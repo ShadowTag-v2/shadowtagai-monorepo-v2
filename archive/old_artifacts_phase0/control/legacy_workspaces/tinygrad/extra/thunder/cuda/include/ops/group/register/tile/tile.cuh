@@ -44,4 +44,3 @@ __device__ static inline bool hasnan(const RT &src) {
 
 #include "complex/complex_conversions.cuh"
 #include "complex/complex_maps.cuh"
-

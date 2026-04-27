@@ -98,7 +98,7 @@ class GradStudentAgent:
             text = resp.text
             self.history.append({"role": "model", "parts": [text]})
             if "FINAL ANSWER:" in text: return text.split("FINAL ANSWER:")[1]
-            
+
             code = re.search(r"```python(.*?)```", text, re.DOTALL)
             if code:
                 res = self.repl.execute(code.group(1))
@@ -160,7 +160,7 @@ class JudgeSixSentinel:
         if any(h['severity'] == "IV" for h in hazards):
             print(f"{Fore.CYAN}>>> 🧹 Scrubbing debugs...")
             code = "\\n".join([l for l in code.split('\\n') if "print(" not in l])
-        
+
         # Ghost Writer (???)
         if "???" in code and self.model:
             print(f"{Fore.BLUE}>>> 👻 Ghost Writer Active...")
@@ -169,21 +169,21 @@ class JudgeSixSentinel:
             resp = self.model.generate_content(f"Write python code for: {prompt}. Output CODE ONLY.", tools=[self.grounding])
             gen_code = resp.text.replace("```python", "").replace("```", "")
             code = code.replace(f"??? {prompt}", gen_code)
-        
+
         return code
 
     def execute(self, path):
         if not os.path.exists(path): return
         with open(path, 'r') as f: content = f.read()
-        
+
         risk, hazards = self.assess_risk(content)
         if hazards: print(f"{Fore.YELLOW}>>> ⚠️  Hazards in {path}: {[h['name'] for h in hazards]}")
-        
+
         new_content = self.mitigate(content, hazards)
         if new_content != content:
             with open(path, 'w') as f: f.write(new_content)
             print(f"{Fore.GREEN}>>> 💾 Patch Applied to {path}.")
-            
+
         if risk in ["HIGH", "EXTREME"]:
             print(f"{Fore.RED}>>> 🛑 BLOCKED: Risk Level {risk}")
             sys.exit(1)

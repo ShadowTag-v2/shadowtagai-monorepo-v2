@@ -153,8 +153,8 @@ describe('HfDatasetLogger', () => {
 				};
 			};
 
-			logger = createTestLogger({ 
-				uploadFunction: conflictThenSuccessUpload, 
+			logger = createTestLogger({
+				uploadFunction: conflictThenSuccessUpload,
 				batchSize: 10, // Prevent auto-flush
 				flushInterval: 60000 // Prevent timer flush
 			});

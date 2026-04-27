@@ -149,7 +149,7 @@ The following is an example of an expanded quantization recipe you can tune to y
         QuantizationScheme,
         QuantizationStrategy,
         QuantizationType,
-    ) 
+    )
     recipe = GPTQModifier(
         targets="Linear",
         config_groups={

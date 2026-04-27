@@ -23,7 +23,7 @@ Help us keep a healthy and open community. We expect all participants in this pr
 
 > While we are doing all we can to take care of every issue, sometimes we get overwhelmed. That's why
 > - issues that are not constructive or describe problems that cannot be reproduced will be closed
-> - feature requests or bug reports with unanswered questions regarding the behavior/reproduction for more than 20 days will be closed 
+> - feature requests or bug reports with unanswered questions regarding the behavior/reproduction for more than 20 days will be closed
 
 ## <a name="features"></a> Requesting Features
 
@@ -78,13 +78,13 @@ git push origin <my-fix-branch> --force
 
 7. [Submit your pull request](https://github.com/NativeScript/NativeScript/compare). Please, fill in the Pull Request template - it will help us better understand the PR and increase the chances of it getting merged quickly.
 
-It's our turn from there on! We will review the PR and discuss changes you might have to make before merging it! Thanks! 
+It's our turn from there on! We will review the PR and discuss changes you might have to make before merging it! Thanks!
 
 >Note: Sometimes you will see someone from the contributors team writing strange comments like: `test` or `test branch_functional_tests#css-gradients-tests branch_widgets#vultix/css-gradients` - don't worry about it, these are just phrases that trigger the internal CI builds.
 
 ## <a name="test-report"></a> Check test report
 
-The purpose of the test report view is to show the tests' results for the PRs for the external contributors. When a NativeScript team member triggers the tests, you can review the result by selecting the `Details` button next to the `ci/jenkins/core-modules-tests`  task. 
+The purpose of the test report view is to show the tests' results for the PRs for the external contributors. When a NativeScript team member triggers the tests, you can review the result by selecting the `Details` button next to the `ci/jenkins/core-modules-tests`  task.
 
 > Note: the `Details` button will be available when the execution of the test completes and there is at least one failing test.
 
@@ -95,8 +95,8 @@ When you click on the button, you will be redirected to the report page. On the 
 Based on the executed suite, one of the following or all of the following files will be generated: `mochawesome.html` | `index.html` | `unit-tests.log`. Some reports also might include `*.png`, `*.logs` or `[page source].xml` files that can help in understanding where is the problem.
 
 For example:
-1. When you select the `index.html` page, an additional `TestNG Results` sidebar will be displayed. There you can find a list of all failures. 
-2. When you select one of them, you will see on the right side all tests, that have been executed. The problematic ones will be coloured in red. 
+1. When you select the `index.html` page, an additional `TestNG Results` sidebar will be displayed. There you can find a list of all failures.
+2. When you select one of them, you will see on the right side all tests, that have been executed. The problematic ones will be coloured in red.
 3. If you click on one of them, detailed info or error log will be displayed. As we've mentioned above in some test reports, you will also find screenshots, that demonstrates the problem visually. Those images can be found below the info/ error log.
 
 ## <a name="commit-messages"></a> Commit Message Guidelines
@@ -209,7 +209,7 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 …
 })
 
-with: 
+with:
 
 import { NativeScriptCommonModule } from "nativescript-angular/common";
 …
@@ -245,7 +245,7 @@ git checkout release
 ```
 git merge --ff-only origin/master
 ```
-*** Note: If there are commits in release branch which are not merged in master branch '-ff-merge' command will fail. 
+*** Note: If there are commits in release branch which are not merged in master branch '-ff-merge' command will fail.
 In this case the commits should be merged firstly from release in master branch as explained in section 'Merge changes from release into master' and then repeat step 1.
 
 2. Execute `npm i` to install dependencies:
@@ -259,16 +259,16 @@ npm --no-git-tag-version version [major|minor|patch] -m "release: cut the %s rel
 cd ..
 ```
 
-4. Execute [`npm version`](https://docs.npmjs.com/cli/version) to bump the version of `tns-core-modules`, 
-tag the release and update the CHANGELOG.md. Don't forget to check the auto-generated CHANGELOG.md 
+4. Execute [`npm version`](https://docs.npmjs.com/cli/version) to bump the version of `tns-core-modules`,
+tag the release and update the CHANGELOG.md. Don't forget to check the auto-generated CHANGELOG.md
 ```
 cd nativescript-core
 npm --no-git-tag-version version [major|minor|patch] -m "release: cut the %s release"
 cd ..
 ```
 
-5. Execute [`npm version`](https://docs.npmjs.com/cli/version) to bump the version of `tns-core-modules`, 
-tag the release and update the CHANGELOG.md. Don't forget to check the auto-generated CHANGELOG.md 
+5. Execute [`npm version`](https://docs.npmjs.com/cli/version) to bump the version of `tns-core-modules`,
+tag the release and update the CHANGELOG.md. Don't forget to check the auto-generated CHANGELOG.md
 ```
 cd tns-core-modules-package
 npm --no-git-tag-version version [major|minor|patch] -m "release: cut the %s release"
@@ -299,7 +299,7 @@ curl -d '{"title": "release: cut the [release-version] release","body": "docs: u
 ```
 10. Merge PR into release branch.
 
-11. If all checks has passed publish package. Usually the night builds will be triggered and the package will be ready to be released on the next day. 
+11. If all checks has passed publish package. Usually the night builds will be triggered and the package will be ready to be released on the next day.
 
 ## Merge changes from release into master
 

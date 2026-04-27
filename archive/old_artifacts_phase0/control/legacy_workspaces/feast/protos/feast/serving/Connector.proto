@@ -16,7 +16,7 @@ message ConnectorFeature {
 }
 
 message ConnectorFeatureList {
-	repeated ConnectorFeature  featureList = 1; 
+	repeated ConnectorFeature  featureList = 1;
 }
 
 service OnlineStore {

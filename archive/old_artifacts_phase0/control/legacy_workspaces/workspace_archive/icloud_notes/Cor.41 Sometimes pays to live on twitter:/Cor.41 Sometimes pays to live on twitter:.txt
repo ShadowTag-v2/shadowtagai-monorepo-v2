@@ -51,7 +51,7 @@ Benefits for YouAi:
 
 ⸻
 
-Let me know if you’d like a detailed proposal for Phase 1 (cloud-based GPU access through partners) versus owning hardware (DGX / Blackwell racks), including ROI estimates and ETF style comparisons.” 
+Let me know if you’d like a detailed proposal for Phase 1 (cloud-based GPU access through partners) versus owning hardware (DGX / Blackwell racks), including ROI estimates and ETF style comparisons.”
 
 <next>
 

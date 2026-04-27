@@ -100,4 +100,3 @@ Ingesting from stream sources happens either via a Push API or via a contrib pro
 
 * To **push data into the offline or online stores**: see [push sources](../../reference/data-sources/push.md) for details.
 * (experimental) To **use a contrib Spark processor** to ingest from a topic, see [Tutorial: Building streaming features](../../tutorials/building-streaming-features.md)
-

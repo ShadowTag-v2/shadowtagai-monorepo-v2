@@ -91,25 +91,25 @@ The source configuration determines **WHERE** your server code lives. It tells F
 <Card icon="code" title="Source">
 <ParamField body="source" type="object" required>
   The server source configuration that determines where your server code lives.
-  
+
   <ParamField body="type" type="string" default="filesystem">
     The source type identifier that determines which implementation to use. Currently supports `"filesystem"` for local files. Future releases will add support for `"git"` and `"cloud"` source types.
   </ParamField>
-  
+
   <Expandable title="FileSystemSource">
     When `type` is `"filesystem"` (or omitted), the source points to a local Python file containing your FastMCP server:
-    
+
     <ParamField body="path" type="string" required>
-      Path to the Python file containing your FastMCP server. 
+      Path to the Python file containing your FastMCP server.
     </ParamField>
-    
+
     <ParamField body="entrypoint" type="string">
       Name of the server instance or factory function within the module:
       - Can be a FastMCP server instance (e.g., `mcp = FastMCP("MyServer")`)
       - Can be a function with no arguments that returns a FastMCP server
       - If not specified, FastMCP searches for common names: `mcp`, `server`, or `app`
     </ParamField>
-    
+
     **Example:**
     ```json
     "source": {
@@ -118,7 +118,7 @@ The source configuration determines **WHERE** your server code lives. It tells F
       "entrypoint": "mcp"
     }
     ```
-    
+
     Note: File paths are resolved relative to the configuration file's location.
   </Expandable>
 </ParamField>
@@ -141,42 +141,42 @@ FastMCP uses an extensible environment system with a base `Environment` class th
 <Card icon="code" title="Environment">
 <ParamField body="environment" type="object">
   Optional environment configuration. When specified, FastMCP uses the appropriate environment implementation to set up your server's runtime.
-  
+
   <ParamField body="type" type="string" default="uv">
     The environment type identifier that determines which implementation to use. Currently supports `"uv"` for Python environments managed by uv. If omitted, defaults to `"uv"`.
   </ParamField>
-  
+
   <Expandable title="UVEnvironment">
     When `type` is `"uv"` (or omitted), the environment uses uv to manage Python dependencies:
-    
+
     <ParamField body="python" type="string">
       Python version constraint. Examples:
       - Exact version: `"3.12"`
       - Minimum version: `">=3.10"`
       - Version range: `">=3.10,<3.13"`
     </ParamField>
-    
+
     <ParamField body="dependencies" type="list[str]">
       List of pip packages with optional version specifiers (PEP 508 format).
       ```json
       "dependencies": ["pandas>=2.0", "requests", "httpx"]
       ```
     </ParamField>
-    
+
     <ParamField body="requirements" type="string">
       Path to a requirements.txt file, resolved relative to the config file location.
       ```json
       "requirements": "requirements.txt"
       ```
     </ParamField>
-    
+
     <ParamField body="project" type="string">
       Path to a project directory containing pyproject.toml for uv project management.
       ```json
       "project": "."
       ```
     </ParamField>
-    
+
     <ParamField body="editable" type="list[string]">
       List of paths to packages to install in editable/development mode. Useful for local development when you want changes to be reflected immediately. Supports multiple packages for monorepo setups or shared libraries.
       ```json
@@ -187,7 +187,7 @@ FastMCP uses an extensible environment system with a base `Environment` class th
       "editable": [".", "../shared-lib", "/path/to/another-package"]
       ```
     </ParamField>
-    
+
     **Example:**
     ```json
     "environment": {
@@ -197,7 +197,7 @@ FastMCP uses an extensible environment system with a base `Environment` class th
       "editable": ["."]
     }
     ```
-    
+
     Note: When any UVEnvironment field is specified, FastMCP automatically creates an isolated environment using `uv` before running your server.
   </Expandable>
 </ParamField>
@@ -226,7 +226,7 @@ Environment variables are included in this section because they're runtime confi
 <Card icon="code" title="Deployment Fields">
 <ParamField body="deployment" type="object">
   Optional runtime configuration for the server.
-  
+
   <Expandable title="Deployment Fields">
     <ParamField body="transport" type="string" default="stdio">
       Protocol for client communication:
@@ -234,21 +234,21 @@ Environment variables are included in this section because they're runtime confi
       - `"http"`: Network-accessible HTTP server
       - `"sse"`: Server-sent events
     </ParamField>
-    
+
     <ParamField body="host" type="string" default="127.0.0.1">
       Network interface to bind (HTTP transport only):
       - `"127.0.0.1"`: Local connections only
       - `"0.0.0.0"`: All network interfaces
     </ParamField>
-    
+
     <ParamField body="port" type="integer" default="3000">
       Port number for HTTP transport.
     </ParamField>
-    
+
     <ParamField body="path" type="string" default="/mcp/">
       URL path for the MCP endpoint when using HTTP transport.
     </ParamField>
-    
+
     <ParamField body="log_level" type="string" default="INFO">
       Server logging verbosity. Options:
       - `"DEBUG"`: Detailed debugging information
@@ -257,7 +257,7 @@ Environment variables are included in this section because they're runtime confi
       - `"ERROR"`: Error messages only
       - `"CRITICAL"`: Critical errors only
     </ParamField>
-    
+
     <ParamField body="env" type="object">
       Environment variables to set when running the server. Supports `${VAR_NAME}` syntax for runtime interpolation.
       ```json
@@ -267,11 +267,11 @@ Environment variables are included in this section because they're runtime confi
       }
       ```
     </ParamField>
-    
+
     <ParamField body="cwd" type="string">
       Working directory for the server process. Relative paths are resolved from the config file location.
     </ParamField>
-    
+
     <ParamField body="args" type="list[str]">
       Command-line arguments to pass to the server, passed after `--` to the server's argument parser.
       ```json
@@ -371,7 +371,7 @@ fastmcp run fastmcp.json --skip-env
 
 **When you already have an environment:**
 - You're in an activated virtual environment with all dependencies installed
-- You're inside a Docker container with pre-installed dependencies  
+- You're inside a Docker container with pre-installed dependencies
 - You're in a CI/CD pipeline that pre-builds the environment
 - You're using a system-wide installation with all required packages
 - You're in a uv-managed environment (prevents infinite recursion)
@@ -398,7 +398,7 @@ Note: For filesystem sources (local Python files), this flag has no effect since
 
 The configuration file works with all FastMCP commands:
 - **`run`** - Start the server in production mode
-- **`dev`** - Launch with the Inspector UI for development  
+- **`dev`** - Launch with the Inspector UI for development
 - **`inspect`** - View server capabilities and configuration
 - **`install`** - Install to Claude Desktop, Cursor, or other MCP clients
 
@@ -554,7 +554,7 @@ Configuration for a data analysis server with scientific packages:
 }
 ```
 </Tab>
-<Tab title="Multi-Environment Setup"> 
+<Tab title="Multi-Environment Setup">
 
 You can maintain multiple configuration files for different environments:
 

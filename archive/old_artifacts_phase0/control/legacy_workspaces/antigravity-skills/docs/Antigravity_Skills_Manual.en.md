@@ -1,6 +1,6 @@
 # Antigravity Skills User Manual
 
-**Document Version:** v2.1.0  
+**Document Version:** v2.1.0
 **Total Skills:** 50
 
 This document provides a detailed introduction to all available Skills in the current workspace. These Skills offer a wide range of capabilities, from document processing and artistic creation to full-stack development and testing.

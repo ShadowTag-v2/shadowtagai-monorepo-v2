@@ -1,10 +1,10 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="onLoaded" shownModally="onShownModally" class="page">
 
-    <GridLayout padding="20">   
+    <GridLayout padding="20">
       <ScrollView>
           <StackLayout>
             <Button text="Close" class="view-item" tap="{{close}}" />
-            
+
           </StackLayout>
       </ScrollView>
     </GridLayout>

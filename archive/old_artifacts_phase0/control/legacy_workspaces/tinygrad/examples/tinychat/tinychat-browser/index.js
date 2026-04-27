@@ -39,7 +39,7 @@ async function getDevice() {
   requiredLimits.maxStorageBufferBindingSize = maxBufferSize;
   requiredLimits.maxBufferSize = maxBufferSize;
   requiredLimits.maxComputeInvocationsPerWorkgroup = 512; // may need to vary based on what the WEBGPU backend produces
-            
+
   try {
     return await adapter.requestDevice({ requiredLimits });
   } catch(error) {
@@ -48,7 +48,7 @@ async function getDevice() {
   }
 };
 
-// copied from examples/webgpu/stable_diffusion/index.html 
+// copied from examples/webgpu/stable_diffusion/index.html
 function initDb() {
   return new Promise((resolve, reject) => {
     let db;
@@ -73,13 +73,13 @@ function initDb() {
   });
 }
 
-// copied from examples/webgpu/stable_diffusion/index.html 
+// copied from examples/webgpu/stable_diffusion/index.html
 function readTensorFromDb(db, id) {
   return new Promise((resolve, reject) => {
     if (db == null) {
       resolve(null);
     }
-            
+
       const transaction = db.transaction(['tensors'], 'readonly');
       const store = transaction.objectStore('tensors');
       const request = store.get(id);
@@ -123,7 +123,7 @@ function getAllKeysFromDb(db) {
   });
 }
 
-// modified from examples/webgpu/stable_diffusion/index.html 
+// modified from examples/webgpu/stable_diffusion/index.html
 function saveTensorToDb(db, id, tensor) {
   return readTensorFromDb(db, id).then((result) => {
     if (!result) {
@@ -253,7 +253,7 @@ async function load_state_dict (data, device, progress) {
               controller.close();
           },
       }));
-        
+
       return res.arrayBuffer();
   };
 
@@ -303,7 +303,7 @@ async function load_state_dict (data, device, progress) {
     const chainDownload = async() => {
       const file = toDownload.shift();
       loadPart(`${window.MODEL_BASE_URL}/${file.name}`) // triggers download
-      .then(async (arraybuf) => { 
+      .then(async (arraybuf) => {
         downloaded.push({ ...file, bytes: new Uint8Array(arraybuf)});
         // pause downloads if further processing is a bottleneck
         while (toDownload.length && downloaded.length >= numDownloaders) await new Promise(resolve => setTimeout(resolve, 5));

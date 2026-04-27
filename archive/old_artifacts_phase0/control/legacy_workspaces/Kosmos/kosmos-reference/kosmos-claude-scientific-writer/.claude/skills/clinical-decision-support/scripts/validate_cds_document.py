@@ -331,4 +331,3 @@ if __name__ == '__main__':
 # python validate_cds_document.py cohort_analysis.tex
 # python validate_cds_document.py treatment_recommendations.tex -o validation_report.txt
 # python validate_cds_document.py document.tex --strict  # Warnings cause failure
-

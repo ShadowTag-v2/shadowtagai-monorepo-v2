@@ -1,4 +1,4 @@
-ZT.1 Zero-Touch Legal Deadline Management (ZT) 
+ZT.1 Zero-Touch Legal Deadline Management (ZT)
 Problem being solved (ZT)
 Zero-Touch Legal Deadline Management (ZT)
 
@@ -16,7 +16,7 @@ You’ve lost leverage.
 Or worse, you’ve lost the entire case by default.
 
 The legal system runs on strict timelines.
-Courts don’t care about your inbox or your excuses. 
+Courts don’t care about your inbox or your excuses.
 
 Fix it:
 Calendar every legal date.

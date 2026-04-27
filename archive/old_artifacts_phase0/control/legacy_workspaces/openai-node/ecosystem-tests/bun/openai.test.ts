@@ -49,7 +49,7 @@ test(`proxied request works`, async function () {
       proxy: process.env['ECOSYSTEM_TESTS_PROXY'],
     },
   });
-  
+
   const completion = await client.chat.completions.create({
     model: 'gpt-4',
     messages: [{ role: 'user', content: 'Say this is a test' }],

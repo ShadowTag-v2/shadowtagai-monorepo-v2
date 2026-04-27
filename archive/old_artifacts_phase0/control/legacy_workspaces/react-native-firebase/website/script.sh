@@ -1,5 +1,5 @@
 #!/bin/bash
-# As we currently have two deployments of react-native-firebase. 
+# As we currently have two deployments of react-native-firebase.
 # One is one producetion https://vercel.com/invertase/react-native-firebase
 # Another is new modules located at https://vercel.com/invertase/react-native-firebase-next
 
@@ -20,4 +20,4 @@ else
   echo "🛑 - This is not a build of @invertase/next build cancelled"
   exit 0;
 fi
- 
+

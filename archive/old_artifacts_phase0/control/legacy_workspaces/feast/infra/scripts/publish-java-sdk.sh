@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e 
+set -e
 set -o pipefail
 
 GPG_KEY_IMPORT_DIR=/etc/gpg
@@ -15,7 +15,7 @@ usage()
                         - public-key
                         - private-key
                         The default value is '/etc/gpg'
-  
+
   This script assumes the GPG private key is protected by a passphrase.
   The passphrase can be specified in \$HOME/.m2/settings.xml. In the same xml
   file, credentials to upload releases to Sonatype must also be provided.
@@ -45,7 +45,7 @@ while [ "$1" != "" ]; do
   case "$1" in
       --revision )             REVISION="$2";            shift;;
       --gpg-key-import-dir )   GPG_KEY_IMPORT_DIR="$2";  shift;;
-      -h | --help )            usage;                    exit;; 
+      -h | --help )            usage;                    exit;;
       * )                      usage;                    exit 1
   esac
   shift

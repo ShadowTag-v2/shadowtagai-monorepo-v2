@@ -1144,4 +1144,3 @@ Packages with dependency updates only:
 
  - **FIX**: register generate action with the correct name.
  - **FEAT**: implemented live api using firebase ai logic (#19).
-

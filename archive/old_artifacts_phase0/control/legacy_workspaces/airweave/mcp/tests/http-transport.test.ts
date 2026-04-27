@@ -1,6 +1,6 @@
 /**
  * HTTP Transport Tests - Tests the Streamable HTTP server
- * 
+ *
  * These tests verify:
  * 1. Session management works correctly
  * 2. API keys are handled per-request
@@ -285,4 +285,3 @@ describe('HTTP Transport - Session Management', () => {
         });
     });
 });
-

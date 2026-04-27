@@ -166,7 +166,7 @@ Markdown
 **Enforcement:** IMMEDIATE
 
 ## 1. The "Anti-Bloat" Prime Directive
-You are strictly forbidden from running `git add .` or `git add -A` without first verifying the `.gitignore` status. 
+You are strictly forbidden from running `git add .` or `git add -A` without first verifying the `.gitignore` status.
 **Reason:** You previously attempted to commit `google-cloud-sdk/` and `Legacy_Archives/` (Gigabytes of data), which would corrupt the repository.
 
 **Mandatory Pre-Flight Check:**
@@ -318,7 +318,7 @@ LOCATION = "us-central1"
 def get_client():
     """Initializes the Gemini Client based on available credentials."""
     [CREDENTIAL_REDACTED]GEMINI_API_KEY")
-    
+
     if [CREDENTIAL_REDACTED]>>> 🔑 CORTEX: Detected GEMINI_API_KEY. Using Direct API Mode.")
         # Mode A: Direct API (Key-based)
         return genai.Client([CREDENTIAL_REDACTED] http_options={'api_version': 'v1beta'})
@@ -340,7 +340,7 @@ def route_query(user_query: str):
     """Decides which RAG system to query."""
     try:
         response = client.models.generate_content(
-            model="gemini-3.1-flash-exp", 
+            model="gemini-3.1-flash-exp",
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
                 response_mime_type="application/json",
@@ -354,7 +354,7 @@ def route_query(user_query: str):
             ),
             contents=[user_query]
         )
-        
+
         if not response.parsed:
              # Fallback if the model is lazy
              print(f">>> ⚠️ CORTEX: Empty response. Defaulting to VECTOR_DOCS.")

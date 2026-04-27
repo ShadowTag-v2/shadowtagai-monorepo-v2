@@ -61,4 +61,3 @@ Below is the resulting joined training dataframe. It contains both the original 
 ![](../../.gitbook/assets/image%20%2829%29.png)
 
 Three feature rows were successfully joined to the entity dataframe rows. The first row in the entity dataframe was older than the earliest feature rows in the feature view and could not be joined. The last row in the entity dataframe was outside of the TTL window \(the event happened 11 hours after the feature row\) and also couldn't be joined.
-

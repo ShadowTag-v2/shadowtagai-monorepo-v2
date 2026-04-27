@@ -339,4 +339,3 @@ External resources:
 **Last Updated**: 2025-12-25
 **Author**: Agent Skills for Context Engineering Contributors
 **Version**: 1.0.0
-

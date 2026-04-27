@@ -35,4 +35,3 @@ package:
   patterns:
     - '!node_modules/**/.cache/**'
     - '!**/*.map'
-

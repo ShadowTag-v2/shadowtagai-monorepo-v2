@@ -916,4 +916,3 @@ Ready-to-use poster templates in `assets/` directory:
 - Color scheme definitions and institutional templates
 
 Load these templates and customize for your specific research and conference requirements.
-

@@ -1,4 +1,4 @@
-# Hugging Face Official MCP Server 
+# Hugging Face Official MCP Server
 
 <img src='https://github.com/evalstate/hf-mcp-server/blob/main/hf-logo.svg' width='100'>
 
@@ -12,7 +12,7 @@ Follow the instructions below to get started:
 <summary>Install in <b>Claude Desktop</b> or <b>claude.ai</b></summary>
 <br />
 
-Click [here](https://claude.ai/redirect/website.v1.67274164-23df-4883-8166-3c93ced276be/directory/37ed56d5-9d61-4fd4-ad00-b9134c694296) to add the Hugging Face connector to your account. 
+Click [here](https://claude.ai/redirect/website.v1.67274164-23df-4883-8166-3c93ced276be/directory/37ed56d5-9d61-4fd4-ad00-b9134c694296) to add the Hugging Face connector to your account.
 
 Alternatively, navigate to [https://claude.ai/settings/connectors](https://claude.ai/settings/connectors), and add "Hugging Face" from the gallery.
 
@@ -70,7 +70,7 @@ Start `gemini` and run `/mcp auth huggingface` to authenticate the extension.
 <summary>Install in <b>VSCode</b></summary>
 <br />
 
-Click <a href="vscode:mcp/install?%7B%22name%22%3A%22huggingface%22%2C%22gallery%22%3Atrue%2C%22url%22%3A%22https%3A%2F%2Fhuggingface.co%2Fmcp%3Flogin%22%7D">here</a> to add the Hugging Face connector directly to VSCode. Alternatively, install from the gallery at [https://code.visualstudio.com/mcp](https://code.visualstudio.com/mcp): 
+Click <a href="vscode:mcp/install?%7B%22name%22%3A%22huggingface%22%2C%22gallery%22%3Atrue%2C%22url%22%3A%22https%3A%2F%2Fhuggingface.co%2Fmcp%3Flogin%22%7D">here</a> to add the Hugging Face connector directly to VSCode. Alternatively, install from the gallery at [https://code.visualstudio.com/mcp](https://code.visualstudio.com/mcp):
 
 <img src='docs/vscode-badge.png' width='50%' align='center' />
 
@@ -91,7 +91,7 @@ If you prefer to configure manually or use an auth token, add the snippet below 
 <summary>Install in <b>Cursor</b></summary>
 <br />
 
-Click <a href="https://cursor.com/en/install-mcp?name=Hugging%20Face&config=eyJ1cmwiOiJodHRwczovL2h1Z2dpbmdmYWNlLmNvL21jcD9sb2dpbiJ9">here</a> to install the Hugging Face MCP Server directly in <b>Cursor</b>. 
+Click <a href="https://cursor.com/en/install-mcp?name=Hugging%20Face&config=eyJ1cmwiOiJodHRwczovL2h1Z2dpbmdmYWNlLmNvL21jcD9sb2dpbiJ9">here</a> to install the Hugging Face MCP Server directly in <b>Cursor</b>.
 
 If you prefer to use configure manually or specify an Authorization Token, use the snippet below:
 
@@ -117,19 +117,19 @@ Once installed, navigate to https://huggingface.co/settings/mcp to configure you
 
 This repo contains:
 
- - (`/mcp`) MCP Implementations of Hub API and Search endpoints for integration with MCP Servers. 
+ - (`/mcp`) MCP Implementations of Hub API and Search endpoints for integration with MCP Servers.
  - (`/app`) An MCP Server and Web Application for deploying endpoints.
 
 ### MCP Server
 
 The following transports are supported:
 
-- STDIO 
+- STDIO
 - SSE (To be deprecated, but still commonly deployed).
 - StreamableHTTP
 - StreamableHTTP in Stateless JSON Mode (**StreamableHTTPJson**)
 
-The Web Application and HTTP Transports start by default on Port 3000. 
+The Web Application and HTTP Transports start by default on Port 3000.
 
 SSE and StreamableHTTP services are available at `/sse` and `/mcp` respectively. Although though not strictly enforced by the specification this is common convention.
 
@@ -138,7 +138,7 @@ SSE and StreamableHTTP services are available at `/sse` and `/mcp` respectively.
 
 ### Running Locally
 
-You can run the MCP Server locally with either `npx` or `docker`. 
+You can run the MCP Server locally with either `npx` or `docker`.
 
 ```bash
 npx @llmindset/hf-mcp-server       # Start in STDIO mode
@@ -146,7 +146,7 @@ npx @llmindset/hf-mcp-server-http  # Start in Streamable HTTP mode
 npx @llmindset/hf-mcp-server-json  # Start in Streamable HTTP (JSON RPC) mode
 ```
 
-To run with docker: 
+To run with docker:
 
 ```bash
 docker pull ghcr.io/evalstate/hf-mcp-server:latest
@@ -158,14 +158,14 @@ All commands above start the Management Web interface on http://localhost:3000/.
 
 ### Developing OpenAI Apps SDK Components
 
-To build and test the Apps SDK component, run 
+To build and test the Apps SDK component, run
 
 ```bash
 cd packages/app
 npm run dev:widget
 ```
 
-Then open `http://localhost:5173/gradio-widget-dev.html`. This will bring up a browser with HMR where you can send Structured Content to the components for testing. 
+Then open `http://localhost:5173/gradio-widget-dev.html`. This will bring up a browser with HMR where you can send Structured Content to the components for testing.
 
 ![skybridge-viewer](./docs/skybridge-dev.png)
 
@@ -231,7 +231,7 @@ The `sse` and `streamingHttp` transports are both _stateful_ - they maintain a c
 | `MCP_CLIENT_CONNECTION_CHECK`     | 90000ms | How often to check for stale sessions |
 | `MCP_CLIENT_CONNECTION_TIMEOUT`   | 300000ms | Remove sessions inactive for this duration |
 | `MCP_PING_ENABLED`                | true    | Enable ping keep-alive for sessions |
-| `MCP_PING_INTERVAL`               | 30000ms | Interval between ping cycles | 
+| `MCP_PING_INTERVAL`               | 30000ms | Interval between ping cycles |
 
 
 ### Environment Variables

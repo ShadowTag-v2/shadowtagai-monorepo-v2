@@ -460,7 +460,7 @@ async for update in generate_paper("Create a paper"):
         stage = update["stage"]        # initialization|research|writing|compilation|complete
         percentage = update["percentage"]  # 0-100
         message = update["message"]     # Human-readable message
-        
+
         print(f"[{percentage}%] {message}")
 ```
 
@@ -472,23 +472,23 @@ Final result includes everything about the generated paper:
 if update["type"] == "result":
     # Status
     status = update["status"]  # success|partial|failed
-    
+
     # Files
     pdf = update["files"]["pdf_final"]
     tex = update["files"]["tex_final"]
     bib = update["files"]["bibliography"]
     figures = update["files"]["figures"]  # List of figure paths
-    
+
     # Metadata
     title = update["metadata"]["title"]
     word_count = update["metadata"]["word_count"]
-    
+
     # Citations
     citation_count = update["citations"]["count"]
-    
+
     # Compilation
     compiled = update["compilation_success"]
-    
+
     # Errors (if any)
     errors = update["errors"]
 ```
@@ -536,4 +536,3 @@ async for update in generate_paper(
 - [Troubleshooting](TROUBLESHOOTING.md) - Common issues and solutions
 - [Development Guide](DEVELOPMENT.md) - Contributing and development
 - [Changelog](../CHANGELOG.md) - Version history and updates
-

@@ -35,10 +35,10 @@ This example notebook provides a step-by-step demonstration of building and usin
 
 ## Running the example
 Clone this repository: https://github.com/feast-dev/feast.git
-Navigate to the examples/rag-retriever directory. Here you will find the following files: 
+Navigate to the examples/rag-retriever directory. Here you will find the following files:
 
 * **feature_repo/feature_store.yaml**
-  This is the core configuration file for the RAG project's feature store, configuring a Milvus online store on a local provider. 
+  This is the core configuration file for the RAG project's feature store, configuring a Milvus online store on a local provider.
   * In order to configure Milvus you should:
      - Update `feature_store.yaml` with your Milvus connection details:
        - host
@@ -46,7 +46,7 @@ Navigate to the examples/rag-retriever directory. Here you will find the followi
        - credentials (if required)
 
 * **__feature_repo/ragproject_repo.py__**
-  This is the Feast feature repository configuration that defines the schema and data source for Wikipedia passage embeddings. 
+  This is the Feast feature repository configuration that defines the schema and data source for Wikipedia passage embeddings.
 
 * **__rag_feast.ipynb__**
   This is a notebook demonstrating the implementation of a RAG system using Feast. The notebook provides:

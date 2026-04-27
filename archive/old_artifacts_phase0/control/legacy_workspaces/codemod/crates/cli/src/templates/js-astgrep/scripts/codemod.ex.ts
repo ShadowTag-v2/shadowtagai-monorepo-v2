@@ -11,7 +11,7 @@ async function transform(root: SgRoot<Elixir>): Promise<string> {
     },
   });
 
-  // Find IO.inspect calls  
+  // Find IO.inspect calls
   const ioInspectNodes = rootNode.findAll({
     rule: {
       pattern: "IO.inspect($$$ARGS)"

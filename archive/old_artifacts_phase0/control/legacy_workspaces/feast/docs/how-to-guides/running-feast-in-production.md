@@ -54,20 +54,20 @@ To keep your online store up to date, you need to run a job that loads feature d
 
 ### 2.1 Scalable Materialization
 
-Out of the box, Feast's materialization process uses an in-process materialization engine. This engine loads all the data being materialized into memory from the offline store, and writes it into the online store. 
+Out of the box, Feast's materialization process uses an in-process materialization engine. This engine loads all the data being materialized into memory from the offline store, and writes it into the online store.
 
 This approach may not scale to large amounts of data, which users of Feast may be dealing with in production.
 In this case, we recommend using one of the more [scalable compute engines](./scaling-feast.md#scaling-materialization), such as [Snowflake Compute Engine](../reference/compute-engine/snowflake.md).
-Users may also need to [write a custom compute engine](../how-to-guides/customizing-feast/creating-a-custom-compute-engine.md) to work on their existing infrastructure.  
+Users may also need to [write a custom compute engine](../how-to-guides/customizing-feast/creating-a-custom-compute-engine.md) to work on their existing infrastructure.
 
 
 ### 2.2 Scheduled materialization with Airflow
 
 > See also [data ingestion](../getting-started/concepts/data-ingestion.md#batch-data-ingestion) for code snippets
 
-It is up to you to orchestrate and schedule runs of materialization. 
+It is up to you to orchestrate and schedule runs of materialization.
 
-Feast keeps the history of materialization in its registry so that the choice could be as simple as a [unix cron util](https://en.wikipedia.org/wiki/Cron). Cron util should be sufficient when you have just a few materialization jobs (it's usually one materialization job per feature view) triggered infrequently. 
+Feast keeps the history of materialization in its registry so that the choice could be as simple as a [unix cron util](https://en.wikipedia.org/wiki/Cron). Cron util should be sufficient when you have just a few materialization jobs (it's usually one materialization job per feature view) triggered infrequently.
 
 However, the amount of work can quickly outgrow the resources of a single machine. That happens because the materialization job needs to repackage all rows before writing them to an online store. That leads to high utilization of CPU and memory. In this case, you might want to use a job orchestrator to run multiple jobs in parallel using several workers. Kubernetes Jobs or Airflow are good choices for more comprehensive job orchestration.
 
@@ -180,7 +180,7 @@ It is important to note that both the training pipeline and model serving servic
 
 ## 4. Retrieving online features for prediction
 
-Once you have successfully loaded data from batch / streaming sources into the online store, you can start consuming features for model inference. 
+Once you have successfully loaded data from batch / streaming sources into the online store, you can start consuming features for model inference.
 
 ### 4.1. Use the Python SDK within an existing Python service
 
@@ -272,9 +272,9 @@ online_store:
 
 In summary, the overall architecture in production may look like:
 
-* Feast SDK is being triggered by CI (eg, Github Actions). It applies the latest changes from the feature repo to the Feast database-backed registry 
+* Feast SDK is being triggered by CI (eg, Github Actions). It applies the latest changes from the feature repo to the Feast database-backed registry
 * Data ingestion
-  * **Batch data**: Airflow manages batch transformation jobs + materialization jobs to ingest batch data from DWH to the online store periodically. When working with large datasets to materialize, we recommend using a batch materialization engine 
+  * **Batch data**: Airflow manages batch transformation jobs + materialization jobs to ingest batch data from DWH to the online store periodically. When working with large datasets to materialize, we recommend using a batch materialization engine
     * If your offline and online workloads are in Snowflake, the Snowflake materialization engine is likely the best option.
     * If your offline and online workloads are not using Snowflake, but using Kubernetes is an option, the Bytewax materialization engine is likely the best option.
     * If none of these engines suite your needs, you may continue using the in-process engine, or write a custom engine (e.g with Spark or Ray).

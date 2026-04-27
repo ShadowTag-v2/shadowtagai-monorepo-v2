@@ -250,11 +250,11 @@ Would you like me to append this as an impact_summary.md file under .cursor/MEGA
 Here’s a tight breakdown + ready-to-use bits.
 
 Paper recap — “MoEs are stronger than you think: Hyper-parallel inference scaling with RoE” (Apple)
-	•	What it is. Hyper-parallel scaling for MoE LLMs: instead of sampling more full sequences (self-consistency) or longer sequences (CoT), RoE spends extra compute inside a single token step by sampling multiple expert-routes, then aggregating logits for a better next-token. No finetuning.  
-	•	How it works. Use Gumbel-Top-K noise on the MoE router per layer to diversify active experts; run n stochastic forward paths for the current token, then probability-average the logits. To keep cost sane, they batch the n paths and add a Clean-Cache trick: everyone shares the KV cache from one “clean” (τ=0) path; only the current step routes stochastically.  
-	•	Why it matters. A 7B MoE with RoE matches a 10.5B MoE at ~30% lower per-token latency and ~25–30% lower memory than simply using the bigger model (at K≈32). Performance gains are broad (math, commonsense, code) even with greedy decoding.  
-	•	Tuning knobs. Per-layer temperature τᵢ (0…0.5) governs routing noise; best results come from middle layers, with first/last MoE layers kept τ=0. They use Optuna/TPE; for math they tuned on PPL (cheap), for other tasks on accuracy.  
-	•	Overheads. With Clean-Cache + batching, scaling K from 1→64 raises peak GPU memory by only ~12% and power/token by ~20%; without the cache, latency explodes.  
+	•	What it is. Hyper-parallel scaling for MoE LLMs: instead of sampling more full sequences (self-consistency) or longer sequences (CoT), RoE spends extra compute inside a single token step by sampling multiple expert-routes, then aggregating logits for a better next-token. No finetuning.
+	•	How it works. Use Gumbel-Top-K noise on the MoE router per layer to diversify active experts; run n stochastic forward paths for the current token, then probability-average the logits. To keep cost sane, they batch the n paths and add a Clean-Cache trick: everyone shares the KV cache from one “clean” (τ=0) path; only the current step routes stochastically.
+	•	Why it matters. A 7B MoE with RoE matches a 10.5B MoE at ~30% lower per-token latency and ~25–30% lower memory than simply using the bigger model (at K≈32). Performance gains are broad (math, commonsense, code) even with greedy decoding.
+	•	Tuning knobs. Per-layer temperature τᵢ (0…0.5) governs routing noise; best results come from middle layers, with first/last MoE layers kept τ=0. They use Optuna/TPE; for math they tuned on PPL (cheap), for other tasks on accuracy.
+	•	Overheads. With Clean-Cache + batching, scaling K from 1→64 raises peak GPU memory by only ~12% and power/token by ~20%; without the cache, latency explodes.
 
 Plug-and-play recipe (pseudo)
 	1.	For each MoE layer ℓ in middle range, set τℓ ∈ [0, 0.5].
@@ -263,7 +263,7 @@ Plug-and-play recipe (pseudo)
 • Paths 1…K-1: add Gumbel(0,1)·τℓ to router logits → Top-K experts → forward.
 • Aggregate all K logits by probability averaging → sample/greedy pick.
 	3.	Tune τ with a small validation set (Optuna TPE).
-(This is orthogonal to CoT/SC; you can still add self-consistency on top.)  
+(This is orthogonal to CoT/SC; you can still add self-consistency on top.)
 
 ⸻
 

@@ -47,7 +47,7 @@ If you have ideas for new examples or guides, share them on the [issues page](ht
 - [Embeddings with Voyage AI](https://github.com/anthropics/anthropic-cookbook/blob/main/third_party/VoyageAI/how_to_create_embeddings.md)
 
 ### Multimodal Capabilities
-- [Vision with Claude](https://github.com/anthropics/anthropic-cookbook/tree/main/multimodal): 
+- [Vision with Claude](https://github.com/anthropics/anthropic-cookbook/tree/main/multimodal):
   - [Getting started with images](https://github.com/anthropics/anthropic-cookbook/blob/main/multimodal/getting_started_with_vision.ipynb)
   - [Best practices for vision](https://github.com/anthropics/anthropic-cookbook/blob/main/multimodal/best_practices_for_vision.ipynb)
   - [Interpreting charts and graphs](https://github.com/anthropics/anthropic-cookbook/blob/main/multimodal/reading_charts_graphs_powerpoints.ipynb)

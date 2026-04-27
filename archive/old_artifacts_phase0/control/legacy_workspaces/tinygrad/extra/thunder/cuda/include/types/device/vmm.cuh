@@ -72,7 +72,7 @@ __host__ inline static void vm_unmap(
     void *ptr,
     const size_t size
 ) {
-    CUCHECK(cuMemUnmap(reinterpret_cast<CUdeviceptr>(ptr), size)); 
+    CUCHECK(cuMemUnmap(reinterpret_cast<CUdeviceptr>(ptr), size));
     CUCHECK(cuMemAddressFree(reinterpret_cast<CUdeviceptr>(ptr), size));
 }
 

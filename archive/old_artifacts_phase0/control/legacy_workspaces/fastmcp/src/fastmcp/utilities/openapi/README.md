@@ -117,7 +117,7 @@ async with httpx.AsyncClient() as client:
         client=client,
         name="My API Server"
     )
-    
+
     # Server automatically creates RequestDirector and pre-calculates schemas
 ```
 
@@ -148,7 +148,7 @@ Tests are located in `/tests/server/openapi/`:
 1. **Core Functionality**
    - `test_server.py` - Server initialization and RequestDirector integration
 
-2. **OpenAPI Features**  
+2. **OpenAPI Features**
    - `test_parameter_collisions.py` - Parameter name collision handling
    - `test_deepobject_style.py` - DeepObject parameter style support
    - `test_openapi_features.py` - General OpenAPI feature compliance

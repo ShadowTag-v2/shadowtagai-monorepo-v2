@@ -1,7 +1,7 @@
 const { chromium } = require('playwright');
 async function extractDeepContext(query) {
     console.log(`Initiating Deep Extraction for: ${query}`);
-    const browser = await chromium.launch({ headless: false }); 
+    const browser = await chromium.launch({ headless: false });
     const context = await browser.newContext();
     const page = await context.newPage();
     try {
@@ -17,7 +17,7 @@ async function extractDeepContext(query) {
                 const inputArea = page.locator('textarea').last();
                 await inputArea.fill('yes');
                 await page.keyboard.press('Enter');
-                await page.waitForTimeout(8000); 
+                await page.waitForTimeout(8000);
             }
             console.log("✅ Deep Extraction Complete:\n" + (await page.locator('body').innerText()).substring(0, 1000));
         }

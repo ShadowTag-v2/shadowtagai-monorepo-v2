@@ -198,7 +198,7 @@ __device__ inline static void store(ST &dst, const RT &src) {
                 }
 #endif
             }
-            else if constexpr (std::is_same_v<typename RT::layout, ducks::rt_layout::row> && sizeof(typename ST::dtype) == 1) { 
+            else if constexpr (std::is_same_v<typename RT::layout, ducks::rt_layout::row> && sizeof(typename ST::dtype) == 1) {
                 // handle the row-major layout for 8-bit types
 
                 int warp_group_16 = (warp_laneid / 16);  // divide each warp into two groups of 16 threads

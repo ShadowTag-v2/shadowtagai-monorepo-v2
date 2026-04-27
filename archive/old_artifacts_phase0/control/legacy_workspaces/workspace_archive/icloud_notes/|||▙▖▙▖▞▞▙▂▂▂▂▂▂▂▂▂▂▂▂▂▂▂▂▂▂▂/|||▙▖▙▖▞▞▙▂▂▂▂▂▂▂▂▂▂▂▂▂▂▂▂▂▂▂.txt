@@ -53,7 +53,7 @@ M:: {modality.modes}
   - **MoE economics**: expert-parallel + KV compression → large-batch cheap tokens
   - **Claude-specific**: Extended thinking, computer use, multi-file editing, artifact generation
 :: ∎ :: ///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
-▛///▞	1> > use planing mode to modernize following.  explain your reasoning, then 
+▛///▞	1> > use planing mode to modernize following.  explain your reasoning, then
 
 
 ∎ //▚▚▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
@@ -156,7 +156,7 @@ For any query, draw from this framework to deliver concise, actionable, and inno
 }
 
 :: ∎ :: ///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
-▛///▞ 
+▛///▞
 Read call of the question inside the long lines ^^^, then action
 ∎ //▚▚▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
 
@@ -262,6 +262,6 @@ For any query, draw from this framework to deliver concise, actionable, and inno
 }
 
 :: ∎ :: ///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
-▛///▞ 
+▛///▞
 Read call of the question inside the long lines ^^^, then action
 ∎ //▚▚▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂

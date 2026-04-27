@@ -38,8 +38,8 @@ export class BrowserAudioService {
     for (let i = 0; i < retries; i++) {
       const mediaElements = Array.from(
         document.querySelectorAll("audio, video")
-      ).filter((el: any) => 
-        el.srcObject instanceof MediaStream && 
+      ).filter((el: any) =>
+        el.srcObject instanceof MediaStream &&
         el.srcObject.getAudioTracks().length > 0
       ) as HTMLMediaElement[];
 
@@ -88,7 +88,7 @@ export class BrowserAudioService {
           (window as any).logBot(`Element ${index + 1}: Found ${audioTracks.length} audio tracks`);
           audioTracks.forEach((track, trackIndex) => {
             (window as any).logBot(`  Track ${trackIndex}: enabled=${track.enabled}, muted=${track.muted}, label=${track.label}`);
-            
+
             // Unmute muted audio tracks
             if (track.muted) {
               track.enabled = true;
@@ -180,7 +180,7 @@ export class BrowserAudioService {
 
       const inputData = event.inputBuffer.getChannelData(0);
       const resampledData = this.resampleAudioData(inputData, this.processor!.audioContext.sampleRate);
-      
+
       onAudioData(resampledData, this.processor!.sessionAudioStartTimeMs);
     };
   }
@@ -191,10 +191,10 @@ export class BrowserAudioService {
     );
     const resampledData = new Float32Array(targetLength);
     const springFactor = (inputData.length - 1) / (targetLength - 1);
-    
+
     resampledData[0] = inputData[0];
     resampledData[targetLength - 1] = inputData[inputData.length - 1];
-    
+
     for (let i = 1; i < targetLength - 1; i++) {
       const index = i * springFactor;
       const leftIndex = Math.floor(index);
@@ -204,7 +204,7 @@ export class BrowserAudioService {
         inputData[leftIndex] +
         (inputData[rightIndex] - inputData[leftIndex]) * fraction;
     }
-    
+
     return resampledData;
   }
 
@@ -274,11 +274,11 @@ export class BrowserWhisperLiveService {
   private async simpleConnection(): Promise<WebSocket | null> {
     try {
       this.socket = new WebSocket(this.whisperLiveUrl);
-      
+
       this.socket.onopen = () => {
         this.currentUid = generateBrowserUUID();
         (window as any).logBot(`[Failover] WebSocket connection opened successfully to ${this.whisperLiveUrl}. New UID: ${this.currentUid}. Lang: ${this.botConfigData.language}, Task: ${this.botConfigData.task}`);
-        
+
         const configPayload = {
           uid: this.currentUid,
           language: this.botConfigData.language || null,
@@ -315,17 +315,17 @@ export class BrowserWhisperLiveService {
   private async attemptConnection(): Promise<WebSocket | null> {
     try {
       (window as any).logBot(`[STUBBORN] 🚀 Connecting to WhisperLive with NEVER-GIVE-UP reconnection: ${this.whisperLiveUrl} (attempt ${this.retryCount + 1})`);
-      
+
       this.socket = new WebSocket(this.whisperLiveUrl);
-      
+
       this.socket.onopen = (event) => {
         (window as any).logBot(`[STUBBORN] ✅ WebSocket CONNECTED to ${this.whisperLiveUrl}! Retry count reset from ${this.retryCount}.`);
         this.retryCount = 0; // Reset on successful connection
         this.clearReconnectInterval(); // Stop any ongoing reconnection attempts
         this.isServerReady = false; // Will be set to true when SERVER_READY received
-        
+
         this.currentUid = generateBrowserUUID();
-        
+
         const configPayload = {
           uid: this.currentUid,
           language: this.botConfigData.language || null,
@@ -384,18 +384,18 @@ export class BrowserWhisperLiveService {
 
     // Exponential backoff with max delay of 10 seconds
     const delay = Math.min(this.retryDelayMs * Math.pow(1.5, Math.min(this.retryCount, 10)), 10000);
-    
+
     (window as any).logBot(`[STUBBORN] 🔄 Starting STUBBORN reconnection in ${delay}ms (attempt ${this.retryCount + 1}/∞ - WE NEVER GIVE UP!)...`);
-    
+
     this.reconnectInterval = setTimeout(async () => {
       this.reconnectInterval = null;
       this.retryCount++;
-      
+
       if (this.retryCount >= 1000) { // Reset counter every 1000 attempts to prevent overflow
         (window as any).logBot(`[STUBBORN] 🔄 Resetting retry counter after 1000 attempts. WE WILL NEVER GIVE UP! EVER!`);
         this.retryCount = 0; // Reset and keep going - NEVER GIVE UP!
       }
-      
+
       if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
         (window as any).logBot(`[STUBBORN] 🔄 Attempting reconnection (retry ${this.retryCount})...`);
         await this.attemptConnection();

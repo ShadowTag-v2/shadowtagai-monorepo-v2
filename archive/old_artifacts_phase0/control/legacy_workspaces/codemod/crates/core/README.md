@@ -43,10 +43,10 @@ butterflow run -w workflow.yaml
 
 # Option 2: Run from a workflow bundle directory (containing workflow.yaml)
 # (Assuming workflow.yaml is inside the 'my-workflow-bundle' directory)
-butterflow run ./my-workflow-bundle/ 
+butterflow run ./my-workflow-bundle/
 
 # Option 3: Run from a registry (Conceptual)
-# butterflow run my-registry/react-19-codemods:latest 
+# butterflow run my-registry/react-19-codemods:latest
 ```
 
 ## Core Features
@@ -152,7 +152,7 @@ nodes:
           - template: checkout-repo
             inputs:
               repo_url: ${{params.repo_url}}
-      
+
       - id: find-console-logs
         name: Find console.log statements
         ast-grep:
@@ -160,7 +160,7 @@ nodes:
           exclude:
             - "**/node_modules/**"
             - "**/*.test.*"
-      
+
       - id: check-typescript-issues
         name: Check TypeScript code quality
         ast-grep:
@@ -208,7 +208,7 @@ nodes:
           exclude:
             - "**/*.test.*"
             - "**/*.spec.*"
-      
+
       - id: verify-changes
         name: Verify codemod results
         run: echo "Applied i18n codemod for team $team on shard $shardId"
@@ -370,7 +370,7 @@ rule:
 message: "Found console.log statement"
 ---
 id: typescript-console
-language: typescript  
+language: typescript
 rule:
   pattern: console.log($$$)
 message: "Found console.log in TypeScript"
@@ -682,14 +682,14 @@ nodes:
           import json
 
           # Assume current count is read from somewhere or is known
-          new_count = 11 
+          new_count = 11
           state_file = os.environ['BUTTERFLOW_STATE']
 
           with open(state_file, 'a') as f:
               # Set a simple numeric value
-              f.write(f"processedCount={new_count}\n") 
+              f.write(f"processedCount={new_count}\n")
               # Append a log message (as a JSON string)
-              f.write(f"logMessages@="Processed item {new_count}"\n") 
+              f.write(f"logMessages@="Processed item {new_count}"\n")
 
           print(f"Updated count to {new_count}") # Normal stdout
 ```
@@ -1041,7 +1041,7 @@ nodes:
         codemod:
           source: "@myorg/import-updater@2.1.0"
           args: ["--style", "es6"]
-          
+
       - name: "Format code"
         codemod:
           source: "./local-formatters/prettier-config"
@@ -1059,7 +1059,7 @@ nodes:
       - name: "Clean up legacy code"
         codemod:
           source: "@cleanup/legacy-remover@1.0.0"
-          
+
   - id: "modernize"
     name: "Modernize Code"
     depends_on: ["prepare"]
@@ -1068,7 +1068,7 @@ nodes:
         codemod:
           source: "@modernize/syntax-updater@3.0.0"
           working_dir: "./src"
-          
+
       - name: "Update dependencies"
         codemod:
           source: "@deps/updater@latest"
@@ -1101,7 +1101,7 @@ nodes:
       - name: "Base transformations"
         codemod:
           source: "@safe/base-transform"
-          
+
   - id: "advanced"
     depends_on: ["foundation"]
     steps:

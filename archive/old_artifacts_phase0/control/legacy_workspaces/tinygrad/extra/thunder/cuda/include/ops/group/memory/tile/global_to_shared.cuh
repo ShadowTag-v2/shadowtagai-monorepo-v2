@@ -1,8 +1,8 @@
 /**
  * @file
- * @brief Group (collaborative warp) ops for loading shared tiles from and storing to global memory. 
+ * @brief Group (collaborative warp) ops for loading shared tiles from and storing to global memory.
  */
- 
+
 
 /**
  * @brief Loads data from global memory into a shared memory tile.
@@ -31,7 +31,7 @@ __device__ static inline void load(ST &dst, const GL &src, const COORD &idx) {
     for(int i = 0; i < total_calls; i++) {
 
         int load_idx = i * GROUP_THREADS + laneid;
-        
+
         int row = load_idx / memcpy_per_row;
         int col = (load_idx*elem_per_memcpy) % dst.cols;
 
@@ -84,7 +84,7 @@ __device__ static inline void store(const GL &dst, const ST &src, const COORD &i
     for(int i = 0; i < total_calls; i++) {
 
         int load_idx = i * GROUP_THREADS + laneid;
-        
+
         int row = load_idx / memcpy_per_row;
         int col = (load_idx*elem_per_memcpy) % src.cols;
 
@@ -134,7 +134,7 @@ __device__ static inline void load_async(ST &dst, const GL &src, const COORD &id
     for(int i = 0; i < total_calls; i++) {
 
         int load_idx = i * GROUP_THREADS + laneid;
-        
+
         int row = load_idx / memcpy_per_row;
         int col = (load_idx*elem_per_memcpy) % dst.cols;
 

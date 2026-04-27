@@ -40,18 +40,18 @@ struct cst {
     using T          = typename component::T;
     using T2         = typename component::T2;
     using dtype      = typename component::dtype; ///< Data type of the elements in the tile.
-    
+
     constant static constexpr int rows       = component::rows;
     constant static constexpr int cols       = component::cols;
     constant static constexpr int height     = component::height;
     constant static constexpr int width      = component::width;
-    
+
     // todo: fill in the rest for convenience, but they're all accessible via component so it's not urgent.
-    
+
     // Real/imag tiles have same internal layout and size
     component real;
     component imag;
-    
+
     // vector types
     using col_vec = csv<dtype, rows>;
     using row_vec = csv<dtype, cols>;
@@ -64,13 +64,13 @@ template <typename T>
 struct has_cst_identifier {
     static constant constexpr bool value = false; // Default case
 };
- 
+
 // Specialize for specific template instantiations of st
 template <typename _T, int _height, int _width>
 struct has_cst_identifier<mittens::cst<_T, _height, _width>> {
     static constant constexpr bool value = true;
 };
-    
+
 template <typename CST>
 static constexpr bool is_complex_shared_tile() {
     return has_cst_identifier<CST>::value;

@@ -1,5 +1,5 @@
 Cor.115
- 
+
  1. JUDGE/JURA (Governance-as-a-Service)
 
      Current Implementation Status

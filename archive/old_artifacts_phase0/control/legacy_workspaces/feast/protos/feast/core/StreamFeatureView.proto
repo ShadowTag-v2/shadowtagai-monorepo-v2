@@ -100,4 +100,3 @@ message StreamFeatureViewSpec {
     // If not specified, defaults to 5 minutes. Only used when enable_tiling is true.
     google.protobuf.Duration tiling_hop_size = 19;
 }
-

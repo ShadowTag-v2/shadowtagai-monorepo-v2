@@ -18,4 +18,3 @@ for ext in "${extensions[@]}"; do
 done
 
 echo "Extensions install attempted."
-

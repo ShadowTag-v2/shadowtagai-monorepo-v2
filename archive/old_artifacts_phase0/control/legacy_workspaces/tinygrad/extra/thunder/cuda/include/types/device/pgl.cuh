@@ -37,7 +37,7 @@ template<typename T> concept all = requires {
  * @tparam GL The underlying global layout on each device.
  * @tparam NUM_DEVICES The number of GPU devices.
  * @tparam MULTICAST Whether the multicast object should be initialized by the caller.
- * @tparam TMA_Types The types of TMA descriptors to use for the multicast locations. 
+ * @tparam TMA_Types The types of TMA descriptors to use for the multicast locations.
            Only valid if MULTICAST is true.
  */
 template<kittens::ducks::gl::all _GL, int NUM_DEVICES = 8, bool MULTICAST = true, typename... TMA_Types>
@@ -66,7 +66,7 @@ struct pgl {
                         ducks::gl::make_arg_t<GL::__b__> _batch,
                         ducks::gl::make_arg_t<GL::__d__> _depth,
                         ducks::gl::make_arg_t<GL::__r__> _rows,
-                        ducks::gl::make_arg_t<GL::__c__> _cols) : 
+                        ducks::gl::make_arg_t<GL::__c__> _cols) :
         pgl(std::make_index_sequence<NUM_DEVICES>{}, _data, _batch, _depth, _rows, _cols) { }
 
     __host__ inline pgl(T *_mc_ptr, // multicast pointer, initialized by the caller
@@ -74,7 +74,7 @@ struct pgl {
                         ducks::gl::make_arg_t<GL::__b__> _batch,
                         ducks::gl::make_arg_t<GL::__d__> _depth,
                         ducks::gl::make_arg_t<GL::__r__> _rows,
-                        ducks::gl::make_arg_t<GL::__c__> _cols) : 
+                        ducks::gl::make_arg_t<GL::__c__> _cols) :
         pgl(std::make_index_sequence<NUM_DEVICES>{}, _mc_ptr, _data, _batch, _depth, _rows, _cols) { }
 
     template<size_t... I>
@@ -83,7 +83,7 @@ struct pgl {
                         ducks::gl::make_arg_t<GL::__b__> _batch,
                         ducks::gl::make_arg_t<GL::__d__> _depth,
                         ducks::gl::make_arg_t<GL::__r__> _rows,
-                        ducks::gl::make_arg_t<GL::__c__> _cols) : 
+                        ducks::gl::make_arg_t<GL::__c__> _cols) :
             mc_ptr(nullptr), gls{GL(_data[I], _batch, _depth, _rows, _cols)...} {
         static_assert(!MULTICAST, "Multicast pointer not passed to multicast-enabled PGL.");
     }
@@ -95,14 +95,14 @@ struct pgl {
                         ducks::gl::make_arg_t<GL::__b__> _batch,
                         ducks::gl::make_arg_t<GL::__d__> _depth,
                         ducks::gl::make_arg_t<GL::__r__> _rows,
-                        ducks::gl::make_arg_t<GL::__c__> _cols) : 
+                        ducks::gl::make_arg_t<GL::__c__> _cols) :
             mc_ptr(_mc_ptr), gls{GL(_data[I], _batch, _depth, _rows, _cols)...} {
         static_assert(MULTICAST, "Multicast pointer passed to multicast-disabled PGL.");
         tma_descs = detail::descriptor_dict<TMA_Types...>(
             mc_ptr, gls[0].batch_internal, gls[0].depth_internal, gls[0].rows_internal, gls[0].cols_internal);
     }
 
-    template<typename U, int axis> 
+    template<typename U, int axis>
     __device__ inline const CUtensorMap* get_tma() const {
         return tma_descs.template get<U, axis>();
     }

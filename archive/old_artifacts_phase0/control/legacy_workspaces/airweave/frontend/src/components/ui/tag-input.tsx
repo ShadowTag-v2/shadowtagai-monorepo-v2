@@ -14,7 +14,7 @@ interface TagInputProps {
 
 /**
  * TagInput - A component for entering multiple tags/items
- * 
+ *
  * Features:
  * - Add tags by pressing Enter or comma
  * - Remove tags by clicking X or pressing Backspace on empty input
@@ -129,4 +129,3 @@ export const TagInput: React.FC<TagInputProps> = ({
         </div>
     );
 };
-

@@ -4,21 +4,21 @@ Cor.49  Phase 6: Integrate Doctrine into Judge & n-autoresearch/Kosmos/BioAgents
 
      Completed Changes
 
-     | File                                      | Status | Changes                                               
+     | File                                      | Status | Changes
                                                                              |
      |-------------------------------------------|--------|-------------------------------------------------------
      ------------------------------------------------------------------------|
-     | src/pnkln/judge_six.py                    | ✅      | Added RiskManager, MDMPPipeline, BattleDrillRouter; 
+     | src/pnkln/judge_six.py                    | ✅      | Added RiskManager, MDMPPipeline, BattleDrillRouter;
      doctrine_validate(), handle_error_with_drill(), enforce_with_doctrine()   |
-     | pnkln/governance/judge_architecture.py    | ✅      | Added doctrine imports, RiskLevel mapping methods, 
+     | pnkln/governance/judge_architecture.py    | ✅      | Added doctrine imports, RiskLevel mapping methods,
      Layer 0 ATP 5-19 CRM, Layer 0.5 FM 6-0 MDMP                                |
-     | agents/autoresearch.py                  | ✅      | Added TLPPipeline integration, risk-based consensus 
+     | agents/autoresearch.py                  | ✅      | Added TLPPipeline integration, risk-based consensus
      thresholds in PRTP, prtp_with_battle_drills()                             |
-     | agents/swarm_boss.py                      | ✅      | Added MDMPPipeline, receive_mission_with_mdmp(), 
+     | agents/swarm_boss.py                      | ✅      | Added MDMPPipeline, receive_mission_with_mdmp(),
      handle_error_with_drill(), get_doctrine_status()                             |
-     | judge6/risk_manager.py                    | ✅      | Added RA↔Doctrine mapping, 
+     | judge6/risk_manager.py                    | ✅      | Added RA↔Doctrine mapping,
      full_doctrine_assessment(), get_consensus_threshold(), get_approval_authority()                    |
-     | voice_consensus/consensus_orchestrator.py | ✅      | Added ATP 5-19 thresholds, 
+     | voice_consensus/consensus_orchestrator.py | ✅      | Added ATP 5-19 thresholds,
      assess_risk_and_set_threshold(), check_consensus_reached(), execute_full_consensus_with_doctrine() |
 
      Integration Overview
@@ -269,7 +269,7 @@ Cor.49  Phase 6: Integrate Doctrine into Judge & n-autoresearch/Kosmos/BioAgents
        --format 'value(status.url)'
 
      # Test health endpoint
-     curl $(gcloud run services describe n-autoresearch/Kosmos/BioAgents-server --region us-central1 --format 
+     curl $(gcloud run services describe n-autoresearch/Kosmos/BioAgents-server --region us-central1 --format
      'value(status.url)')/health
 
      Expected Outcome
@@ -300,7 +300,7 @@ Cor.49  Phase 6: Integrate Doctrine into Judge & n-autoresearch/Kosmos/BioAgents
 
 ⏺ Bash(cd "/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services" && git merge
       origin/claude/traffic-congestion-savings-01V4okXt1frBdd8ufoWS…)
-  ⎿  Merge made by the 'ort' strategy.                                              
+  ⎿  Merge made by the 'ort' strategy.
       public/digital-freeway-roi.html                    | 860 +++++++++++++++++++++
       src/aiyou/main.py                                  |   4 +-
      … +10 lines (ctrl+o to expand)
@@ -328,10 +328,10 @@ Cor.49  Phase 6: Integrate Doctrine into Judge & n-autoresearch/Kosmos/BioAgents
 
   Self-hosted runner should be processing CI now.
 
-> /compact <prepare for exit and reformating this mac> 
-  ⎿ Error: Error during compaction: Error: Conversation too long. Press esc twice to go up a few messages and try 
+> /compact <prepare for exit and reformating this mac>
+  ⎿ Error: Error during compaction: Error: Conversation too long. Press esc twice to go up a few messages and try
     again.
 
-> /compact 
-  ⎿ Error: Error during compaction: Error: Conversation too long. Press esc twice to go up a few messages and try 
+> /compact
+  ⎿ Error: Error during compaction: Error: Conversation too long. Press esc twice to go up a few messages and try
     again.

@@ -93,7 +93,7 @@ For each treatment goal, verify it meets SMART criteria:
 - [ ] No vague language (e.g., "improve", "better")
 - [ ] Specific outcome stated
 
-**Example**: "Reduce HbA1c from 8.5% to <7%" ✓  
+**Example**: "Reduce HbA1c from 8.5% to <7%" ✓
 **Not**: "Improve diabetes control" ✗
 
 ### ☐ Measurable
@@ -101,7 +101,7 @@ For each treatment goal, verify it meets SMART criteria:
 - [ ] Baseline value documented
 - [ ] Target value specified
 
-**Example**: "Walk 300 feet with walker independently" ✓  
+**Example**: "Walk 300 feet with walker independently" ✓
 **Not**: "Walk further" ✗
 
 ### ☐ Achievable
@@ -110,7 +110,7 @@ For each treatment goal, verify it meets SMART criteria:
 - [ ] Timeframe is reasonable
 - [ ] Treatment efficacy supports goal
 
-**Example**: "Reduce pain from 7/10 to 4/10 in 6 weeks" ✓  
+**Example**: "Reduce pain from 7/10 to 4/10 in 6 weeks" ✓
 **Not**: "Eliminate all pain in 1 week" ✗
 
 ### ☐ Relevant
@@ -119,7 +119,7 @@ For each treatment goal, verify it meets SMART criteria:
 - [ ] Addresses patient's functional limitations
 - [ ] Integrated with overall treatment objectives
 
-**Example**: "Return to work with modifications within 3 months" ✓  
+**Example**: "Return to work with modifications within 3 months" ✓
 **Not**: "Lab value improvement" (if patient doesn't care about it) ✗
 
 ### ☐ Time-bound
@@ -127,7 +127,7 @@ For each treatment goal, verify it meets SMART criteria:
 - [ ] Reassessment interval defined
 - [ ] Action frequency specified (if applicable)
 
-**Example**: "Within 8 weeks" or "By month 3" ✓  
+**Example**: "Within 8 weeks" or "By month 3" ✓
 **Not**: "Eventually" or "Soon" ✗
 
 ---
@@ -465,7 +465,6 @@ If any critical item is missing, plan should not be finalized until corrected.
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: January 2025  
+**Document Version**: 1.0
+**Last Updated**: January 2025
 **Next Review**: Annually or with guideline updates
-

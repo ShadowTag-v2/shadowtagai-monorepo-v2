@@ -84,7 +84,7 @@ hbase = ["happybase>=1.2.0,<3"]
 ibis = [
     "ibis-framework>=9.0.0,<=9.5.0",
     "ibis-substrait>=4.0.0",
-    "substrait<0.25.0",  # TODO: remove this once we upgrade protobuf 
+    "substrait<0.25.0",  # TODO: remove this once we upgrade protobuf
     "poetry-core<2",
     "poetry-dynamic-versioning",
 ]
@@ -248,14 +248,14 @@ include = ["*.py", "*.pyi"]
 
 [tool.ruff.format]
 # exclude a few common directories in the root of the project
-exclude = [ 
-  ".eggs", 
-  ".git", 
-  ".hg", 
+exclude = [
+  ".eggs",
+  ".git",
+  ".hg",
   ".mypy_cache",
-  ".tox", 
-  ".venv", 
-  "_build", 
+  ".tox",
+  ".venv",
+  "_build",
   "buck-out",
   "build",
   "dist",

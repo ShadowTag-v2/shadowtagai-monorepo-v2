@@ -7,7 +7,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
   "extraction_source": "conversation_search + userMemories",
   "extraction_date": "2025-11-09",
   "specification_version": "Cor.53 + Cor.34 + Cor.35 + Cor.37",
-  
+
   "component_hierarchy": {
     "jr_engine": {
       "name": "JR Engine (Judgment Rule)",
@@ -25,7 +25,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
       ],
       "output": "ROI-optimized decision recommendations"
     },
-    
+
     "cor_brain": {
       "name": "Cor (Unified Execution Brain)",
       "function": "Single-CPU coordinator",
@@ -40,7 +40,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
       ],
       "scope": "Meta-orchestration across all agents"
     },
-    
+
     "nervous_system": {
       "name": "NS (Nervous System)",
       "function": "Elastic distribution layer / Service mesh",
@@ -53,7 +53,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
       ],
       "purpose": "Real-time message bus for component coordination"
     },
-    
+
     "shadowtag_v2": {
       "name": "ShadowTag 2.0",
       "watermarking": {
@@ -76,7 +76,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
         "Blockchain notarization"
       ]
     },
-    
+
     "orchestrator": {
       "name": "Orchestrator (Meta-Brain)",
       "function": "Coordinates all autonomous agents",
@@ -88,7 +88,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
       }
     }
   },
-  
+
   "cor_documents": {
     "cor_34": {
       "title": "90-Point Master Summary",
@@ -99,7 +99,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
         "Gate-based milestone validation"
       ]
     },
-    
+
     "cor_35": {
       "title": "AiU Digital Mall Pitch",
       "valuation": {
@@ -113,7 +113,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
         "moat": "Network effects (keystone positioning)"
       }
     },
-    
+
     "cor_37": {
       "title": "AiYouJR Runtime Doctrine",
       "tech_stack": {
@@ -124,7 +124,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
       "automation_standard": "160-IQ board requirements"
     }
   },
-  
+
   "cognitive_stack_v5": {
     "capabilities": {
       "rot": {
@@ -146,7 +146,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
       }
     }
   },
-  
+
   "deployment_architecture": {
     "platform": "GKE Native (NOT Vertex AI Workbench)",
     "namespaces": [
@@ -183,7 +183,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
       "infrastructure": "Google Hypercomputer"
     }
   },
-  
+
   "judge_6_enforcement": {
     "requirements": {
       "coverage_gate": "98%",
@@ -194,7 +194,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
       "metadata_requirement": "Purpose/Reasons/Brakes on every commit"
     }
   },
-  
+
   "deployment_priorities": [
     "Generate GKE deployment scripts (Google Accelerated Platforms reference)",
     "Audit existing infrastructure against Cor.53 specs",

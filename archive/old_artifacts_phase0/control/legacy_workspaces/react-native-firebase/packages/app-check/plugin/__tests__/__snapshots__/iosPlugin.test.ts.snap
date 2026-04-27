@@ -40,7 +40,7 @@ static void InitializeFlipper(UIApplication *application) {
 #if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
   InitializeFlipper(application);
 #endif
-  
+
 // @generated begin @react-native-firebase/app-check-didFinishLaunchingWithOptions - expo prebuild (DO NOT MODIFY) sync-39c06fe0cc03ffe4bc9cc005b839c559e7ba13d2
 [RNFBAppCheckModule sharedInstance];
 // @generated end @react-native-firebase/app-check-didFinishLaunchingWithOptions
@@ -133,7 +133,7 @@ static void InitializeFlipper(UIApplication *application) {
 #if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
   InitializeFlipper(application);
 #endif
-  
+
 // @generated begin @react-native-firebase/app-check-didFinishLaunchingWithOptions - expo prebuild (DO NOT MODIFY) sync-39c06fe0cc03ffe4bc9cc005b839c559e7ba13d2
 [RNFBAppCheckModule sharedInstance];
 // @generated end @react-native-firebase/app-check-didFinishLaunchingWithOptions
@@ -209,7 +209,7 @@ exports[`Config Plugin iOS Tests tests changes made to AppDelegate.m with fallba
 #if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
   InitializeFlipper(application);
 #endif
-  
+
   // the line below is malfolmed not to be matched by the Expo plugin regex
   // RCTBridge* briddge = [RCTBridge new];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:briddge moduleName:@"main" initialProperties:nil];
@@ -286,7 +286,7 @@ static void InitializeFlipper(UIApplication *application) {
 #if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
   InitializeFlipper(application);
 #endif
-  
+
 // @generated begin @react-native-firebase/app-check-didFinishLaunchingWithOptions - expo prebuild (DO NOT MODIFY) sync-39c06fe0cc03ffe4bc9cc005b839c559e7ba13d2
 [RNFBAppCheckModule sharedInstance];
 // @generated end @react-native-firebase/app-check-didFinishLaunchingWithOptions

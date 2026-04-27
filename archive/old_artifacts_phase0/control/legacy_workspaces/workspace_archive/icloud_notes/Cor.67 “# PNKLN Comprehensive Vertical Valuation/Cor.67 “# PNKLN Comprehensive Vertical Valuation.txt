@@ -18,7 +18,7 @@ Using industry-standard Sum-of-the-Parts (SOTP) methodology and validated agains
 
 ### Layer 6: Government & Defense ($31.4B Value)
 - **DoD Tactical Edge AI:** $2.0B ARR, 78% margin, $11.2B value
-- **AiU Aero (FAA/NASA):** $2.0B ARR, 78% margin, $11.2B value  
+- **AiU Aero (FAA/NASA):** $2.0B ARR, 78% margin, $11.2B value
 - **AiU Med (FDA/HIPAA):** $1.0B ARR, 82% margin, $5.9B value
 - **AiU Lex (Legal/Judicial):** $0.5B ARR, 85% margin, $3.1B value
 
@@ -53,7 +53,7 @@ Using industry-standard Sum-of-the-Parts (SOTP) methodology and validated agains
 
 **Multiples Applied:**
 - Government/Defense: **7.2× EBITDA** (regulatory moat, contract durability)
-- Orbital/Digital Mall: **6.4× EBITDA** (network effects, strategic positioning)  
+- Orbital/Digital Mall: **6.4× EBITDA** (network effects, strategic positioning)
 - RoadMesh: **5.4× EBITDA** (infrastructure execution risk adjustment)
 - Core Stack/Energy: **4.8× EBITDA** (foundational layers, commodity premium)
 

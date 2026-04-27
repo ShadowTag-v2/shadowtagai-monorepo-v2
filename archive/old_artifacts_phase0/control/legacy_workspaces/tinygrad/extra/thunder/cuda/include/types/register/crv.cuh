@@ -19,13 +19,13 @@ namespace kittens {
 namespace ducks {
 /**
  * @namespace rt
- * 
+ *
  * @brief The namespace where concepts and abstract types for register vectors live.
  */
 namespace crv {
 /**
  * @brief A dummy type used to identify register vectors.
- * 
+ *
  * For a type to quack like an rv, it should define its identifier as ducks::rv::identifier.
  * If a type quacks like ducks::rv::identifier, it will be treated as an rv by compiler checks.
  */
@@ -67,7 +67,7 @@ struct crv {
     using identifier = ducks::crv::identifier;
     using component  = rv<_T, _length, _layout>; /// Data type of each internal tile.
     using layout     = component::layout; ///< Layout of the matrix tile, ensures compatibility with the rv concepts
-    
+
     using T          = component::T;
     using T2         = component::T2;
     using dtype      = component::dtype; ///< Data type of the elements in the tile.

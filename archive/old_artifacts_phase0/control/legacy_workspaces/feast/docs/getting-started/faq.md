@@ -39,14 +39,14 @@ Yes, this is possible. For example, you can use BigQuery as an offline store and
 
 ### How do I run `get_historical_features` without providing an entity dataframe?
 
-Feast does supports fetching historical features without passing an entity dataframe with the request. 
-- As of today, only `postgres offline feature store` is supported for entity dataframe less retrieval. Remaining offline stores would be gradually updated to support the entity df less retrieval. The stores would be selected based on priorities and user base/request. 
+Feast does supports fetching historical features without passing an entity dataframe with the request.
+- As of today, only `postgres offline feature store` is supported for entity dataframe less retrieval. Remaining offline stores would be gradually updated to support the entity df less retrieval. The stores would be selected based on priorities and user base/request.
 - The retrieval is based on `start_date` and `end_date` parameters to the function. Here are some combinations supported.
   - Both params are given, Returns data during the given start to end timerange.
   - Only start_date param is given, Returns data from the start date to `now` time.
   - Only end_date param is given, Returns data during the end_date minus TTL time in feature view.
   - Both params are `not` given, Returns data during the TTL time in feature view to now time.
-- When multiple features are requested from multiple feature-views it is required to have entity ids in both of them for `JOIN` so that 
+- When multiple features are requested from multiple feature-views it is required to have entity ids in both of them for `JOIN` so that
 
 This is an area we're actively interested in contributions for. See [GitHub issue](https://github.com/feast-dev/feast/issues/1611)
 
@@ -104,7 +104,7 @@ Yes. Using a GCP or AWS provider in `feature_store.yaml` primarily sets default 
 
 ### What is the difference between a data source and an offline store?
 
-The data source and the offline store are closely tied, but separate concepts. 
+The data source and the offline store are closely tied, but separate concepts.
 The offline store controls how feast talks to a data store for historical feature retrieval, and the data source points to specific table (or query) within a data store. Offline stores are infrastructure-level connectors to data stores like Snowflake.
 
 Additional differences:

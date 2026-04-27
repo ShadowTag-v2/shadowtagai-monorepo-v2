@@ -22,7 +22,7 @@ ds = DataScientist(
 - **agent_type** (str, default="adk"): Type of agent to use
   - `"adk"`: **(Recommended)** Full multi-agent workflow with planning, validation, and adaptive execution
   - `"claude_code"`: Direct mode - bypasses workflow for simple scripting tasks
-  
+
 - **mcp_servers** (list, optional): List of MCP servers to enable (currently not used; see tools_configuration.md)
 
 **Note**: The multi-agent ADK workflow (`agent_type="adk"`) is the primary mode and recommended for most use cases. Direct mode is only for simple tasks that don't benefit from planning and validation.
@@ -359,14 +359,14 @@ During iterative plan refinement:
 ```python
 async def process_workflow_events(ds, query):
     """Track workflow progress through events."""
-    
+
     current_phase = None
     current_stage = None
-    
+
     async for event in await ds.run_async(query, stream=True):
         event_type = event.get('type')
         author = event.get('author', '')
-        
+
         # Track workflow phase
         if 'plan_maker' in author:
             if current_phase != 'planning':
@@ -380,30 +380,30 @@ async def process_workflow_events(ds, query):
             if current_phase != 'summary':
                 current_phase = 'summary'
                 print("\n=== SUMMARY PHASE ===")
-        
+
         # Handle different event types
         if event_type == 'message':
             content = event['content']
-            
+
             # Track stage transitions
             if 'Stage' in content and 'Beginning implementation' in content:
                 print(f"\n→ Starting new stage")
-            
+
             print(f"[{author}] {content[:100]}...")
-            
+
         elif event_type == 'function_call':
             tool_name = event['name']
             print(f"  → Using tool: {tool_name}")
-            
+
         elif event_type == 'usage':
             usage = event['usage']
             print(f"  📊 Tokens: {usage.get('total_input_tokens', 0)} in, "
                   f"{usage.get('output_tokens', 0)} out")
-            
+
         elif event_type == 'error':
             error_msg = event['content']
             print(f"  ❌ Error: {error_msg}")
-            
+
         elif event_type == 'completed':
             duration = event['duration']
             files = event['files_created']
@@ -438,7 +438,7 @@ from agentic_data_scientist import DataScientist
 
 with DataScientist() as ds:
     result = ds.run("Query")
-    
+
     if result.status == "error":
         print(f"Error occurred: {result.error}")
         # Handle error appropriately

@@ -34,7 +34,7 @@ static constexpr void assert_register_tile_base() {
     static_assert(is_register_tile_base<RT>(), "T must be a rt_base");
 }
 } // namespace ducks
-    
+
 /**
  * @brief Basic tile structure for computation in registers.
  *
@@ -55,30 +55,30 @@ struct rt_base {
     using T  = typename base_types::packing<_T>::unpacked_type;
     using T2 = typename base_types::packing<_T>::packed_type;
     using dtype = T;
-    
-    
-    
+
+
+
     static constant constexpr const int tile_size            = mittens::TILE_DIM;
     static constant constexpr const int rows                 = tile_size;
     static constant constexpr const int cols                 = tile_size;
     static constant constexpr const int num_elements         = rows*cols;
     static constant constexpr const int elements_per_thread  = num_elements / mittens::SIMD_THREADS;
-    
+
     static constant constexpr const int registers_per_thread = elements_per_thread;
     static constant constexpr const int packed_per_thread    = elements_per_thread / base_types::packing<T2>::num();
     metal::simdgroup_matrix<dtype, mittens::TILE_DIM, mittens::TILE_DIM> data;
-    
+
     using row_vec_layout = metal::conditional_t<metal::is_same_v<layout, ducks::rt_layout::row>, ducks::rv_layout::align, ducks::rv_layout::ortho>; // for holding column reductions
-    
+
     using col_vec_layout = metal::conditional_t<metal::is_same_v<layout, ducks::rt_layout::row>, ducks::rv_layout::ortho, ducks::rv_layout::align>; // for holding row reductions
 };
-    
+
 /* ----------  WRAPPERS FOR PRETTINESS  ---------- */
-    
+
 template<typename L=ducks::rt_layout::row> using rt_base_fl = rt_base<float, L>;
 template<typename L=ducks::rt_layout::row> using rt_base_bf = rt_base<bf16, L>;
 template<typename L=ducks::rt_layout::row> using rt_base_hf = rt_base<half, L>;
 
-     
+
 }
- 
+

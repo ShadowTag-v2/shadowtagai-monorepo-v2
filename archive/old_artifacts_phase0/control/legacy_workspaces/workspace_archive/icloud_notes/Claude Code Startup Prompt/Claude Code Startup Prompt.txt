@@ -1,4 +1,4 @@
-Claude Code Startup Prompt 
+Claude Code Startup Prompt
   cd "/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services"
   python3 bin/n-autoresearch/Kosmos/BioAgentss-server
   curl http://localhost:8600/squadron

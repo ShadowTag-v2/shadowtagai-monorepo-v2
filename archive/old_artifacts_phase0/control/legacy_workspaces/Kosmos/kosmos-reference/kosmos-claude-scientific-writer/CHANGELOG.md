@@ -250,13 +250,13 @@ scientific-writer
   - Image files routed to `figures/` folder
   - Data files routed to `data/` folder
   - System recognizes manuscripts in drafts/ as editing tasks, not creation from scratch
-  
+
 - **EDITING MODE Context** - Clear feedback and instructions
   - Prominent `⚠️ EDITING MODE` warning displayed when manuscripts detected
   - Agent receives explicit instructions to edit existing manuscript
   - Visual `[EDITING MODE]` indicators in CLI output
   - Progress messages show manuscript file counts separately
-  
+
 - **Enhanced File Processing** - Improved data file handling
   - New `get_manuscript_extensions()` function in `core.py`
   - Updated `process_data_files()` to handle three file categories
@@ -270,13 +270,13 @@ scientific-writer
   - Defined file routing rules by file type
   - Detailed editing workflow for the agent
   - Example scenarios demonstrating the workflow
-  
+
 - **CLI User Experience** - Better visibility into file processing
   - Welcome message explains manuscript file routing
   - File processing shows separate counts for manuscripts, data, and images
   - Help text updated with manuscript editing information
   - Consistent `[EDITING MODE]` indicators throughout
-  
+
 - **API Progress Updates** - Enhanced feedback in programmatic mode
   - Progress messages report manuscript files separately
   - Clear indication when manuscripts are copied to drafts/
@@ -411,7 +411,7 @@ scientific-writer
   - Expanded CLI and API usage examples
   - Added workflow examples for common use cases
   - Better visual organization with emojis and sections
-  
+
 - **API.md** - Added advanced documentation:
   - Research lookup setup and usage
   - Data file processing details
@@ -420,7 +420,7 @@ scientific-writer
   - Metadata extraction examples
   - Progress monitoring patterns (progress bars, stage-based, logging)
   - Multiple paper generation (sequential and parallel)
-  
+
 - **Documentation organization** - Restructured into:
   - User Guides (Features, API, Skills, Troubleshooting)
   - Developer Resources (Development, Releasing, Changelog, System Instructions)
@@ -606,4 +606,3 @@ This release maintains all the great features from v1.x while adding powerful ne
 - 🗑️ Removed - Removed features
 - 🔧 Fixed - Bug fixes
 - 📝 Documentation - Documentation changes
-

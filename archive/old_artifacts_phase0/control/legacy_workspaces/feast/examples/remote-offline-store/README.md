@@ -1,8 +1,8 @@
-# Feast Remote Offline Store Server 
+# Feast Remote Offline Store Server
 
-This example demonstrates the steps using an  [Arrow Flight](https://arrow.apache.org/blog/2019/10/13/introducing-arrow-flight/) server/client as the remote Feast offline store. 
+This example demonstrates the steps using an  [Arrow Flight](https://arrow.apache.org/blog/2019/10/13/introducing-arrow-flight/) server/client as the remote Feast offline store.
 
-## Launch the offline server locally 
+## Launch the offline server locally
 
 1. **Create Feast Project**: Using the `feast init` command for example the [offline_server](./offline_server) folder contains a sample Feast repository.
 
@@ -11,7 +11,7 @@ This example demonstrates the steps using an  [Arrow Flight](https://arrow.apach
 
 3. **Initialize Offline Server**: The offline server can be initialized by providing the `feature_store.yml` file via an environment variable named `FEATURE_STORE_YAML_BASE64`. A temporary directory will be created with the provided YAML file named `feature_store.yml`.
 
-Example 
+Example
 
 ```console
 cd offline_server
@@ -27,13 +27,13 @@ Sample output:
 Serving on grpc+tcp://127.0.0.1:8815
 ```
 
-## Launch a remote offline client 
+## Launch a remote offline client
 
-The [offline_client](./offline_client) folder includes a test python function that uses an offline store of type `remote`, leveraging the remote server as the 
-actual data provider. 
+The [offline_client](./offline_client) folder includes a test python function that uses an offline store of type `remote`, leveraging the remote server as the
+actual data provider.
 
 
-The test class is located under [offline_client](./offline_client/) and uses a remote configuration of the offline store to delegate the actual 
+The test class is located under [offline_client](./offline_client/) and uses a remote configuration of the offline store to delegate the actual
 implementation to the offline store server:
 ```yaml
 offline_store:
@@ -50,7 +50,7 @@ training_df = store.get_historical_features(entity_df, features).to_df()
 ```
 
 
-Run client  
+Run client
 `cd offline_client;
   python test.py`
 
@@ -63,18 +63,18 @@ config.offline_store is <class 'feast.infra.offline_stores.remote.RemoteOfflineS
 <class 'pandas.core.frame.DataFrame'>
 RangeIndex: 3 entries, 0 to 2
 Data columns (total 10 columns):
- #   Column                              Non-Null Count  Dtype              
----  ------                              --------------  -----              
- 0   driver_id                           3 non-null      int64              
+ #   Column                              Non-Null Count  Dtype
+---  ------                              --------------  -----
+ 0   driver_id                           3 non-null      int64
  1   event_timestamp                     3 non-null      datetime64[ns, UTC]
- 2   label_driver_reported_satisfaction  3 non-null      int64              
- 3   val_to_add                          3 non-null      int64              
- 4   val_to_add_2                        3 non-null      int64              
- 5   conv_rate                           3 non-null      float32            
- 6   acc_rate                            3 non-null      float32            
- 7   avg_daily_trips                     3 non-null      int32              
- 8   conv_rate_plus_val1                 3 non-null      float64            
- 9   conv_rate_plus_val2                 3 non-null      float64            
+ 2   label_driver_reported_satisfaction  3 non-null      int64
+ 3   val_to_add                          3 non-null      int64
+ 4   val_to_add_2                        3 non-null      int64
+ 5   conv_rate                           3 non-null      float32
+ 6   acc_rate                            3 non-null      float32
+ 7   avg_daily_trips                     3 non-null      int32
+ 8   conv_rate_plus_val1                 3 non-null      float64
+ 9   conv_rate_plus_val2                 3 non-null      float64
 dtypes: datetime64[ns, UTC](1), float32(2), float64(2), int32(1), int64(4)
 memory usage: 332.0 bytes
 None
@@ -95,4 +95,3 @@ None
 
 [3 rows x 10 columns]
 ```
-

@@ -1,7 +1,7 @@
 # 🚀 Quickstart: Retrieval-Augmented Generation (RAG) using Feast and Large Language Models (LLMs)
 
-This project demonstrates how to use **Feast** to power a **Retrieval-Augmented Generation (RAG)** application. 
-The RAG architecture combines retrieval of documents (using vector search) with In-Context-Learning (ICL) through a 
+This project demonstrates how to use **Feast** to power a **Retrieval-Augmented Generation (RAG)** application.
+The RAG architecture combines retrieval of documents (using vector search) with In-Context-Learning (ICL) through a
 **Large Language Model (LLM)** to answer user questions accurately using structured and unstructured data.
 
 ## 💡 Why Use Feast for RAG?
@@ -39,7 +39,7 @@ The RAG architecture combines retrieval of documents (using vector search) with 
 
    ```python
    store.write_to_online_store(feature_view_name='city_embeddings', df=df)
-   ``` 
+   ```
 4. Run a query:
 
 - Prepare your question:
@@ -51,8 +51,8 @@ The RAG architecture combines retrieval of documents (using vector search) with 
 ## 🛠️ Key Commands for Data Scientists
 - Apply feature definitions:
 
-```bash 
-feast apply 
+```bash
+feast apply
 ```
 
 - Materialize features to the online store:

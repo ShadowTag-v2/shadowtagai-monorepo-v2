@@ -183,7 +183,7 @@ Cor.86
   2. Enable Agent Mode: Cmd+Shift+P → "Gemini Code Assist: Agent Mode"
   3. Colab + BigQuery Gemini: Configure via browser
 
-> no is supposed to be in antigravity, not vs code. see https://github.com/elad12390/antigravity-proxy 
+> no is supposed to be in antigravity, not vs code. see https://github.com/elad12390/antigravity-proxy
 
 ⏺ n-autoresearch/Kosmos/BioAgents ACTIVATED, STANDING BY.
 

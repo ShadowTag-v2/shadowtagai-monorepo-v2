@@ -82,4 +82,3 @@
 
  - **REFACTOR**: renamed anthropic.claude to model.
  - **FEAT**: added anthropic plugin (#86).
-

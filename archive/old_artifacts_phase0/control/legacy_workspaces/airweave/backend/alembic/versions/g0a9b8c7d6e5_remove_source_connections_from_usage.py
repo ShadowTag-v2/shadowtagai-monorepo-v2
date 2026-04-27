@@ -18,7 +18,7 @@ depends_on = None
 
 def upgrade() -> None:
     """Remove source_connections column from usage table.
-    
+
     Source connections are now counted directly from the source_connection table
     (like team_members from user_organization), not tracked in usage.
     """
@@ -36,4 +36,3 @@ def downgrade() -> None:
             server_default='0'
         )
     )
-

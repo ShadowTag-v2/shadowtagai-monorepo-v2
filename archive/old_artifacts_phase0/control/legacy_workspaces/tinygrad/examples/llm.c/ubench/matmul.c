@@ -62,4 +62,3 @@ int main() {
     printf("%.2f ms gen vs %.2f ms reference\n", time_gen*1e3, time_real*1e3);
   }
 }
-

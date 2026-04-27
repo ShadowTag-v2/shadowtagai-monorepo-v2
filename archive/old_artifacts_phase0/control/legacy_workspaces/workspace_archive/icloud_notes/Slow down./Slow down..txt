@@ -1,8 +1,8 @@
-Slow down. 
+Slow down.
 
 - Chat in plan mode.
-- Build one feature at a time. 
-- Review the code and give feedback. 
+- Build one feature at a time.
+- Review the code and give feedback.
 - Log session summaries.
 - Give previous summary to /new agent.
 - Be very selective with MCPs.

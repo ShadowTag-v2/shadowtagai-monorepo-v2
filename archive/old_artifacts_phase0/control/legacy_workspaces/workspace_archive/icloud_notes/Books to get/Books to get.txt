@@ -3,65 +3,65 @@ Books to get
 “Love this prompt. Here’s a high-leverage, fairly exhaustive shopping list of outside resources—many behind paywalls—that we (collectively) can’t directly access on our own but that would measurably sharpen YouAi across legal, finance, risk, AI, product, security, and ops. I grouped them by domain, noted when they’re subscription-only, and included links.
 
 Legal & Governance (board, BJR, deals)
-	1.	Radin, The Business Judgment Rule (treatise; subscription/paid). The definitive read on BJR boundaries, burdens, cleansing, and recent Delaware/other cases. Great for stress-testing YouAiJR playbooks.  
-	2.	ABA Corporate Director’s Guidebook (8th ed.) (subscription/paid). Concise, practical board guidance on committees, oversight, and M&A—useful for codifying Board OS.   
-	3.	Delaware General Corporation Law (DGCL) – official (free). Primary law for governance patterns we often emulate.  
-	4.	California Corporations Code (free portals; official site is gated by frames). Handy when we need CA specificities for entities/consents.  
-	5.	ABA Model Business Corporation Act (2016 Revision) (subscription/paid). Model “golden path” for corporate actions; helpful for templating approvals/resolutions.   
-	6.	NVCA Model Legal Docs (free). Term sheets, stock purchase docs, etc.—baseline for equity financings and counsel instructions.  
-	7.	ABA Model Asset Purchase Agreement with Commentary (subscription/paid). Playbook for buy-then-build and acqui-hire checklists.  
+	1.	Radin, The Business Judgment Rule (treatise; subscription/paid). The definitive read on BJR boundaries, burdens, cleansing, and recent Delaware/other cases. Great for stress-testing YouAiJR playbooks.
+	2.	ABA Corporate Director’s Guidebook (8th ed.) (subscription/paid). Concise, practical board guidance on committees, oversight, and M&A—useful for codifying Board OS.
+	3.	Delaware General Corporation Law (DGCL) – official (free). Primary law for governance patterns we often emulate.
+	4.	California Corporations Code (free portals; official site is gated by frames). Handy when we need CA specificities for entities/consents.
+	5.	ABA Model Business Corporation Act (2016 Revision) (subscription/paid). Model “golden path” for corporate actions; helpful for templating approvals/resolutions.
+	6.	NVCA Model Legal Docs (free). Term sheets, stock purchase docs, etc.—baseline for equity financings and counsel instructions.
+	7.	ABA Model Asset Purchase Agreement with Commentary (subscription/paid). Playbook for buy-then-build and acqui-hire checklists.
 
 Tax (comp, equity, exits)
-	8.	IRC §409A & Treasury Regs (free). Anchor for deferral/exec comp designs (and the deferred-comp “sweet spot” discussions).   
-	9.	IRC §1202 (QSBS) + planning commentary (free + advisory). For C-corp path/stacking/estate use cases. (Treat planning notes as educational, not advice.)    
-	10.	IRS Pub 560 (free). Owner plans (SEP/SIMPLE/solo-401k) to optimize founder/exec comp.  
+	8.	IRC §409A & Treasury Regs (free). Anchor for deferral/exec comp designs (and the deferred-comp “sweet spot” discussions).
+	9.	IRC §1202 (QSBS) + planning commentary (free + advisory). For C-corp path/stacking/estate use cases. (Treat planning notes as educational, not advice.)
+	10.	IRS Pub 560 (free). Owner plans (SEP/SIMPLE/solo-401k) to optimize founder/exec comp.
 
 Accounting & Audit (policy, controls)
-	11.	FASB Accounting Standards Codification (ASC) (subscription). Canonical GAAP reference (revenue 606, R&D 730, etc.) for policy decisions.  
-	12.	PCAOB Auditing Standards (free). Anticipate auditor focus; design “audit-ready” processes.  
-	13.	AICPA Trust Services Criteria (SOC 2) (free overview; full via membership/publishers). Map product & infra controls to TSC.   
+	11.	FASB Accounting Standards Codification (ASC) (subscription). Canonical GAAP reference (revenue 606, R&D 730, etc.) for policy decisions.
+	12.	PCAOB Auditing Standards (free). Anticipate auditor focus; design “audit-ready” processes.
+	13.	AICPA Trust Services Criteria (SOC 2) (free overview; full via membership/publishers). Map product & infra controls to TSC.
 
 Security, Privacy & Compliance
-	14.	NIST SP 800-53 Rev.5 (free). Control library to compose our minimal viable control set.  
-	15.	ISO/IEC 27001 (paid standard; overview free). Management system backbone for SOC2/enterprise asks.  
-	16.	CSA Cloud Controls Matrix (CCM v4) (free with account). Cloud-specific control mapping and CAIQ questionnaires.  
-	17.	OWASP ASVS + Top 10 (free). Practical app-sec acceptance criteria and backlog fodder.  
-	18.	CIS Critical Security Controls v8 (free). Prioritized hardening to reduce “time-to-reasonably-secure.”  
-	19.	GDPR (EUR-Lex text) & CPRA regs (free). For privacy-by-design defaults, DSR playbooks, and DPIAs.   
-	20.	PCI DSS v4.0 (free program docs). If/when payments touch our stack.  
-	21.	HIPAA Security Rule (HHS summary) (free). If health data ever enters scope (BAs, safeguards).  
+	14.	NIST SP 800-53 Rev.5 (free). Control library to compose our minimal viable control set.
+	15.	ISO/IEC 27001 (paid standard; overview free). Management system backbone for SOC2/enterprise asks.
+	16.	CSA Cloud Controls Matrix (CCM v4) (free with account). Cloud-specific control mapping and CAIQ questionnaires.
+	17.	OWASP ASVS + Top 10 (free). Practical app-sec acceptance criteria and backlog fodder.
+	18.	CIS Critical Security Controls v8 (free). Prioritized hardening to reduce “time-to-reasonably-secure.”
+	19.	GDPR (EUR-Lex text) & CPRA regs (free). For privacy-by-design defaults, DSR playbooks, and DPIAs.
+	20.	PCI DSS v4.0 (free program docs). If/when payments touch our stack.
+	21.	HIPAA Security Rule (HHS summary) (free). If health data ever enters scope (BAs, safeguards).
 
 AI Governance & Standards
-	22.	NIST AI Risk Management Framework 1.0 (free). Our north-star for AI risk, measurement, and controls.  
-	23.	ISO/IEC 42001 (AI Management System) (paid; overview free). The ISO “ISM” for AI—helpful to certify later.  
-	24.	ISO/IEC 23894 (AI risk guidance) (paid; overview free). Complements NIST AI RMF with process guidance.  
-	25.	EU AI Act (Official Journal) (free). Roles, risk classes, and conformity—preps us for EU sales.  
+	22.	NIST AI Risk Management Framework 1.0 (free). Our north-star for AI risk, measurement, and controls.
+	23.	ISO/IEC 42001 (AI Management System) (paid; overview free). The ISO “ISM” for AI—helpful to certify later.
+	24.	ISO/IEC 23894 (AI risk guidance) (paid; overview free). Complements NIST AI RMF with process guidance.
+	25.	EU AI Act (Official Journal) (free). Roles, risk classes, and conformity—preps us for EU sales.
 
 IP, Licensing & Data
-	26.	Heather Meeker, Open Source for Business (book; paid). Pragmatic OSS licensing strategies and “clean room” practices.  
-	27.	Open Source Initiative license list (free). Canonical OSI-approved license index.  
-	28.	WIPO patent drafting & PCT guides (free). For lightweight IP filings / freedom-to-operate prep.  
-	29.	Ken Adams, Manual of Style for Contract Drafting (paid). Cleaner drafting = faster deals/fewer disputes.  
+	26.	Heather Meeker, Open Source for Business (book; paid). Pragmatic OSS licensing strategies and “clean room” practices.
+	27.	Open Source Initiative license list (free). Canonical OSI-approved license index.
+	28.	WIPO patent drafting & PCT guides (free). For lightweight IP filings / freedom-to-operate prep.
+	29.	Ken Adams, Manual of Style for Contract Drafting (paid). Cleaner drafting = faster deals/fewer disputes.
 
 Finance, Valuation & Deals
-	30.	McKinsey, Valuation (book; paid). Operating value drivers; ROIC-growth math for our OKRs.  
-	31.	Damodaran (books + site) (mixed free/paid). Practical valuation models, sector betas, and capital costs.  
-	32.	Pratt’s Valuing a Business (book; paid). Private-company valuation nuances (discounts, comps).  
+	30.	McKinsey, Valuation (book; paid). Operating value drivers; ROIC-growth math for our OKRs.
+	31.	Damodaran (books + site) (mixed free/paid). Practical valuation models, sector betas, and capital costs.
+	32.	Pratt’s Valuing a Business (book; paid). Private-company valuation nuances (discounts, comps).
 
 Product, Growth & GTM
-	33.	April Dunford, Obviously Awesome (book; paid). Positioning drills to tighten narrative & ICP.  
-	34.	Ramanujam & Tacke, Monetizing Innovation (book; paid). Price-before-build discipline; our PRD template add.  
-	35.	Reforge programs (Growth, PLG, Strategy) (paid). Deep systems thinking for loops, retention, monetization.  
-	36.	Lenny’s Newsletter (archives) (freemium). Field-tested PM/GTM heuristics and teardown patterns.   
+	33.	April Dunford, Obviously Awesome (book; paid). Positioning drills to tighten narrative & ICP.
+	34.	Ramanujam & Tacke, Monetizing Innovation (book; paid). Price-before-build discipline; our PRD template add.
+	35.	Reforge programs (Growth, PLG, Strategy) (paid). Deep systems thinking for loops, retention, monetization.
+	36.	Lenny’s Newsletter (archives) (freemium). Field-tested PM/GTM heuristics and teardown patterns.
 
 Engineering Org & Reliability
-	37.	Google SRE books (free online). SLOs/error budgets/postmortems—ground truth for reliability policy.  
-	38.	Team Topologies (book; paid). Org design by flow and cognitive load—shapes our “small teams, clear APIs.”  
+	37.	Google SRE books (free online). SLOs/error budgets/postmortems—ground truth for reliability policy.
+	38.	Team Topologies (book; paid). Org design by flow and cognitive load—shapes our “small teams, clear APIs.”
 
 Premium Research / Practice Portals (subscription)
-	39.	Westlaw Practical Law (toolkits, checklists). Fast, vetted governance/M&A templates.  
-	40.	Bloomberg Law / Lexis Practice Advisor (playbooks, clauses, market practice). Great for redline positions.   
-	41.	PitchBook / Capital IQ (private comps, terms, market data). For financing & M&A calibration.  
+	39.	Westlaw Practical Law (toolkits, checklists). Fast, vetted governance/M&A templates.
+	40.	Bloomberg Law / Lexis Practice Advisor (playbooks, clauses, market practice). Great for redline positions.
+	41.	PitchBook / Capital IQ (private comps, terms, market data). For financing & M&A calibration.
 
 ⸻
 
@@ -72,10 +72,10 @@ Why these matter (quick take)
 	•	Valuation-aware: McKinsey/Damodaran/Pratt translate experiments into value creation math we can wire into our OKRs and board packs.
 
 If you want, I can turn this into a living “YouAi Sourcebook” (one-pager per resource: when to use, what we extract, owner, and where it plugs into our OS).
-Me: <next> suggest areas and even treatises resources. 
-Resources you cannot source or access yourself. 
-Specifically from which you all could collectively benefit. 
-Be more exhaustive, rather than less.  Make numbered list. Include source links if possible 
+Me: <next> suggest areas and even treatises resources.
+Resources you cannot source or access yourself.
+Specifically from which you all could collectively benefit.
+Be more exhaustive, rather than less.  Make numbered list. Include source links if possible
 Answer:
 
 Perfect ✅ — here’s how we’ll structure the YouAi Sourcebook as a living doctrine reference set. Each resource becomes a “card” in the Sourcebook, with four fields:
@@ -204,7 +204,7 @@ This rebuild means:
 	•	Every decision traceable to YouAiJR + Doctrine Ledger.
 
 ⸻
-Me: In YouAi : Using your new iq’s, break down YouAi, inventory, rebuild to current standards. Cut out everything possible. List what was cut. Explain benefit of, using percentages 
+Me: In YouAi : Using your new iq’s, break down YouAi, inventory, rebuild to current standards. Cut out everything possible. List what was cut. Explain benefit of, using percentages
 Wowie, wow, Wowie! 🧠 All hands, upgraded IQs engaged.
 This is a YouAi teardown + rebuild to current global standards, cutting redundancies, cruft, or features that don’t directly support our doctrine. Think of it as an inventory > pruning > rebuild cycle.
 
@@ -324,7 +324,7 @@ Dataset Moat (keep all)
 ⸻
 
 👉 Want me to now redraw the System Dashboard (tiles only for the lean set we kept) so you can see the new streamlined nervous system layout?
-Me: All hands use new iq as it is locked at 160 - bring in other discussion here to scrub and update this entire chat <then> describe in percentages, what effect on bottom line 
+Me: All hands use new iq as it is locked at 160 - bring in other discussion here to scrub and update this entire chat <then> describe in percentages, what effect on bottom line
 ✅ All hands engaged. We are now operating under IQ 160 lock, meaning conceptual synthesis + multi-disciplinary orchestration is the baseline. The task: scrub + update the entire YouAiJR governance, systems, and automation framework — and then quantify the bottom-line effect in percentages.
 
 ⸻

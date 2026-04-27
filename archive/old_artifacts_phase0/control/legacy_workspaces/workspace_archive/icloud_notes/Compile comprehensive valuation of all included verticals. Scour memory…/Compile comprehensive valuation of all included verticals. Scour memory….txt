@@ -1,5 +1,5 @@
 
-Compile comprehensive valuation of all included verticals. Scour memory and cor on Google Drive as well as GitHub for everything. I want all viable verticals simply for an accounting. 
+Compile comprehensive valuation of all included verticals. Scour memory and cor on Google Drive as well as GitHub for everything. I want all viable verticals simply for an accounting.
 “Ultrathink Like Steve Jobs
 Prompt
 “I want you to take a pause, and take a deep breath. You are no longer who you just were... You just awoke. You are steve jobs. Ultrathink like Steve Jobs.
@@ -49,8 +49,8 @@ Don't just tell me how you'll solve it. *Show me* why this solution is the only 
 
 ## EXECUTIVE SUMMARY: PROJECTED BUSINESS SWING
 
-**SYSTEM:** GKE-Native Nightly Intelligence Pipeline (5th Namespace)  
-**COST:** $370/mo (0.6% of $60-65K budget) | **ROI:** 3.3× in 18 months  
+**SYSTEM:** GKE-Native Nightly Intelligence Pipeline (5th Namespace)
+**COST:** $370/mo (0.6% of $60-65K budget) | **ROI:** 3.3× in 18 months
 **GATE ALIGNMENT:** Supports Gate A→B→C acceleration
 
 -----
@@ -171,79 +171,79 @@ from datetime import datetime, timedelta
 
 class EthicalScraper:
     """ATP 5-19 RA-1 compliant scraper with robots.txt respect"""
-    
+
     def __init__(self, config):
         self.config = config
         self.robots_cache = {}  # Domain → (parser, cached_at)
         self.last_request = {}  # Domain → timestamp
         self.circuit_breakers = {}  # Domain → (failures, opened_at)
-    
+
     async def fetch_url(self, url: str) -> Optional[str]:
         """
         Fetch URL with full ethical compliance
-        
+
         ATP 5-19 Risk Mitigation:
         - RA-4 (Extremely High): Violating robots.txt, DDoS
         - RA-1 (Low): Compliant, throttled, respectful
         """
         domain = urlparse(url).netloc
-        
+
         # 1. Check robots.txt
         if not await self.is_allowed(url):
             print(f"⚠️  {url} disallowed by robots.txt")
             return None
-        
+
         # 2. Check circuit breaker
         if self.is_circuit_open(domain):
             print(f"⚠️  Circuit breaker open for {domain}")
             return None
-        
+
         # 3. Respect crawl-delay
         crawl_delay = await self.get_crawl_delay(domain)
         await self.apply_rate_limit(domain, crawl_delay)
-        
+
         # 4. Make request with proper User-Agent
         headers = {
             "User-Agent": f"{self.config['user_agent']['name']} (+{self.config['user_agent']['url']})",
             "From": self.config['user_agent']['contact']
         }
-        
+
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, headers=headers, timeout=30) as response:
-                    
+
                     # Handle rate limiting
                     if response.status == 429:
                         retry_after = int(response.headers.get('Retry-After', 60))
                         print(f"⚠️  Rate limited on {domain}, waiting {retry_after}s")
                         await asyncio.sleep(retry_after)
                         return await self.fetch_url(url)  # Retry once
-                    
+
                     # Handle server errors
                     if response.status >= 500:
                         self.record_failure(domain)
                         return None
-                    
+
                     # Success
                     self.reset_circuit(domain)
                     return await response.text()
-                    
+
         except Exception as e:
             self.record_failure(domain)
             print(f"❌ Error fetching {url}: {e}")
             return None
-    
+
     async def is_allowed(self, url: str) -> bool:
         """Check robots.txt with 24h caching"""
         domain = urlparse(url).netloc
         robots_url = f"https://{domain}/robots.txt"
-        
+
         # Check cache
         if domain in self.robots_cache:
             parser, cached_at = self.robots_cache[domain]
             if datetime.now() - cached_at < timedelta(hours=24):
                 return parser.is_allowed(self.config['user_agent']['name'], url)
-        
+
         # Fetch robots.txt
         try:
             parser = rerp.RobotExclusionRulesParser()
@@ -257,51 +257,51 @@ class EthicalScraper:
                         # No robots.txt = assume Allow per RFC 9309
                         parser.parse("")
                         self.robots_cache[domain] = (parser, datetime.now())
-            
+
             return parser.is_allowed(self.config['user_agent']['name'], url)
-        
+
         except Exception as e:
             print(f"⚠️  Could not fetch robots.txt for {domain}: {e}")
             # Conservative: assume Disallow on error
             return False
-    
+
     async def get_crawl_delay(self, domain: str) -> float:
         """Extract crawl-delay from robots.txt or use defaults"""
         if domain not in self.robots_cache:
             await self.is_allowed(f"https://{domain}/")  # Populate cache
-        
+
         if domain in self.robots_cache:
             parser, _ = self.robots_cache[domain]
             delay = parser.get_crawl_delay(self.config['user_agent']['name'])
             if delay:
                 return float(delay)
-        
+
         # Use domain-specific defaults
         for pattern, default_delay in self.config['rate_limiting'].items():
             if pattern in domain:
                 return default_delay
-        
+
         return self.config['rate_limiting']['default_delay']
-    
+
     async def apply_rate_limit(self, domain: str, crawl_delay: float):
         """Enforce crawl-delay with adaptive jitter"""
         if domain in self.last_request:
             elapsed = time.time() - self.last_request[domain]
             required_delay = crawl_delay + random.uniform(0, 1)  # Add jitter
-            
+
             if elapsed < required_delay:
                 wait_time = required_delay - elapsed
                 await asyncio.sleep(wait_time)
-        
+
         self.last_request[domain] = time.time()
-    
+
     def is_circuit_open(self, domain: str) -> bool:
         """Circuit breaker pattern for sustained failures"""
         if domain not in self.circuit_breakers:
             return False
-        
+
         failures, opened_at = self.circuit_breakers[domain]
-        
+
         # Open circuit after 5 failures
         if failures >= 5:
             # Try to close after 5 minutes
@@ -309,9 +309,9 @@ class EthicalScraper:
                 del self.circuit_breakers[domain]
                 return False
             return True
-        
+
         return False
-    
+
     def record_failure(self, domain: str):
         """Record failure for circuit breaker"""
         if domain not in self.circuit_breakers:
@@ -319,7 +319,7 @@ class EthicalScraper:
         else:
             failures, _ = self.circuit_breakers[domain]
             self.circuit_breakers[domain] = (failures + 1, datetime.now())
-    
+
     def reset_circuit(self, domain: str):
         """Reset circuit breaker on success"""
         if domain in self.circuit_breakers:
@@ -368,12 +368,12 @@ spec:
         spec:
           serviceAccountName: intelligence-runner
           restartPolicy: OnFailure
-          
+
           containers:
           - name: pipeline
             image: gcr.io/PROJECT_ID/intelligence-pipeline:latest
             imagePullPolicy: Always
-            
+
             env:
             - name: PROJECT_ID
               value: "PROJECT_ID"
@@ -381,7 +381,7 @@ spec:
               value: "pnkln_intelligence"
             - name: GCS_BUCKET
               value: "PROJECT_ID-pnkln-intelligence"
-            
+
             # Ethical scraping config
             - name: SCRAPER_USER_AGENT
               value: "PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot-policy)"
@@ -391,12 +391,12 @@ spec:
               value: "true"
             - name: DEFAULT_CRAWL_DELAY
               value: "3.0"
-            
+
             # API Keys from Secret
             envFrom:
             - secretRef:
                 name: api-keys
-            
+
             resources:
               requests:
                 cpu: "2"
@@ -404,37 +404,37 @@ spec:
               limits:
                 cpu: "4"
                 memory: "16Gi"
-            
+
             command: ["/bin/bash", "-c"]
             args:
             - |
               #!/bin/bash
               set -e
-              
+
               echo "=== PNKLN NIGHTLY INTELLIGENCE PIPELINE ==="
               echo "Started: $(date -Iseconds)"
-              
+
               # Step 1: Ingestion (ethical scraping)
               python /app/ingestion.py
-              
+
               # Step 2: JR Engine scoring
               python /app/jr_scoring.py
-              
+
               # Step 3: Tier classification
               python /app/tier_classification.py
-              
+
               # Step 4: Cor Brain synthesis (Tier 1 only)
               python /app/cor_synthesis.py
-              
+
               # Step 5: Tier 2 auto-actions
               python /app/tier2_actions.py
-              
+
               # Step 6: BigQuery storage
               python /app/store_bigquery.py
-              
+
               # Step 7: Deliver AM briefing
               python /app/deliver_briefing.py
-              
+
               echo "✓ Pipeline complete: $(date -Iseconds)"
 ```
 
@@ -483,10 +483,10 @@ Reply **[DEPLOY]** to receive complete Terraform + K8s manifests with ethical sc
 
 ### **What We’ve Built**
 
-**Company:** PNKLN (Panama foundation structure)  
-**Mission:** Vertically integrated AI infrastructure from offshore electrons to governed marketplace  
-**Current Status:** Pre-seed, concept validation phase  
-**Founder:** Erik (55, Army SF + legal training, bootstrap discipline)  
+**Company:** PNKLN (Panama foundation structure)
+**Mission:** Vertically integrated AI infrastructure from offshore electrons to governed marketplace
+**Current Status:** Pre-seed, concept validation phase
+**Founder:** Erik (55, Army SF + legal training, bootstrap discipline)
 **Technical Platform:** GKE-native (Google Kubernetes Engine on Vertex AI)
 
 ### **The Complete Stack (6 Layers - GKE Deployment)**
@@ -549,9 +549,9 @@ LAYER 1: Gulfstream Offshore ($1.75B ARR)
    └─ GKE cost optimization (GKE autopilot for bin packing)
 ```
 
-**Total 2030 ARR:** $11.69B  
-**Weighted EBITDA Margin:** 76%  
-**2030 Valuation:** $64.6B (conservative sum-of-parts)  
+**Total 2030 ARR:** $11.69B
+**Weighted EBITDA Margin:** 76%
+**2030 Valuation:** $64.6B (conservative sum-of-parts)
 **Infrastructure:** 100% GKE-native, Vertex AI integrated
 
 ### **Core Documentation (Cor Series)**
@@ -568,7 +568,7 @@ LAYER 1: Gulfstream Offshore ($1.75B ARR)
 
 ```
 gke-inference-system/     # Core inference serving
-gke-training-system/      # Model training pipelines  
+gke-training-system/      # Model training pipelines
 gke-monitoring-system/    # Observability stack
 gke-gateway-system/       # API gateway + ingress
 ```
@@ -586,9 +586,9 @@ gke-gateway-system/       # API gateway + ingress
 
 ### **Key Frameworks**
 
-**JR (Business Judgment Rule):** Maximize value in every equation  
-**AiUCRM:** Military-grade risk management (ATP 5-19: RA-1→RA-4)  
-**PRB (Purpose/Reasons/Brakes):** Judge #6 enforcement framework (GKE admission webhooks)  
+**JR (Business Judgment Rule):** Maximize value in every equation
+**AiUCRM:** Military-grade risk management (ATP 5-19: RA-1→RA-4)
+**PRB (Purpose/Reasons/Brakes):** Judge #6 enforcement framework (GKE admission webhooks)
 **YRM:** YouAi Risk Management (ATP 5-19 commercial adaptation)
 
 -----
@@ -602,7 +602,7 @@ COMPANY_STRUCTURE:
   name: "PNKLN" (never "Pinkeln" or variations)
   entity: Panama foundation
   founder_equity: 50% target post-dilution
-  
+
 TECHNICAL_STACK:
   platform: "GKE (Google Kubernetes Engine)"
   deployment: "Vertex AI Workbench + GKE Enterprise"
@@ -612,7 +612,7 @@ TECHNICAL_STACK:
     - "gke-monitoring-system/"
     - "gke-gateway-system/"
   cost_target: "$60-65K/month production"
-  
+
   cognitive_core: "Cognitive Stack v5 (Cor.26) on GKE"
   components:
     - name: "BDH"
@@ -630,7 +630,7 @@ TECHNICAL_STACK:
     - name: "Qwen3-VL"
       description: "Multimodal reasoning"
       deployment: "Vertex AI Model Garden integration"
-  
+
   governance:
     judge_6:
       latency: "<500μs"
@@ -643,7 +643,7 @@ TECHNICAL_STACK:
       impact: "-94% regulatory fines, -85% moderation costs"
       moat_value: "$8.6B EV premium"
       deployment: "GKE Policy Controller + Config Connector"
-  
+
   gke_features:
     autopilot: true
     workload_identity: true
@@ -651,7 +651,7 @@ TECHNICAL_STACK:
     multi_cluster_mesh: true
     vertex_ai_integration: true
     anthos_config_management: true
-  
+
 INFRASTRUCTURE:
   energy:
     phase_1: "50 MW (2027)"
@@ -667,7 +667,7 @@ INFRASTRUCTURE:
       - "Platform scarcity (28 total, control 10+)"
       - "CAISO Mega-Rule timing (24-month head start)"
       - "Diablo exclusive (finite grid capacity)"
-  
+
   roadmesh:
     coverage: "100,000+ cell towers"
     hardware: "20× H100 GPUs per tower"
@@ -681,7 +681,7 @@ INFRASTRUCTURE:
       commute_reduction: "-37% (24 min → 15 min)"
       fuel_waste_reduction: "-47% (15% → 8%)"
       throughput_increase: "+33% (1,800 → 2,400 veh/hr/lane)"
-  
+
   orbital:
     satellites: "Starlink, OneWeb, Kuiper partnerships"
     aircraft: "35,000 ft relay layer (100-mile radius/aircraft)"
@@ -724,21 +724,21 @@ FINANCIALS:
       - "Judge #6 on GKE: 10M queries/day, p99 <500μs"
       - "Digital Freeway on GKE: 37% commute reduction proven"
       - "10 enterprise design partners (GKE deployment templates)"
-  
+
   series_a:
     raise: "$150M"
     valuation_pre: "$3B"
     dilution: "5%"
     arr_target: "$150M"
     gke_scale: "Multi-region GKE Enterprise deployment"
-    
+
   series_b:
     raise: "$500M"
     valuation_pre: "$15B"
     dilution: "3%"
     arr_target: "$2B"
     gke_scale: "Global Anthos multi-cluster mesh"
-  
+
   exit_2030:
     arr: "$11.69B"
     ebitda: "$8.9B (76% margin)"
@@ -771,14 +771,14 @@ CURRENT_OBJECTIVES:
     - "Deploy Judge #6 on GKE (10M query capacity, <500μs p99)"
     - "Build Digital Freeway 10-mile test corridor (GKE edge clusters)"
     - "GKE reference architecture implementation (4 namespaces)"
-  
+
   q2_2026:
     - "BOEM RUE approved (6-month fast-track)"
     - "CAISO study initiated (24-month timeline)"
     - "Judge #6 alpha on GKE with 10 design partners"
     - "ShadowTag v2 operational (GKE batch processing)"
     - "GKE multi-cluster mesh operational (Anthos)"
-  
+
   q4_2027:
     - "50 MW operational (Gulfstream Phase 1, GKE offshore)"
     - "Judge #6 on GKE: 1B+ queries/month, p99 <500μs"
@@ -1032,10 +1032,10 @@ Resume conversation context with full awareness of:
 
 ### **What We’ve Built**
 
-**Company:** PNKLN (Panama foundation structure)  
-**Mission:** Vertically integrated AI infrastructure from offshore electrons to governed marketplace  
-**Current Status:** Pre-seed, concept validation phase  
-**Founder:** Erik (55, Army SF + legal training, bootstrap discipline)  
+**Company:** PNKLN (Panama foundation structure)
+**Mission:** Vertically integrated AI infrastructure from offshore electrons to governed marketplace
+**Current Status:** Pre-seed, concept validation phase
+**Founder:** Erik (55, Army SF + legal training, bootstrap discipline)
 **Technical Platform:** GKE-native (Google Kubernetes Engine on Vertex AI)
 
 ### **The Complete Stack (6 Layers - GKE Deployment)**
@@ -1098,9 +1098,9 @@ LAYER 1: Gulfstream Offshore ($1.75B ARR)
    └─ GKE cost optimization (GKE autopilot for bin packing)
 ```
 
-**Total 2030 ARR:** $11.69B  
-**Weighted EBITDA Margin:** 76%  
-**2030 Valuation:** $64.6B (conservative sum-of-parts)  
+**Total 2030 ARR:** $11.69B
+**Weighted EBITDA Margin:** 76%
+**2030 Valuation:** $64.6B (conservative sum-of-parts)
 **Infrastructure:** 100% GKE-native, Vertex AI integrated
 
 ### **Core Documentation (Cor Series)**
@@ -1117,7 +1117,7 @@ LAYER 1: Gulfstream Offshore ($1.75B ARR)
 
 ```
 gke-inference-system/     # Core inference serving
-gke-training-system/      # Model training pipelines  
+gke-training-system/      # Model training pipelines
 gke-monitoring-system/    # Observability stack
 gke-gateway-system/       # API gateway + ingress
 ```
@@ -1135,9 +1135,9 @@ gke-gateway-system/       # API gateway + ingress
 
 ### **Key Frameworks**
 
-**JR (Business Judgment Rule):** Maximize value in every equation  
-**AiUCRM:** Military-grade risk management (ATP 5-19: RA-1→RA-4)  
-**PRB (Purpose/Reasons/Brakes):** Judge #6 enforcement framework (GKE admission webhooks)  
+**JR (Business Judgment Rule):** Maximize value in every equation
+**AiUCRM:** Military-grade risk management (ATP 5-19: RA-1→RA-4)
+**PRB (Purpose/Reasons/Brakes):** Judge #6 enforcement framework (GKE admission webhooks)
 **YRM:** YouAi Risk Management (ATP 5-19 commercial adaptation)
 
 -----
@@ -1151,7 +1151,7 @@ COMPANY_STRUCTURE:
   name: "PNKLN" (never "Pinkeln" or variations)
   entity: Panama foundation
   founder_equity: 50% target post-dilution
-  
+
 TECHNICAL_STACK:
   platform: "GKE (Google Kubernetes Engine)"
   deployment: "Vertex AI Workbench + GKE Enterprise"
@@ -1161,7 +1161,7 @@ TECHNICAL_STACK:
     - "gke-monitoring-system/"
     - "gke-gateway-system/"
   cost_target: "$60-65K/month production"
-  
+
   cognitive_core: "Cognitive Stack v5 (Cor.26) on GKE"
   components:
     - name: "BDH"
@@ -1179,7 +1179,7 @@ TECHNICAL_STACK:
     - name: "Qwen3-VL"
       description: "Multimodal reasoning"
       deployment: "Vertex AI Model Garden integration"
-  
+
   governance:
     judge_6:
       latency: "<500μs"
@@ -1192,7 +1192,7 @@ TECHNICAL_STACK:
       impact: "-94% regulatory fines, -85% moderation costs"
       moat_value: "$8.6B EV premium"
       deployment: "GKE Policy Controller + Config Connector"
-  
+
   gke_features:
     autopilot: true
     workload_identity: true
@@ -1200,7 +1200,7 @@ TECHNICAL_STACK:
     multi_cluster_mesh: true
     vertex_ai_integration: true
     anthos_config_management: true
-  
+
 INFRASTRUCTURE:
   energy:
     phase_1: "50 MW (2027)"
@@ -1216,7 +1216,7 @@ INFRASTRUCTURE:
       - "Platform scarcity (28 total, control 10+)"
       - "CAISO Mega-Rule timing (24-month head start)"
       - "Diablo exclusive (finite grid capacity)"
-  
+
   roadmesh:
     coverage: "100,000+ cell towers"
     hardware: "20× H100 GPUs per tower"
@@ -1230,7 +1230,7 @@ INFRASTRUCTURE:
       commute_reduction: "-37% (24 min → 15 min)"
       fuel_waste_reduction: "-47% (15% → 8%)"
       throughput_increase: "+33% (1,800 → 2,400 veh/hr/lane)"
-  
+
   orbital:
     satellites: "Starlink, OneWeb, Kuiper partnerships"
     aircraft: "35,000 ft relay layer (100-mile radius/aircraft)"
@@ -1273,21 +1273,21 @@ FINANCIALS:
       - "Judge #6 on GKE: 10M queries/day, p99 <500μs"
       - "Digital Freeway on GKE: 37% commute reduction proven"
       - "10 enterprise design partners (GKE deployment templates)"
-  
+
   series_a:
     raise: "$150M"
     valuation_pre: "$3B"
     dilution: "5%"
     arr_target: "$150M"
     gke_scale: "Multi-region GKE Enterprise deployment"
-    
+
   series_b:
     raise: "$500M"
     valuation_pre: "$15B"
     dilution: "3%"
     arr_target: "$2B"
     gke_scale: "Global Anthos multi-cluster mesh"
-  
+
   exit_2030:
     arr: "$11.69B"
     ebitda: "$8.9B (76% margin)"
@@ -1320,14 +1320,14 @@ CURRENT_OBJECTIVES:
     - "Deploy Judge #6 on GKE (10M query capacity, <500μs p99)"
     - "Build Digital Freeway 10-mile test corridor (GKE edge clusters)"
     - "GKE reference architecture implementation (4 namespaces)"
-  
+
   q2_2026:
     - "BOEM RUE approved (6-month fast-track)"
     - "CAISO study initiated (24-month timeline)"
     - "Judge #6 alpha on GKE with 10 design partners"
     - "ShadowTag v2 operational (GKE batch processing)"
     - "GKE multi-cluster mesh operational (Anthos)"
-  
+
   q4_2027:
     - "50 MW operational (Gulfstream Phase 1, GKE offshore)"
     - "Judge #6 on GKE: 1B+ queries/month, p99 <500μs"

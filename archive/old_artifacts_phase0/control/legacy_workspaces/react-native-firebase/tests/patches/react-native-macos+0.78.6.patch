@@ -4,13 +4,13 @@ index f4c5ed374..f7afaf4e9 100644
 +++ b/node_modules/react-native-macos/Libraries/Blob/BlobManager.js
 @@ -9,7 +9,7 @@
   */
- 
+
  import type {BlobCollector, BlobData, BlobOptions} from './BlobTypes';
 -
 +import {fromByteArray} from 'base64-js';
  import NativeBlobModule from './NativeBlobModule';
  import invariant from 'invariant';
- 
+
 @@ -67,9 +67,11 @@
      const blobId = uuidv4();
      const items = parts.map(part => {
@@ -28,10 +28,10 @@ index f4c5ed374..f7afaf4e9 100644
          return {
 @@ -92,6 +94,7 @@
      }, 0);
- 
+
      NativeBlobModule.createFromParts(items, blobId);
 +    // console.error('BlobManager thinks blob id ' + blobId + ' already exists (but it may not yet on iOS!).');
- 
+
      return BlobManager.createFromOptions({
        blobId,
 diff --git a/node_modules/react-native-macos/Libraries/Blob/RCTBlobManager.mm b/node_modules/react-native-macos/Libraries/Blob/RCTBlobManager.mm
@@ -45,7 +45,7 @@ index 9d4cde7c4..304638bf1 100755
 +  //RCTLogError(@"RCTBlobManager store inside mutex storing blob id %@", blobId);
    _blobs[blobId] = data;
  }
- 
+
 @@ -117,9 +118,13 @@
    NSData *data;
    {
@@ -67,18 +67,18 @@ index 9d4cde7c4..304638bf1 100755
 +  //RCTLogError(@"RCTBlobManager remove inside mutex removing blob id %@", blobId);
    [_blobs removeObjectForKey:blobId];
  }
- 
+
 @@ -217,15 +223,19 @@
      }
    }
- 
+
 +  //RCTLogError(@"RCTBlobManager createFromParts requesting store of blob id %@", blobId);
    dispatch_async([self executionQueue], ^{
      [self store:data withId:blobId];
 +    //RCTLogError(@"RCTBlobManager createFromParts done storing blob id %@", blobId);
    });
  }
- 
+
  RCT_EXPORT_METHOD(release : (NSString *)blobId)
  {
 +  //RCTLogError(@"RCTBlobManager enqueueing release of blob id %@", blobId);
@@ -87,11 +87,11 @@ index 9d4cde7c4..304638bf1 100755
 +    //RCTLogError(@"RCTBlobManager done releasing blob id %@", blobId);
    });
  }
- 
+
 @@ -297,13 +307,30 @@
    // @lint-ignore FBOBJCUNTYPEDCOLLECTION1
    NSDictionary *blob = [RCTConvert NSDictionary:data[@"blob"]];
- 
+
 +  // FIXME so here - we checked that data[@"blob"] was non-nil in canHandleHandleNetworkingRequest
 +
    NSString *contentType = @"application/octet-stream";
@@ -99,7 +99,7 @@ index 9d4cde7c4..304638bf1 100755
    if (blobType != nil && blobType.length > 0) {
      contentType = blob[@"type"];
    }
- 
+
 -  return @{@"body" : [self resolve:blob], @"contentType" : contentType};
 +  // FIXME but here in resolve:blob the blob isn't found somehow? comes back nil?
 +  NSData *blobBody = nil;
@@ -118,7 +118,7 @@ index 9d4cde7c4..304638bf1 100755
 +
 +  return @{@"body" : blobBody, @"contentType" : contentType};
  }
- 
+
  - (BOOL)canHandleNetworkingResponse:(NSString *)responseType
 diff --git a/node_modules/react-native-macos/Libraries/Network/RCTNetworking.mm b/node_modules/react-native-macos/Libraries/Network/RCTNetworking.mm
 index 80d8c3058..b68a67e77 100644
@@ -165,7 +165,7 @@ index 2f38990e2..a40c5755e 100644
 --- a/node_modules/react-native-macos/third-party-podspecs/fmt.podspec
 +++ b/node_modules/react-native-macos/third-party-podspecs/fmt.podspec
 @@ -8,14 +8,14 @@
- 
+
  Pod::Spec.new do |spec|
    spec.name = "fmt"
 -  spec.version = "11.0.2"
@@ -199,7 +199,7 @@ index 9d758c174..6dfb3ab9d 100644
 --- a/node_modules/react-native-macos/Libraries/Blob/React-RCTBlob.podspec
 +++ b/node_modules/react-native-macos/Libraries/Blob/React-RCTBlob.podspec
 @@ -50,7 +50,7 @@
- 
+
    s.dependency "DoubleConversion"
    s.dependency "fast_float", "6.1.4"
 -  s.dependency "fmt", "11.0.2"
@@ -217,7 +217,7 @@ index aa624ac25..77c33c774 100644
    s.dependency "fast_float", "6.1.4"
 -  s.dependency "fmt", "11.0.2"
 +  s.dependency "fmt", "12.1.0"
-   
+
    if ENV["USE_HERMES"] == nil || ENV["USE_HERMES"] == "1"
      s.dependency "hermes-engine"
 diff --git a/node_modules/react-native-macos/ReactCommon/react/renderer/debug/React-rendererdebug.podspec b/node_modules/react-native-macos/ReactCommon/react/renderer/debug/React-rendererdebug.podspec
@@ -283,7 +283,7 @@ index fb3cbe955..dc84e5da7 100644
 +  s.dependency "fmt", "12.1.0"
    s.dependency "RCT-Folly", folly_version
    s.dependency "glog"
- 
+
 diff --git a/node_modules/react-native-macos/ReactCommon/jsiexecutor/React-jsiexecutor.podspec b/node_modules/react-native-macos/ReactCommon/jsiexecutor/React-jsiexecutor.podspec
 index 17641842b..5b1af8066 100644
 --- a/node_modules/react-native-macos/ReactCommon/jsiexecutor/React-jsiexecutor.podspec
@@ -296,7 +296,7 @@ index 17641842b..5b1af8066 100644
 +  s.dependency "fmt", "12.1.0"
    s.dependency "glog"
    add_dependency(s, "React-jsinspector", :framework_name => 'jsinspector_modern')
- 
+
 diff --git a/node_modules/react-native-macos/ReactCommon/React-Fabric.podspec b/node_modules/react-native-macos/ReactCommon/React-Fabric.podspec
 index 08b5134be..b0db245c3 100644
 --- a/node_modules/react-native-macos/ReactCommon/React-Fabric.podspec

@@ -587,4 +587,3 @@ The venue-templates skill provides comprehensive access to:
 5. **Best practices** for successful academic submissions
 
 Use this skill whenever you need venue-specific formatting guidance or templates for academic publishing.
-

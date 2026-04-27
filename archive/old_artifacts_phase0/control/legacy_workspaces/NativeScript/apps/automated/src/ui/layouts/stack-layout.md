@@ -29,4 +29,3 @@ Using a StackLayout requires the StackLayout module.
 
 ## Change layout orientation to Horizontal
 {%snippet stack-layout-horizontal%}
-

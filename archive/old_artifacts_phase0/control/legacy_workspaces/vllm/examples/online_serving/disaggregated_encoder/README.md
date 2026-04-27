@@ -53,23 +53,23 @@ The vllm instances and `disagg_encoder_proxy` supports local URIs with ```{"url"
 The `ECSharedStorageConnector` is used to store the encoder cache on local disk and facilitate transfer. To enable the encoder disaggregation feature, add the following configuration:
 
 ```bash
-# Add to encoder instance: 
+# Add to encoder instance:
 --ec-transfer-config '{
     "ec_connector": "ECSharedStorageConnector",
     "ec_role": "ec_producer",
     "ec_connector_extra_config": {
         "shared_storage_path": "'"$EC_SHARED_STORAGE_PATH"'"
     }
-}' 
+}'
 
-# Add to prefill/prefill+decode instance: 
+# Add to prefill/prefill+decode instance:
 --ec-transfer-config '{
     "ec_connector": "ECSharedStorageConnector",
     "ec_role": "ec_consumer",
     "ec_connector_extra_config": {
         "shared_storage_path": "'"$EC_SHARED_STORAGE_PATH"'"
     }
-}' 
+}'
 ```
 
 `$EC_SHARED_STORAGE_PATH` is the path where the EC connector temporarily stores the cache.
@@ -77,17 +77,17 @@ The `ECSharedStorageConnector` is used to store the encoder cache on local disk 
 If you enable prefill instance (`--prefill-servers-urls` not disabled), you will need --kv-transfer-config to facilitate the PD disaggregation. Currently, we use the `NixlConnector` for this purpose. Refer to `tests/v1/kv_connector/nixl_integration` for more example codes on PD disaggregation with Nixl.
 
 ```bash
-# Add to prefill instance:    
+# Add to prefill instance:
 --kv-transfer-config '{
     "kv_connector": "NixlConnector",
     "kv_role": "kv_producer"
-}' 
+}'
 
 # Add to decode instance:
 --kv-transfer-config '{
     "kv_connector": "NixlConnector",
     "kv_role": "kv_consumer"
-}' 
+}'
 ```
 
 ## Proxy Instance Flags (`disagg_epd_proxy.py`)
@@ -114,6 +114,6 @@ For E + P + D setup:
 ```bash
 $ python disagg_encoder_proxy.py \
       --encode-servers-urls "http://e1:8001,http://e2:8001" \
-      --prefill-servers-urls "http://p1:8003,http://p2:8004" \ 
+      --prefill-servers-urls "http://p1:8003,http://p2:8004" \
       --decode-servers-urls "http://d1:8005,http://d2:8006"
 ```

@@ -112,4 +112,3 @@ name = "pypi"
         c = p.pipenv("install urllib3==1.*")
         assert c.returncode == 0
         assert "urllib3" in p.lockfile["default"]
-

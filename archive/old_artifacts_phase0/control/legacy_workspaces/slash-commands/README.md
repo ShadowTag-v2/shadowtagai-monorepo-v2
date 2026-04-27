@@ -8,20 +8,20 @@ A curated collection of AI-powered slash commands for code review, problem analy
 
 ## Quick Reference
 
-📝 `/create-plan` - Create comprehensive task plans  
-📋 `/plan-review` - Review implementation plans  
-✅ `/finalize-plan` - Finalize completed tasks  
-🔍 `/code-review-low` - Fast code review  
-🔬 `/code-review-high` - Thorough code review  
-🐛 `/problem-analyzer` - Identify bugs and affected files  
-♻️ `/refactor-code` - Start refactoring workflows  
-🔌 `/kill-port` - Kill processes running on specific ports  
-🔎 `/research-better-lib` - Find modern, faster library alternatives  
-📦 `/ask-codefetch` - Gather codebase context into a single markdown file  
-🚀 `/ask-gpt-pro` - Generate codebase, copy to clipboard, and open AI chat  
-⚛️ `/solidjs-rules` - Comprehensive SolidJS coding rules  
-🧹 `/component-cleanup` - SolidJS component size and structure rules  
-✂️ `/short-tokens` - Minimize token usage while retaining key information  
+📝 `/create-plan` - Create comprehensive task plans
+📋 `/plan-review` - Review implementation plans
+✅ `/finalize-plan` - Finalize completed tasks
+🔍 `/code-review-low` - Fast code review
+🔬 `/code-review-high` - Thorough code review
+🐛 `/problem-analyzer` - Identify bugs and affected files
+♻️ `/refactor-code` - Start refactoring workflows
+🔌 `/kill-port` - Kill processes running on specific ports
+🔎 `/research-better-lib` - Find modern, faster library alternatives
+📦 `/ask-codefetch` - Gather codebase context into a single markdown file
+🚀 `/ask-gpt-pro` - Generate codebase, copy to clipboard, and open AI chat
+⚛️ `/solidjs-rules` - Comprehensive SolidJS coding rules
+🧹 `/component-cleanup` - SolidJS component size and structure rules
+✂️ `/short-tokens` - Minimize token usage while retaining key information
 
 ## Installation
 

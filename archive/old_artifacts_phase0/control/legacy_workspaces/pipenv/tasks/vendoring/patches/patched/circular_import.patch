@@ -8,13 +8,13 @@ index 4931c85bc..2ee87b4bb 100644
  from collections.abc import Generator, Iterable, Iterator
 -from typing import TYPE_CHECKING, Callable, Literal, TypeVar
 +from typing import Any, Callable, Literal, TypeVar
- 
+
  from pip._vendor.rich.progress import (
      BarColumn,
 @@ -22,11 +22,9 @@ from pip._vendor.rich.progress import (
  from pip._internal.cli.spinners import RateLimiter
  from pip._internal.utils.logging import get_console, get_indentation
- 
+
 -if TYPE_CHECKING:
 -    from pip._internal.req.req_install import InstallRequirement
 -
@@ -22,5 +22,5 @@ index 4931c85bc..2ee87b4bb 100644
  ProgressRenderer = Callable[[Iterable[T]], Iterator[T]]
 +InstallRequirement = Any
  BarType = Literal["on", "off", "raw"]
- 
- 
+
+

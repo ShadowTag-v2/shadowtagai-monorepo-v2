@@ -182,7 +182,7 @@ Resources expose read-only data sources (like `GET` requests). Use `@mcp.resourc
 ```python
 # Static resource
 @mcp.resource("config://version")
-def get_version(): 
+def get_version():
     return "2.0.1"
 
 # Dynamic resource template
@@ -452,7 +452,7 @@ Contributions are the core of open source! We welcome improvements and features.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/jlowin/fastmcp.git 
+   git clone https://github.com/jlowin/fastmcp.git
    cd fastmcp
    ```
 

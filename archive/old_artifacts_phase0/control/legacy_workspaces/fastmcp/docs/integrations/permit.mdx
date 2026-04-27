@@ -160,7 +160,7 @@ Policies are defined in the Permit.io dashboard, but you can also use the [Permi
 resource "permitio_resource" "mcp_server" {
   name = "mcp_server"
   key  = "mcp_server"
-  
+
   actions = {
     "greet" = { name = "greet" }
     "add"   = { name = "add" }
@@ -170,7 +170,7 @@ resource "permitio_resource" "mcp_server" {
 resource "permitio_resource" "mcp_server_tools" {
   name = "mcp_server_tools"
   key  = "mcp_server_tools"
-  
+
   actions = {
     "list" = { name = "list" }
   }
@@ -182,7 +182,7 @@ resource "permitio_role" "Admin" {
   name        = "Admin"
   permissions = [
     "mcp_server:greet",
-    "mcp_server:add", 
+    "mcp_server:add",
     "mcp_server_tools:list"
   ]
 }

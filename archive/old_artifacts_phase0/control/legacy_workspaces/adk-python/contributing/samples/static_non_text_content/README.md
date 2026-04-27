@@ -77,7 +77,7 @@ This runs test prompts that demonstrate the static content features:
 - **Gemini Developer API**: 4 prompts testing inline_data + Files API upload
 - **Vertex AI**: 5 prompts testing inline_data + GCS/HTTPS file access comparison
 
-### Interactive Mode  
+### Interactive Mode
 ```bash
 cd contributing/samples
 adk run static_non_text_content

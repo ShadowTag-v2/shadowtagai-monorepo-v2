@@ -91,7 +91,7 @@ jobs:
           cd packages/mcp
           pnpm publish --access public --no-git-checks
 
-          # Then publish the main app package  
+          # Then publish the main app package
           cd ../app
           pnpm publish --access public --no-git-checks
         env:

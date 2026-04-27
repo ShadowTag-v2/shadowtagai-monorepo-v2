@@ -71,7 +71,7 @@ export class GetAppFeatureSchemaToool extends BaseMondayAppsTool<
       // If a specific feature type is requested
       if (featureType) {
         const schema = schemaManager.getSchema(featureType);
-        
+
         if (!schema) {
           const availableTypes = schemaManager.getAvailableFeatureTypes();
           return {
@@ -84,7 +84,7 @@ export class GetAppFeatureSchemaToool extends BaseMondayAppsTool<
             },
           };
         }
-        
+
         return {
           content: this.formatSchemaResponse(featureType, schema),
           metadata: {
@@ -175,11 +175,11 @@ export class GetAppFeatureSchemaToool extends BaseMondayAppsTool<
 
     // Group by category if available
     const byCategory: Record<string, string[]> = {};
-    
+
     availableTypes.forEach((type) => {
       const schema = schemas.find(s => s.name === type);
       const category = schema?.settings?.family || 'other';
-      
+
       if (!byCategory[category]) {
         byCategory[category] = [];
       }
@@ -193,4 +193,3 @@ export class GetAppFeatureSchemaToool extends BaseMondayAppsTool<
     return lines.join('\n');
   }
 }
-

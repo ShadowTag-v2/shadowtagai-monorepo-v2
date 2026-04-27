@@ -3,7 +3,7 @@
         <ActionBar title="RootLayout" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
-    
+
     <GridLayout rows="2*, *">
       <!-- background color transparent here to hide children overflow -->
       <AbsoluteLayout row="0" backgroundColor="transparent">

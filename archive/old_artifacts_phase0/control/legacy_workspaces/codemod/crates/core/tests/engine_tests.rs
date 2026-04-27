@@ -2048,10 +2048,10 @@ async fn test_execute_js_ast_grep_step_with_typescript() {
         r#"
 export default function transform(ast) {
   return ast
-    .findAll({ 
-      rule: { 
-        pattern: 'interface $NAME { $$$ }' 
-      } 
+    .findAll({
+      rule: {
+        pattern: 'interface $NAME { $$$ }'
+      }
     })
     .replace('type $NAME = { $$$ }');
 }
@@ -2579,7 +2579,7 @@ echo "Writing to state at: $STATE_OUTPUTS"
 # Write TypeScript shards to state
 echo 'i18nShardsTs=[{"team": "frontend", "shardId": "shard-1"}, {"team": "backend", "shardId": "shard-2"}]' >> $STATE_OUTPUTS
 
-# Write HTML shards to state  
+# Write HTML shards to state
 echo 'i18nShardsHtml=[{"team": "ui", "shardId": "shard-a"}, {"team": "docs", "shardId": "shard-b"}, {"team": "marketing", "shardId": "shard-c"}]' >> $STATE_OUTPUTS
 
 echo "State written successfully"

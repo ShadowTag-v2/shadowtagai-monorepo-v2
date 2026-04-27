@@ -56,7 +56,7 @@ async def my_endpoint(ctx: ApiContext, ...):
 async def my_endpoint(ctx: ApiContext, ...):
     # Track custom events with automatic context
     ctx.analytics.track_event("custom_event", {"key": "value"})
-    
+
     # Search operations are automatically tracked
     # No manual tracking needed in endpoints
 ```
@@ -278,7 +278,7 @@ ENVIRONMENT=test
 async def my_endpoint(ctx: ApiContext, ...):
     # Analytics service is pre-configured with user/org context
     ctx.analytics.track_event("custom_event", {"key": "value"})
-    
+
     # Search operations are automatically tracked - no manual work needed
     pass
 ```

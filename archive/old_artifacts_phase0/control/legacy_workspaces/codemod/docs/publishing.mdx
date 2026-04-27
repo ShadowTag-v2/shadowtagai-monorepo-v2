@@ -79,7 +79,7 @@ To enable automatic trusted publishing for your organization scope, you need to 
     1. Install the [Codemod GitHub App](https://github.com/apps/codemod) and select your GitHub organization (requires org admin permissions)
     2. Grant access to at least one repository
   </Step>
-  
+
   <Step title="Sign in to Codemod">
     Go to [Codemod platform](https://app.codemod.com) and sign in with GitHub. Your organization will be automatically linked.
   </Step>
@@ -110,7 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Publish codemod
         uses: codemod/publish-action@v1
 ```
@@ -278,7 +278,7 @@ jobs:
     - Repository owner (case-insensitive)
     - Repository name (exact match)
     - Any configured restrictions (workflow path, environment, ref pattern)
-    
+
     **For organization scopes:** Ensure the GitHub App is installed on at least one repository in your organization and you've signed in to Codemod with a GitHub account that has access to the organization.
   </Accordion>
 

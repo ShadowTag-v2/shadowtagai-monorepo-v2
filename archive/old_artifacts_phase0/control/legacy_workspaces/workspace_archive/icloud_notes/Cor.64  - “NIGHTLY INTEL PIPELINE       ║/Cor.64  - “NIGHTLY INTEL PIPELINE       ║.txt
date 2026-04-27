@@ -11,8 +11,8 @@ Cor.64  - “NIGHTLY INTEL PIPELINE       ║
 
 ## EXECUTIVE SUMMARY: PROJECTED BUSINESS SWING
 
-**SYSTEM:** GKE-Native Nightly Intelligence Pipeline (5th Namespace)  
-**COST:** $370/mo (0.6% of $60-65K budget) | **ROI:** 3.3× in 18 months  
+**SYSTEM:** GKE-Native Nightly Intelligence Pipeline (5th Namespace)
+**COST:** $370/mo (0.6% of $60-65K budget) | **ROI:** 3.3× in 18 months
 **GATE ALIGNMENT:** Supports Gate A→B→C acceleration
 
 -----
@@ -133,79 +133,79 @@ from datetime import datetime, timedelta
 
 class EthicalScraper:
     """ATP 5-19 RA-1 compliant scraper with robots.txt respect"""
-    
+
     def __init__(self, config):
         self.config = config
         self.robots_cache = {}  # Domain → (parser, cached_at)
         self.last_request = {}  # Domain → timestamp
         self.circuit_breakers = {}  # Domain → (failures, opened_at)
-    
+
     async def fetch_url(self, url: str) -> Optional[str]:
         """
         Fetch URL with full ethical compliance
-        
+
         ATP 5-19 Risk Mitigation:
         - RA-4 (Extremely High): Violating robots.txt, DDoS
         - RA-1 (Low): Compliant, throttled, respectful
         """
         domain = urlparse(url).netloc
-        
+
         # 1. Check robots.txt
         if not await self.is_allowed(url):
             print(f"⚠️  {url} disallowed by robots.txt")
             return None
-        
+
         # 2. Check circuit breaker
         if self.is_circuit_open(domain):
             print(f"⚠️  Circuit breaker open for {domain}")
             return None
-        
+
         # 3. Respect crawl-delay
         crawl_delay = await self.get_crawl_delay(domain)
         await self.apply_rate_limit(domain, crawl_delay)
-        
+
         # 4. Make request with proper User-Agent
         headers = {
             "User-Agent": f"{self.config['user_agent']['name']} (+{self.config['user_agent']['url']})",
             "From": self.config['user_agent']['contact']
         }
-        
+
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, headers=headers, timeout=30) as response:
-                    
+
                     # Handle rate limiting
                     if response.status == 429:
                         retry_after = int(response.headers.get('Retry-After', 60))
                         print(f"⚠️  Rate limited on {domain}, waiting {retry_after}s")
                         await asyncio.sleep(retry_after)
                         return await self.fetch_url(url)  # Retry once
-                    
+
                     # Handle server errors
                     if response.status >= 500:
                         self.record_failure(domain)
                         return None
-                    
+
                     # Success
                     self.reset_circuit(domain)
                     return await response.text()
-                    
+
         except Exception as e:
             self.record_failure(domain)
             print(f"❌ Error fetching {url}: {e}")
             return None
-    
+
     async def is_allowed(self, url: str) -> bool:
         """Check robots.txt with 24h caching"""
         domain = urlparse(url).netloc
         robots_url = f"https://{domain}/robots.txt"
-        
+
         # Check cache
         if domain in self.robots_cache:
             parser, cached_at = self.robots_cache[domain]
             if datetime.now() - cached_at < timedelta(hours=24):
                 return parser.is_allowed(self.config['user_agent']['name'], url)
-        
+
         # Fetch robots.txt
         try:
             parser = rerp.RobotExclusionRulesParser()
@@ -219,51 +219,51 @@ class EthicalScraper:
                         # No robots.txt = assume Allow per RFC 9309
                         parser.parse("")
                         self.robots_cache[domain] = (parser, datetime.now())
-            
+
             return parser.is_allowed(self.config['user_agent']['name'], url)
-        
+
         except Exception as e:
             print(f"⚠️  Could not fetch robots.txt for {domain}: {e}")
             # Conservative: assume Disallow on error
             return False
-    
+
     async def get_crawl_delay(self, domain: str) -> float:
         """Extract crawl-delay from robots.txt or use defaults"""
         if domain not in self.robots_cache:
             await self.is_allowed(f"https://{domain}/")  # Populate cache
-        
+
         if domain in self.robots_cache:
             parser, _ = self.robots_cache[domain]
             delay = parser.get_crawl_delay(self.config['user_agent']['name'])
             if delay:
                 return float(delay)
-        
+
         # Use domain-specific defaults
         for pattern, default_delay in self.config['rate_limiting'].items():
             if pattern in domain:
                 return default_delay
-        
+
         return self.config['rate_limiting']['default_delay']
-    
+
     async def apply_rate_limit(self, domain: str, crawl_delay: float):
         """Enforce crawl-delay with adaptive jitter"""
         if domain in self.last_request:
             elapsed = time.time() - self.last_request[domain]
             required_delay = crawl_delay + random.uniform(0, 1)  # Add jitter
-            
+
             if elapsed < required_delay:
                 wait_time = required_delay - elapsed
                 await asyncio.sleep(wait_time)
-        
+
         self.last_request[domain] = time.time()
-    
+
     def is_circuit_open(self, domain: str) -> bool:
         """Circuit breaker pattern for sustained failures"""
         if domain not in self.circuit_breakers:
             return False
-        
+
         failures, opened_at = self.circuit_breakers[domain]
-        
+
         # Open circuit after 5 failures
         if failures >= 5:
             # Try to close after 5 minutes
@@ -271,9 +271,9 @@ class EthicalScraper:
                 del self.circuit_breakers[domain]
                 return False
             return True
-        
+
         return False
-    
+
     def record_failure(self, domain: str):
         """Record failure for circuit breaker"""
         if domain not in self.circuit_breakers:
@@ -281,7 +281,7 @@ class EthicalScraper:
         else:
             failures, _ = self.circuit_breakers[domain]
             self.circuit_breakers[domain] = (failures + 1, datetime.now())
-    
+
     def reset_circuit(self, domain: str):
         """Reset circuit breaker on success"""
         if domain in self.circuit_breakers:
@@ -330,12 +330,12 @@ spec:
         spec:
           serviceAccountName: intelligence-runner
           restartPolicy: OnFailure
-          
+
           containers:
           - name: pipeline
             image: gcr.io/PROJECT_ID/intelligence-pipeline:latest
             imagePullPolicy: Always
-            
+
             env:
             - name: PROJECT_ID
               value: "PROJECT_ID"
@@ -343,7 +343,7 @@ spec:
               value: "pnkln_intelligence"
             - name: GCS_BUCKET
               value: "PROJECT_ID-pnkln-intelligence"
-            
+
             # Ethical scraping config
             - name: SCRAPER_USER_AGENT
               value: "PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot-policy)"
@@ -353,12 +353,12 @@ spec:
               value: "true"
             - name: DEFAULT_CRAWL_DELAY
               value: "3.0"
-            
+
             # API Keys from Secret
             envFrom:
             - secretRef:
                 name: api-keys
-            
+
             resources:
               requests:
                 cpu: "2"
@@ -366,37 +366,37 @@ spec:
               limits:
                 cpu: "4"
                 memory: "16Gi"
-            
+
             command: ["/bin/bash", "-c"]
             args:
             - |
               #!/bin/bash
               set -e
-              
+
               echo "=== PNKLN NIGHTLY INTELLIGENCE PIPELINE ==="
               echo "Started: $(date -Iseconds)"
-              
+
               # Step 1: Ingestion (ethical scraping)
               python /app/ingestion.py
-              
+
               # Step 2: JR Engine scoring
               python /app/jr_scoring.py
-              
+
               # Step 3: Tier classification
               python /app/tier_classification.py
-              
+
               # Step 4: Cor Brain synthesis (Tier 1 only)
               python /app/cor_synthesis.py
-              
+
               # Step 5: Tier 2 auto-actions
               python /app/tier2_actions.py
-              
+
               # Step 6: BigQuery storage
               python /app/store_bigquery.py
-              
+
               # Step 7: Deliver AM briefing
               python /app/deliver_briefing.py
-              
+
               echo "✓ Pipeline complete: $(date -Iseconds)"
 ```
 

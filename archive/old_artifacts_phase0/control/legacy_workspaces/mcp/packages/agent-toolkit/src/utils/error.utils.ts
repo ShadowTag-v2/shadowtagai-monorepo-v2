@@ -9,15 +9,15 @@ interface GraphQLErrorResponse {
 
 /**
  * Rethrows an error with a formatted message, extracting GraphQL errors if available.
- * 
+ *
  * This utility handles two types of errors:
  * 1. GraphQL errors - extracts and joins error messages from response.errors
  * 2. Standard errors - uses the error message or falls back to 'Unknown error'
- * 
+ *
  * @param error - The caught error (can be Error, GraphQL error response, or unknown)
  * @param operation - Description of the operation that failed (e.g., "create item", "update board")
  * @throws Always throws an Error with formatted message "Failed to {operation}: {error details}"
- * 
+ *
  * @example
  * ```typescript
  * try {
@@ -41,4 +41,3 @@ export function rethrowWithContext(error: unknown, operation: string): never {
   const errorMessage = error instanceof Error ? error.message : 'Unknown error';
   throw new Error(`Failed to ${operation}: ${errorMessage}`);
 }
-

@@ -11,7 +11,7 @@ ENV_FILE=$1
 source /etc/environment
 source $ENV_FILE
 
-remove_docker_container() { 
+remove_docker_container() {
     docker rm -f $CONTAINER_NAME || true;
 }
 
@@ -25,7 +25,7 @@ LOG_ROOT=$(mktemp -d)
 echo "Results will be stored in: $LOG_ROOT"
 
 if [ -z "$HF_TOKEN" ]; then
-  echo "Error: HF_TOKEN is not set or is empty."  
+  echo "Error: HF_TOKEN is not set or is empty."
   exit 1
 fi
 
@@ -39,7 +39,7 @@ echo "Run model $MODEL"
 echo
 
 echo "starting docker...$CONTAINER_NAME"
-echo    
+echo
 docker run \
  -v $DOWNLOAD_DIR:$DOWNLOAD_DIR \
  --env-file $ENV_FILE \
@@ -61,7 +61,7 @@ docker exec "$CONTAINER_NAME" /bin/bash -c ".buildkite/scripts/tpu/run_bm.sh"
 echo "copy result back..."
 VLLM_LOG="$LOG_ROOT/$TEST_NAME"_vllm_log.txt
 BM_LOG="$LOG_ROOT/$TEST_NAME"_bm_log.txt
-docker cp "$CONTAINER_NAME:/workspace/vllm_log.txt" "$VLLM_LOG" 
+docker cp "$CONTAINER_NAME:/workspace/vllm_log.txt" "$VLLM_LOG"
 docker cp "$CONTAINER_NAME:/workspace/bm_log.txt" "$BM_LOG"
 
 throughput=$(grep "Request throughput (req/s):" "$BM_LOG" | sed 's/[^0-9.]//g')
@@ -69,16 +69,16 @@ echo "throughput for $TEST_NAME at $BUILDKITE_COMMIT: $throughput"
 
 if [ "$BUILDKITE" = "true" ]; then
   echo "Running inside Buildkite"
-  buildkite-agent artifact upload "$VLLM_LOG" 
+  buildkite-agent artifact upload "$VLLM_LOG"
   buildkite-agent artifact upload "$BM_LOG"
 else
   echo "Not running inside Buildkite"
 fi
 
 #
-# compare the throughput with EXPECTED_THROUGHPUT 
+# compare the throughput with EXPECTED_THROUGHPUT
 # and assert meeting the expectation
-# 
+#
 if [[ -z "$throughput" || ! "$throughput" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
   echo "Failed to get the throughput"
   exit 1

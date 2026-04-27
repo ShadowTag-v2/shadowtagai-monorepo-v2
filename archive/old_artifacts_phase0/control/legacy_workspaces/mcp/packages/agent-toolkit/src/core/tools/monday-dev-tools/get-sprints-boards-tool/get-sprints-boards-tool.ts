@@ -1,6 +1,6 @@
 import { ToolInputType, ToolOutputType, ToolType } from '../../../tool';
 import { BaseMondayApiTool, createMondayApiAnnotations } from '../../platform-api-tools/base-monday-api-tool';
-import { 
+import {
   GetRecentBoardsQuery,
   GetRecentBoardsQueryVariables,
 } from '../../../../monday-graphql/generated/graphql/graphql';
@@ -34,7 +34,7 @@ export class GetSprintsBoardsTool extends BaseMondayApiTool<typeof getSprintsBoa
     return `Discover monday-dev sprints boards and their associated tasks boards in your account.
 
 ## Purpose:
-Identifies and returns monday-dev sprints board IDs and tasks board IDs that you need to use with other monday-dev tools. 
+Identifies and returns monday-dev sprints board IDs and tasks board IDs that you need to use with other monday-dev tools.
 This tool scans your recently used boards (up to ${RECENT_BOARDS_LIMIT}) to find valid monday-dev sprint management boards.
 
 ## What it Returns:
@@ -69,7 +69,7 @@ Searches recently used boards (up to ${RECENT_BOARDS_LIMIT}). If none found, ask
       }
 
       const pairs = this.extractBoardPairs(boards);
-      
+
       if (pairs.length === 0) {
         return {
           content: this.generateNotFoundMessage(boards.length),
@@ -218,7 +218,7 @@ No board pairs with sprint relationships found in your recent boards.
  * We can identify pairs from either direction:
  * - From sprints board: sprint_tasks column references tasks board
  * - From tasks board: task_sprint column references sprints board
- * 
+ *
  * Note: If a board in the pair is not found in the recent boards list,
    * its name and workspace will show as "Unknown" or generic names (e.g., "Tasks Board {id}").
    * The board relationship and ID are still valid and functional.

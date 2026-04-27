@@ -73,14 +73,14 @@ describe('GetBoardItemsPageTool', () => {
         name: 'Test Board',
         items_page: {
           items: [
-            { 
-              id: 'item1', 
+            {
+              id: 'item1',
               name: 'First Item',
               created_at: '2024-01-15T10:30:00Z',
               updated_at: '2024-01-16T14:20:00Z'
             },
-            { 
-              id: 'item2', 
+            {
+              id: 'item2',
               name: 'Second Item',
               created_at: '2024-01-14T09:15:00Z',
               updated_at: '2024-01-15T16:45:00Z'
@@ -188,8 +188,8 @@ describe('GetBoardItemsPageTool', () => {
     it('should not include filters when cursor is provided', async () => {
       mocks.setResponse(successfulResponseWithItems);
 
-      const args: inputType = { 
-        boardId: 123456789, 
+      const args: inputType = {
+        boardId: 123456789,
         cursor: 'previous_cursor_456',
         filters: [
           {
@@ -224,7 +224,7 @@ describe('GetBoardItemsPageTool', () => {
     it('should include filters when no cursor is provided', async () => {
       mocks.setResponse(successfulResponseWithItems);
 
-      const args: inputType = { 
+      const args: inputType = {
         boardId: 123456789,
         filters: [
           {
@@ -241,7 +241,7 @@ describe('GetBoardItemsPageTool', () => {
         ]
       };
       await callToolByNameAsync('get_board_items_page', args);
-      
+
       expect(mocks.getMockRequest()).toHaveBeenCalledWith(
         expect.stringContaining('query GetBoardItemsPage'),
         {
@@ -283,7 +283,7 @@ describe('GetBoardItemsPageTool', () => {
           results: smartSearchItemIds.map(id => ({ data: { id: id.toString() } }))
         }
       };
-      
+
       // Mock the smart search request
       jest.spyOn(mocks, 'mockRequest').mockImplementation((query: string, variables: any) => {
         if (query.includes('query SmartSearchBoardItemIds')) {
@@ -394,7 +394,7 @@ describe('GetBoardItemsPageTool', () => {
           operator: ItemsQueryRuleOperator.AnyOf
         }
       ]);
-      
+
       const orderByStringified = JSON.stringify([
         {
           columnId: 'name',
@@ -402,7 +402,7 @@ describe('GetBoardItemsPageTool', () => {
         }
       ]);
 
-      const args: inputType = { 
+      const args: inputType = {
         boardId: 123456789,
         filtersStringified,
         orderByStringified
@@ -451,7 +451,7 @@ describe('GetBoardItemsPageTool', () => {
           operator: ItemsQueryRuleOperator.AnyOf
         }
       ]);
-      
+
       const orderByStringified = JSON.stringify([
         {
           columnId: 'name',
@@ -459,7 +459,7 @@ describe('GetBoardItemsPageTool', () => {
         }
       ]);
 
-      const args: inputType = { 
+      const args: inputType = {
         boardId: 123456789,
         filtersStringified,
         orderByStringified
@@ -472,7 +472,7 @@ describe('GetBoardItemsPageTool', () => {
     });
 
     it('should throw error for invalid stringified JSON', async () => {
-      const args: inputType = { 
+      const args: inputType = {
         boardId: 123456789,
         filtersStringified: 'invalid json'
       };
@@ -491,7 +491,7 @@ describe('GetBoardItemsPageTool', () => {
         }
       ]);
 
-      const args: inputType = { 
+      const args: inputType = {
         boardId: 123456789,
         filters: [
           {
@@ -550,7 +550,7 @@ describe('GetBoardItemsPageTool', () => {
           direction: ItemsOrderByDirection.Asc
         }
       ]);
-      const args: inputType = { 
+      const args: inputType = {
         boardId: 123456789,
         filters: [
           {
@@ -922,7 +922,7 @@ describe('GetBoardItemsPageTool', () => {
       const parsedResult = await callToolByNameAsync('get_board_items_page', args);
 
       expect(parsedResult.items).toHaveLength(2);
-      
+
       if (includeSubItems) {
         // When includeSubItems is true, subitems should be present
         expect(parsedResult.items[0].subitems).toBeDefined();
@@ -970,7 +970,7 @@ describe('GetBoardItemsPageTool', () => {
       const parsedResult = await callToolByNameAsync('get_board_items_page', args);
 
       expect(parsedResult.items).toHaveLength(2);
-      
+
       // First item has subitems - should only return 1
       expect(parsedResult.items[0].subitems).toBeDefined();
       expect(parsedResult.items[0].subitems).toHaveLength(1);

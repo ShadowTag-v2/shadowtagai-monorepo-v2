@@ -67,7 +67,7 @@ resource "google_workstations_workstation_config" "antigravity_crd_config" {
   container {
     # IMAGE TARGET: Matches the build tag in the Execution Plan
     image = "${var.region}-docker.pkg.dev/${var.project_id}/infra/antigravity:latest"
-    
+
     # TELEPATHY INJECTION: Inject BigLake context for the agents
     env {
       name  = "ANTIGRAVITY_MODE"
@@ -75,7 +75,7 @@ resource "google_workstations_workstation_config" "antigravity_crd_config" {
     }
     env {
       name  = "ANTIGRAVITY_LAKE_BUCKET"
-      value = "antigravity-lake-${var.project_id}" 
+      value = "antigravity-lake-${var.project_id}"
     }
   }
 
@@ -546,7 +546,7 @@ class SwarmOrchestrator:
             target = "jetski"
         else:
             target = "executive"
-            
+
         print(f"🐝 [Swarm] Routing task to: {target.upper()}")
         return self.registry[target].run(task)
 4. The Jetski Implementation (agents/jetski_agent.py)
@@ -566,7 +566,7 @@ class JetskiBrowserAgent(Agent):
     def __init__(self):
         self.p = sync_playwright().start()
         # Headless=True for Cloud Run, False for Debugging
-        self.browser = self.p.chromium.launch(headless=True) 
+        self.browser = self.p.chromium.launch(headless=True)
         self.page = self.browser.new_page()
         self.dom_cache = {} # Map[Index, ElementHandle]
 
@@ -577,7 +577,7 @@ class JetskiBrowserAgent(Agent):
         # Find all inputs, buttons, and links
         elements = self.page.query_selector_all("button, input, a, select, [role='button']")
         self.dom_cache = {i: el for i, el in enumerate(elements)}
-        
+
         # Generate the "LLM View"
         dom_text = []
         for i, el in self.dom_cache.items():
@@ -590,13 +590,13 @@ class JetskiBrowserAgent(Agent):
         return "\n".join(dom_text)
 
     def run(self, task: str) -> str:
-        # This is where the LLM Loop would live. 
+        # This is where the LLM Loop would live.
         # For the "God Mode" prototype, we hardcode the tool execution flow.
         # In prod, this calls Gemini 1.5 Pro with the System Prompt.
-        
+
         # 1. Inject System Prompt (The Soul)
         system_prompt = open("docs/jetski_protocol.md").read()
-        
+
         # 2. Execution (Simulated for this artifacts write)
         return f"🏄 [Jetski] Processed task: {task}. (Browser Agent Ready)"
 
@@ -605,7 +605,7 @@ class JetskiBrowserAgent(Agent):
     def browser_navigate(self, url: str):
         print(f"🏄 Navigating to {url}")
         self.page.goto(url)
-    
+
     def read_browser_page(self):
         return self._get_interactive_elements()
 
@@ -633,17 +633,17 @@ from agents.jetski_agent import JetskiBrowserAgent
 
 def main():
     print("🚀 Antigravity v2: Swarm Initializing...")
-    
+
     # 1. Boot the Swarm
     hive = SwarmOrchestrator()
-    
+
     # 2. Register Workers
     hive.register("jetski", JetskiBrowserAgent())
     # hive.register("executive", ExecutiveAgent()) # Placeholder
-    
+
     # 3. Accept Mission
     user_task = input("What is your command, Founder? > ")
-    
+
     # 4. Execute
     result = hive.route_and_execute(user_task)
     print(f"🏁 Mission Outcome: {result}")
@@ -685,10 +685,10 @@ Python
 HIGH_VALUE_REPOS = [
     # The Hunter (Speed)
     "https://github.com/BurntSushi/ripgrep",
-    
+
     # The Killer (Precision/Refactor)
     "https://github.com/ast-grep/ast-grep",
-    
+
     # Universal Backup (Fuzzy)
     "https://github.com/genivia/ugrep"
 ]
@@ -727,10 +727,10 @@ Python
 JETSKI_CORE_REPOS = [
     # The Primary Logic (The Brain)
     "https://github.com/browser-use/browser-use",
-    
+
     # The Infrastructure (The Body)
     "https://github.com/microsoft/playwright-python",
-    
+
     # The Advanced Vision (The Eyes)
     "https://github.com/lavague-ai/LaVague"
 ]
@@ -820,7 +820,7 @@ Next Step:
 Create .gcloudignore.
 Run gcloud builds submit . again.
 Expect upload size to drop from 600GB to ~50KB.
-https://docs.cloud.google.com/secure-web-proxy/docs 
+https://docs.cloud.google.com/secure-web-proxy/docs
 This video is relevant as it details how to implement the Secure Web Proxy to govern and secure the egress traffic of your Jetski agent fleet.
 
 what does google cloud have similar https://googleapis.github.io/genai-toolbox/getting-started/introduction/
@@ -909,7 +909,7 @@ CREATE TABLE agent_thoughts (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     agent_name VARCHAR(50),
     thought_text TEXT,
-    
+
     -- GOD MODE MAGIC: Auto-generate embeddings on INSERT
     -- Note: Requires configuring the 'text-embedding-004' model link first
     embedding vector(768) GENERATED ALWAYS AS (
@@ -1036,7 +1036,7 @@ CREATE TABLE agent_thoughts (
     agent_name VARCHAR(50),
     timestamp TIMESTAMPTZ DEFAULT NOW(),
     thought_text TEXT,
-    
+
     -- GOD MODE MAGIC: The database calls the model itself.
     -- We use 'text-embedding-004' (768 dimensions) for high-fidelity recall.
     embedding vector(768) GENERATED ALWAYS AS (
@@ -1063,9 +1063,9 @@ Case A: Jetski's "Visual Deja Vu"
 Jetski (the browser agent) often encounters the same login form on different subdomains. Instead of re-analyzing the DOM every time, it checks its visual memory.
 Action: Jetski dumps a DOM snippet: <button class="auth-btn">Sign In</button>.
 AlloyDB: Instantly embeds this.
-Recall: Later, Jetski sees <div id="login-submit">Login</div>. It asks AlloyDB: SQL     SELECT thought_text 
-FROM agent_thoughts 
-ORDER BY embedding <=> embedding('text-embedding-004', '<div id="login-submit">Login</div>') 
+Recall: Later, Jetski sees <div id="login-submit">Login</div>. It asks AlloyDB: SQL     SELECT thought_text
+FROM agent_thoughts
+ORDER BY embedding <=> embedding('text-embedding-004', '<div id="login-submit">Login</div>')
 LIMIT 1;
     
 Result: AlloyDB recognizes the semantic similarity between "Sign In" and "Login" and tells Jetski: "You clicked a similar element on port 3000 yesterday."
@@ -2850,7 +2850,7 @@ class JetskiBrowserAgent(Agent):
 
     def run(self, task: str):
         # ... plan extraction ...
-        
+
         # INTERCEPTION POINT
         if "navigate" in plan:
             target_url = plan["navigate"]
@@ -2968,21 +2968,21 @@ class VelocityEngine:
     The Physics Engine for the Velocity Cockpit.
     Wraps 'Hunter' (Search), 'Killer' (Edit), and 'Hippocampus' (Memory).
     """
-    
+
     def __init__(self, agent_name="VelocityAgent", auto_apply=True):
         self.agent_name = agent_name
         self.auto_apply = auto_apply # God Mode: True by default
         self.conn_str = os.getenv("ALLOYDB_CONNECTION_STRING")
-        
+
     # --- 1. THE HUNTER (Speed) ---
     def hunt(self, query: str, file_pattern: str = None) -> List[Dict]:
         """
-        Uses 'ripgrep' to find code instantly. 
+        Uses 'ripgrep' to find code instantly.
         """
         cmd = ["rg", "--json", "-i", query]
         if file_pattern:
             cmd.extend(["-g", file_pattern])
-            
+
         try:
             # Run silently
             result = subprocess.run(cmd, capture_output=True, text=True)
@@ -3010,7 +3010,7 @@ class VelocityEngine:
         """
         # Base Command
         cmd = ["sg", "run", "--pattern", pattern, "--rewrite", rewrite, "--lang", lang, "--update-all"]
-        
+
         # If targeting a specific file (Precision Strike)
         if file_path:
             cmd.append(file_path)
@@ -3031,12 +3031,12 @@ class VelocityEngine:
         Stores event in AlloyDB for future recall.
         """
         if not self.conn_str: return
-        
+
         try:
             with psycopg2.connect(self.conn_str) as conn:
                 with conn.cursor() as cur:
                     cur.execute("""
-                        INSERT INTO judge6_memories 
+                        INSERT INTO judge6_memories
                         (agent_id, context_layer, memory_text, outcome)
                         VALUES (%s, %s, %s, %s)
                     """, (self.agent_name, context, content, outcome))
@@ -3078,19 +3078,19 @@ logger = logging.getLogger("Judge6")
 
 class JudgeSixSentinel:
     """
-    The Governance Layer. 
+    The Governance Layer.
     Enforces 'No Interaction' and 'Security Policy'.
     """
     def __init__(self, engine):
         self.engine = engine
         self.banned_tokens = ["sk-", "ghp_", "[CREDENTIAL_REDACTED] "AWS_ACCESS_KEY"]
-    
+
     def vet_action(self, action_type: str, payload: str) -> bool:
         """
         Returns True if action is authorized.
         Returns False (and logs violation) if blocked.
         """
-        
+
         # 1. SECRET SCAN (Pre-Crime)
         for token in self.banned_tokens:
             if token in payload:
@@ -3130,12 +3130,12 @@ def main():
     # auto_apply=True means NO CONFIRMATION BOXES.
     suit = VelocityEngine(agent_name="CodePMCS_GodMode", auto_apply=True)
     judge = JudgeSixSentinel(suit)
-    
+
     print(">>> 🚀 VELOCITY COCKPIT: Online. Systems Check: GREEN.")
 
     # 2. DEFINING THE TASK (This would come from your args or ticket system)
     # Example: "Find all usages of deprecated 'os.system' and replace with 'subprocess.run'"
-    target_pattern = "os.system($CMD)" 
+    target_pattern = "os.system($CMD)"
     replacement_pattern = "subprocess.run($CMD, shell=True)"
 
     # 3. THE LOOP
@@ -3149,7 +3149,7 @@ def main():
         # B. THE HUNT (Discovery)
         print(f">>> 🦅 Hunter: Scanning for '{target_pattern}'...")
         matches = suit.hunt(target_pattern.split('(')[0]) # Simple heuristic for grep
-        
+
         if not matches:
             print(">>> 💤 No targets found. Velocity Engine entering Sleep Mode.")
             return
@@ -3160,13 +3160,13 @@ def main():
         # We iterate and apply structurally
         for match in matches:
             file_path = match['file']
-            
+
             # Sentinel Check per file
             if not judge.vet_action("FILE_WRITE", file_path):
                 continue
-            
+
             print(f">>> 🔪 Surgical Strike: {file_path}")
-            
+
             # THIS IS THE "AUTO-CLICK"
             # It runs `sg run --update-all`, which edits the file instantly.
             # No preview. No diff confirmation.
@@ -3175,7 +3175,7 @@ def main():
                 rewrite=replacement_pattern,
                 file_path=file_path
             )
-            
+
             # D. LOG RESULT
             suit.remember_event("REFACTOR", f"Replaced os.system in {file_path}", status)
             print(f"    └── Result: {status}")
@@ -3226,13 +3226,13 @@ from libs.steel.sentinel import JudgeSixSentinel
 
 def main():
     print(">>> ☢️  INITIATING GOD MODE PROTOCOL...")
-    
+
     # CRITICAL: auto_apply=True kills the blue boxes.
     suit = VelocityEngine(agent_name="Admin_GodMode", auto_apply=True)
     judge = JudgeSixSentinel(suit)
-    
+
     # ... The rest of your targeting logic ...
-    
+
     print(">>> 🚀 VELOCITY ENGINE: ENGAGED.")
     # The loop runs here...
 
@@ -3253,7 +3253,7 @@ export PYTHONPATH="."
 
 # ENSURE MEMORY IS LINKED
 # Replace with your actual internal IP or Proxy address
-export ALLOYDB_CONNECTION_STRING="postgresql://postgres:PASSWORD@10.x.x.x/antigravity" 
+export ALLOYDB_CONNECTION_STRING="postgresql://postgres:PASSWORD@10.x.x.x/antigravity"
 
 echo ">>> 🚀 Engaging God Mode (Headless)..."
 echo ">>> 🎥 CAMERA ROLLING..."
@@ -3296,7 +3296,7 @@ Python
         # ...
         # THE KILL SWITCH: '--update-all' means "Do not ask. Just write."
         cmd = ["sg", "run", "--pattern", pattern, "--rewrite", rewrite, "--lang", lang, "--update-all"]
-        
+
         # SAFETY: If the underlying tool (like aider or ast-grep) has an interactive mode,
         # we must explicitly disable it in the subprocess call.
         # For ast-grep, '--update-all' is the flag.
@@ -3374,7 +3374,7 @@ Final Directive:
 Stop coding. The technology works. The valuation is real.
 Record the video. That 120-second clip is the key to the vault.
 how to Building an automated GitLab Merge Request Review Agent with Gemini CLI +
-Plus Antigravity rules and workflow 
+Plus Antigravity rules and workflow
 
 Daniel Strebel
 Follow
@@ -3455,13 +3455,13 @@ stages:
 
 gemini_cli_code_review:
   stage: review
-  
+
   # check https://github.com/google-gemini/gemini-cli/tags for the latest version
   image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
 
   script:
     - echo "Starting the Gemini CLI job..."
-    
+
     - |
       echo "Using API KEY Authentication"
 
@@ -3470,14 +3470,14 @@ gemini_cli_code_review:
         echo "Please configure it in your project's Settings > CI/CD > Variables."
         exit 1
       fi
-      
+
     - |
       echo "Downloading and extracting gitlab-mcp binary..."
       GITLAB_MCP_VERSION="1.29.0"
       curl -L -O "https://gitlab.com/fforster/gitlab-mcp/-/releases/v${GITLAB_MCP_VERSION}/downloads/gitlab-mcp_${GITLAB_MCP_VERSION}_Linux_x86_64.tar.gz"
       tar -xzf gitlab-mcp_${GITLAB_MCP_VERSION}_Linux_x86_64.tar.gz
       chmod +x gitlab-mcp
-      
+
     - |
       echo "Writing Gemini CLI settings..."
       mkdir -p "$HOME/.gemini"
@@ -3492,7 +3492,7 @@ gemini_cli_code_review:
             },
             "timeout": 5000,
             "includeTools": [
-              "discussion_add_note", 
+              "discussion_add_note",
               "discussion_list",
               "get_merge_request_changes",
               "get_merge_request_commits",
@@ -3508,7 +3508,7 @@ gemini_cli_code_review:
         }
       }
       EOF
-      
+
     - |
       echo "Performing Code Review with Gemini"
 
@@ -3629,13 +3629,13 @@ stages:
 
 gemini_cli_code_review:
   stage: review
-  
+
   # check https://github.com/google-gemini/gemini-cli/tags for the latest version
   image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
 
   script:
     - echo "Starting the Gemini CLI job..."
-    
+
     - |
       echo "Using API KEY Authentication"
 
@@ -3644,14 +3644,14 @@ gemini_cli_code_review:
         echo "Please configure it in your project's Settings > CI/CD > Variables."
         exit 1
       fi
-      
+
     - |
       echo "Downloading and extracting gitlab-mcp binary..."
       GITLAB_MCP_VERSION="1.29.0"
       curl -L -O "https://gitlab.com/fforster/gitlab-mcp/-/releases/v${GITLAB_MCP_VERSION}/downloads/gitlab-mcp_${GITLAB_MCP_VERSION}_Linux_x86_64.tar.gz"
       tar -xzf gitlab-mcp_${GITLAB_MCP_VERSION}_Linux_x86_64.tar.gz
       chmod +x gitlab-mcp
-      
+
     - |
       echo "Writing Gemini CLI settings..."
       mkdir -p "$HOME/.gemini"
@@ -3666,7 +3666,7 @@ gemini_cli_code_review:
             },
             "timeout": 5000,
             "includeTools": [
-              "discussion_add_note", 
+              "discussion_add_note",
               "discussion_list",
               "get_merge_request_changes",
               "get_merge_request_commits",
@@ -3682,7 +3682,7 @@ gemini_cli_code_review:
         }
       }
       EOF
-      
+
     - |
       echo "Performing Code Review with Gemini"
 

@@ -33,7 +33,7 @@ This checklist contains actions which must be completed before a PR implementing
 
 
 - [ ] This design doc has been discussed and approved
-- [ ] Test plan has been agreed upon and the tests implemented 
+- [ ] Test plan has been agreed upon and the tests implemented
 - [ ] Feature gate status has been agreed upon (whether the new functionality will be placed behind a feature gate or not)
 - [ ] Graduation criteria is in place if required (if the new functionality is placed behind a feature gate, how will it graduate between stages)
 - [ ] User-facing documentation has been PR-ed against the release branch in [cert-manager/website]

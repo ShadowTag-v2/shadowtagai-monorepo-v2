@@ -42,17 +42,17 @@ export class CreateWidgetTool extends BaseMondayApiTool<typeof createWidgetToolS
 
   getDescription(): string {
     return `Create a new widget in a dashboard or board view with specific configuration settings.
-    
+
     This tool creates data visualization widgets that display information from monday.com boards:
     **Parent Containers:**
     - **DASHBOARD**: Place widget in a dashboard (most common use case)
     - **BOARD_VIEW**: Place widget in a specific board view
-    
+
     **Critical Requirements:**
     1. **Schema Compliance**: Widget settings MUST conform to the JSON schema for the specific widget type
     2. **Use all_widgets_schema first**: Always fetch widget schemas before creating widgets
     3. **Validate settings**: Ensure all required fields are provided and data types match
-    
+
     **Workflow:**
     1. Use 'all_widgets_schema' to get schema definitions
     2. Prepare widget settings according to the schema
@@ -68,7 +68,7 @@ export class CreateWidgetTool extends BaseMondayApiTool<typeof createWidgetToolS
     if(!input.settings) {
       throw new Error('You must pass either settings or settingsStringified parameter');
     }
-    
+
     try {
       // Prepare GraphQL variables
       const variables: CreateWidgetMutationVariables = {

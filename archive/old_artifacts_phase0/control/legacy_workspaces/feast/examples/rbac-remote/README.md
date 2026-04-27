@@ -1,11 +1,11 @@
 # Feast Deployment with RBAC
 
 ## Demo Summary
-This demo showcases how to enable Role-Based Access Control (RBAC) for Feast using Kubernetes or [OIDC](https://openid.net/developers/how-connect-works/) Authentication type. 
-The demo steps involve deploying server components (registry, offline, online) and client examples within a Kubernetes environment. 
-The goal is to ensure secure access control based on user roles and permissions. For understanding the Feast RBAC framework 
+This demo showcases how to enable Role-Based Access Control (RBAC) for Feast using Kubernetes or [OIDC](https://openid.net/developers/how-connect-works/) Authentication type.
+The demo steps involve deploying server components (registry, offline, online) and client examples within a Kubernetes environment.
+The goal is to ensure secure access control based on user roles and permissions. For understanding the Feast RBAC framework
 Please read these reference documents.
-- [RBAC Architecture](https://docs.feast.dev/v/master/getting-started/architecture/rbac) 
+- [RBAC Architecture](https://docs.feast.dev/v/master/getting-started/architecture/rbac)
 - [RBAC Permission](https://docs.feast.dev/v/master/getting-started/concepts/permission).
 - [RBAC Authorization Manager](https://docs.feast.dev/v/master/getting-started/components/authz_manager)
 
@@ -22,7 +22,7 @@ This demo contains the following components:
 1. Feast Remote Server components (online, offline, registry).
 2. Feast Remote Client RBAC example.
 3. Yaml Configuration and installation related scripts files.
- 
+
 ![demo.jpg](demo.jpg)
 
 ## Setup Instructions
@@ -32,7 +32,7 @@ The application works with Kubernetes or OpenShift and the instructions assume t
 ### Prerequisites
 
 1. Kubernetes Cluster and Kubernetes CLI (kubectl).
-2. Helm: Ensure you have Helm installed for deploying the Feast components. 
+2. Helm: Ensure you have Helm installed for deploying the Feast components.
 3. Python environment.
 4. Feast CLI latest version.
 
@@ -45,7 +45,7 @@ The application works with Kubernetes or OpenShift and the instructions assume t
        ``` kubectl port-forward svc/postgresql 5432:5432```
     *  Create a feature repository/project using the cli with PostgreSQL. Please see the instructions for more details [here](https://docs.feast.dev/reference/offline-stores/postgres#getting-started).
        For this (local) example setup, we create a project with name server using these settings for  the [feature_store.yaml](server/feature_repo/feature_store.yaml).
-    
+
 ## 2. Authorization Setup
 
 ### A. Kubernetes Authorization
@@ -55,13 +55,13 @@ The application works with Kubernetes or OpenShift and the instructions assume t
          ```yaml
                 auth:
                    type: kubernetes
-          ``` 
+          ```
     - For each server, feature store YAML files can be created for example like below:
 
         **Registry Server:**  [feature_store_registry.yaml](server/k8s/feature_store_registry.yaml)
-        
+
         **Offline Server :** [feature_store_offline.yaml](server/k8s/feature_store_offline.yaml)
-        
+
         **Online Server :** [feature_store_online.yaml](server/k8s/feature_store_online.yaml)
 
 - **Step 2: Deploy the Server Components**
@@ -72,7 +72,7 @@ The application works with Kubernetes or OpenShift and the instructions assume t
     ```
 
 ### B. OIDC Authorization
-- **Step 1: Setup Keycloak** 
+- **Step 1: Setup Keycloak**
     - See the documentation [here](https://www.keycloak.org/getting-started/getting-started-kube) and install Keycloak.
     - Create a new realm with the name `feast-rbac` from the admin console.
     - Under the `feast-rbac` realm, create a new client with the name `feast-client`
@@ -85,7 +85,7 @@ The application works with Kubernetes or OpenShift and the instructions assume t
             type: oidc
             client_id: _CLIENT_ID__
             auth_discovery_url: _OIDC_SERVER_URL_/realms/feast-rbac/.well-known/openid-configuration
-        ``` 
+        ```
     - For each server the feature store YAML files can be created for example like below:
 
       **Registry Server:**  [feature_store_registry.yaml](server/oidc/feature_store_registry.yaml)
@@ -105,7 +105,7 @@ The application works with Kubernetes or OpenShift and the instructions assume t
 
 ### A. Kubernetes Authorization
 - **Step 1: Create the Client Feature Store YAML**
-    - Set up the client feature store with remote connection details for the registry, online, and offline store with auth type `kuberentes` . See the client remote setting example here: [feature_store.yaml](client/k8s/feature_repo/feature_store.yaml) 
+    - Set up the client feature store with remote connection details for the registry, online, and offline store with auth type `kuberentes` . See the client remote setting example here: [feature_store.yaml](client/k8s/feature_repo/feature_store.yaml)
 - **Step 2: Deploy the Client Examples**
     - As an example, we created 3 different users: 1. [admin_user](client/k8s/admin_user_resources.yaml), 2. [readonly_user](client/k8s/readonly_user_resources.yaml) and 3. [unauthorized_user](client/k8s/unauthorized_user_resources.yaml) .
     - Each user is assigned their own service account and roles, as shown in the table below.
@@ -119,12 +119,12 @@ The application works with Kubernetes or OpenShift and the instructions assume t
     - The Deployment of the overall setup looks like :
 
     ![Deployment.png](deployment.png)
-  
+
 ### B. OIDC Authorization
 - **Step 1: Create the Client Feature Store YAML**
     - Set up the client feature store with the remote connection details for the registry, online, and offline store.
     - Set the `Auth type` to `oidc`
-    - update the client secret in client side `feature_store.yaml` or if required any other settings as show below. 
+    - update the client secret in client side `feature_store.yaml` or if required any other settings as show below.
      ```
       auth_discovery_url: https://keycloak-feast-dev.apps.com/realms/feast-rbac/.well-known/openid-configuration
       client_id: feast-client
@@ -140,7 +140,7 @@ The application works with Kubernetes or OpenShift and the instructions assume t
 - **Step 3: Deploy the Client Examples**
     - For OIDC, similar to the k8s examples, create different deployments and add the username and password as environment variables: 1. [admin_user](client/oidc/admin_user_resources.yaml), 2. [readonly_user](client/oidc/readonly_user_resources.yaml) and 3. [unauthorized_user](client/oidc/unauthorized_user_resources.yaml) .
     - To deploy the client confirm `Apply client creation examples` `Y`
- 
+
 ## 4. Permissions Management
 - **Step 1: Apply the Permissions**
     - See the code example in [permissions_apply.py](server/feature_repo/permissions_apply.py) for applying the permissions for both Kubernetes and OIDC setup.
@@ -163,9 +163,9 @@ The application works with Kubernetes or OpenShift and the instructions assume t
       kubectl port-forward svc/postgresql 5432:5432
       kubectl port-forward svc/feast-offline-server-feast-feature-server 8815:80
       kubectl port-forward svc/feast-registry-server-feast-feature-server 6570:80
-      kubectl port-forward svc/feast-feature-server 6566:80 
+      kubectl port-forward svc/feast-feature-server 6566:80
       ```
     - When testing in Kubernetes, users can set the environment variable `LOCAL_K8S_TOKEN` in each example. The token can be obtained from the service account.
 - **Cleanup**
-    - Run the command 
+    - Run the command
     - ```./cleanup_feast.sh```

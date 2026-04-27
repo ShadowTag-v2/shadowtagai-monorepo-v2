@@ -115,16 +115,16 @@ mod tests {
             String::from_utf8(o).context("parsing utf8")?,
             "PREFIX:dir/file-b.pdf: Page 1: hello world
 PREFIX:dir/file-b.pdf: Page 1: this is just a test.
-PREFIX:dir/file-b.pdf: Page 1: 
+PREFIX:dir/file-b.pdf: Page 1:
 PREFIX:dir/file-b.pdf: Page 1: 1
-PREFIX:dir/file-b.pdf: Page 1: 
-PREFIX:dir/file-b.pdf: Page 1: 
+PREFIX:dir/file-b.pdf: Page 1:
+PREFIX:dir/file-b.pdf: Page 1:
 PREFIX:dir/file-a.pdf: Page 1: hello world
 PREFIX:dir/file-a.pdf: Page 1: this is just a test.
-PREFIX:dir/file-a.pdf: Page 1: 
+PREFIX:dir/file-a.pdf: Page 1:
 PREFIX:dir/file-a.pdf: Page 1: 1
-PREFIX:dir/file-a.pdf: Page 1: 
-PREFIX:dir/file-a.pdf: Page 1: 
+PREFIX:dir/file-a.pdf: Page 1:
+PREFIX:dir/file-a.pdf: Page 1:
 "
         );
         Ok(())

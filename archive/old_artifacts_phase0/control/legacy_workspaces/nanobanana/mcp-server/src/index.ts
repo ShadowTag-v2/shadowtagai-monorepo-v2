@@ -531,7 +531,7 @@ class NanoBananaServer {
             content: [
               {
                 type: 'text',
-                text: `${response.message}\n\nGenerated files:\n${response.generatedFiles?.map((f) => `• ${f}`).join('\n') || 'None'}`, 
+                text: `${response.message}\n\nGenerated files:\n${response.generatedFiles?.map((f) => `• ${f}`).join('\n') || 'None'}`,
               },
             ],
           };

@@ -10,4 +10,3 @@ const store = createStore(
     DevTools.instrument()
   )
 )
-

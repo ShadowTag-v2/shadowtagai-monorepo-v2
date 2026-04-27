@@ -68,4 +68,3 @@ tide:
       title: '{{.Title}} (#{{.Number}})'
   blocker_label: merge-blocker
   squash_label: tide/squash
-

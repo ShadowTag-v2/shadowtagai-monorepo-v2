@@ -30,7 +30,7 @@ unary_map(threadgroup ST &dst, threadgroup const ST &src, const ushort laneid) {
         dst.data[i] = op::template op<typename ST::dtype>(src.data[i]);
     }
 }
-    
+
 
 /**
  * @brief Performs a uniform binary operation on a tile with a scalar parameter.

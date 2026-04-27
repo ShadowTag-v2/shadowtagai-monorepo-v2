@@ -22,7 +22,7 @@ load(int i, int j, thread RT *dst, const device U *src_ptr, const short simd_y, 
     dst->tiles[i][j].data.thread_elements()[0] = src2[0];
     dst->tiles[i][j].data.thread_elements()[1] = src2[1];
 }
-    
+
 template<typename RT, typename U>
 METAL_FUNC static typename metal::enable_if<ducks::is_col_register_tile<RT>(), void>::type
 load(int i, int j, thread RT *dst, const device U *src_ptr, const short simd_y, const short simd_x, const int row_stride) {
@@ -35,7 +35,7 @@ load(int i, int j, thread RT *dst, const device U *src_ptr, const short simd_y, 
     offset += row_stride;
     dst->tiles[i][j].data.thread_elements()[1] = base_types::convertor<T, U>::convert(src_ptr[offset]);
 }
-    
+
 template<typename RT, typename U>
 METAL_FUNC static typename metal::enable_if<ducks::is_row_register_tile<RT>(), void>::type
 store(int i, int j, device U *dst_ptr, const thread RT *src, const short simd_y, const short simd_x, const int row_stride) {
@@ -85,11 +85,11 @@ load(thread RT &dst, thread const GL &src, thread const coord &idx, const short 
     using layout = typename RT::layout;
     const device U *src_ptr = (device U*)&src.template get<RT>(idx);
     const int row_stride = src.row_stride();
-    
+
     const short qid = laneid / 4;
     const short simd_y = (qid & 4) + (laneid / 2) % 4;
     const short simd_x = (qid & 2) * 2 + (laneid % 2) * 2;
-    
+
 //    #pragma clang loop unroll(full)
 //    for (int i = 0; i < RT::height; i++) {
 //        #pragma clang loop unroll(full)
@@ -120,11 +120,11 @@ load(thread RT &dst, thread const GL &src, thread const coord &idx, const short 
     using layout = typename RT::layout;
     const device U *src_ptr = (device U*)&(src.template get<RT>(idx));
     const int row_stride = src.row_stride();
-    
+
     const short qid = laneid / 4;
     const short simd_x = (qid & 4) + (laneid / 2) % 4;
     const short simd_y = (qid & 2) * 2 + (laneid % 2) * 2;
-    
+
 //    #pragma clang loop unroll(full)
 //    for (int i = 0; i < RT::height; i++) {
 //        #pragma clang loop unroll(full)
@@ -137,7 +137,7 @@ load(thread RT &dst, thread const GL &src, thread const coord &idx, const short 
 //    }
     meta::unroll_i_j_in_range<0, RT::height, 1, 0, RT::width, 1>::run(meta::load<RT, U>, &dst, src_ptr, simd_y, simd_x, row_stride);
 }
-    
+
 /**
  * @brief Store data from a register tile to a destination array in global memory with a row-major layout.
  *
@@ -161,7 +161,7 @@ store(thread GL &dst, thread const RT &src, thread const coord &idx, const short
     const short qid = laneid / 4;
     const short simd_y = (qid & 4) + (laneid / 2) % 4;
     const short simd_x = (qid & 2) * 2 + (laneid % 2) * 2;
-    
+
 //    #pragma clang loop unroll(full)
 //    for (int i = 0; i < RT::height; i++) {
 //        #pragma clang loop unroll(full)
@@ -199,7 +199,7 @@ store(thread GL &dst, thread const RT &src, thread const coord &idx, const short
     const short qid = laneid / 4;
     const short simd_x = (qid & 4) + (laneid / 2) % 4;
     const short simd_y = (qid & 2) * 2 + (laneid % 2) * 2;
-    
+
 //    #pragma clang loop unroll(full)
 //    for (int i = 0; i < RT::height; i++) {
 //        #pragma clang loop unroll(full)

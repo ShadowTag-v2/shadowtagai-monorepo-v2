@@ -10,7 +10,7 @@ namespace mittens {
 
 // helper struct for type inference
 namespace ducks {
-/** 
+/**
  * @namespace rt
  *
  * @brief The namespace where concepts and abstract types for register vectors live.
@@ -24,9 +24,9 @@ namespace rv {
  */
 struct identifier {};
 }
-    
+
 }
-    
+
 /**
  * @brief Register vector structure.
  *
@@ -40,11 +40,11 @@ struct identifier {};
  * the register layouts used by the tensor cores. Thundermittens wants you working with tiles
  * where possible!
  */
-    
+
 template<typename _T, size_t _length, typename _layout>
 struct rv {
     using identifier = ducks::rv::identifier; ///< Type identifier for the rv structure.
-    
+
     static_assert(ducks::is_rv_layout<_layout>(), "_layout must be a rv layout");
     static_assert(ducks::base_types::isT1Type<_T>(), "T must be float, bf16, or half");
     using layout = _layout;
@@ -79,7 +79,7 @@ template <typename RT>
 static constexpr bool is_align_register_vector() {
     return has_rv_align_identifier<RT>::value;
 }
-    
+
 template <typename T>
 struct has_rv_ortho_identifier {
     static constant constexpr bool value = false; // Default case
@@ -93,7 +93,7 @@ template <typename RT>
 static constexpr bool is_ortho_register_vector() {
     return has_rv_ortho_identifier<RT>::value;
 }
-    
+
 template <typename T>
 struct has_rv_naive_identifier {
     static constant constexpr bool value = false; // Default case
@@ -122,4 +122,4 @@ template<int _l, typename layout=ducks::rv_layout::naive> using rv_bf = rv<bf16,
 template<int _l, typename layout=ducks::rv_layout::naive> using rv_hf = rv<half,  _l, layout>;
 
 }
- 
+

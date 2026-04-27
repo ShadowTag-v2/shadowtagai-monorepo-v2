@@ -25,4 +25,3 @@ terraform {
 ```
 
 3. Use `terraform apply -var-file="my.tfvars"` to deploy.
-

@@ -39,10 +39,10 @@ private:
 
     // Threadpool
     std::vector<std::thread> workers;
-    
+
     // Streams for each device
     std::vector<cudaStream_t> streams;
-    
+
     // Main entry point for each thread
     __host__ inline void worker(int worker_id, int device_id);
 
@@ -54,7 +54,7 @@ private:
     std::condition_variable cond_task_available;
     std::condition_variable cond_task_done;
 };
-    
+
 __host__ inline KittensClub::KittensClub(const int *device_ids, const int num_devices) : stop(false), n_task_done(0) {
     for (size_t dev_idx = 0; dev_idx < num_devices; ++dev_idx) {
         task_available.push_back(false);
@@ -70,7 +70,7 @@ __host__ inline KittensClub::KittensClub(const int *device_ids, const cudaStream
         workers.emplace_back([this, dev_idx, device_ids] { worker(dev_idx, device_ids[dev_idx]); });
     }
 }
-    
+
 __host__ inline KittensClub::~KittensClub() {
     {
         std::lock_guard<std::mutex> lock(mutex);
@@ -81,7 +81,7 @@ __host__ inline KittensClub::~KittensClub() {
         worker.join();
     }
 }
-    
+
 __host__ inline void KittensClub::execute(std::function<void(int, cudaStream_t)> task) {
     {
         std::lock_guard<std::mutex> lock(mutex);

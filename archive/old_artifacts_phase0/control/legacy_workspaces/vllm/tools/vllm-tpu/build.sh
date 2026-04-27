@@ -92,4 +92,4 @@ fi
 trap - EXIT HUP INT QUIT PIPE TERM
 cleanup
 
-exit 0 
+exit 0

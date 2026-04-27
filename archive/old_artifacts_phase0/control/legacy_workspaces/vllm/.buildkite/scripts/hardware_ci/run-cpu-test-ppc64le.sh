@@ -34,7 +34,7 @@ function cpu_tests() {
     export TORCH_COMPILE_DISABLE=1
     set -evx
     pip install pytest pytest-asyncio einops peft Pillow soundfile transformers_stream_generator matplotlib
-    pip install sentence-transformers datamodel_code_generator tblib 
+    pip install sentence-transformers datamodel_code_generator tblib
 
     # Note: disable Bart until supports V1
     # pytest -v -s tests/models/language/generation/test_bart.py -m cpu_model
@@ -51,4 +51,3 @@ function cpu_tests() {
 export container_id
 export -f cpu_tests
 timeout 120m bash -c cpu_tests
-

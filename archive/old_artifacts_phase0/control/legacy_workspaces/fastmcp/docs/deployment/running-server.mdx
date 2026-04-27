@@ -245,11 +245,11 @@ from fastmcp import FastMCP
 
 def create_app():
     mcp = FastMCP("MyServer")
-    
+
     @mcp.tool
     def process(data: str) -> str:
         return f"Processed: {data}"
-    
+
     return mcp.http_app()
 
 app = create_app()  # Uvicorn will use this

@@ -47,7 +47,7 @@ This example demonstrates a patient cohort analysis stratified by molecular biom
 ### Response Assessment (RANO Criteria)
 
 **Objective Response Rate** (after chemoradiation, ~3 months):
-- Mesenchymal-Immune-Active: 6/18 (33%) - CR 0, PR 6  
+- Mesenchymal-Immune-Active: 6/18 (33%) - CR 0, PR 6
 - Other subtypes: 18/42 (43%) - CR 1, PR 17
 - p = 0.48 (Fisher's exact)
 
@@ -205,4 +205,3 @@ Median OS, months (95% CI)        12.8 (10.2-15.4)     16.3 (14.7-18.9) 1.72 (0.
 - Evidence-based recommendations with grading
 - Transparent limitation discussion
 - Structure suitable for pharmaceutical/clinical research documentation
-

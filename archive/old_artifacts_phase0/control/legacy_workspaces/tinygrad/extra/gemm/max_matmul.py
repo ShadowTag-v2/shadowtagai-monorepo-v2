@@ -216,4 +216,3 @@ if __name__ == "__main__":
 
   else:
     raise RuntimeError("invalid max_matmul device")
-

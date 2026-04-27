@@ -16,5 +16,3 @@ review the current <plan />
 - clear scope and out of scope
 - performance, security, and privacy impact
 - decision: if the analysis indicates >90% satisfaction with the implementation, mark GREEN LIGHT
-
-

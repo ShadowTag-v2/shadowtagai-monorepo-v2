@@ -19,8 +19,8 @@ Set a progress handler when creating the client:
 from fastmcp import Client
 
 async def my_progress_handler(
-    progress: float, 
-    total: float | None, 
+    progress: float,
+    total: float | None,
     message: str | None
 ) -> None:
     if total is not None:
@@ -63,8 +63,8 @@ Override the progress handler for specific tool calls:
 async with client:
     # Override with specific progress handler for this call
     result = await client.call_tool(
-        "long_running_task", 
-        {"param": "value"}, 
+        "long_running_task",
+        {"param": "value"},
         progress_handler=my_progress_handler
     )
 ```

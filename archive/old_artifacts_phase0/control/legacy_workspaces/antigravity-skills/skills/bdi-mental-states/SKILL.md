@@ -157,7 +157,7 @@ SELECT ?mentalState WHERE {
     ?mentalState bdi:hasValidity ?interval .
     ?interval bdi:hasStartTime ?start ;
               bdi:hasEndTime ?end .
-    FILTER(?start <= "2025-01-04T10:00:00"^^xsd:dateTime && 
+    FILTER(?start <= "2025-01-04T10:00:00"^^xsd:dateTime &&
            ?end >= "2025-01-04T10:00:00"^^xsd:dateTime)
 }
 ```
@@ -186,10 +186,10 @@ Augment LLM outputs with ontological constraints:
 def augment_llm_with_bdi_ontology(prompt, ontology_graph):
     ontology_context = serialize_ontology(ontology_graph, format='turtle')
     augmented_prompt = f"{ontology_context}\n\n{prompt}"
-    
+
     response = llm.generate(augmented_prompt)
     triples = extract_rdf_triples(response)
-    
+
     is_consistent = validate_triples(triples, ontology_graph)
     return triples if is_consistent else retry_with_feedback()
 ```
@@ -200,13 +200,13 @@ Map BDI ontology to executable production rules:
 
 ```prolog
 % Belief triggers desire formation
-[HEAD: belief(agent_a, store_open)] / 
-[CONDITIONALS: time(weekday_afternoon)] » 
+[HEAD: belief(agent_a, store_open)] /
+[CONDITIONALS: time(weekday_afternoon)] »
 [TAIL: generate_desire(agent_a, buy_groceries)].
 
 % Desire triggers intention commitment
-[HEAD: desire(agent_a, buy_groceries)] / 
-[CONDITIONALS: belief(agent_a, has_shopping_list)] » 
+[HEAD: desire(agent_a, buy_groceries)] /
+[CONDITIONALS: belief(agent_a, has_shopping_list)] »
 [TAIL: commit_intention(agent_a, buy_groceries)].
 ```
 
@@ -292,4 +292,3 @@ Primary sources:
 - Zuppiroli et al. "The Belief-Desire-Intention Ontology" (2025)
 - Rao & Georgeff "BDI agents: From theory to practice" (1995)
 - Bratman "Intention, plans, and practical reason" (1987)
-

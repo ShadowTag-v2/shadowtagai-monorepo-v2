@@ -50,14 +50,14 @@ Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Performance
 -----------
 
-LeaderF is already very fast. If you'd like better performance, install the C extension of the fuzzy matching algorithm, which is more than 10 times faster.  
+LeaderF is already very fast. If you'd like better performance, install the C extension of the fuzzy matching algorithm, which is more than 10 times faster.
 To install the C extension, firstly, make sure `python2` and/or `python3` commands are available on Linux/Unix/MacOS and `py -2` and/or `py -3` commands are available on Windows.
 
  - Install the C extension
     ```vim
     :LeaderfInstallCExtension
     ```
-    There may be some errors during the installation, please google the error messages to resolve it.  
+    There may be some errors during the installation, please google the error messages to resolve it.
     For example, `"error: Unable to find vcvarsall.bat"`, you can turn to [here][6] for help.
 
 
@@ -77,7 +77,7 @@ usage: Leaderf[!] [-h] [--reverse] [--stayOpen] [--input <INPUT> | --cword]
                   [--nameOnly | --fullPath | --fuzzy | --regexMode] [--nowrap] [--next | --previous]
                   [--recall] [--popup-height <POPUP_HEIGHT>] [--popup-width <POPUP_WIDTH>] [--no-sort]
                   [--case-insensitive] [--auto-preview | --no-auto-preview]
-                  
+
                   {file,tag,function,mru,searchHistory,cmdHistory,help,line,colorscheme,gtags,
                       self,bufTag,buffer,rg,filetype,command,window,quickfix,loclist,jumps}
                   ...
@@ -193,7 +193,7 @@ Input formats:
 
 Smart Case:
 
- * If the characters in search pattern are all lowercase, the matching is case-insensitive. If the search pattern contains uppercase characters, all lowercase characters still are matched case-insensitively, the uppercase characters can only match upper case. So uppercase characters can speed up the narrowing down of the searching result.  
+ * If the characters in search pattern are all lowercase, the matching is case-insensitive. If the search pattern contains uppercase characters, all lowercase characters still are matched case-insensitively, the uppercase characters can only match upper case. So uppercase characters can speed up the narrowing down of the searching result.
 
     e.g., input `abcDef`，it can match the following strings:
     ```
@@ -224,13 +224,13 @@ And operator:
 Popup Mode
 ----------
 
-Popup Mode is to open LeaderF in a popup window(vim 8.1.1615+) or floating window(nvim 0.4.2+). 
+Popup Mode is to open LeaderF in a popup window(vim 8.1.1615+) or floating window(nvim 0.4.2+).
 
-To enable popup mode:  
+To enable popup mode:
 ```vim
 let g:Lf_WindowPosition = 'popup'
-```  
-or add `--popup` after each subcommand, e.g.,  
+```
+or add `--popup` after each subcommand, e.g.,
 ```
 Leaderf file --popup
 ```
@@ -296,7 +296,7 @@ Customization
     set ambiwidth=double
     ```
 
-    
+
 Configuration examples
 ----------------------
 
@@ -346,7 +346,7 @@ This plugin is released under the Apache License, Version 2.0 (the "License").
 :heart: Sponsor
 -------
 
-If you like this software, please consider buying me a coffee.  
+If you like this software, please consider buying me a coffee.
 https://github.com/Yggdroot/SponsorMe/blob/main/README.md#donate
 (捐赠的朋友最好备注一下自己的ID）
 
@@ -355,4 +355,4 @@ https://github.com/Yggdroot/SponsorMe/blob/main/README.md#donate
   [3]: https://github.com/gmarik/Vundle.vim
   [4]: https://github.com/Yggdroot/LeaderF/blob/master/doc/leaderf.txt#L189-L349
   [5]: https://github.com/junegunn/vim-plug
-  [6]: https://stackoverflow.com/questions/2817869/error-unable-to-find-vcvarsall-bat  
+  [6]: https://stackoverflow.com/questions/2817869/error-unable-to-find-vcvarsall-bat

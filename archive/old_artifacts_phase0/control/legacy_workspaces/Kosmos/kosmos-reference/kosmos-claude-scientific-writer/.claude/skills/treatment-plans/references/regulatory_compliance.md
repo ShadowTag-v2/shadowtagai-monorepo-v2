@@ -469,8 +469,7 @@ Use, disclose, or request only the minimum amount of PHI necessary to accomplish
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: January 2025  
-**Next Review**: January 2026  
+**Document Version**: 1.0
+**Last Updated**: January 2025
+**Next Review**: January 2026
 **Note**: Regulations subject to change; verify current requirements.
-

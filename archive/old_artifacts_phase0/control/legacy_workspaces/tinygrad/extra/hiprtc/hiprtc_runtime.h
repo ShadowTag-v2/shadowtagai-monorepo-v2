@@ -1,5 +1,5 @@
 #pragma clang diagnostic ignored "-Weverything"
-      
+
 # 1 "/long_pathname_so_that_rpms_can_package_the_debug_info/src/out/ubuntu-22.04/22.04/build/hip-on-rocclr/hipamd/src/hiprtc/hip_rtc_gen/hipRTC_header.h"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
@@ -3627,7 +3627,7 @@ namespace std
                    amdgpu_waves_per_eu(minBlocksPerMultiprocessor)))
 #define select_impl_(_1, _2, impl_, ...) impl_
 #define __launch_bounds__(...)                                                                \
-    select_impl_(__VA_ARGS__, launch_bounds_impl1, launch_bounds_impl0)(__VA_ARGS__)           
+    select_impl_(__VA_ARGS__, launch_bounds_impl1, launch_bounds_impl0)(__VA_ARGS__)
 #define HIP_INCLUDE_HIP_HIP_RUNTIME_H
 #define _HIP_BFLOAT16_H_
 #define HIP_INCLUDE_HIP_MATH_FUNCTIONS_H
@@ -3705,7 +3705,7 @@ THE SOFTWARE.
 #define HIP_INTERNAL_EXPORTED_API   __attribute__ ((visibility ("default")))
 #else
 #define HIP_PUBLIC_API
-#define HIP_INTERNAL_EXPORTED_API 
+#define HIP_INTERNAL_EXPORTED_API
 #endif
 
 #if __HIP_DEVICE_COMPILE__ == 0
@@ -6091,7 +6091,7 @@ THE SOFTWARE.
 #endif
 
 #define __HIP_SURFACE_OBJECT_PARAMETERS_INIT                                                            \
-    unsigned int ADDRESS_SPACE_CONSTANT* i = (unsigned int ADDRESS_SPACE_CONSTANT*)surfObj; 
+    unsigned int ADDRESS_SPACE_CONSTANT* i = (unsigned int ADDRESS_SPACE_CONSTANT*)surfObj;
 
 // CUDA is using byte address, need map to pixel address for HIP
 static __HOST_DEVICE__ __forceinline__ int __hipGetPixelAddr(int x, int format, int order) {
@@ -9256,7 +9256,7 @@ typedef enum {
  *  @ingroup CooperativeG
  *  @{
  *  This section describes the cooperative groups functions of HIP runtime API.
- *  
+ *
  *  The cooperative groups provides flexible thread parallel programming algorithms, threads
  *  cooperate and share data to perform collective computations.
  *
@@ -9520,7 +9520,7 @@ class thread_group {
  *  @ingroup API
  *  @{
  *  This section describes the cooperative groups functions of HIP runtime API.
- *  
+ *
  *  The cooperative groups provides flexible thread parallel programming algorithms, threads
  *  cooperate and share data to perform collective computations.
  *
@@ -11801,7 +11801,7 @@ unsigned int atomicDec(unsigned int* address, unsigned int val)
 #else
   return __builtin_amdgcn_atomic_dec32(address, val, __ATOMIC_RELAXED, "agent");
 #endif // __gfx941__
-    
+
 }
 
 __device__

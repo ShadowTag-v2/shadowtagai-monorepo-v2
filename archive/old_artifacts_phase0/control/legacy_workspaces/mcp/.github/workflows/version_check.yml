@@ -35,7 +35,7 @@ jobs:
               const versionType = versionLabels[0].replace('bump:', '');
               const currentVersion = '${{ steps.preview.outputs.current_version }}' || 'current';
               const nextVersion = '${{ steps.preview.outputs.next_version }}' || 'unknown';
-              
+
               await github.rest.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,

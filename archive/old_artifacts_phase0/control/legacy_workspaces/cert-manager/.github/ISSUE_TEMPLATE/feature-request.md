@@ -19,7 +19,7 @@ about: Suggest an idea to improve cert-manager
 **Environment details (remove if not applicable)**:
 - Kubernetes version:
 - Cloud-provider/provisioner:
-- cert-manager version: 
+- cert-manager version:
 - Install method: e.g., helm/static manifests
 
 

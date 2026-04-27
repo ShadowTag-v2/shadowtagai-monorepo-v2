@@ -59,7 +59,7 @@ Cellular AI slices	$3.5B	90%	Telecom AI resale & leasing
 Defense-grade PNT contracts	$1.2B	80%	Dual-use infrastructure
 Enterprise compute (CoreWeave API)	$2.4B	88%	Enterprise inference workloads
 Data resell (verified telemetry)	$0.8B	75%	Government + research + mobility
-Total ARR	≈ $10B	84% blended margin	
+Total ARR	≈ $10B	84% blended margin
 
 Valuation @20× EBITDA = $160B.
 That’s a +$60B uplift from tower-only deployments.

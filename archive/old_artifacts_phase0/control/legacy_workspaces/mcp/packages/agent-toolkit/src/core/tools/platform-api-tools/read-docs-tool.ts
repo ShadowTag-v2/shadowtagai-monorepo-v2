@@ -41,9 +41,9 @@ export class ReadDocsTool extends BaseMondayApiTool<typeof readDocsToolSchema> {
   });
 
   getDescription(): string {
-    return `Get a collection of monday.com documents with their content as markdown. 
+    return `Get a collection of monday.com documents with their content as markdown.
 
-PAGINATION: 
+PAGINATION:
 - Default limit is 25 documents per page
 - Use 'page' parameter to get additional pages (starts at 1)
 - Check response for 'has_more_pages' to know if you should continue paginating
@@ -51,7 +51,7 @@ PAGINATION:
 
 FILTERING: Provide a type value and array of ids:
 - type: 'ids' for specific document IDs
-- type: 'object_ids' for specific document object IDs  
+- type: 'object_ids' for specific document object IDs
 - type: 'workspace_ids' for all docs in specific workspaces
 - ids: array of ID strings (at least 1 required)
 

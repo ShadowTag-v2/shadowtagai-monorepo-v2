@@ -4,8 +4,7 @@ This file tracks all quality issues and objections raised by the ShadowTag-v2 CT
 
 ## Format
 - **Errors:** Count of blocking issues
-- **Warnings:** Count of non-blocking issues  
+- **Warnings:** Count of non-blocking issues
 - **Status:** ✅ PASSED or ❌ FAILED
 
 ---
-

@@ -318,7 +318,7 @@ df = pd.DataFrame({
     'weight': [0.5, 0.8, 0.3]
 })
 
-G = nx.from_pandas_edgelist(df, source='source', target='target', 
+G = nx.from_pandas_edgelist(df, source='source', target='target',
                             edge_attr='weight')
 ```
 
@@ -391,7 +391,7 @@ edges = G.edges()
 weights = [G[u][v]['weight'] for u, v in edges]
 widths = [w * 3 for w in weights]  # Scale for visibility
 
-nx.draw_networkx_edges(G, pos, width=widths, alpha=0.6, 
+nx.draw_networkx_edges(G, pos, width=widths, alpha=0.6,
                         edge_color='#56B4E9')
 ```
 
@@ -437,11 +437,11 @@ nx.draw_networkx_edges(G, pos, width=[w*5 for w in weights],
                         alpha=0.5, edge_color='#666666', ax=ax)
 
 # Draw nodes
-nx.draw_networkx_nodes(G, pos, 
+nx.draw_networkx_nodes(G, pos,
                        node_color=[node_colors[n] for n in G.nodes()],
-                       node_size=800, 
-                       edgecolors='black', 
-                       linewidths=2, 
+                       node_size=800,
+                       edgecolors='black',
+                       linewidths=2,
                        ax=ax)
 
 # Draw labels
@@ -474,14 +474,14 @@ import matplotlib.patches as mpatches
 fig, ax = plt.subplots(figsize=(8, 6))
 
 # Create rectangle: (x, y, width, height)
-rect = mpatches.Rectangle((0.2, 0.5), 0.3, 0.2, 
-                           facecolor='#56B4E9', 
-                           edgecolor='black', 
+rect = mpatches.Rectangle((0.2, 0.5), 0.3, 0.2,
+                           facecolor='#56B4E9',
+                           edgecolor='black',
                            linewidth=2)
 ax.add_patch(rect)
 
 # Add text
-ax.text(0.35, 0.6, 'Process', ha='center', va='center', 
+ax.text(0.35, 0.6, 'Process', ha='center', va='center',
         fontsize=12, fontweight='bold')
 
 ax.set_xlim(0, 1)
@@ -493,9 +493,9 @@ plt.show()
 **Circle**
 ```python
 # Circle: (center_x, center_y), radius
-circle = mpatches.Circle((0.5, 0.5), 0.1, 
-                          facecolor='#E69F00', 
-                          edgecolor='black', 
+circle = mpatches.Circle((0.5, 0.5), 0.1,
+                          facecolor='#E69F00',
+                          edgecolor='black',
                           linewidth=2)
 ax.add_patch(circle)
 ```
@@ -540,7 +540,7 @@ from matplotlib.patches import FancyArrowPatch
 
 # Arrow from (x1, y1) to (x2, y2)
 arrow = FancyArrowPatch((0.2, 0.5), (0.7, 0.5),
-                        arrowstyle='->', 
+                        arrowstyle='->',
                         mutation_scale=20,
                         linewidth=2,
                         color='black')
@@ -788,4 +788,3 @@ d += elm.Line().to(other_element.end)
 - **Python Graph Gallery**: https://python-graph-gallery.com/
 
 These Python libraries provide powerful tools for creating publication-quality scientific diagrams programmatically, enabling reproducible, data-driven visualizations.
-

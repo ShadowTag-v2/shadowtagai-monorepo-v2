@@ -277,7 +277,7 @@ For high-volume evaluation:
 **Input**:
 ```
 Prompt: "What causes seasons on Earth?"
-Response: "Seasons are caused by Earth's tilted axis. As Earth orbits the Sun, 
+Response: "Seasons are caused by Earth's tilted axis. As Earth orbits the Sun,
 different hemispheres receive more direct sunlight at different times of year."
 Criterion: Factual Accuracy (weight: 1.0)
 Scale: 1-5
@@ -293,8 +293,8 @@ Scale: 1-5
     "Correctly explains differential sunlight by hemisphere",
     "No factual errors present"
   ],
-  "justification": "Response accurately explains the cause of seasons with correct 
-scientific reasoning. Both the axial tilt and its effect on sunlight distribution 
+  "justification": "Response accurately explains the cause of seasons with correct
+scientific reasoning. Both the axial tilt and its effect on sunlight distribution
 are correctly described.",
   "improvement": "Could add the specific tilt angle (23.5°) for completeness."
 }
@@ -451,4 +451,3 @@ Related skills in this collection:
 **Last Updated**: 2024-12-24
 **Author**: Muratcan Koylan
 **Version**: 1.0.0
-

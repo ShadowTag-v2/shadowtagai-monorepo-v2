@@ -82,17 +82,17 @@ export const REALISTIC_SPRINT_SUMMARY_MARKDOWN: ExportMarkdownFromDocQuery = {
     success: true,
     markdown: ` 🗓️ Aug 17 - 31
 
- 
+
 
 | ## **Highlights**
  In Sprint 22, the team committed to 90 tasks but completed only 66, resulting in a velocity of 73.3%. The sprint included 94 planned tasks, 41 unplanned tasks, and 16 tasks removed, indicating a significant amount of unplanned work that may have impacted the team's ability to meet their commitments. |
 | --- |
 
- 
+
 
 ## ✅  **Completed Tasks**
 
-### 
+###
 Velocity 📊
 
 -  **Completed: **66 tasks (26.6 SP)
@@ -101,7 +101,7 @@ Velocity 📊
 -  **Committed: **90 tasks (39.05 SP)
 
 
- 
+
 
 ### Completed by type 🔖
 
@@ -132,7 +132,7 @@ Velocity 📊
 -  **Feature:** 32 tasks - 14.4 SP
 
 
- 
+
 
 ### Completed by Assignee **🧑‍💻**
 
@@ -177,10 +177,10 @@ Velocity 📊
 
 -  @user-12345014 1 tasks
 
- 
 
 
- 
+
+
 
 ### Completed by Priority **🚥**
 
@@ -199,26 +199,26 @@ Velocity 📊
 -  **Low:** 1 tasks - 0.1 SP
 
 
- 
+
 
 ## **📌** **Unplanned tasks**
 
--  [Authentication service - do this do that(/boards/2001001/pulses/3001001) - Done, Infrastructure, 0.2 SP 
+-  [Authentication service - do this do that(/boards/2001001/pulses/3001001) - Done, Infrastructure, 0.2 SP
 
 
--  [Cloud migration - infra resources ](/boards/2001001/pulses/3001002) - Merged, Improvement 
+-  [Cloud migration - infra resources ](/boards/2001001/pulses/3001002) - Merged, Improvement
 
 
--  [Header button alignment fix](/boards/2001001/pulses/3001003) - Done, Bug 🐞, 1 SP 
+-  [Header button alignment fix](/boards/2001001/pulses/3001003) - Done, Bug 🐞, 1 SP
 
 
--  [Migration for production cluster](/boards/2001001/pulses/3001004) - Waiting for review, Quality 🥷, 1 SP 
+-  [Migration for production cluster](/boards/2001001/pulses/3001004) - Waiting for review, Quality 🥷, 1 SP
 
 
--  [Sprint management - external secrets](/boards/2001001/pulses/3001005) - Done, Other 
+-  [Sprint management - external secrets](/boards/2001001/pulses/3001005) - Done, Other
 
 
- 
+
 
 ## ⚡ **Recommended action items**
 
@@ -243,9 +243,9 @@ Velocity 📊
 -  **Improve task estimation accuracy**: The team completed only 66 out of 90 committed tasks, indicating a gap in estimation. Team members should review past sprints to refine their estimation techniques, possibly using historical data to inform future commitments.
 
 
- 
 
- 
+
+
 
 |  **🤖 **This sprint summary was AI-generated for quick insights - [Give feedback](https://forms.monday.com/forms/feedback-form) |
 | --- |

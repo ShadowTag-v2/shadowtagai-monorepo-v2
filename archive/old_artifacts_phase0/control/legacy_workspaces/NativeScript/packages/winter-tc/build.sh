@@ -31,4 +31,3 @@ PACKAGE="$(npm pack)"
 cd ../..
 mv dist/package/$PACKAGE dist/$PACKAGE
 echo "Output: dist/$PACKAGE"
-

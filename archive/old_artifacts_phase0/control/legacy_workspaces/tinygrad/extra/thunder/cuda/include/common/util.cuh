@@ -113,7 +113,7 @@ struct axis {
  * @namespace ducks
  *
  * @brief ThunderKittens' namespace for template metaprogramming..
- * 
+ *
  * This includes primarily dummy types and concept wrappers, along
  * with a few additional utilities.
  */
@@ -219,9 +219,9 @@ struct KITTENS_DEFAULT_ALIGN alignment_dummy { int dummy; };
  * @tparam default_alignment The default alignment this allocator will enforce. If <=0 (default -1) it will not align.
  */
 #ifdef KITTENS_HOPPER
-template<int default_alignment=1024> 
+template<int default_alignment=1024>
 #else
-template<int default_alignment=16> 
+template<int default_alignment=16>
 #endif
 struct shared_allocator {
     int *ptr;
@@ -238,7 +238,7 @@ struct shared_allocator {
         struct variadic_array<A> {
             using type = A;
         };
-        template<typename A, size_t... dims> 
+        template<typename A, size_t... dims>
         using variadic_array_t = typename variadic_array<A, dims...>::type;
 
         template<int alignment>
@@ -263,7 +263,7 @@ struct shared_allocator {
         * @tparam dims... A list of dimensions for the N-dimensional array.
         * @return Reference to the allocated object.
         */
-        template<typename A, size_t... dims> 
+        template<typename A, size_t... dims>
         __device__ inline variadic_array_t<A, dims...>& allocate() {
             // static_assert(sizeof(A) % default_alignment == 0, "Type is not aligned properly for array allocation");
             align_ptr<default_alignment>();
@@ -279,7 +279,7 @@ struct shared_allocator {
         * @tparam dims... A list of dimensions for the N-dimensional array.
         * @return Reference to the allocated object.
         */
-        template<int alignment, typename A, size_t... dims> 
+        template<int alignment, typename A, size_t... dims>
         __device__ inline variadic_array_t<A, dims...>& allocate() {
             // static_assert(sizeof(A) % alignment == 0, "Type is not aligned properly for array allocation");
             align_ptr<alignment>();

@@ -120,7 +120,7 @@ Originally an internal tool built by Anthropic engineers to accelerate developme
 
 The pattern was clear: the SDK had inadvertently become an effective agent-building framework. Its architecture, designed to handle software development complexity, proved remarkably well-suited for general-purpose agent creation.
 
-This tutorial series demonstrates how to leverage the Claude Agent SDK to build highly efficient agents for any domain or use case, from simple automation to complex enterprise systems. 
+This tutorial series demonstrates how to leverage the Claude Agent SDK to build highly efficient agents for any domain or use case, from simple automation to complex enterprise systems.
 
 ## Contributing
 

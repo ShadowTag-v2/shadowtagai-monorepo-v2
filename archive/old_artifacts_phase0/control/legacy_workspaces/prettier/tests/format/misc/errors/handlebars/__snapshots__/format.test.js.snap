@@ -19,7 +19,7 @@ exports[`invalid-2.hbs [glimmer] format 1`] = `
 > 3 | <{@name>
     | ^^^^^^^^
   4 |
-Cause: Unclosed element \`@name\`: 
+Cause: Unclosed element \`@name\`:
 
 |
 |  <{@name>
@@ -45,7 +45,7 @@ exports[`snippet: IMG [glimmer] format 1`] = `
 "Unclosed element \`IMG\` (1:0)
 > 1 | <IMG>
     | ^^^^^
-Cause: Unclosed element \`IMG\`: 
+Cause: Unclosed element \`IMG\`:
 
 |
 |  <IMG>
@@ -58,7 +58,7 @@ exports[`snippet: INPUT [glimmer] format 1`] = `
 "Unclosed element \`INPUT\` (1:0)
 > 1 | <INPUT>
     | ^^^^^^^
-Cause: Unclosed element \`INPUT\`: 
+Cause: Unclosed element \`INPUT\`:
 
 |
 |  <INPUT>
@@ -71,7 +71,7 @@ exports[`snippet: area [glimmer] format 1`] = `
 "<area> elements do not need end tags. You should remove it (1:6)
 > 1 | <area></area>
     |      ^^^^^^^
-Cause: <area> elements do not need end tags. You should remove it: 
+Cause: <area> elements do not need end tags. You should remove it:
 
 |
 |  </area>
@@ -84,7 +84,7 @@ exports[`snippet: base [glimmer] format 1`] = `
 "<base> elements do not need end tags. You should remove it (1:6)
 > 1 | <base></base>
     |      ^^^^^^^
-Cause: <base> elements do not need end tags. You should remove it: 
+Cause: <base> elements do not need end tags. You should remove it:
 
 |
 |  </base>
@@ -97,7 +97,7 @@ exports[`snippet: basefont [glimmer] format 1`] = `
 "Unclosed element \`basefont\` (1:0)
 > 1 | <basefont>
     | ^^^^^^^^^^
-Cause: Unclosed element \`basefont\`: 
+Cause: Unclosed element \`basefont\`:
 
 |
 |  <basefont>
@@ -110,7 +110,7 @@ exports[`snippet: bgsound [glimmer] format 1`] = `
 "Unclosed element \`bgsound\` (1:0)
 > 1 | <bgsound>
     | ^^^^^^^^^
-Cause: Unclosed element \`bgsound\`: 
+Cause: Unclosed element \`bgsound\`:
 
 |
 |  <bgsound>
@@ -123,7 +123,7 @@ exports[`snippet: br [glimmer] format 1`] = `
 "<br> elements do not need end tags. You should remove it (1:4)
 > 1 | <br></br>
     |    ^^^^^
-Cause: <br> elements do not need end tags. You should remove it: 
+Cause: <br> elements do not need end tags. You should remove it:
 
 |
 |  </br>
@@ -136,7 +136,7 @@ exports[`snippet: col [glimmer] format 1`] = `
 "<col> elements do not need end tags. You should remove it (1:5)
 > 1 | <col></col>
     |     ^^^^^^
-Cause: <col> elements do not need end tags. You should remove it: 
+Cause: <col> elements do not need end tags. You should remove it:
 
 |
 |  </col>
@@ -149,7 +149,7 @@ exports[`snippet: command [glimmer] format 1`] = `
 "<command> elements do not need end tags. You should remove it (1:9)
 > 1 | <command></command>
     |         ^^^^^^^^^^
-Cause: <command> elements do not need end tags. You should remove it: 
+Cause: <command> elements do not need end tags. You should remove it:
 
 |
 |  </command>
@@ -162,7 +162,7 @@ exports[`snippet: div [glimmer] format 1`] = `
 "Unclosed element \`div\` (1:0)
 > 1 | <div>
     | ^^^^^
-Cause: Unclosed element \`div\`: 
+Cause: Unclosed element \`div\`:
 
 |
 |  <div>
@@ -175,7 +175,7 @@ exports[`snippet: embed [glimmer] format 1`] = `
 "<embed> elements do not need end tags. You should remove it (1:7)
 > 1 | <embed></embed>
     |       ^^^^^^^^
-Cause: <embed> elements do not need end tags. You should remove it: 
+Cause: <embed> elements do not need end tags. You should remove it:
 
 |
 |  </embed>
@@ -188,7 +188,7 @@ exports[`snippet: frame [glimmer] format 1`] = `
 "Unclosed element \`frame\` (1:0)
 > 1 | <frame>
     | ^^^^^^^
-Cause: Unclosed element \`frame\`: 
+Cause: Unclosed element \`frame\`:
 
 |
 |  <frame>
@@ -201,7 +201,7 @@ exports[`snippet: hr [glimmer] format 1`] = `
 "<hr> elements do not need end tags. You should remove it (1:4)
 > 1 | <hr></hr>
     |    ^^^^^
-Cause: <hr> elements do not need end tags. You should remove it: 
+Cause: <hr> elements do not need end tags. You should remove it:
 
 |
 |  </hr>
@@ -214,7 +214,7 @@ exports[`snippet: imG [glimmer] format 1`] = `
 "Unclosed element \`imG\` (1:0)
 > 1 | <imG>
     | ^^^^^
-Cause: Unclosed element \`imG\`: 
+Cause: Unclosed element \`imG\`:
 
 |
 |  <imG>
@@ -227,7 +227,7 @@ exports[`snippet: image [glimmer] format 1`] = `
 "Unclosed element \`image\` (1:0)
 > 1 | <image>
     | ^^^^^^^
-Cause: Unclosed element \`image\`: 
+Cause: Unclosed element \`image\`:
 
 |
 |  <image>
@@ -240,7 +240,7 @@ exports[`snippet: img [glimmer] format 1`] = `
 "<img> elements do not need end tags. You should remove it (1:5)
 > 1 | <img></img>
     |     ^^^^^^
-Cause: <img> elements do not need end tags. You should remove it: 
+Cause: <img> elements do not need end tags. You should remove it:
 
 |
 |  </img>
@@ -253,7 +253,7 @@ exports[`snippet: input [glimmer] format 1`] = `
 "<input> elements do not need end tags. You should remove it (1:7)
 > 1 | <input></input>
     |       ^^^^^^^^
-Cause: <input> elements do not need end tags. You should remove it: 
+Cause: <input> elements do not need end tags. You should remove it:
 
 |
 |  </input>
@@ -266,7 +266,7 @@ exports[`snippet: isindex [glimmer] format 1`] = `
 "Unclosed element \`isindex\` (1:0)
 > 1 | <isindex>
     | ^^^^^^^^^
-Cause: Unclosed element \`isindex\`: 
+Cause: Unclosed element \`isindex\`:
 
 |
 |  <isindex>
@@ -279,7 +279,7 @@ exports[`snippet: keygen [glimmer] format 1`] = `
 "<keygen> elements do not need end tags. You should remove it (1:8)
 > 1 | <keygen></keygen>
     |        ^^^^^^^^^
-Cause: <keygen> elements do not need end tags. You should remove it: 
+Cause: <keygen> elements do not need end tags. You should remove it:
 
 |
 |  </keygen>
@@ -292,7 +292,7 @@ exports[`snippet: lINk [glimmer] format 1`] = `
 "Unclosed element \`lINk\` (1:0)
 > 1 | <lINk>
     | ^^^^^^
-Cause: Unclosed element \`lINk\`: 
+Cause: Unclosed element \`lINk\`:
 
 |
 |  <lINk>
@@ -305,7 +305,7 @@ exports[`snippet: link [glimmer] format 1`] = `
 "<link> elements do not need end tags. You should remove it (1:6)
 > 1 | <link></link>
     |      ^^^^^^^
-Cause: <link> elements do not need end tags. You should remove it: 
+Cause: <link> elements do not need end tags. You should remove it:
 
 |
 |  </link>
@@ -318,7 +318,7 @@ exports[`snippet: menuitem [glimmer] format 1`] = `
 "Unclosed element \`menuitem\` (1:0)
 > 1 | <menuitem>
     | ^^^^^^^^^^
-Cause: Unclosed element \`menuitem\`: 
+Cause: Unclosed element \`menuitem\`:
 
 |
 |  <menuitem>
@@ -331,7 +331,7 @@ exports[`snippet: meta [glimmer] format 1`] = `
 "<meta> elements do not need end tags. You should remove it (1:6)
 > 1 | <meta></meta>
     |      ^^^^^^^
-Cause: <meta> elements do not need end tags. You should remove it: 
+Cause: <meta> elements do not need end tags. You should remove it:
 
 |
 |  </meta>
@@ -344,7 +344,7 @@ exports[`snippet: nextid [glimmer] format 1`] = `
 "Unclosed element \`nextid\` (1:0)
 > 1 | <nextid>
     | ^^^^^^^^
-Cause: Unclosed element \`nextid\`: 
+Cause: Unclosed element \`nextid\`:
 
 |
 |  <nextid>
@@ -357,7 +357,7 @@ exports[`snippet: param [glimmer] format 1`] = `
 "<param> elements do not need end tags. You should remove it (1:7)
 > 1 | <param></param>
     |       ^^^^^^^^
-Cause: <param> elements do not need end tags. You should remove it: 
+Cause: <param> elements do not need end tags. You should remove it:
 
 |
 |  </param>
@@ -370,7 +370,7 @@ exports[`snippet: source [glimmer] format 1`] = `
 "<source> elements do not need end tags. You should remove it (1:8)
 > 1 | <source></source>
     |        ^^^^^^^^^
-Cause: <source> elements do not need end tags. You should remove it: 
+Cause: <source> elements do not need end tags. You should remove it:
 
 |
 |  </source>
@@ -383,7 +383,7 @@ exports[`snippet: track [glimmer] format 1`] = `
 "<track> elements do not need end tags. You should remove it (1:7)
 > 1 | <track></track>
     |       ^^^^^^^^
-Cause: <track> elements do not need end tags. You should remove it: 
+Cause: <track> elements do not need end tags. You should remove it:
 
 |
 |  </track>
@@ -396,7 +396,7 @@ exports[`snippet: wbr [glimmer] format 1`] = `
 "<wbr> elements do not need end tags. You should remove it (1:5)
 > 1 | <wbr></wbr>
     |     ^^^^^^
-Cause: <wbr> elements do not need end tags. You should remove it: 
+Cause: <wbr> elements do not need end tags. You should remove it:
 
 |
 |  </wbr>

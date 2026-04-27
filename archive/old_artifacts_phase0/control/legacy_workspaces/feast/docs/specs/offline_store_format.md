@@ -54,7 +54,7 @@ Note that this mapping is non-injective, that is more than one Pandas type may c
 
 Feast array types are mapped to a pandas column with object dtype, that contains a Python array of corresponding type.
 
-Another thing to note is Feast doesn't support timestamp type for entity and feature columns. Values of datetime type in pandas dataframe are converted to int64 if they are found in entity and feature columns. In order to easily differentiate int64 to timestamp features, there is a UNIX_TIMESTAMP type that is an int64 under the hood.  
+Another thing to note is Feast doesn't support timestamp type for entity and feature columns. Values of datetime type in pandas dataframe are converted to int64 if they are found in entity and feature columns. In order to easily differentiate int64 to timestamp features, there is a UNIX_TIMESTAMP type that is an int64 under the hood.
 
 #### BigQuery types
 Here's how Feast types map to BigQuery types when using BigQuery for offline storage when reading data from BigQuery to the online store:

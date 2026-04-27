@@ -1,6 +1,6 @@
 # pnkln — Code Roll-Up Package (for Google Sales: Nick)
 
-**Date:** 2025-10-29 19:20 
+**Date:** 2025-10-29 19:20
 
 ## Executive Summary
 pnkln is a Vertex AI-forward solution packaged for rapid evaluation and co-selling with Google Cloud. This bundle includes:

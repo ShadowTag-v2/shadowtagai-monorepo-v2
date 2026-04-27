@@ -1,7 +1,7 @@
 # Running and Processing DisplayList Benchmarks
 
 The DisplayList benchmarks for Flutter are used to determine the relative
-cost of operations in order to assign scores to each op for the raster 
+cost of operations in order to assign scores to each op for the raster
 cache’s cache admission algorithm.
 
 Due to the nature of benchmarking, these need to be run on actual devices in

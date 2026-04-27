@@ -258,7 +258,7 @@ prompts/
 ├── template_loader.py          # Template loading with 30-min TTL caching
 ├── base_template.py           # Common components and utilities
 ├── summarize_template.py      # Content summarization templates
-├── review_template.py         # Code review templates  
+├── review_template.py         # Code review templates
 ├── eval_template.py           # Plan evaluation templates
 └── verify_template.py         # Solution verification templates
 ```
@@ -281,7 +281,7 @@ prompts/
 
 **🛡️ Security & Reliability**:
 - **22 Critical Security Fixes**: Session-based rate limiting, template integrity validation, enhanced credential sanitization, JSON-RPC validation, subprocess injection protection
-- **Multi-layer Defense**: 25+ attack categories with compiled regex patterns for real-time protection  
+- **Multi-layer Defense**: 25+ attack categories with compiled regex patterns for real-time protection
 - **Security Pattern Detection**: Protection against command injection, path traversal, XSS, prompt injection, information disclosure
 - **Memory-Safe Operations**: Bounded caches with automatic cleanup and O(1) operations
 - **JSON-RPC Security Middleware**: Protocol-level validation with request size limits and nesting depth protection
@@ -548,7 +548,7 @@ gemini_content_comparison(
 # Code version analysis
 gemini_content_comparison(
     sources='["@src/auth_v1.py", "@src/auth_v2.py"]',
-    comparison_type="code", 
+    comparison_type="code",
     output_format="detailed",
     focus_areas="differences,security,performance"
 )
@@ -569,7 +569,7 @@ gemini_ai_collaboration(
 
 # Multi-round AI debate
 gemini_ai_collaboration(
-    collaboration_mode="debate", 
+    collaboration_mode="debate",
     content="Should we use microservices or monolith?",
     models="gemini-2.5-flash,openai/gpt-4.1-mini,anthropic/claude-3-haiku",
     rounds=4,
@@ -581,12 +581,12 @@ gemini_ai_collaboration(
 
 **Available Collaboration Modes:**
 - **`sequential`** - Progressive refinement through ordered analysis pipeline
-- **`debate`** - Multi-round discussions with consensus building  
+- **`debate`** - Multi-round discussions with consensus building
 - **`validation`** - Cross-platform validation with conflict resolution
 
 **Available Debate Styles (for debate mode):**
 - **`constructive`** (default) - Focus on building understanding rather than winning arguments
-- **`adversarial`** - Challenge assumptions and arguments rigorously  
+- **`adversarial`** - Challenge assumptions and arguments rigorously
 - **`collaborative`** - Work together to explore topics comprehensively
 - **`socratic`** - Use questioning to explore underlying assumptions
 - **`devil_advocate`** - Deliberately argue for challenging positions
@@ -605,7 +605,7 @@ gemini_ai_collaboration(
 - **`quality_gates`** (optional): `none` | `basic` | `standard` | `strict` | `comprehensive`
 - **`focus`** (optional): Focus area (default: "progressive refinement")
 
-**Debate Mode Parameters:**  
+**Debate Mode Parameters:**
 - **`rounds`** (optional): Number of debate rounds (1-10, default: 3)
 - **`debate_style`** (optional): See debate styles above (default: "constructive")
 - **`convergence_criteria`** (optional): `substantial_agreement` | `consensus` | `majority_view` | `all_viewpoints`
@@ -702,7 +702,7 @@ gemini_ai_collaboration(
 **Auto-Selection Behavior:**
 When `models` parameter is not provided, the function automatically selects appropriate models:
 - **Sequential**: `"gemini-2.5-flash,openai/gpt-4.1-nano,anthropic/claude-3-haiku"`
-- **Debate**: `"gemini-2.5-flash,openai/gpt-4.1-mini,anthropic/claude-3-haiku"`  
+- **Debate**: `"gemini-2.5-flash,openai/gpt-4.1-mini,anthropic/claude-3-haiku"`
 - **Validation**: `"gemini-2.5-flash,openai/gpt-4.1-nano,anthropic/claude-3-haiku"`
 
 ### OpenRouter Tools (6)
@@ -854,7 +854,7 @@ Use the `-s` or `--scope` flag to specify where the configuration is stored:
 
 Add the following to your Claude Desktop settings file:
 
-**Location**: 
+**Location**:
 - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 - Linux: `~/.config/claude/claude_desktop_config.json`
@@ -968,11 +968,11 @@ const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
-    
+
     if (!token) {
         return res.status(401).json({ error: 'Access denied' });
     }
-    
+
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
@@ -1555,17 +1555,17 @@ from mcp_server import gemini_help, gemini_version, gemini_models
 
 async def test_basic():
     print("Testing basic functionality...")
-    
+
     # Test cached operations
     help_result = await gemini_help()
     print(f"Help: {len(help_result)} characters")
-    
+
     version_result = await gemini_version()
     print(f"Version: {version_result[:50]}...")
-    
+
     models_result = await gemini_models()
     print(f"Models: {models_result[:100]}...")
-    
+
     print("✅ Basic tests passed")
 
 asyncio.run(test_basic())
@@ -1578,12 +1578,12 @@ from mcp_server import gemini_prompt
 
 async def test_prompts():
     print("Testing prompt functionality...")
-    
+
     result = await gemini_prompt(
         prompt="Say hello and confirm you're working",
         model="gemini-2.5-flash"
     )
-    
+
     print(f"Prompt result: {result[:200]}...")
     print("✅ Prompt tests passed")
 
@@ -1595,7 +1595,7 @@ asyncio.run(test_prompts())
 The server has been comprehensively tested with:
 - **2,500+ test cases** across 6 specialized test files with descriptive naming
 - **Complete security validation** covering all 22 critical security fixes with attack simulation
-- **Performance benchmarking** with concurrency stress testing and memory leak detection  
+- **Performance benchmarking** with concurrency stress testing and memory leak detection
 - **Monitoring integration testing** with graceful degradation validation
 - **@filename syntax validation** with real files across 32 of 33 tools
 - **OpenRouter integration testing** with 400+ model compatibility validation

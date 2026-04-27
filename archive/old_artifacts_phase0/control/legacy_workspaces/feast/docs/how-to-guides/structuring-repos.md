@@ -1,7 +1,7 @@
 # Structuring Feature Repos
 
-A common scenario when using Feast in production is to want to test changes to Feast object definitions. For this, we recommend setting up a _staging_ environment for your offline and online stores, which mirrors _production_ (with potentially a smaller data set). 
-Having this separate environment allows users to test changes by first applying them to staging, and then promoting the changes to production after verifying the changes on staging.  
+A common scenario when using Feast in production is to want to test changes to Feast object definitions. For this, we recommend setting up a _staging_ environment for your offline and online stores, which mirrors _production_ (with potentially a smaller data set).
+Having this separate environment allows users to test changes by first applying them to staging, and then promoting the changes to production after verifying the changes on staging.
 
 ## Setting up multiple environments
 
@@ -13,7 +13,7 @@ There are three common ways teams approach having separate environments
 
 ### Different version control branches
 
-To keep a clear separation of the feature repos, teams may choose to have multiple long-lived branches in their version control system, one for each environment. In this approach, with CI/CD setup, changes would first be made to the staging branch, and then copied over manually to the production branch once verified in the staging environment. 
+To keep a clear separation of the feature repos, teams may choose to have multiple long-lived branches in their version control system, one for each environment. In this approach, with CI/CD setup, changes would first be made to the staging branch, and then copied over manually to the production branch once verified in the staging environment.
 
 ### Separate `feature_store.yaml`  files and separate Feast object definitions
 
@@ -78,7 +78,7 @@ If your organization consists of many independent data science teams or a single
 
 ### Shared Feast Object definitions with separate `feature_store.yaml` files
 
-This approach is very similar to the previous approach, but instead of having feast objects duplicated and having to copy over changes, it may be possible to share the same Feast object definitions and have different `feature_store.yaml` configuration. 
+This approach is very similar to the previous approach, but instead of having feast objects duplicated and having to copy over changes, it may be possible to share the same Feast object definitions and have different `feature_store.yaml` configuration.
 
 An example of how such a repository would be structured is as follows:
 

@@ -8,7 +8,7 @@ This Gemini CLI extension provides a set of tools to interact with [Cloud SQL fo
 Learn more about [Gemini CLI Extensions](https://github.com/google-gemini/gemini-cli/blob/main/docs/extensions/index.md).
 > [!IMPORTANT]
 > **We Want Your Feedback!**
-> Please share your thoughts with us by filling out our feedback [form][form]. 
+> Please share your thoughts with us by filling out our feedback [form][form].
 > Your input is invaluable and helps us improve the project for everyone.
 
 [form]: https://docs.google.com/forms/d/e/1FAIpQLSfEGmLR46iipyNTgwTmIDJqzkAwDPXxbocpXpUbHXydiN1RTw/viewform?usp=pp_url&entry.157487=cloud-sql-postgresql

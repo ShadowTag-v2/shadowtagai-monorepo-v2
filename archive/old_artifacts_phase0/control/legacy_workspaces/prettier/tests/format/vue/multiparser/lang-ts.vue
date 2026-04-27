@@ -7,4 +7,3 @@ export default {
   computed: {  foo( ): string {  return "foo";  },  },
 }
 </script>
-

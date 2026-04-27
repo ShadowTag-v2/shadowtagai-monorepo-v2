@@ -1491,4 +1491,3 @@ describe('SearchTool', () => {
     });
   });
 });
-

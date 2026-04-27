@@ -1,6 +1,6 @@
 include(FetchContent)
 
-# If FLASH_MLA_SRC_DIR is set, flash-mla is installed from that directory 
+# If FLASH_MLA_SRC_DIR is set, flash-mla is installed from that directory
 # instead of downloading.
 # It can be set as an environment variable or passed as a cmake argument.
 # The environment variable takes precedence.
@@ -10,7 +10,7 @@ endif()
 
 if(FLASH_MLA_SRC_DIR)
   FetchContent_Declare(
-        flashmla 
+        flashmla
         SOURCE_DIR ${FLASH_MLA_SRC_DIR}
         CONFIGURE_COMMAND ""
         BUILD_COMMAND ""
@@ -31,7 +31,7 @@ FetchContent_MakeAvailable(flashmla)
 message(STATUS "FlashMLA is available at ${flashmla_SOURCE_DIR}")
 
 # The FlashMLA kernels only work on hopper and require CUDA 12.3 or later.
-# Only build FlashMLA kernels if we are building for something compatible with 
+# Only build FlashMLA kernels if we are building for something compatible with
 # sm90a
 
 set(SUPPORT_ARCHS)
@@ -130,4 +130,3 @@ else()
     add_custom_target(_flashmla_C)
     add_custom_target(_flashmla_extension_C)
 endif()
-

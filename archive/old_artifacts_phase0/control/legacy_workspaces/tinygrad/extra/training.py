@@ -55,4 +55,3 @@ def evaluate(model, X_test, Y_test, num_classes=None, BS=128, return_predict=Fal
   acc, Y_test_pred = numpy_eval(Y_test, num_classes)
   print("test set accuracy is %f" % acc)
   return (acc, Y_test_pred) if return_predict else acc
-

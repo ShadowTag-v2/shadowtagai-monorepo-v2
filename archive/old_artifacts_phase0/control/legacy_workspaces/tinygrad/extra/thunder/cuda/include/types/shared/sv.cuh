@@ -17,13 +17,13 @@ namespace kittens {
 namespace ducks {
 /**
  * @namespace sv
- * 
+ *
  * @brief The namespace where concepts and abstract types for shared vectors live.
  */
 namespace sv {
 /**
  * @brief A dummy type used to identify shared vectors.
- * 
+ *
  * For a type to quack like an sv, it should define its identifier as ducks::sv::identifier.
  * If a type quacks like ducks::sv::identifier, it will be treated as an sv by compiler checks.
  */

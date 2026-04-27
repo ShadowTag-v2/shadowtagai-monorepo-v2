@@ -46,7 +46,7 @@ async def test_list_tools(main_mcp_client: Client[FastMCPTransport]):
     assert len(list_tools) == 5
 ```
 
-We recommend the [inline-snapshot library](https://github.com/15r10nk/inline-snapshot) for asserting complex data structures coming from your MCP Server. This library allows you to write tests that are easy to read and understand, and are also easy to update when the data structure changes. 
+We recommend the [inline-snapshot library](https://github.com/15r10nk/inline-snapshot) for asserting complex data structures coming from your MCP Server. This library allows you to write tests that are easy to read and understand, and are also easy to update when the data structure changes.
 
 ```python
 from inline_snapshot import snapshot

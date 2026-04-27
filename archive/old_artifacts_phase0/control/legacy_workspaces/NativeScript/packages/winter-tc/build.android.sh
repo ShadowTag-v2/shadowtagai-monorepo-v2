@@ -23,7 +23,7 @@ fi
 
 if [ "$SKIP_PACK" ]
 then
-  echo "SKIP pack" 
+  echo "SKIP pack"
 else
   echo "Copy NPM artefacts"
   cp .npmignore LICENSE README.md package.json dist/package

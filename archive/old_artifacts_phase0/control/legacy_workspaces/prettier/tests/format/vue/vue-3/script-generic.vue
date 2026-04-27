@@ -10,7 +10,7 @@
 
 
                                         // comment 1:
-T 
+T
 extends string &
 
 'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooong',
@@ -18,7 +18,7 @@ extends string &
        * comment 2
  */
         U extends number, // comment 3
-        
+
         /** comment 4 */ C extends MyType
 
 
@@ -28,4 +28,3 @@ extends string &
   <!-- should not format it here -->
   <not-script setup lang="ts" generic="T extends Type1 & Type2 & (Type3 | Type4), U extends string | number | boolean"></not-script>
 </template>
-

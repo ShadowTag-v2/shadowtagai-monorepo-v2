@@ -41,21 +41,21 @@ exports[`should not exit non-zero for jsx style element with spread attribute  1
 exports[`show diff for 2+ error files with --debug-check  1`] = `
 {
   "stderr": "[error] a.debug-check: prettier(input) !== prettier(prettier(input))
-[error] Index: 
+[error] Index:
 [error] ===================================================================
-[error] --- 	
-[error] +++ 	
+[error] ---
+[error] +++
 [error] @@ -1,2 +1,4 @@
 [error]  hello
 [error]  hello
 [error] +hello
 [error] +hello
-[error] 
+[error]
 [error] b.debug-check: prettier(input) !== prettier(prettier(input))
-[error] Index: 
+[error] Index:
 [error] ===================================================================
-[error] --- 	
-[error] +++ 	
+[error] ---
+[error] +++
 [error] @@ -1,2 +1,4 @@
 [error]  world
 [error]  world

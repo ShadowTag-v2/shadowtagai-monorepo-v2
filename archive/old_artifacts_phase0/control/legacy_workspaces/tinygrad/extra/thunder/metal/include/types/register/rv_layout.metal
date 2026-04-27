@@ -28,9 +28,9 @@ struct ortho { constant constexpr static int inner_dim = 1; };
  */
 struct naive { constant constexpr static int inner_dim = 1; };
 
-    
+
 } // namespace rv_layout
-    
+
 template <typename _layout>
 METAL_FUNC static constexpr bool is_align_layout() {
     return metal::is_same_v<_layout, rv_layout::align>;
@@ -47,8 +47,8 @@ template <typename _layout>
 METAL_FUNC static constexpr bool is_rv_layout() {
     return is_align_layout<_layout>() || is_ortho_layout<_layout>() || is_naive_layout<_layout>();
 }
-    
-    
-    
+
+
+
 } // namespace ducks
 } // namespace mittens

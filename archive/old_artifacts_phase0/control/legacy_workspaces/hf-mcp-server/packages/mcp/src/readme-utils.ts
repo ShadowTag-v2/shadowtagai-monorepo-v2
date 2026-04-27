@@ -7,7 +7,7 @@ const DEFAULT_MAX_README_CHARS = 10_000;
 
 /**
  * Fetches README content from a Hugging Face repository
- * 
+ *
  * @param repoName The resolved repository name (e.g., 'rajpurkar/squad', 'openai-community/gpt2')
  * @param type The repository type ('models' or 'datasets')
  * @param includeYaml Whether to include YAML frontmatter (default: false)
@@ -20,14 +20,14 @@ export async function fetchReadmeContent(
 ): Promise<string | null> {
 	try {
 		// Construct the URL based on repository type
-		const baseUrl = type === 'datasets' 
+		const baseUrl = type === 'datasets'
 			? `https://huggingface.co/datasets/${repoName}`
 			: `https://huggingface.co/${repoName}`;
-		
+
 		const url = `${baseUrl}/resolve/main/README.md`;
 
 		const response = await fetch(url);
-		
+
 		if (!response.ok) {
 			if (response.status === 404) {
 				// README doesn't exist, return null silently
@@ -64,7 +64,7 @@ export async function fetchReadmeContent(
 
 /**
  * Strips YAML frontmatter from markdown content
- * 
+ *
  * @param content The full markdown content
  * @returns The content with YAML frontmatter removed
  */
@@ -72,12 +72,12 @@ function stripYamlFrontmatter(content: string): string {
 	// Match YAML frontmatter: starts with ---, ends with ---
 	const yamlPattern = /^(\s*---[\r\n]+)([\S\s]*?)([\r\n]+---(\r\n|\n|$))/;
 	const match = content.match(yamlPattern);
-	
+
 	if (match) {
 		// Return everything after the closing ---
 		return content.substring(match[0].length);
 	}
-	
+
 	// No YAML frontmatter found, return original content
 	return content;
 }

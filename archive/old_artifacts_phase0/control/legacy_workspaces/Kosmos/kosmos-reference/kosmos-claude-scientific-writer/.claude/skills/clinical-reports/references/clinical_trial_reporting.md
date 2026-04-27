@@ -690,4 +690,3 @@ Scoring system based on 10 questions:
 ---
 
 This reference provides comprehensive guidance for clinical trial reporting following ICH-E3 and CONSORT guidelines, as well as SAE reporting requirements. Use these standards when preparing regulatory submissions and trial publications.
-

@@ -11,5 +11,3 @@
 #include "rt.metal"
 #include "rt_layout.metal"
 #include "rt_base.metal"
-
-

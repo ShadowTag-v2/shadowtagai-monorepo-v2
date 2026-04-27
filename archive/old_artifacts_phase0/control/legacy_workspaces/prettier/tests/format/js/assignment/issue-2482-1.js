@@ -12,4 +12,3 @@ aParticularlyLongAndObnoxiousNameForIllustrativePurposes =
 
 aParticularlyLongAndObnoxiousNameForIllustrativePurposes =
   anotherVeryLongNameForIllustrativePurposes + 1;
-

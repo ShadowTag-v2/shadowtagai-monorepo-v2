@@ -403,7 +403,7 @@ class n-autoresearch/Kosmos/BioAgents:
         # THE MISSION
         **Task**: {task}
         **Context**: {json.dumps(context) if context else "None"}
-        
+
         # EXECUTION PROTOCOL
         1. **Identify** the single most relevant Troop for this step.
         2. **Adopt** that persona completely (Voice, Priorities, Constraints).
@@ -412,7 +412,7 @@ class n-autoresearch/Kosmos/BioAgents:
 
         # TOOLS AVAILABLE
         {list(self.registry._tools.keys())}
-        
+
         # MANDATORY OUTPUT FORMAT (JSON)
         return a JSON object with this EXACT structure:
         {{

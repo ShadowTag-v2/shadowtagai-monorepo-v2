@@ -60,6 +60,6 @@
 | Qwen/Qwen3-Embedding-8B | Qwen3ForTextEmbedding          | ✅    | ✅           |       |
 | Qwen/Qwen3-Reranker-8B  | Qwen3ForSequenceClassification | ✅    | ✅           |       |
 
-✅ Runs and optimized.  
-🟨 Runs and correct but not optimized to green yet.  
-❌ Does not pass accuracy test or does not run.  
+✅ Runs and optimized.
+🟨 Runs and correct but not optimized to green yet.
+❌ Does not pass accuracy test or does not run.

@@ -54,7 +54,7 @@ Do you want me to re-roll your pitch deck slides specifically for CoreWeave/NVID
 
 <next>
 
-“Did I initially guess cloudfares tech build by myself?? 
+“Did I initially guess cloudfares tech build by myself??
 
 Based on Cloudflare’s AI Index first build (public beta) and AiYou’s internal plan:
     •    Architecture overlap:
@@ -88,7 +88,7 @@ Would you like me to map this 30% differentiation into a “Moat slide” for th
 
 <next>
 
-“Did I initially guess cloudfares tech build by myself?? 
+“Did I initially guess cloudfares tech build by myself??
 
 Based on Cloudflare’s AI Index first build (public beta) and AiYou’s internal plan:
     •    Architecture overlap:

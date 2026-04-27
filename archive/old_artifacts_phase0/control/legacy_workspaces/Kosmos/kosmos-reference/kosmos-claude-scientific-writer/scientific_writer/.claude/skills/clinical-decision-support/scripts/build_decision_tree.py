@@ -441,4 +441,3 @@ if __name__ == '__main__':
 #
 # Then compile:
 # pdflatex clinical_algorithm.tex
-

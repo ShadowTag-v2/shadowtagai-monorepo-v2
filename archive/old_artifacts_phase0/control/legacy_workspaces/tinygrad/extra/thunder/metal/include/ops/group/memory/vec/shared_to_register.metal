@@ -26,7 +26,7 @@ load(thread RV &dst, threadgroup const SV &_src, const int threadIdx) {
     using subvec = typename SV::template subvec<RV::length>;
 
     threadgroup subvec& src = *(threadgroup subvec*)(&_src[warpId *RV::length]);
-    
+
     ::mittens::load<RV, subvec>(dst, src, simd_laneid(threadIdx)); // warp-level
 }
 
@@ -45,16 +45,16 @@ store(threadgroup SV &_dst, thread const RV &src, const int threadIdx) {
     using U  = typename SV::dtype;
     using T2 = typename base_types::packing<T>::packed_type;
     using U2 = typename base_types::packing<U>::packed_type;
-    
+
 
     static_assert(SV::length == RV::length*N_WARPS, "rv and sv dimensions do not match");// confirm size correct
-    
+
 //    threadgroup typename SV::template subvec<typename SV::dtype, RV::outer_dim> &dst = subvec_inplace<RV::outer_dim, SV>(_dst, warpid(threadIdx));
 //    ::mittens::store<threadgroup typename SV::template subvec<typename SV::dtype, RV::outer_dim>, RV>(dst, src, simd_laneid(threadIdx)); // warp-level
-    
+
     unsigned warpId = warpid(threadIdx);
     using subvec = typename SV::template subvec<RV::length>;
     threadgroup subvec& dst = *(threadgroup subvec*)(&_dst[warpId * RV::length]);
-    
+
     ::mittens::store(dst, src, simd_laneid(threadIdx)); // warp-level
 }

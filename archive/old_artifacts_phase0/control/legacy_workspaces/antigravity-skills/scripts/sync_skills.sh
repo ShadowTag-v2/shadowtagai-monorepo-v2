@@ -25,7 +25,7 @@ if [ -n "$TARGET_SOURCE" ]; then
     # Create temp file for filtered config
     ACTIVE_CONFIG=$(mktemp)
     jq --arg name "$TARGET_SOURCE" '[.[] | select(.name == $name)]' "$CONFIG_FILE" > "$ACTIVE_CONFIG"
-    
+
     # Check if we found it
     count=$(jq '. | length' "$ACTIVE_CONFIG")
     if [ "$count" -eq 0 ]; then
@@ -70,7 +70,7 @@ for ((i=0; i<count; i++)); do
     # Use a subdirectory in temp for this skill
     SKILL_TEMP="$TEMP_DIR/$name"
     rm -rf "$SKILL_TEMP"
-    
+
     echo "  Cloning to temporary directory..."
     if ! git clone --quiet --depth 1 --branch "$branch" "$repo_url" "$SKILL_TEMP"; then
         echo "  ❌ Failed to clone $name"
@@ -88,19 +88,19 @@ for ((i=0; i<count; i++)); do
             echo "  ⚠️ Skipping rule without destination for $name"
             continue
         fi
-        
+
         # Absolute path for source in temp
         # Removing leading ./ from source_sub if present to avoid path issues
         clean_source_sub=${source_sub#./}
         source_path="$SKILL_TEMP/$clean_source_sub"
-        
+
         if [ ! -e "$source_path" ]; then
             echo "  ❌ Source path does not exist in repo: $source_sub"
             continue
         fi
 
         echo "  Copying from '$source_sub' to '$dest_sub'..."
-        
+
         # Create destination directory
         mkdir -p "$dest_sub"
 
@@ -150,7 +150,7 @@ for ((i=0; i<count; i++)); do
             # File copy
             cp "$source_path" "$dest_sub/"
         fi
-        
+
         echo "  ✅ Copied successfully."
     done
 

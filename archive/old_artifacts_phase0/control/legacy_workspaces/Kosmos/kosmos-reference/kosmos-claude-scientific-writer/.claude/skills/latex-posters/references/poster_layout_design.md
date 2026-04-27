@@ -45,7 +45,7 @@ Effective poster layout organizes content for maximum impact and comprehension. 
       % Content
     \end{block}
   \end{column}
-  
+
   \begin{column}{.48\linewidth}
     \begin{block}{Results}
       % Content
@@ -101,11 +101,11 @@ Effective poster layout organizes content for maximum impact and comprehension. 
   \column{0.33}
   \block{Introduction}{...}
   \block{Methods}{...}
-  
+
   \column{0.33}
   \block{Results Part 1}{...}
   \block{Results Part 2}{...}
-  
+
   \column{0.33}
   \block{Results Part 3}{...}
   \block{Discussion}{...}
@@ -155,14 +155,14 @@ Effective poster layout organizes content for maximum impact and comprehension. 
 **LaTeX Implementation (baposter)**:
 ```latex
 \begin{poster}{columns=4, colspacing=1em, ...}
-  
+
   \headerbox{Intro}{name=intro, column=0, row=0}{...}
   \headerbox{Methods}{name=methods, column=1, row=0}{...}
   \headerbox{Results 1}{name=res1, column=2, row=0}{...}
   \headerbox{Results 2}{name=res2, column=3, row=0}{...}
-  
+
   % Continue with below=... for stacking
-  
+
 \end{poster}
 ```
 
@@ -214,7 +214,7 @@ Effective poster layout organizes content for maximum impact and comprehension. 
   \block{Introduction and Methods}{
     % Combined narrative section
   }
-  
+
   \column{0.35}
   \block{}{
     % Key figure with minimal text
@@ -261,7 +261,7 @@ Effective poster layout organizes content for maximum impact and comprehension. 
 \usepackage{tikz}
 \AddToShipoutPictureBG{
   \begin{tikzpicture}[remember picture, overlay]
-    \draw[help lines, step=5cm, very thin, gray!30] 
+    \draw[help lines, step=5cm, very thin, gray!30]
       (current page.south west) grid (current page.north east);
   \end{tikzpicture}
 }
@@ -417,14 +417,14 @@ Guide viewers explicitly through content:
   \begin{column}{.15\linewidth}
     \includegraphics[width=\linewidth]{logo1.pdf}
   \end{column}
-  
+
   \begin{column}{.7\linewidth}
     \centering
     {\VeryHuge\textbf{Your Research Title Here}}\\[0.5cm]
     {\Large Author One\textsuperscript{1}, Author Two\textsuperscript{2}}\\[0.3cm]
     {\normalsize \textsuperscript{1}University A, \textsuperscript{2}University B}
   \end{column}
-  
+
   \begin{column}{.15\linewidth}
     \includegraphics[width=\linewidth]{logo2.pdf}
   \end{column}
@@ -498,13 +498,13 @@ Discussion/Conclusions
         \item Author A et al. (2023). Journal. doi:...
         \item Author B et al. (2024). Conference.
       \end{enumerate}
-      
+
       \textbf{Acknowledgments}
       This work was supported by Grant XYZ.
-      
+
       \textbf{Contact}: firstname.lastname@university.edu
     \end{column}
-    
+
     \begin{column}{0.25\linewidth}
       \centering
       \qrcode[height=3cm]{https://doi.org/10.1234/paper}\\
@@ -606,7 +606,7 @@ Discussion/Conclusions
 \begin{block}{Title}
   % beamerposter with rounded
   \setbeamertemplate{block begin}[rounded]
-  
+
 % Sharp corners (formal, traditional)
   \setbeamertemplate{block begin}[default]
 
@@ -897,4 +897,3 @@ Effective layout design:
 - Adapts to different poster sizes and orientations
 
 Remember: Layout should support content, not compete with it. When viewers focus on your research rather than your design, you've succeeded.
-

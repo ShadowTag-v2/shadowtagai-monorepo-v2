@@ -325,7 +325,7 @@ Total skills loaded: 78
 
 2. rdkit
    Description: Chemical informatics and molecular manipulation
-   Source: K-Dense-AI/claude-scientific-skills  
+   Source: K-Dense-AI/claude-scientific-skills
    Documents: 5 file(s)
 
 3. scanpy
@@ -479,7 +479,7 @@ When set, truncates skill content in `find_helpful_skills` results:
 [View full skill at: https://github.com/...]
 ```
 
-**Recommendation**: 
+**Recommendation**:
 - Leave at `null` (unlimited) unless context window is a concern
 - If set, use 5000-10000 for good balance
 
@@ -581,4 +581,3 @@ When integrating these tools into an AI assistant:
 - [Usage Examples](usage.md) - Advanced configuration and patterns
 - [MCP Specification](https://modelcontextprotocol.io/specification/)
 - [Agent Skills Blog](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
-

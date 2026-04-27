@@ -19,7 +19,7 @@ load(thread RV &dst, thread const GL &_src, thread coord idx, const int threadId
     using U  = typename GL::dtype;
     using U2 = typename base_types::packing<U>::packed_type;
     using T2 = typename base_types::packing<T>::packed_type;
-    
+
     idx.c += warpid(threadIdx);
     // Call warp level store
     ::mittens::load(dst, _src, idx, simd_laneid(threadIdx));
@@ -39,7 +39,7 @@ store(thread GL &_dst, thread const RV &src, thread coord idx, const int threadI
     using T  = typename RV::dtype;
 //    using U2 = typename base_types::packing<U>::packed_type;
     using T2 = typename base_types::packing<T>::packed_type;
-    
+
     idx.c += warpid(threadIdx);
 
     // Call warp level store

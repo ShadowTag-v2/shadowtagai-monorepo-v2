@@ -69,9 +69,9 @@ struct cutlass_3x_gemm {
   // clang-format off
   using CollectiveMainloop =
       typename cutlass::gemm::collective::CollectiveBuilder<
-          cutlass::arch::Sm90, cutlass::arch::OpClassTensorOp, 
-          ElementAB, cutlass::layout::RowMajor, AlignmentAB, 
-          ElementAB, cutlass::layout::ColumnMajor, AlignmentAB, 
+          cutlass::arch::Sm90, cutlass::arch::OpClassTensorOp,
+          ElementAB, cutlass::layout::RowMajor, AlignmentAB,
+          ElementAB, cutlass::layout::ColumnMajor, AlignmentAB,
           ElementAcc, TileShape, ClusterShape,
           Stages,
           KernelSchedule>::CollectiveOp;

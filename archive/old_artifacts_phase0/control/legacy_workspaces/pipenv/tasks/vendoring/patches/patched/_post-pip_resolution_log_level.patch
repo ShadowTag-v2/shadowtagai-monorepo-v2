@@ -5,9 +5,9 @@ index a551b020..03ee8262 100644
 @@ -847,7 +847,7 @@ class Factory:
              + "the dependency conflict\n"
          )
- 
+
 -        logger.info(msg)
 +        logger.critical(msg)
- 
+
          return DistributionNotFound(
              "ResolutionImpossible: for help visit "

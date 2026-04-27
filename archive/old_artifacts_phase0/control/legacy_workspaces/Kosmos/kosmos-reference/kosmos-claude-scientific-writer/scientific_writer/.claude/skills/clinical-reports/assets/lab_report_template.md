@@ -2,25 +2,25 @@
 
 ## Patient Information
 
-**Patient Name:** [Last, First]  
-**Medical Record Number:** [MRN]  
-**Date of Birth:** [MM/DD/YYYY]  
+**Patient Name:** [Last, First]
+**Medical Record Number:** [MRN]
+**Date of Birth:** [MM/DD/YYYY]
 **Age/Sex:** [Age years, M/F]
 
-**Ordering Physician:** [Name]  
+**Ordering Physician:** [Name]
 **Location:** [Inpatient unit / Outpatient clinic]
 
 ---
 
 ## Specimen Information
 
-**Specimen Type:** [Blood / Serum / Plasma / Urine / CSF / Other]  
-**Collection Date/Time:** [MM/DD/YYYY at HH:MM]  
-**Received Date/Time:** [MM/DD/YYYY at HH:MM]  
+**Specimen Type:** [Blood / Serum / Plasma / Urine / CSF / Other]
+**Collection Date/Time:** [MM/DD/YYYY at HH:MM]
+**Received Date/Time:** [MM/DD/YYYY at HH:MM]
 **Reported Date/Time:** [MM/DD/YYYY at HH:MM]
 
-**Accession Number:** [Lab accession number]  
-**Specimen Condition:** [Acceptable / See comments]  
+**Accession Number:** [Lab accession number]
+**Specimen Condition:** [Acceptable / See comments]
 **Fasting Status:** [Fasting / Non-fasting / Unknown] (if relevant)
 
 ---
@@ -74,16 +74,16 @@
 
 **Example for Anemia:**
 ```
-Normocytic anemia with elevated WBC. Differential diagnosis includes anemia of chronic 
-disease, recent blood loss, or hemolysis. Consider reticulocyte count, iron studies, 
+Normocytic anemia with elevated WBC. Differential diagnosis includes anemia of chronic
+disease, recent blood loss, or hemolysis. Consider reticulocyte count, iron studies,
 and peripheral smear for further evaluation. Clinical correlation recommended.
 ```
 
 **Example for Electrolyte Abnormality:**
 ```
-Hypokalemia detected (K+ 3.2 mEq/L). Common causes include diuretic use, GI losses, or 
-inadequate intake. Recommend potassium repletion and follow-up testing. Moderate 
-azotemia present, consistent with acute kidney injury or chronic kidney disease. 
+Hypokalemia detected (K+ 3.2 mEq/L). Common causes include diuretic use, GI losses, or
+inadequate intake. Recommend potassium repletion and follow-up testing. Moderate
+azotemia present, consistent with acute kidney injury or chronic kidney disease.
 Clinical correlation with patient history and prior results recommended.
 ```
 
@@ -93,8 +93,8 @@ Clinical correlation with patient history and prior results recommended.
 
 [If any results meet criteria for critical values]
 
-**Critical Result:** [Test name] = [Value] [Units]  
-**Reference Range:** [Normal range]  
+**Critical Result:** [Test name] = [Value] [Units]
+**Reference Range:** [Normal range]
 **Significance:** [Life-threatening, requires immediate action]
 
 **Notification:**
@@ -231,7 +231,7 @@ Examples:
 
 ### Culture Results
 
-**Specimen Source:** [Blood / Urine / Sputum / Wound / Other]  
+**Specimen Source:** [Blood / Urine / Sputum / Wound / Other]
 **Collection:** [Date and time]
 
 **Gram Stain:**
@@ -240,7 +240,7 @@ Example: "Many Gram-positive cocci in clusters, many WBCs"
 
 **Culture Results:**
 
-**Organism:** [Identified organism]  
+**Organism:** [Identified organism]
 **Quantity:** [Light / Moderate / Heavy growth] or [CFU count]
 
 **Antimicrobial Susceptibility Testing:**
@@ -263,8 +263,8 @@ Example:
 
 ## Molecular/Genetic Testing
 
-**Test:** [Specific test name]  
-**Method:** [PCR / Sequencing / Array / Other]  
+**Test:** [Specific test name]
+**Method:** [PCR / Sequencing / Array / Other]
 **Result:** [Detected / Not detected / Variant identified]
 
 **Interpretation:**
@@ -276,20 +276,20 @@ Example:
 
 [For send-out tests]
 
-**Test:** [Name]  
-**Performed by:** [Reference lab name and location]  
-**Result:** [Value]  
-**Reference Range:** [Range]  
-**Method:** [Methodology]  
+**Test:** [Name]
+**Performed by:** [Reference lab name and location]
+**Result:** [Value]
+**Reference Range:** [Range]
+**Method:** [Methodology]
 **Reported:** [Date]
 
 ---
 
 ## Laboratory Director Signature
 
-**Medical Director:**  
-[Name, MD]  
-[Board Certifications]  
+**Medical Director:**
+[Name, MD]
+[Board Certifications]
 [CLIA License Number]
 
 **Electronically signed:** [Date]
@@ -305,5 +305,3 @@ Example:
 - Glucose: 2345-7
 - Creatinine: 2160-0
 - TSH: 3016-3
-
-

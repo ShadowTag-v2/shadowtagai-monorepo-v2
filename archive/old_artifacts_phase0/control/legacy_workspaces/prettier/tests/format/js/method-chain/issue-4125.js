@@ -146,4 +146,3 @@ var l = base
     .replace(/^\w*:\/\//, '')
     .replace(/\/$/, '')
     .split('/').length
-

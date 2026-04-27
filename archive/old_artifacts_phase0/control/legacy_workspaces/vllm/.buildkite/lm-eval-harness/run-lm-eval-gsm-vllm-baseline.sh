@@ -23,22 +23,22 @@ usage() {
 
 while getopts "m:b:l:f:t:" OPT; do
   case ${OPT} in
-    m ) 
+    m )
         MODEL="$OPTARG"
         ;;
-    b ) 
+    b )
         BATCH_SIZE="$OPTARG"
         ;;
-    l ) 
+    l )
         LIMIT="$OPTARG"
         ;;
-    f ) 
+    f )
         FEWSHOT="$OPTARG"
         ;;
     t )
         TP_SIZE="$OPTARG"
         ;;
-    \? ) 
+    \? )
         usage
         exit 1
         ;;

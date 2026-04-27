@@ -53,7 +53,7 @@ void main() async {
     prompt: 'What is the weather in Boston?',
     toolNames: ['getWeather'],
   );
-  
+
   print(response.text);
 }
 ```
@@ -78,5 +78,3 @@ void main() async {
   print(embeddings[0].embedding);
 }
 ```
-
-

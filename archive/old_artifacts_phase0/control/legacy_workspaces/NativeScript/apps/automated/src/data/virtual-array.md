@@ -21,4 +21,3 @@ the array will raise "itemsLoading" event for still not loaded items.
 
 ### Handle "change" event when you increase "length" property.
 {%snippet virtual-array-lenght%}
-

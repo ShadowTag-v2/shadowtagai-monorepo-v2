@@ -31,4 +31,3 @@ __device__ inline static void store(ST &dst, const RT &src) {
     store(dst.real, src.real);
     store(dst.imag, src.imag);
 }
-

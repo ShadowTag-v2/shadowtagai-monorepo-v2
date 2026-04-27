@@ -6,4 +6,4 @@ from feast.types import {{ feast_types | join(', ') }}
     schema=[
 {% for field in schema_lines %}{{ field }}
 {% endfor %}    ],
-) 
+)

@@ -8,7 +8,7 @@
     dispatch_once(&onceToken, ^{
         sharedInstance = [[NativeScriptEmbedder alloc] init];
     });
-    
+
     return sharedInstance;
 }
 

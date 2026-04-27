@@ -84,11 +84,11 @@ __global__ void attend_ker(bf16 *O_ptr, bf16 *Q_ptr, bf16 *K_ptr, bf16 *V_ptr) {
           // int start_fill = g.Kg.depth()-first_index < ROWS<D> ? g.Kg.depth()-first_index : ROWS<D>;
           // right_fill(att_block, att_block, start_fill, base_types::constants<float>::neg_infty());
           max_vec_last = max_vec;
-          max_vec = warp::max<axis::COL>(att_block, max_vec); 
-          att_block = warp::exp2(att_block - max_vec); 
-          max_vec_last = warp::exp2(max_vec_last - max_vec); 
-          norm_vec *= max_vec_last; 
-          norm_vec = warp::sum<axis::COL>(att_block, norm_vec); 
+          max_vec = warp::max<axis::COL>(att_block, max_vec);
+          att_block = warp::exp2(att_block - max_vec);
+          max_vec_last = warp::exp2(max_vec_last - max_vec);
+          norm_vec *= max_vec_last;
+          norm_vec = warp::sum<axis::COL>(att_block, norm_vec);
           att_block_mma = att_block; // copy to bf16 tile
           warp::load(v_reg, v_smem[subtile][tic]);
           o_reg *= max_vec_last;

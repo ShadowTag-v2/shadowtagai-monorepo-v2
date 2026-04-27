@@ -567,4 +567,3 @@ Describe unexpected response to treatment or unusual disease course.
 ---
 
 This reference provides comprehensive guidance for writing clinical case reports following CARE guidelines. Refer to this document when preparing case reports for journal submission, and use the CARE checklist to ensure completeness before submission.
-

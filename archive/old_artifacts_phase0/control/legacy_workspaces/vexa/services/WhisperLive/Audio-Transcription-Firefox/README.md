@@ -14,7 +14,7 @@ We use OpenAI-whisper model to process the audio continuously and send the trans
 
 
 ## Real time transcription with OpenAI-whisper
-This Firefox extension allows you to send audio from your browser to a server for transcribing the audio in real time. 
+This Firefox extension allows you to send audio from your browser to a server for transcribing the audio in real time.
 
 ## Implementation Details
 

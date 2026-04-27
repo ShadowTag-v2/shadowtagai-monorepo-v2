@@ -197,31 +197,31 @@ data:
     eyJhdXRocyI6eyJodHRwczovL2V4YW1wbGUvdjEvIjp7ImF1dGgiOiJvcGVuc2VzYW1lIn19fQo=`,
 	}
 	fps := map[string]string{
-		"empty-quotes1.yml": `apiVersion: v1            
-kind: Secret              
-metadata:                 
+		"empty-quotes1.yml": `apiVersion: v1
+kind: Secret
+metadata:
   name: registry-auth-data
-type: Opaque              
-data:                     
+type: Opaque
+data:
   htpasswd: ''
 `,
-		"empty-quotes2.yml": `apiVersion: v1            
-kind: Secret              
-metadata:                 
+		"empty-quotes2.yml": `apiVersion: v1
+kind: Secret
+metadata:
   name: registry-auth-data
-type: Opaque              
-data:                     
+type: Opaque
+data:
   htpasswd: ""
 `,
-		"overly-permissive1.yaml": `apiVersion: v1            
-kind: Secret              
-metadata:                 
+		"overly-permissive1.yaml": `apiVersion: v1
+kind: Secret
+metadata:
   name: registry-auth-data
-type: Opaque              
-data:                     
+type: Opaque
+data:
   htpasswd: {{ htpasswd }}
----                       
-apiVersion: v1            
+---
+apiVersion: v1
                           kind: ReplicationController`,
 		"overly-permissive2.yaml": `apiVersion: v1
 kind: Secret

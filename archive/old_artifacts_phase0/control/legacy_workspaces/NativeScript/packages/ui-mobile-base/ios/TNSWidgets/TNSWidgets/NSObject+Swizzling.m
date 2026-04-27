@@ -36,7 +36,7 @@
                                             originalSelector,
                                             method_getImplementation(swizzlingMethod),
                                             method_getTypeEncoding(swizzlingMethod));
-        
+
         if (didAddMethod) {
             class_replaceMethod(self.class,
                                 swizzlingSelector,
@@ -45,20 +45,20 @@
         } else {
             method_exchangeImplementations(originalMethod, swizzlingMethod);
         }
-        
+
         return;
     }
-    
+
     class_addMethod(classContainigOriginalSel,
                     swizzlingSelector,
                     method_getImplementation(originalMethod),
                     method_getTypeEncoding(originalMethod));
-    
+
     class_replaceMethod(classContainigOriginalSel,
                         originalSelector,
                         method_getImplementation(swizzlingMethod),
                         method_getTypeEncoding(swizzlingMethod));
-    
+
     class_replaceMethod(self,
                         swizzlingSelector,
                         method_getImplementation(originalMethod),

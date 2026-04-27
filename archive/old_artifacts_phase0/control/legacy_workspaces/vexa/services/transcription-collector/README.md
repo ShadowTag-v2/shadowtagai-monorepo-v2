@@ -90,4 +90,4 @@ CUSTOM_FILTERS.append(filter_out_short_words_only)
 
 ## Deployment
 
-The Transcription Collector is designed to run as a Docker container alongside Redis and PostgreSQL. See the docker-compose.yml file for deployment configuration. 
+The Transcription Collector is designed to run as a Docker container alongside Redis and PostgreSQL. See the docker-compose.yml file for deployment configuration.

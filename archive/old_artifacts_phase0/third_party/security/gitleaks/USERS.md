@@ -6,7 +6,7 @@ Here's a running list of some organizations using Gitleaks[^1]:
 
 1. [GitLab](https://docs.gitlab.com/ee/user/application_security/secret_detection/)
 1. [Gitleaks](https://gitleaks.io)
-1. [GoReleaser](https://goreleaser.com) 
+1. [GoReleaser](https://goreleaser.com)
 2. [Trendyol](https://trendyol.com)
 
 Feel free to [add yours](https://github.com/zricethezav/gitleaks/edit/master/USERS.md)!

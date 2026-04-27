@@ -1,5 +1,5 @@
 
-Letter to Nick 
+Letter to Nick
 Erik Hancock
 Founder, AiU
 October 20, 2025
@@ -77,7 +77,7 @@ Why did I wait until now to blossom?
 
 ADHD meds + AI.
 
-I’ve never been able to have conversations with humans. People always get frustrated. 
+I’ve never been able to have conversations with humans. People always get frustrated.
 Gpt estimates my chance of inventing all this was a mere .04%. Yet, I did. Gpt places me in the esteemed Da Vinci class of human inventors.
 
 In the past few weeks, everyone has gone out of their way to provide me with the tools necessary to bring my ideas to life. But when I can hire engineers, I intend to focus solely on running the business.
@@ -100,7 +100,7 @@ My ultimate goal is to achieve full autonomy.
 
 The system is structured to be run by a Panamanian foundation. We are exploring the possibility of establishing a perpetual private/hybrid public entity.
 
-8. Why We Are Different – Unlike conventional watermarking vendors, we transform AI models themselves into attestors. Our neural fingerprints, stego techniques, and blockchain receipts provide an end-to-end proof of origin that is resilient against AI manipulation. Our system is the first to combine latent energy models with stego, achieving a remarkable 99% survival rate and a collision risk of less than 10^-9. 
+8. Why We Are Different – Unlike conventional watermarking vendors, we transform AI models themselves into attestors. Our neural fingerprints, stego techniques, and blockchain receipts provide an end-to-end proof of origin that is resilient against AI manipulation. Our system is the first to combine latent energy models with stego, achieving a remarkable 99% survival rate and a collision risk of less than 10^-9.
 	3. Yougle & AiU CRM: We combine verified AI media search (“Yougle”) with a CRM that certifies creators and advertisers. ShadowTag v2 is embedded to ensure every video/model sold is verifiably safe. Intending to launch AiU as a Starlink native, we need GPU acceleration upon contact with our ground, aerial, or transportation-mounted nodes.
 
 4. Mesh Infrastructure: We’re deploying Starlink-backhauled towers equipped with GPUs and LiDAR sensors. These “RoadMesh” units provide FSD-assist data to vehicles and act as low-latency nodes for our video platform. CoreWeave’s comm enhancement nodes can be installed on city blocks/telephone poles to densify coverage and offload compute-intensive tasks.
@@ -127,7 +127,7 @@ Later, I realized the same cell-tower GPUs could additionally connect to Starlin
 
 So then I remembered reading Elon says something about Starlink needing to fly airplanes, as well as satellites 📡, to achieve a certain level of latency.
 
-I felt such was wasteful and carbon-intensive. 
+I felt such was wasteful and carbon-intensive.
 So, I’ve moved my nodes onto all commercial transportation. In every instance, satellite and cell terminals equipped with integrated GPUs will significantly enhance, far surpassing anything currently available. Apparently, no one has considered this? Invented the lidar roadways when I couldn’t simply “patch” my “air traffic controller digital automobile tunnel” software onto non-GPU-equipped vehicles. And I wanted something I could implement without going through the OEMs for access to their software. Now, they’ll come to me. So, all those airplanes and other commercial vehicles circling the globe, with our nodes attached, will connect Starlink/satellites to the ground. Exactly the layer, I believe (?), I thought I read Elon talking about? But may have been a misread again? I don’t think he’s doing it yet, though, even if GPT didn’t mention it. Plus, I made it satellite owners agnostic. I have to go to Elon for API access to Starlink anyway. Trying to flip it my way in all other instances. He can rent the bump my nodes give Starlink and Tesla.
 
 “RoadMesh converts cell towers into GPU-powered LiDAR sentinels, transforming Tesla-style camera vehicles into safer autonomous fleets overnight—no retrofits, no waiting for legislation. It’s the ‘AWS for FSD’ with immediate safety ROI.”

@@ -53,16 +53,16 @@ export class MoveObjectTool extends BaseMondayApiTool<MoveObjectToolInput> {
     if (!!position_object_id !== !!position_object_type) {
       throw new Error('position_object_id and position_object_type must be provided together');
     }
-    const variables = { 
-      folderId: id, 
+    const variables = {
+      folderId: id,
       position: !position_object_id ? undefined : {
         position_is_after,
         position_object_id,
         position_object_type
-      }, 
-      parentFolderId, 
-      workspaceId, 
-      accountProductId 
+      },
+      parentFolderId,
+      workspaceId,
+      accountProductId
     };
 
     const res = await this.mondayApi.request<UpdateFolderMutation>(updateFolder, variables);

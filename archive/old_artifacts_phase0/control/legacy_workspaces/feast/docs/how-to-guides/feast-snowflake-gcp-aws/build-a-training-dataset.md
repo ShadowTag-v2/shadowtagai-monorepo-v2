@@ -70,4 +70,3 @@ training_df = fs.get_historical_features(
 ```
 
 Once the feature references and an entity dataframe are defined, it is possible to call `get_historical_features()`. This method launches a job that executes a point-in-time join of features from the offline store onto the entity dataframe. Once completed, a job reference will be returned. This job reference can then be converted to a Pandas dataframe by calling `to_df()`.
-

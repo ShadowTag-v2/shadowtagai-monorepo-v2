@@ -29,4 +29,4 @@ WARNING: Please consider including the remainder (above).
 Opening your browser to a new Google Cloud SDK issue.
 If your browser does not open or you have issues loading the web page, please ensure you are signed into your account on https://issuetracker.google.com/ first, then try again.
 If you still have issues loading the web page, please file an issue: https://issuetracker.google.com/issues?q=componentid:187143%2B
-➜  ~ 
+➜  ~

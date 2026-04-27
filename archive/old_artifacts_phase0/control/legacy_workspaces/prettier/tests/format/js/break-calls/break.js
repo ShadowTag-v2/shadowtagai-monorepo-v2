@@ -40,4 +40,3 @@ expect(new LongLongLongLongLongRange([0, 0], [0, 0])).toEqualAtomLongLongLongLon
   },
   []
 );
-

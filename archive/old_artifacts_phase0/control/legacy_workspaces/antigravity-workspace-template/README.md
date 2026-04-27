@@ -53,19 +53,19 @@ sequenceDiagram
 
     User->>Agent: "Refactor Authentication"
     activate Agent
-    
+
     Agent->>Artifacts: Create Implementation Plan
-    
+
     Note over Agent: <thought> Deep Think Process </thought>
     Agent->>Agent: Formulate Strategy
-    
+
     Agent->>Tools: Execute Tool (code_edit)
     activate Tools
     Tools-->>Agent: Result
     deactivate Tools
-    
+
     Agent->>Artifacts: Save Logs/Evidence
-    
+
     Agent-->>User: Final Report (Walkthrough)
     deactivate Agent
 ```
@@ -167,10 +167,10 @@ Drop any Python file into `src/tools/` and the agent instantly knows how to use 
 # src/tools/my_custom_tool.py
 def analyze_sentiment(text: str) -> str:
     """Analyzes the sentiment of given text.
-    
+
     Args:
         text: The text to analyze.
-        
+
     Returns:
         Sentiment score and analysis.
     """
@@ -247,19 +247,19 @@ sequenceDiagram
 
     User->>Agent: "Refactor Authentication"
     activate Agent
-    
+
     Agent->>Artifacts: Create Implementation Plan
-    
+
     Note over Agent: <thought> Deep Think Process </thought>
     Agent->>Agent: Formulate Strategy
-    
+
     Agent->>Tools: Execute Tool (code_edit)
     activate Tools
     Tools-->>Agent: Result
     deactivate Tools
-    
+
     Agent->>Artifacts: Save Logs/Evidence
-    
+
     Agent-->>User: Final Report (Walkthrough)
     deactivate Agent
 ```
@@ -496,10 +496,10 @@ Drop any Python file into `src/tools/` and the agent instantly knows how to use 
 # src/tools/my_custom_tool.py
 def analyze_sentiment(text: str) -> str:
     """Analyzes the sentiment of given text.
-    
+
     Args:
         text: The text to analyze.
-        
+
     Returns:
         Sentiment score and analysis.
     """
@@ -585,7 +585,7 @@ A massive thank you to the community members who help build this project:
 
 ## 💡 Call for Ideas: Swarm Protocol
 
-We value **ideas** as much as code! 
+We value **ideas** as much as code!
 We are currently brainstorming the architecture for **Phase 6: Multi-Agent Swarm**. If you provide a solid architectural suggestion or a detailed design that gets adopted, **you will be added to our README as a Contributor**.
 
 Don't hesitate to share your thoughts in the [Issues](https://github.com/study8677/antigravity-workspace-template/issues), even if you don't have time to write the implementation.

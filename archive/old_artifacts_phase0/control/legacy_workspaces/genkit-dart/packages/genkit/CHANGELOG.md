@@ -192,7 +192,7 @@
 ## 0.10.0-dev.1
 
 - Initial release of Genkit Dart framework.
-- **BREAKING CHANGE**: `RemoteAction` has 2 extra generic type parameters `I` and `Init` for the input and init types. 
+- **BREAKING CHANGE**: `RemoteAction` has 2 extra generic type parameters `I` and `Init` for the input and init types.
 - feat: defineRemoteAction now accepts inputType, outputType and streamType parameters using genkit schema builder types.
 
 ## 0.9.0
@@ -202,8 +202,8 @@
 ## 0.8.0
 
 - **BREAKING CHANGE**: The `.stream()` method now returns an `ActionStream` instead of a `FlowStreamResponse` record. `ActionStream` is a `Stream` that provides two ways to access the flow's final, non-streamed response:
-  - `onResult`: A `Future` that completes with the result. This is the recommended approach. It will complete with a `GenkitException` if the stream terminates with an error or is cancelled. 
-  - `result`: A synchronous getter that should only be used after the stream is fully consumed. It will throw a `GenkitException` if the stream is not consumed, terminates with an error or is cancelled. 
+  - `onResult`: A `Future` that completes with the result. This is the recommended approach. It will complete with a `GenkitException` if the stream terminates with an error or is cancelled.
+  - `result`: A synchronous getter that should only be used after the stream is fully consumed. It will throw a `GenkitException` if the stream is not consumed, terminates with an error or is cancelled.
 
   **Migration**:
   Code that previously looked like this:

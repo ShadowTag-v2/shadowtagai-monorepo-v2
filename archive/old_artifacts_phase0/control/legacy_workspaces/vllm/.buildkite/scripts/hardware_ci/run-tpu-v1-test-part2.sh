@@ -3,7 +3,7 @@
 set -xu
 
 
-remove_docker_container() { 
+remove_docker_container() {
     docker rm -f tpu-test || true;
 }
 
@@ -84,7 +84,7 @@ run_test() {
     local actual_exit_code
 
     echo "--- TEST_$test_num: Running $test_name ---"
-    
+
     # Execute the test command.
     eval "$test_command" > >(tee -a "$log_file") 2> >(tee -a "$log_file" >&2)
     actual_exit_code=$?

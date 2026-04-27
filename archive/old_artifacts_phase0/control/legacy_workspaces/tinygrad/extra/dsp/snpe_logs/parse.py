@@ -18,4 +18,3 @@ for l in hp:
     tms += tm
     sl += 1
 print(f"total time, {tms/1000:.2f} ms")
-

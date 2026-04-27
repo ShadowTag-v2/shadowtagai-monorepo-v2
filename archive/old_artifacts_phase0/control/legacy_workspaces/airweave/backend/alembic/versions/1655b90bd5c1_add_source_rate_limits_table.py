@@ -19,7 +19,7 @@ depends_on = None
 def upgrade():
     # Add rate limit field to source table
     op.add_column('source', sa.Column('rate_limit_level', sa.String(), nullable=True))
-    
+
     # Create source_rate_limits table (ONE row per org+source)
     op.create_table(
         'source_rate_limits',
@@ -34,7 +34,7 @@ def upgrade():
         sa.PrimaryKeyConstraint('id'),
         sa.UniqueConstraint('organization_id', 'source_short_name', name='uq_org_source_rate_limit')
     )
-    
+
     # Create index for fast lookups
     op.create_index(
         'ix_source_rate_limits_lookup',
@@ -46,9 +46,9 @@ def upgrade():
 def downgrade():
     # Drop index first
     op.drop_index('ix_source_rate_limits_lookup', table_name='source_rate_limits')
-    
+
     # Drop table
     op.drop_table('source_rate_limits')
-    
+
     # Drop source table column
     op.drop_column('source', 'rate_limit_level')

@@ -34,4 +34,3 @@ resource "kubernetes_secret" "feast_sa_secret" {
     "credentials.json" = base64decode(google_service_account_key.feast_sa.private_key)
   }
 }
-

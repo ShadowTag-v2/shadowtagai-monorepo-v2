@@ -11,7 +11,7 @@ Review the links in the specified changed files and check for potential issues:
 1. **Broken Links**: Identify any links that might be broken or malformed
 2. **Outdated Links**: Check for links to deprecated resources or old documentation
 3. **Security**: Ensure no links to suspicious or potentially harmful sites
-4. **Best Practices**: 
+4. **Best Practices**:
    - Links should use HTTPS where possible
    - Internal links should use relative paths
    - External links should be to stable, reputable sources

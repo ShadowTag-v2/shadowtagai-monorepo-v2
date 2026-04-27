@@ -48,7 +48,7 @@ utils:
         - matches: is-fixture-function
         - matches: is-test-function
   is-fixture-arg:
-    # Fixture arguments are identifiers inside the 
+    # Fixture arguments are identifiers inside the
     # parameters of a test/fixture function
     all:
       - kind: identifier

@@ -88,4 +88,3 @@ template<int _rows, int _cols, typename _layout=ducks::rt_layout::row> using crt
 
 
 }
-

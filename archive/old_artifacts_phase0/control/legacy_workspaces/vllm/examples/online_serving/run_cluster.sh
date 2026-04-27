@@ -21,7 +21,7 @@
 #         --worker \
 #         /abs/path/to/huggingface/cache \
 #         -e VLLM_HOST_IP=<worker_node_ip>
-# 
+#
 # Each worker requires a unique VLLM_HOST_IP value.
 # Keep each terminal session open. Closing a session stops the associated Ray
 # node and thereby shuts down the entire cluster.
@@ -74,7 +74,7 @@ cleanup() {
 trap cleanup EXIT
 
 # Build the Ray start command based on the node role.
-# The head node manages the cluster and accepts connections on port 6379, 
+# The head node manages the cluster and accepts connections on port 6379,
 # while workers connect to the head's address.
 RAY_START_CMD="ray start --block"
 if [ "${NODE_TYPE}" == "--head" ]; then

@@ -100,7 +100,7 @@ The output of the GEMM is:
 ```
 
 ```math
-D = s_a s_b \widehat D + C 
+D = s_a s_b \widehat D + C
 ```
 
 ```math
@@ -123,7 +123,7 @@ The output of the GEMM is:
 ```
 
 ```math
-D = s_a s_b \widehat D + C 
+D = s_a s_b \widehat D + C
 ```
 
 ```math

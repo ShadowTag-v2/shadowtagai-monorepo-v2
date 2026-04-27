@@ -54,4 +54,3 @@ spec:
         - name: client-feature-repo-config
           configMap:
             name: client-feature-repo-config
-

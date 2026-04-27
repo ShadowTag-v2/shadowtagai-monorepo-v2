@@ -8,6 +8,3 @@ class Counter:
 c1 = Counter()
 c2 = Counter()
 print(isinstance(c1, Counter))
-
-
-

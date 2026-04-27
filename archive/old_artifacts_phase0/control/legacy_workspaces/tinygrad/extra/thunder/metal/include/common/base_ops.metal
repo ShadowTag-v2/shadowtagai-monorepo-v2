@@ -44,7 +44,7 @@ namespace base_ops {
     template<> METAL_FUNC T op_name::op<T>(thread      const T &a, device      const T &b) { func_contents } \
     template<> METAL_FUNC T op_name::op<T>(thread      const T &a, threadgroup const T &b) { func_contents } \
     template<> METAL_FUNC T op_name::op<T>(thread      const T &a, thread      const T &b) { func_contents }
-    
+
 #define TEMPLATE_OPS_TRIPLE(func_contents) \
     template<typename T> static METAL_FUNC T op(device      const T &a, device      const T &b, device      const T &c) { func_contents } \
     template<typename T> static METAL_FUNC T op(device      const T &a, device      const T &b, threadgroup const T &c) { func_contents } \
@@ -129,7 +129,7 @@ struct zero {
 struct one {
     template<typename T, typename... args> static METAL_FUNC constexpr T op(args... _) { return base_types::constants<T>::one();       }
 };
-    
+
 /**
  * @brief Represents the positive infinity constant operation.
  *
@@ -152,7 +152,7 @@ struct pos_infty {
 struct neg_infty {
     template<typename T, typename... args> static METAL_FUNC constexpr T op(args... _) { return base_types::constants<T>::neg_infty(); }
 };
-    
+
 
 /* ----------  UNARY OPS  ---------- */
 /**
@@ -170,7 +170,7 @@ struct exp {
 
 TEMPLATE_OPS_OVERRIDE_SINGLE(bf16, exp, return bf16(metal::exp((float)x));)
 TEMPLATE_OPS_OVERRIDE_SINGLE(bf16_2, exp, return bf16_2(metal::exp(float2(x)));)
-    
+
     /**
  * @brief Exponential function operation, in base 2
  *
@@ -185,7 +185,7 @@ struct exp2 {
     template<typename T> static METAL_FUNC T op(threadgroup const T &x) { return metal::exp2(x); } \
     template<typename T> static METAL_FUNC T op(thread const T &x)      { return metal::exp2(x); }
 };
-    
+
 //template<> METAL_FUNC bf16 exp2::op<bf16>(device const bf16 &x)      { return bf16(metal::exp2(x)); } \
 //template<> METAL_FUNC bf16 exp2::op<bf16>(threadgroup const bf16 &x) { return bf16(metal::exp2(x)); } \
 //template<> METAL_FUNC bf16 exp2::op<bf16>(thread const bf16 &x)      { return bf16(metal::exp2(x)); }
@@ -250,8 +250,8 @@ struct copy { // for non-compile-time setters.
 };
 
 /* ----------  BINARY OPS  ---------- */
-  
-    
+
+
 /**
  * @brief Copy2 operation.
  *
@@ -278,7 +278,7 @@ struct copy2 { // this turns out to be a slightly hacky op that makes some code 
 struct sum {
     TEMPLATE_OPS_DOUBLE(return a+b;)
 };
-    
+
 /**
  * @brief Subtraction operation.
  *
@@ -365,7 +365,7 @@ TEMPLATE_OPS_OVERRIDE_DOUBLE(bf16_2, min, return (bf16_2)metal::min((float2)a, (
 struct fma_AxBtC {
     TEMPLATE_OPS_TRIPLE(return sum::op<T>(mul::op<T>(a, b), c);)
 };
-    
+
 /**
  * @brief Fused multiply-add operation A * C + B.
  *
@@ -373,7 +373,7 @@ struct fma_AxBtC {
  * This is particularly useful for attention mechanisms in neural networks.
  *
  * @tparam T The data type of the input and output values.
- * @param a[in] The first input value. 
+ * @param a[in] The first input value.
  * @param b[in] The third input value to be added.
  * @param c[in] The second input value.
  * @return The result of the fused multiply-add operation.

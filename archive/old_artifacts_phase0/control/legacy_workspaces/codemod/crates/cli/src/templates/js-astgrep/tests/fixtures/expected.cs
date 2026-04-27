@@ -12,18 +12,18 @@ namespace MyApp
             Logger.Log("Hello, World!");
             Logger.Log("Debug message: ");
             Logger.Log($"User ID: {userId}");
-            
+
             if (isDebugMode)
             {
                 Logger.Log("Application started successfully");
                 Logger.Log("Processing...");
             }
-            
+
             // This won't be matched
             var message = "Console.WriteLine(\"not me\")";
             SomeOtherClass.WriteLine("also not matched");
         }
-        
+
         private static void ProcessData()
         {
             Logger.Log("Processing data");

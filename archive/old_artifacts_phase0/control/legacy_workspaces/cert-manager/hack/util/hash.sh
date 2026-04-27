@@ -26,5 +26,5 @@ set -o pipefail
 
 case "$(uname -s)" in
     Darwin*)    shasum -a 256 "$1";;
-    *)          sha256sum "$1" 
+    *)          sha256sum "$1"
 esac | cut -d" " -f1

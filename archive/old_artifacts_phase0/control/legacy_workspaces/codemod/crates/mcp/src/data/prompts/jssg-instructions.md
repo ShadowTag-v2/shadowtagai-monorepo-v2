@@ -759,7 +759,7 @@ class SgNode<
   prevAll(): Array<SgNode<M>>;
   replace(text: string): Edit;
   commitEdits(edits: Array<Edit>): string;
-  
+
   // Semantic Analysis Methods (JavaScript/TypeScript and Python only)
   /** Find the definition of the symbol at this node's position */
   definition(options?: { resolveExternal?: boolean }): DefinitionResult | null;
@@ -1104,7 +1104,7 @@ const pathContent = pathText.slice(1, -1); // Remove quotes - fragile!
 ```typescript
 function getStringContent(node: SgNode<Language>): string | null {
   if (!node.is("string")) return null;
-  
+
   // Find the string_fragment child which contains the actual content
   const fragment = node.find({
     rule: { kind: "string_fragment" },

@@ -38,9 +38,9 @@ export class CreateDashboardTool extends BaseMondayApiTool<typeof createDashboar
   });
 
   getDescription(): string {
-    return `Use this tool to create a new monday.com dashboard that aggregates data from one or more boards. 
+    return `Use this tool to create a new monday.com dashboard that aggregates data from one or more boards.
     Dashboards provide visual representations of board data through widgets and charts.
-    
+
     Use this tool when users want to:
     - Create a dashboard to visualize board data
     - Aggregate information from multiple boards

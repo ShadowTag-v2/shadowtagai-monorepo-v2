@@ -2,7 +2,7 @@
  * @file
  * @brief Abstraction for a complex register tile composed of real and imaginary tiles
  */
- 
+
 #pragma once
 
 #include "rt.cuh"
@@ -14,7 +14,7 @@ namespace ducks {
 namespace crt {
 /**
  * @brief A dummy type used to identify complex register tiles.
- * 
+ *
  * For a type to quack like an rt_cmplx, it should define its identifier as ducks::rt::cmplx_identifier.
  * If a type quacks like ducks::rt::cmplx_identifier, it will be treated as an rt_cmplx by compiler checks.
  */
@@ -61,7 +61,7 @@ concept col_layout = all<T> && std::is_same_v<typename T::layout, ducks::rt_layo
  *
  * This structure is designed to abstract complex number operations internally to the real and imaginary
  * register tiles, respectively
- * 
+ *
  * In general, you probably want a row-major tile, unless you specifically want to call mma
  */
 template<typename _T, int _rows, int _cols, ducks::rt_layout::all _layout=ducks::rt_layout::row>

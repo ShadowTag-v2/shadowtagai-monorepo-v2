@@ -44,4 +44,3 @@ store(threadgroup CST &dst, thread const CRT &src) {
 
 
 }
-

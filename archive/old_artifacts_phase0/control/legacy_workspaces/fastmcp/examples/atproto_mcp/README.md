@@ -68,47 +68,47 @@ async def demo():
         await client.call_tool("post", {
             "text": "Hello from FastMCP!"
         })
-        
+
         # Post with image
         await client.call_tool("post", {
             "text": "Beautiful sunset! 🌅",
             "images": ["https://example.com/sunset.jpg"],
             "image_alts": ["Sunset over the ocean"]
         })
-        
+
         # Reply to a post
         await client.call_tool("post", {
             "text": "Great point!",
             "reply_to": "at://did:plc:xxx/app.bsky.feed.post/yyy"
         })
-        
+
         # Quote post
         await client.call_tool("post", {
             "text": "This is important:",
             "quote": "at://did:plc:xxx/app.bsky.feed.post/yyy"
         })
-        
+
         # Rich text with links and mentions
         await client.call_tool("post", {
             "text": "Check out FastMCP by @alternatebuild.dev",
             "links": [{"text": "FastMCP", "url": "https://github.com/jlowin/fastmcp"}],
             "mentions": [{"handle": "alternatebuild.dev", "display_text": "@alternatebuild.dev"}]
         })
-        
+
         # Advanced: Quote with image
         await client.call_tool("post", {
             "text": "Adding visual context:",
             "quote": "at://did:plc:xxx/app.bsky.feed.post/yyy",
             "images": ["https://example.com/chart.png"]
         })
-        
+
         # Advanced: Reply with rich text
         await client.call_tool("post", {
             "text": "I agree! See this article for more info",
             "reply_to": "at://did:plc:xxx/app.bsky.feed.post/yyy",
             "links": [{"text": "this article", "url": "https://example.com/article"}]
         })
-        
+
         # Create a thread
         await client.call_tool("create_thread", {
             "posts": [

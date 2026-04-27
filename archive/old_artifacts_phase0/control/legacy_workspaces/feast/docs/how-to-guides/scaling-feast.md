@@ -2,7 +2,7 @@
 
 ## Overview
 
-Feast is designed to be easy to use and understand out of the box, with as few infrastructure dependencies as possible. However, there are components used by default that may not scale well. 
+Feast is designed to be easy to use and understand out of the box, with as few infrastructure dependencies as possible. However, there are components used by default that may not scale well.
 Since Feast is designed to be modular, it's possible to swap such components with more performant components, at the cost of Feast depending on additional infrastructure.
 
 

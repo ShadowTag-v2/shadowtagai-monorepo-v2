@@ -73,7 +73,7 @@ This single setup gives you:
 
 You can also pass a FastMCP [client transport](/clients/transports) (or parameter that can be inferred to a transport) to `as_proxy()`. This will automatically create a `ProxyClient` instance for you.
 
-Finally, you can pass a regular FastMCP `Client` instance to `as_proxy()`. This will work for many use cases, but may break if advanced MCP features like sampling or elicitation are invoked by the server. 
+Finally, you can pass a regular FastMCP `Client` instance to `as_proxy()`. This will work for many use cases, but may break if advanced MCP features like sampling or elicitation are invoked by the server.
 
 ## Session Isolation & Concurrency
 
@@ -93,7 +93,7 @@ proxy = FastMCP.as_proxy(ProxyClient("backend_server.py"))
 
 # Multiple clients can use this proxy simultaneously without interference:
 # - Client A calls a tool -> gets isolated backend session
-# - Client B calls a tool -> gets different isolated backend session  
+# - Client B calls a tool -> gets different isolated backend session
 # - No context mixing between requests
 ```
 
@@ -108,7 +108,7 @@ from fastmcp import Client
 async with Client("backend_server.py") as connected_client:
     # This proxy will reuse the connected session for all requests
     proxy = FastMCP.as_proxy(connected_client)
-    
+
     # ⚠️ Warning: All requests share the same backend session
     # This may cause context mixing in concurrent scenarios
 ```
@@ -158,7 +158,7 @@ if __name__ == "__main__":
 ### Supported Features
 
 - **Roots**: Forwards filesystem root access requests to the client
-- **Sampling**: Forwards LLM completion requests from backend to client  
+- **Sampling**: Forwards LLM completion requests from backend to client
 - **Elicitation**: Forwards user input requests to the client
 - **Logging**: Forwards log messages from backend through to client
 - **Progress**: Forwards progress notifications during long operations

@@ -26,14 +26,14 @@ NATIVESCRIPT_CORE_ARGS=${NATIVESCRIPT_CORE_ARGS:-$DEFAULT_NATIVESCRIPT_CORE_ARGS
     npx rimraf "$DIST/$PACKAGE*.tgz"
 
     echo "Generating compat package"
-    npx ts-node --project ./build/tsconfig.json ./build/generate-tns-compat 
+    npx ts-node --project ./build/tsconfig.json ./build/generate-tns-compat
 
     echo "Copying $PACKAGE_SOURCE $DIST/$PACKAGE..."
     npx ncp "$PACKAGE_SOURCE" "$DIST/$PACKAGE"
 
     echo "Copying README and LICENSE to $DIST/$PACKAGE"
     npx ncp LICENSE "$DIST"/"$PACKAGE"/LICENSE
-      
+
     (
         echo 'TypeScript transpile...'
         cd "$DIST/$PACKAGE"

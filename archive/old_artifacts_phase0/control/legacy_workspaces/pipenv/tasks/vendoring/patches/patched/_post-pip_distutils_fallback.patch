@@ -23,7 +23,7 @@ index 6e5d6045..95184b8a 100644
 +            "install-scheme resolution."
 +        )
 +        _USE_SYSCONFIG = True
- 
+
  # Be noisy about incompatibilities if this platforms "should" be using
  # sysconfig, but is explicitly opting out and using distutils instead.
 diff --git b/pipenv/patched/pip/_internal/locations/_distutils.py a/pipenv/patched/pip/_internal/locations/_distutils.py
@@ -57,6 +57,6 @@ index 9e9ee5f1..c9044585 100644
 +        "Python installation includes the distutils package "
 +        "(e.g. 'python3-distutils' on Debian/Ubuntu)."
 +    ) from _distutils_missing_exc
- 
+
  from pipenv.patched.pip._internal.models.scheme import Scheme
  from pipenv.patched.pip._internal.utils.compat import WINDOWS

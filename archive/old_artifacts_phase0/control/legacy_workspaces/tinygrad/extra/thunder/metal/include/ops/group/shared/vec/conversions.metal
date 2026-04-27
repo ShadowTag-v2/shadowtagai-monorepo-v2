@@ -26,4 +26,3 @@ copy(threadgroup SV1 &dst, threadgroup const SV2 &src, const int threadIdx) {
         dst[i] = base_types::convertor<typename SV1::dtype, typename SV2::dtype>::convert(src[i]);
     }
 }
-

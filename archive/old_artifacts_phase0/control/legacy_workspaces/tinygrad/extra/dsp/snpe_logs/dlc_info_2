@@ -712,4 +712,3 @@ DLC created with converter version: 1.61.0.3358
 Layers used by DLC: CONVOLUTIONAL, DATA, ELEMENTWISE_BINARY_OP_SUM, FULLY_CONNECTED, NEURON_RELU_MIN_MAX, PERMUTE, POOLING
 Est. Steady-State Memory Needed to Run: 164.3 MiB
 -----------------------------------------------------------------------------------------------------------------------------------------
-

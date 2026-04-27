@@ -5,4 +5,4 @@ You need to install below dependencies:
 
 ```python
 uv pip install youtube_search
-``` 
+```

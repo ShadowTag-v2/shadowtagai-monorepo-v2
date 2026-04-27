@@ -104,10 +104,10 @@ graph TD
 ```python
 class JSONFormatter(logging.Formatter):
     """JSON log formatter for structured logging."""
-    
+
 class TextFormatter(logging.Formatter):
     """Human-readable text formatter with colors."""
-    
+
 def get_logger(name: str = __name__) -> logging.Logger:
     """Get or create logger with workflow context."""
 ```
@@ -123,7 +123,7 @@ class ClaudeConfig(BaseSettings):
     api_key: str  # "999..." enables CLI mode
     model: str = "claude-sonnet-4-5"
     enable_cache: bool = True  # Reduces API costs by ~90%
-    
+
     @property
     def is_cli_mode(self) -> bool:
         """Check if using CLI mode (API key is all 9s)."""
@@ -150,7 +150,7 @@ class Hypothesis(BaseModel):
     testability_score: Optional[float]  # 0.0-1.0
     novelty_score: Optional[float]
     suggested_experiment_types: List[ExperimentType]
-    
+
     @field_validator('statement')
     def validate_statement(cls, v: str) -> str:
         """Ensure statement is clear and testable."""
@@ -177,7 +177,7 @@ class PaperMetadata:
     abstract: str
     authors: List[Author]
     citation_count: int
-    
+
 class BaseLiteratureClient(ABC):
     @abstractmethod
     def search(self, query: str) -> List[PaperMetadata]:
@@ -194,7 +194,7 @@ class BaseLiteratureClient(ABC):
 class ModelComplexity:
     """Estimate prompt complexity for model selection."""
     COMPLEX_KEYWORDS = ['analyze', 'synthesis', 'design', 'research', ...]
-    
+
 def get_client(model: str = None, enable_cache: bool = True) -> LLMProvider:
     """Get LLM client (Anthropic or OpenAI)."""
 ```
@@ -238,13 +238,13 @@ ERROR_BACKOFF_SECONDS = [2, 4, 8]  # Exponential backoff
 
 class ResearchDirectorAgent(BaseAgent):
     """Master orchestrator for autonomous research."""
-    
+
     def __init__(self, research_question, domain, config):
         self.max_iterations = config.get("max_iterations", 10)
         self.max_runtime_hours = config.get("max_runtime_hours", 12.0)
         self.research_plan = ResearchPlan(...)
         self.workflow = ResearchWorkflow(...)
-        # Coordinates: HypothesisGenerator, ExperimentDesigner, 
+        # Coordinates: HypothesisGenerator, ExperimentDesigner,
         # Executor, DataAnalyst, HypothesisRefiner
 ```
 
@@ -503,7 +503,7 @@ def sample_hypothesis():
 class TestNoveltyChecker:
     @patch('kosmos.hypothesis.novelty_checker.UnifiedLiteratureSearch')
     @patch('kosmos.hypothesis.novelty_checker.get_session')
-    def test_check_novelty_high(self, mock_session, mock_search, 
+    def test_check_novelty_high(self, mock_session, mock_search,
                                  novelty_checker, sample_hypothesis):
         mock_search_inst = Mock()
         mock_search_inst.search.return_value = []

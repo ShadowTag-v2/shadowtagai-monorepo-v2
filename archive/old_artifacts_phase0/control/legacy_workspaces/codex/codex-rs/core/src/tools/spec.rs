@@ -301,7 +301,7 @@ fn create_shell_tool() -> ToolSpec {
 
     let description  = if cfg!(windows) {
         r#"Runs a Powershell command (Windows) and returns its output. Arguments to `shell` will be passed to CreateProcessW(). Most commands should be prefixed with ["powershell.exe", "-Command"].
-        
+
 Examples of valid command strings:
 
 - ls -a (show hidden): ["powershell.exe", "-Command", "Get-ChildItem -Force"]
@@ -365,7 +365,7 @@ fn create_shell_command_tool() -> ToolSpec {
 
     let description = if cfg!(windows) {
         r#"Runs a Powershell command (Windows) and returns its output.
-        
+
 Examples of valid command strings:
 
 - ls -a (show hidden): "Get-ChildItem -Force"
@@ -1937,7 +1937,7 @@ mod tests {
 
         let expected = if cfg!(windows) {
             r#"Runs a Powershell command (Windows) and returns its output. Arguments to `shell` will be passed to CreateProcessW(). Most commands should be prefixed with ["powershell.exe", "-Command"].
-        
+
 Examples of valid command strings:
 
 - ls -a (show hidden): ["powershell.exe", "-Command", "Get-ChildItem -Force"]
@@ -1967,7 +1967,7 @@ Examples of valid command strings:
 
         let expected = if cfg!(windows) {
             r#"Runs a Powershell command (Windows) and returns its output.
-        
+
 Examples of valid command strings:
 
 - ls -a (show hidden): "Get-ChildItem -Force"

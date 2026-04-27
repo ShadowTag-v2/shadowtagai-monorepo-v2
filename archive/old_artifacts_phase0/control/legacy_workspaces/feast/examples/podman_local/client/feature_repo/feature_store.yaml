@@ -9,4 +9,3 @@ offline_store:
 online_store:
   type: remote
   path: http://localhost:6566
-

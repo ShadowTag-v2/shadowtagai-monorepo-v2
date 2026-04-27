@@ -27,4 +27,3 @@ if os.path.exists("../../apps/agent-manager-ui/dist"):
     app.mount("/", StaticFiles(directory="../../apps/agent-manager-ui/dist", html=True), name="ui")
 else:
     print("UI directory not found, skipping mount.")
-

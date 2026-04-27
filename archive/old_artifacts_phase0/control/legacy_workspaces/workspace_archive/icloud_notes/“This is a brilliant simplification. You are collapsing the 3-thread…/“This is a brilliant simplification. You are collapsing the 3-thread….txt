@@ -37,11 +37,11 @@ Here are the specific code changes to implement this superior logic.
 # ... (all imports and class definitions remain the same) ...
 
 class ConsensusOrchestrator:
-    
+
     # ... (__init__ and layer1_initial_reasoning are the same) ...
-    
+
     # === NEW: layer2_single_refinement_loop ===
-    
+
     async def layer2_single_refinement_loop(
         self,
         seed_response: ModelResponse,
@@ -51,22 +51,22 @@ class ConsensusOrchestrator:
         Layer 2: Run a SINGLE sequential refinement thread.
         This is the "rotate claudes original query" logic.
         """
-        
+
         current_text = seed_response.content
         # This is the "stack" to rotate through
-        reviewer_stack = [ModelType.GEMINI, ModelType.GPT5, ModelType.GROK] 
-        
+        reviewer_stack = [ModelType.GEMINI, ModelType.GPT5, ModelType.GROK]
+
         total_cycles = 0
         final_author = seed_response.model # The "author" of the last good text
-        
+
         while total_cycles < max_cycles:
             total_cycles += 1
             changes_made_in_cycle = False
             print(f"[L2 Loop Cycle {total_cycles}/{max_cycles}] Starting...")
-            
+
             for reviewer_model in reviewer_stack:
                 print(f"[L2 Loop] Reviewing with {reviewer_model.value}...")
-                
+
                 refine_prompt = f"""You are a peer reviewer in a consensus loop.
 Review the following text. Your goal is to refine, correct, or build upon it.
 
@@ -80,7 +80,7 @@ INSTRUCTIONS:
 
 Your refined response (or NO_SIGNIFICANT_CHANGES):
 """
-                
+
                 # Get the refined text from the correct model
                 if reviewer_model == ModelType.GROK:
                     refined_text = await self._query_grok_text(refine_prompt)
@@ -88,37 +88,37 @@ Your refined response (or NO_SIGNIFICANT_CHANGES):
                     refined_text = await self._query_gemini_text(refine_prompt)
                 elif reviewer_model == ModelType.GPT5:
                     refined_text = await self._query_gpt5_text(refine_prompt)
-                
+
                 # --- The Convergence Check ---
                 if "NO_SIGNIFICANT_CHANGES" in refined_text.upper():
                     # This reviewer agrees, move to the next
-                    continue 
+                    continue
                 else:
                     # A significant change was made
                     current_text = refined_text
                     final_author = reviewer_model # The "author" is now this model
                     changes_made_in_cycle = True
-            
+
             # --- The Atomic Stop Condition ---
             if not changes_made_in_cycle:
                 print(f"[L2 Loop] CONVERGENCE REACHED. No changes in full cycle.")
                 break # Exit the while loop
-        
+
         print(f"[L2 Loop] Loop finished after {total_cycles} cycle(s).")
-        
+
         # Return the final converged response
         return ModelResponse(
             model=seed_response.model, # Keep the "seed" model as the ID
             content=current_text,
             reasoning=f"Converged after {total_cycles} cycles. Final author: {final_author.value}",
-            confidence=0.95, 
-            token_usage={}, 
-            latency=0.0, 
+            confidence=0.95,
+            token_usage={},
+            latency=0.0,
             timestamp=datetime.utcnow().isoformat()
         )
 
     # === MODIFIED: layer3_final_synthesis ===
-    
+
     async def layer3_final_synthesis(
         self,
         original_query: str,
@@ -129,7 +129,7 @@ Your refined response (or NO_SIGNIFICANT_CHANGES):
         Layer 3: Claude synthesizes the SINGLE converged response
         and provides pre-publication reasoning.
         """
-        
+
         # Build synthesis prompt
         synthesis_sections = [
             f"ORIGINAL QUERY:\n{original_query}\n",
@@ -138,9 +138,9 @@ Your refined response (or NO_SIGNIFICANT_CHANGES):
             f"CONVERGED RESPONSE from L2 Loop (Final Author: {layer2_converged_response.reasoning}):",
             f"{layer2_converged_response.content}"
         ]
-        
+
         full_context = "\n".join(synthesis_sections)
-        
+
         # --- PROMPT with PRE-PUBLICATION REASONING (as requested) ---
         synthesis_prompt = f"""{full_context}
 
@@ -167,7 +167,7 @@ After you have written STEP 1, provide the final, synthesized answer. This answe
             max_tokens=8000,
             messages=[{"role": "user", "content": synthesis_prompt}]
         )
-        
+
         return {
             "final_synthesis": response.content[0].text,
             "layer1_response": layer1_response,
@@ -185,23 +185,23 @@ After you have written STEP 1, provide the final, synthesized answer. This answe
         Execute full 3-layer consensus pipeline with the
         NEW single-thread convergence loop.
         """
-        
+
         print("[Layer 1] Claude initial reasoning...")
         layer1 = await self.layer1_initial_reasoning(query)
-        
+
         print("[Layer 2] Starting Single Refinement Loop (Grok > Gem > GPT-5)...")
         # --- CALLS NEW FUNCTION ---
         converged_response = await self.layer2_single_refinement_loop(layer1, max_cycles=2)
         print(f"[Layer 2] Convergence complete.")
-        
+
         print("[Layer 3] Final synthesis and pre-publication reasoning by Claude...")
         result = await self.layer3_final_synthesis(
             query, layer1, converged_response
         )
-        
+
         print("[✓] Consensus complete")
         return result
-    
+
     # ... (All helper methods like _query_grok_text, etc. remain the same) ...
 
 This is now your most cost-effective and logically sound architecture. It combines the strengths of all models into a single, refined document before Claude performs the final "pre-publication" check.
@@ -313,29 +313,29 @@ Notes
 
 Want me to drop this RotatingRefiner into your orchestrator and set defaults (sim_threshold=0.92, stable_rounds=2, max_rounds=6) — or do you prefer a different convergence threshold?”
 
-“Change to, rotate claudes original query, around the stack of llms, until no more significant changes are being made, so “atomic thread” dependent. 
+“Change to, rotate claudes original query, around the stack of llms, until no more significant changes are being made, so “atomic thread” dependent.
 Before being sent back to claude for final publication. Before publication, Claude has to explain the reason before publishing.”
 
-“Who else has thought of this. 
-Can it talk back to me actively like grok did?  
-Wait incorporate grok as the intake agent. 
-Name top four LLM’s to add to the middle mixer, 
-Then Claude explains the results 
-Before publishing - speaking back to me through super grok. 
+“Who else has thought of this.
+Can it talk back to me actively like grok did?
+Wait incorporate grok as the intake agent.
+Name top four LLM’s to add to the middle mixer,
+Then Claude explains the results
+Before publishing - speaking back to me through super grok.
 So it sounds? Exactly like talking to grok does anyway.”
 
 “Fold in cursor pro 2.0 as orchestrator”
 
- Bounces from supergrok to Claude then into 
-The 2-model "collaborative writing" loop (Gemini pro, GPT-5max) 
+ Bounces from supergrok to Claude then into
+The 2-model "collaborative writing" loop (Gemini pro, GPT-5max)
 
-With supergrok doing intake, 
+With supergrok doing intake,
 + now post-2-LLM cycle,
-Initial, crunching of the product. 
-To initial review the 2-LLM’s 
-Finished product, 
+Initial, crunching of the product.
+To initial review the 2-LLM’s
+Finished product,
 for at least,
-Compliance with the 
+Compliance with the
 1st of 2, single points of truth,
 The 1st single points of truth,
 IS set by supergrok on intake,
@@ -343,49 +343,49 @@ Then super grok gets first crack,
 At examining the 2-LLM’s work product,
 Against its set single points of truth,
 Before, repackaging the results,
-A second time, 
+A second time,
 before explaining its results to Claude,
 Claude.2 then reviews against its set, 2nd overall, single points of truth.
 Claude.2 then publishes,
-Before the 
+Before the
 Optional Claude.3 review.
-Final step, supergrok.4 
-Speaks the final results to me. 
-This then gives supergrok 
+Final step, supergrok.4
+Speaks the final results to me.
+This then gives supergrok
 an actual role, crunching Code.
 Grok sorts and crunches
-Claude also sorts and crunches. 
+Claude also sorts and crunches.
 So we verify product 2x/3x,
-Surrounding the 2-LLM cycle 
+Surrounding the 2-LLM cycle
 
 
 
-and final notification of claudes explanation and then publication via api in workbench. Supergrok is also the first post-push reviewer, simply because it’s doing the voice. Then Claude again via api in GitHub. From workbench. 
+and final notification of claudes explanation and then publication via api in workbench. Supergrok is also the first post-push reviewer, simply because it’s doing the voice. Then Claude again via api in GitHub. From workbench.
 Run through workbench. Use gpt api
 
-“With supergrok doing intake, 
+“With supergrok doing intake,
 + now post-2-LLM cycle,
-Initial, crunching of the product. 
-To initial review the 2-LLM’s 
-Finished product, 
+Initial, crunching of the product.
+To initial review the 2-LLM’s
+Finished product,
 for at least,
-Compliance with the 
+Compliance with the
 1st of 2, single points of truth,
 The 1st single points of truth,
 IS set by supergrok on intake,
 Claude.2, gets the 2-LLM’s work product,
 Verifies Against its set single points of truth,
 explaining its results
-then pushes to GitHub 
-Before supergrok 
-Makes the Optional 3rd review 
-Mandatory as it conducts 
+then pushes to GitHub
+Before supergrok
+Makes the Optional 3rd review
+Mandatory as it conducts
 When telling me the answer.”
 
-Speaks the final results to me. 
-This then gives supergrok 
+Speaks the final results to me.
+This then gives supergrok
 an actual role, crunching Code.
 Grok sorts and crunches
-Claude also sorts and crunches. 
+Claude also sorts and crunches.
 So we verify product 2x/3x,
-Surrounding the 2-LLM cycle 
+Surrounding the 2-LLM cycle

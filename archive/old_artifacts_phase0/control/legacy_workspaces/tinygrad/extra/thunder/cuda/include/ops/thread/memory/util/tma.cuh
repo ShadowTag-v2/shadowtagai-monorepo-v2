@@ -26,7 +26,7 @@ namespace tma {
 */
 __device__ static inline void expect_bytes(semaphore& bar, uint32_t bytes) {
     void const* const ptr = &bar;
-    uint32_t bar_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr)); 
+    uint32_t bar_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr));
 
     asm volatile ("mbarrier.arrive.expect_tx.shared::cta.b64 _, [%0], %1;\n"
         :: "r"(bar_ptr), "r"(bytes));
@@ -90,7 +90,7 @@ namespace cluster {
 */
 __device__ static inline void wait(semaphore& bar, int kPhaseBit) {
     void const* const ptr = &bar;
-    uint32_t mbar_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr)); 
+    uint32_t mbar_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr));
 
     asm volatile (
         "{\n"
@@ -108,7 +108,7 @@ __device__ static inline void wait(semaphore& bar, int kPhaseBit) {
 
 __device__ static inline void careful_wait(semaphore& bar, int kPhaseBit) {
     void const* const ptr = &bar;
-    uint32_t mbar_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr)); 
+    uint32_t mbar_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr));
 
     asm volatile (
         "{\n"
@@ -137,7 +137,7 @@ __device__ static inline void careful_wait(semaphore& bar, int kPhaseBit) {
 * This function sets the number of bytes expected at the semaphore for the first thread in the warp.
 * It converts the semaphore pointer to a generic shared memory pointer and uses an inline assembly
 * instruction to set the expected number of bytes.
-* 
+*
 * It's worth being aware that this function is particularly necessary for multicast loads, and
 * distributed shared memory can actually be done with a normal tma::expect followed by wait. See
 * the unit tests of dsmem for an example.
@@ -146,7 +146,7 @@ __device__ static inline void careful_wait(semaphore& bar, int kPhaseBit) {
 * @param bytes The number of bytes expected at the semaphore.
 */
 __device__ static inline void expect_bytes(semaphore& bar, uint32_t bytes, int dst_cta) {
-    uint32_t mbar_addr = static_cast<uint32_t>(__cvta_generic_to_shared(&bar)); 
+    uint32_t mbar_addr = static_cast<uint32_t>(__cvta_generic_to_shared(&bar));
     uint32_t neighbor_mbar_addr;
     asm volatile (
         "mapa.shared::cluster.u32  %0, %1, %2;\n"
@@ -186,7 +186,7 @@ __device__ static inline void expect(semaphore& bar, int dst_cta, const T& _1, c
 * @param kPhaseBit The phase bit used for the semaphore.
 */
 __device__ static inline void arrive(semaphore& bar, int dst_cta, uint32_t count=1) {
-    uint32_t mbar_addr = static_cast<uint32_t>(__cvta_generic_to_shared(&bar)); 
+    uint32_t mbar_addr = static_cast<uint32_t>(__cvta_generic_to_shared(&bar));
     uint32_t neighbor_mbar_addr;
     asm volatile (
         "mapa.shared::cluster.u32  %0, %1, %2;\n"
@@ -204,14 +204,14 @@ __device__ static inline void arrive(semaphore& bar, int dst_cta, uint32_t count
 // Generic transfer
 __device__ static inline void store_async(void *dst, void *src, int dst_cta, uint32_t size_bytes, semaphore& bar) {
     void const* const ptr = &bar;
-    uint32_t mbarrier_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr)); 
+    uint32_t mbarrier_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr));
 
     // **************************************************
     // load from src to dst in different threadblocks
     uint32_t src_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(src));
     uint32_t dst_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(dst));
 
-    // mapa instr = https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#data-movement-and-conversion-instructions-mapa 
+    // mapa instr = https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#data-movement-and-conversion-instructions-mapa
     // find dst addr in neighbor's cta
     uint32_t neighbor_addr_dst;
     asm volatile (
@@ -219,15 +219,15 @@ __device__ static inline void store_async(void *dst, void *src, int dst_cta, uin
         : "=r"(neighbor_addr_dst)
         : "r"(dst_ptr), "r"(dst_cta)
     );
-    
+
     uint32_t neighbor_addr_mbarrier = mbarrier_ptr;
     asm volatile (
         "mapa.shared::cluster.u32  %0, %1, %2;\n"
         : "=r"(neighbor_addr_mbarrier)
         : "r"(mbarrier_ptr), "r"(dst_cta)
     );
-    
-    // cp.async instr = https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#data-movement-and-conversion-instructions-cp-async-bulk 
+
+    // cp.async instr = https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#data-movement-and-conversion-instructions-cp-async-bulk
     // copy src into dst in neighbor's cta
     asm volatile ("fence.proxy.async.shared::cta;\n" ::: "memory");
     asm volatile (

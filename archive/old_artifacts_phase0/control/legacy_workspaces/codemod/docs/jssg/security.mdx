@@ -108,14 +108,14 @@ Use these exact strings in the `capabilities` array:
     ```ts scripts/codemod.ts
     import type { Transform } from "codemod:ast-grep";
     import { readFileSync } from "fs";
-    
+
     const transform: Transform = (root) => {
       // Read a configuration file
       const config = JSON.parse(readFileSync("./config.json", "utf-8"));
-      
+
       // ... use config in transformation
     };
-    
+
     export default transform;
     ```
   </Step>
@@ -133,15 +133,15 @@ Use these exact strings in the `capabilities` array:
   <Step title="Use fetch in your transform">
     ```ts scripts/codemod.ts
     import type { Transform } from "codemod:ast-grep";
-    
+
     const transform: Transform = async (root) => {
       // Fetch latest API definitions
       const response = await fetch("https://api.example.com/schema.json");
       const schema = await response.json();
-      
+
       // ... use schema in transformation
     };
-    
+
     export default transform;
     ```
 
@@ -164,16 +164,16 @@ Use these exact strings in the `capabilities` array:
     ```ts scripts/codemod.ts
     import type { Transform } from "codemod:ast-grep";
     import { execSync } from "child_process";
-    
+
     const transform: Transform = (root) => {
       // Get current git branch
       const branch = execSync("git rev-parse --abbrev-ref HEAD", {
         encoding: "utf-8"
       }).trim();
-      
+
       // ... use branch info in transformation
     };
-    
+
     export default transform;
     ```
 
@@ -214,7 +214,7 @@ codemod workflow run --allow-fs --allow-fetch --allow-child-process -w path/to/w
 
     ```markdown README.md
     ## Required Capabilities
-    
+
     - **fs**: Reads `package.json` to detect project dependencies
     - **fetch**: Calls an external API to get data
     ```
@@ -226,7 +226,7 @@ codemod workflow run --allow-fs --allow-fetch --allow-child-process -w path/to/w
     // ❌ BAD: Command injection vulnerability
     const userInput = options.branch;
     execSync(`git checkout ${userInput}`);
-    
+
     // ✅ GOOD: Validate input first
     const userInput = options.branch;
     if (!/^[a-zA-Z0-9_-]+$/.test(userInput)) {

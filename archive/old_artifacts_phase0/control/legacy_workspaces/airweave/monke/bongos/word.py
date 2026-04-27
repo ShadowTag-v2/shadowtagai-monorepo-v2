@@ -401,4 +401,3 @@ class WordBongo(BaseBongo):
         if (delta := now - self._last_req) < self.rate_limit_delay:
             await asyncio.sleep(self.rate_limit_delay - delta)
         self._last_req = time.time()
-

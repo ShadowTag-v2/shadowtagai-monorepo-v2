@@ -18,18 +18,18 @@ export class AllWidgetsSchemaTool extends BaseMondayApiTool<Record<string, never
 
   getDescription(): string {
     return `Fetch complete JSON Schema 7 definitions for all available widget types in monday.com.
-    
+
     This tool is essential before creating widgets as it provides:
     - Complete schema definitions for all supported widgets
     - Required and optional fields for each widget type
     - Data type specifications and validation rules
     - Detailed descriptions of widget capabilities
-    
+
     Use this tool when you need to:
     - Understand widget configuration requirements before creating widgets
     - Validate widget settings against official schemas
     - Plan widget implementations with proper data structures
-    
+
     The response includes JSON Schema 7 definitions that describe exactly what settings each widget type accepts.`;
   }
 

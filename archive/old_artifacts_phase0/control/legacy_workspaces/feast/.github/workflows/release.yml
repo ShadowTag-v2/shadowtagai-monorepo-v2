@@ -154,7 +154,7 @@ jobs:
         if: github.event.inputs.dry_run == 'false'
         run: |
           npx -p @semantic-release/changelog -p @semantic-release/git -p @semantic-release/exec -p semantic-release semantic-release --github-assets "infra/feast-operator/dist/operator-e2e-tests"
-          
+
 
   update_stable_branch:
     name: Update Stable Branch after release

@@ -210,7 +210,7 @@ while (response.finishReason == FinishReason.interrupted) {
   for (final interrupt in response.interrupts) {
     if (interrupt.toolRequest.name == 'askUser') {
       final question = interrupt.metadata?['interrupt'] as String;
-      
+
       // Prompt user for answer...
       final answer = 'Dart support is coming soon!';
 
@@ -252,7 +252,7 @@ var response = await ai.generate(
 
 if (response.finishReason == FinishReason.interrupted) {
   // Use UI to get user confirmation...
-  final confirmed = true; 
+  final confirmed = true;
 
   if (confirmed) {
     // Resume generation and use `withMetadata` to inject the approval

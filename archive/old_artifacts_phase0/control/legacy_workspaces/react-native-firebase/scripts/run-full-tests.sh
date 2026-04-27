@@ -99,7 +99,7 @@ for flavor in "ios" "android" "macos"; do
     echo "Running $flavor E2E test run attempt $i..."
     if ! yarn tests:"$flavor":test; then
       if [ $i -eq 3 ]; then
-        echo "$flavor E2E test failed all $i attempts."; 
+        echo "$flavor E2E test failed all $i attempts.";
         terminate_testing_processes
         exit 1;
       fi

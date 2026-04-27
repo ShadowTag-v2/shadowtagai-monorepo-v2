@@ -32,11 +32,11 @@ namespace rt {
  * If a type quacks like ducks::rt::identifier, it will be treated as an rt by compiler checks.
  */
 struct identifier {};
-    
+
 } // namespace rt
-    
+
 } // namespace ducks
-    
+
 /**
  * @brief Main tile structure for manipulating data in registers.
  *
@@ -67,15 +67,15 @@ struct rt {
     constant static constexpr int elements_per_thread = rt_base<T, _layout>::elements_per_thread * width * height; ///< Elements handled per thread.
     constant static constexpr int packed_per_thread   = rt_base<T, _layout>::packed_per_thread   * width * height; ///< Packed elements per thread.
     constant static constexpr int packed_per_tile     = rt_base<T, _layout>::packed_per_thread; ///< Packed elements per tile.
-    
+
     rt_base<dtype, _layout> tiles[height][width]; ///< The actual storage for the matrix tile, organized in subtiles.
-    
+
     using row_vec = rv<T, cols, typename rt_base<T, _layout>::row_vec_layout>; ///< A type representing a column vector for this tile.
     using col_vec = rv<T, rows, typename rt_base<T, _layout>::col_vec_layout>; ///< A type representing a column vector for this tile.
 };
 
- 
-    
+
+
 namespace ducks{
 template <typename T>
 struct has_rt_identifier {
@@ -102,7 +102,7 @@ template <typename RT>
 static constexpr bool is_register_tile() {
     return has_rt_identifier<RT>::value;
 }
-    
+
 template <typename RT>
 static constexpr bool is_row_register_tile() {
     return has_rt_identifier<RT>::is_row;
@@ -112,14 +112,14 @@ template <typename RT>
 static constexpr bool is_col_register_tile() {
     return has_rt_identifier<RT>::is_col;
 }
-    
-    
+
+
 template <typename RT>
 static constexpr void assert_register_tile() {
     static_assert(is_register_tile<RT>(), "T must be a rt");
 }
 }
-   
+
 /* ----------  WRAPPERS FOR PRETTINESS  ---------- */
 // layout and type wrappers
 

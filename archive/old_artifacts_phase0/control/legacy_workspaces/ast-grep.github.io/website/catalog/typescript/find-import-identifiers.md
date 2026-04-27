@@ -297,4 +297,3 @@ import /* test */ {
 
 ### Contributed by
 [Michael Angelo Rivera](https://github.com/michaelangeloio)
-

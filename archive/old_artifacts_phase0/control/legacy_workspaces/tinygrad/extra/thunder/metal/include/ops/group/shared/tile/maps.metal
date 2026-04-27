@@ -1,4 +1,4 @@
-/**  
+/**
  * @file
  * @brief Group maps on shared tiles.
  */

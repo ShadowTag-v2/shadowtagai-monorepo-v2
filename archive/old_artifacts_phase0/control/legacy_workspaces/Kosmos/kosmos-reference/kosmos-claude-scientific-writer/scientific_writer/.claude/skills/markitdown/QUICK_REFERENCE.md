@@ -306,4 +306,3 @@ sudo apt-get install tesseract-ocr
 - **Format Details**: See `references/file_formats.md`
 - **Examples**: See `assets/example_usage.md`
 - **GitHub**: https://github.com/microsoft/markitdown
-

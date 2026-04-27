@@ -39,7 +39,7 @@ import (
 
 	f := "apple"
 	fmt.Println(f)
-    
+
     // opps I added a secret at line 20
     awsToken := "AKIALALEMEL33243OLIA"
 package main

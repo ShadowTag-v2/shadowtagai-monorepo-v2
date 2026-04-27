@@ -29,5 +29,3 @@ flutter_runner:
 
     ui:
       uri: "../../../../../lib/ui/ui.dart"
-
-

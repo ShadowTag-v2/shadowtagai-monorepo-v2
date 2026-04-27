@@ -37,4 +37,3 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           path: .ci/metrics_summary.md
-

@@ -24,4 +24,3 @@ type Foo6 = [
 
     /* comment2 */
 ];
-

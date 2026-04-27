@@ -10,7 +10,7 @@ This also adds an on demand feature view + feature services + a saved dataset.
 
 Install a dev build Feast using pip
 
-Clone a feast repo: 
+Clone a feast repo:
 ```bash
 git clone https://github.com/feast-dev/feast.git
 ```

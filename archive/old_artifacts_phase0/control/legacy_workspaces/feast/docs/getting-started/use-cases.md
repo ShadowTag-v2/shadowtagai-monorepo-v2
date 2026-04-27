@@ -14,7 +14,7 @@ Recommendation engines require personalized feature data related to users, items
 ### Example: User-Item Recommendations
 
 A typical recommendation engine might need features such as:
-- User features: demographics, preferences, historical behavior 
+- User features: demographics, preferences, historical behavior
 - Item features: categories, attributes, popularity scores
 - Interaction features: past user-item interactions, ratings
 

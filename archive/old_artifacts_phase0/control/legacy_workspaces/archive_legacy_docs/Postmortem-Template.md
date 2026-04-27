@@ -18,5 +18,3 @@
 
 ### Verification
 - Tests/monitors proving non-recurrence
-
-

@@ -32,7 +32,7 @@
         },
         "trt_client_parameters": {
             "endpoint": "/v2/models/ensemble/generate_stream"
-        }, 
+        },
         "vllm_server_parameters": {
             "disable_log_stats": "",
             "gpu_memory_utilization": 0.9,
@@ -85,7 +85,7 @@
         },
         "trt_client_parameters": {
             "endpoint": "/v2/models/ensemble/generate_stream"
-        }, 
+        },
         "vllm_server_parameters": {
             "disable_log_stats": "",
             "gpu_memory_utilization": 0.9,
@@ -138,7 +138,7 @@
         },
         "trt_client_parameters": {
             "endpoint": "/v2/models/ensemble/generate_stream"
-        }, 
+        },
         "vllm_server_parameters": {
             "disable_log_stats": "",
             "gpu_memory_utilization": 0.9,
@@ -188,7 +188,7 @@
         },
         "trt_client_parameters": {
             "endpoint": "/v2/models/ensemble/generate_stream"
-        }, 
+        },
         "vllm_server_parameters": {
             "disable_log_stats": "",
             "gpu_memory_utilization": 0.9,
@@ -240,7 +240,7 @@
         },
         "trt_client_parameters": {
             "endpoint": "/v2/models/ensemble/generate_stream"
-        }, 
+        },
         "vllm_server_parameters": {
             "disable_log_stats": "",
             "gpu_memory_utilization": 0.9,
@@ -292,7 +292,7 @@
         },
         "trt_client_parameters": {
             "endpoint": "/v2/models/ensemble/generate_stream"
-        }, 
+        },
         "vllm_server_parameters": {
             "disable_log_stats": "",
             "gpu_memory_utilization": 0.9,

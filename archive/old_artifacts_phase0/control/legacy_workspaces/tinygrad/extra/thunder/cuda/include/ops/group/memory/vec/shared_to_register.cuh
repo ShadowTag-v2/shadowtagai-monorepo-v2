@@ -19,10 +19,10 @@ __device__ inline static void load(RV &dst, const SV &src) {
     using T = base_types::packing<T2>::unpacked_type;
     if constexpr (GROUP_WARPS == 1) {
         static_assert(SV::length == RV::length);
-        
+
         int laneid = ::kittens::laneid();
         uint32_t src_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(&src.data[0]));
-        
+
         __syncwarp();
         if constexpr (std::is_same_v<typename RV::layout, align_l>) {
             #pragma unroll
@@ -106,7 +106,7 @@ __device__ inline static void store(SV &dst, const RV &src) {
 
     if constexpr (GROUP_WARPS == 1) {
         static_assert(SV::length == RV::length);
-        
+
         int laneid = ::kittens::laneid();
         uint32_t dst_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(&dst.data[0]));
 

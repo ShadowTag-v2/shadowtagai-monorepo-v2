@@ -51,4 +51,4 @@ docker manifest create vllm/vllm-openai:v${RELEASE_VERSION} vllm/vllm-openai:v${
 docker manifest push vllm/vllm-openai:latest
 docker manifest push vllm/vllm-openai:v${RELEASE_VERSION}
 \`\`\`
-EOF 
+EOF

@@ -5,4 +5,4 @@ node_modules/
 .gitignore
 *.md
 !README.md
-platforms/ 
+platforms/

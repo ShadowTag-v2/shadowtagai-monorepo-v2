@@ -1,6 +1,6 @@
 <!--
 We, the rest of the NativeScript community, thank you for your
-contribution! 
+contribution!
 To help the rest of the community review your change, please follow the instructions in the template.
 -->
 
@@ -25,7 +25,7 @@ Fixes/Implements/Closes #[Issue Number].
 
 <!-- If this PR contains a breaking change, please describe the impact and migration path for existing applications below. -->
 
-<!-- 
+<!--
 BREAKING CHANGES:
 
 
@@ -34,4 +34,3 @@ BREAKING CHANGES:
 Migration steps:
 [Provide a migration path for existing applications.]
 -->
-

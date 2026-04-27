@@ -411,14 +411,14 @@ export class ImageGenerator {
         const style = args?.style || 'consistent';
         const transition = args?.transition || 'smooth';
         let firstError: string | null = null;
-  
+
         console.error(`DEBUG - Generating ${steps}-step ${type} sequence`);
-  
+
         // Generate each step of the story/process
         for (let i = 0; i < steps; i++) {
           const stepNumber = i + 1;
           let stepPrompt = `${request.prompt}, step ${stepNumber} of ${steps}`;
-  
+
           // Add context based on type
           switch (type) {
             case 'story':
@@ -434,14 +434,14 @@ export class ImageGenerator {
               stepPrompt += `, chronological progression, timeline visualization`;
               break;
           }
-  
+
           // Add transition context
           if (i > 0) {
             stepPrompt += `, ${transition} transition from previous step`;
           }
-  
+
           console.error(`DEBUG - Generating step ${stepNumber}: ${stepPrompt}`);
-  
+
           try {
             const response = await this.ai.models.generateContent({
               model: this.modelName,
@@ -452,17 +452,17 @@ export class ImageGenerator {
                 },
               ],
             });
-  
+
             if (response.candidates && response.candidates[0]?.content?.parts) {
               for (const part of response.candidates[0].content.parts) {
                 let imageBase64: string | undefined;
-  
+
                 if (part.inlineData?.data) {
                   imageBase64 = part.inlineData.data;
                 } else if (part.text && this.isValidBase64ImageData(part.text)) {
                   imageBase64 = part.text;
                 }
-  
+
                 if (imageBase64) {
                   const filename = FileHandler.generateFilename(
                     `${type}step${stepNumber}${request.prompt}`,
@@ -497,7 +497,7 @@ export class ImageGenerator {
               };
             }
           }
-  
+
           // Check if this step was actually generated
           if (generatedFiles.length < stepNumber) {
             console.error(
@@ -505,11 +505,11 @@ export class ImageGenerator {
             );
           }
         }
-  
+
         console.error(
           `DEBUG - Story generation completed. Generated ${generatedFiles.length} out of ${steps} requested images`,
         );
-  
+
         if (generatedFiles.length === 0) {
           return {
             success: false,
@@ -517,15 +517,15 @@ export class ImageGenerator {
             error: firstError || 'No image data found in API responses',
           };
         }
-  
+
         // Handle preview if requested
         await this.handlePreview(generatedFiles, request);
-  
+
         const wasFullySuccessful = generatedFiles.length === steps;
         const successMessage = wasFullySuccessful
           ? `Successfully generated complete ${steps}-step ${type} sequence`
           : `Generated ${generatedFiles.length} out of ${steps} requested ${type} steps (${steps - generatedFiles.length} steps failed)`;
-  
+
         return {
           success: true,
           message: successMessage,

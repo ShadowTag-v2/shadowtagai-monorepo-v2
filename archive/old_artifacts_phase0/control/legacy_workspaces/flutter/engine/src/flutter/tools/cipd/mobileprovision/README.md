@@ -59,6 +59,6 @@ Google-internal, see
    cipd set-tag flutter_internal/mac/mobileprovision/mac-amd64 -tag YOUR_NEW_TAG -version AMD64_INSTANCE_ID
    ```
 
-14. Update `.ci.yaml` and migrate `apple_signing` steps to the new version tag.  
-    Before: `{"dependency": "apple_signing", "version": "version:to_2024"}`  
+14. Update `.ci.yaml` and migrate `apple_signing` steps to the new version tag.
+    Before: `{"dependency": "apple_signing", "version": "version:to_2024"}`
     After: `{"dependency": "apple_signing", "version": "version:to_2025"}`

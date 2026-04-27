@@ -24,7 +24,7 @@ __device__ inline static void tensor_load_wait() {
    asm volatile("tcgen05.wait::ld.sync.aligned;");
 }
 __device__ inline static void tensor_store_wait() {
-   asm volatile("tcgen05.wait::st.sync.aligned;"); 
+   asm volatile("tcgen05.wait::st.sync.aligned;");
 }
 
 }

@@ -44,21 +44,21 @@ const result = await codemodSandbox.run_module(
           console.log("Root node kind:", node.kind());
 
           console.log('kind', sg.kind("javascript", "number"));
-          
+
           // Test basic node navigation
           console.log("Is named:", node.isNamed());
           console.log("Is leaf:", node.isLeaf());
-          
+
           // Get the first child if available
           const child = node.child(0);
           if (child) {
               console.log("First child kind:", child.kind());
           }
-          
+
           // Test getting node range
           const range = node.range();
           console.log("Node range:", range);
-          
+
           // Test creating a matcher object for find operations
           const varDeclMatcher = {rule: { pattern: "const $NAME = $INIT;" }};
           const match = node.find(varDeclMatcher);

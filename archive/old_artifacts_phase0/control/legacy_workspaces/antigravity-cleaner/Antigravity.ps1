@@ -38,7 +38,7 @@ $Paths = @{
     Temp     = if ($OS_Win) { $env:TEMP } else { "/tmp" }
     WinTemp  = if ($OS_Win) { "$env:windir\Temp" } else { $null }
     Prefetch = if ($OS_Win) { "$env:windir\Prefetch" } else { $null }
-    
+
     # AppData equivalents
     Local    = if ($OS_Win) { $env:LOCALAPPDATA } elseif ($OS_Mac) { "$HomePath/Library/Application Support" } else { "$HomePath/.config" }
     Roaming  = if ($OS_Win) { $env:APPDATA } elseif ($OS_Mac) { "$HomePath/Library/Application Support" } else { "$HomePath/.config" }
@@ -78,7 +78,7 @@ function Clear-Junk {
         $files = Get-ChildItem -Path $Path -Recurse -Force -ErrorAction SilentlyContinue
         $count = ($files | Measure-Object).Count
         $size = ($files | Measure-Object -Property Length -Sum).Sum / 1MB
-        
+
         if ($count -gt 0) {
             $msg = "$Description ($Path) - Found $count items ({0:N2} MB)" -f $size
             if ($DryRun) {
@@ -105,19 +105,19 @@ function Clear-Junk {
 
 function Invoke-Cleaner {
     param([switch]$DryRun)
-    
+
     Show-Header
     if ($DryRun) { Write-Host "  *** DRY RUN MODE - NO FILES WILL BE DELETED ***" -ForegroundColor Yellow; Write-Host "" }
     Show-Info "Starting System Clean..."
-    
+
     # System Paths
     Clear-Junk -Path $Paths.Temp -Description "Temp Files" -DryRun:$DryRun
     if ($Paths.WinTemp) { Clear-Junk -Path $Paths.WinTemp -Description "OS Temp" -DryRun:$DryRun }
     if ($Paths.Prefetch) { Clear-Junk -Path $Paths.Prefetch -Description "Prefetch" -DryRun:$DryRun }
-    
+
     # Application Paths (Antigravity/IDE Traces)
     $TargetPaths = @()
-    
+
     if ($OS_Win) {
         $TargetPaths += "$($Paths.Local)\Antigravity"
         $TargetPaths += "$($Paths.Roaming)\Antigravity"
@@ -134,11 +134,11 @@ function Invoke-Cleaner {
         $TargetPaths += "$HomePath/.config/Antigravity"
         $TargetPaths += "$HomePath/.cache/JetBrains"
     }
-    
+
     foreach ($path in $TargetPaths) {
         Clear-Junk -Path $path -Description "App Trace" -DryRun:$DryRun
     }
-    
+
     Show-Success "Cleaning Completed."
     Wait-Key
 }
@@ -150,7 +150,7 @@ function Invoke-CleanerMenu {
     Write-Host "  [1] Quick Clean (Standard)"
     Write-Host "  [2] Dry Run (Analyze Only)"
     Write-Host "  [0] Back"
-    
+
     $c = Read-Host "  > Select"
     switch ($c) {
         "1" { Invoke-Cleaner }
@@ -190,16 +190,16 @@ function Get-Browsers {
 function Get-BrowserProfiles {
     param($BrowserName, $UserDataPath)
     $profiles = @()
-    
+
     if (!(Test-Path $UserDataPath)) { return $profiles }
 
     # Standard "Default" and "Profile X" folders
     $dirs = Get-ChildItem -Path $UserDataPath -Directory | Where-Object { $_.Name -eq "Default" -or $_.Name -like "Profile *" }
-    
+
     foreach ($dir in $dirs) {
         $email = "No Login"
         $prefPath = Join-Path $dir.FullName "Preferences"
-        
+
         if (Test-Path $prefPath) {
             try {
                 $content = Get-Content -Path $prefPath -Raw -ErrorAction SilentlyContinue
@@ -215,7 +215,7 @@ function Get-BrowserProfiles {
             }
             catch {}
         }
-        
+
         $profiles += [PSCustomObject]@{
             Browser = $BrowserName
             Name    = $dir.Name
@@ -236,7 +236,7 @@ function Invoke-RegionInspector {
     Write-Host "    2. Set System Timezone to match VPN location (e.g. EST/PST)."
     Write-Host "    3. Disable WebRTC in browser if possible."
     Write-Host ""
-    
+
     $check = Read-Host "  > Launch Pre-Check? (Opens IP/Leak Test) (Y/N)"
     if ($check -eq "Y") {
         Start-Process "https://browserleaks.com/ip"
@@ -247,7 +247,7 @@ function Invoke-RegionInspector {
     $browsers = Get-Browsers
     $allProfiles = @()
     $i = 1
-    
+
     foreach ($bKey in $browsers.Keys) {
         $profs = Get-BrowserProfiles -BrowserName $bKey -UserDataPath $browsers[$bKey]
         foreach ($p in $profs) {
@@ -257,27 +257,27 @@ function Invoke-RegionInspector {
             $i++
         }
     }
-    
+
     if ($allProfiles.Count -eq 0) {
         Show-Warning "No supported browser profiles found."
         Wait-Key
         return
     }
-    
+
     Write-Host "  [0] Back"
     $sel = Read-Host "  > Select Profile to Inspect"
     if ($sel -eq "0") { return }
-    
+
     if ($sel -match "^\d+$" -and [int]$sel -le $allProfiles.Count -and [int]$sel -gt 0) {
         $target = $allProfiles[[int]$sel - 1]
-        
+
         Show-Info "Opening Region Settings for: $($target.Email)"
-        
+
         # Launch URL with specific profile
         $url = "https://policies.google.com/country-association-form"
         $LaunchCmd = ""
         $LaunchArgs = @()
-        
+
         if ($OS_Win) {
             switch -Wildcard ($target.Browser) {
                 "*Chrome*" { $LaunchCmd = "chrome"; $LaunchArgs = "--profile-directory=`"$($target.Name)`" `"$url`"" }
@@ -301,7 +301,7 @@ function Invoke-RegionInspector {
                 "*Brave*" { $LaunchCmd = "brave-browser"; $LaunchArgs = "--profile-directory=`"$($target.Name)`" `"$url`"" }
             }
         }
-        
+
         try {
             Start-Process $LaunchCmd -ArgumentList $LaunchArgs
             Show-Success "Browser opened. Check the page for 'Country Association'."
@@ -319,11 +319,11 @@ function Invoke-RegionInspector {
 function Invoke-BackupSession {
     Show-Header
     Show-Info "Backup Browser Sessions"
-    
+
     $browsers = Get-Browsers
     $allProfiles = @()
     $i = 1
-    
+
     foreach ($bKey in $browsers.Keys) {
         $profs = Get-BrowserProfiles -BrowserName $bKey -UserDataPath $browsers[$bKey]
         foreach ($p in $profs) {
@@ -333,61 +333,61 @@ function Invoke-BackupSession {
             $i++
         }
     }
-    
+
     if ($allProfiles.Count -eq 0) {
         Show-Warning "No profiles found."
         Wait-Key
         return
     }
-    
+
     Write-Host "  [0] Back"
     $sel = Read-Host "  > Select Profile to Backup"
     if ($sel -eq "0") { return }
-    
+
     if ($sel -match "^\d+$" -and [int]$sel -le $allProfiles.Count -and [int]$sel -gt 0) {
         $p = $allProfiles[[int]$sel - 1]
-        
+
         Write-Host ""
         Show-Info "Select Backup Mode:"
         Write-Host "  [1] Light (Login & Sessions Only) - ~20MB - Quick"
         Write-Host "  [2] Full (Entire Profile) - ~500MB+ - Complete"
         $mode = Read-Host "  > Select Mode"
-        
+
         $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
         $safeEmail = $p.Email -replace "[^a-zA-Z0-9@-]", "_"
         $tag = if ($mode -eq "1") { "Light" } else { "Full" }
         $dest = Join-Path $SessionDataPath "$($p.Browser)\$safeEmail\_$tag`_$timestamp"
-        
+
         Show-Info "Backing up $($p.Browser) ($($p.Email))..."
         try {
             if (!(Test-Path $dest)) { New-Item -ItemType Directory -Path $dest -Force > $null }
-            
+
             if ($mode -eq "1") {
                 # Light Mode: Specific files only
                 $essentialFiles = @(
                     "Cookies", "Login Data", "Web Data", "Preferences", "Secure Preferences", "Extension Cookies", "Local State"
                 )
                 $essentialFolders = @("Local Extension Settings", "Sync Data", "Local Storage", "Databases")
-                
+
                 foreach ($file in $essentialFiles) {
                     $fPath = Join-Path $p.Path $file
                     if (Test-Path $fPath) { Copy-Item -Path $fPath -Destination $dest -Force -ErrorAction SilentlyContinue }
                 }
                 foreach ($folder in $essentialFolders) {
                     $dPath = Join-Path $p.Path $folder
-                    if (Test-Path $dPath) { 
+                    if (Test-Path $dPath) {
                         $targetDir = Join-Path $dest $folder
                         New-Item -ItemType Directory -Path $targetDir -Force > $null
-                        Copy-Item -Path "$dPath\*" -Destination $targetDir -Recurse -Force -ErrorAction SilentlyContinue 
+                        Copy-Item -Path "$dPath\*" -Destination $targetDir -Recurse -Force -ErrorAction SilentlyContinue
                     }
                 }
-                
+
             }
             else {
                 # Full Mode
                 Copy-Item -Path "$($p.Path)\*" -Destination $dest -Recurse -Force -ErrorAction Stop
             }
-            
+
             # Save metadata
             $meta = @{
                 Browser     = $p.Browser
@@ -397,7 +397,7 @@ function Invoke-BackupSession {
                 Mode        = $tag
             } | ConvertTo-Json
             $meta | Out-File (Join-Path $dest "meta.json")
-            
+
             Show-Success "Backup ($tag) Saved to:"
             Write-Host "  $dest" -ForegroundColor White
         }
@@ -411,23 +411,23 @@ function Invoke-BackupSession {
 function Invoke-BackupAntigravityApp {
     Show-Header
     Show-Info "Backup Antigravity Desktop App"
-    
+
     $agPath = if ($OS_Win) { "$env:APPDATA\Antigravity" } elseif ($OS_Mac) { "$HomePath/Library/Application Support/Antigravity" } else { "$HomePath/.config/Antigravity" }
-    
+
     if (!(Test-Path $agPath)) {
         Show-Warning "Antigravity Desktop App data not found."
         Wait-Key
         return
     }
-    
+
     $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
     $dest = Join-Path $SessionDataPath "Antigravity_Desktop\_$timestamp"
-    
+
     Show-Info "Backing up Antigravity App Data..."
     try {
         if (!(Test-Path $dest)) { New-Item -ItemType Directory -Path $dest -Force > $null }
         Copy-Item -Path "$agPath\*" -Destination $dest -Recurse -Force -ErrorAction Stop
-        
+
         $meta = @{
             Browser     = "Antigravity Desktop"
             ProfileName = "Roaming"
@@ -436,7 +436,7 @@ function Invoke-BackupAntigravityApp {
             Mode        = "Full"
         } | ConvertTo-Json
         $meta | Out-File (Join-Path $dest "meta.json")
-        
+
         Show-Success "App Backup Complete!"
     }
     catch {
@@ -448,28 +448,28 @@ function Invoke-BackupAntigravityApp {
 function Invoke-RestoreSession {
     Show-Header
     Show-Info "Restore Browser Sessions"
-    
+
     # List all backups recursively
     $backups = Get-ChildItem -Path $SessionDataPath -Recurse -File -Filter "meta.json"
-    
+
     if ($backups.Count -eq 0) {
         Show-Warning "No backups found."
         Wait-Key
         return
     }
-    
+
     $i = 1
     $restoreList = @()
-    
+
     foreach ($metaFile in $backups) {
         $json = Get-Content $metaFile.FullName | ConvertFrom-Json
         $folder = $metaFile.Directory.FullName
         $modeStr = if ($json.Mode) { "[$($json.Mode)]" } else { "[Full]" }
-        
+
         Write-Host "  [$i] $modeStr $($json.Browser)" -NoNewline
         Write-Host " - $($json.Email)" -ForegroundColor Cyan -NoNewline
         Write-Host " ($($json.Date))" -ForegroundColor DarkGray
-        
+
         $restoreList += [PSCustomObject]@{
             Header = $json
             Path   = $folder
@@ -477,15 +477,15 @@ function Invoke-RestoreSession {
         $i++
     }
     Write-Host "  [0] Back"
-    
+
     $sel = Read-Host "  > Select Backup to Restore"
     if ($sel -eq "0") { return }
-    
+
     if ($sel -match "^\d+$" -and [int]$sel -le $restoreList.Count -and [int]$sel -gt 0) {
         $target = $restoreList[[int]$sel - 1]
-        
+
         $destPath = ""
-        
+
         if ($target.Header.Browser -eq "Antigravity Desktop") {
             $destPath = if ($OS_Win) { "$env:APPDATA\Antigravity" } elseif ($OS_Mac) { "$HomePath/Library/Application Support/Antigravity" } else { "$HomePath/.config/Antigravity" }
             Show-Info "Restoring Antigravity Desktop App..."
@@ -496,7 +496,7 @@ function Invoke-RestoreSession {
             $browserRoot = $browsers[$target.Header.Browser]
             $destPath = Join-Path $browserRoot $target.Header.ProfileName
         }
-        
+
         Show-Warning "Restoring will OVERWRITE data in: $destPath"
         $confirm = Read-Host "  > Are you sure? (Y/N)"
         if ($confirm -eq "Y") {
@@ -515,7 +515,7 @@ function Invoke-RestoreSession {
                         Stop-Process -Name $procName -Force -ErrorAction SilentlyContinue
                     }
                 }
-                
+
                 # Restore
                 Copy-Item -Path "$($target.Path)\*" -Destination $destPath -Recurse -Force -ErrorAction Stop
                 Show-Success "Restore Successful!"
@@ -535,7 +535,7 @@ function Invoke-SessionManager {
     Write-Host "  [2] Backup Antigravity App"
     Write-Host "  [3] Restore Profile/App"
     Write-Host "  [0] Back"
-    
+
     $choice = Read-Host "  > Select"
     switch ($choice) {
         "1" { Invoke-BackupSession }
@@ -549,7 +549,7 @@ function Test-SystemAnalysis {
     Show-Header
     Show-Info "Antigravity & Google Services Analysis"
     Write-Host ""
-    
+
     # 1. Google Services
     Write-Host "  [Google Services]" -ForegroundColor Cyan
     $googleEndpoints = @{
@@ -601,17 +601,17 @@ function Invoke-NetworkReset {
     Show-Info "Network Reset Utility"
     Show-Warning "This will reset your network adapters and DNS settings."
     Show-Warning "You may lose internet connection briefly."
-    
+
     $confirm = Read-Host "  > Continue? (Y/N)"
     if ($confirm -ne "Y") { return }
-    
+
     if ($OS_Win) {
         Show-Info "Flushing DNS..."
         cmd /c "ipconfig /flushdns" | Out-Null
-        
+
         Show-Info "Resetting Winsock Catalog..."
         Start-Process "netsh" -ArgumentList "winsock reset catalog" -Wait -NoNewWindow
-        
+
         Show-Info "Resetting TCP/IP..."
         Start-Process "netsh" -ArgumentList "int ip reset" -Wait -NoNewWindow
     }
@@ -629,7 +629,7 @@ function Invoke-NetworkReset {
             Start-Process "sudo" -ArgumentList "systemd-resolve", "--flush-caches" -Wait -NoNewWindow
         }
     }
-    
+
     Show-Success "Network Reset Complete!"
     Show-Info "If problems persist, please RESTART YOUR COMPUTER."
     Wait-Key
@@ -641,7 +641,7 @@ function Invoke-NetworkTools {
     Write-Host "  [1] Full System Analysis (Google + Antigravity)"
     Write-Host "  [2] Reset Network (Flush DNS, Winsock)"
     Write-Host "  [0] Back"
-    
+
     $choice = Read-Host "  > Select"
     switch ($choice) {
         "1" { Test-SystemAnalysis }
@@ -659,7 +659,7 @@ function Main {
 
     while ($true) {
         Show-Header
-        
+
         Write-Host "  MAIN MENU" -ForegroundColor Yellow
         Write-Host ""
         Write-Host "  [1] System Cleaner        " -ForegroundColor White -NoNewline; Write-Host "(Clean Junk & Antigravity Traces)" -ForegroundColor DarkGray
@@ -669,9 +669,9 @@ function Main {
         Write-Host "  [5] Region Inspector      " -ForegroundColor White -NoNewline; Write-Host "(Check/Change Account Region)" -ForegroundColor DarkGray
         Write-Host "  [0] Exit"
         Write-Host ""
-        
+
         $selection = Read-Host "  > Enter Choice"
-        
+
         switch ($selection) {
             "1" { Invoke-CleanerMenu }
             "2" { Invoke-SessionManager }

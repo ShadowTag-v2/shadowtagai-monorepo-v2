@@ -20,7 +20,7 @@ Most of the examples in this document assume you have a FastMCP server instance 
 Elicitation enables tools to pause execution and request specific information from users. This is particularly useful for:
 
 - **Missing parameters**: Ask for required information not provided initially
-- **Clarification requests**: Get user confirmation or choices for ambiguous scenarios  
+- **Clarification requests**: Get user confirmation or choices for ambiguous scenarios
 - **Progressive disclosure**: Collect complex information step-by-step
 - **Dynamic workflows**: Adapt tool behavior based on user responses
 
@@ -48,7 +48,7 @@ async def collect_user_info(ctx: Context) -> str:
         message="Please provide your information",
         response_type=UserInfo
     )
-    
+
     if result.action == "accept":
         user = result.data
         return f"Hello {user.name}, you are {user.age} years old"
@@ -66,21 +66,21 @@ async def collect_user_info(ctx: Context) -> str:
     <ResponseField name="message" type="str">
       The prompt message to display to the user
     </ResponseField>
-    
+
     <ResponseField name="response_type" type="type" default="None">
-      The Python type defining the expected response structure (dataclass, primitive type, etc.) Note that elicitation responses are subject to a restricted subset of JSON Schema types. See [Supported Response Types](#supported-response-types) for more details. 
+      The Python type defining the expected response structure (dataclass, primitive type, etc.) Note that elicitation responses are subject to a restricted subset of JSON Schema types. See [Supported Response Types](#supported-response-types) for more details.
     </ResponseField>
   </Expandable>
-  
+
   <Expandable title="Response">
     <ResponseField name="ElicitationResult" type="object">
       Result object containing the user's response
-      
+
       <Expandable title="properties">
         <ResponseField name="action" type="Literal['accept', 'decline', 'cancel']">
           How the user responded to the request
         </ResponseField>
-        
+
         <ResponseField name="data" type="response_type | None">
           The user's input data (only present when action is "accept")
         </ResponseField>
@@ -115,15 +115,15 @@ FastMCP also provides typed result classes for pattern matching on the `action` 
 
 ```python {1-5, 12, 14, 16}
 from fastmcp.server.elicitation import (
-    AcceptedElicitation, 
-    DeclinedElicitation, 
+    AcceptedElicitation,
+    DeclinedElicitation,
     CancelledElicitation,
 )
 
 @mcp.tool
 async def pattern_example(ctx: Context) -> str:
     result = await ctx.elicit("Enter your name:", response_type=str)
-    
+
     match result:
         case AcceptedElicitation(data=name):
             return f"Hello {name}!"
@@ -156,7 +156,7 @@ As a developer, this means you do not have to worry about creating or accessing 
 async def get_user_name(ctx: Context) -> str:
     """Get the user's name."""
     result = await ctx.elicit("What's your name?", response_type=str)
-    
+
     if result.action == "accept":
         return f"Hello, {result.data}!"
     return "No name provided"
@@ -166,7 +166,7 @@ async def get_user_name(ctx: Context) -> str:
 async def pick_a_number(ctx: Context) -> str:
     """Pick a number."""
     result = await ctx.elicit("Pick a number!", response_type=int)
-    
+
     if result.action == "accept":
         return f"You picked {result.data}"
     return "No number provided"
@@ -176,7 +176,7 @@ async def pick_a_number(ctx: Context) -> str:
 async def pick_a_boolean(ctx: Context) -> str:
     """Pick a boolean."""
     result = await ctx.elicit("True or false?", response_type=bool)
-    
+
     if result.action == "accept":
         return f"You picked {result.data}"
     return "No boolean provided"
@@ -209,10 +209,10 @@ Often you'll want to constrain the user's response to a specific set of values. 
 async def set_priority(ctx: Context) -> str:
     """Set task priority level."""
     result = await ctx.elicit(
-        "What priority level?", 
+        "What priority level?",
         response_type=["low", "medium", "high"],
     )
-    
+
     if result.action == "accept":
         return f"Priority set to: {result.data}"
 ```
@@ -223,10 +223,10 @@ from typing import Literal
 async def set_priority(ctx: Context) -> str:
     """Set task priority level."""
     result = await ctx.elicit(
-        "What priority level?", 
+        "What priority level?",
         response_type=Literal["low", "medium", "high"]
     )
-    
+
     if result.action == "accept":
         return f"Priority set to: {result.data}"
     return "No priority set"
@@ -237,13 +237,13 @@ from enum import Enum
 class Priority(Enum):
     LOW = "low"
     MEDIUM = "medium"
-    HIGH = "high"   
+    HIGH = "high"
 
 @mcp.tool
 async def set_priority(ctx: Context) -> str:
     """Set task priority level."""
     result = await ctx.elicit("What priority level?", response_type=Priority)
-    
+
     if result.action == "accept":
         return f"Priority set to: {result.data.value}"
     return "No priority set"
@@ -273,7 +273,7 @@ async def create_task(ctx: Context) -> str:
         "Please provide task details",
         response_type=TaskDetails
     )
-    
+
     if result.action == "accept":
         task = result.data
         return f"Created task: {task.title} (Priority: {task.priority})"
@@ -288,25 +288,25 @@ Tools can make multiple elicitation calls to gather information progressively:
 @mcp.tool
 async def plan_meeting(ctx: Context) -> str:
     """Plan a meeting by gathering details step by step."""
-    
+
     # Get meeting title
     title_result = await ctx.elicit("What's the meeting title?", response_type=str)
     if title_result.action != "accept":
         return "Meeting planning cancelled"
-    
+
     # Get duration
     duration_result = await ctx.elicit("Duration in minutes?", response_type=int)
     if duration_result.action != "accept":
         return "Meeting planning cancelled"
-    
+
     # Get priority
     priority_result = await ctx.elicit(
-        "Is this urgent?", 
+        "Is this urgent?",
         response_type=Literal["yes", "no"]
     )
     if priority_result.action != "accept":
         return "Meeting planning cancelled"
-    
+
     urgent = priority_result.data == "yes"
     return f"Meeting '{title_result.data}' planned for {duration_result.data} minutes (Urgent: {urgent})"
 ```

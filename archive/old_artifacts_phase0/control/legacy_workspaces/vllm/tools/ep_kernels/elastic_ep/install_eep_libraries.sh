@@ -41,7 +41,7 @@ if [ "$INSTALL_NVSHMEM" = true ]; then
     wget https://github.com/deepseek-ai/DeepEP/raw/main/third-party/nvshmem.patch
     git init
     git apply -vvv nvshmem.patch
-    git apply --reject --whitespace=fix ../../eep_nvshmem.patch 
+    git apply --reject --whitespace=fix ../../eep_nvshmem.patch
 else
     pushd nvshmem_src
 fi
@@ -83,4 +83,3 @@ cd pplx-kernels
 # see https://github.com/pypa/pip/issues/9955#issuecomment-838065925
 # PIP_NO_BUILD_ISOLATION=0 disables build isolation
 PIP_NO_BUILD_ISOLATION=0 TORCH_CUDA_ARCH_LIST=9.0a+PTX pip install . --no-deps -v
-

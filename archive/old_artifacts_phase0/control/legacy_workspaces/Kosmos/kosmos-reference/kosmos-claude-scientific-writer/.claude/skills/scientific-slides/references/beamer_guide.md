@@ -299,7 +299,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```latex
 \begin{frame}{Two Column Layout}
   \begin{columns}
-    
+
     % Left column
     \begin{column}{0.5\textwidth}
       \begin{itemize}
@@ -307,12 +307,12 @@ Beamer includes many built-in themes controlling overall layout:
         \item Point 2
       \end{itemize}
     \end{column}
-    
+
     % Right column
     \begin{column}{0.5\textwidth}
       \includegraphics[width=\textwidth]{figure.png}
     \end{column}
-    
+
   \end{columns}
 \end{frame}
 ```
@@ -406,45 +406,45 @@ Beamer includes many built-in themes controlling overall layout:
 **Standard Blocks**:
 ```latex
 \begin{frame}{Block Examples}
-  
+
   % Standard block
   \begin{block}{Block Title}
     Block content goes here
   \end{block}
-  
+
   % Alert block (red)
   \begin{alertblock}{Important}
     Warning or important information
   \end{alertblock}
-  
+
   % Example block (green)
   \begin{exampleblock}{Example}
     Example content
   \end{exampleblock}
-  
+
 \end{frame}
 ```
 
 **Theorem Environments**:
 ```latex
 \begin{frame}{Mathematical Results}
-  
+
   \begin{theorem}
     Statement of theorem
   \end{theorem}
-  
+
   \begin{proof}
     Proof goes here
   \end{proof}
-  
+
   \begin{definition}
     Definition text
   \end{definition}
-  
+
   \begin{lemma}
     Lemma statement
   \end{lemma}
-  
+
 \end{frame}
 ```
 
@@ -455,13 +455,13 @@ Beamer includes many built-in themes controlling overall layout:
 ```latex
 \begin{frame}{Revealing Content}
   First point appears immediately
-  
+
   \pause
-  
+
   Second point appears on click
-  
+
   \pause
-  
+
   Third point appears on another click
 \end{frame}
 ```
@@ -507,11 +507,11 @@ Beamer includes many built-in themes controlling overall layout:
 ```latex
 \begin{frame}{Appearing and Disappearing}
   Appears on all slides
-  
+
   \only<2>{Only visible on slide 2}
-  
+
   \uncover<3->{Appears on slide 3 and stays}
-  
+
   \visible<4->{Also appears on slide 4, but reserves space}
 \end{frame}
 ```
@@ -523,13 +523,13 @@ Beamer includes many built-in themes controlling overall layout:
   \begin{tikzpicture}
     % Base elements (always visible)
     \draw (0,0) rectangle (4,3);
-    
+
     % Add on slide 2+
     \draw<2-> (1,1) circle (0.5);
-    
+
     % Add on slide 3+
     \draw<3->[->, thick] (2,1.5) -- (3,2);
-    
+
     % Highlight on slide 4
     \node<4>[red,thick] at (2,1.5) {Result};
   \end{tikzpicture}
@@ -544,7 +544,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```latex
 \begin{frame}{Inline Math}
   The equation $E = mc^2$ is famous.
-  
+
   We can also write $\alpha + \beta = \gamma$.
 \end{frame}
 ```
@@ -556,7 +556,7 @@ Beamer includes many built-in themes controlling overall layout:
   \begin{equation}
     f(x) = \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
   \end{equation}
-  
+
   Multiple equations:
   \begin{align}
     E &= mc^2 \\
@@ -657,9 +657,9 @@ def fibonacci(n):
 ```latex
 \begin{frame}{Background}
   Previous work \cite{smith2020} showed that...
-  
+
   Multiple studies \cite{jones2019,brown2021} have found...
-  
+
   According to \textcite{davis2022}, the method works by...
 \end{frame}
 ```
@@ -749,7 +749,7 @@ def fibonacci(n):
 % External links
 \begin{frame}{Resources}
   Visit \url{https://example.com} for more information.
-  
+
   \href{https://github.com/user/repo}{GitHub Repository}
 \end{frame}
 ```
@@ -762,7 +762,7 @@ def fibonacci(n):
 \begin{frame}{Scan for Paper}
   \begin{center}
     \qrcode[height=3cm]{https://doi.org/10.1234/paper}
-    
+
     \vspace{0.5cm}
     Scan for full paper
   \end{center}
@@ -792,13 +792,13 @@ def fibonacci(n):
   \begin{tikzpicture}
     % Rectangle
     \draw (0,0) rectangle (2,1);
-    
+
     % Circle
     \draw (3,0.5) circle (0.5);
-    
+
     % Line with arrow
     \draw[->, thick] (0,0) -- (3,2);
-    
+
     % Node with text
     \node at (1.5,2) {Label};
   \end{tikzpicture}
@@ -815,7 +815,7 @@ def fibonacci(n):
     \node[rectangle,draw] (start) {Start};
     \node[rectangle,draw,right=of start] (process) {Process};
     \node[rectangle,draw,right=of process] (end) {End};
-    
+
     \draw[->,thick] (start) -- (process);
     \draw[->,thick] (process) -- (end);
   \end{tikzpicture}
@@ -903,7 +903,7 @@ pdflatex -output-directory=build presentation.tex
 
 \begin{frame}{Slide Title}
   Slide content visible to audience
-  
+
   \note{
     These notes are visible only to speaker:
     - Remember to emphasize X

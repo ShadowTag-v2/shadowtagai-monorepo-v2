@@ -114,7 +114,7 @@ def search_products_implementation(query: str, category: str | None = None) -> l
 
 <ParamField body="meta" type="dict[str, Any] | None">
   <VersionBadge version="2.11.0" />
-  
+
   Optional meta information about the tool. This data is passed through to the MCP client as the `_meta` field of the client-side tool object and can be used for custom metadata, versioning, or other application-specific purposes.
 </ParamField>
 </Card>
@@ -283,7 +283,7 @@ You can provide additional metadata about parameters in several ways:
 
 For basic parameter descriptions, you can use a convenient shorthand with `Annotated`:
 
-```python 
+```python
 from typing import Annotated
 
 @mcp.tool
@@ -300,7 +300,7 @@ def process_image(
 This shorthand syntax is equivalent to using `Field(description=...)` but more concise for simple descriptions.
 
 <Tip>
-This shorthand syntax is only applied to `Annotated` types with a single string description. 
+This shorthand syntax is only applied to `Annotated` types with a single string description.
 </Tip>
 
 #### Advanced Metadata with Field
@@ -317,7 +317,7 @@ def process_image(
     resize: Annotated[bool, Field(description="Whether to resize the image")] = False,
     width: Annotated[int, Field(description="Target width in pixels", ge=1, le=2000)] = 800,
     format: Annotated[
-        Literal["jpeg", "png", "webp"], 
+        Literal["jpeg", "png", "webp"],
         Field(description="Output image format")
     ] = "jpeg"
 ) -> dict:
@@ -350,7 +350,7 @@ Field provides several validation and documentation features:
 
 ### Excluding Arguments
 
-<VersionBadge version="2.6.0" /> 
+<VersionBadge version="2.6.0" />
 
 You can exclude certain arguments from the tool schema shown to the LLM. This is useful for arguments that are injected at runtime (such as `state`, `user_id`, or credentials) and should not be exposed to the LLM or client. Only arguments with default values can be excluded; attempting to exclude a required argument will raise an error.
 
@@ -381,7 +381,7 @@ FastMCP tools can return data in two complementary formats: **traditional conten
 Understanding how these three concepts work together:
 
 - **Return Values**: What your Python function returns (determines both content blocks and structured data)
-- **Structured Outputs**: JSON data sent alongside traditional content for machine processing  
+- **Structured Outputs**: JSON data sent alongside traditional content for machine processing
 - **Output Schemas**: JSON Schema declarations that describe and validate the structured output format
 
 The following sections explain each concept in detail.
@@ -447,7 +447,7 @@ Each helper class accepts either `path=` or `data=` (mutually exclusive):
 The 6/18/2025 MCP spec update [introduced](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#structured-content) structured content, which is a new way to return data from tools. Structured content is a JSON object that is sent alongside traditional content. FastMCP automatically creates structured outputs alongside traditional content when your tool returns data that has a JSON object representation. This provides machine-readable JSON data that clients can deserialize back to Python objects.
 
 **Automatic Structured Content Rules:**
-- **Object-like results** (`dict`, Pydantic models, dataclasses) → Always become structured content (even without output schema)  
+- **Object-like results** (`dict`, Pydantic models, dataclasses) → Always become structured content (even without output schema)
 - **Non-object results** (`int`, `str`, `list`) → Only become structured content if there's an output schema to validate/serialize them
 - **All results** → Always become traditional content blocks for backward compatibility
 
@@ -637,7 +637,7 @@ You can override the automatically generated schema by providing a custom `outpu
 
 ```python
 @mcp.tool(output_schema={
-    "type": "object", 
+    "type": "object",
     "properties": {
         "data": {"type": "string"},
         "metadata": {"type": "object"}
@@ -651,7 +651,7 @@ def custom_schema_tool() -> dict:
 Schema generation works for most common types including basic types, collections, union types, Pydantic models, TypedDict structures, and dataclasses.
 
 <Warning>
-**Important Constraints**: 
+**Important Constraints**:
 - Output schemas must be object types (`"type": "object"`)
 - If you provide an output schema, your tool **must** return structured output that matches it
 - However, you can provide structured output without an output schema (using `ToolResult`)
@@ -699,7 +699,7 @@ ToolResult(
 )
 ```
 
-**`meta`** 
+**`meta`**
 <VersionBadge version="2.13.1" />
 Runtime metadata about the tool execution. Use this for performance metrics, debugging information, or any client-specific data that doesn't belong in the content or structured output.
 
@@ -749,11 +749,11 @@ def divide(a: float, b: float) -> float:
         # Error messages from ToolError are always sent to clients,
         # regardless of mask_error_details setting
         raise ToolError("Division by zero is not allowed.")
-    
+
     # If mask_error_details=True, this message would be masked
     if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
         raise TypeError("Both arguments must be numbers.")
-        
+
     return a / b
 ```
 
@@ -837,7 +837,7 @@ def example_tool() -> str:
 
 # These operations trigger notifications:
 mcp.add_tool(example_tool)     # Sends tools/list_changed notification
-example_tool.disable()         # Sends tools/list_changed notification  
+example_tool.disable()         # Sends tools/list_changed notification
 example_tool.enable()          # Sends tools/list_changed notification
 mcp.remove_tool("example_tool") # Sends tools/list_changed notification
 ```
@@ -859,17 +859,17 @@ mcp = FastMCP(name="ContextDemo")
 async def process_data(data_uri: str, ctx: Context) -> dict:
     """Process data from a resource with progress reporting."""
     await ctx.info(f"Processing data from {data_uri}")
-    
+
     # Read a resource
     resource = await ctx.read_resource(data_uri)
     data = resource[0].content if resource else ""
-    
+
     # Report progress
     await ctx.report_progress(progress=50, total=100)
-    
+
     # Example request to the client's LLM for help
     summary = await ctx.sample(f"Summarize this in 10 words: {data[:200]}")
-    
+
     await ctx.report_progress(progress=100, total=100)
     return {
         "length": len(data),

@@ -41,7 +41,7 @@ llm = LLM(
 #### `-O2`: Full Optimizations (Default)
 - **Startup**: Longer startup time
 - **Performance**: `-O1` + CUDAGraphMode.FULL_AND_PIECEWISE
-- **Use case**: Production workloads where performance is important. This is the default use case. It is also very similar to the previous default. The primary difference is that  noop & fusion flags are enabled. 
+- **Use case**: Production workloads where performance is important. This is the default use case. It is also very similar to the previous default. The primary difference is that  noop & fusion flags are enabled.
 
 ```bash
 # CLI usage (default, so optional)
@@ -57,7 +57,7 @@ llm = LLM(
 ```
 
 #### `-O3`: Full Optimization
-Still in development. Added infrastructure to prevent changing API in future 
+Still in development. Added infrastructure to prevent changing API in future
 release. Currently behaves the same O2.
 
 ## Troubleshooting

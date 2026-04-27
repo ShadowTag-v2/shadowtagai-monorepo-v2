@@ -11,11 +11,11 @@ set -e
 
 ## Pack tns-core-modules
 (
-    
+
     # Aways execute npx tsc from repo root to use the local typescript
     echo 'TypeScript transpile...'
     npx tsc -v
-    npx tsc -p "dist/tns-core-modules" 
+    npx tsc -p "dist/tns-core-modules"
 
 
     echo 'NPM packing ...'

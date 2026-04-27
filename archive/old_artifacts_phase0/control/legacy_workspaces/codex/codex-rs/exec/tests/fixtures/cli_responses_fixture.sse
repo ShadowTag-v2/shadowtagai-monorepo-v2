@@ -6,5 +6,3 @@ data: {"type":"response.output_item.done","item":{"type":"message","role":"assis
 
 event: response.completed
 data: {"type":"response.completed","response":{"id":"resp1","output":[]}}
-
-

@@ -262,13 +262,13 @@ async def launch_mission(query: str, tier: str = 'BASIC'):
 
     result = await air_cav_swarm.invoke({"messages": [("user", query)]})
 
-    
+
 
     # 3. Calculate Cost
 
     cost = calculate_bill(tier, 1)
 
-    
+
 
     return {
 
@@ -326,7 +326,7 @@ def warp_grep_tool(query: str, path: str = ".") -> str:
 
     """
 
-    Semantic Search Tool. 
+    Semantic Search Tool.
 
     LAW #3: Does NOT preload files. Reads on demand to prevent Context Rot.
 
@@ -668,7 +668,7 @@ cat << 'EOF' > src/governance/voting/cav_mtoe.pyimport randomfrom typing import 
 
         required_approval = thresholds.get(risk_level, 0.90)
 
-        
+
 
         # Poll 5% for speed, or full battalion for High Risk
 
@@ -676,7 +676,7 @@ cat << 'EOF' > src/governance/voting/cav_mtoe.pyimport randomfrom typing import 
 
         sample = random.sample(self.agents, sample_size)
 
-        
+
 
         votes_for = 0
 
@@ -690,13 +690,13 @@ cat << 'EOF' > src/governance/voting/cav_mtoe.pyimport randomfrom typing import 
 
                 votes_for += 1
 
-                
+
 
         approval_rate = votes_for / sample_size
 
         verdict = "A" if approval_rate >= required_approval else "B"
 
-        
+
 
         return {
 
@@ -756,7 +756,7 @@ cat << 'EOF' > src/governance/judge_six/core.pyimport timeimport uuidimport json
 
         # GATE 2: Initial Scoring (Matrix Logic)
 
-        score = prob + sev 
+        score = prob + sev
 
         if score <= 3: tier = RiskTier.RED
 
@@ -774,7 +774,7 @@ cat << 'EOF' > src/governance/judge_six/core.pyimport timeimport uuidimport json
 
         authority = "AUTO" if tier == RiskTier.GREEN else "HUMAN_OVERRIDE"
 
-        
+
 
         # GATE 6: Commit (ShadowTag)
 
@@ -828,7 +828,7 @@ cat << 'EOF' > src/governance/memory/memory_bank.pyimport jsonimport osclass Mem
 
         ]
 
-    
+
 
     def consult(self, file_path: str, finding_type: str) -> str:
 
@@ -908,7 +908,7 @@ HAZARD_DB = [
 
         logger.info(f"{Fore.YELLOW}>>> ⚖️  Judge 6 Scan: {file_pattern}...{Style.RESET_ALL}")
 
-        
+
 
         # 1. MEMORY CHECK
 
@@ -944,7 +944,7 @@ HAZARD_DB = [
 
             return False, max_risk, proposed_fix
 
-            
+
 
         if max_risk in [RiskTier.ORANGE, RiskTier.YELLOW] and self.army:
 
@@ -1030,7 +1030,7 @@ cat << 'EOF' > tests/test_risk.pyfrom libs.steel.sentinel import JudgeSixSentine
 
     sentinel = JudgeSixSentinel()
 
-    
+
 
     # Test 1: Catastrophic Hazard (API Key)
 
@@ -1042,7 +1042,7 @@ cat << 'EOF' > tests/test_risk.pyfrom libs.steel.sentinel import JudgeSixSentine
 
     assert result == False
 
-    
+
 
     # Test 2: Memory Suppression
 
@@ -1098,13 +1098,13 @@ PROJECT_ID = "acquired-jet-478701-b3"
 
 REGION = "us-central1"
 
-ZONE = "us-central1-a" 
+ZONE = "us-central1-a"
 
 INSTANCE_NAME = "pnkln-god-mode-v3"def deploy():
 
     print(f">>> 🖥️  PROVISIONING WORKBENCH INSTANCE (V2): {INSTANCE_NAME}...")
 
-    
+
 
     client_options = ClientOptions(api_endpoint=f"{REGION}-notebooks.googleapis.com:443")
 
@@ -1112,7 +1112,7 @@ INSTANCE_NAME = "pnkln-god-mode-v3"def deploy():
 
     parent = f"projects/{PROJECT_ID}/locations/{ZONE}"
 
-    
+
 
     # 200GB SSD required for DeepLearning Image
 
@@ -1126,7 +1126,7 @@ INSTANCE_NAME = "pnkln-god-mode-v3"def deploy():
 
                 project="deeplearning-platform-release",
 
-                image_family="common-cpu-notebooks" 
+                image_family="common-cpu-notebooks"
 
             ),
 
@@ -1134,7 +1134,7 @@ INSTANCE_NAME = "pnkln-god-mode-v3"def deploy():
 
             boot_disk=notebooks_v2.BootDisk(disk_size_gb=200, disk_type="PD_SSD"),
 
-            disable_public_ip=False 
+            disable_public_ip=False
 
         )
 
@@ -1368,7 +1368,7 @@ import sys, json; from libs.aiyou.governance.sentinel import judge_6
 
 while True:
 
-    l=sys.stdin.readline(); 
+    l=sys.stdin.readline();
 
     if not l: break
 
@@ -1466,7 +1466,7 @@ cat <<PYTHON > apps/n-autoresearch/Kosmos/BioAgents-server/src/manager_routes.py
 
 import os, json; from fastapi import APIRouter; from pydantic import BaseModel; from google.cloud import firestore
 
-router = APIRouter(); 
+router = APIRouter();
 
 try: db = firestore.Client()
 
@@ -1650,13 +1650,13 @@ class CavMTOE:
     def bottom_up_vote(self, intent: str, risk_level: str) -> Dict:
         thresholds = { "L": 0.50, "M": 0.66, "H": 0.90, "EH": 1.00 }
         required = thresholds.get(risk_level, 0.90)
-        
+
         sample_size = 50 if risk_level in ["L", "M"] else self.num_soldiers
         sample = random.sample(self.agents, sample_size)
-        
+
         votes = sum(1 for a in sample if random.random() < (a['glicko']/2000))
         approval_rate = votes / sample_size
-        
+
         return {
             "verdict": "APPROVED" if approval_rate >= required else "DENIED",
             "approval_rate": approval_rate,
@@ -1671,7 +1671,7 @@ class MemoryBank:
         self.learned_rules = [
             {"pattern": "from * import", "action": "suppress", "context": "tests"}
         ]
-    
+
     def consult(self, code_snippet: str, context: str) -> str:
         for rule in self.learned_rules:
             if rule["pattern"] in code_snippet and rule["context"] in context:
@@ -1703,7 +1703,7 @@ class JudgeSixSentinel:
         # 3. Army Vote (Simulation of High Risk)
         # Assuming all new queries are 'Medium' risk by default
         vote = self.army.bottom_up_vote(query, "M")
-        
+
         if vote["verdict"] == "APPROVED":
             return {"status": "SUCCESS", "reason": f"Army Consensus: {vote['approval_rate']:.1%}"}
         else:
@@ -1736,7 +1736,7 @@ async def launch_mission(req: MissionRequest):
     """
     # 1. Governance Gate
     verdict = judge.evaluate(req.query, req.context)
-    
+
     if verdict["status"] == "BLOCKED":
         raise HTTPException(status_code=403, detail=verdict)
 
@@ -1944,7 +1944,7 @@ resource "google_workstations_workstation_cluster" "default" {
   network               = google_compute_network.antigravity_vpc.id
   subnetwork            = google_compute_subnetwork.antigravity_subnet.id
   location              = "$REGION"
-  
+
   # Wait for API enablement
   depends_on = [google_compute_network.antigravity_vpc]
 }

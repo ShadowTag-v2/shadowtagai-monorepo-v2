@@ -1,4 +1,4 @@
-adopt following as persona to align the following with 
+adopt following as persona to align the following with
 
 “PACIFIC EDGE PROTOCOL: NATIONAL EXPANSION MANIFEST
 "The InevUltrathinkhitecture"
@@ -190,8 +190,8 @@ pip -q install --upgrade google-cloud-aiplatform google-cloud-storage google-clo
 #p-vertex-init
 %%python
 import google.cloud.aiplatform as a;from google.cloud import storage as gs
-p="YOUR_GCP_PROJECT";r="us-central1";b="pnkln-bucket";a.init(project=p,location=r);c=gs.Client(project=p); 
-def up(local,blob):c.bucket(b).blob(blob).upload_from_filename(local); 
+p="YOUR_GCP_PROJECT";r="us-central1";b="pnkln-bucket";a.init(project=p,location=r);c=gs.Client(project=p);
+def up(local,blob):c.bucket(b).blob(blob).upload_from_filename(local);
 def dl(blob,local):c.bucket(b).blob(blob).download_to_filename(local)
 
 #p-models
@@ -222,14 +222,14 @@ open("/mnt/data/pnkln_prompts_core.json","w").write(json.dumps(pt,ensure_ascii=F
 from google.cloud import vision as gv;import io,os,base64,json
 cl=gv.ImageAnnotatorClient()
 def ocr_b64(b64):
-    img=gv.Image(content=base64.b64decode(b64));r=cl.document_text_detection(image=img); 
+    img=gv.Image(content=base64.b64decode(b64));r=cl.document_text_detection(image=img);
     t=r.full_text_annotation.text if r.full_text_annotation and r.full_text_annotation.text else ""
     return t.strip()
 def ocr_file(fp):
     with io.open(fp,"rb") as f:bb=base64.b64encode(f.read()).decode()
     return ocr_b64(bb)
 def ocr_gcs(uri):
-    img=gv.Image();img.source.image_uri=uri;r=cl.document_text_detection(image=img); 
+    img=gv.Image();img.source.image_uri=uri;r=cl.document_text_detection(image=img);
     t=r.full_text_annotation.text if r.full_text_annotation and r.full_text_annotation.text else ""
     return t.strip()
 
@@ -249,17 +249,17 @@ def prc(x,p):x=sorted(x);i=int((len(x)-1)*p);return x[i]
 
 #p-mcarlo
 %%python
-def mcarlo_rev(n,base,sd,yrs=5,gr=0.6): 
-    r=[]; 
+def mcarlo_rev(n,base,sd,yrs=5,gr=0.6):
+    r=[];
     for _ in range(n):
         b=max(0,random.gauss(base,sd))
         v=b*((1+gr)**yrs)
         r.append(v)
     return r
-def mcarlo_val(n,rev_mult,rev_samples): 
-    out=[max(0,rev_mult*rv) for rv in rev_samples]; 
+def mcarlo_val(n,rev_mult,rev_samples):
+    out=[max(0,rev_mult*rv) for rv in rev_samples];
     return {"mean":st.mean(out),"p10":prc(out,0.1),"p50":prc(out,0.5),"p90":prc(out,0.9),"max":max(out)}
-def mcarlo_bundle(cfg): 
+def mcarlo_bundle(cfg):
     vals=[]; comps={}
     for k,v in cfg.items():
         rs=mcarlo_rev(v["n"],v["base"],v["sd"],v.get("yrs",5),v.get("gr",0.6))
@@ -282,11 +282,11 @@ res=mcarlo_bundle(cfg); open("/mnt/data/pnkln_valuation.json","w").write(j(res))
 
 #p-swiper-core
 %%python
-def swiper_plan(q): 
+def swiper_plan(q):
     s="You are pnkln-swiper. Return JSON {wedge,geo,content,cpms,revshare,visualize}."
     m=g1.generate_content([{"role":"system","parts":[s]},{"role":"user","parts":[q]}],generation_config={"temperature":0.3})
     return m.text
-def swiper_visualize(img_b64,gear): 
+def swiper_visualize(img_b64,gear):
     t=f"Blend {gear} into scene, return JSON placements and style."
     m=g1.generate_content([{"role":"system","parts":["Return JSON only."]},{"role":"user","parts":[Part.from_data(mime_type="image/jpeg",data=__import__('base64').b64decode(img_b64)),t]}],generation_config={"temperature":0.2})
     return m.text
@@ -297,16 +297,16 @@ import time
 class Verdict:
     def __init__(s):s.q=[]
     def add(s,t,dl,prio):s.q.append({"t":t,"dl":dl,"p":prio,"k":0,"d":False})
-    def tick(s,now): 
+    def tick(s,now):
         for i in s.q:
             if i["d"]:continue
             if now>=i["dl"]:i["k"]=2
             elif (i["dl"]-now)<=900:i["k"]=1
-    def next(s): 
+    def next(s):
         u=[x for x in s.q if not x["d"]]
-        u.sort(key=lambda x:(-x["k"],-x["p"])); 
+        u.sort(key=lambda x:(-x["k"],-x["p"]));
         return u[0] if u else None
-    def done(s,t): 
+    def done(s,t):
         for i in s.q:
             if i["t"]==t:i["d"]=True;return True
         return False
@@ -314,14 +314,14 @@ V=Verdict()
 
 #p-vc-mirror
 %%python
-def vcmirror(profile_txt,company): 
+def vcmirror(profile_txt,company):
     sys="Extract investor thesis and produce pitch copy. JSON keys: thesis,fit,angles,email_open,deck_outline."
     m=g.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[profile_txt,company]}],generation_config={"temperature":0.2})
     return m.text
 
 #p-geos-prime
 %%python
-def geos_skim(txt): 
+def geos_skim(txt):
     sys="Summarize geo triggers, actors, capital flow, compliance. JSON only."
     m=g1.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[txt]}],generation_config={"temperature":0.2})
     return m.text
@@ -329,21 +329,21 @@ def geos_skim(txt):
 #p-odor-dome
 %%python
 import numpy as np
-def odor_sim(n=128,src=[(64,64,1.0)],k=0.92,fx=0.02): 
+def odor_sim(n=128,src=[(64,64,1.0)],k=0.92,fx=0.02):
     f=np.zeros((n,n),float)
     for _ in range(256):
         nf=np.copy(f)
-        nf[1:-1,1:-1]=(f[1:-1,1:-1]*k+fx*(f[:-2,1:-1]+f[2:,1:-1]+f[1:-1,:-2]+f[1:-1,2:])) 
+        nf[1:-1,1:-1]=(f[1:-1,1:-1]*k+fx*(f[:-2,1:-1]+f[2:,1:-1]+f[1:-1,:-2]+f[1:-1,2:]))
         for (x,y,s) in src:nf[x%n,y%n]+=s
         f=nf
     return f
-def odor_score(f,mask=None): 
+def odor_score(f,mask=None):
     if mask is None:return float(f.mean())
     return float((f*mask).mean())
 
 #p-tokable
 %%python
-def tokable_script(theme,persona): 
+def tokable_script(theme,persona):
     sys="Write a 45-90s emotion-first script with 3 beats and optional interactive branch cues. JSON only."
     m=g1.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[f"{theme} | {persona}"]}],generation_config={"temperature":0.55})
     return m.text
@@ -367,11 +367,11 @@ open("/mnt/data/pnkln_studio_templates.json","w").write(j(tpl))
 %%python
 print("pnkln ready”)”
 
-/Users/pikeymickey/aiyou-fastapi-services/src/gemini_ingestion_layer/config.py; 
+/Users/pikeymickey/aiyou-fastapi-services/src/gemini_ingestion_layer/config.py;
 fix in Ruff warning: `one-blank-line-before-c
 (D211) are incompatible. Ignoring
 warning: `multi-line-summary-firs
-`multi-line-summary-second-line` 
+`multi-line-summary-second-line`
 `multi-line-summary-second-line`.
 
 feat/pnkln-core-components*+
@@ -384,8 +384,8 @@ pip -q install --upgrade google-cloud-aiplatform google-cloud-storage google-clo
 #p-vertex-init
 %%python
 import google.cloud.aiplatform as a;from google.cloud import storage as gs
-p="YOUR_GCP_PROJECT";r="us-central1";b="pnkln-bucket";a.init(project=p,location=r);c=gs.Client(project=p); 
-def up(local,blob):c.bucket(b).blob(blob).upload_from_filename(local); 
+p="YOUR_GCP_PROJECT";r="us-central1";b="pnkln-bucket";a.init(project=p,location=r);c=gs.Client(project=p);
+def up(local,blob):c.bucket(b).blob(blob).upload_from_filename(local);
 def dl(blob,local):c.bucket(b).blob(blob).download_to_filename(local)
 
 #p-models
@@ -416,14 +416,14 @@ open("/mnt/data/pnkln_prompts_core.json","w").write(json.dumps(pt,ensure_ascii=F
 from google.cloud import vision as gv;import io,os,base64,json
 cl=gv.ImageAnnotatorClient()
 def ocr_b64(b64):
-    img=gv.Image(content=base64.b64decode(b64));r=cl.document_text_detection(image=img); 
+    img=gv.Image(content=base64.b64decode(b64));r=cl.document_text_detection(image=img);
     t=r.full_text_annotation.text if r.full_text_annotation and r.full_text_annotation.text else ""
     return t.strip()
 def ocr_file(fp):
     with io.open(fp,"rb") as f:bb=base64.b64encode(f.read()).decode()
     return ocr_b64(bb)
 def ocr_gcs(uri):
-    img=gv.Image();img.source.image_uri=uri;r=cl.document_text_detection(image=img); 
+    img=gv.Image();img.source.image_uri=uri;r=cl.document_text_detection(image=img);
     t=r.full_text_annotation.text if r.full_text_annotation and r.full_text_annotation.text else ""
     return t.strip()
 
@@ -443,17 +443,17 @@ def prc(x,p):x=sorted(x);i=int((len(x)-1)*p);return x[i]
 
 #p-mcarlo
 %%python
-def mcarlo_rev(n,base,sd,yrs=5,gr=0.6): 
-    r=[]; 
+def mcarlo_rev(n,base,sd,yrs=5,gr=0.6):
+    r=[];
     for _ in range(n):
         b=max(0,random.gauss(base,sd))
         v=b*((1+gr)**yrs)
         r.append(v)
     return r
-def mcarlo_val(n,rev_mult,rev_samples): 
-    out=[max(0,rev_mult*rv) for rv in rev_samples]; 
+def mcarlo_val(n,rev_mult,rev_samples):
+    out=[max(0,rev_mult*rv) for rv in rev_samples];
     return {"mean":st.mean(out),"p10":prc(out,0.1),"p50":prc(out,0.5),"p90":prc(out,0.9),"max":max(out)}
-def mcarlo_bundle(cfg): 
+def mcarlo_bundle(cfg):
     vals=[]; comps={}
     for k,v in cfg.items():
         rs=mcarlo_rev(v["n"],v["base"],v["sd"],v.get("yrs",5),v.get("gr",0.6))
@@ -476,11 +476,11 @@ res=mcarlo_bundle(cfg); open("/mnt/data/pnkln_valuation.json","w").write(j(res))
 
 #p-swiper-core
 %%python
-def swiper_plan(q): 
+def swiper_plan(q):
     s="You are pnkln-swiper. Return JSON {wedge,geo,content,cpms,revshare,visualize}."
     m=g1.generate_content([{"role":"system","parts":[s]},{"role":"user","parts":[q]}],generation_config={"temperature":0.3})
     return m.text
-def swiper_visualize(img_b64,gear): 
+def swiper_visualize(img_b64,gear):
     t=f"Blend {gear} into scene, return JSON placements and style."
     m=g1.generate_content([{"role":"system","parts":["Return JSON only."]},{"role":"user","parts":[Part.from_data(mime_type="image/jpeg",data=__import__('base64').b64decode(img_b64)),t]}],generation_config={"temperature":0.2})
     return m.text
@@ -491,16 +491,16 @@ import time
 class Verdict:
     def __init__(s):s.q=[]
     def add(s,t,dl,prio):s.q.append({"t":t,"dl":dl,"p":prio,"k":0,"d":False})
-    def tick(s,now): 
+    def tick(s,now):
         for i in s.q:
             if i["d"]:continue
             if now>=i["dl"]:i["k"]=2
             elif (i["dl"]-now)<=900:i["k"]=1
-    def next(s): 
+    def next(s):
         u=[x for x in s.q if not x["d"]]
-        u.sort(key=lambda x:(-x["k"],-x["p"])); 
+        u.sort(key=lambda x:(-x["k"],-x["p"]));
         return u[0] if u else None
-    def done(s,t): 
+    def done(s,t):
         for i in s.q:
             if i["t"]==t:i["d"]=True;return True
         return False
@@ -508,14 +508,14 @@ V=Verdict()
 
 #p-vc-mirror
 %%python
-def vcmirror(profile_txt,company): 
+def vcmirror(profile_txt,company):
     sys="Extract investor thesis and produce pitch copy. JSON keys: thesis,fit,angles,email_open,deck_outline."
     m=g.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[profile_txt,company]}],generation_config={"temperature":0.2})
     return m.text
 
 #p-geos-prime
 %%python
-def geos_skim(txt): 
+def geos_skim(txt):
     sys="Summarize geo triggers, actors, capital flow, compliance. JSON only."
     m=g1.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[txt]}],generation_config={"temperature":0.2})
     return m.text
@@ -523,21 +523,21 @@ def geos_skim(txt):
 #p-odor-dome
 %%python
 import numpy as np
-def odor_sim(n=128,src=[(64,64,1.0)],k=0.92,fx=0.02): 
+def odor_sim(n=128,src=[(64,64,1.0)],k=0.92,fx=0.02):
     f=np.zeros((n,n),float)
     for _ in range(256):
         nf=np.copy(f)
-        nf[1:-1,1:-1]=(f[1:-1,1:-1]*k+fx*(f[:-2,1:-1]+f[2:,1:-1]+f[1:-1,:-2]+f[1:-1,2:])) 
+        nf[1:-1,1:-1]=(f[1:-1,1:-1]*k+fx*(f[:-2,1:-1]+f[2:,1:-1]+f[1:-1,:-2]+f[1:-1,2:]))
         for (x,y,s) in src:nf[x%n,y%n]+=s
         f=nf
     return f
-def odor_score(f,mask=None): 
+def odor_score(f,mask=None):
     if mask is None:return float(f.mean())
     return float((f*mask).mean())
 
 #p-tokable
 %%python
-def tokable_script(theme,persona): 
+def tokable_script(theme,persona):
     sys="Write a 45-90s emotion-first script with 3 beats and optional interactive branch cues. JSON only."
     m=g1.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[f"{theme} | {persona}"]}],generation_config={"temperature":0.55})
     return m.text

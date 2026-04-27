@@ -65,7 +65,7 @@ For example, the access token for a client `app` of a user with `reader` role sh
 }
 ```
 
-An example of feast OIDC authorization configuration on the server side is the following: 
+An example of feast OIDC authorization configuration on the server side is the following:
 ```yaml
 project: my-project
 auth:
@@ -101,7 +101,7 @@ auth:
 With Kubernetes RBAC Authorization, the client uses the service account token as the authorizarion bearer token, and the
 server fetches the associated roles from the Kubernetes RBAC resources. Feast supports advanced authorization by extracting user groups and namespaces from Kubernetes tokens, enabling fine-grained access control beyond simple role matching. This is achieved by leveraging Kubernetes Token Access Review, which allows Feast to determine the groups and namespaces associated with a user or service account.
 
-An example of Kubernetes RBAC authorization configuration is the following: 
+An example of Kubernetes RBAC authorization configuration is the following:
 {% hint style="info" %}
 **NOTE**: This configuration will only work if you deploy feast on Openshift or a Kubernetes platform.
 {% endhint %}
@@ -113,7 +113,7 @@ auth:
 ...
 ```
 
-In case the client cannot run on the same cluster as the servers, the client token can be injected using the `LOCAL_K8S_TOKEN` 
+In case the client cannot run on the same cluster as the servers, the client token can be injected using the `LOCAL_K8S_TOKEN`
 environment variable on the client side. The value must refer to the token of a service account created on the servers cluster
 and linked to the desired RBAC roles/groups/namespaces.
 

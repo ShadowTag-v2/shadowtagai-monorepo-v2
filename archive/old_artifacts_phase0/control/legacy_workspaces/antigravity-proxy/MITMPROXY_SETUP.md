@@ -4,7 +4,7 @@ This is the **actually working** solution for proxying Antigravity's API calls.
 
 ## Why This Instead of Node.js?
 
-The Node.js proxy **cannot inspect HTTPS content** without implementing full MITM with certificate generation. 
+The Node.js proxy **cannot inspect HTTPS content** without implementing full MITM with certificate generation.
 
 `mitmproxy` is the industry-standard tool that handles all of this automatically.
 
@@ -257,15 +257,15 @@ antigravity-proxy() {
     # Start mitmproxy in background
     mitmdump -s ~/dev/personal/antigravity-proxy/mitmproxy-addon.py --listen-port 8080 > /dev/null 2>&1 &
     MITM_PID=$!
-    
+
     # Wait for proxy to start
     sleep 2
-    
+
     # Launch Antigravity
     HTTP_PROXY=http://localhost:8080 \
     HTTPS_PROXY=http://localhost:8080 \
     /Applications/Antigravity.app/Contents/MacOS/Antigravity
-    
+
     # Kill mitmproxy when Antigravity exits
     kill $MITM_PID 2>/dev/null
 }

@@ -42,4 +42,3 @@ jobs:
       - name: Cargo test
         run: |
           if [ -f Cargo.toml ]; then cargo test --all --quiet; else echo "no Rust project"; fi
-

@@ -22,7 +22,7 @@ namespace detail {
     static METAL_FUNC int idx_from_colleader(const int laneid) { // rowvec
         return ((laneid % 8) / 2) % 2; // % 2 to protect against non-leaders
     }
-    
+
     static METAL_FUNC int row_from_laneid(const int laneid) { // rowvec
         return (laneid / 2) % 4 + (laneid / 16) * 4;
     }
@@ -30,30 +30,30 @@ namespace detail {
     static METAL_FUNC int leader_from_row(const int row) { // rowvec
         return (row/4) * 16 + (row % 4) * 2;
     }
-    
-    
+
+
     /* ----- ducks::is_align_register_vector<RV1>() && ducks::is_naive_register_vector<RV2>() -----*/
     static METAL_FUNC int col_leader_from_naive_laneid(const int laneid) { // rowvec
         int tile_col = laneid % 8;
         int base_leader = (tile_col / 4) * 8 + (tile_col / 2) % 2 + (tile_col % 2) * 16;
         return base_leader + 2 * (laneid / 8);
     }
-    
+
     static METAL_FUNC int local_send_idx_from_col(const int laneid) {
         return laneid >= 16;
     }
-    
+
     static METAL_FUNC int src_basetile_from_laneid(const int laneid) { // rowvec
         return (laneid/ 2) % 4;
     }
-    
+
     /* ----- ducks::is_ortho_register_vector<RV1>() && ducks::is_naive_register_vector<RV2>() -----*/
     static METAL_FUNC int row_leader_from_naive_laneid(const int laneid) { // rowvec
         int row = laneid % 8;
         int base_row = (row/4) * 16 + (row % 4) * 2;
         return base_row + (laneid / 8) % 2 + (laneid >= 16) * 8;
     }
-    
+
     static METAL_FUNC int ortho_send_tile_from_laneid(const int laneid) { // rowvec
 //        uint32_t MASK_1 = 0b00000000010101010000000001010101;
         uint32_t MASK_2 = 0b00000000101010100000000010101010;
@@ -61,10 +61,10 @@ namespace detail {
         uint32_t MASK_4 = 0b10101010000000001010101000000000;
         return ((MASK_2 >> laneid) & 1) + ((MASK_3 >> laneid) & 1) * 2 + ((MASK_4 >> laneid) & 1) * 3;
     }
-    
-    
 
-    
+
+
+
 }
 /**
  * @brief Copies data from one register vector to another.

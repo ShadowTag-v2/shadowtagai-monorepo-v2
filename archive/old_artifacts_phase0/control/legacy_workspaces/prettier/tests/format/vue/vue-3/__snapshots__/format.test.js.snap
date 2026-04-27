@@ -18,7 +18,7 @@ printWidth: 80
 
 
                                         // comment 1:
-T 
+T
 extends string &
 
 'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooong',
@@ -26,7 +26,7 @@ extends string &
        * comment 2
  */
         U extends number, // comment 3
-        
+
         /** comment 4 */ C extends MyType
 
 
@@ -182,7 +182,7 @@ printWidth: 80
 <!-- Not root block -->
 <template>
 <style vars="     {row   }"></style>
-</template> 
+</template>
 
 <!-- Not attribute -->
 <style>

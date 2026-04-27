@@ -7,7 +7,7 @@
 /*
  swaping register layout doesn't exist. no layout to swap
  SUBTILE
- 
+
  */
 #include "../../../../common/common.metal"
 #include "../../../../types/types.metal"
@@ -49,12 +49,12 @@ swap_layout(thread rt_base<T, typename ducks::rt_layout::transpose<layout>::type
     const ushort src_laneid_start = compute_laneid(simd_x, simd_y);
     const ushort2 src_laneid = ushort2(src_laneid_start, src_laneid_start+(ushort)2);
     const ushort first_idx = (laneid / 2) % 2;
-    
+
     dst.data.thread_elements()[first_idx] = shfl_sync<T>(src.data.thread_elements()[first_idx], src_laneid[first_idx]);
 
     dst.data.thread_elements()[1 - first_idx] = shfl_sync<T>(src.data.thread_elements()[1 - first_idx], src_laneid[1 - first_idx]);
 }
-    
+
 /**
  * @brief Swaps the layout of a register tile.
  *
@@ -98,9 +98,9 @@ swap_layout_inplace(thread const rt_base<T2, layout> &src) {
     swap_layout(dst, src);
     return dst;
 }
-    
+
 /* ----------  TRANSPOSE  ---------- */
-   
+
 /**
  * @brief Transposes a register base tile.
  *
@@ -119,7 +119,7 @@ transpose(thread rt_base<T, layout> &dst, thread const rt_base<T, layout> &src, 
     const ushort src_laneid_start = compute_laneid(simd_x, simd_y);
     const ushort2 src_laneid = ushort2(src_laneid_start, src_laneid_start+(ushort)2);
     const ushort first_idx = (laneid / 2) % 2;
-    
+
     dst.data.thread_elements()[first_idx] = shfl_sync<T>(src.data.thread_elements()[first_idx], src_laneid[first_idx]);
 
     dst.data.thread_elements()[1 - first_idx] = shfl_sync<T>(src.data.thread_elements()[1 - first_idx], src_laneid[1 - first_idx]);
@@ -149,7 +149,7 @@ transpose_sep(thread RT &dst, thread const rt<typename RT::T, RT::cols, RT::rows
         }
     }
 }
-    
+
 /**
  * @brief Transposes a register base tile in-place.
  *
@@ -288,7 +288,7 @@ make_causal(thread RT &dst, thread const RT &src, const unsigned laneid, thread 
 }
 
 
-    
+
 /* ----------  SUBTILE  ---------- */
 
 /**

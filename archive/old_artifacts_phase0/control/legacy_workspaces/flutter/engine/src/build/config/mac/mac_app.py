@@ -79,7 +79,7 @@ def Main():
   plist_parser = subparsers.add_parser('plist',
                                        help='Process the Info.plist')
   plist_parser.set_defaults(func=ProcessInfoPlist)
-  
+
   plist_parser.add_argument('-i', dest='input', help='The input plist path')
   plist_parser.add_argument('-o', dest='output', help='The output plist dir')
 
@@ -88,7 +88,7 @@ def Main():
   plist_parser = subparsers.add_parser('nib',
                                        help='Process a NIB file')
   plist_parser.set_defaults(func=ProcessNIB)
-  
+
   plist_parser.add_argument('-i', dest='input', help='The input nib path')
   plist_parser.add_argument('-o', dest='output', help='The output nib dir')
   plist_parser.add_argument('-m', dest='module', help='The module name')

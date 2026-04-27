@@ -201,7 +201,7 @@ export class StatelessHttpTransport extends BaseTransport {
 					// Log details if temp logging is active
 					if (this.tempLogCounter > 0) {
 						const logNumber = this.tempLogOriginalCount - this.tempLogCounter + 1;
-						
+
 						// Redact HF token if present - show only last 5 chars
 						let hfTokenInfo: string | undefined;
 						const hfToken = headers['authorization'] || headers['hf-token'] || headers['x-hf-token'];
@@ -213,7 +213,7 @@ export class StatelessHttpTransport extends BaseTransport {
 								hfTokenInfo = '[PRESENT BUT TOO SHORT]';
 							}
 						}
-						
+
 						console.log(`[TEMPLOG ${logNumber}/${this.tempLogOriginalCount}] Session Resume Failed:`, {
 							sessionId: sessionId,
 							timestamp: new Date().toISOString(),

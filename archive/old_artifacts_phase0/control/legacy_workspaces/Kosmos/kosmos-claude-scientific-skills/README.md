@@ -205,9 +205,9 @@ Once you've installed the skills, you can ask Claude to execute complex multi-st
 
 **Prompt**:
 ```
-Use available skills you have access to whenever possible. Query ChEMBL for EGFR inhibitors (IC50 < 50nM), analyze structure-activity relationships 
-with RDKit, generate improved analogs with datamol, perform virtual screening with DiffDock 
-against AlphaFold EGFR structure, search PubMed for resistance mechanisms, check COSMIC for 
+Use available skills you have access to whenever possible. Query ChEMBL for EGFR inhibitors (IC50 < 50nM), analyze structure-activity relationships
+with RDKit, generate improved analogs with datamol, perform virtual screening with DiffDock
+against AlphaFold EGFR structure, search PubMed for resistance mechanisms, check COSMIC for
 mutations, and create visualizations and a comprehensive report.
 ```
 
@@ -220,9 +220,9 @@ mutations, and create visualizations and a comprehensive report.
 
 **Prompt**:
 ```
-Use available skills you have access to whenever possible. Load 10X dataset with Scanpy, perform QC and doublet removal, integrate with Cellxgene 
-Census data, identify cell types using NCBI Gene markers, run differential expression with 
-PyDESeq2, infer gene regulatory networks with Arboreto, enrich pathways via Reactome/KEGG, 
+Use available skills you have access to whenever possible. Load 10X dataset with Scanpy, perform QC and doublet removal, integrate with Cellxgene
+Census data, identify cell types using NCBI Gene markers, run differential expression with
+PyDESeq2, infer gene regulatory networks with Arboreto, enrich pathways via Reactome/KEGG,
 and identify therapeutic targets with Open Targets.
 ```
 
@@ -235,9 +235,9 @@ and identify therapeutic targets with Open Targets.
 
 **Prompt**:
 ```
-Use available skills you have access to whenever possible. Analyze RNA-seq with PyDESeq2, process mass spec with pyOpenMS, integrate metabolites from 
-HMDB/Metabolomics Workbench, map proteins to pathways (UniProt/KEGG), find interactions via 
-STRING, correlate omics layers with statsmodels, build predictive model with scikit-learn, 
+Use available skills you have access to whenever possible. Analyze RNA-seq with PyDESeq2, process mass spec with pyOpenMS, integrate metabolites from
+HMDB/Metabolomics Workbench, map proteins to pathways (UniProt/KEGG), find interactions via
+STRING, correlate omics layers with statsmodels, build predictive model with scikit-learn,
 and search ClinicalTrials.gov for relevant trials.
 ```
 
@@ -250,9 +250,9 @@ and search ClinicalTrials.gov for relevant trials.
 
 **Prompt**:
 ```
-Use available skills you have access to whenever possible. Retrieve AlphaFold structures, identify interaction interface with BioPython, search ZINC 
-for allosteric candidates (MW 300-500, logP 2-4), filter with RDKit, dock with DiffDock, 
-rank with DeepChem, check PubChem suppliers, search USPTO patents, and optimize leads with 
+Use available skills you have access to whenever possible. Retrieve AlphaFold structures, identify interaction interface with BioPython, search ZINC
+for allosteric candidates (MW 300-500, logP 2-4), filter with RDKit, dock with DiffDock,
+rank with DeepChem, check PubChem suppliers, search USPTO patents, and optimize leads with
 MedChem/molfeat.
 ```
 
@@ -265,9 +265,9 @@ MedChem/molfeat.
 
 **Prompt**:
 ```
-Use available skills you have access to whenever possible. Parse VCF with pysam, annotate variants with Ensembl VEP, query ClinVar for pathogenicity, 
-check COSMIC for cancer mutations, retrieve gene info from NCBI Gene, analyze protein impact 
-with UniProt, search PubMed for case reports, check ClinPGx for pharmacogenomics, generate 
+Use available skills you have access to whenever possible. Parse VCF with pysam, annotate variants with Ensembl VEP, query ClinVar for pathogenicity,
+check COSMIC for cancer mutations, retrieve gene info from NCBI Gene, analyze protein impact
+with UniProt, search PubMed for case reports, check ClinPGx for pharmacogenomics, generate
 clinical report with ReportLab, and find matching trials on ClinicalTrials.gov.
 ```
 
@@ -280,9 +280,9 @@ clinical report with ReportLab, and find matching trials on ClinicalTrials.gov.
 
 **Prompt**:
 ```
-Use available skills you have access to whenever possible. Query NCBI Gene for annotations, retrieve sequences from UniProt, identify interactions via 
-STRING, map to Reactome/KEGG pathways, analyze topology with Torch Geometric, reconstruct 
-GRNs with Arboreto, assess druggability with Open Targets, model with PyMC, visualize 
+Use available skills you have access to whenever possible. Query NCBI Gene for annotations, retrieve sequences from UniProt, identify interactions via
+STRING, map to Reactome/KEGG pathways, analyze topology with Torch Geometric, reconstruct
+GRNs with Arboreto, assess druggability with Open Targets, model with PyMC, visualize
 networks, and search GEO for similar patterns.
 ```
 
@@ -467,12 +467,12 @@ We welcome contributions to expand and improve this scientific skills repository
 
 ### Contribution Guidelines
 
-✅ Maintain consistency with existing skill documentation format  
-✅ Include practical, working examples in all contributions  
-✅ Ensure all code examples are tested and functional  
-✅ Follow scientific best practices in examples and workflows  
-✅ Update relevant documentation when adding new capabilities  
-✅ Provide clear comments and docstrings in code  
+✅ Maintain consistency with existing skill documentation format
+✅ Include practical, working examples in all contributions
+✅ Ensure all code examples are tested and functional
+✅ Follow scientific best practices in examples and workflows
+✅ Update relevant documentation when adding new capabilities
+✅ Provide clear comments and docstrings in code
 ✅ Include references to official documentation
 
 ### Recognition
@@ -516,38 +516,38 @@ Your contributions help make scientific computing more accessible and enable res
 
 ### General Questions
 
-**Q: Is this free to use?**  
+**Q: Is this free to use?**
 A: Yes! This project is MIT licensed, allowing free use for any purpose including commercial projects.
 
-**Q: Why are all skills grouped into one plugin instead of separate plugins?**  
+**Q: Why are all skills grouped into one plugin instead of separate plugins?**
 A: We believe good science in the age of AI is inherently interdisciplinary. Bundling all skills into a single plugin makes it trivial for you (and Claude) to bridge across fields—e.g., combining genomics, cheminformatics, clinical data, and machine learning in one workflow—without worrying about which individual skills to install or wire together.
 
-**Q: Can I use this for commercial projects?**  
+**Q: Can I use this for commercial projects?**
 A: Absolutely! The MIT License allows both commercial and noncommercial use without restrictions.
 
-**Q: How often is this updated?**  
+**Q: How often is this updated?**
 A: We regularly update skills to reflect the latest versions of packages and APIs. Major updates are announced in release notes.
 
-**Q: Can I use this with other AI models?**  
+**Q: Can I use this with other AI models?**
 A: The skills are optimized for Claude but can be adapted for other models with MCP support. The MCP server works with any MCP-compatible client.
 
 ### Installation & Setup
 
-**Q: Do I need all the Python packages installed?**  
+**Q: Do I need all the Python packages installed?**
 A: No! Only install the packages you need. Each skill specifies its requirements in its `SKILL.md` file.
 
-**Q: What if a skill doesn't work?**  
+**Q: What if a skill doesn't work?**
 A: First check the [Troubleshooting](#troubleshooting) section. If the issue persists, file an issue on GitHub with detailed reproduction steps.
 
-**Q: Do the skills work offline?**  
+**Q: Do the skills work offline?**
 A: Database skills require internet access to query APIs. Package skills work offline once Python dependencies are installed.
 
 ### Contributing
 
-**Q: Can I contribute my own skills?**  
+**Q: Can I contribute my own skills?**
 A: Absolutely! We welcome contributions. See the [Contributing](#contributing) section for guidelines and best practices.
 
-**Q: How do I report bugs or suggest features?**  
+**Q: How do I report bugs or suggest features?**
 A: Open an issue on GitHub with a clear description. For bugs, include reproduction steps and expected vs actual behavior.
 
 ---

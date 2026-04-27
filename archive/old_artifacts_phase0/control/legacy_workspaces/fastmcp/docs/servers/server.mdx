@@ -193,7 +193,7 @@ You configure tag-based filtering when creating your server:
 # Only expose components tagged with "public"
 mcp = FastMCP(include_tags={"public"})
 
-# Hide components tagged as "internal" or "deprecated"  
+# Hide components tagged as "internal" or "deprecated"
 mcp = FastMCP(exclude_tags={"internal", "deprecated"})
 
 # Combine both: show admin tools but hide deprecated ones
@@ -220,12 +220,12 @@ def greet(name: str) -> str:
 if __name__ == "__main__":
     # This runs the server, defaulting to STDIO transport
     mcp.run()
-    
+
     # To use a different transport, e.g., HTTP:
     # mcp.run(transport="http", host="127.0.0.1", port=9000)
 ```
 
-FastMCP supports several transport options: 
+FastMCP supports several transport options:
 - STDIO (default, for local tools)
 - HTTP (recommended for web services, uses Streamable HTTP protocol)
 - SSE (legacy web transport, deprecated)
@@ -277,7 +277,7 @@ main = FastMCP(name="Main")
 sub = FastMCP(name="Sub")
 
 @sub.tool
-def hello(): 
+def hello():
     return "hi"
 
 # Mount directly
@@ -383,7 +383,7 @@ mcp.run(
 
 # Or for async usage
 await mcp.run_async(
-    transport="http", 
+    transport="http",
     host="127.0.0.1",
     port=8080,
 )

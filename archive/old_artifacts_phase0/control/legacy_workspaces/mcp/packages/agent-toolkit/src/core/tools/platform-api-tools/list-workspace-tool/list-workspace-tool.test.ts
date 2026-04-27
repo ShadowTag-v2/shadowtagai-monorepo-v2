@@ -80,7 +80,7 @@ describe('ListWorkspaceTool', () => {
       const result = await callToolByNameRawAsync('list_workspaces', args);
 
       expect(mocks.getMockRequest()).toHaveBeenCalledTimes(1);
-      
+
       const mockCall = mocks.getMockRequest().mock.calls[0];
       expect(mockCall[0]).toContain('query listWorkspaces');
       expect(mockCall[1]).toEqual({
@@ -145,7 +145,7 @@ describe('ListWorkspaceTool', () => {
       const result = await callToolByNameRawAsync('list_workspaces', args);
 
       expect(mocks.getMockRequest()).toHaveBeenCalledTimes(1);
-      
+
       const mockCall = mocks.getMockRequest().mock.calls[0];
       expect(mockCall[1]).toEqual({
         limit: 10000,
@@ -183,7 +183,7 @@ describe('ListWorkspaceTool', () => {
       const result = await callToolByNameRawAsync('list_workspaces', args);
 
       expect(mocks.getMockRequest()).toHaveBeenCalledTimes(1);
-      
+
       const mockCall = mocks.getMockRequest().mock.calls[0];
       expect(mockCall[1]).toEqual({
         limit: 10000,
@@ -217,7 +217,7 @@ describe('ListWorkspaceTool', () => {
       const result = await callToolByNameRawAsync('list_workspaces', args);
 
       expect(mocks.getMockRequest()).toHaveBeenCalledTimes(1);
-      
+
       const mockCall = mocks.getMockRequest().mock.calls[0];
       expect(mockCall[1]).toEqual({
         limit: 10000,
@@ -275,7 +275,7 @@ describe('ListWorkspaceTool', () => {
 
       expect(result.content[0].text).toBe('No workspaces found matching the search term. Try using the tool without a search term');
       expect(mocks.getMockRequest()).toHaveBeenCalledTimes(1);
-      
+
       const mockCall = mocks.getMockRequest().mock.calls[0];
       expect(mockCall[1]).toEqual({
         limit: 10000,

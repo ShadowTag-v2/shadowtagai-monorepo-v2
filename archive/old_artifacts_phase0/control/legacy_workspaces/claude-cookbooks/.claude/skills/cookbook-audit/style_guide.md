@@ -10,12 +10,12 @@ What you'll be able to do (2-4 bullet points as learning objectives)
 Optional: What this unlocks (1 sentence on broader applications)
 You can lead with a problem, or a value, but not with the machinery. List Terminal Learning Objectives (TLOs) and Enabling Learning Objectives (ELOs) upfront, then map them back in the conclusion. This creates a learning contract with the user.
 
-Good: 
-Your engineering team's GitHub Actions workflows fail for dozens of reasons: flaky tests, dependency conflicts, infrastructure issues, or real bugs. 
+Good:
+Your engineering team's GitHub Actions workflows fail for dozens of reasons: flaky tests, dependency conflicts, infrastructure issues, or real bugs.
 
-Manually triaging which failures need immediate attention versus which can wait wastes hours of senior engineer time every week. 
+Manually triaging which failures need immediate attention versus which can wait wastes hours of senior engineer time every week.
 
-An AI observability agent can monitor your CI/CD pipelines 24/7, distinguish signal from noise, and escalate only what matters—cutting manual triage time by 60-80% while ensuring critical failures never slip through. 
+An AI observability agent can monitor your CI/CD pipelines 24/7, distinguish signal from noise, and escalate only what matters—cutting manual triage time by 60-80% while ensuring critical failures never slip through.
 
 Bad:
 In this notebook we will build a research agent. Research agents are useful because they can search the internet and analyze information. We will use the Claude Code SDK to create an agent with the WebSearch tool.
@@ -45,7 +45,7 @@ You will learn how to:
 ```
 
 # 2. Prerequisites & Setup
-Setup the general requirements for this project that a user would need in order to be successful. These are both software requirements (e.g. python >= 3.11, anthropic>=0.71) and non-software (working knowledge of Python, familiarity with RAG architecture). 
+Setup the general requirements for this project that a user would need in order to be successful. These are both software requirements (e.g. python >= 3.11, anthropic>=0.71) and non-software (working knowledge of Python, familiarity with RAG architecture).
 
 When installing use pip, use %%capture to avoid printing pip install to the jupyter stdout (this can be very noisy).
 
@@ -68,7 +68,7 @@ Good:
 %%capture
 %pip install -U anthropic scikit-learn voyageai
 
---- 
+---
 
 import anthropic
 import dotenv
@@ -76,7 +76,7 @@ import dotenv
 # Teaches good habits
 dotenv.load_dotenv()
 
-# constant model name is easier to change 
+# constant model name is easier to change
 MODEL = "claude-haiku-4-5"
 
 client = anthropic.Anthropic()
@@ -152,14 +152,14 @@ client = anthropic.Anthropic()
 # 3. Core Cookbook Sections
 Each feature/concept gets its own section that teaches through demonstration, not documentation.
 
-You may wish to include an architecture overview, show an entire project, or build toward a larger one. Feel free to include visuals to help break up long content. Prefer inline images over linking to external content. 
+You may wish to include an architecture overview, show an entire project, or build toward a larger one. Feel free to include visuals to help break up long content. Prefer inline images over linking to external content.
 
-Avoid feature dumps, over-explaining the obvious, and code without context. 
+Avoid feature dumps, over-explaining the obvious, and code without context.
 
 Code blocks should explain what they're about to do before they are introduced, and what we just learned after they are run.
 
 4. Conclusion
-Conclusions should map back to the learning objects and direct readers to other readings, links, or ideas to pursue. 
+Conclusions should map back to the learning objects and direct readers to other readings, links, or ideas to pursue.
 
 Good:
 ```
@@ -170,7 +170,7 @@ In this guide, we explored how to build MCP tools that can be called programatic
 * Setting up the MCP Server
 * An unoptimized example
 * A better example
-* Considerations for production use cases 
+* Considerations for production use cases
 
 You can further apply these lessons in real projects. Consider the following:
 
@@ -186,4 +186,3 @@ This has less emphasis on how to apply what the reader has learned to their spec
 ```
 We've demonstrated how the Claude Code SDK enables you to build sophisticated multi-agent systems
 ```
-

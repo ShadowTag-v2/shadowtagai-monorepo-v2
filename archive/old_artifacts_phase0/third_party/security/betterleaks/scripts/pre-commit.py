@@ -7,7 +7,7 @@ import subprocess
 
 def betterleaksEnabled():
     """Determine if the pre-commit hook for betterleaks is enabled.
-    
+
     Checks both 'hooks.betterleaks' and 'hooks.gitleaks' for backwards compatibility.
     """
     # Check betterleaks config first (preferred)

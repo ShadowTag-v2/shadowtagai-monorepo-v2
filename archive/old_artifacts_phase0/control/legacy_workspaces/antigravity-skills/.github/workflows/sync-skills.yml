@@ -48,12 +48,12 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           # Add all changes
           git add .
-          
+
           # Commit
           git commit -m "chore(sync): auto-sync skills from upstream sources [skip ci]"
-          
+
           # Push
           git push origin main

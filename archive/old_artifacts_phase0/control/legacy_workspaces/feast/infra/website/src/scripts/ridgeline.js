@@ -8,13 +8,13 @@ export function createRidgelinePlot() {
     bottom: 10,
     left: 140,
   };
-  
+
   const container = document.getElementById('ridgeline');
   if (!container) return;
-  
+
   // Clear any existing content
   container.innerHTML = '';
-  
+
   const width = container.clientWidth - margin.left - margin.right;
   const height = container.clientHeight - margin.top - margin.bottom;
 
@@ -115,7 +115,7 @@ export function createRidgelinePlot() {
   // Create initial paths
   metrics.forEach(metric => {
     const data = metricData.get(metric);
-    
+
     // Add area
     svg.append('path')
       .attr('class', `metric-area ${metric.replace(/\s+/g, '-')}`)
@@ -138,7 +138,7 @@ export function createRidgelinePlot() {
     if (frameCount % updateFrequency === 0) {
       metrics.forEach(metric => {
         const data = metricData.get(metric);
-        
+
         // Shift existing data left
         data.shift();
         // Add new value
@@ -159,9 +159,9 @@ export function createRidgelinePlot() {
   }
 
   animate();
-  
+
   // Return a cleanup function
   return () => {
     container.innerHTML = '';
   };
-} 
+}

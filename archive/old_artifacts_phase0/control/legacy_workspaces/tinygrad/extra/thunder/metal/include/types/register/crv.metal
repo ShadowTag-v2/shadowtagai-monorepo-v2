@@ -94,4 +94,3 @@ template<int _l, typename layout=ducks::rv_layout::naive> using crv_hf = crv<hal
 
 
 } // namespace mittens
-

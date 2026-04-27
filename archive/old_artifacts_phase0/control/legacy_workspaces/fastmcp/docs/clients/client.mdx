@@ -14,7 +14,7 @@ The central piece of MCP client applications is the `fastmcp.Client` class. This
 The FastMCP Client is designed for deterministic, controlled interactions rather than autonomous behavior, making it ideal for:
 
 - **Testing MCP servers** during development
-- **Building deterministic applications** that need reliable MCP interactions  
+- **Building deterministic applications** that need reliable MCP interactions
 - **Creating the foundation for agentic or LLM-based clients** with structured, type-safe operations
 
 All client operations require using the `async with` context manager for proper connection lifecycle management.
@@ -46,12 +46,12 @@ async def main():
     async with client:
         # Basic server interaction
         await client.ping()
-        
+
         # List available operations
         tools = await client.list_tools()
         resources = await client.list_resources()
         prompts = await client.list_prompts()
-        
+
         # Execute operations
         result = await client.call_tool("example_tool", {"param": "value"})
         print(result)
@@ -72,7 +72,7 @@ The client automatically infers the appropriate transport based on the input:
 
 1. **`FastMCP` instance** → In-memory transport (perfect for testing)
 2. **File path ending in `.py`** → Python Stdio transport
-3. **File path ending in `.js`** → Node.js Stdio transport  
+3. **File path ending in `.js`** → Node.js Stdio transport
 4. **URL starting with `http://` or `https://`** → HTTP transport
 5. **`MCPConfig` dictionary** → Multi-server client
 
@@ -81,7 +81,7 @@ from fastmcp import Client, FastMCP
 
 # Examples of transport inference
 client_memory = Client(FastMCP("TestServer"))
-client_script = Client("./server.py") 
+client_script = Client("./server.py")
 client_http = Client("https://api.example.com/mcp")
 ```
 
@@ -102,7 +102,7 @@ config = {
     "mcpServers": {
         "server_name": {
             # Remote HTTP/SSE server
-            "transport": "http",  # or "sse" 
+            "transport": "http",  # or "sse"
             "url": "https://api.example.com/mcp",
             "headers": {"Authorization": "Bearer token"},
             "auth": "oauth"  # or bearer token string
@@ -135,7 +135,7 @@ async with client:
     # Tools are prefixed with server names
     weather_data = await client.call_tool("weather_get_forecast", {"city": "London"})
     response = await client.call_tool("assistant_answer_question", {"question": "What's the capital of France?"})
-    
+
     # Resources use prefixed URIs
     icons = await client.read_resource("weather://weather/icons/sunny")
     templates = await client.read_resource("resource://assistant/templates/list")
@@ -148,15 +148,15 @@ The client operates asynchronously and uses context managers for connection mana
 ```python
 async def example():
     client = Client("my_mcp_server.py")
-    
+
     # Connection established here
     async with client:
         print(f"Connected: {client.is_connected()}")
-        
+
         # Make multiple calls within the same session
         tools = await client.list_tools()
         result = await client.call_tool("greet", {"name": "World"})
-        
+
     # Connection closed automatically here
     print(f"Connected: {client.is_connected()}")
 ```
@@ -173,7 +173,7 @@ Tools are server-side functions that the client can execute with arguments.
 async with client:
     # List available tools
     tools = await client.list_tools()
-    
+
     # Execute a tool
     result = await client.call_tool("multiply", {"a": 5, "b": 3})
     print(result.data)  # 15
@@ -189,7 +189,7 @@ Resources are data sources that the client can read, either static or templated.
 async with client:
     # List available resources
     resources = await client.list_resources()
-    
+
     # Read a resource
     content = await client.read_resource("file:///config/settings.json")
     print(content[0].text)
@@ -205,7 +205,7 @@ Prompts are reusable message templates that can accept arguments.
 async with client:
     # List available prompts
     prompts = await client.list_prompts()
-    
+
     # Get a rendered prompt
     messages = await client.get_prompt("analyze_data", {"data": [1, 2, 3]})
     print(messages.messages)
@@ -305,7 +305,7 @@ client = Client(
 
 The `Client` constructor accepts several configuration options:
 
-- `transport`: Transport instance or source for automatic inference  
+- `transport`: Transport instance or source for automatic inference
 - `log_handler`: Handle server log messages
 - `progress_handler`: Monitor long-running operations
 - `sampling_handler`: Respond to server LLM requests
@@ -322,7 +322,7 @@ Explore the detailed documentation for each operation type:
 
 ### Core Operations
 - **[Tools](/clients/tools)** - Execute server-side functions and handle results
-- **[Resources](/clients/resources)** - Access static and templated resources  
+- **[Resources](/clients/resources)** - Access static and templated resources
 - **[Prompts](/clients/prompts)** - Work with message templates and argument serialization
 
 ### Advanced Features

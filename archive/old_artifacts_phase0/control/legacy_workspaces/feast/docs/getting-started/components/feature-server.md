@@ -38,5 +38,4 @@ The Feature Server operates as a stateless service backed by two key components:
 | `/materialize`               | Materializes features within a specific time range to the online store. |
 | `/materialize-incremental`   | Incrementally materializes features up to the current timestamp.        |
 | `/retrieve-online-documents` | Supports Vector Similarity Search for RAG (Alpha end-ponit)             |
-| `/docs`                      | API Contract for available endpoints                                    | 
-
+| `/docs`                      | API Contract for available endpoints                                    |

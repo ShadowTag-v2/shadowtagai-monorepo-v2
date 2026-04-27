@@ -37,7 +37,3 @@ if __name__ == "__main__":
     tm = to_mv(test_write_page.va_addr, 0x1000).cast("Q")[0]/1e8
     print(f"{tm:.3f} s @ 0x{sdma_ring.va_addr + (sdma_doorbell_value % sdma_ring.size):X} R:0x{sdma_queue.read_pointer_address:X} W:0x{sdma_queue.write_pointer_address:X}")
     time.sleep(0.01)
-
-
-
-

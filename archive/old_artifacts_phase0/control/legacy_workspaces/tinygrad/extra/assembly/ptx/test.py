@@ -20,4 +20,3 @@ if __name__ == "__main__":
   }""", binary=True)
   prg([1], [1], test)
   print(test.toCPU())
-

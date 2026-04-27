@@ -247,4 +247,3 @@ if __name__ == "__main__":
     print("RUBRIC GENERATION EXAMPLE")
     print("=" * 60)
     rubric_generation_example()
-

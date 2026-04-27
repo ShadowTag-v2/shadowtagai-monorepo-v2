@@ -3,4 +3,3 @@ function f(
   someReallyLongArgument2: WithSomeLongType,
   // Trailing comment should stay after
 ) {}
-

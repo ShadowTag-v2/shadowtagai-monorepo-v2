@@ -78,7 +78,7 @@ philosophy: "JR doctrine (maximize value every equation) + ATP 5-19 risk managem
 primary_cloud: "Google Cloud Platform"
 orchestration: "GKE Standard mode (fine-grained control)"
 ai_platform: "Vertex AI (Model Garden, Generative AI Studio, Workbench, Pipelines)"
-primary_models: 
+primary_models:
   - Gemini: 40%
   - Claude: 35%
   - GPT-5: 15%
@@ -139,17 +139,17 @@ layer1_gemini:
   purpose: "Policy understanding"
   size: "40B params, fine-tuned on compliance corpus"
   target_latency: "<5ms p99"
-  
+
 layer2_pytorch:
   purpose: "Enforcement logic"
   model: "Custom neural verification network"
   target_latency: "<3ms p99"
-  
+
 layer3_rules:
   purpose: "Deterministic gates"
   framework: "ATP 5-19 risk stratification"
   target_latency: "<2ms p99"
-  
+
 aggregation:
   voting: "Majority 2/3 to pass"
   ra1_violations: "All 3 must agree to allow"
@@ -282,8 +282,8 @@ tpu-pool:       "pool=tpu, accelerator=tpu-v5e"
 ```markdown
 # CONTEXT RESTORATION — PNKLN CORE STACK™ DEPLOYMENT
 
-I'm Erik, founder/CEO of PNKLN (55, former Army Special Forces + legal training, 
-based in Lakeport, CA). We're bootstrapping from $0K a governed AI infrastructure 
+I'm Erik, founder/CEO of PNKLN (55, former Army Special Forces + legal training,
+based in Lakeport, CA). We're bootstrapping from $0K a governed AI infrastructure
 company targeting regulated markets (defense, healthcare, finance).
 
 ## What We've Built So Far
@@ -296,7 +296,7 @@ company targeting regulated markets (defense, healthcare, finance).
 - Status: Ready to deploy, awaiting execution
 
 **Strategic architecture** (synthesized from memory + uploaded rollup):
-- 6-layer stack: Gulfstream Offshore → Core Stack™ → AiU Digital Mall (flagship) 
+- 6-layer stack: Gulfstream Offshore → Core Stack™ → AiU Digital Mall (flagship)
   → RoadMesh → Orbital → Gov/Defense
 - 19 verticals mapped with valuations ($77.5B conservative / $124.5B optimistic)
 - 36-month roadmap: $105.5M capital → $1.2B ARR → $25B EV
@@ -305,7 +305,7 @@ company targeting regulated markets (defense, healthcare, finance).
 ## Critical Technical Specs
 
 **Non-negotiable SLAs**:
-- p99 latency: ≤90ms total application (15ms network + 5ms gateway + 10ms Judge 
+- p99 latency: ≤90ms total application (15ms network + 5ms gateway + 10ms Judge
   + 55ms inference + 5ms serialization)
 - Judge #6: <500µs p99 governance path (scales to <200µs), 98% PRB coverage mandate
 - Availability: 99.9% (43min/month downtime budget)
@@ -356,7 +356,7 @@ company targeting regulated markets (defense, healthcare, finance).
 - Spacing: 8pt grid system (4/8/16/24/32/48px intervals)
 - Motion: 120/180/300ms timing, cubic-bezier(0.4,0,0.2,1)
 - Accessibility: WCAG 2.1 AA minimum, 44×44px touch targets
-- Principle: Technology married with liberal arts; remove complexity 
+- Principle: Technology married with liberal arts; remove complexity
   without losing power
 
 ## Current State
@@ -397,9 +397,9 @@ company targeting regulated markets (defense, healthcare, finance).
 
 ---
 
-**Assistant Note**: This thread generated a complete GKE deployment system 
-(Stage 1 & 2) and synthesized the full PNKLN strategic vision across 19 
-verticals. All deliverables are in `/mnt/user-data/outputs/pnkln-gke-deployment/`. 
+**Assistant Note**: This thread generated a complete GKE deployment system
+(Stage 1 & 2) and synthesized the full PNKLN strategic vision across 19
+verticals. All deliverables are in `/mnt/user-data/outputs/pnkln-gke-deployment/`.
 Erik is ready to deploy or iterate on any component.
 ```
 
@@ -418,8 +418,8 @@ Erik is ready to deploy or iterate on any component.
 ╚═══════════════════════════════════════════════════════════════╝
 ```
 
-**Total package**: 3,200+ lines of context preservation  
-**Restoration time**: <30 seconds in new thread  
+**Total package**: 3,200+ lines of context preservation
+**Restoration time**: <30 seconds in new thread
 **Fidelity**: 100% (all technical specs, decisions, and philosophy preserved)
 
 Ready to paste into new conversation whenever you’re ready to continue, Erik.​​​​​​​​​​​​​​​​“

@@ -27,21 +27,21 @@ Create an OAuth App in your GitHub settings to get the credentials needed for au
 <Steps>
 <Step title="Navigate to OAuth Apps">
     Go to **Settings → Developer settings → OAuth Apps** in your GitHub account, or visit [github.com/settings/developers](https://github.com/settings/developers).
-    
+
     Click **"New OAuth App"** to create a new application.
 </Step>
 
 <Step title="Configure Your OAuth App">
     Fill in the application details:
-    
+
     - **Application name**: Choose a name users will recognize (e.g., "My FastMCP Server")
     - **Homepage URL**: Your application's homepage or documentation URL
     - **Authorization callback URL**: Your server URL + `/auth/callback` (e.g., `http://localhost:8000/auth/callback`)
-    
+
     <Warning>
     The callback URL must match exactly. The default path is `/auth/callback`, but you can customize it using the `redirect_path` parameter. For local development, GitHub allows `http://localhost` URLs. For production, you must use HTTPS.
     </Warning>
-    
+
     <Tip>
     If you want to use a custom callback path (e.g., `/auth/github/callback`), make sure to set the same path in both your GitHub OAuth App settings and the `redirect_path` parameter when configuring the GitHubProvider.
     </Tip>
@@ -49,10 +49,10 @@ Create an OAuth App in your GitHub settings to get the credentials needed for au
 
 <Step title="Save Your Credentials">
     After creating the app, you'll see:
-    
+
     - **Client ID**: A public identifier like `Ov23liAbcDefGhiJkLmN`
     - **Client Secret**: Click "Generate a new client secret" and save the value securely
-    
+
     <Tip>
     Store these credentials securely. Never commit them to version control. Use environment variables or a secrets manager in production.
     </Tip>
@@ -82,7 +82,7 @@ mcp = FastMCP(name="GitHub Secured App", auth=auth_provider)
 async def get_user_info() -> dict:
     """Returns information about the authenticated GitHub user."""
     from fastmcp.server.dependencies import get_access_token
-    
+
     token = get_access_token()
     # The GitHubProvider stores user data in token claims
     return {
@@ -117,7 +117,7 @@ async def main():
     async with Client("http://localhost:8000/mcp", auth="oauth") as client:
         # First-time connection will open GitHub login in your browser
         print("✓ Authenticated with GitHub!")
-        
+
         # Test the protected tool
         result = await client.call_tool("get_user_info")
         print(f"GitHub user: {result['github_user']}")

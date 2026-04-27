@@ -40,11 +40,11 @@ export class UpdateFolderTool extends BaseMondayApiTool<UpdateFolderToolInput> {
 
   protected async executeInternal(input: ToolInputType<UpdateFolderToolInput>): Promise<ToolOutputType<never>> {
     const { position_object_id, position_object_type, position_is_after } = input;
-    
+
     if (!!position_object_id !== !!position_object_type) {
       throw new Error('position_object_id and position_object_type must be provided together');
     }
-    
+
     const variables = {
       folderId: input.folderId,
       name: input.name,

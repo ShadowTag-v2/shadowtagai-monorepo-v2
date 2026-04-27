@@ -29,7 +29,7 @@ from feast.batch_feature_view import BatchFeatureView
 from feast.stream_feature_view import StreamFeatureView
 from feast.infra.common.retrieval_task import HistoricalRetrievalTask
 from feast.infra.compute_engines.local.job import LocalMaterializationJob
-from feast.infra.compute_engines.base import ComputeEngine 
+from feast.infra.compute_engines.base import ComputeEngine
 from feast.infra.common.materialization_job import MaterializationTask
 from feast.infra.offline_stores.offline_store import OfflineStore, RetrievalJob
 from feast.infra.online_stores.online_store import OnlineStore

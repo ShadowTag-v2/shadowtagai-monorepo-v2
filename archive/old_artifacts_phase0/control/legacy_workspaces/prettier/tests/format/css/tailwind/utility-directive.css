@@ -21,7 +21,7 @@
 @utility tab-* {
   tab-size: --value(--tab-size-*, integer, [integer]);
 }
-  
+
 @utility opacity-* {
   opacity: calc(--value(integer) * 1%);
   opacity: --value(--opacity-*, [percentage]);
@@ -30,7 +30,7 @@
 @utility inset-* {
   inset: calc(--var(--spacing) * --value([percentage], [length]));
 }
-  
+
 @utility -inset-* {
   inset: calc(--var(--spacing) * --value([percentage], [length]) * -1);
 }

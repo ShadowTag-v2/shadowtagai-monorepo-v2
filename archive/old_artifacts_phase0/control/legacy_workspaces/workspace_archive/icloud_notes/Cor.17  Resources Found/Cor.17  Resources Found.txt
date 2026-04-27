@@ -1,6 +1,6 @@
 Cor.17  Resources Found
 
-CUDA 
+CUDA
 
 https://github.com/infatoshi/cuda-course
 
@@ -15,10 +15,10 @@ https://docs.claude.com/en/api/skills-guide;
 https://x.com/claudeai/status/1984304964663927287?s=12;
 
 
-https://arxiv.org/pdf/2510.21618v1 
+https://arxiv.org/pdf/2510.21618v1
 ￼
 
-https://arxiv.org/pdf/2510.21618v1 
+https://arxiv.org/pdf/2510.21618v1
 ￼
 
 Resources Found “https://arxiv.org/pdf/2502.11089; https://arxiv.org/pdf/2507.11545; https://arxiv.org/pdf/2507.00269;; https://arxiv.org/pdf/2506.14014;; https://arxiv.org/pdf/2506.11123;; https://arxiv.org/pdf/2510.00185;; https://arxiv.org/pdf/2509.02565;; https://arxiv.org/pdf/2509.25045;; https://arxiv.org/pdf/2508.02536;; https://arxiv.org/pdf/2508.21324;; https://arxiv.org/pdf/2504.16447; https://arxiv.org/pdf/2410.13928;; https://arxiv.org/pdf/2409.04478;;
@@ -143,14 +143,14 @@ http://deepagent.abacus.ai;;
 
 ￼
 
-https://arxiv.org/pdf/2510.12773 
+https://arxiv.org/pdf/2510.12773
 ￼
 
 https://arxiv.org/pdf/2510.11962
 
-https://arxiv.org/pdf/2510.08558 
+https://arxiv.org/pdf/2510.08558
 
-https://www.arxiv.org/pdf/2509.21519 
+https://www.arxiv.org/pdf/2509.21519
 ￼
 
 ￼
@@ -158,42 +158,42 @@ https://www.arxiv.org/pdf/2509.21519
 ￼
 
 
-https://arxiv.org/pdf/2502.11089 
+https://arxiv.org/pdf/2502.11089
 
-https://arxiv.org/pdf/2509.25140 
+https://arxiv.org/pdf/2509.25140
 ￼
 
-; https://arxiv.org/pdf/2509.17567 
+; https://arxiv.org/pdf/2509.17567
 ￼
 
 
-https://arxiv.org/pdf/2507.11545 
+https://arxiv.org/pdf/2507.11545
 ￼
 
-https://arxiv.org/pdf/2507.00269 
+https://arxiv.org/pdf/2507.00269
 ￼
-https://arxiv.org/pdf/2506.14014 
+https://arxiv.org/pdf/2506.14014
 ￼
 
 https://arxiv.org/pdf/2506.11123
 
-https://arxiv.org/pdf/2510.00185 
+https://arxiv.org/pdf/2510.00185
 ￼
-https://arxiv.org/pdf/2509.02565 
+https://arxiv.org/pdf/2509.02565
 ￼
-https://arxiv.org/pdf/2509.25045 
+https://arxiv.org/pdf/2509.25045
 ￼
-https://arxiv.org/pdf/2508.02536 
-￼
-
-https://arxiv.org/pdf/2508.21324 
+https://arxiv.org/pdf/2508.02536
 ￼
 
-https://arxiv.org/pdf/2504.16447 
+https://arxiv.org/pdf/2508.21324
 ￼
 
-https://arxiv.org/pdf/2410.13928 
+https://arxiv.org/pdf/2504.16447
 ￼
 
-https://arxiv.org/pdf/2409.04478 
+https://arxiv.org/pdf/2410.13928
+￼
+
+https://arxiv.org/pdf/2409.04478
 ￼

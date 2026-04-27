@@ -2,12 +2,12 @@
 #pragma once
 
 namespace mittens {
-    
+
 using bf16 = bfloat;
 using bf16_2 = bfloat2;
 using bf16_4 = bfloat4;
 //using half_2 = half2;
-     
+
 namespace ducks {
 namespace base_types {
 template <typename T>
@@ -22,7 +22,7 @@ static METAL_FUNC constexpr const bool isT2() {
            metal::is_same<typename T::dtype, bf16_2>::value ||
            metal::is_same<typename T::dtype, half2>::value;
 }
-    
+
 template <typename T>
 static METAL_FUNC constexpr const bool isT1Type() {
     return metal::is_same<T, float>::value ||
@@ -35,7 +35,7 @@ static METAL_FUNC constexpr const bool isT2Type() {
            metal::is_same<T, bf16_2>::value ||
            metal::is_same<T, half2>::value;
 }
-    
+
 template <typename T>
 static METAL_FUNC constexpr const bool isT1Ptr() {
     return metal::is_same<T, device      float*>::value ||
@@ -65,10 +65,10 @@ template <typename T>
 static METAL_FUNC constexpr const bool isTKType() { // good enough
     return !isT1Type<T>() && !isT2Type<T>() && !isT1Ptr<T>() && !isT2Ptr<T>();
 }
-    
+
 } // namespace base_types
 } // namespace ducks
-    
+
 /**
  * @namespace base_types
  *
@@ -132,7 +132,7 @@ template<> struct constants<half> {
     static METAL_FUNC constexpr half pos_infty() { return HUGE_VALH; }
     static METAL_FUNC constexpr half neg_infty() { return -HUGE_VALH; }
 };
-    
+
 template<> struct constants<half2> {
     static METAL_FUNC constexpr half2 zero()      { return half2(constants<half>::zero(),      constants<half>::zero());      }
     static METAL_FUNC constexpr half2 one()       { return half2(constants<half>::one(),       constants<half>::one());       }
@@ -140,7 +140,7 @@ template<> struct constants<half2> {
     static METAL_FUNC constexpr half2 neg_infty() { return half2(constants<half>::neg_infty(), constants<half>::neg_infty()); }
 };
 
-    
+
 
 /**
  * @brief Provides information about packing of elements for a given type.
@@ -189,7 +189,7 @@ template<> struct packing<float> {
     using unpacked_type = float;
     using packed_type = float2;
     using packed_four = float4;
-    
+
     PACK_FUNCTIONS(unpacked_type, packed_type)
 };
 template<> struct packing<bf16_2> {
@@ -223,7 +223,7 @@ template<> struct packing<int4> {
     static METAL_FUNC constexpr int num() { return 4; }
 };
 
-    
+
 /**
  * @brief Provides templated functionality to convert between different types.
  *
@@ -241,7 +241,7 @@ template<typename T, typename U> struct convertor {
     static METAL_FUNC T convert(threadgroup const U & u) { return (T)u; }
     static METAL_FUNC T convert(thread const U & u)      { return (T)u; }
 };
-    
+
 template<> struct convertor<float, bf16> {
     // fptrunc float %_ to bfloat
     static METAL_FUNC float convert(device const bf16 & u)      { return float(u);}
@@ -266,7 +266,7 @@ template<> struct convertor<bf16_2, float2> {
     static METAL_FUNC bf16_2 convert(threadgroup const float2 & u) { return bf16_2(u); }
     static METAL_FUNC bf16_2 convert(thread const float2 & u)      { return bf16_2(u); }
 };
-    
+
 template<> struct convertor<float, half> {
     // fptrunc float %_ to half
     static METAL_FUNC float convert(device const half & u)      { return float(u); }
@@ -313,9 +313,9 @@ template<> struct convertor<half2, bf16_2> {
     static METAL_FUNC half2 convert(threadgroup const bf16_2 & u) { return half2(u); }
     static METAL_FUNC half2 convert(thread const bf16_2 & u)      { return half2(u); }
 };
-    
-    
-    
+
+
+
 } // base_types
 
 } // mittens

@@ -18,9 +18,9 @@ template<typename T> struct from_object {
 template<ducks::gl::all GL> struct from_object<GL> {
     static GL make(pybind11::object obj) {
         // Check if argument is a torch.Tensor
-        if (pybind11::hasattr(obj, "__class__") && 
+        if (pybind11::hasattr(obj, "__class__") &&
             obj.attr("__class__").attr("__name__").cast<std::string>() == "Tensor") {
-        
+
             // Check if tensor is contiguous
             if (!obj.attr("is_contiguous")().cast<bool>()) {
                 throw std::runtime_error("Tensor must be contiguous");
@@ -28,7 +28,7 @@ template<ducks::gl::all GL> struct from_object<GL> {
             if (obj.attr("device").attr("type").cast<std::string>() == "cpu") {
                 throw std::runtime_error("Tensor must be on CUDA device");
             }
-            
+
             // Get shape, pad with 1s if needed
             std::array<int, 4> shape = {1, 1, 1, 1};
             auto py_shape = obj.attr("shape").cast<pybind11::tuple>();
@@ -39,10 +39,10 @@ template<ducks::gl::all GL> struct from_object<GL> {
             for (size_t i = 0; i < dims; ++i) {
                 shape[4 - dims + i] = pybind11::cast<int>(py_shape[i]);
             }
-            
+
             // Get data pointer using data_ptr()
             uint64_t data_ptr = obj.attr("data_ptr")().cast<uint64_t>();
-            
+
             // Create GL object using make_gl
             return make_gl<GL>(data_ptr, shape[0], shape[1], shape[2], shape[3]);
         }
@@ -69,7 +69,7 @@ template<ducks::pgl::all PGL> struct from_object<PGL> {
         uint64_t data_ptrs[PGL::num_devices];
         for (int i = 0; i < PGL::num_devices; i++) {
             auto tensor = tensors[i];
-            if (!pybind11::hasattr(tensor, "__class__") || 
+            if (!pybind11::hasattr(tensor, "__class__") ||
                 tensor.attr("__class__").attr("__name__").cast<std::string>() != "Tensor")
                 throw std::runtime_error("Expected a list of torch.Tensor");
             if (!tensor.attr("is_contiguous")().cast<bool>())
@@ -122,7 +122,7 @@ template<typename T> static pybind11::object multigpu_make(pybind11::object obj)
 }
 
 template<typename T> concept has_dynamic_shared_memory = requires(T t) { { t.dynamic_shared_memory() } -> std::convertible_to<int>; };
-template<typename T> concept is_multigpu_globals = requires { 
+template<typename T> concept is_multigpu_globals = requires {
     { T::num_devices } -> std::convertible_to<std::size_t>;
     { T::dev_idx } -> std::convertible_to<std::size_t>;
 } && T::num_devices >= 1;
@@ -192,13 +192,13 @@ static void bind_multigpu_boilerplate(auto m) {
                 throw std::runtime_error("Not enough CUDA devices available");
             if (streams.size() != device_ids.size())
                 throw std::runtime_error("Number of streams must match number of devices");
-            
+
             std::vector<cudaStream_t> raw_streams(streams.size());
             for (size_t i = 0; i < streams.size(); ++i) {
                 uintptr_t stream_ptr = streams[i].attr("cuda_stream").cast<uintptr_t>();
                 raw_streams[i] = reinterpret_cast<cudaStream_t>(stream_ptr);
             }
-            
+
             auto club = std::make_shared<KittensClub>(device_ids.data(), raw_streams.data(), device_ids.size());
             club->execute([&](int dev_idx, cudaStream_t stream) {}); // warmup
             return club;

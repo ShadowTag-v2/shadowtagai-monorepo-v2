@@ -200,23 +200,23 @@ https://github.com/angular/angular/commit/18a675081f945ed4d7f4c0ee83172ca1528e7b
 
 @let
 foo = 123;
-@let    
+@let
 foo = 123;
-@let    
+@let
               foo = 123;
 @let foo
 = 123;
 @let foo
        = 123;
-@let foo   
+@let foo
    = 123;
-@let  
-   foo   
+@let
+   foo
       = 123;
 
-@let foo = 
-123 + 
- 456 + 
+@let foo =
+123 +
+ 456 +
  789
  ;
 

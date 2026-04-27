@@ -149,4 +149,3 @@ subsequent responses are significantly faster.
 
 You can exercise the ADK Authentication
 without any external components using this demo.
-

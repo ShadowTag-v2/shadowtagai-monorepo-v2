@@ -25,5 +25,3 @@
 **Security & IP**
 - Secrets via env/secure stores; principle of least privilege.
 - Respect licenses/DMCA; avoid proprietary scraping.
-
-

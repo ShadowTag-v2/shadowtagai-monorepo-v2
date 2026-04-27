@@ -1,4 +1,4 @@
-atomic_pipeline/  
+atomic_pipeline/
 ┌─────────────────────────────────────────────────────────────────┐
      │ ARCHITECTURE: Multi-Model Pipeline with Gemini 3 Pro Leadership │
      ├─────────────────────────────────────────────────────────────────┤

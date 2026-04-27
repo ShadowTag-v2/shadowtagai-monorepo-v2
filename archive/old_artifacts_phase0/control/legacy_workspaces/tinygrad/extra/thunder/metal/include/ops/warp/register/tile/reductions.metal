@@ -9,9 +9,9 @@
 #include "../../../../types/types.metal"
 
 namespace mittens {
-    
+
 namespace meta {
-    
+
 //template<typename op, typename RT>
 //static METAL_FUNC typename metal::enable_if<ducks::is_row_register_tile<RT>(), void>::type
 //row_reduce_unroll_inner(int i, thread const RT *src, thread typename RT::T& accum_thread) {
@@ -24,23 +24,23 @@ namespace meta {
 //row_reduce_unroll(int i, thread RV *row_accum, thread const RT *src, thread const RV *src_accum, const short leader) {
 //    using T = typename RV::T;
 //    T accum_thread = op::template op<T>(src->tiles[i][0].data.thread_elements()[0], src->tiles[i][0].data.thread_elements()[1]);
-//    
+//
 //    meta::unroll_i_in_range<1, RT::width, 1>::run(meta::row_reduce_unroll_inner<op, RT>, src, accum_thread);
 //    accum_thread = op::template op<T>(accum_thread, shfl_down_sync<T>(accum_thread, 1));
 //    accum_thread = op::template op<T>(accum_thread, shfl_down_sync<T>(accum_thread, 8));
 //
 //    accum_thread = shfl_sync<T>(accum_thread, leader);
-//    
+//
 //    if(reset) { (*row_accum)[i][0] = accum_thread; }
 //    else { (*row_accum)[i][0] = op::template op<T>((*src_accum)[i][0], accum_thread); }
 //}
-    
+
 //template<typename op, typename RT>
 //static METAL_FUNC typename metal::enable_if<ducks::is_row_register_tile<RT>(), void>::type
 //row_reduce_unroll_inner(int i, thread const RT *src, thread typename RT::T2& accum_thread) {
 //    accum_thread = op::template op<typename RT::T2>(accum_thread, {src->tiles[i][0].data.thread_elements()[0], src->tiles[i][0].data.thread_elements()[1]});
 //}
-    
+
 /*
  pragma clang loop unroll(full)
  for(int i = 0; i < src.height; i++) {
@@ -70,14 +70,14 @@ row_reduce_unroll(int i, thread RV *row_accum, thread const RT *src, thread cons
         accum_thread = op::template op<T>(accum_thread, src->tiles[i][j].data.thread_elements()[0]);
         accum_thread = op::template op<T>(accum_thread, src->tiles[i][j].data.thread_elements()[1]);
     }
-    
+
     T shfl_val = shfl_down_sync<T>(accum_thread, 1);
     accum_thread = op::template op<T>(accum_thread, shfl_val);
     shfl_val = shfl_down_sync<T>(accum_thread, 8);
     accum_thread = op::template op<T>(accum_thread, shfl_val);
 
     accum_thread = shfl_sync<T>(accum_thread, leader);
-    
+
     if(reset) {
         (*row_accum)[i][0] = accum_thread;
     }
@@ -85,8 +85,8 @@ row_reduce_unroll(int i, thread RV *row_accum, thread const RT *src, thread cons
         (*row_accum)[i][0] = op::template op<T>((*src_accum)[i][0], accum_thread);;
     }
 }
-    
-    
+
+
 }
 /**
  * @brief Perform a row-wise reduction on a matrix in row-major layout.
@@ -111,12 +111,12 @@ row_reduce(thread RV &row_accum, thread const RT &src, thread const RV &src_accu
     using T = typename RV::T;
     using T2 = typename RV::T2;
     const short leader = (laneid / 16) * 16 + ((laneid / 2) % 4) * 2;
-    
+
 //    constexpr const uint32_t COL_0 = 0x00550055;
 //    constexpr const uint32_t COL_1 = 0x00AA00AA;
 //    constexpr const uint32_t COL_2 = 0x55005500;
 //    constexpr const uint32_t COL_3 = 0xAA00AA00;
-//    
+//
 //    constexpr const uint32_t COL_0_2 = COL_0 | COL_2;
 //    constexpr const uint32_t COL_0_1 = COL_0 | COL_1;
 //    constexpr const uint32_t COL_2_3 = COL_2 | COL_3;
@@ -133,11 +133,11 @@ row_reduce(thread RV &row_accum, thread const RT &src, thread const RV &src_accu
 //        accum_thread = op::template op<T>(accum_thread, shfl_sync<T>(accum_thread, src_lane1));
 //        accum_thread = op::template op<T>(accum_thread, shfl_sync<T>(accum_thread, src_lane2));
 //
-//        
+//
 //        if(reset) { row_accum[i][0] = accum_thread; }
 //        else { row_accum[i][0] = op::template op<T>(src_accum[i][0], accum_thread); }
 //    }
-    
+
 //    #pragma clang loop unroll(full)
 //    for(int i = 0; i < src.height; i++) {
 //        T accum_thread = op::template op<T>(src.tiles[i][0].data.thread_elements()[0], src.tiles[i][0].data.thread_elements()[1]);
@@ -154,10 +154,10 @@ row_reduce(thread RV &row_accum, thread const RT &src, thread const RV &src_accu
 //        if(reset) { row_accum[i][0] = accum_thread; }
 //        else { row_accum[i][0] = op::template op<T>(src_accum[i][0], accum_thread); }
 //    }
-        
+
     meta::unroll_i_in_range<0, RT::height, 1>::run(meta::row_reduce_unroll<op, RV, RT, reset>, &row_accum, &src, &src_accum, leader);
 }
-    
+
 /**
  * @brief Perform a row-wise reduction on a matrix in row-major layout.
  *
@@ -178,7 +178,7 @@ row_reduce(thread RV &row_accum, thread const RT &src, thread const RV &src_accu
     static_assert(ducks::is_align_layout<typename RV::layout>(), "rv must be align for row RT");
     static_assert(metal::is_same_v<typename RV::dtype, typename RT::dtype>, "rv and rt must be the same type"); // compatible type
     static_assert(RV::outer_dim == RT::height, "rv and rt dims don't match"); // compatible size
-    
+
     using T  = typename RV::T;
     using T2 = typename RV::T2;
 
@@ -208,8 +208,8 @@ row_reduce(thread RV &row_accum, thread const RT &src, thread const RV &src_accu
         }
     }
 }
-    
-    
+
+
 /**
  * @brief Perform a column-wise reduction on a matrix in row-major layout.
  *
@@ -230,7 +230,7 @@ col_reduce(thread RV &col_accum, thread const RT &src, thread const RV &src_accu
     static_assert(ducks::is_align_layout<typename RV::layout>(), "rv must be align layout");
     static_assert(metal::is_same_v<typename RV::dtype, typename RT::dtype>, "rt and rv must be same type"); // compatible type
     static_assert(RV::outer_dim == RT::width, "rv and rt dims don't match"); // compatible size
-    
+
     using dtype = typename RV::dtype;
     using T2 = typename base_types::packing<dtype>::packed_type;
 
@@ -251,7 +251,7 @@ col_reduce(thread RV &col_accum, thread const RT &src, thread const RV &src_accu
 //        accum_left_cols = op::template op<dtype>(accum_left_cols, shfl_down_sync<dtype>(accum_left_cols, 2));
 //        accum_left_cols = op::template op<dtype>(accum_left_cols, shfl_down_sync<dtype>(accum_left_cols, 4));
 //        accum_left_cols = op::template op<dtype>(accum_left_cols, shfl_down_sync<dtype>(accum_left_cols, 16));
-        
+
 //        accum_right_cols = op::template op<dtype>(accum_right_cols, shfl_down_sync<dtype>(accum_right_cols, 2));
 //        accum_right_cols = op::template op<dtype>(accum_right_cols, shfl_down_sync<dtype>(accum_right_cols, 4));
 //        accum_right_cols = op::template op<dtype>(accum_right_cols, shfl_down_sync<dtype>(accum_right_cols, 16));
@@ -262,7 +262,7 @@ col_reduce(thread RV &col_accum, thread const RT &src, thread const RV &src_accu
 //        accum_left_cols  = shfl_sync<dtype>(accum_left_cols, leader);
 //        accum_right_cols = shfl_sync<dtype>(accum_right_cols, leader);
         accum_cols = shfl_sync<T2>(accum_cols, leader);
-        
+
 
         if(reset) {
 //            col_accum[j][0] = accum_left_cols;
@@ -299,7 +299,7 @@ col_reduce(thread RV &col_accum, thread const RT &src, thread const RV &src_accu
     static_assert(ducks::is_ortho_layout<typename RV::layout>(), "rv must be ortho layout");
     static_assert(metal::is_same_v<typename RV::dtype, typename RT::dtype>, "rt and rv must be same type"); // compatible type
     static_assert(RV::outer_dim == RT::width, "rv and rt dims don't match"); // compatible size
-    
+
     using T = typename RV::T;
     using T2 = typename base_types::packing<T>::packed_type;
 
@@ -327,7 +327,7 @@ col_reduce(thread RV &col_accum, thread const RT &src, thread const RV &src_accu
         }
     }
 }
-    
+
 /* ----------  WRAPPERS FOR PRETTINESS  ---------- */
 // two-operand row reductions. (Accumulate and REPLACE.)
 /**
@@ -399,7 +399,7 @@ row_max(thread RV &row_accum, thread const RT &src, thread const RV &src_accum, 
 //    using T = typename RV::T;
 //    using T2 = typename RV::T2;
 //    const short leader = (laneid / 16) * 16 + ((laneid / 2) % 4) * 2;
-//    
+//
 //    #pragma clang loop unroll(full)
 //    for(int i = 0; i < src.height; i++) {
 //        T accum_thread = metal::max(src.tiles[i][0].data.thread_elements()[0], src.tiles[i][0].data.thread_elements()[1]);
@@ -414,7 +414,7 @@ row_max(thread RV &row_accum, thread const RT &src, thread const RV &src_accum, 
 //        if(false) { row_accum[i][0] = accum_thread; }
 //        else { row_accum[i][0] = metal::max(src_accum[i][0], accum_thread); }
 //    }
-    
+
     row_reduce<base_ops::max, RV, RT, false>(row_accum, src, src_accum, laneid);
 }
 /**
@@ -446,7 +446,7 @@ row_sum(thread RV &row_accum, thread const RT &src, thread const RV &src_accum, 
 //    using T = typename RV::T;
 //    using T2 = typename RV::T2;
 //    const short leader = (laneid / 16) * 16 + ((laneid / 2) % 4) * 2;
-//    
+//
 //    #pragma clang loop unroll(full)
 //    for(int i = 0; i < src.height; i++) {
 //        T accum_thread = (src.tiles[i][0].data.thread_elements()[0] + src.tiles[i][0].data.thread_elements()[1]);
@@ -499,11 +499,11 @@ row_sum(thread RV &row_accum, thread const RT &src, thread const RV &src_accum, 
 //            accum_thread = vals[0] + vals[1] + vals[2] + vals[3];
 //        }
 //        row_accum[i][0] = src_accum[i][0] + accum_thread;
-//        
+//
 //    }
 //}
-    
-    
+
+
 /**
  * @brief Store the product of each row of the src register tile, as well as the src_accum column vector, in the row_accum column vector.
  *
@@ -602,7 +602,7 @@ static METAL_FUNC typename metal::enable_if<ducks::is_register_tile<RT>() && duc
 col_min(thread RV &col_accum, thread const RT &src, thread const RV &src_accum, const int laneid)  {
     col_reduce<base_ops::min, RV, RT, false>(col_accum, src, src_accum, laneid);
 }
-    
+
 /**
  * @brief Store the sum of each column of the src register tile, as well as the src_accum row vector, in the col_accum row vector.
  *
@@ -631,6 +631,6 @@ static METAL_FUNC typename metal::enable_if<ducks::is_register_tile<RT>() && duc
 col_prod(thread RV &col_accum, thread const RT &src, thread const RV &src_accum, const int laneid) {
     col_reduce<base_ops::mul, RV, RT, false>(col_accum, src, src_accum, laneid);
 }
-    
+
 
 }

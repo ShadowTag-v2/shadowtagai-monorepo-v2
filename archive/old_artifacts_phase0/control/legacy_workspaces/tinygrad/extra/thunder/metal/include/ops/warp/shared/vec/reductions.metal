@@ -28,7 +28,7 @@ template<typename op, typename SV, bool reset>
 static METAL_FUNC typename metal::enable_if<ducks::is_shared_vector<SV>(), void>::type
 reduce(thread typename SV::dtype &dst_accum, threadgroup const SV &src, thread const typename SV::dtype &src_accum, const ushort laneid) {
     using T = typename SV::dtype;
-    
+
     {
         T accum = src[0];
         for (int i = 1; i < SV::length; i++) {
@@ -38,7 +38,7 @@ reduce(thread typename SV::dtype &dst_accum, threadgroup const SV &src, thread c
         return;
     }
 
-//    
+//
     T accum;
     if(laneid < SV::length) accum = src[laneid]; // initialize a register accumulator
     for(int i = laneid + 32; i < SV::length; i+=32) {
@@ -59,17 +59,17 @@ reduce(thread typename SV::dtype &dst_accum, threadgroup const SV &src, thread c
         metal::simdgroup_barrier(metal::mem_flags::mem_none);
 //        accum = op::template op<T>(accum, shfl_down_sync<T>(accum, 16));
         accum = op::template op<T>(accum, (T)metal::simd_shuffle_rotate_down((float)accum, 16));
-        
+
     } else if (src.length == 24) {
         T shfl_val = shfl_down_sync<T>(accum, 1);
         accum = op::template op<T>(accum, shfl_val);
-        
+
         shfl_val = shfl_down_sync<T>(accum, 2);
         accum = op::template op<T>(accum, shfl_val);
-        
+
         shfl_val = shfl_down_sync<T>(accum, 4);
         accum = op::template op<T>(accum, shfl_val);
-        
+
         shfl_val = shfl_down_sync<T>(accum, 8);
         if (laneid < 16) {
             accum = op::template op<T>(accum, shfl_val);
@@ -123,7 +123,7 @@ template<typename SV>
 static METAL_FUNC typename metal::enable_if<ducks::is_shared_vector<SV>(), void>::type
 min(thread typename SV::dtype &min_val, threadgroup const SV &src, const ushort laneid) {
 //    reduce<base_ops::min, SV, true>(min_val, src, min_val);
-    
+
     using T = typename SV::dtype;
     T accum = base_types::constants<T>::pos_infty();
     if(laneid < SV::length) accum = src[laneid]; // initialize a register accumulator
@@ -263,6 +263,3 @@ prod(thread typename SV::dtype &prod_val, threadgroup const SV &src, thread cons
     prod_val = base_ops::max::template op<T>(prod_val, src_accum);
 }
 }
-
-
-

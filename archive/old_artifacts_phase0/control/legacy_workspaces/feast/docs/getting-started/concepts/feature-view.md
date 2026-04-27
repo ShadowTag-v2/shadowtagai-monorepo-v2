@@ -6,12 +6,12 @@
 **Note**: Feature views do not work with non-timestamped data. A workaround is to insert dummy timestamps.
 {% endhint %}
 
-A **feature view** is defined as a *collection of features*. 
+A **feature view** is defined as a *collection of features*.
 
-- In the online settings, this is a *stateful* collection of 
-features that are read when the `get_online_features` method is called. 
-- In the offline setting, this is a *stateless* collection of features that are created when the `get_historical_features` 
-method is called. 
+- In the online settings, this is a *stateful* collection of
+features that are read when the `get_online_features` method is called.
+- In the offline setting, this is a *stateless* collection of features that are created when the `get_historical_features`
+method is called.
 
 A feature view is an object representing a logical group of time-series feature data as it is found in a [data source](data-ingestion.md). Depending on the kind of feature view, it may contain some lightweight (experimental) feature transformations (see [\[Beta\] On demand feature views](../../reference/beta-on-demand-feature-view.md)).
 

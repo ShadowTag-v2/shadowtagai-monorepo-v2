@@ -7,23 +7,23 @@ printWidth: 80
 proseWrap: "always"
                                                                                 | printWidth
 =====================================input======================================
-123  
+123
 456
 
 123\\
 456
 
-- 123  
+- 123
   123
 
 =====================================output=====================================
-123  
+123
 456
 
 123\\
 456
 
-- 123  
+- 123
   123
 
 ================================================================================
@@ -36,14 +36,14 @@ printWidth: 80
 proseWrap: "always"
                                                                                 | printWidth
 =====================================input======================================
-a  
+a
  very-very-very-very-very-very-very-very-very-very-long-word very-very-very-very-very-very-very-very-very-very-long-word very-very-very-very-very-very-very-very-very-very-long-word
 
 \\
 word very-very-very-very-very-very-very-very-very-very-long-word very-very-very-very-very-very-very-very-very-very-long-word
 
 =====================================output=====================================
-a  
+a
  very-very-very-very-very-very-very-very-very-very-long-word
 very-very-very-very-very-very-very-very-very-very-long-word
 very-very-very-very-very-very-very-very-very-very-long-word

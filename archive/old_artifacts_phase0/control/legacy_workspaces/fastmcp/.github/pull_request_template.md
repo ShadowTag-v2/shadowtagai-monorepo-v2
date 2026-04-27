@@ -1,5 +1,5 @@
 ## Description
-<!-- 
+<!--
 Please provide a clear and concise description of the changes made in this pull request.
 
 Using AI to generate code? Please include a note in the description with which AI tool you used.

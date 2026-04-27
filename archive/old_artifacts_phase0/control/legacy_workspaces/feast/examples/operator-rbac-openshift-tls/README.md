@@ -36,4 +36,4 @@ This directory contains examples and configurations for using Feast with Role-Ba
 
 4. Clean up resources using `3-uninstall.ipynb` when done
 
-For more details, refer to the [Feast documentation](https://docs.feast.dev/master/getting-started/components/authz_manager#kubernetes-rbac-authorization). 
+For more details, refer to the [Feast documentation](https://docs.feast.dev/master/getting-started/components/authz_manager#kubernetes-rbac-authorization).

@@ -53,11 +53,11 @@ Write large tool outputs to files instead of returning them directly to the cont
 def handle_tool_output(output: str, threshold: int = 2000) -> str:
     if len(output) < threshold:
         return output
-    
+
     # Write to scratch pad
     file_path = f"scratch/{tool_name}_{timestamp}.txt"
     write_file(file_path, output)
-    
+
     # Return reference instead of content
     key_summary = extract_summary(output, max_tokens=200)
     return f"[Output written to {file_path}. Summary: {key_summary}]"
@@ -247,7 +247,7 @@ Optimize based on measurements, not assumptions.
 ```
 Input: Web search returns 8000 tokens
 Before: 8000 tokens added to message history
-After: 
+After:
   - Write to scratch/search_results_001.txt
   - Return: "[Results in scratch/search_results_001.txt. Key finding: API rate limit is 1000 req/min]"
   - Agent greps file when needing specific details
@@ -265,7 +265,7 @@ Result: Full skill loaded only when relevant
 **Example 3: Chat History as File Reference**
 ```
 Trigger: Context window limit reached, summarization required
-Action: 
+Action:
   1. Write full history to history/session_001.txt
   2. Generate summary for new context window
   3. Include reference: "Full history in history/session_001.txt"
@@ -318,4 +318,3 @@ External resources:
 **Last Updated**: 2026-01-07
 **Author**: Agent Skills for Context Engineering Contributors
 **Version**: 1.0.0
-

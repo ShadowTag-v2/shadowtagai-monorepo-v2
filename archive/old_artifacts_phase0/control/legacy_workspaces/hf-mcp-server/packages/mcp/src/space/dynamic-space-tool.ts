@@ -89,7 +89,7 @@ For parameters that accept files (FileData types):
  */
 const DYNAMIC_USAGE_INSTRUCTIONS = `# Hugging Face Space Dynamic Use
 
-Perform Tasks using Hugging Face Spaces. 
+Perform Tasks using Hugging Face Spaces.
 
 ## Workflow
 

@@ -1,4 +1,4 @@
-Cor.39 
+Cor.39
 “System Network Dashboard Map upgraded into a percent-based ROI view. Instead of dollars, each tile now shows its effect in % of burn, % savings (downside avoided), and % valuation uplift under YouAiJR.
 
 ⸻

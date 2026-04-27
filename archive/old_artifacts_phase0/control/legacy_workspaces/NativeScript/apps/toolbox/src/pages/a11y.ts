@@ -29,8 +29,8 @@ export class AccessibilityModel extends Observable {
 		this.notifyPropertyChange('switchCheckedText', `${this.labelText} ${checked}`);
 
 		// prettier-ignore
-		this.notifyPropertyChange('largeImageSrc', checked ? 
-			'https://i.picsum.photos/id/669/5000/5000.jpg?hmac=VlpchW0ODhflKm0SKOYQrc8qysLWbqKmDS1MGT9apAc' : 
+		this.notifyPropertyChange('largeImageSrc', checked ?
+			'https://i.picsum.photos/id/669/5000/5000.jpg?hmac=VlpchW0ODhflKm0SKOYQrc8qysLWbqKmDS1MGT9apAc' :
 			'https://i.picsum.photos/id/684/5000/5000.jpg?hmac=loiXO_OQ-y86XY_hc7p3qJdY39fSd9CuDM0iA_--P4Q');
 	}
 

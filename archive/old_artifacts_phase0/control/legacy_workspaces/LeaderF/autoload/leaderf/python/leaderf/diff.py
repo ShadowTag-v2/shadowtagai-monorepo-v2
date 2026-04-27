@@ -97,4 +97,3 @@ class LfDiffer(Differ):
 
         # pump out diffs from after the synch point
         yield from self._fancy_helper(a, best_i+1, ahi, b, best_j+1, bhi)
-

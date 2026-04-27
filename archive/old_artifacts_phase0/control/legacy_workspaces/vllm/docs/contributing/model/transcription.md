@@ -25,7 +25,7 @@ Declare supported languages and capabilities:
     from vllm.config import ModelConfig, SpeechToTextConfig
     from vllm.inputs.data import PromptType
     from vllm.model_executor.models.interfaces import SupportsTranscription
-    
+
     class YourASRModel(nn.Module, SupportsTranscription):
         # Map of ISO 639-1 language codes to language names
         supported_languages: ClassVar[Mapping[str, str]] = {
@@ -33,7 +33,7 @@ Declare supported languages and capabilities:
             "it": "Italian",
             # ... add more as needed
         }
-        
+
         # If your model only supports audio-conditioned generation
         # (no text-only generation), enable this flag.
         supports_transcription_only: ClassVar[bool] = True

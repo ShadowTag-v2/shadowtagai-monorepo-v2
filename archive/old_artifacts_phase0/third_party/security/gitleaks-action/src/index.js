@@ -121,7 +121,7 @@ octokit
 async function start() {
   // validate key first
 
-  // keygen payment method is getting declined... disable this check for now. 
+  // keygen payment method is getting declined... disable this check for now.
   // if (shouldValidate) {
   //   core.debug(
   //     `eventJSON.repository.full_name: ${eventJSON.repository.full_name}`

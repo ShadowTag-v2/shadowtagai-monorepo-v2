@@ -19,7 +19,7 @@ else:
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 class FeatureViewProjection(google.protobuf.message.Message):
-    """A projection to be applied on top of a FeatureView. 
+    """A projection to be applied on top of a FeatureView.
     Contains the modifications to a FeatureView such as the features subset to use.
     """
 

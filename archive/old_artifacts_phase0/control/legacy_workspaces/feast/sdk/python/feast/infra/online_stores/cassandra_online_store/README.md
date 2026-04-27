@@ -1,6 +1,6 @@
 # Cassandra/Astra DB Online Store
 
-This contribution makes it possible to use [Apache Cassandra™](https://cassandra.apache.org) / 
+This contribution makes it possible to use [Apache Cassandra™](https://cassandra.apache.org) /
 [Astra DB](https://astra.datastax.com/) as online store for Feast.
 
 Once the database connection and the keyspace are configured, everything else
@@ -64,12 +64,12 @@ online_store:
 
 #### Astra DB setup:
 
-To point Feast to using an Astra DB instance as online store, an 
+To point Feast to using an Astra DB instance as online store, an
 [Astra DB token](https://awesome-astra.github.io/docs/pages/astra/create-token/#c-procedure)
 with "Database Administrator" role is required: provide the Client ID and
 Client Secret in the token as username and password.
 
-The 
+The
 ["secure connect bundle"](https://awesome-astra.github.io/docs/pages/astra/download-scb/#c-procedure)
 for connecting to the database is also needed:
 its full path must be given in the configuration below:

@@ -39,7 +39,7 @@ The new implementation uses a **stateless request building approach** with `open
 - Built-in error handling and structured response processing
 - **Advantages**: Zero latency, robust, comprehensive OpenAPI support
 
-#### `OpenAPIResource` / `OpenAPIResourceTemplate`  
+#### `OpenAPIResource` / `OpenAPIResourceTemplate`
 - Provides resource access using RequestDirector
 - Consistent parameter handling across all resource types
 - Support for complex parameter patterns and collision resolution
@@ -56,11 +56,11 @@ class FastMCPOpenAPI(FastMCP):
     def __init__(self, openapi_spec: dict, client: httpx.AsyncClient, **kwargs):
         # 1. Parse OpenAPI spec to HTTP routes with pre-calculated schemas
         self._routes = parse_openapi_to_http_routes(openapi_spec)
-        
+
         # 2. Initialize RequestDirector with openapi-core Spec
         self._spec = Spec.from_dict(openapi_spec)
         self._director = RequestDirector(self._spec)
-            
+
         # 3. Create components using RequestDirector
         self._create_components()
 ```
@@ -71,8 +71,8 @@ class FastMCPOpenAPI(FastMCP):
 def _create_tool(self, route: HTTPRoute) -> Tool:
     # All tools use RequestDirector for consistent, high-performance request building
     return OpenAPITool(
-        client=self._client, 
-        route=route, 
+        client=self._client,
+        route=route,
         director=self._director,
         name=tool_name,
         description=description,
@@ -180,13 +180,13 @@ Tests are organized by functionality:
 ```python
 async def test_stateless_request_building():
     """Test that server works with stateless RequestDirector approach."""
-    
+
     # Test server initialization is fast
     start_time = time.time()
     server = FastMCPOpenAPI(spec=valid_spec, client=client)
     init_time = time.time() - start_time
     assert init_time < 0.01  # Should be very fast
-    
+
     # Verify RequestDirector functionality
     assert hasattr(server, '_director')
     assert hasattr(server, '_spec')

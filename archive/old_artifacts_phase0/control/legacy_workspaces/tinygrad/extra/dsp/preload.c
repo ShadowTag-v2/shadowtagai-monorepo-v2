@@ -76,4 +76,3 @@ int ioctl(int fd, unsigned long request, void *arg) {
 	//PyGILState_Release(gstate);
 	return ret;
 }
-

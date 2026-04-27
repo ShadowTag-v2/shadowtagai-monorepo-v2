@@ -682,7 +682,7 @@ public class FlexboxLayout extends LayoutBase {
 				for (int i = viewIndex; i < viewIndex + flexLine.mItemCount; i++) {
 					View child = getReorderedChildAt(i);
 					LayoutParams lp = (LayoutParams) child.getLayoutParams();
-					
+
 					if (mFlexWrap != FLEX_WRAP_WRAP_REVERSE) {
 						int marginTop = flexLine.mMaxBaseline - child.getBaseline();
 						marginTop = Math.max(marginTop, lp.topMargin);

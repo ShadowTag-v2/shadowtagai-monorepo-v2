@@ -366,4 +366,3 @@ Note: Visual timeline generation requires matplotlib.
 
 if __name__ == '__main__':
     main()
-

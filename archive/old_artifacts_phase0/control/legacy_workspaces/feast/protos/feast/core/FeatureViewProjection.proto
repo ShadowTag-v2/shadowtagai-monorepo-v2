@@ -9,7 +9,7 @@ import "feast/core/Feature.proto";
 import "feast/core/DataSource.proto";
 
 
-// A projection to be applied on top of a FeatureView. 
+// A projection to be applied on top of a FeatureView.
 // Contains the modifications to a FeatureView such as the features subset to use.
 message FeatureViewProjection {
   // The feature view name

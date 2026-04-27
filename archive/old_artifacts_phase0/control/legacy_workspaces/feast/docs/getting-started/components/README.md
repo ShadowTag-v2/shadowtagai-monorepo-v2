@@ -1,4 +1,4 @@
-# Components 
+# Components
 
 {% content-ref url="registry.md" %}
 [registry.md](registry.md)

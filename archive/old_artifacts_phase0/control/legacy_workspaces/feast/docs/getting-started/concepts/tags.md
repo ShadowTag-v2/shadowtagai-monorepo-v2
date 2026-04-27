@@ -41,7 +41,7 @@ In this example we define a Stream Feature View that has a tag, in the code:
 
 An example of filtering feature-views with the tag `team:driver_performance`:
 ```commandline
-$ feast feature-views list --tags team:driver_performance              
+$ feast feature-views list --tags team:driver_performance
 NAME                       ENTITIES    TYPE
 driver_hourly_stats        {'driver'}  FeatureView
 driver_hourly_stats_fresh  {'driver'}  FeatureView
@@ -56,4 +56,3 @@ driver_hourly_stats_fresh  {'driver'}  FeatureView
 transformed_conv_rate_fresh  {'driver'}  OnDemandFeatureView
 transformed_conv_rate        {'driver'}  OnDemandFeatureView
 ```
-

@@ -32,7 +32,7 @@ static dispatch_queue_t image_queue;
         @autoreleasepool {
             UIImage* image = [UIImage imageNamed: name];
             [image tns_forceDecode];
-            
+
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 callback(image);
             });
@@ -53,7 +53,7 @@ static dispatch_queue_t image_queue;
         @autoreleasepool {
             UIImage* image = [UIImage imageWithData: data];
             [image tns_forceDecode];
-            
+
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 callback(image);
             });
@@ -66,7 +66,7 @@ static dispatch_queue_t image_queue;
         @autoreleasepool {
             UIImage* image = [UIImage imageWithContentsOfFile: file];
             [image tns_forceDecode];
-            
+
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 callback(image);
             });

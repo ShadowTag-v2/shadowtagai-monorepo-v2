@@ -155,7 +155,7 @@ and introduce the new flag `--default-secret-deletion-policy`. Its values are as
   that don't have the `deletionPolicy` field set will have their associated Secret
   resources updated (i.e., the owner reference gets added) on the next issuance of
   the Certificate.
-  
+
 The effect of changing `--default-secret-deletion-policy` from `Orphan` to `Delete`
 or from `Delete` to `Orphan` is not immediate: the change requires a re-issuance
 of the Certificate resources.

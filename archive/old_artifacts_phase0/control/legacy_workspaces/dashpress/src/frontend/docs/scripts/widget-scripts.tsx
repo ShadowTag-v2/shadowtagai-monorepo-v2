@@ -74,7 +74,7 @@ return [{name: "Hannah", age: "30"}, {"name": "Frederick", "age": 45 }]
   // Do some custom processing here;
   return data;
 }
-      
+
 const table = "users";
 
 const data = $.query("SELECT * FROM " + table + " LIMIT 10");
@@ -91,9 +91,9 @@ return 123;
 // or
 return "123";
 
-// 2. 
+// 2.
 return [{count: 123}]
-//or 
+//or
 return [{count: "123"}]
 
 // 3. Result from a count query
@@ -111,8 +111,8 @@ return await $.query("SELECT count(*) FROM [MY_TABLE]");`}
 because (120 - 100) / 100 = 20 */
 return [120, 100];
 
-/* We also show negative progress in red as the example 
-below means the value has decreased 
+/* We also show negative progress in red as the example
+below means the value has decreased
 from 100 to 80 also by 20 percent */
 return [80, 100];
 
@@ -151,7 +151,7 @@ const actual = await $.query(\`
   SELECT count(*) FROM "users"
 \`);
 
-/* Here we are using the \`$.RELATIVE_TIME\` to placehold 
+/* Here we are using the \`$.RELATIVE_TIME\` to placehold
 the relative time the user selects which we use to filter
 with \`createdAt\` to get the number of users in the
 database at a particular time */

@@ -48,7 +48,7 @@ RUN echo "=== Full package structure ===" && \
 
 
 # Build the application
-# RUN pnpm run build 
+# RUN pnpm run build
 # RUN chmod +x start.sh
 
 # Set working directory to where the built app is

@@ -44,7 +44,7 @@ This design prevents race conditions where tasks wait on events that get
 replaced by other tasks, ensuring reliable coordination in concurrent scenarios.
 
 **Args:**
-- `transport`: 
+- `transport`:
 Connection source specification, which can be\:
 
     - ClientTransport\: Direct transport instance
@@ -524,7 +524,7 @@ that shouldn't be tool arguments but may influence server-side processing. The s
 can access this via `context.request_context.meta`. Defaults to None.
 
 **Returns:**
-- 
+-
 The content returned by the tool. If the tool returns structured
 outputs, they are returned as a dataclass (if an output schema
 is available) or a dictionary; otherwise, a list of content

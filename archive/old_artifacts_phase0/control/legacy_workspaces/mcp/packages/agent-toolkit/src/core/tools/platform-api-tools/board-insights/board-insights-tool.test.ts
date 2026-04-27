@@ -480,7 +480,7 @@ describe('Board Insights Tool', () => {
         const result = handleSelectAndGroupByElements(input as any);
 
         expect(result.selectElements).toHaveLength(3);
-        
+
         // Should have the COUNT aggregation
         expect(result.selectElements[0]).toEqual({
           type: AggregateSelectElementType.Function,

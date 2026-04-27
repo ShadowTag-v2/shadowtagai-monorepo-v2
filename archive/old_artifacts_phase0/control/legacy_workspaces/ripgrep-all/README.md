@@ -125,48 +125,48 @@ Adapters:
 
 - **pandoc**
   Uses pandoc to convert binary/unreadable text documents to plain markdown-like text
-  Runs: pandoc --from= --to=plain --wrap=none --markdown-headings=atx  
+  Runs: pandoc --from= --to=plain --wrap=none --markdown-headings=atx
    Extensions: .epub, .odt, .docx, .fb2, .ipynb, .html, .htm
 
 - **poppler**
   Uses pdftotext (from poppler-utils) to extract plain text from PDF files
-  Runs: pdftotext - -  
-   Extensions: .pdf  
+  Runs: pdftotext - -
+   Extensions: .pdf
    Mime Types: application/pdf
 
 - **postprocpagebreaks**
   Adds the page number to each line for an input file that specifies page breaks as ascii page break character.
-  Mainly to be used internally by the poppler adapter.  
+  Mainly to be used internally by the poppler adapter.
    Extensions: .asciipagebreaks
 
 - **ffmpeg**
-  Uses ffmpeg to extract video metadata/chapters, subtitles, lyrics, and other metadata  
+  Uses ffmpeg to extract video metadata/chapters, subtitles, lyrics, and other metadata
    Extensions: .mkv, .mp4, .avi, .mp3, .ogg, .flac, .webm
 
 - **zip**
-  Reads a zip file as a stream and recurses down into its contents  
-   Extensions: .zip, .jar  
+  Reads a zip file as a stream and recurses down into its contents
+   Extensions: .zip, .jar
    Mime Types: application/zip
 
 - **decompress**
-  Reads compressed file as a stream and runs a different extractor on the contents.  
-   Extensions: .als, .bz2, .gz, .tbz, .tbz2, .tgz, .xz, .zst  
+  Reads compressed file as a stream and runs a different extractor on the contents.
+   Extensions: .als, .bz2, .gz, .tbz, .tbz2, .tgz, .xz, .zst
    Mime Types: application/gzip, application/x-bzip, application/x-xz, application/zstd
 
 - **tar**
-  Reads a tar file as a stream and recurses down into its contents  
+  Reads a tar file as a stream and recurses down into its contents
    Extensions: .tar
 
 - **sqlite**
-  Uses sqlite bindings to convert sqlite databases into a simple plain text format  
-   Extensions: .db, .db3, .sqlite, .sqlite3  
+  Uses sqlite bindings to convert sqlite databases into a simple plain text format
+   Extensions: .db, .db3, .sqlite, .sqlite3
    Mime Types: application/x-sqlite3
 
 The following adapters are disabled by default, and can be enabled using '--rga-adapters=+foo,bar':
 
 - **mail**
-  Reads mailbox/mail files and runs extractors on the contents and attachments.  
-   Extensions: .mbox, .mbx, .eml  
+  Reads mailbox/mail files and runs extractors on the contents and attachments.
+   Extensions: .mbox, .mbx, .eml
    Mime Types: application/mbox, message/rfc822
 
 ## USAGE:

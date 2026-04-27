@@ -19,6 +19,6 @@ struct group {
     #include "memory/memory.metal"
     #include "shared/shared.metal"
 };
-    
+
 
 }

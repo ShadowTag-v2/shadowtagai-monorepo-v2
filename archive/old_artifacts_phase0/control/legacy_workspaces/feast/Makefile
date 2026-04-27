@@ -62,7 +62,7 @@ lint-python: ## Lint Python code
 	cd ${ROOT_DIR}/sdk/python; python -m mypy feast
 	cd ${ROOT_DIR}/sdk/python; python -m ruff check feast/ tests/
 	cd ${ROOT_DIR}/sdk/python; python -m ruff format --check feast/ tests
-	
+
 ##@ Python SDK - local
 # formerly install-python-ci-dependencies-uv-venv
 # editable install
@@ -611,7 +611,7 @@ build-feature-transformation-server-docker: ## Build Feature Transformation Serv
 push-feature-server-java-docker: ## Push Feature Server Java Docker image
 	docker push $(REGISTRY)/feature-server-java:$(VERSION)
 
-build-feature-server-java-docker: ## Build Feature Server Java Docker image	
+build-feature-server-java-docker: ## Build Feature Server Java Docker image
 	docker buildx build --build-arg VERSION=$(VERSION) \
 		-t $(REGISTRY)/feature-server-java:$(VERSION) \
 		-f java/infra/docker/feature-server/Dockerfile --load .
@@ -701,12 +701,12 @@ build-ui-local: ## Build Feast UI locally
 	cd $(ROOT_DIR)/ui && yarn install && npm run build --omit=dev
 	rm -rf $(ROOT_DIR)/sdk/python/feast/ui/build
 	cp -r $(ROOT_DIR)/ui/build $(ROOT_DIR)/sdk/python/feast/ui/
-	
+
 format-ui: ## Format Feast UI
 	cd $(ROOT_DIR)/ui && NPM_TOKEN= yarn install && NPM_TOKEN= yarn format
 
 
-##@ Go SDK 
+##@ Go SDK
 PB_REL = https://github.com/protocolbuffers/protobuf/releases
 PB_VERSION = 30.2
 PB_ARCH := $(shell uname -m)
@@ -772,4 +772,3 @@ build-go-docker-dev: ## Build Go Docker image for development
 	docker buildx build --build-arg VERSION=dev \
 		-t feastdev/feature-server-go:dev \
 		-f go/infra/docker/feature-server/Dockerfile --load .
-

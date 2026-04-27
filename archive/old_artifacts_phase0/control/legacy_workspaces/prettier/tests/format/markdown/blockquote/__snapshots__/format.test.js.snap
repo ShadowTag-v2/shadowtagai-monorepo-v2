@@ -174,12 +174,12 @@ proseWrap: "always"
 > > \`\`\`
 > \`\`\`\`
 
-> 
+>
 > <!-- prettier-ignore -->
 > - This is a long long
 >   long long long long
 >   long long paragraph.
-> 
+>
 
 > \`\`\`\`js
 > // prettier-ignore
@@ -289,12 +289,12 @@ proseWrap: "never"
 > > \`\`\`
 > \`\`\`\`
 
-> 
+>
 > <!-- prettier-ignore -->
 > - This is a long long
 >   long long long long
 >   long long paragraph.
-> 
+>
 
 > \`\`\`\`js
 > // prettier-ignore
@@ -404,12 +404,12 @@ proseWrap: "preserve"
 > > \`\`\`
 > \`\`\`\`
 
-> 
+>
 > <!-- prettier-ignore -->
 > - This is a long long
 >   long long long long
 >   long long paragraph.
-> 
+>
 
 > \`\`\`\`js
 > // prettier-ignore

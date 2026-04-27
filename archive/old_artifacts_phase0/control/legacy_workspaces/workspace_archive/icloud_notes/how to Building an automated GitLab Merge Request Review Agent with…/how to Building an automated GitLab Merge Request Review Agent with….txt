@@ -1,5 +1,5 @@
 how to Building an automated GitLab Merge Request Review Agent with Gemini CLI +
-Plus Antigravity rules and workflow 
+Plus Antigravity rules and workflow
 
 Daniel Strebel
 Follow
@@ -75,13 +75,13 @@ stages:
 
 gemini_cli_code_review:
   stage: review
-  
+
   # check https://github.com/google-gemini/gemini-cli/tags for the latest version
   image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
 
   script:
     - echo "Starting the Gemini CLI job..."
-    
+
     - |
       echo "Using API KEY Authentication"
 
@@ -90,14 +90,14 @@ gemini_cli_code_review:
         echo "Please configure it in your project's Settings > CI/CD > Variables."
         exit 1
       fi
-      
+
     - |
       echo "Downloading and extracting gitlab-mcp binary..."
       GITLAB_MCP_VERSION="1.29.0"
       curl -L -O "https://gitlab.com/fforster/gitlab-mcp/-/releases/v${GITLAB_MCP_VERSION}/downloads/gitlab-mcp_${GITLAB_MCP_VERSION}_Linux_x86_64.tar.gz"
       tar -xzf gitlab-mcp_${GITLAB_MCP_VERSION}_Linux_x86_64.tar.gz
       chmod +x gitlab-mcp
-      
+
     - |
       echo "Writing Gemini CLI settings..."
       mkdir -p "$HOME/.gemini"
@@ -112,7 +112,7 @@ gemini_cli_code_review:
             },
             "timeout": 5000,
             "includeTools": [
-              "discussion_add_note", 
+              "discussion_add_note",
               "discussion_list",
               "get_merge_request_changes",
               "get_merge_request_commits",
@@ -128,7 +128,7 @@ gemini_cli_code_review:
         }
       }
       EOF
-      
+
     - |
       echo "Performing Code Review with Gemini"
 
@@ -249,13 +249,13 @@ stages:
 
 gemini_cli_code_review:
   stage: review
-  
+
   # check https://github.com/google-gemini/gemini-cli/tags for the latest version
   image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
 
   script:
     - echo "Starting the Gemini CLI job..."
-    
+
     - |
       echo "Using API KEY Authentication"
 
@@ -264,14 +264,14 @@ gemini_cli_code_review:
         echo "Please configure it in your project's Settings > CI/CD > Variables."
         exit 1
       fi
-      
+
     - |
       echo "Downloading and extracting gitlab-mcp binary..."
       GITLAB_MCP_VERSION="1.29.0"
       curl -L -O "https://gitlab.com/fforster/gitlab-mcp/-/releases/v${GITLAB_MCP_VERSION}/downloads/gitlab-mcp_${GITLAB_MCP_VERSION}_Linux_x86_64.tar.gz"
       tar -xzf gitlab-mcp_${GITLAB_MCP_VERSION}_Linux_x86_64.tar.gz
       chmod +x gitlab-mcp
-      
+
     - |
       echo "Writing Gemini CLI settings..."
       mkdir -p "$HOME/.gemini"
@@ -286,7 +286,7 @@ gemini_cli_code_review:
             },
             "timeout": 5000,
             "includeTools": [
-              "discussion_add_note", 
+              "discussion_add_note",
               "discussion_list",
               "get_merge_request_changes",
               "get_merge_request_commits",
@@ -302,7 +302,7 @@ gemini_cli_code_review:
         }
       }
       EOF
-      
+
     - |
       echo "Performing Code Review with Gemini"
 

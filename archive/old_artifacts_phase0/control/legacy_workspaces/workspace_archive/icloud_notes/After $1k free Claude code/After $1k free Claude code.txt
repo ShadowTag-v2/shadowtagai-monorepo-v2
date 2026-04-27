@@ -1,2 +1,2 @@
-After $1k free Claude code 
+After $1k free Claude code
 "Opus for planning, Sonnet for execution" is now available as a model setting in Claude Code! Best way to see it in action is with a status line.

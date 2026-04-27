@@ -266,4 +266,3 @@ else
     highlight def link Lf_hl_jumpsLineCol       String
     highlight def link Lf_hl_jumpsIndicator     Type
 endif
-

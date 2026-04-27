@@ -69,7 +69,7 @@ export async function startGoogleRecording(page: Page, botConfig: BotConfig): Pr
         });
       } catch {}
       // ---------------------------------------------
-      
+
       const audioService = new browserUtils.BrowserAudioService({
         targetSampleRate: 16000,
         bufferSize: 4096,
@@ -118,7 +118,7 @@ export async function startGoogleRecording(page: Page, botConfig: BotConfig): Pr
       await new Promise<void>((resolve, reject) => {
         try {
           (window as any).logBot("Starting Google Meet recording process with new services.");
-          
+
           // Find and create combined audio stream
           audioService.findMediaElements().then(async (mediaElements: HTMLMediaElement[]) => {
             if (mediaElements.length === 0) {
@@ -501,15 +501,15 @@ export async function startGoogleRecording(page: Page, botConfig: BotConfig): Pr
             (window as any).getGoogleMeetActiveParticipantsCount = () => {
               return (window as any).getGoogleMeetActiveParticipants().length;
             };
-            
+
             // Setup Google Meet meeting monitoring (browser context)
             const setupGoogleMeetingMonitoring = (botConfigData: any, audioService: any, whisperLiveService: any, resolve: any) => {
               (window as any).logBot("Setting up Google Meet meeting monitoring...");
-              
+
               const leaveCfg = (botConfigData && (botConfigData as any).automaticLeave) || {};
               const startupAloneTimeoutSeconds = Number(leaveCfg.startupAloneTimeoutSeconds ?? (20 * 60));
               const everyoneLeftTimeoutSeconds = Number(leaveCfg.everyoneLeftTimeoutSeconds ?? 10);
-              
+
               let aloneTime = 0;
               let lastParticipantCount = 0;
               let speakersIdentified = false;
@@ -518,11 +518,11 @@ export async function startGoogleRecording(page: Page, botConfig: BotConfig): Pr
               const checkInterval = setInterval(() => {
                 // Check participant count using the comprehensive helper
                 const currentParticipantCount = (window as any).getGoogleMeetActiveParticipantsCount ? (window as any).getGoogleMeetActiveParticipantsCount() : 0;
-                
+
                 if (currentParticipantCount !== lastParticipantCount) {
                   (window as any).logBot(`Participant check: Found ${currentParticipantCount} unique participants from central list.`);
                   lastParticipantCount = currentParticipantCount;
-                  
+
                   // Track if we've ever had multiple participants
                   if (currentParticipantCount > 1) {
                     hasEverHadMultipleParticipants = true;
@@ -533,11 +533,11 @@ export async function startGoogleRecording(page: Page, botConfig: BotConfig): Pr
 
                 if (currentParticipantCount <= 1) {
                   aloneTime++;
-                  
+
                   // Determine timeout based on whether speakers have been identified
                   const currentTimeout = speakersIdentified ? everyoneLeftTimeoutSeconds : startupAloneTimeoutSeconds;
                   const timeoutDescription = speakersIdentified ? "post-speaker" : "startup";
-                  
+
                   if (aloneTime >= currentTimeout) {
                     if (speakersIdentified) {
                       (window as any).logBot(`Google Meet meeting ended or bot has been alone for ${everyoneLeftTimeoutSeconds} seconds after speakers were identified. Stopping recorder...`);
@@ -625,8 +625,8 @@ export async function startGoogleRecording(page: Page, botConfig: BotConfig): Pr
         }
       };
     },
-    { 
-      botConfigData: botConfig, 
+    {
+      botConfigData: botConfig,
       whisperUrlForBrowser: whisperLiveUrl,
       selectors: {
         participantSelectors: googleParticipantSelectors,
@@ -639,7 +639,7 @@ export async function startGoogleRecording(page: Page, botConfig: BotConfig): Pr
       } as any
     }
   );
-  
+
   // After page.evaluate finishes, cleanup services
   await whisperLiveService.cleanup();
 }

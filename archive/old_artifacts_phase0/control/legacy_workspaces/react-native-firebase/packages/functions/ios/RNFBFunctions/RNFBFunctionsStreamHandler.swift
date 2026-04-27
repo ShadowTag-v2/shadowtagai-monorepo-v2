@@ -25,7 +25,7 @@ import FirebaseCore
 @available(iOS 15.0, macOS 12.0, *)
 @objcMembers public class RNFBFunctionsStreamHandler: NSObject {
   private var streamTask: Task<Void, Never>?
-  
+
   /// Start streaming from a Firebase Function
   /// - Parameters:
   ///   - app: Firebase App instance (can be FIRApp or FirebaseApp)
@@ -56,7 +56,7 @@ import FirebaseCore
         )
     }
   }
-  
+
   @objc public func startStream(
     app: FirebaseApp,
     functions: Functions,
@@ -66,10 +66,10 @@ import FirebaseCore
     eventCallback: @escaping ([AnyHashable: Any]) -> Void
   ) {
     let url = URL(string: functionUrl)!
-    
+
     streamTask = Task {
       let callable: Callable<AnyEncodable, StreamResponse<AnyDecodable, AnyDecodable>> = functions.httpsCallable(url)
-      
+
       await self.performStream(
           functions: functions,
           callable: callable,
@@ -79,19 +79,19 @@ import FirebaseCore
         )
     }
   }
-  
+
   /// Cancel the streaming task
   @objc public func cancel() {
     streamTask?.cancel()
     streamTask = nil
   }
-  
+
   /// Get error code name from NSError (delegates to shared utility)
   private func getErrorCodeName(_ error: Error) -> String {
     let nsError = error as NSError
     return RNFBFunctionsCallHandler.getErrorCodeName(nsError)
   }
-  
+
   private func performStream(
     functions: Functions,
     callable: Callable<AnyEncodable, StreamResponse<AnyDecodable, AnyDecodable>>,
@@ -104,7 +104,7 @@ import FirebaseCore
     if timeout > 0 {
     callableStream.timeoutInterval = timeout
   }
-    
+
     do {
       let encodedParams = AnyEncodable(parameters)
 
@@ -135,7 +135,7 @@ import FirebaseCore
           "message": "The operation was cancelled (typically by the caller).",
           "details": NSNull()
         ]
-        
+
         eventCallback([
           "data": NSNull(),
           "error": errorDict,
@@ -143,25 +143,25 @@ import FirebaseCore
         ])
         return
       }
-      
+
       let nsError = error as NSError
-      
+
       // Construct error object similar to httpsCallable
       var details: Any = NSNull()
       let message = error.localizedDescription
-      
+
       if nsError.domain == "com.firebase.functions" {
         if let errorDetails = nsError.userInfo["details"] {
           details = errorDetails
         }
       }
-      
+
       let errorDict: [String: Any] = [
         "code": getErrorCodeName(error),
         "message": message,
         "details": details
       ]
-      
+
       eventCallback([
         "data": NSNull(),
         "error": errorDict,
@@ -286,4 +286,3 @@ public struct AnyDecodable: Decodable {
     self.value = value
   }
 }
-

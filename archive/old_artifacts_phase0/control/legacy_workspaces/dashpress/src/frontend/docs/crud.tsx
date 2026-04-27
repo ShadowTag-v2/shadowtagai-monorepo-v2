@@ -21,9 +21,9 @@ export function CRUDDocumentation() {
         entity which can be done at the <code>Entities Settings</code>
       </p>
       <InfoAlert
-        message={`Note that this filtering is done in the backend so any 
-        data belonging to the filtered-out field will not get to the UI. 
-        We only query the database for the fields we are going to present hereby 
+        message={`Note that this filtering is done in the backend so any
+        data belonging to the filtered-out field will not get to the UI.
+        We only query the database for the fields we are going to present hereby
         decreasing the workload on your database and ensuring
         that those data do not leak out of your server.`}
       />

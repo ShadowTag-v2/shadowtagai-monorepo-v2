@@ -8,7 +8,7 @@ This repository contains the following Feast components.
 
 ### Architecture
 
-Feast Serving has a dependency on an online store (Redis) for retrieving features. 
+Feast Serving has a dependency on an online store (Redis) for retrieving features.
 The process of ingesting data into the online store (Redis) is decoupled from the process of reading from it.
 
 ### Contributing

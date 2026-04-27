@@ -31,7 +31,7 @@ describe('isGradioTool', () => {
 			const publicTool1 = createGradioToolName('flux1_schnell', 0, false);
 			const publicTool2 = createGradioToolName('EasyGhibli', 1, false);
 			const privateTool = createGradioToolName('private-model', 2, true);
-			
+
 			expect(isGradioTool(publicTool1)).toBe(true);
 			expect(isGradioTool(publicTool2)).toBe(true);
 			expect(isGradioTool(privateTool)).toBe(true);
@@ -146,12 +146,12 @@ describe('createGradioToolName', () => {
 			const result1 = createGradioToolName(longName, 0, false);
 			expect(result1.length).toBe(49);
 			expect(result1).toBe('gr1_very_long_tool_name__haracters_total_and_more');
-			
+
 			// Test with larger index (less room for name)
 			const result2 = createGradioToolName(longName, 999, true);
 			expect(result2.length).toBe(49);
 			expect(result2).toBe('grp1000_very_long_tool_name__cters_total_and_more');
-			
+
 			// Test that ending is preserved
 			const toolWithUniqueEnd = 'common_prefix_for_tool_with_very_unique_ending_xyz123';
 			const result3 = createGradioToolName(toolWithUniqueEnd, 0, false);
@@ -174,7 +174,7 @@ describe('createGradioToolName', () => {
 			const tool2 = 'image_generation_model_for_advanced_processing_version_2_final';
 			const result1 = createGradioToolName(tool1, 0, false);
 			const result2 = createGradioToolName(tool2, 0, false);
-			
+
 			// Both should be truncated but keep different endings
 			expect(result1).toBe('gr1_image_generation_mod_ocessing_version_1_final');
 			expect(result2).toBe('gr1_image_generation_mod_ocessing_version_2_final');
@@ -188,12 +188,12 @@ describe('createGradioToolName', () => {
 			const tool2 = 'image_utilities_mcp_update_text_image________'; // 45 chars - exceeds by 1
 			const result1 = createGradioToolName(tool1, 29, false);
 			const result2 = createGradioToolName(tool2, 29, false);
-			
+
 			// No normalization for tool1, tool2 is truncated
 			expect(result1).toBe('gr30_image_utilities_mcp_update_text_image_______');
 			expect(result2).toBe('gr30_image_utilities_mcp__date_text_image________');
 			expect(result1).not.toBe(result2);
-			
+
 			// First keeps its length, second is truncated to exactly 49
 			expect(result1.length).toBe(49);
 			expect(result2.length).toBe(49);
@@ -202,22 +202,22 @@ describe('createGradioToolName', () => {
 		it('should prepend tool index to truncated names when provided', () => {
 			// Test that toolIndex is prepended when truncation occurs
 			const longName = 'very_long_tool_name_that_exceeds_forty_nine_characters_total_and_more';
-			
+
 			// Without toolIndex
 			const result1 = createGradioToolName(longName, 0, false);
 			expect(result1).toBe('gr1_very_long_tool_name__haracters_total_and_more');
 			expect(result1.length).toBe(49);
-			
+
 			// With toolIndex 0
 			const result2 = createGradioToolName(longName, 0, false, 0);
 			expect(result2).toBe('gr1_0_very_long_tool_name__racters_total_and_more');
 			expect(result2.length).toBe(49);
-			
+
 			// With toolIndex 1
 			const result3 = createGradioToolName(longName, 0, false, 1);
 			expect(result3).toBe('gr1_1_very_long_tool_name__racters_total_and_more');
 			expect(result3.length).toBe(49);
-			
+
 			// Different tools should have different names
 			expect(result2).not.toBe(result3);
 		});
@@ -225,15 +225,15 @@ describe('createGradioToolName', () => {
 		it('should handle similar tool names with different indices correctly', () => {
 			// Test multiple similar tool names that would collide without toolIndex
 			const baseName = 'image_utilities_mcp_update_text_image________';
-			
-			const tools = [0, 1, 2, 3].map(toolIdx => 
+
+			const tools = [0, 1, 2, 3].map(toolIdx =>
 				createGradioToolName(baseName, 29, false, toolIdx)
 			);
-			
+
 			// All should be unique
 			const uniqueTools = new Set(tools);
 			expect(uniqueTools.size).toBe(4);
-			
+
 			// Each should start with its tool index after the prefix
 			expect(tools[0]).toBe('gr30_0_image_utilities_mcp__te_text_image________');
 			expect(tools[1]).toBe('gr30_1_image_utilities_mcp__te_text_image________');
@@ -244,10 +244,10 @@ describe('createGradioToolName', () => {
 		it('should not add toolIndex when not truncating', () => {
 			// Short names should not get toolIndex appended
 			const shortName = 'simple_tool';
-			
+
 			const result1 = createGradioToolName(shortName, 0, false, 0);
 			const result2 = createGradioToolName(shortName, 0, false, 1);
-			
+
 			// Both should be the same since no truncation happened
 			expect(result1).toBe('gr1_simple_tool');
 			expect(result2).toBe('gr1_simple_tool');

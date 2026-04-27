@@ -432,7 +432,7 @@ def eval_stable_diffusion():
     batch = whole[i: i + bs].to("CPU")
     if (unpadded_bs := batch.shape[0]) < bs:
       batch = batch.cat(batch[-1:].expand(bs - unpadded_bs, *batch[-1].shape))
-    return batch, unpadded_bs 
+    return batch, unpadded_bs
 
   @Tensor.train(mode=False)
   def eval_unet(eval_inputs: list[dict], unet: UNetModel, cond_stage: FrozenOpenClipEmbedder, first_stage: AutoencoderKL,
@@ -538,7 +538,7 @@ def eval_stable_diffusion():
         progress["end"][stage_idx: stage_idx + 1].assign(Tensor([batch_idx + bs], dtype=dtypes.int)).realize()
         print(f"model: {model}, batch_idx: {batch_idx}, elapsed: {(time.perf_counter() - t1):.2f}")
       del batch
-        
+
       jit.reset()
       Tensor.realize(*[p.to_("CPU") for p in get_parameters(model)])
       print(f"done with model: {model}, elapsed: {(time.perf_counter() - t0):.2f}")
@@ -549,7 +549,7 @@ def eval_stable_diffusion():
     clip_score = progress["clip"].to(GPUS[0]).mean().item()
     for name in disk_tensor_names:
       Path(f"{EVAL_CKPT_DIR}/{name}.bytes").unlink(missing_ok=True)
-    
+
     if EVAL_SAMPLES and BEAM:
       print("BEAM COMPLETE", flush=True)  # allows wrapper script to detect BEAM search completion and retry if it failed
       sys.exit()  # Don't eval additional models; we don't care about clip/fid scores when running BEAM on eval sample subset

@@ -75,5 +75,3 @@ export async function ensureBrowserUtils(page: Page, scriptFsPath: string): Prom
     throw new Error('VexaBrowserUtils global is missing after injection');
   }
 }
-
-

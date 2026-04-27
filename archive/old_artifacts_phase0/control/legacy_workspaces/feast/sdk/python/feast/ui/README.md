@@ -1,6 +1,6 @@
 # Example Feast UI App
 
-This is an example React App that imports the Feast UI module. 
+This is an example React App that imports the Feast UI module.
 
 See the module import in `src/index.js`. The main change this implements on top of a vanilla create-react-app is adding:
 
@@ -17,7 +17,7 @@ ReactDOM.render(
 );
 ```
 
-It is used by the `feast ui` command to scaffold a local UI server. The feast python package bundles in resources produced from `npm run build --omit=dev.` 
+It is used by the `feast ui` command to scaffold a local UI server. The feast python package bundles in resources produced from `npm run build --omit=dev.`
 
 The `feast ui` command will generate the necessary `projects-list.json` file and initialize it for the UI to read.
 
@@ -34,8 +34,8 @@ To test with a locally built Feast UI package, do:
 
 OR
 
-You can also do: 
-1. `yarn link` in ui/ 
+You can also do:
+1. `yarn link` in ui/
 2. `yarn install` in ui/
 3. `yarn link` in ui/node_modules/react
 4. `yarn link` in ui/node_modules/react-dom

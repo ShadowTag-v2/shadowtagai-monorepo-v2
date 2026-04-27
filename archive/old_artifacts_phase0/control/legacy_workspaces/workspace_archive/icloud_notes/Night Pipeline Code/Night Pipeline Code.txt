@@ -1,4 +1,4 @@
-Night Pipeline Code 
+Night Pipeline Code
 
 is mostly solid for a quick MVP—functional, deployable, covers 10 sources as promised. But it’s got gaps in robustness, efficiency, and best practices that could bite you in production. Here’s the straight critique and fixes. I’ll break it down by section, then suggest overall architecture tweaks.
 1. deploy.sh Issues
@@ -11,5 +11,5 @@ No cleanup on failure: If deploy fails midway, leaves partial resources. Add tra
 No versioning: No image tagging for Cloud Run deploys—hard to rollback.
 **”
 
-Roll in all possible tech relevant resources for ingestion. As in, download/flatten all relevant GitHub repos. 
+Roll in all possible tech relevant resources for ingestion. As in, download/flatten all relevant GitHub repos.
 Find all new tech. Crawl on arxiv.org, for all relevant ai/mlops papers. Wasn’t a script just released for exactly such. We store the flattened  code  - check memory. It’s in there

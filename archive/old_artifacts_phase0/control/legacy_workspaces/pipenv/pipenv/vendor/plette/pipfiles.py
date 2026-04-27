@@ -43,7 +43,7 @@ class Pipfile(DataModel):
                 continue
             klass.validate(data[key])
 
-        package_categories = set(data.keys()) - set(PIPFILE_SECTIONS.keys())        
+        package_categories = set(data.keys()) - set(PIPFILE_SECTIONS.keys())
 
         for category in package_categories:
             PackageCollection.validate(data[category])

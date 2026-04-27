@@ -11,7 +11,7 @@ bitfield/mask for SEs to enable instruction tracing on. Masking shader engines w
 don't have any wavefront on first simd of shdaer engine with instruction tracing enabled will not have instruction timings.
 The default is 2 (second shader engine only), only one for file size reasons, second instead of first because dispatch starts from it so there is
 greater chance that kernels with small global size will have instruction tracing data.
- 
+
 Note that instruction tracing might not be available for kernels with small global dims, this is not a bug, but it can be improved with various hacks
 to the point where it can reliably trace a kernel consisting of a single wavefront (am only, not quite reliable under amdgpu due to waves sometimes
 being dispatched starting from different simds). More info in comments in ops_amd.py

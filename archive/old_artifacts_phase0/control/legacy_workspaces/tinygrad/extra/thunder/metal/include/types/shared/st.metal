@@ -15,7 +15,7 @@
 
 // these are helper structs for type inference
 namespace mittens {
-    
+
 namespace ducks {
 /**
  * @namespace st
@@ -32,9 +32,9 @@ namespace st {
  */
 struct identifier {};
 } // namespace st
-    
+
 }// namespace ducks
- 
+
 // Forward declaration of subtile
 template<
     typename ST,
@@ -70,36 +70,36 @@ struct mittens_DEFAULT_ALIGN st {
     static_assert(cols % TILE_DIM == 0, "Rows must be divisible by the tile dimension");
     static constant constexpr const int height              = _rows / TILE_DIM; ///< Height of the tile in terms of 16-element subtiles.
     static constant constexpr const int width               = _cols / TILE_DIM; ///< Width of the tile in terms of 16-element subtiles.
-    
+
     static constant constexpr const int num_elements        = rows * cols; ///< Total number of elements in the tile.
 //    static constant constexpr const int row_incr            = 32 / memcpy_per_row;
-    
 
-    
+
+
     dtype data[rows*cols]; ///< Raw data storage for the tile.
-    
-    
-     
+
+
+
     /* ---------- static vars ---------- */
 //    /* static METAL_FUNC threadgroup float* idx(threadgroup float *ptr, int r, int c)*/
     static constant constexpr const int swizzle_bytes = underlying_width % 4 == 0 ? 128 : underlying_width%2==0 ? 64 : 32;
     static constant constexpr const int swizzle_repeat = swizzle_bytes * 8;
     static constant constexpr const int subtile_cols   = swizzle_bytes / sizeof(T);
-    
+
     static constant constexpr const int subtile_cols_log2 = (swizzle_bytes == 128) ? 5 : (swizzle_bytes == 64) ? 4 : 3;
     static constant constexpr const int subtile_cols_mask = subtile_cols - 1;
     static constant constexpr int swizzle_mask = swizzle_repeat - 1;
     static constant constexpr int swizzle_offset_shift = 7;
     static constant constexpr int swizzle_adjust_shift = 4;
     static constant constexpr int mask = (swizzle_repeat - 1) >> swizzle_offset_shift;
-    
+
 //    static constant constexpr const int load_block_bytes = 8;
     static constant constexpr const int laod_block_words = 4;
 //    static constant constexpr const int load_block_words = 2;
     static constant constexpr const int col_load_block_words = cols / laod_block_words;
     static constant constexpr const int load_block_words_mask = laod_block_words - 1;
-    
- 
+
+
     static METAL_FUNC threadgroup T* idx(threadgroup T * __restrict ptr, int2 coord) { // naive row-major index default
         int r = coord.x, c = coord.y;
         return ptr + r * underlying_cols + c;
@@ -111,7 +111,7 @@ struct mittens_DEFAULT_ALIGN st {
 //        const uint64_t addr = (uint64_t)(&ptr[outer_idx*rows*subtile_cols + r*subtile_cols + c%subtile_cols]);
 //        const int swizzle = ((addr % swizzle_repeat) >> 7) << 4;
 //        return (threadgroup T*)(addr ^ swizzle);
-            
+
 //        const int outer_idx = c/subtile_cols;
 //        ptr = &ptr[outer_idx*rows*subtile_cols + r*subtile_cols + c%subtile_cols];
 //        const int swizzle = (((uintptr_t)ptr % swizzle_repeat) >> 7) << 4;
@@ -125,7 +125,7 @@ struct mittens_DEFAULT_ALIGN st {
 //        int swizzle = (((addr_bytes & swizzle_mask) >> 7) << 4);
 //        // Compute final swizzled address
 //        return (threadgroup T*)((threadgroup char*)ptr + (addr_bytes ^ swizzle));
-//    
+//
 //// CORRECT ____ | 0.169
 //    int idx = (((c >> subtile_cols_log2) * rows + r) << subtile_cols_log2) + (c & subtile_cols_mask);
 //
@@ -145,7 +145,7 @@ struct mittens_DEFAULT_ALIGN st {
     static METAL_FUNC uint32_t idx(uint32_t ptr, int2 coord) { // naive row-major index
         int r = coord.x, c = coord.y; // alias
         return ptr + sizeof(T) * (r * underlying_cols + c);
-        
+
 //        c = (c + ((r / 2) * 8)) % cols;
 //        return ptr + r * underlying_cols + c;
 //        return ptr + sizeof(T) * (r * underlying_cols + c);
@@ -162,14 +162,14 @@ struct mittens_DEFAULT_ALIGN st {
     METAL_FUNC const threadgroup T& operator[](thread const int2 &rowcol) const threadgroup {
         return *(const threadgroup T*)idx((threadgroup T*)data, rowcol);
     }
-        
+
     METAL_FUNC threadgroup T& operator[](int idx) threadgroup {
         return data[idx];
     }
     METAL_FUNC const threadgroup T& operator[](int idx) const threadgroup {
         return data[idx];
     }
-    
+
     using col_vec = sv<dtype, rows>; ///< Column vector type for this tile
     using row_vec = sv<dtype, cols>; ///< Row vector type for this tile
     template<int subtile_rows, int subtile_cols> using subtile = st_subtile<
@@ -199,8 +199,8 @@ struct st_subtile {
     using T = typename ST::T;
     using T2 = typename ST::T2;
     using dtype = T; ///< Data type of the elements in the tile.
-    
-    
+
+
     constant static constexpr int underlying_rows          = ST::underlying_rows;
     static_assert(underlying_rows % TILE_DIM == 0, "Underlying rows must be divisible by the tile dimension");
     constant static constexpr int underlying_cols          = ST::underlying_cols;
@@ -239,7 +239,7 @@ struct st_subtile {
         sub_st.row_offset = rowcol.x * rows;
         sub_st.col_offset = rowcol.y * cols;
     }
-    
+
     template<typename SUBTILE, typename ST>
     static void METAL_FUNC init_subtile(thread SUBTILE& sub_st, threadgroup ST& src, int2 rowcol) {
         sub_st.data = (threadgroup T*)src.data;
@@ -309,8 +309,8 @@ struct st_subtile {
     METAL_FUNC const threadgroup T& operator[](thread const int2 &rowcol) threadgroup const {
         return *idx(data, rowcol);
     }
-    
-    
+
+
     METAL_FUNC threadgroup T* idx(threadgroup T * __restrict ptr, const int2 coord) thread const {
         int r = coord.x + row_offset, c = coord.y + col_offset;
         return ptr + r * underlying_cols + c;
@@ -332,7 +332,7 @@ struct st_subtile {
         return *idx(data, rowcol);
     }
 
-    
+
 
 
     // single-index operator[] is left undefined as it would likely be an improper use of st_subtile type.
@@ -345,7 +345,7 @@ template <typename T>
 struct has_st_identifier {
     static constant constexpr bool value = false; // Default case
 };
- 
+
 // Specialize for specific template instantiations of st
 template <typename _T, int _height, int _width>
 struct has_st_identifier<mittens::st<_T, _height, _width>> {
@@ -356,7 +356,7 @@ template<typename _T, int _subtile_rows, int _subtile_cols>
 struct has_st_identifier<mittens::st_subtile<_T, _subtile_rows, _subtile_cols>> {
     static constant constexpr bool value = true;
 };
-    
+
 template <typename ST>
 static constexpr bool is_shared_tile() {
     return has_st_identifier<ST>::value;
@@ -366,8 +366,8 @@ static constexpr void assert_shared_tile() {
     static_assert(is_shared_tile<ST>(), "T must be a st");
 }
 }
-    
-    
+
+
 
 /* ----------  WRAPPERS FOR PRETTINESS  ---------- */
 
@@ -376,4 +376,3 @@ template<int _height, int _width> using st_bf = st<bf16, _height, _width>;
 template<int _height, int _width> using st_hf = st<half, _height, _width>;
 template<int _height, int _width> using st_fl = st<float, _height, _width>;
 } // namespace mittens
-

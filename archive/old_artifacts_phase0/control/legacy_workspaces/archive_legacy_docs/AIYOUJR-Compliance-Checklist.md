@@ -9,5 +9,3 @@
 - Logging: no sensitive data; structured, rate-limited.
 - Monitoring: SLOs, alerts on error rates, latency, and anomalous spikes.
 - Review: PR checklist includes this file; failures are blocking.
-
-

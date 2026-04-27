@@ -1,4 +1,4 @@
-Cor. Spoofing 
+Cor. Spoofing
 
 “Great q. If we stay fully compliant (no spoofing / MITM), here’s what you don’t get and why—plus a small, ready-to-run mock setup so you can test your flows end-to-end without touching any vendor internals.
 

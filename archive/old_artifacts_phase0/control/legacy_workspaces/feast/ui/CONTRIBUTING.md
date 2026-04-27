@@ -17,7 +17,7 @@
 In this doc, we describe how to contribute both to the Feast Web UI NPM package as well as the embedded Feast UI in the Python SDK (i.e. what's run when you run `feast ui`)
 
 ## `feast ui` command
-You can see the logic in [../sdk/python/feast/ui](../sdk/python/feast/ui/). This instance is loaded in [../sdk/python/feast/ui_server.py](../sdk/python/feast/ui_server.py). 
+You can see the logic in [../sdk/python/feast/ui](../sdk/python/feast/ui/). This instance is loaded in [../sdk/python/feast/ui_server.py](../sdk/python/feast/ui_server.py).
 
 Under the hood, what happens is that the Feast SDK spins up a server which exposes an endpoint to the registry. It then mounts the UI on the server and points it to fetch data from that registry.
 
@@ -26,16 +26,16 @@ Under the hood, what happens is that the Feast SDK spins up a server which expos
 
 ## NPM package project structure
 The Web UI is powered by a JSON registry dump from Feast (running `feast registry-dump`). Running `yarn start` launches a UI
-powered by test data. 
+powered by test data.
 - `public/` contains assets as well as demo data loaded by the Web UI.
-  - There is a `projects-list.json` which represents all Feast projects the UI shows. 
+  - There is a `projects-list.json` which represents all Feast projects the UI shows.
   - There is also a `registry.json` which is the registry dump for the feature repo.
 - `feature_repo/` contains a sample Feast repo which generates the `registry.json`
-- `src/` contains the Web UI source code. 
+- `src/` contains the Web UI source code.
    - `src/contexts` has React context objects around project level metadata or registry path metadata to inject into pages. The contexts are static contexts provided by [FeastUISansProviders.tsx](src/FeastUISansProviders.tsx)
-   - `src/parsers` parses the `registry.json` into in memory representations of Feast objects (feature views, data sources, entities, feature services). 
-     - This has ~1:1 mappings to the protobuf objects in [feast/protos/feast/core](https://github.com/feast-dev/feast/tree/master/protos/feast/core). 
-     - There are also "relationships" which create an in-memory lineage graph which can be used to construct links in pages. 
+   - `src/parsers` parses the `registry.json` into in memory representations of Feast objects (feature views, data sources, entities, feature services).
+     - This has ~1:1 mappings to the protobuf objects in [feast/protos/feast/core](https://github.com/feast-dev/feast/tree/master/protos/feast/core).
+     - There are also "relationships" which create an in-memory lineage graph which can be used to construct links in pages.
      - This generates state which pages will load via React queries (to the registry path).
    - `src/pages` has all individual web pages and their layouts. For any given Feast object (e.g. entity), there exist:
      - an **Index page** (which is the first page you hit when you click on that object). This loads using a React query the in memory representation of all objects (parsed from `src/parsers`) and embeds:
@@ -55,13 +55,13 @@ There are very few tests for this UI. There is a smoke test that ensures pages c
 
 ## Yarn commands
 
-If you would like to simply try things out and see how the UI works, you can simply run the code in this repo. 
+If you would like to simply try things out and see how the UI works, you can simply run the code in this repo.
 
 > **Note**: there is an `.npmrc` which is setup for automatic releases. You'll need to comment out the line in there and continue
 
 First:
 
-### `yarn install` 
+### `yarn install`
 
 That will install the all the dependencies that the UI needs, as well as development dependencies. Then in the project directory, you can run:
 

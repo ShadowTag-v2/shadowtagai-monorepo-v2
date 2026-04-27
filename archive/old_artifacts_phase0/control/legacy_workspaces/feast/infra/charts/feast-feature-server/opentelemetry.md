@@ -3,11 +3,11 @@ To add monitoring to the Feast Feature Server, follow these steps:
 
 ### Workflow
 
-Feast instrumentation Using OpenTelemetry and Prometheus - 
+Feast instrumentation Using OpenTelemetry and Prometheus -
 ![Workflow](samples/workflow.png)
 
 ### Deploy Prometheus Operator
-Follow the Prometheus Operator documentation to install the operator - 
+Follow the Prometheus Operator documentation to install the operator -
 https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/getting-started.md
 
 ### Deploy OpenTelemetry Operator
@@ -16,7 +16,7 @@ Before installing OTEL Operator, install `cert-manager` and validate the `pods` 
 kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
 ```
 
-Follow the documentation for further installation steps - 
+Follow the documentation for further installation steps -
 https://github.com/open-telemetry/opentelemetry-operator
 
 ### Configure OpenTelemetry Collector
@@ -33,7 +33,7 @@ metrics:
       api-key: "your-api-key"
 ```
 
-### Add instrumentation annotation and environment variables in the deployment.yaml 
+### Add instrumentation annotation and environment variables in the deployment.yaml
 
 ```
 template:
@@ -48,7 +48,7 @@ template:
 - name: OTEL_EXPORTER_OTLP_ENDPOINT
     value: http://{{ .Values.service.name }}-collector.{{ .Release.namespace }}.svc.cluster.local:{{ .Values.metrics.endpoint.port}}
 - name: OTEL_EXPORTER_OTLP_INSECURE
-              value: "true"     
+              value: "true"
 ```
 
 ### Add checks
@@ -78,21 +78,21 @@ spec:
 {{end}}
 ```
 
-### Add manifests to the chart 
+### Add manifests to the chart
 Add Instrumentation, OpenTelemetryCollector, ServiceMonitors, Prometheus Instance and RBAC rules as provided in the [samples/](https://github.com/feast-dev/feast/tree/91540703c483f1cd03b534a1a45bc4ccdcf79f81/infra/charts/feast-feature-server/samples) directory.
 
 For latest updates please refer the official repository - https://github.com/open-telemetry/opentelemetry-operator
 
-### Deploy Feast 
+### Deploy Feast
 Deploy Feast and set `metrics` value to `true`.
 
-Example - 
+Example -
 ```
 helm install feast-release infra/charts/feast-feature-server --set metric=true --set feature_store_yaml_base64=""
 ```
 
-## See logs 
-Once the opentelemetry is deployed, you can search the logs to see the required metrics - 
+## See logs
+Once the opentelemetry is deployed, you can search the logs to see the required metrics -
 
 ```
 oc logs otelcol-collector-0 | grep "Name: feast_feature_server_memory_usage\|Value: 0.*"

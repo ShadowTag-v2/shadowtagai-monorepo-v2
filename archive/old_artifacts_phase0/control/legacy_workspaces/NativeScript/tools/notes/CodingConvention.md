@@ -239,7 +239,7 @@ let default = checkX(x) || getDefaultSize();
 let big = (x > 10) ? checkX(x) ? getExtraLarge() : getDefaultSize() : getSmallValue();
 ```
 
-## Curly braces 
+## Curly braces
 
 Always use curly braces even in the cases of one line conditional operations.
 
@@ -469,14 +469,14 @@ Although there is the **private** keyword in TypeScript, it is only a syntax sug
 ```TypeScript
 class Foo {
   private _myBoolean: boolean;
-  
+
   public publicAPIMethod() {
   }
-  
+
   public _frameworkMethod() {
       // this method is for internal use only
   }
-  
+
   private _doSomething() {
   }
 }
@@ -486,14 +486,14 @@ class Foo {
 ```TypeScript
 class Foo {
   private myBoolean: boolean;
-  
+
   public _publicAPIMethod() {
   }
-  
+
   public frameworkMethod() {
       // this method is for internal use only
   }
-  
+
   private doSomething() {
   }
 }

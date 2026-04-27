@@ -16,5 +16,5 @@ This repository contains example minimal implementations of common agent workflo
 See the Jupyter notebooks for detailed examples:
 
 - [Basic Workflows](basic_workflows.ipynb)
-- [Evaluator-Optimizer Workflow](evaluator_optimizer.ipynb) 
+- [Evaluator-Optimizer Workflow](evaluator_optimizer.ipynb)
 - [Orchestrator-Workers Workflow](orchestrator_workers.ipynb)

@@ -5,7 +5,7 @@ index d47df3f3c..415c0c432 100644
 @@ -87,7 +87,7 @@ except ImportError:
      # no write support, probably under GAE
      WRITE_SUPPORT = False
- 
+
 -from pkg_resources.extern.jaraco.text import (
 +from pip._internal.utils._jaraco_text import (
      yield_lines,
@@ -14,7 +14,7 @@ index d47df3f3c..415c0c432 100644
 @@ -102,12 +102,11 @@ if TYPE_CHECKING:
      from _typeshed import BytesPath, StrPath, StrOrBytesPath
      from typing_extensions import Self
- 
+
 -warnings.warn(
 -    "pkg_resources is deprecated as an API. "
 -    "See https://setuptools.pypa.io/en/latest/pkg_resources.html",
@@ -26,6 +26,6 @@ index d47df3f3c..415c0c432 100644
 +# Setting PYTHONWARNINGS=error to verify builds produce no warnings
 +# causes immediate exceptions.
 +# See https://github.com/pypa/pip/issues/12243
- 
- 
+
+
  _T = TypeVar("_T")

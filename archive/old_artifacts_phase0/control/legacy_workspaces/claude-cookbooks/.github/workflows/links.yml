@@ -133,14 +133,14 @@ jobs:
           output: lychee-report.md
           fail: false
           failIfEmpty: false
-      
+
       - name: Comment PR with results
         if: github.event_name == 'pull_request' && steps.lychee.outputs.exit_code != 0
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: link-check
           path: lychee-report.md
-      
+
       - name: Upload link check results
         if: always()
         uses: actions/upload-artifact@v4

@@ -387,4 +387,3 @@ def _create_error_result(error_message: str) -> dict[str, Any]:
         errors=[error_message],
     )
     return result.to_dict()
-

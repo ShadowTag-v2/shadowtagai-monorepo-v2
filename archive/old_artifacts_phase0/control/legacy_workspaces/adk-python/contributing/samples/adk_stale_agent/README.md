@@ -86,4 +86,3 @@ To deploy this agent, a GitHub Actions workflow file (`.github/workflows/stale-b
 
 ### Directory Structure Note
 Because this agent resides within the `adk-python` package structure, the workflow must ensure the script is executed correctly to handle imports.
-

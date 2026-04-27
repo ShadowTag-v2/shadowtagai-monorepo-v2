@@ -7,11 +7,11 @@ v1.21 (2019-10-15)
 
 Feature enhancements:
 
-* [Feature #293](https://github.com/Yggdroot/LeaderF/issues/293):  
-  Let `--recall` support all leaderf cmd.  
+* [Feature #293](https://github.com/Yggdroot/LeaderF/issues/293):
+  Let `--recall` support all leaderf cmd.
   `Leaderf --recall` to recall last Leaderf command
-* [Feature #360](https://github.com/Yggdroot/LeaderF/issues/360):  
-  Find file based on the current buffer  
+* [Feature #360](https://github.com/Yggdroot/LeaderF/issues/360):
+  Find file based on the current buffer
   Add g:Lf_IgnoreCurrentBufferName
 * Enhance the ability to write extension for nvim
 * Add support for `Leaderf! file`
@@ -39,7 +39,7 @@ v1.20 (2019-5-8)
 Feature enhancements:
 
 * [Feature #191](https://github.com/Yggdroot/LeaderF/issues/191):
-  add support for GNU Global(`Leaderf gtags`)  
+  add support for GNU Global(`Leaderf gtags`)
   For more details: `Leaderf gtags -h`
 * [Feature #254](https://github.com/Yggdroot/LeaderF/issues/254):
   Add rg option `--type-add`.
@@ -84,22 +84,22 @@ v1.19 (2018-12-7)
 
 **BREAKING CHANGES**:
 
-* `<Up>` and  `<Down>` is changed. [issue #236](https://github.com/Yggdroot/LeaderF/issues/236)  
-  from: `navigate the result list.`  
+* `<Up>` and  `<Down>` is changed. [issue #236](https://github.com/Yggdroot/LeaderF/issues/236)
+  from: `navigate the result list.`
   to:   `recall last/next input pattern from history.`
 
 Feature enhancements:
 
 * [Feature #57](https://github.com/Yggdroot/LeaderF/issues/57):
-  Add support for rg(`Leaderf rg`)  
+  Add support for rg(`Leaderf rg`)
   For more details: `Leaderf rg -h`
 * [Feature #130](https://github.com/Yggdroot/LeaderF/issues/130):
   Add Changelog file.
 * [Feature #208](https://github.com/Yggdroot/LeaderF/issues/208):
-  Add support for input file list.  
+  Add support for input file list.
   Add `--file` option for `Leaderf file`.
 * [Feature #213](https://github.com/Yggdroot/LeaderF/issues/213):
-  Add support for input history.  
+  Add support for input history.
   Use `<UP>` and `<Down>` to loop the input history.
 * Add `one-dark` colorscheme.
 * Add `--nowrap` option for LeaderF.
@@ -120,7 +120,7 @@ v1.18 (2018-10-7)
 
 Feature enhancements:
 
-* Add support for `and mode`.  
+* Add support for `and mode`.
   In fuzzy mode, using `' '`(space) as the **and** operator(`g:Lf_AndDelimiter`), the
   candidate lines should fuzzily match all the substrings separated by space.
 
@@ -212,7 +212,7 @@ Feature enhancements:
 
 * Beautify the display of bufTag.
 * [Feature #144](https://github.com/Yggdroot/LeaderF/issues/144):
-  Add the capability to search everything. Support writing extensions in vimscript.   
+  Add the capability to search everything. Support writing extensions in vimscript.
   Add a universal command line interface for LeaderF.
     ```
     usage: Leaderf[!] [-h] [--reverse] [--stayOpen] [--input INPUT | --cword]
@@ -388,7 +388,7 @@ Feature enhancements:
 * Add support for `*.pyw` file
 * [Feature #83](https://github.com/Yggdroot/LeaderF/issues/83):
   Add the following commands.
-  
+
     | Command                    | Description
     | ---                        | -----------
     | `:LeaderfFilePattern <pattern>` | like `LeaderfFile`, with `pattern` inputted in advance
@@ -519,4 +519,3 @@ v1.00 (2013-12-29)
 ==================
 
 Initial commit.
-

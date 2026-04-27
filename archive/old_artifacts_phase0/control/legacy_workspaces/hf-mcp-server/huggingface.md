@@ -1,6 +1,6 @@
 ## Rules for Hugging Face
 
-The Hugging Face MCP Tool can be customised at https://huggingface.co/settings/mcp 
+The Hugging Face MCP Tool can be customised at https://huggingface.co/settings/mcp
 
 `hf_doc_search` contains recent information more recent than your knowledge cut off date. Use it when finding out about Hugging Face libraries and command line tools.
 

@@ -204,13 +204,13 @@ If something needs work, your review should help it get there through specific, 
 
 **Good Review Comments:**
 
-❌ "Add more tests"  
+❌ "Add more tests"
 ✅ "The `handle_timeout` method needs tests for the edge case where timeout=0"
 
-❌ "This API is confusing"  
+❌ "This API is confusing"
 ✅ "The parameter name `data` is ambiguous - consider `message_content` to match the MCP specification"
 
-❌ "This could be better"  
+❌ "This could be better"
 ✅ "This approach works but creates a circular dependency. Consider moving the validation to `utils/validators.py`"
 
 ### Review Checklist

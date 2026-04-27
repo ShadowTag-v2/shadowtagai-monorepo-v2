@@ -5,7 +5,7 @@ index 01f08eee8..4969b70e3 100644
 @@ -8,13 +8,7 @@
  from socket import error as SocketError
  from socket import timeout as SocketTimeout
- 
+
 -try:
 -    try:
 -        import brotlicffi as brotli
@@ -14,7 +14,7 @@ index 01f08eee8..4969b70e3 100644
 -except ImportError:
 -    brotli = None
 +brotli = None
- 
+
  from . import util
  from ._collections import HTTPHeaderDict
 diff --git a/src/pip/_vendor/urllib3/util/request.py b/src/pip/_vendor/urllib3/util/request.py
@@ -23,7 +23,7 @@ index b574b081e..330766ef4 100644
 +++ b/src/pip/_vendor/urllib3/util/request.py
 @@ -13,15 +13,6 @@
  SKIPPABLE_HEADERS = frozenset(["accept-encoding", "host", "user-agent"])
- 
+
  ACCEPT_ENCODING = "gzip,deflate"
 -try:
 -    try:
@@ -34,6 +34,6 @@ index b574b081e..330766ef4 100644
 -    pass
 -else:
 -    ACCEPT_ENCODING += ",br"
- 
+
  _FAILEDTELL = object()
- 
+

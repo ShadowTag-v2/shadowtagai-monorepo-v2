@@ -10,15 +10,15 @@ index 1c9661cc7..2f2f7e088 100644
 +            _CACERT_CTX = as_file(files("pip._vendor.certifi").joinpath("cacert.pem"))
              _CACERT_PATH = str(_CACERT_CTX.__enter__())
              atexit.register(exit_cacert_ctx)
- 
+
          return _CACERT_PATH
- 
+
      def contents() -> str:
 -        return files("certifi").joinpath("cacert.pem").read_text(encoding="ascii")
 +        return files("pip._vendor.certifi").joinpath("cacert.pem").read_text(encoding="ascii")
- 
+
  else:
- 
+
 @@ -73,11 +73,11 @@ else:
              # We also have to hold onto the actual context manager, because
              # it will do the cleanup whenever it gets garbage collected, so
@@ -27,9 +27,9 @@ index 1c9661cc7..2f2f7e088 100644
 +            _CACERT_CTX = get_path("pip._vendor.certifi", "cacert.pem")
              _CACERT_PATH = str(_CACERT_CTX.__enter__())
              atexit.register(exit_cacert_ctx)
- 
+
          return _CACERT_PATH
- 
+
      def contents() -> str:
 -        return read_text("certifi", "cacert.pem", encoding="ascii")
 +        return read_text("pip._vendor.certifi", "cacert.pem", encoding="ascii")

@@ -69,21 +69,21 @@ Before submitting your changes as a pull request, please make sure to format and
 
 ### Code quality
 
-To format (and fix) all packages, run: 
+To format (and fix) all packages, run:
 ```bash
 melos run format
 # OR
 melos run format:fix
 ```
 
-To analyze all packages, run: 
+To analyze all packages, run:
 ```bash
 melos run analyze
 ```
 
 ### Testing
 
-To run all tests, use: 
+To run all tests, use:
 ```bash
 melos run test
 ```

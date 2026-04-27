@@ -24,4 +24,3 @@ do
     echo "Directory $example not found"
   fi
 done
-

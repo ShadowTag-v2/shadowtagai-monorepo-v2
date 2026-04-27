@@ -115,9 +115,9 @@ class ReadManyFilesToolInvocation extends BaseToolInvocation<
   }
 
   getDescription(): string {
-    const pathDesc = `using patterns: 
+    const pathDesc = `using patterns:
 ${this.params.include.join('`, `')}
- (within target directory: 
+ (within target directory:
 ${this.config.getTargetDir()}
 ) `;
 
@@ -131,7 +131,7 @@ ${this.config.getTargetDir()}
 
     const excludeDesc = `Excluding: ${
       finalExclusionPatternsForDescription.length > 0
-        ? `patterns like 
+        ? `patterns like
 ${finalExclusionPatternsForDescription
   .slice(0, 2)
   .join(

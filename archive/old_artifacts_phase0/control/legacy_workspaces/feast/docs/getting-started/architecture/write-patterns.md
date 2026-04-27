@@ -2,7 +2,7 @@
 
 Feast uses a [Push Model](push-vs-pull-model.md) to push features to the online store.
 
-This has two important consequences: (1) communication patterns between the Data Producer (i.e., the client) and Feast (i.e,. the server) and (2) feature computation and 
+This has two important consequences: (1) communication patterns between the Data Producer (i.e., the client) and Feast (i.e,. the server) and (2) feature computation and
 _feature value_ write patterns to Feast's online store.
 
 Data Producers (i.e., services that generate data) send data to Feast so that Feast can write feature values to the online store. That data can
@@ -10,21 +10,21 @@ be either raw data where Feast computes and stores the feature values or precomp
 
 ## Communication Patterns
 
-There are two ways a client (or Data Producer) can *_send_* data to the online store: 
+There are two ways a client (or Data Producer) can *_send_* data to the online store:
 
 1. Synchronously
    - Using a synchronous API call for a small number of entities or a single entity (e.g., using the [`push` or `write_to_online_store` methods](../../reference/data-sources/push.md#pushing-data)) or the Feature Server's [`push` endpoint](../../reference/feature-servers/python-feature-server.md#pushing-features-to-the-online-and-offline-stores))
-2. Asynchronously 
+2. Asynchronously
    - Using an asynchronous API call for a small number of entities or a single entity (e.g., using the [`push` or `write_to_online_store` methods](../../reference/data-sources/push.md#pushing-data)) or the Feature Server's [`push` endpoint](../../reference/feature-servers/python-feature-server.md#pushing-features-to-the-online-and-offline-stores))
    - Using a "batch job" for a large number of entities (e.g., using a [compute engine](../components/compute-engine.md))
 
-Note, in some contexts, developers may "batch" a group of entities together and write them to the online store in a 
-single API call. This is a common pattern when writing data to the online store to reduce write loads but we would 
+Note, in some contexts, developers may "batch" a group of entities together and write them to the online store in a
+single API call. This is a common pattern when writing data to the online store to reduce write loads but we would
 not qualify this as a batch job.
 
 ## Feature Value Write Patterns
 
-Writing feature values to the online store (i.e., the server) can be done in two ways: Precomputing the transformations client-side or Computing the transformations On Demand server-side. 
+Writing feature values to the online store (i.e., the server) can be done in two ways: Precomputing the transformations client-side or Computing the transformations On Demand server-side.
 
 ### Combining Approaches
 
@@ -39,7 +39,7 @@ There are two ways the client can write *feature values* to the online store:
 3. Hybrid (Precomputed + On Demand)
 
 ### 1. Precomputing Transformations
-Precomputed transformations can happen outside of Feast (e.g., via some batch job or streaming application) or inside of the Feast feature server when writing to the online store via the `push` or `write-to-online-store` api. 
+Precomputed transformations can happen outside of Feast (e.g., via some batch job or streaming application) or inside of the Feast feature server when writing to the online store via the `push` or `write-to-online-store` api.
 
 ### 2. Computing Transformations On Demand
 On Demand transformations can only happen inside of Feast at either (1) the time of the client's request or (2) when the data producer writes to the online store. With the `transform_on_write` parameter, you can control whether transformations are applied during write operations, allowing you to skip transformations for pre-processed data while still enabling transformations during API calls.

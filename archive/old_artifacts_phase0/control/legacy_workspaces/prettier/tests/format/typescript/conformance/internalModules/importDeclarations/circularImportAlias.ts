@@ -14,5 +14,3 @@ module A {
 
 var c: { name: string };
 var c = new B.a.C();
-
-

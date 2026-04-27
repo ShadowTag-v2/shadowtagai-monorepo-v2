@@ -33,4 +33,3 @@
   "github_api_token": null,
   "comment_token": "Optional GitHub personal access token for 5000 req/hr (default: 60 req/hr)"
 }
-

@@ -68,10 +68,10 @@
         const chatContainer = document.getElementById('chat-container');
         const messageInput = document.getElementById('message-input');
         const sendButton = document.getElementById('send-button');
-        
+
         // WebSocket connection
         const ws = new WebSocket(`ws://${window.location.host}/ws/chat`);
-        
+
         ws.onmessage = function(event) {
             // Check if there's an existing bot message being built
             const lastMessage = chatContainer.lastElementChild;
@@ -88,7 +88,7 @@
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         };
-        
+
         ws.onclose = function(event) {
             console.log('Connection closed');
             // Mark the last message as complete if it was streaming
@@ -97,7 +97,7 @@
                 lastMessage.dataset.streaming = 'false';
             }
         };
-        
+
         function sendMessage() {
             const message = messageInput.value.trim();
             if (message) {
@@ -106,18 +106,18 @@
                 userMessage.classList.add('message', 'user-message');
                 userMessage.textContent = message;
                 chatContainer.appendChild(userMessage);
-                
+
                 // Send message to server
                 ws.send(message);
-                
+
                 // Clear input
                 messageInput.value = '';
-                
+
                 // Scroll to bottom
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         }
-        
+
         sendButton.addEventListener('click', sendMessage);
         messageInput.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {

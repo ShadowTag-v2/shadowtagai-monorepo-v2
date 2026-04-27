@@ -3,7 +3,7 @@ index 9d758c1..6dfb3ab 100644
 --- a/node_modules/react-native/Libraries/Blob/React-RCTBlob.podspec
 +++ b/node_modules/react-native/Libraries/Blob/React-RCTBlob.podspec
 @@ -50,7 +50,7 @@ Pod::Spec.new do |s|
- 
+
    s.dependency "DoubleConversion"
    s.dependency "fast_float", "6.1.4"
 -  s.dependency "fmt", "11.0.2"
@@ -114,7 +114,7 @@ index fb3cbe9..dc84e5d 100644
 +  s.dependency "fmt", "12.1.0"
    s.dependency "RCT-Folly", folly_version
    s.dependency "glog"
- 
+
 diff --git a/node_modules/react-native/ReactCommon/jsiexecutor/React-jsiexecutor.podspec b/node_modules/react-native/ReactCommon/jsiexecutor/React-jsiexecutor.podspec
 index 1764184..5b1af80 100644
 --- a/node_modules/react-native/ReactCommon/jsiexecutor/React-jsiexecutor.podspec
@@ -127,7 +127,7 @@ index 1764184..5b1af80 100644
 +  s.dependency "fmt", "12.1.0"
    s.dependency "glog"
    add_dependency(s, "React-jsinspector", :framework_name => 'jsinspector_modern')
- 
+
 diff --git a/node_modules/react-native/ReactCommon/react/nativemodule/samples/ReactCommon-Samples.podspec b/node_modules/react-native/ReactCommon/react/nativemodule/samples/ReactCommon-Samples.podspec
 index 5c35ba1..8e32287 100644
 --- a/node_modules/react-native/ReactCommon/react/nativemodule/samples/ReactCommon-Samples.podspec
@@ -163,7 +163,7 @@ index 2127b0d..ddee6c3 100644
    s.dependency "fast_float", "6.1.4"
 -  s.dependency "fmt", "11.0.2"
 +  s.dependency "fmt", "12.1.0"
-   
+
    if ENV["USE_HERMES"] == nil || ENV["USE_HERMES"] == "1"
      s.dependency "hermes-engine"
 diff --git a/node_modules/react-native/third-party-podspecs/RCT-Folly.podspec b/node_modules/react-native/third-party-podspecs/RCT-Folly.podspec
@@ -184,7 +184,7 @@ index 2f38990..a40c575 100644
 --- a/node_modules/react-native/third-party-podspecs/fmt.podspec
 +++ b/node_modules/react-native/third-party-podspecs/fmt.podspec
 @@ -8,14 +8,14 @@ fmt_git_url = fmt_config[:git]
- 
+
  Pod::Spec.new do |spec|
    spec.name = "fmt"
 -  spec.version = "11.0.2"

@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 #
 # EPD (Encoder-Prefill-Decode) Correctness Test
-# 
+#
 # This script tests that EPD disaggregation produces the same outputs as baseline.
 # It runs:
 # 1. Baseline: Single vLLM instance
@@ -78,12 +78,12 @@ run_baseline() {
     echo "================================"
     echo "Running BASELINE (single instance)"
     echo "================================"
-    
+
     cleanup_instances
     rm -rf "$EC_SHARED_STORAGE_PATH"
-    
+
     local PORT=$ENDPOINT_PORT
-    
+
     # Start baseline instance
     echo "Starting baseline instance on GPU $GPU_SINGLE, port $PORT"
     CUDA_VISIBLE_DEVICES="$GPU_SINGLE" vllm serve "$MODEL" \
@@ -93,16 +93,16 @@ run_baseline() {
         --max-num-seqs 128 \
         --allowed-local-media-path ${GIT_ROOT}/tests/v1/ec_connector/integration \
         > $LOG_PATH/baseline.log 2>&1 &
-    
+
     local BASELINE_PID=$!
-    
+
     # Wait for baseline to start
     echo "Waiting for baseline instance to start..."
     wait_for_server $PORT
 
     curl http://127.0.0.1:$PORT/v1/models
     echo ""
-    
+
     # Run test in baseline mode
     echo "Running baseline..."
 
@@ -112,7 +112,7 @@ run_baseline() {
         --mode baseline \
         --baseline_file "$BASELINE_FILE" \
         $MM_FLAG
-    
+
     # Cleanup baseline
     echo "Stopping baseline instance..."
     kill $BASELINE_PID 2>/dev/null || true
@@ -125,17 +125,17 @@ run_epd_1e_1pd() {
     echo "================================"
     echo "Running EPD (1E + 1PD)"
     echo "================================"
-    
+
     cleanup_instances
     rm -rf "$EC_SHARED_STORAGE_PATH"
     mkdir -p "$EC_SHARED_STORAGE_PATH"
-    
+
     local ENCODE_PORT=$ENCODE_PORT
     local PREFILL_DECODE_PORT=$PREFILL_DECODE_PORT
     local PROXY_PORT=$ENDPOINT_PORT
-    
+
     declare -a PIDS=()
-    
+
     # Start encoder instance
     echo "Starting encoder instance on GPU $GPU_E, port $ENCODE_PORT"
     CUDA_VISIBLE_DEVICES="$GPU_E" vllm serve "$MODEL" \
@@ -156,7 +156,7 @@ run_epd_1e_1pd() {
         }' \
         > $LOG_PATH/1e1pd_encoder.log 2>&1 &
     PIDS+=($!)
-    
+
     # Start prefill+decode instance
     echo "Starting PD instance on GPU $GPU_PD, port $PREFILL_DECODE_PORT"
     CUDA_VISIBLE_DEVICES="$GPU_PD" vllm serve "$MODEL" \
@@ -175,7 +175,7 @@ run_epd_1e_1pd() {
         }' \
         > $LOG_PATH/1e1pd_pd.log 2>&1 &
     PIDS+=($!)
-    
+
     # Wait for instances to start
     echo "Waiting for encoder instance..."
     wait_for_server $ENCODE_PORT
@@ -192,7 +192,7 @@ run_epd_1e_1pd() {
         --decode-servers-urls "http://localhost:$PREFILL_DECODE_PORT" \
         > $LOG_PATH/1e1pd_proxy.log 2>&1 &
     PIDS+=($!)
-    
+
     # Wait for proxy
     echo "Waiting for proxy..."
     wait_for_server $PROXY_PORT
@@ -202,17 +202,17 @@ run_epd_1e_1pd() {
     echo ""
 
     echo "All EPD (1E+1PD) services are up!"
-    
+
     # Run test in disagg mode
     echo "Running EPD (1E+1PD) correctness test..."
-    
+
     python "${GIT_ROOT}/tests/v1/ec_connector/integration/test_epd_correctness.py" \
         --service_url "http://localhost:$PROXY_PORT" \
         --model_name "$MODEL" \
         --mode disagg \
         --baseline_file "$BASELINE_FILE" \
         $MM_FLAG
-    
+
     # Cleanup
     echo "✓✓ 1E+1PD Correctness Test finished"
     echo "Stopping EPD (1E+1PD) instances..."
@@ -228,17 +228,17 @@ run_baseline_1p_1d() {
     echo "================================"
     echo "Running PD BASELINE (1P + 1D)"
     echo "================================"
-    
+
     cleanup_instances
     rm -rf "$EC_SHARED_STORAGE_PATH"
     mkdir -p "$EC_SHARED_STORAGE_PATH"
-    
+
     local PREFILL_PORT=$PREFILL_PORT
     local DECODE_PORT=$DECODE_PORT
     local PROXY_PORT=$ENDPOINT_PORT
-    
+
     declare -a PIDS=()
-    
+
     # Start prefill instance
     echo "Starting prefill instance on GPU $GPU_P, port $PREFILL_PORT"
     CUDA_VISIBLE_DEVICES="$GPU_P" \
@@ -256,7 +256,7 @@ run_baseline_1p_1d() {
         }' \
         > $LOG_PATH/1p1d_prefill.log 2>&1 &
     PIDS+=($!)
-    
+
     # Start decode instance
     echo "Starting decode instance on GPU $GPU_D, port $DECODE_PORT"
     CUDA_VISIBLE_DEVICES="$GPU_D" \
@@ -274,13 +274,13 @@ run_baseline_1p_1d() {
         }' \
         > $LOG_PATH/1p1d_decode.log 2>&1 &
     PIDS+=($!)
-    
+
     # Wait for instances to start
     echo "Waiting for prefill instance..."
     wait_for_server $PREFILL_PORT
     echo "Waiting for decode instance..."
     wait_for_server $DECODE_PORT
-    
+
     # Start proxy
     echo "Starting EPD proxy on port $PROXY_PORT"
     python "${GIT_ROOT}/tests/v1/kv_connector/nixl_integration/toy_proxy_server.py" \
@@ -290,7 +290,7 @@ run_baseline_1p_1d() {
         --decoder-ports $DECODE_PORT \
         > $LOG_PATH/1p1d_proxy.log 2>&1 &
     PIDS+=($!)
-    
+
     # Wait for proxy
     echo "Waiting for proxy..."
     wait_for_server $PROXY_PORT
@@ -299,17 +299,17 @@ run_baseline_1p_1d() {
     echo ""
 
     echo "All PD (1P+1D) services are up!"
-    
+
     # Run test in baseline mode
     echo "Running PD disagg baseline..."
-    
+
     python "${GIT_ROOT}/tests/v1/ec_connector/integration/test_epd_correctness.py" \
         --service_url "http://localhost:$PROXY_PORT" \
         --model_name "$MODEL" \
         --mode baseline_pd \
         --baseline_file "$BASELINE_PD_FILE" \
         $MM_FLAG
-    
+
     # Cleanup
     echo "Stopping PD (1P+1D) instances..."
     for pid in "${PIDS[@]}"; do
@@ -324,18 +324,18 @@ run_epd_1e_1p_1d() {
     echo "================================"
     echo "Running EPD (1E + 1P + 1D)"
     echo "================================"
-    
+
     cleanup_instances
     rm -rf "$EC_SHARED_STORAGE_PATH"
     mkdir -p "$EC_SHARED_STORAGE_PATH"
-    
+
     local ENCODE_PORT=$ENCODE_PORT
     local PREFILL_PORT=$PREFILL_PORT
     local DECODE_PORT=$DECODE_PORT
     local PROXY_PORT=$ENDPOINT_PORT
-    
+
     declare -a PIDS=()
-    
+
     # Start encoder instance
     echo "Starting encoder instance on GPU $GPU_E, port $ENCODE_PORT"
     CUDA_VISIBLE_DEVICES="$GPU_E" vllm serve "$MODEL" \
@@ -356,7 +356,7 @@ run_epd_1e_1p_1d() {
         }' \
         > $LOG_PATH/1e1p1d_encoder.log 2>&1 &
     PIDS+=($!)
-    
+
     # Start prefill instance
     echo "Starting prefill instance on GPU $GPU_P, port $PREFILL_PORT"
     CUDA_VISIBLE_DEVICES="$GPU_P" \
@@ -381,7 +381,7 @@ run_epd_1e_1p_1d() {
         }' \
         > $LOG_PATH/1e1p1d_prefill.log 2>&1 &
     PIDS+=($!)
-    
+
     # Start decode instance
     echo "Starting decode instance on GPU $GPU_D, port $DECODE_PORT"
     CUDA_VISIBLE_DEVICES="$GPU_D" \
@@ -399,7 +399,7 @@ run_epd_1e_1p_1d() {
         }' \
         > $LOG_PATH/1e1p1d_decode.log 2>&1 &
     PIDS+=($!)
-    
+
     # Wait for instances to start
     echo "Waiting for encoder instance..."
     wait_for_server $ENCODE_PORT
@@ -407,7 +407,7 @@ run_epd_1e_1p_1d() {
     wait_for_server $PREFILL_PORT
     echo "Waiting for decode instance..."
     wait_for_server $DECODE_PORT
-    
+
     # Start proxy
     echo "Starting EPD proxy on port $PROXY_PORT"
     python "${GIT_ROOT}/examples/online_serving/disaggregated_encoder/disagg_epd_proxy.py" \
@@ -418,7 +418,7 @@ run_epd_1e_1p_1d() {
         --decode-servers-urls "http://localhost:$DECODE_PORT" \
         > $LOG_PATH/1e1p1d_proxy.log 2>&1 &
     PIDS+=($!)
-    
+
     # Wait for proxy
     echo "Waiting for proxy..."
     wait_for_server $PROXY_PORT
@@ -428,17 +428,17 @@ run_epd_1e_1p_1d() {
     echo ""
 
     echo "All EPD (1E+1P+1D) services are up!"
-    
+
     # Run test in disagg mode
     echo "Running EPD (1E+1P+1D) correctness test..."
-    
+
     python "${GIT_ROOT}/tests/v1/ec_connector/integration/test_epd_correctness.py" \
         --service_url "http://localhost:$PROXY_PORT" \
         --model_name "$MODEL" \
         --mode disagg \
         --baseline_file "$BASELINE_PD_FILE" \
         $MM_FLAG
-    
+
     # Cleanup
     echo "✓✓ 1E+1P+1D Correctness Test finished"
     echo "Stopping EPD (1E+1P+1D) instances..."

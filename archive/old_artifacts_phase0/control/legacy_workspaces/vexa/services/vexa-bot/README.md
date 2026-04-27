@@ -175,7 +175,7 @@ npm run build
 - All exits are reasoned and graceful; removal is handled deterministically
 - Strong logging and reconnection for reliable operations
 
-# Vexa Bot 
+# Vexa Bot
 
 ## Meet Bot CLI Tool  (Development, Testing)
 
@@ -213,7 +213,7 @@ npm install
 ```bash
 npm run cli <config path>
 ```
-example 
+example
 ```bash
 npm run cli configs/meet-bot.json
 ```

@@ -98,4 +98,3 @@ def handle_ioctl(fd, request, argp, ret):
       print(f"{ret} UNPARSED {nr}")
   else:
     print("ioctl", f"{idir=} {size=} {itype=} {nr=} {fd=} {ret=}", fn)
-

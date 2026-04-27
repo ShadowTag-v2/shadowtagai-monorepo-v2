@@ -66,10 +66,10 @@ You are providing detailed technical analysis with comprehensive data and method
 - **Base Salary Cost:** $600K/year (3 × $200K)
 - **Loaded Cost:** $780K/year (1.3x multiplier for benefits, taxes, equipment)
 - **Monthly Burn Increase:** $65K ($780K / 12)
-- **Runway Impact:** 
+- **Runway Impact:**
   - Current: 20 months at $500K/month = $10M remaining
   - New: $10M / $565K = 17.7 months (-2.3 months)
-  
+
 #### Productivity Analysis
 - **Current Velocity:** 15 story points/sprint
 - **Projected with Seniors:** 22 points/sprint (+46%)

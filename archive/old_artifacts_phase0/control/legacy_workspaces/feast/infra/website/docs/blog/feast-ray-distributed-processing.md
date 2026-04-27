@@ -18,7 +18,7 @@ This blog post explores how Feast's integration with Ray enables distributed pro
 Modern ML teams face critical scaling challenges:
 
 - **Massive Datasets**: Processing millions of documents for embedding generation
-- **Complex Transformations**: CPU-intensive operations like text processing and feature engineering  
+- **Complex Transformations**: CPU-intensive operations like text processing and feature engineering
 - **Real-time Requirements**: Low-latency retrieval for RAG applications
 - **Resource Efficiency**: Optimal utilization of compute resources across clusters
 
@@ -54,18 +54,18 @@ Feast's Ray integration makes embedding generation a first-class transformation 
 from feast import BatchFeatureView, Entity, Field, FileSource
 from feast.types import Array, Float32, String
 from datetime import timedelta
- 
+
 # Embedding processor for distributed Ray processing
 class EmbeddingProcessor:
     """Generate embeddings using SentenceTransformer model."""
-     
+
     def __init__(self):
         import torch
         from sentence_transformers import SentenceTransformer
-         
+
         device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model = SentenceTransformer("all-MiniLM-L6-v2", device=device)
-     
+
     def __call__(self, batch):
         """Process batch and generate embeddings."""
         descriptions = batch["Description"].fillna("").tolist()
@@ -78,18 +78,18 @@ class EmbeddingProcessor:
         )
         batch["embedding"] = embeddings.tolist()
         return batch
- 
+
 # Ray native UDF for distributed processing
 def generate_embeddings_ray_native(ds):
     """Distributed embedding generation using Ray Data."""
     max_workers = 8
     batch_size = 2500
-     
+
     # Optimize partitioning for available workers
     num_blocks = ds.num_blocks()
     if num_blocks < max_workers:
         ds = ds.repartition(max_workers)
-     
+
     result = ds.map_batches(
         EmbeddingProcessor,
         batch_format="pandas",
@@ -97,7 +97,7 @@ def generate_embeddings_ray_native(ds):
         batch_size=batch_size,
     )
     return result
- 
+
 # Feature view with Ray transformation
 document_embeddings_view = BatchFeatureView(
     name="document_embeddings",
@@ -121,14 +121,14 @@ document_embeddings_view = BatchFeatureView(
 ```python
 from feast import FeatureStore
 from sentence_transformers import SentenceTransformer
- 
+
 # Initialize feature store
 store = FeatureStore(repo_path=".")
- 
+
 # Generate query embedding
 model = SentenceTransformer("all-MiniLM-L6-v2")
 query_embedding = model.encode(["sci-fi movie about space"])[0].tolist()
- 
+
 # Retrieve similar documents
 results = store.retrieve_online_documents_v2(
     features=[
@@ -139,7 +139,7 @@ results = store.retrieve_online_documents_v2(
     query=query_embedding,
     top_k=5,
 ).to_dict()
- 
+
 # Display results
 for i in range(len(results["document_id_pk"])):
     print(f"{i+1}. {results['movie_name'][i]}")

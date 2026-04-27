@@ -14,7 +14,7 @@ export const formatBoardInfoAsJson = (board: BoardInfoData, subItemsBoard: Board
   return {
     board: {
       ...board,
-      subItemColumns: subItemsBoard?.columns ?? undefined, 
+      subItemColumns: subItemsBoard?.columns ?? undefined,
     },
     filteringGuidelines: getColumnFilteringGuidelines(board.columns!.filter(isBaseColumnInfo) as BaseColumnInfo[]),
     aggregationGuidelines: getColumnAggregationGuidelines(),
@@ -99,7 +99,7 @@ export const formatBoardInfo = (board: BoardInfoData, subItemsBoard: BoardInfoJu
   if(subItemsBoard) {
     sections = sections.concat(generateColumnsSection(subItemsBoard, true));
   }
-  
+
   if (board.columns && board.columns.length > 0) {
     sections.push(`\n## Columns`);
     board.columns.forEach((column, index: number) => {
@@ -135,7 +135,7 @@ export const formatBoardInfo = (board: BoardInfoData, subItemsBoard: BoardInfoJu
   if (board?.columns) {
     sections.push(getColumnFilteringGuidelines(board.columns!.filter(isBaseColumnInfo) as BaseColumnInfo[]));
   }
-  
+
   return sections.join('\n');
 };
 
@@ -230,7 +230,7 @@ EXAMPLES:
   - "person-123" - when searching for specific person with id 123
   - "team-456" - when searching for specific team with id 456
   - empty array when using is_empty, is_not_empty operators
-EXAMPLES: 
+EXAMPLES:
   ❌ Wrong: {"columnId": "column_id", "compareValue": ["person—123"], "operator": "any_of"} // Using long hyphen '—' instead of short hyphen '-'
   ✅ Correct: {"columnId": "column_id", "compareValue": [], "operator": "is_empty"} // using empty array with is_empty operator
   ✅ Correct: {"columnId": "column_id", "compareValue": ["person-80120403"], "operator": "any_of"} // using person prefix
@@ -277,7 +277,7 @@ const getColumnFilteringGuidelines = (columns: BaseColumnInfo[]) => {
     if (!acc[column.type]) {
       acc[column.type] = [];
     }
-    
+
     acc[column.type].push(column.id);
     return acc;
   }, {} as Record<string, string[]>);

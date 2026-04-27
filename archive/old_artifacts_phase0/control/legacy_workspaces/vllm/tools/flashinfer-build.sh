@@ -47,7 +47,7 @@ pushd flashinfer
     export TORCH_CUDA_ARCH_LIST="${FI_TORCH_CUDA_ARCH_LIST}"
     export FLASHINFER_CUDA_ARCH_LIST="${FI_TORCH_CUDA_ARCH_LIST}"
     python3 -m flashinfer.aot
-    
+
     if [[ "${BUILD_WHEEL}" == "true" ]]; then
         # Build wheel for distribution
         uv build --no-build-isolation --wheel --out-dir ../flashinfer-dist .

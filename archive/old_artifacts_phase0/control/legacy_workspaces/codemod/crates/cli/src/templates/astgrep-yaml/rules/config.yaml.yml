@@ -17,7 +17,7 @@ fix: |
 ---
 # Remove deprecated links configuration
 id: remove-docker-compose-links
-language: yaml  
+language: yaml
 rule:
   kind: block_mapping_pair
   has:

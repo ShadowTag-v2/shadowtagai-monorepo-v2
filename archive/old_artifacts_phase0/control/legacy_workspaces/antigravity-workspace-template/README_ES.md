@@ -54,19 +54,19 @@ sequenceDiagram
 
     User->>Agent: "Refactorizar Autenticación"
     activate Agent
-    
+
     Agent->>Artifacts: Crear Plan de Implementación
-    
+
     Note over Agent: <thought> Proceso de Pensamiento Profundo </thought>
     Agent->>Agent: Formular Estrategia
-    
+
     Agent->>Tools: Ejecutar Herramienta (code_edit)
     activate Tools
     Tools-->>Agent: Resultado
     deactivate Tools
-    
+
     Agent->>Artifacts: Guardar Registros/Evidencia
-    
+
     Agent-->>User: Informe Final (Walkthrough)
     deactivate Agent
 ```

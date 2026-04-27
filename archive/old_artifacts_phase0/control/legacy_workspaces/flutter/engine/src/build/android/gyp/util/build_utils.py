@@ -393,4 +393,3 @@ def ExpandFileArgs(args):
     new_args[i] = arg[:match.start()] + str(expansion)
 
   return new_args
-
