@@ -2,8 +2,8 @@ class FourTierContext:
     def microcompact(self, memory):
         """Strips stale outputs without busting prompt cache."""
         for msg in memory:
-            if len(msg.get('content', '')) > 5000:
-                msg['content'] = msg['content'][:1000] + "\n...[MICROCOMPACTED]...\n" + msg['content'][-1000:]
+            if len(msg.get("content", "")) > 5000:
+                msg["content"] = msg["content"][:1000] + "\n...[MICROCOMPACTED]...\n" + msg["content"][-1000:]
         return memory
 
     def reactive_compact(self, api_call, memory, *args):

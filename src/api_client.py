@@ -1,7 +1,8 @@
 import asyncio
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from src.utils.ssrf import SSRFGuard
 from src.services.watchdog import StreamingWatchdog
@@ -10,6 +11,7 @@ from src.tools.tool_search import ToolSearchTool
 from src.services.cascade import CascadeDetector
 from src.core.hooks import HooksManager
 from src.utils.vcr import VCRDehydrator
+
 
 class APIClient:
     """
@@ -22,6 +24,7 @@ class APIClient:
     - HooksManager
     - VCRDehydrator
     """
+
     def __init__(self, full_tools_registry):
         self.ssrf_guard = SSRFGuard()
         self.watchdog = StreamingWatchdog()
@@ -39,14 +42,14 @@ class APIClient:
     async def generate_response(self, system_prompt, dynamic_state, cache_read_tokens=0):
         # Tools Deferral
         deferred_tools = self.tool_search.get_deferred_manifest()
-        
+
         # Cache break detection & splitting
         self.cache_manager.detect_break(deferred_tools, system_prompt, cache_read_tokens)
         full_prompt = self.cache_manager.build_prompt(system_prompt, dynamic_state)
-        
+
         # Hooks trigger
         await self.hooks.emit("PreToolUse", prompt=full_prompt)
-        
+
         # Simulating API request with Cascade/529 Tracking
         status_code = 200
         self.cascade_detector.record_response(status_code)
@@ -56,8 +59,8 @@ class APIClient:
             yield b"Hello"
             await asyncio.sleep(0.1)
             yield b"World"
-            
-        async for chunk in self.watchdog.watch(dummy_stream()):
+
+        async for _chunk in self.watchdog.watch(dummy_stream()):
             pass
-            
+
         return "OK"

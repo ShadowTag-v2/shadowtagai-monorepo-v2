@@ -1,6 +1,8 @@
-import { c as _c } from "react/compiler-runtime";
-import React, { createContext, useContext } from 'react';
+import type React from 'react';
+import { createContext, useContext } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { FpsMetrics } from '../utils/fpsTracker.js';
+
 type FpsMetricsGetter = () => FpsMetrics | undefined;
 const FpsMetricsContext = createContext<FpsMetricsGetter | undefined>(undefined);
 type Props = {
@@ -9,10 +11,7 @@ type Props = {
 };
 export function FpsMetricsProvider(t0) {
   const $ = _c(3);
-  const {
-    getFpsMetrics,
-    children
-  } = t0;
+  const { getFpsMetrics, children } = t0;
   let t1;
   if ($[0] !== children || $[1] !== getFpsMetrics) {
     t1 = <FpsMetricsContext.Provider value={getFpsMetrics}>{children}</FpsMetricsContext.Provider>;

@@ -9,9 +9,9 @@ import argparse
 import sys
 import urllib.parse
 
-try:
-    import requests
-except ImportError:
+import importlib.util
+
+if importlib.util.find_spec("requests") is None:
     print("Missing dependencies. Install with:")
     print("  pip install requests")
     sys.exit(1)

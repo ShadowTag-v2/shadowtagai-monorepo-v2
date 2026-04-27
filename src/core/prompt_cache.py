@@ -1,16 +1,17 @@
 import hashlib
 
+
 class CacheManager:
     def __init__(self):
         self.last_hashes = {}
 
     def get_hash(self, content):
-        return hashlib.sha256(str(content).encode('utf-8')).hexdigest()
+        return hashlib.sha256(str(content).encode("utf-8")).hexdigest()
 
     def detect_break(self, tool_schemas, system_prompt, cache_read_tokens):
         current = {name: self.get_hash(schema) for name, schema in tool_schemas.items()}
-        current['system_static'] = self.get_hash(system_prompt.split('<DYNAMIC_BOUNDARY>')[0])
-        
+        current["system_static"] = self.get_hash(system_prompt.split("<DYNAMIC_BOUNDARY>")[0])
+
         if cache_read_tokens == 0 and self.last_hashes:
             for key, curr_hash in current.items():
                 if self.last_hashes.get(key) != curr_hash:

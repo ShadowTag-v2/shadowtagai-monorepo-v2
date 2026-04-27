@@ -1,66 +1,157 @@
 {
   "score": "F",
-  "total_findings": 29,
+  "total_findings": 45,
   "critical": 10,
   "errors": 1,
-  "warnings": 14,
-  "info": 4,
+  "warnings": 31,
+  "info": 3,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "beads/heartbeat.json",
-      "fix": "git checkout -- beads/heartbeat.json"
+      "path": "agent/scratch/ant_src/src/QueryEngine.ts",
+      "fix": "git checkout -- agent/scratch/ant_src/src/QueryEngine.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/issues.jsonl",
-      "fix": "git checkout -- .beads/issues.jsonl"
+      "path": ".agent/scratch/ant_src/src/Task.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/Task.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/kairos_heartbeat.json",
-      "fix": "git checkout -- .beads/kairos_heartbeat.json"
+      "path": ".agent/scratch/ant_src/src/Tool.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/Tool.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/kovelai/site/_archive_vanilla_html_2026-04-25/chassis-preview.html",
-      "fix": "git checkout -- apps/kovelai/site/_archive_vanilla_html_2026-04-25/chassis-preview.html"
+      "path": ".agent/scratch/ant_src/src/assistant/sessionHistory.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/assistant/sessionHistory.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/kovelai/site/eslint.config.mjs",
-      "fix": "git checkout -- apps/kovelai/site/eslint.config.mjs"
+      "path": ".agent/scratch/ant_src/src/bootstrap/state.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bootstrap/state.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/kovelai/site/postcss.config.mjs",
-      "fix": "git checkout -- apps/kovelai/site/postcss.config.mjs"
+      "path": ".agent/scratch/ant_src/src/bridge/bridgeApi.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeApi.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/kovelai/site/scripts/sync-skills.mjs",
-      "fix": "git checkout -- apps/kovelai/site/scripts/sync-skills.mjs"
+      "path": ".agent/scratch/ant_src/src/bridge/bridgeConfig.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeConfig.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/unusual-machines-clone/src/app/globals.css",
-      "fix": "git checkout -- apps/unusual-machines-clone/src/app/globals.css"
+      "path": ".agent/scratch/ant_src/src/bridge/bridgeDebug.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeDebug.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/bridgeEnabled.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeEnabled.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/bridgeMain.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeMain.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/bridgeMessaging.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeMessaging.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/bridgePermissionCallbacks.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgePermissionCallbacks.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/bridgePointer.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgePointer.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/bridgeStatusUtil.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeStatusUtil.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/bridgeUI.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeUI.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/capacityWake.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/capacityWake.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/codeSessionApi.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/codeSessionApi.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/createSession.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/createSession.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/debugUtils.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/debugUtils.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/scratch/ant_src/src/bridge/envLessBridgeConfig.ts",
+      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/envLessBridgeConfig.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "... and 3774 more dirty files",
+      "path": "",
+      "fix": ""
     },
     {
       "gate": "conflicts",
@@ -141,10 +232,31 @@
     },
     {
       "gate": "large_files",
-      "severity": "info",
-      "message": "No large files in staging",
-      "path": "",
-      "fix": ""
+      "severity": "warn",
+      "message": "Large file (805 KB > 500 KB)",
+      "path": ".agent/scratch/ant_src/src/main.tsx",
+      "fix": "Add .agent/scratch/ant_src/src/main.tsx to .gitignore or compress"
+    },
+    {
+      "gate": "large_files",
+      "severity": "warn",
+      "message": "Large file (900 KB > 500 KB)",
+      "path": ".agent/scratch/ant_src/src/screens/REPL.tsx",
+      "fix": "Add .agent/scratch/ant_src/src/screens/REPL.tsx to .gitignore or compress"
+    },
+    {
+      "gate": "large_files",
+      "severity": "warn",
+      "message": "Large file (805 KB > 500 KB)",
+      "path": ".agent/scratch/src_zip_extracted/src/main.tsx",
+      "fix": "Add .agent/scratch/src_zip_extracted/src/main.tsx to .gitignore or compress"
+    },
+    {
+      "gate": "large_files",
+      "severity": "warn",
+      "message": "Large file (900 KB > 500 KB)",
+      "path": ".agent/scratch/src_zip_extracted/src/screens/REPL.tsx",
+      "fix": "Add .agent/scratch/src_zip_extracted/src/screens/REPL.tsx to .gitignore or compress"
     },
     {
       "gate": "drift",
@@ -184,7 +296,7 @@
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 2165 more drift files",
+      "message": "... and 2193 more drift files",
       "path": "",
       "fix": ""
     },
@@ -198,14 +310,14 @@
     {
       "gate": "manifest",
       "severity": "info",
-      "message": "Manifest v12.2 valid",
+      "message": "Manifest vunknown valid",
       "path": "",
       "fix": ""
     },
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ========================= 483 tests collected in 2.04s =========================",
+      "message": "Tests: ========================= 485 tests collected in 2.07s =========================",
       "path": "",
       "fix": ""
     }

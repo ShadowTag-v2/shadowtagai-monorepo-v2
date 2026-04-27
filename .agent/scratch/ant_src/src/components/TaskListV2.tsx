@@ -1,12 +1,15 @@
-import { c as _c } from "react/compiler-runtime";
 import figures from 'figures';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useTerminalSize } from '../hooks/useTerminalSize.js';
 import { stringWidth } from '../ink/stringWidth.js';
 import { Box, Text } from '../ink.js';
 import { useAppState } from '../state/AppState.js';
 import { isInProcessTeammateTask } from '../tasks/InProcessTeammateTask/types.js';
-import { AGENT_COLOR_TO_THEME_COLOR, type AgentColorName } from '../tools/AgentTool/agentColorManager.js';
+import {
+  AGENT_COLOR_TO_THEME_COLOR,
+  type AgentColorName,
+} from '../tools/AgentTool/agentColorManager.js';
 import { isAgentSwarmsEnabled } from '../utils/agentSwarmsEnabled.js';
 import { count } from '../utils/array.js';
 import { summarizeRecentActivities } from '../utils/collapseReadSearch.js';
@@ -14,6 +17,7 @@ import { truncateToWidth } from '../utils/format.js';
 import { isTodoV2Enabled, type Task } from '../utils/tasks.js';
 import type { Theme } from '../utils/theme.js';
 import ThemedText from './design-system/ThemedText.js';
+
 type Props = {
   tasks: Task[];
   isStandalone?: boolean;
@@ -27,28 +31,26 @@ function byIdAsc(a: Task, b: Task): number {
   }
   return a.id.localeCompare(b.id);
 }
-export function TaskListV2({
-  tasks,
-  isStandalone = false
-}: Props): React.ReactNode {
-  const teamContext = useAppState(s => s.teamContext);
-  const appStateTasks = useAppState(s_0 => s_0.tasks);
+export function TaskListV2({ tasks, isStandalone = false }: Props): React.ReactNode {
+  const teamContext = useAppState((s) => s.teamContext);
+  const appStateTasks = useAppState((s_0) => s_0.tasks);
   const [, forceUpdate] = React.useState(0);
-  const {
-    rows,
-    columns
-  } = useTerminalSize();
+  const { rows, columns } = useTerminalSize();
 
   // Track when each task was last observed transitioning to completed
   const completionTimestampsRef = React.useRef(new Map<string, number>());
   const previousCompletedIdsRef = React.useRef<Set<string> | null>(null);
   if (previousCompletedIdsRef.current === null) {
-    previousCompletedIdsRef.current = new Set(tasks.filter(t => t.status === 'completed').map(t_0 => t_0.id));
+    previousCompletedIdsRef.current = new Set(
+      tasks.filter((t) => t.status === 'completed').map((t_0) => t_0.id),
+    );
   }
   const maxDisplay = rows <= 10 ? 0 : Math.min(10, Math.max(3, rows - 14));
 
   // Update completion timestamps: reset when a task transitions to completed
-  const currentCompletedIds = new Set(tasks.filter(t_1 => t_1.status === 'completed').map(t_2 => t_2.id));
+  const currentCompletedIds = new Set(
+    tasks.filter((t_1) => t_1.status === 'completed').map((t_2) => t_2.id),
+  );
   const now = Date.now();
   for (const id of currentCompletedIds) {
     if (!previousCompletedIdsRef.current.has(id)) {
@@ -80,7 +82,11 @@ export function TaskListV2({
     if (earliestExpiry === Infinity) {
       return;
     }
-    const timer = setTimeout(forceUpdate_0 => forceUpdate_0((n: number) => n + 1), earliestExpiry - currentNow, forceUpdate);
+    const timer = setTimeout(
+      (forceUpdate_0) => forceUpdate_0((n: number) => n + 1),
+      earliestExpiry - currentNow,
+      forceUpdate,
+    );
     return () => clearTimeout(timer);
   }, [tasks]);
   if (!isTodoV2Enabled()) {
@@ -116,7 +122,9 @@ export function TaskListV2({
         activeTeammates.add(bgTask.identity.agentName);
         activeTeammates.add(bgTask.identity.agentId);
         const activities = bgTask.progress?.recentActivities;
-        const desc = (activities && summarizeRecentActivities(activities)) ?? bgTask.progress?.lastActivity?.activityDescription;
+        const desc =
+          (activities && summarizeRecentActivities(activities)) ??
+          bgTask.progress?.lastActivity?.activityDescription;
         if (desc) {
           teammateActivity[bgTask.identity.agentName] = desc;
           teammateActivity[bgTask.identity.agentId] = desc;
@@ -126,11 +134,13 @@ export function TaskListV2({
   }
 
   // Get task counts for display
-  const completedCount = count(tasks, t_3 => t_3.status === 'completed');
-  const pendingCount = count(tasks, t_4 => t_4.status === 'pending');
+  const completedCount = count(tasks, (t_3) => t_3.status === 'completed');
+  const pendingCount = count(tasks, (t_4) => t_4.status === 'pending');
   const inProgressCount = tasks.length - completedCount - pendingCount;
   // Unresolved tasks (open or in_progress) block dependent tasks
-  const unresolvedTaskIds = new Set(tasks.filter(t_5 => t_5.status !== 'completed').map(t_6 => t_6.id));
+  const unresolvedTaskIds = new Set(
+    tasks.filter((t_5) => t_5.status !== 'completed').map((t_6) => t_6.id),
+  );
 
   // Check if we need to truncate
   const needsTruncation = tasks.length > maxDisplay;
@@ -140,7 +150,7 @@ export function TaskListV2({
     // Prioritize: recently completed (within 30s), in-progress, pending, older completed
     const recentCompleted: Task[] = [];
     const olderCompleted: Task[] = [];
-    for (const task of tasks.filter(t_7 => t_7.status === 'completed')) {
+    for (const task of tasks.filter((t_7) => t_7.status === 'completed')) {
       const ts_0 = completionTimestampsRef.current.get(task.id);
       if (ts_0 && now - ts_0 < RECENT_COMPLETED_TTL_MS) {
         recentCompleted.push(task);
@@ -150,15 +160,17 @@ export function TaskListV2({
     }
     recentCompleted.sort(byIdAsc);
     olderCompleted.sort(byIdAsc);
-    const inProgress = tasks.filter(t_8 => t_8.status === 'in_progress').sort(byIdAsc);
-    const pending = tasks.filter(t_9 => t_9.status === 'pending').sort((a, b) => {
-      const aBlocked = a.blockedBy.some(id_1 => unresolvedTaskIds.has(id_1));
-      const bBlocked = b.blockedBy.some(id_2 => unresolvedTaskIds.has(id_2));
-      if (aBlocked !== bBlocked) {
-        return aBlocked ? 1 : -1;
-      }
-      return byIdAsc(a, b);
-    });
+    const inProgress = tasks.filter((t_8) => t_8.status === 'in_progress').sort(byIdAsc);
+    const pending = tasks
+      .filter((t_9) => t_9.status === 'pending')
+      .sort((a, b) => {
+        const aBlocked = a.blockedBy.some((id_1) => unresolvedTaskIds.has(id_1));
+        const bBlocked = b.blockedBy.some((id_2) => unresolvedTaskIds.has(id_2));
+        if (aBlocked !== bBlocked) {
+          return aBlocked ? 1 : -1;
+        }
+        return byIdAsc(a, b);
+      });
     const prioritized = [...recentCompleted, ...inProgress, ...pending, ...olderCompleted];
     visibleTasks = prioritized.slice(0, maxDisplay);
     hiddenTasks = prioritized.slice(maxDisplay);
@@ -170,9 +182,9 @@ export function TaskListV2({
   let hiddenSummary = '';
   if (hiddenTasks.length > 0) {
     const parts: string[] = [];
-    const hiddenPending = count(hiddenTasks, t_10 => t_10.status === 'pending');
-    const hiddenInProgress = count(hiddenTasks, t_11 => t_11.status === 'in_progress');
-    const hiddenCompleted = count(hiddenTasks, t_12 => t_12.status === 'completed');
+    const hiddenPending = count(hiddenTasks, (t_10) => t_10.status === 'pending');
+    const hiddenInProgress = count(hiddenTasks, (t_11) => t_11.status === 'in_progress');
+    const hiddenCompleted = count(hiddenTasks, (t_12) => t_12.status === 'completed');
     if (hiddenInProgress > 0) {
       parts.push(`${hiddenInProgress} in progress`);
     }
@@ -184,28 +196,44 @@ export function TaskListV2({
     }
     hiddenSummary = ` … +${parts.join(', ')}`;
   }
-  const content = <>
-      {visibleTasks.map(task_0 => <TaskItem key={task_0.id} task={task_0} ownerColor={task_0.owner ? teammateColors[task_0.owner] : undefined} openBlockers={task_0.blockedBy.filter(id_3 => unresolvedTaskIds.has(id_3))} activity={task_0.owner ? teammateActivity[task_0.owner] : undefined} ownerActive={task_0.owner ? activeTeammates.has(task_0.owner) : false} columns={columns} />)}
+  const content = (
+    <>
+      {visibleTasks.map((task_0) => (
+        <TaskItem
+          key={task_0.id}
+          task={task_0}
+          ownerColor={task_0.owner ? teammateColors[task_0.owner] : undefined}
+          openBlockers={task_0.blockedBy.filter((id_3) => unresolvedTaskIds.has(id_3))}
+          activity={task_0.owner ? teammateActivity[task_0.owner] : undefined}
+          ownerActive={task_0.owner ? activeTeammates.has(task_0.owner) : false}
+          columns={columns}
+        />
+      ))}
       {maxDisplay > 0 && hiddenSummary && <Text dimColor>{hiddenSummary}</Text>}
-    </>;
+    </>
+  );
   if (isStandalone) {
-    return <Box flexDirection="column" marginTop={1} marginLeft={2}>
+    return (
+      <Box flexDirection="column" marginTop={1} marginLeft={2}>
         <Box>
           <Text dimColor>
             <Text bold>{tasks.length}</Text>
             {' tasks ('}
             <Text bold>{completedCount}</Text>
             {' done, '}
-            {inProgressCount > 0 && <>
+            {inProgressCount > 0 && (
+              <>
                 <Text bold>{inProgressCount}</Text>
                 {' in progress, '}
-              </>}
+              </>
+            )}
             <Text bold>{pendingCount}</Text>
             {' open)'}
           </Text>
         </Box>
         {content}
-      </Box>;
+      </Box>
+    );
   }
   return <Box flexDirection="column">{content}</Box>;
 }
@@ -225,32 +253,25 @@ function getTaskIcon(status: Task['status']): {
     case 'completed':
       return {
         icon: figures.tick,
-        color: 'success'
+        color: 'success',
       };
     case 'in_progress':
       return {
         icon: figures.squareSmallFilled,
-        color: 'claude'
+        color: 'claude',
       };
     case 'pending':
       return {
         icon: figures.squareSmall,
-        color: undefined
+        color: undefined,
       };
   }
 }
 function TaskItem(t0) {
   const $ = _c(37);
-  const {
-    task,
-    ownerColor,
-    openBlockers,
-    activity,
-    ownerActive,
-    columns
-  } = t0;
-  const isCompleted = task.status === "completed";
-  const isInProgress = task.status === "in_progress";
+  const { task, ownerColor, openBlockers, activity, ownerActive, columns } = t0;
+  const isCompleted = task.status === 'completed';
+  const isInProgress = task.status === 'in_progress';
   const isBlocked = openBlockers.length > 0;
   let t1;
   if ($[0] !== task.status) {
@@ -260,10 +281,7 @@ function TaskItem(t0) {
   } else {
     t1 = $[1];
   }
-  const {
-    icon,
-    color
-  } = t1;
+  const { icon, color } = t1;
   const showActivity = isInProgress && !isBlocked && activity;
   const showOwner = columns >= 60 && task.owner && ownerActive;
   let t2;
@@ -310,7 +328,11 @@ function TaskItem(t0) {
   const t6 = isCompleted || isBlocked;
   let t7;
   if ($[14] !== displaySubject || $[15] !== isCompleted || $[16] !== isInProgress || $[17] !== t6) {
-    t7 = <Text bold={isInProgress} strikethrough={isCompleted} dimColor={t6}>{displaySubject}</Text>;
+    t7 = (
+      <Text bold={isInProgress} strikethrough={isCompleted} dimColor={t6}>
+        {displaySubject}
+      </Text>
+    );
     $[14] = displaySubject;
     $[15] = isCompleted;
     $[16] = isInProgress;
@@ -321,7 +343,13 @@ function TaskItem(t0) {
   }
   let t8;
   if ($[19] !== ownerColor || $[20] !== showOwner || $[21] !== task.owner) {
-    t8 = showOwner && <Text dimColor={true}>{" ("}{ownerColor ? <ThemedText color={ownerColor}>@{task.owner}</ThemedText> : `@${task.owner}`}{")"}</Text>;
+    t8 = showOwner && (
+      <Text dimColor={true}>
+        {' ('}
+        {ownerColor ? <ThemedText color={ownerColor}>@{task.owner}</ThemedText> : `@${task.owner}`}
+        {')'}
+      </Text>
+    );
     $[19] = ownerColor;
     $[20] = showOwner;
     $[21] = task.owner;
@@ -331,7 +359,12 @@ function TaskItem(t0) {
   }
   let t9;
   if ($[23] !== isBlocked || $[24] !== openBlockers) {
-    t9 = isBlocked && <Text dimColor={true}>{" "}{figures.pointerSmall} blocked by{" "}{[...openBlockers].sort(_temp).map(_temp2).join(", ")}</Text>;
+    t9 = isBlocked && (
+      <Text dimColor={true}>
+        {' '}
+        {figures.pointerSmall} blocked by {[...openBlockers].sort(_temp).map(_temp2).join(', ')}
+      </Text>
+    );
     $[23] = isBlocked;
     $[24] = openBlockers;
     $[25] = t9;
@@ -340,7 +373,14 @@ function TaskItem(t0) {
   }
   let t10;
   if ($[26] !== t5 || $[27] !== t7 || $[28] !== t8 || $[29] !== t9) {
-    t10 = <Box>{t5}{t7}{t8}{t9}</Box>;
+    t10 = (
+      <Box>
+        {t5}
+        {t7}
+        {t8}
+        {t9}
+      </Box>
+    );
     $[26] = t5;
     $[27] = t7;
     $[28] = t8;
@@ -351,7 +391,15 @@ function TaskItem(t0) {
   }
   let t11;
   if ($[31] !== displayActivity || $[32] !== showActivity) {
-    t11 = showActivity && displayActivity && <Box><Text dimColor={true}>{"  "}{displayActivity}{figures.ellipsis}</Text></Box>;
+    t11 = showActivity && displayActivity && (
+      <Box>
+        <Text dimColor={true}>
+          {'  '}
+          {displayActivity}
+          {figures.ellipsis}
+        </Text>
+      </Box>
+    );
     $[31] = displayActivity;
     $[32] = showActivity;
     $[33] = t11;
@@ -360,7 +408,12 @@ function TaskItem(t0) {
   }
   let t12;
   if ($[34] !== t10 || $[35] !== t11) {
-    t12 = <Box flexDirection="column">{t10}{t11}</Box>;
+    t12 = (
+      <Box flexDirection="column">
+        {t10}
+        {t11}
+      </Box>
+    );
     $[34] = t10;
     $[35] = t11;
     $[36] = t12;

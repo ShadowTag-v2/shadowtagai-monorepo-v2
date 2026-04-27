@@ -1,11 +1,12 @@
-import { c as _c } from "react/compiler-runtime";
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { pathToFileURL } from 'url';
 import Link from '../ink/components/Link.js';
 import { supportsHyperlinks } from '../ink/supports-hyperlinks.js';
 import { Text } from '../ink.js';
 import { getStoredImagePath } from '../utils/imageStore.js';
 import type { Theme } from '../utils/theme.js';
+
 type Props = {
   imageId: number;
   backgroundColor?: keyof Theme;
@@ -22,11 +23,7 @@ type Props = {
  */
 export function ClickableImageRef(t0) {
   const $ = _c(13);
-  const {
-    imageId,
-    backgroundColor,
-    isSelected: t1
-  } = t0;
+  const { imageId, backgroundColor, isSelected: t1 } = t0;
   const isSelected = t1 === undefined ? false : t1;
   const imagePath = getStoredImagePath(imageId);
   const displayText = `[Image #${imageId}]`;
@@ -35,8 +32,16 @@ export function ClickableImageRef(t0) {
     let t2;
     let t3;
     if ($[0] !== backgroundColor || $[1] !== displayText || $[2] !== isSelected) {
-      t2 = <Text backgroundColor={backgroundColor} inverse={isSelected}>{displayText}</Text>;
-      t3 = <Text backgroundColor={backgroundColor} inverse={isSelected} bold={isSelected}>{displayText}</Text>;
+      t2 = (
+        <Text backgroundColor={backgroundColor} inverse={isSelected}>
+          {displayText}
+        </Text>
+      );
+      t3 = (
+        <Text backgroundColor={backgroundColor} inverse={isSelected} bold={isSelected}>
+          {displayText}
+        </Text>
+      );
       $[0] = backgroundColor;
       $[1] = displayText;
       $[2] = isSelected;
@@ -48,7 +53,11 @@ export function ClickableImageRef(t0) {
     }
     let t4;
     if ($[5] !== fileUrl || $[6] !== t2 || $[7] !== t3) {
-      t4 = <Link url={fileUrl} fallback={t2}>{t3}</Link>;
+      t4 = (
+        <Link url={fileUrl} fallback={t2}>
+          {t3}
+        </Link>
+      );
       $[5] = fileUrl;
       $[6] = t2;
       $[7] = t3;
@@ -60,7 +69,11 @@ export function ClickableImageRef(t0) {
   }
   let t2;
   if ($[9] !== backgroundColor || $[10] !== displayText || $[11] !== isSelected) {
-    t2 = <Text backgroundColor={backgroundColor} inverse={isSelected}>{displayText}</Text>;
+    t2 = (
+      <Text backgroundColor={backgroundColor} inverse={isSelected}>
+        {displayText}
+      </Text>
+    );
     $[9] = backgroundColor;
     $[10] = displayText;
     $[11] = isSelected;

@@ -3,11 +3,12 @@ import sys
 import os
 
 # Add root to sys.path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from src.tools.bash_security import BashSecurityValidator
 from src.services.secrets import SecretScanner
 from src.utils.ssrf import SSRFGuard
+
 
 async def main():
     print("--- Test 1: BashSecurityValidator (zmodload) ---")
@@ -36,6 +37,7 @@ async def main():
         print("❌ FAILED: Metadata IP was not blocked.")
     except Exception as e:
         print(f"✅ PASSED: Blocked with error: {e}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

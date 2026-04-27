@@ -4,6 +4,7 @@ import { checkHasTrustDialogAccepted } from '../config.js';
 import { logForDebugging } from '../debug.js';
 import { clearMarketplacesCache, registerSeedMarketplaces } from './marketplaceManager.js';
 import { clearPluginCache } from './pluginLoader.js';
+
 type SetAppState = (f: (prevState: AppState) => AppState) => void;
 
 /**
@@ -47,14 +48,14 @@ export async function performStartupChecks(setAppState: SetAppState): Promise<vo
       // /reload-plugins. Without this signal, the initial plugin-load
       // (which raced and cached "marketplace not found") would persist
       // until the user manually reloads.
-      setAppState(prev => {
+      setAppState((prev) => {
         if (prev.plugins.needsRefresh) return prev;
         return {
           ...prev,
           plugins: {
             ...prev.plugins,
-            needsRefresh: true
-          }
+            needsRefresh: true,
+          },
         };
       });
     }
