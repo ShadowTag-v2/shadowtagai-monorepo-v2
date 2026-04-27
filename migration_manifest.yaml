@@ -1,0 +1,563 @@
+# migration_manifest.yaml — Quarry → V2 Canonical Monorepo
+# This file is the SINGLE SOURCE OF TRUTH for all transplantation decisions.
+# Status: DRAFT — requires human review before execution.
+# Created: 2026-04-27
+#
+# Dispositions:
+#   TRANSPLANT  — move to V2 canonical repo (wave N)
+#   DEFER       — hold for later evaluation
+#   ABANDON     — never migrate, stays in quarry forever
+#   CONSOLIDATE — merge with another path before transplanting
+#
+# Wave Model:
+#   Wave 0: Governance, manifests, tool gateways, prepush gates
+#   Wave 1: Shared libraries and packages
+#   Wave 2: Revenue-generating apps (counselconduit, kovelai)
+#   Wave 3: Infrastructure, CI, IaC
+#   Wave 4: Remaining active apps
+#   Wave 5: Controlled third-party dependencies
+
+version: "1.0"
+quarry_repo: "git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git"
+quarry_bundle: "~/Monorepo-Uphillsnowball-quarry-20260427.bundle"
+target_repo: "git@github.com:ShadowTag-v2/monorepo.git"  # TBD — new clean repo
+quarry_head: "80581a62b"
+
+# ============================================================
+# WAVE 0 — Governance & Root Config
+# ============================================================
+wave_0_governance:
+  disposition: TRANSPLANT
+  paths:
+    # Core governance docs
+    - source: AGENTS.md
+      target: AGENTS.md
+      notes: "Canonical contract — adapt for V2 structure"
+    - source: GEMINI.md
+      target: GEMINI.md
+      notes: "Operator invariants — version bump for V2"
+    - source: CLAUDE.md
+      target: CLAUDE.md
+      notes: "Thin shim — keep aligned with AGENTS.md"
+    - source: monorepo_manifest.yaml
+      target: monorepo_manifest.yaml
+      notes: "Workspace truth — rewrite for V2 paths"
+    - source: BUSINESS_CONTEXT_LOCKED.md
+      target: BUSINESS_CONTEXT_LOCKED.md
+    - source: RISK_REGISTER.md
+      target: RISK_REGISTER.md
+    - source: SECURITY.md
+      target: SECURITY.md
+    - source: PRIVACY.md
+      target: PRIVACY.md
+    - source: TERMS.md
+      target: TERMS.md
+
+    # Root config
+    - source: pyproject.toml
+      target: pyproject.toml
+      notes: "Review and strip dead dependencies"
+    - source: ruff.toml
+      target: ruff.toml
+    - source: biome.json
+      target: biome.json
+    - source: .gitignore
+      target: .gitignore
+      notes: "START FRESH — V2 gitignore from scratch"
+    - source: .gitattributes
+      target: .gitattributes
+      notes: "Strip dead LFS rules, keep text normalization"
+    - source: firebase.json
+      target: firebase.json
+    - source: firestore.rules
+      target: firestore.rules
+    - source: firestore.indexes.json
+      target: firestore.indexes.json
+    - source: storage.rules
+      target: storage.rules
+    - source: .firebaserc
+      target: .firebaserc
+    - source: pytest.ini
+      target: pytest.ini
+    - source: conftest.py
+      target: conftest.py
+    - source: global.json
+      target: global.json
+      notes: ".NET SDK version pin"
+    - source: operator_invariants.json
+      target: operator_invariants.json
+
+    # CI/CD
+    - source: .github/
+      target: .github/
+      notes: "Review workflows — strip dead ones"
+    - source: .pre-commit-config.yaml
+      target: .pre-commit-config.yaml
+    - source: .betterleaks.toml
+      target: .betterleaks.toml
+    - source: .betterleaksignore
+      target: .betterleaksignore
+    - source: .gitleaks.toml
+      target: .gitleaks.toml
+    - source: .gitleaksignore
+      target: .gitleaksignore
+
+    # Agent config
+    - source: antigravity-mcp-config.json
+      target: antigravity-mcp-config.json
+    - source: .agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md
+      target: .agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md
+    - source: .agents/skills/
+      target: .agents/skills/
+      notes: "Selective — only active skills, strip archived stubs"
+    - source: .ruler/
+      target: .ruler/
+      notes: "Ruler distribution config"
+
+    # Bloat gates (NEW for V2)
+    - source: null
+      target: scripts/prepush-bloat-gate.sh
+      notes: "CREATE NEW — reject commits > 10MB, block binary extensions"
+
+# ============================================================
+# WAVE 1 — Shared Libraries & Packages
+# ============================================================
+wave_1_shared:
+  disposition: TRANSPLANT
+  paths:
+    - source: packages/shadowtag/
+      target: packages/shadowtag/
+      notes: "Core shared package — verify imports"
+    - source: packages/tool_gateway/
+      target: packages/tool_gateway/
+      notes: "MCP tool routing"
+    - source: packages/aiyou-core/
+      target: packages/aiyou-core/
+      notes: "Review — may need rename to shadowtag-core"
+    - source: packages/aiyou-data-contracts/
+      target: packages/aiyou-data-contracts/
+      notes: "Review — Pydantic models"
+    - source: packages/aiyou-policy/
+      target: packages/aiyou-policy/
+      notes: "Policy engine — evaluate if still used"
+    - source: libs/secret_manager_helper.py
+      target: libs/secret_manager_helper.py
+      notes: "GCP Secret Manager utility"
+    - source: scripts/auth_github_app.py
+      target: scripts/auth_github_app.py
+      notes: "Critical — GitHub App push protocol"
+    - source: scripts/load_mcp_secrets.sh
+      target: scripts/load_mcp_secrets.sh
+    - source: scripts/finish_changes.py
+      target: scripts/finish_changes.py
+
+  deferred:
+    - source: packages/aiyou/
+      disposition: DEFER
+      reason: "Evaluate overlap with aiyou-core"
+    - source: packages/aiyou-rollup/
+      disposition: DEFER
+      reason: "Evaluate if still used"
+    - source: packages/repo_oracle/
+      disposition: DEFER
+      reason: "GitNexus dependency — evaluate"
+    - source: libs/aiyou/
+      disposition: DEFER
+      reason: "Large (2.4K files) — audit for dead code first"
+    - source: libs/autoresearch_sources/
+      disposition: DEFER
+      reason: "Evaluate if cor.autoresearch still uses this"
+    - source: libs/steel/
+      disposition: DEFER
+      reason: "Evaluate usage"
+    - source: libs/ui/
+      disposition: DEFER
+      reason: "Evaluate usage"
+
+# ============================================================
+# WAVE 2 — Revenue Apps
+# ============================================================
+wave_2_revenue:
+  disposition: TRANSPLANT
+  paths:
+    - source: apps/counselconduit/
+      target: apps/counselconduit/
+      tracked_files: 134
+      disk_size: "36 MB"
+      notes: "PRIMARY revenue app — 'Shopify for Legal AI'. v3.2.0 LIVE."
+    - source: apps/kovelai/
+      target: apps/kovelai/
+      tracked_files: 300
+      disk_size: "5.9 MB tracked"
+      notes: "Landing page + web app. kovelai.web.app. Strip node_modules."
+    - source: apps/shadowtagai/
+      target: apps/shadowtagai/
+      tracked_files: 69
+      disk_size: "~40 MB tracked"
+      notes: "shadowtagai.web.app. Firebase Hosting."
+
+# ============================================================
+# WAVE 3 — Infrastructure & IaC
+# ============================================================
+wave_3_infra:
+  disposition: TRANSPLANT
+  paths:
+    - source: infra/
+      target: infra/
+      tracked_files: 25
+      notes: "GCP infrastructure config"
+    - source: terraform/
+      target: infra/terraform/
+      tracked_files: 61
+      notes: "OpenTofu/Terraform — consolidate under infra/"
+    - source: infrastructure/
+      target: infra/legacy/
+      tracked_files: 20
+      notes: "Evaluate overlap with terraform/"
+    - source: Dockerfile
+      target: Dockerfile
+    - source: .devcontainer/
+      target: .devcontainer/
+
+  deferred:
+    - source: infrastructure-pulumi/
+      disposition: DEFER
+      reason: "Pulumi abandoned? Evaluate."
+
+# ============================================================
+# WAVE 4 — Remaining Active Apps
+# ============================================================
+wave_4_remaining:
+  # Evaluate each — most are experimental/dead
+  transplant:
+    - source: apps/lead-capture-router/
+      target: apps/lead-capture-router/
+      tracked_files: 10
+      notes: "Firebase Cloud Function — small, active"
+    - source: apps/counselconduit-dashboard/
+      target: apps/counselconduit-dashboard/
+      tracked_files: 18
+      notes: "Dashboard UI for CounselConduit"
+
+  defer:
+    - source: apps/aiyou_stack/
+      tracked_files: 7565
+      reason: "MASSIVE — 7.5K files. Needs audit. Legacy?"
+    - source: apps/thermal-ride/
+      tracked_files: 353
+      reason: "R&D app — evaluate"
+    - source: apps/aiyou-web-dashboard/
+      tracked_files: 66
+      reason: "Legacy dashboard?"
+    - source: apps/agent-starter-pack/
+      tracked_files: 61
+      reason: "Template — evaluate"
+    - source: apps/legaltrack/
+      tracked_files: 51
+      reason: "Predecessor to CounselConduit?"
+    - source: apps/lawtrack-ui/
+      tracked_files: 18
+      reason: "Predecessor to CounselConduit?"
+
+  abandon:
+    - source: apps/GeminiWatermarkTool/
+      tracked_files: 46
+      reason: "Demo tool with 47.5 MB GIF — not product code"
+    - source: apps/stitch-skills/
+      tracked_files: 53
+      reason: "Stitch MCP skills — move to .agents/skills/ if needed"
+    - source: apps/cosmic-crab/
+      tracked_files: 42
+      reason: "Codename app — 3 files, stub"
+    - source: apps/awesome-nano-banana-pro-prompts/
+      tracked_files: 32
+      reason: "Prompt collection — docs, not app"
+    - source: apps/thumbly/
+      tracked_files: 23
+      reason: "Demo app"
+    - source: apps/slides_agent_demo/
+      tracked_files: 22
+      reason: "Demo app"
+    - source: apps/reference_architectures/
+      tracked_files: 21
+      reason: "Reference — docs, not app"
+    - source: apps/kosmos-claude/
+      tracked_files: 20
+      reason: "Experimental swarm — R&D"
+    - source: apps/gemini-skills/
+      tracked_files: 16
+      reason: "Skills — move to .agents/skills/ if needed"
+    - source: apps/unusual-machines-clone/
+      tracked_files: 15
+      reason: "Website clone exercise"
+    - source: apps/headfade/
+      tracked_files: 15
+      reason: "PWA experiment"
+    - source: apps/remotion-demo/
+      tracked_files: 7
+      reason: "Demo app"
+    - source: apps/genkit-dart/
+      tracked_files: 9
+      reason: "Dart experiment"
+    - source: apps/data/
+      tracked_files: 8
+      reason: "Data dumps — not app"
+    - source: apps/aiyou-fastapi-services/
+      tracked_files: 7
+      reason: "Legacy services — 7 tracked files, 4.1 GiB on disk"
+    # All 2-3 file stubs (codename apps)
+    - source: apps/molten-universe/
+      reason: "Stub"
+    - source: apps/templates/
+      reason: "Stub"
+    - source: apps/ultraviolet-zodiac/
+      reason: "Stub"
+    - source: apps/volatile-nova/
+      reason: "Stub"
+    - source: apps/prismic-meteorite/
+      reason: "Stub"
+    - source: apps/gitnexus/
+      reason: "GitNexus — retired"
+    - source: apps/cobalt-planck/
+      reason: "Stub"
+    - source: apps/bennett/
+      reason: "Stub"
+    - source: apps/pnkln_ecosystem/
+      reason: "Stub"
+    - source: apps/playground/
+      reason: "Stub"
+    - source: apps/phantom-radiation/
+      reason: "Stub"
+    - source: apps/gravitic-triangulum/
+      reason: "Stub"
+    - source: apps/covelai-backend/
+      reason: "Stub — 2 files"
+    - source: apps/src/
+      reason: "Misplaced source"
+    - source: apps/shadowtag-default/
+      reason: "Default template"
+    - source: apps/pnkln-desktop/
+      reason: "Stub"
+    - source: apps/ecliptic-belt/
+      reason: "Stub"
+    - source: apps/shadowtag-web/
+      reason: "20 files, 440 MB node_modules — evaluate"
+
+# ============================================================
+# WAVE 5 — Docs, Tests, Labs
+# ============================================================
+wave_5_support:
+  transplant:
+    - source: docs/
+      target: docs/
+      tracked_files: 1947
+      notes: "Selective — strip harvested/generated docs. Keep architecture docs."
+    - source: tests/
+      target: tests/
+      tracked_files: 35
+    - source: vault/
+      target: vault/
+      notes: "Obsidian intelligence pipeline — zero-trust"
+    - source: .beads/
+      target: .beads/
+      tracked_files: 20
+
+  defer:
+    - source: labs/
+      tracked_files: 416
+      reason: "R&D — evaluate per-experiment"
+    - source: tools/
+      tracked_files: 421
+      reason: "Large — audit for dead tools"
+    - source: control/
+      tracked_files: 307
+      reason: "Control plane — evaluate"
+    - source: core/
+      tracked_files: 33
+      reason: "Core modules — evaluate overlap with packages/"
+
+  abandon:
+    - source: .reports/
+      tracked_files: 50
+      reason: "Generated vibe-code reports"
+    - source: product-pitch-site/
+      tracked_files: 69
+      reason: "Superseded by kovelai"
+    - source: .codesight/
+      reason: "Already purged from index"
+    - source: .chroma_db/
+      reason: "Vector DB cache"
+    - source: playwright-report/
+      reason: "Generated test report"
+    - source: test-results/
+      reason: "Generated test results"
+
+# ============================================================
+# NEVER MIGRATE — Quarry-Only Content
+# ============================================================
+never_migrate:
+  - archive/                    # 59 GiB legacy snapshots
+  - venv/                       # Python virtualenvs
+  - .venv*/                     # Python virtualenvs
+  - .gitnexus/                  # GitNexus analysis cache
+  - .mypy_cache/                # Type-checking cache
+  - node_modules/               # NPM dependencies
+  - external_repos/             # Vendored forks
+  - bazel-*/                    # Bazel symlinks
+  - .tmp.driveupload/           # Google Drive artifacts
+  - .scannerwork/               # SonarQube cache
+  - "*.bundle"                  # Git bundles
+
+# ============================================================
+# ROOT DOTFILE TRIAGE
+# ============================================================
+root_dotfiles:
+  transplant:
+    # Active agent configs (pick ONE per agent)
+    - .claude/
+    - .agents/
+    - .agent/
+    - .gemini/
+    - .ruler/
+    # Active tool configs
+    - .github/
+    - .vscode/
+    - .devcontainer/
+    - .pre-commit-config.yaml
+    - .betterleaks.toml
+    - .betterleaksignore
+    - .gitleaks.toml
+    - .gitleaksignore
+    - .eslintrc.cjs
+    - .eslintignore
+    - .prettierrc
+    - .prettierignore
+    - .editorconfig
+    - .dockerignore
+    - .biomeignore
+    - .firebaserc
+    - .lighthouserc.json
+    - .semgrep.yml
+
+  abandon:
+    # Dead/duplicate agent configs (14 different AI tool configs!)
+    - .adal/
+    - .amazonq/
+    - .augment/
+    - .clineignore
+    - .clinerules
+    - .cloud-workstations/
+    - .codebuddy/
+    - .commandcode/
+    - .context/
+    - .continue/
+    - .cortex/
+    - .crush/
+    - .cursor/
+    - .cursorrules
+    - .cursorrules.md
+    - .eclipse/
+    - .factory/
+    - .goose/
+    - .goosehints
+    - .gptram/
+    - .iflow/
+    - .junie/
+    - .kilocode/
+    - .kiro/
+    - .kit_cache/
+    - .kode/
+    - .mcp-memory/
+    - .mcpjam/
+    - .mux/
+    - .neovate/
+    - .openhands/
+    - .qwen/
+    - .roo/
+    - .rooignore
+    - .roorules/
+    - .specify/
+    - .switchboard/
+    - .trae/
+    - .windsurfrules
+    # Dead config files
+    - .antigravity-startup.sh
+    - .antigravity-system-prompt.txt
+    - .antigravityrules
+    - .aiexclude
+    - .aiignore
+    - .all_hands_trigger
+    - .cinematic_trigger
+    - .claude-shortcuts/
+    - .dockerignore.cor17
+    - .flake8
+    - .gcloudignore
+    - .geminiignore
+    - .gitnexusignore
+    - .help.txt
+    - .ignore
+    - .lint-results/
+    - .memory_lock_state
+    - .omega_trigger
+    - .secrets.baseline
+    - .taplo.toml
+    - .ui_audit_trigger
+    # Dead root files
+    - ANTIGRAVITY.md
+    - ARCHITECTURE.md
+    - BOOT_SEQUENCE.md
+    - CHANGELOG.md
+    - CMakeLists.txt
+    - CONTRIBUTING.md
+    - CRUSH.md
+    - DOCTRINE_EXTENDED.md
+    - Dockerfile.cor17
+    - LANDING_PAGE_MANIFEST.md
+    - MASTER_BRAIN.md
+    - MEMORY.md
+    - MERGE_STATUS.md
+    - Makefile
+    - REVIEW.md
+    - RUNTIME_HEALTH.md
+    - WARP.md
+    - WORKSTATION_LOCAL_OVERRIDES.example.md
+    - UPDATE_requirements.txt
+    - alembic.ini
+    - audit.md
+    - bourne_cursor_snippets.json
+    - codepmcs-server.Dockerfile
+    - commits.txt
+    - database_tools.yaml
+    - debug_config.py
+    - fetched_repos.json
+    - firebender.json
+    - fold_in_checklist.yaml
+    - handoff.sh
+    - knip.json
+    - lighthouse-budget.json
+    - lighthouserc.json
+    - memory_lock.json
+    - opencode.json
+    - operator_invariants_atoms.json
+    - parse_manifest.py
+    - pnkln-evolve.py
+    - pnkln.code-workspace.json.bak
+    - pricing_doctrine.md
+    - product.json
+    - program.md
+    - quickstart.py
+    - release_checklist.md
+    - requirements-dev.txt
+    - requirements.txt
+    - resolve_json.py
+    - resolve_validate.py
+    - resolve_yaml.py
+    - sgconfig.yml
+    - sonar-project.properties
+    - sync-daemon.sh
+    - tool_contracts/
+    - ty.toml
+    - vulture_whitelist.py
+    - TASK.md
+    - THIRD_PARTY_TAPESTRY.json
+    - THIRD_PARTY_TAPESTRY_NEW.json
