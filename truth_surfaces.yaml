@@ -1,0 +1,113 @@
+# truth_surfaces.yaml — Monorepo OS Canonical Truth Map
+#
+# Every subsystem of the Monorepo OS has a clear truth surface.
+# This file is the map. SQLite, indexes, and daemon state are CACHE.
+# Truth files are tracked in Git. Caches are gitignored.
+
+surfaces:
+  beads:
+    description: Task graph / work ledger
+    truth_files:
+      - .beads/issues.jsonl
+      - .beads/config.yaml
+    cache_files:
+      - .beads/*.db
+      - .beads/*.db-wal
+      - .beads/*.db-shm
+    cli: bd
+    wrapper: scripts/beads-plan.sh
+
+  memory:
+    description: Knowledge graph / doctrine ledger
+    truth_files:
+      - .memory/atoms/**/*.md
+      - .memory/events.ndjson
+    cache_files:
+      - .memory/*.db
+      - .memory/*.db-wal
+      - .memory/indexes/**
+    views:
+      - .memory/views/INDEX.md
+      - .memory/views/HANDOFF.md
+      - .memory/views/DECISIONS.md
+      - .memory/views/AGENT_PROGRESS.md
+
+  evidence:
+    description: Flight recorder / proof-of-action store
+    truth_files:
+      - .agent/evidence/**/*.json
+      - .agent/evidence/README.md
+    policy: append_only_never_delete
+    recorder: scripts/record-agent-event.sh
+
+  git:
+    description: Source truth
+    truth_files:
+      - "**/*.py"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.go"
+      - "**/*.rs"
+      - "**/*.cs"
+      - "**/*.yaml"
+      - "**/*.md"
+    excluded_from_source_truth:
+      - external_repos/**
+      - archive/**
+      - node_modules/**
+      - .venv/**
+      - "**/target/**"
+
+  tool_contracts:
+    description: Action gate definitions
+    truth_files:
+      - tool_contracts/*.yaml
+    evaluator: ToolGateway
+
+  ruler:
+    description: Agent instruction propagation
+    truth_files:
+      - .ruler/AGENTS.md
+      - .ruler/ruler.toml
+      - .ruler/memory-hygiene.md
+      - .ruler/shadowtagai.md
+    propagation_targets:
+      - AGENTS.md
+      - CLAUDE.md
+      - .cursorrules
+      - .github/copilot-instructions.md
+      - .windsurfrules
+
+  push_gates:
+    description: Outbound safety artery
+    truth_files:
+      - upload_policy.yaml
+      - tool_contracts/github_push.yaml
+    scripts:
+      - scripts/push-with-app-gates.sh
+      - scripts/classify-upload-payload.sh
+
+  indexes:
+    description: Repo truth indexes (all rebuildable from source)
+    systems:
+      - name: GitNexus
+        purpose: Agent impact graph
+        policy_file: index_policy.yaml
+      - name: SCIP
+        purpose: Precise symbol navigation
+      - name: Bazel
+        purpose: Build dependency graph
+        cli: "bazel query"
+      - name: tree-sitter
+        purpose: Local AST structure
+      - name: ast-grep
+        purpose: Structural search/replace
+
+  progression:
+    description: Agent permission ladder
+    truth_files:
+      - agent_progression.yaml
+      - tool_contracts/agent.progression.yaml
+
+# Doctrine: "Track truth files. Ignore caches. Record every mutation.
+#            Rebuild indexes. Compact often."

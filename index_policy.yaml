@@ -1,0 +1,187 @@
+# index_policy.yaml — Monorepo OS Indexing Fabric
+#
+# Defines the multi-index architecture. No single index is treated as total
+# truth. Each index owns a specific class of questions.
+#
+# Referenced by: tool_contracts/index.query.yaml, scripts/index-status.sh,
+#                operator_invariants.json
+#
+# Version history:
+#   v1 - 2026-04-27: Initial fabric from Monorepo OS DNA spec.
+
+version: 1
+
+purpose: >
+  Defines the Monorepo OS indexing fabric. No single index is treated as total
+  truth. Each index owns a specific class of questions.
+
+policy:
+  canonical_source_only_by_default: true
+  generated_indexes_git_tracked: false
+  generated_reports_git_tracked_by_exception: true
+  forbidden_index_zones:
+    - archive/**
+    - external_repos/**
+    - external_sdks/**
+    - reference_architectures/raw/**
+    - third_party/raw/**
+    - venv/**
+    - .venv/**
+    - .venv-*/**
+    - node_modules/**
+    - .gitnexus/**
+    - .mypy_cache/**
+    - .ruff_cache/**
+    - .pytest_cache/**
+    - dist/**
+    - build/**
+    - out/**
+    - .next/**
+    - .turbo/**
+    - .agent/incoming_repos/**
+
+indexes:
+  gitnexus:
+    role: agent_impact_graph
+    authority: impact_and_process_truth
+    storage: .gitnexus/
+    git_tracked: false
+    freshness:
+      required_before:
+        - nontrivial_refactor
+        - rename
+        - public_api_change
+        - auth_or_security_change
+        - precommit_impact_check
+    capabilities:
+      - context
+      - impact
+      - detect_changes
+      - rename
+      - process_trace
+      - hybrid_search
+    commands:
+      analyze: npx gitnexus analyze
+      query: gitnexus_query
+      context: gitnexus_context
+      impact: gitnexus_impact
+      detect_changes: gitnexus_detect_changes
+
+  scip:
+    role: precise_symbol_navigation
+    authority: definition_reference_truth
+    storage: .index/scip/
+    git_tracked: false
+    capabilities:
+      - go_to_definition
+      - find_references
+      - find_implementations
+      - cross_repo_symbol_resolution
+    indexers:
+      python: scip-python
+      typescript: scip-typescript
+      javascript: scip-typescript
+      rust: rust-analyzer_or_scip_rust
+      java: scip-java
+      dotnet: scip-dotnet
+    preferred_outputs:
+      - .index/scip/python.scip
+      - .index/scip/typescript.scip
+
+  bazel:
+    role: build_dependency_graph
+    authority: build_test_truth
+    storage: .reports/bazel/
+    git_tracked: reports_only
+    capabilities:
+      - target_discovery
+      - dependency_graph
+      - reverse_dependencies
+      - configured_dependencies
+      - affected_tests
+      - build_event_protocol
+    commands:
+      query: bazel query
+      cquery: bazel cquery
+      aquery: bazel aquery
+    reports:
+      query: .reports/bazel/query.txt
+      cquery: .reports/bazel/cquery.txt
+      bep: .reports/bazel/bep.json
+
+  zoekt:
+    role: fast_code_search
+    authority: text_search_truth
+    storage: .index/zoekt/
+    git_tracked: false
+    optional: true
+    capabilities:
+      - substring_search
+      - regexp_search
+      - many_repo_search
+
+  rag:
+    role: semantic_docs_memory
+    authority: recall_only_not_source_truth
+    storage: external_or_local_vector_db
+    git_tracked: false
+    capabilities:
+      - natural_language_search
+      - runbook_lookup
+      - architecture_qa
+      - historical_context
+    constraints:
+      - cannot_authorize_refactors
+      - cannot_override_gitnexus_scip_or_bazel
+      - must_cite_source_docs_when_used
+
+future_indexes:
+  kythe:
+    role: google_style_semantic_cross_reference
+    authority: deep_semantic_xref
+    adoption_condition:
+      - broad_bazel_coverage
+      - need_compiler_backed_polyglot_xref
+      - scip_gitnexus_combo_insufficient
+    git_tracked: false
+
+routing:
+  symbol_definition:
+    primary: scip
+    fallback:
+      - gitnexus
+      - ripgrep
+  references:
+    primary: scip
+    fallback:
+      - gitnexus
+      - ripgrep
+  impact:
+    primary: gitnexus
+    fallback:
+      - bazel_rdeps
+      - scip_references
+  build_dependencies:
+    primary: bazel_query
+    fallback:
+      - gitnexus_import_graph
+  configured_dependencies:
+    primary: bazel_cquery
+  build_actions:
+    primary: bazel_aquery
+  text_search:
+    primary: zoekt
+    fallback:
+      - ripgrep
+  process_flow:
+    primary: gitnexus
+  architecture_docs:
+    primary: rag
+    fallback:
+      - docs_search
+  pre_push_evidence:
+    primary:
+      - gitnexus
+      - bazel
+      - secret_scan
+      - bloat_gate
