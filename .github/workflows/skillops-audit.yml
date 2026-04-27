@@ -46,9 +46,10 @@ jobs:
           echo "unsafe_count=$UNSAFE" >> "$GITHUB_OUTPUT"
 
           # Threshold: fail if more than 15 ACTUAL RISK findings
-          # (44 total, 12 actual risk as of v1.8 triage)
-          if [ "$UNSAFE" -gt 50 ]; then
-            echo "::error::SkillOps unsafe findings ($UNSAFE) exceed threshold (50)"
+          # (44 total, 5 actual risk + 12 moderate as of v1.9 triage)
+          # Tightened from 50 → 15 after full triage completion
+          if [ "$UNSAFE" -gt 15 ]; then
+            echo "::error::SkillOps unsafe findings ($UNSAFE) exceed threshold (15)"
             exit 1
           fi
 
@@ -83,7 +84,7 @@ jobs:
 
             </details>
 
-            > Threshold: 50 findings. See \`.reports/skills/unsafe_findings.md\` for full triage.`;
+            > Threshold: 15 findings (tightened from 50 in v1.9). See \`.reports/skills/unsafe_findings_triage.md\` for classification.`;
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,

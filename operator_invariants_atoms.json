@@ -188,6 +188,17 @@
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json#140",
       "tags": ["boot", "probes", "read-only", "safety", "canonical"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "skillops",
+      "predicate": "hazard_triage_gate",
+      "object_text": "All SkillOps unsafe pattern findings must be triaged (classified as actual-risk, moderate-doc, or false-positive) before CI threshold changes are permitted. Triage is recorded in .reports/skills/unsafe_findings_triage.md. Actual-risk skills must have ToolGateway contracts. Moderate skills must have GUARDRAIL annotations.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#141",
+      "tags": ["skills", "skillops", "triage", "safety", "canonical"]
     }
   ]
 }
