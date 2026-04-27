@@ -1,0 +1,21 @@
+# BUILD.bazel — packages/tool_gateway
+# Phase 2: First canonical Bazel package
+# Owner: platform
+
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//visibility:private"])
+
+py_library(
+    name = "tool_gateway",
+    srcs = [
+        "__init__.py",
+        "contracts.py",
+        "evidence.py",
+        "gateway.py",
+    ],
+    visibility = [
+        "//apps/counselconduit:__subpackages__",
+        "//packages:__subpackages__",
+    ],
+)

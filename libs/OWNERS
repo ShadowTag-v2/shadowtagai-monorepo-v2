@@ -1,0 +1,5 @@
+# OWNERS — libs/
+# Core shared libraries (Rust, Python, TypeScript).
+# Changes here affect multiple downstream apps — review required.
+
+ehanc69@gmail.com

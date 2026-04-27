@@ -48,3 +48,21 @@
 
 # Docs
 /docs/ @ehanc69
+
+# Bazel infrastructure (structural truth)
+/BUILD.bazel @ehanc69
+/MODULE.bazel @ehanc69
+/.bazelrc @ehanc69
+/.bazelignore @ehanc69
+/.bazelversion @ehanc69
+/build/bazel_adoption.yaml @ehanc69
+
+# Shared packages
+/packages/ @ehanc69
+
+# Scripts (operational + security)
+/scripts/ @ehanc69
+
+# GitNexus (repo nervous system)
+/apps/gitnexus/ @ehanc69
+/apps/gitnexus-api/ @ehanc69

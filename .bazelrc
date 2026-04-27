@@ -75,6 +75,12 @@ build:ci --noshow_progress
 build:ci --verbose_failures
 
 # ---------------------------------------------------------------------------
-# Python-specific
+# Python — toolchain managed via MODULE.bazel (rules_python + CPython 3.14)
 # ---------------------------------------------------------------------------
-build --python_version=PY3
+# NOTE: --python_version=PY3 removed in Bazel 9.x; version is set in MODULE.bazel
+
+# ---------------------------------------------------------------------------
+# Query — structural analysis (Phase 1 primary use)
+# ---------------------------------------------------------------------------
+query --keep_going
+query --output=label
