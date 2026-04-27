@@ -1,6 +1,6 @@
 # SkillOps Unsafe Pattern Report
 
-Generated: 2026-04-27T23:16:01Z
+Generated: 2026-04-27T23:23:33Z
 Total findings: 44
 
 | Skill | Pattern | Hits |

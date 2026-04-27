@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # scripts/monorepo-heartbeat.sh — Monorepo OS Health Verification
-# Checks all 9 subsystems for structural integrity.
+# Checks all 10 subsystems for structural integrity.
 # Exit 0 = all healthy. Non-zero = failures found.
 set -euo pipefail
 
@@ -118,6 +118,24 @@ if [ "$LOCAL_SHA" = "$REMOTE_SHA" ]; then
   check "HEAD = origin/main ($LOCAL_SHA)" 0
 else
   warn "HEAD ($LOCAL_SHA) ≠ origin/main ($REMOTE_SHA)"
+fi
+
+# ── 10. SkillOps Health ──
+echo ""
+echo "  [10/10] SkillOps — skills-audit.sh"
+if [ -x "$REPO_ROOT/scripts/skills-audit.sh" ] || [ -f "$REPO_ROOT/scripts/skills-audit.sh" ]; then
+  AUDIT_JSON=$(bash "$REPO_ROOT/scripts/skills-audit.sh" --json 2>/dev/null || echo '{"unsafe_findings":0}')
+  UNSAFE_COUNT=$(echo "$AUDIT_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('unsafe_findings', 0))" 2>/dev/null || echo "0")
+  TOTAL_ACTIVE=$(echo "$AUDIT_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('total_active', 0))" 2>/dev/null || echo "0")
+  echo "        Active skills: $TOTAL_ACTIVE"
+  echo "        Unsafe findings: $UNSAFE_COUNT"
+  if [ "$UNSAFE_COUNT" -le 50 ]; then
+    check "SkillOps unsafe findings within threshold (≤50)" 0
+  else
+    check "SkillOps unsafe findings within threshold (≤50)" 1
+  fi
+else
+  warn "scripts/skills-audit.sh not found"
 fi
 
 # ── Summary ──
