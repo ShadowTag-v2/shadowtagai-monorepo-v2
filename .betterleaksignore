@@ -53,3 +53,5 @@ scripts/fix_canonicalization_surfaces.sh
 scripts/run_codepmcs_scan.sh
 scripts/source_pre_commit.sh
 scripts/vault/zero_trust_pipeline.py
+.agents/skills/cloud-sql-basics/references/iam-security.md:iam.gserviceaccount.com
+.agents/skills/*/references/*:iam.gserviceaccount.com

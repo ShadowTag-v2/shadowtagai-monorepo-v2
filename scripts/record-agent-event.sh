@@ -113,7 +113,7 @@ event = {
 path = pathlib.Path('${evidence_dir}/${ts_slug}-${EVENT_TYPE}.json')
 path.write_text(json.dumps(event, indent=2, sort_keys=True))
 print(path)
-" 
+"
     echo "Recorded evidence event: ${evidence_dir}/${ts_slug}-${EVENT_TYPE}.json"
   fi
 }

@@ -1,0 +1,40 @@
+version: 1
+
+source:
+  reference_repo: Leonxlnx/taste-skill
+  role: design_prompt_reference_not_source_truth
+
+baseline:
+  design_variance: 8
+  motion_intensity: 6
+  visual_density: 4
+
+allowed_modes:
+  taste-skill:
+    use_for: premium general frontend output
+  redesign-skill:
+    use_for: existing UI audit and upgrade
+  output-skill:
+    use_for: preventing placeholders and unfinished work
+  minimalist-skill:
+    use_for: restrained editorial product UI
+  soft-skill:
+    use_for: calm premium interfaces
+  stitch-skill:
+    use_for: DESIGN.md-compatible semantic design output
+
+rules:
+  - audit_existing_ui_before_redesign
+  - use_semantic_tokens
+  - prefer_component_architecture
+  - avoid_generic_ai_slop
+  - avoid_placeholder_comments
+  - verify_dependencies_before_importing
+  - record_visual_evidence_for_ui_claims
+
+forbidden:
+  - overriding_tokens_css_without_review
+  - raw_colors_in_components
+  - raw_spacing_in_components
+  - animation_without_accessibility_consideration
+  - claiming_visual_success_without_screenshot_or_video
