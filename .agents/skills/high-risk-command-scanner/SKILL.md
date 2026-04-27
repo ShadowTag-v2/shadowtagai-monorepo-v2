@@ -50,6 +50,7 @@ All commands NOT matching BLOCK or WARN patterns are auto-approved per the `appr
 
 ## False Positive Handling
 
+<!-- GUARDRAIL: rm -rf and sudo patterns below are scanner detection examples. Actual destructive execution requires STATE B authentication per ToolGateway. -->
 If a BLOCK pattern is a false positive (e.g., `rm -rf node_modules/` which is safe):
 1. Log the justification
 2. Narrow the command to be more specific

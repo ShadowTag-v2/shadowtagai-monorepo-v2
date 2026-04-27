@@ -89,6 +89,7 @@ Types: feat, fix, chore, docs, refactor, test, ci, perf
 
 ## Prohibited Actions
 
+<!-- GUARDRAIL: These destructive patterns are documented as anti-patterns. Actual execution requires STATE B authentication per ToolGateway. See ISSUE-018/019. -->
 | Action | Reason | Alternative |
 |--------|--------|-------------|
 | `rm -rf` | RULE 00 | `mv` to `archive/` |

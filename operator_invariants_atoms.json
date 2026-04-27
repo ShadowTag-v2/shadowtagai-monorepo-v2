@@ -94,7 +94,7 @@
       "atom_kind": "preference",
       "subject": "settings",
       "predicate": "monorepo_primary_workspace",
-      "object_text": "ShadowTag-v2/Monorepo-Uphillsnowball",
+      "object_text": "shadowtag-omega-v4/Monorepo-Uphillsnowball",
       "canonical_weight": 1.0,
       "validity": "active",
       "source_type": "operator_invariants",
@@ -111,94 +111,6 @@
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
       "tags": ["git", "remote", "monorepo"]
-    },
-    {
-      "atom_kind": "rule",
-      "subject": "autolint_daemon",
-      "predicate": "scope_boundary",
-      "object_text": "Autolint daemons may perform deterministic formatting and lint autofixes only. No broad refactors, archive deletion, history rewrites, dependency migrations, IDE hot-swaps, or production-affecting changes.",
-      "canonical_weight": 1.0,
-      "validity": "active",
-      "source_type": "operator_invariants",
-      "source_ref": "operator_invariants.json#113",
-      "tags": ["autolint", "scope", "safety", "canonical"]
-    },
-    {
-      "atom_kind": "rule",
-      "subject": "artifact_upload",
-      "predicate": "manifest_requirement",
-      "object_text": "Non-source payloads moved out of Git must have an artifact manifest (URI, sha256, owner, retention_class, source, status, retrieval_instructions). Manifest is committed; payload is not.",
-      "canonical_weight": 1.0,
-      "validity": "active",
-      "source_type": "operator_invariants",
-      "source_ref": "operator_invariants.json#114",
-      "tags": ["artifact", "manifest", "two-lane", "canonical"]
-    },
-    {
-      "atom_kind": "rule",
-      "subject": "git_history",
-      "predicate": "bloat_requires_history_tools",
-      "object_text": "Git history rewrites (filter-branch, filter-repo, BFG) are the ONLY authorized method for removing accidentally committed large objects. Force-pushing requires STATE B. Gitignore cannot remove objects already in pack history.",
-      "canonical_weight": 1.0,
-      "validity": "active",
-      "source_type": "operator_invariants",
-      "source_ref": "operator_invariants.json#105",
-      "tags": ["git", "history", "bloat", "safety", "canonical"]
-    },
-    {
-      "atom_kind": "rule",
-      "subject": "secret_scanning",
-      "predicate": "scanner_succession_policy",
-      "object_text": "Betterleaks is canonical, Gitleaks is legacy fallback. Both share .gitleaksignore. Scanner upgrades must maintain fingerprint compatibility. CI gates must never regress.",
-      "canonical_weight": 1.0,
-      "validity": "active",
-      "source_type": "operator_invariants",
-      "source_ref": "operator_invariants.json#115",
-      "tags": ["security", "secrets", "betterleaks", "gitleaks", "canonical"]
-    },
-    {
-      "atom_kind": "rule",
-      "subject": "external_repos",
-      "predicate": "reference_mirror_policy",
-      "object_text": "external_repos/ are read-only reference mirrors governed by upstream_manifest.yaml. Never modified locally, never committed to monorepo history. Clone via scripts/clone-external-reference-repos.sh exclusively.",
-      "canonical_weight": 1.0,
-      "validity": "active",
-      "source_type": "operator_invariants",
-      "source_ref": "operator_invariants.json#138",
-      "tags": ["external-repos", "mirror", "read-only", "canonical"]
-    },
-    {
-      "atom_kind": "rule",
-      "subject": "skillops",
-      "predicate": "repo_governed_lifecycle",
-      "object_text": "Skill CRUD must flow through SkillOps: tool_contracts/skills.update.yaml (contract), scripts/skills-audit.sh (validation), scripts/skills-registry.py (registry), .ruler/skills.md (propagation). Ad-hoc skill file manipulation without registry update is prohibited.",
-      "canonical_weight": 1.0,
-      "validity": "active",
-      "source_type": "operator_invariants",
-      "source_ref": "operator_invariants.json#139",
-      "tags": ["skills", "skillops", "governance", "canonical"]
-    },
-    {
-      "atom_kind": "rule",
-      "subject": "boot_probes",
-      "predicate": "read_only_enforcement",
-      "object_text": "Session boot probes (MCP pre-flight, health checks, env reads, manifest parsing, heartbeat) must be strictly read-only. No file mutations, branch creation, push commits, config changes, or side effects. Failures reported, not auto-remediated.",
-      "canonical_weight": 1.0,
-      "validity": "active",
-      "source_type": "operator_invariants",
-      "source_ref": "operator_invariants.json#140",
-      "tags": ["boot", "probes", "read-only", "safety", "canonical"]
-    },
-    {
-      "atom_kind": "rule",
-      "subject": "skillops",
-      "predicate": "hazard_triage_gate",
-      "object_text": "All SkillOps unsafe pattern findings must be triaged (classified as actual-risk, moderate-doc, or false-positive) before CI threshold changes are permitted. Triage is recorded in .reports/skills/unsafe_findings_triage.md. Actual-risk skills must have ToolGateway contracts. Moderate skills must have GUARDRAIL annotations.",
-      "canonical_weight": 1.0,
-      "validity": "active",
-      "source_type": "operator_invariants",
-      "source_ref": "operator_invariants.json#141",
-      "tags": ["skills", "skillops", "triage", "safety", "canonical"]
     }
   ]
 }

@@ -154,7 +154,7 @@ class RepoOracle:
             )
             if result.returncode == 0:
                 return result.stdout.strip().splitlines()[:max_results]
-        except (FileNotFoundError, subprocess.TimeoutExpired):
+        except FileNotFoundError, subprocess.TimeoutExpired:
             logger.warning("ripgrep not available or timed out")
 
         return []
@@ -187,7 +187,7 @@ def _log_evidence(repo_root: Path, query: str, match_count: int) -> None:
             "event": "repo.oracle.query",
             "query": query,
             "matches": match_count,
-            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.datetime.now(datetime.UTC).isoformat(),
         }
         with open(evidence_file, "a") as f:
             f.write(json.dumps(event) + "\n")

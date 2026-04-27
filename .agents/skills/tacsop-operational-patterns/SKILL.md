@@ -57,6 +57,7 @@ description: Six operational patterns extracted from Cor.Antigravity TACSOP 2 (V
 
 **Rule:** Revert the specific files with `git checkout -- <files>`, fix the lint issue in isolation, then re-apply the original change with the fix included.
 
+<!-- GUARDRAIL: git reset --hard is documented here as a prohibited anti-pattern. Actual execution requires STATE B authentication per ToolGateway. See ISSUE-018. -->
 **CRITICAL:** Use `git checkout -- <files>` (safe, file-level) — NEVER `git reset --hard` (destructive, repo-level).
 
 **Decision Tree:**
