@@ -1,0 +1,34 @@
+# MODULE.bazel — Root Bazel module for the ShadowTag monorepo
+# Phase: 3 (CI Ladder, OWNERS, Dep Governance)
+# Status: Structural enforcement + L2 CI + dependency isolation
+#
+# Policy: Bazel adoption proceeds wave-by-wave through canonical zones.
+#         Archive, venvs, external forks, and generated artifacts are EXCLUDED.
+
+module(
+    name = "shadowtag_monorepo",
+    version = "0.1.0",
+)
+
+# =============================================================================
+# Language rules — pinned versions
+# =============================================================================
+
+bazel_dep(name = "rules_python", version = "1.4.1")
+
+# TypeScript/JS rules — staged adoption (Phase 5+)
+# bazel_dep(name = "aspect_rules_js", version = "2.3.7")
+# bazel_dep(name = "aspect_rules_ts", version = "3.5.1")
+
+# Rust rules — for libs/core/router_daemon (Phase 4+)
+# bazel_dep(name = "rules_rust", version = "0.61.0")
+
+# =============================================================================
+# Python toolchain — pin to CPython 3.14
+# =============================================================================
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    is_default = True,
+    python_version = "3.14",
+)

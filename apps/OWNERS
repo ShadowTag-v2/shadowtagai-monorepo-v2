@@ -1,0 +1,6 @@
+# OWNERS — apps/
+# Product applications. Each app has its own sub-OWNERS.
+# Changes to app-level configs (Dockerfile, requirements, package.json)
+# require review from the listed owner.
+
+ehanc69@gmail.com

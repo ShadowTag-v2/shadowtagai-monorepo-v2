@@ -1,0 +1,76 @@
+# BUILD.bazel — scripts/
+# Phase 3: Canonical operational scripts exposed as filegroups and sh_test.
+# These scripts have NO Bazel-managed deps yet — they call host tools.
+
+package(default_visibility = ["//visibility:private"])
+
+# =============================================================================
+# Security-critical scripts (auth, secrets)
+# =============================================================================
+
+filegroup(
+    name = "auth_scripts",
+    srcs = [
+        "auth_github_app.py",
+        "load_mcp_secrets.sh",
+        "upload_secrets_to_gcp.sh",
+    ],
+    visibility = ["//visibility:private"],
+)
+
+# =============================================================================
+# Lint and validation scripts (exposed to CI)
+# =============================================================================
+
+filegroup(
+    name = "lint_scripts",
+    srcs = [
+        "check-buildifier.sh",
+        "dead-code-audit.sh",
+        "dep-governance.sh",
+    ],
+    visibility = ["//tools:__subpackages__"],
+)
+
+sh_test(
+    name = "buildifier_gate",
+    srcs = ["check-buildifier.sh"],
+    tags = [
+        "lint",
+        "local",
+    ],
+)
+
+sh_test(
+    name = "dep_governance_gate",
+    srcs = ["dep-governance.sh"],
+    tags = [
+        "governance",
+        "local",
+    ],
+)
+
+# =============================================================================
+# Operational scripts (preflight, daemons)
+# =============================================================================
+
+filegroup(
+    name = "preflight_scripts",
+    srcs = [
+        "antigravity-preflight.sh",
+        "finish_changes.py",
+    ],
+    visibility = ["//visibility:private"],
+)
+
+filegroup(
+    name = "daemon_scripts",
+    srcs = [
+        "dream_consolidation.py",
+        "gca_autolint_daemon.py",
+        "kairos_daemon.py",
+        "loop_steward.py",
+        "pnkln_evolve.py",
+    ],
+    visibility = ["//visibility:private"],
+)

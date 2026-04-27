@@ -1,0 +1,45 @@
+# BUILD.bazel — Root package of the ShadowTag monorepo
+#
+# This file makes the repo root a Bazel package.
+# It enforces private-by-default visibility.
+# Individual packages expose APIs through explicit visibility grants.
+
+package(default_visibility = ["//visibility:private"])
+
+# =============================================================================
+# Filegroups — canonical governance files
+# =============================================================================
+
+filegroup(
+    name = "governance",
+    srcs = [
+        "AGENTS.md",
+        "BUSINESS_CONTEXT_LOCKED.md",
+        "CLAUDE.md",
+        "GEMINI.md",
+        "PRIVACY.md",
+        "RISK_REGISTER.md",
+        "SECURITY.md",
+        "TERMS.md",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "root_config",
+    srcs = [
+        ".bazelignore",
+        ".bazelrc",
+        ".bazelversion",
+        ".betterleaks.toml",
+        ".gitattributes",
+        ".gitignore",
+        "MODULE.bazel",
+        "biome.json",
+        "firebase.json",
+        "pyproject.toml",
+        "pytest.ini",
+        "ruff.toml",
+    ],
+    visibility = ["//visibility:public"],
+)

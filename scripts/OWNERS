@@ -1,0 +1,5 @@
+# OWNERS — scripts/
+# Operational scripts: auth, lint, deployment, daemons.
+# Many are security-critical (auth_github_app, secret management).
+
+ehanc69@gmail.com

@@ -1,0 +1,5 @@
+# BUILD.bazel — apps/
+# Intermediate package boundary for all product applications.
+# Sub-packages (counselconduit/, kovelai/, etc.) define their own targets.
+
+package(default_visibility = ["//visibility:private"])

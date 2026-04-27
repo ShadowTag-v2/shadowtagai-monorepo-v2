@@ -1,0 +1,10 @@
+# OWNERS — packages/
+# Canonical shared libraries for the ShadowTag monorepo.
+# All new packages require review from a platform owner.
+#
+# Format: Google-style OWNERS (one email per line)
+# Ref: https://opensource.google/documentation/reference/codeowners
+
+ehanc69@gmail.com
+
+# Per-package overrides live in subdirectory OWNERS files.
