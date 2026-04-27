@@ -1,9 +1,9 @@
 {
   "score": "F",
-  "total_findings": 29,
+  "total_findings": 24,
   "critical": 10,
   "errors": 1,
-  "warnings": 14,
+  "warnings": 9,
   "info": 4,
   "findings": [
     {
@@ -26,41 +26,6 @@
       "message": "Dirty file (M)",
       "path": ".beads/kairos_heartbeat.json",
       "fix": "git checkout -- .beads/kairos_heartbeat.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".gemini/settings.json",
-      "fix": "git checkout -- .gemini/settings.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/kovelai/site/src/components/shared/Features.tsx",
-      "fix": "git checkout -- apps/kovelai/site/src/components/shared/Features.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "lighthouserc.json",
-      "fix": "git checkout -- lighthouserc.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": ".agents/skills/session-invariants/",
-      "fix": "git add .agents/skills/session-invariants/"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": ".help.txt",
-      "fix": "git add .help.txt"
     },
     {
       "gate": "conflicts",
@@ -184,7 +149,7 @@
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 2165 more drift files",
+      "message": "... and 2169 more drift files",
       "path": "",
       "fix": ""
     },
@@ -205,7 +170,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ========================= 483 tests collected in 1.50s =========================",
+      "message": "Tests: ========================= 483 tests collected in 2.03s =========================",
       "path": "",
       "fix": ""
     }

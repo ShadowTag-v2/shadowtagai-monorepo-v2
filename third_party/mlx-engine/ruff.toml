@@ -1,2 +1,0 @@
-[lint.per-file-ignores]
-"mlx_engine/__init__.py" = ["E402"]
