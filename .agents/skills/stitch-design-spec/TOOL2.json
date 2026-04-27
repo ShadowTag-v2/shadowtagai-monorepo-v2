@@ -1,0 +1,21 @@
+{
+  "name": "execute_stitch_cli_scaffold",
+  "description": "Runs the design.md CLI via bash to parse a component definition from the spec and compile it into a rigid UI framework file.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "component_name": {
+        "type": "string",
+        "description": "The exact name of the component block in design.md (e.g., 'PrimaryButton')"
+      },
+      "output_framework": {
+        "type": "string",
+        "enum": ["react", "lit", "a2ui-json"],
+        "default": "react"
+      },
+      "output_dir": { "type": "string", "default": "./src/components" }
+    },
+    "required": ["component_name", "output_framework"]
+  },
+  "system_instruction": "Execute 'npx @google-labs/design-cli scaffold <component_name> --framework <output_framework> --out <output_dir>' in bash."
+}

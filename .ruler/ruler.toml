@@ -1,26 +1,12 @@
 [workspace]
 name = "shadowtag-omega-v4"
-
 [agents.claude]
 enabled = true
-
 [agents.gemini]
 enabled = true
-
-[agents.cursor]
-enabled = true
-
-[agents.copilot]
-enabled = true
-
-[agents.windsurf]
-enabled = true
-
-[agents.cline]
-enabled = true
-
-[agents.aider]
-enabled = true
-
-[agents.kiro]
-enabled = true
+[mcpServers.google-design]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/client-cli", "wss://design.googleapis.com/mcp"]
+[mcpServers.notebooklm]
+command = "uvx"
+args = ["notebooklm-mcp-cli"]

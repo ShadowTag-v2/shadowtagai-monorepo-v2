@@ -18,7 +18,7 @@ export class CloudRun extends pulumi.ComponentResource {
         ingress: 'INGRESS_TRAFFIC_ALL',
         template: {
           executionEnvironment: 'EXECUTION_ENVIRONMENT_GEN2',
-          encryptionKey: cryptoKey.id,
+          encryptionKey: cryptoKey.id, // Mandatory Encryption
           containers: [{ image: args.image, resources: { limits: { cpu: '1', memory: '512Mi' } } }],
         },
       },

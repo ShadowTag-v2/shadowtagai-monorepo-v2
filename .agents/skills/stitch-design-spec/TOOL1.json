@@ -1,0 +1,16 @@
+{
+  "name": "generate_design_md_spec",
+  "description": "Scaffolds a Google Labs compliant design.md file based on natural language vibe descriptions, establishing color palettes, typography, spacing rhythms, and core component states.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "theme_name": { "type": "string" },
+      "vibe_description": {
+        "type": "string",
+        "description": "e.g., 'Minimalist neo-brutalism with high contrast borders and monospace fonts'"
+      },
+      "target_file_path": { "type": "string", "default": "./design.md" }
+    },
+    "required": ["theme_name", "vibe_description", "target_file_path"]
+  }
+}
