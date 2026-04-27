@@ -38,6 +38,18 @@ python.toolchain(
 )
 
 # =============================================================================
+# Pip dependencies — hermetic test deps resolved from lock file
+# =============================================================================
+
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "pip_deps",
+    python_version = "3.14",
+    requirements_lock = "//third_party/python:requirements_test_lock.txt",
+)
+use_repo(pip, "pip_deps")
+
+# =============================================================================
 # Go toolchain — pin to system Go (for shield sub-package)
 # =============================================================================
 

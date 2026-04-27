@@ -1,11 +1,12 @@
 # BUILD.bazel — apps/counselconduit/api
-# Phase 4: Core FastAPI application — routes, handlers, middleware
+# Phase 7: Core FastAPI application — hermetic pip deps declared
 # Owner: product
 #
 # This is the largest sub-package in counselconduit (41 source files).
 # It declares the API surface as a py_library with deps on middleware/ and services/.
 
 load("@rules_python//python:defs.bzl", "py_library")
+load("@pip_deps//:requirements.bzl", "requirement")
 
 package(default_visibility = ["//apps/counselconduit:__subpackages__"])
 
@@ -64,5 +65,24 @@ py_library(
         "//apps/counselconduit/api/middleware",
         "//apps/counselconduit/models",
         "//apps/counselconduit/services",
+        requirement("fastapi"),
+        requirement("pydantic"),
+        requirement("stripe"),
+        requirement("structlog"),
+        requirement("google-genai"),
+        requirement("google-cloud-firestore"),
+        requirement("google-cloud-tasks"),
+        requirement("google-cloud-secret-manager"),
+        requirement("google-auth"),
+        requirement("google-api-python-client"),
+        requirement("litellm"),
+        requirement("httpx"),
+        requirement("PyJWT"),
+        requirement("opentelemetry-api"),
+        requirement("opentelemetry-sdk"),
+        requirement("opentelemetry-instrumentation-fastapi"),
+        requirement("uvicorn"),
+        requirement("python-multipart"),
     ],
 )
+
