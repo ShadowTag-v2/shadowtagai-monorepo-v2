@@ -41,7 +41,7 @@ A future ADR may reverse any of these, but until then they are not authorized:
 |--------------------|--------------------------------------------------------------|
 | CounselConduit API | `https://counselconduit-767252945109.us-central1.run.app`    |
 | Cloud Run Revision | `counselconduit-00037-7mf`                                   |
-| Service Account    | `counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com` |
+| Service Account    | `$COUNSELCONDUIT_SA` (resolved via `scripts/load_mcp_secrets.sh`) |
 | KovelAI Site       | `kovelai.web.app`                                            |
 | ShadowTagAI Site   | `shadowtagai.web.app`                                        |
 

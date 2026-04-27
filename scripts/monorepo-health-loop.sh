@@ -29,7 +29,9 @@ echo ""
 echo "▸ Beads (Task Graph)"
 if [[ -f "$ROOT/.beads/issues.jsonl" ]]; then
   # Validate NDJSON: each non-empty line must be valid JSON
-  BAD_LINES=$(grep -c '^[^{[]' "$ROOT/.beads/issues.jsonl" 2>/dev/null || echo 0)
+  # Sanitize output: grep -c can produce carriage returns or multi-line noise
+  BAD_LINES=$(grep -c '^[^{[]' "$ROOT/.beads/issues.jsonl" 2>/dev/null | tr -d '\r\n' || true)
+  BAD_LINES="${BAD_LINES:-0}"
   if [[ "$BAD_LINES" -le 1 ]]; then
     ISSUE_COUNT=$(wc -l < "$ROOT/.beads/issues.jsonl" | tr -d ' ')
     pass "issues.jsonl present ($ISSUE_COUNT entries)"
