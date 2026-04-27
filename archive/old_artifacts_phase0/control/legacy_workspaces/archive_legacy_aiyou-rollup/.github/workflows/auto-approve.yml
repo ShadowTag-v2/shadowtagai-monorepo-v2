@@ -1,0 +1,30 @@
+name: auto-approve
+
+on:
+  pull_request:
+    types: [opened, synchronize, labeled]
+  workflow_dispatch: {}
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  approve:
+    if: contains(join(github.event.pull_request.labels.*.name, ','), 'auto-approve')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto-approve PR
+        uses: hmarr/auto-approve-action@v4
+        with:
+          github-token: ${{ secrets.AUTO_APPROVE_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Auto-merge if enabled
+        if: ${{ secrets.AUTO_APPROVE_PAT }}
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.AUTO_APPROVE_PAT }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
+
+

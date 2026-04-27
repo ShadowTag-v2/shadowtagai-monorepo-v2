@@ -1,0 +1,113 @@
+# GitHub Repository Setup Information
+
+## Repository Details
+Name: antigravity-proxy
+Description: Intercept Google Antigravity IDE API calls and use your own Gemini API token
+Topics: proxy, mitmproxy, antigravity, gemini-api, api-interception, https-proxy, mitm
+
+## Branches
+- master (default): Working mitmproxy solution
+- nodejs-experimental: Educational Node.js implementation
+
+## After Creating GitHub Repo
+
+```bash
+cd ~/dev/personal/antigravity-proxy
+
+# Add remote
+git remote add origin https://github.com/YOUR_USERNAME/antigravity-proxy.git
+
+# Push all branches
+git push -u origin master
+git push origin nodejs-experimental
+
+# Set master as default branch in GitHub settings
+```
+
+## GitHub Repository Settings
+
+### General
+- Default branch: master
+- Allow squash merging: Yes
+- Allow merge commits: Yes
+- Allow rebase merging: Yes
+- Automatically delete head branches: Yes
+
+### Pages (optional)
+- Source: Deploy from branch
+- Branch: master / docs
+
+### About Section
+Description: Intercept Google Antigravity IDE API calls and use your own Gemini API token
+
+Website: (leave blank or add your website)
+
+Topics:
+- proxy
+- mitmproxy  
+- antigravity
+- gemini-api
+- api-interception
+- https-proxy
+- mitm
+- python
+- ssl-interception
+
+### Social Preview
+Upload an image (optional) showing the terminal output with the proxy working
+
+## Releases
+
+### v1.0.0 (Initial Release)
+```markdown
+# What's New
+
+First public release of Antigravity Proxy!
+
+## Features
+- 🔐 HTTPS traffic interception using mitmproxy
+- 🔄 Automatic API key replacement for Gemini API
+- 📊 Real-time request/response logging
+- 🛠️ Easy setup with certificate installation
+- 📚 Comprehensive documentation
+- 🔒 Security best practices
+
+## Installation
+
+See [MITMPROXY_SETUP.md](./MITMPROXY_SETUP.md) for complete installation instructions.
+
+Quick start:
+```bash
+brew install mitmproxy
+pip3 install python-dotenv
+mitmproxy -s mitmproxy-addon.py
+```
+
+## What's Included
+- mitmproxy Python addon with colored output
+- Setup scripts for macOS
+- Complete documentation
+- Educational Node.js implementation (nodejs-experimental branch)
+
+## Known Limitations
+- Requires certificate installation (one-time setup)
+- macOS instructions provided (Linux/Windows coming soon)
+- Only supports Gemini API currently
+
+## Links
+- [Documentation](./README.md)
+- [Setup Guide](./MITMPROXY_SETUP.md)
+- [Contributing](./CONTRIBUTING.md)
+```
+
+## README Badges
+
+Add these to README.md:
+
+```markdown
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![mitmproxy](https://img.shields.io/badge/mitmproxy-10.x-green.svg)](https://mitmproxy.org/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
+[![GitHub stars](https://img.shields.io/github/stars/YOUR_USERNAME/antigravity-proxy.svg?style=social&label=Star)](https://github.com/YOUR_USERNAME/antigravity-proxy)
+```

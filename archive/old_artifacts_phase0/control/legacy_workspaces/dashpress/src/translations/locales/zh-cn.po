@@ -1,0 +1,1733 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-22 14:57+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 3.4.2\n"
+
+msgid ""
+msgstr ""
+
+msgid "[[ name ]] is an invalid date"
+msgstr "[[ name ]]是无效日期"
+
+msgid "[[ name ]] is an invalid email"
+msgstr "[[ name ]]是无效的电子邮件"
+
+msgid "[[ name ]] is an invalid json"
+msgstr "[[ name ]]是无效的 json"
+
+msgid "[[ name ]] is an invalid URL"
+msgstr "[[ name ]]是无效的 URL"
+
+msgid "[[ name ]] is invalid"
+msgstr "[[ name ]]无效"
+
+msgid "[[ name ]] is not a text"
+msgstr "[[ name ]]不是文本"
+
+msgid "[[ name ]] is required"
+msgstr "[[ name ]]为必填项"
+
+msgid "[[ name ]] should be a boolean"
+msgstr "[[ name ]]应是布尔值"
+
+msgid "[[ name ]] should be a color"
+msgstr "[[ name ]]应该是一种颜色值"
+
+msgid "[[ name ]] should be a number"
+msgstr "[[ name ]]应为数字"
+
+msgid "[[ name ]] should be greater than [[ length ]] characters"
+msgstr "[[ name ]]应大于[[ length ]]个字符"
+
+msgid "[[ name ]] should be greater than [[ otherField ]]"
+msgstr "[[ name ]]应大于[[ otherField ]]"
+
+msgid "[[ name ]] should be greater than [[ value ]]"
+msgstr "[[ name ]]应大于[[ value ]]"
+
+msgid "[[ name ]] should be less than [[ length ]] characters"
+msgstr "[[ name ]]应小于[[ length ]]个字符"
+
+msgid "[[ name ]] should be less than [[ otherField ]]"
+msgstr "[[ name ]]应小于[[ otherField ]]"
+
+msgid "[[ name ]] should be less than [[ value ]]"
+msgstr "[[ name ]]应小于[[ value ]]"
+
+msgid "[[ name ]] should be positive number"
+msgstr "[[ name ]]应为正数"
+
+msgid "[[ name ]] should contain only alphabets and numbers"
+msgstr "[[ name ]]只能包含字母和数字"
+
+msgid "[[ name ]] should contain only upper cases"
+msgstr "[[ name ]]只能包含大写字母"
+
+msgid "[[ name ]] should match [[ otherField ]]"
+msgstr "[[ name ]]应与[[ otherField ]]匹配"
+
+msgid "[[ name ]] should not match [[ otherField ]]"
+msgstr "[[ name ]]不应与匹配[[ otherField ]]"
+
+msgid "{0}"
+msgstr ""
+
+msgid "{0} - {1}"
+msgstr ""
+
+msgid "{0} [{1}]"
+msgstr ""
+
+msgid "{0} {1}"
+msgstr ""
+
+msgid "{0} Configuration"
+msgstr "{0}配置"
+
+msgid "{0} of the {1} items were not successfully {actionText}. You will find them selected"
+msgstr ""
+
+msgid "{0} Selections"
+msgstr ""
+
+msgid "{0} Validations"
+msgstr ""
+
+msgid "{option} / Page"
+msgstr ""
+
+msgid "{plural} Units"
+msgstr "{plural}单位"
+
+msgid "{singular} {action} Successfully"
+msgstr "{singular}{action}成功"
+
+msgid "{singular} could not be retrieved"
+msgstr "无法检索{singular}"
+
+msgid "{singular} Created Successfully"
+msgstr "{singular}创建成功"
+
+msgid "{singular} Deleted Successfully"
+msgstr "{singular}删除成功"
+
+msgid "{singular} Details"
+msgstr "{singular}细节"
+
+msgid "{singular} Saved Successfully"
+msgstr "{singular}保存成功"
+
+msgid "{singular} Settings"
+msgstr "{singular}设置"
+
+msgid "{singular} Unit"
+msgstr "{singular}单位"
+
+msgid "{singular} Updated Successfully"
+msgstr "{singular}更新成功"
+
+msgid "{value} Day"
+msgstr "{value}天"
+
+msgid "{value} Days"
+msgstr "{value}天"
+
+msgid "{value} Hour"
+msgstr "{value}小时"
+
+msgid "{value} Hours"
+msgstr "{value}小时"
+
+msgid "{value} Month"
+msgstr "{value}个月"
+
+msgid "{value} Months"
+msgstr "{value}个月"
+
+msgid "{value} Quarter"
+msgstr ""
+
+msgid "{value} Quarters"
+msgstr ""
+
+msgid "{value} Week"
+msgstr "{value}周"
+
+msgid "{value} Weeks"
+msgstr "{value}周"
+
+msgid "{value} Year"
+msgstr "{value}年"
+
+msgid "{value} Years"
+msgstr "{value}年"
+
+msgid "•Expression: \\n•JS-Error: {e}"
+msgstr ""
+
+msgid "2FA Tokens"
+msgstr "2FA令牌"
+
+msgid "Access Key ID"
+msgstr "访问密钥 ID"
+
+msgid "Account Preferences"
+msgstr "偏好设置"
+
+msgid "Account Profile"
+msgstr "账号信息"
+
+msgid "Account Setup"
+msgstr ""
+
+msgid "Account Was Successfully Setup"
+msgstr "账户设置成功"
+
+msgid "Accounts"
+msgstr ""
+
+msgid "Action"
+msgstr "动作"
+
+msgid "Actions"
+msgstr "动作"
+
+msgid "Activate {0}"
+msgstr "激活 {0}"
+
+msgid "Activated"
+msgstr ""
+
+msgid "Activating {0}"
+msgstr "激活 {0}"
+
+msgid "Add fields to this table from your prefer database tool to manage them here"
+msgstr ""
+
+msgid "Add Filter"
+msgstr "筛选"
+
+msgid "Add Nested Filter"
+msgstr "添加嵌套筛选"
+
+msgid "Add New {0} And Select"
+msgstr "创建新的并选择{0}"
+
+msgid "Add New {singular}"
+msgstr "添加新{singular}"
+
+msgid "Add New And Select"
+msgstr "创建新的并选中"
+
+msgid "Add New Option"
+msgstr "添加新选项"
+
+msgid "Add new tables through your preferred database editor then restart this application."
+msgstr ""
+
+msgid "Add New Validation"
+msgstr "添加新验证"
+
+msgid "All Dashboards"
+msgstr "所有仪表盘"
+
+msgid "All items were {actionText} successfully"
+msgstr "所有项目均已{actionText}成功"
+
+msgid "Allowed values are [[ options ]]"
+msgstr ""
+
+msgid "Alphanumeric"
+msgstr "字母数字"
+
+msgid "AND"
+msgstr "和"
+
+msgid "API Key"
+msgstr "Api 密钥"
+
+msgid "App"
+msgstr "APP"
+
+msgid "App Navigation"
+msgstr ""
+
+msgid "App Settings"
+msgstr ""
+
+msgid "Are you sure you want to do this?"
+msgstr ""
+
+msgid "Associated Triggers"
+msgstr "关联的触发器"
+
+msgid "Associated Workflows"
+msgstr "关联的工作流程"
+
+msgid "Attach A Trigger"
+msgstr "连接触发器"
+
+msgid "Attach A Workflow"
+msgstr "连接工作流"
+
+msgid "Authenticator Token"
+msgstr "身份验证器令牌"
+
+msgid "Back To {0}"
+msgstr "返回{0}"
+
+msgid "Back to Sign In Page"
+msgstr "返回登录页"
+
+msgid "Bar Chart"
+msgstr "饼图"
+
+msgid "Before Submit"
+msgstr "提交前"
+
+msgid "Beginning of time"
+msgstr ""
+
+msgid "Beginning of Year"
+msgstr ""
+
+msgid "Between"
+msgstr ""
+
+msgid "Body"
+msgstr ""
+
+msgid "Bookmark"
+msgstr "书签"
+
+msgid "Bookmarks"
+msgstr "书签"
+
+msgid "Boolean"
+msgstr "布尔值"
+
+msgid "Bulk Delete"
+msgstr "批量删除"
+
+msgid "Bulk Deleting"
+msgstr "批量删除"
+
+msgid "Bulk Update"
+msgstr "批量更新"
+
+msgid "Can Access All Dashboards"
+msgstr "可以访问所有仪表盘"
+
+msgid "Can Access And Restore Soft Deleted Items"
+msgstr "可访问和恢复软删除的项目"
+
+msgid "Can Configure App"
+msgstr "可以配置应用程序"
+
+msgid "Can Export Data"
+msgstr "可导出数据"
+
+msgid "Can Impersonate Users"
+msgstr "可模拟用户"
+
+msgid "Can Manage All Entities"
+msgstr "可管理所有实体"
+
+msgid "Can Manage App Credentials"
+msgstr "可管理应用程序凭证"
+
+msgid "Can Manage Dashboard"
+msgstr "可管理仪表板"
+
+msgid "Can Manage Permissions"
+msgstr "可管理权限"
+
+msgid "Can Manage Users"
+msgstr "可管理用户"
+
+msgid "Can Manages Flows"
+msgstr "可管理流程"
+
+msgid "Can Reset Password"
+msgstr "可重置密码"
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Change History"
+msgstr "变更历史"
+
+msgid "Change Language"
+msgstr "切换语言"
+
+msgid "Channel"
+msgstr "频道"
+
+msgid "Clear"
+msgstr ""
+
+msgid "Clear selections"
+msgstr "清除选择"
+
+msgid "Client Script"
+msgstr "客户端脚本"
+
+msgid "Clone"
+msgstr "复制"
+
+msgid "Clone {0}"
+msgstr "复制{0}"
+
+msgid "Clone Settings"
+msgstr "复制设置"
+
+msgid "Cloned"
+msgstr ""
+
+msgid "Cloning"
+msgstr "复制"
+
+msgid "Color"
+msgstr "颜色"
+
+msgid "Color Scheme"
+msgstr ""
+
+msgid "Column"
+msgstr "列"
+
+msgid "Column Labels Settings"
+msgstr "列标签设置"
+
+msgid "Column Types Settings"
+msgstr "列类型设置"
+
+msgid "Complete Setup"
+msgstr "完成设置"
+
+msgid "Completing Setup"
+msgstr "完成设置"
+
+msgid "Condition"
+msgstr "条件"
+
+msgid "Configurations"
+msgstr ""
+
+msgid "Configure"
+msgstr "设置"
+
+msgid "Configure Selections"
+msgstr "配置选择"
+
+msgid "Configure Validation"
+msgstr "配置验证方式"
+
+msgid "Confirm Data Restoration"
+msgstr "确认数据还原"
+
+msgid "Confirm Delete"
+msgstr ""
+
+msgid "Confirmation Text"
+msgstr "确认文字"
+
+msgid "Connection URL"
+msgstr "连接链接"
+
+msgid "Constant"
+msgstr "常量"
+
+msgid "Constants"
+msgstr "常量"
+
+msgid "Contains"
+msgstr ""
+
+msgid "Continue"
+msgstr "继续"
+
+msgid "Copy To Clipboard"
+msgstr "复制到剪贴板"
+
+msgid "Could not parse Javascript"
+msgstr ""
+
+msgid "Create"
+msgstr "创建"
+
+msgid "Create {singular}"
+msgstr "创建{singular}"
+
+msgid "Create Columns Settings"
+msgstr "创建列设置"
+
+msgid "Create Fields Order"
+msgstr "创建字段顺序"
+
+msgid "Create first super admin account"
+msgstr ""
+
+msgid "Create It"
+msgstr "创建"
+
+msgid "Created At"
+msgstr "创建时间"
+
+msgid "Creating {singular}"
+msgstr "创建{singular}"
+
+msgid "Credentials Was Successfully Setup"
+msgstr "证书设置成功"
+
+msgid "Cron Expression"
+msgstr "Cron表达式"
+
+msgid "CRUD"
+msgstr "CRUD"
+
+msgid "CRUD Settings"
+msgstr "CRUD设置"
+
+msgid "cURL Command"
+msgstr "cURL命令"
+
+msgid "Curve"
+msgstr "曲线"
+
+msgid "Custom Action"
+msgstr "自定义操作"
+
+msgid "Custom Actions"
+msgstr "自定义操作"
+
+msgid "Custom Dashboard"
+msgstr "自定义仪表盘"
+
+msgid "Custom Dashboards"
+msgstr "自定义仪表盘"
+
+msgid "Custom Date"
+msgstr ""
+
+msgid "Dashboard"
+msgstr "仪表盘"
+
+msgid "Dashboard Widget"
+msgstr "仪表盘组件"
+
+msgid "Dashboard Widgets"
+msgstr "仪表盘组件"
+
+msgid "Dashboards"
+msgstr "仪表盘"
+
+msgid "Data"
+msgstr "数据"
+
+msgid "Data copied to clipboard successfully"
+msgstr "数据已成功复制到剪贴板"
+
+msgid "Data Event"
+msgstr "数据事件"
+
+msgid "Data Events"
+msgstr "数据事件"
+
+msgid "Data exported successfully"
+msgstr "数据导出成功"
+
+msgid "Data Key"
+msgstr "数据键值"
+
+msgid "Database"
+msgstr "数据库"
+
+msgid "Database Type"
+msgstr "数据库类型"
+
+msgid "Date"
+msgstr "日期"
+
+msgid "Date Format"
+msgstr "日期格式"
+
+msgid "Day"
+msgstr ""
+
+msgid "Deactivate"
+msgstr "停用"
+
+msgid "Deactivate {0}"
+msgstr "停用{0}"
+
+msgid "Deactivated"
+msgstr ""
+
+msgid "Deactivating {0}"
+msgstr "停用{0}"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "Delete {singular}"
+msgstr "删除{singular}"
+
+msgid "Delete Edge"
+msgstr ""
+
+msgid "Delete Selection"
+msgstr "删除所选内容"
+
+msgid "Description"
+msgstr "描述"
+
+msgid "Details"
+msgstr "查看详情"
+
+msgid "Details Columns Settings"
+msgstr "详细信息列设置"
+
+msgid "Details Fields Order"
+msgstr "详情 字段 顺序"
+
+msgid "Diction"
+msgstr "字典"
+
+msgid "Diction Settings"
+msgstr "字典设置"
+
+msgid "Display Format"
+msgstr "显示格式"
+
+msgid "Domain"
+msgstr "域名"
+
+msgid "Done"
+msgstr "完成"
+
+msgid "Download"
+msgstr "导出"
+
+msgid "Duplicate {singular}"
+msgstr "重复{singular}"
+
+msgid "Edit"
+msgstr "编辑"
+
+msgid "Edit {singular}"
+msgstr "修改{singular}"
+
+msgid "Email"
+msgstr "邮件"
+
+msgid "Empty Table"
+msgstr ""
+
+msgid "Enable {0} Functionality"
+msgstr "启用{0}功能"
+
+msgid "Enable Area"
+msgstr "启用区域"
+
+msgid "Enable Points"
+msgstr "启用点"
+
+msgid "Enable two-factor authentication"
+msgstr ""
+
+msgid "Enabled Entities"
+msgstr "已启用实体"
+
+msgid "Enabled Entities Settings"
+msgstr "启用实体设置"
+
+msgid "Enabled Relations"
+msgstr "已启用关系"
+
+msgid "Enter a security token from your authenticator app"
+msgstr ""
+
+msgid "Enter one of your unsed recovery codes"
+msgstr ""
+
+msgid "Enter your credentials to continue"
+msgstr "输入您的凭证以继续"
+
+msgid "Enter your database credentials to continue"
+msgstr ""
+
+msgid "Entities"
+msgstr "实体"
+
+msgid "Entities Enabled For Add New And Select"
+msgstr "可添加新实体和选择实体"
+
+msgid "Entities Enabled For Change History"
+msgstr "启用变更历史的实体"
+
+msgid "Entity"
+msgstr "实体"
+
+msgid "Entity Action"
+msgstr "实体操作"
+
+msgid "Entity Create Form Layout"
+msgstr "实体创建表单布局"
+
+msgid "Entity Field"
+msgstr "实体字段"
+
+msgid "Entity ID"
+msgstr "实体ID"
+
+msgid "Entity Tab"
+msgstr "实体选项卡"
+
+msgid "Entity Update Form Layout"
+msgstr "更新实体表单布局"
+
+msgid "Environment Variable"
+msgstr "环境变量"
+
+msgid "Environment Variables"
+msgstr "环境变量"
+
+msgid "Equal"
+msgstr ""
+
+msgid "Equal To Other Field"
+msgstr "与其他字段相同"
+
+msgid "Error message"
+msgstr "错误信息"
+
+msgid "Error Occured Setting Up Your 2FA Token"
+msgstr "设置2FA令牌时发生错误"
+
+msgid "Every 6 Hours"
+msgstr "每6小时"
+
+msgid "Explain {title}"
+msgstr "解释{title}"
+
+msgid "Export"
+msgstr "导出"
+
+msgid "Exporting"
+msgstr "导出"
+
+msgid "External Link"
+msgstr "外部链接"
+
+msgid "Field"
+msgstr "字段"
+
+msgid "Field Corresponding To Dashpress Usernames"
+msgstr "与Dashpress用户名对应的字段"
+
+msgid "Field Settings"
+msgstr "字段设置"
+
+msgid "Fields"
+msgstr "字段"
+
+msgid "Fields State"
+msgstr "字段状态"
+
+msgid "File"
+msgstr "文件"
+
+msgid "File Name"
+msgstr "文件名"
+
+msgid "File Name Format"
+msgstr "文件名格式"
+
+msgid "File Path Format"
+msgstr "文件路径格式"
+
+msgid "File Storage"
+msgstr "存储设置"
+
+msgid "File Uploads Settings"
+msgstr "文件上传设置"
+
+msgid "Flow"
+msgstr "Flow"
+
+msgid "Flow Trigger Attachment"
+msgstr "触发流程附件"
+
+msgid "Flow Trigger Attachments"
+msgstr "触发流程附件"
+
+msgid "Flows"
+msgstr "Flow"
+
+msgid "Follow us on Twitter"
+msgstr "关注我们的推特"
+
+msgid "For security reasons, Please input your account password to reveal credentials"
+msgstr ""
+
+msgid "Form"
+msgstr "表单"
+
+msgid "Form Action"
+msgstr "表单操作"
+
+msgid "Form Actions"
+msgstr "表单操作"
+
+msgid "Form Field"
+msgstr "表单字段"
+
+msgid "Form Fields"
+msgstr "表单字段"
+
+msgid "Form Scripts"
+msgstr "表单脚本"
+
+msgid "Format"
+msgstr "格式"
+
+msgid "From"
+msgstr "来自"
+
+msgid "General"
+msgstr "一般"
+
+msgid "General Data Settings"
+msgstr "常规数据设置"
+
+msgid "Genesis"
+msgstr "起源"
+
+msgid "Global Action"
+msgstr "全局操作"
+
+msgid "Go Back"
+msgstr "返回"
+
+msgid "Greater Than"
+msgstr ""
+
+msgid "Greater Than Other Field"
+msgstr "大于其他字段"
+
+msgid "Group Mode"
+msgstr "群组模式"
+
+msgid "Grouped"
+msgstr "群组"
+
+msgid "Header"
+msgstr "头部"
+
+msgid "Headers"
+msgstr "头部"
+
+msgid "Height"
+msgstr "高度"
+
+msgid "Hi, {0}"
+msgstr "你好，{0}"
+
+msgid "Hide Password"
+msgstr ""
+
+msgid "Home"
+msgstr "首页"
+
+msgid "Home Link"
+msgstr "首页链接"
+
+msgid "Horizontal"
+msgstr "水平"
+
+msgid "Host"
+msgstr "主机"
+
+msgid "Hour"
+msgstr ""
+
+msgid "I have safely saved my recovery tokens"
+msgstr "我已安全保存了我的恢复令牌"
+
+msgid "I Want To Help With Translation"
+msgstr ""
+
+msgid "Icon"
+msgstr "图标"
+
+msgid "ID"
+msgstr ""
+
+msgid "Image"
+msgstr "图像"
+
+msgid "Impersonate User"
+msgstr "模拟用户"
+
+msgid "Impersonating User"
+msgstr "模拟用户"
+
+msgid "Incorrect value"
+msgstr "错误值"
+
+msgid "Initial Values"
+msgstr "初始值"
+
+msgid "Inline Edit"
+msgstr "行内编辑"
+
+msgid "Inline Edit Settings"
+msgstr "行内编辑"
+
+msgid "Input {deactivationKey} to continue"
+msgstr "输入{deactivationKey}继续"
+
+msgid "Input Validation"
+msgstr ""
+
+msgid "Integration"
+msgstr "集成"
+
+msgid "Integrations"
+msgstr "集成"
+
+msgid "Invalid Date Format"
+msgstr ""
+
+msgid "IP Address"
+msgstr "IP地址"
+
+msgid "Is In"
+msgstr "位于"
+
+msgid "Is Not In"
+msgstr ""
+
+msgid "Is Not Null"
+msgstr ""
+
+msgid "Is Null"
+msgstr ""
+
+msgid "Join our Discord community"
+msgstr "加入我们社区"
+
+msgid "JSON"
+msgstr ""
+
+msgid "Key"
+msgstr ""
+
+msgid "Label"
+msgstr "标签"
+
+msgid "Labels"
+msgstr "标签"
+
+msgid "Language"
+msgstr "语言"
+
+msgid "Large Logo"
+msgstr "大图标"
+
+msgid "Layout"
+msgstr ""
+
+msgid "Less Than"
+msgstr ""
+
+msgid "Less Than Other Field"
+msgstr "小于其他字段"
+
+msgid "Line Chart"
+msgstr "折线图"
+
+msgid "Link"
+msgstr "链接"
+
+msgid "Link Entity"
+msgstr "实体链接"
+
+msgid "Link Users To Database"
+msgstr "建立用户数据库"
+
+msgid "List"
+msgstr "列表"
+
+msgid "Loading..."
+msgstr "加载中..."
+
+msgid "Log Out"
+msgstr "退出登录"
+
+msgid "Loop"
+msgstr "循环"
+
+msgid "Manage {plural}"
+msgstr "管理{plural}"
+
+msgid "Manage {title}"
+msgstr "管理{title}"
+
+msgid "Manage Plan"
+msgstr "管理计划"
+
+msgid "Manage Sensitive Fields"
+msgstr "管理敏感字段"
+
+msgid "Manage Variables"
+msgstr "变量管理"
+
+msgid "Max"
+msgstr "最大限度"
+
+msgid "Max Length"
+msgstr "最长长度"
+
+msgid "Maximum file size to upload in MB"
+msgstr "上传的最大文件大小（MB）"
+
+msgid "Menu Item"
+msgstr "菜单选项"
+
+msgid "Menu Settings"
+msgstr "菜单设置"
+
+msgid "Menu Updated Successfully"
+msgstr ""
+
+msgid "Message"
+msgstr "信息"
+
+msgid "Metadata Columns"
+msgstr "元数据列"
+
+msgid "Min"
+msgstr "最小"
+
+msgid "Min Length"
+msgstr "最小长度"
+
+msgid "Modify Data Before Cloning"
+msgstr "复制前修改数据"
+
+msgid "Month"
+msgstr ""
+
+msgid "Mutate"
+msgstr "变异"
+
+msgid "My Account"
+msgstr "我的账户"
+
+msgid "Name"
+msgstr "名称"
+
+msgid "Navigation Menu"
+msgstr "导航菜单"
+
+msgid "New"
+msgstr "新"
+
+msgid "New Password"
+msgstr "新密码"
+
+msgid "New Password Again"
+msgstr "重复新密码"
+
+msgid "New Value"
+msgstr "新值"
+
+msgid "No"
+msgstr ""
+
+msgid "No {singular} Has Been Added Yet"
+msgstr "没有{singular}被添加"
+
+msgid "No available permission for this section"
+msgstr "此部分无可用权限"
+
+msgid "No Data"
+msgstr "无数据"
+
+msgid "No Options"
+msgstr ""
+
+msgid "No result for the current {0} applied."
+msgstr "当前{0}没有结果。"
+
+msgid "No Search Results"
+msgstr ""
+
+msgid "Node"
+msgstr "节点"
+
+msgid "Node Label"
+msgstr "节点标签"
+
+msgid "Node Properties"
+msgstr "节点属性"
+
+msgid "Nodes"
+msgstr "节点"
+
+msgid "Not Equal"
+msgstr ""
+
+msgid "Not Equal To Other Field"
+msgstr "不等于其他字段"
+
+msgid "Now"
+msgstr "当前"
+
+msgid "Number"
+msgstr "数字"
+
+msgid "Old Password"
+msgstr "旧密码"
+
+msgid "Old Value"
+msgstr "旧值"
+
+msgid "On Create"
+msgstr "创建"
+
+msgid "On Delete"
+msgstr "删除"
+
+msgid "On Update"
+msgstr "更新"
+
+msgid "Only capital letters and underscores are allowed"
+msgstr "仅允许使用大写字母和下划线(_)"
+
+msgid "Only lowercase letters, numbers and {delimiter} are allowed"
+msgstr "仅允许小写字母、数字和{delimiter}"
+
+msgid "Operator"
+msgstr "操作员"
+
+msgid "OR"
+msgstr "或"
+
+msgid "Order"
+msgstr "顺序"
+
+msgid "Ordered"
+msgstr ""
+
+msgid "Password"
+msgstr "密码"
+
+msgid "Password Reset Successfully"
+msgstr "密码重置成功"
+
+msgid "Password will not be changed on demo account"
+msgstr "演示账户的密码将不会被更改"
+
+msgid "Persistent Query"
+msgstr "持久查询"
+
+msgid "Personalize This Table"
+msgstr "个性化表格"
+
+msgid "Pick a date"
+msgstr ""
+
+msgid "Pie Chart"
+msgstr "饼图"
+
+msgid "Please go to {DATE_FORMAT_LIB_LINK} to see valid formats"
+msgstr ""
+
+msgid "Plural"
+msgstr "复数"
+
+msgid "Port"
+msgstr "端口"
+
+msgid "Positive Number"
+msgstr "正值"
+
+msgid "Preferences"
+msgstr "偏好设置"
+
+msgid "Presentation Scripts"
+msgstr "演示脚本"
+
+msgid "Preview"
+msgstr "预览"
+
+msgid "Profile"
+msgstr "个人信息"
+
+msgid "Quarter"
+msgstr ""
+
+msgid "Query"
+msgstr "查询"
+
+msgid "Recovery Code"
+msgstr "恢复码"
+
+msgid "Recovery tokens copied to clipboard"
+msgstr "恢复令牌已复制到剪贴板"
+
+msgid "Reference"
+msgstr "参考"
+
+msgid "Reference Template"
+msgstr "参考模板"
+
+msgid "Regex"
+msgstr "正则表达式"
+
+msgid "Region"
+msgstr "地区"
+
+msgid "Relation Labels"
+msgstr "关系标签"
+
+msgid "Relation Template"
+msgstr "关系模板"
+
+msgid "Relations"
+msgstr "关联"
+
+msgid "Relations Order"
+msgstr "关系顺序"
+
+msgid "Relations To Clone Along"
+msgstr "复制关联信息"
+
+msgid "Relationship Settings"
+msgstr "关联设置"
+
+msgid "Remember Me"
+msgstr "记住我"
+
+msgid "Remove"
+msgstr "移除"
+
+msgid "Remove Nested Filter"
+msgstr "移除嵌套过滤器"
+
+msgid "Request Failed"
+msgstr ""
+
+msgid "Request ID"
+msgstr "请求ID"
+
+msgid "Request Method"
+msgstr "请求方法"
+
+msgid "Required"
+msgstr "必填项"
+
+msgid "Reset"
+msgstr ""
+
+msgid "Reset 2FA Recovery Tokens"
+msgstr "重置2FA恢复令牌"
+
+msgid "Reset Password"
+msgstr "重置密码"
+
+msgid "Reset Recovery Tokens"
+msgstr "重置恢复令牌"
+
+msgid "Reset User Password"
+msgstr "重置用户密码"
+
+msgid "Resetting Password"
+msgstr "重置密码"
+
+msgid "Response"
+msgstr "响应"
+
+msgid "Restore"
+msgstr "恢复"
+
+msgid "Restored"
+msgstr ""
+
+msgid "results"
+msgstr ""
+
+msgid "Reveal Credentials"
+msgstr ""
+
+msgid "Revealing Credentials"
+msgstr ""
+
+msgid "Rich Text"
+msgstr "富文本"
+
+msgid "Role"
+msgstr "角色"
+
+msgid "Role Permission"
+msgstr "角色权限"
+
+msgid "Role Permissions"
+msgstr "角色权限"
+
+msgid "Roles"
+msgstr "角色"
+
+msgid "Route ID"
+msgstr "路由ID"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Save {singular}"
+msgstr "保存{singular}"
+
+msgid "Save Current Filters"
+msgstr "保存当前过滤器"
+
+msgid "Saving"
+msgstr "保存"
+
+msgid "Saving {singular}"
+msgstr "保存{singular}"
+
+msgid "Scheduler"
+msgstr "调度器"
+
+msgid "Schedulers"
+msgstr "调度器"
+
+msgid "Script"
+msgstr "脚本"
+
+msgid "Search"
+msgstr ""
+
+msgid "Secret"
+msgstr "密钥"
+
+msgid "Secret Access Key"
+msgstr "访问密钥"
+
+msgid "Secrets"
+msgstr "密钥"
+
+msgid "Select {0}"
+msgstr ""
+
+msgid "Select {0} Type"
+msgstr ""
+
+msgid "Select Count"
+msgstr ""
+
+msgid "Select Date Option"
+msgstr ""
+
+msgid "Select Node Type"
+msgstr "选择节点类型"
+
+msgid "Select Operator"
+msgstr ""
+
+msgid "Select Option"
+msgstr ""
+
+msgid "Select Page Size"
+msgstr ""
+
+msgid "Select Trigger"
+msgstr "选择触发条件"
+
+msgid "Select Value"
+msgstr ""
+
+msgid "Select Workflow"
+msgstr "选择工作流"
+
+msgid "Selection"
+msgstr "选择"
+
+msgid "Selection List"
+msgstr "选择列表"
+
+msgid "Selections Settings"
+msgstr "选择设置"
+
+msgid "Send Mail"
+msgstr "发邮件"
+
+msgid "Send Message"
+msgstr "发信息"
+
+msgid "Send SMS"
+msgstr "发送SMS"
+
+msgid "Sender Email"
+msgstr "发件人电子邮件"
+
+msgid "Sender Name"
+msgstr "发件人名称"
+
+msgid "Sensitive Field"
+msgstr "敏感字段"
+
+msgid "Sensitive Fields"
+msgstr "敏感字段"
+
+msgid "Setting Up Account"
+msgstr "账户设置"
+
+msgid "Setting Up Credentials"
+msgstr "设置凭据"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Setup"
+msgstr "配置"
+
+msgid "Setup Account"
+msgstr "配置账户"
+
+msgid "Setup Credentials"
+msgstr "配置凭据"
+
+msgid "Setup DB credentials"
+msgstr ""
+
+msgid "Share"
+msgstr "分享"
+
+msgid "Shared"
+msgstr ""
+
+msgid "Sharing"
+msgstr "分享"
+
+msgid "Show"
+msgstr ""
+
+msgid "Show Password"
+msgstr ""
+
+msgid "Show Soft Deleted Items And The Restore Button"
+msgstr "显示软删除项目和恢复按钮"
+
+msgid "Show Up In Roles And Permissions"
+msgstr "显示在角色和权限中"
+
+msgid "Sign In"
+msgstr "登录"
+
+msgid "Signing In"
+msgstr "正在登录"
+
+msgid "Singular"
+msgstr ""
+
+msgid "Site"
+msgstr "站点"
+
+msgid "Site Settings"
+msgstr "站点设置"
+
+msgid "Small Logo"
+msgstr "小图标"
+
+msgid "Soft Delete"
+msgstr "软删除"
+
+msgid "Soft Delete Settings"
+msgstr "软删除设置"
+
+msgid "Soft deleted data cannot be updated. Kindly restore the data to be able to update it"
+msgstr ""
+
+msgid "Stacked"
+msgstr "堆叠"
+
+msgid "Star us on Github"
+msgstr "谢谢给我们项目Star"
+
+msgid "Start of year"
+msgstr "年初"
+
+msgid "Start Typing"
+msgstr ""
+
+msgid "State Script"
+msgstr "状态脚本"
+
+msgid "Storage Key"
+msgstr "存储密钥"
+
+msgid "Strategy"
+msgstr "策略"
+
+msgid "String"
+msgstr ""
+
+msgid "Subject"
+msgstr "主题"
+
+msgid "Submit"
+msgstr "提交"
+
+msgid "Submitting"
+msgstr "提交"
+
+msgid "Summary Card"
+msgstr "摘要卡片"
+
+msgid "SVG"
+msgstr ""
+
+msgid "System"
+msgstr "系统"
+
+msgid "System Info"
+msgstr "系统设置"
+
+msgid "System Settings"
+msgstr "系统设置"
+
+msgid "Table"
+msgstr "表格"
+
+msgid "Table Columns Settings"
+msgstr "表格列设置"
+
+msgid "Table Fields Order"
+msgstr "表字段顺序"
+
+msgid "Table Personalization"
+msgstr "表格个性化"
+
+msgid "Table Personalizations"
+msgstr "表格个性化"
+
+msgid "Table View"
+msgstr "表格视图"
+
+msgid "Table Views"
+msgstr "表格视图"
+
+msgid "Test Widget Script"
+msgstr "测试部件脚本"
+
+msgid "Text"
+msgstr "文本"
+
+msgid "Textarea"
+msgstr "文本区域"
+
+msgid "That feature is not enabled on your current plan."
+msgstr ""
+
+msgid "Theme"
+msgstr "主题"
+
+msgid "Theme Settings"
+msgstr "主题设置"
+
+msgid "This {0} Has No Form"
+msgstr "此{0}无表格"
+
+msgid "This action does not have configuration"
+msgstr ""
+
+msgid "This entity has no fields"
+msgstr ""
+
+msgid "This entity has no relations"
+msgstr "该实体没有关联"
+
+msgid "This flow should be queued and executed asynchronously (recommended for long running flows, requires Redis)"
+msgstr "此流程应该排队并异步执行（建议用于长时间运行的流程，需要 Redis）"
+
+msgid "This trigger has no workflow attached"
+msgstr "此触发器未附加任何工作流"
+
+msgid "This workflow has no trigger attached"
+msgstr "此工作流程未附加触发器"
+
+msgid "Time Changed"
+msgstr "时间变化"
+
+msgid "Title"
+msgstr "标题"
+
+msgid "To"
+msgstr ""
+
+msgid "Toggle Connection URL"
+msgstr "切换连接"
+
+msgid "Token"
+msgstr "令牌"
+
+msgid "Token Validity Duration In Days"
+msgstr "令牌有效期（天）"
+
+msgid "Trigger"
+msgstr "触发器"
+
+msgid "Try Out 25+ Pro Features"
+msgstr "试用25+专业功能"
+
+msgid "Two Factor Authentication"
+msgstr ""
+
+msgid "Type"
+msgstr "类型"
+
+msgid "Unauthorized Access"
+msgstr ""
+
+msgid "Update"
+msgstr "更新"
+
+msgid "Update {singular}"
+msgstr "更新{singular}"
+
+msgid "Update Columns Settings"
+msgstr "更新列设置"
+
+msgid "Update Fields Order"
+msgstr "更新字段顺序"
+
+msgid "Updated At"
+msgstr "更新时间"
+
+msgid "Updating {singular}"
+msgstr "更新{singular}"
+
+msgid "Uppercase"
+msgstr "大写"
+
+msgid "URL"
+msgstr ""
+
+msgid "Use Colors"
+msgstr "使用颜色"
+
+msgid "Use Icon"
+msgstr ""
+
+msgid "Use OTP Token"
+msgstr ""
+
+msgid "Use Recovery Code"
+msgstr ""
+
+msgid "Use SSL"
+msgstr "使用SSL"
+
+msgid "Use SVG"
+msgstr ""
+
+msgid "User"
+msgstr "用户"
+
+msgid "Username"
+msgstr "用户名"
+
+msgid "Users"
+msgstr "用户"
+
+msgid "Users Link To Database"
+msgstr "建立用户数据库"
+
+msgid "Users to Database Link"
+msgstr "数据库的链接"
+
+msgid "Validations"
+msgstr "验证"
+
+msgid "Value"
+msgstr "值"
+
+msgid "Variables"
+msgstr "变量"
+
+msgid "Verifing"
+msgstr "验证"
+
+msgid "Verify"
+msgstr "验证"
+
+msgid "Vertical"
+msgstr "垂直"
+
+msgid "View"
+msgstr "查看"
+
+msgid "View Details"
+msgstr ""
+
+msgid "View Full Details"
+msgstr "查看详情"
+
+msgid "Visit our website"
+msgstr "访问我们网站"
+
+msgid "Webhook"
+msgstr ""
+
+msgid "Webhooks"
+msgstr ""
+
+msgid "Week"
+msgstr ""
+
+msgid "Widget Script"
+msgstr "部件脚本"
+
+msgid "Width"
+msgstr "宽度"
+
+msgid "Workflow"
+msgstr "工作流"
+
+msgid "Workflows"
+msgstr "工作流"
+
+msgid "X Label"
+msgstr "X轴标签"
+
+msgid "Y Label"
+msgstr "Y轴标签"
+
+msgid "Year"
+msgstr ""
+
+msgid "Yes"
+msgstr "是"
+
+msgid "You dont have the permission to view this page"
+msgstr ""
+
+msgid "You have {0} recovery tokens left. You can generate new ones from your account page"
+msgstr ""
+
+msgid "Your Users Table"
+msgstr "用户表"

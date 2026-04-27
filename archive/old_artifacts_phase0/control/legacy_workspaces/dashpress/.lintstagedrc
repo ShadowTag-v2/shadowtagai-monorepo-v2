@@ -1,0 +1,6 @@
+{
+  "src/**/*.{json,ts,tsx}": [
+    "npm run lint:fix",
+    "node ./scripts/ci"
+  ]
+}

@@ -1,0 +1,122 @@
+require 'json'
+
+# Uncomment these two lines and specify an *unsupported* testing version of firebase-ios-sdk
+# to check things before release in cooperation with firebase-ios-sdk team
+# source 'https://github.com/firebase/SpecsStaging'
+ source 'https://cdn.cocoapods.org/'
+
+# Settings to test various overrides if desired
+appPackage = JSON.parse(File.read(File.join('..', 'node_modules', '@react-native-firebase', 'app', 'package.json')))
+$FirebaseSDKVersion = appPackage['sdkVersions']['ios']['firebase']
+# $FirebaseSDKVersion = '10.17.0' # https://firebase.google.com/support/release-notes/ios
+Pod::UI.puts "react-native-firebase/tests: Using Firebase SDK version '#{$FirebaseSDKVersion}'"
+
+# Everything will be static with `use_frameworks!`, but you can set it manually for testing if desired
+# $RNFirebaseAsStaticFramework = true # toggle this to true (and set 'use_frameworks!' below to test static frameworks)
+
+# Toggle this to true for the no-ad-tracking Analytics subspec. Useful at minimum for Kids category apps.
+# See: https://firebase.google.com/support/release-notes/ios#analytics - requires firebase-ios-sdk 7.11.0+
+#$RNFirebaseAnalyticsWithoutAdIdSupport = true # toggle this to true for the no-ad-tracking Analytics subspec
+
+# Toggle this to true if you want to include support for on device conversion measurement APIs
+$RNFirebaseAnalyticsGoogleAppMeasurementOnDeviceConversion = true
+
+# Toggle this to true if you want to include optional support for extended analytics features
+$RNFirebaseAnalyticsEnableAdSupport = true
+
+# react-native 0.76 is currently iOS 15.1 as a minimum
+min_ios_version_supported = 15.1
+
+# We need new arch support in the iOS test runner now
+ENV['RCT_NEW_ARCH_ENABLED'] = '1'
+
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
+
+# set this to static and toggle '$RNFirebaseAsStaticFramework' above to test static frameworks)
+linkage = 'static' # ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+target 'testing' do
+  config = use_native_modules!
+
+  # Flags change depending on the env values.
+  flags = get_default_flags()
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  # Use pre-compiled firestore frameworks to optimize compile time.
+  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => $FirebaseSDKVersion
+
+  post_install do |installer|
+    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
+    )
+
+    installer.aggregate_targets.each do |aggregate_target|
+      aggregate_target.user_project.native_targets.each do |target|
+        target.build_configurations.each do |config|
+          # Arch selection is needed to work across M1/Intel macs, became necessary when App Check was added
+          config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
+          config.build_settings['EXCLUDED_ARCHS'] = 'i386'
+        end
+      end
+      aggregate_target.user_project.save
+    end
+
+
+    # Turn off warnings on non-RNFB dependencies - some of them are really really noisy
+    installer.pods_project.targets.each do |target|
+      if !target.name.include? "RNFB"
+        target.build_configurations.each do |config|
+          config.build_settings["GCC_WARN_INHIBIT_ALL_WARNINGS"] = "YES"
+        end
+      end
+    end
+
+    # Bumps minimum deploy target to ours (which is >12.4): https://github.com/facebook/react-native/issues/34106
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings["GCC_WARN_INHIBIT_ALL_WARNINGS"] = "YES"
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = min_ios_version_supported
+      end
+    end
+  end
+end
+
+# Fix Xcode 14 warnings like:
+# warning: Run script build phase '[CP] Copy XCFrameworks' will be run during every build because it does not specify any outputs. To address this warning, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'ATargetNameHere' from project 'YourProjectName')
+# Ref.: https://github.com/CocoaPods/CocoaPods/issues/11444
+post_integrate do |installer|
+  main_project = installer.aggregate_targets[0].user_project
+  pods_project = installer.pods_project
+  targets = main_project.targets + pods_project.targets
+  targets.each do |target|
+    run_script_build_phases = target.build_phases.filter { |phase| phase.is_a?(Xcodeproj::Project::Object::PBXShellScriptBuildPhase) }
+    cocoapods_run_script_build_phases = run_script_build_phases.filter { |phase| (phase.name&.start_with?("Create Symlinks to Header Folders") || phase.name&.start_with?("Bundle React Native") || phase.name&.start_with?("Copy Detox Framework")) }
+    cocoapods_run_script_build_phases.each do |run_script|
+      next unless (run_script.input_paths || []).empty? && (run_script.output_paths || []).empty?
+      run_script.always_out_of_date = "1"
+    end
+  end
+  main_project.save
+  pods_project.save
+end

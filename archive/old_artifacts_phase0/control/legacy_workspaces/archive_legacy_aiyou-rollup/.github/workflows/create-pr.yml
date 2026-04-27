@@ -1,0 +1,39 @@
+name: create-pr
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Source branch to PR'
+        required: true
+        default: 'main'
+      title:
+        description: 'PR title'
+        required: true
+        default: 'chore: automated PR'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.CREATE_PR_PAT || secrets.GITHUB_TOKEN }}
+          commit-message: ${{ github.event.inputs.title }}
+          title: ${{ github.event.inputs.title }}
+          body: 'Automated PR via workflow.'
+          branch: ${{ github.event.inputs.branch }}
+          base: main
+          signoff: true
+
+

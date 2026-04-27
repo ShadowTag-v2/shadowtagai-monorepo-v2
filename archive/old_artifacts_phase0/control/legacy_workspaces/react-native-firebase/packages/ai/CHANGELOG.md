@@ -1,0 +1,149 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [24.0.0](https://github.com/invertase/react-native-firebase/compare/v23.8.6...v24.0.0) (2026-04-01)
+
+### ⚠ BREAKING CHANGES
+
+- **firestore:** migrate to TypeScript and match firebase-js-sdk (#8892)
+
+### Features
+
+- **ai:** `CodeExecutionTool` types for allowing model to run code ([#8866](https://github.com/invertase/react-native-firebase/issues/8866)) ([81a0f19](https://github.com/invertase/react-native-firebase/commit/81a0f1910955a0295b6b308d5c08c17af0384b04))
+- **ai:** `SearchEntryPoint` in grounding metadata responses ([#8894](https://github.com/invertase/react-native-firebase/issues/8894)) ([6a35bec](https://github.com/invertase/react-native-firebase/commit/6a35bec5a252bd1d080cce6e0353956a74b860cf))
+- **ai:** `UrlContextTool` to inform responses from provided URLs ([#8893](https://github.com/invertase/react-native-firebase/issues/8893)) ([29cad20](https://github.com/invertase/react-native-firebase/commit/29cad202a1b9c08045d76f7b7ecf529fa3546c95))
+- **firestore:** Support for Firestore pipelines API ([#8931](https://github.com/invertase/react-native-firebase/issues/8931)) ([54021c4](https://github.com/invertase/react-native-firebase/commit/54021c4af427abc3c8e224b546d68661aa1fc590))
+
+### Bug Fixes
+
+- **web:** avoid react-native-specific polyfills on the web ([e5685a0](https://github.com/invertase/react-native-firebase/commit/e5685a0beecff912a92f9c9cb3cb508a6b9d7ae2))
+
+### Code Refactoring
+
+- **firestore:** migrate to TypeScript and match firebase-js-sdk ([#8892](https://github.com/invertase/react-native-firebase/issues/8892)) ([dba7a2a](https://github.com/invertase/react-native-firebase/commit/dba7a2accd55e7d9146c9abf38e6f31965a53c17))
+
+## [23.8.8](https://github.com/invertase/react-native-firebase/compare/v23.8.6...v23.8.8) (2026-03-12)
+
+### Bug Fixes
+
+- **web:** avoid react-native-specific polyfills on the web ([70ce925](https://github.com/invertase/react-native-firebase/commit/70ce925023872cf135a132f99adf80d7bc926296))
+
+## [23.8.7](https://github.com/invertase/react-native-firebase/compare/v23.8.6...v23.8.7) (2026-03-12)
+
+### Bug Fixes
+
+- **web:** avoid react-native-specific polyfills on the web ([70ce925](https://github.com/invertase/react-native-firebase/commit/70ce925023872cf135a132f99adf80d7bc926296))
+
+## [23.8.6](https://github.com/invertase/react-native-firebase/compare/v23.8.5...v23.8.6) (2026-02-03)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.8.5](https://github.com/invertase/react-native-firebase/compare/v23.8.4...v23.8.5) (2026-01-31)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.8.4](https://github.com/invertase/react-native-firebase/compare/v23.8.3...v23.8.4) (2026-01-24)
+
+### Bug Fixes
+
+- internal cross-module references to transpiled code must be dist not src ([b03db0a](https://github.com/invertase/react-native-firebase/commit/b03db0aa3fb748ee039826ccd9c7e73bc3c78f6f))
+- transpile typescript to module only, not module and commonjs ([c1ba2a8](https://github.com/invertase/react-native-firebase/commit/c1ba2a8ae84b564679dec82253cea728b2a7aabe))
+
+## [23.8.3](https://github.com/invertase/react-native-firebase/compare/v23.8.2...v23.8.3) (2026-01-16)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.8.2](https://github.com/invertase/react-native-firebase/compare/v23.8.1...v23.8.2) (2026-01-14)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.8.1](https://github.com/invertase/react-native-firebase/compare/v23.8.0...v23.8.1) (2026-01-13)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.8.0](https://github.com/invertase/react-native-firebase/compare/v23.7.0...v23.8.0) (2026-01-13)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.7.0](https://github.com/invertase/react-native-firebase/compare/v23.6.0...v23.7.0) (2025-12-08)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.6.0](https://github.com/invertase/react-native-firebase/compare/v23.5.0...v23.6.0) (2025-12-08)
+
+### Features
+
+- **ai:** firebase-js-sdk parity: template models and live API ([6572aa5](https://github.com/invertase/react-native-firebase/commit/6572aa5e06707ef47fad734b48c17da5d1ee943d))
+
+## [23.5.0](https://github.com/invertase/react-native-firebase/compare/v23.4.1...v23.5.0) (2025-10-30)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.4.1](https://github.com/invertase/react-native-firebase/compare/v23.4.0...v23.4.1) (2025-10-14)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.4.0](https://github.com/invertase/react-native-firebase/compare/v23.3.1...v23.4.0) (2025-09-24)
+
+### Features
+
+- **ai:** feature parity for AI package with Web SDK ([2eaee5b](https://github.com/invertase/react-native-firebase/commit/2eaee5bf61745aa2806c7b023d963409a14b70c0))
+
+## [23.3.1](https://github.com/invertase/react-native-firebase/compare/v23.3.0...v23.3.1) (2025-09-08)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.3.0](https://github.com/invertase/react-native-firebase/compare/v23.2.2...v23.3.0) (2025-09-04)
+
+### Features
+
+- **firebase-ai:** Imagen model support ([fb364ed](https://github.com/invertase/react-native-firebase/commit/fb364ed0dfc7e38d9a84ecd4fb13e18b54fba995))
+
+## [23.2.2](https://github.com/invertase/react-native-firebase/compare/v23.2.1...v23.2.2) (2025-09-03)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.2.1](https://github.com/invertase/react-native-firebase/compare/v23.2.0...v23.2.1) (2025-09-01)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.2.0](https://github.com/invertase/react-native-firebase/compare/v23.1.2...v23.2.0) (2025-08-29)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.1.2](https://github.com/invertase/react-native-firebase/compare/v23.1.1...v23.1.2) (2025-08-25)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.1.1](https://github.com/invertase/react-native-firebase/compare/v23.1.0...v23.1.1) (2025-08-22)
+
+**Note:** Version bump only for package @react-native-firebase/ai
+
+## [23.1.0](https://github.com/invertase/react-native-firebase/compare/v23.0.1...v23.1.0) (2025-08-19)
+
+### Features
+
+- **ai:** create `ai` package, `vertexai` wraps around it ([#8555](https://github.com/invertase/react-native-firebase/issues/8555)) ([50c9e0d](https://github.com/invertase/react-native-firebase/commit/50c9e0d8a361b575c6cbf86f028165906d819162))
+
+## Feature
+
+Initial release of the Firebase AI Logic SDK (`FirebaseAI`). This SDK _replaces_ the previous Vertex AI in Firebase SDK (`FirebaseVertexAI`) to accommodate the evolving set of supported features and services.
+The new Firebase AI Logic SDK provides **preview** support for the Gemini Developer API, including its free tier offering.
+Using the Firebase AI Logic SDK with the Vertex AI Gemini API is still generally available (GA).
+
+To start using the new SDK, import the `@react-native-firebase/ai` package and use the modular method `getAI()` to initialize. See details in the [migration guide](https://firebase.google.com/docs/vertex-ai/migrate-to-latest-sdk).
+
+Please update the following to move from VertexAI to FirebaseAI:
+
+```js
+// BEFORE - using firebase/vertexai
+import { initializeApp } from "firebase/app";
+~~import { getVertexAI, getGenerativeModel } from "firebase/vertexai";~~
+
+
+// AFTER - using firebase/ai
+import { initializeApp } from "firebase/app";
+import { getAI, getGenerativeModel } from "firebase/ai";
+```

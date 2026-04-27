@@ -1,0 +1,18 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Allow: /website/
+Allow: /website/og-image.png
+Allow: /icon.png
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://tawroot.github.io/antigravity-cleaner/sitemap.xml
+
+# Disallow build artifacts
+Disallow: /build/
+Disallow: /dist/
+Disallow: /.git/
+Disallow: /.github/

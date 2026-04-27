@@ -1,0 +1,262 @@
+import queue
+
+import pytest
+
+
+def test_install_error_formats_list():
+    """
+    If `InstallError` receives a list/tuple of deps, it should formats it into readable
+    comma-separated string instead of dumping Python repr.
+    """
+    from pipenv.exceptions import InstallError
+
+    exc = InstallError(["requests==2.32.0", "flask==3.0.0"])
+    text = str(exc)
+
+    assert "requests==2.32.0" in text
+    assert "flask==3.0.0" in text
+    assert "Couldn't install package" in text
+
+
+
+def test_cleanup_procs_raises_install_error_with_deps():
+    """
+    _cleanup_procs() should include the deps context from subprocess result
+    in the raised `InstallError` message when the pip subprocess fails.
+    """
+    from pipenv.exceptions import InstallError
+    from pipenv.routines.install import _cleanup_procs
+
+    class _Settings:
+        def is_verbose(self):
+            return False
+
+        def is_quiet(self):
+            return False
+
+    class _Project:
+        s = _Settings()
+
+    class _DummyProc:
+        def __init__(self):
+            self.returncode = 1
+            self.stdout = "pip stdout error details"
+            self.stderr = "pip stderr"
+            self.deps = ["requests==0.0.0", "flask==3.0.0"]
+
+        def communicate(self):
+            return (self.stdout, self.stderr)
+
+    procs = queue.Queue(maxsize=1)
+    procs.put(_DummyProc())
+
+    with pytest.raises(InstallError) as ctx:
+        _cleanup_procs(_Project(), procs)
+
+    text = str(ctx.value)
+    assert "requests==0.0.0" in text
+    assert "flask==3.0.0" in text
+
+
+
+def test_pip_install_deps_attaches_deps_to_subprocess(monkeypatch, tmp_path):
+    """
+    pip_install_deps() should attach deps to the returned subproccess result.
+    so error handling can display it.
+    """
+    from pipenv.utils import pip as pip_utils
+
+    class _Settings:
+        PIPENV_CACHE_DIR = str(tmp_path)
+        PIP_EXISTS_ACTION = None
+        PIPENV_KEYRING_PROVIDER = None
+
+        def is_verbose(self):
+            return False
+
+    class _Project:
+        s = _Settings()
+        settings = {}
+        virtualenv_src_location = str(tmp_path / "src")
+
+    # Patch helpers used to build the pip command so this stays a pure unit test
+    monkeypatch.setattr(pip_utils, "project_python", lambda project, system=False: "python")
+    monkeypatch.setattr(pip_utils, "get_runnable_pip", lambda: "pip")
+    monkeypatch.setattr(pip_utils, "get_pip_args", lambda *a, **k: [])
+    monkeypatch.setattr(pip_utils, "prepare_pip_source_args", lambda sources: [])
+    monkeypatch.setattr(pip_utils, "normalize_path", lambda p: p)
+    # Capture subprocess_run call and return a dummy proc object
+    class _DummyProc:
+        def __init__(self):
+            self.returncode = 0
+            self.stdout = ""
+            self.stderr = ""
+
+        def communicate(self):
+            return (self.stdout, self.stderr)
+
+    def _fake_subprocess_run(*args, **kwargs):
+        return _DummyProc()
+
+    monkeypatch.setattr(pip_utils, "subprocess_run", _fake_subprocess_run)
+
+    deps = ["requests==2.32.0"]
+    cmds = pip_utils.pip_install_deps(
+        project=_Project(),
+        deps=deps,
+        sources=[],
+        allow_global=False,
+        ignore_hashes=True,
+        no_deps=True,
+        requirements_dir=str(tmp_path),
+        use_pep517=True,
+        extra_pip_args=None,
+    )
+
+    assert len(cmds) >= 1
+    c = cmds[0]
+
+    assert hasattr(c, "deps")
+    assert c.deps == deps
+
+
+
+
+def test_pip_install_deps_suppresses_pip_conf(monkeypatch, tmp_path):
+    """pip_install_deps() should set PIP_CONFIG_FILE to os.devnull and override
+    PIP_INDEX_URL / PIP_EXTRA_INDEX_URL from the Pipfile sources so that
+    pip.conf index configuration cannot leak into the install subprocess.
+
+    This is a security hardening: pipenv's index restriction should be enforced
+    at install time, not just at resolution time.  See issues #6066, #5466.
+    """
+    import os
+
+    from pipenv.utils import pip as pip_utils
+
+    class _Settings:
+        PIPENV_CACHE_DIR = str(tmp_path)
+        PIP_EXISTS_ACTION = None
+        PIPENV_KEYRING_PROVIDER = None
+
+        def is_verbose(self):
+            return False
+
+    class _Project:
+        s = _Settings()
+        settings = {}
+        virtualenv_src_location = str(tmp_path / "src")
+
+    monkeypatch.setattr(pip_utils, "project_python", lambda project, system=False: "python")
+    monkeypatch.setattr(pip_utils, "get_runnable_pip", lambda: "pip")
+    monkeypatch.setattr(pip_utils, "get_pip_args", lambda *a, **k: [])
+    monkeypatch.setattr(pip_utils, "prepare_pip_source_args", lambda sources: [])
+    monkeypatch.setattr(pip_utils, "normalize_path", lambda p: p)
+
+    captured_env = {}
+
+    class _DummyProc:
+        def __init__(self):
+            self.returncode = 0
+            self.stdout = ""
+            self.stderr = ""
+
+        def communicate(self):
+            return (self.stdout, self.stderr)
+
+    def _fake_subprocess_run(*args, **kwargs):
+        captured_env.update(kwargs.get("env", {}))
+        return _DummyProc()
+
+    monkeypatch.setattr(pip_utils, "subprocess_run", _fake_subprocess_run)
+
+    sources = [
+        {"url": "https://pypi.org/simple", "verify_ssl": True, "name": "pypi"},
+        {"url": "https://custom.index/simple", "verify_ssl": True, "name": "custom"},
+    ]
+
+    pip_utils.pip_install_deps(
+        project=_Project(),
+        deps=["requests==2.32.0"],
+        sources=sources,
+        allow_global=False,
+        ignore_hashes=True,
+        no_deps=True,
+        requirements_dir=str(tmp_path),
+        use_pep517=True,
+        extra_pip_args=None,
+    )
+
+    # PIP_CONFIG_FILE must be set to os.devnull to prevent pip.conf from
+    # injecting extra indexes at install time.
+    assert captured_env.get("PIP_CONFIG_FILE") == os.devnull
+
+    # PIP_INDEX_URL must match the primary Pipfile source.
+    assert captured_env.get("PIP_INDEX_URL") == "https://pypi.org/simple"
+
+    # PIP_EXTRA_INDEX_URL must contain additional Pipfile sources.
+    assert captured_env.get("PIP_EXTRA_INDEX_URL") == "https://custom.index/simple"
+
+
+def test_pip_install_deps_single_source_no_extra_index(monkeypatch, tmp_path):
+    """When only one Pipfile source is declared, PIP_EXTRA_INDEX_URL should
+    not be set so pip doesn't contact any undeclared indexes."""
+    import os
+
+    from pipenv.utils import pip as pip_utils
+
+    class _Settings:
+        PIPENV_CACHE_DIR = str(tmp_path)
+        PIP_EXISTS_ACTION = None
+        PIPENV_KEYRING_PROVIDER = None
+
+        def is_verbose(self):
+            return False
+
+    class _Project:
+        s = _Settings()
+        settings = {}
+        virtualenv_src_location = str(tmp_path / "src")
+
+    monkeypatch.setattr(pip_utils, "project_python", lambda project, system=False: "python")
+    monkeypatch.setattr(pip_utils, "get_runnable_pip", lambda: "pip")
+    monkeypatch.setattr(pip_utils, "get_pip_args", lambda *a, **k: [])
+    monkeypatch.setattr(pip_utils, "prepare_pip_source_args", lambda sources: [])
+    monkeypatch.setattr(pip_utils, "normalize_path", lambda p: p)
+
+    captured_env = {}
+
+    class _DummyProc:
+        def __init__(self):
+            self.returncode = 0
+            self.stdout = ""
+            self.stderr = ""
+
+        def communicate(self):
+            return (self.stdout, self.stderr)
+
+    def _fake_subprocess_run(*args, **kwargs):
+        captured_env.update(kwargs.get("env", {}))
+        return _DummyProc()
+
+    monkeypatch.setattr(pip_utils, "subprocess_run", _fake_subprocess_run)
+
+    sources = [
+        {"url": "https://pypi.org/simple", "verify_ssl": True, "name": "pypi"},
+    ]
+
+    pip_utils.pip_install_deps(
+        project=_Project(),
+        deps=["requests==2.32.0"],
+        sources=sources,
+        allow_global=False,
+        ignore_hashes=True,
+        no_deps=True,
+        requirements_dir=str(tmp_path),
+        use_pep517=True,
+        extra_pip_args=None,
+    )
+
+    assert captured_env.get("PIP_CONFIG_FILE") == os.devnull
+    assert captured_env.get("PIP_INDEX_URL") == "https://pypi.org/simple"
+    assert "PIP_EXTRA_INDEX_URL" not in captured_env

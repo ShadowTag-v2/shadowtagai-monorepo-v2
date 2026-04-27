@@ -1,0 +1,1733 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2024-04-22 14:57+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: ru-ru\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+msgid ""
+msgstr ""
+
+msgid "[[ name ]] is an invalid date"
+msgstr "[[ name ]] неверная дата"
+
+msgid "[[ name ]] is an invalid email"
+msgstr "[[ name ]] неверный адрес электронной почты."
+
+msgid "[[ name ]] is an invalid json"
+msgstr "[[ name ]] неверный формат JSON."
+
+msgid "[[ name ]] is an invalid URL"
+msgstr "[[ name ]] неверный URL-адрес."
+
+msgid "[[ name ]] is invalid"
+msgstr "[[ name ]] неверно"
+
+msgid "[[ name ]] is not a text"
+msgstr "[[ name ]] не является текстом"
+
+msgid "[[ name ]] is required"
+msgstr "[[ name ]] требуется"
+
+msgid "[[ name ]] should be a boolean"
+msgstr "[[ name ]] должно быть логическим значением"
+
+msgid "[[ name ]] should be a color"
+msgstr "[[ name ]] должен быть цветом"
+
+msgid "[[ name ]] should be a number"
+msgstr "[[ name ]] должно быть числом"
+
+msgid "[[ name ]] should be greater than [[ length ]] characters"
+msgstr "[[ name ]] должно быть больше, чем [[ length ]] символов"
+
+msgid "[[ name ]] should be greater than [[ otherField ]]"
+msgstr "[[ name ]] должно быть больше, чем [[otherField ]]"
+
+msgid "[[ name ]] should be greater than [[ value ]]"
+msgstr "[[ name ]] должно быть больше, чем [[ value ]]"
+
+msgid "[[ name ]] should be less than [[ length ]] characters"
+msgstr "[[ name ]] должно быть меньше [[ length ]] символов"
+
+msgid "[[ name ]] should be less than [[ otherField ]]"
+msgstr "[[ name ]] должно быть меньше, чем [[otherField ]]"
+
+msgid "[[ name ]] should be less than [[ value ]]"
+msgstr "[[ name ]] должно быть меньше [[ value ]]"
+
+msgid "[[ name ]] should be positive number"
+msgstr "[[ name ]] должно быть положительным числом"
+
+msgid "[[ name ]] should contain only alphabets and numbers"
+msgstr "[[ name ]] должно содержать только буквы и цифры"
+
+msgid "[[ name ]] should contain only upper cases"
+msgstr "[[ name ]] должно содержать только заглавные буквы"
+
+msgid "[[ name ]] should match [[ otherField ]]"
+msgstr "[[ name ]] должно соответствовать [[otherField]]"
+
+msgid "[[ name ]] should not match [[ otherField ]]"
+msgstr "[[ name ]] не должно совпадать с [[otherField]]"
+
+msgid "{0}"
+msgstr "{0}"
+
+msgid "{0} - {1}"
+msgstr "{0} – {1}"
+
+msgid "{0} [{1}]"
+msgstr "{0} [{1}]"
+
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+msgid "{0} Configuration"
+msgstr "{0} Конфигурация"
+
+msgid "{0} of the {1} items were not successfully {actionText}. You will find them selected"
+msgstr ""
+
+msgid "{0} Selections"
+msgstr "{0} Выбор"
+
+msgid "{0} Validations"
+msgstr "{0} Проверки"
+
+msgid "{option} / Page"
+msgstr ""
+
+msgid "{plural} Units"
+msgstr "{plural} Единицы"
+
+msgid "{singular} {action} Successfully"
+msgstr "{singular} {action} успешно"
+
+msgid "{singular} could not be retrieved"
+msgstr "{singular} не удалось получить"
+
+msgid "{singular} Created Successfully"
+msgstr "{singular} Создано успешно"
+
+msgid "{singular} Deleted Successfully"
+msgstr "{singular} успешно удалено"
+
+msgid "{singular} Details"
+msgstr "{singular} Подробности"
+
+msgid "{singular} Saved Successfully"
+msgstr "{singular} успешно сохранено"
+
+msgid "{singular} Settings"
+msgstr "{singular} Настройки"
+
+msgid "{singular} Unit"
+msgstr "{singular} Единица"
+
+msgid "{singular} Updated Successfully"
+msgstr "{singular} успешно обновлено"
+
+msgid "{value} Day"
+msgstr "{value} день"
+
+msgid "{value} Days"
+msgstr "{value} дней"
+
+msgid "{value} Hour"
+msgstr "{value} час"
+
+msgid "{value} Hours"
+msgstr "{value} часов"
+
+msgid "{value} Month"
+msgstr "{value} Месяц"
+
+msgid "{value} Months"
+msgstr "{value} Месяцев"
+
+msgid "{value} Quarter"
+msgstr "{value} квартал"
+
+msgid "{value} Quarters"
+msgstr "{value} кварталы"
+
+msgid "{value} Week"
+msgstr "{value} неделя"
+
+msgid "{value} Weeks"
+msgstr "{value} Недели"
+
+msgid "{value} Year"
+msgstr "{value} Год"
+
+msgid "{value} Years"
+msgstr "{value} Годы"
+
+msgid "•Expression: \\n•JS-Error: {e}"
+msgstr ""
+
+msgid "2FA Tokens"
+msgstr "2FA-токены"
+
+msgid "Access Key ID"
+msgstr "Идентификатор ключа доступа"
+
+msgid "Account Preferences"
+msgstr "Настройки аккаунта"
+
+msgid "Account Profile"
+msgstr "Профиль учетной записи"
+
+msgid "Account Setup"
+msgstr ""
+
+msgid "Account Was Successfully Setup"
+msgstr "Аккаунт успешно настроен"
+
+msgid "Accounts"
+msgstr ""
+
+msgid "Action"
+msgstr "Действие"
+
+msgid "Actions"
+msgstr "Действия"
+
+msgid "Activate {0}"
+msgstr "Активировать {0}"
+
+msgid "Activated"
+msgstr "Активировано"
+
+msgid "Activating {0}"
+msgstr "Активация {0}"
+
+msgid "Add fields to this table from your prefer database tool to manage them here"
+msgstr "Добавьте поля в эту таблицу из предпочитаемого вами инструмента базы данных, чтобы управлять ими здесь."
+
+msgid "Add Filter"
+msgstr "Добавить фильтр"
+
+msgid "Add Nested Filter"
+msgstr "Добавить вложенный фильтр"
+
+msgid "Add New {0} And Select"
+msgstr "Добавить новый {0} и выбрать"
+
+msgid "Add New {singular}"
+msgstr "Добавить новый {singular}"
+
+msgid "Add New And Select"
+msgstr "Добавить новый и выбрать"
+
+msgid "Add New Option"
+msgstr "Добавить новую опцию"
+
+msgid "Add new tables through your preferred database editor then restart this application."
+msgstr "Добавьте новые таблицы через предпочитаемый вами редактор базы данных, а затем перезапустите это приложение."
+
+msgid "Add New Validation"
+msgstr "Добавить новую проверку"
+
+msgid "All Dashboards"
+msgstr "Все панели мониторинга"
+
+msgid "All items were {actionText} successfully"
+msgstr "Все элементы были успешно обработаны {actionText}"
+
+msgid "Allowed values are [[ options ]]"
+msgstr "Допустимые значения: [[ options ]]"
+
+msgid "Alphanumeric"
+msgstr "Буквенно-цифровой"
+
+msgid "AND"
+msgstr "И"
+
+msgid "API Key"
+msgstr "API-ключ"
+
+msgid "App"
+msgstr "Приложение"
+
+msgid "App Navigation"
+msgstr ""
+
+msgid "App Settings"
+msgstr ""
+
+msgid "Are you sure you want to do this?"
+msgstr ""
+
+msgid "Associated Triggers"
+msgstr "Связанные триггеры"
+
+msgid "Associated Workflows"
+msgstr "Связанные рабочие процессы"
+
+msgid "Attach A Trigger"
+msgstr "Прикрепите триггер"
+
+msgid "Attach A Workflow"
+msgstr "Прикрепите рабочий процесс"
+
+msgid "Authenticator Token"
+msgstr "Токен аутентификатора"
+
+msgid "Back To {0}"
+msgstr "Назад к {0}"
+
+msgid "Back to Sign In Page"
+msgstr "Вернуться на страницу входа"
+
+msgid "Bar Chart"
+msgstr "Гистограмма"
+
+msgid "Before Submit"
+msgstr "Перед отправкой"
+
+msgid "Beginning of time"
+msgstr ""
+
+msgid "Beginning of Year"
+msgstr ""
+
+msgid "Between"
+msgstr ""
+
+msgid "Body"
+msgstr "Тело"
+
+msgid "Bookmark"
+msgstr "Закладка"
+
+msgid "Bookmarks"
+msgstr "Закладки"
+
+msgid "Boolean"
+msgstr "логическое значение"
+
+msgid "Bulk Delete"
+msgstr "Массовое удаление"
+
+msgid "Bulk Deleting"
+msgstr "Массовое удаление"
+
+msgid "Bulk Update"
+msgstr "Массовое обновление"
+
+msgid "Can Access All Dashboards"
+msgstr "Может получить доступ ко всем информационным панелям"
+
+msgid "Can Access And Restore Soft Deleted Items"
+msgstr "Может получить доступ и восстановить случайно удаленные элементы"
+
+msgid "Can Configure App"
+msgstr "Можно настроить приложение"
+
+msgid "Can Export Data"
+msgstr "Может экспортировать данные"
+
+msgid "Can Impersonate Users"
+msgstr "Может выдавать себя за пользователей"
+
+msgid "Can Manage All Entities"
+msgstr "Может управлять всеми объектами"
+
+msgid "Can Manage App Credentials"
+msgstr "Может управлять учетными данными приложения"
+
+msgid "Can Manage Dashboard"
+msgstr "Может управлять панелью управления"
+
+msgid "Can Manage Permissions"
+msgstr "Может управлять разрешениями"
+
+msgid "Can Manage Users"
+msgstr "Может управлять пользователями"
+
+msgid "Can Manages Flows"
+msgstr "Может управлять потоками"
+
+msgid "Can Reset Password"
+msgstr "Можно сбросить пароль"
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Change History"
+msgstr "История изменений"
+
+msgid "Change Language"
+msgstr "Изменение языка"
+
+msgid "Channel"
+msgstr "Канал"
+
+msgid "Clear"
+msgstr ""
+
+msgid "Clear selections"
+msgstr "Очистить выбор"
+
+msgid "Client Script"
+msgstr "Клиентский скрипт"
+
+msgid "Clone"
+msgstr "Клонировать"
+
+msgid "Clone {0}"
+msgstr "Клонировать {0}"
+
+msgid "Clone Settings"
+msgstr "Настройки клонирования"
+
+msgid "Cloned"
+msgstr "Клонированный"
+
+msgid "Cloning"
+msgstr "Клонирование"
+
+msgid "Color"
+msgstr "Цвет"
+
+msgid "Color Scheme"
+msgstr ""
+
+msgid "Column"
+msgstr "Столбец"
+
+msgid "Column Labels Settings"
+msgstr "Настройки меток столбцов"
+
+msgid "Column Types Settings"
+msgstr "Настройки типов столбцов"
+
+msgid "Complete Setup"
+msgstr "Полная установка"
+
+msgid "Completing Setup"
+msgstr "Завершение установки"
+
+msgid "Condition"
+msgstr "Состояние"
+
+msgid "Configurations"
+msgstr ""
+
+msgid "Configure"
+msgstr "Настроить"
+
+msgid "Configure Selections"
+msgstr "Настройка выбора"
+
+msgid "Configure Validation"
+msgstr "Настройка проверки"
+
+msgid "Confirm Data Restoration"
+msgstr "Подтвердить восстановление данных"
+
+msgid "Confirm Delete"
+msgstr ""
+
+msgid "Confirmation Text"
+msgstr "Текст подтверждения"
+
+msgid "Connection URL"
+msgstr "URL-адрес подключения"
+
+msgid "Constant"
+msgstr "Постоянный"
+
+msgid "Constants"
+msgstr "Константы"
+
+msgid "Contains"
+msgstr ""
+
+msgid "Continue"
+msgstr "Продолжать"
+
+msgid "Copy To Clipboard"
+msgstr "Скопировать в буфер обмена"
+
+msgid "Could not parse Javascript"
+msgstr ""
+
+msgid "Create"
+msgstr "Создавать"
+
+msgid "Create {singular}"
+msgstr "создать {singular}"
+
+msgid "Create Columns Settings"
+msgstr "Создать настройки столбцов"
+
+msgid "Create Fields Order"
+msgstr "Создать порядок полей"
+
+msgid "Create first super admin account"
+msgstr ""
+
+msgid "Create It"
+msgstr "Создать это"
+
+msgid "Created At"
+msgstr "Создан в"
+
+msgid "Creating {singular}"
+msgstr "создание {singular}"
+
+msgid "Credentials Was Successfully Setup"
+msgstr "Учетные данные были успешно настроены"
+
+msgid "Cron Expression"
+msgstr "Выражение Крон"
+
+msgid "CRUD"
+msgstr "CRUD"
+
+msgid "CRUD Settings"
+msgstr "Настройки CRUD"
+
+msgid "cURL Command"
+msgstr "Команда cURL"
+
+msgid "Curve"
+msgstr "Изгиб"
+
+msgid "Custom Action"
+msgstr "Пользовательское действие"
+
+msgid "Custom Actions"
+msgstr "Пользовательские действия"
+
+msgid "Custom Dashboard"
+msgstr "Пользовательская панель мониторинга"
+
+msgid "Custom Dashboards"
+msgstr "Пользовательские панели мониторинга"
+
+msgid "Custom Date"
+msgstr ""
+
+msgid "Dashboard"
+msgstr "Панель приборов"
+
+msgid "Dashboard Widget"
+msgstr "Виджет информационной панели"
+
+msgid "Dashboard Widgets"
+msgstr "Виджеты информационной панели"
+
+msgid "Dashboards"
+msgstr "Панели мониторинга"
+
+msgid "Data"
+msgstr "Данные"
+
+msgid "Data copied to clipboard successfully"
+msgstr "Данные успешно скопированы в буфер обмена"
+
+msgid "Data Event"
+msgstr "Событие данных"
+
+msgid "Data Events"
+msgstr "События данных"
+
+msgid "Data exported successfully"
+msgstr "Данные успешно экспортированы"
+
+msgid "Data Key"
+msgstr "Ключ данных"
+
+msgid "Database"
+msgstr "База данных"
+
+msgid "Database Type"
+msgstr "Тип базы данных"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Date Format"
+msgstr "Формат даты"
+
+msgid "Day"
+msgstr ""
+
+msgid "Deactivate"
+msgstr "Деактивировать"
+
+msgid "Deactivate {0}"
+msgstr "Деактивировать {0}"
+
+msgid "Deactivated"
+msgstr "Деактивирован"
+
+msgid "Deactivating {0}"
+msgstr "Деактивация {0}"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Delete {singular}"
+msgstr "Удалить {singular}"
+
+msgid "Delete Edge"
+msgstr "Удалить край"
+
+msgid "Delete Selection"
+msgstr "Удалить выделение"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Details"
+msgstr "Подробности"
+
+msgid "Details Columns Settings"
+msgstr "Подробности Колонки Настройки"
+
+msgid "Details Fields Order"
+msgstr "Детали Поля Порядок"
+
+msgid "Diction"
+msgstr "Дикция"
+
+msgid "Diction Settings"
+msgstr "Настройки дикции"
+
+msgid "Display Format"
+msgstr "Формат отображения"
+
+msgid "Domain"
+msgstr "Домен"
+
+msgid "Done"
+msgstr "Сделанный"
+
+msgid "Download"
+msgstr "Скачать"
+
+msgid "Duplicate {singular}"
+msgstr "дубликат {singular}"
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "Edit {singular}"
+msgstr "изменить {singular}"
+
+msgid "Email"
+msgstr "Электронная почта"
+
+msgid "Empty Table"
+msgstr ""
+
+msgid "Enable {0} Functionality"
+msgstr "Включить функцию {0}"
+
+msgid "Enable Area"
+msgstr "Включить область"
+
+msgid "Enable Points"
+msgstr "Включить баллы"
+
+msgid "Enable two-factor authentication"
+msgstr ""
+
+msgid "Enabled Entities"
+msgstr "Включенные объекты"
+
+msgid "Enabled Entities Settings"
+msgstr "Настройки включенных объектов"
+
+msgid "Enabled Relations"
+msgstr "Включенные отношения"
+
+msgid "Enter a security token from your authenticator app"
+msgstr "Введите токен безопасности из приложения аутентификации."
+
+msgid "Enter one of your unsed recovery codes"
+msgstr "Введите один из ваших неиспользованных кодов восстановления."
+
+msgid "Enter your credentials to continue"
+msgstr "Введите свои учетные данные, чтобы продолжить"
+
+msgid "Enter your database credentials to continue"
+msgstr ""
+
+msgid "Entities"
+msgstr "Сущности"
+
+msgid "Entities Enabled For Add New And Select"
+msgstr "Объекты, включенные для добавления новых и выбора"
+
+msgid "Entities Enabled For Change History"
+msgstr "Объекты, включенные для истории изменений"
+
+msgid "Entity"
+msgstr "Сущность"
+
+msgid "Entity Action"
+msgstr "Действие сущности"
+
+msgid "Entity Create Form Layout"
+msgstr "Макет формы создания сущности"
+
+msgid "Entity Field"
+msgstr "Поле сущности"
+
+msgid "Entity ID"
+msgstr "Идентификатор объекта"
+
+msgid "Entity Tab"
+msgstr "Вкладка «Объект»"
+
+msgid "Entity Update Form Layout"
+msgstr "Макет формы обновления сущности"
+
+msgid "Environment Variable"
+msgstr "Переменная среды"
+
+msgid "Environment Variables"
+msgstr "Переменные среды"
+
+msgid "Equal"
+msgstr ""
+
+msgid "Equal To Other Field"
+msgstr "Равно другому полю"
+
+msgid "Error message"
+msgstr "Сообщение об ошибке"
+
+msgid "Error Occured Setting Up Your 2FA Token"
+msgstr "Произошла ошибка при настройке токена 2FA."
+
+msgid "Every 6 Hours"
+msgstr "Каждые 6 часов"
+
+msgid "Explain {title}"
+msgstr "Объясните {title}"
+
+msgid "Export"
+msgstr "Экспорт"
+
+msgid "Exporting"
+msgstr "Экспорт"
+
+msgid "External Link"
+msgstr "внешняя ссылка"
+
+msgid "Field"
+msgstr "Поле"
+
+msgid "Field Corresponding To Dashpress Usernames"
+msgstr "Поле, соответствующее именам пользователей Dashpress"
+
+msgid "Field Settings"
+msgstr "Настройки поля"
+
+msgid "Fields"
+msgstr "Поля"
+
+msgid "Fields State"
+msgstr "Государство Филдс"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "File Name"
+msgstr "Имя файла"
+
+msgid "File Name Format"
+msgstr "Формат имени файла"
+
+msgid "File Path Format"
+msgstr "Формат пути к файлу"
+
+msgid "File Storage"
+msgstr "Файловое хранилище"
+
+msgid "File Uploads Settings"
+msgstr "Настройки загрузки файлов"
+
+msgid "Flow"
+msgstr "Поток"
+
+msgid "Flow Trigger Attachment"
+msgstr "Приставка триггера потока"
+
+msgid "Flow Trigger Attachments"
+msgstr "Приложения триггера потока"
+
+msgid "Flows"
+msgstr "Потоки"
+
+msgid "Follow us on Twitter"
+msgstr "Следуйте за нами на Twitter"
+
+msgid "For security reasons, Please input your account password to reveal credentials"
+msgstr "В целях безопасности введите пароль своей учетной записи, чтобы раскрыть учетные данные."
+
+msgid "Form"
+msgstr "Форма"
+
+msgid "Form Action"
+msgstr "Форма действия"
+
+msgid "Form Actions"
+msgstr "Действия с формой"
+
+msgid "Form Field"
+msgstr "Поле формы"
+
+msgid "Form Fields"
+msgstr "Поля формы"
+
+msgid "Form Scripts"
+msgstr "Скрипты форм"
+
+msgid "Format"
+msgstr "Формат"
+
+msgid "From"
+msgstr "От"
+
+msgid "General"
+msgstr "Общий"
+
+msgid "General Data Settings"
+msgstr "Общие настройки данных"
+
+msgid "Genesis"
+msgstr "Бытие"
+
+msgid "Global Action"
+msgstr "Глобальное действие"
+
+msgid "Go Back"
+msgstr "Возвращаться"
+
+msgid "Greater Than"
+msgstr ""
+
+msgid "Greater Than Other Field"
+msgstr "Больше, чем другое поле"
+
+msgid "Group Mode"
+msgstr "Групповой режим"
+
+msgid "Grouped"
+msgstr "Сгруппировано"
+
+msgid "Header"
+msgstr "Заголовок"
+
+msgid "Headers"
+msgstr "Заголовки"
+
+msgid "Height"
+msgstr "Высота"
+
+msgid "Hi, {0}"
+msgstr "Привет, {0}"
+
+msgid "Hide Password"
+msgstr ""
+
+msgid "Home"
+msgstr "Дом"
+
+msgid "Home Link"
+msgstr "Главная ссылка"
+
+msgid "Horizontal"
+msgstr "Горизонтальный"
+
+msgid "Host"
+msgstr "Хозяин"
+
+msgid "Hour"
+msgstr ""
+
+msgid "I have safely saved my recovery tokens"
+msgstr "Я благополучно сохранил свои токены восстановления."
+
+msgid "I Want To Help With Translation"
+msgstr ""
+
+msgid "Icon"
+msgstr "Икона"
+
+msgid "ID"
+msgstr "ИДЕНТИФИКАТОР"
+
+msgid "Image"
+msgstr "Изображение"
+
+msgid "Impersonate User"
+msgstr "Выдавать себя за пользователя"
+
+msgid "Impersonating User"
+msgstr "Выдающий себя за пользователя"
+
+msgid "Incorrect value"
+msgstr "Неверное значение"
+
+msgid "Initial Values"
+msgstr "Начальные значения"
+
+msgid "Inline Edit"
+msgstr "Встроенное редактирование"
+
+msgid "Inline Edit Settings"
+msgstr "Настройки встроенного редактирования"
+
+msgid "Input {deactivationKey} to continue"
+msgstr "Введите {deactivationKey}, чтобы продолжить."
+
+msgid "Input Validation"
+msgstr ""
+
+msgid "Integration"
+msgstr "Интеграция"
+
+msgid "Integrations"
+msgstr "Интеграции"
+
+msgid "Invalid Date Format"
+msgstr ""
+
+msgid "IP Address"
+msgstr "Айпи адрес"
+
+msgid "Is In"
+msgstr "В"
+
+msgid "Is Not In"
+msgstr ""
+
+msgid "Is Not Null"
+msgstr ""
+
+msgid "Is Null"
+msgstr ""
+
+msgid "Join our Discord community"
+msgstr "Присоединяйтесь к нашему сообществу Discord"
+
+msgid "JSON"
+msgstr "JSON"
+
+msgid "Key"
+msgstr "Ключ"
+
+msgid "Label"
+msgstr "Этикетка"
+
+msgid "Labels"
+msgstr "Этикетки"
+
+msgid "Language"
+msgstr "Язык"
+
+msgid "Large Logo"
+msgstr "Большой логотип"
+
+msgid "Layout"
+msgstr "Макет"
+
+msgid "Less Than"
+msgstr ""
+
+msgid "Less Than Other Field"
+msgstr "Меньше, чем другое поле"
+
+msgid "Line Chart"
+msgstr "Линейный график"
+
+msgid "Link"
+msgstr "Связь"
+
+msgid "Link Entity"
+msgstr "Ссылка на объект"
+
+msgid "Link Users To Database"
+msgstr "Связать пользователей с базой данных"
+
+msgid "List"
+msgstr "Список"
+
+msgid "Loading..."
+msgstr "Загрузка..."
+
+msgid "Log Out"
+msgstr "Выйти"
+
+msgid "Loop"
+msgstr "Петля"
+
+msgid "Manage {plural}"
+msgstr "управлять {plural}"
+
+msgid "Manage {title}"
+msgstr "Управление {title}"
+
+msgid "Manage Plan"
+msgstr "Управление планом"
+
+msgid "Manage Sensitive Fields"
+msgstr "Управление конфиденциальными полями"
+
+msgid "Manage Variables"
+msgstr "Управление переменными"
+
+msgid "Max"
+msgstr "Макс"
+
+msgid "Max Length"
+msgstr "Максимальная длина"
+
+msgid "Maximum file size to upload in MB"
+msgstr "Максимальный размер файла для загрузки в МБ"
+
+msgid "Menu Item"
+msgstr "Пункт меню"
+
+msgid "Menu Settings"
+msgstr "Настройки меню"
+
+msgid "Menu Updated Successfully"
+msgstr ""
+
+msgid "Message"
+msgstr "Сообщение"
+
+msgid "Metadata Columns"
+msgstr "Столбцы метаданных"
+
+msgid "Min"
+msgstr "Мин"
+
+msgid "Min Length"
+msgstr "Минимальная длина"
+
+msgid "Modify Data Before Cloning"
+msgstr "Измените данные перед клонированием"
+
+msgid "Month"
+msgstr ""
+
+msgid "Mutate"
+msgstr "Мутировать"
+
+msgid "My Account"
+msgstr "Мой счет"
+
+msgid "Name"
+msgstr "Имя"
+
+msgid "Navigation Menu"
+msgstr "Меню навигации"
+
+msgid "New"
+msgstr "Новый"
+
+msgid "New Password"
+msgstr "Новый пароль"
+
+msgid "New Password Again"
+msgstr "Новый пароль еще раз"
+
+msgid "New Value"
+msgstr "Новое значение"
+
+msgid "No"
+msgstr "Нет"
+
+msgid "No {singular} Has Been Added Yet"
+msgstr "{singular} ещё не добавлено"
+
+msgid "No available permission for this section"
+msgstr "Нет доступных разрешений для этого раздела"
+
+msgid "No Data"
+msgstr "Нет данных"
+
+msgid "No Options"
+msgstr ""
+
+msgid "No result for the current {0} applied."
+msgstr "Нет результата для текущего примененного {0}."
+
+msgid "No Search Results"
+msgstr ""
+
+msgid "Node"
+msgstr "Узел"
+
+msgid "Node Label"
+msgstr "Метка узла"
+
+msgid "Node Properties"
+msgstr "Свойства узла"
+
+msgid "Nodes"
+msgstr "Узлы"
+
+msgid "Not Equal"
+msgstr ""
+
+msgid "Not Equal To Other Field"
+msgstr "Не равно другому полю"
+
+msgid "Now"
+msgstr "Сейчас"
+
+msgid "Number"
+msgstr "Число"
+
+msgid "Old Password"
+msgstr "Старый пароль"
+
+msgid "Old Value"
+msgstr "Старое значение"
+
+msgid "On Create"
+msgstr "При создании"
+
+msgid "On Delete"
+msgstr "При удалении"
+
+msgid "On Update"
+msgstr "При обновлении"
+
+msgid "Only capital letters and underscores are allowed"
+msgstr "Разрешены только заглавные буквы и подчеркивания."
+
+msgid "Only lowercase letters, numbers and {delimiter} are allowed"
+msgstr "Разрешены только строчные буквы, цифры и {delimiter}."
+
+msgid "Operator"
+msgstr "Оператор"
+
+msgid "OR"
+msgstr "ИЛИ"
+
+msgid "Order"
+msgstr "Заказ"
+
+msgid "Ordered"
+msgstr "Заказал"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "Password Reset Successfully"
+msgstr "Пароль сброшен успешно"
+
+msgid "Password will not be changed on demo account"
+msgstr "Пароль не будет изменен на демо-счете"
+
+msgid "Persistent Query"
+msgstr "Постоянный запрос"
+
+msgid "Personalize This Table"
+msgstr "Персонализируйте эту таблицу"
+
+msgid "Pick a date"
+msgstr ""
+
+msgid "Pie Chart"
+msgstr "Круговая диаграмма"
+
+msgid "Please go to {DATE_FORMAT_LIB_LINK} to see valid formats"
+msgstr ""
+
+msgid "Plural"
+msgstr "Множественное число"
+
+msgid "Port"
+msgstr "Порт"
+
+msgid "Positive Number"
+msgstr "Положительное число"
+
+msgid "Preferences"
+msgstr "Предпочтения"
+
+msgid "Presentation Scripts"
+msgstr "Сценарии презентаций"
+
+msgid "Preview"
+msgstr "Предварительный просмотр"
+
+msgid "Profile"
+msgstr "Профиль"
+
+msgid "Quarter"
+msgstr ""
+
+msgid "Query"
+msgstr "Запрос"
+
+msgid "Recovery Code"
+msgstr "Код восстановления"
+
+msgid "Recovery tokens copied to clipboard"
+msgstr "Токены восстановления скопированы в буфер обмена."
+
+msgid "Reference"
+msgstr "Ссылка"
+
+msgid "Reference Template"
+msgstr "Справочный шаблон"
+
+msgid "Regex"
+msgstr "регулярное выражение"
+
+msgid "Region"
+msgstr "Область"
+
+msgid "Relation Labels"
+msgstr "Метки отношений"
+
+msgid "Relation Template"
+msgstr "Шаблон отношения"
+
+msgid "Relations"
+msgstr "связи"
+
+msgid "Relations Order"
+msgstr "Порядок отношений"
+
+msgid "Relations To Clone Along"
+msgstr "Отношения для клонирования"
+
+msgid "Relationship Settings"
+msgstr "Настройки отношений"
+
+msgid "Remember Me"
+msgstr "Запомнить меня"
+
+msgid "Remove"
+msgstr "Удалять"
+
+msgid "Remove Nested Filter"
+msgstr "Удалить вложенный фильтр"
+
+msgid "Request Failed"
+msgstr ""
+
+msgid "Request ID"
+msgstr "Идентификатор запроса"
+
+msgid "Request Method"
+msgstr "Метод запроса"
+
+msgid "Required"
+msgstr "Необходимый"
+
+msgid "Reset"
+msgstr ""
+
+msgid "Reset 2FA Recovery Tokens"
+msgstr "Сброс токенов восстановления 2FA"
+
+msgid "Reset Password"
+msgstr "Сброс пароля"
+
+msgid "Reset Recovery Tokens"
+msgstr "Сбросить токены восстановления"
+
+msgid "Reset User Password"
+msgstr "Сбросить пароль пользователя"
+
+msgid "Resetting Password"
+msgstr "Сброс пароля"
+
+msgid "Response"
+msgstr "Ответ"
+
+msgid "Restore"
+msgstr "Восстановить"
+
+msgid "Restored"
+msgstr "Восстановлен"
+
+msgid "results"
+msgstr ""
+
+msgid "Reveal Credentials"
+msgstr "Раскрыть учетные данные"
+
+msgid "Revealing Credentials"
+msgstr "Раскрытие учетных данных"
+
+msgid "Rich Text"
+msgstr "Богатый текст"
+
+msgid "Role"
+msgstr "Роль"
+
+msgid "Role Permission"
+msgstr "Разрешение роли"
+
+msgid "Role Permissions"
+msgstr "Ролевые разрешения"
+
+msgid "Roles"
+msgstr "Роли"
+
+msgid "Route ID"
+msgstr "Идентификатор маршрута"
+
+msgid "Save"
+msgstr "Сохранять"
+
+msgid "Save {singular}"
+msgstr "Сохранить {singular}"
+
+msgid "Save Current Filters"
+msgstr "Сохранить текущие фильтры"
+
+msgid "Saving"
+msgstr "Сохранение"
+
+msgid "Saving {singular}"
+msgstr "сохранение {singular}"
+
+msgid "Scheduler"
+msgstr "Планировщик"
+
+msgid "Schedulers"
+msgstr "Планировщики"
+
+msgid "Script"
+msgstr "Скрипт"
+
+msgid "Search"
+msgstr ""
+
+msgid "Secret"
+msgstr "Секрет"
+
+msgid "Secret Access Key"
+msgstr "Секретный ключ доступа"
+
+msgid "Secrets"
+msgstr "Секреты"
+
+msgid "Select {0}"
+msgstr ""
+
+msgid "Select {0} Type"
+msgstr ""
+
+msgid "Select Count"
+msgstr ""
+
+msgid "Select Date Option"
+msgstr ""
+
+msgid "Select Node Type"
+msgstr "Выберите тип узла"
+
+msgid "Select Operator"
+msgstr ""
+
+msgid "Select Option"
+msgstr ""
+
+msgid "Select Page Size"
+msgstr ""
+
+msgid "Select Trigger"
+msgstr "Выберите триггер"
+
+msgid "Select Value"
+msgstr ""
+
+msgid "Select Workflow"
+msgstr "Выберите рабочий процесс"
+
+msgid "Selection"
+msgstr "Выбор"
+
+msgid "Selection List"
+msgstr "Список выбора"
+
+msgid "Selections Settings"
+msgstr "Настройки выбора"
+
+msgid "Send Mail"
+msgstr "Отправить письмо"
+
+msgid "Send Message"
+msgstr "Отправить сообщение"
+
+msgid "Send SMS"
+msgstr "Отправить смс"
+
+msgid "Sender Email"
+msgstr "Электронная почта отправителя"
+
+msgid "Sender Name"
+msgstr "Имя отправителя"
+
+msgid "Sensitive Field"
+msgstr "Чувствительное поле"
+
+msgid "Sensitive Fields"
+msgstr "Чувствительные поля"
+
+msgid "Setting Up Account"
+msgstr "Настройка учетной записи"
+
+msgid "Setting Up Credentials"
+msgstr "Настройка учетных данных"
+
+msgid "Settings"
+msgstr "Настройки"
+
+msgid "Setup"
+msgstr "Настраивать"
+
+msgid "Setup Account"
+msgstr "Настройка учетной записи"
+
+msgid "Setup Credentials"
+msgstr "Настройка учетных данных"
+
+msgid "Setup DB credentials"
+msgstr ""
+
+msgid "Share"
+msgstr "Делиться"
+
+msgid "Shared"
+msgstr "Общий"
+
+msgid "Sharing"
+msgstr "Совместное использование"
+
+msgid "Show"
+msgstr "Показывать"
+
+msgid "Show Password"
+msgstr ""
+
+msgid "Show Soft Deleted Items And The Restore Button"
+msgstr "Показать обратимо удаленные элементы и кнопку «Восстановить»"
+
+msgid "Show Up In Roles And Permissions"
+msgstr "Показывать роли и разрешения"
+
+msgid "Sign In"
+msgstr "Войти"
+
+msgid "Signing In"
+msgstr "Вход в систему"
+
+msgid "Singular"
+msgstr "Единственное число"
+
+msgid "Site"
+msgstr "Сайт"
+
+msgid "Site Settings"
+msgstr "Настройки сайта"
+
+msgid "Small Logo"
+msgstr "Маленький логотип"
+
+msgid "Soft Delete"
+msgstr "Мягкое удаление"
+
+msgid "Soft Delete Settings"
+msgstr "Настройки мягкого удаления"
+
+msgid "Soft deleted data cannot be updated. Kindly restore the data to be able to update it"
+msgstr ""
+
+msgid "Stacked"
+msgstr "Сложенный"
+
+msgid "Star us on Github"
+msgstr "Отметьте нас на Github"
+
+msgid "Start of year"
+msgstr "Начало года"
+
+msgid "Start Typing"
+msgstr ""
+
+msgid "State Script"
+msgstr "Государственный сценарий"
+
+msgid "Storage Key"
+msgstr "Ключ хранения"
+
+msgid "Strategy"
+msgstr "Стратегия"
+
+msgid "String"
+msgstr "Нить"
+
+msgid "Subject"
+msgstr "Предмет"
+
+msgid "Submit"
+msgstr "Представлять на рассмотрение"
+
+msgid "Submitting"
+msgstr "Отправка"
+
+msgid "Summary Card"
+msgstr "Сводная карточка"
+
+msgid "SVG"
+msgstr ""
+
+msgid "System"
+msgstr "Система"
+
+msgid "System Info"
+msgstr "Системная информация"
+
+msgid "System Settings"
+msgstr "Настройки системы"
+
+msgid "Table"
+msgstr "Стол"
+
+msgid "Table Columns Settings"
+msgstr "Настройки столбцов таблицы"
+
+msgid "Table Fields Order"
+msgstr "Порядок полей таблицы"
+
+msgid "Table Personalization"
+msgstr "Персонализация стола"
+
+msgid "Table Personalizations"
+msgstr "Персонализация стола"
+
+msgid "Table View"
+msgstr "Представление таблицы"
+
+msgid "Table Views"
+msgstr "Представления таблиц"
+
+msgid "Test Widget Script"
+msgstr "Тестовый скрипт виджета"
+
+msgid "Text"
+msgstr "Текст"
+
+msgid "Textarea"
+msgstr "Текстовая область"
+
+msgid "That feature is not enabled on your current plan."
+msgstr ""
+
+msgid "Theme"
+msgstr "Тема"
+
+msgid "Theme Settings"
+msgstr "Настройки темы"
+
+msgid "This {0} Has No Form"
+msgstr "У этого {0} нет формы"
+
+msgid "This action does not have configuration"
+msgstr "У этого действия нет конфигурации"
+
+msgid "This entity has no fields"
+msgstr "У этой сущности нет полей"
+
+msgid "This entity has no relations"
+msgstr "Эта сущность не имеет отношений"
+
+msgid "This flow should be queued and executed asynchronously (recommended for long running flows, requires Redis)"
+msgstr "Этот поток должен быть поставлен в очередь и выполняться асинхронно (рекомендуется для длительных потоков, требуется Redis)."
+
+msgid "This trigger has no workflow attached"
+msgstr "К этому триггеру не привязан рабочий процесс"
+
+msgid "This workflow has no trigger attached"
+msgstr "К этому рабочему процессу не прикреплен триггер"
+
+msgid "Time Changed"
+msgstr "Время изменено"
+
+msgid "Title"
+msgstr "Заголовок"
+
+msgid "To"
+msgstr "К"
+
+msgid "Toggle Connection URL"
+msgstr "Переключить URL-адрес подключения"
+
+msgid "Token"
+msgstr "Токен"
+
+msgid "Token Validity Duration In Days"
+msgstr "Срок действия токена в днях"
+
+msgid "Trigger"
+msgstr "Курок"
+
+msgid "Try Out 25+ Pro Features"
+msgstr "Попробуйте 25 функций Pro"
+
+msgid "Two Factor Authentication"
+msgstr ""
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "Unauthorized Access"
+msgstr ""
+
+msgid "Update"
+msgstr "Обновлять"
+
+msgid "Update {singular}"
+msgstr "обновить {singular}"
+
+msgid "Update Columns Settings"
+msgstr "Обновить настройки столбцов"
+
+msgid "Update Fields Order"
+msgstr "Обновить порядок полей"
+
+msgid "Updated At"
+msgstr "Обновлено в"
+
+msgid "Updating {singular}"
+msgstr "обновление {singular}"
+
+msgid "Uppercase"
+msgstr "Верхний регистр"
+
+msgid "URL"
+msgstr "URL-адрес"
+
+msgid "Use Colors"
+msgstr "Используйте цвета"
+
+msgid "Use Icon"
+msgstr ""
+
+msgid "Use OTP Token"
+msgstr "Использовать OTP-токен"
+
+msgid "Use Recovery Code"
+msgstr "Использовать код восстановления"
+
+msgid "Use SSL"
+msgstr "Использовать SSL"
+
+msgid "Use SVG"
+msgstr ""
+
+msgid "User"
+msgstr "Пользователь"
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "Users"
+msgstr "Пользователи"
+
+msgid "Users Link To Database"
+msgstr "Пользователи ссылаются на базу данных"
+
+msgid "Users to Database Link"
+msgstr "Пользователи для связи с базой данных"
+
+msgid "Validations"
+msgstr "Валидации"
+
+msgid "Value"
+msgstr "Ценить"
+
+msgid "Variables"
+msgstr "Переменные"
+
+msgid "Verifing"
+msgstr "Проверка"
+
+msgid "Verify"
+msgstr "Проверять"
+
+msgid "Vertical"
+msgstr "Вертикальный"
+
+msgid "View"
+msgstr "Вид"
+
+msgid "View Details"
+msgstr ""
+
+msgid "View Full Details"
+msgstr "Посмотреть полную информацию"
+
+msgid "Visit our website"
+msgstr "Посетите наш сайт"
+
+msgid "Webhook"
+msgstr "Вебхук"
+
+msgid "Webhooks"
+msgstr "Вебхуки"
+
+msgid "Week"
+msgstr ""
+
+msgid "Widget Script"
+msgstr "Скрипт виджета"
+
+msgid "Width"
+msgstr "Ширина"
+
+msgid "Workflow"
+msgstr "Рабочий процесс"
+
+msgid "Workflows"
+msgstr "Рабочие процессы"
+
+msgid "X Label"
+msgstr "X-этикетка"
+
+msgid "Y Label"
+msgstr "Y-этикетка"
+
+msgid "Year"
+msgstr ""
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "You dont have the permission to view this page"
+msgstr ""
+
+msgid "You have {0} recovery tokens left. You can generate new ones from your account page"
+msgstr ""
+
+msgid "Your Users Table"
+msgstr "Таблица ваших пользователей"
