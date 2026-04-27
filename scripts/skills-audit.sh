@@ -68,12 +68,106 @@ fi
 TOTAL_ACTIVE=$(( WORKSPACE_COUNT + GLOBAL_COUNT - OVERLAP_COUNT ))
 TOTAL_ARCHIVED=$(( WORKSPACE_ARCHIVED + GLOBAL_ARCHIVED ))
 
+# ── Dangerous-pattern security scan ──────────────────────────
+# Scans all SKILL.md files for patterns that violate RULE_00,
+# secrets doctrine, or could cause destructive side-effects.
+UNSAFE_COUNT=0
+UNSAFE_FINDINGS=()
+
+# Patterns that indicate dangerous or prohibited operations in skills
+DANGEROUS_PATTERNS=(
+  "private-key\.pem"
+  "agentYoloMode"
+  "git reset --hard"
+  "git push.*--force"
+  "git push.*-f "
+  "while true"
+  "rm -rf"
+  "rm -r "
+  "sudo "
+  "\beval\b"
+  "exec("
+  "os\.system("
+  "subprocess\.call.*shell=True"
+  "sk_live_"
+  "sk_test_"
+  "AKIA[0-9A-Z]"
+  "password\s*=\s*['\"]"
+  "secret\s*=\s*['\"]"
+  "curl.*\| bash"
+  "wget.*\| sh"
+  "filter-branch"
+  "unlink "
+)
+
+scan_skills_for_danger() {
+  local dir="$1"
+  local label="$2"
+  if [[ ! -d "$dir" ]]; then
+    return
+  fi
+
+  while IFS= read -r -d '' skill_file; do
+    local skill_name
+    skill_name="$(basename "$(dirname "$skill_file")")"
+    for pattern in "${DANGEROUS_PATTERNS[@]}"; do
+      local matches
+      matches=$(grep -c -E -i "$pattern" "$skill_file" 2>/dev/null || true)
+      if [[ "$matches" -gt 0 ]]; then
+        UNSAFE_COUNT=$((UNSAFE_COUNT + 1))
+        UNSAFE_FINDINGS+=("${label}/${skill_name}|${pattern}|${matches}")
+      fi
+    done
+  done < <(find "$dir" -name "SKILL.md" -not -path "*/_archive_*/*" -not -path "*/_dedup_*/*" -print0 2>/dev/null)
+}
+
+scan_skills_for_danger "$WORKSPACE_SKILLS" "workspace"
+scan_skills_for_danger "$GLOBAL_SKILLS" "global"
+
+# Write unsafe findings report
+REPORT_DIR="${REPO_ROOT}/.reports/skills"
+REPORT_FILE="${REPORT_DIR}/unsafe_findings.md"
+if [[ "$UNSAFE_COUNT" -gt 0 ]]; then
+  mkdir -p "$REPORT_DIR"
+  {
+    echo "# SkillOps Unsafe Pattern Report"
+    echo ""
+    echo "Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "Total findings: ${UNSAFE_COUNT}"
+    echo ""
+    echo "| Skill | Pattern | Hits |"
+    echo "|-------|---------|------|"
+    for finding in "${UNSAFE_FINDINGS[@]}"; do
+      IFS='|' read -r skill pattern hits <<< "$finding"
+      echo "| ${skill} | \`${pattern}\` | ${hits} |"
+    done
+    echo ""
+    echo "> These patterns may be legitimate documentation references."
+    echo "> Review each finding manually before taking action."
+  } > "$REPORT_FILE"
+fi
+
 # ── Output ───────────────────────────────────────────────────
 if [[ "$JSON_OUTPUT" == "true" ]]; then
   overlap_json="[]"
   if [[ ${#OVERLAPS[@]} -gt 0 ]]; then
     overlap_json=$(printf '"%s",' "${OVERLAPS[@]}")
     overlap_json="[${overlap_json%,}]"
+  fi
+  unsafe_json="[]"
+  if [[ ${#UNSAFE_FINDINGS[@]} -gt 0 ]]; then
+    unsafe_json="["
+    first=true
+    for finding in "${UNSAFE_FINDINGS[@]}"; do
+      IFS='|' read -r skill pattern hits <<< "$finding"
+      if [[ "$first" == "true" ]]; then
+        first=false
+      else
+        unsafe_json+=","
+      fi
+      unsafe_json+="{\"skill\":\"${skill}\",\"pattern\":\"${pattern}\",\"hits\":${hits}}"
+    done
+    unsafe_json+="]"
   fi
   cat <<EOF
 {
@@ -84,7 +178,9 @@ if [[ "$JSON_OUTPUT" == "true" ]]; then
   "workspace_archived": ${WORKSPACE_ARCHIVED},
   "global_archived": ${GLOBAL_ARCHIVED},
   "total_archived": ${TOTAL_ARCHIVED},
+  "unsafe_findings": ${UNSAFE_COUNT},
   "overlapping_skills": ${overlap_json},
+  "unsafe_details": ${unsafe_json},
   "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 }
 EOF
@@ -98,6 +194,8 @@ else
   echo "  ─────────────────────────────────────────"
   echo "  TOTAL ACTIVE:      ${TOTAL_ACTIVE}"
   echo "  TOTAL ARCHIVED:    ${TOTAL_ARCHIVED}"
+  echo "  ─────────────────────────────────────────"
+  echo "  🛡 Unsafe patterns: ${UNSAFE_COUNT}"
   echo "═══════════════════════════════════════════"
   if [[ ${#OVERLAPS[@]} -gt 0 ]]; then
     echo ""
@@ -105,5 +203,15 @@ else
     for s in "${OVERLAPS[@]}"; do
       echo "    - $s"
     done
+  fi
+  if [[ "$UNSAFE_COUNT" -gt 0 ]]; then
+    echo ""
+    echo "  🛡 Unsafe pattern findings:"
+    for finding in "${UNSAFE_FINDINGS[@]}"; do
+      IFS='|' read -r skill pattern hits <<< "$finding"
+      echo "    - ${skill}: ${pattern} (${hits} hits)"
+    done
+    echo ""
+    echo "  Report: .reports/skills/unsafe_findings.md"
   fi
 fi
