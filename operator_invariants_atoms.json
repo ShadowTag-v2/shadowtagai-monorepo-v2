@@ -133,6 +133,61 @@
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json#114",
       "tags": ["artifact", "manifest", "two-lane", "canonical"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "git_history",
+      "predicate": "bloat_requires_history_tools",
+      "object_text": "Git history rewrites (filter-branch, filter-repo, BFG) are the ONLY authorized method for removing accidentally committed large objects. Force-pushing requires STATE B. Gitignore cannot remove objects already in pack history.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#105",
+      "tags": ["git", "history", "bloat", "safety", "canonical"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "secret_scanning",
+      "predicate": "scanner_succession_policy",
+      "object_text": "Betterleaks is canonical, Gitleaks is legacy fallback. Both share .gitleaksignore. Scanner upgrades must maintain fingerprint compatibility. CI gates must never regress.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#115",
+      "tags": ["security", "secrets", "betterleaks", "gitleaks", "canonical"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "external_repos",
+      "predicate": "reference_mirror_policy",
+      "object_text": "external_repos/ are read-only reference mirrors governed by upstream_manifest.yaml. Never modified locally, never committed to monorepo history. Clone via scripts/clone-external-reference-repos.sh exclusively.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#138",
+      "tags": ["external-repos", "mirror", "read-only", "canonical"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "skillops",
+      "predicate": "repo_governed_lifecycle",
+      "object_text": "Skill CRUD must flow through SkillOps: tool_contracts/skills.update.yaml (contract), scripts/skills-audit.sh (validation), scripts/skills-registry.py (registry), .ruler/skills.md (propagation). Ad-hoc skill file manipulation without registry update is prohibited.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#139",
+      "tags": ["skills", "skillops", "governance", "canonical"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "boot_probes",
+      "predicate": "read_only_enforcement",
+      "object_text": "Session boot probes (MCP pre-flight, health checks, env reads, manifest parsing, heartbeat) must be strictly read-only. No file mutations, branch creation, push commits, config changes, or side effects. Failures reported, not auto-remediated.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#140",
+      "tags": ["boot", "probes", "read-only", "safety", "canonical"]
     }
   ]
 }
