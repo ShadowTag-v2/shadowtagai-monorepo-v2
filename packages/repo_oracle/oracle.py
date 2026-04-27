@@ -15,8 +15,10 @@ from reinventing existing infrastructure.
 
 from __future__ import annotations
 
+import json
 import logging
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -151,7 +153,7 @@ class RepoOracle:
             )
             if result.returncode == 0:
                 return result.stdout.strip().splitlines()[:max_results]
-        except FileNotFoundError, subprocess.TimeoutExpired:
+        except (FileNotFoundError, subprocess.TimeoutExpired):
             logger.warning("ripgrep not available or timed out")
 
         return []
@@ -172,3 +174,39 @@ class RepoOracle:
             "libs": len(self._libs),
             "manifest_keys": len(self._manifest),
         }
+
+
+def main() -> None:
+    """CLI entrypoint for scripts/repo-oracle delegation."""
+    if len(sys.argv) < 2:
+        print("Usage: python oracle.py <query> [--json]")
+        sys.exit(1)
+
+    query = sys.argv[1]
+    json_output = "--json" in sys.argv
+
+    repo_root = Path(__file__).resolve().parent.parent.parent
+    oracle = RepoOracle(repo_root)
+    oracle.index()
+
+    results = oracle.grep_pattern(query, max_results=25)
+    summary = oracle.summary()
+
+    if json_output:
+        print(json.dumps({"query": query, "matches": results, "summary": summary}, indent=2))
+    else:
+        print("═══════════════════════════════════════════")
+        print(f"  Repo Oracle — Searching: {query}")
+        print("═══════════════════════════════════════════")
+        for r in results:
+            print(f"  ✓ {r}")
+        print("  ─────────────────────────────────────────")
+        print(f"  Matches found: {len(results)}")
+        print("═══════════════════════════════════════════")
+        if results:
+            print("  ⚠ Existing implementations detected. Review before creating new code.")
+        print(f"  Index: {summary['packages']}pkg {summary['scripts']}scr {summary['skills']}skl {summary['apps']}app {summary['libs']}lib")
+
+
+if __name__ == "__main__":
+    main()
