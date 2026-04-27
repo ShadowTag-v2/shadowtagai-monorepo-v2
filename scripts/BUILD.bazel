@@ -2,6 +2,8 @@
 # Phase 3: Canonical operational scripts exposed as filegroups and sh_test.
 # These scripts have NO Bazel-managed deps yet — they call host tools.
 
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+
 package(default_visibility = ["//visibility:private"])
 
 # =============================================================================

@@ -1,0 +1,21 @@
+# BUILD.bazel — apps/counselconduit/services
+# Phase 4: Business logic layer (Stripe, sessions, attestation, Cloud Tasks)
+# Owner: product
+
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//apps/counselconduit:__subpackages__"])
+
+py_library(
+    name = "services",
+    srcs = [
+        "cloud_tasks_handler.py",
+        "kovel_attestation.py",
+        "litellm_proxy.py",
+        "session_service.py",
+        "stripe_connect.py",
+    ],
+    deps = [
+        "//apps/counselconduit/models",
+    ],
+)
