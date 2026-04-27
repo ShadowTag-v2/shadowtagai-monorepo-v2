@@ -1,9 +1,9 @@
 {
   "score": "F",
-  "total_findings": 24,
+  "total_findings": 33,
   "critical": 10,
   "errors": 1,
-  "warnings": 9,
+  "warnings": 18,
   "info": 4,
   "findings": [
     {
@@ -26,6 +26,69 @@
       "message": "Dirty file (M)",
       "path": ".beads/kairos_heartbeat.json",
       "fix": "git checkout -- .beads/kairos_heartbeat.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".gitleaksignore",
+      "fix": "git checkout -- .gitleaksignore"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/kovelai/DESIGN.md",
+      "fix": "git checkout -- apps/kovelai/DESIGN.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "bazel-Monorepo-Uphillsnowball",
+      "fix": "git checkout -- bazel-Monorepo-Uphillsnowball"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "bazel-bin",
+      "fix": "git checkout -- bazel-bin"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "bazel-out",
+      "fix": "git checkout -- bazel-out"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "bazel-testlogs",
+      "fix": "git checkout -- bazel-testlogs"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "otel/monorepo_agent_event.schema.json",
+      "fix": "git checkout -- otel/monorepo_agent_event.schema.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "scripts/design-system-lint.mjs",
+      "fix": "git checkout -- scripts/design-system-lint.mjs"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (??)",
+      "path": "docs/adr/006-control-plane-v2.md",
+      "fix": "git add docs/adr/006-control-plane-v2.md"
     },
     {
       "gate": "conflicts",
@@ -115,6 +178,27 @@
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
+      "path": "artifacts/manifest.yaml",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "authz/model.fga",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "build/bazel_adoption.yaml",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
       "path": "cmd/gideon-go/go.mod",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
@@ -128,28 +212,7 @@
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "contracts/README.md",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "control/aiyou_stack_bridge/antigravity/v11/execute_fold_in.py",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "control/antigravity/ane_cortex_stack_v10/.agent/memory/architecture.md",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "... and 2169 more drift files",
+      "message": "... and 637 more drift files",
       "path": "",
       "fix": ""
     },
@@ -163,14 +226,14 @@
     {
       "gate": "manifest",
       "severity": "info",
-      "message": "Manifest v12.2 valid",
+      "message": "Manifest v12.3 valid",
       "path": "",
       "fix": ""
     },
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ========================= 483 tests collected in 2.03s =========================",
+      "message": "Tests: ========================= 483 tests collected in 0.52s =========================",
       "path": "",
       "fix": ""
     }

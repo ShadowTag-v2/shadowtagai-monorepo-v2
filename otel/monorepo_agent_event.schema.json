@@ -8,7 +8,18 @@
     "timestamp": { "type": "string", "format": "date-time" },
     "event_type": {
       "type": "string",
-      "enum": ["code_write", "code_delete", "push", "deploy", "test", "lint", "build", "research", "decision", "evidence"]
+      "enum": [
+        "code_write",
+        "code_delete",
+        "push",
+        "deploy",
+        "test",
+        "lint",
+        "build",
+        "research",
+        "decision",
+        "evidence"
+      ]
     },
     "agent": { "type": "string" },
     "action": { "type": "string" },
