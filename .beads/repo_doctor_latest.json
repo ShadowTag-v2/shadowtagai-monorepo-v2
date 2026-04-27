@@ -31,36 +31,36 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/kovelai/site/_archive_vanilla_html_2026-04-25/chassis-preview.html",
-      "fix": "git checkout -- apps/kovelai/site/_archive_vanilla_html_2026-04-25/chassis-preview.html"
+      "path": ".gemini/settings.json",
+      "fix": "git checkout -- .gemini/settings.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/kovelai/site/eslint.config.mjs",
-      "fix": "git checkout -- apps/kovelai/site/eslint.config.mjs"
+      "path": "apps/kovelai/site/src/components/shared/Features.tsx",
+      "fix": "git checkout -- apps/kovelai/site/src/components/shared/Features.tsx"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/kovelai/site/postcss.config.mjs",
-      "fix": "git checkout -- apps/kovelai/site/postcss.config.mjs"
+      "path": "lighthouserc.json",
+      "fix": "git checkout -- lighthouserc.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/kovelai/site/scripts/sync-skills.mjs",
-      "fix": "git checkout -- apps/kovelai/site/scripts/sync-skills.mjs"
+      "message": "Dirty file (??)",
+      "path": ".agents/skills/session-invariants/",
+      "fix": "git add .agents/skills/session-invariants/"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/unusual-machines-clone/src/app/globals.css",
-      "fix": "git checkout -- apps/unusual-machines-clone/src/app/globals.css"
+      "message": "Dirty file (??)",
+      "path": ".help.txt",
+      "fix": "git add .help.txt"
     },
     {
       "gate": "conflicts",
@@ -135,7 +135,7 @@
     {
       "gate": "secrets",
       "severity": "error",
-      "message": "Betterleaks found 693 potential secrets",
+      "message": "Betterleaks found 556 potential secrets",
       "path": "",
       "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
     },
@@ -205,7 +205,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ========================= 483 tests collected in 2.04s =========================",
+      "message": "Tests: ========================= 483 tests collected in 1.50s =========================",
       "path": "",
       "fix": ""
     }
