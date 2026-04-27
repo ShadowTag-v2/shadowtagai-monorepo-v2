@@ -128,3 +128,5 @@ Every push attempt records evidence in `.agent/evidence/push/`.
 | Version | Date | Changes |
 |---------|------|---------|
 | v1.0 | 2026-04-27 | Initial Monorepo OS integration |
+| v1.1 | 2026-04-27 | Phase 6: BUILD coverage complete (12 targets), shield go_test, .mypy_cache gitignore, 60 GiB disk recovery |
+| v1.2 | 2026-04-27 | Phase 6 finalized: 27.3 GiB reclaimed (archive/, .gitnexus/, .mypy_cache/), Go 6/6 + Python 201/201 pass, Bazel 14 targets resolved, heartbeat 11/0/1, 3 new quality-gate beads seeded (ISSUE-014–016) |
