@@ -133,3 +133,81 @@ CLAUDE.md:stripe-api-key
 AGENTS.md:github-app-token
 
 # docs/BUSINESS_CONTEXT_LOCKED.md Stripe references
+
+# Auto-classified IGNORE: Third-party path: \.agent/reports/
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/reports/aiyou-rollup_foldin_report.json:google-api-key:76
+
+# Auto-classified IGNORE: Third-party path: \.agent/reports/
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/reports/pnkln-rollup_foldin_report.json:google-api-key:76
+
+# Auto-classified IGNORE: Third-party path: \.stitch-sdk/
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.stitch-sdk/scripts/publish-readiness.ts:generic-api-key-inline:218
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:426
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:427
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:428
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:429
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:430
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:478
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:479
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:480
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:481
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:482
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:483
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:531
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:532
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:533
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:534
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:535
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:536
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:584
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:585
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:586
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:587
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:588
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:589
