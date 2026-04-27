@@ -32,13 +32,8 @@ build/
 external_repos/
 .agent/incoming_repos/
 
-# --- Archive Subdirectories (keep on disk, never track) ---
-archive/recovered_assets/
-archive/root_debris/
-archive/labs_graveyard/
-archive/external_payloads/
-archive/claude-code-src-leak/
-archive/external_repos_root/
+# --- Archive (blanket — keep on disk, never track) ---
+archive/
 
 # --- Nested Git Repos ---
 **/.git/
