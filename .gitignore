@@ -73,6 +73,15 @@ archive/
 **/*.h5
 **/*.hdf5
 
+# ═══════════════════════════════════════════════════════════
+# TRUTH SURFACE EXCEPTIONS — Files that MUST be tracked
+# despite matching blanket patterns above.
+# Per Invariant #55: Canonical evidence trails are not data.
+# ═══════════════════════════════════════════════════════════
+!.beads/issues.jsonl
+!.beads/kairos_heartbeat.json
+!knowledge/raw_manifest.yaml
+
 # --- Data & Caches ---
 .lancedb/
 data/lancedb/

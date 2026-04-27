@@ -1,4 +1,10 @@
-# Workflow: Cinematic Verification (The Cursor Killer)
+> [!WARNING]
+> **DEPRECATED (2026-04-27)** — Superseded by the Cor.Meatbridge Eviction Protocol.
+> Browser automation uses `chrome-devtools-mcp` + `browser_subagent` now.
+> This workflow references stale paths and uses banned `git reset --hard`.
+> Retained for reference only. Do not execute.
+
+# Workflow: Cinematic Verification (The Cursor Killer) — DEPRECATED
 
 **Trigger:** `@workflow /cursor-killer [Feature Description]`
 
