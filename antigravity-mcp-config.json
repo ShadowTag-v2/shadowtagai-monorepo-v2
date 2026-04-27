@@ -73,7 +73,7 @@
     },
     "sequential-thinking": {
       "command": "npx",
-      "args": ["-y", "@anthropic-ai/sequential-thinking-mcp@latest"],
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking@latest"],
       "env": {},
       "capability_owner": true,
       "owns": ["sequentialthinking"],

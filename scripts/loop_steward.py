@@ -106,6 +106,14 @@ def is_reversible(action: Action) -> bool:
 
 def evaluate_action(action: Action, consecutive_idles: int) -> ActionVerdict:
     """Determine whether to proceed with an action."""
+    import sys, os
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    from src.core.permissions import PermissionLearner
+    
+    learner = PermissionLearner()
+    if learner.is_allowed(action.description) is False:
+        return ActionVerdict.WAIT
+
     # 3-consecutive-idle scaling
     if consecutive_idles >= MAX_IDLE_CYCLES:
         return ActionVerdict.SCALE_BACK
