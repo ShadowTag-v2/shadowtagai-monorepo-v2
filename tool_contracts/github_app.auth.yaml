@@ -1,0 +1,27 @@
+# tool_contracts/github_app.auth.yaml — GitHub App Auth Contract
+version: 1
+
+description: >
+  GitHub App authentication for API and push operations.
+
+credentials:
+  app_id: 3018200
+  client_id: Iv23ctYqrxPQIt2ir8gY
+  pem_fallback_chain:
+    - gcp_secret_manager: github-app-shadowtag-v2-pem
+    - keys_dir: keys/
+    - downloads: ~/Downloads/
+    - ssh_dir: ~/.ssh/
+    - env_var: SHADOWTAG_PEM
+
+transport:
+  primary: ssh
+  fallback: https
+  repo: git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git
+
+prohibited:
+  - gh_auth_login
+  - gh_auth_token
+  - deploy_keys
+  - personal_access_tokens
+  - macos_keychain_entries

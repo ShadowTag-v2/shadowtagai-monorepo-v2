@@ -1,113 +1,66 @@
-# upload_policy.yaml — Root declaration of the Two-Lane Upload Doctrine
-# This file is the machine-readable source of truth for what enters Git
-# versus what goes to artifact storage.
-#
-# Referenced by: push-with-app-gates.sh, classify-upload-payload.sh,
-#                tool_contracts/github.push.yaml, .bazelignore, .gitignore
-#
-# Version history:
-#   v1 - 2026-04-27: Initial doctrine from Monorepo OS DNA spec.
-
+# ═══════════════════════════════════════════════════════════
+# upload_policy.yaml — Two-Lane Upload Doctrine
+# Invariant #111: Git for source, artifact storage for payloads.
+# ═══════════════════════════════════════════════════════════
 version: 1
 
-lanes:
-  git_source:
-    purpose: >
-      Canonical source, policy, small docs, tests, build metadata.
-      This is the only lane that enters the Git repository.
-    allowed:
-      - apps/**
-      - packages/**
-      - libs/**
-      - tools/**
-      - scripts/**
-      - infra/**
-      - docs/**
-      - .github/**
-      - .agent/workflows/**
-      - .agent/evidence/**
-      - .agents/**
-      - BUILD
-      - BUILD.bazel
-      - MODULE.bazel
-      - .bazelrc
-      - .bazelignore
-      - .gitattributes
-      - .gitignore
-      - monorepo_manifest.yaml
-      - operator_invariants.json
-      - upload_policy.yaml
-      - tool_contracts/**
-      - artifacts/manifest.yaml
-    warning_file_size_mib: 50
-    block_file_size_mib: 95
-
-  artifact_archive:
-    purpose: >
-      Large payloads, source archives, generated outputs, reference mirrors,
-      model files, and anything that exceeds git_source thresholds.
-    storage:
-      primary: gcs
-      bucket: gs://shadowtag-artifacts
-    git_representation:
-      - artifact manifest (artifacts/manifest.yaml)
-      - sha256 checksum
-      - owner declaration
-      - source attribution
-      - retrieval instruction
-
-forbidden_in_git:
-  paths:
-    - archive/**
-    - external_repos/**
-    - external_sdks/**
-    - reference_architectures/raw/**
-    - third_party/raw/**
-    - venv/**
-    - .venv/**
-    - .venv-*/**
-    - node_modules/**
-    - .gitnexus/**
-    - .mypy_cache/**
-    - .ruff_cache/**
-    - .pytest_cache/**
-    - dist/**
-    - build/**
-    - out/**
-    - .next/**
-    - .turbo/**
-    - __pycache__/**
-  extensions:
-    - .zip
-    - .tar
-    - .tar.gz
-    - .tgz
-    - .7z
-    - .dmg
-    - .iso
-    - .mp4
-    - .mov
-    - .onnx
-    - .pt
-    - .gguf
-    - .bin
-    - .weights
-    - .safetensors
-    - .pkl
-    - .heapsnapshot
-  secrets:
-    - .env
-    - .env.*
+git_lane:
+  description: Canonical source, small docs, manifests, build files, tests, scripts, policy.
+  max_file_size_mb: 10
+  allowed_extensions:
+    - .py
+    - .ts
+    - .tsx
+    - .js
+    - .jsx
+    - .go
+    - .rs
+    - .cs
+    - .md
+    - .yaml
+    - .yml
+    - .json
+    - .toml
+    - .sh
+    - .bash
+    - .css
+    - .html
+    - .sql
+    - .tf
+    - .hcl
+    - .bzl
+    - .BUILD
+    - .bazel
+    - .proto
+    - .graphql
+    - .fga
+    - .mjs
+    - .cjs
+  blocked_patterns:
     - "*.pem"
     - "*.key"
-    - "client_secret*.json"
-    - "*service-account*.json"
+    - "client_secret*"
+    - "service-account*"
+    - "*.env"
+    - "*.env.*"
 
-lfs:
-  default: forbidden
-  allowed_only_by_exception: true
-  requires:
-    - owner
-    - reason
-    - budget_check
-    - artifact_alternative_rejected
+artifact_lane:
+  description: Large binaries, archives, generated indexes, vector DBs, raw payloads, model files.
+  storage: GCS or local ignored directories
+  requires_manifest: true
+  types:
+    - model_weights
+    - video_assets
+    - generated_indexes
+    - vector_databases
+    - raw_data_payloads
+    - notebook_outputs
+    - external_repo_mirrors
+    - build_artifacts
+    - heapsnapshots
+    - trace_files
+
+enforcement:
+  pre_push_gate: scripts/classify-upload-payload.sh
+  bloat_gate: scripts/prepush-bloat-gate.sh
+  secret_scan: scripts/secret-scan.sh

@@ -1,0 +1,4 @@
+# tool_contracts/bootstrap.alignment.yaml
+version: 1
+description: "Contract for bootstrap.alignment operations."
+enforcement: advisory

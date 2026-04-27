@@ -1,0 +1,4 @@
+# tool_contracts/memory.promote.yaml
+version: 1
+description: "Contract for memory.promote operations."
+enforcement: advisory

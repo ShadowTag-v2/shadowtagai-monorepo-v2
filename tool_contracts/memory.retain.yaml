@@ -1,0 +1,4 @@
+# tool_contracts/memory.retain.yaml
+version: 1
+description: "Contract for memory.retain operations."
+enforcement: advisory

@@ -1,0 +1,4 @@
+# tool_contracts/pageindex.compile.yaml
+version: 1
+description: "Contract for pageindex.compile operations."
+enforcement: advisory

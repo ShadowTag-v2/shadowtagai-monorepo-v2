@@ -1,0 +1,4 @@
+# tool_contracts/artifact.upload.yaml
+version: 1
+description: "Contract for artifact.upload operations."
+enforcement: advisory

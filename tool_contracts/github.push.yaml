@@ -1,0 +1,24 @@
+# tool_contracts/github.push.yaml — GitHub Push Gate Contract
+version: 1
+
+description: >
+  All pushes must go through the GitHub App token wrapper.
+  Token renewal handles expiration only; it is not a bypass.
+
+pre_conditions:
+  - remote_head_check: true
+  - secret_scan_passed: true
+  - bloat_gate_passed: true
+  - buildifier_check: true  # if Bazel/Starlark changed
+
+auth:
+  method: github_app_installation_token
+  script: scripts/auth_github_app.py
+  app_id: 3018200
+  pem_env: SHADOWTAG_PEM
+  token_lifetime_minutes: 60
+
+post_conditions:
+  - verify_remote_head: true
+  - write_evidence: true
+  - evidence_path: .agent/evidence/index.ndjson

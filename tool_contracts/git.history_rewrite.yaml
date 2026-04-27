@@ -1,0 +1,4 @@
+# tool_contracts/git.history_rewrite.yaml
+version: 1
+description: "Contract for git.history_rewrite operations."
+enforcement: advisory

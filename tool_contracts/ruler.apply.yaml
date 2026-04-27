@@ -1,0 +1,4 @@
+# tool_contracts/ruler.apply.yaml
+version: 1
+description: "Contract for ruler.apply operations."
+enforcement: advisory

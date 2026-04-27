@@ -1,0 +1,4 @@
+# tool_contracts/repowise.evaluate.yaml
+version: 1
+description: "Contract for repowise.evaluate operations."
+enforcement: advisory

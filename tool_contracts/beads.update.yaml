@@ -1,0 +1,4 @@
+# tool_contracts/beads.update.yaml
+version: 1
+description: "Contract for beads.update operations."
+enforcement: advisory

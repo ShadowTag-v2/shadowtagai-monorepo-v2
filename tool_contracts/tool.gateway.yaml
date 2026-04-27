@@ -1,0 +1,43 @@
+# tool_contracts/tool.gateway.yaml — ToolGateway Master Contract
+# Every mutating action routes through this contract.
+version: 1
+
+description: >
+  Central authorization gateway for all mutating, architectural, schema-dependent,
+  deployment, GitHub, database, browser-QA, authentication, and external-service actions.
+
+hydration:
+  required_before_execution:
+    - AGENTS.md
+    - operator_invariants.json
+    - monorepo_manifest.yaml
+    - truth_surfaces.yaml
+    - .beads/issues.jsonl
+    - .memory/views/CONSTRAINTS.md
+
+enforcement:
+  mode: advisory  # advisory | enforced
+  upgrade_to_enforced: Phase 10
+
+gates:
+  - name: secret_scan
+    contract: repo.secret_scan.yaml
+    trigger: pre_commit
+  - name: bloat_gate
+    contract: repo.large_file_scan.yaml
+    trigger: pre_push
+  - name: type_check
+    contract: python.typecheck.yaml
+    trigger: pre_commit
+  - name: design_lint
+    contract: design_system.lint.yaml
+    trigger: on_ui_change
+  - name: impact_analysis
+    contract: gitnexus.impact.yaml
+    trigger: on_refactor
+  - name: build_check
+    contract: bazel.build.yaml
+    trigger: on_build_change
+  - name: push_gate
+    contract: github.push.yaml
+    trigger: pre_push
