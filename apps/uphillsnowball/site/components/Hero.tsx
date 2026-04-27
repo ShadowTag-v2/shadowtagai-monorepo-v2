@@ -1,127 +1,103 @@
+'use client';
+
 import { motion, useScroll, useTransform } from 'framer-motion';
-import type React from 'react';
 import { useRef } from 'react';
 
 /**
- * UphillSnowballHero
- * Concept: "Kinetic Reversal"
- * A heavy frosted-glass sphere rolling UP a glowing diagonal vector line,
- * absorbing data nodes, demonstrating physics-defying compounding momentum.
+ * UphillSnowball Hero - Kinetic Reversal
+ * Concept: "Physics-defying compounding momentum."
+ * A frosted-glass sphere rolling upward along a diagonal vector, absorbing data.
  */
-export const UphillSnowballHero: React.FC = () => {
+export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Track scroll progress within the container for physics-based parallax
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  // Calculate the upward motion based on scroll (Kinetic Reversal)
-  // As user scrolls down, the ball moves UP the line
-  const ballY = useTransform(scrollYProgress, [0, 1], ['0%', '-400%']);
-  const ballX = useTransform(scrollYProgress, [0, 1], ['0%', '200%']);
-  const ballRotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  // Calculate the sphere's upward trajectory along the vector
+  // As user scrolls down, sphere moves UP and to the RIGHT
+  const sphereX = useTransform(scrollYProgress, [0, 1], ['0%', '150%']);
+  const sphereY = useTransform(scrollYProgress, [0, 1], ['0%', '-150%']);
+  const sphereRotation = useTransform(scrollYProgress, [0, 1], [0, 720]);
 
-  // Node absorption animation (nodes moving towards the vector line)
-  const floatVariants = {
-    initial: { y: 0, opacity: 0.2 },
-    animate: {
-      y: [-10, 10, -10],
-      opacity: [0.2, 0.5, 0.2],
-      transition: { repeat: Infinity, duration: 4, ease: 'easeInOut' },
-    },
-  };
+  // Compounding mass effect
+  const sphereScale = useTransform(scrollYProgress, [0, 1], [1, 1.8]);
 
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[150vh] bg-[#050505] overflow-hidden flex flex-col items-center pt-32"
+      className="relative w-full h-[150vh] bg-[#050505] overflow-hidden flex flex-col text-[#FAFAFA]"
     >
-      {/* Background ambient lighting */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl opacity-30 pointer-events-none">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-indigo-600 rounded-full mix-blend-screen filter blur-[150px] animate-pulse" />
-        <div
-          className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-blue-600 rounded-full mix-blend-screen filter blur-[150px] animate-pulse"
-          style={{ animationDelay: '2s' }}
-        />
-      </div>
+      {/* Sticky viewport to keep hero visible while scrolling triggers physics */}
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        {/* Background ambient lighting */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-[#3B82F6]/10 rounded-full blur-[120px] opacity-50" />
+          <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-[#8B5CF6]/10 rounded-full blur-[100px] opacity-40" />
+        </div>
 
-      <div className="relative z-20 text-center max-w-4xl mx-auto px-4 mt-16 mb-32">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-6xl md:text-8xl font-black text-white tracking-tighter mb-6"
+        {/* Sharp Glowing Diagonal Vector Line */}
+        <div className="absolute z-10 w-[200%] h-[2px] bg-gradient-to-r from-transparent via-[#FAFAFA]/40 to-transparent rotate-[-25deg] shadow-[0_0_15px_rgba(250,250,250,0.3)]" />
+
+        {/* The Kinetic Sphere */}
+        <motion.div
+          className="absolute z-20 w-32 h-32 md:w-48 md:h-48 rounded-full"
+          style={{
+            x: sphereX,
+            y: sphereY,
+            rotate: sphereRotation,
+            scale: sphereScale,
+          }}
+          initial={{ x: '-20vw', y: '20vh' }}
         >
-          Reverse{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600">
-            Entropy.
-          </span>
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-xl md:text-2xl text-neutral-400 font-light max-w-2xl mx-auto"
-        >
-          Compounding algorithmic momentum that defies technical gravity.
-        </motion.p>
-      </div>
-
-      {/* The Kinetic Reversal Physics Simulation */}
-      <div className="relative w-full max-w-6xl mx-auto h-[800px] pointer-events-none">
-        {/* The glowing diagonal vector line */}
-        <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-purple-500 -rotate-12 origin-left shadow-[0_0_30px_rgba(59,130,246,0.5)]" />
-        <div className="absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/20 to-white -rotate-12 origin-left" />
-
-        {/* Floating Data Nodes being absorbed */}
-        <motion.div
-          variants={floatVariants}
-          initial="initial"
-          animate="animate"
-          className="absolute top-[30%] left-[20%] w-4 h-4 rounded-sm bg-blue-400/30 border border-blue-400/50 backdrop-blur-sm shadow-[0_0_15px_rgba(96,165,250,0.5)]"
-        />
-        <motion.div
-          variants={floatVariants}
-          initial="initial"
-          animate="animate"
-          style={{ animationDelay: '1s' }}
-          className="absolute top-[60%] left-[40%] w-6 h-6 rounded-full bg-indigo-500/20 border border-indigo-500/40 backdrop-blur-sm"
-        />
-        <motion.div
-          variants={floatVariants}
-          initial="initial"
-          animate="animate"
-          style={{ animationDelay: '2.5s' }}
-          className="absolute top-[40%] left-[70%] w-3 h-3 rotate-45 bg-purple-400/40 border border-purple-400/60 shadow-[0_0_20px_rgba(192,132,252,0.6)]"
-        />
-        <motion.div
-          variants={floatVariants}
-          initial="initial"
-          animate="animate"
-          style={{ animationDelay: '0.5s' }}
-          className="absolute top-[20%] left-[60%] w-8 h-2 bg-white/10 border border-white/20 rounded-full"
-        />
-
-        {/* The Heavy Frosted Glass Sphere */}
-        <motion.div
-          style={{ y: ballY, x: ballX, rotate: ballRotate }}
-          className="absolute top-1/2 left-[10%] -translate-y-full -translate-x-1/2 z-30"
-        >
-          <div className="relative w-48 h-48 rounded-full backdrop-blur-2xl bg-gradient-to-tr from-white/5 to-white/20 border border-white/20 shadow-[inset_0_0_40px_rgba(255,255,255,0.1),0_0_50px_rgba(59,130,246,0.3)] flex items-center justify-center overflow-hidden">
-            {/* Inner dynamic core */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 mix-blend-overlay" />
-            <div className="w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/40 via-transparent to-transparent opacity-60" />
-
-            {/* "Absorbed" data particle effect inside sphere */}
+          {/* Frosted Glass Effect using atmospheric-glass hex tokens */}
+          <div className="w-full h-full rounded-full backdrop-blur-xl bg-[#FAFAFA]/10 border border-[#FAFAFA]/20 shadow-[0_0_40px_rgba(250,250,250,0.1),inset_0_0_20px_rgba(250,250,250,0.2)] flex items-center justify-center overflow-hidden relative">
+            {/* Internal core glow */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[#FAFAFA]/5 to-[#FAFAFA]/30" />
             <motion.div
+              className="w-1/2 h-1/2 rounded-full bg-gradient-to-br from-[#FAFAFA] to-transparent opacity-30 blur-md"
               animate={{ rotate: 360 }}
               transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-              className="absolute w-[150%] h-[150%] border-[0.5px] border-white/10 rounded-full border-dashed"
             />
           </div>
         </motion.div>
+
+        {/* Floating Data Nodes (Absorbed by the sphere) */}
+        <motion.div
+          className="absolute z-10 top-1/3 left-1/2 w-4 h-4 bg-[#3B82F6] rounded-sm shadow-[0_0_10px_#3B82F6] opacity-70"
+          animate={{ y: [0, -20, 0], opacity: [0.3, 0.8, 0.3] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute z-10 bottom-1/3 right-1/4 w-3 h-3 bg-[#8B5CF6] rounded-full shadow-[0_0_10px_#8B5CF6] opacity-60"
+          animate={{ x: [0, 15, 0], opacity: [0.4, 0.9, 0.4] }}
+          transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+        />
+        <motion.div
+          className="absolute z-10 top-1/4 right-1/3 w-2 h-12 bg-[#FAFAFA]/50 rotate-45 shadow-[0_0_8px_rgba(250,250,250,0.5)]"
+          animate={{ opacity: [0.1, 0.5, 0.1] }}
+          transition={{ duration: 2.5, repeat: Infinity }}
+        />
+
+        {/* Typography Content */}
+        <div className="relative z-30 flex flex-col items-start px-6 md:px-24 w-full max-w-7xl pointer-events-none mt-32">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-[0.9] text-transparent bg-clip-text bg-gradient-to-br from-[#FAFAFA] via-[#A1A1AA] to-[#3F3F46]">
+              Kinetic <br /> Reversal
+            </h1>
+            <p className="mt-6 text-xl md:text-2xl font-light text-[#A1A1AA] max-w-xl">
+              Physics-defying momentum. Compounding data gravity against the incline.
+            </p>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
-};
-
-export default UphillSnowballHero;
+}
