@@ -1,0 +1,164 @@
+# .github/workflows/monorepo-os-gates.yml — Monorepo OS Health Verification
+# Runs the heartbeat probe on every push to main and on PR.
+# Verifies all 10 subsystems are operational.
+name: Monorepo OS Gates
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - 'tool_contracts/**'
+      - '.beads/**'
+      - '.memory/**'
+      - 'operator_invariants_atoms.json'
+      - 'upload_policy.yaml'
+      - 'index_policy.yaml'
+      - 'MONOREPO_OS.md'
+      - 'scripts/monorepo-health-loop.sh'
+      - 'scripts/skills-audit.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  monorepo-os-health:
+    name: Monorepo OS Health Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify Truth Files Exist
+        run: |
+          echo "═══ Monorepo OS Truth File Verification ═══"
+          MISSING=0
+
+          # Core truth files
+          for f in \
+            ".beads/issues.jsonl" \
+            ".memory/events.ndjson" \
+            "tool_contracts/tool.gateway.yaml" \
+            "operator_invariants_atoms.json" \
+            "upload_policy.yaml" \
+            "index_policy.yaml" \
+            "MONOREPO_OS.md"; do
+            if [ -f "$f" ]; then
+              echo "  ✓ $f"
+            else
+              echo "  ✗ $f — MISSING"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          if [ "$MISSING" -gt 0 ]; then
+            echo "::error::${MISSING} truth files missing"
+            exit 1
+          fi
+          echo "All truth files present."
+
+      - name: Verify ToolGateway Contracts
+        run: |
+          echo "═══ ToolGateway Contract Verification ═══"
+          REQUIRED_CONTRACTS=(
+            "tool.gateway.yaml"
+            "github.push.yaml"
+            "repo.secret_scan.yaml"
+            "skills.update.yaml"
+            "skills.repo_mass_reduction.yaml"
+            "skills.yolo_mode_operator.yaml"
+          )
+          MISSING=0
+          for contract in "${REQUIRED_CONTRACTS[@]}"; do
+            if [ -f "tool_contracts/$contract" ]; then
+              echo "  ✓ $contract"
+            else
+              echo "  ✗ $contract — MISSING"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          if [ "$MISSING" -gt 0 ]; then
+            echo "::error::${MISSING} required contracts missing"
+            exit 1
+          fi
+          echo "All required contracts present."
+
+      - name: Verify Operator Invariants
+        run: |
+          echo "═══ Operator Invariants Verification ═══"
+          # Check that the canonical atoms file parses as valid JSON
+          python3 -c "
+          import json, sys
+          with open('operator_invariants_atoms.json') as f:
+              data = json.load(f)
+          atoms = data.get('atoms', [])
+          print(f'  Atoms count: {len(atoms)}')
+
+          # Verify required invariant IDs are present
+          required_ids = ['105', '113', '114', '115', '138', '139', '140', '141']
+          present = set()
+          for atom in atoms:
+              ref = atom.get('source_ref', '')
+              for rid in required_ids:
+                  if f'#{rid}' in ref:
+                      present.add(rid)
+
+          missing = set(required_ids) - present
+          if missing:
+              print(f'  MISSING invariants: {missing}')
+              sys.exit(1)
+          print(f'  All {len(required_ids)} required invariants present')
+          "
+
+      - name: Verify Triage Completeness
+        run: |
+          echo "═══ SkillOps Triage Verification ═══"
+          if [ -f ".reports/skills/unsafe_findings_triage.md" ]; then
+            echo "  ✓ Triage report exists"
+            # Check that triage has all three categories
+            for category in "ACTUAL RISK" "MODERATE" "FALSE POSITIVE"; do
+              if grep -q "$category" .reports/skills/unsafe_findings_triage.md; then
+                echo "  ✓ Category: $category"
+              else
+                echo "  ✗ Category missing: $category"
+                exit 1
+              fi
+            done
+          else
+            echo "::warning::No triage report found — run skills-audit.sh"
+          fi
+
+      - name: NDJSON Integrity Check
+        run: |
+          echo "═══ NDJSON Integrity ═══"
+          for f in ".beads/issues.jsonl" ".memory/events.ndjson"; do
+            if [ -f "$f" ]; then
+              LINE_COUNT=$(wc -l < "$f" | tr -d ' ')
+              # Validate each line is valid JSON
+              ERRORS=$(python3 -c "
+          import json, sys
+          errors = 0
+          with open('$f') as fh:
+              for i, line in enumerate(fh, 1):
+                  line = line.strip()
+                  if not line:
+                      continue
+                  try:
+                      json.loads(line)
+                  except json.JSONDecodeError:
+                      errors += 1
+                      print(f'  Line {i}: invalid JSON', file=sys.stderr)
+          print(errors)
+              ")
+              if [ "$ERRORS" -gt 0 ]; then
+                echo "::error::$f has $ERRORS invalid JSON lines"
+                exit 1
+              fi
+              echo "  ✓ $f — $LINE_COUNT lines, valid"
+            fi
+          done

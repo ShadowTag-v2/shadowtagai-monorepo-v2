@@ -41,3 +41,11 @@ gates:
   - name: push_gate
     contract: github.push.yaml
     trigger: pre_push
+  - name: repo_mass_reduction_gate
+    contract: skills.repo_mass_reduction.yaml
+    trigger: manual_only
+    requires: state_b
+  - name: yolo_mode_operator_gate
+    contract: skills.yolo_mode_operator.yaml
+    trigger: manual_only
+    requires: state_b
