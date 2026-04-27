@@ -1,4 +1,36 @@
 # tool_contracts/knowledge.compile.yaml
-version: 1
-description: "Contract for knowledge.compile operations."
+# ══════════════════════════════════════════════
+# Knowledge Compile — Session Intelligence Distillation
+# ══════════════════════════════════════════════
+version: 2
+description: >
+  Governs the compilation of session insights into durable Knowledge Items (KIs)
+  for cross-session persistence. Prevents duplicate KIs and enforces quality standards.
 enforcement: advisory
+
+triggers:
+  - session_end  # End of productive session
+  - architectural_decision  # ADR-worthy insight
+  - bug_pattern_resolved  # Reusable fix pattern
+  - api_behavior_discovered  # Empirical API finding
+
+required_structure:
+  directory: "~/.gemini/antigravity/knowledge/<ki-name>/"
+  files:
+    - metadata.json  # title, summary, created, updated, references, tags
+    - "artifacts/*.md"  # Focused content documents
+
+quality_gates:
+  - summary_max_sentences: 3
+  - no_duplicate_ki: true  # Must check existing KIs first
+  - has_references: true  # Cross-referenced to repo files
+  - actionable: true  # Not just notes — must be usable
+
+workflow: .agent/workflows/knowledge-compile.md
+package: null  # No package — file I/O only
+
+evidence:
+  log_to: .agent/evidence/index.ndjson
+  event_type: knowledge_compiled
+
+failure_mode: warn  # Advisory — never blocks

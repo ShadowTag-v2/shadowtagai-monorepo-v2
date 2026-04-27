@@ -1,4 +1,31 @@
 # tool_contracts/bootstrap.alignment.yaml
-version: 1
-description: "Contract for bootstrap.alignment operations."
-enforcement: advisory
+# ══════════════════════════════════════════════
+# Bootstrap Alignment — Session Truth Anchor
+# ══════════════════════════════════════════════
+version: 2
+description: >
+  Anchors agent state to the canonical monorepo truth surfaces at session start.
+  Verifies MCP fleet, beads health, contract drift, and manifest alignment.
+enforcement: mandatory
+
+triggers:
+  - session_start
+  - context_window_reset
+
+required_checks:
+  - git_log_head  # Temporal anchor
+  - truth_surfaces_read  # truth_surfaces.yaml
+  - manifest_read  # monorepo_manifest.yaml
+  - agents_md_read  # AGENTS.md
+  - mcp_preflight  # 5-server check
+  - beads_health  # scripts/beads-health.sh
+  - contract_drift  # scripts/contract-drift-check.sh
+
+workflow: .agent/workflows/bootstrap-alignment.md
+package: null  # No package — orchestration only
+
+evidence:
+  log_to: .agent/evidence/index.ndjson
+  event_type: bootstrap_alignment
+
+failure_mode: block  # Block all operations until alignment passes
