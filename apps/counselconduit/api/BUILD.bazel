@@ -1,0 +1,68 @@
+# BUILD.bazel — apps/counselconduit/api
+# Phase 4: Core FastAPI application — routes, handlers, middleware
+# Owner: product
+#
+# This is the largest sub-package in counselconduit (41 source files).
+# It declares the API surface as a py_library with deps on middleware/ and services/.
+
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//apps/counselconduit:__subpackages__"])
+
+py_library(
+    name = "api",
+    srcs = [
+        "__init__.py",
+        "agui_stream.py",
+        "app_error.py",
+        "auth.py",
+        "blast_radius.py",
+        "byok.py",
+        "cloud_tasks_gdpr.py",
+        "cloud_tasks_gdpr_handler.py",
+        "deprecation_middleware.py",
+        "dispatch_router.py",
+        "email_service.py",
+        "email_templates.py",
+        "empathy_templates.py",
+        "fastapi_kovel_enclave.py",
+        "firestore_client.py",
+        "gdpr.py",
+        "gemini_rag.py",
+        "human_gate.py",
+        "intake_summarizer.py",
+        "judge6.py",
+        "kovel_attestation.py",
+        "magic_link.py",
+        "model_router.py",
+        "monitoring.py",
+        "null_model_validator.py",
+        "oracle_studio.py",
+        "pr_review_webhook.py",
+        "provider_health.py",
+        "resend_webhook.py",
+        "sandbox_router.py",
+        "secret_client.py",
+        "session_pin_monitor.py",
+        "silent_detector.py",
+        "stripe_config.py",
+        "stripe_connect.py",
+        "stripe_connect_onboarding.py",
+        "stripe_connect_webhook.py",
+        "stripe_handler.py",
+        "stripe_multi_attorney.py",
+        "subscription_notifications.py",
+        "telemetry.py",
+        "token_meter.py",
+        "ucmj_discipline.py",
+        "uuid7.py",
+        "vector_db.py",
+        "vent_mode.py",
+        "workspace_alerts.py",
+    ],
+    deps = [
+        "//apps/counselconduit/api/middleware",
+        "//apps/counselconduit/models",
+        "//apps/counselconduit/services",
+    ],
+)

@@ -2,6 +2,8 @@
 # Bazel wrapper scripts for existing linting and validation commands.
 # Phase 2: Wrap existing tools before making them hermetic.
 
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+
 package(default_visibility = ["//visibility:public"])
 
 sh_test(
