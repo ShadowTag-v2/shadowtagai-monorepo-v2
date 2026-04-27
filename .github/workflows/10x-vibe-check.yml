@@ -1,0 +1,130 @@
+name: 10x Vibe Check
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/kovelai/**'
+      - 'apps/counselconduit/**'
+      - 'docs/**'
+      - 'scripts/**'
+      - 'packages/**'
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 3 * * *'  # Daily 3am UTC
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  vibe-check:
+    name: Repository Health & Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install dependencies
+        run: |
+          pip install ruff pyyaml
+
+      - name: Dead code audit (ruff F401/F841)
+        run: |
+          echo "=== Dead Code Audit ==="
+          ruff check --select F401,F841 --statistics . 2>&1 || true
+          echo ""
+          DEAD=$(ruff check --select F401,F841 --output-format json . 2>/dev/null | python3 -c "import json,sys; print(len(json.load(sys.stdin)))" 2>/dev/null || echo "0")
+          echo "Dead code findings: $DEAD"
+          if [ "$DEAD" -gt 20 ]; then
+            echo "::warning::$DEAD dead code findings exceed threshold (20)"
+          fi
+
+      - name: Script health check
+        run: |
+          echo "=== Script Health ==="
+          ERRORS=0
+          for script in scripts/*.sh scripts/*.py; do
+            if [ ! -f "$script" ]; then continue; fi
+            # Check shebang
+            FIRST_LINE=$(head -1 "$script")
+            if [[ "$script" == *.sh ]] && [[ "$FIRST_LINE" != "#!/"* ]]; then
+              echo "⚠️ $script: missing shebang"
+              ERRORS=$((ERRORS + 1))
+            fi
+            if [[ "$script" == *.py ]] && [[ "$FIRST_LINE" != "#!/"* ]] && [[ "$FIRST_LINE" != "#!"* ]]; then
+              echo "⚠️ $script: missing shebang"
+            fi
+            echo "✅ $script ($(wc -l < "$script" | tr -d ' ')L)"
+          done
+          echo "Script count: $(ls scripts/*.sh scripts/*.py 2>/dev/null | wc -l | tr -d ' ')"
+          if [ $ERRORS -gt 0 ]; then
+            echo "::warning::$ERRORS script issues found"
+          fi
+
+      - name: Tool contract validation
+        run: |
+          echo "=== Tool Contract Validation ==="
+          ERRORS=0
+          for contract in tool_contracts/*.yaml; do
+            python3 -c "
+          import yaml, sys
+          with open('$contract') as f:
+              data = yaml.safe_load(f)
+          if not data:
+              print(f'❌ $contract: empty')
+              sys.exit(1)
+          required = ['name']
+          for key in required:
+              if key not in data:
+                  print(f'⚠️ $contract: missing {key}')
+          print(f'✅ $contract')
+          " || ERRORS=$((ERRORS + 1))
+          done
+          echo "Contract count: $(ls tool_contracts/*.yaml | wc -l | tr -d ' ')"
+          if [ $ERRORS -gt 0 ]; then
+            echo "::error::$ERRORS contract validation failures"
+            exit 1
+          fi
+
+      - name: Manifest version check
+        run: |
+          python3 -c "
+          import yaml
+          with open('monorepo_manifest.yaml') as f:
+              m = yaml.safe_load(f)
+          version = m.get('version', 'unknown')
+          project = m.get('project', m.get('name', 'unknown'))
+          print(f'📋 Manifest: {project} v{version}')
+          "
+
+      - name: Repository metrics
+        run: |
+          echo "=== Repository Metrics ==="
+          echo "Total files: $(git ls-files | wc -l | tr -d ' ')"
+          echo "Total LOC: $(git ls-files '*.py' '*.sh' '*.ts' '*.tsx' '*.js' '*.yaml' '*.yml' '*.md' | xargs wc -l 2>/dev/null | tail -1 | tr -d ' ' | cut -d' ' -f1 || echo 'N/A')"
+          echo "Scripts: $(ls scripts/*.sh scripts/*.py 2>/dev/null | wc -l | tr -d ' ')"
+          echo "Packages: $(ls -d packages/*/ 2>/dev/null | wc -l | tr -d ' ')"
+          echo "Workflows: $(ls .agent/workflows/*.md .github/workflows/*.yml 2>/dev/null | wc -l | tr -d ' ')"
+          echo "Tool contracts: $(ls tool_contracts/*.yaml 2>/dev/null | wc -l | tr -d ' ')"
+          echo "Memory atoms: $(find .memory/atoms -name '*.md' 2>/dev/null | wc -l | tr -d ' ')"
+          echo "Beads issues: $(wc -l < .beads/issues.jsonl 2>/dev/null | tr -d ' ' || echo 0)"
+
+      - name: Bloat gate
+        run: |
+          echo "=== Bloat Gate ==="
+          # Check for files > 5MB
+          LARGE=$(find . -not -path './.git/*' -not -path '*/node_modules/*' -not -path '*/venv/*' -type f -size +5M 2>/dev/null)
+          if [ -n "$LARGE" ]; then
+            echo "::warning::Large files detected (>5MB):"
+            echo "$LARGE"
+          else
+            echo "✅ No files exceed 5MB bloat threshold"
+          fi
