@@ -1,6 +1,0 @@
-{
-  "status": "ok",
-  "system": "drive-ingest-daemon",
-  "mode": "placeholder-for-gdrive-langextract-ingest",
-  "next": ["pull latest docs", "extract structured summaries", "append to active resources"]
-}

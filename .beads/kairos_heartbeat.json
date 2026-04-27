@@ -1,9 +1,10 @@
 {
-  "timestamp": "2026-04-27T07:38:15.861049+00:00",
-  "pid": 98936,
+  "timestamp": "2026-04-27T08:04:44.829243+00:00",
+  "pid": 12374,
   "status": {
     "cycle": "1",
     "health": "{\"gcp_adc\": \"missing\", \"ane_dylib\": \"missing\", \"lancedb\": \"empty\", \"vault\": \"missing\", \"git_dirty\": \"unknown\", \"git_fetch\": \"ok\"}",
+    "dead_code": "ran",
     "steward": "ran",
     "vault_ingest": "ran",
     "quarantine_purge": "ran"

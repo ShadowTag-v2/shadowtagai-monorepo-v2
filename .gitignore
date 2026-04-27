@@ -94,6 +94,48 @@ vault/embed/
 # --- Heavy Archive Payloads ---
 control/legacy_workspaces/
 
+# ═══════════════════════════════════════════════════════════
+# INVARIANT #103: Repository Mass Reduction Gate
+# Vendored reference repos, generated analysis, SDK caches
+# ═══════════════════════════════════════════════════════════
+
+# --- Vendored Reference Repos in tools/ (cloned upstream repos) ---
+tools/GitNexus/
+tools/mcp-toolbox/
+tools/material-web/
+tools/java-firestore/
+tools/google-cloud-php-firestore/
+tools/nodejs-firestore/
+tools/firebase-snippets-web/
+tools/firebase-quickstart-js/
+tools/dio/
+tools/gcloud-mcp/
+tools/google-workspace-cli/
+tools/google-cloud-dart/
+tools/mcp-toolbox-sdk-python/
+tools/langchain-google-firestore-python/
+tools/firestore-bundle-builder/
+tools/firebase-demo/
+
+# --- Generated Analysis (regenerable) ---
+.codesight/
+.whiteboard/
+
+# --- SDK Caches (regenerable) ---
+.stitch-sdk/
+
+# --- Vendored Third-Party Forks ---
+third_party/
+
+# --- External SDK Snapshots ---
+external_sdks/
+
+# --- Data Artifacts (blanket — all subdirs ephemeral) ---
+data/
+
+# --- Memory / Agent Ephemeral ---
+memory/
+
 # --- IDE & OS ---
 .DS_Store
 **/.DS_Store

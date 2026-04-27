@@ -1,9 +1,0 @@
-import { Repo, User } from './models';
-
-function main(): void {
-  const user = new User();
-  user.save();
-
-  const repo = new Repo();
-  repo.persist();
-}
