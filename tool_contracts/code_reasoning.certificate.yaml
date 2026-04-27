@@ -1,4 +1,40 @@
 # tool_contracts/code_reasoning.certificate.yaml
-version: 1
-description: "Contract for code_reasoning.certificate operations."
-enforcement: advisory
+# ══════════════════════════════════════════════
+# Code Reasoning Certificate — Gated Analysis
+# ══════════════════════════════════════════════
+version: 2
+description: >
+  Requires a structured reasoning certificate before executing complex code changes.
+  Enforces multi-approach evaluation, edge case analysis, and rollback planning.
+enforcement: advisory  # Mandatory for STATE B changes
+
+triggers:
+  - state_b_change  # Architecture shifts >3 packages
+  - auth_payment_change  # Auth or payment logic
+  - database_migration  # Schema changes
+  - blast_radius_high  # >10 files affected
+
+required_fields:
+  - change_description
+  - approach
+  - rejected_alternatives  # At least 1 alternative considered
+  - risk_level  # LOW | MEDIUM | HIGH
+  - blast_radius_files
+  - blast_radius_packages
+  - edge_cases  # At least 2 edge cases
+  - rollback_plan
+
+workflow: .agent/workflows/gated-code-reasoning.md
+package: packages/code_reasoning
+
+state_b_criteria:
+  - risk_level == HIGH
+  - blast_radius_packages > 3
+  - auth_payment_affected == true
+  - database_schema_changed == true
+
+evidence:
+  log_to: .agent/evidence/index.ndjson
+  event_type: code_reasoning_certificate
+
+failure_mode: warn  # Advisory by default, block for STATE B
