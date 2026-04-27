@@ -3,6 +3,7 @@ message: "Security: Bare 'except:' catches SystemExit. Use 'except Exception:' i
 severity: error
 language: python
 rule:
+  kind: except_clause
   pattern: |
     except:
       $$$BODY

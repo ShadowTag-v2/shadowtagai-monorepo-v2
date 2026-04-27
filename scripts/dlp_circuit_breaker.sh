@@ -50,6 +50,7 @@ ALLOWED_FILES=(
   '.agents/skills/google-cloud-run-basics/references/'
   '.agents/skills/google-firebase-basics/references/'
   '.agents/skills/google-google-cloud-recipe-auth/'
+  'apps/kovelai/agent/iam_mappings.sh'
 )
 
 echo "🔒 DLP Circuit Breaker — Scanning staged files..."
