@@ -48,5 +48,30 @@
     "id": 114,
     "name": "Artifact Manifest Requirement",
     "rule": "Any non-source payload moved out of Git must be represented by an artifact manifest containing URI, sha256, owner, retention class, source, status, and retrieval instructions. The manifest is committed; the payload is not."
+  },
+  {
+    "id": 105,
+    "name": "History Bloat Requires History Tools",
+    "rule": "Git history rewrites (filter-branch, filter-repo, BFG) are the ONLY authorized method for removing accidentally committed large objects from history. Force-pushing rewritten history requires STATE B approval. Objects already in pack history cannot be removed by gitignore alone."
+  },
+  {
+    "id": 115,
+    "name": "Secret Scanner Succession",
+    "rule": "Betterleaks is the canonical secret scanner. Gitleaks is the legacy fallback. Both must share the same .gitleaksignore suppression file. Scanner upgrades must maintain fingerprint compatibility. CI gates must never regress — a secret that was blocked must remain blocked after scanner migration."
+  },
+  {
+    "id": 138,
+    "name": "External Repos Are Reference Mirrors",
+    "rule": "Repositories cloned into external_repos/ are read-only reference mirrors governed by external_repos/upstream_manifest.yaml. They must never be modified locally, committed to the monorepo history, or treated as canonical source. The manifest tracks origin, branch, shallow depth, group, and purpose. Clone operations use scripts/clone-external-reference-repos.sh exclusively."
+  },
+  {
+    "id": 139,
+    "name": "SkillOps Is Repo-Governed",
+    "rule": "Skill creation, update, archival, and deduplication must flow through the SkillOps subsystem: tool_contracts/skills.update.yaml defines the contract, scripts/skills-audit.sh validates fleet integrity, scripts/skills-registry.py manages the registry, and .ruler/skills.md propagates rules to agents. Ad-hoc skill file manipulation without registry update is prohibited."
+  },
+  {
+    "id": 140,
+    "name": "Boot Probes Are Read-Only",
+    "rule": "Session boot probes (MCP pre-flight, health checks, environment reads, manifest parsing, heartbeat queries) must be strictly read-only. They must not mutate files, create branches, push commits, modify configuration, or trigger side effects. Boot failures must be reported, not auto-remediated without explicit operator approval."
   }
 ]

@@ -151,3 +151,4 @@ Model proposes → FunctionRegistry validates → ConfirmationGate checks risk
 | v1.4 | 2026-04-27 | Beads capture, guardian patch, CI drift gates, MIRAS memory atoms, ADR-0006 VPC egress |
 | v1.5 | 2026-04-27 | Cross-reference: 8 operator invariants (104,111,112,121,129,131,136,137), 4 enforcement scripts |
 | v1.6 | 2026-04-27 | Governance completion: Invariants #113 (Autolint Scope Boundary) and #114 (Artifact Manifest Requirement) added. 10 invariants total. Memory atoms wired. Upload subsystem fully governed. |
+| v1.7 | 2026-04-27 | Gap closure: Invariants #105 (History Bloat), #115 (Secret Scanner Succession), #138 (External Repos Mirror), #139 (SkillOps Governed), #140 (Boot Probes Read-Only) added. 15 invariants total, 17 memory atoms. SkillOps, Repo Oracle, and Clone Yard verified operational. |
