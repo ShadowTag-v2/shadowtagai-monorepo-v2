@@ -1,0 +1,31 @@
+# tool_contracts/agent.progression.yaml
+#
+# Contract governing the agent permission ladder.
+
+name: agent.progression
+risk: high
+
+description: >
+  Governs the agent progression system defined in agent_progression.yaml.
+  Agent capabilities are earned through evidence, not granted by default.
+
+requires:
+  - level_requirements_met_before_capability_use
+  - evidence_packets_exist_for_claims
+  - betterleaks_clean_for_push_operations
+  - toolgateway_compliance_for_mutations
+
+forbidden:
+  - skip_levels
+  - self_promote_without_evidence
+  - claim_production_access_without_human_approval
+  - bypass_progression_via_terminal
+  - reset_progression_without_audit
+
+evaluation:
+  evidence_source: .agent/evidence/
+  beads_source: .beads/issues.jsonl
+  check_interval: per_action
+  escalation_on_violation: stop_and_report
+
+truth_file: agent_progression.yaml

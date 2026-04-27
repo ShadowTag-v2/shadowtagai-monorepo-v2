@@ -1,0 +1,40 @@
+# tool_contracts/memory.resolve_conflict.yaml
+#
+# Stop-and-report protocol for conflicting memory sources.
+
+name: memory.resolve_conflict
+risk: medium
+
+description: >
+  When current user instructions, Beads issues, Memory atoms, docs, comments,
+  or code disagree on material facts, the agent must stop synthesis, cite the
+  conflicting sources, and either use the highest-freshness source by policy
+  or ask for resolution. It must not blend contradictory instructions.
+
+freshness_order:
+  - current_user_message
+  - explicit_repo_state
+  - recent_commits
+  - beads_open_issue
+  - memory_active_atom
+  - current_docs
+  - code_comments
+  - old_handoff
+
+requires:
+  - conflict_described
+  - sources_named
+  - chosen_source_or_escalation
+
+forbidden:
+  - blend_conflicting_claims
+  - silently_ignore_current_user
+  - treat_old_handoff_as_current_without_verification
+  - invent_facts_to_resolve_conflict
+  - proceed_without_acknowledging_conflict
+
+resolution_actions:
+  - cite_both_sources_with_paths
+  - apply_freshness_order_if_unambiguous
+  - escalate_to_user_if_ambiguous
+  - log_resolution_to_evidence

@@ -1,0 +1,39 @@
+# tool_contracts/context.google_drive_fetch.yaml
+#
+# Governed Google Drive context fetch — not free-form scripts.
+
+name: context.google_drive_fetch
+risk: medium
+
+description: >
+  Fetch Google Drive context through approved ADC or connector flow.
+  Do not let every agent invent a Drive script. Use this governed path.
+
+requires:
+  - user_requested_or_context_missing
+  - readonly_scope
+  - doc_id_or_search_query
+  - evidence_logged
+
+forbidden:
+  - service_account_key_file_committed
+  - broad_drive_write_scope
+  - fetching_unrelated_personal_files
+  - storing_raw_drive_dump_in_git
+  - sharing_drive_credentials_in_chat
+
+outputs:
+  - .agent/evidence/context_fetch/*.json
+  - optional_memory_atom_summary
+
+auth:
+  method: application_default_credentials
+  scope: https://www.googleapis.com/auth/drive.readonly
+  fallback: user_oauth_consent
+
+scripts:
+  - scripts/context-fetch-drive.py
+
+aiexclude:
+  - raw_drive_dumps
+  - personal_documents
