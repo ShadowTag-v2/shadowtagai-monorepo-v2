@@ -1,11 +1,10 @@
 {
-  "timestamp": "2026-04-26T15:41:44.842467+00:00",
-  "pid": 3068,
+  "timestamp": "2026-04-27T00:44:10.597597+00:00",
+  "pid": 31490,
   "status": {
     "cycle": "1",
-    "health": "{\"gcp_adc\": \"missing\", \"ane_dylib\": \"ok\", \"lancedb\": \"empty\", \"vault\": \"ok\", \"git_dirty\": \"6 files\", \"git_fetch\": \"ok\"}",
+    "health": "{\"gcp_adc\": \"missing\", \"ane_dylib\": \"ok\", \"lancedb\": \"empty\", \"vault\": \"ok\", \"git_dirty\": \"unknown\", \"git_fetch\": \"timeout\"}",
     "steward": "ran",
-    "standup": "ran",
     "vault_ingest": "ran",
     "quarantine_purge": "ran"
   }

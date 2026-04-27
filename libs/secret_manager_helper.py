@@ -43,10 +43,7 @@ def _get_client():
 
         return secretmanager.SecretManagerServiceClient()
     except ImportError:
-        logger.warning(
-            "google-cloud-secret-manager not installed. "
-            "Install with: pip install google-cloud-secret-manager"
-        )
+        logger.warning("google-cloud-secret-manager not installed. Install with: pip install google-cloud-secret-manager")
         return None
 
 
@@ -102,10 +99,7 @@ def get_secret(
     # Access Secret Manager
     client = _get_client()
     if client is None:
-        msg = (
-            f"Cannot retrieve secret '{secret_id}': google-cloud-secret-manager not installed "
-            f"and no environment variable ${env_key} found."
-        )
+        msg = f"Cannot retrieve secret '{secret_id}': google-cloud-secret-manager not installed and no environment variable ${env_key} found."
         raise RuntimeError(msg)
 
     name = f"projects/{project}/secrets/{secret_id}/versions/{version}"
