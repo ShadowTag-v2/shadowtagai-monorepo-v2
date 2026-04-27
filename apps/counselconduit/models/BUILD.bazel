@@ -1,8 +1,9 @@
 # BUILD.bazel — apps/counselconduit/models
-# Phase 4: Data models and storage abstractions
+# Phase 7: Data models and storage abstractions — hermetic pip deps
 # Owner: product
 
 load("@rules_python//python:defs.bzl", "py_library")
+load("@pip_deps//:requirements.bzl", "requirement")
 
 package(default_visibility = ["//apps/counselconduit:__subpackages__"])
 
@@ -11,4 +12,8 @@ py_library(
     srcs = [
         "kv_storage.py",
     ],
+    deps = [
+        requirement("pydantic"),
+    ],
 )
+
