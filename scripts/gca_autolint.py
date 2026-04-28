@@ -24,8 +24,16 @@ import logging
 import subprocess
 import sys
 from pathlib import Path
+from typing import TypedDict
 
 logger = logging.getLogger(__name__)
+
+
+class LinterConfig(TypedDict):
+    name: str
+    cmd: list[str]
+    fatal_threshold: int
+
 
 # Import auth from canonical module — single source of truth
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -35,7 +43,7 @@ REPO_OWNER = "ShadowTag-v2"
 REPO_NAME = "Monorepo-Uphillsnowball"
 
 # Linter commands with their descriptions
-LINTERS = [
+LINTERS: list[LinterConfig] = [
     {
         "name": "ruff check --fix",
         "cmd": [str(REPO_ROOT / ".venv/bin/ruff"), "check", "--fix", "--exit-zero", "."],
