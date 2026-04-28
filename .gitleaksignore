@@ -1,76 +1,21 @@
-# Gitleaks false positive allowlist
-# These are test fixtures with deliberately fake API keys used to verify
-# that the 17-Layer Gauntlet correctly BLOCKS secrets in agent content.
-# They are NOT real credentials.
+# Gitleaks/Betterleaks false positive allowlist
+# Format: filepath:ruleID:lineNumber (all three fields required)
+#
+# AUDIT HISTORY:
+#   2026-04-19: Third-party code reviewed (686 findings, 0 real secrets)
+#   2026-04-20: First-party documentation reviewed (placeholder/example)
+#   2026-04-28: Cleaned invalid entries, added missing line numbers,
+#               moved bulk exclusions to .betterleaks.toml/.gitleaks.toml allowlists
 
+# ════════════════════════════════════════════════════════
 # Test gauntlet: fake key used to test Layer 5 (secret detection)
+# ════════════════════════════════════════════════════════
 labs/uphillsnowball/tests/test_gauntlet.py:generic-api-key:41
 
-# Judge #6 Go test: fake key used in test assertions
-
 # ════════════════════════════════════════════════════════
-# Third-party code — reviewed 2026-04-19
-# 686 findings across reference_architectures/, libs/cyberpunk_stack/,
-# and labs/ — all third-party test fixtures, none are our secrets.
-# Zero overlap with production secrets confirmed.
-# ════════════════════════════════════════════════════════
-
-# labs/ (8 findings)
-labs/claude_code_ingest/hermes-agent/tests/agent/__pycache__/test_redact.cpython-314.pyc:generic-api-key:11
-labs/claude_code_ingest/hermes-agent/tests/agent/__pycache__/test_redact.cpython-314.pyc:generic-api-key:22
-labs/claude_code_ingest/hermes-agent/tests/agent/__pycache__/test_redact.cpython-314.pyc:generic-api-key:24
-labs/claude_code_ingest/hermes-agent/tests/agent/__pycache__/test_redact.cpython-314.pyc:generic-api-key:27
-labs/claude_code_ingest/hermes-agent/tests/agent/__pycache__/test_redact.cpython-314.pyc:generic-api-key:31
-labs/claude_code_ingest/hermes-agent/tests/agent/__pycache__/test_redact.cpython-314.pyc:generic-api-key:32
-labs/claude_code_ingest/hermes-agent/tests/hermes_cli/__pycache__/test_config.cpython-314.pyc:generic-api-key:95
-labs/uphillsnowball/external_payloads/repos/uvicorn/tests/benchmarks/__pycache__/ws.cpython-314.pyc:generic-api-key:9
-
-# libs/cyberpunk_stack/ (7 findings)
-libs/cyberpunk_stack/openclaw/dist/access-control-DqrdUO7B.js:generic-api-key:92
-libs/cyberpunk_stack/openclaw/dist/accounts-ISdL18DD.js:discord-client-secret:58
-libs/cyberpunk_stack/openclaw/dist/discord-surface-cCb7mXTR.js:discord-client-secret:30
-libs/cyberpunk_stack/openclaw/dist/plugin-sdk/discord-surface.js:discord-client-secret:2
-libs/cyberpunk_stack/openclaw/dist/provider-D2WiXTmZ.js:discord-client-secret:18886
-libs/cyberpunk_stack/openclaw/dist/session-DgeCEcIP.js:gcp-api-key:77880
-libs/cyberpunk_stack/openclaw/dist/src-Ba-Tb42Y.js:generic-api-key:1536
-
-# ════════════════════════════════════════════════════════
-# First-party documentation references — reviewed 2026-04-20
-# These are template/example files and report files with
-# placeholder or documented identifiers, NOT live credentials.
-# ════════════════════════════════════════════════════════
-
-# Report file false positives (documented API key references)
-.agent/reports/aiyou-rollup_foldin_report.json:google-api-key:76
-.agent/reports/pnkln-rollup_foldin_report.json:google-api-key:76
-.stitch-sdk/scripts/publish-readiness.ts:generic-api-key-inline:218
-
-# docs/AUDIT_REPORT.md — documented scan results (not secrets)
-docs/AUDIT_REPORT.md:google-api-key:426
-docs/AUDIT_REPORT.md:google-api-key:427
-docs/AUDIT_REPORT.md:google-api-key:428
-docs/AUDIT_REPORT.md:google-api-key:429
-docs/AUDIT_REPORT.md:google-api-key:430
-docs/AUDIT_REPORT.md:google-api-key:478
-docs/AUDIT_REPORT.md:google-api-key:479
-docs/AUDIT_REPORT.md:google-api-key:480
-docs/AUDIT_REPORT.md:google-api-key:481
-docs/AUDIT_REPORT.md:google-api-key:482
-docs/AUDIT_REPORT.md:google-api-key:483
-docs/AUDIT_REPORT.md:google-api-key:531
-docs/AUDIT_REPORT.md:google-api-key:532
-docs/AUDIT_REPORT.md:google-api-key:533
-docs/AUDIT_REPORT.md:google-api-key:534
-docs/AUDIT_REPORT.md:google-api-key:535
-docs/AUDIT_REPORT.md:google-api-key:536
-docs/AUDIT_REPORT.md:google-api-key:584
-docs/AUDIT_REPORT.md:google-api-key:585
-docs/AUDIT_REPORT.md:google-api-key:586
-docs/AUDIT_REPORT.md:google-api-key:587
-docs/AUDIT_REPORT.md:google-api-key:588
-docs/AUDIT_REPORT.md:google-api-key:589
-
 # aiyou_stack template/example files (placeholder secrets)
+# These are .example and .template files with dummy values.
+# ════════════════════════════════════════════════════════
 apps/aiyou_stack/aiyou-fastapi-services/configs/secrets.example.yml:generic-api-key-inline:16
 apps/aiyou_stack/aiyou-fastapi-services/infra/k8s/secrets.yaml.example:generic-api-key-inline:13
 apps/aiyou_stack/aiyou-fastapi-services/infra/k8s/secrets.yaml.example:generic-api-key-inline:24
@@ -100,36 +45,7 @@ apps/aiyou_stack/aiyou-fastapi-services/k8s/secrets.yaml.template:generic-api-ke
 apps/aiyou_stack/aiyou-fastapi-services/k8s/secrets.yaml.template:generic-api-key-inline:41
 apps/aiyou_stack/aiyou-fastapi-services/k8s/secrets.yaml.template:generic-api-key-inline:47
 apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/kubernetes/secret.yaml.example:generic-api-key-inline:15
-apps/aiyou_stack/aiyou-fastapi-services/tests/test_config.py:generic-api-key-inline:107
 apps/aiyou_stack/aiyou-fastapi-services/tests/test_config.py:generic-api-key-inline:17
+apps/aiyou_stack/aiyou-fastapi-services/tests/test_config.py:generic-api-key-inline:107
 apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/k8s/05-secrets.yaml.template:generic-api-key-inline:22
 apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/k8s/05-secrets.yaml.template:generic-api-key-inline:25
-
-# ════════════════════════════════════════════════════════
-# AGENTS.md / GEMINI.md doctrine references — 2026-04-26
-# These are documentation references, NOT live credentials.
-# GitHub App ID, Client ID, and Stripe product/price IDs
-# are intentionally documented in agent instruction files.
-# ════════════════════════════════════════════════════════
-
-# GitHub App metadata (public identifiers, not secrets)
-.ruler/AGENTS.md:generic-api-key
-AGENTS.md:generic-api-key
-CLAUDE.md:generic-api-key
-CRUSH.md:generic-api-key
-WARP.md:generic-api-key
-.trae/rules/project_rules.md:generic-api-key
-firebender.json:generic-api-key
-opencode.json:generic-api-key
-.roo/mcp.json:generic-api-key
-
-# Stripe test product/price IDs (public publishable identifiers)
-.ruler/AGENTS.md:stripe-api-key
-AGENTS.md:stripe-api-key
-CLAUDE.md:stripe-api-key
-
-# App Client ID (public OAuth2 client, not a secret)
-.ruler/AGENTS.md:github-app-token
-AGENTS.md:github-app-token
-
-# docs/BUSINESS_CONTEXT_LOCKED.md Stripe references

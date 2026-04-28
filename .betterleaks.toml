@@ -55,6 +55,19 @@ title = "Monorepo-Uphillsnowball Betterleaks Config"
     '''\.agent/incoming_repos/''',
     '''\.env\.backup''',
     '''\.next/''',
+    # ── Ephemeral caches and internal tracking (audited 2026-04-28) ──
+    # .tmp.driveupload: Google Drive upload cache (729 findings, all false positives)
+    # .beads: Task tracking NDJSON with quoted API key references (490 findings)
+    # .venv-3.14-bak: Archived Python virtual environment
+    # .stitch-sdk: Stitch MCP SDK cache
+    # .reports: Generated governance reports
+    # scripts: Internal tooling scripts (test fixtures only)
+    '''.tmp.driveupload/''',
+    '''.beads/''',
+    '''.venv-3.14-bak/''',
+    '''.stitch-sdk/''',
+    '''.reports/''',
+    '''scripts/''',
     # ── HIGH-risk third-party allowlist (audited 2026-04-19) ──
     # Stripe sk_test_ key: Odoo payment_stripe test fixture (NOT our account)
     # Vault s.Fg8w token: OpenTofu website example doc (NOT live)
