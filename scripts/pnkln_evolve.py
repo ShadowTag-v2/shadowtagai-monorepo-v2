@@ -17,12 +17,20 @@ Rich Hickey Doctrine: Step 0 is DELETION.
 
 import argparse
 import json
+import logging
 import random
 import subprocess
 import sys
 import time
 from datetime import datetime, UTC
 from pathlib import Path
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [pnkln-evolve] %(levelname)s %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%S",
+)
+logger = logging.getLogger("pnkln_evolve")
 
 MONOREPO_ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = MONOREPO_ROOT / ".agents" / "skills"
@@ -145,7 +153,7 @@ def scan_stale_repos() -> dict:
 
 def run_evolve_pass() -> dict:
     """Execute one full evolution pass."""
-    print(f"[pnkln-evolve] Starting pass at {datetime.now(UTC).isoformat()}")
+    logger.info("Starting pass at %s", datetime.now(UTC).isoformat())
 
     results = {
         "dead_code": scan_dead_code(),
@@ -167,22 +175,23 @@ def main():
 
     if args.once or not args.daemon:
         results = run_evolve_pass()
-        print(json.dumps(results, indent=2))
+        # JSON report to stdout for machine consumption
+        sys.stdout.write(json.dumps(results, indent=2) + "\n")
         sys.exit(0)
 
     # Daemon mode with jitter
-    print("[pnkln-evolve] Starting daemon mode")
+    logger.info("Starting daemon mode")
     while True:
         try:
             results = run_evolve_pass()
-            print(f"[pnkln-evolve] Pass complete: {len(results)} scans")
+            logger.info("Pass complete: %d scans", len(results))
         except Exception as e:
             log_event("evolve_error", {"error": str(e)})
-            print(f"[pnkln-evolve] Error: {e}")
+            logger.error("Error: %s", e)
 
         # Jitter: ±20% of base interval
         jitter = random.uniform(0.8, 1.2) * args.interval
-        print(f"[pnkln-evolve] Sleeping {jitter:.0f}s (base={args.interval}s)")
+        logger.info("Sleeping %.0fs (base=%ds)", jitter, args.interval)
         time.sleep(jitter)
 
 
