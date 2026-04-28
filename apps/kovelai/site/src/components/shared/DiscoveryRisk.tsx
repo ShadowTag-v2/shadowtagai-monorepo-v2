@@ -2,18 +2,18 @@ export default function DiscoveryRisk() {
   const cards = [
     {
       icon: '🛡️',
-      title: 'Your Client Is Protected',
-      desc: "Your client's web and AI research flows through a secure, privilege-protected connection to your firm. What they search stays inside the privilege umbrella — opposing counsel cannot discover it, because it never existed outside your protection.",
+      title: 'You Deploy Protection for Your Clients',
+      desc: "Like a police chief buying bulletproof vests for the force — you purchase KovelAI as privileged infrastructure for your clients. Their web and AI research flows through a secure connection to your firm. What they search stays inside the privilege umbrella. The other side can't discover it, because it never existed outside your protection.",
     },
     {
       icon: '🧠',
-      title: 'Clients Relax, Recall, Research',
-      desc: 'Your clients can search at will — nights, weekends, 3 AM before a hearing. CounselConduit lets them relax enough to recall all the facts of their case, explore their concerns, and prepare mentally for trial — without creating discoverable evidence.',
+      title: 'Clients Search Freely, Recall Everything',
+      desc: 'Your clients can search whenever anxiety strikes — nights, weekends, 3 AM before a hearing. KovelAI lets them relax enough to recall all the facts of their case and explore their concerns without creating discoverable evidence. No more panic-googling that hands the other side ammunition.',
     },
     {
       icon: '👁️',
-      title: 'You Monitor the Entire Cycle',
-      desc: "Every search, every AI query, every session — visible to you in real time. You give the first legal opinion instead of being surprised. You bill your client's credit card at the end of the billing cycle, in full compliance with the Rules of Professional Responsibility.",
+      title: 'You Sit in the Loop on Every Session',
+      desc: 'Every search, every AI query, every session — visible to you in real time. You give the first legal opinion instead of being ambushed by your client sending you incorrect AI-generated legal conclusions at random hours. You bill their credit card at the end of the billing cycle, in full compliance with the Rules of Professional Responsibility.',
     },
   ];
 
@@ -26,10 +26,10 @@ export default function DiscoveryRisk() {
         </h2>
         <p className="section-desc mb-12">
           After <em>In re Heppner</em>, every web search and AI interaction your client conducts
-          outside of your privileged infrastructure is discoverable. Opposing counsel can subpoena
-          it, weaponize it, and ambush you at trial. CounselConduit protects your clients by routing
-          their research through a secure connection to your firm — they search freely, you see
-          everything, and the privilege holds.
+          outside of your firm&apos;s KovelAI portal is discoverable. Opposing counsel can subpoena
+          it, weaponize it, and ambush you at trial. The conversation with your client is simple:
+          &ldquo;Either you do it through our firm&apos;s KovelAI, or proceed at your peril. The
+          other side can — and will — obtain everything done outside our portal.&rdquo;
         </p>
         <div className="grid md:grid-cols-3 gap-6">
           {cards.map((c) => (

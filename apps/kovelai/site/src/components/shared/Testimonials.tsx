@@ -4,19 +4,19 @@ export default function Testimonials() {
       initials: 'MR',
       name: 'Managing Partner',
       firm: 'Am Law 200 Litigation Practice, New York',
-      quote: `"A client's Google search history was subpoenaed mid-litigation. After Heppner, we moved all client research to CounselConduit. The client felt safe searching again — and the privilege held. That one save paid for three years of service."`,
+      quote: `"After Heppner, the pitch to clients is simple: 'Either you search through our firm's KovelAI, or the other side gets everything.' We deployed it for our top clients — they search freely, we see everything, and the privilege holds. One client's protected search history would have been devastating if it had been discoverable."`,
     },
     {
       initials: 'SK',
       name: 'Senior Associate',
       firm: 'Boutique Family Law, Los Angeles',
-      quote: `"Our high-conflict custody clients used to text us panic searches at 2 AM. Now they search through CounselConduit whenever anxiety strikes — they relax, recall facts, and I can see exactly what they're worried about before we walk into court. No more ambushes."`,
+      quote: `"Our custody clients used to text us random AI legal opinions at 2 AM — wrong, irritating, and discoverable. Now they search through our portal whenever anxiety strikes. They relax, recall facts, and I see exactly what they're worried about before court. No more surprises. I give the first opinion, not ChatGPT."`,
     },
     {
       initials: 'JL',
       name: 'Founding Partner',
       firm: 'Criminal Defense, Chicago',
-      quote: `"Our clients understand the Heppner risk — they're happy to pay for protection. Their credit card gets charged automatically, I see their searches in real time, and I give the first legal opinion. Intake revenue is up 40% since launch."`,
+      quote: `"It's like buying a medical portal for your patients — except we're lawyers. We buy KovelAI for our clients, they log in with their credit card, and we monitor every session. I'm in the oversight seat on all case-related research. The billing is automatic. Intake revenue is up 40% since we deployed it."`,
     },
   ];
 

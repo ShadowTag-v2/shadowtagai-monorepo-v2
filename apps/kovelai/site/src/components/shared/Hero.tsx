@@ -46,20 +46,21 @@ export default function Hero({ onOpenModal }: HeroProps) {
       {/* Content */}
       <div className="relative z-10 max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 scroll-entrance">
         <div className="text-[0.6875rem] font-medium uppercase tracking-[0.15em] text-gold mb-6">
-          COUNSELCONDUIT · CLIENT-PROTECTED · PRIVILEGE-SHIELDED
+          THE CLIENT PORTAL FOR YOUR FIRM · PRIVILEGE-SHIELDED · ATTORNEY-MONITORED
         </div>
         <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.02em] max-w-[800px] mb-6">
-          Your Clients Are Searching Right Now.
+          Give Your Clients a Privileged Portal.
           <br />
-          <span className="text-gold">Protect Them From Themselves.</span>
+          <span className="text-gold">Protect Them From Discovery.</span>
         </h1>
         <p className="text-[0.9375rem] leading-relaxed text-secondary-text max-w-[640px] mb-8">
-          Since <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every unprotected web search and AI
-          query your client runs is discoverable by opposing counsel. CounselConduit gives your
-          clients a secure, privilege-protected portal — connected directly to your firm — where
-          they can search the web, use AI, and explore their case at will. They relax. They recall
-          facts. You monitor every session, give the first legal opinion, and bill automatically
-          through their credit card. No ambushes. No surprises. No discoverable evidence.
+          Your clients are already searching the web and asking AI about their case. After{' '}
+          <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every one of those searches is discoverable.
+          KovelAI is the secure client portal you deploy through your firm — like a medical portal,
+          except for lawyers. Your clients search at will through your privilege umbrella. You
+          monitor every session, give the first legal opinion, and bill their credit card
+          automatically. Either they do it through your firm&apos;s KovelAI, or they proceed at
+          their peril.
         </p>
         <div className="flex flex-wrap gap-4 mb-4">
           <button
@@ -68,15 +69,15 @@ export default function Hero({ onOpenModal }: HeroProps) {
             className="btn-gold text-sm"
             id="ctaFreeTrial"
           >
-            Start Free Trial
+            Deploy for Your Clients
           </button>
           <a href="#how-it-works" className="btn-ghost text-sm">
             See How It Works →
           </a>
         </div>
         <p className="text-xs text-[#998f81]">
-          Client pays by credit card · Searches are privilege-shielded · Attorney monitors all
-          sessions · SOC 2 audit-ready
+          You buy it for your clients · They log in with their credit card · You monitor all
+          sessions · You give the first legal opinion · Automatic billing
         </p>
       </div>
     </header>

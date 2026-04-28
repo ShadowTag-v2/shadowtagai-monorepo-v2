@@ -25,8 +25,8 @@ export default function Features() {
           <path d="M128 80v96M176 128H80" />
         </svg>
       ),
-      title: 'Secure Client Research Portal',
-      desc: 'Your clients get a branded portal where they can search the web, use AI, and explore their case — all routed through a secure, privilege-protected connection to your firm. Their research stays shielded from discovery.',
+      title: "Your Firm's Client Portal",
+      desc: 'Like a medical portal — except for lawyers. You deploy a branded, secure research environment for your clients. They search the web, use AI, and explore their case through a privilege-protected connection to your firm. Their research stays shielded from discovery because it never leaves your umbrella.',
     },
     {
       icon: (
@@ -49,8 +49,8 @@ export default function Features() {
           <path d="M48 128h160M128 48v160" />
         </svg>
       ),
-      title: 'Attorney Monitoring Dashboard',
-      desc: 'You sit in the loop on every client session. See what your clients are searching, when they are active, and what AI responses they receive. You give the first legal opinion — not opposing counsel.',
+      title: 'Attorney Oversight Dashboard',
+      desc: 'You sit in the loop on every client session. See what your clients are searching, what AI responses they receive, and when they are active. No more getting ambushed by a client sending you random, incorrect AI-generated legal opinions. You give the first legal opinion — not ChatGPT.',
     },
     {
       icon: (
@@ -79,8 +79,8 @@ export default function Features() {
           />
         </svg>
       ),
-      title: 'Automated Credit Card Billing',
-      desc: "Your client's credit card is charged at the end of each billing cycle — you set the rate, the payment flows automatically. No invoicing, no collections, no overhead. Fully compliant with the Rules of Professional Responsibility.",
+      title: 'Automatic Credit Card Billing',
+      desc: "Your client's credit card is both their login credential and their payment method. You set the rate in compliance with the Rules of Professional Responsibility. They're billed at the end of each cycle — automatically. No invoicing, no collections, no overhead. You get paid while they get protected.",
     },
     {
       icon: (
@@ -110,8 +110,8 @@ export default function Features() {
           <path d="M128 56v64" />
         </svg>
       ),
-      title: 'Client Peace of Mind',
-      desc: 'Your clients search whenever anxiety strikes — nights, weekends, 3 AM before a hearing. They finally relax enough to recall all the facts of their case. No discoverable evidence for the other side. No panic. Just clarity.',
+      title: 'Protect Clients From Themselves',
+      desc: 'Your clients will search — with or without you. The question is whether those searches are discoverable. KovelAI puts you in an oversight position on all case-related AI, web search, translation, and transcription. Your client searches at will, relaxes enough to recall all the facts, and the privilege holds.',
     },
     {
       icon: (
@@ -134,8 +134,8 @@ export default function Features() {
           <path d="M128 56V32M96 56V40M160 56V40" />
         </svg>
       ),
-      title: 'Compliance First',
-      desc: 'Pursuing SOC 2 Type II certification. HIPAA-supportive architecture. Built to withstand judicial scrutiny on privilege claims.',
+      title: 'The Heppner Ultimatum',
+      desc: 'The conversation with your client is straightforward: "Knowing the Heppner decision, the other side can and will obtain all searching done outside our firm\'s KovelAI portal. Either you do it through us, or proceed at your peril." Like a medical portal — except the stakes are your case.',
     },
     {
       icon: (
@@ -157,21 +157,22 @@ export default function Features() {
           <path d="M232 168l-68-68-48 48L72 104" fill="none" />
         </svg>
       ),
-      title: 'No More Ambushes',
-      desc: 'Instead of your client sending you discoverable AI searches at random times, everything flows through your privileged portal. You see it first. You give the first legal opinion. You form strategy — not damage control.',
+      title: 'Another Tool in Your Arsenal',
+      desc: 'CounselConduit on KovelAI harnesses AI and web searches into another tool for the attorney to best represent their client. You form legal strategy from privileged intelligence — not damage control from discoverable searches your client did on their own.',
     },
   ];
 
   return (
     <section className="py-20 md:py-28 bg-surface-lowest" id="features">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="section-label">What Your Clients Get</div>
-        <h2 className="section-title">Everything Your Clients Need to Research Safely</h2>
+        <div className="section-label">What You Deploy for Your Clients</div>
+        <h2 className="section-title">Buy It for Your Clients. Monitor Everything.</h2>
         <p className="section-desc mb-12">
-          CounselConduit protects your clients — not from you, but from the other side. You deploy a
-          privileged research portal connected to your firm. Your clients search freely and relax
-          before trial. You monitor every session, give the first legal opinion, and bill
-          automatically through their credit card.
+          You buy KovelAI for your clients — like a police chief buying bulletproof vests for the
+          force. You deploy a privileged client portal connected to your firm. Your clients search
+          freely and relax before trial. You monitor every session, give the first legal opinion,
+          and bill automatically through their credit card. CounselConduit puts you in an oversight
+          position on all case-related research — keeping it between the two of you.
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((f) => (

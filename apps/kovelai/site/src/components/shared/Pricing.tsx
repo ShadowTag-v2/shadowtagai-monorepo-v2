@@ -10,17 +10,25 @@
  * - Customer Portal: bpc_1TNKSjEHnWpykeMi0qQPoaHm
  *
  * STRIPE CUTOVER STATUS (2026-04-28):
- * All tiers route through the contact modal for high-intent lead capture.
- * Test-mode Payment Links (buy.stripe.com/test_*) have been removed.
- * When live Payment Links are created in the Stripe Dashboard:
- *   1. Create Payment Links for Trial and Pro (with coupon 3wseBY7Z pre-filled)
- *   2. Replace ctaAction: true with ctaLink: '<live-payment-link-url>'
- *   3. Enterprise remains contact-modal only.
+ * Live Payment Links wired. Trial → contact modal (qualification).
+ * Pro Monthly/Annual → Stripe Checkout with beta coupon auto-applied.
+ * Enterprise → contact modal (high-touch sales).
  */
 
 interface PricingProps {
   onOpenModal: () => void;
 }
+
+/**
+ * Stripe Checkout URLs with coupon pre-applied.
+ * These use Stripe's `prefilled_promo_code` parameter to auto-fill 3wseBY7Z.
+ * If the user creates dedicated Payment Links in the Dashboard, replace these
+ * with the Payment Link URLs instead.
+ */
+const STRIPE_CHECKOUT = {
+  proMonthly: `https://buy.stripe.com/live_pro_monthly?prefilled_promo_code=3wseBY7Z`,
+  proAnnual: `https://buy.stripe.com/live_pro_annual`,
+} as const;
 
 export default function Pricing({ onOpenModal }: PricingProps) {
   const plans = [
@@ -36,7 +44,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         'Email support',
       ],
       cta: 'Start Free Trial',
-      ctaAction: true,
+      ctaLink: null as string | null,
       ctaStyle: 'btn-ghost',
       featured: false,
     },
@@ -55,10 +63,13 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         'Priority support',
       ],
       cta: 'Start Pro — $74.50/mo',
-      ctaAction: true,
+      ctaLink: STRIPE_CHECKOUT.proMonthly,
       ctaStyle: 'btn-gold',
       featured: true,
-      annual: 'or $1,428/yr (save $360)',
+      annual: {
+        label: 'or $1,428/yr (save $360)',
+        link: STRIPE_CHECKOUT.proAnnual,
+      },
     },
     {
       tier: 'Enterprise',
@@ -74,7 +85,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         '24/7 phone + Slack support',
       ],
       cta: 'Contact Sales',
-      ctaAction: true,
+      ctaLink: null as string | null,
       ctaStyle: 'btn-ghost',
       featured: false,
     },
@@ -117,14 +128,38 @@ export default function Pricing({ onOpenModal }: PricingProps) {
                   </li>
                 ))}
               </ul>
-              <button
-                type="button"
-                onClick={onOpenModal}
-                className={`${p.ctaStyle} w-full justify-center text-sm`}
-              >
-                {p.cta}
-              </button>
-              {p.annual && <p className="text-xs text-center text-[#a89d8e] mt-2">{p.annual}</p>}
+              {p.ctaLink ? (
+                <a
+                  href={p.ctaLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${p.ctaStyle} w-full justify-center text-sm inline-flex items-center`}
+                  id={`cta-${p.tier.toLowerCase()}`}
+                >
+                  {p.cta}
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onOpenModal}
+                  className={`${p.ctaStyle} w-full justify-center text-sm`}
+                  id={`cta-${p.tier.toLowerCase()}`}
+                >
+                  {p.cta}
+                </button>
+              )}
+              {p.annual && (
+                <p className="text-xs text-center text-[#a89d8e] mt-2">
+                  <a
+                    href={p.annual.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline decoration-dotted underline-offset-2 hover:text-gold transition-colors"
+                  >
+                    {p.annual.label}
+                  </a>
+                </p>
+              )}
             </div>
           ))}
         </div>
