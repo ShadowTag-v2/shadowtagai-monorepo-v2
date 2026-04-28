@@ -1,6 +1,6 @@
-# Monorepo OS — v2.2
+# Monorepo OS — v2.4
 
-> **Status:** Active | **Version:** 2.2 | **Updated:** 2026-04-28
+> **Status:** Active | **Version:** 2.4 | **Updated:** 2026-04-28
 
 ## Overview
 
@@ -168,11 +168,13 @@ scripts/clone-external-reference-repos.sh --dry-run
 | `enforced_by_ci` | 6 |
 | `enforced_by_script` | 2 |
 | `enforced_by_toolgateway` | 1 |
-| `advisory_only` | 30 |
+| `advisory_only (P0)` | 5 |
+| `advisory_only (P1)` | 12 |
+| `advisory_only (P2)` | 13 |
 | **Total** | **39** |
 
 Full audit: `.reports/monorepo-os/orphan_contracts.md`
-Each `advisory_only` contract has a Beads issue for enforcement wiring.
+P0 contracts (security/safety) are the enforcement priority for v3.0.
 
 ## Proof Links
 
@@ -207,3 +209,4 @@ Each `advisory_only` contract has a Beads issue for enforcement wiring.
 | 2.1 | 2026-04-28 | Guardrail annotation audit (12/12), Lighthouse A100/BP100/SEO100, 39 ToolGateway contracts |
 | 2.2 | 2026-04-28 | Oracle Score engine, Daily Truth Report, Release Readiness Gate (8 gates), CI hardening (+3 steps) |
 | 2.3 | 2026-04-28 | Clone-yard manifest committed, orphan contract audit (9/39 enforced, 30 advisory), Proof Links section, reproducibility from clean checkout |
+| 2.4 | 2026-04-28 | Secret scan: 0 leaks, gitleaksignore deduplicated (213→135 lines, 0 stale warnings). Biome: 2 a11y errors fixed, 0 errors in production code. Orphan contracts triaged: P0 (5 security), P1 (12 operational), P2 (13 advisory-permanent). Release gate: 7/8 pass + 1 warning. Dashboard auth bug fixed (function name mismatch). |
