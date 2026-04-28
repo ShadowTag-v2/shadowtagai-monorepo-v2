@@ -2,18 +2,18 @@ export default function HowItWorks() {
   const steps = [
     {
       num: '01',
-      title: 'Client Logs In',
-      desc: "Your client uses their credit card to access CounselConduit through your firm's branded portal. The card serves as both authentication and automated billing — no invoicing headaches.",
+      title: 'Client Gets Secure Access',
+      desc: "Your client logs into CounselConduit through your firm's branded portal using their credit card — which serves as both authentication and automated payment. They're instantly connected to a privilege-protected research environment.",
     },
     {
       num: '02',
       title: 'Client Searches Freely',
-      desc: 'Web searches, AI queries, legal research — all routed through a privilege-protected connection to your firm. Your client relaxes, recalls facts, and explores their case without creating discoverable evidence.',
+      desc: 'Web searches, AI queries, legal research — all routed through a secure connection to your firm. Your client searches whenever anxiety strikes. They relax, recall all the facts of their case, and explore their concerns — without creating discoverable evidence for the other side.',
     },
     {
       num: '03',
-      title: 'Attorney Monitors & Strategizes',
-      desc: 'You see every search, every AI response, every session in real time. You give the first legal opinion — not the other side. You bill at the end of the cycle, in full compliance with professional responsibility rules.',
+      title: 'Attorney Monitors & Bills',
+      desc: 'You sit in the loop on every session. You see what your clients are searching and what AI responses they receive — in real time. You give the first legal opinion, not the other side. Their credit card is billed at the end of each cycle, in full compliance with the Rules of Professional Responsibility.',
     },
   ];
 

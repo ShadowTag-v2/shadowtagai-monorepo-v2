@@ -25,8 +25,8 @@ export default function Features() {
           <path d="M128 80v96M176 128H80" />
         </svg>
       ),
-      title: 'Privileged Client Portal',
-      desc: 'Deploy a branded, secure portal for your clients. Every web search and AI query routes through privileged infrastructure under your direction. Your clients search freely — you stay protected.',
+      title: 'Secure Client Research Portal',
+      desc: 'Your clients get a branded portal where they can search the web, use AI, and explore their case — all routed through a secure, privilege-protected connection to your firm. Their research stays shielded from discovery.',
     },
     {
       icon: (
@@ -49,8 +49,8 @@ export default function Features() {
           <path d="M48 128h160M128 48v160" />
         </svg>
       ),
-      title: 'Attorney Dashboard',
-      desc: 'Monitor every client session in real time. See what your clients are searching, when they are active, and what AI responses they receive — before opposing counsel gets a chance.',
+      title: 'Attorney Monitoring Dashboard',
+      desc: 'You sit in the loop on every client session. See what your clients are searching, when they are active, and what AI responses they receive. You give the first legal opinion — not opposing counsel.',
     },
     {
       icon: (
@@ -79,8 +79,8 @@ export default function Features() {
           />
         </svg>
       ),
-      title: 'Automated Billing',
-      desc: 'Clients log in with their credit card. You set the rate, the card is charged at the end of each billing cycle, and you receive payment — all in compliance with the Rules of Professional Responsibility.',
+      title: 'Automated Credit Card Billing',
+      desc: "Your client's credit card is charged at the end of each billing cycle — you set the rate, the payment flows automatically. No invoicing, no collections, no overhead. Fully compliant with the Rules of Professional Responsibility.",
     },
     {
       icon: (
@@ -111,7 +111,7 @@ export default function Features() {
         </svg>
       ),
       title: 'Client Peace of Mind',
-      desc: 'Your clients search whenever anxiety strikes — nights, weekends, 3 AM before a hearing. They relax, recall facts, and explore their case without creating discoverable evidence for the other side.',
+      desc: 'Your clients search whenever anxiety strikes — nights, weekends, 3 AM before a hearing. They finally relax enough to recall all the facts of their case. No discoverable evidence for the other side. No panic. Just clarity.',
     },
     {
       icon: (
@@ -157,20 +157,21 @@ export default function Features() {
           <path d="M232 168l-68-68-48 48L72 104" fill="none" />
         </svg>
       ),
-      title: 'Strategy Advantage',
-      desc: 'Every search and AI response your client generates is archived under privilege for your case preparation. You give the first legal opinion. No more ambushes at trial.',
+      title: 'No More Ambushes',
+      desc: 'Instead of your client sending you discoverable AI searches at random times, everything flows through your privileged portal. You see it first. You give the first legal opinion. You form strategy — not damage control.',
     },
   ];
 
   return (
     <section className="py-20 md:py-28 bg-surface-lowest" id="features">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="section-label">What You Deploy</div>
-        <h2 className="section-title">Everything Your Clients Need to Search Safely</h2>
+        <div className="section-label">What Your Clients Get</div>
+        <h2 className="section-title">Everything Your Clients Need to Research Safely</h2>
         <p className="section-desc mb-12">
-          You buy CounselConduit for your clients — the way a chief issues protective equipment to
-          the team. Your clients get privileged search access. You get visibility, automated
-          billing, and the strategic upper hand.
+          CounselConduit protects your clients — not from you, but from the other side. You deploy a
+          privileged research portal connected to your firm. Your clients search freely and relax
+          before trial. You monitor every session, give the first legal opinion, and bill
+          automatically through their credit card.
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((f) => (

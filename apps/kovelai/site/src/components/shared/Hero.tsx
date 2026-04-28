@@ -42,19 +42,20 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 scroll-entrance">
         <div className="text-[0.6875rem] font-medium uppercase tracking-[0.15em] text-gold mb-6">
-          COUNSELCONDUIT · PRIVILEGE-PROTECTED · ATTORNEY-MONITORED
+          COUNSELCONDUIT · CLIENT-PROTECTED · PRIVILEGE-SHIELDED
         </div>
         <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.02em] max-w-[800px] mb-6">
-          Your Client&apos;s Searches Are Discoverable.
+          Your Clients Deserve to Search Without Fear.
           <br />
-          <span className="text-gold">CounselConduit Makes Them Privileged.</span>
+          <span className="text-gold">CounselConduit Makes It Safe.</span>
         </h1>
         <p className="text-[0.9375rem] leading-relaxed text-secondary-text max-w-[640px] mb-8">
-          Since <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every unprotected client web search
-          and AI query is fair game for opposing counsel. CounselConduit gives your clients a
-          secure, privilege-protected portal to search the web and use AI — while you monitor every
-          session, bill in accordance with the Rules of Professional Responsibility, and form your
-          legal strategy before trial. No more ambush discoveries. No more surprises.
+          Since <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every unprotected web search and AI
+          query your client runs is discoverable by opposing counsel. CounselConduit gives your
+          clients a secure, privilege-protected portal — connected directly to your firm — where
+          they can search the web, use AI, and explore their case at will. They relax. They recall
+          facts. You monitor every session, give the first legal opinion, and bill automatically
+          through their credit card. No ambushes. No surprises. No discoverable evidence.
         </p>
         <div className="flex flex-wrap gap-4 mb-4">
           <a
@@ -69,7 +70,8 @@ export default function Hero() {
           </a>
         </div>
         <p className="text-xs text-[#998f81]">
-          Client pays by credit card to log in · Attorney monitors all sessions · SOC 2 audit-ready
+          Client pays by credit card · Searches are privilege-shielded · Attorney monitors all
+          sessions · SOC 2 audit-ready
         </p>
       </div>
     </header>

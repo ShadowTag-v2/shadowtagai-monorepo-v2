@@ -4,22 +4,19 @@ export default function Testimonials() {
       initials: 'MR',
       name: 'Managing Partner',
       firm: 'Am Law 200 Litigation Practice, New York',
-      quote:
-        '"We had a client whose Google search history was subpoenaed mid-litigation. After Heppner, we moved all client research to KovelAI. The privilege held. That one save paid for three years of service."',
+      quote: `"A client's Google search history was subpoenaed mid-litigation. After Heppner, we moved all client research to CounselConduit. The client felt safe searching again — and the privilege held. That one save paid for three years of service."`,
     },
     {
       initials: 'SK',
       name: 'Senior Associate',
       firm: 'Boutique Family Law, Los Angeles',
-      quote:
-        '"We deployed CounselConduit for our high-conflict custody clients. They search at all hours — nights, weekends, panic before hearings. Now every search is privileged, and I see exactly what they\'re worried about before we walk into court."',
+      quote: `"Our high-conflict custody clients used to text us panic searches at 2 AM. Now they search through CounselConduit whenever anxiety strikes — they relax, recall facts, and I can see exactly what they're worried about before we walk into court. No more ambushes."`,
     },
     {
       initials: 'JL',
       name: 'Founding Partner',
       firm: 'Criminal Defense, Chicago',
-      quote:
-        '"We bill clients $250/month for privileged search access. They\'re happy to pay because they understand the Heppner risk. Our intake revenue is up 40% since launch."',
+      quote: `"Our clients understand the Heppner risk — they're happy to pay for protection. Their credit card gets charged automatically, I see their searches in real time, and I give the first legal opinion. Intake revenue is up 40% since launch."`,
     },
   ];
 

@@ -2,18 +2,18 @@ export default function DiscoveryRisk() {
   const cards = [
     {
       icon: '🛡️',
-      title: 'Client Searches Protected',
-      desc: "Your client's web and AI research flows through a privilege-protected connection to your firm. Opposing counsel cannot discover what doesn\u0027t exist outside the privilege umbrella.",
+      title: 'Your Client Is Protected',
+      desc: "Your client's web and AI research flows through a secure, privilege-protected connection to your firm. What they search stays inside the privilege umbrella — opposing counsel cannot discover it, because it never existed outside your protection.",
+    },
+    {
+      icon: '🧠',
+      title: 'Clients Relax, Recall, Research',
+      desc: 'Your clients can search at will — nights, weekends, 3 AM before a hearing. CounselConduit lets them relax enough to recall all the facts of their case, explore their concerns, and prepare mentally for trial — without creating discoverable evidence.',
     },
     {
       icon: '👁️',
-      title: 'Attorney Stays in the Loop',
-      desc: 'Every search, every AI query, every session — visible to you in real time. No more being ambushed by random discoverable searches your client ran at 2 AM.',
-    },
-    {
-      icon: '💳',
-      title: 'Billing Built Into Access',
-      desc: 'Clients use their credit card to log in. You bill in accordance with the Rules of Professional Responsibility. Revenue flows automatically at the end of each billing cycle.',
+      title: 'You Monitor the Entire Cycle',
+      desc: "Every search, every AI query, every session — visible to you in real time. You give the first legal opinion instead of being surprised. You bill your client's credit card at the end of the billing cycle, in full compliance with the Rules of Professional Responsibility.",
     },
   ];
 
@@ -22,13 +22,14 @@ export default function DiscoveryRisk() {
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="section-label">The Heppner Problem</div>
         <h2 className="section-title">
-          After <em>Heppner</em>, Your Client&apos;s Internet Is a Liability.
+          After <em>Heppner</em>, Your Client&apos;s Internet Is a Weapon Against Them.
         </h2>
         <p className="section-desc mb-12">
-          After <em>In re Heppner</em>, any client web search or AI interaction conducted outside
-          privileged channels is discoverable in litigation. CounselConduit solves this — your
-          client searches freely through a secure portal, you see everything, you give the first
-          legal opinion, and you bill for the protection.
+          After <em>In re Heppner</em>, every web search and AI interaction your client conducts
+          outside of your privileged infrastructure is discoverable. Opposing counsel can subpoena
+          it, weaponize it, and ambush you at trial. CounselConduit protects your clients by routing
+          their research through a secure connection to your firm — they search freely, you see
+          everything, and the privilege holds.
         </p>
         <div className="grid md:grid-cols-3 gap-6">
           {cards.map((c) => (
