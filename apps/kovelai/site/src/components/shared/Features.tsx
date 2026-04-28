@@ -25,8 +25,8 @@ export default function Features() {
           <path d="M128 80v96M176 128H80" />
         </svg>
       ),
-      title: 'AI-Powered Intake',
-      desc: 'Intelligent after-hours client intake that captures, qualifies, and organizes potential matters while your team rests.',
+      title: 'Privileged Client Portal',
+      desc: 'Deploy a branded, secure portal for your clients. Every web search and AI query routes through privileged infrastructure under your direction. Your clients search freely — you stay protected.',
     },
     {
       icon: (
@@ -49,8 +49,8 @@ export default function Features() {
           <path d="M48 128h160M128 48v160" />
         </svg>
       ),
-      title: 'Matter Pipeline',
-      desc: 'Every client interaction becomes a tracked, scored, and prioritized entry in your matter pipeline. No leads lost.',
+      title: 'Attorney Dashboard',
+      desc: 'Monitor every client session in real time. See what your clients are searching, when they are active, and what AI responses they receive — before opposing counsel gets a chance.',
     },
     {
       icon: (
@@ -79,8 +79,8 @@ export default function Features() {
           />
         </svg>
       ),
-      title: 'Privileged Search',
-      desc: 'Clients search the web through your firm\u0027s infrastructure. Every query is privileged, every session is billed.',
+      title: 'Automated Billing',
+      desc: 'Clients log in with their credit card. You set the rate, the card is charged at the end of each billing cycle, and you receive payment — all in compliance with the Rules of Professional Responsibility.',
     },
     {
       icon: (
@@ -110,8 +110,8 @@ export default function Features() {
           <path d="M128 56v64" />
         </svg>
       ),
-      title: 'After-Hours Capture',
-      desc: 'Panic calls at 2 AM become organized, retained matters by 8 AM. Your paralegal costs drop, your intake revenue rises.',
+      title: 'Client Peace of Mind',
+      desc: 'Your clients search whenever anxiety strikes — nights, weekends, 3 AM before a hearing. They relax, recall facts, and explore their case without creating discoverable evidence for the other side.',
     },
     {
       icon: (
@@ -157,19 +157,20 @@ export default function Features() {
           <path d="M232 168l-68-68-48 48L72 104" fill="none" />
         </svg>
       ),
-      title: 'Revenue Analytics',
-      desc: 'Real-time dashboards showing intake conversion, after-hours capture rate, and revenue per privileged session.',
+      title: 'Strategy Advantage',
+      desc: 'Every search and AI response your client generates is archived under privilege for your case preparation. You give the first legal opinion. No more ambushes at trial.',
     },
   ];
 
   return (
     <section className="py-20 md:py-28 bg-surface-lowest" id="features">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="section-label">Platform</div>
-        <h2 className="section-title">Built for Law Firms That Think Like Businesses</h2>
+        <div className="section-label">What You Deploy</div>
+        <h2 className="section-title">Everything Your Clients Need to Search Safely</h2>
         <p className="section-desc mb-12">
-          KovelAI combines privileged communication infrastructure with AI-powered intake — turning
-          your firm&apos;s front door into a revenue engine that never sleeps.
+          You buy CounselConduit for your clients — the way a chief issues protective equipment to
+          the team. Your clients get privileged search access. You get visibility, automated
+          billing, and the strategic upper hand.
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((f) => (

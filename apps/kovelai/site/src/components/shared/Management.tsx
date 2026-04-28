@@ -12,10 +12,10 @@ export default function Management() {
             <h3 className="text-lg font-semibold text-primary-text mb-1">Erik Hancock</h3>
             <div className="text-sm text-gold mb-3">Founder &amp; CEO</div>
             <p className="text-sm leading-relaxed text-secondary-text">
-              Erik founded KovelAI to solve the post-<em>Heppner</em> privilege gap that leaves law
-              firms and their clients exposed. With a background in legal technology and AI
-              infrastructure, he leads the company&apos;s mission to make privileged access the
-              default — not the exception — for every client interaction.
+              Erik founded KovelAI after watching attorneys get blindsided by discoverable client
+              searches post-<em>Heppner</em>. His mission: give every attorney a turnkey portal they
+              can deploy for their clients — privileged web and AI search access that protects the
+              client, empowers the attorney, and bills automatically.
             </p>
           </div>
         </div>

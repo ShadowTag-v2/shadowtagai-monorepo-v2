@@ -42,18 +42,19 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 scroll-entrance">
         <div className="text-[0.6875rem] font-medium uppercase tracking-[0.15em] text-gold mb-6">
-          POST-HEPPNER · PRIVILEGED · REVENUE-FIRST
+          COUNSELCONDUIT · PRIVILEGE-PROTECTED · ATTORNEY-MONITORED
         </div>
         <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.02em] max-w-[800px] mb-6">
-          Every Google Search Your Client Makes Is a Loaded Gun Pointed at Your Case.
+          Your Client&apos;s Searches Are Discoverable.
           <br />
-          <span className="text-gold">KovelAI Disarms It — And Bills For the Protection.</span>
+          <span className="text-gold">CounselConduit Makes Them Privileged.</span>
         </h1>
         <p className="text-[0.9375rem] leading-relaxed text-secondary-text max-w-[640px] mb-8">
-          Since <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every unprotected client web search,
-          every ChatGPT query, every 2 AM panic-Google is discoverable. Opposing counsel is already
-          subpoenaing browser histories. KovelAI wraps all of it under attorney-client privilege —
-          and your firm gets paid for every session.
+          Since <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every unprotected client web search
+          and AI query is fair game for opposing counsel. CounselConduit gives your clients a
+          secure, privilege-protected portal to search the web and use AI — while you monitor every
+          session, bill in accordance with the Rules of Professional Responsibility, and form your
+          legal strategy before trial. No more ambush discoveries. No more surprises.
         </p>
         <div className="flex flex-wrap gap-4 mb-4">
           <a
@@ -63,12 +64,12 @@ export default function Hero() {
           >
             Start Free Trial
           </a>
-          <a href="#discovery" className="btn-ghost text-sm">
-            See the Risk →
+          <a href="#how-it-works" className="btn-ghost text-sm">
+            See How It Works →
           </a>
         </div>
         <p className="text-xs text-[#998f81]">
-          No credit card required · 10,000 tokens free · SOC 2 audit-ready
+          Client pays by credit card to log in · Attorney monitors all sessions · SOC 2 audit-ready
         </p>
       </div>
     </header>

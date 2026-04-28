@@ -1,9 +1,9 @@
 export default function StatsBar() {
   const stats = [
-    { value: '3x+', label: 'Intake Revenue' },
-    { value: '0', label: 'Data Retained' },
-    { value: '24/7', label: 'Client Capture' },
-    { value: '↑ ACV', label: 'Revenue per Matter', accent: true },
+    { value: '100%', label: 'Searches Privileged' },
+    { value: '24/7', label: 'Client Access' },
+    { value: 'Real-Time', label: 'Attorney Visibility' },
+    { value: 'Auto', label: 'Credit Card Billing', accent: true },
   ];
 
   return (

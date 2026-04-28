@@ -4,7 +4,7 @@ export default function FAQ() {
   const faqs = [
     {
       q: 'What is the Kovel Doctrine?',
-      a: "The Kovel Doctrine (from United States v. Kovel, 296 F.2d 918) extends attorney-client privilege to non-attorney agents — like accountants, interpreters, or AI tools — working under the attorney's direction. KovelAI operates as a Kovel agent under your firm's privilege umbrella. After In re Heppner, this doctrine is more critical than ever for protecting client web activity.",
+      a: "The Kovel Doctrine (from United States v. Kovel, 296 F.2d 918) extends attorney-client privilege to non-attorney agents — like accountants, interpreters, or technology platforms — working under the attorney's direction. When you deploy KovelAI for your clients, it operates as a Kovel agent under your firm's privilege umbrella. Your clients get protected search access; you get visibility and billing. After In re Heppner, this is no longer optional.",
     },
     {
       q: 'Is my client data stored anywhere?',
@@ -12,11 +12,11 @@ export default function FAQ() {
     },
     {
       q: 'What happened in In re Heppner?',
-      a: 'In In re Heppner (S.D.N.Y., Feb. 10, 2026), the court ruled that client internet search histories conducted outside of attorney-supervised channels are discoverable in litigation. This includes Google searches, AI chatbot interactions, and any web activity not routed through a privileged infrastructure. The ruling sent shockwaves through the legal industry and created the post-Heppner compliance gap that KovelAI was built to fill.',
+      a: 'In In re Heppner (S.D.N.Y., Feb. 10, 2026), the court ruled that client internet search histories conducted outside of attorney-supervised channels are discoverable in litigation. This includes Google searches, AI chatbot interactions, and any web activity not routed through a privileged infrastructure. The ruling created the post-Heppner compliance gap. KovelAI gives attorneys a turnkey portal to deploy for their clients — closing that gap with privileged search infrastructure.',
     },
     {
-      q: 'How does billing work for privileged sessions?',
-      a: "Clients access KovelAI through your firm's branded portal. Each privileged session generates a billable entry that integrates with your practice management system. Most firms bill clients $50–$250 per session for privileged AI and web search access. The privilege protection is the value — clients pay because they understand the Heppner risk.",
+      q: 'How does billing work?',
+      a: "You purchase CounselConduit for your clients — like issuing equipment to your team. Clients log in with their credit card, which serves as both authentication and payment method. You set the session rate. The client's card is billed at the end of each cycle, and you receive payment in full compliance with the Rules of Professional Responsibility. No invoicing, no collections, no overhead.",
     },
     {
       q: 'What AI model does KovelAI use?',

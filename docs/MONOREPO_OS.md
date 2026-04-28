@@ -1,6 +1,6 @@
-# Monorepo OS — v1.5
+# Monorepo OS — v2.1
 
-> **Status:** Active | **Version:** 1.5 | **Updated:** 2026-04-27
+> **Status:** Active | **Version:** 2.1 | **Updated:** 2026-04-28
 
 ## Overview
 
@@ -152,3 +152,7 @@ Transition trigger: `>3 packages affected` OR `auth/payment/migration` scope.
 | 1.3 | 2026-04-27 | Script manifest, MIRAS alignment |
 | 1.4 | 2026-04-27 | Complete infrastructure audit closure |
 | 1.5 | 2026-04-27 | Operator Invariants section, enforcement script manifest |
+| 1.6 | 2026-04-27 | Clone yard `upstream_manifest.yaml`, agent_protocols group |
+| 1.7 | 2026-04-27 | Command Deck truth layer (AG-UI + Chrome DevTools MCP) |
+| 2.0 | 2026-04-28 | DESIGN.md + `tokens.css` Stitch token export for KovelAI |
+| 2.1 | 2026-04-28 | Guardrail annotation audit (12/12), Lighthouse A100/BP100/SEO100, 39 ToolGateway contracts |
