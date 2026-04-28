@@ -1,6 +1,6 @@
 # Monorepo OS — Daily Truth Report
 
-> **Generated:** 2026-04-28T09:57:28Z | **Date:** April 28, 2026
+> **Generated:** 2026-04-28T10:33:38Z | **Date:** April 28, 2026
 
 ## Oracle Score
 
@@ -27,8 +27,8 @@
 
 | Property | Value |
 |----------|-------|
-| Last Commit | `1d5835786` — feat(kovelai): wire live Stripe price IDs into Pricing.tsx |
-| Dirty Files | 4 |
+| Last Commit | `901113c4d` — chore: daily truth report + release gate validation |
+| Dirty Files | 8 |
 | Triage | ✅ Triaged (2 actual-risk) |
 
 ## Guardrails
