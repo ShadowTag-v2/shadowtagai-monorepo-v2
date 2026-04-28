@@ -111,6 +111,94 @@
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
       "tags": ["git", "remote", "monorepo"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "history_bloat_requires_history_tools",
+      "object_text": "Git history rewrites (filter-branch, filter-repo, BFG) are the ONLY authorized method for removing accidentally committed large objects. Force-pushing rewritten history requires STATE B approval.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#105",
+      "tags": ["git", "history", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "autolint_scope_boundary",
+      "object_text": "Autolint daemons may perform deterministic formatting and lint autofixes only. Non-lint architectural changes require a separate branch, impact check, and human review.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#113",
+      "tags": ["lint", "automation", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "artifact_manifest_requirement",
+      "object_text": "Any non-source payload moved out of Git must be represented by an artifact manifest containing URI, sha256, owner, retention class, source, status, and retrieval instructions.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#114",
+      "tags": ["artifacts", "manifests", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "secret_scanner_succession",
+      "object_text": "Betterleaks is the canonical secret scanner. Gitleaks is the legacy fallback. Both must share the same .gitleaksignore suppression file. CI gates must never regress.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#115",
+      "tags": ["security", "secrets", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "external_repos_are_reference_mirrors",
+      "object_text": "Repositories cloned into external_repos/ are read-only reference mirrors governed by external_repos/upstream_manifest.yaml. They must never be modified locally or committed to monorepo history.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#138",
+      "tags": ["external-repos", "clone-yard", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "skillops_is_repo_governed",
+      "object_text": "Skill creation, update, archival, and deduplication must flow through the SkillOps subsystem. Ad-hoc skill file manipulation without registry update is prohibited.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#139",
+      "tags": ["skills", "skillops", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "boot_probes_are_read_only",
+      "object_text": "Session boot probes must be strictly read-only. They must not mutate files, create branches, push commits, modify configuration, or trigger side effects.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#140",
+      "tags": ["boot", "probes", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "skillops_hazard_triage_gate",
+      "object_text": "All unsafe pattern findings from skills-audit.sh must be triaged into ACTUAL RISK, MODERATE, or FALSE POSITIVE categories before CI will pass. CI threshold is 15 unresolved unsafe findings.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#141",
+      "tags": ["skills", "triage", "ci-gate", "governance"]
     }
   ]
 }
