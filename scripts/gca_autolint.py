@@ -20,9 +20,12 @@ Usage:
 """
 
 import argparse
+import logging
 import subprocess
 import sys
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 # Import auth from canonical module — single source of truth
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -69,30 +72,30 @@ def _run(cmd: list[str], cwd: str | None = None) -> subprocess.CompletedProcess:
 
 def run_linters() -> bool:
     """Run the Omni-Linter triad. Returns True if all passed without fatal errors."""
-    print("🧹 Running Omni-Linter Suite...")
+    logger.info("Running Omni-Linter Suite...")
     for linter in LINTERS:
-        print(f"  ➤ {linter['name']}...")
+        logger.info("  Running %s...", linter["name"])
         result = _run(linter["cmd"])
 
         # Judgment Check 1: Fatal Errors
         if result.returncode >= linter["fatal_threshold"]:
-            print(f"\n  ❌ SEVERE ERROR in {linter['name']} (exit code {result.returncode})")
+            logger.error("SEVERE ERROR in %s (exit code %d)", linter["name"], result.returncode)
             if result.stderr:
                 # Truncate to avoid flooding terminal
                 stderr_lines = result.stderr.strip().split("\n")
                 for line in stderr_lines[:20]:
-                    print(f"     {line}")
+                    logger.error("     %s", line)
                 if len(stderr_lines) > 20:
-                    print(f"     ... ({len(stderr_lines) - 20} more lines)")
-            print("\n  🛑 Aborting to prevent repository corruption.")
+                    logger.error("     ... (%d more lines)", len(stderr_lines) - 20)
+            logger.error("Aborting to prevent repository corruption.")
             return False
 
         if result.returncode == 0:
-            print("     ✅ Clean")
+            logger.info("     Clean")
         else:
-            print(f"     ⚠️ Warnings (exit {result.returncode}), fixes applied")
+            logger.warning("     Warnings (exit %d), fixes applied", result.returncode)
 
-    print("  ✅ Linting pass complete.\n")
+    logger.info("  Linting pass complete.")
     return True
 
 
@@ -103,7 +106,7 @@ def check_changes() -> bool:
 
 
 def show_diff() -> str:
-    """Print and return the git diff."""
+    """Return the git diff."""
     result = _run(["git", "diff"])
     return result.stdout
 
@@ -115,22 +118,22 @@ def commit_and_push(auto: bool = False) -> bool:
         # Check staged changes too (biome may have added files)
         staged = _run(["git", "diff", "--staged"])
         if not staged.stdout.strip():
-            print("✨ No AST changes detected. Repository is clean.")
+            logger.info("No AST changes detected. Repository is clean.")
             return True
 
-    print("\n⚠️  AST changes detected. Diff preview:\n")
+    logger.warning("AST changes detected. Diff preview:")
     # Truncate long diffs
     lines = diff.split("\n")
     for line in lines[:100]:
-        print(f"  {line}")
+        logger.info("  %s", line)
     if len(lines) > 100:
-        print(f"  ... ({len(lines) - 100} more lines)")
+        logger.info("  ... (%d more lines)", len(lines) - 100)
 
     # Judgment Check 2: Human-in-the-Loop
     if not auto:
-        choice = input("\n🔍 AST changes detected. Review diff above.\n   Proceed with commit and push? (y/n): ")
+        choice = input("\nAST changes detected. Review diff above.\n   Proceed with commit and push? (y/n): ")
         if choice.strip().lower() != "y":
-            print("🛑 Aborting commit and push as requested.")
+            logger.info("Aborting commit and push as requested.")
             return False
 
     # Import auth and get token
@@ -139,8 +142,8 @@ def commit_and_push(auto: bool = False) -> bool:
 
         token = get_token()
     except Exception as e:
-        print(f"❌ Auth failed: {e}")
-        print("   Falling back to existing remote URL...")
+        logger.error("Auth failed: %s", e)
+        logger.warning("Falling back to existing remote URL...")
         token = None
 
     # Set push URL with token
@@ -159,16 +162,16 @@ def commit_and_push(auto: bool = False) -> bool:
         ]
     )
     if commit_result.returncode != 0:
-        print(f"❌ Commit failed: {commit_result.stderr}")
+        logger.error("Commit failed: %s", commit_result.stderr)
         return False
 
     # Push
-    print("\n🚀 Pushing AST fixes...")
+    logger.info("Pushing AST fixes...")
     push_result = _run(["git", "push", "origin", "main"])
     if push_result.returncode == 0:
-        print("✅ Successfully pushed AST optimizations.")
+        logger.info("Successfully pushed AST optimizations.")
     else:
-        print(f"❌ Push failed: {push_result.stderr}")
+        logger.error("Push failed: %s", push_result.stderr)
         return False
 
     # Restore SSH push URL
@@ -186,18 +189,16 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Lint only, no commit/push")
     args = parser.parse_args()
 
-    print("=" * 60)
-    print("  GCA Omni-Autolint v1.0 — Continuous Self-Healing")
-    print("  Rich Hickey Doctrine: Simple Made Easy")
-    print("=" * 60)
-    print()
+    logger.info("=" * 60)
+    logger.info("  GCA Omni-Autolint v1.0 — Continuous Self-Healing")
+    logger.info("  Rich Hickey Doctrine: Simple Made Easy")
+    logger.info("=" * 60)
 
     # Pull latest
-    print("📥 Pulling latest origin/main...")
+    logger.info("Pulling latest origin/main...")
     pull = _run(["git", "pull", "--rebase", "origin", "main"])
     if pull.returncode != 0:
-        print(f"⚠️  Pull warning: {pull.stderr.strip()}")
-    print()
+        logger.warning("Pull warning: %s", pull.stderr.strip())
 
     # Run linters
     if not run_linters():
@@ -205,13 +206,13 @@ def main():
 
     # Check for changes
     if not check_changes():
-        print("✨ No AST changes detected. Repository is clean.")
+        logger.info("No AST changes detected. Repository is clean.")
         sys.exit(0)
 
     if args.dry_run:
-        print("🔍 Dry run: showing diff only")
+        logger.info("Dry run: showing diff only")
         diff = show_diff()
-        print(diff)
+        logger.info(diff)
         sys.exit(0)
 
     # Commit and push
@@ -220,4 +221,8 @@ def main():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    )
     main()

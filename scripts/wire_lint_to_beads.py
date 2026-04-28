@@ -11,9 +11,12 @@ Usage:
 from __future__ import annotations
 
 import json
+import logging
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 LINT_RESULTS = REPO_ROOT / ".lint-results" / "latest.json"
@@ -23,7 +26,7 @@ ISSUES_FILE = BEADS_DIR / "issues.jsonl"
 
 def main() -> None:
     if not LINT_RESULTS.exists():
-        print("[*] No lint results found at", LINT_RESULTS)
+        logger.info("No lint results found at %s", LINT_RESULTS)
         sys.exit(0)
 
     results = json.loads(LINT_RESULTS.read_text())
@@ -52,10 +55,14 @@ def main() -> None:
     with ISSUES_FILE.open("a") as f:
         f.write(json.dumps(entry) + "\n")
 
-    print(f"[*] Appended lint entry to {ISSUES_FILE}")
-    print(f"    Severity: {entry['severity']}")
-    print(f"    Summary: {entry['summary']}")
+    logger.info("Appended lint entry to %s", ISSUES_FILE)
+    logger.info("Severity: %s", entry["severity"])
+    logger.info("Summary: %s", entry["summary"])
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    )
     main()
