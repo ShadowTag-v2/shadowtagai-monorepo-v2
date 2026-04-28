@@ -145,6 +145,52 @@ Transition trigger: `>3 packages affected` OR `auth/payment/migration` scope.
 | `daily-truth-report.sh` | Daily governance report generator | 93 |
 | `release-readiness-gate.sh` | 8-gate pre-release validator | 157 |
 
+## Clone Yard
+
+**Manifest:** `external_repos/upstream_manifest.yaml` (committed, git-tracked)
+
+| Metric | Value |
+|--------|-------|
+| Groups | 17 |
+| Total repos | 95 |
+| Dry-run status | ✅ 95/95 pass |
+
+**Validation (reproducible from clean checkout):**
+```bash
+python3 -c "import yaml; yaml.safe_load(open('external_repos/upstream_manifest.yaml'))"
+scripts/clone-external-reference-repos.sh --dry-run
+```
+
+## Contract Coverage
+
+| Classification | Count |
+|---------------|-------|
+| `enforced_by_ci` | 6 |
+| `enforced_by_script` | 2 |
+| `enforced_by_toolgateway` | 1 |
+| `advisory_only` | 30 |
+| **Total** | **39** |
+
+Full audit: `.reports/monorepo-os/orphan_contracts.md`
+Each `advisory_only` contract has a Beads issue for enforcement wiring.
+
+## Proof Links
+
+| Proof | Path / Command |
+|-------|---------------|
+| Clone-yard manifest | `external_repos/upstream_manifest.yaml` |
+| Orphan contracts report | `.reports/monorepo-os/orphan_contracts.md` |
+| Daily truth report | `.reports/monorepo-os/daily.md` |
+| Release readiness report | `.reports/monorepo-os/release-readiness.md` |
+| Oracle score report | `.reports/monorepo-os/repo-oracle-score.md` |
+| Guardrail audit report | `.reports/skills/guardrail_annotation_audit.md` |
+| Triage report | `.reports/skills/unsafe_findings_triage.md` |
+| Invariants validation | `python3 -c "import json; json.load(open('operator_invariants.json'))"` |
+| Atoms validation | `python3 -c "import json; json.load(open('operator_invariants_atoms.json'))"` |
+| CI workflow | `.github/workflows/monorepo-os-gates.yml` |
+| SkillOps workflow | `.github/workflows/skillops-audit.yml` |
+| Release gate | `scripts/release-readiness-gate.sh` |
+
 ## Version History
 
 | Version | Date | Changes |
@@ -160,3 +206,4 @@ Transition trigger: `>3 packages affected` OR `auth/payment/migration` scope.
 | 2.0 | 2026-04-28 | DESIGN.md + `tokens.css` Stitch token export for KovelAI |
 | 2.1 | 2026-04-28 | Guardrail annotation audit (12/12), Lighthouse A100/BP100/SEO100, 39 ToolGateway contracts |
 | 2.2 | 2026-04-28 | Oracle Score engine, Daily Truth Report, Release Readiness Gate (8 gates), CI hardening (+3 steps) |
+| 2.3 | 2026-04-28 | Clone-yard manifest committed, orphan contract audit (9/39 enforced, 30 advisory), Proof Links section, reproducibility from clean checkout |
