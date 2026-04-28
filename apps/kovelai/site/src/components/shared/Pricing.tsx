@@ -9,9 +9,13 @@
  * - Beta Coupon Code: 3wseBY7Z (50% off, 3 months, max 100 redemptions)
  * - Customer Portal: bpc_1TNKSjEHnWpykeMi0qQPoaHm
  *
- * TODO: Replace Pro CTA link with live Stripe Payment Link once created in Dashboard.
- * The current implementation routes Professional inquiries through the contact modal
- * to capture high-intent leads while the payment link is being provisioned.
+ * STRIPE CUTOVER STATUS (2026-04-28):
+ * All tiers route through the contact modal for high-intent lead capture.
+ * Test-mode Payment Links (buy.stripe.com/test_*) have been removed.
+ * When live Payment Links are created in the Stripe Dashboard:
+ *   1. Create Payment Links for Trial and Pro (with coupon 3wseBY7Z pre-filled)
+ *   2. Replace ctaAction: true with ctaLink: '<live-payment-link-url>'
+ *   3. Enterprise remains contact-modal only.
  */
 
 interface PricingProps {
@@ -32,8 +36,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         'Email support',
       ],
       cta: 'Start Free Trial',
-      // biome-ignore lint/security/noSecrets: Public Stripe Payment Link (test mode)
-      ctaLink: 'https://buy.stripe.com/test_aEU5nR1Jy9Mg8zS000',
+      ctaAction: true,
       ctaStyle: 'btn-ghost',
       featured: false,
     },
@@ -52,8 +55,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         'Priority support',
       ],
       cta: 'Start Pro — $74.50/mo',
-      // biome-ignore lint/security/noSecrets: Public Stripe Payment Link (test mode) with coupon
-      ctaLink: 'https://buy.stripe.com/test_aEU5nR1Jy9Mg8zS000?prefilled_promo_code=3wseBY7Z',
+      ctaAction: true,
       ctaStyle: 'btn-gold',
       featured: true,
       annual: 'or $1,428/yr (save $360)',
@@ -115,19 +117,13 @@ export default function Pricing({ onOpenModal }: PricingProps) {
                   </li>
                 ))}
               </ul>
-              {p.ctaAction ? (
-                <button
-                  type="button"
-                  onClick={onOpenModal}
-                  className={`${p.ctaStyle} w-full justify-center text-sm`}
-                >
-                  {p.cta}
-                </button>
-              ) : (
-                <a href={p.ctaLink} className={`${p.ctaStyle} w-full justify-center text-sm`}>
-                  {p.cta}
-                </a>
-              )}
+              <button
+                type="button"
+                onClick={onOpenModal}
+                className={`${p.ctaStyle} w-full justify-center text-sm`}
+              >
+                {p.cta}
+              </button>
               {p.annual && <p className="text-xs text-center text-[#a89d8e] mt-2">{p.annual}</p>}
             </div>
           ))}

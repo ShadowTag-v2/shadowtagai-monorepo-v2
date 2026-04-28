@@ -10,6 +10,8 @@ CounselConduit is the **"Shopify for Legal AI"** — a privilege-preserving rout
 
 **Hard Redesign Thesis**: CounselConduit is not a legal research tool. It is an **emotional arbitrage engine** — the client pays because they feel safe, heard, and understood. The AI does the thinking; the brand does the holding.
 
+**Messaging Model (Locked v10.2)**: The **attorney is the buyer**. The **client is the beneficiary**. Like a police chief buying bulletproof vests for the force. The attorney deploys CounselConduit as privileged search infrastructure for their clients. The client searches freely inside the privilege umbrella — relaxing enough to recall all the facts of their case. The attorney sits in the loop: monitoring sessions, providing the first legal opinion, and billing automatically. We protect the client from themselves — from discoverable Google searches, from incorrect AI-generated legal opinions, and from ambushing their own attorney with unvetted research.
+
 ---
 
 ## §1 — Core Tiers (Updated v10.0)

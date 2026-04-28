@@ -12,10 +12,13 @@ export default function Management() {
             <h3 className="text-lg font-semibold text-primary-text mb-1">Erik Hancock</h3>
             <div className="text-sm text-gold mb-3">Founder &amp; CEO</div>
             <p className="text-sm leading-relaxed text-secondary-text">
-              Erik founded KovelAI after watching attorneys get blindsided by discoverable client
-              searches post-<em>Heppner</em>. His mission: give every attorney a turnkey portal they
-              can deploy for their clients — privileged web and AI search access that protects the
-              client, empowers the attorney, and bills automatically.
+              Erik founded KovelAI after watching the post-<em>Heppner</em> landscape expose a
+              dangerous gap: clients were flooding attorneys with discoverable AI searches,
+              incorrect legal opinions from ChatGPT, and Google rabbit holes — all of it available
+              to opposing counsel. His mission: give every attorney a turnkey portal to deploy for
+              their clients. The client searches freely and relaxes enough to recall all the facts
+              of their case. The attorney sits in the loop — monitoring sessions, providing the
+              first legal opinion, and billing automatically. We protect the client from themselves.
             </p>
           </div>
         </div>

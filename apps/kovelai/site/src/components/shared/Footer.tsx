@@ -12,8 +12,8 @@ export default function Footer({ onOpenModal }: FooterProps) {
           <div>
             <div className="text-xl font-bold text-primary-text mb-3">KovelAI</div>
             <p className="text-sm text-secondary-text leading-relaxed">
-              Post-Heppner privilege protection you deploy for your clients. You buy it, your
-              clients use it, opposing counsel can&apos;t touch it.
+              Privileged search infrastructure you deploy for your clients. They research freely,
+              you monitor everything, opposing counsel discovers nothing.
             </p>
           </div>
           <div>
@@ -27,6 +27,9 @@ export default function Footer({ onOpenModal }: FooterProps) {
               </li>
               <li>
                 <a href="#discovery-risk">Discovery Risk</a>
+              </li>
+              <li>
+                <a href="#pricing">Pricing</a>
               </li>
             </ul>
           </div>
@@ -56,7 +59,7 @@ export default function Footer({ onOpenModal }: FooterProps) {
                   onClick={onOpenModal}
                   className="bg-transparent border-none cursor-pointer text-[#d0c5b5] hover:text-[#d7e3fc] transition-colors text-[0.8125rem] p-0"
                 >
-                  Contact Sales
+                  Schedule a Demo
                 </button>
               </li>
               <li>
