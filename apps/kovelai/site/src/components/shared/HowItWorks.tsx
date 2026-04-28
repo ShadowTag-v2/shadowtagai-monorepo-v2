@@ -20,8 +20,10 @@ export default function HowItWorks() {
   return (
     <section className="py-20 md:py-28" id="how-it-works">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="section-label">How CounselConduit Works</div>
-        <h2 className="section-title">Three Steps. Full Privilege. Full Oversight.</h2>
+        <div className="section-label">The Heppner Ultimatum — How It Works</div>
+        <h2 className="section-title">
+          Deploy the Portal. Monitor the Client. Bill Automatically.
+        </h2>
         <div className="grid md:grid-cols-3 gap-8 mt-10">
           {steps.map((s) => (
             <div key={s.num} className="glass-card text-center">

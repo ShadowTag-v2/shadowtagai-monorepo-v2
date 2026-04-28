@@ -18,10 +18,10 @@ export default function CTASection({ onOpenModal }: CTASectionProps) {
           will — obtain all of it.
         </p>
         <p className="section-desc mx-auto mb-10">
-          Deploy KovelAI for your clients. You buy it, they use it, you monitor everything. Like a
-          medical portal, except for lawyers — their research stays privileged, you give the first
-          legal opinion, and opposing counsel discovers nothing. Either they do it through your
-          firm&apos;s KovelAI, or they proceed at their peril.
+          Deploy KovelAI for your clients. You buy it, they use it, you monitor everything. Their
+          research stays privileged, you give the first legal opinion, and opposing counsel
+          discovers nothing. Either they do it through your firm&apos;s KovelAI, or they proceed at
+          their peril.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <button

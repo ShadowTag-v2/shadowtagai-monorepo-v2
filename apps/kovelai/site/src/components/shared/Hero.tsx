@@ -46,21 +46,29 @@ export default function Hero({ onOpenModal }: HeroProps) {
       {/* Content */}
       <div className="relative z-10 max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 scroll-entrance">
         <div className="text-[0.6875rem] font-medium uppercase tracking-[0.15em] text-gold mb-6">
-          THE CLIENT PORTAL FOR YOUR FIRM · PRIVILEGE-SHIELDED · ATTORNEY-MONITORED
+          PRIVILEGE-PROTECTED INFRASTRUCTURE · ATTORNEY-MONITORED · HEPPNER-COMPLIANT
         </div>
         <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.02em] max-w-[800px] mb-6">
-          Give Your Clients a Privileged Portal.
+          Every Search. Every Chat.
           <br />
-          <span className="text-gold">Protect Them From Discovery.</span>
+          <span className="text-gold">Discoverable.</span>
         </h1>
+        <h2 className="text-[clamp(1rem,2.5vw,1.5rem)] font-semibold text-secondary-text max-w-[700px] mb-6 leading-snug">
+          Deploy the privileged research portal that shields your clients&mdash;and your firm.
+        </h2>
+        <p className="text-[0.9375rem] leading-relaxed text-secondary-text max-w-[640px] mb-4">
+          After <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every web search and AI conversation
+          your client conducts outside your firm&apos;s umbrella is fair game for opposing counsel.
+          KovelAI is the turnkey infrastructure you deploy to close that gap.
+        </p>
         <p className="text-[0.9375rem] leading-relaxed text-secondary-text max-w-[640px] mb-8">
-          Your clients are already searching the web and asking AI about their case. After{' '}
-          <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every one of those searches is discoverable.
-          KovelAI is the secure client portal you deploy through your firm — like a medical portal,
-          except for lawyers. Your clients search at will through your privilege umbrella. You
-          monitor every session, give the first legal opinion, and bill their credit card
-          automatically. Either they do it through your firm&apos;s KovelAI, or they proceed at
-          their peril.
+          Your clients search at will under your privilege umbrella. You monitor every session,
+          deliver the first legal opinion, and bill their credit card automatically. The pitch is
+          one sentence:{' '}
+          <strong className="text-primary-text">
+            &ldquo;Either you do it through our firm&apos;s KovelAI, or proceed at your
+            peril.&rdquo;
+          </strong>
         </p>
         <div className="flex flex-wrap gap-4 mb-4">
           <button
@@ -69,15 +77,15 @@ export default function Hero({ onOpenModal }: HeroProps) {
             className="btn-gold text-sm"
             id="ctaFreeTrial"
           >
-            Deploy for Your Clients
+            Deploy Your Firm&apos;s Portal
           </button>
           <a href="#how-it-works" className="btn-ghost text-sm">
-            See How It Works →
+            See How Privilege Works →
           </a>
         </div>
         <p className="text-xs text-[#998f81]">
-          You buy it for your clients · They log in with their credit card · You monitor all
-          sessions · You give the first legal opinion · Automatic billing
+          Clients log in · You monitor all sessions · You give the first opinion · Automatic billing
+          · Opposing counsel gets nothing
         </p>
       </div>
     </header>

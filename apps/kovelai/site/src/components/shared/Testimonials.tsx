@@ -16,7 +16,7 @@ export default function Testimonials() {
       initials: 'JL',
       name: 'Founding Partner',
       firm: 'Criminal Defense, Chicago',
-      quote: `"It's like buying a medical portal for your patients — except we're lawyers. We buy KovelAI for our clients, they log in with their credit card, and we monitor every session. I'm in the oversight seat on all case-related research. The billing is automatic. Intake revenue is up 40% since we deployed it."`,
+      quote: `"We deploy KovelAI as privileged infrastructure for every active case. Clients log in with their credit card, and we monitor every session. I'm in the oversight seat on all case-related research. The billing is automatic. Intake revenue is up 40% since we deployed it."`,
     },
   ];
 

@@ -4,7 +4,7 @@ export default function FAQ() {
   const faqs = [
     {
       q: 'What is KovelAI / CounselConduit?',
-      a: "KovelAI is a privileged client portal — like a medical portal, except for lawyers. You buy it for your clients so their web searches, AI queries, translations, and transcriptions flow through a secure connection to your firm. CounselConduit is the engine that routes all client research through your privilege umbrella. You monitor every session, give the first legal opinion, and bill the client's credit card automatically. It's another tool in your arsenal to best represent your client.",
+      a: "KovelAI is a privileged research environment you deploy for your clients. Their web searches, AI queries, translations, and transcriptions flow through a secure connection to your firm. CounselConduit is the engine that routes all client research through your privilege umbrella. You monitor every session, give the first legal opinion, and bill the client's credit card automatically. It's another tool in your arsenal to best represent your client.",
     },
     {
       q: 'Who is the buyer? Who is the user?',

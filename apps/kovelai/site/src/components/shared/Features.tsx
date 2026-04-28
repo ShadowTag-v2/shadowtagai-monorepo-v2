@@ -26,7 +26,7 @@ export default function Features() {
         </svg>
       ),
       title: "Your Firm's Client Portal",
-      desc: 'Like a medical portal — except for lawyers. You deploy a branded, secure research environment for your clients. They search the web, use AI, and explore their case through a privilege-protected connection to your firm. Their research stays shielded from discovery because it never leaves your umbrella.',
+      desc: 'You deploy a branded, secure research environment for your clients. They search the web, use AI, and explore their case through a privilege-protected connection to your firm. Their research stays shielded from discovery because it never leaves your umbrella. No IT department required — deploy in minutes.',
     },
     {
       icon: (
@@ -135,7 +135,7 @@ export default function Features() {
         </svg>
       ),
       title: 'The Heppner Ultimatum',
-      desc: 'The conversation with your client is straightforward: "Knowing the Heppner decision, the other side can and will obtain all searching done outside our firm\'s KovelAI portal. Either you do it through us, or proceed at your peril." Like a medical portal — except the stakes are your case.',
+      desc: 'The conversation with your client is straightforward: "Knowing the Heppner decision, the other side can and will obtain all searching done outside our firm\'s KovelAI portal. Either you do it through us, or proceed at your peril." That single sentence closes the deal — because the stakes are their entire case.',
     },
     {
       icon: (
@@ -165,14 +165,15 @@ export default function Features() {
   return (
     <section className="py-20 md:py-28 bg-surface-lowest" id="features">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="section-label">What You Deploy for Your Clients</div>
-        <h2 className="section-title">Buy It for Your Clients. Monitor Everything.</h2>
+        <div className="section-label">Your Firm&apos;s Privileged Research Infrastructure</div>
+        <h2 className="section-title">
+          Mandatory Infrastructure. Full Oversight. Automatic Billing.
+        </h2>
         <p className="section-desc mb-12">
-          You buy KovelAI for your clients — like a police chief buying bulletproof vests for the
-          force. You deploy a privileged client portal connected to your firm. Your clients search
-          freely and relax before trial. You monitor every session, give the first legal opinion,
-          and bill automatically through their credit card. CounselConduit puts you in an oversight
-          position on all case-related research — keeping it between the two of you.
+          You purchase KovelAI as privileged infrastructure for your clients. They search the web,
+          use AI, and explore their case through a secure connection to your firm. You monitor every
+          session, give the first legal opinion, and bill their credit card automatically. The
+          privilege holds. Opposing counsel gets nothing.
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((f) => (
