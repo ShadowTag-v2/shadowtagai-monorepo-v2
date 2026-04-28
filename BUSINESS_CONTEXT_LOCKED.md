@@ -309,3 +309,30 @@ Because we moved away from Redis cache over to Firestore `system_idempotency_key
 
 ### Production Hardening (2026-04-16)
 - CSP Headers, Permissions-Policy, WebP Optimization, Custom 404 Pages, DNS Prefetch, Preview Channels, Google Search Console, Firebase Storage, GCS CORS, Cloud Monitoring, captureLead, Hero Preload, Git Auth
+
+---
+
+## §10 — Marketing Channels (Locked 2026-04-28)
+
+### Google Pomelli Integration
+| Property | Value |
+|----------|-------|
+| Platform | Google Labs Pomelli (https://labs.google.com/pomelli) |
+| Business DNA Source | https://kovelai.web.app |
+| Campaign Prompt | "Legal tech SaaS that shields clients from discoverable AI research under attorney-client privilege" |
+| Photoshoot (Imagen) | TACSOP 7-compliant product imagery generation with provenance tracking |
+| Mobile Support | ✅ Available for on-the-go campaign creation |
+| Status | Active — Business DNA requires re-ingestion after each major messaging pivot |
+
+### Marketing Asset Pipeline
+1. **Pomelli Campaigns**: Generate social media cards, ad copy, and landing page variants
+2. **Photoshoot (Imagen)**: Professional product imagery — hero images, feature illustrations, social assets
+3. **Content Themes**: Attorney-client privilege, post-Heppner compliance, client protection from discoverable searches
+4. **Distribution**: LinkedIn (attorney buyers), Twitter/X, legal tech newsletters, ABA Journal
+
+### Campaign Messaging Framework
+- **Primary Buyer**: Attorney / Managing Partner
+- **Primary Beneficiary**: Client (protected from discoverable AI searches)
+- **Core Thesis**: "Protect your clients from themselves — deploy privileged search infrastructure"
+- **Emotional Hook**: "Your client is Googling their case at 2 AM. Make those searches privileged."
+- **Compliance Anchor**: *United States v. Heppner* (S.D.N.Y., Feb. 10, 2026)
