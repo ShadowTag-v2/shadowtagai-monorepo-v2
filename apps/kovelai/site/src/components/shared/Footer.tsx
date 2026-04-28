@@ -12,8 +12,8 @@ export default function Footer({ onOpenModal }: FooterProps) {
           <div>
             <div className="text-xl font-bold text-primary-text mb-3">KovelAI</div>
             <p className="text-sm text-secondary-text leading-relaxed">
-              Post-Heppner privileged client AI and web search infrastructure for law firms. Capture
-              revenue, protect privilege, automate intake.
+              Post-Heppner privilege protection you deploy for your clients. You buy it, your
+              clients use it, opposing counsel can&apos;t touch it.
             </p>
           </div>
           <div>

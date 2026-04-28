@@ -12,7 +12,7 @@ export default function Testimonials() {
       name: 'Senior Associate',
       firm: 'Boutique Family Law, Los Angeles',
       quote:
-        '"The after-hours capture alone justified the cost. We went from losing 60% of weekend inquiries to converting 85% into retained matters. The privilege protection is the bonus."',
+        '"We deployed CounselConduit for our high-conflict custody clients. They search at all hours — nights, weekends, panic before hearings. Now every search is privileged, and I see exactly what they\'re worried about before we walk into court."',
     },
     {
       initials: 'JL',

@@ -7,9 +7,9 @@ export default function ComparisonTable() {
       safe: '✅ Shielded under Kovel',
     },
     {
-      feature: 'After-hours client inquiries',
-      risk: '❌ Lost to voicemail',
-      safe: '✅ Captured & retained',
+      feature: 'Client pre-trial research',
+      risk: '⚠️ Discoverable anxiety searches',
+      safe: '✅ Privileged & archived for strategy',
     },
     {
       feature: 'Data retention',
@@ -21,7 +21,11 @@ export default function ComparisonTable() {
       risk: '$0 (unbilled panic calls)',
       safe: '$50–$250/session (billable)',
     },
-    { feature: 'Paralegal cost for intake', risk: '$45–$75/hour', safe: '$0 (automated)' },
+    {
+      feature: 'Attorney strategic position',
+      risk: '❌ Ambushed at trial',
+      safe: '✅ First legal opinion is yours',
+    },
     {
       feature: 'Compliance posture',
       risk: '❌ Hope-based',
