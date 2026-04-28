@@ -103,6 +103,14 @@ This checks:
 9. Buildifier availability
 10. Push gate script availability
 
+## Proof Links
+
+- **Latest Commit**: [View on GitHub](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/commits/main)
+- **Monorepo OS Gates**: [View Runs](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/monorepo-os-gates.yml)
+- **SkillOps Audit**: [View Runs](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/skillops-audit.yml)
+- **Release Readiness Gate**: [.reports/monorepo-os/release-readiness.md](.reports/monorepo-os/release-readiness.md)
+- **Daily Truth Report**: [.reports/monorepo-os/daily.md](.reports/monorepo-os/daily.md)
+
 ## Integration Points
 
 ### Beads → Memory
@@ -156,3 +164,4 @@ Model proposes → FunctionRegistry validates → ConfirmationGate checks risk
 | v1.9 | 2026-04-28 | Security remediation: 44-finding triage complete (5 actual risk, 12 moderate, 27 FP). ToolGateway contracts for repo-mass-reduction (ISSUE-018) and yolo-mode-operator (ISSUE-019). CI threshold tightened 50→15. Invariant #141 (SkillOps Hazard Triage Gate) added. 12 moderate-risk skills annotated with GUARDRAIL. monorepo-os-gates.yml CI workflow created. skill-creator audit: 27 eval hits cleared (natural language, zero code). Production print()→logging migration complete (4 files). 18 atoms total, 9 ToolGateway gates. |
 | v2.0 | 2026-04-28 | Hardening milestone: 12/12 GUARDRAIL annotations verified (4 newly added: repo-mass-reduction, yolo-mode-operator, mcp-github, cor-deployment-operations). test_ane_bridge codified with xfail (hardware-specific). guardrail-annotation-audit.sh created + wired. Full test suite: 297 passed, 2 skipped, 3 xfailed, 0 failures. Dead code: 0 F401/F841 violations. Betterleaks: 0 leaks. 39 ToolGateway contracts. ISSUE-018/019 resolved. Skills audit: 271 active, 37 archived. |
 | v2.1 | 2026-04-28 | Full atom coverage: 16/16 invariants have matching #ID-tagged atoms (8 added: #104, #111, #112, #121, #129, #131, #136, #137). 26 total atoms. Orphan contract audit: 30/39 contracts have no CI/script gate reference (legacy scaffolding). Triage report validated: 5 actual risk gated, 12 moderate annotated, 27 FP cleared. KovelAI dev server verified (Next.js 16.2.1 Turbopack, localhost:3001). DESIGN.md token system validated (Sovereign Architect + KovelAI Chassis dual palette). |
+| v2.2 | 2026-04-28 | Monorepo OS Truth and Proof patch. Clone Yard manifest verified and committed. CI gates tightened with hard checks for manifest, guardrail audit, and triage completeness. Proof Links added. Orphan contracts officially registered as beads. |

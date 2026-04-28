@@ -230,7 +230,7 @@ Key metrics:
 - Lighthouse LHCI (ShadowTagAI): A95 / BP96 / SEO100
 - Tests: 504 collected, 498 passed, 3 xfailed, 3 skipped (82.10s)
 - Dead code: clean (ruff 0.15.11 F401/F841 — 0 errors)
-- CounselConduit: v3.2.0 LIVE on Cloud Run rev `counselconduit-00037-7mf`
+- CounselConduit: v3.2.0 LIVE on Cloud Run rev `counselconduit-00045-kjp`
 - Cloud Armor WAF: `counselconduit-waf` (XSS + SQLi + rate limiting active)
 - Cloud Monitoring: 9 alert policies + email channel
 - SLO: CounselConduit 99.5% Availability, 30-day rolling
@@ -250,7 +250,7 @@ Key metrics:
 ### CounselConduit Cloud Run
 | Service | URL | Rev |
 |---------|-----|-----|
-| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00037-7mf (100% traffic) |
+| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00045-kjp (100% traffic) |
 | Staging | https://counselconduit-staging-767252945109.us-central1.run.app | counselconduit-staging-00003-l9h |
 
 ### Deployed Hosting Targets

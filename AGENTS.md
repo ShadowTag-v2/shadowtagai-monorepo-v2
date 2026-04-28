@@ -48,7 +48,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 
 ## Core Technical Truths (DO NOT HALLUCINATE OVERRIDES)
 
-1. **uuid7 Fallback:** `try/except ImportError` pattern is REQUIRED for `uuid7` resolution between monorepo (`apps.counselconduit.api.uuid7`) and container (`api.uuid7`) paths. ~~Old container `counselconduit-00015-mmq`~~ → current: `counselconduit-00037-7mf` (verified live 2026-04-25 via gcloud).
+1. **uuid7 Fallback:** `try/except ImportError` pattern is REQUIRED for `uuid7` resolution between monorepo (`apps.counselconduit.api.uuid7`) and container (`api.uuid7`) paths. ~~Old container `counselconduit-00015-mmq`~~ → current: `counselconduit-00045-kjp` (verified live 2026-04-28 via gcloud).
 2. **.NET Environment:** .NET 11.0.100-preview.3 (26207.106) is the CANONICAL target framework (upgraded from 10.0 on 2026-04-26). Also installed: 10.0.203, 10.0.107 (Homebrew), 8.0.419. `global.json` pins to `11.0.100-preview.3.26207.106` with `rollForward: latestFeature`. Semantic Kernel target: `net11.0`. SK v1.74.0 build-verified. **Namespace collision resolved:** `ShadowTagV4.Kernel` vs `Microsoft.SemanticKernel.Kernel` — use fully-qualified `Microsoft.SemanticKernel.Kernel` in all Process.cs references.
 3. **Semantic Kernel Process.cs:** `OnExternalEvent` is the CORRECT API for `Microsoft.SemanticKernel.Process.Core v1.21.0-alpha`. Do NOT apply the `OnInputEvent` rename until Process.Core >= v1.30+.
 4. **Skill Fleet:** We maintain 247 active skills (54 workspace + 210 global − 17 overlap) inside our local Matrix. 20 archived in `_archive_redundant_2026-04-25/`. 12 moderate+ risk skills annotated with `<!-- GUARDRAIL -->`. 39 ToolGateway contracts enforced. `npx skills` CLI fully operational (Node v25.9.0). MONOREPO_OS v2.1 hardening complete (2026-04-28).
@@ -73,7 +73,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 - ~~Firebase Storage needs console initialization~~ — ✅ RESOLVED (2026-04-23): `storage.rules` deployed with deny-all rules.
 - ~~`lead-capture-router` requires a `firebase-admin` upgrade~~ — ✅ RESOLVED: Already at `^13.8.0` (latest major).
 - ~~`NotebookLM MCP` CLI needs installation~~ — ✅ RESOLVED (2026-04-23): Replaced with `antigravity-notebooklm-mcp` MCP server in `antigravity-mcp-config.json`.
-- ~~Cloud Run redeploy needed for uuid7 fix~~ — ✅ RESOLVED (2026-04-23): Current revision `counselconduit-00037-7mf` (verified live 2026-04-25 via gcloud) with uuid7 try/except pattern across 5 modules.
+- ~~Cloud Run redeploy needed for uuid7 fix~~ — ✅ RESOLVED (2026-04-23): Current revision `counselconduit-00045-kjp` (verified live 2026-04-28 via gcloud) with uuid7 try/except pattern across 5 modules.
 - ~~Gideon OS Go/Rust/C++ build configs missing~~ — ✅ RESOLVED (2026-04-24): `go.mod`, `Cargo.toml`, `tauri.conf.json` scaffolded.
 - ~~FlyingMonkeys needs retirement and rename~~ — ✅ RESOLVED (2026-04-24): Retired to `archive/legacy_flyingmonkeys/`. Replaced by Cor.autoresearch engine. See `docs/COR_AUTORESEARCH.md`.
 - ~~Tauri desktop wrapper needs deprecation~~ — ✅ RESOLVED (2026-04-24): Archived to `archive/legacy_tauri_workspace/`. Replaced by browser tab + WebAuthn. Risk #83 closed.

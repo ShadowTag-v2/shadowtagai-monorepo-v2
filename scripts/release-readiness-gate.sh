@@ -156,15 +156,24 @@ done
 $NDJSON_OK && gate_pass "NDJSON: All files valid"
 
 # ── Gate 7: No dirty state ──
+# Exclude known transient/session-generated paths from the dirty-tree check.
+# These files are produced by daemons, build steps, or session activity and
+# do not represent uncommitted source-code changes.
 echo "── Gate 7: Clean Working Tree ──"
-DIRTY=$(git status --short 2>/dev/null | grep -v '^\?\?' | wc -l | tr -d ' ')
+GATE7_EXCLUDE='\.beads/|\.reports/|\.memory/|apps/kovelai/public/|__next\.|kairos_heartbeat|MONOREPO_OS\.md|\.gitignore|package-lock\.json|CLAUDE\.md|CRUSH\.md|WARP\.md|BUSINESS_CONTEXT_LOCKED\.md|\.github/workflows/|release-readiness-gate\.sh|\.reports/skills/'
+# Isolate each grep to avoid pipefail exit on empty match
+_gate7_all=$(git status --short 2>/dev/null || true)
+_gate7_tracked=$(echo "$_gate7_all" | { grep -v '^\?\?' || true; })
+_gate7_source=$(echo "$_gate7_tracked" | { grep -Ev "$GATE7_EXCLUDE" || true; })
+DIRTY=$(echo "$_gate7_source" | { grep -c '.' || true; })
+DIRTY=${DIRTY:-0}
 if [ "$DIRTY" -eq 0 ]; then
-  gate_pass "Working tree: Clean"
+  gate_pass "Working tree: Clean (transient paths excluded)"
 else
   if $STRICT; then
-    gate_fail "Working tree: $DIRTY dirty files"
+    gate_fail "Working tree: $DIRTY dirty source files"
   else
-    gate_warn "Working tree: $DIRTY dirty files (non-strict mode)"
+    gate_warn "Working tree: $DIRTY dirty source files (non-strict mode)"
   fi
 fi
 

@@ -53,6 +53,18 @@ jobs:
             exit 1
           fi
 
+      - name: Verify Triage & Contracts
+        run: |
+          echo "═══ Verify Reports Exist ═══"
+          test -f .reports/skills/unsafe_findings_triage.md || (echo "::error::Missing unsafe_findings_triage.md"; exit 1)
+          test -f .reports/skills/guardrail_annotation_audit.md || (echo "::error::Missing guardrail_annotation_audit.md"; exit 1)
+
+          echo "═══ Verify Contracts & Guardrails ═══"
+          # Check for ToolGateway contracts for actual-risk skills and GUARDRAIL for moderate skills
+          # Since we are just asserting these conditions in CI, we'll just check if the guardrail script passes
+          bash -n scripts/guardrail-annotation-audit.sh
+          scripts/guardrail-annotation-audit.sh || (echo "::error::Guardrail and contract verification failed"; exit 1)
+
       - name: Upload Audit Report
         if: always()
         uses: actions/upload-artifact@v4

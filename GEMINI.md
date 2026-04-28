@@ -411,7 +411,7 @@ Before starting any complex implementation task, the agent MUST:
 <session_memory_corpus>
 ## Consolidated Session Memory
 **Status:** Incorporated into KI system and AGENTS.md Core Technical Truths (2026-04-24). Key facts:
-- uuid7 `try/except ImportError` REQUIRED. Container: `counselconduit-00037-7mf`.
+- uuid7 `try/except ImportError` REQUIRED. Container: `counselconduit-00045-kjp`.
 - .NET 11.0.100-preview INSTALLED. SK 1.74.0. OnExternalEvent is correct API.
 - Python 3.14.3 CPython. 126 packages. MLX 0.31.1.
 - Skills fleet: 248 active (55 WS + 210 global − 17 overlap). 20 archived. New: `deep-think-consultation` (2026-04-26).
