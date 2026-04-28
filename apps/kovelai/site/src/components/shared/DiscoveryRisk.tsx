@@ -20,16 +20,17 @@ export default function DiscoveryRisk() {
   return (
     <section className="py-20 md:py-28" id="discovery-risk">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="section-label">The Heppner Problem</div>
+        <div className="section-label">The Heppner Ultimatum</div>
         <h2 className="section-title">
-          After <em>Heppner</em>, Your Client&apos;s Internet Is a Weapon Against Them.
+          &ldquo;Either You Do It Through Our Portal, or Proceed at Your Peril.&rdquo;
         </h2>
         <p className="section-desc mb-12">
-          After <em>In re Heppner</em>, every web search and AI interaction your client conducts
-          outside of your firm&apos;s KovelAI portal is discoverable. Opposing counsel can subpoena
-          it, weaponize it, and ambush you at trial. The conversation with your client is simple:
-          &ldquo;Either you do it through our firm&apos;s KovelAI, or proceed at your peril. The
-          other side can — and will — obtain everything done outside our portal.&rdquo;
+          That&apos;s the conversation. After <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every
+          web search, AI interaction, and digital footprint your client creates outside your firm is
+          discoverable. Opposing counsel can subpoena it, weaponize it, and ambush you at trial.
+          KovelAI is not a nice-to-have — it&apos;s mandatory privileged infrastructure you deploy
+          for every active case. The client understands the risk. They&apos;re happy to pay for
+          protection — it&apos;s their case on the line.
         </p>
         <div className="grid md:grid-cols-3 gap-6">
           {cards.map((c) => (
