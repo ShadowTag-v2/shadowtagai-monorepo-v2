@@ -199,6 +199,94 @@
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json#141",
       "tags": ["skills", "triage", "ci-gate", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "monorepo_bounced_tool_calls",
+      "object_text": "Every mutating, architectural, schema-dependent, deployment, GitHub, database, browser-QA, authentication, or external-service action must pass through ToolGateway. The gateway hydrates AGENTS.md, operator_invariants.json, monorepo_manifest.yaml, truth_surfaces.yaml, relevant tool_contracts, Beads, Memory views, and existing package implementations before allowing execution.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#104",
+      "tags": ["toolgateway", "mutation", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "two_lane_upload_doctrine",
+      "object_text": "Git is for canonical source, small docs, manifests, build files, tests, scripts, and policy. Large binaries, raw archives, external mirrors, generated indexes, vector DBs, notebook outputs, videos, model files, and build artifacts go to artifact storage or ignored local mirrors. Commit manifests, not payloads.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#111",
+      "tags": ["git", "upload", "artifacts", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "github_app_push_gate",
+      "object_text": "Automated pushes must use short-lived GitHub App installation tokens through scripts/auth_github_app.py or an approved wrapper. Token renewal handles expiration only; it is not a bypass for file-size limits, LFS budget, branch protection, or secret scanning.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#112",
+      "tags": ["github", "push", "auth", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "no_markdown_plan_sprawl",
+      "object_text": "Long-horizon work belongs in Beads. Durable knowledge belongs in Memory atoms. Research synthesis belongs in the knowledge vault. Evidence belongs in .agent/evidence.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#121",
+      "tags": ["documentation", "planning", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "research_wiki_is_synthesis_not_source_truth",
+      "object_text": "LLM-compiled Markdown wikis are allowed for research synthesis, Q&A, reports, slides, and concept mapping. They must not override Git source, Bazel build truth, GitNexus/SCIP code truth, Beads task truth, Memory atom operational truth, or ToolGateway contracts.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#129",
+      "tags": ["documentation", "wiki", "truth-hierarchy", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "gate_0_ui_discipline",
+      "object_text": "Frontend changes must pass Gate 0: Biome, design-token lint, Taste profile review, and screenshot/video proof where applicable. Raw design values are forbidden outside token/spec files unless explicitly approved.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#131",
+      "tags": ["frontend", "design", "lint", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "bootstrap_alignment_is_phased_work",
+      "object_text": "Bootstrap sequences that touch auth, workspace settings, indexes, repo clones, ZIP payloads, lint fixes, or validation must be decomposed into Beads issues and executed through ToolGateway contracts. They must not run as one broad bash payload.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#136",
+      "tags": ["bootstrap", "decomposition", "governance"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "governance",
+      "predicate": "taste_is_a_gate_not_a_vibe",
+      "object_text": "Taste Skill concepts may guide design output, but repo-owned design.md, tokens.css, screenshots, accessibility checks, and lint gates remain the source of truth.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#137",
+      "tags": ["design", "taste", "frontend", "governance"]
     }
   ]
 }
