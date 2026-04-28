@@ -88,31 +88,52 @@ jobs:
           fi
           echo "All required contracts present."
 
-      - name: Verify Operator Invariants
+      - name: Verify Operator Invariants (Bidirectional Cross-Check)
         run: |
-          echo "═══ Operator Invariants Verification ═══"
-          # Check that the canonical atoms file parses as valid JSON
+          echo "═══ Operator Invariants Bidirectional Verification ═══"
           python3 -c "
           import json, sys
+
+          # Load both truth surfaces
+          with open('operator_invariants.json') as f:
+              invariants = json.load(f)
           with open('operator_invariants_atoms.json') as f:
-              data = json.load(f)
-          atoms = data.get('atoms', [])
+              atoms_data = json.load(f)
+
+          atoms = atoms_data.get('atoms', [])
+          print(f'  Invariants count: {len(invariants)}')
           print(f'  Atoms count: {len(atoms)}')
 
-          # Verify required invariant IDs are present
-          required_ids = ['105', '113', '114', '115', '138', '139', '140', '141']
-          present = set()
+          # Extract all invariant IDs from canonical JSON
+          invariant_ids = {str(inv['id']) for inv in invariants}
+          print(f'  Invariant IDs: {sorted(invariant_ids, key=int)}')
+
+          # Required governance IDs (must be in BOTH surfaces)
+          required_ids = {'105', '113', '114', '115', '138', '139', '140', '141'}
+
+          # Check 1: All required IDs exist in operator_invariants.json
+          missing_from_invariants = required_ids - invariant_ids
+          if missing_from_invariants:
+              print(f'  FAIL: Missing from operator_invariants.json: {missing_from_invariants}')
+              sys.exit(1)
+          print(f'  ✓ All {len(required_ids)} required IDs present in invariants')
+
+          # Check 2: All required IDs have matching atoms (via source_ref #ID pattern)
+          atom_refs = set()
           for atom in atoms:
               ref = atom.get('source_ref', '')
               for rid in required_ids:
                   if f'#{rid}' in ref:
-                      present.add(rid)
+                      atom_refs.add(rid)
 
-          missing = set(required_ids) - present
-          if missing:
-              print(f'  MISSING invariants: {missing}')
+          missing_from_atoms = required_ids - atom_refs
+          if missing_from_atoms:
+              print(f'  FAIL: Missing atoms for IDs: {missing_from_atoms}')
               sys.exit(1)
-          print(f'  All {len(required_ids)} required invariants present')
+          print(f'  ✓ All {len(required_ids)} required IDs have matching atoms')
+
+          # Check 3: Both files parse as valid JSON (structural integrity)
+          print('  ✓ Bidirectional cross-verification PASSED')
           "
 
       - name: Verify Triage Completeness

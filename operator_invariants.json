@@ -73,5 +73,10 @@
     "id": 140,
     "name": "Boot Probes Are Read-Only",
     "rule": "Session boot probes (MCP pre-flight, health checks, environment reads, manifest parsing, heartbeat queries) must be strictly read-only. They must not mutate files, create branches, push commits, modify configuration, or trigger side effects. Boot failures must be reported, not auto-remediated without explicit operator approval."
+  },
+  {
+    "id": 141,
+    "name": "SkillOps Hazard Triage Gate",
+    "rule": "All unsafe pattern findings from scripts/skills-audit.sh must be triaged into ACTUAL RISK, MODERATE, or FALSE POSITIVE categories in .reports/skills/unsafe_findings_triage.md before the CI gate will pass. The CI threshold is 15 unresolved unsafe findings. Skills classified as ACTUAL RISK must have a ToolGateway contract in tool_contracts/."
   }
 ]
