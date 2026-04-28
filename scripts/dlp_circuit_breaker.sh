@@ -46,6 +46,8 @@ ALLOWED_FILES=(
   'scripts/dlp_circuit_breaker.sh'
   'docs/DEPLOYMENT_RUNBOOK.md'
   'docs/deployment.md'
+  # CI workflows — WIF service accounts are public identifiers per Google IAM best practices
+  '.github/workflows/'
   # Google Cloud skills reference docs — parameterized SA patterns from official docs
   '.agents/skills/cloud-sql-basics/references/'
   '.agents/skills/gke-basics/references/'

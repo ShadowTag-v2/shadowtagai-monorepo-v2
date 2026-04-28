@@ -12,6 +12,11 @@ concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  packages: write
+  id-token: write  # Required for WIF auth
+
 jobs:
   deploy:
     name: Deploy to Production

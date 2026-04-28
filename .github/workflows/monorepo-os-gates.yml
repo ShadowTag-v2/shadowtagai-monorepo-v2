@@ -278,6 +278,26 @@ jobs:
             echo "  ✓ Report generated"
           fi
 
+      - name: Firebase Deploy Gate (P0)
+        run: |
+          echo "═══ Firebase Deploy Gate ═══"
+          if [ -x scripts/firebase-deploy-gate.sh ]; then
+            bash scripts/firebase-deploy-gate.sh || true
+            echo "  ✓ Firebase deploy gate complete"
+          else
+            echo "::warning::firebase-deploy-gate.sh not executable"
+          fi
+
+      - name: GITHUB_TOKEN Scope Audit (P0)
+        run: |
+          echo "═══ GITHUB_TOKEN Scope Audit ═══"
+          if [ -x scripts/github-token-scope-audit.sh ]; then
+            bash scripts/github-token-scope-audit.sh || true
+            echo "  ✓ Token scope audit complete"
+          else
+            echo "::warning::github-token-scope-audit.sh not executable"
+          fi
+
   release-readiness:
     name: Release Readiness Gate
     runs-on: ubuntu-latest

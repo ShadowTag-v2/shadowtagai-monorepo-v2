@@ -10,6 +10,9 @@ on:
       - 'infra/**'
       - '*.tf'
 
+permissions:
+  contents: read
+
 jobs:
   checkov:
     runs-on: ubuntu-latest

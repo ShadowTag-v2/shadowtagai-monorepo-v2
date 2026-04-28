@@ -1,6 +1,9 @@
-# tool_contracts/repo.large_file_scan.yaml — SUPERSEDED
-# Canonical contract: tool_contracts/large_file_scan.yaml
-# This file is retained for backward compatibility only.
-version: 1
-description: "Contract for repo.large_file_scan operations."
-enforcement: advisory
+# tool_contracts/repo.large_file_scan.yaml — CONSOLIDATED
+# Canonical contract: tool_contracts/git.lfs_check.yaml
+# Enforcement: scripts/prepush-bloat-gate.sh (pre-push hook)
+# This file is retained as a redirect for backward compatibility.
+version: 2
+description: "Repo large file scan — redirects to git.lfs_check.yaml"
+canonical_contract: git.lfs_check.yaml
+enforcement: enforced_by_script
+enforcement_evidence: scripts/prepush-bloat-gate.sh

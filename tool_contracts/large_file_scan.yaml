@@ -1,25 +1,9 @@
-# Tool Contract: repo.large_file_scan
-# Governs large file detection before commit/push.
-
-tool_id: repo.large_file_scan
-description: >
-  Scan for files exceeding the repository's size threshold (>5MB).
-  Large binaries must use Git LFS or be excluded.
-risk_level: medium
-
-preconditions:
-  - name: scan_scope_defined
-    type: context_key_present
-    key: scan_scope
-    description: Must specify scan scope (staged, all, path).
-
-evidence_requirements:
-  - type: log_large_files
-    description: Log any files exceeding the size threshold with paths and sizes
-  - type: log_lfs_status
-    description: Record whether Git LFS is configured for detected large files
-
-reuse_queries:
-  - type: script_exists
-    value: repo_doctor
-    description: Check if repo_doctor already includes large file scanning.
+# tool_contracts/large_file_scan.yaml — CONSOLIDATED
+# Canonical contract: tool_contracts/git.lfs_check.yaml
+# Enforcement: scripts/prepush-bloat-gate.sh (pre-push hook)
+# This file is retained as a redirect for backward compatibility.
+version: 2
+description: "Large file scan — redirects to git.lfs_check.yaml"
+canonical_contract: git.lfs_check.yaml
+enforcement: enforced_by_script
+enforcement_evidence: scripts/prepush-bloat-gate.sh

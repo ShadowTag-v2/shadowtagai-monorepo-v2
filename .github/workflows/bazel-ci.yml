@@ -39,6 +39,9 @@ concurrency:
 env:
   BAZEL_VERSION: "9.1.0"
 
+permissions:
+  contents: read
+
 jobs:
   # =========================================================================
   # Level 1: Buildifier formatting gate

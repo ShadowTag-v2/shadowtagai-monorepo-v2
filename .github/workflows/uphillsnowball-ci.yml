@@ -34,6 +34,9 @@ concurrency:
   group: uphillsnowball-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 jobs:
 

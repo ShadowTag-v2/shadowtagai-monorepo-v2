@@ -11,6 +11,9 @@ concurrency:
   group: pnkln-governance-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   checks:
     runs-on: ubuntu-latest

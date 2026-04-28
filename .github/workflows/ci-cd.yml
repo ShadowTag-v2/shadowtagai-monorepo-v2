@@ -16,6 +16,9 @@ concurrency:
   group: ci-cd-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   # ── Lint & Type Check ──────────────────────────────────────────────
   lint:

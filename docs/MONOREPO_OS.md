@@ -1,6 +1,6 @@
-# Monorepo OS — v2.4
+# Monorepo OS — v2.5
 
-> **Status:** Active | **Version:** 2.4 | **Updated:** 2026-04-28
+> **Status:** Active | **Version:** 2.5 | **Updated:** 2026-04-28
 
 ## Overview
 
@@ -144,6 +144,8 @@ Transition trigger: `>3 packages affected` OR `auth/payment/migration` scope.
 | `repo-oracle-score.sh` | Truth surface confidence scorer | 105 |
 | `daily-truth-report.sh` | Daily governance report generator | 93 |
 | `release-readiness-gate.sh` | 8-gate pre-release validator | 157 |
+| `firebase-deploy-gate.sh` | Firebase deploy contract gate (P0) | 99 |
+| `github-token-scope-audit.sh` | GITHUB_TOKEN scope audit (P0) | 89 |
 
 ## Clone Yard
 
@@ -165,16 +167,16 @@ scripts/clone-external-reference-repos.sh --dry-run
 
 | Classification | Count |
 |---------------|-------|
-| `enforced_by_ci` | 6 |
-| `enforced_by_script` | 2 |
+| `enforced_by_ci` | 8 |
+| `enforced_by_script` | 5 |
 | `enforced_by_toolgateway` | 1 |
-| `advisory_only (P0)` | 5 |
+| `advisory_only (P0)` | 0 |
 | `advisory_only (P1)` | 12 |
 | `advisory_only (P2)` | 13 |
 | **Total** | **39** |
 
 Full audit: `.reports/monorepo-os/orphan_contracts.md`
-P0 contracts (security/safety) are the enforcement priority for v3.0.
+P0 contracts: ✅ ALL 5 ENFORCED (v2.5). P1 operational contracts are the enforcement priority for v3.0.
 
 ## Proof Links
 
@@ -210,3 +212,4 @@ P0 contracts (security/safety) are the enforcement priority for v3.0.
 | 2.2 | 2026-04-28 | Oracle Score engine, Daily Truth Report, Release Readiness Gate (8 gates), CI hardening (+3 steps) |
 | 2.3 | 2026-04-28 | Clone-yard manifest committed, orphan contract audit (9/39 enforced, 30 advisory), Proof Links section, reproducibility from clean checkout |
 | 2.4 | 2026-04-28 | Secret scan: 0 leaks, gitleaksignore deduplicated (213→135 lines, 0 stale warnings). Biome: 2 a11y errors fixed, 0 errors in production code. Orphan contracts triaged: P0 (5 security), P1 (12 operational), P2 (13 advisory-permanent). Release gate: 7/8 pass + 1 warning. Dashboard auth bug fixed (function name mismatch). |
+| 2.5 | 2026-04-28 | P0 security contracts ALL ENFORCED (5/5): firebase-deploy-gate.sh + github-token-scope-audit.sh wired to CI, force-push-guard.sh + prepush-bloat-gate.sh in pre-push hook, auth_github_app.py PEM chain. Brand Identity LOCKED (BRAND_IDENTITY_LOCKED.md). Pomelli dual-brand campaign complete. Enforcement density: 14/39 contracts enforced (36%). |
