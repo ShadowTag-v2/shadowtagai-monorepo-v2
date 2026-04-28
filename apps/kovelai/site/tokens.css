@@ -49,7 +49,7 @@
   --sa-inverse-primary: #745a27;
 
   /* ─── Typography ─── */
-  --sa-font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --sa-font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --sa-display-lg: 3.5rem;
   --sa-display-lg-tracking: -0.02em;
   --sa-headline-md: 1.75rem;

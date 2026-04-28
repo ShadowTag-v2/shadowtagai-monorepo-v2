@@ -1,8 +1,8 @@
 export default function StatsBar() {
   const stats = [
     { value: '100%', label: 'Searches Privileged' },
-    { value: '24/7', label: 'Client Access' },
-    { value: 'Real-Time', label: 'Attorney Visibility' },
+    { value: '24/7', label: 'Client Portal Access' },
+    { value: 'Real-Time', label: 'Attorney Oversight' },
     { value: 'Auto', label: 'Credit Card Billing', accent: true },
   ];
 

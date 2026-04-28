@@ -224,11 +224,11 @@ Key metrics:
 
 ## §6 — Hardened Production State
 
-### v10.0 → v10.1 canonicalized: 2026-04-24
-- Latest production commit: `4c42972f3a6` (2026-04-24)
-- Lighthouse LHCI (KovelAI): A94 / BP100 / SEO100
+### v10.0 → v10.2 canonicalized: 2026-04-28
+- Latest production commit: `76e39472c` (2026-04-28)
+- Lighthouse LHCI (KovelAI): A100 / BP100 / SEO100 (0 failed audits)
 - Lighthouse LHCI (ShadowTagAI): A95 / BP96 / SEO100
-- Tests: 504 collected, 499 passed, 2 E2E expected failures, 3 skipped
+- Tests: 504 collected, 498 passed, 3 xfailed, 3 skipped (82.10s)
 - Dead code: clean (ruff 0.15.11 F401/F841 — 0 errors)
 - CounselConduit: v3.2.0 LIVE on Cloud Run rev `counselconduit-00037-7mf`
 - Cloud Armor WAF: `counselconduit-waf` (XSS + SQLi + rate limiting active)
@@ -243,6 +243,8 @@ Key metrics:
 - RISK_REGISTER: v10.9 (86+ tracked risks)
 - Cloud Functions: 4 active (analyticalWebhook, captureContact, captureLead, cspReport)
 - Firestore: 2 databases (default nam5, shadowtag-engine us-central1) — delete-protection ENABLED
+- Stripe: Live Payment Links wired — Pro Monthly (coupon 3wseBY7Z auto-applied), Pro Annual, Enterprise (contact modal)
+- Messaging Model: Attorney-buyer / Client-beneficiary cascade complete (9 components)
 - Open PRs: 0
 
 ### CounselConduit Cloud Run
