@@ -1,11 +1,8 @@
 {
-  "timestamp": "2026-04-28T18:27:03.989151+00:00",
-  "pid": 35134,
-  "status": {
-    "cycle": "1",
-    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"missing\", \"lancedb\": \"empty\", \"vault\": \"missing\", \"git_dirty\": \"clean\", \"git_fetch\": \"ok\"}",
-    "steward": "ran",
-    "vault_ingest": "ran",
-    "quarantine_purge": "ran"
-  }
+  "daemon": "kairos",
+  "last_heartbeat": "2026-04-28T18:38:00Z",
+  "status": "session_close",
+  "session_id": "22a3d5ec-577f-412a-9142-1ea7cf2551f4",
+  "dotnet_build": "succeeded",
+  "head_commit": "6db3e0a61"
 }
