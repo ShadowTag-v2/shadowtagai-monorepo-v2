@@ -1,0 +1,143 @@
+# ═══════════════════════════════════════════════════════════
+# external_repos/upstream_manifest.yaml — Clone Yard Policy
+# Rule: Reference leverage without landfill.
+# Clone into external_repos/upstream/<group>/<org>/<repo>
+# Never into canonical source.
+# ═══════════════════════════════════════════════════════════
+version: 1
+
+policy:
+  destination: external_repos/upstream
+  clone_depth: 1
+  canonical_source: false
+  git_tracked: false
+
+groups:
+  build:
+    - bazelbuild/bazel
+    - bazelbuild/buildtools
+    - bazelbuild/bazel-central-registry
+    - bazelbuild/rules_python
+    - aspect-build/rules_js
+    - aspect-build/rules_ts
+
+  execution:
+    - dagger/dagger
+    - temporalio/temporal
+    - temporalio/sdk-python
+
+  authz:
+    - openfga/openfga
+    - openfga/cli
+    - authzed/spicedb
+    - authzed/zed
+
+  observability:
+    - open-telemetry/opentelemetry-collector
+    - open-telemetry/opentelemetry-collector-contrib
+
+  indexing:
+    - sourcegraph/scip
+    - sourcegraph/zoekt
+    - kythe/kythe
+
+  repo_health:
+    - microsoft/scalar
+    - github/git-sizer
+    - newren/git-filter-repo
+
+  security:
+    - trufflesecurity/trufflehog
+    - semgrep/semgrep
+    - ast-grep/ast-grep
+    - gitleaks/gitleaks
+    - slsa-framework/slsa-github-generator
+    - sigstore/cosign
+    - in-toto/in-toto
+    - anchore/syft
+    - anchore/grype
+    - google/osv-scanner
+    - ossf/scorecard
+    - bridgecrewio/checkov
+    - terraform-linters/tflint
+    - terraform-docs/terraform-docs
+
+  quality:
+    - openrewrite/rewrite
+    - openrewrite/rewrite-recipe-bom
+    - GoogleChrome/lighthouse
+    - GoogleChrome/lighthouse-ci
+    - renovatebot/renovate
+    - pre-commit/pre-commit
+    - astral-sh/ruff
+    - astral-sh/uv
+    - microsoft/pyright
+    - facebook/pyrefly-pre-commit
+    - biomejs/biome
+    - pnpm/pnpm
+    - marp-team/marp-cli
+    - backstage/backstage
+    - squidfunk/mkdocs-material
+
+  design:
+    - Leonxlnx/taste-skill
+
+  memory:
+    - steveyegge/beads
+    - mainion-ai/memory-kernel
+    - anthony-maio/mnemos
+    - intellectronica/ruler
+
+  knowledge:
+    - VectifyAI/PageIndex
+    - VectifyAI/pageindex-mcp
+    - obsidianmd/obsidian-releases
+    - roshunsunder/filesift
+
+  command_deck:
+    - ag-ui-protocol/ag-ui
+    - CopilotKit/CopilotKit
+    - xyflow/xyflow
+    - cytoscape/cytoscape.js
+    - jacomyal/sigma.js
+    - graphology/graphology
+    - visgl/deck.gl
+    - recharts/recharts
+    - TanStack/table
+    - TanStack/query
+    - shadcn-ui/ui
+
+  firebase_google:
+    - firebase/firebase-js-sdk
+    - firebase/firebase-admin-node
+    - firebase/functions-samples
+    - firebase/quickstart-js
+    - firebase/genkit
+    - googleapis/googleapis
+    - googleapis/google-cloud-python
+    - googleapis/google-cloud-node
+    - googleapis/google-api-python-client
+    - GoogleCloudPlatform/cloud-run-samples
+    - GoogleCloudPlatform/python-docs-samples
+    - GoogleCloudPlatform/nodejs-docs-samples
+
+  agent_protocols:
+    - modelcontextprotocol/specification
+    - modelcontextprotocol/servers
+    - langchain-ai/langgraph
+    - BerriAI/litellm
+    - browser-use/browser-use
+    - browserbase/stagehand
+    - ChromeDevTools/chrome-devtools-mcp
+
+  workflow_templates:
+    - harikrishna8121999/antigravity-workflows
+
+  github_auth:
+    - actions/create-github-app-token
+    - peter-murray/workflow-application-token-action
+
+  evaluation_only:
+    - repowise-dev/repowise
+    - braedonsaunders/codeflow
+    - GaijinEntertainment/daScript
