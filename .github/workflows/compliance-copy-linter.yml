@@ -22,6 +22,9 @@ on:
       - 'apps/kovelai/**'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   copy-lint:
     name: 📝 Compliance Copy Check

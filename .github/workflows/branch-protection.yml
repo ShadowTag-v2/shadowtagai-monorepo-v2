@@ -11,6 +11,9 @@ concurrency:
   group: branch-protection-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   protect-branches:
     name: Configure Branch Protection

@@ -6,13 +6,13 @@
 
 | Classification | Count |
 |---------------|-------|
-| `enforced_by_ci` | 6 |
-| `enforced_by_script` | 2 |
+| `enforced_by_ci` | 8 |
+| `enforced_by_script` | 5 |
 | `enforced_by_toolgateway` | 1 |
-| `advisory_only` | 30 |
+| `advisory_only` | 25 |
 | **Total** | **39** |
 
-## Enforced Contracts (9/39)
+## Enforced Contracts (14/39)
 
 | Contract | Classification | Evidence |
 |----------|---------------|----------|
@@ -25,18 +25,23 @@
 | `skills.update.yaml` | `enforced_by_ci` | .github/workflows/monorepo-os-gates.yml |
 | `skills.yolo_mode_operator.yaml` | `enforced_by_ci` | .github/workflows/monorepo-os-gates.yml |
 | `tool.gateway.yaml` | `enforced_by_toolgateway` | scripts/release-readiness-gate.sh, packages/tool_gateway/ |
+| `firebase_deploy.yaml` | `enforced_by_ci` | scripts/firebase-deploy-gate.sh, .github/workflows/monorepo-os-gates.yml |
+| `git.history_rewrite.yaml` | `enforced_by_script` | scripts/force-push-guard.sh, .git/hooks/pre-push |
+| `git.lfs_check.yaml` | `enforced_by_script` | scripts/prepush-bloat-gate.sh, .git/hooks/pre-push |
+| `github_app.auth.yaml` | `enforced_by_script` | scripts/auth_github_app.py, 5-tier PEM fallback |
+| `github_app.workflow_token.yaml` | `enforced_by_ci` | scripts/github-token-scope-audit.sh, .github/workflows/monorepo-os-gates.yml |
 
 ## Advisory Contracts — Priority Triage
 
-### P0 — Security/Safety (must wire before v3.0)
+### P0 — Security/Safety ✅ ALL ENFORCED (v2.5)
 
-| Contract | Risk | Wiring Target |
-|----------|------|---------------|
-| `firebase_deploy.yaml` | Unauthorized deploys | CI gate: `firebase deploy` blocked without MCP auth check |
-| `git.history_rewrite.yaml` | History rewrite (force-push) | Pre-push hook: reject `--force` unless STATE B |
-| `git.lfs_check.yaml` | Bloat from large files | Pre-commit hook: `prepush-bloat-gate.sh` |
-| `github_app.auth.yaml` | Auth bypass | CI: verify JWT in push pipeline |
-| `github_app.workflow_token.yaml` | Token leakage | CI: GITHUB_TOKEN scope audit |
+| Contract | Status | Enforcement |
+|----------|--------|-------------|
+| `firebase_deploy.yaml` | ✅ `enforced_by_ci` | `scripts/firebase-deploy-gate.sh` → CI step |
+| `git.history_rewrite.yaml` | ✅ `enforced_by_script` | `scripts/force-push-guard.sh` → pre-push hook |
+| `git.lfs_check.yaml` | ✅ `enforced_by_script` | `scripts/prepush-bloat-gate.sh` → pre-push hook |
+| `github_app.auth.yaml` | ✅ `enforced_by_script` | `scripts/auth_github_app.py` (5-tier PEM fallback) |
+| `github_app.workflow_token.yaml` | ✅ `enforced_by_ci` | `scripts/github-token-scope-audit.sh` → CI step |
 
 ### P1 — Operational Integrity (target v3.0)
 
@@ -77,7 +82,8 @@
 
 | Milestone | Target | Count |
 |-----------|--------|-------|
-| **v2.4** (now) | P0 security contracts identified | 5 |
-| **v3.0** | P0 + P1 enforced | 17 |
-| **v3.5** | All non-P2 enforced | 17 |
+| **v2.4** | P0 security contracts identified | 5 |
+| **v2.5** (now) | ✅ P0 security contracts ALL ENFORCED | 5/5 |
+| **v3.0** | P1 operational contracts enforced | 12 |
+| **v3.5** | All non-P2 enforced | 12 |
 | **Permanent** | P2 stays advisory | 13 |

@@ -4,6 +4,9 @@ on:
     - cron: '0 5 * * *'  # Daily at 5am UTC
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   load-test:
     runs-on: ubuntu-latest

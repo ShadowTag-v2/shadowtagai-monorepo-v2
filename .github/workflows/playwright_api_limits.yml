@@ -14,6 +14,9 @@ concurrency:
   group: playwright_api_limits-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   test:
     timeout-minutes: 15

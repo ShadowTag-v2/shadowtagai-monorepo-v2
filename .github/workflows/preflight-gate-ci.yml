@@ -21,6 +21,9 @@ concurrency:
   group: preflight-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   preflight:
     name: 🛫 Preflight Gate

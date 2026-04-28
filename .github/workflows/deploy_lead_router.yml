@@ -12,6 +12,9 @@ concurrency:
   group: deploy_lead_router-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

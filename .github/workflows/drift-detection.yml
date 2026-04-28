@@ -12,6 +12,9 @@ env:
   TF_IN_AUTOMATION: true
   TERRAGRUNT_NON_INTERACTIVE: true
 
+permissions:
+  contents: read
+
 jobs:
   drift-check:
     runs-on: ubuntu-latest

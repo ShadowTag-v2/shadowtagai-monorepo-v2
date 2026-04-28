@@ -16,6 +16,9 @@ env:
   PROJECT_ID: shadowtag-omega-v4
   REGION: us-central1
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest

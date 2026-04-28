@@ -11,6 +11,9 @@ concurrency:
   group: daily_sync-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   extract_and_sync:
     runs-on: ubuntu-latest
