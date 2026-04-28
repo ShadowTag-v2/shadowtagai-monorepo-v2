@@ -479,3 +479,4 @@ install_ext.py
 pickle_package.json
 # Stale npx artifact directory
 --help/
+external_repos/numpy-100/
