@@ -32,7 +32,7 @@ export default function Home() {
       <ScrollProgress />
       <Nav onOpenModal={openModal} />
       <main id="main-content">
-        <Hero />
+        <Hero onOpenModal={openModal} />
         <StatsBar />
         <DiscoveryRisk />
         <Features />
