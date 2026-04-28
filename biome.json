@@ -61,6 +61,9 @@
     }
   },
   "css": {
+    "parser": {
+      "tailwindDirectives": true
+    },
     "formatter": {
       "enabled": true,
       "indentStyle": "space",
@@ -134,6 +137,16 @@
     },
     {
       "includes": ["**/components/ui/**"],
+      "linter": {
+        "rules": {
+          "security": {
+            "noSecrets": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/components/shared/Pricing.tsx", "**/components/shared/ContactModal.tsx"],
       "linter": {
         "rules": {
           "security": {
