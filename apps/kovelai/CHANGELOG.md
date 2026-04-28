@@ -1,5 +1,30 @@
 # KovelAI — Changelog
 
+## [1.4.0] - 2026-04-28
+
+### Validated
+- **Next.js build**: 16.2.1 (Turbopack) — compiled in 2.2s, 4/4 static pages, zero TS errors
+- **Lighthouse Desktop**: A100 / BP100 / SEO100 (51 passed, 0 failed)
+- **Lighthouse Mobile**: A100 / BP100 / SEO100 (52 passed, 0 failed)
+- **Ruff F401/F841**: All checks passed — zero dead Python code
+- **Biome lint**: 28 files, 4 warnings (WCAG `!important` — intentional per accessibility spec)
+
+### Infrastructure
+- **Cloud Run**: CounselConduit healthy — `{"status":"healthy","version":"3.1.0","firestore":"connected"}`
+- **CSP headers**: Verified — Stripe, GA, GTM, Cloudflare, GCS domains authorized
+- **HSTS**: `max-age=63072000; includeSubDomains; preload` confirmed
+- **COOP/CORP**: `same-origin` enforced
+
+### Campaign Assets (Stitch Project 9243896103844268571)
+- **LinkedIn banner** (1200×628): "Shield your client's research from discovery"
+- **Twitter/X header** (1500×500): "Your client's AI research stays privileged"
+- **Social card** (1080×1080): "Secure your incoming associate class"
+- All assets: Prestige Protocol aesthetic, Inter typography, gold/navy palette
+
+### Design System
+- **DESIGN.md** v1.0 token alignment verified against Stitch asset
+- No-Line rule enforced, Inter typography active, gold CTA gradients confirmed
+
 ## [1.3.0] - 2026-04-28
 
 ### Validated
