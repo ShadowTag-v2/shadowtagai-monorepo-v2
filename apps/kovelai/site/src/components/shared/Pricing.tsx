@@ -10,9 +10,11 @@
  * - Customer Portal: bpc_1TNKSjEHnWpykeMi0qQPoaHm
  *
  * STRIPE CUTOVER STATUS (2026-04-28):
- * Live Payment Links wired. Trial → contact modal (qualification).
- * Pro Monthly/Annual → Stripe Checkout with beta coupon auto-applied.
- * Enterprise → contact modal (high-touch sales).
+ * PENDING: Create Payment Links in Stripe Dashboard for:
+ *   - Pro Monthly: price_1TNKSREHnWpykeMiRMDlVgLl ($149/mo, coupon 3wseBY7Z)
+ *   - Pro Annual: price_1TNKSjEHnWpykeMi0S9GCVjy ($1,428/yr)
+ * Then replace the buy.stripe.com placeholder URLs below.
+ * Trial → contact modal (qualification). Enterprise → contact modal (high-touch sales).
  */
 
 interface PricingProps {

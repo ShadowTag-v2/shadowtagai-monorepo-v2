@@ -1,6 +1,6 @@
-# Monorepo OS — v2.1
+# Monorepo OS — v2.2
 
-> **Status:** Active | **Version:** 2.1 | **Updated:** 2026-04-28
+> **Status:** Active | **Version:** 2.2 | **Updated:** 2026-04-28
 
 ## Overview
 
@@ -141,6 +141,9 @@ Transition trigger: `>3 packages affected` OR `auth/payment/migration` scope.
 | `prepush-bloat-gate.sh` | Pre-push size enforcement | 139 |
 | `secret-scan.sh` | Secret leak scanner | 124 |
 | `push-with-app-gates.sh` | Gated GitHub App push | 379 |
+| `repo-oracle-score.sh` | Truth surface confidence scorer | 105 |
+| `daily-truth-report.sh` | Daily governance report generator | 93 |
+| `release-readiness-gate.sh` | 8-gate pre-release validator | 157 |
 
 ## Version History
 
@@ -156,3 +159,4 @@ Transition trigger: `>3 packages affected` OR `auth/payment/migration` scope.
 | 1.7 | 2026-04-27 | Command Deck truth layer (AG-UI + Chrome DevTools MCP) |
 | 2.0 | 2026-04-28 | DESIGN.md + `tokens.css` Stitch token export for KovelAI |
 | 2.1 | 2026-04-28 | Guardrail annotation audit (12/12), Lighthouse A100/BP100/SEO100, 39 ToolGateway contracts |
+| 2.2 | 2026-04-28 | Oracle Score engine, Daily Truth Report, Release Readiness Gate (8 gates), CI hardening (+3 steps) |

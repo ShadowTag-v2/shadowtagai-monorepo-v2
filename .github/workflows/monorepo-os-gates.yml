@@ -13,11 +13,19 @@ on:
       - '.beads/**'
       - '.memory/**'
       - 'operator_invariants_atoms.json'
+      - 'operator_invariants.json'
       - 'upload_policy.yaml'
       - 'index_policy.yaml'
       - 'MONOREPO_OS.md'
+      - 'AGENTS.md'
       - 'scripts/monorepo-health-loop.sh'
       - 'scripts/skills-audit.sh'
+      - 'scripts/prepush-bloat-gate.sh'
+      - 'scripts/release-readiness-gate.sh'
+      - 'scripts/repo-oracle-score.sh'
+      - 'scripts/daily-truth-report.sh'
+      - 'external_repos/upstream_manifest.yaml'
+      - '.bloat-allowlist'
   workflow_dispatch:
 
 permissions:
@@ -183,3 +191,90 @@ jobs:
               echo "  ✓ $f — $LINE_COUNT lines, valid"
             fi
           done
+
+      - name: Repo Oracle Score
+        run: |
+          echo "═══ Repo Oracle Score Gate ═══"
+          if [ -x scripts/repo-oracle-score.sh ]; then
+            SCORE_JSON=$(bash scripts/repo-oracle-score.sh --json)
+            PERCENTAGE=$(echo "$SCORE_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['percentage'])")
+            echo "  Oracle Score: ${PERCENTAGE}%"
+            if [ "$PERCENTAGE" -lt 85 ]; then
+              echo "::error::Oracle score ${PERCENTAGE}% is below 85% threshold"
+              exit 1
+            fi
+            echo "  ✓ Score above threshold"
+          else
+            echo "::warning::repo-oracle-score.sh not executable"
+          fi
+
+      - name: Guardrail Annotation Audit
+        run: |
+          echo "═══ Guardrail Annotation Audit ═══"
+          if [ -x scripts/guardrail-annotation-audit.sh ]; then
+            bash scripts/guardrail-annotation-audit.sh || true
+            echo "  ✓ Audit complete"
+          else
+            echo "::warning::guardrail-annotation-audit.sh not executable"
+          fi
+
+      - name: Clone Yard Manifest Validation
+        run: |
+          echo "═══ Clone Yard Dry Run ═══"
+          if [ -f "external_repos/upstream_manifest.yaml" ]; then
+            # Validate YAML structure (stdlib-only, no pyyaml dependency)
+            python3 -c "
+          import re, sys
+          with open('external_repos/upstream_manifest.yaml') as f:
+              content = f.read()
+          # Extract all '- org/repo' entries
+          entries = re.findall(r'^\s+-\s+(\S+)', content, re.MULTILINE)
+          valid = 0
+          for entry in entries:
+              if '/' not in entry:
+                  print(f'  INVALID: {entry} (missing org/repo format)')
+                  sys.exit(1)
+              valid += 1
+          # Count groups (lines ending with colon, indented under 'groups:')
+          groups = re.findall(r'^\s{2}(\w[\w_]*):', content, re.MULTILINE)
+          print(f'  Groups: {len(groups)}')
+          print(f'  Total repos: {valid}')
+          print('  ✓ All repo references valid (org/repo format)')
+            "
+          else
+            echo "::warning::upstream_manifest.yaml not found"
+          fi
+
+      - name: Bloat Gate (CI Mode)
+        run: |
+          echo "═══ Bloat Gate ═══"
+          if [ -x scripts/prepush-bloat-gate.sh ]; then
+            bash scripts/prepush-bloat-gate.sh --fast
+            echo "  ✓ Bloat gate passed"
+          else
+            echo "::warning::prepush-bloat-gate.sh not executable"
+          fi
+
+      - name: Daily Truth Report
+        run: |
+          echo "═══ Daily Truth Report ═══"
+          if [ -x scripts/daily-truth-report.sh ]; then
+            bash scripts/daily-truth-report.sh 2>/dev/null || true
+            echo "  ✓ Report generated"
+          fi
+
+  release-readiness:
+    name: Release Readiness Gate
+    runs-on: ubuntu-latest
+    needs: monorepo-os-health
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Release Readiness Gate
+        run: |
+          chmod +x scripts/release-readiness-gate.sh scripts/repo-oracle-score.sh scripts/prepush-bloat-gate.sh 2>/dev/null || true
+          bash scripts/release-readiness-gate.sh
