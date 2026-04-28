@@ -1,4 +1,46 @@
-# tool_contracts/github_app.workflow_token.yaml
-version: 1
-description: "Contract for github_app.workflow_token operations."
-enforcement: advisory
+# Tool Contract: github_app.workflow_token
+# Governs GitHub Actions GITHUB_TOKEN scope and workflow token security.
+# Enforcement: CI audit in monorepo-os-gates.yml
+
+tool_id: github_app.workflow_token
+version: 2
+description: >
+  Audit and enforce minimal GITHUB_TOKEN permissions in CI workflows.
+  Prevents over-scoped tokens from enabling supply chain attacks.
+risk_level: high
+enforcement: enforced_by_ci
+
+rules:
+  - name: minimal_permissions
+    description: >
+      All workflow files MUST declare explicit `permissions:` block.
+      Default `write-all` is BANNED. Use least-privilege per job.
+
+  - name: no_pat_in_workflows
+    description: >
+      Personal Access Tokens (PATs) are BANNED in workflow files.
+      Use GitHub App installation tokens or GITHUB_TOKEN only.
+
+  - name: pin_third_party_actions
+    description: >
+      All third-party actions MUST be pinned to SHA, not tag.
+      Example: uses: actions/checkout@<sha> (NOT @v4)
+
+preconditions:
+  - name: permissions_declared
+    type: yaml_field_present
+    field: permissions
+    in: .github/workflows/*.yml
+    description: Every workflow must have an explicit permissions block.
+
+  - name: no_secrets_in_logs
+    type: check
+    description: Workflows must not echo or print secret values.
+
+evidence_requirements:
+  - type: log_token_audit
+    description: Log which workflows were audited, permission levels found, and any violations.
+
+wiring:
+  ci_workflow: .github/workflows/monorepo-os-gates.yml
+  audit_script: scripts/audit-workflow-tokens.sh
