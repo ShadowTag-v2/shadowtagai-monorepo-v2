@@ -165,7 +165,7 @@ export default function Features() {
   return (
     <section className="py-20 md:py-28 bg-surface-lowest" id="features">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="section-label">Your Firm&apos;s Privileged Research Infrastructure</div>
+        <div className="section-label">Shield From Discovery — Your Firm&apos;s Infrastructure</div>
         <h2 className="section-title">
           Mandatory Infrastructure. Full Oversight. Automatic Billing.
         </h2>

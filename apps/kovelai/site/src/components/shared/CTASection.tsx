@@ -8,9 +8,9 @@ export default function CTASection({ onOpenModal }: CTASectionProps) {
   return (
     <section className="py-20 md:py-28" id="contact">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="section-label">Deploy Protection</div>
+        <div className="section-label">Shield From Discovery</div>
         <h2 className="section-title mx-auto" style={{ maxWidth: 700 }}>
-          Your Clients Are Searching Right Now. Deploy Their Portal Today.
+          Your Clients Are Searching Right Now. Shield Their Research Today.
         </h2>
         <p className="section-desc mx-auto mb-4">
           Your clients are Googling their case, asking ChatGPT for legal opinions, and creating

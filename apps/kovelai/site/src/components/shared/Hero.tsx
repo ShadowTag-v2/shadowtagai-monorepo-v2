@@ -49,12 +49,13 @@ export default function Hero({ onOpenModal }: HeroProps) {
           PRIVILEGE-PROTECTED INFRASTRUCTURE · ATTORNEY-MONITORED · HEPPNER-COMPLIANT
         </div>
         <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.02em] max-w-[800px] mb-6">
-          Every Search. Every Chat.
+          Shield Your Client&apos;s Research
           <br />
-          <span className="text-gold">Discoverable.</span>
+          <span className="text-gold">From Discovery.</span>
         </h1>
         <h2 className="text-[clamp(1rem,2.5vw,1.5rem)] font-semibold text-secondary-text max-w-[700px] mb-6 leading-snug">
-          Deploy the privileged research portal that shields your clients&mdash;and your firm.
+          Deploy privileged search infrastructure your clients use under your oversight&mdash;so
+          opposing counsel discovers nothing.
         </h2>
         <p className="text-[0.9375rem] leading-relaxed text-secondary-text max-w-[640px] mb-4">
           After <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every web search and AI conversation

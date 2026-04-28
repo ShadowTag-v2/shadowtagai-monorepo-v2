@@ -12,8 +12,8 @@ export default function Footer({ onOpenModal }: FooterProps) {
           <div>
             <div className="text-xl font-bold text-primary-text mb-3">KovelAI</div>
             <p className="text-sm text-secondary-text leading-relaxed">
-              Privileged search infrastructure you deploy for your clients. They research freely,
-              you monitor everything, opposing counsel discovers nothing.
+              Shield your client&apos;s research from discovery. Privileged search infrastructure
+              they use under your oversight — opposing counsel discovers nothing.
             </p>
           </div>
           <div>
