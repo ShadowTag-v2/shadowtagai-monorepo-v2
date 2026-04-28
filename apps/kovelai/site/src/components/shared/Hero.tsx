@@ -2,7 +2,11 @@
 
 import Image from 'next/image';
 
-export default function Hero() {
+interface HeroProps {
+  onOpenModal?: () => void;
+}
+
+export default function Hero({ onOpenModal }: HeroProps) {
   return (
     <header className="relative min-h-[100dvh] flex items-center overflow-hidden" id="hero">
       {/* Layer 0: Vault interior hero (Flow-generated, Nano Banana 2) */}
@@ -45,9 +49,9 @@ export default function Hero() {
           COUNSELCONDUIT · CLIENT-PROTECTED · PRIVILEGE-SHIELDED
         </div>
         <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.02em] max-w-[800px] mb-6">
-          Your Clients Deserve to Search Without Fear.
+          Your Clients Are Searching Right Now.
           <br />
-          <span className="text-gold">CounselConduit Makes It Safe.</span>
+          <span className="text-gold">Protect Them From Themselves.</span>
         </h1>
         <p className="text-[0.9375rem] leading-relaxed text-secondary-text max-w-[640px] mb-8">
           Since <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every unprotected web search and AI
@@ -58,13 +62,14 @@ export default function Hero() {
           through their credit card. No ambushes. No surprises. No discoverable evidence.
         </p>
         <div className="flex flex-wrap gap-4 mb-4">
-          <a
-            href="https://buy.stripe.com/test_aEU5nR1Jy9Mg8zS000"
+          <button
+            type="button"
+            onClick={onOpenModal}
             className="btn-gold text-sm"
             id="ctaFreeTrial"
           >
             Start Free Trial
-          </a>
+          </button>
           <a href="#how-it-works" className="btn-ghost text-sm">
             See How It Works →
           </a>
