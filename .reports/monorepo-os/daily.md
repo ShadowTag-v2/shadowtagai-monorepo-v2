@@ -1,6 +1,6 @@
 # Monorepo OS — Daily Truth Report
 
-> **Generated:** 2026-04-28T16:58:52Z | **Date:** April 28, 2026
+> **Generated:** 2026-04-28T17:35:00Z | **Date:** April 28, 2026
 
 ## Oracle Score
 
@@ -27,8 +27,8 @@
 
 | Property | Value |
 |----------|-------|
-| Last Commit | `348d41fbf` — fix(truth): sync CounselConduit revision 00037→00045-kjp across 7 truth surfac |
-| Dirty Files | 23 |
+| Last Commit | `de2e6fa9e` — feat(security): deploy kernel hardening gates — force-push guard, artifact-siz |
+| Dirty Files | 3 |
 | Triage | ✅ Triaged (2 actual-risk) |
 
 ## Guardrails
