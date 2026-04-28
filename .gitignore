@@ -480,3 +480,4 @@ pickle_package.json
 # Stale npx artifact directory
 --help/
 external_repos/numpy-100/
+.tmp.driveupload/
