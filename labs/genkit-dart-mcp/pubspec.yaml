@@ -6,9 +6,8 @@ environment:
   sdk: ^3.11.4
 
 dependencies:
-  # genkit_dart: ^0.1.0  # TODO: uncomment when published
-  shelf: ^1.4.0
-  args: ^2.6.0
+  genkit: any
+  genkit_mcp: any
 
 dev_dependencies:
   lints: ^6.0.0
