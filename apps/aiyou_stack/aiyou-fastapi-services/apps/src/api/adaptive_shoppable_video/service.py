@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # ruff: noqa: F403, F405
 """Adaptive Shoppable Video Platform (Amazon Challenger) - FastAPI Service
 

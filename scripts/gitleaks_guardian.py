@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """gitleaks_guardian.py — Autonomous Secret Leak Classifier & Gate.
 
 Per AGENTS.md Rule 23: Gitleaks + detect-private-key in pre-commit and CI.

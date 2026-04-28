@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from fastapi import APIRouter
 from google.cloud import firestore
 

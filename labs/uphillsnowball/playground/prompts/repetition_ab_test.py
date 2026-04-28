@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Playground: Prompt repetition A/B test.
 
 Tests the arXiv 2512.14982 prompt repetition technique on flash-lite models.

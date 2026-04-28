@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """media_mcp_server.py — Media Generation MCP Server.
 
 Wraps Nano Banana Pro (Gemini 3 Pro Image) + Veo 3.1 video generation

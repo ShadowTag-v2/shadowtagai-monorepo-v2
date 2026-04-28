@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - Gemini Ingestion Layer Configuration
 
 This module manages configuration for the ingestion pipeline using Pydantic Settings.

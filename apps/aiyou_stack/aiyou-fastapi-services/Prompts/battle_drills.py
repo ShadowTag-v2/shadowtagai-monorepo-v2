@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Battle Drills for n-autoresearch/Kosmos/BioAgents Cavalry Squadron
 =================================================
 Mission-typed battle drills with specific tasks per troop.

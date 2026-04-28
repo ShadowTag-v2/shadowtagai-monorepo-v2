@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ST3GG Unwrapper: Steganographic Prompt Injection Detection
 
 Detects and strips hidden prompt injections embedded in:

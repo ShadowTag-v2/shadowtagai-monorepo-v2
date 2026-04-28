@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """LangGraph Node Implementations for Judge 6 Kill Chain
 
 Kill Chain Phases:

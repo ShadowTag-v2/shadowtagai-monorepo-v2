@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/deprecation_middleware.py
 """Item 16: Deprecation header middleware for API versioning.
 

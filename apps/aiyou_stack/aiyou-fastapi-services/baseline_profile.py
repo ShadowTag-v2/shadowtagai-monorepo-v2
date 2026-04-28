@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Baseline profiling script for Judge#6 (pre‑Triton) workload.
 
 Purpose

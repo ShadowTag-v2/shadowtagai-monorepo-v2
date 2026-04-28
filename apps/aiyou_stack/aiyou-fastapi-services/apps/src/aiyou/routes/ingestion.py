@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Content Ingestion API Routes
 Handles file uploads and Gemini-powered content analysis
 """

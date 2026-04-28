@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Step 7 — GitHub Sync.
 
 1. Push feat/agent-1774963915 branch (40 unpushed commits) to ShadowTag-v2/Monorepo-Uphillsnowball

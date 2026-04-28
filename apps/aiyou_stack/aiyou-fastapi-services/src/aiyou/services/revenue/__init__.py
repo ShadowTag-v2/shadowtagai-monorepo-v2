@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Revenue tracking service.
 
 Provides event-based revenue tracking across all PNKLN services.

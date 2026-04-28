@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/tests/test_seu_litellm_roundtrip.py
 """S.E.U. → LiteLLM Round-Trip Integration Test.
 

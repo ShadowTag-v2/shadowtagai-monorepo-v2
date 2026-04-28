@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Grok Code Fast 1 API Client
 ============================
 xAI's agentic coding model optimized for rapid code generation.

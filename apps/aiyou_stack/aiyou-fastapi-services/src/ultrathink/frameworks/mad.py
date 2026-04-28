@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from pydantic import BaseModel
 
 from src.ultrathink.agents.roster import AgentProfile

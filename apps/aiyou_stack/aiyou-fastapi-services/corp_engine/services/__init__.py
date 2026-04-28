@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Corp Engine Services"""
 
 from .intel_processor import IntelProcessor

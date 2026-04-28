@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Loop Agent: Architect/Critic/Refiner pattern
 Based on Google Cloud ADK Loop Agent architecture
 

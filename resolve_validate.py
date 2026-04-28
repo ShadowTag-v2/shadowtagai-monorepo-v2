@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import re
 
 with open("scripts/ai-validate.sh") as f:

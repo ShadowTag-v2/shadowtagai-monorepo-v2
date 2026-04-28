@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """FastAPI routes for AWS Cost Optimizer Operations.
 
 Endpoints for cost analysis, optimization recommendations, and waste elimination.

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """JuraLimiter: Enforces tier-based constraints on agent assignments.
 
 Each tier has limits on:

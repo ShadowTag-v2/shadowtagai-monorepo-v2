@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AI-Powered Scraper Client
 Unified interface for AI-powered web scraping services
 Supports Firecrawl and Browse AI for 95%+ extraction accuracy

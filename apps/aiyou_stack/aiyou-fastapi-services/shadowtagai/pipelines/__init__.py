@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTagAi Pipelines
 
 Specialized execution pipelines built on COR Orchestrator patterns.

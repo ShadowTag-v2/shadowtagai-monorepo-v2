@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """RTF: Role-Task-Format
 
 The simplest, most elegant prompting pattern.

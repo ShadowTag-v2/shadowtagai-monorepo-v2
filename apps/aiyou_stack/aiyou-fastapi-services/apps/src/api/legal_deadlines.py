@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Zero-Touch Legal Deadline Management (ZT) API
 FastAPI endpoints for automated deadline extraction, tracking, and notification
 """

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 One-time data preparation for autoresearch experiments.
 Downloads data shards and trains a BPE tokenizer.

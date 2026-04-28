@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Data models for Gemini Ingestion Layer API"""
 
 from datetime import datetime

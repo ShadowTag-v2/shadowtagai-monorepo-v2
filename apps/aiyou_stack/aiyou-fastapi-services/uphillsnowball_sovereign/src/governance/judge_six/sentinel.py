@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Judge Six Sentinel — Governance Gate for UphillSnowball Sovereign OS.
 
 Production-ready version: self-contained, no external deps.

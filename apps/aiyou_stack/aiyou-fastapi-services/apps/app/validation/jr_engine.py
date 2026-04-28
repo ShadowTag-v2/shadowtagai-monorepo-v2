@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """JR Engine: Purpose-Reasons-Brakes validation framework.
 
 Validates each kernel against three criteria:

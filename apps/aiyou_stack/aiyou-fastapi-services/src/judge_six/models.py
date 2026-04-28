@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Data models for Judge 6"""
 
 from dataclasses import dataclass, field

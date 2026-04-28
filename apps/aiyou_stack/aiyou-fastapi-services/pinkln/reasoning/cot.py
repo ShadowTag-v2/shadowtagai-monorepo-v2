@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Chain of Thought (CoT) reasoning framework.
 
 CoT is a linear, step-by-step reasoning approach that makes the thought process

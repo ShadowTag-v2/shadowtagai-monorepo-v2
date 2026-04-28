@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from sovereign_fold import pnkln_judge6_check, pnkln_unit_econ
 
 print(">>> RUNNING JUDGE 6 VALIDATION")

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # -----------------------------------------------------------------------------
 # PROTOCOL: SHADOWTAG OMEGA (v2.0)
 # TARGET: shadowtag-omega-v2

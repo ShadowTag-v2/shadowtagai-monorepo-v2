@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Reindex Monorepo — Cor.Gemini Sovereign RAG v2
 Crawls apps/ libs/ control/ scripts/ src/ and ingests code chunks into:
   - .chroma_db  (ChromaDB PersistentClient, collection=coryay_knowledge)

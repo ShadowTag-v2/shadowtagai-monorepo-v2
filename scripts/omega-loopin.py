@@ -1,4 +1,6 @@
 #!/opt/homebrew/bin/python3.14
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # scripts/omega-loopin.py
 # ============================================================================
 # SHADOWTAG OS: THE IMMORTAL DURABLE EXECUTION LOOP

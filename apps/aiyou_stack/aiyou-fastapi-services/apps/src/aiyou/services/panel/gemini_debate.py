@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini-Native Panel Debate Architecture
 Multi-agent consensus using Gemini 1.5 Pro (no framework overhead)
 

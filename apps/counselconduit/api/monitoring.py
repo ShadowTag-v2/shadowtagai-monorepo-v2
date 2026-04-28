@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/monitoring.py
 """Cloud Monitoring custom metric export for NadirClaw dispatch.
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Growth Engineer Agent
 
 A specialized agent that implements viral mechanics and finds where users get hooked

@@ -1,4 +1,6 @@
 #!/usr/bin/env uv run --script
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PipelineOrchestrator - Routes tasks to Flying minion, chains Jura evaluations.
 Aggregates results from 600 PhD/JD agents for group Jeopardy-style answers.
 """

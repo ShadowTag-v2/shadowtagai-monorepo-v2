@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Promotion gate — blocks PR merge if offline eval results are below threshold.
 
 Reads tools/eval/eval_results.json and exits non-zero if the eval failed.

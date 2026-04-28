@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Resilience and edge case handling for ingestion pipeline.
 
 Implements:

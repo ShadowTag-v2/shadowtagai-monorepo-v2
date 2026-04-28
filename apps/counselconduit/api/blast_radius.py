@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Blast-Radius Declarations — Per-module scope boundaries.
 
 Every module declares its maximum authorized scope.

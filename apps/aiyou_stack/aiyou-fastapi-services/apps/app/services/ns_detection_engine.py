@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """NS (Neural System) Detection Engine
 ====================================
 First layer of the NS-JR-Cor compliance framework.

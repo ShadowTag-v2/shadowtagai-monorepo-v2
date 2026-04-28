@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Security Middleware Tests
 
 Tests for rate limiting, security headers, and request validation

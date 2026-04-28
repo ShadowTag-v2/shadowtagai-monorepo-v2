@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Repo Oracle — Workspace Indexer and Pattern Query Engine.
 
 Indexes the monorepo's truth surfaces (manifest, packages, scripts,

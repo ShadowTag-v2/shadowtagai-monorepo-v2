@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Redis-backed Rate Limiter
 Persists rate limiting state across pod restarts
 """

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Logging configuration for the pipeline"""
 
 from pathlib import Path

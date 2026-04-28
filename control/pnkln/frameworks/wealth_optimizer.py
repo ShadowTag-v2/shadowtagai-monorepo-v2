@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 WEALTH OPTIMIZER - Jobs-Obsessed Financial Engineering
 =======================================================

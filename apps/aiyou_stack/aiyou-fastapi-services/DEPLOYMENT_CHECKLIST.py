@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """DEPLOYMENT CHECKLIST - COR.53 Integration Tactical Execution Guide
 
 This module provides:

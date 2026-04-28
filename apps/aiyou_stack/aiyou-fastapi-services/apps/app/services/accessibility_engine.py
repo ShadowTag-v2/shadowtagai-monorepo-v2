@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Accessibility and Safety Compliance Engine
 Implements WCAG 2.2, COPPA, and Age Appropriate Design Code
 """

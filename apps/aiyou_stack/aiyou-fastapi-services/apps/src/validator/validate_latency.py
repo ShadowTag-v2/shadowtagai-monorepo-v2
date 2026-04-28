@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Corrected Async Latency Validator for Judge6 Service
 
 CRITICAL FIXES APPLIED:

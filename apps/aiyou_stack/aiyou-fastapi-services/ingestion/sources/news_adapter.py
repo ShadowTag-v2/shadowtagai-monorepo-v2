@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - News/RSS Source Adapter
 
 Fetches news articles from RSS feeds and news APIs.

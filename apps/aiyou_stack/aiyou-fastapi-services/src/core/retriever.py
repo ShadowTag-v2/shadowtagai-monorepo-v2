@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Vertex AI RAG Retriever Implementation
 Based on SELF-ROUTE research paper specifications
 

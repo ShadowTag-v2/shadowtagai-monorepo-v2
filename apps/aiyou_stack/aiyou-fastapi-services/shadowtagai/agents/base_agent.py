@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Abstract Base Agent for Flying n-autoresearch/Kosmos/BioAgents swarm.
 Defines composable agent interface with forward/backward pattern.
 Based on patterns from yyz-agentics-june/neural_network/core/base.py

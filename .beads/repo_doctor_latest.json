@@ -1,94 +1,157 @@
 {
   "score": "F",
-  "total_findings": 33,
-  "critical": 10,
+  "total_findings": 34,
+  "critical": 2,
   "errors": 1,
-  "warnings": 18,
+  "warnings": 27,
   "info": 4,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "beads/heartbeat.json",
-      "fix": "git checkout -- beads/heartbeat.json"
+      "path": "agent/bundles/antigravity_manifest_bundle_v3/antigravity_manifest_bundle_v3/fold_in_repo_checklist.py",
+      "fix": "git checkout -- agent/bundles/antigravity_manifest_bundle_v3/antigravity_manifest_bundle_v3/fold_in_repo_checklist.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/issues.jsonl",
-      "fix": "git checkout -- .beads/issues.jsonl"
+      "path": ".agent/bundles/antigravity_manifest_bundle_v3/antigravity_manifest_bundle_v3/manifest_reconcile_report.py",
+      "fix": "git checkout -- .agent/bundles/antigravity_manifest_bundle_v3/antigravity_manifest_bundle_v3/manifest_reconcile_report.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/kairos_heartbeat.json",
-      "fix": "git checkout -- .beads/kairos_heartbeat.json"
+      "path": ".agent/evidence/index.ndjson",
+      "fix": "git checkout -- .agent/evidence/index.ndjson"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".gitleaksignore",
-      "fix": "git checkout -- .gitleaksignore"
+      "path": ".agent/hybrid_scraper.py",
+      "fix": "git checkout -- .agent/hybrid_scraper.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/kovelai/DESIGN.md",
-      "fix": "git checkout -- apps/kovelai/DESIGN.md"
+      "path": ".agent/ingest_staging/antigravity_manifest_bundle_v3/fold_in_repo_checklist.py",
+      "fix": "git checkout -- .agent/ingest_staging/antigravity_manifest_bundle_v3/fold_in_repo_checklist.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "bazel-Monorepo-Uphillsnowball",
-      "fix": "git checkout -- bazel-Monorepo-Uphillsnowball"
+      "path": ".agent/ingest_staging/antigravity_manifest_bundle_v3/manifest_reconcile_report.py",
+      "fix": "git checkout -- .agent/ingest_staging/antigravity_manifest_bundle_v3/manifest_reconcile_report.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "bazel-bin",
-      "fix": "git checkout -- bazel-bin"
+      "path": ".agent/ingest_staging/antigravity_memory_lock_pack/previous_bundle/fold_in_repo_checklist.py",
+      "fix": "git checkout -- .agent/ingest_staging/antigravity_memory_lock_pack/previous_bundle/fold_in_repo_checklist.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "bazel-out",
-      "fix": "git checkout -- bazel-out"
+      "path": ".agent/ingest_staging/antigravity_memory_lock_pack/previous_bundle/manifest_reconcile_report.py",
+      "fix": "git checkout -- .agent/ingest_staging/antigravity_memory_lock_pack/previous_bundle/manifest_reconcile_report.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "bazel-testlogs",
-      "fix": "git checkout -- bazel-testlogs"
+      "path": ".agent/ingest_staging/antigravity_memory_lock_pack/scripts/memory_lock_audit.py",
+      "fix": "git checkout -- .agent/ingest_staging/antigravity_memory_lock_pack/scripts/memory_lock_audit.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "otel/monorepo_agent_event.schema.json",
-      "fix": "git checkout -- otel/monorepo_agent_event.schema.json"
+      "path": ".agent/ingest_staging/antigravity_memory_lock_pack/scripts/rebuild_context_packet.py",
+      "fix": "git checkout -- .agent/ingest_staging/antigravity_memory_lock_pack/scripts/rebuild_context_packet.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "scripts/design-system-lint.mjs",
-      "fix": "git checkout -- scripts/design-system-lint.mjs"
+      "path": ".agent/scripts/auth_orchestrate_batch_foldin.py",
+      "fix": "git checkout -- .agent/scripts/auth_orchestrate_batch_foldin.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": "docs/adr/006-control-plane-v2.md",
-      "fix": "git add docs/adr/006-control-plane-v2.md"
+      "message": "Dirty file (M)",
+      "path": ".agent/scripts/orchestrate_batch_foldin.py",
+      "fix": "git checkout -- .agent/scripts/orchestrate_batch_foldin.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/singularity_daemon.py",
+      "fix": "git checkout -- .agent/singularity_daemon.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/skills-recovered/adk-tool-scaffold/examples/WeatherTool.py",
+      "fix": "git checkout -- .agent/skills-recovered/adk-tool-scaffold/examples/WeatherTool.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/skills-recovered/adk-tool-scaffold/scripts/scaffold_tool.py",
+      "fix": "git checkout -- .agent/skills-recovered/adk-tool-scaffold/scripts/scaffold_tool.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/skills-recovered/antigravity-safe-scrapling-runner/scripts/run_scrapling.py",
+      "fix": "git checkout -- .agent/skills-recovered/antigravity-safe-scrapling-runner/scripts/run_scrapling.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/skills-recovered/database-schema-validator/scripts/validate_schema.py",
+      "fix": "git checkout -- .agent/skills-recovered/database-schema-validator/scripts/validate_schema.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/skills-recovered/json-to-pydantic/examples/output_model.py",
+      "fix": "git checkout -- .agent/skills-recovered/json-to-pydantic/examples/output_model.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/skills-recovered/judge6-compliance/scripts/assess_risk.py",
+      "fix": "git checkout -- .agent/skills-recovered/judge6-compliance/scripts/assess_risk.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agent/skills-recovered/omni_search.py",
+      "fix": "git checkout -- .agent/skills-recovered/omni_search.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "... and 4656 more dirty files",
+      "path": "",
+      "fix": ""
     },
     {
       "gate": "conflicts",
@@ -101,69 +164,13 @@
       "gate": "conflicts",
       "severity": "critical",
       "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/.env.example",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/.gcloudignore",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/libraries/RoyaltyMath.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Identity.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Reputation.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Validation.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/clone-and-flatten.sh",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/deploy-all.sh",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/fork-all-antigravity.sh",
+      "path": "libs/autoresearch_sources/Kosmos/archived/bug-fixes-2025-11-19/MERGE_CONFLICT_STRATEGY.md",
       "fix": "Resolve merge conflicts manually"
     },
     {
       "gate": "secrets",
       "severity": "error",
-      "message": "Betterleaks found 556 potential secrets",
+      "message": "Betterleaks found 60 potential secrets",
       "path": "",
       "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
     },
@@ -173,6 +180,13 @@
       "message": "No large files in staging",
       "path": "",
       "fix": ""
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "_archive_legacy_beads_2026-04-28/beads_manager_tools.py",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
@@ -205,14 +219,7 @@
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "configs/feature_flags.yaml",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "... and 637 more drift files",
+      "message": "... and 645 more drift files",
       "path": "",
       "fix": ""
     },
@@ -233,7 +240,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ========================= 483 tests collected in 0.52s =========================",
+      "message": "Tests: ========================= 483 tests collected in 0.60s =========================",
       "path": "",
       "fix": ""
     }

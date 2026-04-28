@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Revenue Model Configuration
 Defines pricing tiers and projections for ShadowTagAi agent platform
 """

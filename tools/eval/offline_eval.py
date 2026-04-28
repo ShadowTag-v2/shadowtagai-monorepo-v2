@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Offline evaluation runner for CounselConduit promotion gate.
 
 Loads policy/config/strict_policy.yml and evaluates the current codebase

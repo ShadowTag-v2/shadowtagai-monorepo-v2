@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """SQLAlchemy models for the agent system."""
 
 import enum

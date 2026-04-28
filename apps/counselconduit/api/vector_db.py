@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """LanceDB RAG ingestion for CounselConduit sovereign memory."""
 
 import os

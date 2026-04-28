@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/judge6.py
 """Judge 6: Python-First Governance Pipeline.
 

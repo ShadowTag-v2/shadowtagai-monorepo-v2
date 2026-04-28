@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tool Gateway — Monorepo-Bounced Tool Call Mediator.
 
 Routes high-risk agent tool calls through contract validation,

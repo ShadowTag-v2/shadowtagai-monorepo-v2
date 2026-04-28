@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # src/epistemology/pathway_ingest.py
 # ============================================================================
 # Pathway LLM-App — Real-Time Ingestion Sync

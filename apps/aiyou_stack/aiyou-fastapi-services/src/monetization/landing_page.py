@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Landing page generator for ShadowTag-v2 Intelligence Services.
 
 Generates static HTML landing pages with:

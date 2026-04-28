@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Atomic Thread Orchestrator with Multi-Model Consensus (Ultrathink Merged)
 Combines AoT decomposition with circular peer review + Ultrathink model allocation
 

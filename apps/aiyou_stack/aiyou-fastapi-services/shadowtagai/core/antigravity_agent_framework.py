@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Antigravity Agent Framework - Self-Applied Multi-Agent Architecture
 =====================================================================
 

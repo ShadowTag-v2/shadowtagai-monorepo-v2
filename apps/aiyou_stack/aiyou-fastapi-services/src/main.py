@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Main FastAPI application for agent-based governance system.
 
 Production-ready API with hybrid OPA + agent architecture,

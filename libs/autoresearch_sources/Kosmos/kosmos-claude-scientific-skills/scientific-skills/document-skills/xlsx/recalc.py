@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Excel Formula Recalculation Script
 Recalculates all formulas in an Excel file using LibreOffice

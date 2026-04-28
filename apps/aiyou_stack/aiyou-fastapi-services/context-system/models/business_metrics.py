@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PART 2: BUSINESS METRICS & UNIT ECONOMICS
 Key Parameters & Variables
 """

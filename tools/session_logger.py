@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Session Logger — Append-Only Structured Logging.
 
 Writes structured JSON logs to `.beads/sessions/` during every active

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pydantic schemas for Support Builder API request/response validation."""
 
 from datetime import datetime

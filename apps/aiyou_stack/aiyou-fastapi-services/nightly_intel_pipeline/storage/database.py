@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Intelligence Database - Local SQLite Storage
 Stores scored content, metadata, and IntelEvents from Gemini normalization
 

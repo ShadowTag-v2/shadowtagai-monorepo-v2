@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """MCP server implementation for Claude Skills search."""
 
 import fnmatch

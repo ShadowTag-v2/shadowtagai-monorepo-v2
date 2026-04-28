@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """BarExamProtocol - "Judge6" Gatekeeper.
 Prevents dumb agents from polluting memory.
 """

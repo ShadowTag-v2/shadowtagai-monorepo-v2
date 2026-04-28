@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Verdict Systems - Main FastAPI Application
 Executive Function Replacement Platform
 

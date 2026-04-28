@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Agentic Data Scientist - A General-Purpose Multi-Agent Framework.
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTag-v4 Content Ingestion Models
 Handles Gemini-powered content analysis, moderation, and verification
 """

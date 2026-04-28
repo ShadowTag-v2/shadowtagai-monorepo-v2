@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """L6: Claude.3 - PR Check (Dynamic, Optional)
 
 Role: The Auditor

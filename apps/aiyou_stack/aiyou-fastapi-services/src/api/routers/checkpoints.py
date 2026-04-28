@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Checkpoint API endpoints."""
 
 from fastapi import APIRouter, Depends, HTTPException, status

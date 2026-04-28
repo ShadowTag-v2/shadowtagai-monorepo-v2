@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Content provenance and C2PA models"""
 
 from datetime import datetime

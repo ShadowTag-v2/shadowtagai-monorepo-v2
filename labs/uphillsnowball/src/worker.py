@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # labs/uphillsnowball/src/worker.py
 """Temporal Worker — Entry point for durable execution (Items 14, 15).
 

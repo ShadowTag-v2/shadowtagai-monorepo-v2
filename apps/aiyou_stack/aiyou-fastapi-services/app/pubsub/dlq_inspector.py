@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Dead Letter Queue Inspector - Forensic tool for failed audit traces.
 
 The "Coroner" for compliance failures.

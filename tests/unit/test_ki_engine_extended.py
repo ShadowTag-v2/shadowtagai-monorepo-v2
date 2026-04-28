@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # Copyright 2026 ShadowTag AI. All rights reserved.
 """Tests for ki_engine extended modules: encryption, FTS5, migration, isolation."""
 

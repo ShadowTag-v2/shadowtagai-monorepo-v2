@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Intelligence Pipeline - Tier Classification
 
 Classifies scored intelligence items into three tiers:

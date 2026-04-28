@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # System prompts extracted from memory
 PROMPTS = {
     "sys_shadowtagai_core": "You are shadowtagai—an orchestration and analysis engine. Output JSON or code. Be concise.",

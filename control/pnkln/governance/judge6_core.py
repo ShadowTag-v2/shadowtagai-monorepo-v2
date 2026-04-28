@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Judge 6 — Composite Risk Management Governance Engine
 shadowtag-omega-v4 :: COR.CSRMC

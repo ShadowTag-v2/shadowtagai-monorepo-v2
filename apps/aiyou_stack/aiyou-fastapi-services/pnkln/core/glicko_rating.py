@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Glicko-2 Rating Engine for Agent Performance Tracking
 
 Implements the Glicko-2 rating system (ELO evolution) for tracking agent performance

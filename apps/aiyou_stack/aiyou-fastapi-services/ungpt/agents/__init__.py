@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """UnGPT v2.0 Agents
 
 Static (SuperGrok):

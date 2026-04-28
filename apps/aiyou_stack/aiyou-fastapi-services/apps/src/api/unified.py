@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Unified API for Complete $715B Ecosystem Integration
 
 Combines all 8 architectural layers:

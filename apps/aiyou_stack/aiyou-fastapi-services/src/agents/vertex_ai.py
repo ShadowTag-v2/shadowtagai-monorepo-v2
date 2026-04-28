@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Vertex AI-Specific Agents for Vertex AI Workbench"""
 
 from typing import Any

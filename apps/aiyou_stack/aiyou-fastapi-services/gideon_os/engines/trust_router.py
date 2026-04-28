@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # /home/jupyter/gideon_os/engines/trust_router.py
 
 

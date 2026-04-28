@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """LLM Client integration supporting multiple providers."""
 
 from abc import ABC, abstractmethod

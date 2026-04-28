@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # tests/test_judge6_atp519_scoring.py
 """Integration tests for Judge 6 ATP 5-19 Risk Scoring.
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Shadow Mode Framework for safe agent governance migration.
 
 Runs new agent system in parallel with existing Judge 6 without

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Monorepo Health Dashboard — generates a terminal-friendly status report.
 
 V22 Pruned Singularity: vulture replaced with ruff F401/F841 dead-code pass.

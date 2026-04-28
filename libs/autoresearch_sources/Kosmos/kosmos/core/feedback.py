@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Feedback Loop System - Learns from experimental results to improve research (Phase 7).
 

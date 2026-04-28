@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Native Gemini Function Calling Implementation
 
 This module replaces AutoGen's multi-agent architecture with native Gemini

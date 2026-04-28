@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Scholarly PDF Indexer - Elasticsearch-based Academic Paper Search
 
 Indexes scholarly PDFs for full-text search, enabling "Sauron's Panorama"

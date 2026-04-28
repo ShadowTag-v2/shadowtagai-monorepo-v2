@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CineVerse streaming platform models (Updated for Cor.18).
 
 Handles content, creators, streams, subscriptions, and Verification Index.

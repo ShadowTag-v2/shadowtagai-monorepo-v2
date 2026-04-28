@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AM Briefing Generator - Morning Intelligence Summary.
 
 Generates daily briefings from collected and classified intelligence:

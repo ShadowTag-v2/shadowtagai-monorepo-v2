@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """JR Rules Loader - Policy-as-Code for Judge 6
 
 Loads JR validation rules from YAML configuration, enabling policy changes

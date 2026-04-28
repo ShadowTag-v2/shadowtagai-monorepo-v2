@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from google.adk.core import LlmAgent, LoopAgent
 
 # 1. The Writer (Generator)

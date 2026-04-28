@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Base agent framework implementing ADK integration for governance decisions.
 
 Provides foundational agent interface with deterministic guardrails,

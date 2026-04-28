@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Thread Rollup & Transfer Package System
 Context preservation and session continuity
 

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """pinkln Infrastructure Analysis Demo
 
 This script demonstrates the infrastructure analysis capabilities for the

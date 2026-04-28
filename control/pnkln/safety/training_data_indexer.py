@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Training Data Safety Indexer
 Based on: Apertus LLM Training Data Indexing Research (arxiv:2510.09471v1)

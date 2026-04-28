@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # ATOMIC CODE BLOCK 2: JUDGE6 CORE
 # File: src/minions/core/judge6.py
 # Function: The Risk Management Engine (Policy-as-Code)

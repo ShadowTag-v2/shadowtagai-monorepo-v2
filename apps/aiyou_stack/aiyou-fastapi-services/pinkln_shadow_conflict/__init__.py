@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """pinkln Agent Architecture System™
 "Insanely Great AI Systems Through Elegant Orchestration"
 

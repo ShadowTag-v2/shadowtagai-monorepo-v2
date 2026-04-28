@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # src/shield/rkill_daemon.py
 import logging
 import os

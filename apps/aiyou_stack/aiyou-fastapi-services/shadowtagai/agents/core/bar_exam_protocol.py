@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Bar Exam Protocol - Agent Level Qualification System
 
 Implements 6-level progression system with qualification gates.

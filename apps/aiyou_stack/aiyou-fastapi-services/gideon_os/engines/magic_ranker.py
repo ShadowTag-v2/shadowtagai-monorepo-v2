@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # /home/jupyter/gideon_os/engines/magic_ranker.py
 import pandas as pd
 import yfinance as yf

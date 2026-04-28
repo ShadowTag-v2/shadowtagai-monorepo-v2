@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import logging
 
 from src.governance.judge_six.sentinel import JudgeSentinel

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - AM Briefing Generator and Delivery
 
 Generates and delivers the morning intelligence briefing based on

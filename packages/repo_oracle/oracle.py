@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Repo Oracle — Core workspace indexer and query engine.
 
 Scans the monorepo structure and maintains an in-memory index of:

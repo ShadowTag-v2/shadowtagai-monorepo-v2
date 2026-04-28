@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Load Test Runner
 Comprehensive load testing tool for ShadowTag-v2 FastAPI Services
 """

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # ATOMIC CODE BLOCK 4: TRINITY ORCHESTRATOR
 # File: src/orchestrators/trinity.py
 # Function: The Executive Loop (Sensor -> Judge -> Execution)

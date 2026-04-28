@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Metrics and Monitoring Router for PNKLN Stack"""
 
 import logging

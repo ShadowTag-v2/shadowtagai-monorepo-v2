@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 AfterTool Hook: Compress verbose MCP JSON output to flat CSV.
 Saves ~70% of context tokens on list_log_entries, list_timeseries, etc.

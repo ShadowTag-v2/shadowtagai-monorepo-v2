@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 unified_memory.py — Unified Memory Bridge (Gate 3 & 4)
 Per operator_invariants.json PRE_ACTION_MEMORY_GATE steps 3 and 4.

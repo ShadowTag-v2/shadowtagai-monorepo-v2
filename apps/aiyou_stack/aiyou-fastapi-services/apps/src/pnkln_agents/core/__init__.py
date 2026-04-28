@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Core components: Collection and Enforcement"""
 
 from .agent_pattern import (  # noqa: F401

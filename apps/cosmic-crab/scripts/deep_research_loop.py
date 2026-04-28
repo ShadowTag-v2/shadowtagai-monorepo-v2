@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # scripts/deep_research_loop.py
 import asyncio
 import logging

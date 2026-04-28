@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import logging
 
 from src.governance.judge_six.gauntlet_17_layer import Gauntlet17Layer

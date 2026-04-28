@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """User consent model for GDPR/CCPA compliance"""
 
 import enum

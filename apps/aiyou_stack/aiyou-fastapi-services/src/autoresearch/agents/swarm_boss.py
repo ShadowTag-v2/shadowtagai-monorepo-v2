@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """SwarmBoss - 10-Finger Audit Team Orchestrator with Army Doctrine Integration.
 
 Army Doctrine Integration (v3.0.0):

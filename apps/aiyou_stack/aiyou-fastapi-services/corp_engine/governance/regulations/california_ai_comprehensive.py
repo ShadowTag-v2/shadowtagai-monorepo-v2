@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """California AI Comprehensive Regulations
 ========================================
 Complete implementation of California's AI chatbot regulations.

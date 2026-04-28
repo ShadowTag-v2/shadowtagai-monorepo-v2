@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """MonetizationArchitectSkill - Revenue system design."""
 
 import os

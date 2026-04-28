@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Growth Engineer API Routes
 
 FastAPI routes for the Growth Engineer agent.

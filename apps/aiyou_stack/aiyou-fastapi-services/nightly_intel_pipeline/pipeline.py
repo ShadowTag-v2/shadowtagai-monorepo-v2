@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Nightly Intel Pipeline - Main Orchestration
 Coordinates ingestion, normalization, scoring, and briefing generation
 

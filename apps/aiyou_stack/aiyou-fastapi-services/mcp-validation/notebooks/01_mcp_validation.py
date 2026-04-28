@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """MCP Code Execution Validation Notebook
 Run in Vertex AI Workbench for Hour 0-24 technical validation
 

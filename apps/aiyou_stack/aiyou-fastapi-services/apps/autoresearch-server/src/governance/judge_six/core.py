@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from google.adk import Agent
 from google.adk.models import Gemini as ModelArgs
 

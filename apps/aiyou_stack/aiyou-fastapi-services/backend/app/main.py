@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Main FastAPI application for AI Issue Chat Workflow API."""
 
 from collections.abc import AsyncGenerator

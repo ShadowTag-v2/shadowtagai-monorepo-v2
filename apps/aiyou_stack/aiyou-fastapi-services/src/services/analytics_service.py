@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Analytics and insights service"""
 
 from datetime import datetime, timedelta

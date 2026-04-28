@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Integration tests for complete 8-branch ecosystem.
 
 Tests all layers:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import google.auth
 import requests
 from google.auth.transport.requests import Request

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tests for JURA Protocol: Cost-aware agent routing.
 
 Tests:

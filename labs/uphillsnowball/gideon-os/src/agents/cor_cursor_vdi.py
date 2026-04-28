@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cor.Cursor Cinematic Visual Verification Agent.
 
 Removes human QA. Boots Xvfb, records UI via FFmpeg, and self-critiques

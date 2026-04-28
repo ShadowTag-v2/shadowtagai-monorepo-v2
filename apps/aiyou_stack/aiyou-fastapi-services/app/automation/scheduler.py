@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Scheduler for managing scheduled jobs and automation."""
 
 import logging

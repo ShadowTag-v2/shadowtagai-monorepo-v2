@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """User management endpoints.
 
 Provides CRUD operations for users with full accessibility support:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Judge 6 Governance Skill Structure
 Adapted from K-Dense-AI/claude-scientific-skills
 

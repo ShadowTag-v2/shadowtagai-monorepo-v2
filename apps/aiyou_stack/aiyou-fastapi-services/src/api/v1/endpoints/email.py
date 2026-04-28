@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Email automation API endpoints"""
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query

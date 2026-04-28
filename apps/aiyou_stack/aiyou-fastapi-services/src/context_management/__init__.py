@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Context Window Management for AI Analysis Sessions
 
 Tracks AI chat sessions with metadata, summaries, and context indices

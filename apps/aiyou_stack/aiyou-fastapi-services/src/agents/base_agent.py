@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Base agent class for all AI agents"""
 
 from abc import ABC, abstractmethod

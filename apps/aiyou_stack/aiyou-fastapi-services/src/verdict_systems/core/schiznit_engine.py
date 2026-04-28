@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Verdict Systems - Schiznit Engine
 Core executive function orchestration layer
 

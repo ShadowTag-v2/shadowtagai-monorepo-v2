@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - Twitter/X Source Adapter
 
 Fetches tweets using the Twitter API v2 via Tweepy.

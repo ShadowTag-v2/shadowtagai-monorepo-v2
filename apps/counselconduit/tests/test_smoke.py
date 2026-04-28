@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/tests/test_smoke.py
 """Smoke test suite for post-deploy validation (Item #18).
 

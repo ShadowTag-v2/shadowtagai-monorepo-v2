@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Multi-LLM Consensus Orchestrator with Cross-Validation
 =======================================================
 Architecture: Claude → [Grok, Gemini, GPT-4] → Peer Review → Claude Synthesis

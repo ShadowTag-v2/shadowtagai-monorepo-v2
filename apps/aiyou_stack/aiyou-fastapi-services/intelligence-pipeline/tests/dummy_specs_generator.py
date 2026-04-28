@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Dummy Specs Generator for Testing Gemini Analysis Prompt
 
 Generates synthetic pipeline specifications to test the analysis framework

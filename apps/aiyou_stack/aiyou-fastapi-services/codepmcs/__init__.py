@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CodePMCS - AI-Powered Code Quality & Remediation Platform
 
 Part of the n-autoresearch/Kosmos/BioAgents Cavalry Squadron.

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for Security Data Requirements (REQ-SEC-DATA-*).
 

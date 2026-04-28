@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cost Tracking and Analytics for Multi-LLM Consensus System
 
 Tracks API costs, provides ROI analysis, and cost optimization recommendations.

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Test suite for Core Infrastructure - LLM Integration Requirements (REQ-LLM-001 through REQ-LLM-012).
 

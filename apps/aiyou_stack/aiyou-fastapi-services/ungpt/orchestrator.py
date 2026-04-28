@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """UnGPT Atomic Thread Orchestrator
 Implements AoT (Atom of Thoughts) with AunCRM compliance integration
 """

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Multi-Agent Debate (MAD)
 
 Multiple agents debate a problem until consensus.

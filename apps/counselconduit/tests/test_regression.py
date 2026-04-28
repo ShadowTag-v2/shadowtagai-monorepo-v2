@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Automated Regression Suite for CounselConduit Endpoints (#21).
 
 Tests all API endpoints against a live deployment (staging by default).

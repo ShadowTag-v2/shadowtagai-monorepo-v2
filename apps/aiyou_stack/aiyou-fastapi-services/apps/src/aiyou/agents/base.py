@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import ast
 import io
 from contextlib import redirect_stderr, redirect_stdout

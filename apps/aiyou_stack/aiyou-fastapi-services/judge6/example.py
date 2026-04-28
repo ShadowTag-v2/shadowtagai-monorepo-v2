@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Simple example demonstrating Judge 6 usage."""
 
 import json

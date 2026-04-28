@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ANTIGRAVITY :: GOD MODE :: OMEGA DEPLOYMENT
 Classification: TIER 30 SOVEREIGN
 Context: 1M+

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GPTRAM - GPT Retrieval Augmented Memory
 Temporal agent memory with Redis backend (Memorystore)
 

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Antigravity Uni-Script: Google Cloud Centric Universal Prompt Framework
 Erik Hancock | ShadowTag-v4 Global | Pipeline → JudgeJura → n-autoresearch/Kosmos/BioAgents → ShadowTag
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Chaos Engineering Tests for CounselConduit (Item #21).
 
 Tests system resilience under failure conditions:

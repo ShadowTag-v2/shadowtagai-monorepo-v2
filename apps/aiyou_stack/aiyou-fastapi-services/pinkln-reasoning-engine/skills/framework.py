@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Framework-based Reasoning Skill
 
 Apply structured frameworks to problems (SWOT, 5 Whys, First Principles, etc.)

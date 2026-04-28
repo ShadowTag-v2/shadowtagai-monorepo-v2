@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Layer 16–17: Product Delivery Gate & Blockchain Evaluator
 =========================================================
 

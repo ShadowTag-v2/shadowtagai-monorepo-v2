@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CodePMCS Scanner - Gemini-powered code quality scanner.
 
 Uses Gemini function calling for intelligent issue detection:

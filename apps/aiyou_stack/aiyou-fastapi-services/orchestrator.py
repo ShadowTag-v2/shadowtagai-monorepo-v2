@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ANTIGRAVITY SQUADRON ORCHESTRATOR
 Mission: Tier 30 "The Child"
 """

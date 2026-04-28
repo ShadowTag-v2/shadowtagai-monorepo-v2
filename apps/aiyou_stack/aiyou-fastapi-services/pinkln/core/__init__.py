@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Core components of the pinkln Agent Architecture System."""
 
 from .base_agent import BaseAgent

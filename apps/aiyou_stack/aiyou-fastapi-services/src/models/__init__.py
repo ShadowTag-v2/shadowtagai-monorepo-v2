@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from .glicko import Glicko2Match, Glicko2Player, Glicko2System, PerformanceTracker
 from .optimization import DoingLessBetterResults, LifeArea, OptimizationStrategy
 from .problem_solving import IsIsNotDiagram, ProblemSolvingStep, StructuredProblemSolvingProcess

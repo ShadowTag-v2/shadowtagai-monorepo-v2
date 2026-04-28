@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pydantic models for storage (notes, issues, etc.)."""
 
 from datetime import datetime

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # tests/e2e/test_billing_flow.py
 """Playwright-style E2E tests for the billing flow.
 

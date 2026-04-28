@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Core configuration, specifications, and policies for the pnkln system."""
 
 # Project specification

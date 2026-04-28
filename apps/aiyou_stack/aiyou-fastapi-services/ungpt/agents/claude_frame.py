@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """L1: Claude.1 - Frame & SPT.2 (Dynamic)
 
 Role: The Architect

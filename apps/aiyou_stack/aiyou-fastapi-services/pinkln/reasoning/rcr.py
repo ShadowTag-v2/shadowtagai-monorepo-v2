@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Reflect-Critique-Refine (RCR) reasoning framework.
 
 RCR implements a self-improvement cycle where agents:

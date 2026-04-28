@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """FinJudge Pure Judge Models (v0.2)
 Simplified input/output for pure risk classification
 """

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """The Constitution — Immutable Mission Contracts & Privilege Metadata.
 
 The CallOfQuestion is the Bar Exam. Once forged, the mission hash is

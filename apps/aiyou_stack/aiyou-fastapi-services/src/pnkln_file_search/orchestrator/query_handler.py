@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Query Handler with File Search Integration
 Orchestrates parallel execution of file search and Judge 6 enforcement
 """

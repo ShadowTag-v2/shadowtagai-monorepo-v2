@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # ShadowTag-Omega/omega_kernel.py
 import asyncio
 import contextlib

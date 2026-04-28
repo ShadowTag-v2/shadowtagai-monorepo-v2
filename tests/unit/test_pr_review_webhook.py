@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # tests/unit/test_pr_review_webhook.py
 """Unit tests for Sovereign PR Review Webhook — enforce_m1_max_constraints."""
 

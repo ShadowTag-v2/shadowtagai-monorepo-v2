@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Kosmos Integration - AI Scientist for Autonomous Agent Optimization
 
 Implements autonomous research and experimentation for agent swarm optimization.

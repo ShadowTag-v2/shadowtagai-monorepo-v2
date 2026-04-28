@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Judge 6 LangGraph Orchestrator
 Multi-agent workflow for compliance document analysis
 """

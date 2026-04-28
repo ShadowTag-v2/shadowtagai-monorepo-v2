@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Notion Import Script for Boy Scout Rule Registry
 
 Imports skills and agents from registry.json to Notion databases.

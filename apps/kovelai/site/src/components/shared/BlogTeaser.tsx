@@ -1,3 +1,5 @@
+// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
+
 export default function BlogTeaser() {
   return (
     <section className="py-20 md:py-28 bg-surface-lowest" id="blog">

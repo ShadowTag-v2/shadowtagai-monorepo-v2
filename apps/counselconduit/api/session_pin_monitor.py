@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Session Pin TTL Monitor (#15).
 
 Monitors and cleans up expired session pins from in-memory and Firestore.

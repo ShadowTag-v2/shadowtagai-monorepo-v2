@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Base Collector Interface
 All source collectors inherit from this base class
 """

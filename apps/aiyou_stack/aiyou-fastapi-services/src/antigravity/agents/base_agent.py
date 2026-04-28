@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Base Agent class for all specialist agents in the swarm.
 
 Provides common functionality for agent execution, context management,

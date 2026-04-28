@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Context Index Service - CRUD Operations for OPORD Contexts
 
 Provides service layer for creating, reading, updating, and deleting

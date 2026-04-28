@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GitHub Push Utility
 
 Handles the 4-file structure push for UnGPT outputs.

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Policy RAG (Retrieval-Augmented Generation) system.
 
 Implements semantic search over policy documents using vector embeddings

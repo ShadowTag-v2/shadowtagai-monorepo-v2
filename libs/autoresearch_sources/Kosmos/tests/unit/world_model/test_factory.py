@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tests for world model factory."""
 
 from unittest.mock import Mock, patch

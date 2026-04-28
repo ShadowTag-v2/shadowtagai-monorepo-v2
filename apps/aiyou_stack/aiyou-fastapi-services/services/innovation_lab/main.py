@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Innovation Lab Service - Main Application
 
 FastAPI application for AI-powered innovation, experimentation, and tech exploration.

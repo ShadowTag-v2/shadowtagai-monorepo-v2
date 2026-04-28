@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from google.cloud import aiplatform
 
 from schema.memory import MemoryItem

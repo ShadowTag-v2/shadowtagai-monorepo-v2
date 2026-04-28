@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """FinJudge CLI - Main Command Interface"""
 
 import json

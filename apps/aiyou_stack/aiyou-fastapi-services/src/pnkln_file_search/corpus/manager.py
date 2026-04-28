@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Vertex AI RAG Corpus Manager
 Handles creation, management, and querying of policy document corpora
 """

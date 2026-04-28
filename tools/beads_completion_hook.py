@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 beads_completion_hook.py — Auto-append completed tasks to .beads/issues.jsonl
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Three-Layer Context Memory — memory_indexer.py
 
 All context must traverse this module before entering the agent's

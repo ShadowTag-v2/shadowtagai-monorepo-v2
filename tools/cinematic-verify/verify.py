@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cinematic Verification Pipeline — Browser-based Lighthouse + screenshot audit."""
 
 import json

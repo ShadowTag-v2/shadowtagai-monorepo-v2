@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Ensemble Distillation for Flying n-autoresearch/Kosmos/BioAgents swarm.
 Implements CIKD pattern: score → elect best → distill → repeat.
 Based on Hong et al., NeurIPS 2019 Deep RL Workshop.

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tests for API endpoints."""
 
 from fastapi.testclient import TestClient

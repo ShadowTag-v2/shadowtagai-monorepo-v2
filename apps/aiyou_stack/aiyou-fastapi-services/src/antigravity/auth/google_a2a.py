@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Zero Trust Agent-to-Agent (A2A) Authentication Module for Cloud Run.
 
 Implements the "Can I see some ID, please?" pattern using Google ID Tokens.

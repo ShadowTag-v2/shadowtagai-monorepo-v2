@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Integration Tests for LLM Orchestrator + PNKLN Integration
 Tests the Superpowers Marketplace integration with PNKLN Core Stack
 """

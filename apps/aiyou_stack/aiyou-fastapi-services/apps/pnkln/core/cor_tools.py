@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """COR TOOLS - Dynamic Tool Registry with Semantic Retrieval
 ==========================================================
 

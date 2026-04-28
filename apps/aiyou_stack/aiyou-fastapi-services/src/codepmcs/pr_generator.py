@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CodePMCS PR Generator - Automated PR creation for fixes.
 
 Uses GitHub CLI (gh) to create PRs with fixes.

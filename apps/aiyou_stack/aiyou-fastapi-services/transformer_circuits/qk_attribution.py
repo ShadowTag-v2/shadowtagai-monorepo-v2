@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """QK Attribution: Decompose attention scores as bilinear functions of feature activations.
 
 Based on the paper "Tracing Attention Computation Through Feature Interactions" (2025)

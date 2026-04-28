@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Intelligence Pipeline Orchestrator.
 
 Wires 2,856 ingested LanceDB docs against the codebase, git history, and biz plans.

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Recursive Critique and Refinement (RCR) Skill
 
 Iteratively improve responses through self-critique

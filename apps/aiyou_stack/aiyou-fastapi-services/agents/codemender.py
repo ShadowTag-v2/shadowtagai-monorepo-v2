@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CodeMender Agent - Neuro-symbolic Repair Agent
 Inspired by DeepMind's CodeMender (2025)
 

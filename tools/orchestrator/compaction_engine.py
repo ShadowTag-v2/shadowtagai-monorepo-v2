@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Compaction Circuit Breakers — compaction_engine.py
 
 Context compaction logic with circuit breaker protection.

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/email_service.py
 """Email service for magic-link delivery and lifecycle notifications.
 

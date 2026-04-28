@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Antigravity Swarm - Judge 6 Governed Agent Orchestration
 
 Purpose: ShadowTag-v2JR doctrine enforcement

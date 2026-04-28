@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Evidence Logger — Appends structured audit entries to .beads/issues.jsonl.
 
 Every tool gateway decision is logged as a structured JSON line for

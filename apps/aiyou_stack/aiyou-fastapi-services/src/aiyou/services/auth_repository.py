@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Auth service layer addendum.
 
 Extracts the remaining db.query from the auth route.

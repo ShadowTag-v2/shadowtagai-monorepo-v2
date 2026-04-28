@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """n-autoresearch/Kosmos/BioAgents Swarm Status Dashboard
 Real-time monitoring of 200-agent deployment progress
 """

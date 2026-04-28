@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """KPI tracking and reporting API endpoints
 Tracks governance, safety, and monetization metrics
 """

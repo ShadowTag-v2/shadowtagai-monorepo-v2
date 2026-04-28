@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Omega Auth Daemon — Background token refresh for the Kovel Enclave.
 
 Refreshes GCP Application Default Credentials every 3 minutes

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini Scheduler - Run workflows via Gemini Layer instead of GitHub Actions.
 Bypasses GitHub Actions billing by using Gemini API directly.
 """

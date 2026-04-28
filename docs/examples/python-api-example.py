@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Python API Usage Examples for Wealth Acceleration Agent
 

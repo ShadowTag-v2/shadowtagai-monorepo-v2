@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Judge 6 Core - Governance Engine
 Target Valuation: $35.0B
 Purpose / Reasons / Brakes

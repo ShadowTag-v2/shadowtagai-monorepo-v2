@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/cloud_tasks_gdpr_handler.py
 """GDPR 30-Day Auto-Delete Cloud Tasks Handler.
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Configuration for the DSPy Swarm Router."""
 
 from dataclasses import dataclass, field

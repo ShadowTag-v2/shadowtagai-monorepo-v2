@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Prompt Engineering Agents for Vertex AI Workbench
 Specialized agents for prompt adaptation, analysis, and optimization
 """

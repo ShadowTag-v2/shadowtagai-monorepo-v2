@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tier Classification Implementation
 
 Uses Gemini 2.5 Flash-Lite for cost-effective content classification.

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for World Model CRUD Requirements (REQ-WM-CRUD-001 through REQ-WM-CRUD-007).
 

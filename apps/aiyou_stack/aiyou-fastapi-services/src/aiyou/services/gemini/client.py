@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini AI Client Service
 Handles all interactions with Google Gemini API for content ingestion and analysis
 """

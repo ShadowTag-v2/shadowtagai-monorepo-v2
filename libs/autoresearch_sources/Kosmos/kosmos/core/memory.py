@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Memory System - Stores and retrieves research history to avoid duplication (Phase 7).
 

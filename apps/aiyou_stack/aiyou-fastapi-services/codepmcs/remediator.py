@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CodePMCS Remediator - AI-powered auto-fix generator.
 
 Uses Gemini to generate fixes for detected issues:

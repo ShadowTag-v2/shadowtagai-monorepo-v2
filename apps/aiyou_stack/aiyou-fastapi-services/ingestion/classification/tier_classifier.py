@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - Tier Classification Engine
 
 Classifies ingested items into tiers using Gemini 2.0 Pro:

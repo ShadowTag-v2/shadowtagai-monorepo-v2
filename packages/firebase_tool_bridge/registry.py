@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # Copyright 2026 ShadowTag AI. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 """Function Registry — tracks approved functions with risk classification.

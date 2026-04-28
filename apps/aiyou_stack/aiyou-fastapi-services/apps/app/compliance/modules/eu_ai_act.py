@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """EU AI Act Compliance Module
 
 Implements the European Union Artificial Intelligence Act requirements.

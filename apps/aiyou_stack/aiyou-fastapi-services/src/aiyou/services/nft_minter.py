@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """TruthLedger - Hashes analysis data and mints ERC-721 Verification tokens."""
 
 import hashlib

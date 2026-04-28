@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Deadline Extraction Engine for LegalTrack
 
 ML-powered extraction of legal deadlines from court emails

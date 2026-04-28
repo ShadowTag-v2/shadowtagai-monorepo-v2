@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Business Plan Module - Usage Examples
 Demonstrates querying metrics, verticals, tech stack, and context restoration
 """

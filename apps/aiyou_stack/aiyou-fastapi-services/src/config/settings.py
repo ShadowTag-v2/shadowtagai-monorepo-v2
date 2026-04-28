@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Environment configuration management"""
 
 # NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """California Bar Exam Protocol - Legal Reasoning for Agent Swarm
 
 Integrates 9 years of legal education + 11 California Bar exam attempts

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Repo Doctor — Automated monorepo health check.
 
 Scans for dirty files, conflict markers, broken imports, secrets,

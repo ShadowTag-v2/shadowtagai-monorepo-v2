@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GCS Signed URL Generation for Governance Traces.
 
 Provides secure, time-limited access to governance decision traces

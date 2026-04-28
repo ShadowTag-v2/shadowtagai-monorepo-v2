@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # scripts/scientific_ingestion.py
 import asyncio
 import logging

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GCA God Mode Bridge — gca_god_mode_bridge.py
 
 Bridge between 'f1 gca' finish alias and god_mode_admin.py.

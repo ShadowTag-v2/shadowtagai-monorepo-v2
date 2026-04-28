@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """SELF-ROUTE Controller Implementation
 Intelligent routing between RAG and Long-Context modes
 

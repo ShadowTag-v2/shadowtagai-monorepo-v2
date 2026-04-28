@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Simple example of using the Vertex AI RAG Service"""
 
 import json

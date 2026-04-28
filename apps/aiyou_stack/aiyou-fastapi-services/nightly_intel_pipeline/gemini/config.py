@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini Ingestion Layer Configuration
 ====================================
 Configuration for Gemini-powered semantic extraction.

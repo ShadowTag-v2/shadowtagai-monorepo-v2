@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cost Tracking & Optimization
 
 Monitors costs across platform services:

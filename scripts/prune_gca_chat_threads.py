@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Surgical pruner for Gemini Code Assist (GCA) chat thread bloat.
 
 The GCA extension stores entire conversation history + error stack traces

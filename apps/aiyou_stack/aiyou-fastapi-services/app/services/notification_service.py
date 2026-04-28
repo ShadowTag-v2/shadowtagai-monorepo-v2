@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Notification service layer.
 
 Extracts all database operations from notification routes

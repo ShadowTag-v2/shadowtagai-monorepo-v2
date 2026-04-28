@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GCA Omni-Autolint — One-Shot CLI for Gemini Code Assist Extension.
 
 This is NOT a daemon. It is a single-invocation CLI that the GCA extension

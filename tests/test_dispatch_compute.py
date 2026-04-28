@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Test script for dispatch_compute() 4-tier cascade.
 
 Verifies:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 class GeminiCodeReviewer:
     def analyze_commit(self, diff_content):
         print("    [CLI-Review] Gemini 1.5 Pro scanning diff for logic errors...")

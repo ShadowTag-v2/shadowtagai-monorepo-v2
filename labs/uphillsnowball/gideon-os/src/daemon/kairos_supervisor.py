@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # src/daemon/kairos_supervisor.py
 # ============================================================================
 # KAIROS Session Supervisor — 15s Budget, ULTRAPLAN, Auto-Dream

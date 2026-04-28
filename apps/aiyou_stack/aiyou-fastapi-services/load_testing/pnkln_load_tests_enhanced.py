@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """═══════════════════════════════════════════════════════════════════
   PNKLN LOAD TESTING SUITE - ENHANCED VERSION v2.0
   Production-Grade Performance Validation with Advanced Analytics

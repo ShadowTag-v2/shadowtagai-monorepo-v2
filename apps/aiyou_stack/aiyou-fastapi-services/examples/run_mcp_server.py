@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Run MCP Server for ShadowTag + ShadowTag-v4
 
 Starts FastAPI server with all MCP tool endpoints

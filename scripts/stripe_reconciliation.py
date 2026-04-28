@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Stripe Connect Reconciliation Job (Item #16).
 
 Compares Stripe subscription data against Firestore tenant records to detect:

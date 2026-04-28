@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Research Director Agent - Master orchestrator for autonomous research (Phase 7).
 

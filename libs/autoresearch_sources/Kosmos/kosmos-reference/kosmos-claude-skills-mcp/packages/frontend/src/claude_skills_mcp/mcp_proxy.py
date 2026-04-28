@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """MCP Proxy - Acts as both MCP Server (stdio) and MCP Client (HTTP)."""
 
 import asyncio

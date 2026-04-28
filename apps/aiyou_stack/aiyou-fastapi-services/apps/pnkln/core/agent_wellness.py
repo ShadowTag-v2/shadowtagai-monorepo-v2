@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AgentWellness - Buffet, Hydration, Breaks, and Vitamins for Agents
 Version: 1.0.0
 

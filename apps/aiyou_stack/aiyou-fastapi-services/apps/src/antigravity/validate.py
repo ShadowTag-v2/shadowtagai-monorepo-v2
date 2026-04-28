@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CodePMCS Client - Code Quality Validation
 
 Scans and auto-fixes code before commit.

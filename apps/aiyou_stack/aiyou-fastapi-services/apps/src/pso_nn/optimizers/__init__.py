@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PSO-NN Optimizers: Specialized optimizers for neural network tasks."""
 
 from .weight_optimizer import WeightOptimizer

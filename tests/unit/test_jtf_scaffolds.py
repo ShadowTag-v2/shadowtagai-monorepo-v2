@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # Copyright 2026 ShadowTag AI. All rights reserved.
 """Tests for JTF Headquarters scaffolds and J-6 → Judge6 Bridge.
 

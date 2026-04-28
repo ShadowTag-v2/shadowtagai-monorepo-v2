@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """DoD CIO CSRMC & NIST RMF — Continuous Authority to Operate (cATO).
 
 Judge 6.1 is not a tollbooth at the end of the room. It is the J-6

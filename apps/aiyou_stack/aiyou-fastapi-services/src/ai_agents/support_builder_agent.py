@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AI Agent for Support Builder using Anthropic Claude API.
 
 This agent provides intelligent customer support responses,

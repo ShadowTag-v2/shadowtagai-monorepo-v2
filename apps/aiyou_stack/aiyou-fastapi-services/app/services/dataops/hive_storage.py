@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Hive Storage Service - Data Ops
 Embeddings, moderation logs, and continual learning adapter storage
 Quantitative Effect: ↑ Traceability +90%, ↓ Data drift –50%

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Health check endpoints.
 
 Provides endpoints for monitoring application health and readiness.

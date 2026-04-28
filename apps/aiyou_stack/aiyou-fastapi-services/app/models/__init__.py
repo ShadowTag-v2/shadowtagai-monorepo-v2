@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Data models for kernel chain."""
 
 from .decision import DecisionContext, DecisionResult, RiskTier, Violation

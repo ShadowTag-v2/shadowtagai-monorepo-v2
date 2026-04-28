@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTag Signer Service
 =========================
 C2PA-compliant content provenance signing for Corp Engine outputs.

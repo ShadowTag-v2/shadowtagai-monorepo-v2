@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Error handling middleware for consistent, accessible error responses.
 
 All errors are transformed into a standard format following WCAG 2.1 principles:

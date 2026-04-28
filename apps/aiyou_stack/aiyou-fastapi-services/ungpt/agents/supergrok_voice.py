@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """L7: SuperGrok.4 - Voice (Static)
 
 Role: The Announcer

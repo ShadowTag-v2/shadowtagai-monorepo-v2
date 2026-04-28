@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tegu Integration for AiU+ShadowTag-v4 Platform
 Machine Learning Toolbox for Computer Vision
 

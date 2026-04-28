@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Structured Problem Solving Process API Routes
 Endpoints for Is/Is Not Diagram and 6-step problem solving methodology
 """

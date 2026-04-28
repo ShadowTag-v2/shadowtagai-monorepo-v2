@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CorAutoresearch Arbiter Orchestrator (Heavy Path)
 =================================================
 This Temporal Worker maps incoming Level 1-4 compliance anomalies or logic

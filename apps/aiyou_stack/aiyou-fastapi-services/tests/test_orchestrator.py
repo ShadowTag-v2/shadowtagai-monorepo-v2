@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Validation tests for pnkln orchestrator"""
 
 import asyncio

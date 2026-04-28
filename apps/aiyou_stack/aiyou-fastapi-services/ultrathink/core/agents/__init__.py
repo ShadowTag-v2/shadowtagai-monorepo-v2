@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Multi-agent systems: MAD, PanelGPT, AgentCoder, DTE.
 
 When multiple perspectives beat single-model responses.

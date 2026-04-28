@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/intake_summarizer.py
 """Intake Summary Extraction Model with S.E.U. Framework.
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PSO Swarm: Manages a population of particles for optimization.
 
 Implements standard PSO with:

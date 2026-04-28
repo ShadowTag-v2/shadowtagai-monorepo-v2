@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Verdict Systems - Task Models
 Core task representation and urgency calculation
 """

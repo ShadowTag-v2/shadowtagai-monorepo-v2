@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Materials science experiment templates"""
 
 from kosmos.experiments.templates.materials.optimization import MultiParameterOptimizationTemplate

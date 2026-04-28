@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """HIPAA Compliance Module
 
 Implements the Health Insurance Portability and Accountability Act requirements.

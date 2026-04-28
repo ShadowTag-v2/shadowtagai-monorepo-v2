@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Commerce Mall API Routes.
 
 Handles product catalog, cart, and checkout.

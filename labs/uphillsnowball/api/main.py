@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """UphillSnowball API — Sovereign Agent Orchestration Backend.
 
 Cloud Run source-deploy service. Provides:

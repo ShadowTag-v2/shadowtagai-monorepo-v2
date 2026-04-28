@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """RKILL — Emergency AI Safety Kill Protocol (Patent Claim #7).
 
 Two-phase coordinated lockout:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Vertex Workbench / GKE Native Deployment
 Memory-enabled consensus system for Google Cloud Platform
 

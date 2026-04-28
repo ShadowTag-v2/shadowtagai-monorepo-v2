@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Monitoring endpoints for health checks, metrics, and observability."""
 
 from fastapi import APIRouter, Response

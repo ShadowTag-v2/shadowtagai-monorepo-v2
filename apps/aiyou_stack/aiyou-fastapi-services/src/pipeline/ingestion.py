@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from src.config.squadron import AUTORESEARCH_TRIAD_SQUADRON
 from src.governance.judge import Judge6
 

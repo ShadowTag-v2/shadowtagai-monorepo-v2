@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """8-Agent Synthesis Coordinator — Temporal-native Agent Board.
 
 Agent 0: The Board. Orchestrates the 8-agent synthesis map using

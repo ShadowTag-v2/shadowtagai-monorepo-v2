@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/stripe_handler.py
 """Stripe Webhook Handler with HMAC Signature Verification.
 

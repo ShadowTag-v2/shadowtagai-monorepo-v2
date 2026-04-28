@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Verification Script for Google Official MCP Integration.
 Tests BigQuery and GKE tools using GeminiFunctionCaller.
 """

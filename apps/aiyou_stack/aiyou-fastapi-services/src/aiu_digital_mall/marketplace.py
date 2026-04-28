@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AiU Digital Mall - Marketplace Core
 Governed AI marketplace with pre-execution compliance verification
 """

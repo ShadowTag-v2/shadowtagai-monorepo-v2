@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tests for the Regulation Registry System"""
 
 from app.compliance.modules.base import ComplianceModule

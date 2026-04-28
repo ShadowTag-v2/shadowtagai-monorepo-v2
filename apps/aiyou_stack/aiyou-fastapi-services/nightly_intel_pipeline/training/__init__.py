@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Training modules for Nightly Intel Pipeline
 GAIN-RL, Entropy-Targeted Loss, and other training utilities
 """

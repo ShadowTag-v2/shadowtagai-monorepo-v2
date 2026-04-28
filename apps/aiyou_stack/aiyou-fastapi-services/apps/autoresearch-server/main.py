@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """▛///▞ ANTIGRAVITY :: n-autoresearch/Kosmos/BioAgents SERVER
 :: 650-Agent Swarm with AG-UI Protocol Support
 :: Integrates with CopilotKit and Modern Frontends

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Video Steganography Endpoints
 
 API endpoints for video encoding and decoding operations.

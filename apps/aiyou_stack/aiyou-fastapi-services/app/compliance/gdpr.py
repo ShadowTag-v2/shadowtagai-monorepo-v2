@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GDPR (General Data Protection Regulation) Compliance Implementation
 
 Provides:

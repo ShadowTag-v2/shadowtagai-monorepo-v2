@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Test suite for Domain and Multi-Domain Support Requirements (REQ-DOMAIN-001 through REQ-DOMAIN-003).
 

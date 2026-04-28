@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from governance.judge_llm_v7 import vet_sovereign_action
 
 

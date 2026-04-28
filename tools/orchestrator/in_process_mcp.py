@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Native MCP Bypass — in_process_mcp.py
 
 JSON-RPC IPC overhead deprecated for internal Python tools.

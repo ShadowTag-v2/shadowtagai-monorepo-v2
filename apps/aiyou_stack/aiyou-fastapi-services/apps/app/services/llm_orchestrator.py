@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """LLM Orchestrator - Integration Layer
 Connects PNKLN Multi-Agent System with LLM Memory Persistence
 

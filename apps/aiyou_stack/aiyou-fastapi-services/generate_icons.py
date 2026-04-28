@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Generate PWA icons in various sizes
 This creates simple SVG-based placeholder icons
 For production, replace with your actual app icons

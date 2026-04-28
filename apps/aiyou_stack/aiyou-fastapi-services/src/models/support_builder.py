@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Database models for Support Builder feature."""
 
 from datetime import datetime

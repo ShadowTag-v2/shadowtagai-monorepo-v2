@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Example: Sending Transactional Emails
 
 This example shows how to send transactional emails like:

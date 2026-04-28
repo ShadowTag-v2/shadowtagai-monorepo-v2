@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 JR Auto-Validator
 Validates tool usage against JR (Purpose/Reasons/Brakes) framework constraints

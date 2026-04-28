@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import json
 
 POLICY_FILE = "iam_policy.json"

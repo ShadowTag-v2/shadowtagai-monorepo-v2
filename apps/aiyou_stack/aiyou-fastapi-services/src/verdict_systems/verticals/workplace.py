@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Verdict Systems - Workplace Vertical
 Employer-controlled focus, workflow enforcement, productivity tracking
 

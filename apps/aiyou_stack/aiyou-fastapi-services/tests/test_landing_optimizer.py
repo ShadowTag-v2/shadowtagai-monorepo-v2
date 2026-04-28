@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tests for Landing Page Optimizer service and endpoints"""
 
 from unittest.mock import Mock, patch

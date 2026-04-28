@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ADP 5-0 Operations Process — Plan, Prepare, Execute, Assess.
 
 A simpler, IPB-first workflow variant that follows ADP 5-0 strictly.

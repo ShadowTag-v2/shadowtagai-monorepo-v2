@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cor.NotebookLM 6-Step Epistemology Engine.
 
 The Epistemological Crucible. Applied during KAIROS Auto-Dream and Vanguard Scout.

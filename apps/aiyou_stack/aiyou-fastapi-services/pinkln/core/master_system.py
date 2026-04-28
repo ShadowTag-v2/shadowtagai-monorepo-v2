@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """The pnkln OS™ - Master System Agent
 
 The core personality and cultural layer that defines the soul of every agent and skill.

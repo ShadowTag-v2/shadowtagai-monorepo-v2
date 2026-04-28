@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Prompt Templates for SELF-ROUTE Implementation
 Based on research paper specifications (Table 9)
 

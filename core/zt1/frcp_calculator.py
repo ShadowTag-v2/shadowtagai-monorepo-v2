@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import datetime
 
 # Standard US Federal Holidays (Simplified static list for proof-of-concept)

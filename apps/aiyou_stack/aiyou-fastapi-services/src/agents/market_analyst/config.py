@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Configuration for Market Analyst Product Strategy Agent"""
 
 MARKET_ANALYST_CONFIG = {

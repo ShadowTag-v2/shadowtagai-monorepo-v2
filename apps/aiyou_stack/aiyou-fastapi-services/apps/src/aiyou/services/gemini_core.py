@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GeminiAntigravity - Core intelligence engine.
 Replaces MediaPipe/Emotion/Text pipelines with native Gemini multimodal.
 Supports both Vertex AI and direct API key authentication.

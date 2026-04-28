@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/cloud_tasks_gdpr.py
 """Cloud Tasks integration for GDPR 30-day hard delete.
 

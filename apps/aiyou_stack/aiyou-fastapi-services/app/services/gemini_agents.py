@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini 2.0 Pro Multi-Agent System (AutoGen → Gemini Migration)
 Replaces custom PanelDebateClassifier with native Gemini agents
 

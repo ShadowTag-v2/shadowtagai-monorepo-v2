@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Authentication and authorization system.
 
 Implements JWT-based authentication with refresh tokens and role-based access control.

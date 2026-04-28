@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # Copyright 2026 ShadowTag AI. All rights reserved.
 """
 Promotion & Conflict Detection — Items 15, 18: Automated lifecycle transitions.

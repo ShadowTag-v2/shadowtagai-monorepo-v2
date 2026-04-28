@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Mock Telemetry Generator for Digital Freeway API
 Simulates 10K vehicles with realistic movement patterns.
 """

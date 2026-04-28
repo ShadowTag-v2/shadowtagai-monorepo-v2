@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/gdpr.py
 """GDPR Account Deletion Flow — Cor.30 R27.
 

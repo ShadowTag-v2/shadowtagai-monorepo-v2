@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """TDD Red Phase Agent - Hybrid Implementation
 
 Single agent with two internal phases:

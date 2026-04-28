@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PII Scrubber for Forensic Index
 
 Removes personally identifiable information before indexing.

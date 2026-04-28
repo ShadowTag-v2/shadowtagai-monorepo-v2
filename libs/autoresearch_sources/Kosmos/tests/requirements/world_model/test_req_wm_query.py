@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for World Model Query Requirements (REQ-WM-QUERY-001 through REQ-WM-QUERY-004).
 

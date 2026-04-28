@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Intel Processor Service
 ========================
 Consumes intel from Nightly Pipeline via Pub/Sub.

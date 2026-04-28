@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Wire lint results into the .beads/issues.jsonl audit trail.
 
 Reads .lint-results/latest.json and appends a structured entry to .beads/issues.jsonl.

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # tests/e2e/test_counselconduit_e2e.py
 """Playwright E2E tests for CounselConduit checkout and onboarding flows.
 

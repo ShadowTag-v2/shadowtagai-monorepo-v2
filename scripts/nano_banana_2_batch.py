@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Nano Banana 2 — Batch Image Regeneration
 Model: gemini-3.1-flash-image-preview
 Regenerates ALL website graphics + pitch deck assets.

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Stripe Webhook Handler with Signature Verification
 
 Handles subscription lifecycle events for the ShadowTag product matrix:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Kosmos AI Scientist - Autonomous scientific research powered by Claude.
 

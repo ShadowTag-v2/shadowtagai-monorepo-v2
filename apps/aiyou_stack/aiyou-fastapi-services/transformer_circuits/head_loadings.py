@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Head Loadings: Compute attention head contributions to attribution graph edges.
 
 Based on the paper "Tracing Attention Computation Through Feature Interactions" (2025).

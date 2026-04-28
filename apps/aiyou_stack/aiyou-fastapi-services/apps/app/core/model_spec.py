@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """OpenAI Model Spec v2 Extract
 Pinned to Feb 12, 2025 release.
 """

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Karpathy AutoResearch Mutagenesis Engine.
 
 Autonomous R&D loop that mutates the AST Router compliance logic nightly.

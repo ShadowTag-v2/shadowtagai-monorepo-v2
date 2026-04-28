@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pnkln VC Mirror Vertical
 Investor thesis extraction and pitch copy generation.
 """

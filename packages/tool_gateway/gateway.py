@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Core Tool Gateway — Validates tool calls against contracts and repo truth.
 
 This module is the central mediator for the "Monorepo-Bounced Tool Calls"

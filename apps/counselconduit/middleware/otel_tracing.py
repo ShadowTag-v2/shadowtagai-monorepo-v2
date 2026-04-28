@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/middleware/otel_tracing.py
 """OpenTelemetry tracing middleware for sandbox quota enforcement.
 

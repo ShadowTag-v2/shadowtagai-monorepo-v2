@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AiYouJR Objection Taxonomy Engine
 
 Implements the "Voice Objections per AiYouJR" constraint from ATP 5-19.

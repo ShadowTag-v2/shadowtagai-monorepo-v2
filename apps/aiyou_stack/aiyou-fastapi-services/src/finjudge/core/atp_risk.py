@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ATP 5-19 Risk Assessment Engine
 U.S. Army Techniques Publication 5-19 risk management framework adapted for finance
 """

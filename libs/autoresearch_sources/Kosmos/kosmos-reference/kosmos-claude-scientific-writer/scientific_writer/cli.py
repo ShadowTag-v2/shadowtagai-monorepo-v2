@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Scientific Writer CLI Tool
 A command-line interface for scientific writing powered by Claude Code.

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTag-v4 Services
 
 This package contains all the service modules for the ShadowTag-v4 platform:

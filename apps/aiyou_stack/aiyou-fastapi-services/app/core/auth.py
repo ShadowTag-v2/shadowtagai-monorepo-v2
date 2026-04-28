@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """FastAPI Authentication Middleware with Rate Limiting
 Production-ready API key authentication with tier-based rate limiting
 """

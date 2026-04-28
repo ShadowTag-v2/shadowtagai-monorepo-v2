@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Aegaeon Protocol — VRAM Context Caching for KovelAI.
 
 Uploads massive GDrive case files once to Google's VRAM Context Cache,

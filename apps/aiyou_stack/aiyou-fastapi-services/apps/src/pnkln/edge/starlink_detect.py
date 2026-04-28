@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Starlink Detection Agent
 -----------------------
 Identifies if the current request session is originating from a Starlink satellite connection.

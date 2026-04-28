@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pnkln File Search Integration
 Google File Search API integration for Pnkln Core Stack with Judge 6
 """

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PDF Indexer for Scholarly Papers
 Indexes PDFs for Flying n-autoresearch/Kosmos/BioAgents research corpus.
 Apertus-style scholarly document ingestion.

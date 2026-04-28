@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/middleware/token_budget.py
 """Token Budget Middleware — OWASP LLM10 (Unbounded Consumption).
 

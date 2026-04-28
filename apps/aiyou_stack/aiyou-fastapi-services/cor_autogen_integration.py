@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """COR AutoGen Integration - Multi-Agent Orchestration with Skill Routing
 
 This module provides:

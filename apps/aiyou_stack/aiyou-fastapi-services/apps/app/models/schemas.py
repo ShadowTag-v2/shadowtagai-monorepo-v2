@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pydantic schemas for PNKLN Core Stack™ API
 Matches API specs from docs/cor8-shadowtag_v4-global-edge-fabric/09-implementation/api-schemas.md
 """

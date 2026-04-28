@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from fastapi import APIRouter, HTTPException, status
 
 from app.models.refactor import AnalyzeRequest, AnalyzeResponse, RefactorRequest, RefactorResponse

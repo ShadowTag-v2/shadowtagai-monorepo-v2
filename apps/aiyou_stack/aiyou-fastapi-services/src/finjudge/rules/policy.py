@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Policy Rule Engine
 Internal policy and risk limit enforcement
 """

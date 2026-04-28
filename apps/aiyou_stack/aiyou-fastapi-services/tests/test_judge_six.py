@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Unit tests for Judge 6 validation pipeline (p99≤90ms SLA)."""
 
 import asyncio

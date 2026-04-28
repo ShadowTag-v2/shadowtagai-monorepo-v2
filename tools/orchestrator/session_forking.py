@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Session Forking Swarm — session_forking.py
 
 Dense multi-file operations (>5 files) are chunked horizontally

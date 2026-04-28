@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Attribution Graph: Represent transformer forward pass as interpretable causal graphs.
 
 Based on the paper "Tracing Attention Computation Through Feature Interactions" (2025).

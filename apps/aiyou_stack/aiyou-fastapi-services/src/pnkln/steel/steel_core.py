@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pnkln Steel Core - SkyNode Infrastructure Logic
 Target Valuation: $100.0B
 """

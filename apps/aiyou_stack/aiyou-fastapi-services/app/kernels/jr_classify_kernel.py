@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """JR Classify Kernel - California AI Regulations
 ==============================================
 Kernel 2 of NS-JR-Cor pipeline for California AI compliance.

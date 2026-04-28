@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Infrastructure Agent - PNKLN Core Stack™ Analyst
 
 This agent provides comprehensive infrastructure analysis and optimization

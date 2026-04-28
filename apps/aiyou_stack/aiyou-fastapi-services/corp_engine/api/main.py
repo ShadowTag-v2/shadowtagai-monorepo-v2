@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTagAI Corp Engine - Main API
 ===================================
 Cloud-native, login-and-run enterprise SaaS platform.

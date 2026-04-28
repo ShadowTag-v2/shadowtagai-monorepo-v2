@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Nano Banana 2 — Gemini 3.1 Flash Image Generation Test
 Model: gemini-3.1-flash-image-preview
 SDK: google-genai.

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """omega_auth_daemon.py
 --------------------
 A persistent daemon that ensures the "headless-runner" service account

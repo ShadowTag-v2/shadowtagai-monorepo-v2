@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Corp Engine Core - Self-configuring AI engine"""
 
 from .self_config import (

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 class MockBridge:
     def get_task_status(self, task_id):
         return {

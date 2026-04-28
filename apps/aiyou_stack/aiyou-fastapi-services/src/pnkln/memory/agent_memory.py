@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """DeepAgent-Style Memory Architecture for Pnkln Agents
 =====================================================
 

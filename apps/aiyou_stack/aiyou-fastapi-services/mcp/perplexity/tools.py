@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Perplexity MCP Tools - Standalone tool functions for MCP integration.
 
 These functions can be registered directly with Claude Code's MCP system

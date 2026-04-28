@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # IN-MEMORY STORAGE (Replace with PostgreSQL in production)
 # ================================================================================
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Ethical Compliance Checker for web crawling and data collection.
 
 Ensures responsible intelligence gathering through:

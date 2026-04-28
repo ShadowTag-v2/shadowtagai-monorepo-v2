@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for Performance Scalability Requirements (REQ-PERF-SCALE-001 through REQ-PERF-SCALE-003).
 

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Firestore Backup Restore Drill (Item #10).
 
 Verifies that Firestore backups are functional by:

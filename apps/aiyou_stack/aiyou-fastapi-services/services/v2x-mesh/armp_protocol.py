@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ARMP (ShadowTag-v4 Resilient Mesh Protocol) v1.0
 Core protocol implementation for V2V/V2X mesh networking
 

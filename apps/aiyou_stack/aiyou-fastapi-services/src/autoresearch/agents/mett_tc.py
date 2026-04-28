@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """METT-TC Context Builder for minion
 ==========================================
 Mission, Enemy, Terrain, Troops, Time, Civilian considerations.

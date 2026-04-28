@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for Performance Time Requirements (REQ-PERF-TIME-001 through REQ-PERF-TIME-003).
 

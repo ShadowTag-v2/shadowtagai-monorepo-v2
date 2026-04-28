@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # labs/uphillsnowball/tests/test_ucmj_drag_race.py
 """Pytest fixtures for UCMJ tests with Redis mock (Item 16).
 

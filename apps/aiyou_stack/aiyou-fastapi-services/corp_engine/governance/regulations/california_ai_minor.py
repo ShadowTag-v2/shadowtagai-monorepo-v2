@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """California AI Minor Protection Act Compliance
 ==============================================
 Implementation of California's AI protections for minors.

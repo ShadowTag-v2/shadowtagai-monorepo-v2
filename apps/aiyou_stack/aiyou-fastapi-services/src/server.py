@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Main FastAPI server for multi-model LLM serving.
 
 Implements Aegaeon-inspired architecture:

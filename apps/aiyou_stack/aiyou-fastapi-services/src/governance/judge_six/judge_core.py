@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Judge 6 Core - The Governance Engine
 Combined Implementation: Legacy Logic + CSRMC 2026 + Omega Protocol
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ANTIGRAVITY :: GOD MODE :: TRAIN TITANS
 Classification: TIER 30 SOVEREIGN
 Context: 1M+

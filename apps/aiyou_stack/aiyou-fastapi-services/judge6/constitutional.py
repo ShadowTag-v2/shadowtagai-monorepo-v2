@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cor.53 Constitutional Layer - Immutable Governance Axioms
 
 These axioms form the foundational governance rules that cannot be

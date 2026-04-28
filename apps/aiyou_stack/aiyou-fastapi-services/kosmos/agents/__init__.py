@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Kosmos specialized agents for multi-agent workflows."""
 
 from kosmos.agents.base import BaseAgent

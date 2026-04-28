@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """FastAPI endpoints for Context Window Management"""
 
 from fastapi import APIRouter, HTTPException, Query

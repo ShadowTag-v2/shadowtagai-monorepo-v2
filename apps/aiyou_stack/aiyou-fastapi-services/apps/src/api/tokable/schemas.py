@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tokable Gesture Streaming Platform API
 FastAPI endpoints for silent gesture-based streaming with AI interpretation
 

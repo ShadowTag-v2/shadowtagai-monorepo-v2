@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Dual-Stack Architecture: LanceDB Compartment Initializer
 Ensures absolute isolation between internal sovereign data and external API data.
 

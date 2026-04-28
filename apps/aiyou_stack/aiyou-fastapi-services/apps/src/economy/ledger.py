@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """THE BOOKS
 Sovereign Financial Ledger
 Exports transactions to Quicken (QIF) and Universal CSV.

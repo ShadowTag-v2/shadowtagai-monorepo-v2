@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTagAi Agents: Collection → Enforcement Pipeline
 
 Provides:

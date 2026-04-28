@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Multi-LLM Router - Pure Gemini Brain & Brawn Architecture
 
 Routes requests to appropriate Gemini model based on task type:

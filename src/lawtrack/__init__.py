@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 LAWTRACK (LT): Live Rules Database + Dynamic Timelines
 

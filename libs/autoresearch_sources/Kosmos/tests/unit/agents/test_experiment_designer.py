@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tests for experiment designer Variable parsing (D1 fix)."""
 
 import pytest

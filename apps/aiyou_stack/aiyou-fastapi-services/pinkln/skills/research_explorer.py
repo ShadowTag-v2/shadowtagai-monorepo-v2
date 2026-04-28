@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ResearchExplorerSkill - Deep topic exploration and insight discovery.
 
 This skill performs web searches, extracts key insights, highlights assumptions,

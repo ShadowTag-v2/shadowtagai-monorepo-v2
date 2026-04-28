@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Critic Agent: Validates Implementer's test plan against diff
 Uses Claude Sonnet for deep reasoning
 BLOCKS merge if critical issues found

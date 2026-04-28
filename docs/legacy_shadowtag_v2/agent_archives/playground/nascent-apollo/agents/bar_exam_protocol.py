@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # agents/bar_exam_protocol.py
 import os
 import sys

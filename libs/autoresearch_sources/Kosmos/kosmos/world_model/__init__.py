@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 World Model: Persistent knowledge graph for accumulating research knowledge.
 

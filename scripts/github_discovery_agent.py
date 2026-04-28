@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GitHub Script Discovery Agent
 Scans project for scripts that should be tracked in GitHub.
 Produces structured JSON output for pipeline integration.

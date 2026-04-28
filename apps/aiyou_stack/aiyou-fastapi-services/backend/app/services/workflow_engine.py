@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Workflow engine service for executing workflow automation blocks."""
 
 import re

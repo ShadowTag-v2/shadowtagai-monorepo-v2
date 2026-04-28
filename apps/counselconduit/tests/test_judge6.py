@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/tests/test_judge6.py
 """Tests for the Judge 6 governance pipeline."""
 

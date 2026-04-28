@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Judge 6 Silent Detector — Passive signal collection layer.
 
 Scans content streams for NY S7263, RAISE Act, credential, and injection

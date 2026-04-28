@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/oracle_studio.py
 """Oracle Studio — 7-Prompt Legal Research System with S.E.U. Framework.
 

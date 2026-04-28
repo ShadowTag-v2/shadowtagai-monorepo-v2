@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """SHADOWTAGAI Core Stack - Gemini Ingestion Layer
 
 An intelligence collection pipeline designed for nightly batch processing

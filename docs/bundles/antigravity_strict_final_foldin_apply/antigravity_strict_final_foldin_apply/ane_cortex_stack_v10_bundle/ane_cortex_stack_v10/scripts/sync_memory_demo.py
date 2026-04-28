@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from service.app.adapters.cortexltm import (
     add_event,
     create_thread,

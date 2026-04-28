@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Compounding Engineering Integration for n-autoresearch/Kosmos/BioAgents Cavalry Squadron.
 Integrates 24 specialized review agents from compounding-engineering-plugin.
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTag cryptographic service.
 
 Implements Ed25519 signing and verification.

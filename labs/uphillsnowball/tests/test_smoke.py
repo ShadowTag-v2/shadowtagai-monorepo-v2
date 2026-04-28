@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # labs/uphillsnowball/tests/test_smoke.py
 """Smoke tests to bootstrap pytest discovery (Item 5).
 

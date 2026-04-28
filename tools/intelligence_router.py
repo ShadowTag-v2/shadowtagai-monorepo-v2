@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Intelligence Router — IPI Quarantine → NotebookLM Pipeline.
 
 Routes file reads through an IPI (Indirect Prompt Injection) quarantine zone

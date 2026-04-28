@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Antigravity Handoff Router - Cross-Model Orchestration
 
 Intelligent routing between Claude Sonnet 4.5 and Gemini 2.0 Flash based on:

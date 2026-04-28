@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AgentCoder: Producer-Tester-Optimizer for code generation.
 
 Three specialized agents collaborate:

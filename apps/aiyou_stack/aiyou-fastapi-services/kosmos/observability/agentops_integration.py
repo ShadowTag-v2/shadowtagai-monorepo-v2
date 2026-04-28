@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AgentOps Integration: Full observability for autonomous agents.
 
 Provides:

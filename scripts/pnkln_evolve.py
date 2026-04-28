@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """pnkln-evolve: Recursive self-improvement daemon.
 
 Scans the monorepo for:

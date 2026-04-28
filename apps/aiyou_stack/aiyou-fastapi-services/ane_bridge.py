@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ane_bridge.py — Python ctypes wrapper for libane_bridge.dylib (Pickle Rick)
 
 Wraps the C-callable ANE bridge into a Pythonic API.

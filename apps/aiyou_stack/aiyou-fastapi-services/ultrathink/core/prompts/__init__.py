@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Prompting primitives: RTF, TAG, BAB, CARE, RISE.
 
 These are the building blocks of structured AI prompting.

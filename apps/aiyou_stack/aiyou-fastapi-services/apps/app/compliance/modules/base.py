@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Base Compliance Module Class
 
 Abstract base class for all regulation compliance modules.

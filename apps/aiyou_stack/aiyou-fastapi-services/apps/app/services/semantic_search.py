@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Semantic Search Service (Nowgrep-inspired)
 Ultra-fast neural search for intelligence items, code, and text
 

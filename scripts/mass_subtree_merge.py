@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Mass subtree merge for ehanc69 fold-in.
 
 Merges all repos from third_party/ehanc69-fold-staging/ into the monorepo

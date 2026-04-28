@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GCP Scalpel — Zero-Knowledge Deployment.
 
 Headless native deployment targeting Google Cloud Run with Gen2 execution

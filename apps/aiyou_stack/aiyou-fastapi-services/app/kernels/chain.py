@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Kernel Chain Execution Logic"""
 
 from app.kernels.base import Kernel, KernelChainError

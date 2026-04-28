@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """HUD Query Memory — Cor.Gemini Sovereign RAG v2
 Queries local ChromaDB + beads_index.sqlite using all-MiniLM-L6-v2.
 Fixes: explicit embed_fn binding (no SequentialMemoryService abstraction dead-end).

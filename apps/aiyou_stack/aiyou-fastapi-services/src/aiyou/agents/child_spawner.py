@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Child Spawner: Dynamic agent spawning and lifecycle management.
 
 Partners (L3+) can spawn child agents to handle subtasks. This module

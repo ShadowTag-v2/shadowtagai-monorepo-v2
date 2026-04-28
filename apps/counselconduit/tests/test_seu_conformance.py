@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/tests/test_seu_conformance.py
 """S.E.U. Conformance Tests — Validates prompt ordering and template integrity.
 

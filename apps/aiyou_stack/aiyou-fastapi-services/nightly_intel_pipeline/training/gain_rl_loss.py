@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GAIN-RL Loss Module
 Gradient-Aware Informed Negation for Reinforcement Learning
 

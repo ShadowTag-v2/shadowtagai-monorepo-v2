@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Judge 6 Latency Validation Harness
 
 Tests p99 latency against 90ms SLA target.

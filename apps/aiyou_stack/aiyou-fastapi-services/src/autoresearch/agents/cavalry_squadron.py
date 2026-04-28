@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cavalry Squadron Structure for minion
 =============================================
 Implements Cavalry Squadron organization with Air, Armor, Stryker, and Bradley elements.

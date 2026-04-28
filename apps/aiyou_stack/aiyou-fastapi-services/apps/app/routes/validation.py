@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Validation API Routes (PNKLN: Judge 6)
 FastAPI endpoints for ATP 5-19 compliance and JR validation
 """

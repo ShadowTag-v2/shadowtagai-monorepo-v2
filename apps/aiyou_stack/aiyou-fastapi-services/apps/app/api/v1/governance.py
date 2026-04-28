@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Governance API endpoints
 Implements EU AI Act, DSA, NIST RMF, and ISO 42001 assessments
 """

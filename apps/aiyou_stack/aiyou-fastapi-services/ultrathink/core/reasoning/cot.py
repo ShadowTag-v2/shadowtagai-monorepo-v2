@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Chain-of-Thought (CoT) Reasoning
 
 The breakthrough that changed LLM capabilities.

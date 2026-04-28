@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Production API Server for Consensus Orchestrator
 FastAPI-based REST API with authentication, rate limiting, and monitoring
 """

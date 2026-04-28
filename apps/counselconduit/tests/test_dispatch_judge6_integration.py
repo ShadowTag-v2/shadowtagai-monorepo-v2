@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Integration test: Dispatch Router → Judge 6 Pipeline.
 
 Tests the full flow: prompt classification → model selection → Judge 6 gate.

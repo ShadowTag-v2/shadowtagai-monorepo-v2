@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """# noqa: INP001
 scripts/generate_hero_video.py.
 

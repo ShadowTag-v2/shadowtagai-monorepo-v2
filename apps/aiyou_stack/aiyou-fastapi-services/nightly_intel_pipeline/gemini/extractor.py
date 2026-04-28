@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini Extractor - Semantic Intelligence Extraction
 ===================================================
 Extracts structured IntelEvent objects from raw text using Gemini.

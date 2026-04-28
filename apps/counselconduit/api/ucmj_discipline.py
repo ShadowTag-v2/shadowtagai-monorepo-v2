@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """UCMJ Agent Discipline — SLA enforcement via Cloud Tasks deadlines.
 
 Maps military UCMJ articles to agent timeout behaviors:

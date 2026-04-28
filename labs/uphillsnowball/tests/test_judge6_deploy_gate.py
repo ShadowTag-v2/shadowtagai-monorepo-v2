@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tests for Judge6DeployGate — Wet Fleece / Dry Ground / Battle."""
 
 from __future__ import annotations

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - Judge 6 Validation API
 
 FastAPI service exposing validation endpoints across 4 namespaces:

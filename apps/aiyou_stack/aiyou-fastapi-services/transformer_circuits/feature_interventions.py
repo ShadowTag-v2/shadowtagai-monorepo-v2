@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Feature Interventions: Steering and validation experiments for QK circuits.
 
 Based on the paper "Tracing Attention Computation Through Feature Interactions" (2025).

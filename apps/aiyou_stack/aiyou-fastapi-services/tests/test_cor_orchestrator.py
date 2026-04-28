@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Unit tests for Cor Orchestrator (SK-inspired patterns)."""
 
 import asyncio

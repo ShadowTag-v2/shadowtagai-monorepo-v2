@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Memory Fabric for 600-agent Flying n-autoresearch/Kosmos/BioAgents swarm.
 Implements 3-tier coordination: global, team, agent.
 Based on patterns from yyz-agentics-june SPARC orchestrator.

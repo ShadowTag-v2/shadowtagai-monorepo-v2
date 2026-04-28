@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """MCP Bridge - Model Context Protocol for Semantic Compression
 
 Implements 40-60% token reduction via:

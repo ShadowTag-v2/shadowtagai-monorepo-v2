@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """scripts/skills-registry.py — SkillOps Registry Manager.
 
 Maintains the canonical skill fleet registry. Provides refresh, overlap check,

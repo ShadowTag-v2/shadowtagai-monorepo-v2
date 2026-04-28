@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """IntelEvent Schema - Structured intelligence event for Gemini normalization layer.
 
 This model defines the canonical format for all ingested intelligence items

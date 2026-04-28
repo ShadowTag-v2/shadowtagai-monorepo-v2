@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """JP 3-33 Joint Task Force Staff Topology.
 
 The 8-Agent Swarm is NOT a flat circle. It is a Joint Task Force (JTF)

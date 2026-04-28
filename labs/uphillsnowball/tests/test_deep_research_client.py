@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tests for DeepResearchClient — Interactions API wrapper.
 
 All tests use mocked google-genai SDK to avoid real API calls.

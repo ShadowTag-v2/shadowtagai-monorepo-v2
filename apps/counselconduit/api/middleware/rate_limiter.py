@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/middleware/rate_limiter.py
 """Rate Limiting Middleware — Cor.30 Rules R14-R15.
 

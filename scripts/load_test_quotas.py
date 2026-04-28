@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Load test script for sandbox quota enforcement.
 
 Validates that the SandboxMiddleware correctly enforces per-tier quotas

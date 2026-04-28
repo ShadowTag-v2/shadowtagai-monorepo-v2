@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Agents package for multi-agent swarm orchestration.
 
 Contains specialized agents that work together to solve complex tasks:

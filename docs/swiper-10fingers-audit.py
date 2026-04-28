@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Swiper Adaptive Shoppable Video Platform - 10 Fingers Business Viability Audit
 

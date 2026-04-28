@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ADP 6-22: Army Leadership and the Profession
 =============================================
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Digital Freeway Coordination API
 Pure software coordination layer for autonomous vehicles.
 """

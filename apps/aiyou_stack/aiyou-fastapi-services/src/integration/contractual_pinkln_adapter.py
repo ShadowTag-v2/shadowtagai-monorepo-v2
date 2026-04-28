@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Contractual-Pinkln Integration Adapter
 
 This module integrates the Contractual AI negotiation platform with the

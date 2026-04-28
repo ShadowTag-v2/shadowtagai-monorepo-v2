@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Event tracking API routes"""
 
 from fastapi import APIRouter, Depends, status

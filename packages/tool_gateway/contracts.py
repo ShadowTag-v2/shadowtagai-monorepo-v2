@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Contract Registry — Loads and validates tool contract YAML files.
 
 Each contract defines:

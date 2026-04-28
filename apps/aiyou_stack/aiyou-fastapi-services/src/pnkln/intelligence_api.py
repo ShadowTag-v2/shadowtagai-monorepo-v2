@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Intelligence-as-a-Service API
 Monetize the intelligence pipeline (currently $77/mo cost, $0 revenue)
 

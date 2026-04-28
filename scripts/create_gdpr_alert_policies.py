@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # scripts/create_gdpr_alert_policies.py
 """#6: Create Cloud Monitoring alert policies for GDPR endpoint 429 rate limit triggers.
 

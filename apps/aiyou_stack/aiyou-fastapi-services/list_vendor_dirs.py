@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import os
 
 vendor_path = "/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2/vendor"

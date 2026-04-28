@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cor.17 AI Architecture Integration Routes
 GPTRAM Memory + Semantic Search + Content Safety
 
