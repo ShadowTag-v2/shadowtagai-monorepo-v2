@@ -3,6 +3,10 @@ name: Repository Mass Reduction
 description: Codified protocol for git history rewrites using git-filter-repo to permanently remove large blobs, vendored repos, build caches, and ephemeral data from git history.
 ---
 
+<!-- GUARDRAIL: ACTUAL-RISK skill. Contains git reset --hard, git push --force, rm -rf.
+     Gated by: tool_contracts/skills.repo_mass_reduction.yaml (STATE B required).
+     ISSUE-018 remediation. Never execute without user authorization. -->
+
 # Repository Mass Reduction — Codified Protocol
 
 ## When to Use
