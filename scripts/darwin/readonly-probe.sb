@@ -1,0 +1,10 @@
+; Darwin Sandbox Profile for Read-Only Boot Probes (Invariant #140)
+; Install: sudo cp scripts/darwin/readonly-probe.sb /etc/antigravity/
+; Usage: sandbox-exec -f /etc/antigravity/readonly-probe.sb python scripts/health_check.py
+(version 1)
+(allow default)
+(deny file-write*)
+(allow file-write* (literal "/dev/null"))
+(allow file-write* (literal "/dev/tty"))
+(allow file-write* (subpath "/tmp"))
+(allow file-write* (subpath "/private/tmp"))
