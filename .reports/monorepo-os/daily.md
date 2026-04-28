@@ -1,6 +1,6 @@
 # Monorepo OS — Daily Truth Report
 
-> **Generated:** 2026-04-28T17:35:00Z | **Date:** April 28, 2026
+> **Generated:** 2026-04-28T18:58:02Z | **Date:** April 28, 2026
 
 ## Oracle Score
 
@@ -27,8 +27,8 @@
 
 | Property | Value |
 |----------|-------|
-| Last Commit | `de2e6fa9e` — feat(security): deploy kernel hardening gates — force-push guard, artifact-siz |
-| Dirty Files | 3 |
+| Last Commit | `0b608e562` — feat(kovelai): deploy Heppner-compliant messaging — Lighthouse 100/100/100 |
+| Dirty Files | 1 |
 | Triage | ✅ Triaged (2 actual-risk) |
 
 ## Guardrails

@@ -12,88 +12,72 @@
 | `advisory_only` | 30 |
 | **Total** | **39** |
 
-## Contract Classification
+## Enforced Contracts (9/39)
 
 | Contract | Classification | Evidence |
 |----------|---------------|----------|
-| `agent.progression.yaml` | `advisory_only` | — |
-| `artifact.upload.yaml` | `advisory_only` | — |
-| `bazel.build.yaml` | `advisory_only` | — |
-| `beads.update.yaml` | `advisory_only` | — |
-| `bootstrap.alignment.yaml` | `advisory_only` | — |
-| `code_reasoning.certificate.yaml` | `advisory_only` | — |
-| `context.google_drive_fetch.yaml` | `advisory_only` | — |
-| `design_system.lint.yaml` | `advisory_only` | — |
-| `firebase.function_bridge.yaml` | `advisory_only` | — |
-| `firebase_deploy.yaml` | `advisory_only` | — |
-| `function_call.consequential_action.yaml` | `advisory_only` | — |
-| `gemini.function_call.yaml` | `advisory_only` | — |
-| `git.history_rewrite.yaml` | `advisory_only` | — |
-| `git.lfs_check.yaml` | `advisory_only` | — |
 | `github.push.yaml` | `enforced_by_ci` | scripts/push-with-app-gates.sh, .github/workflows/monorepo-os-gates.yml |
-| `github_app.auth.yaml` | `advisory_only` | — |
-| `github_app.workflow_token.yaml` | `advisory_only` | — |
 | `github_push.yaml` | `enforced_by_script` | scripts/push-with-app-gates.sh |
-| `gitnexus.impact.yaml` | `advisory_only` | — |
 | `index.query.yaml` | `enforced_by_script` | scripts/index-status.sh |
-| `knowledge.compile.yaml` | `advisory_only` | — |
-| `knowledge.promote_to_memory.yaml` | `advisory_only` | — |
-| `large_file_scan.yaml` | `advisory_only` | — |
-| `memory.promote.yaml` | `advisory_only` | — |
-| `memory.resolve_conflict.yaml` | `advisory_only` | — |
-| `memory.retain.yaml` | `advisory_only` | — |
-| `pageindex.compile.yaml` | `advisory_only` | — |
-| `python.typecheck.yaml` | `advisory_only` | — |
-| `repo.large_file_scan.yaml` | `advisory_only` | — |
-| `repo.oracle.yaml` | `advisory_only` | — |
 | `repo.secret_scan.yaml` | `enforced_by_ci` | scripts/secret-scan.sh, .github/workflows/monorepo-os-gates.yml |
-| `repowise.evaluate.yaml` | `advisory_only` | — |
-| `ruler.apply.yaml` | `advisory_only` | — |
 | `secret_scan.yaml` | `enforced_by_ci` | scripts/secret-scan.sh, .github/workflows/monorepo-os-gates.yml |
 | `skills.repo_mass_reduction.yaml` | `enforced_by_ci` | .github/workflows/monorepo-os-gates.yml |
 | `skills.update.yaml` | `enforced_by_ci` | .github/workflows/monorepo-os-gates.yml |
 | `skills.yolo_mode_operator.yaml` | `enforced_by_ci` | .github/workflows/monorepo-os-gates.yml |
-| `tool.gateway.yaml` | `enforced_by_toolgateway` | scripts/release-readiness-gate.sh, scripts/repo-oracle-score.sh, .github/workflows/monorepo-os-gates.yml, packages/tool_gateway/ |
-| `visual.proof.yaml` | `advisory_only` | — |
+| `tool.gateway.yaml` | `enforced_by_toolgateway` | scripts/release-readiness-gate.sh, packages/tool_gateway/ |
 
-## Orphan Contracts (Advisory Only)
+## Advisory Contracts — Priority Triage
 
-These contracts have no CI job, script, or ToolGateway enforcement. They serve as
-documentation-only policy declarations until enforcement is wired.
+### P0 — Security/Safety (must wire before v3.0)
 
-- `agent.progression.yaml`
-- `artifact.upload.yaml`
-- `bazel.build.yaml`
-- `beads.update.yaml`
-- `bootstrap.alignment.yaml`
-- `code_reasoning.certificate.yaml`
-- `context.google_drive_fetch.yaml`
-- `design_system.lint.yaml`
-- `firebase.function_bridge.yaml`
-- `firebase_deploy.yaml`
-- `function_call.consequential_action.yaml`
-- `gemini.function_call.yaml`
-- `git.history_rewrite.yaml`
-- `git.lfs_check.yaml`
-- `github_app.auth.yaml`
-- `github_app.workflow_token.yaml`
-- `gitnexus.impact.yaml`
-- `knowledge.compile.yaml`
-- `knowledge.promote_to_memory.yaml`
-- `large_file_scan.yaml`
-- `memory.promote.yaml`
-- `memory.resolve_conflict.yaml`
-- `memory.retain.yaml`
-- `pageindex.compile.yaml`
-- `python.typecheck.yaml`
-- `repo.large_file_scan.yaml`
-- `repo.oracle.yaml`
-- `repowise.evaluate.yaml`
-- `ruler.apply.yaml`
-- `visual.proof.yaml`
+| Contract | Risk | Wiring Target |
+|----------|------|---------------|
+| `firebase_deploy.yaml` | Unauthorized deploys | CI gate: `firebase deploy` blocked without MCP auth check |
+| `git.history_rewrite.yaml` | History rewrite (force-push) | Pre-push hook: reject `--force` unless STATE B |
+| `git.lfs_check.yaml` | Bloat from large files | Pre-commit hook: `prepush-bloat-gate.sh` |
+| `github_app.auth.yaml` | Auth bypass | CI: verify JWT in push pipeline |
+| `github_app.workflow_token.yaml` | Token leakage | CI: GITHUB_TOKEN scope audit |
 
-## Next Steps
+### P1 — Operational Integrity (target v3.0)
 
-1. Wire each `advisory_only` contract to either a CI gate, pre-push script, or ToolGateway check
-2. Track progress via Beads issues
-3. Target: 100% enforced by v3.0
+| Contract | Risk | Wiring Target |
+|----------|------|---------------|
+| `beads.update.yaml` | Stale task tracking | Post-commit hook: verify `.beads/` touched |
+| `firebase.function_bridge.yaml` | Unvetted function calls | ToolGateway: function call routing |
+| `knowledge.compile.yaml` | Stale KIs | Nightly daemon: `dream_consolidation.py` |
+| `knowledge.promote_to_memory.yaml` | Lost context | Session-handoff: `memory-retain.sh` |
+| `memory.promote.yaml` | Lost atoms | Session-handoff: `memory-retain.sh` |
+| `memory.resolve_conflict.yaml` | Conflicting memory | Session-handoff: conflict detection |
+| `memory.retain.yaml` | Ephemeral state | Session-handoff: `memory-retain.sh` |
+| `large_file_scan.yaml` | Duplicate of `git.lfs_check` | Consolidate with `git.lfs_check.yaml` |
+| `repo.large_file_scan.yaml` | Duplicate of above | Consolidate with `git.lfs_check.yaml` |
+| `repo.oracle.yaml` | Stale oracle score | CI: `repo-oracle-score.sh` in gate |
+| `design_system.lint.yaml` | Design drift | CI: `design-system-lint.mjs` |
+| `bootstrap.alignment.yaml` | Misaligned bootstraps | CI: phase gate check |
+
+### P2 — Advisory Documentation (acceptable as-is)
+
+| Contract | Rationale |
+|----------|-----------|
+| `agent.progression.yaml` | Agent-internal tracking, no external risk |
+| `artifact.upload.yaml` | Covered by `upload_policy.yaml` |
+| `bazel.build.yaml` | Bazel not in active build path |
+| `code_reasoning.certificate.yaml` | Agent-internal reasoning certificate |
+| `context.google_drive_fetch.yaml` | Read-only operation |
+| `function_call.consequential_action.yaml` | Covered by ToolGateway |
+| `gemini.function_call.yaml` | Covered by ToolGateway |
+| `gitnexus.impact.yaml` | Future feature, no current risk |
+| `pageindex.compile.yaml` | Read-only index generation |
+| `python.typecheck.yaml` | Advisory lint, not safety-critical |
+| `repowise.evaluate.yaml` | Evaluation-only, no mutation |
+| `ruler.apply.yaml` | Agent instruction distribution |
+| `visual.proof.yaml` | Screenshot documentation |
+
+## Enforcement Roadmap
+
+| Milestone | Target | Count |
+|-----------|--------|-------|
+| **v2.4** (now) | P0 security contracts identified | 5 |
+| **v3.0** | P0 + P1 enforced | 17 |
+| **v3.5** | All non-P2 enforced | 17 |
+| **Permanent** | P2 stays advisory | 13 |
