@@ -243,7 +243,7 @@ Key metrics:
 - RISK_REGISTER: v10.9 (86+ tracked risks)
 - Cloud Functions: 4 active (analyticalWebhook, captureContact, captureLead, cspReport)
 - Firestore: 2 databases (default nam5, shadowtag-engine us-central1) — delete-protection ENABLED
-- Stripe: Live Payment Links wired — Pro Monthly (coupon 3wseBY7Z auto-applied), Pro Annual, Enterprise (contact modal)
+- Stripe: Payment Link URLs PENDING — Price IDs wired, need Dashboard Payment Link creation for Pro Monthly/Annual
 - Messaging Model: Attorney-buyer / Client-beneficiary cascade complete (9 components)
 - Open PRs: 0
 
