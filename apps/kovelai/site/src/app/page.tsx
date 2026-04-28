@@ -9,8 +9,8 @@ import DiscoveryRisk from '@/components/shared/DiscoveryRisk';
 import FAQ from '@/components/shared/FAQ';
 import Features from '@/components/shared/Features';
 import Footer from '@/components/shared/Footer';
-import Hero from '@/components/shared/Hero';
 import HowItWorks from '@/components/shared/HowItWorks';
+import KineticHero from '@/components/shared/KineticHero';
 import Management from '@/components/shared/Management';
 import Nav from '@/components/shared/Nav';
 import Pricing from '@/components/shared/Pricing';
@@ -32,7 +32,7 @@ export default function Home() {
       <ScrollProgress />
       <Nav onOpenModal={openModal} />
       <main id="main-content">
-        <Hero onOpenModal={openModal} />
+        <KineticHero onOpenModal={openModal} />
         <StatsBar />
         <DiscoveryRisk />
         <Features />

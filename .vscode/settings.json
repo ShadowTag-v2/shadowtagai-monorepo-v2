@@ -1,21 +1,114 @@
 {
   "editor.formatOnSave": true,
-  "python.languageServer": "Pylance",
-  "python.defaultInterpreterPath": "/opt/homebrew/bin/python3.14",
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "editor.foldingImportsByDefault": true,
+  "editor.defaultFormatter": "google.geminicodeassist",
+
+  "python.languageServer": "None",
+  "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.terminal.activateEnvInCurrentTerminal": true,
+
   "git.decorations.enabled": false,
+  "git.ignoreLimitWarning": true,
+
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+
   "cSpell.ignorePaths": [
     "**/dist-runtime/**",
     "**/.agent/incoming_repos/**",
     "**/vendor/a2ui/**",
     "**/payload-starter/**"
   ],
+
+  "files.exclude": {
+    "**/bazel-*/**": true,
+    "**/vendor/**": true,
+    "**/third_party/**": true,
+    "**/archive/**": true,
+    "**/tools/legacy/**": true,
+    "**/docs/legacy_shadowtag_v2/**": true,
+    "**/apps/aiyou_ecosystem/raw_ingest/**": true,
+    "**/_PRE_OMEGA_BACKUP_*/**": true,
+    "**/ShadowTag-Omega/**": true,
+    "**/arsenal_recovered/**": true,
+    "**/repos/*-legacy/**": true
+  },
+  "search.exclude": {
+    "**/bazel-*/**": true,
+    "**/vendor/**": true,
+    "**/third_party/**": true,
+    "**/archive/**": true,
+    "**/tools/legacy/**": true,
+    "**/docs/legacy_shadowtag_v2/**": true,
+    "**/apps/aiyou_ecosystem/raw_ingest/**": true,
+    "**/_PRE_OMEGA_BACKUP_*/**": true,
+    "**/ShadowTag-Omega/**": true,
+    "**/arsenal_recovered/**": true,
+    "**/repos/*-legacy/**": true,
+    "**/external_repos/**": true,
+    "**/monorepo-fold-in-batch/**": true,
+    "**/third_party/playgrounds/**": true,
+    "**/labs/uphillsnowball/external_payloads/**": true,
+    "**/.reports/**": true
+  },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.hg/store/**": true,
     "**/node_modules/**": true,
-    "**/dist-runtime/**": true,
+    "**/.venv/**": true,
     "**/.pixi/**": true,
-    "**/.venv/**": true
+    "**/archive/**": true,
+    "**/legacy/**": true,
+    "**/raw_ingest/**": true,
+    "**/recovered/**": true,
+    "**/backup/**": true,
+    "**/data/lancedb/**": true,
+    "**/bazel-*/**": true,
+    "**/vendor/**": true,
+    "**/third_party/**": true,
+    "**/tools/legacy/**": true,
+    "**/docs/legacy_shadowtag_v2/**": true,
+    "**/apps/aiyou_ecosystem/raw_ingest/**": true,
+    "**/_PRE_OMEGA_BACKUP_*/**": true,
+    "**/ShadowTag-Omega/**": true,
+    "**/arsenal_recovered/**": true,
+    "**/repos/*-legacy/**": true,
+    "**/external_repos/**": true,
+    "**/monorepo-fold-in-batch/**": true,
+    "**/dist-runtime/**": true
   },
+
   "extensions.experimental.affinity": {
     "google.geminicodeassist": 1,
     "googlecloudtools.cloudcode": 1,
