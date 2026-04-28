@@ -7,26 +7,29 @@
 # runs linters, and prints the explicit file delta before saving.
 # ============================================================================
 
+import logging
 import subprocess
 import sys
 from pathlib import Path
 
+logger = logging.getLogger(__name__)
+
 
 def run_cmd(cmd, cwd=None, check=False):
-    print(f">>> Executing: {cmd}")
+    logger.info("Executing: %s", cmd)
     res = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=cwd)
     if res.returncode != 0:
         stderr = res.stderr.strip()
         if check:
-            print(f"❌ Failed: {stderr}")
+            logger.error("Failed: %s", stderr)
             sys.exit(res.returncode)
         elif stderr and "warning" not in stderr.lower():
-            print(f"⚠️ Notice: {stderr}")
+            logger.warning("Notice: %s", stderr)
     return res
 
 
 def pre_action_memory_gate():
-    print(">>> 🛑 1. PRE-ACTION MEMORY GATE: SAVING TABS & PURGING RAM...")
+    logger.info("1. PRE-ACTION MEMORY GATE: SAVING TABS & PURGING RAM...")
     # AppleScript to force VS Code/Cursor/Antigravity to Save All (Cmd+Opt+S)
     script = """
     tell application "System Events"
@@ -35,11 +38,11 @@ def pre_action_memory_gate():
     end tell
     """
     subprocess.run(["osascript", "-e", script], capture_output=True)
-    print("   [+] Workspace editors saved. Memory recovered.")
+    logger.info("Workspace editors saved. Memory recovered.")
 
 
 def repo_drift_audit():
-    print(">>> 🔍 2. REPO-DRIFT AUDIT: SCANNING DIRTY FILES...")
+    logger.info("2. REPO-DRIFT AUDIT: SCANNING DIRTY FILES...")
     res = run_cmd("git status --porcelain")
     dirty_files = [line[3:] for line in res.stdout.splitlines() if line.strip()]
 
@@ -67,12 +70,12 @@ def repo_drift_audit():
             changed_files.append(file)
 
     if conflict_files:
-        print("\n🚨 CONFLICT MARKERS DETECTED (MANUAL HEALING REQUIRED):")
+        logger.error("CONFLICT MARKERS DETECTED (MANUAL HEALING REQUIRED):")
         for f in conflict_files:
-            print(f"  - {f}")
+            logger.error("  - %s", f)
         sys.exit(1)
 
-    print(">>> 🧹 3. LINTING & AST HEALING...")
+    logger.info("3. LINTING & AST HEALING...")
     run_cmd("/opt/homebrew/bin/ruff check --fix .")
     run_cmd("/opt/homebrew/bin/ruff format .")
     run_cmd("npx @biomejs/biome check --write . 2>/dev/null || true")
@@ -81,29 +84,33 @@ def repo_drift_audit():
 
 
 def egress_commit(changed_files):
-    print("\n📊 EX TOTO SWEEP REPORT:")
-    print("--------------------------------------------------")
+    logger.info("EX TOTO SWEEP REPORT:")
+    logger.info("--------------------------------------------------")
     if changed_files:
-        print("✅ MUTATED / DIRTY FILES (SAVED, LINTED, & REPAIRED):")
+        logger.info("MUTATED / DIRTY FILES (SAVED, LINTED, & REPAIRED):")
         for f in changed_files:
-            print(f"  [+] {f}")
+            logger.info("  [+] %s", f)
         # Stage only the meaningful files, not heartbeat/bazel drift
         file_list = " ".join(f'"{f}"' for f in changed_files)
         run_cmd(f"git add {file_list}")
     else:
-        print("✅ NO DRIFT DETECTED. ALL FILES ALREADY CLEAN.")
-        print("   Nothing to commit.")
+        logger.info("NO DRIFT DETECTED. ALL FILES ALREADY CLEAN.")
+        logger.info("Nothing to commit.")
         return
 
-    print("\n>>> 🔒 5. OMEGA LOOP EGRESS (Locking State)...")
+    logger.info("5. OMEGA LOOP EGRESS (Locking State)...")
     res = run_cmd('git commit -m "chore(omega): Ex Toto memory gate sweep"')
     if res.returncode == 0:
-        print("✅ STATUS: GOD MODE MAINTAINED. WORKSPACE LOCKED. READY FOR OMEGA LOOP.")
+        logger.info("STATUS: GOD MODE MAINTAINED. WORKSPACE LOCKED. READY FOR OMEGA LOOP.")
     else:
-        print("⚠️ Nothing to commit or commit failed. State unchanged.")
+        logger.warning("Nothing to commit or commit failed. State unchanged.")
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    )
     pre_action_memory_gate()
     changed = repo_drift_audit()
     egress_commit(changed)
