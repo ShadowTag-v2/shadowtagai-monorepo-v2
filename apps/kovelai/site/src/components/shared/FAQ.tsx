@@ -4,7 +4,11 @@ export default function FAQ() {
   const faqs = [
     {
       q: 'What is the Kovel Doctrine?',
-      a: "The Kovel Doctrine (from United States v. Kovel, 296 F.2d 918) extends attorney-client privilege to non-attorney agents — like accountants, interpreters, or technology platforms — working under the attorney's direction. When you deploy KovelAI for your clients, it operates as a Kovel agent under your firm's privilege umbrella. Your clients get protected search access; you get visibility and billing. After In re Heppner, this is no longer optional.",
+      a: "The Kovel Doctrine (from United States v. Kovel, 296 F.2d 918) extends attorney-client privilege to non-attorney agents — like accountants, interpreters, or technology platforms — working under the attorney's direction. When you deploy KovelAI for your clients, their web searches and AI interactions operate under your firm's privilege umbrella. The attorney stays in the loop, provides the first legal opinion, and the client gets protected access to research without risk of discovery. After In re Heppner, this isn't optional — it's the standard of care.",
+    },
+    {
+      q: 'How does KovelAI protect my client?',
+      a: "Your clients are already searching the internet about their case — Google, ChatGPT, Reddit. Every one of those searches is discoverable. KovelAI gives you a turnkey portal to deploy for your clients so their research happens inside your privilege umbrella. Instead of getting ambushed by random, discoverable AI searches, you see everything they search, provide the first legal opinion, and keep a complete, privileged archive. The client relaxes enough to recall all the facts of their case — and opposing counsel can't touch any of it.",
     },
     {
       q: 'Is my client data stored anywhere?',
@@ -12,15 +16,19 @@ export default function FAQ() {
     },
     {
       q: 'What happened in In re Heppner?',
-      a: 'In In re Heppner (S.D.N.Y., Feb. 10, 2026), the court ruled that client internet search histories conducted outside of attorney-supervised channels are discoverable in litigation. This includes Google searches, AI chatbot interactions, and any web activity not routed through a privileged infrastructure. The ruling created the post-Heppner compliance gap. KovelAI gives attorneys a turnkey portal to deploy for their clients — closing that gap with privileged search infrastructure.',
+      a: 'In In re Heppner (S.D.N.Y., Feb. 10, 2026), the court ruled that client internet search histories conducted outside of attorney-supervised channels are discoverable in litigation. This includes Google searches, AI chatbot interactions, and any web activity not routed through a privileged infrastructure. KovelAI gives attorneys a turnkey portal to deploy for their clients — routing all that activity through your privilege umbrella so the client can research freely and you maintain oversight.',
     },
     {
       q: 'How does billing work?',
-      a: "You purchase CounselConduit for your clients — like issuing equipment to your team. Clients log in with their credit card, which serves as both authentication and payment method. You set the session rate. The client's card is billed at the end of each cycle, and you receive payment in full compliance with the Rules of Professional Responsibility. No invoicing, no collections, no overhead.",
+      a: "You purchase CounselConduit as infrastructure for your clients — like a police chief buying bulletproof vests for the force. The client logs in with their credit card, which serves as both authentication and payment method. You set the session rate in compliance with the Rules of Professional Responsibility. The client's card is billed at the end of each billing cycle, and you receive payment automatically. No invoicing, no collections, no overhead. You monitor usage, you provide the first legal opinion, and you get paid.",
     },
     {
       q: 'What AI model does KovelAI use?',
-      a: 'KovelAI uses Google Gemini 2.5 Flash via Vertex AI, governed by the Judge 6 Compliance Framework — a risk matrix that evaluates every query before execution. The model never trains on your data, and all inference happens within our zero-retention pipeline.',
+      a: 'KovelAI uses Google Gemini 2.5 Flash via Vertex AI, governed by the Judge 6 Compliance Framework — a risk matrix that evaluates every query before execution. The model never trains on your data, and all inference happens within our zero-retention pipeline. Your client gets AI-powered research; you get a clean, privileged archive of everything they explored.',
+    },
+    {
+      q: 'What does the attorney see?',
+      a: "Everything. The attorney monitoring dashboard gives you real-time visibility into your client's research sessions — what they searched, what the AI responded, and how long they spent. You provide the first legal opinion before the client acts on anything. No more getting blindsided by a client who Googled their way into a bad strategy. You sit in the loop, maintain privilege, and bill automatically.",
     },
     {
       q: 'Does KovelAI support SOC 2 / HIPAA-aligned practices?',
