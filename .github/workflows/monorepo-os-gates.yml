@@ -192,6 +192,21 @@ jobs:
             fi
           done
 
+      - name: Verify Clone Yard & Guardrail Audit
+        run: |
+          echo "═══ Clone Yard Truth ═══"
+          test -f external_repos/upstream_manifest.yaml || (echo "::error::Missing clone-yard manifest"; exit 1)
+          python3 -c "import yaml; yaml.safe_load(open('external_repos/upstream_manifest.yaml'))" || (echo "::error::Invalid YAML in manifest"; exit 1)
+          bash -n scripts/clone-external-reference-repos.sh
+          scripts/clone-external-reference-repos.sh --dry-run || (echo "::error::Clone yard dry-run failed"; exit 1)
+          echo "  ✓ Clone-yard manifest and dry-run passed"
+
+          echo "═══ Guardrail Audit ═══"
+          bash -n scripts/guardrail-annotation-audit.sh
+          scripts/guardrail-annotation-audit.sh || (echo "::error::Guardrail audit failed"; exit 1)
+          test -f .reports/skills/guardrail_annotation_audit.md || (echo "::error::Missing guardrail audit report"; exit 1)
+          echo "  ✓ Guardrail annotation passed"
+
       - name: Repo Oracle Score
         run: |
           echo "═══ Repo Oracle Score Gate ═══"

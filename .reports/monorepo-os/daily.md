@@ -1,6 +1,6 @@
 # Monorepo OS — Daily Truth Report
 
-> **Generated:** 2026-04-28T15:53:23Z | **Date:** April 28, 2026
+> **Generated:** 2026-04-28T16:29:57Z | **Date:** April 28, 2026
 
 ## Oracle Score
 
@@ -16,7 +16,7 @@
 | Operator Invariants | 16 | `operator_invariants.json` |
 | Invariant Atoms | 26 | `operator_invariants_atoms.json` |
 | ToolGateway Contracts | 39 | `tool_contracts/*.yaml` |
-| Beads (Issues) | 29 | `.beads/issues.jsonl` |
+| Beads (Issues) | 59 | `.beads/issues.jsonl` |
 | Memory Events | 5 | `.memory/events.ndjson` |
 | Memory Atoms | 12 | `.memory/atoms/` |
 | Workspace Skills | 65 | `.agents/skills/` |
@@ -27,8 +27,8 @@
 
 | Property | Value |
 |----------|-------|
-| Last Commit | `4d2c2a821` — build(kovelai): static export artifacts from Next.js 16.2.1 production build |
-| Dirty Files | 7 |
+| Last Commit | `8512e65c6` — fix(governance): v2.3 truth-and-proof patch — commit clone-yard manifest, orph |
+| Dirty Files | 27 |
 | Triage | ✅ Triaged (2 actual-risk) |
 
 ## Guardrails

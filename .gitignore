@@ -32,6 +32,8 @@ build/
 
 # --- ROOT-LEVEL EXTERNAL REPOS (CRITICAL — Invariant #55) ---
 external_repos/
+!external_repos/README.md
+!external_repos/upstream_manifest.yaml
 .agent/incoming_repos/
 
 # --- Archive (blanket — keep on disk, never track) ---

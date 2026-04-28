@@ -7,7 +7,7 @@
 
 ## Context
 
-CounselConduit (Cloud Run, revision `counselconduit-00037-7mf`) needs to access
+CounselConduit (Cloud Run, revision `counselconduit-00045-kjp`) needs to access
 GCP Filestore for persistent file storage (uploaded legal documents, generated
 reports, client attachments). Cloud Run services run in a managed environment
 without direct VPC access by default.
