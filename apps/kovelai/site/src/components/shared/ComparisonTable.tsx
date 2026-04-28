@@ -1,15 +1,19 @@
 export default function ComparisonTable() {
   const rows = [
-    { feature: 'Client web searches', risk: '⚠️ Discoverable', safe: '✅ Privileged' },
     {
-      feature: 'AI chatbot conversations',
-      risk: '⚠️ Subpoena target',
-      safe: '✅ Shielded under Kovel',
+      feature: 'Client web searches',
+      risk: '⚠️ Discoverable by opposing counsel',
+      safe: '✅ Shielded under privilege',
     },
     {
-      feature: 'Client pre-trial research',
-      risk: '⚠️ Discoverable anxiety searches',
-      safe: '✅ Privileged & archived for strategy',
+      feature: 'AI chatbot conversations',
+      risk: '⚠️ Subpoenaed and weaponized',
+      safe: '✅ Protected via Kovel Doctrine',
+    },
+    {
+      feature: 'Client pre-trial anxiety',
+      risk: '⚠️ Panic searches create discoverable evidence',
+      safe: '✅ Client relaxes, recalls facts safely',
     },
     {
       feature: 'Data retention',
@@ -17,30 +21,30 @@ export default function ComparisonTable() {
       safe: '✅ Zero retention (RAM only)',
     },
     {
-      feature: 'Revenue per interaction',
+      feature: 'Attorney awareness',
+      risk: '❌ Ambushed by random client searches',
+      safe: '✅ Full real-time visibility',
+    },
+    {
+      feature: 'First legal opinion',
+      risk: '❌ Other side sees it first',
+      safe: '✅ Attorney gives the first opinion',
+    },
+    {
+      feature: 'Billing',
       risk: '$0 (unbilled panic calls)',
-      safe: '$50–$250/session (billable)',
-    },
-    {
-      feature: 'Attorney strategic position',
-      risk: '❌ Ambushed at trial',
-      safe: '✅ First legal opinion is yours',
-    },
-    {
-      feature: 'Compliance posture',
-      risk: '❌ Hope-based',
-      safe: '✅ SOC 2 audit-ready, HIPAA-supportive',
+      safe: '✅ Auto-billed via client credit card',
     },
   ];
 
   return (
     <section className="py-20 md:py-28" id="comparison">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="section-label">Why KovelAI</div>
-        <h2 className="section-title">KovelAI vs. Doing Nothing</h2>
+        <div className="section-label">Why CounselConduit</div>
+        <h2 className="section-title">Your Client Without CounselConduit vs. With</h2>
         <p className="section-desc mb-10">
           Every day without privilege protection is another day opposing counsel can mine your
-          clients&apos; digital footprint.
+          clients&apos; web and AI activity and use it against them at trial.
         </p>
         <div className="overflow-x-auto glass-card p-0">
           <table className="comparison-table">
@@ -48,10 +52,10 @@ export default function ComparisonTable() {
               <tr>
                 <th scope="col">Feature</th>
                 <th scope="col" className="text-error">
-                  Without KovelAI
+                  Client Unprotected
                 </th>
                 <th scope="col" className="text-blue">
-                  Shielded by Attorney-Client Privilege
+                  Client Shielded by CounselConduit
                 </th>
               </tr>
             </thead>
