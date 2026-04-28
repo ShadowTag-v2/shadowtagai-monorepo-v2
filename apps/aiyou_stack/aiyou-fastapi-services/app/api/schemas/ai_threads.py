@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AI Threads API Schemas
 
 Pydantic models for AI thread API request/response handling.

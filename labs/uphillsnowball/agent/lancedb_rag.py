@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # labs/uphillsnowball/agent/lancedb_rag.py
 """LanceDB Local RAG Pipeline for UphillSnowball.
 

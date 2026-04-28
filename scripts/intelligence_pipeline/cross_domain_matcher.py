@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Step 3 — Cross-Domain Matcher.
 
 For each of 2,856 docs, finds top-3 semantic matches in:

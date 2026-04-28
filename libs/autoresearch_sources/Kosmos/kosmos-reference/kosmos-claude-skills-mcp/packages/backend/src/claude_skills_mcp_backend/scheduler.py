@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Hourly scheduler for automatic skill updates."""
 
 import asyncio

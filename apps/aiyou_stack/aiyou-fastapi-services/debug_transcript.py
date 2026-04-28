@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import inspect
 
 from youtube_transcript_api import YouTubeTranscriptApi

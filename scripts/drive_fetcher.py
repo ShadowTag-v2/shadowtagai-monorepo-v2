@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import argparse
 from google.auth import default
 from googleapiclient.discovery import build

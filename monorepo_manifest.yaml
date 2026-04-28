@@ -230,3 +230,4 @@ active_silos:
       # tauri_cockpit — DEPRECATED 2026-04-24: Archived, replaced by browser tab + WebAuthn
       - sovereign_infra_tf
       - genesis_bootstrapper
+copyright_infrastructure: active

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTagAi Agent Pattern: Enforcement-First Agent Architecture
 
 Pattern:

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Generate A/B variant hero videos with alternate color palettes using Veo 3.1.
 
 Usage:

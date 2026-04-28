@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pnkln Verdict Vertical
 Task scheduler enforcing flow with locks/escrows and time escalations.
 """

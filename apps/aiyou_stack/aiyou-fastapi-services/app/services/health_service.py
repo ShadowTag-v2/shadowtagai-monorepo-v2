@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Health Service Layer
 
 Encapsulates database connectivity checks for readiness probes.

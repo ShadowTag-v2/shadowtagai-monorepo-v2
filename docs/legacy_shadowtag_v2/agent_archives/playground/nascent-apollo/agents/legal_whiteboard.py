@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # agents/legal_whiteboard.py
 import json
 from datetime import datetime

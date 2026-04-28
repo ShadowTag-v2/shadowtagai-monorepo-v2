@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cofounder Enhancements - Enterprise Context for All Agents
 
 Ensures every agent (Level 0-5) has full access to:

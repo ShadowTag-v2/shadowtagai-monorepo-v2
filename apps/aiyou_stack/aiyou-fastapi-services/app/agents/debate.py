@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PanelGPT/MAD (Multi-Agent Debate) framework.
 
 Multiple agents debate a problem, refining solutions through iteration.

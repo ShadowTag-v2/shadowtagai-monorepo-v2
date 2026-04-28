@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AI Agent Business Plan - Thread Rollup & Transfer Package
 Generated: 2025-11-17
 Context: AI Agent-as-a-Service (Vertical SaaS Model)

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/pr_review_webhook.py
 """Sovereign PR Review Webhook — M1 Max Antigravity Swarm.
 

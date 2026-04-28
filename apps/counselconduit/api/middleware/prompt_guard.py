@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/middleware/prompt_guard.py
 """Prompt Injection Guardrails — OWASP LLM01.
 

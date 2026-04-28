@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/stripe_connect.py
 """Stripe Connect — Attorney onboarding + payment splitting.
 

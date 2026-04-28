@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """God Mode Admin — Comprehensive GCP + Firebase environment validator.
 
 Verifies all production invariants:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Workflow execution engine for running automation workflows."""
 
 import asyncio

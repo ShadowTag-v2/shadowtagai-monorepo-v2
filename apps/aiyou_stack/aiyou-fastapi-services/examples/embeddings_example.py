@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Example usage of the embeddings and semantic search API."""
 
 import asyncio

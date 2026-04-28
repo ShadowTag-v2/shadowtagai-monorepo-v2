@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTag v2 Setup Script.
 
 Installation:

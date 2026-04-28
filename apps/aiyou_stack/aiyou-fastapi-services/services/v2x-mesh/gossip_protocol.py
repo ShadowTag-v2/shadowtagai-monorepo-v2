@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gossip Protocol for V2X Mesh Networking
 
 Implements epidemic-style message propagation with:

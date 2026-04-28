@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTag-v4 FastAPI Main Application
 
 This is the main entry point for the ShadowTag-v4 platform API services.

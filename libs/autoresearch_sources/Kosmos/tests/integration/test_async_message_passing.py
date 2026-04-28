@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Integration tests for async message passing architecture (Issue #66 fix).
 

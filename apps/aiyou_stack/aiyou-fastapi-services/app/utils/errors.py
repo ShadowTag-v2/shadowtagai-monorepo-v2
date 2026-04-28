@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Custom exception classes for accessible error handling.
 
 All exceptions follow WCAG 2.1 principles with:

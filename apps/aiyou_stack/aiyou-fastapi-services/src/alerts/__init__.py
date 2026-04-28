@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Predictive Alerting System - Proactive problem detection and notification.
 
 Features:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """managed_push.py — Resumable, self-healing GitHub push daemon for Monorepo-Uphillsnowball.
 
 Features:

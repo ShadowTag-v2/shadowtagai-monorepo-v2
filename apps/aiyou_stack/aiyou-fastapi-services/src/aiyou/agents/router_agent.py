@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Router Agent - The orchestrator that analyzes tasks and delegates to specialists.
 
 This agent acts as the "manager" in the swarm, analyzing user requests,

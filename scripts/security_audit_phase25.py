@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cor.30 Security Audit — Phase 2.5 New Files.
 
 Validates security compliance of recently added files against

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cor - Unified Execution Brain
 
 Central orchestrator for task execution. Coordinates between:

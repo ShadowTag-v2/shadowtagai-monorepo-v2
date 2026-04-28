@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for Orchestrator Resource Management Requirements (REQ-ORCH-RES-001 through REQ-ORCH-RES-004).
 

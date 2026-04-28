@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Research Information Lookup Tool
 Uses Perplexity's Sonar Pro or Sonar Reasoning Pro models through OpenRouter.

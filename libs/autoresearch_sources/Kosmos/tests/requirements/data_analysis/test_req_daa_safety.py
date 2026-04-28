@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for Data Analysis Agent Safety Requirements (REQ-DAA-SAFE-*).
 

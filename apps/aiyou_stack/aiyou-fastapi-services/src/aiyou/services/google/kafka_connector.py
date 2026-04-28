@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import logging
 
 # https://docs.cloud.google.com/managed-service-for-apache-kafka/docs

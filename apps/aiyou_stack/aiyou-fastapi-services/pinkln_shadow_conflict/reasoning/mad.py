@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Multi-Agent Debate (MAD) reasoning framework.
 
 MAD enables multiple agents to debate solutions, critique each other, and reach

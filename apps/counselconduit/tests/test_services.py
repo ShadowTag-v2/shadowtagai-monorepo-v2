@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # Copyright 2026 ShadowTag AI. All rights reserved.
 # SPDX-License-Identifier: Proprietary
 """Unit tests for AG-UI SSE stream, Kovel attestation, LiteLLM proxy,

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Cost Monitor: Budget tracking and alerts for LLM inference costs.
 
 Features:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """YouTube Data API Collector
 Collects videos using YouTube Data API v3
 """

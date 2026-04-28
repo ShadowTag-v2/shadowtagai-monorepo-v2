@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Unit tests for event system."""
 
 from agentic_data_scientist.core.events import (

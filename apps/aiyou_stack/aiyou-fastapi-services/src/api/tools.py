@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from duckduckgo_search import DDGS
 
 WEB_SEARCH_TOOL_SCHEMA = {

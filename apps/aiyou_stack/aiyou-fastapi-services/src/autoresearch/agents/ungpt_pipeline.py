@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """UNGPT Pipeline - Minimal working version
 10 Gemini instances → Git Push → PR
 """

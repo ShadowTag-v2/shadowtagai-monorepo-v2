@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pnkln Odor Vertical
 Model airflow/odor/CBRN scrubbing with constraints.
 """

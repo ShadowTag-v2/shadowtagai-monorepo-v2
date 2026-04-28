@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """FastAPI route decorators for ultrathink integration.
 
 Make every route smarter with zero boilerplate.

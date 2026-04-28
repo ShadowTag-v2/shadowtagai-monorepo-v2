@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Forensic Index (Code: GLASS BOX)
 
 Full-text compliance search engine for Judge 6 and ShadowTag.

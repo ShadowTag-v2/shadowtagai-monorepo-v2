@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ADK-based agent system."""
 
 from agentic_data_scientist.agents.adk.agent import NonEscalatingLoopAgent, create_agent, create_app

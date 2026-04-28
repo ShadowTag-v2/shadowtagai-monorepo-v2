@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Base Agent class for the pinkln Agent Architecture System.
 
 Agents are autonomous personas that use one or more Skills to execute tasks.

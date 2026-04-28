@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pnkln Geos Vertical
 Summarize geo/polygon events and economic triggers.
 """

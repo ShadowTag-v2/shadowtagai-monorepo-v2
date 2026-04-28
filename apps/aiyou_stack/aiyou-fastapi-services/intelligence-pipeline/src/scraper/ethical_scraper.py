@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Intelligence Pipeline - Ethical Web Scraper
 ATP 5-19 RA-1 Compliant | RFC 9309 robots.txt Compliance
 

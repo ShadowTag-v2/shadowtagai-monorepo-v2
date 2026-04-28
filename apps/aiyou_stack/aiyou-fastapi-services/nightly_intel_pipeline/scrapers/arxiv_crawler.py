@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """arXiv Paper Crawler
 Discovers and downloads relevant AI/MLOps research papers
 """

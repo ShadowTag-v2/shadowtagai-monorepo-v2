@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - Dark Web / Onion Source Adapter
 
 Routes requests through Tor (localhost:9050 SOCKS5).

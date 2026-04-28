@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Database Models for Zero-Touch Legal Deadline Management
 SQLAlchemy ORM models
 """

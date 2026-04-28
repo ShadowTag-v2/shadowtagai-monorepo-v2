@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """SEO Master API Router"""
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status

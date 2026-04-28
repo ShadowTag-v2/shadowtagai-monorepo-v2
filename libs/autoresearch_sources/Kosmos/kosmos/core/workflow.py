@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Research workflow state machine for autonomous iteration (Phase 7).
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - Judge 6 Validation Layer
 
 Hybrid Gemini+PyTorch validation system that ensures data quality

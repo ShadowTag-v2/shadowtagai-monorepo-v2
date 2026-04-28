@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 omega_port_executioner.py - The "Pickle Rick" Port Killer
 Autonomously detects and annihilates zombie processes holding dev ports (3000, 8000, 5173, etc.) hostage.

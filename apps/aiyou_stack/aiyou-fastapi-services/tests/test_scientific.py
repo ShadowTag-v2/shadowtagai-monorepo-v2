@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from src.agents.scientific.scientific_agent import ScientificAgent
 from src.agents.v8_core import Task
 

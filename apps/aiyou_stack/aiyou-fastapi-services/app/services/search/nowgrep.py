@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Nowgrep - Ultra-fast Neural Grep
 Semantic search for text, code, and multimodal content
 Quantitative Effect: ↑ Query speed +60%, ↓ Index size –40%

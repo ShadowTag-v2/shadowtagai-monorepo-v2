@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Autonomous Flight Service using GAAS
 AiU Aero: FAA-certified autonomous flight with pre-execution compliance
 

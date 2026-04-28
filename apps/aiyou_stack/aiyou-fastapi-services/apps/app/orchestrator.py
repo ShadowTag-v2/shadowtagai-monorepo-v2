@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Antigravity Orchestrator (The Nervous System)
 Implements the "Courtroom" and "Explain-to-Peer" patterns via LangGraph.
 """

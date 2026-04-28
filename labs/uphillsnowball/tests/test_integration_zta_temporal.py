@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # labs/uphillsnowball/tests/test_integration_zta_temporal.py
 """Integration test for end-to-end ZTA → Temporal flow (Item 19).
 

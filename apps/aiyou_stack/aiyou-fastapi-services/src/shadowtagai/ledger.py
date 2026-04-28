@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTag Immutable Ledger (BigQuery Implementation)
 
 Implements a secure, append-only ledger for ShadowTag verification events using Google BigQuery.

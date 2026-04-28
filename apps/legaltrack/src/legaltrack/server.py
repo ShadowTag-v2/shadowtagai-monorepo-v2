@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from fastapi import FastAPI
 
 from .calendar import google_sync

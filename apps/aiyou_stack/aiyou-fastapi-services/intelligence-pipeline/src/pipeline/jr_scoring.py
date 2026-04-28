@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Intelligence Pipeline - JR Engine Scoring
 
 JR (Junior) Engine provides initial scoring and reasoning for intelligence items.

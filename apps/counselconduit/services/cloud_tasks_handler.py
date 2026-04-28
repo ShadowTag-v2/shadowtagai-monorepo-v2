@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # Copyright 2026 ShadowTag AI. All rights reserved.
 # SPDX-License-Identifier: Proprietary
 """Cloud Tasks push notification handler for long-running A2A queries.

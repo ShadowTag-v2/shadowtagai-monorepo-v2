@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """V2X Mesh API Service
 
 FastAPI application for V2X mesh network management.

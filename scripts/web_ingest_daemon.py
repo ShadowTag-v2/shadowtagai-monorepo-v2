@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """SYSTEM PROMPT (ArXiv 2512.14982 - PROMPT REPETITION ENFORCEMENT):
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini Ingestion Layer - Nightly Intelligence Collection Orchestrator
 
 ARCHITECTURE: GKE CronJob Multi-Container

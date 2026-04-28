@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Authentication service.
 
 Handles JWT issuing, password hashing, and user validation.

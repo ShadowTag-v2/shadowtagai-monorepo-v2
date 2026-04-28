@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 r"""Deduplicate and post PR review comments via GitHub Pulls Review API.
 
 Collects review outputs from multiple parallel Gemini agent jobs,

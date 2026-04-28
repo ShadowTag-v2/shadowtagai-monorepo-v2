@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Coder Agent - Specialist in code generation, refactoring, and implementation.
 
 Focuses on writing clean, well-documented code following best practices.

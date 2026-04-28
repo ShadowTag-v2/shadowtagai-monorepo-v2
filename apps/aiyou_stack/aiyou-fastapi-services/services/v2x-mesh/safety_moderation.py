@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Safety Moderation for V2X Mesh
 
 Integrates with:

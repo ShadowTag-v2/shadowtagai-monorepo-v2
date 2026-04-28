@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """LLM Orchestrator API Routes
 Endpoints for multi-LLM orchestration with PNKLN integration
 """

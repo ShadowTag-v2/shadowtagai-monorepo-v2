@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Context Management Service
 
 Business logic for managing AI analysis sessions and context indices

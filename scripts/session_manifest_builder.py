@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Session Manifest Builder.
 ========================
 Parses raw_sessions.txt → deduplicates → emits structured TELEPORT_MANIFEST.json.

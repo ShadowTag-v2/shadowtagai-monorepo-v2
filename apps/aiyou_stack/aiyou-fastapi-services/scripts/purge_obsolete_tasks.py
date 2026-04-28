@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PURGE SCRIPT
 Target: Batch-mark legacy action items as [OBSOLETE].
 Preserves: Files identified in MISSION_CRITICAL.md.

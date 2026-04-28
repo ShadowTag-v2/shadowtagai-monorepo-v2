@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Ray Serve orchestrator for distributed LLM serving."""
 
 import logging

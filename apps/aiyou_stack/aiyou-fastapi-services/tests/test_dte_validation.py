@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """DTE (Dynamic Test Evolution) Validation Tests
 
 PURPOSE: Prove +3.7% accuracy improvement claim through empirical testing

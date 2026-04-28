@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Contractual Services Package
 
 This package contains core business logic for the Contractual platform:

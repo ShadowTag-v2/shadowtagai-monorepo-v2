@@ -1,3 +1,5 @@
+// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
+
 'use client';
 
 import { Button as ButtonPrimitive } from '@base-ui/react/button';

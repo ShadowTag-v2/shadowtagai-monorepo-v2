@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tier Classification Module
 
 Implements 3-tier data classification system:

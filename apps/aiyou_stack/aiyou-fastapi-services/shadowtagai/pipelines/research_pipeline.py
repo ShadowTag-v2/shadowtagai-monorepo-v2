@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Multi-Source Research Pipeline
 
 COR-based orchestration for parallel research across Drive, Gmail, Web.

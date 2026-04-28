@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Ingest Merged Extractions into Memory Bank.
 
 This script takes the output of `merge_web_extractions.py` (JSON) and folds it into

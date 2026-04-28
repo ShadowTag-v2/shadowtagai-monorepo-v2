@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pytest configuration and fixtures for ShadowTag v2 tests."""
 
 from pathlib import Path

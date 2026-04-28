@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Performance monitoring integration for unified observability.
 
 Integrates with Performance Engineer to provide:

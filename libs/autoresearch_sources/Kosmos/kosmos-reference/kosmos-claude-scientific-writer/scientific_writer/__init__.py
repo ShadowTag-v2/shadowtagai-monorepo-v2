@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Scientific Writer - AI-powered scientific writing assistant.
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Intelligence Agent: Collection → Enforcement Pipeline
 
 Combines Gemini Ingestion Layer (upstream) with Judge 6 Enforcement (downstream)

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import threading
 from collections.abc import Callable
 from typing import Any

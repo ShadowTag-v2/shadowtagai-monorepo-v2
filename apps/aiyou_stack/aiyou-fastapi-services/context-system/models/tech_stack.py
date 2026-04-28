@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Technical Architecture & Stack Configuration"""
 
 from dataclasses import dataclass, field

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from .gulfstream import GulfstreamOffshore
 from .intel_pipeline import IntelPipeline
 from .orbital import AiUOrbital

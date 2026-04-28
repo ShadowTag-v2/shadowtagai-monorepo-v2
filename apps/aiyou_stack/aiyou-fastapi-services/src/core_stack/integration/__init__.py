@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack™ — Integration Layer
 Gemini Ingestion → Judge 6 → Services
 

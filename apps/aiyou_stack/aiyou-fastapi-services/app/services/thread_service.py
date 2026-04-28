@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Thread Service for AI agent knowledge threads.
 
 Business logic for:

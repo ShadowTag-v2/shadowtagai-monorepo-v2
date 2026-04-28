@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CodeReviewer - Automated code review agent.
 Uses Jura for risk assessment + BugBot for static analysis.
 """

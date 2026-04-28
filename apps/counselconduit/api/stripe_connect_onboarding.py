@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/stripe_connect_onboarding.py
 """Stripe Connect Onboarding Endpoint.
 

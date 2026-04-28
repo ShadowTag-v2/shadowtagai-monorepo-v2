@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pnkln System Prompts
 Consolidated from pnkln_vertex_rollup.txt
 """

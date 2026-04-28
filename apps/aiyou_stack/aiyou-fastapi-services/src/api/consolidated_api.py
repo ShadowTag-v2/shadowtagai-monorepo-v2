@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Consolidated API - Generated from iPhone Notes Extraction
 177 API endpoints extracted → consolidated into modular FastAPI app
 """

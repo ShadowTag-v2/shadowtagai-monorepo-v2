@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini 3 Pro Intake - 2M Context Window
 
 Atomizes input into discrete tasks with:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """context_cache.py — Aegaeon Protocol: Gemini Context Cache Slab Builder
 
 Builds a persistent Gemini Context Cache ("Master Memory Slab") from

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GitHub Repository Flattener
 Downloads and flattens GitHub repositories for AI/MLOps technologies
 """

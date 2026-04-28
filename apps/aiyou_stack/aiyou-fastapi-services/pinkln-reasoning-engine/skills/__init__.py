@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pinkln Skills System
 
 Modular reasoning skills with Glicko-2 ratings:

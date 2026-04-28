@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini Ingestion Layer Service
 Implements PNKLN Core Stack™ Preparation (P) component
 Based on docs/cor8-shadowtag_v4-global-edge-fabric/03-technical-architecture/gemini-ingestion-layer.md

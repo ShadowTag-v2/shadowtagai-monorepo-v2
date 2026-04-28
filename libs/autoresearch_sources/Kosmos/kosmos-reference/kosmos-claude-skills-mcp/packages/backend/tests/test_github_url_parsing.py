@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tests for GitHub URL parsing with branch and subpath."""
 
 import pytest

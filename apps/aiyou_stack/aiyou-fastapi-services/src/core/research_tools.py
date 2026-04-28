@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Research Tools for Multi-Source Orchestration
 
 Defines FunctionTool declarations for Drive, Gmail, and Web search

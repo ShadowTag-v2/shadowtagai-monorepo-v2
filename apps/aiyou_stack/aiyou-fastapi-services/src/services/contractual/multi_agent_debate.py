@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Multi-Agent Debate (MAD) System for Conflict Detection
 
 This module implements a panel debate system where multiple AI agents

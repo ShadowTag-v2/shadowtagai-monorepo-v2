@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/model_router.py
 """Multi-Model Selector — LiteLLM-based routing.
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """LawTrack Rules Engine
 
 Jurisdiction-specific procedural rule loading, business day calculation,

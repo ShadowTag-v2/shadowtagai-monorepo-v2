@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Core API and session management for Agentic Data Scientist."""
 
 from agentic_data_scientist.core.api import DataScientist, FileInfo, Result, SessionConfig

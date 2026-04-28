@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Perplexity MCP Server - Model Context Protocol Server for Perplexity Integration
 
 Routes Comet browser queries through Judge 6 for compliance scoring,

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # Copyright 2026 ShadowTag AI. All rights reserved.
 """DoD CIO CSRMC & NIST RMF Continuous ATO — Judge 6.1 J-6 Policy Enforcement.
 

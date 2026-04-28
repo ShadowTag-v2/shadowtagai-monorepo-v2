@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Test suite for Core Infrastructure - Configuration Requirements (REQ-CFG-001 through REQ-CFG-005).
 

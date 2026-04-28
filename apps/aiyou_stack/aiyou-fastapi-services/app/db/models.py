@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """SQLAlchemy database models."""
 
 from sqlalchemy import Boolean, Column, DateTime, Integer, String

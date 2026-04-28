@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Item 15: Canary analysis script for CounselConduit.
 
 Compares error rates between canary and baseline Cloud Run revisions.

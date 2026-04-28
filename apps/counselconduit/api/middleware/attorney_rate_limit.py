@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/middleware/attorney_rate_limit.py
 """Per-attorney rate limiting for Vent Mode and Oracle Studio.
 

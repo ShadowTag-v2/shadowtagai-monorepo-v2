@@ -1,4 +1,6 @@
 #!/opt/homebrew/bin/python3.14
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # scripts/finish_changes.py
 # ============================================================================
 # SHADOWTAG OS: PRE-ACTION MEMORY GATE & REPO-DRIFT AUDIT

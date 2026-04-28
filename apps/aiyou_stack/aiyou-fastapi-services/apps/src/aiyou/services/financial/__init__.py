@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Financial Services Module
 
 ROI calculators and financial analysis tools for Digital Freeway

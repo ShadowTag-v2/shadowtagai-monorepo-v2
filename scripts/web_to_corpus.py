@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """scripts/web_to_corpus.py — Web Scrape → Corpus Normalizer.
 ----------------------------------------------------------
 Reads new items from data/web_ingest/ingest.db (IngestStore.items schema),

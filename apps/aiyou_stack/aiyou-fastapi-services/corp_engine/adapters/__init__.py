@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Corp Engine Enterprise Adapters
 ================================
 Plug-and-play connectors for enterprise systems.

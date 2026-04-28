@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AI Personalization Engine for Swiper Platform
 
 Three-stage evolution:

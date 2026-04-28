@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """LangGraph State Models for Judge 6 Governance Engine
 
 Defines the three-phase state machine:

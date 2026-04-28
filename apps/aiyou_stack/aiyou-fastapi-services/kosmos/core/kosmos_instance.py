@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Kosmos Instance - Autonomous AI Scientist per LLM
 =================================================
 Wraps an LLM + RSTA Squadron (380 agents) into a single Kosmos instance.

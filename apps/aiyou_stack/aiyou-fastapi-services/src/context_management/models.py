@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pydantic models for Context Window Management"""
 
 from datetime import datetime

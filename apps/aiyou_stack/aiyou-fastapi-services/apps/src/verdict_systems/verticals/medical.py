@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Verdict Systems - Medical & Senior Care Vertical
 Appointment reminders, medication tracking, senior independence support
 

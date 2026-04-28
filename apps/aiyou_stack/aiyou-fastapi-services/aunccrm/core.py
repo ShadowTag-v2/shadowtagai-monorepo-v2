@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AunCRM Core Framework
 Implements Purpose-Reasons-Brakes (PRB) compliance system
 Based on ATP 5-19 risk stratification and Business Judgment Rule

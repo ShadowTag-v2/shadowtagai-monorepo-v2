@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for Orchestrator Error Handling Requirements (REQ-ORCH-ERR-001 through REQ-ORCH-ERR-008).
 

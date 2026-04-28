@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from pso_experiments.pso_backend import PsoModel
 
 

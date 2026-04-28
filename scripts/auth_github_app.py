@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GitHub App Token Generator — ShadowTag-v2 / Antigravity Manager
 App ID: 3018200 | Client ID: Iv23ctYqrxPQIt2ir8gY.
 

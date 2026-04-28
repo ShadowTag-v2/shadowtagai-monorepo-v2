@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Judge 6 Governance Engine - LangGraph Implementation
 
 This module implements what Antigravity promised but didn't deliver:

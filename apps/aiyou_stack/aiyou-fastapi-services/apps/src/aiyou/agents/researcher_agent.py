@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Researcher Agent - Specialist in information gathering and analysis.
 
 Focuses on finding relevant information, synthesizing knowledge, and providing insights.

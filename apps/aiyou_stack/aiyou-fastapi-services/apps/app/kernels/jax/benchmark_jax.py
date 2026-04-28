@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import time
 
 from judge_six_jax import init_mock_data, judge_six_enforce

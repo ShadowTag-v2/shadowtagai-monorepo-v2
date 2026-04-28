@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """kv_cache_slab.py — Sovereign MLX KV Cache Slab Builder
 
 Runs llama-server --prompt-cache-all once against the .beads corpus

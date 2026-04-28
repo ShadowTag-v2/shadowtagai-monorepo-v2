@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - LinkedIn Source Adapter
 
 Uses Scrapling StealthyFetcher (Playwright + fingerprint spoofing) as primary,

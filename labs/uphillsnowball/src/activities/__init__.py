@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Temporal Activities — J-Staff Operations.
 
 Stub activities referenced by the Temporal workflows. Each activity

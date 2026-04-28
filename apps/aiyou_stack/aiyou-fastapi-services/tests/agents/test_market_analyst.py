@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tests for Market Analyst agent"""
 
 from unittest.mock import Mock, patch

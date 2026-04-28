@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # tests/test_heartbeat.py
 """Test the session heartbeat keep-alive endpoint.
 

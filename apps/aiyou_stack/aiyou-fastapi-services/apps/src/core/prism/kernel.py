@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PRISM Kernel - Core Operating System Framework
 Position • Role • Intent • Structure • Modality
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """California AI Compliance API Endpoints
 ======================================
 REST API endpoints for California AI regulation compliance.

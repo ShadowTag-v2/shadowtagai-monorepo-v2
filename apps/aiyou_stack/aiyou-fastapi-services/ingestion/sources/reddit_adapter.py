@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - Reddit Source Adapter
 
 Uses Reddit's public JSON API (no auth, free).

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from src.agents.v8_core import RiskLevel, TokenLedger
 
 

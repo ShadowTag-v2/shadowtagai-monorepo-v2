@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Comment models for forum posts and other content."""
 
 from datetime import datetime

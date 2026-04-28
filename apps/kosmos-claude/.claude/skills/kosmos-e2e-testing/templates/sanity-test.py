@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Kosmos Sanity Test Template
 
 Quick validation that basic imports and configuration work.

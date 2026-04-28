@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Omni-Autolint Daemon — Secure lint + push via GitHub App short-lived tokens.
 
 Astral Ruff Integration:

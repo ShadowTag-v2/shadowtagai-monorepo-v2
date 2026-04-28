@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Attestation Pipeline
 
 Handles the end-to-end flow of media attestation:

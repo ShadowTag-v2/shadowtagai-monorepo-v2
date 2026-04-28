@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Context Auto-Loader
 Auto-searches past conversations when question assumes prior context

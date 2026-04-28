@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Template Rendering Service
 Converts template models into formatted prompts and documents
 """

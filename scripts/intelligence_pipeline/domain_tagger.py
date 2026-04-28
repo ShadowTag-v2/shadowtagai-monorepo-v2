@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Step 1 — Domain Tagger.
 
 Classifies each of 2,856 LanceDB documents into:

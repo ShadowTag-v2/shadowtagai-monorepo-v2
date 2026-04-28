@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - Ethical Web Crawler
 
 Implements ethical web crawling with:

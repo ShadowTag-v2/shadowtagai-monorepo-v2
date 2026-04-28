@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Materials Science domain module - materials optimization and parameter analysis"""
 
 from kosmos.domains.materials.apis import (

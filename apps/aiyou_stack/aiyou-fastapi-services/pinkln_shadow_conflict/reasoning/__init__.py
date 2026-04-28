@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Reasoning frameworks for the pinkln Agent Architecture System.
 
 Implements multiple reasoning strategies:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ACO - Automated Compliance & Oversight
 Defense-Grade Wrapper for Judge 6 to enable Continuous ATO.
 

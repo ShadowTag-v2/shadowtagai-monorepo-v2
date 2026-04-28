@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Embeddings API endpoints for vector operations and semantic search."""
 
 import structlog

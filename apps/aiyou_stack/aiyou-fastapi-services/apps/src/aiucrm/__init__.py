@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AiUCRM - AI Unified Compliance & Risk Management
 Adapted from U.S. Military Composite Risk Management System
 

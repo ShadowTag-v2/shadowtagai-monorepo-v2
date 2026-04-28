@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Infrastructure Analysis Skill - pinkln Agent Architecture System
 
 This skill provides comprehensive analysis capabilities for infrastructure components

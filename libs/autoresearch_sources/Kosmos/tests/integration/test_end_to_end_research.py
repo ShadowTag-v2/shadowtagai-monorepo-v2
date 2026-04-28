@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 End-to-end integration tests for autonomous research system (Phase 7).
 

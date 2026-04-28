@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Claude Code CLI agent."""
 
 from agentic_data_scientist.agents.claude_code.agent import ClaudeCodeAgent, setup_working_directory

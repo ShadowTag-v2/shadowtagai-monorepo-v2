@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - Gemini Ingestion Layer Entry Point
 
 Main entry point for running the ingestion pipeline.

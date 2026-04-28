@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Demonstration of Gemini Ingestion Layer with visualizations and resilience.
 
 Shows:

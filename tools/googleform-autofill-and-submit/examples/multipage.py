@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Multiple pages Google Form Example
 just add the field "pageHistory" to the request body
 """

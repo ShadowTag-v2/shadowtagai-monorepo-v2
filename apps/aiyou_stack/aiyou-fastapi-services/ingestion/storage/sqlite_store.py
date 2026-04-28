@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - SQLite Ingest Store
 
 Lightweight local persistence for ingested items and job state.

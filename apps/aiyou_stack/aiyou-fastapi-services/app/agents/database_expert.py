@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Database Expert Agent - AI-powered database optimization specialist
 
 This agent uses Claude Agent SDK to provide expert database analysis,

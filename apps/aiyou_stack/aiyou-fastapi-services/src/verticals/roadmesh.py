@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 class RoadMeshFreeways:
     """Vertical 4: RoadMesh Digital Freeways
     ARR 2030: $2.5B

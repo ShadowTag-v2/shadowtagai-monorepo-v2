@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Reasons Validator - JR Engine Component 2
 
 Validates the REASONS for an action:

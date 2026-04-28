@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Judge 6 Grounded Governance Client
 
 Layer 3 (JURA) implementation with Vertex AI Search grounding.

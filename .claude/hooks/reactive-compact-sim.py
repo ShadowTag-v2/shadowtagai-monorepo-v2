@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 reactive-compact-sim.py — Simulates reactive compaction behavior
 Reconstructed from CC source query.ts:790-1140 + compact.ts:686

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Google Distributed Cloud (GDC) Edge Client Stub
 Simulates management of a GDC Edge Hardware node (NVIDIA H100/A100).
 """

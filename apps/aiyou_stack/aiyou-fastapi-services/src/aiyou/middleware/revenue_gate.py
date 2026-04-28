@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Revenue Gate Middleware
 
 Enforces "No Pay, No AI" rule. All AI endpoints require payment verification.

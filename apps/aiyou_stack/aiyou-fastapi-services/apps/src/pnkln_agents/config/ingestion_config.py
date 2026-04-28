@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Ingestion Layer Configuration
 Quality gates, sources, and operational parameters
 """

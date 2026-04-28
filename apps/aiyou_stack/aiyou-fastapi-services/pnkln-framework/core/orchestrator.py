@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """═══════════════════════════════════════════════════════════════════════════════
 PNKLN ORCHESTRATOR
 Production-grade AI orchestration with auto-activation and execution

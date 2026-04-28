@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Decision Framework - ATP 5-19 Risk Assessment Matrix Integration
 Military risk management adapted for business decisions
 """

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Configuration management for agent-based governance system.
 
 Implements environment-aware settings with validation and defaults

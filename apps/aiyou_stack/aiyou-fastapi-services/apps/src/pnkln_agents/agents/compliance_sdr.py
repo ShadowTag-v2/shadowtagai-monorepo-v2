@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Compliance-First SDR Agent
 Job: Generate B2B leads without GDPR/CAN-SPAM violations
 

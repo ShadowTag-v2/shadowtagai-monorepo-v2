@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/fastapi_kovel_enclave.py
 """CounselConduit: Kovel Enclave v3.0
 

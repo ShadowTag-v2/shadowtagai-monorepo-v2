@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Database models package"""
 
 from app.models.audit_log import AuditLog

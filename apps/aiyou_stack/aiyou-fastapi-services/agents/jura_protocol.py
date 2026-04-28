@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """JuraProtocol - "Jura" Gatekeeper (German for Judge).
 Prevents dumb agents from polluting memory.
 Supports atomic chat reconfiguration for dynamic context injection.

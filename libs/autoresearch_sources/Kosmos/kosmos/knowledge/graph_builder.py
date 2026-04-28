@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Knowledge graph builder that orchestrates graph construction from papers.
 

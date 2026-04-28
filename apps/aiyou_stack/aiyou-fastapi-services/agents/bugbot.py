@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """BugBot - Static analysis agent.
 Runs without LLM - pure code analysis.
 """

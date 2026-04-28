@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from .unified.aerospacedeploymentrequest import AerospaceDeploymentRequest
 from .unified.aerospacedeploymentresponse import AerospaceDeploymentResponse
 from .unified.dteevolutionrequest import DTEEvolutionRequest

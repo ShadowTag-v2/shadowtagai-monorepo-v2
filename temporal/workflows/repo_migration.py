@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Temporal workflow for long-running repository migrations."""
 
 # TODO: Implement with temporalio/sdk-python

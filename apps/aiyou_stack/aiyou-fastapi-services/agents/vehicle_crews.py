@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Vehicle Crews with Anonymous Voting
 ===================================
 Implements anonymous voting at vehicle level for 0% error rate.

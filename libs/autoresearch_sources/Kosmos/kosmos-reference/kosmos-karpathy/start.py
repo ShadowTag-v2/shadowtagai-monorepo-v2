@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Simple startup script for Karpathy agent.
 Runs sandbox setup and then starts the ADK web interface.

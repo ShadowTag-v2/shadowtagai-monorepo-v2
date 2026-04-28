@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pub/Sub Audit Trail with Dead Letter Queue (DLQ)
 
 Governance-grade message processing with automatic failure routing.

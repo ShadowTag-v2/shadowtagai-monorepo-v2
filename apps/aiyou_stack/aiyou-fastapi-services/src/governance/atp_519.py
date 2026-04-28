@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # DOCTRINE: ATP 5-19 Risk Management (US Army / Judge 6)
 # SOURCE: Drive Docs (ATP 5-19 Risk Management.pdf)
 # PURPOSE: "Jr Engine" Risk Assessment (Physical / Kinetic / Operational Only)

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Decision-specific data models for ATP 5-19 governance."""
 
 from datetime import datetime

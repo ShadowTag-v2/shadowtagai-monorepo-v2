@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Research Query Router
 
 Routes research queries to appropriate sources based on keyword detection

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from src.governance.memory.memory_bank import MemoryBank
 from src.governance.voting.cav_mtoe import CavMTOE
 

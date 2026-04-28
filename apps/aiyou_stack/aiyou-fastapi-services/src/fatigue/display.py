@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Display Control Layer
 Adaptive brightness, hue, and contrast adjustments for fatigue reduction
 

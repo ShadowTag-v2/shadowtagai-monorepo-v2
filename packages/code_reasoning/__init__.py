@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Code Reasoning Certificate Generator.
 
 Produces structured reasoning certificates for complex code changes,

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GamePort API Routes.
 
 Handles game sessions, matchmaking, and SDK integration.

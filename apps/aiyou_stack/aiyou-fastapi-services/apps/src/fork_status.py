@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Fork Status Utility for n-autoresearch/Kosmos/BioAgents
 Reports on the status (sync, existence) of repositories in external_repos.
 """

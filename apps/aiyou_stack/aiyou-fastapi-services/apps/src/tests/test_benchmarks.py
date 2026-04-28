@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Benchmark Suite for Pinkln Unified System
 
 Tests against:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Dagger module for Monorepo OS reproducible checks."""
 
 import dagger

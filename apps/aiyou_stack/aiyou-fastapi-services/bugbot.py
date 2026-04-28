@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """BugBot: Intelligent GitHub Issue Triage & Auto-Fix
 
 Uses ultrathink framework for:

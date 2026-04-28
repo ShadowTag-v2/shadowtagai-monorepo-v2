@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Market Analyst Agent
 Competitive analysis and strategic positioning.
 Ported from legacy market-analyst.ts

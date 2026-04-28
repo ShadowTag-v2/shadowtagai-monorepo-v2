@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import time
 
 from ..v8_core import AgentUnit, Finding, KosmosREPL, Provenance, Task

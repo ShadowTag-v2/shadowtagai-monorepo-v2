@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Base Skill class for Pinkln reasoning skills
 
 All skills have:

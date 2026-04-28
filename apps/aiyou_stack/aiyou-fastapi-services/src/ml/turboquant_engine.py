@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """TurboQuant KV cache v2: Asymmetric attention & Unbiased Inner Products
 Drop-in replacement for Dynamic VRAM (AimdoAllocator)
 """

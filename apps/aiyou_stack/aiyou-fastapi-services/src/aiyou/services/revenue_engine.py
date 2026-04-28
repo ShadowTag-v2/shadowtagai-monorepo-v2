@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # src/ShadowTag-v2/services/revenue_engine.py
 """Revenue Engine module
 

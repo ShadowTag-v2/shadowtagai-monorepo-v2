@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Prompt Engineering Template Models
 Supports: R-T-F, T-A-G, B-A-B, C-A-R-E, R-I-S-E frameworks
 """

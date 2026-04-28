@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Kernel Adapters - Bridge between async kernel implementations and synchronous function calls.
 
 These adapters wrap kernel implementations to work as synchronous Gemini function tools.

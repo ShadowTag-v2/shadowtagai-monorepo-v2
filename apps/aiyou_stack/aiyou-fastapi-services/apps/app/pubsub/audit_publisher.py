@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Audit Event Publisher - High-speed API for publishing audit traces to Pub/Sub.
 
 Governance-grade event publishing with automatic retries and batching.

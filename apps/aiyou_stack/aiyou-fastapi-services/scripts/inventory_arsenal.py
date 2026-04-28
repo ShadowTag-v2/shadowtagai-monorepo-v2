@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ANTIGRAVITY :: GOD MODE :: ARSENAL INVENTORY
 Classification: TIER 30 SOVEREIGN
 Context: 1M+

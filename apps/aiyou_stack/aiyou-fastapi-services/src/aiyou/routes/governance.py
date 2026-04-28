@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Governance API Routes.
 
 Provides endpoints for governance trace viewing and decision auditing.

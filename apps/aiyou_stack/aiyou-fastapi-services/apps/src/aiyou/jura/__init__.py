@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """JURA Protocol: Cost-aware agent routing for n-autoresearch/Kosmos/BioAgents swarm.
 
 Tiers:

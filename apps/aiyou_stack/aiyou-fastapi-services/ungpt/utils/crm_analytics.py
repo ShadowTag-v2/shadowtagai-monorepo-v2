@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CRM Analytics - Track quality scores and re-loop effectiveness
 
 SQLite-based tracking for:

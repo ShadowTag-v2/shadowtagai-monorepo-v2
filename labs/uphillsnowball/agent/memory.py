@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # labs/uphillsnowball/agent/memory.py
 """Agent Memory: Cross-Session State Persistence.
 

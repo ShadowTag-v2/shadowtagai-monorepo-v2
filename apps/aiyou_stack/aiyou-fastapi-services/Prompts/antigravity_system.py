@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Antigravity System Prompt for n-autoresearch/Kosmos/BioAgents Cavalry Squadron
 =============================================================
 ID/EGO/SUPEREGO architecture with METT-TC dynamic injection.

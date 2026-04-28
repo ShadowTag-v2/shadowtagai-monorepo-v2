@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """MAD (Multi-Agent Debate) Orchestrator
 
 Implements multi-agent debate pattern (PanelGPT) for reaching consensus

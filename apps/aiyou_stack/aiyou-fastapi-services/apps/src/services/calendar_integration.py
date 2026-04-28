@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Calendar Integration Service
 Integrates with Google Calendar, Outlook, and other calendar providers
 """

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """11x Browser Extractor — Google AI Mode Research Extraction.
 
 Playwright-based script that navigates Google AI Mode, executes a research

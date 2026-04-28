@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Quality Comparison Test: Brave Search vs Google Grounding
 
 Validates that Option 3 (Brave Search) meets >90% quality parity

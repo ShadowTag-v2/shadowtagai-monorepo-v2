@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """core/rag_evolve — LanceDB-backed RAG search with Prompt Repetition.
 
 Provides corpus search using LanceDB vector similarity, and a RAG

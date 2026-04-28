@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """API routes for workflow management."""
 
 from fastapi import APIRouter, Depends, HTTPException

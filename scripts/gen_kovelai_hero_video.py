@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Veo 3.1 Hero Video Generator — KovelAI Legal Tech.
 =================================================
 Generates an 8-second Abstract Data Architecture loop for the

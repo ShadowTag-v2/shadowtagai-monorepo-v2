@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Configuration management for Claude Skills MCP server."""
 
 import json

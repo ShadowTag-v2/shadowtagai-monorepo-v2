@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Phase 2: Component Testing Script
 Tests each KOSMOS agent/component independently and captures results.
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTag DCT Watermarking — The $1B+ Media Provenance Moat.
 
 A text firewall stops bad advice. A frequency-domain watermark stops

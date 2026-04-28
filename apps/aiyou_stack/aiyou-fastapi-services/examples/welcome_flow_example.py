@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Example: Creating a Welcome Email Flow
 
 This example demonstrates how to:

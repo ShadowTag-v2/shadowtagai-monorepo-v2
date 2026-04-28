@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Purpose Validator - JR Engine Component 1
 
 Validates the PURPOSE of an action:

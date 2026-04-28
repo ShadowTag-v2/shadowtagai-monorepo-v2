@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GEPA Router: Speculative Decoding via 2B (Draft) → 31B (Audit)
 
 Implements the asymmetric compute model:

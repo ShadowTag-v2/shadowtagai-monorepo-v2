@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Evolution and self-improvement systems."""
 
 from .dte import (

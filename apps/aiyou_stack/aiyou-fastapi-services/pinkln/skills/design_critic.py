@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """DesignCriticSkill - Evaluate designs against "Jobs-style" criteria.
 
 Reviews designs, UI/UX, code structure with focus on beauty, simplicity, and function.

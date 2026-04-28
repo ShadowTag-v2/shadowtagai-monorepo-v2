@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Ripgrep Search Service — Pure serverless search wrapper.
 Provides ultra-fast codebase traversal via ripgrep (rg).
 """

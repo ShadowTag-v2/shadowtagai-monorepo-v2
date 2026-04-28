@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Optimization and General Template API Routes
 Endpoints for Doing Less Better Results and other templates
 """

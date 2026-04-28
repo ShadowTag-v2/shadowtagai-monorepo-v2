@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """scripts/gemini_agent_swarm.py
 Gemini Agent Swarm — replaces n-autoresearch/Kosmos/BioAgents with a Gemini-native multi-agent loop.
 

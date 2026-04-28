@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Response formatting utilities.
 Makes it easy to return consistent API responses.
 """

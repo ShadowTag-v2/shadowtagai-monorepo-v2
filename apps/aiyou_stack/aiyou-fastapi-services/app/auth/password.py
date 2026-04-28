@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Password hashing and verification utilities.
 Uses passlib with bcrypt for secure password hashing.
 """

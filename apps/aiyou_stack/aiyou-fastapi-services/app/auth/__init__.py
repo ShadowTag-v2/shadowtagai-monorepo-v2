@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Authentication module for API Builder.
 Provides JWT authentication, API key authentication, and OAuth2 support.
 """

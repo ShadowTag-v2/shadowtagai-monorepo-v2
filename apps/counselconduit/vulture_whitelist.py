@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Vulture whitelist for CounselConduit API.
 
 Marks FastAPI route handlers, Pydantic model fields, and pytest fixtures

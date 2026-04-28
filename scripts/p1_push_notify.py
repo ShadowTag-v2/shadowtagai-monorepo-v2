@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """P1 Alert Push Notification via Firebase Cloud Messaging (Item #17).
 
 Sends push notifications to admin devices when P1 alerts fire.

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Main API v1 router"""
 
 from fastapi import APIRouter

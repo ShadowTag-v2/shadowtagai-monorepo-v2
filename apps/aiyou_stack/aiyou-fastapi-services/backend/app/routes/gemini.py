@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """FastAPI routes for Gemini AI analysis."""
 
 from fastapi import APIRouter, Depends, HTTPException

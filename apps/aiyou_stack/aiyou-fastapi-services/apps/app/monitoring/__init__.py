@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Monitoring, metrics, and logging infrastructure."""
 
 from .logging import get_logger, setup_logging

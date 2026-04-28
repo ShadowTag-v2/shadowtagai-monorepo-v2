@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AI Thread models for storing and managing curated AI agent knowledge threads.
 
 Handles storage for threads scraped from X/Twitter, including:

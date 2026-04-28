@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """add_performance_indexes
 
 Revision ID: fb9e61f33cbf

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Colab Notebook Runner: Execute notebooks in Google Colab environment.
 Handles actual Colab integration via API or browser automation.
 

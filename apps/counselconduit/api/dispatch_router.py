@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/dispatch_router.py
 """NadirClaw Dispatch FastAPI Router.
 

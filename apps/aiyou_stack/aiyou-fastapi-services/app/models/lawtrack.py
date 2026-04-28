@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """LawTrack Pydantic Models
 
 Comprehensive data models for the LawTrack legal deadline management platform.

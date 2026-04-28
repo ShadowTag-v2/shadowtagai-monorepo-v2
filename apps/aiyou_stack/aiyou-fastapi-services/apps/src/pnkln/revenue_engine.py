@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Antigravity Revenue Engine
 Manages the lifecycle of the 30 Sovereign Verticals.
 """

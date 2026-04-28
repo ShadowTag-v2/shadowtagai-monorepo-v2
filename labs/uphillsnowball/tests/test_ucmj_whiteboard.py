@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # labs/uphillsnowball/tests/test_ucmj_whiteboard.py
 """Unit tests for SwarmWhiteboard.write_state OCC logic (Item 13).
 

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini Sustained Load Calculator & Runner
 Maximum indefinite throughput without quota exhaustion.
 """

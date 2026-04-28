@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Ethical Crawler Implementation
 
 Implements responsible web crawling with:

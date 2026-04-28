@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """L2b: GPT Refine - Generation Loop
 
 Role: Labor (GPT side)

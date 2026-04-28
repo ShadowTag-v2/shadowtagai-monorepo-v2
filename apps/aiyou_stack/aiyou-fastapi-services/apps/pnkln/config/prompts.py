@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Standardized prompt templates for interacting with language models."""
 
 # Primary prompt for the executive agent

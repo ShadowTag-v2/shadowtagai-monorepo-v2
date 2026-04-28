@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """API routes for Support Builder feature.
 
 Provides REST endpoints for FAQs, help articles, chat widgets,

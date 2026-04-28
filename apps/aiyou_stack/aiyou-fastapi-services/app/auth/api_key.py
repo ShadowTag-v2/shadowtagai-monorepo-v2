@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """API Key authentication.
 Simple and efficient authentication using API keys in headers.
 """

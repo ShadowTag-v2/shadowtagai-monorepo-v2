@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """DualCo Strategy Constants (Bourne/160)"""
 
 from enum import StrEnum

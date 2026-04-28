@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from google.adk.core import LlmAgent, ParallelAgent, SequentialAgent
 
 # 1. The Panel of Judges (Run in Parallel)

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Recommender governance and explainability API endpoints
 Implements DSA-compliant recommender transparency
 """

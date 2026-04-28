@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Training Job Dashboard
 =======================
 Rich terminal UI for GPU cluster job management.

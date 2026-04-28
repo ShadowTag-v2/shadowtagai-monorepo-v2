@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Multi-Agent Swarm Orchestration System.
 
 Implements a lightweight Router-Worker pattern for coordinating multiple

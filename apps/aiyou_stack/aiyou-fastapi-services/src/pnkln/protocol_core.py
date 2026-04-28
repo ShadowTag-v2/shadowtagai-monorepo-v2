@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN CORE PROTOCOL V2.0 (Real Mode)
 -----------------------------------
 This module implements the core Pnkln logic blocks:

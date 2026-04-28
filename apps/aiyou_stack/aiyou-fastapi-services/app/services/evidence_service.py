@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Evidence Service
 
 Generates compliance dossiers and audit reports.

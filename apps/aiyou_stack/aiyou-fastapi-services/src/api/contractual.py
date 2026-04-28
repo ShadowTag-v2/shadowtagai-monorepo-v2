@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Contractual API - AI-Powered Contract Negotiation Platform
 
 This module implements the FastAPI endpoints for the Contractual service,

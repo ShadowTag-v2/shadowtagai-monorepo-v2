@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Tests for Glicko-2 rating system"""
 
 import pytest

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Panel Debate Architecture for Complex Content Moderation
 Multi-agent consensus-building for edge cases (Gemini Powered)
 """

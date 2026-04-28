@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Antigravity Ultrathink v2.0 System Prompt
 =========================================
 Implements the PRISM Kernel and Value.Lock framework.

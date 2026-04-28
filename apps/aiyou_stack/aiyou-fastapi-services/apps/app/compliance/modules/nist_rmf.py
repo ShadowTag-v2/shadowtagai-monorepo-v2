@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """NIST AI Risk Management Framework Module
 
 Implements the NIST AI RMF 1.0 requirements.

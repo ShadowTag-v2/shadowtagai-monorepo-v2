@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/app_error.py
 """Centralized Error Handling — Cor.30 "Opaque Errors" Rule.
 

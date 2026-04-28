@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Omega Auto-Dispatcher — omega_auto_dispatcher.py.
 
 Autonomous telemetry auto-healing for HTTP 500 drops.

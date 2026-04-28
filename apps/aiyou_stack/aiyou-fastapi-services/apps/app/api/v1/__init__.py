@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """API v1 Router
 
 Includes all API sub-routers including the ActiveShield Modular Compliance Framework (MCF).

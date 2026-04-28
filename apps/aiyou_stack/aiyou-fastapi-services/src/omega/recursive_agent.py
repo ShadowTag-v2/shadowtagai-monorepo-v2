@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # Mocking an LLM client for demonstration.
 # Replace this with standard OpenAI/Gemini/Anthropic API calls.
 class LLMClient:

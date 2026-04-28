@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """verify_monorepo_assimilation.py
 Verifies that all migrated codebases have been properly assimilated into the
 canonical monorepo structure, ensuring no nested .git states exist and core

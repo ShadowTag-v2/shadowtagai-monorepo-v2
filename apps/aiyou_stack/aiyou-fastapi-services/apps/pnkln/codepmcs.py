@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CODEPMCS (Preventive Maintenance Checks and Services)
 Mission: Enforce Ranger Standards (Linting, Security, Watermarking)
 ATP 3-75 Compliance Gate

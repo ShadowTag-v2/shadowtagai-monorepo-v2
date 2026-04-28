@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Health Check Endpoints
 
 Provides health and readiness checks for the service.

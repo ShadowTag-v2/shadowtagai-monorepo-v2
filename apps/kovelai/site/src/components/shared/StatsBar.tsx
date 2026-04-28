@@ -1,3 +1,5 @@
+// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
+
 export default function StatsBar() {
   const stats = [
     { value: '100%', label: 'Searches Privileged' },

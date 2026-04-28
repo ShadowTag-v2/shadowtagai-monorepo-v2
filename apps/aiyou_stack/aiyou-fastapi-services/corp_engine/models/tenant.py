@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Multi-Tenant Database Models with Row-Level Security"""
 
 from datetime import datetime

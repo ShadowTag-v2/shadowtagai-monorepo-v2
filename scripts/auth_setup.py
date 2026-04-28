@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import os
 
 from google_auth_oauthlib.flow import InstalledAppFlow

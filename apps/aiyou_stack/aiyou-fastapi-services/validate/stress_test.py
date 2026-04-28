@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Stress Test for Judge 6
 
 Progressive load testing to find capacity limits.

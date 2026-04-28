@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Scientific Skills Loader for n-autoresearch/Kosmos/BioAgents Cavalry Squadron.
 Loads and injects 119 scientific skills from claude-scientific-skills repo.
 

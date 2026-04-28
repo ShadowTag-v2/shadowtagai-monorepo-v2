@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GKE 4-Namespace Integration Example
 
 This example demonstrates how services in different GKE namespaces

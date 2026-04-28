@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """COR Skill Registry - Skills API Discovery & ATP 5-19 Risk Stratification
 
 This module provides:

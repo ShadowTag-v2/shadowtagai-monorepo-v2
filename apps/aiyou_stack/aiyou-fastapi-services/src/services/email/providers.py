@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Email provider integrations"""
 
 from abc import ABC, abstractmethod

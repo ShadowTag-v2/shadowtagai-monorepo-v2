@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Verification script for Genkit integration.
 Tests initialization and basic flow execution.
 """

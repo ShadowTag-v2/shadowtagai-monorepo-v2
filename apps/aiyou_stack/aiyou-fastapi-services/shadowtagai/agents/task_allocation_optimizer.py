@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Task Allocation Optimizer using Particle Swarm Optimization.
 Allocates N tasks to 600 Flying n-autoresearch/Kosmos/BioAgents agents minimizing latency + cost + load variance.
 Based on FM 5-0 MDMP Step 3: COA Development.

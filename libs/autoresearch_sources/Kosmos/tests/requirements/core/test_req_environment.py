@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Test suite for Core Infrastructure - Environment Requirements (REQ-ENV-001 through REQ-ENV-007).
 

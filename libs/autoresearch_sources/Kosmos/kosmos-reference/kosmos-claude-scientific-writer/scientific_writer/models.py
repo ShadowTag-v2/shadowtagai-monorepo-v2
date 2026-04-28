@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Data models for scientific writer API responses."""
 
 from dataclasses import asdict, dataclass, field

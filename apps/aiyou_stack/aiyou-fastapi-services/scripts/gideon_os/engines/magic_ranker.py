@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import pandas as pd
 import yfinance as yf
 from pycoingecko import CoinGeckoAPI

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # Copyright 2026 ShadowTag AI. All rights reserved.
 """ATP 2-01.3 Intelligence Preparation of the Battlefield (IPB) Engine.
 

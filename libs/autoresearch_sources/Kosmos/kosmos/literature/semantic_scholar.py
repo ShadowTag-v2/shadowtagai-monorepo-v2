@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Semantic Scholar API client for searching and retrieving scientific papers.
 

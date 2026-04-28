@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTag-v2JR Core Framework
 PRISM Kernel, Business Plan, Operating Framework, and Context Management
 

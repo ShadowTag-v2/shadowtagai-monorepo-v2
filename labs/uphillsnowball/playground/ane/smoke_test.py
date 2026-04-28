@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Playground: Apple Neural Engine smoke test.
 
 Verifies CoreML model loading on the local ANE.

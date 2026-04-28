@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """FCM Topic Subscription Helper (#7).
 
 Subscribes admin device tokens to the 'counselconduit-p1-alerts' FCM topic.

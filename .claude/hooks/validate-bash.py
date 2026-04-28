@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 PreToolUse hook for Bash - Validates commands and suggests better alternatives
 """

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Edge Reasoning and GPU Optimization for V2X Mesh
 
 Implements:

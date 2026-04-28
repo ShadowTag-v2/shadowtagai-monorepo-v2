@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # ATOMIC CODE BLOCK 3: SCHOLAR AGENT
 # File: src/agents/scholar.py
 # Function: The Sensor (arXiv Scraper + Vertex AI Analyzer)

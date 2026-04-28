@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Computer-Use Agent Action Executor
 
 Translates Gemini Computer-Use API function calls to Playwright actions.

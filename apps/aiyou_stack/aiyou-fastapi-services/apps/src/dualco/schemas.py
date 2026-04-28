@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """DualCo Pydantic Schemas"""
 
 from datetime import datetime

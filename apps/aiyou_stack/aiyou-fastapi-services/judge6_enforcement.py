@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Judge 6 Enforcement - ShadowTag-v2JR Doctrine Compliance & Gemini Integration
 
 This module implements the Judge 6 enforcement layer from ShadowTag-v2JR doctrine:

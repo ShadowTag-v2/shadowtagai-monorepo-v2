@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - ShadowTag-v4 Platform API
 
 AI-curated social video platform with:

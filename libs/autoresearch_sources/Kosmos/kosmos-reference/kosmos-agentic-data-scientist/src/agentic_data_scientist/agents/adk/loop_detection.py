@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Loop Detection Agent that extends LlmAgent with repetition detection.
 

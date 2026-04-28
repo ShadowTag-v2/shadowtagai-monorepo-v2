@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Brakes Validator - JR Engine Component 3
 
 Validates the BRAKES (risks) of an action:

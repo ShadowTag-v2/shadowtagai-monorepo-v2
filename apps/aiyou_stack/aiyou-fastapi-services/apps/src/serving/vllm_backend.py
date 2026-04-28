@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """vLLM backend for efficient LLM serving."""
 
 import asyncio

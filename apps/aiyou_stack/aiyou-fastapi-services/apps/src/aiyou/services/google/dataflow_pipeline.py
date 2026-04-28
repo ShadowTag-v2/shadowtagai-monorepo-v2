@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import logging
 
 # This service scaffolds the interaction with Google Cloud Dataflow

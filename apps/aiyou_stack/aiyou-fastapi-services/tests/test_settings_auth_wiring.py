@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from src.config import Settings, settings
 from src.config.settings import settings as settings_instance
 from src.models import User

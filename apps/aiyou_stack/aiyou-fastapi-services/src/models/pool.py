@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """GPU pooling for multi-model serving."""
 
 import asyncio

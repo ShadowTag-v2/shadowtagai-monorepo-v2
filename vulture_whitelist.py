@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Vulture whitelist — known false positives for dead code analysis."""
 
 # dream_consolidation.py: NotebookLM is imported dynamically in try/except

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Step 6 — Memory Injector.
 
 Injects top-50 synthesis results into agent-readable locations:

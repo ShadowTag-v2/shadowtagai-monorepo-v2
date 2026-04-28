@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Example client for ShadowTag-v2 LLM serving API.
 
 Demonstrates how to use the multi-model serving endpoint with different routing strategies.

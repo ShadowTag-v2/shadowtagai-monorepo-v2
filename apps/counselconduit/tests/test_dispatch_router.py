@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/tests/test_dispatch_router.py
 """Integration tests for dispatch_router.py FastAPI endpoints.
 

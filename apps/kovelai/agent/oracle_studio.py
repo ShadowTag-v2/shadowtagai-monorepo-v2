@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Oracle Studio — 7-Step Murder Board Pipeline
 
 The Oracle Studio is the lawyer-side intelligence engine of KovelAI.

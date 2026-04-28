@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PINKLN ULTRATHINK CORE STACK v2.0
 
 Unified infrastructure integrating:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for World Model Concurrency Requirements (REQ-WM-CONC-001 through REQ-WM-CONC-005).
 

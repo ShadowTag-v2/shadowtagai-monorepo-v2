@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 class GeminiSecurityScanner:
     def scan_dependencies(self, manifest):
         print("    [CLI-Security] Scanning dependencies for CVEs...")

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """LegalTrack Rules Engine FastAPI Router
 ======================================
 Adopts the Zero-Touch (ZT.1) Deadline Management spec for GCP Cloud Run.

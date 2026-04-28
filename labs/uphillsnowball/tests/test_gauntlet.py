@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # labs/uphillsnowball/tests/test_gauntlet.py
 """Tests for the 17-Layer Gauntlet."""
 

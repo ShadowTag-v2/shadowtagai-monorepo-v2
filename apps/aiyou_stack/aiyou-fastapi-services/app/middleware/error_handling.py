@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Error handling middleware and exception handlers"""
 
 from fastapi import Request, status

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """RISE: Role-Input-Steps-Expectation
 
 The most detailed framework. For complex, multi-step processes.

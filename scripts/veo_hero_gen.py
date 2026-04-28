@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """veo_hero_gen.py — Veo 3.1 Hero Video Generation Configuration
 ══════════════════════════════════════════════════════════════
 Configures a Cloud Run Job to generate hero background videos

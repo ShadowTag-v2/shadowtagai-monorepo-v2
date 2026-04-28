@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 class TrustRouter:
     def __init__(self):
         # Rule Set: Jurisdiction -> {Features}

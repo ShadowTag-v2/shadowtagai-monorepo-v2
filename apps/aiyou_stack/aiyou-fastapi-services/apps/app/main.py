@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTag-v4 PNKLN Core Stack™ API
 FastAPI application for intelligence collection and validation
 

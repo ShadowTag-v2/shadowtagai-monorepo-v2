@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pagination utilities for list endpoints."""
 
 from math import ceil

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """CPU-bound threading benchmark for Python 3.14 free-threaded vs GIL builds.
 
 Measures the scaling of multi-threaded CPU work.

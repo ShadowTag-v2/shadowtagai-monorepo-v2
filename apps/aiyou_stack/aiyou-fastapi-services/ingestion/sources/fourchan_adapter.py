@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack - 4chan Source Adapter
 
 Uses the official 4chan JSON API (no auth, no cost).

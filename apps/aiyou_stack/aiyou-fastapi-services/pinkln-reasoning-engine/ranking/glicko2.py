@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Glicko-2 Rating System
 
 Improved rating system over Elo, with rating deviation (RD) and volatility.

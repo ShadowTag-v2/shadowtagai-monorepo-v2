@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # conftest.py — Root-level pytest configuration
 # Ensures monorepo-root is on sys.path for imports like:
 #   from apps.counselconduit.module import symbol

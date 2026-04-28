@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Chain of Thought (CoT) Skill
 
 Step-by-step reasoning with explicit intermediate steps

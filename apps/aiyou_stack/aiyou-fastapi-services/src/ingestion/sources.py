@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Multi-source data collection manager.
 
 Handles intelligence gathering from diverse sources:

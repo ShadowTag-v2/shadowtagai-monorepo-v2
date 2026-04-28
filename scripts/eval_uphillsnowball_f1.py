@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from __future__ import annotations
 
 """UphillSnowball Agent Task F1 Evaluation Harness

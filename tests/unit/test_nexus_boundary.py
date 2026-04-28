@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """tests/unit/test_nexus_boundary.py — NexusDispatcher boundary case tests.
 
 Tests the API Nexus WebSocket endpoint and /trigger_scraper route

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """KAIROS Dream Memory Consolidation Daemon.
 =========================================
 Implements the enhanced 8-phase Dream protocol for KI system maintenance.

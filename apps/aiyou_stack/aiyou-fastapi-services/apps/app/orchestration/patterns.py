@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Alternative orchestration patterns (for future expansion)."""
 
 import asyncio

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Atomic Pipeline API Clients
 ===========================
 Multi-model API clients for the atomic pipeline.

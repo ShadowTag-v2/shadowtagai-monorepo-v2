@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Bottleneck detection and analysis service
 Finds the exact lines making your app slow
 """

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """scripts/cinematic_studio.py
 Telemetry capture and Auto-Healing boundary for the Cinematic Studio UI payload.
 """

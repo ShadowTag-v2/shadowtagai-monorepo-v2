@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Claude Agent SDK with Custom Tools Example
 
 This example shows how to create and use custom tools with the Claude Agent SDK.

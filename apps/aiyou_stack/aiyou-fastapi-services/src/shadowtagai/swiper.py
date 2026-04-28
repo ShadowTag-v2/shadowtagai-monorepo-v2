@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 def swiper_plan(q):
     # Placeholder for Swiper Plan generation logic
     # In full system, this would call the Swiper agent/LLM

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/auth.py
 """Firebase Auth JWT Verification for CounselConduit.
 

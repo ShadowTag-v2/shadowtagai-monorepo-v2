@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import yaml
 
 with open("monorepo_manifest.yaml") as f:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini Ingestion Layer - Nightly CronJob Entry Point
 
 Orchestrates the complete ingestion pipeline:

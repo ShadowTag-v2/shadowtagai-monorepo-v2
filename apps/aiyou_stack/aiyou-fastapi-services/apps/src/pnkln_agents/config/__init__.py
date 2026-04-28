@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Configuration modules"""
 
 from .constraints import DEFAULT_CONSTRAINTS, BootstrapConstraints

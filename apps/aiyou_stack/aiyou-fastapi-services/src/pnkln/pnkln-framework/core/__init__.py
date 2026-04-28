@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Orchestration Framework
 
 Simple imports. Elegant API. Nothing left to remove.

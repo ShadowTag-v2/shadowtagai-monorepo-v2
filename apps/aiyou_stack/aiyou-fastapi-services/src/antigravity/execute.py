@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini Code Assist Pool - 10× Parallel Execution with Kosmos RSTA
 =================================================================
 Routes atoms to 10 Gemini Code Assist Enterprise licenses.

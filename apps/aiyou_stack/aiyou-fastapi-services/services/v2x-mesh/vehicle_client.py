@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """V2X On-Vehicle Client Service
 
 Runs on vehicle compute (Tesla HW5/HW6 or aftermarket edge box).

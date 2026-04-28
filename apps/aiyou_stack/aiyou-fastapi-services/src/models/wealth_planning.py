@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Wealth Planning and Financial Optimization Models
 Based on Pinkln Ultrathink wealth acceleration framework
 """

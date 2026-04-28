@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Adtech compliance API endpoints
 Implements VAST 4.x, OM SDK, Privacy Sandbox verification
 """

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Authentication routes.
 
 Endpoints for login, registration, and token management.

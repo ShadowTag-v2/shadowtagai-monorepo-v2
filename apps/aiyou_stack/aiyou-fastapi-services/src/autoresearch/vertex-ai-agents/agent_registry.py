@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Vertex AI Agents Registry
 Python implementation for loading and managing AI agents
 """

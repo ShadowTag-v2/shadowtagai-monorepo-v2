@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Content Provenance Engine
 Implements C2PA content credentials and provenance tracking
 """

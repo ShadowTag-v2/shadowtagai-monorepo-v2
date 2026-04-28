@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Judge6Engine factory — wires RKILL notifier from environment.
 
 Environment variables:

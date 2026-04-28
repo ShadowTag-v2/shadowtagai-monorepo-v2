@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Judge 6: Core Judgment Rule System
 
 Implements the six-gate evaluation process for AI governance:

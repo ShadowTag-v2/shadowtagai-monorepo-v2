@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Metrics Collector for Prometheus
 
 Tracks key metrics:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Common dependencies for FastAPI routes"""
 
 from app.db.session import SessionLocal

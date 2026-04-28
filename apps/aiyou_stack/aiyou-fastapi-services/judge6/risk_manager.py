@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """YRM: Your Risk Manager - ATP 5-19 Risk Assessment & Stratification
 
 Implements military-grade risk classification and constitutional

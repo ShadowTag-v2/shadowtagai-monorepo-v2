@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Idle Worker - 24/7 Maintenance & Intelligence Ingestion
 
 Keeps all paid instances busy during downtime with:

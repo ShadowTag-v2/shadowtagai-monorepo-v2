@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Compliance Middleware - Enforce compliance policies"""
 
 import logging

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ui_consistency_auditor.py — Tactical UI Consistency Auditor.
 
 Scans React/TSX/JSX/HTML files for:

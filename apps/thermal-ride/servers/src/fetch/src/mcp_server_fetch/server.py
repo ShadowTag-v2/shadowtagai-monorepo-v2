@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from typing import Annotated
 from urllib.parse import urlparse, urlunparse
 

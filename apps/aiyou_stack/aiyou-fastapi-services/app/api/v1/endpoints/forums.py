@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Forum endpoints for categories, topics, and posts."""
 
 from fastapi import APIRouter, Depends, HTTPException, status

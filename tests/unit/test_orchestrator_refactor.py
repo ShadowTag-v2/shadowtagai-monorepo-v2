@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for the Rich Hickey refactored cor_orchestrator.py submodules.
 

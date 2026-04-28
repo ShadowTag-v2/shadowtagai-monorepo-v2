@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Stripe Webhook Handler — Unit Tests.
 
 Tests for the HMAC signature verification and webhook event dispatch

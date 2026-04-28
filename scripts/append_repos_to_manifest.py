@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import json
 
 with open("fetched_repos_client_id.json") as f:

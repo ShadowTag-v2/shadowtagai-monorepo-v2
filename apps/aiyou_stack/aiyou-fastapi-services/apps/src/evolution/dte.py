@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """DTE (Dynamic Test Evolution) Self-Evolution System.
 
 Automatically evolves prompts, kernels, and agents through:

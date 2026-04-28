@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Stack Integration Analyzer
 
 Analyzes the integration between Intelligence Pipeline (upstream collection)

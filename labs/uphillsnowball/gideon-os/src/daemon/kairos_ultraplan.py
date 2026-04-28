@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """KAIROS Daemon & ULTRAPLAN — Coordinator Mode.
 
 15-second blocking budget. Tasks exceeding the budget are farmed to

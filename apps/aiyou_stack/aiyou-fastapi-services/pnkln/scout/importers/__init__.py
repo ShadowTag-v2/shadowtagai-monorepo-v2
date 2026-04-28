@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Boy Scout Rule Registry Importers
 
 Import scripts for pushing the scout registry to external platforms:

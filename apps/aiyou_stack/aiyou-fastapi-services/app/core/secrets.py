@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Google Secret Manager Integration
 Production-ready secrets management with automatic environment variable fallback
 """

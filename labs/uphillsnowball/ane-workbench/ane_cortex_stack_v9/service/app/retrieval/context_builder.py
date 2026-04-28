@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from ..adapters.authority_state import AuthorityState
 from ..adapters.json_memory import JsonMemoryStore
 from ..adapters.memory_atoms import search_atoms

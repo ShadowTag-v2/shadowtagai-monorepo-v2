@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ShadowTag 2.0 Cryptographic Provenance Engine
 
 Provides cryptographic watermarking, content-addressable hashing,

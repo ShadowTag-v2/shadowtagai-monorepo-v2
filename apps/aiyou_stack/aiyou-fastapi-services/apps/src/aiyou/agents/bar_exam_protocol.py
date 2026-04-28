@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Bar Exam Protocol - Agent Level Progression System
 
 Defines the qualification gates and revenue thresholds for agent advancement.

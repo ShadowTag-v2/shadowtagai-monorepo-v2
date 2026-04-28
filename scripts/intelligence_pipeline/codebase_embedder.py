@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Step 2 — Codebase Embedder.
 
 Embeds every .py / .go / .ts file in the monorepo using CodeChunker →

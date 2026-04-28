@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Core Stack™ — Integration Pipeline Orchestrator
 Handles data flow: Gemini Ingestion → Cloud Storage → Judge 6 → Services
 """

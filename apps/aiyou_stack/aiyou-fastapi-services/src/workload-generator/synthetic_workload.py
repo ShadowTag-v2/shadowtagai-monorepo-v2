@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pnkln Judge 6 Synthetic Workload Generator
 Purpose: Generate realistic request patterns to validate p99 ≤ 90ms SLA
 """

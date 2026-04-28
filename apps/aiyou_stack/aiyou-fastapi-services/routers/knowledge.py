@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Knowledge ingestion route.
 
 POST /api/v1/workspaces/{workspace_id}/knowledge

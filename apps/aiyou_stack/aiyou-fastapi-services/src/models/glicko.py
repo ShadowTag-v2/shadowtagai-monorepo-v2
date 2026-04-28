@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Glicko-2 Rating System for Performance Tracking
 Tracks uncertainty and volatility in addition to skill rating
 """

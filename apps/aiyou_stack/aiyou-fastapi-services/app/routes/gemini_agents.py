@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Gemini Multi-Agent API Routes
 AutoGen → Gemini migration endpoints
 """

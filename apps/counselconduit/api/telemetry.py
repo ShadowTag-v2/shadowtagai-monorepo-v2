@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 # apps/counselconduit/api/telemetry.py
 """OpenTelemetry Cloud Trace integration for CounselConduit.
 

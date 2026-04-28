@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AiURCM Document AI Integration
 Processes compliance documents using Google Document AI and triggers Judge 6 analysis
 """

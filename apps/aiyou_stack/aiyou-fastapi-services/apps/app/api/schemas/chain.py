@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Receipt Chain API Schemas"""
 
 from typing import Any

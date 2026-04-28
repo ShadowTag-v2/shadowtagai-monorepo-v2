@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """YouTube Source Implementation"""
 
 from .base import BaseSource, IngestionItem

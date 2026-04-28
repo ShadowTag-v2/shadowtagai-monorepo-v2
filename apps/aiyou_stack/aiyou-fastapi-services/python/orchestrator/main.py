@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Inference Orchestrator
 Main entry point for LLM routing and Judge 6 integration
 """

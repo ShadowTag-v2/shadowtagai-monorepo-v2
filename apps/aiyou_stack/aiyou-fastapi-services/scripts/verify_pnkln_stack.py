@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Stack Verification Script
 
 Verifies all 6 layers are properly installed and configured.

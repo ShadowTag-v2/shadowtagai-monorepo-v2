@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Edge Compute Billing Middleware (Stub)
 --------------------------------------
 Meters usage for satellite-routed low-latency sessions.

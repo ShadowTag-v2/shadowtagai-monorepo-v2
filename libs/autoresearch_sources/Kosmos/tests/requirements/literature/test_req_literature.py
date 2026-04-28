@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for Literature Search Agent Requirements (REQ-LSA-*).
 

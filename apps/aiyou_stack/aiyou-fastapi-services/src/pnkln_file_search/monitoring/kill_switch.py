@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Kill Switch Monitoring
 Automatic fallback when file search degrades or fails
 """

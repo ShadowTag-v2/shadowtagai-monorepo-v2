@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Core utilities and clients."""
 
 from app.core.claude_client import ClaudeClient, claude_client

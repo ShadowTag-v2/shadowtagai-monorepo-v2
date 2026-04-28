@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PSO Particle: Represents a candidate solution in the search space.
 
 Each particle has:

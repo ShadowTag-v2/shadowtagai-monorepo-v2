@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Health check implementation for liveness and readiness probes.
 Monitors application and dependency health.
 """

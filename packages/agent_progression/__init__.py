@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Agent Progression Tracker — Track agent capability evolution.
 
 Monitors and records agent skill acquisitions, capability gaps, and

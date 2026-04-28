@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Hypothesis Refiner - Refines, retires, and spawns hypotheses based on experimental results (Phase 7).
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """UnGPT Multi-LLM Consensus Service
 Production-ready FastAPI implementation with tiered routing and cost controls
 """

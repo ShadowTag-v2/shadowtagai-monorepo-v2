@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """T-05: Starlink Failover Calibration Script.
 Executes the 'Heartbeat' logic of the Tower Edge Node and verifies failover to Starlink
 under simulated high-latency conditions.

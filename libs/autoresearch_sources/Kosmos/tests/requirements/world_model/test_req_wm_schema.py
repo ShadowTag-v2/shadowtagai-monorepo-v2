@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for World Model Schema Requirements (REQ-WM-SCHEMA-001 through REQ-WM-SCHEMA-006).
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """E2E test configuration — auto-applies pytest.mark.e2e to all tests in this directory."""
 
 from __future__ import annotations

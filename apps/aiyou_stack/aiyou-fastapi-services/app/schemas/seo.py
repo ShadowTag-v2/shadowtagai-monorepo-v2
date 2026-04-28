@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Pydantic schemas for SEO Master service"""
 
 from datetime import datetime

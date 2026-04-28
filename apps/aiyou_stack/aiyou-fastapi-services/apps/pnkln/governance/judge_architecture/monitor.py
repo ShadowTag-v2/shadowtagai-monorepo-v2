@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Layer 21: IQ 160 Lock Performance Monitoring
 =============================================
 

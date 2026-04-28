@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """embed_to_lancedb.py — Vectorize extracted JSONL into LanceDB workspace_knowledge table.
 
 Reads .beads/knowledge_base/extraction_results.jsonl, embeds text via

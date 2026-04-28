@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Example 4: Neuroscience - Neurodegeneration Research
 

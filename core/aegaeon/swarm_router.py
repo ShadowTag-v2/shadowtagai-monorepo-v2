@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """swarm_router.py — Aegaeon 7-Instance Gemini Swarm Router
 
 Routes inference requests through a shared Gemini Context Cache.

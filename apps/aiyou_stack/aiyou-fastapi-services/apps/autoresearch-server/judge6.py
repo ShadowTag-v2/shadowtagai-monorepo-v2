@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """ANTIGRAVITY :: JUDGE#6 GOVERNANCE ENGINE
 Classified: TIER 30
 Doctrine: "Never Resting, Ever Vesting."

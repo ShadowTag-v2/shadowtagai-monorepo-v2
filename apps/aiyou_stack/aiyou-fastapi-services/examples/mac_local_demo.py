@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Mac Local Demo - Pnkln Agent Platform v0.2.0
 Tests full Collection → Enforcement pipeline
 

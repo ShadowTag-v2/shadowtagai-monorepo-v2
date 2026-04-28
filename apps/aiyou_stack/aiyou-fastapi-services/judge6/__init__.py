@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PNKLN Judge 6 - AI Governance & Risk Management System
 ========================================================
 

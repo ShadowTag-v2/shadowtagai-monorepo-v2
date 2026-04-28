@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Core data models and type definitions for Judge 6 governance system."""
 
 from dataclasses import dataclass, field

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tests for World Model Persistence Requirements (REQ-WM-PERSIST-001 through REQ-WM-PERSIST-006).
 

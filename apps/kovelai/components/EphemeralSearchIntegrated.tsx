@@ -1,3 +1,5 @@
+// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
+
 /**
  * Integrated Ephemeral Search UI with Dead Man's Switch
  *

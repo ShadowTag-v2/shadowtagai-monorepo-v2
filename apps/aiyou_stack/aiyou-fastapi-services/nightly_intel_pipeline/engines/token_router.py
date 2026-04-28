@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Token Router - Long⊗Short Entropy-Based Model Routing
 Routes tokens between models based on entropy for compute optimization.
 

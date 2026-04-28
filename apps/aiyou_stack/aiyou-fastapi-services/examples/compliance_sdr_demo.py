@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Compliance SDR Agent Demo
 
 Demonstrates enforcement-first lead generation with GDPR/CAN-SPAM compliance.

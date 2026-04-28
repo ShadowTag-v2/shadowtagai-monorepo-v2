@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Delta Detector - Change Detection Between Document Versions
 ============================================================
 Detects and summarizes changes between previous and current versions.

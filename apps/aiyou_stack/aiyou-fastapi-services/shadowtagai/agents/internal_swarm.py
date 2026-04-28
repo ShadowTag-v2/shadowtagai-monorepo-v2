@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """internal_swarm.py
 
 Implementation of the **n-autoresearch/Kosmos/BioAgents Internal Swarm Script – All LLMs** as a native

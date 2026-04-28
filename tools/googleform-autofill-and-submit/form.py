@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """Get entries from form
 Version 2:
     - support submit almost all types of google form fields

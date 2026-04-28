@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """PKGBUILD validation tests.
 
 Tests for Arch Linux package build file correctness.
