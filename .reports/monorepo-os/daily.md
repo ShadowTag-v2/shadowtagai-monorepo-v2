@@ -1,6 +1,6 @@
 # Monorepo OS — Daily Truth Report
 
-> **Generated:** 2026-04-28T09:00:31Z | **Date:** April 28, 2026
+> **Generated:** 2026-04-28T09:21:01Z | **Date:** April 28, 2026
 
 ## Oracle Score
 
@@ -27,8 +27,8 @@
 
 | Property | Value |
 |----------|-------|
-| Last Commit | `5779e09f3` — deploy(kovelai): shield messaging hardened + production build + Firebase deploy  |
-| Dirty Files | 16 |
+| Last Commit | `b6d31e4ab` — chore(governance): complete Monorepo OS v2.1 gate suite + clone-yard fetch |
+| Dirty Files | 3 |
 | Triage | ✅ Triaged (2 actual-risk) |
 
 ## Guardrails

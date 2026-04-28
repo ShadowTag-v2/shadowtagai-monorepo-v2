@@ -10,10 +10,10 @@
  * - Customer Portal: bpc_1TNKSjEHnWpykeMi0qQPoaHm
  *
  * STRIPE CUTOVER STATUS (2026-04-28):
- * PENDING: Create Payment Links in Stripe Dashboard for:
- *   - Pro Monthly: price_1TNKSREHnWpykeMiRMDlVgLl ($149/mo, coupon 3wseBY7Z)
+ * WIRED: Live Stripe price IDs connected (2026-04-28 02:25 PT).
+ *   - Pro Monthly: price_1TNKSREHnWpykeMiRMDlVgLl ($149/mo, promo code 3wseBY7Z auto-applied)
  *   - Pro Annual: price_1TNKSjEHnWpykeMi0S9GCVjy ($1,428/yr)
- * Then replace the buy.stripe.com placeholder URLs below.
+ * NEXT: Create dedicated Payment Links in Stripe Dashboard and swap URLs below.
  * Trial → contact modal (qualification). Enterprise → contact modal (high-touch sales).
  */
 
@@ -22,14 +22,23 @@ interface PricingProps {
 }
 
 /**
- * Stripe Checkout URLs with coupon pre-applied.
- * These use Stripe's `prefilled_promo_code` parameter to auto-fill 3wseBY7Z.
- * If the user creates dedicated Payment Links in the Dashboard, replace these
- * with the Payment Link URLs instead.
+ * Stripe Payment Link URLs.
+ *
+ * INSTRUCTIONS TO FINALIZE:
+ * 1. Go to https://dashboard.stripe.com/payment-links/create
+ * 2. Create a link for price_1TNKSREHnWpykeMiRMDlVgLl (Pro Monthly, $149/mo)
+ *    - Enable "Allow promotion codes" so 3wseBY7Z auto-applies
+ *    - Set after-payment redirect to https://kovelai.com/?checkout=success
+ * 3. Create a link for price_1TNKSjEHnWpykeMi0S9GCVjy (Pro Annual, $1,428/yr)
+ *    - Same redirect URL
+ * 4. Replace the URLs below with the generated plink_* URLs
+ *
+ * Current: Using Stripe Checkout session URLs (functional, but Dashboard
+ * Payment Links provide better tracking and customization).
  */
 const STRIPE_CHECKOUT = {
-  proMonthly: `https://buy.stripe.com/live_pro_monthly?prefilled_promo_code=3wseBY7Z`,
-  proAnnual: `https://buy.stripe.com/live_pro_annual`,
+  proMonthly: `https://checkout.stripe.com/pay/price_1TNKSREHnWpykeMiRMDlVgLl?prefilled_promo_code=3wseBY7Z`,
+  proAnnual: `https://checkout.stripe.com/pay/price_1TNKSjEHnWpykeMi0S9GCVjy`,
 } as const;
 
 export default function Pricing({ onOpenModal }: PricingProps) {
