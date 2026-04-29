@@ -1,6 +1,6 @@
 import { feature } from 'bun:bundle';
 import { z } from 'zod/v4';
-import { getKairosActive, setUserMsgOptIn } from '../bootstrap/state.js';
+import { getCor.KairosActive, setUserMsgOptIn } from '../bootstrap/state.js';
 import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -45,7 +45,7 @@ const brief = {
   name: 'brief',
   description: 'Toggle brief-only mode',
   isEnabled: () => {
-    if (feature('KAIROS') || feature('KAIROS_BRIEF')) {
+    if (feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')) {
       return getBriefConfig().enable_slash_command;
     }
     return false;
@@ -96,13 +96,13 @@ const brief = {
         // (model may keep emitting plain text from inertia, or keep calling a
         // tool that just vanished). Inject an explicit reminder into the next
         // turn's context so the transition is unambiguous.
-        // Skip when Kairos is active: isBriefEnabled() short-circuits on
-        // getKairosActive() so the tool never actually leaves the list, and
-        // the Kairos system prompt already mandates SendUserMessage.
+        // Skip when Cor.Kairos is active: isBriefEnabled() short-circuits on
+        // getCor.KairosActive() so the tool never actually leaves the list, and
+        // the Cor.Kairos system prompt already mandates SendUserMessage.
         // Inline <system-reminder> wrap — importing wrapInSystemReminder from
         // utils/messages.ts pulls constants/xml.ts into the bridge SDK bundle
         // via this module's import chain, tripping the excluded-strings check.
-        const metaMessages = getKairosActive()
+        const metaMessages = getCor.KairosActive()
           ? undefined
           : [
               `<system-reminder>\n${

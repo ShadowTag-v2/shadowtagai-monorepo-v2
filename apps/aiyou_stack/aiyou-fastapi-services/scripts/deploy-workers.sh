@@ -9,7 +9,7 @@ echo "  Target: <50ms p99 | Cost: \$5/month base              "
 echo "════════════════════════════════════════════════════════"
 
 # Configuration
-WORKER_DIR="workers/Claude_Code_6-lite"
+WORKER_DIR="workers/Cor.Claude_Code_6-lite"
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 cd "${PROJECT_ROOT}/${WORKER_DIR}"
@@ -48,7 +48,7 @@ if [ ! -f "package.json" ]; then
     echo "  Creating package.json..."
     cat > package.json << 'EOF'
 {
-  "name": "pnkln-Claude_Code_6-lite",
+  "name": "pnkln-Cor.Claude_Code_6-lite",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -157,7 +157,7 @@ echo "────────────────────────"
 
 WORKER_URL=$(wrangler whoami 2>/dev/null | grep -oP 'https://[^\s]+' || echo "")
 if [ -z "$WORKER_URL" ]; then
-    WORKER_URL="https://pnkln-Claude_Code_6-lite-${ENV}.workers.dev"
+    WORKER_URL="https://pnkln-Cor.Claude_Code_6-lite-${ENV}.workers.dev"
 fi
 
 echo "  Testing health endpoint..."

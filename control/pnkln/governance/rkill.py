@@ -23,7 +23,7 @@ Usage::
         armor_policy="lawtrack-api-prod-policy",
         trigger_reason="RAISE_ACT_FRONTIER violation — automated lockout",
     )
-    result = await RkillProtocol(cfg).execute(triggered_by="Claude_Code_6-auto")
+    result = await RkillProtocol(cfg).execute(triggered_by="Cor.Claude_Code_6-auto")
 """
 
 from __future__ import annotations

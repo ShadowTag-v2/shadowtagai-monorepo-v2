@@ -37,7 +37,7 @@ class FIPS199Categorization:
     availability: str
 
 
-class Claude_Code_6CSRMC:
+class Cor.Claude_Code_6CSRMC:
     """DoD CIO CSRMC & NIST RMF Continuous ATO enforcement.
 
     Acts as the J-6 Policy Enforcement Point (PEP) for every
@@ -91,10 +91,10 @@ class Claude_Code_6CSRMC:
         """
         logger.info("🔐 J-6 ZTA PEP: Intercepting handoff %s -> %s", source, destination)
 
-        fips = Claude_Code_6CSRMC.categorize_system(payload.get("type", "UNKNOWN"))
+        fips = Cor.Claude_Code_6CSRMC.categorize_system(payload.get("type", "UNKNOWN"))
         severity = payload.get("risk_sev", "MARGINAL")
 
-        if fips.integrity == "HIGH" and severity in Claude_Code_6CSRMC.UNACCEPTABLE_SEVERITIES:
+        if fips.integrity == "HIGH" and severity in Cor.Claude_Code_6CSRMC.UNACCEPTABLE_SEVERITIES:
             logger.critical(
                 "🛑 J-6 ZTA VIOLATION: Unacceptable Risk (%s). Handoff Blocked.",
                 severity,

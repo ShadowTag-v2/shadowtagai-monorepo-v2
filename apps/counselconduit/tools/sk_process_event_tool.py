@@ -62,7 +62,7 @@ class SKProcessEventTool:
 
     Security:
         - Tool validates firm_id before injection
-        - Claude_Code_6 gate checks MUST pass before the event reaches the process
+        - Cor.Claude_Code_6 gate checks MUST pass before the event reaches the process
         - Audit log emitted for every event injection
     """
 

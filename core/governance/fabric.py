@@ -82,7 +82,7 @@ class CorCSRMCGovernanceFabric:
                 "framework": framework,
                 "ny_raise_penalty_exposure": "UP TO $1M FIRST VIOLATION / $3M SUBSEQUENT (RAISE Act) + Chatbot UPL private right of action",
                 "action_blocked": payload,
-                "escalation": "Layer 5 — Immediate CEO + Cor.CSRMC + Claude_Code_6 FM notification",
+                "escalation": "Layer 5 — Immediate CEO + Cor.CSRMC + Cor.Claude_Code_6 FM notification",
                 "signed_proof": "fake_crypto_sig_for_now",
             }
             print(f"[!] {layer.name} EXECUTED: {json.dumps(notification)}")

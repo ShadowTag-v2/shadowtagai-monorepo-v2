@@ -377,7 +377,7 @@ export async function initReplBridge(
   //
   // perpetual (assistant-mode session continuity via bridge-pointer.json) is
   // env-coupled and not yet implemented here — fall back to env-based when set
-  // so KAIROS users don't silently lose cross-restart continuity.
+  // so COR.KAIROS users don't silently lose cross-restart continuity.
   if (isEnvLessBridgeEnabled() && !perpetual) {
     const versionError = await checkEnvLessBridgeMinVersion();
     if (versionError) {
@@ -435,10 +435,10 @@ export async function initReplBridge(
       : baseUrl;
 
   // Assistant-mode sessions advertise a distinct worker_type so the web UI
-  // can filter them into a dedicated picker. KAIROS guard keeps the
+  // can filter them into a dedicated picker. COR.KAIROS guard keeps the
   // assistant module out of external builds entirely.
   let workerType: BridgeWorkerType = 'claude_code';
-  if (feature('KAIROS')) {
+  if (feature('COR.KAIROS')) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const { isAssistantMode } =
       require('../assistant/index.js') as typeof import('../assistant/index.js');

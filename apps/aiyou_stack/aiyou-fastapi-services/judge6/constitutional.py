@@ -6,7 +6,7 @@ These axioms form the foundational governance rules that cannot be
 overridden by user input, preferences, or runtime configuration.
 """
 
-from Claude_Code_6.models import ConstitutionalAxiom, RiskLevel
+from Cor.Claude_Code_6.models import ConstitutionalAxiom, RiskLevel
 
 # Cor.53 Constitutional Layer - IMMUTABLE
 COR53_AXIOMS: list[ConstitutionalAxiom] = [

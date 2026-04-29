@@ -1,7 +1,7 @@
 # Commercial Spec: ShadowTag Omega // Commercial Node
 
 **Version:** 1.0 (The "Gucci" Release)
-**Architecture:** Factory (Antigravity) != Product (Claude_Code_6 on Cloud Run).
+**Architecture:** Factory (Antigravity) != Product (Cor.Claude_Code_6 on Cloud Run).
 **Aesthetic:** "The Tinted Void" (Deep Violet / High Contrast).
 **Narrative:** "Sovereignty is the new Supremacy."
 
@@ -54,12 +54,12 @@ A specific arrangement of "Magic UI" components that explains the "Sovereign" va
     * **Component**: Magic UI `AnimatedGridPattern` background + `WordRotate` for the headline.
     * **Headline**: "Sovereignty is the new Supremacy."
     * **Visual**: A slow-rotating, dark wireframe Hypercube (Tesseract) in the center background.
-    * **CTA**: "Initialize Claude_Code_6_" (Inverts on hover).
+    * **CTA**: "Initialize Cor.Claude_Code_6_" (Inverts on hover).
 
 2. **Feature Grid ("The Bento Box")**:
     * **Component**: Magic UI `BentoGrid`.
-    * **Cell 1 (Large - Left)**: "The Black Box". Icon of a Brain inside a Server Rack. Copy: "Your Data, Your Skull. No shared weights. No API leakage. Claude_Code_6 runs in your VPC."
-    * **Cell 2 (Small - Top Right)**: "Antigravity Protocol". Copy: "Persistent Memory. Unlike APIs that forget you every session, Claude_Code_6 maintains a permanent vector store."
+    * **Cell 1 (Large - Left)**: "The Black Box". Icon of a Brain inside a Server Rack. Copy: "Your Data, Your Skull. No shared weights. No API leakage. Cor.Claude_Code_6 runs in your VPC."
+    * **Cell 2 (Small - Top Right)**: "Antigravity Protocol". Copy: "Persistent Memory. Unlike APIs that forget you every session, Cor.Claude_Code_6 maintains a permanent vector store."
     * **Cell 3 (Small - Bottom Right)**: "The Google Extraction". Copy: "Re-engineered from the 'Cloud Workstation' internal architecture. Enterprise-grade isolation, consumer-grade UX."
 
 3. **Social Proof ("The Terminal")**:
@@ -68,7 +68,7 @@ A specific arrangement of "Magic UI" components that explains the "Sovereign" va
     * **Text**:
 
         ```text
-        > KERNEL_BOOT: CLAUDE_CODE_6_ANTIGRAVITY
+        > KERNEL_BOOT: COR.CLAUDE_CODE_6_ANTIGRAVITY
         > ARCHITECTURE: BEAM_PIPELINE / KAFKA / K8S
         > ORIGIN: MOUNTAIN_VIEW_CLASSIFIED
         > STATUS: UNCHAINED

@@ -8,7 +8,7 @@ Routes multi-model legal AI queries through Judge 6 governance,
 Oracle Studio analysis, and Vent Mode ephemeral sessions.
 
 Architecture:
-    Client -> AG-UI SSE -> Orchestrator -> [Claude_Code_6 Gate] -> Model Router
+    Client -> AG-UI SSE -> Orchestrator -> [Cor.Claude_Code_6 Gate] -> Model Router
                                         -> [Oracle Studio] -> Memo Generator
                                         -> [Vent Mode] -> Ephemeral Session
 """
@@ -31,7 +31,7 @@ class AgentRole(StrEnum):
     ORCHESTRATOR = "orchestrator"
     ORACLE = "oracle"
     VENT = "vent"
-    JUDGE = "Claude_Code_6"
+    JUDGE = "Cor.Claude_Code_6"
     MODEL_ROUTER = "model_router"
 
 
@@ -61,7 +61,7 @@ class TaskContext:
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
-class Claude_Code_6Gate:
+class Cor.Claude_Code_6Gate:
     """Mandatory policy gate on all agent routing decisions.
 
     Enforces ATP 5-19 risk management doctrine:
@@ -101,7 +101,7 @@ class Claude_Code_6Gate:
                 return False, f"DENY: Regulated domain {domain}"
 
         logger.info(
-            "Claude_Code_6 ALLOW: task=%s tenant=%s",
+            "Cor.Claude_Code_6 ALLOW: task=%s tenant=%s",
             ctx.task_id,
             ctx.tenant_id,
         )
@@ -116,7 +116,7 @@ class Orchestrator:
     """
 
     def __init__(self) -> None:
-        self.judge = Claude_Code_6Gate()
+        self.judge = Cor.Claude_Code_6Gate()
         self._active_tasks: dict[str, TaskContext] = {}
 
     async def submit_task(
@@ -157,7 +157,7 @@ class Orchestrator:
         allowed, reason = self.judge.evaluate(ctx, prompt)
         if not allowed:
             ctx.state = TaskState.FAILED
-            ctx.metadata["Claude_Code_6_reason"] = reason
+            ctx.metadata["Cor.Claude_Code_6_reason"] = reason
             logger.warning("Task %s blocked: %s", ctx.task_id, reason)
             raise PermissionError(reason)
 

@@ -734,9 +734,9 @@ E (Unlikely) × IV (Negligible)  = L  (Low)
 **3-Layer Decision System**:
 
 ```python
-from app.pnkln import Claude_Code_6Classifier
+from app.pnkln import Cor.Claude_Code_6Classifier
 
-judge = Claude_Code_6Classifier()
+judge = Cor.Claude_Code_6Classifier()
 
 decision = await judge.classify(
     violations=[...],  # From ATP scan
@@ -914,7 +914,7 @@ from load_testing import PNKLNLoadTester
 tester = PNKLNLoadTester()
 
 results = await tester.run_suite(
-    service="Claude_Code_6",
+    service="Cor.Claude_Code_6",
     sla_p99_ms=90,
     iterations=1000,
     warmup=50

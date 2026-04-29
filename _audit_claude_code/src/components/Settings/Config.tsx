@@ -192,7 +192,7 @@ export function Config({
   // sets userMsgOptIn if still entitled.
   /* eslint-disable @typescript-eslint/no-require-imports */
   const showDefaultViewPicker =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
       ? (
           require('../../tools/BriefTool/BriefTool.js') as typeof import('../../tools/BriefTool/BriefTool.js')
         ).isBriefEntitled()
@@ -784,7 +784,7 @@ export function Config({
     {
       id: 'notifChannel',
       label:
-        feature('KAIROS') || feature('KAIROS_PUSH_NOTIFICATION')
+        feature('COR.KAIROS') || feature('COR.KAIROS_PUSH_NOTIFICATION')
           ? 'Local notifications'
           : 'Notifications',
       value: globalConfig.preferredNotifChannel,
@@ -809,7 +809,7 @@ export function Config({
         });
       },
     },
-    ...(feature('KAIROS') || feature('KAIROS_PUSH_NOTIFICATION')
+    ...(feature('COR.KAIROS') || feature('COR.KAIROS_PUSH_NOTIFICATION')
       ? [
           {
             id: 'taskCompleteNotifEnabled',

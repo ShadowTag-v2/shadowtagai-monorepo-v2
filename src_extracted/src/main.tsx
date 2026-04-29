@@ -137,12 +137,12 @@ const coordinatorModeModule = feature('COORDINATOR_MODE')
   ? (require('./coordinator/coordinatorMode.js') as typeof import('./coordinator/coordinatorMode.js'))
   : null;
 /* eslint-enable @typescript-eslint/no-require-imports */
-// Dead code elimination: conditional import for KAIROS (assistant mode)
+// Dead code elimination: conditional import for COR.KAIROS (assistant mode)
 /* eslint-disable @typescript-eslint/no-require-imports */
-const assistantModule = feature('KAIROS')
+const assistantModule = feature('COR.KAIROS')
   ? (require('./assistant/index.js') as typeof import('./assistant/index.js'))
   : null;
-const kairosGate = feature('KAIROS')
+const kairosGate = feature('COR.KAIROS')
   ? (require('./assistant/gate.js') as typeof import('./assistant/gate.js'))
   : null;
 
@@ -347,7 +347,7 @@ import {
   setInitialMainLoopModel,
   setInlinePlugins,
   setIsInteractive,
-  setKairosActive,
+  setCor.KairosActive,
   setOriginalCwd,
   setQuestionPreviewFormat,
   setSdkBetas,
@@ -785,7 +785,7 @@ type PendingAssistantChat = {
   sessionId?: string;
   discover: boolean;
 };
-const _pendingAssistantChat: PendingAssistantChat | undefined = feature('KAIROS')
+const _pendingAssistantChat: PendingAssistantChat | undefined = feature('COR.KAIROS')
   ? {
       sessionId: undefined,
       discover: false,
@@ -910,7 +910,7 @@ export async function main() {
   // `claude -p "explain assistant"`. Root-flag-before-subcommand
   // (e.g. `--debug assistant`) falls through to the stub, which
   // prints usage.
-  if (feature('KAIROS') && _pendingAssistantChat) {
+  if (feature('COR.KAIROS') && _pendingAssistantChat) {
     const rawArgs = process.argv.slice(2);
     if (rawArgs[0] === 'assistant') {
       const nextArg = rawArgs[1];
@@ -1624,7 +1624,7 @@ async function run(): Promise<CommanderCommand> {
         | Awaited<ReturnType<NonNullable<typeof assistantModule>['initializeAssistantTeam']>>
         | undefined;
       if (
-        feature('KAIROS') &&
+        feature('COR.KAIROS') &&
         (
           options as {
             assistant?: boolean;
@@ -1638,7 +1638,7 @@ async function run(): Promise<CommanderCommand> {
         assistantModule.markAssistantForced();
       }
       if (
-        feature('KAIROS') &&
+        feature('COR.KAIROS') &&
         assistantModule?.isAssistantMode() &&
         // Spawned teammates share the leader's cwd + settings.json, so
         // isAssistantMode() is true for them too. --agent-id being set
@@ -1665,13 +1665,13 @@ async function run(): Promise<CommanderCommand> {
           // (max ~5s). --assistant skips the gate entirely (daemon is
           // pre-entitled).
           kairosEnabled =
-            assistantModule.isAssistantForced() || (await kairosGate.isKairosEnabled());
+            assistantModule.isAssistantForced() || (await kairosGate.isCor.KairosEnabled());
           if (kairosEnabled) {
             const opts = options as {
               brief?: boolean;
             };
             opts.brief = true;
-            setKairosActive(true);
+            setCor.KairosActive(true);
             // Pre-seed an in-process team so Agent(name: "foo") spawns
             // teammates without TeamCreate. Must run BEFORE setup() captures
             // the teammateMode snapshot (initializeAssistantTeam calls
@@ -2333,7 +2333,7 @@ async function run(): Promise<CommanderCommand> {
       // devChannels is deferred: showSetupScreens shows a confirmation dialog
       // and only appends to allowedChannels on accept.
       let devChannels: ChannelEntry[] | undefined;
-      if (feature('KAIROS') || feature('KAIROS_CHANNELS')) {
+      if (feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) {
         // Parse plugin:name@marketplace / server:Y tags into typed entries.
         // Tag decides trust model downstream: plugin-kind hits marketplace
         // verification + GrowthBook allowlist, server-kind always fails
@@ -2429,7 +2429,7 @@ async function run(): Promise<CommanderCommand> {
       // the tool as enabled when computing the base-tools disallow filter.
       // Conditional require avoids leaking the tool-name string into
       // external builds.
-      if ((feature('KAIROS') || feature('KAIROS_BRIEF')) && baseTools.length > 0) {
+      if ((feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')) && baseTools.length > 0) {
         /* eslint-disable @typescript-eslint/no-require-imports */
         const { BRIEF_TOOL_NAME, LEGACY_BRIEF_TOOL_NAME } =
           require('./tools/BriefTool/prompt.js') as typeof import('./tools/BriefTool/prompt.js');
@@ -2988,7 +2988,7 @@ async function run(): Promise<CommanderCommand> {
       // briefVisibility). A persisted 'chat' after a GB kill-switch falls
       // through (entitlement fails).
       if (
-        (feature('KAIROS') || feature('KAIROS_BRIEF')) &&
+        (feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')) &&
         !getIsNonInteractiveSession() &&
         !getUserMsgOptIn() &&
         getInitialSettings().defaultView === 'chat'
@@ -3005,7 +3005,7 @@ async function run(): Promise<CommanderCommand> {
       // the generic proactive prompt would tell it to call a tool it can't
       // access and conflict with delegation instructions.
       if (
-        (feature('PROACTIVE') || feature('KAIROS')) &&
+        (feature('PROACTIVE') || feature('COR.KAIROS')) &&
         ((
           options as {
             proactive?: boolean;
@@ -3016,7 +3016,7 @@ async function run(): Promise<CommanderCommand> {
       ) {
         /* eslint-disable @typescript-eslint/no-require-imports */
         const briefVisibility =
-          feature('KAIROS') || feature('KAIROS_BRIEF')
+          feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
             ? (
                 require('./tools/BriefTool/BriefTool.js') as typeof import('./tools/BriefTool/BriefTool.js')
               ).isBriefEnabled()
@@ -3029,7 +3029,7 @@ async function run(): Promise<CommanderCommand> {
           ? `${appendSystemPrompt}\n\n${proactivePrompt}`
           : proactivePrompt;
       }
-      if (feature('KAIROS') && kairosEnabled && assistantModule) {
+      if (feature('COR.KAIROS') && kairosEnabled && assistantModule) {
         const assistantAddendum = assistantModule.getAssistantSystemPromptAddendum();
         appendSystemPrompt = appendSystemPrompt
           ? `${appendSystemPrompt}\n\n${assistantAddendum}`
@@ -3387,7 +3387,7 @@ async function run(): Promise<CommanderCommand> {
           : undefined,
         thinkingConfig,
         assistantActivationPath:
-          feature('KAIROS') && kairosEnabled
+          feature('COR.KAIROS') && kairosEnabled
             ? assistantModule?.getAssistantActivationPath()
             : undefined,
       });
@@ -3530,7 +3530,7 @@ async function run(): Promise<CommanderCommand> {
           // scheduled tasks and Agent-tool calls ran synchronously — N
           // overdue cron tasks on spawn = N serial subagent turns blocking
           // user input. Computed at :1620, well before this branch.
-          ...(feature('KAIROS')
+          ...(feature('COR.KAIROS')
             ? {
                 kairosEnabled,
               }
@@ -3826,7 +3826,7 @@ async function run(): Promise<CommanderCommand> {
       // All startup opt-in paths (--tools, --brief, defaultView) have fired
       // above; initialIsBriefOnly just reads the resulting state.
       const initialIsBriefOnly =
-        feature('KAIROS') || feature('KAIROS_BRIEF') ? getUserMsgOptIn() : false;
+        feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF') ? getUserMsgOptIn() : false;
       const fullRemoteControl = remoteControl || getRemoteControlAtStartup() || kairosEnabled;
       let ccrMirrorEnabled = false;
       if (feature('CCR_MIRROR') && !fullRemoteControl) {
@@ -3948,11 +3948,11 @@ async function run(): Promise<CommanderCommand> {
             advisorModel,
           }),
         // Compute teamContext synchronously to avoid useEffect setState during render.
-        // KAIROS: assistantTeamContext takes precedence — set earlier in the
-        // KAIROS block so Agent(name: "foo") can spawn in-process teammates
+        // COR.KAIROS: assistantTeamContext takes precedence — set earlier in the
+        // COR.KAIROS block so Agent(name: "foo") can spawn in-process teammates
         // without TeamCreate. computeInitialTeamContext() is for tmux-spawned
         // teammates reading their own identity, not the assistant-mode leader.
-        teamContext: feature('KAIROS')
+        teamContext: feature('COR.KAIROS')
           ? (assistantTeamContext ?? computeInitialTeamContext?.())
           : computeInitialTeamContext?.(),
       };
@@ -4221,7 +4221,7 @@ async function run(): Promise<CommanderCommand> {
         );
         return;
       } else if (
-        feature('KAIROS') &&
+        feature('COR.KAIROS') &&
         _pendingAssistantChat &&
         (_pendingAssistantChat.sessionId || _pendingAssistantChat.discover)
       ) {
@@ -4303,9 +4303,9 @@ async function run(): Promise<CommanderCommand> {
         const getAccessToken = (): string =>
           getClaudeAIOAuthTokens()?.accessToken ?? apiCreds.accessToken;
 
-        // Brief mode activation: setKairosActive(true) satisfies BOTH opt-in
+        // Brief mode activation: setCor.KairosActive(true) satisfies BOTH opt-in
         // and entitlement for isBriefEnabled() (BriefTool.ts:124-132).
-        setKairosActive(true);
+        setCor.KairosActive(true);
         setUserMsgOptIn(true);
         setIsRemoteMode(true);
         const remoteSessionConfig = createRemoteSessionConfig(
@@ -4973,7 +4973,7 @@ async function run(): Promise<CommanderCommand> {
   if (feature('TRANSCRIPT_CLASSIFIER')) {
     program.addOption(new Option('--enable-auto-mode', 'Opt in to auto mode').hideHelp());
   }
-  if (feature('PROACTIVE') || feature('KAIROS')) {
+  if (feature('PROACTIVE') || feature('COR.KAIROS')) {
     program.addOption(new Option('--proactive', 'Start in proactive autonomous mode'));
   }
   if (feature('UDS_INBOX')) {
@@ -4984,17 +4984,17 @@ async function run(): Promise<CommanderCommand> {
       ),
     );
   }
-  if (feature('KAIROS') || feature('KAIROS_BRIEF')) {
+  if (feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')) {
     program.addOption(
       new Option('--brief', 'Enable SendUserMessage tool for agent-to-user communication'),
     );
   }
-  if (feature('KAIROS')) {
+  if (feature('COR.KAIROS')) {
     program.addOption(
       new Option('--assistant', 'Force assistant mode (Agent SDK daemon use)').hideHelp(),
     );
   }
-  if (feature('KAIROS') || feature('KAIROS_CHANNELS')) {
+  if (feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) {
     program.addOption(
       new Option(
         '--channels <servers...>',
@@ -5725,7 +5725,7 @@ async function run(): Promise<CommanderCommand> {
         await bridgeMain(process.argv.slice(3));
       });
   }
-  if (feature('KAIROS')) {
+  if (feature('COR.KAIROS')) {
     program
       .command('assistant [sessionId]')
       .description(
@@ -6114,7 +6114,7 @@ async function logTenguInit({
 }
 function maybeActivateProactive(options: unknown): void {
   if (
-    (feature('PROACTIVE') || feature('KAIROS')) &&
+    (feature('PROACTIVE') || feature('COR.KAIROS')) &&
     ((
       options as {
         proactive?: boolean;
@@ -6130,7 +6130,7 @@ function maybeActivateProactive(options: unknown): void {
   }
 }
 function maybeActivateBrief(options: unknown): void {
-  if (!(feature('KAIROS') || feature('KAIROS_BRIEF'))) return;
+  if (!(feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF'))) return;
   const briefFlag = (
     options as {
       brief?: boolean;

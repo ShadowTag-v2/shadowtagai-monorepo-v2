@@ -7,7 +7,7 @@ import requests
 # CONFIG
 # Queries specific Computer Science categories for new papers
 ARXIV_API = "http://export.arxiv.org/api/query?search_query=cat:cs.AI&max_results=1&sortBy=submittedDate&sortOrder=descending"
-CLAUDE_CODE_6_THRESHOLD = 0.85
+COR.CLAUDE_CODE_6_THRESHOLD = 0.85
 
 
 def genesis_scan():
@@ -35,17 +35,17 @@ def genesis_scan():
         print(f"[SENSOR] Error: {e}")
         paper_title = "Simulated Paper: The Connective Stability of Hashed Tensors"
 
-    # STEP 2: CLAUDE_CODE_6 RISK ASSESSMENT
+    # STEP 2: COR.CLAUDE_CODE_6 RISK ASSESSMENT
     # In a real scenario, this uses an LLM to read the PDF.
     # Here, we simulate the 'Constraint' logic.
-    print("[CLAUDE_CODE_6] Analyzing Stability Score...")
+    print("[COR.CLAUDE_CODE_6] Analyzing Stability Score...")
     stability_score = 0.92  # Simulated High Score
 
-    if stability_score > CLAUDE_CODE_6_THRESHOLD:
-        print("[CLAUDE_CODE_6] VERDICT: APPROVED. Technology is stable.")
+    if stability_score > COR.CLAUDE_CODE_6_THRESHOLD:
+        print("[COR.CLAUDE_CODE_6] VERDICT: APPROVED. Technology is stable.")
         deploy_simulation(paper_title)
     else:
-        print("[CLAUDE_CODE_6] VERDICT: REJECTED. Too experimental.")
+        print("[COR.CLAUDE_CODE_6] VERDICT: REJECTED. Too experimental.")
 
 
 def deploy_simulation(tech_name):

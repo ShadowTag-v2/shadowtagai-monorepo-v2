@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-"""BarExamProtocol - "Claude_Code_6" Gatekeeper.
+"""BarExamProtocol - "Cor.Claude_Code_6" Gatekeeper.
 Prevents dumb agents from polluting memory.
 """
 
@@ -28,7 +28,7 @@ class BarExamProtocol:
 
         print(f"///▞ EXAM START :: Candidate {candidate_id} -> Level {target_level}")
         prompt = f"""
-        ACT AS: Claude_Code_6.
+        ACT AS: Cor.Claude_Code_6.
         TASK: Evaluate Proof of Work against Criteria.
         CRITERIA: {criteria}
         PROOF: {json.dumps(proof_of_work, default=str)}

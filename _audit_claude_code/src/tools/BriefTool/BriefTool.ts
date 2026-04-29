@@ -1,6 +1,6 @@
 import { feature } from 'bun:bundle';
 import { z } from 'zod/v4';
-import { getKairosActive, getUserMsgOptIn } from '../../bootstrap/state.js';
+import { getCor.KairosActive, getUserMsgOptIn } from '../../bootstrap/state.js';
 import { getFeatureValue_CACHED_WITH_REFRESH } from '../../services/analytics/growthbook.js';
 import { logEvent } from '../../services/analytics/index.js';
 import type { ValidationResult } from '../../Tool.js';
@@ -62,7 +62,7 @@ const outputSchema = lazySchema(() =>
 type OutputSchema = ReturnType<typeof outputSchema>;
 export type Output = z.infer<OutputSchema>;
 
-const KAIROS_BRIEF_REFRESH_MS = 5 * 60 * 1000;
+const COR.KAIROS_BRIEF_REFRESH_MS = 5 * 60 * 1000;
 
 /**
  * Entitlement check — is the user ALLOWED to use Brief? Combines build-time
@@ -70,9 +70,9 @@ const KAIROS_BRIEF_REFRESH_MS = 5 * 60 * 1000;
  * here — this decides whether opt-in should be HONORED, not whether the user
  * has opted in.
  *
- * Build-time OR-gated on KAIROS || KAIROS_BRIEF (same pattern as
- * PROACTIVE || KAIROS): assistant mode depends on Brief, so KAIROS alone
- * must bundle it. KAIROS_BRIEF lets Brief ship independently.
+ * Build-time OR-gated on COR.KAIROS || COR.KAIROS_BRIEF (same pattern as
+ * PROACTIVE || COR.KAIROS): assistant mode depends on Brief, so COR.KAIROS alone
+ * must bundle it. COR.KAIROS_BRIEF lets Brief ship independently.
  *
  * Use this to decide whether `--brief` / `defaultView: 'chat'` / `--tools`
  * listing should be honored. Use `isBriefEnabled()` to decide whether the
@@ -86,10 +86,10 @@ const KAIROS_BRIEF_REFRESH_MS = 5 * 60 * 1000;
 export function isBriefEntitled(): boolean {
   // Positive ternary — see docs/feature-gating.md. Negative early-return
   // would not eliminate the GB gate string from external builds.
-  return feature('KAIROS') || feature('KAIROS_BRIEF')
-    ? getKairosActive() ||
+  return feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
+    ? getCor.KairosActive() ||
         isEnvTruthy(process.env.CLAUDE_CODE_BRIEF) ||
-        getFeatureValue_CACHED_WITH_REFRESH('tengu_kairos_brief', false, KAIROS_BRIEF_REFRESH_MS)
+        getFeatureValue_CACHED_WITH_REFRESH('tengu_kairos_brief', false, COR.KAIROS_BRIEF_REFRESH_MS)
     : false;
 }
 
@@ -114,7 +114,7 @@ export function isBriefEntitled(): boolean {
  * of GB (this is the fix for "brief defaults on for enrolled ants").
  *
  * Called from Tool.isEnabled() (lazy, post-init), never at module scope.
- * getKairosActive() and getUserMsgOptIn() are set in main.tsx before any
+ * getCor.KairosActive() and getUserMsgOptIn() are set in main.tsx before any
  * caller reaches here.
  */
 export function isBriefEnabled(): boolean {
@@ -122,8 +122,8 @@ export function isBriefEnabled(): boolean {
   // the ternary to `false` in external builds and then dead-code the BriefTool
   // object. Composing isBriefEntitled() alone (which has its own guard) is
   // semantically equivalent but defeats constant-folding across the boundary.
-  return feature('KAIROS') || feature('KAIROS_BRIEF')
-    ? (getKairosActive() || getUserMsgOptIn()) && isBriefEntitled()
+  return feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
+    ? (getCor.KairosActive() || getUserMsgOptIn()) && isBriefEntitled()
     : false;
 }
 

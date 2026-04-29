@@ -10,7 +10,7 @@ import type { GovernanceEngine } from './router.js';
 /**
  * Judge 6 governance decision
  */
-export interface Claude_Code_6Decision {
+export interface Cor.Claude_Code_6Decision {
   approved: boolean;
   risk_level: string;
   reasoning: string;
@@ -30,20 +30,20 @@ export interface Claude_Code_6Decision {
  * Python Judge 6 adapter
  * Calls Python Judge 6 implementation via subprocess
  */
-export class Claude_Code_6Adapter implements GovernanceEngine {
+export class Cor.Claude_Code_6Adapter implements GovernanceEngine {
   private corInstanceId: string;
   private pythonPath: string;
-  private Claude_Code_6Path: string;
+  private Cor.Claude_Code_6Path: string;
 
   constructor(corInstanceId: string = 'copilot-001', pythonPath: string = 'python3') {
     this.corInstanceId = corInstanceId;
     this.pythonPath = pythonPath;
 
-    // Path to Claude_Code_6 Python package
-    this.Claude_Code_6Path = path.join(process.cwd(), '..', 'Claude_Code_6');
+    // Path to Cor.Claude_Code_6 Python package
+    this.Cor.Claude_Code_6Path = path.join(process.cwd(), '..', 'Cor.Claude_Code_6');
   }
 
-  async evaluateRequest(input: string, purpose?: string): Promise<Claude_Code_6Decision> {
+  async evaluateRequest(input: string, purpose?: string): Promise<Cor.Claude_Code_6Decision> {
     return new Promise((resolve, reject) => {
       // Build Python script to evaluate request
       const script = this.buildEvaluationScript(input, purpose);
@@ -53,7 +53,7 @@ export class Claude_Code_6Adapter implements GovernanceEngine {
         cwd: process.cwd(),
         env: {
           ...process.env,
-          PYTHONPATH: path.dirname(this.Claude_Code_6Path),
+          PYTHONPATH: path.dirname(this.Cor.Claude_Code_6Path),
         },
       });
 
@@ -75,7 +75,7 @@ export class Claude_Code_6Adapter implements GovernanceEngine {
         }
 
         try {
-          const decision = JSON.parse(stdout) as Claude_Code_6Decision;
+          const decision = JSON.parse(stdout) as Cor.Claude_Code_6Decision;
           resolve(decision);
         } catch (error) {
           reject(new Error(`Failed to parse Judge 6 response: ${error}`));
@@ -102,9 +102,9 @@ export class Claude_Code_6Adapter implements GovernanceEngine {
     return `
 import sys
 import json
-sys.path.insert(0, "${this.escapePython(path.dirname(this.Claude_Code_6Path))}")
+sys.path.insert(0, "${this.escapePython(path.dirname(this.Cor.Claude_Code_6Path))}")
 
-from Claude_Code_6 import JudgmentRule
+from Cor.Claude_Code_6 import JudgmentRule
 
 judge = JudgmentRule(cor_instance_id="${this.escapePython(this.corInstanceId)}")
 
@@ -150,7 +150,7 @@ print(json.dumps(result))
  * Mock governance for testing without Python dependency
  */
 export class MockGovernance implements GovernanceEngine {
-  async evaluateRequest(input: string, purpose?: string): Promise<Claude_Code_6Decision> {
+  async evaluateRequest(input: string, purpose?: string): Promise<Cor.Claude_Code_6Decision> {
     // Simple mock: reject if input contains "malware" or "exploit"
     const dangerous = /\b(malware|exploit|hack|bypass|jailbreak)\b/i.test(input);
 
@@ -187,5 +187,5 @@ export function createGovernance(
   if (useMock) {
     return new MockGovernance();
   }
-  return new Claude_Code_6Adapter();
+  return new Cor.Claude_Code_6Adapter();
 }

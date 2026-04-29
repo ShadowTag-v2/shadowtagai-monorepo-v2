@@ -185,7 +185,7 @@ export function useReplBridge(
           // crashes. Non-assistant bridges clear the pointer on teardown
           // (crash-recovery only).
           let perpetual = false;
-          if (feature('KAIROS')) {
+          if (feature('COR.KAIROS')) {
             const { isAssistantMode } = await import('../assistant/index.js');
             perpetual = isAssistantMode();
           }
@@ -207,7 +207,7 @@ export function useReplBridge(
               // Dynamic import keeps the bridge code out of non-BRIDGE_MODE builds.
               const { resolveAndPrepend } = await import('../bridge/inboundAttachments.js');
               let sanitized = fields.content;
-              if (feature('KAIROS_GITHUB_WEBHOOKS')) {
+              if (feature('COR.KAIROS_GITHUB_WEBHOOKS')) {
                 /* eslint-disable @typescript-eslint/no-require-imports */
                 const { sanitizeInboundWebhookContent } =
                   require('../bridge/webhookSanitizer.js') as typeof import('../bridge/webhookSanitizer.js');
@@ -681,7 +681,7 @@ export function useReplBridge(
               };
             });
 
-            // Show bridge status with URL in the transcript. perpetual (KAIROS
+            // Show bridge status with URL in the transcript. perpetual (COR.KAIROS
             // assistant mode) falls back to v1 at initReplBridge.ts — skip the
             // v2-only upgrade nudge for them. Own try/catch so a cosmetic
             // GrowthBook hiccup doesn't hit the outer init-failure handler.

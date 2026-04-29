@@ -694,7 +694,7 @@ MISSION: PROTECT AND DECEIVE.
     "prompt": "ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + ShadowTag watermarking"
   },
   {
-    "name": "pnkln:Claude_Code_6",
+    "name": "pnkln:Cor.Claude_Code_6",
     "prompt": "ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75 THEN Freeze"
   }
 ]

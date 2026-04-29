@@ -93,7 +93,7 @@ IF server DOWN:
 |--------|--------|----------|--------------|
 | Dream Consolidation | `scripts/dream_consolidation.py` | Nightly | KI artifact timestamps |
 | Loop Steward | `scripts/loop_steward.py` | 5-min cycles | Task file modification time |
-| KAIROS | `scripts/kairos_daemon.py` | Background | `.beads/kairos_heartbeat.json` |
+| COR.KAIROS | `scripts/kairos_daemon.py` | Background | `.beads/kairos_heartbeat.json` |
 | pnkln-evolve | `scripts/pnkln_evolve.py` | Background | Evolution log entries |
 | Omni-Autolint | `scripts/gca_autolint_daemon.py` | Daily 3-5AM | Last push timestamp |
 

@@ -4627,7 +4627,7 @@ bquote>  {"name":"pnkln:TroopB","prompt":"ROLE:Ranger Eng; MISSION:Direct Action
 bquote> Secure, Linted"},
 bquote>  {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + ShadowTag
 bquote> watermarking"},
-bquote>  {"name":"pnkln:Claude_Code_6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75
+bquote>  {"name":"pnkln:Cor.Claude_Code_6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75
 bquote> THEN Freeze"}
 bquote> ]
 bquote> JSON
@@ -4767,7 +4767,7 @@ bash-3.2$ ```bash
 > Secure, Linted"},
 >  {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + ShadowTag
 > watermarking"},
->  {"name":"pnkln:Claude_Code_6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75
+>  {"name":"pnkln:Cor.Claude_Code_6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75
 > THEN Freeze"}
 > ]
 > JSON

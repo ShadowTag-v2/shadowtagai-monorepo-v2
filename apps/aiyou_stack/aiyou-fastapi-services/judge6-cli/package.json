@@ -1,10 +1,10 @@
 {
-  "name": "@pnkln/Claude_Code_6-cli",
+  "name": "@pnkln/Cor.Claude_Code_6-cli",
   "version": "2.0.0",
   "description": "Zero-flicker TUI for Judge 6 decision validation (Purpose/Reasons/Brakes)",
   "main": "dist/index.js",
   "bin": {
-    "Claude_Code_6": "dist/index.js"
+    "Cor.Claude_Code_6": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",

@@ -44,7 +44,7 @@ export function UserToolSuccessMessage({
   // per-scrollback-message store subscription — same pattern as
   // UserPromptMessage.tsx.
   const isBriefOnly =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useAppState((s) => s.isBriefOnly)
       : false;

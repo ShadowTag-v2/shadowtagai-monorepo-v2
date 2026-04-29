@@ -1847,14 +1847,14 @@ tier: security
 pnkln.io/component: "watermarking"
 Judge 6 Hybrid Enforcement System
 
-# Claude_Code_6-deployment.yaml - 3-layer hybrid enforcement
+# Cor.Claude_Code_6-deployment.yaml - 3-layer hybrid enforcement
 
 ---
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-name: Claude_Code_6-config
+name: Cor.Claude_Code_6-config
 namespace: ShadowTag-v2jr-governance
 data:
 latency_budget_ms: "90"
@@ -1872,17 +1872,17 @@ timeout_ms: 20
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-name: Claude_Code_6-hybrid
+name: Cor.Claude_Code_6-hybrid
 namespace: ShadowTag-v2jr-governance
 spec:
 replicas: 3
 selector:
 matchLabels:
-app: Claude_Code_6
+app: Cor.Claude_Code_6
 template:
 metadata:
 labels:
-app: Claude_Code_6
+app: Cor.Claude_Code_6
 tier: enforcement
 spec:
 nodeSelector:
@@ -1897,7 +1897,7 @@ workload: judge-enforcement
       containers:
       # Layer 1: Gemini Policy Understanding
       - name: gemini-layer
-        image: gcr.io/pnkln-core-stack/Claude_Code_6-gemini:latest
+        image: gcr.io/pnkln-core-stack/Cor.Claude_Code_6-gemini:latest
         env:
         - name: MODEL_ID
           value: "gemini-3.1-family"
@@ -1919,12 +1919,12 @@ workload: judge-enforcement
 
       # Layer 2: PyTorch Neural Enforcement
       - name: pytorch-layer
-        image: gcr.io/pnkln-core-stack/Claude_Code_6-pytorch:latest
+        image: gcr.io/pnkln-core-stack/Cor.Claude_Code_6-pytorch:latest
         env:
         - name: CUDA_VISIBLE_DEVICES
           value: "0"
         - name: MODEL_PATH
-          value: "/models/Claude_Code_6-neural.pt"
+          value: "/models/Cor.Claude_Code_6-neural.pt"
         volumeMounts:
         - name: model-weights
           mountPath: /models
@@ -1938,7 +1938,7 @@ workload: judge-enforcement
 
       # Layer 3: Rules Engine
       - name: rules-layer
-        image: gcr.io/pnkln-core-stack/Claude_Code_6-rules:latest
+        image: gcr.io/pnkln-core-stack/Cor.Claude_Code_6-rules:latest
         env:
         - name: RULES_PATH
           value: "/config/rules.yaml"
@@ -1976,18 +1976,18 @@ workload: judge-enforcement
             mountOptions: "implicit-dirs"
       - name: rules-config
         configMap:
-          name: Claude_Code_6-rules
+          name: Cor.Claude_Code_6-rules
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-name: Claude_Code_6-service
+name: Cor.Claude_Code_6-service
 namespace: ShadowTag-v2jr-governance
 spec:
 selector:
-app: Claude_Code_6
+app: Cor.Claude_Code_6
 ports:
 
 - name: http
@@ -2103,13 +2103,13 @@ ports:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-name: Claude_Code_6-hpa
+name: Cor.Claude_Code_6-hpa
 namespace: ShadowTag-v2jr-governance
 spec:
 scaleTargetRef:
 apiVersion: apps/v1
 kind: Deployment
-name: Claude_Code_6-hybrid
+name: Cor.Claude_Code_6-hybrid
 minReplicas: 3
 maxReplicas: 10
 metrics:
@@ -2184,12 +2184,12 @@ metrics:
 apiVersion: v1
 kind: ServiceMonitor
 metadata:
-name: Claude_Code_6-metrics
+name: Cor.Claude_Code_6-metrics
 namespace: ShadowTag-v2jr-governance
 spec:
 selector:
 matchLabels:
-app: Claude_Code_6
+app: Cor.Claude_Code_6
 endpoints:
 
 - port: metrics
@@ -2201,7 +2201,7 @@ endpoints:
 apiVersion: v1
 kind: PrometheusRule
 metadata:
-name: Claude_Code_6-alerts
+name: Cor.Claude_Code_6-alerts
 namespace: ShadowTag-v2jr-governance
 spec:
 groups:
@@ -2287,7 +2287,7 @@ kubectl apply -f ${K8S_DIR}/namespaces.yaml
 # Deploy Judge 6
 
 echo "▶ Deploying Judge 6 hybrid enforcement..."
-kubectl apply -f ${K8S_DIR}/Claude_Code_6-deployment.yaml
+kubectl apply -f ${K8S_DIR}/Cor.Claude_Code_6-deployment.yaml
 
 # Deploy LLM routing
 
@@ -2314,7 +2314,7 @@ echo "───────────────────────"
 
 echo "Waiting for deployments to be ready..."
 kubectl wait --for=condition=available --timeout=600s \
- deployment/Claude_Code_6-hybrid -n ShadowTag-v2jr-governance
+ deployment/Cor.Claude_Code_6-hybrid -n ShadowTag-v2jr-governance
 
 kubectl wait --for=condition=available --timeout=600s \
  deployment/llm-router -n cognitive-stack-v5
@@ -2362,14 +2362,14 @@ echo "╚═══════════════════════�
 echo "▶ Testing Judge 6 p99 latency..."
 for i in {1..100}; do
 curl -s -o /dev/null -w "%{time_total}\n" \
- http://Claude_Code_6-service.ShadowTag-v2jr-governance/validate
+ http://Cor.Claude_Code_6-service.ShadowTag-v2jr-governance/validate
 done | awk '{sum+=$1; sumsq+=$1*$1} END {print "Mean:", sum/NR*1000, "ms"}'
 
 # Test coverage gates
 
 echo "▶ Testing 98% coverage gates..."
-kubectl exec -n ShadowTag-v2jr-governance deployment/Claude_Code_6-hybrid -- \
- python -c "import Claude_Code_6; print(f'Coverage: {Claude_Code_6.get_coverage()}%')"
+kubectl exec -n ShadowTag-v2jr-governance deployment/Cor.Claude_Code_6-hybrid -- \
+ python -c "import Cor.Claude_Code_6; print(f'Coverage: {Cor.Claude_Code_6.get_coverage()}%')"
 
 # Verify LLM distribution
 
@@ -2954,14 +2954,14 @@ tier: security
 pnkln.io/component: "watermarking"
 Judge 6 Hybrid Enforcement System
 
-# Claude_Code_6-deployment.yaml - 3-layer hybrid enforcement
+# Cor.Claude_Code_6-deployment.yaml - 3-layer hybrid enforcement
 
 ---
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-name: Claude_Code_6-config
+name: Cor.Claude_Code_6-config
 namespace: ShadowTag-v2jr-governance
 data:
 latency_budget_ms: "90"
@@ -2979,17 +2979,17 @@ timeout_ms: 20
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-name: Claude_Code_6-hybrid
+name: Cor.Claude_Code_6-hybrid
 namespace: ShadowTag-v2jr-governance
 spec:
 replicas: 3
 selector:
 matchLabels:
-app: Claude_Code_6
+app: Cor.Claude_Code_6
 template:
 metadata:
 labels:
-app: Claude_Code_6
+app: Cor.Claude_Code_6
 tier: enforcement
 spec:
 nodeSelector:
@@ -3004,7 +3004,7 @@ workload: judge-enforcement
       containers:
       # Layer 1: Gemini Policy Understanding
       - name: gemini-layer
-        image: gcr.io/pnkln-core-stack/Claude_Code_6-gemini:latest
+        image: gcr.io/pnkln-core-stack/Cor.Claude_Code_6-gemini:latest
         env:
         - name: MODEL_ID
           value: "gemini-3.1-family"
@@ -3026,12 +3026,12 @@ workload: judge-enforcement
 
       # Layer 2: PyTorch Neural Enforcement
       - name: pytorch-layer
-        image: gcr.io/pnkln-core-stack/Claude_Code_6-pytorch:latest
+        image: gcr.io/pnkln-core-stack/Cor.Claude_Code_6-pytorch:latest
         env:
         - name: CUDA_VISIBLE_DEVICES
           value: "0"
         - name: MODEL_PATH
-          value: "/models/Claude_Code_6-neural.pt"
+          value: "/models/Cor.Claude_Code_6-neural.pt"
         volumeMounts:
         - name: model-weights
           mountPath: /models
@@ -3045,7 +3045,7 @@ workload: judge-enforcement
 
       # Layer 3: Rules Engine
       - name: rules-layer
-        image: gcr.io/pnkln-core-stack/Claude_Code_6-rules:latest
+        image: gcr.io/pnkln-core-stack/Cor.Claude_Code_6-rules:latest
         env:
         - name: RULES_PATH
           value: "/config/rules.yaml"
@@ -3083,18 +3083,18 @@ workload: judge-enforcement
             mountOptions: "implicit-dirs"
       - name: rules-config
         configMap:
-          name: Claude_Code_6-rules
+          name: Cor.Claude_Code_6-rules
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-name: Claude_Code_6-service
+name: Cor.Claude_Code_6-service
 namespace: ShadowTag-v2jr-governance
 spec:
 selector:
-app: Claude_Code_6
+app: Cor.Claude_Code_6
 ports:
 
 - name: http
@@ -3210,13 +3210,13 @@ ports:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-name: Claude_Code_6-hpa
+name: Cor.Claude_Code_6-hpa
 namespace: ShadowTag-v2jr-governance
 spec:
 scaleTargetRef:
 apiVersion: apps/v1
 kind: Deployment
-name: Claude_Code_6-hybrid
+name: Cor.Claude_Code_6-hybrid
 minReplicas: 3
 maxReplicas: 10
 metrics:
@@ -3291,12 +3291,12 @@ metrics:
 apiVersion: v1
 kind: ServiceMonitor
 metadata:
-name: Claude_Code_6-metrics
+name: Cor.Claude_Code_6-metrics
 namespace: ShadowTag-v2jr-governance
 spec:
 selector:
 matchLabels:
-app: Claude_Code_6
+app: Cor.Claude_Code_6
 endpoints:
 
 - port: metrics
@@ -3308,7 +3308,7 @@ endpoints:
 apiVersion: v1
 kind: PrometheusRule
 metadata:
-name: Claude_Code_6-alerts
+name: Cor.Claude_Code_6-alerts
 namespace: ShadowTag-v2jr-governance
 spec:
 groups:
@@ -3394,7 +3394,7 @@ kubectl apply -f ${K8S_DIR}/namespaces.yaml
 # Deploy Judge 6
 
 echo "▶ Deploying Judge 6 hybrid enforcement..."
-kubectl apply -f ${K8S_DIR}/Claude_Code_6-deployment.yaml
+kubectl apply -f ${K8S_DIR}/Cor.Claude_Code_6-deployment.yaml
 
 # Deploy LLM routing
 
@@ -3421,7 +3421,7 @@ echo "───────────────────────"
 
 echo "Waiting for deployments to be ready..."
 kubectl wait --for=condition=available --timeout=600s \
- deployment/Claude_Code_6-hybrid -n ShadowTag-v2jr-governance
+ deployment/Cor.Claude_Code_6-hybrid -n ShadowTag-v2jr-governance
 
 kubectl wait --for=condition=available --timeout=600s \
  deployment/llm-router -n cognitive-stack-v5
@@ -3469,14 +3469,14 @@ echo "╚═══════════════════════�
 echo "▶ Testing Judge 6 p99 latency..."
 for i in {1..100}; do
 curl -s -o /dev/null -w "%{time_total}\n" \
- http://Claude_Code_6-service.ShadowTag-v2jr-governance/validate
+ http://Cor.Claude_Code_6-service.ShadowTag-v2jr-governance/validate
 done | awk '{sum+=$1; sumsq+=$1*$1} END {print "Mean:", sum/NR*1000, "ms"}'
 
 # Test coverage gates
 
 echo "▶ Testing 98% coverage gates..."
-kubectl exec -n ShadowTag-v2jr-governance deployment/Claude_Code_6-hybrid -- \
- python -c "import Claude_Code_6; print(f'Coverage: {Claude_Code_6.get_coverage()}%')"
+kubectl exec -n ShadowTag-v2jr-governance deployment/Cor.Claude_Code_6-hybrid -- \
+ python -c "import Cor.Claude_Code_6; print(f'Coverage: {Cor.Claude_Code_6.get_coverage()}%')"
 
 # Verify LLM distribution
 

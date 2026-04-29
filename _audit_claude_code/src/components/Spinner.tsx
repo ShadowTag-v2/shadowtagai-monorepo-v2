@@ -7,7 +7,7 @@ import { c as _c } from 'react/compiler-runtime';
 import type { Theme } from 'src/utils/theme.js';
 import {
   getCurrentTurnTokenBudget,
-  getKairosActive,
+  getCor.KairosActive,
   getTurnOutputTokens,
   getUserMsgOptIn,
 } from '../bootstrap/state.js';
@@ -77,7 +77,7 @@ export function SpinnerWithVerb(props: Props): React.ReactNode {
   const viewingAgentTaskId = useAppState((s_0) => s_0.viewingAgentTaskId);
   // Hoisted to mount-time — this component re-renders at animation framerate.
   const briefEnvEnabled =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useMemo(() => isEnvTruthy(process.env.CLAUDE_CODE_BRIEF), [])
       : false;
@@ -86,8 +86,8 @@ export function SpinnerWithVerb(props: Props): React.ReactNode {
   // BriefTool.ts would leak tool-name strings into external builds. Single
   // spinner instance → hooks stay unconditional (two subs, negligible).
   if (
-    (feature('KAIROS') || feature('KAIROS_BRIEF')) &&
-    (getKairosActive() ||
+    (feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')) &&
+    (getCor.KairosActive() ||
       (getUserMsgOptIn() &&
         (briefEnvEnabled || getFeatureValue_CACHED_MAY_BE_STALE('tengu_kairos_brief', false)))) &&
     isBriefOnly &&

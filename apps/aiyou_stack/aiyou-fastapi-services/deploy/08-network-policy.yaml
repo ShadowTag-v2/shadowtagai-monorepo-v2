@@ -1,16 +1,16 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: Claude_Code_6-network-policy
+  name: Cor.Claude_Code_6-network-policy
   namespace: pnkln
   labels:
-    app.kubernetes.io/name: Claude_Code_6-network-policy
+    app.kubernetes.io/name: Cor.Claude_Code_6-network-policy
     app.kubernetes.io/component: security
     app.kubernetes.io/managed-by: terraform
 spec:
   podSelector:
     matchLabels:
-      app: Claude_Code_6
+      app: Cor.Claude_Code_6
   policyTypes:
   - Ingress
   - Egress

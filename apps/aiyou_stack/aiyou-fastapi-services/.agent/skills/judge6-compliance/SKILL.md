@@ -1,5 +1,5 @@
 ---
-name: Claude_Code_6-compliance
+name: Cor.Claude_Code_6-compliance
 description: Enforces Pnkln "Judge 6" Risk Protocols (Wet Fleece/Dry Ground). Use this to validate project phases before deployment.
 ---
 

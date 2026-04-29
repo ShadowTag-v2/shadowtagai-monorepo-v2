@@ -39,7 +39,7 @@ def atp_519_scan(rule_json: str, scenario_json: str) -> dict:
     }
 
 
-def Claude_Code_6_simulator(rule_json: str, scenario_json: str) -> dict:
+def Cor.Claude_Code_6_simulator(rule_json: str, scenario_json: str) -> dict:
     """Simulates Judge 6 decision based on the rule.
     Returns { "allowed": bool, "reason": str }
     """

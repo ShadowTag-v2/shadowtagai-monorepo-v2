@@ -84,7 +84,7 @@
 - **Type**: Operational / AI Safety
 - **Severity**: 🟡 Medium
 - **Status**: MITIGATED
-- **Description**: Long-running agent sessions accumulate stale context from operator_invariants.json and GEMINI.md, causing drift between canonical truth and in-memory agent state. Mitigated by: (1) KAIROS daemon refreshes context every 5 minutes, (2) Dream consolidation prunes stale KIs nightly, (3) GEMINI.md version pinning prevents implicit upgrades.
+- **Description**: Long-running agent sessions accumulate stale context from operator_invariants.json and GEMINI.md, causing drift between canonical truth and in-memory agent state. Mitigated by: (1) COR.COR.KAIROS daemon refreshes context every 5 minutes, (2) Dream consolidation prunes stale KIs nightly, (3) GEMINI.md version pinning prevents implicit upgrades.
 
 ## Risk #51: JTF V35.0 Scaffolds — Temporal.io Runtime Not Installed
 - **Type**: Build / Dependency
@@ -117,7 +117,7 @@
 - **Status**: ✅ RESOLVED (2026-04-26)
 - **Description**: Two copies of `ShadowTagV4.Kernel/Process.cs` existed: (1) canonical at `apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/Process.cs` and (2) duplicate at `apps/aiyou_stack/aiyou-fastapi-services/src/dotnet/AiYou.Kernel/Process.cs`. The duplicate had already drifted — AGENTS.md incorrectly claimed `OnExternalEvent` should be replaced with `OnInputEvent` (which does NOT exist in SK Process.Core 1.21.0-alpha). `OnExternalEvent` is the CORRECT API for human-in-the-loop external resumption.
 - **Resolution (2026-04-26)**: Full consolidation completed in three phases:
-  1. **Deduplication**: Duplicate at `src/dotnet/AiYou.Kernel/Process.cs` deleted via `git rm -r`. Canonical copy at `apps/aiyou-kernel/Process.cs` updated with user's authoritative version containing MDO (Model-Driven Orchestration), Claude_Code_6 governance steps, and CSRMC pipeline stages.
+  1. **Deduplication**: Duplicate at `src/dotnet/AiYou.Kernel/Process.cs` deleted via `git rm -r`. Canonical copy at `apps/aiyou-kernel/Process.cs` updated with user's authoritative version containing MDO (Model-Driven Orchestration), Cor.Cor.Claude_Code_6 governance steps, and CSRMC pipeline stages.
   2. **.NET 10.0 TFM Alignment**: Both `.csproj` files (`AiYou.Kernel.csproj` and `SemanticKernel.csproj`) realigned from `net11.0` (preview) to `net10.0` (stable). `global.json` updated to pin `10.0.202` with `rollForward: latestFeature`. AGENTS.md Core Truth #2 corrected.
   3. **Namespace Collision Fix**: `Process.cs` referenced `Kernel` ambiguously — the compiler could not resolve between `ShadowTagV4.Kernel` (local namespace) and `Microsoft.SemanticKernel.Kernel` (SK dependency). Resolved by using fully-qualified type `Microsoft.SemanticKernel.Kernel` throughout. `dotnet build` verified clean (0 warnings, 0 errors).
   4. **Pre-commit Hook Bypass**: The `git-lfs` smudge filter interference caused `pre-commit` to crash during checkout restoration. Bypassed with `SKIP=guillotine git commit --no-verify`. This is a known recurring issue (see also Risk #54).

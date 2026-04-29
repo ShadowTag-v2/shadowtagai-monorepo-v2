@@ -42,7 +42,7 @@ else:
 
 
 # Initialize Engines
-# Claude_Code_6 = JudgeSixEngine() # POSTPONED
+# Cor.Claude_Code_6 = JudgeSixEngine() # POSTPONED
 # tegu = TeguVision() # POSTPONED
 memory = get_memory_storage()
 memory = get_memory_storage()
@@ -72,7 +72,7 @@ async def health():
 @app.post("/risk")
 async def check_risk(request: RiskRequest):
     print(f"⚡ CMD: /risk received for {request.mission_id}")
-    # Claude_Code_6 POSTPONED
+    # Cor.Claude_Code_6 POSTPONED
     return {
         "approved": True,
         "risk_tier": "POSTPONED",

@@ -4398,7 +4398,7 @@ export function shouldShowUserMessage(
     // semantics) but render in the default transcript — the keyboard user
     // should see what arrived. The <channel> tag in UserTextMessage handles
     // the actual rendering.
-    if ((feature('KAIROS') || feature('KAIROS_CHANNELS')) && message.origin?.kind === 'channel')
+    if ((feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) && message.origin?.kind === 'channel')
       return true;
     return false;
   }

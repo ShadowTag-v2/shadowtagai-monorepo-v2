@@ -2,7 +2,7 @@
 
 # src/daemon/kairos_supervisor.py
 # ============================================================================
-# KAIROS Session Supervisor — 15s Budget, ULTRAPLAN, Auto-Dream
+# COR.KAIROS Session Supervisor — 15s Budget, ULTRAPLAN, Auto-Dream
 # ============================================================================
 # Block 2 of the Ex Toto Omni-Compile (Gideon OS Architecture)
 # Invariants: arXiv:2512.14982 Prompt Repetition Framework
@@ -15,11 +15,11 @@ from datetime import datetime
 from google.cloud import tasks_v2, pubsub_v1
 from google import genai
 
-logger = logging.getLogger("KAIROS-Daemon")
+logger = logging.getLogger("COR.KAIROS-Daemon")
 
 
-class KairosSessionSupervisor:
-    """Long-lived supervisor managing KAIROS, ULTRAPLAN, and Auto-Dream."""
+class Cor.KairosSessionSupervisor:
+    """Long-lived supervisor managing COR.KAIROS, ULTRAPLAN, and Auto-Dream."""
 
     def __init__(self):
         self.task_client = tasks_v2.CloudTasksClient()
@@ -31,7 +31,7 @@ class KairosSessionSupervisor:
         estimated_time = self._estimate_complexity(command)
 
         if estimated_time > 15:
-            logger.info("⏳ [KAIROS] Budget >15s. Farming to ULTRAPLAN remote instance.")
+            logger.info("⏳ [COR.KAIROS] Budget >15s. Farming to ULTRAPLAN remote instance.")
             interaction_id = await self._dispatch_ultraplan(command, context)
             return {
                 "tool": "SendUserMessage",
@@ -69,7 +69,7 @@ class KairosSessionSupervisor:
 
     async def nightly_auto_dream(self):
         """Midnight boundary handling. The 4-Phase Memory Consolidation."""
-        logger.info("🌙 [KAIROS] Midnight boundary reached. Initiating Auto-Dream...")
+        logger.info("🌙 [COR.KAIROS] Midnight boundary reached. Initiating Auto-Dream...")
         yesterday_log = self._get_yesterday_log()
 
         if not yesterday_log:
@@ -87,7 +87,7 @@ class KairosSessionSupervisor:
 
         # Push to Obsidian Master Brain
         self._write_to_obsidian_vault(consolidation.text)
-        logger.info("✨ [KAIROS] Auto-Dream complete. Memory compressed.")
+        logger.info("✨ [COR.KAIROS] Auto-Dream complete. Memory compressed.")
 
     def _append_daily_log(self, cmd: str, result: str):
         today = datetime.utcnow().strftime("%Y-%m-%d")

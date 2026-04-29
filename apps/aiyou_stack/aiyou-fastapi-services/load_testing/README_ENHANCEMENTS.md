@@ -108,18 +108,18 @@ ROI: 3.3× in 18 months per business plan
 ```bash
 # Development
 export ENV=development
-export CLAUDE_CODE_6_ENDPOINT="http://localhost:8080/enforce"
-export CLAUDE_CODE_6_ITERATIONS=100
+export COR.CLAUDE_CODE_6_ENDPOINT="http://localhost:8080/enforce"
+export COR.CLAUDE_CODE_6_ITERATIONS=100
 
 # Staging
 export ENV=staging
-export CLAUDE_CODE_6_ENDPOINT="https://staging-Claude_Code_6.pnkln.ai/enforce"
-export CLAUDE_CODE_6_ITERATIONS=500
+export COR.CLAUDE_CODE_6_ENDPOINT="https://staging-Cor.Claude_Code_6.pnkln.ai/enforce"
+export COR.CLAUDE_CODE_6_ITERATIONS=500
 
 # Production
 export ENV=production
-export CLAUDE_CODE_6_ENDPOINT="https://Claude_Code_6.pnkln.ai/enforce"
-export CLAUDE_CODE_6_ITERATIONS=1000
+export COR.CLAUDE_CODE_6_ENDPOINT="https://Cor.Claude_Code_6.pnkln.ai/enforce"
+export COR.CLAUDE_CODE_6_ITERATIONS=1000
 ```
 
 **Business Value**:
@@ -137,7 +137,7 @@ export CLAUDE_CODE_6_ITERATIONS=1000
 ```json
 {
   "timestamp": "2025-11-08T10:30:00",
-  "service": "Claude_Code_6",
+  "service": "Cor.Claude_Code_6",
   "environment": "production",
   "results": {...},
   "sla_compliance": {
@@ -190,7 +190,7 @@ pool_stats = {
 **Purpose**: Exclude cold-start from performance measurements
 
 **Implementation**:
-- Configurable warmup count (default: 50 for Claude_Code_6, 100 for JR Engine)
+- Configurable warmup count (default: 50 for Cor.Claude_Code_6, 100 for JR Engine)
 - Separate warmup phase before main test
 - Warmup results reported but not included in SLA validation
 
@@ -309,7 +309,7 @@ pip install -r requirements.txt
 
 # 3. Configure environment
 export ENV=staging
-export CLAUDE_CODE_6_ENDPOINT="https://staging-Claude_Code_6.pnkln.ai/enforce"
+export COR.CLAUDE_CODE_6_ENDPOINT="https://staging-Cor.Claude_Code_6.pnkln.ai/enforce"
 
 # 4. Run all validations
 python3 run_all_validations.py
@@ -319,7 +319,7 @@ python3 run_all_validations.py
 
 ```bash
 # Judge 6 only
-python3 validate_Claude_Code_6_latency.py
+python3 validate_Cor.Claude_Code_6_latency.py
 
 # JR Engine only
 python3 validate_jr_engine_latency.py
@@ -354,7 +354,7 @@ jobs:
       - name: Run validations
         env:
           ENV: production
-          CLAUDE_CODE_6_ENDPOINT: ${{ secrets.CLAUDE_CODE_6_ENDPOINT }}
+          COR.CLAUDE_CODE_6_ENDPOINT: ${{ secrets.COR.CLAUDE_CODE_6_ENDPOINT }}
         run: python3 run_all_validations.py
 
       - name: Upload results
@@ -419,12 +419,12 @@ Benefits:
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `ENV` | `production` | Environment name (dev/staging/prod) |
-| `CLAUDE_CODE_6_ENDPOINT` | `https://Claude_Code_6.pnkln.ai/enforce` | Judge 6 API endpoint |
-| `CLAUDE_CODE_6_ITERATIONS` | `1000` | Number of test requests |
-| `CLAUDE_CODE_6_WARMUP` | `50` | Warmup iterations (not counted) |
-| `CLAUDE_CODE_6_CONCURRENCY` | `50` | Initial concurrency (adaptive) |
-| `CLAUDE_CODE_6_REQUEST_TIMEOUT` | `5.0` | Request timeout (seconds) |
-| `CLAUDE_CODE_6_CONNECT_TIMEOUT` | `2.0` | Connection timeout (seconds) |
+| `COR.CLAUDE_CODE_6_ENDPOINT` | `https://Cor.Claude_Code_6.pnkln.ai/enforce` | Judge 6 API endpoint |
+| `COR.CLAUDE_CODE_6_ITERATIONS` | `1000` | Number of test requests |
+| `COR.CLAUDE_CODE_6_WARMUP` | `50` | Warmup iterations (not counted) |
+| `COR.CLAUDE_CODE_6_CONCURRENCY` | `50` | Initial concurrency (adaptive) |
+| `COR.CLAUDE_CODE_6_REQUEST_TIMEOUT` | `5.0` | Request timeout (seconds) |
+| `COR.CLAUDE_CODE_6_CONNECT_TIMEOUT` | `2.0` | Connection timeout (seconds) |
 
 *(Similar for `JR_ENGINE_*` and `ORCHESTRATOR_*`)*
 

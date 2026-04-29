@@ -1,4 +1,4 @@
-name = "pnkln-Claude_Code_6-lite"
+name = "pnkln-Cor.Claude_Code_6-lite"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
 
@@ -14,14 +14,14 @@ GOOGLE_CLOUD_LOCATION = "us-central1"
 
 # Production environment
 [env.production]
-name = "pnkln-Claude_Code_6-lite-prod"
+name = "pnkln-Cor.Claude_Code_6-lite-prod"
 routes = [
   { pattern = "judge.pnkln.io/*", zone_name = "pnkln.io" }
 ]
 
 # Staging environment
 [env.staging]
-name = "pnkln-Claude_Code_6-lite-staging"
+name = "pnkln-Cor.Claude_Code_6-lite-staging"
 
 # Observability
 [observability]

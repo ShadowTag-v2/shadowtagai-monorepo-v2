@@ -121,7 +121,7 @@ import {
   setNeedsAutoModeExitAttachment,
   getLastEmittedDate,
   setLastEmittedDate,
-  getKairosActive,
+  getCor.KairosActive,
 } from '../bootstrap/state.js';
 import type { QuerySource } from '../constants/querySource.js';
 import {
@@ -156,11 +156,11 @@ import { isEnvTruthy, getClaudeConfigHomeDir } from './envUtils.js';
 import { feature } from 'bun:bundle';
 /* eslint-disable @typescript-eslint/no-require-imports */
 const BRIEF_TOOL_NAME: string | null =
-  feature('KAIROS') || feature('KAIROS_BRIEF')
+  feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
     ? (require('../tools/BriefTool/prompt.js') as typeof import('../tools/BriefTool/prompt.js'))
         .BRIEF_TOOL_NAME
     : null;
-const sessionTranscriptModule = feature('KAIROS')
+const sessionTranscriptModule = feature('COR.KAIROS')
   ? (require('../services/sessionTranscript/sessionTranscript.js') as typeof import('../services/sessionTranscript/sessionTranscript.js'))
   : null;
 /* eslint-enable @typescript-eslint/no-require-imports */
@@ -1303,8 +1303,8 @@ export function getDateChangeAttachments(messages: Message[] | undefined): Attac
   // the /dream skill (1–5am local) finds it even if no compaction fires
   // today. Fire-and-forget; writeSessionTranscriptSegment buckets by
   // message timestamp so a multi-day gap flushes each day correctly.
-  if (feature('KAIROS')) {
-    if (getKairosActive() && messages !== undefined) {
+  if (feature('COR.KAIROS')) {
+    if (getCor.KairosActive() && messages !== undefined) {
       sessionTranscriptModule?.flushOnDateChange(messages, currentDate);
     }
   }

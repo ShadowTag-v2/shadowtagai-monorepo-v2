@@ -334,7 +334,7 @@ rm -rf /tmp/kdense-review  # Delete immediately after extraction
 | Component         | Status      | Details                          |
 | ----------------- | ----------- | -------------------------------- |
 | Judge #6 CPU Pod  | 🟢 RUNNING  | `1/1 Ready, 0 Restarts`          |
-| K8s Deployment    | 🟢 DEPLOYED | `k8s/Claude_Code_6_deployment_cpu.yaml` |
+| K8s Deployment    | 🟢 DEPLOYED | `k8s/Cor.Claude_Code_6_deployment_cpu.yaml` |
 | Kuvasz Monitoring | 🟢 RUNNING  | localhost:8080, 3000, 9099       |
 | Engine Image      | 🟢 PUSHED   | sha256:dfeec6d072a1              |
 | pnkln Module      | 🟢 FIXED    | **init**.py + shadowtagai        |
@@ -349,8 +349,8 @@ The "Antigravity" session (likely Cursor/VS Code with another LLM) attempted a "
 
 | Attempted                                    | Status         | Impact                                                       |
 | -------------------------------------------- | -------------- | ------------------------------------------------------------ |
-| `src/Claude_Code_6/core.py`                         | ❌ NOT CREATED | Referenced in transcript but file doesn't exist              |
-| `src/Claude_Code_6/memory.py`                       | ❌ NOT CREATED | Referenced in transcript but file doesn't exist              |
+| `src/Cor.Claude_Code_6/core.py`                         | ❌ NOT CREATED | Referenced in transcript but file doesn't exist              |
+| `src/Cor.Claude_Code_6/memory.py`                       | ❌ NOT CREATED | Referenced in transcript but file doesn't exist              |
 | `scripts/deploy_modern_stack.sh`             | ❌ NOT CREATED | Failed due to gcloud auth                                    |
 | `.claude/memory/current.json`                | ❌ NOT CREATED | Referenced but doesn't exist                                 |
 | `.claude/docs/MASTER_STRATEGIC_PLAN_2025.md` | ❌ NOT CREATED | Referenced but doesn't exist                                 |
@@ -365,13 +365,13 @@ The "Antigravity" session (likely Cursor/VS Code with another LLM) attempted a "
    - The existing `shadowtagai/core/antigravity_agent_framework.py` (662 lines) was written separately and works fine
 
 2. **Confusion Created**:
-   - Transcript mentions files (`src/Claude_Code_6/core.py`, `src/Claude_Code_6/memory.py`) that don't exist
+   - Transcript mentions files (`src/Cor.Claude_Code_6/core.py`, `src/Cor.Claude_Code_6/memory.py`) that don't exist
    - Requirements.txt was modified to add `graphrag` which fails on Python 3.13
    - No actual "Gucci stack" infrastructure was deployed
 
 3. **What Actually Exists vs. What Was Claimed**:
    - ✅ `shadowtagai/core/antigravity_agent_framework.py` - Full JREngine, Glicko-2, Panel Debate (this works)
-   - ❌ `src/Claude_Code_6/` - Empty, despite transcript saying LangGraph state machine was implemented
+   - ❌ `src/Cor.Claude_Code_6/` - Empty, despite transcript saying LangGraph state machine was implemented
    - ❌ LangGraph/Mem0/GraphRAG integration - Not actually present
 
 ---
@@ -390,8 +390,8 @@ The Antigravity session's phantom files don't exist, so nothing to clean up. Sim
 
 If you want the LangGraph/Mem0 stack that was promised but not delivered:
 
-1. Create `src/Claude_Code_6/core.py` with actual LangGraph state machine
-2. Create `src/Claude_Code_6/memory.py` with Mem0 integration
+1. Create `src/Cor.Claude_Code_6/core.py` with actual LangGraph state machine
+2. Create `src/Cor.Claude_Code_6/memory.py` with Mem0 integration
 3. Create `scripts/deploy_modern_stack.sh` with proper gcloud auth handling
 4. Fix `requirements.txt` to use compatible versions
 
@@ -430,11 +430,11 @@ Keep what works, add what's needed:
 
 | File                             | Purpose                                  |
 | -------------------------------- | ---------------------------------------- |
-| `src/Claude_Code_6/__init__.py`         | Package initialization                   |
-| `src/Claude_Code_6/core.py`             | LangGraph state machine with kill chain  |
-| `src/Claude_Code_6/memory.py`           | Mem0 integration for sovereign memory    |
-| `src/Claude_Code_6/state.py`            | Pydantic state models for LangGraph      |
-| `src/Claude_Code_6/nodes.py`            | Kill chain node implementations          |
+| `src/Cor.Claude_Code_6/__init__.py`         | Package initialization                   |
+| `src/Cor.Claude_Code_6/core.py`             | LangGraph state machine with kill chain  |
+| `src/Cor.Claude_Code_6/memory.py`           | Mem0 integration for sovereign memory    |
+| `src/Cor.Claude_Code_6/state.py`            | Pydantic state models for LangGraph      |
+| `src/Cor.Claude_Code_6/nodes.py`            | Kill chain node implementations          |
 | `scripts/deploy_modern_stack.sh` | GKE deployment with proper auth handling |
 
 ### User Choices
@@ -456,7 +456,7 @@ redis>=5.0.0
 ### Phase 1: LangGraph State Machine (core.py)
 
 ```python
-# src/Claude_Code_6/core.py
+# src/Cor.Claude_Code_6/core.py
 """
 LangGraph Kill Chain: OPA Fast Check → Judge#6 Reasoning → Audit Logger
 """
@@ -498,7 +498,7 @@ def create_governance_graph():
 ### Phase 2: Mem0 Sovereign Memory (memory.py)
 
 ```python
-# src/Claude_Code_6/memory.py
+# src/Cor.Claude_Code_6/memory.py
 """
 Sovereign Memory: Session Context + Persistent Memory + Pattern Recognition
 """
@@ -547,7 +547,7 @@ gcloud services enable \
     --project=acquired-jet-478701-b3
 
 # Deploy GKE Autopilot cluster with Spot instances
-gcloud container clusters create-auto Claude_Code_6-cluster \
+gcloud container clusters create-auto Cor.Claude_Code_6-cluster \
     --region=us-central1 \
     --project=acquired-jet-478701-b3 \
     --spot
@@ -587,11 +587,11 @@ echo "✅ Modern stack deployed"
 7. **pnkln Module Fix** ✅ - Created pnkln/**init**.py
 8. **Dockerfile Fix** ✅ - Added shadowtagai/ to COPY
 9. **K8s Manifest Fix** ✅ - Port 8082→8000, healthz→health
-10. **CPU Pod Deployment** ✅ - `Claude_Code_6-inference-cpu-6777d84b8b-hzf57` RUNNING
+10. **CPU Pod Deployment** ✅ - `Cor.Claude_Code_6-inference-cpu-6777d84b8b-hzf57` RUNNING
 
 ### Service Endpoints
 
-- **Internal**: `Claude_Code_6-cpu-service.Claude_Code_6-system.svc.cluster.local:80`
+- **Internal**: `Cor.Claude_Code_6-cpu-service.Cor.Claude_Code_6-system.svc.cluster.local:80`
 - **Pod**: Running on port 8000, health checks passing
 
 ### Pending (Optional)
@@ -679,7 +679,7 @@ Source: `PNKLN_TOKEN_COMPRESSION_SPEC.md` (1056 lines)
 
 | Instance          | Role                          |
 | ----------------- | ----------------------------- |
-| ag-Claude_Code_6-dev-01  | Judge #6 kernel development   |
+| ag-Cor.Claude_Code_6-dev-01  | Judge #6 kernel development   |
 | ag-compression-01 | Token compression pipeline    |
 | ag-monitor-01     | Monitoring & observability    |
 | ag-api-gateway-01 | FastAPI gateway development   |
@@ -692,7 +692,7 @@ Source: `PNKLN_TOKEN_COMPRESSION_SPEC.md` (1056 lines)
 
 ### 10 VS Code Workspaces
 
-- Claude_Code_6-Kernel
+- Cor.Claude_Code_6-Kernel
 - Compression-Pipeline
 - FastAPI-Gateway
 - Testing-Suite

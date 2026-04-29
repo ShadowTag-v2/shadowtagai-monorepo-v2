@@ -3,7 +3,7 @@
 """context_cache.py — Aegaeon Protocol: Gemini Context Cache Slab Builder
 
 Builds a persistent Gemini Context Cache ("Master Memory Slab") from
-CLAUDE.md, .beads/, Claude_Code_6 config, and monorepo manifest. Cached tokens
+CLAUDE.md, .beads/, Cor.Claude_Code_6 config, and monorepo manifest. Cached tokens
 cost ~90% less on subsequent requests (Gemini 2.5+ pricing).
 
 State persists to data/aegaeon/cache_state.json.
@@ -39,7 +39,7 @@ SLAB_SOURCES = [
     REPO_ROOT / "AGENTS.md",
     REPO_ROOT / "monorepo_manifest.yaml",
     REPO_ROOT / ".beads" / "active_session_invariants.md",
-    REPO_ROOT / "apps" / "aiyou_stack" / "aiyou-fastapi-services" / "src" / "Claude_Code_6" / "orchestrator.py",
+    REPO_ROOT / "apps" / "aiyou_stack" / "aiyou-fastapi-services" / "src" / "Cor.Claude_Code_6" / "orchestrator.py",
 ]
 
 # Default model for caching

@@ -15,7 +15,7 @@
 cd infra && terraform init && terraform plan  # Expected: Zero errors
 
 # Test 2: Kubernetes deployment
-cd deploy && kubectl apply -f . && kubectl wait --for=condition=ready pod -l app=Claude_Code_6 -n pnkln --timeout=300s  # Expected: All pods ready
+cd deploy && kubectl apply -f . && kubectl wait --for=condition=ready pod -l app=Cor.Claude_Code_6 -n pnkln --timeout=300s  # Expected: All pods ready
 
 # Test 3: Latency SLA
 cd validate && python test_latency.py --p99-target-ms=90  # Expected: PASS (exit 0)
@@ -101,17 +101,17 @@ Brakes (Meet SLA)          → validate/ (Testing harness)
 ### Phase 2: Model Upload (5 min)
 
 - [ ] Get bucket name: `terraform output model_bucket_name`
-- [ ] Upload model: `gsutil -m cp -r MODEL_PATH gs://BUCKET/models/Claude_Code_6/`
-- [ ] Verify upload: `gsutil ls gs://BUCKET/models/Claude_Code_6/`
+- [ ] Upload model: `gsutil -m cp -r MODEL_PATH gs://BUCKET/models/Cor.Claude_Code_6/`
+- [ ] Verify upload: `gsutil ls gs://BUCKET/models/Cor.Claude_Code_6/`
 
 ### Phase 3: Workload Deployment (10 min)
 
 - [ ] `cd ../deploy`
 - [ ] Update `02-service-account.yaml` with PROJECT_ID
 - [ ] Update `03-configmap.yaml` with bucket name
-- [ ] Update `04-Claude_Code_6-deployment.yaml` with bucket name and GPU type
+- [ ] Update `04-Cor.Claude_Code_6-deployment.yaml` with bucket name and GPU type
 - [ ] Deploy: `kubectl apply -f .`
-- [ ] Wait for ready: `kubectl wait --for=condition=ready pod -l app=Claude_Code_6 -n pnkln --timeout=600s`
+- [ ] Wait for ready: `kubectl wait --for=condition=ready pod -l app=Cor.Claude_Code_6 -n pnkln --timeout=600s`
 - [ ] Verify pods: `kubectl get pods -n pnkln`
 - [ ] Verify HPA: `kubectl get hpa -n pnkln`
 
@@ -138,7 +138,7 @@ Brakes (Meet SLA)          → validate/ (Testing harness)
 
 - [ ] Namespace `pnkln` exists
 - [ ] All pods in `Running` state
-- [ ] Service `Claude_Code_6` has ClusterIP
+- [ ] Service `Cor.Claude_Code_6` has ClusterIP
 - [ ] HPA shows current/desired replicas
 - [ ] PodDisruptionBudget configured
 - [ ] NetworkPolicy applied
@@ -161,13 +161,13 @@ Brakes (Meet SLA)          → validate/ (Testing harness)
 
 ### Cloud Console
 
-- [ ] Navigate to GKE → Workloads → Claude_Code_6
+- [ ] Navigate to GKE → Workloads → Cor.Claude_Code_6
 - [ ] Verify metrics visible (CPU, Memory, Network)
 - [ ] Check logs for errors
 
 ### Prometheus (Optional)
 
-- [ ] Port forward metrics: `kubectl port-forward -n pnkln svc/Claude_Code_6-metrics 8080:8080`
+- [ ] Port forward metrics: `kubectl port-forward -n pnkln svc/Cor.Claude_Code_6-metrics 8080:8080`
 - [ ] Access metrics: `curl localhost:8080/metrics`
 - [ ] Verify vLLM metrics present
 
@@ -187,7 +187,7 @@ Brakes (Meet SLA)          → validate/ (Testing harness)
 cd deploy && kubectl delete -f .
 
 # Check logs
-kubectl logs -n pnkln -l app=Claude_Code_6
+kubectl logs -n pnkln -l app=Cor.Claude_Code_6
 
 # Fix issues and redeploy
 kubectl apply -f .
@@ -244,7 +244,7 @@ terraform apply
 
 ### High Latency
 
-**Check**: `kubectl logs -n pnkln -l app=Claude_Code_6`
+**Check**: `kubectl logs -n pnkln -l app=Cor.Claude_Code_6`
 **Fix**: Review ConfigMap, enable optimizations, check GPU utilization
 
 ### GCS Access Denied
@@ -279,7 +279,7 @@ gcloud storage buckets delete gs://BUCKET_NAME --force
 
 ```bash
 # Scale down workloads to zero
-kubectl scale deployment Claude_Code_6 -n pnkln --replicas=0
+kubectl scale deployment Cor.Claude_Code_6 -n pnkln --replicas=0
 
 # GPU nodes will auto-scale to zero after ~10 minutes
 ```
@@ -298,7 +298,7 @@ Deployment is successful when:
 
 For issues:
 
-1. Check logs: `kubectl logs -n pnkln -l app=Claude_Code_6`
+1. Check logs: `kubectl logs -n pnkln -l app=Cor.Claude_Code_6`
 2. Review events: `kubectl get events -n pnkln --sort-by='.lastTimestamp'`
 3. Consult component READMEs:
    - `infra/README.md`

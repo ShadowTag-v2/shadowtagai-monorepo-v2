@@ -237,7 +237,7 @@ function useCanUseTool(setToolUseConfirmQueue, setToolPermissionContext) {
                       ? appState.replBridgePermissionCallbacks
                       : undefined,
                     channelCallbacks:
-                      feature('KAIROS') || feature('KAIROS_CHANNELS')
+                      feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')
                         ? appState.channelPermissionCallbacks
                         : undefined,
                   },

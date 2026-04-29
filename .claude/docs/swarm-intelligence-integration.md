@@ -181,9 +181,9 @@ def benchmark():
     # Index 1000 Judge#6 decisions
     for i in range(1000):
         corpus.index_document(
-            doc_id=f"Claude_Code_6_{i:05d}",
+            doc_id=f"Cor.Claude_Code_6_{i:05d}",
             text=f"Sample decision {i} with governance reasoning...",
-            metadata={'task_type': 'Claude_Code_6', 'opord_id': f"OPORD_{i:05d}"}
+            metadata={'task_type': 'Cor.Claude_Code_6', 'opord_id': f"OPORD_{i:05d}"}
         )
 
     # Benchmark full-text search
@@ -353,7 +353,7 @@ class Autoresearch:
         result = self.mcp.github_repo_analysis(repo_url)
 
         # Validate with Judge#6
-        validated = Claude_Code_6.validate(result)
+        validated = Cor.Claude_Code_6.validate(result)
 
         # Log to Context Index
         context_index.log_achievement(

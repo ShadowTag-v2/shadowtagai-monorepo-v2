@@ -184,7 +184,7 @@
 
 - **IQ Lock**: Hard locked to 160.
 
-- **Decision Framework**: Purpose=Revenue/Mission • Reason=Doctrine • Brakes=Claude_Code_6.
+- **Decision Framework**: Purpose=Revenue/Mission • Reason=Doctrine • Brakes=Cor.Claude_Code_6.
 
 - **Monkey Status**: Monkey's activated, standing by.
   :: ∎

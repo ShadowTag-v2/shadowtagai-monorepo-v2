@@ -25,7 +25,7 @@ M:: {modality.modes}
 (⊢ ∙ ⇨ ∙ ⟿ ∙ ▷) ⇨ PRISM ≡ Value.Lock'
 
 - **Operating Posture**: Professional: Your, “Antigravity-Created-by-Google,” baseline-IQ remains hard locked to 160.
-- **Decision Framework**: Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=‘Claude_Code_6’’
+- **Decision Framework**: Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=‘Cor.Claude_Code_6’’
 - **Pillars**:
   - SOP-A Upload Triage (2× speed, −90% errors)
   - SOP-B Change & Release (2× cadence, clearer audits)
@@ -607,7 +607,7 @@ Here’s the **clean, revised, and future-proofed** version of your handoff pack
 - Codebase: `~/ShadowTag-v2-fastapi-services` → fully renamed from pnkln → ShadowTagAI
 - All PII removed (names, old emails, keys)
 - Architecture: **Native Gemini function-calling only** (zero AutoGen / LangGraph / multi-agent frameworks)
-- Core governance kernel chain: ATP_519 → Claude_Code_6 → Audit (p99 ≤ 90 ms target)
+- Core governance kernel chain: ATP_519 → Cor.Claude_Code_6 → Audit (p99 ≤ 90 ms target)
 - UNGPT router live at `localhost:8787/v1/chat/completions` (routes to Gemini, Claude, Groq, Ollama, Grok)
 - GCP project ready: `acquired-jet-478701-b3`, Autopilot cluster up
 - Docker registry: `us-central1-docker.pkg.dev/.../shadowtagai-core`
@@ -642,7 +642,7 @@ Here’s the **clean, revised, and future-proofed** version of your handoff pack
 
 ## Architecture Summary (what actually matters)
 
-- Single Gemini context → parallel function sets (COR, JR, NS, CLAUDE_CODE_6, SHADOWTAG)
+- Single Gemini context → parallel function sets (COR, JR, NS, COR.CLAUDE_CODE_6, SHADOWTAG)
 - Kernel chain: 95% token reduction, $0.0003/decision
 - Routing strategy:
   - function calling → Gemini
@@ -695,7 +695,7 @@ Here’s the **folded-in, final, clean, and fully operational** version — ever
 ## Core Truth (non-negotiable)
 - Platform: ShadowTagAI (formerly pnkln / ShadowTag-v2)
 - Architecture: **Native Gemini function-calling only** — zero AutoGen, LangGraph, AG2, or any multi-agent framework ever again
-- Governance kernel: ATP_519 → Claude_Code_6 → Audit (target p99 ≤ 90 ms, $0.0003/decision)
+- Governance kernel: ATP_519 → Cor.Claude_Code_6 → Audit (target p99 ≤ 90 ms, $0.0003/decision)
 - UNGPT router live: `localhost:8787/v1/chat/completions` (Gemini / Claude / Groq / Ollama / Grok)
 - GCP project: `acquired-jet-478701-b3` | Autopilot cluster running
 - All PII scrubbed, all references to old names/emails removed
@@ -1739,7 +1739,7 @@ cat artifacts/SHADOWTAGAI_COMPLETE_HANDOFF_2025-11-22.txt
 ```
 START OF SHADOWTAGAI MASTER HANDOFF – NOVEMBER 22, 2025
 Platform: ShadowTagAI – Native Gemini function-calling only
-Architecture: Single context → COR/JR/NS/CLAUDE_CODE_6/SHADOWTAG
+Architecture: Single context → COR/JR/NS/COR.CLAUDE_CODE_6/SHADOWTAG
 Deprecations: NO LangChain, NO AutoGen, NO Vertex Workbench
 Whiteboard: Persistent, revenue-tracking, corruption-proof
 Tests: 97% unit, 100% integration, load-tested to 10k RPS
@@ -4021,7 +4021,7 @@ SHADOWTAGAI MASTER THREAD COMPILATION – NOVEMBER 22, 2025
 ## Core Truth
 - Platform: ShadowTagAI (formerly pnkln / ShadowTag-v2)
 - Architecture: Native Gemini function-calling only — zero AutoGen, LangGraph, etc.
-- Governance kernel: ATP_519 → Claude_Code_6 → Audit (p99 ≤ 90 ms, $0.0003/decision)
+- Governance kernel: ATP_519 → Cor.Claude_Code_6 → Audit (p99 ≤ 90 ms, $0.0003/decision)
 - UNGPT router: localhost:8787 (Gemini/Claude/Groq/Ollama/Grok)
 - GCP: acquired-jet-478701-b3 | Autopilot cluster
 - PII scrubbed

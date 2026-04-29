@@ -7,7 +7,7 @@ Progressive load testing to find capacity limits.
 Increases load until p99 latency exceeds SLA.
 
 Usage:
-    python stress_test.py --endpoint http://Claude_Code_6.pnkln.svc.cluster.local
+    python stress_test.py --endpoint http://Cor.Claude_Code_6.pnkln.svc.cluster.local
 """
 
 import argparse
@@ -105,7 +105,7 @@ async def main():
     parser = argparse.ArgumentParser(description="PNKLN Stress Test - Find capacity limits")
     parser.add_argument(
         "--endpoint",
-        default="http://Claude_Code_6.pnkln.svc.cluster.local",
+        default="http://Cor.Claude_Code_6.pnkln.svc.cluster.local",
         help="Inference endpoint URL",
     )
     parser.add_argument(

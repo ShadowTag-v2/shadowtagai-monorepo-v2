@@ -96,7 +96,7 @@ class SafetyScanner:
 
         if violations:
             # Flag for Judge#6 review
-            self._escalate_to_Claude_Code_6(violations, metadata)
+            self._escalate_to_Cor.Claude_Code_6(violations, metadata)
 
         return violations
 

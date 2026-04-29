@@ -16,7 +16,7 @@ Judge 6 is a cryptographically-enforced AI governance framework implementing:
 ### Core Components
 
 ```
-Claude_Code_6/
+Cor.Claude_Code_6/
 ├── __init__.py           # Package exports
 ├── models.py             # Data models and enums
 ├── constitutional.py     # Cor.53 axioms
@@ -51,7 +51,7 @@ uv pip install typing-extensions dataclasses-json
 ### Basic Usage
 
 ```python
-from Claude_Code_6 import JudgmentRule
+from Cor.Claude_Code_6 import JudgmentRule
 
 # Initialize Judge 6
 judge = JudgmentRule(cor_instance_id="my-instance")
@@ -76,19 +76,19 @@ else:
 
 ```bash
 # Run demonstration
-python -m Claude_Code_6.main
+python -m Cor.Claude_Code_6.main
 
 # Run with verbose logging
-python -m Claude_Code_6.main --verbose
+python -m Cor.Claude_Code_6.main --verbose
 ```
 
 ### Configuration
 
 ```python
-from Claude_Code_6.config import Claude_Code_6Config, get_config, set_config
+from Cor.Claude_Code_6.config import Cor.Claude_Code_6Config, get_config, set_config
 
 # Create custom configuration
-config = Claude_Code_6Config(
+config = Cor.Claude_Code_6Config(
     COR_INSTANCE_ID="my-custom-instance",
     TEST_COVERAGE_TARGET=0.99
 )
@@ -181,7 +181,7 @@ Cryptographic provenance system.
 python -m pytest tests/
 
 # Run with coverage
-python -m pytest --cov=Claude_Code_6 tests/
+python -m pytest --cov=Cor.Claude_Code_6 tests/
 ```
 
 ### Code Quality

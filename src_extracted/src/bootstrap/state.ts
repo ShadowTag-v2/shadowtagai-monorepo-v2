@@ -1061,11 +1061,11 @@ export function setSdkAgentProgressSummariesEnabled(value: boolean): void {
   STATE.sdkAgentProgressSummariesEnabled = value;
 }
 
-export function getKairosActive(): boolean {
+export function getCor.KairosActive(): boolean {
   return STATE.kairosActive;
 }
 
-export function setKairosActive(value: boolean): void {
+export function setCor.KairosActive(value: boolean): void {
   STATE.kairosActive = value;
 }
 
@@ -1079,7 +1079,7 @@ export function setStrictToolResultPairing(value: boolean): void {
 
 // Field name 'userMsgOptIn' avoids excluded-string substrings ('BriefTool',
 // 'SendUserMessage' — case-insensitive). All callers are inside feature()
-// guards so these accessors don't need their own (matches getKairosActive).
+// guards so these accessors don't need their own (matches getCor.KairosActive).
 export function getUserMsgOptIn(): boolean {
   return STATE.userMsgOptIn;
 }

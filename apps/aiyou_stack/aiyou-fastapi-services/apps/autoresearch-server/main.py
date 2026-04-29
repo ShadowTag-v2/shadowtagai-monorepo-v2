@@ -19,11 +19,11 @@ from pydantic import BaseModel
 # LOCAL IMPORTS (Self-Healing Fix)
 # ==============================================================================
 try:
-    from Claude_Code_6 import RiskLevel, Verdict, judge_unified  # noqa: F401
+    from Cor.Claude_Code_6 import RiskLevel, Verdict, judge_unified  # noqa: F401
 
-    CLAUDE_CODE_6_AVAILABLE = True
+    COR.CLAUDE_CODE_6_AVAILABLE = True
 except ImportError:
-    CLAUDE_CODE_6_AVAILABLE = False
+    COR.CLAUDE_CODE_6_AVAILABLE = False
     print("⚠️  Judge#6 not available locally")
 
 # ==============================================================================
@@ -56,14 +56,14 @@ class AGUIAdapter:
     def __init__(self, agent_id):
         self.agent_id = agent_id
 
-    async def emit_Claude_Code_6_gate(self, gate, approved, risk_level, reasoning, latency_ms):
+    async def emit_Cor.Claude_Code_6_gate(self, gate, approved, risk_level, reasoning, latency_ms):
         # Simulate SSE event data
-        return f"event: Claude_Code_6\ndata: {approved}\n\n"
+        return f"event: Cor.Claude_Code_6\ndata: {approved}\n\n"
 
     async def stream_agent_run(self, prompt, context, handler):
         # Determine Verdict First
-        if CLAUDE_CODE_6_AVAILABLE:
-            # We call the handler's logic here to verify Claude_Code_6
+        if COR.CLAUDE_CODE_6_AVAILABLE:
+            # We call the handler's logic here to verify Cor.Claude_Code_6
             # In a real adapter, this handles the SSE stream formatting
             response = await handler(prompt, context)
             yield f"data: {response}\n\n"
@@ -151,7 +151,7 @@ async def agui_endpoint(request: Request):
         result_parts = []
 
         # Judge#6 Gate Check
-        if CLAUDE_CODE_6_AVAILABLE:
+        if COR.CLAUDE_CODE_6_AVAILABLE:
             decision = await judge_unified.enforce(
                 action=prompt,
                 context=ctx
@@ -164,7 +164,7 @@ async def agui_endpoint(request: Request):
             )
 
             # Emit Judge#6 gate event (Simulated)
-            await agui_adapter.emit_Claude_Code_6_gate(
+            await agui_adapter.emit_Cor.Claude_Code_6_gate(
                 gate="unified",
                 approved=decision.approved,
                 risk_level=decision.risk_level.value,
@@ -202,7 +202,7 @@ def health_check():
         "version": "3.0.0",
         "protocol": "ag-ui",
         "components": {
-            "Claude_Code_6": CLAUDE_CODE_6_AVAILABLE,
+            "Cor.Claude_Code_6": COR.CLAUDE_CODE_6_AVAILABLE,
         },
     }
 
@@ -216,6 +216,6 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     print("▛///▞ n-autoresearch/Kosmos/BioAgents SERVER v3.0.0")
     print(f"    AG-UI Protocol: {'✅' if AGUI_AVAILABLE else '❌'}")
-    print(f"    Judge#6: {'✅' if CLAUDE_CODE_6_AVAILABLE else '❌'}")
+    print(f"    Judge#6: {'✅' if COR.CLAUDE_CODE_6_AVAILABLE else '❌'}")
     print(f"    Port: {port}")
     uvicorn.run(app, host="0.0.0.0", port=port)

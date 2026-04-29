@@ -4,7 +4,7 @@
 import logging
 
 # Configure Judge 6 Logger
-logger = logging.getLogger("Claude_Code_6")
+logger = logging.getLogger("Cor.Claude_Code_6")
 
 
 # Mock AntigravityEngine for God Mode prototype

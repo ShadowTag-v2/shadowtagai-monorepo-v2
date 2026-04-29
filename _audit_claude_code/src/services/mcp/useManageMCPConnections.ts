@@ -150,7 +150,7 @@ export function useManageMCPConnections(
   // the closure (not module-level, not AppState — functions-in-state is brittle).
   const channelPermCallbacksRef = useRef<ChannelPermissionCallbacks | null>(null);
   if (
-    (feature('KAIROS') || feature('KAIROS_CHANNELS')) &&
+    (feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) &&
     channelPermCallbacksRef.current === null
   ) {
     channelPermCallbacksRef.current = createChannelPermissionCallbacks();
@@ -158,7 +158,7 @@ export function useManageMCPConnections(
   // Store callbacks in AppState so interactiveHandler.ts can reach them via
   // ctx.toolUseContext.getAppState(). One-time set — the ref is stable.
   useEffect(() => {
-    if (feature('KAIROS') || feature('KAIROS_CHANNELS')) {
+    if (feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) {
       const callbacks = channelPermCallbacksRef.current;
       if (!callbacks) return;
       // GrowthBook runtime gate — separate from channels so channels can
@@ -415,7 +415,7 @@ export function useManageMCPConnections(
           // Channel push: notifications/claude/channel → enqueue().
           // Gate decides whether to register the handler; connection stays
           // up either way (allowedMcpServers controls that).
-          if (feature('KAIROS') || feature('KAIROS_CHANNELS')) {
+          if (feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) {
             const gate = gateChannelServer(
               client.name,
               client.capabilities,

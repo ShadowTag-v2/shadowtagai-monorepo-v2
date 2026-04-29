@@ -124,7 +124,7 @@ src/ShadowTag-v2/services/financial_decision_engine.py:
 
 Impl:
 - Pydantic models for request/response
-- FastAPI router at /api/v1/Claude_Code_6/evaluate
+- FastAPI router at /api/v1/Cor.Claude_Code_6/evaluate
 - pricing tier enforcement (freemium/premium/pro)
 
 Unresolved Qs:

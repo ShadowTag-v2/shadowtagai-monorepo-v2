@@ -1,4 +1,4 @@
-// Extracted from dream.ts so auto-dream ships independently of KAIROS
+// Extracted from dream.ts so auto-dream ships independently of COR.KAIROS
 // feature flags (dream.ts is behind a feature()-gated require).
 
 import { DIR_EXISTS_GUIDANCE, ENTRYPOINT_NAME, MAX_ENTRYPOINT_LINES } from '../../memdir/memdir.js';

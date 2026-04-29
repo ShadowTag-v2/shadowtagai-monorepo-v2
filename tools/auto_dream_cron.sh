@@ -1,7 +1,7 @@
 #!/bin/bash
 # ╔═══════════════════════════════════════════════╗
 # ║  Auto-Dream — Nightly Memory Consolidation     ║
-# ║  KAIROS Protocol § Invariant #65               ║
+# ║  COR.KAIROS Protocol § Invariant #65               ║
 # ║  Model: gemini-3.1-flash-lite-preview           ║
 # ║  Project: shadowtag-omega-v4                    ║
 # ╚═══════════════════════════════════════════════╝

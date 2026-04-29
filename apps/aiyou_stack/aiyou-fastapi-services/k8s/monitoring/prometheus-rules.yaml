@@ -12,7 +12,7 @@ spec:
     interval: 10s
     rules:
     # SLA Breach Alerts
-    - alert: Claude_Code_6LatencyP99Breach
+    - alert: Cor.Claude_Code_6LatencyP99Breach
       expr: |
         histogram_quantile(0.99,
           sum(rate(judge_request_duration_seconds_bucket{namespace="pnkln-core"}[1m])) by (le)
@@ -27,7 +27,7 @@ spec:
         description: "Current p99 latency: {{ $value | humanizeDuration }}. SLA requires ≤90ms. Immediate scale-up required."
         runbook: "https://docs.pnkln.internal/runbooks/judge-6-latency-breach"
 
-    - alert: Claude_Code_6LatencyP95Warning
+    - alert: Cor.Claude_Code_6LatencyP95Warning
       expr: |
         histogram_quantile(0.95,
           sum(rate(judge_request_duration_seconds_bucket{namespace="pnkln-core"}[1m])) by (le)
@@ -42,7 +42,7 @@ spec:
         description: "Current p95 latency: {{ $value | humanizeDuration }}. Target: ≤60ms. Investigate before p99 breach."
 
     # Error Rate Alerts
-    - alert: Claude_Code_6HighErrorRate
+    - alert: Cor.Claude_Code_6HighErrorRate
       expr: |
         sum(rate(judge_request_errors_total{namespace="pnkln-core"}[5m]))
         /
@@ -57,7 +57,7 @@ spec:
         description: "Current error rate: {{ $value | humanizePercentage }}. Normal: <1%. Check layer health."
 
     # Circuit Breaker Alerts
-    - alert: Claude_Code_6CircuitBreakerTripped
+    - alert: Cor.Claude_Code_6CircuitBreakerTripped
       expr: |
         increase(judge_circuit_breaker_trips_total{namespace="pnkln-core"}[5m]) > 10
       for: 2m
@@ -69,7 +69,7 @@ spec:
         description: "Circuit breaker trips in last 5m: {{ $value }}. Indicates layer timeouts. Check Gemini/PyTorch layer health."
 
     # GPU Utilization Alerts
-    - alert: Claude_Code_6GPUUnderutilized
+    - alert: Cor.Claude_Code_6GPUUnderutilized
       expr: |
         avg(nvidia_gpu_duty_cycle{namespace="pnkln-core"}) < 30
       for: 15m
@@ -81,7 +81,7 @@ spec:
         summary: "Judge 6 GPU underutilized"
         description: "Average GPU utilization: {{ $value }}%. Consider scaling down or using smaller instance types."
 
-    - alert: Claude_Code_6GPUOverutilized
+    - alert: Cor.Claude_Code_6GPUOverutilized
       expr: |
         avg(nvidia_gpu_duty_cycle{namespace="pnkln-core"}) > 90
       for: 5m
@@ -93,7 +93,7 @@ spec:
         description: "Average GPU utilization: {{ $value }}%. May cause queuing delays. Scale up."
 
     # Layer-Specific Alerts
-    - alert: Claude_Code_6GeminiLayerSlow
+    - alert: Cor.Claude_Code_6GeminiLayerSlow
       expr: |
         histogram_quantile(0.99,
           sum(rate(judge_layer_duration_seconds_bucket{layer="gemini"}[1m])) by (le)
@@ -107,7 +107,7 @@ spec:
         summary: "Gemini layer p99 exceeds 30ms"
         description: "Gemini layer latency: {{ $value | humanizeDuration }}. Target: ≤30ms for overall SLA compliance."
 
-    - alert: Claude_Code_6PyTorchLayerSlow
+    - alert: Cor.Claude_Code_6PyTorchLayerSlow
       expr: |
         histogram_quantile(0.99,
           sum(rate(judge_layer_duration_seconds_bucket{layer="pytorch"}[1m])) by (le)
@@ -122,7 +122,7 @@ spec:
         description: "PyTorch layer latency: {{ $value | humanizeDuration }}. Target: ≤40ms for overall SLA compliance."
 
     # Request Volume Alerts
-    - alert: Claude_Code_6LowRequestVolume
+    - alert: Cor.Claude_Code_6LowRequestVolume
       expr: |
         sum(rate(judge_request_total{namespace="pnkln-core"}[5m])) < 1
       for: 10m
@@ -133,7 +133,7 @@ spec:
         summary: "Judge 6 receiving low request volume"
         description: "Request rate: {{ $value }} req/s. Indicates possible routing issue or validation sprint idle."
 
-    - alert: Claude_Code_6HighRequestVolume
+    - alert: Cor.Claude_Code_6HighRequestVolume
       expr: |
         sum(rate(judge_request_total{namespace="pnkln-core"}[5m])) > 100
       for: 3m

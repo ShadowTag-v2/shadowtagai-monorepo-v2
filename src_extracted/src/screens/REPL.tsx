@@ -366,12 +366,12 @@ import { escapeXml } from '../utils/xml.js';
 // Dead code elimination: conditional import for loop mode
 /* eslint-disable @typescript-eslint/no-require-imports */
 const proactiveModule =
-  feature('PROACTIVE') || feature('KAIROS') ? require('../proactive/index.js') : null;
+  feature('PROACTIVE') || feature('COR.KAIROS') ? require('../proactive/index.js') : null;
 const PROACTIVE_NO_OP_SUBSCRIBE = (_cb: () => void) => () => {};
 const PROACTIVE_FALSE = () => false;
 const SUGGEST_BG_PR_NOOP = (_p: string, _n: string): boolean => false;
 const useProactive =
-  feature('PROACTIVE') || feature('KAIROS')
+  feature('PROACTIVE') || feature('COR.KAIROS')
     ? require('../proactive/useProactive.js').useProactive
     : null;
 const useScheduledTasks = feature('AGENT_TRIGGERS')
@@ -534,7 +534,7 @@ import type { RemoteMessageContent } from '../utils/teleport/api.js';
 // cause useEffect dependency changes and infinite re-render loops.
 const EMPTY_MCP_CLIENTS: MCPServerConnection[] = [];
 
-// Stable stub for useAssistantHistory's non-KAIROS branch — avoids a new
+// Stable stub for useAssistantHistory's non-COR.KAIROS branch — avoids a new
 // function identity each render, which would break composedOnScroll's memo.
 const HISTORY_STUB = {
   maybeLoadOlder: (_: ScrollBoxHandle) => {},
@@ -1619,10 +1619,10 @@ export function REPL({
     }
   }, [lastMsgIsHuman, lastMsg, repinScroll]);
   // Assistant-chat: lazy-load remote history on scroll-up. No-op unless
-  // KAIROS build + config.viewerOnly. feature() is build-time constant so
-  // the branch is dead-code-eliminated in non-KAIROS builds (same pattern
+  // COR.KAIROS build + config.viewerOnly. feature() is build-time constant so
+  // the branch is dead-code-eliminated in non-COR.KAIROS builds (same pattern
   // as useUnseenDivider above).
-  const { maybeLoadOlder } = feature('KAIROS')
+  const { maybeLoadOlder } = feature('COR.KAIROS')
     ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
       useAssistantHistory({
         config: remoteSessionConfig,
@@ -1639,7 +1639,7 @@ export function REPL({
         onRepin();
       } else {
         onScrollAway(handle);
-        if (feature('KAIROS')) maybeLoadOlder(handle);
+        if (feature('COR.KAIROS')) maybeLoadOlder(handle);
         // Dismiss the companion bubble on scroll — it's absolute-positioned
         // at bottom-right and covers transcript content. Scrolling = user is
         // trying to read something under it.
@@ -2586,7 +2586,7 @@ export function REPL({
 
     // Pause proactive mode so the user gets control back.
     // It will resume when they submit their next input (see onSubmit).
-    if (feature('PROACTIVE') || feature('KAIROS')) {
+    if (feature('PROACTIVE') || feature('COR.KAIROS')) {
       proactiveModule?.pauseProactive();
     }
     queryGuard.forceEnd();
@@ -3202,7 +3202,7 @@ export function REPL({
             // stale memoized rows remount with post-compact content.
             setConversationId(randomUUID());
             // Compaction succeeded — clear the context-blocked flag so ticks resume
-            if (feature('PROACTIVE') || feature('KAIROS')) {
+            if (feature('PROACTIVE') || feature('COR.KAIROS')) {
               proactiveModule?.setContextBlocked(false);
             }
           } else if (
@@ -3238,7 +3238,7 @@ export function REPL({
           // Block ticks on API errors to prevent tick → error → tick
           // runaway loops (e.g., auth failure, rate limit, blocking limit).
           // Cleared on compact boundary (above) or successful response (below).
-          if (feature('PROACTIVE') || feature('KAIROS')) {
+          if (feature('PROACTIVE') || feature('COR.KAIROS')) {
             if (
               newMessage.type === 'assistant' &&
               'isApiErrorMessage' in newMessage &&
@@ -3389,7 +3389,7 @@ export function REPL({
           // Bump conversationId so Messages.tsx row keys change and
           // stale memoized rows remount with post-compact content.
           setConversationId(randomUUID());
-          if (feature('PROACTIVE') || feature('KAIROS')) {
+          if (feature('PROACTIVE') || feature('COR.KAIROS')) {
             proactiveModule?.setContextBlocked(false);
           }
         }
@@ -3447,7 +3447,7 @@ export function REPL({
           freshMcpClients,
           isScratchpadEnabled() ? getScratchpadDir() : undefined,
         ),
-        ...((feature('PROACTIVE') || feature('KAIROS')) &&
+        ...((feature('PROACTIVE') || feature('COR.KAIROS')) &&
         proactiveModule?.isProactiveActive() &&
         !terminalFocusRef.current
           ? {
@@ -3922,7 +3922,7 @@ export function REPL({
       repinScroll();
 
       // Resume loop mode if paused
-      if (feature('PROACTIVE') || feature('KAIROS')) {
+      if (feature('PROACTIVE') || feature('COR.KAIROS')) {
         proactiveModule?.resumeProactive();
       }
 
@@ -6495,7 +6495,7 @@ export function REPL({
                       }
                       // Partial compact bypasses handleMessageFromStream — clear
                       // the context-blocked flag so proactive ticks resume.
-                      if (feature('PROACTIVE') || feature('KAIROS')) {
+                      if (feature('PROACTIVE') || feature('COR.KAIROS')) {
                         proactiveModule?.setContextBlocked(false);
                       }
                       setConversationId(randomUUID());

@@ -207,13 +207,13 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: Claude_Code_6-hpa
+  name: Cor.Claude_Code_6-hpa
   namespace: ShadowTag-v2jr-governance
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: Claude_Code_6-hybrid
+    name: Cor.Claude_Code_6-hybrid
   minReplicas: 3
   maxReplicas: 10
 

@@ -6,7 +6,7 @@ Runs llama-server --prompt-cache-all once against the .beads corpus
 to produce a persistent KV cache binary slab. Subsequent inference
 requests use --prompt-cache-ro to skip prefill entirely.
 
-Slab is valid for 24 hours (regenerate daily via KAIROS daemon).
+Slab is valid for 24 hours (regenerate daily via COR.KAIROS daemon).
 
 Usage:
     python -m core.sovereign_mlx.kv_cache_slab --build

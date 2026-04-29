@@ -39,7 +39,7 @@ async def ingest_logs_to_lancedb() -> str:
     found_legacy = glob.glob(legacy_pattern)
 
     total_files = len(found_logs) + len(found_legacy)
-    msg = f"[KAIROS DREAM] Found {total_files} session transcripts. Consolidating into LanceDB Memory Graph..."
+    msg = f"[COR.KAIROS DREAM] Found {total_files} session transcripts. Consolidating into LanceDB Memory Graph..."
     print(msg)
 
     if index_documents:
@@ -51,7 +51,7 @@ async def ingest_logs_to_lancedb() -> str:
 
 @workflow.defn
 class OmegaDreamDaemon:
-    """Temporal cron workflow designed to mimic KAIROS_DREAM daemon.
+    """Temporal cron workflow designed to mimic COR.KAIROS_DREAM daemon.
     Should be scheduled from the client with cron_schedule="0 3 * * *".
     """
 

@@ -1,6 +1,6 @@
-# Rule 13: KAIROS — The Unreleased Autonomous Agent Mode
+# Rule 13: COR.KAIROS — The Unreleased Autonomous Agent Mode
 
-Throughout the codebase, there are references to a feature-gated mode called KAIROS. Based on the code paths in main.tsx, it's an unreleased autonomous agent mode that includes:
+Throughout the codebase, there are references to a feature-gated mode called COR.KAIROS. Based on the code paths in main.tsx, it's an unreleased autonomous agent mode that includes:
 
 - A /dream skill for "nightly memory distillation" (Auto-Dream)
 - Daily append-only logs
@@ -13,11 +13,11 @@ This is the biggest product roadmap reveal from the leak.
 
 ## Environment Variables (set in ~/.zshrc)
 ```bash
-export CLAUDE_CODE_KAIROS="1"
-export KAIROS="1"
+export CLAUDE_CODE_COR.KAIROS="1"
+export COR.KAIROS="1"
 export CLAUDE_AUTO_BACKGROUND_TASKS="1"
-export KAIROS_GITHUB_WEBHOOKS="1"
-export KAIROS_BRIEF_MODE="1"
+export COR.KAIROS_GITHUB_WEBHOOKS="1"
+export COR.KAIROS_BRIEF_MODE="1"
 ```
 
 These are all feature-gated server-side, so setting them doesn't guarantee activation — but it opts you in when the gates open.
