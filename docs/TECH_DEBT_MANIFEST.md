@@ -94,7 +94,7 @@ Top candidates for removal:
 | `rsta_squadron.py` | 932 | Decompose per-agent modules |
 | `cor_orchestrator.py` | 922 | Extract: pipeline, routing, error handling |
 | `multi_agent_debate.py` | 912 | Separate: debate protocol, scoring, history |
-| `judge6/nodes.py` | 907 | Extract per-node modules |
+| `Claude_Code_6/nodes.py` | 907 | Extract per-node modules |
 | `walt/mcp_server.py` | 865 | Split: tools, handlers, config |
 | `mitmproxy_ultra.py` | 862 | Extract: interceptors, transforms, logging |
 | `enterprise_compliance_api.py` | 834 | Split per-domain routers |

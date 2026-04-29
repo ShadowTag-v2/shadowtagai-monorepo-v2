@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
 from src.config.squadron import AUTORESEARCH_TRIAD_SQUADRON
-from src.governance.judge import Judge6
+from src.governance.judge import Claude_Code_6
 
 # DOCTRINE: Cor.58 "Control Loop"
 # FLOW: Input -> Generator -> Validator -> Output
@@ -9,7 +9,7 @@ from src.governance.judge import Judge6
 
 class IngestionPipeline:
     def __init__(self):
-        self.judge = Judge6()
+        self.judge = Claude_Code_6()
         self.squadron = AUTORESEARCH_TRIAD_SQUADRON
 
     def receive(self, source_path: str):

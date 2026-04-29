@@ -252,7 +252,7 @@ KOSMOS-SUPERGROK (430) → X/GROKIPEDIA
 ```json
 [
   {
-    "name": "pnkln:Judge6",
+    "name": "pnkln:Claude_Code_6",
     "prompt": "ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework; IF Confidence<0.75 THEN Freeze; OUTPUT:JSON {verdict, risk_score, reasoning}"
   },
   {

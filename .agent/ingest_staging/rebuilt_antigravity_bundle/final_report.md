@@ -42,7 +42,7 @@ Below is a recap of the key concepts, differences, and deliverables, followed by
 
 ### 4. **Future State: Full Repo Fold‑in**
 
-- A list of 56 (not 57) repos, mostly prefixed with `shadowtag-omega-v4-` plus `pnkln`, `erik-hancock-llm-memory`, and several public demos (e.g. `antigravity-go`, `judge6`).
+- A list of 56 (not 57) repos, mostly prefixed with `shadowtag-omega-v4-` plus `pnkln`, `erik-hancock-llm-memory`, and several public demos (e.g. `antigravity-go`, `Claude_Code_6`).
 - Each repo must be classified into one of five statuses: `canonical_in_monorepo`, `queued_for_fold_in`, `archived_after_fold_in`, `reference_only`, or `deprecated`.
 - A `fold_in_checklist.yaml` was produced to track this process.
 

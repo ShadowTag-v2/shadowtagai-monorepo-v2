@@ -53,8 +53,8 @@ from google.cloud import billing_v1  # noqa: F401
 
 _ = billing_v1
 
-# --- Swarm/Judge6 conditional imports ---
-# swarm_endpoint.py and judge6/nodes.py: SwarmVoter/VoteDecision inside try/except
+# --- Swarm/Claude_Code_6 conditional imports ---
+# swarm_endpoint.py and Claude_Code_6/nodes.py: SwarmVoter/VoteDecision inside try/except
 SwarmVoter = None  # noqa: F841 — conditional import in try/except
 VoteDecision = None  # noqa: F841 — conditional import in try/except
 

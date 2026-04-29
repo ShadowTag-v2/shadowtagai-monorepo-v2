@@ -131,7 +131,7 @@ class JudgeSix:
         """Trinity Governance Loop.
         Evaluates a proposal against the 'Anti-Hype' Doctrine.
         """
-        print(f"\n--- JUDGE6 RISK AUDIT: {proposal.target_name} ---")
+        print(f"\n--- CLAUDE_CODE_6 RISK AUDIT: {proposal.target_name} ---")
 
         # 1. Identity Check (Simulated)
         print("[IDENTITY] [PASS] Identity Verified.")

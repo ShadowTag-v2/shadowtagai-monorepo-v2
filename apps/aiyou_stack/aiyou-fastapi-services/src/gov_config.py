@@ -263,7 +263,7 @@ class GovernanceSettings(BaseSettings):
         default=1.0,
         description="Sample rate for shadow mode (0.0-1.0)",
     )
-    judge6_endpoint: str | None = Field(
+    Claude_Code_6_endpoint: str | None = Field(
         default=None,
         description="Legacy Judge 6 endpoint for comparison",
     )

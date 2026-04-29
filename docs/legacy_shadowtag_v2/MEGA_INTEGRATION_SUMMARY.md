@@ -2748,7 +2748,7 @@ This integration represents the **final production readiness milestone**, adding
 **Files**: 16 files, ~3,271 lines
 
 - `p3_hybrid.py` (399 lines) - Hybrid prompt engine
-- `judge6_adapter.py` (707 lines) - Byzantine consensus
+- `Claude_Code_6_adapter.py` (707 lines) - Byzantine consensus
 - `api.py` (196 lines) - FastAPI service
 - `validate_p3.py` (586 lines) - Validation framework
 - Kubernetes deployment + Docker + docs
@@ -3441,7 +3441,7 @@ The mega-integration of 180+ research branches (including Production Enhancement
 ✅ **Judge 6 enforcement** (100% pre-commit governance, p99 ≤90ms validated, Byzantine consensus)
 ✅ **AI development tools** (40% productivity boost via AI refactoring + design system builder)
 ✅ **10 production verticals** (added RoadMesh, Wealth, Ultrathink + 6 Judge products)
-✅ **6 Judge product family** (FinJudge, CaseJudge, LawJudge, JudgeJudge, MedJudge, Judge6 - $100k enterprise tier)
+✅ **6 Judge product family** (FinJudge, CaseJudge, LawJudge, JudgeJudge, MedJudge, Claude_Code_6 - $100k enterprise tier)
 ✅ **10,400 edge nodes** + **400 satellite nodes**
 ✅ **40% faster development** (build automation + AI tools)
 ✅ **95% LLM cost savings** (Gemini native + Aegaeon 82% GPU pooling)

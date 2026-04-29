@@ -152,7 +152,7 @@ cat /tmp/stage1.txt | base64 -d   # ALLOW: reading temp file
 ```
 
 ### Implications for Judge 6
-Our current BLOCK/ALLOW spec (judge6_block_allow_spec.md) evaluates actions individually.
+Our current BLOCK/ALLOW spec (Claude_Code_6_block_allow_spec.md) evaluates actions individually.
 The Composite Action Evaluation rule (line 83-86) is theoretically sound but lacks:
 
 1. **Chain depth limit**: No maximum command chain length before escalation

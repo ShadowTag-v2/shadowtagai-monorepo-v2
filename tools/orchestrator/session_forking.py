@@ -164,7 +164,7 @@ if __name__ == "__main__":
         "apps/counselconduit/src/models.py",
         "apps/counselconduit/src/routes.py",
         "apps/counselconduit/src/middleware.py",
-        "apps/counselconduit/src/judge6.py",
+        "apps/counselconduit/src/Claude_Code_6.py",
         "apps/counselconduit/src/oracle.py",
     ]
     forks = plan_forks(files)

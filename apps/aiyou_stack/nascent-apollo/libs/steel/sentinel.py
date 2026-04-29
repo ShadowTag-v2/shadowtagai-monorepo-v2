@@ -16,7 +16,7 @@ try:
 except ImportError:
     ARMY_AVAILABLE = False
 
-logger = logging.getLogger("Judge6")
+logger = logging.getLogger("Claude_Code_6")
 
 
 class RiskTier(Enum):

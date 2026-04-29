@@ -62,7 +62,7 @@ export default function ReactorCore() {
               <span className="ml-2 text-ghost font-mono text-xs uppercase">/ Epoch</span>
             </div>
             <p className="mt-4 text-gray-400 text-sm font-light leading-relaxed">
-              Allocates 100 Compute Credits. Full access to Judge6 reasoning engine.
+              Allocates 100 Compute Credits. Full access to Claude_Code_6 reasoning engine.
               <span className="text-brand block mt-1">Provenance: Dataform Strict Mode.</span>
             </p>
           </div>

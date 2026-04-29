@@ -12,7 +12,7 @@ This repository contains two integrated systems that work together to provide en
 
 ```
 shadowtag_v4-fastapi-services/
-├── judge6/                    # AI Governance & Risk Management (Python)
+├── Claude_Code_6/                    # AI Governance & Risk Management (Python)
 │   ├── models.py              # Type-safe data models
 │   ├── constitutional.py      # Cor.53 immutable axioms
 │   ├── risk_manager.py        # ATP 5-19 risk assessment
@@ -95,7 +95,7 @@ Decision + Proof
 ### Usage
 
 ```python
-from judge6 import JudgmentRule
+from Claude_Code_6 import JudgmentRule
 
 judge = JudgmentRule(cor_instance_id="production-001")
 
@@ -154,9 +154,9 @@ Providers:
 #### 2. Judge 6 Governance Integration
 
 ```typescript
-import { Judge6Adapter, CopilotRouter } from "@pnkln/universal-copilot";
+import { Claude_Code_6Adapter, CopilotRouter } from "@pnkln/universal-copilot";
 
-const governance = new Judge6Adapter("copilot-instance-001");
+const governance = new Claude_Code_6Adapter("copilot-instance-001");
 const router = new CopilotRouter(
   { enableGovernance: true, ...config },
   governance
@@ -226,9 +226,9 @@ console.log({
 ```typescript
 // 1. Initialize components
 import { CopilotRouter, createPatcher } from "@pnkln/universal-copilot";
-import { Judge6Adapter } from "@pnkln/universal-copilot";
+import { Claude_Code_6Adapter } from "@pnkln/universal-copilot";
 
-const governance = new Judge6Adapter("prod-001");
+const governance = new Claude_Code_6Adapter("prod-001");
 const router = new CopilotRouter(config, governance);
 const patcher = createPatcher();
 
@@ -325,8 +325,8 @@ USE_MOCK=1 npm run dev
 
 ```bash
 # Judge 6
-cd judge6
-python -m judge6.main
+cd Claude_Code_6
+python -m Claude_Code_6.main
 
 # Universal Copilot
 cd universal-copilot
@@ -341,9 +341,9 @@ node dist/widget.js
 
 ```dockerfile
 # Multi-stage build
-FROM python:3.11-alpine AS judge6
-WORKDIR /judge6
-COPY judge6/ .
+FROM python:3.11-alpine AS Claude_Code_6
+WORKDIR /Claude_Code_6
+COPY Claude_Code_6/ .
 RUN pip install -r requirements.txt
 
 FROM node:18-alpine AS copilot
@@ -353,7 +353,7 @@ RUN npm ci --production && npm run build
 
 # Runtime
 FROM node:18-alpine
-COPY --from=judge6 /judge6 /app/judge6
+COPY --from=Claude_Code_6 /Claude_Code_6 /app/Claude_Code_6
 COPY --from=copilot /copilot/dist /app/dist
 WORKDIR /app
 CMD ["node", "dist/widget.js"]
@@ -366,8 +366,8 @@ CMD ["node", "dist/widget.js"]
 ### Judge 6 Tests
 
 ```bash
-cd judge6
-python -m pytest tests/ --cov=judge6
+cd Claude_Code_6
+python -m pytest tests/ --cov=Claude_Code_6
 ```
 
 ### Universal Copilot Tests
@@ -450,8 +450,8 @@ USE_MOCK=1 USE_MOCK_GOVERNANCE=1 npm run test:e2e
 ## Documentation
 
 - **Judge 6**
-  - [README.md](./judge6/README.md) - Package documentation
-  - [IMPROVEMENTS.md](./judge6/IMPROVEMENTS.md) - v2.0 refactoring details
+  - [README.md](./Claude_Code_6/README.md) - Package documentation
+  - [IMPROVEMENTS.md](./Claude_Code_6/IMPROVEMENTS.md) - v2.0 refactoring details
 
 - **Universal Copilot**
   - [README.md](./universal-copilot/README.md) - Usage guide

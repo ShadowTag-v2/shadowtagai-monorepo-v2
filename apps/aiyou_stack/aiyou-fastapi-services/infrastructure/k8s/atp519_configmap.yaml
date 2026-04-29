@@ -2,8 +2,8 @@
 # ==============================================================================
 # ATP519 Rules ConfigMap
 # ==============================================================================
-# This ConfigMap contains the enforcement rules for the Judge6 system
-# Apply this BEFORE deploying judge6_deployment.yaml
+# This ConfigMap contains the enforcement rules for the Claude_Code_6 system
+# Apply this BEFORE deploying Claude_Code_6_deployment.yaml
 #
 # Usage:
 #   kubectl apply -f atp519_configmap.yaml
@@ -13,9 +13,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: atp519-rules
-  namespace: judge6-system
+  namespace: Claude_Code_6-system
   labels:
-    app: judge6
+    app: Claude_Code_6
     component: rules
 data:
   rules.json: |

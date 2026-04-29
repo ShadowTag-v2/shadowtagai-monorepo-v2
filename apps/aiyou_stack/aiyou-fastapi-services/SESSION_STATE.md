@@ -4,7 +4,7 @@
 
 - **shadowtag_v4-fastapi-services**: Main FastAPI services repo
 
-- **judge6-mcp**: Judge Six MCP integration
+- **Claude_Code_6-mcp**: Judge Six MCP integration
 
 ## GCP Infrastructure
 

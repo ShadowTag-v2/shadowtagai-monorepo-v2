@@ -23,7 +23,7 @@ python test_latency.py
 
 # Custom endpoint and SLA target
 python test_latency.py \
-  --endpoint http://judge6.pnkln.svc.cluster.local \
+  --endpoint http://Claude_Code_6.pnkln.svc.cluster.local \
   --p99-target-ms 90
 
 # Larger test (1000 requests, 50 concurrent)
@@ -46,7 +46,7 @@ python test_latency.py \
 
 ```
 🔬 Starting latency test...
-   Endpoint: http://judge6.pnkln.svc.cluster.local
+   Endpoint: http://Claude_Code_6.pnkln.svc.cluster.local
    Requests: 100
    Concurrency: 10
 
@@ -60,7 +60,7 @@ Requests: 100%|████████████████████| 100
 ======================================================================
 
 🎯 Target: p99 ≤ 90ms
-📍 Endpoint: http://judge6.pnkln.svc.cluster.local
+📍 Endpoint: http://Claude_Code_6.pnkln.svc.cluster.local
 🕒 Timestamp: 2025-11-08T14:30:00
 
 📦 Requests:
@@ -108,7 +108,7 @@ Quick health check before running latency tests.
 bash test_health.sh
 
 # Custom endpoint
-ENDPOINT=http://judge6.pnkln.svc.cluster.local bash test_health.sh
+ENDPOINT=http://Claude_Code_6.pnkln.svc.cluster.local bash test_health.sh
 ```
 
 **Example**:
@@ -116,7 +116,7 @@ ENDPOINT=http://judge6.pnkln.svc.cluster.local bash test_health.sh
 ```
 🏥 Health Check for Judge 6
 ================================
-Endpoint: http://judge6.pnkln.svc.cluster.local
+Endpoint: http://Claude_Code_6.pnkln.svc.cluster.local
 
 Attempt 1/30: ✅ Healthy
 
@@ -125,7 +125,7 @@ Attempt 1/30: ✅ Healthy
 📊 Service Information:
 {
   "status": "healthy",
-  "model": "pnkln-judge6-v1",
+  "model": "pnkln-Claude_Code_6-v1",
   "gpu": "NVIDIA L4"
 }
 ```
@@ -261,7 +261,7 @@ Use in CI/CD pipelines:
 - name: Deploy to GKE
   run: |
     kubectl apply -f deploy/
-    kubectl wait --for=condition=ready pod -l app=judge6 -n pnkln --timeout=300s
+    kubectl wait --for=condition=ready pod -l app=Claude_Code_6 -n pnkln --timeout=300s
 
 - name: Health Check
   run: bash validate/test_health.sh
@@ -285,7 +285,7 @@ Use in CI/CD pipelines:
 
 ```bash
 # Port forward service to localhost
-kubectl port-forward -n pnkln svc/judge6 8000:80
+kubectl port-forward -n pnkln svc/Claude_Code_6 8000:80
 
 # Test against local port
 python test_latency.py \
@@ -336,21 +336,21 @@ Error: Cannot connect to endpoint
 
 1. Check service is running:
    ```bash
-   kubectl get svc -n pnkln judge6
+   kubectl get svc -n pnkln Claude_Code_6
    ```
 
 2. Verify pods are ready:
    ```bash
-   kubectl get pods -n pnkln -l app=judge6
+   kubectl get pods -n pnkln -l app=Claude_Code_6
    ```
 
 3. Check endpoint URL:
    ```bash
    # In-cluster
-   curl http://judge6.pnkln.svc.cluster.local/health
+   curl http://Claude_Code_6.pnkln.svc.cluster.local/health
 
    # Via port-forward
-   kubectl port-forward -n pnkln svc/judge6 8000:80
+   kubectl port-forward -n pnkln svc/Claude_Code_6 8000:80
    curl http://localhost:8000/health
    ```
 
@@ -365,7 +365,7 @@ Error: Cannot connect to endpoint
 
 2. **Review pod logs**:
    ```bash
-   kubectl logs -n pnkln -l app=judge6 --tail=100
+   kubectl logs -n pnkln -l app=Claude_Code_6 --tail=100
    ```
 
 3. **Check resource limits**:
@@ -375,7 +375,7 @@ Error: Cannot connect to endpoint
 
 4. **Verify configuration**:
    ```bash
-   kubectl get cm judge6-config -n pnkln -o yaml
+   kubectl get cm Claude_Code_6-config -n pnkln -o yaml
    ```
 
 **Optimization checklist**:
@@ -439,10 +439,10 @@ Test from different locations:
 
 ```bash
 # Region A
-ENDPOINT=http://judge6-us-central.example.com python test_latency.py
+ENDPOINT=http://Claude_Code_6-us-central.example.com python test_latency.py
 
 # Region B
-ENDPOINT=http://judge6-us-east.example.com python test_latency.py
+ENDPOINT=http://Claude_Code_6-us-east.example.com python test_latency.py
 ```
 
 ## Metrics Reference
@@ -502,6 +502,6 @@ Assuming 2 GPU pods running during tests:
 
 Issues with validation tools? Check:
 
-1. Logs: `kubectl logs -n pnkln -l app=judge6`
+1. Logs: `kubectl logs -n pnkln -l app=Claude_Code_6`
 2. Events: `kubectl get events -n pnkln --sort-by='.lastTimestamp'`
 3. Metrics: Port-forward and access `/metrics` endpoint

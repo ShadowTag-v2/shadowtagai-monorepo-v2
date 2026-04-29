@@ -207,7 +207,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: judge6
+  name: Claude_Code_6
 spec:
   replicas: 5
   template:
@@ -215,8 +215,8 @@ spec:
       containers:
 
 
-      - name: judge6
-        image: us-central1-docker.pkg.dev/shadowtag_v4-prod/containers/judge6:v2.0
+      - name: Claude_Code_6
+        image: us-central1-docker.pkg.dev/shadowtag_v4-prod/containers/Claude_Code_6:v2.0
         env:
 
 
@@ -246,7 +246,7 @@ spec:
 
 - Max: 100 replicas
 
-- Metrics: CPU 70%, judge6_latency_p99_ms <80, decisions/sec >1000
+- Metrics: CPU 70%, Claude_Code_6_latency_p99_ms <80, decisions/sec >1000
 
 - Aggressive scale-up for latency spikes
 
@@ -359,7 +359,7 @@ git push origin main
 # Manual deployment (if needed)
 
 kubectl apply -f infrastructure/kubernetes/base/pnkln-api-deployment.yaml
-kubectl apply -f infrastructure/kubernetes/base/judge6-deployment.yaml
+kubectl apply -f infrastructure/kubernetes/base/Claude_Code_6-deployment.yaml
 
 # 3. Verify deployment
 
@@ -370,7 +370,7 @@ kubectl logs -l app=pnkln-api -n production --tail=100
 # 4. Check SLAs
 
 kubectl top pods -n production
-kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1/namespaces/production/pods/*/judge6_latency_p99_ms
+kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1/namespaces/production/pods/*/Claude_Code_6_latency_p99_ms
 
 ```
 
@@ -413,7 +413,7 @@ POST /api/v1/orchestrator/intelligence/classify
 
 # Step 2: Judge 6 Risk Scoring
 
-POST /api/v1/judge6/decision
+POST /api/v1/Claude_Code_6/decision
 {
   "tier": 1,
   "confidence": 0.87,
@@ -574,7 +574,7 @@ metrics:
 - type: Pods
   pods:
     metric:
-      name: judge6_latency_p99_ms
+      name: Claude_Code_6_latency_p99_ms
     target:
       type: AverageValue
       averageValue: "80"  # Scale up if p99 > 80ms
@@ -589,11 +589,11 @@ metrics:
 
 gcloud alpha monitoring policies create \
   --notification-channels=$PAGERDUTY_CHANNEL \
-  --display-name="Judge6 P99 Latency SLA Breach" \
+  --display-name="Claude_Code_6 P99 Latency SLA Breach" \
   --condition-display-name="P99 > 90ms" \
   --condition-threshold-value=90 \
   --condition-threshold-duration=60s \
-  --condition-filter='resource.type="k8s_pod" AND metric.type="custom.googleapis.com/judge6_latency_p99_ms"'
+  --condition-filter='resource.type="k8s_pod" AND metric.type="custom.googleapis.com/Claude_Code_6_latency_p99_ms"'
 
 ```
 
@@ -671,7 +671,7 @@ gcloud alpha monitoring policies create \
 
 - `infrastructure/kubernetes/base/pnkln-api-deployment.yaml` (Deployment, Service, HPA, SA)
 
-- `infrastructure/kubernetes/base/judge6-deployment.yaml` (Deployment, Service, HPA, BackendConfig)
+- `infrastructure/kubernetes/base/Claude_Code_6-deployment.yaml` (Deployment, Service, HPA, BackendConfig)
 
 ### CI/CD
 

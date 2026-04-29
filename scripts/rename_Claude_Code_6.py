@@ -1,0 +1,41 @@
+import os
+import re
+
+def replace_in_file(filepath):
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            content = f.read()
+    except (UnicodeDecodeError, FileNotFoundError):
+        return False
+        
+    new_content = content.replace("Claude_Code_6", "Claude_Code_6")
+    new_content = new_content.replace("Claude_Code_6", "Claude_Code_6")
+    new_content = new_content.replace("CLAUDE_CODE_6", "CLAUDE_CODE_6")
+    
+    if new_content != content:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+        return True
+    return False
+
+def main():
+    root_dir = "."
+    for dirpath, dirnames, filenames in os.walk(root_dir):
+        if ".git" in dirpath or "node_modules" in dirpath or "__pycache__" in dirpath or ".junie" in dirpath or ".agents" in dirpath:
+            continue
+            
+        for filename in filenames:
+            filepath = os.path.join(dirpath, filename)
+            replace_in_file(filepath)
+            
+            if "Claude_Code_6" in filename or "Claude_Code_6" in filename:
+                new_filename = filename.replace("Claude_Code_6", "Claude_Code_6").replace("Claude_Code_6", "Claude_Code_6")
+                new_filepath = os.path.join(dirpath, new_filename)
+                try:
+                    os.rename(filepath, new_filepath)
+                    print(f"Renamed {filepath} to {new_filepath}")
+                except FileNotFoundError:
+                    pass
+
+if __name__ == "__main__":
+    main()

@@ -1,4 +1,4 @@
-# @pnkln/judge6-cli
+# @pnkln/Claude_Code_6-cli
 
 **Zero-flicker TUI for Judge 6 decision validation**
 
@@ -25,10 +25,10 @@ Validate governance decisions using the Purpose/Reasons/Brakes framework with AT
 
 ```bash
 # Install globally
-npm install -g @pnkln/judge6-cli
+npm install -g @pnkln/Claude_Code_6-cli
 
 # Or use npx (no installation)
-npx @pnkln/judge6-cli
+npx @pnkln/Claude_Code_6-cli
 ```
 
 ---
@@ -51,10 +51,10 @@ python -m src.api.main
 
 ```bash
 # Default (connects to localhost:8000)
-judge6
+Claude_Code_6
 
 # Connect to remote API
-judge6 --api-url=https://api.pnkln.com
+Claude_Code_6 --api-url=https://api.pnkln.com
 ```
 
 ### 3. Validate a Decision
@@ -161,7 +161,7 @@ render(<DecisionReview />);
 ### CLI Options
 
 ```bash
-judge6 [OPTIONS]
+Claude_Code_6 [OPTIONS]
 
 OPTIONS:
   --api-url=<url>    API endpoint (default: http://localhost:8000)
@@ -180,10 +180,10 @@ OPTIONS:
 
 ```bash
 # API endpoint
-export JUDGE6_API_URL=https://api.pnkln.com
+export CLAUDE_CODE_6_API_URL=https://api.pnkln.com
 
 # Enable debug logging
-export DEBUG=judge6:*
+export DEBUG=Claude_Code_6:*
 ```
 
 ---
@@ -194,7 +194,7 @@ export DEBUG=judge6:*
 
 ```bash
 # Install dependencies
-cd judge6-cli
+cd Claude_Code_6-cli
 npm install
 
 # Run in development mode
@@ -210,7 +210,7 @@ npm start
 ### Project Structure
 
 ```
-judge6-cli/
+Claude_Code_6-cli/
 ├── src/
 │   ├── components/
 │   │   ├── DecisionReview.tsx    # Main TUI component
@@ -307,7 +307,7 @@ ROI: $68,052 / $90 = 756× (PASS)
 ```bash
 # Fork the repo
 git clone https://github.com/ehanc69/shadowtag_v4-fastapi-services
-cd shadowtag_v4-fastapi-services/judge6-cli
+cd shadowtag_v4-fastapi-services/Claude_Code_6-cli
 
 # Create feature branch
 git checkout -b feature/my-feature
@@ -338,7 +338,7 @@ MIT © PNKLN
 ## Citation
 
 ```bibtex
-@software{judge6_cli,
+@software{Claude_Code_6_cli,
   title = {Judge 6 CLI: Zero-Flicker TUI for Decision Validation},
   author = {PNKLN},
   year = {2025},

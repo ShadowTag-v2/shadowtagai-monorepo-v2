@@ -22,7 +22,7 @@ if (args.includes('--help') || args.includes('-h')) {
 Judge 6 CLI - Decision Validation Tool
 
 USAGE:
-  judge6 [OPTIONS]
+  Claude_Code_6 [OPTIONS]
 
 OPTIONS:
   --api-url=<url>    API endpoint (default: http://localhost:8000)
@@ -31,13 +31,13 @@ OPTIONS:
 
 EXAMPLES:
   # Start with default API (localhost:8000)
-  judge6
+  Claude_Code_6
 
   # Connect to remote API
-  judge6 --api-url=https://api.pnkln.com
+  Claude_Code_6 --api-url=https://api.pnkln.com
 
   # Show version
-  judge6 --version
+  Claude_Code_6 --version
 
 ABOUT:
   Judge 6 validates decisions using the Purpose/Reasons/Brakes framework.
@@ -59,7 +59,7 @@ DASHBOARD:
 
 MORE INFO:
   GitHub: https://github.com/ehanc69/shadowtag_v4-fastapi-services
-  Docs: https://docs.pnkln.com/judge6-cli
+  Docs: https://docs.pnkln.com/Claude_Code_6-cli
 `);
   process.exit(0);
 }

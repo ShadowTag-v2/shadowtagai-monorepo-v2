@@ -130,7 +130,7 @@ curl -X POST http://127.0.0.1:8765/put \
   -H "Content-Type: application/json" \
   -d '{
     "key": "decision:latency-target",
-    "text": "Judge6 platform targets sub-100ms p99 latency for API calls. Rationale: User research shows >100ms feels sluggish for interactive workflows.",
+    "text": "Claude_Code_6 platform targets sub-100ms p99 latency for API calls. Rationale: User research shows >100ms feels sluggish for interactive workflows.",
     "meta": {
       "source": "architecture-review-2025-01",
       "author": "platform-team",

@@ -28,7 +28,7 @@ fi
 # 1. Configuration
 PROJECT_ID=$(gcloud config get-value project)
 REGION="us-central1"
-CLUSTER_NAME="judge6-sovereign-cloud"
+CLUSTER_NAME="Claude_Code_6-sovereign-cloud"
 NETWORK="default"
 
 echo -e "${GREEN}[+] Target Project: ${PROJECT_ID}${NC}"
@@ -71,29 +71,29 @@ pip3 install -r requirements.txt
 echo -e "${BLUE}[*] Generating Spot-Optimized Manifests...${NC}"
 mkdir -p k8s/deployments
 
-cat <<EOF > k8s/deployments/judge6-core.yaml
+cat <<EOF > k8s/deployments/Claude_Code_6-core.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: judge6-core
+  name: Claude_Code_6-core
   labels:
-    app: judge6
+    app: Claude_Code_6
     doctrine: targeting
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: judge6
+      app: Claude_Code_6
   template:
     metadata:
       labels:
-        app: judge6
+        app: Claude_Code_6
     spec:
       nodeSelector:
         cloud.google.com/gke-spot: "true"
       terminationGracePeriodSeconds: 25
       containers:
-      - name: judge6-engine
+      - name: Claude_Code_6-engine
         image: us-docker.pkg.dev/cloudrun/container/hello
         resources:
           requests:
@@ -107,7 +107,7 @@ EOF
 
 # 7. Apply Manifests
 echo -e "${BLUE}[*] Applying Initial Configuration...${NC}"
-kubectl apply -f k8s/deployments/judge6-core.yaml
+kubectl apply -f k8s/deployments/Claude_Code_6-core.yaml
 
 echo -e "${BLUE}▙▖▙▖▞▞▙ DEPLOYMENT COMPLETE${NC}"
 echo -e "${GREEN}Status: OPERATIONAL${NC}"

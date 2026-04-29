@@ -44,7 +44,7 @@ For agents like `swarm_boss.py` or `atomic_chat_manager.py` that have access to 
 
 ### Implementation Strategy for `ShadowTag-v2` (PTC)
 
-For complex analysis agents (`judge6`, `financial_analyst`):
+For complex analysis agents (`Claude_Code_6`, `financial_analyst`):
 
 1. **Enable Code Execution**: Ensure the agent has a `run_python` or `execute_code` tool.
 2. **Prompt Engineering**:

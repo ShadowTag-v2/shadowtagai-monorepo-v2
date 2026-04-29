@@ -1018,19 +1018,19 @@ def foo(x: dict[str, Any]) -> list[str]:
 
 
 
-25. `erik-hancock-llm-memory/judge6/engine/schedule.py`
+25. `erik-hancock-llm-memory/Claude_Code_6/engine/schedule.py`
 
 
-26. `erik-hancock-llm-memory/judge6/runtime/base.py`
+26. `erik-hancock-llm-memory/Claude_Code_6/runtime/base.py`
 
 
-27. `erik-hancock-llm-memory/judge6/runtime/mock_wasm.py`
+27. `erik-hancock-llm-memory/Claude_Code_6/runtime/mock_wasm.py`
 
 
-28. `erik-hancock-llm-memory/judge6/runtime/ops_edge.py`
+28. `erik-hancock-llm-memory/Claude_Code_6/runtime/ops_edge.py`
 
 
-29. `erik-hancock-llm-memory/judge6/uop.py`
+29. `erik-hancock-llm-memory/Claude_Code_6/uop.py`
 
 ### Architecture Docs (5 files)
 

@@ -173,7 +173,7 @@ class DocumentAIProcessor:
             processing_time_ms=int(processing_time),
         )
 
-    def process_and_trigger_judge6(
+    def process_and_trigger_Claude_Code_6(
         self,
         bucket_name: str,
         file_path: str,
@@ -309,7 +309,7 @@ class CloudFunctionHandler:
             use_form_parser = "forms" in file_path.lower()
 
             # Process and trigger Judge 6
-            message_id = self.processor.process_and_trigger_judge6(
+            message_id = self.processor.process_and_trigger_Claude_Code_6(
                 bucket_name=bucket_name,
                 file_path=file_path,
                 mime_type=mime_type,
@@ -352,7 +352,7 @@ if __name__ == "__main__":
     processor = DocumentAIProcessor(project_id=project_id)
 
     # Example: Process a document from GCS
-    message_id = processor.process_and_trigger_judge6(
+    message_id = processor.process_and_trigger_Claude_Code_6(
         bucket_name="pnkln-compliance-docs",
         file_path="intake/sample-fda-policy.pdf",
         mime_type="application/pdf",

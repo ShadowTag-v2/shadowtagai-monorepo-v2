@@ -278,7 +278,7 @@ From `online-inference-gpu/vllm-with-hf-model.md:205-221`:
 2. **Judge 6 Framework** → Deployment Decision Logic
    ```python
    # Judge 6 decides: Which GPU? How many replicas?
-   deployment_decision = Judge6Framework.decide(
+   deployment_decision = Claude_Code_6Framework.decide(
        purpose="Cost-effective inference for Gemma 27B",
        reasons=[
            "Expected QPS: 10-50",

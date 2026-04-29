@@ -1,4 +1,4 @@
-// Package judge6 implements a compiled policy gate for the CounselConduit
+// Package Claude_Code_6 implements a compiled policy gate for the CounselConduit
 // platform. It enforces BLOCK/ALLOW rules for tool execution, memory writes,
 // and network egress following the Adversa AI 50-subcommand bypass analysis
 // and the Claude Code v2.1.91 security monitor pattern.
@@ -361,7 +361,7 @@ func NewJudge() *Judge {
 	return &Judge{
 		chains:  NewChainTracker(),
 		limiter: NewRateLimiter(100, 5*time.Minute),
-		log:     log.New(os.Stderr, "[JUDGE6] ", log.LstdFlags|log.LUTC),
+		log:     log.New(os.Stderr, "[CLAUDE_CODE_6] ", log.LstdFlags|log.LUTC),
 	}
 }
 

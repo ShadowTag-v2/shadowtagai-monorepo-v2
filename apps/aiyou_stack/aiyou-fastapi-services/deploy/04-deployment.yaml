@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: judge6-inference
+  name: Claude_Code_6-inference
   namespace: pnkln
   labels:
-    app: judge6
+    app: Claude_Code_6
     component: inference
     version: v1
 spec:
@@ -16,12 +16,12 @@ spec:
       maxUnavailable: 0  # Ensure zero-downtime deployments
   selector:
     matchLabels:
-      app: judge6
+      app: Claude_Code_6
       component: inference
   template:
     metadata:
       labels:
-        app: judge6
+        app: Claude_Code_6
         component: inference
         version: v1
       annotations:
@@ -77,7 +77,7 @@ spec:
       containers:
         - name: inference
           # Replace with your actual inference container image
-          image: gcr.io/PROJECT_ID/judge6-inference:latest
+          image: gcr.io/PROJECT_ID/Claude_Code_6-inference:latest
           imagePullPolicy: Always
 
           ports:

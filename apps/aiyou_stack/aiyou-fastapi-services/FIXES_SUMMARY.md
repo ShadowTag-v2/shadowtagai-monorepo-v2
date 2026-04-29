@@ -1,6 +1,6 @@
 # Comprehensive Code Review Fixes - Summary
 
-This document summarizes ALL fixes applied to the Judge6 inference architecture based on the comprehensive code review.
+This document summarizes ALL fixes applied to the Claude_Code_6 inference architecture based on the comprehensive code review.
 
 ## Critical Blocking Issues - FIXED ✅
 
@@ -128,9 +128,9 @@ This document summarizes ALL fixes applied to the Judge6 inference architecture 
 
 ### Shell Interpolation
 
-- **Issue:** `image: gcr.io/${PROJECT_ID}/judge6-gemini:latest` won't work in YAML
+- **Issue:** `image: gcr.io/${PROJECT_ID}/Claude_Code_6-gemini:latest` won't work in YAML
 
-- **Fix:** Replaced with literal `gcr.io/shadowtagai-core-stack/judge6-gemini:latest`
+- **Fix:** Replaced with literal `gcr.io/shadowtagai-core-stack/Claude_Code_6-gemini:latest`
 
 ### Missing Probes
 
@@ -184,7 +184,7 @@ This document summarizes ALL fixes applied to the Judge6 inference architecture 
 
 - **Fix:** Created `k8s/atp519_configmap.yaml` with ATP519 rules
 
-### File: `k8s/judge6_deployment.yaml`, `k8s/atp519_configmap.yaml`
+### File: `k8s/Claude_Code_6_deployment.yaml`, `k8s/atp519_configmap.yaml`
 
 ---
 
@@ -202,7 +202,7 @@ This document summarizes ALL fixes applied to the Judge6 inference architecture 
 
 - **Issue:** `google_service_account.workbench_sa` not defined
 
-- **Fix:** Added both `judge6_sa` and `workbench_sa` with proper IAM bindings
+- **Fix:** Added both `Claude_Code_6_sa` and `workbench_sa` with proper IAM bindings
 
 ### Missing API Enablement
 
@@ -228,7 +228,7 @@ This document summarizes ALL fixes applied to the Judge6 inference architecture 
 
 - **Issue:** Missing IAM binding for Workload Identity
 
-- **Fix:** Added `google_service_account_iam_member.judge6_workload_identity`
+- **Fix:** Added `google_service_account_iam_member.Claude_Code_6_workload_identity`
 
 ### Files: `infrastructure/main.tf`, `infrastructure/bootstrap.sh`
 
@@ -354,11 +354,11 @@ This document summarizes ALL fixes applied to the Judge6 inference architecture 
 
 2. `scripts/deploy_01_gke_cluster.sh` - GKE Standard cluster with GPU
 
-3. `scripts/deploy_02_judge6.sh` - K8s deployment script
+3. `scripts/deploy_02_Claude_Code_6.sh` - K8s deployment script
 
 4. `scripts/master_deploy.sh` - Master orchestration script
 
-5. `k8s/judge6_deployment.yaml` - Corrected K8s deployment
+5. `k8s/Claude_Code_6_deployment.yaml` - Corrected K8s deployment
 
 6. `k8s/atp519_configmap.yaml` - ATP519 rules
 

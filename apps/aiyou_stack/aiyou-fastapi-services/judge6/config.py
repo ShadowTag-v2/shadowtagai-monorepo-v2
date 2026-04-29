@@ -120,7 +120,7 @@ class ProvenanceConfig:
 
 
 @dataclass
-class Judge6Config:
+class Claude_Code_6Config:
     """Master configuration for Judge 6 system."""
 
     # Instance identifier
@@ -141,15 +141,15 @@ class Judge6Config:
 
 
 # Global configuration instance
-_config: Judge6Config = Judge6Config()
+_config: Claude_Code_6Config = Claude_Code_6Config()
 
 
-def get_config() -> Judge6Config:
+def get_config() -> Claude_Code_6Config:
     """Get global configuration instance."""
     return _config
 
 
-def set_config(config: Judge6Config) -> None:
+def set_config(config: Claude_Code_6Config) -> None:
     """Set global configuration instance."""
     global _config
     _config = config

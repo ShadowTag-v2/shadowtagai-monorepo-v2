@@ -20,7 +20,7 @@
 **Location**: `tui/`
 
 
-- **judge6_monitor.py**: Bottom-inspired real-time monitoring dashboard
+- **Claude_Code_6_monitor.py**: Bottom-inspired real-time monitoring dashboard
 
 
 - **Widgets**:
@@ -71,7 +71,7 @@
 
 
 
-- **TUI Monitor**: `python3 tui/judge6_monitor.py --mode=mock` (Running for 34+ minutes)
+- **TUI Monitor**: `python3 tui/Claude_Code_6_monitor.py --mode=mock` (Running for 34+ minutes)
 
 
 - Displaying real-time simulated governance decisions
@@ -88,7 +88,7 @@
 
 # Run with EdgeQueue mode (will use mock network for now)
 
-python3 tui/judge6_monitor.py --mode=edgequeue
+python3 tui/Claude_Code_6_monitor.py --mode=edgequeue
 
 ```
 
@@ -102,10 +102,10 @@ python3 tui/judge6_monitor.py --mode=edgequeue
 2. Deploy worker: `cd runtime && wrangler deploy worker.js`
 
 
-3. Update `judge6_engine_edgequeue.py` with real worker URL
+3. Update `Claude_Code_6_engine_edgequeue.py` with real worker URL
 
 
-4. Run: `python3 tui/judge6_monitor.py --mode=edgequeue`
+4. Run: `python3 tui/Claude_Code_6_monitor.py --mode=edgequeue`
 
 #### Option C: Continue React Dashboard Enhancement
 
@@ -148,7 +148,7 @@ CloudFlare Workers (Target Deployment)
 
 
 
-1. **`tui/judge6_monitor.py`**: Add new widgets, change layout
+1. **`tui/Claude_Code_6_monitor.py`**: Add new widgets, change layout
 
 
 2. **`tui/widgets/`**: Create new visualizations (e.g., `TimeSeriesWidget`, `AlertWidget`)
@@ -165,11 +165,11 @@ CloudFlare Workers (Target Deployment)
 
 # Run TUI with histogram
 
-python3 tui/judge6_monitor.py --mode=mock
+python3 tui/Claude_Code_6_monitor.py --mode=mock
 
 # Run TUI with EdgeQueue (simulated network)
 
-python3 tui/judge6_monitor.py --mode=edgequeue
+python3 tui/Claude_Code_6_monitor.py --mode=edgequeue
 
 # Run load test
 

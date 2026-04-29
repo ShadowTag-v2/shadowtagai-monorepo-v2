@@ -136,7 +136,7 @@ pip install anthropic google-generativeai pyautogen --break-system-packages
 
 ### RA-1 Operations Not Blocked?
 
-**CRITICAL:** Run `python judge6_enforcement.py` - Test 2 MUST show "BLOCKED"
+**CRITICAL:** Run `python Claude_Code_6_enforcement.py` - Test 2 MUST show "BLOCKED"
 If not blocked, DO NOT deploy to production - fix BrakesGate first
 
 ---
@@ -231,7 +231,7 @@ Reasons Score: 0.90
 **Questions? Issues?**
 
 - Check `deployment_report.json` for detailed diagnostics
-- Review `judge6_audit_log.json` for violation patterns
+- Review `Claude_Code_6_audit_log.json` for violation patterns
 - See `OPTION_C_DEPLOYMENT_GUIDE.md` for full troubleshooting guide
 
 **Good luck with your deployment!** 🚀

@@ -166,7 +166,7 @@ def run_once(sources: list[str], verified_only: bool) -> dict:
 
     # Stage 3
     swarm_result = run_swarm(verified_only=verified_only)
-    swarm_result.get("architect_directive", {}).get("judge6_gate", "unknown")
+    swarm_result.get("architect_directive", {}).get("Claude_Code_6_gate", "unknown")
 
     output = {
         "ts": ts,

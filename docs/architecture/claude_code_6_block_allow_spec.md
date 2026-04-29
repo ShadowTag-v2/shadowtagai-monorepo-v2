@@ -1,7 +1,7 @@
 # Judge 6 — BLOCK/ALLOW Rule Engine Specification
 
 > Adapted from Claude Code Security Monitor (CL4R1T4S competitive intel, v2.1.110)
-> Integrates with: `apps/counselconduit/api/judge6_gate.py`
+> Integrates with: `apps/counselconduit/api/Claude_Code_6_gate.py`
 
 ## Architecture
 

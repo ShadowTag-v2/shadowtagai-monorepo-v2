@@ -28,7 +28,7 @@ echo "   [!] CDP Bridge requires manual start: node src/senses/browser_extension
 
 echo ">>> [4/8] Federal Go Control Plane (Judge 6 Ingress)..."
 if command -v go &>/dev/null; then
-    cd "$REPO_ROOT" && go build -o judge6 cmd/gideon-go/shield1_ingress.go 2>/dev/null || echo "   [!] Go build requires cloud.google.com/go/pubsub dependency."
+    cd "$REPO_ROOT" && go build -o Claude_Code_6 cmd/gideon-go/shield1_ingress.go 2>/dev/null || echo "   [!] Go build requires cloud.google.com/go/pubsub dependency."
 else
     echo "   [!] Go not found. Skipping Cor.Go compilation."
 fi

@@ -1,3 +1,3 @@
-module judge6
+module Claude_Code_6
 
 go 1.22

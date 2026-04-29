@@ -33,6 +33,6 @@ We established that the "Thread" is not just the chat history but the **State of
 
 We will not just "zip up" the folder. We will:
 
-1.  **Identify** the "Atomic Blocks": The specific Python/Shell files that run the `Judge6`, `https://github.com/karpathy/autoresearchs`, and `Antigravity` cores.
+1.  **Identify** the "Atomic Blocks": The specific Python/Shell files that run the `Claude_Code_6`, `https://github.com/karpathy/autoresearchs`, and `Antigravity` cores.
 2.  **Number** them (Block 1, Block 2, ...) for clarity.
 3.  **Generate** `THREAD_TRANSFER_SCRIPT.sh`: A script that, when run, prints/exports _only_ these critical blocks, effectively "teleporting" the clean soul of the system to the next context, leaving the "body" (legacy files) behind.

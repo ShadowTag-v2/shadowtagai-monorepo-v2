@@ -496,7 +496,7 @@ E: “no, we already wrote it   1. JUDGE/JURA (Governance-as-a-Service)
 |      | 21-Layer Architecture | /pnkln/governance/judge_architecture.py  | ✅ Complete         | Async     |
 |      | Jura Protocol         | /agents/jura_protocol.py                 | ✅ Complete         | <100ms    |
 |      | Perplexity MCP        | /mcp/perplexity/server.py                | ✅ Complete         | <35ms     |
-|      | Vertex AI Grounding   | NEW: judge6_grounded.py                  | 🔄 Ready to deploy  | +50-100ms |
+|      | Vertex AI Grounding   | NEW: Claude_Code_6_grounded.py                  | 🔄 Ready to deploy  | +50-100ms |
 
      10 Fingers Scores
 

@@ -59,7 +59,7 @@ Provided Ultrathink framework with complete operating parameters:
 - **PRISM::KERNEL**: position/role/intent/structure/modality
 
 
-- **Value.Lock**: IQ=160 baseline, Purpose=ShadowTag-v2JR, Reason=Doctrine, Brakes=Judge6
+- **Value.Lock**: IQ=160 baseline, Purpose=ShadowTag-v2JR, Reason=Doctrine, Brakes=Claude_Code_6
 
 
 - **Bootstrap Gates**: ROI≥3×@18mo, LTV:CAC≥4:1@12mo
@@ -587,7 +587,7 @@ Kit's value prop: "Rivals paid services at fraction of cost - just pay for token
 ShadowTagAi pricing model (derived from Kit):
 
 
-- **Cost**: $0.0003/decision (ATP_519 + Judge6 + Audit)
+- **Cost**: $0.0003/decision (ATP_519 + Claude_Code_6 + Audit)
 
 
 - **Value**: $36K saved per false rejection avoided
@@ -3185,13 +3185,13 @@ VALUE:
       "matcher": "Bash|Edit|Write",
       "hooks": [{
         "type": "command",
-        "command": ".claude/hooks/judge6_lite.py"
+        "command": ".claude/hooks/Claude_Code_6_lite.py"
       }]
     }]
   }
 }
 
-# judge6_lite.py
+# Claude_Code_6_lite.py
 
 # - Regex rules from JR Engine doctrine
 
@@ -3230,7 +3230,7 @@ tail -f .quibbler/rules.md
 
 # After 2 weeks → export to Judge 6 policy repo
 
-grep "RULE:" .quibbler/rules.md > ../judge6/policies/quibbler_learned.md
+grep "RULE:" .quibbler/rules.md > ../Claude_Code_6/policies/quibbler_learned.md
 
 ```
 
@@ -3527,7 +3527,7 @@ confidence = 1 - uncertainty.mean()
 @app.post("/governance/decision")
 async def bayesian_decision(request: DecisionRequest):
     # Run Judge 6 with MC dropout
-    result = await judge6_with_uncertainty(
+    result = await Claude_Code_6_with_uncertainty(
         action=request.action,
         context=request.context
     )
@@ -3822,7 +3822,7 @@ from torch_ema import ExponentialMovingAverage
 
 # Initialize
 
-model = Judge6Model()
+model = Claude_Code_6Model()
 ema = ExponentialMovingAverage(model.parameters(), decay=0.999)
 optimizer = AdamW(model.parameters(), lr=5e-4)
 
@@ -3846,8 +3846,8 @@ for epoch in range(100):
 
 # Save both checkpoints
 
-torch.save(model.state_dict(), "judge6_final.pt")
-torch.save(ema.state_dict(), "judge6_final_ema.pt")  # Use this for production
+torch.save(model.state_dict(), "Claude_Code_6_final.pt")
+torch.save(ema.state_dict(), "Claude_Code_6_final_ema.pt")  # Use this for production
 
 ```
 
@@ -3855,12 +3855,12 @@ torch.save(ema.state_dict(), "judge6_final_ema.pt")  # Use this for production
 
 ```yaml
 
-# judge6-deployment.yaml
+# Claude_Code_6-deployment.yaml
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: judge6-bayesian
+  name: Claude_Code_6-bayesian
 spec:
   replicas: 3
   template:
@@ -3868,13 +3868,13 @@ spec:
       containers:
 
 
-      - name: judge6
-        image: gcr.io/shadowtagai/judge6:bayesian-v1
+      - name: Claude_Code_6
+        image: gcr.io/shadowtagai/Claude_Code_6:bayesian-v1
         env:
 
 
         - name: MODEL_PATH
-          value: /models/judge6_final_ema.pt  # EMA checkpoint
+          value: /models/Claude_Code_6_final_ema.pt  # EMA checkpoint
 
 
         - name: MC_DROPOUT_SAMPLES

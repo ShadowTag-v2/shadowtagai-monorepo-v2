@@ -59,7 +59,7 @@ class WorkflowStep(StrEnum):
     COMPLETE = "complete"
 
 
-class Judge6State(TypedDict):
+class Claude_Code_6State(TypedDict):
     """Shared state across all Judge 6 agents.
     Uses Annotated with operator.add for list fields to enable proper state merging.
     """
@@ -96,7 +96,7 @@ class Judge6State(TypedDict):
     tokens_used: int
 
 
-class Judge6Orchestrator:
+class Claude_Code_6Orchestrator:
     """LangGraph-based orchestrator for Judge 6 multi-agent compliance analysis.
 
     Uses supervisor pattern with specialized agents for each workflow step.
@@ -107,7 +107,7 @@ class Judge6Orchestrator:
         project_id: str,
         location: str = "us-central1",
         model_endpoint: str = None,
-        firestore_collection: str = "judge6_workflows",
+        firestore_collection: str = "Claude_Code_6_workflows",
     ):
         self.project_id = project_id
         self.location = location
@@ -155,7 +155,7 @@ class Judge6Orchestrator:
                 ↓
            GenerateRecommendations → END
         """
-        workflow = StateGraph(Judge6State)
+        workflow = StateGraph(Claude_Code_6State)
 
         # Add nodes (agents)
         workflow.add_node("supervisor", self._supervisor_agent)
@@ -188,7 +188,7 @@ class Judge6Orchestrator:
         memory = MemorySaver()
         return workflow.compile(checkpointer=memory)
 
-    def _supervisor_agent(self, state: Judge6State) -> Judge6State:
+    def _supervisor_agent(self, state: Claude_Code_6State) -> Claude_Code_6State:
         """Supervisor agent that initializes and monitors the workflow."""
         logger.info(f"Supervisor: Processing workflow {state.get('workflow_id')}")
 
@@ -209,7 +209,7 @@ class Judge6Orchestrator:
 
         return state
 
-    def _classify_document_agent(self, state: Judge6State) -> Judge6State:
+    def _classify_document_agent(self, state: Claude_Code_6State) -> Claude_Code_6State:
         """Classify document and detect compliance framework."""
         logger.info("Agent: Classifying document")
 
@@ -264,7 +264,7 @@ Return ONLY a JSON object with:
 
         return state
 
-    def _parse_document_agent(self, state: Judge6State) -> Judge6State:
+    def _parse_document_agent(self, state: Claude_Code_6State) -> Claude_Code_6State:
         """Parse document structure and extract key sections."""
         logger.info("Agent: Parsing document structure")
 
@@ -307,7 +307,7 @@ Return a JSON object with:
 
         return state
 
-    def _extract_policies_agent(self, state: Judge6State) -> Judge6State:
+    def _extract_policies_agent(self, state: Claude_Code_6State) -> Claude_Code_6State:
         """Extract compliance policies and requirements using thinking model."""
         logger.info("Agent: Extracting compliance policies")
 
@@ -356,7 +356,7 @@ Return as JSON array: {{"policies": [...]}}
 
         return state
 
-    def _check_compliance_agent(self, state: Judge6State) -> Judge6State:
+    def _check_compliance_agent(self, state: Claude_Code_6State) -> Claude_Code_6State:
         """Check extracted policies against compliance framework requirements."""
         logger.info("Agent: Checking compliance")
 
@@ -410,7 +410,7 @@ Return:
 
         return state
 
-    def _generate_recommendations_agent(self, state: Judge6State) -> Judge6State:
+    def _generate_recommendations_agent(self, state: Claude_Code_6State) -> Claude_Code_6State:
         """Generate remediation recommendations for violations and warnings."""
         logger.info("Agent: Generating recommendations")
 
@@ -467,13 +467,13 @@ Return: {{"recommendations": [...]}}
 
         return state
 
-    def _route_from_supervisor(self, state: Judge6State) -> str:
+    def _route_from_supervisor(self, state: Claude_Code_6State) -> str:
         """Routing function for supervisor to next agent."""
         if state.get("current_step") == WorkflowStep.CLASSIFY:
             return "classify"
         return "complete"
 
-    def _save_state(self, state: Judge6State):
+    def _save_state(self, state: Claude_Code_6State):
         """Save workflow state to Firestore for durability and audit trail."""
         try:
             doc_ref = self.firestore_client.collection(self.firestore_collection).document(
@@ -496,14 +496,14 @@ Return: {{"recommendations": [...]}}
         except Exception as e:
             logger.error(f"Failed to save state to Firestore: {e}")
 
-    def _record_metrics(self, state: Judge6State):
+    def _record_metrics(self, state: Claude_Code_6State):
         """Record workflow metrics to Cloud Monitoring."""
         try:
             duration = (state["end_time"] - state["start_time"]).total_seconds()
 
             # Record duration metric
             series = monitoring_v3.TimeSeries()
-            series.metric.type = "custom.googleapis.com/judge6/workflow_duration_seconds"
+            series.metric.type = "custom.googleapis.com/Claude_Code_6/workflow_duration_seconds"
             series.resource.type = "global"
             series.points = [
                 monitoring_v3.Point(
@@ -536,7 +536,7 @@ Return: {{"recommendations": [...]}}
 
         workflow_id = f"wf-{uuid.uuid4()}"
 
-        initial_state = Judge6State(
+        initial_state = Claude_Code_6State(
             workflow_id=workflow_id,
             document_id=document_id,
             document_content=document_content,
@@ -569,7 +569,7 @@ if __name__ == "__main__":
 
     project_id = os.getenv("GCP_PROJECT_ID", "pnkln-prod")
 
-    orchestrator = Judge6Orchestrator(project_id=project_id)
+    orchestrator = Claude_Code_6Orchestrator(project_id=project_id)
 
     sample_document = """
     FDA 21 CFR Part 11 Compliance Policy
