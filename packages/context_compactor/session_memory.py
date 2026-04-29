@@ -33,6 +33,7 @@ DEDUP_SIMILARITY_THRESHOLD = 0.7
 @dataclass
 class SessionMemory:
     """A single memory entry for scoring."""
+
     id: str
     content: str
     summary: str = ""
@@ -47,6 +48,7 @@ class SessionMemory:
 @dataclass
 class ScoredMemory:
     """A memory with its computed score."""
+
     memory: SessionMemory
     score: float = 0.0
     recency_score: float = 0.0
@@ -59,6 +61,7 @@ class ScoredMemory:
 @dataclass
 class CompactionReport:
     """Report from a session memory compaction run."""
+
     memories_scored: int = 0
     memories_kept: int = 0
     memories_archived: int = 0
@@ -82,10 +85,11 @@ class MemoryScorer:
             rel = self._relevance(mem, ctx_tokens)
             freq = self._frequency(mem.access_count)
             composite = RECENCY_WEIGHT * rec + RELEVANCE_WEIGHT * rel + FREQUENCY_WEIGHT * freq
-            scored.append(ScoredMemory(memory=mem, score=round(composite, 4),
-                                       recency_score=round(rec, 4),
-                                       relevance_score=round(rel, 4),
-                                       frequency_score=round(freq, 4)))
+            scored.append(
+                ScoredMemory(
+                    memory=mem, score=round(composite, 4), recency_score=round(rec, 4), relevance_score=round(rel, 4), frequency_score=round(freq, 4)
+                )
+            )
         scored.sort(key=lambda s: s.score, reverse=True)
         return scored
 
@@ -129,10 +133,45 @@ class MemoryScorer:
         if not text:
             return []
         tokens = re.findall(r"[a-z0-9]+", text.lower())
-        stop = {"the","a","an","is","are","was","were","in","on","at","to","for",
-                "of","and","or","not","with","this","that","it","be","has","had",
-                "have","do","does","will","would","could","should","may","can",
-                "from","by","as","but","if"}
+        stop = {
+            "the",
+            "a",
+            "an",
+            "is",
+            "are",
+            "was",
+            "were",
+            "in",
+            "on",
+            "at",
+            "to",
+            "for",
+            "of",
+            "and",
+            "or",
+            "not",
+            "with",
+            "this",
+            "that",
+            "it",
+            "be",
+            "has",
+            "had",
+            "have",
+            "do",
+            "does",
+            "will",
+            "would",
+            "could",
+            "should",
+            "may",
+            "can",
+            "from",
+            "by",
+            "as",
+            "but",
+            "if",
+        }
         return [t for t in tokens if t not in stop and len(t) > 1]
 
     def _jaccard(self, a: set, b: set) -> float:
@@ -154,12 +193,23 @@ def archive_memories(to_archive: list[ScoredMemory], cold_dir: Path) -> int:
         with open(archive_file) as f:
             existing = sum(1 for _ in f)
     slots = MAX_COLD_ARCHIVE_SIZE - existing
-    to_write = to_archive[:max(0, slots)]
+    to_write = to_archive[: max(0, slots)]
     if not to_write:
         return 0
     with open(archive_file, "a") as f:
         for sm in to_write:
-            f.write(json.dumps({"id": sm.memory.id, "summary": sm.memory.summary or sm.memory.content[:200],
-                                "score": sm.score, "archived_at": time.time(), "source": sm.memory.source,
-                                "is_duplicate": sm.is_duplicate, "duplicate_of": sm.duplicate_of}) + "\n")
+            f.write(
+                json.dumps(
+                    {
+                        "id": sm.memory.id,
+                        "summary": sm.memory.summary or sm.memory.content[:200],
+                        "score": sm.score,
+                        "archived_at": time.time(),
+                        "source": sm.memory.source,
+                        "is_duplicate": sm.is_duplicate,
+                        "duplicate_of": sm.duplicate_of,
+                    }
+                )
+                + "\n"
+            )
     return len(to_write)

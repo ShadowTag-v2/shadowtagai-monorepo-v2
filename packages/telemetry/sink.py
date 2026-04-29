@@ -43,9 +43,7 @@ class TelemetrySink:
         buffer_size: int = 10,
         enabled: bool | None = None,
     ) -> None:
-        default_path = Path(
-            os.environ.get("AGNT_TELEMETRY_PATH", ".beads/telemetry.jsonl")
-        )
+        default_path = Path(os.environ.get("AGNT_TELEMETRY_PATH", ".beads/telemetry.jsonl"))
         self._path = output_path or default_path
         self._max_bytes = max_bytes
         self._buffer_size = buffer_size
@@ -147,8 +145,4 @@ class TelemetrySink:
         self.close()
 
     def __repr__(self) -> str:
-        return (
-            f"TelemetrySink(path={self._path}, "
-            f"enabled={self._enabled}, "
-            f"buffered={len(self._buffer)})"
-        )
+        return f"TelemetrySink(path={self._path}, enabled={self._enabled}, buffered={len(self._buffer)})"

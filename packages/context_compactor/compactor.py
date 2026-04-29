@@ -81,9 +81,7 @@ class ContextCompactor:
         return {
             "run_count": self._run_count,
             "total_tokens_saved": self._total_tokens_saved,
-            "circuit_breaker_open": self._layers[3].circuit_open
-            if isinstance(self._layers[3], Layer4FullCompaction)
-            else False,
+            "circuit_breaker_open": self._layers[3].circuit_open if isinstance(self._layers[3], Layer4FullCompaction) else False,
         }
 
     def should_compact(self, current_tokens: int, max_tokens: int) -> bool:
@@ -176,9 +174,7 @@ class ContextCompactor:
             final_result.messages_modified += result.messages_modified
             final_result.errors.extend(result.errors)
             final_result.layer_used = result.layer_used
-            final_result.cache_preserved = (
-                final_result.cache_preserved and result.cache_preserved
-            )
+            final_result.cache_preserved = final_result.cache_preserved and result.cache_preserved
 
             # Log telemetry
             self._emit_telemetry(result, time.time() - start_time)

@@ -139,15 +139,9 @@ class CacheBreakDetector:
             tool_definitions: Tool definitions sent to the API.
         """
         params_str = (
-            f"model={model}|"
-            f"temp={temperature}|"
-            f"max_tokens={max_tokens}|"
-            f"stop={sorted(stop_sequences or [])}|"
-            f"tools={len(tool_definitions or [])}"
+            f"model={model}|temp={temperature}|max_tokens={max_tokens}|stop={sorted(stop_sequences or [])}|tools={len(tool_definitions or [])}"
         )
-        self._api_params_hash = hashlib.sha256(
-            params_str.encode()
-        ).hexdigest()[:16]
+        self._api_params_hash = hashlib.sha256(params_str.encode()).hexdigest()[:16]
 
     def pre_scan(self, messages: list[Message]) -> list[CacheAnchor]:
         """Phase 1: Identify cache-anchored messages before compaction.
@@ -223,9 +217,7 @@ class CacheBreakDetector:
 
         if api_params_changed:
             report.cache_broken = True
-            report.vectors_triggered.append(
-                CacheBreakVector.TEMPERATURE_CHANGE
-            )
+            report.vectors_triggered.append(CacheBreakVector.TEMPERATURE_CHANGE)
 
         # Check message count change (insertion/deletion)
         if len(messages) < len(pre_anchors):
@@ -241,9 +233,7 @@ class CacheBreakDetector:
                     report.break_position = anchor.index
                 report.cache_broken = True
                 if CacheBreakVector.MESSAGE_DELETION not in report.vectors_triggered:
-                    report.vectors_triggered.append(
-                        CacheBreakVector.MESSAGE_DELETION
-                    )
+                    report.vectors_triggered.append(CacheBreakVector.MESSAGE_DELETION)
                 continue
 
             current_msg = messages[anchor.index]
@@ -257,9 +247,7 @@ class CacheBreakDetector:
                 report.cache_broken = True
 
                 # Determine the specific vector
-                vector = self._classify_mutation(
-                    anchor, current_msg, current_hash
-                )
+                vector = self._classify_mutation(anchor, current_msg, current_hash)
                 if vector not in report.vectors_triggered:
                     report.vectors_triggered.append(vector)
             else:
@@ -269,16 +257,13 @@ class CacheBreakDetector:
             if current_msg.role != anchor.role:
                 report.cache_broken = True
                 if CacheBreakVector.ROLE_CHANGE not in report.vectors_triggered:
-                    report.vectors_triggered.append(
-                        CacheBreakVector.ROLE_CHANGE
-                    )
+                    report.vectors_triggered.append(CacheBreakVector.ROLE_CHANGE)
 
         report.anchors_surviving = surviving
 
         if report.cache_broken:
             logger.warning(
-                "Cache break detected: %d/%d anchors survived "
-                "(vectors: %s, break at position %d)",
+                "Cache break detected: %d/%d anchors survived (vectors: %s, break at position %d)",
                 surviving,
                 len(pre_anchors),
                 [v.value for v in report.vectors_triggered],
@@ -335,6 +320,7 @@ class CacheBreakDetector:
             data = content.encode()
         elif isinstance(content, (list, dict)):
             import json
+
             data = json.dumps(content, sort_keys=True).encode()
         else:
             data = str(content).encode()

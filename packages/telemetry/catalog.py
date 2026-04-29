@@ -25,6 +25,7 @@ from typing import Any
 
 class EventCategory(StrEnum):
     """Event category for filtering and dashboarding."""
+
     API = "api"
     COMPACTION = "compaction"
     TOOL = "tool"
@@ -49,6 +50,7 @@ class TelemetryEvent:
         success: Whether the operation succeeded.
         error_message: Error details if success=False.
     """
+
     event: str
     category: EventCategory
     timestamp: float = 0.0
@@ -200,10 +202,7 @@ class EventCatalog:
                 "tokens_before": tokens_before,
                 "tokens_after": tokens_after,
                 "tokens_reclaimed": tokens_reclaimed,
-                "reclaim_pct": (
-                    round(tokens_reclaimed / tokens_before * 100, 1)
-                    if tokens_before > 0 else 0
-                ),
+                "reclaim_pct": (round(tokens_reclaimed / tokens_before * 100, 1) if tokens_before > 0 else 0),
             },
         )
 

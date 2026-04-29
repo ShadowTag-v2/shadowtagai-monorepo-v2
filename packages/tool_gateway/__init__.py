@@ -25,8 +25,12 @@ from packages.tool_gateway.bash_ast import BashASTAnalyzer, BashASTResult
 from packages.tool_gateway.security import SecurityHardening, SecurityCheckResult
 
 __all__ = [
-    "ToolGateway", "Decision", "ClassifiedGateway",
-    "BashASTAnalyzer", "BashASTResult",
-    "SecurityHardening", "SecurityCheckResult",
+    "ToolGateway",
+    "Decision",
+    "ClassifiedGateway",
+    "BashASTAnalyzer",
+    "BashASTResult",
+    "SecurityHardening",
+    "SecurityCheckResult",
 ]
 __version__ = "3.0.0"

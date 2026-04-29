@@ -454,10 +454,7 @@ class Layer4FullCompaction(CompactionLayer):
 
         except Exception as e:
             self._consecutive_failures += 1
-            result.errors.append(
-                f"L4 compaction failed (attempt {self._consecutive_failures}/"
-                f"{MAX_CONSECUTIVE_FAILURES}): {e}"
-            )
+            result.errors.append(f"L4 compaction failed (attempt {self._consecutive_failures}/{MAX_CONSECUTIVE_FAILURES}): {e}")
             logger.exception("L4 compaction failed")
 
         return result
