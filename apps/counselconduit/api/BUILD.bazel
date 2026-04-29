@@ -32,7 +32,7 @@ py_library(
         "gemini_rag.py",
         "human_gate.py",
         "intake_summarizer.py",
-        "judge6.py",
+        "Claude_Code_6.py",
         "kovel_attestation.py",
         "magic_link.py",
         "model_router.py",

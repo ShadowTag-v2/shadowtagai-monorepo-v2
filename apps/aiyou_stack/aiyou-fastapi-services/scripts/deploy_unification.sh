@@ -46,7 +46,7 @@ gcloud dataflow flex-template run "omega-pubsub-refinery" \
     --parameters project="$PROJECT_ID" \
     --parameters region="$REGION" \
     --parameters input_subscription="projects/$PROJECT_ID/subscriptions/trinity-worker-sub" \
-    --parameters output_table="$PROJECT_ID:judge6_memory.event_ledger" \
+    --parameters output_table="$PROJECT_ID:Claude_Code_6_memory.event_ledger" \
     --region "$REGION"
 
 # 5. CLOUD RUN JOB (The Harvester)

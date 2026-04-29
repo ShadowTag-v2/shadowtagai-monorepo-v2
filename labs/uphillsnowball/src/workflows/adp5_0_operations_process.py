@@ -29,7 +29,7 @@ with workflow.unsafe.imports_passed_through():
         j5_mdmp_plan,
         j9_assess_and_syndicate,
     )
-    from src.governance.j6_csrmc_cato import Judge6_CSRMC_cATO
+    from src.governance.j6_csrmc_cato import Claude_Code_6_CSRMC_cATO
     from src.intelligence.ipb_engine import ATP_2_01_3_IPB
 
 # Maximum execution retries before escalation
@@ -91,7 +91,7 @@ class ADP5_0_OperationsProcess:
         # ── Step 4: EXECUTE (N-Autoresearch Triad) ─────────────
         for attempt in range(1, _MAX_EXECUTE_RETRIES + 1):
             # J-6 ZTA check before every execution attempt
-            Judge6_CSRMC_cATO.enforce_zero_trust_handoff(
+            Claude_Code_6_CSRMC_cATO.enforce_zero_trust_handoff(
                 "J5",
                 "J3",
                 {

@@ -22,8 +22,8 @@ Files Modified/Created:
 | File                      | Changes                                                         |
 | ------------------------- | --------------------------------------------------------------- |
 | agents/autoresearch2.py | New 500-line SwarmVoter class with heuristic-first voting       |
-| src/judge6/state.py       | Added SwarmVoteState, SwarmVoteMethod, default VotingMode.SWARM |
-| src/judge6/nodes.py       | Added \_async_swarm_vote, \_async_debate dispatcher             |
+| src/Claude_Code_6/state.py       | Added SwarmVoteState, SwarmVoteMethod, default VotingMode.SWARM |
+| src/Claude_Code_6/nodes.py       | Added \_async_swarm_vote, \_async_debate dispatcher             |
 
 Cost Reduction Achieved:
 

@@ -23,7 +23,7 @@ The Ingestion Layer is a **nightly CronJob-based intelligence collection system*
 - **Architecture**: GKE CronJob Multi-Container
 - **Runtime**: ~45 minutes/night (nightly at 2:00 AM UTC)
 - **Cost**: ~$77/month operational
-- **Integration**: **CALLED BY** services in 4 namespaces (judge6-system, analytics, briefing, archive)
+- **Integration**: **CALLED BY** services in 4 namespaces (Claude_Code_6-system, analytics, briefing, archive)
 
 ### Key Differences from Judge 6
 
@@ -140,7 +140,7 @@ Review integration with PNKLN Core Stack:
   - BigQuery: `pnkln_intelligence` dataset
   - AM Briefing service
 - **Called by**:
-  - judge6-system (for validation context)
+  - Claude_Code_6-system (for validation context)
   - analytics (for trends)
   - briefing service (for delivery)
   - archive service (for historical analysis)

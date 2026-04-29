@@ -247,7 +247,7 @@ class AntigravitySwarm(minion):
 def main(cycles: int = 5) -> None:
     """Run swarm demonstration."""
     logger.info("///▞ ANTIGRAVITY SWARM :: INITIALIZING")
-    logger.info("///▞ Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=Judge6")
+    logger.info("///▞ Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=Claude_Code_6")
 
     swarm = AntigravitySwarm()
     swarm.start()

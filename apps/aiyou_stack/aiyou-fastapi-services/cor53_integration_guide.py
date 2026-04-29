@@ -43,9 +43,9 @@ from datetime import datetime  # noqa: E402
 from typing import Any  # noqa: E402
 
 from cor_autogen_integration import COROrchestrator  # noqa: E402
-from judge6_enforcement import (  # noqa: E402
+from Claude_Code_6_enforcement import (  # noqa: E402
     DoctrineConstraints,
-    Judge6Enforcer,
+    Claude_Code_6Enforcer,
     ValidationResult,
     ViolationLevel,
 )
@@ -132,7 +132,7 @@ class COR53UnifiedPipeline:
         # Initialize components
         logger.info("Initializing COR.53 unified pipeline...")
 
-        self.judge6 = Judge6Enforcer(
+        self.Claude_Code_6 = Claude_Code_6Enforcer(
             api_key=self.anthropic_api_key,
             gemini_api_key=self.gemini_api_key,
             doctrine=self.doctrine,
@@ -189,7 +189,7 @@ class COR53UnifiedPipeline:
             for req in task_request.compliance_requirements:
                 validation_context[f"{req.lower()}_compliant"] = True
 
-        validation = self.judge6.validate_task(
+        validation = self.Claude_Code_6.validate_task(
             task_description=task_request.description,
             justification=task_request.justification,
             context=validation_context,
@@ -616,7 +616,7 @@ def initialize_cor53(
 
     COR_INSTANCE = {
         "pipeline": pipeline,
-        "judge6": pipeline.judge6,
+        "Claude_Code_6": pipeline.Claude_Code_6,
         "orchestrator": pipeline.orchestrator,
         "process_task": pipeline.process_task,
         "batch_process": pipeline.batch_process_tasks,

@@ -318,8 +318,8 @@ Based on `router/src/openai-proxy.ts`:
 ### Judge 6 Deployment
 
 ```yaml
-# k8s/judge6_deployment.yaml
-namespace: judge6-system
+# k8s/Claude_Code_6_deployment.yaml
+namespace: Claude_Code_6-system
 containers:
   - layer1-gemini (8080)
   - layer2-orchestration (8081)
@@ -333,7 +333,7 @@ gpu: nvidia-l4
 
 ```bash
 #!/bin/bash
-PROJECT=~/shadowtagai-judge6
+PROJECT=~/shadowtagai-Claude_Code_6
 CODEBASE=~/Documents/Claude\ Code/Code/Claude\ Demo/ShadowTag-v2-fastapi-services
 
 # PHASE 1: ANTIGRAVITY

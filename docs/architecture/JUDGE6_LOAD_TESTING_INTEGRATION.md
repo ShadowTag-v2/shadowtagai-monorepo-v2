@@ -179,17 +179,17 @@ class EnforcedGeminiPanelDebate(GeminiPanelDebate):
         }
 
         # Call Judge 6 for enforcement validation
-        judge6_result = await self.judge6_client.enforce(enforcement_payload)
+        Claude_Code_6_result = await self.Claude_Code_6_client.enforce(enforcement_payload)
 
         # Step 3: Combine results
-        if not judge6_result.approved:
+        if not Claude_Code_6_result.approved:
             # Override debate decision if governance violation
             return ModeratedContent(
                 decision="rejected",
-                reason=f"Governance violation: {judge6_result.brakes_violated}",
+                reason=f"Governance violation: {Claude_Code_6_result.brakes_violated}",
                 original_debate=debate_result,
-                enforcement=judge6_result,
-                signature=await shadowtag.sign(judge6_result)
+                enforcement=Claude_Code_6_result,
+                signature=await shadowtag.sign(Claude_Code_6_result)
             )
 
         # Step 4: Return approved with enforcement metadata
@@ -197,8 +197,8 @@ class EnforcedGeminiPanelDebate(GeminiPanelDebate):
             decision=debate_result.decision,
             reason=debate_result.judge_reasoning,
             original_debate=debate_result,
-            enforcement=judge6_result,  # Audit trail
-            signature=await shadowtag.sign(judge6_result)
+            enforcement=Claude_Code_6_result,  # Audit trail
+            signature=await shadowtag.sign(Claude_Code_6_result)
         )
 ```
 
@@ -389,7 +389,7 @@ class JREnforcedDecision:
 
 **Extracted Scripts** (via `--extract` flag):
 
-1. `validate_judge6_latency.py` - Judge 6 P99 ≤90ms validation
+1. `validate_Claude_Code_6_latency.py` - Judge 6 P99 ≤90ms validation
 2. `validate_jr_engine_latency.py` - JR Engine 500μs validation
 3. `validate_orchestrator_prb.py` - Purpose/Reasons/Brakes orchestrator test
 4. `run_all_validations.py` - Master runner for all tests
@@ -403,8 +403,8 @@ cd load_testing
 python3 shadowtagai_load_tests_enhanced.py --extract
 
 # Configure for ShadowTag-v2
-export JUDGE6_ENDPOINT="https://ShadowTag-v2-judge6.gke.shadowtagai.ai/enforce"
-export JUDGE6_ITERATIONS=1000
+export CLAUDE_CODE_6_ENDPOINT="https://ShadowTag-v2-Claude_Code_6.gke.shadowtagai.ai/enforce"
+export CLAUDE_CODE_6_ITERATIONS=1000
 export ENV=production
 
 # Run tests

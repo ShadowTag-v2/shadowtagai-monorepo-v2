@@ -193,7 +193,7 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/SECTION_17_AEGAEON_GKEmd_19c9-YSg3LItIoo3h5DSH_QxbEU7lqe3q.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/CMakeListstxt_1uF5s_76v5l7kSQaCq546FD0VF0ZnXHx_.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/BRANCH_B_GAPS_FIXEDmd_1Nef__7n6kE87KB8FNfCWV6OgPNF9qAPN.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/final_synthesis_judge6md_1HxCyUJqoo0UhQwRBsRGkHpTtsXsmhcHW.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/final_synthesis_Claude_Code_6md_1HxCyUJqoo0UhQwRBsRGkHpTtsXsmhcHW.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/pinkln-multi-agent-evolutionmd_1dPHoiXCj3yCwUhZGW20REnHfPpR3bhoJ.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/INGESTION_INTEGRATION_GUIDEmd_1ljIIGrKzfqhlzOZQWVNIW0tXMYOAwWFB.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/MASTER_AGENT_PROMPT_FRAMEWORKmd_1R6HWM4M1jaze2mJ9_i29wUjo9amZCbwj.txt
@@ -406,7 +406,7 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/The_Machine_Learning_Solutions_Architect_Handbook_txt_1KU4QVixLfyHbDZyyAdS_Fj4cuHvZu8oK.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/READMEmd_1LsEmlVaJK2U3IhhIqYks-uH9M2UV9rdm.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Brooks__Financial_Management__4e_R2_CLOSED____Raymtxt_1h-StNOZfuBMNoDJdHY3n-yDXj77jAqNJ.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/JUDGE6_CLI_INTEGRATIONmd_1J4cf6KuRy1W2woAcEMipeBD2xOCf9LSk.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/CLAUDE_CODE_6_CLI_INTEGRATIONmd_1J4cf6KuRy1W2woAcEMipeBD2xOCf9LSk.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/READMEmd_1HCt8eNCxwitqO07MoBM2ecgGnN_nvZoj.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/subagent-driven-developmentmd_1BNW9x_NVmn5Z60mWTBMrKNCWkkq3DPIl.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/INGESTIONmd_1uAxTOhtw600cBEsYVdvjgddGjQIf4OoA.txt
@@ -605,7 +605,7 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Optimizing_AI_and_Machine_Learning_Solutions__Yourtxt_1uNtnsOVdgz_2my8rs2gpPXRAbRr8uCNk.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/plan_1764053613md_1zoqreTFIcIn2abgZE4m4H-sw0Qt0qoAi.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Financial-Results-Analysis-Branch-Comparisonmd_1kxgcNgrB3tgBMH4nYGvk83MVq9IWqk3s.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/JUDGE6_LOAD_TESTING_INTEGRATIONmd_18YIY_RIkrISJzak5sVX83CywY10jFzMF.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/CLAUDE_CODE_6_LOAD_TESTING_INTEGRATIONmd_18YIY_RIkrISJzak5sVX83CywY10jFzMF.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/requirementstxt_1_bIEkG9-YGU5Sv7iXUD1nDiDsaWBx6cv.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/BUILD_TEGU_GAASmd_1OV1xpVX8mz6yrgI7HGUHMa_eOZ_8Y_gS.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/CHANGELOGmd_16-Qtdc6yzdkRmRBourNyXsZTn4FNCAbM.txt
@@ -718,7 +718,7 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/dli_fundamentals_of_deep_learning_1369828_r3_web_ptxt_1hSi77eA3gPXvJCzkYkIR55FSp4kfXNJr.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/USAGE_EXAMPLESmd_1r8PPsvWH9Oqx6Y6az4WhJDcrejMkLDaD.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/READMEmd_15gy1MROUUXKX_GKFqh2W9W5NUzKiTbWg.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/JUDGE6_ARCHITECTURE_REVIEWmd_1KqVpTsb6v2u8MnJf39YTd0AEJIpBpnxJ.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/CLAUDE_CODE_6_ARCHITECTURE_REVIEWmd_1KqVpTsb6v2u8MnJf39YTd0AEJIpBpnxJ.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/FUNDAMENTALS_OF_DATA_OBSERVABILITY___implement_trutxt_1TjSTkeTuzoLRXa9jKBe6qck2i0EfHyoT.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Transcript_of_How_To_Run_Your_Small_Business_Like_txt_1t6sKAtNSriSV5bNnOo6yeX-Btd3P8KHT.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/AUTOGEN_MIGRATIONmd_117GVnfNQHQEL3vhD2NgMTOoTY7yQTd38.txt
@@ -1168,11 +1168,11 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/250422_Layperson_App_docxtxt_1o4CAFadsNKlkdWCIvvX5Xz3Q1ZirqbBt.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/PINKLN-READMEmd_1vFNC5xgn0XSamMOBiYeWj_QFC410WEyj.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/text_3_txttxt_13SincZgqOMozYsnLf19nnpsdvrQeB40l.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/hcq_deep_dive_for_judge6md_1sifYV5m9beWkWk-flUfguxI4lVLPXg_a.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/hcq_deep_dive_for_Claude_Code_6md_1sifYV5m9beWkWk-flUfguxI4lVLPXg_a.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/superpowerswrite-planmd_12QUylh3jf6IkcR7OJqJngW2E8NANvunn.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/READMEmd_18f0cR3Cf_Y9s83SYKrH9a10mVWyRQt5z.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/text_3_txttxt_13SincZgqOMozYsnLf19nnpsdvrQeB40l.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/hcq_deep_dive_for_judge6md_1sifYV5m9beWkWk-flUfguxI4lVLPXg_a.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/hcq_deep_dive_for_Claude_Code_6md_1sifYV5m9beWkWk-flUfguxI4lVLPXg_a.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/superpowerswrite-planmd_12QUylh3jf6IkcR7OJqJngW2E8NANvunn.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/READMEmd_18f0cR3Cf_Y9s83SYKrH9a10mVWyRQt5z.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Architecting_Power_BI_Solutions_in_Microsoft_Fabritxt_16Yov3UoK7Hcs5PbBTiH5aRZXv1tATzNn.txt
@@ -1993,7 +1993,7 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Postmortem-Templatemd_1iNSzA4PmtrMmJlMl_A2Azhs4eoPuAqqu.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/monorepo-weekly-scorecardmd_1tkckEhwEDL1CoKVtdie7EjDAWLCY5PWJ.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/decision-treemd_10TYHvAejQQwEaCqNYZl-v45fHyN-LvU3.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/final_synthesis_judge6md_15ptaOUkoPtln_t8v2qyPa3Zc90DOUGAN.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/final_synthesis_Claude_Code_6md_15ptaOUkoPtln_t8v2qyPa3Zc90DOUGAN.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/ingestionlog_1RhOx0vyj6eT5flfRKwTimaMMRx8iquKm.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/USE_POLICYmd_1BzBMwXjVGzIBQ-JtJ-ENdEONueV1vCfv.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/prompt-engineermd_1SNnqD1W1LDmD1EXklJWahoQRvcmXgmwW.txt
@@ -2685,7 +2685,7 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/2__Model_PIPE_Securities_Purchase_Agreement_US_Isstxt_1V_ENP6b1eLclgqFB5AIcbgg2BjQF1bnk.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/READMEmd_12zpAPVDPQkJ_hVri2Y5hRCT67atKJxZe.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/12_Key_Levers_of_SaaS_Success_with_Matrix_Partnerstxt_1oux2LvcOWnpLRuUX_jHYyzNo2It95FY6.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/judge6-financial-decision-enginemd_1ZimjK0hdCd3TWw6WjQlaVB_es3M6mzHv.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Claude_Code_6-financial-decision-enginemd_1ZimjK0hdCd3TWw6WjQlaVB_es3M6mzHv.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Gemini-CLI-TUI-Integration-Analysismd_10KAcZts-I9_By4ySHFUfTLPKZG13hcAp.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/text_18_txttxt_1CNnbqztPYpTvvTg5kyhprMpI7k2pdUGI.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/GitHub_Actions_Cookbook____Michael_Kaufmann____202txt_1vDlwqCKkto0SQosSdY1SQCkx9AqQUA52.txt
@@ -2758,7 +2758,7 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/2__Model_PIPE_Securities_Purchase_Agreement_US_Isstxt_1V_ENP6b1eLclgqFB5AIcbgg2BjQF1bnk.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/READMEmd_12zpAPVDPQkJ_hVri2Y5hRCT67atKJxZe.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/12_Key_Levers_of_SaaS_Success_with_Matrix_Partnerstxt_1oux2LvcOWnpLRuUX_jHYyzNo2It95FY6.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/judge6-financial-decision-enginemd_1ZimjK0hdCd3TWw6WjQlaVB_es3M6mzHv.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Claude_Code_6-financial-decision-enginemd_1ZimjK0hdCd3TWw6WjQlaVB_es3M6mzHv.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Gemini-CLI-TUI-Integration-Analysismd_10KAcZts-I9_By4ySHFUfTLPKZG13hcAp.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/WebGPUcsv_1xxzE2It9kY92RsTKIydWFrhURQocUlBS.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/SKILLmd_1GBG7EiZrFVPTktJ2Q3D5rwhkhEoI9s41.txt
@@ -2898,7 +2898,7 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/dusan_stosic_training_neural_networks_with_tensor_txt_1nomPnXHs83rVvOZIC-vpwhzelwZUedjK.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Apache_Spark_for_Machine_Learning__Build_and_deplotxt_1bwx2KNt2DOzLl6AILf9H36ZI9swycE8j.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/DEPLOYMENTmd_1HLn2epcLAWgPUvIOwSwEAiLXsXHtvIHd.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/JUDGE6_VS_INGESTION_COMPARISONmd_1aZAAKCiHZLEtNLiciqeqYOqVPuHOHPOI.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/CLAUDE_CODE_6_VS_INGESTION_COMPARISONmd_1aZAAKCiHZLEtNLiciqeqYOqVPuHOHPOI.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/READMEmd_1vLjvNk14tTxdHjrcwfVfgqsrsuLTuiNo.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/cor72_cloudflare_doctrinemd_1xAXUvrI17VzhcsLWqfl8nn5eT89_k61l.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/OPENCLmd_1ZHc6YBgC77m59tzNyYW2Hu5m9Wi5ab0s.txt
@@ -2969,7 +2969,7 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Designing_Information_Architecture__A_practical_gutxt_1TBt2b2EyF_Rw45fMjhSRCslbbLKDDKIk.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Apache_Spark_for_Machine_Learning__Build_and_deplotxt_1bwx2KNt2DOzLl6AILf9H36ZI9swycE8j.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/DEPLOYMENTmd_1HLn2epcLAWgPUvIOwSwEAiLXsXHtvIHd.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/JUDGE6_VS_INGESTION_COMPARISONmd_1aZAAKCiHZLEtNLiciqeqYOqVPuHOHPOI.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/CLAUDE_CODE_6_VS_INGESTION_COMPARISONmd_1aZAAKCiHZLEtNLiciqeqYOqVPuHOHPOI.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/READMEmd_1vLjvNk14tTxdHjrcwfVfgqsrsuLTuiNo.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/cor72_cloudflare_doctrinemd_1xAXUvrI17VzhcsLWqfl8nn5eT89_k61l.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/OPENCLmd_1ZHc6YBgC77m59tzNyYW2Hu5m9Wi5ab0s.txt

@@ -127,8 +127,8 @@ def assess(
 
 # Default SLA thresholds per agent tier (milliseconds)
 SLA_THRESHOLDS: dict[str, float] = {
-    "judge6_fast": 500,  # 500ms for inline risk gate
-    "judge6_autonomous": 5000,  # 5s for post-hoc audit
+    "Claude_Code_6_fast": 500,  # 500ms for inline risk gate
+    "Claude_Code_6_autonomous": 5000,  # 5s for post-hoc audit
     "oracle_studio": 30000,  # 30s for 7-stage pipeline
     "vent_mode": 10000,  # 10s per streaming chunk
     "model_router": 1000,  # 1s for routing decision

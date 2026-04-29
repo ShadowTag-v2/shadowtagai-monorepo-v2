@@ -19,11 +19,6 @@ async def parallel_bootstrap():
     return {"status": "authorized"}
 
 
-class ToolSearchTool:
-    def __init__(self, registry):
-        self.registry = registry
-
-
 async def main():
     print("\n🚀 Bootstrapping Antigravity Engine...")
     start_time = time.time()
@@ -33,11 +28,11 @@ async def main():
     bootstrap_task = asyncio.create_task(parallel_bootstrap())
     watchdog_task = asyncio.create_task(watchdog.monitor())
 
-    keychain_data = await bootstrap_task
+    await bootstrap_task
     print(f"⏱️  Boot sequence finished in {(time.time() - start_time) * 1000:.2f}ms")
 
-    HEAVY_REGISTRY = {f"mcp_tool_{i}": {"description": f"Tool {i}"} for i in range(1, 51)}
-    deferral_engine = ToolSearchTool(HEAVY_REGISTRY)
+    from packages.tool_gateway.honeypots import HONEYPOT_REGISTRY
+    print(f"🛡️  Loaded {len(HONEYPOT_REGISTRY)} honeypot routes into primary gateway.")
 
     print("\n🟢 SYSTEM ONLINE. READY FOR DAEMON DISPATCH.")
 

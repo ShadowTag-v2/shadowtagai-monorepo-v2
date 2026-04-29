@@ -62,7 +62,7 @@ The `claude/encode-bet-01PtrKTyPJehixSi4Cvk6j8E` branch contains **two productio
 
 - ~200 lines
 
-**New (`judge6/` - v2.0):**
+**New (`Claude_Code_6/` - v2.0):**
 
 - **9 modular files** (1,322 lines total)
 
@@ -83,7 +83,7 @@ The `claude/encode-bet-01PtrKTyPJehixSi4Cvk6j8E` branch contains **two productio
 ### File Structure
 
 ```python
-judge6/
+Claude_Code_6/
 ├── __init__.py              # Clean package exports
 ├── models.py                # Type-safe data models (186 lines)
 ├── constitutional.py        # Cor.53 immutable axioms (71 lines)
@@ -438,10 +438,10 @@ const response = await router.route({
 #### 2. Judge 6 Governance Integration
 
 ```typescript
-import { Judge6Adapter } from "@pnkln/universal-copilot";
+import { Claude_Code_6Adapter } from "@pnkln/universal-copilot";
 
 // Connect to Judge 6 Python backend
-const governance = new Judge6Adapter("production-001");
+const governance = new Claude_Code_6Adapter("production-001");
 
 const router = new CopilotRouter({ enableGovernance: true, ...config }, governance);
 
@@ -578,49 +578,49 @@ mv src/pnkln/judge_six.py src/pnkln/judge_six.py.v1.backup
 
 # 2. Cherry-pick Judge 6 v2.0
 
-git checkout origin/claude/encode-bet-01PtrKTyPJehixSi4Cvk6j8E -- judge6/
+git checkout origin/claude/encode-bet-01PtrKTyPJehixSi4Cvk6j8E -- Claude_Code_6/
 
 # 3. Update imports in Layer 2-5
 
 # Change: from src.pnkln import JudgeSix
 
-# To: from judge6 import JudgmentRule as JudgeSix
+# To: from Claude_Code_6 import JudgmentRule as JudgeSix
 
 # 4. Run tests
 
-pytest judge6/tests/ --cov=judge6
+pytest Claude_Code_6/tests/ --cov=Claude_Code_6
 
 # 5. Verify integration
 
-python -c "from judge6 import JudgmentRule; print('✅ Import successful')"
+python -c "from Claude_Code_6 import JudgmentRule; print('✅ Import successful')"
 
 ```
 
 **Files added:**
 
-- `judge6/__init__.py`
+- `Claude_Code_6/__init__.py`
 
-- `judge6/models.py`
+- `Claude_Code_6/models.py`
 
-- `judge6/constitutional.py`
+- `Claude_Code_6/constitutional.py`
 
-- `judge6/config.py`
+- `Claude_Code_6/config.py`
 
-- `judge6/risk_manager.py`
+- `Claude_Code_6/risk_manager.py`
 
-- `judge6/provenance.py`
+- `Claude_Code_6/provenance.py`
 
-- `judge6/judgment.py`
+- `Claude_Code_6/judgment.py`
 
-- `judge6/main.py`
+- `Claude_Code_6/main.py`
 
-- `judge6/example.py`
+- `Claude_Code_6/example.py`
 
-- `judge6/requirements.txt`
+- `Claude_Code_6/requirements.txt`
 
 **Changes needed:**
 
-- Update `src/pnkln/__init__.py` to export from `judge6`
+- Update `src/pnkln/__init__.py` to export from `Claude_Code_6`
 
 - Update `src/core/gemini_function_calling.py` to use new Judge 6 API
 
@@ -647,7 +647,7 @@ npm install
 
 # 3. Configure Judge 6 connection
 
-# Update universal-copilot/src/core/governance.ts to use judge6/ backend
+# Update universal-copilot/src/core/governance.ts to use Claude_Code_6/ backend
 
 # 4. Run tests
 
@@ -679,7 +679,7 @@ npm run build
 
 # 1. Test Judge 6 v2.0
 
-python judge6/main.py
+python Claude_Code_6/main.py
 
 # 2. Test Universal Copilot with mock provider
 

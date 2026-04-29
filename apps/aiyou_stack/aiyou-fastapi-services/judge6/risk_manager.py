@@ -8,8 +8,8 @@ axiom validation for AI governance.
 
 import logging
 
-from judge6.config import get_config
-from judge6.models import ConstitutionalAxiom, RiskLevel
+from Claude_Code_6.config import get_config
+from Claude_Code_6.models import ConstitutionalAxiom, RiskLevel
 
 logger = logging.getLogger(__name__)
 

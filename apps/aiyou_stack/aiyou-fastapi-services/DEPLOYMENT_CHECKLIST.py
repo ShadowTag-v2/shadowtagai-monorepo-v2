@@ -104,7 +104,7 @@ class DeploymentChecker:
         required_files = [
             "cor_skill_registry.py",
             "cor_autogen_integration.py",
-            "judge6_enforcement.py",
+            "Claude_Code_6_enforcement.py",
             "cor53_integration_guide.py",
             "cor_skills_manifest.json",
             "DEPLOYMENT_CHECKLIST.py",
@@ -140,7 +140,7 @@ class DeploymentChecker:
         self.smoke_test_autogen_integration()
 
         # Test Judge 6 Enforcement
-        self.smoke_test_judge6_enforcement()
+        self.smoke_test_Claude_Code_6_enforcement()
 
     def phase_4_integration_tests(self):
         """Phase 4: Integration Testing"""
@@ -356,13 +356,13 @@ class DeploymentChecker:
                 remediation="Check cor_autogen_integration.py for errors",
             )
 
-    def smoke_test_judge6_enforcement(self):
+    def smoke_test_Claude_Code_6_enforcement(self):
         """Smoke test for Judge 6 Enforcement"""
         try:
-            from judge6_enforcement import Judge6Enforcer
+            from Claude_Code_6_enforcement import Claude_Code_6Enforcer
 
             # Initialize enforcer
-            enforcer = Judge6Enforcer()
+            enforcer = Claude_Code_6Enforcer()
 
             # Test compliant task
             result = enforcer.validate_task(
@@ -417,7 +417,7 @@ class DeploymentChecker:
                 passed=False,
                 message=f"Error: {e!s}",
                 severity="CRITICAL",
-                remediation="Check judge6_enforcement.py for errors",
+                remediation="Check Claude_Code_6_enforcement.py for errors",
             )
 
     def integration_test_cor53_pipeline(self):
@@ -503,7 +503,7 @@ class DeploymentChecker:
     def validate_doctrine_constraints(self):
         """Validate doctrine constraints are enforced"""
         try:
-            from judge6_enforcement import DoctrineConstraints
+            from Claude_Code_6_enforcement import DoctrineConstraints
 
             doctrine = DoctrineConstraints()
 
@@ -544,7 +544,7 @@ class DeploymentChecker:
 
     def validate_ra1_killswitch(self):
         """Validate RA-1 kill-switch is functional"""
-        # This was already tested in smoke_test_judge6_enforcement
+        # This was already tested in smoke_test_Claude_Code_6_enforcement
         # Just add a production-level validation marker
         self.add_result(
             check_name="Production: RA-1 Kill-Switch",
@@ -590,9 +590,9 @@ class DeploymentChecker:
     def validate_audit_trail(self):
         """Validate audit trail generation"""
         try:
-            from judge6_enforcement import Judge6Enforcer
+            from Claude_Code_6_enforcement import Claude_Code_6Enforcer
 
-            enforcer = Judge6Enforcer()
+            enforcer = Claude_Code_6Enforcer()
 
             # Generate a test validation
             enforcer.validate_task(

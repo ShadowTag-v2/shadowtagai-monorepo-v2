@@ -286,7 +286,7 @@ Round: $1.6B
 
 **Confidence**: 75% (proven ShadowTagAi production deployment, integration risk moderate)
 
-**Details**: See `docs/architecture/JUDGE6_LOAD_TESTING_INTEGRATION.md` for full analysis
+**Details**: See `docs/architecture/CLAUDE_CODE_6_LOAD_TESTING_INTEGRATION.md` for full analysis
 
 ---
 

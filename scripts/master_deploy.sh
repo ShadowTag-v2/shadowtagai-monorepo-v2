@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ==============================================================================
-# Master Deployment Script - Judge6 Full Stack
+# Master Deployment Script - Claude_Code_6 Full Stack
 # ==============================================================================
 #
 # FIXES APPLIED:
@@ -29,7 +29,7 @@ set -euo pipefail
 # Configuration
 export PROJECT_ID="${PROJECT_ID:-shadowtagai-core-stack}"
 export REGION="${REGION:-us-central1}"
-export CLUSTER_NAME="${CLUSTER_NAME:-judge6-inference}"
+export CLUSTER_NAME="${CLUSTER_NAME:-Claude_Code_6-inference}"
 
 # Colors for output
 RED='\033[0;31m'
@@ -148,10 +148,10 @@ build_and_push_images() {
   configure_docker_auth
 
   local components=(
-    "judge6-gemini"
-    "judge6-orchestrator"
-    "judge6-gateway"
-    "judge6-validator"
+    "Claude_Code_6-gemini"
+    "Claude_Code_6-orchestrator"
+    "Claude_Code_6-gateway"
+    "Claude_Code_6-validator"
   )
 
   for component in "${components[@]}"; do
@@ -247,25 +247,25 @@ deploy_to_kubernetes() {
 
   # Wait for ConfigMap to be ready
   kubectl wait --for=jsonpath='{.metadata.name}'=atp519-rules \
-    configmap/atp519-rules -n judge6-system --timeout=60s || log_warn "ConfigMap wait timed out"
+    configmap/atp519-rules -n Claude_Code_6-system --timeout=60s || log_warn "ConfigMap wait timed out"
 
   # Apply deployment
   log_info "Applying deployment..."
-  kubectl apply -f k8s/judge6_deployment.yaml || error_exit "Failed to apply deployment"
+  kubectl apply -f k8s/Claude_Code_6_deployment.yaml || error_exit "Failed to apply deployment"
 
   # Wait for deployments to be ready
   log_info "Waiting for deployments to be ready..."
   kubectl wait --for=condition=available \
     --timeout=300s \
-    deployment/judge6-inference -n judge6-system || log_warn "Deployment not ready after 5 minutes"
+    deployment/Claude_Code_6-inference -n Claude_Code_6-system || log_warn "Deployment not ready after 5 minutes"
 
   # Check pod status
   log_info "Checking pod status..."
-  kubectl get pods -n judge6-system
+  kubectl get pods -n Claude_Code_6-system
 
   # Get service endpoint
   log_info "Getting service endpoint..."
-  kubectl get service judge6-service -n judge6-system
+  kubectl get service Claude_Code_6-service -n Claude_Code_6-system
 
   log_info "✓ Kubernetes deployment complete"
 }
@@ -276,7 +276,7 @@ run_validation() {
 
   # Get service endpoint
   local endpoint
-  endpoint=$(kubectl get service judge6-service -n judge6-system \
+  endpoint=$(kubectl get service Claude_Code_6-service -n Claude_Code_6-system \
     -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
 
   if [ -z "$endpoint" ]; then
@@ -288,7 +288,7 @@ run_validation() {
   log_info "Service endpoint: http://${endpoint}"
 
   # Update validator endpoint
-  export JUDGE6_ENDPOINT="http://${endpoint}/enforce"
+  export CLAUDE_CODE_6_ENDPOINT="http://${endpoint}/enforce"
 
   # Run validator
   python3 src/validator/validate_latency.py || log_warn "Validation failed (this is expected for stub services)"
@@ -308,7 +308,7 @@ cleanup() {
 
   # Delete Kubernetes resources
   log_info "Deleting Kubernetes resources..."
-  kubectl delete -f k8s/judge6_deployment.yaml --ignore-not-found=true || log_warn "K8s cleanup had errors"
+  kubectl delete -f k8s/Claude_Code_6_deployment.yaml --ignore-not-found=true || log_warn "K8s cleanup had errors"
   kubectl delete -f k8s/atp519_configmap.yaml --ignore-not-found=true || log_warn "ConfigMap cleanup had errors"
 
   # Delete GKE cluster
@@ -335,20 +335,20 @@ show_status() {
   gcloud container clusters list --filter="name:${CLUSTER_NAME}" --format="table(name,location,status)" || true
 
   log_info "\nKubernetes Deployments:"
-  kubectl get deployments -n judge6-system || log_warn "Not connected to cluster"
+  kubectl get deployments -n Claude_Code_6-system || log_warn "Not connected to cluster"
 
   log_info "\nPods:"
-  kubectl get pods -n judge6-system || log_warn "Not connected to cluster"
+  kubectl get pods -n Claude_Code_6-system || log_warn "Not connected to cluster"
 
   log_info "\nServices:"
-  kubectl get services -n judge6-system || log_warn "Not connected to cluster"
+  kubectl get services -n Claude_Code_6-system || log_warn "Not connected to cluster"
 }
 
 # Main execution
 main() {
   local command="${1:-all}"
 
-  log_step "Judge6 Master Deployment Script"
+  log_step "Claude_Code_6 Master Deployment Script"
   log_info "Command: ${command}"
   log_info "Project: ${PROJECT_ID}"
   log_info "Region: ${REGION}"

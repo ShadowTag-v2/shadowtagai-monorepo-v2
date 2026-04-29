@@ -180,7 +180,7 @@ context_service.log_revenue_event(
 
 ```python
 # Check if deployment meets governance standards
-judge6_decision = {
+Claude_Code_6_decision = {
     "opord_number": 143,
     "policy_violated": "security_audit_required",
     "severity": "PASSED",
@@ -189,7 +189,7 @@ judge6_decision = {
 }
 
 # Log to Context Index
-context_service.log_judge6_decision(**judge6_decision)
+context_service.log_Claude_Code_6_decision(**Claude_Code_6_decision)
 ```
 
 ### Step 7: Complete OPORD

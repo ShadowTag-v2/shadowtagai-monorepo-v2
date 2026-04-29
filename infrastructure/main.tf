@@ -1,5 +1,5 @@
 /**
- * Corrected Terraform Configuration for Judge6 Infrastructure
+ * Corrected Terraform Configuration for Claude_Code_6 Infrastructure
  *
  * FIXES APPLIED:
  * 1. Added missing KMS key resource definition
@@ -35,7 +35,7 @@ terraform {
   # Create with: gsutil mb -p shadowtagai-core-stack gs://shadowtagai-terraform-state
   backend "gcs" {
     bucket = "shadowtagai-terraform-state"
-    prefix = "judge6/terraform/state"
+    prefix = "Claude_Code_6/terraform/state"
   }
 }
 
@@ -137,11 +137,11 @@ resource "google_kms_crypto_key_iam_member" "storage_kms" {
 # Service Accounts
 # ============================================================================
 
-# Judge6 service account for GKE workloads
-resource "google_service_account" "judge6_sa" {
-  account_id   = "judge6"
-  display_name = "Judge6 Service Account"
-  description  = "Service account for Judge6 inference workloads"
+# Claude_Code_6 service account for GKE workloads
+resource "google_service_account" "Claude_Code_6_sa" {
+  account_id   = "Claude_Code_6"
+  display_name = "Claude_Code_6 Service Account"
+  description  = "Service account for Claude_Code_6 inference workloads"
   project      = var.project_id
 
   depends_on = [google_project_service.required_apis]
@@ -149,48 +149,48 @@ resource "google_service_account" "judge6_sa" {
 
 # Workbench service account
 resource "google_service_account" "workbench_sa" {
-  account_id   = "judge6-workbench"
-  display_name = "Judge6 Workbench Service Account"
+  account_id   = "Claude_Code_6-workbench"
+  display_name = "Claude_Code_6 Workbench Service Account"
   description  = "Service account for Vertex AI Workbench"
   project      = var.project_id
 
   depends_on = [google_project_service.required_apis]
 }
 
-# IAM bindings for judge6 service account
-resource "google_project_iam_member" "judge6_vertex_user" {
+# IAM bindings for Claude_Code_6 service account
+resource "google_project_iam_member" "Claude_Code_6_vertex_user" {
   project = var.project_id
   role    = "roles/aiplatform.user"
-  member  = "serviceAccount:${google_service_account.judge6_sa.email}"
+  member  = "serviceAccount:${google_service_account.Claude_Code_6_sa.email}"
 }
 
-resource "google_project_iam_member" "judge6_storage_object_viewer" {
+resource "google_project_iam_member" "Claude_Code_6_storage_object_viewer" {
   project = var.project_id
   role    = "roles/storage.objectViewer"
-  member  = "serviceAccount:${google_service_account.judge6_sa.email}"
+  member  = "serviceAccount:${google_service_account.Claude_Code_6_sa.email}"
 }
 
-resource "google_project_iam_member" "judge6_logging_writer" {
+resource "google_project_iam_member" "Claude_Code_6_logging_writer" {
   project = var.project_id
   role    = "roles/logging.logWriter"
-  member  = "serviceAccount:${google_service_account.judge6_sa.email}"
+  member  = "serviceAccount:${google_service_account.Claude_Code_6_sa.email}"
 }
 
-resource "google_project_iam_member" "judge6_monitoring_writer" {
+resource "google_project_iam_member" "Claude_Code_6_monitoring_writer" {
   project = var.project_id
   role    = "roles/monitoring.metricWriter"
-  member  = "serviceAccount:${google_service_account.judge6_sa.email}"
+  member  = "serviceAccount:${google_service_account.Claude_Code_6_sa.email}"
 }
 
 # ============================================================================
 # Artifact Registry
 # ============================================================================
 
-resource "google_artifact_registry_repository" "judge6" {
+resource "google_artifact_registry_repository" "Claude_Code_6" {
   provider      = google-beta
   location      = var.region
-  repository_id = "judge6"
-  description   = "Docker repository for Judge6 container images"
+  repository_id = "Claude_Code_6"
+  description   = "Docker repository for Claude_Code_6 container images"
   format        = "DOCKER"
 
   kms_key_name = google_kms_crypto_key.shadowtagai_key.id
@@ -222,13 +222,13 @@ resource "google_artifact_registry_repository" "judge6" {
   ]
 }
 
-# Grant judge6 SA permission to pull images
-resource "google_artifact_registry_repository_iam_member" "judge6_reader" {
+# Grant Claude_Code_6 SA permission to pull images
+resource "google_artifact_registry_repository_iam_member" "Claude_Code_6_reader" {
   provider   = google-beta
-  location   = google_artifact_registry_repository.judge6.location
-  repository = google_artifact_registry_repository.judge6.name
+  location   = google_artifact_registry_repository.Claude_Code_6.location
+  repository = google_artifact_registry_repository.Claude_Code_6.name
   role       = "roles/artifactregistry.reader"
-  member     = "serviceAccount:${google_service_account.judge6_sa.email}"
+  member     = "serviceAccount:${google_service_account.Claude_Code_6_sa.email}"
 }
 
 # ============================================================================
@@ -269,9 +269,9 @@ resource "google_storage_bucket" "model_artifacts" {
 # ============================================================================
 
 # Vertex AI Featurestore (if needed)
-resource "google_vertex_ai_featurestore" "judge6_featurestore" {
+resource "google_vertex_ai_featurestore" "Claude_Code_6_featurestore" {
   provider = google-beta
-  name     = "judge6_featurestore"
+  name     = "Claude_Code_6_featurestore"
   region   = var.region
   project  = var.project_id
 
@@ -294,11 +294,11 @@ resource "google_vertex_ai_featurestore" "judge6_featurestore" {
 # Vertex AI Model Registry (example placeholder)
 # Note: Models are typically deployed via gcloud or Python SDK
 # This is a placeholder showing the resource structure
-resource "google_vertex_ai_endpoint" "judge6_gemini" {
+resource "google_vertex_ai_endpoint" "Claude_Code_6_gemini" {
   provider     = google-beta
-  name         = "judge6-gemini"
-  display_name = "Judge6 Gemini Endpoint"
-  description  = "Endpoint for Judge6 Gemini model inference"
+  name         = "Claude_Code_6-gemini"
+  display_name = "Claude_Code_6 Gemini Endpoint"
+  description  = "Endpoint for Claude_Code_6 Gemini model inference"
   region       = var.region
   project      = var.project_id
 
@@ -316,9 +316,9 @@ resource "google_vertex_ai_endpoint" "judge6_gemini" {
 # Vertex AI Workbench (Notebooks)
 # ============================================================================
 
-resource "google_notebooks_instance" "judge6_workbench" {
+resource "google_notebooks_instance" "Claude_Code_6_workbench" {
   provider     = google-beta
-  name         = "judge6-workbench"
+  name         = "Claude_Code_6-workbench"
   location     = "${var.region}-a"
   machine_type = "n1-standard-4"
 
@@ -359,12 +359,12 @@ resource "google_notebooks_instance" "judge6_workbench" {
 # ============================================================================
 
 # Bind Kubernetes SA to Google SA for Workload Identity
-resource "google_service_account_iam_member" "judge6_workload_identity" {
-  service_account_id = google_service_account.judge6_sa.name
+resource "google_service_account_iam_member" "Claude_Code_6_workload_identity" {
+  service_account_id = google_service_account.Claude_Code_6_sa.name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "serviceAccount:${var.project_id}.svc.id.goog[judge6-system/judge6-sa]"
+  member             = "serviceAccount:${var.project_id}.svc.id.goog[Claude_Code_6-system/Claude_Code_6-sa]"
 
-  depends_on = [google_service_account.judge6_sa]
+  depends_on = [google_service_account.Claude_Code_6_sa]
 }
 
 # ============================================================================
@@ -389,9 +389,9 @@ output "region" {
   value       = var.region
 }
 
-output "judge6_service_account_email" {
-  description = "Judge6 service account email"
-  value       = google_service_account.judge6_sa.email
+output "Claude_Code_6_service_account_email" {
+  description = "Claude_Code_6 service account email"
+  value       = google_service_account.Claude_Code_6_sa.email
 }
 
 output "workbench_service_account_email" {
@@ -401,7 +401,7 @@ output "workbench_service_account_email" {
 
 output "artifact_registry_repository" {
   description = "Artifact Registry repository name"
-  value       = google_artifact_registry_repository.judge6.name
+  value       = google_artifact_registry_repository.Claude_Code_6.name
 }
 
 output "kms_key_id" {
@@ -411,7 +411,7 @@ output "kms_key_id" {
 
 output "vertex_endpoint_id" {
   description = "Vertex AI endpoint ID"
-  value       = google_vertex_ai_endpoint.judge6_gemini.id
+  value       = google_vertex_ai_endpoint.Claude_Code_6_gemini.id
 }
 
 output "model_artifacts_bucket" {

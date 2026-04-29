@@ -97,7 +97,7 @@ Every execution generates:
   "corrections_applied": [...],
   "execution_time_ms": 4523,
   "escalation_triggered": false,
-  "judge6_integration": {
+  "Claude_Code_6_integration": {
     "coverage_target": 0.98,
     "latency_p99_ms": 90
   }

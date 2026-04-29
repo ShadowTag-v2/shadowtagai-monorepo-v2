@@ -51,7 +51,7 @@
   source <(python3 scripts/auth_github_app.py --export)
   ```
 - **Rule**: NEVER use personal PATs or hardcoded tokens. Always call `auth_github_app.py`.
-- **JUDGE6_SKIP=true** is set automatically in `.claude/settings.json` env vars.
+- **CLAUDE_CODE_6_SKIP=true** is set automatically in `.claude/settings.json` env vars.
 
 ## 1. MODE: FAST (The Mechanic)
 

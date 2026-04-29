@@ -29,7 +29,7 @@ in a flat text file and hit context limits.
 
 ## Key Decisions (2026-04)
 - 2026-04-18: Switched to CPython 3.14.3, venv rebuilt → topic/python_env.md
-- 2026-04-18: Judge 6 BLOCK/ALLOW spec finalized → topic/judge6.md
+- 2026-04-18: Judge 6 BLOCK/ALLOW spec finalized → topic/Claude_Code_6.md
 - 2026-04-17: Firebase MCP-first deployment doctrine → topic/firebase_deploy.md
 
 ## People & Accounts
@@ -91,7 +91,7 @@ in a flat text file and hit context limits.
 **Retention**: Based on configured policy (default: 30 days)
 
 ```jsonl
-{"ts":"2026-04-18T17:34:30Z","type":"decision","topic":"judge6","content":"Finalized BLOCK/ALLOW spec with 16 BLOCK rules and 8 ALLOW exceptions"}
+{"ts":"2026-04-18T17:34:30Z","type":"decision","topic":"Claude_Code_6","content":"Finalized BLOCK/ALLOW spec with 16 BLOCK rules and 8 ALLOW exceptions"}
 {"ts":"2026-04-18T16:46:17Z","type":"finding","topic":"cl4r1t4s","content":"Identified 6 adoptable patterns from Claude Code competitive analysis"}
 {"ts":"2026-04-18T15:20:00Z","type":"action","topic":"infrastructure","content":"OpenTofu drift resolved: notification channel sync"}
 ```

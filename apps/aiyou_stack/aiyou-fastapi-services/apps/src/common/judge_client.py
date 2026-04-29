@@ -7,10 +7,10 @@ import requests
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
-JUDGE6_URL = "http://localhost:8080/validate"
+CLAUDE_CODE_6_URL = "http://localhost:8080/validate"
 
 
-def check_with_judge6(operation: str, confidence: float, vertical: str) -> bool:
+def check_with_Claude_Code_6(operation: str, confidence: float, vertical: str) -> bool:
     """Consults Judge#6 before execution.
     Returns True if PROCEED, False if FREEZE.
     """
@@ -20,7 +20,7 @@ def check_with_judge6(operation: str, confidence: float, vertical: str) -> bool:
             "confidence": confidence,
             "vertical": vertical,
         }
-        response = requests.post(JUDGE6_URL, json=payload)
+        response = requests.post(CLAUDE_CODE_6_URL, json=payload)
         response.raise_for_status()
 
         verdict = response.json()

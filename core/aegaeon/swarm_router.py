@@ -12,7 +12,7 @@ All instances share one cached_content=cache_name for ~90% cost reduction (Gemin
 Usage:
     from core.aegaeon.swarm_router import SwarmRouter
     router = SwarmRouter()
-    result = await router.route("fast", "Summarize the judge6 pipeline")
+    result = await router.route("fast", "Summarize the Claude_Code_6 pipeline")
 """
 
 from __future__ import annotations

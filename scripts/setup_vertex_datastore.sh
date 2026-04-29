@@ -13,8 +13,8 @@ set -euo pipefail
 # Configuration
 PROJECT_ID="${PROJECT_ID:-acquired-jet-478701-b3}"
 LOCATION="${LOCATION:-us-central1}"
-DATASTORE_ID="${DATASTORE_ID:-judge6-doctrine-store}"
-BUCKET_NAME="${BUCKET_NAME:-${PROJECT_ID}-judge6-docs}"
+DATASTORE_ID="${DATASTORE_ID:-Claude_Code_6-doctrine-store}"
+BUCKET_NAME="${BUCKET_NAME:-${PROJECT_ID}-Claude_Code_6-docs}"
 COLLECTION_ID="default_collection"
 
 # Colors
@@ -250,14 +250,14 @@ import_documents() {
     log_info "Import job submitted (may take several minutes)"
 }
 
-# Print configuration for judge6_grounded.py
+# Print configuration for Claude_Code_6_grounded.py
 print_config() {
-    log_info "Configuration for judge6_grounded.py:"
+    log_info "Configuration for Claude_Code_6_grounded.py:"
     echo ""
     echo "# Add to environment or config:"
     echo "export VERTEX_PROJECT_ID=\"$PROJECT_ID\""
     echo "export VERTEX_LOCATION=\"$LOCATION\""
-    echo "export JUDGE6_DATASTORE_ID=\"$DATASTORE_ID\""
+    echo "export CLAUDE_CODE_6_DATASTORE_ID=\"$DATASTORE_ID\""
     echo ""
     echo "# Datastore path for grounding:"
     echo "DATASTORE_PATH=\"projects/$PROJECT_ID/locations/global/collections/$COLLECTION_ID/dataStores/$DATASTORE_ID\""
@@ -268,7 +268,7 @@ from google.cloud import discoveryengine_v1
 from vertexai.preview.generative_models import grounding, Tool
 
 # Create grounding tool
-data_store_path = f"projects/{PROJECT_ID}/locations/global/collections/default_collection/dataStores/judge6-doctrine-store"
+data_store_path = f"projects/{PROJECT_ID}/locations/global/collections/default_collection/dataStores/Claude_Code_6-doctrine-store"
 
 grounding_tool = Tool.from_retrieval(
     grounding.Retrieval(

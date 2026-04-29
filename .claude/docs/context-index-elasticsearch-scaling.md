@@ -260,12 +260,12 @@ def scan_opord_for_violations(opord_content: str) -> List[str]:
 
 ```python
 # Log governance decisions to ES for audit trail
-def log_judge6_decision(decision: Dict):
+def log_Claude_Code_6_decision(decision: Dict):
     """
     Log Judge#6 governance decision to Elasticsearch.
     """
     es.index(
-        index="judge6_decisions",
+        index="Claude_Code_6_decisions",
         body={
             "decision_id": decision["id"],
             "opord_number": decision["opord_num"],

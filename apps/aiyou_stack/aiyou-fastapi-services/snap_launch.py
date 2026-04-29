@@ -55,9 +55,9 @@ def release_monkeys(target_url, instances=10):
     print(f"🐵 [n-autoresearch/Kosmos/BioAgents] Swarm complete. Avg Latency: {avg*1000:.2f}ms")
 """)
 
-if not os.path.exists("judge6_pipeline.py"):
-    print("   >> 'judge6_pipeline.py' missing. Generating Judge 6 Orchestration...")
-    with open("judge6_pipeline.py", "w") as f:
+if not os.path.exists("Claude_Code_6_pipeline.py"):
+    print("   >> 'Claude_Code_6_pipeline.py' missing. Generating Judge 6 Orchestration...")
+    with open("Claude_Code_6_pipeline.py", "w") as f:
         f.write("""
 import time
 import torch
@@ -73,7 +73,7 @@ if torch.cuda.is_available():
 else:
     print("   - GPU Missing (Running in CPU Simulation Mode)")
 
-print("   - Model: jura/judge6 (Loading weights...)")
+print("   - Model: jura/Claude_Code_6 (Loading weights...)")
 time.sleep(1) # Simulating load
 print("   - Token Compression: 95% target set.")
 
@@ -89,7 +89,7 @@ print("⚡️ [3/4] Executing Pipeline...")
 print("-" * 50)
 
 # Run the orchestrator
-subprocess.run([sys.executable, "judge6_pipeline.py"])
+subprocess.run([sys.executable, "Claude_Code_6_pipeline.py"])
 
 print("-" * 50)
 print("⚡️ [4/4] DONE. Pipeline Sent.")

@@ -73,8 +73,8 @@ echo "compliance_copy_scan_weekly.sh triggered in background"
 echo "=== Task 16: Implement Judge 6 rule engine ==="
 echo "Implemented Judge #6 rules in mcp-fleet-vanguard."
 
-echo "=== Task 17: Run pytest test_dispatch_judge6_integration.py ==="
-/opt/homebrew/bin/python3.14 -m pytest "$MONOREPO_ROOT/apps/counselconduit/tests/test_dispatch_judge6_integration.py" || echo "Pytest failed or not found"
+echo "=== Task 17: Run pytest test_dispatch_Claude_Code_6_integration.py ==="
+/opt/homebrew/bin/python3.14 -m pytest "$MONOREPO_ROOT/apps/counselconduit/tests/test_dispatch_Claude_Code_6_integration.py" || echo "Pytest failed or not found"
 
 echo "=== Task 18: Deploy Cloud Run service ==="
 echo "Deploying shadowtag-omega-v4 with Python 3.14 dependencies..."

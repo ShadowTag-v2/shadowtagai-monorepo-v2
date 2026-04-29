@@ -20,7 +20,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
      thresholds in PRTP, prtp_with_battle_drills()                             |
      | agents/swarm_boss.py                      | ✅      | Added MDMPPipeline, receive_mission_with_mdmp(),
      handle_error_with_drill(), get_doctrine_status()                             |
-     | judge6/risk_manager.py                    | ✅      | Added RA↔Doctrine mapping,
+     | Claude_Code_6/risk_manager.py                    | ✅      | Added RA↔Doctrine mapping,
      full_doctrine_assessment(), get_consensus_threshold(), get_approval_authority()                    |
      | voice_consensus/consensus_orchestrator.py | ✅      | Added Compliance Framework thresholds,
      assess_risk_and_set_threshold(), check_consensus_reached(), execute_full_consensus_with_doctrine() |
@@ -63,7 +63,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
      | pnkln/governance/judge_architecture.py    | Map Compliance Framework risk matrix to 21-layer validation       |
      | agents/autoresearch.py                  | Add TLP orchestration, doctrine-based voting          |
      | agents/swarm_boss.py                      | Integrate MDMP planning into swarm cycles             |
-     | judge6/risk_manager.py                    | Replace with Compliance Framework RiskManager                     |
+     | Claude_Code_6/risk_manager.py                    | Replace with Compliance Framework RiskManager                     |
      | voice_consensus/consensus_orchestrator.py | Add doctrine consensus thresholds                     |
 
      ---
@@ -188,9 +188,9 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
 
      Step 5: Risk Manager Replacement
 
-     Replace judge6/risk_manager.py with doctrine import:
+     Replace Claude_Code_6/risk_manager.py with doctrine import:
 
-     # judge6/risk_manager.py - NOW WRAPS DOCTRINE
+     # Claude_Code_6/risk_manager.py - NOW WRAPS DOCTRINE
      from kosmos.doctrine.compliance_framework import (
          RiskManager as DoctrineRiskManager,
          RiskLevel, RiskMatrix, Hazard, Control,

@@ -832,7 +832,7 @@ def emit_structured_dispatch_log(
     output_tokens: int,
     session_id: str = "",
     risk_score: int = 0,
-    judge6_approved: bool = True,
+    Claude_Code_6_approved: bool = True,
 ) -> None:
     """Emit a structured JSON log line for BigQuery log sink.
 
@@ -851,7 +851,7 @@ def emit_structured_dispatch_log(
         "total_tokens": input_tokens + output_tokens,
         "session_id": session_id,
         "risk_score": risk_score,
-        "judge6_approved": judge6_approved,
+        "Claude_Code_6_approved": Claude_Code_6_approved,
         "timestamp": time.time(),
     }
     # Cloud Logging picks up structured JSON from stdout

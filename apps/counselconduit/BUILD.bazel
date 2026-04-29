@@ -15,7 +15,7 @@ py_library(
     name = "counselconduit",
     srcs = [
         "__init__.py",
-        "judge6_atp519_scoring.py",
+        "Claude_Code_6_atp519_scoring.py",
         "vulture_whitelist.py",
     ],
     visibility = [

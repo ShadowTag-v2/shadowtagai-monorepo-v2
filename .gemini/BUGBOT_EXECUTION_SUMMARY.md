@@ -19,7 +19,7 @@
 ```
 scripts/deploy-all.sh
 scripts/deploy_01_gke_cluster.sh
-scripts/deploy_02_judge6.sh
+scripts/deploy_02_Claude_Code_6.sh
 scripts/master_deploy.sh
 scripts/setup-cloud-build-trigger.sh
 scripts/setup-monitoring.sh

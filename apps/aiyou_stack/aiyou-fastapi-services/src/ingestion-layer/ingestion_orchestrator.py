@@ -15,7 +15,7 @@ KEY RESPONSIBILITIES:
 5. Deliver AM briefing to downstream services
 
 INTEGRATION:
-- CALLED BY: Services in 4 namespaces (judge6-system, analytics, etc.)
+- CALLED BY: Services in 4 namespaces (Claude_Code_6-system, analytics, etc.)
 - OUTPUTS TO: GCS bucket, BigQuery, AM briefing system
 
 QUALITY GATES:

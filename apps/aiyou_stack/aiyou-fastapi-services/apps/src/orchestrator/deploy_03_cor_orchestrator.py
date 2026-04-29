@@ -150,7 +150,7 @@ Return ONLY a JSON object with this exact structure:
   "steps": [
     {{
       "action": "call_service",
-      "service": "judge6-layer1",
+      "service": "Claude_Code_6-layer1",
       "method": "POST",
       "endpoint": "/infer",
       "payload": {{"key": "value"}},
@@ -380,7 +380,7 @@ def deploy_to_vertex_training(
     logger.info("Submitting job to Vertex AI...")
     job.run(
         sync=False,  # Run asynchronously
-        service_account=f"judge6@{project_id}.iam.gserviceaccount.com",
+        service_account=f"Claude_Code_6@{project_id}.iam.gserviceaccount.com",
     )
 
     logger.info(f"Job submitted: {job.resource_name}")
@@ -443,8 +443,8 @@ def main():
     job_name = deploy_to_vertex_training(
         project_id=project_id,
         location=location,
-        display_name="judge6-orchestrator-v1",
-        container_image_uri=f"gcr.io/{project_id}/judge6-orchestrator:latest",
+        display_name="Claude_Code_6-orchestrator-v1",
+        container_image_uri=f"gcr.io/{project_id}/Claude_Code_6-orchestrator:latest",
         machine_type="n1-standard-4",
         accelerator_type="NVIDIA_TESLA_T4",
         accelerator_count=1,

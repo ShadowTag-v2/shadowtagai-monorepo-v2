@@ -39,7 +39,7 @@ The **Wealth Strategist (Troop Delta)** maximizes the "Six Rounded Dimensions":
 | :-------------------- | :--------------------------------------------------------- | :------------------------------ |
 | **Core Seat Price**   | Move from Feature to **Platform**.                         | **$4,999/mo** (Enterprise Base) |
 | **The "Fear" Upsell** | Sell the "Compliance Feed" to Auditors.                    | **+$15k/yr** per client         |
-| **Burn Reduction**    | Pitch Judge6 as replacement for 2 Jr. Compliance Officers. | Client saves **$150k/yr**       |
+| **Burn Reduction**    | Pitch Claude_Code_6 as replacement for 2 Jr. Compliance Officers. | Client saves **$150k/yr**       |
 | **Insurance Wedge**   | Cyber Insurance Revenue Share.                             | **20% Rev Share** on premiums   |
 | **Valuation Uplift**  | Convert "Internal Tool" to "SaaS Revenue".                 | **+15% Multiplier** on Exit     |
 
@@ -92,7 +92,7 @@ Judge 6 continuously models 50+ risk scenarios.
 
 ## V. IMMEDIATE EXECUTION PLAN
 
-1.  **Code Crafting**: Refactor Judge6 codebase. Enforce "Boy Scout Rule". Simplify ruthlessly.
+1.  **Code Crafting**: Refactor Claude_Code_6 codebase. Enforce "Boy Scout Rule". Simplify ruthlessly.
 2.  **Sales Interface**: Build the Dashboard showing "Burn Rate Saved" to the customer.
 3.  **Infrastructure Lock**: Migrate to GKE Native. No Vertex Workbench.
 

@@ -1,12 +1,12 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
 # Copyright 2026 ShadowTag AI. All rights reserved.
-"""Tests for JTF Headquarters scaffolds and J-6 → Judge6 Bridge.
+"""Tests for JTF Headquarters scaffolds and J-6 → Claude_Code_6 Bridge.
 
 Tests cover:
 - JTF Staff Topology (JP 3-33)
 - J-Staff designation lookup
-- J-6 → Judge6 Bridge authorization
+- J-6 → Claude_Code_6 Bridge authorization
 - J-6 augmented validation results
 """
 
@@ -21,7 +21,7 @@ if _repo_root not in sys.path:
 import pytest
 
 from src.headquarters.jtf_staff_topology import JStaffDesignation, JTFHeadquarters
-from src.headquarters.j6_judge6_bridge import J6Judge6Bridge
+from src.headquarters.j6_Claude_Code_6_bridge import J6Claude_Code_6Bridge
 
 
 # ============================================================================
@@ -106,28 +106,28 @@ class TestJTFHeadquarters:
 
 
 # ============================================================================
-# J-6 → Judge6 Bridge Tests
+# J-6 → Claude_Code_6 Bridge Tests
 # ============================================================================
 
 
-class TestJ6Judge6Bridge:
-    """Tests for J-6 → Judge6 Bridge."""
+class TestJ6Claude_Code_6Bridge:
+    """Tests for J-6 → Claude_Code_6 Bridge."""
 
     def test_bridge_init(self):
         """Bridge initializes with correct J-6 designation."""
-        bridge = J6Judge6Bridge()
+        bridge = J6Claude_Code_6Bridge()
         assert bridge.authority_code == "J-6"
         assert bridge.designation.agent_role == "Judge 6.1"
 
     def test_designation_property(self):
         """Designation property returns JStaffDesignation."""
-        bridge = J6Judge6Bridge()
+        bridge = J6Claude_Code_6Bridge()
         assert isinstance(bridge.designation, JStaffDesignation)
 
     @pytest.mark.asyncio
     async def test_authorize_validation(self):
         """Authorization pre-flight grants access."""
-        bridge = J6Judge6Bridge()
+        bridge = J6Claude_Code_6Bridge()
         auth = await bridge.authorize_validation({"text": "test request"}, request_id="test_001")
         assert auth["authorized"] is True
         assert auth["authority"] == "J-6"
@@ -138,7 +138,7 @@ class TestJ6Judge6Bridge:
     @pytest.mark.asyncio
     async def test_authorize_includes_doctrine(self):
         """Authorization result includes doctrine mandate."""
-        bridge = J6Judge6Bridge()
+        bridge = J6Claude_Code_6Bridge()
         auth = await bridge.authorize_validation({"text": "check"})
         assert "CSRMC" in auth["doctrine"]
         assert auth["agent_role"] == "Judge 6.1"

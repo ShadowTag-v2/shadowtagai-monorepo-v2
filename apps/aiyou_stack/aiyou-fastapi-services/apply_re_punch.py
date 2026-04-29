@@ -364,7 +364,7 @@ except ImportError:
          def __init__(self, num_soldiers=650): pass
          def bottom_up_vote(self, intent, risk_level): return {"final_action": "A", "approval_rate": 1.0}
 
-logger = logging.getLogger("Judge6")
+logger = logging.getLogger("Claude_Code_6")
 
 class RiskTier(Enum):
     GREEN = "L (Auto-Approve)"

@@ -26,7 +26,7 @@ REPOS=(
   shadowtagai-v1
   shadowtag_v2
   kosmos
-  judge6
+  Claude_Code_6
   codepmcs
   antigravity-go
   pnkln

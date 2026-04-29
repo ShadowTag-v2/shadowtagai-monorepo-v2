@@ -28,7 +28,7 @@
 **Files**:
 
 ```
-judge6/
+Claude_Code_6/
 ├── main.py                        ✅ FastAPI app
 ├── core/
 │   ├── judge.py                  ✅ 3-layer orchestrator
@@ -126,7 +126,7 @@ Use templates from `CONSULTING_PLAYBOOK_WEEK1.md`:
 
 ### Priority 2: Set Up Stripe (15 min)
 
-Follow `judge6/STRIPE_SETUP.md`:
+Follow `Claude_Code_6/STRIPE_SETUP.md`:
 
 1. Create Stripe account: <https://dashboard.stripe.com/register>
 2. Get API keys: <https://dashboard.stripe.com/test/apikeys>
@@ -141,7 +141,7 @@ Follow `judge6/STRIPE_SETUP.md`:
 ### Priority 3: Test Judge 6 Locally (10 min)
 
 ```bash
-cd judge6
+cd Claude_Code_6
 
 # Edit .env (add your Gemini API key)
 cp .env.example .env
@@ -340,7 +340,7 @@ Production Kubernetes setup:
 
 - Stuck on an objection? → Check `CONSULTING_PLAYBOOK_WEEK1.md`
 - Need to adjust pricing? → Consult Revenue Acceleration Strategy
-- Technical issue? → Check `judge6/README.md` or `QUICKSTART.md`
+- Technical issue? → Check `Claude_Code_6/README.md` or `QUICKSTART.md`
 
 ### What I'm Building This Week
 
@@ -397,8 +397,8 @@ Let's go.
 
 1. `REVENUE_ACCELERATION_STRATEGY.md` - Overall 90-day plan
 2. `CONSULTING_PLAYBOOK_WEEK1.md` - Your outreach guide
-3. `judge6/STRIPE_SETUP.md` - 15-min Stripe setup
-4. `judge6/QUICKSTART.md` - Test Judge 6 locally
-5. `judge6/README.md` - Full technical docs
+3. `Claude_Code_6/STRIPE_SETUP.md` - 15-min Stripe setup
+4. `Claude_Code_6/QUICKSTART.md` - Test Judge 6 locally
+5. `Claude_Code_6/README.md` - Full technical docs
 
 **Questions?** I'm building the dashboard while you're selling. Stay focused.

@@ -5,7 +5,7 @@ SHADOWTAGAI MASTER THREAD COMPILATION – NOVEMBER 22, 2025
 ## Core Truth
 - Platform: ShadowTagAI (formerly pnkln / ShadowTag-v4)
 - Architecture: Native Gemini function-calling only — zero AutoGen, LangGraph, etc.
-- Governance kernel: ATP_519 → Judge6 → Audit (p99 ≤ 90 ms, $0.0003/decision)
+- Governance kernel: ATP_519 → Claude_Code_6 → Audit (p99 ≤ 90 ms, $0.0003/decision)
 - UNGPT router: localhost:8787 (Gemini/Claude/Groq/Ollama/Grok)
 - GCP: acquired-jet-478701-b3 | Autopilot cluster
 - PII scrubbed

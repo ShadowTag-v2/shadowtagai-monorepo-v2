@@ -26,7 +26,7 @@ The equation has been re-cocked. We have reinstated the atomic blocks and purged
 
 - **Path**: `src/antigravity/trinity_main.py`
 - **Purpose**: Orchestrates the Scholar (Analysis), Governor (Judgment), and Sovereign (Execution) loop.
-- **Refinement**: Switched from `Judge6Simplified` to the Unified `judge_unified` (Governor).
+- **Refinement**: Switched from `Claude_Code_6Simplified` to the Unified `judge_unified` (Governor).
 - **Status**: ✅ **COMPILED & IMPORTABLE**.
 
 ### 4. THE SCALPEL (Omega Deploy)
@@ -63,7 +63,7 @@ Source Brain: f6e572fc-3b8e-45ff-bbe5-7ba6ca9de593
 
 ## Audit Scope (Deep Sweep)
 - **14 brain artifacts** (~1,100 lines) — read cover-to-cover
-- **5 live code files** (~1,170 lines) — `judge6_core.py`, `silent_detector.py`, `omni_ipb_orchestration_vdr.py`, `workflows.py`, `activities.py`
+- **5 live code files** (~1,170 lines) — `Claude_Code_6_core.py`, `silent_detector.py`, `omni_ipb_orchestration_vdr.py`, `workflows.py`, `activities.py`
 - **82 legacy Strategic Intelligence docs** — scanned for missed concepts
 - **Sovereign Dynastic Architecture** — cross-referenced with current corporate structure
 - **ShadowTag DCT Silo** — 342 lines of canonical watermarking code
@@ -93,8 +93,8 @@ Source Brain: f6e572fc-3b8e-45ff-bbe5-7ba6ca9de593
 **Problem:** The legacy doc describes a **Liechtenstein Stiftung → Singapore VCC → Nevis/Cook Islands LLC** legal structure. The current business plan uses a **Panama PIF → Puerto Rico LLC** structure. These have **never been reconciled**. Both are valid but serve different purposes (one is dynastic IP protection, the other is operational tax arbitrage).
 **Recommendation:** The business plan should reference both: the Panama PIF for operational liability, and the Liechtenstein Stiftung for IP asset holding (the patents). This creates a double firewall.
 
-### Gap 13: `judge6_core.py` Missing NY S7263 and RAISE Act Violation Types
-**Source:** [judge6_core.py](file:///Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/src/governance/judge6_core.py) (Lines 60-92)
+### Gap 13: `Claude_Code_6_core.py` Missing NY S7263 and RAISE Act Violation Types
+**Source:** [Claude_Code_6_core.py](file:///Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/src/governance/Claude_Code_6_core.py) (Lines 60-92)
 **Problem:** The `ViolationType` enum is comprehensive for EU AI Act, GDPR, NIST, and COPPA/SB243. But it has **no violation type for NY S7263** (unauthorized practice of law/medicine) or the **March 2026 RAISE Act** ($3M/violation for frontier models). These are the two most valuable regulatory catalysts for our entire business thesis, yet the actual enforcement engine can't detect them.
 **Recommendation:** Add `LEGAL_NY_S7263_UNAUTHORIZED_PRACTICE` and `LEGAL_RAISE_ACT_FRONTIER_VIOLATION` to the enum and routing table.
 
@@ -109,15 +109,15 @@ Source Brain: f6e572fc-3b8e-45ff-bbe5-7ba6ca9de593
 
 Every atomic code block produced or discussed in this thread, reprinted:
 
-### Block 1: Judge 6 Core Engine — `judge6_core.py` (802 lines)
-[View full file](file:///Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/src/governance/judge6_core.py)
+### Block 1: Judge 6 Core Engine — `Claude_Code_6_core.py` (802 lines)
+[View full file](file:///Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/src/governance/Claude_Code_6_core.py)
 
 The canonical governance engine. Key components:
 - `ViolationType` enum: 22 violation categories across EU AI Act, GDPR, NIST, Cyber, Legal, and Operational domains
 - `ATPRiskMatrix`: Compliance Framework Table 1-1 probability × severity scoring
 - `VIOLATION_FRAMEWORK_MAP`: 22-entry routing table mapping violations to frameworks, base probabilities, severities, and enforcement floors
 - `EUAIActMitigation`, `GDPRMitigation`, `NISTMitigation`, `LegalMitigation`: 4 framework-specific mitigation modules with playbooks
-- `Judge6Engine.evaluate()`: Full Compliance Framework 5-step execution returning `GovernanceDecision` at p99 < 90ms
+- `Claude_Code_6Engine.evaluate()`: Full Compliance Framework 5-step execution returning `GovernanceDecision` at p99 < 90ms
 
 ### Block 2: Silent Detector — `silent_detector.py` (172 lines)
 [View full file](file:///Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/src/governance/silent_detector.py)
@@ -132,14 +132,14 @@ Passive signal collection layer. Key components:
 
 Private Equity VDR analysis pipeline. Key components:
 - `AtomicThread`: Deterministic state machine logging every step to the Confidential Ledger
-- `IPBVdrOrchestrator`: 4-step pipeline (Judge6 pre-check → NotebookLM ingestion → Sequential Attention queries → AG-UI firewall)
+- `IPBVdrOrchestrator`: 4-step pipeline (Claude_Code_6 pre-check → NotebookLM ingestion → Sequential Attention queries → AG-UI firewall)
 - Sequential Attention queries: Change of Control, indemnification carve-outs, litigation disclosures, working capital constraints
 
 ### Block 4: Temporal Workflow — `workflows.py` (47 lines)
 [View full file](file:///Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/src/temporal/workflows.py)
 
 Indestructible crash-proof orchestration. Key components:
-- `ArbitrageExecutionWorkflow`: 3-step Temporal workflow (Extract → Judge6 Validate → Pickle Protocol)
+- `ArbitrageExecutionWorkflow`: 3-step Temporal workflow (Extract → Claude_Code_6 Validate → Pickle Protocol)
 - If Python crashes mid-verification, Temporal resumes exact execution state
 
 ### Block 5: Temporal Activities — `activities.py` (31 lines)
@@ -147,7 +147,7 @@ Indestructible crash-proof orchestration. Key components:
 
 Atomic task wrappers:
 - `extract_wedge_payload()`: Swarm Router domain analysis
-- `submit_judge6_validation()`: Sentinel Gate wet-fleece verification
+- `submit_Claude_Code_6_validation()`: Sentinel Gate wet-fleece verification
 - `execute_pickle_protocol()`: The final irreversible execution
 
 ### Block 6: ShadowTag DCT Watermarking — Full Silo (342 lines)
@@ -173,7 +173,7 @@ Atomic task wrappers:
 | Work-Product Doctrine in Patent #1 | Blocks competitors from copying Privilege Portal |
 | RAISE Act in Executive Summary | Increases urgency for Q2 2026 enterprise sales |
 | Liechtenstein Stiftung for IP holding | Double firewall on patent portfolio |
-| NY S7263 in `judge6_core.py` | Makes the engine actually enforce our #1 selling point |
+| NY S7263 in `Claude_Code_6_core.py` | Makes the engine actually enforce our #1 selling point |
 
 **Total Recovered Enterprise Value:** +$1.0B - $2.0B minimum from the single DCT Hydra Head addition alone. The code-level gaps (13 & 14) are the most critical: without them, Judge 6 literally cannot enforce the regulations we're selling protection against.
 
@@ -393,7 +393,7 @@ The Uphill Snowball Monorepo has successfully transitioned to a 100% offline, ze
 ## 4. Environment & Security Remediation
 - **VS Code Recovery:** Purged stale `ShadowTag-v2` virtual environments from the global VS Code `settings.json` and linked variables dynamically via `${workspaceFolder}`.
 - **Lockfile Discipline:** A corrupted `.venv` was fully razed and cleanly rebuilt via `uv sync` to restore the Python extension's parsing cache.
-- **Cryptographic Gate:** Implemented `judge6_gating_valve.py` as an advanced security middleware.
+- **Cryptographic Gate:** Implemented `Claude_Code_6_gating_valve.py` as an advanced security middleware.
 - **Sovereign Closer:** Auth timeouts were defeated. Using the `ShadowTag-v2` PEM key and Client ID, the system synthesized a JWT, retrieved a GitHub installation token, and cemented the pivot directly to the `main` branch.
 
 ## 5. Local LLM Orchestration & Omni-Sweep
@@ -932,7 +932,7 @@ We didn't patch the error. We redesigned the bridge.
 The CopilotKit context requires specifically shaped metadata: models, tools, and strict validation structures. We injected an explicit `/info` override into the `judge-sentinel` backend to answer the frontend's probing immediately and correctly, bypassing the internal ADK validation loop when necessary to guarantee client-side rendering.
 
 ```python
-# filepath: apps/judge-sentinel/judge6_sentinel.py
+# filepath: apps/judge-sentinel/Claude_Code_6_sentinel.py
 # MANUAL OVERRIDE: Simulate ADK Handshake for CopilotKit React Core 1.51.x
 @app.post("/copilotkit_remote")
 async def copilotkit_remote(request: Request):
@@ -984,7 +984,7 @@ export async function POST(req: NextRequest) {
        console.log("CopilotKit Proxy: Requesting Info Protocol Sync");
     }
 
-    const response = await fetch(`${process.env.JUDGE6_API_URL}/copilotkit_remote`, {
+    const response = await fetch(`${process.env.CLAUDE_CODE_6_API_URL}/copilotkit_remote`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -1256,7 +1256,7 @@ The structural transition to **HeadFade** is complete. We established the `shado
 
 ### Phase 10: The RAG Evolution Engine
 *   Constructed `core/rag_evolve.py`, a pure-python semantic intelligence loop.
-*   Wired the LanceDB FTS5 knowledge base directly into `judge6.sh`. The RAG Gatekeeper now forcefully blocks pull requests that contradict DoD/NIST anti-patterns.
+*   Wired the LanceDB FTS5 knowledge base directly into `Claude_Code_6.sh`. The RAG Gatekeeper now forcefully blocks pull requests that contradict DoD/NIST anti-patterns.
 *   Implemented the Clean Room Copyright Shield via Abstractive Synthesis. The LLM is forced to paraphrase mathematical and architectural concepts, and is mathematically blocked from emitting >7 consecutive words from the source datasets to prevent liability exposure.
 
 ### Phase 11: External Ingestion (AlphaXiv & Market Scrapes)
@@ -1266,7 +1266,7 @@ The structural transition to **HeadFade** is complete. We established the `shado
 
 ### Phase 12: Kaggle GenAI Intensive Integration
 *   Cloned the official `kaggle-genai-intensive-course` repository into `data/github_archive`.
-*   **Utilization Vector**: By extracting the `.ipynb` and markdown files from this specific repository into the LanceDB/FTS5 layer as `architecture_pattern` class documents, the RAG Gatekeeper (`judge6.sh`) will adopt these Google-authored notebooks as the mathematical ground-truth. Ensure all subsequent pull requests querying the Gemini API conform identically to the patterns taught in these notebooks to avoid Gatekeeper rejection.
+*   **Utilization Vector**: By extracting the `.ipynb` and markdown files from this specific repository into the LanceDB/FTS5 layer as `architecture_pattern` class documents, the RAG Gatekeeper (`Claude_Code_6.sh`) will adopt these Google-authored notebooks as the mathematical ground-truth. Ensure all subsequent pull requests querying the Gemini API conform identically to the patterns taught in these notebooks to avoid Gatekeeper rejection.
 
 ### Phase 14: Master Architectural Assimilation
 *   Deployed the visual browser subagent to mechanically rip the text from 6 JavaScript-rendered SPAs (Google Cloud / Kaggle AI Agent Whitepapers).
@@ -1877,7 +1877,7 @@ This document outlines the finalized modifications and verified integrations res
 
 ## Codebase Upgrades Executed
 
-### 1. AI IQ Failsafe (`src/governance/judge6.py`)
+### 1. AI IQ Failsafe (`src/governance/Claude_Code_6.py`)
 
 - Refactored `apply_failsafe_throttle()` to return highly structured telemetry dictionaries rather than basic boolean flags.
 - **Onboarding Mode (Active):** Throttles down `max_tokens` (1024), drops `temperature` (0.2), and routes compute dynamically stringently via `gemini-3.1-flash-lite-preview` focusing aggressively on performance throughput.
@@ -2077,7 +2077,7 @@ Source Brain: 44f570f2-db1e-4e14-b147-c91af0e55865
 
 # Walkthrough: Sequential Strategic Execution (Option D)
 
-## 1. Cloud Run Deployment (Judge6 Governance)
+## 1. Cloud Run Deployment (Claude_Code_6 Governance)
 **Status:** ✅ Deployed (Traffic Routing Active)
 
 ### Actions Taken
@@ -2103,7 +2103,7 @@ Source Brain: 44f570f2-db1e-4e14-b147-c91af0e55865
 - **CLI Options:** Added `--transport` (`stdio`, `sse`) and `--port` arguments to `cli.ts`.
 
 ## Next Steps
-- Verify `judge6-governance` service endpoint manually via Cloud Console if needed.
+- Verify `Claude_Code_6-governance` service endpoint manually via Cloud Console if needed.
 - Connect MCP clients to the new SSE endpoint (`http://localhost:8080/sse`) to utilize multi-session capabilities.
 
 
@@ -2515,7 +2515,7 @@ The monolithic 600-agent `FlyingMonkeys` architecture has been successfully purg
 - **Legacy Obliteration**: Completely deleted the legacy entrypoints (`agents/flying_monkeys.py`, `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/bin/flyingmonkeys-server`, `fmshell`, and associated Cloud Build trigger manifests).
 - **Mass AST Refactor**: Executed a global search-and-replace operation utilizing an AST script across 150+ configuration files, `main.py` entrypoints, doctrine definitions, and documentation artifacts. All references to "FlyingMonkeys" and "flying-monkeys" have been transmuted to the `n-autoresearch/Kosmos/BioAgents` syntax.
 - **REST Pipeline Integration**:
-  - The core evolution loop (`core/pnkln-evolve.py`) no longer invokes local `scripts/judge6.sh`. It has been rewritten to make external HTTP requests to the `iii-hq` Orchestrator REST API (`/api/experiment/setup`, `/api/search/suggest`, `/api/experiment/complete`).
+  - The core evolution loop (`core/pnkln-evolve.py`) no longer invokes local `scripts/Claude_Code_6.sh`. It has been rewritten to make external HTTP requests to the `iii-hq` Orchestrator REST API (`/api/experiment/setup`, `/api/search/suggest`, `/api/experiment/complete`).
   - Switched execution to trigger the `uv run train.py` wrapper around the Rust GPU multi-worker logic.
   - Submodules (`Kosmos`, `BioAgents`, `n-autoresearch`) have been incorporated into the `deploy_kosmos_core.py` deployment script to ensure recursive packaging.
 

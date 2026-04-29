@@ -21,7 +21,7 @@ set -euo pipefail
 
 # Configuration
 export PROJECT_ID="${PROJECT_ID:-shadowtagai-core-stack}"
-export CLUSTER_NAME="${CLUSTER_NAME:-judge6-inference}"
+export CLUSTER_NAME="${CLUSTER_NAME:-Claude_Code_6-inference}"
 export REGION="${REGION:-us-central1}"
 export NETWORK="${NETWORK:-default}"
 export SUBNETWORK="${SUBNETWORK:-default}"
@@ -188,11 +188,11 @@ setup_cluster() {
   log_info "Setting up cluster namespaces and basic resources..."
 
   # Create namespaces
-  kubectl create namespace judge6-system --dry-run=client -o yaml | kubectl apply -f -
+  kubectl create namespace Claude_Code_6-system --dry-run=client -o yaml | kubectl apply -f -
   kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
 
   # Label namespaces
-  kubectl label namespace judge6-system name=judge6-system --overwrite
+  kubectl label namespace Claude_Code_6-system name=Claude_Code_6-system --overwrite
   kubectl label namespace monitoring name=monitoring --overwrite
 
   log_info "Cluster setup complete"
@@ -224,7 +224,7 @@ main() {
   log_info ""
   log_info "Next steps:"
   log_info "1. Build and push container images: ./scripts/master_deploy.sh build"
-  log_info "2. Deploy judge6 workloads: ./scripts/deploy_02_judge6.sh"
+  log_info "2. Deploy Claude_Code_6 workloads: ./scripts/deploy_02_Claude_Code_6.sh"
   log_info "3. Verify GPU nodes: kubectl get nodes -l accelerator=nvidia-l4"
   log_info ""
   log_info "Cluster info:"
