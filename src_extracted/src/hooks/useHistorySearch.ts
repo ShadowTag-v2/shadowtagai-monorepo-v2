@@ -269,7 +269,7 @@ export function useHistorySearch(
     return () => {
       controller.abort();
     };
-  }, [historyQuery]);
+  }, []);
 
   return {
     historyQuery,

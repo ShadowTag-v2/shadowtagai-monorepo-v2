@@ -1,6 +1,5 @@
 import type { ToolUseBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
 import type React from 'react';
-import { useMemo } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
 import type { ThemeName } from 'src/utils/theme.js';
@@ -287,7 +286,7 @@ export function AssistantToolUseMessage(t0) {
   }
   let t11;
   if ($[44] !== input_0.data || $[45] !== input_0.success || $[46] !== tool_0) {
-    t11 = input_0.success && tool_0.renderToolUseTag && tool_0.renderToolUseTag(input_0.data);
+    t11 = input_0.success && tool_0.renderToolUseTag?.(input_0.data);
     $[44] = input_0.data;
     $[45] = input_0.success;
     $[46] = tool_0;

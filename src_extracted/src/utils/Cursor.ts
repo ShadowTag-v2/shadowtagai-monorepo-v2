@@ -217,7 +217,7 @@ export class Cursor {
             // confirm they pasted the right thing without exposing the full token
             const visibleCount = Math.min(6, graphemes.length);
             const maskCount = graphemes.length - visibleCount;
-            const splitOffset = graphemes.length > visibleCount ? graphemes[maskCount]!.index : 0;
+            const splitOffset = graphemes.length > visibleCount ? graphemes[maskCount]?.index : 0;
             displayText = mask.repeat(maskCount) + text.slice(splitOffset);
           } else {
             // Earlier wrapped lines: fully mask. Previously only the last line
@@ -921,7 +921,7 @@ export class Cursor {
       /(^|\s)\[(Pasted text #\d+(?: \+\d+ lines)?|Image #\d+|\.\.\.Truncated text #\d+ \+\d+ lines\.\.\.)\]$/,
     );
     if (pasteMatch) {
-      const matchStart = pasteMatch.index! + pasteMatch[1]!.length;
+      const matchStart = pasteMatch.index! + pasteMatch[1]?.length;
       return new Cursor(this.measuredText, matchStart).modifyText(this);
     }
 

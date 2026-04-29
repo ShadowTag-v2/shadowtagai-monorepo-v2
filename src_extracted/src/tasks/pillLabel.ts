@@ -9,10 +9,10 @@ import type { BackgroundTaskState } from './types.js';
  */
 export function getPillLabel(tasks: BackgroundTaskState[]): string {
   const n = tasks.length;
-  const allSameType = tasks.every((t) => t.type === tasks[0]!.type);
+  const allSameType = tasks.every((t) => t.type === tasks[0]?.type);
 
   if (allSameType) {
-    switch (tasks[0]!.type) {
+    switch (tasks[0]?.type) {
       case 'local_bash': {
         const monitors = count(tasks, (t) => t.type === 'local_bash' && t.kind === 'monitor');
         const shells = n - monitors;

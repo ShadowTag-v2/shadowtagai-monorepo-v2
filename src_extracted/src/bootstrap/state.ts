@@ -1,12 +1,12 @@
+import { realpathSync } from 'node:fs';
+import { cwd } from 'node:process';
 import type { BetaMessageStreamParams } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
 import type { Attributes, Meter, MetricOptions } from '@opentelemetry/api';
 import type { logs } from '@opentelemetry/api-logs';
 import type { LoggerProvider } from '@opentelemetry/sdk-logs';
 import type { MeterProvider } from '@opentelemetry/sdk-metrics';
 import type { BasicTracerProvider } from '@opentelemetry/sdk-trace-base';
-import { realpathSync } from 'fs';
 import sumBy from 'lodash-es/sumBy.js';
-import { cwd } from 'process';
 import type { HookEvent, ModelUsage } from 'src/entrypoints/agentSdkTypes.js';
 import type { AgentColorName } from 'src/tools/AgentTool/agentColorManager.js';
 import type { HookCallbackMatcher } from 'src/types/hooks.js';
@@ -1061,11 +1061,15 @@ export function setSdkAgentProgressSummariesEnabled(value: boolean): void {
   STATE.sdkAgentProgressSummariesEnabled = value;
 }
 
-export function getCor.KairosActive(): boolean {
+export function getCor
+.KairosActive(): boolean
+{
   return STATE.kairosActive;
 }
 
-export function setCor.KairosActive(value: boolean): void {
+export function setCor
+.KairosActive(value: boolean): void
+{
   STATE.kairosActive = value;
 }
 
@@ -1387,7 +1391,7 @@ export function registerHookCallbacks(
     if (!STATE.registeredHooks[eventKey]) {
       STATE.registeredHooks[eventKey] = [];
     }
-    STATE.registeredHooks[eventKey]!.push(...matchers);
+    STATE.registeredHooks[eventKey]?.push(...matchers);
   }
 }
 

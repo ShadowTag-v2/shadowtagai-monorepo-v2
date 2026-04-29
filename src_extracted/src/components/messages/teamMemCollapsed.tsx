@@ -1,4 +1,3 @@
-import React from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { Text } from '../../ink.js';
 import type { CollapsedReadSearchGroup } from '../../types/message.js';
@@ -157,7 +156,7 @@ export function TeamMemCountParts(t0) {
       }
       nodes.push(t4);
     }
-    t1 = <>{nodes}</>;
+    t1 = nodes;
     $[0] = hasPrecedingParts;
     $[1] = isActiveGroup;
     $[2] = tmReadCount;

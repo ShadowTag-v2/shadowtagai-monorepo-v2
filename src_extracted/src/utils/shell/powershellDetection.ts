@@ -1,4 +1,4 @@
-import { realpath, stat } from 'fs/promises';
+import { realpath, stat } from 'node:fs/promises';
 import { getPlatform } from '../platform.js';
 import { which } from '../which.js';
 
@@ -90,8 +90,8 @@ export async function getPowerShellEdition(): Promise<PowerShellEdition | null> 
   //   C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
   const base = p
     .split(/[/\\]/)
-    .pop()!
-    .toLowerCase()
+    .pop()
+    ?.toLowerCase()
     .replace(/\.exe$/, '');
   return base === 'pwsh' ? 'core' : 'desktop';
 }

@@ -10,10 +10,10 @@
  */
 
 import { feature } from 'bun:bundle';
+import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { dirname } from 'node:path';
 import axios from 'axios';
-import { mkdir, readFile, stat, writeFile } from 'fs/promises';
 import pickBy from 'lodash-es/pickBy.js';
-import { dirname } from 'path';
 import { getIsInteractive } from '../../bootstrap/state.js';
 import {
   CLAUDE_AI_INFERENCE_SCOPE,
@@ -74,7 +74,7 @@ export async function uploadUserSettingsInBackground(): Promise<void> {
 
     const projectId = await getRepoRemoteHash();
     const localEntries = await buildEntriesFromLocalFiles(projectId);
-    const remoteEntries = result.isEmpty ? {} : result.data!.content.entries;
+    const remoteEntries = result.isEmpty ? {} : result.data?.content.entries;
     const changedEntries = pickBy(localEntries, (value, key) => remoteEntries[key] !== value);
 
     const entryCount = Object.keys(changedEntries).length;
@@ -165,7 +165,7 @@ async function doDownloadUserSettings(maxRetries = DEFAULT_MAX_RETRIES): Promise
         return false;
       }
 
-      const entries = result.data!.content.entries;
+      const entries = result.data?.content.entries;
       const projectId = await getRepoRemoteHash();
       const entryCount = Object.keys(entries).length;
       logForDiagnosticsNoPII('info', 'settings_sync_download_applying', {

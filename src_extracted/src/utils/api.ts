@@ -1,9 +1,9 @@
+import { createHash } from 'node:crypto';
 import type Anthropic from '@anthropic-ai/sdk';
 import type {
   BetaTool,
   BetaToolUnion,
 } from '@anthropic-ai/sdk/resources/beta/messages/messages.mjs';
-import { createHash } from 'crypto';
 import { SYSTEM_PROMPT_DYNAMIC_BOUNDARY } from 'src/constants/prompts.js';
 import { getSystemContext, getUserContext } from 'src/context.js';
 import { isAnalyticsDisabled } from 'src/services/analytics/config.js';
@@ -338,7 +338,7 @@ export function splitSysPromptPrefix(
   }
 
   if (useGlobalCacheFeature) {
-    const boundaryIndex = systemPrompt.findIndex((s) => s === SYSTEM_PROMPT_DYNAMIC_BOUNDARY);
+    const boundaryIndex = systemPrompt.indexOf(SYSTEM_PROMPT_DYNAMIC_BOUNDARY);
     if (boundaryIndex !== -1) {
       let attributionHeader: string | undefined;
       let systemPromptPrefix: string | undefined;
@@ -601,10 +601,10 @@ export function normalizeToolInput<T extends Tool>(
 
       // SAFETY: See comment in BashTool case above
       return {
-        replace_all: edits[0]!.replace_all,
+        replace_all: edits[0]?.replace_all,
         file_path,
-        old_string: edits[0]!.old_string,
-        new_string: edits[0]!.new_string,
+        old_string: edits[0]?.old_string,
+        new_string: edits[0]?.new_string,
       } as z.infer<T['inputSchema']>;
     }
     case FileWriteTool.name: {

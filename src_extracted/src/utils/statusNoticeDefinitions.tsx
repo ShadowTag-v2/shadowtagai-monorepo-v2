@@ -8,7 +8,7 @@ import {
 } from './claudemd.js';
 import figures from 'figures';
 import { getCwd } from './cwd.js';
-import { relative } from 'path';
+import { relative } from 'node:path';
 import { formatNumber } from './format.js';
 import type { getGlobalConfig } from './config.js';
 import {

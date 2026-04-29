@@ -1,10 +1,10 @@
 import { feature } from 'bun:bundle';
+import { randomUUID } from 'node:crypto';
 import type {
   Base64ImageSource,
   ContentBlockParam,
   ImageBlockParam,
 } from '@anthropic-ai/sdk/resources/messages.mjs';
-import { randomUUID } from 'crypto';
 import type { QuerySource } from 'src/constants/querySource.js';
 import { logEvent } from 'src/services/analytics/index.js';
 import { getContentText } from 'src/utils/messages.js';
@@ -390,7 +390,7 @@ async function processUserInputBase(
   // known-but-unsafe command (local-jsx UI or terminal-only), short-circuit
   // with a helpful message rather than letting the model see raw "/config".
   let effectiveSkipSlash = skipSlashCommands;
-  if (bridgeOrigin && inputString !== null && inputString.startsWith('/')) {
+  if (bridgeOrigin && inputString?.startsWith('/')) {
     const parsed = parseSlashCommand(inputString);
     const cmd = parsed ? findCommand(parsed.commandName, context.options.commands) : undefined;
     if (cmd) {

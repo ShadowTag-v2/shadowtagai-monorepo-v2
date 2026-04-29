@@ -1,7 +1,7 @@
+import { PassThrough } from 'node:stream';
 import type * as React from 'react';
 import { useLayoutEffect } from 'react';
 import { c as _c } from 'react/compiler-runtime';
-import { PassThrough } from 'stream';
 import stripAnsi from 'strip-ansi';
 import { render, useApp } from '../ink.js';
 
@@ -37,7 +37,7 @@ function RenderOnceAndExit(t0) {
   useLayoutEffect(t1, t2);
   let t3;
   if ($[3] !== children) {
-    t3 = <>{children}</>;
+    t3 = children;
     $[3] = children;
     $[4] = t3;
   } else {

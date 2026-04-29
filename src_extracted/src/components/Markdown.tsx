@@ -1,10 +1,10 @@
 import { marked, type Token, type Tokens } from 'marked';
 import type React from 'react';
-import { Suspense, use, useMemo, useRef } from 'react';
+import { Suspense, use, useRef } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { useSettings } from '../hooks/useSettings.js';
 import { Ansi, Box, useTheme } from '../ink.js';
-import { type CliHighlight, getCliHighlightPromise } from '../utils/cliHighlight.js';
+import { getCliHighlightPromise } from '../utils/cliHighlight.js';
 import { hashContent } from '../utils/hash.js';
 import { configureMarked, formatToken } from '../utils/markdown.js';
 import { stripPromptXMLTags } from '../utils/messages.js';
@@ -231,12 +231,12 @@ export function StreamingMarkdown({ children }: StreamingProps): React.ReactNode
 
   // Last non-space token is the growing block; everything before is final
   let lastContentIdx = tokens.length - 1;
-  while (lastContentIdx >= 0 && tokens[lastContentIdx]!.type === 'space') {
+  while (lastContentIdx >= 0 && tokens[lastContentIdx]?.type === 'space') {
     lastContentIdx--;
   }
   let advance = 0;
   for (let i = 0; i < lastContentIdx; i++) {
-    advance += tokens[i]!.raw.length;
+    advance += tokens[i]?.raw.length;
   }
   if (advance > 0) {
     stablePrefixRef.current = stripped.substring(0, boundary + advance);

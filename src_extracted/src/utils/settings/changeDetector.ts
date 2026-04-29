@@ -1,6 +1,6 @@
+import { stat } from 'node:fs/promises';
+import * as platformPath from 'node:path';
 import chokidar, { type FSWatcher } from 'chokidar';
-import { stat } from 'fs/promises';
-import * as platformPath from 'path';
 import { getIsRemoteMode } from '../../bootstrap/state.js';
 import { registerCleanup } from '../cleanupRegistry.js';
 import { logForDebugging } from '../debug.js';
@@ -198,7 +198,7 @@ async function getWatchTargets(): Promise<{
     if (!dirToSettingsFiles.has(dir)) {
       dirToSettingsFiles.set(dir, new Set());
     }
-    dirToSettingsFiles.get(dir)!.add(path);
+    dirToSettingsFiles.get(dir)?.add(path);
 
     // Check if file exists - only watch directories that have at least one existing file
     try {

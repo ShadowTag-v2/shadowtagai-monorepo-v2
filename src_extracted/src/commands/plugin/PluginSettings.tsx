@@ -1,6 +1,5 @@
 import figures from 'figures';
-import * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { ConfigurableShortcutHint } from '../../components/ConfigurableShortcutHint.js';
 import { Byline } from '../../components/design-system/Byline.js';
@@ -28,7 +27,7 @@ import { ManageMarketplaces } from './ManageMarketplaces.js';
 import { ManagePlugins } from './ManagePlugins.js';
 import { formatErrorMessage, getErrorGuidance } from './PluginErrors.js';
 import { type ParsedCommand, parsePluginArgs } from './parseArgs.js';
-import type { PluginSettingsProps, ViewState } from './types.js';
+import type { ViewState } from './types.js';
 import { ValidatePlugin } from './ValidatePlugin.js';
 
 type TabId = 'discover' | 'installed' | 'marketplaces' | 'errors';
@@ -838,7 +837,6 @@ function getInitialViewState(parsedCommand: ParsedCommand): ViewState {
       return {
         type: 'marketplace-menu',
       };
-    case 'menu':
     default:
       // Default to discover view showing all plugins
       return {

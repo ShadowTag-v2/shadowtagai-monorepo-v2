@@ -349,8 +349,8 @@ export const ToolSearchTool = buildTool({
     // is a harmless no-op that lets the model proceed without retry churn.
     const selectMatch = query.match(/^select:(.+)$/i);
     if (selectMatch) {
-      const requested = selectMatch[1]!
-        .split(',')
+      const requested = selectMatch[1]
+        ?.split(',')
         .map((s) => s.trim())
         .filter(Boolean);
 

@@ -1,8 +1,8 @@
 import { feature } from 'bun:bundle';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
 import type Anthropic from '@anthropic-ai/sdk';
 import type { BetaToolUnion } from '@anthropic-ai/sdk/resources/beta/messages.js';
-import { mkdir, writeFile } from 'fs/promises';
-import { dirname, join } from 'path';
 import { z } from 'zod/v4';
 import {
   getCachedClaudeMdContent,
@@ -385,14 +385,14 @@ function toCompactBlock(
     }
     if (encoded === '') return '';
     if (isJsonlTranscriptEnabled()) {
-      return jsonStringify({ [block.name]: encoded }) + '\n';
+      return `${jsonStringify({ [block.name]: encoded })}\n`;
     }
     const s = typeof encoded === 'string' ? encoded : jsonStringify(encoded);
     return `${block.name} ${s}\n`;
   }
   if (block.type === 'text' && role === 'user') {
     return isJsonlTranscriptEnabled()
-      ? jsonStringify({ user: block.text }) + '\n'
+      ? `${jsonStringify({ user: block.text })}\n`
       : `User: ${block.text}\n`;
   }
   return '';
@@ -540,7 +540,7 @@ function stripThinking(text: string): string {
 function parseXmlBlock(text: string): boolean | null {
   const matches = [...stripThinking(text).matchAll(/<block>(yes|no)\b(<\/block>)?/gi)];
   if (matches.length === 0) return null;
-  return matches[0]![1]!.toLowerCase() === 'yes';
+  return matches[0]?.[1]?.toLowerCase() === 'yes';
 }
 
 /**
@@ -550,7 +550,7 @@ function parseXmlBlock(text: string): boolean | null {
 function parseXmlReason(text: string): string | null {
   const matches = [...stripThinking(text).matchAll(/<reason>([\s\S]*?)<\/reason>/g)];
   if (matches.length === 0) return null;
-  return matches[0]![1]!.trim();
+  return matches[0]?.[1]?.trim();
 }
 
 /**
@@ -558,7 +558,7 @@ function parseXmlReason(text: string): string | null {
  */
 function parseXmlThinking(text: string): string | null {
   const match = /<thinking>([\s\S]*?)<\/thinking>/.exec(text);
-  return match ? match[1]!.trim() : null;
+  return match ? match[1]?.trim() : null;
 }
 
 /**
@@ -1005,7 +1005,7 @@ export async function classifyYoloAction(
     );
     logForDebugging(
       `[auto-mode] new action being classified: ` +
-        `${actionCompact.length > 500 ? actionCompact.slice(0, 500) + '…' : actionCompact}`,
+        `${actionCompact.length > 500 ? `${actionCompact.slice(0, 500)}…` : actionCompact}`,
     );
   }
 

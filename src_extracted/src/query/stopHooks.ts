@@ -110,8 +110,8 @@ export async function* handleStopHooks(
     const turnAssistantMessages = stopHookContext.messages.filter(
       (m): m is AssistantMessage => m.type === 'assistant',
     );
-    const p = jobClassifierModule!
-      .classifyAndWriteState(process.env.CLAUDE_JOB_DIR, turnAssistantMessages)
+    const p = jobClassifierModule
+      ?.classifyAndWriteState(process.env.CLAUDE_JOB_DIR, turnAssistantMessages)
       .catch((err) => {
         logForDebugging(`[job] classifier error: ${errorMessage(err)}`, {
           level: 'error',
@@ -135,7 +135,7 @@ export async function* handleStopHooks(
       // Fire-and-forget in both interactive and non-interactive. For -p/SDK,
       // print.ts drains the in-flight promise after flushing the response
       // but before gracefulShutdownSync (see drainPendingExtraction).
-      void extractMemoriesModule!.executeExtractMemories(
+      void extractMemoriesModule?.executeExtractMemories(
         stopHookContext,
         toolUseContext.appendSystemMessage,
       );
@@ -216,10 +216,7 @@ export async function* handleStopHooks(
               hasOutput = true;
             } else if (attachment.type === 'hook_success') {
               // Check if successful hook produced any stdout/stderr
-              if (
-                (attachment.stdout && attachment.stdout.trim()) ||
-                (attachment.stderr && attachment.stderr.trim())
-              ) {
+              if (attachment.stdout?.trim() || attachment.stderr?.trim()) {
                 hasOutput = true;
               }
             }

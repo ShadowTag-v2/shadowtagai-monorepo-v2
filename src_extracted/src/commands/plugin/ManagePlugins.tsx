@@ -1,7 +1,7 @@
+import type { Dirent } from 'node:fs';
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
 import figures from 'figures';
-import type { Dirent } from 'fs';
-import * as fs from 'fs/promises';
-import * as path from 'path';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ConfigurableShortcutHint } from '../../components/ConfigurableShortcutHint.js';
@@ -614,7 +614,7 @@ export function ManagePlugins({
         type: 'menu',
       });
     }
-  }, [viewState, setParentViewState, pendingToggles, setResult]);
+  }, [viewState, setParentViewState, pendingToggles, setResult, onManageComplete]);
 
   // Escape when not in search mode - go back.
   // Excludes confirm-project-uninstall (has its own confirm:no handler in
@@ -796,7 +796,7 @@ export function ManagePlugins({
       if (!itemsByScope.has(scope_0)) {
         itemsByScope.set(scope_0, []);
       }
-      itemsByScope.get(scope_0)!.push(item_1);
+      itemsByScope.get(scope_0)?.push(item_1);
       // Add child MCPs right after the plugin, indented (use original scope, not 'flagged').
       // Built-in plugins map to 'user' for display since MCP ConfigScope doesn't include 'builtin'.
       for (const { displayName, client: client_2 } of childMcps) {
@@ -804,7 +804,7 @@ export function ManagePlugins({
         if (!itemsByScope.has(displayScope)) {
           itemsByScope.set(displayScope, []);
         }
-        itemsByScope.get(displayScope)!.push({
+        itemsByScope.get(displayScope)?.push({
           type: 'mcp',
           id: `mcp:${client_2.name}`,
           name: displayName,
@@ -823,7 +823,7 @@ export function ManagePlugins({
       if (!itemsByScope.has(scope_1)) {
         itemsByScope.set(scope_1, []);
       }
-      itemsByScope.get(scope_1)!.push(mcp);
+      itemsByScope.get(scope_1)?.push(mcp);
     }
 
     // Add failed plugins to their respective scope groups
@@ -832,7 +832,7 @@ export function ManagePlugins({
       if (!itemsByScope.has(scope_2)) {
         itemsByScope.set(scope_2, []);
       }
-      itemsByScope.get(scope_2)!.push(failedPlugin);
+      itemsByScope.get(scope_2)?.push(failedPlugin);
     }
 
     // Add flagged (delisted) plugins from user settings.
@@ -844,7 +844,7 @@ export function ManagePlugins({
       if (!itemsByScope.has('flagged')) {
         itemsByScope.set('flagged', []);
       }
-      itemsByScope.get('flagged')!.push({
+      itemsByScope.get('flagged')?.push({
         type: 'flagged-plugin',
         id: pluginId_1,
         name: pluginName_1,
@@ -897,7 +897,7 @@ export function ManagePlugins({
       }
 
       // Sort plugin groups by the plugin name (first item in each group)
-      pluginGroups.sort((a_0, b_0) => a_0[0]!.name.localeCompare(b_0[0]!.name));
+      pluginGroups.sort((a_0, b_0) => a_0[0]?.name.localeCompare(b_0[0]?.name));
 
       // Sort standalone MCPs by name
       standaloneMcpsInScope.sort((a_1, b_1) => a_1.name.localeCompare(b_1.name));
@@ -909,7 +909,7 @@ export function ManagePlugins({
       unified.push(...standaloneMcpsInScope);
     }
     return unified;
-  }, [pluginStates, mcpClients, pluginErrors, pendingToggles, flaggedPlugins]);
+  }, [pluginStates, mcpClients, pluginErrors, pendingToggles, flaggedPlugins, getMcpStatus]);
 
   // Mark flagged plugins as seen when the Installed view renders them.
   // After 48 hours from seenAt, they auto-clear on next load.
@@ -964,7 +964,7 @@ export function ManagePlugins({
     }
     async function detectMcpb() {
       // Check plugin manifest first
-      const mcpServersSpec = selectedPlugin!.plugin.manifest.mcpServers;
+      const mcpServersSpec = selectedPlugin?.plugin.manifest.mcpServers;
       let hasMcpb = false;
       if (mcpServersSpec) {
         hasMcpb =
@@ -977,7 +977,7 @@ export function ManagePlugins({
       // This works even with old cached marketplaces from before MCPB support
       if (!hasMcpb) {
         try {
-          const marketplaceDir = path.join(selectedPlugin!.plugin.path, '..');
+          const marketplaceDir = path.join(selectedPlugin?.plugin.path, '..');
           const marketplaceJsonPath = path.join(
             marketplaceDir,
             '.claude-plugin',
@@ -986,7 +986,7 @@ export function ManagePlugins({
           const content = await fs.readFile(marketplaceJsonPath, 'utf-8');
           const marketplace_1 = jsonParse(content);
           const entry_0 = marketplace_1.plugins?.find(
-            (p: { name: string }) => p.name === selectedPlugin!.plugin.name,
+            (p: { name: string }) => p.name === selectedPlugin?.plugin.name,
           );
           if (entry_0?.mcpServers) {
             const spec = entry_0.mcpServers;
@@ -1021,7 +1021,7 @@ export function ManagePlugins({
           if (!pluginsByMarketplace[marketplace]) {
             pluginsByMarketplace[marketplace] = [];
           }
-          pluginsByMarketplace[marketplace]!.push(plugin);
+          pluginsByMarketplace[marketplace]?.push(plugin);
         }
 
         // Create marketplace info array with enabled/disabled counts
@@ -1364,7 +1364,7 @@ export function ManagePlugins({
     } else if (item_7?.type === 'mcp') {
       void toggleMcpServer(item_7.client.name);
     }
-  }, [selectedIndex, filteredItems, pendingToggles, pluginStates, toggleMcpServer]);
+  }, [selectedIndex, filteredItems, pendingToggles, toggleMcpServer]);
 
   // Handle accept (Enter) in plugin-list
   const handleAccept = React.useCallback(() => {
@@ -1610,7 +1610,7 @@ export function ManagePlugins({
       },
     });
     return menuItems;
-  }, [viewState, selectedPlugin, selectedPluginHasMcpb, pluginStates]);
+  }, [viewState, selectedPlugin, selectedPluginHasMcpb, pluginStates, handleSingleOperation]);
 
   // Plugin-details navigation
   useKeybindings(
@@ -1627,7 +1627,7 @@ export function ManagePlugins({
       },
       'select:accept': () => {
         if (detailsMenuItems[detailsMenuIndex]) {
-          detailsMenuItems[detailsMenuIndex]!.action();
+          detailsMenuItems[detailsMenuIndex]?.action();
         }
       },
     },
@@ -1803,7 +1803,7 @@ export function ManagePlugins({
   // Reset selection when search query changes
   React.useEffect(() => {
     setSelectedIndex(0);
-  }, [searchQuery]);
+  }, []);
 
   // Handle input for entering search mode (text input handled by useSearchInput hook)
   // eslint-disable-next-line custom-rules/prefer-use-keybindings -- useInput needed for raw search mode text input

@@ -1,8 +1,8 @@
+import { randomUUID } from 'node:crypto';
 import type { AnyValueMap, Logger, logs } from '@opentelemetry/api-logs';
 import { resourceFromAttributes } from '@opentelemetry/resources';
 import { BatchLogRecordProcessor, LoggerProvider } from '@opentelemetry/sdk-logs';
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
-import { randomUUID } from 'crypto';
 import { isEqual } from 'lodash-es';
 import { getOrCreateUserID } from '../../utils/config.js';
 import { logForDebugging } from '../../utils/debug.js';
@@ -312,7 +312,10 @@ export function initialize1PEventLogging(): void {
 
   const scheduledDelayMillis =
     batchConfig.scheduledDelayMillis ||
-    parseInt(process.env.OTEL_LOGS_EXPORT_INTERVAL || DEFAULT_LOGS_EXPORT_INTERVAL_MS.toString());
+    parseInt(
+      process.env.OTEL_LOGS_EXPORT_INTERVAL || DEFAULT_LOGS_EXPORT_INTERVAL_MS.toString(),
+      10,
+    );
 
   const maxExportBatchSize = batchConfig.maxExportBatchSize || DEFAULT_MAX_EXPORT_BATCH_SIZE;
 

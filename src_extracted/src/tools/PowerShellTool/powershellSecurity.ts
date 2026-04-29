@@ -88,7 +88,7 @@ function psExeHasParamAbbreviation(
   const normalized: ParsedCommandElement = {
     ...cmd,
     args: cmd.args.map((a) =>
-      a.length > 0 && PS_ALT_PARAM_PREFIXES.has(a[0]!) ? '-' + a.slice(1) : a,
+      a.length > 0 && PS_ALT_PARAM_PREFIXES.has(a[0]!) ? `-${a.slice(1)}` : a,
     ),
   };
   return commandHasArgAbbreviation(normalized, fullParam, minPrefix);
@@ -551,7 +551,7 @@ function checkStartProcess(parsed: ParsedPowerShellCommand): PowerShellSecurityR
     if (cmd.children) {
       for (let i = 0; i < cmd.args.length; i++) {
         // Strip backticks before matching param name (bug #14): -V`erb:RunAs
-        const argClean = cmd.args[i]!.replace(/`/g, '');
+        const argClean = cmd.args[i]?.replace(/`/g, '');
         if (!/^[-\u2013\u2014\u2015/]v[a-z]*:/i.test(argClean)) continue;
         const kids = cmd.children[i];
         if (!kids) continue;

@@ -1,6 +1,6 @@
+import { PassThrough } from 'node:stream';
+import { URL } from 'node:url';
 import type { StdoutMessage } from 'src/entrypoints/sdk/controlTypes.js';
-import { PassThrough } from 'stream';
-import { URL } from 'url';
 import { getSessionId } from '../bootstrap/state.js';
 import { getPollIntervalConfig } from '../bridge/pollConfig.js';
 import { registerCleanup } from '../utils/cleanupRegistry.js';
@@ -52,7 +52,7 @@ export class RemoteIO extends StructuredIO {
     const headers: Record<string, string> = {};
     const sessionToken = getSessionIngressAuthToken();
     if (sessionToken) {
-      headers['Authorization'] = `Bearer ${sessionToken}`;
+      headers.Authorization = `Bearer ${sessionToken}`;
     } else {
       logForDebugging('[remote-io] No session ingress token available', {
         level: 'error',
@@ -72,7 +72,7 @@ export class RemoteIO extends StructuredIO {
       const h: Record<string, string> = {};
       const freshToken = getSessionIngressAuthToken();
       if (freshToken) {
-        h['Authorization'] = `Bearer ${freshToken}`;
+        h.Authorization = `Bearer ${freshToken}`;
       }
       const freshErVersion = process.env.CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION;
       if (freshErVersion) {
@@ -90,7 +90,7 @@ export class RemoteIO extends StructuredIO {
     this.transport.setOnData((data: string) => {
       this.inputStream.write(data);
       if (this.isBridge && this.isDebug) {
-        writeToStdout(data.endsWith('\n') ? data : data + '\n');
+        writeToStdout(data.endsWith('\n') ? data : `${data}\n`);
       }
     });
 
@@ -129,15 +129,15 @@ export class RemoteIO extends StructuredIO {
       // When set, sessionStorage writes transcript messages as CCR v2
       // internal events instead of v1 Session Ingress.
       setInternalEventWriter((eventType, payload, options) =>
-        this.ccrClient!.writeInternalEvent(eventType, payload, options),
+        this.ccrClient?.writeInternalEvent(eventType, payload, options),
       );
 
       // Register internal event readers for session resume.
       // When set, hydrateFromCCRv2InternalEvents() can fetch foreground
       // and subagent internal events to reconstruct conversation state.
       setInternalEventReader(
-        () => this.ccrClient!.readInternalEvents(),
-        () => this.ccrClient!.readSubagentInternalEvents(),
+        () => this.ccrClient?.readInternalEvents(),
+        () => this.ccrClient?.readSubagentInternalEvents(),
       );
 
       const LIFECYCLE_TO_DELIVERY = {
@@ -193,7 +193,7 @@ export class RemoteIO extends StructuredIO {
       const stream = this.inputStream;
       void (async () => {
         for await (const chunk of initialPrompt) {
-          stream.write(String(chunk).replace(/\n$/, '') + '\n');
+          stream.write(`${String(chunk).replace(/\n$/, '')}\n`);
         }
       })();
     }
@@ -221,7 +221,7 @@ export class RemoteIO extends StructuredIO {
     }
     if (this.isBridge) {
       if (message.type === 'control_request' || this.isDebug) {
-        writeToStdout(ndjsonSafeStringify(message) + '\n');
+        writeToStdout(`${ndjsonSafeStringify(message)}\n`);
       }
     }
   }

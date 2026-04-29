@@ -3,7 +3,7 @@
  * for case-insensitive cmdlet matching.
  */
 
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 import type { ToolPermissionContext, ToolUseContext } from '../../Tool.js';
 import type { PermissionDecisionReason, PermissionResult } from '../../types/permissions.js';
 import { getCwd } from '../../utils/cwd.js';
@@ -224,7 +224,7 @@ function filterRulesByContentsMatchingInput(
                 if (strEquals(cmd, rule.prefix)) {
                   return true;
                 }
-                return strStartsWith(cmd, rule.prefix + ' ');
+                return strStartsWith(cmd, `${rule.prefix} `);
               }
             }
             break;
@@ -282,7 +282,7 @@ function filterRulesByContentsMatchingInput(
           } else {
             if (
               strEquals(canonicalCommand, canonicalPrefix) ||
-              strStartsWith(canonicalCommand, canonicalPrefix + ' ')
+              strStartsWith(canonicalCommand, `${canonicalPrefix} `)
             ) {
               return true;
             }

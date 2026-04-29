@@ -254,11 +254,11 @@ function extractSectionName(content: string): string {
   // Try to find first markdown heading
   const headingMatch = content.match(/^#+\s+(.+)$/m);
   if (headingMatch) {
-    return headingMatch[1]!.trim();
+    return headingMatch[1]?.trim();
   }
   // Fall back to a truncated preview of the first non-empty line
   const firstLine = content.split('\n').find((l) => l.trim().length > 0) ?? '';
-  return firstLine.length > 40 ? firstLine.slice(0, 40) + '…' : firstLine;
+  return firstLine.length > 40 ? `${firstLine.slice(0, 40)}…` : firstLine;
 }
 
 async function countSystemTokens(effectiveSystemPrompt: readonly string[]): Promise<{

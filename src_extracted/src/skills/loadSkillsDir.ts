@@ -1,7 +1,7 @@
-import { realpath } from 'fs/promises';
+import { realpath } from 'node:fs/promises';
+import { basename, dirname, isAbsolute, join, sep as pathSep, relative } from 'node:path';
 import ignore from 'ignore';
 import memoize from 'lodash-es/memoize.js';
-import { basename, dirname, isAbsolute, join, sep as pathSep, relative } from 'path';
 import { getAdditionalDirectoriesForClaudeMd, getSessionId } from '../bootstrap/state.js';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -199,7 +199,7 @@ export function parseSkillFrontmatterFields(
         ? parseUserSpecifiedModel(frontmatter.model as string)
         : undefined;
 
-  const effortRaw = frontmatter['effort'];
+  const effortRaw = frontmatter.effort;
   const effort = effortRaw !== undefined ? parseEffortValue(effortRaw) : undefined;
   if (effortRaw !== undefined && effort === undefined) {
     logForDebugging(

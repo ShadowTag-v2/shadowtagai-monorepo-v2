@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { stringWidth } from '../../ink/stringWidth.js';
 import { Text, useTheme } from '../../ink.js';

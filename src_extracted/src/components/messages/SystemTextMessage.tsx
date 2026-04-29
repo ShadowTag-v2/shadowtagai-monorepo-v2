@@ -1,13 +1,12 @@
 import { feature } from 'bun:bundle';
+import { basename } from 'node:path';
 import figures from 'figures';
 import sample from 'lodash-es/sample.js';
-import { basename } from 'path';
-import * as React from 'react';
 import { useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { BLACK_CIRCLE, REFERENCE_MARK, TEARDROP_ASTERISK } from '../../constants/figures.js';
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
-import { Box, Text, type TextProps } from '../../ink.js';
+import { Box, Text } from '../../ink.js';
 import { openPath } from '../../utils/browser.js';
 import { FilePathLink } from '../FilePathLink.js';
 import { MessageResponse } from '../MessageResponse.js';
@@ -24,14 +23,7 @@ import Link from '../../ink/components/Link.js';
 import { useAppStateStore } from '../../state/AppState.js';
 import { getPillLabel } from '../../tasks/pillLabel.js';
 import { isBackgroundTask, type TaskState } from '../../tasks/types.js';
-import type {
-  SystemBridgeStatusMessage,
-  SystemMemorySavedMessage,
-  SystemMessage,
-  SystemStopHookSummaryMessage,
-  SystemThinkingMessage,
-  SystemTurnDurationMessage,
-} from '../../types/message.js';
+import type { SystemMessage } from '../../types/message.js';
 import { getGlobalConfig } from '../../utils/config.js';
 import { formatDuration, formatNumber, formatSecondsShort } from '../../utils/format.js';
 import { CtrlOToExpand } from '../CtrlOToExpand.js';
@@ -889,7 +881,7 @@ function MemoryFileRow(t0) {
   }
   return t8;
 }
-function ThinkingMessage(t0) {
+function _ThinkingMessage(t0) {
   const $ = _c(7);
   const { message, addMargin } = t0;
   const bg = useSelectedMessageBg();

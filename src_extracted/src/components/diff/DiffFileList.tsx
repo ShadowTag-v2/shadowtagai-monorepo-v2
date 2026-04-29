@@ -1,5 +1,4 @@
 import figures from 'figures';
-import React, { useMemo } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import type { DiffFile } from '../../hooks/useDiffData.js';
 import { useTerminalSize } from '../../hooks/useTerminalSize.js';
@@ -189,7 +188,7 @@ function FileItem(t0) {
     t1 = $[2];
   }
   const displayPath = t1;
-  const pointer = isSelected ? figures.pointer + ' ' : '  ';
+  const pointer = isSelected ? `${figures.pointer} ` : '  ';
   const line = `${pointer}${displayPath}`;
   const t2 = isSelected ? 'background' : undefined;
   let t3;

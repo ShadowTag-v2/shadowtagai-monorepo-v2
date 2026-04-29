@@ -596,7 +596,7 @@ export function useVoice({
     return () => {
       cancelled = true;
     };
-  }, [enabled, focusMode, isFocused]);
+  }, [enabled, focusMode, isFocused, armFocusSilenceTimer, finishRecording, startRecordingSession]);
 
   // ── Start a new recording session (voice_stream connect + audio) ──
   async function startRecordingSession(): Promise<void> {
@@ -786,7 +786,7 @@ export function useVoice({
               // Show accumulated finals + current interim as live preview
               const interim = text.trim();
               const preview = accumulatedRef.current
-                ? accumulatedRef.current + (interim ? ' ' + interim : '')
+                ? accumulatedRef.current + (interim ? ` ${interim}` : '')
                 : interim;
               setVoiceState((prev) => {
                 if (prev.voiceInterimTranscript === preview) return prev;
@@ -884,7 +884,7 @@ export function useVoice({
                   slices.push([]);
                   sliceBytes = 0;
                 }
-                slices[slices.length - 1]!.push(chunk);
+                slices[slices.length - 1]?.push(chunk);
                 sliceBytes += chunk.length;
               }
               logForDebugging(
@@ -1054,7 +1054,7 @@ export function useVoice({
         );
       }
     },
-    [enabled, focusMode, cleanup],
+    [enabled, focusMode, startRecordingSession, finishRecording, armFocusSilenceTimer],
   );
 
   // Cleanup only when disabled or unmounted - NOT on state changes
@@ -1066,7 +1066,7 @@ export function useVoice({
     return () => {
       cleanup();
     };
-  }, [enabled, cleanup]);
+  }, [enabled, cleanup, updateState]);
 
   return {
     state,

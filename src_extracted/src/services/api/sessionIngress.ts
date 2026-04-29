@@ -1,5 +1,5 @@
+import type { UUID } from 'node:crypto';
 import axios, { type AxiosError } from 'axios';
-import type { UUID } from 'crypto';
 import { getOauthConfig } from '../../constants/oauth.js';
 import type { Entry, TranscriptMessage } from '../../types/logs.js';
 import { logForDebugging } from '../../utils/debug.js';
@@ -109,7 +109,7 @@ async function appendSessionLogImpl(
           if (adoptedUuid) {
             lastUuidMap.set(sessionId, adoptedUuid);
             logForDebugging(
-              `Session 409: re-fetched ${logs!.length} entries, adopting lastUuid=${adoptedUuid}, retrying entry ${entry.uuid}`,
+              `Session 409: re-fetched ${logs?.length} entries, adopting lastUuid=${adoptedUuid}, retrying entry ${entry.uuid}`,
             );
           } else {
             // Can't determine server state — give up

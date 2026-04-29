@@ -1,5 +1,4 @@
 import figures from 'figures';
-import React from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { GITHUB_ACTION_SETUP_DOCS_URL } from '../../constants/github-app.js';
 import { Box, Text } from '../../ink.js';
@@ -73,14 +72,12 @@ export function WarningsStep(t0) {
   let t6;
   if ($[6] !== t3) {
     t6 = (
-      <>
-        <Box flexDirection="column" borderStyle="round" paddingX={1}>
-          {t2}
-          {t3}
-          {t4}
-          {t5}
-        </Box>
-      </>
+      <Box flexDirection="column" borderStyle="round" paddingX={1}>
+        {t2}
+        {t3}
+        {t4}
+        {t5}
+      </Box>
     );
     $[6] = t3;
     $[7] = t6;

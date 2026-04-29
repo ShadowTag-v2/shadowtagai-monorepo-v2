@@ -24,10 +24,10 @@
  *   This avoids module-level mutable state and gives tests natural isolation.
  */
 
+import { createHash } from 'node:crypto';
+import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { join, relative, sep } from 'node:path';
 import axios from 'axios';
-import { createHash } from 'crypto';
-import { mkdir, readdir, readFile, stat, writeFile } from 'fs/promises';
-import { join, relative, sep } from 'path';
 import {
   CLAUDE_AI_INFERENCE_SCOPE,
   CLAUDE_AI_PROFILE_SCOPE,
@@ -126,7 +126,7 @@ export function createSyncState(): SyncState {
  * so local-vs-server comparison works by direct string equality.
  */
 export function hashContent(content: string): string {
-  return 'sha256:' + createHash('sha256').update(content, 'utf8').digest('hex');
+  return `sha256:${createHash('sha256').update(content, 'utf8').digest('hex')}`;
 }
 
 /**
@@ -238,7 +238,7 @@ async function fetchTeamMemoryOnce(
 
     // Extract checksum from response data or ETag header
     const responseChecksum =
-      parsed.data.checksum || response.headers['etag']?.replace(/^"|"$/g, '') || undefined;
+      parsed.data.checksum || response.headers.etag?.replace(/^"|"$/g, '') || undefined;
     if (responseChecksum) {
       state.lastKnownChecksum = responseChecksum;
     }
@@ -311,7 +311,7 @@ async function fetchTeamMemoryHashes(
       return { success: false, error: auth.error, errorType: 'auth' };
     }
 
-    const endpoint = getTeamMemorySyncEndpoint(repoSlug) + '&view=hashes';
+    const endpoint = `${getTeamMemorySyncEndpoint(repoSlug)}&view=hashes`;
     const response = await axios.get(endpoint, {
       headers: auth.headers,
       timeout: TEAM_MEMORY_SYNC_TIMEOUT_MS,
@@ -323,7 +323,7 @@ async function fetchTeamMemoryHashes(
       return { success: true, entryChecksums: {} };
     }
 
-    const checksum = response.data?.checksum || response.headers['etag']?.replace(/^"|"$/g, '');
+    const checksum = response.data?.checksum || response.headers.etag?.replace(/^"|"$/g, '');
     const entryChecksums = response.data?.entryChecksums;
 
     // Requires anthropic/anthropic#283027. If entryChecksums is missing,

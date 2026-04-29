@@ -68,7 +68,7 @@ function findWordObject(
   let graphemeIdx = graphemes.length - 1;
   for (let i = 0; i < graphemes.length; i++) {
     const g = graphemes[i]!;
-    const nextStart = i + 1 < graphemes.length ? graphemes[i + 1]!.index : text.length;
+    const nextStart = i + 1 < graphemes.length ? graphemes[i + 1]?.index : text.length;
     if (offset >= g.index && offset < nextStart) {
       graphemeIdx = i;
       break;
@@ -77,7 +77,7 @@ function findWordObject(
 
   const graphemeAt = (idx: number): string => graphemes[idx]?.segment ?? '';
   const offsetAt = (idx: number): number =>
-    idx < graphemes.length ? graphemes[idx]!.index : text.length;
+    idx < graphemes.length ? graphemes[idx]?.index : text.length;
   const isWs = (idx: number): boolean => isVimWhitespace(graphemeAt(idx));
   const isWord = (idx: number): boolean => isWordChar(graphemeAt(idx));
   const isPunct = (idx: number): boolean => isVimPunctuation(graphemeAt(idx));

@@ -1,5 +1,5 @@
+import * as path from 'node:path';
 import chalk from 'chalk';
-import * as path from 'path';
 import type React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
@@ -61,7 +61,7 @@ function IDEScreen(t0) {
         if (value === 'None' && shouldShowDisableAutoConnectDialog()) {
           setShowDisableAutoConnectDialog(true);
         } else {
-          onSelect(availableIDEs.find((ide) => ide.port === parseInt(value)));
+          onSelect(availableIDEs.find((ide) => ide.port === parseInt(value, 10)));
         }
       }
     };
@@ -324,7 +324,7 @@ function IDEOpenSelection(t0) {
   let t2;
   if ($[2] !== availableIDEs || $[3] !== onSelectIDE) {
     t2 = (value) => {
-      const selectedIDE = availableIDEs.find((ide) => ide.port === parseInt(value));
+      const selectedIDE = availableIDEs.find((ide) => ide.port === parseInt(value, 10));
       onSelectIDE(selectedIDE);
     };
     $[2] = availableIDEs;
@@ -781,7 +781,7 @@ export function formatWorkspaceFolders(folders: string[], maxLength: number = 10
     if (folder.length <= maxLengthPerPath) {
       return folder;
     }
-    return '…' + folder.slice(-(maxLengthPerPath - 1));
+    return `…${folder.slice(-(maxLengthPerPath - 1))}`;
   });
   let result = formattedFolders.join(', ');
   if (hasMore) {

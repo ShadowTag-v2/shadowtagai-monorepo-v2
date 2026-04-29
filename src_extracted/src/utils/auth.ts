@@ -1,9 +1,9 @@
+import { exec } from 'node:child_process';
+import { mkdir, stat } from 'node:fs/promises';
+import { join } from 'node:path';
 import chalk from 'chalk';
-import { exec } from 'child_process';
 import { execa } from 'execa';
-import { mkdir, stat } from 'fs/promises';
 import memoize from 'lodash-es/memoize.js';
-import { join } from 'path';
 import { CLAUDE_AI_PROFILE_SCOPE } from 'src/constants/oauth.js';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -617,7 +617,7 @@ export function refreshAwsAuth(awsAuthRefresh: string): Promise<boolean> {
     const refreshProc = exec(awsAuthRefresh, {
       timeout: AWS_AUTH_REFRESH_TIMEOUT_MS,
     });
-    refreshProc.stdout!.on('data', (data) => {
+    refreshProc.stdout?.on('data', (data) => {
       const output = data.toString().trim();
       if (output) {
         // Add output to status manager for UI display
@@ -627,7 +627,7 @@ export function refreshAwsAuth(awsAuthRefresh: string): Promise<boolean> {
       }
     });
 
-    refreshProc.stderr!.on('data', (data) => {
+    refreshProc.stderr?.on('data', (data) => {
       const error = data.toString().trim();
       if (error) {
         authStatusManager.setError(error);
@@ -875,7 +875,7 @@ export function refreshGcpAuth(gcpAuthRefresh: string): Promise<boolean> {
     const refreshProc = exec(gcpAuthRefresh, {
       timeout: GCP_AUTH_REFRESH_TIMEOUT_MS,
     });
-    refreshProc.stdout!.on('data', (data) => {
+    refreshProc.stdout?.on('data', (data) => {
       const output = data.toString().trim();
       if (output) {
         // Add output to status manager for UI display
@@ -885,7 +885,7 @@ export function refreshGcpAuth(gcpAuthRefresh: string): Promise<boolean> {
       }
     });
 
-    refreshProc.stderr!.on('data', (data) => {
+    refreshProc.stderr?.on('data', (data) => {
       const error = data.toString().trim();
       if (error) {
         authStatusManager.setError(error);
@@ -1683,6 +1683,7 @@ export function getOtelHeadersFromHelper(): Record<string, string> {
   const debounceMs = parseInt(
     process.env.CLAUDE_CODE_OTEL_HEADERS_HELPER_DEBOUNCE_MS ||
       DEFAULT_OTEL_HEADERS_DEBOUNCE_MS.toString(),
+    10,
   );
   if (cachedOtelHeaders && Date.now() - cachedOtelHeadersTimestamp < debounceMs) {
     return cachedOtelHeaders;

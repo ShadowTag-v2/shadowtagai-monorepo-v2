@@ -1,5 +1,5 @@
-import { appendFile, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { appendFile, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { getProjectRoot, getSessionId } from './bootstrap/state.js';
 import { registerCleanup } from './utils/cleanupRegistry.js';
 import type { HistoryEntry, PastedContent } from './utils/config.js';
@@ -63,7 +63,7 @@ export function parseReferences(
   const matches = [...input.matchAll(referencePattern)];
   return matches
     .map((match) => ({
-      id: parseInt(match[2] || '0'),
+      id: parseInt(match[2] || '0', 10),
       match: match[0],
       index: match.index,
     }))
@@ -304,7 +304,7 @@ async function immediateFlushHistory(): Promise<void> {
       },
     });
 
-    const jsonLines = pendingEntries.map((entry) => jsonStringify(entry) + '\n');
+    const jsonLines = pendingEntries.map((entry) => `${jsonStringify(entry)}\n`);
     pendingEntries = [];
 
     await appendFile(historyPath, jsonLines.join(''), { mode: 0o600 });

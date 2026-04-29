@@ -329,7 +329,7 @@ export async function* runToolUse(
   if (!tool) {
     const fallbackTool = findToolByName(getAllBaseTools(), toolName);
     // Only use fallback if the tool was found via alias (deprecated name)
-    if (fallbackTool && fallbackTool.aliases?.includes(toolName)) {
+    if (fallbackTool?.aliases?.includes(toolName)) {
       tool = fallbackTool;
     }
   }
@@ -727,7 +727,7 @@ async function checkPermissionsAndCallTool(
       ? ({ ...processedInput } as typeof processedInput)
       : null;
   if (backfilledClone) {
-    tool.backfillObservableInput!(backfilledClone as Record<string, unknown>);
+    tool.backfillObservableInput?.(backfilledClone as Record<string, unknown>);
     processedInput = backfilledClone;
   }
 

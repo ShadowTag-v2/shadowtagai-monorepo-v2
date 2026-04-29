@@ -107,7 +107,7 @@ export function CoordinatorTaskPanel(): React.ReactNode {
  * stays accurate without needing its own tick.
  */
 export function useCoordinatorTaskCount() {
-  const tasks = useAppState(_temp);
+  const _tasks = useAppState(_temp);
   let t0;
   t0 = 0;
   return t0;
@@ -119,7 +119,7 @@ function MainLine(t0) {
   const $ = _c(10);
   const { isSelected, isViewed, onClick } = t0;
   const [hover, setHover] = React.useState(false);
-  const prefix = isSelected || hover ? figures.pointer + ' ' : '  ';
+  const prefix = isSelected || hover ? `${figures.pointer} ` : '  ';
   const bullet = isViewed ? BLACK_CIRCLE : figures.circle;
   let t1;
   let t2;
@@ -213,7 +213,7 @@ function AgentLine(t0) {
   const queuedText = queuedCount > 0 ? ` · ${queuedCount} queued` : '';
   const displayDescription = task.progress?.summary || task.description;
   const highlighted = isSelected || hover;
-  const prefix = highlighted ? figures.pointer + ' ' : '  ';
+  const prefix = highlighted ? `${figures.pointer} ` : '  ';
   const bullet = isViewed ? BLACK_CIRCLE : figures.circle;
   const dim = !highlighted && !isViewed;
   const sep = isRunning ? PLAY_ICON : PAUSE_ICON;

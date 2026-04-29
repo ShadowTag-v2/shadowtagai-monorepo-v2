@@ -6,6 +6,9 @@
  * MCP server auths. The id_token is cached in the keychain and reused until expiry.
  */
 
+import { randomBytes } from 'node:crypto';
+import { createServer, type Server } from 'node:http';
+import { parse } from 'node:url';
 import {
   exchangeAuthorization,
   startAuthorization,
@@ -15,9 +18,6 @@ import {
   type OpenIdProviderDiscoveryMetadata,
   OpenIdProviderDiscoveryMetadataSchema,
 } from '@modelcontextprotocol/sdk/shared/auth.js';
-import { randomBytes } from 'crypto';
-import { createServer, type Server } from 'http';
-import { parse } from 'url';
 import xss from 'xss';
 import { openBrowser } from '../../utils/browser.js';
 import { isEnvTruthy } from '../../utils/envUtils.js';
@@ -193,7 +193,7 @@ export function clearIdpClientSecret(idpIssuer: string): void {
 // auth servers, and Keycloak realms. Trailing-slash base + relative path is
 // the fix. Exported because auth.ts needs the same discovery.
 export async function discoverOidc(idpIssuer: string): Promise<OpenIdProviderDiscoveryMetadata> {
-  const base = idpIssuer.endsWith('/') ? idpIssuer : idpIssuer + '/';
+  const base = idpIssuer.endsWith('/') ? idpIssuer : `${idpIssuer}/`;
   const url = new URL('.well-known/openid-configuration', base);
   // eslint-disable-next-line eslint-plugin-n/no-unsupported-features/node-builtins
   const res = await fetch(url, {

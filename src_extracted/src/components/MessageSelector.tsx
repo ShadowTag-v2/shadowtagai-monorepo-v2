@@ -1,5 +1,5 @@
+import { randomUUID, type UUID } from 'node:crypto';
 import type { ContentBlockParam, TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { randomUUID, type UUID } from 'crypto';
 import figures from 'figures';
 import type * as React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -35,7 +35,7 @@ function isTextBlock(block: ContentBlockParam): block is TextBlockParam {
   return block.type === 'text';
 }
 
-import * as path from 'path';
+import * as path from 'node:path';
 import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
 import type { FileEditOutput } from 'src/tools/FileEditTool/types.js';
 import type { Output as FileWriteToolOutput } from 'src/tools/FileWriteTool/FileWriteTool.js';
@@ -51,7 +51,6 @@ import {
 } from '../constants/xml.js';
 import { count } from '../utils/array.js';
 import { formatRelativeTimeAgo, truncate } from '../utils/format.js';
-import type { Theme } from '../utils/theme.js';
 import { Divider } from './design-system/Divider.js';
 
 type RestoreOption =
@@ -403,16 +402,8 @@ export function MessageSelector({
           Rewind
         </Text>
 
-        {error && (
-          <>
-            <Text color="error">Error: {error}</Text>
-          </>
-        )}
-        {!hasMessagesToSelect && (
-          <>
-            <Text>Nothing to rewind to yet.</Text>
-          </>
-        )}
+        {error && <Text color="error">Error: {error}</Text>}
+        {!hasMessagesToSelect && <Text>Nothing to rewind to yet.</Text>}
         {!error && messageToRestore && hasMessagesToSelect && (
           <>
             <Text>
@@ -477,7 +468,7 @@ export function MessageSelector({
                   const isCurrent = msg.uuid === currentUUID;
                   const metadataLoaded = optionIndex in fileHistoryMetadata;
                   const metadata = fileHistoryMetadata[optionIndex];
-                  const numFilesChanged = metadata?.filesChanged && metadata.filesChanged.length;
+                  const numFilesChanged = metadata?.filesChanged?.length;
                   return (
                     <Box
                       key={msg.uuid}
@@ -507,20 +498,18 @@ export function MessageSelector({
                         {isFileHistoryEnabled && metadataLoaded && (
                           <Box height={1} flexDirection="row">
                             {metadata ? (
-                              <>
-                                <Text dimColor={!isSelected} color="inactive">
-                                  {numFilesChanged ? (
-                                    <>
-                                      {numFilesChanged === 1 && metadata.filesChanged![0]
-                                        ? `${path.basename(metadata.filesChanged![0])} `
-                                        : `${numFilesChanged} files changed `}
-                                      <DiffStatsText diffStats={metadata} />
-                                    </>
-                                  ) : (
-                                    <>No code changes</>
-                                  )}
-                                </Text>
-                              </>
+                              <Text dimColor={!isSelected} color="inactive">
+                                {numFilesChanged ? (
+                                  <>
+                                    {numFilesChanged === 1 && metadata.filesChanged?.[0]
+                                      ? `${path.basename(metadata.filesChanged?.[0])} `
+                                      : `${numFilesChanged} files changed `}
+                                    <DiffStatsText diffStats={metadata} />
+                                  </>
+                                ) : (
+                                  <>No code changes</>
+                                )}
+                              </Text>
                             ) : (
                               <Text dimColor color="warning">
                                 {figures.warning} No code restore
@@ -621,7 +610,7 @@ function RestoreCodeConfirmation(t0) {
   if (diffStatsForRestore === undefined) {
     return;
   }
-  if (!diffStatsForRestore.filesChanged || !diffStatsForRestore.filesChanged[0]) {
+  if (!diffStatsForRestore.filesChanged?.[0]) {
     let t1;
     if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
       t1 = <Text dimColor={true}>The code has not changed (nothing will be restored).</Text>;
@@ -688,11 +677,9 @@ function RestoreCodeConfirmation(t0) {
   let t2;
   if ($[11] !== fileLabel || $[12] !== t1) {
     t2 = (
-      <>
-        <Text dimColor={true}>
-          The code will be restored {t1} in {fileLabel}.
-        </Text>
-      </>
+      <Text dimColor={true}>
+        The code will be restored {t1} in {fileLabel}.
+      </Text>
     );
     $[11] = fileLabel;
     $[12] = t1;
@@ -705,7 +692,7 @@ function RestoreCodeConfirmation(t0) {
 function DiffStatsText(t0) {
   const $ = _c(7);
   const { diffStats } = t0;
-  if (!diffStats || !diffStats.filesChanged) {
+  if (!diffStats?.filesChanged) {
     return;
   }
   let t1;
@@ -953,7 +940,7 @@ function computeDiffStatsBetweenMessages(
       continue;
     }
     const result = msg.toolUseResult as FileEditOutput | FileWriteToolOutput;
-    if (!result || !result.filePath || !result.structuredPatch) {
+    if (!result?.filePath || !result.structuredPatch) {
       continue;
     }
     if (!filesChanged.includes(result.filePath)) {

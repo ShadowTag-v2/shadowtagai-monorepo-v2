@@ -218,7 +218,7 @@ export function ansiToSvg(ansiText: string, options: AnsiToSvgOptions = {}): str
   const lines = parseAnsi(ansiText);
 
   // Trim trailing empty lines
-  while (lines.length > 0 && lines[lines.length - 1]!.every((span) => span.text.trim() === '')) {
+  while (lines.length > 0 && lines[lines.length - 1]?.every((span) => span.text.trim() === '')) {
     lines.pop();
   }
 

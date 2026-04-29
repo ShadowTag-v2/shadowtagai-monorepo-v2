@@ -108,9 +108,9 @@ export function attachAnalyticsSink(newSink: AnalyticsSink): void {
     queueMicrotask(() => {
       for (const event of queuedEvents) {
         if (event.async) {
-          void sink!.logEventAsync(event.eventName, event.metadata);
+          void sink?.logEventAsync(event.eventName, event.metadata);
         } else {
-          sink!.logEvent(event.eventName, event.metadata);
+          sink?.logEvent(event.eventName, event.metadata);
         }
       }
     });

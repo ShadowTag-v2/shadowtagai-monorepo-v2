@@ -1,6 +1,6 @@
-import { statSync } from 'fs';
+import { statSync } from 'node:fs';
+import * as path from 'node:path';
 import ignore from 'ignore';
-import * as path from 'path';
 import {
   CLAUDE_CONFIG_DIRECTORIES,
   loadMarkdownFilesForSubdir,
@@ -685,7 +685,7 @@ export async function generateFileSuggestions(
 
     // Handle both './' and '.\'
     let normalizedPath = partialPath;
-    const currentDirPrefix = '.' + path.sep;
+    const currentDirPrefix = `.${path.sep}`;
     if (partialPath.startsWith(currentDirPrefix)) {
       normalizedPath = partialPath.substring(2);
     }

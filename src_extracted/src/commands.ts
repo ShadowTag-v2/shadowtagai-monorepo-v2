@@ -60,7 +60,9 @@ import { feature } from 'bun:bundle';
 const proactive =
   feature('PROACTIVE') || feature('COR.KAIROS') ? require('./commands/proactive.js').default : null;
 const briefCommand =
-  feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF') ? require('./commands/brief.js').default : null;
+  feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
+    ? require('./commands/brief.js').default
+    : null;
 const assistantCommand = feature('COR.KAIROS')
   ? require('./commands/assistant/index.js').default
   : null;

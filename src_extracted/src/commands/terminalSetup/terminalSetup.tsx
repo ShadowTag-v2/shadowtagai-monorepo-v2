@@ -1,10 +1,10 @@
+import { randomBytes } from 'node:crypto';
+import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { homedir, platform } from 'node:os';
+import { dirname, join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import chalk from 'chalk';
-import { randomBytes } from 'crypto';
-import { copyFile, mkdir, readFile, writeFile } from 'fs/promises';
-import { homedir, platform } from 'os';
-import { dirname, join } from 'path';
 import type { ThemeName } from 'src/utils/theme.js';
-import { pathToFileURL } from 'url';
 import { supportsHyperlinks } from '../../ink/supports-hyperlinks.js';
 import { color } from '../../ink.js';
 import { maybeMarkProjectOnboardingComplete } from '../../projectOnboardingState.js';
@@ -502,7 +502,7 @@ chars = "\\u001B\\r"`;
     if (configContent && !configContent.endsWith('\n')) {
       updatedContent += '\n';
     }
-    updatedContent += '\n' + ALACRITTY_KEYBINDING + '\n';
+    updatedContent += `\n${ALACRITTY_KEYBINDING}\n`;
 
     // Write the updated config
     await writeFile(configPath, updatedContent, {
@@ -574,7 +574,7 @@ async function installBindingsForZed(theme: ThemeName): Promise<string> {
     });
 
     // Write the updated keymap
-    await writeFile(keymapPath, jsonStringify(keymap, null, 2) + '\n', {
+    await writeFile(keymapPath, `${jsonStringify(keymap, null, 2)}\n`, {
       encoding: 'utf-8',
     });
     return `${color('success', theme)('Installed Zed Shift+Enter key binding')}${EOL}${chalk.dim(`See ${formatPathLink(keymapPath)}`)}${EOL}`;

@@ -2,9 +2,9 @@
  * Utility for persisting large tool results to disk instead of truncating them.
  */
 
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { mkdir, writeFile } from 'fs/promises';
-import { join } from 'path';
 import { getOriginalCwd, getSessionId } from '../bootstrap/state.js';
 import {
   BYTES_PER_TOKEN,

@@ -6,10 +6,10 @@
  * previously implemented as a Rust NAPI binding but now in pure TypeScript.
  */
 
-import { appendFile, chmod, mkdir, readdir, rmdir, stat, unlink } from 'fs/promises';
-import { createServer, type Server, type Socket } from 'net';
-import { homedir, platform } from 'os';
-import { join } from 'path';
+import { appendFile, chmod, mkdir, readdir, rmdir, stat, unlink } from 'node:fs/promises';
+import { createServer, type Server, type Socket } from 'node:net';
+import { homedir, platform } from 'node:os';
+import { join } from 'node:path';
 import { z } from 'zod';
 import { lazySchema } from '../lazySchema.js';
 import { jsonParse, jsonStringify } from '../slowOperations.js';
@@ -26,7 +26,7 @@ const LOG_FILE =
 function log(message: string, ...args: unknown[]): void {
   if (LOG_FILE) {
     const timestamp = new Date().toISOString();
-    const formattedArgs = args.length > 0 ? ' ' + jsonStringify(args) : '';
+    const formattedArgs = args.length > 0 ? ` ${jsonStringify(args)}` : '';
     const logLine = `[${timestamp}] [Claude Chrome Native Host] ${message}${formattedArgs}\n`;
     // Fire-and-forget: logging is best-effort and callers (including event
     // handlers) don't await
@@ -135,7 +135,7 @@ class ChromeNativeHost {
             continue;
           }
           const pid = parseInt(file.replace('.sock', ''), 10);
-          if (isNaN(pid)) {
+          if (Number.isNaN(pid)) {
             continue;
           }
           try {
@@ -159,13 +159,13 @@ class ChromeNativeHost {
     this.server = createServer((socket) => this.handleMcpClient(socket));
 
     await new Promise<void>((resolve, reject) => {
-      this.server!.listen(this.socketPath!, () => {
+      this.server?.listen(this.socketPath!, () => {
         log('Socket server listening for connections');
         this.running = true;
         resolve();
       });
 
-      this.server!.on('error', (err) => {
+      this.server?.on('error', (err) => {
         log('Socket server error:', err);
         reject(err);
       });
@@ -196,7 +196,7 @@ class ChromeNativeHost {
     // Close server
     if (this.server) {
       await new Promise<void>((resolve) => {
-        this.server!.close(() => resolve());
+        this.server?.close(() => resolve());
       });
       this.server = null;
     }
