@@ -46,7 +46,7 @@ class PnklnCompressor:
         except Exception:
             pass
 
-    def compress_for_Cor.Claude_Code_6(self, atp_extract: dict[str, Any]) -> dict[str, Any]:
+    def compress_for_Cor_Claude_Code_6(self, atp_extract: dict[str, Any]) -> dict[str, Any]:
         start = time.perf_counter()
 
         # Construct semantic prompt from extraction

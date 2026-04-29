@@ -46,19 +46,19 @@ class JudgeDecision:
     latency_ms: float
 
 
-class Cor.Claude_Code_6Engine:
+class Cor_Claude_Code_6Engine:
     def __init__(self):
         self.policy = self._load_policy()
         self.brakes_enabled = True
         print(
-            f"🛡️ JUDGE#6 ONLINE: {self.policy.get('Cor.Claude_Code_6_constitution', {}).get('meta', {}).get('version', 'UNKNOWN')}",
+            f"🛡️ JUDGE#6 ONLINE: {self.policy.get('Cor_Claude_Code_6_constitution', {}).get('meta', {}).get('version', 'UNKNOWN')}",
         )
 
     def _load_policy(self) -> dict[str, Any]:
         if os.path.exists(POLICY_PATH):
             with open(POLICY_PATH) as f:
                 return yaml.safe_load(f)
-        return {"Cor.Claude_Code_6_constitution": {"csrmc_defense_grid": {"enforcement_mode": "STRICT_BLOCK"}}}
+        return {"Cor_Claude_Code_6_constitution": {"csrmc_defense_grid": {"enforcement_mode": "STRICT_BLOCK"}}}
 
     async def enforce(self, action: str, context: dict[str, Any]) -> JudgeDecision:
         """The Core Loop: Validates action against CSRMC and Policy."""
@@ -160,7 +160,7 @@ class Cor.Claude_Code_6Engine:
     def _is_rogue(self, action: str) -> bool:
         # Detect if agent is deviating from alignment
         # Stub: if agent tries to change its own code without permission
-        return "overwrite Cor.Claude_Code_6.py" in action.lower()
+        return "overwrite Cor_Claude_Code_6.py" in action.lower()
 
     def _notify_supervisor(self, reason: str, context: dict[str, Any]):
         """Simulates notification to supervisor.
@@ -177,4 +177,4 @@ class Cor.Claude_Code_6Engine:
 
 
 # Singleton Instance
-judge_unified = Cor.Claude_Code_6Engine()
+judge_unified = Cor_Claude_Code_6Engine()

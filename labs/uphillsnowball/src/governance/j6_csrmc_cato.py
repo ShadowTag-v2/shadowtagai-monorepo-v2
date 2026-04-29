@@ -117,7 +117,7 @@ _RISK_MATRIX: dict[tuple[str, str], RiskLevel] = {
 }
 
 
-class Cor.Claude_Code_6_CSRMC_cATO:
+class Cor_Claude_Code_6_CSRMC_cATO:
     """DoD CIO Cyber Security Risk Management Construct & NIST RMF cATO.
 
     Enforces Zero Trust at every J-Staff handoff boundary.
@@ -187,11 +187,11 @@ class Cor.Claude_Code_6_CSRMC_cATO:
         logger.info("🔐 J-6 ZTA PEP: Intercepting handoff %s → %s", source, destination)
 
         payload_type = payload.get("type", "UNKNOWN")
-        fips = Cor.Claude_Code_6_CSRMC_cATO.categorize_system(payload_type)
+        fips = Cor_Claude_Code_6_CSRMC_cATO.categorize_system(payload_type)
 
         probability = payload.get("risk_prob", "SELDOM")
         severity = payload.get("risk_sev", "MARGINAL")
-        risk = Cor.Claude_Code_6_CSRMC_cATO.calculate_risk(probability, severity)
+        risk = Cor_Claude_Code_6_CSRMC_cATO.calculate_risk(probability, severity)
 
         logger.info(
             "  FIPS-199 HWM=%s | Risk=%s (P=%s, S=%s)",
@@ -261,7 +261,7 @@ class PhaseResult:
     directive: str
 
 
-class Cor.Claude_Code_6DeployGate:
+class Cor_Claude_Code_6DeployGate:
     """3-Phase deployment gate: Wet Fleece → Dry Ground → Battle.
 
     Each phase is progressively more expensive. If an earlier phase

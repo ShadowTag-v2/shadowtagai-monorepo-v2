@@ -13,11 +13,11 @@ Author: Erik Bjontegard, Pnkln
 Version: 2.0.0
 """
 
-from Cor.Claude_Code_6.constitutional import COR53_AXIOMS, ConstitutionalAxiom
-from Cor.Claude_Code_6.judgment import JudgmentRule
-from Cor.Claude_Code_6.models import JudgmentDecision, RiskLevel
-from Cor.Claude_Code_6.provenance import ProvenanceStamp, ShadowTagEngine
-from Cor.Claude_Code_6.risk_manager import YourRiskManager
+from Cor_Claude_Code_6.constitutional import COR53_AXIOMS, ConstitutionalAxiom
+from Cor_Claude_Code_6.judgment import JudgmentRule
+from Cor_Claude_Code_6.models import JudgmentDecision, RiskLevel
+from Cor_Claude_Code_6.provenance import ProvenanceStamp, ShadowTagEngine
+from Cor_Claude_Code_6.risk_manager import YourRiskManager
 
 __version__ = "2.0.0"
 __author__ = "Erik Bjontegard, Pnkln"

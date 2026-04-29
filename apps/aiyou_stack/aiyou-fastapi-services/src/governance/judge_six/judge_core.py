@@ -21,8 +21,8 @@ from typing import Any
 import yaml
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - COR.CLAUDE_CODE_6 - %(levelname)s - %(message)s")
-logger = logging.getLogger("Cor.Claude_Code_6")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - COR_CLAUDE_CODE_6 - %(levelname)s - %(message)s")
+logger = logging.getLogger("Cor_Claude_Code_6")
 
 
 class Verdict(Enum):
@@ -54,7 +54,7 @@ class JudgeSixEngine:
         self.policy_path = policy_path
         self.constitution = self._load_constitution_from_file() or self._load_default_constitution()
         logger.info(
-            f"⚖️  Judge 6 Engine Online - CSRMC Active (Constitution v{self.constitution.get('Cor.Claude_Code_6_constitution', {}).get('version', 'Unknown')})",
+            f"⚖️  Judge 6 Engine Online - CSRMC Active (Constitution v{self.constitution.get('Cor_Claude_Code_6_constitution', {}).get('version', 'Unknown')})",
         )
 
     def _load_constitution_from_file(self) -> dict[str, Any] | None:
@@ -63,9 +63,9 @@ class JudgeSixEngine:
             if os.path.exists(self.policy_path):
                 with open(self.policy_path) as f:
                     data = yaml.safe_load(f)
-                    # Flatten slightly for easier access if nested under Cor.Claude_Code_6_constitution
-                    if "Cor.Claude_Code_6_constitution" in data:
-                        return data["Cor.Claude_Code_6_constitution"]
+                    # Flatten slightly for easier access if nested under Cor_Claude_Code_6_constitution
+                    if "Cor_Claude_Code_6_constitution" in data:
+                        return data["Cor_Claude_Code_6_constitution"]
                     return data
         except Exception as e:
             logger.error(f"Failed to load policy.yaml: {e}")

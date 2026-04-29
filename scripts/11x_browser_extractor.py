@@ -10,7 +10,7 @@ query, waits for the response to fully render, then extracts:
   - Any inline code blocks
 
 This is the "Brainstem Layer" of the Tri-Partite Cognitive Architecture
-(TACSOP 4 Cor.Kairos, Core Truth #12). It provides zero-latency web research
+(TACSOP 4 Cor_Kairos, Core Truth #12). It provides zero-latency web research
 capability by hijacking the browser's existing Google session.
 
 Usage:

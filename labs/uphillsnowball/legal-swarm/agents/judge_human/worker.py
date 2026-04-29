@@ -21,10 +21,10 @@ import time
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [Cor.Claude_Code_6] %(levelname)s %(message)s",
+    format="%(asctime)s [Cor_Claude_Code_6] %(levelname)s %(message)s",
     datefmt="%Y-%m-%dT%H:%M:%SZ",
 )
-logger = logging.getLogger("Cor.Claude_Code_6")
+logger = logging.getLogger("Cor_Claude_Code_6")
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 PORT = int(os.getenv("JUDGE_LEGAL_HUMAN_PORT", "8002"))

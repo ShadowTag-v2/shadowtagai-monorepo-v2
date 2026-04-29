@@ -110,7 +110,7 @@ class ContentSafetyClassifier(nn.Module):
         return self.sigmoid(logits)
 
 
-class Cor.Claude_Code_6Validator:
+class Cor_Claude_Code_6Validator:
     """Judge 6 - Main validation orchestrator.
 
     Implements hybrid Gemini+PyTorch validation with:
@@ -143,7 +143,7 @@ class Cor.Claude_Code_6Validator:
         self._total_latency_ms = 0.0
 
         logger.info(
-            "Cor.Claude_Code_6_initialized",
+            "Cor_Claude_Code_6_initialized",
             safety_threshold=self.safety_threshold,
             confidence_threshold=self.confidence_threshold,
         )

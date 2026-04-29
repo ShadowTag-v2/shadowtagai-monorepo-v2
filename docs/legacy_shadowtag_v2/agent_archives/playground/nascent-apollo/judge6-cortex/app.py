@@ -3,7 +3,7 @@
 from fastapi import FastAPI
 from logic.reasoning import evaluate_verdict
 
-app = FastAPI(title="COR.CLAUDE_CODE_6_CORTEX", version="1.0.0")
+app = FastAPI(title="COR_CLAUDE_CODE_6_CORTEX", version="1.0.0")
 
 
 @app.get("/")

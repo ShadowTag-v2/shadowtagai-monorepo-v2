@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-# apps/counselconduit/api/Cor.Claude_Code_6.py
+# apps/counselconduit/api/Cor_Claude_Code_6.py
 """Judge 6: Python-First Governance Pipeline.
 
 MVP implementation of the deterministic governance interceptor.
@@ -33,7 +33,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-logger = logging.getLogger("counselconduit.Cor.Claude_Code_6")
+logger = logging.getLogger("counselconduit.Cor_Claude_Code_6")
 
 
 class RiskLevel(Enum):

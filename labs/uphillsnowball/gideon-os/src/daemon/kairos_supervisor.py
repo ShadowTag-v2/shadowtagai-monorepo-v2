@@ -18,7 +18,7 @@ from google import genai
 logger = logging.getLogger("COR.KAIROS-Daemon")
 
 
-class Cor.KairosSessionSupervisor:
+class Cor_KairosSessionSupervisor:
     """Long-lived supervisor managing COR.KAIROS, ULTRAPLAN, and Auto-Dream."""
 
     def __init__(self):

@@ -36,7 +36,7 @@ class SwarmStatus:
 
     # Critical milestones
     token_compression_implemented: bool = False
-    Cor.Claude_Code_6_deployed: bool = False
+    Cor_Claude_Code_6_deployed: bool = False
     monitoring_operational: bool = False
     status_page_live: bool = False
     load_testing_complete: bool = False
@@ -74,7 +74,7 @@ class SwarmStatus:
         """Count completed critical milestones"""
         milestones = [
             self.token_compression_implemented,
-            self.Cor.Claude_Code_6_deployed,
+            self.Cor_Claude_Code_6_deployed,
             self.monitoring_operational,
             self.status_page_live,
             self.load_testing_complete,
@@ -140,7 +140,7 @@ class SwarmStatus:
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
 ║  {"✅" if self.token_compression_implemented else "⏸️ "} Token Compression Pipeline{"  " if not self.token_compression_implemented else ""}                         ║
-║  {"✅" if self.Cor.Claude_Code_6_deployed else "⏸️ "} Judge 6 Deployment{"       " if not self.Cor.Claude_Code_6_deployed else ""}                                   ║
+║  {"✅" if self.Cor_Claude_Code_6_deployed else "⏸️ "} Judge 6 Deployment{"       " if not self.Cor_Claude_Code_6_deployed else ""}                                   ║
 ║  {"✅" if self.monitoring_operational else "⏸️ "} Monitoring Infrastructure{"   " if not self.monitoring_operational else ""}                            ║
 ║  {"✅" if self.status_page_live else "⏸️ "} Public Status Page{"         " if not self.status_page_live else ""}                                    ║
 ║  {"✅" if self.load_testing_complete else "⏸️ "} Load Testing Complete{"     " if not self.load_testing_complete else ""}                                 ║

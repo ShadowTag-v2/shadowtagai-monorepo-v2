@@ -1,16 +1,15 @@
 import os
-import re
 
 def replace_in_file(filepath):
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, encoding='utf-8') as f:
             content = f.read()
     except (UnicodeDecodeError, FileNotFoundError):
         return False
         
-    new_content = content.replace("Claude_Code_6", "Cor.Claude_Code_6")
-    new_content = new_content.replace("CLAUDE_CODE_6", "COR.CLAUDE_CODE_6")
-    new_content = new_content.replace("Kairos", "Cor.Kairos")
+    new_content = content.replace("Claude_Code_6", "Cor_Claude_Code_6")
+    new_content = new_content.replace("CLAUDE_CODE_6", "COR_CLAUDE_CODE_6")
+    new_content = new_content.replace("Kairos", "Cor_Kairos")
     new_content = new_content.replace("KAIROS", "COR.KAIROS")
     
     if new_content != content:
@@ -32,9 +31,9 @@ def main():
             
             new_filename = filename
             if "Claude_Code_6" in new_filename:
-                new_filename = new_filename.replace("Claude_Code_6", "Cor.Claude_Code_6")
+                new_filename = new_filename.replace("Claude_Code_6", "Cor_Claude_Code_6")
             if "Kairos" in new_filename:
-                new_filename = new_filename.replace("Kairos", "Cor.Kairos")
+                new_filename = new_filename.replace("Kairos", "Cor_Kairos")
                 
             if new_filename != filename:
                 new_filepath = os.path.join(dirpath, new_filename)

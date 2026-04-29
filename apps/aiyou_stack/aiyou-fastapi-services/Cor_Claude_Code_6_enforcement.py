@@ -334,7 +334,7 @@ Provide scores and brief rationale. Format response as JSON:
             }
 
 
-class Cor.Claude_Code_6Enforcer:
+class Cor_Claude_Code_6Enforcer:
     """Judge 6 Enforcement Engine - Complete PRB validation and enforcement"""
 
     def __init__(
@@ -468,7 +468,7 @@ class Cor.Claude_Code_6Enforcer:
             "brakes_triggered": brakes_triggered,
             "gemini_recommendation": gemini_result.get("recommendation") if gemini_result else None,
             "enforcement_decision": "BLOCKED" if not is_valid else "APPROVED",
-            "validator": "Cor.Claude_Code_6_v1.0.0",
+            "validator": "Cor_Claude_Code_6_v1.0.0",
         }
 
         result = ValidationResult(
@@ -493,7 +493,7 @@ class Cor.Claude_Code_6Enforcer:
 
         return result
 
-    def export_audit_log(self, output_path: str = "Cor.Claude_Code_6_audit_log.json") -> str:
+    def export_audit_log(self, output_path: str = "Cor_Claude_Code_6_audit_log.json") -> str:
         """Export comprehensive audit log
 
         Args:
@@ -522,7 +522,7 @@ def main():
     print("=== Judge 6 Enforcement - ShadowTag-v2JR Doctrine Compliance ===\n")
 
     # Initialize enforcer
-    enforcer = Cor.Claude_Code_6Enforcer()
+    enforcer = Cor_Claude_Code_6Enforcer()
 
     # Test 1: Compliant task
     print("\n--- Test 1: Compliant Healthcare GTM Task ---")

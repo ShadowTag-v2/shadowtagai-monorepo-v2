@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-# tests/test_Cor.Claude_Code_6_atp519_scoring.py
+# tests/test_Cor_Claude_Code_6_atp519_scoring.py
 """Integration tests for Judge 6 ATP 5-19 Risk Scoring.
 
 Tests the score_risk function and RISK_MATRIX against known scenarios
@@ -9,7 +9,7 @@ to verify correct risk level computation per ATP 5-19.
 
 from __future__ import annotations
 
-from apps.counselconduit.Cor.Claude_Code_6_atp519_scoring import (
+from apps.counselconduit.Cor_Claude_Code_6_atp519_scoring import (
     score_risk,
     RISK_MATRIX,
     SEVERITY_LEVELS,

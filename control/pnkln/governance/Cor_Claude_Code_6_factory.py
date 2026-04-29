@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-"""Cor.Claude_Code_6Engine factory — wires RKILL notifier from environment.
+"""Cor_Claude_Code_6Engine factory — wires RKILL notifier from environment.
 
 Environment variables:
     GCP_PROJECT          — GCP project ID (required for live RKILL)
@@ -12,13 +12,13 @@ Environment variables:
 
 Usage::
 
-    from control.pnkln.governance.Cor.Claude_Code_6_factory import build_engine
+    from control.pnkln.governance.Cor_Claude_Code_6_factory import build_engine
 
     engine = build_engine()        # reads env, RKILL wired in
     engine_dry = build_engine(dry_run=True)   # explicit override
 
     # or in a FastAPI lifespan:
-    app.state.Cor.Claude_Code_6 = build_engine()
+    app.state.Cor_Claude_Code_6 = build_engine()
 """
 
 from __future__ import annotations
@@ -27,11 +27,11 @@ import logging
 import os
 from collections.abc import Callable
 
-from .Cor.Claude_Code_6_core import GovernanceDecision, Cor.Claude_Code_6Engine
-from .Cor.Claude_Code_6_rkill_bridge import RkillNotifier
+from .Cor_Claude_Code_6_core import GovernanceDecision, Cor_Claude_Code_6Engine
+from .Cor_Claude_Code_6_rkill_bridge import RkillNotifier
 from .rkill import RkillConfig
 
-logger = logging.getLogger("Cor.Claude_Code_6_factory")
+logger = logging.getLogger("Cor_Claude_Code_6_factory")
 
 
 def _str_to_bool(val: str) -> bool:
@@ -41,8 +41,8 @@ def _str_to_bool(val: str) -> bool:
 def build_engine(
     dry_run: bool | None = None,
     audit_callback: Callable[[GovernanceDecision], None] | None = None,
-) -> Cor.Claude_Code_6Engine:
-    """Build a Cor.Claude_Code_6Engine with RKILL auto-lockout wired to ceo_notifier.
+) -> Cor_Claude_Code_6Engine:
+    """Build a Cor_Claude_Code_6Engine with RKILL auto-lockout wired to ceo_notifier.
 
     Args:
         dry_run: Override RKILL_DRY_RUN env var. If None, reads from env
@@ -50,7 +50,7 @@ def build_engine(
         audit_callback: Optional audit sink (e.g. write to BigQuery).
 
     Returns:
-        Configured Cor.Claude_Code_6Engine ready for production use.
+        Configured Cor_Claude_Code_6Engine ready for production use.
     """
     project = os.environ.get("GCP_PROJECT", "")
     kms_key_name = os.environ.get("RKILL_KMS_KEY_NAME", "")
@@ -77,20 +77,20 @@ def build_engine(
         kms_key_name=kms_key_name,
         armor_policy=armor_policy,
         armor_rule_priority=armor_priority,
-        trigger_reason="Cor.Claude_Code_6 L5_LOCKOUT auto-triggered",
+        trigger_reason="Cor_Claude_Code_6 L5_LOCKOUT auto-triggered",
         dry_run=effective_dry_run,
     )
 
     notifier = RkillNotifier(cfg)
 
     logger.info(
-        "[Cor.Claude_Code_6_factory] engine built: rkill_dry_run=%s project=%s armor_policy=%s",
+        "[Cor_Claude_Code_6_factory] engine built: rkill_dry_run=%s project=%s armor_policy=%s",
         effective_dry_run,
         project or "(unset)",
         armor_policy or "(unset)",
     )
 
-    return Cor.Claude_Code_6Engine(
+    return Cor_Claude_Code_6Engine(
         ceo_notifier=notifier,
         audit_callback=audit_callback,
     )

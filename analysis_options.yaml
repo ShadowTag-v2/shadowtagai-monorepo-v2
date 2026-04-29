@@ -1,0 +1,8 @@
+analyzer:
+  exclude:
+    - "bazel-Monorepo-Uphillsnowball/**"
+    - "bazel-out/**"
+    - "bazel-bin/**"
+    - "bazel-testlogs/**"
+    - "external_repos/**"
+    - "libs/autoresearch_sources/**"

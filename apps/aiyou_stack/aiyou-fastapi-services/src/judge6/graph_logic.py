@@ -49,7 +49,7 @@ def opa_fast_check(state: FinancialDecisionState):
     return {"decision": None}  # Signals need for escalation
 
 
-def Cor.Claude_Code_6_reasoning(state: FinancialDecisionState):
+def Cor_Claude_Code_6_reasoning(state: FinancialDecisionState):
     """The LLM-as-a-Judge for complex financial reasoning.
     Doctrine: FM 6-0 (Mission Command - Commander's Intent)
     """
@@ -93,22 +93,22 @@ def route_decision(state: FinancialDecisionState):
     """Determines the next step based on OPA result."""
     if state["decision"] is not None:
         return "audit"
-    return "Cor.Claude_Code_6"
+    return "Cor_Claude_Code_6"
 
 
 workflow = StateGraph(FinancialDecisionState)
 
 # Add Nodes
 workflow.add_node("opa", opa_fast_check)
-workflow.add_node("Cor.Claude_Code_6", Cor.Claude_Code_6_reasoning)
+workflow.add_node("Cor_Claude_Code_6", Cor_Claude_Code_6_reasoning)
 workflow.add_node("audit", audit_logger)
 
 # Set Entry Point
 workflow.set_entry_point("opa")
 
 # Add Edges
-workflow.add_conditional_edges("opa", route_decision, {"audit": "audit", "Cor.Claude_Code_6": "Cor.Claude_Code_6"})
-workflow.add_edge("Cor.Claude_Code_6", "audit")
+workflow.add_conditional_edges("opa", route_decision, {"audit": "audit", "Cor_Claude_Code_6": "Cor_Claude_Code_6"})
+workflow.add_edge("Cor_Claude_Code_6", "audit")
 workflow.add_edge("audit", END)
 
 # Compile

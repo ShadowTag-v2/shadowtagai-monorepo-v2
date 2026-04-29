@@ -23,7 +23,7 @@ from google.cloud import tasks_v2
 logger = logging.getLogger("COR.KAIROS-Daemon")
 
 
-class Cor.KairosPersistentAssistant:
+class Cor_KairosPersistentAssistant:
     """The COR.KAIROS persistent assistant with 15-second blocking budget."""
 
     def __init__(self) -> None:

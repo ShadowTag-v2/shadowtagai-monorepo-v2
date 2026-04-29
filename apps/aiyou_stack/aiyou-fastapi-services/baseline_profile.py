@@ -5,7 +5,7 @@
 
 Purpose
 -------
-* Load the existing Judge#6 runtime (`erik-hancock-llm-memory/Cor.Claude_Code_6/runtime/base.py`).
+* Load the existing Judge#6 runtime (`erik-hancock-llm-memory/Cor_Claude_Code_6/runtime/base.py`).
 * Execute a representative batch of inference calls.
 * Measure end‑to‑end latency (including model forward pass, token handling, and any post‑processing).
 * Output mean, median, p90 and p99 latency statistics.
@@ -40,7 +40,7 @@ sys.path.append(PROJECT_ROOT)
 import importlib.util  # noqa: E402
 
 # Dynamically load JudgeSixRuntime from the file path (handles hyphenated directory name)
-runtime_path = os.path.join(PROJECT_ROOT, "erik-hancock-llm-memory", "Cor.Claude_Code_6", "runtime", "base.py")
+runtime_path = os.path.join(PROJECT_ROOT, "erik-hancock-llm-memory", "Cor_Claude_Code_6", "runtime", "base.py")
 spec = importlib.util.spec_from_file_location("base", runtime_path)
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)

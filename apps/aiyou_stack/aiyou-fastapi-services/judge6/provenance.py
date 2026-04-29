@@ -11,8 +11,8 @@ import json
 import logging
 from datetime import datetime
 
-from Cor.Claude_Code_6.config import get_config
-from Cor.Claude_Code_6.models import ProvenanceStamp, RiskLevel
+from Cor_Claude_Code_6.config import get_config
+from Cor_Claude_Code_6.models import ProvenanceStamp, RiskLevel
 
 logger = logging.getLogger(__name__)
 

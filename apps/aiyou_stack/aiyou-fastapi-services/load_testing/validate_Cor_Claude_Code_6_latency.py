@@ -35,10 +35,10 @@ class TestConfig:
     connect_timeout: float
 
     @classmethod
-    def from_env(cls, prefix: str = "COR.CLAUDE_CODE_6"):
+    def from_env(cls, prefix: str = "COR_CLAUDE_CODE_6"):
         """Load configuration from environment variables"""
         return cls(
-            endpoint=os.getenv(f"{prefix}_ENDPOINT", "https://Cor.Claude_Code_6.pnkln.ai/enforce"),
+            endpoint=os.getenv(f"{prefix}_ENDPOINT", "https://Cor_Claude_Code_6.pnkln.ai/enforce"),
             iterations=int(os.getenv(f"{prefix}_ITERATIONS", "1000")),
             warmup_iterations=int(os.getenv(f"{prefix}_WARMUP", "50")),
             concurrency=int(os.getenv(f"{prefix}_CONCURRENCY", "50")),
@@ -145,7 +145,7 @@ def detect_degradation(latencies: list[float], window_size: int = 100) -> dict:
 # ═══════════════════════════════════════════════════════════════════
 
 
-def export_results(results: dict, service_name: str = "Cor.Claude_Code_6"):
+def export_results(results: dict, service_name: str = "Cor_Claude_Code_6"):
     """Export results for historical tracking and analysis"""
     timestamp = datetime.now().isoformat()
     results_dir = Path("test_results")
@@ -470,7 +470,7 @@ async def run_validation():
     print("═══════════════════════════════════════════════════════════════════")
 
     # Export results
-    export_results(results, "Cor.Claude_Code_6")
+    export_results(results, "Cor_Claude_Code_6")
 
     return 0 if all_pass else 1
 

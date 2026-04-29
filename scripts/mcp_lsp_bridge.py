@@ -1,8 +1,6 @@
 import asyncio
 import json
-import subprocess
 import os
-import sys
 
 class LspBridge:
     def __init__(self, workspace_path):

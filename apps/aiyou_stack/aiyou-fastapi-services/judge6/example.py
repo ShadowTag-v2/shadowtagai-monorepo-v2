@@ -4,7 +4,7 @@
 
 import json
 
-from Cor.Claude_Code_6 import JudgmentRule
+from Cor_Claude_Code_6 import JudgmentRule
 
 
 def main():
