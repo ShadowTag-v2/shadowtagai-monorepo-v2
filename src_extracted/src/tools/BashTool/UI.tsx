@@ -113,7 +113,7 @@ export function renderToolUseMessage(
       const label = extractBashCommentLabel(command);
       if (label) {
         return label.length > MAX_COMMAND_DISPLAY_CHARS
-          ? label.slice(0, MAX_COMMAND_DISPLAY_CHARS) + '…'
+          ? `${label.slice(0, MAX_COMMAND_DISPLAY_CHARS)}…`
           : label;
       }
     }
@@ -154,7 +154,7 @@ export function renderToolUseProgressMessage(
   },
 ): React.ReactNode {
   const lastProgress = progressMessagesForMessage.at(-1);
-  if (!lastProgress || !lastProgress.data) {
+  if (!lastProgress?.data) {
     return (
       <MessageResponse height={1}>
         <Text dimColor>Running…</Text>

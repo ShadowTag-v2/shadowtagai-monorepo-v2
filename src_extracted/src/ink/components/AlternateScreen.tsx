@@ -1,4 +1,4 @@
-import React, { type PropsWithChildren, useContext, useInsertionEffect } from 'react';
+import { type PropsWithChildren, useContext, useInsertionEffect } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import instances from '../instances.js';
 import {
@@ -50,7 +50,7 @@ export function AlternateScreen(t0) {
       if (!writeRaw) {
         return;
       }
-      writeRaw(ENTER_ALT_SCREEN + '\x1B[2J\x1B[H' + (mouseTracking ? ENABLE_MOUSE_TRACKING : ''));
+      writeRaw(`${ENTER_ALT_SCREEN}\x1B[2J\x1B[H${mouseTracking ? ENABLE_MOUSE_TRACKING : ''}`);
       ink?.setAltScreenActive(true, mouseTracking);
       return () => {
         ink?.setAltScreenActive(false);

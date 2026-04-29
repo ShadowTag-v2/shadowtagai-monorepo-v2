@@ -1,10 +1,10 @@
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
 import { feature } from 'bun:bundle';
-import { spawnSync } from 'child_process';
+import { spawnSync } from 'node:child_process';
 import figures from 'figures';
-import { writeFile } from 'fs/promises';
-import { tmpdir } from 'os';
-import { dirname, join } from 'path';
+import { writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { dirname, join } from 'node:path';
 import * as React from 'react';
 import {
   type RefObject,
@@ -219,7 +219,7 @@ const getCoordinatorUserContext: (
   ? require('../coordinator/coordinatorMode.js').getCoordinatorUserContext
   : () => ({});
 import type { ContentBlockParam, ImageBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
-import { randomUUID, type UUID } from 'crypto';
+import { randomUUID, type UUID } from 'node:crypto';
 import { getFeatureValue_CACHED_MAY_BE_STALE } from 'src/services/analytics/growthbook.js';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -710,7 +710,7 @@ function TranscriptSearchBar({
       alive = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // mount-only: bar opens once per /
+  }, [jumpRef.current?.warmSearchIndex]); // mount-only: bar opens once per /
   // Gate the query effect on warm completion. setHighlight stays instant
   // (screen-space overlay, no indexing). setSearchQuery (the scan) waits.
   const warmDone = indexStatus !== 'building';
@@ -719,7 +719,7 @@ function TranscriptSearchBar({
     jumpRef.current?.setSearchQuery(query);
     setHighlight(query);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, warmDone]);
+  }, [query, warmDone, setHighlight, jumpRef.current?.setSearchQuery]);
   const off = cursorOffset;
   const cursorChar = off < query.length ? query[off] : ' ';
   return (
@@ -1000,21 +1000,15 @@ export function REPL({
   // /brief mid-session leaves the stale tool list (no SendUserMessage) and
   // the model emits plain text the brief filter hides.
   const isBriefOnly = useAppState((s) => s.isBriefOnly);
-  const localTools = useMemo(
-    () => getTools(toolPermissionContext),
-    [toolPermissionContext, proactiveActive, isBriefOnly],
-  );
+  const localTools = useMemo(() => getTools(toolPermissionContext), [toolPermissionContext]);
   useKickOffCheckAndDisableBypassPermissionsIfNeeded();
   useKickOffCheckAndDisableAutoModeIfNeeded();
   const [dynamicMcpConfig, setDynamicMcpConfig] = useState<
     Record<string, ScopedMcpServerConfig> | undefined
   >(initialDynamicMcpConfig);
-  const onChangeDynamicMcpConfig = useCallback(
-    (config: Record<string, ScopedMcpServerConfig>) => {
-      setDynamicMcpConfig(config);
-    },
-    [setDynamicMcpConfig],
-  );
+  const onChangeDynamicMcpConfig = useCallback((config: Record<string, ScopedMcpServerConfig>) => {
+    setDynamicMcpConfig(config);
+  }, []);
   const [screen, setScreen] = useState<Screen>('prompt');
   const [showAllInTranscript, setShowAllInTranscript] = useState(false);
   // [ forces the dump-to-scrollback path inside transcript mode. Separate
@@ -1335,7 +1329,7 @@ export function REPL({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [addNotification]);
   const [showUndercoverCallout, setShowUndercoverCallout] = useState(false);
   useEffect(() => {
     if ('external' === 'ant') {
@@ -1492,7 +1486,7 @@ export function REPL({
     sessionStatus !== 'waiting'
       ? undefined
       : toolUseConfirmQueue.length > 0
-        ? `approve ${toolUseConfirmQueue[0]!.tool.name}`
+        ? `approve ${toolUseConfirmQueue[0]?.tool.name}`
         : pendingWorkerRequest
           ? 'worker request'
           : pendingSandboxRequest
@@ -1525,7 +1519,7 @@ export function REPL({
   useEffect(() => {
     registerLeaderToolUseConfirmQueue(setToolUseConfirmQueue);
     return () => unregisterLeaderToolUseConfirmQueue();
-  }, [setToolUseConfirmQueue]);
+  }, []);
   const [messages, rawSetMessages] = useState<MessageType[]>(initialMessages ?? []);
   const messagesRef = useRef(messages);
   // Stores the willowMode variant that was shown (or false if no hint shown).
@@ -1595,7 +1589,7 @@ export function REPL({
   const unseenDivider = useMemo(
     () => computeUnseenDivider(messages, dividerIndex),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- length change covers appends; useUnseenDivider's count-drop guard clears dividerIndex on replace/rewind
-    [dividerIndex, messages.length],
+    [dividerIndex, messages.length, messages],
   );
   // Re-pin scroll to bottom and clear the unseen-messages baseline. Called
   // on any user-driven return-to-live action (submit, type-into-empty,
@@ -1604,7 +1598,7 @@ export function REPL({
     scrollRef.current?.scrollToBottom();
     onRepin();
     setCursor(null);
-  }, [onRepin, setCursor]);
+  }, [onRepin]);
   // Backstop for the submit-handler repin at onSubmit. If a buffered stdin
   // event (wheel/drag) races between handler-fire and state-commit, the
   // handler's scrollToBottom can be undone. This effect fires on the render
@@ -1617,7 +1611,7 @@ export function REPL({
     if (lastMsgIsHuman) {
       repinScroll();
     }
-  }, [lastMsgIsHuman, lastMsg, repinScroll]);
+  }, [lastMsgIsHuman, repinScroll]);
   // Assistant-chat: lazy-load remote history on scroll-up. No-op unless
   // COR.KAIROS build + config.viewerOnly. feature() is build-time constant so
   // the branch is dead-code-eliminated in non-COR.KAIROS builds (same pattern
@@ -1718,7 +1712,7 @@ export function REPL({
       setInputValueRaw(value);
       setIsPromptInputActive(value.trim().length > 0);
     },
-    [setIsPromptInputActive, repinScroll, trySuggestBgPRIntercept],
+    [repinScroll],
   );
 
   // Schedule a timeout to stop suppressing dialogs after the user stops typing.
@@ -1739,16 +1733,13 @@ export function REPL({
   >();
 
   // Callback to filter commands based on CCR's available slash commands
-  const handleRemoteInit = useCallback(
-    (remoteSlashCommands: string[]) => {
-      const remoteCommandSet = new Set(remoteSlashCommands);
-      // Keep commands that CCR lists OR that are in the local-safe set
-      setLocalCommands((prev) =>
-        prev.filter((cmd) => remoteCommandSet.has(cmd.name) || REMOTE_SAFE_COMMANDS.has(cmd)),
-      );
-    },
-    [setLocalCommands],
-  );
+  const handleRemoteInit = useCallback((remoteSlashCommands: string[]) => {
+    const remoteCommandSet = new Set(remoteSlashCommands);
+    // Keep commands that CCR lists OR that are in the local-safe set
+    setLocalCommands((prev) =>
+      prev.filter((cmd) => remoteCommandSet.has(cmd.name) || REMOTE_SAFE_COMMANDS.has(cmd)),
+    );
+  }, []);
   const [inProgressToolUseIDs, setInProgressToolUseIDs] = useState<Set<string>>(new Set());
   const hasInterruptibleToolInProgressRef = useRef(false);
 
@@ -1967,7 +1958,14 @@ export function REPL({
     // turn's commands — clear after each turn to avoid accumulating
     // Promise chains for unconsumed checks (denied/aborted paths).
     clearSpeculativeChecks();
-  }, [pickNewSpinnerTip]);
+  }, [
+    pickNewSpinnerTip, // isLoading is now derived from queryGuard — no setter call needed.
+    // queryGuard.end() (onQuery finally) or cancelReservation() (executeUserInput
+    // finally) have already transitioned the guard to idle by the time this runs.
+    // External loading (remote/backgrounding) is reset separately by those hooks.
+    setIsExternalLoading,
+    setUserInputOnProcessing,
+  ]);
 
   // Session backgrounding — hook is below, after getToolUseContext
 
@@ -2387,7 +2385,22 @@ export function REPL({
         throw error;
       }
     },
-    [resetLoadingState, setAppState],
+    [
+      resetLoadingState,
+      setAppState, // Restore read file state from the message history
+      restoreReadFileState,
+      mainThreadAgentDefinition?.agentType,
+      contentReplacementStateRef.current, // Clear input to ensure no residual state
+      setInputValue, // Clear any active tool JSX
+      setToolJSX,
+      agentDefinitions,
+      contentReplacementStateRef,
+      store.getState, // Reset messages to the provided initial messages
+      // Use a callback to ensure we're not dependent on stale state
+      setMessages,
+      mainLoopModel,
+      initialMainThreadAgentDefinition,
+    ],
   );
 
   // Lazy init: useRef(createX()) would call createX on every render and
@@ -2435,7 +2448,7 @@ export function REPL({
     }
     // Only run on mount - initialMessages shouldn't change during component lifetime
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [initialMessages.length, setAppState, initialMessages, restoreReadFileState, store.getState]);
   const { status: apiKeyStatus, reverify } = useApiKeyVerification();
 
   // Auto-run /issue state
@@ -2658,7 +2671,7 @@ export function REPL({
         return newContents;
       });
     }
-  }, [setInputValue, setInputMode, inputValue, setPastedContents]);
+  }, [setInputValue, inputValue]);
 
   // CancelRequestHandler props - rendered inside KeybindingSetup
   const cancelRequestProps = {
@@ -2689,7 +2702,7 @@ export function REPL({
         setShowCostDialog(true);
       }
     }
-  }, [messages, showCostDialog, haveShownCostDialog]);
+  }, [showCostDialog, haveShownCostDialog]);
   const sandboxAskCallback: SandboxAskCallback = useCallback(
     async (hostPattern: NetworkHostPattern) => {
       // If running as a swarm worker, forward the request to the leader via mailbox
@@ -2876,7 +2889,7 @@ export function REPL({
         });
       }, setToolUseConfirmQueue);
     },
-    [setAppState, setToolUseConfirmQueue],
+    [setAppState],
   );
 
   // Register the leader's setToolPermissionContext for in-process teammates
@@ -2905,7 +2918,7 @@ export function REPL({
   const getToolUseContext = useCallback(
     (
       messages: MessageType[],
-      newMessages: MessageType[],
+      _newMessages: MessageType[],
       abortController: AbortController,
       mainLoopModel: string,
     ): ProcessUserInputContext => {
@@ -3079,7 +3092,11 @@ export function REPL({
       disabled,
       customSystemPrompt,
       appendSystemPrompt,
-      setConversationId,
+      terminal,
+      thinkingConfig,
+      setToolJSX,
+      setResponseLength,
+      contentReplacementStateRef.current,
     ],
   );
 
@@ -3167,6 +3184,7 @@ export function REPL({
     appendSystemPrompt,
     canUseTool,
     setAppState,
+    terminalTitle,
   ]);
   const { handleBackgroundSession } = useSessionBackgrounding({
     setMessages,
@@ -3277,14 +3295,7 @@ export function REPL({
         onStreamingText,
       );
     },
-    [
-      setMessages,
-      setResponseLength,
-      setStreamMode,
-      setStreamingToolUses,
-      setStreamingThinking,
-      onStreamingText,
-    ],
+    [setMessages, setResponseLength, onStreamingText],
   );
   const onQueryImpl = useCallback(
     async (
@@ -3552,7 +3563,20 @@ export function REPL({
       mainThreadAgentDefinition,
       onQueryEvent,
       sessionTitle,
-      titleDisabled,
+      titleDisabled, // Apply slash-command-scoped allowedTools (from skill frontmatter) to the
+      // store once per turn. This also covers the reset: the next non-skill turn
+      // passes [] and clears it. Must run before the !shouldQuery gate: forked
+      // commands (executeForkedSlashCommand) return shouldQuery=false, and
+      // createGetAppStateWithAllowedTools in forkedAgent.ts reads this field, so
+      // stale skill tools would otherwise leak into forked agent permissions.
+      // Previously this write was hidden inside getToolUseContext's getAppState
+      // (~85 calls/turn); hoisting it here makes getAppState a pure read and stops
+      // ephemeral contexts (permission dialog, BackgroundTasksDialog) from
+      // accidentally clearing it mid-turn.
+      store.setState,
+      setMessages,
+      store.getState,
+      agentTitle,
     ],
   );
   const onQuery = useCallback(
@@ -3773,7 +3797,19 @@ export function REPL({
         }
       }
     },
-    [onQueryImpl, setAppState, resetLoadingState, queryGuard, mrOnBeforeQuery, mrOnTurnComplete],
+    [
+      onQueryImpl,
+      setAppState,
+      resetLoadingState,
+      queryGuard,
+      mrOnBeforeQuery,
+      mrOnTurnComplete,
+      setMessages,
+      store.getState, // isLoading is derived from queryGuard — tryStart() above already
+      // transitioned dispatching→running, so no setter call needed here.
+      resetTimingRefs,
+      proactiveActive,
+    ],
   );
 
   // Handle initial message (from CLI args or plan mode exit with context clear)
@@ -3903,7 +3939,17 @@ export function REPL({
       );
     }
     void processInitialMessage(pending);
-  }, [initialMessage, isLoading, setMessages, setAppState, onQuery, mainLoopModel, tools]);
+  }, [
+    initialMessage,
+    isLoading,
+    setMessages,
+    setAppState,
+    onQuery,
+    mainLoopModel,
+    store.getState,
+    awaitPendingHooks,
+    onSubmit,
+  ]);
   const onSubmit = useCallback(
     async (
       input: string,
@@ -4376,10 +4422,6 @@ export function REPL({
       inputMode,
       commands,
       setInputValue,
-      setInputMode,
-      setPastedContents,
-      setSubmitCount,
-      setIDESelection,
       setToolJSX,
       getToolUseContext,
       // messages is read via messagesRef.current inside the callback to
@@ -4393,18 +4435,22 @@ export function REPL({
       pastedContents,
       ideSelection,
       setUserInputOnProcessing,
-      setAbortController,
       addNotification,
       onQuery,
       stashedPrompt,
-      setStashedPrompt,
       setAppState,
       onBeforeQuery,
       canUseTool,
-      remoteSession,
       setMessages,
       awaitPendingHooks,
-      repinScroll,
+      repinScroll, // showSpinner includes userInputOnProcessing, so the spinner appears
+      // on this render. Reset timing refs now (before queryGuard.reserve()
+      // would) so elapsed time doesn't read as Date.now() - 0. The
+      // isQueryActive transition above does the same reset — idempotent.
+      resetTimingRefs,
+      activeRemote.sendMessage,
+      activeRemote.isRemoteMode,
+      abortController,
     ],
   );
 
@@ -4812,11 +4858,11 @@ export function REPL({
       ideSelection,
       setUserInputOnProcessing,
       canUseTool,
-      setAbortController,
       onQuery,
       addNotification,
       setAppState,
       onBeforeQuery,
+      setMessages,
     ],
   );
   useQueueProcessor({
@@ -4832,7 +4878,7 @@ export function REPL({
   useEffect(() => {
     activityManager.recordUserActivity();
     updateLastInteractionTime(true);
-  }, [inputValue, submitCount]);
+  }, []);
   useEffect(() => {
     if (submitCount === 1) {
       startBackgroundHousekeeping();
@@ -4980,7 +5026,7 @@ export function REPL({
       void onQuery([userMessage], newAbortController, true, [], mainLoopModel);
       return true;
     },
-    [onQuery, mainLoopModel, store],
+    [onQuery, mainLoopModel, queryGuard.isActive],
   );
 
   // Voice input integration (VOICE_MODE builds only)
@@ -5018,7 +5064,7 @@ export function REPL({
     // condition would break rules-of-hooks.
     const assistantMode = store.getState().kairosEnabled;
     // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
-    useScheduledTasks!({
+    useScheduledTasks?.({
       isLoading,
       assistantMode,
       setMessages,
@@ -5081,7 +5127,7 @@ export function REPL({
     };
     // TODO: fix this
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [onInit]);
 
   // Listen for suspend/resume events
   const { internal_eventEmitter } = useStdin();
@@ -5643,7 +5689,7 @@ export function REPL({
   // (immediate: /model, /mcp, /btw, ...) and scrollable (non-immediate:
   // /config, /theme, /diff, ...) both go here now.
   const toolJsxCentered = isFullscreenEnvEnabled() && toolJSX?.isLocalJSXCommand === true;
-  const centeredModal: React.ReactNode = toolJsxCentered ? toolJSX!.jsx : null;
+  const centeredModal: React.ReactNode = toolJsxCentered ? toolJSX?.jsx : null;
 
   // <AlternateScreen> at the root: everything below is inside its
   // <Box height={rows}>. Handlers/contexts are zero-height so ScrollBox's
@@ -5839,8 +5885,8 @@ export function REPL({
                   )}
                 {focusedInputDialog === 'sandbox-permission' && (
                   <SandboxPermissionRequest
-                    key={sandboxPermissionRequestQueue[0]!.hostPattern.host}
-                    hostPattern={sandboxPermissionRequestQueue[0]!.hostPattern}
+                    key={sandboxPermissionRequestQueue[0]?.hostPattern.host}
+                    hostPattern={sandboxPermissionRequestQueue[0]?.hostPattern}
                     onUserResponse={(response: { allow: boolean; persistToSettings: boolean }) => {
                       const { allow, persistToSettings } = response;
                       const currentRequest = sandboxPermissionRequestQueue[0];
@@ -5895,10 +5941,10 @@ export function REPL({
                 )}
                 {focusedInputDialog === 'prompt' && (
                   <PromptDialog
-                    key={promptQueue[0]!.request.prompt}
-                    title={promptQueue[0]!.title}
-                    toolInputSummary={promptQueue[0]!.toolInputSummary}
-                    request={promptQueue[0]!.request}
+                    key={promptQueue[0]?.request.prompt}
+                    title={promptQueue[0]?.title}
+                    toolInputSummary={promptQueue[0]?.toolInputSummary}
+                    request={promptQueue[0]?.request}
                     onRespond={(selectedKey) => {
                       const item = promptQueue[0];
                       if (!item) return;
@@ -5933,10 +5979,10 @@ export function REPL({
                 {/* Worker sandbox permission requests from swarm workers */}
                 {focusedInputDialog === 'worker-sandbox-permission' && (
                   <SandboxPermissionRequest
-                    key={workerSandboxPermissions.queue[0]!.requestId}
+                    key={workerSandboxPermissions.queue[0]?.requestId}
                     hostPattern={
                       {
-                        host: workerSandboxPermissions.queue[0]!.host,
+                        host: workerSandboxPermissions.queue[0]?.host,
                         port: undefined,
                       } as NetworkHostPattern
                     }
@@ -5991,9 +6037,9 @@ export function REPL({
                 {focusedInputDialog === 'elicitation' && (
                   <ElicitationDialog
                     key={
-                      elicitation.queue[0]!.serverName +
+                      elicitation.queue[0]?.serverName +
                       ':' +
-                      String(elicitation.queue[0]!.requestId)
+                      String(elicitation.queue[0]?.requestId)
                     }
                     event={elicitation.queue[0]!}
                     onResponse={(action, content) => {

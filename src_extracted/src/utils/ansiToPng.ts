@@ -18,7 +18,7 @@
  *   bun scripts/generate-bitmap-font.ts
  */
 
-import { deflateSync } from 'zlib';
+import { deflateSync } from 'node:zlib';
 import { stringWidth } from '../ink/stringWidth.js';
 import { type AnsiColor, DEFAULT_BG, type ParsedLine, parseAnsi } from './ansiToSvg.js';
 
@@ -93,7 +93,7 @@ export function ansiToPng(ansiText: string, options: AnsiToPngOptions = {}): Buf
 
   const lines = parseAnsi(ansiText);
   // Trim trailing blank lines (same behavior as ansiToSvg).
-  while (lines.length > 0 && lines[lines.length - 1]!.every((span) => span.text.trim() === '')) {
+  while (lines.length > 0 && lines[lines.length - 1]?.every((span) => span.text.trim() === '')) {
     lines.pop();
   }
   if (lines.length === 0) {

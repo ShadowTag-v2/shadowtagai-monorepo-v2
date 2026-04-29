@@ -1,6 +1,6 @@
 import { feature } from 'bun:bundle';
+import { dirname, join, resolve } from 'node:path';
 import mergeWith from 'lodash-es/mergeWith.js';
-import { dirname, join, resolve } from 'path';
 import { z } from 'zod/v4';
 import {
   getFlagSettingsInline,
@@ -452,7 +452,7 @@ export function updateSettingsForSource(
     // Mark this as an internal write before writing the file
     markInternalWrite(filePath);
 
-    writeFileSyncAndFlush_DEPRECATED(filePath, jsonStringify(updatedSettings, null, 2) + '\n');
+    writeFileSyncAndFlush_DEPRECATED(filePath, `${jsonStringify(updatedSettings, null, 2)}\n`);
 
     // Invalidate the session cache since settings have been updated
     resetSettingsCache();

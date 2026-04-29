@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join } from 'node:path';
 import type React from 'react';
 import { useCallback, useState } from 'react';
 import type { ExitState } from '../hooks/useExitOnCtrlCDWithKeybindings.js';
@@ -54,7 +54,7 @@ export function ExportDialog({
   const handleFilenameSubmit = () => {
     const finalFilename = filename.endsWith('.txt')
       ? filename
-      : filename.replace(/\.[^.]+$/, '') + '.txt';
+      : `${filename.replace(/\.[^.]+$/, '')}.txt`;
     const filepath = join(getCwd(), finalFilename);
     try {
       writeFileSync_DEPRECATED(filepath, content, {

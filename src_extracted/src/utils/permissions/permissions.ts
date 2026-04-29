@@ -610,7 +610,7 @@ export const hasPermissionsToUseTool: CanUseToolFn = async (
 
       // Allowlisted tools are safe and don't need YOLO classification.
       // This uses the safe-tool allowlist to skip unnecessary classifier API calls.
-      if (classifierDecisionModule!.isAutoModeAllowlistedTool(tool.name)) {
+      if (classifierDecisionModule?.isAutoModeAllowlistedTool(tool.name)) {
         const newDenialState = recordSuccess(denialState);
         persistDenialState(context, newDenialState);
         logForDebugging(
@@ -1291,7 +1291,7 @@ function convertRulesToUpdates(
     if (!grouped.has(key)) {
       grouped.set(key, []);
     }
-    grouped.get(key)!.push(rule.ruleValue);
+    grouped.get(key)?.push(rule.ruleValue);
   }
 
   // Convert to PermissionUpdate array

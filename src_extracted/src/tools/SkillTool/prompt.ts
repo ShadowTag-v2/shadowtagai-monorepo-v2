@@ -37,7 +37,7 @@ export function getCharBudget(contextWindowTokens?: number): number {
 function getCommandDescription(cmd: Command): string {
   const desc = cmd.whenToUse ? `${cmd.description} - ${cmd.whenToUse}` : cmd.description;
   return desc.length > MAX_LISTING_DESC_CHARS
-    ? desc.slice(0, MAX_LISTING_DESC_CHARS - 1) + '\u2026'
+    ? `${desc.slice(0, MAX_LISTING_DESC_CHARS - 1)}\u2026`
     : desc;
 }
 
@@ -118,7 +118,7 @@ export function formatCommandsWithinBudget(
       });
     }
     return commands
-      .map((cmd, i) => (bundledIndices.has(i) ? fullEntries[i]!.full : `- ${cmd.name}`))
+      .map((cmd, i) => (bundledIndices.has(i) ? fullEntries[i]?.full : `- ${cmd.name}`))
       .join('\n');
   }
 
@@ -144,7 +144,7 @@ export function formatCommandsWithinBudget(
   return commands
     .map((cmd, i) => {
       // Bundled skills always get full descriptions
-      if (bundledIndices.has(i)) return fullEntries[i]!.full;
+      if (bundledIndices.has(i)) return fullEntries[i]?.full;
       const description = getCommandDescription(cmd);
       return `- ${cmd.name}: ${truncate(description, maxDescLen)}`;
     })

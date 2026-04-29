@@ -112,7 +112,7 @@ async function extractPrefixFromElement(cmd: ParsedCommandElement): Promise<stri
           spec?.options &&
           argIdx < cmd.args.length &&
           cmd.args[argIdx] !== word &&
-          !cmd.args[argIdx]!.startsWith('-')
+          !cmd.args[argIdx]?.startsWith('-')
         ) {
           const flagLower = a.toLowerCase();
           const opt = spec.options.find((o) =>
@@ -278,16 +278,16 @@ function wordAlignedLCP(strings: string[]): string {
   if (strings.length === 0) return '';
   if (strings.length === 1) return strings[0]!;
 
-  const firstWords = strings[0]!.split(' ');
+  const firstWords = strings[0]?.split(' ');
   let commonWordCount = firstWords.length;
 
   for (let i = 1; i < strings.length; i++) {
-    const words = strings[i]!.split(' ');
+    const words = strings[i]?.split(' ');
     let matchCount = 0;
     while (
       matchCount < commonWordCount &&
       matchCount < words.length &&
-      words[matchCount]!.toLowerCase() === firstWords[matchCount]!.toLowerCase()
+      words[matchCount]?.toLowerCase() === firstWords[matchCount]?.toLowerCase()
     ) {
       matchCount++;
     }

@@ -32,12 +32,12 @@ export function startBackgroundHousekeeping(): void {
   void initMagicDocs();
   void initSkillImprovement();
   if (feature('EXTRACT_MEMORIES')) {
-    extractMemoriesModule!.initExtractMemories();
+    extractMemoriesModule?.initExtractMemories();
   }
   initAutoDream();
   void autoUpdateMarketplacesAndPluginsInBackground();
   if (feature('LODESTONE') && getIsInteractive()) {
-    void registerProtocolModule!.ensureDeepLinkProtocolRegistered();
+    void registerProtocolModule?.ensureDeepLinkProtocolRegistered();
   }
 
   let needsCleanup = true;

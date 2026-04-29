@@ -6,9 +6,9 @@
  * extension (packages/claude-vscode/src/common-host/sessionStorage.ts).
  */
 
-import type { UUID } from 'crypto';
-import { open as fsOpen, readdir, realpath, stat } from 'fs/promises';
-import { join } from 'path';
+import type { UUID } from 'node:crypto';
+import { open as fsOpen, readdir, realpath, stat } from 'node:fs/promises';
+import { join } from 'node:path';
 import { getClaudeConfigHomeDir } from './envUtils.js';
 import { getWorktreePathsPortable } from './getWorktreePathsPortable.js';
 import { djb2Hash } from './hash.js';
@@ -170,12 +170,12 @@ export function extractFirstPromptFromHead(head: string): string {
 
         // Format bash input with ! prefix before the generic XML skip
         const bashMatch = /<bash-input>([\s\S]*?)<\/bash-input>/.exec(result);
-        if (bashMatch) return `! ${bashMatch[1]!.trim()}`;
+        if (bashMatch) return `! ${bashMatch[1]?.trim()}`;
 
         if (SKIP_FIRST_PROMPT_PATTERN.test(result)) continue;
 
         if (result.length > 200) {
-          result = result.slice(0, 200).trim() + '\u2026';
+          result = `${result.slice(0, 200).trim()}\u2026`;
         }
         return result;
       }
@@ -348,7 +348,7 @@ export async function findProjectDir(projectPath: string): Promise<string | unde
     const projectsDir = getProjectsDir();
     try {
       const dirents = await readdir(projectsDir, { withFileTypes: true });
-      const match = dirents.find((d) => d.isDirectory() && d.name.startsWith(prefix + '-'));
+      const match = dirents.find((d) => d.isDirectory() && d.name.startsWith(`${prefix}-`));
       return match ? join(projectsDir, match.name) : undefined;
     } catch {
       return undefined;
@@ -634,7 +634,7 @@ function captureSnap(
     if (s.lastSnapBuf === undefined || s.lastSnapLen > s.lastSnapBuf.length) {
       s.lastSnapBuf = Buffer.allocUnsafe(s.lastSnapLen);
     }
-    s.carryBuf!.copy(s.lastSnapBuf, 0, 0, s.straddleSnapCarryLen);
+    s.carryBuf?.copy(s.lastSnapBuf, 0, 0, s.straddleSnapCarryLen);
     chunk.copy(s.lastSnapBuf, s.straddleSnapCarryLen, 0, s.straddleSnapTailEnd);
     s.lastSnapSrc = s.lastSnapBuf;
   }
@@ -723,7 +723,7 @@ export async function readTranscriptForLoad(
       if (s.carryLen > 0) {
         const bufLen = s.carryLen + (bytesRead - chunkOff);
         buf = Buffer.allocUnsafe(bufLen);
-        s.carryBuf!.copy(buf, 0, 0, s.carryLen);
+        s.carryBuf?.copy(buf, 0, 0, s.carryLen);
         chunk.copy(buf, s.carryLen, chunkOff, bytesRead);
       } else {
         buf = chunk.subarray(chunkOff, bytesRead);

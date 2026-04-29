@@ -99,14 +99,14 @@ function resolveValue(v: Value, ownerSize: number): number {
     case Unit.Point:
       return v.value;
     case Unit.Percent:
-      return isNaN(ownerSize) ? NaN : (v.value * ownerSize) / 100;
+      return Number.isNaN(ownerSize) ? NaN : (v.value * ownerSize) / 100;
     default:
       return NaN;
   }
 }
 
 function isDefined(n: number): boolean {
-  return !isNaN(n);
+  return !Number.isNaN(n);
 }
 
 // NaN-safe equality for layout-cache input comparison
@@ -254,11 +254,11 @@ function isMarginAuto(edges: Value[], physicalEdge: number): boolean {
 // Setter helpers for the _hasAutoMargin / _hasPosition fast-path flags.
 // Unit.Undefined = 0, Unit.Auto = 3.
 function hasAnyAutoEdge(edges: Value[]): boolean {
-  for (let i = 0; i < 9; i++) if (edges[i]!.unit === 3) return true;
+  for (let i = 0; i < 9; i++) if (edges[i]?.unit === 3) return true;
   return false;
 }
 function hasAnyDefinedEdge(edges: Value[]): boolean {
-  for (let i = 0; i < 9; i++) if (edges[i]!.unit !== 0) return true;
+  for (let i = 0; i < 9; i++) if (edges[i]?.unit !== 0) return true;
   return false;
 }
 
@@ -277,7 +277,7 @@ function resolveEdges4Into(
   const eA = edges[8]!; // Edge.All
   const eS = edges[4]!; // Edge.Start
   const eE = edges[5]!; // Edge.End
-  const pctDenom = isNaN(ownerSize) ? NaN : ownerSize / 100;
+  const pctDenom = Number.isNaN(ownerSize) ? NaN : ownerSize / 100;
 
   // Left: edges[0] → Horizontal → All → Start
   let v = edges[0]!;
@@ -720,7 +720,7 @@ export class Node {
     this.markDirty();
   }
   setFlex(v: number | undefined): void {
-    if (v === undefined || isNaN(v)) {
+    if (v === undefined || Number.isNaN(v)) {
       this.style.flexGrow = 0;
       this.style.flexShrink = 0;
     } else if (v > 0) {
@@ -1118,8 +1118,8 @@ function layoutNode(
           sameFloat(cIn[o + 4]!, ownerWidth) &&
           sameFloat(cIn[o + 5]!, ownerHeight)
         ) {
-          layout.width = node._cOut![i * 2]!;
-          layout.height = node._cOut![i * 2 + 1]!;
+          layout.width = node._cOut?.[i * 2]!;
+          layout.height = node._cOut?.[i * 2 + 1]!;
           _yogaCacheHits++;
           return;
         }
@@ -2137,7 +2137,7 @@ function resolveFlexibleLengths(
     } else if (remaining < 0 && totalShrinkScaled > 0) {
       let totalShrink = 0;
       for (let i = 0; i < n; i++) {
-        if (!frozen[i]) totalShrink += children[i]!.style.flexShrink;
+        if (!frozen[i]) totalShrink += children[i]?.style.flexShrink;
       }
       if (totalShrink < 1) {
         const scaled = initialFree * totalShrink;
@@ -2166,7 +2166,7 @@ function resolveFlexibleLengths(
     let anyFrozen = false;
     for (let i = 0; i < n; i++) {
       if (frozen[i]) continue;
-      const v = children[i]!._mainSize - unclamped[i]!;
+      const v = children[i]?._mainSize - unclamped[i]!;
       if ((totalViolation > 0 && v > 0) || (totalViolation < 0 && v < 0)) {
         frozen[i] = true;
         anyFrozen = true;
@@ -2395,7 +2395,7 @@ function parseDimension(v: number | string | undefined): Value {
     return percentValue(parseFloat(v));
   }
   const n = parseFloat(v);
-  return isNaN(n) ? UNDEFINED_VALUE : pointValue(n);
+  return Number.isNaN(n) ? UNDEFINED_VALUE : pointValue(n);
 }
 
 function physicalEdge(edge: Edge): number {

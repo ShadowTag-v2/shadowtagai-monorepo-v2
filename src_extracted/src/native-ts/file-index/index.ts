@@ -46,9 +46,6 @@ export class FileIndex {
   private charBits: Int32Array = new Int32Array(0);
   private pathLens: Uint16Array = new Uint16Array(0);
   private topLevelCache: SearchResult[] | null = null;
-  // During async build, tracks how many paths have bitmap/lowerPath filled.
-  // search() uses this to search the ready prefix while build continues.
-  private readyCount = 0;
 
   /**
    * Load paths from an array of strings.
@@ -151,7 +148,7 @@ export class FileIndex {
   // of paths missing any needle letter (89% survival for broad queries like
   // "test" → still a 10%+ free win; 90%+ rejection for rare chars).
   private indexPath(i: number): void {
-    const lp = this.paths[i]!.toLowerCase();
+    const lp = this.paths[i]?.toLowerCase();
     this.lowerPaths[i] = lp;
     const len = lp.length;
     this.pathLens[i] = len;
@@ -247,19 +244,19 @@ export class FileIndex {
         topK.push({ path, fuzzScore: score });
         if (topK.length === limit) {
           topK.sort((a, b) => a.fuzzScore - b.fuzzScore);
-          threshold = topK[0]!.fuzzScore;
+          threshold = topK[0]?.fuzzScore;
         }
       } else if (score > threshold) {
         let lo = 0;
         let hi = topK.length;
         while (lo < hi) {
           const mid = (lo + hi) >> 1;
-          if (topK[mid]!.fuzzScore < score) lo = mid + 1;
+          if (topK[mid]?.fuzzScore < score) lo = mid + 1;
           else hi = mid;
         }
         topK.splice(lo, 0, { path, fuzzScore: score });
         topK.shift();
-        threshold = topK[0]!.fuzzScore;
+        threshold = topK[0]?.fuzzScore;
       }
     }
 
@@ -271,7 +268,7 @@ export class FileIndex {
     const results: SearchResult[] = new Array(matchCount);
 
     for (let i = 0; i < matchCount; i++) {
-      const path = topK[i]!.path;
+      const path = topK[i]?.path;
       const positionScore = i / denom;
       const finalScore = path.includes('test')
         ? Math.min(positionScore * 1.05, 1.0)

@@ -1,5 +1,4 @@
 import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import * as React from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { REFRESH_ARROW } from '../../constants/figures.js';
 import { Box, Text } from '../../ink.js';
@@ -57,7 +56,7 @@ function formatUri(uri: string): string {
   }
   // For other URIs, show the whole thing but truncated
   if (uri.length > 40) {
-    return uri.slice(0, 39) + '\u2026';
+    return `${uri.slice(0, 39)}\u2026`;
   }
   return uri;
 }

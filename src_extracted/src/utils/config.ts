@@ -1,9 +1,9 @@
 import { feature } from 'bun:bundle';
-import { randomBytes } from 'crypto';
-import { unwatchFile, watchFile } from 'fs';
+import { randomBytes } from 'node:crypto';
+import { unwatchFile, watchFile } from 'node:fs';
+import { basename, dirname, join, resolve } from 'node:path';
 import memoize from 'lodash-es/memoize.js';
 import pickBy from 'lodash-es/pickBy.js';
-import { basename, dirname, join, resolve } from 'path';
 import { getOriginalCwd, getSessionTrustAccepted } from '../bootstrap/state.js';
 import { getAutoMemEntrypoint } from '../memdir/paths.js';
 import { logEvent } from '../services/analytics/index.js';
@@ -1722,7 +1722,7 @@ export function getMemoryPath(memoryType: MemoryType): string {
   }
   // TeamMem is only a valid MemoryType when feature('TEAMMEM') is true
   if (feature('TEAMMEM')) {
-    return teamMemPaths!.getTeamMemEntrypoint();
+    return teamMemPaths?.getTeamMemEntrypoint();
   }
   return ''; // unreachable in external builds where TeamMem is not in MemoryType
 }

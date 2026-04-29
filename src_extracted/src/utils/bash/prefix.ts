@@ -94,7 +94,7 @@ async function handleWrapper(
             return parts.join(' ');
           }
           break;
-        } else if (args[i] && !args[i]!.startsWith('-') && !ENV_VAR.test(args[i]!)) {
+        } else if (args[i] && !args[i]?.startsWith('-') && !ENV_VAR.test(args[i]!)) {
           parts.push(args[i]!);
         }
       }
@@ -183,7 +183,7 @@ function longestCommonPrefix(strings: string[]): string {
   let commonWords = words.length;
 
   for (let i = 1; i < strings.length; i++) {
-    const otherWords = strings[i]!.split(' ');
+    const otherWords = strings[i]?.split(' ');
     let shared = 0;
     while (
       shared < commonWords &&

@@ -389,7 +389,7 @@ function isSafeHeredoc(command: string): boolean {
         const parenMatch = nextLine.match(/^([ \t]*)\)/);
         if (!parenMatch) return false; // `)` not at start of next line
         closeParenLineIdx = i + 1;
-        closeParenColIdx = parenMatch[1]!.length; // Position of `)`
+        closeParenColIdx = parenMatch[1]?.length; // Position of `)`
         break;
       }
 
@@ -403,7 +403,7 @@ function isSafeHeredoc(command: string): boolean {
           closeParenLineIdx = i;
           // Column is in rawLine (pre-tab-strip), so recompute
           const tabPrefix = isDash ? (rawLine.match(/^\t*/)?.[0] ?? '') : '';
-          closeParenColIdx = tabPrefix.length + delimiter.length + parenMatch[1]!.length;
+          closeParenColIdx = tabPrefix.length + delimiter.length + parenMatch[1]?.length;
           break;
         }
         // Line starts with delimiter but has other trailing content —
@@ -423,7 +423,7 @@ function isSafeHeredoc(command: string): boolean {
     // Compute the absolute end position (one past the `)` character)
     let endPos = bodyStart;
     for (let i = 0; i < closeParenLineIdx; i++) {
-      endPos += bodyLines[i]!.length + 1; // +1 for newline
+      endPos += bodyLines[i]?.length + 1; // +1 for newline
     }
     endPos += closeParenColIdx + 1; // +1 to include the `)` itself
 
@@ -700,7 +700,7 @@ function validateGitCommit(context: ValidationContext): PermissionResult {
 
     // Security hardening: block messages starting with dash
     // This catches potential obfuscation patterns like git commit -m "---"
-    if (messageContent && messageContent.startsWith('-')) {
+    if (messageContent?.startsWith('-')) {
       logEvent('tengu_bash_security_check_triggered', {
         checkId: BASH_SECURITY_CHECK_IDS.OBFUSCATED_FLAGS,
         subId: 5,

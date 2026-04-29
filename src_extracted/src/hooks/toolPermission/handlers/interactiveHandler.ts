@@ -1,6 +1,6 @@
 import { feature } from 'bun:bundle';
+import { randomUUID } from 'node:crypto';
 import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
-import { randomUUID } from 'crypto';
 import { logForDebugging } from 'src/utils/debug.js';
 import { getAllowedChannels } from '../../../bootstrap/state.js';
 import type { BridgePermissionCallbacks } from '../../../bridge/bridgePermissionCallbacks.js';

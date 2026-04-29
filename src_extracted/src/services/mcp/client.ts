@@ -233,8 +233,8 @@ const isComputerUseMCPServer = feature('CHICAGO_MCP')
     ).isComputerUseMCPServer
   : undefined;
 
-import { mkdir, readFile, unlink, writeFile } from 'fs/promises';
-import { dirname, join } from 'path';
+import { mkdir, readFile, unlink, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
 import { getClaudeConfigHomeDir } from '../../utils/envUtils.js';
 /* eslint-enable @typescript-eslint/no-require-imports */
 import { jsonParse, jsonStringify } from '../../utils/slowOperations.js';
@@ -862,7 +862,7 @@ export const connectToServer = memoize(
       } else if (
         feature('CHICAGO_MCP') &&
         (serverRef.type === 'stdio' || !serverRef.type) &&
-        isComputerUseMCPServer!(name)
+        isComputerUseMCPServer?.(name)
       ) {
         // Run the Computer Use MCP server in-process — same rationale as
         // Chrome above. The package's CallTool handler is a stub; real
@@ -1081,7 +1081,7 @@ export const connectToServer = memoize(
       const rawInstructions = client.getInstructions();
       let instructions = rawInstructions;
       if (rawInstructions && rawInstructions.length > MAX_MCP_DESCRIPTION_LENGTH) {
-        instructions = rawInstructions.slice(0, MAX_MCP_DESCRIPTION_LENGTH) + '… [truncated]';
+        instructions = `${rawInstructions.slice(0, MAX_MCP_DESCRIPTION_LENGTH)}… [truncated]`;
         logMCPDebug(
           name,
           `Server instructions truncated from ${rawInstructions.length} to ${MAX_MCP_DESCRIPTION_LENGTH} chars`,
@@ -1290,7 +1290,7 @@ export const connectToServer = memoize(
         fetchResourcesForClient.cache.delete(name);
         fetchCommandsForClient.cache.delete(name);
         if (feature('MCP_SKILLS')) {
-          fetchMcpSkillsForClient!.cache.delete(name);
+          fetchMcpSkillsForClient?.cache.delete(name);
         }
 
         connectToServer.cache.delete(key);
@@ -1552,7 +1552,7 @@ export async function clearServerCache(
   fetchResourcesForClient.cache.delete(name);
   fetchCommandsForClient.cache.delete(name);
   if (feature('MCP_SKILLS')) {
-    fetchMcpSkillsForClient!.cache.delete(name);
+    fetchMcpSkillsForClient?.cache.delete(name);
   }
 }
 
@@ -1665,7 +1665,7 @@ export const fetchToolsForClient = memoizeWithLRU(
             async prompt() {
               const desc = tool.description ?? '';
               return desc.length > MAX_MCP_DESCRIPTION_LENGTH
-                ? desc.slice(0, MAX_MCP_DESCRIPTION_LENGTH) + '… [truncated]'
+                ? `${desc.slice(0, MAX_MCP_DESCRIPTION_LENGTH)}… [truncated]`
                 : desc;
             },
             isConcurrencySafe() {
@@ -1841,8 +1841,8 @@ export const fetchToolsForClient = memoizeWithLRU(
               : {}),
             ...(feature('CHICAGO_MCP') &&
             (client.config.type === 'stdio' || !client.config.type) &&
-            isComputerUseMCPServer!(client.name)
-              ? computerUseWrapper!().getComputerUseMCPToolOverrides(tool.name)
+            isComputerUseMCPServer?.(client.name)
+              ? computerUseWrapper?.().getComputerUseMCPToolOverrides(tool.name)
               : {}),
           };
         })
@@ -1911,7 +1911,7 @@ export const fetchCommandsForClient = memoizeWithLRU(
         const argNames = Object.values(prompt.arguments ?? {}).map((k) => k.name);
         return {
           type: 'prompt' as const,
-          name: 'mcp__' + normalizeNameForMCP(client.name) + '__' + prompt.name,
+          name: `mcp__${normalizeNameForMCP(client.name)}__${prompt.name}`,
           description: prompt.description ?? '',
           hasUserSpecifiedDescription: !!prompt.description,
           contentLength: 0, // Dynamic MCP content
@@ -2025,7 +2025,7 @@ export async function reconnectMcpServerImpl(
       fetchToolsForClient(client),
       fetchCommandsForClient(client),
       feature('MCP_SKILLS') && supportsResources
-        ? fetchMcpSkillsForClient!(client)
+        ? fetchMcpSkillsForClient?.(client)
         : Promise.resolve([]),
       supportsResources ? fetchResourcesForClient(client) : Promise.resolve([]),
     ]);
@@ -2185,7 +2185,7 @@ export async function getMcpToolsCommandsAndResources(
         fetchCommandsForClient(client),
         // Discover skills from skill:// resources
         feature('MCP_SKILLS') && supportsResources
-          ? fetchMcpSkillsForClient!(client)
+          ? fetchMcpSkillsForClient?.(client)
           : Promise.resolve([]),
         // Fetch resources if supported
         supportsResources ? fetchResourcesForClient(client) : Promise.resolve([]),
@@ -2729,7 +2729,7 @@ export async function callMCPToolWithUrlElicitationRetry({
           );
           if (hookResponse.action !== 'accept') {
             return {
-              content: `URL elicitation was ${hookResponse.action === 'decline' ? 'declined' : hookResponse.action + 'ed'} by a hook. The tool "${tool}" could not complete because it requires the user to open a URL.`,
+              content: `URL elicitation was ${hookResponse.action === 'decline' ? 'declined' : `${hookResponse.action}ed`} by a hook. The tool "${tool}" could not complete because it requires the user to open a URL.`,
             };
           }
           // Hook accepted — skip the UI and proceed to retry
@@ -2804,10 +2804,10 @@ export async function callMCPToolWithUrlElicitationRetry({
         if (finalResult.action !== 'accept') {
           logMCPDebug(
             serverName,
-            `User ${finalResult.action === 'decline' ? 'declined' : finalResult.action + 'ed'} URL elicitation ${elicitationId}`,
+            `User ${finalResult.action === 'decline' ? 'declined' : `${finalResult.action}ed`} URL elicitation ${elicitationId}`,
           );
           return {
-            content: `URL elicitation was ${finalResult.action === 'decline' ? 'declined' : finalResult.action + 'ed'} by the user. The tool "${tool}" could not complete because it requires the user to open a URL.`,
+            content: `URL elicitation was ${finalResult.action === 'decline' ? 'declined' : `${finalResult.action}ed`} by the user. The tool "${tool}" could not complete because it requires the user to open a URL.`,
           };
         }
 

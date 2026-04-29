@@ -1,8 +1,8 @@
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { execa } from 'execa';
-import { readFile } from 'fs/promises';
-import { join } from 'path';
 import type * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import type { CommandResultDisplay } from '../../commands.js';
 import { Select } from '../../components/CustomSelect/select.js';
@@ -50,7 +50,7 @@ const SKILL_NAME = 'thinkback';
 async function getThinkbackSkillDir(): Promise<string | null> {
   const { enabled } = await loadAllPlugins();
   const thinkbackPlugin = enabled.find(
-    (p) => p.name === 'thinkback' || (p.source && p.source.includes(getPluginId())),
+    (p) => p.name === 'thinkback' || p.source?.includes(getPluginId()),
   );
   if (!thinkbackPlugin) {
     return null;

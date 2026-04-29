@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import figures from 'figures';
 import React, {
   createContext,
@@ -6,13 +7,11 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
-  useMemo,
   useRef,
   useState,
   useSyncExternalStore,
 } from 'react';
 import { c as _c } from 'react/compiler-runtime';
-import { fileURLToPath } from 'url';
 import { ModalContext } from '../context/modalContext.js';
 import {
   PromptOverlayProvider,

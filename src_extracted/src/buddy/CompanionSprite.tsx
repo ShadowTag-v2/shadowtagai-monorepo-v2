@@ -10,7 +10,6 @@ import { useAppState, useSetAppState } from '../state/AppState.js';
 import type { AppState } from '../state/AppStateStore.js';
 import { getGlobalConfig } from '../utils/config.js';
 import { isFullscreenActive } from '../utils/fullscreen.js';
-import type { Theme } from '../utils/theme.js';
 import { getCompanion } from './companion.js';
 import { renderFace, renderSprite, spriteFrameCount } from './sprites.js';
 import { RARITY_COLORS } from './types.js';
@@ -249,7 +248,7 @@ export function CompanionSprite(): React.ReactNode {
     );
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- tick intentionally captured at reaction-change, not tracked
-  }, [reaction, setAppState]);
+  }, [reaction, setAppState, tick]);
   if (!feature('BUDDY')) return null;
   const companion = getCompanion();
   if (!companion || getGlobalConfig().companionMuted) return null;
@@ -265,7 +264,7 @@ export function CompanionSprite(): React.ReactNode {
   if (columns < MIN_COLS_FOR_FULL_SPRITE) {
     const quip =
       reaction && reaction.length > NARROW_QUIP_CAP
-        ? reaction.slice(0, NARROW_QUIP_CAP - 1) + '…'
+        ? `${reaction.slice(0, NARROW_QUIP_CAP - 1)}…`
         : reaction;
     const label = quip ? `"${quip}"` : focused ? ` ${companion.name} ` : companion.name;
     return (

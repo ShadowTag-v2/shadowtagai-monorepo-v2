@@ -1,6 +1,6 @@
+import { hostname } from 'node:os';
 import axios from 'axios';
 import memoize from 'lodash-es/memoize.js';
-import { hostname } from 'os';
 import { getOauthConfig } from '../constants/oauth.js';
 import {
   checkGate_CACHED_OR_BLOCKING,

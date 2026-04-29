@@ -1,7 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 import Tacsop0FrontendClone from '../components/Tacsop0FrontendClone';
-import { describe, it, expect } from 'vitest';
 
 describe('Tacsop0FrontendClone', () => {
   it('renders the component', () => {

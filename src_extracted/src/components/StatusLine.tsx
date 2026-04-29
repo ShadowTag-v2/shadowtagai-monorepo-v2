@@ -288,7 +288,7 @@ function StatusLineInner({ messagesRef, lastAssistantMessageId, vimMode }: Props
   }, [lastAssistantMessageId, permissionMode, vimMode, mainLoopModel, scheduleUpdate]);
 
   // When the statusLine command changes (hot reload), log the next result
-  const statusLineCommand = settings?.statusLine?.command;
+  const _statusLineCommand = settings?.statusLine?.command;
   const isFirstSettingsRender = useRef(true);
   useEffect(() => {
     if (isFirstSettingsRender.current) {
@@ -297,7 +297,7 @@ function StatusLineInner({ messagesRef, lastAssistantMessageId, vimMode }: Props
     }
     logNextResultRef.current = true;
     void doUpdate();
-  }, [statusLineCommand, doUpdate]);
+  }, [doUpdate]);
 
   // Separate effect for logging on mount
   useEffect(() => {
@@ -330,7 +330,7 @@ function StatusLineInner({ messagesRef, lastAssistantMessageId, vimMode }: Props
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     // biome-ignore lint/correctness/useExhaustiveDependencies: intentional
-  }, []); // Only run once on mount - settings stable for initial logging
+  }, [addNotification, settings?.statusLine, settings.disableAllHooks]); // Only run once on mount - settings stable for initial logging
 
   // Initial update on mount + cleanup on unmount
   useEffect(() => {
@@ -343,7 +343,7 @@ function StatusLineInner({ messagesRef, lastAssistantMessageId, vimMode }: Props
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     // biome-ignore lint/correctness/useExhaustiveDependencies: intentional
-  }, []); // Only run once on mount, not when doUpdate changes
+  }, [doUpdate]); // Only run once on mount, not when doUpdate changes
 
   // Get padding from settings or default to 0
   const paddingX = settings?.statusLine?.padding ?? 0;

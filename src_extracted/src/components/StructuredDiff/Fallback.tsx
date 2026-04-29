@@ -1,6 +1,5 @@
 import { diffWordsWithSpace, type StructuredPatchHunk } from 'diff';
 import type * as React from 'react';
-import { useMemo } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import type { ThemeName } from 'src/utils/theme.js';
 import { stringWidth } from '../../ink/stringWidth.js';
@@ -342,8 +341,7 @@ function generateWordDiffElements(
           ? 'diffRemovedDimmed'
           : 'diffRemoved';
     const lineNum = lineIndex === 0 ? i : undefined;
-    const lineNumStr =
-      (lineNum !== undefined ? lineNum.toString().padStart(maxWidth) : ' '.repeat(maxWidth)) + ' ';
+    const lineNumStr = `${lineNum !== undefined ? lineNum.toString().padStart(maxWidth) : ' '.repeat(maxWidth)} `;
     // Calculate padding to fill the entire terminal width
     const usedWidth = lineNumStr.length + diffPrefixWidth + contentWidth;
     const padding = Math.max(0, width - usedWidth);

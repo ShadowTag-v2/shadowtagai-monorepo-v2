@@ -1,14 +1,10 @@
 {
-  "roots": [
-    "uphillsnowball_flutter"
-  ],
+  "roots": ["uphillsnowball_flutter"],
   "packages": [
     {
       "name": "uphillsnowball_flutter",
       "version": "0.0.0",
-      "dependencies": [
-        "dio"
-      ],
+      "dependencies": ["dio"],
       "devDependencies": []
     },
     {
@@ -32,12 +28,7 @@
     {
       "name": "http_parser",
       "version": "4.1.2",
-      "dependencies": [
-        "collection",
-        "source_span",
-        "string_scanner",
-        "typed_data"
-      ]
+      "dependencies": ["collection", "source_span", "string_scanner", "typed_data"]
     },
     {
       "name": "collection",
@@ -47,19 +38,12 @@
     {
       "name": "typed_data",
       "version": "1.4.0",
-      "dependencies": [
-        "collection"
-      ]
+      "dependencies": ["collection"]
     },
     {
       "name": "dio_web_adapter",
       "version": "2.1.2",
-      "dependencies": [
-        "dio",
-        "http_parser",
-        "meta",
-        "web"
-      ]
+      "dependencies": ["dio", "http_parser", "meta", "web"]
     },
     {
       "name": "web",
@@ -69,17 +53,12 @@
     {
       "name": "string_scanner",
       "version": "1.4.1",
-      "dependencies": [
-        "source_span"
-      ]
+      "dependencies": ["source_span"]
     },
     {
       "name": "async",
       "version": "2.13.1",
-      "dependencies": [
-        "collection",
-        "meta"
-      ]
+      "dependencies": ["collection", "meta"]
     },
     {
       "name": "mime",
@@ -89,11 +68,7 @@
     {
       "name": "source_span",
       "version": "1.10.2",
-      "dependencies": [
-        "collection",
-        "path",
-        "term_glyph"
-      ]
+      "dependencies": ["collection", "path", "term_glyph"]
     },
     {
       "name": "term_glyph",

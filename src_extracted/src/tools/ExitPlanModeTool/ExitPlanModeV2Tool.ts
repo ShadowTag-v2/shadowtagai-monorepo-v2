@@ -1,5 +1,5 @@
 import { feature } from 'bun:bundle';
-import { writeFile } from 'fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { z } from 'zod/v4';
 import {
   getAllowedChannels,
@@ -141,7 +141,10 @@ export const ExitPlanModeV2Tool: Tool<InputSchema, Output> = buildTool({
     // When --channels is active the user is likely on Telegram/Discord, not
     // watching the TUI. The plan-approval dialog would hang. Paired with the
     // same gate on EnterPlanMode so plan mode isn't a trap.
-    if ((feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) && getAllowedChannels().length > 0) {
+    if (
+      (feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) &&
+      getAllowedChannels().length > 0
+    ) {
       return false;
     }
     return true;
@@ -187,7 +190,7 @@ export const ExitPlanModeV2Tool: Tool<InputSchema, Output> = buildTool({
     }
     return { result: true };
   },
-  async checkPermissions(input, context) {
+  async checkPermissions(input, _context) {
     // For ALL teammates, bypass the permission UI to avoid sending permission_request
     // The call() method handles the appropriate behavior:
     // - If isPlanModeRequired(): sends plan_approval_request to leader

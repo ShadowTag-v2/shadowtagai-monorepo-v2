@@ -1,5 +1,5 @@
-import { mkdir, readdir, readFile, unlink, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { mkdir, readdir, readFile, unlink, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { z } from 'zod/v4';
 import { getIsNonInteractiveSession, getSessionId } from '../bootstrap/state.js';
 import { uniq } from './array.js';
@@ -114,7 +114,7 @@ async function readHighWaterMark(taskListId: string): Promise<number> {
   try {
     const content = (await readFile(path, 'utf-8')).trim();
     const value = parseInt(content, 10);
-    return isNaN(value) ? 0 : value;
+    return Number.isNaN(value) ? 0 : value;
   } catch {
     return 0;
   }
@@ -248,7 +248,7 @@ async function findHighestTaskIdFromFiles(taskListId: string): Promise<number> {
       continue;
     }
     const taskId = parseInt(file.replace('.json', ''), 10);
-    if (!isNaN(taskId) && taskId > highest) {
+    if (!Number.isNaN(taskId) && taskId > highest) {
       highest = taskId;
     }
   }
@@ -377,7 +377,7 @@ export async function deleteTask(taskListId: string, taskId: string): Promise<bo
   try {
     // Update high water mark before deleting to prevent ID reuse
     const numericId = parseInt(taskId, 10);
-    if (!isNaN(numericId)) {
+    if (!Number.isNaN(numericId)) {
       const currentMark = await readHighWaterMark(taskListId);
       if (numericId > currentMark) {
         await writeHighWaterMark(taskListId, numericId);

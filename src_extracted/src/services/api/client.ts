@@ -1,5 +1,5 @@
+import { randomUUID } from 'node:crypto';
 import Anthropic, { type ClientOptions } from '@anthropic-ai/sdk';
-import { randomUUID } from 'crypto';
 import type { GoogleAuth } from 'google-auth-library';
 import {
   checkAndRefreshOAuthTokenIfNeeded,
@@ -105,7 +105,7 @@ export async function getAnthropicClient({
 
   // Log API client configuration for HFI debugging
   logForDebugging(
-    `[API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: ${!!process.env.ANTHROPIC_CUSTOM_HEADERS}, has Authorization header: ${!!customHeaders['Authorization']}`,
+    `[API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: ${!!process.env.ANTHROPIC_CUSTOM_HEADERS}, has Authorization header: ${!!customHeaders.Authorization}`,
   );
 
   // Add additional protection header if enabled via env var
@@ -235,17 +235,16 @@ export async function getAnthropicClient({
     // Check project environment variables in same order as google-auth-library
     // See: https://github.com/googleapis/google-auth-library-nodejs/blob/main/src/auth/googleauth.ts
     const hasProjectEnvVar =
-      process.env['GCLOUD_PROJECT'] ||
-      process.env['GOOGLE_CLOUD_PROJECT'] ||
-      process.env['gcloud_project'] ||
-      process.env['google_cloud_project'];
+      process.env.GCLOUD_PROJECT ||
+      process.env.GOOGLE_CLOUD_PROJECT ||
+      process.env.gcloud_project ||
+      process.env.google_cloud_project;
 
     // Check for credential file paths (service account or ADC)
     // Note: We're checking both standard and lowercase variants to be safe,
     // though we should verify what google-auth-library actually checks
     const hasKeyFile =
-      process.env['GOOGLE_APPLICATION_CREDENTIALS'] ||
-      process.env['google_application_credentials'];
+      process.env.GOOGLE_APPLICATION_CREDENTIALS || process.env.google_application_credentials;
 
     const googleAuth = isEnvTruthy(process.env.CLAUDE_CODE_SKIP_VERTEX_AUTH)
       ? ({
@@ -303,7 +302,7 @@ async function configureApiKeyHeaders(
   const token =
     process.env.ANTHROPIC_AUTH_TOKEN || (await getApiKeyFromApiKeyHelper(isNonInteractiveSession));
   if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+    headers.Authorization = `Bearer ${token}`;
   }
 }
 

@@ -80,7 +80,7 @@ function parseOscRgb(data: string): Rgb | undefined {
   }
   // #RRGGBB or #RRRRGGGGBBBB — split into three equal hex runs.
   const hashMatch = /^#([0-9a-f]+)$/i.exec(data);
-  if (hashMatch && hashMatch[1]!.length % 3 === 0) {
+  if (hashMatch && hashMatch[1]?.length % 3 === 0) {
     const hex = hashMatch[1]!;
     const n = hex.length / 3;
     return {
@@ -106,7 +106,7 @@ function hexComponent(hex: string): number {
  * iTerm2 with the option enabled), so this is a best-effort hint.
  */
 function detectFromColorFgBg(): SystemTheme | undefined {
-  const colorfgbg = process.env['COLORFGBG'];
+  const colorfgbg = process.env.COLORFGBG;
   if (!colorfgbg) return undefined;
   const parts = colorfgbg.split(';');
   const bg = parts[parts.length - 1];

@@ -55,7 +55,7 @@ export function getContextWindowForModel(model: string, betas?: string[]): numbe
   // while still using a 1M-capable endpoint.
   if (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_CODE_MAX_CONTEXT_TOKENS) {
     const override = parseInt(process.env.CLAUDE_CODE_MAX_CONTEXT_TOKENS, 10);
-    if (!isNaN(override) && override > 0) {
+    if (!Number.isNaN(override) && override > 0) {
       return override;
     }
   }
@@ -99,7 +99,7 @@ export function getSonnet1mExpTreatmentEnabled(model: string): boolean {
   if (!getCanonicalName(model).includes('sonnet-4-6')) {
     return false;
   }
-  return getGlobalConfig().clientDataCache?.['coral_reef_sonnet'] === 'true';
+  return getGlobalConfig().clientDataCache?.coral_reef_sonnet === 'true';
 }
 
 /**

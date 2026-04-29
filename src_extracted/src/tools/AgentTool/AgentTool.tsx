@@ -1,5 +1,4 @@
 import { feature } from 'bun:bundle';
-import * as React from 'react';
 import { buildTool, type ToolDef, toolMatchesName } from 'src/Tool.js';
 import type { Message as MessageType, NormalizedUserMessage } from 'src/types/message.js';
 import { getQuerySourceForAgent } from 'src/utils/promptCategory.js';
@@ -1257,7 +1256,7 @@ export const AgentTool = buildTool({
                           agentMessages,
                           tools: toolUseContext.options.tools,
                           toolPermissionContext: backgroundedAppState.toolPermissionContext,
-                          abortSignal: task.abortController!.signal,
+                          abortSignal: task.abortController?.signal,
                           subagentType: selectedAgent.agentType,
                           totalToolUseCount: agentResult.totalToolUseCount,
                         });

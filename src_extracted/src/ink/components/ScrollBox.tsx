@@ -192,7 +192,7 @@ function ScrollBox({
       isSticky() {
         const el = domRef.current;
         if (!el) return false;
-        return el.stickyScroll ?? Boolean(el.attributes['stickyScroll']);
+        return el.stickyScroll ?? Boolean(el.attributes.stickyScroll);
       },
       subscribe(listener: () => void) {
         listenersRef.current.add(listener);
@@ -209,7 +209,7 @@ function ScrollBox({
     // refs + imports — stable. Empty deps avoids rebuilding the handle on
     // every render (which re-registers the ref = churn).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [scrollMutated, notify],
   );
 
   // Structure: outer viewport (overflow:scroll, constrained height) >

@@ -1,8 +1,9 @@
+import { closeSync, constants as fsConstants, openSync, readSync, writeSync } from 'node:fs';
+import { format } from 'node:util';
 import autoBind from 'auto-bind';
-import { closeSync, constants as fsConstants, openSync, readSync, writeSync } from 'fs';
 import noop from 'lodash-es/noop.js';
 import throttle from 'lodash-es/throttle.js';
-import React, { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { FiberRoot } from 'react-reconciler';
 import { ConcurrentRoot } from 'react-reconciler/constants.js';
 import { onExit } from 'signal-exit';
@@ -10,7 +11,6 @@ import { flushInteractionTime } from 'src/bootstrap/state.js';
 import { getYogaCounters } from 'src/native-ts/yoga-layout/index.js';
 import { logForDebugging } from 'src/utils/debug.js';
 import { logError } from 'src/utils/log.js';
-import { format } from 'util';
 import { colorize } from './colorize.js';
 import App from './components/App.js';
 import type {

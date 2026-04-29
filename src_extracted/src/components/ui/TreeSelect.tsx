@@ -1,8 +1,7 @@
 import React from 'react';
 import { c as _c } from 'react/compiler-runtime';
-import type { KeyboardEvent } from '../../ink/events/keyboard-event.js';
 import { Box } from '../../ink.js';
-import { type OptionWithDescription, Select } from '../CustomSelect/select.js';
+import { Select } from '../CustomSelect/select.js';
 export type TreeNode<T> = {
   id: string | number;
   value: T;
@@ -245,7 +244,7 @@ export function TreeSelect(t0) {
   if ($[17] !== findFlattenedNode || $[18] !== onCollapse || $[19] !== onExpand) {
     t9 = (nodeId_1, shouldExpand) => {
       const flatNode_1 = findFlattenedNode(nodeId_1);
-      if (!flatNode_1 || !flatNode_1.hasChildren) {
+      if (!flatNode_1?.hasChildren) {
         return;
       }
       if (shouldExpand) {

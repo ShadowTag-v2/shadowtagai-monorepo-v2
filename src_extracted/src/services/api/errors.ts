@@ -375,7 +375,7 @@ export function extractUnknownErrorFormat(value: unknown): string | undefined {
 
   // Amazon Bedrock routing errors
   if ((value as AmazonError).Output?.__type) {
-    return (value as AmazonError).Output!.__type;
+    return (value as AmazonError).Output?.__type;
   }
 
   return undefined;

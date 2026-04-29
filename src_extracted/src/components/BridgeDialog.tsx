@@ -1,6 +1,5 @@
-import { basename } from 'path';
+import { basename } from 'node:path';
 import { toString as qrToString } from 'qrcode';
-import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { getOriginalCwd } from '../bootstrap/state.js';
@@ -197,7 +196,7 @@ export function BridgeDialog(t0) {
     } else {
       contextParts = $[44];
     }
-    const contextSuffix = contextParts.length > 0 ? ' \xB7 ' + contextParts.join(' \xB7 ') : '';
+    const contextSuffix = contextParts.length > 0 ? ` \xB7 ${contextParts.join(' \xB7 ')}` : '';
     let t18;
     if ($[45] !== displayUrl || $[46] !== error || $[47] !== sessionActive) {
       t18 = error

@@ -1780,7 +1780,7 @@ export function validateFlags(
         // the safe direction. Users who need `-I` can use it unbundled: `-r -I {}`.
         if (flag.startsWith('-') && !flag.startsWith('--') && flag.length > 2) {
           for (let j = 1; j < flag.length; j++) {
-            const singleFlag = '-' + flag[j];
+            const singleFlag = `-${flag[j]}`;
             const flagType = config.safeFlags[singleFlag];
             if (!flagType) {
               return false; // One of the combined flags is not safe
@@ -1819,8 +1819,8 @@ export function validateFlags(
           if (
             i + 1 >= tokens.length ||
             (tokens[i + 1] &&
-              tokens[i + 1]!.startsWith('-') &&
-              tokens[i + 1]!.length > 1 &&
+              tokens[i + 1]?.startsWith('-') &&
+              tokens[i + 1]?.length > 1 &&
               FLAG_PATTERN.test(tokens[i + 1]!))
           ) {
             return false; // Missing required argument

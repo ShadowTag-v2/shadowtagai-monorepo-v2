@@ -1,4 +1,3 @@
-import React from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { Text } from '../../ink.js';
 import { extractMcpToolDisplayName, getMcpDisplayName } from '../../services/mcp/mcpStringUtils.js';
@@ -113,7 +112,7 @@ export function MCPToolListView(t0) {
         <Select
           options={toolOptions}
           onChange={(value) => {
-            const index_0 = parseInt(value);
+            const index_0 = parseInt(value, 10);
             const tool_0 = serverTools[index_0];
             if (tool_0) {
               onSelectTool(tool_0, index_0);

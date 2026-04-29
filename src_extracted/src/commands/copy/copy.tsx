@@ -1,16 +1,14 @@
-import { mkdir, writeFile } from 'fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { marked, type Tokens } from 'marked';
-import { tmpdir } from 'os';
-import { join } from 'path';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import type { CommandResultDisplay } from '../../commands.js';
-import type { OptionWithDescription } from '../../components/CustomSelect/select.js';
 import { Select } from '../../components/CustomSelect/select.js';
 import { Byline } from '../../components/design-system/Byline.js';
 import { KeyboardShortcutHint } from '../../components/design-system/KeyboardShortcutHint.js';
 import { Pane } from '../../components/design-system/Pane.js';
-import type { KeyboardEvent } from '../../ink/events/keyboard-event.js';
 import { stringWidth } from '../../ink/stringWidth.js';
 import { setClipboard } from '../../ink/termio/osc.js';
 import { Box, Text } from '../../ink.js';
@@ -107,7 +105,7 @@ function truncateLine(text: string, maxLen: number): string {
     result += char;
     width += charWidth;
   }
-  return result + '\u2026';
+  return `${result}\u2026`;
 }
 type PickerProps = {
   fullText: string;

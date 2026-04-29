@@ -1,7 +1,7 @@
+import { createHash } from 'node:crypto';
+import { promises as fs } from 'node:fs';
+import { dirname, join } from 'node:path';
 import type { ClientOptions } from '@anthropic-ai/sdk';
-import { createHash } from 'crypto';
-import { promises as fs } from 'fs';
-import { dirname, join } from 'path';
 import { getSessionId } from 'src/bootstrap/state.js';
 import { getClaudeConfigHomeDir } from '../../utils/envUtils.js';
 import { jsonParse, jsonStringify } from '../../utils/slowOperations.js';
@@ -67,7 +67,7 @@ export function getDumpPromptsPath(agentIdOrSessionId?: string): string {
 function appendToFile(filePath: string, entries: string[]): void {
   if (entries.length === 0) return;
   fs.mkdir(dirname(filePath), { recursive: true })
-    .then(() => fs.appendFile(filePath, entries.join('\n') + '\n'))
+    .then(() => fs.appendFile(filePath, `${entries.join('\n')}\n`))
     .catch(() => {});
 }
 
@@ -195,7 +195,7 @@ export function createDumpPromptsFetch(agentIdOrSessionId: string): ClientOption
 
           await fs.appendFile(
             filePath,
-            jsonStringify({ type: 'response', timestamp, data }) + '\n',
+            `${jsonStringify({ type: 'response', timestamp, data })}\n`,
           );
         } catch {
           // Best effort

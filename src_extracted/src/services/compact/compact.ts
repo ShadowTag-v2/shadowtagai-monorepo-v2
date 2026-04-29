@@ -1,5 +1,5 @@
 import { feature } from 'bun:bundle';
-import type { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import uniqBy from 'lodash-es/uniqBy.js';
 
 /* eslint-disable @typescript-eslint/no-require-imports */
@@ -332,9 +332,9 @@ export function annotateBoundaryWithPreservedSegment(
     compactMetadata: {
       ...boundary.compactMetadata,
       preservedSegment: {
-        headUuid: keep[0]!.uuid,
+        headUuid: keep[0]?.uuid,
         anchorUuid,
-        tailUuid: keep.at(-1)!.uuid,
+        tailUuid: keep.at(-1)?.uuid,
       },
     },
   };

@@ -253,7 +253,7 @@ export const WebSearchTool = buildTool({
     const startTime = performance.now();
     const { query } = input;
     const userMessage = createUserMessage({
-      content: 'Perform a web search for the query: ' + query,
+      content: `Perform a web search for the query: ${query}`,
     });
     const toolSchema = makeToolSchema(input);
 
@@ -319,9 +319,9 @@ export const WebSearchTool = buildTool({
           try {
             // Look for a complete query field
             const queryMatch = currentToolUseJson.match(/"query"\s*:\s*"((?:[^"\\]|\\.)*)"/);
-            if (queryMatch && queryMatch[1]) {
+            if (queryMatch?.[1]) {
               // The regex properly handles escaped characters
-              const query = jsonParse('"' + queryMatch[1] + '"');
+              const query = jsonParse(`"${queryMatch[1]}"`);
 
               if (
                 !toolUseQueries.has(currentToolUseId) ||
@@ -391,7 +391,7 @@ export const WebSearchTool = buildTool({
       }
       if (typeof result === 'string') {
         // Text summary
-        formattedOutput += result + '\n\n';
+        formattedOutput += `${result}\n\n`;
       } else {
         // Search result with links
         if (result.content?.length > 0) {

@@ -106,8 +106,8 @@ export function findSlackChannelPositions(text: string): Array<{ start: number; 
   let m: RegExpExecArray | null;
   while ((m = re.exec(text)) !== null) {
     if (!knownChannels.has(m[2]!)) continue;
-    const start = m.index + m[1]!.length;
-    positions.push({ start, end: start + 1 + m[2]!.length });
+    const start = m.index + m[1]?.length;
+    positions.push({ start, end: start + 1 + m[2]?.length });
   }
   return positions;
 }

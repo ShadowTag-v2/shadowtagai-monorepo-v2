@@ -1,5 +1,5 @@
 import { feature } from 'bun:bundle';
-import { basename } from 'path';
+import { basename } from 'node:path';
 import type React from 'react';
 import { useRef } from 'react';
 import { c as _c } from 'react/compiler-runtime';
@@ -14,7 +14,6 @@ import { getDisplayPath } from '../../utils/file.js';
 import { formatDuration, formatSecondsShort } from '../../utils/format.js';
 import { isFullscreenEnvEnabled } from '../../utils/fullscreen.js';
 import type { buildMessageLookups } from '../../utils/messages.js';
-import type { ThemeName } from '../../utils/theme.js';
 import { CtrlOToExpand } from '../CtrlOToExpand.js';
 import { useSelectedMessageBg } from '../messageActions.js';
 import { PrBadge } from '../PrBadge.js';
@@ -190,7 +189,7 @@ export function CollapsedReadSearchContent({
   const anyError = toolUseIds.some((id) => lookups.erroredToolUseIDs.has(id));
   const hasMemoryOps = memorySearchCount > 0 || memoryReadCount > 0 || memoryWriteCount > 0;
   const hasTeamMemoryOps = feature('TEAMMEM')
-    ? teamMemCollapsed!.checkHasTeamMemOps(message)
+    ? teamMemCollapsed?.checkHasTeamMemOps(message)
     : false;
 
   // Track the max seen counts so they only ever increase. The debounce timer
@@ -361,7 +360,7 @@ export function CollapsedReadSearchContent({
     if (!isFirst) nonMemParts.push(<Text key={`comma-${key}`}>, </Text>);
     nonMemParts.push(
       <Text key={key}>
-        {isFirst ? verb[0]!.toUpperCase() + verb.slice(1) : verb} {body}
+        {isFirst ? verb[0]?.toUpperCase() + verb.slice(1) : verb} {body}
       </Text>,
     );
   }
@@ -582,7 +581,7 @@ export function CollapsedReadSearchContent({
           {nonMemParts}
           {memParts}
           {feature('TEAMMEM')
-            ? teamMemCollapsed!.TeamMemCountParts({
+            ? teamMemCollapsed?.TeamMemCountParts({
                 message,
                 isActiveGroup,
                 hasPrecedingParts: hasPrecedingNonMem || memParts.length > 0,
