@@ -167,9 +167,7 @@ describe('S.E.U. Token Manager', () => {
         sandbox_id: 'sandbox-001',
       });
 
-      const { verifySEUToken, SEUViolationError } = await import(
-        '../lib/security/seu-token-manager'
-      );
+      const { verifySEUToken } = await import('../lib/security/seu-token-manager');
 
       await expect(verifySEUToken('valid.jwt.token', '10.0.0.99', 'sandbox-001')).rejects.toThrow(
         'IP_MISMATCH',

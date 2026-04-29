@@ -11,7 +11,7 @@ Architecture:
     Model proposes → Bridge validates → App executes → Bridge logs → SDK returns
 
 Usage:
-    from packages.firebase_tool_bridge import ToolBridge, FunctionRegistry, RiskTier
+    from firebase_tool_bridge import ToolBridge, FunctionRegistry, RiskTier
 
     registry = FunctionRegistry()
     registry.register("fetch_weather", fetch_weather, RiskTier.LOW)
@@ -19,13 +19,13 @@ Usage:
     result = bridge.handle(function_call)
 """
 
-from packages.firebase_tool_bridge.registry import (
+from firebase_tool_bridge.registry import (
     FunctionRegistry,
     RegisteredFunction,
     RiskTier,
 )
-from packages.firebase_tool_bridge.bridge import ToolBridge
-from packages.firebase_tool_bridge.evidence import EvidenceLogger
+from firebase_tool_bridge.bridge import ToolBridge
+from firebase_tool_bridge.evidence import EvidenceLogger
 
 __all__ = [
     "EvidenceLogger",

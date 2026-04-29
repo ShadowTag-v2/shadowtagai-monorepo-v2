@@ -96,6 +96,7 @@ export default function FirmAdminDashboard({
           <div className="flex gap-2">
             {tabs.map((tab) => (
               <button
+                type="button"
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -205,7 +206,10 @@ export default function FirmAdminDashboard({
           <div>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold">Team Members</h2>
-              <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-200 transition-colors">
+              <button
+                type="button"
+                className="bg-white text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-200 transition-colors"
+              >
                 + Invite Member
               </button>
             </div>
@@ -254,7 +258,9 @@ export default function FirmAdminDashboard({
                         {new Date(member.lastActive).toLocaleDateString()}
                       </td>
                       <td className="px-4 py-3">
-                        <button className="text-slate-500 hover:text-white text-xs">Manage</button>
+                        <button type="button" className="text-slate-500 hover:text-white text-xs">
+                          Manage
+                        </button>
                       </td>
                     </tr>
                   ))}

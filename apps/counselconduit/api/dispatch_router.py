@@ -380,11 +380,29 @@ def cleanup_expired_session_pins() -> int:
 )
 async def dispatch_endpoint(
     body: DispatchRequest,
+    request: Request,
     response: Response,
     x_user_tier: Annotated[str, Header(alias="X-User-Tier")] = "trial",
 ) -> DispatchResponse:
     """Model dispatch endpoint — wires NadirClaw into FastAPI."""
     _check_circuit_breaker()
+
+    # ── Ant Forensic Logging Gate ────────────────────────────────────────
+    _ant_forensic = (
+        os.getenv("ENABLE_ANT_FORENSIC_LOGGING", "false").lower() in ("true", "1", "t", "y", "yes")
+        and getattr(request.state, "user_type", "external") == "ant"
+    )
+    if _ant_forensic:
+        logger.info(
+            "ant_forensic: dispatch_request_received",
+            firm_id=body.firm_id,
+            session_id=body.session_id,
+            query_length=len(body.query),
+            preferred_model=body.preferred_model,
+            firm_allowed_models=body.firm_allowed_models,
+            user_tier=x_user_tier,
+            client_ip=request.client.host if request.client else "unknown",
+        )
 
     start = time.monotonic()
 
@@ -426,7 +444,7 @@ async def dispatch_endpoint(
         # Add rate-limit headers
         _add_rate_limit_headers(response, body.firm_id, x_user_tier)
 
-        return DispatchResponse(
+        dispatch_result = DispatchResponse(
             model=result["model"],
             provider=result["provider"],
             tier=result["tier"],
@@ -434,6 +452,21 @@ async def dispatch_endpoint(
             cost_per_1k_input=result["cost_per_1k_input"],
             latency_ms=round(latency_ms, 2),
         )
+
+        # ── Ant Forensic: Response Trace ─────────────────────────────────
+        if _ant_forensic:
+            logger.info(
+                "ant_forensic: dispatch_response",
+                model=dispatch_result.model,
+                provider=dispatch_result.provider,
+                tier=dispatch_result.tier,
+                session_pinned=dispatch_result.session_pinned,
+                latency_ms=dispatch_result.latency_ms,
+                cost_per_1k_input=dispatch_result.cost_per_1k_input,
+                firm_id=body.firm_id,
+            )
+
+        return dispatch_result
 
     except HTTPException:
         raise

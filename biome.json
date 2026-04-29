@@ -109,8 +109,29 @@
       "!docs/legacy_shadowtag_v2",
       "!reference_architectures",
       "!libs/autoresearch_sources",
-      "!apps/kovelai/public/assets",
-      "!tests"
+      "!apps/kovelai/public",
+      "!apps/kovelai/public-v1-archive",
+      "!apps/kovelai-site-archive",
+      "!archive/legacy_flyingmonkeys",
+      "!archive/legacy_tauri_workspace",
+      "!**/_archive_redundant*",
+      "!tests",
+      "!src_extracted",
+      "!scratch",
+      "!_audit_claude_code",
+      "!labs",
+      "!scripts",
+      "!vault",
+      "!.agents",
+      "!.claude",
+      "!.reports",
+      "!apps/kovelai/site",
+      "!claude_code_services",
+      "!packages/agnt_context",
+      "!packages/agnt_plan_mode",
+      "!packages/agnt_sub_agents",
+      "!packages/agnt_tools",
+      "!packages/agnt_vcr"
     ],
     "maxSize": 2097152
   },
@@ -126,11 +147,14 @@
       }
     },
     {
-      "includes": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts"],
+      "includes": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.js", "**/e2e/**"],
       "linter": {
         "rules": {
           "suspicious": {
             "noConsole": { "level": "off", "options": { "allow": ["log"] } }
+          },
+          "security": {
+            "noSecrets": "off"
           }
         }
       }

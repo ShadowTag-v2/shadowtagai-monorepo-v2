@@ -9,8 +9,8 @@ All events are written to .beads/telemetry.jsonl in a structured format
 compatible with BigQuery export and Datadog-style dashboarding.
 """
 
-from packages.telemetry.catalog import TelemetryEvent, EventCatalog
-from packages.telemetry.sink import TelemetrySink
+from telemetry.catalog import TelemetryEvent, EventCatalog
+from telemetry.sink import TelemetrySink
 
 __all__ = [
     "TelemetryEvent",

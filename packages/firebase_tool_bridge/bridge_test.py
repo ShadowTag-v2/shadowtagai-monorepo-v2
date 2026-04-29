@@ -11,15 +11,15 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from packages.firebase_tool_bridge.bridge import (
+from firebase_tool_bridge.bridge import (
     BridgeResult,
     CallStatus,
     ConfirmationProvider,
     ToolBridge,
     _summarize_result,
 )
-from packages.firebase_tool_bridge.evidence import EvidenceLogger
-from packages.firebase_tool_bridge.registry import FunctionRegistry, RiskTier
+from firebase_tool_bridge.evidence import EvidenceLogger
+from firebase_tool_bridge.registry import FunctionRegistry, RiskTier
 
 
 # --- Fixtures ---

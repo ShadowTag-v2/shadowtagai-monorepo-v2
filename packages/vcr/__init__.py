@@ -11,8 +11,8 @@ Three modes:
   - DIFF: Compare live vs recorded for regression detection
 """
 
-from packages.vcr.cassette import Cassette, CassetteEntry
-from packages.vcr.recorder import VCRRecorder, VCRMode
+from vcr.cassette import Cassette, CassetteEntry
+from vcr.recorder import VCRRecorder, VCRMode
 
 __all__ = [
     "Cassette",

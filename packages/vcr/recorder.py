@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any
 from collections.abc import Callable
 
-from packages.vcr.cassette import Cassette, compute_request_hash
+from vcr.cassette import Cassette, compute_request_hash
 
 logger = logging.getLogger(__name__)
 

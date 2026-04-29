@@ -24,8 +24,8 @@ from typing import Any
 
 import yaml
 
-from packages.agnt_classifier import AGNTClassifier, ClassifierVerdict
-from packages.tool_gateway.gateway import Decision, ToolGateway
+from agnt_classifier import AGNTClassifier, ClassifierVerdict
+from tool_gateway.gateway import Decision, ToolGateway
 
 logger = logging.getLogger(__name__)
 

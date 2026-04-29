@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from packages.tool_gateway.gateway import Decision
+    from tool_gateway.gateway import Decision
 
 logger = logging.getLogger(__name__)
 

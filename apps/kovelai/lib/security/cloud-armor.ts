@@ -122,6 +122,7 @@ export function generateCloudArmorPolicy(): CloudArmorPolicy {
         priority: 3000,
         match: {
           expr: {
+            // biome-ignore lint/security/noSecrets: GCP Cloud Armor WAF preconfigured expression
             expression: "evaluatePreconfiguredExpr('sqli-v33-stable')",
           },
         },
@@ -134,6 +135,7 @@ export function generateCloudArmorPolicy(): CloudArmorPolicy {
         priority: 3100,
         match: {
           expr: {
+            // biome-ignore lint/security/noSecrets: GCP Cloud Armor WAF preconfigured expression
             expression: "evaluatePreconfiguredExpr('xss-v33-stable')",
           },
         },
@@ -146,6 +148,7 @@ export function generateCloudArmorPolicy(): CloudArmorPolicy {
         priority: 3200,
         match: {
           expr: {
+            // biome-ignore lint/security/noSecrets: GCP Cloud Armor WAF preconfigured expression
             expression: "evaluatePreconfiguredExpr('rfi-v33-stable')",
           },
         },
@@ -158,6 +161,7 @@ export function generateCloudArmorPolicy(): CloudArmorPolicy {
         priority: 3300,
         match: {
           expr: {
+            // biome-ignore lint/security/noSecrets: GCP Cloud Armor WAF preconfigured expression
             expression: "evaluatePreconfiguredExpr('scannerdetection-v33-stable')",
           },
         },
@@ -182,6 +186,7 @@ export function generateCloudArmorPolicy(): CloudArmorPolicy {
         priority: 5000,
         match: {
           expr: {
+            // biome-ignore lint/security/noSecrets: GCP Cloud Armor geo-restriction rule
             expression: "!origin.region_code.matches('US|GB|CA|AU')",
           },
         },
