@@ -36,6 +36,7 @@ class CassetteEntry:
         token_usage: Token counts (prompt, completion, total).
         tags: Optional metadata tags for filtering.
     """
+
     request_hash: str
     request_body: dict[str, Any]
     response_body: dict[str, Any]
@@ -88,8 +89,7 @@ def compute_request_hash(request_body: dict[str, Any]) -> str:
         Hex-encoded SHA-256 hash.
     """
     # Strip non-deterministic fields before hashing
-    normalized = {k: v for k, v in request_body.items()
-                  if k not in ("timestamp", "session_id", "request_id")}
+    normalized = {k: v for k, v in request_body.items() if k not in ("timestamp", "session_id", "request_id")}
     canonical = json.dumps(normalized, sort_keys=True, default=str)
     return hashlib.sha256(canonical.encode()).hexdigest()
 
@@ -141,9 +141,11 @@ class Cassette:
                 except (json.JSONDecodeError, KeyError) as e:
                     # Skip malformed entries
                     import logging
+
                     logging.getLogger(__name__).warning(
                         "Skipping malformed cassette entry at line %d: %s",
-                        line_num, e,
+                        line_num,
+                        e,
                     )
 
     def save(self) -> None:

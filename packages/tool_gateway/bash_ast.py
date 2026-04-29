@@ -23,40 +23,100 @@ logger = logging.getLogger(__name__)
 
 MAX_SUBCOMMANDS = 50
 
-SAFE_WRAPPERS = frozenset({
-    "timeout", "time", "nice", "nohup", "ionice",
-    "taskset", "strace", "ltrace", "perf", "caffeinate",
-})
+SAFE_WRAPPERS = frozenset(
+    {
+        "timeout",
+        "time",
+        "nice",
+        "nohup",
+        "ionice",
+        "taskset",
+        "strace",
+        "ltrace",
+        "perf",
+        "caffeinate",
+    }
+)
 
-SAFE_ENV_VARS = frozenset({
-    "PATH", "HOME", "USER", "SHELL", "TERM", "LANG", "LC_ALL",
-    "TZ", "EDITOR", "VISUAL", "PAGER", "LESS", "NODE_ENV", "CI",
-    "DEBUG", "VERBOSE", "PYTHONPATH", "VIRTUAL_ENV", "GOPATH",
-    "GOROOT", "CARGO_HOME", "RUSTUP_HOME", "GIT_AUTHOR_NAME",
-    "GIT_AUTHOR_EMAIL", "GIT_COMMITTER_NAME", "GIT_COMMITTER_EMAIL",
-    "DEBIAN_FRONTEND", "DISABLE_TELEMETRY", "DISABLE_ERROR_REPORTING",
-    "COLUMNS", "LINES", "AGNT_FC_OVERRIDES", "AGNT_DUMP_PROMPTS",
-    "AGNT_VCR_MODE", "KI_DIR", "PYTHONDONTWRITEBYTECODE",
-})
+SAFE_ENV_VARS = frozenset(
+    {
+        "PATH",
+        "HOME",
+        "USER",
+        "SHELL",
+        "TERM",
+        "LANG",
+        "LC_ALL",
+        "TZ",
+        "EDITOR",
+        "VISUAL",
+        "PAGER",
+        "LESS",
+        "NODE_ENV",
+        "CI",
+        "DEBUG",
+        "VERBOSE",
+        "PYTHONPATH",
+        "VIRTUAL_ENV",
+        "GOPATH",
+        "GOROOT",
+        "CARGO_HOME",
+        "RUSTUP_HOME",
+        "GIT_AUTHOR_NAME",
+        "GIT_AUTHOR_EMAIL",
+        "GIT_COMMITTER_NAME",
+        "GIT_COMMITTER_EMAIL",
+        "DEBIAN_FRONTEND",
+        "DISABLE_TELEMETRY",
+        "DISABLE_ERROR_REPORTING",
+        "COLUMNS",
+        "LINES",
+        "AGNT_FC_OVERRIDES",
+        "AGNT_DUMP_PROMPTS",
+        "AGNT_VCR_MODE",
+        "KI_DIR",
+        "PYTHONDONTWRITEBYTECODE",
+    }
+)
 
-NEVER_SAFE_ENV_VARS = frozenset({
-    "AWS_SECRET_ACCESS_KEY", "AWS_SESSION_TOKEN",
-    "GOOGLE_APPLICATION_CREDENTIALS", "GITHUB_TOKEN", "GH_TOKEN",
-    "STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "DATABASE_URL",
-    "DB_PASSWORD", "FIREBASE_TOKEN", "OPENAI_API_KEY",
-    "ANTHROPIC_API_KEY", "GEMINI_API_KEY", "STITCH_API_KEY",
-    "KOVEL_ATTESTATION_SECRET", "MAGIC_LINK_SECRET",
-    "SSH_PRIVATE_KEY", "SHADOWTAG_PEM",
-})
+NEVER_SAFE_ENV_VARS = frozenset(
+    {
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN",
+        "GOOGLE_APPLICATION_CREDENTIALS",
+        "GITHUB_TOKEN",
+        "GH_TOKEN",
+        "STRIPE_SECRET_KEY",
+        "STRIPE_WEBHOOK_SECRET",
+        "DATABASE_URL",
+        "DB_PASSWORD",
+        "FIREBASE_TOKEN",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY",
+        "GEMINI_API_KEY",
+        "STITCH_API_KEY",
+        "KOVEL_ATTESTATION_SECRET",
+        "MAGIC_LINK_SECRET",
+        "SSH_PRIVATE_KEY",
+        "SHADOWTAG_PEM",
+    }
+)
 
-ALWAYS_BLOCKED = frozenset({
-    "rm -rf /", "rm -rf ~", "rm -rf /*", "mkfs",
-    "dd if=/dev/zero", ":(){ :|:& };:", "chmod 777",
-})
+ALWAYS_BLOCKED = frozenset(
+    {
+        "rm -rf /",
+        "rm -rf ~",
+        "rm -rf /*",
+        "mkfs",
+        "dd if=/dev/zero",
+        ":(){ :|:& };:",
+        "chmod 777",
+    }
+)
 
-COMPOUND_OPS = re.compile(r'[;\n]|\|\||\&\&|\|')
-CMD_SUBST = re.compile(r'\$\(|`')
-ENV_ASSIGN = re.compile(r'(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)=')
+COMPOUND_OPS = re.compile(r"[;\n]|\|\||\&\&|\|")
+CMD_SUBST = re.compile(r"\$\(|`")
+ENV_ASSIGN = re.compile(r"(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)=")
 
 
 class CommandRisk(StrEnum):
@@ -124,25 +184,18 @@ class BashASTAnalyzer:
         # Phase 4: Subcommand cap
         if result.total_subcommands > MAX_SUBCOMMANDS:
             result.is_safe = False
-            result.deny_reason = (
-                f"Command has {result.total_subcommands} subcommands "
-                f"(cap: {MAX_SUBCOMMANDS}). Break into smaller commands."
-            )
+            result.deny_reason = f"Command has {result.total_subcommands} subcommands (cap: {MAX_SUBCOMMANDS}). Break into smaller commands."
             return result
 
         if result.total_subcommands > MAX_SUBCOMMANDS * 0.8:
-            result.warnings.append(
-                f"Approaching cap: {result.total_subcommands}/{MAX_SUBCOMMANDS}"
-            )
+            result.warnings.append(f"Approaching cap: {result.total_subcommands}/{MAX_SUBCOMMANDS}")
 
         # Phase 5: Env var check
         violations = self._check_env_vars(commands)
         result.env_violations = violations
         if violations:
             result.is_safe = False
-            result.deny_reason = (
-                "NEVER_SAFE env var assignment: " + ", ".join(violations)
-            )
+            result.deny_reason = "NEVER_SAFE env var assignment: " + ", ".join(violations)
             return result
 
         # Phase 6: Risk classification
@@ -152,10 +205,7 @@ class BashASTAnalyzer:
         critical = [c for c in commands if c.risk == CommandRisk.CRITICAL]
         if critical:
             result.is_safe = False
-            result.deny_reason = (
-                "CRITICAL risk command(s): "
-                + "; ".join(c.raw[:80] for c in critical[:3])
-            )
+            result.deny_reason = "CRITICAL risk command(s): " + "; ".join(c.raw[:80] for c in critical[:3])
 
         return result
 
@@ -187,7 +237,7 @@ class BashASTAnalyzer:
                     try:
                         float(tokens[idx])
                         idx += 1
-                    except (ValueError, IndexError):
+                    except ValueError, IndexError:
                         pass
                 stripped = " ".join(tokens[idx:])
                 changed = True
@@ -197,10 +247,13 @@ class BashASTAnalyzer:
         nodes: list[CommandNode] = []
         subst_count = len(CMD_SUBST.findall(command))
         for _ in range(subst_count):
-            nodes.append(CommandNode(
-                raw="$(substitution)", executable="(subst)",
-                is_substitution=True,
-            ))
+            nodes.append(
+                CommandNode(
+                    raw="$(substitution)",
+                    executable="(subst)",
+                    is_substitution=True,
+                )
+            )
         for part in COMPOUND_OPS.split(command):
             part = part.strip()
             if not part:
@@ -215,7 +268,7 @@ class BashASTAnalyzer:
                     ei += 1
                 if ei < len(tokens):
                     node.executable = tokens[ei]
-                    node.args = tokens[ei + 1:]
+                    node.args = tokens[ei + 1 :]
             except ValueError:
                 node.executable = part.split()[0] if part.split() else ""
             nodes.append(node)
@@ -232,9 +285,27 @@ class BashASTAnalyzer:
     def _classify_risk(self, cmd: CommandNode) -> CommandRisk:
         exe = cmd.executable.lower()
         safe_cmds = {
-            "cat", "ls", "head", "tail", "wc", "grep", "find", "file",
-            "stat", "du", "df", "which", "type", "echo", "printf",
-            "pwd", "whoami", "date", "uname", "env", "printenv",
+            "cat",
+            "ls",
+            "head",
+            "tail",
+            "wc",
+            "grep",
+            "find",
+            "file",
+            "stat",
+            "du",
+            "df",
+            "which",
+            "type",
+            "echo",
+            "printf",
+            "pwd",
+            "whoami",
+            "date",
+            "uname",
+            "env",
+            "printenv",
         }
         if exe in safe_cmds:
             return CommandRisk.SAFE

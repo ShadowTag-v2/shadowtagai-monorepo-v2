@@ -29,7 +29,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from enum import IntEnum
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -40,6 +40,7 @@ logger = logging.getLogger(__name__)
 
 class PlanPhase(IntEnum):
     """Plan Mode V2 phases (ordered)."""
+
     UNDERSTAND = 1
     RESEARCH = 2
     PLAN = 3
@@ -59,6 +60,7 @@ PHASE_DESCRIPTIONS = {
 @dataclass
 class PlanCheckpoint:
     """A numbered checkpoint within the execution phase."""
+
     cp_id: str
     description: str
     status: str = "pending"  # pending | in_progress | done | blocked
@@ -67,7 +69,7 @@ class PlanCheckpoint:
 
     def mark_done(self, notes: str = "") -> None:
         self.status = "done"
-        self.timestamp = datetime.now(timezone.utc).isoformat()
+        self.timestamp = datetime.now(UTC).isoformat()
         if notes:
             self.notes = notes
 
@@ -75,6 +77,7 @@ class PlanCheckpoint:
 @dataclass
 class PhaseEntry:
     """Record of a single phase transition."""
+
     phase: PlanPhase
     entered_at: str
     notes: str = ""
@@ -92,6 +95,7 @@ class PlanSession:
         task_id: Unique identifier for this planning task.
         output_dir: Directory to write plan artifacts.
     """
+
     task_id: str
     output_dir: Path = field(default_factory=lambda: Path("."))
     current_phase: PlanPhase = PlanPhase.UNDERSTAND
@@ -118,29 +122,26 @@ class PlanSession:
             ValueError: If attempting to skip phases or go backward.
         """
         if to_phase <= self.current_phase:
-            raise ValueError(
-                f"Cannot move from {self.current_phase.name} to "
-                f"{to_phase.name} — phases are sequential"
-            )
+            raise ValueError(f"Cannot move from {self.current_phase.name} to {to_phase.name} — phases are sequential")
         if to_phase.value != self.current_phase.value + 1:
-            raise ValueError(
-                f"Cannot skip from {self.current_phase.name} to "
-                f"{to_phase.name} — advance one phase at a time"
-            )
+            raise ValueError(f"Cannot skip from {self.current_phase.name} to {to_phase.name} — advance one phase at a time")
         self._enter_phase(to_phase, notes)
 
     def _enter_phase(self, phase: PlanPhase, notes: str = "") -> None:
         entry = PhaseEntry(
             phase=phase,
-            entered_at=datetime.now(timezone.utc).isoformat(),
+            entered_at=datetime.now(UTC).isoformat(),
             notes=notes,
         )
         self.phases.append(entry)
         self.current_phase = phase
         logger.info(
             "[PLAN %s] Phase %d/%d: %s — %s",
-            self.task_id, phase.value, len(PlanPhase),
-            phase.name, PHASE_DESCRIPTIONS[phase],
+            self.task_id,
+            phase.value,
+            len(PlanPhase),
+            phase.name,
+            PHASE_DESCRIPTIONS[phase],
         )
 
     def add_checkpoint(self, description: str) -> PlanCheckpoint:
@@ -181,7 +182,7 @@ class PlanSession:
         lines = [
             f"# Plan: {self.task_id}",
             "",
-            f"> Generated: {datetime.now(timezone.utc).isoformat()}",
+            f"> Generated: {datetime.now(UTC).isoformat()}",
             f"> Current Phase: {self.current_phase.name}",
             "",
             "## Phase History",
@@ -189,10 +190,7 @@ class PlanSession:
         ]
 
         for entry in self.phases:
-            lines.append(
-                f"- **{entry.phase.name}** ({entry.entered_at})"
-                + (f" — {entry.notes}" if entry.notes else "")
-            )
+            lines.append(f"- **{entry.phase.name}** ({entry.entered_at})" + (f" — {entry.notes}" if entry.notes else ""))
 
         if self.context:
             lines.extend(["", "## Research Context", ""])
@@ -273,9 +271,7 @@ class PlanSession:
             )
             for e in data["phases"]
         ]
-        session.checkpoints = [
-            PlanCheckpoint(**cp) for cp in data["checkpoints"]
-        ]
+        session.checkpoints = [PlanCheckpoint(**cp) for cp in data["checkpoints"]]
         session.context = data.get("context", {})
         return session
 
@@ -284,8 +280,4 @@ class PlanSession:
         """Human-readable progress summary."""
         done = sum(1 for cp in self.checkpoints if cp.status == "done")
         total = len(self.checkpoints)
-        return (
-            f"[{self.task_id}] Phase {self.current_phase.value}/5 "
-            f"({self.current_phase.name}) | "
-            f"Checkpoints: {done}/{total}"
-        )
+        return f"[{self.task_id}] Phase {self.current_phase.value}/5 ({self.current_phase.name}) | Checkpoints: {done}/{total}"

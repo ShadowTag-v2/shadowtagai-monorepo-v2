@@ -52,9 +52,7 @@ class ClassifiedGateway:
         self._classifier = classifier or AGNTClassifier()
 
         # Load permission tiers
-        perms_path = permissions_path or (
-            self._repo_root / "config" / "tool_permissions.yaml"
-        )
+        perms_path = permissions_path or (self._repo_root / "config" / "tool_permissions.yaml")
         self._auto_approved: set[str] = set()
         self._requires_classifier: set[str] = set()
         self._always_blocked: set[str] = set()
@@ -136,10 +134,7 @@ class ClassifiedGateway:
         if classifier_result.verdict == ClassifierVerdict.BLOCK:
             return Decision(
                 allowed=False,
-                reason=(
-                    f"Classifier BLOCKED (stage {classifier_result.stage}): "
-                    f"{classifier_result.reasoning}"
-                ),
+                reason=(f"Classifier BLOCKED (stage {classifier_result.stage}): {classifier_result.reasoning}"),
                 contract_id=f"classifier_stage_{classifier_result.stage}",
             )
 
@@ -158,10 +153,7 @@ class ClassifiedGateway:
         if contract_decision.allowed:
             return Decision(
                 allowed=True,
-                reason=(
-                    f"Classifier ALLOWED (stage {classifier_result.stage}) "
-                    f"AND contracts passed: {contract_decision.reason}"
-                ),
+                reason=(f"Classifier ALLOWED (stage {classifier_result.stage}) AND contracts passed: {contract_decision.reason}"),
                 reuse_hints=contract_decision.reuse_hints,
                 preconditions_met=contract_decision.preconditions_met,
                 contract_id=contract_decision.contract_id,
@@ -180,9 +172,4 @@ class ClassifiedGateway:
         }
 
     def __repr__(self) -> str:
-        return (
-            f"ClassifiedGateway("
-            f"auto={len(self._auto_approved)}, "
-            f"classifier={len(self._requires_classifier)}, "
-            f"blocked={len(self._always_blocked)})"
-        )
+        return f"ClassifiedGateway(auto={len(self._auto_approved)}, classifier={len(self._requires_classifier)}, blocked={len(self._always_blocked)})"

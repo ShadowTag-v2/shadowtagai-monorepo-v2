@@ -34,6 +34,7 @@ CONTEXT_WARNING_THRESHOLD_PCT = 20  # Warn when <20% remaining
 @dataclass
 class SecurityCheckResult:
     """Result of a security check."""
+
     passed: bool = True
     reason: str = ""
     warnings: list[str] = field(default_factory=list)
@@ -51,12 +52,14 @@ class SecurityHardening:
         This ensures API errors, parse failures, schema issues,
         and timeouts all result in blocking, never permitting.
         """
+
         def wrapper(*args, **kwargs) -> SecurityCheckResult:
             try:
                 return func(*args, **kwargs)
             except Exception as e:
                 logger.error("Fail-closed triggered in %s: %s", func.__name__, e)
                 return SecurityCheckResult(passed=False, reason=f"Fail-closed: {e}")
+
         return wrapper
 
     # --- P5.2: 50-Subcommand Security Cap ---
@@ -75,22 +78,18 @@ class SecurityHardening:
         """
         # Count subcommands by splitting on compound operators
         # Operators: ;, &&, ||, |, $(), ``, \n
-        subcommands = re.split(r'[;\n]|\|\||&&|\|', command)
+        subcommands = re.split(r"[;\n]|\|\||&&|\|", command)
 
         # Also count $() and `` substitutions
-        backtick_count = command.count('`') // 2
-        subst_count = len(re.findall(r'\$\(', command))
+        backtick_count = command.count("`") // 2
+        subst_count = len(re.findall(r"\$\(", command))
 
         total = len([s for s in subcommands if s.strip()]) + backtick_count + subst_count
 
         if total > MAX_SUBCOMMANDS:
             return SecurityCheckResult(
                 passed=False,
-                reason=(
-                    f"Command has {total} subcommands "
-                    f"(cap: {MAX_SUBCOMMANDS}). "
-                    "Break into smaller commands or get explicit approval."
-                ),
+                reason=(f"Command has {total} subcommands (cap: {MAX_SUBCOMMANDS}). Break into smaller commands or get explicit approval."),
             )
 
         if total > MAX_SUBCOMMANDS * 0.8:
@@ -158,9 +157,7 @@ class SecurityHardening:
             )
 
         if remaining_pct < CONTEXT_WARNING_THRESHOLD_PCT:
-            warnings.append(
-                f"Context LOW: {remaining_pct:.1f}% remaining ({current_tokens}/{max_tokens} tokens)"
-            )
+            warnings.append(f"Context LOW: {remaining_pct:.1f}% remaining ({current_tokens}/{max_tokens} tokens)")
 
         return SecurityCheckResult(passed=True, warnings=warnings)
 
@@ -192,9 +189,6 @@ class SecurityHardening:
         if len(result_text) > TOOL_RESULT_MAX_CHARS:
             return SecurityCheckResult(
                 passed=True,
-                warnings=[
-                    f"Tool result is {len(result_text)} chars "
-                    f"(truncation limit: {TOOL_RESULT_MAX_CHARS})"
-                ],
+                warnings=[f"Tool result is {len(result_text)} chars (truncation limit: {TOOL_RESULT_MAX_CHARS})"],
             )
         return SecurityCheckResult(passed=True)

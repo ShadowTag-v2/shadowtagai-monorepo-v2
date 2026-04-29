@@ -24,7 +24,8 @@ import os
 import time
 from enum import StrEnum
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
+from collections.abc import Callable
 
 from packages.vcr.cassette import Cassette, compute_request_hash
 
@@ -33,6 +34,7 @@ logger = logging.getLogger(__name__)
 
 class VCRMode(StrEnum):
     """VCR operational modes."""
+
     OFF = "off"
     RECORD = "record"
     REPLAY = "replay"
@@ -67,12 +69,14 @@ class DiffMismatch:
         live_str = json.dumps(live_response, indent=2, sort_keys=True, default=str)
         recorded_str = json.dumps(recorded_response, indent=2, sort_keys=True, default=str)
 
-        self.diff_lines = list(difflib.unified_diff(
-            recorded_str.splitlines(keepends=True),
-            live_str.splitlines(keepends=True),
-            fromfile="recorded",
-            tofile="live",
-        ))
+        self.diff_lines = list(
+            difflib.unified_diff(
+                recorded_str.splitlines(keepends=True),
+                live_str.splitlines(keepends=True),
+                fromfile="recorded",
+                tofile="live",
+            )
+        )
         self.is_match = len(self.diff_lines) == 0
 
 
@@ -100,19 +104,17 @@ class VCRRecorder:
         mode: VCRMode | None = None,
         cassette_name: str = "default",
     ) -> None:
-        self._mode = mode or VCRMode(
-            os.environ.get("AGNT_VCR_MODE", "off").lower()
-        )
+        self._mode = mode or VCRMode(os.environ.get("AGNT_VCR_MODE", "off").lower())
 
-        default_dir = Path(os.environ.get(
-            "AGNT_VCR_DIR",
-            str(cassette_dir or Path.cwd() / "vcr_cassettes"),
-        ))
+        default_dir = Path(
+            os.environ.get(
+                "AGNT_VCR_DIR",
+                str(cassette_dir or Path.cwd() / "vcr_cassettes"),
+            )
+        )
         self._cassette_dir = default_dir
 
-        self._cassette = Cassette(
-            self._cassette_dir / f"{cassette_name}.jsonl"
-        )
+        self._cassette = Cassette(self._cassette_dir / f"{cassette_name}.jsonl")
 
         # Load existing cassette for replay/diff modes
         if self._mode in (VCRMode.REPLAY, VCRMode.DIFF):
@@ -245,10 +247,7 @@ class VCRRecorder:
 
         # No match
         self._stats["replay_misses"] += 1
-        raise ReplayMiss(
-            f"No cassette entry for request hash {req_hash[:12]}. "
-            f"Cassette has {len(self._cassette)} entries."
-        )
+        raise ReplayMiss(f"No cassette entry for request hash {req_hash[:12]}. Cassette has {len(self._cassette)} entries.")
 
     def _diff(
         self,
@@ -319,10 +318,12 @@ class VCRRecorder:
 
         for result in self._diff_results:
             if not result.is_match:
-                report["mismatches"].append({
-                    "request_hash": result.request_hash,
-                    "diff": "".join(result.diff_lines),
-                })
+                report["mismatches"].append(
+                    {
+                        "request_hash": result.request_hash,
+                        "diff": "".join(result.diff_lines),
+                    }
+                )
 
         with open(output_path, "w") as f:
             json.dump(report, f, indent=2)
@@ -344,8 +345,4 @@ class VCRRecorder:
             )
 
     def __repr__(self) -> str:
-        return (
-            f"VCRRecorder(mode={self._mode.value}, "
-            f"cassette={self._cassette.path.name}, "
-            f"entries={len(self._cassette)})"
-        )
+        return f"VCRRecorder(mode={self._mode.value}, cassette={self._cassette.path.name}, entries={len(self._cassette)})"

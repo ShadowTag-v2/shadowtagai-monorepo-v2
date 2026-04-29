@@ -31,6 +31,7 @@ logger = logging.getLogger(__name__)
 
 class ClassifierVerdict(StrEnum):
     """Possible classifier outcomes."""
+
     ALLOW = "allow"
     BLOCK = "block"
     UNKNOWN = "unknown"
@@ -49,6 +50,7 @@ class ClassifierResult:
         elapsed_ms: Time taken for classification.
         fail_closed: Whether fail-closed was triggered.
     """
+
     verdict: ClassifierVerdict
     stage: int = 1
     reasoning: str = ""
@@ -66,9 +68,18 @@ SAFE_WRAPPERS = {"timeout", "time", "nice", "nohup", "env", "ionice"}
 
 # Environment variables that are never safe to set
 NEVER_SAFE_ENV_VARS = {
-    "PATH", "LD_PRELOAD", "LD_LIBRARY_PATH", "DYLD_INSERT_LIBRARIES",
-    "DYLD_LIBRARY_PATH", "PYTHONPATH", "NODE_PATH", "HOME", "USER",
-    "SHELL", "GOOGLE_APPLICATION_CREDENTIALS", "AWS_SECRET_ACCESS_KEY",
+    "PATH",
+    "LD_PRELOAD",
+    "LD_LIBRARY_PATH",
+    "DYLD_INSERT_LIBRARIES",
+    "DYLD_LIBRARY_PATH",
+    "PYTHONPATH",
+    "NODE_PATH",
+    "HOME",
+    "USER",
+    "SHELL",
+    "GOOGLE_APPLICATION_CREDENTIALS",
+    "AWS_SECRET_ACCESS_KEY",
 }
 
 
@@ -164,11 +175,7 @@ class AGNTClassifier:
                 verdict=ClassifierVerdict.BLOCK,
                 stage=1,
                 tool_id="run_command",
-                reasoning=(
-                    f"Command has {subcommands} subcommands "
-                    f"(max: {MAX_SUBCOMMANDS}). "
-                    "Exceeds security threshold — requires human approval."
-                ),
+                reasoning=(f"Command has {subcommands} subcommands (max: {MAX_SUBCOMMANDS}). Exceeds security threshold — requires human approval."),
                 elapsed_ms=(time.time() - start) * 1000,
             )
 
@@ -179,10 +186,7 @@ class AGNTClassifier:
                 verdict=ClassifierVerdict.BLOCK,
                 stage=1,
                 tool_id="run_command",
-                reasoning=(
-                    f"Command sets unsafe env vars: {unsafe_vars}. "
-                    "These are in NEVER_SAFE_ENV_VARS."
-                ),
+                reasoning=(f"Command sets unsafe env vars: {unsafe_vars}. These are in NEVER_SAFE_ENV_VARS."),
                 elapsed_ms=(time.time() - start) * 1000,
             )
 
@@ -216,7 +220,7 @@ class AGNTClassifier:
 
     def _count_subcommands(self, command: str) -> int:
         """Count subcommands in a compound shell command."""
-        separators = re.findall(r'[;&|]+', command)
+        separators = re.findall(r"[;&|]+", command)
         # Each separator adds a subcommand
         return len(separators) + 1
 
@@ -224,7 +228,7 @@ class AGNTClassifier:
         """Check for unsafe environment variable assignments."""
         unsafe = []
         # Match VAR=value patterns at start or after separators
-        env_pattern = re.compile(r'\b([A-Z_][A-Z0-9_]*)=')
+        env_pattern = re.compile(r"\b([A-Z_][A-Z0-9_]*)=")
         for match in env_pattern.finditer(command):
             var_name = match.group(1)
             if var_name in NEVER_SAFE_ENV_VARS:
@@ -289,7 +293,9 @@ class AGNTClassifier:
         )
 
     def _build_stage2_prompt(
-        self, tool_id: str, tool_input: dict[str, Any],
+        self,
+        tool_id: str,
+        tool_input: dict[str, Any],
         context: dict[str, Any],
     ) -> str:
         """Build Stage 2 thinking classification prompt."""
@@ -302,7 +308,9 @@ class AGNTClassifier:
         )
 
     def _heuristic_classify(
-        self, tool_id: str, tool_input: dict[str, Any],
+        self,
+        tool_id: str,
+        tool_input: dict[str, Any],
     ) -> ClassifierVerdict:
         """Heuristic-based fast classification (pre-model fallback)."""
         # File writes: check for sensitive paths
@@ -322,7 +330,7 @@ class AGNTClassifier:
         Defaults to BLOCK on parse failure (fail-closed).
         """
         # Try <verdict> tag first
-        match = re.search(r'<verdict>(.*?)</verdict>', response, re.IGNORECASE)
+        match = re.search(r"<verdict>(.*?)</verdict>", response, re.IGNORECASE)
         if match:
             val = match.group(1).strip().lower()
             if val == "allow":
@@ -331,7 +339,7 @@ class AGNTClassifier:
                 return ClassifierVerdict.BLOCK
 
         # Try <block> tag
-        match = re.search(r'<block>(.*?)</block>', response, re.IGNORECASE)
+        match = re.search(r"<block>(.*?)</block>", response, re.IGNORECASE)
         if match:
             val = match.group(1).strip().lower()
             if val in ("yes", "true"):
@@ -348,6 +356,7 @@ class AGNTClassifier:
             return
 
         from pathlib import Path
+
         event = {
             "event": "agnt_classifier_outcome",
             "timestamp": time.time(),
