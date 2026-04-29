@@ -2,7 +2,7 @@ import os
 import json
 
 # 1. Gate Definition
-FEATURE_CACHED_MICROCOMPACT = os.getenv("ag_cached_microcompact", "true").lower() == "true" or os.getenv("USER_TYPE") == "ant"
+FEATURE_CACHED_MICROCOMPACT = os.getenv("AG_CACHED_MICROCOMPACT", "true").lower() == "true" or os.getenv("USER_TYPE") == "ant"
 
 
 def perform_micro_compaction(memory_file=".memory/events.ndjson"):

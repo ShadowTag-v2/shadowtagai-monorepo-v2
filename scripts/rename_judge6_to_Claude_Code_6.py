@@ -19,12 +19,13 @@ def replace_in_file(filepath):
 
 def main():
     root_dir = "."
-    for dirpath, dirnames, filenames in os.walk(root_dir, topdown=False):
+    for dirpath, _dirnames, filenames in os.walk(root_dir, topdown=False):
         if ".git" in dirpath or "node_modules" in dirpath or "__pycache__" in dirpath or ".junie" in dirpath or ".agents" in dirpath or ".venv" in dirpath or "venv" in dirpath:
             continue
             
         for filename in filenames:
-            if filename == "rename_judge6_to_Claude_Code_6.py" or filename == "rename_Claude_Code_6.py": continue
+            if filename == "rename_judge6_to_Claude_Code_6.py" or filename == "rename_Claude_Code_6.py":
+                continue
             filepath = os.path.join(dirpath, filename)
             
             # replace inside file

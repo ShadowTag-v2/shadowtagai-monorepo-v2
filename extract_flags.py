@@ -11,7 +11,7 @@ def extract_flags(directory):
     )
     flags = set()
 
-    for root, dirs, files in os.walk(directory):
+    for root, _dirs, files in os.walk(directory):
         for file in files:
             if file.endswith((".ts", ".tsx", ".js", ".jsx")):
                 filepath = os.path.join(root, file)
