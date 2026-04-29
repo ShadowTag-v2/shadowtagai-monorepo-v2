@@ -106,7 +106,7 @@ def test_jr_engine():
         return False
 
 
-def test_judge_six():
+def test_Claude_Code_6():
     """Test Judge 6 Lite enforcement"""
     print_header("TEST 3: Judge 6 Lite (Compliance Verification)")
 
@@ -363,7 +363,7 @@ def main():
     tests = [
         ("Core Imports", test_imports),
         ("JR Engine", test_jr_engine),
-        ("Judge 6 Lite", test_judge_six),
+        ("Judge 6 Lite", test_Claude_Code_6),
         ("Gemini Ingestion", test_gemini_ingestion),
         ("Intelligence Agent", test_intelligence_agent),
         ("Compliance SDR Agent", test_compliance_sdr),

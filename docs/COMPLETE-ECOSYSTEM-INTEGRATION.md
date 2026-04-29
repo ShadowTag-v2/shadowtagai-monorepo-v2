@@ -193,7 +193,7 @@ ShadowTag-v2-fastapi-services/
 │   │   │   ├── cor.py                 # Cortex orchestrator
 │   │   │   ├── ns.py                  # Nervous System memory
 │   │   │   ├── shadowtag.py           # Cryptographic audit
-│   │   │   └── judge_six.py           # JR Engine
+│   │   │   └── Claude_Code_6.py           # JR Engine
 │   │   │
 │   │   ├── agents/                    # Layer 6: Multi-agent
 │   │   │   ├── debate.py
@@ -202,7 +202,7 @@ ShadowTag-v2-fastapi-services/
 │   │   │
 │   │   ├── kernels/                   # Layer 5: Kernel Functions
 │   │   │   ├── atp_519_scan.py
-│   │   │   ├── judge_six.py
+│   │   │   ├── Claude_Code_6.py
 │   │   │   ├── audit_compress.py
 │   │   │   └── base.py
 │   │   │

@@ -149,7 +149,7 @@ Please provide:
 ## Input Materials
 
 [Attach the following to this prompt:]
-- `judge_six.py` source code
+- `Claude_Code_6.py` source code
 - ATP 5-19 risk assessment configuration
 - JR engine implementation
 - Deployment manifests (Kubernetes YAML)
@@ -184,7 +184,7 @@ For production analysis (with telemetry):
 ## Usage Instructions
 
 ### Pre-Production Analysis
-1. Gather `judge_six.py`, configs, deployment specs
+1. Gather `Claude_Code_6.py`, configs, deployment specs
 2. Run unit tests and capture coverage reports
 3. Attach all materials to prompt
 4. Submit to Gemini 2.0 Pro

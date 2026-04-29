@@ -2,7 +2,7 @@
 
 import logging
 
-from src.governance.judge_six.gauntlet_17_layer import Gauntlet17Layer
+from src.governance.Claude_Code_6.gauntlet_17_layer import Gauntlet17Layer
 from src.governance.memory.memory_bank import MemoryBank
 
 logger = logging.getLogger(__name__)

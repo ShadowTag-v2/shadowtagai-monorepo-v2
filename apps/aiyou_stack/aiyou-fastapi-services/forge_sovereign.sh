@@ -17,7 +17,7 @@ echo ">>> 🏗️  Forging Sovereign Architecture..."
 mkdir -p Docs
 mkdir -p infrastructure
 mkdir -p src/agents
-mkdir -p src/governance/{judge_six,memory,voting}
+mkdir -p src/governance/{Claude_Code_6,memory,voting}
 mkdir -p src/tools
 mkdir -p scripts
 mkdir -p tests
@@ -107,7 +107,7 @@ class MemoryBank:
 EOF
 
 # --- The Sentinel (Judge 6 Core) ---
-cat <<EOF > src/governance/judge_six/sentinel.py
+cat <<EOF > src/governance/Claude_Code_6/sentinel.py
 import logging
 from src.governance.voting.cav_mtoe import CavMTOE
 from src.governance.memory.memory_bank import MemoryBank
@@ -146,7 +146,7 @@ cat <<EOF > src/main.py
 import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from src.governance.judge_six.sentinel import JudgeSixSentinel
+from src.governance.Claude_Code_6.sentinel import JudgeSixSentinel
 
 app = FastAPI(title="UphillSnowball Sovereign OS")
 judge = JudgeSixSentinel()

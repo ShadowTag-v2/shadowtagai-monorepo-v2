@@ -545,14 +545,14 @@ echo "✅ Modern stack deployed"
 | Existing Component | Integration |
 |-------------------|-------------|
 | `shadowtagai/core/antigravity_agent_framework.py` | Wrap `JREngine`, `GlickoAgentSelector`, `PanelDebateSystem` in LangGraph nodes |
-| `shadowtagai/core/judge_six_pipeline.py` | Use as reference for validation pipeline |
+| `shadowtagai/core/Claude_Code_6_pipeline.py` | Use as reference for validation pipeline |
 | `app/kernels/audit_compress.py` | Wrap in `node_audit` for checkpoint recovery |
 | `app/api/v1/governance.py` | Add LangGraph compilation layer |
 
 ### Critical Files to Read Before Implementation
 
 1. `shadowtagai/core/antigravity_agent_framework.py` - Existing JREngine, Glicko-2, Panel Debate (662 lines)
-2. `shadowtagai/core/judge_six_pipeline.py` - Validation pipeline (475 lines)
+2. `shadowtagai/core/Claude_Code_6_pipeline.py` - Validation pipeline (475 lines)
 3. `app/kernels/audit_compress.py` - ATP 519 compression
 4. `app/api/v1/governance.py` - Existing governance endpoints (275 lines)
 5. `app/core/pinkln_framework.py` - Ultrathink framework (286 lines)
@@ -613,12 +613,12 @@ docker-compose -f monitoring/docker-compose.yml up -d
 ## PHASE 2: JUDGE #6 DEPLOYMENT (Hours 2-8)
 
 ### Deployment Script Location
-`/Users/pikeymickey/Downloads/deploy_judge_six.sh` (367 lines)
+`/Users/pikeymickey/Downloads/deploy_Claude_Code_6.sh` (367 lines)
 
 ### Commands
 ```bash
 cd /Users/pikeymickey/Downloads
-bash deploy_judge_six.sh deploy
+bash deploy_Claude_Code_6.sh deploy
 ```
 
 ### Success Criteria
@@ -741,7 +741,7 @@ All core deployment tasks COMPLETE:
 | File | Purpose |
 |------|---------|
 | `PRE_LAUNCH_ORCHESTRATION.md` | Master launch plan |
-| `deploy_judge_six.sh` | A100 deployment |
+| `deploy_Claude_Code_6.sh` | A100 deployment |
 | `PNKLN_TOKEN_COMPRESSION_SPEC.md` | Compression spec |
 | `thorough-merge.sh` | Git merge automation |
 | `master_deploy.sh` | GKE deployment |

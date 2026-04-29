@@ -546,11 +546,11 @@ def enforce_policy(request, context):
 
     if risk.level == "CRITICAL":
         # Fast path: Judge 6 synchronous blocking (<10ms)
-        return judge_six.enforce(request, timeout_ms=90)
+        return Claude_Code_6.enforce(request, timeout_ms=90)
 
     elif risk.level == "HIGH":
         # Dual validation: Both systems must approve
-        judge_result = judge_six.enforce(request, timeout_ms=90)
+        judge_result = Claude_Code_6.enforce(request, timeout_ms=90)
         if judge_result.decision == "DENY":
             return judge_result
 
@@ -561,7 +561,7 @@ def enforce_policy(request, context):
         # Agent evaluation with Judge 6 fallback
         agent_result = agent_governance.evaluate(request, timeout_s=5)
         if agent_result.confidence < 0.6:
-            return judge_six.enforce(request, timeout_ms=90)
+            return Claude_Code_6.enforce(request, timeout_ms=90)
         return agent_result
 
     else:  # LOW risk

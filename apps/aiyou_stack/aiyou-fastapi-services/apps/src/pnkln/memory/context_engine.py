@@ -17,7 +17,7 @@ import datetime
 import json
 import logging
 
-from pnkln.core.judge_six_pipeline import get_judge
+from pnkln.core.Claude_Code_6_pipeline import get_judge
 
 from src.pnkln.gemini_integration import GeminiService
 

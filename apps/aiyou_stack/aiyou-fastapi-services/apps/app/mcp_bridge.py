@@ -58,7 +58,7 @@ class MCPBridge:
 
     COMPRESSION PIPELINE:
     1. ATP_519_scan(): 50KB context → 487-byte kernel
-    2. judge_six_binary(): kernel → 1-bit decision (<35ms)
+    2. Claude_Code_6_binary(): kernel → 1-bit decision (<35ms)
     3. Cache results for reuse
 
     TARGET:
@@ -173,7 +173,7 @@ class MCPBridge:
 
         return kernel
 
-    async def judge_six_binary(
+    async def Claude_Code_6_binary(
         self,
         kernel: ATP519Kernel,
         max_latency_ms: int = 35,
@@ -432,7 +432,7 @@ async def test_mcp_bridge():
 
     # Test 2: Judge#6 binary decision
     print("\nTest 2: Judge#6 Binary Decision")
-    decision = await bridge.judge_six_binary(kernel, max_latency_ms=35)
+    decision = await bridge.Claude_Code_6_binary(kernel, max_latency_ms=35)
     print(f"   Decision: {decision.decision} ({decision.reasoning})")
     print(f"   Latency: {decision.latency_ms:.1f}ms, Cost: ${decision.cost_usd:.4f}")
 

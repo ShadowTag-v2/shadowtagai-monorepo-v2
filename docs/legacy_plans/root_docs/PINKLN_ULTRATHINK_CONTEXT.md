@@ -34,7 +34,7 @@
 │  ┌──────────────────────────────────────────────────────────┐ │
 │  │              Function Tool Registry                       │ │
 │  │  • atp_519_scan()         • multi_agent_debate()         │ │
-│  │  • judge_six_classify()   • dte_evolve()                 │ │
+│  │  • Claude_Code_6_classify()   • dte_evolve()                 │ │
 │  │  • audit_compress()       • wealth_analyze()             │ │
 │  │  • glicko_update()        • [+∞ extensible]              │ │
 │  └─────────────────┬────────────────────────────────────────┘ │
@@ -671,7 +671,7 @@ tagged = shadow.sign(
     content="Decision: APPROVE deployment",
     metadata={
         "timestamp": "2025-11-18T10:30:00Z",
-        "agent": "judge_six",
+        "agent": "Claude_Code_6",
         "glicko_rating": 1650
     }
 )
@@ -957,7 +957,7 @@ decision = jr.validate(
 # Check kernel ratings before deployment
 kernel_ratings = glicko.get_ratings([
     "atp_519_scan",
-    "judge_six_classify",
+    "Claude_Code_6_classify",
     "audit_compress"
 ])
 

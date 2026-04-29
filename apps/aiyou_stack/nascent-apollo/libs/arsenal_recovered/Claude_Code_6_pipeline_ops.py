@@ -26,7 +26,7 @@ class PipelineOps:
 
     def __init__(self, db_client=None):
         self.db = db_client or firestore.Client()
-        self.logger = logging.getLogger("judge_six_ops")
+        self.logger = logging.getLogger("Claude_Code_6_ops")
 
     def calculate_hot_risk(self, transactions: list[dict[str, Any]]) -> float:
         """

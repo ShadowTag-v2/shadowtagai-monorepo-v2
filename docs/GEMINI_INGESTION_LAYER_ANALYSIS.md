@@ -40,7 +40,7 @@ This document specifies the Gemini Ingestion Layer Analysis Prompt, adapted from
 
 ### 2. File References
 
-- **From**: `judge_six.py` (single script)
+- **From**: `Claude_Code_6.py` (single script)
 - **To**: Pipeline documentation, architecture specs, flowcharts, config files
 - **Rationale**: Distributed ingestion system requires broader artifact analysis
 
@@ -582,4 +582,4 @@ Flag any <60% confidence findings for human review. Be direct and results-orient
 **Document Version**: 1.0
 **Last Updated**: 2025-11-15
 **Maintainer**: SHADOWTAGAI Core Stack™ Architecture Team
-**Related Docs**: `SHADOWTAGAI_THREAD_ROLLUP_COMPREHENSIVE.md`, `judge_six_analysis_prompt.md`
+**Related Docs**: `SHADOWTAGAI_THREAD_ROLLUP_COMPREHENSIVE.md`, `Claude_Code_6_analysis_prompt.md`

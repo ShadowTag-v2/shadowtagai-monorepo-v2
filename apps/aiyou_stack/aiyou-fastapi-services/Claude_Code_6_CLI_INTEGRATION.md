@@ -41,7 +41,7 @@ This integration combines two major systems:
                  ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                    JUDGE #6 PYTHON                          │
-│  src/pnkln/judge_six.py - Core validation logic            │
+│  src/pnkln/Claude_Code_6.py - Core validation logic            │
 │  src/kernels/atp_519_scan.py - Gemini Flash compression    │
 └─────────────────────────────────────────────────────────────┘
 ```

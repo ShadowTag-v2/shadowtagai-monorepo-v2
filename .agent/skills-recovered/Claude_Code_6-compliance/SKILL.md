@@ -1,11 +1,11 @@
 ---
 name: Cor.Claude_Code_6-compliance
-description: Enforces Pnkln "Judge 6" Risk Protocols (Wet Fleece/Dry Ground). Use this to validate project phases before deployment.
+description: Enforces Pnkln "Claude_Code_6" Risk Protocols (Wet Fleece/Dry Ground). Use this to validate project phases before deployment.
 ---
 
-# Judge 6 Compliance Skill
+# Claude_Code_6 Compliance Skill
 
-This skill enforces the **Pnkln Gideon Protocol** ("Judge 6") before allowing significant actions like deployment or scaling.
+This skill enforces the **Pnkln Gideon Protocol** ("Claude_Code_6") before allowing significant actions like deployment or scaling.
 
 ## Instructions
 

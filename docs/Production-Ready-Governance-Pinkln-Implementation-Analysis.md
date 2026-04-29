@@ -215,7 +215,7 @@ Kernel chaining (ATP, Judge, Audit)
 **7 Core Functions**:
 
 1. `atp_519_scan(context)` - Extract Compliance Framework violations
-2. `judge_six_classify(context)` - Binary go/no-go decision
+2. `Claude_Code_6_classify(context)` - Binary go/no-go decision
 3. `audit_compress(data)` - Compress audit trail (zstd)
 4. `multi_agent_debate(question, num_agents)` - Collaborative reasoning
 5. `dte_evolve(prompt, strategy)` - Evolve prompts (+3.7% accuracy)

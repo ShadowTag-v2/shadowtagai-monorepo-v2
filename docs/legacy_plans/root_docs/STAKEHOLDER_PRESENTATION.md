@@ -581,7 +581,7 @@ Week 16 - First revenue recognized ($125K)
    - Secrets management
    - Quality gates enforcement
 
-2. **JR Engine Prototype** (`src/judge_six/`)
+2. **JR Engine Prototype** (`src/Claude_Code_6/`)
    - Purpose/Reasons/Brakes validators
    - Live code walkthrough available
    - Example scenarios (approved, rejected, flagged)
@@ -597,7 +597,7 @@ Week 16 - First revenue recognized ($125K)
    - Risk management
 
 5. **Inception Analyses** (Full reports)
-   - `JUDGE_SIX_INCEPTION_ANALYSIS.md` (20 pages)
+   - `Claude_Code_6_INCEPTION_ANALYSIS.md` (20 pages)
    - `GEMINI_INGESTION_LAYER_INCEPTION_ANALYSIS.md` (25 pages)
 
 ---

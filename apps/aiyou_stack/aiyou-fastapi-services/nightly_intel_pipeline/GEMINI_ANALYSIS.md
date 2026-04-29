@@ -42,7 +42,7 @@ These replacements ensure the prompt stays focused on intelligence collection ra
 
 
 
-- **From**: `judge_six.py` (single script)
+- **From**: `Claude_Code_6.py` (single script)
 
 
 - **To**: Pipeline documentation, architecture specs, flowcharts, config files

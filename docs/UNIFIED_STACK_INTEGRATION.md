@@ -104,7 +104,7 @@ from src.integration.contractual_pinkln_adapter import ContractualPinklnAdapter
 
 adapter = ContractualPinklnAdapter(
     gemini_api_key=os.getenv("GOOGLE_API_KEY"),
-    enable_judge_six=True,      # Validation
+    enable_Claude_Code_6=True,      # Validation
     enable_shadowtag=True,       # Audit trail
     enable_grpo=True,            # Training
     enable_dte=True              # Evolution
@@ -180,7 +180,7 @@ caller = GeminiFunctionCaller(
 # Single API call executes all functions locally
 result = caller.execute(
     prompt="Analyze this negotiation for conflicts...",
-    validation_callback=judge_six_callback
+    validation_callback=Claude_Code_6_callback
 )
 ```
 

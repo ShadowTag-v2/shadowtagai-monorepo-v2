@@ -485,7 +485,7 @@ async def ultimate_optimization(
     )
 
     # Layer 5: Kernel processing with OCR compression
-    from src.kernels import atp_519_scan, judge_six_classify
+    from src.kernels import atp_519_scan, Claude_Code_6_classify
     from src.optimization.deepseek import OCRCompressor
 
     compressor = OCRCompressor()

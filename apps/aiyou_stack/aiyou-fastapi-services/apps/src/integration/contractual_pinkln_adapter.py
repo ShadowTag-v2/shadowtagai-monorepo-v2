@@ -21,7 +21,7 @@ import os
 from typing import Any
 from uuid import UUID
 
-from pnkln.core.judge_six_pipeline import JudgeSix
+from pnkln.core.Claude_Code_6_pipeline import JudgeSix
 
 from src.agents.debate import DebateOrchestrator
 from src.core.gemini_function_calling import FunctionTool, GeminiFunctionCaller
@@ -59,7 +59,7 @@ class ContractualPinklnAdapter:
     def __init__(
         self,
         gemini_api_key: str | None = None,
-        enable_judge_six: bool = True,
+        enable_Claude_Code_6: bool = True,
         enable_shadowtag: bool = True,
         enable_glicko: bool = True,
         enable_grpo: bool = False,  # Requires training data
@@ -69,7 +69,7 @@ class ContractualPinklnAdapter:
 
         Args:
             gemini_api_key: Google API key (defaults to env var)
-            enable_judge_six: Validate all function calls with Judge 6
+            enable_Claude_Code_6: Validate all function calls with Judge 6
             enable_shadowtag: Add cryptographic watermarks to outputs
             enable_glicko: Track quality with Glicko-2 ratings
             enable_grpo: Enable GRPO training (requires negotiation outcomes)
@@ -79,8 +79,8 @@ class ContractualPinklnAdapter:
         self.gemini_api_key = gemini_api_key or os.environ.get("GOOGLE_API_KEY")
 
         # Initialize core components
-        self.judge_six = JudgeSix() if enable_judge_six else None
-        self.cor = Cor(judge_six=self.judge_six)
+        self.Claude_Code_6 = JudgeSix() if enable_Claude_Code_6 else None
+        self.cor = Cor(Claude_Code_6=self.Claude_Code_6)
         self.shadowtag = ShadowTag() if enable_shadowtag else None
 
         # Initialize debate orchestrator (multi-agent)
@@ -250,10 +250,10 @@ class ContractualPinklnAdapter:
             )
 
         # Tool 5: Judge 6 Validation (always available)
-        if self.judge_six:
+        if self.Claude_Code_6:
             tools.append(
                 FunctionTool(
-                    name="validate_with_judge_six",
+                    name="validate_with_Claude_Code_6",
                     description="""
                 Validate output using Judge 6 framework (Purpose/Reasons/Brakes).
 
@@ -264,7 +264,7 @@ class ContractualPinklnAdapter:
 
                 Returns validation result with risk level.
                 """,
-                    function=self._validate_judge_six_wrapper,
+                    function=self._validate_Claude_Code_6_wrapper,
                     parameters={
                         "output_data": {
                             "type": "object",
@@ -440,13 +440,13 @@ Performance targets:
             "improvement": self.dte_evolver.last_improvement_percent,
         }
 
-    def _validate_judge_six_wrapper(self, output_data: dict, operation: str) -> dict[str, Any]:
+    def _validate_Claude_Code_6_wrapper(self, output_data: dict, operation: str) -> dict[str, Any]:
         """Wrapper for Judge 6 validation"""
-        if not self.judge_six:
+        if not self.Claude_Code_6:
             return {"valid": True, "note": "Judge 6 not enabled"}
 
         # Validate through Judge 6
-        validation_result = self.judge_six.validate(
+        validation_result = self.Claude_Code_6.validate(
             output=output_data,
             operation=operation,
             context={"platform": "Contractual AI Negotiation"},
@@ -496,7 +496,7 @@ Performance targets:
 
         result = self.gemini_caller.execute(
             prompt=prompt,
-            validation_callback=self._judge_six_callback if self.judge_six else None,
+            validation_callback=self._Claude_Code_6_callback if self.Claude_Code_6 else None,
         )
 
         # Parse result (Gemini returns JSON from function calls)
@@ -546,7 +546,7 @@ Performance targets:
 
         result = self.gemini_caller.execute(
             prompt=prompt,
-            validation_callback=self._judge_six_callback if self.judge_six else None,
+            validation_callback=self._Claude_Code_6_callback if self.Claude_Code_6 else None,
         )
 
         # Parse result
@@ -558,7 +558,7 @@ Performance targets:
         except json.JSONDecodeError:
             return self._extract_suggestions_from_text(result)
 
-    def _judge_six_callback(self, function_name: str, args: dict[str, Any]) -> bool:
+    def _Claude_Code_6_callback(self, function_name: str, args: dict[str, Any]) -> bool:
         """Validation callback for Judge 6
 
         Args:
@@ -569,10 +569,10 @@ Performance targets:
             True if validation passes, False otherwise
 
         """
-        if not self.judge_six:
+        if not self.Claude_Code_6:
             return True
 
-        validation = self.judge_six.validate(
+        validation = self.Claude_Code_6.validate(
             output=args,
             operation=function_name,
             context={"platform": "Contractual"},
@@ -640,7 +640,7 @@ if __name__ == "__main__":
     async def main():
         # Initialize adapter
         adapter = ContractualPinklnAdapter(
-            enable_judge_six=True,
+            enable_Claude_Code_6=True,
             enable_shadowtag=True,
             enable_glicko=True,
             enable_grpo=False,  # Requires training data

@@ -33,7 +33,7 @@ Judge 6 is a hybrid Gemini + PyTorch inference system designed to:
 - Maintain ≥98% test coverage for critical validation paths
 
 This is a **production system** with active telemetry. You have access to:
-- Complete architecture specifications including judge_six.py implementation
+- Complete architecture specifications including Claude_Code_6.py implementation
 - Real-world performance metrics (latency distributions, throughput data)
 - Production logs and error traces
 - Test coverage reports and FP/FN analysis
@@ -71,7 +71,7 @@ Perform a structured analysis across **8 key dimensions**, providing:
 - Are there single points of failure?
 
 **Key Documents & Data**:
-- Architecture specifications and judge_six.py code
+- Architecture specifications and Claude_Code_6.py code
 - Service call latency breakdowns by namespace
 - Load test results and scaling behavior
 - Failure mode analysis from production incidents
@@ -318,7 +318,7 @@ Please proceed with the structured analysis of Judge 6 across all 8 dimensions, 
 ### How to Use This Prompt
 
 1. **Prepare Context Documents**:
-   - Copy judge_six.py source code (or relevant implementation files)
+   - Copy Claude_Code_6.py source code (or relevant implementation files)
    - Gather production metrics:
      - Latency distributions (p50, p95, p99) from monitoring dashboards
      - Throughput data (validations/second over time)
@@ -332,7 +332,7 @@ Please proceed with the structured analysis of Judge 6 across all 8 dimensions, 
    - Start a new Gemini conversation
    - First message: "I'm providing production data and code for Judge 6 analysis."
    - Upload or paste:
-     - judge_six.py and related code
+     - Claude_Code_6.py and related code
      - CSV/JSON of production metrics
      - Screenshots of dashboards (Gemini can parse images)
      - Test coverage HTML reports
@@ -432,7 +432,7 @@ Judge 6 **calls** services in 4 namespaces; Ingestion is **called by** them. Thi
 
 After running this analysis:
 
-1. Document Gemini's insights in `JUDGE_SIX_ANALYSIS_RESULTS_YYYY-MM-DD.md`
+1. Document Gemini's insights in `Claude_Code_6_ANALYSIS_RESULTS_YYYY-MM-DD.md`
 2. Create Jira tickets or GitHub issues for top recommendations
 3. Track latency improvements and cost reductions over time
 4. Re-run analysis after major optimizations to measure impact
@@ -443,7 +443,7 @@ After running this analysis:
 ## Related Documents
 
 - [PNKLN Core Stack Architecture](../architecture/PNKLN_CORE_STACK.md)
-- [Judge 6 Specifications](../architecture/JUDGE_SIX.md) (to be created)
+- [Judge 6 Specifications](../architecture/Claude_Code_6.md) (to be created)
 - [Gemini Ingestion Layer Analysis Prompt](./gemini_ingestion_analysis.md) (complementary)
 - [Analysis Results Archive](./results/) (store both Judge 6 and Ingestion analyses)
 

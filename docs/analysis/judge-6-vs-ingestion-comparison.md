@@ -226,7 +226,7 @@ The evolution of the analysis prompt reflects this:
 
 | Prompt Element          | Judge 6 Version        | Ingestion Layer Version               | Rationale                            |
 | ----------------------- | ----------------------- | ------------------------------------- | ------------------------------------ |
-| **File References**     | `judge_six.py`          | Pipeline docs, architecture specs     | Broader scope for distributed system |
+| **File References**     | `Claude_Code_6.py`          | Pipeline docs, architecture specs     | Broader scope for distributed system |
 | **Performance Metrics** | p99 ≤90ms               | ~45 min runtime                       | Batch vs. real-time optimization     |
 | **Quality Gates**       | 98% coverage            | Items, sources, costs, scores         | Holistic vs. binary quality          |
 | **Unique Features**     | Compliance Framework, JR validation | Ethical crawling, tier classification | Compliance vs. ethics focus          |

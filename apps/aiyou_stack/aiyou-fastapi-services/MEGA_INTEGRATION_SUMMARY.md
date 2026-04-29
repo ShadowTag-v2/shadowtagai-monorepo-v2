@@ -453,7 +453,7 @@ This document summarizes the integration of 180+ research and development branch
 
 - `src/shadowtagai/` - SHADOWTAGAI production implementation
 
-  - `judge_six.py` - JR validation engine
+  - `Claude_Code_6.py` - JR validation engine
 
   - `cor.py` - Unified execution orchestrator
 
@@ -1938,7 +1938,7 @@ Working implementation of Jobs-inspired meta-orchestration:
 
 - **ShadowTag** (src/shadowtagai/shadowtag.py) - Cryptographic audit trails (Ed25519 + Merkle trees)
 
-- **Judge Six** (src/shadowtagai/judge_six.py) - Binary decision engine
+- **Judge Six** (src/shadowtagai/Claude_Code_6.py) - Binary decision engine
 
 - **Wealth Accelerator** - Business optimization model (+12% leak detection, +15% funnel CVR)
 
@@ -1983,7 +1983,7 @@ AutoGen → Native Gemini with kernel-as-functions architecture:
 
 - `src/shadowtagai/shadowtag.py` - Cryptographic audit system
 
-- `src/shadowtagai/judge_six.py` - Judge Six decision engine
+- `src/shadowtagai/Claude_Code_6.py` - Judge Six decision engine
 
 - `src/ratings/glicko2.py` - Glicko-2 rating system (239 lines)
 
@@ -1999,7 +1999,7 @@ AutoGen → Native Gemini with kernel-as-functions architecture:
 
 **Specialized Kernels** (as Gemini functions):
 
-- `src/kernels/judge_six.py` - Binary classifier (241 lines)
+- `src/kernels/Claude_Code_6.py` - Binary classifier (241 lines)
 
 - `src/kernels/atp_519_scan.py` - ATP-519 violation scanner (168 lines)
 
@@ -2019,7 +2019,7 @@ AutoGen → Native Gemini with kernel-as-functions architecture:
 
 - `src/examples/unified_poc_demo.py` - Full stack demo (382 lines)
 
-- `src/examples/judge_six_example.py` - Judge Six usage (141 lines)
+- `src/examples/Claude_Code_6_example.py` - Judge Six usage (141 lines)
 
 - `src/examples/basic_function_calling.py` - Gemini function calling (166 lines)
 
@@ -2031,7 +2031,7 @@ AutoGen → Native Gemini with kernel-as-functions architecture:
 
 - `src/tests/test_benchmarks.py` - Benchmark suite (265 lines)
 
-- `src/tests/test_judge_six.py` - Kernel tests (116 lines)
+- `src/tests/test_Claude_Code_6.py` - Kernel tests (116 lines)
 
 - `src/tests/test_latency.py` - Performance tests (126 lines)
 

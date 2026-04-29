@@ -217,6 +217,11 @@ Before producing nag prompts for complex tasks, route through `sequential-thinki
 ## Prompt Repetition — Zero-Cost Accuracy Boost
 **Full protocol:** `skills/prompt-repetition-boost/SKILL.md` (106 lines). arXiv:2512.14982. Repeat prompts for non-reasoning models (flash/lite/mini). Do NOT apply to thinking/reasoning models.
 </prompt_repetition_doctrine>
+
+<mcp_deferred_loading_doctrine>
+## MCP Deferred Loading
+**Full protocol:** `skills/mcp-deferred-loading/SKILL.md`. Strategies and architectural patterns for deferring the initialization of Model Context Protocol (MCP) servers to improve boot times and reduce idle resource consumption. Heavyweight servers should only be instantiated when their specific domain tools are invoked.
+</mcp_deferred_loading_doctrine>
 <secrets_manager_doctrine>
 ## Secrets Manager Doctrine
 

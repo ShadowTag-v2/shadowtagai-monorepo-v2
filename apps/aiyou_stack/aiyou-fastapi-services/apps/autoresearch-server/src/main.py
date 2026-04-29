@@ -19,7 +19,7 @@ from shadowtag_v4.bridge_client import bridge
 
 # Verified: This file imports from src.memory, which defaults PROJECT_ID to os.getenv.
 # No hardcoded ID here to replace, but good to check.
-# from src.governance.judge_six.core import JudgeSixEngine # POSTPONED
+# from src.governance.Claude_Code_6.core import JudgeSixEngine # POSTPONED
 # from src.intelligence.tegu_vision.detector import TeguVision # POSTPONED
 from src.memory import get_memory_storage
 

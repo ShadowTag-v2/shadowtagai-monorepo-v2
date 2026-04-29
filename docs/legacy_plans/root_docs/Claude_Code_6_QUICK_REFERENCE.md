@@ -332,7 +332,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using Co
 
 ### Documentation
 
-- Full Analysis: `JUDGE_SIX_INCEPTION_ANALYSIS.md`
+- Full Analysis: `Claude_Code_6_INCEPTION_ANALYSIS.md`
 - Implementation Guide: TBD (Week 1)
 - API Reference: TBD (Week 2)
 
@@ -370,4 +370,4 @@ Automated governance & compliance enforcement engine for AI/LLM systems using Co
 
 ---
 
-_For detailed analysis, see `JUDGE_SIX_INCEPTION_ANALYSIS.md` (full 20+ page report)_
+_For detailed analysis, see `Claude_Code_6_INCEPTION_ANALYSIS.md` (full 20+ page report)_

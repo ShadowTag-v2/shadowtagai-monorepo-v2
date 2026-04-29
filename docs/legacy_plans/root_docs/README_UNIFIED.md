@@ -120,13 +120,13 @@ src/
 │   ├── unified_orchestrator.py        # Main orchestrator
 │   └── kernel_adapters.py             # Kernel → function adapters
 ├── pnkln/                             # Pinkln core stack
-│   ├── judge_six.py                   # JR Engine validation
+│   ├── Claude_Code_6.py                   # JR Engine validation
 │   ├── cor.py                         # Orchestrator
 │   ├── shadowtag.py                   # Cryptographic watermarking
 │   └── ns.py                          # Semantic memory
 ├── kernels/                           # Specialized kernels
 │   ├── atp_519_scan.py                # Violation extraction
-│   ├── judge_six.py                   # Binary decision
+│   ├── Claude_Code_6.py                   # Binary decision
 │   └── audit_compress.py              # Audit compression
 ├── agents/                            # Multi-agent debates
 │   ├── base.py                        # Agent base class
@@ -138,14 +138,14 @@ src/
 ├── examples/                          # Demo code
 │   ├── unified_poc_demo.py            # Full stack demo
 │   ├── basic_function_calling.py      # Simple example
-│   └── judge_six_example.py           # Validation demo
+│   └── Claude_Code_6_example.py           # Validation demo
 └── tests/                             # Test suite
 ```
 
 **7 Core Functions** registered with Gemini:
 
 1. `atp_519_scan()` - Violation extraction
-2. `judge_six_classify()` - Binary decision
+2. `Claude_Code_6_classify()` - Binary decision
 3. `audit_compress()` - Audit compression
 4. `multi_agent_debate()` - Collaborative reasoning
 5. `dte_evolve()` - Prompt evolution
@@ -287,7 +287,7 @@ export GEMINI_API_KEY="your-key-here"
 # Run examples
 python src/examples/unified_poc_demo.py        # Full stack
 python src/examples/basic_function_calling.py  # Simple demo
-python src/examples/judge_six_example.py       # Validation
+python src/examples/Claude_Code_6_example.py       # Validation
 
 # Run tests
 pytest src/tests/
@@ -403,7 +403,7 @@ pytest app/tests/   # Full test suite
 ```bash
 pytest src/tests/test_pnkln_integration.py  # Integration
 pytest src/tests/test_benchmarks.py         # Performance
-pytest src/tests/test_judge_six.py          # Validation
+pytest src/tests/test_Claude_Code_6.py          # Validation
 pytest src/tests/test_latency.py            # Speed
 ```
 

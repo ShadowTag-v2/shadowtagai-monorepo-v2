@@ -425,7 +425,7 @@ load_testing/
 
 - `agents/` (3): Multi-agent debates
 - `evolution/` (2): DTE self-evolution
-- `kernels/` (5): 3-kernel pipeline (ATP_519_scan, judge_six, audit_compress)
+- `kernels/` (5): 3-kernel pipeline (ATP_519_scan, Claude_Code_6, audit_compress)
 - `monitoring/` (3): Logging + Prometheus
 - `orchestration/` (3): Chain patterns
 - `prompts/` (2): Cheat sheet fusion
@@ -449,7 +449,7 @@ load_testing/
 - `training/` (2): Duplicated from app/
 - `wealth/` (2): Duplicated from app/
 - `tests/` (5): Comprehensive test suite
-- `judge_six/` (8): Standalone JR Engine
+- `Claude_Code_6/` (8): Standalone JR Engine
 - `__init__.py` (1)
 
 #### erik-hancock-llm-memory/ - LLM Memory Persistence (15 files) ⭐ NEW
@@ -503,7 +503,7 @@ load_testing/
 │  LAYER 3: SPECIALIZED FUNCTION TOOLS                                 │
 │  ┌────────────────────────────────────────────────────────────────┐  │
 │  │ • atp_519_scan() → Extract violations                          │  │
-│  │ • judge_six_classify() → Go/no-go decision                     │  │
+│  │ • Claude_Code_6_classify() → Go/no-go decision                     │  │
 │  │ • audit_compress() → Audit trail compression                   │  │
 │  │ • multi_agent_debate() → Collaborative reasoning               │  │
 │  │ • dte_evolve() → Prompt self-evolution                         │  │
@@ -695,7 +695,7 @@ pytest load_testing/             # Enhanced load tests
 # Run examples
 python src/examples/basic_function_calling.py
 python src/examples/full_pnkln_stack.py
-PYTHONPATH=src python src/judge_six/example.py
+PYTHONPATH=src python src/Claude_Code_6/example.py
 ```
 
 ---

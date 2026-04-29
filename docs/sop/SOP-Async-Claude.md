@@ -145,7 +145,7 @@ Track these metrics during trial period:
 
 - `scripts/async/claude_async.sh` - Wrapper implementation
 - `pnkln/safety/training_data_indexer.py` - Safety indexing module
-- `pnkln/governance/judge_six.py` - Judge 6 governance engine
+- `pnkln/governance/Claude_Code_6.py` - Judge 6 governance engine
 
 ---
 

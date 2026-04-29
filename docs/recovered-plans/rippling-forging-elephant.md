@@ -1315,7 +1315,7 @@ https://atiam.train.army.mil/catalog-ws/view/100.ATSC/002C902B-ADA8-4809-B4CD-23
 
 | File | Status | Changes |
 |------|--------|---------|
-| `src/pnkln/judge_six.py` | ✅ | Added RiskManager, MDMPPipeline, BattleDrillRouter; `doctrine_validate()`, `handle_error_with_drill()`, `enforce_with_doctrine()` |
+| `src/pnkln/Claude_Code_6.py` | ✅ | Added RiskManager, MDMPPipeline, BattleDrillRouter; `doctrine_validate()`, `handle_error_with_drill()`, `enforce_with_doctrine()` |
 | `pnkln/governance/judge_architecture.py` | ✅ | Added doctrine imports, RiskLevel mapping methods, Layer 0 Compliance Framework CRM, Layer 0.5 FM 6-0 MDMP |
 | `agents/flying_monkeys.py` | ✅ | Added TLPPipeline integration, risk-based consensus thresholds in PRTP, `prtp_with_battle_drills()` |
 | `agents/swarm_boss.py` | ✅ | Added MDMPPipeline, `receive_mission_with_mdmp()`, `handle_error_with_drill()`, `get_doctrine_status()` |
@@ -1359,7 +1359,7 @@ https://atiam.train.army.mil/catalog-ws/view/100.ATSC/002C902B-ADA8-4809-B4CD-23
 
 | File | Integration |
 |------|-------------|
-| `src/pnkln/judge_six.py` | Import doctrine modules, add MDMP validation workflow |
+| `src/pnkln/Claude_Code_6.py` | Import doctrine modules, add MDMP validation workflow |
 | `pnkln/governance/judge_architecture.py` | Map Compliance Framework risk matrix to 21-layer validation |
 | `agents/flying_monkeys.py` | Add TLP orchestration, doctrine-based voting |
 | `agents/swarm_boss.py` | Integrate MDMP planning into swarm cycles |
@@ -1372,7 +1372,7 @@ https://atiam.train.army.mil/catalog-ws/view/100.ATSC/002C902B-ADA8-4809-B4CD-23
 
 #### Step 1: Judge 6 Doctrine Integration
 
-Update `src/pnkln/judge_six.py`:
+Update `src/pnkln/Claude_Code_6.py`:
 
 ```python
 from kosmos.doctrine.compliance_framework import RiskManager, RiskLevel, CONSENSUS_THRESHOLDS

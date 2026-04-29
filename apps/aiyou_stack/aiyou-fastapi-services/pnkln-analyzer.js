@@ -49,7 +49,7 @@ const CONFIG = {
       confidenceTarget: 70,
       type: 'validation',
       docsRequired: [
-        'judge_six.py',
+        'Claude_Code_6.py',
         'architecture-specs.md',
         'atp-5-19-compliance.pdf',
         'jr-validation-rules.yaml',

@@ -45,12 +45,12 @@ def print_subsection(title: str):
     print("-" * 70)
 
 
-async def demo_judge_six_analysis():
+async def demo_Claude_Code_6_analysis():
     """Demo 1: Analyze Judge 6 System"""
     print_section("DEMO 1: Judge 6 Analysis")
 
     agent = InfrastructureAgent()
-    result = await agent.analyze_judge_six()
+    result = await agent.analyze_Claude_Code_6()
 
     print(f"System: {result['system']}")
     print(f"Type: {result['type']}")
@@ -292,7 +292,7 @@ async def demo_gemini_prompt_generation():
     print("Generating analysis prompts for Gemini 2.0 Pro...\n")
 
     print_subsection("Judge 6 Analysis Prompt")
-    judge_prompt = skill.generate_gemini_prompt(skill.JUDGE_SIX_SPEC)
+    judge_prompt = skill.generate_gemini_prompt(skill.Claude_Code_6_SPEC)
     print(judge_prompt[:500] + "...")
     print(f"\nTotal length: {len(judge_prompt)} characters")
 
@@ -308,20 +308,20 @@ async def demo_gemini_prompt_generation():
     output_dir = Path("./analysis_prompts")
     output_dir.mkdir(exist_ok=True)
 
-    with open(output_dir / "judge_six_analysis.md", "w") as f:
+    with open(output_dir / "Claude_Code_6_analysis.md", "w") as f:
         f.write(judge_prompt)
 
     with open(output_dir / "gemini_ingestion_analysis.md", "w") as f:
         f.write(ingestion_prompt)
 
     print(f"\n✓ Prompts saved to {output_dir}/")
-    print("  - judge_six_analysis.md")
+    print("  - Claude_Code_6_analysis.md")
     print("  - gemini_ingestion_analysis.md")
 
 
 async def demo_all():
     """Run all demos"""
-    await demo_judge_six_analysis()
+    await demo_Claude_Code_6_analysis()
     await demo_gemini_ingestion_analysis()
     await demo_comparative_analysis()
     await demo_full_pipeline_analysis()
@@ -352,7 +352,7 @@ async def main():
     print("=" * 70)
 
     demo_map = {
-        "judge": demo_judge_six_analysis,
+        "judge": demo_Claude_Code_6_analysis,
         "ingestion": demo_gemini_ingestion_analysis,
         "compare": demo_comparative_analysis,
         "pipeline": demo_full_pipeline_analysis,

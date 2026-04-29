@@ -408,7 +408,7 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
         domain = email.rsplit("@", maxsplit=1)[-1].lower()
         return domain in self.personal_email_domains
 
-    def _verify_with_judge_six(self, result: LeadGenerationResult, context: dict[str, Any]):
+    def _verify_with_Claude_Code_6(self, result: LeadGenerationResult, context: dict[str, Any]):
         """Override to verify lead generation result"""
         # Build verification data
         verification_data = {
@@ -433,14 +433,14 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
             "is_marketing_email": False,  # B2B lead gen, not direct email marketing
         }
 
-        return super()._verify_with_judge_six(verification_data, verification_context)
+        return super()._verify_with_Claude_Code_6(verification_data, verification_context)
 
 
 # Example usage
 def example_usage():
     """Example of using Compliance SDR Agent"""
+    from ..core.Claude_Code_6_lite import JudgeSixLite
     from ..core.jr_engine import JREngine
-    from ..core.judge_six_lite import JudgeSixLite
 
     # Initialize agent
     jr_engine = JREngine(
@@ -450,13 +450,13 @@ def example_usage():
         },
     )
 
-    judge_six = JudgeSixLite(
+    Claude_Code_6 = JudgeSixLite(
         config={
             "sla_p99_ms": 90,
         },
     )
 
-    agent = ComplianceSDRAgent(jr_engine=jr_engine, judge_six=judge_six)
+    agent = ComplianceSDRAgent(jr_engine=jr_engine, Claude_Code_6=Claude_Code_6)
 
     # Generate leads
     result = agent.generate_leads(

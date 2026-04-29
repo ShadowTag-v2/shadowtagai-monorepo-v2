@@ -6,7 +6,7 @@
 
 from src.agents.scholar import Autoresearch_Triad_Scholar
 
-from src.governance.judge_six import JudgeSix, RiskLevel, SystemContext
+from src.governance.Claude_Code_6 import JudgeSix, RiskLevel, SystemContext
 
 
 def run_trinity():

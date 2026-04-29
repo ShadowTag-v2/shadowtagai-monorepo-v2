@@ -19,7 +19,7 @@ def deploy_kosmos_core() -> None:
     # Define files to package
     files_to_package = [
         "core/pnkln-evolve.py",
-        "src/pnkln/judge_six.py",
+        "src/pnkln/Claude_Code_6.py",
         "scripts/deploy_kosmos_core.py",  # Include self for installation logic
     ]
 

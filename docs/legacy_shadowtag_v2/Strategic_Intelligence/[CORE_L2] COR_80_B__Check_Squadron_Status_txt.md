@@ -915,7 +915,7 @@ COR.80 B. Check Squadron Status
                                                                              |
      |-------------------------------------------|--------|-------------------------------------------------------
      ------------------------------------------------------------------------|
-     | src/pnkln/judge_six.py                    | ✅      | Added RiskManager, MDMPPipeline, BattleDrillRouter;
+     | src/pnkln/Claude_Code_6.py                    | ✅      | Added RiskManager, MDMPPipeline, BattleDrillRouter;
      doctrine_validate(), handle_error_with_drill(), enforce_with_doctrine()   |
      | pnkln/governance/judge_architecture.py    | ✅      | Added doctrine imports, RiskLevel mapping methods,
      Layer 0 Compliance Framework CRM, Layer 0.5 FM 6-0 MDMP                                |
@@ -962,7 +962,7 @@ COR.80 B. Check Squadron Status
 
      | File                                      | Integration                                           |
      |-------------------------------------------|-------------------------------------------------------|
-     | src/pnkln/judge_six.py                    | Import doctrine modules, add MDMP validation workflow |
+     | src/pnkln/Claude_Code_6.py                    | Import doctrine modules, add MDMP validation workflow |
      | pnkln/governance/judge_architecture.py    | Map Compliance Framework risk matrix to 21-layer validation       |
      | agents/autoresearch.py                  | Add TLP orchestration, doctrine-based voting          |
      | agents/swarm_boss.py                      | Integrate MDMP planning into swarm cycles             |
@@ -974,7 +974,7 @@ COR.80 B. Check Squadron Status
 
      Step 1: Judge 6 Doctrine Integration
 
-     Update src/pnkln/judge_six.py:
+     Update src/pnkln/Claude_Code_6.py:
 
      from kosmos.doctrine.compliance_framework import RiskManager, RiskLevel, CONSENSUS_THRESHOLDS
      from kosmos.doctrine.fm_6_0 import MDMPPipeline

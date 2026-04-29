@@ -4,7 +4,7 @@ from google.adk import Agent
 from google.adk.models import Gemini as ModelArgs
 
 # Define the Judge 6 Persona
-JUDGE_SIX_PROMPT = """
+Claude_Code_6_PROMPT = """
 You are Judge 6, the Sovereign Governance Engine of ShadowTag Omega.
 Your role is to evaluate requests for "Wet Fleece" (High Risk) vs "Dry Ground" (Safe).
 You output verdicts in a strict format.
@@ -17,13 +17,13 @@ Respond to user queries with your verdict.
 # We use a simple model configuration for now (Gemini or Mock)
 # Since we don't have the full ADK config loaded, we'll create a base agent.
 class JudgeSixAgent(Agent):
-    prompt: str = JUDGE_SIX_PROMPT
+    prompt: str = Claude_Code_6_PROMPT
 
     def __init__(self):
         # Configure the Brain (Gemini 1.5 Pro)
         model = ModelArgs(model_name="gemini-3.1-flash-lite-preview")
         # ALIAS: Naming it 'default' ensures CopilotKit frontend connects automatically
-        super().__init__(name="default", model=model, prompt=JUDGE_SIX_PROMPT)
+        super().__init__(name="default", model=model, prompt=Claude_Code_6_PROMPT)
 
     def process(self, context):
         # Determine Verdict
@@ -36,7 +36,7 @@ class JudgeSixAgent(Agent):
         )
 
 
-from src.governance.judge_six.risk_router import JudgeSixRouter, RiskLevel  # noqa: E402
+from src.governance.Claude_Code_6.risk_router import JudgeSixRouter, RiskLevel  # noqa: E402
 
 # Export the agent instance for main.py
 root_agent = JudgeSixAgent()

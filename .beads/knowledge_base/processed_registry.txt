@@ -1385,7 +1385,7 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/CUDA-FEDORAmd_1Va-EYnvRi_2jFJ85je2tdBz-fuCFdi9K.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/EVOLUTION_V2md_1zhNlsiXa00sqXGWRhy3qkKdwMEhGRYmU.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/SKILLmd_1EeQSc_huguNQxbUdDyhzk3ONQnZYuQax.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/JUDGE_SIX_INCEPTION_ANALYSISmd_1dMuklToLiIml-OenJBY0IJDAvnmuvZ0p.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Claude_Code_6_INCEPTION_ANALYSISmd_1dMuklToLiIml-OenJBY0IJDAvnmuvZ0p.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/GEMINI_SETUPmd_1AMkiXistZuBj6zAsqE9zDwENKBh7sxQ0.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/READMEmd_12olMj3g0PO6pHt4tvLuMs6DbrlVA7akq.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/PYTHON_PROGRAMMING__3_MANUSCRIPTS_CRASH_COURSE_CODtxt_1JrnsOrRB7yH3ouyNlUaA47aIo-pi7K4D.txt
@@ -1439,7 +1439,7 @@
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/transcript-to-contract-systemmd_1KLrBDmUoT1Csm_H9nLjEdDrH7REMl90e.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/pip_venv_upgrademd_1P-cXgbbKoc0OVaSyXKDQJa99P4YRF0eY.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/SKILLmd_1EeQSc_huguNQxbUdDyhzk3ONQnZYuQax.txt
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/JUDGE_SIX_INCEPTION_ANALYSISmd_1dMuklToLiIml-OenJBY0IJDAvnmuvZ0p.txt
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/Claude_Code_6_INCEPTION_ANALYSISmd_1dMuklToLiIml-OenJBY0IJDAvnmuvZ0p.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/GEMINI_SETUPmd_1AMkiXistZuBj6zAsqE9zDwENKBh7sxQ0.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/READMEmd_12olMj3g0PO6pHt4tvLuMs6DbrlVA7akq.txt
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/drive_ingest/docs/PINKLN_INTEGRATIONmd_1KjxUSpCw1mMVm0DrDB_TGXqqDozMWLBa.txt

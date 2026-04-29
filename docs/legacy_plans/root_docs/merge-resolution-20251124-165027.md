@@ -26,7 +26,7 @@
 | app/**init**.py                                | theirs   | Source code - take source branch features   |
 | app/agents/**init**.py                         | theirs   | Source code - take source branch features   |
 | app/config.py                                  | theirs   | Source code - take source branch features   |
-| app/kernels/judge_six.py                       | theirs   | Source code - take source branch features   |
+| app/kernels/Claude_Code_6.py                       | theirs   | Source code - take source branch features   |
 | app/main.py                                    | theirs   | Source code - take source branch features   |
 | app/main_ecosystem.py                          | theirs   | Source code - take source branch features   |
 | app/models/**init**.py                         | theirs   | Source code - take source branch features   |

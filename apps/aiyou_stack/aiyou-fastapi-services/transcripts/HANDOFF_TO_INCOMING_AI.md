@@ -565,7 +565,7 @@ Application to ShadowTagAi:
 Video Upload (2GB)
     ↓ ATP_519_SCAN
 50KB of policy-relevant frames (99.998% compression)
-    ↓ JUDGE_SIX
+    ↓ Claude_Code_6
 Binary classification (12ms inference)
     ↓ AUDIT
 Compressed audit trail (zstd L22, 10:1 ratio)
@@ -981,7 +981,7 @@ K1: ATP_519_SCAN
     ↳ Compression: 50KB → 2.5KB (95% reduction)
     ↳ Cost: ~$0.0001/decision
 
-K2: JUDGE_SIX
+K2: Claude_Code_6
     ↳ Technology: PyTorch binary classifier
     ↳ Purpose: Enforcement decision (APPROVE/REJECT/ESCALATE)
     ↳ Performance: 12ms inference
@@ -2032,7 +2032,7 @@ Vertex AI Workbench (dev)
   3. Load safetensors model (e.g., SmolLM2)
 
 
-  4. Benchmark ATP_519_scan→judge_six_binary decision latency
+  4. Benchmark ATP_519_scan→Claude_Code_6_binary decision latency
 
 
   5. Compare vs current Vertex AI Gemini inference path
@@ -3032,7 +3032,7 @@ Turn agent taxonomy into thought leadership → "Why enterprise AI needs all 5 a
 ATP_519_scan(policy_doc)          # 95% reduction → violation set
   → self_rag_validate(violations)  # Judge 6 reflection loop
   → hybrid_retrieve(context)       # Structured rules + case history
-  → judge_six_binary(decision)     # Single bit: PERMIT/DENY
+  → Claude_Code_6_binary(decision)     # Single bit: PERMIT/DENY
   → zstd_compress(audit_log)       # 10:1 compression for trail
 
 ```

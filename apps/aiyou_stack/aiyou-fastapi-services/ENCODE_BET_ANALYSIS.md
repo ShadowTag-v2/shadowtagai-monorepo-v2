@@ -50,7 +50,7 @@ The `claude/encode-bet-01PtrKTyPJehixSi4Cvk6j8E` branch contains **two productio
 
 ### What's Different from Current Implementation
 
-**Current (`src/pnkln/judge_six.py`):**
+**Current (`src/pnkln/Claude_Code_6.py`):**
 
 - Single file implementation
 
@@ -577,7 +577,7 @@ console.log({
 
 # 1. Backup current implementation
 
-mv src/pnkln/judge_six.py src/pnkln/judge_six.py.v1.backup
+mv src/pnkln/Claude_Code_6.py src/pnkln/Claude_Code_6.py.v1.backup
 
 # 2. Cherry-pick Judge 6 v2.0
 
@@ -629,7 +629,7 @@ python -c "from Cor.Claude_Code_6 import JudgmentRule; print('✅ Import success
 
 - Update `src/integration/unified_orchestrator.py` imports
 
-- Update `src/tests/test_judge_six.py` for new API
+- Update `src/tests/test_Claude_Code_6.py` for new API
 
 ---
 

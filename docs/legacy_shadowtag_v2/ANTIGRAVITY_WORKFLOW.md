@@ -312,11 +312,11 @@ SEVERITY_WEIGHTS = {
 
 | File                                     | Purpose                 |
 | ---------------------------------------- | ----------------------- |
-| `app/kernels/judge_six.py`               | Binary classification   |
+| `app/kernels/Claude_Code_6.py`               | Binary classification   |
 | `app/kernels/atp_519_scan.py`            | Violation extraction    |
 | `app/kernels/audit_compress.py`          | Audit trail compression |
 | `shadowtagai/core/jr_engine.py`          | JR Engine framework     |
-| `shadowtagai/core/judge_six_pipeline.py` | Pipeline orchestration  |
+| `shadowtagai/core/Claude_Code_6_pipeline.py` | Pipeline orchestration  |
 
 ---
 
