@@ -58,7 +58,7 @@ _SYSTEM_PROMPT_MARKERS: list[str] = [
     "counselconduit internal",
     "system_prompt",
     "NEVER_REVEAL",
-    "Claude_Code_6_policy",
+    "Cor.Claude_Code_6_policy",
 ]
 
 
@@ -91,7 +91,7 @@ class PromptGuardMiddleware(BaseHTTPMiddleware):
 
     Scans request bodies for known injection patterns on LLM-adjacent routes.
     Does NOT replace proper system prompt isolation — that must be done at
-    the LLM call site (gemini_rag.py / Claude_Code_6.py).
+    the LLM call site (gemini_rag.py / Cor.Claude_Code_6.py).
     """
 
     # Routes that process user text for LLM consumption

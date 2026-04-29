@@ -1,6 +1,6 @@
 defaultProject: "shadowtag-omega-prod"
 defaultLocation: "us-central1"
-defaultDataset: "Claude_Code_6_memory"
+defaultDataset: "Cor.Claude_Code_6_memory"
 dataformCoreVersion: "3.0.0"
 
 # THE ENTERPRISE FLAG

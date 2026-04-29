@@ -310,7 +310,7 @@ function handleInteractivePermission(
   // the subscription never fires and another racer wins. Graceful degradation
   // — the local dialog is always there as the floor.
   if (
-    (feature('KAIROS') || feature('KAIROS_CHANNELS')) &&
+    (feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) &&
     channelCallbacks &&
     !ctx.tool.requiresUserInteraction?.()
   ) {

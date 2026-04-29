@@ -52,7 +52,7 @@
 ## 6. JURA PROTOCOL (ROUTING)
 
 - **FLASH (90%)**: gemini-3-flash (~$0.01/req) -> Runtime Ops
-- **PRO (10%)**: gemini-3-pro (~$1.00/req) -> Governance/Claude_Code_6
+- **PRO (10%)**: gemini-3-pro (~$1.00/req) -> Governance/Cor.Claude_Code_6
 - **NO FREE TIER**
 
 ## 7. CURRENT STATE INJECTION

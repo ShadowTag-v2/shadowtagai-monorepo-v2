@@ -1,9 +1,9 @@
 # Judge 6 — Canonical Business Plan
 
 **Version:** 2026 Current
-**Supersedes:** Claude_Code_6_biz_plan, COR_22_CLAUDE_CODE_6_REVENUE, JUDGE_6_PREMIUM_RESTRUCTURE,
-CLAUDE_CODE_6_FINANCIAL_PROTOCOL, CLAUDE_CODE_6_PREMIUM_STRATEGY, JUDGE_6_TECH_BRIEF,
-cor_55_Claude_Code_6_fused_architecture, judge_6_technical_specification (8 docs → 1)
+**Supersedes:** Cor.Claude_Code_6_biz_plan, COR_22_COR.CLAUDE_CODE_6_REVENUE, JUDGE_6_PREMIUM_RESTRUCTURE,
+COR.CLAUDE_CODE_6_FINANCIAL_PROTOCOL, COR.CLAUDE_CODE_6_PREMIUM_STRATEGY, JUDGE_6_TECH_BRIEF,
+cor_55_Cor.Claude_Code_6_fused_architecture, judge_6_technical_specification (8 docs → 1)
 
 ---
 
@@ -22,7 +22,7 @@ _intent_ — only syntax. Human reviewers can't keep up with agent commit veloci
 - When code is pushed: boots the build, visually inspects DOM for structural and aesthetic truth,
   rejects the commit if it hallucinates or deviates from the design system
 - Acts as the "Superego" for any autonomous coding agent stack
-- Already operational as `scripts/Claude_Code_6.sh` in Monorepo-Uphillsnowball
+- Already operational as `scripts/Cor.Claude_Code_6.sh` in Monorepo-Uphillsnowball
 
 ### Judge 6 Premium Layers
 
@@ -63,7 +63,7 @@ Judge 6 does not need external VC at launch:
 PR Push → GitHub Webhook → Judge 6 Cloud Run (GCP)
   → Playwright boot → DOM capture → Gemini Multimodal analysis
   → Verdict: PASS (APPROVED) / FAIL (BLOCKED)
-  → Report → artifacts/Claude_Code_6-reports/
+  → Report → artifacts/Cor.Claude_Code_6-reports/
   → Gemini Agent Swarm escalation if Heavy Lift anomaly detected
 ```
 

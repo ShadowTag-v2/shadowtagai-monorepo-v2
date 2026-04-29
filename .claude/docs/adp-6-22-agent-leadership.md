@@ -82,7 +82,7 @@ class AgentCharacter:
             raise CharacterViolation("LOYALTY: Action not mission-aligned")
 
         # INTEGRITY: Has output been validated?
-        if not agent_action.get('Claude_Code_6_validated'):
+        if not agent_action.get('Cor.Claude_Code_6_validated'):
             raise CharacterViolation("INTEGRITY: Output not validated by Judge#6")
 
         # HONOR: Is failure being reported honestly?
@@ -127,7 +127,7 @@ class AgentPresence:
         self.agent_id = agent_id
         self.metrics = {
             'tasks_completed': 0,
-            'Claude_Code_6_pass_rate': 0.0,
+            'Cor.Claude_Code_6_pass_rate': 0.0,
             'consensus_agreement_rate': 0.0,
             'avg_latency_ms': 0.0,
             'cost_per_decision': 0.0
@@ -142,9 +142,9 @@ class AgentPresence:
         """
         self.metrics['tasks_completed'] += 1
 
-        if task_result.get('Claude_Code_6_validated'):
-            self.metrics['Claude_Code_6_pass_rate'] = (
-                (self.metrics['Claude_Code_6_pass_rate'] * (self.metrics['tasks_completed'] - 1) + 1.0)
+        if task_result.get('Cor.Claude_Code_6_validated'):
+            self.metrics['Cor.Claude_Code_6_pass_rate'] = (
+                (self.metrics['Cor.Claude_Code_6_pass_rate'] * (self.metrics['tasks_completed'] - 1) + 1.0)
                 / self.metrics['tasks_completed']
             )
 
@@ -158,7 +158,7 @@ class AgentPresence:
         High-performing agents get more weight in consensus voting.
         """
         return (
-            self.metrics['Claude_Code_6_pass_rate'] * 0.4 +
+            self.metrics['Cor.Claude_Code_6_pass_rate'] * 0.4 +
             self.metrics['consensus_agreement_rate'] * 0.3 +
             (1.0 - min(self.metrics['avg_latency_ms'] / 5000, 1.0)) * 0.2 +
             (1.0 - min(self.metrics['cost_per_decision'] / 0.01, 1.0)) * 0.1
@@ -224,7 +224,7 @@ class AgentIntellect:
             reasoning_trace = self._standard_thinking(problem, input_data)
 
         # Validate with Judge#6
-        validated = Claude_Code_6.validate(reasoning_trace)
+        validated = Cor.Claude_Code_6.validate(reasoning_trace)
 
         return {
             'solution': reasoning_trace['solution'],
@@ -479,7 +479,7 @@ class AgentAchievement:
             metrics={
                 'latency': result['latency_ms'],
                 'cost': result['cost_usd'],
-                'quality': result['Claude_Code_6_score']
+                'quality': result['Cor.Claude_Code_6_score']
             }
         )
 
@@ -492,7 +492,7 @@ class AgentAchievement:
         ADP 6-22: "Ensure mission accomplishment."
         """
         checks = {
-            'quality': result['Claude_Code_6_score'] >= criteria.get('min_quality', 0.98),
+            'quality': result['Cor.Claude_Code_6_score'] >= criteria.get('min_quality', 0.98),
             'speed': result['latency_ms'] <= criteria.get('max_latency_ms', 5000),
             'cost': result['cost_usd'] <= criteria.get('max_cost_usd', 0.01)
         }

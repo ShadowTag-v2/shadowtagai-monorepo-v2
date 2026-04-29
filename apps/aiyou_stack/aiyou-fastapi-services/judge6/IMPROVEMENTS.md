@@ -21,7 +21,7 @@ The original 700+ line monolithic script has been refactored into a modular, pro
 - **Maintainable**: Changes isolated to specific modules
 
 ```
-Claude_Code_6/
+Cor.Claude_Code_6/
 ├── __init__.py           # Clean package exports
 ├── models.py             # Data models (186 lines)
 ├── constitutional.py     # Axioms (71 lines)
@@ -104,14 +104,14 @@ self.test_coverage = 0.98
 ```python
 # Centralized configuration with dataclasses
 @dataclass
-class Claude_Code_6Config:
+class Cor.Claude_Code_6Config:
     COR_INSTANCE_ID: str = "cor-001"
     TEST_COVERAGE_TARGET: float = 0.98
     risk_patterns: RiskPatternConfig = field(default_factory=RiskPatternConfig)
     # ...
 
 # Easy to customize
-config = Claude_Code_6Config(COR_INSTANCE_ID="my-instance")
+config = Cor.Claude_Code_6Config(COR_INSTANCE_ID="my-instance")
 set_config(config)
 ```
 
@@ -266,7 +266,7 @@ def evaluate_request(
 ```python
 # Structure supports easy testing
 import pytest
-from Claude_Code_6 import JudgmentRule, RiskLevel
+from Cor.Claude_Code_6 import JudgmentRule, RiskLevel
 
 def test_risk_classification():
     judge = JudgmentRule()
@@ -396,16 +396,16 @@ To migrate from v1.0 to v2.0:
 
 ```python
 # v1.0 style
-from Claude_Code_6_old import JudgmentRule, main
+from Cor.Claude_Code_6_old import JudgmentRule, main
 judge = JudgmentRule()
 decision = judge.evaluate_request(input_text)
 
 # v2.0 style (mostly compatible!)
-from Claude_Code_6 import JudgmentRule
-from Claude_Code_6.config import Claude_Code_6Config, set_config
+from Cor.Claude_Code_6 import JudgmentRule
+from Cor.Claude_Code_6.config import Cor.Claude_Code_6Config, set_config
 
 # Optional: customize configuration
-config = Claude_Code_6Config(COR_INSTANCE_ID="my-instance")
+config = Cor.Claude_Code_6Config(COR_INSTANCE_ID="my-instance")
 set_config(config)
 
 judge = JudgmentRule()

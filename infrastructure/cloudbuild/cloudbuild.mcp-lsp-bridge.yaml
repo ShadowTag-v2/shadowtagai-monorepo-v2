@@ -1,0 +1,45 @@
+# Cloud Build configuration for mcp-lsp-bridge container block
+# Cloud Run ONLY Architecture
+
+steps:
+  # 1. Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-mcp-lsp-bridge'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/shadowtagai-core/mcp-lsp-bridge:latest'
+      - '-f'
+      - 'infrastructure/docker/Dockerfile.mcp_lsp_bridge'
+      - '.'
+
+  # 2. Push to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-mcp-lsp-bridge'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/shadowtagai-core/mcp-lsp-bridge:latest'
+
+  # 3. Deploy to Cloud Run (Service)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'deploy-cloud-run'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'mcp-lsp-bridge'
+      - '--image'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/shadowtagai-core/mcp-lsp-bridge:latest'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/shadowtagai-core/mcp-lsp-bridge:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+timeout: '1800s'

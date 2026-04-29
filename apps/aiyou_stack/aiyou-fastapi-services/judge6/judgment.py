@@ -13,11 +13,11 @@ GATE 6: Cryptographic Provenance Stamp
 
 import logging
 
-from Claude_Code_6.config import get_config
-from Claude_Code_6.constitutional import COR53_AXIOMS
-from Claude_Code_6.models import ConstitutionalAxiom, JudgmentDecision, ProvenanceStamp, RiskLevel
-from Claude_Code_6.provenance import ProvenanceError, ShadowTagEngine
-from Claude_Code_6.risk_manager import AxiomValidationError, RiskAssessmentError, YourRiskManager
+from Cor.Claude_Code_6.config import get_config
+from Cor.Claude_Code_6.constitutional import COR53_AXIOMS
+from Cor.Claude_Code_6.models import ConstitutionalAxiom, JudgmentDecision, ProvenanceStamp, RiskLevel
+from Cor.Claude_Code_6.provenance import ProvenanceError, ShadowTagEngine
+from Cor.Claude_Code_6.risk_manager import AxiomValidationError, RiskAssessmentError, YourRiskManager
 
 logger = logging.getLogger(__name__)
 

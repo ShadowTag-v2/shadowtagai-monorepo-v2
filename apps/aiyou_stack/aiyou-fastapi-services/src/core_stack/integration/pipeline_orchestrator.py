@@ -99,7 +99,7 @@ class IngestionPublisher:
         return gcs_path
 
 
-class Claude_Code_6Updater:
+class Cor.Claude_Code_6Updater:
     """Subscribes to Pub/Sub events and updates Judge 6 Redis cache.
     Runs as sidecar in Judge 6 StatefulSet (gke-inference-system).
     """
@@ -230,7 +230,7 @@ class Claude_Code_6Updater:
             logger.info("Stopped Pub/Sub listener")
 
 
-class Claude_Code_6Client:
+class Cor.Claude_Code_6Client:
     """Client for services to query Judge 6 (real-time validation).
     Runs in gke-inference-system, gke-gateway-system, etc.
     """
@@ -376,13 +376,13 @@ async def integration_test():
     print(f"✓ Published briefing to {gcs_path}")
 
     # Step 2: Load to Judge 6 (Updater)
-    updater = Claude_Code_6Updater(config)
+    updater = Cor.Claude_Code_6Updater(config)
     await updater.connect_redis()
     success = await updater.load_briefing_to_cache(gcs_path)
     print(f"✓ Loaded to Judge 6 cache: {success}")
 
     # Step 3: Validate item (Service)
-    judge_client = Claude_Code_6Client(config)
+    judge_client = Cor.Claude_Code_6Client(config)
     await judge_client.connect()
     decision = await judge_client.validate_item("ing_20251115_000001")
     print(f"✓ Judge 6 decision: {decision.allowed}, {decision.latency_us}μs")

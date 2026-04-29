@@ -45,7 +45,7 @@ Every client session must traverse three layers in strict order. This is not opt
 
 ### Implementation
 - `oracle_studio.py` — 7-stage analysis pipeline
-- `Claude_Code_6.py` — policy gate (ATP 5-19 compliance)
+- `Cor.Claude_Code_6.py` — policy gate (ATP 5-19 compliance)
 - `dispatch_router.py` — NadirClaw model routing
 
 ## Emotional Loop

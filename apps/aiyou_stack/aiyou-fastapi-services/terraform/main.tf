@@ -609,17 +609,17 @@ resource "google_project_iam_member" "gke_node_roles" {
 }
 
 # Workload Identity for Judge 6
-resource "google_service_account" "Claude_Code_6_sa" {
-  account_id   = "Claude_Code_6-workload-sa"
+resource "google_service_account" "Cor.Claude_Code_6_sa" {
+  account_id   = "Cor.Claude_Code_6-workload-sa"
   display_name = "Judge 6 Workload Service Account"
 }
 
-resource "google_service_account_iam_binding" "Claude_Code_6_workload_identity" {
-  service_account_id = google_service_account.Claude_Code_6_sa.name
+resource "google_service_account_iam_binding" "Cor.Claude_Code_6_workload_identity" {
+  service_account_id = google_service_account.Cor.Claude_Code_6_sa.name
   role               = "roles/iam.workloadIdentityUser"
 
   members = [
-    "serviceAccount:${var.project_id}.svc.id.goog[aiyoujr-governance/Claude_Code_6]"
+    "serviceAccount:${var.project_id}.svc.id.goog[aiyoujr-governance/Cor.Claude_Code_6]"
   ]
 }
 
@@ -811,9 +811,9 @@ output "gke_node_sa_email" {
   value       = google_service_account.gke_node_sa.email
 }
 
-output "Claude_Code_6_sa_email" {
+output "Cor.Claude_Code_6_sa_email" {
   description = "Judge 6 workload identity service account"
-  value       = google_service_account.Claude_Code_6_sa.email
+  value       = google_service_account.Cor.Claude_Code_6_sa.email
 }
 
 output "llm_router_sa_email" {

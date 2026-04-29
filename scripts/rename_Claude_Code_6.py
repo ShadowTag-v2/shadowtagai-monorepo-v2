@@ -8,9 +8,10 @@ def replace_in_file(filepath):
     except (UnicodeDecodeError, FileNotFoundError):
         return False
         
-    new_content = content.replace("Claude_Code_6", "Claude_Code_6")
-    new_content = new_content.replace("Claude_Code_6", "Claude_Code_6")
-    new_content = new_content.replace("CLAUDE_CODE_6", "CLAUDE_CODE_6")
+    new_content = content.replace("Claude_Code_6", "Cor.Claude_Code_6")
+    new_content = new_content.replace("CLAUDE_CODE_6", "COR.CLAUDE_CODE_6")
+    new_content = new_content.replace("Kairos", "Cor.Kairos")
+    new_content = new_content.replace("KAIROS", "COR.KAIROS")
     
     if new_content != content:
         with open(filepath, 'w', encoding='utf-8') as f:
@@ -25,11 +26,17 @@ def main():
             continue
             
         for filename in filenames:
+            if filename == "rename_Claude_Code_6.py": continue
             filepath = os.path.join(dirpath, filename)
             replace_in_file(filepath)
             
-            if "Claude_Code_6" in filename or "Claude_Code_6" in filename:
-                new_filename = filename.replace("Claude_Code_6", "Claude_Code_6").replace("Claude_Code_6", "Claude_Code_6")
+            new_filename = filename
+            if "Claude_Code_6" in new_filename:
+                new_filename = new_filename.replace("Claude_Code_6", "Cor.Claude_Code_6")
+            if "Kairos" in new_filename:
+                new_filename = new_filename.replace("Kairos", "Cor.Kairos")
+                
+            if new_filename != filename:
                 new_filepath = os.path.join(dirpath, new_filename)
                 try:
                     os.rename(filepath, new_filepath)

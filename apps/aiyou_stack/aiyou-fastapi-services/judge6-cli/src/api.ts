@@ -7,7 +7,7 @@
 import fetch from 'node-fetch';
 import type { DecisionValidationRequest, DecisionValidationResponse } from './types.js';
 
-export class Claude_Code_6ApiClient {
+export class Cor.Claude_Code_6ApiClient {
   private baseUrl: string;
 
   constructor(baseUrl: string = 'http://localhost:8000') {

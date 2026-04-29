@@ -5,7 +5,7 @@
 
 export * from './core/errors.js';
 export * from './core/governance.js';
-export { createGovernance, Claude_Code_6Adapter, MockGovernance } from './core/governance.js';
+export { createGovernance, Cor.Claude_Code_6Adapter, MockGovernance } from './core/governance.js';
 export type { PatchOptions, PatchResult } from './core/patcher.js';
 export * from './core/patcher.js';
 export { createPatcher, UnifiedPatcher } from './core/patcher.js';

@@ -85,10 +85,10 @@ Default credentials:
 2. Configure:
 
 
-   - **Name**: `Claude_Code_6 Health Check`
+   - **Name**: `Cor.Claude_Code_6 Health Check`
 
 
-   - **URL**: `https://your-Claude_Code_6-endpoint.com/health`
+   - **URL**: `https://your-Cor.Claude_Code_6-endpoint.com/health`
 
 
    - **Check Interval**: `5 seconds`
@@ -174,7 +174,7 @@ Default credentials:
    - **Visibility**: `Public` (for transparency)
 
 
-   - **Monitors**: Select Claude_Code_6 + Token Compression
+   - **Monitors**: Select Cor.Claude_Code_6 + Token Compression
 
 
    - **Custom Domain**: `status.shadowtag.ai` (configure DNS)
@@ -191,7 +191,7 @@ Default credentials:
 
 
 
-1. **Monitors** → **Claude_Code_6 Health Check** → **Settings**
+1. **Monitors** → **Cor.Claude_Code_6 Health Check** → **Settings**
 
 
 2. Add **Response Time Threshold**:
@@ -216,13 +216,13 @@ Kuvasz exposes metrics at: `http://localhost:8080/metrics`
 **Key Metrics:**
 
 
-- `kuvasz_uptime_percentage{monitor="Claude_Code_6"}`
+- `kuvasz_uptime_percentage{monitor="Cor.Claude_Code_6"}`
 
 
-- `kuvasz_response_time_ms{monitor="Claude_Code_6",quantile="0.99"}`
+- `kuvasz_response_time_ms{monitor="Cor.Claude_Code_6",quantile="0.99"}`
 
 
-- `kuvasz_ssl_expiry_days{monitor="Claude_Code_6"}`
+- `kuvasz_ssl_expiry_days{monitor="Cor.Claude_Code_6"}`
 
 ### Grafana Dashboard
 

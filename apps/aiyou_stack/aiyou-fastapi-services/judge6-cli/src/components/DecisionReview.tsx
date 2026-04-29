@@ -10,7 +10,7 @@ import Spinner from 'ink-spinner';
 import TextInput from 'ink-text-input';
 import type React from 'react';
 import { useState } from 'react';
-import { Claude_Code_6ApiClient } from '../api.js';
+import { Cor.Claude_Code_6ApiClient } from '../api.js';
 import type { DecisionValidationResponse, ValidationHistory } from '../types.js';
 import { RiskMatrix } from './RiskMatrix.js';
 
@@ -24,7 +24,7 @@ export const DecisionReview: React.FC<DecisionReviewProps> = ({ apiUrl }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<ValidationHistory[]>([]);
-  const [client] = useState(() => new Claude_Code_6ApiClient(apiUrl));
+  const [client] = useState(() => new Cor.Claude_Code_6ApiClient(apiUrl));
 
   const handleSubmit = async (value: string) => {
     if (!value.trim()) {

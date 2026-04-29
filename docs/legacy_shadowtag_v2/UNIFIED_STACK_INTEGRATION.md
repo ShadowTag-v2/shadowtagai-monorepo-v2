@@ -599,14 +599,14 @@ ROI: 3.3× in 18 months
 # Development
 
 export ENV=development
-export CLAUDE_CODE_6_ENDPOINT="http://localhost:8080/enforce"
-export CLAUDE_CODE_6_ITERATIONS=100
+export COR.CLAUDE_CODE_6_ENDPOINT="http://localhost:8080/enforce"
+export COR.CLAUDE_CODE_6_ITERATIONS=100
 
 # Production
 
 export ENV=production
-export CLAUDE_CODE_6_ENDPOINT="https://Claude_Code_6.pnkln.ai/enforce"
-export CLAUDE_CODE_6_ITERATIONS=1000
+export COR.CLAUDE_CODE_6_ENDPOINT="https://Cor.Claude_Code_6.pnkln.ai/enforce"
+export COR.CLAUDE_CODE_6_ITERATIONS=1000
 
 ```
 
@@ -742,8 +742,8 @@ jobs:
       - name: Run Contractual validation
         env:
           ENV: production
-          CLAUDE_CODE_6_ENDPOINT: ${{ secrets.CONTRACTUAL_API_ENDPOINT }}
-          CLAUDE_CODE_6_ITERATIONS: 1000
+          COR.CLAUDE_CODE_6_ENDPOINT: ${{ secrets.CONTRACTUAL_API_ENDPOINT }}
+          COR.CLAUDE_CODE_6_ITERATIONS: 1000
         run: python3 load_testing/run_all_validations.py
 
       - name: Upload results
@@ -1008,7 +1008,7 @@ export ANTHROPIC_API_KEY=your_anthropic_key
 
 # Endpoints
 
-export CLAUDE_CODE_6_ENDPOINT="http://localhost:8080/enforce"
+export COR.CLAUDE_CODE_6_ENDPOINT="http://localhost:8080/enforce"
 export ENV=development
 
 ```
@@ -1124,12 +1124,12 @@ python erik-hancock-llm-memory/scripts/claude_code_memory_local.py
 
 # Increase timeout
 
-export CLAUDE_CODE_6_REQUEST_TIMEOUT=10.0
-export CLAUDE_CODE_6_CONNECT_TIMEOUT=5.0
+export COR.CLAUDE_CODE_6_REQUEST_TIMEOUT=10.0
+export COR.CLAUDE_CODE_6_CONNECT_TIMEOUT=5.0
 
 # Reduce iterations for dev
 
-export CLAUDE_CODE_6_ITERATIONS=100
+export COR.CLAUDE_CODE_6_ITERATIONS=100
 
 ```
 
@@ -1141,7 +1141,7 @@ export CLAUDE_CODE_6_ITERATIONS=100
 
 # Reduce concurrency
 
-export CLAUDE_CODE_6_CONCURRENCY=10
+export COR.CLAUDE_CODE_6_CONCURRENCY=10
 
 # Add retry logic (already built-in with adaptive load control)
 

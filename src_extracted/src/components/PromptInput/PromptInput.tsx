@@ -402,7 +402,7 @@ function PromptInput({
   // REPL.tsx) — teammate view falls back to SpinnerWithVerbInner which has
   // its own marginTop, so the gap stays even without ours.
   const briefOwnsGap =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useAppState((s) => s.isBriefOnly) && !viewingAgentTaskId
       : false;

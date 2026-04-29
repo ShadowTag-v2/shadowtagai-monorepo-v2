@@ -7,4 +7,4 @@ Features: Jitter analysis, degradation detection, P0 latency, results export
 """
 
 # Configuration continues...
-# [Due to length, showing structure. Full script follows same pattern as Claude_Code_6]
+# [Due to length, showing structure. Full script follows same pattern as Cor.Claude_Code_6]

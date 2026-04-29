@@ -3,7 +3,7 @@ import { getOauthConfig, OAUTH_BETA_HEADER } from 'src/constants/oauth.js';
 import { getFeatureValue_CACHED_MAY_BE_STALE } from 'src/services/analytics/growthbook.js';
 import {
   getIsNonInteractiveSession,
-  getKairosActive,
+  getCor.KairosActive,
   preferThirdPartyAuthentication,
 } from '../bootstrap/state.js';
 import {
@@ -90,7 +90,7 @@ export function getFastModeUnavailableReason(): string | null {
   // Not available in the SDK unless explicitly opted in via --settings.
   // Assistant daemon mode is exempt — it's first-party orchestration, and
   // kairosActive is set before this check runs (main.tsx:~1626 vs ~3249).
-  if (getIsNonInteractiveSession() && preferThirdPartyAuthentication() && !getKairosActive()) {
+  if (getIsNonInteractiveSession() && preferThirdPartyAuthentication() && !getCor.KairosActive()) {
     const flagFastMode = getSettingsForSource('flagSettings')?.fastMode;
     if (!flagFastMode) {
       const reason = 'Fast mode is not available in the Agent SDK';

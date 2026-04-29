@@ -1,15 +1,15 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: Claude_Code_6-pdb
+  name: Cor.Claude_Code_6-pdb
   namespace: pnkln
   labels:
-    app.kubernetes.io/name: Claude_Code_6-pdb
+    app.kubernetes.io/name: Cor.Claude_Code_6-pdb
     app.kubernetes.io/component: availability
     app.kubernetes.io/managed-by: terraform
 spec:
   minAvailable: 1  # Always keep at least 1 pod running during disruptions
   selector:
     matchLabels:
-      app: Claude_Code_6
+      app: Cor.Claude_Code_6
   unhealthyPodEvictionPolicy: AlwaysAllow

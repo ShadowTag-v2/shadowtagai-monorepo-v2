@@ -668,7 +668,7 @@
 - `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/external_repos/windsurf-antigravity-rules/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/external_repos/zed-pyrefly/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/intelligence-pipeline/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
-- `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/Claude_Code_6-cli/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
+- `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/Cor.Claude_Code_6-cli/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/pnkln-framework/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/pnkln/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/src/pnkln/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
@@ -879,7 +879,7 @@
 - `external_sdks/ladybug_nexus/run-nix-shell/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `fastapi/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `intelligence-pipeline/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
-- `Claude_Code_6-cli/Claude_Code_6-cli/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
+- `Cor.Claude_Code_6-cli/Cor.Claude_Code_6-cli/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `libs/autoresearch_sources/BioAgents/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `libs/autoresearch_sources/BioAgents/documentation/.gitignore` → **needs classification: necessary local override vs redundant vs stale**
 - `libs/autoresearch_sources/Kosmos/.gitignore` → **needs classification: necessary local override vs redundant vs stale**

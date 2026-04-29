@@ -20,7 +20,7 @@ const SuggestBackgroundPRTool =
     ? require('./tools/SuggestBackgroundPRTool/SuggestBackgroundPRTool.js').SuggestBackgroundPRTool
     : null;
 const SleepTool =
-  feature('PROACTIVE') || feature('KAIROS')
+  feature('PROACTIVE') || feature('COR.KAIROS')
     ? require('./tools/SleepTool/SleepTool.js').SleepTool
     : null;
 const cronTools = feature('AGENT_TRIGGERS')
@@ -36,14 +36,14 @@ const RemoteTriggerTool = feature('AGENT_TRIGGERS_REMOTE')
 const MonitorTool = feature('MONITOR_TOOL')
   ? require('./tools/MonitorTool/MonitorTool.js').MonitorTool
   : null;
-const SendUserFileTool = feature('KAIROS')
+const SendUserFileTool = feature('COR.KAIROS')
   ? require('./tools/SendUserFileTool/SendUserFileTool.js').SendUserFileTool
   : null;
 const PushNotificationTool =
-  feature('KAIROS') || feature('KAIROS_PUSH_NOTIFICATION')
+  feature('COR.KAIROS') || feature('COR.KAIROS_PUSH_NOTIFICATION')
     ? require('./tools/PushNotificationTool/PushNotificationTool.js').PushNotificationTool
     : null;
-const SubscribePRTool = feature('KAIROS_GITHUB_WEBHOOKS')
+const SubscribePRTool = feature('COR.KAIROS_GITHUB_WEBHOOKS')
   ? require('./tools/SubscribePRTool/SubscribePRTool.js').SubscribePRTool
   : null;
 /* eslint-enable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */

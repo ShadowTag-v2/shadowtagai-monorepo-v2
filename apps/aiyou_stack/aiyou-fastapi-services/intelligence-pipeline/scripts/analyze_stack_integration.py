@@ -352,7 +352,7 @@ class StackIntegrationAnalyzer:
 
         # Note: Judge 6 specs would be loaded from separate branch
         # For now, use placeholder
-        specs["CLAUDE_CODE_6_SPEC"] = (
+        specs["COR.CLAUDE_CODE_6_SPEC"] = (
             "[Judge 6 specs to be loaded from judge-six-improvement-analysis branch]"
         )
 

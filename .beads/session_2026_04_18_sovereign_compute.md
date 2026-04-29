@@ -98,7 +98,7 @@ W8A8 64x conv 512ch 64x64        16.0  137.44   13.442 ms  10.22  1.07x
 - **4-tier cascade:** ANE → Metal/MLX → Vertex AI → Error
 - **Vulture fixes:** Removed unused `args`, `kwargs` variables (line 275)
 
-## 9. KAIROS Daemon Fix
+## 9. COR.KAIROS Daemon Fix
 
 - **Bug:** `datetime.UTC` doesn't exist in Python 3.9 (line 174)
 - **Fix:** `datetime.datetime.now(datetime.timezone.utc).isoformat()`

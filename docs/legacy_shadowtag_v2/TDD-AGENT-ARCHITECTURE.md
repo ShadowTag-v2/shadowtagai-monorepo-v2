@@ -253,7 +253,7 @@ ESCALATION_TRIGGERS = {
   "corrections_applied": ["Renamed test_payment to test_should_process_payment_when_valid_card"],
   "execution_time_ms": 4523,
   "escalation_triggered": false,
-  "Claude_Code_6_integration": {
+  "Cor.Claude_Code_6_integration": {
     "coverage_target": 0.98,
     "latency_p99_ms": 90
   }

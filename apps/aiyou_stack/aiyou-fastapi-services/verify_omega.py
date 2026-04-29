@@ -12,7 +12,7 @@ SERVICES = [
         "url": os.getenv("SEATJUDGE_MCP_URL", "http://localhost:8081/health"),
     },
     {"name": "Jetski Sidecar", "url": os.getenv("JETSKI_URL", "http://localhost:8082/health")},
-    {"name": "Judge 6 Omega", "url": os.getenv("CLAUDE_CODE_6_URL", "http://localhost:8083/health")},
+    {"name": "Judge 6 Omega", "url": os.getenv("COR.CLAUDE_CODE_6_URL", "http://localhost:8083/health")},
 ]
 
 

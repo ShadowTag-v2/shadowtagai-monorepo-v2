@@ -15,7 +15,7 @@ How best to plan to consolidate all found workspaces within vs code and antigrav
 ~/Documents/GKC/Code/Pipeline;
 ~/ShadowTag-v2-fastapi-services;
 /Users/Deleted Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services;
-/Users/Deleted Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/Claude_Code_6-mcp;
+/Users/Deleted Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/Cor.Claude_Code_6-mcp;
 /Users/Deleted Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/google-cloud-sdk;
 /Users/Deleted Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/google-cloud-sdk;
 /Users/Deleted Users/pikeymickey/Documents/GitHub;

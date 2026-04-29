@@ -637,7 +637,7 @@ Source Brain: ba1d6458-5752-40e4-9dfb-2797272497d3
 
 ## Directive 5: ShadowTag Web Homepage Assembly
 
-- [x] Step 1: Mount the Arsenal (Integrate `TeamSection`, `Claude_Code_6Section`, or `DeckViewer` natively into `page.tsx`).
+- [x] Step 1: Mount the Arsenal (Integrate `TeamSection`, `Cor.Claude_Code_6Section`, or `DeckViewer` natively into `page.tsx`).
 - [x] Step 2: Flesh out the 3 Columns (Replace placeholders for "Recent News" and "Quick Links" with real stylistic components/data).
 - [x] Step 3: Integrate the Copilot (Wire up the `ActivistDashboard.tsx` Copilot UI).
 - [ ] Step 4: Polish & Deploy (Boot `npm run dev` server to visually QA the fluid waves).
@@ -705,7 +705,7 @@ The Board has requested the absolute ingestion and deployment of the "Cor.Uphill
 - [x] `.agent/shadowtag_constitution.md` (ShadowTag OS Constitution)
 - [x] `scripts/ignite_omega.sh` (Genesis Bootstrapper)
 - [x] `src/infra/sovereign_omni.tf` (Sovereign Infrastructure)
-- [x] `src/governance/Claude_Code_6_crsrmc_sentinel.py` (Judge 6 Omni-Governor)
+- [x] `src/governance/Cor.Claude_Code_6_crsrmc_sentinel.py` (Judge 6 Omni-Governor)
 - [x] `src/core/nexus_adk_router.py` (AG-UI Nexus Router)
 - [x] `frontend/app/GlassBoxDashboard.tsx` (Glass Box Dashboard)
 
@@ -1657,7 +1657,7 @@ Source Brain: febdc97f-37fe-4921-9a5a-8c16eccde12c
 
 ## 10. The RAG Evolution Engine (Continuous Intelligence)
 - [x] Build the Evolution Loop (`core/rag_evolve.py`) to systematically query business plans against the LanceDB corpus, applying AI-driven strategic upgrades to markdown files automatically.
-- [x] Integrate LanceDB Retreival into Judge-6 (`scripts/Claude_Code_6.sh`), converting the Gatekeeper into an active RAG-agent that blocks PRs contradicting the DoD/NIST knowledge base.
+- [x] Integrate LanceDB Retreival into Judge-6 (`scripts/Cor.Claude_Code_6.sh`), converting the Gatekeeper into an active RAG-agent that blocks PRs contradicting the DoD/NIST knowledge base.
 - [x] Implement the Clean Room Abstractive Filter (Abstractive Synthesis limits + Cosine Similarity traps) to guarantee no copyrighted excerpts slip into the outgoing generated permutations.
 
 ## 11. External Ingestion (AlphaXiv & Market Scrape)
@@ -2202,7 +2202,7 @@ Source Brain: ce2b2556-1d50-4fd4-a69c-b581d910507e
 - [x] The Antigravity SDK Skill: Write `.agent/skills/genai_v1_expert.md` teaching the new `google-genai` SDK and `code_execution` tool.
 
 ## Phase 5: Infrastructure
-- [x] Write Terraform config `infrastructure/monitoring.tf` for OTLP Dashboard tracking `Claude_Code_6_strikes`.
+- [x] Write Terraform config `infrastructure/monitoring.tf` for OTLP Dashboard tracking `Cor.Claude_Code_6_strikes`.
 - [x] Run `terraform init` and `terraform apply` in `infrastructure/terraform` (State bucket temporarily disabled for local processing).
 
 ## Phase 6: Capstone Doctrine Assimilation & Protocol 22
@@ -2771,7 +2771,7 @@ Source Brain: 44f570f2-db1e-4e14-b147-c91af0e55865
 - [x] Fix Antigravity Command Error
 - [x] Fix Java Language Server Crash
 - [x] Protocol: Formalize 'AI Mode' Protocol
-- [x] **Deploy**: Execute Cloud Run Deployment (`Claude_Code_6-governance` - **REVERSED/DELETED** per user command)
+- [x] **Deploy**: Execute Cloud Run Deployment (`Cor.Claude_Code_6-governance` - **REVERSED/DELETED** per user command)
 - [x] **Upgrade**: Implement Chrome DevTools MCP Multi-Session (`chrome-devtools-mcp` - **COMPLETE**)
 
 
@@ -3376,7 +3376,7 @@ Source Brain: 0cedd488-4776-4c99-a792-6a10d639a01c
 
 ### Phase 25: Military/NIST Doc Ingestion & SDK Cloning
 - [x] Clone markdownlint, langextract, and open-location-code SDKs into `external_sdks/military_defense`
-- [x] Use `langextract` to ingest Cor.CSRMC Claude_Code_6 FMs, NIST SPs, and Deep Think army doctrines
+- [x] Use `langextract` to ingest Cor.CSRMC Cor.Claude_Code_6 FMs, NIST SPs, and Deep Think army doctrines
 - [x] Validate ingested structure for the `.mil` risk mitigation layer
 
 ### Phase 26: Stitch UI Generation & Redesign

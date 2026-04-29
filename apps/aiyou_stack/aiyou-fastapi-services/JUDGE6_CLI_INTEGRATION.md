@@ -51,7 +51,7 @@ This integration combines two major systems:
 #### CLI Implementation (9 files)
 
 ```
-Claude_Code_6-cli/
+Cor.Claude_Code_6-cli/
 ├── src/
 │   ├── components/
 │   │   ├── DecisionReview.tsx      # Main TUI (151 lines)
@@ -83,9 +83,9 @@ Total Backend: 258 lines
 
 ```
 docs/technical-architecture/
-├── CLAUDE_CODE_6-CLI-ECONOMICS.md         # Bootstrap validation (461 lines)
+├── COR.CLAUDE_CODE_6-CLI-ECONOMICS.md         # Bootstrap validation (461 lines)
 
-CLAUDE_CODE_6_CLI_INTEGRATION.md           # This file
+COR.CLAUDE_CODE_6_CLI_INTEGRATION.md           # This file
 
 Total Docs: 461+ lines
 ```
@@ -314,7 +314,7 @@ Total: $68,052
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ Stage 1: AWARENESS (Free CLI)                              │
-│   • npm install -g @pnkln/Claude_Code_6-cli                       │
+│   • npm install -g @pnkln/Cor.Claude_Code_6-cli                       │
 │   • Zero-flicker TUI (wow factor)                          │
 │   • Instant validation (no signup required)                │
 │   • HackerNews/ProductHunt launch                          │
@@ -440,15 +440,15 @@ PNKLN CORE STACK™
 
 ### Week 3-4: Polish (IN PROGRESS)
 
-- [ ] Install dependencies (`npm install` in Claude_Code_6-cli/)
+- [ ] Install dependencies (`npm install` in Cor.Claude_Code_6-cli/)
 - [ ] Test FastAPI backend (start server, validate endpoint)
-- [ ] Test CLI locally (`npm run dev` in Claude_Code_6-cli/)
+- [ ] Test CLI locally (`npm run dev` in Cor.Claude_Code_6-cli/)
 - [ ] Terminal compatibility testing (iTerm2, VSCode, Wezterm)
 - [ ] Build production bundle (`npm run build`)
 
 ### Month 2: Launch
 
-- [ ] npm publish (@pnkln/Claude_Code_6-cli)
+- [ ] npm publish (@pnkln/Cor.Claude_Code_6-cli)
 - [ ] HackerNews post (demo video + technical deep-dive)
 - [ ] ProductHunt submission
 - [ ] Reddit (r/programming, r/devtools)
@@ -470,15 +470,15 @@ PNKLN CORE STACK™
 #### Judge 6 CLI (9 files)
 
 ```
-✅ Claude_Code_6-cli/src/components/DecisionReview.tsx
-✅ Claude_Code_6-cli/src/components/RiskMatrix.tsx
-✅ Claude_Code_6-cli/src/api.ts
-✅ Claude_Code_6-cli/src/types.ts
-✅ Claude_Code_6-cli/src/index.tsx
-✅ Claude_Code_6-cli/package.json
-✅ Claude_Code_6-cli/tsconfig.json
-✅ Claude_Code_6-cli/.gitignore
-✅ Claude_Code_6-cli/README.md
+✅ Cor.Claude_Code_6-cli/src/components/DecisionReview.tsx
+✅ Cor.Claude_Code_6-cli/src/components/RiskMatrix.tsx
+✅ Cor.Claude_Code_6-cli/src/api.ts
+✅ Cor.Claude_Code_6-cli/src/types.ts
+✅ Cor.Claude_Code_6-cli/src/index.tsx
+✅ Cor.Claude_Code_6-cli/package.json
+✅ Cor.Claude_Code_6-cli/tsconfig.json
+✅ Cor.Claude_Code_6-cli/.gitignore
+✅ Cor.Claude_Code_6-cli/README.md
 ```
 
 #### FastAPI Backend (3 files)
@@ -492,8 +492,8 @@ PNKLN CORE STACK™
 #### Documentation (2 files)
 
 ```
-✅ docs/technical-architecture/CLAUDE_CODE_6-CLI-ECONOMICS.md
-✅ CLAUDE_CODE_6_CLI_INTEGRATION.md (this file)
+✅ docs/technical-architecture/COR.CLAUDE_CODE_6-CLI-ECONOMICS.md
+✅ COR.CLAUDE_CODE_6_CLI_INTEGRATION.md (this file)
 ```
 
 #### LLM Memory System (15 files - from merged branch)
@@ -549,7 +549,7 @@ curl -X POST http://localhost:8000/api/v1/validate \
 
 ```bash
 # Install dependencies
-cd Claude_Code_6-cli
+cd Cor.Claude_Code_6-cli
 npm install
 
 # Run in dev mode
@@ -571,8 +571,8 @@ npm start
 
 # Or test as installed binary
 npm link
-Claude_Code_6 --help
-Claude_Code_6 --version
+Cor.Claude_Code_6 --help
+Cor.Claude_Code_6 --version
 ```
 
 ### Terminal Compatibility

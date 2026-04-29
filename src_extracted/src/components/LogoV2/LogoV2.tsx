@@ -52,7 +52,7 @@ import { VoiceModeNotice } from './VoiceModeNotice.js';
 // is external: true so it's moot there.
 /* eslint-disable @typescript-eslint/no-require-imports */
 const ChannelsNoticeModule =
-  feature('KAIROS') || feature('KAIROS_CHANNELS')
+  feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')
     ? (require('./ChannelsNotice.js') as typeof import('./ChannelsNotice.js'))
     : null;
 

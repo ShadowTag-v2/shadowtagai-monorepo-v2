@@ -3,15 +3,15 @@
 """Judge 6 Main Entry Point and Demonstration
 
 Usage:
-    python -m Claude_Code_6.main              # Run demonstration
-    python -m Claude_Code_6.main --verbose    # Run with detailed logging
+    python -m Cor.Claude_Code_6.main              # Run demonstration
+    python -m Cor.Claude_Code_6.main --verbose    # Run with detailed logging
 """
 
 import logging
 import sys
 
-from Claude_Code_6 import COR53_AXIOMS, JudgmentRule
-from Claude_Code_6.config import get_config
+from Cor.Claude_Code_6 import COR53_AXIOMS, JudgmentRule
+from Cor.Claude_Code_6.config import get_config
 
 
 def setup_logging(verbose: bool = False):

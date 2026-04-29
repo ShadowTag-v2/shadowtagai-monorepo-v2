@@ -15,7 +15,7 @@ import { getMainLoopModel } from '../../utils/model/model.js';
 import {
   getSessionId,
   getIsInteractive,
-  getKairosActive,
+  getCor.KairosActive,
   getClientType,
   getParentSessionId as getParentSessionIdFromState,
 } from '../../bootstrap/state.js';
@@ -482,7 +482,7 @@ export type EventMetadata = {
   teamName?: string; // Team name for swarm agents (from env var or AsyncLocalStorage)
   subscriptionType?: string; // OAuth subscription tier (max, pro, enterprise, team)
   rh?: string; // Hashed repo remote URL (first 16 chars of SHA256), for joining with server-side data
-  kairosActive?: true; // KAIROS assistant mode active (ant-only; set in main.tsx after gate check)
+  kairosActive?: true; // COR.KAIROS assistant mode active (ant-only; set in main.tsx after gate check)
   skillMode?: 'discovery' | 'coach' | 'discovery_and_coach'; // Which skill surfacing mechanism(s) are gated on (ant-only; for BQ session segmentation)
   observerMode?: 'backseat' | 'skillcoach' | 'both'; // Which observer classifiers are gated on (ant-only; for BQ cohort splits on tengu_backseat_* events)
 };
@@ -713,9 +713,9 @@ export async function getEventMetadata(
       subscriptionType: getSubscriptionType()!,
     }),
     // Assistant mode tag — lives outside memoized buildEnvContext() because
-    // setKairosActive() runs at main.tsx:~1648, after the first event may
+    // setCor.KairosActive() runs at main.tsx:~1648, after the first event may
     // have already fired and memoized the env. Read fresh per-event instead.
-    ...(feature('KAIROS') && getKairosActive() ? { kairosActive: true as const } : {}),
+    ...(feature('COR.KAIROS') && getCor.KairosActive() ? { kairosActive: true as const } : {}),
     // Repo remote hash for joining with server-side repo bundle data
     ...(repoRemoteHash && { rh: repoRemoteHash }),
   };

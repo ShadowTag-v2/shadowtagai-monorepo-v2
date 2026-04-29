@@ -2,7 +2,7 @@ import { feature } from 'bun:bundle';
 import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
 import type React from 'react';
 import { useContext, useMemo } from 'react';
-import { getKairosActive, getUserMsgOptIn } from '../../bootstrap/state.js';
+import { getCor.KairosActive, getUserMsgOptIn } from '../../bootstrap/state.js';
 import { Box } from '../../ink.js';
 import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js';
 import { useAppState } from '../../state/AppState.js';
@@ -49,24 +49,24 @@ export function UserPromptMessage({
   // to avoid pulling BriefTool.ts → prompt.ts tool-name strings into
   // external builds.
   const isBriefOnly =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useAppState((s) => s.isBriefOnly)
       : false;
   const viewingAgentTaskId =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useAppState((s_0) => s_0.viewingAgentTaskId)
       : null;
   // Hoisted to mount-time — per-message component, re-renders on every scroll.
   const briefEnvEnabled =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useMemo(() => isEnvTruthy(process.env.CLAUDE_CODE_BRIEF), [])
       : false;
   const useBriefLayout =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
-      ? (getKairosActive() ||
+    feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
+      ? (getCor.KairosActive() ||
           (getUserMsgOptIn() &&
             (briefEnvEnabled ||
               getFeatureValue_CACHED_MAY_BE_STALE('tengu_kairos_brief', false)))) &&

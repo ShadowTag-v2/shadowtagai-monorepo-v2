@@ -6,7 +6,7 @@ import unittest
 
 
 class TestGovernanceIntegration(unittest.TestCase):
-    """Verify Claude_Code_6 + RKILL + governance tools integration."""
+    """Verify Cor.Claude_Code_6 + RKILL + governance tools integration."""
 
     def test_governance_module_importable(self):
         """Governance control plane should be importable."""
@@ -18,8 +18,8 @@ class TestGovernanceIntegration(unittest.TestCase):
             importable = False
         self.assertTrue(importable or True, "Governance module scaffold exists")
 
-    def test_Claude_Code_6_policy_gate(self):
-        """Claude_Code_6 should enforce policy gates."""
+    def test_Cor.Claude_Code_6_policy_gate(self):
+        """Cor.Claude_Code_6 should enforce policy gates."""
         # Scaffold: policy gate returns ALLOW for safe operations
         policy_result = {"action": "ALLOW", "reason": "safe_operation"}
         self.assertEqual(policy_result["action"], "ALLOW")

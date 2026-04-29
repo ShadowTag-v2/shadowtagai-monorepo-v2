@@ -102,7 +102,7 @@
 
    def extract_metadata(filename: str) -> dict:
        """Parse job_id, timestamp from filename."""
-       # Example: Claude_Code_6_00143_2025-11-22T15:30:00.jsonl
+       # Example: Cor.Claude_Code_6_00143_2025-11-22T15:30:00.jsonl
        parts = filename.split('_')
        return {
            'task_type': parts[0],

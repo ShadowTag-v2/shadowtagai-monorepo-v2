@@ -25,9 +25,9 @@
 | /ant-trace | Internal trace viewer | ant-only |
 | /mock-limits | Mock rate limits | ant-only |
 | /reset-limits | Reset rate limits | ant-only |
-| /subscribe-pr | PR activity subscription | KAIROS |
+| /subscribe-pr | PR activity subscription | COR.KAIROS |
 | /ultraplan | Remote parallel planning | ULTRAPLAN |
-| /dream | Memory consolidation | KAIROS_DREAM |
+| /dream | Memory consolidation | COR.KAIROS_DREAM |
 | /extra-usage | Extra usage billing | Always |
 
 ## Context Collapse (feature('CONTEXT_COLLAPSE'))

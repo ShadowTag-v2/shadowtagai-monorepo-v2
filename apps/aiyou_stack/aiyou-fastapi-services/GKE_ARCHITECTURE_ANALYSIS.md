@@ -208,7 +208,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: Claude_Code_6-hybrid
+  name: Cor.Claude_Code_6-hybrid
 spec:
   template:
     metadata:
@@ -469,7 +469,7 @@ Your 3-layer hybrid needs revision:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: Claude_Code_6-hybrid
+  name: Cor.Claude_Code_6-hybrid
   namespace: ShadowTag-v2jr-governance
 spec:
   replicas: 3
@@ -478,7 +478,7 @@ spec:
       containers:
       # Layer 1: Use Vertex AI Gemini API instead of containerized version
       - name: gemini-layer
-        image: gcr.io/pnkln-core-stack/Claude_Code_6-gemini-client:latest
+        image: gcr.io/pnkln-core-stack/Cor.Claude_Code_6-gemini-client:latest
         env:
         - name: VERTEX_AI_PROJECT
           value: "pnkln-core-stack"
@@ -495,9 +495,9 @@ spec:
 
       # Layer 2: Optimized PyTorch with quantization
       - name: pytorch-layer
-        image: gcr.io/pnkln-core-stack/Claude_Code_6-pytorch:latest
+        image: gcr.io/pnkln-core-stack/Cor.Claude_Code_6-pytorch:latest
         args:
-        - --model-path=/models/Claude_Code_6-neural.pt
+        - --model-path=/models/Cor.Claude_Code_6-neural.pt
         - --quantization=int8
         - --tensor-parallel-size=1
         - --gpu-memory-utilization=0.90
@@ -519,7 +519,7 @@ spec:
 
       # Layer 3: Rules Engine (unchanged)
       - name: rules-layer
-        image: gcr.io/pnkln-core-stack/Claude_Code_6-rules:latest
+        image: gcr.io/pnkln-core-stack/Cor.Claude_Code_6-rules:latest
         # ... existing config ...
 ```
 

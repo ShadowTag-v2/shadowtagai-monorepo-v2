@@ -74,7 +74,7 @@ The separation lets the business story stay simple while the technical engine co
 | S.E.U. Framework | Methodology | Medium — copyable but branded | `empathy_templates.py` |
 | Oracle Studio 7-Stage | Pipeline Architecture | High — complex, tuned | `oracle_studio.py` |
 | NadirClaw Dispatch | Multi-Model Router | Medium — proprietary routing logic | `dispatch_router.py` |
-| Judge 6 Policy Gate | Risk Engine | High — regulatory domain expertise | `Claude_Code_6.py` |
+| Judge 6 Policy Gate | Risk Engine | High — regulatory domain expertise | `Cor.Claude_Code_6.py` |
 | Vent Mode | UX Innovation | High — emotional intake IP | `vent_mode.py` |
 | Dead-Man's Switch | Session Architecture | Medium — pattern is novel | `silent_detector.py` |
 | Invisible Meter | Engagement Design | Low — concept, needs data | Frontend (planned) |

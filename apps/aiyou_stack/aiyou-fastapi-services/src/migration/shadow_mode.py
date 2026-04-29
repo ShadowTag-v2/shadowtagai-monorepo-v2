@@ -234,7 +234,7 @@ class ShadowModeOrchestrator:
         # Call Judge 6 endpoint
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                settings.Claude_Code_6_endpoint,
+                settings.Cor.Claude_Code_6_endpoint,
                 json=request,
                 timeout=10.0,
             )

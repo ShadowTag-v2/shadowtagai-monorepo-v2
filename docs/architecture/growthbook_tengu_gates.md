@@ -88,7 +88,7 @@ This document catalogues the 44 known flags for competitive intelligence purpose
 | `tengu_auto_compact` | `.claude/rules/11-compaction-pipeline.md` |
 | `tengu_memory_enabled` | KI system + brain/ session persistence |
 | `tengu_dream_enabled` | `scripts/dream_consolidation.py` |
-| `tengu_security_monitor_version` | `docs/architecture/Claude_Code_6_block_allow_spec.md` |
+| `tengu_security_monitor_version` | `docs/architecture/Cor.Claude_Code_6_block_allow_spec.md` |
 | `tengu_autonomous_mode` | `scripts/loop_steward.py` |
 | `tengu_permission_tier` | State A/B machine in GEMINI.md |
 | `tengu_anti_distillation` | `/etc/claude-code/CLAUDE.md` UNDERCOVER section |

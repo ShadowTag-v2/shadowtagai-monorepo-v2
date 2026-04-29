@@ -344,7 +344,7 @@ function NotificationContent({
       useVoiceState((s_0) => s_0.voiceError)
     : null;
   const isBriefOnly =
-    feature('KAIROS') || feature('KAIROS_BRIEF')
+    feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
       ? // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
         useAppState((s_1) => s_1.isBriefOnly)
       : false;

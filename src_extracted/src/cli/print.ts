@@ -312,7 +312,7 @@ const coordinatorModeModule = feature('COORDINATOR_MODE')
   ? (require('../coordinator/coordinatorMode.js') as typeof import('../coordinator/coordinatorMode.js'))
   : null;
 const proactiveModule =
-  feature('PROACTIVE') || feature('KAIROS')
+  feature('PROACTIVE') || feature('COR.KAIROS')
     ? (require('../proactive/index.js') as typeof import('../proactive/index.js'))
     : null;
 const cronSchedulerModule = feature('AGENT_TRIGGERS')
@@ -484,7 +484,7 @@ export async function runHeadless(
   // where CLAUDE_CODE_PROACTIVE is set but main.tsx's check didn't fire
   // (e.g. env was injected by the SDK transport after argv parsing).
   if (
-    (feature('PROACTIVE') || feature('KAIROS')) &&
+    (feature('PROACTIVE') || feature('COR.KAIROS')) &&
     proactiveModule &&
     !proactiveModule.isProactiveActive() &&
     isEnvTruthy(process.env.CLAUDE_CODE_PROACTIVE)
@@ -1545,7 +1545,7 @@ function runHeadlessStreaming(
       // handler re-runs the full gate); just avoids dead buttons.
       let capabilities: { experimental?: Record<string, unknown> } | undefined;
       if (
-        (feature('KAIROS') || feature('KAIROS_CHANNELS')) &&
+        (feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) &&
         connection.type === 'connected' &&
         connection.capabilities.experimental
       ) {
@@ -1700,7 +1700,7 @@ function runHeadlessStreaming(
   // setTimeout(0) yields to the event loop so pending stdin messages
   // (interrupts, user messages) are processed before the tick fires.
   const scheduleProactiveTick =
-    feature('PROACTIVE') || feature('KAIROS')
+    feature('PROACTIVE') || feature('COR.KAIROS')
       ? () => {
           setTimeout(() => {
             if (
@@ -2287,7 +2287,7 @@ function runHeadlessStreaming(
 
     // Proactive tick: if proactive is active and queue is empty, inject a tick
     if (
-      (feature('PROACTIVE') || feature('KAIROS')) &&
+      (feature('PROACTIVE') || feature('COR.KAIROS')) &&
       proactiveModule?.isProactiveActive() &&
       !proactiveModule.isProactivePaused()
     ) {
@@ -2489,7 +2489,7 @@ function runHeadlessStreaming(
   // during an active turn: the call no-ops and the post-run recheck at
   // the end of run() picks up the queued command.
   let cronScheduler: import('../utils/cronScheduler.js').CronScheduler | null = null;
-  if (feature('AGENT_TRIGGERS') && cronSchedulerModule && cronGate?.isKairosCronEnabled()) {
+  if (feature('AGENT_TRIGGERS') && cronSchedulerModule && cronGate?.isCor.KairosCronEnabled()) {
     cronScheduler = cronSchedulerModule.createCronScheduler({
       onFire: (prompt) => {
         if (inputClosed) return;
@@ -2512,7 +2512,7 @@ function runHeadlessStreaming(
       },
       isLoading: () => running || inputClosed,
       getJitterConfig: cronJitterConfigModule?.getCronJitterConfig,
-      isKilled: () => !cronGate?.isKairosCronEnabled(),
+      isKilled: () => !cronGate?.isCor.KairosCronEnabled(),
     });
     cronScheduler.start();
   }
@@ -3580,7 +3580,7 @@ function runHeadlessStreaming(
             }
           })();
         } else if (
-          (feature('PROACTIVE') || feature('KAIROS')) &&
+          (feature('PROACTIVE') || feature('COR.KAIROS')) &&
           (message.request as { subtype: string }).subtype === 'set_proactive'
         ) {
           const req = message.request as unknown as {
@@ -4323,7 +4323,7 @@ function handleChannelEnable(
       response: { subtype: 'error', request_id: requestId, error },
     });
 
-  if (!(feature('KAIROS') || feature('KAIROS_CHANNELS'))) {
+  if (!(feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS'))) {
     return respondError('channels feature not available in this build');
   }
 
@@ -4423,7 +4423,7 @@ function handleChannelEnable(
  * check.
  */
 function reregisterChannelHandlerAfterReconnect(connection: MCPServerConnection): void {
-  if (!(feature('KAIROS') || feature('KAIROS_CHANNELS'))) return;
+  if (!(feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS'))) return;
   if (connection.type !== 'connected') return;
 
   const gate = gateChannelServer(

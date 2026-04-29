@@ -1415,7 +1415,7 @@ cat artifacts/SHADOWTAGAI_COMPLETE_HANDOFF_2025-11-22.txt
 ```
 START OF SHADOWTAGAI MASTER HANDOFF – NOVEMBER 22, 2025
 Platform: ShadowTagAI – Native Gemini function-calling only
-Architecture: Single context → COR/JR/NS/CLAUDE_CODE_6/SHADOWTAG
+Architecture: Single context → COR/JR/NS/COR.CLAUDE_CODE_6/SHADOWTAG
 Deprecations: NO LangChain, NO AutoGen, NO Vertex Workbench
 Whiteboard: Persistent, revenue-tracking, corruption-proof
 Tests: 97% unit, 100% integration, load-tested to 10k RPS

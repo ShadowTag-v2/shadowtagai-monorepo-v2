@@ -58,14 +58,14 @@ const getCachedMCConfigForFRC = feature('CACHED_MICROCOMPACT')
   : null;
 
 const proactiveModule =
-  feature('PROACTIVE') || feature('KAIROS') ? require('../proactive/index.js') : null;
+  feature('PROACTIVE') || feature('COR.KAIROS') ? require('../proactive/index.js') : null;
 const BRIEF_PROACTIVE_SECTION: string | null =
-  feature('KAIROS') || feature('KAIROS_BRIEF')
+  feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
     ? (require('../tools/BriefTool/prompt.js') as typeof import('../tools/BriefTool/prompt.js'))
         .BRIEF_PROACTIVE_SECTION
     : null;
 const briefToolModule =
-  feature('KAIROS') || feature('KAIROS_BRIEF')
+  feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
     ? (require('../tools/BriefTool/BriefTool.js') as typeof import('../tools/BriefTool/BriefTool.js'))
     : null;
 const DISCOVER_SKILLS_TOOL_NAME: string | null = feature('EXPERIMENTAL_SKILL_SEARCH')
@@ -424,7 +424,7 @@ export async function getSystemPrompt(
   const settings = getInitialSettings();
   const enabledTools = new Set(tools.map((_) => _.name));
 
-  if ((feature('PROACTIVE') || feature('KAIROS')) && proactiveModule?.isProactiveActive()) {
+  if ((feature('PROACTIVE') || feature('COR.KAIROS')) && proactiveModule?.isProactiveActive()) {
     logForDebugging(`[SystemPrompt] path=simple-proactive`);
     return [
       `\nYou are an autonomous agent. Use the available tools to do useful work.
@@ -493,7 +493,7 @@ ${CYBER_RISK_INSTRUCTION}`,
           ),
         ]
       : []),
-    ...(feature('KAIROS') || feature('KAIROS_BRIEF')
+    ...(feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
       ? [systemPromptSection('brief', () => getBriefSection())]
       : []),
   ];
@@ -764,7 +764,7 @@ Old tool results will be automatically cleared from context to free up space. Th
 const SUMMARIZE_TOOL_RESULTS_SECTION = `When working with tool results, write down any important information you might need later in your response, as the original tool result may be cleared later.`;
 
 function getBriefSection(): string | null {
-  if (!(feature('KAIROS') || feature('KAIROS_BRIEF'))) return null;
+  if (!(feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF'))) return null;
   if (!BRIEF_PROACTIVE_SECTION) return null;
   // Whenever the tool is available, the model is told to use it. The
   // /brief toggle and --brief flag now only control the isBriefOnly
@@ -772,13 +772,13 @@ function getBriefSection(): string | null {
   if (!briefToolModule?.isBriefEnabled()) return null;
   // When proactive is active, getProactiveSection() already appends the
   // section inline. Skip here to avoid duplicating it in the system prompt.
-  if ((feature('PROACTIVE') || feature('KAIROS')) && proactiveModule?.isProactiveActive())
+  if ((feature('PROACTIVE') || feature('COR.KAIROS')) && proactiveModule?.isProactiveActive())
     return null;
   return BRIEF_PROACTIVE_SECTION;
 }
 
 function getProactiveSection(): string | null {
-  if (!(feature('PROACTIVE') || feature('KAIROS'))) return null;
+  if (!(feature('PROACTIVE') || feature('COR.KAIROS'))) return null;
   if (!proactiveModule?.isProactiveActive()) return null;
 
   return `# Autonomous work

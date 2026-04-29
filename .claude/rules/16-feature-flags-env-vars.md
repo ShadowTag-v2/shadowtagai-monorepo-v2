@@ -15,7 +15,7 @@ Dead-code eliminated at build time. 85+ flags discovered.
 - TREE_SITTER_BASH — parsed bash security
 
 ### Internal-Only (ant builds)
-- KAIROS, KAIROS_BRIEF, KAIROS_CHANNELS, KAIROS_DREAM
+- COR.KAIROS, COR.KAIROS_BRIEF, COR.KAIROS_CHANNELS, COR.KAIROS_DREAM
 - COORDINATOR_MODE, PROACTIVE
 - BUDDY (companion pet system)
 - ULTRAPLAN (remote parallel planning)

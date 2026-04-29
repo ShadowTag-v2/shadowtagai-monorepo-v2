@@ -4,7 +4,7 @@ import os
 
 
 # Simulated Judge 6 Safety Brake
-class Claude_Code_6:
+class Cor.Claude_Code_6:
     """Safety Brake verified by God Mode Protocol"""
 
     @staticmethod
@@ -16,7 +16,7 @@ class Claude_Code_6:
         return True
 
 
-judge_6 = Claude_Code_6()
+judge_6 = Cor.Claude_Code_6()
 
 
 class GeminiCodeAssistProxy:

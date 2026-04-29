@@ -393,9 +393,9 @@
       "ci_wired": false
     },
     {
-      "repo_name": "Claude_Code_6",
-      "source_url": "https://github.com/ehanc69/Claude_Code_6.git",
-      "canonical_path": "apps/pnkln-stack_stack/Claude_Code_6",
+      "repo_name": "Cor.Claude_Code_6",
+      "source_url": "https://github.com/ehanc69/Cor.Claude_Code_6.git",
+      "canonical_path": "apps/pnkln-stack_stack/Cor.Claude_Code_6",
       "status": "absent",
       "build_wired": false,
       "ci_wired": false

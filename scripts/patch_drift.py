@@ -12,7 +12,7 @@ def patch_drift() -> None:
     missing_paths = [
         "reference/public-demos/antigravity-go",
         "reference/public-demos/codepmcs",
-        "reference/public-demos/Claude_Code_6",
+        "reference/public-demos/Cor.Claude_Code_6",
         "reference/public-demos/kosmos",
         "reference/public-demos/shadowtag_v2",
     ]

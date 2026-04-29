@@ -22,7 +22,7 @@ from .ingestion_models import (
     QualityMetrics,
     SourceTier,
 )
-from .pipeline_orchestrator import IngestionPublisher, Claude_Code_6Client, Claude_Code_6Updater, PipelineConfig
+from .pipeline_orchestrator import IngestionPublisher, Cor.Claude_Code_6Client, Cor.Claude_Code_6Updater, PipelineConfig
 
 __all__ = [
     # Models
@@ -36,8 +36,8 @@ __all__ = [
     # Orchestration
     "PipelineConfig",
     "IngestionPublisher",
-    "Claude_Code_6Updater",
-    "Claude_Code_6Client",
+    "Cor.Claude_Code_6Updater",
+    "Cor.Claude_Code_6Client",
 ]
 
 __version__ = "1.0.0"

@@ -23,7 +23,7 @@ hardened_state:
     - com.pnkln.kairos
     - com.pnkln.dream-consolidation
     - com.pnkln.auto-dream
-    - com.pnkln.Claude_Code_6-legal-human
+    - com.pnkln.Cor.Cor.Claude_Code_6-legal-human
     - com.pnkln.pagespeed-monitor
   python_canonical: /opt/homebrew/bin/python3.14
   counselconduit_version: v3.2.0
@@ -138,7 +138,7 @@ ci_workflows:
       purpose: Configuration drift detection
     - path: .github/workflows/pnkln-governance.yml
       purpose: Pnkln governance enforcement
-    - path: .github/workflows/Claude_Code_6_yolo_gate.yml
+    - path: .github/workflows/Cor.Cor.Claude_Code_6_yolo_gate.yml
       purpose: Judge 6 YOLO gate
     - path: .github/workflows/omega-sync-ci.yml
       purpose: Omega sync CI

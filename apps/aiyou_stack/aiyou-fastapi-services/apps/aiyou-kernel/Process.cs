@@ -84,7 +84,7 @@ public sealed record GovernanceDecision
 }
 
 /// <summary>Configuration for Judge 6 blocked action types.</summary>
-public sealed record Claude_Code_6Config
+public sealed record Cor.Claude_Code_6Config
 {
     public HashSet<string> BlockedActions { get; init; } =
     [
@@ -94,7 +94,7 @@ public sealed record Claude_Code_6Config
         "drop_database",
     ];
 
-    public static Claude_Code_6Config Default => new();
+    public static Cor.Claude_Code_6Config Default => new();
 }
 
 /// <summary>Internal deserialization model for LLM governance responses.</summary>
@@ -166,15 +166,15 @@ public class SovereignMdoProcess
 /// Judge 6 risk governance process for the UphillSnowball legal AI agent.
 /// Implements the Wet Fleece / Dry Ground risk assessment protocol.
 /// </summary>
-public sealed class Claude_Code_6Process
+public sealed class Cor.Claude_Code_6Process
 {
     private readonly Microsoft.SemanticKernel.Kernel _kernel;
-    private readonly Claude_Code_6Config _config;
+    private readonly Cor.Claude_Code_6Config _config;
 
-    public Claude_Code_6Process(Microsoft.SemanticKernel.Kernel kernel, Claude_Code_6Config? config = null)
+    public Cor.Claude_Code_6Process(Microsoft.SemanticKernel.Kernel kernel, Cor.Claude_Code_6Config? config = null)
     {
         _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
-        _config = config ?? Claude_Code_6Config.Default;
+        _config = config ?? Cor.Claude_Code_6Config.Default;
     }
 
     /// <summary>
@@ -310,26 +310,26 @@ public sealed class Claude_Code_6Process
 
             default:
                 Console.Error.WriteLine(
-                    $"[Claude_Code_6] Unknown external event: {eventType}");
+                    $"[Cor.Claude_Code_6] Unknown external event: {eventType}");
                 break;
         }
     }
 
     private Task HandleSanctionsAlertAsync(string payload, CancellationToken ct)
     {
-        Console.WriteLine($"[Claude_Code_6] SANCTIONS ALERT: {payload}");
+        Console.WriteLine($"[Cor.Claude_Code_6] SANCTIONS ALERT: {payload}");
         return Task.CompletedTask;
     }
 
     private Task HandlePrivilegeBreachAsync(string payload, CancellationToken ct)
     {
-        Console.WriteLine($"[Claude_Code_6] PRIVILEGE BREACH: {payload}");
+        Console.WriteLine($"[Cor.Claude_Code_6] PRIVILEGE BREACH: {payload}");
         return Task.CompletedTask;
     }
 
     private Task HandleBillingDisputeAsync(string payload, CancellationToken ct)
     {
-        Console.WriteLine($"[Claude_Code_6] BILLING DISPUTE: {payload}");
+        Console.WriteLine($"[Cor.Claude_Code_6] BILLING DISPUTE: {payload}");
         return Task.CompletedTask;
     }
 }

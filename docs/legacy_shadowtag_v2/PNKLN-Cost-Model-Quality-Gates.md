@@ -547,16 +547,16 @@ ingestion_robots_txt_violations_total{namespace="gke-training-system"}
 
 ```promql
 # Latency percentiles
-histogram_quantile(0.99, Claude_Code_6_latency_seconds_bucket)
+histogram_quantile(0.99, Cor.Claude_Code_6_latency_seconds_bucket)
 
 # Coverage percentage
-Claude_Code_6_coverage_percentage{namespace="gke-inference-system"}
+Cor.Claude_Code_6_coverage_percentage{namespace="gke-inference-system"}
 
 # Throughput
-rate(Claude_Code_6_queries_total[1m])
+rate(Cor.Claude_Code_6_queries_total[1m])
 
 # Accuracy
-Claude_Code_6_false_negative_rate{namespace="gke-inference-system"}
+Cor.Claude_Code_6_false_negative_rate{namespace="gke-inference-system"}
 ```
 
 ### Alerting Rules (Critical)
@@ -567,14 +567,14 @@ Claude_Code_6_false_negative_rate{namespace="gke-inference-system"}
   severity: critical
   action: Immediate abort, manual review
 
-- alert: Claude_Code_6CoverageCritical
-  expr: Claude_Code_6_coverage_percentage < 95
+- alert: Cor.Claude_Code_6CoverageCritical
+  expr: Cor.Claude_Code_6_coverage_percentage < 95
   for: 1m
   severity: critical
   action: Auto-rollback, PagerDuty
 
-- alert: Claude_Code_6LatencyBreach
-  expr: histogram_quantile(0.99, Claude_Code_6_latency_seconds_bucket) > 0.0005
+- alert: Cor.Claude_Code_6LatencyBreach
+  expr: histogram_quantile(0.99, Cor.Claude_Code_6_latency_seconds_bucket) > 0.0005
   for: 5m
   severity: critical
   action: Scale replicas, fallback mode

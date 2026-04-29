@@ -291,13 +291,13 @@ ROI: 3.3× in 18 months
 ```bash
 # Development
 export ENV=development
-export CLAUDE_CODE_6_ENDPOINT="http://localhost:8080/enforce"
-export CLAUDE_CODE_6_ITERATIONS=100
+export COR.CLAUDE_CODE_6_ENDPOINT="http://localhost:8080/enforce"
+export COR.CLAUDE_CODE_6_ITERATIONS=100
 
 # Production
 export ENV=production
-export CLAUDE_CODE_6_ENDPOINT="https://Claude_Code_6.pnkln.ai/enforce"
-export CLAUDE_CODE_6_ITERATIONS=1000
+export COR.CLAUDE_CODE_6_ENDPOINT="https://Cor.Claude_Code_6.pnkln.ai/enforce"
+export COR.CLAUDE_CODE_6_ITERATIONS=1000
 ```
 
 **Value:** Single codebase, reduces config errors, accelerates CI/CD
@@ -309,7 +309,7 @@ export CLAUDE_CODE_6_ITERATIONS=1000
 ```json
 {
   "timestamp": "2025-11-17T10:30:00",
-  "service": "Claude_Code_6",
+  "service": "Cor.Claude_Code_6",
   "environment": "production",
   "results": {...},
   "sla_compliance": {
@@ -351,7 +351,7 @@ pool_stats = {
 
 **Exclude cold-start from performance measurements**
 
-- Configurable warmup count (default: 50 for Claude_Code_6, 100 for JR Engine)
+- Configurable warmup count (default: 50 for Cor.Claude_Code_6, 100 for JR Engine)
 - Separate warmup phase before main test
 - Warmup results reported but not included in SLA validation
 
@@ -385,8 +385,8 @@ ENV=development python load_testing/pnkln_load_tests_enhanced.py
 
 # Production validation
 ENV=production \
-  CLAUDE_CODE_6_ENDPOINT=https://Claude_Code_6.pnkln.ai/enforce \
-  CLAUDE_CODE_6_ITERATIONS=1000 \
+  COR.CLAUDE_CODE_6_ENDPOINT=https://Cor.Claude_Code_6.pnkln.ai/enforce \
+  COR.CLAUDE_CODE_6_ITERATIONS=1000 \
   python load_testing/pnkln_load_tests_enhanced.py
 
 # Continuous integration
@@ -637,14 +637,14 @@ ENV=development python load_testing/pnkln_load_tests_enhanced.py
 
 # Staging validation
 ENV=staging \
-  CLAUDE_CODE_6_ENDPOINT=https://staging-Claude_Code_6.pnkln.ai/enforce \
-  CLAUDE_CODE_6_ITERATIONS=500 \
+  COR.CLAUDE_CODE_6_ENDPOINT=https://staging-Cor.Claude_Code_6.pnkln.ai/enforce \
+  COR.CLAUDE_CODE_6_ITERATIONS=500 \
   python load_testing/pnkln_load_tests_enhanced.py
 
 # Production SLA validation
 ENV=production \
-  CLAUDE_CODE_6_ENDPOINT=https://Claude_Code_6.pnkln.ai/enforce \
-  CLAUDE_CODE_6_ITERATIONS=1000 \
+  COR.CLAUDE_CODE_6_ENDPOINT=https://Cor.Claude_Code_6.pnkln.ai/enforce \
+  COR.CLAUDE_CODE_6_ITERATIONS=1000 \
   python load_testing/pnkln_load_tests_enhanced.py
 
 # CI/CD integration

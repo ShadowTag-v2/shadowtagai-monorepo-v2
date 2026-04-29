@@ -3,7 +3,7 @@
 import logging
 from enum import Enum
 
-logger = logging.getLogger("Claude_Code_6-CSRMC")
+logger = logging.getLogger("Cor.Claude_Code_6-CSRMC")
 
 
 class Phase(Enum):

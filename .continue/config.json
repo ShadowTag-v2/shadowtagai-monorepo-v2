@@ -21,7 +21,7 @@
   },
   "customCommands": [
     {
-      "name": "Claude_Code_6",
+      "name": "Cor.Claude_Code_6",
       "prompt": "Act as Judge #6. Apply ATP 5-19 risk assessment to this code/decision. Output: APPROVE/DENY with reasoning, risk tier (1-5), and confidence score (0-100%)."
     },
     {

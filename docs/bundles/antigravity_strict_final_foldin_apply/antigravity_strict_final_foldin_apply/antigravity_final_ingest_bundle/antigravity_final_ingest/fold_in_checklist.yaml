@@ -570,9 +570,9 @@ repos:
       final_status_stamped: false
     notes:
       - public/demo repo unless explicitly promoted to active product root
-  - repo: ehanc69/Claude_Code_6
+  - repo: ehanc69/Cor.Claude_Code_6
     status: reference_only
-    destination: reference/public-demos/Claude_Code_6
+    destination: reference/public-demos/Cor.Claude_Code_6
     duplicate_family: null
     checks:
       classified: false
