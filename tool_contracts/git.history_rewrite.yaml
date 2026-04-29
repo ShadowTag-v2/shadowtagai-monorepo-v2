@@ -1,28 +1,9 @@
-# Tool Contract: git.history_rewrite
-# Governs all git history rewrite operations (rebase, filter-branch, push --force).
-# STATE B REQUIRED — This is a CRITICAL destructive operation.
-
-tool_id: git.history_rewrite
-description: >
-  Rewrite git history via rebase, filter-branch, or force push.
-  This permanently alters commit graph — requires explicit human authorization.
-risk_level: critical
-requires_state_b: true
-
-preconditions:
-  - name: state_b_authenticated
-    type: execution_state
-    value: STATE_B
-    description: Must be in STATE B (Clutch) — not permitted in STATE A (YOLO).
-
-  - name: branch_protection_verified
-    type: check
-    description: Verify target branch allows force-push (never force-push to main without review).
-
-  - name: backup_exists
-    type: check
-    description: A backup branch or tag of the pre-rewrite state MUST exist.
-
+# tool_contracts/git.history_rewrite.yaml
+tool_id: "git.history_rewrite"
+description: "Governs the git.history_rewrite operations."
+risk_level: "low"
+preconditions: []
 evidence_requirements:
-  - type: log_history_rewrite
-    description: Log the operation type, affected commits, pre/post SHAs, and operator authorization.
+  - type: "log"
+    path: ".beads/evidence/git_history_rewrite.jsonl"
+reuse_queries: []

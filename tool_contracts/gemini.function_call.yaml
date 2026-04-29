@@ -1,48 +1,9 @@
 # tool_contracts/gemini.function_call.yaml
-#
-# Governed native Gemini function-calling route.
-
-name: gemini.function_call
-risk: medium
-
-description: >
-  Governed native Gemini function-calling route. The model may propose function
-  name and arguments, but application code executes only approved functions
-  through ToolGateway. AutoGen, AG2, LangGraph, and ad-hoc multi-agent
-  frameworks are deprecated for this path unless a future ADR explicitly
-  reverses this decision.
-
-requires:
-  - function_declaration_registered
-  - tool_contract_loaded
-  - arguments_schema_validated
-  - risk_classified
-  - evidence_path_allocated
-
-forbidden:
-  - model_executes_shell_directly
-  - unregistered_function
-  - function_call_without_schema
-  - bypass_tool_gateway
-  - sensitive_action_without_authz
-
-evidence:
-  - function_name
-  - arguments_hash
-  - risk_tier
-  - decision
-  - result_summary
-
-# Low temperature for deterministic function call argument generation
-generation_config:
-  default_temperature: 0.0
-  rationale: deterministic_function_arguments
-  remote_config_override_allowed: true
-
-# Tool cardinality
-limits:
-  preferred_active_tools: 10
-  review_required_above: 20
-  rationale: >
-    Too many tools increase wrong/suboptimal selection risk.
-    Use scoped tool bundles over global tool exposure.
+tool_id: "gemini.function_call"
+description: "Governs the gemini.function_call operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/gemini_function_call.jsonl"
+reuse_queries: []

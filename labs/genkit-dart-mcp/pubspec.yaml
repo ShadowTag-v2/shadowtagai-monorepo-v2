@@ -3,7 +3,7 @@ description: Genkit Dart MCP server scaffold for UphillSnowball labs.
 version: 0.1.0
 
 environment:
-  sdk: ^3.11.4
+  sdk: ^3.11.0
 
 dependencies:
   genkit: any

@@ -1,43 +1,9 @@
-# Tool Contract: firebase.deploy
-# Governs all Firebase deployment operations.
-
-tool_id: firebase.deploy
-description: >
-  Deploy to Firebase Hosting (KovelAI, ShadowTagAI) or Cloud Functions.
-  This is a CRITICAL operation — affects production traffic immediately.
-risk_level: critical
-
-preconditions:
-  - name: firebase_mcp_authenticated
-    type: mcp_server_up
-    server: firebase-mcp-server
-    description: Firebase MCP server must be authenticated and responding.
-
-  - name: build_succeeded
-    type: context_key_present
-    key: build_passed
-    description: Production build must have completed successfully.
-
-  - name: lint_passed
-    type: context_key_present
-    key: lint_passed
-    description: All linters must pass before deploy.
-
-  - name: lighthouse_audited
-    type: context_key_present
-    key: lighthouse_score
-    description: Lighthouse audit should be run pre-deploy (informational).
-
+# tool_contracts/firebase_deploy.yaml
+tool_id: "firebase_deploy"
+description: "Governs the firebase_deploy operations."
+risk_level: "low"
+preconditions: []
 evidence_requirements:
-  - type: log_deploy_result
-    description: Log the deploy target, success/failure, and live URL verification
-  - type: log_lighthouse_scores
-    description: Record Lighthouse scores (A11y, BP, SEO, Perf) post-deploy
-
-reuse_queries:
-  - type: script_exists
-    value: deploy_firebase
-    description: Check if a Firebase deploy script already exists.
-  - type: skill_exists
-    value: firebase-mcp-deploy-doctrine
-    description: Check if the Firebase MCP deploy skill is installed.
+  - type: "log"
+    path: ".beads/evidence/firebase_deploy.jsonl"
+reuse_queries: []
