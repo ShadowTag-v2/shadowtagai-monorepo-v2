@@ -263,7 +263,7 @@ Bridges intelligence gathering (Ingestion Layer) with validation (Judge 6 framew
 
 #### `src/ingestion/judge_integration.py`
 
-##### Judge6Integrator
+##### Cor.Claude_Code_6Integrator
 
 **Functions**:
 
@@ -289,9 +289,9 @@ Bridges intelligence gathering (Ingestion Layer) with validation (Judge 6 framew
 **Usage**:
 
 ```python
-from src.ingestion.judge_integration import Judge6Integrator
+from src.ingestion.judge_integration import Cor.Claude_Code_6Integrator
 
-integrator = Judge6Integrator()
+integrator = Cor.Claude_Code_6Integrator()
 
 # Validate ingestion output
 
@@ -435,7 +435,7 @@ from src.ingestion import (
     BriefingGenerator,
     CircuitBreaker,
     CostSpikeDetector,
-    Judge6Integrator,
+    Cor.Claude_Code_6Integrator,
 )
 
 # Visualizations
@@ -461,7 +461,7 @@ cost_detector = CostSpikeDetector(
 
 # Judge 6 integration
 
-judge_integrator = Judge6Integrator()
+judge_integrator = Cor.Claude_Code_6Integrator()
 
 ```
 

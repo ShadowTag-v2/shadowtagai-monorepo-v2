@@ -123,7 +123,7 @@ import {
 
 /* eslint-disable @typescript-eslint/no-require-imports */
 const proactiveModule =
-  feature('PROACTIVE') || feature('KAIROS')
+  feature('PROACTIVE') || feature('COR.KAIROS')
     ? (require('../../proactive/index.js') as typeof import('../../proactive/index.js'))
     : null;
 /* eslint-enable @typescript-eslint/no-require-imports */
@@ -218,7 +218,7 @@ const fullInputSchema = lazySchema(() => {
 // type, but call() destructures via the explicit AgentToolInput type below
 // which always includes all optional fields.
 export const inputSchema = lazySchema(() => {
-  const schema = feature('KAIROS')
+  const schema = feature('COR.KAIROS')
     ? fullInputSchema()
     : fullInputSchema().omit({
         cwd: true,
@@ -777,7 +777,7 @@ export const AgentTool = buildTool({
     // executeForkedSlashCommand's fire-and-forget path; the
     // <task-notification> re-entry there is handled by the else branch
     // below (registerAsyncAgentTask + notifyOnCompletion).
-    const assistantForceAsync = feature('KAIROS') ? appState.kairosEnabled : false;
+    const assistantForceAsync = feature('COR.KAIROS') ? appState.kairosEnabled : false;
     const shouldRunAsync =
       (run_in_background === true ||
         selectedAgent.background === true ||
@@ -864,7 +864,7 @@ export const AgentTool = buildTool({
       description,
     };
 
-    // Helper to wrap execution with a cwd override: explicit cwd arg (KAIROS)
+    // Helper to wrap execution with a cwd override: explicit cwd arg (COR.KAIROS)
     // takes precedence over worktree isolation path.
     const cwdOverridePath = cwd ?? worktreeInfo?.worktreePath;
     const wrapWithCwd = <T,>(fn: () => T): T =>

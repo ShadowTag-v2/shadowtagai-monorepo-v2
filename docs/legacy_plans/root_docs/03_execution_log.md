@@ -49,7 +49,7 @@
 - **2026-03-20T13:53:09.372701** | `pnkln` | PHYSICAL FOLD-IN | Rsync from GitHub | Touched `control/pnkln` | SUCCESS | verified via filesystem | Rollback: delete dir
 - **2026-03-20T13:53:09.372701** | `antigravity-go` | PHYSICAL FOLD-IN | Rsync from GitHub | Touched `reference/public-demos/antigravity-go` | SUCCESS | verified via filesystem | Rollback: delete dir
 - **2026-03-20T13:53:09.372701** | `codepmcs` | PHYSICAL FOLD-IN | Rsync from GitHub | Touched `reference/public-demos/codepmcs` | SUCCESS | verified via filesystem | Rollback: delete dir
-- **2026-03-20T13:53:09.372701** | `judge6` | PHYSICAL FOLD-IN | Rsync from GitHub | Touched `reference/public-demos/judge6` | SUCCESS | verified via filesystem | Rollback: delete dir
+- **2026-03-20T13:53:09.372701** | `Cor.Claude_Code_6` | PHYSICAL FOLD-IN | Rsync from GitHub | Touched `reference/public-demos/Cor.Claude_Code_6` | SUCCESS | verified via filesystem | Rollback: delete dir
 - **2026-03-20T13:53:09.372701** | `kosmos` | PHYSICAL FOLD-IN | Rsync from GitHub | Touched `reference/public-demos/kosmos` | SUCCESS | verified via filesystem | Rollback: delete dir
 - **2026-03-20T13:53:09.372701** | `shadowtag_v2` | PHYSICAL FOLD-IN | Rsync from GitHub | Touched `reference/public-demos/shadowtag_v2` | SUCCESS | verified via filesystem | Rollback: delete dir
 - **2026-03-20T13:53:09.372701** | `shadowtagai-v1` | PHYSICAL FOLD-IN | Rsync from GitHub | Touched `archive/shadowtagai-v1` | SUCCESS | verified via filesystem | Rollback: delete dir

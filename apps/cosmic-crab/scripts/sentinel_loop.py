@@ -5,7 +5,7 @@ import time
 
 from libs.steel.pruner import CodePruner
 from libs.steel.vfs import ShadowVFS
-from src.shield.judge import Judge6
+from src.shield.judge import Cor_Claude_Code_6
 
 # Configure Logging
 logging.basicConfig(level=logging.INFO)
@@ -20,7 +20,7 @@ class SentinelController:
     def __init__(self, root_dir: str):
         self.vfs = ShadowVFS(root_dir)
         self.pruner = CodePruner(root_dir)
-        self.judge = Judge6("shadowtag-omega-v2")
+        self.judge = Cor_Claude_Code_6("shadowtag-omega-v2")
         self.is_running = True
 
     def run_loop(self):

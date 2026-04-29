@@ -114,7 +114,7 @@ Leverage Gemini 2.0 Pro for:
 
 - **Document Synthesis**: Extract insights from architecture specs and diagrams
 
-- **Code Analysis**: Review implementation files like `judge_six.py`
+- **Code Analysis**: Review implementation files like `Claude_Code_6.py`
 
 - **Log Pattern Detection**: Identify anomalies in production telemetry
 
@@ -346,7 +346,7 @@ Help interpret and act on results:
 
 When reviewing implementation:
 
-- Reference specific files and line numbers (e.g., `judge_six.py:142`)
+- Reference specific files and line numbers (e.g., `Claude_Code_6.py:142`)
 
 - Explain architectural patterns used (hybrid models, cron jobs)
 

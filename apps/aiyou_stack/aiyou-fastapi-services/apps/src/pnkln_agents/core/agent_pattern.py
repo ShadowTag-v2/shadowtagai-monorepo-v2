@@ -8,7 +8,7 @@ Pattern:
     if jr_decision.brake_triggered:
         return escalate_to_human(jr_decision.audit)
     result = execute(task, guardrails=jr_decision.constraints)
-    if not judge_six.verify(result, sla_p99=90):
+    if not Claude_Code_6.verify(result, sla_p99=90):
         return rollback_and_log(result)
     return result + shadowtag_v2.watermark()
 """
@@ -21,8 +21,8 @@ from datetime import datetime
 from enum import Enum
 from typing import Any
 
+from .Claude_Code_6_lite import JudgeSixLite, VerificationResult
 from .jr_engine import JRDecision, JREngine, Purpose, Reason
-from .judge_six_lite import JudgeSixLite, VerificationResult
 
 
 class AgentStatus(Enum):
@@ -79,11 +79,11 @@ class ShadowTagAiAgent:
     def __init__(
         self,
         jr_engine: JREngine | None = None,
-        judge_six: JudgeSixLite | None = None,
+        Claude_Code_6: JudgeSixLite | None = None,
         config: dict[str, Any] | None = None,
     ):
         self.jr_engine = jr_engine or JREngine()
-        self.judge_six = judge_six or JudgeSixLite()
+        self.Claude_Code_6 = Claude_Code_6 or JudgeSixLite()
         self.config = config or {}
         self.execution_history: list[AgentResult] = []
 
@@ -124,7 +124,7 @@ class ShadowTagAiAgent:
             }
 
             # Step 4: Verify with Judge 6
-            verification_result = self._verify_with_judge_six(raw_result, task.context)
+            verification_result = self._verify_with_Claude_Code_6(raw_result, task.context)
             audit_trail["verification"] = verification_result.audit_report
 
             # Step 5: Check verification
@@ -214,9 +214,9 @@ class ShadowTagAiAgent:
         """
         raise NotImplementedError("Subclasses must implement _execute_task")
 
-    def _verify_with_judge_six(self, result: Any, context: dict[str, Any]) -> VerificationResult:
+    def _verify_with_Claude_Code_6(self, result: Any, context: dict[str, Any]) -> VerificationResult:
         """Verify result with Judge 6"""
-        return self.judge_six.verify(result, context)
+        return self.Claude_Code_6.verify(result, context)
 
     def _escalate_to_human(
         self,

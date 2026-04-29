@@ -83,7 +83,7 @@ This document will define the architecture based strictly on:
 ### 2. Codebase Updates
 
 #### [MODIFY] `src/cortex/omni_ipb_orchestration_vdr.py` (or targeted scripts)
-*   Ensure that any orchestration code reflects actual LLM orchestration (e.g. `NotebookLMMCPClient` and `Judge6Engine`) rather than mocked logic.
+*   Ensure that any orchestration code reflects actual LLM orchestration (e.g. `NotebookLMMCPClient` and `Cor.Claude_Code_6Engine`) rather than mocked logic.
 
 #### [MODIFY] `task.md`
 *   Add a new strategic vector denoting the replacement of the simulated swarm with a real Kosmos/BioAgents architecture loop.
@@ -177,7 +177,7 @@ Complete the deployment of the `flyingmonkeys-server` to Cloud Run, verify its a
 ### Verification
 #### [EXECUTE] [scripts/verify_god_mode.sh](file:///Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/scripts/verify_god_mode.sh)
 - Publishes `monkey-summons` to Pub/Sub.
-- Monitors Cloud Run logs for 'FlyingMonkeys7' and 'Judge6'.
+- Monitors Cloud Run logs for 'FlyingMonkeys7' and 'Cor.Claude_Code_6'.
 
 ### Security (Post-Verification)
 #### [APPLY] [Gatekeeper Policies]
@@ -1083,7 +1083,7 @@ Execute Directives 1, 2, and 3 from the user prompt to implement the Splinter Sy
 
 #### [MODIFY] [page.tsx](file:///Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/apps/shadowtag-web/app/page.tsx)
 
-- **Step 1: Mount the Arsenal:** Import and render `TeamSection`, `Judge6Section`, and `DeckViewer` into the homepage scroll, below the Hero section.
+- **Step 1: Mount the Arsenal:** Import and render `TeamSection`, `Cor.Claude_Code_6Section`, and `DeckViewer` into the homepage scroll, below the Hero section.
 - **Step 2: Flesh out the 3 Columns:** Replace the static placeholder text for "Recent News", "Quick Links", and "Upcoming Events" with actual stylised UI code matching the design guidelines.
 - **Step 3: Integrate the Copilot:** Import and mount the newly created `ActivistDashboard.tsx` from `apps/src/components/` into the shadowtag-web application, likely wrapping it in CopilotKit providers.
 
@@ -1564,7 +1564,7 @@ Fully flesh out the two major technical debts left on the table:
 - Implement bidirectional streaming capabilities if the SDK expects Server-Sent Events (SSE).
 - Ensure that the `/info` object explicitly matches the GraphQL/REST schema expected by CopilotKit React Core 1.51.x, which demands strict properties: `models`, `tools`, etc.
 
-#### [MODIFY] [apps/judge-sentinel/judge6_sentinel.py]
+#### [MODIFY] [apps/judge-sentinel/Cor.Claude_Code_6_sentinel.py]
 - Ensure the backend FastAPI application accepts `POST /copilotkit_remote` conforming either to the native `copilotkit` Python SDK standards, or properly formats the manual override to return `data` streams properly.
 
 ### 2. Stripe Webhook Implementation
@@ -1928,7 +1928,7 @@ Execute Stage 4 Hardening directives mandated by the Antigravity Spec. This pipe
 ## Proposed Changes
 
 ### Vector 1: Judge 6 Risk Protocols
-- **Action**: Evaluate the `apps/pnkln_stack` microservices utilizing the `judge6-compliance` skill module (Wet Fleece/Dry Ground execution gating).
+- **Action**: Evaluate the `apps/pnkln_stack` microservices utilizing the `Cor.Claude_Code_6-compliance` skill module (Wet Fleece/Dry Ground execution gating).
 - **Target**: Confirm that structural DB operations utilize strict parameterization to prevent implicit payload injection paths.
 
 ### Vector 2: Firebase Zero-Trust Schemas
@@ -2675,7 +2675,7 @@ Implement the Adaptive Memory Matrix. Create the `executive_profiles` table with
 
 #### [NEW] schema/lean_hippocampus.sql
 
-Create the 669 NIST Federal Catalog store (`nist_federal_catalog`) and the Operational WORM logs (`judge6_memories`).
+Create the 669 NIST Federal Catalog store (`nist_federal_catalog`) and the Operational WORM logs (`Cor.Claude_Code_6_memories`).
 
 #### [NEW] scripts/nist_kinetic_scraper.py
 

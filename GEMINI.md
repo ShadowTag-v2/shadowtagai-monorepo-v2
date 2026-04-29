@@ -217,6 +217,11 @@ Before producing nag prompts for complex tasks, route through `sequential-thinki
 ## Prompt Repetition — Zero-Cost Accuracy Boost
 **Full protocol:** `skills/prompt-repetition-boost/SKILL.md` (106 lines). arXiv:2512.14982. Repeat prompts for non-reasoning models (flash/lite/mini). Do NOT apply to thinking/reasoning models.
 </prompt_repetition_doctrine>
+
+<mcp_deferred_loading_doctrine>
+## MCP Deferred Loading
+**Full protocol:** `skills/mcp-deferred-loading/SKILL.md`. Strategies and architectural patterns for deferring the initialization of Model Context Protocol (MCP) servers to improve boot times and reduce idle resource consumption. Heavyweight servers should only be instantiated when their specific domain tools are invoked.
+</mcp_deferred_loading_doctrine>
 <secrets_manager_doctrine>
 ## Secrets Manager Doctrine
 
@@ -325,7 +330,7 @@ Before producing nag prompts for complex tasks, route through `sequential-thinki
 |--------|--------|----------|---------|
 | Dream Consolidation | `scripts/dream_consolidation.py` | Nightly | KI maintenance: orient → gather → consolidate → prune |
 | Loop Steward | `scripts/loop_steward.py` | 5-min cycles | Autonomous task continuation with idle scaling |
-| KAIROS | `scripts/kairos_daemon.py` | Background | Background autonomous agent mode |
+| COR.COR.KAIROS | `scripts/kairos_daemon.py` | Background | Background autonomous agent mode |
 | pnkln-evolve | `scripts/pnkln_evolve.py` | Background | Recursive self-improvement loop |
 | Omni-Autolint | `scripts/gca_autolint_daemon.py` | Daily 3-5AM | Secure lint+push via GitHub App tokens, beads audit trail |
 </daemon_fleet_registry>
@@ -375,9 +380,9 @@ Native `generate_image` tool is BANNED across all agents. All visual assets MUST
 </tacsop7_visual_provenance>
 
 <motor_cortex_reflexes>
-## Motor Cortex — Dynamic Skill Hunting Reflexes (TACSOP 4 Kairos Delta)
+## Motor Cortex — Dynamic Skill Hunting Reflexes (TACSOP 4 Cor.Cor.Kairos Delta)
 
-**Activated:** 2026-04-24 | **Source:** Kairos Delta directive
+**Activated:** 2026-04-24 | **Source:** Cor.Cor.Kairos Delta directive
 
 Two standalone tactical reflexes wired into the Motor Cortex for autonomous skill acquisition:
 

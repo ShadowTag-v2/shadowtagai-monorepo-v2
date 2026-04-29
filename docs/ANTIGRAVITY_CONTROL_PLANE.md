@@ -191,7 +191,7 @@ Report at conversation start and after any server failure:
 |--------|--------|-------------|
 | Dream Consolidation | `scripts/dream_consolidation.py` | KI count + timestamp |
 | Loop Steward | `scripts/loop_steward.py` | Task queue depth |
-| KAIROS | `scripts/kairos_daemon.py` | Heartbeat file |
+| COR.KAIROS | `scripts/kairos_daemon.py` | Heartbeat file |
 | pnkln-evolve | `scripts/pnkln_evolve.py` | Evolution log |
 | Omni-Autolint | `scripts/gca_autolint_daemon.py` | Last push timestamp |
 

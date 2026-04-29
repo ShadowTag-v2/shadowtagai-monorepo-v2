@@ -170,10 +170,10 @@ if (dryRun.success) {
 ### Governance Integration
 
 ```typescript
-import { Judge6Adapter } from "@pnkln/universal-copilot";
+import { Cor.Claude_Code_6Adapter } from "@pnkln/universal-copilot";
 
 // Use Python Judge 6 for real governance
-const governance = new Judge6Adapter("copilot-instance-001");
+const governance = new Cor.Claude_Code_6Adapter("copilot-instance-001");
 
 const router = new CopilotRouter(
   { ...config, enableGovernance: true },
@@ -312,7 +312,7 @@ it("should handle rate limits", async () => {
 
 ## Judge 6 Integration
 
-Universal Copilot integrates with [Judge 6](../judge6/) for cryptographic governance enforcement.
+Universal Copilot integrates with [Judge 6](../Cor.Claude_Code_6/) for cryptographic governance enforcement.
 
 ### Key Features
 
@@ -401,7 +401,7 @@ See [API.md](./docs/API.md) for complete API documentation.
 
 - **CopilotRouter** - Main routing and orchestration
 - **UnifiedPatcher** - Patch application and backup management
-- **Judge6Adapter** - Governance integration
+- **Cor.Claude_Code_6Adapter** - Governance integration
 - **MockProvider, OpenAIProvider, AnthropicProvider** - LLM providers
 
 ### Key Types
@@ -441,7 +441,7 @@ Copyright © 2025 Erik Bjontegard, Pnkln. All rights reserved.
 
 ## Related Projects
 
-- [Judge 6](../judge6/) - AI Governance & Risk Management System
+- [Judge 6](../Cor.Claude_Code_6/) - AI Governance & Risk Management System
 - [PNKLN ShadowTag-v4 Stack](../) - Complete AI infrastructure
 
 ---

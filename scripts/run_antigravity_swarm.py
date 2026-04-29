@@ -20,7 +20,7 @@ if os.path.exists(env_path):
                 except ValueError:
                     pass
 
-from pnkln.core.judge_six_pipeline import JudgeSix  # noqa: E402
+from pnkln.core.Claude_Code_6_pipeline import JudgeSix  # noqa: E402
 
 
 class AgentUnit:
@@ -39,7 +39,7 @@ class AntigravitySwarm:
     Parameters aligned with Antigravity's agentic makeup:
     - Purpose: ShadowTag-v2JR
     - Reason: Doctrine
-    - Brakes: Judge6.
+    - Brakes: Cor_Claude_Code_6.
     """
 
     def __init__(self) -> None:

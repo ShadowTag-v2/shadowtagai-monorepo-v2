@@ -5,4 +5,4 @@
 Target: PRB ≥98%, LLM mix within ±2%
 Features: Cost projection, degradation detection, results export
 """
-# [Full implementation similar to Judge6 with cost projection added]
+# [Full implementation similar to Cor_Claude_Code_6 with cost projection added]

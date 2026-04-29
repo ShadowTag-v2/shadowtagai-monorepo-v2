@@ -10,12 +10,12 @@ Cor.115
 
          | Component             | File                                     | Status             | Latency   |
          |-----------------------|------------------------------------------|--------------------|-----------|
-         | Judge 6 Core         | /src/pnkln/judge_six.py                  | ✅ Complete         | <90ms     |
-         | Judge Lite            | /src/pnkln_agents/core/judge_six_lite.py | ✅ Complete         | <90ms p99 |
+         | Judge 6 Core         | /src/pnkln/Claude_Code_6.py                  | ✅ Complete         | <90ms     |
+         | Judge Lite            | /src/pnkln_agents/core/Claude_Code_6_lite.py | ✅ Complete         | <90ms p99 |
          | 21-Layer Architecture | /pnkln/governance/judge_architecture.py  | ✅ Complete         | Async     |
          | Jura Protocol         | /agents/jura_protocol.py                 | ✅ Complete         | <100ms    |
          | Perplexity MCP        | /mcp/perplexity/server.py                | ✅ Complete         | <35ms     |
-         | Vertex AI Grounding   | NEW: judge6_grounded.py                  | 🔄 Ready to deploy | +50-100ms |
+         | Vertex AI Grounding   | NEW: Cor.Claude_Code_6_grounded.py                  | 🔄 Ready to deploy | +50-100ms |
 
          10 Fingers Scores
 

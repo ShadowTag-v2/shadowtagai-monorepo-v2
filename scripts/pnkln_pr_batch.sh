@@ -325,9 +325,9 @@ echo "  ℹ️  No new files for this PR. Existing implementations preserved."
 # ==========================================
 echo ""
 echo "═══════════════════════════════════════"
-echo " PR-6: Cinematic Verification (SKIP — judge6.sh exists)"
+echo " PR-6: Cinematic Verification (SKIP — Cor.Claude_Code_6.sh exists)"
 echo "═══════════════════════════════════════"
-echo "  🔒 SKIP: scripts/judge6.sh (exists — Judge6 Engine already operational)"
+echo "  🔒 SKIP: scripts/Cor.Claude_Code_6.sh (exists — Cor.Claude_Code_6 Engine already operational)"
 
 # ==========================================
 # PR-7: Tauri GlassBox

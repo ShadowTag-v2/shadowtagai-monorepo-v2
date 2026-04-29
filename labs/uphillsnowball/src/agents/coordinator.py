@@ -16,7 +16,7 @@ Architecture:
         If any phase fails, triggers Temporal-reversal.
 
     SUPPORT DAEMONS (Agents 5–8):
-        Agent 5 (KAIROS):          Nightly knowledge distillation.
+        Agent 5 (COR.KAIROS):          Nightly knowledge distillation.
         Agent 6 (Aegaeon Cache):   Token microcompaction & KV slab.
         Agent 7 (Omega Auth):      GCP Secret Manager fetch.
         Agent 8 (Rich Hickey):     Dead code enforcement (vulture + ruff).
@@ -43,7 +43,7 @@ class AgentRole(StrEnum):
     REVIEWER = "reviewer"
     TESTER = "tester"
     JUDGE_6 = "judge_6"
-    KAIROS = "kairos"
+    COR.KAIROS = "kairos"
     AEGAEON = "aegaeon"
     OMEGA_AUTH = "omega_auth"
     RICH_HICKEY = "rich_hickey"
@@ -106,8 +106,8 @@ SYNTHESIS_MAP: dict[AgentRole, AgentSpec] = {
         capabilities=frozenset({AgentCapability.ENFORCE_RISK}),
         forbidden=frozenset({AgentCapability.WRITE_CODE}),
     ),
-    AgentRole.KAIROS: AgentSpec(
-        role=AgentRole.KAIROS,
+    AgentRole.COR.KAIROS: AgentSpec(
+        role=AgentRole.COR.KAIROS,
         temporal_activity="j5_kairos_distill",
         capabilities=frozenset({AgentCapability.DISTILL_KNOWLEDGE}),
         forbidden=frozenset({AgentCapability.WRITE_CODE}),
@@ -236,10 +236,10 @@ class SynthesisCoordinator:
         """Return the Temporal activity names for support daemons (5–8).
 
         Returns:
-            List of 4 activity names for KAIROS, Aegaeon, Omega, Hickey.
+            List of 4 activity names for COR.KAIROS, Aegaeon, Omega, Hickey.
         """
         return [
-            self._map[AgentRole.KAIROS].temporal_activity,
+            self._map[AgentRole.COR.KAIROS].temporal_activity,
             self._map[AgentRole.AEGAEON].temporal_activity,
             self._map[AgentRole.OMEGA_AUTH].temporal_activity,
             self._map[AgentRole.RICH_HICKEY].temporal_activity,

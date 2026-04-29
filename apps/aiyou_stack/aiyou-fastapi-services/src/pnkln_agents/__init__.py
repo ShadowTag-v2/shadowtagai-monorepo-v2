@@ -32,6 +32,13 @@ from .core.agent_pattern import (  # noqa: F401
     PnklnAgent,
     SimpleAgent,
 )
+from .core.Claude_Code_6_lite import (
+    JudgeSixLite,
+    VerificationResult,
+    Violation,
+    ViolationSeverity,
+    ViolationType,
+)
 from .core.gemini_ingestion import (
     EthicalComplianceValidator,
     EthicalViolation,
@@ -48,13 +55,6 @@ from .core.gemini_ingestion import (
 
 # Enforcement (downstream)
 from .core.jr_engine import BrakeType, JRDecision, JREngine, Purpose, Reason, RiskLevel
-from .core.judge_six_lite import (
-    JudgeSixLite,
-    VerificationResult,
-    Violation,
-    ViolationSeverity,
-    ViolationType,
-)
 
 __version__ = "0.2.0"  # Updated for dual-layer architecture
 

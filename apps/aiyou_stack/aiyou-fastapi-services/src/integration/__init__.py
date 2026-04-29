@@ -13,7 +13,7 @@ This is the bridge between:
 import asyncio
 from typing import Any, Dict, List  # noqa: F401, UP035
 
-from pnkln.core.judge_six_pipeline import JudgeSixKernel
+from pnkln.core.Claude_Code_6_pipeline import JudgeSixKernel
 
 from src.agents.debate import DebateAgent, DebateConfig, DebateOrchestrator
 from src.core import FunctionRegistry, FunctionTool
@@ -76,7 +76,7 @@ class KernelFunctionRegistry:
                 "violations": {"type": "object", "description": "Violations data from ATP scan"},
             },
         )
-        def judge_six_classify(violations: dict) -> dict:
+        def Claude_Code_6_classify(violations: dict) -> dict:
             """Kernel 2: Judge Six Binary Classifier
 
             Uses local PyTorch model for instant classification.
@@ -322,7 +322,7 @@ def create_unified_function_registry() -> KernelFunctionRegistry:
     Returns:
         KernelFunctionRegistry with 7 core functions:
         1. atp_519_scan - Violation extraction
-        2. judge_six_classify - Binary decision
+        2. Claude_Code_6_classify - Binary decision
         3. audit_compress - Audit trail
         4. multi_agent_debate - Collaborative reasoning
         5. dte_evolve - Prompt evolution

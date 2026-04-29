@@ -913,7 +913,7 @@ Replaces 'Open File' with 'Hunter' and 'Write File' with 'Killer'.
             with psycopg2.connect(self.conn_str) as conn:
                 with conn.cursor() as cur:
                     cur.execute("""
-                        INSERT INTO judge6_memories
+                        INSERT INTO Cor.Claude_Code_6_memories
                         (agent_id, context_layer, memory_text, outcome)
                         VALUES (%s, 'codepmcs_fix', %s, %s)
                     """, (self.agent_name, f"ISSUE: {issue} | FIX: {fix_action}", outcome))
@@ -932,7 +932,7 @@ Replaces 'Open File' with 'Hunter' and 'Write File' with 'Killer'.
                 with conn.cursor() as cur:
                     # Semantic Search via SQL
                     cur.execute("""
-                        SELECT memory_text FROM judge6_memories
+                        SELECT memory_text FROM Cor.Claude_Code_6_memories
                         ORDER BY embedding <=> embedding('text-embedding-004', %s)
                         LIMIT 1
                     """, (issue,))
@@ -1135,7 +1135,7 @@ from libs.steel.sdk import AntigravityEngine
 
 # Configure Judge 6 Logger
 
-logger = logging.getLogger("Judge6")
+logger = logging.getLogger("Cor.Claude_Code_6")
 
 class JudgeSixSentinel:
 """
@@ -1196,8 +1196,8 @@ self.banned_patterns = [
 
 # 1. The Gateway Policy
 
-resource "google_network_security_gateway_security_policy" "judge6_policy" {
-name = "judge6-policy"
+resource "google_network_security_gateway_security_policy" "Cor.Claude_Code_6_policy" {
+name = "Cor.Claude_Code_6-policy"
 location = "us-central1"
 description = "Judge 6 Governance for Velocity Cockpit"
 }
@@ -1207,7 +1207,7 @@ description = "Judge 6 Governance for Velocity Cockpit"
 resource "google_network_security_gateway_security_policy_rule" "allow_devtools" {
 name = "allow-devtools"
 location = "us-central1"
-gateway_security_policy = google_network_security_gateway_security_policy.judge6_policy.name
+gateway_security_policy = google_network_security_gateway_security_policy.Cor.Claude_Code_6_policy.name
 enabled = true
 priority = 1
 session_matcher = "host() in ['github.com', 'pypi.org', 'stackoverflow.com', 'googleapis.com']"
@@ -1411,7 +1411,7 @@ Wraps 'Hunter' (Search), 'Killer' (Edit), and 'Hippocampus' (Memory).
             with psycopg2.connect(self.conn_str) as conn:
                 with conn.cursor() as cur:
                     cur.execute("""
-                        INSERT INTO judge6_memories
+                        INSERT INTO Cor.Claude_Code_6_memories
                         (agent_id, context_layer, memory_text, outcome)
                         VALUES (%s, %s, %s, %s)
                     """, (self.agent_name, context, content, outcome))
@@ -1428,7 +1428,7 @@ Wraps 'Hunter' (Search), 'Killer' (Edit), and 'Hippocampus' (Memory).
             with psycopg2.connect(self.conn_str) as conn:
                 with conn.cursor() as cur:
                     cur.execute("""
-                        SELECT memory_text, outcome FROM judge6_memories
+                        SELECT memory_text, outcome FROM Cor.Claude_Code_6_memories
                         ORDER BY embedding <=> embedding('text-embedding-004', %s)
                         LIMIT 1
                     """, (query,))
@@ -1449,7 +1449,7 @@ Wraps 'Hunter' (Search), 'Killer' (Edit), and 'Hippocampus' (Memory).
 import logging
 from typing import List
 
-logger = logging.getLogger("Judge6")
+logger = logging.getLogger("Cor.Claude_Code_6")
 
 class JudgeSixSentinel:
 """
@@ -1595,7 +1595,7 @@ Antigravity v2 outperforms the Stock configuration by ~680% in task velocity 
 1. Velocity (Cycle Time)
    The time to take a prompt from "Thought" to "Applied Code."
 
-MetricStock Mode (Preview)Antigravity v2 (God Mode)DeltaGeneration~3.0s~6.9s (Cold Start)-Verification0s (Manual)0.09s (Judge6 Lite)+90msReview/Apply~20.0s (Human)0.01s (Direct Write)-19.99sTotal Cycle~23.0s~7.02s3.3x Faster
+MetricStock Mode (Preview)Antigravity v2 (God Mode)DeltaGeneration~3.0s~6.9s (Cold Start)-Verification0s (Manual)0.09s (Cor.Claude_Code_6 Lite)+90msReview/Apply~20.0s (Human)0.01s (Direct Write)-19.99sTotal Cycle~23.0s~7.02s3.3x Faster
 Result: You can execute 3 autonomous loops in the time it takes to review 1 manual diff. Note: Warm execution in Cloud Run is expected to be ~3-4s. 3. "God Mode" Execution (Cockpit Provisioning)
 Total Time: ~35 minutes.
 Successes:Parallelism: Running Cloud Build (Strike 1) and Terraform (Strike 2) concurrently saved ~10-15 minutes.

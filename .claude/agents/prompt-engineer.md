@@ -130,7 +130,7 @@ For each prompt design or analysis, provide:
 **Direct Replacements:**
 ```
 "Judge #6" → "Gemini Ingestion Layer"
-"judge_six.py" → Pipeline docs and architecture specs
+"Claude_Code_6.py" → Pipeline docs and architecture specs
 "p99 ≤90ms" → ~45 min/night runtime efficiency
 "98% coverage" → Quality gates on items, sources, costs, scores
 ```

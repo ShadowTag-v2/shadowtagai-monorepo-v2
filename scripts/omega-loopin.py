@@ -27,12 +27,12 @@ def verify_invariants():
     py_version = subprocess.run(["python3", "--version"], capture_output=True, text=True).stdout.strip()
     logger.info("  [PYTHON] %s", py_version)
     if "3.14" not in py_version:
-        logger.warning("CPython drift detected. Run /pickle egress to sanitize.")
+        logger.warning("CPython drift detected. Run /omega egress to sanitize.")
 
     # Check Git Drift
     status = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True).stdout
     if status:
-        logger.warning("Uncommitted files present. Run /pickle egress to sanitize.")
+        logger.warning("Uncommitted files present. Run /omega egress to sanitize.")
     else:
         logger.info("  ✅ [GIT] Tree is mathematically clean. Zero drift.")
 

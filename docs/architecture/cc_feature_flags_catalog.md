@@ -9,7 +9,7 @@
 | Flag | Purpose | Status |
 |------|---------|--------|
 | `COORDINATOR_MODE` | Multi-agent delegation (dispatch to sub-agents) | ✅ Active via env var |
-| `KAIROS` | Background daemon for autonomous task continuation | ✅ Active via env var |
+| `COR.KAIROS` | Background daemon for autonomous task continuation | ✅ Active via env var |
 | `ULTRAPLAN` | Enhanced planning/architecture mode | ✅ Active via env var |
 | `DREAM` | Memory consolidation daemon (nightly aggregation) | ✅ Active via env var |
 | `BUDDY` | Personality tuning / conversational warmth | ✅ Shipped (opt-in) |
@@ -152,7 +152,7 @@ cat /tmp/stage1.txt | base64 -d   # ALLOW: reading temp file
 ```
 
 ### Implications for Judge 6
-Our current BLOCK/ALLOW spec (judge6_block_allow_spec.md) evaluates actions individually.
+Our current BLOCK/ALLOW spec (Cor.Claude_Code_6_block_allow_spec.md) evaluates actions individually.
 The Composite Action Evaluation rule (line 83-86) is theoretically sound but lacks:
 
 1. **Chain depth limit**: No maximum command chain length before escalation

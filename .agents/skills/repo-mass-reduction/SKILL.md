@@ -91,7 +91,7 @@ git remote add origin git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git
 python3 scripts/auth_github_app.py
 
 # 2. Force push (bypass LFS if budget exceeded)
-GIT_LFS_SKIP_PUSH=1 JUDGE6_SKIP=true git push --force --no-verify origin main
+GIT_LFS_SKIP_PUSH=1 Claude_Code_6_SKIP=true git push --force --no-verify origin main
 ```
 
 ### Phase 4: Verify

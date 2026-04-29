@@ -8,7 +8,7 @@ This directory stores the output from Gemini 2.0 Pro analysis runs for PNKLN Cor
 results/
 ├── README.md                           # This file
 ├── gemini_ingestion_YYYY-MM-DD.md     # Ingestion Layer analyses
-├── judge_six_YYYY-MM-DD.md            # Judge 6 analyses
+├── Claude_Code_6_YYYY-MM-DD.md            # Judge 6 analyses
 └── combined_stack_YYYY-MM-DD.md       # Full stack analyses (optional)
 ```
 
@@ -19,7 +19,7 @@ Format: `{component}_{YYYY-MM-DD}.md`
 Examples:
 
 - `gemini_ingestion_2025-11-15.md` - Pre-production analysis
-- `judge_six_2026-01-15.md` - Production health check
+- `Claude_Code_6_2026-01-15.md` - Production health check
 - `combined_stack_2026-04-15.md` - Quarterly full stack review
 
 ## Analysis Index

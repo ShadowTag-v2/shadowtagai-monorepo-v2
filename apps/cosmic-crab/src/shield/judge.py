@@ -2,10 +2,10 @@
 
 import logging
 
-logger = logging.getLogger("Judge6")
+logger = logging.getLogger("Cor_Claude_Code_6")
 
 
-class Judge6:
+class Cor_Claude_Code_6:
     """ShadowTag Omega V7 Judge 6.1 Governance Shield
     Implements 17-Layer NIST-Aligned CRSMC (Cognitive Risk Sentinel & Monitoring Control).
     Version 6.1: Recursive self-protective loops enabled.

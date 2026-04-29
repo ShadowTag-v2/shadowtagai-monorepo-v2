@@ -12,7 +12,7 @@ class AnalysisType(StrEnum):
     """Types of Gemini analysis."""
 
     INGESTION_LAYER = "ingestion_layer"
-    JUDGE_SIX = "judge_six"
+    Claude_Code_6 = "Claude_Code_6"
     WORKFLOW_OPTIMIZATION = "workflow_optimization"
     COVERAGE_ANALYSIS = "coverage_analysis"
     COMPLIANCE_AUDIT = "compliance_audit"

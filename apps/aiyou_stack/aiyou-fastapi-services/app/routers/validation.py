@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from app.models.pnkln import IngestedItem, ValidationMetrics, ValidationStatus
-from app.services.judge_six import JudgeSixService
+from app.services.Claude_Code_6 import JudgeSixService
 
 router = APIRouter()
 logger = logging.getLogger(__name__)

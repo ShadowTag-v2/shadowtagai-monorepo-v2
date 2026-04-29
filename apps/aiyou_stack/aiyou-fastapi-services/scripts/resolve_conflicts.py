@@ -32,10 +32,10 @@ def resolve_file(filepath):
     # Strategy: Find all blocks and replace with HEAD content.
 
     # Pattern A: 3-way conflict (with |||||||)
-    # <<<<<<< HEAD\n(.*?)\n\|\|\|\|\|\|\| .*?\n=======\n.*?\n>>>>>>> .*?($|\n)
+    # <{7} HEAD\n(.*?)\n\|{7} .*?\n={7}\n.*?\n>{7} .*?($|\n)
 
     # Pattern B: 2-way conflict
-    # <<<<<<< HEAD\n(.*?)\n=======\n.*?\n>>>>>>> .*?($|\n)
+    # <{7} HEAD\n(.*?)\n={7}\n.*?\n>{7} .*?($|\n)
 
     # We can try a generic pattern that handles optional ||| part.
     # But python re doesn't support atomic groups, so be careful.
@@ -49,19 +49,19 @@ def resolve_file(filepath):
     in_head = False
 
     for line in lines:
-        if line.startswith("<<<<<<< HEAD"):
+        if line.startswith("<" * 7 + " HEAD"):
             in_conflict = True
             in_head = True
             continue
 
         if in_conflict:
-            if line.startswith("|||||||"):
+            if line.startswith("|" * 7):
                 in_head = False
                 continue
-            if line.startswith("======="):
+            if line.startswith("=" * 7):
                 in_head = False
                 continue
-            if line.startswith(">>>>>>>"):
+            if line.startswith(">" * 7):
                 in_conflict = False
                 in_head = False
                 continue

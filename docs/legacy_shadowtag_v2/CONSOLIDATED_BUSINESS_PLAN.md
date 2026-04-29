@@ -200,7 +200,7 @@ We are building the **Civilization OS**—a vertically integrated stack from ele
 **Core Services**:
 - `agents/` - Multi-agent framework
 - `flying_monkeys/` - 650-agent swarm
-- `judge6/` - Compliance Framework governance
+- `Cor.Claude_Code_6/` - Compliance Framework governance
 - `shadowtag/` - Cryptographic watermarking
 - `codepmcs/` - 50-agent code remediation
 

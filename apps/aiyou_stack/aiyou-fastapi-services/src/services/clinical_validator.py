@@ -15,7 +15,7 @@ from typing import Any
 from pydantic import BaseModel
 
 from activeshield_medical.core.liability_shield import liability_shield
-from app.services.judge6_grounded import score_governance
+from app.services.Cor_Claude_Code_6_grounded import score_governance
 
 logger = logging.getLogger(__name__)
 

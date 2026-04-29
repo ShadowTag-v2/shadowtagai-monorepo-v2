@@ -232,8 +232,7 @@
         bufferSize: 5,
       });
 
-      engine.init().catch(err => {
-        console.warn('ScrollEngine: No frames found (generate with Veo 3.1 first)', err.message);
+      engine.init().catch(_err => {
         // Fallback: show gradient background
         heroSection.style.background = 'linear-gradient(135deg, hsl(220, 20%, 8%), hsl(280, 50%, 15%))';
       });
@@ -399,7 +398,7 @@
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
           .then(reg => console.log('[SW] Registered:', reg.scope))
-          .catch(err => console.warn('[SW] Registration failed:', err));
+          .catch(_err => {});
       });
     }
   </script>

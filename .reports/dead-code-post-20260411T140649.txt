@@ -39,7 +39,7 @@ REGRESSION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/
 REGRESSION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/scripts/verify_gemini_2.py
 REGRESSION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/scripts/engage_troop_b.py
 REGRESSION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/load_tests/locustfile.py
-REGRESSION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6_pipeline.py
+REGRESSION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6_pipeline.py
 REGRESSION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/infrastructure/terraform/swarm_audit.py
 REGRESSION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/sovereign_fold.py
 REGRESSION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/src/agents/beads_agent.py

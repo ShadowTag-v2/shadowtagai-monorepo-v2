@@ -85,7 +85,7 @@ class InfrastructureAgent(BaseAgent):
         if "judge" in task_lower and "ingestion" in task_lower:
             return await self.analyze_full_pipeline()
         if "judge" in task_lower:
-            return await self.analyze_judge_six()
+            return await self.analyze_Claude_Code_6()
         if "ingestion" in task_lower or "gemini" in task_lower:
             return await self.analyze_gemini_ingestion()
         if "compare" in task_lower or "comparative" in task_lower:
@@ -96,7 +96,7 @@ class InfrastructureAgent(BaseAgent):
             return await self.cost_analysis()
         return await self.general_infrastructure_review(task, context)
 
-    async def analyze_judge_six(self) -> dict[str, Any]:
+    async def analyze_Claude_Code_6(self) -> dict[str, Any]:
         """Analyze Judge 6 validation/enforcement system.
 
         Returns:
@@ -106,7 +106,7 @@ class InfrastructureAgent(BaseAgent):
         print("\n🔍 Analyzing Judge 6 System...")
 
         result = self.skill.analyze_system(
-            self.skill.JUDGE_SIX_SPEC,
+            self.skill.Claude_Code_6_SPEC,
             focus_areas=[MetricType.PERFORMANCE, MetricType.QUALITY, MetricType.INTEGRATION],
         )
 
@@ -117,7 +117,7 @@ class InfrastructureAgent(BaseAgent):
             "system": "Judge 6",
             "type": "enforcement_validation",
             "analysis": enhanced_result,
-            "gemini_prompt": self.skill.generate_gemini_prompt(self.skill.JUDGE_SIX_SPEC),
+            "gemini_prompt": self.skill.generate_gemini_prompt(self.skill.Claude_Code_6_SPEC),
             "next_steps": self._generate_action_plan(result),
         }
 
@@ -164,7 +164,7 @@ class InfrastructureAgent(BaseAgent):
         print("\n🔍 Performing Comparative Analysis...")
 
         comparison = self.skill.comparative_analysis(
-            self.skill.JUDGE_SIX_SPEC,
+            self.skill.Claude_Code_6_SPEC,
             self.skill.GEMINI_INGESTION_SPEC,
         )
 
@@ -188,12 +188,12 @@ class InfrastructureAgent(BaseAgent):
         print("\n🔍 Analyzing Full Pipeline (Ingestion → Judge)...")
 
         # Analyze both systems
-        judge_analysis = await self.analyze_judge_six()
+        judge_analysis = await self.analyze_Claude_Code_6()
         ingestion_analysis = await self.analyze_gemini_ingestion()
         comparison = await self.comparative_analysis()
 
         return {
-            "pipeline": "gemini_ingestion → judge_six",
+            "pipeline": "gemini_ingestion → Claude_Code_6",
             "components": {"ingestion": ingestion_analysis, "validation": judge_analysis},
             "integration_analysis": comparison,
             "bottlenecks": self._identify_bottlenecks(),
@@ -302,7 +302,7 @@ class InfrastructureAgent(BaseAgent):
 
         return {
             "current_monthly_costs": {
-                "judge_six": {
+                "Claude_Code_6": {
                     "model": "per_validation",
                     "estimated": "$200-400/month (depends on volume)",
                     "breakdown": {
@@ -554,7 +554,7 @@ class InfrastructureAgent(BaseAgent):
 async def quick_judge_analysis() -> dict[str, Any]:
     """Quick analysis of Judge 6."""
     agent = InfrastructureAgent()
-    return await agent.analyze_judge_six()
+    return await agent.analyze_Claude_Code_6()
 
 
 async def quick_ingestion_analysis() -> dict[str, Any]:

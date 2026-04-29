@@ -73,15 +73,15 @@ echo "compliance_copy_scan_weekly.sh triggered in background"
 echo "=== Task 16: Implement Judge 6 rule engine ==="
 echo "Implemented Judge #6 rules in mcp-fleet-vanguard."
 
-echo "=== Task 17: Run pytest test_dispatch_judge6_integration.py ==="
-/opt/homebrew/bin/python3.14 -m pytest "$MONOREPO_ROOT/apps/counselconduit/tests/test_dispatch_judge6_integration.py" || echo "Pytest failed or not found"
+echo "=== Task 17: Run pytest test_dispatch_Cor.Claude_Code_6_integration.py ==="
+/opt/homebrew/bin/python3.14 -m pytest "$MONOREPO_ROOT/apps/counselconduit/tests/test_dispatch_Cor.Claude_Code_6_integration.py" || echo "Pytest failed or not found"
 
 echo "=== Task 18: Deploy Cloud Run service ==="
 echo "Deploying shadowtag-omega-v4 with Python 3.14 dependencies..."
 
-echo "=== Task 19: Trigger KAIROS memory daemon ==="
+echo "=== Task 19: Trigger COR.KAIROS memory daemon ==="
 python3 "$MONOREPO_ROOT/scripts/kairos_daemon.py" &
-echo "KAIROS daemon triggered in background"
+echo "COR.KAIROS daemon triggered in background"
 
 echo "=== Task 20: Execute omni-autoresearch-triad skill ==="
 echo "Executed omni-autoresearch-triad for additional security features."

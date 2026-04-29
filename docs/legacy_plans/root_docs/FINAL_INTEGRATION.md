@@ -291,13 +291,13 @@ ROI: 3.3× in 18 months
 ```bash
 # Development
 export ENV=development
-export JUDGE6_ENDPOINT="http://localhost:8080/enforce"
-export JUDGE6_ITERATIONS=100
+export COR.CLAUDE_CODE_6_ENDPOINT="http://localhost:8080/enforce"
+export COR.CLAUDE_CODE_6_ITERATIONS=100
 
 # Production
 export ENV=production
-export JUDGE6_ENDPOINT="https://judge6.pnkln.ai/enforce"
-export JUDGE6_ITERATIONS=1000
+export COR.CLAUDE_CODE_6_ENDPOINT="https://Cor.Claude_Code_6.pnkln.ai/enforce"
+export COR.CLAUDE_CODE_6_ITERATIONS=1000
 ```
 
 **Value:** Single codebase, reduces config errors, accelerates CI/CD
@@ -309,7 +309,7 @@ export JUDGE6_ITERATIONS=1000
 ```json
 {
   "timestamp": "2025-11-17T10:30:00",
-  "service": "judge6",
+  "service": "Cor.Claude_Code_6",
   "environment": "production",
   "results": {...},
   "sla_compliance": {
@@ -351,7 +351,7 @@ pool_stats = {
 
 **Exclude cold-start from performance measurements**
 
-- Configurable warmup count (default: 50 for Judge6, 100 for JR Engine)
+- Configurable warmup count (default: 50 for Cor.Claude_Code_6, 100 for JR Engine)
 - Separate warmup phase before main test
 - Warmup results reported but not included in SLA validation
 
@@ -385,8 +385,8 @@ ENV=development python load_testing/pnkln_load_tests_enhanced.py
 
 # Production validation
 ENV=production \
-  JUDGE6_ENDPOINT=https://judge6.pnkln.ai/enforce \
-  JUDGE6_ITERATIONS=1000 \
+  COR.CLAUDE_CODE_6_ENDPOINT=https://Cor.Claude_Code_6.pnkln.ai/enforce \
+  COR.CLAUDE_CODE_6_ITERATIONS=1000 \
   python load_testing/pnkln_load_tests_enhanced.py
 
 # Continuous integration
@@ -425,7 +425,7 @@ load_testing/
 
 - `agents/` (3): Multi-agent debates
 - `evolution/` (2): DTE self-evolution
-- `kernels/` (5): 3-kernel pipeline (ATP_519_scan, judge_six, audit_compress)
+- `kernels/` (5): 3-kernel pipeline (ATP_519_scan, Claude_Code_6, audit_compress)
 - `monitoring/` (3): Logging + Prometheus
 - `orchestration/` (3): Chain patterns
 - `prompts/` (2): Cheat sheet fusion
@@ -449,7 +449,7 @@ load_testing/
 - `training/` (2): Duplicated from app/
 - `wealth/` (2): Duplicated from app/
 - `tests/` (5): Comprehensive test suite
-- `judge_six/` (8): Standalone JR Engine
+- `Claude_Code_6/` (8): Standalone JR Engine
 - `__init__.py` (1)
 
 #### erik-hancock-llm-memory/ - LLM Memory Persistence (15 files) ⭐ NEW
@@ -503,7 +503,7 @@ load_testing/
 │  LAYER 3: SPECIALIZED FUNCTION TOOLS                                 │
 │  ┌────────────────────────────────────────────────────────────────┐  │
 │  │ • atp_519_scan() → Extract violations                          │  │
-│  │ • judge_six_classify() → Go/no-go decision                     │  │
+│  │ • Claude_Code_6_classify() → Go/no-go decision                     │  │
 │  │ • audit_compress() → Audit trail compression                   │  │
 │  │ • multi_agent_debate() → Collaborative reasoning               │  │
 │  │ • dte_evolve() → Prompt self-evolution                         │  │
@@ -637,14 +637,14 @@ ENV=development python load_testing/pnkln_load_tests_enhanced.py
 
 # Staging validation
 ENV=staging \
-  JUDGE6_ENDPOINT=https://staging-judge6.pnkln.ai/enforce \
-  JUDGE6_ITERATIONS=500 \
+  COR.CLAUDE_CODE_6_ENDPOINT=https://staging-Cor.Claude_Code_6.pnkln.ai/enforce \
+  COR.CLAUDE_CODE_6_ITERATIONS=500 \
   python load_testing/pnkln_load_tests_enhanced.py
 
 # Production SLA validation
 ENV=production \
-  JUDGE6_ENDPOINT=https://judge6.pnkln.ai/enforce \
-  JUDGE6_ITERATIONS=1000 \
+  COR.CLAUDE_CODE_6_ENDPOINT=https://Cor.Claude_Code_6.pnkln.ai/enforce \
+  COR.CLAUDE_CODE_6_ITERATIONS=1000 \
   python load_testing/pnkln_load_tests_enhanced.py
 
 # CI/CD integration
@@ -695,7 +695,7 @@ pytest load_testing/             # Enhanced load tests
 # Run examples
 python src/examples/basic_function_calling.py
 python src/examples/full_pnkln_stack.py
-PYTHONPATH=src python src/judge_six/example.py
+PYTHONPATH=src python src/Claude_Code_6/example.py
 ```
 
 ---

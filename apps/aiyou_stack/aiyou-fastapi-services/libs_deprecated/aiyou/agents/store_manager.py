@@ -3,7 +3,7 @@
 from typing import Any
 
 from src.economy.mall import GeminiStore, Transaction, Vendor
-from src.governance.judge_six.core import JudgeSixEngine
+from src.governance.Claude_Code_6.core import JudgeSixEngine
 
 
 class StoreManager:

@@ -52,7 +52,7 @@ Decision Context (50KB)
     ↓ [API Call 1]
 [Kernel 1: ATP_519_scan] → Gemini → Violations JSON (2.5KB)
     ↓ [API Call 2]
-[Kernel 2: judge_six_classify] → PyTorch → Binary decision
+[Kernel 2: Claude_Code_6_classify] → PyTorch → Binary decision
     ↓ [API Call 3]
 [Kernel 3: audit_compress] → zstd → Audit trail (487 bytes)
     ↓
@@ -73,7 +73,7 @@ Decision Context (50KB)
     ↓ [Single Gemini Conversation]
 [Gemini with 3 Function Tools]
   ├─ atp_519_scan() → Local Python function
-  ├─ judge_six_classify() → Local Python/PyTorch
+  ├─ Claude_Code_6_classify() → Local Python/PyTorch
   └─ audit_compress() → Local Python/zstd
     ↓
 Result
@@ -107,7 +107,7 @@ BENEFITS:
 │  │ LAYER 2: SPECIALIZED FUNCTION TOOLS (Kernel Concept)    │  │
 │  │                                                          │  │
 │  │  ATP_519_scan()          → Extract violations           │  │
-│  │  judge_six_classify()    → Binary go/no-go decision     │  │
+│  │  Claude_Code_6_classify()    → Binary go/no-go decision     │  │
 │  │  audit_compress()        → Audit trail compression      │  │
 │  │  debate_orchestrate()    → Multi-agent reasoning        │  │
 │  │  dte_evolve()            → Prompt self-evolution        │  │
@@ -192,7 +192,7 @@ kernel_3_result = compress(kernel_2_result)
 
 tools = [
     FunctionTool(name="atp_519_scan", function=atp_519_scan_local),
-    FunctionTool(name="judge_six_classify", function=judge_six_local),
+    FunctionTool(name="Claude_Code_6_classify", function=Claude_Code_6_local),
     FunctionTool(name="audit_compress", function=audit_compress_local),
 ]
 
@@ -312,7 +312,7 @@ result = caller.execute(
 1. `atp_519_scan()` - Violation extraction
 
 
-2. `judge_six_classify()` - Binary decision making
+2. `Claude_Code_6_classify()` - Binary decision making
 
 
 3. `audit_compress()` - Audit trail compression

@@ -51,7 +51,7 @@ Defines the reliability and safety targets.
     - `POST /mission`: Execute full OPORD missions.
     - `GET /squadron`: Monitor the 650-agent swarm status.
     - `POST /codepmcs/scan`: Trigger automated code quality scans.
-5.  **Monitor Safety**: Check `scripts/verification` and `src/judge_six` logs.
+5.  **Monitor Safety**: Check `scripts/verification` and `src/Claude_Code_6` logs.
 
 ---
 

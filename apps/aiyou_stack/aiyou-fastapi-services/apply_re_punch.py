@@ -267,8 +267,8 @@ class CavMTOE:
         }
 """
 
-# src/governance/judge_six/core.py (Overwrites previous restore)
-judge_six_core_content = """import time
+# src/governance/Claude_Code_6/core.py (Overwrites previous restore)
+Claude_Code_6_core_content = """import time
 import uuid
 import json
 import hashlib
@@ -364,7 +364,7 @@ except ImportError:
          def __init__(self, num_soldiers=650): pass
          def bottom_up_vote(self, intent, risk_level): return {"final_action": "A", "approval_rate": 1.0}
 
-logger = logging.getLogger("Judge6")
+logger = logging.getLogger("Cor_Claude_Code_6")
 
 class RiskTier(Enum):
     GREEN = "L (Auto-Approve)"
@@ -431,7 +431,7 @@ sys.path.append(os.getcwd())
 
 from mcp.server.fastmcp import FastMCP
 from src.governance.voting.cav_mtoe import CavMTOE
-from src.governance.judge_six.core import JudgeSixEngine
+from src.governance.Claude_Code_6.core import JudgeSixEngine
 
 mcp = FastMCP("n-autoresearch/Kosmos/BioAgents Governance")
 ARMY = CavMTOE(num_soldiers=650)
@@ -443,7 +443,7 @@ def assess_risk_consensus(intent: str, risk_level: str = "L") -> str:
     return f"✅ VOTE: {result['final_action']} ({result['approval_rate']:.1%})"
 
 @mcp.tool()
-def judge_six_evaluate(context: str, prob: int, sev: int) -> str:
+def Claude_Code_6_evaluate(context: str, prob: int, sev: int) -> str:
     return JUDGE.evaluate_transaction(context, prob, sev)
 
 if __name__ == "__main__":
@@ -684,7 +684,7 @@ def apply_re_punch():
     write_file("Docs/GEMINI_MEMORY_DOCTRINE.md", gemini_memory_content)
     write_file("Docs/TELEPORT_MANIFEST.json", teleport_manifest_content)
     write_file("src/governance/voting/cav_mtoe.py", cav_mtoe_content)
-    write_file("src/governance/judge_six/core.py", judge_six_core_content)
+    write_file("src/governance/Claude_Code_6/core.py", Claude_Code_6_core_content)
     write_file("src/governance/memory/memory_bank.py", memory_bank_content)
     write_file("libs/steel/sentinel.py", sentinel_content)
     write_file("src/governance/mcp_server.py", mcp_server_content)

@@ -255,7 +255,7 @@ function withdraw(uint256 amount) external nonReentrant {
 All critical findings must be logged to Judge#6 governance system:
 
 ```python
-judge6.log_security_finding(
+Cor.Claude_Code_6.log_security_finding(
     contract="ShadowTagAccount.sol",
     severity="CRITICAL",
     finding_id="CRIT-001",

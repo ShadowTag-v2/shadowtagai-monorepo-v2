@@ -59,7 +59,7 @@ Week 1 establishes the foundation for PNKLN Core Stack™ development. This chec
 - [ ] All team members have access to:
   - `PNKLN_ROADMAP.md` (12-week plan)
   - `IMPLEMENTATION_TICKETS.md` (32 issues)
-  - `JUDGE_SIX_INCEPTION_ANALYSIS.md` (technical specs)
+  - `Claude_Code_6_INCEPTION_ANALYSIS.md` (technical specs)
   - `GEMINI_INGESTION_LAYER_INCEPTION_ANALYSIS.md` (technical specs)
   - `kubernetes/` manifests (deployment guides)
 
@@ -268,7 +268,7 @@ Week 1 establishes the foundation for PNKLN Core Stack™ development. This chec
 - [ ] **Test JR Engine prototype**
 
   ```bash
-  PYTHONPATH=/home/user/ShadowTag-v2-fastapi-services/src python3 src/judge_six/example.py
+  PYTHONPATH=/home/user/ShadowTag-v2-fastapi-services/src python3 src/Claude_Code_6/example.py
   ```
 
 - [ ] **Review output:**
@@ -514,7 +514,7 @@ Week 1 establishes the foundation for PNKLN Core Stack™ development. This chec
      - Show PostgreSQL results: 63 items collected
 
   3. **JR Engine Prototype (5 min)**
-     - Run example: `python src/judge_six/example.py`
+     - Run example: `python src/Claude_Code_6/example.py`
      - Show 4 scenarios: APPROVED, REJECTED, FLAGGED, JSON
      - Explain Purpose/Reasons/Brakes philosophy
 

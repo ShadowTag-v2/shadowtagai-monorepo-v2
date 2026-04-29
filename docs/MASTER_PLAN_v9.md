@@ -104,7 +104,7 @@ We are building the **Civilization OS** — a vertically integrated stack from e
 - Stage 2: Gemini `gemini-3.1-flash-lite-preview` semantic check (~40-60ms)
 - Stage 3: PyTorch classifier + hard rules (~15-25ms)
 
-**Code**: `pnkln/core/judge_six_pipeline.py` (canonical — DO NOT duplicate)
+**Code**: `pnkln/core/Claude_Code_6_pipeline.py` (canonical — DO NOT duplicate)
 
 | Tier               | Price/Month | Features                   |
 | ------------------ | ----------- | -------------------------- |
@@ -252,7 +252,7 @@ KOSMOS-SUPERGROK (430) → X/GROKIPEDIA
 ```json
 [
   {
-    "name": "pnkln:Judge6",
+    "name": "pnkln:Cor.Claude_Code_6",
     "prompt": "ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework; IF Confidence<0.75 THEN Freeze; OUTPUT:JSON {verdict, risk_score, reasoning}"
   },
   {
@@ -506,7 +506,7 @@ _Assumes disciplined round sizing relative to valuation step-ups (see Part 8)._
 
 | System             | Canonical Path                                                           | Notes                                  |
 | ------------------ | ------------------------------------------------------------------------ | -------------------------------------- |
-| Judge 6 Pipeline  | `pnkln/core/judge_six_pipeline.py`                                       | 3-stage, GeminiAgent wired, p99≤90ms   |
+| Judge 6 Pipeline  | `pnkln/core/Claude_Code_6_pipeline.py`                                       | 3-stage, GeminiAgent wired, p99≤90ms   |
 | COR Orchestrator   | `pnkln/core/cor_orchestrator.py`                                         | SequentialPipeline base class          |
 | Ingestion Pipeline | `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/ingestion/`                     | Full pipeline with tiers + briefing    |
 | Briefing Delivery  | `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/ingestion/delivery/briefing.py` | gws gmail send                         |

@@ -37,7 +37,7 @@ Judge 6 is an enforcement and validation system that provides real-time complian
 
 You have access to:
 
-1. `judge_six.py` - main implementation file
+1. `Claude_Code_6.py` - main implementation file
 
 2. Architecture specifications
 
@@ -451,7 +451,7 @@ Leverage Gemini's capabilities for:
 
 - Parsing production logs and extracting patterns
 
-- Analyzing complex Python code in `judge_six.py`
+- Analyzing complex Python code in `Claude_Code_6.py`
 
 - Identifying anomalies in telemetry time-series
 
@@ -489,7 +489,7 @@ Gather all relevant production data:
 
 - [ ] Metrics/telemetry (latency, errors, throughput)
 
-- [ ] `judge_six.py` source code
+- [ ] `Claude_Code_6.py` source code
 
 - [ ] Compliance Framework compliance docs
 
@@ -515,7 +515,7 @@ model = genai.GenerativeModel('gemini-3.1-pro')
 # Upload production artifacts
 
 files = [
-    genai.upload_file('judge_six.py'),
+    genai.upload_file('Claude_Code_6.py'),
     genai.upload_file('production-metrics-30d.csv'),
     genai.upload_file('latency-percentiles.png'),
     genai.upload_file('error-rates-by-type.json'),

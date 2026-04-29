@@ -4,7 +4,7 @@
 
 set -e
 
-ENDPOINT="${ENDPOINT:-http://judge6.pnkln.svc.cluster.local}"
+ENDPOINT="${ENDPOINT:-http://Cor.Claude_Code_6.pnkln.svc.cluster.local}"
 MAX_RETRIES=30
 RETRY_DELAY=5
 
@@ -54,8 +54,8 @@ else
     echo ""
     echo "💡 Troubleshooting steps:"
     echo "   1. Check pods: kubectl get pods -n pnkln"
-    echo "   2. Check logs: kubectl logs -n pnkln -l app=judge6"
-    echo "   3. Check service: kubectl get svc -n pnkln judge6"
+    echo "   2. Check logs: kubectl logs -n pnkln -l app=Cor.Claude_Code_6"
+    echo "   3. Check service: kubectl get svc -n pnkln Cor.Claude_Code_6"
     echo ""
     exit 1
 fi

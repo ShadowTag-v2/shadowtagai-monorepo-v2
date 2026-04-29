@@ -317,7 +317,7 @@ This document summarizes the integration of 180+ research and development branch
 - `src/core/multi_provider.py` - Anthropic + Gemini unified executor
 - `src/core/unified_orchestrator.py` - Multi-agent orchestration
 - `src/shadowtagai/` - SHADOWTAGAI production implementation
-  - `judge_six.py` - JR validation engine
+  - `Claude_Code_6.py` - JR validation engine
   - `cor.py` - Unified execution orchestrator
   - `shadowtag.py` - DCT watermarking and provenance
   - `ns.py` - Semantic memory retrieval
@@ -1404,7 +1404,7 @@ Working implementation of Jobs-inspired meta-orchestration:
 - **COR** (Cost of Reasoning) - Verification engine
 - **NS** (Necessary & Sufficient) - Reasoning engine
 - **ShadowTag** (src/shadowtagai/shadowtag.py) - Cryptographic audit trails (Ed25519 + Merkle trees)
-- **Judge Six** (src/shadowtagai/judge_six.py) - Binary decision engine
+- **Judge Six** (src/shadowtagai/Claude_Code_6.py) - Binary decision engine
 - **Wealth Accelerator** - Business optimization model (+12% leak detection, +15% funnel CVR)
 
 #### 3. **Gemini Function Calling Migration** (src/core/)
@@ -1441,7 +1441,7 @@ AutoGen → Native Gemini with kernel-as-functions architecture:
 - `src/shadowtagai/cor.py` - COR verification engine
 - `src/shadowtagai/ns.py` - NS reasoning engine
 - `src/shadowtagai/shadowtag.py` - Cryptographic audit system
-- `src/shadowtagai/judge_six.py` - Judge Six decision engine
+- `src/shadowtagai/Claude_Code_6.py` - Judge Six decision engine
 - `src/ratings/glicko2.py` - Glicko-2 rating system (239 lines)
 - `src/evolution/dte.py` - Dynamic Task Evolution (268 lines)
 - `src/agents/base.py` - Base agent class (149 lines)
@@ -1451,7 +1451,7 @@ AutoGen → Native Gemini with kernel-as-functions architecture:
 
 **Specialized Kernels** (as Gemini functions):
 
-- `src/kernels/judge_six.py` - Binary classifier (241 lines)
+- `src/kernels/Claude_Code_6.py` - Binary classifier (241 lines)
 - `src/kernels/atp_519_scan.py` - ATP-519 violation scanner (168 lines)
 - `src/kernels/audit_compress.py` - Audit trail compressor (128 lines)
 - `src/kernels/base.py` - Kernel base class (110 lines)
@@ -1465,7 +1465,7 @@ AutoGen → Native Gemini with kernel-as-functions architecture:
 **Examples & Demos** (4 working demonstrations):
 
 - `src/examples/unified_poc_demo.py` - Full stack demo (382 lines)
-- `src/examples/judge_six_example.py` - Judge Six usage (141 lines)
+- `src/examples/Claude_Code_6_example.py` - Judge Six usage (141 lines)
 - `src/examples/basic_function_calling.py` - Gemini function calling (166 lines)
 - `src/examples/full_shadowtagai_stack.py` - Complete Pinkln demo (191 lines)
 
@@ -1473,7 +1473,7 @@ AutoGen → Native Gemini with kernel-as-functions architecture:
 
 - `src/tests/test_shadowtagai_integration.py` - Integration tests (138 lines)
 - `src/tests/test_benchmarks.py` - Benchmark suite (265 lines)
-- `src/tests/test_judge_six.py` - Kernel tests (116 lines)
+- `src/tests/test_Claude_Code_6.py` - Kernel tests (116 lines)
 - `src/tests/test_latency.py` - Performance tests (126 lines)
 
 **Documentation** (.cursor/MEGA_ROLLUP/):
@@ -2748,7 +2748,7 @@ This integration represents the **final production readiness milestone**, adding
 **Files**: 16 files, ~3,271 lines
 
 - `p3_hybrid.py` (399 lines) - Hybrid prompt engine
-- `judge6_adapter.py` (707 lines) - Byzantine consensus
+- `Cor.Claude_Code_6_adapter.py` (707 lines) - Byzantine consensus
 - `api.py` (196 lines) - FastAPI service
 - `validate_p3.py` (586 lines) - Validation framework
 - Kubernetes deployment + Docker + docs
@@ -3441,7 +3441,7 @@ The mega-integration of 180+ research branches (including Production Enhancement
 ✅ **Judge 6 enforcement** (100% pre-commit governance, p99 ≤90ms validated, Byzantine consensus)
 ✅ **AI development tools** (40% productivity boost via AI refactoring + design system builder)
 ✅ **10 production verticals** (added RoadMesh, Wealth, Ultrathink + 6 Judge products)
-✅ **6 Judge product family** (FinJudge, CaseJudge, LawJudge, JudgeJudge, MedJudge, Judge6 - $100k enterprise tier)
+✅ **6 Judge product family** (FinJudge, CaseJudge, LawJudge, JudgeJudge, MedJudge, Cor.Claude_Code_6 - $100k enterprise tier)
 ✅ **10,400 edge nodes** + **400 satellite nodes**
 ✅ **40% faster development** (build automation + AI tools)
 ✅ **95% LLM cost savings** (Gemini native + Aegaeon 82% GPU pooling)

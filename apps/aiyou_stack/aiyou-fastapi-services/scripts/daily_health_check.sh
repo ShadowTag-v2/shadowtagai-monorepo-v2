@@ -50,7 +50,7 @@ echo -e "${BLUE}Layer 1: PNKLN Stack${NC}"
 echo "---------------------------------------------------------------------"
 
 # Check if core files exist
-if [ -f "src/pnkln/judge_six.py" ] && [ -f "src/pnkln/shadowtag.py" ]; then
+if [ -f "src/pnkln/Claude_Code_6.py" ] && [ -f "src/pnkln/shadowtag.py" ]; then
     echo -e "  ${GREEN}✓${NC} PNKLN modules present"
 else
     echo -e "  ${RED}✗${NC} PNKLN modules missing"
@@ -58,7 +58,7 @@ else
 fi
 
 # Check if tests exist
-if [ -f "src/tests/test_judge_six.py" ]; then
+if [ -f "src/tests/test_Claude_Code_6.py" ]; then
     echo -e "  ${GREEN}✓${NC} Test suite available"
 else
     echo -e "  ${YELLOW}⚠${NC} Tests not found"

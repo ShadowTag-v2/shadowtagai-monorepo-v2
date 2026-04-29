@@ -48,7 +48,7 @@ Successfully integrated the **AutoGen to Gemini Migration** branch into the Shad
 
 ### Pinkln Stack (`src/pnkln/`)
 
-- `judge_six.py` - JR Engine validation (Purpose/Reasons/Brakes)
+- `Claude_Code_6.py` - JR Engine validation (Purpose/Reasons/Brakes)
 - `cor.py` - Orchestrator
 - `shadowtag.py` - Ed25519 cryptographic watermarking
 - `ns.py` - Semantic memory
@@ -56,7 +56,7 @@ Successfully integrated the **AutoGen to Gemini Migration** branch into the Shad
 ### Specialized Kernels (`src/kernels/`)
 
 - `atp_519_scan.py` - Compliance Framework violation extraction
-- `judge_six.py` - Binary decision making
+- `Claude_Code_6.py` - Binary decision making
 - `audit_compress.py` - Audit trail compression (zstd)
 
 ### Multi-Agent System (`src/agents/`)
@@ -83,7 +83,7 @@ Successfully integrated the **AutoGen to Gemini Migration** branch into the Shad
 
 - `unified_poc_demo.py` - Full stack demonstration
 - `basic_function_calling.py` - Simple function calling
-- `judge_six_example.py` - Validation example
+- `Claude_Code_6_example.py` - Validation example
 - Test suite with benchmarks
 
 ---
@@ -259,7 +259,7 @@ async def hybrid_execution(request: Request):
 **7 Core Functions:**
 
 1. `atp_519_scan(context)` - Extract Compliance Framework violations
-2. `judge_six_classify(context)` - Binary go/no-go decision
+2. `Claude_Code_6_classify(context)` - Binary go/no-go decision
 3. `audit_compress(data)` - Compress audit trail (zstd)
 4. `multi_agent_debate(question, num_agents)` - Collaborative reasoning
 5. `dte_evolve(prompt, strategy)` - Evolve prompts (+3.7% accuracy)

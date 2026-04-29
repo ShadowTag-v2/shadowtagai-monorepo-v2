@@ -230,7 +230,7 @@ REJECTION CRITERIA:
 | Judge 6              | Gemini Ingestion Layer                        | Rationale                 |
 | --------------------- | --------------------------------------------- | ------------------------- |
 | Judge 6 (everywhere) | Gemini Ingestion Layer                        | Domain re-focus           |
-| `judge_six.py`        | Pipeline docs, architecture specs             | Broader artifact scope    |
+| `Claude_Code_6.py`        | Pipeline docs, architecture specs             | Broader artifact scope    |
 | p99 ≤90ms latency     | ~45 min/night runtime                         | Batch vs. real-time       |
 | 98% test coverage     | Quality gates (items, sources, costs, scores) | Holistic quality measures |
 

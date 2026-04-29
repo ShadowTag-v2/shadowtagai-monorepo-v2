@@ -36,7 +36,7 @@ set -euo pipefail
 # Configuration
 export PROJECT_ID="${PROJECT_ID:-shadowtagai-core-stack}"
 export REGION="${REGION:-us-central1}"
-export CLUSTER_NAME="${CLUSTER_NAME:-judge6-inference}"
+export CLUSTER_NAME="${CLUSTER_NAME:-Cor.Claude_Code_6-inference}"
 
 # Colors for output
 RED='\033[0;31m'
@@ -156,10 +156,10 @@ build_and_push_images() {
 
   local components=(
     # Judge 6 components
-    "judge6-gemini"
-    "judge6-orchestrator"
-    "judge6-gateway"
-    "judge6-validator"
+    "Cor.Claude_Code_6-gemini"
+    "Cor.Claude_Code_6-orchestrator"
+    "Cor.Claude_Code_6-gateway"
+    "Cor.Claude_Code_6-validator"
     # Gemini Ingestion Layer components
     "gemini-ingestion"
     "youtube-collector"
@@ -262,17 +262,17 @@ deploy_to_kubernetes() {
 
   # Wait for ConfigMap to be ready
   kubectl wait --for=jsonpath='{.metadata.name}'=atp519-rules \
-    configmap/atp519-rules -n judge6-system --timeout=60s || log_warn "ConfigMap wait timed out"
+    configmap/atp519-rules -n Cor.Claude_Code_6-system --timeout=60s || log_warn "ConfigMap wait timed out"
 
   # Apply Judge 6 deployment
   log_info "Applying Judge 6 deployment..."
-  kubectl apply -f k8s/judge6_deployment.yaml || error_exit "Failed to apply Judge 6 deployment"
+  kubectl apply -f k8s/Cor.Claude_Code_6_deployment.yaml || error_exit "Failed to apply Judge 6 deployment"
 
   # Wait for Judge 6 deployments to be ready
   log_info "Waiting for Judge 6 deployments to be ready..."
   kubectl wait --for=condition=available \
     --timeout=300s \
-    deployment/judge6-inference -n judge6-system || log_warn "Judge 6 deployment not ready after 5 minutes"
+    deployment/Cor.Claude_Code_6-inference -n Cor.Claude_Code_6-system || log_warn "Judge 6 deployment not ready after 5 minutes"
 
   # Apply Gemini Ingestion Layer CronJob
   log_info "Applying Gemini Ingestion Layer CronJob..."
@@ -283,11 +283,11 @@ deploy_to_kubernetes() {
 
   # Check pod status
   log_info "Checking pod status..."
-  kubectl get pods -n judge6-system
+  kubectl get pods -n Cor.Claude_Code_6-system
 
   # Get service endpoint
   log_info "Getting service endpoint..."
-  kubectl get service judge6-service -n judge6-system
+  kubectl get service Cor.Claude_Code_6-service -n Cor.Claude_Code_6-system
 
   log_info "✓ Kubernetes deployment complete"
 }
@@ -298,7 +298,7 @@ run_validation() {
 
   # Get service endpoint
   local endpoint
-  endpoint=$(kubectl get service judge6-service -n judge6-system \
+  endpoint=$(kubectl get service Cor.Claude_Code_6-service -n Cor.Claude_Code_6-system \
     -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
 
   if [ -z "$endpoint" ]; then
@@ -310,7 +310,7 @@ run_validation() {
   log_info "Service endpoint: http://${endpoint}"
 
   # Update validator endpoint
-  export JUDGE6_ENDPOINT="http://${endpoint}/enforce"
+  export COR.CLAUDE_CODE_6_ENDPOINT="http://${endpoint}/enforce"
 
   # Run validator
   python3 src/validator/validate_latency.py || log_warn "Validation failed (this is expected for stub services)"
@@ -330,7 +330,7 @@ cleanup() {
 
   # Delete Kubernetes resources
   log_info "Deleting Kubernetes resources..."
-  kubectl delete -f k8s/judge6_deployment.yaml --ignore-not-found=true || log_warn "Judge 6 cleanup had errors"
+  kubectl delete -f k8s/Cor.Claude_Code_6_deployment.yaml --ignore-not-found=true || log_warn "Judge 6 cleanup had errors"
   kubectl delete -f k8s/gemini_ingestion_cronjob.yaml --ignore-not-found=true || log_warn "Ingestion Layer cleanup had errors"
   kubectl delete -f k8s/atp519_configmap.yaml --ignore-not-found=true || log_warn "ConfigMap cleanup had errors"
 
@@ -359,13 +359,13 @@ show_status() {
 
   log_info "\n=== Judge 6 System ==="
   log_info "Deployments:"
-  kubectl get deployments -n judge6-system || log_warn "Not connected to cluster"
+  kubectl get deployments -n Cor.Claude_Code_6-system || log_warn "Not connected to cluster"
 
   log_info "\nPods:"
-  kubectl get pods -n judge6-system || log_warn "Not connected to cluster"
+  kubectl get pods -n Cor.Claude_Code_6-system || log_warn "Not connected to cluster"
 
   log_info "\nServices:"
-  kubectl get services -n judge6-system || log_warn "Not connected to cluster"
+  kubectl get services -n Cor.Claude_Code_6-system || log_warn "Not connected to cluster"
 
   log_info "\n=== Gemini Ingestion Layer ==="
   log_info "CronJobs:"

@@ -716,8 +716,8 @@ skills:
     has_scripts: false
     has_allowed_tools: false
     is_redirect: false
-  - folder: judge6-compliance
-    name: "judge6-compliance"
+  - folder: Claude_Code_6-compliance
+    name: "Claude_Code_6-compliance"
     name_matches_folder: true
     lines: 36
     has_scripts: true

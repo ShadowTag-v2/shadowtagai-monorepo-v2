@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-"""KAIROS Daemon — Background Autonomous Agent Controller.
+"""COR.KAIROS Daemon — Background Autonomous Agent Controller.
 
 Runs in continuous mode, executing scheduled maintenance tasks:
   1. Dream Consolidation (nightly) — KI maintenance
@@ -31,7 +31,7 @@ import time
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [KAIROS] %(levelname)s %(message)s",
+    format="%(asctime)s [COR.KAIROS] %(levelname)s %(message)s",
     datefmt="%Y-%m-%dT%H:%M:%S",
 )
 logger = logging.getLogger("kairos")
@@ -318,8 +318,8 @@ def write_heartbeat(status: dict) -> None:
 
 
 def main_loop(once: bool = False) -> None:
-    """KAIROS main execution loop."""
-    logger.info("KAIROS daemon starting (PID %d)", os.getpid())
+    """COR.KAIROS main execution loop."""
+    logger.info("COR.KAIROS daemon starting (PID %d)", os.getpid())
     logger.info("Repo root: %s", REPO_ROOT)
 
     last_health = 0.0
@@ -397,11 +397,11 @@ def main_loop(once: bool = False) -> None:
                 break
             time.sleep(1)
 
-    logger.info("KAIROS daemon stopped")
+    logger.info("COR.KAIROS daemon stopped")
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="KAIROS Background Daemon")
+    parser = argparse.ArgumentParser(description="COR.KAIROS Background Daemon")
     parser.add_argument("--daemon", action="store_true", help="Run as background process")
     parser.add_argument("--once", action="store_true", help="Single cycle then exit")
     args = parser.parse_args()
@@ -409,7 +409,7 @@ def main() -> None:
     if args.daemon:
         pid = os.fork()
         if pid > 0:
-            logger.info("KAIROS daemon forked (PID %d)", pid)
+            logger.info("COR.KAIROS daemon forked (PID %d)", pid)
             sys.exit(0)
         os.setsid()
         main_loop(once=False)

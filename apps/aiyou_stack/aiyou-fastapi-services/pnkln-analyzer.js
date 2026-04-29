@@ -11,7 +11,7 @@
  *
  * Components:
  *   ingestion    - Gemini Ingestion Layer
- *   judge6       - Judge 6 Validation System
+ *   Cor.Claude_Code_6       - Judge 6 Validation System
  *
  * Commands:
  *   analyze      - Run Gemini analysis on component
@@ -43,13 +43,13 @@ const CONFIG = {
         'cost-breakdown.xlsx',
       ],
     },
-    judge6: {
+    Cor.Claude_Code_6: {
       name: 'Judge 6',
       promptFile: 'judge-six-prompt.md',
       confidenceTarget: 70,
       type: 'validation',
       docsRequired: [
-        'judge_six.py',
+        'Claude_Code_6.py',
         'architecture-specs.md',
         'atp-5-19-compliance.pdf',
         'jr-validation-rules.yaml',
@@ -396,7 +396,7 @@ Usage:
 
 Components:
   ingestion    Gemini Ingestion Layer (collection pipeline)
-  judge6       Judge 6 (validation system)
+  Cor.Claude_Code_6       Judge 6 (validation system)
 
 Commands:
   prepare [docs-dir]              Validate documentation for analysis
@@ -407,7 +407,7 @@ Commands:
 Examples:
   node pnkln-analyzer.js list
   node pnkln-analyzer.js ingestion prepare ./docs
-  node pnkln-analyzer.js judge6 analyze ./production-data
+  node pnkln-analyzer.js Cor.Claude_Code_6 analyze ./production-data
   node pnkln-analyzer.js compare result1.md result2.md
 
 For more information, see: docs/pnkln-analysis/README.md

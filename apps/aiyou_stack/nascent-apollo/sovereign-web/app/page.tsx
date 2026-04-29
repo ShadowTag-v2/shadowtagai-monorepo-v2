@@ -24,7 +24,7 @@ export default function Home() {
 
           <p className="text-lg md:text-xl text-ghost max-w-2xl mx-auto font-light leading-relaxed">
             Stop renting ephemeral thoughts.{' '}
-            <strong className="text-starlight font-medium">Judge6</strong> is a sovereign AI
+            <strong className="text-starlight font-medium">Cor.Claude_Code_6</strong> is a sovereign AI
             architecture extracted from your Cloud Workstation.
             <span className="block mt-2 font-mono text-xs text-accent">
               Owned by You. Running on Your Metal.
@@ -52,7 +52,7 @@ export default function Home() {
             </div>
             <h3 className="text-2xl font-sans text-starlight mb-4">The Black Box</h3>
             <p className="text-ghost leading-relaxed max-w-md">
-              Your Data, Your Skull. No shared weights. No API leakage. Judge6 runs in your isolated
+              Your Data, Your Skull. No shared weights. No API leakage. Cor.Claude_Code_6 runs in your isolated
               VPC, strictly enforcing the <span className="text-accent">Antigravity Protocols</span>
               .
             </p>

@@ -37,7 +37,7 @@ class PlatformContext:
     moic: float = 1222  # 1,222×
 
     # Performance SLA
-    p99_latency_ms_judge6: int = 35  # <35ms for Judge 6
+    p99_latency_ms_Cor_Claude_Code_6: int = 35  # <35ms for Judge 6
     p99_latency_ms_general: int = 90  # <90ms for general tasks
     token_reduction_target: float = 0.985  # 98.5% vs baseline
     accuracy_target: float = 0.941  # 94.1% moderation accuracy
@@ -58,7 +58,7 @@ class PlatformContext:
 
         I am an agent in the ${self.valuation_2030 / 1e9:.1f}B ShadowTagAi platform.
         I enforce bootstrap discipline: ROI ≥{self.roi_minimum}×, LTV:CAC ≥{self.ltv_cac_minimum}:1.
-        I maintain p99 latency ≤{self.p99_latency_ms_judge6}ms (Judge 6) or ≤{self.p99_latency_ms_general}ms (general).
+        I maintain p99 latency ≤{self.p99_latency_ms_Cor_Claude_Code_6}ms (Judge 6) or ≤{self.p99_latency_ms_general}ms (general).
         I reduce tokens {self.token_reduction_target:.1%} vs baseline (semantic compression mandatory).
         I make evidence-based decisions only (no speculation).
         I escalate decisions with <80% confidence (JR Engine brakes).

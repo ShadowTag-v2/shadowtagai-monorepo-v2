@@ -35,7 +35,7 @@ This is Anthropic's second accidental exposure in a week (model spec leak days p
 ## What Makes This Different From Open Source
 Google's Gemini CLI and OpenAI's Codex are open source — but they open-sourced their agent SDK (a toolkit), not the full internal wiring of their flagship product.
 
-The real damage isn't the code — it's the feature flags. KAIROS, anti-distillation mechanisms — these are product roadmap details competitors can see and react to. The code can be refactored. The strategic surprise can't be un-leaked.
+The real damage isn't the code — it's the feature flags. COR.KAIROS, anti-distillation mechanisms — these are product roadmap details competitors can see and react to. The code can be refactored. The strategic surprise can't be un-leaked.
 
 ## The Meta-Lesson
 "Accidentally shipping your source map to npm is the kind of mistake that sounds impossible until you remember that a significant portion of the codebase was probably written by the AI you are shipping."

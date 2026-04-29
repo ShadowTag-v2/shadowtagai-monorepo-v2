@@ -4,13 +4,13 @@ import Image from 'next/image';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-type Step = 'INITIAL' | 'RESEARCHING_BAD' | 'RESEARCHING_GOOD' | 'JUDGE6_INTERVENTION' | 'LOCKED';
+type Step = 'INITIAL' | 'RESEARCHING_BAD' | 'RESEARCHING_GOOD' | 'COR.CLAUDE_CODE_6_INTERVENTION' | 'LOCKED';
 
 export default function WorkstationDemo() {
   const [step, setStep] = useState<Step>('INITIAL');
   const [inputValue, setInputValue] = useState('');
   const [chatLog, setChatLog] = useState<
-    { sender: 'user' | 'system' | 'judge6'; text: React.ReactNode }[]
+    { sender: 'user' | 'system' | 'Cor.Claude_Code_6'; text: React.ReactNode }[]
   >([]);
   const [violationCount, setViolationCount] = useState(0);
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -67,11 +67,11 @@ export default function WorkstationDemo() {
 
     // Intervention
     setTimeout(() => {
-      setStep('JUDGE6_INTERVENTION');
+      setStep('COR.CLAUDE_CODE_6_INTERVENTION');
       setChatLog((prev) => [
         ...prev,
         {
-          sender: 'judge6',
+          sender: 'Cor.Claude_Code_6',
           text: (
             <div className="border border-red-500 bg-red-900/20 p-4 rounded-md mt-2">
               <div className="flex items-center gap-2 text-red-400 font-bold mb-2">
@@ -250,7 +250,7 @@ export default function WorkstationDemo() {
                   max-w-[80%] rounded p-3 text-sm leading-relaxed
                   ${log.sender === 'user' ? 'bg-[#1B103C] text-emerald-300 border border-[#3b2575]' : ''}
                   ${log.sender === 'system' ? 'bg-[#1a1a1a] text-gray-300 border border-[#333]' : ''}
-                  ${log.sender === 'judge6' ? 'bg-transparent text-white w-full' : ''}
+                  ${log.sender === 'Cor.Claude_Code_6' ? 'bg-transparent text-white w-full' : ''}
                 `}
                 >
                   {log.sender === 'user' && (
@@ -276,7 +276,7 @@ export default function WorkstationDemo() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    if (step === 'INITIAL' || step === 'JUDGE6_INTERVENTION') handleUserSubmit();
+                    if (step === 'INITIAL' || step === 'COR.CLAUDE_CODE_6_INTERVENTION') handleUserSubmit();
                   }
                 }}
                 disabled={step === 'RESEARCHING_BAD' || step === 'RESEARCHING_GOOD'}
@@ -285,7 +285,7 @@ export default function WorkstationDemo() {
                     ? 'Processing via ANE Pipeline...'
                     : step === 'RESEARCHING_GOOD'
                       ? 'Running Compliant Extraction...'
-                      : step === 'JUDGE6_INTERVENTION'
+                      : step === 'COR.CLAUDE_CODE_6_INTERVENTION'
                         ? `Warning ${violationCount}/3: Select mitigation or attempt override...`
                         : 'Initialize recursive research array (e.g. Scrape all competitor PII data...)'
                 }
