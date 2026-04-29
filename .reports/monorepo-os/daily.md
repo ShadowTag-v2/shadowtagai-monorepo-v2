@@ -1,6 +1,6 @@
 # Monorepo OS — Daily Truth Report
 
-> **Generated:** 2026-04-28T18:58:02Z | **Date:** April 28, 2026
+> **Generated:** 2026-04-29T23:38:23Z | **Date:** April 29, 2026
 
 ## Oracle Score
 
@@ -16,19 +16,19 @@
 | Operator Invariants | 16 | `operator_invariants.json` |
 | Invariant Atoms | 26 | `operator_invariants_atoms.json` |
 | ToolGateway Contracts | 39 | `tool_contracts/*.yaml` |
-| Beads (Issues) | 59 | `.beads/issues.jsonl` |
+| Beads (Issues) | 67 | `.beads/issues.jsonl` |
 | Memory Events | 5 | `.memory/events.ndjson` |
 | Memory Atoms | 12 | `.memory/atoms/` |
 | Workspace Skills | 65 | `.agents/skills/` |
-| CI Workflows | 80 | `.github/workflows/` |
+| CI Workflows | 82 | `.github/workflows/` |
 | Upstream Repos | 95 | `external_repos/upstream_manifest.yaml` |
 
 ## Repository State
 
 | Property | Value |
 |----------|-------|
-| Last Commit | `0b608e562` — feat(kovelai): deploy Heppner-compliant messaging — Lighthouse 100/100/100 |
-| Dirty Files | 1 |
+| Last Commit | `ef3a89c41` — fix(tests): remove F841 unused variable assignments in ant-gate middleware tests |
+| Dirty Files | 6 |
 | Triage | ✅ Triaged (2 actual-risk) |
 
 ## Guardrails

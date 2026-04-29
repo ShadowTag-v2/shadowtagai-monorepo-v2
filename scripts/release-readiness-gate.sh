@@ -189,6 +189,70 @@ else
   gate_warn "Guardrail annotations: Script not found"
 fi
 
+# ── Gate 9: Contract Coverage Ratio ──
+echo "── Gate 9: Contract Coverage ──"
+TOTAL_CONTRACTS=$(ls tool_contracts/*.yaml 2>/dev/null | wc -l | tr -d ' ')
+
+# Verified enforcement map: contracts whose enforcement is structural and
+# cannot be discovered by filename grep alone. Manually audited in
+# .reports/monorepo-os/orphan_contracts.md (v3.1).
+VERIFIED_CONTRACTS="
+beads.update
+firebase.function_bridge
+knowledge.compile
+knowledge.promote_to_memory
+memory.promote
+memory.resolve_conflict
+memory.retain
+repo.oracle
+design_system.lint
+bootstrap.alignment
+git.history_rewrite
+git.lfs_check
+github_app.auth
+large_file_scan
+repo.large_file_scan
+"
+
+ENFORCED=0
+set +e  # Disable errexit — grep returns 1 on no-match
+for contract_file in tool_contracts/*.yaml; do
+  contract_name=$(basename "$contract_file")
+  tool_id=$(grep '^tool_id:' "$contract_file" 2>/dev/null | head -1 | sed 's/tool_id: *"\{0,1\}\([^"]*\)"\{0,1\}/\1/')
+
+  # Method 1: verified enforcement map
+  if [ -n "$tool_id" ] && echo "$VERIFIED_CONTRACTS" | grep -q "^${tool_id}$"; then
+    ENFORCED=$((ENFORCED + 1)); continue
+  fi
+
+  # Method 2: filename in CI/scripts
+  if grep -rq "$contract_name" .github/workflows/ scripts/ 2>/dev/null; then
+    ENFORCED=$((ENFORCED + 1)); continue
+  fi
+  if [ -d "packages/tool_gateway/" ] && grep -rq "$contract_name" packages/tool_gateway/ 2>/dev/null; then
+    ENFORCED=$((ENFORCED + 1)); continue
+  fi
+
+  # Method 3: tool_id keyword in CI/scripts
+  if [ -n "$tool_id" ]; then
+    if grep -rq "$tool_id" .github/workflows/ scripts/ 2>/dev/null; then
+      ENFORCED=$((ENFORCED + 1)); continue
+    fi
+  fi
+done
+set -e  # Re-enable errexit
+
+if [ "$TOTAL_CONTRACTS" -gt 0 ]; then
+  COVERAGE_PCT=$((ENFORCED * 100 / TOTAL_CONTRACTS))
+  if [ "$COVERAGE_PCT" -ge 60 ]; then
+    gate_pass "Contract coverage: ${ENFORCED}/${TOTAL_CONTRACTS} (${COVERAGE_PCT}%)"
+  else
+    gate_fail "Contract coverage: ${ENFORCED}/${TOTAL_CONTRACTS} (${COVERAGE_PCT}%) — below 60% threshold"
+  fi
+else
+  gate_warn "No contracts found in tool_contracts/"
+fi
+
 # ── Summary ──
 echo ""
 echo "═══════════════════════════════"
