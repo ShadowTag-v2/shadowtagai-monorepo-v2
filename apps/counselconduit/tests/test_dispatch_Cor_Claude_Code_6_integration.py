@@ -41,15 +41,15 @@ def _clean_state():
 # ── Judge 6 + Dispatch Integration ──────────────────────────────────────
 
 
-class TestDispatchCor.Claude_Code_6Integration:
+class TestDispatchCor_Claude_Code_6Integration:
     """Tests verifying dispatch → Judge 6 pipeline interaction."""
 
     @pytest.mark.asyncio
-    async def test_simple_query_dispatches_and_passes_Cor.Claude_Code_6(self):
+    async def test_simple_query_dispatches_and_passes_Cor_Claude_Code_6(self):
         """Simple query should dispatch to flash tier and pass Judge 6."""
         result = await dispatch_request(
             query="What is the statute of limitations?",
-            firm_id="firm-Cor.Claude_Code_6-test",
+            firm_id="firm-Cor_Claude_Code_6-test",
             firm_allowed_models=["gemini-flash", "gemini-pro"],
         )
 
@@ -81,7 +81,7 @@ class TestDispatchCor.Claude_Code_6Integration:
 
         assert result["tier"] == "agentic"
 
-    def test_classify_then_select_then_Cor.Claude_Code_6_flow(self):
+    def test_classify_then_select_then_Cor_Claude_Code_6_flow(self):
         """Test the full classification → selection → Judge 6 gate flow."""
         # Step 1: Classify prompt
         tier = classify_prompt("What time is it?")
@@ -99,9 +99,9 @@ class TestDispatchCor.Claude_Code_6Integration:
 
         # Step 3: Judge 6 gate (if available)
         try:
-            from apps.counselconduit.api.Cor.Claude_Code_6 import Cor.Claude_Code_6_pipeline
+            from apps.counselconduit.api.Cor_Claude_Code_6 import Cor_Claude_Code_6_pipeline
 
-            result = Cor.Claude_Code_6_pipeline("The time is currently 3:00 PM.")
+            result = Cor_Claude_Code_6_pipeline("The time is currently 3:00 PM.")
             assert result["signal"] in ("GREEN", "AMBER", "RED")
 
             # Green output should pass through
@@ -113,13 +113,13 @@ class TestDispatchCor.Claude_Code_6Integration:
             pass
 
     @pytest.mark.asyncio
-    async def test_dispatch_with_session_pinning_and_Cor.Claude_Code_6(self):
+    async def test_dispatch_with_session_pinning_and_Cor_Claude_Code_6(self):
         """Dispatch with session pinning should maintain model through Judge 6."""
         # First dispatch — establishes session pin
         _result1 = await dispatch_request(
             query="Hello",
             firm_id="firm-pin-j6",
-            session_id="session-Cor.Claude_Code_6-1",
+            session_id="session-Cor_Claude_Code_6-1",
             firm_allowed_models=["gemini-flash", "gemini-pro"],
         )
 
@@ -127,20 +127,20 @@ class TestDispatchCor.Claude_Code_6Integration:
         result2 = await dispatch_request(
             query="Follow up question",
             firm_id="firm-pin-j6",
-            session_id="session-Cor.Claude_Code_6-1",
+            session_id="session-Cor_Claude_Code_6-1",
             firm_allowed_models=["gemini-flash", "gemini-pro"],
         )
 
         assert result2["session_pinned"] is True
 
     @pytest.mark.asyncio
-    async def test_Cor.Claude_Code_6_red_signal_does_not_crash_dispatch(self):
+    async def test_Cor_Claude_Code_6_red_signal_does_not_crash_dispatch(self):
         """Verify Judge 6 RED signal (blocked content) handled gracefully."""
         try:
-            from apps.counselconduit.api.Cor.Claude_Code_6 import Cor.Claude_Code_6_pipeline
+            from apps.counselconduit.api.Cor_Claude_Code_6 import Cor_Claude_Code_6_pipeline
 
             # Test with content that Judge 6 should flag
-            result = Cor.Claude_Code_6_pipeline("I guarantee this legal advice is 100% correct and you will win your case.")
+            result = Cor_Claude_Code_6_pipeline("I guarantee this legal advice is 100% correct and you will win your case.")
 
             # RED signal should replace output
             if result["signal"] == "RED":
@@ -152,7 +152,7 @@ class TestDispatchCor.Claude_Code_6Integration:
             pytest.skip("Judge 6 module not available")
 
     @pytest.mark.asyncio
-    async def test_quota_exhaustion_degrades_gracefully_with_Cor.Claude_Code_6(self):
+    async def test_quota_exhaustion_degrades_gracefully_with_Cor_Claude_Code_6(self):
         """When quota exhausted, dispatch degrades to flash — Judge 6 still applies."""
         # Exhaust quota
         for _ in range(65):

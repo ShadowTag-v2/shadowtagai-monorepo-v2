@@ -155,7 +155,7 @@ def trace_dispatch_routing(
     }
 
 
-def trace_Cor.Claude_Code_6_evaluation(
+def trace_Cor_Claude_Code_6_evaluation(
     risk_score: int,
     risk_level: str,
     approved: bool,
@@ -164,16 +164,16 @@ def trace_Cor.Claude_Code_6_evaluation(
 ) -> dict[str, Any]:
     """Trace a Judge 6 governance evaluation."""
     tracer = get_tracer()
-    with tracer.start_as_current_span("Cor.Claude_Code_6.evaluate") as span:
-        span.set_attribute("Cor.Claude_Code_6.risk_score", risk_score)
-        span.set_attribute("Cor.Claude_Code_6.risk_level", risk_level)
-        span.set_attribute("Cor.Claude_Code_6.approved", approved)
-        span.set_attribute("Cor.Claude_Code_6.flags_count", flags_count)
-        span.set_attribute("Cor.Claude_Code_6.pipeline_ms", pipeline_ms)
+    with tracer.start_as_current_span("Cor_Claude_Code_6.evaluate") as span:
+        span.set_attribute("Cor_Claude_Code_6.risk_score", risk_score)
+        span.set_attribute("Cor_Claude_Code_6.risk_level", risk_level)
+        span.set_attribute("Cor_Claude_Code_6.approved", approved)
+        span.set_attribute("Cor_Claude_Code_6.flags_count", flags_count)
+        span.set_attribute("Cor_Claude_Code_6.pipeline_ms", pipeline_ms)
 
         if not approved:
             span.add_event(
-                "Cor.Claude_Code_6_blocked",
+                "Cor_Claude_Code_6_blocked",
                 {"risk_score": risk_score, "risk_level": risk_level},
             )
 

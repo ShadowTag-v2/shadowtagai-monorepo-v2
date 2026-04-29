@@ -5,7 +5,7 @@
 """Integration tests for A2A task lifecycle.
 
 Tests the complete flow:
-    submit_task -> Cor.Claude_Code_6 gate -> route_task -> complete/cancel/fail
+    submit_task -> Cor_Claude_Code_6 gate -> route_task -> complete/cancel/fail
 """
 
 from __future__ import annotations
@@ -14,18 +14,18 @@ import pytest
 
 from apps.counselconduit.agents.orchestrator import (
     AgentRole,
-    Cor.Claude_Code_6Gate,
+    Cor_Claude_Code_6Gate,
     Orchestrator,
     TaskContext,
     TaskState,
 )
 
 
-class TestCor.Claude_Code_6Gate:
+class TestCor_Claude_Code_6Gate:
     """Tests for the Judge 6 governance gate."""
 
     def setup_method(self) -> None:
-        self.gate = Cor.Claude_Code_6Gate()
+        self.gate = Cor_Claude_Code_6Gate()
 
     def test_allow_valid_context(self) -> None:
         ctx = TaskContext(tenant_id="firm-123", user_id="user-456")

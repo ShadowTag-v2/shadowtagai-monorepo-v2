@@ -45,12 +45,12 @@ class PnklnCompressionPipeline:
         if len(atp.compressed_context) > 2000:
             atp.compressed_context = atp.compressed_context[:2000]
 
-        compressed = self.compressor.compress_for_Cor.Claude_Code_6(asdict(atp))
+        compressed = self.compressor.compress_for_Cor_Claude_Code_6(asdict(atp))
         latencies["llm"] = (time.perf_counter() - t2) * 1000
 
         # --- Stage 3: Judge 6 Logic ---
         t3 = time.perf_counter()
-        decision_data = self._Cor.Claude_Code_6_decide(atp)
+        decision_data = self._Cor_Claude_Code_6_decide(atp)
         latencies["judge"] = (time.perf_counter() - t3) * 1000
 
         # --- Stage 4: Packetize ---
@@ -77,7 +77,7 @@ class PnklnCompressionPipeline:
 
         return packet, metrics
 
-    def _Cor.Claude_Code_6_decide(self, atp):
+    def _Cor_Claude_Code_6_decide(self, atp):
         """Deterministic Governance Logic"""
         # Hard Stop: Known Violations
         if atp.violations:

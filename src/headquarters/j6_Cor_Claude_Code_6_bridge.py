@@ -1,13 +1,13 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
 # Copyright 2026 ShadowTag AI. All rights reserved.
-"""J-6 → Cor.Claude_Code_6 Pipeline Bridge.
+"""J-6 → Cor_Claude_Code_6 Pipeline Bridge.
 
 Wires the JTF J-6 (Command, Control, Cyber, & ZTA) staff designation
-into the operational Cor.Claude_Code_6 validation pipeline per JP 3-33.
+into the operational Cor_Claude_Code_6 validation pipeline per JP 3-33.
 
 The J-6 holds doctrinal authority over all CSRMC/NIST continuous ATO
-decisions. This bridge ensures that Cor.Claude_Code_6 pipeline invocations are
+decisions. This bridge ensures that Cor_Claude_Code_6 pipeline invocations are
 routed through the J-Staff topology for audit and routing authority.
 
 References:
@@ -23,11 +23,11 @@ from typing import Any
 
 from src.headquarters.jtf_staff_topology import JTFHeadquarters, JStaffDesignation
 
-logger = logging.getLogger("J6-Cor.Claude_Code_6-Bridge")
+logger = logging.getLogger("J6-Cor_Claude_Code_6-Bridge")
 
 
-class J6Cor.Claude_Code_6Bridge:
-    """Bridge between JTF J-6 staff authority and Cor.Claude_Code_6 validation pipeline.
+class J6Cor_Claude_Code_6Bridge:
+    """Bridge between JTF J-6 staff authority and Cor_Claude_Code_6 validation pipeline.
 
     The J-6 officer has doctrinal authority over:
     - Command & Control (C2) decisions
@@ -35,7 +35,7 @@ class J6Cor.Claude_Code_6Bridge:
     - Zero Trust Architecture (ZTA) enforcement
     - Continuous ATO via CSRMC/NIST
 
-    This bridge wraps Cor.Claude_Code_6 pipeline calls with J-Staff routing,
+    This bridge wraps Cor_Claude_Code_6 pipeline calls with J-Staff routing,
     audit logging, and authority verification.
     """
 
@@ -61,7 +61,7 @@ class J6Cor.Claude_Code_6Bridge:
     async def authorize_validation(self, request: dict[str, Any], request_id: str = "default") -> dict[str, Any]:
         """Authorize a validation request through J-6 routing authority.
 
-        This is the pre-flight check before Cor.Claude_Code_6 pipeline execution.
+        This is the pre-flight check before Cor_Claude_Code_6 pipeline execution.
         The J-6 verifies the request meets C2 and ZTA requirements.
 
         Args:
@@ -97,9 +97,9 @@ class J6Cor.Claude_Code_6Bridge:
         request: dict[str, Any],
         request_id: str = "default",
     ) -> dict[str, Any]:
-        """Execute Cor.Claude_Code_6 validation under J-6 doctrinal authority.
+        """Execute Cor_Claude_Code_6 validation under J-6 doctrinal authority.
 
-        Wraps the Cor.Claude_Code_6 pipeline with J-6 routing authority, ensuring
+        Wraps the Cor_Claude_Code_6 pipeline with J-6 routing authority, ensuring
         all validation decisions are traceable to the J-Staff C2 chain.
 
         Args:
@@ -119,7 +119,7 @@ class J6Cor.Claude_Code_6Bridge:
                 "authority": self.authority_code,
             }
 
-        # Step 2: Execute Cor.Claude_Code_6 pipeline under authority
+        # Step 2: Execute Cor_Claude_Code_6 pipeline under authority
         result = await pipeline.validate(request, request_id=request_id)
 
         # Step 3: Augment result with J-6 authority chain

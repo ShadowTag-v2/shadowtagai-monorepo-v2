@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-"""Tests for Cor.Claude_Code_6DeployGate — Wet Fleece / Dry Ground / Battle."""
+"""Tests for Cor_Claude_Code_6DeployGate — Wet Fleece / Dry Ground / Battle."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import pytest
 
 from src.governance.j6_csrmc_cato import (
     DeploymentPhase,
-    Cor.Claude_Code_6DeployGate,
+    Cor_Claude_Code_6DeployGate,
     PhaseResult,
 )
 
@@ -23,7 +23,7 @@ class TestWetFleece:
             "source": "Agent-1-Builder",
             "code": "def hello():\n    return 'world'",
         }
-        result = Cor.Claude_Code_6DeployGate.wet_fleece(artifact)
+        result = Cor_Claude_Code_6DeployGate.wet_fleece(artifact)
         assert result.passed is True
         assert result.phase == DeploymentPhase.WET_FLEECE
         assert result.directive == "ADVANCE_TO_DRY_GROUND"
@@ -31,7 +31,7 @@ class TestWetFleece:
     def test_missing_type_fails(self):
         """Missing artifact type should fail."""
         artifact = {"source": "Builder", "code": ""}
-        result = Cor.Claude_Code_6DeployGate.wet_fleece(artifact)
+        result = Cor_Claude_Code_6DeployGate.wet_fleece(artifact)
         assert result.passed is False
         assert "Missing artifact type" in result.findings[0]
 
@@ -42,7 +42,7 @@ class TestWetFleece:
             "source": "Builder",
             "code": "result = eval(user_input)",
         }
-        result = Cor.Claude_Code_6DeployGate.wet_fleece(artifact)
+        result = Cor_Claude_Code_6DeployGate.wet_fleece(artifact)
         assert result.passed is False
         assert any("eval()" in f for f in result.findings)
 
@@ -53,7 +53,7 @@ class TestWetFleece:
             "source": "Builder",
             "code": "exec(compiled_code)",
         }
-        result = Cor.Claude_Code_6DeployGate.wet_fleece(artifact)
+        result = Cor_Claude_Code_6DeployGate.wet_fleece(artifact)
         assert result.passed is False
 
     def test_os_system_banned(self):
@@ -63,7 +63,7 @@ class TestWetFleece:
             "source": "Builder",
             "code": "os.system('rm -rf /')",
         }
-        result = Cor.Claude_Code_6DeployGate.wet_fleece(artifact)
+        result = Cor_Claude_Code_6DeployGate.wet_fleece(artifact)
         assert result.passed is False
 
 
@@ -74,7 +74,7 @@ class TestDryGround:
         """All tests passing should advance to Battle."""
         artifact = {"type": "CODE_MODIFICATION", "source": "Builder"}
         test_results = {"passed": 42, "failed": 0, "error": 0, "execution_time_ms": 5000}
-        result = Cor.Claude_Code_6DeployGate.dry_ground(artifact, test_results)
+        result = Cor_Claude_Code_6DeployGate.dry_ground(artifact, test_results)
         assert result.passed is True
         assert result.directive == "ADVANCE_TO_BATTLE"
 
@@ -82,7 +82,7 @@ class TestDryGround:
         """Failed tests should reject."""
         artifact = {"type": "CODE_MODIFICATION", "source": "Builder"}
         test_results = {"passed": 40, "failed": 2, "error": 0, "execution_time_ms": 3000}
-        result = Cor.Claude_Code_6DeployGate.dry_ground(artifact, test_results)
+        result = Cor_Claude_Code_6DeployGate.dry_ground(artifact, test_results)
         assert result.passed is False
         assert "2 test(s) failed" in result.findings[0]
 
@@ -90,7 +90,7 @@ class TestDryGround:
         """Execution exceeding 40s SLA should reject."""
         artifact = {"type": "CODE_MODIFICATION", "source": "Builder"}
         test_results = {"passed": 10, "failed": 0, "error": 0, "execution_time_ms": 50_000}
-        result = Cor.Claude_Code_6DeployGate.dry_ground(artifact, test_results)
+        result = Cor_Claude_Code_6DeployGate.dry_ground(artifact, test_results)
         assert result.passed is False
         assert "UCMJ SLA" in result.findings[0]
 
@@ -98,7 +98,7 @@ class TestDryGround:
         """Zero passing tests should reject."""
         artifact = {"type": "CODE_MODIFICATION", "source": "Builder"}
         test_results = {"passed": 0, "failed": 0, "error": 0, "execution_time_ms": 100}
-        result = Cor.Claude_Code_6DeployGate.dry_ground(artifact, test_results)
+        result = Cor_Claude_Code_6DeployGate.dry_ground(artifact, test_results)
         assert result.passed is False
 
 
@@ -114,7 +114,7 @@ class TestBattle:
             "smoke_tests_total": 5,
             "lighthouse_score": 95,
         }
-        result = Cor.Claude_Code_6DeployGate.battle(artifact, integration)
+        result = Cor_Claude_Code_6DeployGate.battle(artifact, integration)
         assert result.passed is True
         assert result.directive == "DEPLOY_TO_PRODUCTION"
 
@@ -122,14 +122,14 @@ class TestBattle:
         """Failed health check should reject."""
         artifact = {"type": "CODE_MODIFICATION", "source": "Builder"}
         integration = {"health_check": False}
-        result = Cor.Claude_Code_6DeployGate.battle(artifact, integration)
+        result = Cor_Claude_Code_6DeployGate.battle(artifact, integration)
         assert result.passed is False
 
     def test_low_lighthouse_rejects(self):
         """Lighthouse score below 80 should reject."""
         artifact = {"type": "CODE_MODIFICATION", "source": "Builder"}
         integration = {"health_check": True, "lighthouse_score": 55}
-        result = Cor.Claude_Code_6DeployGate.battle(artifact, integration)
+        result = Cor_Claude_Code_6DeployGate.battle(artifact, integration)
         assert result.passed is False
 
 
@@ -139,7 +139,7 @@ class TestRunGate:
     def test_fail_fast_on_wet_fleece(self):
         """Should stop at Wet Fleece if it fails."""
         artifact = {"code": "eval('exploit')"}
-        results = Cor.Claude_Code_6DeployGate.run_gate(artifact)
+        results = Cor_Claude_Code_6DeployGate.run_gate(artifact)
         assert len(results) == 1
         assert results[0].phase == DeploymentPhase.WET_FLEECE
         assert results[0].passed is False
@@ -149,7 +149,7 @@ class TestRunGate:
         artifact = {"type": "CODE_MODIFICATION", "source": "Builder", "code": "pass"}
         test_results = {"passed": 10, "failed": 0, "error": 0, "execution_time_ms": 1000}
         integration = {"health_check": True, "smoke_tests_passed": 3, "smoke_tests_total": 3}
-        results = Cor.Claude_Code_6DeployGate.run_gate(artifact, test_results, integration)
+        results = Cor_Claude_Code_6DeployGate.run_gate(artifact, test_results, integration)
         assert len(results) == 3
         assert all(r.passed for r in results)
         assert results[-1].directive == "DEPLOY_TO_PRODUCTION"

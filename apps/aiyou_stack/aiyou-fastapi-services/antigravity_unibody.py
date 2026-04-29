@@ -8,7 +8,7 @@
 This single executable performs the entire Antigravity Transformation:
 1. ARCHITECT: Enforces the apps/libs/infra monorepo structure.
 2. BRAIN: Implants the TRUE Recursive RLM (Gemini 2.5) with 'Jump' & 'Recurse' capabilities.
-3. SENTINEL: Installs Cor.Claude_Code_6 (Pure LLM) for code repair.
+3. SENTINEL: Installs Cor_Claude_Code_6 (Pure LLM) for code repair.
 4. GUCCI: Configures the 'Cmd+Shift+B' one-touch deployment.
 5. SHIELD: Neutralizes the 116GB Cargo Breach via ironclad .gitignore.
 """
@@ -243,10 +243,10 @@ if __name__ == "__main__":
 
 
 class Sentinel:
-    """Installs Cor.Claude_Code_6 (Code Repair)."""
+    """Installs Cor_Claude_Code_6 (Code Repair)."""
 
     def arm(self):
-        print(">>> 🛠️  THE SENTINEL: Arming Cor.Claude_Code_6...")
+        print(">>> 🛠️  THE SENTINEL: Arming Cor_Claude_Code_6...")
         tools_dir = REPO_ROOT / "tools"
         tools_dir.mkdir(exist_ok=True)
 
@@ -258,7 +258,7 @@ from vertexai.generative_models import GenerativeModel
 PROJECT_ID = "{PROJECT_ID}"
 LOCATION = "{REGION}"
 
-class Cor.Claude_Code_6:
+class Cor_Claude_Code_6:
     def __init__(self):
         vertexai.init(project=PROJECT_ID, location=LOCATION)
         self.model = GenerativeModel("gemini-3.1-flash-lite-preview")
@@ -274,9 +274,9 @@ class Cor.Claude_Code_6:
             print(">>> 💾 Saved.")
 
 if __name__ == "__main__":
-    Cor.Claude_Code_6().fix(sys.argv[1])
+    Cor_Claude_Code_6().fix(sys.argv[1])
 """
-        with open(tools_dir / "Cor.Claude_Code_6_sentinel.py", "w") as f:
+        with open(tools_dir / "Cor_Claude_Code_6_sentinel.py", "w") as f:
             f.write(judge_code)
 
 

@@ -128,7 +128,7 @@ CRITIQUE VERDICT: {verdict}
 Output a JSON object with keys:
   "directive": "final one-paragraph implementation instruction for Cor"
   "files_to_change": ["list of files"]
-  "Cor.Claude_Code_6_gate": "pass | warn | block"
+  "Cor_Claude_Code_6_gate": "pass | warn | block"
   "summary": "≤ 140-char tweet-length summary"
 """
 
@@ -227,7 +227,7 @@ async def run_swarm(query: str) -> dict:
         "critique": crit_data,
         "architect_directive": arch_data,
     }
-    logger.info("Swarm complete. Cor.Claude_Code_6 gate: %s", arch_data.get("Cor.Claude_Code_6_gate", "?"))
+    logger.info("Swarm complete. Cor_Claude_Code_6 gate: %s", arch_data.get("Cor_Claude_Code_6_gate", "?"))
     return output
 
 

@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-# ATOMIC CODE BLOCK 2: COR.CLAUDE_CODE_6 CORE
-# File: src/minions/core/Cor.Claude_Code_6.py
+# ATOMIC CODE BLOCK 2: COR_CLAUDE_CODE_6 CORE
+# File: src/minions/core/Cor_Claude_Code_6.py
 # Function: The Risk Management Engine (Policy-as-Code)
 # Layers Covered: Anti-Fraud, Policy, Anti-Self Harm, LEO Toggle
 
@@ -57,10 +57,10 @@ class SystemContext(BaseModel):
     leo_status: LEOStatus = LEOStatus.PRIVATE  # "Toggle LEO"
 
 
-# --- COR.CLAUDE_CODE_6 CORE LOGIC ---
+# --- COR_CLAUDE_CODE_6 CORE LOGIC ---
 
 
-class Cor.Claude_Code_6:
+class Cor_Claude_Code_6:
     def __init__(self, context: SystemContext):
         self.context = context
         logging.basicConfig(level=logging.INFO)
@@ -79,7 +79,7 @@ class Cor.Claude_Code_6:
         """Executes the Defense Protocol.
         Returns: True (ATO GRANTED) or False (ATO DENIED).
         """
-        print(f"\n--- COR.CLAUDE_CODE_6 RISK AUDIT: {action.target_name} ---")
+        print(f"\n--- COR_CLAUDE_CODE_6 RISK AUDIT: {action.target_name} ---")
 
         # ---------------------------------------------------------
         # LAYER 1: IDENTITY & ANTI-FRAUD (The "Who")

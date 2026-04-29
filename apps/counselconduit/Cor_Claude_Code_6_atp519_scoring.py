@@ -44,7 +44,7 @@
 
 ## Step 5: Implement Controls
 # Controls are NOT advisory — they are code:
-# - `Cor.Claude_Code_6.evaluate()` on every model routing decision
+# - `Cor_Claude_Code_6.evaluate()` on every model routing decision
 # - `prompt_guard.scan()` on every user input
 # - `kovel_attestation.generate()` on every privileged session
 # - `stripe_handler.verify_webhook()` on every payment event

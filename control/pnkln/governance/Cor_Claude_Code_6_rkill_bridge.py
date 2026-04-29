@@ -1,10 +1,10 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-"""RKILL ↔ Cor.Claude_Code_6Engine bridge.
+"""RKILL ↔ Cor_Claude_Code_6Engine bridge.
 
 Provides ``RkillNotifier`` — a sync callable that satisfies the
 ``ceo_notifier: Callable[[GovernanceDecision], None]`` slot on
-``Cor.Claude_Code_6Engine``.
+``Cor_Claude_Code_6Engine``.
 
 When enforcement reaches L5_LOCKOUT, ``RkillNotifier`` fires
 ``RkillProtocol.execute()`` asynchronously:
@@ -12,7 +12,7 @@ When enforcement reaches L5_LOCKOUT, ``RkillNotifier`` fires
     via ``asyncio.ensure_future`` so it doesn't block the gate.
   - In a sync context (CLI, test, batch): runs via ``asyncio.run``.
 
-Use ``build_engine()`` from ``Cor.Claude_Code_6_factory`` rather than instantiating
+Use ``build_engine()`` from ``Cor_Claude_Code_6_factory`` rather than instantiating
 this class directly.
 """
 
@@ -21,10 +21,10 @@ from __future__ import annotations
 import asyncio
 import logging
 
-from .Cor.Claude_Code_6_core import EnforcementLevel, GovernanceDecision
+from .Cor_Claude_Code_6_core import EnforcementLevel, GovernanceDecision
 from .rkill import RkillConfig, RkillProtocol
 
-logger = logging.getLogger("Cor.Claude_Code_6_rkill_bridge")
+logger = logging.getLogger("Cor_Claude_Code_6_rkill_bridge")
 
 
 class RkillNotifier:
@@ -50,7 +50,7 @@ class RkillNotifier:
             decision.event.violation_type.value,
             decision.decision_id,
         )
-        triggered_by = f"Cor.Claude_Code_6-auto:{decision.event.violation_type.value}"
+        triggered_by = f"Cor_Claude_Code_6-auto:{decision.event.violation_type.value}"
         self._fire(triggered_by)
 
     def _fire(self, triggered_by: str) -> None:

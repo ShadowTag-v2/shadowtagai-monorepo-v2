@@ -1,12 +1,12 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-# apps/counselconduit/tests/test_Cor.Claude_Code_6.py
+# apps/counselconduit/tests/test_Cor_Claude_Code_6.py
 """Tests for the Judge 6 governance pipeline."""
 
-from apps.counselconduit.api.Cor.Claude_Code_6 import RiskLevel, evaluate
+from apps.counselconduit.api.Cor_Claude_Code_6 import RiskLevel, evaluate
 
 
-class TestCor.Claude_Code_6Pipeline:
+class TestCor_Claude_Code_6Pipeline:
     """Test the ATP 5-19 risk matrix evaluation."""
 
     def test_clean_output_passes(self):
@@ -49,7 +49,7 @@ class TestCor.Claude_Code_6Pipeline:
         assert result.pipeline_ms < 100  # Should be sub-100ms
 
 
-class TestCor.Claude_Code_6Enforcement:
+class TestCor_Claude_Code_6Enforcement:
     """Test the enforcement (output modification) step."""
 
     def test_green_output_unchanged(self):

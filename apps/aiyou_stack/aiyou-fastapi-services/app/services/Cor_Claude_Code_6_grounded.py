@@ -86,14 +86,14 @@ class GroundedGovernanceResult:
     timestamp: str
 
 
-class Cor.Claude_Code_6Grounded:
+class Cor_Claude_Code_6Grounded:
     """Grounded governance scoring using Vertex AI Search.
 
     "Always Grounded" mode: Every governance query retrieves from
     the doctrine datastore for citation-backed, auditable decisions.
 
     Example:
-        judge = Cor.Claude_Code_6Grounded()
+        judge = Cor_Claude_Code_6Grounded()
         await judge.initialize()
 
         result = await judge.score_governance(
@@ -112,26 +112,9 @@ class Cor.Claude_Code_6Grounded:
 
     # Compliance domain keywords
     COMPLIANCE_DOMAINS = {
-        "gdpr": [
-            "eu",
-            "europe",
-            "gdpr",
-            "consent",
-            "pii",
-            "delete",
-            "erasure",
-            "data subject",
-        ],
+        "gdpr": ["eu", "europe", "gdpr", "consent", "pii", "delete", "erasure", "data subject"],
         "ccpa": ["california", "ccpa", "opt-out", "sell", "personal information"],
-        "pci_dss": [
-            "payment",
-            "card",
-            "credit",
-            "checkout",
-            "paypal",
-            "stripe",
-            "cardholder",
-        ],
+        "pci_dss": ["payment", "card", "credit", "checkout", "paypal", "stripe", "cardholder"],
         "coppa": ["child", "minor", "kids", "under13", "parental"],
         "hipaa": ["health", "medical", "patient", "hipaa", "phi", "healthcare"],
     }
@@ -164,8 +147,8 @@ class Cor.Claude_Code_6Grounded:
         self.project_id = project_id or os.getenv("VERTEX_PROJECT_ID", "acquired-jet-478701-b3")
         self.location = location
         self.datastore_id = datastore_id or os.getenv(
-            "COR.CLAUDE_CODE_6_DATASTORE_ID",
-            "Cor.Claude_Code_6-doctrine-store",
+            "COR_CLAUDE_CODE_6_DATASTORE_ID",
+            "Cor_Claude_Code_6-doctrine-store",
         )
 
         # Derived paths
@@ -200,11 +183,7 @@ class Cor.Claude_Code_6Grounded:
         try:
             # Initialize Vertex AI
             import vertexai
-            from vertexai.preview.generative_models import (
-                GenerativeModel,
-                Tool,
-                grounding,
-            )
+            from vertexai.preview.generative_models import GenerativeModel, Tool, grounding
 
             vertexai.init(project=self.project_id, location="us-central1")
 
@@ -460,14 +439,14 @@ Be specific and cite relevant doctrine sections."""
 
 
 # Global instance
-_judge: Cor.Claude_Code_6Grounded | None = None
+_judge: Cor_Claude_Code_6Grounded | None = None
 
 
-async def get_judge() -> Cor.Claude_Code_6Grounded:
+async def get_judge() -> Cor_Claude_Code_6Grounded:
     """Get or create global Judge 6 instance."""
     global _judge
     if _judge is None:
-        _judge = Cor.Claude_Code_6Grounded()
+        _judge = Cor_Claude_Code_6Grounded()
         await _judge.initialize()
     return _judge
 
@@ -494,7 +473,7 @@ if __name__ == "__main__":
     async def test():
         print("=== Judge 6 Grounded Governance Test ===\n")
 
-        judge = Cor.Claude_Code_6Grounded()
+        judge = Cor_Claude_Code_6Grounded()
         await judge.initialize()
 
         # Test cases

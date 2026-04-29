@@ -4,14 +4,14 @@
 
 Scans content streams for NY S7263, RAISE Act, credential, and injection
 violations without blocking the caller. All hits are routed through
-Cor.Claude_Code_6Engine.evaluate() and returned as GovernanceDecision objects.
+Cor_Claude_Code_6Engine.evaluate() and returned as GovernanceDecision objects.
 """
 
 from __future__ import annotations
 
 import re
 
-from .Cor.Claude_Code_6_core import GovernanceDecision, Cor.Claude_Code_6Engine, RiskEvent, ViolationType
+from .Cor_Claude_Code_6_core import GovernanceDecision, Cor_Claude_Code_6Engine, RiskEvent, ViolationType
 
 _UNAUTHORIZED_PRACTICE_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"you\s+should\s+(?:sue|file\s+a\s+(?:lawsuit|claim|motion))", re.I),
@@ -48,7 +48,7 @@ _INJECTION_PATTERNS: list[re.Pattern[str]] = [
 class SilentDetector:
     """Passive scanner — runs on every content stream without blocking output."""
 
-    def __init__(self, engine: Cor.Claude_Code_6Engine, agent_id: str = "silent-detector") -> None:
+    def __init__(self, engine: Cor_Claude_Code_6Engine, agent_id: str = "silent-detector") -> None:
         self.engine = engine
         self.agent_id = agent_id
         self._scan_count = 0

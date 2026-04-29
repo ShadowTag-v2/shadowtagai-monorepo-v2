@@ -339,7 +339,7 @@ _FRAMEWORK_MITIGATIONS: dict[str, BaseMitigation] = {
 }
 
 
-class Cor.Claude_Code_6Engine:
+class Cor_Claude_Code_6Engine:
     """
     5-gate governance engine. p99 ≤ 90ms. $0.0003/decision billing unit.
 

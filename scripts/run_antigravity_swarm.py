@@ -39,7 +39,7 @@ class AntigravitySwarm:
     Parameters aligned with Antigravity's agentic makeup:
     - Purpose: ShadowTag-v2JR
     - Reason: Doctrine
-    - Brakes: Cor.Claude_Code_6.
+    - Brakes: Cor_Claude_Code_6.
     """
 
     def __init__(self) -> None:

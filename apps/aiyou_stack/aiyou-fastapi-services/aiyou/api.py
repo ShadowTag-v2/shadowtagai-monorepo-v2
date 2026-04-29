@@ -28,7 +28,7 @@ from shadowtag_v4.ranking_engine import ContentItem, FeedRankingEngine
 from ingestion.classification.tier_classifier import IngestedItem, TierClassifier
 from shadowtag.blockchain_receipt import ReceiptManager
 from shadowtag.neural_hash import NeuralHasher
-from validation.Cor.Claude_Code_6 import Cor.Claude_Code_6Validator, ValidationStatus
+from validation.Cor_Claude_Code_6 import Cor_Claude_Code_6Validator, ValidationStatus
 
 logger = structlog.get_logger(__name__)
 
@@ -111,7 +111,7 @@ app.mount("/metrics", metrics_app)
 # Global service instances
 _ranking_engine: FeedRankingEngine | None = None
 _classifier: TierClassifier | None = None
-_validator: Cor.Claude_Code_6Validator | None = None
+_validator: Cor_Claude_Code_6Validator | None = None
 _hasher: NeuralHasher | None = None
 _receipt_manager: ReceiptManager | None = None
 
@@ -128,7 +128,7 @@ def get_services():
     if _classifier is None:
         _classifier = TierClassifier()
     if _validator is None:
-        _validator = Cor.Claude_Code_6Validator()
+        _validator = Cor_Claude_Code_6Validator()
     if _hasher is None:
         _hasher = NeuralHasher()
     if _receipt_manager is None:

@@ -129,7 +129,7 @@ AGENTS: list[dict[str, Any]] = [
     {"agent_id": "cor-001", "role": "Cor (Principal Architect)", "model": "gemini-3.1-flash-lite-preview", "temperature": 0.3, "status": "active"},
     {"agent_id": "sentinel-002", "role": "Sentinel (Security)", "model": "gemini-3.1-flash-lite-preview", "temperature": 0.1, "status": "active"},
     {"agent_id": "vulture-003", "role": "Vulture (Dead Code)", "model": "gemini-3.1-flash-lite-preview", "temperature": 0.0, "status": "active"},
-    {"agent_id": "Cor.Claude_Code_6-004", "role": "Judge 6 (Governance)", "model": "gemini-3.1-flash-lite-preview", "temperature": 0.2, "status": "active"},
+    {"agent_id": "Cor_Claude_Code_6-004", "role": "Judge 6 (Governance)", "model": "gemini-3.1-flash-lite-preview", "temperature": 0.2, "status": "active"},
     {"agent_id": "kairos-005", "role": "COR.KAIROS (Background)", "model": "gemini-3.1-flash-lite-preview", "temperature": 0.5, "status": "idle"},
 ]
 
