@@ -1,4 +1,9 @@
 # tool_contracts/visual.proof.yaml
-version: 1
-description: "Contract for visual.proof operations."
-enforcement: advisory
+tool_id: "visual.proof"
+description: "Governs the visual.proof operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/visual_proof.jsonl"
+reuse_queries: []

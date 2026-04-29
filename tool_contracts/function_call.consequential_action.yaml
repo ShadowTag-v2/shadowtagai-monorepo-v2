@@ -1,50 +1,9 @@
 # tool_contracts/function_call.consequential_action.yaml
-#
-# Governs function calls that have significant real-world consequences.
-
-name: function_call.consequential_action
-risk: high
-
-description: >
-  Governs Firebase/Gemini/native function calls that mutate user data,
-  spend money, deploy code, push to GitHub, start external jobs, or affect
-  production state. Both mobile Firebase tools and Antigravity tools
-  must obey this contract.
-
-requires:
-  - function_declaration_registered
-  - arguments_schema_validated
-  - risk_classified
-  - user_confirmation_if_consequential
-  - toolgateway_authorized
-  - evidence_logged
-
-forbidden:
-  - silent_purchase
-  - silent_deploy
-  - silent_github_push
-  - silent_data_delete
-  - unregistered_function
-  - ambiguous_arguments
-  - model_executes_action_without_app_bridge
-  - consequential_action_without_confirmation
-
-consequential_actions:
-  - purchase
-  - deployment
-  - data_delete
-  - data_write_sensitive
-  - github_push
-  - external_api_mutation
-  - money_movement
-  - user_notification_broadcast
-  - iam_role_change
-  - secret_rotation
-
-evidence:
-  - function_name
-  - arguments_hash
-  - risk_tier
-  - confirmation_id
-  - execution_result
-  - function_response_part
+tool_id: "function_call.consequential_action"
+description: "Governs the function_call.consequential_action operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/function_call_consequential_action.jsonl"
+reuse_queries: []

@@ -63,6 +63,23 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 18. **Firebase M2M Headless Auth (Activated 2026-04-25):** Interactive `firebase login` browser OAuth is BANNED for agent operations. Firebase CLI authenticates headlessly via `GOOGLE_APPLICATION_CREDENTIALS` pointing to a Service Account JSON key pulled from GCP Secret Manager. SA: `$FIREBASE_DEPLOYER_SA` with `roles/firebase.admin`. Key stored in Secret Manager as `firebase-deployer-sa-key`, pulled to `.beads/firebase-sa.json` (gitignored). Skill: `.agents/skills/firebase-m2m-headless-auth/SKILL.md`.
 19. **Antigravity Control Plane v2.0 (Activated 2026-04-27):** Antigravity is a control plane, not just an editor. 5-pillar architecture: (1) VS Code Base Stabilization, (2) Agent Loop Hardening, (3) Remote Compute First-Class, (4) Observable Agent Actions, (5) Reversible Agent Actions. Firebase Tool Bridge (`libs/client_action_truth/bridge.py`) implements the Client Action Truth layer — 6-step lifecycle (validate→gate→hooks→execute→evidence→return) with ConfirmationProvider gate, batch dispatch, and hook system. All agent-initiated Firebase mutations route through this bridge. Spec: `docs/ANTIGRAVITY_CONTROL_PLANE.md`. Skill: `.agents/skills/control-plane-doctrine/SKILL.md`.
 
+<orthogonal_edits_doctrine>
+## Orthogonal Edits — Context Preservation Rule
+**ABSOLUTE RULE:** You MUST make orthogonal edits (strictly minimal file changes) to protect the context budget and prevent cascading hallucinated dependencies. Never apply stylistic or unrelated formatting changes during a functional edit. This prevents attention dilution.
+</orthogonal_edits_doctrine>
+
+<context_engineering_doctrine>
+## Context Engineering — The 4-Layer Hierarchy
+**Reference:** Claude Code Architecture (V22)
+**Rule:** Context engineering is more important than prompt engineering. The agent MUST evaluate rules at every message interaction.
+**Hierarchy:**
+1. Global (`/etc/claude-code/CLAUDE.md` or equivalent) — Coding standards.
+2. User (`~/.claude/CLAUDE.md` or equivalent) — Personal shortcuts and identity.
+3. Project (`./CLAUDE.md` or `GEMINI.md`) — Architecture decisions, test patterns, "absolute forbidden" rules.
+4. Modular (`.claude/rules/*.md`) — Component-specific rules.
+5. Private (`CLAUDE.local.md`) — Gitignored secrets/local contexts.
+</context_engineering_doctrine>
+
 ## Open Infrastructure Blockers
 
 - ~~MAGIC_LINK_SECRET needs creation via GCP Secret Manager~~ — ✅ RESOLVED (2026-04-23): Secret exists with live value in `shadowtag-omega-v4`.

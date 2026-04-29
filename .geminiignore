@@ -48,3 +48,4 @@
 **/external_payloads/**
 **/devrel-demos/**
 **/deep-archive/**
+!tools/dio/

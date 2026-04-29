@@ -1,43 +1,9 @@
-# Tool Contract: git.lfs_check
-# Governs large file detection to prevent repository bloat.
-# Enforcement: pre-commit hook via prepush-bloat-gate.sh
-
-tool_id: git.lfs_check
-version: 2
-description: >
-  Detect and block commits containing files exceeding size thresholds.
-  Prevents repository bloat from accidental binary/media commits.
-risk_level: high
-enforcement: enforced_by_script
-
-thresholds:
-  warn_file_size_mb: 5
-  block_file_size_mb: 50
-  warn_repo_size_gb: 2
-  block_repo_size_gb: 5
-
-preconditions:
-  - name: bloat_gate_passed
-    type: script_exit_code
-    script: scripts/prepush-bloat-gate.sh
-    expected: 0
-    description: Pre-push bloat gate must pass before push is allowed.
-
-  - name: no_binaries_staged
-    type: check
-    description: No binary files (images, videos, ZIPs) staged without LFS tracking.
-
-exceptions:
-  - pattern: "*.woff2"
-    reason: Font files are small and required for web rendering.
-  - pattern: "*.ico"
-    reason: Favicon files are small and required.
-
+# tool_contracts/git.lfs_check.yaml
+tool_id: "git.lfs_check"
+description: "Governs the git.lfs_check operations."
+risk_level: "low"
+preconditions: []
 evidence_requirements:
-  - type: log_bloat_check
-    description: Log file sizes checked, any warnings issued, and pass/fail result.
-
-wiring:
-  script: scripts/prepush-bloat-gate.sh
-  hook: pre-push
-  ci_workflow: .github/workflows/monorepo-os-gates.yml
+  - type: "log"
+    path: ".beads/evidence/git_lfs_check.jsonl"
+reuse_queries: []

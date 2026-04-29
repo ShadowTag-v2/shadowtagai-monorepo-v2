@@ -51,10 +51,10 @@ apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/k8s/05-secrets.yaml.temp
 apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/k8s/05-secrets.yaml.template:generic-api-key-inline:25
 
 # Auto-classified IGNORE: Third-party path: \.agent/reports/
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/reports/aiyou-rollup_foldin_report.json:google-api-key:76
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/reports/pnkln-rollup_foldin_report.json:google-api-key:76
 
 # Auto-classified IGNORE: Third-party path: \.agent/reports/
-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/reports/pnkln-rollup_foldin_report.json:google-api-key:76
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/reports/aiyou-rollup_foldin_report.json:google-api-key:76
 
 # Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:426

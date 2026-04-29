@@ -43,6 +43,12 @@ export SOVEREIGN_MEMORY_LINK="/Users/pikeymickey/.gemini/antigravity/Monorepo-Up
 # oh-my-claudecode telemetry & execution
 export OMC_OPENCLAW=1
 alias omc="npm i -g oh-my-claude-sisyphus@latest && npx oh-my-claude-sisyphus"
+
+# Claude Code / Antigravity Max Effort Constraints (from architecture leak)
+export CLAUDE_CODE_EFFORT_LEVEL="max"
+export CLAUDE_CODE_DISABLE_1M_CONTEXT="1"
+export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING="1"
+export CLAUDE_CODE_DISABLE_AUTO_MEMORY="1"
 ```
 
 ## Session Start: Sovereign Memory Sync

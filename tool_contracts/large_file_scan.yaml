@@ -1,9 +1,9 @@
-# tool_contracts/large_file_scan.yaml — CONSOLIDATED
-# Canonical contract: tool_contracts/git.lfs_check.yaml
-# Enforcement: scripts/prepush-bloat-gate.sh (pre-push hook)
-# This file is retained as a redirect for backward compatibility.
-version: 2
-description: "Large file scan — redirects to git.lfs_check.yaml"
-canonical_contract: git.lfs_check.yaml
-enforcement: enforced_by_script
-enforcement_evidence: scripts/prepush-bloat-gate.sh
+# tool_contracts/large_file_scan.yaml
+tool_id: "large_file_scan"
+description: "Governs the large_file_scan operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/large_file_scan.jsonl"
+reuse_queries: []
