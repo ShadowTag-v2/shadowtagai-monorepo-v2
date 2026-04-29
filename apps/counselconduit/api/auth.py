@@ -20,7 +20,7 @@ import os
 from typing import Any
 
 import firebase_admin
-from fastapi import Header, HTTPException, status
+from fastapi import Header, HTTPException, Request, status
 from firebase_admin import auth, credentials
 
 logger = logging.getLogger("counselconduit.auth")
@@ -94,13 +94,20 @@ def verify_firebase_token(id_token: str) -> dict[str, Any]:
         )
 
 
-async def get_current_attorney(x_kovel_auth: str = Header(None)) -> dict[str, Any]:
+async def get_current_attorney(
+    request: Request | None = None,
+    x_kovel_auth: str = Header(None),
+) -> dict[str, Any]:
     """FastAPI dependency: Extract and verify attorney from request header.
+
+    Inherits ``user_type`` from ``request.state`` if set by
+    :class:`AntGateMiddleware`.
 
     Usage in routes:
         @app.post("/endpoint")
         async def handler(attorney: dict = Depends(get_current_attorney)):
             uid = attorney["uid"]
+            user_type = attorney.get("user_type", "external")
     """
     if not x_kovel_auth:
         raise HTTPException(
@@ -108,12 +115,18 @@ async def get_current_attorney(x_kovel_auth: str = Header(None)) -> dict[str, An
             detail="Kovel Authentication Missing. Operation Terminated.",
         )
 
+    # Inherit user_type from AntGateMiddleware (defaults to "external")
+    user_type = "external"
+    if request is not None:
+        user_type = getattr(request.state, "user_type", "external")
+
     # Development mode bypass
     if os.getenv("APP_ENV") == "development" and x_kovel_auth.startswith("dev_"):
         return {
             "uid": x_kovel_auth,
             "email": "dev@kovelai.test",
             "name": "Development Attorney",
+            "user_type": user_type,
         }
 
     claims = verify_firebase_token(x_kovel_auth)
@@ -122,4 +135,5 @@ async def get_current_attorney(x_kovel_auth: str = Header(None)) -> dict[str, An
         "email": claims.get("email", ""),
         "name": claims.get("name", ""),
         "email_verified": claims.get("email_verified", False),
+        "user_type": user_type,
     }
