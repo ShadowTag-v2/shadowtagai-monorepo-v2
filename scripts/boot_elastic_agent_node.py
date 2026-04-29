@@ -23,7 +23,7 @@ except ImportError:
 class PnklnHybridEngine:
     """The master Pnkln orchestration engine.
     Routes inference workloads dynamically between the zero-overhead Apple Neural Engine (ANE)
-    via Pickle Rick (ane_bridge.py), and the highly elastic abstract GPU caching layer (kvcached).
+    via Omega Protocol (ane_bridge.py), and the highly elastic abstract GPU caching layer (kvcached).
     """
 
     def __init__(self, model_path: str, _max_concurrent_agents: int = 50, prefer_ane: bool = True) -> None:
@@ -33,7 +33,7 @@ class PnklnHybridEngine:
 
         # 1. Attempt ANE (Apple Neural Engine) Zero-CPU Boot First
         if self.prefer_ane and dispatch_compute:
-            # dispatch_compute implicitly orchestrates ane_bridge.py (Pickle Rick)
+            # dispatch_compute implicitly orchestrates ane_bridge.py (Omega Protocol)
             # which talks to the C-bridge in third_party/ANE/bridge/
             self.mode = "ANE_ZERO_CPU"
 

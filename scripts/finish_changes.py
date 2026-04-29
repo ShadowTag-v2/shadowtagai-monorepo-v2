@@ -5,7 +5,7 @@
 # ============================================================================
 # SHADOWTAG OS: PRE-ACTION MEMORY GATE & REPO-DRIFT AUDIT
 # ============================================================================
-# The /pickle egress script. Closes tabs, purges cache, rebuilds deps,
+# The /omega egress script. Closes tabs, purges cache, rebuilds deps,
 # runs linters, and prints the explicit file delta before saving.
 # ============================================================================
 
