@@ -6,9 +6,9 @@ export function isVoiceModeEnabled(): boolean {
   if (evalFeature('tengu_amber_quartz_disabled', false)) {
     return false;
   }
-  
+
   // OAuth auth required
   // ... check oauth state
-  
+
   return true;
 }

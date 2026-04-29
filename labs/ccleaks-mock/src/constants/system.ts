@@ -65,7 +65,7 @@ export function getUserType(): string {
 export const NATIVE_CLIENT_ATTESTATION = {
   // Bun's native HTTP stack (Zig) overwrites this with a computed hash
   placeholder: 'cch=c2dd6',
-  enabled: true
+  enabled: true,
 };
 // padding
 // padding

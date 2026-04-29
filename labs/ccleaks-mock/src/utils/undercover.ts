@@ -1,7 +1,3 @@
-// src/utils/undercover.ts
-import { getRepoDetails } from './git';
-import { getEnvironment } from '../constants/system';
-
 /**
  * Strips all traces of AI involvement (commit messages, Co-Authored-By lines, model names).
  * Do not blow your cover.
@@ -16,7 +12,7 @@ export function isUndercoverModeEnabled(repoPath: string): boolean {
   return process.env.CLAUDE_CODE_UNDERCOVER === '1';
 }
 
-function checkPrivateRepo(path: string): boolean {
+function checkPrivateRepo(_path: string): boolean {
   // logic to check if private
   return false;
 }

@@ -12,7 +12,7 @@ export const INTERNAL_REPOS = [
 export function generateCommitDescription(stats: any, isUndercover: boolean): string {
   // line 325
   const aiPercentageMsg = `${stats.percentage}% 3-shotted by claude-opus-4-6`;
-  
+
   if (isUndercover) {
     return ''; // Stripped entirely in undercover mode
   }
