@@ -52,7 +52,8 @@ fi
 # ── Gate 2: Secret-free ──
 echo "── Gate 2: Secret Scan ──"
 if [ -x scripts/secret-scan.sh ]; then
-  if bash scripts/secret-scan.sh --check 2>/dev/null; then
+  # Use 'dir' mode (working tree scan) — there is no --check flag
+  if bash scripts/secret-scan.sh dir 2>/dev/null; then
     gate_pass "Secret scan: Clean"
   else
     # Secret scan failures in non-strict mode are warnings (third-party repos)
@@ -63,7 +64,7 @@ if [ -x scripts/secret-scan.sh ]; then
     fi
   fi
 elif command -v gitleaks >/dev/null 2>&1; then
-  if gitleaks detect --no-git --source . --quiet 2>/dev/null; then
+  if gitleaks detect --no-git --source . 2>/dev/null; then
     gate_pass "Secret scan: Clean (gitleaks)"
   else
     gate_fail "Secret scan: Leaks detected (gitleaks)"

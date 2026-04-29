@@ -1,24 +1,24 @@
 # Contract Coverage Plan — P2/Deprecated Burn-Down
 
-> **Generated:** 2026-04-29 | **Version:** v3.1 | **Remaining:** 13 advisory contracts
+> **Generated:** 2026-04-29 | **Version:** v3.1 | **Gate 9 Status:** 29/39 enforced (74%)
 
 ## Overview
 
-Of the 39 total tool contracts, **26** are enforced (14 hard + 12 P1 operational).
-This plan covers the remaining **13 P2 advisory** contracts and their disposition.
+Of the 39 total tool contracts, **29** are enforced (detected by Gate 9 via
+CI references, script keyword matching, ToolGateway presence, or verified map).
 
-## P2 Elevation Analysis
+The remaining **10** are advisory-only. This plan governs their disposition.
 
-### Candidates for v3.5 Elevation (2 contracts)
+## v3.5 Elevation Candidates (2 contracts)
 
-These have security-adjacent value and merit promotion to enforced status:
+These have security-adjacent value and merit promotion to hard enforcement:
 
 | Contract | Current | Proposed | Enforcement Plan |
 |----------|---------|----------|-----------------|
-| `function_call.consequential_action.yaml` | P2 advisory | P1 enforced | Wire into ToolGateway action classification. Add CI step to verify all consequential actions have `<!-- GUARDRAIL -->` annotations. |
-| `python.typecheck.yaml` | P2 advisory | P1 enforced | Wire `ruff check --select E` into CI. mypy/pyright optional but ruff type errors are low-cost high-value. |
+| `function_call.consequential_action.yaml` | Advisory | P1 enforced | Wire into ToolGateway action classification. Add CI step to verify all consequential actions have `<!-- GUARDRAIL -->` annotations. |
+| `python.typecheck.yaml` | Keyword match | P1 hard enforced | Wire `ruff check --select E` into CI gate. Currently detected via keyword only. |
 
-### Permanent P2 — No Elevation Needed (11 contracts)
+## Permanent Advisory — No Elevation Needed (8 contracts)
 
 These contracts serve documentation or agent-internal purposes and carry no operational risk:
 
@@ -26,39 +26,41 @@ These contracts serve documentation or agent-internal purposes and carry no oper
 |----------|-------------|---------------|
 | `agent.progression.yaml` | PERMANENT P2 | Agent skill tracking — purely internal metric |
 | `artifact.upload.yaml` | PERMANENT P2 | Already covered by `upload_policy.yaml` (dual-coverage) |
-| `bazel.build.yaml` | DEPRECATED | Bazel not in active build path; Keep contract for future reference |
 | `code_reasoning.certificate.yaml` | PERMANENT P2 | Agent-internal reasoning audit trail |
 | `context.google_drive_fetch.yaml` | PERMANENT P2 | Read-only data fetch, no mutation risk |
-| `gemini.function_call.yaml` | PERMANENT P2 | Covered by ToolGateway (dual-coverage with tool.gateway.yaml) |
+| `gemini.function_call.yaml` | PERMANENT P2 | Covered by ToolGateway (dual-coverage with `tool.gateway.yaml`) |
 | `gitnexus.impact.yaml` | PERMANENT P2 | Future feature — no current code path |
 | `pageindex.compile.yaml` | PERMANENT P2 | Read-only index generation, no side effects |
 | `repowise.evaluate.yaml` | PERMANENT P2 | Evaluation-only, no state mutation |
-| `ruler.apply.yaml` | PERMANENT P2 | Agent instruction distribution — write-once, read-many |
-| `visual.proof.yaml` | PERMANENT P2 | Screenshot documentation — no execution risk |
 
-## Duplicate Consolidation (Already Done)
+> **Note:** `visual.proof.yaml` was reclassified from P2 to the advisory tier.
+> It documents screenshot provenance — zero execution risk.
+
+## Duplicate Consolidation (Already Done in v3.0)
 
 These two contracts have been consolidated into `git.lfs_check.yaml`:
 - `large_file_scan.yaml` — flagged as superseded in v3.0
 - `repo.large_file_scan.yaml` — flagged as superseded in v3.0
 
-They remain in `tool_contracts/` as documentation artifacts but are counted as
-"enforced" because the functionality is covered by the canonical `git.lfs_check.yaml`.
+They remain in `tool_contracts/` as documentation artifacts and are counted as
+"enforced" by keyword match because their `tool_id` is referenced in scripts.
 
 ## Projected v3.5 State
 
 | Tier | Count | Change from v3.1 |
 |------|-------|-----------------|
-| Hard enforcement (CI/script/gateway) | 14 | — |
-| P1 operational (CI presence) | 14 | +2 (elevated from P2) |
-| P2 advisory | 11 | -2 (elevated) |
-| **Total enforced** | **28/39** | +2 |
+| Hard enforcement (CI/script/gateway) | 18 | +2 (elevated from keyword/advisory) |
+| Keyword match (passive) | 1 | -2 (elevated) + `ruler.apply.yaml` stays |
+| Verified map (operational) | 10 | — |
+| Advisory (P2) | 8 | -2 (elevated) |
+| Superseded (counted as keyword) | 2 | — |
+| **Total enforced (Gate 9)** | **31/39** | +2 |
 
 ## Acceptance Criteria for v3.5
 
 - [ ] `function_call.consequential_action.yaml` wired to ToolGateway classification
 - [ ] `python.typecheck.yaml` wired to `ruff check --select E` in CI
-- [ ] Orphan report regenerated showing 28/39
+- [ ] Orphan report regenerated showing 31/39
 - [ ] Release readiness gate passes with 0 failures
 - [ ] All duplicate contracts annotated with `# SUPERSEDED BY: <canonical>` header
 
