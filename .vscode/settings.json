@@ -106,7 +106,10 @@
     "**/repos/*-legacy/**": true,
     "**/external_repos/**": true,
     "**/monorepo-fold-in-batch/**": true,
-    "**/dist-runtime/**": true
+    "**/dist-runtime/**": true,
+    "**/.dart_tool/**": true,
+    "**/build/**": true,
+    "**/.pub-cache/**": true
   },
 
   "extensions.experimental.affinity": {

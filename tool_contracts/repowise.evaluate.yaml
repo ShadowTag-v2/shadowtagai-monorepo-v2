@@ -1,4 +1,9 @@
 # tool_contracts/repowise.evaluate.yaml
-version: 1
-description: "Contract for repowise.evaluate operations."
-enforcement: advisory
+tool_id: "repowise.evaluate"
+description: "Governs the repowise.evaluate operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/repowise_evaluate.jsonl"
+reuse_queries: []

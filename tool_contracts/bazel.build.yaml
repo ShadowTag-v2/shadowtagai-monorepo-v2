@@ -1,4 +1,9 @@
 # tool_contracts/bazel.build.yaml
-version: 1
-description: "Contract for bazel.build operations."
-enforcement: advisory
+tool_id: "bazel.build"
+description: "Governs the bazel.build operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/bazel_build.jsonl"
+reuse_queries: []
