@@ -1,4 +1,9 @@
 # tool_contracts/gitnexus.impact.yaml
-version: 1
-description: "Contract for gitnexus.impact operations."
-enforcement: advisory
+tool_id: "gitnexus.impact"
+description: "Governs the gitnexus.impact operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/gitnexus_impact.jsonl"
+reuse_queries: []

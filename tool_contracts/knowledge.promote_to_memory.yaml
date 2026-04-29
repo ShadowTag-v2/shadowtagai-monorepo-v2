@@ -1,4 +1,9 @@
 # tool_contracts/knowledge.promote_to_memory.yaml
-version: 1
-description: "Contract for knowledge.promote_to_memory operations."
-enforcement: advisory
+tool_id: "knowledge.promote_to_memory"
+description: "Governs the knowledge.promote_to_memory operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/knowledge_promote_to_memory.jsonl"
+reuse_queries: []

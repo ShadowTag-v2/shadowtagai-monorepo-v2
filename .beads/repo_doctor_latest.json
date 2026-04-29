@@ -10,146 +10,146 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "agent/bundles/antigravity_manifest_bundle_v3/antigravity_manifest_bundle_v3/fold_in_repo_checklist.py",
-      "fix": "git checkout -- agent/bundles/antigravity_manifest_bundle_v3/antigravity_manifest_bundle_v3/fold_in_repo_checklist.py"
+      "path": "agent/workflows/live-engine.md",
+      "fix": "git checkout -- agent/workflows/live-engine.md"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/bundles/antigravity_manifest_bundle_v3/antigravity_manifest_bundle_v3/manifest_reconcile_report.py",
-      "fix": "git checkout -- .agent/bundles/antigravity_manifest_bundle_v3/antigravity_manifest_bundle_v3/manifest_reconcile_report.py"
+      "path": ".beads/heartbeat.json",
+      "fix": "git checkout -- .beads/heartbeat.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/evidence/index.ndjson",
-      "fix": "git checkout -- .agent/evidence/index.ndjson"
+      "path": ".beads/issues.jsonl",
+      "fix": "git checkout -- .beads/issues.jsonl"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/hybrid_scraper.py",
-      "fix": "git checkout -- .agent/hybrid_scraper.py"
+      "path": ".beads/kairos_heartbeat.json",
+      "fix": "git checkout -- .beads/kairos_heartbeat.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/ingest_staging/antigravity_manifest_bundle_v3/fold_in_repo_checklist.py",
-      "fix": "git checkout -- .agent/ingest_staging/antigravity_manifest_bundle_v3/fold_in_repo_checklist.py"
+      "path": ".beads/repo_doctor_latest.json",
+      "fix": "git checkout -- .beads/repo_doctor_latest.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".eslintrc.cjs",
+      "fix": "git checkout -- .eslintrc.cjs"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/ingest_staging/antigravity_manifest_bundle_v3/manifest_reconcile_report.py",
-      "fix": "git checkout -- .agent/ingest_staging/antigravity_manifest_bundle_v3/manifest_reconcile_report.py"
+      "path": ".geminiignore",
+      "fix": "git checkout -- .geminiignore"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/ingest_staging/antigravity_memory_lock_pack/previous_bundle/fold_in_repo_checklist.py",
-      "fix": "git checkout -- .agent/ingest_staging/antigravity_memory_lock_pack/previous_bundle/fold_in_repo_checklist.py"
+      "path": ".gitleaksignore",
+      "fix": "git checkout -- .gitleaksignore"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".prettierignore",
+      "fix": "git checkout -- .prettierignore"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".prettierrc",
+      "fix": "git checkout -- .prettierrc"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/ingest_staging/antigravity_memory_lock_pack/previous_bundle/manifest_reconcile_report.py",
-      "fix": "git checkout -- .agent/ingest_staging/antigravity_memory_lock_pack/previous_bundle/manifest_reconcile_report.py"
+      "path": ".ruler/AGENTS.md",
+      "fix": "git checkout -- .ruler/AGENTS.md"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/ingest_staging/antigravity_memory_lock_pack/scripts/memory_lock_audit.py",
-      "fix": "git checkout -- .agent/ingest_staging/antigravity_memory_lock_pack/scripts/memory_lock_audit.py"
+      "path": ".vscode/settings.json",
+      "fix": "git checkout -- .vscode/settings.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/ingest_staging/antigravity_memory_lock_pack/scripts/rebuild_context_packet.py",
-      "fix": "git checkout -- .agent/ingest_staging/antigravity_memory_lock_pack/scripts/rebuild_context_packet.py"
+      "path": "GEMINI.md",
+      "fix": "git checkout -- GEMINI.md"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scripts/auth_orchestrate_batch_foldin.py",
-      "fix": "git checkout -- .agent/scripts/auth_orchestrate_batch_foldin.py"
+      "path": "Monorepo-Uphillsnowball.code-workspace",
+      "fix": "git checkout -- Monorepo-Uphillsnowball.code-workspace"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scripts/orchestrate_batch_foldin.py",
-      "fix": "git checkout -- .agent/scripts/orchestrate_batch_foldin.py"
+      "path": "apps/aiyou-fastapi-services/tests/test_api.py",
+      "fix": "git checkout -- apps/aiyou-fastapi-services/tests/test_api.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/singularity_daemon.py",
-      "fix": "git checkout -- .agent/singularity_daemon.py"
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/app/core/tracing.py",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/app/core/tracing.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/adk-tool-scaffold/examples/WeatherTool.py",
-      "fix": "git checkout -- .agent/skills-recovered/adk-tool-scaffold/examples/WeatherTool.py"
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/app/quality/quality_gates.py",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/app/quality/quality_gates.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/adk-tool-scaffold/scripts/scaffold_tool.py",
-      "fix": "git checkout -- .agent/skills-recovered/adk-tool-scaffold/scripts/scaffold_tool.py"
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/app/core/tracing.py",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/app/core/tracing.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/antigravity-safe-scrapling-runner/scripts/run_scrapling.py",
-      "fix": "git checkout -- .agent/skills-recovered/antigravity-safe-scrapling-runner/scripts/run_scrapling.py"
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/app/quality/quality_gates.py",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/app/quality/quality_gates.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/database-schema-validator/scripts/validate_schema.py",
-      "fix": "git checkout -- .agent/skills-recovered/database-schema-validator/scripts/validate_schema.py"
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/src/bridge_mock.py",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/src/bridge_mock.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/json-to-pydantic/examples/output_model.py",
-      "fix": "git checkout -- .agent/skills-recovered/json-to-pydantic/examples/output_model.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/judge6-compliance/scripts/assess_risk.py",
-      "fix": "git checkout -- .agent/skills-recovered/judge6-compliance/scripts/assess_risk.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/omni_search.py",
-      "fix": "git checkout -- .agent/skills-recovered/omni_search.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "... and 4656 more dirty files",
+      "message": "... and 89 more dirty files",
       "path": "",
       "fix": ""
     },
@@ -192,34 +192,34 @@
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "artifacts/manifest.yaml",
+      "path": "_audit_claude_code/src/QueryEngine.ts",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "authz/model.fga",
+      "path": "_audit_claude_code/src/Task.ts",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "build/bazel_adoption.yaml",
+      "path": "_audit_claude_code/src/Tool.ts",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "cmd/gideon-go/go.mod",
+      "path": "_audit_claude_code/src/assistant/sessionHistory.ts",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 645 more drift files",
+      "message": "... and 2540 more drift files",
       "path": "",
       "fix": ""
     },
@@ -233,14 +233,14 @@
     {
       "gate": "manifest",
       "severity": "info",
-      "message": "Manifest v12.3 valid",
+      "message": "Manifest v12.4 valid",
       "path": "",
       "fix": ""
     },
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ========================= 483 tests collected in 0.60s =========================",
+      "message": "Tests: ========================= 483 tests collected in 0.53s =========================",
       "path": "",
       "fix": ""
     }

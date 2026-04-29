@@ -1,6 +1,7 @@
 import json
 import os
 
+
 class YoloClassifier:
     def __init__(self):
         self.log_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".beads", "yolo_decisions.jsonl")
@@ -27,13 +28,10 @@ class YoloClassifier:
         return risk
 
     def _log_decision(self, action_name: str, args: dict, risk: str):
-        payload = {
-            "action": action_name,
-            "args_summary": str(args)[:100],
-            "risk_assigned": risk
-        }
-        with open(self.log_file, 'a') as f:
+        payload = {"action": action_name, "args_summary": str(args)[:100], "risk_assigned": risk}
+        with open(self.log_file, "a") as f:
             f.write(json.dumps(payload) + "\n")
+
 
 if __name__ == "__main__":
     classifier = YoloClassifier()

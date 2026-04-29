@@ -418,4 +418,21 @@ Before starting any complex implementation task, the agent MUST:
 - Ruler (`@intellectronica/ruler`) recommended for agent config unification.
 - Memory Kernel patterns: selective adoption only, NOT wholesale migration.
 </session_memory_corpus>
+<orthogonal_edits_doctrine>
+## Orthogonal Edits — Context Preservation Rule
+**ABSOLUTE RULE:** You MUST make orthogonal edits (strictly minimal file changes) to protect the context budget and prevent cascading hallucinated dependencies. Never apply stylistic or unrelated formatting changes during a functional edit. This prevents attention dilution.
+</orthogonal_edits_doctrine>
+
+<context_engineering_doctrine>
+## Context Engineering — The 4-Layer Hierarchy
+**Reference:** Claude Code Architecture (V22)
+**Rule:** Context engineering is more important than prompt engineering. The agent MUST evaluate rules at every message interaction.
+**Hierarchy:**
+1. Global (`/etc/claude-code/CLAUDE.md` or equivalent) — Coding standards.
+2. User (`~/.claude/CLAUDE.md` or equivalent) — Personal shortcuts and identity.
+3. Project (`./CLAUDE.md` or `GEMINI.md`) — Architecture decisions, test patterns, "absolute forbidden" rules.
+4. Modular (`.claude/rules/*.md`) — Component-specific rules.
+5. Private (`CLAUDE.local.md`) — Gitignored secrets/local contexts.
+</context_engineering_doctrine>
+
 </system_directive>
