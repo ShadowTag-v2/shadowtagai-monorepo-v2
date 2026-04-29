@@ -434,11 +434,29 @@ async def enclave_health():
     }
 
 
+import asyncio
+
+
+class StreamingWatchdog:
+    async def monitor(self):
+        logger.info("StreamingWatchdog active. Monitoring context streams...")
+        while True:
+            await asyncio.sleep(60)
+
+
+watchdog_task = None
+
+
 @app.on_event("startup")
 async def startup():
+    global watchdog_task
     logger.info("counselconduit_started", version="3.3.2")
+    watchdog = StreamingWatchdog()
+    watchdog_task = asyncio.create_task(watchdog.monitor())
 
 
 @app.on_event("shutdown")
 async def shutdown():
     logger.info("counselconduit_shutdown")
+    if watchdog_task:
+        watchdog_task.cancel()

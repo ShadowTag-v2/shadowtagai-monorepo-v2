@@ -1,13 +1,13 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/bash
+# OMEGA LOOP EGRESS SCRIPT
+export CI=true
+export DEBIAN_FRONTEND=noninteractive
 
-echo "$(date +'%Y-%m-%dT%H:%M:%S') [OMEGA-LOOP] INFO 🛡️ INITIATING REPO-DRIFT AUDIT..."
-echo "$(date +'%Y-%m-%d %H:%M:%S') [INFO] 1. PRE-ACTION MEMORY GATE: SAVING TABS & PURGING RAM..."
+echo "$(date +'%Y-%m-%d %H:%M:%S') [INFO] 1. OMEGA LOOP INGRESS..."
 
-EXCLUDES="--exclude .agent --exclude extensions --exclude node_modules"
-
-echo "$(date +'%Y-%m-%d %H:%M:%S') [INFO] 2. LINTING & AST HEALING..."
-if command -v ruff >/dev/null 2>&1; then
+echo "$(date +'%Y-%m-%d %H:%M:%S') [INFO] 2. OMEGA LOOP EXECUTION (Linting & Formatting)..."
+EXCLUDES="--exclude=.git --exclude=node_modules --exclude=venv"
+if command -v ruff &> /dev/null; then
     ruff check --fix $EXCLUDES . 2>/dev/null || true
     ruff format $EXCLUDES . 2>/dev/null || true
 fi
