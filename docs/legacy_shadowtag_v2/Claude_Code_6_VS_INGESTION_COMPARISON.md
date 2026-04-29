@@ -55,7 +55,7 @@ When evolving the Judge 6 analysis prompt for the Ingestion Layer, these direct 
 
 | Judge 6 Element       | Ingestion Layer Replacement                             | Rationale                                                   |
 | ---------------------- | ------------------------------------------------------- | ----------------------------------------------------------- |
-| **File Reference**     | `judge_six.py` → Pipeline docs/specs                    | Broader scope: distributed system vs. single script         |
+| **File Reference**     | `Claude_Code_6.py` → Pipeline docs/specs                    | Broader scope: distributed system vs. single script         |
 | **Performance Target** | p99 ≤90ms → ~45 min/night runtime                       | Batch processing vs. real-time latency                      |
 | **Quality Gate**       | 98% test coverage → 7 multi-faceted gates               | Holistic quality (items, cost, relevance) vs. code coverage |
 | **Primary Metric**     | Block rate / throughput → Items/day, sources, cost/item | Volume + diversity vs. enforcement rate                     |
@@ -393,7 +393,7 @@ When adapting an analysis prompt from Judge 6 to another pnkln component:
 
 ### Direct Replacements
 
-- [ ] Update file references (judge_six.py → component-specific)
+- [ ] Update file references (Claude_Code_6.py → component-specific)
 - [ ] Adjust performance metrics (latency → runtime, throughput → volume)
 - [ ] Redefine quality gates (coverage → domain-specific metrics)
 - [ ] Swap cost model (per-call → monthly operational)
@@ -436,5 +436,5 @@ Based on Judge 6 Analysis Prompt v1.0 and Gemini Ingestion Layer Analysis Prompt
 **Related Documents:**
 
 - `prompts/gemini_ingestion_layer_analysis.md`
-- `prompts/judge_six_analysis.md` (if available)
+- `prompts/Claude_Code_6_analysis.md` (if available)
 - `ARCHITECTURE.md`

@@ -199,7 +199,7 @@ class TestSystemIntegration:
         """Test all 7 core functions are accessible."""
         expected_functions = [
             "atp_519_scan",
-            "judge_six_classify",
+            "Claude_Code_6_classify",
             "audit_compress",
             "multi_agent_debate",
             "dte_evolve",

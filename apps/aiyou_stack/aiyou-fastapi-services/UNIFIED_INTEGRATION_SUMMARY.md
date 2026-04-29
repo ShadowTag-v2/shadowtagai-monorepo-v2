@@ -130,7 +130,7 @@ src/
 │   └─ dte.py                     # Debates-then-Elevate with memory
 │
 ├─ pnkln/                         # Pinkln ecosystem modules
-│   ├─ judge_six.py               # Judge Six kernel (Army RM)
+│   ├─ Claude_Code_6.py               # Judge Six kernel (Army RM)
 │   ├─ cor.py                     # Chain-of-Reasoning
 │   ├─ ns.py                      # Number System (semantic compression)
 │   └─ shadowtag.py               # ShadowTag memory system
@@ -145,7 +145,7 @@ src/
 │   └─ model.py                   # Wealth acceleration model
 │
 ├─ kernels/                       # Specialized processing kernels
-│   ├─ judge_six.py               # Army RM risk assessment
+│   ├─ Claude_Code_6.py               # Army RM risk assessment
 │   ├─ atp_519_scan.py            # ATP 5-19 compliance scanning
 │   └─ audit_compress.py          # 10:1 audit compression
 │
@@ -156,12 +156,12 @@ src/
 ├─ tests/                         # Test suite
 │   ├─ test_pnkln_integration.py  # Integration tests
 │   ├─ test_benchmarks.py         # Performance benchmarks
-│   ├─ test_judge_six.py          # Judge Six validation
+│   ├─ test_Claude_Code_6.py          # Judge Six validation
 │   └─ test_latency.py            # Latency testing
 │
 └─ examples/                      # Runnable demos
     ├─ basic_function_calling.py  # Simple Gemini function calling
-    ├─ judge_six_example.py       # Judge Six risk assessment
+    ├─ Claude_Code_6_example.py       # Judge Six risk assessment
     ├─ full_pnkln_stack.py        # Complete Pinkln integration
     └─ unified_poc_demo.py        # Unified orchestrator demo
 ```
@@ -351,7 +351,7 @@ class DTEEvolutionEngine:
         ])
 
         # Phase 2: Judge Six evaluation (Army RM framework)
-        scores = await self.judge_six.evaluate_proposals(proposals)
+        scores = await self.Claude_Code_6.evaluate_proposals(proposals)
 
         # Phase 3: Glicko-2 rating updates
         for agent, score in zip(self.agents, scores):
@@ -481,7 +481,7 @@ class WealthAccelerationModel:
 
 ---
 
-#### Security & Trust Structure (src/pnkln/judge_six.py)
+#### Security & Trust Structure (src/pnkln/Claude_Code_6.py)
 
 **Strategic Alignment** (from PNKLN_CORE_STACK_2025_REFRESH.md):
 
@@ -492,7 +492,7 @@ class WealthAccelerationModel:
 **Implementation**:
 
 ```python
-# src/pnkln/judge_six.py
+# src/pnkln/Claude_Code_6.py
 class JudgeSixKernel:
     """Army RM-based risk assessment and decision validation"""
 
@@ -587,7 +587,7 @@ pytest src/tests/ --cov=src --cov-fail-under=98 --cov-report=html
 pytest src/tests/test_pnkln_integration.py    # Integration tests
 pytest src/tests/test_benchmarks.py           # Performance benchmarks
 pytest src/tests/test_latency.py              # Latency validation
-pytest src/tests/test_judge_six.py            # Judge Six validation
+pytest src/tests/test_Claude_Code_6.py            # Judge Six validation
 ```
 
 **4. Run Demos**:
@@ -597,7 +597,7 @@ pytest src/tests/test_judge_six.py            # Judge Six validation
 python src/examples/basic_function_calling.py
 
 # Judge Six risk assessment
-python src/examples/judge_six_example.py
+python src/examples/Claude_Code_6_example.py
 
 # Full Pinkln stack integration
 python src/examples/full_pnkln_stack.py
@@ -757,7 +757,7 @@ kubectl apply -f k8s/service.yaml
 
 ```
 [ ] Code review: src/core/gemini_function_calling.py
-[ ] Code review: src/pnkln/judge_six.py (Army RM compliance)
+[ ] Code review: src/pnkln/Claude_Code_6.py (Army RM compliance)
 [ ] Code review: src/evolution/dte.py (DTE algorithm)
 [ ] Code review: src/ratings/glicko2.py (rating calculations)
 [ ] Security review: .env.example (no secrets committed)
@@ -768,7 +768,7 @@ kubectl apply -f k8s/service.yaml
 ```
 [ ] Run full test suite: pytest src/tests/ --cov=src --cov-fail-under=98
 [ ] Benchmark latency: python src/tests/test_latency.py
-[ ] Validate Judge Six: python src/tests/test_judge_six.py
+[ ] Validate Judge Six: python src/tests/test_Claude_Code_6.py
 [ ] Integration test: python src/tests/test_pnkln_integration.py
 [ ] Performance baseline: python src/tests/test_benchmarks.py
 ```

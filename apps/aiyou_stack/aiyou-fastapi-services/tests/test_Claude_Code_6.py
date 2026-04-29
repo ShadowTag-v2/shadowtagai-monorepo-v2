@@ -5,7 +5,7 @@
 import asyncio
 
 import pytest
-from pnkln.core.judge_six_pipeline import JudgeSixPipeline, ValidationResult
+from pnkln.core.Claude_Code_6_pipeline import JudgeSixPipeline, ValidationResult
 
 from shadowtagai.core.jr_engine import RiskLevel
 

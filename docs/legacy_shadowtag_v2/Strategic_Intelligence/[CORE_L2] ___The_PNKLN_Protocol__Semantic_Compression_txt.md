@@ -14,7 +14,7 @@ def compress_governance_decision(input_tokens):
 
     # Step 2: Binary decision tree
 
-    decision = judge_six_binary(violations)  # Single bit output
+    decision = Claude_Code_6_binary(violations)  # Single bit output
 
 
 

@@ -83,7 +83,7 @@ Google's 42-page agents whitepaper (Sep 2024) defines their Vertex AI agent arch
 ├──────────────────────┼──────────────────────────┼──────────────────────────┤
 │ COST OPTIMIZATION    │ ⚠️ NOT MENTIONED ⚠️       │ Semantic compression:    │
 │                      │ Assumes unlimited budget │ • ATP_519_scan (95% ↓)   │
-│                      │                          │ • Judge_six_binary (1bit)│
+│                      │                          │ • Claude_Code_6_binary (1bit)│
 │                      │                          │ • zstd audit (10:1)      │
 │                      │                          │ • 487 bytes vs 50KB      │
 │                      │                          │ $60-65K monthly burn     │
@@ -358,7 +358,7 @@ SEMANTIC COMPRESSION PIPELINE:
 │    └─ Extract violations only (95% ↓)   │
 │    └─ 2.5KB violation summary           │
 │                                         │
-│ 3. JUDGE_SIX_BINARY                     │
+│ 3. Claude_Code_6_BINARY                     │
 │    └─ Approve/Reject decision (1 bit)   │
 │    └─ <90ms p99 enforcement             │
 │                                         │

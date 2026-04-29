@@ -18,8 +18,8 @@ from pydantic import BaseModel
 
 from src.agents.policy_agent import PolicyEnforcementAgent
 from src.gov_config import settings
+from src.governance.Claude_Code_6.sentinel import JudgeSixSentinel
 from src.governance.gaas_trust import GaaSTrustManager, ViolationRecord, ViolationSeverity
-from src.governance.judge_six.sentinel import JudgeSixSentinel
 from src.monitoring.observability import metrics_collector, observability
 from src.policies.rag_retriever import get_policy_retriever
 from src.routers import agents, auth, knowledge

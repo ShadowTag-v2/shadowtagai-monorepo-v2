@@ -12,7 +12,7 @@ echo "📦 Packaging Smart Actions for Transfer..."
 echo "Manifest:
 - apps/n-autoresearch/Kosmos/BioAgents-server/src/main.py
 - bin/n-autoresearch/Kosmos/BioAgents-server
-- src/governance/judge_six
+- src/governance/Claude_Code_6
 - src/intelligence/tegu_vision
 - scripts/verify_smart_actions.py" > transfer_manifest.txt
 
@@ -20,7 +20,7 @@ echo "Manifest:
 tar -czf "$PACKET_NAME" \
     apps/n-autoresearch/Kosmos/BioAgents-server/src/main.py \
     bin/n-autoresearch/Kosmos/BioAgents-server \
-    src/governance/judge_six \
+    src/governance/Claude_Code_6 \
     src/intelligence/tegu_vision \
     src/provenance \
     src/intelligence/gaas_flight \

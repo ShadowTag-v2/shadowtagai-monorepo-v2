@@ -244,8 +244,8 @@ Profit margin:                 80%
 **Files Added** (41 files):
 
 - `src/core/gemini_function_calling.py`
-- `src/kernels/{judge_six,atp_519,audit_compress}.py`
-- `src/pnkln/{cor,ns,shadowtag,judge_six}.py`
+- `src/kernels/{Claude_Code_6,atp_519,audit_compress}.py`
+- `src/pnkln/{cor,ns,shadowtag,Claude_Code_6}.py`
 - `src/ratings/glicko2.py`
 - `src/evolution/dte.py`
 - `src/agents/debate.py`

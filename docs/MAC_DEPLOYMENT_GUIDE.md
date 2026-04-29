@@ -422,7 +422,7 @@ pytest tests/unit/
 
 # Test specific components
 pytest tests/unit/test_jr_engine.py -v
-pytest tests/unit/test_judge_six_lite.py -v
+pytest tests/unit/test_Claude_Code_6_lite.py -v
 pytest tests/unit/test_gemini_ingestion.py -v
 ```
 

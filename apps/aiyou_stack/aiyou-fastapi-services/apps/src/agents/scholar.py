@@ -8,7 +8,7 @@ from datetime import date, datetime
 
 import arxiv
 
-from src.governance.judge_six import ActionType, ProposedAction
+from src.governance.Claude_Code_6 import ActionType, ProposedAction
 
 
 class Autoresearch_Triad_Scholar:

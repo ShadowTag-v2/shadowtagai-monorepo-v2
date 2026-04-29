@@ -110,7 +110,7 @@ result_3 = await gemini_api("Audit compress", result_2)  # API call 3
 
 tools = [
     FunctionTool("atp_519_scan", atp_scan_local),
-    FunctionTool("judge_six_classify", judge_local),
+    FunctionTool("Claude_Code_6_classify", judge_local),
     FunctionTool("audit_compress", compress_local)
 ]
 
@@ -381,7 +381,7 @@ for cycle in range(10):
 
 **Implementation:**
 
-- `src/pnkln/judge_six.py` (400+ lines)
+- `src/pnkln/Claude_Code_6.py` (400+ lines)
 
 - Full JR Engine with threshold configuration
 

@@ -20,7 +20,7 @@ if os.path.exists(env_path):
                 except ValueError:
                     pass
 
-from pnkln.core.judge_six_pipeline import JudgeSix  # noqa: E402
+from pnkln.core.Claude_Code_6_pipeline import JudgeSix  # noqa: E402
 
 
 class AgentUnit:

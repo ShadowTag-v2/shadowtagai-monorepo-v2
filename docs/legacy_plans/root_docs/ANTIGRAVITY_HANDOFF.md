@@ -94,7 +94,7 @@ ATP_519_scan() → Extracts 487-byte kernel
   • Compliance requirements (6 domains)
   • Risk scores (0-100)
   ↓
-Judge_six_binary() → 1-bit decision
+Claude_Code_6_binary() → 1-bit decision
   ↓
 OUTPUT: APPROVE/DENY (<35ms)
 ```
@@ -247,7 +247,7 @@ for q in questions:
     # Compress with MCP if context > 10KB
     if len(response.context) > 10_000:
         kernel = mcp_bridge.atp_519_scan(response.context)
-        decision = mcp_bridge.judge_six_binary(kernel)  # <35ms
+        decision = mcp_bridge.Claude_Code_6_binary(kernel)  # <35ms
 
     # Store in Legal Whiteboard
     whiteboard.log_decision(task_id, decision)

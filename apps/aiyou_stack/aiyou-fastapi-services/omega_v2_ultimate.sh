@@ -186,7 +186,7 @@ PYTHON
 echo ">>> [5] INJECTING GOVERNANCE (JUDGE 6)..."
 
 # 1. CI Script (The Article Implementation: "Gemini CLI Reviewer")
-cat <<SCRIPT > scripts/judge_six_ci.sh
+cat <<SCRIPT > scripts/Claude_Code_6_ci.sh
 #!/bin/bash
 # Judge Six: CI Gatekeeper (Gemini CLI Wrapper)
 echo ">>> ⚖️ JUDGE SIX: REVIEWING DIFF..."
@@ -203,7 +203,7 @@ Rules:
 Output: VERDICT: [APPROVED | REJECTED]
 EOF
 SCRIPT
-chmod +x scripts/judge_six_ci.sh
+chmod +x scripts/Claude_Code_6_ci.sh
 
 # 2. GitHub Actions (Keyless WIF)
 cat <<YAML > .github/workflows/deploy.yaml
@@ -217,7 +217,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: google-github-actions/auth@v1
         with: { workload_identity_provider: '...', service_account: '...' }
-      - run: ./scripts/judge_six_ci.sh
+      - run: ./scripts/Claude_Code_6_ci.sh
       - uses: google-github-actions/deploy-cloudrun@v1
         with: { service: 'n-autoresearch/Kosmos/BioAgents-server', source: '.', region: '$REGION' }
 YAML
@@ -325,4 +325,4 @@ MD
 echo ">>> ✅ OMEGA v2 ULTIMATE BUILD COMPLETE."
 echo "👉 1. 'uv sync' to install."
 echo "👉 2. 'cd infra/terraform && terraform apply' to build the Universe."
-echo "👉 3. './scripts/judge_six_ci.sh' to test the Gatekeeper."
+echo "👉 3. './scripts/Claude_Code_6_ci.sh' to test the Gatekeeper."

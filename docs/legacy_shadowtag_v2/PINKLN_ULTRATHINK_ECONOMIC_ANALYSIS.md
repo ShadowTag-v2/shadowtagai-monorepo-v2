@@ -80,7 +80,7 @@ Decision Context (50KB)
     ↓ [Single Gemini API Call with Function Tools]
 Gemini 2.0 Flash orchestrates:
   ├─ atp_519_scan() → Local Python → Violations JSON (2.5KB)
-  ├─ judge_six_classify() → Local PyTorch → Binary decision
+  ├─ Claude_Code_6_classify() → Local PyTorch → Binary decision
   └─ audit_compress() → Local zstd → Audit trail (487 bytes)
     ↓
 Result (3KB total output, 87% reduction)
@@ -453,7 +453,7 @@ gemini_ingestion:
   networking: "$7/mo"
   total: "$77/mo"
 
-judge_six:
+Claude_Code_6:
   sidecar_compute: "$99/mo (scales with requests)"
   pytorch_inference: "$0/mo (CPU-only, bundled)"
   total: "$99/mo"
@@ -662,8 +662,8 @@ decision_metadata:
   timestamp: "2025-11-15T23:45:00Z"
   pinkln_agent_rating: 1623
   pinkln_uncertainty: 0.18
-  gemini_function_calls: ["atp_519_scan", "judge_six_classify"]
-  judge_six_verdict: "no-go"
+  gemini_function_calls: ["atp_519_scan", "Claude_Code_6_classify"]
+  Claude_Code_6_verdict: "no-go"
   risk_tier: "RA-2"
   shadowtag_watermark: "dct_hash_abc123..."
   immutable_log: "gs://pnkln-audit/2025/11/15/decision_xyz.json.zstd"
@@ -671,7 +671,7 @@ decision_metadata:
 cryptographic_proof:
   signature: "ed25519_sig_..."
   merkle_root: "0x789def..."
-  chain_of_custody: ["pinkln", "ingestion", "judge_six", "shadowtag"]
+  chain_of_custody: ["pinkln", "ingestion", "Claude_Code_6", "shadowtag"]
 ```
 
 **Regulatory Compliance**:
@@ -1135,7 +1135,7 @@ pinkln-ultrathink-ecosystem/
 │
 ├── examples/
 │   ├── basic_function_calling.py
-│   ├── judge_six_example.py
+│   ├── Claude_Code_6_example.py
 │   ├── unified_poc_demo.py
 │   └── wealth_planning_demo.py
 │

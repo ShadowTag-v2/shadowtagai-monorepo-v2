@@ -23,7 +23,7 @@ These are straightforward swaps that maintain prompt structure while changing do
 | Element              | Judge 6                | Gemini Ingestion Layer                         | Rationale                                    |
 | -------------------- | ----------------------- | ---------------------------------------------- | -------------------------------------------- |
 | **Component Name**   | Judge 6                | Gemini Ingestion Layer                         | Domain relevance                             |
-| **Primary Artifact** | `judge_six.py` script   | Pipeline docs, architecture specs, GKE configs | Broader scope for distributed system         |
+| **Primary Artifact** | `Claude_Code_6.py` script   | Pipeline docs, architecture specs, GKE configs | Broader scope for distributed system         |
 | **Performance SLA**  | p99 ≤ 90ms latency      | ~45 min/night runtime efficiency               | Batch processing vs real-time                |
 | **Quality Gates**    | 98% test coverage       | Items/day, sources, costs, relevance scores    | Multi-dimensional quality vs binary coverage |
 | **System Role**      | Risk enforcement engine | Intelligence collection pipeline analyzer      | Defensive vs acquisitive mission             |

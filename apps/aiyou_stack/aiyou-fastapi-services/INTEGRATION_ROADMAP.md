@@ -743,9 +743,9 @@ curl http://localhost:9091/metrics
 
 # Expected metrics:
 
-# pnkln_judge_six_validations_total{result="approved"} 247
+# pnkln_Claude_Code_6_validations_total{result="approved"} 247
 
-# pnkln_judge_six_validations_total{result="blocked"} 12
+# pnkln_Claude_Code_6_validations_total{result="blocked"} 12
 
 # pnkln_gemini_latency_p99_ms 87
 

@@ -471,11 +471,11 @@ pip install deepseek-ocr
 
 ```python
 # Add Redis cache to Judge 6 decisions
-from app.kernels import cached_judge_six
+from app.kernels import cached_Claude_Code_6
 
 @cached(ttl=3600)  # 1 hour cache
 async def validate_tip(amount, creator_id):
-    return await judge_six_classify(amount, creator_id)
+    return await Claude_Code_6_classify(amount, creator_id)
 ```
 
 **Total Quick Wins**: $61k/year savings, <1 month implementation

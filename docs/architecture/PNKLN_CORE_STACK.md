@@ -87,7 +87,7 @@ The PNKLN Core Stack™ is an intelligence collection and processing pipeline de
 - Block rate monitoring
 - API call cost tracking per validation
 
-**Documentation**: See [Judge 6 Specifications](./JUDGE_SIX.md)
+**Documentation**: See [Judge 6 Specifications](./Claude_Code_6.md)
 
 ---
 
@@ -359,7 +359,7 @@ AM Briefing Delivery
 ## References
 
 - [Gemini Ingestion Layer Specifications](./GEMINI_INGESTION_LAYER.md)
-- [Judge 6 Specifications](./JUDGE_SIX.md)
+- [Judge 6 Specifications](./Claude_Code_6.md)
 - [Analysis Prompts](../prompts/README.md)
 - [Deployment Guide](../deployment/README.md)
 - [Cost Model Documentation](./COST_MODEL.md)

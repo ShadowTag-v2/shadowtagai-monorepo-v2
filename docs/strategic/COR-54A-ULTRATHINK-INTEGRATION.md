@@ -49,7 +49,7 @@ This document bridges **COR.54** (external competitive positioning vs Google Ver
 ├─────────────────────────────────────────────────────────────────────┤
 │ CHEAT SHEET FUSION           → Semantic Compression (102×)          │
 │ • 21→10 essentials evolved   → • ATP_519_scan (95% reduction)       │
-│ • Context/format/objective   → • Judge_six_binary (1 bit)           │
+│ • Context/format/objective   → • Claude_Code_6_binary (1 bit)           │
 │ • DTE-tested (+3.7% gain)    → • zstd audit (10:1)                  │
 │                              → Result: 50KB → 487 bytes             │
 ├─────────────────────────────────────────────────────────────────────┤

@@ -39,9 +39,9 @@ def get_api_key(api_key: str = Depends(api_key_header)):
 limiter = Limiter(key_func=get_remote_address)
 
 # --- JR Engine Integration ---
-from ...judge_six.jr_engine import JREngine  # noqa: E402
-from ...judge_six.models import Action  # noqa: E402
-from ...judge_six.models import VerdictStatus as JRVerdictStatus  # noqa: E402
+from ...Claude_Code_6.jr_engine import JREngine  # noqa: E402
+from ...Claude_Code_6.models import Action  # noqa: E402
+from ...Claude_Code_6.models import VerdictStatus as JRVerdictStatus  # noqa: E402
 from ..core.schiznit_engine import schiznit_engine  # noqa: E402
 from ..enums import TaskStatus, UrgencyLevel, VerticalType  # noqa: E402
 from ..models.task import Task, TaskCompletion, TaskCreate, TaskUpdate  # noqa: E402

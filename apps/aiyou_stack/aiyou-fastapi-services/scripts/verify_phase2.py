@@ -6,10 +6,10 @@ import sys
 # Ensure src is in path
 sys.path.append(os.getcwd())
 
-from src.governance.judge_six.core import JudgeSixEngine
+from src.governance.Claude_Code_6.core import JudgeSixEngine
 
 
-def test_judge_six():
+def test_Claude_Code_6():
     print(">>> 🧪 VERIFYING PHASE 2 ARSENAL INTEGRATIONS...")
     engine = JudgeSixEngine()
 
@@ -42,4 +42,4 @@ def test_judge_six():
 
 
 if __name__ == "__main__":
-    test_judge_six()
+    test_Claude_Code_6()

@@ -277,7 +277,7 @@ Start by shipping the two whiteboard files above.
 ## Key Files to Know
 
 - `cloudbuild.yaml`, `k8s/*.yaml`, `Dockerfile`
-- `app/kernels/{atp_519_scan,judge_six,audit_compress}.py`
+- `app/kernels/{atp_519_scan,Claude_Code_6,audit_compress}.py`
 - `docs/ANTIGRAVITY_WORKFLOW.md`
 
 ## One-line instruction for any future AI (or human) inheriting this thread:
@@ -319,7 +319,7 @@ fold in ⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   │ SHADOWTAG: Watermarking (DCT embed/detect, C2PA, forensics) │
   └────────────────────────────────────────────────────────────────────────┘
   KERNEL CHAIN (p99≤90ms SLA):
-  K1:ATP_519_SCAN(Gemini,40ms)→K2:JUDGE_SIX(PyTorch,12ms)→K3:AUDIT(zstd,<1ms)
+  K1:ATP_519_SCAN(Gemini,40ms)→K2:Claude_Code_6(PyTorch,12ms)→K3:AUDIT(zstd,<1ms)
   • Token reduction: 95% (50KB→2.5KB)
   • Cost/decision: $0.0003
   • Compression: 10:1 (4.8KB→487 bytes)
@@ -493,7 +493,7 @@ fold in ⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   ARCHITECTURE:
     cloudbuild.yaml, k8s/Cor.Claude_Code_6_deployment.yaml, Dockerfile
   KERNELS:
-    app/kernels/{atp_519_scan,judge_six,audit_compress}.py
+    app/kernels/{atp_519_scan,Claude_Code_6,audit_compress}.py
   ENGINES:
     shadowtagai/core/jr_engine.py, app/validation/jr_engine.py
   DOCS:
@@ -538,7 +538,7 @@ fold in ⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
       },
       "kernel_chain": {
         "k1": {"name": "atp_519_scan", "model": "Gemini", "latency_ms": 40},
-        "k2": {"name": "judge_six", "model": "PyTorch", "latency_ms": 12},
+        "k2": {"name": "Claude_Code_6", "model": "PyTorch", "latency_ms": 12},
         "k3": {"name": "audit_compress", "algo": "zstd", "latency_ms": 1}
       },
       "sla_p99_ms": 90,
@@ -745,7 +745,7 @@ sure, revise "⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   │ SHADOWTAG: Watermarking (DCT embed/detect, C2PA, forensics) │
   └────────────────────────────────────────────────────────────────────────┘
   KERNEL CHAIN (p99≤90ms SLA):
-  K1:ATP_519_SCAN(Gemini,40ms)→K2:JUDGE_SIX(PyTorch,12ms)→K3:AUDIT(zstd,<1ms)
+  K1:ATP_519_SCAN(Gemini,40ms)→K2:Claude_Code_6(PyTorch,12ms)→K3:AUDIT(zstd,<1ms)
   • Token reduction: 95% (50KB→2.5KB)
   • Cost/decision: $0.0003
   • Compression: 10:1 (4.8KB→487 bytes)
@@ -919,7 +919,7 @@ sure, revise "⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   ARCHITECTURE:
     cloudbuild.yaml, k8s/Cor.Claude_Code_6_deployment.yaml, Dockerfile
   KERNELS:
-    app/kernels/{atp_519_scan,judge_six,audit_compress}.py
+    app/kernels/{atp_519_scan,Claude_Code_6,audit_compress}.py
   ENGINES:
     shadowtagai/core/jr_engine.py, app/validation/jr_engine.py
   DOCS:
@@ -964,7 +964,7 @@ sure, revise "⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
       },
       "kernel_chain": {
         "k1": {"name": "atp_519_scan", "model": "Gemini", "latency_ms": 40},
-        "k2": {"name": "judge_six", "model": "PyTorch", "latency_ms": 12},
+        "k2": {"name": "Claude_Code_6", "model": "PyTorch", "latency_ms": 12},
         "k3": {"name": "audit_compress", "algo": "zstd", "latency_ms": 1}
       },
       "sla_p99_ms": 90,

@@ -199,7 +199,7 @@ class JudgeSixPipeline:
         self.pytorch_classifier = PyTorchClassifier()
 
         # Build sequential pipeline
-        self.pipeline = SequentialPipeline("judge_six_validation")
+        self.pipeline = SequentialPipeline("Claude_Code_6_validation")
         self._build_pipeline()
 
         logger.info("Judge 6 pipeline initialized (p99 ≤ 90ms SLA)")

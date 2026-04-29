@@ -7,6 +7,7 @@ on:
     paths:
       - 'apps/mcp-lsp-bridge/**'
       - '.github/workflows/deploy-mcp-lsp-bridge.yml'
+  workflow_dispatch:
 
 env:
   PROJECT_ID: shadowtag-omega-v4

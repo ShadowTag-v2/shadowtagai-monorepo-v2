@@ -41,7 +41,7 @@ None.
 - `drive_knowledge/documents/text_47_txt.txt:50` → `gemini-3.1-family`
 - `drive_knowledge/documents/pnkln_vertex_rollup_txt.txt:17` → `gemini-3.1-family`
 - `drive_knowledge/documents/pnkln_vertex_rollup_txt.txt:18` → `gemini-3.1-family`
-- `pnkln/core/judge_six_pipeline.py:100` → `gemini-3.1-flash-lite-preview`
+- `pnkln/core/Claude_Code_6_pipeline.py:100` → `gemini-3.1-flash-lite-preview`
 - `pnkln/agents/__init__.py:7` → `gemini-3.1-flash-lite-preview`
 - `pnkln/agents/__init__.py:7` → `gemini-3.1-pro`
 - `pnkln/agents/orchestrator.py:32` → `gemini-3.1-flash-lite-preview`

@@ -2,7 +2,7 @@
 
 import logging
 
-from src.governance.judge_six.sentinel import JudgeSentinel
+from src.governance.Claude_Code_6.sentinel import JudgeSentinel
 
 
 class GeminiCodeAssistProxy:

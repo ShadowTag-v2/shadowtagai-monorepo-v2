@@ -31,8 +31,8 @@ We now have a **complete, production-ready PINKLN ecosystem** that combines:
 
 #### Business & Financial Analysis (4)
 
-1. `JUDGE_SIX_INCEPTION_ANALYSIS.md` - 20+ page baseline ($6.6M value, 12× ROI)
-2. `JUDGE_SIX_QUICK_REFERENCE.md` - Executive summary
+1. `Claude_Code_6_INCEPTION_ANALYSIS.md` - 20+ page baseline ($6.6M value, 12× ROI)
+2. `Claude_Code_6_QUICK_REFERENCE.md` - Executive summary
 3. `GEMINI_INGESTION_LAYER_INCEPTION_ANALYSIS.md` - 25+ page analysis ($2.9M value, 18× ROI)
 4. `GEMINI_INGESTION_LAYER_QUICK_REFERENCE.md` - Collection reference
 
@@ -73,7 +73,7 @@ We now have a **complete, production-ready PINKLN ecosystem** that combines:
 
 #### GitHub Templates (2)
 
-25. `.github/ISSUE_TEMPLATE/judge_six_implementation.md`
+25. `.github/ISSUE_TEMPLATE/Claude_Code_6_implementation.md`
 26. `.github/ISSUE_TEMPLATE/gemini_ingestion_implementation.md`
 
 ### Code (93 files)
@@ -93,7 +93,7 @@ app/
 │   ├── __init__.py
 │   ├── base.py
 │   ├── atp_519_scan.py       # Gemini Flash violations extractor
-│   ├── judge_six.py          # PyTorch binary classifier
+│   ├── Claude_Code_6.py          # PyTorch binary classifier
 │   └── audit_compress.py     # zstd compression
 ├── monitoring/                # Logging + Prometheus metrics
 │   ├── __init__.py
@@ -138,7 +138,7 @@ src/
 │
 ├── pnkln/                     # PNKLN Core Stack ⭐ NEW
 │   ├── __init__.py
-│   ├── judge_six.py           # JR Engine (Purpose/Reasons/Brakes)
+│   ├── Claude_Code_6.py           # JR Engine (Purpose/Reasons/Brakes)
 │   ├── cor.py                 # Unified orchestrator ⭐
 │   ├── shadowtag.py           # Cryptographic watermarking ⭐
 │   └── ns.py                  # Semantic memory retrieval ⭐
@@ -150,7 +150,7 @@ src/
 │
 ├── examples/                  # Working examples ⭐ NEW
 │   ├── basic_function_calling.py   # Simple migration demo
-│   ├── judge_six_example.py        # JR validation demo
+│   ├── Claude_Code_6_example.py        # JR validation demo
 │   ├── full_pnkln_stack.py         # Complete integration
 │   └── unified_poc_demo.py         # Proof of concept
 │
@@ -167,7 +167,7 @@ src/
 │   ├── __init__.py
 │   ├── base.py
 │   ├── atp_519_scan.py
-│   ├── judge_six.py
+│   ├── Claude_Code_6.py
 │   └── audit_compress.py
 │
 ├── ratings/                   # (Duplicated from app/ for src/ usage)
@@ -185,17 +185,17 @@ src/
 ├── tests/                     # Comprehensive test suite ⭐ NEW
 │   ├── __init__.py
 │   ├── test_latency.py        # P99 latency validation
-│   ├── test_judge_six.py      # JR validation tests
+│   ├── test_Claude_Code_6.py      # JR validation tests
 │   ├── test_benchmarks.py     # Performance benchmarks
 │   └── test_pnkln_integration.py  # Integration tests
 │
 └── __init__.py
 ```
 
-#### Src/judge_six/ - Standalone JR Engine (8 files)
+#### Src/Claude_Code_6/ - Standalone JR Engine (8 files)
 
 ```
-src/judge_six/
+src/Claude_Code_6/
 ├── __init__.py
 ├── jr_engine.py              # Core engine
 ├── models.py                 # Data models
@@ -242,7 +242,7 @@ from src.core import GeminiFunctionCaller, FunctionTool
 
 tools = [
     FunctionTool(name="atp_519_scan", function=atp_scan_local),
-    FunctionTool(name="judge_six_classify", function=judge_local),
+    FunctionTool(name="Claude_Code_6_classify", function=judge_local),
     FunctionTool(name="audit_compress", function=compress_local),
 ]
 
@@ -538,7 +538,7 @@ Cor Orchestrator (Validate → Execute → Watermark → Store)
 1. Gemini 2.0 Flash baseline: 45ms (fastest model)
 2. Single API call vs 3 (saves ~20ms)
 3. Local function execution (no network overhead)
-4. Optimized PyTorch CPU inference (judge_six kernel)
+4. Optimized PyTorch CPU inference (Claude_Code_6 kernel)
 5. zstd compression (fastest lossless algorithm)
 
 ---
@@ -619,7 +619,7 @@ Cor Orchestrator (Validate → Execute → Watermark → Store)
 
 **src/pnkln/ (5) - PNKLN Core Stack:**
 
-- `judge_six.py` - JR Engine (Purpose/Reasons/Brakes) validation
+- `Claude_Code_6.py` - JR Engine (Purpose/Reasons/Brakes) validation
 - `cor.py` - Unified orchestrator (Validate → Execute → Watermark → Store)
 - `shadowtag.py` - Cryptographic watermarking (Ed25519 + Merkle trees)
 - `ns.py` - Semantic memory retrieval (vector-based context)
@@ -634,14 +634,14 @@ Cor Orchestrator (Validate → Execute → Watermark → Store)
 **src/examples/ (4) - Working Examples:**
 
 - `basic_function_calling.py` - Simple AutoGen → Gemini migration demo
-- `judge_six_example.py` - JR validation demonstration
+- `Claude_Code_6_example.py` - JR validation demonstration
 - `full_pnkln_stack.py` - Complete integration example
 - `unified_poc_demo.py` - Proof of concept demonstration
 
 **src/tests/ (5) - Comprehensive Test Suite:**
 
 - `test_latency.py` - P99 latency validation (<90ms SLA)
-- `test_judge_six.py` - JR Engine validation tests
+- `test_Claude_Code_6.py` - JR Engine validation tests
 - `test_benchmarks.py` - Performance benchmarking
 - `test_pnkln_integration.py` - Full stack integration tests
 - `__init__.py`
@@ -661,7 +661,7 @@ Cor Orchestrator (Validate → Execute → Watermark → Store)
 ### Total Project Inventory (124 files)
 
 **Documentation:** 31 files
-**Code:** 93 files (36 app/ + 33 src/ + 8 src/judge_six/ + 5 tests/ + 5 src/tests/ + 6 config)
+**Code:** 93 files (36 app/ + 33 src/ + 8 src/Claude_Code_6/ + 5 tests/ + 5 src/tests/ + 6 config)
 
 ---
 
@@ -699,7 +699,7 @@ pytest src/tests/test_benchmarks.py --benchmark-only
 python src/examples/basic_function_calling.py
 
 # JR Engine validation
-python src/examples/judge_six_example.py
+python src/examples/Claude_Code_6_example.py
 
 # Full PNKLN stack
 python src/examples/full_pnkln_stack.py
@@ -708,7 +708,7 @@ python src/examples/full_pnkln_stack.py
 python src/examples/unified_poc_demo.py
 
 # Standalone JR Engine (original)
-PYTHONPATH=/home/user/ShadowTag-v2-fastapi-services/src python3 src/judge_six/example.py
+PYTHONPATH=/home/user/ShadowTag-v2-fastapi-services/src python3 src/Claude_Code_6/example.py
 ```
 
 ---

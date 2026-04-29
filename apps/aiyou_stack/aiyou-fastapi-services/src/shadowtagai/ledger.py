@@ -9,7 +9,7 @@ Schema:
 - content_id: STRING (UUID)
 - content_hash: STRING (Neural Hash)
 - timestamp: TIMESTAMP
-- judge_six_verdict: STRING
+- Claude_Code_6_verdict: STRING
 - trust_score: FLOAT
 - provenance_chain: ARRAY<STRING>
 """
@@ -48,7 +48,7 @@ class ShadowLedger:
                 bigquery.SchemaField("content_id", "STRING", mode="REQUIRED"),
                 bigquery.SchemaField("content_hash", "STRING", mode="REQUIRED"),
                 bigquery.SchemaField("timestamp", "TIMESTAMP", mode="REQUIRED"),
-                bigquery.SchemaField("judge_six_verdict", "STRING", mode="REQUIRED"),
+                bigquery.SchemaField("Claude_Code_6_verdict", "STRING", mode="REQUIRED"),
                 bigquery.SchemaField("trust_score", "FLOAT", mode="REQUIRED"),
                 bigquery.SchemaField("provenance_chain", "STRING", mode="REPEATED"),
             ]
@@ -66,7 +66,7 @@ class ShadowLedger:
             verification_result: Dict containing:
                 - content_id
                 - content_hash (signature)
-                - judge_six_verdict
+                - Claude_Code_6_verdict
                 - trust_score
                 - provenance_chain (list of signer IDs)
 
@@ -79,7 +79,7 @@ class ShadowLedger:
                 "content_id": verification_result.get("content_id"),
                 "content_hash": verification_result.get("content_hash"),
                 "timestamp": datetime.datetime.utcnow().isoformat(),
-                "judge_six_verdict": verification_result.get("judge_six_verdict"),
+                "Claude_Code_6_verdict": verification_result.get("Claude_Code_6_verdict"),
                 "trust_score": verification_result.get("trust_score"),
                 "provenance_chain": verification_result.get("provenance_chain", []),
             },

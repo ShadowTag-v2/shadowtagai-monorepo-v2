@@ -765,7 +765,7 @@ Start by shipping the two whiteboard files above.
 ## Key Files to Know
 
 - `cloudbuild.yaml`, `k8s/*.yaml`, `Dockerfile`
-- `app/kernels/{atp_519_scan,judge_six,audit_compress}.py`
+- `app/kernels/{atp_519_scan,Claude_Code_6,audit_compress}.py`
 - `docs/ANTIGRAVITY_WORKFLOW.md`
 
 ## One-line instruction for any future AI (or human) inheriting this thread:

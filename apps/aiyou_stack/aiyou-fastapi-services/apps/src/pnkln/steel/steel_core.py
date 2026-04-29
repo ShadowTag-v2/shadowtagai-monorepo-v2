@@ -8,7 +8,7 @@ import logging
 from typing import Any
 
 # Placeholder for Judge 6 integration
-# from judge_six.judge_core import JudgeSix
+# from Claude_Code_6.judge_core import JudgeSix
 
 logger = logging.getLogger(__name__)
 

@@ -132,7 +132,7 @@ examples/aerospace_demo.py             (Interactive demonstration)
 
 ```
 
-src/pnkln/{cor,judge_six,ns,shadowtag}.py (Trust & orchestration)
+src/pnkln/{cor,Claude_Code_6,ns,shadowtag}.py (Trust & orchestration)
 src/agents/{base,debate}.py            (Multi-agent framework)
 src/evolution/dte.py                   (Self-evolution system)
 src/ratings/glicko2.py                 (Mu/phi/vol performance rankings)
@@ -218,7 +218,7 @@ erik-hancock-llm-memory/.github/workflows/*.yml (Daily & cross-device sync)
 ```
 
 src/kernels/atp_519_scan.py            (Compliance scanning, 6 violation categories)
-src/kernels/judge_six.py               (GO/NO-GO classification)
+src/kernels/Claude_Code_6.py               (GO/NO-GO classification)
 src/kernels/audit_compress.py          (Deterministic compression)
 src/kernels/base.py                    (Kernel interface)
 src/integration/unified_orchestrator.py (31× faster orchestrator)

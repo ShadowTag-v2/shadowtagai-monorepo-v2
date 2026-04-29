@@ -43,7 +43,7 @@ def shadowtagai_agent_pattern():
 
     result = execute(task, guardrails=jr_decision.constraints)
 
-    if not judge_six.verify(result, sla_p99=90):
+    if not Claude_Code_6.verify(result, sla_p99=90):
         return rollback_and_log(result)
 
     return result + shadowtag_v2.watermark()

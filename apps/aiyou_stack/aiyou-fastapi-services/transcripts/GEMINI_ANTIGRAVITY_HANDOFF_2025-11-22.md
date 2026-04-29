@@ -256,7 +256,7 @@ I successfully integrated **n-autoresearch/Kosmos/BioAgents** (200-agent code ge
 **Action**:
 
 
-- Implemented `judge_six_binary()` in MCP bridge
+- Implemented `Claude_Code_6_binary()` in MCP bridge
 
 
 - Compressed kernel → binary output in <1ms

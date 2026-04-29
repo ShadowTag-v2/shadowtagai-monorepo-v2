@@ -463,7 +463,7 @@ User-Agent: GeminiIngestionBot/1.0 (+https://yourorg.com/ingestion-policy)
 ### Documentation
 
 - Full Analysis: `GEMINI_INGESTION_LAYER_INCEPTION_ANALYSIS.md`
-- Integration with Judge 6: `JUDGE_SIX_INCEPTION_ANALYSIS.md`
+- Integration with Judge 6: `Claude_Code_6_INCEPTION_ANALYSIS.md`
 - Implementation Guide: TBD (Week 1)
 - API Reference: TBD (Week 2)
 
@@ -503,4 +503,4 @@ User-Agent: GeminiIngestionBot/1.0 (+https://yourorg.com/ingestion-policy)
 ---
 
 _For detailed analysis, see `GEMINI_INGESTION_LAYER_INCEPTION_ANALYSIS.md` (full 25+ page report)_
-_For enforcement/validation analysis, see `JUDGE_SIX_INCEPTION_ANALYSIS.md` (complementary PNKLN component)_
+_For enforcement/validation analysis, see `Claude_Code_6_INCEPTION_ANALYSIS.md` (complementary PNKLN component)_

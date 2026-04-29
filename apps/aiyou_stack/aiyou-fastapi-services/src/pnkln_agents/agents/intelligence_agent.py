@@ -34,13 +34,13 @@ from typing import Any
 
 from ..config.ingestion_config import DEFAULT_INGESTION_CONFIG, IngestionConfig
 from ..core.agent_pattern import AgentStatus, AgentTask, ShadowTagAiAgent
+from ..core.Claude_Code_6_lite import VerificationResult
 from ..core.gemini_ingestion import (
     GeminiIngestionLayer,
     IngestionResult,
     Source,
 )
 from ..core.jr_engine import Reason
-from ..core.judge_six_lite import VerificationResult
 
 
 @dataclass
@@ -233,7 +233,7 @@ class IntelligenceAgent(ShadowTagAiAgent):
             "involves_pii": False,  # Intelligence collection, not personal data
         }
 
-        verification_result = self.judge_six.verify(verification_data, context=verification_context)
+        verification_result = self.Claude_Code_6.verify(verification_data, context=verification_context)
 
         # Step 4: Generate AM briefing
         briefing = self.ingestion_layer.export_am_briefing(
@@ -278,10 +278,10 @@ class IntelligenceAgent(ShadowTagAiAgent):
             },
         )
 
-    def _verify_with_judge_six(self, result: IntelligenceResult, context: dict[str, Any]):
+    def _verify_with_Claude_Code_6(self, result: IntelligenceResult, context: dict[str, Any]):
         """Override to skip redundant verification (already done in _execute_task)"""
         # Verification already performed in _execute_task
-        return result.verification_result or super()._verify_with_judge_six(result, context)
+        return result.verification_result or super()._verify_with_Claude_Code_6(result, context)
 
     def register_source(self, source: Source):
         """Register a data source for ingestion"""
