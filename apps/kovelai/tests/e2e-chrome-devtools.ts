@@ -49,8 +49,10 @@ export const KOVELAI_E2E_TESTS: E2ETestCase[] = [
     steps: [
       { action: 'navigate', value: 'http://localhost:3000' },
       { action: 'wait', value: 'Search securely', timeout: 5000 },
+      // biome-ignore lint/security/noSecrets: CSS selector for E2E test, not a secret
       { action: 'click', target: 'input[placeholder*="Search securely"]' },
       { action: 'type', value: 'attorney-client privilege waiver AI' },
+      // biome-ignore lint/security/noSecrets: CSS selector for E2E test, not a secret
       { action: 'click', target: 'button[type="submit"]' },
       { action: 'wait', value: 'Searching', timeout: 2000 },
       { action: 'screenshot' },

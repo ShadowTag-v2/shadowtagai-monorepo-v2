@@ -9,7 +9,7 @@ Consolidates all Phase 5 security items from the AGNT STATE B Spec:
   P5.4 — Context Decay Warning System
 
 Usage:
-    from packages.tool_gateway.security import SecurityHardening
+    from tool_gateway.security import SecurityHardening
     sec = SecurityHardening()
     sec.check_subcommand_count(command)
     sec.check_context_decay(current_tokens, max_tokens)

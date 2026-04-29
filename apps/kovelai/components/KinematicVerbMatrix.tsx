@@ -128,6 +128,7 @@ export function KinematicVerbMatrix({
       <div style={styles.rollUpGrid}>
         {causesOfAction.map((coa) => (
           <button
+            type="button"
             key={coa.action}
             onClick={() => setFilterAction(filterAction === coa.action ? null : coa.action)}
             style={{

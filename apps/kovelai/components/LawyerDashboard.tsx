@@ -108,7 +108,8 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
   const polygonPoints = points.map((p) => `${p.x},${p.y}`).join(' ');
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img">
+      <title>Client risk radar chart</title>
       {/* Grid rings */}
       {Array.from({ length: levels }, (_, i) => {
         const r = ((i + 1) / levels) * maxRadius;
@@ -364,14 +365,10 @@ export function LawyerDashboard() {
             Client Activity
           </h2>
           {clients.map((client) => (
-            <div
+            <button
+              type="button"
               key={client.clientId}
               onClick={() => setSelectedClient(client)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedClient(client);
-              }}
               style={{
                 padding: '16px',
                 marginBottom: '8px',
@@ -391,7 +388,7 @@ export function LawyerDashboard() {
                 </div>
               </div>
               <RiskBadge level={client.riskLevel} />
-            </div>
+            </button>
           ))}
         </div>
 

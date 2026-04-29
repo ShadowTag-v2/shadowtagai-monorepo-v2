@@ -9,7 +9,7 @@ When AGNT_DUMP_PROMPTS=1, writes full Gemini API payloads to
 brain/{conv}/prompt_dumps/ for debugging and analysis.
 
 Usage:
-    from packages.telemetry.prompt_dump import PromptDumper
+    from telemetry.prompt_dump import PromptDumper
     dumper = PromptDumper(dump_dir=Path("brain/conv-123/prompt_dumps"))
     dumper.dump_request(model, messages, params)
     dumper.dump_response(response_data)

@@ -99,8 +99,10 @@ export function useDeadManSwitch(config: DeadManSwitchConfig) {
   // ── User Activity Listeners ───────────────────────────────────
   useEffect(() => {
     const events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'];
-    events.forEach((event) => document.addEventListener(event, resetTimer));
-    return () => events.forEach((event) => document.removeEventListener(event, resetTimer));
+    for (const event of events) document.addEventListener(event, resetTimer);
+    return () => {
+      for (const event of events) document.removeEventListener(event, resetTimer);
+    };
   }, [resetTimer]);
 
   // ── Beforeunload Cleanup ──────────────────────────────────────

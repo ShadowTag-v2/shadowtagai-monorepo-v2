@@ -242,7 +242,8 @@ export function EphemeralSearchIntegrated({
       </form>
 
       {/* Results — No copy, no export, no right-click */}
-      <div
+      <section
+        aria-label="Search results"
         style={{ maxWidth: '800px', margin: '0 auto' }}
         onCopy={(e) => e.preventDefault()}
         onContextMenu={(e) => e.preventDefault()}
@@ -273,7 +274,7 @@ export function EphemeralSearchIntegrated({
         {results.length === 0 && !isSearching && query && (
           <p style={{ textAlign: 'center', color: '#484f58' }}>No results found.</p>
         )}
-      </div>
+      </section>
 
       {/* Footer */}
       <div

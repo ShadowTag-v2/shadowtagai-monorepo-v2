@@ -21,8 +21,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from packages.tool_gateway.contracts import Contract, ContractRegistry
-from packages.tool_gateway.evidence import EvidenceLogger
+from tool_gateway.contracts import Contract, ContractRegistry
+from tool_gateway.evidence import EvidenceLogger
 
 logger = logging.getLogger(__name__)
 

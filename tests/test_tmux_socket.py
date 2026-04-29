@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import patch, MagicMock
 from agnt_tmux.tmux_socket import TmuxSocketManager
 

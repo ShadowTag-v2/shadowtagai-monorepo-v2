@@ -60,7 +60,9 @@ export default function HeppnerEvaporatingChat({
 
     // 2. Purge service worker caches
     try {
-      caches.keys().then((names) => names.forEach((name) => caches.delete(name)));
+      caches.keys().then((names) => {
+        for (const name of names) caches.delete(name);
+      });
     } catch {
       /* noop */
     }
@@ -152,7 +154,7 @@ export default function HeppnerEvaporatingChat({
   const isSystem = role === 'system';
 
   return (
-    <div
+    <article
       id={`msg-${messageId}`}
       onCopy={blockCopy}
       onContextMenu={blockContextMenu}
@@ -229,6 +231,6 @@ export default function HeppnerEvaporatingChat({
           🛡️ Protected under US v. Heppner · Auto-purge in {timeRemaining || '24h'}
         </div>
       )}
-    </div>
+    </article>
   );
 }

@@ -24,7 +24,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from packages.context_compactor.layers import (
+from context_compactor.layers import (
     AUTOCOMPACT_BUFFER_TOKENS,
     WARNING_THRESHOLD_BUFFER_TOKENS,
     CompactionResult,

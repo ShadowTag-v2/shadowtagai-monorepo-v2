@@ -13,8 +13,8 @@ Implements a 4-layer progressive compaction strategy:
 Reference: agnt_state_b_implementation_spec.md P1.1
 """
 
-from packages.context_compactor.compactor import ContextCompactor
-from packages.context_compactor.layers import (
+from context_compactor.compactor import ContextCompactor
+from context_compactor.layers import (
     Layer1CachedMC,
     Layer2TimeBased,
     Layer3APIManagement,

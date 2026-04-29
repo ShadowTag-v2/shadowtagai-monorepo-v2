@@ -18,7 +18,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from packages.telemetry.catalog import TelemetryEvent
+from telemetry.catalog import TelemetryEvent
 
 logger = logging.getLogger(__name__)
 

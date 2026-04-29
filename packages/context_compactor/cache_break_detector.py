@@ -31,7 +31,7 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any
 
-from packages.context_compactor.layers import Message
+from context_compactor.layers import Message
 
 logger = logging.getLogger(__name__)
 

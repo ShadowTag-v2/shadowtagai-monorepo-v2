@@ -27,8 +27,8 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Any
 
-from packages.firebase_tool_bridge.evidence import EvidenceLogger
-from packages.firebase_tool_bridge.registry import FunctionRegistry, RiskTier
+from firebase_tool_bridge.evidence import EvidenceLogger
+from firebase_tool_bridge.registry import FunctionRegistry, RiskTier
 
 logger = logging.getLogger(__name__)
 

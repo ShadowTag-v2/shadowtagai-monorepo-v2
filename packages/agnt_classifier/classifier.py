@@ -12,6 +12,43 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+# ── XML Intent Router (Domain Classifier) ──
+
+# Map XML tag names to agent domains
+_TAG_DOMAIN_MAP = {
+    "intent": "db_architect",
+    "search": "osint_agent",
+    "code": "code_agent",
+    "deploy": "deploy_agent",
+}
+
+
+class XMLClassifier:
+    """Simple XML-tag intent router.
+
+    Extracts the outermost XML tag and maps it to an agent domain.
+    Unknown tags route to 'general_agent'.
+    """
+
+    def classify(self, text: str) -> str:
+        match = re.match(r"<(\w+)>", text.strip())
+        if match:
+            tag = match.group(1).lower()
+            return _TAG_DOMAIN_MAP.get(tag, "general_agent")
+        return "general_agent"
+
+    @staticmethod
+    def strip_xml(text: str) -> str:
+        """Remove all XML elements (tag pairs + content) from text, returning plain content."""
+        # First remove matched tag pairs with their content
+        stripped = re.sub(r"<(\w+)[^>]*>.*?</\1>", "", text, flags=re.DOTALL)
+        # Then remove any remaining standalone tags
+        stripped = re.sub(r"<[^>]+>", "", stripped)
+        return stripped.strip()
+
+
+# ── Two-Stage Security Classifier ──
+
 
 def fail_closed_handler(func):
     """P5.1: Any exception in classifier MUST result in DENY/BLOCK."""

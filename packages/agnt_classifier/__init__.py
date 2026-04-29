@@ -5,7 +5,16 @@
 Reference: AGNT STATE B Spec P2.1
 """
 
-from packages.agnt_classifier.classifier import AGNTClassifier
-from packages.agnt_classifier.allowlist import SAFE_ALLOWLIST, is_allowlisted
+from agnt_classifier.classifier import XMLClassifier, TwoStageClassifier
+from agnt_classifier.allowlist import SAFE_ALLOWLIST, is_allowlisted
+from agnt_classifier.agnt_api import AGNTClassifier, ClassifierVerdict, ClassifierResult
 
-__all__ = ["AGNTClassifier", "SAFE_ALLOWLIST", "is_allowlisted"]
+__all__ = [
+    "XMLClassifier",
+    "TwoStageClassifier",
+    "AGNTClassifier",
+    "ClassifierVerdict",
+    "ClassifierResult",
+    "SAFE_ALLOWLIST",
+    "is_allowlisted",
+]
