@@ -1,5 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
+
 class GAASAutopilot:
     def calculate_path(self, waypoints, wind):
         print(f"    [GAAS] Computing path for {len(waypoints)} waypoints with wind {wind}kts...")

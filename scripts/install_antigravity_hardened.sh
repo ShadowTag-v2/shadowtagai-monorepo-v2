@@ -14,7 +14,7 @@ python3 "$MONOREPO_ROOT/scripts/add_copyright.py"
 
 echo "=== 3. Executing Omni-Autolint Daemon ==="
 # Fix pyproject.toml before ruff if necessary
-sed -i '' 's/src-path/src/g' "$MONOREPO_ROOT/scratch/repos/everything-claude-code/pyproject.toml" || true
+find "$MONOREPO_ROOT" -name "pyproject.toml" -exec sed -i '' 's/src-path/src/g' {} + 2>/dev/null || true
 python3 "$MONOREPO_ROOT/scripts/gca_autolint_daemon.py" --yes
 
 echo "=== 4. Running SkillOps Audit ==="

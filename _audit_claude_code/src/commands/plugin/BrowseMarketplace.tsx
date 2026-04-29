@@ -764,26 +764,23 @@ export function BrowseMarketplace({
           {!selectedPlugin.entry.commands &&
             !selectedPlugin.entry.agents &&
             !selectedPlugin.entry.hooks &&
-            !selectedPlugin.entry.mcpServers && (
-              <>
-                {typeof selectedPlugin.entry.source === 'object' &&
-                'source' in selectedPlugin.entry.source &&
-                (selectedPlugin.entry.source.source === 'github' ||
-                  selectedPlugin.entry.source.source === 'url' ||
-                  selectedPlugin.entry.source.source === 'npm' ||
-                  selectedPlugin.entry.source.source === 'pip') ? (
-                  <Text dimColor>· Component summary not available for remote plugin</Text>
-                ) : (
-                  // TODO: Actually scan local plugin directories to show real components
-                  // This would require accessing the filesystem to check for:
-                  // - commands/ directory and list files
-                  // - agents/ directory and list files
-                  // - hooks/ directory and list files
-                  // - .mcp.json or mcp-servers.json files
-                  <Text dimColor>· Components will be discovered at installation</Text>
-                )}
-              </>
-            )}
+            !selectedPlugin.entry.mcpServers &&
+            (typeof selectedPlugin.entry.source === 'object' &&
+            'source' in selectedPlugin.entry.source &&
+            (selectedPlugin.entry.source.source === 'github' ||
+              selectedPlugin.entry.source.source === 'url' ||
+              selectedPlugin.entry.source.source === 'npm' ||
+              selectedPlugin.entry.source.source === 'pip') ? (
+              <Text dimColor>· Component summary not available for remote plugin</Text>
+            ) : (
+              // TODO: Actually scan local plugin directories to show real components
+              // This would require accessing the filesystem to check for:
+              // - commands/ directory and list files
+              // - agents/ directory and list files
+              // - hooks/ directory and list files
+              // - .mcp.json or mcp-servers.json files
+              <Text dimColor>· Components will be discovered at installation</Text>
+            ))}
         </Box>
 
         <PluginTrustWarning />

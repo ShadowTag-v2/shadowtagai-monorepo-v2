@@ -92,6 +92,7 @@
         "SWITCHBOARD_WORKSPACE_ROOT": "."
       },
       "note": "Routing firewall and task orchestrator. Queues external data retrieval without exposing raw API keys to the agent context."
+    },
     "mnemos-memory": {
       "command": "node",
       "args": ["external_repos/mnemos/build/index.js"],

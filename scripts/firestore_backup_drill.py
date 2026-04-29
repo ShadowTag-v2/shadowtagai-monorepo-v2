@@ -59,7 +59,7 @@ def verify_backup_metadata(folder: str) -> bool:
     """Check if backup folder contains valid metadata."""
     logger.info("🔍 Verifying: %s", folder)
     out = run(["gcloud", "storage", "ls", folder, f"--project={PROJECT}"])
-    has_metadata = "all_namespaces" in out or ".overall_export_metadata" in out
+    has_metadata = "all_namespaces" in out or "overall_export_metadata" in out
     status = "✅ Valid" if has_metadata else "❌ Missing metadata"
     logger.info("   %s", status)
     return has_metadata
