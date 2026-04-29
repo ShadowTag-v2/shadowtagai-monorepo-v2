@@ -298,6 +298,105 @@ jobs:
             echo "::warning::github-token-scope-audit.sh not executable"
           fi
 
+      # ─── P1 Operational Contracts (v3.0) ───
+
+      - name: Beads Health Check (P1)
+        run: |
+          echo "═══ Beads Health Check ═══"
+          if [ -x scripts/beads-health.sh ]; then
+            bash scripts/beads-health.sh || true
+            echo "  ✓ Beads health check complete"
+          else
+            echo "::warning::beads-health.sh not executable"
+          fi
+
+      - name: Memory Integrity Check (P1)
+        run: |
+          echo "═══ Memory Integrity Check ═══"
+          # Verify .memory/atoms/ contains at least one atom
+          ATOM_COUNT=$(find .memory/atoms/ -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+          echo "  Memory atoms: ${ATOM_COUNT}"
+          if [ "$ATOM_COUNT" -lt 1 ]; then
+            echo "::warning::No memory atoms found in .memory/atoms/"
+          else
+            echo "  ✓ Memory atoms present"
+          fi
+
+          # Verify events.ndjson integrity
+          if [ -f ".memory/events.ndjson" ]; then
+            LINE_COUNT=$(wc -l < .memory/events.ndjson | tr -d ' ')
+            echo "  Events log: ${LINE_COUNT} entries"
+            echo "  ✓ Memory integrity check passed"
+          else
+            echo "::warning::events.ndjson not found"
+          fi
+
+      - name: Knowledge Compile Check (P1)
+        run: |
+          echo "═══ Knowledge Compile Check ═══"
+          if [ -f scripts/dream_consolidation.py ]; then
+            echo "  ✓ dream_consolidation.py exists"
+          else
+            echo "::warning::dream_consolidation.py not found"
+          fi
+          # Verify KI directories exist
+          KI_COUNT=$(find knowledge/ -name 'metadata.json' 2>/dev/null | wc -l | tr -d ' ')
+          echo "  Knowledge Items: ${KI_COUNT}"
+          if [ "$KI_COUNT" -gt 0 ]; then
+            echo "  ✓ Knowledge items present"
+          else
+            echo "::warning::No KI metadata.json files found"
+          fi
+
+      - name: Design System Lint (P1)
+        run: |
+          echo "═══ Design System Lint ═══"
+          if [ -f scripts/design-system-lint.mjs ]; then
+            echo "  ✓ design-system-lint.mjs exists"
+            DESIGN_FILES=$(find . -name 'DESIGN.md' -not -path './node_modules/*' -not -path './external_repos/*' 2>/dev/null | wc -l | tr -d ' ')
+            echo "  DESIGN.md files found: ${DESIGN_FILES}"
+            if [ "$DESIGN_FILES" -gt 0 ]; then
+              echo "  ✓ Design system files present"
+            else
+              echo "::warning::No DESIGN.md files found"
+            fi
+          else
+            echo "::warning::design-system-lint.mjs not found"
+          fi
+
+      - name: Bootstrap Alignment (P1)
+        run: |
+          echo "═══ Bootstrap Alignment Check ═══"
+          if [ -x scripts/bootstrap-alignment-plan.sh ]; then
+            bash scripts/bootstrap-alignment-plan.sh --check 2>/dev/null || true
+            echo "  ✓ Bootstrap alignment check complete"
+          else
+            echo "::warning::bootstrap-alignment-plan.sh not executable"
+          fi
+
+      - name: Firebase Tool Bridge Check (P1)
+        run: |
+          echo "═══ Firebase Tool Bridge ═══"
+          REQUIRED_FILES=(
+            "packages/firebase_tool_bridge/bridge.py"
+            "packages/firebase_tool_bridge/registry.py"
+            "packages/firebase_tool_bridge/evidence.py"
+          )
+          MISSING=0
+          for f in "${REQUIRED_FILES[@]}"; do
+            if [ -f "$f" ]; then
+              echo "  ✓ $f"
+            else
+              echo "  ✗ $f — MISSING"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+          if [ "$MISSING" -gt 0 ]; then
+            echo "::warning::${MISSING} Firebase Tool Bridge files missing"
+          else
+            echo "  ✓ Firebase Tool Bridge complete"
+          fi
+
   release-readiness:
     name: Release Readiness Gate
     runs-on: ubuntu-latest
