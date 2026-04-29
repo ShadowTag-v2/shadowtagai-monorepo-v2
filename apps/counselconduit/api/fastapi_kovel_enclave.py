@@ -76,6 +76,7 @@ try:
     from apps.counselconduit.api.cloud_tasks_gdpr_handler import router as gdpr_handler_router
     from apps.counselconduit.api.deprecation_middleware import DeprecationMiddleware
     from apps.counselconduit.api.dispatch_router import router as dispatch_router
+    from apps.counselconduit.api.middleware_ant import AntGateMiddleware
     from apps.counselconduit.api.gdpr import router as gdpr_router
     from apps.counselconduit.api.kovel_attestation import router as attestation_router
     from apps.counselconduit.api.magic_link import router as onboarding_router
@@ -98,6 +99,7 @@ except ImportError:
     from api.cloud_tasks_gdpr_handler import router as gdpr_handler_router  # type: ignore[no-redef]
     from api.deprecation_middleware import DeprecationMiddleware  # type: ignore[no-redef]
     from api.dispatch_router import router as dispatch_router  # type: ignore[no-redef]
+    from api.middleware_ant import AntGateMiddleware  # type: ignore[no-redef]
     from api.gdpr import router as gdpr_router  # type: ignore[no-redef]
     from api.kovel_attestation import router as attestation_router  # type: ignore[no-redef]
     from api.magic_link import router as onboarding_router  # type: ignore[no-redef]
@@ -195,6 +197,9 @@ app.add_middleware(SandboxMiddleware)
 
 # RFC 8594: Deprecation + Sunset headers on versioned routes
 app.add_middleware(DeprecationMiddleware)
+
+# Cor.Ant: Inject user_type (ant/external) into request.state
+app.add_middleware(AntGateMiddleware)
 
 # Cor.30: Opaque error handling — never expose stack traces
 app.add_exception_handler(AppError, app_error_handler)
