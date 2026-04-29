@@ -12,7 +12,7 @@ Tests the middleware that injects USER_TYPE into request state, ensuring:
 from __future__ import annotations
 
 import os
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -84,7 +84,7 @@ class TestAntGateMiddlewareDefault:
             return response
 
         with patch.dict(os.environ, {"ENABLE_ANT_GATE": "false"}):
-            result = await middleware.dispatch(request, call_next)
+            await middleware.dispatch(request, call_next)
 
         assert request.state.user_type == "external"
 
@@ -138,7 +138,7 @@ class TestAntGateMiddlewareEnabled:
             return response
 
         with patch.dict(os.environ, {"ENABLE_ANT_GATE": "1"}):
-            result = await middleware.dispatch(request, call_next)
+            await middleware.dispatch(request, call_next)
 
         assert request.state.user_type == "ant"
 
