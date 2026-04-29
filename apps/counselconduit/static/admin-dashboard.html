@@ -262,7 +262,7 @@
 const BASE = 'https://counselconduit-767252945109.us-central1.run.app';
 let TOKEN = '';
 
-function authenticate() {
+function _authenticate() {
     TOKEN = document.getElementById('token-input').value.trim();
     if (!TOKEN) return;
     document.getElementById('auth-view').style.display = 'none';

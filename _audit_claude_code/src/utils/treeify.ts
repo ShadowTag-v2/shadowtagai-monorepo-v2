@@ -112,9 +112,7 @@ export function treeify(obj: TreeNode, options: TreeifyOptions = {}): string {
         growBranch(value, nextPrefix, isLastKey, depth + 1);
       } else if (Array.isArray(value)) {
         // Handle arrays
-        lines.push(
-          line + (shouldAddColon ? ': ' : line ? ' ' : '') + '[Array(' + value.length + ')]',
-        );
+        lines.push(`${line + (shouldAddColon ? ': ' : line ? ' ' : '')}[Array(${value.length})]`);
       } else if (showValues) {
         // Add value if showValues is true
         const valueStr = typeof value === 'function' ? '[Function]' : String(value);

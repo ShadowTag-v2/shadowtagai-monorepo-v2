@@ -3393,7 +3393,7 @@ Read the team config to discover your teammates' names. Check the task list peri
       const maxSelectionLength = 2000;
       const content =
         attachment.content.length > maxSelectionLength
-          ? attachment.content.substring(0, maxSelectionLength) + '\n... (truncated)'
+          ? `${attachment.content.substring(0, maxSelectionLength)}\n... (truncated)`
           : attachment.content;
 
       return wrapMessagesInSystemReminder([

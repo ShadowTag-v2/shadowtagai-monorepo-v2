@@ -1,5 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
+
 def tokable_script(theme, persona):
     # Placeholder for Tokable script generation
     return {

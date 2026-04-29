@@ -931,9 +931,7 @@ function getVSCodeIDECommandByParentProcess(): string | null {
             // Extract the path from the beginning to the end of the .app name
             const folderPathEnd = appIndex + appName.length;
             // These are all known VSCode variants with the same structure
-            return (
-              command.substring(0, folderPathEnd) + '/Contents/Resources/app/bin/' + executableName
-            );
+            return `${command.substring(0, folderPathEnd)}/Contents/Resources/app/bin/${executableName}`;
           }
         }
       }

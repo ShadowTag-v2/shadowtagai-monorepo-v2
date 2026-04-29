@@ -1,16 +1,15 @@
-# Scrapling Vue SPA Data Parser (HYBRID SCRAPER)
-
-## Description
-
-Advanced web scraping skill using `scrapling` and `firecrawl` to bypass anti-bot mechanisms and hydrate React/Vue single-page-applications (SPAs).
-
-## Rules
-
-1. Never use raw requests or BeautifulSoup for modern SPAs.
-2. Always arbitrate between FireCrawl's LLM extraction and Scrapling's stealth network-idle fetching.
-3. Obfuscate all web traffic via rotating `brd.superproxy.io` residential proxies.
-4. Output scraped results rigidly in JSON. Strictly drop items lacking an `id_field`.
-
-## Path
-
-`apps/src/api/agents/skills/scrapling-vue-spa-parse/`
+---
+name: "Scrapling Vue SPA Data Parser"
+id: "scrapling-vue-spa-parse"
+description: Use Scrapling to parse post-processed HTML. Resolves infinite-scroll spacing issues.
+execution:
+  script: |
+    from scrapling import Core
+    core = Core(html=user_input['rendered_html'], timeout=10)
+    items = []
+    for item in core.select(user_input['selector']):
+        item_id = item.get("data-id") or item.get("id")
+        if item_id not in [i['id'] for i in items]:
+            items.append({"id": item_id, "text": item.text})
+    return {"items": items, "total": len(items)}
+---

@@ -402,16 +402,8 @@ export function MessageSelector({
           Rewind
         </Text>
 
-        {error && (
-          <>
-            <Text color="error">Error: {error}</Text>
-          </>
-        )}
-        {!hasMessagesToSelect && (
-          <>
-            <Text>Nothing to rewind to yet.</Text>
-          </>
-        )}
+        {error && <Text color="error">Error: {error}</Text>}
+        {!hasMessagesToSelect && <Text>Nothing to rewind to yet.</Text>}
         {!error && messageToRestore && hasMessagesToSelect && (
           <>
             <Text>
