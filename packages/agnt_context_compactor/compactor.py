@@ -3,6 +3,7 @@ Context Compaction Port
 Implementation of the ~30% efficiency clear_tool_uses and clear_thinking API stripping.
 """
 
+
 def compact_tool_uses(context_blocks: list) -> list:
     """
     Strips raw tool_use blocks from context if they match 'clear_tool_uses' pattern.
@@ -12,13 +13,11 @@ def compact_tool_uses(context_blocks: list) -> list:
     for block in context_blocks:
         if block.get("type") == "tool_use" and block.get("name") in ["clear_tool_uses", "clear_thinking"]:
             # Prune or summarize
-            compacted.append({
-                "type": "text",
-                "text": f"[Compacted {block['name']} execution - {len(str(block.get('input', '')))} bytes removed]"
-            })
+            compacted.append({"type": "text", "text": f"[Compacted {block['name']} execution - {len(str(block.get('input', '')))} bytes removed]"})
         else:
             compacted.append(block)
     return compacted
+
 
 def compact_thinking(context_blocks: list) -> list:
     """
@@ -28,13 +27,11 @@ def compact_thinking(context_blocks: list) -> list:
     for block in context_blocks:
         if block.get("type") == "thinking":
             # Convert to brief metadata log
-            compacted.append({
-                "type": "text",
-                "text": "[Internal Reasoning Compacted]"
-            })
+            compacted.append({"type": "text", "text": "[Internal Reasoning Compacted]"})
         else:
             compacted.append(block)
     return compacted
+
 
 def apply_context_compaction(context: dict) -> dict:
     """
@@ -42,7 +39,7 @@ def apply_context_compaction(context: dict) -> dict:
     """
     if "messages" not in context:
         return context
-        
+
     compressed_messages = []
     for message in context["messages"]:
         content = message.get("content", [])
@@ -51,6 +48,6 @@ def apply_context_compaction(context: dict) -> dict:
             content = compact_thinking(content)
         message["content"] = content
         compressed_messages.append(message)
-        
+
     context["messages"] = compressed_messages
     return context
