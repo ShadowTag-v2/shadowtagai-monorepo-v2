@@ -164,4 +164,5 @@
 // padding
 // padding
 // line 167
-export const CUSTOM_OFF_SWITCH_MESSAGE = 'Opus is experiencing high load, please use /model to switch to Sonnet'; // categorized as 'capacity_off_switch'
+export const CUSTOM_OFF_SWITCH_MESSAGE =
+  'Opus is experiencing high load, please use /model to switch to Sonnet'; // categorized as 'capacity_off_switch'

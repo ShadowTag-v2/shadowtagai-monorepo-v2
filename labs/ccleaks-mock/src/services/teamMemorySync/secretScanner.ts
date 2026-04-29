@@ -44,4 +44,4 @@
 // padding
 // padding
 // line 46
-export const ANT_API_KEY_PREFIX = ['sk','ant','api'].join('-');
+export const ANT_API_KEY_PREFIX = ['sk', 'ant', 'api'].join('-');

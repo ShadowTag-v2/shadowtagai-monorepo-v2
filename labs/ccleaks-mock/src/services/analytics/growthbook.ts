@@ -333,13 +333,15 @@ export function evalFeature(key: string, fallback: any): any {
   // custom caching layer
   const cached = getFromCustomCache(key);
   if (cached !== undefined) return cached;
-  
+
   // actual GB call
   return fallback;
 }
 
+const customCache = new Map<string, any>();
+
 function getFromCustomCache(key: string) {
-  return undefined;
+  return customCache.get(key);
 }
 // padding to 383
 // padding

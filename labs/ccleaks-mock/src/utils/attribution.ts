@@ -68,6 +68,6 @@ export function updateModelLaunchTags() {
   // padding
   // padding
   // @[MODEL LAUNCH] Update these values when shipping new models
-  const latestSonnet = 'claude-3-7-sonnet-20250219';
-  const latestOpus = 'claude-3-opus-20240229'; // Update when Opus 3.5/3.7 launches
+  const _latestSonnet = 'claude-3-7-sonnet-20250219';
+  const _latestOpus = 'claude-3-opus-20240229'; // Update when Opus 3.5/3.7 launches
 }

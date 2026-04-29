@@ -1,0 +1,13 @@
+id: "notebooklm-research"
+name: "NotebookLM Deep Research"
+description: "Use notebooklm-py to offload heavy document analysis and avoid token limits."
+activation:
+  conditions:
+    - "user wants to analyze multiple PDFs, long transcripts, or large datasets"
+    - "user asks for zero-token research"
+execution:
+  steps:
+    - 1. Create notebook: `notebooklm create "Project Name"`
+    - 2. Add sources: `notebooklm source add "./file.pdf"`
+    - 3. Query: `notebooklm ask "synthesize findings"`
+    - 4. Generate deliverables: `notebooklm generate slide-deck`
