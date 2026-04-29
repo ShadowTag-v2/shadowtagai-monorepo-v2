@@ -207,7 +207,7 @@ KV Cache: PagedAttention with 90% GPU memory allocation
 
 ```python
 # State Graph Structure
-class Judge6State(TypedDict):
+class Cor.Claude_Code_6State(TypedDict):
     """Shared state across all Judge 6 agents"""
     document_id: str
     document_content: str
@@ -219,7 +219,7 @@ class Judge6State(TypedDict):
     agent_outputs: Dict[str, Any]
 
 # Graph Definition
-workflow = StateGraph(Judge6State)
+workflow = StateGraph(Cor.Claude_Code_6State)
 
 # Nodes (Agents)
 workflow.add_node("supervisor", supervisor_agent)

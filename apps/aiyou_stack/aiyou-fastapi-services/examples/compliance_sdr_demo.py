@@ -105,7 +105,7 @@ def demo_jr_engine():
             print(f"  - {brake.brake_type.value}: {brake.reason}")
 
 
-def demo_judge_six():
+def demo_Claude_Code_6():
     """Demonstrate Judge 6 Lite verification"""
     print_separator("Judge 6 Lite: Rule-Based Enforcement")
 
@@ -272,7 +272,7 @@ def main():
 
     try:
         demo_jr_engine()
-        demo_judge_six()
+        demo_Claude_Code_6()
         demo_compliance_sdr_agent()
         demo_revenue_model()
 

@@ -96,10 +96,10 @@ DOCKER
 # [III] GOVERNANCE ENGINE (The Law)
 # ==============================================================================
 echo ">>> [III] CODIFYING LAW..."
-mkdir -p src/governance/{judge_six,voting,memory}
+mkdir -p src/governance/{Claude_Code_6,voting,memory}
 
 # BLOCK 7: The Sentinel (Judge 6 Core)
-cat <<PYTHON > src/governance/judge_six/sentinel.py
+cat <<PYTHON > src/governance/Claude_Code_6/sentinel.py
 from src.governance.voting.cav_mtoe import CavMTOE
 class JudgeSentinel:
     def __init__(self): self.army = CavMTOE()
@@ -128,7 +128,7 @@ PYTHON
 
 # BLOCK 10: Governance Interface
 cat <<PYTHON > src/governance/api.py
-from .judge_six.sentinel import JudgeSentinel
+from .Claude_Code_6.sentinel import JudgeSentinel
 judge = JudgeSentinel()
 PYTHON
 

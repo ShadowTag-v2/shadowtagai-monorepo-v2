@@ -25,7 +25,7 @@ Real-time governance enforcement monitoring inspired by [Bottom](https://github.
 ### Mock Mode (Simulated Latency)
 
 ```bash
-python3 tui/judge6_monitor.py --mode=mock
+python3 tui/Cor.Claude_Code_6_monitor.py --mode=mock
 
 ```
 
@@ -39,7 +39,7 @@ python3 tui/judge6_monitor.py --mode=mock
 
 # Terminal 2: Run monitor in EdgeQueue mode
 
-python3 tui/judge6_monitor.py --mode=edgequeue
+python3 tui/Cor.Claude_Code_6_monitor.py --mode=edgequeue
 
 ```
 
@@ -62,14 +62,14 @@ python3 tui/judge6_monitor.py --mode=edgequeue
 
 ```
 
-judge6_monitor.py
+Cor.Claude_Code_6_monitor.py
 ├─ LatencySparklineWidget (Bottom's CPU graph)
 ├─ ViolationTableWidget (Bottom's process table)
 ├─ DecisionRateWidget (Bottom's metrics)
-└─ Judge6MonitorApp (Bottom's main app)
+└─ Cor.Claude_Code_6MonitorApp (Bottom's main app)
 
 Engines:
-├─ MockJudge6Engine (Simulated latency patterns)
+├─ MockCor.Claude_Code_6Engine (Simulated latency patterns)
 └─ EdgeQueueEngine (Real EdgeQueue runtime)
 
 ```
@@ -103,7 +103,7 @@ Engines:
 1. Deploy real CloudFlare Worker for EdgeQueue
 
 
-2. Add `judge6_engine_live.py` for production connection
+2. Add `Cor.Claude_Code_6_engine_live.py` for production connection
 
 
 3. Implement real-time alerting for SLA breaches

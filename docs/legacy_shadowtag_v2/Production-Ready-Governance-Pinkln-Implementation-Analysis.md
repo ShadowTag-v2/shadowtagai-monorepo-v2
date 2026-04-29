@@ -243,7 +243,7 @@ Kernel chaining (ATP, Judge, Audit)
 
 1. `atp_519_scan(context)` - Extract Compliance Framework violations
 
-2. `judge_six_classify(context)` - Binary go/no-go decision
+2. `Claude_Code_6_classify(context)` - Binary go/no-go decision
 
 3. `audit_compress(data)` - Compress audit trail (zstd)
 

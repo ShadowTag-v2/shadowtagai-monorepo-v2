@@ -34,7 +34,7 @@ interface ComplianceConfig {
   max_iterations: number;
   timeout_seconds: number;
   fail_fast_violations: number;
-  judge6_integration: {
+  Cor.Claude_Code_6_integration: {
     coverage_target: number;
     latency_p99_ms: number;
   };
@@ -637,7 +637,7 @@ def test_${scenario}(self):
       execution_time_ms: report.execution_time_ms,
       escalation_triggered: report.escalation_triggered,
       escalation_reason: report.escalation_reason,
-      judge6_integration: this.config.judge6_integration,
+      Cor.Claude_Code_6_integration: this.config.Cor.Claude_Code_6_integration,
     };
 
     fs.writeFileSync(filepath, JSON.stringify(auditData, null, 2), 'utf-8');

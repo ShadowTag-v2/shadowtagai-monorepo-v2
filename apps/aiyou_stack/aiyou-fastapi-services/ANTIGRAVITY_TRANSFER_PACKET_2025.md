@@ -13,7 +13,7 @@
 **Founder**: Erik Hancock ("Tiny Teams", $1B Revenue Goal).
 **Monkey Status**: **ACTIVATED** (Standing By).
 
-**Core Directive**: "Make as much money as possible... Brakes='Judge6' to keep us free of regulatory, financial, and legal pitfalls."
+**Core Directive**: "Make as much money as possible... Brakes='Cor.Claude_Code_6' to keep us free of regulatory, financial, and legal pitfalls."
 
 ---
 

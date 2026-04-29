@@ -63,11 +63,11 @@ gsutil cp test/data/sample-compliance.pdf gs://${PROJECT_ID}-compliance-docs/int
 gcloud functions logs read process-compliance-document --region=${REGION} --limit=10
 
 # 3. Check workflow completion
-gcloud firestore export gs://${PROJECT_ID}-firestore-exports --collection-ids=judge6_workflows --async
+gcloud firestore export gs://${PROJECT_ID}-firestore-exports --collection-ids=Cor.Claude_Code_6_workflows --async
 
 # 4. Verify metrics
 gcloud monitoring time-series list \
-  --filter='metric.type="custom.googleapis.com/judge6/workflow_duration_seconds"' \
+  --filter='metric.type="custom.googleapis.com/Cor.Claude_Code_6/workflow_duration_seconds"' \
   --interval-start-time=$(date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%SZ) \
   --interval-end-time=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 ```

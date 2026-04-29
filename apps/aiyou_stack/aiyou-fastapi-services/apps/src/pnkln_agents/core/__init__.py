@@ -9,6 +9,13 @@ from .agent_pattern import (  # noqa: F401
     PnklnAgent,
     SimpleAgent,
 )
+from .Claude_Code_6_lite import (
+    JudgeSixLite,
+    VerificationResult,
+    Violation,
+    ViolationSeverity,
+    ViolationType,
+)
 from .gemini_ingestion import (
     EthicalComplianceValidator,
     EthicalViolation,
@@ -23,13 +30,6 @@ from .gemini_ingestion import (
     TierClassifier,
 )
 from .jr_engine import BrakeType, JRDecision, JREngine, Purpose, Reason, RiskLevel
-from .judge_six_lite import (
-    JudgeSixLite,
-    VerificationResult,
-    Violation,
-    ViolationSeverity,
-    ViolationType,
-)
 
 __all__ = [
     # Enforcement (downstream)

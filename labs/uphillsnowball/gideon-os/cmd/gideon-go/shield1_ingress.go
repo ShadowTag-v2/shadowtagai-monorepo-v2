@@ -78,7 +78,7 @@ func ingressHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // INVARIANT 4: COORDINATOR XML PUSH
-// Workers push <task-notification> here. Go proxies it to Pub/Sub to wake KAIROS.
+// Workers push <task-notification> here. Go proxies it to Pub/Sub to wake COR.KAIROS.
 func taskNotificationHandler(w http.ResponseWriter, r *http.Request) {
 	pubsubClient.Topic("coordinator-xml-push").Publish(r.Context(), &pubsub.Message{Data: []byte("XML_RECEIVED")})
 	w.WriteHeader(http.StatusOK)

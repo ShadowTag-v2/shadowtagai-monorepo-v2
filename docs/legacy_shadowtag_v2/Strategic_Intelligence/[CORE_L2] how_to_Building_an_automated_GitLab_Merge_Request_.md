@@ -538,7 +538,7 @@ gcloud run deploy https://github.com/karpathy/autoresearchs-server \
 
 We will implement the logic from the Medium article, but upgraded for your **Keyless/WIF** setup.
 
-**Create this file on your Workstation:** `scripts/judge_six_ci.sh`
+**Create this file on your Workstation:** `scripts/Claude_Code_6_ci.sh`
 
 ```bash
 #!/bin/bash

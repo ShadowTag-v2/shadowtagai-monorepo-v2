@@ -53,7 +53,7 @@ class ViolationsScanOutput(BaseModel):
 
 
 class JudgeSixClassification(BaseModel):
-    """Output from kernel_2: judge_six_classify."""
+    """Output from kernel_2: Claude_Code_6_classify."""
 
     decision: bool = Field(..., description="Binary go/no-go decision")
     confidence: float = Field(..., ge=0.0, le=1.0)

@@ -14,7 +14,7 @@ python3 "$MONOREPO_ROOT/scripts/add_copyright.py"
 
 echo "=== 3. Executing Omni-Autolint Daemon ==="
 # Fix pyproject.toml before ruff if necessary
-sed -i '' 's/src-path/src/g' "$MONOREPO_ROOT/scratch/repos/everything-claude-code/pyproject.toml" || true
+find "$MONOREPO_ROOT" -name "pyproject.toml" -exec sed -i '' 's/src-path/src/g' {} + 2>/dev/null || true
 python3 "$MONOREPO_ROOT/scripts/gca_autolint_daemon.py" --yes
 
 echo "=== 4. Running SkillOps Audit ==="
@@ -24,7 +24,7 @@ echo "=== 5. Running Compliance Copy Scan ==="
 bash "$MONOREPO_ROOT/scripts/compliance_copy_scan_weekly.sh"
 
 echo "=== 6. Validating Core Architecture (pytest) ==="
-/opt/homebrew/bin/python3.14 -m pytest "$MONOREPO_ROOT/apps/counselconduit/tests/test_dispatch_judge6_integration.py"
+/opt/homebrew/bin/python3.14 -m pytest "$MONOREPO_ROOT/apps/counselconduit/tests/test_dispatch_Cor.Claude_Code_6_integration.py"
 
 echo "=== 7. Securing GitOps Push ==="
 python3 "$MONOREPO_ROOT/scripts/auth_github_app.py" --push

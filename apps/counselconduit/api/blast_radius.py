@@ -28,7 +28,7 @@ class BlastRadius(Flag):
 # Adding a module here is a security-critical operation.
 MODULE_BLAST_RADIUS: dict[str, BlastRadius] = {
     # Governance
-    "judge6": BlastRadius.READ | BlastRadius.BLOCK,
+    "Cor_Claude_Code_6": BlastRadius.READ | BlastRadius.BLOCK,
     "silent_detector": BlastRadius.READ,
     "auth": BlastRadius.READ | BlastRadius.BLOCK,
     # AI Pipeline

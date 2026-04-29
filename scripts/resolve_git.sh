@@ -39,7 +39,7 @@ else
   git rebase origin/main
 fi
 
-# 4. Push (requires JUDGE6_SKIP=true or judge6.sh passing)
+# 4. Push (requires COR.CLAUDE_CODE_6_SKIP=true or Cor.Claude_Code_6.sh passing)
 echo "[4/4] Pushing to origin/main..."
-JUDGE6_SKIP=true git push origin main
+COR.CLAUDE_CODE_6_SKIP=true git push origin main
 echo "=== Git state resolved ==="

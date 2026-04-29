@@ -7,7 +7,7 @@ Tests p99 latency against 90ms SLA target.
 Generates detailed reports with percentile breakdowns.
 
 Usage:
-    python test_latency.py --endpoint http://judge6.pnkln.svc.cluster.local --p99-target-ms 90
+    python test_latency.py --endpoint http://Cor_Claude_Code_6.pnkln.svc.cluster.local --p99-target-ms 90
 """
 
 import argparse
@@ -96,7 +96,7 @@ class LatencyTester:
             headers["Authorization"] = f"Bearer {self.api_key}"
 
         payload = {
-            "model": "pnkln-judge6-v1",
+            "model": "pnkln-Cor_Claude_Code_6-v1",
             "prompt": prompt,
             "max_tokens": 100,
             "temperature": 0.7,
@@ -334,7 +334,7 @@ async def main():
     parser = argparse.ArgumentParser(description="PNKLN Judge 6 Latency Validation Harness")
     parser.add_argument(
         "--endpoint",
-        default="http://judge6.pnkln.svc.cluster.local",
+        default="http://Cor_Claude_Code_6.pnkln.svc.cluster.local",
         help="Inference endpoint URL",
     )
     parser.add_argument(

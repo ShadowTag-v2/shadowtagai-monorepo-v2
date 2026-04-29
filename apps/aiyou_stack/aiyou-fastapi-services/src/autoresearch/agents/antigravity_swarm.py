@@ -24,7 +24,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from agents.autoresearch import AgentUnit, minion  # noqa: E402
-from pnkln.core.judge_six_pipeline import JudgeSix  # noqa: E402
+from pnkln.core.Claude_Code_6_pipeline import JudgeSix  # noqa: E402
 
 if TYPE_CHECKING:
     from typing import Any
@@ -247,7 +247,7 @@ class AntigravitySwarm(minion):
 def main(cycles: int = 5) -> None:
     """Run swarm demonstration."""
     logger.info("///▞ ANTIGRAVITY SWARM :: INITIALIZING")
-    logger.info("///▞ Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=Judge6")
+    logger.info("///▞ Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=Cor_Claude_Code_6")
 
     swarm = AntigravitySwarm()
     swarm.start()

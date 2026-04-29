@@ -247,7 +247,7 @@ Next: War-game YAML—GKE deployment for body. Culture ignites. Dent now.”
 
     "semantic_compression": {
       "step_1": "ATP_519_scan (95% reduction)",
-      "step_2": "judge_six_binary (single bit)",
+      "step_2": "Claude_Code_6_binary (single bit)",
       "step_3": "zstd audit (10:1)",
       "result": "487 bytes vs 50KB"
     },

@@ -22,7 +22,7 @@ def antigravity_local_infer(prompt: str, model: str = "pnkln-logic-8b", require_
         sys.exit(1)
 
     try:
-        # Antigravity explicitly invoking Pickle Rick (ANE) autonomously
+        # Antigravity explicitly invoking Omega Protocol (ANE) autonomously
         dispatch_compute(prompt, model=model)
 
         if require_json:

@@ -54,7 +54,7 @@ class ValidationResult:
             self.timestamp = datetime.now()
 
 
-class Judge6Integrator:
+class Cor_Claude_Code_6Integrator:
     """Integrates Ingestion Layer with Judge 6 validation framework.
 
     Functions:

@@ -48,7 +48,7 @@
 
 * **Visual:** A **Hypercube (Tesseract)** rotating slowly in the void. Wireframed in `#6E56CF`. It represents the Sovereign Weights.
 * **Headline:** "Sovereignty is the New Supremacy."
-* **Subhead:** "Stop renting ephemeral thoughts. **Judge6** is a sovereign architecture extracted from Google Cloud Workstations. Runs in your VPC. Owned by you."
+* **Subhead:** "Stop renting ephemeral thoughts. **Cor.Claude_Code_6** is a sovereign architecture extracted from Google Cloud Workstations. Runs in your VPC. Owned by you."
 * **CTA:** A single, glowing button: `[ INITIALIZE REACTOR ]` (Triggers Stripe Payment).
 
 ### **Section 2: The Evidence (Zero Entropy)**

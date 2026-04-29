@@ -52,7 +52,7 @@ This document describes the **complete integration** of 5 major architectural co
 │  │ LAYER 3: FUNCTION TOOLS (Kernel Concept)                        │  │
 │  │                                                                  │  │
 │  │  ATP_519_scan()          → Extract violations (168 lines)       │  │
-│  │  judge_six_classify()    → Binary go/no-go (241 lines)          │  │
+│  │  Claude_Code_6_classify()    → Binary go/no-go (241 lines)          │  │
 │  │  audit_compress()        → Audit trail compression (128 lines)  │  │
 │  │  debate_orchestrate()    → Multi-agent reasoning (192 lines)    │  │
 │  │  dte_evolve()            → Prompt evolution (268 lines)         │  │
@@ -159,7 +159,7 @@ result = caller.execute("Research quantum computing and write a report")
 
 **Purpose**: Transform intelligence collection into active reasoning
 
-#### 2.1 Judge 6 (JR Engine) - `src/pnkln/judge_six.py` (334 lines)
+#### 2.1 Judge 6 (JR Engine) - `src/pnkln/Claude_Code_6.py` (334 lines)
 
 **Purpose/Reasons/Brakes** validation framework:
 
@@ -644,7 +644,7 @@ python src/tests/test_latency.py
 
 # Validate Judge 6 integration
 
-python src/tests/test_judge_six.py
+python src/tests/test_Claude_Code_6.py
 
 # If any fail, prevent commit
 
@@ -913,7 +913,7 @@ pytest src/tests/test_pnkln_integration.py
 
 # Judge 6 validation
 
-pytest src/tests/test_judge_six.py
+pytest src/tests/test_Claude_Code_6.py
 
 # Benchmarks
 
@@ -982,7 +982,7 @@ python erik-hancock-llm-memory/scripts/extract_and_commit.py
 3. python src/tests/test_latency.py  # Performance
 
 
-4. python src/tests/test_judge_six.py  # Validation
+4. python src/tests/test_Claude_Code_6.py  # Validation
 
 ```
 

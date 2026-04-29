@@ -12,7 +12,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
                                                                              |
      |-------------------------------------------|--------|-------------------------------------------------------
      ------------------------------------------------------------------------|
-     | src/pnkln/judge_six.py                    | ✅      | Added RiskManager, MDMPPipeline, BattleDrillRouter;
+     | src/pnkln/Claude_Code_6.py                    | ✅      | Added RiskManager, MDMPPipeline, BattleDrillRouter;
      doctrine_validate(), handle_error_with_drill(), enforce_with_doctrine()   |
      | pnkln/governance/judge_architecture.py    | ✅      | Added doctrine imports, RiskLevel mapping methods,
      Layer 0 Compliance Framework CRM, Layer 0.5 FM 6-0 MDMP                                |
@@ -20,7 +20,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
      thresholds in PRTP, prtp_with_battle_drills()                             |
      | agents/swarm_boss.py                      | ✅      | Added MDMPPipeline, receive_mission_with_mdmp(),
      handle_error_with_drill(), get_doctrine_status()                             |
-     | judge6/risk_manager.py                    | ✅      | Added RA↔Doctrine mapping,
+     | Cor.Claude_Code_6/risk_manager.py                    | ✅      | Added RA↔Doctrine mapping,
      full_doctrine_assessment(), get_consensus_threshold(), get_approval_authority()                    |
      | voice_consensus/consensus_orchestrator.py | ✅      | Added Compliance Framework thresholds,
      assess_risk_and_set_threshold(), check_consensus_reached(), execute_full_consensus_with_doctrine() |
@@ -59,11 +59,11 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
 
      | File                                      | Integration                                           |
      |-------------------------------------------|-------------------------------------------------------|
-     | src/pnkln/judge_six.py                    | Import doctrine modules, add MDMP validation workflow |
+     | src/pnkln/Claude_Code_6.py                    | Import doctrine modules, add MDMP validation workflow |
      | pnkln/governance/judge_architecture.py    | Map Compliance Framework risk matrix to 21-layer validation       |
      | agents/autoresearch.py                  | Add TLP orchestration, doctrine-based voting          |
      | agents/swarm_boss.py                      | Integrate MDMP planning into swarm cycles             |
-     | judge6/risk_manager.py                    | Replace with Compliance Framework RiskManager                     |
+     | Cor.Claude_Code_6/risk_manager.py                    | Replace with Compliance Framework RiskManager                     |
      | voice_consensus/consensus_orchestrator.py | Add doctrine consensus thresholds                     |
 
      ---
@@ -71,7 +71,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
 
      Step 1: Judge 6 Doctrine Integration
 
-     Update src/pnkln/judge_six.py:
+     Update src/pnkln/Claude_Code_6.py:
 
      from kosmos.doctrine.compliance_framework import RiskManager, RiskLevel, CONSENSUS_THRESHOLDS
      from kosmos.doctrine.fm_6_0 import MDMPPipeline
@@ -188,9 +188,9 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
 
      Step 5: Risk Manager Replacement
 
-     Replace judge6/risk_manager.py with doctrine import:
+     Replace Cor.Claude_Code_6/risk_manager.py with doctrine import:
 
-     # judge6/risk_manager.py - NOW WRAPS DOCTRINE
+     # Cor.Claude_Code_6/risk_manager.py - NOW WRAPS DOCTRINE
      from kosmos.doctrine.compliance_framework import (
          RiskManager as DoctrineRiskManager,
          RiskLevel, RiskMatrix, Hazard, Control,

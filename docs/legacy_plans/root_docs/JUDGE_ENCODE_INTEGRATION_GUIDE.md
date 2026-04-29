@@ -280,7 +280,7 @@ result = orchestrator.execute(
 **7 Core Functions**:
 
 1. `atp_519_scan(context)` - Extract Compliance Framework violations
-2. `judge_six_classify(context)` - Binary go/no-go
+2. `Claude_Code_6_classify(context)` - Binary go/no-go
 3. `audit_compress(data)` - Compress audit trail
 4. `multi_agent_debate(question, num_agents)` - Collaborative reasoning
 5. `dte_evolve(prompt, strategy)` - Evolve prompts (+3.7%)

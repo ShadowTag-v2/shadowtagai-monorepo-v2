@@ -17,7 +17,7 @@ echo -e "${BLUE}DOCTRINE: GOOGLE MANAGED ONLY (NO GKE)${NC}"
 # 1. Configuration
 PROJECT_ID=$(gcloud config get-value project)
 REGION="us-central1"
-SERVICE_NAME="judge6-governance"
+SERVICE_NAME="Cor.Claude_Code_6-governance"
 
 echo -e "${GREEN}[+] Target Project: ${PROJECT_ID}${NC}"
 
@@ -44,7 +44,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
 COPY pnkln/ ./pnkln/
-CMD ["python", "src/judge6/core.py"]
+CMD ["python", "src/Cor.Claude_Code_6/core.py"]
 EOF
 fi
 

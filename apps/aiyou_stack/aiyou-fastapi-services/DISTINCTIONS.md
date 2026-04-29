@@ -21,7 +21,7 @@
 - **Difference:** `vendor/` contains external code; `libs/` contains internal code.
 - **Distinction:**
   - **Vendor** is "frozen ground." We own the copy, but not the soul. We import it (via monorepo) to _control_ it (prevent deletion, ensure availability).
-  - **Library** (`libs/`) is "living soil." It is the `shadowtag_v4` framework, the `judge_six` core. It demands `settings.json` IntelliSense because it is where the "Value Lock" is generated.
+  - **Library** (`libs/`) is "living soil." It is the `shadowtag_v4` framework, the `Claude_Code_6` core. It demands `settings.json` IntelliSense because it is where the "Value Lock" is generated.
 
 ### 3. Archive vs. Arsenal
 

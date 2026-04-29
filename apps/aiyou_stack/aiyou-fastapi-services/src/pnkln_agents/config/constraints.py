@@ -32,7 +32,7 @@ class BootstrapConstraints:
     chromadb_hosting_usd: float = 0.0  # Self-hosted
     cloudflare_workers_min_usd: float = 200.0
     cloudflare_workers_max_usd: float = 400.0
-    judge_six_maintenance_usd: float = 0.0  # No ML training yet
+    Claude_Code_6_maintenance_usd: float = 0.0  # No ML training yet
 
     def get_total_operational_cost_range(self) -> tuple[float, float]:
         """Get min/max operational cost range"""
@@ -40,13 +40,13 @@ class BootstrapConstraints:
             self.gemini_flash_min_usd
             + self.chromadb_hosting_usd
             + self.cloudflare_workers_min_usd
-            + self.judge_six_maintenance_usd
+            + self.Claude_Code_6_maintenance_usd
         )
         max_cost = (
             self.gemini_flash_max_usd
             + self.chromadb_hosting_usd
             + self.cloudflare_workers_max_usd
-            + self.judge_six_maintenance_usd
+            + self.Claude_Code_6_maintenance_usd
         )
         return min_cost, max_cost
 

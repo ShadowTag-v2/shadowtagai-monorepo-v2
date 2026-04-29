@@ -22,15 +22,15 @@ USAGE:
     python3 shadowtagai_load_tests_enhanced.py --extract
 
     # Set environment variables (optional)
-    export JUDGE6_ENDPOINT="https://judge6.shadowtagai.ai/enforce"
-    export JUDGE6_ITERATIONS=1000
+    export COR_CLAUDE_CODE_6_ENDPOINT="https://Cor_Claude_Code_6.shadowtagai.ai/enforce"
+    export COR_CLAUDE_CODE_6_ITERATIONS=1000
     export ENV=staging
 
     # Run all tests
     python3 run_all_validations.py
 
 EXTRACTION CREATES:
-    - validate_judge6_latency.py
+    - validate_Cor_Claude_Code_6_latency.py
     - validate_jr_engine_latency.py
     - validate_orchestrator_prb.py
     - run_all_validations.py
@@ -40,10 +40,10 @@ EXTRACTION CREATES:
 """
 
 # ═══════════════════════════════════════════════════════════════════
-# SCRIPT 1: validate_judge6_latency.py
+# SCRIPT 1: validate_Cor_Claude_Code_6_latency.py
 # ═══════════════════════════════════════════════════════════════════
 
-SCRIPT_JUDGE6 = '''#!/usr/bin/env python3
+SCRIPT_COR_CLAUDE_CODE_6 = '''#!/usr/bin/env python3
 """
 Judge 6 Latency Validation - Enhanced Version v2.0
 Target: P99 ≤90ms, P95 ≤65ms, P50 ≤40ms
@@ -76,10 +76,10 @@ class TestConfig:
     connect_timeout: float
 
     @classmethod
-    def from_env(cls, prefix: str = "JUDGE6"):
+    def from_env(cls, prefix: str = "COR_CLAUDE_CODE_6"):
         """Load configuration from environment variables"""
         return cls(
-            endpoint=os.getenv(f"{prefix}_ENDPOINT", "https://judge6.shadowtagai.ai/enforce"),
+            endpoint=os.getenv(f"{prefix}_ENDPOINT", "https://Cor_Claude_Code_6.shadowtagai.ai/enforce"),
             iterations=int(os.getenv(f"{prefix}_ITERATIONS", "1000")),
             warmup_iterations=int(os.getenv(f"{prefix}_WARMUP", "50")),
             concurrency=int(os.getenv(f"{prefix}_CONCURRENCY", "50")),
@@ -182,7 +182,7 @@ def detect_degradation(latencies: List[float], window_size: int = 100) -> Dict:
 # Results Export
 # ═══════════════════════════════════════════════════════════════════
 
-def export_results(results: Dict, service_name: str = "judge6"):
+def export_results(results: Dict, service_name: str = "Cor_Claude_Code_6"):
     """Export results for historical tracking and analysis"""
     timestamp = datetime.now().isoformat()
     results_dir = Path("test_results")
@@ -489,7 +489,7 @@ async def run_validation():
     print("═══════════════════════════════════════════════════════════════════")
 
     # Export results
-    export_results(results, "judge6")
+    export_results(results, "Cor_Claude_Code_6")
 
     return 0 if all_pass else 1
 
@@ -530,7 +530,7 @@ from pathlib import Path
 import sys
 
 # Configuration continues...
-# [Due to length, showing structure. Full script follows same pattern as Judge6]
+# [Due to length, showing structure. Full script follows same pattern as Cor_Claude_Code_6]
 '''
 
 SCRIPT_ORCHESTRATOR = '''#!/usr/bin/env python3
@@ -539,7 +539,7 @@ Orchestrator PRB & LLM Mix Validation - Enhanced Version v2.0
 Target: PRB ≥98%, LLM mix within ±2%
 Features: Cost projection, degradation detection, results export
 """
-# [Full implementation similar to Judge6 with cost projection added]
+# [Full implementation similar to Cor_Claude_Code_6 with cost projection added]
 '''
 
 SCRIPT_RUNNER = '''#!/usr/bin/env python3
@@ -569,7 +569,7 @@ tqdm>=4.65.0
 def extract_scripts():
     """Extract all scripts to individual files"""
     scripts = {
-        "validate_judge6_latency.py": SCRIPT_JUDGE6,
+        "validate_Cor_Claude_Code_6_latency.py": SCRIPT_COR_CLAUDE_CODE_6,
         "validate_jr_engine_latency.py": SCRIPT_JR_ENGINE,
         "validate_orchestrator_prb.py": SCRIPT_ORCHESTRATOR,
         "run_all_validations.py": SCRIPT_RUNNER,

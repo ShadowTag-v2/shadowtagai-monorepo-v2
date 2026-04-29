@@ -31,13 +31,13 @@ External Source → ingest/ → zero_trust_pipeline.py → quarantine/
 
 1. **NEVER** read raw files from `ingest/` directly into agent context
 2. **ALL** untrusted data passes through `zero_trust_pipeline.py` first
-3. Files in `quarantine/` are auto-purged after 24h by KAIROS daemon
+3. Files in `quarantine/` are auto-purged after 24h by COR.KAIROS daemon
 4. Files in `serve/` follow Obsidian Visual Graph Protocol (YAML frontmatter + WikiLinks)
-5. `monitor/` contains KAIROS heartbeat and pipeline metrics only
+5. `monitor/` contains COR.KAIROS heartbeat and pipeline metrics only
 
-## KAIROS Integration
+## COR.KAIROS Integration
 
-The KAIROS daemon (`scripts/kairos_daemon.py`) runs these vault cycles:
+The COR.KAIROS daemon (`scripts/kairos_daemon.py`) runs these vault cycles:
 - **Vault Ingest Sweep** (5 min) — process new files in `ingest/`
 - **Quarantine Purge** (hourly) — delete stale quarantine files
 - **Obsidian Sync** (hourly) — sync KI atoms to `serve/` as Obsidian notes

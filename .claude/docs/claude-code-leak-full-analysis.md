@@ -81,7 +81,7 @@ Controls: NATIVE_CLIENT_ATTESTATION compile flag, CLAUDE_CODE_ATTRIBUTION_HEADER
 ### 250K Wasted API Calls
 autoCompact.ts (68-70): "1,279 sessions had 50+ consecutive failures (up to 3,272) wasting ~250K API calls/day globally." Fix: MAX_CONSECUTIVE_AUTOCOMPACT_FAILURES = 3.
 
-### KAIROS: Autonomous Agent Mode
+### COR.KAIROS: Autonomous Agent Mode
 Feature-gated mode including:
 - /dream skill for nightly memory distillation
 - Daily append-only logs
@@ -121,7 +121,7 @@ buddy/companion.ts: Tamagotchi companion. 18 species, rarity tiers, 1% shiny cha
 ### The Meta-Lesson
 "Accidentally shipping your source map to npm is the kind of mistake that sounds impossible until you remember that a significant portion of the codebase was probably written by the AI you are shipping."
 
-The real damage isn't the code — it's the feature flags. KAIROS, anti-distillation: product roadmap details competitors can now see and react to. The code can be refactored. The strategic surprise can't be un-leaked.
+The real damage isn't the code — it's the feature flags. COR.KAIROS, anti-distillation: product roadmap details competitors can now see and react to. The code can be refactored. The strategic surprise can't be un-leaked.
 
 ---
 
@@ -140,12 +140,12 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS="1"
 export CLAUDE_CODE_MAX_CONTEXT_TOKENS="500000"
 export CLAUDE_CODE_AUTOCOMPACT_PCT_OVERRIDE="0.95"
 
-# KAIROS daemon
-export CLAUDE_CODE_KAIROS="1"
-export KAIROS="1"
+# COR.KAIROS daemon
+export CLAUDE_CODE_COR.KAIROS="1"
+export COR.KAIROS="1"
 export CLAUDE_AUTO_BACKGROUND_TASKS="1"
-export KAIROS_GITHUB_WEBHOOKS="1"
-export KAIROS_BRIEF_MODE="1"
+export COR.KAIROS_GITHUB_WEBHOOKS="1"
+export COR.KAIROS_BRIEF_MODE="1"
 
 # Performance
 export CLAUDE_CODE_EFFORT_LEVEL="max"

@@ -24,7 +24,7 @@ APPS=(
     "yougle-ai"
     "universal-copilot"
     "shadowtagai"
-    "judge6"
+    "Cor.Claude_Code_6"
     "kosmos"
     "pnkln"
     "seatjudge-monorepo"

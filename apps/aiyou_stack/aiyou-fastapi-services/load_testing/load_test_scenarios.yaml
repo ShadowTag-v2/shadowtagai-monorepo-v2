@@ -1,7 +1,7 @@
 scenarios:
-  - name: "Judge6_Spike"
+  - name: "Cor.Claude_Code_6_Spike"
     description: "Spike test for Judge 6 enforcement endpoint"
-    target_endpoint: "https://judge6.pnkln.ai/enforce"
+    target_endpoint: "https://Cor.Claude_Code_6.pnkln.ai/enforce"
     iterations: 2000
     warmup_iterations: 100
     concurrency: 100

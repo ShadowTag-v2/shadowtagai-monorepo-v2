@@ -180,10 +180,10 @@ curl http://localhost:8000/v1/models
 ```bash
 # Build Docker image
 cd ../../src
-docker build -t gcr.io/${PROJECT_ID}/judge6-orchestrator:v1.0.0 -f judge6/Dockerfile .
+docker build -t gcr.io/${PROJECT_ID}/Cor.Claude_Code_6-orchestrator:v1.0.0 -f Cor.Claude_Code_6/Dockerfile .
 
 # Push to Google Container Registry
-docker push gcr.io/${PROJECT_ID}/judge6-orchestrator:v1.0.0
+docker push gcr.io/${PROJECT_ID}/Cor.Claude_Code_6-orchestrator:v1.0.0
 
 # Deploy to GKE
 kubectl apply -f ../infrastructure/kubernetes/langgraph-deployment.yaml
@@ -275,7 +275,7 @@ gcloud alpha monitoring policies create \
 
 ```bash
 # Create log-based metric for errors
-gcloud logging metrics create judge6_errors \
+gcloud logging metrics create Cor.Claude_Code_6_errors \
   --description="Count of Judge 6 errors" \
   --log-filter='resource.type="k8s_container"
 resource.labels.namespace_name="judge-6"
@@ -300,7 +300,7 @@ gcloud functions logs read process-compliance-document --region=${REGION} --foll
 kubectl logs -n judge-6 -l component=orchestrator --follow &
 
 # 4. Check Firestore for results
-gcloud firestore export gs://${PROJECT_ID}-firestore-exports --collection-ids=judge6_workflows
+gcloud firestore export gs://${PROJECT_ID}-firestore-exports --collection-ids=Cor.Claude_Code_6_workflows
 
 # 5. Verify workflow completion
 # Query Firestore via console: https://console.cloud.google.com/firestore

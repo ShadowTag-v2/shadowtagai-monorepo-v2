@@ -7,7 +7,7 @@
         "finding": "CounselConduit is the designated 'mvp-commercial-wedge' for revenue generation, while Uphillsnowball serves as the internal R&D lab, creating a potential resource-drain risk if R&D cycles exceed commercial velocity."
       },
       {
-        "source": "judge6.sh",
+        "source": "Cor.Claude_Code_6.sh",
         "finding": "Judge 6 acts as a mandatory security gatekeeper for all artifacts; its reliance on GCS buckets and external model inference creates a hard dependency on Google Cloud infrastructure that is not yet reflected in the CounselConduit deployment plan."
       },
       {
@@ -39,7 +39,7 @@
       "data/memory/operator_invariants.json",
       "manifests/monorepo_manifest.yaml"
     ],
-    "judge6_gate": "pass",
+    "Cor.Claude_Code_6_gate": "pass",
     "summary": "Cor initialized. Control plane v11 active. Awaiting operator input for architectural tasks under Zero Trust protocols."
   }
 }

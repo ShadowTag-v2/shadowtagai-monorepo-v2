@@ -131,7 +131,7 @@ Developer (stays in terminal)
 **TUI Implementation (Ink):**
 
 ```typescript
-// judge6-cli/src/components/MultiAgentDebate.tsx
+// Cor.Claude_Code_6-cli/src/components/MultiAgentDebate.tsx
 import React, { useState, useEffect } from 'react';
 import { Box, Text } from 'ink';
 import Spinner from 'ink-spinner';
@@ -660,7 +660,7 @@ const MonteCarloSimulation = ({ params }) => {
 **After TUI (Terminal-Native):**
 
 - Decision validation workflow:
-  1. Type command: `judge6 scan "Launch new API feature"` (2 sec)
+  1. Type command: `Cor.Claude_Code_6 scan "Launch new API feature"` (2 sec)
 
   2. Real-time streaming results: 3 sec
   - **Total: 5 seconds per validation**
@@ -786,7 +786,7 @@ ROI: $470,760 / $9,660 (dev + annual ops) = 48.7× (>>3× bootstrap gate)
 
 **Day 1-2: Ink Setup + Basic UI**
 
-- [ ] Create `judge6-cli/` directory structure
+- [ ] Create `Cor.Claude_Code_6-cli/` directory structure
 
 - [ ] Install dependencies: `npm install ink ink-text-input ink-spinner`
 
@@ -862,11 +862,11 @@ ROI: $470,760 / $9,660 (dev + annual ops) = 48.7× (>>3× bootstrap gate)
 
 **Day 15-16: npm Package Setup**
 
-- [ ] Create `@pnkln/judge6-cli` package
+- [ ] Create `@pnkln/Cor.Claude_Code_6-cli` package
 
 - [ ] Write `package.json` with proper bin scripts
 
-- [ ] Test global install: `npm install -g @pnkln/judge6-cli`
+- [ ] Test global install: `npm install -g @pnkln/Cor.Claude_Code_6-cli`
 
 **Day 17-18: GKE Integration**
 
@@ -914,19 +914,19 @@ ROI: $470,760 / $9,660 (dev + annual ops) = 48.7× (>>3× bootstrap gate)
 
 # iTerm2 (macOS)
 
-judge6 scan "Test decision" --debug
+Cor.Claude_Code_6 scan "Test decision" --debug
 
 # Wezterm (Linux)
 
-wezterm -e judge6 scan "Test decision"
+wezterm -e Cor.Claude_Code_6 scan "Test decision"
 
 # VSCode (integrated terminal)
 
-# Open VSCode terminal → run judge6 scan
+# Open VSCode terminal → run Cor.Claude_Code_6 scan
 
 # tmux (nested)
 
-tmux new-session -d -s test "judge6 scan 'Test decision'"
+tmux new-session -d -s test "Cor.Claude_Code_6 scan 'Test decision'"
 
 # Expect: Warning about nested buffers
 
@@ -943,7 +943,7 @@ tmux new-session -d -s test "judge6 scan 'Test decision'"
 - **Description:** Developers prefer simple JSON output over interactive TUI
 
 - **Mitigation:**
-  - A/B test: 50% get TUI, 50% get JSON output (`judge6 scan --json`)
+  - A/B test: 50% get TUI, 50% get JSON output (`Cor.Claude_Code_6 scan --json`)
 
   - Measure adoption: TUI users vs JSON users (30-day retention)
 
@@ -958,7 +958,7 @@ tmux new-session -d -s test "judge6 scan 'Test decision'"
 - **Mitigation:**
   - Lazy load Ink (only when TUI mode enabled)
 
-  - Offer lightweight version (`judge6-lite`) without TUI
+  - Offer lightweight version (`Cor.Claude_Code_6-lite`) without TUI
 
   - If complaints >10% of users → switch to Blessed (smaller bundle)
 

@@ -5,7 +5,7 @@
 from .atp_519_scan import ATP519ScanKernel
 from .audit_compress import AuditCompressKernel
 from .base import Kernel, KernelChainError
-from .judge_six import JudgeSixClassifyKernel
+from .Claude_Code_6 import JudgeSixClassifyKernel
 
 __all__ = [
     "ATP519ScanKernel",

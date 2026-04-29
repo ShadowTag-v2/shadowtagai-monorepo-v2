@@ -94,13 +94,13 @@ class PerplexityMCPServer:
     def __init__(
         self,
         manifest_path: str | None = None,
-        judge6_latency_target_ms: int = 35,
+        Cor_Claude_Code_6_latency_target_ms: int = 35,
         enable_shadowtag: bool = True,
     ):
         self.manifest_path = Path(manifest_path or "./logs/pnkln/perplexity/manifest.jsonl")
         self.manifest_path.parent.mkdir(parents=True, exist_ok=True)
 
-        self.judge6_latency_target = judge6_latency_target_ms
+        self.Cor_Claude_Code_6_latency_target = Cor_Claude_Code_6_latency_target_ms
         self.enable_shadowtag = enable_shadowtag
 
         # Performance tracking
@@ -124,7 +124,7 @@ class PerplexityMCPServer:
 
         print("Perplexity MCP Server initialized")
         print(f"  Manifest: {self.manifest_path}")
-        print(f"  Judge 6 target: <{judge6_latency_target_ms}ms")
+        print(f"  Judge 6 target: <{Cor_Claude_Code_6_latency_target_ms}ms")
         print(f"  SHADOWTAG: {'enabled' if enable_shadowtag else 'disabled'}")
 
     async def governance_score(
@@ -189,9 +189,9 @@ class PerplexityMCPServer:
         self.governance_latencies.append(latency_ms)
 
         # SLA check
-        if latency_ms > self.judge6_latency_target:
+        if latency_ms > self.Cor_Claude_Code_6_latency_target:
             print(
-                f"  SLA BREACH: Judge 6 took {latency_ms:.1f}ms (target: {self.judge6_latency_target}ms)",
+                f"  SLA BREACH: Judge 6 took {latency_ms:.1f}ms (target: {self.Cor_Claude_Code_6_latency_target}ms)",
             )
 
         return GovernanceResult(

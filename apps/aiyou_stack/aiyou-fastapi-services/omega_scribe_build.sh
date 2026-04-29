@@ -106,17 +106,17 @@ PYTHON
 echo ">>> [II] GENERATING GOVERNANCE..."
 
 # BLOCK 5: Judge 6 CI Script
-cat <<SCRIPT > scripts/judge_six_ci.sh
+cat <<SCRIPT > scripts/Claude_Code_6_ci.sh
 #!/bin/bash
 # Judge Six: The CI Gatekeeper
 if ! command -v gemini &> /dev/null; then npm install -g @google/gemini-cli-beta; fi
 gemini --yolo <<EOF
-You are Judge Six. Review staged changes. Ref 'docs/codex/VOL_10_JUDGE_SIX.md'.
+You are Judge Six. Review staged changes. Ref 'docs/codex/VOL_10_Claude_Code_6.md'.
 Rules: 1. NO hardcoded secrets. 2. NO 'print' statements. 3. Check for 'JudgeSixLite'.
 Output: VERDICT: [APPROVED | REJECTED]
 EOF
 SCRIPT
-chmod +x scripts/judge_six_ci.sh
+chmod +x scripts/Claude_Code_6_ci.sh
 
 # BLOCK 6: GitHub Actions
 cat <<YAML > .github/workflows/deploy.yaml
@@ -127,7 +127,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: ./scripts/judge_six_ci.sh
+      - run: ./scripts/Claude_Code_6_ci.sh
       - uses: google-github-actions/deploy-cloudrun@v1
         with: { service: 'n-autoresearch/Kosmos/BioAgents-server', source: '.', region: '$REGION' }
 YAML

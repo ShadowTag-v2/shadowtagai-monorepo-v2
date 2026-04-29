@@ -24,7 +24,7 @@ def wait_for_server():
 def test_risk():
     print("\n[TEST] /risk Endpoint")
     payload = {"code": "import os; os.system('rm -rf /')", "mission_id": "TEST-RISK-001"}
-    # Note: Our current logic validates with Judge6.
+    # Note: Our current logic validates with Cor_Claude_Code_6.
     # 'rm -rf' isn't explicitly caught by our simple 'malware' keyword list in SafetyNet yet
     # unless we add it, but let's just check the structure for now.
 

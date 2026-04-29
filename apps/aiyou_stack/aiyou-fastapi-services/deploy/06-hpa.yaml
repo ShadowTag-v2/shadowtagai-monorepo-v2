@@ -1,17 +1,17 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: judge6-hpa
+  name: Cor.Claude_Code_6-hpa
   namespace: pnkln
   labels:
-    app.kubernetes.io/name: judge6-hpa
+    app.kubernetes.io/name: Cor.Claude_Code_6-hpa
     app.kubernetes.io/component: autoscaling
     app.kubernetes.io/managed-by: terraform
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: judge6
+    name: Cor.Claude_Code_6
 
   minReplicas: 2  # Minimum for HA
   maxReplicas: 6  # Maximum to stay within cost budget

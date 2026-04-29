@@ -1,19 +1,19 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: judge6
+  name: Cor.Claude_Code_6
   namespace: pnkln
   labels:
-    app.kubernetes.io/name: judge6
+    app.kubernetes.io/name: Cor.Claude_Code_6
     app.kubernetes.io/component: inference
     app.kubernetes.io/managed-by: terraform
   annotations:
     cloud.google.com/neg: '{"ingress": true}'
-    cloud.google.com/backend-config: '{"default": "judge6-backend-config"}'
+    cloud.google.com/backend-config: '{"default": "Cor.Claude_Code_6-backend-config"}'
 spec:
   type: ClusterIP
   selector:
-    app: judge6
+    app: Cor.Claude_Code_6
   ports:
   - name: http
     port: 80
@@ -30,15 +30,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: judge6-metrics
+  name: Cor.Claude_Code_6-metrics
   namespace: pnkln
   labels:
-    app.kubernetes.io/name: judge6-metrics
+    app.kubernetes.io/name: Cor.Claude_Code_6-metrics
     app.kubernetes.io/component: monitoring
 spec:
   type: ClusterIP
   selector:
-    app: judge6
+    app: Cor.Claude_Code_6
   ports:
   - name: metrics
     port: 8080
@@ -51,7 +51,7 @@ spec:
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
-  name: judge6-backend-config
+  name: Cor.Claude_Code_6-backend-config
   namespace: pnkln
 spec:
   # Connection draining for graceful shutdown

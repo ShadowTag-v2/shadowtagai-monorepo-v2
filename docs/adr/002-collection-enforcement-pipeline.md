@@ -281,7 +281,7 @@ result = agent.generate_leads(
 
 | Dimension               | Judge 6 (Enforcement)    | Gemini Ingestion (Collection)     |
 | ----------------------- | ------------------------- | --------------------------------- |
-| **File References**     | judge_six.py              | Pipeline docs, architecture specs |
+| **File References**     | Claude_Code_6.py              | Pipeline docs, architecture specs |
 | **Performance Metrics** | p99 ≤90ms (real-time)     | ~45 min/night (batch)             |
 | **Quality Gates**       | 98% Coverage (validation) | Items/Day, Sources, Cost, Scores  |
 | **Architecture**        | Hybrid Gemini+PyTorch     | GKE CronJob Multi-Container       |

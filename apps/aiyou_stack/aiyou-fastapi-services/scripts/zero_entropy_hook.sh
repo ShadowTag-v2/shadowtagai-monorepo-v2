@@ -2,7 +2,7 @@
 # .git/hooks/pre-commit
 # PROTOCOL: ZERO_ENTROPY
 
-echo ">>> 🛡️  JUDGE6 SECURITY PROTOCOL INITIATED..."
+echo ">>> 🛡️  COR.CLAUDE_CODE_6 SECURITY PROTOCOL INITIATED..."
 
 # 1. Check for Hardcoded Keys (The "Stupid" Check)
 if grep -rE "sk_live_|sk_test_" ./app; then

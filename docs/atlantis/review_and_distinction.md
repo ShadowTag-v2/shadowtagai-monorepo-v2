@@ -39,7 +39,7 @@
 ## 3. Judge 6 vs. Judge 7 (The Renaming)
 
 ### The Query
-"Renaming 'judge 6' to 'judge6bak'... wait, 'judge7' and 'flyingmonkeys1'..."
+"Renaming 'judge 6' to 'Cor.Claude_Code_6bak'... wait, 'judge7' and 'flyingmonkeys1'..."
 
 ### The Difference (Mechanical)
 *   User proposed renaming directories and files to version up the governance governance.

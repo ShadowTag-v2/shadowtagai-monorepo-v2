@@ -8,7 +8,7 @@ from datetime import date, datetime
 
 import arxiv
 
-from src.governance.judge_six import ActionType, ProposedAction
+from src.governance.Claude_Code_6 import ActionType, ProposedAction
 
 
 class Autoresearch_Triad_Scholar:
@@ -48,7 +48,7 @@ class Autoresearch_Triad_Scholar:
             # Logic: If age < 3 months, Hype is HIGH (0.95). If age > 6 months, Hype is LOW (0.10).
             hype_score = 0.95 if age_months < 3 else 0.10
 
-            # 4. Formulate Proposal for Judge6
+            # 4. Formulate Proposal for Cor_Claude_Code_6
             proposal = ProposedAction(
                 action_type=ActionType.CODE_MERGE,
                 target_name=f"Update: {result.title[:40]}...",

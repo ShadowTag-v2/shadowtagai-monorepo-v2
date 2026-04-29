@@ -62,7 +62,7 @@ Transfer Status: 95% Complete
 | https://github.com/karpathy/autoresearchs 650-Agent Swarm | ✅ OPERATIONAL | agents/autoresearch.py                                   |
 | Gemini API Failover                                       | ✅ DEPLOYED    | src/ShadowTag-v2/services/gemini_failover.py                      |
 | MCP 98% Compression                                       | ✅ ACHIEVED    | app/mcp_bridge.py                                          |
-| Judge#6 Binary (<35ms)                                    | ✅ 0ms LATENCY | erik-hancock-llm-memory/judge6/                            |
+| Judge#6 Binary (<35ms)                                    | ✅ 0ms LATENCY | erik-hancock-llm-memory/Cor.Claude_Code_6/                            |
 | Antigravity Router                                        | ✅ INTEGRATED  | app/antigravity_handoff.py                                 |
 | FastAPI Endpoints                                         | ✅ Port 8888   | api/https://github.com/karpathy/autoresearchs_api.py       |
 | GKE Deployment                                            | ⚠️ PENDING     | cloudbuild\_https://github.com/karpathy/autoresearchs.yaml |

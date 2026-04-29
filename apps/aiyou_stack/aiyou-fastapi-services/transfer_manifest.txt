@@ -1,6 +1,6 @@
 Manifest:
 - apps/n-autoresearch/Kosmos/BioAgents-server/src/main.py
 - bin/n-autoresearch/Kosmos/BioAgents-server
-- src/governance/judge_six
+- src/governance/Claude_Code_6
 - src/intelligence/tegu_vision
 - scripts/verify_smart_actions.py

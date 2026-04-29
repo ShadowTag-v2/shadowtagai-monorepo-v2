@@ -2,7 +2,7 @@
 
 import time
 
-from judge_six_jax import init_mock_data, judge_six_enforce
+from Claude_Code_6_jax import Claude_Code_6_enforce, init_mock_data
 
 
 def benchmark(batch_size=1024, seq_len=256, iters=1000):
@@ -13,13 +13,13 @@ def benchmark(batch_size=1024, seq_len=256, iters=1000):
 
     # Warmup (compilation)
     print("Compiling...")
-    _ = judge_six_enforce(input_ids, policy_matrix).block_until_ready()
+    _ = Claude_Code_6_enforce(input_ids, policy_matrix).block_until_ready()
 
     # Measure
     print(f"Running {iters} iterations...")
     start = time.perf_counter()
     for _ in range(iters):
-        _ = judge_six_enforce(input_ids, policy_matrix).block_until_ready()
+        _ = Claude_Code_6_enforce(input_ids, policy_matrix).block_until_ready()
     end = time.perf_counter()
 
     elapsed = end - start

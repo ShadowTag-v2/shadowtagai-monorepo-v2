@@ -1,0 +1,244 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Cor.Claude_Code_6
+  labels:
+    app: Cor.Claude_Code_6
+    component: decision-engine
+    version: v2
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: Cor.Claude_Code_6
+  template:
+    metadata:
+      labels:
+        app: Cor.Claude_Code_6
+        component: decision-engine
+        version: v2
+    spec:
+      serviceAccountName: Cor.Claude_Code_6-sa
+
+      containers:
+      - name: Cor.Claude_Code_6
+        image: us-central1-docker.pkg.dev/shadowtag_v4-prod/containers/Cor.Claude_Code_6:v2.0
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 9090
+          name: metrics
+
+        env:
+        - name: KERNEL_CHAINING_ENABLED
+          value: "true"
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: pnkln-secrets
+              key: gemini-api-key
+        - name: POSTGRES_CONNECTION_STRING
+          valueFrom:
+            secretKeyRef:
+              name: cloudsql-db-credentials
+              key: connection-string
+        - name: REDIS_URL
+          value: "redis://$(REDIS_HOST):$(REDIS_PORT)"
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: pnkln-config
+              key: redis-host
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: pnkln-config
+              key: redis-port
+        - name: TARGET_LATENCY_P99_MS
+          value: "90"  # p99 ≤90ms SLA
+        - name: ATP519_MODE
+          value: "enforced"  # ATP 5-19 compliance
+
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "2Gi"
+          limits:
+            cpu: "4000m"
+            memory: "8Gi"
+
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 2
+          failureThreshold: 3
+
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 1
+          failureThreshold: 2
+
+        # Strict security context
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: cache
+          mountPath: /cache
+
+      # Cloud SQL Proxy sidecar
+      - name: cloud-sql-proxy
+        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.8.0
+        args:
+        - "--structured-logs"
+        - "--port=5432"
+        - "shadowtag_v4-prod:us-central1:pnkln-db"
+
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: cache
+        emptyDir:
+          sizeLimit: "1Gi"
+
+      # Pod anti-affinity for HA
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - Cor.Claude_Code_6
+            topologyKey: kubernetes.io/hostname
+
+      # Topology spread constraints
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: Cor.Claude_Code_6
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: Cor.Claude_Code_6
+  labels:
+    app: Cor.Claude_Code_6
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+    cloud.google.com/backend-config: '{"default": "Cor.Claude_Code_6-backend-config"}'
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  - port: 9090
+    targetPort: 9090
+    protocol: TCP
+    name: metrics
+  selector:
+    app: Cor.Claude_Code_6
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: Cor.Claude_Code_6-sa
+  annotations:
+    iam.gke.io/gcp-service-account: Cor.Claude_Code_6@shadowtag_v4-prod.iam.gserviceaccount.com
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: Cor.Claude_Code_6-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: Cor.Claude_Code_6
+  minReplicas: 5
+  maxReplicas: 100
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Pods
+    pods:
+      metric:
+        name: Cor.Claude_Code_6_latency_p99_ms
+      target:
+        type: AverageValue
+        averageValue: "80"  # Scale up if p99 > 80ms
+  - type: Pods
+    pods:
+      metric:
+        name: decisions_per_second
+      target:
+        type: AverageValue
+        averageValue: "1000"
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+      selectPolicy: Max
+
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: Cor.Claude_Code_6-backend-config
+spec:
+  timeoutSec: 1  # 1 second timeout (p99 ≤90ms + margin)
+  connectionDraining:
+    drainingTimeoutSec: 60
+  cdn:
+    enabled: false  # Decisions are not cacheable
+  iap:
+    enabled: false
+  healthCheck:
+    checkIntervalSec: 5
+    timeoutSec: 1
+    healthyThreshold: 2
+    unhealthyThreshold: 3
+    type: HTTP
+    requestPath: /health
+    port: 8080

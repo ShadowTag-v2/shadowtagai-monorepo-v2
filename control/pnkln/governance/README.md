@@ -1,10 +1,10 @@
 # Core Governance Control Plane
 
-Judge6 engine, RKILL protocol, and governance tools for the ShadowTag monorepo.
+Cor.Claude_Code_6 engine, RKILL protocol, and governance tools for the ShadowTag monorepo.
 
 ## Components
-- `judge6_core.py` — Policy evaluation engine
-- `judge6_factory.py` — Rule factory and composition
+- `Cor.Claude_Code_6_core.py` — Policy evaluation engine
+- `Cor.Claude_Code_6_factory.py` — Rule factory and composition
 - `judge_architecture.py` — Architectural constraint enforcement
 - `rkill.py` — Circuit breaker against hallucination
 

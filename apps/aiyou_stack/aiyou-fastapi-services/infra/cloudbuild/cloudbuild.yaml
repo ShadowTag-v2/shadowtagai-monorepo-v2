@@ -2,21 +2,21 @@ steps:
   # 1. PREP: Pull the Judge 6 Cockpit (Cached)
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    args: ['-c', 'docker pull gcr.io/$PROJECT_ID/judge6-cockpit:latest || exit 0']
+    args: ['-c', 'docker pull gcr.io/$PROJECT_ID/Cor.Claude_Code_6-cockpit:latest || exit 0']
 
   # 2. AUDIT: Run Judge 6 against the fresh code
-  - name: 'gcr.io/$PROJECT_ID/judge6-cockpit:latest'
+  - name: 'gcr.io/$PROJECT_ID/Cor.Claude_Code_6-cockpit:latest'
     entrypoint: 'python3'
     args: ['codepmcs_v2.py', '.']
-    secretEnv: ['JUDGE6_WEBHOOK_URL']
+    secretEnv: ['COR.CLAUDE_CODE_6_WEBHOOK_URL']
     env:
       - 'PROJECT_ID=$PROJECT_ID'
 
 # 3. SECRET SOURCE (Discord/Slack Webhook)
 availableSecrets:
   secretManager:
-  - versionName: projects/$PROJECT_ID/secrets/judge6-webhook/versions/latest
-    env: 'JUDGE6_WEBHOOK_URL'
+  - versionName: projects/$PROJECT_ID/secrets/Cor.Claude_Code_6-webhook/versions/latest
+    env: 'COR.CLAUDE_CODE_6_WEBHOOK_URL'
 
 options:
   logging: CLOUD_LOGGING_ONLY

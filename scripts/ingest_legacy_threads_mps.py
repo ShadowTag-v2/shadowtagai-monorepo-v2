@@ -21,7 +21,7 @@ TARGET_THREADS = [
 
 
 def get_files_recursively(directory):
-    """Pickle Rick: Ruthlessly hunt down every file in the directory structure."""
+    """Omega Protocol: Ruthlessly hunt down every file in the directory structure."""
     if not os.path.exists(directory):
         return []
 

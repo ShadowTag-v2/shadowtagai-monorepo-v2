@@ -77,7 +77,7 @@ Located at `/docs/`:
 4. **INVESTOR_PITCH.md** - Investor presentation
 5. **Pinkln-Ultrathink-Investor-Deck.md** - pnkln deck
 6. **PINKLN_UNIFIED_PLAN.md** - Unified strategy
-7. **COR_22_JUDGE6_REVENUE.md** - Judge6 revenue model
+7. **COR_22_COR.CLAUDE_CODE_6_REVENUE.md** - Cor.Claude_Code_6 revenue model
 8. **cor8_master_plan.md** - Cor8 orchestration
 9. **COST_REVENUE_ANALYSIS.md** - Financial analysis
 10. **decaunicorn_plan.md** - Decaunicorn strategy

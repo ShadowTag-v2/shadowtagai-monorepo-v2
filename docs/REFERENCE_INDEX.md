@@ -37,7 +37,7 @@ _Control Plane Constraint:_ `ignore_codebase_as_authority: true` — Skills are 
 - `frontend-debugger`
 - `git-commit-formatter`
 - `json-to-pydantic`
-- `judge6-compliance`
+- `Cor.Claude_Code_6-compliance`
 - `license-header-adder`
 - `mcp-brave-search`
 - `mcp-filesystem`

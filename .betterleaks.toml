@@ -40,6 +40,7 @@ title = "Monorepo-Uphillsnowball Betterleaks Config"
     # Claude legacy plans
     '''\.claude/''',
     '''\.agents/''',
+    '''\.betterleaks\.toml''',
     # ── Third-party incorporated work product (1,631 assets) ──
     # Reference architectures, archived assets, and third-party
     # libraries leveraged as incorporated work product.

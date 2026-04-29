@@ -31,7 +31,7 @@ Reports are gitignored by default (see `.gitkeep`).
 
 ## Judge 6 Policy
 
-See [judge6_policy.md](./judge6_policy.md) for auto-fix boundaries.
+See [Cor.Claude_Code_6_policy.md](./Cor.Claude_Code_6_policy.md) for auto-fix boundaries.
 
 **One-line rule:**
 > Betterleaks blocks secrets; Ruff and Biome clean syntax/style; ast-grep handles structural detection; Judge 6 decides what may change automatically.

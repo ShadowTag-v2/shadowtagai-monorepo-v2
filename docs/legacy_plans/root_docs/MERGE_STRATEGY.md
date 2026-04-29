@@ -86,7 +86,7 @@ Create a UNIFIED system that combines:
                           ↓
 ┌─────────────────────────────────────────────────────────┐
 │ LAYER 2: PINKLN ECOSYSTEM (from autogen-to-gemini)     │
-│ ├─ src/pnkln/judge_six.py (JR Engine)                  │
+│ ├─ src/pnkln/Claude_Code_6.py (JR Engine)                  │
 │ ├─ src/pnkln/cor.py (Unified orchestrator)             │
 │ ├─ src/integration/unified_orchestrator.py             │
 │ └─ src/ratings/glicko2.py (Dynamic ratings)            │

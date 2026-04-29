@@ -25,6 +25,7 @@ extend-exclude = [
     "**/libs/autoresearch_sources/",
     "labs/gemini-cookbook/",
     "tools/",
+    ".agent/",
 ]
 
 [lint]
