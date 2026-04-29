@@ -2,10 +2,12 @@
 VCR Record/Replay Subsystem
 Provides deterministic test reproduction by recording API/Tool interactions and replaying them.
 """
+
 import json
 import os
 import hashlib
-from typing import Any, Dict, Optional
+from typing import Any
+
 
 class VCRReplay:
     def __init__(self, cassette_dir: str = ".cassettes"):
@@ -13,35 +15,35 @@ class VCRReplay:
         os.makedirs(self.cassette_dir, exist_ok=True)
         self.recording = os.environ.get("AGNT_VCR_RECORD") == "1"
         self.replaying = os.environ.get("AGNT_VCR_REPLAY") == "1"
-        
-    def _hash_request(self, method: str, kwargs: Dict[str, Any]) -> str:
+
+    def _hash_request(self, method: str, kwargs: dict[str, Any]) -> str:
         payload = json.dumps({"method": method, "kwargs": kwargs}, sort_keys=True).encode("utf-8")
         return hashlib.sha256(payload).hexdigest()
 
     def _get_cassette_path(self, req_hash: str) -> str:
         return os.path.join(self.cassette_dir, f"{req_hash}.json")
 
-    def intercept(self, method: str, kwargs: Dict[str, Any], execute_fn: callable) -> Any:
+    def intercept(self, method: str, kwargs: dict[str, Any], execute_fn: callable) -> Any:
         # Sanitize kwargs for secrets before hashing and saving
         sanitized_kwargs = self._sanitize_secrets(kwargs)
-        
+
         req_hash = self._hash_request(method, sanitized_kwargs)
         cassette_path = self._get_cassette_path(req_hash)
-        
+
         if self.replaying and os.path.exists(cassette_path):
-            with open(cassette_path, "r") as f:
+            with open(cassette_path) as f:
                 return json.load(f)["response"]
-                
+
         # Execute actual network/tool logic
         response = execute_fn()
-        
+
         if self.recording:
             with open(cassette_path, "w") as f:
                 json.dump({"request": {"method": method, "kwargs": sanitized_kwargs}, "response": response}, f, indent=2)
-                
+
         return response
 
-    def _sanitize_secrets(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    def _sanitize_secrets(self, kwargs: dict[str, Any]) -> dict[str, Any]:
         """Strip sensitive tokens from recorded cassettes."""
         sanitized = dict(kwargs)
         for key in ["token", "api_key", "password", "secret", "authorization"]:

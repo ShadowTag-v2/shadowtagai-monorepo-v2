@@ -1,44 +1,89 @@
 """
-XML Classifier Side-Query
-Porting Anthropic's XML classification logic to AGNT QueryEngine.
+AGNT Two-Stage Classifier & Security Filters
+
+Implements:
+- P2.1 Two-Stage Classifier (Tool YOLO vs Block)
+- P5.1 Fail-Closed Error Handling
+- P5.3 Assistant Text Exclusion
 """
+
 import re
-from typing import Dict, Optional
+import logging
 
-class XMLClassifier:
+logger = logging.getLogger(__name__)
+
+
+def fail_closed_handler(func):
+    """P5.1: Any exception in classifier MUST result in DENY/BLOCK."""
+
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            logger.error(f"Classifier error (fail-closed triggered): {e}")
+            return "BLOCK"  # Or another appropriate deny state
+
+    return wrapper
+
+
+class AssistantTextExcluder:
+    """P5.3: Strip all assistant conversational text BEFORE passing to classifier."""
+
+    @staticmethod
+    def extract_tool_blocks(text: str) -> str:
+        """
+        Only <tool_call> or [COMMAND] blocks are analyzed.
+        """
+        tool_calls = re.findall(r"<tool_call>(.*?)</tool_call>", text, re.DOTALL)
+        commands = re.findall(r"\[COMMAND\](.*?)\[/COMMAND\]", text, re.DOTALL)
+
+        extracted = "\n".join(tool_calls + commands).strip()
+        return extracted if extracted else text.strip()
+
+
+class TwoStageClassifier:
     """
-    Side-query router that uses XML tag semantics to classify user intent 
-    and route to specialized sub-agents.
+    P2.1: Two-Stage Classifier
+    Stage 1: Fast, bias toward blocking.
+    Stage 2: Thinking, full chain-of-thought reasoning.
     """
+
     def __init__(self):
-        self.routing_table = {
-            "search": "osint_agent",
-            "refactor": "coder_agent",
-            "test": "qa_agent",
-            "sql": "db_architect"
-        }
+        self.fast_llm_mock_call = self._mock_fast_llm
+        self.thinking_llm_mock_call = self._mock_thinking_llm
 
-    def extract_xml_tags(self, query: str) -> list:
-        # Anthropic standard: <query_type>search</query_type>
-        pattern = r"<([a-z_]+)>(.*?)</\1>"
-        return re.findall(pattern, query)
+    def _mock_fast_llm(self, query: str) -> str:
+        # Mock logic: bias towards blocking. If safe pattern, ALLOW.
+        safe_patterns = ["echo", "ls", "pwd", "git status"]
+        for p in safe_patterns:
+            if p in query.lower():
+                return "ALLOW"
+        return "UNKNOWN"
 
-    def classify(self, query: str) -> str:
-        """
-        Extracts XML tags and returns the recommended sub-agent route.
-        Defaults to 'general_agent' if no specialized routing is found.
-        """
-        tags = self.extract_xml_tags(query)
-        for tag_name, tag_value in tags:
-            if tag_name == "intent" and tag_value in self.routing_table:
-                return self.routing_table[tag_value]
-            elif tag_name in self.routing_table:
-                return self.routing_table[tag_name]
-                
-        return "general_agent"
+    def _mock_thinking_llm(self, query: str) -> str:
+        # Mock CoT logic that outputs <block>yes/no</block>
+        if "rm -rf" in query.lower():
+            return "<block>yes</block>"
+        return "<block>no</block>"
 
-    def strip_xml(self, query: str) -> str:
-        """
-        Removes the classification XML before passing to the execution agent.
-        """
-        return re.sub(r"<[a-z_]+>.*?</[a-z_]+>", "", query).strip()
+    @fail_closed_handler
+    def classify(self, raw_text: str) -> str:
+        # P5.3: Strip conversational text
+        clean_query = AssistantTextExcluder.extract_tool_blocks(raw_text)
+
+        if not clean_query:
+            return "BLOCK"
+
+        # Stage 1
+        stage1_result = self.fast_llm_mock_call(clean_query)
+        if stage1_result == "ALLOW":
+            return "ALLOW"
+
+        # Stage 2 (escalated)
+        stage2_result = self.thinking_llm_mock_call(clean_query)
+        match = re.search(r"<block>(yes|no)</block>", stage2_result.lower())
+
+        if match and match.group(1) == "no":
+            return "ALLOW"
+
+        return "BLOCK"
