@@ -12,7 +12,7 @@ def fix_file_content(path):
     except Exception as e:
         print(f"Error reading {path}: {e}")
 
-for root, dirs, files in os.walk('.'):
+for root, _dirs, files in os.walk('.'):
     for filename in files:
         if filename.endswith('.py'):
             filepath = os.path.join(root, filename)

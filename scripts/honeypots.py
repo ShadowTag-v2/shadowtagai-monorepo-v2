@@ -1,8 +1,6 @@
 """
 Honeypots: Simulates vulnerability vectors for AI penetration testing.
 """
-import os
-import sys
 import logging
 
 logging.basicConfig(level=logging.INFO)

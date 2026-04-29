@@ -22,7 +22,10 @@ class VCRReplay:
         return os.path.join(self.cassette_dir, f"{req_hash}.json")
 
     def intercept(self, method: str, kwargs: Dict[str, Any], execute_fn: callable) -> Any:
-        req_hash = self._hash_request(method, kwargs)
+        # Sanitize kwargs for secrets before hashing and saving
+        sanitized_kwargs = self._sanitize_secrets(kwargs)
+        
+        req_hash = self._hash_request(method, sanitized_kwargs)
         cassette_path = self._get_cassette_path(req_hash)
         
         if self.replaying and os.path.exists(cassette_path):
@@ -34,6 +37,19 @@ class VCRReplay:
         
         if self.recording:
             with open(cassette_path, "w") as f:
-                json.dump({"request": {"method": method, "kwargs": kwargs}, "response": response}, f, indent=2)
+                json.dump({"request": {"method": method, "kwargs": sanitized_kwargs}, "response": response}, f, indent=2)
                 
         return response
+
+    def _sanitize_secrets(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        """Strip sensitive tokens from recorded cassettes."""
+        sanitized = dict(kwargs)
+        for key in ["token", "api_key", "password", "secret", "authorization"]:
+            if key in sanitized:
+                sanitized[key] = "[REDACTED]"
+            # Also check nested headers if present
+            if "headers" in sanitized and isinstance(sanitized["headers"], dict):
+                for h_key in sanitized["headers"]:
+                    if h_key.lower() == "authorization":
+                        sanitized["headers"][h_key] = "[REDACTED]"
+        return sanitized
