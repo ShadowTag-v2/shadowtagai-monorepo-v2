@@ -1,8 +1,15 @@
-# tool_contracts/bootstrap.alignment.yaml
+# tool_contracts/bootstrap.alignment.yaml — P1 Operational Contract
 tool_id: "bootstrap.alignment"
-description: "Governs the bootstrap.alignment operations."
-risk_level: "low"
-preconditions: []
+description: "Verifies that workspace bootstrap phases are aligned and complete."
+risk_level: "medium"
+enforcement: "enforced_by_ci"
+preconditions:
+  - "scripts/bootstrap-alignment-plan.sh must exist and be executable"
+  - "All truth files from MONOREPO_OS.md must be present"
+postconditions:
+  - "Bootstrap alignment check passes with no missing phases"
+enforcement_script: "scripts/bootstrap-alignment-plan.sh"
+ci_gate: ".github/workflows/monorepo-os-gates.yml#bootstrap-alignment"
 evidence_requirements:
   - type: "log"
     path: ".beads/evidence/bootstrap_alignment.jsonl"

@@ -1,9 +1,18 @@
-# tool_contracts/knowledge.promote_to_memory.yaml
+# tool_contracts/knowledge.promote_to_memory.yaml — P1 Operational Contract
 tool_id: "knowledge.promote_to_memory"
-description: "Governs the knowledge.promote_to_memory operations."
-risk_level: "low"
-preconditions: []
+description: "Governs promotion of session context into persistent memory atoms via session-handoff."
+risk_level: "medium"
+enforcement: "enforced_by_script"
+preconditions:
+  - "scripts/session-handoff.sh must exist and be executable"
+  - "scripts/memory-retain.sh must exist and be executable"
+  - "Session must have produced at least one knowledge artifact"
+postconditions:
+  - "Promoted atom exists in .memory/atoms/ with YAML frontmatter"
+  - "Promotion event logged to .memory/events.ndjson"
+enforcement_script: "scripts/session-handoff.sh"
+ci_gate: ".github/workflows/monorepo-os-gates.yml#memory-integrity"
 evidence_requirements:
   - type: "log"
-    path: ".beads/evidence/knowledge_promote_to_memory.jsonl"
+    path: ".memory/events.ndjson"
 reuse_queries: []

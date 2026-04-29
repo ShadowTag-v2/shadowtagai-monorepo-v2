@@ -1,9 +1,12 @@
-# tool_contracts/large_file_scan.yaml
+# tool_contracts/large_file_scan.yaml — DEPRECATED
+# Consolidated into git.lfs_check.yaml (v3.0)
+# This file is retained as a pointer for backward compatibility.
 tool_id: "large_file_scan"
-description: "Governs the large_file_scan operations."
+description: "DEPRECATED — consolidated into git.lfs_check.yaml"
 risk_level: "low"
+deprecated: true
+successor: "git.lfs_check.yaml"
+enforcement: "see git.lfs_check.yaml"
 preconditions: []
-evidence_requirements:
-  - type: "log"
-    path: ".beads/evidence/large_file_scan.jsonl"
+evidence_requirements: []
 reuse_queries: []
