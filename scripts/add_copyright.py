@@ -11,7 +11,7 @@ for root, dirs, files in os.walk("."):
         if not file.endswith(".py"): continue
         filepath = os.path.join(root, file)
         
-        with open(filepath, "r") as f:
+        with open(filepath) as f:
             content = f.read()
             
         if header.strip() not in content:
