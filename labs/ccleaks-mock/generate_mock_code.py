@@ -175,7 +175,9 @@ export function getPlanModeAgentCount(): number {
 
 export function updateModelLaunchTags() {
   // padding to reach line 70
-""" + "\n".join(["  // padding"] * 65) + """
+"""
+    + "\n".join(["  // padding"] * 65)
+    + """
   // @[MODEL LAUNCH] Update these values when shipping new models
   const latestSonnet = 'claude-3-7-sonnet-20250219';
   const latestOpus = 'claude-3-opus-20240229'; // Update when Opus 3.5/3.7 launches
@@ -234,7 +236,9 @@ export function generateRequestFingerprint(msg: string, version: string): string
 import { runCLI } from './runner';
 
 // padding to line 21
-""" + "\n".join(["// padding"] * 16) + """
+"""
+    + "\n".join(["// padding"] * 16)
+    + """
 // line 21
 if (process.env.CLAUDE_CODE_ABLATION_BASELINE === '1') {
   process.env.CLAUDE_CODE_SIMPLE = '1';
@@ -249,7 +253,9 @@ runCLI();
     "src/services/api/errors.ts": """// src/services/api/errors.ts
 
 // padding to line 167
-""" + "\n".join(["// padding"] * 162) + """
+"""
+    + "\n".join(["// padding"] * 162)
+    + """
 // line 167
 export const CUSTOM_OFF_SWITCH_MESSAGE = 'Opus is experiencing high load, please use /model to switch to Sonnet'; // categorized as 'capacity_off_switch'
 """,
@@ -260,7 +266,9 @@ export function getUserType(): string {
 }
 
 // padding to line 64
-""" + "\n".join(["// padding"] * 56) + """
+"""
+    + "\n".join(["// padding"] * 56)
+    + """
 // line 64
 export const NATIVE_CLIENT_ATTESTATION = {
   // Bun's native HTTP stack (Zig) overwrites this with a computed hash
@@ -284,7 +292,9 @@ export const NATIVE_CLIENT_ATTESTATION = {
     "src/services/teamMemorySync/secretScanner.ts": """// src/services/teamMemorySync/secretScanner.ts
 
 // padding to line 46
-""" + "\n".join(["// padding"] * 42) + """
+"""
+    + "\n".join(["// padding"] * 42)
+    + """
 // line 46
 export const ANT_API_KEY_PREFIX = ['sk','ant','api'].join('-');
 """,
@@ -315,7 +325,9 @@ export function createDumpPromptsFetch(originalFetch: typeof fetch) {
     "src/services/analytics/growthbook.ts": """// src/services/analytics/growthbook.ts
 
 // padding to line 330
-""" + "\n".join(["// padding"] * 326) + """
+"""
+    + "\n".join(["// padding"] * 326)
+    + """
 // line 330
 // WORKAROUND: GrowthBook's evalFeature() ignores pre-evaluated values from remote eval.
 export function evalFeature(key: string, fallback: any): any {
@@ -331,16 +343,20 @@ function getFromCustomCache(key: string) {
   return undefined;
 }
 // padding to 383
-""" + "\n".join(["// padding"] * 42) + """
+"""
+    + "\n".join(["// padding"] * 42)
+    + """
 // line 383
 """,
     "src/services/analytics/metadata.ts": """// src/services/analytics/metadata.ts
 
 // padding to line 94
-""" + "\n".join(["// padding"] * 90) + """
+"""
+    + "\n".join(["// padding"] * 90)
+    + """
 // line 94
 // See go/cc-logging, go/taxonomy, go/ccshare, and anthropics/anthropic#274559 for telemetry schema
-"""
+""",
 }
 
 for filepath, content in files.items():
