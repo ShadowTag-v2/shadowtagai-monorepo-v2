@@ -55,7 +55,7 @@ def biome_check(filepath: str) -> str:
 
 
 def ane_semantic_scan(filepath: str, filename: str) -> str:
-    """Heavy Lift: Route to Apple Neural Engine via Pickle Rick Bypass."""
+    """Heavy Lift: Route to Apple Neural Engine via Omega Protocol Bypass."""
     if not ANE_ENABLED:
         return "CPU_HEURISTIC_GUESS"
 
