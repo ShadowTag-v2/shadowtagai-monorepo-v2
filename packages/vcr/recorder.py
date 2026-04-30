@@ -105,6 +105,7 @@ class VCRRecorder:
         cassette_name: str = "default",
     ) -> None:
         from config.feature_flags import flags
+
         self._mode = mode or VCRMode(flags.get_string("vcr_mode", default="off").lower())
 
         default_dir = Path(

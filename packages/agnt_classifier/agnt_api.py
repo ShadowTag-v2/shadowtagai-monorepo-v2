@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 class ClassifierVerdict(StrEnum):
     """Verdict from the two-stage classification pipeline."""
+
     ALLOW = "allow"
     BLOCK = "block"
     ERROR = "error"
@@ -31,6 +32,7 @@ class ClassifierVerdict(StrEnum):
 @dataclass(frozen=True)
 class ClassifierResult:
     """Structured result from classification."""
+
     verdict: ClassifierVerdict
     stage: int = 0
     reasoning: str = ""

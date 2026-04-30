@@ -117,10 +117,7 @@ class ClassifiedGateway:
         # If a contract exists with medium+ risk, require explicit confirmation
         contract = self._gateway.registry.get(tool_id)
         if contract and contract.risk_level in ("medium", "high", "critical"):
-            has_consequential_precond = any(
-                p.get("name") == "consequential_action_confirmed"
-                for p in contract.preconditions
-            )
+            has_consequential_precond = any(p.get("name") == "consequential_action_confirmed" for p in contract.preconditions)
             if has_consequential_precond and not context.get("consequential_action_confirmed"):
                 return Decision(
                     allowed=False,

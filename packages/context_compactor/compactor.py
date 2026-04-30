@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 import time
 from pathlib import Path
 from typing import Any
@@ -52,6 +51,7 @@ class ContextCompactor:
         feature_flags: dict[str, Any] | None = None,
     ) -> None:
         from config.feature_flags import flags
+
         self._layers = [
             Layer1CachedMC(),
             Layer2TimeBased(),

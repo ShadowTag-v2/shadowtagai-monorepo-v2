@@ -12,6 +12,7 @@ from typing import Any
 class VCRReplay:
     def __init__(self, cassette_dir: str = ".cassettes"):
         from config.feature_flags import flags
+
         self.cassette_dir = cassette_dir
         os.makedirs(self.cassette_dir, exist_ok=True)
         vcr_mode = flags.get_string("vcr_mode", default="off")

@@ -55,6 +55,7 @@ class TelemetrySink:
             self._enabled = enabled
         else:
             from config.feature_flags import flags
+
             self._enabled = flags.is_enabled("telemetry_enabled")
 
     @property
