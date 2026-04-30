@@ -1,0 +1,184 @@
+"use client";
+
+/**
+ * PanopticonProvider — Unified Telemetry Context
+ *
+ * Cor.Re-Coding the Vibe: This provider wires the telemetry sink on mount,
+ * establishing the event pipeline from React components to the /api/ops/telemetry
+ * endpoint.
+ *
+ * Architecture (adapted from Claude Code's initializeAnalyticsSink):
+ *   1. On mount: attach the HTTP sink to the telemetry module
+ *   2. All queued events (from SSR hydration gap) are drained
+ *   3. Children gain access to usePanopticon() via this provider's context
+ *   4. On unmount: flush all pending events
+ *
+ * Usage:
+ *   <PanopticonProvider>
+ *     <App />
+ *   </PanopticonProvider>
+ */
+
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  type ReactNode,
+} from "react";
+import {
+  type TelemetrySink,
+  type TelemetryEvent,
+  attachTelemetrySink,
+  flushTelemetry,
+  isTelemetryDisabled,
+  stripPiiFields,
+} from "@/lib/telemetry";
+import { type PanopticonActions, usePanopticon } from "@/hooks/usePanopticon";
+
+// ─────────────────────────────────────────────────────────────
+// Context
+// ─────────────────────────────────────────────────────────────
+
+const PanopticonContext = createContext<PanopticonActions | null>(null);
+
+/**
+ * Access the Panopticon telemetry context.
+ * Must be used within a PanopticonProvider.
+ */
+export function usePanopticonContext(): PanopticonActions {
+  const ctx = useContext(PanopticonContext);
+  if (!ctx) {
+    throw new Error(
+      "usePanopticonContext must be used within a <PanopticonProvider>",
+    );
+  }
+  return ctx;
+}
+
+// ─────────────────────────────────────────────────────────────
+// HTTP Sink Implementation
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * Batched HTTP sink that sends events to /api/ops/telemetry.
+ * Adapted from Claude Code's dual-sink (Datadog + 1P) routing pattern,
+ * but simplified to a single HTTP endpoint.
+ */
+function createHttpSink(): TelemetrySink {
+  const buffer: TelemetryEvent[] = [];
+  let flushTimer: ReturnType<typeof setTimeout> | null = null;
+  const FLUSH_INTERVAL_MS = 5000;
+  const BATCH_SIZE = 25;
+
+  const sendBatch = async (events: TelemetryEvent[]): Promise<void> => {
+    if (events.length === 0) return;
+
+    // Strip PII fields before sending to general-access endpoint
+    const sanitizedEvents = events.map((event) => ({
+      ...event,
+      metadata: stripPiiFields(event.metadata),
+    }));
+
+    try {
+      const response = await fetch("/api/ops/telemetry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ events: sanitizedEvents }),
+        // Use keepalive for unload scenarios
+        keepalive: true,
+      });
+
+      if (!response.ok) {
+        console.warn(
+          `[Panopticon] Telemetry batch failed: ${response.status}`,
+        );
+      }
+    } catch {
+      // Silent failure — telemetry must never break the app
+      // Events are lost, which is acceptable for observability data
+    }
+  };
+
+  const scheduleFlush = () => {
+    if (flushTimer) return;
+    flushTimer = setTimeout(async () => {
+      flushTimer = null;
+      if (buffer.length > 0) {
+        const batch = buffer.splice(0, BATCH_SIZE);
+        await sendBatch(batch);
+        // If there are remaining events, schedule another flush
+        if (buffer.length > 0) {
+          scheduleFlush();
+        }
+      }
+    }, FLUSH_INTERVAL_MS);
+  };
+
+  return {
+    logEvent: (event: TelemetryEvent) => {
+      buffer.push(event);
+
+      // Flush immediately if batch is full
+      if (buffer.length >= BATCH_SIZE) {
+        const batch = buffer.splice(0, BATCH_SIZE);
+        void sendBatch(batch);
+      } else {
+        scheduleFlush();
+      }
+    },
+
+    logEventAsync: async (event: TelemetryEvent) => {
+      await sendBatch([event]);
+    },
+
+    flush: async () => {
+      if (flushTimer) {
+        clearTimeout(flushTimer);
+        flushTimer = null;
+      }
+      if (buffer.length > 0) {
+        const remaining = buffer.splice(0);
+        await sendBatch(remaining);
+      }
+    },
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// Provider Component
+// ─────────────────────────────────────────────────────────────
+
+interface PanopticonProviderProps {
+  children: ReactNode;
+  /** Disable telemetry (overrides env check) */
+  disabled?: boolean;
+}
+
+export function PanopticonProvider({
+  children,
+  disabled = false,
+}: PanopticonProviderProps) {
+  const sinkAttached = useRef(false);
+  const panopticon = usePanopticon();
+
+  // Attach the HTTP sink on mount (once)
+  useEffect(() => {
+    if (sinkAttached.current || disabled || isTelemetryDisabled()) return;
+
+    const sink = createHttpSink();
+    attachTelemetrySink(sink);
+    sinkAttached.current = true;
+
+    // Flush on unmount
+    return () => {
+      void flushTelemetry();
+    };
+  }, [disabled]);
+
+  return (
+    <PanopticonContext.Provider value={panopticon}>
+      {children}
+    </PanopticonContext.Provider>
+  );
+}
