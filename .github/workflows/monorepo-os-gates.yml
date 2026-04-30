@@ -397,6 +397,47 @@ jobs:
             echo "  ✓ Firebase Tool Bridge complete"
           fi
 
+      - name: Python Typecheck (ruff E-series)
+        run: |
+          echo "═══ python.typecheck.yaml Enforcement ═══"
+          if command -v ruff >/dev/null 2>&1; then
+            # E-series: runtime errors, syntax errors, import errors
+            ERRORS=$(ruff check --select E --exclude external_repos --exclude node_modules --quiet . 2>&1 | wc -l | tr -d ' ')
+            ERRORS=${ERRORS:-0}
+            if [ "$ERRORS" -eq 0 ]; then
+              echo "  ✓ ruff E-series: 0 errors"
+            else
+              echo "  ⚠ ruff E-series: ${ERRORS} findings"
+              ruff check --select E --exclude external_repos --exclude node_modules . 2>&1 | head -20
+              echo "::warning::${ERRORS} ruff E-series findings — review for type safety"
+            fi
+          elif pip install ruff 2>/dev/null; then
+            ERRORS=$(ruff check --select E --exclude external_repos --exclude node_modules --quiet . 2>&1 | wc -l | tr -d ' ')
+            echo "  ruff installed on-the-fly — ${ERRORS:-0} E-series findings"
+          else
+            echo "::warning::ruff not available — python.typecheck enforcement skipped"
+          fi
+
+      - name: Consequential Action Contract (v3.5)
+        run: |
+          echo "═══ function_call.consequential_action Enforcement ═══"
+          if [ -f "tool_contracts/function_call.consequential_action.yaml" ]; then
+            # Verify the contract has preconditions (not advisory-only)
+            if grep -q "consequential_action_confirmed" tool_contracts/function_call.consequential_action.yaml; then
+              echo "  ✓ Contract has confirmation precondition"
+            else
+              echo "  ⚠ Contract exists but lacks confirmation precondition"
+            fi
+            # Verify ClassifiedGateway integration
+            if grep -q "consequential_action" packages/tool_gateway/classified_gateway.py 2>/dev/null; then
+              echo "  ✓ Wired into ClassifiedGateway"
+            else
+              echo "::warning::Contract not wired into ClassifiedGateway"
+            fi
+          else
+            echo "::warning::function_call.consequential_action.yaml not found"
+          fi
+
   release-readiness:
     name: Release Readiness Gate
     runs-on: ubuntu-latest

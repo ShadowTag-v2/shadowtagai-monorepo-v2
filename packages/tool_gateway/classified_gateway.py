@@ -96,6 +96,7 @@ class ClassifiedGateway:
         """Check whether a tool call should proceed.
 
         Pipeline:
+            0. Consequential-action gate → enforce confirmation for medium+ risk
             1. Always-blocked → reject
             2. Auto-approved → contract check only (skip classifier)
             3. Requires-classifier → 2-stage XML classifier + contract check
@@ -111,6 +112,24 @@ class ClassifiedGateway:
         """
         tool_input = tool_input or {}
         context = context or {}
+
+        # Tier 0: Consequential action gate (v3.5)
+        # If a contract exists with medium+ risk, require explicit confirmation
+        contract = self._gateway.registry.get(tool_id)
+        if contract and contract.risk_level in ("medium", "high", "critical"):
+            has_consequential_precond = any(
+                p.get("name") == "consequential_action_confirmed"
+                for p in contract.preconditions
+            )
+            if has_consequential_precond and not context.get("consequential_action_confirmed"):
+                return Decision(
+                    allowed=False,
+                    reason=(
+                        f"Tool '{tool_id}' is a consequential action (risk={contract.risk_level}). "
+                        "Set context['consequential_action_confirmed']=True to proceed."
+                    ),
+                    contract_id=contract.tool_id,
+                )
 
         # Tier 1: Always blocked
         if tool_id in self._always_blocked:

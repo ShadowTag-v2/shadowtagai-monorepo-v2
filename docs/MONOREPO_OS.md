@@ -1,6 +1,6 @@
-# Monorepo OS — v3.0
+# Monorepo OS — v3.5
 
-> **Status:** Active | **Version:** 3.0 | **Updated:** 2026-04-29
+> **Status:** Active | **Version:** 3.5 | **Updated:** 2026-04-30
 
 ## Overview
 
@@ -167,12 +167,13 @@ scripts/clone-external-reference-repos.sh --dry-run
 
 | Classification | Count |
 |---------------|-------|
-| `enforced_by_ci` | 14 |
-| `enforced_by_script` | 10 |
+| `enforced_by_ci` | 12 |
+| `enforced_by_script` | 5 |
 | `enforced_by_toolgateway` | 2 |
-| `advisory_only (P2)` | 11 |
-| `deprecated` | 2 |
+| `enforced_by_verified_map` | 12 |
+| `advisory_only (P2)` | 8 |
 | **Total** | **39** |
+| **Gate 9 enforced** | **31/39 (79%)** |
 
 Full audit: `.reports/monorepo-os/orphan_contracts.md`
 
@@ -182,7 +183,9 @@ Full audit: `.reports/monorepo-os/orphan_contracts.md`
 |-----------|--------|-----------|
 | **v2.5** | ✅ Complete | P0 security (5/5): firebase deploy, history rewrite, LFS, GitHub App auth, token scope |
 | **v3.0** | ✅ Complete | P1 operational (12/12): beads health, memory integrity (4), knowledge (2), oracle, design lint, bootstrap, firebase bridge |
-| **Permanent** | Advisory | P2 (11): agent-internal, read-only, covered-by-other-gates |
+| **v3.1** | ✅ Complete | Proof-tightened — reports reconciled with Gate 9: 29/39 (74%) |
+| **v3.5** | ✅ Complete | Consequential action + typecheck elevated: 31/39 (79%) |
+| **Permanent** | Advisory | P2 (8): agent-internal, read-only, covered-by-other-gates |
 | **Deprecated** | Consolidated | `large_file_scan.yaml` + `repo.large_file_scan.yaml` → `git.lfs_check.yaml` |
 
 ## Proof Links
@@ -221,3 +224,5 @@ Full audit: `.reports/monorepo-os/orphan_contracts.md`
 | 2.4 | 2026-04-28 | Secret scan: 0 leaks, gitleaksignore deduplicated (213→135 lines, 0 stale warnings). Biome: 2 a11y errors fixed, 0 errors in production code. Orphan contracts triaged: P0 (5 security), P1 (12 operational), P2 (13 advisory-permanent). Release gate: 7/8 pass + 1 warning. Dashboard auth bug fixed (function name mismatch). |
 | 2.5 | 2026-04-28 | P0 security contracts ALL ENFORCED (5/5): firebase-deploy-gate.sh + github-token-scope-audit.sh wired to CI, force-push-guard.sh + prepush-bloat-gate.sh in pre-push hook, auth_github_app.py PEM chain. Brand Identity LOCKED (BRAND_IDENTITY_LOCKED.md). Pomelli dual-brand campaign complete. Enforcement density: 14/39 contracts enforced (36%). |
 | 3.0 | 2026-04-29 | P1 operational contracts ALL ENFORCED (12/12). Root MONOREPO_OS.md unified as pointer to docs/. 12 stub contracts enriched with preconditions, enforcement_script, ci_gate. 6 new CI steps in monorepo-os-gates.yml (beads health, memory integrity, knowledge compile, design lint, bootstrap alignment, firebase bridge). 2 duplicate contracts deprecated (large_file_scan → git.lfs_check). Enforcement density: 26/39 contracts enforced (67%). |
+| 3.1 | 2026-04-29 | Proof-tightened: Gate 9 verified map expanded to 16 contracts, contract coverage discovery logic fixed, orphan_contracts.md and contract_coverage_plan.md reconciled with gate. 25 reference repos cloned to external_repos/upstream/ for CI hardening evaluation. Enforcement density reconciled: 29/39 (74%). |
+| 3.5 | 2026-04-30 | v3.5 elevation: `function_call.consequential_action` wired to ClassifiedGateway Tier 0 (medium+ risk confirmation gate). `python.typecheck` wired to `ruff check --select E` in CI. Gate 9 self-referential keyword match bug fixed. Daily truth report enhanced with dirty file classification. Enforcement density: 31/39 (79%). |

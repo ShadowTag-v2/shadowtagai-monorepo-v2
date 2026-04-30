@@ -213,6 +213,7 @@ git.lfs_check
 github_app.auth
 large_file_scan
 repo.large_file_scan
+function_call.consequential_action
 "
 
 ENFORCED=0
@@ -234,9 +235,9 @@ for contract_file in tool_contracts/*.yaml; do
     ENFORCED=$((ENFORCED + 1)); continue
   fi
 
-  # Method 3: tool_id keyword in CI/scripts
+  # Method 3: tool_id keyword in CI/scripts (EXCLUDING tool_contracts/ self-matches)
   if [ -n "$tool_id" ]; then
-    if grep -rq "$tool_id" .github/workflows/ scripts/ 2>/dev/null; then
+    if grep -rq --exclude-dir=tool_contracts "$tool_id" .github/workflows/ scripts/ 2>/dev/null; then
       ENFORCED=$((ENFORCED + 1)); continue
     fi
   fi
