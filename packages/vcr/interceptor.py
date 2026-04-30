@@ -3,7 +3,7 @@
 import json
 import os
 import hashlib
-from typing import Any, Dict, Callable
+from typing import Any, Callable
 
 class VCRInterceptor:
     """Intercepts and records/replays model queries."""
