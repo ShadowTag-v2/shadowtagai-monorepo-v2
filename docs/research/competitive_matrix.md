@@ -40,7 +40,7 @@
 4. **STATE A/B Machine**: Configurable autonomy with security gates
 5. **Zero-Trust Security**: 3-layer XML classifier + betterleaks + Cor.30 pipeline
 6. **Google-Native**: Direct Firebase, Cloud Run, Firestore, Stitch integration
-7. **Sovereign Skill Fleet**: 247 skills (no competitor has comparable extensibility)
+7. **Sovereign Skill Fleet**: 264 skills (no competitor has comparable extensibility)
 
 ### Antigravity Gaps (Address in Q2 2026)
 1. **Desktop Testing**: Devin can interact with desktop apps; we're browser-only via Chrome DevTools MCP
@@ -62,6 +62,46 @@ Autonomy ───────────────────────�
 │                    (terminal REPL)
 ```
 
+## Claude Agent SDK Python — Architecture Analysis (2026-04-30)
+
+> Source: `external_repos/claude-agent-sdk-python/` (official Anthropic SDK)
+
+### Key Patterns Discovered
+
+| Module | Pattern | Adoptable? |
+|--------|---------|------------|
+| `session_resume.py` | Materializes external store sessions into temp `CLAUDE_CONFIG_DIR` for subprocess resume | ✅ Reference for KI-backed session restore |
+| `transcript_mirror_batcher.py` | Bounded async buffer (500 entries / 1MiB) with eager background flush | ✅ Pattern for Dream daemon evidence streaming |
+| `session_store_validation.py` | Pre-flight validation of store option combinations (fail-fast before spawn) | ✅ Apply to daemon config validation |
+| `message_parser.py` | Typed message parsing (21 message types: Text, Thinking, ToolUse, ToolResult, RateLimit, etc.) | ✅ Reference for MCP message handling |
+| `session_store_conformance.py` | Protocol conformance test harness for custom session stores | ✅ Template for our KI store testing |
+| `types.py` | `PermissionMode` enum (`default/acceptEdits/plan/bypassPermissions/dontAsk/auto`) | ✅ Maps to our STATE A/B machine |
+| `types.py` | `exclude_dynamic_sections` flag for cross-user prompt caching | ✅ Cost optimization pattern |
+| `_task_compat.py` | Python 3.10/3.11/3.14 TaskGroup compatibility shim | ⬜ Already on 3.14 exclusively |
+
+### SDK Architecture Insights
+
+1. **Session Store Protocol**: Abstract `SessionStore` with `append()`, `list()`, `get()`, `list_subkeys()` — implementations for Postgres, Redis, S3
+2. **Transcript Mirroring**: Real-time session recording via bounded batcher (prevents OOM during long sessions)
+3. **6 Permission Modes**: `auto` = full YOLO, `plan` = read-only planning, `dontAsk` = bypass all permission prompts
+4. **Beta Headers**: `context-1m-2025-08-07` — confirms 1M context was beta gated
+
+## ECC2 Rust TUI — Architecture Reference (2026-04-30)
+
+> Source: `external_repos/everything-claude-code/ecc2/src/` (16 Rust files)
+> Status: QUARANTINE — REFERENCE ONLY (Rust, not adoptable as Python/TS code)
+
+### Architecture Patterns (Adoptable as Design)
+
+| Module | Pattern | Value |
+|--------|---------|-------|
+| `worktree/` | Git worktree-based agent isolation (dedicated branch per task) | HIGH — parallel agent execution |
+| `session/daemon.rs` | Background session daemon with TCP IPC | MED — daemon fleet architecture reference |
+| `session/runtime.rs` | Session lifecycle management (spawn → monitor → collect) | MED — maps to our daemon registry |
+| `tui/dashboard.rs` | Real-time agent activity dashboard | LOW — we use Chrome DevTools MCP |
+| `comms/` | Inter-agent communication via TCP sockets | MED — alternative to MCP stdio |
+| `config/mod.rs` | `auto_create_worktrees` policy flag | HIGH — configurable isolation default |
+
 ## Recommended Actions
 
 | # | Action | Priority | ETA |
@@ -71,3 +111,6 @@ Autonomy ───────────────────────�
 | 3 | Explore model-routing per task complexity | P3 | Q3 2026 |
 | 4 | Add Slack/Teams notification integration | P3 | Q3 2026 |
 | 5 | Publish Antigravity SDK for custom agent builders | P3 | Q3 2026 |
+| 6 | Port session store conformance testing pattern | P2 | Q2 2026 |
+| 7 | Implement transcript mirror bounded batcher for Dream daemon | P2 | Q2 2026 |
+| 8 | Add worktree-based agent isolation (from ECC2) | P3 | Q3 2026 |
