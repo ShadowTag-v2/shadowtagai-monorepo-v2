@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 import time
 from pathlib import Path
 from typing import Any
@@ -35,6 +34,7 @@ class PromptDumper:
 
     def __init__(self, dump_dir: Path | None = None, enabled: bool | None = None) -> None:
         from config.feature_flags import flags
+
         self._enabled = enabled if enabled is not None else flags.is_enabled("dump_prompts")
         self._dump_dir = dump_dir
         self._sequence = 0

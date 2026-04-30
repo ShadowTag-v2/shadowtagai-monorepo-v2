@@ -30,8 +30,10 @@ def test_context_compaction():
 
 
 def test_vcr_record_replay(tmp_path):
-    os.environ["AGNT_VCR_RECORD"] = "1"
-    os.environ["AGNT_VCR_REPLAY"] = "0"
+    from config.feature_flags import flags
+
+    os.environ["AGNT_FC_OVERRIDES"] = json.dumps({"vcr_mode": "record"})
+    flags.reload()
     vcr = VCRReplay(cassette_dir=str(tmp_path))
 
     def my_call():
@@ -40,8 +42,8 @@ def test_vcr_record_replay(tmp_path):
     res = vcr.intercept("test_call", {"arg": 1}, my_call)
     assert res == {"result": "success"}
 
-    os.environ["AGNT_VCR_RECORD"] = "0"
-    os.environ["AGNT_VCR_REPLAY"] = "1"
+    os.environ["AGNT_FC_OVERRIDES"] = json.dumps({"vcr_mode": "replay"})
+    flags.reload()
     vcr_replay = VCRReplay(cassette_dir=str(tmp_path))
 
     def fail_call():
