@@ -1,0 +1,42 @@
+# Bazel-managed dependencies for counselconduit py_library + py_test targets
+# Combined: production requirements + test requirements
+# Source: apps/counselconduit/requirements.txt + requirements-dev.txt
+
+# === Production (from apps/counselconduit/requirements.txt) ===
+fastapi>=0.115.0
+uvicorn[standard]>=0.34.0
+pydantic>=2.10.0
+
+# Google Cloud
+google-genai>=1.0.0
+google-cloud-firestore>=2.19.0
+google-cloud-tasks>=2.16.0
+google-cloud-secret-manager>=2.22.0
+firebase-admin>=6.6.0
+
+# LiteLLM
+litellm>=1.60.0
+
+# Stripe
+stripe>=12.0.0
+
+# Google Workspace
+google-api-python-client>=2.150.0
+google-auth>=2.36.0
+
+# Security
+PyJWT[crypto]>=2.10.0
+passlib[bcrypt]>=1.7.4
+python-multipart>=0.0.12
+
+# Observability
+structlog>=24.4.0
+httpx>=0.27.0
+opentelemetry-api>=1.30.0
+opentelemetry-sdk>=1.30.0
+opentelemetry-instrumentation-fastapi>=0.51b0
+opentelemetry-exporter-otlp>=1.30.0
+
+# === Test (from requirements-dev.txt) ===
+pytest>=9.0
+pytest-asyncio>=0.25

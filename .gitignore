@@ -425,3 +425,9 @@ STEP_BY_STEP_GUIDE.md
 install_ext.py
 pickle_package.json
 .beads/firebase-sa.json
+.tmp.driveupload/
+--help/
+scratch/repos/
+data/
+external_sdks/
+memory/

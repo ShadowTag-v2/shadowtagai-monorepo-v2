@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "exclude": ["**/demo"],
+  "include": ["../../types/css-imports.d.ts", "**/*"]
+}
