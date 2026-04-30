@@ -1,6 +1,6 @@
 # Monorepo OS — Daily Truth Report
 
-> **Generated:** 2026-04-30T00:42:17Z | **Date:** April 30, 2026
+> **Generated:** 2026-04-30T01:08:23Z | **Date:** April 30, 2026
 
 ## Oracle Score
 
@@ -27,12 +27,12 @@
 
 | Property | Value |
 |----------|-------|
-| Last Commit | `4e0cacb41` — feat(monorepo-os): v3.5 hardening — 31/39 contracts (79%), CI gates, classifie |
-| Dirty Files (total) | 8 |
+| Last Commit | `943505701` — chore(reports): regenerate daily + release-readiness at v4.0 — 34/39 (87%), 53 |
+| Dirty Files (total) | 2 |
 | — Source (tracked, non-transient) | 0 |
-| — Session-generated | 6 |
-| — IDE transient | 1 |
-| — Untracked new | 1 |
+| — Session-generated | 2 |
+| — IDE transient | 0 |
+| — Untracked new | 0 |
 | Triage | ✅ Triaged (2 actual-risk) |
 
 ## Guardrails
