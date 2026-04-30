@@ -25,6 +25,7 @@ Key differences from CC implementation:
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import logging
 import re
@@ -44,7 +45,7 @@ warnings.warn(
 
 # Re-export the new package's public API for backwards compatibility.
 # Consumers should migrate to `import speculation_engine` directly.
-try:
+with contextlib.suppress(ImportError):
     from speculation_engine import (  # noqa: E402, F401
         OverlayFS,
         SpeculationEngine,
@@ -53,8 +54,6 @@ try:
         emit_event,
         read_telemetry_events,
     )
-except ImportError:
-    pass  # New package not installed — legacy-only mode.
 
 logger = logging.getLogger(__name__)
 
