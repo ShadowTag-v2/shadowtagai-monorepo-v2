@@ -1,17 +1,24 @@
 {
   "score": "F",
-  "total_findings": 20,
-  "critical": 1,
+  "total_findings": 34,
+  "critical": 2,
   "errors": 1,
-  "warnings": 14,
+  "warnings": 27,
   "info": 4,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "beads/heartbeat.json",
-      "fix": "git checkout -- beads/heartbeat.json"
+      "path": "agent/workflows/live-engine.md",
+      "fix": "git checkout -- agent/workflows/live-engine.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".beads/heartbeat.json",
+      "fix": "git checkout -- .beads/heartbeat.json"
     },
     {
       "gate": "dirty",
@@ -31,36 +38,127 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".reports/secrets/betterleaks-dir.json",
-      "fix": "git checkout -- .reports/secrets/betterleaks-dir.json"
+      "path": ".beads/repo_doctor_latest.json",
+      "fix": "git checkout -- .beads/repo_doctor_latest.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".eslintrc.cjs",
+      "fix": "git checkout -- .eslintrc.cjs"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".reports/skills/guardrail_annotation_audit.md",
-      "fix": "git checkout -- .reports/skills/guardrail_annotation_audit.md"
+      "path": ".geminiignore",
+      "fix": "git checkout -- .geminiignore"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "scripts/install_antigravity_hardened.sh",
-      "fix": "git checkout -- scripts/install_antigravity_hardened.sh"
+      "path": ".gitleaksignore",
+      "fix": "git checkout -- .gitleaksignore"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".prettierignore",
+      "fix": "git checkout -- .prettierignore"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".prettierrc",
+      "fix": "git checkout -- .prettierrc"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "vault/monitor/pipeline_metrics.json",
-      "fix": "git checkout -- vault/monitor/pipeline_metrics.json"
+      "path": ".ruler/AGENTS.md",
+      "fix": "git checkout -- .ruler/AGENTS.md"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": "fix_judge_names.py",
-      "fix": "git add fix_judge_names.py"
+      "message": "Dirty file (M)",
+      "path": ".vscode/settings.json",
+      "fix": "git checkout -- .vscode/settings.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "GEMINI.md",
+      "fix": "git checkout -- GEMINI.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "Monorepo-Uphillsnowball.code-workspace",
+      "fix": "git checkout -- Monorepo-Uphillsnowball.code-workspace"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/aiyou-fastapi-services/tests/test_api.py",
+      "fix": "git checkout -- apps/aiyou-fastapi-services/tests/test_api.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/app/core/tracing.py",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/app/core/tracing.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/app/quality/quality_gates.py",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/app/quality/quality_gates.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/app/core/tracing.py",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/app/core/tracing.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/app/quality/quality_gates.py",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/app/quality/quality_gates.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/src/bridge_mock.py",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/src/bridge_mock.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "... and 89 more dirty files",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "conflicts",
+      "severity": "critical",
+      "message": "Merge conflict marker found",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/.claude/hooks/SessionStart",
+      "fix": "Resolve merge conflicts manually"
     },
     {
       "gate": "conflicts",
@@ -72,7 +170,7 @@
     {
       "gate": "secrets",
       "severity": "error",
-      "message": "Betterleaks found 37 potential secrets",
+      "message": "Betterleaks found 60 potential secrets",
       "path": "",
       "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
     },
@@ -87,41 +185,41 @@
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "Claude_Code_6/Cor.Claude_Code_6",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "Claude_Code_6/go.mod",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "Claude_Code_6/main.go",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "Claude_Code_6/main_test.go",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "File outside canonical layout",
       "path": "_archive_legacy_beads_2026-04-28/beads_manager_tools.py",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 4472 more drift files",
+      "message": "File outside canonical layout",
+      "path": "_audit_claude_code/src/QueryEngine.ts",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "_audit_claude_code/src/Task.ts",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "_audit_claude_code/src/Tool.ts",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "_audit_claude_code/src/assistant/sessionHistory.ts",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "... and 2540 more drift files",
       "path": "",
       "fix": ""
     },
@@ -142,7 +240,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ========================= 625 tests collected in 0.70s =========================",
+      "message": "Tests: ========================= 483 tests collected in 0.53s =========================",
       "path": "",
       "fix": ""
     }

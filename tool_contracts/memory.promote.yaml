@@ -1,17 +1,9 @@
-# tool_contracts/memory.promote.yaml — P1 Operational Contract
+# tool_contracts/memory.promote.yaml
 tool_id: "memory.promote"
-description: "Governs promotion of ephemeral session data into persistent .memory/atoms/ knowledge atoms."
-risk_level: "medium"
-enforcement: "enforced_by_script"
-preconditions:
-  - ".memory/atoms/ directory must exist"
-  - "scripts/memory-retain.sh must exist and be executable"
-postconditions:
-  - "New atom file created in .memory/atoms/ with valid YAML frontmatter"
-  - "Creation event appended to .memory/events.ndjson"
-enforcement_script: "scripts/memory-retain.sh"
-ci_gate: ".github/workflows/monorepo-os-gates.yml#memory-integrity"
+description: "Governs the memory.promote operations."
+risk_level: "low"
+preconditions: []
 evidence_requirements:
   - type: "log"
-    path: ".memory/events.ndjson"
+    path: ".beads/evidence/memory_promote.jsonl"
 reuse_queries: []

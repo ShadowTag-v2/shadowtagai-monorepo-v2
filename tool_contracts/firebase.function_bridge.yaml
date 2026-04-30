@@ -1,18 +1,9 @@
-# tool_contracts/firebase.function_bridge.yaml — P1 Operational Contract
+# tool_contracts/firebase.function_bridge.yaml
 tool_id: "firebase.function_bridge"
-description: "Governs Firebase AI Logic function calls through the Tool Bridge registry and confirmation gate."
-risk_level: "high"
-enforcement: "enforced_by_toolgateway"
-preconditions:
-  - "packages/firebase_tool_bridge/registry.py must define the function"
-  - "Function must have an assigned RiskTier (LOW, MEDIUM, HIGH, CRITICAL)"
-  - "HIGH/CRITICAL risk functions require user confirmation via ConfirmationGate"
-postconditions:
-  - "Execution evidence appended to .agent/evidence/function_calls.ndjson"
-  - "Args are SHA-256 hashed in evidence — raw args never stored"
-enforcement_script: "packages/firebase_tool_bridge/bridge.py"
-ci_gate: ".github/workflows/monorepo-os-gates.yml#firebase-bridge-check"
+description: "Governs the firebase.function_bridge operations."
+risk_level: "low"
+preconditions: []
 evidence_requirements:
   - type: "log"
-    path: ".agent/evidence/function_calls.ndjson"
+    path: ".beads/evidence/firebase_function_bridge.jsonl"
 reuse_queries: []

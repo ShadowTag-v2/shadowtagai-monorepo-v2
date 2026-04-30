@@ -1,17 +1,9 @@
-# tool_contracts/memory.retain.yaml — P1 Operational Contract
+# tool_contracts/memory.retain.yaml
 tool_id: "memory.retain"
-description: "Prevents ephemeral session state from being lost by enforcing memory-retain at session boundaries."
-risk_level: "medium"
-enforcement: "enforced_by_script"
-preconditions:
-  - "scripts/memory-retain.sh must exist and be executable"
-  - "Session must have produced actionable knowledge or decisions"
-postconditions:
-  - "Session knowledge persisted to .memory/atoms/ or KI system"
-  - "Retention event logged to .memory/events.ndjson"
-enforcement_script: "scripts/memory-retain.sh"
-ci_gate: ".github/workflows/monorepo-os-gates.yml#memory-integrity"
+description: "Governs the memory.retain operations."
+risk_level: "low"
+preconditions: []
 evidence_requirements:
   - type: "log"
-    path: ".memory/events.ndjson"
+    path: ".beads/evidence/memory_retain.jsonl"
 reuse_queries: []

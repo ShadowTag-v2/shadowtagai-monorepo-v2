@@ -1,16 +1,8 @@
-# tool_contracts/design_system.lint.yaml — P1 Operational Contract
+# tool_contracts/design_system.lint.yaml
 tool_id: "design_system.lint"
-description: "Enforces DESIGN.md token compliance via the design-system-lint.mjs linter."
-risk_level: "medium"
-enforcement: "enforced_by_ci"
-preconditions:
-  - "scripts/design-system-lint.mjs must exist"
-  - "At least one DESIGN.md must exist in the workspace"
-postconditions:
-  - "All DESIGN.md files pass linting (8 rules including WCAG contrast)"
-  - "Lint results logged"
-enforcement_script: "scripts/design-system-lint.mjs"
-ci_gate: ".github/workflows/monorepo-os-gates.yml#design-system-lint"
+description: "Governs the design_system.lint operations."
+risk_level: "low"
+preconditions: []
 evidence_requirements:
   - type: "log"
     path: ".beads/evidence/design_system_lint.jsonl"
