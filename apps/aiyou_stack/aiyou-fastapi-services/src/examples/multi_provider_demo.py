@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Multi-Provider Demo: Gemini + Anthropic Working Together
 
 This example demonstrates the unified orchestrator routing tasks between

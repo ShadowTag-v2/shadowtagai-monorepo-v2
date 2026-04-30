@@ -1,15 +1,8 @@
 ---
 description: Sets the comprehensive environment variables and paths for "God Mode" operation and initiates the Heartbeat.
-status: DEPRECATED
-superseded_by: /repo-pulse
-deprecated_date: 2026-04-27
 ---
 
-> [!WARNING]
-> **DEPRECATED** — This workflow is superseded by `/repo-pulse`. Use `/repo-pulse` for session initialization.
-> Legacy content retained for reference only. Do not execute.
-
-# LIVE ENGINE INITIALIZATION (DEPRECATED)
+# LIVE ENGINE INITIALIZATION
 
 > **Purpose:** Ignites the comprehensive environment variables and paths for "God Mode", ensuring the agent operates with full authority over the defined territory and rules.
 
@@ -19,7 +12,7 @@ deprecated_date: 2026-04-27
 ## Automation Restored:
 1. `gcloud_auth_solver.py`: Ready (Jetski/Browser).
 2. `omega_auth_daemon.py`: RUNNING (PID: Active).
-3. Service Accounts: `$GCP_COMPUTE_SA` is now REFRESHING every 3 minutes, as you are getting detokenized that quickly. This is this service account’s only function! `$CLOUD_RUN_SA` is for cloud runs.
+3. Service Accounts: `767252945109-compute@developer.gserviceaccount.com` is now REFRESHING every 3 minutes, as you are getting detokenized that quickly. This is this service account’s only function! `shadowtag-core-run-sa@shadowtag-omega-v4.iam.gserviceaccount.com` is for cloud runs.
 4. `BRAIN_DIR` is per-conversation: `~/.gemini/antigravity/brain/<conversation-id>`
 5. Ensure you are saving everything to beads as you go.
 
@@ -43,12 +36,6 @@ export SOVEREIGN_MEMORY_LINK="/Users/pikeymickey/.gemini/antigravity/Monorepo-Up
 # oh-my-claudecode telemetry & execution
 export OMC_OPENCLAW=1
 alias omc="npm i -g oh-my-claude-sisyphus@latest && npx oh-my-claude-sisyphus"
-
-# Claude Code / Antigravity Max Effort Constraints (from architecture leak)
-export CLAUDE_CODE_EFFORT_LEVEL="max"
-export CLAUDE_CODE_DISABLE_1M_CONTEXT="1"
-export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING="1"
-export CLAUDE_CODE_DISABLE_AUTO_MEMORY="1"
 ```
 
 ## Session Start: Sovereign Memory Sync

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Tests for Orchestrator Iteration Tracking Requirements (REQ-ORCH-ITER-001 through REQ-ORCH-ITER-008).
 

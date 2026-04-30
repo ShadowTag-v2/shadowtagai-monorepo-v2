@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FastAPI Application for Vertex AI RAG vs Long-Context Service
 
 Endpoints:

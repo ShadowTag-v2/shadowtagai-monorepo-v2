@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Innovation Lab Service - Data Models"""
 
 from enum import StrEnum

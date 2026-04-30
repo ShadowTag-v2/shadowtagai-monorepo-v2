@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """COR ORCHESTRATOR - Event-Driven Multi-Agent Coordination
 =========================================================
 
@@ -867,7 +865,7 @@ async def example_usage():
     This demonstrates Pattern 1 (Sequential Pipeline) with conditional
     stage skipping to maintain p99≤90ms SLA.
     """
-    orchestrator = CorOrchestrator("Claude_Code_6_orchestrator")
+    orchestrator = CorOrchestrator("judge_six_orchestrator")
 
     # Define pipeline stages (mock implementations)
     async def jr_engine_scan(ctx: ExecutionContext, request: dict) -> dict:
@@ -891,7 +889,7 @@ async def example_usage():
         return {**data, "decision": decision}
 
     # Build pipeline
-    pipeline = SequentialPipeline("Claude_Code_6_validation")
+    pipeline = SequentialPipeline("judge_six_validation")
     pipeline.add_stage("jr_engine_scan", jr_engine_scan, timeout_ms=5.0)
     pipeline.add_stage(
         "gemini_semantic_check",
@@ -902,12 +900,12 @@ async def example_usage():
     pipeline.add_stage("hybrid_judge_decision", hybrid_judge_decision, timeout_ms=25.0)
 
     # Register pipeline
-    orchestrator.register_pipeline("Claude_Code_6", pipeline)
+    orchestrator.register_pipeline("judge_six", pipeline)
 
     # Execute
     context = orchestrator.create_context("req_001", latency_budget_ms=90.0)
     result = await orchestrator.execute_pipeline(
-        "Claude_Code_6",
+        "judge_six",
         context,
         {"user_query": "example request"},
     )

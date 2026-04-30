@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Test suite for System Limitations Requirements (REQ-LIMIT-001 through REQ-LIMIT-005).
 

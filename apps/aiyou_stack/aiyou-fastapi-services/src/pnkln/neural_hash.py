@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Neural Hash - Semantic/Latent Hash Generation (CLIP-based)
 
 Generates semantic hashes for media assets using CLIP (Contrastive Language-Image Pre-training).

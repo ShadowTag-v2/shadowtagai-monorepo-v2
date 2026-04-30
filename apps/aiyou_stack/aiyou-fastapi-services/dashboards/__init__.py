@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Dashboards Module
 =================
 Rich terminal dashboards for monitoring and management.

@@ -26,7 +26,7 @@ The Silicon Chassis layer describes IDE-level modifications for deep integration
 
 > [!NOTE]
 > These require forking VS Code or building a custom IDE extension. Current
-> implementation uses COR.KAIROS daemon + MCP servers as the integration layer instead.
+> implementation uses KAIROS daemon + MCP servers as the integration layer instead.
 
 ## Layer 2: Intelligence Pipeline (Implemented ✅)
 
@@ -63,7 +63,7 @@ The middleware layer that processes data through the vault:
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| COR.KAIROS Daemon | ✅ | Background autonomous agent |
+| KAIROS Daemon | ✅ | Background autonomous agent |
 | Dream Consolidation | ✅ | Nightly KI maintenance |
 | Loop Steward | ✅ | Autonomous task continuation |
 | Vault Monitor | ✅ | Pipeline metrics in `vault/monitor/` |

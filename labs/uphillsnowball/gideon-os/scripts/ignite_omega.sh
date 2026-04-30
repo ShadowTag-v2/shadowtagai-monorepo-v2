@@ -28,7 +28,7 @@ echo "   [!] CDP Bridge requires manual start: node src/senses/browser_extension
 
 echo ">>> [4/8] Federal Go Control Plane (Judge 6 Ingress)..."
 if command -v go &>/dev/null; then
-    cd "$REPO_ROOT" && go build -o Cor.Claude_Code_6 cmd/gideon-go/shield1_ingress.go 2>/dev/null || echo "   [!] Go build requires cloud.google.com/go/pubsub dependency."
+    cd "$REPO_ROOT" && go build -o judge6 cmd/gideon-go/shield1_ingress.go 2>/dev/null || echo "   [!] Go build requires cloud.google.com/go/pubsub dependency."
 else
     echo "   [!] Go not found. Skipping Cor.Go compilation."
 fi
@@ -36,8 +36,8 @@ fi
 echo ">>> [5/8] C++ Midas Hot Path..."
 echo "   [!] Midas requires Cloud Build: gcloud builds submit --tag gcr.io/shadowtag/midas-cpp src/finance/"
 
-echo ">>> [6/8] COR.KAIROS Daemon (Python)..."
-echo "   [!] COR.KAIROS requires manual start: python src/daemon/kairos_supervisor.py &"
+echo ">>> [6/8] KAIROS Daemon (Python)..."
+echo "   [!] KAIROS requires manual start: python src/daemon/kairos_supervisor.py &"
 
 echo ">>> [7/8] Cor.Yay Bridge (Pub/Sub to WebSocket Relay)..."
 echo "   [!] Cor.Yay requires manual start: node src/workstation/cor_yay_bridge.js &"

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Publication-quality visualization templates from kosmos-figures.
 

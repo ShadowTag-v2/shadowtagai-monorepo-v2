@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Swarm Orchestrator for 600 Flying n-autoresearch/Kosmos/BioAgents agents.
 Integrates PSO task allocation + ACO squad routing with FM 5-0 MDMP flow.
 Based on FM 5-0 (Operations Process) and FM 6-0 (Commander and Staff Organization).

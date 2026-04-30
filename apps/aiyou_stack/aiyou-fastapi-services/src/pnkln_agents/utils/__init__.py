@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Utility modules for PNKLN agents"""
 
 from .rate_limiter import RedisRateLimiter

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FastAPI routes for monitoring, metrics, and alerting.
 
 Endpoints:

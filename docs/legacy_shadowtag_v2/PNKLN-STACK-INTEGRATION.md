@@ -388,7 +388,7 @@ gemini analyze \
 
 **Input Artifacts**:
 
-- `Claude_Code_6.py` source code
+- `judge_six.py` source code
 - Compliance Framework framework documentation
 - Test coverage reports
 - Performance benchmarks (latency, throughput)
@@ -399,7 +399,7 @@ gemini analyze \
 ```bash
 gemini analyze \
   --prompt prompts/judge/v2/variants/variant-b-reconstructed.md \
-  --artifacts Claude_Code_6.py atp-5-19-docs/ benchmarks.json \
+  --artifacts judge_six.py atp-5-19-docs/ benchmarks.json \
   --output reports/judge-6-analysis-YYYYMMDD.md
 ```
 

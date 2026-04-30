@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Receipt Chain Endpoints
 
 API endpoints for managing and querying receipt chains.

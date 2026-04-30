@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 def vcmirror(profile_txt, company):
     # Placeholder for VCM logic
     return {

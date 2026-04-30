@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Update detection for GitHub and local skill sources."""
 
 import logging

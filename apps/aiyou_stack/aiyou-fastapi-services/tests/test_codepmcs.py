@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from src.codepmcs import CodePMCS
 from src.codepmcs.remediator import Remediator
 from src.codepmcs.scanner import CodeScanner

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Accessibility compliance tests.
 
 Tests verify WCAG 2.1 Level AA compliance for API:

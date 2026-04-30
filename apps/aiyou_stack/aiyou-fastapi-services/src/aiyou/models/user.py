@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """User authentication and profile models.
 
 Handles user accounts, roles, sessions, and authentication tokens.

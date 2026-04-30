@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Chunked Git Push — Splits a massive commit into smaller chunks
 to bypass GitHub's 2GB pack size limit.
 """

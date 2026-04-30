@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Simulate Shield - Defense Valuation Engine
 Validates the $35B valuation thesis for Pillar III (The Shield).
 """

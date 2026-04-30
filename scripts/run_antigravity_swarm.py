@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import os
 import random
 import sys
@@ -20,7 +18,7 @@ if os.path.exists(env_path):
                 except ValueError:
                     pass
 
-from pnkln.core.Claude_Code_6_pipeline import JudgeSix  # noqa: E402
+from pnkln.core.judge_six_pipeline import JudgeSix  # noqa: E402
 
 
 class AgentUnit:
@@ -39,7 +37,7 @@ class AntigravitySwarm:
     Parameters aligned with Antigravity's agentic makeup:
     - Purpose: ShadowTag-v2JR
     - Reason: Doctrine
-    - Brakes: Cor_Claude_Code_6.
+    - Brakes: Judge6.
     """
 
     def __init__(self) -> None:

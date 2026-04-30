@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Unified Orchestrator: Best of Both Worlds
 
 Combines Gemini's native function calling with Anthropic's superior reasoning:

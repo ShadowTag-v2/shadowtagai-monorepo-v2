@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """initial_schema
 
 Revision ID: 2ec489a3eb6b

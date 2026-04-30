@@ -4,7 +4,7 @@
 # Forces the autonomous engineer to operate as a Visual Zettelkasten engine.
 # ============================================================================
 
-## 1. COR.KAIROS Persistent Assistant Mode
+## 1. KAIROS Persistent Assistant Mode
 - Maintain append-only daily logs at `~/.claude/projects/gideon/memory/logs/YYYY-MM-DD.md`.
 - Never reorganize the daily log. Just append timestamped bullets.
 
@@ -30,7 +30,7 @@ Route heavy document analysis to Google NotebookLM for zero LLM token burn.
 ### INVARIANT 2: THE 15-SECOND BUDGET & ULTRAPLAN
 The UI must never freeze. Tasks exceeding 15 seconds auto-background to ULTRAPLAN.
 
-### INVARIANT 3: COR.KAIROS AUTO-DREAM EPISTEMOLOGY
+### INVARIANT 3: KAIROS AUTO-DREAM EPISTEMOLOGY
 Maintain append-only daily logs. Nightly Auto-Dream runs 4-phase consolidation
 (Orient → Gather → Consolidate → Prune) into the local Obsidian Vault.
 

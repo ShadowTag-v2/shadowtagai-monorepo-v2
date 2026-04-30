@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import inspect
 
 from google.adk.tools.mcp_tool import mcp_session_manager

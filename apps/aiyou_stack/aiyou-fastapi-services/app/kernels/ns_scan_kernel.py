@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """NS Scan Kernel - California AI Regulations
 ==========================================
 Kernel 1 of NS-JR-Cor pipeline for California AI compliance.

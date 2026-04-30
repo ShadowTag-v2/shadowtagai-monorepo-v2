@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # FILE: genesis_setup.py
 # CLASSIFICATION: PROPRIETARY // FOUNDER EYES ONLY
 # "It just works."

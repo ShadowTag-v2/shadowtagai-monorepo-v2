@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Base Skill class for the pinkln Agent Architecture System.
 
 Skills are atomic capabilities - reusable expertise modules used by agents.

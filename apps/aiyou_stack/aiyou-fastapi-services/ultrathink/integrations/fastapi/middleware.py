@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Ultrathink middleware for FastAPI.
 
 Global enhancements for all routes.

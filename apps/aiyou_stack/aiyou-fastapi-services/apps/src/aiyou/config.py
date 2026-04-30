@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Configuration settings for ShadowTag-v4."""
 
 from pydantic import Field, SecretStr, validator

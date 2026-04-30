@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Test Suite for Wealth Acceleration Agent
 
 This module contains unit and integration tests for the wealth acceleration

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Intelligence Pipeline - Briefing Delivery
 
 Delivers morning briefings to CEO and team:

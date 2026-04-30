@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ArchLint: The Ironwood Architecture Enforcer.
 Part of the Cor.56 CI Protocol.
 Enforces "Pure Gemini/JAX" and bans "Legacy/PyTorch" patterns.

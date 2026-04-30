@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Antigravity Wrapper for Firebase Genkit.
 Aligns Genkit initialization with the Antigravity/ShadowTag-v4 architecture.
 """

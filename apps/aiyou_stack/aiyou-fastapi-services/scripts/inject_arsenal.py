@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 def create_file(path, content):
     with open(path, "w") as f:
         f.write(content)

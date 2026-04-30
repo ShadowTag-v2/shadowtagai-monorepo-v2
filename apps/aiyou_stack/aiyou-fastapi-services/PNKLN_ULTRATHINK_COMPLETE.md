@@ -51,14 +51,14 @@ shadowtag_v4-fastapi-services/
 │   │   └── function_registry.py        # Tool registry
 │   │
 │   ├── pnkln/                          # PNKLN Core Stack
-│   │   ├── Claude_Code_6.py                # JR Engine (Purpose/Reasons/Brakes)
+│   │   ├── judge_six.py                # JR Engine (Purpose/Reasons/Brakes)
 │   │   ├── cor.py                      # Unified orchestrator
 │   │   ├── shadowtag.py                # Cryptographic watermarking
 │   │   └── ns.py                       # Semantic memory
 │   │
 │   ├── kernels/                        # Kernel functions
 │   │   ├── atp_519_scan.py             # Violation extraction
-│   │   ├── Claude_Code_6.py                # Binary classification
+│   │   ├── judge_six.py                # Binary classification
 │   │   └── audit_compress.py           # Audit trail compression
 │   │
 │   ├── agents/                         # Multi-agent debates
@@ -83,13 +83,13 @@ shadowtag_v4-fastapi-services/
 │   │
 │   ├── examples/                       # Working demos
 │   │   ├── basic_function_calling.py   # Simple demo
-│   │   ├── Claude_Code_6_example.py        # JR validation
+│   │   ├── judge_six_example.py        # JR validation
 │   │   ├── full_pnkln_stack.py         # Complete stack
 │   │   └── unified_poc_demo.py         # Unified POC
 │   │
 │   └── tests/                          # Test suite
 │       ├── test_latency.py             # P99 latency validation
-│       ├── test_Claude_Code_6.py           # JR validation tests
+│       ├── test_judge_six.py           # JR validation tests
 │       ├── test_benchmarks.py          # Benchmark tests
 │       └── test_pnkln_integration.py   # Integration tests
 │
@@ -155,7 +155,7 @@ result = caller.execute("Research quantum computing")
 
 #### 1. Judge 6 (JR Engine)
 
-**File**: `src/pnkln/Claude_Code_6.py`
+**File**: `src/pnkln/judge_six.py`
 
 Validates EVERY function call against:
 
@@ -202,7 +202,7 @@ Vector-based context retrieval
 **7 Core Function Tools**:
 
 1. **atp_519_scan()** - Extract ATP 5-19 violations
-2. **Claude_Code_6_classify()** - Binary go/no-go decision
+2. **judge_six_classify()** - Binary go/no-go decision
 3. **audit_compress()** - Audit trail compression
 4. **multi_agent_debate()** - Collaborative reasoning
 5. **dte_evolve()** - Prompt self-evolution
@@ -346,7 +346,7 @@ Revenue leak detection:
 ┌────────────────────────────────────────────────────────────────┐
 │                    PNKLN CORE STACK                            │
 │                                                                 │
-│  JudgeSix (src/pnkln/Claude_Code_6.py)                            │
+│  JudgeSix (src/pnkln/judge_six.py)                            │
 │  • Validate every function call (Purpose/Reasons/Brakes)       │
 │                                                                 │
 │  Cor (src/pnkln/cor.py)                                       │
@@ -365,7 +365,7 @@ Revenue leak detection:
 │                                                                 │
 │  Kernel Functions (src/kernels/)                               │
 │  • atp_519_scan() - Violation extraction                       │
-│  • Claude_Code_6_classify() - Binary decision                      │
+│  • judge_six_classify() - Binary decision                      │
 │  • audit_compress() - Audit trail                              │
 │                                                                 │
 │  Ultrathink Functions (src/agents/, src/evolution/, etc.)      │
@@ -643,7 +643,7 @@ pytest src/tests/ -v
 pytest src/tests/test_latency.py -v -s
 
 # Test Judge 6 validation
-pytest src/tests/test_Claude_Code_6.py -v
+pytest src/tests/test_judge_six.py -v
 
 # Test benchmarks (HumanEval)
 pytest src/tests/test_benchmarks.py -v

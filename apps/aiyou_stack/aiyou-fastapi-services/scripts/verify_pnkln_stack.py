@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Stack Verification Script
 
 Verifies all 6 layers are properly installed and configured.
@@ -59,7 +57,7 @@ def check_layer_1_pnkln_stack() -> tuple[bool, list[str]]:
     if pnkln_dir.exists():
         checks.append(f"{GREEN}✓{RESET} PNKLN stack directory exists")
 
-        required_files = ["__init__.py", "Claude_Code_6.py", "shadowtag.py", "cor.py", "ns.py"]
+        required_files = ["__init__.py", "judge_six.py", "shadowtag.py", "cor.py", "ns.py"]
 
         for file in required_files:
             if (pnkln_dir / file).exists():
@@ -299,7 +297,7 @@ def check_examples() -> tuple[bool, list[str]]:
 
         example_files = [
             "basic_function_calling.py",
-            "Claude_Code_6_example.py",
+            "judge_six_example.py",
             "full_pnkln_stack.py",
             "unified_poc_demo.py",
         ]

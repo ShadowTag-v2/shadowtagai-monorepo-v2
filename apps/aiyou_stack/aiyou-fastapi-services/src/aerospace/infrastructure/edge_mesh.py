@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Edge Mesh Architecture: Starlink + CoreWeave + Tesla + Cell Tower Integration
 ==============================================================================
 

@@ -14,9 +14,6 @@ concurrency:
   group: make-check-pr-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-
 jobs:
   quality-gate:
     runs-on: ubuntu-latest

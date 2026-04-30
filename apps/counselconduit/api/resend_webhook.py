@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/resend_webhook.py
 """Resend Webhook Handler — email delivery tracking.
 

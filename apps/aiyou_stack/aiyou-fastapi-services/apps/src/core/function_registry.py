@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Function Registry for managing tool functions.
 
 Provides a centralized registry for all tool functions that can be called

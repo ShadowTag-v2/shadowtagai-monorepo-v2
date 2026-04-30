@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Elasticsearch Configuration for Glass Box
 
 Based on Apertus paper constraints:

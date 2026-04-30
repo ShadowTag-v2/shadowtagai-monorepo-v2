@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import json
 
 import os
@@ -55,7 +53,7 @@ def biome_check(filepath: str) -> str:
 
 
 def ane_semantic_scan(filepath: str, filename: str) -> str:
-    """Heavy Lift: Route to Apple Neural Engine via Omega Protocol Bypass."""
+    """Heavy Lift: Route to Apple Neural Engine via Pickle Rick Bypass."""
     if not ANE_ENABLED:
         return "CPU_HEURISTIC_GUESS"
 

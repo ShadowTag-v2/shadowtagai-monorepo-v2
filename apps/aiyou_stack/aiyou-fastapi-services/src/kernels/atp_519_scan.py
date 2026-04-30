@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Kernel 1: ATP 5-19 Violation Scanner using Gemini Flash."""
 
 import json

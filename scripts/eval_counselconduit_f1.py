@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from __future__ import annotations
 
 """CounselConduit F1 Evaluation Harness

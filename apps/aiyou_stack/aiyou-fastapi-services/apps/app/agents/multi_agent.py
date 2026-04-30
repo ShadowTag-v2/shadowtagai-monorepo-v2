@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Multi-Agent System for Pinkln
 Includes: Debate Panel, Code Crafter, Wealth Accelerator, Deep Reasoning
 All enhanced with cheat sheet fusion and DTE evolution

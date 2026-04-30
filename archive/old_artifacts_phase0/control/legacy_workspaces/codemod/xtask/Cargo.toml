@@ -1,0 +1,22 @@
+[package]
+name = "xtask"
+version.workspace = true
+edition = "2021"
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+repository.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+clap.workspace = true
+butterflow-models.workspace = true
+schemars = "1.0.0-alpha.17"
+serde_json.workspace = true
+ts-rs = "11.0"
+regex.workspace = true
+tokio = { workspace = true, features = ["full"] }
+reqwest = { workspace = true, features = ["json"] }
+serde = { workspace = true, features = ["derive"] }
+anyhow.workspace = true

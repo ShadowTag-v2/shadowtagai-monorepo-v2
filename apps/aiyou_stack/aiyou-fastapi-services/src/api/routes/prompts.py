@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Prompt Engineering Templates API Routes
 Endpoints for R-T-F, T-A-G, B-A-B, C-A-R-E, R-I-S-E templates
 """

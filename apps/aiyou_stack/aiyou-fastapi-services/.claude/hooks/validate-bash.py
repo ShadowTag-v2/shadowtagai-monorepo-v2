@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PreToolUse hook for Bash - Validate bash commands for best practices and safety"""
 
 import json

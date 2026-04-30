@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Aegaeon Protocol — VRAM Context Caching for KovelAI.
 
 Uploads massive GDrive case files once to Google's VRAM Context Cache,
@@ -30,25 +28,17 @@ Reference: Aegaeon Caching Strategist skill (skills/aegaeon-caching-strategist/)
 from __future__ import annotations
 
 import argparse
-import logging
 import os
 import sys
 
 import google.generativeai as genai
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [AEGAEON] %(levelname)s %(message)s",
-    datefmt="%Y-%m-%dT%H:%M:%S",
-)
-logger = logging.getLogger("aegaeon")
 
 
 def configure_client() -> None:
     """Configure the Gemini API client."""
     api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
-        logger.error("GOOGLE_API_KEY environment variable is required.")
+        print("ERROR: GOOGLE_API_KEY environment variable is required.")
         sys.exit(1)
     genai.configure(api_key=api_key)
 
@@ -63,7 +53,7 @@ def mount_case_file_to_vram(file_path: str, display_name: str) -> str:
     Returns:
         The cache resource name for use in subsequent queries.
     """
-    logger.info("Disaggregating VRAM. Uploading %s to Context Cache...", file_path)
+    print(f"[AEGAEON] Disaggregating VRAM. Uploading {file_path} to Context Cache...")
 
     document = genai.upload_file(path=file_path)
 
@@ -81,7 +71,7 @@ def mount_case_file_to_vram(file_path: str, display_name: str) -> str:
         ttl="PT24H",  # Ephemeral: Dies after 24 hours
     )
 
-    logger.info("✅ Slab locked. Compute dropped by 84%%. Cache ID: %s", cache.name)
+    print(f"✅ [AEGAEON] Slab locked. Compute dropped by 84%. Cache ID: {cache.name}")
     return cache.name
 
 
@@ -91,7 +81,7 @@ def list_active_slabs() -> list[dict]:
     Returns:
         List of active cache metadata dicts.
     """
-    logger.info("Listing active VRAM slabs...")
+    print("[AEGAEON] Listing active VRAM slabs...")
     slabs = []
     for cache in genai.caching.CachedContent.list():
         slab = {
@@ -101,10 +91,10 @@ def list_active_slabs() -> list[dict]:
             "expire_time": str(cache.expire_time),
         }
         slabs.append(slab)
-        logger.info("  📦 %s → %s (expires: %s)", slab["display_name"], slab["name"], slab["expire_time"])
+        print(f"  📦 {slab['display_name']} → {slab['name']} (expires: {slab['expire_time']})")
 
     if not slabs:
-        logger.info("  (no active slabs)")
+        print("  (no active slabs)")
 
     return slabs
 

@@ -41,7 +41,7 @@ cfg = {
     "gemini_ai": {"n": 10000, "base": 38.9e9, "sd": 15e9, "gr": 0.6, "mult": 1.0},
     "governance": {"n": 10000, "base": 19e9, "sd": 8e9, "gr": 0.55, "mult": 1.0},
     "llm_memory": {"n": 10000, "base": 3.5e9, "sd": 2e9, "gr": 0.6, "mult": 1.0},
-    "Cor.Claude_Code_6": {"n": 10000, "base": 1.6e9, "sd": 0.8e9, "gr": 0.5, "mult": 1.0}
+    "judge6": {"n": 10000, "base": 1.6e9, "sd": 0.8e9, "gr": 0.5, "mult": 1.0}
 }
 
 result = mcarlo_bundle(cfg)

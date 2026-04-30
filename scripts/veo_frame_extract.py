@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 r"""Extract frames from Veo 3.1 generated videos for scroll animations.
 
 Replaces the Kling 3.0 → manual frame extraction workflow with a

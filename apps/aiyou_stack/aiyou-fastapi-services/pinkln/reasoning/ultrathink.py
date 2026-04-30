@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Ultrathink Engine - Unified Reasoning Orchestrator
 
 The Ultrathink engine automatically selects and orchestrates the appropriate

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack - Cost Tracking and Budget Monitoring
 
 Tracks costs across all pipeline operations and alerts when approaching budget limits.

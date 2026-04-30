@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """drive_ingest_runner.py — ANE-stack entrypoint for Drive ingest.
 
 Execution order:

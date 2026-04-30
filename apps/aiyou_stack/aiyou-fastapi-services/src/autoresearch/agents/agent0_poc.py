@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Agent0 POC: Self-Evolving Framework for ATP 5-19 Rule Synthesis
 
 Based on arXiv:2511.16043v1 - Symbiotic dual-agent co-evolution:

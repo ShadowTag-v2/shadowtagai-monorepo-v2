@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 'use client';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Atomic Chat Manager - OPORD-Based Context Management
 
 Manages per-agent atomic contexts using Army Operations Order format.

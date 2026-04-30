@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pinkln Ultrathink Framework
 Jobs-inspired multi-agent ecosystem with DTE evolution, Glicko ratings, and wealth acceleration
 

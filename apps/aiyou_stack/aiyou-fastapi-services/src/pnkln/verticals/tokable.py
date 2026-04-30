@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pnkln Tokable Vertical
 Create emotion-first creator flows.
 """

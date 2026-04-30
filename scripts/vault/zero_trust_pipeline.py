@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # Copyright 2026 ShadowTag AI. All rights reserved.
 """Zero-Trust Data Pipeline — True Obsidian IPI Quarantine.
 

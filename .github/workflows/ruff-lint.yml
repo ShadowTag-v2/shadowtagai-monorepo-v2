@@ -12,9 +12,6 @@ on:
       - 'apps/**/*.py'
       - 'scripts/**/*.py'
 
-permissions:
-  contents: read
-
 jobs:
   ruff-lint:
     runs-on: ubuntu-latest

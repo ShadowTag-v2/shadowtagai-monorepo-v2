@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Intake Handler - Sonnet 4.5 Interface
 
 Receives tasks from the standalone Sonnet 4.5 instance and routes them

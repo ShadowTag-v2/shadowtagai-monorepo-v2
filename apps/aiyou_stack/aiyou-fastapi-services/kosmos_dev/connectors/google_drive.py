@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Google Drive Connector: Scan Drive for watermarked content.
 
 Implements OAuth2 authentication and recursive file scanning

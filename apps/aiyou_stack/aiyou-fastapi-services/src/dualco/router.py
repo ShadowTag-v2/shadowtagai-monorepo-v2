@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """DualCo REST API Router"""
 
 from fastapi import APIRouter, Depends

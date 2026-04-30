@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """COR Skill Registry - Skills API Discovery & ATP 5-19 Risk Stratification
 
 This module provides:
@@ -101,7 +99,7 @@ class ATP519RiskAssessor:
                     "trigger": keyword,
                     "rationale": "Irreversible or production-impacting operation",
                     "mitigation_required": True,
-                    "Cor_Claude_Code_6_review": True,
+                    "judge6_review": True,
                 }
 
         # Check for RA-2 (HIGH) indicators
@@ -112,7 +110,7 @@ class ATP519RiskAssessor:
                     "trigger": keyword,
                     "rationale": "Modifies state or handles sensitive data",
                     "mitigation_required": True,
-                    "Cor_Claude_Code_6_review": True,
+                    "judge6_review": True,
                 }
 
         # Check for RA-3 (MEDIUM) indicators
@@ -123,7 +121,7 @@ class ATP519RiskAssessor:
                     "trigger": keyword,
                     "rationale": "Computational or analytical operation",
                     "mitigation_required": False,
-                    "Cor_Claude_Code_6_review": False,
+                    "judge6_review": False,
                 }
 
         # Default to RA-4 (LOW) for informational operations
@@ -132,7 +130,7 @@ class ATP519RiskAssessor:
             "trigger": "default_classification",
             "rationale": "Read-only or low-impact operation",
             "mitigation_required": False,
-            "Cor_Claude_Code_6_review": False,
+            "judge6_review": False,
         }
 
 
@@ -335,9 +333,7 @@ def main():
                 print(
                     f"    Risk: {skill.atp_classification['level']} - {skill.atp_classification['rationale']}",
                 )
-                print(
-                    f"    Judge 6 Review Required: {skill.atp_classification['Cor_Claude_Code_6_review']}"
-                )
+                print(f"    Judge 6 Review Required: {skill.atp_classification['judge6_review']}")
 
     # Generate manifest
     manifest_path = registry.generate_manifest()

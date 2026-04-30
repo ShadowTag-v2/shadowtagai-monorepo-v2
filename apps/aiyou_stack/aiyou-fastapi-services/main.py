@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from fastapi import Depends, FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict, EmailStr
 from sqlalchemy import select

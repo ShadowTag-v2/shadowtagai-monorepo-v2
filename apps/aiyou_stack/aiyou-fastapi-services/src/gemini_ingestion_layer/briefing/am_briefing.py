@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AM Briefing Generator
 
 Generates morning intelligence briefings from ingested data.

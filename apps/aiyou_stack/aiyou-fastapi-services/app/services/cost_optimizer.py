@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Cost Optimizer Service
 Analyzes and optimizes cloud infrastructure costs
 """

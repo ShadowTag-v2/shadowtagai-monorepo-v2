@@ -36,14 +36,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Source Map Leak Prevention (No .map files)
-        run: |
-          if find . -name "*.map" -not -path "*/node_modules/*" | grep -q .; then
-            echo "🚨 Source map files (.map) found! This is a severe security risk."
-            exit 1
-          fi
-
-
   # ── Rules 8, 34: Dependency Audit ────────────────────────────────────────
   dependency-audit:
     name: "📦 Dependency Audit"

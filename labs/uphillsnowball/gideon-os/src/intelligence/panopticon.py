@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # src/intelligence/panopticon.py
 # ============================================================================
 # Panopticon — Ding Protocol, Ghost Ship, Warrant Protocol

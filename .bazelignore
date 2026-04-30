@@ -1,53 +1,12 @@
-# .bazelignore — Directories Bazel must never walk
-# Maintained by: platform team
-# Last updated: 2026-04-27
-#
-# Policy: Only canonical zones get Bazel coverage.
-# Everything below is excluded from the build universe.
-
-# Legacy quarry / archive
-archive
-
-# Virtual environments (all variants)
-venv
 .venv
-.venv-314
-.venv-3.14-bak
-
-# Node.js
 node_modules
-
-# External forks and cloned repos
 external_repos
-external_sdks
-
-# Build outputs and caches
-dist
-build
-out
-.next
-.turbo
-.mypy_cache
-.ruff_cache
-.pytest_cache
-__pycache__
-
-# Generated artifacts and tooling debris
-.gitnexus
-.codesight
-.gemini
-control
-uvicorn
-
-# Rust build artifacts in libs/core
-libs/core/router_daemon/target
-
-# Legacy workspace debris
-legacy_workspaces
-
-# Git internals
-.git
-
-# aiyou_stack untracked mass (209K+ files, 4.1 GiB)
 apps/aiyou_stack/aiyou-fastapi-services/.venv
 apps/aiyou_stack/aiyou-fastapi-services/external_repos
+dist
+build
+.git
+.gemini
+external_sdks
+control
+uvicorn

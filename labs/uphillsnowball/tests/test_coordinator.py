@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tests for SynthesisCoordinator — 8-Agent capability routing."""
 
 from __future__ import annotations
@@ -78,7 +76,7 @@ class TestCoordinatorDispatch:
         activity = coordinator.dispatch(AgentRole.TESTER, AgentCapability.WRITE_TESTS)
         assert activity == "j3_roc_drill_sandbox"
 
-    def test_Cor_Claude_Code_6_dispatch_risk(self, coordinator):
+    def test_judge6_dispatch_risk(self, coordinator):
         """Judge 6 should dispatch to deploy gate."""
         activity = coordinator.dispatch(AgentRole.JUDGE_6, AgentCapability.ENFORCE_RISK)
         assert activity == "j6_judge_deploy_gate"
@@ -86,7 +84,7 @@ class TestCoordinatorDispatch:
     def test_unauthorized_capability_raises(self, coordinator):
         """Agent with forbidden capability should raise PermissionError."""
         with pytest.raises(PermissionError, match="forbidden"):
-            coordinator.dispatch(AgentRole.COR.KAIROS, AgentCapability.WRITE_CODE)
+            coordinator.dispatch(AgentRole.KAIROS, AgentCapability.WRITE_CODE)
 
 
 class TestTriadAndDaemons:

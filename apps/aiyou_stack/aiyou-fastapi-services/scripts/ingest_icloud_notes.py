@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Ingest iCloud Notes export into ShadowTag-v2 docs/notes/
 Reads exported note directories, extracts text, builds index.
 """

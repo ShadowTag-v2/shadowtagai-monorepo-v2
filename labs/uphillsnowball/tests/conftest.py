@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Conftest for labs/uphillsnowball/tests.
 
 Forces the lab's ``src/`` package to take precedence over the monorepo

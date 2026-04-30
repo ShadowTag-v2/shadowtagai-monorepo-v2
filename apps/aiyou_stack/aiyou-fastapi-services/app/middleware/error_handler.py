@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Global error handlers for the API.
 Provides consistent error responses across all endpoints.
 """

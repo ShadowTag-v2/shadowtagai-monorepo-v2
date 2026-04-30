@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Metric models for storing calculated analytics metrics"""
 
 import uuid

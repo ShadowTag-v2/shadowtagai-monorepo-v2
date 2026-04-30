@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/uuid7.py
 """UUIDv7 Generator — Voice AI IDOR Defense.
 

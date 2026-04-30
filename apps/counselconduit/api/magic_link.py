@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/magic_link.py
 """Magic-Link Onboarding — Attorney creates matter, sends link to client.
 

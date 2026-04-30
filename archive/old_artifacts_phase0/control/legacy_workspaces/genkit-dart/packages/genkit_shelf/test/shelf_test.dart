@@ -1,0 +1,500 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:genkit/client.dart';
+import 'package:genkit/genkit.dart';
+import 'package:genkit_shelf/genkit_shelf.dart';
+import 'package:http/http.dart' as http;
+import 'package:schemantic/schemantic.dart';
+import 'package:shelf/shelf.dart';
+import 'package:test/test.dart';
+
+part 'shelf_test.g.dart';
+
+@Schema()
+abstract class $ShelfTestOutput {
+  String get greeting;
+}
+
+@Schema()
+abstract class $ShelfTestStream {
+  String get chunk;
+}
+
+void main() {
+  late Genkit ai;
+  HttpServer? server;
+  late int port;
+
+  setUp(() {
+    ai = Genkit();
+  });
+
+  tearDown(() async {
+    await server?.close(force: true);
+  });
+
+  test('Unary flow', () async {
+    final echoFlow = ai.defineFlow(
+      name: 'echo',
+      fn: (input, _) async => 'Echo: $input',
+      inputSchema: .string(),
+      outputSchema: .string(),
+    );
+
+    server = await startFlowServer(flows: [echoFlow], port: 0);
+    port = server!.port;
+
+    final action = defineRemoteAction(
+      url: 'http://localhost:$port/echo',
+      fromResponse: (data) => data as String,
+    );
+
+    final result = await action(input: 'hello');
+    expect(result, 'Echo: hello');
+  });
+
+  test('Streaming flow', () async {
+    final streamFlow = ai.defineFlow(
+      name: 'stream',
+      fn: (input, ctx) async {
+        ctx.sendChunk('Chunk 1');
+        await Future.delayed(const Duration(milliseconds: 10));
+        ctx.sendChunk('Chunk 2');
+        return 'Done';
+      },
+      inputSchema: .string(),
+      outputSchema: .string(),
+      streamSchema: .string(),
+    );
+
+    server = await startFlowServer(flows: [streamFlow], port: 0);
+    port = server!.port;
+
+    final action = defineRemoteAction(
+      url: 'http://localhost:$port/stream',
+      fromResponse: (data) => data as String,
+      fromStreamChunk: (data) => data as String,
+    );
+
+    final stream = action.stream(input: 'start');
+    final chunks = <String>[];
+    await for (final chunk in stream) {
+      chunks.add(chunk);
+    }
+
+    expect(chunks, ['Chunk 1', 'Chunk 2']);
+    expect(await stream.onResult, 'Done');
+  });
+
+  test('Context provider', () async {
+    final authFlow = ai.defineFlow(
+      name: 'auth',
+      fn: (input, ctx) async {
+        final user = ctx.context?['user'];
+        if (user == null) {
+          throw GenkitException(
+            'Unauthorized',
+            status: StatusCodes.PERMISSION_DENIED,
+          );
+        }
+        return 'Hello $user';
+      },
+      inputSchema: .string(),
+      outputSchema: .string(),
+    );
+
+    final flowWithContext = FlowWithContextProvider(
+      flow: authFlow,
+      context: (req) {
+        final auth = req.headers['Authorization'];
+        if (auth == 'Bearer token') {
+          return {'user': 'Admin'};
+        }
+        return {};
+      },
+    );
+
+    server = await startFlowServer(flows: [flowWithContext], port: 0);
+    port = server!.port;
+
+    final action = defineRemoteAction(
+      url: 'http://localhost:$port/auth',
+      fromResponse: (data) => data as String,
+      defaultHeaders: {'Authorization': 'Bearer token'},
+    );
+
+    final result = await action(input: 'hi');
+    expect(result, 'Hello Admin');
+
+    // Fail case
+    final actionFail = defineRemoteAction(
+      url: 'http://localhost:$port/auth',
+      fromResponse: (data) => data as String,
+    );
+
+    try {
+      await actionFail(input: 'hi');
+      fail('Should have thrown');
+    } catch (e) {
+      // Expected
+      expect(e.toString(), contains('Unauthorized'));
+    }
+  });
+
+  test('Unary flow maps GenkitException status', () async {
+    final deniedFlow = ai.defineFlow(
+      name: 'denied',
+      fn: (input, _) async {
+        throw GenkitException(
+          'You shall not pass',
+          status: StatusCodes.PERMISSION_DENIED,
+        );
+      },
+      inputSchema: .string(),
+      outputSchema: .string(),
+    );
+
+    server = await startFlowServer(flows: [deniedFlow], port: 0);
+    port = server!.port;
+
+    final response = await http.post(
+      Uri.parse('http://localhost:$port/denied'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'data': 'hello'}),
+    );
+
+    expect(response.statusCode, 403);
+    final body = jsonDecode(response.body) as Map<String, dynamic>;
+    expect(body['code'], 403);
+    expect(body['status'], 'PERMISSION_DENIED');
+    expect(body['message'], 'You shall not pass');
+  });
+
+  test('Streaming flow sends mapped SSE error payload', () async {
+    final streamErrorFlow = ai.defineFlow(
+      name: 'streamError',
+      fn: (input, _) async {
+        throw GenkitException(
+          'Bad stream input',
+          status: StatusCodes.INVALID_ARGUMENT,
+        );
+      },
+      inputSchema: .string(),
+      outputSchema: .string(),
+      streamSchema: .string(),
+    );
+
+    server = await startFlowServer(flows: [streamErrorFlow], port: 0);
+    port = server!.port;
+
+    final client = http.Client();
+    addTearDown(client.close);
+
+    final request = http.Request(
+      'POST',
+      Uri.parse('http://localhost:$port/streamError?stream=true'),
+    );
+    request.headers['Content-Type'] = 'application/json';
+    request.headers['Accept'] = 'text/event-stream';
+    request.body = jsonEncode({'data': 'hello'});
+
+    final response = await client.send(request);
+    expect(response.statusCode, 200);
+
+    final streamBody = await response.stream.bytesToString();
+    final errorChunk = streamBody
+        .split('\n\n')
+        .map((chunk) => chunk.trim())
+        .firstWhere((chunk) => chunk.startsWith('error: '), orElse: () => '');
+
+    expect(errorChunk, isNotEmpty);
+
+    final eventJson = errorChunk.substring('error: '.length);
+    final event = jsonDecode(eventJson) as Map<String, dynamic>;
+    final error = event['error'] as Map<String, dynamic>;
+
+    expect(error['code'], 400);
+    expect(error['status'], 'INVALID_ARGUMENT');
+    expect(error['message'], 'Bad stream input');
+  });
+
+  test('Unary flow hides non-Genkit exception details', () async {
+    final hiddenErrorFlow = ai.defineFlow(
+      name: 'hiddenUnaryError',
+      fn: (input, _) async {
+        throw Exception('sensitive: db-password');
+      },
+      inputSchema: .string(),
+      outputSchema: .string(),
+    );
+
+    server = await startFlowServer(flows: [hiddenErrorFlow], port: 0);
+    port = server!.port;
+
+    final response = await http.post(
+      Uri.parse('http://localhost:$port/hiddenUnaryError'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'data': 'hello'}),
+    );
+
+    expect(response.statusCode, 500);
+    final body = jsonDecode(response.body) as Map<String, dynamic>;
+    expect(body['code'], 500);
+    expect(body['status'], 'INTERNAL');
+    expect(body['message'], 'Internal server error');
+    expect(body['message'], isNot(contains('db-password')));
+  });
+
+  test('Streaming flow hides non-Genkit exception details', () async {
+    final hiddenStreamErrorFlow = ai.defineFlow(
+      name: 'hiddenStreamError',
+      fn: (input, _) async {
+        throw Exception('sensitive: service-account-key');
+      },
+      inputSchema: .string(),
+      outputSchema: .string(),
+      streamSchema: .string(),
+    );
+
+    server = await startFlowServer(flows: [hiddenStreamErrorFlow], port: 0);
+    port = server!.port;
+
+    final client = http.Client();
+    addTearDown(client.close);
+
+    final request = http.Request(
+      'POST',
+      Uri.parse('http://localhost:$port/hiddenStreamError?stream=true'),
+    );
+    request.headers['Content-Type'] = 'application/json';
+    request.headers['Accept'] = 'text/event-stream';
+    request.body = jsonEncode({'data': 'hello'});
+
+    final response = await client.send(request);
+    expect(response.statusCode, 200);
+
+    final streamBody = await response.stream.bytesToString();
+    final errorChunk = streamBody
+        .split('\n\n')
+        .map((chunk) => chunk.trim())
+        .firstWhere((chunk) => chunk.startsWith('error: '), orElse: () => '');
+
+    expect(errorChunk, isNotEmpty);
+
+    final eventJson = errorChunk.substring('error: '.length);
+    final event = jsonDecode(eventJson) as Map<String, dynamic>;
+    final error = event['error'] as Map<String, dynamic>;
+
+    expect(error['code'], 500);
+    expect(error['status'], 'INTERNAL');
+    expect(error['message'], 'Internal server error');
+    expect(error['message'], isNot(contains('service-account-key')));
+  });
+
+  test('Direct shelfHandler', () async {
+    final echoFlow = ai.defineFlow(
+      name: 'echo',
+      fn: (input, _) async => 'Echo: $input',
+      inputSchema: .string(),
+      outputSchema: .string(),
+    );
+
+    final handler = shelfHandler(echoFlow);
+
+    final request = Request(
+      'POST',
+      Uri.parse('http://localhost/echo'),
+      body: '{"data": "direct"}',
+      headers: {'content-type': 'application/json'},
+    );
+
+    final response = await handler(request);
+
+    expect(response.statusCode, 200);
+    final body = await response.readAsString();
+    expect(body, contains('"result":"Echo: direct"'));
+  });
+
+  test('Client using SchemanticType', () async {
+    final echoFlow = ai.defineFlow(
+      name: 'echoType',
+      fn: (input, _) async => 'Echo: $input',
+      inputSchema: .string(),
+      outputSchema: .string(),
+    );
+
+    server = await startFlowServer(flows: [echoFlow], port: 0);
+    port = server!.port;
+
+    final action = defineRemoteAction(
+      url: 'http://localhost:$port/echoType',
+      outputSchema: .string(),
+    );
+
+    final result = await action(input: 'typed');
+    expect(result, 'Echo: typed');
+  });
+
+  test('Client using Schema types and Streaming', () async {
+    final complexStreamFlow = ai.defineFlow(
+      name: 'complexStream',
+      fn: (input, ctx) async {
+        ctx.sendChunk(ShelfTestStream(chunk: 'chunk1'));
+        await Future.delayed(const Duration(milliseconds: 10));
+        ctx.sendChunk(ShelfTestStream(chunk: 'chunk2'));
+        return ShelfTestOutput(greeting: 'done');
+      },
+      inputSchema: .string(),
+      outputSchema: ShelfTestOutput.$schema,
+      streamSchema: ShelfTestStream.$schema,
+    );
+
+    server = await startFlowServer(flows: [complexStreamFlow], port: 0);
+    port = server!.port;
+
+    final action = defineRemoteAction(
+      url: 'http://localhost:$port/complexStream',
+      outputSchema: ShelfTestOutput.$schema,
+      streamSchema: ShelfTestStream.$schema,
+    );
+
+    final stream = action.stream(input: 'start');
+    final chunks = <ShelfTestStream>[];
+    await for (final chunk in stream) {
+      chunks.add(chunk);
+    }
+
+    final result = await stream.onResult;
+
+    expect(chunks.length, 2);
+    expect(chunks[0].chunk, 'chunk1');
+    expect(chunks[1].chunk, 'chunk2');
+
+    expect(result.greeting, 'done');
+  });
+
+  test('Streaming flow headers and timing', () async {
+    final streamFlow = ai.defineFlow(
+      name: 'streamHeaders',
+      fn: (input, ctx) async {
+        ctx.sendChunk('Chunk 1');
+        await Future.delayed(const Duration(milliseconds: 100));
+        ctx.sendChunk('Chunk 2');
+        return 'Done';
+      },
+      inputSchema: .string(),
+      outputSchema: .string(),
+      streamSchema: .string(),
+    );
+
+    server = await startFlowServer(flows: [streamFlow], port: 0);
+    port = server!.port;
+
+    final client = http.Client();
+    final request = http.Request(
+      'POST',
+      Uri.parse('http://localhost:$port/streamHeaders?stream=true'),
+    );
+    request.headers['Content-Type'] = 'application/json';
+    request.body = '{"data": "start"}';
+
+    final response = await client.send(request);
+
+    final chunks = <int>[];
+    final start = DateTime.now();
+    await response.stream.listen((chunk) {
+      chunks.add(DateTime.now().difference(start).inMilliseconds);
+    }).asFuture();
+
+    // First chunk should be fast, next should be after ~100ms
+    // We expect at least some delay between chunks if streaming works.
+    // If buffering, all chunks might arrive at same time > 100ms.
+    // Actually, response.stream gives bytes.
+    // Let's decode to ensure we get distinctive data chunks.
+    // But raw byte chunks arrival time is enough.
+
+    // If buffered, we likely get one big chunk after 100ms.
+    // If streaming, we get one chunk immediately (or very fast), then another.
+
+    expect(
+      chunks.length,
+      greaterThanOrEqualTo(2),
+      reason: 'Should receive multiple chunks',
+    );
+    expect(
+      chunks.last,
+      greaterThan(80),
+      reason: 'Total time should be around 100ms',
+    );
+    // If buffering happened, chunks.first would probably be ~100ms too (depending on implementation).
+    // Better check:
+    // If we receive multiple chunks, and the first one is fast (< 50ms) and last is slow (> 80ms), then we streamed.
+    // If we receive only 1 chunk, or all chunks > 80ms, then we buffered.
+
+    // Note: shelf might send headers immediately, then body.
+    // checking first chunk time.
+    expect(
+      chunks.first,
+      lessThan(80),
+      reason: 'First chunk should arrive quickly',
+    );
+  });
+
+  test('Remote model', () async {
+    final myModel = ai.defineModel(
+      name: 'my-model',
+      fn: (request, context) async {
+        if (context.streamingRequested) {
+          context.sendChunk(
+            ModelResponseChunk(content: [TextPart(text: 'remote chunk')]),
+          );
+        }
+        return ModelResponse(
+          finishReason: FinishReason.stop,
+          message: Message(
+            role: Role.model,
+            content: [TextPart(text: 'hello from model')],
+          ),
+        );
+      },
+    );
+
+    server = await startFlowServer(flows: [myModel], port: 0);
+    port = server!.port;
+
+    final remoteModel = ai.defineRemoteModel(
+      name: 'remote-model',
+      url: 'http://localhost:$port/my-model',
+    );
+
+    // Unary
+    final response = await ai.generate(model: remoteModel, prompt: 'hi');
+    expect(response.text, 'hello from model');
+
+    // Streaming
+    final receivedChunks = <String>[];
+    final streamResponse = await ai.generate(
+      model: remoteModel,
+      prompt: 'hi',
+      onChunk: (c) => receivedChunks.add(c.text),
+    );
+
+    expect(receivedChunks, ['remote chunk']);
+    expect(streamResponse.text, 'hello from model');
+  });
+}

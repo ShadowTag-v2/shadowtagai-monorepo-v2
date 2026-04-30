@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Colab Coop: Cooperative notebook execution orchestrator.
 Distributes workloads across Gemini accounts via Cloud Code API.
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Rotation Orchestrator - Intelligent Model Pool Manager
 
 Manages 10 Antigravity instances × 3 tiers = 30 endpoints with:

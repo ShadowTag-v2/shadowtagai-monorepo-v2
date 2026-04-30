@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AR Glasses Fatigue Detection & Reduction SDK
 Dreamlight-style fatigue management for always-on AI eyewear
 

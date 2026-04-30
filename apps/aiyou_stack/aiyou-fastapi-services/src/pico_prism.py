@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PiCO::PRISM Framework - Production Module
 Extracted from Vertex AI Workbench for GKE deployment
 

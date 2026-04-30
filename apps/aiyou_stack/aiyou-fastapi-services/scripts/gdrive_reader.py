@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Google Drive Document Reader
 Reads all Google Docs and PDFs from your Drive, extracts text content.
 """

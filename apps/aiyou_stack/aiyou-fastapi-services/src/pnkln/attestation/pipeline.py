@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Attestation Pipeline
 
 Handles the end-to-end flow of media attestation:
@@ -15,7 +13,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from pnkln.core.Claude_Code_6_pipeline import get_judge
+from pnkln.core.judge_six_pipeline import get_judge
 
 from src.pnkln.neural_hash import get_neural_hash
 

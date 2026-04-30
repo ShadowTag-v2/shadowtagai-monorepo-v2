@@ -14,9 +14,6 @@ on:
       - 'apps/kovelai/**'
       - 'apps/shadowtagai/**'
 
-permissions:
-  contents: read
-
 jobs:
   lighthouse:
     runs-on: ubuntu-latest

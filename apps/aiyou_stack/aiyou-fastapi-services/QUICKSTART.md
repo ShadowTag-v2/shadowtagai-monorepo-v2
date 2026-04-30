@@ -96,7 +96,7 @@ echo -n "xxxx" | \
 
 ```bash
 # Get cluster credentials
-gcloud container clusters get-credentials Cor.Claude_Code_6-inference \
+gcloud container clusters get-credentials judge6-inference \
   --region=$REGION --project=$PNKLN_PROJECT_ID
 
 # Deploy the application
@@ -231,7 +231,7 @@ kubectl scale deployment judge-inference -n pnkln-judge --replicas=5
 kubectl top nodes -l gpu-type=nvidia-l4
 
 # Review logs for bottlenecks
-kubectl logs -n pnkln-judge -l app=Cor.Claude_Code_6 --tail=100
+kubectl logs -n pnkln-judge -l app=judge6 --tail=100
 ```
 
 **High error rate:**
@@ -258,7 +258,7 @@ make cost-estimate
 # Set up billing alerts
 gcloud alpha billing budgets create \
   --billing-account=<ACCOUNT_ID> \
-  --display-name="Cor.Claude_Code_6 Daily Budget" \
+  --display-name="Judge6 Daily Budget" \
   --budget-amount=500 \
   --threshold-rule=percent=50 \
   --threshold-rule=percent=90 \
@@ -316,7 +316,7 @@ kubectl top nodes -l gpu-type=nvidia-l4
    kubectl get networkpolicies -n pnkln-judge
 
    # Check private node configuration
-   gcloud container clusters describe Cor.Claude_Code_6-inference \
+   gcloud container clusters describe judge6-inference \
      --region=$REGION --format="value(privateClusterConfig)"
    ```
 
@@ -382,7 +382,7 @@ kubectl port-forward -n monitoring svc/prometheus 9090:9090
 For issues or questions:
 
 1. Check `./preflight-check.sh` output
-2. Review logs: `kubectl logs -n pnkln-judge -l app=Cor.Claude_Code_6`
+2. Review logs: `kubectl logs -n pnkln-judge -l app=judge6`
 3. Run diagnostics: `make diagnose`
 4. Consult `DEPLOYMENT_SUMMARY.txt` for detailed architecture
 

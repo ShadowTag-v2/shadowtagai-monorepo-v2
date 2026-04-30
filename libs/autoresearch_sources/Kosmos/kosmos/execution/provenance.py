@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Code Line Provenance for Kosmos research artifacts.
 

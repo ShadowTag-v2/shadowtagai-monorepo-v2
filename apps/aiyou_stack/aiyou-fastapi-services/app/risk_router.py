@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from app.schemas import RiskLevel, TaskRequest
 
 # Keywords that trigger higher risk levels

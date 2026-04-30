@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import inspect
 
 from google.adk.agents import LlmAgent

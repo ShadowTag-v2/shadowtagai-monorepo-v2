@@ -1,6 +1,11 @@
 {
   "version": 1,
   "skills": {
+    "accessibility": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "computedHash": "6462f04969f59f771150e6410e6a11fa397f2934be0b51e8650f495feed1e28d"
+    },
     "alloydb-basics": {
       "source": "google/skills",
       "sourceType": "github",
@@ -21,6 +26,11 @@
       "sourceType": "github",
       "computedHash": "96281e7bb9f6b4c6ba1b6f1a1f28d99ccebf4639c320f14e9a429dc882d6e4c0"
     },
+    "dotnet-xunit": {
+      "source": "wshaddix/dotnet-skills",
+      "sourceType": "github",
+      "computedHash": "ee4c1f97923c954f1645ec645f30fc774013018c131f50619b3226df28bdcded"
+    },
     "find-skills": {
       "source": "vercel-labs/skills",
       "sourceType": "github",
@@ -30,6 +40,11 @@
       "source": "google/skills",
       "sourceType": "github",
       "computedHash": "b1bbd67ca1bf614e1130ee6e02021c1518448fda4bcd420c81014c2e4ffb22ec"
+    },
+    "ga4": {
+      "source": "jdrhyne/agent-skills",
+      "sourceType": "github",
+      "computedHash": "37284661a4a9e84c0942d03d5644d144c373dbb25a6180ee832544b9749603da"
     },
     "gemini-api": {
       "source": "google/skills",

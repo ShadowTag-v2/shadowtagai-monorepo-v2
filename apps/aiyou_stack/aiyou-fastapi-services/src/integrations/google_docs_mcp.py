@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Google Cloud Docs MCP Integration
 Enables AI agents to read/write Google Docs for:
 - Cor state management

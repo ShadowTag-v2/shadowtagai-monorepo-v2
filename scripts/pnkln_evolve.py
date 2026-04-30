@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """pnkln-evolve: Recursive self-improvement daemon.
 
 Scans the monorepo for:
@@ -19,20 +17,12 @@ Rich Hickey Doctrine: Step 0 is DELETION.
 
 import argparse
 import json
-import logging
 import random
 import subprocess
 import sys
 import time
 from datetime import datetime, UTC
 from pathlib import Path
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [pnkln-evolve] %(levelname)s %(message)s",
-    datefmt="%Y-%m-%dT%H:%M:%S",
-)
-logger = logging.getLogger("pnkln_evolve")
 
 MONOREPO_ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = MONOREPO_ROOT / ".agents" / "skills"
@@ -155,7 +145,7 @@ def scan_stale_repos() -> dict:
 
 def run_evolve_pass() -> dict:
     """Execute one full evolution pass."""
-    logger.info("Starting pass at %s", datetime.now(UTC).isoformat())
+    print(f"[pnkln-evolve] Starting pass at {datetime.now(UTC).isoformat()}")
 
     results = {
         "dead_code": scan_dead_code(),
@@ -177,23 +167,22 @@ def main():
 
     if args.once or not args.daemon:
         results = run_evolve_pass()
-        # JSON report to stdout for machine consumption
-        sys.stdout.write(json.dumps(results, indent=2) + "\n")
+        print(json.dumps(results, indent=2))
         sys.exit(0)
 
     # Daemon mode with jitter
-    logger.info("Starting daemon mode")
+    print("[pnkln-evolve] Starting daemon mode")
     while True:
         try:
             results = run_evolve_pass()
-            logger.info("Pass complete: %d scans", len(results))
+            print(f"[pnkln-evolve] Pass complete: {len(results)} scans")
         except Exception as e:
             log_event("evolve_error", {"error": str(e)})
-            logger.error("Error: %s", e)
+            print(f"[pnkln-evolve] Error: {e}")
 
         # Jitter: ±20% of base interval
         jitter = random.uniform(0.8, 1.2) * args.interval
-        logger.info("Sleeping %.0fs (base=%ds)", jitter, args.interval)
+        print(f"[pnkln-evolve] Sleeping {jitter:.0f}s (base={args.interval}s)")
         time.sleep(jitter)
 
 

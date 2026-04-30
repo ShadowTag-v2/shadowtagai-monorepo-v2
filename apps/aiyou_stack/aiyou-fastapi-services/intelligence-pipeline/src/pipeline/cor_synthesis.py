@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Intelligence Pipeline - Cor Brain Synthesis
 
 Cor Brain provides executive-level synthesis for Tier 1 items.

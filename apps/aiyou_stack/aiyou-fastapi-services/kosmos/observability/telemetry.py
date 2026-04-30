@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """OpenTelemetry Integration: Cloud Trace integration for distributed tracing.
 
 Provides:

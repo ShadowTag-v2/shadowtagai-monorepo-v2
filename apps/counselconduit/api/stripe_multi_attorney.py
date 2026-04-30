@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/stripe_multi_attorney.py
 """Stripe Connect: Multi-Attorney Billing Split.
 

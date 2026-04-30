@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pydantic models for AWS Cost Optimizer API requests and responses."""
 
 from datetime import datetime

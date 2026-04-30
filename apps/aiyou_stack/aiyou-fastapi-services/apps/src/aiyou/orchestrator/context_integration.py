@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """SwarmOrchestrator Integration with Context Index
 
 Adds atomic chat logging for task routing and revenue distribution decisions.

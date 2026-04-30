@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Deploy Ready Orchestrator
 ==========================
 5-prompt workflow to deploy-ready code (Replit-style).

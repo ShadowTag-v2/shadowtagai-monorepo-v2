@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Cor Tool Registry
 
 Central registration point for all MCP tools including:

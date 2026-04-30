@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Hybrid Orchestrator: Routes tasks to appropriate execution layer
 Combines: rtrvr.ai (web) + E2B (sandbox) + CI pipeline + minions
 

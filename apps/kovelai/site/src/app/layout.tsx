@@ -1,8 +1,8 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 import type { Metadata } from 'next';
 import { Geist_Mono, Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
+import UnusualChassis from '@/components/UnusualChassis';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -67,18 +67,23 @@ export default function RootLayout({
       <head>
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <>
-            <script
-              async
+            <Script
+              id="ga4-gtag"
+              strategy="afterInteractive"
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
             />
-            <script
-              // biome-ignore lint/security/noDangerouslySetInnerHtml: GA4 gtag bootstrap — static server-rendered analytics
+            <Script
+              id="ga4-config"
+              strategy="afterInteractive"
               dangerouslySetInnerHTML={{
                 __html: `
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
+                    page_path: window.location.pathname,
+                    send_page_view: true
+                  });
                 `,
               }}
             />
@@ -193,7 +198,9 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-[#071325] text-[#d7e3fc]">{children}</body>
+      <body className="min-h-screen flex flex-col bg-[#071325] text-[#d7e3fc]">
+        <UnusualChassis>{children}</UnusualChassis>
+      </body>
     </html>
   );
 }

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FM 3-0 Multi-Domain Operations — Temporal.io Durable Execution.
 
 The complete Theater Campaign workflow: the Commander's Operations

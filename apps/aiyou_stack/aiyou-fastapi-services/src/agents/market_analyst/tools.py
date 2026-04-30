@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tools for Market Analyst Agent"""
 
 from datetime import datetime

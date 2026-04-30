@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import json
 import os
 from pathlib import Path
@@ -32,7 +30,7 @@ def create_single_repo_workspace(base_path, name):
         )
 
     # 3. Add Judge 6 governance stub
-    with open(root / "Claude_Code_6.json", "w") as f:
+    with open(root / "judge_six.json", "w") as f:
         json.dump(
             {
                 "mission": f"Manage Apigee proxy: {name}",

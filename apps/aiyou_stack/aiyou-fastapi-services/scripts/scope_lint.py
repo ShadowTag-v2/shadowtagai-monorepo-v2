@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Scope Lint: Enforces single-domain PRs
 Detects mega-merges that touch too many unrelated areas
 

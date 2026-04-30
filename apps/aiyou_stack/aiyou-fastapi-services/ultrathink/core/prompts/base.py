@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Base prompt class for all prompting techniques.
 
 Design principle: Every prompt technique should be:

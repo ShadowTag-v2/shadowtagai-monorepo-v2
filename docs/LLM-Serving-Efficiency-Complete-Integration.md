@@ -275,7 +275,7 @@ src/
 ├── kernels/
 │   ├── __init__.py
 │   ├── base.py
-│   ├── Claude_Code_6.py
+│   ├── judge_six.py
 │   ├── atp_519_scan.py
 │   └── audit_compress.py
 ├── ml/
@@ -295,7 +295,7 @@ src/
 ├── pnkln/
 │   ├── __init__.py
 │   ├── cor.py
-│   ├── Claude_Code_6.py
+│   ├── judge_six.py
 │   ├── shadowtag.py
 │   └── ns.py
 ├── ratings/
@@ -304,7 +304,7 @@ src/
 ├── tests/
 │   ├── __init__.py
 │   ├── test_benchmarks.py
-│   ├── test_Claude_Code_6.py
+│   ├── test_judge_six.py
 │   ├── test_latency.py
 │   └── test_pnkln_integration.py
 └── (21 more subdirectories with 67 total files)
@@ -546,7 +546,7 @@ Complete research synthesis covering:
 **Test Coverage**:
 
 - `test_benchmarks.py` - Performance benchmarks
-- `test_Claude_Code_6.py` - Judge Six kernel validation
+- `test_judge_six.py` - Judge Six kernel validation
 - `test_latency.py` - Latency regression tests
 - `test_pnkln_integration.py` - Pinkln agent integration
 

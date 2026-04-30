@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Rate Limiter Implementation
 
 Implements token bucket algorithm for ethical rate limiting across domains.

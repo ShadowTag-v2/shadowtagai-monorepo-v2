@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Industry & Manufacturer Blog Crawler
 Discovers and ingests content from tech industry sources aligned with PNKLN verticals
 """

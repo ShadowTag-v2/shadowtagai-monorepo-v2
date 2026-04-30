@@ -18,7 +18,7 @@ docker:
 
 # ── Cor.Go ZTA Kernel ──────────────────────────────────────────
 go-build:
-	cd cmd/cor-go && go build -o ../../bin/Cor.Claude_Code_6_pep .
+	cd cmd/cor-go && go build -o ../../bin/judge6_pep .
 
 # ── Midas C++ IPC Client ──────────────────────────────────────
 cpp-build:

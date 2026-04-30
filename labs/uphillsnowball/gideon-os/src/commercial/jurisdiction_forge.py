@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # src/commercial/jurisdiction_forge.py
 # ============================================================================
 # Jurisdiction Forge — The Pricing Menu

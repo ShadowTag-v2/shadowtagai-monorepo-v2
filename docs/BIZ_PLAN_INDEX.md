@@ -14,5 +14,5 @@ Strategic mapping for the pnkln-stack stack repositories.
 ## Legacy / Reference
 - **ShadowTag-v2**: Reference implementation.
 - **kosmos**: Reference implementation.
-- **Cor.Claude_Code_6**: Reference implementation for compliance.
+- **judge6**: Reference implementation for compliance.
 - **codepmcs**: Policy enforcement reference.

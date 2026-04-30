@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Live Service - Real-time Multimodal Interaction
 
 Implements the Gemini Live API (WebSocket-based) for low-latency audio/video streaming.

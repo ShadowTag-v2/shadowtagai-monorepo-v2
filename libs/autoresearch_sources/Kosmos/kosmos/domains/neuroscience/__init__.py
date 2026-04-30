@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Neuroscience domain module - connectomics, neurodegeneration, and brain network analysis"""
 
 from kosmos.domains.neuroscience.apis import (

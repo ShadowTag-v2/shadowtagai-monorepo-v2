@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Intelligence Pipeline - Tier 2 Auto-Actions
 
 Automated actions for Tier 2 items (medium priority):

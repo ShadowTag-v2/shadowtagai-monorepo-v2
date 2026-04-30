@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Safety and validation modules."""
 
 from kosmos.safety.code_validator import CodeValidator

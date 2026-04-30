@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pre-defined load testing scenarios"""
 
 from dataclasses import dataclass

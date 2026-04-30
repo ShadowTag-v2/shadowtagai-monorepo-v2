@@ -9,7 +9,7 @@ PACKET_NAME="smart_actions_packet_${TIMESTAMP}.tar.gz"
 echo "📦 Packaging Smart Actions for Transfer..."
 
 # Verify paths exist before tarring to avoid partial failures
-for path in "apps/n-autoresearch/Kosmos/BioAgents-server/src/main.py" "bin/n-autoresearch/Kosmos/BioAgents-server" "scripts/verify_smart_actions.py" "src/governance/Claude_Code_6" "src/intelligence/tegu_vision"; do
+for path in "apps/n-autoresearch/Kosmos/BioAgents-server/src/main.py" "bin/n-autoresearch/Kosmos/BioAgents-server" "scripts/verify_smart_actions.py" "src/governance/judge_six" "src/intelligence/tegu_vision"; do
     if [ ! -e "$path" ]; then
         echo "WARNING: $path not found! Creating placeholder..."
         mkdir -p "$(dirname "$path")"
@@ -25,7 +25,7 @@ done
 echo "Manifest:
 - apps/n-autoresearch/Kosmos/BioAgents-server/src/main.py
 - bin/n-autoresearch/Kosmos/BioAgents-server
-- src/governance/Claude_Code_6
+- src/governance/judge_six
 - src/intelligence/tegu_vision
 - scripts/verify_smart_actions.py" > transfer_manifest.txt
 
@@ -35,7 +35,7 @@ echo "Manifest:
 tar -czf "$PACKET_NAME" \
     apps/n-autoresearch/Kosmos/BioAgents-server/src/main.py \
     bin/n-autoresearch/Kosmos/BioAgents-server \
-    src/governance/Claude_Code_6 \
+    src/governance/judge_six \
     src/intelligence/tegu_vision \
     scripts/verify_smart_actions.py \
     transfer_manifest.txt

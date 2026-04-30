@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # /antigravity/core/guard.py
 """THE GIDEON GUARD
 Doctrine: 2026 CSRMC (Continuous Authority to Operate)

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """OPORD Generator for n-autoresearch/Kosmos/BioAgents Cavalry Squadron
 ===================================================
 Implements 5-Paragraph Operations Order format for agent swarm coordination.

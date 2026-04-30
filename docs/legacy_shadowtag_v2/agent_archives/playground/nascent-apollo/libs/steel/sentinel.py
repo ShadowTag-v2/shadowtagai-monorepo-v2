@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import logging
 import os
 import sys
@@ -16,7 +14,7 @@ try:
 except ImportError:
     ARMY_AVAILABLE = False
 
-logger = logging.getLogger("Cor_Claude_Code_6")
+logger = logging.getLogger("Judge6")
 
 
 class RiskTier(Enum):

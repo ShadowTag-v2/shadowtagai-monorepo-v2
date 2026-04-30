@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Vector database wrapper using ChromaDB."""
 
 import asyncio

@@ -172,7 +172,7 @@ tokens:
 | GCA Autolint | `scripts/gca_autolint_daemon.py` (507L) | GitHub App JWT push, ruff+biome, beads audit trail |
 | Dream Consolidation | `scripts/dream_consolidation.py` | Nightly KI maintenance |
 | Loop Steward | `scripts/loop_steward.py` | 5-min autonomous task continuation |
-| COR.KAIROS | `scripts/kairos_daemon.py` | Background autonomous agent mode |
+| KAIROS | `scripts/kairos_daemon.py` | Background autonomous agent mode |
 | pnkln-evolve | `scripts/pnkln_evolve.py` | Recursive self-improvement |
 
 ---

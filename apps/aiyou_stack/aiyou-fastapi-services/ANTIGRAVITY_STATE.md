@@ -6,7 +6,7 @@
 
 ## 1. Antigravity Core
 
-- **Judge 6 (Gideon Protocol):** `Cor.Claude_Code_6-compliance` skill. Enforces "Wet Fleece" (Spot/Free) and "Dry Ground" (Unit Economics) gates.
+- **Judge 6 (Gideon Protocol):** `judge6-compliance` skill. Enforces "Wet Fleece" (Spot/Free) and "Dry Ground" (Unit Economics) gates.
 - **RLM Agent:** Recursive Language Model "Grad Student" implanted.
 
 ## 2. Capabilities (Doctrines)

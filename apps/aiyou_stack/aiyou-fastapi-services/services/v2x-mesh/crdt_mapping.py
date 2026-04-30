@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """CRDT-based Collaborative Mapping System
 
 Implements conflict-free replicated data types (CRDTs) for:

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Antigravity Pipeline - Full Wire with ATP 3-20.96 Cavalry Squadron
 ===================================================================
 

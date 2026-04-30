@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Ethical Web Scraper with ATP 5-19 RA-1 Compliance
 Implements robots.txt respect, rate limiting, and circuit breaker patterns
 """

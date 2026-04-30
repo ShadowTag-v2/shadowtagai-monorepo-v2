@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Kosmos Dev core components: whiteboard, swarm, orchestrator."""
 
 from kosmos_dev.core.swarm import (

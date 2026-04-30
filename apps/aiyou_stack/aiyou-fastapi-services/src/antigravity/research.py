@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Research Chain: Perplexity → SuperGrok
 
 Each LLM explains reasoning to the next (REASONING HANDOFF pattern).

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """JR Engine, Token Router, Confidence Monitor, and scoring modules"""
 
 from .confidence_monitor import (

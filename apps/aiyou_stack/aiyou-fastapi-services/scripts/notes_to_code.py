@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Notes to Code Converter
 Extracts code-relevant content from iPhone Notes and Google Drive docs
 """

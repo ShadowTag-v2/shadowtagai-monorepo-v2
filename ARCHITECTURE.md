@@ -78,9 +78,9 @@ Reduction: 95%
 - JSON parse error: Log raw response, raise KernelChainError
 - Invalid violation schema: Pydantic validation catches malformed data
 
-### Kernel 2: Claude_Code_6_classify
+### Kernel 2: judge_six_classify
 
-**File**: `app/kernels/Claude_Code_6.py`
+**File**: `app/kernels/judge_six.py`
 
 ```python
 class JudgeSixModel(nn.Module):
@@ -215,7 +215,7 @@ class KernelChain:
 Total p99 latency: 52ms
 
 Kernel 1 (ATP_519_scan):       38ms  (73%)
-Kernel 2 (Claude_Code_6_classify):  9ms  (17%)
+Kernel 2 (judge_six_classify):  9ms  (17%)
 Kernel 3 (audit_compress):      5ms  (10%)
 ```
 

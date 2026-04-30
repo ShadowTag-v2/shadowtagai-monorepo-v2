@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Ingestion Service - Wraps Gemini Ingestion Layer for FastAPI"""
 
 import asyncio

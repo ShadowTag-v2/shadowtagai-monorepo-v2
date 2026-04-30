@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 class Verdict:
     def __init__(self):
         self.q = []

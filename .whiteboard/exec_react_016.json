@@ -1,0 +1,15 @@
+{
+  "agent_id": "exec_react_016",
+  "level": 2,
+  "tasks_completed": 0,
+  "success_rate": 1.0,
+  "specialization": "react",
+  "tier": "execution",
+  "shift": "shift_5",
+  "knowledge_graph": {
+    "specialization": "react",
+    "domain": "react"
+  },
+  "task_history": [],
+  "preferred_llm": "gemini-3-pro-preview"
+}

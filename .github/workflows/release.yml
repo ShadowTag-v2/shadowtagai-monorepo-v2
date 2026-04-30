@@ -16,9 +16,6 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-
 jobs:
   release:
     name: Create Release

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Regulation Registry System
 
 Central registry for all compliance modules.

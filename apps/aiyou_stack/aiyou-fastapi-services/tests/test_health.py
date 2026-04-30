@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tests for health check endpoints."""
 
 from fastapi.testclient import TestClient

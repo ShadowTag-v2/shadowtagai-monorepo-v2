@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Omni-Autolint Daemon — Secure lint + push via GitHub App short-lived tokens.
 
 Astral Ruff Integration:
@@ -23,7 +21,6 @@ Usage:
 import argparse
 import contextlib
 import json
-import logging
 import os
 import subprocess
 import sys
@@ -31,8 +28,6 @@ import tempfile
 import time
 from datetime import datetime, UTC
 from pathlib import Path
-
-logger = logging.getLogger(__name__)
 
 # Augment PATH for non-interactive shells (Python 3.14 subprocess may not
 # inherit zsh PATH that includes homebrew, cargo, etc.)
@@ -112,8 +107,8 @@ def resolve_pem_path() -> Path:
     except FileNotFoundError, subprocess.TimeoutExpired:
         pass
 
-    logger.critical("FATAL: No PEM file found in any of the 5 fallback tiers.")
-    logger.critical("Checked: $SHADOWTAG_PEM, keys/, ~/Downloads/, ~/.ssh/, GCP Secret Manager")
+    print("[!] FATAL: No PEM file found in any of the 5 fallback tiers.")
+    print("    Checked: $SHADOWTAG_PEM, keys/, ~/Downloads/, ~/.ssh/, GCP Secret Manager")
     sys.exit(1)
 
 
@@ -149,7 +144,7 @@ def run_command(
     env_override: dict | None = None,
 ) -> subprocess.CompletedProcess:
     """Run a shell command, optionally checking for fatal errors (exit code > 1)."""
-    logger.info("Running: %s", " ".join(command))
+    print(f"[*] Running: {' '.join(command)}")
 
     import os
 
@@ -162,10 +157,10 @@ def run_command(
     result = subprocess.run(command, **kwargs)
 
     if check_fatal and result.returncode > 1:
-        logger.critical("FATAL ERROR: %s exited with code %d", " ".join(command), result.returncode)
-        logger.error("STDOUT:\n%s", result.stdout[-2000:] if result.stdout else "(empty)")
-        logger.error("STDERR:\n%s", result.stderr[-2000:] if result.stderr else "(empty)")
-        logger.critical("Aborting to prevent pushing a broken tree.")
+        print(f"\n[!] FATAL ERROR: {' '.join(command)} exited with code {result.returncode}")
+        print("STDOUT:\n", result.stdout[-2000:] if result.stdout else "(empty)")
+        print("STDERR:\n", result.stderr[-2000:] if result.stderr else "(empty)")
+        print("Aborting to prevent pushing a broken tree.")
         sys.exit(1)
 
     return result
@@ -291,7 +286,7 @@ def write_beads_entry(lint_results: dict) -> None:
     }
     with BEADS_ISSUES.open("a") as f:
         f.write(json.dumps(entry) + "\n")
-    logger.info("Beads audit entry written to %s", BEADS_ISSUES)
+    print(f"[*] Beads audit entry written to {BEADS_ISSUES}")
 
 
 def write_heartbeat(phase: str, status: str) -> None:
@@ -316,7 +311,7 @@ def send_gws_notification(summary: str, branch: str = "") -> None:
 
     gws = shutil.which("gws")
     if not gws:
-        logger.info("GWS CLI not found — notification skipped (install googleworkspace/cli)")
+        print("[*] GWS CLI not found — notification skipped (install googleworkspace/cli)")
         return
     msg = f"🤖 Omni-Autolint: {summary}"
     if branch:
@@ -328,9 +323,9 @@ def send_gws_notification(summary: str, branch: str = "") -> None:
             text=True,
             timeout=15,
         )
-        logger.info("GWS notification sent: %s", msg[:80])
+        print(f"[*] GWS notification sent: {msg[:80]}")
     except FileNotFoundError, subprocess.TimeoutExpired:
-        logger.warning("GWS notification failed — continuing")
+        print("[*] GWS notification failed — continuing")
 
 
 def write_results_json(lint_results: dict, diff_stats: str) -> None:
@@ -359,7 +354,7 @@ def write_results_json(lint_results: dict, diff_stats: str) -> None:
         }
 
     RESULTS_FILE.write_text(json.dumps(output, indent=2))
-    logger.info("Results written to %s", RESULTS_FILE)
+    print(f"[*] Results written to {RESULTS_FILE}")
 
 
 def parse_args() -> argparse.Namespace:
@@ -383,28 +378,28 @@ def main() -> None:
     args = parse_args()
     headless = args.yes or os.environ.get("CI", "").lower() == "true"
 
-    logger.info("=== Omni-Autolint Daemon ===")
+    print("=== Omni-Autolint Daemon ===")
 
     # --- Phase 1: Authenticate ---
-    logger.info("[1] Authenticating with GitHub App...")
+    print("[1] Authenticating with GitHub App...")
     try:
         pem_path = resolve_pem_path()
-        logger.info("PEM resolved: %s", pem_path)
+        print(f"[*] PEM resolved: {pem_path}")
         jwt_token = generate_jwt(APP_ID, pem_path)
         installation_id = get_installation_id(jwt_token)
         access_token = get_access_token(jwt_token, installation_id)
-        logger.info("Short-lived token acquired (Installation ID: %d).", installation_id)
+        print(f"[*] Short-lived token acquired (Installation ID: {installation_id}).")
     except Exception as e:
-        logger.critical("Authentication failed: %s", e)
+        print(f"[!] Authentication failed: {e}")
         sys.exit(1)
 
     # --- Phase 2: Sync ---
-    logger.info("[2] Synchronizing with origin/main...")
+    print("\n[2] Synchronizing with origin/main...")
     run_command(["git", "pull", "origin", "main"])
 
     # --- Phase 3: Lint ---
-    logger.info("[3] Running Omni-Linter Suite (ruff + biome)...")
-    logger.info("    Ruff: https://github.com/astral-sh/ruff")
+    print("\n[3] Running Omni-Linter Suite (ruff + biome)...")
+    print("    Ruff: https://github.com/astral-sh/ruff")
     write_heartbeat("lint", "running")
     lint_results = run_linters(
         timeout=args.timeout,
@@ -418,7 +413,7 @@ def main() -> None:
     write_beads_entry(lint_results)
 
     # --- Phase 3.5: Repo Doctor Health Check (Risk #85 remediation) ---
-    logger.info("[3.5] Running Repo Doctor health check...")
+    print("\n[3.5] Running Repo Doctor health check...")
     repo_doctor_script = Path("scripts/repo_doctor.py")
     if repo_doctor_script.exists():
         import sys as _sys
@@ -430,15 +425,15 @@ def main() -> None:
             timeout=300,
         )
         if rd.returncode != 0:
-            logger.warning("Repo Doctor warnings:\n%s", rd.stdout[-1000:])
+            print(f"[!] Repo Doctor warnings:\n{rd.stdout[-1000:]}")
         else:
-            logger.info("Repo Doctor: healthy")
+            print("[*] Repo Doctor: healthy")
         lint_results["repo_doctor"] = {"exit_code": rd.returncode, "stdout": rd.stdout, "stderr": rd.stderr}
     else:
-        logger.info("Repo Doctor script not found — skipping")
+        print("[*] Repo Doctor script not found — skipping")
 
     # --- Phase 4: Evaluate ---
-    logger.info("[4] Evaluating modifications...")
+    print("\n[4] Evaluating modifications...")
     status_result = run_command(["git", "status", "--porcelain"])
     diff_stat_result = run_command(["git", "diff", "--stat"])
 
@@ -447,33 +442,33 @@ def main() -> None:
         write_results_json(lint_results, diff_stat_result.stdout)
 
     if not status_result.stdout.strip():
-        logger.info("No AST changes detected. Working tree is clean.")
+        print("[*] No AST changes detected. Working tree is clean.")
         return
 
     # --- Phase 5: Review + Push ---
-    logger.info("AST modifications detected:")
-    logger.info(diff_stat_result.stdout)
+    print("\n[*] AST modifications detected:")
+    print(diff_stat_result.stdout)
 
     if args.dry_run:
-        logger.info("[DRY-RUN] Skipping commit/push as requested.")
+        print("[DRY-RUN] Skipping commit/push as requested.")
         return
 
     # Human-in-the-loop or headless auto-approve
     if headless:
-        logger.info("[HEADLESS] Auto-approving changes (--yes or CI=true).")
+        print("[HEADLESS] Auto-approving changes (--yes or CI=true).")
         approved = True
     else:
         diff_result = run_command(["git", "diff"])
-        logger.info("--- DIFF START ---")
-        logger.info(diff_result.stdout[:10000])
+        print("\n--- DIFF START ---")
+        print(diff_result.stdout[:10000])
         if len(diff_result.stdout) > 10000:
-            logger.info("... (%d more characters truncated)", len(diff_result.stdout) - 10000)
-        logger.info("--- DIFF END ---")
+            print(f"... ({len(diff_result.stdout) - 10000} more characters truncated)")
+        print("--- DIFF END ---\n")
         choice = input("Proceed with commit and push? (y/n): ")
         approved = choice.strip().lower() == "y"
 
     if not approved:
-        logger.info("Commit aborted by user.")
+        print("[*] Commit aborted by user.")
         return
 
     # Create branch (never push directly to main)
@@ -489,14 +484,14 @@ def main() -> None:
     run_command(["git", "commit", "-m", "chore(ast): autonomous AST optimization via GCA"])
 
     # Secure push via GIT_ASKPASS (token never in URL args)
-    logger.info("Pushing securely via GIT_ASKPASS...")
+    print("[*] Pushing securely via GIT_ASKPASS...")
     push_result = secure_push(access_token, branch_name)
 
     if push_result.returncode != 0:
-        logger.error("Push failed:\n%s", push_result.stderr)
+        print(f"[!] Push failed:\n{push_result.stderr}")
         sys.exit(1)
 
-    logger.info("Push successful to branch: %s", branch_name)
+    print(f"[*] Push successful to branch: {branch_name}")
     write_heartbeat("push", "complete")
 
     # Notify via GWS if requested (items 11, 12)
@@ -505,12 +500,8 @@ def main() -> None:
 
     # Return to main
     run_command(["git", "checkout", "main"])
-    logger.info("Done. Create a PR from '%s' → main.", branch_name)
+    print(f"[*] Done. Create a PR from '{branch_name}' → main.")
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    )
     main()

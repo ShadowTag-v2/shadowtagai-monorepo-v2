@@ -1,21 +1,5 @@
 # Changelog
 
-## [v12.3] - 2026-04-28
-
-### KovelAI Deployment Integrity Audit
-- audit(build): Next.js 16.2.1 (Turbopack) — compiled 1.83s, 4/4 static pages ✅
-- audit(lighthouse): A100/BP100/SEO100 — 51 passed, 0 failed ✅
-- audit(ruff): F401/F841 — all checks passed, zero dead Python code ✅
-- audit(biome): 28 files, 4 warnings (non-critical), format auto-fixed (quote style) ✅
-- audit(guillotine): v9.0 full sweep — all passes clean ✅
-- audit(cloud-run): counselconduit-00045-kjp active, Ready=True ✅
-- audit(csp): firebase.json CSP headers validated — Stripe/GA/GTM/Cloudflare domains ✅
-- audit(design): DESIGN.md Sovereign Architect v1.0 — no-line rule + Inter tokens aligned ✅
-- feat(stitch): 2 LinkedIn campaign banners generated (project 9243896103844268571)
-  - Screen `ed27dbee...` — "Your client's research is discoverable. Unless it isn't."
-  - Screen `7ace1ed3...` — "Shield your client's research from discovery."
-- feat(changelog): KovelAI-specific CHANGELOG.md created at apps/kovelai/CHANGELOG.md
-
 ## [v12.2] - 2026-04-25
 
 - fix(truth): reconcile skill fleet count across 4 surfaces (AGENTS.md, GEMINI.md ×2, manifest) to 247 active (54 WS + 210 global − 17 overlap)

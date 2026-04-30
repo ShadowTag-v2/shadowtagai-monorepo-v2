@@ -9,7 +9,7 @@ import { logger } from '../utils/logger';
 
 export enum InfrastructureComponent {
   GEMINI_INGESTION = 'gemini-ingestion',
-  Claude_Code_6 = 'judge-six',
+  JUDGE_SIX = 'judge-six',
   PNKLN_CORE = 'pnkln-core',
   UNKNOWN = 'unknown',
 }
@@ -58,7 +58,7 @@ export class InfrastructureAnalyzer {
 
     // Judge 6
     if (input.includes('judge') || input.includes('validation') || input.includes('enforcement')) {
-      return InfrastructureComponent.Claude_Code_6;
+      return InfrastructureComponent.JUDGE_SIX;
     }
 
     // PNKLN Core
@@ -81,7 +81,7 @@ export class InfrastructureAnalyzer {
       case InfrastructureComponent.GEMINI_INGESTION:
         return GEMINI_INGESTION_ANALYSIS_PROMPT;
 
-      case InfrastructureComponent.Claude_Code_6:
+      case InfrastructureComponent.JUDGE_SIX:
         // TODO: Add Judge 6 analysis prompt
         return 'Judge 6 analysis not yet implemented';
 

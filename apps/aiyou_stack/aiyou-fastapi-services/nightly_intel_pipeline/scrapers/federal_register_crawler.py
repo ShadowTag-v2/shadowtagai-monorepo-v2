@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Federal Register API Crawler
 Discovers and ingests regulatory intelligence from 530+ federal agencies
 No authentication required - free public API

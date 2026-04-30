@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import glob
 import json
 import os
@@ -60,7 +58,7 @@ HAZARD_DATABASE = [
 class MissionLogger:
     def __init__(self, log_file="aar_log.json"):
         self.log_file = log_file
-        self.webhook = os.getenv("COR_CLAUDE_CODE_6_WEBHOOK_URL")
+        self.webhook = os.getenv("JUDGE6_WEBHOOK_URL")
 
     def get_recent_failures(self, limit=3):
         """THE LEARNER: Retrieves recent failures to warn Gemini"""

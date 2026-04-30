@@ -11,7 +11,7 @@ This is a Google Cloud-native monorepo for ShadowTag AI, containing:
 - **apps/aiyou_stack** — AI pipeline services
 
 ### Core Libraries
-- **core/governance** — Cor.Claude_Code_6 policy engine
+- **core/governance** — Judge6 policy engine
 - **core/lawtrack** — Legal domain logic
 - **core/aegaeon** — Context caching + swarm routing
 - **core/sovereign_mlx** — Apple Silicon ML inference
@@ -27,7 +27,7 @@ This is a Google Cloud-native monorepo for ShadowTag AI, containing:
 - **Auth**: Firebase Auth
 - **Secrets**: GCP Secret Manager (production), .env (local only)
 - **Model**: gemini-3.1-flash-lite-preview (runtime)
-- **CI**: GitHub Actions (4 workflows: gca-pr-review, 10x_vibe_matrix, Cor.Claude_Code_6_yolo_gate, antigravity_ci)
+- **CI**: GitHub Actions (4 workflows: gca-pr-review, 10x_vibe_matrix, judge6_yolo_gate, antigravity_ci)
 
 ## GitHub Integration
 - **SSH transport** for git push/pull

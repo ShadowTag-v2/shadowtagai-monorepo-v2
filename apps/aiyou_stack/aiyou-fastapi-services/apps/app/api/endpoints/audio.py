@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Audio Steganography Endpoints
 
 API endpoints for audio encoding and decoding operations.

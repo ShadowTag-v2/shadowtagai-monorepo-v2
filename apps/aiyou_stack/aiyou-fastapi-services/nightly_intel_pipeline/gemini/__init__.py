@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Event Ingestion Layer
 ============================
 Semantic normalization layer for intelligence pipeline.

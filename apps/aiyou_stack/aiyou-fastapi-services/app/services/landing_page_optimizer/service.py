@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Landing Page Optimizer service implementation using Claude Agent SDK"""
 
 import json

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """JADC2 - Joint All-Domain Command & Control
 Defense-Grade Wrapper for Kernels to accelerate OODA Loop.
 

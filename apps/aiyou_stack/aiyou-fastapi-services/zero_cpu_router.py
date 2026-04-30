@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Zero-CPU Master Router
 ======================
 Dispatches inference to the appropriate zero-CPU backend:

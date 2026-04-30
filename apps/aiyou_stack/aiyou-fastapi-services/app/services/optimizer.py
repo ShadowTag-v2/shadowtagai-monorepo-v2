@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Performance optimization recommendations engine
 Automatically suggests and applies optimizations
 """

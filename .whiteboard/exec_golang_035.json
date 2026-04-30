@@ -1,0 +1,15 @@
+{
+  "agent_id": "exec_golang_035",
+  "level": 1,
+  "tasks_completed": 0,
+  "success_rate": 1.0,
+  "specialization": "golang",
+  "tier": "execution",
+  "shift": "shift_6",
+  "knowledge_graph": {
+    "specialization": "golang",
+    "domain": "golang"
+  },
+  "task_history": [],
+  "preferred_llm": "gemini-3-pro-preview"
+}

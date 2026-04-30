@@ -39,7 +39,7 @@ Upload all 6 files to `/home/jupyter/` directory:
 /home/jupyter/
 ├── cor_skill_registry.py           (13K)
 ├── cor_autogen_integration.py      (14K)
-├── Cor.Claude_Code_6_enforcement.py           (21K)
+├── judge6_enforcement.py           (21K)
 ├── cor53_integration_guide.py      (21K)
 ├── cor_skills_manifest.json        (5.8K)
 └── DEPLOYMENT_CHECKLIST.py         (25K)
@@ -258,7 +258,7 @@ Response Preview: Based on the task of analyzing security vulnerabilities...
 ### Test 4.3: Judge 6 Enforcement
 
 ```bash
-python Cor.Claude_Code_6_enforcement.py
+python judge6_enforcement.py
 ```
 
 **Expected Output:**
@@ -347,7 +347,7 @@ print('Components:', list(cor.keys()))
 
 ```
 COR.53 initialized: True
-Components: ['pipeline', 'Cor.Claude_Code_6', 'orchestrator', 'process_task', 'batch_process', 'export_report']
+Components: ['pipeline', 'judge6', 'orchestrator', 'process_task', 'batch_process', 'export_report']
 ```
 
 ---
@@ -462,9 +462,9 @@ report_path = cor['export_report']('telehealth_gtm_execution_report.json')
 print(f"✓ Audit trail exported: {report_path}")
 
 # Optional: Export Judge 6 audit log
-Cor.Claude_Code_6_audit = cor['Cor.Claude_Code_6'].export_audit_log('Cor.Claude_Code_6_telehealth_audit.json')
+judge6_audit = cor['judge6'].export_audit_log('judge6_telehealth_audit.json')
 
-print(f"✓ Judge 6 audit: {Cor.Claude_Code_6_audit}")
+print(f"✓ Judge 6 audit: {judge6_audit}")
 ```
 
 ---
@@ -547,7 +547,7 @@ print(f"✓ Batch report: {report_path}")
 # Check Judge 6 audit log for violations
 python -c "
 import json
-with open('Cor.Claude_Code_6_audit_log.json') as f:
+with open('judge6_audit_log.json') as f:
     audit = json.load(f)
 
 critical = [v for v in audit['validations']
@@ -560,7 +560,7 @@ print(f'Critical violations in last 24h: {len(critical)}')
 ### Weekly Maintenance
 
 1. **Review Audit Trails:**
-   - Check `Cor.Claude_Code_6_audit_log.json` for patterns
+   - Check `judge6_audit_log.json` for patterns
    - Identify frequently violated constraints
    - Refine justification templates
 
@@ -688,7 +688,7 @@ Before deploying to customer-facing operations:
 **Documentation:**
 
 - COR.53 Integration: See `cor53_integration_guide.py` docstrings
-- Judge 6 Enforcement: See `Cor.Claude_Code_6_enforcement.py` docstrings
+- Judge 6 Enforcement: See `judge6_enforcement.py` docstrings
 - Deployment Validation: Run `python DEPLOYMENT_CHECKLIST.py`
 
 **API Documentation:**
@@ -700,7 +700,7 @@ Before deploying to customer-facing operations:
 **Troubleshooting:**
 
 - Check deployment report: `deployment_report.json`
-- Review audit logs: `Cor.Claude_Code_6_audit_log.json`
+- Review audit logs: `judge6_audit_log.json`
 - Examine execution reports: `*_execution_report.json`
 
 ---

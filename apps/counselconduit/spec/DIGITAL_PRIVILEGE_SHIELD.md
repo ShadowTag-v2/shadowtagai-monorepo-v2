@@ -207,7 +207,7 @@ Brief Available (Privileged Export)
 | Opposing counsel subpoenas AI logs | Privilege applies per Heppner; attestation receipts prove basis | `kovel_attestation.py` |
 | Prompt injection strips empathy layer | Empathy fingerprinting detects mutation | `empathy_templates.py` |
 | Client session hijacked | UUIDv7 session IDs + tenant-scoped auth + Dead-Man's Switch | `auth.py` + `silent_detector.py` |
-| LLM returns privilege-breaking content | Judge 6 policy gate blocks before delivery | `Cor.Claude_Code_6.py` |
+| LLM returns privilege-breaking content | Judge 6 policy gate blocks before delivery | `judge6.py` |
 | Data breach exposes transcripts | Firestore encryption at rest + per-tenant namespace isolation | `firestore_client.py` |
 | AI impersonates attorney | S.E.U. wrapper explicitly identifies as AI assistance | `empathy_templates.py` |
 | Unauthorized transcript export | Kovel attestation required for export; GDPR 30-day TTL | `gdpr.py` |
@@ -220,7 +220,7 @@ Brief Available (Privileged Export)
 |-----------|------|--------|-------|
 | Kovel Attestation | `api/kovel_attestation.py` | ✅ LIVE | 7,684 B |
 | Dead-Man's Switch | `api/silent_detector.py` | ✅ LIVE | 2,121 B |
-| Judge 6 Gate | `api/Cor.Claude_Code_6.py` | ✅ LIVE | 6,828 B |
+| Judge 6 Gate | `api/judge6.py` | ✅ LIVE | 6,828 B |
 | Empathy Templates | `api/empathy_templates.py` | ✅ LIVE | 9,033 B |
 | S.E.U. Wrapper | `api/empathy_templates.py:wrap_seu_prompt()` | ✅ LIVE | — |
 | Oracle Studio | `api/oracle_studio.py` | ✅ LIVE | 14,226 B |

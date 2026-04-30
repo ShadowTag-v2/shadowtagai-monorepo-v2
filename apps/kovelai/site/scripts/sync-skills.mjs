@@ -20,11 +20,13 @@ let raw;
 try {
   raw = readFileSync(SOURCE, 'utf8').replace(/\r\n/g, '\n');
 } catch {
+  console.error(`Error: Source skill not found at .claude/skills/clone-website/SKILL.md`);
   process.exit(1);
 }
 
 const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
 if (!match) {
+  console.error('Error: Could not parse SKILL.md frontmatter');
   process.exit(1);
 }
 
@@ -94,7 +96,7 @@ write(
 // 9. Amazon Q — JSON agent definition
 write(
   '.amazonq/cli-agents/clone-website.json',
-  `${JSON.stringify(
+  JSON.stringify(
     {
       name: 'clone-website',
       description: shortDesc,
@@ -103,7 +105,7 @@ write(
     },
     null,
     2,
-  )}\n`,
+  ) + '\n',
 );
 
 console.log('\nDone! 9 platform command files generated from source skill.');

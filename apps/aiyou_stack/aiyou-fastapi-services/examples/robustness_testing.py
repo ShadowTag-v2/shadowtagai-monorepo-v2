@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Robustness Testing Example
 
 Demonstrates comprehensive robustness testing against various attacks.

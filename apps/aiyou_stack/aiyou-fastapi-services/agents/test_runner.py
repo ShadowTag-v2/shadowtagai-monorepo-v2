@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """TestRunner - Automated test execution agent.
 Runs pytest with coverage and benchmarks.
 """

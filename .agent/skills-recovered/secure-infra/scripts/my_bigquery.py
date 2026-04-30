@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import sys
 from google.cloud import bigquery
 from google.api_core.exceptions import GoogleAPIError

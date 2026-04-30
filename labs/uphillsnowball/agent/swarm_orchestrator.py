@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # labs/uphillsnowball/agent/swarm_orchestrator.py
 """UphillSnowball: Sovereign Agent Swarm Orchestrator.
 

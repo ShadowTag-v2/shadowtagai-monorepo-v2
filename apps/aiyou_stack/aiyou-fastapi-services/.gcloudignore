@@ -1,10 +1,14 @@
+<<<<<<< HEAD
 # Google Cloud Build ignore file
 # Similar to .gitignore but for Cloud Build
 
 # Git
 ||||||| merged common ancestors
 # Exclude large files and directories not needed for build
+=======
+>>>>>>> upstream/claude/gptram-integration-01
 .git/
+<<<<<<< HEAD
 .gitignore
 
 # Python
@@ -34,8 +38,15 @@ __pycache__/
 *.pyo
 .env
 .venv/
+=======
+.gitignore
+.dockerignore
+.gcloudignore
+node_modules/
+>>>>>>> upstream/claude/gptram-integration-01
 venv/
 env/
+<<<<<<< HEAD
 ENV/
 
 # Testing
@@ -93,3 +104,26 @@ services/
 infrastructure/
 nightly_intel_pipeline/
 deployment/
+=======
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+*.log
+*.zip
+*.tar.gz
+build/
+dist/
+downloads/
+external_repos/
+htmlcov/
+coverage.xml
+tmp/
+vertex-ai-samples/
+experiments/
+transcripts/
+apps/
+terraform/
+aiyou-fastapi-services/
+>>>>>>> upstream/claude/gptram-integration-01

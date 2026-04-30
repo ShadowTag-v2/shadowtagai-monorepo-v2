@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Vertical Revenue Models
 6 productized AI agent solutions with pricing & targets
 """

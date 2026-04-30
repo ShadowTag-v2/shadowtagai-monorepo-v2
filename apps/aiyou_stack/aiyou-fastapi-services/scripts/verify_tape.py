@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import os
 
 from src.antigravity.ironwood_mcp import TAPE_FILE, log_event, read_tape

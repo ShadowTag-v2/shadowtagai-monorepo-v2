@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Kosmos Dev: IQ-160 Agent Swarm for Product Development.
 
 Deploys hundreds of IQ-160 agents to develop ALL products across your GitHub

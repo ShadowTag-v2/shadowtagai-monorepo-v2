@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 class MemoryBank:
     def __init__(self):
         self.learned_rules = [

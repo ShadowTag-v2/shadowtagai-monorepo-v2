@@ -217,11 +217,6 @@ Before producing nag prompts for complex tasks, route through `sequential-thinki
 ## Prompt Repetition — Zero-Cost Accuracy Boost
 **Full protocol:** `skills/prompt-repetition-boost/SKILL.md` (106 lines). arXiv:2512.14982. Repeat prompts for non-reasoning models (flash/lite/mini). Do NOT apply to thinking/reasoning models.
 </prompt_repetition_doctrine>
-
-<mcp_deferred_loading_doctrine>
-## MCP Deferred Loading
-**Full protocol:** `skills/mcp-deferred-loading/SKILL.md`. Strategies and architectural patterns for deferring the initialization of Model Context Protocol (MCP) servers to improve boot times and reduce idle resource consumption. Heavyweight servers should only be instantiated when their specific domain tools are invoked.
-</mcp_deferred_loading_doctrine>
 <secrets_manager_doctrine>
 ## Secrets Manager Doctrine
 
@@ -330,7 +325,7 @@ Before producing nag prompts for complex tasks, route through `sequential-thinki
 |--------|--------|----------|---------|
 | Dream Consolidation | `scripts/dream_consolidation.py` | Nightly | KI maintenance: orient → gather → consolidate → prune |
 | Loop Steward | `scripts/loop_steward.py` | 5-min cycles | Autonomous task continuation with idle scaling |
-| COR.COR.KAIROS | `scripts/kairos_daemon.py` | Background | Background autonomous agent mode |
+| KAIROS | `scripts/kairos_daemon.py` | Background | Background autonomous agent mode |
 | pnkln-evolve | `scripts/pnkln_evolve.py` | Background | Recursive self-improvement loop |
 | Omni-Autolint | `scripts/gca_autolint_daemon.py` | Daily 3-5AM | Secure lint+push via GitHub App tokens, beads audit trail |
 </daemon_fleet_registry>
@@ -380,9 +375,9 @@ Native `generate_image` tool is BANNED across all agents. All visual assets MUST
 </tacsop7_visual_provenance>
 
 <motor_cortex_reflexes>
-## Motor Cortex — Dynamic Skill Hunting Reflexes (TACSOP 4 Cor.Cor.Kairos Delta)
+## Motor Cortex — Dynamic Skill Hunting Reflexes (TACSOP 4 Kairos Delta)
 
-**Activated:** 2026-04-24 | **Source:** Cor.Cor.Kairos Delta directive
+**Activated:** 2026-04-24 | **Source:** Kairos Delta directive
 
 Two standalone tactical reflexes wired into the Motor Cortex for autonomous skill acquisition:
 
@@ -416,28 +411,11 @@ Before starting any complex implementation task, the agent MUST:
 <session_memory_corpus>
 ## Consolidated Session Memory
 **Status:** Incorporated into KI system and AGENTS.md Core Technical Truths (2026-04-24). Key facts:
-- uuid7 `try/except ImportError` REQUIRED. Container: `counselconduit-00045-kjp`.
+- uuid7 `try/except ImportError` REQUIRED. Container: `counselconduit-00037-7mf`.
 - .NET 11.0.100-preview INSTALLED. SK 1.74.0. OnExternalEvent is correct API.
 - Python 3.14.3 CPython. 126 packages. MLX 0.31.1.
 - Skills fleet: 248 active (55 WS + 210 global − 17 overlap). 20 archived. New: `deep-think-consultation` (2026-04-26).
 - Ruler (`@intellectronica/ruler`) recommended for agent config unification.
 - Memory Kernel patterns: selective adoption only, NOT wholesale migration.
 </session_memory_corpus>
-<orthogonal_edits_doctrine>
-## Orthogonal Edits — Context Preservation Rule
-**ABSOLUTE RULE:** You MUST make orthogonal edits (strictly minimal file changes) to protect the context budget and prevent cascading hallucinated dependencies. Never apply stylistic or unrelated formatting changes during a functional edit. This prevents attention dilution.
-</orthogonal_edits_doctrine>
-
-<context_engineering_doctrine>
-## Context Engineering — The 4-Layer Hierarchy
-**Reference:** Claude Code Architecture (V22)
-**Rule:** Context engineering is more important than prompt engineering. The agent MUST evaluate rules at every message interaction.
-**Hierarchy:**
-1. Global (`/etc/claude-code/CLAUDE.md` or equivalent) — Coding standards.
-2. User (`~/.claude/CLAUDE.md` or equivalent) — Personal shortcuts and identity.
-3. Project (`./CLAUDE.md` or `GEMINI.md`) — Architecture decisions, test patterns, "absolute forbidden" rules.
-4. Modular (`.claude/rules/*.md`) — Component-specific rules.
-5. Private (`CLAUDE.local.md`) — Gitignored secrets/local contexts.
-</context_engineering_doctrine>
-
 </system_directive>

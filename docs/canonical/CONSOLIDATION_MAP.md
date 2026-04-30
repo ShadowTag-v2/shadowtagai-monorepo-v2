@@ -41,20 +41,20 @@
 
 ---
 
-## 2. Judge 6 → `COR.CLAUDE_CODE_6_CANONICAL.md`
+## 2. Judge 6 → `JUDGE6_CANONICAL.md`
 
 **Supersedes 8 docs**
 
 | File                                | Location         | Status        |
 | ----------------------------------- | ---------------- | ------------- |
-| COR.CLAUDE_CODE_6_CANONICAL.md                 | docs/canonical/  | **CANONICAL** |
-| Cor.Claude_Code_6_biz_plan.md                  | artifacts/brain/ | SUPERSEDED    |
-| COR_22_COR.CLAUDE_CODE_6_REVENUE.md            | artifacts/brain/ | SUPERSEDED    |
+| JUDGE6_CANONICAL.md                 | docs/canonical/  | **CANONICAL** |
+| judge6_biz_plan.md                  | artifacts/brain/ | SUPERSEDED    |
+| COR_22_JUDGE6_REVENUE.md            | artifacts/brain/ | SUPERSEDED    |
 | JUDGE_6_PREMIUM_RESTRUCTURE.md      | artifacts/brain/ | SUPERSEDED    |
-| COR.CLAUDE_CODE_6_FINANCIAL_PROTOCOL.md        | artifacts/brain/ | SUPERSEDED    |
-| COR.CLAUDE_CODE_6_PREMIUM_STRATEGY.md          | artifacts/brain/ | SUPERSEDED    |
+| JUDGE6_FINANCIAL_PROTOCOL.md        | artifacts/brain/ | SUPERSEDED    |
+| JUDGE6_PREMIUM_STRATEGY.md          | artifacts/brain/ | SUPERSEDED    |
 | JUDGE_6_TECH_BRIEF.md               | artifacts/brain/ | SUPERSEDED    |
-| cor_55_Cor.Claude_Code_6_fused_architecture.md | artifacts/brain/ | SUPERSEDED    |
+| cor_55_judge6_fused_architecture.md | artifacts/brain/ | SUPERSEDED    |
 | judge_6_technical_specification.md  | artifacts/brain/ | SUPERSEDED    |
 
 ---

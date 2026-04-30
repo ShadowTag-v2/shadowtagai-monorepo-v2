@@ -1,8 +1,6 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Cor.NotebookLM 6-Step Epistemology Engine.
 
-The Epistemological Crucible. Applied during COR.KAIROS Auto-Dream and Vanguard Scout.
+The Epistemological Crucible. Applied during KAIROS Auto-Dream and Vanguard Scout.
 If you can't state a book's central argument in two sentences, you haven't finished it.
 
 6-Step Protocol:

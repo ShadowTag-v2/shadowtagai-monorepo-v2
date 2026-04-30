@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ScholarEval — Epistemological Forensics Engine (The S&C Cure).
 
 Zero-Trust Citation Verification. Policies fail. Code doesn't.

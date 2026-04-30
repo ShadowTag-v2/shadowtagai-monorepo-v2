@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Context Restoration & State Management
 Thread rollup for seamless continuation across sessions
 """

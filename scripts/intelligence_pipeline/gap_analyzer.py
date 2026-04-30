@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Step 4 — Gap Analyzer.
 
 Three gap types from the match tables:

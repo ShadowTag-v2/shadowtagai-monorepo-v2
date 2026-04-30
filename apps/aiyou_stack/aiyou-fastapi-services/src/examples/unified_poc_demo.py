@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Unified Pinkln Proof-of-Concept Demo
 
 Demonstrates the complete integrated system:

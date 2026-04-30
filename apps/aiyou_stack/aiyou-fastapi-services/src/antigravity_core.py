@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # FILE: src/antigravity_core.py
 # CLASSIFICATION: PROPRIETARY
 # ARCHITECTURE: GKC-NATIVE (Cloud Run + Firestore)

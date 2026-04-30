@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """TAG: Task-Action-Goal
 
 Perfect for performance-oriented objectives.

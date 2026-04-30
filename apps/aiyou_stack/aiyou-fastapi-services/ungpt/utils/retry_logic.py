@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Retry Logic with Exponential Backoff
 
 Used across all UnGPT layers for resilient API calls.

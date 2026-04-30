@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """California SB 243 Compliance Module
 
 Implements California Senate Bill 243 - AI harm detection and minor protection.

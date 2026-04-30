@@ -57,7 +57,7 @@ kernel = await mcp.atp_519_scan(large_context)
 
 # Binary decision (<35ms)
 
-decision = await mcp.Claude_Code_6_binary(kernel)
+decision = await mcp.judge_six_binary(kernel)
 
 ```
 

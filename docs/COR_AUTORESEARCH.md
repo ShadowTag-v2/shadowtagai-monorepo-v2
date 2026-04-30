@@ -107,8 +107,8 @@ labs/uphillsnowball/engine/cor_autoresearch.py       → AutoresearchEngine
 labs/uphillsnowball/engine/kosmos_bridge.py           → KosmosBridge
 labs/uphillsnowball/engine/bioagents_worker.py        → BioAgentsWorker
 labs/uphillsnowball/engine/n_autoresearch_client.py   → NAutoresearchClient
-labs/uphillsnowball/governance/Claude_Code_6_human.py     → JudgeSixHuman
-labs/uphillsnowball/governance/Claude_Code_6_agent.py     → JudgeSixAgent
+labs/uphillsnowball/governance/judge_six_human.py     → JudgeSixHuman
+labs/uphillsnowball/governance/judge_six_agent.py     → JudgeSixAgent
 labs/uphillsnowball/governance/runtime_watchdog.py    → RuntimeWatchdog
 labs/uphillsnowball/governance/rkill.py               → RKillHandler
 ```

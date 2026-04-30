@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Revenue Tracker: Turn AI operations into $ insights.
 
 Every interaction is a potential revenue opportunity.

@@ -5,7 +5,7 @@
 
 ## 1. Judge#6 Governance Engine
 
-- **Service URL:** `https://Cor.Claude_Code_6-governance-450789569813.us-central1.run.app`
+- **Service URL:** `https://judge6-governance-450789569813.us-central1.run.app`
 
 - **Region:** `us-central1`
 

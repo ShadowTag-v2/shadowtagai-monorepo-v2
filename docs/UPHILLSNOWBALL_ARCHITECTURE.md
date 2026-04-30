@@ -205,8 +205,8 @@ labs/uphillsnowball/
 │   └── n_autoresearch_client.py  # n-autoresearch execution client
 ├── governance/
 │   ├── __init__.py
-│   ├── Claude_Code_6_human.py        # JudgeSix-Human gate
-│   ├── Claude_Code_6_agent.py        # JudgeSix-Agent gate
+│   ├── judge_six_human.py        # JudgeSix-Human gate
+│   ├── judge_six_agent.py        # JudgeSix-Agent gate
 │   ├── runtime_watchdog.py       # Runtime monitoring (ENDEX/RKILL)
 │   └── rkill.py                  # RKILL emergency stop handler
 └── ...

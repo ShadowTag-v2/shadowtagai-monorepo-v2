@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """KovelAI ADK Agent — AG-UI SSE Endpoint with Oracle Studio Integration
 
 This is the canonical backend agent for KovelAI, exposing the CounselConduit

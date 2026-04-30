@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FinJudge Free Tier Tests
 Test API key management, signup, and rate limiting
 """

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Configuration management for UnGPT system
 Loads from environment variables with sensible defaults
 """

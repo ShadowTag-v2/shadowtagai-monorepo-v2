@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Discord webhook alert utility for CounselConduit.
 
 Sends structured alerts to Discord channels for operational events:

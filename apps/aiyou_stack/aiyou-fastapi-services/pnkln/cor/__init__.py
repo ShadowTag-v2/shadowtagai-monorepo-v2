@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Cor module - Orchestration and routing."""
 
 from pnkln.cor.routing import CorOrchestrator, IntentClassifier  # noqa: F401

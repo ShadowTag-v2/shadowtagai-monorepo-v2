@@ -3,11 +3,11 @@
 ## Active Daemons
 | Daemon | Status | Purpose |
 |---|---|---|
-| `COR.COR.KAIROS_DAEMON` | PM2 `AG-COR.COR.KAIROS-DAEMON` | Offline AST-Watchdog bypassing NPM |
+| `KAIROS_DAEMON` | PM2 `AG-KAIROS-DAEMON` | Offline AST-Watchdog bypassing NPM |
 | `VDI_DAEMON` | `Xvfb :99`, `ffmpeg`, `novnc` port 8081 | Headless display and recording |
 | `OMNI_WEBHOOKS` | Listening | `@antigravity` Slack/GitHub webhooks |
 | `SINGULARITY_DAEMON` | `ws://127.0.0.1:9090` | Cost-Arbitrage Hypervisor & BCI Intent Predictor |
-| `auto-dream` | 24h cycle | COR.COR.KAIROS consolidation (Orient→Gather→Consolidate→Prune) |
+| `auto-dream` | 24h cycle | KAIROS consolidation (Orient→Gather→Consolidate→Prune) |
 | `gitsync` | 5-min interval | `fetch`/`status` background sync |
 | `aegaeon` | Idle mode | Cache warmer |
 | `push` | Active | Git push daemon |

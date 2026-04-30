@@ -97,7 +97,7 @@ This document provides a methodology for analyzing and adapting system component
 #### 1.2 File References
 
 ```diff
-- Claude_Code_6.py (single Python script)
+- judge_six.py (single Python script)
 + Pipeline Documentation and Architecture Specs
   (diagrams, flowcharts, config files)
 ```

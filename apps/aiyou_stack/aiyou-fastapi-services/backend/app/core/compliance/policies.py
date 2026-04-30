@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Compliance Policies - GDPR and CCPA compliance rules and policies"""
 
 from dataclasses import dataclass

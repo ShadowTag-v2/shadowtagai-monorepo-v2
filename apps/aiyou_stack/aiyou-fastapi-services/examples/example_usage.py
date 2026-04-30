@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Example usage of the Transformer Circuits library.
 
 This script demonstrates the core functionality:

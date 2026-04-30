@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ChatGPT Conversation Extractor
 Extracts conversations from ChatGPT data export
 """

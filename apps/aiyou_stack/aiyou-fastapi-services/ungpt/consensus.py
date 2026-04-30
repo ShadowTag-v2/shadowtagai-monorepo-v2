@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Multi-LLM Consensus System with Cross-Validation
 Layer 1: Claude initial reasoning
 Layer 2: Parallel analysis (Grok, Gemini, GPT-5)

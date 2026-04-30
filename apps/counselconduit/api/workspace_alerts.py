@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/workspace_alerts.py
 """Google Workspace alerts for CounselConduit operations.
 

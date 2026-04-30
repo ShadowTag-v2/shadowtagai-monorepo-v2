@@ -44,7 +44,7 @@ ShadowTag-v2-fastapi-services/
 │   │   └── gemini_function_calling.py
 │   ├── kernels/
 │   │   ├── atp_scan.py            # Kernel 1
-│   │   ├── Claude_Code_6.py           # Kernel 2
+│   │   ├── judge_six.py           # Kernel 2
 │   │   └── audit_compress.py      # Kernel 3
 │   ├── agents/
 │   │   ├── debate_agent.py        # Multi-agent debate

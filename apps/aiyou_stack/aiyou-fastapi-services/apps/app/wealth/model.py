@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Wealth-Planning Model Component.
 
 Structured approach to wealth optimization:

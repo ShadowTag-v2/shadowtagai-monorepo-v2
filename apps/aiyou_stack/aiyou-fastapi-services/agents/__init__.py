@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """TDD Agents - Hybrid architecture with embedded validation."""
 
 from .tdd_red_phase import (

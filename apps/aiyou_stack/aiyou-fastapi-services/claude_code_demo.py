@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """pinkln Agent Architecture System - Claude Code Demo
 
 This script demonstrates the full capabilities of the pinkln Agent Architecture

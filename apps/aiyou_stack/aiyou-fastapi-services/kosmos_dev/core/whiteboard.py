@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Whiteboard: Shared world model that all agents can see and write to.
 
 This is the 'single source of truth' for the Shadowtag swarm.

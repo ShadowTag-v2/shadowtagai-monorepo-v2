@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from fastapi import APIRouter, File, HTTPException, UploadFile, status
 
 # Local app imports based on conventional structure

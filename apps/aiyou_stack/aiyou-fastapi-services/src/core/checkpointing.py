@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Core checkpointing manager."""
 
 from src.models.checkpoint import CheckpointCreate, CheckpointType

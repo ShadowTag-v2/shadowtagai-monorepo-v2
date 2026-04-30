@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """DTE (Dynamic Tree Exploration) Engine for Prompt Self-Evolution
 
 Implements tree-based exploration of solution space with automatic prompt

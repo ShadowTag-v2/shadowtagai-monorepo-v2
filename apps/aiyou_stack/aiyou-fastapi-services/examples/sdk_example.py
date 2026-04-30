@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FinJudge Python SDK - Usage Examples"""
 
 from finjudge.client import FinJudgeClient, judge

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # Namespace package extension — merges root pnkln with apps/aiyou_stack pnkln
 # This allows pnkln.core (root) and pnkln.governance (apps) to coexist
 from pkgutil import extend_path

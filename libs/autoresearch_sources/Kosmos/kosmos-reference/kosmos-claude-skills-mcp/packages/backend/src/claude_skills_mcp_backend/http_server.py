@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """HTTP server with MCP Streamable HTTP transport using FastMCP."""
 
 import logging

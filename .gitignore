@@ -18,8 +18,6 @@ storage_state.json
 .venv*/
 __pycache__/
 **/__pycache__/
-.mypy_cache/
-**/.mypy_cache/
 node_modules/
 **/node_modules/
 **/obj/
@@ -32,12 +30,15 @@ build/
 
 # --- ROOT-LEVEL EXTERNAL REPOS (CRITICAL — Invariant #55) ---
 external_repos/
-!external_repos/README.md
-!external_repos/upstream_manifest.yaml
 .agent/incoming_repos/
 
-# --- Archive (blanket — keep on disk, never track) ---
-archive/
+# --- Archive Subdirectories (keep on disk, never track) ---
+archive/recovered_assets/
+archive/root_debris/
+archive/labs_graveyard/
+archive/external_payloads/
+archive/claude-code-src-leak/
+archive/external_repos_root/
 
 # --- Nested Git Repos ---
 **/.git/
@@ -75,23 +76,9 @@ archive/
 **/*.h5
 **/*.hdf5
 
-# ═══════════════════════════════════════════════════════════
-# TRUTH SURFACE EXCEPTIONS — Files that MUST be tracked
-# despite matching blanket patterns above.
-# Per Invariant #55: Canonical evidence trails are not data.
-# ═══════════════════════════════════════════════════════════
-!.beads/issues.jsonl
-!.beads/kairos_heartbeat.json
-!knowledge/raw_manifest.yaml
-
 # --- Data & Caches ---
 .lancedb/
 data/lancedb/
-**/data/lancedb/
-**/*.lance
-**/*.manifest
-**/*.txn
-**/*.bak
 data/intelligence_pipeline/
 data/aegaeon/
 data/sovereign_mlx/
@@ -111,48 +98,6 @@ vault/embed/
 
 # --- Heavy Archive Payloads ---
 control/legacy_workspaces/
-
-# ═══════════════════════════════════════════════════════════
-# INVARIANT #103: Repository Mass Reduction Gate
-# Vendored reference repos, generated analysis, SDK caches
-# ═══════════════════════════════════════════════════════════
-
-# --- Vendored Reference Repos in tools/ (cloned upstream repos) ---
-tools/GitNexus/
-tools/mcp-toolbox/
-tools/material-web/
-tools/java-firestore/
-tools/google-cloud-php-firestore/
-tools/nodejs-firestore/
-tools/firebase-snippets-web/
-tools/firebase-quickstart-js/
-tools/dio/
-tools/gcloud-mcp/
-tools/google-workspace-cli/
-tools/google-cloud-dart/
-tools/mcp-toolbox-sdk-python/
-tools/langchain-google-firestore-python/
-tools/firestore-bundle-builder/
-tools/firebase-demo/
-
-# --- Generated Analysis (regenerable) ---
-.codesight/
-.whiteboard/
-
-# --- SDK Caches (regenerable) ---
-.stitch-sdk/
-
-# --- Vendored Third-Party Forks ---
-third_party/
-
-# --- External SDK Snapshots ---
-external_sdks/
-
-# --- Data Artifacts (blanket — all subdirs ephemeral) ---
-data/
-
-# --- Memory / Agent Ephemeral ---
-memory/
 
 # --- IDE & OS ---
 .DS_Store
@@ -479,16 +424,4 @@ pickle-rick-extension
 STEP_BY_STEP_GUIDE.md
 install_ext.py
 pickle_package.json
-# Stale npx artifact directory
---help/
-external_repos/numpy-100/
-.tmp.driveupload/
-external_repos/upstream/
-scratch/
-
-# AGNT_OS Paths
-_ai_context/
-.agents/vcr_tapes/
-.agents/logs/
-.agents/cor_kairos/.scheduler.lock
-*.sock
+.beads/firebase-sa.json

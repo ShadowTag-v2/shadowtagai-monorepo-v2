@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """California AI Regulations Compliance Models
 ============================================
 Pydantic models for the NS-JR-Cor (Neural System / Judgment Rule / Core)

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Configuration management for agent-based governance system.
 
 Implements environment-aware settings with validation and defaults
@@ -263,7 +261,7 @@ class GovernanceSettings(BaseSettings):
         default=1.0,
         description="Sample rate for shadow mode (0.0-1.0)",
     )
-    Cor_Claude_Code_6_endpoint: str | None = Field(
+    judge6_endpoint: str | None = Field(
         default=None,
         description="Legacy Judge 6 endpoint for comparison",
     )

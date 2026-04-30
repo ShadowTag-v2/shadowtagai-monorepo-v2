@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Ingestion Layer - Core Intelligence Collection Pipeline
 
 Nightly CronJob that ingests data from multiple sources for PNKLN Core Stack™

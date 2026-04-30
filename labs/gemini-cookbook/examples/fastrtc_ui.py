@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # Copyright 2026 Google LLC
 #
 # Written by:

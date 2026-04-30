@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Batch Governance Assessment - MCP Efficiency Patterns
 
 Implements efficient batch processing for 100s-1000s of governance assessments:

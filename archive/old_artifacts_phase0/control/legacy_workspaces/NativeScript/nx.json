@@ -1,0 +1,151 @@
+{
+	"workspaceLayout": {
+		"appsDir": "apps",
+		"libsDir": "packages"
+	},
+	"tasksRunnerOptions": {
+		"default": {
+			"options": {
+				"canTrackAnalytics": false,
+				"showUsageWarnings": true
+			}
+		}
+	},
+	"generators": {
+		"@nrwl/cypress": {
+			"cypress-project": {
+				"linter": "eslint"
+			}
+		},
+		"@nrwl/react": {
+			"application": {
+				"linter": "eslint"
+			},
+			"library": {
+				"linter": "eslint"
+			}
+		},
+		"@nrwl/next": {
+			"application": {
+				"linter": "eslint"
+			}
+		},
+		"@nrwl/web": {
+			"application": {
+				"linter": "eslint"
+			}
+		},
+		"@nrwl/nx-plugin": {
+			"plugin": {
+				"linter": "eslint"
+			}
+		},
+		"@nrwl/nest": {
+			"application": {
+				"linter": "eslint"
+			}
+		},
+		"@nrwl/express": {
+			"application": {
+				"linter": "eslint"
+			},
+			"library": {
+				"linter": "eslint"
+			}
+		},
+		"@nx/workspace": {
+			"library": {
+				"linter": "eslint"
+			}
+		},
+		"@nx/node": {
+			"application": {
+				"linter": "eslint"
+			},
+			"library": {
+				"linter": "eslint"
+			}
+		}
+	},
+	"$schema": "./node_modules/nx/schemas/nx-schema.json",
+	"namedInputs": {
+		"default": ["{projectRoot}/**/*", "sharedGlobals"],
+		"sharedGlobals": ["{workspaceRoot}/workspace.json", "{workspaceRoot}/tsconfig.json", "{workspaceRoot}/nx.json"],
+		"production": ["default", "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)", "!{projectRoot}/tsconfig.spec.json", "!{projectRoot}/jest.config.[jt]s", "!{projectRoot}/src/test-setup.[jt]s"]
+	},
+	"targetDefaults": {
+		"build": {
+			"inputs": ["production", "^production"],
+			"cache": true
+		},
+		"test": {
+			"inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+			"cache": true
+		},
+		"lint": {
+			"cache": true
+		},
+		"ios": {
+			"cache": true
+		},
+		"android": {
+			"cache": true
+		},
+		"e2e": {
+			"cache": true
+		},
+		"@nx/jest:jest": {
+			"inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+			"cache": true,
+			"options": {
+				"passWithNoTests": true
+			},
+			"configurations": {
+				"ci": {
+					"ci": true,
+					"codeCoverage": true
+				}
+			}
+		},
+		"@nx/vite:test": {
+			"cache": true,
+			"inputs": ["default", "^production"]
+		},
+		"nx-release-publish": {
+			"dependsOn": ["build"],
+			"options": {
+				"packageRoot": "{workspaceRoot}/dist/packages/{projectName}"
+			}
+		}
+	},
+	"useDaemonProcess": false,
+	"parallel": 1,
+	"useInferencePlugins": false,
+	"defaultBase": "master",
+	"release": {
+		"projects": ["packages/*", "!packages/ui-mobile-base", "!packages/types-minimal", "!packages/winter-tc", "!packages/types", "!packages/types-ios", "!packages/types-android"],
+		"projectsRelationship": "independent",
+		"changelog": {
+			"workspaceChangelog": false,
+			"projectChangelogs": {
+				"renderOptions": {
+					"authors": true,
+					"commitReferences": true,
+					"versionTitleDate": true
+				}
+			},
+			"git": {
+				"commit": false,
+				"tag": false,
+				"push": false
+			}
+		},
+		"releaseTag": {
+			"pattern": "{version}-{projectName}"
+		}
+	},
+	"nxCloudId": "680a89d49c76d63ce41eb397",
+	"tui": {
+		"enabled": false
+	}
+}

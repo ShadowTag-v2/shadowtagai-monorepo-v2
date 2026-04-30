@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from src.pnkln.steel.backend import np
 from src.pnkln.steel.tinytorch_activations import GELU
 from src.pnkln.steel.tinytorch_attention import MultiHeadAttention

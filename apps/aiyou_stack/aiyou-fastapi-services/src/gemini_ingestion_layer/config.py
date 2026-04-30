@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Configuration for Gemini Ingestion Layer
 
 Aligned with SHADOWTAGAI Core Stack 2025 technology refresh:

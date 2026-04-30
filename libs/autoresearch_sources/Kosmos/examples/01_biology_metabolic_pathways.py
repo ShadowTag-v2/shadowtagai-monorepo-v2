@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Example 1: Biology - Metabolic Pathways Analysis
 

@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 'use client';
 
 import { type FormEvent, useCallback, useEffect, useRef, useState } from 'react';

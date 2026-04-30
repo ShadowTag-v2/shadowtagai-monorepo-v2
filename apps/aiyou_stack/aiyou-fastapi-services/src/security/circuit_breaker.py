@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Circuit Breaker pattern for agent governance with graceful degradation.
 
 Implements resilient fallback when agent system experiences failures,

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/sandbox/runner.py
 """Phase 3 Sandbox Runner — Isolated container execution for tool calls.
 

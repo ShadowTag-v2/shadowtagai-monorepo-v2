@@ -298,7 +298,7 @@ This document unifies **four strategic branches** into one coherent revenue-gene
 │                                                            │
 │  [2] GEMINI FUNCTION CALLING (1 API, local execution)     │
 │      ├─ atp_519_scan() → Python local                     │
-│      ├─ Claude_Code_6_classify() → PyTorch local              │
+│      ├─ judge_six_classify() → PyTorch local              │
 │      ├─ multi_agent_debate() → Python local               │
 │      ├─ dte_evolve() → Self-improvement                   │
 │      ├─ wealth_analyze() → Business planning              │

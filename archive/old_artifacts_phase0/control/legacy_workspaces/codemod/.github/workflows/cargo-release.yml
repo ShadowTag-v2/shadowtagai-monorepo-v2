@@ -1,0 +1,350 @@
+name: Cargo Release
+
+on:
+  push:
+    tags:
+      - "codemod-cli@*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (e.g., 0.1.0)"
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  build:
+    name: Build Release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            binary_name: codemod-linux-x86_64-gnu
+          - os: ubuntu-22.04-arm
+            target: aarch64-unknown-linux-gnu
+            binary_name: codemod-linux-aarch64-gnu
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            binary_name: codemod-darwin-aarch64
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            binary_name: codemod-darwin-x86_64
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            binary_name: codemod-windows-x86_64.exe
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.89.0
+          components: rustfmt, clippy
+          targets: ${{ matrix.target }}
+
+      - name: Get Binary Path
+        id: binary_path
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            echo "path=target/${{ matrix.target }}/release/codemod.exe" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "path=target/${{ matrix.target }}/release/codemod" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install dependencies (Linux only)
+        if: matrix.os == 'ubuntu-22.04' || (matrix.os == 'self-hosted' && matrix.target == 'aarch64-unknown-linux-gnu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config build-essential libssl-dev
+
+      - name: Install GNU coreutils (macOS only)
+        if: matrix.os == 'macos-latest'
+        run: brew install coreutils
+
+      - name: Import Code Signing Certificate (macOS only)
+        if: matrix.os == 'macos-latest'
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Install report UI dependencies
+        run: pnpm install --frozen-lockfile --filter codemod-report-ui...
+
+      - name: Build report UI
+        run: pnpm --filter codemod-report-ui build
+
+      - name: Verify report UI build
+        run: test -f crates/cli/report-ui/dist/index.html
+
+      - name: Build
+        run: |
+          cargo build --release -p codemod --target ${{ matrix.target }}
+        env:
+          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+
+      - name: Chmod binary
+        run: |
+          chmod 755 ${{ steps.binary_path.outputs.path }}
+
+      - name: Sign Binary (macOS only)
+        if: matrix.os == 'macos-latest'
+        env:
+          APPLE_IDENTITY: ${{ secrets.APPLE_IDENTITY }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          # Set timeout for codesign (5 minutes)
+          timeout 300 codesign \
+            --force \
+            --timestamp \
+            --sign "$APPLE_IDENTITY" \
+            --team-id "$APPLE_TEAM_ID" \
+            --options runtime \
+            --verbose \
+            ${{ steps.binary_path.outputs.path }}
+
+      - name: Verify Signing (macOS only)
+        if: matrix.os == 'macos-latest'
+        run: |
+          codesign --verify --deep --verbose=4 ${{ steps.binary_path.outputs.path }}
+
+      - name: Create ZIP for Notarization (macOS only)
+        if: matrix.os == 'macos-latest'
+        run: zip -r binary.zip ${{ steps.binary_path.outputs.path }}
+
+      - name: Submit for Notarization (macOS only)
+        if: matrix.os == 'macos-latest'
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          # Set timeout for notarization (15 minutes)
+          timeout 900 xcrun notarytool submit binary.zip \
+            --apple-id "$APPLE_ID" \
+            --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+            --team-id "$APPLE_TEAM_ID" \
+            --wait \
+            --verbose
+
+      # - name: Staple Notarization (macOS only)
+      #   if: matrix.os == 'macos-latest'
+      #   run: xcrun stapler staple -v ${{ steps.binary_path.outputs.path }}
+
+      - name: Rename binary (Non-Windows)
+        if: matrix.os != 'windows-latest'
+        run: |
+          cd target/${{ matrix.target }}/release
+          mv codemod ${{ matrix.binary_name }}
+
+      - name: Rename binary (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd target/${{ matrix.target }}/release
+          mv codemod.exe ${{ matrix.binary_name }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/${{ matrix.binary_name }}
+
+  changelog:
+    name: Generate Changelog
+    runs-on: ubuntu-22.04
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    outputs:
+      changelog: ${{ steps.git-cliff.outputs.content }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Back up CHANGELOG.md
+        run: cp CHANGELOG.md CHANGELOG.md.bak
+
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: --current
+        env:
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: Restore CHANGELOG.md
+        run: |
+          # Remove the starting "# Changelog" section from the backup
+          sed -i '/^# Changelog$/,$!d' CHANGELOG.md.bak
+          cat CHANGELOG.md.bak >> CHANGELOG.md
+          rm CHANGELOG.md.bak
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(changelog): Update changelog for ${{ github.ref_name }}"
+          title: "Update changelog for ${{ github.ref_name }}"
+          body: |
+            This PR updates the changelog for the release `${{ github.ref_name }}`.
+
+            Generated changelog:
+
+            ${{ steps.git-cliff.outputs.content }}
+          branch: changelog-update-${{ github.ref_name }}
+          base: main
+          delete-branch: true
+
+  create_release:
+    name: Create Release
+    needs: [build, changelog]
+    runs-on: ubuntu-22.04
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: ${{ needs.changelog.outputs.changelog }}
+          tag_name: ${{ github.ref_name }}
+          files: |
+            x86_64-unknown-linux-gnu/*
+            aarch64-apple-darwin/*
+            x86_64-apple-darwin/*
+            x86_64-pc-windows-msvc/*
+            i686-pc-windows-msvc/*
+            aarch64-pc-windows-msvc/*
+            aarch64-unknown-linux-gnu/*
+          generate_release_notes: true
+
+  release_npm:
+    name: Release NPM Package
+    needs: [build]
+    environment: production
+    runs-on: ubuntu-22.04
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Extract version from tag or input
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            # Use manual input version for workflow_dispatch
+            VERSION="${{ github.event.inputs.version }}"
+            NPM_TAG="alpha"
+          else
+            # Extract version from tag (e.g., codemod-cli@0.1.0 -> 0.1.0)
+            VERSION=$(echo "${{ github.ref_name }}" | sed 's/codemod-cli@//')
+            NPM_TAG="latest"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "npm_tag=$NPM_TAG" >> "$GITHUB_OUTPUT"
+          echo "Version: $VERSION"
+          echo "NPM Tag: $NPM_TAG"
+
+      - name: Setup npm packages with binaries
+        run: |
+          # Create directories if they don't exist
+          mkdir -p crates/cli/npm/platforms/darwin-arm64
+          mkdir -p crates/cli/npm/platforms/darwin-x64
+          mkdir -p crates/cli/npm/platforms/linux-x64-gnu
+          mkdir -p crates/cli/npm/platforms/linux-arm64-gnu
+          mkdir -p crates/cli/npm/platforms/win32-x64-msvc
+
+          # Copy binaries to platform packages
+          cp artifacts/aarch64-apple-darwin/codemod-darwin-aarch64 crates/cli/npm/platforms/darwin-arm64/codemod
+          cp artifacts/x86_64-apple-darwin/codemod-darwin-x86_64 crates/cli/npm/platforms/darwin-x64/codemod
+          cp artifacts/x86_64-unknown-linux-gnu/codemod-linux-x86_64-gnu crates/cli/npm/platforms/linux-x64-gnu/codemod
+          cp artifacts/aarch64-unknown-linux-gnu/codemod-linux-aarch64-gnu crates/cli/npm/platforms/linux-arm64-gnu/codemod
+          cp artifacts/x86_64-pc-windows-msvc/codemod-windows-x86_64.exe crates/cli/npm/platforms/win32-x64-msvc/codemod.exe
+
+          # Make binaries executable
+          chmod +x crates/cli/npm/platforms/*/codemod
+
+      - name: Update package versions
+        run: |
+          # Update main package version
+          sed -i 's/"version": "0.0.0"/"version": "${{ steps.version.outputs.version }}"/' crates/cli/npm/package.json
+
+          # Update platform package versions
+          for platform in crates/cli/npm/platforms/*/package.json; do
+            sed -i 's/"version": "0.0.0"/"version": "${{ steps.version.outputs.version }}"/' "$platform"
+          done
+
+          # Update optional dependencies versions in main package
+          sed -i 's/"@codemod\.com\/cli-\([^"]*\)": "0\.0\.0"/"@codemod.com\/cli-\1": "${{ steps.version.outputs.version }}"/g' crates/cli/npm/package.json
+
+      - name: Publish platform packages
+        run: |
+          # Publish each platform package with error handling
+          for platform in crates/cli/npm/platforms/*/; do
+            platform_name=$(basename "$platform")
+            echo "Publishing $platform_name..."
+            cd "$platform"
+
+            # Show package info before publishing
+            echo "Package details:"
+            cat package.json | jq '.name, .version'
+
+            # Check if package.json exists and is valid
+            if ! jq empty package.json 2>/dev/null; then
+              echo "Error: Invalid package.json in $platform_name"
+              exit 1
+            fi
+
+            # Publish with explicit tag, provenance for OIDC auth, and error handling
+            if ! npm publish --tag "${{ steps.version.outputs.npm_tag }}" --access public --provenance; then
+              echo "Failed to publish $platform_name"
+              exit 1
+            fi
+
+            echo "Successfully published $platform_name"
+            cd - > /dev/null
+          done
+
+      - name: Publish main package
+        run: |
+          cd crates/cli/npm
+          npm publish --tag ${{ steps.version.outputs.npm_tag }} --provenance

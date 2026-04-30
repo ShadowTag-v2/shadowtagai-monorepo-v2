@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pinkln Kernels: Specialized prompt functions
 
 3-kernel decision pipeline:

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Judge Architecture Framework — v2.0.0 (Rich Hickey Refactor)"""
 
 try:

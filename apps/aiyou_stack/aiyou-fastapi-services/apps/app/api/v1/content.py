@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Content provenance API endpoints
 Implements C2PA content credentials and provenance tracking
 """

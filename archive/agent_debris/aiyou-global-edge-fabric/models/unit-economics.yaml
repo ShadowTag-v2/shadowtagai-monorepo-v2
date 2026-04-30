@@ -1,0 +1,268 @@
+# shadowtag-omega-v4 Unit Economics — Per-Customer / Per-Node Profitability
+
+infrastructure_edge_node:
+  description: "Single CoreWeave GPU pod at edge location"
+
+  costs:
+    capex:
+      hardware: 8000  # GPU server, networking, enclosure
+      installation: 2000
+      total: 10000
+
+    opex_monthly:
+      power: 200
+      bandwidth: 150
+      maintenance: 100
+      monitoring: 50
+      total: 500
+
+    opex_annual: 6000
+
+  revenue:
+    arpu_monthly: 2500  # Average revenue per node
+    arpu_annual: 30000
+
+  margins:
+    gross_margin: 0.65
+    contribution_margin: 0.70
+
+  payback:
+    months: 10
+    roi_18mo: 2.10
+
+cineverse_subscriber:
+  description: "Individual streaming subscriber"
+
+  costs:
+    cac: 25  # Customer acquisition cost (marketing)
+    content_licensing_per_hour: 0.15
+    bandwidth_per_hour: 0.08
+    platform_opex_monthly: 4.00
+
+  revenue:
+    arpu_monthly: 14.99
+
+  margins:
+    gross_margin: 0.70
+    contribution_margin: 0.55
+
+  ltv:
+    avg_lifetime_months: 24
+    churn_monthly: 0.05
+    ltv: 359.76  # 24 months * $14.99
+    ltv_cac_ratio: 14.4
+
+game_port_publisher:
+  description: "AAA game publisher integration"
+
+  costs:
+    integration_cost: 150000  # One-time SDK integration
+    annual_platform_fee: 50000
+    bandwidth_per_user: 0.50
+
+  revenue:
+    gmv_per_publisher_annual: 100000000  # $100M in-game purchases
+    take_rate: 0.12
+    annual_revenue_per_publisher: 12000000
+
+  margins:
+    gross_margin: 0.60
+    net_margin_per_publisher: 0.55
+
+  payback:
+    months: 2
+
+virtual_commerce_storefront:
+  description: "Retail storefront in VR mall"
+
+  costs:
+    onboarding: 5000
+    monthly_hosting: 2000
+    ai_support_compute: 500
+
+  revenue:
+    gmv_monthly: 1000000  # $1M GMV per storefront
+    take_rate: 0.075
+    monthly_revenue: 75000
+    ai_support_sessions: 200
+    ai_support_fee_per_session: 5
+    ai_support_revenue: 1000
+
+  total_revenue_monthly: 76000
+
+  margins:
+    gross_margin: 0.75
+    net_margin: 0.68
+
+shadowtag_enterprise_customer:
+  description: "Enterprise audit-as-a-service customer"
+
+  costs:
+    sales_cost: 15000  # CAC for enterprise sales
+    onboarding: 5000
+    annual_hosting: 2000
+    support: 3000
+
+  revenue:
+    base_subscription_annual: 50000
+    events_per_year: 10000000  # 10M events
+    per_event_fee: 0.10
+    event_revenue: 1000000
+    total_annual_revenue: 1050000
+
+  margins:
+    gross_margin: 0.85
+    net_margin: 0.80
+
+  ltv:
+    avg_lifetime_years: 5
+    ltv: 5250000
+    ltv_cac_ratio: 350
+
+pnt_trust_site:
+  description: "Aviation/maritime PNT site (enterprise)"
+
+  costs:
+    hardware_capex: 15000
+    installation: 5000
+    monthly_opex: 400
+    annual_opex: 4800
+
+  revenue:
+    annual_subscription: 12000
+    premium_sla_addon: 8000
+    total_annual_revenue: 20000
+
+  margins:
+    gross_margin: 0.70
+    contribution_margin: 0.65
+
+  payback:
+    months: 18
+
+pnt_defense_contract:
+  description: "DoD/NATO multi-year PNT contract"
+
+  costs:
+    initial_deployment: 5000000
+    annual_opex: 1000000
+
+  revenue:
+    contract_annual_value: 10000000
+    contract_duration_years: 5
+    total_contract_value: 50000000
+
+  margins:
+    gross_margin: 0.75
+    net_margin: 0.60
+
+  ltv: 50000000
+
+faang_partner:
+  description: "Meta/Apple/Amazon/Netflix/Google integration"
+
+  costs:
+    integration_development: 2000000  # One-time SDK development
+    annual_operations: 500000
+
+  revenue:
+    revenue_share_percentage: 0.20  # 20% of verification fees
+    estimated_annual_revenue: 280000000  # Per partner (avg)
+
+  margins:
+    gross_margin: 0.80
+    net_margin: 0.75
+
+  payback:
+    months: 1
+
+# Blended Portfolio Metrics (2027 target mix)
+
+blended_2027:
+  customer_mix:
+    infrastructure_nodes: 20000
+    cineverse_subs: 2500000
+    game_port_publishers: 20
+    commerce_storefronts: 500
+    shadowtag_enterprises: 500
+    pnt_sites: 5000
+    pnt_defense_contracts: 50
+    faang_partners: 3
+
+  weighted_margins:
+    gross_margin: 0.68
+    ebitda_margin: 0.38
+
+  working_capital:
+    days_sales_outstanding: 45
+    days_inventory: 0  # SaaS, no inventory
+    days_payable: 30
+    cash_conversion_cycle: 15
+
+  efficiency_metrics:
+    revenue_per_employee: 750000
+    gross_profit_per_employee: 510000
+    target_headcount_2027: 1200
+
+  growth_metrics:
+    net_revenue_retention: 115  # 115% (upsells + expansion)
+    logo_retention: 92  # 92% customer retention
+    cac_payback_months: 6
+    ltv_cac_ratio: 8.5
+
+# Rule of 40 Compliance (SaaS Health Metric)
+
+rule_of_40:
+  2025:
+    revenue_growth_pct: 600  # 600% YoY
+    ebitda_margin_pct: -50
+    rule_of_40_score: 550  # Well above 40
+
+  2027:
+    revenue_growth_pct: 180  # 180% YoY
+    ebitda_margin_pct: 38
+    rule_of_40_score: 218  # Excellent
+
+  2030:
+    revenue_growth_pct: 45  # 45% YoY
+    ebitda_margin_pct: 35
+    rule_of_40_score: 80  # Healthy
+
+# Investor Return Scenarios
+
+investor_returns:
+  seed:
+    round_size: 8000000
+    post_money_valuation: 60000000
+    ownership: 0.133
+
+    exit_2030_base:
+      exit_valuation: 15000000000
+      exit_ownership: 0.120  # After dilution
+      exit_value: 1800000000
+      multiple: 225
+      irr: 0.95  # 95% IRR
+
+  series_a:
+    round_size: 40000000
+    post_money_valuation: 300000000
+    ownership: 0.133
+
+    exit_2030_base:
+      exit_valuation: 15000000000
+      exit_ownership: 0.120  # After dilution
+      exit_value: 1800000000
+      multiple: 45
+      irr: 0.70  # 70% IRR
+
+  series_b:
+    round_size: 120000000
+    post_money_valuation: 1500000000
+    ownership: 0.080
+
+    exit_2030_base:
+      exit_valuation: 15000000000
+      exit_ownership: 0.072
+      exit_value: 1080000000
+      multiple: 9
+      irr: 0.45  # 45% IRR

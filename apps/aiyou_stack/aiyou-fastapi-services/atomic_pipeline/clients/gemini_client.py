@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini 2.5 Pro Preview API Client
 ==================================
 Design wizard for creative direction and test generation.

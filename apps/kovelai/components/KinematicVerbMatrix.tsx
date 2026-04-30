@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 /**
  * @fileoverview Kinematic Verb Matrix — Action Verb Audit UI
  *
@@ -128,7 +126,6 @@ export function KinematicVerbMatrix({
       <div style={styles.rollUpGrid}>
         {causesOfAction.map((coa) => (
           <button
-            type="button"
             key={coa.action}
             onClick={() => setFilterAction(filterAction === coa.action ? null : coa.action)}
             style={{

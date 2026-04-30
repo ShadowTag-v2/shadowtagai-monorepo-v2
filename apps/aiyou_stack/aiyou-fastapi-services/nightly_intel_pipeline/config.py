@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Configuration for Nightly Intel Pipeline
 ATP 5-19 Risk Management Framework Implementation
 """

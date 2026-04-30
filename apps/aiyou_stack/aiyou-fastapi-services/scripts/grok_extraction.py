@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """grok_extraction.py
 
 Utility script to help you export Grok (xAI) conversation data.

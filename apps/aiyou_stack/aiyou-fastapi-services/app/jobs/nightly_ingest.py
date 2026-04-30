@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # app/jobs/nightly_ingest.py
 import asyncio
 import logging

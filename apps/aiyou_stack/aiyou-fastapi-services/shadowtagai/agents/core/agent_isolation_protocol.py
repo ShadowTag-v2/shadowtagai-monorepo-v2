@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Agent Isolation Protocol - Silo Analysis
 
 Critical architectural decision: How much should agents be isolated from each

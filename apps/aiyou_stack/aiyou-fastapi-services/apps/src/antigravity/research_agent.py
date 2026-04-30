@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Deep Research Agent Wrapper
 Wraps the Google Gemini Deep Research (Interactions API) for autonomous research tasks.
 """

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Revenue Tier Implementation
 
 Implements Free/Pro/Enterprise tiers with feature gates and monetization hooks.

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Uphill Snowball Temporal MDO Campaign Loop (FM 5-0).
 
 The Immortal Execution Engine. State is separated from compute.

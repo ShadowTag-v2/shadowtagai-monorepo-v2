@@ -1,6 +1,4 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-"""COR.KAIROS Daemon & ULTRAPLAN — Coordinator Mode.
+"""KAIROS Daemon & ULTRAPLAN — Coordinator Mode.
 
 15-second blocking budget. Tasks exceeding the budget are farmed to
 ULTRAPLAN remote instances via Google Cloud Tasks (no BullMQ).
@@ -20,11 +18,11 @@ import os
 
 from google.cloud import tasks_v2
 
-logger = logging.getLogger("COR.KAIROS-Daemon")
+logger = logging.getLogger("KAIROS-Daemon")
 
 
-class Cor_KairosPersistentAssistant:
-    """The COR.KAIROS persistent assistant with 15-second blocking budget."""
+class KairosPersistentAssistant:
+    """The KAIROS persistent assistant with 15-second blocking budget."""
 
     def __init__(self) -> None:
         self.task_client = tasks_v2.CloudTasksClient()
@@ -42,7 +40,7 @@ class Cor_KairosPersistentAssistant:
             dict with 'tool', 'status', and 'content' keys.
         """
         if self._estimate_latency(command) > 15:
-            logger.info("⏳ [COR.KAIROS] Task > 15s. Backgrounding to ULTRAPLAN.")
+            logger.info("⏳ [KAIROS] Task > 15s. Backgrounding to ULTRAPLAN.")
             self.dispatch_ultraplan(command)
             return {
                 "tool": "SendUserMessage",

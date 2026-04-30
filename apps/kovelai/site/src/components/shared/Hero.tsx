@@ -1,14 +1,8 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 'use client';
 
 import Image from 'next/image';
 
-interface HeroProps {
-  onOpenModal?: () => void;
-}
-
-export default function Hero({ onOpenModal }: HeroProps) {
+export default function Hero() {
   return (
     <header className="relative min-h-[100dvh] flex items-center overflow-hidden" id="hero">
       {/* Layer 0: Vault interior hero (Flow-generated, Nano Banana 2) */}
@@ -48,47 +42,33 @@ export default function Hero({ onOpenModal }: HeroProps) {
       {/* Content */}
       <div className="relative z-10 max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 scroll-entrance">
         <div className="text-[0.6875rem] font-medium uppercase tracking-[0.15em] text-gold mb-6">
-          PRIVILEGE-PROTECTED INFRASTRUCTURE · ATTORNEY-MONITORED · HEPPNER-COMPLIANT
+          POST-HEPPNER · PRIVILEGED · REVENUE-FIRST
         </div>
         <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.02em] max-w-[800px] mb-6">
-          Shield Your Client&apos;s Research
+          Every Google Search Your Client Makes Is a Loaded Gun Pointed at Your Case.
           <br />
-          <span className="text-gold">From Discovery.</span>
+          <span className="text-gold">KovelAI Disarms It — And Bills For the Protection.</span>
         </h1>
-        <h2 className="text-[clamp(1rem,2.5vw,1.5rem)] font-semibold text-secondary-text max-w-[700px] mb-6 leading-snug">
-          Deploy privileged search infrastructure your clients use under your oversight&mdash;so
-          opposing counsel discovers nothing.
-        </h2>
-        <p className="text-[0.9375rem] leading-relaxed text-secondary-text max-w-[640px] mb-4">
-          After <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every web search and AI conversation
-          your client conducts outside your firm&apos;s umbrella is fair game for opposing counsel.
-          KovelAI is the turnkey infrastructure you deploy to close that gap.
-        </p>
         <p className="text-[0.9375rem] leading-relaxed text-secondary-text max-w-[640px] mb-8">
-          Your clients search at will under your privilege umbrella. You monitor every session,
-          deliver the first legal opinion, and bill their credit card automatically. The pitch is
-          one sentence:{' '}
-          <strong className="text-primary-text">
-            &ldquo;Either you do it through our firm&apos;s KovelAI, or proceed at your
-            peril.&rdquo;
-          </strong>
+          Since <em>In re Heppner</em> (S.D.N.Y., Feb. 2026), every unprotected client web search,
+          every ChatGPT query, every 2 AM panic-Google is discoverable. Opposing counsel is already
+          subpoenaing browser histories. KovelAI wraps all of it under attorney-client privilege —
+          and your firm gets paid for every session.
         </p>
         <div className="flex flex-wrap gap-4 mb-4">
-          <button
-            type="button"
-            onClick={onOpenModal}
+          <a
+            href="https://buy.stripe.com/test_aEU5nR1Jy9Mg8zS000"
             className="btn-gold text-sm"
             id="ctaFreeTrial"
           >
-            Deploy Your Firm&apos;s Portal
-          </button>
-          <a href="#how-it-works" className="btn-ghost text-sm">
-            See How Privilege Works →
+            Start Free Trial
+          </a>
+          <a href="#discovery" className="btn-ghost text-sm">
+            See the Risk →
           </a>
         </div>
         <p className="text-xs text-[#998f81]">
-          Clients log in · You monitor all sessions · You give the first opinion · Automatic billing
-          · Opposing counsel gets nothing
+          No credit card required · 10,000 tokens free · SOC 2 audit-ready
         </p>
       </div>
     </header>

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PURGE SCRIPT
 Target: Batch-mark legacy action items as [OBSOLETE].
 Preserves: Files identified in MISSION_CRITICAL.md.
@@ -12,7 +10,7 @@ preserved_files = [
     "src/shadowtag_v4/services/context_index.py",
     "src/orchestrator/deploy_03_cor_orchestrator.py",
     "src/pnkln/steel/steel_core.py",
-    "src/Claude_Code_6/judge_core.py",
+    "src/judge_six/judge_core.py",
 ]
 
 

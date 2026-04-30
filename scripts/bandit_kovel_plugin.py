@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Custom Bandit Plugin: Kovel Privilege Leak Detection.
 
 Checks for patterns that could leak privileged attorney-client

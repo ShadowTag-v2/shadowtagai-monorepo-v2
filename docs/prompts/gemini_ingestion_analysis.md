@@ -388,7 +388,7 @@ After running this analysis:
 
 - [PNKLN Core Stack Architecture](../architecture/PNKLN_CORE_STACK.md)
 - [Gemini Ingestion Layer Specifications](../architecture/GEMINI_INGESTION_LAYER.md)
-- [Judge 6 Analysis Prompt](./Claude_Code_6_analysis.md) (for comparison)
+- [Judge 6 Analysis Prompt](./judge_six_analysis.md) (for comparison)
 - [Analysis Results Archive](./results/) (store Gemini outputs here)
 
 ---

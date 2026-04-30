@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ML-based anomaly detection for intelligence pipelines.
 
 Features:

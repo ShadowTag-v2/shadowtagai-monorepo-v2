@@ -35,7 +35,7 @@ Both systems use Gemini 2.0 Pro/Flash for AI-powered analysis but serve differen
 
 #### File References
 
-- **Judge 6**: `Claude_Code_6.py` (single enforcement script)
+- **Judge 6**: `judge_six.py` (single enforcement script)
 - **Ingestion**: Pipeline docs, architecture specs, config YAMLs
 
 **Rationale**: Ingestion is more distributed (8 containers, multiple data sources) vs Judge 6's monolithic enforcement logic. Analyzing docs/specs provides broader insights into dependencies, bottlenecks, and integration points.

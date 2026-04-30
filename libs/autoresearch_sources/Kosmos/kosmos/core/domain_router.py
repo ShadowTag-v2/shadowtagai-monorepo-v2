@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Domain Router for intelligent routing of research questions to domain-specific agents.
 

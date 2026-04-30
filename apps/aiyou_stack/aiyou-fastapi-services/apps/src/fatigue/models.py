@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Fatigue Prediction Models
 Edge-optimized ML models for real-time fatigue prediction (100-500ms latency)
 

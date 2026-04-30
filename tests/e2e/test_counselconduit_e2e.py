@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # tests/e2e/test_counselconduit_e2e.py
 """Playwright E2E tests for CounselConduit checkout and onboarding flows.
 
@@ -101,7 +99,7 @@ class TestHealthAndDiscovery:
 
 
 class TestMagicLinkOnboarding:
-    @pytest.mark.xfail(reason="Requires live Firestore auth + MAGIC_LINK_SECRET for matter creation")
+    @pytest.mark.xfail(reason="Cloud Run /onboarding/create-matter returns 500 — pending redeploy")
     def test_create_matter(self, base_url):
         """Attorney creates a matter and receives a magic link."""
         payload = {
@@ -120,7 +118,7 @@ class TestMagicLinkOnboarding:
         assert data["client_email"] == "john@example.com"
         assert "kovelai.web.app/portal?token=" in data["magic_link"]
 
-    @pytest.mark.xfail(reason="Depends on test_create_matter — requires Firestore auth")
+    @pytest.mark.xfail(reason="Depends on test_create_matter — Cloud Run 500 pending redeploy")
     def test_verify_magic_link(self, base_url):
         """Client verifies a magic link token."""
         # First create a matter

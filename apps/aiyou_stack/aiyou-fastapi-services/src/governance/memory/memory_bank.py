@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 class MemoryBank:
     """Sovereign OS Memory Layer.
     Suppresses/Overrides specific codebase heuristics using learned context.

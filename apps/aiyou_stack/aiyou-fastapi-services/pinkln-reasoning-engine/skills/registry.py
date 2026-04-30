@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Skills Registry
 
 Central registry for all Pinkln reasoning skills with Glicko-2 rankings

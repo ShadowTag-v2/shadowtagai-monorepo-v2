@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Billing API Router
 Exposes billing endpoints for revenue capture.
 """

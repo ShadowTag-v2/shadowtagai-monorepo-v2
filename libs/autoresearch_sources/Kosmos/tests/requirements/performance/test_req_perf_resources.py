@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Tests for Performance Resource Requirements (REQ-PERF-RES-001 through REQ-PERF-RES-009).
 

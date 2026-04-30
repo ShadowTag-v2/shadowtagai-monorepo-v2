@@ -96,9 +96,9 @@ describe('KovelAI Integration Pipeline', () => {
       expect(fees.enterprise).toBe(10);
 
       // Total never exceeds 15%
-      for (const fee of Object.values(fees)) {
+      Object.values(fees).forEach((fee) => {
         expect(fee).toBeLessThanOrEqual(15);
-      }
+      });
     });
   });
 

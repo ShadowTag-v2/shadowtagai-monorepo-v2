@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FinJudge API
 FastAPI endpoints for financial governance decisions
 """

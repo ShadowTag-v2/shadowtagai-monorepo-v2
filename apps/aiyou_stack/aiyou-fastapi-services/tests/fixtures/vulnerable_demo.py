@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 def check_password(input_password):
     # SECURITY ISSUE: Hardcoded password
     return input_password == "[VAPORIZED_PWD]"

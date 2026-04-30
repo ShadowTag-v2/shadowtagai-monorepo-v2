@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from .core import PROMPTS
 from .geos import geos_skim
 from .monte_carlo import mcarlo_bundle

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tier Classification System for Intelligence Data.
 
 Classifies collected data into tiers based on:

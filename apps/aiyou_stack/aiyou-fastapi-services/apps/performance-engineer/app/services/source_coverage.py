@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # DOCTRINE: Cor.115 Night Pipeline (Source Coverage)
 # RESPONSIBILITY: Multi-Source Diversity (Shannon Entropy)
 

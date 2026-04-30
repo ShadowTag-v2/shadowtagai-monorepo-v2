@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FastGPT Client - Wire contract for FastGPT knowledge console.
 
 Implements GPTRAM (Retrieval-Augmented Memory) pattern:

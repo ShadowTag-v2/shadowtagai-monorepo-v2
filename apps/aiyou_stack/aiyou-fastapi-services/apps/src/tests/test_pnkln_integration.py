@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """SHADOWTAGAI Integration Tests - Test all four pillars working together"""
 
 import os

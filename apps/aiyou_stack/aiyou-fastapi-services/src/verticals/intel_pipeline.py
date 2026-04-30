@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 class IntelPipeline:
     """Vertical 7: Nightly Intel Pipeline (Add-on)
     ARR 2030: $1.65B (Upsell)

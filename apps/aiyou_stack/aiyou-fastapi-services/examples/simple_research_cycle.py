@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Example: Simple Kosmos Research Cycle
 
 Demonstrates a complete autonomous research workflow:

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AI Threads API endpoints
 
 REST API for managing curated AI agent knowledge threads:

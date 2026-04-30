@@ -747,7 +747,7 @@ Total Annual Budget:            $912
 
 ```json
 {
-  "Claude_Code_6": {
+  "judge_six": {
     "target_confidence": 70,
     "rationale": "production_enforcement_high_stakes"
   },

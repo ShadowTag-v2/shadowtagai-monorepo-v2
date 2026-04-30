@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # ShadowTag-Omega/omega_kernel.py
 import asyncio
 import contextlib
@@ -25,7 +23,7 @@ TIER_30_MATRIX = {
     "risk_thresholds": {
         "max_transaction_value": 1000000,
         "prohibited_jurisdictions": ["NK", "IR", "SY", "CU"],
-        "required_approvals": ["COR_CLAUDE_CODE_6", "HUMAN_OVERRIDE"],
+        "required_approvals": ["JUDGE6", "HUMAN_OVERRIDE"],
     },
     "agent_permissions": {
         "agent-007": ["read_balance", "initiate_transfer", "ping_gateway"],
@@ -34,21 +32,21 @@ TIER_30_MATRIX = {
 }
 
 
-# /// COR_CLAUDE_CODE_6: THE ENFORCER ///
-class Cor_Claude_Code_6:
+# /// JUDGE6: THE ENFORCER ///
+class Judge6:
     def __init__(self, policy: dict):
         self.policy = policy
-        logger.info("COR_CLAUDE_CODE_6 ONLINE. POLICY LOADED.")
+        logger.info("JUDGE6 ONLINE. POLICY LOADED.")
 
     def adjudicate(self, agent_id: str, intent: str, params: dict = None) -> bool:
         if params is None:
             params = {}
-        logger.info(f"COR_CLAUDE_CODE_6 ADJUDICATING: {agent_id} -> {intent}")
+        logger.info(f"JUDGE6 ADJUDICATING: {agent_id} -> {intent}")
 
         # 1. PERMISSION CHECK
         allowed = self.policy["agent_permissions"].get(agent_id, [])
         if intent not in allowed:
-            logger.warning(f"COR_CLAUDE_CODE_6 DENIAL: {agent_id} not authorized for {intent}")
+            logger.warning(f"JUDGE6 DENIAL: {agent_id} not authorized for {intent}")
             return False
 
         # 2. RISK CHECK
@@ -56,10 +54,10 @@ class Cor_Claude_Code_6:
             "amount" in params
             and params["amount"] > self.policy["risk_thresholds"]["max_transaction_value"]
         ):
-            logger.critical("COR_CLAUDE_CODE_6 DENIAL: Amount exceeds TIER 30 Limit")
+            logger.critical("JUDGE6 DENIAL: Amount exceeds TIER 30 Limit")
             return False
 
-        logger.info("COR_CLAUDE_CODE_6 APPROVAL: Intent Validated.")
+        logger.info("JUDGE6 APPROVAL: Intent Validated.")
         return True
 
 
@@ -82,7 +80,7 @@ def check_wet_fleece(project_id: str = "shadowtag-omega-v2") -> bool:
 
 # /// ANTIGRAVITY ENGINE ///
 app = FastAPI(title="ShadowTag Omega Kernel")
-judge = Cor_Claude_Code_6(TIER_30_MATRIX)
+judge = Judge6(TIER_30_MATRIX)
 
 
 @app.get("/")
@@ -204,7 +202,7 @@ async def run_world_simulation():
                 await manager.broadcast(
                     {
                         "type": "RISK_ALERT",
-                        "msg": f"COR_CLAUDE_CODE_6 INTERVENTION: {event['id']} denied for {event['action']}",
+                        "msg": f"JUDGE6 INTERVENTION: {event['id']} denied for {event['action']}",
                     },
                 )
 

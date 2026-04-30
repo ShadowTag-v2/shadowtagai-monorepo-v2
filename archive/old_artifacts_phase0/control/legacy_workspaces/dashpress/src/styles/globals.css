@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./themes.css";
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+
+    --light-primary-alpha-opacity: 0.1;
+    --dark-primary-alpha-opacity: 0.5;
+
+    --app-primary: 249, 52%, 46%;
+
+    --white: 100% 0 0;
+  }
+
+  [data-theme="light"] {
+    color-scheme: light;
+    --dp-primary-text: var(--white);
+    --dp-primary: var(--app-primary);
+    --dp-primary-alpha-opacity: var(--light-primary-alpha-opacity);
+    --dp-primary-alpha-text: var(--app-primary);
+    --dp-soft: 97.4663% 0.011947 259.822565;
+    --dp-foundation: 94.542% 0.012 259.823;
+    --dp-base: 107.213% 0.012 259.823;
+    --dp-border: 89.669% 0.012 259.823;
+    --dp-main: 41.8869% 0.053885 255.824911;
+    --dp-muted: 50.264% 0.054 255.825;
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --dp-primary: var(--app-primary);
+    --dp-primary-alpha-opacity: var(--dark-primary-alpha-opacity);
+    --dp-primary-alpha-text: var(--white);
+    --dp-primary-text: var(--white);
+    --dp-soft: 23.2607% 0.013807 253.100675;
+    --dp-foundation: 22.563% 0.014 253.101;
+    --dp-base: 20.935% 0.014 253.101;
+    --dp-border: 26.75% 0.014 253.101;
+    --dp-main: 74.6477% 0.0216 264.435964;
+    --dp-muted: 89.577% 0.022 264.436;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  .gaussian-blur {
+    filter: blur(2px);
+  }
+  body {
+    @apply text-main;
+  }
+
+  html {
+    font-family: "Inter", sans-serif;
+  }
+}
+
+@layer components {
+  .input-base {
+    @apply bg-base flex w-full rounded-md border border-border px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted font-normal;
+    @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary;
+    @apply disabled:cursor-not-allowed disabled:bg-soft disabled:opacity-70;
+  }
+  .grid-root {
+    @apply grid gap-x-4 grid-cols-1 @3xl:grid-cols-12;
+  }
+  .grid-item {
+    @apply col-start-[span_1] @3xl:col-start-[span_var(--grid-span,12)];
+  }
+  .dashboard-grid-root {
+    @apply grid-root select-none gap-y-4 auto-rows-[minmax(100px,auto)];
+  }
+}

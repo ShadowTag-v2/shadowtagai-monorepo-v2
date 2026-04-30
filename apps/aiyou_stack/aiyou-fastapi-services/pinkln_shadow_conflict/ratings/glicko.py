@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Glicko Rating System - Uncertainty-aware rankings.
 
 Glicko extends Elo by adding:

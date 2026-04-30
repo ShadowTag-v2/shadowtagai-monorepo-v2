@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # labs/uphillsnowball/server.py
 """UphillSnowball API Server.
 

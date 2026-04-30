@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Memory Index — memory_index.py.
 
 Lightweight CLI entrypoint for the Three-Layer Context Memory system.

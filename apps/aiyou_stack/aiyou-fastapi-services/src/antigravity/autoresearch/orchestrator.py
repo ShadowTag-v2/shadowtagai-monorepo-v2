@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """minion Agent Swarm Orchestrator
 
 Code-generation agent swarm implementing:

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Claude Code-Specific Agents for Vertex AI Workbench
 Specialized agents for Claude Code workflows, hooks, skills, and integration
 """

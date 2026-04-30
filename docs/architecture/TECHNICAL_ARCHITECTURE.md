@@ -175,7 +175,7 @@ def route_query(query, requirements):
 apiVersion: v1
 kind: CustomModel
 metadata:
-  name: pnkln-Cor.Claude_Code_6-v1
+  name: pnkln-judge6-v1
   namespace: ShadowTag-v2jr-governance
 spec:
   framework: pytorch

@@ -40,8 +40,8 @@ Two parallel development tracks have emerged for Pinkln, each with distinct stre
 
 #### Business & Financial Analysis
 
-- ✅ `Claude_Code_6_INCEPTION_ANALYSIS.md` (20+ pages)
-- ✅ `Claude_Code_6_QUICK_REFERENCE.md`
+- ✅ `JUDGE_SIX_INCEPTION_ANALYSIS.md` (20+ pages)
+- ✅ `JUDGE_SIX_QUICK_REFERENCE.md`
 - ✅ `GEMINI_INGESTION_LAYER_INCEPTION_ANALYSIS.md` (25+ pages)
 - ✅ `GEMINI_INGESTION_LAYER_QUICK_REFERENCE.md`
 - ✅ `STAKEHOLDER_PRESENTATION.md` (20 slides)
@@ -56,7 +56,7 @@ Two parallel development tracks have emerged for Pinkln, each with distinct stre
 
 - ✅ `IMPLEMENTATION_TICKETS.md` (32 detailed tickets)
 - ✅ `PNKLN_ROADMAP.md` (12-week parallel development)
-- ✅ `.github/ISSUE_TEMPLATE/Claude_Code_6_implementation.md`
+- ✅ `.github/ISSUE_TEMPLATE/judge_six_implementation.md`
 - ✅ `.github/ISSUE_TEMPLATE/gemini_ingestion_implementation.md`
 
 #### Kubernetes Deployment
@@ -70,12 +70,12 @@ Two parallel development tracks have emerged for Pinkln, each with distinct stre
 
 #### Code (Minimal Prototype)
 
-- ✅ `src/Claude_Code_6/jr_engine.py` (JR Engine core)
-- ✅ `src/Claude_Code_6/models.py` (data models)
-- ✅ `src/Claude_Code_6/validators/purpose.py`
-- ✅ `src/Claude_Code_6/validators/reasons.py`
-- ✅ `src/Claude_Code_6/validators/brakes.py`
-- ✅ `src/Claude_Code_6/example.py` (4 working demos)
+- ✅ `src/judge_six/jr_engine.py` (JR Engine core)
+- ✅ `src/judge_six/models.py` (data models)
+- ✅ `src/judge_six/validators/purpose.py`
+- ✅ `src/judge_six/validators/reasons.py`
+- ✅ `src/judge_six/validators/brakes.py`
+- ✅ `src/judge_six/example.py` (4 working demos)
 
 **Status:** ✅ Tested (JR Engine v1.0.0 validated)
 
@@ -136,7 +136,7 @@ Two parallel development tracks have emerged for Pinkln, each with distinct stre
 
 - ✅ `base.py` - Abstract kernel interface
 - ✅ `atp_519_scan.py` - Gemini Flash violations extractor
-- ✅ `Claude_Code_6.py` - PyTorch binary classifier (go/no-go)
+- ✅ `judge_six.py` - PyTorch binary classifier (go/no-go)
 - ✅ `audit_compress.py` - zstd compression (10:1 ratio)
 
 **Orchestration (app/orchestration/):**
@@ -232,7 +232,7 @@ Two parallel development tracks have emerged for Pinkln, each with distinct stre
 - 🎯 Cheat sheet fusion (21→10 elements, +3.7% accuracy)
 - 🤖 DTE self-evolution (RCR-MAD, GRPO, benchmarks)
 - 💰 Wealth optimization model
-- 🔗 3-kernel pipeline (ATP_519_scan → Claude_Code_6 → audit_compress)
+- 🔗 3-kernel pipeline (ATP_519_scan → judge_six → audit_compress)
 - ⚡ 52ms p50 latency, 98.5% token reduction
 - ✅ Full test suite
 
@@ -324,7 +324,7 @@ Annual Value: $10.4M | ROI: 15× | Cost: $370K
 │  └───────────────────────────────────────────────┘     │
 │                    ↓                                    │
 │  ┌───────────────────────────────────────────────┐     │
-│  │ Kernel 2: Claude_Code_6_classify                  │     │
+│  │ Kernel 2: judge_six_classify                  │     │
 │  │ ├── Model: PyTorch local (CPU)                │     │
 │  │ ├── Classify: Go/no-go decision               │     │
 │  │ ├── Output: 1 bit + confidence + risk tier    │     │
@@ -410,7 +410,7 @@ Performance: 52ms p50 | 98.5% token reduction | $0.0003/decision
 3. ✅ Copy technical docs (`ARCHITECTURE.md`, `PINKLN_ECOSYSTEM.md`)
 4. ✅ Update `README.md` to combine both visions
 5. ✅ Create `kubernetes/judge-six-api-deployment.yaml` for FastAPI service
-6. ✅ Integrate JR Engine prototype (`src/Claude_Code_6/`) with app implementation (`app/validation/jr_engine.py`)
+6. ✅ Integrate JR Engine prototype (`src/judge_six/`) with app implementation (`app/validation/jr_engine.py`)
 7. ✅ Add tests, requirements.txt, .env.example
 8. ✅ Update roadmap to include ultrathink ecosystem features
 9. ✅ Create Week 2 checklist for multi-agent/DTE/Glicko-2 deployment
@@ -431,7 +431,7 @@ unified-branch/
 │   ├── ARCHITECTURE.md
 │   ├── PINKLN_ECOSYSTEM.md
 │   ├── README.md (combined)
-│   └── Claude_Code_6_INCEPTION_ANALYSIS.md
+│   └── JUDGE_SIX_INCEPTION_ANALYSIS.md
 └── Roadmap (updated for full ecosystem)
 ```
 
@@ -531,9 +531,9 @@ git checkout origin/claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR
 
 **Conflicts to resolve:**
 
-- ✅ `src/Claude_Code_6/jr_engine.py` (prototype) vs `app/validation/jr_engine.py` (full implementation)
+- ✅ `src/judge_six/jr_engine.py` (prototype) vs `app/validation/jr_engine.py` (full implementation)
   - **Decision:** Keep both, update docs to clarify:
-    - `src/Claude_Code_6/` = standalone JR Engine library
+    - `src/judge_six/` = standalone JR Engine library
     - `app/validation/jr_engine.py` = integrated into kernel chain
 
 ### Phase 2: Update Documentation (Day 2)
@@ -643,7 +643,7 @@ cp .env.example .env
 pytest tests/
 
 # Test JR Engine standalone
-PYTHONPATH=/home/user/ShadowTag-v2-fastapi-services/src python3 src/Claude_Code_6/example.py
+PYTHONPATH=/home/user/ShadowTag-v2-fastapi-services/src python3 src/judge_six/example.py
 
 # Test kernel chain API
 uvicorn app.main:app --reload
@@ -657,7 +657,7 @@ uvicorn app.main_ecosystem:app --reload --port 8001
 **WEEK_1_DEPLOYMENT_CHECKLIST.md** (add ecosystem tasks):
 
 - Day 3: Deploy Judge 6 API (FastAPI + Kubernetes)
-- Day 4: Test kernel chaining pipeline (ATP_519_scan → Claude_Code_6 → audit_compress)
+- Day 4: Test kernel chaining pipeline (ATP_519_scan → judge_six → audit_compress)
 - Day 5: Validate 52ms p50 latency, 98.5% token reduction
 
 **GITHUB_PROJECT_SETUP.md** (add 16 ecosystem labels):
@@ -706,7 +706,7 @@ gh label create "grpo" --color "ffeaa7" --description "Group relative policy opt
 │  ┌────────────────────────────────────────────────────────┐     │
 │  │ Decision Context (50KB) → ATP_519_scan (Gemini Flash) │     │
 │  │       ↓ (2.5KB JSON)                                   │     │
-│  │ Violations → Claude_Code_6_classify (PyTorch)             │     │
+│  │ Violations → judge_six_classify (PyTorch)             │     │
 │  │       ↓ (1 bit + confidence)                           │     │
 │  │ Decision + Metadata → audit_compress (zstd)           │     │
 │  │       ↓ (487 bytes)                                    │     │
@@ -773,7 +773,7 @@ Timeline: 16 weeks | Team: 7.25 FTE → 9.5 FTE (ecosystem features)
 **Code (62+ modules):**
 
 1. Application (40+ files in app/): kernels, orchestration, agents, ratings, training, evolution, prompts, validation, wealth, monitoring, models, main APIs
-2. JR Engine Standalone (8 files in src/Claude_Code_6/): models, engine, validators, examples
+2. JR Engine Standalone (8 files in src/judge_six/): models, engine, validators, examples
 3. Tests (12+ files in tests/): kernel tests, orchestration tests, validation tests, fixtures
 4. Kubernetes Deployments (7+ YAML files): ingestion cronjob, judge-six API deployment, services, configs
 
@@ -876,7 +876,7 @@ Timeline: 16 weeks | Team: 7.25 FTE → 9.5 FTE (ecosystem features)
 
 **Merge strategy:** Option A (merge kernel-chaining into current) delivers:
 
-- ✅ Complete codebase (app/ + src/Claude_Code_6/ + tests/)
+- ✅ Complete codebase (app/ + src/judge_six/ + tests/)
 - ✅ Production deployment (Kubernetes manifests)
 - ✅ Business justification ($10.4M value, 15× ROI)
 - ✅ Launch materials (GitHub Project, Week 1, Design Partners)

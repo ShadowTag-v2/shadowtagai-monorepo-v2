@@ -110,7 +110,7 @@ Tokable v2.0 integrates four powerful systems into a unified platform:
 
 ```python
 # In src/api/tokable.py
-from pinkln.Claude_Code_6 import validate_decision
+from pinkln.judge_six import validate_decision
 
 @app.post("/tips/send")
 async def send_tip(request: SendTipRequest):

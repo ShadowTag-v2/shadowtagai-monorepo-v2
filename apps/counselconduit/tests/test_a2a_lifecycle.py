@@ -1,11 +1,9 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # Copyright 2026 ShadowTag AI. All rights reserved.
 # SPDX-License-Identifier: Proprietary
 """Integration tests for A2A task lifecycle.
 
 Tests the complete flow:
-    submit_task -> Cor_Claude_Code_6 gate -> route_task -> complete/cancel/fail
+    submit_task -> Judge6 gate -> route_task -> complete/cancel/fail
 """
 
 from __future__ import annotations
@@ -14,18 +12,18 @@ import pytest
 
 from apps.counselconduit.agents.orchestrator import (
     AgentRole,
-    Cor_Claude_Code_6Gate,
+    Judge6Gate,
     Orchestrator,
     TaskContext,
     TaskState,
 )
 
 
-class TestCor_Claude_Code_6Gate:
+class TestJudge6Gate:
     """Tests for the Judge 6 governance gate."""
 
     def setup_method(self) -> None:
-        self.gate = Cor_Claude_Code_6Gate()
+        self.gate = Judge6Gate()
 
     def test_allow_valid_context(self) -> None:
         ctx = TaskContext(tenant_id="firm-123", user_id="user-456")

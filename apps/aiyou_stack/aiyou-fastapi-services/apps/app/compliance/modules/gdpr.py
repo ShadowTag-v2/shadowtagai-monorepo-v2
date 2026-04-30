@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GDPR Compliance Module
 
 Implements the General Data Protection Regulation (EU) 2016/679 requirements.

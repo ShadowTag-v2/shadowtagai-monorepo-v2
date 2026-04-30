@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Layer 18–20: Competitive Reality, Milestone Tracker, Impact Model
 =================================================================
 

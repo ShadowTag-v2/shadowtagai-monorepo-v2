@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Research Agent
 
 Multi-source research orchestration using native Gemini function calling.

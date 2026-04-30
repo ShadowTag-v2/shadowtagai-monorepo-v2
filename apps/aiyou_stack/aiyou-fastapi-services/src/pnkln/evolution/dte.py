@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from .dte.dtesystem import DTESystem
 from .dte.evolutionstrategy import EvolutionStrategy
 

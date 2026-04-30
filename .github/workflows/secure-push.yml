@@ -15,9 +15,6 @@ on:
         default: 'ShadowTag-v2'
         type: string
 
-permissions:
-  contents: read
-
 jobs:
   authenticated-push:
     runs-on: ubuntu-latest

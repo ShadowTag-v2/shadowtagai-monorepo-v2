@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """JURA Compliance Gate
 =====================
 Integrated compliance checking for all Economic Juggernaut operations.

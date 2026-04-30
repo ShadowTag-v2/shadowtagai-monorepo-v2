@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Agent Registry - Central registry for all Vertex AI Workbench agents"""
 
 from .ai_innovation import AIIntegrationExpertAgent, AutomationBuilderAgent, InnovationLabAgent

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ANE Memory Budget Gate for PR Review.
 
 Scans a unified diff for tensor dimension changes and flags if any single

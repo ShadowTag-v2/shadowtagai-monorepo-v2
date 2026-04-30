@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import os
 import shutil
 import subprocess
@@ -103,7 +101,7 @@ RUN apt-get update && apt-get install -y curl gnupg && \
 
 WORKDIR /app
 COPY . .
-RUN npm ci && chmod +x scripts/pnkln-test.sh scripts/Cor_Claude_Code_6.sh scripts/cleanup-cinematic-videos.sh
+RUN npm ci && chmod +x scripts/pnkln-test.sh scripts/judge6.sh scripts/cleanup-cinematic-videos.sh
 ENTRYPOINT ["./scripts/pnkln-test.sh"]
 """,
 )
@@ -136,15 +134,15 @@ export default defineConfig({
 )
 
 write_file(
-    f"{pack_dir}/scripts/Cor_Claude_Code_6.sh",
+    f"{pack_dir}/scripts/judge6.sh",
     """
 #!/usr/bin/env bash
 set -euo pipefail
 PROJECT_ROOT="${PWD}"
-REPORT_DIR="${PROJECT_ROOT}/docs/Cor_Claude_Code_6-reports"
+REPORT_DIR="${PROJECT_ROOT}/docs/judge6-reports"
 mkdir -p "${REPORT_DIR}"
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-REPORT="${REPORT_DIR}/Cor_Claude_Code_6-${TIMESTAMP}.md"
+REPORT="${REPORT_DIR}/judge6-${TIMESTAMP}.md"
 VIDEO_FILE="${PROJECT_ROOT}/latest-run.mp4"
 GCS_BUCKET="gs://pnkln-cinematic-artifacts"
 GCS_PATH="${GCS_BUCKET}/videos/$(basename "${VIDEO_FILE}" .mp4)-${TIMESTAMP}.mp4"
@@ -155,7 +153,7 @@ if [[ -f "${VIDEO_FILE}" ]]; then
   PROJECT_ID="${GOOGLE_CLOUD_PROJECT}"
   LOCATION="${REGION:-us-central1}"
   MODEL="gemini-3.1-flash-lite-preview"
-  PROMPT=$(cat "${PROJECT_ROOT}/prompts/Cor_Claude_Code_6-cinematic.md")
+  PROMPT=$(cat "${PROJECT_ROOT}/prompts/judge6-cinematic.md")
   RESPONSE=$(curl -s -X POST -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "Content-Type: application/json" "https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${MODEL}:generateContent" -d '{"contents":[{"role":"user","parts":[{"text":"'"${PROMPT}"'"},{"fileData":{"mimeType":"video/mp4","fileUri":"'"${GCS_PATH}"'"}}]}],"generationConfig":{"temperature":0.0,"responseMimeType":"application/json"}}')
   VERDICT=$(echo "${RESPONSE}" | jq -r '.candidates[0].content.parts[0].text | fromjson.verdict // "FAIL"')
   RISK_LEVEL=$(echo "${RESPONSE}" | jq -r '.candidates[0].content.parts[0].text | fromjson.risk_level // "High"')
@@ -185,10 +183,10 @@ set -euo pipefail
 BUCKET="gs://pnkln-cinematic-artifacts"
 DAYS=7
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-LOG="docs/Cor_Claude_Code_6-cleanup-${TIMESTAMP}.log"
+LOG="docs/judge6-cleanup-${TIMESTAMP}.log"
 echo "=== Judge-6 Video Cleanup Started: $(date) ===" | tee -a "${LOG}"
 gcloud storage ls --recursive "${BUCKET}/videos/" | awk '{print $1}' | xargs -I {} gcloud storage rm --quiet {} 2>&1 | tee -a "${LOG}"
-find docs/Cor_Claude_Code_6-reports -name "Cor_Claude_Code_6-*.md" -mtime +${DAYS} -delete 2>&1 | tee -a "${LOG}"
+find docs/judge6-reports -name "judge6-*.md" -mtime +${DAYS} -delete 2>&1 | tee -a "${LOG}"
 echo "=== Cleanup Complete ===" | tee -a "${LOG}"
 """,
 )
@@ -198,7 +196,7 @@ write_file(
     """
 version: '3.8'
 services:
-  pnkln-Cor_Claude_Code_6:
+  pnkln-judge6:
     image: mcr.microsoft.com/playwright:v1.58.2-noble
     volumes:
       - .:/app
@@ -214,12 +212,12 @@ write_file(
 #!/usr/bin/env bash
 rm -f latest-run.mp4
 npx playwright test --video=on --output=latest-run.mp4 "$@"
-chmod +x scripts/Cor_Claude_Code_6.sh
-./scripts/Cor_Claude_Code_6.sh --full-audit
+chmod +x scripts/judge6.sh
+./scripts/judge6.sh --full-audit
 """,
 )
 
-for f in ["scripts/Cor_Claude_Code_6.sh", "scripts/cleanup-cinematic-videos.sh", "scripts/pnkln-test.sh"]:
+for f in ["scripts/judge6.sh", "scripts/cleanup-cinematic-videos.sh", "scripts/pnkln-test.sh"]:
     os.chmod(f"{pack_dir}/{f}", 0o755)
 
 shutil.make_archive(pack_dir, "zip", pack_dir)
@@ -246,18 +244,18 @@ write_file(
 import subprocess
 import time
 
-def run_Cor_Claude_Code_6_experiment():
+def run_judge6_experiment():
     print("Running 5-minute Judge-6 evolution experiment...")
     start = time.time()
 
     # Example evolution: tweak cinematic prompt or add skill
-    subprocess.run(["./scripts/Cor_Claude_Code_6.sh", "--evolve"], check=True)
+    subprocess.run(["./scripts/judge6.sh", "--evolve"], check=True)
 
     duration = time.time() - start
     print(f"Experiment completed in {duration:.1f}s")
 
     # Fitness from Judge-6 report
-    with open("Cor_Claude_Code_6-report.md") as f:
+    with open("judge6-report.md") as f:
         report = f.read()
     if "APPROVED" in report and "High" not in report:
         print("✓ Improvement kept")
@@ -270,7 +268,7 @@ def run_Cor_Claude_Code_6_experiment():
         return False
 
 if __name__ == "__main__":
-    run_Cor_Claude_Code_6_experiment()
+    run_judge6_experiment()
 """,
 )
 
@@ -296,7 +294,7 @@ def run_meta_experiment():
     print(f"Meta-experiment completed in {duration:.1f}s")
 
     # Judge-6 decides if the meta-change survives
-    result = subprocess.run(["./scripts/Cor_Claude_Code_6.sh", "--full-audit"], capture_output=True, text=True)
+    result = subprocess.run(["./scripts/judge6.sh", "--full-audit"], capture_output=True, text=True)
     if "APPROVED" in result.stdout and "High" not in result.stdout:
         print("✓ Meta-improvement kept")
         subprocess.run(["git", "add", "program.md", "core/pnkln-evolve.py"])
@@ -339,7 +337,7 @@ node -e '
 '
 
 # 3. Re-apply Judge-6 cinematic gate (never weaken)
-chmod +x scripts/Cor_Claude_Code_6.sh
+chmod +x scripts/judge6.sh
 echo "Judge-6 cinematic enforcement re-locked."
 
 # 4. Restart Antigravity workspace
@@ -357,7 +355,7 @@ set -euo pipefail
 
 echo "🌱 Seeding full pnkln monorepo..."
 
-mkdir -p apps/counselconduit labs/uphillsnowball docs/Cor_Claude_Code_6-reports scripts prompts .antigravity/rules
+mkdir -p apps/counselconduit labs/uphillsnowball docs/judge6-reports scripts prompts .antigravity/rules
 
 # Core canonical files (all previous raw blocks)
 cp -f .antigravity/rules/cor-antigravity.mdc .antigravity/rules/cor-antigravity.mdc || true
@@ -367,7 +365,7 @@ workspace: pnkln
 product: apps/counselconduit
 lab: labs/uphillsnowball
 mcp-truth: antigravity-mcp-config.json
-Cor_Claude_Code_6-gate: active
+judge6-gate: active
 EOF
 
 echo "Monorepo seeded with Judge-6, Cor.Rules, cinematic loop, and all skills."

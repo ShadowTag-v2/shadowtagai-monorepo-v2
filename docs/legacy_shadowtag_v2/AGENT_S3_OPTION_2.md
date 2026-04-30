@@ -296,7 +296,7 @@ integration = ComplianceJudgeIntegration(
 # Process audit entry
 result = await integration.process_audit_entry(
     entry=audit_entry,
-    enforce_with_Claude_Code_6=True  # Enable enforcement
+    enforce_with_judge_six=True  # Enable enforcement
 )
 
 # Query compliance history
@@ -559,7 +559,7 @@ src/pnkln/
     ├── ComplianceJudgeIntegration
     ├── ComplianceEnforcementContext
     ├── _store_compliance_memory() → NS
-    └── _enforce_with_Claude_Code_6()
+    └── _enforce_with_judge_six()
 
 src/examples/
 └── agent_s3_compliance_demo.py        # Complete demonstration

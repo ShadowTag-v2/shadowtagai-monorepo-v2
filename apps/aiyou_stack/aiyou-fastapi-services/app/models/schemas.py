@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pydantic models for request/response validation."""
 
 from pydantic import BaseModel, Field, field_validator

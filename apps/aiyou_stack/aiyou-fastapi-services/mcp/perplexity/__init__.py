@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Perplexity MCP Server - Governance Bridge for Comet Browser & AI Shopping
 
 Integrates:

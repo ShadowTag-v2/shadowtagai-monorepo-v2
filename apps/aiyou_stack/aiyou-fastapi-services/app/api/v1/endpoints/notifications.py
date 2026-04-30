@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Notification endpoints."""
 
 from fastapi import APIRouter, Depends, HTTPException, status

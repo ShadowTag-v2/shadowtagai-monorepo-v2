@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Message-Level Consensus Orchestrator for Claude Code
 Processes user messages through 3 LLMs with circular peer review
 

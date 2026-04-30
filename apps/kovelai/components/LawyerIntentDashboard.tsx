@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 /**
  * Lawyer Intent Dashboard — "The Anxiety Radar"
  *
@@ -177,7 +175,6 @@ export default function LawyerIntentDashboard({
               const colors = getUrgencyColor(vec.urgencyScore);
               return (
                 <button
-                  type="button"
                   key={vec.topic}
                   onClick={() => setActiveFilter(activeFilter === vec.topic ? 'all' : vec.topic)}
                   className={`${colors.bg} border ${colors.border} p-5 rounded-xl text-left transition-all hover:scale-[1.02] ${
@@ -219,7 +216,6 @@ export default function LawyerIntentDashboard({
             </h2>
             {activeFilter !== 'all' && (
               <button
-                type="button"
                 onClick={() => setActiveFilter('all')}
                 className="text-xs text-slate-500 hover:text-white transition-colors font-mono"
               >
@@ -230,10 +226,9 @@ export default function LawyerIntentDashboard({
 
           <div className="space-y-3">
             {filteredLogs.map((log, idx) => (
-              <button
-                type="button"
+              <div
                 key={idx}
-                className="bg-slate-900/60 border border-slate-800 rounded-lg hover:border-slate-700 transition-colors cursor-pointer w-full text-left"
+                className="bg-slate-900/60 border border-slate-800 rounded-lg hover:border-slate-700 transition-colors cursor-pointer"
                 onClick={() => setExpandedLog(expandedLog === idx ? null : idx)}
               >
                 <div className="p-4 flex items-start gap-4">
@@ -271,7 +266,7 @@ export default function LawyerIntentDashboard({
                     </div>
                   </div>
                 </div>
-              </button>
+              </div>
             ))}
           </div>
 

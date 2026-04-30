@@ -1,11 +1,9 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 export default function StatsBar() {
   const stats = [
-    { value: '100%', label: 'Searches Privileged' },
-    { value: '24/7', label: 'Client Portal Access' },
-    { value: 'Real-Time', label: 'Attorney Oversight' },
-    { value: 'Auto', label: 'Credit Card Billing', accent: true },
+    { value: '3x+', label: 'Intake Revenue' },
+    { value: '0', label: 'Data Retained' },
+    { value: '24/7', label: 'Client Capture' },
+    { value: '↑ ACV', label: 'Revenue per Matter', accent: true },
   ];
 
   return (

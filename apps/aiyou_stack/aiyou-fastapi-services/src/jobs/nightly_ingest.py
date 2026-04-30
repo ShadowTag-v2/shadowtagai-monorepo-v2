@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import asyncio
 import logging
 import sys
@@ -23,7 +21,7 @@ async def synthesize_nightly():
     ]
 
     # [STAGE 4 OVERRIDE AUTHENTICATED] Proceeding directly to Vector Sync via Service Account Override
-    # from src.governance.Claude_Code_6.pipeline_ops import hook_pipeline
+    # from src.governance.judge_six.pipeline_ops import hook_pipeline
 
     processed = 0
     for doc in mocked_document_queue:

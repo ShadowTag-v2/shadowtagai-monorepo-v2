@@ -32,9 +32,6 @@ concurrency:
   group: deploy-autoresearch-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Judge 6 - ATP 5-19 Compliance & Enforcement Engine
 PNKLN Core Stack™ - Enforcement Layer
 

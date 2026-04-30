@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """User Service Layer
 
 Encapsulates all user-related database operations.

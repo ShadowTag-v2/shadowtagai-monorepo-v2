@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """RevenueGate - Enforces "No Pay, No AI" doctrine via Stripe."""
 
 import os

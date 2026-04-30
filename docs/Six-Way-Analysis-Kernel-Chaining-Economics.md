@@ -68,7 +68,7 @@ Decision Context (50KB raw input)
                   │ 95% token reduction
                   ▼
 ┌─────────────────────────────────────┐
-│ Kernel 2: Claude_Code_6_classify        │
+│ Kernel 2: judge_six_classify        │
 │ Model: PyTorch Local (CPU)          │
 │ Purpose: Binary decision + risk     │
 │ Input: 2.5KB → Output: 1 bit + conf │
@@ -457,7 +457,7 @@ Decision Context (50KB raw input)
 
 ```python
 # Monolithic prompt approach
-def Claude_Code_6_validate(content):
+def judge_six_validate(content):
     prompt = f"""
     You are Judge 6. Evaluate this content for violations.
     Content: {content}
@@ -474,7 +474,7 @@ def Claude_Code_6_validate(content):
 # Kernel chain approach
 from app.orchestration.chain import KernelChain
 from app.kernels.atp_519_scan import ATP519ScanKernel
-from app.kernels.Claude_Code_6 import JudgeSixClassifyKernel
+from app.kernels.judge_six import JudgeSixClassifyKernel
 from app.kernels.audit_compress import AuditCompressKernel
 
 chain = KernelChain([
@@ -483,7 +483,7 @@ chain = KernelChain([
     AuditCompressKernel(),    # zstd, $0, 5ms
 ])
 
-def Claude_Code_6_validate(content):
+def judge_six_validate(content):
     outputs = await chain.execute(content)
     return outputs[-1].data  # Final decision
 ```

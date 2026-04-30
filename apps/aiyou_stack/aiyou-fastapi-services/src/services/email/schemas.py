@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pydantic schemas for email service"""
 
 from datetime import datetime

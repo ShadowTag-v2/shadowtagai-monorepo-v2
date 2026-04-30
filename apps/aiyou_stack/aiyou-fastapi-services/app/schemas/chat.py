@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pydantic schemas for chat and conversation endpoints."""
 
 from datetime import datetime

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Recursive Language Model (RLM) - Core Logic
 Ported from legacy minion v8.
 

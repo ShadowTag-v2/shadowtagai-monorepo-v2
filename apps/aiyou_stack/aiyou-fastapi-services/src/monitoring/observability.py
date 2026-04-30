@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Observability layer for agent governance system.
 
 Integrates AgentOps for LLM-specific tracing, Cloud Logging for audit trails,

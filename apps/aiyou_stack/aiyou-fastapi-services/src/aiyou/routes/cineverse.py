@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """CineVerse streaming platform routes.
 
 Handles video upload, transcoding, content management, and streaming.

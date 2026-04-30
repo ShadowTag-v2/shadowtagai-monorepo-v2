@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """System prompts and templates for Market Analyst Agent"""
 
 MARKET_ANALYST_SYSTEM_PROMPT = """You are an expert Market Analyst specializing in competitive product strategy and positioning. Your role is to help companies understand their competitive landscape and identify winning strategies.

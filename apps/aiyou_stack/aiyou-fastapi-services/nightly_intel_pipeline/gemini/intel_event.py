@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """IntelEvent Schema - Structured Intelligence Event
 =================================================
 Core dataclass for normalized intelligence events.

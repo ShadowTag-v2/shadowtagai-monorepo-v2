@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Stripe Webhook Simulation — ShadowTag-v4
 
 Simulates incoming Stripe webhook events to validate

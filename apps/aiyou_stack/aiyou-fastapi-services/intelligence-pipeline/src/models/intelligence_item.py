@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Intelligence Pipeline - Data Models
 
 Core data structures for intelligence items, scoring, and classification

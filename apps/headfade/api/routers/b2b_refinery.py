@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import langextract as lx
 import pipeline_dp
 from fastapi import APIRouter

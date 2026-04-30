@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Step 5 — Synthesis Report.
 
 Feeds top-100 gaps to Gemini 2.0 Flash → ranked action queue JSON + Markdown report.

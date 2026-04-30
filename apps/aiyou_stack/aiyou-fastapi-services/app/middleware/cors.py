@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """CORS (Cross-Origin Resource Sharing) configuration.
 Enables the API to be accessed from web applications.
 """

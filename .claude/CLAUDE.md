@@ -23,7 +23,7 @@ Follow `AGENTS.md` as the canonical project guide. Hardened state: v9.5 (2026-04
 - 10-cache-and-operations.md — Cache architecture, emotion vector
 - 11-compaction-pipeline.md — 4-layer compaction pipeline architecture
 - 12-anti-distillation.md — Fake tool injection, client attestation, bypass
-- 13-kairos-daemon.md — COR.KAIROS autonomous mode, coordinator, buddy
+- 13-kairos-daemon.md — KAIROS autonomous mode, coordinator, buddy
 - 14-architecture-and-leak.md — Terminal rendering, source map leak details
 - 15-ultrathink-fastmode.md — Ultrathink keyword, Fast Mode, effort precedence
 - 16-feature-flags-env-vars.md — 85+ feature flags, 170+ env vars catalog

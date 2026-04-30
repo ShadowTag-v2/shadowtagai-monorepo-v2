@@ -40,18 +40,6 @@ Detect commands that would bypass the physically excluded destructive tools and 
 
 All commands NOT matching BLOCK or WARN patterns are auto-approved per the `approval_envelope`.
 
-## Advanced Heuristics (Claude Parity)
-
-To slip the scales and ensure parity with 1P architectures, the scanner MUST implement:
-
-1. **Subcommand Fanout Cap (`MAX_SUBCOMMANDS_FOR_SECURITY_CHECK = 50`)**
-   Complex compound commands (`&&`, `||`, `;`) that split into >50 subcommands trigger a fallback to `STATE B` mode. The system cannot reliably prove safety at this complexity.
-
-2. **Safe Environment Variable Stripping**
-   Before evaluating a command prefix against the BLOCK/WARN lists, strip safe environment variable assignments to prevent false positives:
-   - **Standard (`SAFE_ENV_VARS`)**: `GOEXPERIMENT`, `NODE_ENV`, `RUST_BACKTRACE`, `PYTEST_DISABLE_PLUGIN_AUTOLOAD`, `LANG`, `TERM`, etc.
-   - **Antigravity Internal (`ANT_ONLY_SAFE_ENV_VARS`)**: `KUBECONFIG`, `DOCKER_HOST`, `AWS_PROFILE`, `CLOUDSDK_CORE_PROJECT`. *Note: Stripping these is an intentional adoption of 1P security posture.*
-
 ## Integration
 
 1. This scanner runs BEFORE `run_command` mentally evaluates each command
@@ -62,7 +50,6 @@ To slip the scales and ensure parity with 1P architectures, the scanner MUST imp
 
 ## False Positive Handling
 
-<!-- GUARDRAIL: rm -rf and sudo patterns below are scanner detection examples. Actual destructive execution requires STATE B authentication per ToolGateway. -->
 If a BLOCK pattern is a false positive (e.g., `rm -rf node_modules/` which is safe):
 1. Log the justification
 2. Narrow the command to be more specific

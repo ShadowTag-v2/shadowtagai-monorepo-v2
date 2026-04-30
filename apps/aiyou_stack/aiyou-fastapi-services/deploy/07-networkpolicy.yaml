@@ -2,15 +2,15 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: Cor.Claude_Code_6-inference-netpol
+  name: judge6-inference-netpol
   namespace: pnkln
   labels:
-    app: Cor.Claude_Code_6
+    app: judge6
     component: inference
 spec:
   podSelector:
     matchLabels:
-      app: Cor.Claude_Code_6
+      app: judge6
       component: inference
 
   policyTypes:

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Settings and configuration management using Pydantic"""
 
 from functools import lru_cache

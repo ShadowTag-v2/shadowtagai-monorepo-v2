@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Human oversight and notification modules."""
 
 from kosmos.oversight.human_review import (

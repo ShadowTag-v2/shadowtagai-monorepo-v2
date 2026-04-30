@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import sys
 
 
@@ -32,10 +30,10 @@ def resolve_file(filepath):
     # Strategy: Find all blocks and replace with HEAD content.
 
     # Pattern A: 3-way conflict (with |||||||)
-    # <{7} HEAD\n(.*?)\n\|{7} .*?\n={7}\n.*?\n>{7} .*?($|\n)
+    # <<<<<<< HEAD\n(.*?)\n\|\|\|\|\|\|\| .*?\n=======\n.*?\n>>>>>>> .*?($|\n)
 
     # Pattern B: 2-way conflict
-    # <{7} HEAD\n(.*?)\n={7}\n.*?\n>{7} .*?($|\n)
+    # <<<<<<< HEAD\n(.*?)\n=======\n.*?\n>>>>>>> .*?($|\n)
 
     # We can try a generic pattern that handles optional ||| part.
     # But python re doesn't support atomic groups, so be careful.
@@ -49,19 +47,19 @@ def resolve_file(filepath):
     in_head = False
 
     for line in lines:
-        if line.startswith("<" * 7 + " HEAD"):
+        if line.startswith("<<<<<<< HEAD"):
             in_conflict = True
             in_head = True
             continue
 
         if in_conflict:
-            if line.startswith("|" * 7):
+            if line.startswith("|||||||"):
                 in_head = False
                 continue
-            if line.startswith("=" * 7):
+            if line.startswith("======="):
                 in_head = False
                 continue
-            if line.startswith(">" * 7):
+            if line.startswith(">>>>>>>"):
                 in_conflict = False
                 in_head = False
                 continue

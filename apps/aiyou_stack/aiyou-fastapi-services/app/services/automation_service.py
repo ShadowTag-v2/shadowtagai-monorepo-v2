@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Automation Service Layer
 
 Encapsulates all database operations for the automation subsystem:

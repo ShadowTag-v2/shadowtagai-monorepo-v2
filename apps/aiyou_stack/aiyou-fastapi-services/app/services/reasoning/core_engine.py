@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Core Reasoning Engine
 Hybrid RNN × Transformer × Diffusion core with BDH, RoT, and MoE-CL
 Quantitative Effect: ↑ Throughput +82%, ↓ Cost –59%

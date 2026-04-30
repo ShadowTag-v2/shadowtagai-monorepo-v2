@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 async def retrieve(query: str, k=12, mode="default"):
     # 1) dense embed
     # qv = await _embed(query)

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Vertex AI Training Pipeline for Cor.54 CodeAct Orchestrator
 ===========================================================
 

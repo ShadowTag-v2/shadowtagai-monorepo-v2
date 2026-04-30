@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Test suite for Documentation Requirements (REQ-DOC-001 through REQ-DOC-005).
 

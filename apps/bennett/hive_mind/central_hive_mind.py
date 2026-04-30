@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Bennett Central Hive Mind — Asymmetric Compute Engine.
 
 The Vanguard move for consumer commerce:

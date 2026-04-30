@@ -43,7 +43,7 @@ This repository combines TWO powerful approaches into a unified AI decision syst
 ┌──────────────────────────────────────────────────────────────────┐
 │ LAYER 2: SPECIALIZED KERNELS (src/kernels/)                     │
 │ ├─ ATP_519_scan (policy violation detection)                    │
-│ ├─ Claude_Code_6_classify (binary decision)                         │
+│ ├─ judge_six_classify (binary decision)                         │
 │ ├─ audit_compress (zstd compression)                            │
 │ └─ All execute as LOCAL Python functions (no API overhead)      │
 └──────────────────────────────────────────────────────────────────┘
@@ -66,7 +66,7 @@ This repository combines TWO powerful approaches into a unified AI decision syst
 **What it provides**:
 
 - ✅ Working Gemini function calling implementation
-- ✅ Kernel functions (ATP_519, Claude_Code_6, audit_compress)
+- ✅ Kernel functions (ATP_519, judge_six, audit_compress)
 - ✅ Pinkln ecosystem (Judge Six, COR, NS, ShadowTag)
 - ✅ Examples and tests
 - ✅ Performance: p99 ~85ms (within SLA)
@@ -115,9 +115,9 @@ This repository combines TWO powerful approaches into a unified AI decision syst
 | **Glicko-2 dynamic ranking** | ✅ Implemented            | `src/ratings/glicko2.py`                  |
 | **DTE self-evolution**       | ✅ Implemented            | `src/evolution/dte.py`                    |
 | **MAD multi-agent debates**  | ✅ Implemented            | `src/agents/debate.py`                    |
-| **Cheat Sheet Fusion**       | ✅ In progress            | `src/pnkln/Claude_Code_6.py`                  |
+| **Cheat Sheet Fusion**       | ✅ In progress            | `src/pnkln/judge_six.py`                  |
 | **4-layer failover**         | ⚠️ Enhance Gemini         | `src/core/gemini_function_calling.py`     |
-| **Judge 6**                 | ✅ Implemented            | `src/pnkln/Claude_Code_6.py`                  |
+| **Judge 6**                 | ✅ Implemented            | `src/pnkln/judge_six.py`                  |
 | **Integrated system**        | ✅ Implemented            | `src/integration/unified_orchestrator.py` |
 
 **Status**:
@@ -233,14 +233,14 @@ ShadowTag-v2-fastapi-services/
 │   │   └── function_registry.py          # Tool definitions
 │   │
 │   ├── pnkln/                            # Pinkln Ecosystem
-│   │   ├── Claude_Code_6.py                  # JR Engine
+│   │   ├── judge_six.py                  # JR Engine
 │   │   ├── cor.py                        # Unified orchestrator
 │   │   ├── ns.py                         # Semantic memory
 │   │   └── shadowtag.py                  # Cryptographic watermarking
 │   │
 │   ├── kernels/                          # Specialized Functions
 │   │   ├── atp_519_scan.py              # Policy violations
-│   │   ├── Claude_Code_6.py                 # Binary decisions
+│   │   ├── judge_six.py                 # Binary decisions
 │   │   └── audit_compress.py            # Compression
 │   │
 │   ├── integration/                      # Unified System
@@ -265,7 +265,7 @@ ShadowTag-v2-fastapi-services/
 │   │
 │   ├── examples/                         # Working Demos
 │   │   ├── basic_function_calling.py    # Simple demo
-│   │   ├── Claude_Code_6_example.py         # JR validation
+│   │   ├── judge_six_example.py         # JR validation
 │   │   ├── full_pnkln_stack.py          # Complete stack
 │   │   └── unified_poc_demo.py          # Unified system
 │   │
@@ -311,7 +311,7 @@ Get key from: https://aistudio.google.com/app/apikey
 python src/examples/basic_function_calling.py
 
 # Judge Six validation
-python src/examples/Claude_Code_6_example.py
+python src/examples/judge_six_example.py
 
 # Full Pinkln stack
 python src/examples/full_pnkln_stack.py

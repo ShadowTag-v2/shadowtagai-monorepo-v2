@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # labs/uphillsnowball/src/pipelines/metrics.py
 """Prometheus Metrics Exporter for the Senses Pipeline (Item 18).
 

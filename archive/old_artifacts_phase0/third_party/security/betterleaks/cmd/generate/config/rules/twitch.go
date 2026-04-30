@@ -1,0 +1,23 @@
+package rules
+
+import (
+	"github.com/betterleaks/betterleaks/cmd/generate/config/utils"
+	"github.com/betterleaks/betterleaks/cmd/generate/secrets"
+	"github.com/betterleaks/betterleaks/config"
+)
+
+func TwitchAPIToken() *config.Rule {
+	// define rule
+	r := config.Rule{
+		RuleID:      "twitch-api-token",
+		Description: "Discovered a Twitch API token, which could compromise streaming services and account integrations.",
+		Regex:       utils.GenerateSemiGenericRegex([]string{"twitch"}, utils.AlphaNumeric("30"), true),
+		Keywords: []string{
+			"twitch",
+		},
+	}
+
+	// validate
+	tps := utils.GenerateSampleSecrets("twitch", secrets.NewSecret(utils.AlphaNumeric("30")))
+	return utils.Validate(r, tps, nil)
+}

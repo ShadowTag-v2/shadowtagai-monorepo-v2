@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Tests for Orchestrator 7-Phase Discovery Cycle Requirements (REQ-ORCH-CYCLE-* and REQ-ORCH-SYN-*).
 

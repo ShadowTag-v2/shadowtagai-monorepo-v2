@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Sensor Pipelines — Cloudflare RadarSense & Apache Beam Ingest.
 
 RadarSense: Deterministic L3/L7 internet traffic anomalies from

@@ -55,7 +55,7 @@ def pnkln_unit_econ(rev, mat, lab, over):
     margin = prof / rev if rev else 0
     return {"margin": round(margin, 3), "profit": prof, "pass_gate": margin >= 0.30}
 
-def pnkln_Cor.Claude_Code_6_check(project, phase):
+def pnkln_judge6_check(project, phase):
     checks = {
         "Phase 1": "Has code run on $0 infrastructure? (y/n)",
         "Phase 2": "Does the 'Golden Artifact' exist? (y/n)",
@@ -608,7 +608,7 @@ def main():
     # 2. n-autoresearch/Kosmos/BioAgents Whiteboard Voting (MTOE)
     print("⚔️ [Swarm] Polling 650-Unit Battalion (CavMTOE)...")
     mtoe = CavMTOE()
-    # Risk is purely heuristic for this shim; usually determined by Cor.Claude_Code_6
+    # Risk is purely heuristic for this shim; usually determined by Judge6
     verdict = mtoe.bottom_up_vote(intent=call_of_question, risk_level="M")
 
     # 3. Publish Answer

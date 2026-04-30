@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Live Rules Database for LawTrack
 
 Jurisdiction-specific procedural rules with:

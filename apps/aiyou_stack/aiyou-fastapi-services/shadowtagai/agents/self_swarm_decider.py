@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """self_swarm_decider.py
 
 Utility wrapper that uses the internal n-autoresearch/Kosmos/BioAgents swarm implementation to

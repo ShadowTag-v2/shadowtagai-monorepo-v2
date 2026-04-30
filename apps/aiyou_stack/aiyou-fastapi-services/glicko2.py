@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Glicko-2 Rating System Implementation
 
 A chess-style rating system that tracks:

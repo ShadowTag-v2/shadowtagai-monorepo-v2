@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AR Glasses Fatigue Detection - Quick Start Example
 
 This example demonstrates how to use the fatigue detection SDK

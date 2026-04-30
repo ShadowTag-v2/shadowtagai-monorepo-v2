@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Model registry for managing multiple LLM models."""
 
 import asyncio

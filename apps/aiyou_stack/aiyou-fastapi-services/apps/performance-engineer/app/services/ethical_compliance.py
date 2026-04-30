@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # DOCTRINE: Cor.115 Night Pipeline (Ethical Compliance)
 # RESPONSIBILITY: robots.txt, rate limits, user agent transparency
 

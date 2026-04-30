@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """minions Client - 650-Agent Consensus Voting
 
 Calls the minions Cloud Run service for swarm voting.

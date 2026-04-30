@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pydantic v1/v2 compatibility utilities.
 
 This module provides compatibility wrappers to handle differences between

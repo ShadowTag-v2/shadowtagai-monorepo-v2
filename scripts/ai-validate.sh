@@ -23,10 +23,10 @@ echo -n "  [1/5] Conflict markers... "
 STAGED=$(git diff --cached --name-only 2>/dev/null || true)
 if [ -n "$STAGED" ]; then
   # Only check staged files
-  FOUND=$(echo "$STAGED" | xargs grep -l '<<<<<<' 2>/dev/null | grep -vE 'resolve_conflicts|scan_files|repo_doctor|finish_changes' | head -1 || true)
+  FOUND=$(echo "$STAGED" | xargs grep -l '<<<<<<' 2>/dev/null | head -1 || true)
 else
   # Quick scan of key directories only
-  FOUND=$(grep -rl '<<<<<<' $EXCLUDE_DIRS --exclude-dir=external_repos --include='*.py' --include='*.ts' --include='*.tsx' --include='*.js' --include='*.json' --include='*.yaml' --include='*.yml' apps/ core/ tools/ scripts/ infrastructure/ 2>/dev/null | grep -vE 'resolve_conflicts|scan_files|repo_doctor|finish_changes' | head -1 || true)
+  FOUND=$(grep -rl '<<<<<<' $EXCLUDE_DIRS --exclude-dir=external_repos --include='*.py' --include='*.ts' --include='*.tsx' --include='*.js' --include='*.json' --include='*.yaml' --include='*.yml' apps/ core/ tools/ scripts/ infrastructure/ 2>/dev/null | grep -v 'resolve_conflicts\|scan_files' | head -1 || true)
 fi
 if [ -n "$FOUND" ]; then
   echo -e "${RED}FAIL${NC} — Conflict markers found in: $FOUND"

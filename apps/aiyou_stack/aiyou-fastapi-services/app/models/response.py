@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Standard API response models for consistent formatting."""
 
 from typing import Any, Generic, TypeVar

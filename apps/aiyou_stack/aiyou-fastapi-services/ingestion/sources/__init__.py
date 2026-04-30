@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # Free adapters — no optional deps, always importable
 from ingestion.sources.cloudflare_adapter import (
     cf_get,

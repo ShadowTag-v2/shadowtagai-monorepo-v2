@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Corp Engine Governance Regulations
 ===================================
 Specific regulatory compliance modules.

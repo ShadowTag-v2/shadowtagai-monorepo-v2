@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Security Headers Middleware
 
 Implements OWASP recommended security headers:

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # tests/integration/test_hard_delete_cascade.py
 """Integration tests for the GDPR hard-delete cascade.
 

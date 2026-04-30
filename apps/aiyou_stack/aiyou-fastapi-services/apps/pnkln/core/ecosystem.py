@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Ecosystem - Unified Legal-Linguistic Multi-Agent System
 Version: 1.0.0
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Main FastAPI application with sandboxing support."""
 
 from collections.abc import AsyncIterator

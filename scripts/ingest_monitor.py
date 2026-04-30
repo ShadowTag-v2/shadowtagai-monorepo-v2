@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """scripts/ingest_monitor.py — Continuous Web Ingest → Corpus → Swarm Monitor.
 ---------------------------------------------------------------------------
 Ties together all three pipeline stages in a loop:
@@ -166,7 +164,7 @@ def run_once(sources: list[str], verified_only: bool) -> dict:
 
     # Stage 3
     swarm_result = run_swarm(verified_only=verified_only)
-    swarm_result.get("architect_directive", {}).get("Cor_Claude_Code_6_gate", "unknown")
+    swarm_result.get("architect_directive", {}).get("judge6_gate", "unknown")
 
     output = {
         "ts": ts,

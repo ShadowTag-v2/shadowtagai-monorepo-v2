@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+#!/bin/bash\n
+||||||| empty tree
+=======
 #!/bin/bash
 # ==============================================================================
 # SINGULARITY CORE v2.2 BOOTSTRAP — THE COMPLETE ENGINE
@@ -59,4 +63,4 @@ npx @mendable/mcp-server --repo-path . --watch &
 echo "=============================================================================="
 echo "  SYSTEM ONLINE: Antigravity IDE v2.2 is fully operational and sandboxed."
 echo "=============================================================================="
-
+>>>>>>> 5003ee8144b25604e711ef88a2d161f951a40419

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AR Glasses Fatigue Detection API
 FastAPI endpoints for real-time fatigue monitoring and display control
 

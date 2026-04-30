@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """JWT token creation and validation.
 Implements OAuth2 password bearer flow for secure authentication.
 """

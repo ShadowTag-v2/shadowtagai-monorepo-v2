@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """L2a: Gemini Refine - Generation Loop
 
 Role: Labor (Gemini side)

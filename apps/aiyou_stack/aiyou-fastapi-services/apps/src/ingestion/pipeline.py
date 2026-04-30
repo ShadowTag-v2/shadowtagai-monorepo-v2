@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Ingestion Pipeline - Main Orchestrator.
 
 Coordinates the nightly intelligence collection run:

@@ -1,8 +1,5 @@
 name: Pulumi Preview
 on: [pull_request]
-permissions:
-  contents: read
-
 jobs:
   preview:
     runs-on: ubuntu-latest

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Verdict Systems - School/Student Vertical (MVP)
 Academic scheduling, lockouts, AI tutoring, and teacher oversight
 

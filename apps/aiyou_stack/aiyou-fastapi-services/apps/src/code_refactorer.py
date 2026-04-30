@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Code Refactorer Agent
 
 Refactoring specialist who improves code quality.

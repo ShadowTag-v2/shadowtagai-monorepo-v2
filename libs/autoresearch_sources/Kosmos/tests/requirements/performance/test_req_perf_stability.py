@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Tests for Performance Stability Requirements (REQ-PERF-STAB-001 through REQ-PERF-STAB-004).
 

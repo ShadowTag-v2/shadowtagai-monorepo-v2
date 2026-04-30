@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Judge 6 Integration Stub
 Placeholder for actual Judge 6 hybrid architecture implementation
 """

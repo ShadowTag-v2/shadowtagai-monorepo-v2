@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Visualization utilities for transformer circuits.
 
 Provides tools to visualize:

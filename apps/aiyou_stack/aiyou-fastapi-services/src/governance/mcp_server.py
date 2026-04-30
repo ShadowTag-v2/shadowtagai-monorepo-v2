@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import os
 import sys
 
@@ -8,7 +6,7 @@ sys.path.append(os.getcwd())
 from mcp.server.fastmcp import FastMCP
 from src.governance.voting.cav_mtoe import CavMTOE
 
-from src.governance.Claude_Code_6.core import JudgeSixEngine
+from src.governance.judge_six.core import JudgeSixEngine
 
 mcp = FastMCP("minion Governance")
 ARMY = CavMTOE(num_soldiers=650)
@@ -22,7 +20,7 @@ def assess_risk_consensus(intent: str, risk_level: str = "L") -> str:
 
 
 @mcp.tool()
-def Claude_Code_6_evaluate(context: str, prob: int, sev: int) -> str:
+def judge_six_evaluate(context: str, prob: int, sev: int) -> str:
     return JUDGE.evaluate_transaction(context, prob, sev)
 
 

@@ -3,7 +3,7 @@
 import type React from 'react';
 import { useState } from 'react';
 
-type Step = 'INITIAL' | 'RESEARCHING_BAD' | 'RESEARCHING_GOOD' | 'COR.CLAUDE_CODE_6_INTERVENTION' | 'LOCKED';
+type Step = 'INITIAL' | 'RESEARCHING_BAD' | 'RESEARCHING_GOOD' | 'JUDGE6_INTERVENTION' | 'LOCKED';
 
 export default function CorpInvisibleDemo() {
   const [step, setStep] = useState<Step>('INITIAL');
@@ -26,7 +26,7 @@ export default function CorpInvisibleDemo() {
 
     // Simulate invisible interception
     setTimeout(() => {
-      setStep('COR.CLAUDE_CODE_6_INTERVENTION');
+      setStep('JUDGE6_INTERVENTION');
     }, 1500); // Intercepts before the page even navigates
   };
 
@@ -135,7 +135,7 @@ export default function CorpInvisibleDemo() {
               disabled={
                 step === 'RESEARCHING_BAD' ||
                 step === 'RESEARCHING_GOOD' ||
-                step === 'COR.CLAUDE_CODE_6_INTERVENTION'
+                step === 'JUDGE6_INTERVENTION'
               }
             />
             {step === 'RESEARCHING_BAD' && (
@@ -211,7 +211,7 @@ export default function CorpInvisibleDemo() {
       </div>
 
       {/* INVISIBLE JUDGE 6 INTERVENTION OVERLAY */}
-      {step === 'COR.CLAUDE_CODE_6_INTERVENTION' && (
+      {step === 'JUDGE6_INTERVENTION' && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-[#111] border border-red-500/50 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] max-w-2xl w-full p-0 overflow-hidden text-white font-mono">
             {/* Header */}

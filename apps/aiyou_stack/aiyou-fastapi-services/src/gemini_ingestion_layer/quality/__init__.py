@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Quality Gates Module
 
 Implements multi-faceted quality checks:

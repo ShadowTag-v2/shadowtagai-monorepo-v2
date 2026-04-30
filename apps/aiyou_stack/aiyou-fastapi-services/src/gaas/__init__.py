@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GAAS Integration for AiU+ShadowTag-v4 Platform
 Generalized Autonomy Aviation System
 

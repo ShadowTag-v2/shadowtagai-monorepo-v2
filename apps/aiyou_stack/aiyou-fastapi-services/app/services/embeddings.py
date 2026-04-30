@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Embeddings service for vector operations and semantic search."""
 
 from typing import Any

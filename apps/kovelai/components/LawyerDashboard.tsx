@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 /**
  * Lawyer Dashboard — Anxiety Radar Widget
  *
@@ -108,8 +106,7 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
   const polygonPoints = points.map((p) => `${p.x},${p.y}`).join(' ');
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img">
-      <title>Client risk radar chart</title>
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
       {/* Grid rings */}
       {Array.from({ length: levels }, (_, i) => {
         const r = ((i + 1) / levels) * maxRadius;
@@ -365,10 +362,14 @@ export function LawyerDashboard() {
             Client Activity
           </h2>
           {clients.map((client) => (
-            <button
-              type="button"
+            <div
               key={client.clientId}
               onClick={() => setSelectedClient(client)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') setSelectedClient(client);
+              }}
               style={{
                 padding: '16px',
                 marginBottom: '8px',
@@ -388,7 +389,7 @@ export function LawyerDashboard() {
                 </div>
               </div>
               <RiskBadge level={client.riskLevel} />
-            </button>
+            </div>
           ))}
         </div>
 

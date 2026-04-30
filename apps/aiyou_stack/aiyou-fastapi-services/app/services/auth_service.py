@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Authentication Service Layer
 
 Encapsulates all database operations for user authentication,

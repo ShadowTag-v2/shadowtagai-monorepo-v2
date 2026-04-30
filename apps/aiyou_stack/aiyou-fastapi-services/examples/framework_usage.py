@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Example Usage: ShadowTag-v2JR Core Framework
 Demonstrates PRISM kernel, business plan, risk assessment, and context management
 

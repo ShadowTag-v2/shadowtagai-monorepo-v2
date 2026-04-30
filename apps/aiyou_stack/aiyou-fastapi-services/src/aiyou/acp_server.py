@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ACP (Agent Client Protocol) Server
 JSON-RPC server for IDE integration (JetBrains, Zed, VSCode).
 """

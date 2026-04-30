@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """DualCo Strategy Engine Core Logic"""
 
 import json

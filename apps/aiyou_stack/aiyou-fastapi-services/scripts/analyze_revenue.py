@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Revenue Analysis Script
 Generates a detailed financial analysis report based on the Revenue Model.
 """

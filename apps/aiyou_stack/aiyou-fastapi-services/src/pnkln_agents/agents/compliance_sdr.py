@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import random
 from dataclasses import dataclass
 from enum import Enum
@@ -30,7 +28,7 @@ class ComplianceSDRAgent:
             }
 
             # Governance Check (Mocking Judge 6)
-            verdict = self.Claude_Code_6_governance_check(lead)
+            verdict = self.judge_six_governance_check(lead)
 
             if verdict["status"] == "BLOCKED":
                 self.blocked_leads += 1
@@ -43,7 +41,7 @@ class ComplianceSDRAgent:
         print(f"    Blocked Leads:  {self.blocked_leads} (GDPR Violations)")
         print(f"    Total Processed: {count}")
 
-    def Claude_Code_6_governance_check(self, lead: dict) -> dict:
+    def judge_six_governance_check(self, lead: dict) -> dict:
         """Simulates Judge 6 Governance Engine (GDPR Rule)."""
         # Rule: EU emails require explicit consent.
         if "germany" in lead["location"].lower() or ".de" in lead["email"]:  # noqa: SIM102
@@ -379,7 +377,7 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
         domain = email.rsplit("@", maxsplit=1)[-1].lower()
         return domain in self.personal_email_domains
 
-    def _verify_with_Claude_Code_6(self, result: LeadGenerationResult, context: dict[str, Any]):
+    def _verify_with_judge_six(self, result: LeadGenerationResult, context: dict[str, Any]):
         """Override to verify lead generation result"""
         # Build verification data
         verification_data = {
@@ -404,14 +402,14 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
             "is_marketing_email": False,  # B2B lead gen, not direct email marketing
         }
 
-        return super()._verify_with_Claude_Code_6(verification_data, verification_context)
+        return super()._verify_with_judge_six(verification_data, verification_context)
 
 
 # Example usage
 def example_usage():
     """Example of using Compliance SDR Agent"""
-    from ..core.Claude_Code_6_lite import JudgeSixLite
     from ..core.jr_engine import JREngine
+    from ..core.judge_six_lite import JudgeSixLite
 
     # Initialize agent
     jr_engine = JREngine(
@@ -421,13 +419,13 @@ def example_usage():
         },
     )
 
-    Claude_Code_6 = JudgeSixLite(
+    judge_six = JudgeSixLite(
         config={
             "sla_p99_ms": 90,
         },
     )
 
-    agent = ComplianceSDRAgent(jr_engine=jr_engine, Claude_Code_6=Claude_Code_6)
+    agent = ComplianceSDRAgent(jr_engine=jr_engine, judge_six=judge_six)
 
     # Generate leads
     result = agent.generate_leads(

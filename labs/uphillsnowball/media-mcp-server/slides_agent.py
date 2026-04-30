@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """slides_agent.py — ADK Slides Agent with Media MCP.
 
 Based on: devrel-demos/ai-ml/agent-factory-antigravity-nano-banana-pro/slides-agent-demo/

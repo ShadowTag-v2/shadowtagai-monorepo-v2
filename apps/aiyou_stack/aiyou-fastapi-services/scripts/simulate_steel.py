@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Simulate Steel - Phase 2 Valuation Engine
 Validates the $100B valuation thesis for 1GW Virtual Capacity.
 

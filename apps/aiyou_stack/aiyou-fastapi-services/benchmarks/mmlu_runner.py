@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """MMLU Benchmark Runner for n-autoresearch/Kosmos/BioAgents Swarm
 
 Tests the swarm's accuracy on MMLU (Massive Multitask Language Understanding).

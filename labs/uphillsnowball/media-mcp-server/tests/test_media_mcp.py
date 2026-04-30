@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """test_media_mcp.py — Tests for Media MCP Server + Slides Agent.
 
 Tests:

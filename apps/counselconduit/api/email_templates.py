@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/email_templates.py
 """Email Notification Templates for CounselConduit billing events.
 

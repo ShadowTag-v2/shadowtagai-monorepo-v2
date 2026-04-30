@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Adtech Compliance Engine
 Implements VAST 4.x, OM SDK, Privacy Sandbox verification
 """

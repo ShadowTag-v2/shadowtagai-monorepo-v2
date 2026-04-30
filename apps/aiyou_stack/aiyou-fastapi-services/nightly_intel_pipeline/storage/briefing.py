@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Briefing Generator
 Creates executive briefings from intelligence data
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Webhook service with event handling and retry logic"""
 
 import hashlib

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Audit Event Worker - Resilient processor with DLQ support.
 
 Governance-grade message processing that never loses an audit trail.

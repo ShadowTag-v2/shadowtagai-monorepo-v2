@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FinJudge Signup Automation
 Webhook handler for Typeform → Email → API Key flow
 """

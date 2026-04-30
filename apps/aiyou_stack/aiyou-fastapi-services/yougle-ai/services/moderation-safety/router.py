@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 async def moderate(content: str | None, media: list[str] | None = None):
     # g = await google_text_scan(content) if content else {"ok": True}
     # h_txt = await hive_text_scan(content) if content else {"ok": True}

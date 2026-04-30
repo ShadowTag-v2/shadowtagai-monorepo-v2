@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Compliance SDR Agent Demo
 
 Demonstrates enforcement-first lead generation with GDPR/CAN-SPAM compliance.
@@ -105,7 +103,7 @@ def demo_jr_engine():
             print(f"  - {brake.brake_type.value}: {brake.reason}")
 
 
-def demo_Claude_Code_6():
+def demo_judge_six():
     """Demonstrate Judge 6 Lite verification"""
     print_separator("Judge 6 Lite: Rule-Based Enforcement")
 
@@ -272,7 +270,7 @@ def main():
 
     try:
         demo_jr_engine()
-        demo_Claude_Code_6()
+        demo_judge_six()
         demo_compliance_sdr_agent()
         demo_revenue_model()
 

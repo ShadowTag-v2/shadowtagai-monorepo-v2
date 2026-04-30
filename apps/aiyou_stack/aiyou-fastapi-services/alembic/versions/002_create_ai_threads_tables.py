@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Create AI threads tables for storing curated AI agent knowledge
 
 Revision ID: 002

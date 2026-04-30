@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Brief Builder — Attorney Work-Product PDF Generator.
 

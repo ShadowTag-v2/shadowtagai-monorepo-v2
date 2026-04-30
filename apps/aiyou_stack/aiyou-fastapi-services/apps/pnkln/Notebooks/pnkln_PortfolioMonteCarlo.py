@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN // PORTFOLIO MONTE CARLO SIMULATION
 Calculates expected value, standard deviation, and 5% VaR
 """

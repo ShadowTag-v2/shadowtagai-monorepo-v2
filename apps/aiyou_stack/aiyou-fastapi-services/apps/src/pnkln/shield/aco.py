@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ACO - Automated Compliance & Oversight
 Defense-Grade Wrapper for Judge 6 to enable Continuous ATO.
 
@@ -11,7 +9,7 @@ from enum import Enum
 
 
 # Mock JudgeSix to avoid Pydantic import issues during Phase 3 scaffold
-# In production, this imports from pnkln.core.Claude_Code_6_pipeline
+# In production, this imports from pnkln.core.judge_six_pipeline
 class ValidationResult(Enum):
     APPROVED = "APPROVED"
     BLOCKED = "BLOCKED"

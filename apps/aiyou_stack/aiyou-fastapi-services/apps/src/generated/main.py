@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from flask import Flask, jsonify
 
 app = Flask(__name__)

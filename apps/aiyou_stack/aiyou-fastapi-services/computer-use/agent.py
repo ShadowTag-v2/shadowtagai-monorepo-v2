@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Computer-Use Agent
 
 Safety-controlled browser automation agent using Gemini 2.5 Computer-Use API.

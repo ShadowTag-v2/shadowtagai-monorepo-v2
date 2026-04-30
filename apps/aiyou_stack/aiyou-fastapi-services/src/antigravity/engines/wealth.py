@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # /antigravity/engines/wealth.py
 """MODERN MAGIC FORMULA
 Philosophy: Greenblatt (EBIT/EV) + Crypto Staking Yield

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Multi-Source Integrations for Gemini Ingestion Layer
 
 Concrete implementations for:

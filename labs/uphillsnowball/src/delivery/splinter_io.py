@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Splinter Distribution Moat — Information Operations (J-39).
 
 Every time Uphill Snowball's Judge 6.1 engine averts a Sullivan & Cromwell

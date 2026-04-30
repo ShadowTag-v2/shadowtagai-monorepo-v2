@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Firestore Composite Indexes for Verb Ledger Queries
+ *
+ * Defines indexes needed for War Room analytical queries.
+ * Deploy with: firebase deploy --only firestore:indexes
+ *
+ * @see verb_ledger.py — Data model
+ * @see WAR_ROOM_ARCHITECTURE.md — Query patterns
+ */
+
 {
   "indexes": [
     {

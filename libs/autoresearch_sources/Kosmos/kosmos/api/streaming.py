@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Server-Sent Events (SSE) Streaming Endpoint.
 

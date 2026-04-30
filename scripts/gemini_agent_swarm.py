@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """scripts/gemini_agent_swarm.py
 Gemini Agent Swarm — replaces n-autoresearch/Kosmos/BioAgents with a Gemini-native multi-agent loop.
 
@@ -128,7 +126,7 @@ CRITIQUE VERDICT: {verdict}
 Output a JSON object with keys:
   "directive": "final one-paragraph implementation instruction for Cor"
   "files_to_change": ["list of files"]
-  "Cor_Claude_Code_6_gate": "pass | warn | block"
+  "judge6_gate": "pass | warn | block"
   "summary": "≤ 140-char tweet-length summary"
 """
 
@@ -227,7 +225,7 @@ async def run_swarm(query: str) -> dict:
         "critique": crit_data,
         "architect_directive": arch_data,
     }
-    logger.info("Swarm complete. Cor_Claude_Code_6 gate: %s", arch_data.get("Cor_Claude_Code_6_gate", "?"))
+    logger.info("Swarm complete. Judge6 gate: %s", arch_data.get("judge6_gate", "?"))
     return output
 
 

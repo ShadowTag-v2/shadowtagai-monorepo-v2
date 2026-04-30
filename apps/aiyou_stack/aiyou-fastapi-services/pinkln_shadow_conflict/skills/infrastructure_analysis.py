@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Infrastructure Analysis Skill - pinkln Agent Architecture System
 
 This skill provides comprehensive analysis capabilities for infrastructure components
@@ -81,7 +79,7 @@ class InfrastructureAnalysisSkill:
     """
 
     # Judge 6 Specification
-    Claude_Code_6_SPEC = SystemSpec(
+    JUDGE_SIX_SPEC = SystemSpec(
         name="Judge 6",
         system_type=SystemType.JUDGE,
         architecture="Hybrid Gemini+PyTorch on GKE",
@@ -544,10 +542,10 @@ Obsess Over Details, Simplify Ruthlessly, Iterate to Excellence.
 # Convenience functions
 
 
-def analyze_Claude_Code_6() -> AnalysisResult:
+def analyze_judge_six() -> AnalysisResult:
     """Quick analysis of Judge 6 system."""
     skill = InfrastructureAnalysisSkill()
-    return skill.analyze_system(skill.Claude_Code_6_SPEC)
+    return skill.analyze_system(skill.JUDGE_SIX_SPEC)
 
 
 def analyze_gemini_ingestion() -> AnalysisResult:
@@ -559,7 +557,7 @@ def analyze_gemini_ingestion() -> AnalysisResult:
 def compare_judge_and_ingestion() -> dict[str, Any]:
     """Compare Judge 6 and Gemini Ingestion Layer."""
     skill = InfrastructureAnalysisSkill()
-    return skill.comparative_analysis(skill.Claude_Code_6_SPEC, skill.GEMINI_INGESTION_SPEC)
+    return skill.comparative_analysis(skill.JUDGE_SIX_SPEC, skill.GEMINI_INGESTION_SPEC)
 
 
 if __name__ == "__main__":
@@ -572,7 +570,7 @@ if __name__ == "__main__":
 
     # Analyze Judge 6
     print("\n--- Judge 6 Analysis ---")
-    judge_result = skill.analyze_system(skill.Claude_Code_6_SPEC)
+    judge_result = skill.analyze_system(skill.JUDGE_SIX_SPEC)
     print(f"Strengths: {len(judge_result.strengths)}")
     print(f"Recommendations: {len(judge_result.recommendations)}")
     print(f"Confidence: {judge_result.confidence_score:.2%}")
@@ -586,6 +584,6 @@ if __name__ == "__main__":
 
     # Comparative analysis
     print("\n--- Comparative Analysis ---")
-    comparison = skill.comparative_analysis(skill.Claude_Code_6_SPEC, skill.GEMINI_INGESTION_SPEC)
+    comparison = skill.comparative_analysis(skill.JUDGE_SIX_SPEC, skill.GEMINI_INGESTION_SPEC)
     print(f"Role Relationship: {comparison['role_contrast']['relationship']}")
     print(f"Combined Recommendations: {len(comparison['combined_recommendations'])}")

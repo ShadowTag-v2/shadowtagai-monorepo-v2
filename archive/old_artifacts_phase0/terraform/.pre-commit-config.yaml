@@ -1,0 +1,38 @@
+# Checkov pre-commit hook configuration
+# Item 17: Wire Checkov into pre-commit hooks
+repos:
+  - repo: https://github.com/bridgecrewio/checkov
+    rev: '3.2.520'
+    hooks:
+      - id: checkov
+        name: Checkov Terraform Security Scan
+        entry: checkov
+        language: python
+        files: \.tf$
+        args:
+          - '--framework'
+          - 'terraform'
+          - '--quiet'
+          - '--compact'
+          - '--skip-check'
+          - 'CKV_GCP_41'  # SA User role needed for CI/CD
+        pass_filenames: false
+        types: [terraform]
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.105.0
+    hooks:
+      - id: terraform_fmt
+        name: Terraform Format
+      - id: terraform_validate
+        name: Terraform Validate
+      - id: terraform_tflint
+        name: TFLint
+        args:
+          - '--args=--config=__GIT_WORKING_DIR__/terraform/.tflint.hcl'
+
+  - repo: https://github.com/betterleaks/betterleaks
+    rev: v9.0.0
+    hooks:
+      - id: betterleaks
+        name: Betterleaks Secret Scanner

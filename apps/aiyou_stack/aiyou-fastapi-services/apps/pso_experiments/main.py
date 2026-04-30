@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Minimal entry‑point to verify that the PSO backend works.
 Run:
     $ python -m pso_experiments.main

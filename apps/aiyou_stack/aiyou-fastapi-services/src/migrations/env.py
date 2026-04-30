@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Alembic environment configuration for database migrations."""
 
 from logging.config import fileConfig

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Digital Services Act (DSA) Compliance Module
 
 Implements the EU Digital Services Act requirements for online platforms.

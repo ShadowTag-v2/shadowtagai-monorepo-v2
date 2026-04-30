@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Rollout Tracker - Track agent rollouts matching paper metrics (Issue #58).
 

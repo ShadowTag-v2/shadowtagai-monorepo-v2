@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """11x Browser Extractor — Google AI Mode Research Extraction.
 
 Playwright-based script that navigates Google AI Mode, executes a research
@@ -10,7 +8,7 @@ query, waits for the response to fully render, then extracts:
   - Any inline code blocks
 
 This is the "Brainstem Layer" of the Tri-Partite Cognitive Architecture
-(TACSOP 4 Cor_Kairos, Core Truth #12). It provides zero-latency web research
+(TACSOP 4 Kairos, Core Truth #12). It provides zero-latency web research
 capability by hijacking the browser's existing Google session.
 
 Usage:

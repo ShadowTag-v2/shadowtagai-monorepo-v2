@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """scripts/last30days_to_ingest.py — last30days skill → IngestStore bridge.
 ------------------------------------------------------------------------
 Runs the last30days research skill for a given topic and funnels its

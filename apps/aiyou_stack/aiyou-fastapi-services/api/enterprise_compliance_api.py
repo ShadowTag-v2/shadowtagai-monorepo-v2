@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Enterprise Compliance Certificate API
 "AI that passes audit" vs "AI that answers fast"
 

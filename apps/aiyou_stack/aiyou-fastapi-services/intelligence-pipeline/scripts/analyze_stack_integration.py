@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Stack Integration Analyzer
 
 Analyzes the integration between Intelligence Pipeline (upstream collection)
@@ -352,7 +350,7 @@ class StackIntegrationAnalyzer:
 
         # Note: Judge 6 specs would be loaded from separate branch
         # For now, use placeholder
-        specs["COR_CLAUDE_CODE_6_SPEC"] = (
+        specs["JUDGE6_SPEC"] = (
             "[Judge 6 specs to be loaded from judge-six-improvement-analysis branch]"
         )
 

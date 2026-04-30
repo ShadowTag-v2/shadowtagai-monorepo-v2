@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 class EchoProtocol:
     def __init__(self, max_tokens=100000):
         self.max_tokens = max_tokens

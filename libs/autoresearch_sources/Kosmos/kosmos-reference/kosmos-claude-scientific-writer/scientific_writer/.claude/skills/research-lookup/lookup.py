@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Research Lookup Tool for Claude Code
 Performs research queries using Perplexity Sonar Pro via OpenRouter.

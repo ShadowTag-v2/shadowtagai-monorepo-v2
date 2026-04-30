@@ -53,13 +53,6 @@ title = "Monorepo-Uphillsnowball Gitleaks Config"
     '''\.agent/incoming_repos/''',
     '''\.env\.backup''',
     '''\.next/''',
-    # ── Ephemeral caches and internal tracking (audited 2026-04-28) ──
-    '''\.tmp\.driveupload/''',
-    '''\.beads/''',
-    '''\.venv-3\.14-bak/''',
-    '''\.stitch-sdk/''',
-    '''\.reports/''',
-    '''scripts/''',
     # ── HIGH-risk third-party allowlist (audited 2026-04-19) ──
     # Stripe sk_test_ key: Odoo payment_stripe test fixture (NOT our account)
     # Vault s.Fg8w token: OpenTofu website example doc (NOT live)

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-"""Corrected Async Latency Validator for Cor_Claude_Code_6 Service
+"""Corrected Async Latency Validator for Judge6 Service
 
 CRITICAL FIXES APPLIED:
 1. Changed from ThreadPoolExecutor to async/await with httpx
@@ -56,7 +54,7 @@ class ErrorType(Enum):
 class ValidationConfig:
     """Configuration for latency validation"""
 
-    endpoint: str = "https://Cor_Claude_Code_6.shadowtagai.ai/enforce"
+    endpoint: str = "https://judge6.shadowtagai.ai/enforce"
     iterations: int = 1000
     concurrency: int = 50
     connect_timeout: float = 5.0
@@ -243,7 +241,7 @@ class LatencyValidator:
         """Build request payload"""
         return {
             "request_id": f"val-{request_id}",
-            "model": "Cor_Claude_Code_6-gemini",
+            "model": "judge6-gemini",
             "prompt": "Validate this request for ATP519 compliance.",
             "max_tokens": 100,
             "temperature": 0.0,
@@ -357,7 +355,7 @@ async def main():
     """Main execution"""
     # Configuration
     config = ValidationConfig(
-        endpoint="https://Cor_Claude_Code_6.shadowtagai.ai/enforce",
+        endpoint="https://judge6.shadowtagai.ai/enforce",
         iterations=1000,
         concurrency=50,
         connect_timeout=5.0,

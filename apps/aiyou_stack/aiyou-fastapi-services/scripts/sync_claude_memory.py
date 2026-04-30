@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Sync Claude Code session to memory bank (GCS + Firestore + CLAUDE.md)
 
 Usage:

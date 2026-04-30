@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Ethical Crawling Module
 
 Implements responsible web scraping practices:

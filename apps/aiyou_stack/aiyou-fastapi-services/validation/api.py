@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack - Judge 6 Validation API
 
 FastAPI service exposing validation endpoints across 4 namespaces:
@@ -18,23 +16,19 @@ from prometheus_client import Counter, Histogram, make_asgi_app
 from pydantic import BaseModel
 
 from ingestion.classification.tier_classifier import IngestedItem, TierScore
-from validation.Cor_Claude_Code_6 import (
-    Cor_Claude_Code_6Validator,
-    ValidationResult,
-    ValidationStatus,
-)
+from validation.judge6 import Judge6Validator, ValidationResult, ValidationStatus
 
 logger = structlog.get_logger(__name__)
 
 
 # Prometheus metrics
 validation_requests = Counter(
-    "Cor_Claude_Code_6_validation_requests_total",
+    "judge6_validation_requests_total",
     "Total validation requests",
     ["namespace", "status"],
 )
 validation_latency = Histogram(
-    "Cor_Claude_Code_6_validation_latency_seconds",
+    "judge6_validation_latency_seconds",
     "Validation latency",
     ["namespace"],
 )
@@ -121,15 +115,15 @@ app.mount("/metrics", metrics_app)
 
 
 # Global validator instance
-_validator: Cor_Claude_Code_6Validator | None = None
+_validator: Judge6Validator | None = None
 
 
-def get_validator() -> Cor_Claude_Code_6Validator:
+def get_validator() -> Judge6Validator:
     """Dependency injection for validator."""
     global _validator
 
     if _validator is None:
-        _validator = Cor_Claude_Code_6Validator()
+        _validator = Judge6Validator()
 
     return _validator
 
@@ -138,12 +132,12 @@ def get_validator() -> Cor_Claude_Code_6Validator:
 async def startup_event():
     """Initialize validator on startup."""
     global _validator
-    _validator = Cor_Claude_Code_6Validator()
-    logger.info("Cor_Claude_Code_6_api_started")
+    _validator = Judge6Validator()
+    logger.info("judge6_api_started")
 
 
 @app.get("/health", response_model=HealthResponse)
-async def health_check(validator: Cor_Claude_Code_6Validator = Depends(get_validator)):  # noqa: B008
+async def health_check(validator: Judge6Validator = Depends(get_validator)):  # noqa: B008
     """Health check endpoint."""
     stats = validator.get_stats()
 
@@ -158,7 +152,7 @@ async def health_check(validator: Cor_Claude_Code_6Validator = Depends(get_valid
 @app.post("/validate", response_model=ValidationResponse)
 async def validate_item(
     request: ValidationRequest,
-    validator: Cor_Claude_Code_6Validator = Depends(get_validator),  # noqa: B008
+    validator: Judge6Validator = Depends(get_validator),  # noqa: B008
 ):
     """Validate a single item.
 
@@ -186,7 +180,7 @@ async def validate_item(
 @app.post("/validate/batch", response_model=BatchValidationResponse)
 async def validate_batch(
     request: BatchValidationRequest,
-    validator: Cor_Claude_Code_6Validator = Depends(get_validator),  # noqa: B008
+    validator: Judge6Validator = Depends(get_validator),  # noqa: B008
 ):
     """Validate multiple items in batch.
 
@@ -243,7 +237,7 @@ async def validate_batch(
 
 
 @app.get("/stats")
-async def get_stats(validator: Cor_Claude_Code_6Validator = Depends(get_validator)):  # noqa: B008
+async def get_stats(validator: Judge6Validator = Depends(get_validator)):  # noqa: B008
     """Get validation statistics."""
     return validator.get_stats()
 

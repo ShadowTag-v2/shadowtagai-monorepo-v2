@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GamePort gaming integration models.
 
 Handles game catalog, sessions, and publisher partnerships.

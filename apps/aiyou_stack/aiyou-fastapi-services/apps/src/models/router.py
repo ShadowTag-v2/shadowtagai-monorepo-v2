@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Token-level request routing inspired by Aegaeon."""
 
 from __future__ import annotations

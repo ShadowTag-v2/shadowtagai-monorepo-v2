@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """pnkln Spec Generator - Unified JSON config generator for pnkln platform.
 Namespace: pnkln
 Generated outputs: pnkln/out/*.json

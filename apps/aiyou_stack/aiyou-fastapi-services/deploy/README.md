@@ -10,11 +10,11 @@ Production-ready Kubernetes manifests for deploying Judge 6 inference workload w
 └─────────────────┬───────────────────────────────────┘
                   │
 ┌─────────────────▼───────────────────────────────────┐
-│  Service: Cor.Claude_Code_6 (ClusterIP)                        │
+│  Service: judge6 (ClusterIP)                        │
 └─────────────────┬───────────────────────────────────┘
                   │
 ┌─────────────────▼───────────────────────────────────┐
-│  Deployment: Cor.Claude_Code_6                                  │
+│  Deployment: judge6                                  │
 │  ├─ 2-6 Replicas (HPA controlled)                   │
 │  ├─ GPU: NVIDIA L4 or H100                          │
 │  ├─ Priority: Critical                              │
@@ -37,8 +37,8 @@ Production-ready Kubernetes manifests for deploying Judge 6 inference workload w
 
    ```bash
    # Upload model files
-   gsutil -m cp -r /path/to/Cor.Claude_Code_6-model/* \
-     gs://YOUR_BUCKET/models/Cor.Claude_Code_6/
+   gsutil -m cp -r /path/to/judge6-model/* \
+     gs://YOUR_BUCKET/models/judge6/
    ```
 
 4. **Workload Identity** configured (done by Terraform):
@@ -64,10 +64,10 @@ iam.gke.io/gcp-service-account: pnkln-gke-cluster-workload@YOUR_PROJECT_ID.iam.g
 **03-configmap.yaml**:
 
 ```yaml
-GCS_BUCKET: 'gs://YOUR_BUCKET/models/Cor.Claude_Code_6'
+GCS_BUCKET: 'gs://YOUR_BUCKET/models/judge6'
 ```
 
-**04-Cor.Claude_Code_6-deployment.yaml**:
+**04-judge6-deployment.yaml**:
 
 - Line 136: `bucketName: YOUR_BUCKET`
 - Line 67: `cloud.google.com/gke-accelerator: nvidia-l4` (or `nvidia-h100-80gb`)
@@ -85,7 +85,7 @@ kubectl apply -f .
 2. `01-priority-class.yaml` - Scheduling priorities
 3. `02-service-account.yaml` - Workload identity
 4. `03-configmap.yaml` - Configuration
-5. `04-Cor.Claude_Code_6-deployment.yaml` - Main workload
+5. `04-judge6-deployment.yaml` - Main workload
 6. `05-service.yaml` - Load balancing
 7. `06-hpa.yaml` - Autoscaling
 8. `07-pdb.yaml` - Disruption budget
@@ -101,7 +101,7 @@ kubectl get ns pnkln
 kubectl get pods -n pnkln
 
 # Wait for ready state
-kubectl wait --for=condition=ready pod -l app=Cor.Claude_Code_6 -n pnkln --timeout=300s
+kubectl wait --for=condition=ready pod -l app=judge6 -n pnkln --timeout=300s
 
 # Check services
 kubectl get svc -n pnkln
@@ -113,7 +113,7 @@ kubectl get hpa -n pnkln
 ### 4. Check GPU Allocation
 
 ```bash
-kubectl describe pod -n pnkln -l app=Cor.Claude_Code_6 | grep -A5 "Limits:"
+kubectl describe pod -n pnkln -l app=judge6 | grep -A5 "Limits:"
 ```
 
 Expected output:
@@ -208,17 +208,17 @@ resources:
 
 ```bash
 # Stream logs
-kubectl logs -n pnkln -l app=Cor.Claude_Code_6 -f
+kubectl logs -n pnkln -l app=judge6 -f
 
 # Logs from specific pod
-kubectl logs -n pnkln <pod-name> -c Cor.Claude_Code_6-inference
+kubectl logs -n pnkln <pod-name> -c judge6-inference
 ```
 
 ### Check Metrics Endpoint
 
 ```bash
 # Port forward to local machine
-kubectl port-forward -n pnkln svc/Cor.Claude_Code_6-metrics 8080:8080
+kubectl port-forward -n pnkln svc/judge6-metrics 8080:8080
 
 # Query metrics
 curl http://localhost:8080/metrics
@@ -236,7 +236,7 @@ Key metrics to monitor:
 Access dashboards in GCP Console:
 
 ```
-Navigation → Kubernetes Engine → Workloads → Cor.Claude_Code_6
+Navigation → Kubernetes Engine → Workloads → judge6
 ```
 
 View:
@@ -287,7 +287,7 @@ kubectl logs -n pnkln <pod-name> -c model-loader
 **Solution**: Verify model uploaded:
 
 ```bash
-gsutil ls gs://YOUR_BUCKET/models/Cor.Claude_Code_6/
+gsutil ls gs://YOUR_BUCKET/models/judge6/
 ```
 
 **Issue**: `Permission denied accessing GCS`
@@ -308,7 +308,7 @@ kubectl describe sa pnkln-workload -n pnkln
 2. **Verify quantization enabled**:
 
    ```bash
-   kubectl get cm Cor.Claude_Code_6-config -n pnkln -o yaml | grep QUANTIZATION
+   kubectl get cm judge6-config -n pnkln -o yaml | grep QUANTIZATION
    ```
 
 3. **Check concurrent requests**:
@@ -320,13 +320,13 @@ kubectl describe sa pnkln-workload -n pnkln
 4. **Scale up replicas manually**:
 
    ```bash
-   kubectl scale deployment Cor.Claude_Code_6 -n pnkln --replicas=4
+   kubectl scale deployment judge6 -n pnkln --replicas=4
    ```
 
 ### HPA Not Scaling
 
 ```bash
-kubectl describe hpa Cor.Claude_Code_6-hpa -n pnkln
+kubectl describe hpa judge6-hpa -n pnkln
 ```
 
 **Issue**: `unable to get metrics`
@@ -345,25 +345,25 @@ kubectl get deployment metrics-server -n kube-system
 
 ```bash
 # Update image
-kubectl set image deployment/Cor.Claude_Code_6 \
-  Cor.Claude_Code_6-inference=vllm/vllm-openai:v0.x.x \
+kubectl set image deployment/judge6 \
+  judge6-inference=vllm/vllm-openai:v0.x.x \
   -n pnkln
 
 # Watch rollout
-kubectl rollout status deployment/Cor.Claude_Code_6 -n pnkln
+kubectl rollout status deployment/judge6 -n pnkln
 ```
 
 ### Rollback
 
 ```bash
 # View history
-kubectl rollout history deployment/Cor.Claude_Code_6 -n pnkln
+kubectl rollout history deployment/judge6 -n pnkln
 
 # Rollback to previous
-kubectl rollout undo deployment/Cor.Claude_Code_6 -n pnkln
+kubectl rollout undo deployment/judge6 -n pnkln
 
 # Rollback to specific revision
-kubectl rollout undo deployment/Cor.Claude_Code_6 -n pnkln --to-revision=2
+kubectl rollout undo deployment/judge6 -n pnkln --to-revision=2
 ```
 
 ## Cleanup
@@ -386,10 +386,10 @@ kubectl delete namespace pnkln
 
 ```bash
 # Scale to 0 (GPU nodes will scale to zero)
-kubectl scale deployment Cor.Claude_Code_6 -n pnkln --replicas=0
+kubectl scale deployment judge6 -n pnkln --replicas=0
 
 # Scale back up
-kubectl scale deployment Cor.Claude_Code_6 -n pnkln --replicas=2
+kubectl scale deployment judge6 -n pnkln --replicas=2
 ```
 
 ### Monitor Costs
@@ -425,11 +425,11 @@ All secrets in Secret Manager (not ConfigMap):
 
 ```bash
 # Create secret
-gcloud secrets create Cor.Claude_Code_6-api-key \
+gcloud secrets create judge6-api-key \
   --data-file=- <<< "your-api-key"
 
 # Grant access
-gcloud secrets add-iam-policy-binding Cor.Claude_Code_6-api-key \
+gcloud secrets add-iam-policy-binding judge6-api-key \
   --member="serviceAccount:pnkln-gke-cluster-workload@PROJECT_ID.iam.gserviceaccount.com" \
   --role="roles/secretmanager.secretAccessor"
 ```
@@ -441,7 +441,7 @@ env:
   - name: API_KEY
     valueFrom:
       secretKeyRef:
-        name: Cor.Claude_Code_6-api-key
+        name: judge6-api-key
         key: latest
 ```
 

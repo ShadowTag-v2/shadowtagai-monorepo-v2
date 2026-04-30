@@ -40,7 +40,7 @@ We have consolidated 7 verticals into one governing architecture: **The pnkln Co
 - **The Mission**: Military-grade orchestration and governance for the Sovereign AI.
 - **The Assets**:
   - **Antigravity**: The Master Agent Controller (`antigravity.py`).
-  - **Judge 6**: The <500µs Governance Engine (`Cor.Claude_Code_6_enforcement.py`).
+  - **Judge 6**: The <500µs Governance Engine (`judge6_enforcement.py`).
   - **Kosmos**: The 5,590-Agent Swarm.
 - **Current State**: **ACTIVE**. The beating heart of the 41GB codebase.
 

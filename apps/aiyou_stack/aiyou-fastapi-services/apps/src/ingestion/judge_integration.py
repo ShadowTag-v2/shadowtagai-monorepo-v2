@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Judge 6 Integration for End-to-End Flow Analysis.
 
 Bridges validation (Judge 6) with intelligence gathering (Ingestion Layer):
@@ -54,7 +52,7 @@ class ValidationResult:
             self.timestamp = datetime.now()
 
 
-class Cor_Claude_Code_6Integrator:
+class Judge6Integrator:
     """Integrates Ingestion Layer with Judge 6 validation framework.
 
     Functions:

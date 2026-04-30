@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Source Collectors for Gemini Ingestion Layer
 Real API integrations for YouTube, Twitter, News, Academic sources
 """

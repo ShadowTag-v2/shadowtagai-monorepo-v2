@@ -17,7 +17,7 @@ colors:
   outline-variant: "#3A3A52"
   surface-tint: "#8B7BCF"
   primary: "#8B7BCF"
-  on-primary: "#1A1030"
+  on-primary: "#FFFFFF"
   primary-container: "#291E44"
   on-primary-container: "#C4B8E8"
   inverse-primary: "#53478A"
@@ -52,8 +52,8 @@ colors:
   on-success: "#0A2E14"
   warning: "#FFD43B"
   on-warning: "#2E2710"
-  accent-glow: "#8B7BCF"
-  accent-cyan: "#22B8F0"
+  accent-glow: "#8B7BCF26"
+  accent-cyan: "#22B8F042"
 typography:
   display-lg:
     fontFamily: Inter
@@ -238,7 +238,7 @@ The color strategy is dark-mode-first with purple as the dominant brand hue. The
 - **Surface Colors:** A monochromatic dark blue-black range (`#0F0F1A` base) with purple undertones. No pure black — the darkest value is `#080812`.
 - **Primary:** Muted lavender-purple `#8B7BCF` — softer than UMAC's `#57458F` for screen readability at small sizes. The UMAC purple lives in `primary-container` (#291E44) for dark bg sections.
 - **Secondary:** Blue-mist `#A0AED1` from UMAC's accent palette. Professional, calming tone for secondary CTAs and info surfaces.
-- **Accent Glow:** Primary hue at 15% opacity (applied via rgba at component level) for ambient hover/focus effects. UMAC's `rgba(34,184,240,0.26)` cyan accent preserved as `accent-cyan` (base hue `#22B8F0`, alpha applied at usage site).
+- **Accent Glow:** Translucent primary at 15% for ambient hover/focus effects. UMAC's `rgba(34,184,240,0.26)` cyan accent preserved as `accent-cyan` for subtle highlights.
 - **Semantic:** Standard error (red), success (green), warning (amber). UMAC's stock-ticker red (#DF0000) informed the error palette.
 - **WCAG:** All foreground-on-background combinations target AA minimum (4.5:1 ratio). `on-surface` (#E8E8F0) on `surface` (#0F0F1A) clears 15:1.
 

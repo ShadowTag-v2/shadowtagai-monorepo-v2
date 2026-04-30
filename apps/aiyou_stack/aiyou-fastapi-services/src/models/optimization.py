@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Doing Less Better Results - Life/Work Optimization Framework
 8 key areas for focused improvement
 """

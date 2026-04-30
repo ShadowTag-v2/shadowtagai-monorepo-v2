@@ -32,7 +32,7 @@ export class JudgeSixAnalyzerAgent extends BaseAgent {
     system: masterPromptFramework.generatePrompt('judge-6'),
 
     context: [
-      'Claude_Code_6.py implementation',
+      'judge_six.py implementation',
       'Hybrid Gemini+PyTorch architecture specs',
       'Performance benchmarks (p50, p95, p99 latencies)',
       'Throughput metrics and capacity limits',
@@ -107,7 +107,7 @@ Very high confidence due to production telemetry and detailed performance logs.`
     steps: [
       {
         name: 'Code Review',
-        description: 'Review Claude_Code_6.py implementation',
+        description: 'Review judge_six.py implementation',
         action: 'Analyze code structure, AI integration, validation logic',
         validation: 'Understand system design and decision flow',
       },
@@ -157,7 +157,7 @@ Very high confidence due to production telemetry and detailed performance logs.`
   ): Promise<void> {
     switch (step.name) {
       case 'Code Review':
-        result.recommendations?.push('Review Claude_Code_6.py implementation');
+        result.recommendations?.push('Review judge_six.py implementation');
         break;
       case 'Performance Analysis':
         result.recommendations?.push('Analyze latency metrics and SLA compliance');

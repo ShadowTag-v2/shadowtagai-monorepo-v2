@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Cor.56 Impact Tracker
 Measures the health and velocity of the Antigravity OS.
 

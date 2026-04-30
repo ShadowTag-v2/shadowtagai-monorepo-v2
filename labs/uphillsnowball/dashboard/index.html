@@ -194,7 +194,7 @@
     ];
 
     // ── State ──
-    let _connected = false;
+    let connected = false;
     const stats = { completed: 0, blocked: 0, tokens: 0, warnings: 0 };
 
     // ── DOM Refs ──
@@ -218,7 +218,7 @@
 
     // ── Connection Status ──
     function setConnected(state) {
-      _connected = state;
+      connected = state;
       const dot = connStatus.querySelector('.dot');
       if (state) {
         statusDot.className = 'dot live';
@@ -302,6 +302,7 @@
         renderAgents(data);
       } catch (e) {
         setConnected(false);
+        console.warn('Agent fetch failed:', e.message);
       }
     }
 
@@ -318,6 +319,7 @@
         updateStats();
       } catch (e) {
         setConnected(false);
+        console.warn('Task fetch failed:', e.message);
       }
     }
 

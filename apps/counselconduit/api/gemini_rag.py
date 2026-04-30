@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/gemini_rag.py
 """Gemini RAG Pipeline for CounselConduit.
 

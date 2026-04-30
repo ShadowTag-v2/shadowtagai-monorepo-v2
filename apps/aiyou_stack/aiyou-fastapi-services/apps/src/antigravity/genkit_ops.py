@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Antigravity Genkit Ops.
 Defines Genkit flows for operational tasks within the Antigravity ecosystem.
 """

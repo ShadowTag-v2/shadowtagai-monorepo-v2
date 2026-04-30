@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """MCP Code Execution Server for Judge 6 v2.0
 Production-grade FastAPI implementation with gVisor sandbox integration
 

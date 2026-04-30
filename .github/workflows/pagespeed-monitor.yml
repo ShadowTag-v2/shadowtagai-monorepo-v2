@@ -10,9 +10,6 @@ concurrency:
   group: pagespeed-monitor-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-
 jobs:
   pagespeed:
     runs-on: ubuntu-latest

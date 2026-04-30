@@ -70,11 +70,11 @@ var result = await kernel.RunAsync(plan);
 
 ### ShadowTagAi Adaptation: Judge 6 Validation Pipeline
 
-**Implementation:** `/shadowtagai/core/Claude_Code_6_pipeline.py`
+**Implementation:** `/shadowtagai/core/judge_six_pipeline.py`
 
 ```python
 # ShadowTagAi Sequential Pipeline
-pipeline = SequentialPipeline("Claude_Code_6_validation")
+pipeline = SequentialPipeline("judge_six_validation")
 
 # Stage 1: JR Engine scan (<500μs)
 pipeline.add_stage("jr_engine_scan", jr_scan, timeout_ms=5.0)
@@ -288,7 +288,7 @@ def shadowtag_embed_video(
 │   ├── __init__.py                     # Core exports
 │   ├── cor_orchestrator.py             # SK Patterns 1-3 (500 lines)
 │   ├── jr_engine.py                    # Compliance Framework framework (400 lines)
-│   ├── Claude_Code_6_pipeline.py           # Pattern 1 implementation (350 lines)
+│   ├── judge_six_pipeline.py           # Pattern 1 implementation (350 lines)
 │   └── monte_carlo_risk.py             # Pattern 2 implementation (300 lines)
 ├── tools/
 │   ├── __init__.py                     # Tool exports
@@ -299,7 +299,7 @@ def shadowtag_embed_video(
 /tests/
 ├── test_cor_orchestrator.py            # Pattern 1-2 tests
 ├── test_jr_engine.py                   # Compliance Framework tests
-├── test_Claude_Code_6.py                   # Pipeline SLA tests
+├── test_judge_six.py                   # Pipeline SLA tests
 └── test_monte_carlo.py                 # Concurrent execution tests
 
 /docs/
@@ -332,7 +332,7 @@ pytest tests/ -v
 
 # Performance benchmarks
 pytest tests/test_jr_engine.py::TestJREngine::test_quick_scan_performance
-pytest tests/test_Claude_Code_6.py::TestJudgeSixPipeline::test_validate_sla_compliance
+pytest tests/test_judge_six.py::TestJudgeSixPipeline::test_validate_sla_compliance
 pytest tests/test_monte_carlo.py::TestMonteCarloRiskAssessment::test_evaluate_scenarios_performance
 ```
 
@@ -436,7 +436,7 @@ Based on COR.54 analysis, ShadowTagAi + SK patterns address:
 ### Example 1: Judge 6 Validation (Pattern 1)
 
 ```python
-from shadowtagai.core.Claude_Code_6_pipeline import JudgeSixPipeline
+from shadowtagai.core.judge_six_pipeline import JudgeSixPipeline
 
 # Initialize pipeline
 judge = JudgeSixPipeline()

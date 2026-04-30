@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """pinkln Agent Architecture System - Claude Code Integration
 
 This module provides seamless integration between the pinkln Agent Architecture

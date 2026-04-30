@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Integration tests for complete analysis pipeline (Phase 6).
 

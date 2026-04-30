@@ -73,7 +73,7 @@
     },
     "sequential-thinking": {
       "command": "npx",
-      "args": ["-y", "@anthropic-ai/sequential-thinking-mcp@latest"],
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking@latest"],
       "env": {},
       "capability_owner": true,
       "owns": ["sequentialthinking"],
@@ -92,7 +92,6 @@
         "SWITCHBOARD_WORKSPACE_ROOT": "."
       },
       "note": "Routing firewall and task orchestrator. Queues external data retrieval without exposing raw API keys to the agent context."
-    },
     "mnemos-memory": {
       "command": "node",
       "args": ["external_repos/mnemos/build/index.js"],

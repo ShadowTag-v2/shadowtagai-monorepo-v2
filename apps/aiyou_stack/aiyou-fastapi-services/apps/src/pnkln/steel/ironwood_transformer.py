@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Ironwood Transformer Block
 Architectural Equivalent to tinytorch_transformer.py but powered by JAX/Flax.
 Optimized for Google Cloud TPU v5e/v6.

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Accessibility and safety compliance API endpoints
 Implements WCAG 2.2, COPPA, and Age Appropriate Design Code
 """

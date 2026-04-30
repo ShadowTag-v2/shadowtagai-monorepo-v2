@@ -294,7 +294,7 @@ The "Gucci Hunt" of January 2026 recovered:
 
 - `agents/` - Multi-agent framework
 - `autoresearch/` - 650-agent swarm
-- `Cor.Claude_Code_6/` - Compliance Framework governance
+- `judge6/` - Compliance Framework governance
 - `shadowtag/` - Cryptographic watermarking
 - `codepmcs/` - 50-agent code remediation
 

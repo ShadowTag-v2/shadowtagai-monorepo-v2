@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Vertex AI Integration for Platform Intelligence
 
 Enhances platform with:

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AI Assistant service with conversation management and context handling."""
 
 import uuid

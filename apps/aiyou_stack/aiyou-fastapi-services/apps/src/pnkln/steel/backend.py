@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Backend abstraction layer for TinyTorch.
 Allows switching between numpy (CPU) and jax.numpy (TPU/GPU) via environment variable.
 """

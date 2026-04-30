@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 export default function BlogTeaser() {
   return (
     <section className="py-20 md:py-28 bg-surface-lowest" id="blog">
@@ -18,13 +16,9 @@ export default function BlogTeaser() {
             discoverable. Here&apos;s what that means for your practice and why privilege-first
             infrastructure is no longer optional.
           </p>
-          <button
-            type="button"
-            className="text-sm text-gold/80 hover:text-gold transition-colors cursor-pointer bg-transparent border-none p-0"
-            aria-label="Read the full analysis — coming soon"
-          >
+          <a href="#" className="text-sm text-blue hover:text-primary-text transition-colors">
             Read the full analysis →
-          </button>
+          </a>
         </div>
       </div>
     </section>

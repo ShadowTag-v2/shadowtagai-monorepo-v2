@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Standalone Revenue Engine Server
 Minimal FastAPI server for whiteboard revenue simulation
 """

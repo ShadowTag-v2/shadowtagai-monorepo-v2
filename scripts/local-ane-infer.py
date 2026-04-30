@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import argparse
 import os
 import sys
@@ -22,7 +20,7 @@ def antigravity_local_infer(prompt: str, model: str = "pnkln-logic-8b", require_
         sys.exit(1)
 
     try:
-        # Antigravity explicitly invoking Omega Protocol (ANE) autonomously
+        # Antigravity explicitly invoking Pickle Rick (ANE) autonomously
         dispatch_compute(prompt, model=model)
 
         if require_json:

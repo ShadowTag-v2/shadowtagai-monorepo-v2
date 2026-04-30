@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tests for world model abstract interfaces."""
 
 from abc import ABC

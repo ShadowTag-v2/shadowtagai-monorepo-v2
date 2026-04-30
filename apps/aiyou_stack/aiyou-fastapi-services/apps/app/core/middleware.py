@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Custom middleware for Omega Governance Service"""
 
 import asyncio

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Application configuration using Pydantic Settings"""
 
 from pydantic_settings import BaseSettings

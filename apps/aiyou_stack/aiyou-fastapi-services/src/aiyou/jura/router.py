@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """JuraRouter: Orchestrates cost-aware request routing.
 
 Combines:

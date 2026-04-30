@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FM 6-0: Commander and Staff Organization and Operations
 ========================================================
 

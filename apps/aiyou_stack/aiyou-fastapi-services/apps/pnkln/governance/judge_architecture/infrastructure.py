@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Layer 14–15: Infrastructure Optimizer & Supply Chain Security
 =============================================================
 

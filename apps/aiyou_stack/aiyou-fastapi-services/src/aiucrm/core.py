@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AiUCRM Core Engine
 Military Composite Risk Management System adapted for AI governance
 

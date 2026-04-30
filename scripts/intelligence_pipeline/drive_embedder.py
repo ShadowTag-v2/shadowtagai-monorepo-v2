@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Drive Embedder - Sovereign Memory Ingestion Protocol.
 
 Embeds every .md file in the local data/drive_ingest/markdown/ directory

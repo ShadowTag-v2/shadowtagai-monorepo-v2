@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Vertical-Specific Configurations for 30 Regulated Industries
 
 Each vertical has custom settings for:

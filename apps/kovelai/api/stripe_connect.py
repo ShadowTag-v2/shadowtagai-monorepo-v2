@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """KovelAI Stripe Connect Module — Payment Routing Engine
 
 Track A: Client CC → Stripe Connect → Lawyer's Bank Account

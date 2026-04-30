@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Jurisdiction-Specific Rule Engine
 Handles complex deadline calculations with jurisdiction-specific rules
 """

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pinkln Defense Translator
 Translates Commercial Strategy/Terminology into DoD/Mil-Spec Language.
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Compliance Expert Agent - AI-powered privacy compliance specialist
 Implements GDPR, CCPA, cookie consent, and legal compliance requirements
 """

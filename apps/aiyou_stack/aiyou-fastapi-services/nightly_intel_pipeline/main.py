@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Nightly Intel Pipeline - Main Entry Point
 Local execution script for intelligence gathering and briefing generation
 """

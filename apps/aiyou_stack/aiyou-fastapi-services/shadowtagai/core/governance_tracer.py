@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Governance Tracer - Monetizes transparency via signed audit URLs.
 
 Captures Judge 6 decision logs, uploads to private GCS bucket,

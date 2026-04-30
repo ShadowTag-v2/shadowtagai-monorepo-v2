@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Base Enterprise Adapter Framework
 ==================================
 Foundation for all enterprise system integrations.

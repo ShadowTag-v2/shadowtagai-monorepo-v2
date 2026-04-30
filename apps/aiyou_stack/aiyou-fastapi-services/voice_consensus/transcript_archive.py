@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Transcript Archive System
 Persistent storage and indexing for all consensus queries/responses
 

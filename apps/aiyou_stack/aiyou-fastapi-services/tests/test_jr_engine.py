@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Unit tests for JR Engine (ATP 5-19 risk framework)."""
 
 import pytest

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AI Agent Business Plan - Core Parameters & Models
 Vertical SaaS Model for AI Agent-as-a-Service
 

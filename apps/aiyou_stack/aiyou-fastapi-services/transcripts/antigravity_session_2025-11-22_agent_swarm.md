@@ -62,7 +62,7 @@ Folded in deployment state:
 - **GCP**: acquired-jet-478701-b3, autopilot-cluster-1, us-central1
 
 
-- **Architecture**: K1(ATP_519_SCAN) → K2(Claude_Code_6) → K3(AUDIT), p99≤90ms
+- **Architecture**: K1(ATP_519_SCAN) → K2(JUDGE_SIX) → K3(AUDIT), p99≤90ms
 
 
 - **Pending**: Cloud Build trigger creation, gcloud deployment
@@ -538,7 +538,7 @@ if confidence < 0.80:
 ```
 
 K1: ATP_519_SCAN (Gemini, 40ms, 50KB→2.5KB compression)
-K2: Claude_Code_6 (PyTorch, 12ms, binary classification)
+K2: JUDGE_SIX (PyTorch, 12ms, binary classification)
 K3: AUDIT_COMPRESS (zstd L22, <1ms, 10:1 ratio)
 Total: p99≤90ms | Cost: $0.0003/decision | JR: <500μs
 

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: judge6-core
+  labels:
+    app: judge6
+    doctrine: targeting
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: judge6
+  template:
+    metadata:
+      labels:
+        app: judge6
+    spec:
+      nodeSelector:
+        cloud.google.com/gke-spot: "true"
+      terminationGracePeriodSeconds: 25
+      containers:
+      - name: judge6-engine
+        image: us-docker.pkg.dev/cloudrun/container/hello # Placeholder until build
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+            ephemeral-storage: "1Gi"
+        env:
+        - name: DOCTRINE
+          value: "PRECISION_PERSISTENCE_PROFIT"

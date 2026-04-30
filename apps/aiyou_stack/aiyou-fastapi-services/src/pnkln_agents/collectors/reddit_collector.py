@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Reddit Collector
 Collects posts from AI-related subreddits
 """

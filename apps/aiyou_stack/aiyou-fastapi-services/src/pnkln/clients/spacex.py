@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """SpaceX Starlink Client Stub
 Simulates interacting with a Starlink Flat High Performance Dish.
 """

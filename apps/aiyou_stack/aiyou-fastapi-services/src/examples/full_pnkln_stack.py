@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Full PNKLN Stack Example
 
 Demonstrates all four pillars working together:

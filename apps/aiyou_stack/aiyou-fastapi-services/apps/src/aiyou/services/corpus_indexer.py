@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Corpus Indexer for Elasticsearch
 Indexes documents for Flying n-autoresearch/Kosmos/BioAgents searchable corpus.
 Apertus-style 8.6T token indexing pattern.

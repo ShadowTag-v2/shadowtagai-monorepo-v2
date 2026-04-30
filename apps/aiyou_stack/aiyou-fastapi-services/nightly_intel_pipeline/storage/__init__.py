@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Storage and briefing delivery modules"""
 
 from .briefing import BriefingGenerator

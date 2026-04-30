@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """L5: SuperGrok.3 - Repackage (Static)
 
 Role: The Translator

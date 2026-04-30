@@ -47,7 +47,7 @@ Uphill Snowball separates the control plane from the data plane.
 * External documents from Google Drive (PDFs, EPUBs, etc.) are ingested strictly mapped to `shadowtag-omega-v4` using `langextract`.
 
 ### 3. The 17-Layer Gauntlet
-All generated actions are filtered through the Cor.Claude_Code_6 Sentinel protocols to prevent "Forced Descent" state poisoning. Changes to the VFS (Virtual File System) within `.gemini/` are natively prohibited unless explicitly flagged for system overrides. Open-source models (qwen, llama, anthropic) are actively stripped to preserve FedRAMP enclave segregation.
+All generated actions are filtered through the Judge6 Sentinel protocols to prevent "Forced Descent" state poisoning. Changes to the VFS (Virtual File System) within `.gemini/` are natively prohibited unless explicitly flagged for system overrides. Open-source models (qwen, llama, anthropic) are actively stripped to preserve FedRAMP enclave segregation.
 
 ## ⏺ ///▙▖▙▖▞ THE NAG PROTOCOL & EXECUTION FLYWHEEL
 Because Uphill Snowball is operated by a Solo-Founder (Tiny Teams Thesis) operating at explosive velocities (YOLO Mode), the agents MUST:

@@ -2,7 +2,7 @@
 
 ## Mandatory Startup Commands
 1. **Auth Routing**: `git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git` via SSH (App ID `3018200` for API operations only).
-2. **Run**: `/omega` or `/omega-prd` (see `STEP_BY_STEP_GUIDE.md`).
+2. **Run**: `/pickle` or `/pickle-prd` (see `STEP_BY_STEP_GUIDE.md`).
 3. **Ignite**: `/omega-loop` + `@AGENTS.md` + `@TASK.md` + `@.agent/workflows/live-engine.md` + `@.agent/rules/shadowtag-laws.md`.
 4. **Set Project**: `shadowtag-omega-v4`.
 5. **Resume**: `ag-resume` (Execute `/live-engine`) | MODE: LIVE FIRE (NO SIMULATION). Always use `--continue`.

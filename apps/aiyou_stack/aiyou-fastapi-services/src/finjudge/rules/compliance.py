@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Compliance Rule Engine
 Regulatory compliance checking for financial decisions
 """

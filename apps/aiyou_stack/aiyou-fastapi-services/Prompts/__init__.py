@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Prompts package for n-autoresearch/Kosmos/BioAgents Cavalry Squadron.
 Contains Antigravity system prompt and battle drills.
 """

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """DTE: Difficulty-Tracking Evolution
 
 Adaptive difficulty management for Agent0 co-evolution.

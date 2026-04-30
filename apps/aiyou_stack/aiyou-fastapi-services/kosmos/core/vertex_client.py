@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Vertex AI Gemini Client: Wrapper for Google Vertex AI generative models.
 
 Provides cost tracking, model selection logic, and error handling for

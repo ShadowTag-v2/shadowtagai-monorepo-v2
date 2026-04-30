@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AgentLifecycle - Regeneration and Corruption Prevention
 Version: 1.0.0
 

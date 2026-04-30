@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """API Endpoint Tests
 
 Tests for main application endpoints and routes

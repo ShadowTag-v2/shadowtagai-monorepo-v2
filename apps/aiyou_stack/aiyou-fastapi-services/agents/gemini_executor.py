@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Vehicle Executor for n-autoresearch/Kosmos/BioAgents
 ==========================================
 Real Gemini API calls per vehicle crew with consensus voting.

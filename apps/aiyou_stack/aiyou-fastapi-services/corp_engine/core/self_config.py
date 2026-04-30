@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Self-Configuring AI Engine
 ===========================
 Auto-configures platform based on customer profile.

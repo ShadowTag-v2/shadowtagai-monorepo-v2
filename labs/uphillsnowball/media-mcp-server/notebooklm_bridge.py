@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """notebooklm_bridge.py — NotebookLM MCP Integration for Research-to-Slides.
 
 Bridges the NotebookLM MCP server (35 tools) with the Media MCP server

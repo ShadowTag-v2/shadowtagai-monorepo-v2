@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """KovelAI FastAPI Backend — S.E.U. Proxy + Stripe Connect + Kovel Enclave
 
 Architecture:

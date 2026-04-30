@@ -1,0 +1,38 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install dependencies and ttyd
+COPY apps/n-autoresearch/Kosmos/BioAgentss-server/requirements.txt .
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    git \
+    vim \
+    procps \
+    net-tools \
+    && pip install --no-cache-dir -r requirements.txt \
+    && # Install ttyd
+    curl -L -o /usr/bin/ttyd https://github.com/tsl0922/ttyd/releases/download/1.7.4/ttyd.x86_64 \
+    && chmod +x /usr/bin/ttyd \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy application code
+COPY apps/n-autoresearch/Kosmos/BioAgentss-server/src/ src/
+COPY libs/ libs/
+COPY pyproject.toml .
+
+# Environment variables
+ENV PORT 8080
+ENV PYTHONPATH=/app:/app/libs
+ENV TTYD_PORT 7681
+
+# Expose both ports
+EXPOSE 8080
+EXPOSE 7681
+
+# Entrypoint script to run both uvicorn and ttyd
+COPY apps/n-autoresearch/Kosmos/BioAgentss-server/entrypoint-debug.sh /app/entrypoint-debug.sh
+RUN chmod +x /app/entrypoint-debug.sh
+
+CMD ["/app/entrypoint-debug.sh"]

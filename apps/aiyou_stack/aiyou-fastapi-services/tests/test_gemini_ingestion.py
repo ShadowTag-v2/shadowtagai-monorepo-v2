@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Unit tests for Gemini Ingestion Layer (batch intelligence collection)."""
 
 import pytest

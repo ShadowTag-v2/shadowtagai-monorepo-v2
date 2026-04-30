@@ -1,7 +1,7 @@
 # Judge 6 Constitution (CSRMC-2025 / Omega Protocol)
 # Authority: DoD CSRMC, EU AI Act 2026, ShadowTag Business Judgment Layer
 
-Cor.Claude_Code_6_constitution:
+judge6_constitution:
   version: "6.0.0"
   mode: "STRICT_BLOCK" # Options: MONITOR, STRICT_BLOCK, MITIGATE
 

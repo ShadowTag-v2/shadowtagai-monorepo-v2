@@ -41,7 +41,7 @@ PHASE 2: GKE Migration (when justified)
 │         CLOUDFLARE EDGE                 │
 │         195+ cities globally            │
 ├─────────────────────────────────────────┤
-│  Cor.Claude_Code_6-lite Worker                     │
+│  judge6-lite Worker                     │
 │  ┌─────────────────────────────────┐   │
 │  │ Rules Engine (Stage 1)          │   │
 │  │ • Pattern matching: <5ms        │   │
@@ -167,7 +167,7 @@ Health check endpoint.
 
 ```bash
 # Development
-cd workers/Cor.Claude_Code_6-lite
+cd workers/judge6-lite
 wrangler dev
 
 # Staging
@@ -182,7 +182,7 @@ wrangler dev
 ```
 pnkln-stack-fastapi-services/
 ├── workers/
-│   └── Cor.Claude_Code_6-lite/
+│   └── judge6-lite/
 │       ├── src/
 │       │   └── index.ts      # Main worker code
 │       ├── wrangler.toml     # CF configuration

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """LawTrack Services
 
 Core business logic for the LawTrack legal deadline management platform.

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Research API Endpoint
 
 Multi-source research orchestration via REST API.

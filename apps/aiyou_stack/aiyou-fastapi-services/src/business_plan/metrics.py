@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Business Metrics & Unit Economics
 Target State: Month 12 Financial Model
 """

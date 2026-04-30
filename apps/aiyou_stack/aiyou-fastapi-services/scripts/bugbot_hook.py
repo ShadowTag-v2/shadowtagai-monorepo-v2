@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """BugBot PR Hook: Wires BugBot into GitHub PR events
 Integrates with Dual-Model CI pipeline
 

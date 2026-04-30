@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Test script to verify if Gemini API actually blocks simultaneous use of
 custom tools and Google Search grounding.
 

@@ -1,10 +1,8 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # libs/steel/sentinel.py
 import logging
 
 # Configure Judge 6 Logger
-logger = logging.getLogger("Cor_Claude_Code_6")
+logger = logging.getLogger("Judge6")
 
 
 # Mock AntigravityEngine for God Mode prototype

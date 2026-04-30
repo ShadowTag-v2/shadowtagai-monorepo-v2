@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Product Strategy Agents for Vertex AI Workbench"""
 
 from typing import Any

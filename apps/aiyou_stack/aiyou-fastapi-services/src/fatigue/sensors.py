@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Sensor Layer - Biosignal Detection
 Handles blink tracking, pupil dynamics, HRV monitoring, and IMU analysis
 """
