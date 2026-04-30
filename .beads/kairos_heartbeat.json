@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-04-30T01:08:59.890676+00:00",
-  "pid": 9339,
+  "timestamp": "2026-04-30T01:17:15.949886+00:00",
+  "pid": 30086,
   "status": {
-    "cycle": "1160",
-    "steward": "ran"
+    "cycle": "1069",
+    "vault_ingest": "ran"
   }
 }

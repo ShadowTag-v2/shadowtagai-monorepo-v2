@@ -4,7 +4,10 @@
 # Chains: Force-Push Guard → Bloat Gate → Release Readiness → Egress Scan
 # ==============================================================================
 set -euo pipefail
-REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
+
+# CRITICAL: dirname "$0" inside .git/hooks/ resolves to .git/hooks/, not repo root.
+# Use git rev-parse for reliable root discovery.
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 # ─── Gate 1: Force-Push / History Rewrite Guard (Invariant #105) ───
 echo "═══ Pre-Push Gate 1: Force-Push Guard ═══"
@@ -38,11 +41,12 @@ echo ""
 
 # ─── Gate 4: Secret Egress Scan (Invariant #115) ───
 echo "═══ Pre-Push Gate 4: Secret Egress Scan ═══"
-if [ -x "$REPO_ROOT/scripts/sync-daemon.sh" ]; then
-  bash "$REPO_ROOT/scripts/sync-daemon.sh" || exit 1
+if [ -x "$REPO_ROOT/scripts/pre-push-egress-scan.sh" ]; then
+  bash "$REPO_ROOT/scripts/pre-push-egress-scan.sh" || exit 1
 else
-  echo "   ⚠️  sync-daemon.sh not found, skipping."
+  echo "   ⚠️  pre-push-egress-scan.sh not found, skipping."
 fi
 
 echo ""
 echo "✅ All pre-push gates passed."
+

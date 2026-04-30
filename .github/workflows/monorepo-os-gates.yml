@@ -282,7 +282,10 @@ jobs:
         run: |
           echo "═══ Firebase Deploy Gate ═══"
           if [ -x scripts/firebase-deploy-gate.sh ]; then
-            bash scripts/firebase-deploy-gate.sh || true
+            if ! bash scripts/firebase-deploy-gate.sh; then
+              echo "::error::Firebase deploy gate FAILED"
+              exit 1
+            fi
             echo "  ✓ Firebase deploy gate complete"
           else
             echo "::warning::firebase-deploy-gate.sh not executable"
@@ -292,7 +295,10 @@ jobs:
         run: |
           echo "═══ GITHUB_TOKEN Scope Audit ═══"
           if [ -x scripts/github-token-scope-audit.sh ]; then
-            bash scripts/github-token-scope-audit.sh || true
+            if ! bash scripts/github-token-scope-audit.sh; then
+              echo "::error::GitHub token scope audit FAILED"
+              exit 1
+            fi
             echo "  ✓ Token scope audit complete"
           else
             echo "::warning::github-token-scope-audit.sh not executable"
@@ -407,9 +413,10 @@ jobs:
             if [ "$ERRORS" -eq 0 ]; then
               echo "  ✓ ruff E-series: 0 errors"
             else
-              echo "  ⚠ ruff E-series: ${ERRORS} findings"
-              ruff check --select E --exclude external_repos --exclude node_modules . 2>&1 | head -20
-              echo "::warning::${ERRORS} ruff E-series findings — review for type safety"
+              echo "  ❌ ruff E-series: ${ERRORS} findings"
+              ruff check --select E --exclude external_repos --exclude node_modules . 2>&1 | head -30
+              echo "::error::${ERRORS} ruff E-series errors — P1 enforcement FAIL"
+              exit 1
             fi
           elif pip install ruff 2>/dev/null; then
             ERRORS=$(ruff check --select E --exclude external_repos --exclude node_modules --quiet . 2>&1 | wc -l | tr -d ' ')
@@ -426,7 +433,9 @@ jobs:
             if grep -q "consequential_action_confirmed" tool_contracts/function_call.consequential_action.yaml; then
               echo "  ✓ Contract has confirmation precondition"
             else
-              echo "  ⚠ Contract exists but lacks confirmation precondition"
+              echo "  ❌ Contract exists but lacks confirmation precondition"
+              echo "::error::consequential_action contract missing confirmation gate"
+              exit 1
             fi
             # Verify ClassifiedGateway integration
             if grep -q "consequential_action" packages/tool_gateway/classified_gateway.py 2>/dev/null; then
