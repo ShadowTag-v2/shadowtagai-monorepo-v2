@@ -1,6 +1,6 @@
-version: 13.5 # Phase 2 Complete + Telemetry Wiring — 2026-04-30
+version: 14.0 # Phase 3 Kickoff — Sandbox Session API + Integration Tests — 2026-04-30
 hardened_state:
-  last_hardened: "2026-04-30"  # v13.5 Phase 2 Complete — Speculation + Telemetry
+  last_hardened: "2026-04-30"  # v14.0 Phase 3 Kickoff — Sandbox Session API
   gold_master_tag: v11.7-gold
   tests_collected: 866
   tests_passing: 861
@@ -307,4 +307,10 @@ active_silos:
       - suggestion   # 5-layer enablement gates + 12-rule client filter
       - telemetry    # Structured event logging to .beads/ evidence trail
       - orchestrator # SpeculativeResearchOrchestrator — bridges speculation_engine ↔ deep_research
+  - id: sandbox_session
+    path: apps/counselconduit/api/sandbox
+    status: active
+    owner: pnkln-architecture
+    modules:
+      - session  # SandboxSession — CoW overlay lifecycle for attorney review
 copyright_infrastructure: active
