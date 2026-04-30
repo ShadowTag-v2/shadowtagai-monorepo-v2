@@ -94,3 +94,20 @@ docs/AUDIT_REPORT.md:google-api-key:589
 scratch/repos/everything-claude-code/tests/hooks/governance-capture.test.js:generic-api-key-inline:47
 scratch/repos/everything-claude-code/tests/hooks/governance-capture.test.js:generic-api-key-inline:497
 scratch/repos/everything-claude-code/tests/hooks/governance-capture.test.js:github-token:67
+
+# ════════════════════════════════════════════════════════
+# packages/tool_gateway/block_allow_engine.py: detection regex patterns
+# These are compiled re.compile() patterns used to DETECT secrets,
+# NOT actual secrets. Lines 92-93 in source.
+# ════════════════════════════════════════════════════════
+packages/tool_gateway/block_allow_engine.py:generic-api-key:92
+packages/tool_gateway/block_allow_engine.py:generic-api-key:93
+
+# ════════════════════════════════════════════════════════
+# tests/test_block_allow_engine.py: test fixture fake keys
+# Deliberately fake/placeholder keys used in unit test assertions
+# ════════════════════════════════════════════════════════
+tests/test_block_allow_engine.py:generic-api-key:167
+tests/test_block_allow_engine.py:google-api-key:177
+tests/test_block_allow_engine.py:generic-api-key:413
+tests/test_block_allow_engine.py:generic-api-key:568
