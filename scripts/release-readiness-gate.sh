@@ -214,6 +214,10 @@ github_app.auth
 large_file_scan
 repo.large_file_scan
 function_call.consequential_action
+gemini.function_call
+artifact.upload
+visual.proof
+repowise.evaluate
 "
 
 ENFORCED=0
