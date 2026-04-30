@@ -54,7 +54,12 @@ class ContextCompactor:
         telemetry_dir: Path | None = None,
         feature_flags: dict[str, Any] | None = None,
     ) -> None:
-        from config.feature_flags import flags
+        try:
+            from config.feature_flags import flags
+
+            default_flags = flags.all_flags()
+        except ImportError, ModuleNotFoundError:
+            default_flags = {"context_compaction": True}
 
         self._layers = [
             Layer1CachedMC(),
@@ -63,7 +68,7 @@ class ContextCompactor:
             Layer4FullCompaction(),
         ]
         self._telemetry_dir = telemetry_dir
-        self._flags = feature_flags if feature_flags is not None else flags.all_flags()
+        self._flags = feature_flags if feature_flags is not None else default_flags
         self._run_count = 0
         self._total_tokens_saved = 0
 
