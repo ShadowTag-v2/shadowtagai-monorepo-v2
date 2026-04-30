@@ -1,0 +1,637 @@
+/* Attorney Diff View — Phase 3 Component Styles
+ * Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+ *
+ * Design tokens inherited from KovelAI globals.css
+ * Every class below is referenced by a TSX component via CSS modules.
+ */
+
+/* ── Container (DiffView.tsx: styles.container) ────────────────────── */
+
+.container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+  min-height: 600px;
+  background: var(--color-surface-bg, #09090b);
+  border: 1px solid var(--color-border-subtle, #27272a);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: 'Inter', 'SF Mono', 'JetBrains Mono', monospace;
+}
+
+/* ── Loading State (DiffView.tsx) ──────────────────────────────────── */
+
+.loading {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 16px;
+  color: var(--color-text-muted, #a1a1aa);
+}
+
+.loadingSpinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--color-border-subtle, #27272a);
+  border-top-color: var(--color-brand-gold, #c5a059);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingSubtext {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* ── Empty State (DiffView.tsx) ────────────────────────────────────── */
+
+.emptyState {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 12px;
+  color: var(--color-text-muted, #a1a1aa);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* ── Diff Panel (DiffView.tsx: styles.diffPanel) ───────────────────── */
+
+.diffPanel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: var(--color-surface-elevated, #18181b);
+  border-bottom: 1px solid var(--color-border-subtle, #27272a);
+}
+
+.panelTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary, #fafafa);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+
+.panelSubtitle {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-muted, #a1a1aa);
+}
+
+.sessionBadge {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text-muted, #a1a1aa);
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+.diffScroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+/* ── File Navigator (FileNavigator.tsx) ────────────────────────────── */
+
+.fileNavigator {
+  grid-row: 1 / 3;
+  border-right: 1px solid var(--color-border-subtle, #27272a);
+  background: var(--color-surface-bg, #09090b);
+  overflow-y: auto;
+  padding: 0;
+}
+
+.navHeader {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--color-border-subtle, #27272a);
+}
+
+.navTitle {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted, #a1a1aa);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.navCount {
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 100px;
+  background: rgba(197, 160, 89, 0.15);
+  color: var(--color-brand-gold, #c5a059);
+  font-weight: 700;
+}
+
+.fileList {
+  list-style: none;
+  padding: 4px 0;
+  margin: 0;
+}
+
+.fileItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-left: 3px solid transparent;
+}
+
+.fileItem:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.fileItemActive {
+  background: rgba(197, 160, 89, 0.08);
+  border-left-color: var(--color-brand-gold, #c5a059);
+}
+
+.fileCheckbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.fileCheckbox input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  accent-color: var(--color-brand-gold, #c5a059);
+  cursor: pointer;
+}
+
+.fileButton {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+}
+
+.filePath {
+  font-size: 12px;
+  color: var(--color-text-primary, #fafafa);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileDir {
+  color: var(--color-text-muted, #a1a1aa);
+}
+
+.fileName {
+  font-weight: 500;
+}
+
+.fileMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.hunkCount {
+  font-size: 10px;
+  color: var(--color-text-muted, #a1a1aa);
+  opacity: 0.7;
+}
+
+/* ── DiffFile (DiffFile.tsx) ───────────────────────────────────────── */
+
+.diffFile {
+  border-bottom: 1px solid var(--color-border-subtle, #27272a);
+}
+
+.fileHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--color-surface-elevated, #18181b);
+  border: none;
+  border-bottom: 1px solid var(--color-border-subtle, #27272a);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  transition: background 0.15s ease;
+  gap: 12px;
+}
+
+.fileHeader:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.expandIcon {
+  font-size: 10px;
+  color: var(--color-text-muted, #a1a1aa);
+  flex-shrink: 0;
+  width: 16px;
+}
+
+.fileHeaderPath {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.fileHeaderName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary, #fafafa);
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+.fileHeaderDir {
+  font-size: 11px;
+  color: var(--color-text-muted, #a1a1aa);
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  opacity: 0.6;
+}
+
+.fileHeaderMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.langBadge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text-muted, #a1a1aa);
+  text-transform: lowercase;
+}
+
+.statAdd {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4ade80;
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+.statDel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f87171;
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+.diffContent {
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.emptyDiff {
+  padding: 24px 20px;
+  text-align: center;
+  color: var(--color-text-muted, #a1a1aa);
+  font-size: 13px;
+}
+
+/* ── DiffHunk (DiffHunk.tsx) ───────────────────────────────────────── */
+
+.hunk {
+  border-bottom: 1px solid rgba(39, 39, 42, 0.5);
+}
+
+.hunkHeader {
+  padding: 6px 20px;
+  font-size: 11px;
+  color: var(--color-text-muted, #a1a1aa);
+  background: rgba(39, 39, 42, 0.5);
+  border-top: 1px solid var(--color-border-subtle, #27272a);
+  border-bottom: 1px solid var(--color-border-subtle, #27272a);
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+.hunkTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 22px;
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+.lineNumber {
+  width: 48px;
+  padding: 0 8px;
+  text-align: right;
+  color: var(--color-text-muted, #a1a1aa);
+  user-select: none;
+  font-size: 12px;
+  opacity: 0.6;
+  vertical-align: top;
+}
+
+.linePrefix {
+  width: 20px;
+  padding: 0 4px;
+  text-align: center;
+  user-select: none;
+  font-weight: 600;
+  vertical-align: top;
+}
+
+.lineContent {
+  padding: 0 16px;
+  white-space: pre;
+  min-width: 0;
+}
+
+/* Line type colors */
+.lineAdd {
+  background: #0d2818;
+}
+
+.lineAdd .lineContent,
+.lineAdd .linePrefix {
+  color: #4ade80;
+}
+
+.lineDelete {
+  background: #2d0a0a;
+}
+
+.lineDelete .lineContent,
+.lineDelete .linePrefix {
+  color: #f87171;
+}
+
+.lineContext {
+  background: transparent;
+}
+
+.lineContext .lineContent,
+.lineContext .linePrefix {
+  color: var(--color-text-muted, #a1a1aa);
+}
+
+/* ── Confidence Badge (ConfidenceBadge.tsx) ─────────────────────────── */
+
+.confidenceBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.confidenceSm {
+  font-size: 10px;
+  padding: 1px 6px;
+}
+
+.confidenceHigh {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+}
+
+.confidenceMedium {
+  background: rgba(250, 204, 21, 0.12);
+  color: #facc15;
+}
+
+.confidenceLow {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+}
+
+.confidencePulse {
+  animation: pulseLow 2s ease-in-out infinite;
+}
+
+@keyframes pulseLow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.confidenceDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ── Privilege Badge (PrivilegeBadge.tsx) ────────────────────────────── */
+
+.privilegeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* TSX references 'privilegeProtected' for 'privileged' status */
+.privilegeProtected {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+}
+
+.privilegeWorkProduct {
+  background: rgba(197, 160, 89, 0.12);
+  color: var(--color-brand-gold, #c5a059);
+}
+
+.privilegePublic {
+  background: rgba(161, 161, 170, 0.12);
+  color: var(--color-text-muted, #a1a1aa);
+}
+
+/* ── Decision Bar (DecisionBar.tsx) ──────────────────────────────────── */
+
+.decisionBar {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--color-surface-elevated, #18181b);
+  border-top: 1px solid var(--color-border-subtle, #27272a);
+}
+
+.decisionInfo {
+  font-size: 13px;
+  color: var(--color-text-muted, #a1a1aa);
+}
+
+.decisionCount {
+  color: var(--color-brand-gold, #c5a059);
+  font-weight: 600;
+}
+
+.decisionActions {
+  display: flex;
+  gap: 10px;
+}
+
+/* DecisionBar uses styles.decisionBtn as base */
+.decisionBtn {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+  transform-origin: center;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.decisionBtn:active {
+  transform: scale(0.97);
+}
+
+.decisionBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btnAccept {
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+}
+
+.btnAccept:hover:not(:disabled) {
+  background: linear-gradient(135deg, #047857, #059669);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.btnReject {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+}
+
+.btnReject:hover:not(:disabled) {
+  background: linear-gradient(135deg, #b91c1c, #dc2626);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+}
+
+.btnPartial {
+  background: linear-gradient(135deg, #c5a059, #d4af6e);
+  color: #09090b;
+  box-shadow: 0 2px 8px rgba(197, 160, 89, 0.25);
+}
+
+.btnPartial:hover:not(:disabled) {
+  background: linear-gradient(135deg, #b08d47, #c5a059);
+  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.35);
+}
+
+/* DecisionBar uses styles.spinner for loading indicator */
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* ── No Copy on Privileged Content ──────────────────────────────────── */
+
+.noSelect {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .fileNavigator {
+    display: none;
+  }
+
+  .decisionBar {
+    grid-column: 1;
+  }
+}
+
+/* ── Reduced Motion ─────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .confidencePulse {
+    animation: none;
+  }
+
+  .decisionBtn:active {
+    transform: none;
+  }
+
+  .loadingSpinner,
+  .spinner {
+    animation-duration: 1.5s;
+  }
+
+  .fileItem,
+  .fileHeader {
+    transition: none;
+  }
+}
