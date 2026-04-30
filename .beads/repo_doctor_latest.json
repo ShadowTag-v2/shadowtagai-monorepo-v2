@@ -1,9 +1,9 @@
 {
   "score": "F",
-  "total_findings": 33,
+  "total_findings": 20,
   "critical": 1,
   "errors": 1,
-  "warnings": 27,
+  "warnings": 14,
   "info": 4,
   "findings": [
     {
@@ -45,113 +45,22 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/src/Claude_Code_6/judge_core.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/src/Claude_Code_6/judge_core.py"
+      "path": "scripts/install_antigravity_hardened.sh",
+      "fix": "git checkout -- scripts/install_antigravity_hardened.sh"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/mcp-lsp-bridge/mcp_lsp_bridge.py",
-      "fix": "git checkout -- apps/mcp-lsp-bridge/mcp_lsp_bridge.py"
+      "path": "vault/monitor/pipeline_metrics.json",
+      "fix": "git checkout -- vault/monitor/pipeline_metrics.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "control/pnkln/governance/block_allow_rules.py",
-      "fix": "git checkout -- control/pnkln/governance/block_allow_rules.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "fix_claude_6.py",
-      "fix": "git checkout -- fix_claude_6.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "insert_anti_rationalization.py",
-      "fix": "git checkout -- insert_anti_rationalization.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "labs/ccleaks-mock/fix_yolo_classifier.py",
-      "fix": "git checkout -- labs/ccleaks-mock/fix_yolo_classifier.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "labs/ccleaks-mock/generate_mock_code.py",
-      "fix": "git checkout -- labs/ccleaks-mock/generate_mock_code.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "packages/agnt_agents/db_architect.py",
-      "fix": "git checkout -- packages/agnt_agents/db_architect.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "packages/agnt_agents/osint_agent.py",
-      "fix": "git checkout -- packages/agnt_agents/osint_agent.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "packages/agnt_agents/qa_agent.py",
-      "fix": "git checkout -- packages/agnt_agents/qa_agent.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "packages/agnt_bash_classifier/telemetry.py",
-      "fix": "git checkout -- packages/agnt_bash_classifier/telemetry.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "packages/agnt_classifier/classifier.py",
-      "fix": "git checkout -- packages/agnt_classifier/classifier.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "packages/agnt_context_compactor/compactor.py",
-      "fix": "git checkout -- packages/agnt_context_compactor/compactor.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "packages/agnt_tmux/__init__.py",
-      "fix": "git checkout -- packages/agnt_tmux/__init__.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "packages/agnt_tmux/isolation.py",
-      "fix": "git checkout -- packages/agnt_tmux/isolation.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "... and 44 more dirty files",
-      "path": "",
-      "fix": ""
+      "message": "Dirty file (??)",
+      "path": "fix_judge_names.py",
+      "fix": "git add fix_judge_names.py"
     },
     {
       "gate": "conflicts",
@@ -212,7 +121,7 @@
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 4470 more drift files",
+      "message": "... and 4472 more drift files",
       "path": "",
       "fix": ""
     },
@@ -233,7 +142,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ========================= 625 tests collected in 0.58s =========================",
+      "message": "Tests: ========================= 625 tests collected in 0.70s =========================",
       "path": "",
       "fix": ""
     }
