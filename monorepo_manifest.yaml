@@ -1,12 +1,11 @@
-version: 13.5 # Phase 2 Complete + Telemetry Wiring — 2026-04-30
+version: 12.4 # Claude Code Architecture Assimilation + CI Hardening — 2026-04-29
 hardened_state:
-  last_hardened: "2026-04-30"  # v13.5 Phase 2 Complete — Speculation + Telemetry
+  last_hardened: "2026-04-29"  # v12.4 CI Hardening + KV Caching + Compaction timings
   gold_master_tag: v11.7-gold
-  tests_collected: 866
-  tests_passing: 861
-  tests_skipped: 2
+  tests_collected: 504
+  tests_passing: 499
+  tests_skipped: 3
   tests_e2e_expected_failures: 2
-  tests_xpassed: 1
   test_runner: /opt/homebrew/bin/python3.14
   risk_register_version: v10.9
   risk_register_count: 46
@@ -24,7 +23,7 @@ hardened_state:
     - com.pnkln.kairos
     - com.pnkln.dream-consolidation
     - com.pnkln.auto-dream
-    - com.pnkln.Cor.Cor.Claude_Code_6-legal-human
+    - com.pnkln.judge6-legal-human
     - com.pnkln.pagespeed-monitor
   python_canonical: /opt/homebrew/bin/python3.14
   counselconduit_version: v3.2.0
@@ -59,7 +58,7 @@ hardened_state:
   omni_ingest_repos: 73
   browser_extractor: scripts/11x_browser_extractor.py
 ci_workflows:
-  total_count: 85
+  total_count: 75
   registered:
     - path: .github/workflows/ci.yml
       purpose: Primary CI gate
@@ -139,7 +138,7 @@ ci_workflows:
       purpose: Configuration drift detection
     - path: .github/workflows/pnkln-governance.yml
       purpose: Pnkln governance enforcement
-    - path: .github/workflows/Cor.Cor.Claude_Code_6_yolo_gate.yml
+    - path: .github/workflows/judge6_yolo_gate.yml
       purpose: Judge 6 YOLO gate
     - path: .github/workflows/omega-sync-ci.yml
       purpose: Omega sync CI
@@ -209,26 +208,6 @@ ci_workflows:
       purpose: Veo demo generator
     - path: .github/workflows/10x_vibe_matrix.yml
       purpose: 10x vibe matrix
-    - path: .github/workflows/10x-vibe-check.yml
-      purpose: 10x vibe check
-    - path: .github/workflows/bazel-ci.yml
-      purpose: Bazel build CI
-    - path: .github/workflows/betterleaks-nightly.yml
-      purpose: Nightly Betterleaks secret scan
-    - path: .github/workflows/deploy-mcp-lsp-bridge.yml
-      purpose: MCP-LSP bridge deploy
-    - path: .github/workflows/design-lint.yml
-      purpose: Design system linting
-    - path: .github/workflows/judge6_yolo_gate.yml
-      purpose: Judge 6 YOLO gate (canonical)
-    - path: .github/workflows/mcp-lsp-bridge-deploy.yml
-      purpose: MCP-LSP bridge deploy (alt)
-    - path: .github/workflows/monorepo-os-gates.yml
-      purpose: Monorepo OS governance gates
-    - path: .github/workflows/ruler-drift.yml
-      purpose: Ruler drift detection
-    - path: .github/workflows/skillops-audit.yml
-      purpose: SkillOps fleet audit
 active_silos:
   # REMOVED: packages/core (never created, dead reference)
   # REMOVED: packages/ag-ui (never created, dead reference)
@@ -251,60 +230,4 @@ active_silos:
       # tauri_cockpit — DEPRECATED 2026-04-24: Archived, replaced by browser tab + WebAuthn
       - sovereign_infra_tf
       - genesis_bootstrapper
-  - id: aiyou_core
-    path: packages/aiyou-core
-    status: active
-    owner: pnkln-architecture
-    modules:
-      - messaging  # ECC2 typed inter-daemon comms
-      - session_ingress  # Filesystem-backed persistence (CC sessionIngress.ts port)
-  - id: context_compactor
-    path: packages/context_compactor
-    status: active
-    owner: pnkln-architecture
-    modules:
-      - token_estimator  # Multi-provider token estimation (CC tokenEstimation.ts port)
-  - id: agnt_tools
-    path: packages/agnt_tools
-    status: active
-    owner: pnkln-architecture
-    modules:
-      - usage_summary  # Tool usage reporting for daemon analytics (CC toolUseSummary port)
-  - id: agnt_agents
-    path: packages/agnt_agents
-    status: active
-    owner: pnkln-architecture
-    modules:
-      - coordinator_summary  # Coordinator state tracking (CC AgentSummary port)
-  - id: deep_research
-    path: packages/deep_research
-    status: active
-    owner: pnkln-architecture
-    modules:
-      - state_machine   # 7-phase deterministic research orchestrator
-      - research_router  # MCP-aware query routing (7 categories)
-      - synthesis        # Finding aggregation + confidence scoring
-      - telemetry        # Research pipeline telemetry
-  - id: evaluation_bridge
-    path: packages/evaluation_bridge
-    status: active
-    owner: pnkln-architecture
-    modules:
-      - bridge  # 4-gate pipeline (build/test/lint/merge) with fail-fast
-  - id: orbstack_sandbox
-    path: packages/orbstack_sandbox
-    status: active
-    owner: pnkln-architecture
-    modules:
-      - engine   # Container-isolated execution engine
-      - overlay  # CoW FUSE-like overlay filesystem
-  - id: speculation_engine
-    path: packages/speculation_engine
-    status: active
-    owner: pnkln-architecture
-    modules:
-      - engine       # CoW-overlay speculative execution with 4-tier tool permissions
-      - suggestion   # 5-layer enablement gates + 12-rule client filter
-      - telemetry    # Structured event logging to .beads/ evidence trail
-      - orchestrator # SpeculativeResearchOrchestrator — bridges speculation_engine ↔ deep_research
 copyright_infrastructure: active

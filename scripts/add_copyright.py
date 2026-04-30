@@ -6,15 +6,14 @@ exclude_dirs = {"external_repos", "scratch", ".venv", "site-packages", "build", 
 count = 0
 for root, dirs, files in os.walk("."):
     dirs[:] = [d for d in dirs if d not in exclude_dirs]
-
+    
     for file in files:
-        if not file.endswith(".py"):
-            continue
+        if not file.endswith(".py"): continue
         filepath = os.path.join(root, file)
-
+        
         with open(filepath) as f:
             content = f.read()
-
+            
         if header.strip() not in content:
             if content.startswith("#!"):
                 parts = content.split("\n", 1)
@@ -24,7 +23,7 @@ for root, dirs, files in os.walk("."):
                     new_content = parts[0] + "\n" + header
             else:
                 new_content = header + "\n" + content
-
+                
             with open(filepath, "w") as f:
                 f.write(new_content)
             count += 1
