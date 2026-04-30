@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Jurisdiction Rule Engine — LegalTrack (Cloud Run Native)
 ================================
 Applies jurisdiction-specific deadline math over a trigger date.

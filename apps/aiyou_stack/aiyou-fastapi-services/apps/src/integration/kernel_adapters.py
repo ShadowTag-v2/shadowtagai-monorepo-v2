@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Kernel Adapters - Bridge between async kernel implementations and synchronous function calls.
 
 These adapters wrap kernel implementations to work as synchronous Gemini function tools.
@@ -76,7 +74,7 @@ class JudgeSixAdapter(KernelAdapter):
 
     def __init__(self):
         try:
-            from pnkln.core.Claude_Code_6_pipeline import JudgeSixKernel
+            from pnkln.core.judge_six_pipeline import JudgeSixKernel
 
             self.kernel = JudgeSixKernel()
         except ImportError:
@@ -377,7 +375,7 @@ def atp_519_scan(context: str) -> dict:
     return _atp_adapter.execute(context)
 
 
-def Claude_Code_6_classify(violations: dict) -> dict:
+def judge_six_classify(violations: dict) -> dict:
     """Execute classification."""
     return _judge_adapter.execute(violations)
 

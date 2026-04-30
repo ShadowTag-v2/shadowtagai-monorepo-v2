@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 /**
  * Client Ephemeral Search UI Component
  *
@@ -45,8 +43,8 @@ interface EphemeralSearchProps {
 
 export function EphemeralSearchUI({
   seuToken,
-  firmId: _firmId,
-  sandboxId: _sandboxId,
+  firmId,
+  sandboxId,
   onSessionEnd,
 }: EphemeralSearchProps) {
   const [query, setQuery] = useState('');
@@ -167,9 +165,8 @@ export function EphemeralSearchUI({
 
   // ─── Render ──────────────────────────────────────────────────────
   return (
-    <section
+    <div
       className="ephemeral-search"
-      aria-label="Ephemeral search"
       onMouseMove={resetInactivityTimer}
       onKeyDown={resetInactivityTimer}
       style={{
@@ -244,7 +241,6 @@ export function EphemeralSearchUI({
             {formatTimer(sessionTimer)}
           </span>
           <button
-            type="button"
             onClick={onSessionEnd}
             style={{
               padding: '6px 16px',
@@ -330,7 +326,6 @@ export function EphemeralSearchUI({
             }}
           />
           <button
-            type="button"
             onClick={handleSearch}
             disabled={loading || !query.trim()}
             style={{
@@ -420,6 +415,6 @@ export function EphemeralSearchUI({
         <span>•</span>
         <span>Session: {formatTimer(sessionTimer)}</span>
       </footer>
-    </section>
+    </div>
   );
 }

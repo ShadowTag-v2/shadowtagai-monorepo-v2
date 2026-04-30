@@ -1,0 +1,61 @@
+{
+	"name": "apps-ui",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/ui/src",
+	"projectType": "application",
+	"prefix": "nativescript",
+	"namedInputs": {
+		"default": ["{projectRoot}/**/*"],
+		"production": ["!{projectRoot}/**/*.spec.ts"]
+	},
+	"targets": {
+		"build": {
+			"executor": "@nativescript/nx:build",
+			"options": {
+				"noHmr": true,
+				"production": true,
+				"uglify": true,
+				"release": true,
+				"forDevice": true
+			},
+			"configurations": {},
+			"dependsOn": ["^build"]
+		},
+		"debug": {
+			"executor": "@nativescript/nx:debug",
+			"options": {
+				"noHmr": true,
+				"uglify": false,
+				"release": false,
+				"forDevice": false,
+				"prepare": false
+			},
+			"configurations": {},
+			"dependsOn": ["^build"]
+		},
+		"prepare": {
+			"executor": "@nativescript/nx:prepare",
+			"options": {
+				"noHmr": true,
+				"production": true,
+				"uglify": true,
+				"release": true,
+				"forDevice": true,
+				"prepare": true
+			},
+			"configurations": {},
+			"dependsOn": ["^build"]
+		},
+		"clean": {
+			"executor": "@nativescript/nx:clean",
+			"options": {}
+		},
+		"lint": {
+			"executor": "@nx/eslint:lint",
+			"options": {
+				"lintFilePatterns": ["apps/ui/**/*.ts", "apps/ui/src/**/*.html"]
+			}
+		}
+	},
+	"implicitDependencies": ["webpack5"]
+}

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Unified Metrics Dashboard - Single pane of glass for all observability.
 
 Combines:

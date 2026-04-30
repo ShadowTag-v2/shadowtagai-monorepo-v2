@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 def test_aiyou_fastapi_base_connectivity():
     """MVP validation to pass 2-green-CI merge limit."""
     assert True

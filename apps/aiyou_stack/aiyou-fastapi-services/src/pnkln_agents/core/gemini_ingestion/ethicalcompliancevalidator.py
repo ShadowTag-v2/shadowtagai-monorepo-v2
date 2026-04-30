@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from datetime import datetime
 from typing import Any
 from urllib.parse import urlparse

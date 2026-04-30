@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GRPO vs PPO Comparison — Reinforcement Learning for Agent Training
 
 GRPO (Group Relative Policy Optimization):

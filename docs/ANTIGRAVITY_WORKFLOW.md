@@ -281,11 +281,11 @@ SEVERITY_WEIGHTS = {
 
 | File                                     | Purpose                 |
 | ---------------------------------------- | ----------------------- |
-| `app/kernels/Claude_Code_6.py`               | Binary classification   |
+| `app/kernels/judge_six.py`               | Binary classification   |
 | `app/kernels/atp_519_scan.py`            | Violation extraction    |
 | `app/kernels/audit_compress.py`          | Audit trail compression |
 | `shadowtagai/core/jr_engine.py`          | JR Engine framework     |
-| `shadowtagai/core/Claude_Code_6_pipeline.py` | Pipeline orchestration  |
+| `shadowtagai/core/judge_six_pipeline.py` | Pipeline orchestration  |
 
 ---
 
@@ -318,8 +318,8 @@ Based on `router/src/openai-proxy.ts`:
 ### Judge 6 Deployment
 
 ```yaml
-# k8s/Cor.Claude_Code_6_deployment.yaml
-namespace: Cor.Claude_Code_6-system
+# k8s/judge6_deployment.yaml
+namespace: judge6-system
 containers:
   - layer1-gemini (8080)
   - layer2-orchestration (8081)
@@ -333,7 +333,7 @@ gpu: nvidia-l4
 
 ```bash
 #!/bin/bash
-PROJECT=~/shadowtagai-Cor.Claude_Code_6
+PROJECT=~/shadowtagai-judge6
 CODEBASE=~/Documents/Claude\ Code/Code/Claude\ Demo/ShadowTag-v2-fastapi-services
 
 # PHASE 1: ANTIGRAVITY

@@ -269,7 +269,7 @@ Start from handoff; pursue objectives.
 🆕 **7 Core Function Tools:**
 
 1. `atp_519_scan()` - Violation extraction
-2. `Claude_Code_6_classify()` - Binary decision
+2. `judge_six_classify()` - Binary decision
 3. `audit_compress()` - Audit trail
 4. `multi_agent_debate()` - Collaborative reasoning
 5. `dte_evolve()` - Prompt self-evolution
@@ -318,7 +318,7 @@ Start from handoff; pursue objectives.
 ```
 src/core/gemini_function_calling.py   → Main Gemini orchestrator
 src/core/function_registry.py         → Tool registry
-src/shadowtagai/Claude_Code_6.py                 → JR Engine validation
+src/shadowtagai/judge_six.py                 → JR Engine validation
 src/shadowtagai/cor.py                       → Unified orchestrator
 src/shadowtagai/shadowtag.py                 → Cryptographic watermarking
 src/shadowtagai/ns.py                        → Semantic memory
@@ -331,7 +331,7 @@ README.md                              → Migration guide
 
 ```
 app/kernels/atp_519_scan.py           → Kernel 1 implementation
-app/kernels/Claude_Code_6.py               → Kernel 2 (PyTorch)
+app/kernels/judge_six.py               → Kernel 2 (PyTorch)
 app/kernels/audit_compress.py          → Kernel 3 (zstd)
 app/orchestration/chain.py             → Chain orchestrator
 app/evolution/dte.py                   → DTE self-evolution

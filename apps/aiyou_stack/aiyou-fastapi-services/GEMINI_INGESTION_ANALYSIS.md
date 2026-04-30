@@ -12,7 +12,7 @@ These swaps are straightforward but effective for repurposing the prompt without
 
 ### File References
 
-**Change**: `Claude_Code_6.py` → Pipeline Documentation and Architecture Specs
+**Change**: `judge_six.py` → Pipeline Documentation and Architecture Specs
 
 This shift broadens the scope from a single Python script to broader docs and specs, which fits an ingestion layer's more distributed nature. It allows for analyzing diagrams, flowcharts, or config files, potentially leading to deeper insights into dependencies or bottlenecks.
 

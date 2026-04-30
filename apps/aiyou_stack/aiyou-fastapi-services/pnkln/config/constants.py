@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Core configuration and constants for Gemini API + Custom Tools workaround.
 
 CONTEXT: Google Gemini API blocks simultaneous use of:

@@ -1,0 +1,181 @@
+{
+  "2.1_hypothesis_generation": {
+    "count": 3,
+    "response_type": "HypothesisGenerationResponse",
+    "research_question": "Which genes are differentially expressed between drug-treated and control cancer cell lines, and what biological pathways do they implicate?",
+    "domain": "genomics",
+    "hypotheses": [
+      {
+        "statement": "Treatment with the drug will significantly upregulate genes involved in the p53 signaling pathway (e.g., CDKN1A, BAX, PUMA) and downregulate genes in cell cycle progression pathways (e.g., CCNB1, CDC2",
+        "has_rationale": true,
+        "has_domain": true,
+        "novelty_score": 1.0,
+        "testability_score": 0.9,
+        "confidence_score": 0.75
+      },
+      {
+        "statement": "Drug treatment will induce a specific inflammatory gene signature, characterized by the upregulation of interleukin and chemokine genes (e.g., IL6, IL8, CXCL1, CXCL2), and this signature will be assoc",
+        "has_rationale": true,
+        "has_domain": true,
+        "novelty_score": 1.0,
+        "testability_score": 0.85,
+        "confidence_score": 0.65
+      },
+      {
+        "statement": "The drug will cause significant downregulation of genes in the oxidative phosphorylation (OXPHOS) pathway (e.g., subunits of mitochondrial complexes I-V) and concomitant upregulation of genes involved",
+        "has_rationale": true,
+        "has_domain": true,
+        "novelty_score": 1.0,
+        "testability_score": 0.9,
+        "confidence_score": 0.6
+      }
+    ],
+    "novelty_checker_integrated": false,
+    "novelty_checker_note": "NoveltyChecker exists but never called from HypothesisGeneratorAgent",
+    "require_novelty_check_config": true,
+    "min_novelty_score_config": 0.5,
+    "status": "PASS",
+    "duration_seconds": 32.64
+  },
+  "2.2_literature_search": {
+    "count": 49,
+    "search_query": "Which genes are differentially expressed between drug-treated and control cancer",
+    "research_question": "Which genes are differentially expressed between drug-treated and control cancer cell lines, and what biological pathways do they implicate?",
+    "papers": [
+      {
+        "title": "MicroRNAs and target genes as regulators of colon cancer immune signaling",
+        "source": "PaperSource.SEMANTIC_SCHOLAR",
+        "year": 2025,
+        "has_abstract": true
+      },
+      {
+        "title": "Identification of novel neutrophil-extracellular-traps-related genes as biomarkers for breast cancer prognosis and immunotherapy",
+        "source": "PaperSource.SEMANTIC_SCHOLAR",
+        "year": 2025,
+        "has_abstract": true
+      },
+      {
+        "title": "Development of a prognostic model related to mitochondria and programmed cell death-related genes in bladder cancer",
+        "source": "PaperSource.SEMANTIC_SCHOLAR",
+        "year": 2025,
+        "has_abstract": true
+      },
+      {
+        "title": "Exploration of propionate metabolism-related genes to predict prognosis and immunotherapy response in ovarian cancer",
+        "source": "PaperSource.SEMANTIC_SCHOLAR",
+        "year": 2025,
+        "has_abstract": true
+      },
+      {
+        "title": "Identifying Differentially Expressed tRNA-Derived Small Fragments as a Biomarker for the Progression and Metastasis of Colorectal Cancer",
+        "source": "PaperSource.SEMANTIC_SCHOLAR",
+        "year": 2022,
+        "has_abstract": true
+      }
+    ],
+    "status": "PASS",
+    "duration_seconds": 25.86
+  },
+  "2.3_experiment_design": {
+    "count": 1,
+    "research_question": "Which genes are differentially expressed between drug-treated and control cancer cell lines, and what biological pathways do they implicate?",
+    "domain": "genomics",
+    "protocols": [
+      {
+        "name": "unnamed",
+        "has_steps": false,
+        "step_count": 0,
+        "has_variables": false,
+        "has_controls": false,
+        "has_statistical_tests": false,
+        "experiment_type": "unknown"
+      }
+    ],
+    "power_analyzer_integrated": false,
+    "experiment_validator_integrated": false,
+    "gap_notes": [
+      "PowerAnalyzer exists but never called by designer",
+      "ExperimentValidator exists but never imported by designer",
+      "Inline _validate_protocol() used instead (~37 lines vs ~500 line validator)"
+    ],
+    "status": "PASS",
+    "duration_seconds": 77.46
+  },
+  "2.4_code_execution": {
+    "code_generated": true,
+    "code_length": 3001,
+    "code_preview": "# T-Test Comparison Analysis\n# Generated from protocol template\n\nimport pandas as pd\nimport numpy as np\nfrom scipy import stats\nfrom pathlib import Path\nfrom kosmos.execution.data_analysis import DataAnalyzer\n\n# Data loading with synthetic fallback (Issue #51 fix)\n# Expected format: CSV with columns 'group' and 'measurement'\ndf = None\nif 'data_path' in dir() and data_path:\n    try:\n        df = pd.read_csv(data_path)\n        _data_source = 'file'\n    except Exception as e:\n        print(f'Warnin",
+    "domain": "genomics",
+    "data_path": "/mnt/c/python/Kosmos/evaluation/data/gene_expression_test.csv",
+    "has_data_source_flag": true,
+    "uses_synthetic_data": true,
+    "hardcoded_effect_size": false,
+    "execution": {
+      "success": false,
+      "stdout": "",
+      "stderr": "\nTraceback (most recent call last):\n  File \"/mnt/c/python/Kosmos/kosmos/execution/executor.py\", line 423, in _execute_once\n    exec(code, exec_globals, exec_locals)\n  File \"<string>\", line 36, in <module>\n  File \"<string>\", line 36, in <dictcomp>\nNameError: name 'df' is not defined\n",
+      "error": "name 'df' is not defined",
+      "return_value": "None"
+    },
+    "gap_notes": [
+      "Synthetic data flag in code: True",
+      "Uses synthetic data: True",
+      "Hardcoded effect_size=0.5: False",
+      "Direct exec() used (no Docker sandbox by default)"
+    ],
+    "status": "PASS",
+    "duration_seconds": 0.14
+  },
+  "2.5_data_analysis": {
+    "interpretation_received": true,
+    "interpretation_type": "ResultInterpretation",
+    "research_question": "Which genes are differentially expressed between drug-treated and control cancer cell lines, and what biological pathways do they implicate?",
+    "domain": "genomics",
+    "hypothesis_supported": true,
+    "confidence": 0.85,
+    "summary": "The experiment provides strong statistical evidence for differential gene expression between drug-treated and control cancer cell lines, with a highly significant p-value (0.003) and a large effect size (Cohen's d = 0.8). However, the biological significance requires further investigation given the ",
+    "key_findings": [
+      "Statistically significant differential gene expression exists between treatment groups (p = 0.003)",
+      "The effect size is large (Cohen's d = 0.8), suggesting a meaningful biological difference",
+      "The sample size (n=100) provides reasonable statistical power for detecting effects"
+    ],
+    "anomalies_detected": [],
+    "supports_hypothesis_method": "LLM-based (not formal statistical criteria)",
+    "gap_notes": [
+      "supports_hypothesis set by LLM interpretation, not formal criteria",
+      "No check for _data_source (synthetic vs real)",
+      "No check_assumptions() called before interpretation"
+    ],
+    "status": "PASS",
+    "duration_seconds": 20.7
+  },
+  "2.6_convergence_detection": {
+    "research_question": "Which genes are differentially expressed between drug-treated and control cancer cell lines, and what biological pathways do they implicate?",
+    "domain": "genomics",
+    "test_max_iterations": {
+      "should_stop": true,
+      "reason": "StoppingReason.NO_TESTABLE_HYPOTHESES",
+      "details": "0 untested hypotheses, 0 queued experiments"
+    },
+    "test_novelty_decline": {
+      "should_stop": true,
+      "reason": "StoppingReason.NO_TESTABLE_HYPOTHESES",
+      "novelty_trend": [
+        0.8,
+        0.6,
+        0.4,
+        0.2,
+        0.1,
+        0.1
+      ],
+      "details": "0 untested hypotheses, 0 queued experiments"
+    },
+    "cost_tracking": {
+      "total_cost": 0.0,
+      "is_always_zero": true,
+      "note": "total_cost is never propagated from LLM calls"
+    },
+    "status": "PASS",
+    "duration_seconds": 0.0
+  }
+}

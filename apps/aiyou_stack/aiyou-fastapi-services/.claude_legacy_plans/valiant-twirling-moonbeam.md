@@ -995,7 +995,7 @@ Components:
 ### Resource Right-Sizing
 
 ```yaml
-# Cor.Claude_Code_6-enforcer.yaml REMEDIATION
+# judge6-enforcer.yaml REMEDIATION
 # Before: cpu.limits: "8", memory.limits: "16Gi"
 # After:
 resources:
@@ -1011,7 +1011,7 @@ resources:
 
 | File                                          | Changes                         |
 | --------------------------------------------- | ------------------------------- |
-| `k8s/ShadowTag-v2jr-governance/Cor.Claude_Code_6-enforcer.yaml` | Right-size CPU/Memory           |
+| `k8s/ShadowTag-v2jr-governance/judge6-enforcer.yaml` | Right-size CPU/Memory           |
 | `scripts/bootstrap.sh`                        | Adjust max-nodes=4 for CPU pool |
 | `docs/COST_MODEL.md`                          | Corrected FinOps documentation  |
 
@@ -1097,7 +1097,7 @@ class SemanticDeduplicator:
    - Pub/Sub-based autoscaling
 
 6. **Right-Sizing** (FinOps)
-   - Cor.Claude_Code_6-enforcer resource limits
+   - judge6-enforcer resource limits
    - CPU pool max-nodes adjustment
 
 ---
@@ -1155,7 +1155,7 @@ gcloud pubsub topics list --format="table(name)"
 
 ### Files to Modify
 
-- `k8s/ShadowTag-v2jr-governance/Cor.Claude_Code_6-enforcer.yaml` - Right-size
+- `k8s/ShadowTag-v2jr-governance/judge6-enforcer.yaml` - Right-size
 - `scripts/bootstrap.sh` - CPU pool adjustment
 - `scrapers/industry_crawler.py` - Deep extraction
 

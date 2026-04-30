@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from vertexai.preview.language_models import ChatModel, ChatSession
 
 

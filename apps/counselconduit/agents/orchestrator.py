@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # Copyright 2026 ShadowTag AI. All rights reserved.
 # SPDX-License-Identifier: Proprietary
 """ADK 2.0 Graph Workflow Orchestrator for CounselConduit.
@@ -8,7 +6,7 @@ Routes multi-model legal AI queries through Judge 6 governance,
 Oracle Studio analysis, and Vent Mode ephemeral sessions.
 
 Architecture:
-    Client -> AG-UI SSE -> Orchestrator -> [Cor_Claude_Code_6 Gate] -> Model Router
+    Client -> AG-UI SSE -> Orchestrator -> [Judge6 Gate] -> Model Router
                                         -> [Oracle Studio] -> Memo Generator
                                         -> [Vent Mode] -> Ephemeral Session
 """
@@ -31,7 +29,7 @@ class AgentRole(StrEnum):
     ORCHESTRATOR = "orchestrator"
     ORACLE = "oracle"
     VENT = "vent"
-    JUDGE = "Cor_Claude_Code_6"
+    JUDGE = "judge6"
     MODEL_ROUTER = "model_router"
 
 
@@ -61,7 +59,7 @@ class TaskContext:
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
-class Cor_Claude_Code_6Gate:
+class Judge6Gate:
     """Mandatory policy gate on all agent routing decisions.
 
     Enforces ATP 5-19 risk management doctrine:
@@ -101,7 +99,7 @@ class Cor_Claude_Code_6Gate:
                 return False, f"DENY: Regulated domain {domain}"
 
         logger.info(
-            "Cor_Claude_Code_6 ALLOW: task=%s tenant=%s",
+            "Judge6 ALLOW: task=%s tenant=%s",
             ctx.task_id,
             ctx.tenant_id,
         )
@@ -116,7 +114,7 @@ class Orchestrator:
     """
 
     def __init__(self) -> None:
-        self.judge = Cor_Claude_Code_6Gate()
+        self.judge = Judge6Gate()
         self._active_tasks: dict[str, TaskContext] = {}
 
     async def submit_task(
@@ -157,7 +155,7 @@ class Orchestrator:
         allowed, reason = self.judge.evaluate(ctx, prompt)
         if not allowed:
             ctx.state = TaskState.FAILED
-            ctx.metadata["Cor_Claude_Code_6_reason"] = reason
+            ctx.metadata["judge6_reason"] = reason
             logger.warning("Task %s blocked: %s", ctx.task_id, reason)
             raise PermissionError(reason)
 

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Chunked Git Data API Push — Invariant #90
 Pushes all tracked files in 100MB chunks, 5 per JWT window.
 Renews token between batch windows.

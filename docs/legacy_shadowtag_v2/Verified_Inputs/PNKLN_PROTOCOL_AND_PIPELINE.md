@@ -6,7 +6,7 @@ def compress_governance_decision(input_tokens):
     violations = ATP_519_scan(input_tokens)  # 95% reduction
 
     # Step 2: Binary decision tree
-    decision = Claude_Code_6_binary(violations)  # Single bit output
+    decision = judge_six_binary(violations)  # Single bit output
 
     # Step 3: Audit trail compression
     audit = zstd.compress(decision.metadata)  # 10:1 compression

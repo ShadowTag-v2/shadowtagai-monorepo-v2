@@ -163,7 +163,7 @@ These swaps repurposed the prompt without losing core structure:
 | Original (Judge 6) | New (Ingestion Layer)                         | Why                                      |
 | ------------------- | --------------------------------------------- | ---------------------------------------- |
 | "Judge 6"          | "Gemini Ingestion Layer"                      | Domain focus                             |
-| `Claude_Code_6.py`      | Pipeline docs & arch specs                    | Broader scope for distributed system     |
+| `judge_six.py`      | Pipeline docs & arch specs                    | Broader scope for distributed system     |
 | p99 ≤90ms           | ~45 min/night runtime                         | Batch vs real-time metrics               |
 | 98% coverage        | Quality gates (items, sources, costs, scores) | Multifaceted quality vs binary threshold |
 

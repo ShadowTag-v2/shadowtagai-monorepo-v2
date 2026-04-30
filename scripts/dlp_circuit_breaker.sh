@@ -39,23 +39,18 @@ ALLOWED_FILES=(
   'RISK_REGISTER.md'
   '.firebaserc'
   'firebase.json'
-  '.betterleaksignore'
-  '.gitleaksignore'
   'scripts/load_mcp_secrets.sh'
   'scripts/firebase_auth_health_check.sh'
   'scripts/dlp_circuit_breaker.sh'
   'docs/DEPLOYMENT_RUNBOOK.md'
   'docs/deployment.md'
-  # CI workflows — WIF service accounts are public identifiers per Google IAM best practices
-  '.github/workflows/'
   # Google Cloud skills reference docs — parameterized SA patterns from official docs
-  '.agents/skills/cloud-sql-basics/references/'
-  '.agents/skills/gke-basics/references/'
-  '.agents/skills/cloud-run-basics/references/'
-  '.agents/skills/firebase-basics/references/'
-  '.agents/skills/google-cloud-recipe-auth/'
-  '.agents/skills/alloydb-basics/references/'
-  '.agents/skills/google-cloud-recipe-onboarding/'
+  '.agents/skills/google-cloud-sql-basics/references/'
+  '.agents/skills/google-gke-basics/references/'
+  '.agents/skills/google-cloud-run-basics/references/'
+  '.agents/skills/google-firebase-basics/references/'
+  '.agents/skills/google-google-cloud-recipe-auth/'
+  'apps/kovelai/agent/iam_mappings.sh'
 )
 
 echo "🔒 DLP Circuit Breaker — Scanning staged files..."

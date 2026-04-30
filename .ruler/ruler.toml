@@ -1,40 +1,12 @@
-# Ruler Configuration — Monorepo OS Instruction Propagation
-#
-# `ruler apply` distributes .ruler/AGENTS.md to all agent config locations.
-# Generated output files are listed in .gitignore under "Ruler Generated Files".
-
 [workspace]
 name = "shadowtag-omega-v4"
-source = "AGENTS.md"
-
 [agents.claude]
 enabled = true
-
 [agents.gemini]
 enabled = true
-
-[agents.cursor]
-enabled = true
-
-[agents.copilot]
-enabled = true
-
-[agents.windsurf]
-enabled = true
-
-[agents.cline]
-enabled = true
-
-[agents.aider]
-enabled = true
-
-[agents.kiro]
-enabled = true
-
-# Integration with Monorepo OS subsystems
-[integration]
-monorepo_os = "../MONOREPO_OS.md"
-beads_config = "../.beads/config.yaml"
-memory_dir = "../.memory/"
-tool_contracts = "../tool_contracts/"
-evidence_dir = "../.agent/evidence/"
+[mcpServers.google-design]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/client-cli", "wss://design.googleapis.com/mcp"]
+[mcpServers.notebooklm]
+command = "uvx"
+args = ["notebooklm-mcp-cli"]

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """MONTE CARLO RISK ASSESSMENT - Concurrent Execution Pattern
 ===========================================================
 

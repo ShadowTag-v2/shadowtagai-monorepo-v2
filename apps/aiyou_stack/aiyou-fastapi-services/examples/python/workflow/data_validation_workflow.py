@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Workflow Pattern Reference Implementation
 
 This example demonstrates a production-ready workflow agent for data validation.

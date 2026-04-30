@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """NFT Minting Service for Tokable
 Handles blockchain integration for minting stream NFTs
 

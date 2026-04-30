@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ShadowTag-v4: The Verified AI Civilization Layer
 
 Main package for the ShadowTag-v4 platform, providing verified AI infrastructure

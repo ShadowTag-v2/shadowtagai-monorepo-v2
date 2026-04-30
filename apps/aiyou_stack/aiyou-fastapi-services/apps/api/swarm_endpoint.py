@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """n-autoresearch/Kosmos/BioAgents Swarm API Endpoint (Pro Tier)
 
 Hosted governance-as-a-service for production deployments.

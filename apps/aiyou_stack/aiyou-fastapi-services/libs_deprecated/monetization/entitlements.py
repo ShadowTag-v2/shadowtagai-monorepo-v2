@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from libs.monetization.pricing_matrix import SubscriptionTier
 
 

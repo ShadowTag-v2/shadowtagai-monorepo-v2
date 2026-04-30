@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Blast-Radius Declarations — Per-module scope boundaries.
 
 Every module declares its maximum authorized scope.
@@ -28,7 +26,7 @@ class BlastRadius(Flag):
 # Adding a module here is a security-critical operation.
 MODULE_BLAST_RADIUS: dict[str, BlastRadius] = {
     # Governance
-    "Cor_Claude_Code_6": BlastRadius.READ | BlastRadius.BLOCK,
+    "judge6": BlastRadius.READ | BlastRadius.BLOCK,
     "silent_detector": BlastRadius.READ,
     "auth": BlastRadius.READ | BlastRadius.BLOCK,
     # AI Pipeline

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Ingestion Layer - Multi-Source Intelligence Collection Pipeline
 
 This module provides:

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PSO-NN: Particle Swarm Optimization for Neural Networks.
 
 This module provides PSO-based optimization for neural network weights,

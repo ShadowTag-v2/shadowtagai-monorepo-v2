@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Database connection and session management.
 
 Provides SQLAlchemy engine, session factory, and base declarative class.

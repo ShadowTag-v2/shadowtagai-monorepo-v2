@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pnkln Judge 6 Hybrid Orchestrator - Vertex AI Integration
 Purpose: Coordinate 3-layer governance enforcement with <90ms p99 latency SLA
 Architecture:

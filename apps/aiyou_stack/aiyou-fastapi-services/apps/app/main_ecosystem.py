@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FastAPI application for SHADOWTAGAI Ultrathink Ecosystem.
 
 Evolution from kernel chain to Jobs-inspired multi-agent platform with:

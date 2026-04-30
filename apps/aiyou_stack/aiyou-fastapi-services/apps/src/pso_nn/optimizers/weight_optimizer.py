@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Weight Optimizer: PSO-based neural network weight optimization.
 
 Flattens network weights, optimizes via PSO, and reshapes back.

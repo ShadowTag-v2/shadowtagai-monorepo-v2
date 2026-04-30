@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'KovelAI | Strategic Intelligence',

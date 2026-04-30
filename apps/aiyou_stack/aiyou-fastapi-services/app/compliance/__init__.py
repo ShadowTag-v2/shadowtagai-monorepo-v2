@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Compliance module for GDPR, CCPA, and other privacy regulations"""
 
 from .ccpa import CCPACompliance, CCPARequest, CCPARequestType, DataExportFormat

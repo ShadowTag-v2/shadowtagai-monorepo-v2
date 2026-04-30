@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from google.api_core.client_options import ClientOptions
 from google.cloud import notebooks_v2
 

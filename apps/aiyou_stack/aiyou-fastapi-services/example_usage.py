@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Example usage of UnGPT with AunCRM compliance integration
 Demonstrates both single-model and multi-LLM consensus modes
 """

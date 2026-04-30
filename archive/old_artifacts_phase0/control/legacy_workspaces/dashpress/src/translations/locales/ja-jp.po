@@ -1,0 +1,1733 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2024-04-22 14:57+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: ja-jp\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+msgid ""
+msgstr ""
+
+msgid "[[ name ]] is an invalid date"
+msgstr "[[ name ]] は無効な日付です"
+
+msgid "[[ name ]] is an invalid email"
+msgstr "[[ name ]] は無効なメールです"
+
+msgid "[[ name ]] is an invalid json"
+msgstr "[[ name ]] は無効な JSON です"
+
+msgid "[[ name ]] is an invalid URL"
+msgstr "[[ name ]] は無効な URL です"
+
+msgid "[[ name ]] is invalid"
+msgstr "[[ name ]] は無効です"
+
+msgid "[[ name ]] is not a text"
+msgstr "[[ name ]] はテキストではありません"
+
+msgid "[[ name ]] is required"
+msgstr "[[ name ]]は必須です"
+
+msgid "[[ name ]] should be a boolean"
+msgstr "[[ name ]] はブール値である必要があります"
+
+msgid "[[ name ]] should be a color"
+msgstr "[[ name ]] は色である必要があります"
+
+msgid "[[ name ]] should be a number"
+msgstr "[[ name ]] は数字である必要があります"
+
+msgid "[[ name ]] should be greater than [[ length ]] characters"
+msgstr "[[ name ]] は [[ length ]] 文字より大きくなければなりません"
+
+msgid "[[ name ]] should be greater than [[ otherField ]]"
+msgstr "[[ name ]] は [[ otherField ]] より大きくなければなりません"
+
+msgid "[[ name ]] should be greater than [[ value ]]"
+msgstr "[[ name ]] は [[ value ]] より大きくなければなりません"
+
+msgid "[[ name ]] should be less than [[ length ]] characters"
+msgstr "[[ name ]] は [[ length ]] 文字未満である必要があります"
+
+msgid "[[ name ]] should be less than [[ otherField ]]"
+msgstr "[[ name ]] は [[ otherField ]] より小さくなければなりません"
+
+msgid "[[ name ]] should be less than [[ value ]]"
+msgstr "[[ name ]] は [[ value ]] 未満である必要があります"
+
+msgid "[[ name ]] should be positive number"
+msgstr "[[ name ]] は正の数である必要があります"
+
+msgid "[[ name ]] should contain only alphabets and numbers"
+msgstr "[[ name ]] にはアルファベットと数字のみを含めてください"
+
+msgid "[[ name ]] should contain only upper cases"
+msgstr "[[ name ]] には大文字のみを含める必要があります"
+
+msgid "[[ name ]] should match [[ otherField ]]"
+msgstr "[[ name ]] は [[ otherField ]] と一致する必要があります"
+
+msgid "[[ name ]] should not match [[ otherField ]]"
+msgstr "[[ name ]] は [[ otherField ]] と一致してはなりません"
+
+msgid "{0}"
+msgstr "{0}"
+
+msgid "{0} - {1}"
+msgstr "{0} - {1}"
+
+msgid "{0} [{1}]"
+msgstr "{0} [{1}]"
+
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+msgid "{0} Configuration"
+msgstr "{0} 構成"
+
+msgid "{0} of the {1} items were not successfully {actionText}. You will find them selected"
+msgstr ""
+
+msgid "{0} Selections"
+msgstr "{0} 個の選択"
+
+msgid "{0} Validations"
+msgstr "{0} 検証"
+
+msgid "{option} / Page"
+msgstr ""
+
+msgid "{plural} Units"
+msgstr "{plural}単位"
+
+msgid "{singular} {action} Successfully"
+msgstr "{singular} {action} が成功しました"
+
+msgid "{singular} could not be retrieved"
+msgstr "{singular} を取得できませんでした"
+
+msgid "{singular} Created Successfully"
+msgstr "{singular} が正常に作成されました"
+
+msgid "{singular} Deleted Successfully"
+msgstr "{singular} が正常に削除されました"
+
+msgid "{singular} Details"
+msgstr "{singular} 詳細"
+
+msgid "{singular} Saved Successfully"
+msgstr "{singular} が正常に保存されました"
+
+msgid "{singular} Settings"
+msgstr "{singular} 設定"
+
+msgid "{singular} Unit"
+msgstr "{singular} 単位"
+
+msgid "{singular} Updated Successfully"
+msgstr "{singular} が正常に更新されました"
+
+msgid "{value} Day"
+msgstr "{value} 日"
+
+msgid "{value} Days"
+msgstr "{value} 日"
+
+msgid "{value} Hour"
+msgstr "{value} 時間"
+
+msgid "{value} Hours"
+msgstr "{value} 時間"
+
+msgid "{value} Month"
+msgstr "{value} 月"
+
+msgid "{value} Months"
+msgstr "{value} か月"
+
+msgid "{value} Quarter"
+msgstr "{value} 四半期"
+
+msgid "{value} Quarters"
+msgstr "{value} 四半期"
+
+msgid "{value} Week"
+msgstr "{value} 週間"
+
+msgid "{value} Weeks"
+msgstr "{value} 週間"
+
+msgid "{value} Year"
+msgstr "{value} 年"
+
+msgid "{value} Years"
+msgstr "{value} 年"
+
+msgid "•Expression: \\n•JS-Error: {e}"
+msgstr ""
+
+msgid "2FA Tokens"
+msgstr "2FA トークン"
+
+msgid "Access Key ID"
+msgstr "アクセスキーID"
+
+msgid "Account Preferences"
+msgstr "アカウントの設定"
+
+msgid "Account Profile"
+msgstr "アカウントプロフィール"
+
+msgid "Account Setup"
+msgstr ""
+
+msgid "Account Was Successfully Setup"
+msgstr "アカウントは正常にセットアップされました"
+
+msgid "Accounts"
+msgstr ""
+
+msgid "Action"
+msgstr "アクション"
+
+msgid "Actions"
+msgstr "行動"
+
+msgid "Activate {0}"
+msgstr "{0}をアクティブにする"
+
+msgid "Activated"
+msgstr "アクティブ化された"
+
+msgid "Activating {0}"
+msgstr "{0}をアクティブ化しています"
+
+msgid "Add fields to this table from your prefer database tool to manage them here"
+msgstr "好みのデータベース ツールからこのテーブルにフィールドを追加して、ここで管理します"
+
+msgid "Add Filter"
+msgstr "フィルターの追加"
+
+msgid "Add Nested Filter"
+msgstr "ネストされたフィルターの追加"
+
+msgid "Add New {0} And Select"
+msgstr "新しい {0} を追加して選択"
+
+msgid "Add New {singular}"
+msgstr "新しい{singular}を追加"
+
+msgid "Add New And Select"
+msgstr "新規追加して選択"
+
+msgid "Add New Option"
+msgstr "新しいオプションを追加"
+
+msgid "Add new tables through your preferred database editor then restart this application."
+msgstr "好みのデータベース エディターを使用して新しいテーブルを追加し、このアプリケーションを再起動します。"
+
+msgid "Add New Validation"
+msgstr "新しい検証を追加"
+
+msgid "All Dashboards"
+msgstr "すべてのダッシュボード"
+
+msgid "All items were {actionText} successfully"
+msgstr "すべてのアイテムが正常に {actionText} されました"
+
+msgid "Allowed values are [[ options ]]"
+msgstr "許可される値は [[ options ]] です。"
+
+msgid "Alphanumeric"
+msgstr "英数字"
+
+msgid "AND"
+msgstr "そして"
+
+msgid "API Key"
+msgstr "APIキー"
+
+msgid "App"
+msgstr "アプリ"
+
+msgid "App Navigation"
+msgstr ""
+
+msgid "App Settings"
+msgstr ""
+
+msgid "Are you sure you want to do this?"
+msgstr ""
+
+msgid "Associated Triggers"
+msgstr "関連するトリガー"
+
+msgid "Associated Workflows"
+msgstr "関連するワークフロー"
+
+msgid "Attach A Trigger"
+msgstr "トリガーを接続する"
+
+msgid "Attach A Workflow"
+msgstr "ワークフローを添付する"
+
+msgid "Authenticator Token"
+msgstr "認証トークン"
+
+msgid "Back To {0}"
+msgstr "{0} に戻る"
+
+msgid "Back to Sign In Page"
+msgstr "サインインページに戻る"
+
+msgid "Bar Chart"
+msgstr "棒グラフ"
+
+msgid "Before Submit"
+msgstr "送信する前に"
+
+msgid "Beginning of time"
+msgstr ""
+
+msgid "Beginning of Year"
+msgstr ""
+
+msgid "Between"
+msgstr ""
+
+msgid "Body"
+msgstr "体"
+
+msgid "Bookmark"
+msgstr "ブックマーク"
+
+msgid "Bookmarks"
+msgstr "ブックマーク"
+
+msgid "Boolean"
+msgstr "ブール値"
+
+msgid "Bulk Delete"
+msgstr "一括削除"
+
+msgid "Bulk Deleting"
+msgstr "一括削除"
+
+msgid "Bulk Update"
+msgstr "一括更新"
+
+msgid "Can Access All Dashboards"
+msgstr "すべてのダッシュボードにアクセス可能"
+
+msgid "Can Access And Restore Soft Deleted Items"
+msgstr "論理的に削除されたアイテムにアクセスして復元できる"
+
+msgid "Can Configure App"
+msgstr "アプリを設定できる"
+
+msgid "Can Export Data"
+msgstr "データをエクスポートできる"
+
+msgid "Can Impersonate Users"
+msgstr "ユーザーになりすますことができる"
+
+msgid "Can Manage All Entities"
+msgstr "すべてのエンティティを管理できる"
+
+msgid "Can Manage App Credentials"
+msgstr "アプリの認証情報を管理できる"
+
+msgid "Can Manage Dashboard"
+msgstr "ダッシュボードを管理できる"
+
+msgid "Can Manage Permissions"
+msgstr "権限を管理できる"
+
+msgid "Can Manage Users"
+msgstr "ユーザーを管理できる"
+
+msgid "Can Manages Flows"
+msgstr "フローを管理できる"
+
+msgid "Can Reset Password"
+msgstr "パスワードをリセットできます"
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Change History"
+msgstr "変更履歴"
+
+msgid "Change Language"
+msgstr "言語を変えてください"
+
+msgid "Channel"
+msgstr "チャネル"
+
+msgid "Clear"
+msgstr ""
+
+msgid "Clear selections"
+msgstr "選択をクリア"
+
+msgid "Client Script"
+msgstr "クライアントスクリプト"
+
+msgid "Clone"
+msgstr "クローン"
+
+msgid "Clone {0}"
+msgstr "クローン {0}"
+
+msgid "Clone Settings"
+msgstr "クローン設定"
+
+msgid "Cloned"
+msgstr "クローン化された"
+
+msgid "Cloning"
+msgstr "クローン作成"
+
+msgid "Color"
+msgstr "色"
+
+msgid "Color Scheme"
+msgstr ""
+
+msgid "Column"
+msgstr "カラム"
+
+msgid "Column Labels Settings"
+msgstr "列ラベルの設定"
+
+msgid "Column Types Settings"
+msgstr "列タイプの設定"
+
+msgid "Complete Setup"
+msgstr "セットアップを完了する"
+
+msgid "Completing Setup"
+msgstr "セットアップの完了"
+
+msgid "Condition"
+msgstr "状態"
+
+msgid "Configurations"
+msgstr ""
+
+msgid "Configure"
+msgstr "構成、設定"
+
+msgid "Configure Selections"
+msgstr "選択項目の構成"
+
+msgid "Configure Validation"
+msgstr "検証の構成"
+
+msgid "Confirm Data Restoration"
+msgstr "データ復元の確認"
+
+msgid "Confirm Delete"
+msgstr ""
+
+msgid "Confirmation Text"
+msgstr "確認テキスト"
+
+msgid "Connection URL"
+msgstr "接続URL"
+
+msgid "Constant"
+msgstr "絶え間ない"
+
+msgid "Constants"
+msgstr "定数"
+
+msgid "Contains"
+msgstr ""
+
+msgid "Continue"
+msgstr "続く"
+
+msgid "Copy To Clipboard"
+msgstr "クリップボードにコピー"
+
+msgid "Could not parse Javascript"
+msgstr ""
+
+msgid "Create"
+msgstr "作成する"
+
+msgid "Create {singular}"
+msgstr "{singular}を作成する"
+
+msgid "Create Columns Settings"
+msgstr "列の作成設定"
+
+msgid "Create Fields Order"
+msgstr "フィールドの作成順序"
+
+msgid "Create first super admin account"
+msgstr ""
+
+msgid "Create It"
+msgstr "作成してください"
+
+msgid "Created At"
+msgstr "作成日"
+
+msgid "Creating {singular}"
+msgstr "{singular}の作成"
+
+msgid "Credentials Was Successfully Setup"
+msgstr "資格情報が正常にセットアップされました"
+
+msgid "Cron Expression"
+msgstr "クロン式"
+
+msgid "CRUD"
+msgstr "クラッド"
+
+msgid "CRUD Settings"
+msgstr "CRUD設定"
+
+msgid "cURL Command"
+msgstr "cURLコマンド"
+
+msgid "Curve"
+msgstr "曲線"
+
+msgid "Custom Action"
+msgstr "カスタムアクション"
+
+msgid "Custom Actions"
+msgstr "カスタムアクション"
+
+msgid "Custom Dashboard"
+msgstr "カスタムダッシュボード"
+
+msgid "Custom Dashboards"
+msgstr "カスタムダッシュボード"
+
+msgid "Custom Date"
+msgstr ""
+
+msgid "Dashboard"
+msgstr "ダッシュボード"
+
+msgid "Dashboard Widget"
+msgstr "ダッシュボードウィジェット"
+
+msgid "Dashboard Widgets"
+msgstr "ダッシュボードウィジェット"
+
+msgid "Dashboards"
+msgstr "ダッシュボード"
+
+msgid "Data"
+msgstr "データ"
+
+msgid "Data copied to clipboard successfully"
+msgstr "データがクリップボードに正常にコピーされました"
+
+msgid "Data Event"
+msgstr "データイベント"
+
+msgid "Data Events"
+msgstr "データイベント"
+
+msgid "Data exported successfully"
+msgstr "データは正常にエクスポートされました"
+
+msgid "Data Key"
+msgstr "データキー"
+
+msgid "Database"
+msgstr "データベース"
+
+msgid "Database Type"
+msgstr "データベースの種類"
+
+msgid "Date"
+msgstr "日付"
+
+msgid "Date Format"
+msgstr "日付形式"
+
+msgid "Day"
+msgstr ""
+
+msgid "Deactivate"
+msgstr "非アクティブ化"
+
+msgid "Deactivate {0}"
+msgstr "{0}を非アクティブ化します"
+
+msgid "Deactivated"
+msgstr "無効化されました"
+
+msgid "Deactivating {0}"
+msgstr "{0}を非アクティブ化しています"
+
+msgid "Delete"
+msgstr "消去"
+
+msgid "Delete {singular}"
+msgstr "{singular}を削除"
+
+msgid "Delete Edge"
+msgstr "エッジの削除"
+
+msgid "Delete Selection"
+msgstr "選択範囲の削除"
+
+msgid "Description"
+msgstr "説明"
+
+msgid "Details"
+msgstr "詳細"
+
+msgid "Details Columns Settings"
+msgstr "詳細列の設定"
+
+msgid "Details Fields Order"
+msgstr "詳細フィールドの順序"
+
+msgid "Diction"
+msgstr "辞書"
+
+msgid "Diction Settings"
+msgstr "辞書設定"
+
+msgid "Display Format"
+msgstr "表示形式"
+
+msgid "Domain"
+msgstr "ドメイン"
+
+msgid "Done"
+msgstr "終わり"
+
+msgid "Download"
+msgstr "ダウンロード"
+
+msgid "Duplicate {singular}"
+msgstr "重複 {singular}"
+
+msgid "Edit"
+msgstr "編集"
+
+msgid "Edit {singular}"
+msgstr "{singular}を編集"
+
+msgid "Email"
+msgstr "Eメール"
+
+msgid "Empty Table"
+msgstr ""
+
+msgid "Enable {0} Functionality"
+msgstr "{0} 機能を有効にする"
+
+msgid "Enable Area"
+msgstr "エリアを有効にする"
+
+msgid "Enable Points"
+msgstr "ポイントを有効にする"
+
+msgid "Enable two-factor authentication"
+msgstr ""
+
+msgid "Enabled Entities"
+msgstr "有効なエンティティ"
+
+msgid "Enabled Entities Settings"
+msgstr "有効なエンティティの設定"
+
+msgid "Enabled Relations"
+msgstr "有効な関係"
+
+msgid "Enter a security token from your authenticator app"
+msgstr "認証アプリからセキュリティ トークンを入力します"
+
+msgid "Enter one of your unsed recovery codes"
+msgstr "Unsed リカバリ コードのいずれかを入力してください"
+
+msgid "Enter your credentials to continue"
+msgstr "続行するには資格情報を入力してください"
+
+msgid "Enter your database credentials to continue"
+msgstr ""
+
+msgid "Entities"
+msgstr "エンティティ"
+
+msgid "Entities Enabled For Add New And Select"
+msgstr "新規追加と選択が有効なエンティティ"
+
+msgid "Entities Enabled For Change History"
+msgstr "変更履歴が有効になっているエンティティ"
+
+msgid "Entity"
+msgstr "実在物"
+
+msgid "Entity Action"
+msgstr "エンティティアクション"
+
+msgid "Entity Create Form Layout"
+msgstr "エンティティ作成フォームのレイアウト"
+
+msgid "Entity Field"
+msgstr "エンティティフィールド"
+
+msgid "Entity ID"
+msgstr "エンティティID"
+
+msgid "Entity Tab"
+msgstr "エンティティタブ"
+
+msgid "Entity Update Form Layout"
+msgstr "エンティティ更新フォームのレイアウト"
+
+msgid "Environment Variable"
+msgstr "環境変数"
+
+msgid "Environment Variables"
+msgstr "環境変数"
+
+msgid "Equal"
+msgstr ""
+
+msgid "Equal To Other Field"
+msgstr "他のフィールドと等しい"
+
+msgid "Error message"
+msgstr "エラーメッセージ"
+
+msgid "Error Occured Setting Up Your 2FA Token"
+msgstr "2FA トークンのセットアップ中にエラーが発生しました"
+
+msgid "Every 6 Hours"
+msgstr "6時間ごと"
+
+msgid "Explain {title}"
+msgstr "{title}について説明する"
+
+msgid "Export"
+msgstr "輸出"
+
+msgid "Exporting"
+msgstr "輸出中"
+
+msgid "External Link"
+msgstr "外部リンク"
+
+msgid "Field"
+msgstr "分野"
+
+msgid "Field Corresponding To Dashpress Usernames"
+msgstr "Dashpress ユーザー名に対応するフィールド"
+
+msgid "Field Settings"
+msgstr "フィールド設定"
+
+msgid "Fields"
+msgstr "田畑"
+
+msgid "Fields State"
+msgstr "フィールドの状態"
+
+msgid "File"
+msgstr "ファイル"
+
+msgid "File Name"
+msgstr "ファイル名"
+
+msgid "File Name Format"
+msgstr "ファイル名の形式"
+
+msgid "File Path Format"
+msgstr "ファイルパス形式"
+
+msgid "File Storage"
+msgstr "ファイルストレージ"
+
+msgid "File Uploads Settings"
+msgstr "ファイルアップロード設定"
+
+msgid "Flow"
+msgstr "流れ"
+
+msgid "Flow Trigger Attachment"
+msgstr "フロートリガーアタッチメント"
+
+msgid "Flow Trigger Attachments"
+msgstr "フロートリガーアタッチメント"
+
+msgid "Flows"
+msgstr "流れ"
+
+msgid "Follow us on Twitter"
+msgstr "Twitterでフォローします"
+
+msgid "For security reasons, Please input your account password to reveal credentials"
+msgstr "セキュリティ上の理由から、資格情報を明らかにするにはアカウントのパスワードを入力してください"
+
+msgid "Form"
+msgstr "形状"
+
+msgid "Form Action"
+msgstr "フォームアクション"
+
+msgid "Form Actions"
+msgstr "フォームアクション"
+
+msgid "Form Field"
+msgstr "フォームフィールド"
+
+msgid "Form Fields"
+msgstr "フォームフィールド"
+
+msgid "Form Scripts"
+msgstr "フォームスクリプト"
+
+msgid "Format"
+msgstr "フォーマット"
+
+msgid "From"
+msgstr "から"
+
+msgid "General"
+msgstr "一般的な"
+
+msgid "General Data Settings"
+msgstr "一般的なデータ設定"
+
+msgid "Genesis"
+msgstr "創世記"
+
+msgid "Global Action"
+msgstr "グローバルアクション"
+
+msgid "Go Back"
+msgstr "戻る"
+
+msgid "Greater Than"
+msgstr ""
+
+msgid "Greater Than Other Field"
+msgstr "他の分野よりも優れている"
+
+msgid "Group Mode"
+msgstr "グループモード"
+
+msgid "Grouped"
+msgstr "グループ化された"
+
+msgid "Header"
+msgstr "ヘッダ"
+
+msgid "Headers"
+msgstr "ヘッダー"
+
+msgid "Height"
+msgstr "身長"
+
+msgid "Hi, {0}"
+msgstr "こんにちは、{0}"
+
+msgid "Hide Password"
+msgstr ""
+
+msgid "Home"
+msgstr "家"
+
+msgid "Home Link"
+msgstr "ホームリンク"
+
+msgid "Horizontal"
+msgstr "水平"
+
+msgid "Host"
+msgstr "ホスト"
+
+msgid "Hour"
+msgstr ""
+
+msgid "I have safely saved my recovery tokens"
+msgstr "回復トークンを安全に保存しました"
+
+msgid "I Want To Help With Translation"
+msgstr ""
+
+msgid "Icon"
+msgstr "アイコン"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Image"
+msgstr "画像"
+
+msgid "Impersonate User"
+msgstr "ユーザーになりすます"
+
+msgid "Impersonating User"
+msgstr "ユーザーになりすます"
+
+msgid "Incorrect value"
+msgstr "不正な値"
+
+msgid "Initial Values"
+msgstr "初期値"
+
+msgid "Inline Edit"
+msgstr "インライン編集"
+
+msgid "Inline Edit Settings"
+msgstr "インライン編集設定"
+
+msgid "Input {deactivationKey} to continue"
+msgstr "続行するには、{deactivationKey} を入力してください"
+
+msgid "Input Validation"
+msgstr ""
+
+msgid "Integration"
+msgstr "統合"
+
+msgid "Integrations"
+msgstr "統合"
+
+msgid "Invalid Date Format"
+msgstr ""
+
+msgid "IP Address"
+msgstr "IPアドレス"
+
+msgid "Is In"
+msgstr "入っています"
+
+msgid "Is Not In"
+msgstr ""
+
+msgid "Is Not Null"
+msgstr ""
+
+msgid "Is Null"
+msgstr ""
+
+msgid "Join our Discord community"
+msgstr "Discord コミュニティに参加してください"
+
+msgid "JSON"
+msgstr "JSON"
+
+msgid "Key"
+msgstr "鍵"
+
+msgid "Label"
+msgstr "ラベル"
+
+msgid "Labels"
+msgstr "ラベル"
+
+msgid "Language"
+msgstr "言語"
+
+msgid "Large Logo"
+msgstr "大きなロゴ"
+
+msgid "Layout"
+msgstr "レイアウト"
+
+msgid "Less Than"
+msgstr ""
+
+msgid "Less Than Other Field"
+msgstr "他の分野に比べて少ない"
+
+msgid "Line Chart"
+msgstr "折れ線グラフ"
+
+msgid "Link"
+msgstr "リンク"
+
+msgid "Link Entity"
+msgstr "リンクエンティティ"
+
+msgid "Link Users To Database"
+msgstr "ユーザーをデータベースにリンクする"
+
+msgid "List"
+msgstr "リスト"
+
+msgid "Loading..."
+msgstr "読み込み中..."
+
+msgid "Log Out"
+msgstr "ログアウト"
+
+msgid "Loop"
+msgstr "ループ"
+
+msgid "Manage {plural}"
+msgstr "{複数}を管理する"
+
+msgid "Manage {title}"
+msgstr "{タイトル}を管理する"
+
+msgid "Manage Plan"
+msgstr "計画の管理"
+
+msgid "Manage Sensitive Fields"
+msgstr "機密フィールドの管理"
+
+msgid "Manage Variables"
+msgstr "変数の管理"
+
+msgid "Max"
+msgstr "マックス"
+
+msgid "Max Length"
+msgstr "最大長さ"
+
+msgid "Maximum file size to upload in MB"
+msgstr "アップロードする最大ファイルサイズ (MB)"
+
+msgid "Menu Item"
+msgstr "メニュー項目"
+
+msgid "Menu Settings"
+msgstr "メニュー設定"
+
+msgid "Menu Updated Successfully"
+msgstr ""
+
+msgid "Message"
+msgstr "メッセージ"
+
+msgid "Metadata Columns"
+msgstr "メタデータ列"
+
+msgid "Min"
+msgstr "分"
+
+msgid "Min Length"
+msgstr "最小長さ"
+
+msgid "Modify Data Before Cloning"
+msgstr "クローン作成前にデータを変更する"
+
+msgid "Month"
+msgstr ""
+
+msgid "Mutate"
+msgstr "変異する"
+
+msgid "My Account"
+msgstr "私のアカウント"
+
+msgid "Name"
+msgstr "名前"
+
+msgid "Navigation Menu"
+msgstr "ナビゲーションメニュー"
+
+msgid "New"
+msgstr "新しい"
+
+msgid "New Password"
+msgstr "新しいパスワード"
+
+msgid "New Password Again"
+msgstr "新しいパスワードを再入力"
+
+msgid "New Value"
+msgstr "新しい価値"
+
+msgid "No"
+msgstr "いいえ"
+
+msgid "No {singular} Has Been Added Yet"
+msgstr "{singular} はまだ追加されていません"
+
+msgid "No available permission for this section"
+msgstr "このセクションには利用可能な権限がありません"
+
+msgid "No Data"
+msgstr "データなし"
+
+msgid "No Options"
+msgstr ""
+
+msgid "No result for the current {0} applied."
+msgstr "現在適用されている {0} の結果はありません。"
+
+msgid "No Search Results"
+msgstr ""
+
+msgid "Node"
+msgstr "ノード"
+
+msgid "Node Label"
+msgstr "ノードラベル"
+
+msgid "Node Properties"
+msgstr "ノードのプロパティ"
+
+msgid "Nodes"
+msgstr "ノード"
+
+msgid "Not Equal"
+msgstr ""
+
+msgid "Not Equal To Other Field"
+msgstr "他のフィールドと等しくない"
+
+msgid "Now"
+msgstr "今"
+
+msgid "Number"
+msgstr "番号"
+
+msgid "Old Password"
+msgstr "以前のパスワード"
+
+msgid "Old Value"
+msgstr "古い値"
+
+msgid "On Create"
+msgstr "作成時"
+
+msgid "On Delete"
+msgstr "削除時"
+
+msgid "On Update"
+msgstr "更新時"
+
+msgid "Only capital letters and underscores are allowed"
+msgstr "大文字とアンダースコアのみが使用できます"
+
+msgid "Only lowercase letters, numbers and {delimiter} are allowed"
+msgstr "小文字、数字、および {delimiter} のみが許可されます"
+
+msgid "Operator"
+msgstr "オペレーター"
+
+msgid "OR"
+msgstr "または"
+
+msgid "Order"
+msgstr "注文"
+
+msgid "Ordered"
+msgstr "順序付けられました"
+
+msgid "Password"
+msgstr "パスワード"
+
+msgid "Password Reset Successfully"
+msgstr "パスワードが正常にリセットされました"
+
+msgid "Password will not be changed on demo account"
+msgstr "デモアカウントではパスワードは変更されません"
+
+msgid "Persistent Query"
+msgstr "永続的なクエリ"
+
+msgid "Personalize This Table"
+msgstr "このテーブルをカスタマイズする"
+
+msgid "Pick a date"
+msgstr ""
+
+msgid "Pie Chart"
+msgstr "円グラフ"
+
+msgid "Please go to {DATE_FORMAT_LIB_LINK} to see valid formats"
+msgstr ""
+
+msgid "Plural"
+msgstr "複数"
+
+msgid "Port"
+msgstr "ポート"
+
+msgid "Positive Number"
+msgstr "正数"
+
+msgid "Preferences"
+msgstr "環境設定"
+
+msgid "Presentation Scripts"
+msgstr "プレゼンテーションスクリプト"
+
+msgid "Preview"
+msgstr "プレビュー"
+
+msgid "Profile"
+msgstr "プロフィール"
+
+msgid "Quarter"
+msgstr ""
+
+msgid "Query"
+msgstr "クエリ"
+
+msgid "Recovery Code"
+msgstr "リカバリーコード"
+
+msgid "Recovery tokens copied to clipboard"
+msgstr "リカバリトークンがクリップボードにコピーされました"
+
+msgid "Reference"
+msgstr "参照"
+
+msgid "Reference Template"
+msgstr "参照テンプレート"
+
+msgid "Regex"
+msgstr "正規表現"
+
+msgid "Region"
+msgstr "地域"
+
+msgid "Relation Labels"
+msgstr "関係ラベル"
+
+msgid "Relation Template"
+msgstr "関係テンプレート"
+
+msgid "Relations"
+msgstr "関係"
+
+msgid "Relations Order"
+msgstr "関係の順序"
+
+msgid "Relations To Clone Along"
+msgstr "クローンを作成する関係"
+
+msgid "Relationship Settings"
+msgstr "関係設定"
+
+msgid "Remember Me"
+msgstr "私を覚えてますか"
+
+msgid "Remove"
+msgstr "取り除く"
+
+msgid "Remove Nested Filter"
+msgstr "ネストされたフィルタを削除する"
+
+msgid "Request Failed"
+msgstr ""
+
+msgid "Request ID"
+msgstr "リクエストID"
+
+msgid "Request Method"
+msgstr "リクエストメソッド"
+
+msgid "Required"
+msgstr "必須"
+
+msgid "Reset"
+msgstr ""
+
+msgid "Reset 2FA Recovery Tokens"
+msgstr "2FA 回復トークンをリセットする"
+
+msgid "Reset Password"
+msgstr "パスワードを再設定する"
+
+msgid "Reset Recovery Tokens"
+msgstr "回復トークンをリセットする"
+
+msgid "Reset User Password"
+msgstr "ユーザーパスワードのリセット"
+
+msgid "Resetting Password"
+msgstr "パスワードのリセット"
+
+msgid "Response"
+msgstr "応答"
+
+msgid "Restore"
+msgstr "復元する"
+
+msgid "Restored"
+msgstr "復元されました"
+
+msgid "results"
+msgstr ""
+
+msgid "Reveal Credentials"
+msgstr "資格情報を明らかにする"
+
+msgid "Revealing Credentials"
+msgstr "資格情報の公開"
+
+msgid "Rich Text"
+msgstr "リッチテキスト"
+
+msgid "Role"
+msgstr "役割"
+
+msgid "Role Permission"
+msgstr "役割の権限"
+
+msgid "Role Permissions"
+msgstr "役割の権限"
+
+msgid "Roles"
+msgstr "役割"
+
+msgid "Route ID"
+msgstr "ルートID"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Save {singular}"
+msgstr "{singular}を保存"
+
+msgid "Save Current Filters"
+msgstr "現在のフィルターを保存する"
+
+msgid "Saving"
+msgstr "保存"
+
+msgid "Saving {singular}"
+msgstr "{singular}を保存しています"
+
+msgid "Scheduler"
+msgstr "スケジューラ"
+
+msgid "Schedulers"
+msgstr "スケジューラ"
+
+msgid "Script"
+msgstr "脚本"
+
+msgid "Search"
+msgstr ""
+
+msgid "Secret"
+msgstr "秘密"
+
+msgid "Secret Access Key"
+msgstr "シークレットアクセスキー"
+
+msgid "Secrets"
+msgstr "秘密"
+
+msgid "Select {0}"
+msgstr ""
+
+msgid "Select {0} Type"
+msgstr ""
+
+msgid "Select Count"
+msgstr ""
+
+msgid "Select Date Option"
+msgstr ""
+
+msgid "Select Node Type"
+msgstr "ノードタイプの選択"
+
+msgid "Select Operator"
+msgstr ""
+
+msgid "Select Option"
+msgstr ""
+
+msgid "Select Page Size"
+msgstr ""
+
+msgid "Select Trigger"
+msgstr "トリガーの選択"
+
+msgid "Select Value"
+msgstr ""
+
+msgid "Select Workflow"
+msgstr "ワークフローの選択"
+
+msgid "Selection"
+msgstr "選択"
+
+msgid "Selection List"
+msgstr "選択リスト"
+
+msgid "Selections Settings"
+msgstr "選択設定"
+
+msgid "Send Mail"
+msgstr "メールを送信する"
+
+msgid "Send Message"
+msgstr "メッセージを送る"
+
+msgid "Send SMS"
+msgstr "SMSを送信"
+
+msgid "Sender Email"
+msgstr "送信者の電子メール"
+
+msgid "Sender Name"
+msgstr "送信者名"
+
+msgid "Sensitive Field"
+msgstr "敏感なフィールド"
+
+msgid "Sensitive Fields"
+msgstr "敏感なフィールド"
+
+msgid "Setting Up Account"
+msgstr "アカウントのセットアップ"
+
+msgid "Setting Up Credentials"
+msgstr "資格情報のセットアップ"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Setup"
+msgstr "設定"
+
+msgid "Setup Account"
+msgstr "アカウントのセットアップ"
+
+msgid "Setup Credentials"
+msgstr "資格情報のセットアップ"
+
+msgid "Setup DB credentials"
+msgstr ""
+
+msgid "Share"
+msgstr "共有"
+
+msgid "Shared"
+msgstr "共有"
+
+msgid "Sharing"
+msgstr "共有"
+
+msgid "Show"
+msgstr "見せる"
+
+msgid "Show Password"
+msgstr ""
+
+msgid "Show Soft Deleted Items And The Restore Button"
+msgstr "ソフト的に削除されたアイテムと復元ボタンを表示する"
+
+msgid "Show Up In Roles And Permissions"
+msgstr "役割と権限を表示する"
+
+msgid "Sign In"
+msgstr "サインイン"
+
+msgid "Signing In"
+msgstr "サインイン"
+
+msgid "Singular"
+msgstr "特異な"
+
+msgid "Site"
+msgstr "サイト"
+
+msgid "Site Settings"
+msgstr "サイト設定"
+
+msgid "Small Logo"
+msgstr "小さなロゴ"
+
+msgid "Soft Delete"
+msgstr "ソフト削除"
+
+msgid "Soft Delete Settings"
+msgstr "ソフトデリート設定"
+
+msgid "Soft deleted data cannot be updated. Kindly restore the data to be able to update it"
+msgstr ""
+
+msgid "Stacked"
+msgstr "積み重ねられた"
+
+msgid "Star us on Github"
+msgstr "Github でスターを付けてください"
+
+msgid "Start of year"
+msgstr "年の初め"
+
+msgid "Start Typing"
+msgstr ""
+
+msgid "State Script"
+msgstr "状態スクリプト"
+
+msgid "Storage Key"
+msgstr "ストレージキー"
+
+msgid "Strategy"
+msgstr "戦略"
+
+msgid "String"
+msgstr "弦"
+
+msgid "Subject"
+msgstr "主題"
+
+msgid "Submit"
+msgstr "提出する"
+
+msgid "Submitting"
+msgstr "提出中"
+
+msgid "Summary Card"
+msgstr "サマリーカード"
+
+msgid "SVG"
+msgstr ""
+
+msgid "System"
+msgstr "システム"
+
+msgid "System Info"
+msgstr "システム情報"
+
+msgid "System Settings"
+msgstr "システム設定"
+
+msgid "Table"
+msgstr "テーブル"
+
+msgid "Table Columns Settings"
+msgstr "テーブル列の設定"
+
+msgid "Table Fields Order"
+msgstr "テーブルフィールドの順序"
+
+msgid "Table Personalization"
+msgstr "テーブルのパーソナライゼーション"
+
+msgid "Table Personalizations"
+msgstr "テーブルのカスタマイズ"
+
+msgid "Table View"
+msgstr "テーブルビュー"
+
+msgid "Table Views"
+msgstr "テーブルビュー"
+
+msgid "Test Widget Script"
+msgstr "ウィジェット スクリプトのテスト"
+
+msgid "Text"
+msgstr "文章"
+
+msgid "Textarea"
+msgstr "テキストエリア"
+
+msgid "That feature is not enabled on your current plan."
+msgstr ""
+
+msgid "Theme"
+msgstr "テーマ"
+
+msgid "Theme Settings"
+msgstr "テーマ設定"
+
+msgid "This {0} Has No Form"
+msgstr "この {0} には形式がありません"
+
+msgid "This action does not have configuration"
+msgstr "このアクションには構成がありません"
+
+msgid "This entity has no fields"
+msgstr "このエンティティにはフィールドがありません"
+
+msgid "This entity has no relations"
+msgstr "このエンティティには関係がありません"
+
+msgid "This flow should be queued and executed asynchronously (recommended for long running flows, requires Redis)"
+msgstr "このフローはキューに入れて非同期で実行する必要があります (長時間実行されるフローに推奨、Redis が必要です)。"
+
+msgid "This trigger has no workflow attached"
+msgstr "このトリガーにはワークフローが接続されていません"
+
+msgid "This workflow has no trigger attached"
+msgstr "このワークフローにはトリガーが接続されていません"
+
+msgid "Time Changed"
+msgstr "時間変更"
+
+msgid "Title"
+msgstr "タイトル"
+
+msgid "To"
+msgstr "に"
+
+msgid "Toggle Connection URL"
+msgstr "接続 URL の切り替え"
+
+msgid "Token"
+msgstr "トークン"
+
+msgid "Token Validity Duration In Days"
+msgstr "トークンの有効期間 (日)"
+
+msgid "Trigger"
+msgstr "引き金"
+
+msgid "Try Out 25+ Pro Features"
+msgstr "25 の Pro 機能を試してみる"
+
+msgid "Two Factor Authentication"
+msgstr ""
+
+msgid "Type"
+msgstr "タイプ"
+
+msgid "Unauthorized Access"
+msgstr ""
+
+msgid "Update"
+msgstr "アップデート"
+
+msgid "Update {singular}"
+msgstr "{singular}を更新します"
+
+msgid "Update Columns Settings"
+msgstr "列設定の更新"
+
+msgid "Update Fields Order"
+msgstr "フィールドの順序を更新する"
+
+msgid "Updated At"
+msgstr "更新日"
+
+msgid "Updating {singular}"
+msgstr "{singular}を更新しています"
+
+msgid "Uppercase"
+msgstr "大文字"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Use Colors"
+msgstr "色の使用"
+
+msgid "Use Icon"
+msgstr ""
+
+msgid "Use OTP Token"
+msgstr "OTPトークンを使用する"
+
+msgid "Use Recovery Code"
+msgstr "リカバリーコードを使用する"
+
+msgid "Use SSL"
+msgstr "SSLを使用する"
+
+msgid "Use SVG"
+msgstr ""
+
+msgid "User"
+msgstr "ユーザー"
+
+msgid "Username"
+msgstr "ユーザー名"
+
+msgid "Users"
+msgstr "ユーザー"
+
+msgid "Users Link To Database"
+msgstr "ユーザーがデータベースにリンクする"
+
+msgid "Users to Database Link"
+msgstr "ユーザーからデータベースへのリンク"
+
+msgid "Validations"
+msgstr "検証"
+
+msgid "Value"
+msgstr "価値"
+
+msgid "Variables"
+msgstr "変数"
+
+msgid "Verifing"
+msgstr "検証中"
+
+msgid "Verify"
+msgstr "確認する"
+
+msgid "Vertical"
+msgstr "垂直"
+
+msgid "View"
+msgstr "ビュー"
+
+msgid "View Details"
+msgstr ""
+
+msgid "View Full Details"
+msgstr "詳細を表示"
+
+msgid "Visit our website"
+msgstr "当社のウェブサイトを訪問"
+
+msgid "Webhook"
+msgstr "Webhook"
+
+msgid "Webhooks"
+msgstr "Webhook"
+
+msgid "Week"
+msgstr ""
+
+msgid "Widget Script"
+msgstr "ウィジェットスクリプト"
+
+msgid "Width"
+msgstr "幅"
+
+msgid "Workflow"
+msgstr "ワークフロー"
+
+msgid "Workflows"
+msgstr "ワークフロー"
+
+msgid "X Label"
+msgstr "Xラベル"
+
+msgid "Y Label"
+msgstr "Yラベル"
+
+msgid "Year"
+msgstr ""
+
+msgid "Yes"
+msgstr "はい"
+
+msgid "You dont have the permission to view this page"
+msgstr ""
+
+msgid "You have {0} recovery tokens left. You can generate new ones from your account page"
+msgstr ""
+
+msgid "Your Users Table"
+msgstr "ユーザーテーブル"

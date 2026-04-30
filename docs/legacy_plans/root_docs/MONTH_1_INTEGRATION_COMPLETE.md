@@ -60,7 +60,7 @@ decision = engine.execute_decision(context)
 from sla_moat import DTELocalModelTrainer
 
 trainer = DTELocalModelTrainer(
-    model_path="models/Cor.Claude_Code_6_local.pt",
+    model_path="models/judge6_local.pt",
     target_accuracy=0.80
 )
 

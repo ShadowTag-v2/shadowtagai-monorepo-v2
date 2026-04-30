@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # vertex_ai_setup.py - The Nervous System
 import os
 

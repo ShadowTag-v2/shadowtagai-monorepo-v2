@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Benchmark script for ShadowTag-v2 LLM serving.
 
 Tests throughput, latency, and GPU utilization under various loads.

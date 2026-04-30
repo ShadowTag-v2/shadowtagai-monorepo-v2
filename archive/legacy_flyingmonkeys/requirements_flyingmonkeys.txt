@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+pydantic
+google-cloud-storage
+google-cloud-aiplatform
+google-cloud-secret-manager
+google-cloud-logging
+google-auth
+requests
+httpx
+jinja2
+python-multipart
+mcp
+google-cloud-firestore

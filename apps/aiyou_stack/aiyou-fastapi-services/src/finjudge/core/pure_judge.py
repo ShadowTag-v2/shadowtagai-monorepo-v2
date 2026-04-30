@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pure Judge Engine (v0.2)
 Risk classification without compliance/policy enforcement
 """

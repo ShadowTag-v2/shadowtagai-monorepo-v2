@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Configure Firestore TTL policy for tenant_quotas collection.
 
 Item 13: Adds a TTL policy on the `updated_at` field so stale quota

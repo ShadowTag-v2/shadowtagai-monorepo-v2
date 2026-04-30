@@ -63,7 +63,7 @@ Straightforward domain update ensures the prompt stays focused on the intelligen
 
 ---
 
-### 2. File References: "Claude_Code_6.py" → "Pipeline Documentation and Architecture Specs"
+### 2. File References: "judge_six.py" → "Pipeline Documentation and Architecture Specs"
 
 **Rationale**:
 The ingestion layer is more distributed than a single Python script. It spans:
@@ -83,7 +83,7 @@ The ingestion layer is more distributed than a single Python script. It spans:
 **Previous (Judge 6)**:
 
 ```
-Analyze Claude_Code_6.py for validation logic and performance patterns
+Analyze judge_six.py for validation logic and performance patterns
 ```
 
 **Updated (Ingestion Layer)**:
@@ -135,7 +135,7 @@ Could help identify optimizations like:
 **Rationale**:
 Swapping strict coverage thresholds for multifaceted quality checks aligns with ingestion's goal of gathering **high-value data**, not just high volume.
 
-**Claude_Code_6 Gate** (single-dimensional):
+**Judge 6 Gate** (single-dimensional):
 
 - 98% code coverage (test completeness metric)
 - Binary: pass/fail on coverage threshold
@@ -754,7 +754,7 @@ If Gemini outputs reports, request:
 | Section                            | Judge 6 Version                      | Ingestion Layer Version               | Why Changed                            |
 | ---------------------------------- | ------------------------------------- | ------------------------------------- | -------------------------------------- |
 | **System Name**                    | "Judge 6"                            | "Gemini Ingestion Layer"              | Domain focus                           |
-| **File References**                | `Claude_Code_6.py`                        | Pipeline docs, GKE specs              | Distributed architecture               |
+| **File References**                | `judge_six.py`                        | Pipeline docs, GKE specs              | Distributed architecture               |
 | **Primary Function**               | Validate/block content (real-time)    | Crawl/classify content (batch)        | Reactive vs proactive                  |
 | **Architecture**                   | 3-layer hybrid (Gemini+PyTorch+Rules) | GKE CronJob multi-container           | Real-time vs batch                     |
 | **Performance SLA**                | p99 ≤90ms (latency)                   | ~45 min/night (runtime)               | Speed vs throughput                    |

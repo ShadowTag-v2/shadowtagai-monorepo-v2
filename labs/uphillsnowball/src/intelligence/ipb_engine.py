@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ATP 2-01.3 Intelligence Preparation of the Battlefield (IPB).
 
 The J-2 (Jetski/Deep Research) does NOT scrape blindly. It executes a

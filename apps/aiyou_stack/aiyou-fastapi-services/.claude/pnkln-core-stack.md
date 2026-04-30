@@ -38,7 +38,7 @@ The PNKLN Core Stack is a multi-layer AI governance and intelligence system desi
 - **Target**: Sub-millisecond rule engine, selective AI invocation
 
 #### Implementation Files
-- `Claude_Code_6.py` - Core validation logic
+- `judge_six.py` - Core validation logic
 - ATP 5-19 risk assessment integration
 - Rule engine configuration
 

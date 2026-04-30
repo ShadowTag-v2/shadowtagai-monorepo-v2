@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FastAPI service for Pnkln File Search"""
 
 from contextlib import asynccontextmanager

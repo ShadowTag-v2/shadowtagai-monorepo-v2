@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PanelGPT: Expert Panel Discussion
 
 Simulates a panel of domain experts discussing a topic.

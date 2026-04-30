@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """pinkln Agents - Autonomous personas combining multiple skills.
 
 Agents are the orchestrators in the pinkln Agent Architecture System™,

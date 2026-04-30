@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FinJudge Decision Engine
 Core logic for financial governance decision-making
 """

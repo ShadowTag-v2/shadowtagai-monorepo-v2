@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/sandbox_router.py
 """Phase 3 Sandbox Router Middleware for CounselConduit.
 

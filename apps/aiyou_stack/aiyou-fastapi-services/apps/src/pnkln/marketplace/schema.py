@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Marketplace - Database Schema
 Two-sided marketplace for AI superpowers and kernel chains
 

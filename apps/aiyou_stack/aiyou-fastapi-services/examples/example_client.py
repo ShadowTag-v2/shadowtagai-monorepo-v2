@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Example client script demonstrating how to interact with the Automation Builder API."""
 
 import asyncio

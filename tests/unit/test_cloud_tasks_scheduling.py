@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # tests/unit/test_cloud_tasks_scheduling.py
 """Tests for Cloud Tasks GDPR scheduling logic (#16).
 

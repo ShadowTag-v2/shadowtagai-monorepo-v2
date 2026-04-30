@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Corp Engine - Economic Engines
 ==============================
 The money-making machinery of the platform.

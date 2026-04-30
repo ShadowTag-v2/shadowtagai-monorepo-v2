@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """DTE (Dynamic Test Evolution) Engine
 Self-evolving test framework with GRPO/PPO comparison
 

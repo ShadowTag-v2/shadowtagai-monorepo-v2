@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FastAPI integration example for Vertex AI Agents
 Demonstrates how to build an API service using the agents
 """

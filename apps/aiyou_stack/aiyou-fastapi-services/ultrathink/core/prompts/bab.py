@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """BAB: Before-After-Bridge
 
 The transformation framework. Perfect for planning, strategy, roadmaps.

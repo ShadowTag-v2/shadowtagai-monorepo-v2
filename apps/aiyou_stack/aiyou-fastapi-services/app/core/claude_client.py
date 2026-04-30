@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Claude client wrapper using Claude Agent SDK."""
 
 from collections.abc import AsyncGenerator

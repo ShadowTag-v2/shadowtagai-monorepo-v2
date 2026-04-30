@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GRPO (Group Relative Policy Optimization) training simulation.
 
 Comparison with PPO (Proximal Policy Optimization):

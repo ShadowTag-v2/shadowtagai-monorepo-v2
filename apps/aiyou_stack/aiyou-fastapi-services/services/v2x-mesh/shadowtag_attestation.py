@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ShadowTag Integration for V2X Vehicle Attestation
 
 Provides:

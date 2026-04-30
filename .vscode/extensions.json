@@ -1,20 +1,4 @@
 {
-  "unwantedRecommendations": [
-    "google.cros-ide",
-    "mtxr.sqltools",
-    "dsznajder.es7-react-js-snippets",
-    "ritwickdey.liveserver",
-    "astral-sh.ruff-nightly"
-  ],
-  // Ruff VSCode: https://github.com/astral-sh/ruff-vscode
-  // Ruff core: https://github.com/astral-sh/ruff
-  // Pre-commit: https://github.com/astral-sh/ruff-pre-commit
-  "recommendations": [
-    "charliermarsh.ruff",
-    "astral-sh.ty",
-    "biomejs.biome",
-    "esbenp.prettier-vscode",
-    "google.geminicodeassist",
-    "DavidAnson.vscode-markdownlint"
-  ]
+  "recommendations": ["charliermarsh.ruff", "biomejs.biome", "google.geminicodeassist"],
+  "unwantedRecommendations": ["dsznajder.es7-react-js-snippets", "ritwickdey.liveserver"]
 }

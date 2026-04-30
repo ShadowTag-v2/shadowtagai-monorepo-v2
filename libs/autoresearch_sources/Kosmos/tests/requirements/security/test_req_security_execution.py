@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Tests for Security Execution Requirements (REQ-SEC-EXEC-*).
 

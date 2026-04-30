@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """load_test.py — Lightweight API load testing script
 ═══════════════════════════════════════════════════
 Uses asyncio + aiohttp for concurrent request testing.

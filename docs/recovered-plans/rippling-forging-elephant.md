@@ -569,7 +569,7 @@ if __name__ == "__main__":
  {"name":"pnkln:TroopA","prompt":"ROLE:RSTA Scout; MISSION:Zone Recon; TACTIC:Find gaps using Perplexity; OUTPUT:Target Packet"},
  {"name":"pnkln:TroopB","prompt":"ROLE:Ranger Eng; MISSION:Direct Action; TACTIC:Build MVP <48h; STD:Coverage 98%, Secure, Linted"},
  {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + ShadowTag watermarking"},
- {"name":"pnkln:Cor.Claude_Code_6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75 THEN Freeze"}
+ {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75 THEN Freeze"}
 ]
 ```
 
@@ -1152,7 +1152,7 @@ For time-constrained operations (company level and below):
 
 **Source**: Compliance Framework Risk Management (April 2014)
 
-Already partially implemented in `Cor.Claude_Code_6/risk_manager.py`. Expand with full 5-step process:
+Already partially implemented in `judge6/risk_manager.py`. Expand with full 5-step process:
 
 | Step | Compliance Framework Step | Implementation |
 |------|---------------|----------------|
@@ -1315,11 +1315,11 @@ https://atiam.train.army.mil/catalog-ws/view/100.ATSC/002C902B-ADA8-4809-B4CD-23
 
 | File | Status | Changes |
 |------|--------|---------|
-| `src/pnkln/Claude_Code_6.py` | ✅ | Added RiskManager, MDMPPipeline, BattleDrillRouter; `doctrine_validate()`, `handle_error_with_drill()`, `enforce_with_doctrine()` |
+| `src/pnkln/judge_six.py` | ✅ | Added RiskManager, MDMPPipeline, BattleDrillRouter; `doctrine_validate()`, `handle_error_with_drill()`, `enforce_with_doctrine()` |
 | `pnkln/governance/judge_architecture.py` | ✅ | Added doctrine imports, RiskLevel mapping methods, Layer 0 Compliance Framework CRM, Layer 0.5 FM 6-0 MDMP |
 | `agents/flying_monkeys.py` | ✅ | Added TLPPipeline integration, risk-based consensus thresholds in PRTP, `prtp_with_battle_drills()` |
 | `agents/swarm_boss.py` | ✅ | Added MDMPPipeline, `receive_mission_with_mdmp()`, `handle_error_with_drill()`, `get_doctrine_status()` |
-| `Cor.Claude_Code_6/risk_manager.py` | ✅ | Added RA↔Doctrine mapping, `full_doctrine_assessment()`, `get_consensus_threshold()`, `get_approval_authority()` |
+| `judge6/risk_manager.py` | ✅ | Added RA↔Doctrine mapping, `full_doctrine_assessment()`, `get_consensus_threshold()`, `get_approval_authority()` |
 | `voice_consensus/consensus_orchestrator.py` | ✅ | Added Compliance Framework thresholds, `assess_risk_and_set_threshold()`, `check_consensus_reached()`, `execute_full_consensus_with_doctrine()` |
 
 ### Integration Overview
@@ -1359,11 +1359,11 @@ https://atiam.train.army.mil/catalog-ws/view/100.ATSC/002C902B-ADA8-4809-B4CD-23
 
 | File | Integration |
 |------|-------------|
-| `src/pnkln/Claude_Code_6.py` | Import doctrine modules, add MDMP validation workflow |
+| `src/pnkln/judge_six.py` | Import doctrine modules, add MDMP validation workflow |
 | `pnkln/governance/judge_architecture.py` | Map Compliance Framework risk matrix to 21-layer validation |
 | `agents/flying_monkeys.py` | Add TLP orchestration, doctrine-based voting |
 | `agents/swarm_boss.py` | Integrate MDMP planning into swarm cycles |
-| `Cor.Claude_Code_6/risk_manager.py` | Replace with Compliance Framework RiskManager |
+| `judge6/risk_manager.py` | Replace with Compliance Framework RiskManager |
 | `voice_consensus/consensus_orchestrator.py` | Add doctrine consensus thresholds |
 
 ---
@@ -1372,7 +1372,7 @@ https://atiam.train.army.mil/catalog-ws/view/100.ATSC/002C902B-ADA8-4809-B4CD-23
 
 #### Step 1: Judge 6 Doctrine Integration
 
-Update `src/pnkln/Claude_Code_6.py`:
+Update `src/pnkln/judge_six.py`:
 
 ```python
 from kosmos.doctrine.compliance_framework import RiskManager, RiskLevel, CONSENSUS_THRESHOLDS
@@ -1497,10 +1497,10 @@ class SwarmBoss:
 
 #### Step 5: Risk Manager Replacement
 
-Replace `Cor.Claude_Code_6/risk_manager.py` with doctrine import:
+Replace `judge6/risk_manager.py` with doctrine import:
 
 ```python
-# Cor.Claude_Code_6/risk_manager.py - NOW WRAPS DOCTRINE
+# judge6/risk_manager.py - NOW WRAPS DOCTRINE
 from kosmos.doctrine.compliance_framework import (
     RiskManager as DoctrineRiskManager,
     RiskLevel, RiskMatrix, Hazard, Control,

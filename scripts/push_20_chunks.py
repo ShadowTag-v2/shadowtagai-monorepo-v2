@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """push_20_chunks.py — Chunked Git Push Daemon (Invariant #58).
 
 Breaks large pushes into partitioned chunks to bypass

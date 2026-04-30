@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Squad Routing Optimizer using Ant Colony Optimization.
 Routes tasks through 24 squads (groups of 25 agents) to minimize handoff latency.
 Based on FM 5-0 MDMP Step 4: COA Analysis (Wargaming).

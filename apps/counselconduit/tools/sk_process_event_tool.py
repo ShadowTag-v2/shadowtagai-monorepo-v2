@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # Copyright 2026 ShadowTag AI. All rights reserved.
 """ADK Tool: SK Process External Event Injector.
 
@@ -62,7 +60,7 @@ class SKProcessEventTool:
 
     Security:
         - Tool validates firm_id before injection
-        - Cor_Claude_Code_6 gate checks MUST pass before the event reaches the process
+        - Judge6 gate checks MUST pass before the event reaches the process
         - Audit log emitted for every event injection
     """
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ISO/IEC 42001 Compliance Module
 
 Implements the ISO/IEC 42001:2023 AI Management System (AIMS) requirements.

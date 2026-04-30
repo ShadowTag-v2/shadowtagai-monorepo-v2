@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """MCP Bridge - Model Context Protocol for Semantic Compression
 
 Implements 40-60% token reduction via:
@@ -39,7 +37,7 @@ class ATP519Kernel:
 
 
 @dataclass
-class Cor_Claude_Code_6Decision:
+class Judge6Decision:
     """Binary decision from Judge#6 governance system.
 
     Target: <35ms latency, $0.0003 cost
@@ -58,7 +56,7 @@ class MCPBridge:
 
     COMPRESSION PIPELINE:
     1. ATP_519_scan(): 50KB context → 487-byte kernel
-    2. Claude_Code_6_binary(): kernel → 1-bit decision (<35ms)
+    2. judge_six_binary(): kernel → 1-bit decision (<35ms)
     3. Cache results for reuse
 
     TARGET:
@@ -80,11 +78,11 @@ class MCPBridge:
 
         # Cache for kernels (avoids recompression)
         self.kernel_cache: dict[str, ATP519Kernel] = {}
-        self.decision_cache: dict[str, Cor_Claude_Code_6Decision] = {}
+        self.decision_cache: dict[str, Judge6Decision] = {}
 
         # Performance tracking
         self.compression_ratios: list[float] = []
-        self.Cor_Claude_Code_6_latencies: list[float] = []
+        self.judge6_latencies: list[float] = []
 
         print("✅ MCP Bridge initialized")
         print(f"   Compression target: {compression_target:.0%}")
@@ -173,11 +171,11 @@ class MCPBridge:
 
         return kernel
 
-    async def Claude_Code_6_binary(
+    async def judge_six_binary(
         self,
         kernel: ATP519Kernel,
         max_latency_ms: int = 35,
-    ) -> Cor_Claude_Code_6Decision:
+    ) -> Judge6Decision:
         """Judge#6 binary decision from compressed kernel.
 
         Target: <35ms latency, $0.0003 cost
@@ -193,7 +191,7 @@ class MCPBridge:
             max_latency_ms: Max allowed latency (default 35ms)
 
         Returns:
-            Cor_Claude_Code_6Decision with binary output (0=DENY, 1=APPROVE)
+            Judge6Decision with binary output (0=DENY, 1=APPROVE)
 
         """
         start_time = time.time()
@@ -226,7 +224,7 @@ class MCPBridge:
         cost_usd = 0.0003
 
         # Create decision
-        Cor_Claude_Code_6 = Cor_Claude_Code_6Decision(
+        judge6 = Judge6Decision(
             decision=decision,
             latency_ms=elapsed_ms,
             cost_usd=cost_usd,
@@ -236,10 +234,10 @@ class MCPBridge:
         )
 
         # Cache
-        self.decision_cache[cache_key] = Cor_Claude_Code_6
+        self.decision_cache[cache_key] = judge6
 
         # Track performance
-        self.Cor_Claude_Code_6_latencies.append(elapsed_ms)
+        self.judge6_latencies.append(elapsed_ms)
 
         # Validate SLA
         if elapsed_ms > max_latency_ms:
@@ -247,7 +245,7 @@ class MCPBridge:
         else:
             print(f"   ✓ Judge#6: {reasoning} ({elapsed_ms:.1f}ms, ${cost_usd:.4f})")
 
-        return Cor_Claude_Code_6
+        return judge6
 
     def _calculate_threat_level(self, context: dict[str, Any]) -> int:
         """Calculate threat level (0-10) from context"""
@@ -378,10 +376,10 @@ class MCPBridge:
 
     def get_p99_latency(self) -> float:
         """Get p99 latency for Judge#6 decisions"""
-        if not self.Cor_Claude_Code_6_latencies:
+        if not self.judge6_latencies:
             return 0.0
 
-        sorted_latencies = sorted(self.Cor_Claude_Code_6_latencies)
+        sorted_latencies = sorted(self.judge6_latencies)
         p99_idx = int(len(sorted_latencies) * 0.99)
         return (
             sorted_latencies[p99_idx] if p99_idx < len(sorted_latencies) else sorted_latencies[-1]
@@ -397,7 +395,7 @@ class MCPBridge:
         """Get MCP bridge statistics"""
         return {
             "total_scans": len(self.compression_ratios),
-            "total_decisions": len(self.Cor_Claude_Code_6_latencies),
+            "total_decisions": len(self.judge6_latencies),
             "avg_compression": f"{self.get_avg_compression():.0%}",
             "p99_latency_ms": f"{self.get_p99_latency():.1f}",
             "cache_hits_kernel": len(self.kernel_cache),
@@ -432,7 +430,7 @@ async def test_mcp_bridge():
 
     # Test 2: Judge#6 binary decision
     print("\nTest 2: Judge#6 Binary Decision")
-    decision = await bridge.Claude_Code_6_binary(kernel, max_latency_ms=35)
+    decision = await bridge.judge_six_binary(kernel, max_latency_ms=35)
     print(f"   Decision: {decision.decision} ({decision.reasoning})")
     print(f"   Latency: {decision.latency_ms:.1f}ms, Cost: ${decision.cost_usd:.4f}")
 

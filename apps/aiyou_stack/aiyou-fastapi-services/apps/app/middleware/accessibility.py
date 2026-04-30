@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Accessibility middleware for adding WCAG-compliant HTTP headers.
 
 This middleware adds headers that improve accessibility for:

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Skills library for the pinkln Agent Architecture System.
 
 Core skills implementing reusable expertise modules.

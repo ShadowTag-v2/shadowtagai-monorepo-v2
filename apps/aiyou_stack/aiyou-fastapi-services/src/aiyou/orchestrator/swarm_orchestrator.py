@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Swarm Orchestrator - Level 5 Overlord Mode
 
 Activates at $100M real revenue. Routes all tasks to specialized child agents.

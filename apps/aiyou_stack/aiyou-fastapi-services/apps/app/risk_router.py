@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import logging
 import re
 from enum import StrEnum
@@ -9,10 +7,8 @@ import yaml
 from pydantic import BaseModel
 
 # --- LOGGING SETUP ---
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - COR_CLAUDE_CODE_6 - %(levelname)s - %(message)s"
-)
-logger = logging.getLogger("COR_CLAUDE_CODE_6")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - JUDGE6 - %(levelname)s - %(message)s")
+logger = logging.getLogger("JUDGE6")
 
 # --- SCHEMA DEFINITIONS ---
 
@@ -42,7 +38,7 @@ class Judgment(BaseModel):
 # --- CORE LOGIC ---
 
 
-class Cor_Claude_Code_6:
+class Judge6:
     """COR.JUDGE.6 - The Governance Layer.
     Implements the DoD Cybersecurity Risk Management Construct (CSRMC) 2026.
 
@@ -87,9 +83,7 @@ class Cor_Claude_Code_6:
         elif "test" in prompt.lower():
             phase = "TEST"
 
-        logger.info(
-            f"Mission {mission_id}: Cor_Claude_Code_6 Review - Iteration {current_iter}/3 [{phase}]"
-        )
+        logger.info(f"Mission {mission_id}: Judge6 Review - Iteration {current_iter}/3 [{phase}]")
 
         # 1. LAYER 1: THE IRON DOME (DoD CSRMC) - Hard Security & Critical Controls
         csrmc_verdict = self._check_csrmc_compliance(prompt, file_paths, phase)
@@ -166,7 +160,7 @@ class Cor_Claude_Code_6:
 
     def _check_legislation(self, prompt: str) -> Judgment:
         eu_rules = (
-            self.policy.get("Cor_Claude_Code_6_constitution", {})
+            self.policy.get("judge6_constitution", {})
             .get("legislative_guardrails", {})
             .get("eu_ai_act_2026", {})
         )
@@ -194,7 +188,7 @@ class Cor_Claude_Code_6:
 
 
 # --- SINGLETON EXPORT ---
-judge = Cor_Claude_Code_6()
+judge = Judge6()
 
 
 def evaluate_risk(prompt: str, file_paths: list[str] = None, mission_id: str = "default") -> dict:

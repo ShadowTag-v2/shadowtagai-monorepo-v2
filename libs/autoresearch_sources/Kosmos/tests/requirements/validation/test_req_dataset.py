@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Test suite for Dataset Handling Requirements (REQ-DATA-001 through REQ-DATA-012).
 

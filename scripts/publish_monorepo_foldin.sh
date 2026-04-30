@@ -9,7 +9,7 @@ REPORT="$ROOT/final_publish_report.md"
 REPOS=(
   "antigravity-go|https://github.com/ehanc69/antigravity-go.git|$REFERENCE_ROOT/antigravity-go"
   "codepmcs|https://github.com/ehanc69/codepmcs.git|$REFERENCE_ROOT/codepmcs"
-  "Cor.Claude_Code_6|https://github.com/ehanc69/Cor.Claude_Code_6.git|$REFERENCE_ROOT/Cor.Claude_Code_6"
+  "judge6|https://github.com/ehanc69/judge6.git|$REFERENCE_ROOT/judge6"
   "kosmos|https://github.com/ehanc69/kosmos.git|$REFERENCE_ROOT/kosmos"
   "shadowtag_v2|https://github.com/ehanc69/shadowtag_v2.git|$REFERENCE_ROOT/shadowtag_v2"
 )
@@ -60,7 +60,7 @@ report = root / "final_publish_report.md"
 
 present = []
 missing = []
-for name in ["antigravity-go", "codepmcs", "Cor.Claude_Code_6", "kosmos", "shadowtag_v2"]:
+for name in ["antigravity-go", "codepmcs", "judge6", "kosmos", "shadowtag_v2"]:
     path = reference_root / name
     if path.exists():
         present.append(name)

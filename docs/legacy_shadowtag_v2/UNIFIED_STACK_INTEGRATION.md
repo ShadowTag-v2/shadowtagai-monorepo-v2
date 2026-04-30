@@ -118,7 +118,7 @@ from src.integration.contractual_pinkln_adapter import ContractualPinklnAdapter
 
 adapter = ContractualPinklnAdapter(
     gemini_api_key=os.getenv("GOOGLE_API_KEY"),
-    enable_Claude_Code_6=True,      # Validation
+    enable_judge_six=True,      # Validation
     enable_shadowtag=True,       # Audit trail
     enable_grpo=True,            # Training
     enable_dte=True              # Evolution
@@ -208,7 +208,7 @@ caller = GeminiFunctionCaller(
 
 result = caller.execute(
     prompt="Analyze this negotiation for conflicts...",
-    validation_callback=Claude_Code_6_callback
+    validation_callback=judge_six_callback
 )
 
 ```
@@ -599,14 +599,14 @@ ROI: 3.3× in 18 months
 # Development
 
 export ENV=development
-export COR.CLAUDE_CODE_6_ENDPOINT="http://localhost:8080/enforce"
-export COR.CLAUDE_CODE_6_ITERATIONS=100
+export JUDGE6_ENDPOINT="http://localhost:8080/enforce"
+export JUDGE6_ITERATIONS=100
 
 # Production
 
 export ENV=production
-export COR.CLAUDE_CODE_6_ENDPOINT="https://Cor.Claude_Code_6.pnkln.ai/enforce"
-export COR.CLAUDE_CODE_6_ITERATIONS=1000
+export JUDGE6_ENDPOINT="https://judge6.pnkln.ai/enforce"
+export JUDGE6_ITERATIONS=1000
 
 ```
 
@@ -742,8 +742,8 @@ jobs:
       - name: Run Contractual validation
         env:
           ENV: production
-          COR.CLAUDE_CODE_6_ENDPOINT: ${{ secrets.CONTRACTUAL_API_ENDPOINT }}
-          COR.CLAUDE_CODE_6_ITERATIONS: 1000
+          JUDGE6_ENDPOINT: ${{ secrets.CONTRACTUAL_API_ENDPOINT }}
+          JUDGE6_ITERATIONS: 1000
         run: python3 load_testing/run_all_validations.py
 
       - name: Upload results
@@ -1008,7 +1008,7 @@ export ANTHROPIC_API_KEY=your_anthropic_key
 
 # Endpoints
 
-export COR.CLAUDE_CODE_6_ENDPOINT="http://localhost:8080/enforce"
+export JUDGE6_ENDPOINT="http://localhost:8080/enforce"
 export ENV=development
 
 ```
@@ -1124,12 +1124,12 @@ python erik-hancock-llm-memory/scripts/claude_code_memory_local.py
 
 # Increase timeout
 
-export COR.CLAUDE_CODE_6_REQUEST_TIMEOUT=10.0
-export COR.CLAUDE_CODE_6_CONNECT_TIMEOUT=5.0
+export JUDGE6_REQUEST_TIMEOUT=10.0
+export JUDGE6_CONNECT_TIMEOUT=5.0
 
 # Reduce iterations for dev
 
-export COR.CLAUDE_CODE_6_ITERATIONS=100
+export JUDGE6_ITERATIONS=100
 
 ```
 
@@ -1141,7 +1141,7 @@ export COR.CLAUDE_CODE_6_ITERATIONS=100
 
 # Reduce concurrency
 
-export COR.CLAUDE_CODE_6_CONCURRENCY=10
+export JUDGE6_CONCURRENCY=10
 
 # Add retry logic (already built-in with adaptive load control)
 

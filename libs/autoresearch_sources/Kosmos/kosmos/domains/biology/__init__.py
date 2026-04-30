@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Biology domain module - metabolomics, genomics, and multi-modal integration"""
 
 from kosmos.domains.biology.apis import (

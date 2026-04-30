@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Cloud Storage Backend: Storage for artifacts (datasets, plots, reports).
 
 Provides:

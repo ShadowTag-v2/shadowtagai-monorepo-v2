@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Playground: MLX quantization benchmark.
 
 Tests MLX model loading and quantization on Apple Silicon GPU.

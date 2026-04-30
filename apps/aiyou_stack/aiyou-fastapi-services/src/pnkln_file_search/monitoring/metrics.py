@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Metrics collection for file search and enforcement operations"""
 
 from collections import deque

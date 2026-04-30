@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """L3: SuperGrok.2 - Static Validation (Static)
 
 Role: The Inspector

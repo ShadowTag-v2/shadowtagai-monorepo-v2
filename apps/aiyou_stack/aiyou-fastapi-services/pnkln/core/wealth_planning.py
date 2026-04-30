@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Wealth Planning Analyzer - Jobs-Inspired Financial Strategy
 
 Identifies revenue leaks, optimizes conversion funnels, and recommends

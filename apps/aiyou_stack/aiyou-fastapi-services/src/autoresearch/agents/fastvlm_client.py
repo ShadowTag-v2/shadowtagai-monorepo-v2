@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FastVLM Client: Apple Vision-Language Model Integration
 
 Uses MLX-optimized FastVLM for on-device visual understanding.

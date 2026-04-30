@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Cursor-style code intelligence features.
 AST parsing, symbol extraction, code search.
 """

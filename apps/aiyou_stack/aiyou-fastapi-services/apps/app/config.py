@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Configuration management for Omega Governance Service"""
 
 from functools import lru_cache

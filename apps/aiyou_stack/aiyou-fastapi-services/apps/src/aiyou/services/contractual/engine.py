@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Contractual Service Engine
 "The Digital Napkin" / "The AI Lawyer"
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pnkln Orchestrator - Execution engine for ultrathink framework
 Version: 1.0.0
 

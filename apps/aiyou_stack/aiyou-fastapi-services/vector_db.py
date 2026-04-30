@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """LanceDB vector store for the ShadowTag-v4 FastAPI workspace knowledge base.
 
 Embedding: Vertex AI text-embedding-004 (768-dim) via ADC.

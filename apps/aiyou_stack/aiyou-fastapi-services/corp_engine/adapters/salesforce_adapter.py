@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Salesforce Enterprise Adapter
 ==============================
 API-only integration with customer Salesforce environments.

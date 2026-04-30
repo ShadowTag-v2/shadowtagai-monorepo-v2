@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Judge 6 Validation Service
 Implements PNKLN Core Stack™ Logic & Validation (L) component
 Based on docs/cor8-shadowtag_v4-global-edge-fabric/03-technical-architecture/judge-six-validation.md

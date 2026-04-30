@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN CORE STACK - RAG Corpus Import Tool
 ==========================================
 Purpose: Import policy documents from GCS into Vertex AI RAG corpora

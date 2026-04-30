@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FastAPI routes for privacy compliance (CCPA, GDPR)"""
 
 from datetime import datetime, timedelta

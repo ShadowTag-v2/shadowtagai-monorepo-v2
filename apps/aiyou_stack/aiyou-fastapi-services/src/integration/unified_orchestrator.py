@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Unified Pinkln Orchestrator
 
 Combines:
@@ -17,11 +15,11 @@ from typing import Any
 
 from src.core import FunctionRegistry, GeminiFunctionCaller
 from src.integration.kernel_adapters import (
-    Claude_Code_6_classify,
     atp_519_scan,
     audit_compress,
     dte_evolve,
     glicko_update,
+    judge_six_classify,
     multi_agent_debate,
     wealth_analyze,
 )
@@ -132,8 +130,8 @@ class UnifiedPinklnOrchestrator:
         registry.register(
             description="Classify decision risk (go/no-go)",
             parameters={"violations": {"type": "object"}},
-            name="Claude_Code_6_classify",
-        )(Claude_Code_6_classify)
+            name="judge_six_classify",
+        )(judge_six_classify)
 
         registry.register(
             description="Compress metadata into audit trail",
@@ -184,7 +182,7 @@ focused on beautiful, insanely great execution.
 You have access to 7 core function tools:
 
 1. atp_519_scan(context) - Extract compliance violations
-2. Claude_Code_6_classify(violations) - Binary go/no-go decision
+2. judge_six_classify(violations) - Binary go/no-go decision
 3. audit_compress(metadata) - Create audit trail
 4. multi_agent_debate(question, num_agents) - Collaborative reasoning
 5. dte_evolve(prompt, strategy) - Self-evolution (+3.7% accuracy)

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """The Gemini Store (Digital Mall) - Marketplace Core
 Governed AI marketplace with pre-execution compliance verification.
 Ported from Legacy Archives (AiU Digital Mall).

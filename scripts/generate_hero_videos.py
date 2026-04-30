@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Veo 3.1 Hero Video Generator — Full Design-to-Video Pipeline
 Generates Fluid Kinetic Aura (ShadowTag) and Legal Data Architecture (KovelAI)
 background loops using brand colors extracted from Stitch MCP design tokens.

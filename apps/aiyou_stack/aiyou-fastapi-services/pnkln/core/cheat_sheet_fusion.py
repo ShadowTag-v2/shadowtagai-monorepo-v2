@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Cheat Sheet Fusion - 21 Essentials → 10 Core Elements
 
 Intelligent fusion of prompting techniques to achieve 52% memory reduction

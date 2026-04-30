@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PART 3: RESTART PROMPT GENERATOR
 Generates context restoration block for new conversations
 """

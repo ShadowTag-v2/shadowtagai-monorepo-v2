@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GCA Omni-Autolint — One-Shot CLI for Gemini Code Assist Extension.
 
 This is NOT a daemon. It is a single-invocation CLI that the GCA extension
@@ -22,20 +20,9 @@ Usage:
 """
 
 import argparse
-import logging
 import subprocess
 import sys
 from pathlib import Path
-from typing import TypedDict
-
-logger = logging.getLogger(__name__)
-
-
-class LinterConfig(TypedDict):
-    name: str
-    cmd: list[str]
-    fatal_threshold: int
-
 
 # Import auth from canonical module — single source of truth
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -45,7 +32,7 @@ REPO_OWNER = "ShadowTag-v2"
 REPO_NAME = "Monorepo-Uphillsnowball"
 
 # Linter commands with their descriptions
-LINTERS: list[LinterConfig] = [
+LINTERS = [
     {
         "name": "ruff check --fix",
         "cmd": [str(REPO_ROOT / ".venv/bin/ruff"), "check", "--fix", "--exit-zero", "."],
@@ -82,30 +69,30 @@ def _run(cmd: list[str], cwd: str | None = None) -> subprocess.CompletedProcess:
 
 def run_linters() -> bool:
     """Run the Omni-Linter triad. Returns True if all passed without fatal errors."""
-    logger.info("Running Omni-Linter Suite...")
+    print("🧹 Running Omni-Linter Suite...")
     for linter in LINTERS:
-        logger.info("  Running %s...", linter["name"])
+        print(f"  ➤ {linter['name']}...")
         result = _run(linter["cmd"])
 
         # Judgment Check 1: Fatal Errors
         if result.returncode >= linter["fatal_threshold"]:
-            logger.error("SEVERE ERROR in %s (exit code %d)", linter["name"], result.returncode)
+            print(f"\n  ❌ SEVERE ERROR in {linter['name']} (exit code {result.returncode})")
             if result.stderr:
                 # Truncate to avoid flooding terminal
                 stderr_lines = result.stderr.strip().split("\n")
                 for line in stderr_lines[:20]:
-                    logger.error("     %s", line)
+                    print(f"     {line}")
                 if len(stderr_lines) > 20:
-                    logger.error("     ... (%d more lines)", len(stderr_lines) - 20)
-            logger.error("Aborting to prevent repository corruption.")
+                    print(f"     ... ({len(stderr_lines) - 20} more lines)")
+            print("\n  🛑 Aborting to prevent repository corruption.")
             return False
 
         if result.returncode == 0:
-            logger.info("     Clean")
+            print("     ✅ Clean")
         else:
-            logger.warning("     Warnings (exit %d), fixes applied", result.returncode)
+            print(f"     ⚠️ Warnings (exit {result.returncode}), fixes applied")
 
-    logger.info("  Linting pass complete.")
+    print("  ✅ Linting pass complete.\n")
     return True
 
 
@@ -116,7 +103,7 @@ def check_changes() -> bool:
 
 
 def show_diff() -> str:
-    """Return the git diff."""
+    """Print and return the git diff."""
     result = _run(["git", "diff"])
     return result.stdout
 
@@ -128,22 +115,22 @@ def commit_and_push(auto: bool = False) -> bool:
         # Check staged changes too (biome may have added files)
         staged = _run(["git", "diff", "--staged"])
         if not staged.stdout.strip():
-            logger.info("No AST changes detected. Repository is clean.")
+            print("✨ No AST changes detected. Repository is clean.")
             return True
 
-    logger.warning("AST changes detected. Diff preview:")
+    print("\n⚠️  AST changes detected. Diff preview:\n")
     # Truncate long diffs
     lines = diff.split("\n")
     for line in lines[:100]:
-        logger.info("  %s", line)
+        print(f"  {line}")
     if len(lines) > 100:
-        logger.info("  ... (%d more lines)", len(lines) - 100)
+        print(f"  ... ({len(lines) - 100} more lines)")
 
     # Judgment Check 2: Human-in-the-Loop
     if not auto:
-        choice = input("\nAST changes detected. Review diff above.\n   Proceed with commit and push? (y/n): ")
+        choice = input("\n🔍 AST changes detected. Review diff above.\n   Proceed with commit and push? (y/n): ")
         if choice.strip().lower() != "y":
-            logger.info("Aborting commit and push as requested.")
+            print("🛑 Aborting commit and push as requested.")
             return False
 
     # Import auth and get token
@@ -152,8 +139,8 @@ def commit_and_push(auto: bool = False) -> bool:
 
         token = get_token()
     except Exception as e:
-        logger.error("Auth failed: %s", e)
-        logger.warning("Falling back to existing remote URL...")
+        print(f"❌ Auth failed: {e}")
+        print("   Falling back to existing remote URL...")
         token = None
 
     # Set push URL with token
@@ -172,16 +159,16 @@ def commit_and_push(auto: bool = False) -> bool:
         ]
     )
     if commit_result.returncode != 0:
-        logger.error("Commit failed: %s", commit_result.stderr)
+        print(f"❌ Commit failed: {commit_result.stderr}")
         return False
 
     # Push
-    logger.info("Pushing AST fixes...")
+    print("\n🚀 Pushing AST fixes...")
     push_result = _run(["git", "push", "origin", "main"])
     if push_result.returncode == 0:
-        logger.info("Successfully pushed AST optimizations.")
+        print("✅ Successfully pushed AST optimizations.")
     else:
-        logger.error("Push failed: %s", push_result.stderr)
+        print(f"❌ Push failed: {push_result.stderr}")
         return False
 
     # Restore SSH push URL
@@ -199,16 +186,18 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Lint only, no commit/push")
     args = parser.parse_args()
 
-    logger.info("=" * 60)
-    logger.info("  GCA Omni-Autolint v1.0 — Continuous Self-Healing")
-    logger.info("  Rich Hickey Doctrine: Simple Made Easy")
-    logger.info("=" * 60)
+    print("=" * 60)
+    print("  GCA Omni-Autolint v1.0 — Continuous Self-Healing")
+    print("  Rich Hickey Doctrine: Simple Made Easy")
+    print("=" * 60)
+    print()
 
     # Pull latest
-    logger.info("Pulling latest origin/main...")
+    print("📥 Pulling latest origin/main...")
     pull = _run(["git", "pull", "--rebase", "origin", "main"])
     if pull.returncode != 0:
-        logger.warning("Pull warning: %s", pull.stderr.strip())
+        print(f"⚠️  Pull warning: {pull.stderr.strip()}")
+    print()
 
     # Run linters
     if not run_linters():
@@ -216,13 +205,13 @@ def main():
 
     # Check for changes
     if not check_changes():
-        logger.info("No AST changes detected. Repository is clean.")
+        print("✨ No AST changes detected. Repository is clean.")
         sys.exit(0)
 
     if args.dry_run:
-        logger.info("Dry run: showing diff only")
+        print("🔍 Dry run: showing diff only")
         diff = show_diff()
-        logger.info(diff)
+        print(diff)
         sys.exit(0)
 
     # Commit and push
@@ -231,8 +220,4 @@ def main():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    )
     main()

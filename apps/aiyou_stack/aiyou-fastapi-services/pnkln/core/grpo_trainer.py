@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GRPO/PPO Trainer - Group Relative Policy Optimization vs PPO
 
 Comparison framework for GRPO (Group Relative Policy Optimization) and

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """API routes for scheduled job management."""
 
 from fastapi import APIRouter, Depends, HTTPException

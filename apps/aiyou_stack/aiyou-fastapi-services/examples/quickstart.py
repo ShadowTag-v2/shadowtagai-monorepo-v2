@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Ultrathink Quickstart Examples
 
 Run these to see all framework capabilities in action.

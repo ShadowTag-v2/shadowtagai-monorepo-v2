@@ -26,7 +26,7 @@ mkdir -p apps/n-autoresearch/Kosmos/BioAgents-server/src
 mkdir -p .vscode
 mkdir -p docs/commercial/hr
 mkdir -p libs/arsenal/jetski
-mkdir -p src/governance/Claude_Code_6
+mkdir -p src/governance/judge_six
 
 # ==============================================================================
 # 1. A2UI (Visually Rich)
@@ -120,10 +120,10 @@ JSON
 # 3. GOD MODE (Writer)
 # ==============================================================================
 # Ensure dependency exists or stub it
-mkdir -p src/governance/Claude_Code_6
-touch src/governance/Claude_Code_6/__init__.py
-if [ ! -f src/governance/Claude_Code_6/sentinel.py ]; then
-    cat <<PYTHON > src/governance/Claude_Code_6/sentinel.py
+mkdir -p src/governance/judge_six
+touch src/governance/judge_six/__init__.py
+if [ ! -f src/governance/judge_six/sentinel.py ]; then
+    cat <<PYTHON > src/governance/judge_six/sentinel.py
 class JudgeSentinel:
     def evaluate(self, content):
         return {"status": "ALLOWED", "reason": "Stub Sentinel Approved"}
@@ -139,7 +139,7 @@ import sys
 sys.path.append(os.getcwd())
 
 try:
-    from src.governance.Claude_Code_6.sentinel import JudgeSentinel
+    from src.governance.judge_six.sentinel import JudgeSentinel
 except ImportError:
     class JudgeSentinel:
         def evaluate(self, c): return {"status": "ALLOWED", "reason": "No Judge Found"}

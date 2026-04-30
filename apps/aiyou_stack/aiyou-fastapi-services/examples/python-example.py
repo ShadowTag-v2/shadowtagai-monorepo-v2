@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Code Refactorer Agent - Python Example
 
 This example demonstrates how to use the Code Refactorer agent

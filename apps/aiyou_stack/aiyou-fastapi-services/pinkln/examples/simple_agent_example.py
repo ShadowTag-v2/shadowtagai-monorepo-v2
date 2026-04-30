@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Simple Agent Example - pinkln Agent Architecture System
 
 This example demonstrates basic usage of the pinkln agent system.

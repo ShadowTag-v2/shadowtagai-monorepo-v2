@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Safety Scanner with Lexicons
 Scans content for harmful patterns before corpus indexing.
 Judge 6 pre-filter for Flying n-autoresearch/Kosmos/BioAgents pipeline.

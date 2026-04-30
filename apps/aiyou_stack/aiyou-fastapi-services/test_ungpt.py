@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Quick test of UnGPT service core functionality
 Tests without requiring full Google SDK setup
 """

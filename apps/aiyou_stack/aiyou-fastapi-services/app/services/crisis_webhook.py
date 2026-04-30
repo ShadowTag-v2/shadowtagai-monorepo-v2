@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Crisis Alert Webhook Service
 ============================
 Webhook notifications for crisis events detected by California AI compliance.

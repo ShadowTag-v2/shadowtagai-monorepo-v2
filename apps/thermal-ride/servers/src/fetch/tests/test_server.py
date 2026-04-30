@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tests for the fetch MCP server."""
 
 from unittest.mock import AsyncMock, MagicMock, patch

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Basic usage example for Vertex AI Agents
 Demonstrates how to load and use agents with Vertex AI
 """

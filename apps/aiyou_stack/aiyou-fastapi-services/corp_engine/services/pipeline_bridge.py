@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pipeline Bridge Service
 ========================
 Bridge between Nightly Intel Pipeline and Corp Engine.

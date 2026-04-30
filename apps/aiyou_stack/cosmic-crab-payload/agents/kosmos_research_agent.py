@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # agents/kosmos_research_agent.py
 import asyncio
 import logging

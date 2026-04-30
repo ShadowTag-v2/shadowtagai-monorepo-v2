@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """LLM Memory Persistence System
 
 Cross-device context synchronization via Git

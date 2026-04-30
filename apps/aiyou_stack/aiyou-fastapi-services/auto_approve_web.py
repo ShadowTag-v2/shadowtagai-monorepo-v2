@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import os
 
 from playwright.sync_api import Error, expect, sync_playwright

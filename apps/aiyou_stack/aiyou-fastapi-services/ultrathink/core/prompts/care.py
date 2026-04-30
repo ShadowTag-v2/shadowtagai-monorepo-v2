@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """CARE: Context-Action-Result-Example
 
 For when you need context-rich, example-driven outputs.

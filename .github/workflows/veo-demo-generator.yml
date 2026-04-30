@@ -37,9 +37,6 @@ concurrency:
   group: veo-demo-generator-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-
 jobs:
   generate-demo:
     runs-on: ubuntu-latest

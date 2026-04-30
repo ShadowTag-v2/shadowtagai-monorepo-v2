@@ -117,7 +117,7 @@ pip install -r requirements.txt
 
 # Install Judge 6 v2.0 dependencies
 
-pip install -r Cor.Claude_Code_6/requirements.txt
+pip install -r judge6/requirements.txt
 
 ```
 
@@ -154,7 +154,7 @@ source venv/bin/activate
 
 pip install --upgrade pip
 pip install -r requirements.txt
-pip install -r Cor.Claude_Code_6/requirements.txt
+pip install -r judge6/requirements.txt
 
 ```
 
@@ -239,7 +239,7 @@ ENABLE_COST_TRACKING=true
 # From repository root
 
 python3 -c "
-from Cor.Claude_Code_6 import JudgmentRule, RiskLevel
+from judge6 import JudgmentRule, RiskLevel
 judge = JudgmentRule(cor_instance_id='local-dev')
 print('✅ Judge 6 v2.0 installed successfully')
 print(f'Risk levels: {[r.value for r in RiskLevel]}')
@@ -424,7 +424,7 @@ git checkout claude/vertex-workbench-code-01MQJ8CfXToph64WHQD2P7Zj
 # Install Python dependencies
 
 pip install -r requirements.txt
-pip install -r Cor.Claude_Code_6/requirements.txt
+pip install -r judge6/requirements.txt
 
 # Configure IPython startup
 
@@ -506,13 +506,13 @@ RUN apt-get update && apt-get install -y \
 
 # Copy requirements
 
-COPY requirements.txt Cor.Claude_Code_6/requirements.txt ./
-COPY Cor.Claude_Code_6/requirements.txt ./Cor.Claude_Code_6_requirements.txt
+COPY requirements.txt judge6/requirements.txt ./
+COPY judge6/requirements.txt ./judge6_requirements.txt
 
 # Install Python dependencies
 
 RUN pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir -r Cor.Claude_Code_6_requirements.txt
+    pip install --no-cache-dir -r judge6_requirements.txt
 
 # Copy application code
 
@@ -760,7 +760,7 @@ python3 scripts/verify_pnkln_stack.py
 # 3. Test Judge 6 v2.0
 
 python3 -c "
-from Cor.Claude_Code_6 import JudgmentRule
+from judge6 import JudgmentRule
 judge = JudgmentRule(cor_instance_id='verification-test')
 decision = judge.evaluate_request(
     user_input='Purpose: System test. Verify Judge 6 is working.',
@@ -804,7 +804,7 @@ print('✅ Gemini Function Calling imports OK')
 
 ### Python Import Errors
 
-**Problem:** `ModuleNotFoundError: No module named 'Cor.Claude_Code_6'`
+**Problem:** `ModuleNotFoundError: No module named 'judge6'`
 
 **Solution:**
 
@@ -1088,7 +1088,7 @@ kubectl get service pnkln-stack
 
    ```bash
    # Judge 6 v2.0
-   python3 Cor.Claude_Code_6/example.py
+   python3 judge6/example.py
 
    # Universal Copilot
    cd universal-copilot
@@ -1117,7 +1117,7 @@ kubectl get service pnkln-stack
 
 - `DOLLAR_VALUE_ANALYSIS.md` - ROI analysis
 
-- `Cor.Claude_Code_6/README.md` - Judge 6 v2.0 docs
+- `judge6/README.md` - Judge 6 v2.0 docs
 
 - `universal-copilot/README.md` - Universal Copilot docs
 

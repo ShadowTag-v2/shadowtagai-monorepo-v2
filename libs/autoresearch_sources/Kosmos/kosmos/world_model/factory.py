@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Factory for creating world model instances.
 
 This module provides a singleton factory pattern for creating and managing

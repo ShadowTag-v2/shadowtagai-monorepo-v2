@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AST-Grep Zero-Latency Mitigation Fabric.
 
 Judge 6.1 does not merely block bad outputs — it rewrites the AST tree

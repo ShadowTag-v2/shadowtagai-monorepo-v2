@@ -109,7 +109,7 @@ This is a hybrid Gemini+PyTorch AI system that validates data quality and enforc
           value: 'Validation & Enforcement System',
           description: 'System type',
         },
-        { key: '{{PRIMARY_FILE}}', value: 'Claude_Code_6.py', description: 'Main implementation file' },
+        { key: '{{PRIMARY_FILE}}', value: 'judge_six.py', description: 'Main implementation file' },
         { key: '{{LATENCY_TARGET}}', value: 'p99 ≤ 90ms', description: 'Performance SLA' },
         { key: '{{COVERAGE_TARGET}}', value: '98%', description: 'Quality gate threshold' },
       ],

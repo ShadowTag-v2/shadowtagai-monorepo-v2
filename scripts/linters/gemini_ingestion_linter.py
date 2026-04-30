@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Ingestion Layer Custom Linter.
 
 Enforces domain-specific patterns for the intelligence collection pipeline:

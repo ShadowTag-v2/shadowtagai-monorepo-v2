@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Guardian - Self-Healing Code Loop & Watchdog
 Part of the Omega Protocol.
 

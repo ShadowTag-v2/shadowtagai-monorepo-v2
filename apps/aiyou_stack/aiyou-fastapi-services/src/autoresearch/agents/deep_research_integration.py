@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Deep Research Integration for minion Cavalry Squadron.
 Integrates M2-Deep-Research multi-agent system from DAIR-AI.
 

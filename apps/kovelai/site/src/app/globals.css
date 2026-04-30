@@ -7,8 +7,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback', ui-monospace, monospace;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
   --font-heading: var(--font-sans);
 
   /* Sovereign Architect Color Tokens */
@@ -626,14 +626,52 @@
   outline-offset: 2px;
 }
 
-/* ─── Prefers Reduced Motion ─── */
+/* ─── Prefers Reduced Motion (WCAG 2.3.3 — targeted suppression) ─── */
 @media (prefers-reduced-motion: reduce) {
+  /* Kill aura blob drift animations */
+  .aura-blob,
+  .aura-blob--1,
+  .aura-blob--2,
+  .aura-blob--3 {
+    animation: none !important;
+    opacity: 0.15 !important;
+  }
+
+  /* Kill shield pulse */
+  .shield-glow {
+    animation: none !important;
+  }
+
+  /* Kill scroll entrance animation — show immediately */
+  .scroll-entrance {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Kill glass-card hover transform */
+  .glass-card:hover {
+    transform: none !important;
+  }
+
+  /* Kill button hover transforms */
+  .btn-gold:hover,
+  .btn-ghost:hover {
+    transform: none !important;
+  }
+
+  /* Disable smooth scrolling */
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  /* Preserve essential opacity/color transitions but reduce duration */
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms;
-    animation-iteration-count: 1;
-    transition-duration: 0.01ms;
-    scroll-behavior: auto;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.15s !important;
+    scroll-behavior: auto !important;
   }
 }

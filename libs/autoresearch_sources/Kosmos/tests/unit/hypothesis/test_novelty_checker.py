@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tests for novelty_checker module."""
 
 from unittest.mock import Mock, patch

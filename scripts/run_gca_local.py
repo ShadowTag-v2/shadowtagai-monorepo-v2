@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GCA Local Orchestrator — full multi-agent PR review pipeline, no GitHub Actions required.
 
 Mirrors gca-pr-review.yml exactly:

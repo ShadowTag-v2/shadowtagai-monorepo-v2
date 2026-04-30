@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Main entry point for Claude Skills MCP Backend (HTTP/Streamable HTTP server)."""
 
 import argparse

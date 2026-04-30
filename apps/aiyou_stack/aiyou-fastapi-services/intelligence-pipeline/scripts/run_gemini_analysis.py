@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Intelligence Pipeline - Gemini Self-Analysis Runner
 
 Executes comprehensive analysis of the Intelligence Pipeline using Gemini 2.0 Pro.

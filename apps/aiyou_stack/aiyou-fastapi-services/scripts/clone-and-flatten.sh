@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/bin/bash
 # clone-and-flatten.sh
 # 1. Clone all repos from config/antigravity_repos.json (forked versions)
@@ -87,3 +88,49 @@ done
 echo "🎉 Clone & Flatten Complete!"
 echo "Files are available in $FLATTEN_DIR"
 ||||||| merged common ancestors
+=======
+#!/bin/bash
+# scripts/clone-and-flatten.sh
+# Clone and flatten all forked repos
+
+set -e
+
+GITHUB_USER="ehanc69"
+TARGET_DIR="$HOME/antigravity-repos"
+FLATTEN_DIR="$HOME/antigravity-flattened"
+
+mkdir -p "$TARGET_DIR"
+mkdir -p "$FLATTEN_DIR"
+
+echo "Fetching list of repos for $GITHUB_USER..."
+# Get list of all repos (forks and sources)
+REPOS=$(gh repo list "$GITHUB_USER" --limit 2000 --json name --jq '.[].name')
+
+echo "Cloning repositories..."
+for REPO in $REPOS; do
+    if [ -d "$TARGET_DIR/$REPO" ]; then
+        echo "Repo $REPO already cloned, pulling updates..."
+        git -C "$TARGET_DIR/$REPO" pull || echo "Failed to pull $REPO"
+    else
+        echo "Cloning $REPO..."
+        gh repo clone "$GITHUB_USER/$REPO" "$TARGET_DIR/$REPO" -- --depth 1 || echo "Failed to clone $REPO"
+    fi
+done
+
+echo "Flattening repositories..."
+# Copy all files from repos to flattened dir
+# We prepend the repo name to the filename to avoid collisions and keep context
+# e.g. repo/src/main.py -> flattened/repo_src_main.py
+# This is a simple flattening strategy.
+
+find "$TARGET_DIR" -type f -not -path '*/.*' | while read -r file; do
+    # Get relative path from TARGET_DIR
+    rel_path="${file#$TARGET_DIR/}"
+    # Replace slashes with underscores
+    flat_name="${rel_path//\//_}"
+    # Copy
+    cp "$file" "$FLATTEN_DIR/$flat_name"
+done
+
+echo "Flattening complete. Files in $FLATTEN_DIR"
+>>>>>>> upstream/claude/gptram-integration-01

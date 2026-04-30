@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AgentSpecialization - T-Shaped Expertise Model
 Version: 1.0.0
 

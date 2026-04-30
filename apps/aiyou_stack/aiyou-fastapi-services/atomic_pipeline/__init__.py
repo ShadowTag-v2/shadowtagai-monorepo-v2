@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Atomic Code Generation Pipeline
 ================================
 Multi-model pipeline for intelligent code generation.

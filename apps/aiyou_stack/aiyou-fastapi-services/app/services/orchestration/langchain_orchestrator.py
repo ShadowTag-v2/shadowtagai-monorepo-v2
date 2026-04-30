@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """LangChain Orchestrator
 Chain orchestration with temporal agent memory integration
 Quantitative Effect: ↑ Reasoning depth +45%, ↓ Token waste –35%

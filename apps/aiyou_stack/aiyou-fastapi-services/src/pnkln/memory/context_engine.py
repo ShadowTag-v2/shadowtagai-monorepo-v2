@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pnkln Context Engine
 ====================
 
@@ -17,7 +15,7 @@ import datetime
 import json
 import logging
 
-from pnkln.core.Claude_Code_6_pipeline import get_judge
+from pnkln.core.judge_six_pipeline import get_judge
 
 from src.pnkln.gemini_integration import GeminiService
 

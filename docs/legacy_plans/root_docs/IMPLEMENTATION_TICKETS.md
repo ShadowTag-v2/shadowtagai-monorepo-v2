@@ -56,11 +56,11 @@ class JREngine:
 
 **Files to Create:**
 
-- `src/Claude_Code_6/jr_engine.py`
-- `src/Claude_Code_6/validators/__init__.py`
-- `src/Claude_Code_6/validators/purpose.py`
-- `src/Claude_Code_6/validators/reasons.py`
-- `src/Claude_Code_6/validators/brakes.py`
+- `src/judge_six/jr_engine.py`
+- `src/judge_six/validators/__init__.py`
+- `src/judge_six/validators/purpose.py`
+- `src/judge_six/validators/reasons.py`
+- `src/judge_six/validators/brakes.py`
 - `tests/test_jr_engine.py`
 
 **Dependencies:** None
@@ -100,8 +100,8 @@ Define Compliance Framework policy schema (JSON format) covering 44 threat categ
 **Files to Create:**
 
 - `schemas/compliance_framework_policy_schema.json`
-- `src/Claude_Code_6/policies/__init__.py`
-- `src/Claude_Code_6/policies/loader.py`
+- `src/judge_six/policies/__init__.py`
+- `src/judge_six/policies/loader.py`
 - `policies/security/injection.json`
 - `policies/security/xss.json`
 - `policies/compliance/data_residency.json`
@@ -138,10 +138,10 @@ Integrate Gemini Flash 2.0 for AI-powered policy validation.
 
 **Files to Create:**
 
-- `src/Claude_Code_6/gemini_client.py`
-- `src/Claude_Code_6/prompts/__init__.py`
-- `src/Claude_Code_6/prompts/validation.py`
-- `src/Claude_Code_6/cache.py`
+- `src/judge_six/gemini_client.py`
+- `src/judge_six/prompts/__init__.py`
+- `src/judge_six/prompts/validation.py`
+- `src/judge_six/cache.py`
 - `tests/test_gemini_integration.py`
 
 **Dependencies:**
@@ -213,7 +213,7 @@ Add PyTorch local models as fallback for Gemini API failures or offline mode.
 
 **Files to Create:**
 
-- `src/Claude_Code_6/pytorch_validator.py`
+- `src/judge_six/pytorch_validator.py`
 - `models/policy_classifier.pt`
 - `scripts/train_pytorch_model.py`
 - `tests/test_hybrid_enforcement.py`
@@ -250,9 +250,9 @@ Optimize for <200ms p99 latency and 150 validations/sec throughput.
 
 **Files to Create:**
 
-- `src/Claude_Code_6/optimizations/__init__.py`
-- `src/Claude_Code_6/optimizations/caching.py`
-- `src/Claude_Code_6/optimizations/batching.py`
+- `src/judge_six/optimizations/__init__.py`
+- `src/judge_six/optimizations/caching.py`
+- `src/judge_six/optimizations/batching.py`
 - `benchmarks/latency_test.py`
 - `benchmarks/throughput_test.py`
 
@@ -337,9 +337,9 @@ CREATE TABLE audit_log (
 
 **Files to Create:**
 
-- `src/Claude_Code_6/audit/__init__.py`
-- `src/Claude_Code_6/audit/logger.py`
-- `src/Claude_Code_6/audit/retrieval.py`
+- `src/judge_six/audit/__init__.py`
+- `src/judge_six/audit/logger.py`
+- `src/judge_six/audit/retrieval.py`
 - `migrations/001_create_audit_log.sql`
 - `tests/test_audit_logging.py`
 
@@ -387,10 +387,10 @@ Extend beyond Compliance Framework to support SOC 2, HIPAA, ISO 27001.
 - `policies/compliance/soc2/`
 - `policies/compliance/hipaa/`
 - `policies/compliance/iso27001/`
-- `src/Claude_Code_6/compliance/__init__.py`
-- `src/Claude_Code_6/compliance/soc2.py`
-- `src/Claude_Code_6/compliance/hipaa.py`
-- `src/Claude_Code_6/compliance/report_generator.py`
+- `src/judge_six/compliance/__init__.py`
+- `src/judge_six/compliance/soc2.py`
+- `src/judge_six/compliance/hipaa.py`
+- `src/judge_six/compliance/report_generator.py`
 - `tests/test_multi_framework.py`
 
 **Dependencies:**
@@ -431,8 +431,8 @@ async def create_policy(policy: PolicyCreate) -> Policy:
 **Files to Create:**
 
 - `src/api/routes/policy_management.py`
-- `src/Claude_Code_6/policy_tester.py`
-- `src/Claude_Code_6/policy_versioning.py`
+- `src/judge_six/policy_tester.py`
+- `src/judge_six/policy_versioning.py`
 - `tests/test_custom_policies.py`
 
 **Dependencies:**
@@ -469,8 +469,8 @@ Build real-time monitoring dashboard for validation metrics.
 - `dashboard/frontend/src/components/Metrics.tsx`
 - `dashboard/frontend/src/components/Alerts.tsx`
 - `src/api/routes/metrics.py`
-- `src/Claude_Code_6/metrics/__init__.py`
-- `src/Claude_Code_6/metrics/collector.py`
+- `src/judge_six/metrics/__init__.py`
+- `src/judge_six/metrics/collector.py`
 
 **Dependencies:**
 
@@ -503,9 +503,9 @@ Implement SLA monitoring and guarantees for enterprise customers.
 
 **Files to Create:**
 
-- `src/Claude_Code_6/sla/__init__.py`
-- `src/Claude_Code_6/sla/monitor.py`
-- `src/Claude_Code_6/sla/reporter.py`
+- `src/judge_six/sla/__init__.py`
+- `src/judge_six/sla/monitor.py`
+- `src/judge_six/sla/reporter.py`
 - `tests/test_sla_tracking.py`
 
 **Dependencies:**
@@ -552,9 +552,9 @@ Enable horizontal scaling for >150 validations/sec.
 
 **Files to Create:**
 
-- `kubernetes/Claude_Code_6_deployment.yaml`
-- `kubernetes/Claude_Code_6_service.yaml`
-- `kubernetes/Claude_Code_6_hpa.yaml` (HorizontalPodAutoscaler)
+- `kubernetes/judge_six_deployment.yaml`
+- `kubernetes/judge_six_service.yaml`
+- `kubernetes/judge_six_hpa.yaml` (HorizontalPodAutoscaler)
 - `docs/scaling_guide.md`
 
 **Dependencies:**
@@ -587,10 +587,10 @@ Analyze validation patterns to detect emerging threats.
 
 **Files to Create:**
 
-- `src/Claude_Code_6/analytics/__init__.py`
-- `src/Claude_Code_6/analytics/trend_detector.py`
-- `src/Claude_Code_6/analytics/anomaly_detector.py`
-- `src/Claude_Code_6/analytics/recommender.py`
+- `src/judge_six/analytics/__init__.py`
+- `src/judge_six/analytics/trend_detector.py`
+- `src/judge_six/analytics/anomaly_detector.py`
+- `src/judge_six/analytics/recommender.py`
 - `tests/test_analytics.py`
 
 **Dependencies:**
@@ -623,8 +623,8 @@ Implement per-client rate limiting and quota management.
 **Files to Create:**
 
 - `src/api/middleware/rate_limiter.py`
-- `src/Claude_Code_6/quota/__init__.py`
-- `src/Claude_Code_6/quota/tracker.py`
+- `src/judge_six/quota/__init__.py`
+- `src/judge_six/quota/tracker.py`
 - `tests/test_rate_limiting.py`
 
 **Dependencies:**
@@ -659,9 +659,9 @@ Generate downloadable compliance reports for customers.
 
 **Files to Create:**
 
-- `src/Claude_Code_6/reports/__init__.py`
-- `src/Claude_Code_6/reports/pdf_generator.py`
-- `src/Claude_Code_6/reports/csv_exporter.py`
+- `src/judge_six/reports/__init__.py`
+- `src/judge_six/reports/pdf_generator.py`
+- `src/judge_six/reports/csv_exporter.py`
 - `src/api/routes/reports.py`
 - `templates/compliance_report.html` (PDF template)
 - `tests/test_report_generation.py`

@@ -21,7 +21,7 @@ This session completed the integration of three major branches into the SHADOWTA
 
 - `shadowtagai/core/gemini_ingestion_layer.py` (675 lines) - Batch intelligence collection
 
-- `shadowtagai/core/Claude_Code_6_pipeline.py` (474 lines) - Sequential validation pipeline
+- `shadowtagai/core/judge_six_pipeline.py` (474 lines) - Sequential validation pipeline
 
 - `shadowtagai/core/jr_engine.py` (414 lines) - Purpose/Reasons/Brakes validation
 
@@ -243,7 +243,7 @@ pnkln-stack-fastapi-services/
 ├─ shadowtagai/                          # Core SHADOWTAGAI implementation
 │  ├─ core/                        # SK-pattern implementations
 │  │  ├─ gemini_ingestion_layer.py  (675 lines)
-│  │  ├─ Claude_Code_6_pipeline.py      (474 lines)
+│  │  ├─ judge_six_pipeline.py      (474 lines)
 │  │  ├─ jr_engine.py               (414 lines)
 │  │  ├─ cor_orchestrator.py        (576 lines)
 │  │  └─ monte_carlo_risk.py        (397 lines)
@@ -279,7 +279,7 @@ pnkln-stack-fastapi-services/
    ├─ test_gemini_ingestion.py     (167 lines)
    ├─ test_ethical_crawler.py      (143 lines)
    ├─ test_jr_engine.py            (134 lines)
-   ├─ test_Claude_Code_6.py            (114 lines)
+   ├─ test_judge_six.py            (114 lines)
    └─ test_monte_carlo.py          (110 lines)
 
 ```

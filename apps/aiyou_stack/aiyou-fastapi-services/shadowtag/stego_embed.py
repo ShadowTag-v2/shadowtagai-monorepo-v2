@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack - ShadowTag Steganographic Embedding
 
 Dual-layer watermark embedding:

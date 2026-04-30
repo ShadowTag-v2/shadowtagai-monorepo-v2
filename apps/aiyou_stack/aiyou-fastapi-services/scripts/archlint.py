@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ArchLint: Detects GPU/CPU sync issues and dtype problems
 Catches .item(), .to(device) ordering, etc.
 

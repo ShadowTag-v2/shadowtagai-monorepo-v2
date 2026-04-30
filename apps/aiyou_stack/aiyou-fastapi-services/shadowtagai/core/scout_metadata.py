@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Boy Scout Rule Metadata Bridge
 
 Integrates the pnkln/scout registry with the existing AuditTrailPersistence system.

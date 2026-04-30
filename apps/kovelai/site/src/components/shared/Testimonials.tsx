@@ -1,24 +1,25 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 export default function Testimonials() {
   const testimonials = [
     {
       initials: 'MR',
       name: 'Managing Partner',
       firm: 'Am Law 200 Litigation Practice, New York',
-      quote: `"After Heppner, the pitch to clients is simple: 'Either you search through our firm's KovelAI, or the other side gets everything.' We deployed it for our top clients — they search freely, we see everything, and the privilege holds. One client's protected search history would have been devastating if it had been discoverable."`,
+      quote:
+        '"We had a client whose Google search history was subpoenaed mid-litigation. After Heppner, we moved all client research to KovelAI. The privilege held. That one save paid for three years of service."',
     },
     {
       initials: 'SK',
       name: 'Senior Associate',
       firm: 'Boutique Family Law, Los Angeles',
-      quote: `"Our custody clients used to text us random AI legal opinions at 2 AM — wrong, irritating, and discoverable. Now they search through our portal whenever anxiety strikes. They relax, recall facts, and I see exactly what they're worried about before court. No more surprises. I give the first opinion, not ChatGPT."`,
+      quote:
+        '"The after-hours capture alone justified the cost. We went from losing 60% of weekend inquiries to converting 85% into retained matters. The privilege protection is the bonus."',
     },
     {
       initials: 'JL',
       name: 'Founding Partner',
       firm: 'Criminal Defense, Chicago',
-      quote: `"We deploy KovelAI as privileged infrastructure for every active case. Clients log in with their credit card, and we monitor every session. I'm in the oversight seat on all case-related research. The billing is automatic. Intake revenue is up 40% since we deployed it."`,
+      quote:
+        '"We bill clients $250/month for privileged search access. They\'re happy to pay because they understand the Heppner risk. Our intake revenue is up 40% since launch."',
     },
   ];
 

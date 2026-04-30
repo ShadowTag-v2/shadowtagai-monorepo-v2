@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Ingestion layer endpoints.
 
 Provides endpoints for managing and monitoring the Gemini Ingestion Layer.

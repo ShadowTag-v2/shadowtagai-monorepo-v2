@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pydantic models for Gemini AI analysis."""
 
 from datetime import datetime
@@ -12,7 +10,7 @@ class AnalysisType(StrEnum):
     """Types of Gemini analysis."""
 
     INGESTION_LAYER = "ingestion_layer"
-    Claude_Code_6 = "Claude_Code_6"
+    JUDGE_SIX = "judge_six"
     WORKFLOW_OPTIMIZATION = "workflow_optimization"
     COVERAGE_ANALYSIS = "coverage_analysis"
     COMPLIANCE_AUDIT = "compliance_audit"

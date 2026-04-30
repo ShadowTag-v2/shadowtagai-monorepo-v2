@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # labs/uphillsnowball/tests/test_shadowtag_processor.py
 """Unit tests for ShadowTagProcessor.embed_watermark (Item 11)."""
 

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Quick test script to validate template functionality"""
 
 from src.models.optimization import AreaType, DoingLessBetterResults, LifeArea, OptimizationStrategy

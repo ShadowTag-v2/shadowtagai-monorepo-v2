@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Base agent framework for Pinkln multi-agent system.
 
 Agents are evolved versions of kernels with:

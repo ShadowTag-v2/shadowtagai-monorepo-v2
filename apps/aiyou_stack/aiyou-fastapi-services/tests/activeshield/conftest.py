@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ActiveShield Medical - Local Test Configuration
 
 This conftest overrides the global conftest to allow running

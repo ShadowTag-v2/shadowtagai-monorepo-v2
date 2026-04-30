@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Structured logging configuration with JSON formatting and correlation IDs.
 Provides context-aware logging with automatic request tracking.
 """

@@ -23,7 +23,7 @@ By failing to complete the "ExToto Prompt" injection, we left the following capa
 
 - **Tier 30 Verticals:** The system doesn't know _what_ to sell (Sovereign AI @ $1M+).
 - **Hunter/Killer Protocols:** `TroopB` (build MVP <48h) and `TroopC` (IP Protection) are defined in abstract but not accessible to the `flymonkeys-server` runtime.
-- **Governance Gates:** `Cor.Claude_Code_6` logic was not strictly enforced in the `pnkln_mission_start.py` loop.
+- **Governance Gates:** `Judge6` logic was not strictly enforced in the `pnkln_mission_start.py` loop.
 
 ## The Re-Punch Strategy
 

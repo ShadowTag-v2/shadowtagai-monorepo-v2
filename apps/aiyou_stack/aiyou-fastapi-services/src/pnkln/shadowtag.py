@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ShadowTag - DCT Watermarking & Cryptographic Audit Trail
 
 Applies cryptographic watermarks to all outputs for:

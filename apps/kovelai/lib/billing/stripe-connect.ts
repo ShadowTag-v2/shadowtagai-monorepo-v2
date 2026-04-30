@@ -22,24 +22,17 @@ import { z } from 'zod';
 
 const STRIPE_CONFIG = {
   products: {
-    // biome-ignore lint/security/noSecrets: Stripe product IDs are public identifiers, not secrets
     trial: 'prod_UM2XwCF1byjegL',
     pro: 'prod_UM2X10cpyay52e',
-    // biome-ignore lint/security/noSecrets: Stripe product ID
     enterprise: 'prod_UM2XMVp9Er7A0i',
   },
   prices: {
-    // biome-ignore lint/security/noSecrets: Stripe price ID (public)
     proMonthly: 'price_1TNKSREHnWpykeMiRMDlVgLl',
-    // biome-ignore lint/security/noSecrets: Stripe price ID (public)
     proAnnual: 'price_1TNKSjEHnWpykeMi0S9GCVjy',
-    // biome-ignore lint/security/noSecrets: Stripe price ID (public)
     enterprise: 'price_1TNKSREHnWpykeMi8mrDf4rI',
   },
   betaCoupon: '3wseBY7Z',
-  // biome-ignore lint/security/noSecrets: Stripe billing portal config ID (public)
   portalConfig: 'bpc_1TNKSjEHnWpykeMi0qQPoaHm',
-  // biome-ignore lint/security/noSecrets: Stripe webhook endpoint ID (public)
   webhookEndpoint: 'we_1TNKSjEHnWpykeMiQZqmpy3X',
 } as const;
 

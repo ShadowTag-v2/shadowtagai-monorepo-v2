@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Quality & Testing Agents for Vertex AI Workbench"""
 
 from typing import Any

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import json
 import zlib
 
@@ -39,7 +37,7 @@ def atp_519_scan(rule_json: str, scenario_json: str) -> dict:
     }
 
 
-def Cor_Claude_Code_6_simulator(rule_json: str, scenario_json: str) -> dict:
+def judge6_simulator(rule_json: str, scenario_json: str) -> dict:
     """Simulates Judge 6 decision based on the rule.
     Returns { "allowed": bool, "reason": str }
     """

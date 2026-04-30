@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Code sandboxing implementation for secure code execution."""
 
 import asyncio

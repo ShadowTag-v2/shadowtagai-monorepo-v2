@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Operating System Execution Framework
 Risk assessment, decision protocols, and development constraints
 

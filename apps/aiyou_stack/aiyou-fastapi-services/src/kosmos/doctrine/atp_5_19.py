@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ATP 5-19: Composite Risk Management
 ====================================
 

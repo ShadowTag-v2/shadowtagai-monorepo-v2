@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ShadowTag cryptographic verification models.
 
 Provides provenance attestation for all platform operations.

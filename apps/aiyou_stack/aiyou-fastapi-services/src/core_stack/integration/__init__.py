@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack™ — Integration Layer
 Gemini Ingestion → Judge 6 → Services
 
@@ -22,12 +20,7 @@ from .ingestion_models import (
     QualityMetrics,
     SourceTier,
 )
-from .pipeline_orchestrator import (
-    Cor_Claude_Code_6Client,
-    Cor_Claude_Code_6Updater,
-    IngestionPublisher,
-    PipelineConfig,
-)
+from .pipeline_orchestrator import IngestionPublisher, Judge6Client, Judge6Updater, PipelineConfig
 
 __all__ = [
     # Models
@@ -41,8 +34,8 @@ __all__ = [
     # Orchestration
     "PipelineConfig",
     "IngestionPublisher",
-    "Cor_Claude_Code_6Updater",
-    "Cor_Claude_Code_6Client",
+    "Judge6Updater",
+    "Judge6Client",
 ]
 
 __version__ = "1.0.0"

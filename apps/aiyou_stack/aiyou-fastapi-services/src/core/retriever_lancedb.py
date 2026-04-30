@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """LanceDB Local Retriever Bridge
 Provides the same interface as VertexRAGRetriever but backed by local LanceDB.
 Falls back to Vertex AI when local table is unavailable.

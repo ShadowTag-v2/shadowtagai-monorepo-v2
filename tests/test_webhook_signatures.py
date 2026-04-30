@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # tests/test_webhook_signatures.py
 """Webhook signature verification tests.
 

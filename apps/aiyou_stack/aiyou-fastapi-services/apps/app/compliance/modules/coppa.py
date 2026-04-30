@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """COPPA Compliance Module
 
 Implements the Children's Online Privacy Protection Act requirements.

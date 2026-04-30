@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """LegalWhiteboard - Single Point of Truth for Multi-Agent Coordination
 Version: 1.0.0
 

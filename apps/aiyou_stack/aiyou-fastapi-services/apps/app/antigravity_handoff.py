@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Antigravity Handoff Router - Cross-Model Orchestration
 
 Intelligent routing between Claude Sonnet 4.5 and Gemini 2.0 Flash based on:
@@ -43,7 +41,7 @@ class TaskType(StrEnum):
     DEEP_ANALYSIS = "deep_analysis"  # Superior reasoning
     CODE_REFACTORING = "code_refactoring"  # Large-scale edits
     ARTIFACT_CREATION = "artifact_creation"  # Long-form docs
-    COR_CLAUDE_CODE_6_BINARY = "Cor_Claude_Code_6_binary"  # <35ms governance
+    JUDGE6_BINARY = "judge6_binary"  # <35ms governance
     SPECIALIZED = "specialized"  # Specific capabilities
 
 
@@ -148,7 +146,7 @@ class AntigravityRouter:
             TaskType.DEEP_ANALYSIS: (ModelChoice.CLAUDE, 2000, 0.015),
             TaskType.CODE_REFACTORING: (ModelChoice.CLAUDE, 3000, 0.015),
             TaskType.ARTIFACT_CREATION: (ModelChoice.CLAUDE, 4000, 0.015),
-            TaskType.COR_CLAUDE_CODE_6_BINARY: (ModelChoice.GEMINI, 35, 0.0003),
+            TaskType.JUDGE6_BINARY: (ModelChoice.GEMINI, 35, 0.0003),
             TaskType.SPECIALIZED: (ModelChoice.GPT5, 500, 0.010),
         }
 
@@ -181,7 +179,7 @@ class AntigravityRouter:
             reasoning = f"{task_type.value} → {model.value}"
 
         # Decide on MCP compression (use for large contexts)
-        use_mcp = context_size_bytes > 10_000 or task_type == TaskType.COR_CLAUDE_CODE_6_BINARY
+        use_mcp = context_size_bytes > 10_000 or task_type == TaskType.JUDGE6_BINARY
 
         decision = RoutingDecision(
             model=model,

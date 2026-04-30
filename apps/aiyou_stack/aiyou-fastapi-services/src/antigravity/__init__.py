@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Antigravity - The Central Brain with Kosmos Cavalry Squadron
 =============================================================
 

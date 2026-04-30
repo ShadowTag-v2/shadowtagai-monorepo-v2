@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Content Safety & Compliance Service
 Google Content Safety API + Hive for semantic and media/PII moderation
 Quantitative Effect: ↑ Trust/Compliance +99%, ↓ Manual review –70%

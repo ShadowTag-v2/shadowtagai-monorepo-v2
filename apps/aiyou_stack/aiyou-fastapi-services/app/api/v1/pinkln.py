@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pinkln Ultrathink API Endpoints
 Multi-agent platform with debates, code crafters, wealth acceleration
 """

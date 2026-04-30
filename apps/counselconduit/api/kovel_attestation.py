@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/kovel_attestation.py
 """Heppner/Kovel Attestation Receipt System.
 

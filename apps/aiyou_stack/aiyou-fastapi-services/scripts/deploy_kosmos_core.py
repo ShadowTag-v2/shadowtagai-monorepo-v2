@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import datetime
 import os
 import zipfile
@@ -21,7 +19,7 @@ def deploy_kosmos_core():
     # Define files to package
     files_to_package = [
         "agents/autoresearch.py",
-        "src/pnkln/Claude_Code_6.py",
+        "src/pnkln/judge_six.py",
         "scripts/deploy_kosmos_core.py",  # Include self for installation logic
     ]
 

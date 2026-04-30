@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Shift Management - Agent Pool Rotation
 
 Implements 8-hour shifts for 200+ agent swarm to prevent:

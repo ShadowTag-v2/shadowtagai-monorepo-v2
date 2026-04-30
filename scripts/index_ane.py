@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from service.app.config import load_settings
 from service.app.retrieval.sqlite_index import chunk_text
 

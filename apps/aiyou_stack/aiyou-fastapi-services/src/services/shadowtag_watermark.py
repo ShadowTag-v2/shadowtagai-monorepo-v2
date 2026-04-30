@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ShadowTag Watermarking Service
 Dual-layer imperceptible watermarking for media authentication
 

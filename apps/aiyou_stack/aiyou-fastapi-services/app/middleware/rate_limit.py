@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Rate Limiting Middleware
 
 Prevents brute force attacks and API abuse

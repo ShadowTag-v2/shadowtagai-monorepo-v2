@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Token Budget Meter — Client Portal Component (#18).
 
 FastAPI endpoint that returns token budget status as a visual meter.

@@ -27,7 +27,7 @@ labs/uphillsnowball/gideon-os/
     ├── automations/
     │   └── firestore_pipeline.js   # JS: 86% compute reduction pipelines
     ├── daemon/
-    │   └── kairos_ultraplan.py     # Python: COR.KAIROS + ULTRAPLAN Cloud Tasks
+    │   └── kairos_ultraplan.py     # Python: KAIROS + ULTRAPLAN Cloud Tasks
     ├── epistemology/
     │   └── notebooklm_epistemology.py  # Python: 6-step deep read protocol
     ├── finance/
@@ -70,7 +70,7 @@ labs/uphillsnowball/gideon-os/
 - **Purpose**: IAM credential guillotine triggered by life events
 - **Security**: Parameterized BigQuery queries (SQL injection patched)
 
-### Block 8: COR.KAIROS Daemon (Python)
+### Block 8: KAIROS Daemon (Python)
 - **Purpose**: Autonomous task continuation with Cloud Tasks
 - **Budget**: 15-second blocking budget, then non-blocking Cloud Tasks dispatch
 

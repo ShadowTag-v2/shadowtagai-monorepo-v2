@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tree of Thoughts (ToT) reasoning framework.
 
 ToT enables exploration of multiple reasoning paths through a tree structure,

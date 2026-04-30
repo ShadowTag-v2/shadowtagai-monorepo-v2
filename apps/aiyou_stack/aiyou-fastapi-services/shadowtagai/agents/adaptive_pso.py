@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Adaptive Particle Swarm Optimization with Adam-inspired momentum.
 Combines PSO swarm intelligence with adaptive learning rates from Adam optimizer.
 Based on patterns from yyz-agentics-june/neuralflow/core/optimizers/optimizers.py

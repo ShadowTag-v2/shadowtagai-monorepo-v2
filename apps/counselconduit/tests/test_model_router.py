@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Unit tests for NadirClaw 3-tier dispatch model router.
 
 Tests cover:

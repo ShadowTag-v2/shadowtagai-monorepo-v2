@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """CineVerse service layer.
 
 Extracts all database operations from cineverse routes

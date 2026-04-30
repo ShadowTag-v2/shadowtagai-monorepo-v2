@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 class AiUOrbital:
     """Vertical 5: AiU Orbital (Connectivity)
     ARR 2030: $3.5B

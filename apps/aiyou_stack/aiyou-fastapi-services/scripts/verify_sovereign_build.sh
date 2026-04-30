@@ -24,7 +24,7 @@ verify_file() {
 echo ">>> [1] ARTIFACT CHECK..."
 verify_file "infra/terraform/consolidation.tf"
 verify_file "src/pipeline/consolidation_beam.py"
-verify_file "src/governance/Claude_Code_6/pipeline_ops.py"
+verify_file "src/governance/judge_six/pipeline_ops.py"
 verify_file "src/antigravity/grounded_agent.py"
 verify_file "scripts/harvest_docs_producer.py"
 
@@ -40,7 +40,7 @@ else
 fi
 
 echo ">>> [3] PYTHON SYNTAX CHECK..."
-for pyfile in src/pipeline/consolidation_beam.py src/governance/Claude_Code_6/pipeline_ops.py src/antigravity/grounded_agent.py scripts/harvest_docs_producer.py; do
+for pyfile in src/pipeline/consolidation_beam.py src/governance/judge_six/pipeline_ops.py src/antigravity/grounded_agent.py scripts/harvest_docs_producer.py; do
     if [ -f "$pyfile" ]; then
         python3 -m py_compile "$pyfile"
         if [ $? -eq 0 ]; then

@@ -14,7 +14,7 @@ Upgrade the current workspace to fully implement the "Antigravity Workspace Temp
 
 ## Phase 2: Judge 6 LLM Integration
 
-**Goal**: Replace keyword-based validation in `src/pnkln/Claude_Code_6.py` with actual Gemini 3 Deep Think validation.
+**Goal**: Replace keyword-based validation in `src/pnkln/judge_six.py` with actual Gemini 3 Deep Think validation.
 
 - [ ] Update `_validate_purpose` to call Gemini API.
 - [ ] Implement `_validate_reasons` with logic checks via LLM.

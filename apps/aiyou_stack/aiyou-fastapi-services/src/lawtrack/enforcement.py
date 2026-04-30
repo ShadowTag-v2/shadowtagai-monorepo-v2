@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Enforcement Engine for LawTrack
 
 Configurable compliance checking and enforcement actions

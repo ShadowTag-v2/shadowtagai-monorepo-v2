@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Benchmark Suite for Pinkln Unified System
 
 Tests against:
@@ -199,7 +197,7 @@ class TestSystemIntegration:
         """Test all 7 core functions are accessible."""
         expected_functions = [
             "atp_519_scan",
-            "Claude_Code_6_classify",
+            "judge_six_classify",
             "audit_compress",
             "multi_agent_debate",
             "dte_evolve",

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Legal Whiteboard - Persistent Agent Evolution System
 
 GitHub-based persistent memory for agent evolution across context windows.

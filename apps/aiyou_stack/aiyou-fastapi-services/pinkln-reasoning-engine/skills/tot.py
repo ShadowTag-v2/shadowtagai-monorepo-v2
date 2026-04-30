@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tree of Thoughts (ToT) Skill
 
 Explores multiple reasoning paths, evaluates them, and selects the best

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/provider_health.py
 """Item 6: Per-provider health endpoint.
 

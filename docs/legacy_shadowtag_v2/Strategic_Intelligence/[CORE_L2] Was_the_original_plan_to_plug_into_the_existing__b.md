@@ -124,7 +124,7 @@ We always require 100% security to operate. If we lose security, getting it back
     violations = ATP_519_scan(input_tokens) # 95% reduction
 
         # Step 2: Binary decision tree
-        decision = Claude_Code_6_binary(violations)  # Single bit output
+        decision = judge_six_binary(violations)  # Single bit output
 
         # Step 3: Audit trail compression
         audit = zstd.compress(decision.metadata)  # 10:1 compression

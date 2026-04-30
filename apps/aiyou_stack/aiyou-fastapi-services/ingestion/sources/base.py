@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack - Base Source Adapter
 
 Abstract base class for all source adapters (YouTube, Twitter, News, RSS).

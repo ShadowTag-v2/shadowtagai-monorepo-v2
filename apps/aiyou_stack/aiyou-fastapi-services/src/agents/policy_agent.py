@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Policy enforcement agent using Google ADK and Gemini.
 
 Implements real governance decisions with RAG-based policy retrieval,

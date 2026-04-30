@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Deep Research Client — Interactions API.
 
 Wraps the official Gemini Deep Research agent

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Markdown formatter for Claude Code output.
 Fixes missing language tags and spacing issues while preserving code content.
 """

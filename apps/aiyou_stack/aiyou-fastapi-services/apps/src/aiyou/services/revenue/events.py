@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Revenue event definitions.
 
 Defines the schema for all revenue-generating events across the platform.

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 GDPR 30-Day TTL Enforcement for Brief Exports.
 

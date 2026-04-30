@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Data Analysis Agent: Specializes in data exploration and computational analysis.
 
 Capabilities:

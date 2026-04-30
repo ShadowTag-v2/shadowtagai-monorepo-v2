@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Test script for dispatch_compute() 4-tier cascade.
 
 Verifies:
@@ -19,14 +17,6 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "apps", "aiyou_stack", "aiyou-fastapi-services"))
 
 
-import pytest
-
-
-@pytest.mark.xfail(
-    reason="ANE bridge dylib requires Apple Silicon build — hardware-specific",
-    raises=FileNotFoundError,
-    strict=False,
-)
 def test_ane_bridge():
     """Test ANE bridge loads and inits."""
     print("=== Test 1: ANE Bridge ===")

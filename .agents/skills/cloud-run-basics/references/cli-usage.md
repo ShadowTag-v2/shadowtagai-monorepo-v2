@@ -25,7 +25,7 @@ gcloud run [GROUP] [COMMAND] [FLAGS]
     gcloud run deploy my-service --source .
     ```
 
--   **Deploy a Cloud Run function:**
+-   **Deploy a Cloud Run function:** 
 
     ```bash
     gcloud run deploy my-service

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """robots.txt Parser
 Ethical web crawling compliance checker
 """

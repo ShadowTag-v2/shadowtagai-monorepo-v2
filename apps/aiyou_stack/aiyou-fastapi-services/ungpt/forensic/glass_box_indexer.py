@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Glass Box Indexer - Full-Text Compliance Search
 
 Based on ArXiv 2510.09471 (Apertus Methodology):

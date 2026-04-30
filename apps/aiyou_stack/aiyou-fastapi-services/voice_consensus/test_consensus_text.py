@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Simple text-based consensus tester (no voice required)
 Useful for testing API configuration and consensus logic
 """

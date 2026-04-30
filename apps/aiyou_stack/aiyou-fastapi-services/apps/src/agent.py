@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import time
 
 # from agents.autoresearch import n-autoresearch/Kosmos/BioAgents # Removed to use tools singleton

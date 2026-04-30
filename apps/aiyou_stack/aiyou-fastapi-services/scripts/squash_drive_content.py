@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """The Squasher: Drive Content Extractor
 Downloads and extracts text from Google Drive assets into a single JSONL file.
 """

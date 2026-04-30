@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Tests for Discovery Narrative Identification Requirements (REQ-OUT-DISC-*).
 

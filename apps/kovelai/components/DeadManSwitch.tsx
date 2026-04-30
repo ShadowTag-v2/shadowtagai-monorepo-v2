@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 /**
  * Dead Man's Switch — Auto-Logout Component
  *
@@ -99,10 +97,8 @@ export function useDeadManSwitch(config: DeadManSwitchConfig) {
   // ── User Activity Listeners ───────────────────────────────────
   useEffect(() => {
     const events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'];
-    for (const event of events) document.addEventListener(event, resetTimer);
-    return () => {
-      for (const event of events) document.removeEventListener(event, resetTimer);
-    };
+    events.forEach((event) => document.addEventListener(event, resetTimer));
+    return () => events.forEach((event) => document.removeEventListener(event, resetTimer));
   }, [resetTimer]);
 
   // ── Beforeunload Cleanup ──────────────────────────────────────

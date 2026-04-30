@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ANTIGRAVITY // MISSION LAUNCHER
 Loads SOP snippets and announces Tier 30.
 """

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pnkln - Unified Search API
 
 Solves Gemini API limitation where custom tools and Google Search grounding

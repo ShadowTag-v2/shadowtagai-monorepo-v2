@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Scrape Job Service Layer
 
 Encapsulates database operations for AI Thread scrape job management.

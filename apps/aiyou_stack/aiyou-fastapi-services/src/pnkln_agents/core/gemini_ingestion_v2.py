@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Ingestion Layer V2 - Production Ready
 Replaces mock collectors with real API integrations
 

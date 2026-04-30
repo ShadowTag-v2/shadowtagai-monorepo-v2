@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tests for DeepAgent pattern enhancements.
 
 Tests dynamic tool retrieval, RL rewards, and memory persistence.

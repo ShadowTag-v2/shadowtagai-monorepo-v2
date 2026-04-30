@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Decision Framework & Risk Assessment
 ATP 5-19 Military Risk Management + Business Kill-Switches
 """

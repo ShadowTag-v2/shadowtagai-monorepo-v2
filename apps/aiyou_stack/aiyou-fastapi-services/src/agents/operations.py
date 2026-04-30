@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Operations Agents for Vertex AI Workbench"""
 
 from typing import Any

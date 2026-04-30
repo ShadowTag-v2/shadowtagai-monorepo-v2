@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Normalization Layer - Semantic Extraction Service
 
 Transforms raw scraped documents into structured IntelEvent objects

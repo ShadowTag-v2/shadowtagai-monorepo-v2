@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Synthesis Agent: Specializes in synthesizing findings into structured reports.
 
 Capabilities:

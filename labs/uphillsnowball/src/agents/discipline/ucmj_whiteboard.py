@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """UCMJ Whiteboard — Optimistic Concurrency Control & Drag Race SLAs.
 
 Agents don't just "time out" — they hallucinate over each other.

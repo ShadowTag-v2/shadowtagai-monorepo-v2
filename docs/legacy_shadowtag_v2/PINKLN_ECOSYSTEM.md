@@ -35,7 +35,7 @@ Decision Context (50KB)
     ↓
 [Kernel 1: ATP_519_scan]      → Gemini Flash → Violations JSON (2.5KB)
     ↓
-[Kernel 2: Claude_Code_6_classify] → PyTorch local → Binary decision + risk tier
+[Kernel 2: judge_six_classify] → PyTorch local → Binary decision + risk tier
     ↓
 [Kernel 3: audit_compress]     → zstd → Audit trail (487 bytes)
     ↓

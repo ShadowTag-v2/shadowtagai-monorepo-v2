@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """JR Engine - Purpose/Reasons/Brakes Validation Framework
 Core orchestration for Judge 6
 """

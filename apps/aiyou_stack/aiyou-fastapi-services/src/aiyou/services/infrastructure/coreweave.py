@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """CoreWeave GPU Orchestration Service.
 
 Manages GPU resources across cloud and edge nodes.

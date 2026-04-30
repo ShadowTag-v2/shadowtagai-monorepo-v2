@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Confidence Monitor - SOP-C Decision Protocol
 Lowest-Confidence Check for Auto-Triggering Branch/Review
 

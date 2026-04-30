@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Drive Content Analyzer ("The Gucci Finder")
 
 Parses pnkln_intelligence/knowledge_base/drive_index.json to identify high-value assets.

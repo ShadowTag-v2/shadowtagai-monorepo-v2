@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Context Engineering System (Google ADK Style)
 =============================================
 

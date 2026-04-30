@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import json
 import logging
 import os
@@ -10,7 +8,7 @@ from src.governance.voting.cav_mtoe import CavMTOE
 from vertexai.generative_models import GenerativeModel
 
 from src.antigravity.genkit_wrapper import get_genkit
-from src.governance.Claude_Code_6.core import JudgeSixEngine
+from src.governance.judge_six.core import JudgeSixEngine
 from src.governance.memory.memory_bank import MemoryBank
 
 # Try to import local Jetski if available, else usage will be mocked or remote

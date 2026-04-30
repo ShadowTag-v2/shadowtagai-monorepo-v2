@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """LLM Executor: Unified interface for calling LLMs (Anthropic, OpenAI, Vertex AI).
 
 Design principles:

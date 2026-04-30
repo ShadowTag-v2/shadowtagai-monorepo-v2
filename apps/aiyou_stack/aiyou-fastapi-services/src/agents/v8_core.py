@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import enum
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field

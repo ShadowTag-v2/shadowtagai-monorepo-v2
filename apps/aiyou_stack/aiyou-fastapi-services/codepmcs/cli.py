@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """CodePMCS CLI - Command line interface for GitHub Actions and local use.
 
 Usage:

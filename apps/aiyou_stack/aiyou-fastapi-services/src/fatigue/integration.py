@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """OEM Integration Layer
 SDK interfaces for Meta Ray-Ban, Apple Vision Pro, Samsung AR, etc.
 

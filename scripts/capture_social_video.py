@@ -1,6 +1,4 @@
 #!/usr/bin/env uv run --python 3.14
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # /// script
 # requires-python = ">=3.14"
 # dependencies = ["playwright"]

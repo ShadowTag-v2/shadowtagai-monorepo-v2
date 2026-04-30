@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """RSTA Squadron - 650 Agent Hunter-Killer Structure
 =================================================
 OPORD 2511-ALPHA // ATP 3-20.96 Aligned

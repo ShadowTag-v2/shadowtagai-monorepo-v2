@@ -110,14 +110,14 @@ from pinkln.skills.infrastructure_analysis import InfrastructureAnalysisSkill
 skill = InfrastructureAnalysisSkill()
 
 # Analyze Judge 6
-judge_result = skill.analyze_system(skill.Claude_Code_6_SPEC)
+judge_result = skill.analyze_system(skill.JUDGE_SIX_SPEC)
 
 # Analyze Gemini Ingestion
 ingestion_result = skill.analyze_system(skill.GEMINI_INGESTION_SPEC)
 
 # Comparative analysis
 comparison = skill.comparative_analysis(
-    skill.Claude_Code_6_SPEC,
+    skill.JUDGE_SIX_SPEC,
     skill.GEMINI_INGESTION_SPEC
 )
 ```
@@ -211,7 +211,7 @@ from pinkln.agents.infrastructure_agent import InfrastructureAgent
 agent = InfrastructureAgent()
 
 # Analyze specific systems
-judge_analysis = await agent.analyze_Claude_Code_6()
+judge_analysis = await agent.analyze_judge_six()
 ingestion_analysis = await agent.analyze_gemini_ingestion()
 
 # Comparative analysis
@@ -251,7 +251,7 @@ agent = InfrastructureAgent(config=config)
 from pinkln.agents.infrastructure_agent import InfrastructureAgent
 
 agent = InfrastructureAgent()
-result = await agent.analyze_Claude_Code_6()
+result = await agent.analyze_judge_six()
 
 print("=== Judge 6 Analysis ===")
 print(f"Strengths: {len(result['analysis']['core_analysis']['strengths'])}")
@@ -342,7 +342,7 @@ infra_agent = InfrastructureAgent()
 
 ```python
 # Get analysis from Infrastructure Agent
-judge_analysis = await infra_agent.analyze_Claude_Code_6()
+judge_analysis = await infra_agent.analyze_judge_six()
 
 # Use Claude to deep-dive into specific areas
 challenge = f"""
@@ -420,7 +420,7 @@ print(response.content[0].text)
 ```python
 # Analyze both systems in parallel on Vertex AI
 systems = [
-    ("Judge 6", skill.Claude_Code_6_SPEC),
+    ("Judge 6", skill.JUDGE_SIX_SPEC),
     ("Gemini Ingestion", skill.GEMINI_INGESTION_SPEC)
 ]
 
@@ -542,14 +542,14 @@ async def create_health_dashboard():
     agent = InfrastructureAgent()
 
     # Analyze all systems
-    judge = await agent.analyze_Claude_Code_6()
+    judge = await agent.analyze_judge_six()
     ingestion = await agent.analyze_gemini_ingestion()
     pipeline = await agent.analyze_full_pipeline()
 
     dashboard = {
         "overall_health": calculate_health_score([judge, ingestion]),
         "systems": {
-            "Claude_Code_6": summarize_health(judge),
+            "judge_six": summarize_health(judge),
             "gemini_ingestion": summarize_health(ingestion)
         },
         "pipeline": {
@@ -649,7 +649,7 @@ The PNKLN Core Stack™ infrastructure analysis capabilities provide systematic,
 
 ### Next Steps
 
-1. **Analyze your systems**: Start with `analyze_Claude_Code_6()` and `analyze_gemini_ingestion()`
+1. **Analyze your systems**: Start with `analyze_judge_six()` and `analyze_gemini_ingestion()`
 2. **Review recommendations**: Implement quick wins first
 3. **Monitor continuously**: Set up weekly/monthly reviews
 4. **Iterate**: Track improvements and adjust

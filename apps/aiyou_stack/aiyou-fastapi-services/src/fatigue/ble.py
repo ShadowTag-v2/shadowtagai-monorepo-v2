@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """BLE Sync Layer
 Wearable integration for HRV and biometric data
 

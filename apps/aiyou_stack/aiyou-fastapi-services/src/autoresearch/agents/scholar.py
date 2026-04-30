@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # ATOMIC CODE BLOCK 3: SCHOLAR AGENT
 # File: src/minions/agents/scholar.py
 # Function: The Sensor (arXiv Scraper + Vertex AI Analyzer)
@@ -9,10 +7,7 @@ from datetime import date, datetime
 
 import arxiv
 
-from src.minions.core.Cor_Claude_Code_6 import (  # Import Cor_Claude_Code_6
-    ActionType,
-    ProposedAction,
-)
+from src.minions.core.judge6 import ActionType, ProposedAction  # Import Judge6
 
 
 class minion_Scholar:
@@ -43,7 +38,7 @@ class minion_Scholar:
             # Logic: If age < 3 months, Hype is HIGH (0.95). If age > 6 months, Hype is LOW (0.10).
             hype_score = 0.95 if age_months < 3 else 0.10
 
-            # 4. Formulate Proposal for Cor_Claude_Code_6
+            # 4. Formulate Proposal for Judge6
             proposal = ProposedAction(
                 action_type=ActionType.CODE_MERGE,
                 target_name=f"Update: {result.title[:40]}...",

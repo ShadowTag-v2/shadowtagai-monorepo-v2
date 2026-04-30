@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Shadow Mode Framework for safe agent governance migration.
 
 Runs new agent system in parallel with existing Judge 6 without
@@ -234,7 +232,7 @@ class ShadowModeOrchestrator:
         # Call Judge 6 endpoint
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                settings.Cor_Claude_Code_6_endpoint,
+                settings.judge6_endpoint,
                 json=request,
                 timeout=10.0,
             )

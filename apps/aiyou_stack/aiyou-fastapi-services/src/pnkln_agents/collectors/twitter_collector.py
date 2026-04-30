@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Twitter API v2 Collector
 Collects tweets using Twitter API v2
 """

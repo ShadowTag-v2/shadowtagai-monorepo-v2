@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GCA Batch PR Reviewer — Review and merge multiple PRs in sequence.
 
 Usage:

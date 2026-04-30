@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """World Model: Persistent state tracking across autonomous discovery cycles.
 
 Implements the 'structured world-model' concept from Kosmos paper (arxiv 2511.02824).

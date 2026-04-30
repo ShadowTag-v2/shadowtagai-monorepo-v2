@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Infrastructure design and management endpoints"""
 
 from typing import Any

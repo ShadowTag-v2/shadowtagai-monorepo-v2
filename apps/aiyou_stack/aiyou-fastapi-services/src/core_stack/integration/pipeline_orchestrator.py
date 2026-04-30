@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack™ — Integration Pipeline Orchestrator
 Handles data flow: Gemini Ingestion → Cloud Storage → Judge 6 → Services
 """
@@ -99,7 +97,7 @@ class IngestionPublisher:
         return gcs_path
 
 
-class Cor_Claude_Code_6Updater:
+class Judge6Updater:
     """Subscribes to Pub/Sub events and updates Judge 6 Redis cache.
     Runs as sidecar in Judge 6 StatefulSet (gke-inference-system).
     """
@@ -230,7 +228,7 @@ class Cor_Claude_Code_6Updater:
             logger.info("Stopped Pub/Sub listener")
 
 
-class Cor_Claude_Code_6Client:
+class Judge6Client:
     """Client for services to query Judge 6 (real-time validation).
     Runs in gke-inference-system, gke-gateway-system, etc.
     """
@@ -376,13 +374,13 @@ async def integration_test():
     print(f"✓ Published briefing to {gcs_path}")
 
     # Step 2: Load to Judge 6 (Updater)
-    updater = Cor_Claude_Code_6Updater(config)
+    updater = Judge6Updater(config)
     await updater.connect_redis()
     success = await updater.load_briefing_to_cache(gcs_path)
     print(f"✓ Loaded to Judge 6 cache: {success}")
 
     # Step 3: Validate item (Service)
-    judge_client = Cor_Claude_Code_6Client(config)
+    judge_client = Judge6Client(config)
     await judge_client.connect()
     decision = await judge_client.validate_item("ing_20251115_000001")
     print(f"✓ Judge 6 decision: {decision.allowed}, {decision.latency_us}μs")

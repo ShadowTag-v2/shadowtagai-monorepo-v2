@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Layer 12–13: Regulatory Compliance & Adtech Standards
 =====================================================
 

@@ -7,9 +7,6 @@ concurrency:
   group: judge6_yolo_gate-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-
 jobs:
   csrmc-audit:
     runs-on: ubuntu-latest

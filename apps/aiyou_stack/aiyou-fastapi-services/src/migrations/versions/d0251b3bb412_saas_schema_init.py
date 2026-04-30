@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """SaaS schema init
 
 Revision ID: d0251b3bb412

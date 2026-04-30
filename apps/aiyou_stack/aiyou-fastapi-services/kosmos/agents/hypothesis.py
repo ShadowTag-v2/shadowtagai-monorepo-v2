@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Hypothesis Agent: Specializes in generating testable research hypotheses.
 
 Capabilities:

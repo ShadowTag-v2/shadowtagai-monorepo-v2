@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pinkln Ultrathink Framework - Complete Rebuild
 Integrates: CoT/ToT/RCR/Glicko-2/MAD/DTE/GRPO/PPO
 

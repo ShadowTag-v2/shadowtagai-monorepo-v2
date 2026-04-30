@@ -1118,7 +1118,7 @@ The two systems work together in the PNKLN Core Stack™ to ensure:
 - [GKE Deployment Guide](./deployment.md)
 
 
-- [Judge 6 Specification](./Claude_Code_6.md)
+- [Judge 6 Specification](./judge_six.md)
 
 
 - [Ethical Crawling Best Practices](https://www.robotstxt.org/)

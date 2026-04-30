@@ -19,7 +19,7 @@ echo "Manifest:
 
 - apps/https://github.com/karpathy/autoresearchs-server/src/main.py
 - bin/https://github.com/karpathy/autoresearchs-server
-- src/governance/Claude_Code_6
+- src/governance/judge_six
 - src/intelligence/tegu_vision
 - scripts/verify_smart_actions.py" > transfer_manifest.txt
 
@@ -28,9 +28,9 @@ echo "Manifest:
 tar -czf "$PACKET_NAME" \
  apps/https://github.com/karpathy/autoresearchs-server/src/main.py \
  bin/https://github.com/karpathy/autoresearchs-server \
- src/governance/Claude_Code_6 \
+ src/governance/judge_six \
  src/intelligence/tegu_vision \
- src/governance/Claude_Code_6/core.py \
+ src/governance/judge_six/core.py \
  src/intelligence/tegu_vision/detector.py \
  scripts/verify_smart_actions.py \
  transfer_manifest.txt

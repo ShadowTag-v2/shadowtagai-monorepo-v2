@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Vertical-specific configuration for regulatory compliance
 Defines the 30 verticals with their regulatory requirements
 """

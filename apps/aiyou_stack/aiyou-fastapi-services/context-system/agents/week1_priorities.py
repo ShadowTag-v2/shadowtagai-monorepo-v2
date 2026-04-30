@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Current Objectives - Week 1 Execution Priorities
 Immediate action items with clear deliverables and deadlines
 """

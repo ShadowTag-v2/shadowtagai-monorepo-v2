@@ -110,7 +110,7 @@ sed -i 's/ATP 5-19/ethical crawling compliance/g' prompt.txt
 
 | Source | Target | Rationale |
 |--------|--------|-----------|
-| `Claude_Code_6.py` | Pipeline architecture specs | Single file → distributed docs |
+| `judge_six.py` | Pipeline architecture specs | Single file → distributed docs |
 | Unit test files | Integration diagrams | Code → system design |
 | Coverage reports | Source diversity metrics | Quality measure shift |
 

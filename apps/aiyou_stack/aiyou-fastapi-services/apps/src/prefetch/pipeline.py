@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Prefetch Pipeline - Minimize LLM Usage Through Smart Caching & Web Investigation
 
 Strategy:

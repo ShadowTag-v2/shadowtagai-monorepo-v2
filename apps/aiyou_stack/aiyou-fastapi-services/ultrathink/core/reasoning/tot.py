@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tree-of-Thoughts (ToT) Reasoning
 
 Multi-path exploration with backtracking.

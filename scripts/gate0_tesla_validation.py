@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gate 0: Tesla Fleet API viability test (1Hz for 60s).
 ---------------------------------------------------
 PREREQS (one-time):

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Prompt engineering and cheat sheet systems."""
 
 from .cheat_sheet import (

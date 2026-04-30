@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Intelligent caching system with Redis support
 Automatically caches responses and provides cache statistics
 """

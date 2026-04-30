@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Latency Tests - Validate p99≤90ms SLA
 
 Tests to ensure the native Gemini function calling meets the

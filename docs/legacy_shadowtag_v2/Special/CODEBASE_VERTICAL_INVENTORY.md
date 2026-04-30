@@ -19,11 +19,11 @@
   - `pnkln/` (The Framework)
   - `shadowtag/`, `shadowtag-omega-v2/` (The Product)
   - `antigravity/`, `antigravity-go/` (The Agentic Brain)
-  - `Cor.Claude_Code_6/`, `Cor.Claude_Code_6-cli/` (The Law/Governance)
+  - `judge6/`, `judge6-cli/` (The Law/Governance)
   - `gideon_os/` (The OS)
   - `kosmos/` (The Agent Swarm)
 - **Key Code**:
-  - `Cor.Claude_Code_6/Cor.Claude_Code_6_enforcement.py`: The <500µs governance engine.
+  - `judge6/judge6_enforcement.py`: The <500µs governance engine.
   - `antigravity/antigravity.py`: The master agent controller.
   - `pnkln/pnkln-analyzer.js`: Core framework logic.
 

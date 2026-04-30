@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ShadowTag-v2 Autonomous Error Repair Engine.
 =====================================
 Watches lint/test output, calls Gemini (primary) for fix, applies it,

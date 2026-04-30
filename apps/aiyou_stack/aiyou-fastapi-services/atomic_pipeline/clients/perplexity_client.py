@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Perplexity Sonar API Client
 ============================
 Deep research and citation-backed responses.

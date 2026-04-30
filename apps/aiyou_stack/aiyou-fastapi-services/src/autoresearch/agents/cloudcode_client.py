@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Cloud Code API Client: Wrapper for Antigravity Cloud Code API
 Supports single account operation with scaling to 10 accounts.
 

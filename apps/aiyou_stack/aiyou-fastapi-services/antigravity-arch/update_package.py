@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Auto-update PKGBUILD when pyproject.toml version changes.
 Runs in GitHub Actions daily.
 

@@ -10,8 +10,6 @@ CounselConduit is the **"Shopify for Legal AI"** — a privilege-preserving rout
 
 **Hard Redesign Thesis**: CounselConduit is not a legal research tool. It is an **emotional arbitrage engine** — the client pays because they feel safe, heard, and understood. The AI does the thinking; the brand does the holding.
 
-**Messaging Model (Locked v10.2)**: The **attorney is the buyer**. The **client is the beneficiary**. Like a police chief buying bulletproof vests for the force. The attorney deploys CounselConduit as privileged search infrastructure for their clients. The client searches freely inside the privilege umbrella — relaxing enough to recall all the facts of their case. The attorney sits in the loop: monitoring sessions, providing the first legal opinion, and billing automatically. We protect the client from themselves — from discoverable Google searches, from incorrect AI-generated legal opinions, and from ambushing their own attorney with unvetted research.
-
 ---
 
 ## §1 — Core Tiers (Updated v10.0)
@@ -224,13 +222,13 @@ Key metrics:
 
 ## §6 — Hardened Production State
 
-### v10.0 → v10.2 canonicalized: 2026-04-28
-- Latest production commit: `76e39472c` (2026-04-28)
-- Lighthouse LHCI (KovelAI): A100 / BP100 / SEO100 (0 failed audits)
+### v10.0 → v10.1 canonicalized: 2026-04-24
+- Latest production commit: `4c42972f3a6` (2026-04-24)
+- Lighthouse LHCI (KovelAI): A94 / BP100 / SEO100
 - Lighthouse LHCI (ShadowTagAI): A95 / BP96 / SEO100
-- Tests: 504 collected, 498 passed, 3 xfailed, 3 skipped (82.10s)
+- Tests: 504 collected, 499 passed, 2 E2E expected failures, 3 skipped
 - Dead code: clean (ruff 0.15.11 F401/F841 — 0 errors)
-- CounselConduit: v3.2.0 LIVE on Cloud Run rev `counselconduit-00045-kjp`
+- CounselConduit: v3.2.0 LIVE on Cloud Run rev `counselconduit-00037-7mf`
 - Cloud Armor WAF: `counselconduit-waf` (XSS + SQLi + rate limiting active)
 - Cloud Monitoring: 9 alert policies + email channel
 - SLO: CounselConduit 99.5% Availability, 30-day rolling
@@ -243,14 +241,12 @@ Key metrics:
 - RISK_REGISTER: v10.9 (86+ tracked risks)
 - Cloud Functions: 4 active (analyticalWebhook, captureContact, captureLead, cspReport)
 - Firestore: 2 databases (default nam5, shadowtag-engine us-central1) — delete-protection ENABLED
-- Stripe: Payment Link URLs PENDING — Price IDs wired, need Dashboard Payment Link creation for Pro Monthly/Annual
-- Messaging Model: Attorney-buyer / Client-beneficiary cascade complete (9 components)
 - Open PRs: 0
 
 ### CounselConduit Cloud Run
 | Service | URL | Rev |
 |---------|-----|-----|
-| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00045-kjp (100% traffic) |
+| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00037-7mf (100% traffic) |
 | Staging | https://counselconduit-staging-767252945109.us-central1.run.app | counselconduit-staging-00003-l9h |
 
 ### Deployed Hosting Targets
@@ -311,30 +307,3 @@ Because we moved away from Redis cache over to Firestore `system_idempotency_key
 
 ### Production Hardening (2026-04-16)
 - CSP Headers, Permissions-Policy, WebP Optimization, Custom 404 Pages, DNS Prefetch, Preview Channels, Google Search Console, Firebase Storage, GCS CORS, Cloud Monitoring, captureLead, Hero Preload, Git Auth
-
----
-
-## §10 — Marketing Channels (Locked 2026-04-28)
-
-### Google Pomelli Integration
-| Property | Value |
-|----------|-------|
-| Platform | Google Labs Pomelli (https://labs.google.com/pomelli) |
-| Business DNA Source | https://kovelai.web.app |
-| Campaign Prompt | "Legal tech SaaS that shields clients from discoverable AI research under attorney-client privilege" |
-| Photoshoot (Imagen) | TACSOP 7-compliant product imagery generation with provenance tracking |
-| Mobile Support | ✅ Available for on-the-go campaign creation |
-| Status | Active — Business DNA requires re-ingestion after each major messaging pivot |
-
-### Marketing Asset Pipeline
-1. **Pomelli Campaigns**: Generate social media cards, ad copy, and landing page variants
-2. **Photoshoot (Imagen)**: Professional product imagery — hero images, feature illustrations, social assets
-3. **Content Themes**: Attorney-client privilege, post-Heppner compliance, client protection from discoverable searches
-4. **Distribution**: LinkedIn (attorney buyers), Twitter/X, legal tech newsletters, ABA Journal
-
-### Campaign Messaging Framework
-- **Primary Buyer**: Attorney / Managing Partner
-- **Primary Beneficiary**: Client (protected from discoverable AI searches)
-- **Core Thesis**: "Protect your clients from themselves — deploy privileged search infrastructure"
-- **Emotional Hook**: "Your client is Googling their case at 2 AM. Make those searches privileged."
-- **Compliance Anchor**: *United States v. Heppner* (S.D.N.Y., Feb. 10, 2026)

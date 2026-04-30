@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Main Entry Point for Gemini Ingestion Layer
 
 GKE CronJob multi-container orchestration for nightly intelligence collection.

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """SSH egress push script — splits large pushes into 20-ref chunks."""
 
 import subprocess

@@ -19,9 +19,7 @@ import crypto from 'node:crypto';
 import { type JWTPayload, jwtVerify, SignJWT } from 'jose';
 import Stripe from 'stripe';
 
-const stripeKey = process.env.STRIPE_SECRET_KEY;
-if (!stripeKey) throw new Error('[S.E.U.] STRIPE_SECRET_KEY must be set');
-const stripe = new Stripe(stripeKey);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const SECRET_KEY = new TextEncoder().encode(process.env.SEU_JWT_SECRET);
 
 /** S.E.U. JWT payload shape. */

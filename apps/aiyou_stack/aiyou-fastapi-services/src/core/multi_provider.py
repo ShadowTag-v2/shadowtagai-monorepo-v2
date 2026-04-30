@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Multi-Provider LLM Support: Anthropic Claude + Google Gemini
 
 Unified interface supporting:

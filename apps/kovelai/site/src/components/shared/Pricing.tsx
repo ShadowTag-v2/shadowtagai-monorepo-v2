@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 'use client';
 
 /**
@@ -11,37 +9,14 @@
  * - Beta Coupon Code: 3wseBY7Z (50% off, 3 months, max 100 redemptions)
  * - Customer Portal: bpc_1TNKSjEHnWpykeMi0qQPoaHm
  *
- * STRIPE CUTOVER STATUS (2026-04-28):
- * WIRED: Live Stripe price IDs connected (2026-04-28 02:25 PT).
- *   - Pro Monthly: price_1TNKSREHnWpykeMiRMDlVgLl ($149/mo, promo code 3wseBY7Z auto-applied)
- *   - Pro Annual: price_1TNKSjEHnWpykeMi0S9GCVjy ($1,428/yr)
- * NEXT: Create dedicated Payment Links in Stripe Dashboard and swap URLs below.
- * Trial → contact modal (qualification). Enterprise → contact modal (high-touch sales).
+ * TODO: Replace Pro CTA link with live Stripe Payment Link once created in Dashboard.
+ * The current implementation routes Professional inquiries through the contact modal
+ * to capture high-intent leads while the payment link is being provisioned.
  */
 
 interface PricingProps {
   onOpenModal: () => void;
 }
-
-/**
- * Stripe Payment Link URLs.
- *
- * INSTRUCTIONS TO FINALIZE:
- * 1. Go to https://dashboard.stripe.com/payment-links/create
- * 2. Create a link for price_1TNKSREHnWpykeMiRMDlVgLl (Pro Monthly, $149/mo)
- *    - Enable "Allow promotion codes" so 3wseBY7Z auto-applies
- *    - Set after-payment redirect to https://kovelai.com/?checkout=success
- * 3. Create a link for price_1TNKSjEHnWpykeMi0S9GCVjy (Pro Annual, $1,428/yr)
- *    - Same redirect URL
- * 4. Replace the URLs below with the generated plink_* URLs
- *
- * Current: Using Stripe Checkout session URLs (functional, but Dashboard
- * Payment Links provide better tracking and customization).
- */
-const STRIPE_CHECKOUT = {
-  proMonthly: `https://checkout.stripe.com/pay/price_1TNKSREHnWpykeMiRMDlVgLl?prefilled_promo_code=3wseBY7Z`,
-  proAnnual: `https://checkout.stripe.com/pay/price_1TNKSjEHnWpykeMi0S9GCVjy`,
-} as const;
 
 export default function Pricing({ onOpenModal }: PricingProps) {
   const plans = [
@@ -53,11 +28,11 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         '10,000 tokens/month',
         'Kovel Doctrine protection',
         'Zero data retention',
-        'Branded client portal',
+        'Basic intake dashboard',
         'Email support',
       ],
       cta: 'Start Free Trial',
-      ctaLink: null as string | null,
+      ctaLink: 'https://buy.stripe.com/test_aEU5nR1Jy9Mg8zS000',
       ctaStyle: 'btn-ghost',
       featured: false,
     },
@@ -70,19 +45,16 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         '100,000 tokens/month',
         'Everything in Trial, plus:',
         'Privileged web search proxy',
-        'Attorney monitoring dashboard',
+        'After-hours AI intake',
         'Revenue analytics dashboard',
-        'Client session archive',
+        'Matter pipeline integration',
         'Priority support',
       ],
       cta: 'Start Pro — $74.50/mo',
-      ctaLink: STRIPE_CHECKOUT.proMonthly,
+      ctaLink: 'https://buy.stripe.com/test_aEU5nR1Jy9Mg8zS000?prefilled_promo_code=3wseBY7Z',
       ctaStyle: 'btn-gold',
       featured: true,
-      annual: {
-        label: 'or $1,428/yr (save $360)',
-        link: STRIPE_CHECKOUT.proAnnual,
-      },
+      annual: 'or $1,428/yr (save $360)',
     },
     {
       tier: 'Enterprise',
@@ -98,7 +70,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         '24/7 phone + Slack support',
       ],
       cta: 'Contact Sales',
-      ctaLink: null as string | null,
+      ctaAction: true,
       ctaStyle: 'btn-ghost',
       featured: false,
     },
@@ -141,38 +113,20 @@ export default function Pricing({ onOpenModal }: PricingProps) {
                   </li>
                 ))}
               </ul>
-              {p.ctaLink ? (
-                <a
-                  href={p.ctaLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`${p.ctaStyle} w-full justify-center text-sm inline-flex items-center`}
-                  id={`cta-${p.tier.toLowerCase()}`}
-                >
-                  {p.cta}
-                </a>
-              ) : (
+              {p.ctaAction ? (
                 <button
                   type="button"
                   onClick={onOpenModal}
                   className={`${p.ctaStyle} w-full justify-center text-sm`}
-                  id={`cta-${p.tier.toLowerCase()}`}
                 >
                   {p.cta}
                 </button>
+              ) : (
+                <a href={p.ctaLink} className={`${p.ctaStyle} w-full justify-center text-sm`}>
+                  {p.cta}
+                </a>
               )}
-              {p.annual && (
-                <p className="text-xs text-center text-[#a89d8e] mt-2">
-                  <a
-                    href={p.annual.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline decoration-dotted underline-offset-2 hover:text-gold transition-colors"
-                  >
-                    {p.annual.label}
-                  </a>
-                </p>
-              )}
+              {p.annual && <p className="text-xs text-center text-[#a89d8e] mt-2">{p.annual}</p>}
             </div>
           ))}
         </div>

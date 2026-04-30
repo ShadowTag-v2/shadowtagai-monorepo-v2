@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Workflow Execution Engine - Process Atomic Chat JSON Action Blocks
 
 Executes workflow definitions like:

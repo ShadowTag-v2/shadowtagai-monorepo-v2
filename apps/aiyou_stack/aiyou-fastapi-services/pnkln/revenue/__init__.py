@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Revenue module - Tier enforcement and monetization."""
 
 from pnkln.revenue.tiers import (

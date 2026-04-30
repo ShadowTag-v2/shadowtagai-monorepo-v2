@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Security Middleware for ShadowTag-v4 Platform
 Implements rate limiting, security headers, and request validation
 """

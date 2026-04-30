@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Swiper Adaptive Shoppable Video Platform - Database Models
 
 This module implements the core database models for the Swiper platform:

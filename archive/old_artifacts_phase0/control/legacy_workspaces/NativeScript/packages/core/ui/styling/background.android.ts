@@ -1,0 +1,124 @@
+import { View } from '../core/view';
+import { LinearGradient } from './linear-gradient';
+import { ClipPathFunction } from './clip-path-function';
+import { isDataURI, isFileOrResourcePath, RESOURCE_PREFIX, FILE_PREFIX } from '../../utils';
+import { CSSValue, parse } from '../../css-value/reworkcss-value';
+import { path, knownFolders } from '../../file-system';
+export * from './background-common';
+
+function fromBase64(source: string): android.graphics.Bitmap {
+	const bytes = android.util.Base64.decode(source, android.util.Base64.DEFAULT);
+
+	return android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+}
+
+function fromGradient(gradient: LinearGradient): org.nativescript.widgets.LinearGradientDefinition {
+	const colors = Array.create('int', gradient.colorStops.length);
+	const stops = Array.create('float', gradient.colorStops.length);
+	let hasStops = false;
+	gradient.colorStops.forEach((stop, index) => {
+		colors[index] = stop.color.android;
+		if (stop.offset) {
+			stops[index] = stop.offset.value;
+			hasStops = true;
+		}
+	});
+
+	const alpha = gradient.angle / (Math.PI * 2);
+	const startX = Math.pow(Math.sin(Math.PI * (alpha + 0.75)), 2);
+	const startY = Math.pow(Math.sin(Math.PI * (alpha + 0.5)), 2);
+	const endX = Math.pow(Math.sin(Math.PI * (alpha + 0.25)), 2);
+	const endY = Math.pow(Math.sin(Math.PI * alpha), 2);
+
+	return new org.nativescript.widgets.LinearGradientDefinition(startX, startY, endX, endY, colors, hasStops ? stops : null);
+}
+
+const pattern = /url\(('|")(.*?)\1\)/;
+export function refreshBorderDrawable(view: View, borderDrawable: org.nativescript.widgets.BorderDrawable) {
+	const nativeView = <android.view.View>view.nativeViewProtected;
+	const context = nativeView.getContext();
+
+	const background = view.style.backgroundInternal;
+	if (background) {
+		const backgroundPositionParsedCSSValues = createNativeCSSValueArray(background.position);
+		const backgroundSizeParsedCSSValues = createNativeCSSValueArray(background.size);
+		const blackColor = -16777216; //android.graphics.Color.BLACK;
+
+		let imageUri: string;
+		if (background.image && typeof background.image === 'string' && background.image !== 'none') {
+			imageUri = background.image;
+			const match = imageUri.match(pattern);
+			if (match && match[2]) {
+				imageUri = match[2];
+			}
+		}
+
+		let bitmap: android.graphics.Bitmap = null;
+		if (isDataURI(imageUri)) {
+			const base64Data = imageUri.split(',')[1];
+			if (base64Data !== undefined) {
+				bitmap = fromBase64(base64Data);
+				imageUri = null;
+			}
+		} else if (isFileOrResourcePath(imageUri)) {
+			if (imageUri.indexOf(RESOURCE_PREFIX) !== 0) {
+				let fileName = imageUri;
+				if (fileName.indexOf('~/') === 0) {
+					fileName = path.join(knownFolders.currentApp().path, fileName.replace('~/', ''));
+				}
+
+				imageUri = FILE_PREFIX + fileName;
+			}
+		}
+
+		let gradient: org.nativescript.widgets.LinearGradientDefinition = null;
+		if (background.image && background.image instanceof LinearGradient) {
+			gradient = fromGradient(background.image);
+		}
+
+		borderDrawable.refresh(
+			background.borderTopColor ? background.borderTopColor.android : blackColor,
+			background.borderRightColor ? background.borderRightColor.android : blackColor,
+			background.borderBottomColor ? background.borderBottomColor.android : blackColor,
+			background.borderLeftColor ? background.borderLeftColor.android : blackColor,
+
+			background.borderTopWidth,
+			background.borderRightWidth,
+			background.borderBottomWidth,
+			background.borderLeftWidth,
+
+			background.borderTopLeftRadius,
+			background.borderTopRightRadius,
+			background.borderBottomRightRadius,
+			background.borderBottomLeftRadius,
+
+			background.clipPath instanceof ClipPathFunction ? background.clipPath.toString() : background.clipPath,
+
+			background.color ? background.color.android : 0,
+			imageUri,
+			bitmap,
+			gradient,
+			context,
+			background.repeat,
+			background.position,
+			backgroundPositionParsedCSSValues,
+			background.size,
+			backgroundSizeParsedCSSValues,
+		);
+		//console.log(`>>> ${borderDrawable.toDebugString()}`);
+	}
+}
+
+function createNativeCSSValueArray(css: string): androidNative.Array<org.nativescript.widgets.CSSValue> {
+	if (!css) {
+		return null;
+	}
+
+	const cssValues = parse(css) as CSSValue[];
+	const nativeArray = Array.create(org.nativescript.widgets.CSSValue, cssValues.length);
+	for (let i = 0, length = cssValues.length; i < length; i++) {
+		nativeArray[i] = new org.nativescript.widgets.CSSValue(cssValues[i].type, cssValues[i].string, cssValues[i].unit, cssValues[i].value);
+	}
+
+	return nativeArray;
+}

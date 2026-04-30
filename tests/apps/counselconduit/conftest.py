@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # tests/apps/counselconduit/conftest.py
 """Ensure repo root is importable for counselconduit tests."""
 

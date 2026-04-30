@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Headless Antigravity Runner
 ============================
 Runs Antigravity IDE instances in headless mode for distributed execution.

@@ -1,0 +1,6 @@
+policy:
+  name: Strict Policy
+  version: 1.0.0
+  rules:
+    - id: default
+      level: strict

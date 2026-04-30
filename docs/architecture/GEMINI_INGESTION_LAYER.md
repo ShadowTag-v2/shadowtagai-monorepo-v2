@@ -775,7 +775,7 @@ The Gemini analysis prompt will produce:
 ### Internal Documentation
 
 - [PNKLN Core Stack Architecture](./PNKLN_CORE_STACK.md)
-- [Judge 6 Specifications](./Claude_Code_6.md)
+- [Judge 6 Specifications](./JUDGE_SIX.md)
 - [Gemini Ingestion Layer Analysis Prompt](../prompts/gemini_ingestion_analysis.md)
 - [Cost Model Details](./COST_MODEL.md)
 - [Deployment Manifests](../deployment/gke/)

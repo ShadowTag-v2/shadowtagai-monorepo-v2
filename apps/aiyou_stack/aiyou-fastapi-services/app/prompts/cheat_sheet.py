@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Cheat Sheet Fusion for prompt engineering.
 
 Evolved from 21 elements to 10 essentials via DTE testing (+3.7% accuracy).

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Comprehensive system sanity tests for Kosmos AI Scientist.
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ShadowTagAI Corp Engine - Elastic Enterprise SaaS Platform
 ============================================================
 Self-configuring platform that converts pipeline intel into

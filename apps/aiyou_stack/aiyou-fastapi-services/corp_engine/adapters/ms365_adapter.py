@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Microsoft 365 Enterprise Adapter
 =================================
 API-only integration with customer MS365 environments.

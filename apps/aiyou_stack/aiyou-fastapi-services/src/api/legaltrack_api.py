@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """LegalTrack FastAPI Application
 Combines Zero-Touch (ZT) architecture with LegalTrack implementation
 

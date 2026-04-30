@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ReAct Orchestrator: Implements the Reason → Act → Observe → Reason loop.
 
 Based on the ReAct framework (arxiv 2210.03629), this orchestrator enables

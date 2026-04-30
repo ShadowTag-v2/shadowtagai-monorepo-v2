@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Business logic layer for Support Builder feature.
 
 Handles database operations, AI integration, and core functionality.

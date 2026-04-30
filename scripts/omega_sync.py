@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """omega_sync.py — Secure GitHub App JWT Push Protocol
 Per Invariant #56: Dual-Org GitHub App Authentication
 Per Invariant #55: Commits MUST target ShadowTag-v2/Monorepo-Uphillsnowball.

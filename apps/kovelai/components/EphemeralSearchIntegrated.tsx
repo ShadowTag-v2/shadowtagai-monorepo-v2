@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 /**
  * Integrated Ephemeral Search UI with Dead Man's Switch
  *
@@ -242,8 +240,7 @@ export function EphemeralSearchIntegrated({
       </form>
 
       {/* Results — No copy, no export, no right-click */}
-      <section
-        aria-label="Search results"
+      <div
         style={{ maxWidth: '800px', margin: '0 auto' }}
         onCopy={(e) => e.preventDefault()}
         onContextMenu={(e) => e.preventDefault()}
@@ -274,7 +271,7 @@ export function EphemeralSearchIntegrated({
         {results.length === 0 && !isSearching && query && (
           <p style={{ textAlign: 'center', color: '#484f58' }}>No results found.</p>
         )}
-      </section>
+      </div>
 
       {/* Footer */}
       <div

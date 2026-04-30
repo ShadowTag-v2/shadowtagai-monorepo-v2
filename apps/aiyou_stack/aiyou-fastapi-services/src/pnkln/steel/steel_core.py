@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pnkln Steel Core - SkyNode Infrastructure Logic
 Target Valuation: $100.0B
 """
@@ -8,7 +6,7 @@ import logging
 from typing import Any
 
 # Placeholder for Judge 6 integration
-# from Claude_Code_6.judge_core import JudgeSix
+# from judge_six.judge_core import JudgeSix
 
 logger = logging.getLogger(__name__)
 

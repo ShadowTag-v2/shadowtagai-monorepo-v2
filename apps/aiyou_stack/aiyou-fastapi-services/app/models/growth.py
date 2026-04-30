@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Growth Engineering Data Models
 
 Pydantic models for growth engineering requests and responses.

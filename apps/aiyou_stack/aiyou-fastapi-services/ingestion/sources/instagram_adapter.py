@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack - Instagram Source Adapter
 
 Uses instagrapi (unofficial Instagram private API client).

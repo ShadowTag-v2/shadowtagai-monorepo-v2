@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PreToolUse hook for Write/Edit - Check file operations for safety"""
 
 import json

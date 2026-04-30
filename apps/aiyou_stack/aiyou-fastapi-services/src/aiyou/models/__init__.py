@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Database models for all ShadowTag-v4 services.
 
 This package contains SQLAlchemy ORM models for:

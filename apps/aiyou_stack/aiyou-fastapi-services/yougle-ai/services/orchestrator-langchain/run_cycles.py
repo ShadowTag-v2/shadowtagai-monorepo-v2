@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # from .chains import chain_a, chain_b, cursor_plan_mode
 # from ..moderation_safety.router import moderate
 # from ..shadowtag_audit.writer import attest

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Vulnerability Analysis Task for Gemini Code Assist
 Analyzes all dependency files and identifies security issues.
 

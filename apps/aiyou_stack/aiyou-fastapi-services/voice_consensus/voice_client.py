@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Voice Capture Client for Multi-LLM Consensus Orchestrator
 Cross-platform voice capture using Whisper for transcription
 """

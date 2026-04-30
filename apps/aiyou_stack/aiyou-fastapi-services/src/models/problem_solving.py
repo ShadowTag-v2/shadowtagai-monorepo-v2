@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Structured Problem Solving Process Models
 Based on Is/Is Not Diagram methodology
 """

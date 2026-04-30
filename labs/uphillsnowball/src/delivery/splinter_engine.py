@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Splinter Engine — J-39 Information Operations.
 
 95% of compute automates the distribution of our Alpha. Every

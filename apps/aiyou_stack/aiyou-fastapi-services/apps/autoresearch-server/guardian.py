@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GUARDIAN :: SELF-HEALING WATCHDOG
 Monitors the n-autoresearch/Kosmos/BioAgents Server.
 If it crashes, it captures the stack trace, consults Gemini (Simulated), patches the code, and restarts.

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """API Routes - Cor.17 Architecture Endpoints"""
 
 from fastapi import APIRouter

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Revenue tracker service.
 
 Provides async event tracking with BigQuery streaming and local buffering.

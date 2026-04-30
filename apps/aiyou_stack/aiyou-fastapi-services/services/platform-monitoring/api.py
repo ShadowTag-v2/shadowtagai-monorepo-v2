@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Platform Monitoring API
 
 Unified monitoring and cost tracking API for PNKLN Core Stack™

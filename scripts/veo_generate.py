@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 r"""Veo 3.1 video generation via Vertex AI / Gemini API.
 
 Replaces Remotion with Google's native Veo 3.1 model for CounselConduit

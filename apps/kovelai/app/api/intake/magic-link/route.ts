@@ -77,9 +77,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             lawyerNotes: parsed.notes,
           },
         }),
-      }).catch(() => {
-        /* Cloud Tasks queue is fire-and-forget */
-      });
+      }).catch(console.error);
     }
 
     return NextResponse.json({

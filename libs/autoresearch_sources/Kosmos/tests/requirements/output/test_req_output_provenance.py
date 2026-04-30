@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Tests for Output Provenance and Citations Requirements (REQ-OUT-PROV-*).
 

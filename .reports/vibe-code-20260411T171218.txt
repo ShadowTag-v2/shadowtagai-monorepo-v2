@@ -126,7 +126,7 @@ Timestamp: 20260411T171218
   MONOLITH [     527 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/thermal-ride/servers/src/time/test/time_server_test.py
   MONOLITH [    1135 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/src_vertex_rag_demo_dual_llms_with_judge.py
   MONOLITH [    1135 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/arsenal_recovered_src_vertex_rag_demo_dual_llms_with_judge.py
-  MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6_enforcement.py
+  MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6_enforcement.py
   MONOLITH [     629 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/quidditch_competition.py
   MONOLITH [     504 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/glicko_rating.py
   MONOLITH [     907 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/cor_orchestrator.py
@@ -148,7 +148,7 @@ Timestamp: 20260411T171218
   MONOLITH [     693 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/frameworks/cheat_sheet_fusion.py
   MONOLITH [     630 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/frameworks/wealth_optimizer.py
   MONOLITH [     520 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/infrastructure/gptram.py
-  MONOLITH [     518 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/Cor.Claude_Code_6_grounded.py
+  MONOLITH [     518 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/judge6_grounded.py
   MONOLITH [     633 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/terraform_generator.py
   MONOLITH [     539 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/ns_detection_engine.py
   MONOLITH [     657 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/thread_service.py
@@ -253,7 +253,7 @@ Timestamp: 20260411T171218
   MONOLITH [     501 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/compliance/modules/iso_42001.py
   MONOLITH [     505 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/compliance/modules/hipaa.py
   MONOLITH [     530 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/infrastructure/gptram.py
-  MONOLITH [     539 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/Cor.Claude_Code_6_grounded.py
+  MONOLITH [     539 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/judge6_grounded.py
   MONOLITH [     539 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/ns_detection_engine.py
   MONOLITH [     519 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/gemini_agents.py
   MONOLITH [     834 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/api/enterprise_compliance_api.py
@@ -268,7 +268,7 @@ Timestamp: 20260411T171218
   MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/code_refactorer.py
   MONOLITH [     696 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/models/adaptive_shoppable_video.py
   MONOLITH [     696 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/models/swiper 2.py
-  MONOLITH [     907 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/nodes.py
+  MONOLITH [     907 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/nodes.py
   MONOLITH [     521 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/alerts/__init__.py
   MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/dashboard/__init__.py
   MONOLITH [     554 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/dashboard/__init__ 2.py
@@ -471,7 +471,7 @@ Timestamp: 20260411T171218
   MONOLITH [   13082 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/hf_api.py
   MONOLITH [    3397 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/inference/_client.py
   MONOLITH [    3452 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/inference/_generated/_async_client.py
-  MONOLITH [     569 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/Cor.Claude_Code_6.py
+  MONOLITH [     569 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/judge6.py
   MONOLITH [     669 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp-validation/notebooks/01_mcp_validation.py
   MONOLITH [     637 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp-validation/mcp_server.py
   MONOLITH [     536 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/intelligence_api.py
@@ -510,8 +510,8 @@ Timestamp: 20260411T171218
   MONOLITH [     954 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/agents/claude_code.py
   MONOLITH [     696 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/models/swiper.py
   MONOLITH [     696 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/models/swiper 2.py
-  MONOLITH [     613 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/orchestrator.py
-  MONOLITH [     903 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/nodes.py
+  MONOLITH [     613 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/orchestrator.py
+  MONOLITH [     903 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/nodes.py
   MONOLITH [     521 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/alerts/__init__.py
   MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/dashboard/__init__.py
   MONOLITH [     554 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/dashboard/__init__ 2.py
@@ -577,7 +577,7 @@ Timestamp: 20260411T171218
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/arsenal_recovered_genai-mlops-tune-and-eval_pipeline.py (13 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/genai-mlops-tune-and-eval_pipeline.py (13 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/arsenal_recovered_src_vertex_rag_demo_dual_llms_with_judge.py (19 import sources)
-  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6_enforcement.py (10 import sources)
+  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6_enforcement.py (10 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/cor_orchestrator.py (9 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/kernel_chaining.py (10 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/gemini_ingestion_ultrathink.py (16 import sources)
@@ -624,7 +624,7 @@ Timestamp: 20260411T171218
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/bottleneck_detector.py (9 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/landing_page_optimizer/service.py (9 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/webhook_service.py (10 import sources)
-  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/Cor.Claude_Code_6_grounded.py (11 import sources)
+  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/judge6_grounded.py (11 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/oauth_service.py (9 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/content_engine.py (10 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/synthesis_service.py (10 import sources)
@@ -703,7 +703,7 @@ Timestamp: 20260411T171218
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/codepmcsbak.py (10 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/dashboards/training_dashboard.py (13 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/load_testing/shadowtagai_load_tests_enhanced.py (25 import sources)
-  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/load_testing/validate_Cor.Claude_Code_6_latency.py (11 import sources)
+  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/load_testing/validate_judge6_latency.py (11 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/load_testing/pnkln_load_tests_enhanced.py (25 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/examples/demo_shadowtag_aiyou.py (9 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/examples/simple_research_cycle.py (14 import sources)
@@ -755,7 +755,7 @@ Timestamp: 20260411T171218
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/main.py (14 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/compliance_engine.py (9 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/crisis_webhook.py (11 import sources)
-  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/Cor.Claude_Code_6_grounded.py (11 import sources)
+  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/judge6_grounded.py (11 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/content_engine.py (10 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/llm_orchestrator.py (10 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/ingestion_service.py (9 import sources)
@@ -790,7 +790,7 @@ Timestamp: 20260411T171218
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/verdict_systems/api/main.py (19 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/tests/test_unified_integration.py (21 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/gaas/control/autonomous_flight.py (9 import sources)
-  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/nodes.py (11 import sources)
+  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/nodes.py (11 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/shadowtagai/shadowtag.py (10 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/alerts/__init__.py (9 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/pinkln/memory.py (10 import sources)
@@ -1070,7 +1070,7 @@ Timestamp: 20260411T171218
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/inference/_generated/types/__init__.py (35 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/aiyou/api.py (15 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/api.py (10 import sources)
-  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/Cor.Claude_Code_6.py (10 import sources)
+  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/judge6.py (10 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp-validation/notebooks/01_mcp_validation.py (11 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp-validation/mcp_server.py (17 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/routers/agents.py (14 import sources)
@@ -1126,8 +1126,8 @@ Timestamp: 20260411T171218
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/agents/registry.py (11 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/agents/neural_hash.py (9 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/gaas/control/autonomous_flight.py (9 import sources)
-  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/orchestrator.py (13 import sources)
-  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/nodes.py (11 import sources)
+  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/orchestrator.py (13 import sources)
+  COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/nodes.py (11 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/shadowtagai/shadowtag.py (10 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/alerts/__init__.py (9 import sources)
   COMPLECTED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pinkln/memory.py (10 import sources)
@@ -2021,10 +2021,10 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/arsenal_recovered_src_vertex_rag_demo_dual_llms_with_judge.py:def judge_responses( (84 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/arsenal_recovered_src_vertex_rag_demo_dual_llms_with_judge.py:def main(args: argparse.Namespace):  # <-- Pass parsed args to main (171 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/digital-freeway-api/utils/telemetry_generator.py:    async def run( (67 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6_enforcement.py:    def validate( (66 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6_enforcement.py:    def validate_task( (61 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6_enforcement.py:    def validate_task( (117 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6_enforcement.py:def main(): (56 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6_enforcement.py:    def validate( (66 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6_enforcement.py:    def validate_task( (61 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6_enforcement.py:    def validate_task( (117 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6_enforcement.py:def main(): (56 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/terraform/gke-file-search/scripts/corpus_import.py:def import_files( (60 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/terraform/gke-file-search/scripts/corpus_import.py:def query_corpus(project_id: str, region: str, vertical: str, query: str, top_k: int = 5) -> None: (59 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/terraform/gke-file-search/scripts/corpus_import.py:def main(): (62 lines)
@@ -2195,7 +2195,7 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/compliance/modules/hipaa.py:    async def _check_validation_rule( (60 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/compliance/modules/base.py:    async def assess(self, input_data: AssessmentInput) -> ModuleResult: (77 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/mcp_bridge.py:    async def atp_519_scan( (81 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/mcp_bridge.py:    async def Claude_Code_6_binary( (74 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/mcp_bridge.py:    async def judge_six_binary( (74 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/orchestration/chain.py:    async def execute( (68 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/orchestration/chain.py:    async def execute_decision( (84 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/prompts/cheat_sheet.py:    def to_system_prompt(self) -> str: (65 lines)
@@ -2262,9 +2262,9 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/vertex_ai_client.py:    async def execute_model( (70 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/vertex_ai_client.py:    async def execute_batch( (52 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/vertex_ai_client.py:    async def generate_embeddings( (53 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/Cor.Claude_Code_6_grounded.py:    def active_domains(self) -> list[str]: (94 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/Cor.Claude_Code_6_grounded.py:    async def _retrieve_grounding( (52 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/Cor.Claude_Code_6_grounded.py:    async def score_governance( (95 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/judge6_grounded.py:    def active_domains(self) -> list[str]: (94 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/judge6_grounded.py:    async def _retrieve_grounding( (52 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/judge6_grounded.py:    async def score_governance( (95 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/california_ai_engine.py:    def generate_report(self, request: ComplianceReportRequest) -> ComplianceReport: (87 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/oauth_service.py:    async def handle_oauth_callback( (104 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/oauth_service.py:    async def refresh_access_token( (69 lines)
@@ -2391,7 +2391,7 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/cor53_integration_guide.py:    def __init__( (55 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/cor53_integration_guide.py:    def process_task(self, task_request: TaskRequest) -> ExecutionResult: (102 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/cor53_integration_guide.py:    def intelligence_to_tasks( (69 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/DEPLOYMENT_CHECKLIST.py:    def smoke_test_Cor.Claude_Code_6_enforcement(self): (64 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/DEPLOYMENT_CHECKLIST.py:    def smoke_test_judge6_enforcement(self): (64 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/ultrathink/core/agents/mad.py:    def solve( (86 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/ultrathink/core/agents/agent_coder.py:    def generate( (51 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/ultrathink/core/reasoning/rcr.py:    def refine( (51 lines)
@@ -2492,12 +2492,12 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp/perplexity/tools.py:def governance_score( (83 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp/perplexity/tools.py:def search_manifest( (52 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp/perplexity/tools.py:def get_mcp_tools() -> list[dict[str, Any]]: (53 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6/models.py:    def to_dict(self) -> dict: (69 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6/judgment.py:    def evaluate_request( (93 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6/judgment.py:    def _build_reasoning_chain( (51 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6/example.py:def main(): (56 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6/provenance.py:    def verify_stamp(self, stamp: ProvenanceStamp, purpose: str, reasoning_chain: str) -> bool: (51 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/Cor.Claude_Code_6/main.py:def demo_evaluations(judge: JudgmentRule): (67 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6/models.py:    def to_dict(self) -> dict: (69 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6/judgment.py:    def evaluate_request( (93 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6/judgment.py:    def _build_reasoning_chain( (51 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6/example.py:def main(): (56 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6/provenance.py:    def verify_stamp(self, stamp: ProvenanceStamp, purpose: str, reasoning_chain: str) -> bool: (51 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6/main.py:def demo_evaluations(judge: JudgmentRule): (67 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/bugbot.py:    async def triage(self, issue: dict) -> TriageResult: (91 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/example_usage.py:async def demo_aunccrm_standalone(): (81 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/example_usage.py:async def demo_consensus_orchestrator(): (53 lines)
@@ -2724,11 +2724,11 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/dashboards/training_dashboard.py:    def render_jobs_panel(self) -> Panel: (56 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/orchestrator.py:def run_mission(): (53 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/load_testing/shadowtagai_load_tests_enhanced.py:async def run_validation(): (301 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/load_testing/validate_Cor.Claude_Code_6_latency.py:async def run_validation(): (253 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/load_testing/validate_judge6_latency.py:async def run_validation(): (253 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/load_testing/pnkln_load_tests_enhanced.py:async def run_validation(): (301 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/examples/robustness_testing.py:def main(): (168 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/examples/compliance_sdr_demo.py:def demo_jr_engine(): (75 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/examples/compliance_sdr_demo.py:def demo_Claude_Code_6(): (52 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/examples/compliance_sdr_demo.py:def demo_judge_six(): (52 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/examples/compliance_sdr_demo.py:def demo_compliance_sdr_agent(): (66 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/examples/basic_usage.py:async def main(): (72 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/examples/demo_shadowtag_aiyou.py:async def demo_shadowtag_workflow(): (87 lines)
@@ -2810,7 +2810,7 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/scripts/clone_all_repos.py:def main(): (89 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/scripts/simulate_steel.py:def run_simulation(): (99 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/scripts/notes_to_code.py:def main(): (59 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/scripts/setup_Cor.Claude_Code_6_memory.py:def query_Cor.Claude_Code_6_grounded(project_id: str, location: str, data_store_id: str, query: str): (54 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/scripts/setup_judge6_memory.py:def query_judge6_grounded(project_id: str, location: str, data_store_id: str, query: str): (54 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/scripts/batch_git_push.py:def batch_push(batch_size=10): (55 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/scripts/verify_gemini_2.py:async def verify_system(): (64 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/scripts/gemini_scheduler.py:    def run_ingestion(self): (60 lines)
@@ -2961,7 +2961,7 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/frameworks/wealth_optimizer.py:async def example_wealth_optimizer(): (51 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/guardian.py:def monitor_loop(): (52 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/main.py:    async def stream_agent_run(self, prompt, context, handler): (54 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/src/governance/Claude_Code_6/risk_router.py:    def evaluate(self, content: str, mission_id: str = "GENERIC", iteration: int = 1) -> Judgment: (63 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/src/governance/judge_six/risk_router.py:    def evaluate(self, content: str, mission_id: str = "GENERIC", iteration: int = 1) -> Judgment: (63 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/routers/users.py:async def get_users( (54 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/routers/users.py:async def get_user( (67 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/routers/users.py:async def create_user(user: UserCreate) -> UserResponse: (93 lines)
@@ -3016,7 +3016,7 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/compliance/modules/hipaa.py:    async def _check_validation_rule( (68 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/compliance/modules/base.py:    async def assess(self, input_data: AssessmentInput) -> ModuleResult: (77 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/mcp_bridge.py:    async def atp_519_scan( (81 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/mcp_bridge.py:    async def Claude_Code_6_binary( (74 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/mcp_bridge.py:    async def judge_six_binary( (74 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/orchestration/chain.py:    async def execute( (68 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/orchestration/chain.py:    async def execute_decision( (84 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/prompts/cheat_sheet.py:    def to_system_prompt(self) -> str: (65 lines)
@@ -3057,9 +3057,9 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/vertex_ai_client.py:    async def execute_model( (70 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/vertex_ai_client.py:    async def execute_batch( (55 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/vertex_ai_client.py:    async def generate_embeddings( (53 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/Cor.Claude_Code_6_grounded.py:    def active_domains(self) -> list[str]: (111 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/Cor.Claude_Code_6_grounded.py:    async def _retrieve_grounding( (52 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/Cor.Claude_Code_6_grounded.py:    async def score_governance( (95 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/judge6_grounded.py:    def active_domains(self) -> list[str]: (111 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/judge6_grounded.py:    async def _retrieve_grounding( (52 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/judge6_grounded.py:    async def score_governance( (95 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/california_ai_engine.py:    def generate_report(self, request: ComplianceReportRequest) -> ComplianceReport: (87 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/batch_governance.py:    async def assess_batch( (63 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/batch_governance.py:    async def _batch_detailed_assessment( (74 lines)
@@ -3095,7 +3095,7 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/api/swarm_endpoint.py:def execute_internal_swarm( (93 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/multi_inbox_search_fixed.py:def search_inbox(service, target_email, query): (55 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/worker/src/devtools/pipeline_hook.py:    def pre_commit_check(self, code_diff: str) -> str: (85 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/worker/src/governance/Claude_Code_6/core.py:    def execute_mission(self, mission_id, telemetry, priority, payload): (53 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/worker/src/governance/judge_six/core.py:    def execute_mission(self, mission_id, telemetry, priority, payload): (53 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln_compression/src/compression/atp_519_scan.py:def atp_519_scan( (68 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/kernels/atp_519_scan 2.py:    async def execute(self, kernel_input: KernelInput) -> KernelOutput: (77 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/kernels/audit_compress 2.py:    async def execute(self, kernel_input: KernelInput) -> KernelOutput: (81 lines)
@@ -3224,16 +3224,16 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/gaas/control/autonomous_flight.py:    async def execute_flight_plan( (161 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/models/adaptive_shoppable_video.py:    def validate_times(cls, v, values): (132 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/models/swiper 2.py:    def validate_times(cls, v, values): (132 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/nodes.py:def node_assessment(state: GovernanceState) -> GovernanceState: (154 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/nodes.py:def node_router(state: GovernanceState) -> str: (57 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/nodes.py:async def _async_single_round_vote(state: GovernanceState) -> GovernanceState: (132 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/nodes.py:async def _async_swarm_vote(state: GovernanceState) -> GovernanceState: (149 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/nodes.py:async def _async_debate_legacy(state: GovernanceState) -> GovernanceState: (80 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/nodes.py:def node_audit(state: GovernanceState) -> GovernanceState: (102 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/state.py:    def to_dict(self) -> dict[str, Any]: (85 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/state.py:    def to_dict(self) -> dict[str, Any]: (77 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/state.py:    def to_dict(self) -> dict[str, Any]: (59 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/Cor.Claude_Code_6/state.py:    def to_dict(self) -> dict[str, Any]: (63 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/nodes.py:def node_assessment(state: GovernanceState) -> GovernanceState: (154 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/nodes.py:def node_router(state: GovernanceState) -> str: (57 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/nodes.py:async def _async_single_round_vote(state: GovernanceState) -> GovernanceState: (132 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/nodes.py:async def _async_swarm_vote(state: GovernanceState) -> GovernanceState: (149 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/nodes.py:async def _async_debate_legacy(state: GovernanceState) -> GovernanceState: (80 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/nodes.py:def node_audit(state: GovernanceState) -> GovernanceState: (102 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/state.py:    def to_dict(self) -> dict[str, Any]: (85 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/state.py:    def to_dict(self) -> dict[str, Any]: (77 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/state.py:    def to_dict(self) -> dict[str, Any]: (59 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/state.py:    def to_dict(self) -> dict[str, Any]: (63 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/dashboard/__init__.py:    async def get_current_snapshot(self) -> DashboardSnapshot: (71 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/dashboard/__init__.py:    def _calculate_health_score(self, snapshot: DashboardSnapshot) -> float: (72 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/dashboard/__init__.py:    async def generate_alerts(self, snapshot: DashboardSnapshot) -> list[Alert]: (115 lines)
@@ -4122,16 +4122,16 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/orchestrator/ai_factory.py:    def _parse_decomposition(self, request: str) -> list[AtomicThread]: (99 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/orchestrator/ai_factory.py:    def generate_colab_notebook(self, thread: AtomicThread) -> str: (78 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/orchestrator/ai_factory.py:    def process_request(self, user_request: str, feature_name: str) -> dict[str, Any]: (66 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/Cor.Claude_Code_6.py:    async def validate(self, item: IngestedItem, tier_score: TierScore) -> ValidationResult: (115 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/Cor.Claude_Code_6.py:    def _assess_risk( (66 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/Cor.Claude_Code_6.py:    async def _gemini_deep_check( (67 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/judge6.py:    async def validate(self, item: IngestedItem, tier_score: TierScore) -> ValidationResult: (115 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/judge6.py:    def _assess_risk( (66 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/judge6.py:    async def _gemini_deep_check( (67 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp-validation/notebooks/01_mcp_validation.py:    async def close(self): (61 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp-validation/notebooks/01_mcp_validation.py:    def analyze_results(self) -> ValidationSummary: (69 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp-validation/notebooks/01_mcp_validation.py:    def print_summary(self, summary: ValidationSummary): (65 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp-validation/mcp_server.py:    async def execute( (97 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp-validation/mcp_server.py:async def execute_code(request: CodeExecutionRequest) -> CodeExecutionResponse: (92 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/aiurcm/document_ai_integration.py:    def process_document_from_gcs( (66 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/aiurcm/document_ai_integration.py:    def process_and_trigger_Cor.Claude_Code_6( (51 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/aiurcm/document_ai_integration.py:    def process_and_trigger_judge6( (51 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/kernels/atp_519_scan 2.py:    async def execute(self, kernel_input: KernelInput) -> KernelOutput: (77 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/kernels/audit_compress 2.py:    async def execute(self, kernel_input: KernelInput) -> KernelOutput: (81 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/kernels/atp_519_scan.py:    async def execute(self, kernel_input: KernelInput) -> KernelOutput: (77 lines)
@@ -4222,7 +4222,7 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/gemini_ingestion_layer/main 2.py:    async def run(self) -> dict[str, Any]: (120 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/gemini_ingestion_layer/main.py:    async def run(self) -> dict[str, Any]: (120 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/gemini_ingestion_layer/crawling/ethical_crawler.py:    async def fetch( (72 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/core/Cor.Claude_Code_6.py:    def evaluate(self, action: ProposedAction) -> bool: (81 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/core/judge6.py:    def evaluate(self, action: ProposedAction) -> bool: (81 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/agents/fastvlm_client.py:    async def analyze( (94 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/agents/fastvlm_client.py:    async def route_visual_task(self, image_path: str, task: str) -> dict[str, Any]: (59 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/agents/fastvlm_client.py:    async def main(): (54 lines)
@@ -4330,7 +4330,7 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/config/revenue_model.py:    def to_dict(self) -> dict[str, Any]: (106 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/config/ingestion_config.py:    def to_dict(self) -> dict[str, Any]: (134 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/agents/intelligence_agent.py:    def _execute_task(self, task: AgentTask, constraints: dict[str, Any]) -> IntelligenceResult: (111 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/agents/compliance_sdr.py:    def Claude_Code_6_governance_check(self, lead: dict) -> dict: (70 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/agents/compliance_sdr.py:    def judge_six_governance_check(self, lead: dict) -> dict: (70 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/agents/compliance_sdr.py:    def __init__(self, **kwargs): (55 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/agents/compliance_sdr.py:    def _execute_task(self, task: AgentTask, constraints: dict[str, Any]) -> LeadGenerationResult: (76 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/agents/compliance_sdr.py:def example_usage(): (61 lines)
@@ -4382,21 +4382,21 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/models/glicko.py:    def update_rating( (95 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/models/swiper.py:    def validate_times(cls, v, values): (132 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/models/swiper 2.py:    def validate_times(cls, v, values): (132 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/orchestrator.py:    def _classify_document_agent(self, state: Cor.Claude_Code_6State) -> Cor.Claude_Code_6State: (56 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/orchestrator.py:    def _extract_policies_agent(self, state: Cor.Claude_Code_6State) -> Cor.Claude_Code_6State: (51 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/orchestrator.py:    def _check_compliance_agent(self, state: Cor.Claude_Code_6State) -> Cor.Claude_Code_6State: (56 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/orchestrator.py:    def _generate_recommendations_agent(self, state: Cor.Claude_Code_6State) -> Cor.Claude_Code_6State: (59 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/orchestrator.py:    def process_document(self, document_id: str, document_content: str) -> dict[str, Any]: (71 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/nodes.py:def node_assessment(state: GovernanceState) -> GovernanceState: (154 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/nodes.py:def node_router(state: GovernanceState) -> str: (55 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/nodes.py:async def _async_single_round_vote(state: GovernanceState) -> GovernanceState: (130 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/nodes.py:async def _async_swarm_vote(state: GovernanceState) -> GovernanceState: (149 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/nodes.py:async def _async_debate_legacy(state: GovernanceState) -> GovernanceState: (80 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/nodes.py:def node_audit(state: GovernanceState) -> GovernanceState: (102 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/state.py:    def to_dict(self) -> dict[str, Any]: (85 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/state.py:    def to_dict(self) -> dict[str, Any]: (77 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/state.py:    def to_dict(self) -> dict[str, Any]: (59 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/Cor.Claude_Code_6/state.py:    def to_dict(self) -> dict[str, Any]: (63 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/orchestrator.py:    def _classify_document_agent(self, state: Judge6State) -> Judge6State: (56 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/orchestrator.py:    def _extract_policies_agent(self, state: Judge6State) -> Judge6State: (51 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/orchestrator.py:    def _check_compliance_agent(self, state: Judge6State) -> Judge6State: (56 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/orchestrator.py:    def _generate_recommendations_agent(self, state: Judge6State) -> Judge6State: (59 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/orchestrator.py:    def process_document(self, document_id: str, document_content: str) -> dict[str, Any]: (71 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/nodes.py:def node_assessment(state: GovernanceState) -> GovernanceState: (154 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/nodes.py:def node_router(state: GovernanceState) -> str: (55 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/nodes.py:async def _async_single_round_vote(state: GovernanceState) -> GovernanceState: (130 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/nodes.py:async def _async_swarm_vote(state: GovernanceState) -> GovernanceState: (149 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/nodes.py:async def _async_debate_legacy(state: GovernanceState) -> GovernanceState: (80 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/nodes.py:def node_audit(state: GovernanceState) -> GovernanceState: (102 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/state.py:    def to_dict(self) -> dict[str, Any]: (85 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/state.py:    def to_dict(self) -> dict[str, Any]: (77 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/state.py:    def to_dict(self) -> dict[str, Any]: (59 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/state.py:    def to_dict(self) -> dict[str, Any]: (63 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/policies/rag_retriever.py:    async def retrieve( (59 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/core_stack/integration/pipeline_orchestrator.py:    def publish_briefing(self, briefing: IngestionBriefing) -> str: (54 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/core_stack/integration/pipeline_orchestrator.py:    async def load_briefing_to_cache(self, gcs_path: str) -> bool: (70 lines)
@@ -4724,7 +4724,7 @@ Timestamp: 20260411T171218
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/clone_all_repos.py:    def get_repo_list(client_id, pem_path, owner_name): (52 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/manifest_reconcile_report.py:def main() -> int: (100 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/chunked_initial_push.py:def chunk_commit_push(token): (94 lines)
-  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/setup_Cor.Claude_Code_6_memory.py:def query_Cor.Claude_Code_6_grounded(project_id: str, location: str, data_store_id: str, query: str): (54 lines)
+  LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/setup_judge6_memory.py:def query_judge6_grounded(project_id: str, location: str, data_store_id: str, query: str): (54 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/delta_audit_api.py:def get_remote_tree(repo): (104 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/push_20_chunks.py:def push_chunk(up_to_sha: str, branch: str, target: str = "shadowtag") -> bool: (53 lines)
   LONG_FUNCTION: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/push_20_chunks.py:def main(): (64 lines)

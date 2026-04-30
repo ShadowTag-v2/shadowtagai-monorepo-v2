@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/vent_mode.py
 """Vent Mode — SSE Streaming Chat + S.E.U. Emotional Architecture.
 

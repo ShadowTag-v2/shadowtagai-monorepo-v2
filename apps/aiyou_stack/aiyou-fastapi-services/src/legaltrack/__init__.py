@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """LEGALTRACK: AI-Powered Legal Calendar
 
 Email ingestion → Deadline extraction → Auto-sync calendars

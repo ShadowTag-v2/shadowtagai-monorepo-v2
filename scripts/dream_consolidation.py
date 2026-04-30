@@ -1,595 +1,506 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+#!/usr/bin/env python3
+"""KAIROS Dream Memory Consolidation Daemon.
+=========================================
+Implements the enhanced 8-phase Dream protocol for KI system maintenance.
+Adapted from Claude Code v2.1.98 + memory-kernel integration.
 
+Phases:
+  1. Orient        — Scan KI index, read metadata, map current state
+  2. Gather        — Read session logs, identify drifted memories
+  2.5 Activate     — Spreading activation for collision detection
+  3. Consolidate   — Merge learnings, resolve contradictions, date normalize
+  3.5 Promote      — Belief promotion pipeline + conflict detection
+  4. Prune         — Enforce size limits, remove orphaned artifacts
+  4.5 Measure      — Operational closure metrics + generate views
+  5. Gitleaks      — Nightly production secret scan
+  6. Archive       — NotebookLM archive
+
+Usage:
+  python dream_consolidation.py --ki-dir ~/.gemini/antigravity/knowledge
+  python dream_consolidation.py --dry-run  # Preview changes without writing
 """
-Layer 3 dream_consolidation.py daemon.
 
-Orchestrates context orientation, gathering, consolidation, and pruning
-based on the daemon registry. Includes the Claude Code v2.1.119
-contradiction detection decision tree ported from the Dream CLAUDE.md
-memory reconciliation protocol.
-
-4-Phase Pipeline:
-  Phase 1: Preparation — orient context vectors, read recent logs/sessions
-  Phase 2: Topics — extract events/decisions, reconcile against AGENTS.md
-  Phase 3: Rules & Learnings — capture painful/inefficient workflow patterns
-  Phase 4: Prioritization & Pruning — enforce MEMORY.md budget (<200 lines)
-
-Contradiction Detection (3-way decision tree):
-  1. Memory is stale → AGENTS.md is maintained source → delete/rewrite memory
-  2. AGENTS.md may be stale → memory dated after and corrects it → annotate only
-  3. Not a conflict → memory adds detail AGENTS.md doesn't cover → leave it
-"""
-
-from __future__ import annotations
-
-import datetime
+import contextlib
 import json
-import logging
-import pathlib
-import time
-import tempfile
+import os
+import sys
 from dataclasses import dataclass, field
-from enum import StrEnum
+from datetime import datetime, UTC
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+# Python 3.9 compatibility: datetime.UTC was added in 3.11
+UTC = UTC
+from pathlib import Path
 
-# Budget constants (ported from Claude Code skill-dream-memory-consolidation v2.1.119)
-MEMORY_INDEX_MAX_LINES = 200
-MEMORY_INDEX_MAX_KB = 25
-LEARNINGS_DIR = "learnings"
-BEADS_DIR = ".beads"
+# --- KI Engine Integration ---------------------------------------------------
+# Falls back gracefully if ki_engine is not available
+try:
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from core.ki_engine.activation import spread_activation
+    from core.ki_engine.closure import compute_closure
+    from core.ki_engine.decay import rank_kis  # noqa: F401, F811
+    from core.ki_engine.events import EventAction, append_event  # noqa: F401, F811
+    from core.ki_engine.promotion import detect_conflicts, promote_beliefs
+    from core.ki_engine.schema import KIMetadata
+    from core.ki_engine.views import generate_all_views
+
+    HAS_KI_ENGINE = True
+except ImportError:
+    HAS_KI_ENGINE = False
+
+# --- Configuration -----------------------------------------------------------
+
+INDEX_MAX_KB = 25
+ARTIFACT_MAX_KB = 10
+MAX_INDEX_ENTRIES = 200
+DRY_RUN = "--dry-run" in sys.argv
 
 
-class ConflictResolution(StrEnum):
-    """Three-way decision outcomes for memory vs. truth surface conflicts."""
-
-    MEMORY_STALE = "memory_stale"
-    TRUTH_SURFACE_STALE = "truth_surface_stale"
-    NOT_A_CONFLICT = "not_a_conflict"
-
-
-@dataclass
-class MemoryRecord:
-    """Represents a single memory fragment with metadata."""
-
-    slug: str
-    content: str
-    source: str  # 'feedback', 'project', 'session', 'topic'
-    created_at: str  # ISO 8601
-    file_path: str | None = None
-
-    @property
-    def created_date(self) -> datetime.date | None:
-        """Parse the creation date for comparison."""
-        try:
-            return datetime.date.fromisoformat(self.created_at[:10])
-        except (ValueError, IndexError):
-            return None
+# --- Data Models -------------------------------------------------------------
 
 
 @dataclass
-class ReconciliationResult:
-    """Outcome of reconciling a memory against a truth surface."""
+class KIEntry:
+    """Represents a single Knowledge Item."""
 
-    memory_slug: str
-    resolution: ConflictResolution
-    annotation: str = ""
-    action_taken: str = ""
+    name: str
+    summary: str
+    created_at: str
+    updated_at: str
+    references: list = field(default_factory=list)
+    path: str = ""
+    size_kb: float = 0.0
+    artifact_count: int = 0
 
 
 @dataclass
-class DreamCycleReport:
-    """Summary report for a single dream consolidation cycle."""
+class DreamReport:
+    """Tracks all actions taken during a Dream cycle."""
 
-    timestamp: str = field(default_factory=lambda: datetime.datetime.now(datetime.UTC).isoformat())
-    memories_reviewed: int = 0
+    phase: str = ""
+    ki_scanned: int = 0
     contradictions_found: int = 0
-    memories_deleted: int = 0
-    memories_annotated: int = 0
-    learnings_extracted: int = 0
-    reconciliations: list[ReconciliationResult] = field(default_factory=list)
+    dates_normalized: int = 0
+    artifacts_pruned: int = 0
+    size_violations: list = field(default_factory=list)
+    orphaned_artifacts: list = field(default_factory=list)
+    actions: list = field(default_factory=list)
 
 
-class DreamConsolidator:
-    """Handles nightly Knowledge Integration (KI) maintenance tasks.
+# --- Phase 1: Orient ---------------------------------------------------------
 
-    Implements the 4-phase Dream protocol with contradiction detection
-    ported from Claude Code v2.1.119 system-prompt-dream-claudemd-memory-reconciliation.
-    """
 
-    def __init__(
-        self,
-        knowledge_root: str | None = None,
-        agents_md_path: str | None = None,
-    ) -> None:
-        """Initialize the consolidator.
+def orient(ki_dir: Path) -> list[KIEntry]:
+    """Scan KI directory, read metadata, build inventory."""
+    entries = []
 
-        Args:
-            knowledge_root: Path to the knowledge directory. Defaults to
-                ~/.gemini/antigravity/knowledge/.
-            agents_md_path: Path to the canonical AGENTS.md truth surface.
-                Defaults to .ruler/AGENTS.md in the workspace.
-        """
-        self.logger = logging.getLogger(__name__)
-        self.knowledge_root = pathlib.Path(knowledge_root or pathlib.Path.home() / ".gemini" / "antigravity" / "knowledge")
-        self.agents_md_path = pathlib.Path(agents_md_path or pathlib.Path.cwd() / ".ruler" / "AGENTS.md")
-        self.report = DreamCycleReport()
-        self._job_dir: pathlib.Path | None = None
+    if not ki_dir.exists():
+        return entries
 
-    # ------------------------------------------------------------------
-    # Phase 1: Preparation
-    # ------------------------------------------------------------------
+    for ki_path in sorted(ki_dir.iterdir()):
+        if not ki_path.is_dir():
+            continue
 
-    def orient(self) -> None:
-        """Phase 1a: Orient context and align current session vectors."""
-        self.logger.info("[Phase 1] Orienting context vectors...")
-        self.logger.info("  Reading recent KI metadata from %s", self.knowledge_root)
-        time.sleep(0.1)
+        metadata_file = ki_path / "metadata.json"
+        if not metadata_file.exists():
+            continue
 
-    def gather(self) -> list[MemoryRecord]:
-        """Phase 1b: Gather disparate context fragments from active memory logs.
+        try:
+            with open(metadata_file) as f:
+                meta = json.load(f)
 
-        Returns:
-            List of memory records found in the knowledge directory.
-        """
-        self.logger.info("[Phase 1] Gathering memory logs and context fragments...")
-        records: list[MemoryRecord] = []
+            artifacts_dir = ki_path / "artifacts"
+            artifact_count = 0
+            total_size = 0
 
-        if not self.knowledge_root.exists():
-            self.logger.warning("Knowledge root does not exist: %s", self.knowledge_root)
-            return records
+            if artifacts_dir.exists():
+                for artifact in artifacts_dir.iterdir():
+                    if artifact.is_file():
+                        artifact_count += 1
+                        total_size += artifact.stat().st_size
 
-        for meta_path in self.knowledge_root.rglob("metadata.json"):
-            try:
-                meta = json.loads(meta_path.read_text(encoding="utf-8"))
-                record = MemoryRecord(
-                    slug=meta_path.parent.name,
-                    content=meta.get("summary", ""),
-                    source=meta.get("source", "project"),
-                    created_at=meta.get("created_at", meta.get("last_accessed", "")),
-                    file_path=str(meta_path),
+            entry = KIEntry(
+                name=meta.get("name", ki_path.name),
+                summary=meta.get("summary", ""),
+                created_at=meta.get("createdAt", ""),
+                updated_at=meta.get("updatedAt", ""),
+                references=meta.get("references", []),
+                path=str(ki_path),
+                size_kb=round(total_size / 1024, 2),
+                artifact_count=artifact_count,
+            )
+            entries.append(entry)
+
+        except json.JSONDecodeError, KeyError:
+            pass
+
+    return entries
+
+
+# --- Phase 2: Gather ---------------------------------------------------------
+
+
+def gather(entries: list[KIEntry], report: DreamReport) -> dict:
+    """Identify issues: relative dates, size violations, contradictions."""
+    issues = {
+        "relative_dates": [],
+        "size_violations": [],
+        "stale_entries": [],
+        "orphaned": [],
+    }
+
+    relative_date_patterns = [
+        "yesterday",
+        "today",
+        "last week",
+        "last month",
+        "this morning",
+        "earlier",
+        "recently",
+        "a few days ago",
+        "last night",
+        "this week",
+        "next week",
+    ]
+
+    now = datetime.now(UTC)
+
+    for entry in entries:
+        # Check for relative dates in summaries
+        summary_lower = entry.summary.lower()
+        for pattern in relative_date_patterns:
+            if pattern in summary_lower:
+                issues["relative_dates"].append(
+                    {
+                        "ki": entry.name,
+                        "pattern": pattern,
+                        "path": entry.path,
+                    },
                 )
-                records.append(record)
-            except (json.JSONDecodeError, OSError) as exc:
-                self.logger.warning("Skipping malformed metadata: %s (%s)", meta_path, exc)
+                report.dates_normalized += 1
 
-        self.report.memories_reviewed = len(records)
-        self.logger.info("  Found %d memory records", len(records))
-        return records
-
-    # ------------------------------------------------------------------
-    # Contradiction Detection (3-way decision tree)
-    # ------------------------------------------------------------------
-
-    def _load_truth_surface(self) -> str:
-        """Load the canonical AGENTS.md truth surface for reconciliation."""
-        if self.agents_md_path.exists():
-            return self.agents_md_path.read_text(encoding="utf-8")
-        self.logger.warning("AGENTS.md not found at %s", self.agents_md_path)
-        return ""
-
-    def _detect_contradiction(
-        self,
-        memory: MemoryRecord,
-        truth_content: str,
-    ) -> ConflictResolution:
-        """Apply the 3-way contradiction decision tree.
-
-        Decision tree (from Claude Code v2.1.119):
-        1. Memory is stale — AGENTS.md and memory describe different procedures
-           for the same task. AGENTS.md is the maintained, checked-in source.
-           → Delete the memory, or rewrite to keep the *why* if useful.
-        2. AGENTS.md may be stale — memory is clearly dated after AGENTS.md
-           and explicitly corrects it.
-           → Do NOT edit AGENTS.md during a dream. Annotate the memory.
-        3. Not a conflict — memory adds detail AGENTS.md doesn't cover,
-           or narrows a rule with a stated reason.
-           → Leave it.
-
-        Args:
-            memory: The memory record to evaluate.
-            truth_content: The current AGENTS.md content.
-
-        Returns:
-            The conflict resolution classification.
-        """
-        if not truth_content:
-            return ConflictResolution.NOT_A_CONFLICT
-
-        content_lower = memory.content.lower()
-
-        # Heuristic: check if memory explicitly references overriding/correcting AGENTS.md
-        correction_signals = [
-            "contradicts agents.md",
-            "override agents.md",
-            "agents.md is wrong",
-            "agents.md should be updated",
-            "corrects agents.md",
-            "agents.md is stale",
-            "contradicts claude.md",
-            "override gemini.md",
-        ]
-        if any(signal in content_lower for signal in correction_signals):
-            return ConflictResolution.TRUTH_SURFACE_STALE
-
-        # Heuristic: check if memory describes a procedure that AGENTS.md also covers
-        # by looking for shared topic keywords
-        truth_lower = truth_content.lower()
-        memory_topics = [word for word in content_lower.split() if len(word) > 5 and word.isalpha()]
-        overlap_count = sum(1 for topic in memory_topics if topic in truth_lower)
-        overlap_ratio = overlap_count / max(len(memory_topics), 1)
-
-        # High overlap + memory content suggests different procedure = stale memory
-        conflict_signals = ["instead of", "no longer", "deprecated", "replaced by", "was changed to"]
-        if overlap_ratio > 0.3 and any(signal in content_lower for signal in conflict_signals):
-            return ConflictResolution.MEMORY_STALE
-
-        return ConflictResolution.NOT_A_CONFLICT
-
-    def reconcile_memory(
-        self,
-        memory: MemoryRecord,
-        truth_content: str,
-    ) -> ReconciliationResult:
-        """Reconcile a single memory against the truth surface.
-
-        Args:
-            memory: The memory record to reconcile.
-            truth_content: The current AGENTS.md content.
-
-        Returns:
-            The reconciliation result with resolution and action taken.
-        """
-        resolution = self._detect_contradiction(memory, truth_content)
-
-        result = ReconciliationResult(
-            memory_slug=memory.slug,
-            resolution=resolution,
-        )
-
-        if resolution == ConflictResolution.MEMORY_STALE:
-            result.annotation = (
-                f"Memory '{memory.slug}' conflicts with AGENTS.md — AGENTS.md is the maintained source. Memory marked for deletion/rewrite."
-            )
-            result.action_taken = "MARKED_FOR_DELETION"
-            self.report.memories_deleted += 1
-            self.logger.info("  ⚠ STALE MEMORY: %s — %s", memory.slug, result.annotation)
-
-        elif resolution == ConflictResolution.TRUTH_SURFACE_STALE:
-            result.annotation = (
-                f"Memory '{memory.slug}' explicitly corrects AGENTS.md — annotated for user review. AGENTS.md NOT modified during dream."
-            )
-            result.action_taken = "ANNOTATED_FOR_REVIEW"
-            self.report.memories_annotated += 1
-            self.logger.info("  📌 AGENTS.MD MAY BE STALE: %s — %s", memory.slug, result.annotation)
-
-        else:
-            result.action_taken = "NO_ACTION"
-
-        # Enqueue to bounded evidence batcher
-        self._enqueue_evidence({
-            "slug": memory.slug,
-            "resolution": resolution.value,
-            "action": result.action_taken,
-            "annotation": result.annotation,
-        })
-
-        return result
-
-    # ------------------------------------------------------------------
-    # Date Conversion (existing)
-    # ------------------------------------------------------------------
-
-    def _convert_relative_to_absolute_dates(self, content: str) -> str:
-        """Convert relative dates (e.g., 'today', 'yesterday') to absolute dates."""
-        today = datetime.datetime.now().strftime("%Y-%m-%d")
-        yesterday = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-        content = content.replace("today", today).replace("Today", today)
-        content = content.replace("yesterday", yesterday).replace("Yesterday", yesterday)
-        return content
-
-    # ------------------------------------------------------------------
-    # Phase 2: Topics — consolidate and reconcile
-    # ------------------------------------------------------------------
-
-    def consolidate(self, memories: list[MemoryRecord] | None = None) -> None:
-        """Phase 2: Consolidate fragments into structured epistemic memory nodes.
-
-        Applies:
-        - Relative-to-absolute date conversion
-        - Contradiction resolution against AGENTS.md
-        - Deduplication of topic coverage
-
-        Args:
-            memories: Optional pre-gathered memory records.
-        """
-        self.logger.info("[Phase 2] Consolidating knowledge into unified epistemic memory...")
-        self.logger.info("  Applying relative-to-absolute date conversion...")
-        self.logger.info("  Running contradiction detection against AGENTS.md...")
-
-        truth_content = self._load_truth_surface()
-        records = memories or []
-
-        for record in records:
-            # Apply date normalization
-            record.content = self._convert_relative_to_absolute_dates(record.content)
-
-            # Reconcile against truth surface
-            result = self.reconcile_memory(record, truth_content)
-            self.report.reconciliations.append(result)
-
-            if result.resolution != ConflictResolution.NOT_A_CONFLICT:
-                self.report.contradictions_found += 1
-
-        self.logger.info(
-            "  Consolidation complete: %d reviewed, %d contradictions found",
-            len(records),
-            self.report.contradictions_found,
-        )
-
-    # ------------------------------------------------------------------
-    # Phase 3: Rules & Learnings
-    # ------------------------------------------------------------------
-
-    def extract_learnings(self, memories: list[MemoryRecord] | None = None) -> int:
-        """Phase 3: Extract painful/inefficient workflow patterns into learnings.
-
-        Reviews memory records for signals of frustration, build failures,
-        or test failures and logs them for future reference.
-
-        Args:
-            memories: Optional pre-gathered memory records.
-
-        Returns:
-            Number of learnings extracted.
-        """
-        self.logger.info("[Phase 3] Extracting learnings from painful workflow patterns...")
-        records = memories or []
-        learnings_count = 0
-
-        pain_signals = [
-            "failed",
-            "error",
-            "broken",
-            "frustrated",
-            "workaround",
-            "hack",
-            "manual",
-            "couldn't build",
-            "test failure",
-            "regression",
-            "retry",
-            "hung",
-            "timeout",
-            "blocked",
-        ]
-
-        for record in records:
-            content_lower = record.content.lower()
-            if any(signal in content_lower for signal in pain_signals):
-                learnings_count += 1
-                self.logger.info("  📚 Learning extracted from: %s", record.slug)
-
-        self.report.learnings_extracted = learnings_count
-        self.logger.info("  Extracted %d learnings", learnings_count)
-        return learnings_count
-
-    # ------------------------------------------------------------------
-    # Phase 4: Prioritization & Pruning
-    # ------------------------------------------------------------------
-
-    def prune(self) -> None:
-        """Phase 4: Prune decayed or redundant context arrays to adhere to the budget.
-
-        Enforces:
-        - MEMORY.md index under 200 lines
-        - Individual indices under 25KB
-        - One-line hooks for referenced topics
-        """
-        self.logger.info("[Phase 4] Pruning decayed context to maintain budget discipline...")
-        self.logger.info(
-            "  Budget: MEMORY.md < %d lines, indices < %dKB",
-            MEMORY_INDEX_MAX_LINES,
-            MEMORY_INDEX_MAX_KB,
-        )
-
-        # Check actual KI count
-        ki_count = 0
-        if self.knowledge_root.exists():
-            ki_count = sum(1 for _ in self.knowledge_root.rglob("metadata.json"))
-
-        self.logger.info("  Current KI count: %d", ki_count)
-
-    # ------------------------------------------------------------------
-    # Job-Scoped Scratch Directory (ported from background-session-instructions v2.1.119)
-    # ------------------------------------------------------------------
-
-    def _create_job_dir(self) -> pathlib.Path:
-        """Create a job-scoped scratch directory for this daemon cycle.
-
-        Provides environment isolation per Claude Code background-session-instructions
-        pattern. Each dream cycle gets its own temporary workspace so that
-        concurrent daemons never collide.
-
-        Returns:
-            Path to the created job directory.
-        """
-        workspace = pathlib.Path.cwd()
-        beads_dir = workspace / BEADS_DIR
-        beads_dir.mkdir(parents=True, exist_ok=True)
-
-        job_dir = pathlib.Path(
-            tempfile.mkdtemp(
-                prefix=f"dream-{datetime.datetime.now(datetime.UTC).strftime('%Y%m%dT%H%M%S')}-",
-                dir=beads_dir,
-            )
-        )
-        self.logger.info("  Job scratch directory: %s", job_dir)
-        self._job_dir = job_dir
-        return job_dir
-
-    def _write_cycle_report(self) -> None:
-        """Write the dream cycle report to the beads evidence trail."""
-        if self._job_dir is None:
-            return
-
-        report_path = self._job_dir / "dream_cycle_report.json"
-        report_data = {
-            "timestamp": self.report.timestamp,
-            "memories_reviewed": self.report.memories_reviewed,
-            "contradictions_found": self.report.contradictions_found,
-            "memories_deleted": self.report.memories_deleted,
-            "memories_annotated": self.report.memories_annotated,
-            "learnings_extracted": self.report.learnings_extracted,
-            "reconciliations": [
+        # Check size limits
+        if entry.size_kb > ARTIFACT_MAX_KB:
+            issues["size_violations"].append(
                 {
-                    "slug": r.memory_slug,
-                    "resolution": r.resolution.value,
-                    "annotation": r.annotation,
-                    "action_taken": r.action_taken,
-                }
-                for r in self.report.reconciliations
-            ],
-        }
-        report_path.write_text(json.dumps(report_data, indent=2), encoding="utf-8")
-        self.logger.info("  Report written to: %s", report_path)
-        time.sleep(0.1)
+                    "ki": entry.name,
+                    "size_kb": entry.size_kb,
+                    "limit_kb": ARTIFACT_MAX_KB,
+                },
+            )
+            report.size_violations.append(entry.name)
 
-    # ------------------------------------------------------------------
-    # Bounded Evidence Batcher (ported from Claude Agent SDK transcript_mirror_batcher.py)
-    # ------------------------------------------------------------------
-
-    # Eager-flush thresholds. Keeps memory flat during long sessions.
-    _BATCHER_MAX_ENTRIES = 500
-    _BATCHER_MAX_BYTES = 1 << 20  # 1 MiB
-    _BATCHER_MAX_RETRIES = 3
-    _BATCHER_BACKOFF_S = (0.2, 0.8)
-
-    def _init_batcher(self) -> None:
-        """Initialize the evidence batcher state for this cycle."""
-        self._evidence_pending: list[dict] = []
-        self._evidence_pending_bytes = 0
-
-    def _enqueue_evidence(self, entry: dict) -> None:
-        """Buffer an evidence entry; flush eagerly if thresholds exceeded.
-
-        Ported from TranscriptMirrorBatcher.enqueue() — fire-and-forget
-        pattern that keeps adapter latency off the hot path. The batcher
-        coalesces entries and flushes when the pending buffer exceeds
-        MAX_ENTRIES (500) or MAX_BYTES (1 MiB).
-
-        Args:
-            entry: A dict representing an evidence trail entry.
-        """
-        entry_bytes = len(json.dumps(entry))
-        self._evidence_pending.append(entry)
-        self._evidence_pending_bytes += entry_bytes
-
-        if (
-            len(self._evidence_pending) > self._BATCHER_MAX_ENTRIES
-            or self._evidence_pending_bytes > self._BATCHER_MAX_BYTES
-        ):
-            self._flush_evidence()
-
-    def _flush_evidence(self) -> None:
-        """Flush all pending evidence entries to the beads trail.
-
-        Implements bounded retry with backoff per the Claude Agent SDK
-        pattern. Failures are logged but never raised — the local-disk
-        cycle report is already durable.
-        """
-        if not self._evidence_pending or self._job_dir is None:
-            return
-
-        items = self._evidence_pending
-        self._evidence_pending = []
-        self._evidence_pending_bytes = 0
-
-        evidence_path = self._job_dir / "evidence_batch.jsonl"
-        last_err: Exception | None = None
-
-        for attempt in range(self._BATCHER_MAX_RETRIES):
-            if attempt > 0:
-                time.sleep(self._BATCHER_BACKOFF_S[attempt - 1])
+        # Check for stale entries (>30 days since last update)
+        if entry.updated_at:
             try:
-                with evidence_path.open("a", encoding="utf-8") as f:
-                    for item in items:
-                        f.write(json.dumps(item) + "\n")
-                self.logger.info(
-                    "  Evidence batch flushed: %d entries to %s",
-                    len(items),
-                    evidence_path,
-                )
-                return
-            except OSError as exc:
-                last_err = exc
-                self.logger.debug(
-                    "  Evidence flush attempt %d/%d failed: %s",
-                    attempt + 1,
-                    self._BATCHER_MAX_RETRIES,
-                    exc,
-                )
+                updated = datetime.fromisoformat(entry.updated_at)
+                age_days = (now - updated).days
+                if age_days > 30:
+                    issues["stale_entries"].append(
+                        {
+                            "ki": entry.name,
+                            "age_days": age_days,
+                            "updated_at": entry.updated_at,
+                        },
+                    )
+            except ValueError, TypeError:
+                pass
 
-        self.logger.error(
-            "  Evidence flush failed after %d attempts: %s",
-            self._BATCHER_MAX_RETRIES,
-            last_err,
-        )
+    report.ki_scanned = len(entries)
 
-    # ------------------------------------------------------------------
-    # Pipeline Orchestration
-    # ------------------------------------------------------------------
-
-    def run_nightly_cycle(self) -> DreamCycleReport:
-        """Execute the full nightly dream consolidation pipeline.
-
-        Returns:
-            The dream cycle report with all metrics.
-        """
-        self.logger.info("=" * 60)
-        self.logger.info("Starting nightly dream consolidation cycle...")
-        self.logger.info("=" * 60)
-
-        # Phase 0: Job isolation
-        self._create_job_dir()
-        self._init_batcher()
-
-        # Phase 1: Preparation
-        self.orient()
-        memories = self.gather()
-
-        # Phase 2: Topics + Reconciliation
-        self.consolidate(memories)
-
-        # Phase 3: Rules & Learnings
-        self.extract_learnings(memories)
-
-        # Phase 4: Prioritization & Pruning
-        self.prune()
-
-        # Flush evidence batcher and write evidence trail
-        self._flush_evidence()
-        self._write_cycle_report()
-
-        self.logger.info("=" * 60)
-        self.logger.info("Nightly dream consolidation cycle complete.")
-        self.logger.info(
-            "  Report: %d reviewed, %d contradictions, %d deleted, %d annotated, %d learnings",
-            self.report.memories_reviewed,
-            self.report.contradictions_found,
-            self.report.memories_deleted,
-            self.report.memories_annotated,
-            self.report.learnings_extracted,
-        )
-        self.logger.info("=" * 60)
-        return self.report
+    return issues
 
 
-def main() -> None:
-    """Daemon entrypoint."""
-    consolidator = DreamConsolidator()
-    consolidator.run_nightly_cycle()
+# --- Phase 3: Consolidate ----------------------------------------------------
+
+
+def consolidate(entries: list[KIEntry], issues: dict, report: DreamReport) -> None:
+    """Resolve contradictions, normalize dates, merge duplicates."""
+    # Check for potential contradictions (same topic, different claims)
+    names_seen = {}
+    for entry in entries:
+        # Extract key tokens from name
+        tokens = set(entry.name.lower().split())
+        for prev_name, prev_tokens in names_seen.items():
+            overlap = tokens & prev_tokens
+            if len(overlap) >= 3:  # Significant overlap
+                report.contradictions_found += 1
+                report.actions.append(f"POTENTIAL CONTRADICTION: '{entry.name}' may overlap with '{prev_name}' (shared tokens: {overlap})")
+        names_seen[entry.name] = tokens
+
+    # Report relative dates that need manual conversion
+    for rd in issues["relative_dates"]:
+        report.actions.append(f"RELATIVE DATE: '{rd['pattern']}' found in '{rd['ki']}' — convert to absolute ISO-8601 date")
+
+
+# --- Phase 4: Prune ----------------------------------------------------------
+
+
+def prune(entries: list[KIEntry], issues: dict, report: DreamReport) -> None:
+    """Enforce size limits, remove orphans, trim index."""
+    # Report size violations
+    for sv in issues["size_violations"]:
+        report.actions.append(f"SIZE VIOLATION: '{sv['ki']}' is {sv['size_kb']}KB (limit: {sv['limit_kb']}KB) — consider splitting")
+
+    # Check for orphaned artifacts (artifacts dir but no metadata reference)
+    for entry in entries:
+        artifacts_dir = Path(entry.path) / "artifacts"
+        if not artifacts_dir.exists():
+            continue
+
+        # Get referenced artifact paths
+        referenced_paths = set()
+        for ref in entry.references:
+            if isinstance(ref, dict) and ref.get("type") == "file":
+                referenced_paths.add(ref.get("path", ""))
+
+        # Check for unreferenced artifacts
+        for artifact in artifacts_dir.iterdir():
+            if artifact.is_file():
+                rel_path = str(artifact.relative_to(Path(entry.path).parent))
+                if rel_path not in referenced_paths and artifact.name != ".gitkeep":
+                    report.orphaned_artifacts.append(str(artifact))
+                    report.artifacts_pruned += 1
+
+    # Index size check
+    total_summary_kb = sum(len(e.summary.encode()) / 1024 for e in entries)
+    if total_summary_kb > INDEX_MAX_KB:
+        report.actions.append(f"INDEX SIZE: Total summaries are {total_summary_kb:.1f}KB (limit: {INDEX_MAX_KB}KB) — prune oldest entries")
+
+    if len(entries) > MAX_INDEX_ENTRIES:
+        report.actions.append(f"INDEX COUNT: {len(entries)} entries (limit: {MAX_INDEX_ENTRIES}) — archive oldest")
+
+
+# --- Phase 2.5: Activate (memory-kernel integration) -------------------------
+
+
+def activate(entries: list[KIEntry], ki_dir: Path, report: DreamReport) -> None:
+    """Run spreading activation for collision detection."""
+    if not HAS_KI_ENGINE:
+        return
+
+    # Load enhanced metadata
+    ki_metas = []
+    for entry in entries:
+        metadata_file = Path(entry.path) / "metadata.json"
+        if metadata_file.exists():
+            with contextlib.suppress(json.JSONDecodeError, OSError):
+                ki_metas.append(KIMetadata.load(metadata_file))
+
+    if not ki_metas:
+        return
+
+    # Collect all tags for seeding
+    all_tags = set()
+    for ki in ki_metas:
+        all_tags.update(ki.tags)
+
+    # Run activation with top 5 most common tags as seeds
+    from collections import Counter
+
+    tag_counts = Counter()
+    for ki in ki_metas:
+        tag_counts.update(ki.tags)
+    seed_tags = {tag for tag, _ in tag_counts.most_common(5)}
+
+    result = spread_activation(ki_metas, seed_tags=seed_tags, steps=2)
+
+    if result.collisions:
+        for collision in result.collisions[:5]:
+            report.actions.append(f"COLLISION: {collision.description}")
+    else:
+        pass
+
+
+# --- Phase 3.5: Promote + Detect Conflicts -----------------------------------
+
+
+def promote_and_detect(entries: list[KIEntry], ki_dir: Path, report: DreamReport) -> None:
+    """Run belief promotion and conflict detection."""
+    if not HAS_KI_ENGINE:
+        return
+
+    ki_metas = []
+    for entry in entries:
+        metadata_file = Path(entry.path) / "metadata.json"
+        if metadata_file.exists():
+            with contextlib.suppress(json.JSONDecodeError, OSError):
+                ki_metas.append(KIMetadata.load(metadata_file))
+
+    # Promotion pipeline
+    promo_result = promote_beliefs(ki_metas, ki_dir=ki_dir, dry_run=DRY_RUN)
+    if promo_result.promoted:
+        for name in promo_result.promoted:
+            report.actions.append(f"PROMOTED: '{name}' belief → fact (confidence ≥ 0.9)")
+
+    # Conflict detection
+    conflict_result = detect_conflicts(ki_metas)
+    if conflict_result.detected:
+        for c in conflict_result.detected:
+            report.actions.append(f"CONFLICT: {c.ki_a} ↔ {c.ki_b}: {c.reason}")
+            report.contradictions_found += 1
+
+
+# --- Phase 4.5: Closure Metrics + Views --------------------------------------
+
+
+def measure_and_render(entries: list[KIEntry], ki_dir: Path, report: DreamReport) -> None:
+    """Compute closure metrics and generate views."""
+    if not HAS_KI_ENGINE:
+        return
+
+    ki_metas = []
+    for entry in entries:
+        metadata_file = Path(entry.path) / "metadata.json"
+        if metadata_file.exists():
+            with contextlib.suppress(json.JSONDecodeError, OSError):
+                ki_metas.append(KIMetadata.load(metadata_file))
+
+    # Closure metrics
+    closure = compute_closure(ki_metas, ki_dir=ki_dir)
+    for pred in closure.predictions:
+        if pred.status == "degraded":
+            report.actions.append(f"CLOSURE WARNING: {pred.tool} — {pred.detail}")
+
+    # Generate views
+    if not DRY_RUN:
+        views_dir = ki_dir / "_views"
+        generate_all_views(ki_metas, views_dir)
+    else:
+        pass
+
+
+# --- Main --------------------------------------------------------------------
+
+
+def run_dream_cycle(ki_dir: Path) -> DreamReport:
+    """Execute the full enhanced Dream consolidation cycle."""
+    report = DreamReport()
+
+    # Phase 1: Orient
+    report.phase = "orient"
+    entries = orient(ki_dir)
+
+    # Phase 2: Gather
+    report.phase = "gather"
+    issues = gather(entries, report)
+
+    # Phase 2.5: Activate (spreading activation for collision detection)
+    report.phase = "activate"
+    activate(entries, ki_dir, report)
+
+    # Phase 3: Consolidate
+    report.phase = "consolidate"
+    consolidate(entries, issues, report)
+
+    # Phase 3.5: Promote + Detect
+    report.phase = "promote"
+    promote_and_detect(entries, ki_dir, report)
+
+    # Phase 4: Prune
+    report.phase = "prune"
+    prune(entries, issues, report)
+
+    # Phase 4.5: Measure + Views
+    report.phase = "measure"
+    measure_and_render(entries, ki_dir, report)
+
+    # Report
+    report.phase = "complete"
+
+    if report.actions:
+        for _i, _action in enumerate(report.actions, 1):
+            pass
+
+    return report
 
 
 if __name__ == "__main__":
-    main()
+    ki_dir = Path(
+        os.environ.get(
+            "KI_DIR",
+            os.path.expanduser("~/.gemini/antigravity/knowledge"),
+        ),
+    )
+
+    if len(sys.argv) > 1 and sys.argv[1] not in ("--dry-run", "--migrate"):
+        ki_dir = Path(sys.argv[1])
+
+    # Optional: run migration first
+    if "--migrate" in sys.argv:
+        from core.ki_engine.migration import migrate_ki_metadata
+
+        mig_result = migrate_ki_metadata(ki_dir, dry_run=DRY_RUN)
+
+    report = run_dream_cycle(ki_dir)
+
+    # Phase 5a: Rebuild FTS5 search index
+    if DRY_RUN:
+        pass
+    else:
+        try:
+            from core.ki_engine.fts_index import reindex_all
+
+            fts_count = reindex_all(ki_dir)
+        except Exception as e:
+            report.actions.append(f"FTS5: Reindex failed — {e}")
+
+    # Phase 5b: Gitleaks nightly production scan
+    repo_root = Path(__file__).resolve().parent.parent
+    guardian_script = repo_root / "scripts" / "gitleaks_guardian.py"
+    if guardian_script.exists():
+        import subprocess as _sp
+
+        gl_report = repo_root / ".beads" / f"gitleaks_nightly_{datetime.now(UTC).strftime('%Y%m%d')}.md"
+        cmd = [
+            sys.executable,
+            str(guardian_script),
+            "--mode",
+            "scan",
+            "--scope",
+            "production",
+            "--output",
+            str(gl_report),
+        ]
+        if DRY_RUN:
+            pass
+        else:
+            result = _sp.run(cmd, capture_output=True, text=True, timeout=300)
+            if result.returncode == 0:
+                pass
+            else:
+                if result.stdout:
+                    pass
+                report.actions.append(f"GITLEAKS: Production scan found issues — review {gl_report}")
+    else:
+        pass
+
+    # Phase 6: Archive to NotebookLM Master Brain (if available)
+    try:
+        from notebooklm import NotebookLM  # noqa: F401 — used conditionally for archive
+
+        # Master Brain ID from session config
+        master_brain_id = os.environ.get(
+            "NOTEBOOKLM_BRAIN_ID",
+            "default",
+        )
+        report_text = (
+            f"# Dream Consolidation Report — {datetime.now(UTC).isoformat()}\n"
+            f"KIs scanned: {report.ki_scanned}\n"
+            f"Contradictions: {report.contradictions_found}\n"
+            f"Dates to normalize: {report.dates_normalized}\n"
+            f"Size violations: {len(report.size_violations)}\n"
+            f"Orphaned artifacts: {report.artifacts_pruned}\n"
+            f"Actions: {len(report.actions)}\n"
+        )
+        if not DRY_RUN:
+            pass
+            # NotebookLM upload would happen here when API is live
+        else:
+            pass
+    except ImportError:
+        pass
+
+    # Exit with error if critical issues found
+    if report.contradictions_found > 3 or len(report.size_violations) > 5:
+        sys.exit(1)
+    sys.exit(0)

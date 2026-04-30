@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # labs/uphillsnowball/agent/gauntlet.py
 """The 17-Layer Gauntlet: Request Filtering & Risk Scoring.
 

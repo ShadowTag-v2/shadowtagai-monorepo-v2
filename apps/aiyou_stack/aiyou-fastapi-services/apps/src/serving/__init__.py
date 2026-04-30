@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Serving backends module."""
 
 from .ray_orchestrator import RayOrchestrator

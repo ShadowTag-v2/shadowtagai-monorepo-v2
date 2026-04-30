@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # scripts/rag_router.py
 # Implements "Modular RAG" - The Agent decides which memory to access.
 

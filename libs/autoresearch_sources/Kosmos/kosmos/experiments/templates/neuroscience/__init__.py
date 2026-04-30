@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Neuroscience experiment templates"""
 
 from kosmos.experiments.templates.neuroscience.connectome_scaling import ConnectomeScalingTemplate

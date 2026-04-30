@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # tests/e2e/test_billing_flow.py
 """Playwright-style E2E tests for the billing flow.
 
@@ -37,7 +35,7 @@ class TestBillingOnboarding:
             )
             # 422 = endpoint exists but validation failed (expected)
             # 403 = auth required (also expected)
-            assert resp.status_code in (403, 422, 429, 500)
+            assert resp.status_code in (403, 422, 500)
 
     @pytest.mark.asyncio
     async def test_billing_status_endpoint_exists(self):
@@ -51,7 +49,7 @@ class TestBillingOnboarding:
             )
             # 404 = firm not found (correct)
             # 503 = Stripe not configured (acceptable in test)
-            assert resp.status_code in (404, 429, 500, 503)
+            assert resp.status_code in (404, 500, 503)
 
     @pytest.mark.asyncio
     async def test_portal_session_requires_customer(self):
@@ -68,7 +66,7 @@ class TestBillingOnboarding:
                 },
                 timeout=10,
             )
-            assert resp.status_code in (400, 403, 404, 429, 500, 503)
+            assert resp.status_code in (400, 403, 404, 500, 503)
 
 
 class TestCouponFlow:
@@ -112,7 +110,7 @@ class TestStripeWebhook:
                 timeout=10,
             )
             # 400 = invalid signature, 401 = auth failure (correct behaviors)
-            assert resp.status_code in (400, 401, 429, 500)
+            assert resp.status_code in (400, 401, 500)
 
     @pytest.mark.asyncio
     async def test_webhook_rejects_empty_body(self):
@@ -126,4 +124,4 @@ class TestStripeWebhook:
                 headers={"Content-Type": "application/json"},
                 timeout=10,
             )
-            assert resp.status_code in (400, 422, 429, 500)
+            assert resp.status_code in (400, 422, 500)

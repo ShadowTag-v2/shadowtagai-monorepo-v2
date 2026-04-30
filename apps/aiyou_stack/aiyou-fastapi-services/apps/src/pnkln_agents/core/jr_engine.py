@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """JR Engine: Purpose/Reasons/Brakes Validator
 Target latency: <500μs
 Method: ATP 5-19 risk assessment (Probability × Severity → Level)

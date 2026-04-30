@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Firestore Backend: Persistent storage for world model state.
 
 Provides:

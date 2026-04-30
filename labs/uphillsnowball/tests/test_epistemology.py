@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # labs/uphillsnowball/tests/test_epistemology.py
 """Unit tests for EpistemologicalForensics.validate_statistical_claim (Item 12)."""
 

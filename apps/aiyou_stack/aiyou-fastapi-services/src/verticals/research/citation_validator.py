@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """RESEARCH-GRADE CITATION VALIDATION
 Verifies legal/medical references exist and are current.
 Integrates with Jetski for browser-based ground truth verification.

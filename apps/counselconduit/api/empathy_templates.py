@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/empathy_templates.py
 """S.E.U. Empathy Template Library — Randomized Empathy Acknowledgers.
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """TECF - Tactical Edge Compute Fabric
 Defense-Grade Wrapper for SkyNode (TowerNode) to enable JADC2.
 

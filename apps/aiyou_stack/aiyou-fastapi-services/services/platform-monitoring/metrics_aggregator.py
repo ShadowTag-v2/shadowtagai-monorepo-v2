@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Platform Monitoring - Unified Metrics Aggregator
 
 Aggregates metrics from:

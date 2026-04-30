@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/fastapi_kovel_enclave.py
 """CounselConduit: Kovel Enclave v3.0
 
@@ -48,7 +46,7 @@ try:
         execute_privileged_query,
         stream_privileged_query,
     )
-    from apps.counselconduit.api.Cor_Claude_Code_6 import evaluate as Cor_Claude_Code_6_evaluate
+    from apps.counselconduit.api.judge6 import evaluate as judge6_evaluate
     from apps.counselconduit.api.stripe_connect import router as billing_router
     from apps.counselconduit.api.stripe_handler import router as stripe_router
 except ImportError:
@@ -64,7 +62,7 @@ except ImportError:
         execute_privileged_query,
         stream_privileged_query,
     )
-    from api.Cor_Claude_Code_6 import evaluate as Cor_Claude_Code_6_evaluate  # type: ignore[no-redef]
+    from api.judge6 import evaluate as judge6_evaluate  # type: ignore[no-redef]
     from api.stripe_connect import router as billing_router  # type: ignore[no-redef]
     from api.stripe_handler import router as stripe_router  # type: ignore[no-redef]
 
@@ -76,7 +74,6 @@ try:
     from apps.counselconduit.api.cloud_tasks_gdpr_handler import router as gdpr_handler_router
     from apps.counselconduit.api.deprecation_middleware import DeprecationMiddleware
     from apps.counselconduit.api.dispatch_router import router as dispatch_router
-    from apps.counselconduit.api.middleware_ant import AntGateMiddleware
     from apps.counselconduit.api.gdpr import router as gdpr_router
     from apps.counselconduit.api.kovel_attestation import router as attestation_router
     from apps.counselconduit.api.magic_link import router as onboarding_router
@@ -99,7 +96,6 @@ except ImportError:
     from api.cloud_tasks_gdpr_handler import router as gdpr_handler_router  # type: ignore[no-redef]
     from api.deprecation_middleware import DeprecationMiddleware  # type: ignore[no-redef]
     from api.dispatch_router import router as dispatch_router  # type: ignore[no-redef]
-    from api.middleware_ant import AntGateMiddleware  # type: ignore[no-redef]
     from api.gdpr import router as gdpr_router  # type: ignore[no-redef]
     from api.kovel_attestation import router as attestation_router  # type: ignore[no-redef]
     from api.magic_link import router as onboarding_router  # type: ignore[no-redef]
@@ -197,9 +193,6 @@ app.add_middleware(SandboxMiddleware)
 
 # RFC 8594: Deprecation + Sunset headers on versioned routes
 app.add_middleware(DeprecationMiddleware)
-
-# Cor.Ant: Inject user_type (ant/external) into request.state
-app.add_middleware(AntGateMiddleware)
 
 # Cor.30: Opaque error handling — never expose stack traces
 app.add_exception_handler(AppError, app_error_handler)
@@ -370,7 +363,7 @@ async def execute_query(
     elapsed_ms = int((time.monotonic() - start) * 1000)
 
     # Judge 6 governance gate
-    governance = Cor_Claude_Code_6_evaluate(result.response)
+    governance = judge6_evaluate(result.response)
     if not governance.assessment.approved:
         result.response = governance.output_text  # Replace with blocked message
     elif governance.output_text != governance.input_text:
@@ -439,29 +432,11 @@ async def enclave_health():
     }
 
 
-import asyncio
-
-
-class StreamingWatchdog:
-    async def monitor(self):
-        logger.info("StreamingWatchdog active. Monitoring context streams...")
-        while True:
-            await asyncio.sleep(60)
-
-
-watchdog_task = None
-
-
 @app.on_event("startup")
 async def startup():
-    global watchdog_task
     logger.info("counselconduit_started", version="3.3.2")
-    watchdog = StreamingWatchdog()
-    watchdog_task = asyncio.create_task(watchdog.monitor())
 
 
 @app.on_event("shutdown")
 async def shutdown():
     logger.info("counselconduit_shutdown")
-    if watchdog_task:
-        watchdog_task.cancel()

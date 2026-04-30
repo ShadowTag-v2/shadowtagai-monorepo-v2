@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-"""COR.KAIROS Daemon — Background Autonomous Agent Controller.
+"""KAIROS Daemon — Background Autonomous Agent Controller.
 
 Runs in continuous mode, executing scheduled maintenance tasks:
   1. Dream Consolidation (nightly) — KI maintenance
@@ -31,7 +29,7 @@ import time
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [COR.KAIROS] %(levelname)s %(message)s",
+    format="%(asctime)s [KAIROS] %(levelname)s %(message)s",
     datefmt="%Y-%m-%dT%H:%M:%S",
 )
 logger = logging.getLogger("kairos")
@@ -55,32 +53,11 @@ AUTOLINT_INTERVAL = 86400  # 24 hours
 
 # Jitter range (±30s) to prevent thundering herd — TACSOP B8
 JITTER_SECONDS = 30
-DYNAMIC_CONFIG_FILE = BEADS_DIR / "tengu_kairos_cron_config.json"
 
-def get_jitter_config() -> float:
-    """Dynamic Jitter: Allows ops to spread out API load during incidents."""
-    try:
-        if DYNAMIC_CONFIG_FILE.exists():
-            cfg = json.loads(DYNAMIC_CONFIG_FILE.read_text())
-            return cfg.get("jitter_seconds", JITTER_SECONDS)
-    except Exception as e:
-        logger.warning("Failed to parse dynamic jitter config: %s", e)
-    return JITTER_SECONDS
-
-def is_killed() -> bool:
-    """Kill Switch: Halt scheduler on next check tick if tengu_kairos_cron is false."""
-    try:
-        if DYNAMIC_CONFIG_FILE.exists():
-            cfg = json.loads(DYNAMIC_CONFIG_FILE.read_text())
-            return not cfg.get("tengu_kairos_cron", True)
-    except Exception:
-        pass
-    return False
 
 def _jittered(interval: float) -> float:
-    """Add dynamic random offset to an interval."""
-    j = get_jitter_config()
-    return interval + random.uniform(-j, j)
+    """Add ±JITTER_SECONDS random offset to an interval."""
+    return interval + random.uniform(-JITTER_SECONDS, JITTER_SECONDS)
 
 
 _running = True
@@ -114,7 +91,7 @@ def health_check() -> dict:
             timeout=15,
         )
         checks["gcp_adc"] = "ok" if result.returncode == 0 else "expired"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["gcp_adc"] = "missing"
 
     # 2. ANE dylib
@@ -140,7 +117,7 @@ def health_check() -> dict:
         )
         dirty_count = len(result.stdout.strip().splitlines()) if result.stdout.strip() else 0
         checks["git_dirty"] = f"{dirty_count} files" if dirty_count > 0 else "clean"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["git_dirty"] = "unknown"
 
     # 6. Git fetch --prune (GitHub-first context: keep remote refs fresh)
@@ -153,7 +130,7 @@ def health_check() -> dict:
             cwd=str(REPO_ROOT),
         )
         checks["git_fetch"] = "ok" if fetch_result.returncode == 0 else "failed"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["git_fetch"] = "timeout"
 
     logger.info("Health: %s", json.dumps(checks))
@@ -339,8 +316,8 @@ def write_heartbeat(status: dict) -> None:
 
 
 def main_loop(once: bool = False) -> None:
-    """COR.KAIROS main execution loop."""
-    logger.info("COR.KAIROS daemon starting (PID %d)", os.getpid())
+    """KAIROS main execution loop."""
+    logger.info("KAIROS daemon starting (PID %d)", os.getpid())
     logger.info("Repo root: %s", REPO_ROOT)
 
     last_health = 0.0
@@ -355,15 +332,6 @@ def main_loop(once: bool = False) -> None:
     cycle = 0
     while _running:
         cycle += 1
-        
-        # Anthropic 'tengu_kairos_cron' fleet-wide kill switch parity
-        if is_killed():
-            logger.info("Kill switch 'tengu_kairos_cron' engaged. Halting scheduler.")
-            for _ in range(30):
-                if not _running: break
-                time.sleep(1)
-            continue
-            
         now = time.time()
         status: dict[str, str] = {"cycle": str(cycle)}
 
@@ -372,9 +340,8 @@ def main_loop(once: bool = False) -> None:
             status["health"] = json.dumps(health_check())
             last_health = now
 
-        # Dream consolidation (daily, only between 2-4 AM UTC)
-        utc_now = datetime.datetime.now(datetime.timezone.utc)
-        hour = utc_now.hour
+        # Dream consolidation (daily, only between 2-4 AM local)
+        hour = datetime.datetime.now().hour
         if now - last_dream >= _jittered(DREAM_INTERVAL) and 2 <= hour <= 4:
             run_dream_consolidation()
             last_dream = now
@@ -428,11 +395,11 @@ def main_loop(once: bool = False) -> None:
                 break
             time.sleep(1)
 
-    logger.info("COR.KAIROS daemon stopped")
+    logger.info("KAIROS daemon stopped")
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="COR.KAIROS Background Daemon")
+    parser = argparse.ArgumentParser(description="KAIROS Background Daemon")
     parser.add_argument("--daemon", action="store_true", help="Run as background process")
     parser.add_argument("--once", action="store_true", help="Single cycle then exit")
     args = parser.parse_args()
@@ -440,7 +407,7 @@ def main() -> None:
     if args.daemon:
         pid = os.fork()
         if pid > 0:
-            logger.info("COR.KAIROS daemon forked (PID %d)", pid)
+            logger.info("KAIROS daemon forked (PID %d)", pid)
             sys.exit(0)
         os.setsid()
         main_loop(once=False)

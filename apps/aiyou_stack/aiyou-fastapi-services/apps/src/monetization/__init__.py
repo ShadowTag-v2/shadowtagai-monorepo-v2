@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Monetization layer for ShadowTag-v2 Intelligence Services.
 
 Implements:

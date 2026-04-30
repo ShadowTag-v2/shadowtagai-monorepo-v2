@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Data Lineage Tracking for Ingestion Pipeline."""
 
 import json

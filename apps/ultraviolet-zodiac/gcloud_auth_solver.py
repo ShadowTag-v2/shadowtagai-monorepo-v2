@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """gcloud_auth_solver.py
 ---------------------
 Implements the "Loop & Review" methodology for reliable GCloud Authentication.

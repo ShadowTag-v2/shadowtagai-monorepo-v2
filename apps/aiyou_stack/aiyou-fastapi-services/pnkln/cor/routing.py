@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Option 1: Sequential Orchestration with Cor Routing (Long-term Architecture)
 
 Intent classifier routes queries to:

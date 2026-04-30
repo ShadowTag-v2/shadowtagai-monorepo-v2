@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tests for PSO-NN Weight Optimizer."""
 
 import numpy as np

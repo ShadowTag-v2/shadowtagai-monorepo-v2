@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Parallel Fitness Evaluator for 600-agent Flying n-autoresearch/Kosmos/BioAgents swarm.
 Uses multiprocessing with shared memory for 4-10x speedup.
 Based on patterns from yyz-agentics-june/performance_optimization/src/parallel_optimized.py

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from src.shadowtag_v4.agents.base import AntigravityAgent
 from src.shadowtag_v4.tools.registry import registry
 

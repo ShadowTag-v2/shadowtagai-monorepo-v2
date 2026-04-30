@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PSO-NN Core: Particle and swarm primitives for optimization."""
 
 from .fitness import CrossEntropyFitness, FitnessFunction, MSEFitness

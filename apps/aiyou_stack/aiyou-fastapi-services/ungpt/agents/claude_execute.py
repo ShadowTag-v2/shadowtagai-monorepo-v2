@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """L4: Claude.2 - Execution & Publish (Dynamic)
 
 Role: The Builder

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Marketplace - Two-sided platform for AI capabilities
 
 Revenue streams:

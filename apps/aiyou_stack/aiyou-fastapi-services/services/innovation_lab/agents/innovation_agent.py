@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Innovation Agent - Core AI agent for innovation tasks
 
 This agent specializes in:

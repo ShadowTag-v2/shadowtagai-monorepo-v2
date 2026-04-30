@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AWS Cost Optimizer service - Core business logic for cost optimization.
 
 This service analyzes AWS costs, identifies waste, provides right-sizing

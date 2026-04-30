@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Transformer Circuits: Tracing Attention Computation Through Feature Interactions
 
 This package implements the methods described in "Tracing Attention Computation Through Feature Interactions"

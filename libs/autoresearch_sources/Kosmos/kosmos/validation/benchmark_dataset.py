@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Benchmark Dataset Management for Paper Accuracy Validation.
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Test suite for Meta-Requirements (REQ-META-001 through REQ-META-003).
 

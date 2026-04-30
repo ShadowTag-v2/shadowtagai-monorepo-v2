@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """JETSKI REALITY VALIDATOR
 Combines Selenium Wire (network) + CDP (browser control)
 """

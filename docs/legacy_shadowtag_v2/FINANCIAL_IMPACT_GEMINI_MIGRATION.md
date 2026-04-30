@@ -36,15 +36,15 @@ Adding Gemini CLI TUI, kernel-chaining architecture, and migrating from Autogen 
 **Stack:**
 
 ```typescript
-// Cor.Claude_Code_6-cli (Ink-based TUI)
+// judge6-cli (Ink-based TUI)
 import { render, Box, Text } from "ink";
-import { Cor.Claude_Code_6 } from "@pnkln/governance-sdk";
+import { judge6 } from "@pnkln/governance-sdk";
 
 // CloudFlare Workers API endpoint (CLI talks to Judge 6 service)
 export default {
   async fetch(request) {
     const { purpose } = await request.json();
-    const decision = await Cor.Claude_Code_6.scan({ purpose, atp519: true });
+    const decision = await judge6.scan({ purpose, atp519: true });
     return Response.json(decision);
   },
 };
@@ -147,7 +147,7 @@ class KernelChain:
     """
 
     def __init__(self, kernels: List[Kernel]):
-        self.kernels = kernels  # [GeminiIngestion, Cor.Claude_Code_6, JREngine]
+        self.kernels = kernels  # [GeminiIngestion, Judge6, JREngine]
 
     async def execute(self, input_data: Dict) -> ChainResult:
         """Execute kernel chain with intermediate state"""
@@ -170,7 +170,7 @@ class KernelChain:
 # Example usage: Multi-step governance workflow
 chain = KernelChain([
     GeminiIngestionKernel(),   # Collect intelligence from 5 sources
-    Cor.Claude_Code_6Kernel(),            # Binary governance scan (Compliance Framework)
+    Judge6Kernel(),            # Binary governance scan (Compliance Framework)
     JREngineKernel(),          # Justice/Restitution layer
     ActionExecutionKernel()    # Execute approved action
 ])
@@ -198,7 +198,7 @@ Kernel 1: GeminiIngestion (5 sources × 10 items/source):
 - Output: 50 compressed items × 100 tokens = 5K tokens
 - Cost: $0.000075/1K input + $0.0003/1K output = $0.0019
 
-Kernel 2: Cor.Claude_Code_6 (binary decision):
+Kernel 2: Judge6 (binary decision):
 - Input: 50 items × 100 tokens = 5K tokens
 - Output: 1 decision × 500 tokens = 0.5K tokens
 - Cost: $0.000375 + $0.00015 = $0.000525
@@ -798,7 +798,7 @@ Conclusion: Gemini Flash offers best price/performance ratio
    - **Cost:** $34/mo (Gemini API), **Time:** 1 week
 
 3. **Kernel-Chaining MVP**
-   - Build basic 2-kernel chain (GeminiIngestion → Cor.Claude_Code_6)
+   - Build basic 2-kernel chain (GeminiIngestion → Judge6)
    - Test with 5 enterprise beta customers
    - Measure execution latency (<5 seconds target)
    - **Cost:** $70/mo (kernel infra), **Time:** 2 weeks

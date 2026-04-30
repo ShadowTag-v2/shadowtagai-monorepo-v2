@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 GOVERNANCE TOOLS - ATP 5-19 Validation & Risk Assessment
 =========================================================
@@ -21,23 +19,23 @@ import asyncio
 from typing import Annotated
 import logging
 
-from pnkln.core.Claude_Code_6_pipeline import JudgeSixPipeline
+from pnkln.core.judge_six_pipeline import JudgeSixPipeline
 from pnkln.core.monte_carlo_risk import MonteCarloRiskAssessment
 
 logger = logging.getLogger(__name__)
 
 
 # Initialize singletons for reuse
-_Claude_Code_6 = None
+_judge_six = None
 _monte_carlo = None
 
 
-def _get_Claude_Code_6() -> JudgeSixPipeline:
+def _get_judge_six() -> JudgeSixPipeline:
     """Get or create Judge 6 singleton."""
-    global _Claude_Code_6
-    if _Claude_Code_6 is None:
-        _Claude_Code_6 = JudgeSixPipeline()
-    return _Claude_Code_6
+    global _judge_six
+    if _judge_six is None:
+        _judge_six = JudgeSixPipeline()
+    return _judge_six
 
 
 def _get_monte_carlo() -> MonteCarloRiskAssessment:
@@ -100,7 +98,7 @@ async def governance_validate(
 
     logger.info(f"Governance validation: {request_id} (SLA: {sla_ms}ms)")
 
-    judge = _get_Claude_Code_6()
+    judge = _get_judge_six()
 
     # Execute validation
     validation_result = await judge.validate(request={"text": request_text}, request_id=request_id)

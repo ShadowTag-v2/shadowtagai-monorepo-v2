@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 class TeguVision:
     def scan_tower_feed(self, frame):
         print("    [Tegu] Scanning infrastructure (Vision API)...")

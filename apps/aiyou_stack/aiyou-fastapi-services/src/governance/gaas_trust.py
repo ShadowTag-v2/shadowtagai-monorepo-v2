@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GaaS (Governance-as-a-Service) Trust Factor System.
 
 Implements longitudinal compliance scoring with severity-aware penalization

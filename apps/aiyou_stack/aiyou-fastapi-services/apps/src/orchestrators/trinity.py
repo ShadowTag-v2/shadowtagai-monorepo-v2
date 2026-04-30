@@ -1,12 +1,10 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # ATOMIC CODE BLOCK 4: TRINITY ORCHESTRATOR
 # File: src/orchestrators/trinity.py
 # Function: The Executive Loop (Sensor -> Judge -> Execution)
 
 from src.agents.scholar import Autoresearch_Triad_Scholar
 
-from src.governance.Claude_Code_6 import JudgeSix, RiskLevel, SystemContext
+from src.governance.judge_six import JudgeSix, RiskLevel, SystemContext
 
 
 def run_trinity():

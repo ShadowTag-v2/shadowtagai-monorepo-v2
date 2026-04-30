@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # Vulture whitelist for kovelai API
 # These items are false positives — used by Pydantic models or function signatures.
 #

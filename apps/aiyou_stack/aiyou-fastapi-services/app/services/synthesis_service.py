@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Memory synthesis service."""
 
 from datetime import datetime, timedelta

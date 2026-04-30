@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Atomic Pipeline Orchestrator
 =============================
 Multi-model orchestration for intelligent code generation.

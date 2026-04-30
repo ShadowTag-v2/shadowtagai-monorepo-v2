@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Alert management system for proactive incident detection.
 Supports multiple notification channels (webhook, email, Slack).
 """

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Visualization generator for briefings.
 
 Creates charts and graphs for intelligence data:

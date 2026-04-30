@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ShadowTag-v4 Monte Carlo Valuation Simulator
 
 Runs 10,000 simulations to model exit valuation uncertainty.

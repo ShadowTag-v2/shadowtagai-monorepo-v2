@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Predictive Revocation Engine — The Panopticon.
 
 Fuses the Stressor Index with Licensure Heartbeat. Triggers IAM Guillotine

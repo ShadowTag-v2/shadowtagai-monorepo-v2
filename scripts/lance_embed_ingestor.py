@@ -1,6 +1,4 @@
 #!/usr/bin/env -S .venv/bin/python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """scripts/lance_embed_ingestor.py
 Batch-embeds the SQLite corpus extractions into LanceDB using Gemini text-embedding.
 

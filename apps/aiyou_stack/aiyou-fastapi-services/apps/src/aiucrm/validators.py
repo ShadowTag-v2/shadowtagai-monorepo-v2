@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AiUCRM Validators
 Specialized compliance validators for different regulatory frameworks
 """

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import os
 
 BASE_DIR = "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/shadowtag_v4-web-dashboard/src/app"

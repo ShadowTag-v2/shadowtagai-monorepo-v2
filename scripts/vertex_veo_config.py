@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Vertex AI Veo Configuration — High-Resolution (1080p) Backend.
 
 Configures Vertex AI backend for Veo operations requiring higher

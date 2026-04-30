@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gmail Sent Folder Ingestor
 Target: redacted@shadowtag-v4.local
 Purpose: Extract business & tech plans from Sent Items.

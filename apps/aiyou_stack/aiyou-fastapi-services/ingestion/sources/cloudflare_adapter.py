@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack - Cloudflare Bypass Adapter
 
 Wraps cloudscraper (VeNoMouS/cloudscraper) as the default HTTP client

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pydantic models and schemas for Landing Page Optimizer"""
 
 from datetime import datetime

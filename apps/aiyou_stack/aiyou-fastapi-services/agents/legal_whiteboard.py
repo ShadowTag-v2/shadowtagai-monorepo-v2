@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """LegalWhiteboard - The "Never Resting" memory latch.
 Records agent evolution. Single Point of Truth.
 """

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Prometheus metrics collection for kernel chain."""
 
 from prometheus_client import Counter, Histogram, Info

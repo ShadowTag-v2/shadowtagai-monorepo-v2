@@ -1,7 +1,7 @@
 # Autonomous Loop Steward — Daemon Specification
 
 > Adapted from Claude Code Autonomous Loop Check (CL4R1T4S, v2.1.101)
-> Integrates with: `pnkln-evolve.py`, COR.KAIROS Auto-Dream, daemon-fleet-manager skill
+> Integrates with: `pnkln-evolve.py`, KAIROS Auto-Dream, daemon-fleet-manager skill
 
 ## Philosophy
 
@@ -70,7 +70,7 @@ When the conversation transcript has nothing left, check the current branch's PR
 | Daemon | Relationship |
 |--------|-------------|
 | `pnkln-evolve.py` | Steward invokes evolve for R&D tasks in `labs/uphillsnowball` |
-| COR.KAIROS Auto-Dream | Steward defers to COR.KAIROS for memory consolidation cycles |
+| KAIROS Auto-Dream | Steward defers to KAIROS for memory consolidation cycles |
 | 160IQ Sentinel | Sentinel validates steward actions against AGENTS.md invariants |
 | Singularity Daemon | No interaction — singularity operates on separate cycle |
 

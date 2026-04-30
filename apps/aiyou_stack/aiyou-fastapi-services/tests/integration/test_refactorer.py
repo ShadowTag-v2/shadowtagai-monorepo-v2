@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Integration tests for Code Refactorer Agent (Python version)
 
 Tests the refactorer's analyze and refactor capabilities from Python.

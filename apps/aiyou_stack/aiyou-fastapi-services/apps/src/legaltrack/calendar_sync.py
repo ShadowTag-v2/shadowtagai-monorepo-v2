@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Calendar Sync Engine for LegalTrack
 
 Auto-sync deadlines to Google Calendar, Outlook, etc.

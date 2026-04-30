@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """LLM Orchestrator
 Handles dual-review loop with GPT-5 and HF pool.
 """

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AWS Cost Explorer client for cost analysis operations."""
 
 import logging

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Deadline Extraction Service
 AI/ML-powered extraction of deadlines from legal documents
 """

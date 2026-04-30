@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Computer-Use Agent Audit Logging
 
 Logs all agent actions to JSONL for compliance and debugging.

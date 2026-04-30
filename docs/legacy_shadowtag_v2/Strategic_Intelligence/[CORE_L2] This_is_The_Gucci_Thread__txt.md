@@ -139,7 +139,7 @@ echo ">>> [3/8] ⚖️ Codifying Judge 6 Sentinel (Compliance Framework)..."
 
 # This is the FULL Judge 6 Logic (Risk Matrix + Grounding)
 
-cat <<PYTHON > tools/Cor.Claude_Code_6_sentinel.py
+cat <<PYTHON > tools/judge6_sentinel.py
 import os, sys, json, glob, subprocess, urllib.request
 import vertexai
 from vertexai.generative_models import GenerativeModel, Tool, grounding
@@ -213,7 +213,7 @@ sentinel = JudgeSixSentinel()
 target = sys.argv[1] if len(sys.argv) > 1 else "."
 if target == ".":
 for f in glob.glob("\*_/_.py", recursive=True):
-if "Cor.Claude_Code_6" not in f: sentinel.execute(f)
+if "judge6" not in f: sentinel.execute(f)
 else:
 sentinel.execute(target)
 PYTHON
@@ -273,7 +273,7 @@ ENV PYTHONUNBUFFERED=1
 
 # The Sentinel guards the gate
 
-CMD ["python3", "tools/Cor.Claude_Code_6_sentinel.py", "."]
+CMD ["python3", "tools/judge6_sentinel.py", "."]
 DOCKER
 
 cat <<YAML > cloudbuild.yaml
@@ -287,7 +287,7 @@ steps:
   - '-c'
   - |
     pip install google-cloud-aiplatform colorama requests
-    python3 tools/Cor.Claude_Code_6_sentinel.py .
+    python3 tools/judge6_sentinel.py .
     env:
   - 'PROJECT_ID=$PROJECT_ID'
 
@@ -315,7 +315,7 @@ echo ">>> 🦍 ANTIGRAVITY LAUNCH SEQUENCE..."
 # 1. Run Local Sentinel
 
 echo ">>> ⚖️ Summoning Judge 6 (Local)..."
-uv run python3 tools/Cor.Claude_Code_6_sentinel.py .
+uv run python3 tools/judge6_sentinel.py .
 
 # 2. Deploy
 
@@ -361,7 +361,7 @@ TOML
 echo ">>> [8/8] ✅ SINGULARITY ACHIEVED."
 echo "----------------------------------------------------------------"
 echo "📂 Repo: $REPO_NAME/"
-echo "⚖️ Judge: tools/Cor.Claude_Code_6_sentinel.py (Active Risk Matrix)"
+echo "⚖️ Judge: tools/judge6_sentinel.py (Active Risk Matrix)"
 echo "🧠 Brain: libs/ShadowTag-v2/ (RLM v3)"
 echo "🛠️ Tool: tools/warpgrep 'Find the bug' ."
 echo "🚀 Deploy: ./scripts/launch_antigravity.sh production"
@@ -384,7 +384,7 @@ chmod +x antigravity_singularity.sh
    It is accessible via the CLI tool tools/warpgrep.
    Try it: tools/warpgrep "Find all functions that use recursion" .
 3. The Law (South)
-   You have Judge 6 Sentinel installed in tools/Cor.Claude_Code_6_sentinel.py.
+   You have Judge 6 Sentinel installed in tools/judge6_sentinel.py.
    Active Defense: It scans your code for API keys (sk-) and sudo commands.
    Ghost Writer: If you type # ??? Write a function to calculate Fibonacci in any Python file and run the Sentinel, Judge 6 will physically overwrite that comment with working, grounded code from Gemini.
    The Mitigator: If you leave print() statements, Judge 6 scrubs them automatically.
@@ -395,5 +395,5 @@ chmod +x antigravity_singularity.sh
    🚀 Next Step: The Ghost Writer Test
    Go into apps/server/main.py.
    Add this line: # ??? Write a pydantic model for a User with email validation.
-   Run:uv run python3 tools/Cor.Claude_Code_6_sentinel.py .
+   Run:uv run python3 tools/judge6_sentinel.py .
    Watch the file change. That is Antigravity.

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Vertex AI Search Ingestion Script (Burn Strategy A)
 Target: $1,000 GenAI App Builder Credit
 """

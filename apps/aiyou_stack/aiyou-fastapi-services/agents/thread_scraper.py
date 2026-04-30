@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Thread Scraper Agent
 
 Automated agent for collecting AI agent knowledge threads from X/Twitter.

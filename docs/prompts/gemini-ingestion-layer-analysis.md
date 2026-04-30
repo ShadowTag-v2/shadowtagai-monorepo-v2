@@ -13,7 +13,7 @@ This analysis prompt evolved from the Judge 6 validation system prompt, adapting
 | Judge 6 Version       | Gemini Ingestion Layer Version                       | Rationale                                          |
 | ---------------------- | ---------------------------------------------------- | -------------------------------------------------- |
 | "Judge 6"             | "Gemini Ingestion Layer"                             | Domain-specific naming for intelligence collection |
-| `Claude_Code_6.py`         | Pipeline documentation, architecture specs, diagrams | Broader scope for distributed ingestion system     |
+| `judge_six.py`         | Pipeline documentation, architecture specs, diagrams | Broader scope for distributed ingestion system     |
 | p99 ≤90ms latency      | ~45 min/night runtime efficiency                     | Batch processing vs. real-time validation          |
 | 98% test coverage gate | Quality gates: items, sources, costs, scores         | Multifaceted quality over strict coverage          |
 

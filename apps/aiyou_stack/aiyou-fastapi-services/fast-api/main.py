@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN FastAPI Governance Engine
 Sub-90ms p99 latency | 100% security gate | Zero external deps in core logic
 """

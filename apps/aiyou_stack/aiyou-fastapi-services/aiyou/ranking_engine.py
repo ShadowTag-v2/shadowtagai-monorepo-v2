@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack - ShadowTag-v4 Feed Ranking Engine
 
 AI-presumed ranking (not engagement-based):

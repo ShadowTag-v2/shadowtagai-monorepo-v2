@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ReAct Orchestrator: Reason → Act → Observe cycle for Shadowtag swarm.
 
 Implements Kosmos patterns:

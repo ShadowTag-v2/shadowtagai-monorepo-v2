@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GRPO (Group Relative Policy Optimization) Simulator
 
 Demonstrates key concepts of GRPO:

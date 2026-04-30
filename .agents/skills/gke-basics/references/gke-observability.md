@@ -157,3 +157,4 @@ resource.type="k8s_event" AND jsonPayload.reason="FailedScheduling"
 # Audit logs (who did what)
 resource.type="k8s_cluster" AND logName:"cloudaudit.googleapis.com"
 ```
+

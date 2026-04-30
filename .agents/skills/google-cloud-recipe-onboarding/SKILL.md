@@ -103,9 +103,9 @@ Linux VM (e.g., `e2-micro` which is part of the Always Free tier in certain
 regions). - **[Cloud Storage](https://docs.cloud.google.com/storage/docs):**
 Create a bucket to store files.
 
-Example (Cloud Run):
+Example (Cloud Run): 
 
-```bash
+```bash 
     gcloud run deploy hello-world \
     --image=gcr.io/cloudrun/hello \ --platform=managed \ --region=us-central1 \
     --allow-unauthenticated

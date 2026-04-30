@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Musk First Principles Filter - Pre-JR Engine Triage.
 
 Runs BEFORE Purpose/Reasons/Brakes to ensure we're not

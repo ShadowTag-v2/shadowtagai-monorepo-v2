@@ -1,0 +1,10 @@
+name: Antigravity Deploy
+on: { push: { branches: [ main ] } }
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: ./scripts/judge_six_ci.sh
+      - uses: google-github-actions/deploy-cloudrun@v1
+        with: { service: 'n-autoresearch/Kosmos/BioAgentss-server', source: '.', region: 'us-central1' }

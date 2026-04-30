@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack - Gemini Ingestion Layer Pipeline
 
 Main orchestration pipeline that:

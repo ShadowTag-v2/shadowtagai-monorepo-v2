@@ -39,7 +39,7 @@
 │  ┌──────────────────────────────────────────────────────────┐ │
 │  │              Function Tool Registry                       │ │
 │  │  • atp_519_scan()         • multi_agent_debate()         │ │
-│  │  • Claude_Code_6_classify()   • dte_evolve()                 │ │
+│  │  • judge_six_classify()   • dte_evolve()                 │ │
 │  │  • audit_compress()       • wealth_analyze()             │ │
 │  │  • glicko_update()        • [+∞ extensible]              │ │
 │  └─────────────────┬────────────────────────────────────────┘ │
@@ -734,9 +734,9 @@ E (Unlikely) × IV (Negligible)  = L  (Low)
 **3-Layer Decision System**:
 
 ```python
-from app.pnkln import Cor.Claude_Code_6Classifier
+from app.pnkln import Judge6Classifier
 
-judge = Cor.Claude_Code_6Classifier()
+judge = Judge6Classifier()
 
 decision = await judge.classify(
     violations=[...],  # From ATP scan
@@ -779,7 +779,7 @@ tagged = shadow.sign(
     content="Decision: APPROVE deployment",
     metadata={
         "timestamp": "2025-11-18T10:30:00Z",
-        "agent": "Claude_Code_6",
+        "agent": "judge_six",
         "glicko_rating": 1650
     }
 )
@@ -914,7 +914,7 @@ from load_testing import PNKLNLoadTester
 tester = PNKLNLoadTester()
 
 results = await tester.run_suite(
-    service="Cor.Claude_Code_6",
+    service="judge6",
     sla_p99_ms=90,
     iterations=1000,
     warmup=50
@@ -1129,7 +1129,7 @@ decision = jr.validate(
 
 kernel_ratings = glicko.get_ratings([
     "atp_519_scan",
-    "Claude_Code_6_classify",
+    "judge_six_classify",
     "audit_compress"
 ])
 

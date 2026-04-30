@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import json
 
 ws_settings_path = "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.vscode/settings.json"

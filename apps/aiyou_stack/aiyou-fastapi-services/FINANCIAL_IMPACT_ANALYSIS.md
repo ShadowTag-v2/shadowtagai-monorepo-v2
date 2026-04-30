@@ -550,7 +550,7 @@ Launch Agent SaaS first, add Pinkln after $120K MRR.
 ```
 PRIORITY 1: REVENUE - Pinkln Kernel Chain API MVP
 ├─ Set up Gemini 2.0 Flash function calling (4h)
-├─ Implement 3 core functions: atp_519_scan, Claude_Code_6, audit_compress (8h)
+├─ Implement 3 core functions: atp_519_scan, judge_six, audit_compress (8h)
 ├─ Deploy on Cloud Run (2h)
 ├─ Stripe usage-based billing setup (3h)
 ├─ Landing page: /docs/pinkln (3h)

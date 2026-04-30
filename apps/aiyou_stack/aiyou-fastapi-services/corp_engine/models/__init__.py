@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Corp Engine Models - Multi-tenant SaaS data models"""
 
 from .tenant import (

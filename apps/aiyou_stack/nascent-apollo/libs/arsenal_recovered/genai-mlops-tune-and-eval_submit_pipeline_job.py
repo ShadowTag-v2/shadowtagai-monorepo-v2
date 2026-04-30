@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from google.cloud import aiplatform
 
 aiplatform.init(project="[your-project-id]", location="us-central1")  # Initialize the Vertex AI SDK

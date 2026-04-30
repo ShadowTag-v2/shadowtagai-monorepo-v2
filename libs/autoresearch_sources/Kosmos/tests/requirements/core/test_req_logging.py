@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Test suite for Core Infrastructure - Logging Requirements (REQ-LOG-001 through REQ-LOG-006).
 

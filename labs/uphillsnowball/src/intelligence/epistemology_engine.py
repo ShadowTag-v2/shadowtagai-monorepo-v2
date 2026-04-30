@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Epistemological Forensics Engine.
 
 Goes beyond ScholarEval citation verification into statistical

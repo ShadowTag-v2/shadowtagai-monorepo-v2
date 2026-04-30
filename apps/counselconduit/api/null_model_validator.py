@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Null-Model Validator — Permutation testing for hallucinated alpha.
 
 Prevents the system from reporting 'discoveries' that are statistical noise.

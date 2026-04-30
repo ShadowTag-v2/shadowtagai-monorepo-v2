@@ -10,6 +10,7 @@ contract MockERC8004Identity is IERC8004Identity {
         uris[agentId] = agentCardURI;
     }
 
+<<<<<<< HEAD
     function getAgentCardURI(uint256 agentId) external view returns (string memory) {
         return uris[agentId];
     }
@@ -18,6 +19,9 @@ contract MockERC8004Identity is IERC8004Identity {
     function getAgentURI(uint256 agentId) external view returns (string memory) {
 ||||||| f285896f1
     function getAgentURI(uint256 agentId) external view returns (string memory) {
+=======
+    function getAgentCardURI(uint256 agentId) external view returns (string memory) {
+>>>>>>> feature/n-autoresearch/Kosmos/BioAgentss-integration
         return uris[agentId];
     }
 }

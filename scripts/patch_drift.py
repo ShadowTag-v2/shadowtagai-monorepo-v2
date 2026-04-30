@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import json
 
 
@@ -12,7 +10,7 @@ def patch_drift() -> None:
     missing_paths = [
         "reference/public-demos/antigravity-go",
         "reference/public-demos/codepmcs",
-        "reference/public-demos/Cor_Claude_Code_6",
+        "reference/public-demos/judge6",
         "reference/public-demos/kosmos",
         "reference/public-demos/shadowtag_v2",
     ]

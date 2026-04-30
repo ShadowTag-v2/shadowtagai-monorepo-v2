@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Agent implementations"""
 
 from .compliance_sdr import ComplianceSDRAgent, Lead, LeadGenerationResult, LeadStatus

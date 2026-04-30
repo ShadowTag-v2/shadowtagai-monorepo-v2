@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Leaks Protocol — Copyright Compliance Guardrail Agent.
 
 Derived from analysis of leaked Claude Opus 4.6, Grok 4.20/4.30, and Cursor 3.0

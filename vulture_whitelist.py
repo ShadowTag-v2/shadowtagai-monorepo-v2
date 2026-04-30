@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Vulture whitelist — known false positives for dead code analysis."""
 
 # dream_consolidation.py: NotebookLM is imported dynamically in try/except
@@ -53,8 +51,8 @@ from google.cloud import billing_v1  # noqa: F401
 
 _ = billing_v1
 
-# --- Swarm/Cor.Cor_Claude_Code_6 conditional imports ---
-# swarm_endpoint.py and Cor.Cor_Claude_Code_6/nodes.py: SwarmVoter/VoteDecision inside try/except
+# --- Swarm/Judge6 conditional imports ---
+# swarm_endpoint.py and judge6/nodes.py: SwarmVoter/VoteDecision inside try/except
 SwarmVoter = None  # noqa: F841 — conditional import in try/except
 VoteDecision = None  # noqa: F841 — conditional import in try/except
 

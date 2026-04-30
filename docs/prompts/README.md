@@ -9,7 +9,7 @@ This directory contains Gemini 2.0 Pro analysis prompts for comprehensive evalua
 | Prompt                        | Target Component          | Phase          | Confidence Target | File                                                           |
 | ----------------------------- | ------------------------- | -------------- | ----------------- | -------------------------------------------------------------- |
 | **Gemini Ingestion Analysis** | Gemini Ingestion Layer    | Pre-production | ≥60%              | [gemini_ingestion_analysis.md](./gemini_ingestion_analysis.md) |
-| **Judge 6 Analysis**         | Judge 6 Validation Layer | Production     | ≥70%              | [Claude_Code_6_analysis.md](./Claude_Code_6_analysis.md)               |
+| **Judge 6 Analysis**         | Judge 6 Validation Layer | Production     | ≥70%              | [judge_six_analysis.md](./judge_six_analysis.md)               |
 
 ---
 
@@ -54,7 +54,7 @@ Each dimension receives:
 
 **For Production Systems** (with real data):
 
-- Use: [Judge 6 Analysis](./Claude_Code_6_analysis.md)
+- Use: [Judge 6 Analysis](./judge_six_analysis.md)
 - Confidence Target: ≥70%
 - Best for: Performance tuning, cost optimization, production health checks
 
@@ -80,7 +80,7 @@ Optional (if available):
 
 Required:
 
-- [ ] Judge 6 source code (Claude_Code_6.py and related files)
+- [ ] Judge 6 source code (judge_six.py and related files)
 - [ ] Production metrics:
   - Latency distributions (p50, p95, p99, p99.9)
   - Throughput data (validations/second)
@@ -249,7 +249,7 @@ If your stack differs from PNKLN, modify prompts:
 
 1. **Change Component Names**:
    - Replace "Gemini Ingestion Layer" with your component
-   - Update file references (e.g., "Claude_Code_6.py" → "your_validator.py")
+   - Update file references (e.g., "judge_six.py" → "your_validator.py")
 
 2. **Adjust Metrics**:
    - Replace "Items/day" with your volume metric
@@ -330,8 +330,8 @@ docs/prompts/results/
 ├── gemini_ingestion_2025-11-15.md    # First pre-prod analysis
 ├── gemini_ingestion_2026-01-15.md    # Post-deployment analysis
 ├── gemini_ingestion_2026-04-15.md    # Quarterly review
-├── Claude_Code_6_2025-11-15.md           # Production health check
-├── Claude_Code_6_2026-02-15.md           # Post-optimization review
+├── judge_six_2025-11-15.md           # Production health check
+├── judge_six_2026-02-15.md           # Post-optimization review
 └── README.md                          # Results index
 ```
 
@@ -483,7 +483,7 @@ Run analysis immediately after:
 
 ### Questions?
 
-- **Prompt structure**: See examples in `gemini_ingestion_analysis.md` and `Claude_Code_6_analysis.md`
+- **Prompt structure**: See examples in `gemini_ingestion_analysis.md` and `judge_six_analysis.md`
 - **Gemini API**: https://ai.google.dev/gemini-api/docs
 - **Analysis methodology**: Based on structured component analysis best practices
 
@@ -525,7 +525,7 @@ Found a gap or improvement?
 ## 🗺️ Next Steps
 
 1. **Run Your First Analysis**:
-   - Choose [Gemini Ingestion Analysis](./gemini_ingestion_analysis.md) or [Judge 6 Analysis](./Claude_Code_6_analysis.md)
+   - Choose [Gemini Ingestion Analysis](./gemini_ingestion_analysis.md) or [Judge 6 Analysis](./judge_six_analysis.md)
    - Follow the Quick Start Guide above
    - Save results to `results/` directory
 

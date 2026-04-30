@@ -61,7 +61,7 @@
 ## SEMANTIC EFFICIENCY
 
 - SOP format = verbose markdown (hundreds of bytes minimum)
-- Your target = 487 bytes vs 50KB (ATP_519_scan → Claude_Code_6_binary)
+- Your target = 487 bytes vs 50KB (ATP_519_scan → judge_six_binary)
 - RFC 2119 constraints = rigid text patterns (not compressed binary)
 - MCP integration possible but adds parsing overhead vs native schemas
 

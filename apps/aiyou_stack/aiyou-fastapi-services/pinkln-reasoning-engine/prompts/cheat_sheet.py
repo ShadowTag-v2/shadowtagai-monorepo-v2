@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Cheat Sheet Fusion — Evolved Prompt Engineering
 
 Condensed from 21 prompt engineering techniques to 10 essential patterns.

@@ -1,6 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 class ContentModerator:
     def scan_content(self, payload):
         print("    [SafetyNet] Scanning for toxicity...")

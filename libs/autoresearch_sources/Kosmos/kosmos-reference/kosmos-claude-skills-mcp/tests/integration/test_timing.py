@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Timing tests to verify Cursor timeout requirements are met."""
 
 import subprocess

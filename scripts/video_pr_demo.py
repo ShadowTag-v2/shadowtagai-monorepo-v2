@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Video PR Demo Generator — Concatenates Veo clips into a PR demo reel.
 
 Combines multiple Veo-generated video clips into a single demo reel

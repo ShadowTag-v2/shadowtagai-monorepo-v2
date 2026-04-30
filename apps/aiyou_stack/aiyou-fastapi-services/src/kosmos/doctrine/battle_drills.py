@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FM 7-8 / Ranger Handbook: Battle Drills
 ========================================
 

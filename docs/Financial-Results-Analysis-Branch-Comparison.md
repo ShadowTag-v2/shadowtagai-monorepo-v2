@@ -471,7 +471,7 @@ Merged Branch Structure:
 ├── pnkln/
 │   ├── core/
 │   │   ├── gemini_ingestion_layer.py             (from Branch B)
-│   │   ├── Claude_Code_6_pipeline.py                 (from Branch B)
+│   │   ├── judge_six_pipeline.py                 (from Branch B)
 │   │   ├── jr_engine.py                          (from Branch B)
 │   │   ├── monte_carlo_risk.py                   (from Branch B)
 │   │   └── cor_orchestrator.py                   (from Branch B)

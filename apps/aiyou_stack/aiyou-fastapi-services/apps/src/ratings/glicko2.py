@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Glicko-2 rating system for kernels, agents, and strategies.
 
 Implementation with configurable tolerance (tol) parameter for convergence.

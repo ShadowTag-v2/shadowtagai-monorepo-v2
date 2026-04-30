@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Ingestion Layer - Nightly Intelligence Collection Orchestrator
 
 ARCHITECTURE: GKE CronJob Multi-Container
@@ -15,7 +13,7 @@ KEY RESPONSIBILITIES:
 5. Deliver AM briefing to downstream services
 
 INTEGRATION:
-- CALLED BY: Services in 4 namespaces (Cor_Claude_Code_6-system, analytics, etc.)
+- CALLED BY: Services in 4 namespaces (judge6-system, analytics, etc.)
 - OUTPUTS TO: GCS bucket, BigQuery, AM briefing system
 
 QUALITY GATES:

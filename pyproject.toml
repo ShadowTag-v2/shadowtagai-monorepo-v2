@@ -161,7 +161,6 @@ exclude = [
     "external_sdks/",
     ".venv/",
     "node_modules/",
-    ".agent/",
 ]
 line-length = 120
 target-version = "py314"

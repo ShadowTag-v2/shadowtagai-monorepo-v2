@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Claude Code Memory Integration
 Extracts patterns from transcript archive and persists to ~/.claude-code/memory.md
 

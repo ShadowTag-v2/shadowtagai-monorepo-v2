@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Dynamic Timeline Engine for LawTrack
 
 Generates procedural timelines based on jurisdiction rules

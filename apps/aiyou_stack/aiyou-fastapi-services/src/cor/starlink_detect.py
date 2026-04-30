@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Starlink Ingress Detection & Routing.
 Detects if current request is coming via Starlink IP ranges.
 """

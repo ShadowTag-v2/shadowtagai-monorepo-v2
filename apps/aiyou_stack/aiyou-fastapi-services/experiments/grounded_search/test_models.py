@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import vertexai
 from vertexai.generative_models import GenerativeModel
 

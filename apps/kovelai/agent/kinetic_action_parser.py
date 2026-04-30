@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Kinetic Action Parser (KAP) — Forensic Action Verb Auditor
 
 The Kinetic Action Parser is the mandatory first-pass hook (Prompt 0) in the

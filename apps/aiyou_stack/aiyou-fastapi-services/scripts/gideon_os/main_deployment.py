@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from engines.magic_ranker import ModernMagicFormula
 from engines.trust_router import TrustRouter
 from engines.video_econ import VideoEconomics

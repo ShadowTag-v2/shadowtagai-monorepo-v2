@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Growth Engineer Agent - Implements viral mechanics and growth loops."""
 
 from .base_agent import BaseAgent

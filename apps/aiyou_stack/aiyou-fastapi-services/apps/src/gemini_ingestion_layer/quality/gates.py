@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Quality Gates Implementation
 
 Multi-faceted quality checks for the Gemini Ingestion Layer.

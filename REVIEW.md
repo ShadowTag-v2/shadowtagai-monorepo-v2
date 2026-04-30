@@ -21,7 +21,7 @@ Generate an `.ipynb` with `"vscode": {}` metadata and prompt the human to run it
 - **Trigger**: When matrix sizes exceed M1 Max SRAM limits AND cloud GPU is needed
 - **Format**: Notebook saved to `labs/uphillsnowball/notebooks/pr_review_{pr_number}.ipynb`
 
-### Tier 3 — Bare-Metal M1 Max (ANE Bridge / Omega Protocol)
+### Tier 3 — Bare-Metal M1 Max (ANE Bridge / Pickle Rick)
 Pass test matrices and edge ML changes through `apps/aiyou_stack/aiyou-fastapi-services/ane_bridge.py`.
 
 > [!CAUTION]
@@ -30,7 +30,7 @@ Pass test matrices and edge ML changes through `apps/aiyou_stack/aiyou-fastapi-s
 > you **MUST** flag the PR with 🔴 Normal (Kernel Panic Risk).
 
 - **Compile budget**: The Apple private API has an undocumented 119-cycle compile limit.
-  Omega Protocol's subprocess loop catches exit codes, flushes Apple memory registers for 1000ms, and auto-resumes.
+  Pickle Rick's subprocess loop catches exit codes, flushes Apple memory registers for 1000ms, and auto-resumes.
 - **Isolation**: ANE operations run in `subprocess.Popen` — main FastAPI server is fully insulated.
 - **Build**: `cd third_party/ANE/bridge && make clean && make`
 
@@ -157,4 +157,4 @@ Pass test matrices and edge ML changes through `apps/aiyou_stack/aiyou-fastapi-s
 | Kernel panic detection | ❌ Impossible | ✅ enforce_m1_max_constraints() |
 | Model | Claude (closed) | Gemini (open-weight capable) |
 | Data sovereignty | ❌ Anthropic's servers | ✅ Never leaves your machine |
-| 119-cycle leak defense | ❌ N/A | ✅ Omega Protocol subprocess |
+| 119-cycle leak defense | ❌ N/A | ✅ Pickle Rick subprocess |

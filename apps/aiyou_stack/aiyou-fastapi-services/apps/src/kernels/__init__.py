@@ -1,11 +1,9 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Kernel implementations for the chain."""
 
 from .atp_519_scan import ATP519ScanKernel
 from .audit_compress import AuditCompressKernel
 from .base import Kernel, KernelChainError
-from .Claude_Code_6 import JudgeSixClassifyKernel
+from .judge_six import JudgeSixClassifyKernel
 
 __all__ = [
     "ATP519ScanKernel",

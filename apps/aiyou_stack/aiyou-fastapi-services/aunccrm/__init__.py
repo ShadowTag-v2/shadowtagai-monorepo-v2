@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AunCRM - AI Compliance and Risk Management Framework
 Purpose-Reasons-Brakes (PRB) system for regulated AI applications
 """

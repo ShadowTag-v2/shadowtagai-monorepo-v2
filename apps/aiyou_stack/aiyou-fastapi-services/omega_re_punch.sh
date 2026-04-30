@@ -120,7 +120,7 @@ mkdir -p libs/arsenal/god_mode
 cat <<PYTHON > libs/arsenal/god_mode/direct_write.py
 import os
 import logging
-from src.governance.Claude_Code_6.sentinel import JudgeSentinel
+from src.governance.judge_six.sentinel import JudgeSentinel
 
 class GeminiCodeAssistProxy:
     """

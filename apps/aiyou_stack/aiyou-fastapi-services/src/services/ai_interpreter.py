@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """AI Interpretation Layer for Tokable
 Converts gestures to text and generated art in real-time
 

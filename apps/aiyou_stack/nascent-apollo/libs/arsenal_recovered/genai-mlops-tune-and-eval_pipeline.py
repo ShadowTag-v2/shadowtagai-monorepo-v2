@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # pylint: disable=import-outside-toplevel,too-many-locals,too-many-arguments,too-many-positional-arguments,unused-argument
 from typing import NamedTuple
 

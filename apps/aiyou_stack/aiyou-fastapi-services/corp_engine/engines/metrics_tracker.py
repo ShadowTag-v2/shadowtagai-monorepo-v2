@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Metrics Tracker
 ================
 Enforces the "Ever Upward Sloping Graph" doctrine.

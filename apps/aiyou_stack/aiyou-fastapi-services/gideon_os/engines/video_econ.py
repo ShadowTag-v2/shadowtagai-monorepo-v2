@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # /home/jupyter/gideon_os/engines/video_econ.py
 from ..core.guard import judge
 

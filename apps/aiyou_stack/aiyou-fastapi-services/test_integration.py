@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Integration tests for PNKLN Core Stack™ API
 Tests AutoGen → Gemini migration functionality
 """

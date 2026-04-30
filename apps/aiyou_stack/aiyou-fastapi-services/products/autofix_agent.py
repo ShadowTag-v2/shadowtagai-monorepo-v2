@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pnkln Autofix Agent (Green Loop)
 A self-healing TDD loop that fixes failing tests using Vertex AI.
 

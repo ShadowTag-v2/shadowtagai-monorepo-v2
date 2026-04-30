@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """L0: SuperGrok.1 - Intake & SPT.1 (Static)
 
 Role: The Gatekeeper

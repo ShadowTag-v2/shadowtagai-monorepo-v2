@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack - YouTube Source Adapter
 
 Fetches videos from YouTube using the YouTube Data API v3.

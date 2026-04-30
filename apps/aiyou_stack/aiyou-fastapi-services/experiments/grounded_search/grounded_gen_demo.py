@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from google.cloud import discoveryengine_v1beta as discoveryengine
 
 # Configuration

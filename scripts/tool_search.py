@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """tool_search — Lazy Discovery for Skills System.
 ================================================
 Implements Claude Code-style lazy tool loading via semantic search.

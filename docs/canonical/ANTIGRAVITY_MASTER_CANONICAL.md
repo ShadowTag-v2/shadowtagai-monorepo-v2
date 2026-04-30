@@ -24,7 +24,7 @@ A **platform of platforms** — the operating system layer that all product vert
 | Component          | Role                                       | Status                                     |
 | ------------------ | ------------------------------------------ | ------------------------------------------ |
 | PNKLN Stack        | AI-native FAANG-replacement dev platform   | Active (apps/pnkln_stack)                  |
-| Judge 6            | Multimodal CI/CD gatekeeper                | Active (scripts/Cor.Claude_Code_6.sh)                 |
+| Judge 6            | Multimodal CI/CD gatekeeper                | Active (scripts/judge6.sh)                 |
 | Aegaeon Protocol   | 84% API cost reduction via context caching | Active (core/aegaeon/)                     |
 | Sovereign MLX      | M1 Max local inference (zero API cost)     | Active (core/sovereign_mlx/)               |
 | Gemini Agent Swarm | Continuous intelligence loop               | Active (scripts/gemini_agent_swarm.py)     |
@@ -74,7 +74,7 @@ PNKLN is the AI-native development standard that governs all Antigravity code.
 ## 6. The 33-Repo Roadmap (Build Priority)
 
 **NOW (Revenue):** counselconduit → legaltrack → antigravity-proxy
-**90-DAYS (Platform):** nascent-apollo → Cor.Claude_Code_6-service → codepmcs → bugbot
+**90-DAYS (Platform):** nascent-apollo → judge6-service → codepmcs → bugbot
 **COMPLIANCE:** counselconduit-api (HIPAA/NIST) → legaltrack-rules-packs
 **PLATFORM:** gptram-replacement (Aegaeon) → pnkln-mall → shadowtag-core → safety-pipeline
 

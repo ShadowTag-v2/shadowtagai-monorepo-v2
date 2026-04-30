@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Context Index Service - CRUD Operations for OPORD Contexts
 
 Provides service layer for creating, reading, updating, and deleting
@@ -188,7 +186,7 @@ class ContextIndexService:
 
         return revenue_log
 
-    def log_Cor_Claude_Code_6_decision(
+    def log_judge6_decision(
         self,
         opord_number: int,
         policy_violated: str,
@@ -209,7 +207,7 @@ class ContextIndexService:
             "timestamp": datetime.now(UTC).isoformat(),
         }
 
-        # TODO: Push to Elasticsearch Cor_Claude_Code_6_decisions index
+        # TODO: Push to Elasticsearch judge6_decisions index
         logger.warning(
             f"Judge#6 decision logged for OPORD {opord_number:05d}: "
             f"{severity} violation of {policy_violated}",

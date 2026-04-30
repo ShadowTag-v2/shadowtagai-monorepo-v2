@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Fitness Functions: Loss-based fitness for neural network optimization.
 
 Converts neural network losses to PSO fitness values.

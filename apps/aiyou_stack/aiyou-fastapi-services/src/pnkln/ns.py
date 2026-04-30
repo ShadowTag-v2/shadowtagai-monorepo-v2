@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """NS - Semantic Memory Retrieval
 
 Semantic memory system for storing and retrieving contextually relevant

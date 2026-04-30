@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Development Constraints & Operational Frameworks
 SOPs, coding standards, and shipping philosophy
 """

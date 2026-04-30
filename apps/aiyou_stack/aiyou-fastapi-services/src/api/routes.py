@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """FastAPI Routes for Wealth Acceleration Agent
 
 This module defines the RESTful API endpoints for accessing the

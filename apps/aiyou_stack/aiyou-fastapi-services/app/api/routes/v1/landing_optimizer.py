@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """API routes for Landing Page Optimizer"""
 
 from fastapi import APIRouter, Depends, HTTPException, status

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Wealth Acceleration Service - FastAPI Integration
 
 This service provides FastAPI endpoints for the wealth acceleration strategist agent,

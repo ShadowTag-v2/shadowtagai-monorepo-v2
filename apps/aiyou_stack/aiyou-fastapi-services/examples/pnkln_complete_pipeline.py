@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack™ Complete Pipeline Example
 
 This example demonstrates the full end-to-end flow through the PNKLN stack:

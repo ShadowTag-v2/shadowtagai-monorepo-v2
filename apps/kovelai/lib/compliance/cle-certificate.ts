@@ -191,7 +191,6 @@ export function getCertificatePDFData(cert: CLECertificate): Record<string, stri
 // ─── Helpers ────────────────────────────────────────────────────────
 
 function generateVerificationCode(): string {
-  // biome-ignore lint/security/noSecrets: Character alphabet for human-readable codes, not a secret
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // No I, O, 0, 1 for readability
   let code = '';
   for (let i = 0; i < 8; i++) {

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """gcs_frame_cdn.py — GCS-backed Frame CDN with Signed URLs.
 
 Generates signed URLs for frame sequences stored in GCS,

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Moondream Vision Ingestion Pipeline
 
 Processes images/documents with Moondream vision model and outputs structured JSON.

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Observability and monitoring components for Kosmos agents."""
 
 from kosmos.observability.agentops_integration import AgentOpsTracker

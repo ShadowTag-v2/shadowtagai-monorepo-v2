@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Deploy Manager - GitHub → Cloud Build → Cloud Run
 
 Pushes code to GitHub, creates PRs, triggers Cloud Build.

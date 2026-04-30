@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # src/epistemology/zero_trust_pipeline.py
 # ============================================================================
 # Secure BLAST & NotebookLM Zero-Token Quarantine

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Base Agent: Abstract base class for specialized Kosmos agents.
 
 Each agent specializes in a specific aspect of autonomous research:

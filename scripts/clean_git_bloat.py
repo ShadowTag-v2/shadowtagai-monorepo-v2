@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import subprocess
 import time
 from pathlib import Path
@@ -22,10 +20,7 @@ def get_token():
     encoded_jwt = jwt.encode({"iat": now - 60, "exp": now + (10 * 60), "iss": APP_2_ID}, pk, algorithm="RS256")
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
     resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
-    data = resp.json()
-    if isinstance(data, dict) and "message" in data:
-        raise ValueError(f"GitHub API Error: {data['message']}")
-    inst_id = next(inst["id"] for inst in data if inst["account"]["login"].lower() == TARGET_ORG.lower())
+    inst_id = next(inst["id"] for inst in resp.json() if inst["account"]["login"].lower() == TARGET_ORG.lower())
     resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers, timeout=30)
     return resp.json()["token"]
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Remote Agent Implementation for Zero Trust A2A."""
 
 import logging

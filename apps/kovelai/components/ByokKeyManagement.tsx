@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 /**
  * @fileoverview BYOK Key Management Component
  *
@@ -109,7 +107,7 @@ async function _hashApiKey(key: string): Promise<string> {
 // ═══════════════════════════════════════════════════════════
 
 export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
-  firmId: _firmId,
+  firmId,
   registeredKeys,
   onKeyRegistered,
   onKeyRevoked,
@@ -173,9 +171,8 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
           const isSelected = selectedProvider === provider.id;
 
           return (
-            <button
+            <div
               key={provider.id}
-              type="button"
               style={{
                 ...styles.providerCard,
                 ...(isSelected ? styles.providerCardSelected : {}),
@@ -212,7 +209,6 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
                       onClick={(e) => e.stopPropagation()}
                     />
                     <button
-                      type="button"
                       style={styles.toggleBtn}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -224,7 +220,6 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
                   </div>
                   <div style={styles.actions}>
                     <button
-                      type="button"
                       style={styles.registerBtn}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -250,7 +245,6 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
               {isSelected && registered && (
                 <div style={styles.revokeSection}>
                   <button
-                    type="button"
                     style={styles.revokeBtn}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -261,7 +255,7 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
                   </button>
                 </div>
               )}
-            </button>
+            </div>
           );
         })}
       </div>

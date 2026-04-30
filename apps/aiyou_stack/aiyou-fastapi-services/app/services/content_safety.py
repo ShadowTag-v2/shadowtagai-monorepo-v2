@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Content Safety Service
 Google Content Safety API + PII Detection for ATP 5-19 Compliance
 

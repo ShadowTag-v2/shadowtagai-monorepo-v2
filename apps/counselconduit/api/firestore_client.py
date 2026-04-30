@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # apps/counselconduit/api/firestore_client.py
 """Firestore client for CounselConduit — attestation, matter, and session persistence.
 

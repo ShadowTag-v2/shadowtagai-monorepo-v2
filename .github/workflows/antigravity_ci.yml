@@ -12,9 +12,6 @@ concurrency:
   group: antigravity_ci-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-
 jobs:
   test-proxy:
     runs-on: ubuntu-latest

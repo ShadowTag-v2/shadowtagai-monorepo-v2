@@ -41,8 +41,7 @@ export VERTEX_PROJECT="shadowtag-omega-v4"
 export VERTEX_LOCATION="us-central1"
 export DISABLE_TELEMETRY="1"
 export DISABLE_ERROR_REPORTING="1"
-export ALLOW_ANT_COMPUTER_USE_MCP="1"
-_log "Exported 9 config vars"
+_log "Exported 8 config vars"
 
 # --- Verify gcloud auth ---
 if ! gcloud auth print-access-token --quiet >/dev/null 2>&1; then
@@ -97,7 +96,6 @@ if [ "${1:-}" = "--export" ]; then
   echo "export VERTEX_LOCATION=\"us-central1\""
   echo "export DISABLE_TELEMETRY=\"1\""
   echo "export DISABLE_ERROR_REPORTING=\"1\""
-  echo "export ALLOW_ANT_COMPUTER_USE_MCP=\"1\""
 
   for entry in $SECRETS; do
     [ -z "$entry" ] && continue

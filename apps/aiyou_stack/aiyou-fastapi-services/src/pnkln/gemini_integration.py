@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Revenue Platform - Gemini 2.0 Integration
 97% cost reduction: GPT-4 ($50K/year) → Gemini ($1.5K/year)
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Firestore backend for Shadowtag whiteboard persistence.
 
 Provides real-time sync capabilities for the shared whiteboard.

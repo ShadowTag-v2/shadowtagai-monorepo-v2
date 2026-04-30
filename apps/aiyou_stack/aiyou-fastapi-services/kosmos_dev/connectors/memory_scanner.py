@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Memory Scanner: Scan local file system for watermarked content.
 
 Implements file system walking with filters for watermark detection.

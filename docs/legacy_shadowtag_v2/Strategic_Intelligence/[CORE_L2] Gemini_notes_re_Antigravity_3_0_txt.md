@@ -2749,7 +2749,7 @@ from typing import Dict, List
 from libs.steel.sdk import AntigravityEngine
 
 # Configure Judge 6 Logger
-logger = logging.getLogger("Cor.Claude_Code_6")
+logger = logging.getLogger("Judge6")
 
 class JudgeSixSentinel:
     """
@@ -2812,8 +2812,8 @@ To enforce the "Runtime" layer, we don't trust Python. We trust the Network. We 
 # infrastructure/security.tf
 
 # 1. The Gateway Policy
-resource "google_network_security_gateway_security_policy" "Cor.Claude_Code_6_policy" {
-  name        = "Cor.Claude_Code_6-policy"
+resource "google_network_security_gateway_security_policy" "judge6_policy" {
+  name        = "judge6-policy"
   location    = "us-central1"
   description = "Judge 6 Governance for Velocity Cockpit"
 }
@@ -2822,7 +2822,7 @@ resource "google_network_security_gateway_security_policy" "Cor.Claude_Code_6_po
 resource "google_network_security_gateway_security_policy_rule" "allow_devtools" {
   name                    = "allow-devtools"
   location                = "us-central1"
-  gateway_security_policy = google_network_security_gateway_security_policy.Cor.Claude_Code_6_policy.name
+  gateway_security_policy = google_network_security_gateway_security_policy.judge6_policy.name
   enabled                 = true
   priority                = 1
   session_matcher         = "host() in ['github.com', 'pypi.org', 'stackoverflow.com', 'googleapis.com']"
@@ -3033,7 +3033,7 @@ Wraps 'Hunter' (Search), 'Killer' (Edit), and 'Hippocampus' (Memory).
             with psycopg2.connect(self.conn_str) as conn:
                 with conn.cursor() as cur:
                     cur.execute("""
-                        INSERT INTO Cor.Claude_Code_6_memories
+                        INSERT INTO judge6_memories
                         (agent_id, context_layer, memory_text, outcome)
                         VALUES (%s, %s, %s, %s)
                     """, (self.agent_name, context, content, outcome))
@@ -3050,7 +3050,7 @@ Wraps 'Hunter' (Search), 'Killer' (Edit), and 'Hippocampus' (Memory).
             with psycopg2.connect(self.conn_str) as conn:
                 with conn.cursor() as cur:
                     cur.execute("""
-                        SELECT memory_text, outcome FROM Cor.Claude_Code_6_memories
+                        SELECT memory_text, outcome FROM judge6_memories
                         ORDER BY embedding <=> embedding('text-embedding-004', %s)
                         LIMIT 1
                     """, (query,))
@@ -3071,7 +3071,7 @@ Wraps 'Hunter' (Search), 'Killer' (Edit), and 'Hippocampus' (Memory).
 import logging
 from typing import List
 
-logger = logging.getLogger("Cor.Claude_Code_6")
+logger = logging.getLogger("Judge6")
 
 class JudgeSixSentinel:
 """

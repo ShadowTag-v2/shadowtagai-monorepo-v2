@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """California AI Compliance Engine
 ===============================
 Public-facing engine wrapping the NS-JR-Cor framework.

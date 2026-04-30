@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 'use client';
 
 interface FooterProps {
@@ -14,8 +12,8 @@ export default function Footer({ onOpenModal }: FooterProps) {
           <div>
             <div className="text-xl font-bold text-primary-text mb-3">KovelAI</div>
             <p className="text-sm text-secondary-text leading-relaxed">
-              Shield your client&apos;s research from discovery. Privileged search infrastructure
-              they use under your oversight — opposing counsel discovers nothing.
+              Post-Heppner privileged client AI and web search infrastructure for law firms. Capture
+              revenue, protect privilege, automate intake.
             </p>
           </div>
           <div>
@@ -29,9 +27,6 @@ export default function Footer({ onOpenModal }: FooterProps) {
               </li>
               <li>
                 <a href="#discovery-risk">Discovery Risk</a>
-              </li>
-              <li>
-                <a href="#pricing">Pricing</a>
               </li>
             </ul>
           </div>
@@ -61,7 +56,7 @@ export default function Footer({ onOpenModal }: FooterProps) {
                   onClick={onOpenModal}
                   className="bg-transparent border-none cursor-pointer text-[#d0c5b5] hover:text-[#d7e3fc] transition-colors text-[0.8125rem] p-0"
                 >
-                  Schedule a Demo
+                  Contact Sales
                 </button>
               </li>
               <li>

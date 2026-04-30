@@ -1,6 +1,6 @@
 # MEMORY.md — Workspace Session Index
 
-> Read-only quick-reference index. Max 150 chars per line. Updated by COR.COR.KAIROS nightly.
+> Read-only quick-reference index. Max 150 chars per line. Updated by KAIROS nightly.
 
 ## Active Project
 - `shadowtag-omega-v4` — GCP project, Cloud Run + Firestore + Cloud Tasks
@@ -11,7 +11,7 @@
 - `uphillsnowball` → `labs/uphillsnowball` — R&D engine, Apple Silicon local
 
 ## Key Scripts
-- `scripts/kairos_daemon.py` — Background agent controller (COR.COR.KAIROS)
+- `scripts/kairos_daemon.py` — Background agent controller (KAIROS)
 - `scripts/dream_consolidation.py` — 4-phase KI maintenance (nightly)
 - `scripts/loop_steward.py` — Autonomous task continuation (5-min)
 - `scripts/load_mcp_secrets.sh` — Secret Manager env injection
@@ -32,7 +32,7 @@
 - `antigravity-mcp-config.json` — MCP routing truth
 
 ## Daemon Fleet
-- COR.COR.KAIROS → background, health checks every 5 min
+- KAIROS → background, health checks every 5 min
 - Dream Consolidation → nightly orient/gather/consolidate/prune
 - Loop Steward → 5-min idle scaling cycles
 - pnkln-evolve → recursive self-improvement

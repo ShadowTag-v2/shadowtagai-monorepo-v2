@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import os
 import sys
 
@@ -21,7 +19,7 @@ TARGET_THREADS = [
 
 
 def get_files_recursively(directory):
-    """Omega Protocol: Ruthlessly hunt down every file in the directory structure."""
+    """Pickle Rick: Ruthlessly hunt down every file in the directory structure."""
     if not os.path.exists(directory):
         return []
 

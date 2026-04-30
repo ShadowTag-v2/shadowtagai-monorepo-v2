@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Basic Claude Agent SDK Query Example
 
 This example demonstrates how to use the Claude Agent SDK to make simple queries.

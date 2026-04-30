@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """JR ENGINE - ATP 5-19 Risk Assessment Framework
 ===============================================
 

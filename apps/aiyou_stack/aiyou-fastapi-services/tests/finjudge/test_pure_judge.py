@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tests for Pure Judge Engine (v0.2)"""
 
 from uuid import uuid4

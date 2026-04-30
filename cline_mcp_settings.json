@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    // Explicitly delete developer-knowledge-mcp, stitch-mcp, and firebase-mcp-server so Antigravity retains native control
+  }
+}

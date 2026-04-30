@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Google Drive Indexer
 
 This script indexes the contents of a specific Google Drive folder and saves the

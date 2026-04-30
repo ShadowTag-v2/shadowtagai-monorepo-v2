@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """SkyNode Architecture - The Steel
 Defines the physical infrastructure classes for Sovereign Compute.
 """

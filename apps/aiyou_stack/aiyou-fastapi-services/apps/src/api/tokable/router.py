@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # ruff: noqa: F403, F405
 """Tokable Gesture Streaming Platform API
 FastAPI endpoints for silent gesture-based streaming with AI interpretation

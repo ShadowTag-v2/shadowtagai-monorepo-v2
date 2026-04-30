@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Convergence Detection - Detects when autonomous research should stop (Phase 7).
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Commerce Mall models.
 
 Handles products, orders, payments, and virtual shopping.

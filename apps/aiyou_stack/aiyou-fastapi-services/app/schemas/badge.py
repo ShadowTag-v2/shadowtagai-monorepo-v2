@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Badge schemas for API validation."""
 
 from datetime import datetime

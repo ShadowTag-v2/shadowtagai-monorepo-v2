@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from .remediator import RemediationResult, Remediator
 from .scanner import CodeScanner, ScanResult
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Stripe Webhook Handler with Signature Verification
 
 Handles Stripe webhook events for subscription lifecycle:

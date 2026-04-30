@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Conflict Detection Engine
 
 This module implements AI-powered conflict detection for business negotiations.

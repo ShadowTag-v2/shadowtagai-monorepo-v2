@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Hugging Face Client Pool
 Rotates politely; does NOT evade rate limits.
 """

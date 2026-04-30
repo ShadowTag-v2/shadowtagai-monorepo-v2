@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Application Configuration
 
 Centralized configuration management using Pydantic settings.

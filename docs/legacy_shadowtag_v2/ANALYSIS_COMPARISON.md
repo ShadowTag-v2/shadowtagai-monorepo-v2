@@ -23,7 +23,7 @@ These swaps maintain the prompt's analytical structure while adapting it to doma
 
 | Aspect             | Judge 6                              | Gemini Ingestion Layer                      |
 | ------------------ | ------------------------------------- | ------------------------------------------- |
-| **Primary Source** | `Claude_Code_6.py` (single Python script) | Pipeline docs, architecture specs, configs  |
+| **Primary Source** | `judge_six.py` (single Python script) | Pipeline docs, architecture specs, configs  |
 | **Scope**          | Focused code review                   | Distributed system analysis                 |
 | **Artifacts**      | Source code, logs, metrics            | YAML configs, flowcharts, integration specs |
 
@@ -249,7 +249,7 @@ These additions address gaps in the original Judge 6 prompt and provide deeper i
 
 **Data Sources**:
 
-- `Claude_Code_6.py` source code
+- `judge_six.py` source code
 - Application logs (validation events, errors)
 - Prometheus/Grafana metrics
 - Gemini API call logs
@@ -394,7 +394,7 @@ Since Ingestion and Judge 6 are complementary, a **joint analysis** could provid
 **Prerequisites**:
 
 - Production logs, metrics, telemetry accessible
-- `Claude_Code_6.py` source code available
+- `judge_six.py` source code available
 - Incident reports and postmortems collected
   **Next Step**: Run analysis, target ≥70% confidence
 

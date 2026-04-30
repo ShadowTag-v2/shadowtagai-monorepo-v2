@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Reviewer Agent - Specialist in code review, quality analysis, and security.
 
 Focuses on identifying issues, suggesting improvements, and ensuring best practices.

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Tests for Orchestrator Task Dispatch Requirements (REQ-ORCH-TASK-001 through REQ-ORCH-TASK-007).
 

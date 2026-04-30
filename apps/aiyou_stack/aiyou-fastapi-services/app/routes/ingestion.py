@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Ingestion API Routes (PNKLN: Preparation)
 FastAPI endpoints for intelligence collection and classification
 """

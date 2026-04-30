@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """CCPA (California Consumer Privacy Act) Compliance Implementation
 
 Provides:

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Scrapling Sandbox Guard — scrapling_sandbox_guard.py.
 
 SAFE MODE enforcement for web scraping workflows.

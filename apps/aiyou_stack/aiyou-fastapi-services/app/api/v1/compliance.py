@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Compliance API Router
 
 REST API endpoints for the ActiveShield Modular Compliance Framework.

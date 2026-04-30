@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tower Monitoring Service using Tegu Object Detection
 AiU Orbital: Visual verification of tower equipment health
 """

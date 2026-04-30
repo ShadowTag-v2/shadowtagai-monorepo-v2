@@ -1,7 +1,12 @@
 id: no-bare-except
-message: "Security: Bare 'except:' catches SystemExit/KeyboardInterrupt. Use 'except Exception:' instead."
+message: "Security: Bare 'except:' catches SystemExit. Use 'except Exception:' instead."
 severity: error
 language: python
 rule:
   kind: except_clause
-  regex: "^except:"
+  pattern: |
+    except:
+      $$$BODY
+fix: |
+  except Exception:
+    $$$BODY

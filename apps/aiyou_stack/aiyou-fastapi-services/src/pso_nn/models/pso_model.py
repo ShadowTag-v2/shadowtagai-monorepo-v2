@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PsoModel: High-level adapter for minion integration.
 
 Provides a simple interface for PSO-based neural network optimization

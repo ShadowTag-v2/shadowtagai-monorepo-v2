@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Economic Juggernaut Engine
 ===========================
 The North-Seeking Economic Pulsar.

@@ -605,7 +605,7 @@
 
         const drawFrame = (idx) => {
           const img = frames[idx];
-          if (!img?.complete) return;
+          if (!img || !img.complete) return;
           // Cover-fit: maintain aspect ratio, fill canvas
           const cw = canvas.width, ch = canvas.height;
           const iw = img.naturalWidth, ih = img.naturalHeight;
@@ -620,7 +620,7 @@
         const preloadFrames = () => {
           for (let i = 1; i <= FRAME_COUNT; i++) {
             const img = new Image();
-            img.src = `${FRAME_DIR}frame_${String(i).padStart(FRAME_PAD, '0')}.jpg`;
+            img.src = FRAME_DIR + 'frame_' + String(i).padStart(FRAME_PAD, '0') + '.jpg';
             img.onload = () => {
               framesLoaded++;
               if (framesLoaded === FRAME_COUNT) {
@@ -655,7 +655,7 @@
         if (prefersReduced) {
           // prefers-reduced-motion: show static poster frame only
           const poster = new Image();
-          poster.src = `${FRAME_DIR}frame_0000.png`;
+          poster.src = FRAME_DIR + 'frame_0000.png';
           poster.onload = () => {
             canvasReady = true;
             frames[0] = poster;

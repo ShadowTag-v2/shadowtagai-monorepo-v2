@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """ROC Drill — gVisor Sand Table (Rehearsal of Concept).
 
 JP 3-33 mandates that no operation proceeds without a Combined Arms

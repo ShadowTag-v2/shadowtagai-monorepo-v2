@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Audit Middleware - Automatically log all API requests for compliance"""
 
 import logging

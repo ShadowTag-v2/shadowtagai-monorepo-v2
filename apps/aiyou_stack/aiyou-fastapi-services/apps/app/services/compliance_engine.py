@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Modular Compliance Engine Service
 
 Orchestrates compliance assessments across selected regulation modules.

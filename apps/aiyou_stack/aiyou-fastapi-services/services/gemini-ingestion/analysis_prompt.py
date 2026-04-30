@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Gemini Ingestion Layer Analysis Prompt
 
 Adapted from Judge 6 analysis framework for intelligence collection pipeline.

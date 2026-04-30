@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Infrastructure mesh models.
 
 Manages edge nodes, POPs, and distributed compute resources.

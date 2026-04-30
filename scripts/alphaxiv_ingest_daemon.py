@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """scripts/alphaxiv_ingest_daemon.py
 Connects to the alphaXiv SSE MCP server to pull academic papers
 on core financial/strategic concepts (Zero Trust, QSBS, Valuation).

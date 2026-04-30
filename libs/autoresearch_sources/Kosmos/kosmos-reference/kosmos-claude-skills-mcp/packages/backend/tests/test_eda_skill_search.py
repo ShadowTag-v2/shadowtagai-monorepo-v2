@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tests specifically for the EDA skill search issue."""
 
 import numpy as np

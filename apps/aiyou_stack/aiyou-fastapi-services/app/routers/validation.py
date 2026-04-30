@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Judge 6 Validation Router"""
 
 import logging
@@ -8,7 +6,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from app.models.pnkln import IngestedItem, ValidationMetrics, ValidationStatus
-from app.services.Claude_Code_6 import JudgeSixService
+from app.services.judge_six import JudgeSixService
 
 router = APIRouter()
 logger = logging.getLogger(__name__)

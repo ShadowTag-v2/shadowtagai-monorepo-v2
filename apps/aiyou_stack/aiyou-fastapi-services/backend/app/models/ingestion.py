@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Pydantic models for ingestion layer and intelligence collection."""
 
 from datetime import datetime

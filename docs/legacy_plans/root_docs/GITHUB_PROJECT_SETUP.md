@@ -175,7 +175,7 @@ gh milestone create \
 ```bash
 gh issue create \
   --title "[JUDGE-6] JR Engine Core Framework (Purpose/Reasons/Brakes)" \
-  --body-file .github/ISSUE_TEMPLATE/Claude_Code_6_implementation.md \
+  --body-file .github/ISSUE_TEMPLATE/judge_six_implementation.md \
   --label "component: judge-6,phase-1: foundation,priority: critical,type: feature" \
   --milestone "Week 3: First Integration" \
   --assignee "backend-eng-3"
@@ -306,10 +306,10 @@ Implement core Purpose/Reasons/Brakes validation framework.
 - [ ] Documentation: JR Engine philosophy guide
 
 **Files to Create:**
-- \`src/Claude_Code_6/jr_engine.py\`
-- \`src/Claude_Code_6/validators/purpose.py\`
-- \`src/Claude_Code_6/validators/reasons.py\`
-- \`src/Claude_Code_6/validators/brakes.py\`
+- \`src/judge_six/jr_engine.py\`
+- \`src/judge_six/validators/purpose.py\`
+- \`src/judge_six/validators/reasons.py\`
+- \`src/judge_six/validators/brakes.py\`
 
 **Dependencies:** None" \
   --label "component: judge-6,phase-1: foundation,priority: critical" \

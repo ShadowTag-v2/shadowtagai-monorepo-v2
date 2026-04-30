@@ -1,5 +1,3 @@
-// Copyright (c) 2026 ShadowTag, Inc. All rights reserved. Dual-Licensed under CounselConduit Compliance.
-
 /**
  * @fileoverview Citation Panel — Perplexity-style Inline Citations
  *
@@ -67,11 +65,7 @@ export function CitationPanel({
   return (
     <div style={styles.container}>
       {/* Header */}
-      <button
-        type="button"
-        onClick={() => setIsCollapsed(!isCollapsed)}
-        style={styles.headerButton}
-      >
+      <button onClick={() => setIsCollapsed(!isCollapsed)} style={styles.headerButton}>
         <div style={styles.headerLeft}>
           <span style={styles.headerIcon}>📎</span>
           <span style={styles.headerTitle}>Citations ({citations.length})</span>
@@ -118,14 +112,9 @@ export function CitationPanel({
                   borderLeftColor: statusInfo.color,
                 }}
               >
-                <button
-                  type="button"
+                <div
                   style={styles.citationHeader}
                   onClick={() => setExpandedCitation(isExpanded ? null : citation.index)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ')
-                      setExpandedCitation(isExpanded ? null : citation.index);
-                  }}
                 >
                   {/* Index badge */}
                   <span style={styles.indexBadge}>{citation.index}</span>
@@ -169,7 +158,7 @@ export function CitationPanel({
                       {Math.round(citation.relevance_score * 100)}%
                     </span>
                   </div>
-                </button>
+                </div>
 
                 {/* Expanded detail */}
                 {isExpanded && (
@@ -213,12 +202,8 @@ export function InlineCitationMarker({
 }: InlineCitationMarkerProps) {
   const statusInfo = STATUS_CONFIG[status];
   return (
-    <button
-      type="button"
+    <sup
       onClick={onClick}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') onClick?.();
-      }}
       title={authority}
       style={{
         display: 'inline-flex',
@@ -239,7 +224,7 @@ export function InlineCitationMarker({
       }}
     >
       {index}
-    </button>
+    </sup>
   );
 }
 

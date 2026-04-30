@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Benchmark Harness - Standard Evaluation Suite
 
 Framework for running standard code generation and software engineering

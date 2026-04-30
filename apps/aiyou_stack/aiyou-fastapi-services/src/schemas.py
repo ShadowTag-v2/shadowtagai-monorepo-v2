@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, EmailStr

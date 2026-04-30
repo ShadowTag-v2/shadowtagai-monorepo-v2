@@ -32,7 +32,7 @@ Integration of FOUR technical architectures into unified Pinkln ultrathink syste
 
 3. **Kernel Chaining** (from `claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR`)
 
-   - 3 specialized kernels: ATP_519_scan, Claude_Code_6_classify, audit_compress
+   - 3 specialized kernels: ATP_519_scan, judge_six_classify, audit_compress
 
    - 98.5% token reduction (50KB → 487 bytes)
 
@@ -90,9 +90,9 @@ tools = [
         parameters={"context": {"type": "string"}}
     ),
     FunctionTool(
-        name="Claude_Code_6_classify",
+        name="judge_six_classify",
         description="Binary go/no-go classification",
-        function=Claude_Code_6_local,      # Local PyTorch
+        function=judge_six_local,      # Local PyTorch
         parameters={"violations": {"type": "object"}}
     ),
     FunctionTool(
@@ -116,7 +116,7 @@ result = caller.execute("Process this decision context...")
 
 # 1. Calls atp_519_scan() locally → violations JSON
 
-# 2. Calls Claude_Code_6_classify() locally → binary decision
+# 2. Calls judge_six_classify() locally → binary decision
 
 # 3. Calls audit_compress() locally → compressed audit
 
@@ -182,7 +182,7 @@ result = caller.execute("Process this decision context...")
 │  │  • 35ms p50 latency (vs 52ms old kernels)               │  │
 │  │  • Function tools:                                       │  │
 │  │    - atp_519_scan() → Extract violations                │  │
-│  │    - Claude_Code_6_classify() → Binary decision             │  │
+│  │    - judge_six_classify() → Binary decision             │  │
 │  │    - audit_compress() → Audit trail                     │  │
 │  │    - glicko_update() → Performance rating               │  │
 │  │    - debate_orchestrate() → Multi-agent reasoning       │  │
@@ -291,7 +291,7 @@ class GeminiFunctionCaller:
 ```
 
 src/pnkln/
-├── Claude_Code_6.py      # Purpose/Reasons/Brakes validation
+├── judge_six.py      # Purpose/Reasons/Brakes validation
 ├── cor.py            # Orchestration coordinator
 ├── shadowtag.py      # Ed25519 cryptographic signatures
 ├── ns.py             # Semantic memory retrieval
@@ -568,7 +568,7 @@ class DTESystem:
 
 src/kernels/
 ├── atp_519_scan.py      # Compliance Framework violation extraction
-├── Claude_Code_6.py         # Binary classification (PyTorch)
+├── judge_six.py         # Binary classification (PyTorch)
 ├── audit_compress.py    # Audit trail compression
 ├── base.py              # Kernel base class
 
@@ -959,7 +959,7 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
 
 git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp -- src/examples/basic_function_calling.py
 git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp -- src/examples/full_pnkln_stack.py
-git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp -- src/examples/Claude_Code_6_example.py
+git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp -- src/examples/judge_six_example.py
 
 # Cherry-pick tests
 
@@ -986,7 +986,7 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
    ```python
    # tools/orchestrator/ace_with_gemini.mjs
    from src.core.gemini_function_calling import GeminiFunctionCaller, FunctionTool
-   from src.pnkln.Claude_Code_6 import JudgeSix
+   from src.pnkln.judge_six import JudgeSix
 
    # Define ACE function tools
    generator_tool = FunctionTool(...)
@@ -1052,7 +1052,7 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
 
    tests/integration/
    ├── test_gemini_function_calling.py  # Basic function calling
-   ├── test_Claude_Code_6_validation.py     # JR enforcement
+   ├── test_judge_six_validation.py     # JR enforcement
    ├── test_glicko_rating.py            # Rating updates
    ├── test_grpo_training.py            # GRPO vs PPO
    ├── test_dte_evolution.py            # DTE evolution

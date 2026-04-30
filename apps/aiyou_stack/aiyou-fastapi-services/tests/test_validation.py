@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tests for JR Engine validation framework."""
 
 from app.validation import JREngine, ValidationStatus

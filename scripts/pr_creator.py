@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """GitHub App JWT-based PR creator. Replaces `gh pr create` for doctrine compliance."""
 
 import json
-import logging
 import os
 import sys
 import time
-
-logger = logging.getLogger(__name__)
 
 try:
     import jwt
@@ -43,7 +38,7 @@ def find_pem():
 def get_installation_token():
     pem_path = find_pem()
     if not pem_path:
-        logger.error("No PEM found in 5-tier fallback chain. PRs will be skipped.")
+        print("[!] No PEM found in 5-tier fallback chain. PRs will be skipped.")
         return None
 
     with open(pem_path, "rb") as f:
@@ -62,7 +57,7 @@ def get_installation_token():
 
     resp = requests.get(f"https://api.github.com/repos/{REPO}/installation", headers=headers, timeout=15)
     if resp.status_code != 200:
-        logger.error("Installation lookup failed: %d %s", resp.status_code, resp.text[:200])
+        print(f"[!] Installation lookup failed: {resp.status_code} {resp.text[:200]}")
         return None
 
     inst_id = resp.json()["id"]
@@ -72,7 +67,7 @@ def get_installation_token():
         timeout=15,
     )
     if resp.status_code != 201:
-        logger.error("Token generation failed: %d %s", resp.status_code, resp.text[:200])
+        print(f"[!] Token generation failed: {resp.status_code} {resp.text[:200]}")
         return None
 
     return resp.json()["token"]
@@ -97,20 +92,20 @@ def create_pr(token, branch, title, body, base="main"):
     )
     if resp.status_code == 201:
         pr_url = resp.json().get("html_url", "unknown")
-        logger.info("PR created: %s", pr_url)
+        print(f"  ✅ PR created: {pr_url}")
         return True
     elif resp.status_code == 422:
         # PR already exists or validation error
-        logger.warning("PR already exists or validation error: %s", resp.json().get("message", ""))
+        print(f"  ⚠️  PR already exists or validation error: {resp.json().get('message', '')}")
         return False
     else:
-        logger.error("PR creation failed (%d): %s", resp.status_code, resp.text[:200])
+        print(f"  ❌ PR creation failed ({resp.status_code}): {resp.text[:200]}")
         return False
 
 
 def main():
     if len(sys.argv) < 2:
-        logger.error("Usage: pr_creator.py <pr_manifest.json>")
+        print("Usage: pr_creator.py <pr_manifest.json>")
         sys.exit(1)
 
     manifest_path = sys.argv[1]
@@ -119,22 +114,18 @@ def main():
 
     token = get_installation_token()
     if not token:
-        logger.error("Could not obtain GitHub App token. Branches are pushed but PRs not created.")
-        logger.error("Run manually: open https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/branches")
+        print("[!] Could not obtain GitHub App token. Branches are pushed but PRs not created.")
+        print("[!] Run manually: open https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/branches")
         sys.exit(1)
 
     created = 0
     for pr in prs:
-        logger.info("Creating PR: %s", pr["title"])
+        print(f"→ Creating PR: {pr['title']}")
         if create_pr(token, pr["branch"], pr["title"], pr["body"]):
             created += 1
 
-    logger.info("%d/%d PRs created successfully.", created, len(prs))
+    print(f"\n✅ {created}/{len(prs)} PRs created successfully.")
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    )
     main()

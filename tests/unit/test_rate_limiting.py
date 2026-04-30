@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # tests/unit/test_rate_limiting.py
 """Tests for attestation rate limiting (#9).
 

@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """Tests for ATP 5-19 Risk Assessment Engine"""
 
 import pytest

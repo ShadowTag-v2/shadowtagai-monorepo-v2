@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """PNKLN Core Stack - ShadowTag Neural Hash
 
 Multi-hash fingerprinting system for media authentication:
