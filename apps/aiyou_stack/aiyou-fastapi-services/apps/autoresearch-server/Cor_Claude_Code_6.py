@@ -58,7 +58,11 @@ class Cor_Claude_Code_6Engine:
         if os.path.exists(POLICY_PATH):
             with open(POLICY_PATH) as f:
                 return yaml.safe_load(f)
-        return {"Cor_Claude_Code_6_constitution": {"csrmc_defense_grid": {"enforcement_mode": "STRICT_BLOCK"}}}
+        return {
+            "Cor_Claude_Code_6_constitution": {
+                "csrmc_defense_grid": {"enforcement_mode": "STRICT_BLOCK"}
+            }
+        }
 
     async def enforce(self, action: str, context: dict[str, Any]) -> JudgeDecision:
         """The Core Loop: Validates action against CSRMC and Policy."""

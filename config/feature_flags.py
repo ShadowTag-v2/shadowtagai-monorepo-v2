@@ -34,24 +34,20 @@ _DEFAULTS: dict[str, Any] = {
     "autocompact_buffer_tokens": 13_000,
     "warning_threshold_buffer_tokens": 20_000,
     "max_consecutive_compact_failures": 3,
-
     # Phase 2: Permission Architecture
     "xml_classifier": False,
     "classifier_model": "gemini-3.1-flash-lite-preview-thinking",
     "classifier_max_tokens_stage1": 256,
     "subcommand_security_cap": 50,
-
     # Phase 3: Memory & Observability
-    "vcr_mode": "off",          # off | record | replay | diff
+    "vcr_mode": "off",  # off | record | replay | diff
     "telemetry_enabled": True,
     "telemetry_buffer_size": 10,
     "session_memory_compact": False,
-
     # Phase 4: Developer Experience
     "dump_prompts": False,
     "plan_mode_v2": False,
     "plan_interview_phase": False,
-
     # Phase 5: Security Hardening
     "fail_closed_default": True,
     "assistant_text_exclusion": True,
@@ -147,10 +143,7 @@ class FeatureFlags:
         return dict(self._overrides)
 
     def __repr__(self) -> str:
-        return (
-            f"FeatureFlags(total={len(self._flags)}, "
-            f"overrides={len(self._overrides)})"
-        )
+        return f"FeatureFlags(total={len(self._flags)}, overrides={len(self._overrides)})"
 
 
 # Singleton instance — importable from anywhere

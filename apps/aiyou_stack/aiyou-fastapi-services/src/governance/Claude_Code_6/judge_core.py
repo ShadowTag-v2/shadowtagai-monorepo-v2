@@ -21,7 +21,9 @@ from typing import Any
 import yaml
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - COR_CLAUDE_CODE_6 - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - COR_CLAUDE_CODE_6 - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger("Cor_Claude_Code_6")
 
 

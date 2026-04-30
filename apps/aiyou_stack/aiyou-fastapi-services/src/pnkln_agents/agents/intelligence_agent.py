@@ -233,7 +233,9 @@ class IntelligenceAgent(ShadowTagAiAgent):
             "involves_pii": False,  # Intelligence collection, not personal data
         }
 
-        verification_result = self.Claude_Code_6.verify(verification_data, context=verification_context)
+        verification_result = self.Claude_Code_6.verify(
+            verification_data, context=verification_context
+        )
 
         # Step 4: Generate AM briefing
         briefing = self.ingestion_layer.export_am_briefing(

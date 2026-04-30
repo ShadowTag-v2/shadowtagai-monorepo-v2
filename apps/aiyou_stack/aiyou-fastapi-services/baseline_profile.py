@@ -40,7 +40,9 @@ sys.path.append(PROJECT_ROOT)
 import importlib.util  # noqa: E402
 
 # Dynamically load JudgeSixRuntime from the file path (handles hyphenated directory name)
-runtime_path = os.path.join(PROJECT_ROOT, "erik-hancock-llm-memory", "Cor_Claude_Code_6", "runtime", "base.py")
+runtime_path = os.path.join(
+    PROJECT_ROOT, "erik-hancock-llm-memory", "Cor_Claude_Code_6", "runtime", "base.py"
+)
 spec = importlib.util.spec_from_file_location("base", runtime_path)
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)

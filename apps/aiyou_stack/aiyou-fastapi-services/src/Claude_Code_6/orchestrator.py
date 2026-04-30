@@ -410,7 +410,9 @@ Return:
 
         return state
 
-    def _generate_recommendations_agent(self, state: Cor_Claude_Code_6State) -> Cor_Claude_Code_6State:
+    def _generate_recommendations_agent(
+        self, state: Cor_Claude_Code_6State
+    ) -> Cor_Claude_Code_6State:
         """Generate remediation recommendations for violations and warnings."""
         logger.info("Agent: Generating recommendations")
 

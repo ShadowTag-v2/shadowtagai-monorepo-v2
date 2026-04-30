@@ -107,7 +107,9 @@ workflow.add_node("audit", audit_logger)
 workflow.set_entry_point("opa")
 
 # Add Edges
-workflow.add_conditional_edges("opa", route_decision, {"audit": "audit", "Cor_Claude_Code_6": "Cor_Claude_Code_6"})
+workflow.add_conditional_edges(
+    "opa", route_decision, {"audit": "audit", "Cor_Claude_Code_6": "Cor_Claude_Code_6"}
+)
 workflow.add_edge("Cor_Claude_Code_6", "audit")
 workflow.add_edge("audit", END)
 
