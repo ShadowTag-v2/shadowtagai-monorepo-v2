@@ -136,9 +136,7 @@ def _generate_summary(
     for source, source_findings in by_source.items():
         parts.append(f"\n## Source: {source}")
         for f in source_findings[:5]:  # Cap per source.
-            confidence_marker = (
-                "🟢" if f.confidence >= 0.8 else "🟡" if f.confidence >= 0.5 else "🔴"
-            )
+            confidence_marker = "🟢" if f.confidence >= 0.8 else "🟡" if f.confidence >= 0.5 else "🔴"
             parts.append(f"  {confidence_marker} {f.content[:200]}")
             if f.references:
                 parts.append(f"    refs: {', '.join(f.references[:3])}")
@@ -156,16 +154,12 @@ def _generate_recommendations(
     # High-confidence findings become recommendations.
     for finding in findings:
         if finding.confidence >= 0.9:
-            recommendations.append(
-                f"[HIGH CONFIDENCE] {finding.content[:150]}"
-            )
+            recommendations.append(f"[HIGH CONFIDENCE] {finding.content[:150]}")
 
     # Priority-1 actions become recommendations.
     for action in actions:
         if action.priority == 1:
-            recommendations.append(
-                f"[ACTION REQUIRED] {action.description[:150]}"
-            )
+            recommendations.append(f"[ACTION REQUIRED] {action.description[:150]}")
 
     return recommendations[:10]  # Cap at 10 recommendations.
 

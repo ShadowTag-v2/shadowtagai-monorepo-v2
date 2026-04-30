@@ -270,7 +270,7 @@ class SandboxEngine:
                 stderr=stderr_bytes.decode("utf-8", errors="replace")[:5000],
                 duration_ms=duration_ms,
             )
-        except asyncio.TimeoutError:
+        except TimeoutError:
             duration_ms = (time.time() - start) * 1000
             return CommandResult(
                 command=command,
