@@ -1,11 +1,11 @@
-# Judge 6 — BLOCK/ALLOW Rule Engine Specification
+# Claude_Code_6 — BLOCK/ALLOW Rule Engine Specification
 
 > Adapted from Claude Code Security Monitor (CL4R1T4S competitive intel, v2.1.110)
 > Integrates with: `apps/counselconduit/api/Cor.Claude_Code_6_gate.py`
 
 ## Architecture
 
-Judge 6 operates as an **immutable process** using the .NET Semantic Kernel Process Framework.
+Claude_Code_6 operates as an **immutable process** using the .NET Semantic Kernel Process Framework.
 This document specifies the BLOCK/ALLOW rule engine that augments the existing Compliance Framework risk matrix.
 
 ## Default Rule
@@ -110,7 +110,7 @@ encoding/decoding chains, and staged execution from temp directories.
 ## Integration Points
 
 ```
-Request → Judge 6 Gate → {ALLOW → Execute, BLOCK → Log + Error, ESCALATE → Notify + Hold}
+Request → Claude_Code_6 Gate → {ALLOW → Execute, BLOCK → Log + Error, ESCALATE → Notify + Hold}
 ```
 
 ### Firestore Audit Log Schema

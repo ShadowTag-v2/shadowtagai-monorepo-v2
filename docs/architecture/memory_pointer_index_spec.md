@@ -29,7 +29,7 @@ in a flat text file and hit context limits.
 
 ## Key Decisions (2026-04)
 - 2026-04-18: Switched to CPython 3.14.3, venv rebuilt → topic/python_env.md
-- 2026-04-18: Judge 6 BLOCK/ALLOW spec finalized → topic/Cor.Claude_Code_6.md
+- 2026-04-18: Claude_Code_6 BLOCK/ALLOW spec finalized → topic/Cor.Claude_Code_6.md
 - 2026-04-17: Firebase MCP-first deployment doctrine → topic/firebase_deploy.md
 
 ## People & Accounts
