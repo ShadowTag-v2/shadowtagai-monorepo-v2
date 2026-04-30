@@ -2,17 +2,22 @@
 
 import { checkIdempotency, releaseIdempotencyLock } from "@/lib/idempotency";
 import { safeAction } from "@/lib/safe-action";
+import { logEvent, TELEMETRY_EVENTS } from "@/lib/telemetry";
 
 /**
- * Cor.Re-Coding the Vibe — Two-Front Defense:
+ * Cor.Re-Coding the Vibe — Three-Front Defense:
  *
- * Front 1 (DOM Lock): React 19 useFormStatus in SubmitButton.tsx
+ * Front 1 (DOM Lock): React 19 useFormStatus in TelemetrySubmitButton.tsx
  *   → Disables the button while the Server Action is in-flight.
  *   → Manages user PERCEPTION ("it's working, don't touch").
  *
  * Front 2 (Edge Idempotency Lock): This file.
  *   → Redis NX lock mathematically rejects duplicate payloads.
  *   → Survives page refresh, network retry, tab duplication.
+ *
+ * Front 3 (Panopticon Observability): Telemetry tracking.
+ *   → Every lifecycle event is captured for operational visibility.
+ *   → PII-safe: only hashed keys and numeric metadata.
  *
  * "A UI spinner is useless if a page refresh bypasses it."
  */
@@ -28,8 +33,14 @@ export async function processOrderAction(prevState: unknown, formData: FormData)
   const isNew = await checkIdempotency(idempotencyKey);
   if (!isNew) {
     console.warn(`[AGNT_OS] Blocked duplicate order submission: ${idempotencyKey}`);
+    logEvent(TELEMETRY_EVENTS.IDEMPOTENCY_LOCK_REJECTED, {
+      has_order_data: orderData ? 1 : 0,
+    }, "warn", "server");
     return { error: "This order is already processing. Please wait." };
   }
+
+  // FRONT 3: Track successful lock acquisition
+  logEvent(TELEMETRY_EVENTS.IDEMPOTENCY_LOCK_ACQUIRED, {}, "info", "server");
 
   // ──────────────────────────────────────────────────────
   // safeAction: Wraps the entire business logic in a try/catch
@@ -49,8 +60,11 @@ export async function processOrderAction(prevState: unknown, formData: FormData)
     // so the user can retry. The lock only persists on SUCCESS
     // to prevent duplicate mutations.
     await releaseIdempotencyLock(idempotencyKey);
+    logEvent(TELEMETRY_EVENTS.CHECKOUT_ERROR, {}, "error", "server");
+    logEvent(TELEMETRY_EVENTS.IDEMPOTENCY_LOCK_RELEASED, {}, "info", "server");
     return { error: result.error };
   }
 
+  logEvent(TELEMETRY_EVENTS.CHECKOUT_SUCCESS, {}, "info", "server");
   return { success: true, orderId: result.data?.orderId };
 }
