@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": true,
   "python.languageServer": "Pylance",
-  "python.defaultInterpreterPath": "/opt/homebrew/bin/python3.14",
+  "python.defaultInterpreterPath": "/opt/homebrew/opt/python@3.14/bin/python3.14",
   "git.decorations.enabled": false,
   "cSpell.ignorePaths": [
     "**/dist-runtime/**",
