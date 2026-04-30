@@ -3,7 +3,9 @@
 import json
 import os
 import hashlib
-from typing import Any, Callable
+from typing import Any
+from collections.abc import Callable
+
 
 class VCRInterceptor:
     """Intercepts and records/replays model queries."""
@@ -11,7 +13,7 @@ class VCRInterceptor:
     def __init__(self, cassette_dir: str = ".cassettes", record_mode: str = "once"):
         """
         Initialize the VCR interceptor.
-        
+
         Args:
             cassette_dir (str): Directory to store cassettes.
             record_mode (str): Mode for recording ('once', 'all', 'none').
@@ -27,7 +29,7 @@ class VCRInterceptor:
 
     def _get_hash(self, prompt: str, model: str) -> str:
         """Generate a unique hash for the query."""
-        content = f"{model}:{prompt}".encode("utf-8")
+        content = f"{model}:{prompt}".encode()
         return hashlib.sha256(content).hexdigest()
 
     def _get_cassette_path(self, query_hash: str) -> str:
@@ -37,13 +39,13 @@ class VCRInterceptor:
     def queryWithModel(self, prompt: str, model: str, original_func: Callable[..., Any], **kwargs: Any) -> Any:
         """
         Intercept the queryWithModel call.
-        
+
         Args:
             prompt (str): The prompt being queried.
             model (str): The model being used.
             original_func (Callable): The original query function to call on cache miss.
             kwargs: Additional arguments for the original function.
-            
+
         Returns:
             Any: The response from the model or cassette.
         """
@@ -52,7 +54,7 @@ class VCRInterceptor:
 
         if self._is_replay or self.record_mode == "none":
             if os.path.exists(cassette_path):
-                with open(cassette_path, "r", encoding="utf-8") as f:
+                with open(cassette_path, encoding="utf-8") as f:
                     return json.load(f)
             if self._is_replay:
                 raise ValueError(f"Cassette not found for query in replay mode: {query_hash}")

@@ -6,7 +6,8 @@ Orchestrates context orientation, gathering, consolidation, and pruning based on
 import time
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
 
 class DreamConsolidator:
     """Handles nightly Knowledge Integration (KI) maintenance tasks."""
@@ -48,10 +49,12 @@ class DreamConsolidator:
         self.prune()
         self.logger.info("Nightly dream consolidation cycle complete.")
 
+
 def main() -> None:
     """Daemon entrypoint."""
     consolidator = DreamConsolidator()
     consolidator.run_nightly_cycle()
+
 
 if __name__ == "__main__":
     main()
