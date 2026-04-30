@@ -14,21 +14,18 @@ Tests the full auto-compact middleware flow including:
 
 from __future__ import annotations
 
-import time
 
 import pytest
 
 from context_compactor.api_context_management import (
     TOOLS_CLEARABLE_RESULTS,
     TOOLS_CLEARABLE_USES,
-    ContextManagementConfig,
     StrategyType,
     build_api_context_management,
 )
 from context_compactor.auto_compact import (
     AutoCompactMiddleware,
     AutoCompactTracker,
-    TokenWarningState,
     calculate_token_warning_state,
     get_auto_compact_threshold,
     get_effective_context_window,
@@ -42,7 +39,6 @@ from context_compactor.compact_prompts import (
 from context_compactor.post_compact_cleanup import (
     PostCompactCleanupState,
     is_main_thread_compact,
-    run_post_compact_cleanup,
 )
 
 

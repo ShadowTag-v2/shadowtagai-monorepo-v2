@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import pytest
 
 from tool_gateway.token_estimator import (
     bytes_per_token_for_file_type,
