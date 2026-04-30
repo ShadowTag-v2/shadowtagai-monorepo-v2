@@ -37,7 +37,8 @@ if [ -z "$DIFF_CONTENT" ]; then
 fi
 
 for pattern in "${PATTERNS[@]}"; do
-  MATCHES=$(echo "$DIFF_CONTENT" | grep -cP "$pattern" 2>/dev/null || true)
+  MATCHES=$(echo "$DIFF_CONTENT" | grep -cE "$pattern" 2>/dev/null || echo "0")
+  MATCHES="${MATCHES:-0}"
   if [ "$MATCHES" -gt 0 ]; then
     echo "  ⚠️  Pattern match: $pattern ($MATCHES occurrences)"
     VIOLATIONS=$((VIOLATIONS + MATCHES))
