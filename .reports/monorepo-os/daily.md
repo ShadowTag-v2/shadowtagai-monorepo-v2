@@ -1,6 +1,6 @@
 # Monorepo OS — Daily Truth Report
 
-> **Generated:** 2026-04-29T23:38:23Z | **Date:** April 29, 2026
+> **Generated:** 2026-04-30T00:42:17Z | **Date:** April 30, 2026
 
 ## Oracle Score
 
@@ -19,7 +19,7 @@
 | Beads (Issues) | 67 | `.beads/issues.jsonl` |
 | Memory Events | 5 | `.memory/events.ndjson` |
 | Memory Atoms | 12 | `.memory/atoms/` |
-| Workspace Skills | 65 | `.agents/skills/` |
+| Workspace Skills | 68 | `.agents/skills/` |
 | CI Workflows | 82 | `.github/workflows/` |
 | Upstream Repos | 95 | `external_repos/upstream_manifest.yaml` |
 
@@ -27,8 +27,12 @@
 
 | Property | Value |
 |----------|-------|
-| Last Commit | `ef3a89c41` — fix(tests): remove F841 unused variable assignments in ant-gate middleware tests |
-| Dirty Files | 6 |
+| Last Commit | `4e0cacb41` — feat(monorepo-os): v3.5 hardening — 31/39 contracts (79%), CI gates, classifie |
+| Dirty Files (total) | 8 |
+| — Source (tracked, non-transient) | 0 |
+| — Session-generated | 6 |
+| — IDE transient | 1 |
+| — Untracked new | 1 |
 | Triage | ✅ Triaged (2 actual-risk) |
 
 ## Guardrails
