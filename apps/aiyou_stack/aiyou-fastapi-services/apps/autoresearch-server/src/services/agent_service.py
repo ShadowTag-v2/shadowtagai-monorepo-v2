@@ -8,7 +8,9 @@
 class AgentService:
     @staticmethod
     def list_agents():
-        return [{"id": "Claude_Code_6", "name": "Judge 6", "model": "gemini-3.1-flash-lite-preview"}]
+        return [
+            {"id": "Claude_Code_6", "name": "Judge 6", "model": "gemini-3.1-flash-lite-preview"}
+        ]
 
     @staticmethod
     def get_agent(agent_id: str):

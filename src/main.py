@@ -32,6 +32,7 @@ async def main():
     print(f"⏱️  Boot sequence finished in {(time.time() - start_time) * 1000:.2f}ms")
 
     from packages.tool_gateway.honeypots import HONEYPOT_REGISTRY
+
     print(f"🛡️  Loaded {len(HONEYPOT_REGISTRY)} honeypot routes into primary gateway.")
 
     print("\n🟢 SYSTEM ONLINE. READY FOR DAEMON DISPATCH.")

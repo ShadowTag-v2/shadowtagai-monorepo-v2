@@ -21,11 +21,7 @@ export const TungstenLiveMonitor: React.FC<{ sessionId: string }> = ({ sessionId
 
   if (!isExpanded) {
     return (
-      <button
-        type="button"
-        className="tungsten-pill"
-        onClick={() => setIsExpanded(true)}
-      >
+      <button type="button" className="tungsten-pill" onClick={() => setIsExpanded(true)}>
         <span>🟢 Background Job {sessionId} Running...</span>
       </button>
     );

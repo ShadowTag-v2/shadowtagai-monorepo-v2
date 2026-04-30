@@ -335,7 +335,9 @@ def main():
                 print(
                     f"    Risk: {skill.atp_classification['level']} - {skill.atp_classification['rationale']}",
                 )
-                print(f"    Judge 6 Review Required: {skill.atp_classification['Cor_Claude_Code_6_review']}")
+                print(
+                    f"    Judge 6 Review Required: {skill.atp_classification['Cor_Claude_Code_6_review']}"
+                )
 
     # Generate manifest
     manifest_path = registry.generate_manifest()

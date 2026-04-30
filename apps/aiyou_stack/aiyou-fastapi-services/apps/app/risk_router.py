@@ -9,7 +9,9 @@ import yaml
 from pydantic import BaseModel
 
 # --- LOGGING SETUP ---
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - COR_CLAUDE_CODE_6 - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - COR_CLAUDE_CODE_6 - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger("COR_CLAUDE_CODE_6")
 
 # --- SCHEMA DEFINITIONS ---
@@ -85,7 +87,9 @@ class Cor_Claude_Code_6:
         elif "test" in prompt.lower():
             phase = "TEST"
 
-        logger.info(f"Mission {mission_id}: Cor_Claude_Code_6 Review - Iteration {current_iter}/3 [{phase}]")
+        logger.info(
+            f"Mission {mission_id}: Cor_Claude_Code_6 Review - Iteration {current_iter}/3 [{phase}]"
+        )
 
         # 1. LAYER 1: THE IRON DOME (DoD CSRMC) - Hard Security & Critical Controls
         csrmc_verdict = self._check_csrmc_compliance(prompt, file_paths, phase)

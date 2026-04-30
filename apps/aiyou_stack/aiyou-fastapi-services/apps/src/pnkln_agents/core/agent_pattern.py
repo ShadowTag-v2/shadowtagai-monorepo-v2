@@ -214,7 +214,9 @@ class ShadowTagAiAgent:
         """
         raise NotImplementedError("Subclasses must implement _execute_task")
 
-    def _verify_with_Claude_Code_6(self, result: Any, context: dict[str, Any]) -> VerificationResult:
+    def _verify_with_Claude_Code_6(
+        self, result: Any, context: dict[str, Any]
+    ) -> VerificationResult:
         """Verify result with Judge 6"""
         return self.Claude_Code_6.verify(result, context)
 

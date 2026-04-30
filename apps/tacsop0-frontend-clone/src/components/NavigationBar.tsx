@@ -1,12 +1,12 @@
 import React from 'react';
+import { Button } from './ui/button';
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "./ui/navigation-menu";
-import { Button } from './ui/button';
+} from './ui/navigation-menu';
 
 export function NavigationBar() {
   return (
@@ -16,7 +16,7 @@ export function NavigationBar() {
           <a href="/" className="flex items-center space-x-2">
             <span className="font-bold text-xl tracking-tighter">TACSOP 0</span>
           </a>
-          
+
           <div className="hidden md:flex">
             <NavigationMenu>
               <NavigationMenuList>
@@ -47,7 +47,9 @@ export function NavigationBar() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Button variant="ghost" className="hidden sm:inline-flex">Sign In</Button>
+          <Button variant="ghost" className="hidden sm:inline-flex">
+            Sign In
+          </Button>
           <Button className="rounded-full">Start Free Trial</Button>
         </div>
       </div>

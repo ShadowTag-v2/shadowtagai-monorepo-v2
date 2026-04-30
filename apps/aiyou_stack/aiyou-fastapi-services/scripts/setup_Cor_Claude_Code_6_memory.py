@@ -55,7 +55,9 @@ def import_documents(project_id: str, location: str, data_store_id: str, input_d
         print(f"⚠️  Could not list data stores (API enabled?): {e}")
 
 
-def query_Cor_Claude_Code_6_grounded(project_id: str, location: str, data_store_id: str, query: str):
+def query_Cor_Claude_Code_6_grounded(
+    project_id: str, location: str, data_store_id: str, query: str
+):
     """Queries Gemini with grounding against the Vertex AI Search data store.
     This is the key step that uses the "GenAI App Builder" credits.
     """
