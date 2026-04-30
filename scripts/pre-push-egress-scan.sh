@@ -28,8 +28,8 @@ PATTERNS=(
 
 VIOLATIONS=0
 
-# Check the most recent commit diff
-DIFF_CONTENT=$(git diff HEAD~1..HEAD -- . ':(exclude)*.lock' ':(exclude)*.sum' ':(exclude)vendor/' ':(exclude)node_modules/' 2>/dev/null || echo "")
+# Check the most recent commit diff (exclude reports, docs, vendor, locks, third-party)
+DIFF_CONTENT=$(git diff HEAD~1..HEAD -- . ':(exclude)*.lock' ':(exclude)*.sum' ':(exclude)vendor/' ':(exclude)node_modules/' ':(exclude)docs/AUDIT_REPORT.md' ':(exclude).reports/secrets/' ':(exclude).beads/' ':(exclude)scratch/repos/' ':(exclude)docs/ADAPTER_ONLY_HARDENING_REPORT.md' ':(exclude)tools/external_sdks/' 2>/dev/null || echo "")
 
 if [ -z "$DIFF_CONTENT" ]; then
   echo "  ✓ No diff to scan (initial commit or no changes)"

@@ -1,7 +1,7 @@
 """AST chunk-stripping script for micro-compaction."""
 
 import ast
-from typing import Optional
+
 
 class MicroCompactionNodeTransformer(ast.NodeTransformer):
     """Transformer that strips docstrings and type annotations to compress code."""
@@ -30,7 +30,7 @@ class MicroCompactionNodeTransformer(ast.NodeTransformer):
             node.body = node.body[1:]
         return node
 
-    def visit_AnnAssign(self, node: ast.AnnAssign) -> Optional[ast.Assign]:
+    def visit_AnnAssign(self, node: ast.AnnAssign) -> ast.Assign | None:
         """Convert annotated assignments to regular assignments."""
         if node.value is None:
             return None  # Remove pure annotations without assignment
@@ -41,10 +41,10 @@ def strip_ast_chunks(source_code: str) -> str:
     """
     Strips non-essential AST chunks (docstrings, type hints) from source code
     for micro-compaction of the context window.
-    
+
     Args:
         source_code (str): The original Python source code.
-        
+
     Returns:
         str: The compacted source code.
     """

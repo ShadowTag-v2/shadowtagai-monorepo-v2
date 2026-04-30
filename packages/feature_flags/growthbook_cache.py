@@ -1,7 +1,8 @@
 """Dynamic GrowthBook remote config cache."""
 
 import time
-from typing import Any, Dict, Optional
+from typing import Any
+
 
 class GrowthBookRemoteCache:
     """Cache for GrowthBook feature flags to prevent redundant network calls."""
@@ -9,33 +10,30 @@ class GrowthBookRemoteCache:
     def __init__(self, ttl_seconds: int = 60):
         """
         Initialize the GrowthBook cache.
-        
+
         Args:
             ttl_seconds (int): Time-to-live for cached flags in seconds.
         """
         self.ttl_seconds = ttl_seconds
-        self._cache: Dict[str, Dict[str, Any]] = {}
+        self._cache: dict[str, dict[str, Any]] = {}
 
     def set(self, key: str, value: Any) -> None:
         """
         Set a value in the cache.
-        
+
         Args:
             key (str): The feature flag key.
             value (Any): The feature flag value.
         """
-        self._cache[key] = {
-            "value": value,
-            "timestamp": time.time()
-        }
+        self._cache[key] = {"value": value, "timestamp": time.time()}
 
-    def get(self, key: str) -> Optional[Any]:
+    def get(self, key: str) -> Any | None:
         """
         Get a value from the cache if it hasn't expired.
-        
+
         Args:
             key (str): The feature flag key.
-            
+
         Returns:
             Optional[Any]: The cached value if valid, None otherwise.
         """
@@ -52,7 +50,7 @@ class GrowthBookRemoteCache:
     def invalidate(self, key: str) -> None:
         """
         Invalidate a specific cache entry.
-        
+
         Args:
             key (str): The feature flag key to invalidate.
         """
