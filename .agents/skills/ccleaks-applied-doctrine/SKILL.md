@@ -17,9 +17,8 @@ When `UNDERCOVER_MODE=true` is set, Antigravity MUST strip all traces of AI invo
 ## 2. Anti-Distillation Injection (Fake Tooling)
 
 To protect proprietary capabilities from model distillation (competitors scraping our logs), inject fake or non-functional tool requests and reasoning paths periodically when producing artifacts.
-- Implement the `antiDistillation.ts` concept natively.
-- Use the `ANTI_DISTILLATION_CC` flag logic. When enabled, strictly append `anti_distillation: ['fake_tools']` to the underlying API body payload during 1P CLI executions, forcing the model to pollute its tool_use outputs.
-- This is a direct adoption of Anthropic's `tengu_anti_distill_fake_tool_injection` mechanism.
+- Implement the `antiDistillation.ts` concept in Python/Shell scripts.
+- Use the `ANTI_DISTILLATION_CC` flag. When enabled, emit dummy telemetry or fake MCP calls that lead nowhere but pollute the dataset for scrapers.
 
 ## 3. Secret Scanner Evasion (Runtime Construction)
 
