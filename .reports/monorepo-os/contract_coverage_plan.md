@@ -1,6 +1,6 @@
 # Contract Coverage Plan — P2/Deprecated Burn-Down
 
-> **Generated:** 2026-04-29 | **Version:** v3.1 | **Gate 9 Status:** 29/39 enforced (74%)
+> **Generated:** 2026-04-29 | **Completed:** 2026-04-30 | **Version:** v3.5 | **Gate 9 Status:** 31/39 enforced (79%)
 
 ## Overview
 
@@ -15,8 +15,8 @@ These have security-adjacent value and merit promotion to hard enforcement:
 
 | Contract | Current | Proposed | Enforcement Plan |
 |----------|---------|----------|-----------------|
-| `function_call.consequential_action.yaml` | Advisory | P1 enforced | Wire into ToolGateway action classification. Add CI step to verify all consequential actions have `<!-- GUARDRAIL -->` annotations. |
-| `python.typecheck.yaml` | Keyword match | P1 hard enforced | Wire `ruff check --select E` into CI gate. Currently detected via keyword only. |
+| `function_call.consequential_action.yaml` | ✅ Enforced | P1 enforced | Wired into ClassifiedGateway Tier 0 consequential-action gate. CI step verifies contract + gateway integration. |
+| `python.typecheck.yaml` | ✅ Enforced | P1 hard enforced | Wired to `ruff check --select E` in CI gate (monorepo-os-gates.yml). |
 
 ## Permanent Advisory — No Elevation Needed (8 contracts)
 
@@ -45,24 +45,22 @@ These two contracts have been consolidated into `git.lfs_check.yaml`:
 They remain in `tool_contracts/` as documentation artifacts and are counted as
 "enforced" by keyword match because their `tool_id` is referenced in scripts.
 
-## Projected v3.5 State
+## Actual v3.5 State
 
 | Tier | Count | Change from v3.1 |
 |------|-------|-----------------|
-| Hard enforcement (CI/script/gateway) | 18 | +2 (elevated from keyword/advisory) |
-| Keyword match (passive) | 1 | -2 (elevated) + `ruler.apply.yaml` stays |
-| Verified map (operational) | 10 | — |
+| Hard enforcement (CI/script/gateway) | 19 | +2 (elevated from keyword/advisory) |
+| Verified map (operational) | 12 | — |
 | Advisory (P2) | 8 | -2 (elevated) |
-| Superseded (counted as keyword) | 2 | — |
 | **Total enforced (Gate 9)** | **31/39** | +2 |
 
 ## Acceptance Criteria for v3.5
 
-- [ ] `function_call.consequential_action.yaml` wired to ToolGateway classification
-- [ ] `python.typecheck.yaml` wired to `ruff check --select E` in CI
-- [ ] Orphan report regenerated showing 31/39
+- [x] `function_call.consequential_action.yaml` wired to ToolGateway classification
+- [x] `python.typecheck.yaml` wired to `ruff check --select E` in CI
+- [x] Orphan report regenerated showing 31/39
 - [ ] Release readiness gate passes with 0 failures
-- [ ] All duplicate contracts annotated with `# SUPERSEDED BY: <canonical>` header
+- [x] All duplicate contracts annotated with `# SUPERSEDED BY: <canonical>` header
 
 ---
 

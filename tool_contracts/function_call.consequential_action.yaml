@@ -1,9 +1,18 @@
 # tool_contracts/function_call.consequential_action.yaml
+# v3.5: Elevated from advisory to enforced (ClassifiedGateway integration)
 tool_id: "function_call.consequential_action"
-description: "Governs the function_call.consequential_action operations."
-risk_level: "low"
-preconditions: []
+description: >
+  Gates consequential function calls — operations that mutate external state
+  (deployments, database writes, payment charges, secret rotations).
+  Requires explicit confirmation context before proceeding.
+risk_level: "medium"
+preconditions:
+  - type: "context_key_present"
+    name: "consequential_action_confirmed"
+    key: "consequential_action_confirmed"
 evidence_requirements:
   - type: "log"
     path: ".beads/evidence/function_call_consequential_action.jsonl"
-reuse_queries: []
+reuse_queries:
+  - type: "pattern_grep"
+    value: "consequential_action"

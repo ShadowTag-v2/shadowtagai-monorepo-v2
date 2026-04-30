@@ -34,6 +34,20 @@ LAST_COMMIT_HASH=$(git log -1 --format='%h' 2>/dev/null || echo "unknown")
 LAST_COMMIT_MSG=$(git log -1 --format='%s' 2>/dev/null | head -c 80 || echo "unknown")
 DIRTY_FILES=$(git status --short 2>/dev/null | wc -l | tr -d ' ')
 
+# Dirty file classification
+_git_all=$(git status --short 2>/dev/null || true)
+_git_tracked=$(echo "$_git_all" | { grep -v '^\?\?' || true; })
+_git_untracked=$(echo "$_git_all" | { grep '^\?\?' || true; })
+
+# IDE/build transient patterns
+IDE_TRANSIENT_PAT='\.dart_tool|__pycache__|\.next/|node_modules/|\.swp$|\.swo$'
+SESSION_PAT='kairos_heartbeat|pipeline_metrics|\.beads/|\.reports/|\.memory/'
+
+TRACKED_DIRTY=$(echo "$_git_tracked" | { grep -Ev "$IDE_TRANSIENT_PAT|$SESSION_PAT" || true; } | { grep -c '.' || true; })
+SESSION_GENERATED=$(echo "$_git_all" | { grep -E "$SESSION_PAT" || true; } | { grep -c '.' || true; })
+IDE_TRANSIENT=$(echo "$_git_all" | { grep -E "$IDE_TRANSIENT_PAT" || true; } | { grep -c '.' || true; })
+UNTRACKED_NEW=$(echo "$_git_untracked" | { grep -Ev "$IDE_TRANSIENT_PAT|$SESSION_PAT" || true; } | { grep -c '.' || true; })
+
 # Oracle score
 ORACLE_JSON=$(bash scripts/repo-oracle-score.sh --json 2>/dev/null || echo '{"score":0,"max_score":100,"percentage":0}')
 ORACLE_SCORE=$(echo "$ORACLE_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['percentage'])" 2>/dev/null || echo "0")
@@ -84,7 +98,11 @@ cat > "$REPORT_FILE" <<EOF
 | Property | Value |
 |----------|-------|
 | Last Commit | \`$LAST_COMMIT_HASH\` — $LAST_COMMIT_MSG |
-| Dirty Files | $DIRTY_FILES |
+| Dirty Files (total) | $DIRTY_FILES |
+| — Source (tracked, non-transient) | $TRACKED_DIRTY |
+| — Session-generated | $SESSION_GENERATED |
+| — IDE transient | $IDE_TRANSIENT |
+| — Untracked new | $UNTRACKED_NEW |
 | Triage | $TRIAGE_STATUS |
 
 ## Guardrails
