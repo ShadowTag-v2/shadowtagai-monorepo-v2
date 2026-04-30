@@ -51,6 +51,7 @@ class ContextCompactor:
         telemetry_dir: Path | None = None,
         feature_flags: dict[str, Any] | None = None,
     ) -> None:
+        from config.feature_flags import flags
         self._layers = [
             Layer1CachedMC(),
             Layer2TimeBased(),
@@ -58,22 +59,14 @@ class ContextCompactor:
             Layer4FullCompaction(),
         ]
         self._telemetry_dir = telemetry_dir
-        self._flags = feature_flags or self._load_flags()
+        self._flags = feature_flags if feature_flags is not None else flags.all_flags()
         self._run_count = 0
         self._total_tokens_saved = 0
-
-    def _load_flags(self) -> dict[str, Any]:
-        """Load feature flags from AGNT_FC_OVERRIDES env var."""
-        raw = os.environ.get("AGNT_FC_OVERRIDES", "{}")
-        try:
-            return json.loads(raw)
-        except json.JSONDecodeError:
-            return {}
 
     @property
     def is_enabled(self) -> bool:
         """Check if context compaction is enabled via feature flags."""
-        return self._flags.get("context_compaction", True)
+        return self._flags.get("context_compaction", False)
 
     @property
     def stats(self) -> dict[str, Any]:

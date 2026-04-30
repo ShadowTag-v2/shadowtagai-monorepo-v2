@@ -104,7 +104,8 @@ class VCRRecorder:
         mode: VCRMode | None = None,
         cassette_name: str = "default",
     ) -> None:
-        self._mode = mode or VCRMode(os.environ.get("AGNT_VCR_MODE", "off").lower())
+        from config.feature_flags import flags
+        self._mode = mode or VCRMode(flags.get_string("vcr_mode", default="off").lower())
 
         default_dir = Path(
             os.environ.get(

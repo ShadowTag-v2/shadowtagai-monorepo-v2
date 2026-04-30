@@ -34,7 +34,8 @@ class PromptDumper:
     """
 
     def __init__(self, dump_dir: Path | None = None, enabled: bool | None = None) -> None:
-        self._enabled = enabled if enabled is not None else os.environ.get("AGNT_DUMP_PROMPTS", "0") == "1"
+        from config.feature_flags import flags
+        self._enabled = enabled if enabled is not None else flags.is_enabled("dump_prompts")
         self._dump_dir = dump_dir
         self._sequence = 0
 
