@@ -403,3 +403,9 @@
 - **Severity:** 🟡 Medium
 - **Status:** ✅ RESOLVED (2026-04-30)
 - **Description**: The AGNT feature flag system (`config/feature_flags.py`) only supported env var overrides at startup time. CC engineers have the `/config Gates tab` for live runtime modification. **Resolution**: Implemented `packages/agnt_tools/config_tool.py` — a full port of CC's ConfigTool with set/get/clear/list operations, atomic JSON writes to `.beads/agnt_config.json`, env var sync for immediate propagation, and a formatted Gates tab display. Priority chain: AGNT_FC_OVERRIDES env > config file > compiled defaults.
+
+## Risk #98: STATE B Deferred Items — 5 Infrastructure Tasks Pending
+- **Type**: Operational / Architecture
+- **Severity:** 🟡 Medium
+- **Status:** TRACKED (2026-04-30)
+- **Description**: Five infrastructure items were deferred to STATE B during the Gideon OS hardening session. All require either external service interaction or long-running background processes. **Deferred items**: (1) CounselConduit Cloud Run redeploy — required to fix staging 500 errors and move `TestMagicLinkOnboarding` from XFAIL to PASS. Dockerfile is at `apps/counselconduit/Dockerfile` (Python 3.14-slim, multi-stage). Current revision: `counselconduit-00045-kjp`. (2) Lighthouse-CI assertions on staging URL via Chrome DevTools MCP — blocked on active browser session. (3) ehanc69 56 sub-repo formal 4-file audit — workflow at `.agent/workflows/merge-56-four-file-proof.md` defines strict schema (01_repo_census.json, 02_merge_plan.md, 03_execution_log.md, 04_canonical_state.md). (4) Competitive matrix formalization — Devin 2.0 and Cursor 2.0 intel gathered but not committed to a persistent artifact. (5) NotebookLM MCP server installation — See Risk #77. **Action**: Execute items (1) and (3) in next session. Items (2), (4), (5) are low-risk deferrals.

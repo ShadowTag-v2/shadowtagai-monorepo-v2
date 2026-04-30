@@ -1,10 +1,13 @@
 {
   "version": "1.0.0",
   "description": "AGNT runtime feature flag overrides. Source of truth for /config tool.",
-  "growthBookOverrides": {},
+  "growthBookOverrides": {
+    "context_compaction": true,
+    "xml_classifier": true
+  },
   "speculationEnabled": true,
   "nagPromptPrecompute": true,
   "nagPromptCacheMs": 30000,
-  "lastModified": 1777526437.789564,
+  "lastModified": 1777526771.998188,
   "modifiedBy": null
 }

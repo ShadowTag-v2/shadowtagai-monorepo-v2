@@ -177,9 +177,14 @@ class ConfigTool:
 
     def list_all(self) -> dict[str, dict[str, Any]]:
         """List all flags grouped by category with override status."""
-        from config.feature_flags import flags
+        try:
+            from config.feature_flags import flags
 
-        all_flags = flags.all_flags()
+            all_flags = flags.all_flags()
+        except ImportError:
+            # Feature flags module not available — show overrides only
+            all_flags = self._get_overrides()
+
         overrides = self._get_overrides()
         result: dict[str, dict[str, Any]] = {}
         seen: set[str] = set()
@@ -230,9 +235,12 @@ class ConfigTool:
 
     def reload_flags(self) -> None:
         """Force the FeatureFlags singleton to reload from env."""
-        from config.feature_flags import flags
+        try:
+            from config.feature_flags import flags
 
-        flags.reload()
+            flags.reload()
+        except ImportError:
+            pass  # Feature flags module not available
 
     def get_change_log(self) -> list[ConfigChange]:
         """Return the in-memory audit trail of changes this session."""

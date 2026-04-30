@@ -491,10 +491,13 @@ class PromptSpeculationEngine:
         task_phase: str,
     ) -> str | None:
         """Check if suggestion generation should be suppressed."""
-        from config.feature_flags import flags
+        try:
+            from config.feature_flags import flags
 
-        if not flags.is_enabled("telemetry_enabled"):
-            return SuppressReason.DISABLED.value
+            if not flags.is_enabled("telemetry_enabled"):
+                return SuppressReason.DISABLED.value
+        except ImportError:
+            pass  # Feature flags not available (e.g., during isolated test runs)
 
         # Need at least 2 assistant turns
         assistant_count = sum(1 for m in context if m.get("role") == "assistant")
