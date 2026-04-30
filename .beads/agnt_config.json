@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "description": "AGNT runtime feature flag overrides. Source of truth for /config tool.",
+  "growthBookOverrides": {},
+  "speculationEnabled": true,
+  "nagPromptPrecompute": true,
+  "nagPromptCacheMs": 30000,
+  "lastModified": null,
+  "modifiedBy": null
+}
