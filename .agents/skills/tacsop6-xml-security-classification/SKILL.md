@@ -22,7 +22,11 @@ The unified `ClassifiedGateway` combines the Tool Gateway's contract-based valid
    - **Tier 0 (Consequential Gate)**: Evaluates tools against medium/high/critical risk levels. Requires explicit `consequential_action_confirmed` context.
    - **Tier 1 (Blocked)**: Immediate denial.
    - **Tier 2 (Auto-Approved)**: XML Classifier is bypassed.
-   - **Tier 3 (Classifier)**: 2-stage XML classifier runs. If `ALLOW`, contract checks follow. If `BLOCK` or `ERROR` (fail-closed), execution stops.
+   - **Tier 3 (Classifier)**: 2-stage XML classifier runs. Governed by the `twoStageClassifier` setting, this pipeline operates in one of three modes:
+     - `'fast'`: Stage 1 only. Returns verdict immediately. Maximum 256 tokens. Suffix: `"Err on the side of blocking. <block> immediately."`
+     - `'thinking'`: Stage 2 only. Full chain-of-thought. Suffix: `"Review the classification process... Use <thinking> before responding with <block>."`
+     - `'both'`: Stage 1 fast triage. If blocked, escalates to Stage 2 reasoning.
+     *Scale Slipping Detail:* When routing to a reasoning model, the `max_tokens` MUST be padded with `+2048` headroom to accommodate adaptive thinking generation. If `ALLOW`, contract checks follow. If `BLOCK` or `ERROR` (strictly fail-closed), execution stops.
    - **Tier 4 (Unknown)**: Unrecognized tools fail-safe into Tier 3 (Requires Classifier).
 
 ## Rules of Engagement

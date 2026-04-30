@@ -55,11 +55,32 @@ AUTOLINT_INTERVAL = 86400  # 24 hours
 
 # Jitter range (±30s) to prevent thundering herd — TACSOP B8
 JITTER_SECONDS = 30
+DYNAMIC_CONFIG_FILE = BEADS_DIR / "tengu_kairos_cron_config.json"
 
+def get_jitter_config() -> float:
+    """Dynamic Jitter: Allows ops to spread out API load during incidents."""
+    try:
+        if DYNAMIC_CONFIG_FILE.exists():
+            cfg = json.loads(DYNAMIC_CONFIG_FILE.read_text())
+            return cfg.get("jitter_seconds", JITTER_SECONDS)
+    except Exception as e:
+        logger.warning("Failed to parse dynamic jitter config: %s", e)
+    return JITTER_SECONDS
+
+def is_killed() -> bool:
+    """Kill Switch: Halt scheduler on next check tick if tengu_kairos_cron is false."""
+    try:
+        if DYNAMIC_CONFIG_FILE.exists():
+            cfg = json.loads(DYNAMIC_CONFIG_FILE.read_text())
+            return not cfg.get("tengu_kairos_cron", True)
+    except Exception:
+        pass
+    return False
 
 def _jittered(interval: float) -> float:
-    """Add ±JITTER_SECONDS random offset to an interval."""
-    return interval + random.uniform(-JITTER_SECONDS, JITTER_SECONDS)
+    """Add dynamic random offset to an interval."""
+    j = get_jitter_config()
+    return interval + random.uniform(-j, j)
 
 
 _running = True
@@ -93,7 +114,7 @@ def health_check() -> dict:
             timeout=15,
         )
         checks["gcp_adc"] = "ok" if result.returncode == 0 else "expired"
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["gcp_adc"] = "missing"
 
     # 2. ANE dylib
@@ -119,7 +140,7 @@ def health_check() -> dict:
         )
         dirty_count = len(result.stdout.strip().splitlines()) if result.stdout.strip() else 0
         checks["git_dirty"] = f"{dirty_count} files" if dirty_count > 0 else "clean"
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["git_dirty"] = "unknown"
 
     # 6. Git fetch --prune (GitHub-first context: keep remote refs fresh)
@@ -132,7 +153,7 @@ def health_check() -> dict:
             cwd=str(REPO_ROOT),
         )
         checks["git_fetch"] = "ok" if fetch_result.returncode == 0 else "failed"
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["git_fetch"] = "timeout"
 
     logger.info("Health: %s", json.dumps(checks))
@@ -334,6 +355,15 @@ def main_loop(once: bool = False) -> None:
     cycle = 0
     while _running:
         cycle += 1
+        
+        # Anthropic 'tengu_kairos_cron' fleet-wide kill switch parity
+        if is_killed():
+            logger.info("Kill switch 'tengu_kairos_cron' engaged. Halting scheduler.")
+            for _ in range(30):
+                if not _running: break
+                time.sleep(1)
+            continue
+            
         now = time.time()
         status: dict[str, str] = {"cycle": str(cycle)}
 
@@ -342,8 +372,9 @@ def main_loop(once: bool = False) -> None:
             status["health"] = json.dumps(health_check())
             last_health = now
 
-        # Dream consolidation (daily, only between 2-4 AM local)
-        hour = datetime.datetime.now().hour
+        # Dream consolidation (daily, only between 2-4 AM UTC)
+        utc_now = datetime.datetime.now(datetime.timezone.utc)
+        hour = utc_now.hour
         if now - last_dream >= _jittered(DREAM_INTERVAL) and 2 <= hour <= 4:
             run_dream_consolidation()
             last_dream = now
