@@ -1,16 +1,12 @@
 {
-  "last_heartbeat": "2026-04-30T08:00:35Z",
-  "state": "ACTIVE",
-  "phase": "fold_in_complete",
-  "test_baseline": "640p/3s/2xf/1xp/646c",
-  "skill_count": 298,
-  "workspace_skill_count": 98,
-  "workflow_count": 79,
-  "fold_in_status": {
-    "canonical": 38,
-    "deprecated": 9,
-    "reference_only": 6,
-    "archived": 3,
-    "queued": 0
+  "timestamp": "2026-04-30T08:53:22.707185+00:00",
+  "pid": 46437,
+  "status": {
+    "cycle": "1",
+    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": \"2 files\", \"git_fetch\": \"ok\"}",
+    "steward": "ran",
+    "standup": "ran",
+    "vault_ingest": "ran",
+    "quarantine_purge": "ran"
   }
 }
