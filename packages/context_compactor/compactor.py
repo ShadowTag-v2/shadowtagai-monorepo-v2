@@ -33,6 +33,10 @@ from context_compactor.layers import (
     Layer4FullCompaction,
     Message,
 )
+from context_compactor.micro_compact import (
+    MicrocompactResult,
+    microcompact_messages,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -106,6 +110,25 @@ class ContextCompactor:
         remaining = max_tokens - current_tokens
         return remaining < WARNING_THRESHOLD_BUFFER_TOKENS
 
+    def pre_compact(
+        self,
+        messages: list[Any],
+        query_source: str | None = None,
+    ) -> MicrocompactResult:
+        """Run pre-request microcompaction (proactive phase).
+
+        Should be called BEFORE each API request to shrink stale context
+        when the prompt cache is cold (idle gap exceeds threshold).
+
+        Args:
+            messages: Raw message dicts (will be deep-copied if modified).
+            query_source: Originating query source identifier.
+
+        Returns:
+            MicrocompactResult with possibly-modified messages.
+        """
+        return microcompact_messages(messages, query_source)
+
     def run(
         self,
         messages: list[Message],
@@ -113,9 +136,10 @@ class ContextCompactor:
         current_tokens: int,
         max_layer: int = 4,
     ) -> CompactionResult:
-        """Execute the compaction pipeline.
+        """Execute the reactive compaction pipeline.
 
         Tries layers L1→L4 in order. Stops as soon as target is reached.
+        Call `pre_compact()` first for proactive shrinking.
 
         Args:
             messages: Mutable list of conversation messages.
