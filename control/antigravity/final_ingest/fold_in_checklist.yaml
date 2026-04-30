@@ -20,7 +20,7 @@ repos:
   destination: apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services
   duplicate_family: fastapi-services
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -37,7 +37,7 @@ repos:
   destination: apps/templates/ShadowTag-v2jr-template-2
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -54,7 +54,7 @@ repos:
   destination: governance/ShadowTag-v2-objections-decisions
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -71,7 +71,7 @@ repos:
   destination: packages/ShadowTag-v2-core
   duplicate_family: core
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -88,7 +88,7 @@ repos:
   destination: apps/ShadowTag-v2_stack/ShadowTag-v2-clients
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -105,7 +105,7 @@ repos:
   destination: infra/ShadowTag-v2-mlops
   duplicate_family: mlops
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -122,7 +122,7 @@ repos:
   destination: packages/ShadowTag-v2-data-contracts
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -139,7 +139,7 @@ repos:
   destination: infra/ShadowTag-v2-infra
   duplicate_family: infra
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -156,7 +156,7 @@ repos:
   destination: infra/ShadowTag-v2-devops
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -173,7 +173,7 @@ repos:
   destination: infra/ShadowTag-v2-observability
   duplicate_family: observability
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -190,7 +190,7 @@ repos:
   destination: infra/ShadowTag-v2-sre
   duplicate_family: sre
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -207,7 +207,7 @@ repos:
   destination: infra/ShadowTag-v2-security
   duplicate_family: security
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -224,7 +224,7 @@ repos:
   destination: infra/ShadowTag-v2-sops
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -241,7 +241,7 @@ repos:
   destination: docs/ShadowTag-v2
   duplicate_family: docs
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -258,7 +258,7 @@ repos:
   destination: apps/ShadowTag-v2_stack/ShadowTag-v2-frontend
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -275,7 +275,7 @@ repos:
   destination: apps/ShadowTag-v2_stack/ShadowTag-v2-examples
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -292,7 +292,7 @@ repos:
   destination: memory/erik-hancock-llm-memory
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -309,7 +309,7 @@ repos:
   destination: packages/ShadowTag-v2-rollup
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -326,7 +326,7 @@ repos:
   destination: apps/ShadowTag-v2_stack/ShadowTag-v2-api
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -343,7 +343,7 @@ repos:
   destination: control/pnkln
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -360,7 +360,7 @@ repos:
   destination: reference/public-demos/ShadowTag-v2
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -378,7 +378,7 @@ repos:
   destination: archive/legacy-security
   duplicate_family: security
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -396,7 +396,7 @@ repos:
   destination: archive/legacy-sre
   duplicate_family: sre
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -414,7 +414,7 @@ repos:
   destination: archive/legacy-observability
   duplicate_family: observability
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -432,7 +432,7 @@ repos:
   destination: archive/legacy-mlops
   duplicate_family: mlops
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -450,7 +450,7 @@ repos:
   destination: archive/legacy-docs
   duplicate_family: docs
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -468,7 +468,7 @@ repos:
   destination: archive/legacy-prompts
   duplicate_family: prompts
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -486,7 +486,7 @@ repos:
   destination: archive/legacy-infra
   duplicate_family: infra
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -504,7 +504,7 @@ repos:
   destination: archive/legacy-fastapi-services
   duplicate_family: fastapi-services
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -522,7 +522,7 @@ repos:
   destination: archive/legacy-core
   duplicate_family: core
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -540,7 +540,7 @@ repos:
   destination: reference/public-demos/shadowtag_v2
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -558,7 +558,7 @@ repos:
   destination: reference/public-demos/kosmos
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -576,7 +576,7 @@ repos:
   destination: reference/public-demos/Cor.Claude_Code_6
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -594,7 +594,7 @@ repos:
   destination: reference/public-demos/codepmcs
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -612,7 +612,7 @@ repos:
   destination: reference/public-demos/antigravity-go
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -630,7 +630,7 @@ repos:
   destination: packages/ShadowTag-v2-policy
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -647,7 +647,7 @@ repos:
   destination: apps/ShadowTag-v2_stack/Pipeline
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -664,7 +664,7 @@ repos:
   destination: apps/ShadowTag-v2_stack/ShadowTag-v2-backend
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -681,7 +681,7 @@ repos:
   destination: apps/ShadowTag-v2_stack/cosmic-crab-payload
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -698,7 +698,7 @@ repos:
   destination: apps/ShadowTag-v2_stack/nascent-apollo
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -715,7 +715,7 @@ repos:
   destination: archive/chatgpt-archive
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -733,7 +733,7 @@ repos:
   destination: archive/shadowtagai-v1
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -751,7 +751,7 @@ repos:
   destination: evals/ShadowTag-v2-evals
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -768,7 +768,7 @@ repos:
   destination: governance/ShadowTag-v2-governance
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -785,7 +785,7 @@ repos:
   destination: apps/ShadowTag-v2_stack/ShadowTag-v2-ui-kit
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -802,7 +802,7 @@ repos:
   destination: apps/ShadowTag-v2_stack/ShadowTag-v2-offline-appliance
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -819,7 +819,7 @@ repos:
   destination: infra/ShadowTag-v2-risk-engine
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -836,7 +836,7 @@ repos:
   destination: packages/ShadowTag-v2-indexer
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -853,7 +853,7 @@ repos:
   destination: packages/ShadowTag-v2-codesmith
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -870,7 +870,7 @@ repos:
   destination: packages/ShadowTag-v2-prompts
   duplicate_family: prompts
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: false
     folded_into_destination: true
@@ -887,7 +887,7 @@ repos:
   destination: packages/ShadowTag-v2-exec
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -904,7 +904,7 @@ repos:
   destination: staging/ShadowTag-v2-ml
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -922,7 +922,7 @@ repos:
   destination: data/ShadowTag-v2-data
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -939,7 +939,7 @@ repos:
   destination: infra/ShadowTag-v2-risk
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -956,7 +956,7 @@ repos:
   destination: infra/ci/ShadowTag-v2-ci
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
@@ -973,7 +973,7 @@ repos:
   destination: archive/ShadowTag-v2
   duplicate_family: null
   checks:
-    classified: false
+    classified: true
     destination_assigned: true
     duplicate_family_checked: true
     folded_into_destination: true
