@@ -25,6 +25,11 @@ from typing import Any
 import yaml
 
 from agnt_classifier import AGNTClassifier, ClassifierVerdict
+from tool_gateway.block_allow_engine import (
+    AntiRationalizationGate,
+    BlockAllowRuleEngine,
+    Verdict as BAVerdict,
+)
 from tool_gateway.gateway import Decision, ToolGateway
 
 logger = logging.getLogger(__name__)
@@ -46,10 +51,14 @@ class ClassifiedGateway:
         permissions_path: Path | None = None,
         classifier: AGNTClassifier | None = None,
         gateway: ToolGateway | None = None,
+        rule_engine: BlockAllowRuleEngine | None = None,
+        anti_rationalization: AntiRationalizationGate | None = None,
     ) -> None:
         self._repo_root = repo_root.resolve()
         self._gateway = gateway or ToolGateway(repo_root=self._repo_root)
         self._classifier = classifier or AGNTClassifier()
+        self._rule_engine = rule_engine or BlockAllowRuleEngine()
+        self._anti_rationalization = anti_rationalization or AntiRationalizationGate()
 
         # Load permission tiers
         perms_path = permissions_path or (self._repo_root / "config" / "tool_permissions.yaml")
@@ -98,6 +107,7 @@ class ClassifiedGateway:
         Pipeline:
             0. Consequential-action gate → enforce confirmation for medium+ risk
             1. Always-blocked → reject
+            1.5. Block/Allow Rule Engine → 16 BLOCK rules, 8 ALLOW exceptions
             2. Auto-approved → contract check only (skip classifier)
             3. Requires-classifier → 2-stage XML classifier + contract check
             4. Unknown tools → require classifier (fail-safe)
@@ -135,6 +145,38 @@ class ClassifiedGateway:
                 reason=f"Tool '{tool_id}' is in ALWAYS_BLOCKED tier (RULE 00/TACSOP 7).",
                 contract_id="always_blocked",
             )
+
+        # Tier 1.5: Block/Allow Rule Engine (Claude_Code_6 spec)
+        ba_result = self._rule_engine.evaluate(
+            tool_id=tool_id,
+            tool_input=tool_input,
+            context=context,
+        )
+
+        if ba_result.final_verdict == BAVerdict.BLOCK:
+            # Check anti-rationalization gate on agent reasoning
+            reasoning = context.get("agent_reasoning", "")
+            if reasoning:
+                ar_result = self._anti_rationalization.check_reasoning(reasoning)
+                if ar_result.is_rationalization:
+                    logger.warning(
+                        "Anti-rationalization TRIGGERED for tool '%s': %s",
+                        tool_id,
+                        ar_result.matched_markers,
+                    )
+            block_reasons = ", ".join(f"{r.rule_id}: {r.description}" for r in ba_result.matched_rules)
+            return Decision(
+                allowed=False,
+                reason=(f"BLOCK/ALLOW Engine BLOCKED (Tier 1.5): {block_reasons}. Reasoning: {ba_result.reasoning}"),
+                contract_id="block_allow_engine",
+            )
+
+        if ba_result.final_verdict == BAVerdict.ESCALATE:
+            logger.info(
+                "BLOCK/ALLOW Engine ESCALATED tool '%s' to classifier",
+                tool_id,
+            )
+            # Fall through to classifier
 
         # Tier 2: Auto-approved — skip classifier, contract check only
         if tool_id in self._auto_approved:
