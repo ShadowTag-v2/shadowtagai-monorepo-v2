@@ -1,33 +1,56 @@
 "use server";
 
-import { checkIdempotency } from "@/lib/idempotency";
-// Assuming you have the safe-action wrapper from our previous AGNT_OS implementation
-// import { safeAction } from "@/lib/safe-action"; 
+import { checkIdempotency, releaseIdempotencyLock } from "@/lib/idempotency";
+import { safeAction } from "@/lib/safe-action";
 
-export async function processOrderAction(prevState: any, formData: FormData) {
+/**
+ * Cor.Re-Coding the Vibe — Two-Front Defense:
+ *
+ * Front 1 (DOM Lock): React 19 useFormStatus in SubmitButton.tsx
+ *   → Disables the button while the Server Action is in-flight.
+ *   → Manages user PERCEPTION ("it's working, don't touch").
+ *
+ * Front 2 (Edge Idempotency Lock): This file.
+ *   → Redis NX lock mathematically rejects duplicate payloads.
+ *   → Survives page refresh, network retry, tab duplication.
+ *
+ * "A UI spinner is useless if a page refresh bypasses it."
+ */
+export async function processOrderAction(prevState: unknown, formData: FormData) {
   const idempotencyKey = formData.get("idempotencyKey") as string;
   const orderData = formData.get("orderData") as string;
 
-  //  2026 Guardrail: The Physics Lock.
-  // If the user refreshed the page while the spinner was active, 
+  // ──────────────────────────────────────────────────────
+  // FRONT 2: The Physics Lock.
+  // If the user refreshed the page while the spinner was active,
   // this instantly catches the duplicate request and halts execution.
+  // ──────────────────────────────────────────────────────
   const isNew = await checkIdempotency(idempotencyKey);
   if (!isNew) {
     console.warn(`[AGNT_OS] Blocked duplicate order submission: ${idempotencyKey}`);
     return { error: "This order is already processing. Please wait." };
   }
 
-  try {
-    // Simulate 2-second payment processing delay
+  // ──────────────────────────────────────────────────────
+  // safeAction: Wraps the entire business logic in a try/catch
+  // that emails engineering on production failures instead of
+  // silently swallowing errors.
+  // ──────────────────────────────────────────────────────
+  const result = await safeAction("processOrder", async () => {
+    // TODO: Replace with real payment processing (Stripe)
+    // and database insertion (Firestore/Prisma).
     await new Promise((resolve) => setTimeout(resolve, 2000));
-    
-    // Process real Database insertion here...
 
-    return { success: true };
-  } catch (error) {
-    // CRITICAL: If the database transaction fails legitimately, you must release the lock
-    // so the user can attempt to checkout again.
-    // await redis.del(`idempotency:${idempotencyKey}`);
-    return { error: "Payment failed. Engineering has been notified." };
+    return { success: true as const, orderId: idempotencyKey };
+  });
+
+  if (result.error) {
+    // CRITICAL: Release the idempotency lock on LEGITIMATE failure
+    // so the user can retry. The lock only persists on SUCCESS
+    // to prevent duplicate mutations.
+    await releaseIdempotencyLock(idempotencyKey);
+    return { error: result.error };
   }
+
+  return { success: true, orderId: result.data?.orderId };
 }
