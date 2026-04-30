@@ -1,6 +1,6 @@
 # Phase 3 — CounselConduit Sandbox Integration
 
-> Status: **PLANNING** | Started: 2026-04-30 | Target: 2026-05-15
+> Status: **IN PROGRESS** | Started: 2026-04-30 | Target: 2026-05-15
 
 ## Objective
 
@@ -68,12 +68,12 @@ an isolated environment before committing to the production database.
 
 | # | Milestone | Est. Effort | Status |
 |---|-----------|-------------|--------|
-| 1 | Sandbox Session API scaffold | 4h | Not started |
+| 1 | Sandbox Session API scaffold | 4h | ✅ Complete |
 | 2 | CoW overlay ↔ Firestore bridge | 8h | Not started |
-| 3 | Attorney diff review UI | 6h | Not started |
+| 3 | Attorney diff review UI | 6h | 📝 Spec written |
 | 4 | Accept/reject commit flow | 4h | Not started |
 | 5 | Telemetry + dashboard wiring | 3h | Not started |
-| 6 | Integration tests (12 cases) | 4h | Not started |
+| 6 | Integration tests (17 cases) | 4h | ✅ Complete (17/17) |
 | 7 | Security audit + privilege tests | 3h | Not started |
 
 **Total estimated: 32 hours**
