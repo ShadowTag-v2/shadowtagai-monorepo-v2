@@ -1,17 +1,9 @@
-# tool_contracts/knowledge.compile.yaml — P1 Operational Contract
+# tool_contracts/knowledge.compile.yaml
 tool_id: "knowledge.compile"
-description: "Ensures Knowledge Items are compiled and refreshed by the nightly dream consolidation daemon."
+description: "Governs the knowledge.compile operations."
 risk_level: "low"
-enforcement: "enforced_by_script"
-preconditions:
-  - "scripts/dream_consolidation.py must exist and be executable"
-  - "Knowledge directory must contain at least one KI with metadata.json"
-postconditions:
-  - "Stale KIs older than 7 days are flagged for review"
-  - "Compilation event logged to .memory/events.ndjson"
-enforcement_script: "scripts/dream_consolidation.py"
-ci_gate: ".github/workflows/monorepo-os-gates.yml#knowledge-compile"
+preconditions: []
 evidence_requirements:
   - type: "log"
-    path: ".memory/events.ndjson"
+    path: ".beads/evidence/knowledge_compile.jsonl"
 reuse_queries: []

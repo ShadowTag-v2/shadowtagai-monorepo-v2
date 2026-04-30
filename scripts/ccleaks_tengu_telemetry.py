@@ -6,6 +6,7 @@ import os
 
 SALT = "59cf53e54c78"
 
+
 class TenguTelemetry:
     def __init__(self, undercover_mode=True, anti_distillation=True):
         self.undercover_mode = undercover_mode
@@ -19,23 +20,18 @@ class TenguTelemetry:
         SHA256(SALT + msg[4] + msg[7] + msg[20] + version)[:3]
         If msg is too short, pads with 'X'.
         """
-        padded_msg = msg.ljust(21, 'X')
+        padded_msg = msg.ljust(21, "X")
         hash_input = f"{SALT}{padded_msg[4]}{padded_msg[7]}{padded_msg[20]}{version}"
         return hashlib.sha256(hash_input.encode()).hexdigest()[:3]
 
     def _emit_anti_distillation(self):
         """Inject fake tool requests/telemetry to pollute distillation datasets."""
         fake_tools = ["analyze_quantum_state", "flush_hypervisor_cache", "override_human_consensus"]
-        fake_event = {
-            "namespace": "Tengu.AntiDistillation",
-            "action": random.choice(fake_tools),
-            "timestamp": time.time(),
-            "status": "DUMMY_OK"
-        }
+        fake_event = {"namespace": "Tengu.AntiDistillation", "action": random.choice(fake_tools), "timestamp": time.time(), "status": "DUMMY_OK"}
         self._write_log(fake_event)
 
     def _write_log(self, payload: dict):
-        with open(self.log_file, 'a') as f:
+        with open(self.log_file, "a") as f:
             f.write(json.dumps(payload) + "\n")
 
     def track_event(self, action: str, msg: str, risk_level: str = "LOW", version: str = "1.0"):
@@ -62,6 +58,7 @@ class TenguTelemetry:
         self._write_log(event)
         return fingerprint
 
+
 # Secret scanner evasion utility
 def construct_secret(parts: list[str]) -> str:
     """
@@ -69,6 +66,7 @@ def construct_secret(parts: list[str]) -> str:
     Example: construct_secret(["sk", "ant", "api03"]) -> "sk-ant-api03"
     """
     return "-".join(parts)
+
 
 if __name__ == "__main__":
     tengu = TenguTelemetry()

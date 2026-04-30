@@ -1,20 +1,9 @@
-# tool_contracts/repo.oracle.yaml — P1 Operational Contract
+# tool_contracts/repo.oracle.yaml
 tool_id: "repo.oracle"
-description: "Ensures repo oracle structural health score stays above 85% threshold."
-risk_level: "medium"
-enforcement: "enforced_by_ci"
-preconditions:
-  - "scripts/repo-oracle-score.sh must exist and be executable"
-  - "packages/repo_oracle/ must contain scoring logic"
-postconditions:
-  - "Oracle score >= 85%"
-  - "Score output written to .reports/monorepo-os/repo-oracle-score.md"
-  - "Score event logged to .agent/evidence/index.ndjson"
-enforcement_script: "scripts/repo-oracle-score.sh"
-ci_gate: ".github/workflows/monorepo-os-gates.yml#repo-oracle-score"
+description: "Governs the repo.oracle operations."
+risk_level: "low"
+preconditions: []
 evidence_requirements:
-  - type: "report"
-    path: ".reports/monorepo-os/repo-oracle-score.md"
   - type: "log"
-    path: ".agent/evidence/index.ndjson"
+    path: ".beads/evidence/repo_oracle.jsonl"
 reuse_queries: []

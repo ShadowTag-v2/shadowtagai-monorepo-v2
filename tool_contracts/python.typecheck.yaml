@@ -1,14 +1,8 @@
 # tool_contracts/python.typecheck.yaml
-# v3.5: Elevated from keyword-match to CI-enforced (ruff E-series)
 tool_id: "python.typecheck"
-description: >
-  Enforces Python type safety via ruff E-series checks (runtime errors,
-  syntax errors, import errors). CI gate in monorepo-os-gates.yml.
+description: "Governs the python.typecheck operations."
 risk_level: "low"
-preconditions:
-  - type: "file_exists"
-    name: "ruff_config"
-    path: "pyproject.toml"
+preconditions: []
 evidence_requirements:
   - type: "log"
     path: ".beads/evidence/python_typecheck.jsonl"

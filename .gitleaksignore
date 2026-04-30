@@ -6,8 +6,6 @@
 #   2026-04-20: First-party documentation reviewed (placeholder/example)
 #   2026-04-28: Cleaned invalid entries, added missing line numbers,
 #               moved bulk exclusions to .betterleaks.toml/.gitleaks.toml allowlists
-#   2026-04-29: v3.1 — Fixed absolute→relative paths, corrected line drift,
-#               added scratch/repos/ third-party entries, purged 18 stale fingerprints
 
 # ════════════════════════════════════════════════════════
 # Test gauntlet: fake key used to test Layer 5 (secret detection)
@@ -47,67 +45,82 @@ apps/aiyou_stack/aiyou-fastapi-services/k8s/secrets.yaml.template:generic-api-ke
 apps/aiyou_stack/aiyou-fastapi-services/k8s/secrets.yaml.template:generic-api-key-inline:41
 apps/aiyou_stack/aiyou-fastapi-services/k8s/secrets.yaml.template:generic-api-key-inline:47
 apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/kubernetes/secret.yaml.example:generic-api-key-inline:15
-# Line numbers corrected from 17→19 and 107→109 (line drift from upstream edits)
-apps/aiyou_stack/aiyou-fastapi-services/tests/test_config.py:generic-api-key-inline:19
-apps/aiyou_stack/aiyou-fastapi-services/tests/test_config.py:generic-api-key-inline:109
+apps/aiyou_stack/aiyou-fastapi-services/tests/test_config.py:generic-api-key-inline:17
+apps/aiyou_stack/aiyou-fastapi-services/tests/test_config.py:generic-api-key-inline:107
 apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/k8s/05-secrets.yaml.template:generic-api-key-inline:22
 apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/k8s/05-secrets.yaml.template:generic-api-key-inline:25
 
-# ════════════════════════════════════════════════════════
-# Foldin report JSON: redacted google-api-key patterns in report metadata
-# ════════════════════════════════════════════════════════
-.agent/reports/pnkln-rollup_foldin_report.json:google-api-key:76
-.agent/reports/aiyou-rollup_foldin_report.json:google-api-key:76
+# Auto-classified IGNORE: Third-party path: \.agent/reports/
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/reports/pnkln-rollup_foldin_report.json:google-api-key:76
 
-# ════════════════════════════════════════════════════════
-# docs/AUDIT_REPORT.md: example API key patterns in documentation
-# (converted from absolute to relative paths — v3.1 fix)
-# ════════════════════════════════════════════════════════
-docs/AUDIT_REPORT.md:google-api-key:426
-docs/AUDIT_REPORT.md:google-api-key:427
-docs/AUDIT_REPORT.md:google-api-key:428
-docs/AUDIT_REPORT.md:google-api-key:429
-docs/AUDIT_REPORT.md:google-api-key:430
-docs/AUDIT_REPORT.md:google-api-key:478
-docs/AUDIT_REPORT.md:google-api-key:479
-docs/AUDIT_REPORT.md:google-api-key:480
-docs/AUDIT_REPORT.md:google-api-key:481
-docs/AUDIT_REPORT.md:google-api-key:482
-docs/AUDIT_REPORT.md:google-api-key:483
-docs/AUDIT_REPORT.md:google-api-key:531
-docs/AUDIT_REPORT.md:google-api-key:532
-docs/AUDIT_REPORT.md:google-api-key:533
-docs/AUDIT_REPORT.md:google-api-key:534
-docs/AUDIT_REPORT.md:google-api-key:535
-docs/AUDIT_REPORT.md:google-api-key:536
-docs/AUDIT_REPORT.md:google-api-key:584
-docs/AUDIT_REPORT.md:google-api-key:585
-docs/AUDIT_REPORT.md:google-api-key:586
-docs/AUDIT_REPORT.md:google-api-key:587
-docs/AUDIT_REPORT.md:google-api-key:588
-docs/AUDIT_REPORT.md:google-api-key:589
+# Auto-classified IGNORE: Third-party path: \.agent/reports/
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/reports/aiyou-rollup_foldin_report.json:google-api-key:76
 
-# ════════════════════════════════════════════════════════
-# scratch/repos/everything-claude-code: third-party cloned repo
-# Test fixtures containing placeholder API keys and tokens
-# ════════════════════════════════════════════════════════
-scratch/repos/everything-claude-code/tests/hooks/governance-capture.test.js:generic-api-key-inline:47
-scratch/repos/everything-claude-code/tests/hooks/governance-capture.test.js:generic-api-key-inline:497
-scratch/repos/everything-claude-code/tests/hooks/governance-capture.test.js:github-token:67
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:426
 
-# ════════════════════════════════════════════════════════
-# packages/tool_gateway/block_allow_engine.py: detection regex patterns
-# These are compiled re.compile() patterns used to DETECT secrets,
-# NOT actual secrets. Lines 92-93 in source.
-# ════════════════════════════════════════════════════════
-packages/tool_gateway/block_allow_engine.py:generic-api-key:92
-packages/tool_gateway/block_allow_engine.py:generic-api-key:93
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:427
 
-# ════════════════════════════════════════════════════════
-# tests/test_block_allow_engine.py: test fixture fake keys
-# Deliberately fake/placeholder keys used in unit test assertions
-# ════════════════════════════════════════════════════════
-tests/test_block_allow_engine.py:generic-api-key:167
-tests/test_block_allow_engine.py:google-api-key:177
-tests/test_block_allow_engine.py:generic-api-key:413
-tests/test_block_allow_engine.py:generic-api-key:568
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:428
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:429
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:430
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:478
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:479
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:480
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:481
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:482
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:483
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:531
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:532
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:533
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:534
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:535
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:536
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:584
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:585
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:586
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:587
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:588
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:589
