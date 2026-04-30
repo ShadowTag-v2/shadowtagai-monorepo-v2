@@ -11,10 +11,12 @@ from typing import Any
 
 class VCRReplay:
     def __init__(self, cassette_dir: str = ".cassettes"):
+        from config.feature_flags import flags
         self.cassette_dir = cassette_dir
         os.makedirs(self.cassette_dir, exist_ok=True)
-        self.recording = os.environ.get("AGNT_VCR_RECORD") == "1"
-        self.replaying = os.environ.get("AGNT_VCR_REPLAY") == "1"
+        vcr_mode = flags.get_string("vcr_mode", default="off")
+        self.recording = vcr_mode == "record"
+        self.replaying = vcr_mode == "replay"
 
     def _hash_request(self, method: str, kwargs: dict[str, Any]) -> str:
         payload = json.dumps({"method": method, "kwargs": kwargs}, sort_keys=True).encode("utf-8")

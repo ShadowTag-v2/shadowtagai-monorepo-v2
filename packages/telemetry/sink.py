@@ -54,7 +54,8 @@ class TelemetrySink:
         if enabled is not None:
             self._enabled = enabled
         else:
-            self._enabled = os.environ.get("AGNT_TELEMETRY", "1") != "0"
+            from config.feature_flags import flags
+            self._enabled = flags.is_enabled("telemetry_enabled")
 
     @property
     def enabled(self) -> bool:
