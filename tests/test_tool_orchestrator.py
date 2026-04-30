@@ -9,7 +9,6 @@ import asyncio
 import pytest
 
 from tool_gateway.tool_orchestrator import (
-    Batch,
     ToolCall,
     ToolResult,
     partition_tool_calls,
