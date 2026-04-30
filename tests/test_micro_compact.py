@@ -4,10 +4,8 @@
 
 from __future__ import annotations
 
-import copy
 import time
 
-import pytest
 
 from context_compactor.micro_compact import (
     COMPACTABLE_TOOLS,

@@ -158,6 +158,37 @@ class SpeculationEngine:
     tools_executed: int = 0
     pipelined_suggestion: str | None = None
     bypass_permissions: bool = False
+    _trust_level: int = 0
+    session_id: str = ""
+
+    @classmethod
+    def create(
+        cls,
+        cwd: str,
+        *,
+        trust_level: int = 0,
+        session_id: str = "",
+    ) -> SpeculationEngine:
+        """Factory with explicit trust level for bypass_permissions security gate.
+
+        Args:
+            cwd: Working directory for the engine.
+            trust_level: 0=deny bypass, 1=session-approved, 2=always-allow.
+            session_id: Correlation ID for DeepResearchEngine telemetry.
+        """
+        engine = cls(
+            cwd=cwd,
+            bypass_permissions=trust_level >= 2,
+            _trust_level=trust_level,
+            session_id=session_id,
+        )
+        if trust_level >= 1:
+            log_speculation_event(
+                event="bypass_permissions_activated",
+                trust_level=trust_level,
+                session_id=session_id,
+            )
+        return engine
 
     def start(self) -> None:
         self.state = SpeculationState.ACTIVE
@@ -174,7 +205,14 @@ class SpeculationEngine:
             if file_path and not _is_path_in_cwd(self.cwd, file_path):
                 b = CompletionBoundary(type=BoundaryType.EDIT, tool_name=tool_name, file_path=file_path, detail="outside_cwd")
                 return False, b
-            if self.bypass_permissions:
+            if self.bypass_permissions and self._trust_level >= 1:
+                log_speculation_event(
+                    event="bypass_write",
+                    tool=tool_name,
+                    file_path=file_path or "",
+                    trust_level=self._trust_level,
+                    session_id=self.session_id,
+                )
                 self.tools_executed += 1
                 return True, None
             b = CompletionBoundary(type=BoundaryType.EDIT, tool_name=tool_name, file_path=file_path)

@@ -199,7 +199,10 @@ class TestToolPermissions:
         engine.abort()
 
     def test_write_tools_allowed_with_bypass(self, tmp_path: Path) -> None:
-        engine = SpeculationEngine(cwd=str(tmp_path), bypass_permissions=True)
+        # Security model: bypass_permissions alone is not enough.
+        # trust_level >= 2 (Always Allow) is required for write operations.
+        # Use the .create() factory which maps trust_level → bypass_permissions.
+        engine = SpeculationEngine.create(cwd=str(tmp_path), trust_level=2)
         engine.start()
         allowed, boundary = engine.can_use_tool("Edit", file_path=str(tmp_path / "f.py"))
         assert allowed is True
