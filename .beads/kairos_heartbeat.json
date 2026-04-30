@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-04-27T05:45:37.345770+00:00",
-  "pid": 44166,
+  "timestamp": "2026-04-30T22:34:53.167573+00:00",
+  "pid": 83507,
   "status": {
     "cycle": "1",
-    "health": "{\"gcp_adc\": \"missing\", \"ane_dylib\": \"missing\", \"lancedb\": \"empty\", \"vault\": \"missing\", \"git_dirty\": \"unknown\", \"git_fetch\": \"timeout\"}",
+    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": \"1 files\", \"git_fetch\": \"ok\"}",
     "steward": "ran",
     "vault_ingest": "ran",
     "quarantine_purge": "ran"
