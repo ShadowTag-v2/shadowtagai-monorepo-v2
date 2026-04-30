@@ -30,10 +30,7 @@ def test_context_compaction():
 
 
 def test_vcr_record_replay(tmp_path):
-    from config.feature_flags import flags
-
     os.environ["AGNT_FC_OVERRIDES"] = json.dumps({"vcr_mode": "record"})
-    flags.reload()
     vcr = VCRReplay(cassette_dir=str(tmp_path))
 
     def my_call():
@@ -43,7 +40,6 @@ def test_vcr_record_replay(tmp_path):
     assert res == {"result": "success"}
 
     os.environ["AGNT_FC_OVERRIDES"] = json.dumps({"vcr_mode": "replay"})
-    flags.reload()
     vcr_replay = VCRReplay(cassette_dir=str(tmp_path))
 
     def fail_call():
