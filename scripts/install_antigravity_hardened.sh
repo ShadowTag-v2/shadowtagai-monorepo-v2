@@ -24,7 +24,7 @@ echo "=== 5. Running Compliance Copy Scan ==="
 bash "$MONOREPO_ROOT/scripts/compliance_copy_scan_weekly.sh"
 
 echo "=== 6. Validating Core Architecture (pytest) ==="
-/opt/homebrew/bin/python3.14 -m pytest "$MONOREPO_ROOT/apps/counselconduit/tests/test_dispatch_Cor.Claude_Code_6_integration.py"
+/opt/homebrew/bin/python3.14 -m pytest "$MONOREPO_ROOT/apps/counselconduit/tests/test_dispatch_Cor_Claude_Code_6_integration.py"
 
 echo "=== 7. Securing GitOps Push ==="
 python3 "$MONOREPO_ROOT/scripts/auth_github_app.py" --push
