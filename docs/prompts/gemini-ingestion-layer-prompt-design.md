@@ -135,7 +135,7 @@ Could help identify optimizations like:
 **Rationale**:
 Swapping strict coverage thresholds for multifaceted quality checks aligns with ingestion's goal of gathering **high-value data**, not just high volume.
 
-**Judge 6 Gate** (single-dimensional):
+**Claude_Code_6 Gate** (single-dimensional):
 
 - 98% code coverage (test completeness metric)
 - Binary: pass/fail on coverage threshold
