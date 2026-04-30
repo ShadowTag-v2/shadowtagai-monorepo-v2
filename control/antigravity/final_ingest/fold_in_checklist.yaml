@@ -1,7 +1,8 @@
 version: 1
 workspace: ShadowTag-v2/Monorepo-Uphillsnowball
 policy:
-  goal: Every listed repo is canonically rooted, explicitly archived, or explicitly reference-only inside the monorepo.
+  goal: Every listed repo is canonically rooted, explicitly archived, or explicitly
+    reference-only inside the monorepo.
   current_declared_merge_truth:
   - apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services
   - apps/ShadowTag-v2_stack/cosmic-crab-payload
@@ -22,14 +23,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2jr-template-2
   status: queued_for_fold_in
@@ -39,14 +40,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-objections-decisions
   status: queued_for_fold_in
@@ -56,14 +57,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-core
   status: queued_for_fold_in
@@ -73,14 +74,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-clients
   status: queued_for_fold_in
@@ -90,14 +91,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-mlops
   status: queued_for_fold_in
@@ -107,14 +108,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-data-contracts
   status: queued_for_fold_in
@@ -124,14 +125,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-infra
   status: queued_for_fold_in
@@ -141,14 +142,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-devops
   status: queued_for_fold_in
@@ -158,14 +159,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-observability
   status: queued_for_fold_in
@@ -175,14 +176,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-sre
   status: queued_for_fold_in
@@ -192,14 +193,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-security
   status: queued_for_fold_in
@@ -209,14 +210,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-sops
   status: queued_for_fold_in
@@ -226,14 +227,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-docs
   status: queued_for_fold_in
@@ -243,14 +244,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-frontend
   status: queued_for_fold_in
@@ -260,14 +261,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-examples
   status: queued_for_fold_in
@@ -277,14 +278,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/erik-hancock-llm-memory
   status: queued_for_fold_in
@@ -294,14 +295,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-rollup
   status: queued_for_fold_in
@@ -311,14 +312,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-api
   status: queued_for_fold_in
@@ -328,14 +329,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/pnkln
   status: queued_for_fold_in
@@ -345,14 +346,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2
   status: reference_only
@@ -362,176 +363,176 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - public/demo repo unless explicitly promoted to active product root
 - repo: ehanc69/security
-  status: queued_for_fold_in
+  status: archived_after_fold_in
   destination: archive/legacy-security
   duplicate_family: security
   checks:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
 - repo: ehanc69/sre
-  status: queued_for_fold_in
+  status: archived_after_fold_in
   destination: archive/legacy-sre
   duplicate_family: sre
   checks:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
 - repo: ehanc69/observability
-  status: queued_for_fold_in
+  status: archived_after_fold_in
   destination: archive/legacy-observability
   duplicate_family: observability
   checks:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
 - repo: ehanc69/mlops
-  status: queued_for_fold_in
+  status: archived_after_fold_in
   destination: archive/legacy-mlops
   duplicate_family: mlops
   checks:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
 - repo: ehanc69/docs
-  status: queued_for_fold_in
+  status: archived_after_fold_in
   destination: archive/legacy-docs
   duplicate_family: docs
   checks:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
 - repo: ehanc69/prompts
-  status: queued_for_fold_in
+  status: archived_after_fold_in
   destination: archive/legacy-prompts
   duplicate_family: prompts
   checks:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
 - repo: ehanc69/infra
-  status: queued_for_fold_in
+  status: archived_after_fold_in
   destination: archive/legacy-infra
   duplicate_family: infra
   checks:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
 - repo: ehanc69/fastapi-services
-  status: queued_for_fold_in
+  status: archived_after_fold_in
   destination: archive/legacy-fastapi-services
   duplicate_family: fastapi-services
   checks:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
 - repo: ehanc69/core
-  status: queued_for_fold_in
+  status: archived_after_fold_in
   destination: archive/legacy-core
   duplicate_family: core
   checks:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
 - repo: ehanc69/shadowtag_v2
@@ -542,14 +543,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - public/demo repo unless explicitly promoted to active product root
 - repo: ehanc69/kosmos
@@ -560,14 +561,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - public/demo repo unless explicitly promoted to active product root
 - repo: ehanc69/Cor.Claude_Code_6
@@ -578,14 +579,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - public/demo repo unless explicitly promoted to active product root
 - repo: ehanc69/codepmcs
@@ -596,14 +597,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - public/demo repo unless explicitly promoted to active product root
 - repo: ehanc69/antigravity-go
@@ -614,14 +615,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - public/demo repo unless explicitly promoted to active product root
 - repo: ehanc69/ShadowTag-v2-policy
@@ -632,14 +633,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/Pipeline
   status: canonical_in_monorepo
@@ -649,14 +650,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-backend
   status: queued_for_fold_in
@@ -666,14 +667,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/cosmic-crab-payload
   status: canonical_in_monorepo
@@ -683,14 +684,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/nascent-apollo
   status: canonical_in_monorepo
@@ -700,14 +701,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/chatgpt-archive
   status: archived_after_fold_in
@@ -717,14 +718,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - historical/archive-oriented; fold in physically but keep out of active roots
 - repo: ehanc69/shadowtagai-v1
@@ -735,14 +736,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - historical/archive-oriented; fold in physically but keep out of active roots
 - repo: ehanc69/ShadowTag-v2-evals
@@ -753,14 +754,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-governance
   status: queued_for_fold_in
@@ -770,14 +771,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-ui-kit
   status: queued_for_fold_in
@@ -787,14 +788,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-offline-appliance
   status: queued_for_fold_in
@@ -804,14 +805,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-risk-engine
   status: queued_for_fold_in
@@ -821,14 +822,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-indexer
   status: queued_for_fold_in
@@ -838,14 +839,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-codesmith
   status: queued_for_fold_in
@@ -855,14 +856,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-prompts
   status: queued_for_fold_in
@@ -872,14 +873,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: false
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-exec
   status: queued_for_fold_in
@@ -889,14 +890,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-ml
   status: queued_for_fold_in
@@ -906,14 +907,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - destination needs confirmation
 - repo: ehanc69/ShadowTag-v2-data
@@ -924,14 +925,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-risk
   status: queued_for_fold_in
@@ -941,14 +942,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2-ci
   status: queued_for_fold_in
@@ -958,14 +959,14 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes: []
 - repo: ehanc69/ShadowTag-v2
   status: archived_after_fold_in
@@ -975,13 +976,13 @@ repos:
     classified: false
     destination_assigned: true
     duplicate_family_checked: true
-    folded_into_destination: false
-    old_live_copies_demoted: false
-    manifest_updated: false
-    merge_status_updated: false
-    tooling_updated: false
-    index_updated: false
-    build_sanity_checked: false
-    final_status_stamped: false
+    folded_into_destination: true
+    old_live_copies_demoted: true
+    manifest_updated: true
+    merge_status_updated: true
+    tooling_updated: true
+    index_updated: true
+    build_sanity_checked: true
+    final_status_stamped: true
   notes:
   - historical/archive-oriented; fold in physically but keep out of active roots
