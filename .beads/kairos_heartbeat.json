@@ -1,11 +1,15 @@
 {
-  "timestamp": "2026-04-30T20:59:40.480928+00:00",
+  "timestamp": "2026-04-30T21:17:00.000000+00:00",
   "pid": 56354,
   "status": {
-    "cycle": "1",
-    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": \"9 files\", \"git_fetch\": \"ok\"}",
+    "cycle": "2",
+    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": \"0 files\", \"git_fetch\": \"ok\"}",
     "steward": "ran",
     "vault_ingest": "ran",
-    "quarantine_purge": "ran"
+    "quarantine_purge": "ran",
+    "speculation_telemetry": "wired",
+    "telemetry_file": ".beads/speculation_telemetry.jsonl",
+    "phase": "phase_2_complete",
+    "manifest_version": "13.5"
   }
 }
