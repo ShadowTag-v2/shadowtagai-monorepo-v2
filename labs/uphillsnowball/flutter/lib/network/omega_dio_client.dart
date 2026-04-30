@@ -9,9 +9,10 @@
 //   406 → Kickback (unauthorized practice detected)
 //   423 → Locked (RKILL executed)
 //
-// v4.1 additions:
+// v4.2 additions:
 //   - 401 token-refresh interceptor (single retry with fresh token)
 //   - authorizeBackbrief exponential backoff retry (3 attempts)
+//   - dispatchOpord now uses _retryablePost for consistency
 //   - retryable POST helper for all idempotent endpoints
 
 import 'dart:developer' show log;
@@ -170,21 +171,26 @@ class OmegaDioClient {
     ));
   }
 
-  /// Dispatch an OPORD to the ZTA kernel.
+  /// Dispatch an OPORD to the ZTA kernel with retry on transient failures.
   ///
   /// Returns the workflow ID on success, or an empty string if absent.
+  /// Retries up to [_maxRetries] times on 5xx/timeout errors.
   /// Throws [DioException] wrapping [JudgeSixException] on J-6 enforcement.
   Future<String> dispatchOpord({
     required String payload,
     required String hash,
     String agentId = 'Architect',
   }) async {
-    final response = await dio.post('/api/v5/zta/evaluate', data: {
-      'tenant_id': tenantId,
-      'payload': payload,
-      'hash': hash,
-      'agent_id': agentId,
-    });
+    final response = await _retryablePost(
+      '/api/v5/zta/evaluate',
+      data: {
+        'tenant_id': tenantId,
+        'payload': payload,
+        'hash': hash,
+        'agent_id': agentId,
+      },
+      operationName: 'dispatchOpord',
+    );
 
     final data = response.data;
     if (data is Map) {
