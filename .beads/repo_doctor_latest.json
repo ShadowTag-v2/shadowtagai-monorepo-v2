@@ -24,106 +24,29 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/app/risk_router.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/app/risk_router.py"
+      "path": ".beads/kairos_heartbeat.json",
+      "fix": "git checkout -- .beads/kairos_heartbeat.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/Cor_Claude_Code_6.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/Cor_Claude_Code_6.py"
+      "path": ".reports/secrets/betterleaks-dir.json",
+      "fix": "git checkout -- .reports/secrets/betterleaks-dir.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/src/services/agent_service.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/src/services/agent_service.py"
+      "path": ".reports/skills/guardrail_annotation_audit.md",
+      "fix": "git checkout -- .reports/skills/guardrail_annotation_audit.md"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/src/Claude_Code_6/graph_logic.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/src/Claude_Code_6/graph_logic.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/src/pnkln_agents/agents/intelligence_agent.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/src/pnkln_agents/agents/intelligence_agent.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/src/pnkln_agents/core/agent_pattern.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/src/pnkln_agents/core/agent_pattern.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/baseline_profile.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/baseline_profile.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/cor_skill_registry.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/cor_skill_registry.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/setup_Cor_Claude_Code_6_memory.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/scripts/setup_Cor_Claude_Code_6_memory.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/src/Claude_Code_6/graph_logic.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/src/Claude_Code_6/graph_logic.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/src/Claude_Code_6/orchestrator.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/src/Claude_Code_6/orchestrator.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/src/governance/Claude_Code_6/judge_core.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/src/governance/Claude_Code_6/judge_core.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/agents/intelligence_agent.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/agents/intelligence_agent.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/core/agent_pattern.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/src/pnkln_agents/core/agent_pattern.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/verify_omega.py",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/verify_omega.py"
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/src/Claude_Code_6/judge_core.py",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/src/Claude_Code_6/judge_core.py"
     },
     {
       "gate": "dirty",
@@ -136,20 +59,97 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/tacsop0-frontend-clone/eslint.config.mjs",
-      "fix": "git checkout -- apps/tacsop0-frontend-clone/eslint.config.mjs"
+      "path": "control/pnkln/governance/block_allow_rules.py",
+      "fix": "git checkout -- control/pnkln/governance/block_allow_rules.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/tacsop0-frontend-clone/next.config.ts",
-      "fix": "git checkout -- apps/tacsop0-frontend-clone/next.config.ts"
+      "path": "fix_claude_6.py",
+      "fix": "git checkout -- fix_claude_6.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "... and 1924 more dirty files",
+      "message": "Dirty file (M)",
+      "path": "insert_anti_rationalization.py",
+      "fix": "git checkout -- insert_anti_rationalization.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "labs/ccleaks-mock/fix_yolo_classifier.py",
+      "fix": "git checkout -- labs/ccleaks-mock/fix_yolo_classifier.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "labs/ccleaks-mock/generate_mock_code.py",
+      "fix": "git checkout -- labs/ccleaks-mock/generate_mock_code.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_agents/db_architect.py",
+      "fix": "git checkout -- packages/agnt_agents/db_architect.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_agents/osint_agent.py",
+      "fix": "git checkout -- packages/agnt_agents/osint_agent.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_agents/qa_agent.py",
+      "fix": "git checkout -- packages/agnt_agents/qa_agent.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_bash_classifier/telemetry.py",
+      "fix": "git checkout -- packages/agnt_bash_classifier/telemetry.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_classifier/classifier.py",
+      "fix": "git checkout -- packages/agnt_classifier/classifier.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_context_compactor/compactor.py",
+      "fix": "git checkout -- packages/agnt_context_compactor/compactor.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_tmux/__init__.py",
+      "fix": "git checkout -- packages/agnt_tmux/__init__.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_tmux/isolation.py",
+      "fix": "git checkout -- packages/agnt_tmux/isolation.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "... and 44 more dirty files",
       "path": "",
       "fix": ""
     },
@@ -163,7 +163,7 @@
     {
       "gate": "secrets",
       "severity": "error",
-      "message": "Betterleaks found 60 potential secrets",
+      "message": "Betterleaks found 37 potential secrets",
       "path": "",
       "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
     },
@@ -212,7 +212,7 @@
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 6361 more drift files",
+      "message": "... and 4470 more drift files",
       "path": "",
       "fix": ""
     },
@@ -233,7 +233,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ========================= 521 tests collected in 0.51s =========================",
+      "message": "Tests: ========================= 625 tests collected in 0.58s =========================",
       "path": "",
       "fix": ""
     }

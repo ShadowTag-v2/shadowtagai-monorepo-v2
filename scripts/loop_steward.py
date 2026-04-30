@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Loop Steward API
 Implements autonomous background operation with continuation intervals.

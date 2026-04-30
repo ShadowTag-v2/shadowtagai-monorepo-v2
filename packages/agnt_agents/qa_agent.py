@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 QA Agent Subsystem
 Handles specialized <test> routing from the XML Classifier for automated self-healing.

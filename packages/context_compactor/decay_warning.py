@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 P5.4: Context Decay Warning System
 

@@ -1,4 +1,6 @@
-with open('.claude/skills/debugging/verification-before-completion.md', 'r') as f:
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
+with open(".claude/skills/debugging/verification-before-completion.md") as f:
     content = f.read()
 
 anti_rationalization = """
@@ -21,5 +23,5 @@ At least ONE adversarial probe must be executed before declaring PASS:
 """
 
 if "Anti-Rationalization" not in content:
-    with open('.claude/skills/debugging/verification-before-completion.md', 'w') as f:
+    with open(".claude/skills/debugging/verification-before-completion.md", "w") as f:
         f.write(content.replace("## When to Use", anti_rationalization + "\n## When to Use"))

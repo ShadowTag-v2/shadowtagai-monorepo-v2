@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """AST chunk-stripping script for micro-compaction."""
 
 import ast

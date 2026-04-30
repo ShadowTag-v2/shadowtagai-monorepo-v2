@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 from unittest.mock import patch, MagicMock
 from agnt_tmux.tmux_socket import TmuxSocketManager
 
