@@ -485,3 +485,10 @@ external_repos/numpy-100/
 .tmp.driveupload/
 external_repos/upstream/
 scratch/
+
+# AGNT_OS Paths
+_ai_context/
+.agents/vcr_tapes/
+.agents/logs/
+.agents/cor_kairos/.scheduler.lock
+*.sock
