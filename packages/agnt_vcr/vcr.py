@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 VCR Record/Replay Subsystem
 Provides deterministic test reproduction by recording API/Tool interactions and replaying them.

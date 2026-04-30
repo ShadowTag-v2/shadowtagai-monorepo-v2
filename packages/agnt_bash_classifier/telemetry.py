@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Bash Classifier Telemetry Port
 Brings Claude Code's bash execution telemetry tracking over to AGNT.

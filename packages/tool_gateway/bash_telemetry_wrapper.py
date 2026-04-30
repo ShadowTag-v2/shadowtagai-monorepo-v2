@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Bash Telemetry Wrapper
 Integrates BashTelemetryTracker directly into the command execution pipeline.

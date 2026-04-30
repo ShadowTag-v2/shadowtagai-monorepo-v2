@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Terminal Capture Tool
 AGNT equivalent of Claude Code's TerminalCaptureTool.

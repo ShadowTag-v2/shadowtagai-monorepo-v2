@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 P4.3: Plan Mode V2 (Interview Phase)
 

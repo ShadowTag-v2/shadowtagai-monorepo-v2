@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import re
 
 file_path = "labs/ccleaks-mock/src/utils/permissions/yoloClassifier.ts"

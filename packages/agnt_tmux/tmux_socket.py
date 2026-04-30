@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Tmux Socket Isolation
 AGNT port of Claude Code's tmux socket isolation for background tasks.

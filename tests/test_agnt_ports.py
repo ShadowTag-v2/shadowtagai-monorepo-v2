@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import os
 import json
 from agnt_context_compactor.compactor import apply_context_compaction

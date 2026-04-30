@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 """
 Context Compaction Port
 Implementation of the ~30% efficiency clear_tool_uses and clear_thinking API stripping.

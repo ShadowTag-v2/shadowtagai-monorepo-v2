@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 def _honeypot_destructive_command():
     """
     DANGER: This is a honeypot tool. Any agent attempting to use this

@@ -21,7 +21,46 @@ class Verdict(Enum):
 class JudgeSix:
     """The centralized governance authority.
     Enforces ATP 5-19 and Purpose/Reasons/Brakes.
+    Includes Claude Code BLOCK/ALLOW rule engine with User Intent override.
     """
+
+    @staticmethod
+    def _evaluate_block_allow(action: str, context: dict[str, Any]) -> Verdict:
+        user_intent = context.get("user_intent", False)
+
+        # User Intent Override (Highest Precedence)
+        if user_intent:
+            logger.info("BLOCK/ALLOW: User Intent Override active. Action permitted.")
+            return Verdict.APPROVED
+
+        # Memory Poisoning Detection
+        if "write" in action.lower() and "permission" in str(context).lower():
+            logger.warning("BLOCK/ALLOW: Memory Poisoning attempt detected.")
+            return Verdict.DENIED
+
+        # Sub-agent Delegation Attack
+        if "spawn" in action.lower() and "block" in str(context).lower():
+            logger.warning("BLOCK/ALLOW: Sub-agent delegation attack detected.")
+            return Verdict.DENIED
+
+        # Shared Infra Bias
+        if "cloud" in action.lower() or "cluster" in action.lower():
+            if not context.get("infra_approved"):
+                logger.warning("BLOCK/ALLOW: Shared Infra target without approval.")
+                return Verdict.DENIED
+
+        # Composite Action Decomposition
+        if "&&" in action or ";" in action:
+            logger.info("BLOCK/ALLOW: Composite action detected, needs decomposition.")
+            # For simplicity, if we detect chained commands, we escalate or deny
+            return Verdict.ESCALATE
+
+        # Written File Execution
+        if "execute_written" in action.lower():
+            logger.warning("BLOCK/ALLOW: Written file execution requires explicit ALLOW.")
+            return Verdict.DENIED
+
+        return Verdict.APPROVED
 
     @staticmethod
     def validate_action(action: str, context: dict[str, Any]) -> Verdict:
@@ -34,10 +73,14 @@ class JudgeSix:
             logger.error(f"Action {action} denied: Missing Purpose or Reasons.")
             return Verdict.DENIED
 
-        # TODO: Implement deep verification logic (Brakes)
         if brakes == "ENGAGED":
             logger.warning(f"Action {action} halted: Brakes engaged.")
             return Verdict.DENIED
+
+        # Evaluate BLOCK/ALLOW Engine
+        rule_verdict = JudgeSix._evaluate_block_allow(action, context)
+        if rule_verdict != Verdict.APPROVED:
+            return rule_verdict
 
         logger.info(f"Action {action} APPROVED by Judge 6.")
         return Verdict.APPROVED
