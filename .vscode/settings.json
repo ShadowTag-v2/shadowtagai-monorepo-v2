@@ -1,4 +1,10 @@
 {
+  // Dart Analyzer: Exclude external tool repos to prevent phantom errors
+  "dart.analysisExcludedFolders": [
+    "tools/dio",
+    "tools/google-cloud-dart",
+    "external_repos"
+  ],
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "modificationsIfAvailable",
   "editor.foldingImportsByDefault": true,
@@ -69,6 +75,8 @@
     "**/third_party/**": true,
     "**/archive/**": true,
     "**/tools/legacy/**": true,
+    "**/tools/dio/**": true,
+    "**/tools/google-cloud-dart/**": true,
     "**/docs/legacy_shadowtag_v2/**": true,
     "**/apps/aiyou_ecosystem/raw_ingest/**": true,
     "**/_PRE_OMEGA_BACKUP_*/**": true,
@@ -79,7 +87,10 @@
     "**/monorepo-fold-in-batch/**": true,
     "**/third_party/playgrounds/**": true,
     "**/labs/uphillsnowball/external_payloads/**": true,
-    "**/.reports/**": true
+    "**/.reports/**": true,
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/.turbo/**": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
@@ -98,6 +109,8 @@
     "**/vendor/**": true,
     "**/third_party/**": true,
     "**/tools/legacy/**": true,
+    "**/tools/dio/**": true,
+    "**/tools/google-cloud-dart/**": true,
     "**/docs/legacy_shadowtag_v2/**": true,
     "**/apps/aiyou_ecosystem/raw_ingest/**": true,
     "**/_PRE_OMEGA_BACKUP_*/**": true,
@@ -109,7 +122,9 @@
     "**/dist-runtime/**": true,
     "**/.dart_tool/**": true,
     "**/build/**": true,
-    "**/.pub-cache/**": true
+    "**/.pub-cache/**": true,
+    "**/.next/**": true,
+    "**/.turbo/**": true
   },
 
   "extensions.experimental.affinity": {
