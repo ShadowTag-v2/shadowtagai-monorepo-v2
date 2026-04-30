@@ -1,4 +1,3 @@
-import google.generativeai as genai
 from google.generativeai.interactions import InteractionsClient
 
 client = InteractionsClient(api_key="YOUR_GEMINI_API_KEY")

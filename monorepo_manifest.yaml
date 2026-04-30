@@ -3,3 +3,32 @@ product: apps/counselconduit
 lab: labs/uphillsnowball
 mcp-truth: antigravity-mcp-config.json
 judge6-gate: active
+
+# Version & Phase Tracking
+version: "14.2"
+phase: 3
+milestone: 2
+milestone_name: "Attorney Diff Review + Telemetry Defense"
+milestone_status: "COMPLETE"
+phase_started: "2026-04-30"
+last_updated: "2026-05-01"
+
+# Deployment
+production_url: "https://counselconduit-767252945109.us-central1.run.app"
+firebase_project: shadowtag-omega-v4
+service_account: counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com
+
+# Test Health
+test_framework: pytest
+test_count: 919
+collection_errors: 0
+collection_error_reason: "RESOLVED — conftest.py module stubbing active"
+vitest_count: 14
+vitest_status: "passing"
+
+# Branch Health
+stale_branches_cleaned:
+  - feat/cor-re-coding-vibe-completion
+  - feat/panopticon-telemetry
+  - feat/phase-3-milestone-2-3
+  - fix/test-alignment-auth-telemetry
