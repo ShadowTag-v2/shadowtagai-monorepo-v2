@@ -1,9 +1,9 @@
-version: 13.0 # ECC2 Typed Messaging Integration + Manifest Consolidation — 2026-04-30
+version: 13.2 # Phase 2 CC Integration Complete — Session Ingress, Token Estimator, Usage Summary, Coordinator Summary — 2026-04-30
 hardened_state:
   last_hardened: "2026-04-30"  # v13.0 Typed Messaging + Manifest v13
   gold_master_tag: v11.7-gold
-  tests_collected: 580
-  tests_passing: 575
+  tests_collected: 759
+  tests_passing: 753
   tests_skipped: 3
   tests_e2e_expected_failures: 2
   test_runner: /opt/homebrew/bin/python3.14
@@ -58,7 +58,7 @@ hardened_state:
   omni_ingest_repos: 73
   browser_extractor: scripts/11x_browser_extractor.py
 ci_workflows:
-  total_count: 75
+  total_count: 85
   registered:
     - path: .github/workflows/ci.yml
       purpose: Primary CI gate
@@ -208,6 +208,26 @@ ci_workflows:
       purpose: Veo demo generator
     - path: .github/workflows/10x_vibe_matrix.yml
       purpose: 10x vibe matrix
+    - path: .github/workflows/10x-vibe-check.yml
+      purpose: 10x vibe check
+    - path: .github/workflows/bazel-ci.yml
+      purpose: Bazel build CI
+    - path: .github/workflows/betterleaks-nightly.yml
+      purpose: Nightly Betterleaks secret scan
+    - path: .github/workflows/deploy-mcp-lsp-bridge.yml
+      purpose: MCP-LSP bridge deploy
+    - path: .github/workflows/design-lint.yml
+      purpose: Design system linting
+    - path: .github/workflows/judge6_yolo_gate.yml
+      purpose: Judge 6 YOLO gate (canonical)
+    - path: .github/workflows/mcp-lsp-bridge-deploy.yml
+      purpose: MCP-LSP bridge deploy (alt)
+    - path: .github/workflows/monorepo-os-gates.yml
+      purpose: Monorepo OS governance gates
+    - path: .github/workflows/ruler-drift.yml
+      purpose: Ruler drift detection
+    - path: .github/workflows/skillops-audit.yml
+      purpose: SkillOps fleet audit
 active_silos:
   # REMOVED: packages/core (never created, dead reference)
   # REMOVED: packages/ag-ui (never created, dead reference)
@@ -236,4 +256,23 @@ active_silos:
     owner: pnkln-architecture
     modules:
       - messaging  # ECC2 typed inter-daemon comms
+      - session_ingress  # Filesystem-backed persistence (CC sessionIngress.ts port)
+  - id: context_compactor
+    path: packages/context_compactor
+    status: active
+    owner: pnkln-architecture
+    modules:
+      - token_estimator  # Multi-provider token estimation (CC tokenEstimation.ts port)
+  - id: agnt_tools
+    path: packages/agnt_tools
+    status: active
+    owner: pnkln-architecture
+    modules:
+      - usage_summary  # Tool usage reporting for daemon analytics (CC toolUseSummary port)
+  - id: agnt_agents
+    path: packages/agnt_agents
+    status: active
+    owner: pnkln-architecture
+    modules:
+      - coordinator_summary  # Coordinator state tracking (CC AgentSummary port)
 copyright_infrastructure: active
