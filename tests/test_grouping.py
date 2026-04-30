@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import pytest
 
 from context_compactor.grouping import group_messages_by_api_round
 

@@ -47,9 +47,15 @@ from speculation_engine.suggestion import (
     should_filter_suggestion,
     try_generate_suggestion,
 )
+from speculation_engine.orchestrator import (
+    SpeculativePhaseResult,
+    SpeculativeResearchConfig,
+    SpeculativeResearchOrchestrator,
+)
 from speculation_engine.telemetry import (
     log_speculation_event,
     log_suggestion_event,
+    read_telemetry_events,
 )
 
 __all__ = [
@@ -78,7 +84,12 @@ __all__ = [
     "get_suggestion_suppress_reason",
     "log_suggestion_outcome",
     "SINGLE_WORD_ALLOWLIST",
+    # Orchestrator
+    "SpeculativeResearchOrchestrator",
+    "SpeculativeResearchConfig",
+    "SpeculativePhaseResult",
     # Telemetry
     "log_suggestion_event",
     "log_speculation_event",
+    "read_telemetry_events",
 ]

@@ -29,9 +29,32 @@ import hashlib
 import logging
 import re
 import time
+import warnings
 from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any
+
+warnings.warn(
+    "agnt_tools.speculation_engine is deprecated. "
+    "Use 'from speculation_engine import SpeculationEngine, SuggestionManager' instead. "
+    "This shim will be removed in v14.0.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
+# Re-export the new package's public API for backwards compatibility.
+# Consumers should migrate to `import speculation_engine` directly.
+try:
+    from speculation_engine import (  # noqa: E402, F401
+        OverlayFS,
+        SpeculationEngine,
+        SpeculativeResearchOrchestrator,
+        SuggestionManager,
+        emit_event,
+        read_telemetry_events,
+    )
+except ImportError:
+    pass  # New package not installed — legacy-only mode.
 
 logger = logging.getLogger(__name__)
 

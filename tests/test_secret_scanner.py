@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import pytest
 
 from tool_gateway.secret_scanner import (
     redact_secrets,
