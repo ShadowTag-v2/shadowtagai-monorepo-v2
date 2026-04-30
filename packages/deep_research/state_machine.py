@@ -29,7 +29,8 @@ import time
 import uuid
 from dataclasses import dataclass, field
 from enum import StrEnum
-from typing import Any, Callable
+from typing import Any
+from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 
@@ -266,9 +267,7 @@ class DeepResearchEngine:
             ResearchResult with all findings, artifacts, and metadata.
         """
         async with self._lock:
-            return await self._run_pipeline(
-                objective, context or {}, phase_handlers or {}
-            )
+            return await self._run_pipeline(objective, context or {}, phase_handlers or {})
 
     # ── Internal Pipeline ───────────────────────────────────────
 
@@ -314,38 +313,25 @@ class DeepResearchEngine:
                         "[DeepResearch] Total timeout (%.1fs) exceeded",
                         elapsed,
                     )
-                    await self._transition(
-                        ResearchPhase.FAILED, error="total_timeout"
-                    )
+                    await self._transition(ResearchPhase.FAILED, error="total_timeout")
                     break
 
                 # Transition to next phase.
                 await self._transition(target_phase)
 
                 # Execute phase handler with timeout.
-                handler = phase_handlers.get(
-                    target_phase, self._default_phase_handler
-                )
+                handler = phase_handlers.get(target_phase, self._default_phase_handler)
                 try:
                     result = await asyncio.wait_for(
-                        asyncio.ensure_future(
-                            self._execute_phase(
-                                handler, objective, context, target_phase
-                            )
-                        ),
+                        asyncio.ensure_future(self._execute_phase(handler, objective, context, target_phase)),
                         timeout=self._config.phase_timeout_s,
                     )
                     self._state.findings[target_phase.value] = result
                     self._state.consecutive_failures = 0
-                except asyncio.TimeoutError:
-                    logger.warning(
-                        "[DeepResearch] Phase %s timed out", target_phase
-                    )
+                except TimeoutError:
+                    logger.warning("[DeepResearch] Phase %s timed out", target_phase)
                     self._state.consecutive_failures += 1
-                    if (
-                        self._state.consecutive_failures
-                        >= self._config.max_consecutive_failures
-                    ):
+                    if self._state.consecutive_failures >= self._config.max_consecutive_failures:
                         await self._transition(
                             ResearchPhase.FAILED,
                             error=f"circuit_breaker_{target_phase.value}",
@@ -358,10 +344,7 @@ class DeepResearchEngine:
                         exc,
                     )
                     self._state.consecutive_failures += 1
-                    if (
-                        self._state.consecutive_failures
-                        >= self._config.max_consecutive_failures
-                    ):
+                    if self._state.consecutive_failures >= self._config.max_consecutive_failures:
                         await self._transition(
                             ResearchPhase.FAILED,
                             error=str(exc),
@@ -372,13 +355,9 @@ class DeepResearchEngine:
                 await self._transition(ResearchPhase.COMPLETE)
 
         except Exception as exc:
-            logger.exception(
-                "[DeepResearch] Pipeline error: %s", exc
-            )
+            logger.exception("[DeepResearch] Pipeline error: %s", exc)
             try:
-                await self._transition(
-                    ResearchPhase.FAILED, error=str(exc)
-                )
+                await self._transition(ResearchPhase.FAILED, error=str(exc))
             except Exception:
                 self._state.phase = ResearchPhase.FAILED
 
@@ -392,12 +371,7 @@ class DeepResearchEngine:
             total_duration_ms=total_duration,
             total_queries=self._state.total_queries,
             success=self._state.phase == ResearchPhase.COMPLETE,
-            error=(
-                self._state.transitions[-1].error
-                if self._state.transitions
-                and not self._state.transitions[-1].success
-                else None
-            ),
+            error=(self._state.transitions[-1].error if self._state.transitions and not self._state.transitions[-1].success else None),
         )
 
     async def _transition(
@@ -410,18 +384,11 @@ class DeepResearchEngine:
         valid_targets = VALID_TRANSITIONS.get(from_phase, set())
 
         if to_phase not in valid_targets:
-            msg = (
-                f"Invalid transition: {from_phase.value} → {to_phase.value}. "
-                f"Valid targets: {[p.value for p in valid_targets]}"
-            )
+            msg = f"Invalid transition: {from_phase.value} → {to_phase.value}. Valid targets: {[p.value for p in valid_targets]}"
             raise ValueError(msg)
 
         now = time.time()
-        duration_ms = (
-            (now - self._state.phase_start) * 1000
-            if self._state.phase_start > 0
-            else 0.0
-        )
+        duration_ms = (now - self._state.phase_start) * 1000 if self._state.phase_start > 0 else 0.0
 
         transition = PhaseTransition(
             from_phase=from_phase,

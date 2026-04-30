@@ -1,4 +1,4 @@
-version: 13.2 # Phase 2 CC Integration Complete — Session Ingress, Token Estimator, Usage Summary, Coordinator Summary — 2026-04-30
+version: 13.4 # Phase 2 Speculation Engine Registration — 2026-04-30
 hardened_state:
   last_hardened: "2026-04-30"  # v13.0 Typed Messaging + Manifest v13
   gold_master_tag: v11.7-gold
@@ -275,4 +275,34 @@ active_silos:
     owner: pnkln-architecture
     modules:
       - coordinator_summary  # Coordinator state tracking (CC AgentSummary port)
+  - id: deep_research
+    path: packages/deep_research
+    status: active
+    owner: pnkln-architecture
+    modules:
+      - state_machine   # 7-phase deterministic research orchestrator
+      - research_router  # MCP-aware query routing (7 categories)
+      - synthesis        # Finding aggregation + confidence scoring
+      - telemetry        # Research pipeline telemetry
+  - id: evaluation_bridge
+    path: packages/evaluation_bridge
+    status: active
+    owner: pnkln-architecture
+    modules:
+      - bridge  # 4-gate pipeline (build/test/lint/merge) with fail-fast
+  - id: orbstack_sandbox
+    path: packages/orbstack_sandbox
+    status: active
+    owner: pnkln-architecture
+    modules:
+      - engine   # Container-isolated execution engine
+      - overlay  # CoW FUSE-like overlay filesystem
+  - id: speculation_engine
+    path: packages/speculation_engine
+    status: active
+    owner: pnkln-architecture
+    modules:
+      - engine      # CoW-overlay speculative execution with 4-tier tool permissions
+      - suggestion   # 5-layer enablement gates + 12-rule client filter
+      - telemetry    # Structured event logging to .beads/ evidence trail
 copyright_infrastructure: active

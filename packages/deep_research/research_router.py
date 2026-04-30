@@ -114,13 +114,9 @@ def classify_query(query: str) -> QuerySource:
     """
     scores: dict[QuerySource, int] = {
         QuerySource.FIREBASE_MCP: _score_patterns(query, _FIREBASE_PATTERNS),
-        QuerySource.GOOGLE_DEVELOPER_KNOWLEDGE: _score_patterns(
-            query, _GOOGLE_DEV_PATTERNS
-        ),
+        QuerySource.GOOGLE_DEVELOPER_KNOWLEDGE: _score_patterns(query, _GOOGLE_DEV_PATTERNS),
         QuerySource.LOCAL_CODEBASE: _score_patterns(query, _LOCAL_PATTERNS),
-        QuerySource.SEQUENTIAL_THINKING: _score_patterns(
-            query, _THINKING_PATTERNS
-        ),
+        QuerySource.SEQUENTIAL_THINKING: _score_patterns(query, _THINKING_PATTERNS),
     }
 
     # Priority ordering for tie-breaking.

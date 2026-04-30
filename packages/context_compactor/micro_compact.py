@@ -46,32 +46,34 @@ IMAGE_MAX_TOKEN_SIZE = 2000
 
 # Tool names eligible for compaction. Only tool results from these tools
 # are cleared during microcompaction. Order is irrelevant (set lookup).
-COMPACTABLE_TOOLS: frozenset[str] = frozenset({
-    "Read",          # FILE_READ_TOOL_NAME
-    "Bash",          # Bash shell
-    "Terminal",      # Terminal shell
-    "Grep",          # GREP_TOOL_NAME
-    "Glob",          # GLOB_TOOL_NAME
-    "WebSearch",     # WEB_SEARCH_TOOL_NAME
-    "WebFetch",      # WEB_FETCH_TOOL_NAME
-    "Edit",          # FILE_EDIT_TOOL_NAME
-    "Write",         # FILE_WRITE_TOOL_NAME
-    # Extended names for broader compatibility
-    "file_read",
-    "bash",
-    "shell",
-    "grep_search",
-    "glob",
-    "web_search",
-    "web_fetch",
-    "file_edit",
-    "file_write",
-    "read_file",
-    "run_command",
-    "search_files",
-    "list_dir",
-    "view_file",
-})
+COMPACTABLE_TOOLS: frozenset[str] = frozenset(
+    {
+        "Read",  # FILE_READ_TOOL_NAME
+        "Bash",  # Bash shell
+        "Terminal",  # Terminal shell
+        "Grep",  # GREP_TOOL_NAME
+        "Glob",  # GLOB_TOOL_NAME
+        "WebSearch",  # WEB_SEARCH_TOOL_NAME
+        "WebFetch",  # WEB_FETCH_TOOL_NAME
+        "Edit",  # FILE_EDIT_TOOL_NAME
+        "Write",  # FILE_WRITE_TOOL_NAME
+        # Extended names for broader compatibility
+        "file_read",
+        "bash",
+        "shell",
+        "grep_search",
+        "glob",
+        "web_search",
+        "web_fetch",
+        "file_edit",
+        "file_write",
+        "read_file",
+        "run_command",
+        "search_files",
+        "list_dir",
+        "view_file",
+    }
+)
 
 # Token estimation padding factor — pad by 4/3 to be conservative since
 # we're approximating (matches the TS implementation exactly).
@@ -79,6 +81,7 @@ ESTIMATION_PADDING_FACTOR = 4 / 3
 
 
 # --- Configuration ---
+
 
 @dataclass(frozen=True)
 class TimeBasedMCConfig:
@@ -117,6 +120,7 @@ def set_time_based_mc_config(config: TimeBasedMCConfig) -> None:
 
 # --- Result types ---
 
+
 @dataclass
 class MicrocompactResult:
     """Result of a microcompaction operation.
@@ -139,6 +143,7 @@ class MicrocompactResult:
 
 
 # --- Token calculation ---
+
 
 def calculate_tool_result_tokens(block: dict[str, Any]) -> int:
     """Calculate estimated token count for a tool_result block.
@@ -215,19 +220,16 @@ def estimate_message_tokens(messages: list[Any]) -> int:
             elif block_type == "tool_use":
                 name = block.get("name", "")
                 input_data = block.get("input", {})
-                total_tokens += rough_token_estimate(
-                    name + json.dumps(input_data, separators=(",", ":"))
-                )
+                total_tokens += rough_token_estimate(name + json.dumps(input_data, separators=(",", ":")))
             else:
                 # server_tool_use, web_search_tool_result, etc.
-                total_tokens += rough_token_estimate(
-                    json.dumps(block, separators=(",", ":"))
-                )
+                total_tokens += rough_token_estimate(json.dumps(block, separators=(",", ":")))
 
     return math.ceil(total_tokens * ESTIMATION_PADDING_FACTOR)
 
 
 # --- Core logic ---
+
 
 def collect_compactable_tool_ids(messages: list[Any]) -> list[str]:
     """Walk messages and collect tool_use IDs whose tool name is compactable.
@@ -255,10 +257,7 @@ def collect_compactable_tool_ids(messages: list[Any]) -> list[str]:
         for block in content:
             if not isinstance(block, dict):
                 continue
-            if (
-                block.get("type") == "tool_use"
-                and block.get("name", "") in COMPACTABLE_TOOLS
-            ):
+            if block.get("type") == "tool_use" and block.get("name", "") in COMPACTABLE_TOOLS:
                 tool_id = block.get("id", "")
                 if tool_id:
                     ids.append(tool_id)
@@ -386,10 +385,12 @@ def maybe_time_based_microcompact(
                 and block.get("content") != TIME_BASED_MC_CLEARED_MESSAGE
             ):
                 tokens_saved += calculate_tool_result_tokens(block)
-                new_content.append({
-                    **block,
-                    "content": TIME_BASED_MC_CLEARED_MESSAGE,
-                })
+                new_content.append(
+                    {
+                        **block,
+                        "content": TIME_BASED_MC_CLEARED_MESSAGE,
+                    }
+                )
                 touched = True
             else:
                 new_content.append(block)
@@ -401,8 +402,7 @@ def maybe_time_based_microcompact(
         return None
 
     logger.info(
-        "[TIME-BASED MC] gap %.0fmin > %.0fmin, cleared %d tool results "
-        "(~%d tokens), kept last %d",
+        "[TIME-BASED MC] gap %.0fmin > %.0fmin, cleared %d tool results (~%d tokens), kept last %d",
         gap_minutes,
         config.gap_threshold_minutes,
         len(clear_set),
@@ -454,6 +454,7 @@ def microcompact_messages(
 
 # --- Internal helpers ---
 
+
 def _get_role(msg: Any) -> str:
     """Extract role/type from a message."""
     if isinstance(msg, dict):
@@ -500,9 +501,10 @@ def _get_timestamp(msg: Any) -> float:
     if isinstance(ts, str):
         try:
             import datetime
+
             dt = datetime.datetime.fromisoformat(ts.replace("Z", "+00:00"))
             return dt.timestamp()
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             return 0.0
 
     return float(ts) if ts else 0.0

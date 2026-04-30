@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface-bg: #09090b;      
+  --color-surface-elevated: #18181b;
+  --color-border-subtle: #27272a;   
+  --color-brand-gold: #c5a059;      
+  --color-text-primary: #fafafa;    
+  --color-text-muted: #a1a1aa;      
+}

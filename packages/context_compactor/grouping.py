@@ -44,12 +44,7 @@ def group_messages_by_api_round(
         msg_role = _get_role(msg)
         msg_id = _get_assistant_id(msg)
 
-        if (
-            msg_role == "assistant"
-            and last_assistant_id is not None
-            and msg_id != last_assistant_id
-            and len(current) > 0
-        ):
+        if msg_role == "assistant" and last_assistant_id is not None and msg_id != last_assistant_id and len(current) > 0:
             groups.append(current)
             current = [msg]
         else:
