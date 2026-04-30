@@ -54,6 +54,16 @@ _DEFAULTS: dict[str, Any] = {
     "context_decay_warnings": True,
     "file_read_budget": 2000,
     "tool_result_max_chars": 50_000,
+    # Phase 6: Speculation Engine (CC speculation.ts port)
+    "speculation_enabled": True,
+    "speculation_max_turns": 20,
+    "speculation_max_messages": 100,
+    "speculation_overlay_isolation": True,
+    # Phase 7: Nag Protocol (complexity-proportional prompts)
+    "nag_prompt_precompute": True,
+    "nag_prompt_cache_ms": 30_000,
+    "nag_prompt_min_count": 5,
+    "nag_prompt_max_count": 22,
 }
 
 
