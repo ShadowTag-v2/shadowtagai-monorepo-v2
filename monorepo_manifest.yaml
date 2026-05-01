@@ -5,10 +5,10 @@ mcp-truth: antigravity-mcp-config.json
 judge6-gate: active
 
 # Version & Phase Tracking
-version: "14.2"
+version: "14.3"
 phase: 3
-milestone: 2
-milestone_name: "Attorney Diff Review + Telemetry Defense"
+milestone: 3
+milestone_name: "Sandbox Session API + Route Wiring + E2E Tests"
 milestone_status: "COMPLETE"
 phase_started: "2026-04-30"
 last_updated: "2026-05-01"

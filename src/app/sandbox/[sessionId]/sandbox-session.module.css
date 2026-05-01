@@ -1,0 +1,134 @@
+/* Copyright (c) 2026 ShadowTag, Inc. All rights reserved. */
+
+/**
+ * Sandbox Session Page Styles
+ *
+ * Premium dark theme with glassmorphism for the review experience.
+ * Micro-animations for state transitions.
+ */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-surface) 100%);
+  padding: var(--space-md);
+}
+
+/* ── Error State ── */
+.errorCard {
+  max-width: 480px;
+  margin: 20vh auto 0;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  text-align: center;
+  animation: slideUp var(--transition-slow) ease;
+  backdrop-filter: blur(12px);
+}
+
+.errorIcon {
+  font-size: 48px;
+  margin-bottom: var(--space-md);
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.4));
+}
+
+.errorTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-danger);
+  margin-bottom: var(--space-sm);
+}
+
+.errorMessage {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: var(--space-lg);
+}
+
+.retryButton {
+  background: var(--color-danger);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all var(--transition-base);
+}
+
+.retryButton:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Success State ── */
+.successCard {
+  max-width: 520px;
+  margin: 20vh auto 0;
+  background: rgba(45, 212, 191, 0.06);
+  border: 1px solid rgba(45, 212, 191, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  text-align: center;
+  animation: slideUp var(--transition-slow) ease;
+  backdrop-filter: blur(12px);
+}
+
+.successIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(45, 212, 191, 0.15);
+  color: var(--color-success);
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  box-shadow: 0 0 24px rgba(45, 212, 191, 0.2);
+}
+
+.successTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-success);
+  margin-bottom: var(--space-lg);
+}
+
+.commitSummary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.commitSummary p {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+.commitSummary strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.auditNote {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.auditNote code {
+  background: rgba(108, 99, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--color-accent);
+}
+
+.durationNote {
+  color: var(--color-text-muted) !important;
+  font-size: 0.75rem !important;
+}
