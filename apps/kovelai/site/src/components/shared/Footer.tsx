@@ -37,6 +37,12 @@ export default function Footer({ onOpenModal }: FooterProps) {
                 <a href="#management">Leadership</a>
               </li>
               <li>
+                <a href="https://linkedin.com/in/erik-hancock-80442476" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              </li>
+              <li>
+                <a href="https://x.com/KovelAi_Inc" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+              </li>
+              <li>
                 <a href="/privacy">Privacy Policy</a>
               </li>
               <li>
@@ -63,7 +69,7 @@ export default function Footer({ onOpenModal }: FooterProps) {
                 <a href="mailto:founder@shadowtagai.com">Email</a>
               </li>
               <li>
-                <a href="https://shadowtagai.web.app" target="_blank" rel="noopener noreferrer">
+                <a href="https://shadowtagai.com" target="_blank" rel="noopener noreferrer">
                   ShadowTagAI ↗
                 </a>
               </li>
@@ -74,7 +80,7 @@ export default function Footer({ onOpenModal }: FooterProps) {
           <span>© 2024–2026 KovelAI. All rights reserved.</span>
           <span>
             A{' '}
-            <a href="https://shadowtagai.web.app" className="text-gold underline">
+            <a href="https://shadowtagai.com" className="text-gold underline">
               ShadowTag AI
             </a>{' '}
             Company
