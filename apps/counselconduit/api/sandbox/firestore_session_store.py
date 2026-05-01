@@ -36,6 +36,7 @@ from apps.counselconduit.api.sandbox.session import (
     SessionConfig,
     SessionState,
 )
+from apps.counselconduit.api.sandbox.telemetry import telemetry_latency
 
 logger = logging.getLogger("counselconduit.sandbox.store")
 
@@ -80,6 +81,7 @@ class FirestoreSessionStore:
 
     # ── Create ────────────────────────────────────────────────────────────
 
+    @telemetry_latency("create_session")
     async def create_session(self, session: SandboxSession) -> str:
         """Persist a new sandbox session to Firestore.
 
@@ -131,6 +133,7 @@ class FirestoreSessionStore:
 
     # ── Read ──────────────────────────────────────────────────────────────
 
+    @telemetry_latency("get_session")
     async def get_session(self, session_id: str) -> SandboxSession | None:
         """Load a sandbox session from Firestore.
 
@@ -178,6 +181,7 @@ class FirestoreSessionStore:
 
         return session
 
+    @telemetry_latency("session_exists")
     async def session_exists(self, session_id: str) -> bool:
         """Check if a session document exists without full hydration."""
         doc_ref = self.db.collection(self.COLLECTION).document(session_id)
@@ -186,6 +190,7 @@ class FirestoreSessionStore:
 
     # ── Update ────────────────────────────────────────────────────────────
 
+    @telemetry_latency("update_state")
     async def update_state(
         self,
         session_id: str,
@@ -211,6 +216,7 @@ class FirestoreSessionStore:
         await doc_ref.update(update_data)
         logger.info("Session %s… state → %s", session_id[:8], new_state.value)
 
+    @telemetry_latency("update_overlay")
     async def update_overlay(
         self,
         session_id: str,
@@ -240,6 +246,7 @@ class FirestoreSessionStore:
 
     # ── Decision Audit Trail (Append-Only) ────────────────────────────────
 
+    @telemetry_latency("record_decision")
     async def record_decision(
         self,
         session_id: str,
@@ -294,6 +301,7 @@ class FirestoreSessionStore:
         )
         return decision_id
 
+    @telemetry_latency("get_decisions")
     async def get_decisions(self, session_id: str) -> list[dict[str, Any]]:
         """Retrieve all decisions for a session (ordered by timestamp).
 
@@ -307,6 +315,7 @@ class FirestoreSessionStore:
 
     # ── Delete / Cleanup ──────────────────────────────────────────────────
 
+    @telemetry_latency("expire_session")
     async def expire_session(self, session_id: str) -> None:
         """Mark a session as expired (soft delete).
 
@@ -352,6 +361,7 @@ class FirestoreSessionStore:
 
     # ── Utility ───────────────────────────────────────────────────────────
 
+    @telemetry_latency("list_active_sessions")
     async def list_active_sessions(
         self,
         attorney_uid: str | None = None,
