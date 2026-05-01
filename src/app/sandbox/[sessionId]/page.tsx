@@ -33,7 +33,7 @@ import {
   useSandboxWebSocket,
   type StateChangeEvent,
 } from '@/hooks/useSandboxWebSocket';
-import type { CommitAction, DiffFile } from '@/components/diff-view/types';
+import type { CommitAction, CommitResponse, DiffFile, DiffResponse } from '@/components/diff-view/types';
 import styles from './sandbox-session.module.css';
 
 /** Session state machine — aligns with Python SandboxSession.lifecycle */
@@ -52,15 +52,7 @@ interface SessionState {
   diffs: DiffFile[];
   matterId: string;
   error: string | null;
-  commitResult: CommitResult | null;
-}
-
-interface CommitResult {
-  success: boolean;
-  committedFiles: string[];
-  rejectedFiles: string[];
-  auditId: string;
-  durationMs: number;
+  commitResult: CommitResponse | null;
 }
 
 export default function SandboxSessionPage() {
@@ -95,10 +87,11 @@ export default function SandboxSessionPage() {
           phase: 'committed',
           commitResult: prev.commitResult ?? {
             success: true,
-            committedFiles: [],
-            rejectedFiles: [],
-            auditId: (event.metadata.audit_id as string) ?? '',
-            durationMs: 0,
+            committed_files: [],
+            rejected_files: [],
+            audit_id: (event.metadata?.audit_id as string) ?? '',
+            error: '',
+            duration_ms: 0,
           },
         }));
       } else if (event.to === 'rejected') {
@@ -154,10 +147,11 @@ export default function SandboxSessionPage() {
               phase: 'committed',
               commitResult: {
                 success: true,
-                committedFiles: [],
-                rejectedFiles: [],
-                auditId: '',
-                durationMs: 0,
+                committed_files: [],
+                rejected_files: [],
+                audit_id: '',
+                error: '',
+                duration_ms: 0,
               },
             }));
             return;
@@ -182,12 +176,12 @@ export default function SandboxSessionPage() {
           throw new Error(body.error ?? `HTTP ${res.status}`);
         }
 
-        const data = await res.json();
+        const data: DiffResponse = await res.json();
         setState((prev) => ({
           ...prev,
           phase: 'reviewing',
-          diffs: data.diffs,
-          matterId: data.matterId ?? effectiveMatter,
+          diffs: data.diffs as DiffFile[],
+          matterId: data.matter_id ?? effectiveMatter,
         }));
 
         track('sandbox.diffs_loaded', {
@@ -220,8 +214,9 @@ export default function SandboxSessionPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action,
-            selectedFiles,
-            matterId: state.matterId,
+            selected_files: selectedFiles ?? null,
+            matter_id: state.matterId,
+            rejection_reason: '',
           }),
         });
 
@@ -230,7 +225,7 @@ export default function SandboxSessionPage() {
           throw new Error(body.error ?? `HTTP ${res.status}`);
         }
 
-        const result: CommitResult = await res.json();
+        const result: CommitResponse = await res.json();
         setState((prev) => ({
           ...prev,
           phase: 'committed',
@@ -240,7 +235,7 @@ export default function SandboxSessionPage() {
         track('sandbox.decision_completed', {
           action,
           success: 1,
-          duration_ms: result.durationMs,
+          duration_ms: result.duration_ms,
         });
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Commit failed';
@@ -307,21 +302,21 @@ export default function SandboxSessionPage() {
           <div className={styles.successIcon}>✓</div>
           <h2 className={styles.successTitle}>Decision Recorded</h2>
           <div className={styles.commitSummary}>
-            {state.commitResult.committedFiles.length > 0 && (
+            {state.commitResult.committed_files.length > 0 && (
               <p>
-                <strong>{state.commitResult.committedFiles.length}</strong> file(s) committed
+                <strong>{state.commitResult.committed_files.length}</strong> file(s) committed
               </p>
             )}
-            {state.commitResult.rejectedFiles.length > 0 && (
+            {state.commitResult.rejected_files.length > 0 && (
               <p>
-                <strong>{state.commitResult.rejectedFiles.length}</strong> file(s) rejected
+                <strong>{state.commitResult.rejected_files.length}</strong> file(s) rejected
               </p>
             )}
             <p className={styles.auditNote}>
-              Audit ID: <code>{state.commitResult.auditId}</code>
+              Audit ID: <code>{state.commitResult.audit_id}</code>
             </p>
             <p className={styles.durationNote}>
-              Completed in {state.commitResult.durationMs.toFixed(0)}ms
+              Completed in {state.commitResult.duration_ms.toFixed(0)}ms
             </p>
           </div>
         </div>

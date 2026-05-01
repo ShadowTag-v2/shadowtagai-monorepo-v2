@@ -34,6 +34,30 @@ export interface DiffFile {
 
 export type CommitAction = 'accept' | 'reject' | 'partial_accept';
 
+/**
+ * API response from GET /api/sandbox/{sessionId}/diffs
+ * Mirrors Python DiffResponse (sandbox_api.py)
+ */
+export interface DiffResponse {
+  session_id: string;
+  matter_id: string;
+  diffs: DiffFile[];
+  file_count: number;
+}
+
+/**
+ * API response from POST /api/sandbox/{sessionId}/commit
+ * Mirrors Python CommitResponse (sandbox_api.py)
+ */
+export interface CommitResponse {
+  success: boolean;
+  committed_files: string[];
+  rejected_files: string[];
+  audit_id: string;
+  error: string;
+  duration_ms: number;
+}
+
 export interface DiffViewProps {
   /** Session ID from SandboxSession */
   sessionId: string;
