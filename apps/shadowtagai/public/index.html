@@ -259,30 +259,34 @@
         <h2 class="headline-md mb-lg">Google Cloud Native. Zero Compromise.</h2>
         <p class="body-lg">Every component runs on Google Cloud Platform. Firestore document model with PITR. Cloud Run for compute. Cloud Tasks for async processing. No external dependencies.</p>
       </div>
-      <div class="terminal animate-on-scroll" id="terminal-preview">
-        <div class="terminal__header">
-          <span class="terminal__dot terminal__dot--red"></span>
-          <span class="terminal__dot terminal__dot--yellow"></span>
-          <span class="terminal__dot terminal__dot--green"></span>
-          <span class="terminal__title">shadowtag &mdash; production</span>
+      <div class="arch-grid animate-on-scroll" id="arch-grid">
+        <div class="arch-card">
+          <div class="arch-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+          </div>
+          <h4 class="arch-card__title">Cloud Run</h4>
+          <p class="arch-card__desc">30 containerized endpoints. Auto-scaling, zero cold starts, us-central1 region with Cloud Armor WAF protection.</p>
         </div>
-        <div class="terminal__body">
-          <div class="terminal__line"><span class="terminal__prompt">$</span><span class="terminal__command">gcloud run services describe counselconduit</span></div>
-          <div class="terminal__line"><span class="terminal__output">✓ Service counselconduit in region us-central1</span></div>
-          <div class="terminal__line"><span class="terminal__output">&nbsp;&nbsp;revision: counselconduit-00020-puy</span></div>
-          <div class="terminal__line"><span class="terminal__output">&nbsp;&nbsp;endpoints: 30 | status: ACTIVE</span></div>
-          <br>
-          <div class="terminal__line"><span class="terminal__prompt">$</span><span class="terminal__command">firebase deploy --only hosting:kovelai,shadowtagai</span></div>
-          <div class="terminal__line"><span class="terminal__output">✓ Deploy complete!</span></div>
-          <div class="terminal__line"><span class="terminal__output">&nbsp;&nbsp;kovelai.com — Lighthouse P96/A100/BP100/SEO100</span></div>
-          <div class="terminal__line"><span class="terminal__output">&nbsp;&nbsp;shadowtagai.com — Lighthouse A88+</span></div>
-          <br>
-          <div class="terminal__line"><span class="terminal__prompt">$</span><span class="terminal__command">gitnexus analyze --stats</span></div>
-          <div class="terminal__line"><span class="terminal__output">✓ 273,869 nodes | 505,829 edges | 5,667 clusters</span></div>
-          <br>
-          <div class="terminal__line"><span class="terminal__comment"># Infrastructure: Firestore (PITR 7d) + Cloud Armor WAF</span></div>
-          <div class="terminal__line"><span class="terminal__comment"># Security: Gitleaks + Ruff + Bandit pre-commit</span></div>
-          <div class="terminal__line"><span class="terminal__comment"># Auth: Firebase Auth + GitHub App PEM (SSH primary)</span></div>
+        <div class="arch-card">
+          <div class="arch-card__icon arch-card__icon--cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+          </div>
+          <h4 class="arch-card__title">Firestore</h4>
+          <p class="arch-card__desc">Document model with 7-day PITR. Per-tenant namespace isolation. Composite indexes for sub-100ms queries.</p>
+        </div>
+        <div class="arch-card">
+          <div class="arch-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h4 class="arch-card__title">Cloud Armor</h4>
+          <p class="arch-card__desc">WAF with 4 security rules. DDoS protection, geo-fencing, and rate limiting at the edge layer.</p>
+        </div>
+        <div class="arch-card">
+          <div class="arch-card__icon arch-card__icon--cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h4 class="arch-card__title">CI/CD</h4>
+          <p class="arch-card__desc">GitHub App PEM auth. Automated Gitleaks + Ruff + Bandit pre-commit. Zero-trust deployment pipeline.</p>
         </div>
       </div>
     </div>
@@ -452,27 +456,27 @@
       }
     }, { passive: true });
 
-    // Terminal typing effect
-    const terminalBody = document.querySelector('.terminal__body');
-    if (terminalBody) {
-      const termObserver = new IntersectionObserver((entries) => {
+    // Architecture grid stagger animation
+    const archGrid = document.getElementById('arch-grid');
+    if (archGrid) {
+      const archObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const lines = terminalBody.querySelectorAll('.terminal__line, br');
-            lines.forEach((line, i) => {
-              line.style.opacity = '0';
-              line.style.transform = 'translateX(-8px)';
-              line.style.transition = `all 0.4s ease-out ${i * 0.12}s`;
+            const cards = archGrid.querySelectorAll('.arch-card');
+            cards.forEach((card, i) => {
+              card.style.opacity = '0';
+              card.style.transform = 'translateY(16px)';
+              card.style.transition = `all 0.5s ease-out ${i * 0.1}s`;
               requestAnimationFrame(() => {
-                line.style.opacity = '1';
-                line.style.transform = 'translateX(0)';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
               });
             });
-            termObserver.unobserve(entry.target);
+            archObserver.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.3 });
-      termObserver.observe(terminalBody);
+      }, { threshold: 0.2 });
+      archObserver.observe(archGrid);
     }
   </script>
 </body>
