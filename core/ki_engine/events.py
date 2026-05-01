@@ -164,7 +164,7 @@ def read_events(
                 if ki_filter and event.ki_name != ki_filter:
                     continue
                 events.append(event)
-            except json.JSONDecodeError, KeyError, ValueError:
+            except (json.JSONDecodeError, KeyError, ValueError):
                 continue
 
     # Most recent first for limit
