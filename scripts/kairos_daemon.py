@@ -16,6 +16,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import asyncio
 import datetime
 import json
 import logging
@@ -52,6 +53,7 @@ VAULT_INGEST_INTERVAL = 300  # 5 minutes
 QUARANTINE_PURGE_INTERVAL = 3600  # 1 hour
 AUTOLINT_INTERVAL = 86400  # 24 hours
 OOB_REPORT_CHECK_INTERVAL = 600  # 10 minutes
+PROMPT_VALIDATION_INTERVAL = 3600  # 1 hour — periodic prompt assembly check
 
 # Disk-Skill Dream resource limits
 DISK_SKILL_AST_TIMEOUT = 900  # 15-minute cap for deep AST scans
@@ -84,6 +86,82 @@ signal.signal(signal.SIGTERM, _signal_handler)
 # ---------------------------------------------------------------------------
 
 
+def _init_sleep_guard() -> None:
+    """Start hardware sleep prevention via caffeinate (macOS only)."""
+    try:
+        from packages.prevent_sleep import start_prevent_sleep, is_preventing_sleep
+
+        start_prevent_sleep()
+        if is_preventing_sleep():
+            logger.info("Sleep prevention: ACTIVE (caffeinate engaged)")
+        else:
+            logger.info("Sleep prevention: skipped (non-Darwin or caffeinate unavailable)")
+    except ImportError:
+        logger.warning("prevent_sleep package not available")
+
+
+def _shutdown_sleep_guard() -> None:
+    """Release the sleep prevention assertion."""
+    try:
+        from packages.prevent_sleep import stop_prevent_sleep
+
+        stop_prevent_sleep()
+        logger.info("Sleep prevention: released")
+    except ImportError:
+        pass
+
+
+def _validate_prompt_assembly() -> bool:
+    """Periodically validate that the system prompt assembler works.
+
+    Catches import errors, malformed sections, and registry failures
+    early rather than at agent invocation time.
+    """
+    try:
+        from packages.prompt_assembler import assemble_system_prompt
+        from packages.prompt_assembler.assembler import PromptConfig
+
+        config = PromptConfig(
+            cwd=str(REPO_ROOT),
+            model_id="gemini-3.1-flash-lite-preview-thinking",
+        )
+        sections = asyncio.run(assemble_system_prompt(config))
+        if not sections:
+            logger.error("Prompt assembly returned 0 sections")
+            return False
+        logger.info(
+            "Prompt assembly: %d sections, ~%d chars",
+            len(sections),
+            sum(len(s) for s in sections),
+        )
+        return True
+    except Exception as e:
+        logger.error("Prompt assembly validation failed: %s", e)
+        return False
+
+
+def _estimate_context_budget() -> dict[str, int]:
+    """Use token_estimation to report current context budget metrics."""
+    try:
+        from packages.token_estimation import rough_token_estimate
+
+        # Estimate tokens for key config files
+        metrics: dict[str, int] = {}
+        for name, path in [
+            ("AGENTS.md", REPO_ROOT / "AGENTS.md"),
+            ("GEMINI.md", REPO_ROOT / "GEMINI.md"),
+            ("manifest", REPO_ROOT / "monorepo_manifest.yaml"),
+        ]:
+            if path.exists():
+                content = path.read_text(errors="replace")
+                metrics[name] = rough_token_estimate(content)
+        logger.info("Token budget: %s", json.dumps(metrics))
+        return metrics
+    except ImportError:
+        logger.warning("token_estimation package not available")
+        return {}
+
+
 def health_check() -> dict:
     """Run system health checks. Returns status dict."""
     checks: dict[str, str] = {}
@@ -97,7 +175,7 @@ def health_check() -> dict:
             timeout=15,
         )
         checks["gcp_adc"] = "ok" if result.returncode == 0 else "expired"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["gcp_adc"] = "missing"
 
     # 2. ANE dylib
@@ -123,7 +201,7 @@ def health_check() -> dict:
         )
         dirty_count = len(result.stdout.strip().splitlines()) if result.stdout.strip() else 0
         checks["git_dirty"] = f"{dirty_count} files" if dirty_count > 0 else "clean"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["git_dirty"] = "unknown"
 
     # 6. Git fetch --prune (GitHub-first context: keep remote refs fresh)
@@ -136,7 +214,7 @@ def health_check() -> dict:
             cwd=str(REPO_ROOT),
         )
         checks["git_fetch"] = "ok" if fetch_result.returncode == 0 else "failed"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["git_fetch"] = "timeout"
 
     logger.info("Health: %s", json.dumps(checks))
@@ -227,7 +305,7 @@ def run_disk_skill_dream() -> bool:
         if check.returncode != 0:
             logger.warning("ast-grep not available, skipping disk-skill phase 1")
             return run_dream_consolidation(tier="disk-skill")
-    except (FileNotFoundError, subprocess.TimeoutExpired):
+    except FileNotFoundError, subprocess.TimeoutExpired:
         logger.warning("ast-grep binary not found")
         return run_dream_consolidation(tier="disk-skill")
 
@@ -549,6 +627,11 @@ def main_loop(once: bool = False) -> None:
     logger.info("KAIROS daemon starting (PID %d)", os.getpid())
     logger.info("Repo root: %s", REPO_ROOT)
 
+    # --- Startup wiring ---
+    _init_sleep_guard()
+    _validate_prompt_assembly()
+    _estimate_context_budget()
+
     last_health = 0.0
     last_dream = 0.0
     last_disk_skill_dream = 0.0
@@ -560,6 +643,8 @@ def main_loop(once: bool = False) -> None:
     last_autolint = 0.0
     last_oob_check = 0.0
     last_webhook_check = 0.0
+    last_prompt_validation = 0.0
+    last_token_budget = 0.0
 
     cycle = 0
     while _running:
@@ -631,6 +716,20 @@ def main_loop(once: bool = False) -> None:
         if now - last_webhook_check >= _jittered(LOOP_STEWARD_INTERVAL):
             process_webhook_events()
             last_webhook_check = now
+
+        # Prompt assembly validation (hourly)
+        if now - last_prompt_validation >= _jittered(PROMPT_VALIDATION_INTERVAL):
+            if _validate_prompt_assembly():
+                status["prompt_assembly"] = "ok"
+            else:
+                status["prompt_assembly"] = "FAILED"
+            last_prompt_validation = now
+
+        # Token budget estimation (hourly, staggered 30min after prompt)
+        if now - last_token_budget >= _jittered(PROMPT_VALIDATION_INTERVAL):
+            budget = _estimate_context_budget()
+            status["token_budget"] = json.dumps(budget) if budget else "unavailable"
+            last_token_budget = now
             status["webhook_events"] = "ran"
 
         write_heartbeat(status)
@@ -645,6 +744,8 @@ def main_loop(once: bool = False) -> None:
                 break
             time.sleep(1)
 
+    # --- Shutdown wiring ---
+    _shutdown_sleep_guard()
     logger.info("KAIROS daemon stopped")
 
 

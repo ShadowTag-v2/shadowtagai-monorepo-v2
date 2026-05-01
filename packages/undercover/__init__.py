@@ -146,9 +146,7 @@ def should_show_auto_notice() -> bool:
         return False
     if not is_undercover():
         return False
-    if _has_seen_auto_notice:
-        return False
-    return True
+    return not _has_seen_auto_notice
 
 
 def get_config() -> dict[str, Any]:

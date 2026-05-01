@@ -26,7 +26,7 @@ import platform
 import subprocess
 import threading
 from contextlib import contextmanager
-from typing import Generator
+from collections.abc import Generator
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +96,7 @@ def get_ref_count() -> int:
 
 
 @contextmanager
-def PreventSleepContext() -> Generator[None, None, None]:
+def PreventSleepContext() -> Generator[None]:
     """Context manager for sleep prevention.
 
     Usage::

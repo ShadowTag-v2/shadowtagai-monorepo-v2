@@ -22,7 +22,6 @@ from __future__ import annotations
 import os
 import platform
 from dataclasses import dataclass, field
-from typing import Optional
 
 from packages.prompt_sections.registry import (
     SystemPromptSection,
@@ -87,10 +86,10 @@ class PromptConfig:
     shell: str = field(default_factory=lambda: os.environ.get("SHELL", "/bin/zsh"))
     os_version: str = field(default_factory=lambda: f"{platform.system()} {platform.release()}")
     additional_dirs: list[str] = field(default_factory=list)
-    language_preference: Optional[str] = None
+    language_preference: str | None = None
     use_global_cache_scope: bool = True
-    mcp_instructions: Optional[str] = None
-    memory_prompt: Optional[str] = None
+    mcp_instructions: str | None = None
+    memory_prompt: str | None = None
     enabled_tools: set[str] = field(default_factory=set)
 
 
@@ -110,8 +109,7 @@ IMPORTANT: You must NEVER generate or guess URLs for the user unless you are con
 def _build_system_section() -> str:
     """Build the static system behavior section."""
     items = [
-        "All text you output outside of tool use is displayed to the user. "
-        "You can use Github-flavored markdown for formatting.",
+        "All text you output outside of tool use is displayed to the user. You can use Github-flavored markdown for formatting.",
         "Tool results and user messages may include <system-reminder> or other tags. "
         "Tags contain information from the system. They bear no direct relation to "
         "the specific tool results or user messages in which they appear.",
@@ -132,16 +130,12 @@ def _build_doing_tasks_section() -> str:
         "The user will primarily request you to perform software engineering tasks. "
         "When given an unclear or generic instruction, consider it in the context "
         "of these tasks and the current working directory.",
-        "In general, do not propose changes to code you haven't read. If a user asks "
-        "about or wants you to modify a file, read it first.",
-        "Do not create files unless they're absolutely necessary for achieving your goal. "
-        "Prefer editing an existing file to creating a new one.",
+        "In general, do not propose changes to code you haven't read. If a user asks about or wants you to modify a file, read it first.",
+        "Do not create files unless they're absolutely necessary for achieving your goal. Prefer editing an existing file to creating a new one.",
         "If an approach fails, diagnose why before switching tactics — read the error, "
         "check your assumptions, try a focused fix. Don't retry the identical action blindly.",
-        "Be careful not to introduce security vulnerabilities such as command injection, "
-        "XSS, SQL injection, and other OWASP top 10 vulnerabilities.",
-        "Don't add features, refactor code, or make improvements beyond what was asked. "
-        "Only add comments where the logic isn't self-evident.",
+        "Be careful not to introduce security vulnerabilities such as command injection, XSS, SQL injection, and other OWASP top 10 vulnerabilities.",
+        "Don't add features, refactor code, or make improvements beyond what was asked. Only add comments where the logic isn't self-evident.",
         "Don't add error handling, fallbacks, or validation for scenarios that can't happen. "
         "Trust internal code and framework guarantees. Only validate at system boundaries.",
         "Don't create helpers, utilities, or abstractions for one-time operations. "
@@ -195,7 +189,7 @@ def _build_env_info(config: PromptConfig) -> str:
  - Model: {config.model_id}{additional_dirs_info}"""
 
 
-def _build_language_section(language: Optional[str]) -> Optional[str]:
+def _build_language_section(language: str | None) -> str | None:
     """Build the language preference section."""
     if not language:
         return None
@@ -267,7 +261,7 @@ class PromptAssembler:
             or pass as separate system prompt blocks to the API.
         """
         # Static prefix.
-        sections: list[Optional[str]] = list(self._build_static_sections())
+        sections: list[str | None] = list(self._build_static_sections())
 
         # Boundary marker (when global cache scope is enabled).
         if self.config.use_global_cache_scope:

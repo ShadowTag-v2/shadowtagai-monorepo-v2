@@ -18,8 +18,6 @@ import pytest
 
 from packages.prevent_sleep.sleep_guard import (
     PreventSleepContext,
-    _kill_caffeinate,
-    _spawn_caffeinate,
     force_stop_prevent_sleep,
     get_ref_count,
     is_preventing_sleep,
@@ -40,53 +38,47 @@ class TestRefCounting:
     """Reference counting is the core invariant."""
 
     def test_start_increments_ref_count(self):
-        with patch("packages.prevent_sleep.sleep_guard._spawn_caffeinate"):
-            with patch("packages.prevent_sleep.sleep_guard._start_restart_timer"):
-                start_prevent_sleep()
-                assert get_ref_count() == 1
+        with patch("packages.prevent_sleep.sleep_guard._spawn_caffeinate"), patch("packages.prevent_sleep.sleep_guard._start_restart_timer"):
+            start_prevent_sleep()
+            assert get_ref_count() == 1
 
     def test_stop_decrements_ref_count(self):
-        with patch("packages.prevent_sleep.sleep_guard._spawn_caffeinate"):
-            with patch("packages.prevent_sleep.sleep_guard._start_restart_timer"):
-                start_prevent_sleep()
-                start_prevent_sleep()
-                assert get_ref_count() == 2
-                stop_prevent_sleep()
-                assert get_ref_count() == 1
+        with patch("packages.prevent_sleep.sleep_guard._spawn_caffeinate"), patch("packages.prevent_sleep.sleep_guard._start_restart_timer"):
+            start_prevent_sleep()
+            start_prevent_sleep()
+            assert get_ref_count() == 2
+            stop_prevent_sleep()
+            assert get_ref_count() == 1
 
     def test_stop_does_not_go_negative(self):
         stop_prevent_sleep()
         assert get_ref_count() == 0
 
     def test_force_stop_resets_to_zero(self):
-        with patch("packages.prevent_sleep.sleep_guard._spawn_caffeinate"):
-            with patch("packages.prevent_sleep.sleep_guard._start_restart_timer"):
-                start_prevent_sleep()
-                start_prevent_sleep()
-                start_prevent_sleep()
-                assert get_ref_count() == 3
-                force_stop_prevent_sleep()
-                assert get_ref_count() == 0
+        with patch("packages.prevent_sleep.sleep_guard._spawn_caffeinate"), patch("packages.prevent_sleep.sleep_guard._start_restart_timer"):
+            start_prevent_sleep()
+            start_prevent_sleep()
+            start_prevent_sleep()
+            assert get_ref_count() == 3
+            force_stop_prevent_sleep()
+            assert get_ref_count() == 0
 
 
 class TestContextManager:
     """Context manager wraps start/stop cleanly."""
 
     def test_context_manager_increments_and_decrements(self):
-        with patch("packages.prevent_sleep.sleep_guard._spawn_caffeinate"):
-            with patch("packages.prevent_sleep.sleep_guard._start_restart_timer"):
-                with PreventSleepContext():
-                    assert get_ref_count() == 1
-                assert get_ref_count() == 0
+        with patch("packages.prevent_sleep.sleep_guard._spawn_caffeinate"), patch("packages.prevent_sleep.sleep_guard._start_restart_timer"):
+            with PreventSleepContext():
+                assert get_ref_count() == 1
+            assert get_ref_count() == 0
 
     def test_context_manager_decrements_on_exception(self):
-        with patch("packages.prevent_sleep.sleep_guard._spawn_caffeinate"):
-            with patch("packages.prevent_sleep.sleep_guard._start_restart_timer"):
-                with pytest.raises(ValueError):
-                    with PreventSleepContext():
-                        assert get_ref_count() == 1
-                        raise ValueError("test")
-                assert get_ref_count() == 0
+        with patch("packages.prevent_sleep.sleep_guard._spawn_caffeinate"), patch("packages.prevent_sleep.sleep_guard._start_restart_timer"):
+            with pytest.raises(ValueError), PreventSleepContext():
+                assert get_ref_count() == 1
+                raise ValueError("test")
+            assert get_ref_count() == 0
 
 
 class TestPlatformGuard:
