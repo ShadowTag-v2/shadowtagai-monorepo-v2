@@ -227,3 +227,73 @@ class TestFirestoreBridgeDiffs:
         )
         # Both overlay files should be treated as new
         assert all(d.original_hash != d.overlay_hash for d in diffs)
+
+
+# ── Advanced Diff Edge Cases ──────────────────────────────────────────────
+
+
+class TestDiffEdgeCases:
+    def test_large_file_diff(self) -> None:
+        """Diff computation must handle files with 1000+ lines."""
+        original = "\n".join(f"line {i}" for i in range(1000)) + "\n"
+        overlay = "\n".join(f"line {i}" for i in range(500))
+        overlay += "\nINSERTED LINE\n"
+        overlay += "\n".join(f"line {i}" for i in range(500, 1000)) + "\n"
+        diff = compute_diff(original, overlay, "large_file.py")
+        assert len(diff.hunks) >= 1
+        assert diff.language == "python"
+
+    def test_multi_hunk_diff(self) -> None:
+        """Changes at beginning and end produce separate hunks."""
+        original = "\n".join(f"line {i}" for i in range(50)) + "\n"
+        lines = original.splitlines(keepends=True)
+        lines[0] = "MODIFIED line 0\n"
+        lines[49] = "MODIFIED line 49\n"
+        overlay = "".join(lines)
+        diff = compute_diff(original, overlay, "multi.ts")
+        assert len(diff.hunks) >= 2
+
+    def test_modification_and_addition_mix(self) -> None:
+        """Mixed modification and addition within one overlay."""
+        original = "line A\nline B\nline C\n"
+        overlay = "line A MODIFIED\nline B\nline C\nline D new\n"
+        diff = compute_diff(original, overlay, "mix.jsx")
+        changes = [c for h in diff.hunks for c in h.changes]
+        types = {c["type"] for c in changes}
+        assert "add" in types or "delete" in types
+
+    def test_empty_overlay_produces_delete_hunks(self) -> None:
+        """Deleting all content produces a diff with deletions."""
+        diff = compute_diff("content to delete\n", "", "deleted.md")
+        del_changes = [c for h in diff.hunks for c in h.changes if c["type"] == "delete"]
+        assert len(del_changes) >= 1
+
+    def test_binary_like_content(self) -> None:
+        """Non-text-looking content still computes without error."""
+        original = "\x00\x01\x02\x03\n"
+        overlay = "\x00\x01\xff\x03\n"
+        diff = compute_diff(original, overlay, "data.bin")
+        assert diff.path == "data.bin"
+
+    def test_hash_integrity(self) -> None:
+        """Content hashes must match SHA-256 of actual content."""
+        content_a = "hello world\n"
+        content_b = "hello modified\n"
+        diff = compute_diff(content_a, content_b, "test.py")
+        assert diff.original_hash == _sha256(content_a)
+        assert diff.overlay_hash == _sha256(content_b)
+
+    def test_context_lines_parameter(self) -> None:
+        """Different context_lines values affect hunk size."""
+        original = "\n".join(f"line {i}" for i in range(20)) + "\n"
+        lines = original.splitlines(keepends=True)
+        lines[10] = "MODIFIED line 10\n"
+        overlay = "".join(lines)
+
+        diff_small = compute_diff(original, overlay, "ctx.py", context_lines=1)
+        diff_large = compute_diff(original, overlay, "ctx.py", context_lines=5)
+
+        # Larger context should produce more context lines per hunk
+        small_changes = sum(len(h.changes) for h in diff_small.hunks)
+        large_changes = sum(len(h.changes) for h in diff_large.hunks)
+        assert large_changes >= small_changes
