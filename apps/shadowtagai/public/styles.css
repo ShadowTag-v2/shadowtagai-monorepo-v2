@@ -742,75 +742,57 @@ video {
   color: var(--on-surface-variant);
 }
 
-/* --- Tech Stack / Terminal Preview --- */
-.terminal {
-  background: var(--surface-container-lowest);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  max-width: 720px;
-  margin: var(--space-3xl) auto 0;
+/* --- Architecture Grid --- */
+.arch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-3xl);
 }
 
-.terminal__header {
+.arch-card {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.arch-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(84, 0, 98, 0.15);
+}
+
+.arch-card__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: rgba(84, 0, 98, 0.1);
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  background: var(--surface-container-high);
-}
-
-.terminal__dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.terminal__dot--red {
-  background: #ff5f57;
-}
-.terminal__dot--yellow {
-  background: #febc2e;
-}
-.terminal__dot--green {
-  background: #28c840;
-}
-
-.terminal__title {
-  font-family: var(--font-headline);
-  font-size: var(--label-sm);
-  color: var(--on-surface-variant);
-  margin-left: var(--space-sm);
-}
-
-.terminal__body {
-  padding: var(--space-lg);
-  font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-  font-size: 0.8125rem;
-  line-height: 1.8;
-  color: var(--on-surface-variant);
-}
-
-.terminal__line {
-  display: flex;
-  gap: 8px;
-}
-
-.terminal__prompt {
+  justify-content: center;
+  margin-bottom: var(--space-md);
   color: var(--primary);
-  user-select: none;
 }
 
-.terminal__command {
-  color: var(--on-surface);
-}
-
-.terminal__output {
+.arch-card__icon--cyan {
+  background: rgba(0, 232, 252, 0.08);
   color: var(--tertiary);
-  opacity: 0.8;
 }
 
-.terminal__comment {
-  color: var(--outline);
+.arch-card__title {
+  font-family: var(--font-headline);
+  font-size: var(--body-lg);
+  font-weight: 600;
+  color: var(--on-surface);
+  margin-bottom: var(--space-xs);
+}
+
+.arch-card__desc {
+  font-size: var(--body-md);
+  color: var(--on-surface-variant);
+  line-height: 1.6;
 }
 
 /* --- CTA Section --- */
