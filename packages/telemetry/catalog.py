@@ -592,3 +592,79 @@ class EventCatalog:
                 "error_type": error_type,
             },
         )
+
+    # --- Rate Limit Events (OTel Histograms) ---
+
+    @staticmethod
+    def throttle_invocation(
+        function_name: str = "",
+        interval_ms: float = 0.0,
+        was_suppressed: bool = False,
+        elapsed_since_last_ms: float = 0.0,
+    ) -> TelemetryEvent:
+        """agnt_throttle_invocation — Tracks throttle execution/suppression.
+
+        OTel histogram buckets on elapsed_since_last_ms reveal rate-limit
+        pressure: spikes at low-ms values indicate callers hitting the
+        suppression wall, while even distribution means healthy pacing.
+        """
+        return TelemetryEvent(
+            event="agnt_throttle_invocation",
+            category=EventCategory.TOOL,
+            duration_ms=elapsed_since_last_ms,
+            properties={
+                "function_name": function_name,
+                "interval_ms": interval_ms,
+                "was_suppressed": was_suppressed,
+            },
+        )
+
+    @staticmethod
+    def debounce_invocation(
+        function_name: str = "",
+        wait_ms: float = 0.0,
+        was_coalesced: bool = False,
+        max_wait_triggered: bool = False,
+        pending_duration_ms: float = 0.0,
+    ) -> TelemetryEvent:
+        """agnt_debounce_invocation — Tracks debounce coalescing behavior.
+
+        OTel histogram on pending_duration_ms shows how long events queue
+        before firing. Frequent max_wait_triggered=True signals the
+        debounce ceiling is being hit under sustained load.
+        """
+        return TelemetryEvent(
+            event="agnt_debounce_invocation",
+            category=EventCategory.TOOL,
+            duration_ms=pending_duration_ms,
+            properties={
+                "function_name": function_name,
+                "wait_ms": wait_ms,
+                "was_coalesced": was_coalesced,
+                "max_wait_triggered": max_wait_triggered,
+            },
+        )
+
+    @staticmethod
+    def cooldown_check(
+        throttle_name: str = "",
+        cooldown_ms: float = 0.0,
+        was_allowed: bool = True,
+        time_until_next_ms: float = 0.0,
+    ) -> TelemetryEvent:
+        """agnt_cooldown_check — Tracks CooldownThrottle gate decisions.
+
+        Histogram on time_until_next_ms shows how close callers are to
+        the cooldown boundary. Clustering near 0ms = good pacing;
+        clustering near cooldown_ms = premature retries.
+        """
+        return TelemetryEvent(
+            event="agnt_cooldown_check",
+            category=EventCategory.TOOL,
+            properties={
+                "throttle_name": throttle_name,
+                "cooldown_ms": cooldown_ms,
+                "was_allowed": was_allowed,
+                "time_until_next_ms": time_until_next_ms,
+            },
+        )

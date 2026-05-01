@@ -1,6 +1,6 @@
 # GUARDRAIL Annotation Audit Report
 
-**Generated:** 2026-05-01T00:00:25Z
+**Generated:** 2026-05-01T06:09:46Z
 **Total moderate+ risk skills:** 12
 **Annotated:** 10
 **Missing annotations:** 2

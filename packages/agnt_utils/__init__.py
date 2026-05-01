@@ -131,6 +131,7 @@ from packages.agnt_utils.token_estimate import (
 )
 from packages.agnt_utils.treeify import treeify
 from packages.agnt_utils.truncate import (
+    smart_truncate,
     string_width,
     truncate,
     truncate_path_middle,
@@ -151,6 +152,7 @@ __all__ = [
     "rough_token_estimate_for_content",
     "rough_token_estimate_for_message",
     "rough_token_estimate_for_messages",
+    "smart_truncate",
     "string_width",
     "token_count_with_estimation",
     "truncate",

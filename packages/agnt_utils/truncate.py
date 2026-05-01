@@ -47,6 +47,7 @@ def string_width(text: str) -> int:
     """
     # Strip ANSI escape sequences
     import re
+
     clean = re.sub(r"\x1b\[[0-9;]*[a-zA-Z]", "", text)
 
     width = 0
@@ -230,3 +231,38 @@ def wrap_text(text: str, width: int) -> list[str]:
     if current_line:
         lines.append("".join(current_line))
     return lines
+
+
+def smart_truncate(text: str, *, max_tokens: int = 4096) -> str:
+    """Truncate text to fit within a token budget.
+
+    Uses ``rough_token_estimate`` to measure token count and binary-search
+    to find the optimal character cutoff.  Appends ``… [truncated]`` when
+    truncation occurs.
+
+    Args:
+        text: The text to truncate.
+        max_tokens: Maximum number of tokens to allow.
+
+    Returns:
+        The original text if within budget, or a truncated version.
+    """
+    from agnt_utils.token_estimate import rough_token_estimate
+
+    if rough_token_estimate(text) <= max_tokens:
+        return text
+
+    # Binary search for the optimal character cutoff
+    lo, hi = 0, len(text)
+    suffix = "\n… [truncated]"
+    suffix_tokens = rough_token_estimate(suffix)
+    target = max_tokens - suffix_tokens
+
+    while lo < hi:
+        mid = (lo + hi + 1) // 2
+        if rough_token_estimate(text[:mid]) <= target:
+            lo = mid
+        else:
+            hi = mid - 1
+
+    return text[:lo] + suffix

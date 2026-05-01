@@ -13,9 +13,8 @@ Tests:
 
 from __future__ import annotations
 
-import time
 from typing import Any
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
@@ -26,7 +25,6 @@ from apps.counselconduit.api.sandbox.session import (
     AbstractSessionStore,
     CommitAction,
     SandboxSession,
-    SecurityError,
     SessionConfig,
     SessionState,
 )
