@@ -166,7 +166,7 @@ function generateDemoData() {
     report_length: 3000 + Math.floor(Math.random() * 12000),
     agent: ['gemini-3-flash','gemini-3-pro'][i % 2],
     pipeline_mode: i % 3 === 0 ? 'pair_programming' : 'research_sweep',
-    status: i === 5 ? 'failed' : 'completed',
+    status: 'completed',
     source: i % 4 === 0 ? 'sweep-now' : 'scheduled'
   }));
 }
