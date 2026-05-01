@@ -28,6 +28,9 @@ F = TypeVar("F", bound=Callable[..., Any])
 def telemetry_latency(operation: str) -> Callable[[F], F]:
     """Decorator that measures async method latency and logs structured metrics.
 
+    Automatically records latency and error data to the Prometheus-compatible
+    MetricsRegistry (Phase 4 M5).
+
     Args:
         operation: Human-readable operation name (e.g., "create_session").
 
@@ -59,6 +62,15 @@ def telemetry_latency(operation: str) -> Callable[[F], F]:
                     "duration_ms": round(duration_ms, 2),
                     "session_prefix": session_id_prefix,
                 }
+
+                # Record to Prometheus-compatible metrics registry
+                try:
+                    from apps.counselconduit.api.sandbox.metrics import metrics_registry
+
+                    metrics_registry.record_latency(operation, duration_ms, error=error_type is not None)
+                except ImportError:
+                    pass  # Metrics module not available — degrade gracefully
+
                 if error_type:
                     log_data["error_type"] = error_type
                     logger.warning(
