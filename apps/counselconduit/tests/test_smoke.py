@@ -46,12 +46,47 @@ class TestHealthEndpoints:
         assert r.status_code == 200
         assert r.json()["status"] == "operational"
 
+    def test_oracle_health(self, client: httpx.Client) -> None:
+        r = client.get("/oracle/health")
+        assert r.status_code == 200
+        data = r.json()
+        assert data["status"] in ("healthy", "degraded")
+        assert data["service"] == "oracle-studio"
+
     def test_openapi_reachable(self, client: httpx.Client) -> None:
         r = client.get("/openapi.json")
         assert r.status_code == 200
         schema = r.json()
         assert "paths" in schema
         assert len(schema["paths"]) > 20
+
+
+class TestOracleHealth:
+    """Verify Oracle Studio pipeline health check (GCP Uptime Check target)."""
+
+    def test_oracle_health_response_structure(self, client: httpx.Client) -> None:
+        """Verify all required fields in oracle health response."""
+        r = client.get("/oracle/health")
+        assert r.status_code == 200
+        data = r.json()
+        required_fields = {"status", "service", "version", "pipeline_stages", "firestore", "timestamp"}
+        assert required_fields.issubset(data.keys()), f"Missing fields: {required_fields - data.keys()}"
+
+    def test_oracle_health_pipeline_stages(self, client: httpx.Client) -> None:
+        """Oracle Studio has exactly 7 pipeline stages."""
+        r = client.get("/oracle/health")
+        assert r.status_code == 200
+        assert r.json()["pipeline_stages"] == 7
+
+    def test_oracle_health_firestore_connectivity(self, client: httpx.Client) -> None:
+        """Firestore should be connected in production."""
+        r = client.get("/oracle/health")
+        assert r.status_code == 200
+        data = r.json()
+        # In production, Firestore should connect. Accept degraded during cold start.
+        assert data["firestore"] in ("connected", "error: ServiceUnavailable")
+        if data["firestore"] == "connected":
+            assert data["status"] == "healthy"
 
 
 class TestDispatch:

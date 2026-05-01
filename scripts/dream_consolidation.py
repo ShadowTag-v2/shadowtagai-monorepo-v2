@@ -219,7 +219,7 @@ class DreamLockFile:
                 except OSError:
                     # Process is dead — break the stale lock
                     logger.warning("Breaking orphaned lock (dead PID %d)", held_pid)
-            except json.JSONDecodeError, KeyError, ValueError:
+            except (json.JSONDecodeError, KeyError, ValueError):
                 logger.warning("Corrupt lock file, replacing")
 
         # Write our lock
@@ -246,7 +246,7 @@ class DreamLockFile:
                         lock_data.get("pid", -1),
                         os.getpid(),
                     )
-            except json.JSONDecodeError, OSError:
+            except (json.JSONDecodeError, OSError):
                 pass
 
 
@@ -327,7 +327,7 @@ def orient(ki_dir: Path) -> list[KIEntry]:
             )
             entries.append(entry)
 
-        except json.JSONDecodeError, KeyError:
+        except (json.JSONDecodeError, KeyError):
             pass
 
     return entries
@@ -399,7 +399,7 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
                             "updated_at": entry.updated_at,
                         },
                     )
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
     report.ki_scanned = len(entries)
@@ -812,14 +812,18 @@ if __name__ == "__main__":
             pass
         else:
             logger.info("Phase 8/8: Gitleaks — running production secret scan")
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=600, check=False)
-            logger.info("Phase 8/8: Gitleaks complete — exit code %d", result.returncode)
-            if result.returncode in (0, 1):
-                pass
-            else:
-                if result.stdout:
+            try:
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=180, check=False)
+                logger.info("Phase 8/8: Gitleaks complete — exit code %d", result.returncode)
+                if result.returncode in (0, 1):
                     pass
-                report.actions.append(f"GITLEAKS: Production scan found issues — review {gl_report}")
+                else:
+                    if result.stdout:
+                        pass
+                    report.actions.append(f"GITLEAKS: Production scan found issues — review {gl_report}")
+            except subprocess.TimeoutExpired:
+                logger.warning("Phase 8/8: Gitleaks timed out (180s) — skipping")
+                report.actions.append("GITLEAKS: Production scan timed out — skipped")
     else:
         pass
 

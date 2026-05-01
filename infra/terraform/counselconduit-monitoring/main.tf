@@ -10,7 +10,7 @@ terraform {
     }
   }
   backend "gcs" {
-    bucket = "shadowtag-omega-v4-tf-state"
+    bucket = "shadowtag-omega-v4-terraform-state"
     prefix = "counselconduit/monitoring"
   }
 }

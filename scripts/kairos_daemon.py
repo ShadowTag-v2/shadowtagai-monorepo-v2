@@ -96,7 +96,7 @@ signal.signal(signal.SIGTERM, _signal_handler)
 def _init_sleep_guard() -> None:
     """Start hardware sleep prevention via caffeinate (macOS only)."""
     try:
-        from packages.prevent_sleep import start_prevent_sleep, is_preventing_sleep
+        from prevent_sleep import start_prevent_sleep, is_preventing_sleep
 
         start_prevent_sleep()
         if is_preventing_sleep():
@@ -110,7 +110,7 @@ def _init_sleep_guard() -> None:
 def _shutdown_sleep_guard() -> None:
     """Release the sleep prevention assertion."""
     try:
-        from packages.prevent_sleep import stop_prevent_sleep
+        from prevent_sleep import stop_prevent_sleep
 
         stop_prevent_sleep()
         logger.info("Sleep prevention: released")
@@ -125,8 +125,8 @@ def _validate_prompt_assembly() -> bool:
     early rather than at agent invocation time.
     """
     try:
-        from packages.prompt_assembler import assemble_system_prompt
-        from packages.prompt_assembler.assembler import PromptConfig
+        from prompt_assembler import assemble_system_prompt
+        from prompt_assembler.assembler import PromptConfig
 
         config = PromptConfig(
             cwd=str(REPO_ROOT),
@@ -150,7 +150,7 @@ def _validate_prompt_assembly() -> bool:
 def _estimate_context_budget() -> dict[str, int]:
     """Use token_estimation to report current context budget metrics."""
     try:
-        from packages.token_estimation import rough_token_estimate
+        from token_estimation import rough_token_estimate
 
         # Estimate tokens for key config files
         metrics: dict[str, int] = {}
@@ -182,7 +182,7 @@ def health_check() -> dict:
             timeout=15,
         )
         checks["gcp_adc"] = "ok" if result.returncode == 0 else "expired"
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["gcp_adc"] = "missing"
 
     # 2. ANE dylib
@@ -208,7 +208,7 @@ def health_check() -> dict:
         )
         dirty_count = len(result.stdout.strip().splitlines()) if result.stdout.strip() else 0
         checks["git_dirty"] = f"{dirty_count} files" if dirty_count > 0 else "clean"
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["git_dirty"] = "unknown"
 
     # 6. Git fetch --prune (GitHub-first context: keep remote refs fresh)
@@ -221,7 +221,7 @@ def health_check() -> dict:
             cwd=str(REPO_ROOT),
         )
         checks["git_fetch"] = "ok" if fetch_result.returncode == 0 else "failed"
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["git_fetch"] = "timeout"
 
     logger.info("Health: %s", json.dumps(checks))
@@ -312,7 +312,7 @@ def run_disk_skill_dream() -> bool:
         if check.returncode != 0:
             logger.warning("ast-grep not available, skipping disk-skill phase 1")
             return run_dream_consolidation(tier="disk-skill")
-    except FileNotFoundError, subprocess.TimeoutExpired:
+    except (FileNotFoundError, subprocess.TimeoutExpired):
         logger.warning("ast-grep binary not found")
         return run_dream_consolidation(tier="disk-skill")
 
@@ -623,7 +623,7 @@ def run_research_sweep() -> bool:
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
     try:
         idx = int(topic_index_file.read_text().strip()) if topic_index_file.exists() else 0
-    except ValueError, OSError:
+    except (ValueError, OSError):
         idx = 0
     topic = _RESEARCH_TOPICS[idx % len(_RESEARCH_TOPICS)]
     topic_index_file.write_text(str((idx + 1) % len(_RESEARCH_TOPICS)))
