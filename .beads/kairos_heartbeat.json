@@ -1,16 +1,15 @@
 {
-  "timestamp": "2026-05-01T12:44:14.869249+00:00",
-  "pid": 34437,
+  "timestamp": "2026-05-01T16:19:54.400996+00:00",
+  "pid": 50481,
   "status": {
     "cycle": "1",
-    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": \"7 files\", \"git_fetch\": \"ok\"}",
-    "disk_skill_dream": "ran",
-    "dead_code": "ran",
+    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": \"8 files\", \"git_fetch\": \"ok\"}",
     "steward": "ran",
     "vault_ingest": "ran",
     "quarantine_purge": "ran",
-    "autolint": "ran",
     "oob_check": "ran",
+    "prompt_assembly": "FAILED",
+    "token_budget": "unavailable",
     "webhook_events": "ran"
   },
   "tree_diagnostic": "(treeify unavailable)"
