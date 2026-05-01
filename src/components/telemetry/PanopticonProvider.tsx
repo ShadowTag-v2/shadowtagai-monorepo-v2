@@ -34,6 +34,7 @@ import {
   isTelemetryDisabled,
   stripPiiFields,
 } from "@/lib/telemetry";
+import { createOtelSink } from "@/lib/otel-sink";
 import { type PanopticonActions, usePanopticon } from "@/hooks/usePanopticon";
 
 // ─────────────────────────────────────────────────────────────
@@ -163,11 +164,41 @@ export function PanopticonProvider({
   const panopticon = usePanopticon();
 
   // Attach the HTTP sink on mount (once)
+  // Secondary OTel sink is wired in parallel if configured
   useEffect(() => {
     if (sinkAttached.current || disabled || isTelemetryDisabled()) return;
 
-    const sink = createHttpSink();
-    attachTelemetrySink(sink);
+    const httpSink = createHttpSink();
+    const otelSink = createOtelSink();
+
+    // If OTel is configured, create a compound sink that dispatches to both
+    const activeSink: TelemetrySink = otelSink
+      ? {
+          logEvent: (event: TelemetryEvent) => {
+            httpSink.logEvent(event);
+            try {
+              otelSink.logEvent(event);
+            } catch {
+              // Silent — secondary must never break primary
+            }
+          },
+          logEventAsync: async (event: TelemetryEvent) => {
+            // Primary is awaited; secondary is fire-and-forget
+            await httpSink.logEventAsync(event);
+            otelSink.logEvent(event); // non-blocking
+          },
+          flush: async () => {
+            await httpSink.flush();
+            try {
+              await otelSink.flush();
+            } catch {
+              // Silent
+            }
+          },
+        }
+      : httpSink;
+
+    attachTelemetrySink(activeSink);
     sinkAttached.current = true;
 
     // Flush on unmount
