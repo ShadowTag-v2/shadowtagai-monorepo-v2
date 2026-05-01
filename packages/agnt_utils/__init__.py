@@ -28,11 +28,16 @@ Batch 3 modules (8):
     generators:        Async generator manipulation utilities
     format_utils:      Human-readable display formatters
     array_utils:       Functional array utilities (intersperse, count, group_by)
+
+Batch 4 modules (2):
+    throttle:          Rate-limiting decorator with leading/trailing edge control
+    debounce:          Delayed execution until activity settles
 """
 
 from packages.agnt_utils.array_utils import count, group_by, intersperse, uniq
 from packages.agnt_utils.circular_buffer import CircularBuffer
 from packages.agnt_utils.combined_abort import CombinedAbort, create_combined_abort
+from packages.agnt_utils.debounce import DebouncedFunction, debounce
 from packages.agnt_utils.diff_utils import (
     Hunk,
     LinesChanged,
@@ -111,6 +116,7 @@ from packages.agnt_utils.string_utils import (
     safe_join_lines,
     truncate_to_lines,
 )
+from packages.agnt_utils.throttle import CooldownThrottle, ThrottledFunction, throttle
 from packages.agnt_utils.token_budget import (
     get_budget_continuation_message,
     parse_token_budget,
@@ -241,4 +247,10 @@ __all__ = [
     "group_by",
     "intersperse",
     "uniq",
+    # ── Batch 4: throttle ─────────────────────────────────────────────
+    "CooldownThrottle",
+    "DebouncedFunction",
+    "ThrottledFunction",
+    "debounce",
+    "throttle",
 ]
