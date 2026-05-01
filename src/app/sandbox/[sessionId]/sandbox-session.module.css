@@ -236,3 +236,78 @@
   50% { opacity: 0.4; }
 }
 
+/* ── Phase 4: Hydration Loading Card ── */
+.loadingCard {
+  max-width: 400px;
+  margin: 25vh auto 0;
+  background: rgba(108, 99, 255, 0.06);
+  border: 1px solid rgba(108, 99, 255, 0.15);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl) var(--space-xl);
+  text-align: center;
+  animation: slideUp var(--transition-slow) ease;
+  backdrop-filter: blur(12px);
+}
+
+.spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(108, 99, 255, 0.15);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: var(--space-md);
+}
+
+.loadingText {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Phase 4: Session Metadata Badge ── */
+.sessionBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full, 999px);
+  background: rgba(108, 99, 255, 0.08);
+  border: 1px solid rgba(108, 99, 255, 0.15);
+  backdrop-filter: blur(8px);
+  font-size: 0.75rem;
+  margin-bottom: var(--space-md);
+  animation: slideUp var(--transition-base) ease;
+}
+
+.badgeLabel {
+  color: var(--color-text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.65rem;
+}
+
+.badgeId {
+  color: var(--color-accent);
+  background: rgba(108, 99, 255, 0.1);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+}
+
+.badgeSeparator {
+  color: var(--color-border);
+}
+
+.badgeState {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
