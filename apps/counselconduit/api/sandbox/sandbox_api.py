@@ -18,7 +18,7 @@ Security:
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from pydantic import BaseModel, Field
@@ -33,10 +33,18 @@ from apps.counselconduit.api.sandbox.session import (
     SandboxSession,
     SecurityError,
 )
+from apps.counselconduit.api.sandbox.ws_state_push import (
+    manager as ws_manager,
+    router as ws_router,
+)
 
 logger = logging.getLogger("counselconduit.sandbox.api")
 
 router = APIRouter(prefix="/api/sandbox", tags=["sandbox"])
+router.include_router(ws_router)
+
+# ── Dependency Injection (B008 compliant) ──────────────────────────────
+AttorneyDep = Annotated[dict[str, Any], Depends(get_current_attorney)]
 
 
 # ── Request / Response Models ──────────────────────────────────────────
@@ -46,9 +54,7 @@ class CommitRequest(BaseModel):
     """Attorney commit decision request body."""
 
     action: str = Field(..., description="accept | reject | partial_accept")
-    selected_files: list[str] | None = Field(
-        None, description="Files to commit (partial_accept only)"
-    )
+    selected_files: list[str] | None = Field(None, description="Files to commit (partial_accept only)")
     matter_id: str = Field(..., description="Matter ID for scoping")
     rejection_reason: str = Field("", description="Rejection reason (reject only)")
 
@@ -93,7 +99,7 @@ def _get_session(session_id: str) -> SandboxSession:
 async def get_session_diffs(
     session_id: str,
     matter: str = Query(..., description="Matter ID"),
-    attorney: dict[str, Any] = Depends(get_current_attorney),
+    attorney: AttorneyDep = None,  # type: ignore[assignment]
 ) -> DiffResponse:
     """Compute and return overlay diffs for attorney review.
 
@@ -139,7 +145,7 @@ async def commit_session(
     session_id: str,
     body: CommitRequest,
     request: Request,
-    attorney: dict[str, Any] = Depends(get_current_attorney),
+    attorney: AttorneyDep = None,  # type: ignore[assignment]
 ) -> CommitResponse:
     """Execute the attorney's accept/reject/partial decision.
 
@@ -154,7 +160,7 @@ async def commit_session(
         raise HTTPException(
             status_code=400,
             detail=f"Invalid action: {body.action}",
-        )
+        ) from None
 
     attorney_uid = attorney.get("uid", "")
     firm_id = attorney.get("firm_id", "")
@@ -170,6 +176,18 @@ async def commit_session(
             firm_id=firm_id,
             selected_files=body.selected_files,
             rejection_reason=body.rejection_reason,
+        )
+
+        # Push real-time state notification to connected WebSocket clients
+        await ws_manager.notify_state_change(
+            session_id=session_id,
+            from_state="reviewing",
+            to_state="committed" if action != CommitAction.REJECT else "rejected",
+            metadata={
+                "action": action.value,
+                "file_count": len(result.committed_files),
+                "audit_id": result.audit_id,
+            },
         )
 
         return CommitResponse(
