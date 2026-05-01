@@ -231,7 +231,7 @@ def export_to_memory_kernel_format(
             atom_file.write_text("\n".join(lines))
             count += 1
 
-        except json.JSONDecodeError, OSError:
+        except (json.JSONDecodeError, OSError):
             continue
 
     return count

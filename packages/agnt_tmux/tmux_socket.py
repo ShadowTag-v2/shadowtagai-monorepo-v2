@@ -24,7 +24,7 @@ class TmuxSocketManager:
         try:
             subprocess.run(["tmux", "-V"], check=True, capture_output=True)
             return True
-        except subprocess.CalledProcessError, FileNotFoundError:
+        except (subprocess.CalledProcessError, FileNotFoundError):
             return False
 
     def initialize(self):
