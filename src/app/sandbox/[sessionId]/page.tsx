@@ -1,24 +1,25 @@
 // Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
 /**
- * Sandbox Session Page — Attorney Diff Review Route
+ * Sandbox Session Page — Attorney Diff Review Route (Phase 4)
  *
- * This is the Phase 3 Milestone 3 page that wires DiffView into
- * the sandbox session route: /sandbox/[sessionId]
+ * This page wires DiffView into the sandbox session route: /sandbox/[sessionId]
  *
- * Flow:
+ * Phase 4 Flow:
  *   1. Attorney navigates to /sandbox/{session-id}?matter={matter-id}
- *   2. Page fetches diffs from /api/sandbox/[sessionId]/diffs
- *   3. DiffView renders the overlay changes
- *   4. WebSocket listens for real-time state transitions
- *   5. Attorney makes accept/reject/partial decision
- *   6. Decision POSTed to /api/sandbox/[sessionId]/commit
- *   7. WebSocket broadcasts committed/rejected to all connected clients
+ *   2. Page FIRST hydrates session from Firestore via GET /api/sandbox/{sessionId}
+ *   3. Then fetches diffs from GET /api/sandbox/{sessionId}/diffs
+ *   4. DiffView renders the overlay changes
+ *   5. WebSocket listens for real-time state transitions
+ *   6. Attorney makes accept/reject/partial decision
+ *   7. Decision POSTed to POST /api/sandbox/{sessionId}/commit
+ *   8. Decision persisted to Firestore decisions sub-collection
+ *   9. WebSocket broadcasts committed/rejected to all connected clients
  *
  * Security:
  *   - Server-side auth check via middleware
  *   - Attorney UID verified against session config
- *   - All decisions produce immutable audit trail
+ *   - All decisions produce immutable audit trail (Firestore + .beads/)
  *   - WebSocket messages contain session prefix only (no PII)
  */
 
@@ -36,10 +37,18 @@ import type { CommitAction, DiffFile } from '@/components/diff-view/types';
 import styles from './sandbox-session.module.css';
 
 /** Session state machine — aligns with Python SandboxSession.lifecycle */
-type SessionPhase = 'loading' | 'reviewing' | 'committing' | 'committed' | 'rejected' | 'error';
+type SessionPhase = 'hydrating' | 'loading' | 'reviewing' | 'committing' | 'committed' | 'rejected' | 'error';
+
+interface SessionMeta {
+  sessionId: string;
+  state: string;
+  matterId: string;
+  createdAt: number;
+}
 
 interface SessionState {
   phase: SessionPhase;
+  meta: SessionMeta | null;
   diffs: DiffFile[];
   matterId: string;
   error: string | null;
@@ -63,7 +72,8 @@ export default function SandboxSessionPage() {
   const { track, trackAsync } = usePanopticonContext();
 
   const [state, setState] = useState<SessionState>({
-    phase: 'loading',
+    phase: 'hydrating',
+    meta: null,
     diffs: [],
     matterId,
     error: null,
@@ -106,7 +116,7 @@ export default function SandboxSessionPage() {
     enabled: state.phase !== 'error',
   });
 
-  // ── Fetch diffs on mount ──────────────────────────────────
+  // ── Phase 4: Hydrate session from Firestore, then fetch diffs ──
   useEffect(() => {
     if (!sessionId) return;
 
@@ -114,9 +124,59 @@ export default function SandboxSessionPage() {
       session_id_prefix: sessionId.slice(0, 8),
     });
 
-    const fetchDiffs = async () => {
+    const hydrateAndFetch = async () => {
+      // Step 1: Hydrate session metadata from Firestore
       try {
-        const res = await fetch(`/api/sandbox/${sessionId}/diffs?matter=${matterId}`);
+        const sessionRes = await fetch(`/api/sandbox/${sessionId}`);
+        if (sessionRes.ok) {
+          const sessionData = await sessionRes.json();
+          const meta: SessionMeta = {
+            sessionId: sessionData.session_id,
+            state: sessionData.state,
+            matterId: sessionData.matter_id ?? matterId,
+            createdAt: sessionData.created_at,
+          };
+          setState((prev) => ({
+            ...prev,
+            meta,
+            matterId: meta.matterId,
+          }));
+
+          track('sandbox.session_hydrated', {
+            persisted_state: meta.state,
+            session_age_s: Math.floor(Date.now() / 1000 - meta.createdAt),
+          });
+
+          // If session is already in a terminal state, short-circuit
+          if (meta.state === 'committed') {
+            setState((prev) => ({
+              ...prev,
+              phase: 'committed',
+              commitResult: {
+                success: true,
+                committedFiles: [],
+                rejectedFiles: [],
+                auditId: '',
+                durationMs: 0,
+              },
+            }));
+            return;
+          }
+          if (meta.state === 'rejected') {
+            setState((prev) => ({ ...prev, phase: 'rejected' }));
+            return;
+          }
+        }
+      } catch {
+        // Hydration failure is non-fatal — fall through to diff fetch
+        track('sandbox.hydration_failed', { error_type: 'fetch_failed' }, 'warn');
+      }
+
+      // Step 2: Fetch diffs (works regardless of hydration success)
+      setState((prev) => ({ ...prev, phase: 'loading' }));
+      try {
+        const effectiveMatter = state.matterId !== 'unknown' ? state.matterId : matterId;
+        const res = await fetch(`/api/sandbox/${sessionId}/diffs?matter=${effectiveMatter}`);
         if (!res.ok) {
           const body = await res.json().catch(() => ({ error: 'Unknown error' }));
           throw new Error(body.error ?? `HTTP ${res.status}`);
@@ -127,7 +187,7 @@ export default function SandboxSessionPage() {
           ...prev,
           phase: 'reviewing',
           diffs: data.diffs,
-          matterId: data.matterId ?? matterId,
+          matterId: data.matterId ?? effectiveMatter,
         }));
 
         track('sandbox.diffs_loaded', {
@@ -140,7 +200,8 @@ export default function SandboxSessionPage() {
       }
     };
 
-    void fetchDiffs();
+    void hydrateAndFetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId, matterId, track]);
 
   // ── Handle attorney decision ──────────────────────────────
@@ -190,7 +251,19 @@ export default function SandboxSessionPage() {
     [sessionId, state.diffs.length, state.matterId, track, trackAsync],
   );
 
-  // ── Render by phase ───────────────────────────────────────
+  // ── Render: Hydrating spinner ─────────────────────────────
+  if (state.phase === 'hydrating') {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loadingCard}>
+          <div className={styles.spinner} />
+          <p className={styles.loadingText}>Restoring session…</p>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Render: Error state ───────────────────────────────────
   if (state.phase === 'error') {
     return (
       <div className={styles.container}>
@@ -258,6 +331,16 @@ export default function SandboxSessionPage() {
 
   return (
     <div className={styles.container}>
+      {/* Session metadata badge (Phase 4) */}
+      {state.meta && (
+        <div className={styles.sessionBadge}>
+          <span className={styles.badgeLabel}>Session</span>
+          <code className={styles.badgeId}>{state.meta.sessionId.slice(0, 8)}…</code>
+          <span className={styles.badgeSeparator}>|</span>
+          <span className={styles.badgeState}>{state.meta.state}</span>
+        </div>
+      )}
+
       {/* WebSocket connection status indicator */}
       <div
         className={styles.wsStatus}
@@ -290,4 +373,3 @@ export default function SandboxSessionPage() {
     </div>
   );
 }
-
