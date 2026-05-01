@@ -50,12 +50,60 @@ resource "google_monitoring_notification_channel" "email" {
 # ── Uptime Check ─────────────────────────────────────────────────────────
 
 resource "google_monitoring_uptime_check_config" "health" {
-  display_name = "counselconduit-health-uptime"
+  display_name = "counselconduit-health"
   timeout      = "10s"
   period       = "60s"
 
   http_check {
     path         = "/health"
+    port         = 443
+    use_ssl      = true
+    validate_ssl = true
+    accepted_response_status_codes {
+      status_class = "STATUS_CLASS_2XX"
+    }
+  }
+
+  monitored_resource {
+    type = "uptime_url"
+    labels = {
+      project_id = var.project_id
+      host       = "counselconduit-767252945109.us-central1.run.app"
+    }
+  }
+}
+
+resource "google_monitoring_uptime_check_config" "health_providers" {
+  display_name = "counselconduit-health-providers"
+  timeout      = "10s"
+  period       = "60s"
+
+  http_check {
+    path         = "/health/providers"
+    port         = 443
+    use_ssl      = true
+    validate_ssl = true
+    accepted_response_status_codes {
+      status_class = "STATUS_CLASS_2XX"
+    }
+  }
+
+  monitored_resource {
+    type = "uptime_url"
+    labels = {
+      project_id = var.project_id
+      host       = "counselconduit-767252945109.us-central1.run.app"
+    }
+  }
+}
+
+resource "google_monitoring_uptime_check_config" "oracle_health" {
+  display_name = "CounselConduit Oracle Studio Pipeline"
+  timeout      = "10s"
+  period       = "60s"
+
+  http_check {
+    path         = "/oracle/health"
     port         = 443
     use_ssl      = true
     validate_ssl = true
