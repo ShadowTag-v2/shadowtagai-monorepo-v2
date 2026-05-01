@@ -210,7 +210,7 @@ class DreamLockFile:
                 except OSError:
                     # Process is dead — break the stale lock
                     logger.warning("Breaking orphaned lock (dead PID %d)", held_pid)
-            except (json.JSONDecodeError, KeyError, ValueError):
+            except json.JSONDecodeError, KeyError, ValueError:
                 logger.warning("Corrupt lock file, replacing")
 
         # Write our lock
@@ -237,7 +237,7 @@ class DreamLockFile:
                         lock_data.get("pid", -1),
                         os.getpid(),
                     )
-            except (json.JSONDecodeError, OSError):
+            except json.JSONDecodeError, OSError:
                 pass
 
 
@@ -318,7 +318,7 @@ def orient(ki_dir: Path) -> list[KIEntry]:
             )
             entries.append(entry)
 
-        except (json.JSONDecodeError, KeyError):
+        except json.JSONDecodeError, KeyError:
             pass
 
     return entries
@@ -390,7 +390,7 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
                             "updated_at": entry.updated_at,
                         },
                     )
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
     report.ki_scanned = len(entries)
@@ -670,7 +670,67 @@ def run_dream_cycle(ki_dir: Path) -> DreamReport:
     finally:
         lock.release()
 
+    # Phase 5c: Deep Research autonomous sweep (outside ReadOnlyBashGuard)
+    if not DRY_RUN and report.contradictions_found > 0:
+        _run_deep_research_sweep(report, ki_dir)
+
     return report
+
+
+def _run_deep_research_sweep(report: DreamReport, ki_dir: Path) -> None:
+    """Run a Deep Research sweep for contradictory or stale KIs.
+
+    This executes OUTSIDE the ReadOnlyBashGuard because it makes
+    network calls to the Gemini API. Results are written to
+    .beads/ as research reports for human review.
+
+    Only runs when GEMINI_API_KEY is available.
+    """
+    api_key = os.environ.get("GEMINI_API_KEY", "")
+    if not api_key:
+        logger.info("GEMINI_API_KEY not set — skipping Deep Research sweep")
+        return
+
+    try:
+        from gemini_deep_research.client import DeepResearchClient, ResearchDepth
+
+        client = DeepResearchClient(api_key=api_key)
+
+        # Build research queries from dream report actions
+        research_queries: list[str] = []
+        for action in report.actions:
+            if action.startswith("POTENTIAL CONTRADICTION:") or action.startswith("CONFLICT:"):
+                research_queries.append(f"Resolve this knowledge conflict in the ShadowTag monorepo: {action}")
+            elif action.startswith("RELATIVE DATE:"):
+                # Skip — these are just date normalization, not worth a research sweep
+                continue
+
+        if not research_queries:
+            logger.info("No research-worthy items found — skipping sweep")
+            return
+
+        # Run at most 3 research queries per dream cycle (cost control)
+        for i, query in enumerate(research_queries[:3]):
+            logger.info("Deep Research sweep %d/%d: %s", i + 1, min(3, len(research_queries)), query[:80])
+            try:
+                result = client.research(
+                    query=query,
+                    depth=ResearchDepth.FAST,
+                    collaborative_planning=False,
+                )
+                # Write result to .beads/ for human review
+                ts = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
+                sweep_path = BEADS_DIR / f"dream_research_sweep_{ts}_{i}.md"
+                sweep_path.write_text(f"# Dream Research Sweep — {datetime.now(UTC).isoformat()}\n\n## Query\n{query}\n\n## Result\n{result}\n")
+                report.actions.append(f"RESEARCH SWEEP: Written to {sweep_path.name}")
+            except Exception as e:
+                logger.warning("Deep Research sweep %d failed: %s", i + 1, e)
+                report.actions.append(f"RESEARCH SWEEP FAILED: {e}")
+
+    except ImportError:
+        logger.info("gemini_deep_research not available — skipping sweep")
+    except Exception as e:
+        logger.warning("Deep Research sweep initialization failed: %s", e)
 
 
 if __name__ == "__main__":
