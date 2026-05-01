@@ -43,6 +43,9 @@ from apps.counselconduit.api.sandbox.session import (
     SessionConfig,
     SessionState,
 )
+from apps.counselconduit.api.sandbox.analytics import (
+    router as analytics_router,
+)
 from apps.counselconduit.api.sandbox.ws_state_push import (
     manager as ws_manager,
     router as ws_router,
@@ -52,6 +55,7 @@ logger = logging.getLogger("counselconduit.sandbox.api")
 
 router = APIRouter(prefix="/api/sandbox", tags=["sandbox"])
 router.include_router(ws_router)
+router.include_router(analytics_router)
 
 # ── Dependency Injection (B008 compliant) ──────────────────────────────
 AttorneyDep = Annotated[dict[str, Any], Depends(get_current_attorney)]
