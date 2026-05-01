@@ -1,13 +1,16 @@
 {
-  "timestamp": "2026-05-01T04:54:40.535011+00:00",
-  "pid": 65088,
+  "timestamp": "2026-05-01T08:18:43.265792+00:00",
+  "pid": 97037,
   "status": {
     "cycle": "1",
-    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": \"9 files\", \"git_fetch\": \"ok\"}",
+    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": \"111 files\", \"git_fetch\": \"ok\"}",
+    "disk_skill_dream": "ran",
+    "dead_code": "ran",
     "steward": "ran",
     "vault_ingest": "ran",
     "quarantine_purge": "ran",
     "oob_check": "ran",
     "webhook_events": "ran"
-  }
+  },
+  "tree_diagnostic": "(treeify unavailable)"
 }

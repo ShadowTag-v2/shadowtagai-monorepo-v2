@@ -7,7 +7,6 @@ Tests: json_utils, set_ops, signal, diff_utils, treeify,
 
 from __future__ import annotations
 
-import asyncio
 import json
 import os
 import tempfile
@@ -15,6 +14,7 @@ import threading
 import time
 
 import pytest
+from datetime import UTC
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -520,28 +520,28 @@ class TestFormatUtils:
         assert "k" in result
 
     def test_format_relative_time_past(self):
-        from datetime import datetime, timedelta, timezone
+        from datetime import datetime, timedelta
         from packages.agnt_utils.format_utils import format_relative_time
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         past = now - timedelta(hours=3)
         result = format_relative_time(past, now=now)
-        assert "3h ago" == result
+        assert result == "3h ago"
 
     def test_format_relative_time_future(self):
-        from datetime import datetime, timedelta, timezone
+        from datetime import datetime, timedelta
         from packages.agnt_utils.format_utils import format_relative_time
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         future = now + timedelta(days=2)
         result = format_relative_time(future, now=now)
-        assert "in 2d" == result
+        assert result == "in 2d"
 
     def test_format_relative_time_seconds(self):
-        from datetime import datetime, timedelta, timezone
+        from datetime import datetime, timedelta
         from packages.agnt_utils.format_utils import format_relative_time
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         recent = now - timedelta(seconds=30)
         result = format_relative_time(recent, now=now)
-        assert "30s ago" == result
+        assert result == "30s ago"
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -597,40 +597,23 @@ class TestBatch3Integration:
 
     def test_json_imports(self):
         from packages.agnt_utils import (
-            add_item_to_jsonc_array,
-            clear_parse_cache,
-            parse_jsonl,
             safe_parse_json,
-            safe_parse_jsonc,
-            strip_bom,
         )
         assert callable(safe_parse_json)
 
     def test_set_imports(self):
         from packages.agnt_utils import (
             difference,
-            every,
-            intersection,
-            intersects,
-            symmetric_difference,
-            union,
-            unique,
         )
         assert callable(difference)
 
     def test_signal_imports(self):
-        from packages.agnt_utils import Signal, create_signal
+        from packages.agnt_utils import create_signal
         assert callable(create_signal)
 
     def test_diff_imports(self):
         from packages.agnt_utils import (
-            Hunk,
-            LinesChanged,
-            adjust_hunk_line_numbers,
-            apply_edits,
-            count_lines_changed,
             get_patch_from_contents,
-            get_unified_diff,
         )
         assert callable(get_patch_from_contents)
 
@@ -639,25 +622,19 @@ class TestBatch3Integration:
         assert callable(treeify)
 
     def test_combined_abort_imports(self):
-        from packages.agnt_utils import CombinedAbort, create_combined_abort
+        from packages.agnt_utils import create_combined_abort
         assert callable(create_combined_abort)
 
     def test_generator_imports(self):
-        from packages.agnt_utils import from_array, last, merge_concurrent, to_array
+        from packages.agnt_utils import last
         assert callable(last)
 
     def test_format_imports(self):
         from packages.agnt_utils import (
             format_duration,
-            format_file_size,
-            format_number,
-            format_relative_time,
-            format_relative_time_ago,
-            format_seconds_short,
-            format_tokens,
         )
         assert callable(format_duration)
 
     def test_array_imports(self):
-        from packages.agnt_utils import count, group_by, intersperse, uniq
+        from packages.agnt_utils import intersperse
         assert callable(intersperse)

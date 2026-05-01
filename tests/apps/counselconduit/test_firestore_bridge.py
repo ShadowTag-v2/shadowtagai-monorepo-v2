@@ -16,14 +16,13 @@ Coverage targets:
 from __future__ import annotations
 
 import hashlib
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
 from apps.counselconduit.api.sandbox.firestore_bridge import (
     BridgeResult,
     DiffHunk,
-    FileDiff,
     FirestoreBridge,
     compute_diff,
     _detect_language,

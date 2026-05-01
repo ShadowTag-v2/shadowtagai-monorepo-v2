@@ -65,7 +65,7 @@ class MockDocRef:
     async def get(self) -> MockDocSnapshot:
         return MockDocSnapshot(self.id, self._data, self._exists)
 
-    def collection(self, name: str) -> "MockCollectionRef":
+    def collection(self, name: str) -> MockCollectionRef:
         return MockCollectionRef(name)
 
 
@@ -86,15 +86,15 @@ class MockCollectionRef:
                 return MockDocRef(doc_id, doc._data, doc.exists)
         return MockDocRef(doc_id, exists=False)
 
-    def where(self, field: str, op: str, value: Any) -> "MockCollectionRef":
+    def where(self, field: str, op: str, value: Any) -> MockCollectionRef:
         self._filters.append((field, op, value))
         return self
 
-    def limit(self, n: int) -> "MockCollectionRef":
+    def limit(self, n: int) -> MockCollectionRef:
         self._limit = n
         return self
 
-    def order_by(self, field: str) -> "MockCollectionRef":
+    def order_by(self, field: str) -> MockCollectionRef:
         self._order_field = field
         return self
 

@@ -505,14 +505,38 @@ def process_webhook_events() -> bool:
 
 
 def write_heartbeat(status: dict) -> None:
-    """Write heartbeat file for monitoring."""
+    """Write heartbeat file for monitoring.
+
+    Includes a treeify diagnostic snapshot for human-readable
+    health at a glance from ``tail -f .beads/kairos_heartbeat.json``.
+    """
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Build tree diagnostic from status dict
+    tree_text = ""
+    try:
+        import importlib
+
+        treeify_mod = importlib.import_module("agnt_utils.treeify")
+        tree_data = {
+            "KAIROS Heartbeat": {
+                "PID": str(os.getpid()),
+                "Cycle": status.get("cycle", "?"),
+                **{k: v for k, v in status.items() if k != "cycle"},
+            }
+        }
+        tree_text = treeify_mod.treeify(tree_data, show_values=True, max_depth=5)
+    except Exception:
+        tree_text = "(treeify unavailable)"
+
     heartbeat = {
         "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),  # noqa: UP017
         "pid": os.getpid(),
         "status": status,
+        "tree_diagnostic": tree_text,
     }
     HEARTBEAT_FILE.write_text(json.dumps(heartbeat, indent=2))
+    logger.debug("Heartbeat tree:\n%s", tree_text)
 
 
 # ---------------------------------------------------------------------------
