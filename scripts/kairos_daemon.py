@@ -622,6 +622,16 @@ def run_research_sweep() -> bool:
     topic = _RESEARCH_TOPICS[idx % len(_RESEARCH_TOPICS)]
     topic_index_file.write_text(str((idx + 1) % len(_RESEARCH_TOPICS)))
 
+    # Rate limit check
+    try:
+        from speculation_engine.firestore_persistence import check_sweep_rate_limit, record_sweep_invocation
+
+        if not check_sweep_rate_limit():
+            logger.info("Research sweep rate-limited, skipping")
+            return False
+    except ImportError:
+        pass  # No rate limiting if persistence module unavailable
+
     logger.info("Research sweep starting: '%s'", topic)
     start = time.time()
 
@@ -665,6 +675,12 @@ def run_research_sweep() -> bool:
         except Exception as fs_err:
             logger.debug("Firestore persistence skipped: %s", fs_err)
 
+        # Record invocation for rate limiting
+        try:
+            record_sweep_invocation()
+        except Exception:
+            pass
+
         logger.info(
             "Research sweep completed: %s (%.1fs, %d chars)",
             topic,
@@ -674,6 +690,95 @@ def run_research_sweep() -> bool:
         return True
     except Exception as e:
         logger.error("Research sweep failed: %s", e)
+        return False
+
+
+def _run_sweep_with_topic(topic: str) -> bool:
+    """Run a research sweep with a specific custom topic.
+
+    Same infrastructure as ``run_research_sweep()`` but uses the caller's topic
+    instead of rotating through ``_RESEARCH_TOPICS``.
+    """
+    try:
+        from speculation_engine.orchestrator import (
+            SpeculativeResearchOrchestrator,
+            SpeculativeResearchConfig,
+        )
+    except ImportError:
+        logger.warning("speculation_engine not importable, skipping research sweep")
+        return False
+
+    # Rate limit check
+    try:
+        from speculation_engine.firestore_persistence import check_sweep_rate_limit, record_sweep_invocation
+
+        if not check_sweep_rate_limit():
+            logger.info("Custom research sweep rate-limited, skipping")
+            return False
+    except ImportError:
+        pass
+
+    logger.info("Custom research sweep starting: '%s'", topic)
+    start = time.time()
+
+    try:
+        orchestrator = SpeculativeResearchOrchestrator(
+            workspace=str(REPO_ROOT),
+            config=SpeculativeResearchConfig(
+                speculate_during_research=False,
+                speculate_during_synthesis=False,
+                use_cow_overlay=False,
+            ),
+        )
+        sweep = orchestrator.research_sweep
+        result = sweep.run(topic, timeout=600)
+
+        duration = time.time() - start
+        log_path = BEADS_DIR / "research_sweep.jsonl"
+        entry = {
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),  # noqa: UP017
+            "topic": topic,
+            "duration_seconds": round(duration, 1),
+            "report_length": len(result.report_text),
+            "agent": result.agent,
+            "source": "sweep-now",
+        }
+        with open(log_path, "a") as f:
+            f.write(json.dumps(entry) + "\n")
+
+        # Persist to Firestore (fail-open)
+        try:
+            from speculation_engine.firestore_persistence import persist_sweep_result
+
+            doc_id = persist_sweep_result(
+                result,
+                session_id=f"sweep-now-{os.getpid()}-{int(start)}",
+                pipeline_mode="research_sweep",
+                status="completed",
+            )
+            if doc_id:
+                logger.info("SweepResult persisted to Firestore: %s", doc_id)
+        except Exception as fs_err:
+            logger.debug("Firestore persistence skipped: %s", fs_err)
+
+        # Record invocation for rate limiting
+        try:
+            record_sweep_invocation()
+        except Exception:
+            pass
+
+        # Print report to stdout for --sweep-now users
+        print(f"\n{'='*72}")
+        print(f"Research Sweep: {topic}")
+        print(f"Duration: {duration:.1f}s | Report: {len(result.report_text)} chars")
+        print(f"{'='*72}\n")
+        print(result.report_text[:2000])
+        if len(result.report_text) > 2000:
+            print(f"\n... ({len(result.report_text) - 2000} chars truncated)")
+
+        return True
+    except Exception as e:
+        logger.error("Custom research sweep failed: %s", e)
         return False
 
 
@@ -926,6 +1031,17 @@ def main() -> None:
         action="store_true",
         help="Probe speculation engine bridge health and exit",
     )
+    parser.add_argument(
+        "--sweep-now",
+        action="store_true",
+        help="Run an immediate research sweep and exit (ignores schedule)",
+    )
+    parser.add_argument(
+        "--sweep-topic",
+        type=str,
+        default=None,
+        help="Custom topic for --sweep-now (overrides rotation)",
+    )
     args = parser.parse_args()
 
     # Bridge health probe — quick liveness check and exit
@@ -934,6 +1050,16 @@ def main() -> None:
         status = _probe_bridge_health()
         print(json.dumps(status, indent=2))
         sys.exit(0 if status.get("healthy") else 1)
+
+    # On-demand research sweep — run immediately and exit
+    if args.sweep_now:
+        logger.info("On-demand research sweep triggered")
+        if args.sweep_topic:
+            # Override the rotation topic with the custom one
+            success = _run_sweep_with_topic(args.sweep_topic)
+        else:
+            success = run_research_sweep()
+        sys.exit(0 if success else 1)
 
     # Manual tier invocation — run the specified tier and exit
     if args.tier:
