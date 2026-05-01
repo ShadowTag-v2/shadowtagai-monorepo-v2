@@ -642,31 +642,49 @@ def run_dream_cycle(ki_dir: Path) -> DreamReport:
 
             # Phase 1: Orient
             report.phase = "orient"
+            logger.info("Phase 1/8: Orient — scanning KI directory %s", ki_dir)
             entries = orient(ki_dir)
+            logger.info("Phase 1/8: Orient complete — %d KIs found", len(entries))
 
             # Phase 2: Gather
             report.phase = "gather"
+            logger.info("Phase 2/8: Gather — identifying issues across %d KIs", len(entries))
             issues = gather(entries, report)
+            logger.info(
+                "Phase 2/8: Gather complete — %d date issues, %d size violations",
+                len(issues.get("relative_dates", [])),
+                len(issues.get("size_violations", [])),
+            )
 
             # Phase 2.5: Activate (spreading activation for collision detection)
             report.phase = "activate"
+            logger.info("Phase 3/8: Activate — spreading activation for collision detection")
             activate(entries, ki_dir, report)
+            logger.info("Phase 3/8: Activate complete")
 
             # Phase 3: Consolidate
             report.phase = "consolidate"
+            logger.info("Phase 4/8: Consolidate — resolving contradictions and normalizing dates")
             consolidate(entries, issues, report)
+            logger.info("Phase 4/8: Consolidate complete — %d contradictions found", report.contradictions_found)
 
             # Phase 3.5: Promote + Detect
             report.phase = "promote"
+            logger.info("Phase 5/8: Promote — belief promotion and conflict detection")
             promote_and_detect(entries, ki_dir, report)
+            logger.info("Phase 5/8: Promote complete")
 
             # Phase 4: Prune
             report.phase = "prune"
+            logger.info("Phase 6/8: Prune — enforcing size limits and cleaning orphans")
             prune(entries, issues, report)
+            logger.info("Phase 6/8: Prune complete — %d orphaned artifacts found", report.artifacts_pruned)
 
             # Phase 4.5: Measure + Views
             report.phase = "measure"
+            logger.info("Phase 7/8: Measure — computing closure metrics and generating views")
             measure_and_render(entries, ki_dir, report)
+            logger.info("Phase 7/8: Measure complete")
 
         # Report
         report.phase = "complete"
@@ -789,7 +807,9 @@ if __name__ == "__main__":
         if DRY_RUN:
             pass
         else:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300, check=False)
+            logger.info("Phase 8/8: Gitleaks — running production secret scan")
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=600, check=False)
+            logger.info("Phase 8/8: Gitleaks complete — exit code %d", result.returncode)
             if result.returncode in (0, 1):
                 pass
             else:
