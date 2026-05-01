@@ -57,6 +57,14 @@ from context_compactor.post_compact_cleanup import (
     register_cleanup_hook,
     run_post_compact_cleanup,
 )
+from context_compactor.session_memory_compact import (
+    SessionMemoryCompactConfig,
+    SessionMemoryCompactResult,
+    adjust_index_to_preserve_api_invariants,
+    calculate_messages_to_keep_index,
+    has_text_blocks,
+    try_session_memory_compact,
+)
 
 __all__ = [
     # Core orchestrator
@@ -92,4 +100,11 @@ __all__ = [
     "get_compact_prompt",
     "get_compact_user_summary_message",
     "get_partial_compact_prompt",
+    # Session memory compact
+    "SessionMemoryCompactConfig",
+    "SessionMemoryCompactResult",
+    "adjust_index_to_preserve_api_invariants",
+    "calculate_messages_to_keep_index",
+    "has_text_blocks",
+    "try_session_memory_compact",
 ]
