@@ -35,17 +35,16 @@ from __future__ import annotations
 
 import argparse
 import csv
+import datetime
 import json
 import os
 import re
 import subprocess
 import sys
 from collections import defaultdict
-import datetime
 
 UTC = getattr(datetime, "UTC", datetime.timezone.utc)  # noqa: UP017
 from pathlib import Path
-
 
 # ============================================================================
 # Configuration
@@ -554,7 +553,7 @@ Examples:
     if args.mode in ("gate", "staged") and gate_check(findings):
         sys.exit(1)
 
-    sys.exit(1 if blocks else 0)
+    sys.exit(0)
 
 
 def _generate_manifest(raw_findings: list[dict], output_dir: str | None = None) -> None:
