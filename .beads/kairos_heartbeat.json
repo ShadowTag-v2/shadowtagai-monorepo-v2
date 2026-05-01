@@ -1,11 +1,13 @@
 {
-  "timestamp": "2026-05-01T00:52:28.027778+00:00",
-  "pid": 11620,
+  "timestamp": "2026-05-01T04:39:02.897018+00:00",
+  "pid": 59117,
   "status": {
     "cycle": "1",
-    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": \"5 files\", \"git_fetch\": \"ok\"}",
+    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": \"15 files\", \"git_fetch\": \"ok\"}",
     "steward": "ran",
     "vault_ingest": "ran",
-    "quarantine_purge": "ran"
+    "quarantine_purge": "ran",
+    "oob_check": "ran",
+    "webhook_events": "ran"
   }
 }

@@ -138,6 +138,18 @@ jobs:
             npm run build || true
           fi
 
+      - name: Post-build pack safety check
+        run: |
+          echo "🛡️ Post-build source map leak check..."
+          PACK_OUT=$(npm pack --dry-run 2>&1) || true
+          MAP_FILES=$(echo "$PACK_OUT" | grep -c '\.map$' || true)
+          if [ "$MAP_FILES" -gt 0 ]; then
+            echo "❌ $MAP_FILES .map file(s) would leak into package!"
+            echo "$PACK_OUT" | grep '\.map$'
+            exit 1
+          fi
+          echo "✅ No source maps in pack output"
+
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   # 3. RUST SERVICES
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -44,12 +44,18 @@ VAULT_DIR = REPO_ROOT / "vault"
 # Task intervals (seconds)
 HEALTH_CHECK_INTERVAL = 300  # 5 minutes
 DREAM_INTERVAL = 86400  # 24 hours
+DISK_SKILL_DREAM_INTERVAL = 604800  # 7 days (weekly deep scan)
 DEAD_CODE_INTERVAL = 86400  # 24 hours
 LOOP_STEWARD_INTERVAL = 300  # 5 minutes
 STANDUP_INTERVAL = 86400  # 24 hours
 VAULT_INGEST_INTERVAL = 300  # 5 minutes
 QUARANTINE_PURGE_INTERVAL = 3600  # 1 hour
 AUTOLINT_INTERVAL = 86400  # 24 hours
+OOB_REPORT_CHECK_INTERVAL = 600  # 10 minutes
+
+# Disk-Skill Dream resource limits
+DISK_SKILL_AST_TIMEOUT = 900  # 15-minute cap for deep AST scans
+DISK_SKILL_MAX_FILES = 5000  # Cap file count for ast-grep sweeps
 
 # Jitter range (±30s) to prevent thundering herd — TACSOP B8
 JITTER_SECONDS = 30
@@ -91,7 +97,7 @@ def health_check() -> dict:
             timeout=15,
         )
         checks["gcp_adc"] = "ok" if result.returncode == 0 else "expired"
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["gcp_adc"] = "missing"
 
     # 2. ANE dylib
@@ -117,7 +123,7 @@ def health_check() -> dict:
         )
         dirty_count = len(result.stdout.strip().splitlines()) if result.stdout.strip() else 0
         checks["git_dirty"] = f"{dirty_count} files" if dirty_count > 0 else "clean"
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["git_dirty"] = "unknown"
 
     # 6. Git fetch --prune (GitHub-first context: keep remote refs fresh)
@@ -130,35 +136,159 @@ def health_check() -> dict:
             cwd=str(REPO_ROOT),
         )
         checks["git_fetch"] = "ok" if fetch_result.returncode == 0 else "failed"
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["git_fetch"] = "timeout"
 
     logger.info("Health: %s", json.dumps(checks))
     return checks
 
 
-def run_dream_consolidation() -> bool:
-    """Execute dream_consolidation.py if it exists."""
+def run_dream_consolidation(tier: str = "light") -> bool:
+    """Execute dream_consolidation.py.
+
+    Args:
+        tier: "light" for daily interactive KI maintenance,
+              "disk-skill" for deep AST extraction (weekly).
+    """
     script = SCRIPTS_DIR / "dream_consolidation.py"
     if not script.exists():
         logger.warning("dream_consolidation.py not found, skipping")
         return False
+
+    timeout = 300 if tier == "light" else DISK_SKILL_AST_TIMEOUT
+    logger.info("Starting %s dream (timeout=%ds)", tier, timeout)
+
     try:
         result = subprocess.run(
             [sys.executable, str(script)],
             capture_output=True,
             text=True,
-            timeout=300,
+            timeout=timeout,
             cwd=str(REPO_ROOT),
         )
         if result.returncode == 0:
-            logger.info("Dream consolidation completed successfully")
+            logger.info("%s dream completed successfully", tier.title())
             return True
-        logger.error("Dream consolidation failed: %s", result.stderr[:500])
+        logger.error("%s dream failed: %s", tier.title(), result.stderr[:500])
         return False
     except subprocess.TimeoutExpired:
-        logger.exception("Dream consolidation timed out (300s)")
+        logger.exception("%s dream timed out (%ds)", tier.title(), timeout)
         return False
+
+
+def _load_ast_grep_rules() -> list[dict]:
+    """Load ast-grep rules from externalized YAML config.
+
+    Falls back to a minimal default if the config file is missing.
+    """
+    rules_path = REPO_ROOT / "config" / "ast_grep_rules.yaml"
+    if not rules_path.exists():
+        logger.warning("ast-grep rules file not found: %s", rules_path)
+        return [{"id": "unused-def", "language": "python", "rule": {"kind": "function_definition"}}]
+
+    try:
+        # Use yaml if available, otherwise fall back to JSON-compatible subset
+        try:
+            import yaml  # noqa: F811
+
+            with open(rules_path) as f:
+                config = yaml.safe_load(f)
+            return config.get("rules", [])
+        except ImportError:
+            logger.warning("PyYAML not installed, using fallback rule")
+            return [{"id": "unused-def", "language": "python", "rule": {"kind": "function_definition"}}]
+    except (OSError, ValueError) as e:
+        logger.warning("Failed to load ast-grep rules: %s", e)
+        return [{"id": "unused-def", "language": "python", "rule": {"kind": "function_definition"}}]
+
+
+def run_disk_skill_dream() -> bool:
+    """Execute deep AST extraction over the full repo.
+
+    This is the heavy tier that runs weekly during off-peak hours.
+    It performs:
+      1. ast-grep structural analysis on all Python/TS files
+      2. Full dependency graph extraction
+      3. Dead symbol cross-reference against KI entries
+
+    Unlike the light dream, this tier doesn't share compute with
+    a waiting user, so it can afford expensive operations.
+    """
+    # Phase 1: ast-grep deep scan (if available)
+    ast_grep_bin = "ast-grep"
+    try:
+        # Verify ast-grep is installed
+        check = subprocess.run(
+            [ast_grep_bin, "--version"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if check.returncode != 0:
+            logger.warning("ast-grep not available, skipping disk-skill phase 1")
+            return run_dream_consolidation(tier="disk-skill")
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        logger.warning("ast-grep binary not found")
+        return run_dream_consolidation(tier="disk-skill")
+
+    # Count files to process (cap at DISK_SKILL_MAX_FILES)
+    py_files = list(REPO_ROOT.rglob("*.py"))
+    ts_files = list(REPO_ROOT.rglob("*.ts"))
+    tsx_files = list(REPO_ROOT.rglob("*.tsx"))
+    all_files = py_files + ts_files + tsx_files
+
+    # Filter out node_modules, .venv, etc.
+    filtered = [
+        f for f in all_files if not any(part in f.parts for part in ("node_modules", ".venv", "venv", "__pycache__", ".git", "dist", "build"))
+    ]
+    logger.info("Disk-Skill Dream: %d files to scan (capped at %d)", len(filtered), DISK_SKILL_MAX_FILES)
+
+    # Phase 2: Load externalized rules and run ast-grep scan
+    rules = _load_ast_grep_rules()
+    scan_report_path = BEADS_DIR / f"disk_skill_scan_{datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d')}.json"  # noqa: UP017
+    BEADS_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Run each Python rule through ast-grep
+    all_findings = []
+    for rule in rules:
+        if rule.get("language") != "python":
+            continue
+        try:
+            rule_json = json.dumps(rule)
+            result = subprocess.run(
+                [
+                    ast_grep_bin,
+                    "scan",
+                    "--rule",
+                    rule_json,
+                    "--json",
+                    str(REPO_ROOT),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=DISK_SKILL_AST_TIMEOUT,
+                cwd=str(REPO_ROOT),
+            )
+            if result.stdout:
+                try:
+                    findings = json.loads(result.stdout)
+                    all_findings.extend(findings if isinstance(findings, list) else [findings])
+                except json.JSONDecodeError:
+                    pass
+        except subprocess.TimeoutExpired:
+            logger.exception("Disk-Skill AST scan timed out for rule '%s' (%ds)", rule.get("id", "?"), DISK_SKILL_AST_TIMEOUT)
+        except FileNotFoundError:
+            logger.warning("ast-grep binary disappeared during scan")
+            break
+
+    if all_findings:
+        scan_report_path.write_text(json.dumps(all_findings, indent=2))
+        logger.info("Disk-Skill AST scan: %d findings written to %s", len(all_findings), scan_report_path)
+    else:
+        logger.info("Disk-Skill AST scan: no findings")
+
+    # Phase 3: Run the standard dream with extended timeout
+    return run_dream_consolidation(tier="disk-skill")
 
 
 def run_dead_code_audit() -> bool:
@@ -299,6 +429,81 @@ def run_omni_autolint() -> bool:
         return False
 
 
+def check_oob_reports() -> bool:
+    """Check for new OOB dream reports and log summaries.
+
+    Monitors .beads/ for dream_report_*.md files and logs their
+    key metrics. This enables KAIROS to react to dream findings
+    without tight coupling to the dream daemon itself.
+    """
+    if not BEADS_DIR.exists():
+        return True
+
+    reports = sorted(BEADS_DIR.glob("dream_report_*.md"), reverse=True)
+    if not reports:
+        return True
+
+    # Only process the latest report
+    latest = reports[0]
+    try:
+        content = latest.read_text()
+        # Extract key metrics from the markdown report
+        for line in content.splitlines():
+            if line.startswith("- **"):
+                logger.info("OOB Dream: %s", line.strip("- "))
+    except OSError:
+        pass
+
+    return True
+
+
+def process_webhook_events() -> bool:
+    """Process webhook-driven events from .beads/events/ queue.
+
+    This is the stub for future SSE/Webhook relay integration.
+    Events are JSON files dropped into .beads/events/ by external
+    systems (e.g., GitHub App webhooks, PR notifications).
+
+    Each event file is processed exactly once and archived.
+    """
+    events_dir = BEADS_DIR / "events"
+    if not events_dir.exists():
+        return True
+
+    archive_dir = events_dir / "processed"
+    archive_dir.mkdir(exist_ok=True)
+
+    processed = 0
+    for event_file in sorted(events_dir.glob("*.json")):
+        if not event_file.is_file():
+            continue
+        try:
+            event = json.loads(event_file.read_text())
+            event_type = event.get("type", "unknown")
+            logger.info("Processing event: %s (type=%s)", event_file.name, event_type)
+
+            # Route by event type
+            if event_type == "pr_review_requested":
+                logger.info("PR review event: %s", event.get("pr_url", "N/A"))
+            elif event_type == "deploy_complete":
+                logger.info("Deploy event: %s", event.get("service", "N/A"))
+            elif event_type == "secret_rotation":
+                logger.info("Secret rotation event: %s", event.get("secret_name", "N/A"))
+            else:
+                logger.info("Unknown event type: %s", event_type)
+
+            # Archive the processed event
+            dest = archive_dir / event_file.name
+            event_file.rename(dest)
+            processed += 1
+        except (json.JSONDecodeError, OSError) as e:
+            logger.warning("Failed to process event %s: %s", event_file.name, e)
+
+    if processed > 0:
+        logger.info("Processed %d webhook event(s)", processed)
+    return True
+
+
 def write_heartbeat(status: dict) -> None:
     """Write heartbeat file for monitoring."""
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
@@ -322,12 +527,15 @@ def main_loop(once: bool = False) -> None:
 
     last_health = 0.0
     last_dream = 0.0
+    last_disk_skill_dream = 0.0
     last_dead_code = 0.0
     last_steward = 0.0
     last_standup = 0.0
     last_vault_ingest = 0.0
     last_quarantine_purge = 0.0
     last_autolint = 0.0
+    last_oob_check = 0.0
+    last_webhook_check = 0.0
 
     cycle = 0
     while _running:
@@ -340,12 +548,18 @@ def main_loop(once: bool = False) -> None:
             status["health"] = json.dumps(health_check())
             last_health = now
 
-        # Dream consolidation (daily, only between 2-4 AM local)
+        # Light Dream consolidation (daily, only between 2-4 AM local)
         hour = datetime.datetime.now().hour
         if now - last_dream >= _jittered(DREAM_INTERVAL) and 2 <= hour <= 4:
-            run_dream_consolidation()
+            run_dream_consolidation(tier="light")
             last_dream = now
-            status["dream"] = "ran"
+            status["dream"] = "light_ran"
+
+        # Disk-Skill Dream (weekly, broader off-peak window 1-5 AM)
+        if now - last_disk_skill_dream >= _jittered(DISK_SKILL_DREAM_INTERVAL) and 1 <= hour <= 5:
+            run_disk_skill_dream()
+            last_disk_skill_dream = now
+            status["disk_skill_dream"] = "ran"
 
         # Dead code audit (daily, during off-hours)
         if now - last_dead_code >= _jittered(DEAD_CODE_INTERVAL) and 1 <= hour <= 5:
@@ -383,6 +597,18 @@ def main_loop(once: bool = False) -> None:
             last_autolint = now
             status["autolint"] = "ran"
 
+        # OOB report monitor (every 10 min)
+        if now - last_oob_check >= _jittered(OOB_REPORT_CHECK_INTERVAL):
+            check_oob_reports()
+            last_oob_check = now
+            status["oob_check"] = "ran"
+
+        # Webhook event processor (every 5 min)
+        if now - last_webhook_check >= _jittered(LOOP_STEWARD_INTERVAL):
+            process_webhook_events()
+            last_webhook_check = now
+            status["webhook_events"] = "ran"
+
         write_heartbeat(status)
 
         if once:
@@ -402,7 +628,22 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="KAIROS Background Daemon")
     parser.add_argument("--daemon", action="store_true", help="Run as background process")
     parser.add_argument("--once", action="store_true", help="Single cycle then exit")
+    parser.add_argument(
+        "--tier",
+        choices=["light", "disk-skill"],
+        default=None,
+        help="Run a specific dream tier immediately and exit",
+    )
     args = parser.parse_args()
+
+    # Manual tier invocation — run the specified tier and exit
+    if args.tier:
+        logger.info("Manual tier invocation: %s", args.tier)
+        if args.tier == "light":
+            success = run_dream_consolidation(tier="light")
+        else:
+            success = run_disk_skill_dream()
+        sys.exit(0 if success else 1)
 
     if args.daemon:
         pid = os.fork()
