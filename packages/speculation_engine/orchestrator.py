@@ -100,6 +100,8 @@ class SpeculativeResearchOrchestrator:
         self,
         workspace: str,
         config: SpeculativeResearchConfig | None = None,
+        *,
+        gemini_api_key: str | None = None,
     ) -> None:
         self._workspace = workspace
         self._config = config or SpeculativeResearchConfig()
@@ -110,6 +112,32 @@ class SpeculativeResearchOrchestrator:
         self._session_id = ""
         self._speculation_results: list[SpeculativePhaseResult] = []
         self._session_state = SessionState()
+        self._gemini_api_key = gemini_api_key
+        self._pair_programmer: Any | None = None
+        self._research_sweep: Any | None = None
+
+    @property
+    def pair_programmer(self) -> Any:
+        """Lazy-init GeminiPairProgrammer for live pair-programming."""
+        if self._pair_programmer is None:
+            from speculation_engine.gemini_bridge import GeminiPairProgrammer
+
+            self._pair_programmer = GeminiPairProgrammer(
+                api_key=self._gemini_api_key,
+            )
+        return self._pair_programmer
+
+    @property
+    def research_sweep(self) -> Any:
+        """Lazy-init GeminiResearchSweep for autonomous research."""
+        if self._research_sweep is None:
+            from speculation_engine.gemini_bridge import GeminiResearchSweep
+
+            self._research_sweep = GeminiResearchSweep(
+                api_key=self._gemini_api_key,
+                max_depth=True,
+            )
+        return self._research_sweep
 
     @property
     def speculation_engine(self) -> SpeculationEngine:

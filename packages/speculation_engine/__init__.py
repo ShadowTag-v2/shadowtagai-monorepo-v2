@@ -74,6 +74,13 @@ from speculation_engine.cache_break_detection import (
     PromptStateSnapshot,
     TrackedState,
 )
+from speculation_engine.gemini_bridge import (
+    GeminiPairProgrammer,
+    GeminiResearchSweep,
+    PairSession,
+    PipelineMode,
+    SweepResult,
+)
 
 __all__ = [
     # Engine
@@ -124,4 +131,10 @@ __all__ = [
     "log_suggestion_event",
     "log_speculation_event",
     "read_telemetry_events",
+    # Gemini Bridge
+    "GeminiPairProgrammer",
+    "GeminiResearchSweep",
+    "PairSession",
+    "PipelineMode",
+    "SweepResult",
 ]
