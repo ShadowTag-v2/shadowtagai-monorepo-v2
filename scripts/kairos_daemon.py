@@ -28,6 +28,7 @@ import subprocess
 import sys
 import time
 from typing import Any
+import contextlib
 
 logging.basicConfig(
     level=logging.INFO,
@@ -38,6 +39,11 @@ logger = logging.getLogger("kairos")
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = REPO_ROOT / "scripts"
+
+# Bootstrap monorepo packages for deferred imports (speculation_engine, etc.)
+_packages_dir = str(REPO_ROOT / "packages")
+if _packages_dir not in sys.path:
+    sys.path.insert(0, _packages_dir)
 BEADS_DIR = REPO_ROOT / ".beads"
 HEARTBEAT_FILE = BEADS_DIR / "kairos_heartbeat.json"
 
@@ -617,7 +623,7 @@ def run_research_sweep() -> bool:
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
     try:
         idx = int(topic_index_file.read_text().strip()) if topic_index_file.exists() else 0
-    except (ValueError, OSError):
+    except ValueError, OSError:
         idx = 0
     topic = _RESEARCH_TOPICS[idx % len(_RESEARCH_TOPICS)]
     topic_index_file.write_text(str((idx + 1) % len(_RESEARCH_TOPICS)))
@@ -676,10 +682,8 @@ def run_research_sweep() -> bool:
             logger.debug("Firestore persistence skipped: %s", fs_err)
 
         # Record invocation for rate limiting
-        try:
+        with contextlib.suppress(Exception):
             record_sweep_invocation()
-        except Exception:
-            pass
 
         logger.info(
             "Research sweep completed: %s (%.1fs, %d chars)",
@@ -762,16 +766,14 @@ def _run_sweep_with_topic(topic: str) -> bool:
             logger.debug("Firestore persistence skipped: %s", fs_err)
 
         # Record invocation for rate limiting
-        try:
+        with contextlib.suppress(Exception):
             record_sweep_invocation()
-        except Exception:
-            pass
 
         # Print report to stdout for --sweep-now users
-        print(f"\n{'='*72}")
+        print(f"\n{'=' * 72}")
         print(f"Research Sweep: {topic}")
         print(f"Duration: {duration:.1f}s | Report: {len(result.report_text)} chars")
-        print(f"{'='*72}\n")
+        print(f"{'=' * 72}\n")
         print(result.report_text[:2000])
         if len(result.report_text) > 2000:
             print(f"\n... ({len(result.report_text) - 2000} chars truncated)")

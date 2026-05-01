@@ -53,6 +53,10 @@ logger = logging.getLogger("dream")
 # Falls back gracefully if ki_engine is not available
 try:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    # Bootstrap monorepo packages (speculation_engine, etc.)
+    _pkg_dir = str(Path(__file__).resolve().parent.parent / "packages")
+    if _pkg_dir not in sys.path:
+        sys.path.insert(0, _pkg_dir)
     from core.ki_engine.activation import spread_activation
     from core.ki_engine.closure import compute_closure
     from core.ki_engine.decay import rank_kis  # noqa: F401, F811
