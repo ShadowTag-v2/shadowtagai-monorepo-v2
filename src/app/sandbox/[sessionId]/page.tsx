@@ -10,13 +10,16 @@
  *   1. Attorney navigates to /sandbox/{session-id}?matter={matter-id}
  *   2. Page fetches diffs from /api/sandbox/[sessionId]/diffs
  *   3. DiffView renders the overlay changes
- *   4. Attorney makes accept/reject/partial decision
- *   5. Decision POSTed to /api/sandbox/[sessionId]/commit
+ *   4. WebSocket listens for real-time state transitions
+ *   5. Attorney makes accept/reject/partial decision
+ *   6. Decision POSTed to /api/sandbox/[sessionId]/commit
+ *   7. WebSocket broadcasts committed/rejected to all connected clients
  *
  * Security:
  *   - Server-side auth check via middleware
  *   - Attorney UID verified against session config
  *   - All decisions produce immutable audit trail
+ *   - WebSocket messages contain session prefix only (no PII)
  */
 
 'use client';
@@ -25,11 +28,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { DiffView } from '@/components/diff-view/DiffView';
 import { usePanopticonContext } from '@/components/telemetry/PanopticonProvider';
+import {
+  useSandboxWebSocket,
+  type StateChangeEvent,
+} from '@/hooks/useSandboxWebSocket';
 import type { CommitAction, DiffFile } from '@/components/diff-view/types';
 import styles from './sandbox-session.module.css';
 
 /** Session state machine — aligns with Python SandboxSession.lifecycle */
-type SessionPhase = 'loading' | 'reviewing' | 'committing' | 'committed' | 'error';
+type SessionPhase = 'loading' | 'reviewing' | 'committing' | 'committed' | 'rejected' | 'error';
 
 interface SessionState {
   phase: SessionPhase;
@@ -61,6 +68,42 @@ export default function SandboxSessionPage() {
     matterId,
     error: null,
     commitResult: null,
+  });
+
+  // ── WebSocket: real-time state transitions ────────────────
+  const handleWsStateChange = useCallback(
+    (event: StateChangeEvent) => {
+      track('sandbox.ws_state_received', {
+        from: event.from,
+        to: event.to,
+      });
+
+      // Map backend state transitions to frontend phases
+      if (event.to === 'committed') {
+        setState((prev) => ({
+          ...prev,
+          phase: 'committed',
+          commitResult: prev.commitResult ?? {
+            success: true,
+            committedFiles: [],
+            rejectedFiles: [],
+            auditId: (event.metadata.audit_id as string) ?? '',
+            durationMs: 0,
+          },
+        }));
+      } else if (event.to === 'rejected') {
+        setState((prev) => ({ ...prev, phase: 'rejected' }));
+      } else if (event.to === 'reviewing') {
+        setState((prev) => ({ ...prev, phase: 'reviewing' }));
+      }
+    },
+    [track],
+  );
+
+  const { connectionState, reconnectCount } = useSandboxWebSocket({
+    sessionId,
+    onStateChange: handleWsStateChange,
+    enabled: state.phase !== 'error',
   });
 
   // ── Fetch diffs on mount ──────────────────────────────────
@@ -166,6 +209,24 @@ export default function SandboxSessionPage() {
     );
   }
 
+  if (state.phase === 'rejected') {
+    return (
+      <div className={styles.container}>
+        <div className={styles.rejectedCard}>
+          <div className={styles.rejectedIcon}>✕</div>
+          <h2 className={styles.rejectedTitle}>Session Rejected</h2>
+          <p className={styles.rejectedMessage}>
+            This sandbox session has been rejected. Speculative changes were
+            discarded and will not be applied to the matter.
+          </p>
+          <p className={styles.auditNote}>
+            Session: <code>{sessionId.slice(0, 8)}…</code>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (state.phase === 'committed' && state.commitResult) {
     return (
       <div className={styles.container}>
@@ -197,6 +258,28 @@ export default function SandboxSessionPage() {
 
   return (
     <div className={styles.container}>
+      {/* WebSocket connection status indicator */}
+      <div
+        className={styles.wsStatus}
+        data-state={connectionState}
+        title={
+          connectionState === 'connected'
+            ? 'Real-time updates active'
+            : connectionState === 'connecting'
+              ? `Connecting${reconnectCount > 0 ? ` (attempt ${reconnectCount})` : ''}…`
+              : 'Real-time updates disconnected'
+        }
+      >
+        <span className={styles.wsStatusDot} />
+        <span className={styles.wsStatusText}>
+          {connectionState === 'connected'
+            ? 'Live'
+            : connectionState === 'connecting'
+              ? 'Connecting…'
+              : 'Offline'}
+        </span>
+      </div>
+
       <DiffView
         sessionId={sessionId}
         matterId={state.matterId}
@@ -207,3 +290,4 @@ export default function SandboxSessionPage() {
     </div>
   );
 }
+
