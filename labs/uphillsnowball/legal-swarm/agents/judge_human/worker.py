@@ -56,7 +56,7 @@ def main() -> int:
         try:
             while True:
                 time.sleep(3600)
-        except KeyboardInterrupt, SystemExit:
+        except (KeyboardInterrupt, SystemExit):
             logger.info("Judge 6 shutting down cleanly")
             return 0
 
@@ -67,7 +67,7 @@ def main() -> int:
             # TODO: Poll redis for review requests
             # TODO: Expose HTTP endpoint on PORT for dashboard integration
             time.sleep(30)
-    except KeyboardInterrupt, SystemExit:
+    except (KeyboardInterrupt, SystemExit):
         logger.info("Judge 6 shutting down cleanly")
         return 0
 
