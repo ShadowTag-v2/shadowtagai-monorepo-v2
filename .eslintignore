@@ -8,3 +8,6 @@ tests/**
 legacy/**
 coverage/**
 .git/**
+external_repos/
+tools/
+.turbo/

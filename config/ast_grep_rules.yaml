@@ -1,0 +1,111 @@
+# ast-grep Rules for KAIROS Disk-Skill Dream
+# ============================================
+# Externalized from kairos_daemon.py inline JSON.
+# Used by run_disk_skill_dream() for weekly deep AST scans.
+#
+# Syntax reference: https://ast-grep.github.io/reference/yaml.html
+#
+# Each rule has:
+#   id:       Unique identifier for the rule
+#   language: Target language (python, typescript, tsx)
+#   rule:     ast-grep matching pattern
+#   message:  Human-readable description
+#   severity: hint | warning | error
+
+rules:
+  # --- Python Rules ---
+
+  - id: unused-function-def
+    language: python
+    rule:
+      kind: function_definition
+    message: "Function definition found — cross-reference with ruff F401/F841 for usage"
+    severity: hint
+
+  - id: bare-except
+    language: python
+    rule:
+      pattern: |
+        except:
+            $$$BODY
+    message: "Bare except clause — should specify exception type"
+    severity: warning
+
+  - id: python2-except-syntax
+    language: python
+    rule:
+      pattern: |
+        except $TYPE, $VAR:
+            $$$BODY
+    message: "Python 2-style except clause — use 'except ($TYPE) as $VAR:' instead"
+    severity: error
+
+  - id: subprocess-shell-true
+    language: python
+    rule:
+      pattern: |
+        subprocess.run($$$ARGS, shell=True, $$$REST)
+    message: "subprocess.run with shell=True — potential command injection vector"
+    severity: error
+
+  - id: os-system-call
+    language: python
+    rule:
+      pattern: |
+        os.system($CMD)
+    message: "os.system() call — use subprocess.run() instead for safety"
+    severity: error
+
+  - id: hardcoded-secret-pattern
+    language: python
+    rule:
+      pattern: |
+        $VAR = "$$$VALUE"
+    constraints:
+      VAR:
+        regex: "(?i)(api_key|secret|password|token|private_key)"
+    message: "Potential hardcoded secret — use GCP Secret Manager"
+    severity: error
+
+  # --- TypeScript Rules ---
+
+  - id: ts-any-type
+    language: typescript
+    rule:
+      pattern: |
+        : any
+    message: "Explicit 'any' type — use a specific type or 'unknown'"
+    severity: warning
+
+  - id: ts-console-log
+    language: typescript
+    rule:
+      pattern: |
+        console.log($$$ARGS)
+    message: "console.log in production code — use structured logging"
+    severity: hint
+
+  - id: ts-unused-export
+    language: typescript
+    rule:
+      kind: export_statement
+    message: "Export statement found — verify it's consumed by another module"
+    severity: hint
+
+  # --- TSX Rules ---
+
+  - id: tsx-inline-style
+    language: tsx
+    rule:
+      pattern: |
+        style={{$$$PROPS}}
+    message: "Inline style object — prefer CSS modules or design tokens"
+    severity: hint
+
+  - id: tsx-dangerous-html
+    language: tsx
+    rule:
+      pattern: |
+        dangerouslySetInnerHTML={$$$VAL}
+    message: "dangerouslySetInnerHTML — XSS risk, ensure input is sanitized"
+    severity: error

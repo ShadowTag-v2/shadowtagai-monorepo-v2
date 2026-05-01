@@ -56,5 +56,6 @@
       "source.fixAll": "explicit",
       "source.organizeImports": "explicit"
     }
-  }
+  },
+  "eslint.workingDirectories": [{ "mode": "auto" }]
 }

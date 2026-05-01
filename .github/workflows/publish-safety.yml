@@ -1,0 +1,308 @@
+name: Publish Safety Gate
+
+# ═══════════════════════════════════════════════════════════
+# Publish Safety — Prevents artifact bloat and source leaks
+# Reference: https://www.sabrina.dev/p/claude-code-source-leak-analysis
+# Lessons: (1) *.map files leaked full source tree
+#          (2) Manual deploy step skipped automation
+#          (3) 60MB spike in normally-5MB package went undetected
+# ═══════════════════════════════════════════════════════════
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'package.json'
+      - 'packages/*/package.json'
+      - 'apps/*/package.json'
+      - '.npmignore'
+      - '**/tsconfig*.json'
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '22'
+  # Package size thresholds (in bytes)
+  # 5MB = 5242880 bytes — any package exceeding this triggers a hard failure
+  MAX_PACKAGE_SIZE_BYTES: 5242880
+  # Warn at 2MB
+  WARN_PACKAGE_SIZE_BYTES: 2097152
+
+concurrency:
+  group: publish-safety-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 1. NPMIGNORE INTEGRITY CHECK
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  npmignore-integrity:
+    name: .npmignore Integrity
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify .npmignore exists and contains *.map
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🛡️  .npmignore Integrity Check"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+          if [ ! -f .npmignore ]; then
+            echo "❌ FATAL: .npmignore is MISSING from repository root"
+            echo "   This is the #1 defense against source map leaks."
+            echo "   Create .npmignore with at minimum: *.map"
+            exit 1
+          fi
+
+          if ! grep -q '^\*\.map$' .npmignore; then
+            echo "❌ FATAL: .npmignore does NOT contain '*.map' pattern"
+            echo "   Source maps WILL leak into published packages."
+            echo "   Add '*.map' to .npmignore immediately."
+            exit 1
+          fi
+
+          echo "✅ .npmignore exists and contains *.map exclusion"
+
+          # Additional safety checks
+          CRITICAL_PATTERNS=("*.map" "*.pem" "*.key" ".env")
+          MISSING=0
+          for pattern in "${CRITICAL_PATTERNS[@]}"; do
+            if grep -q "$pattern" .npmignore; then
+              echo "  ✅ $pattern — excluded"
+            else
+              echo "  ⚠️  $pattern — NOT excluded (recommended)"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          if [ $MISSING -gt 0 ]; then
+            echo ""
+            echo "⚠️  $MISSING recommended exclusion patterns missing"
+            echo "   Consider adding them for defense-in-depth"
+          fi
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 2. NPM PACK DRY-RUN VALIDATION
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  pack-dry-run:
+    name: npm pack --dry-run
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [npmignore-integrity]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Run npm pack --dry-run on root
+        id: pack_root
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📦 npm pack --dry-run (Root Package)"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+          # Capture pack output for analysis
+          PACK_OUTPUT=$(npm pack --dry-run 2>&1) || true
+          echo "$PACK_OUTPUT"
+
+          # Check for .map files in pack output
+          MAP_FILES=$(echo "$PACK_OUTPUT" | grep -c '\.map$' || true)
+          if [ "$MAP_FILES" -gt 0 ]; then
+            echo ""
+            echo "❌ FATAL: $MAP_FILES source map file(s) detected in package!"
+            echo "   These would leak your source code if published."
+            echo "$PACK_OUTPUT" | grep '\.map$'
+            exit 1
+          fi
+
+          # Check for .pem / .key files
+          SECRET_FILES=$(echo "$PACK_OUTPUT" | grep -cE '\.(pem|key|env)$' || true)
+          if [ "$SECRET_FILES" -gt 0 ]; then
+            echo ""
+            echo "❌ FATAL: $SECRET_FILES secret/credential file(s) detected!"
+            echo "$PACK_OUTPUT" | grep -E '\.(pem|key|env)$'
+            exit 1
+          fi
+
+          echo ""
+          echo "✅ No source maps or secret files in pack output"
+
+      - name: Scan sub-packages for leaks
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📦 Scanning sub-packages"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+          FAILED=0
+          # Find all package.json files (skip node_modules)
+          for pkg in $(find packages apps -name package.json -not -path "*/node_modules/*" 2>/dev/null); do
+            PKG_DIR=$(dirname "$pkg")
+            echo ""
+            echo "📂 Checking: $PKG_DIR"
+
+            if [ -f "$PKG_DIR/package.json" ]; then
+              cd "$PKG_DIR"
+              PACK_OUT=$(npm pack --dry-run 2>&1) || true
+
+              MAP_COUNT=$(echo "$PACK_OUT" | grep -c '\.map$' || true)
+              if [ "$MAP_COUNT" -gt 0 ]; then
+                echo "  ❌ $MAP_COUNT .map files detected in $PKG_DIR"
+                echo "$PACK_OUT" | grep '\.map$' | sed 's/^/     /'
+                FAILED=$((FAILED + 1))
+              else
+                echo "  ✅ Clean — no .map files"
+              fi
+
+              cd "$GITHUB_WORKSPACE"
+            fi
+          done
+
+          if [ "$FAILED" -gt 0 ]; then
+            echo ""
+            echo "❌ $FAILED package(s) contain source maps — BLOCKING PUBLISH"
+            exit 1
+          fi
+
+          echo ""
+          echo "✅ All sub-packages clean"
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 3. PACKAGE SIZE ENFORCEMENT
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  package-size-check:
+    name: Package Size Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [npmignore-integrity]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Enforce package size limits
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📏 Package Size Enforcement"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "   Hard limit: $(( ${{ env.MAX_PACKAGE_SIZE_BYTES }} / 1048576 )) MB"
+          echo "   Warn limit: $(( ${{ env.WARN_PACKAGE_SIZE_BYTES }} / 1048576 )) MB"
+          echo ""
+
+          FAILED=0
+          WARNED=0
+
+          # Check root package
+          check_package_size() {
+            local dir="$1"
+            local label="$2"
+
+            if [ ! -f "$dir/package.json" ]; then
+              return
+            fi
+
+            cd "$dir"
+            # npm pack to get actual tarball size
+            TARBALL=$(npm pack --pack-destination /tmp 2>/dev/null) || true
+
+            if [ -n "$TARBALL" ] && [ -f "/tmp/$TARBALL" ]; then
+              SIZE=$(stat -c%s "/tmp/$TARBALL" 2>/dev/null || stat -f%z "/tmp/$TARBALL" 2>/dev/null || echo "0")
+              SIZE_KB=$((SIZE / 1024))
+              SIZE_MB=$((SIZE / 1048576))
+
+              if [ "$SIZE" -gt "${{ env.MAX_PACKAGE_SIZE_BYTES }}" ]; then
+                echo "  ❌ $label: ${SIZE_KB}KB (${SIZE_MB}MB) — EXCEEDS ${MAX_MB}MB limit!"
+                FAILED=$((FAILED + 1))
+              elif [ "$SIZE" -gt "${{ env.WARN_PACKAGE_SIZE_BYTES }}" ]; then
+                echo "  ⚠️  $label: ${SIZE_KB}KB (${SIZE_MB}MB) — above warning threshold"
+                WARNED=$((WARNED + 1))
+              else
+                echo "  ✅ $label: ${SIZE_KB}KB — within limits"
+              fi
+
+              rm -f "/tmp/$TARBALL"
+            else
+              echo "  ℹ️  $label: skipped (private or no packable content)"
+            fi
+
+            cd "$GITHUB_WORKSPACE"
+          }
+
+          check_package_size "$GITHUB_WORKSPACE" "root"
+
+          # Check all sub-packages
+          for pkg in $(find packages apps -name package.json -not -path "*/node_modules/*" 2>/dev/null); do
+            PKG_DIR=$(dirname "$pkg")
+            PKG_NAME=$(node -p "require('./$pkg').name || '$PKG_DIR'" 2>/dev/null || echo "$PKG_DIR")
+            check_package_size "$GITHUB_WORKSPACE/$PKG_DIR" "$PKG_NAME"
+          done
+
+          echo ""
+          if [ "$FAILED" -gt 0 ]; then
+            echo "❌ $FAILED package(s) exceed the ${SIZE_MB:-5}MB size limit — BLOCKING"
+            echo "   This likely indicates source maps or large artifacts leaking in."
+            echo "   Run 'npm pack --dry-run' locally to inspect contents."
+            exit 1
+          elif [ "$WARNED" -gt 0 ]; then
+            echo "⚠️  $WARNED package(s) above warning threshold — review recommended"
+          else
+            echo "✅ All packages within size limits"
+          fi
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 4. SUMMARY
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  publish-safety-summary:
+    name: Publish Safety Summary
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [npmignore-integrity, pack-dry-run, package-size-check]
+    if: always()
+
+    steps:
+      - name: Report status
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🛡️  Publish Safety Gate — Final Report"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "  .npmignore Integrity:  ${{ needs.npmignore-integrity.result }}"
+          echo "  Pack Dry-Run:          ${{ needs.pack-dry-run.result }}"
+          echo "  Package Size Check:    ${{ needs.package-size-check.result }}"
+          echo ""
+
+          if [[ "${{ needs.npmignore-integrity.result }}" == "failure" ]] || \
+             [[ "${{ needs.pack-dry-run.result }}" == "failure" ]] || \
+             [[ "${{ needs.package-size-check.result }}" == "failure" ]]; then
+            echo "❌ PUBLISH BLOCKED — one or more safety checks failed"
+            echo "   Review the failed jobs above for remediation steps."
+            exit 1
+          fi
+
+          echo "✅ All publish safety checks passed"
+          echo "   Safe to proceed with npm publish."
+          echo ""
+          echo "Reference: Sabrina.dev incident analysis"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
