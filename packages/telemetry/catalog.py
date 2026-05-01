@@ -35,6 +35,8 @@ class EventCategory(StrEnum):
     VCR = "vcr"
     SESSION = "session"
     ERROR = "error"
+    GEMINI = "gemini"
+    RESEARCH = "research"
 
 
 @dataclass
@@ -463,5 +465,130 @@ class EventCatalog:
             properties={
                 "subsystem": subsystem,
                 "failure_count": failure_count,
+            },
+        )
+
+    # --- Gemini API Events (P4.1) ---
+
+    @staticmethod
+    def gemini_interactions_turn(
+        session_id: str = "",
+        turn_index: int = 0,
+        prompt_tokens: int = 0,
+        completion_tokens: int = 0,
+        latency_ms: float = 0.0,
+        function_calls: int = 0,
+    ) -> TelemetryEvent:
+        """agnt_gemini_interactions_turn — Single Interactions API turn."""
+        return TelemetryEvent(
+            event="agnt_gemini_interactions_turn",
+            category=EventCategory.GEMINI,
+            duration_ms=latency_ms,
+            properties={
+                "session_id": session_id,
+                "turn_index": turn_index,
+                "prompt_tokens": prompt_tokens,
+                "completion_tokens": completion_tokens,
+                "total_tokens": prompt_tokens + completion_tokens,
+                "function_calls": function_calls,
+            },
+        )
+
+    @staticmethod
+    def gemini_interactions_session_end(
+        session_id: str = "",
+        total_turns: int = 0,
+        total_tokens: int = 0,
+        duration_ms: float = 0.0,
+    ) -> TelemetryEvent:
+        """agnt_gemini_interactions_session_end — Interactions session completed."""
+        return TelemetryEvent(
+            event="agnt_gemini_interactions_session_end",
+            category=EventCategory.GEMINI,
+            duration_ms=duration_ms,
+            properties={
+                "session_id": session_id,
+                "total_turns": total_turns,
+                "total_tokens": total_tokens,
+            },
+        )
+
+    @staticmethod
+    def gemini_interactions_error(
+        session_id: str = "",
+        error_type: str = "",
+        error_message: str = "",
+        reconnect_attempt: int = 0,
+    ) -> TelemetryEvent:
+        """agnt_gemini_interactions_error — Interactions API error."""
+        return TelemetryEvent(
+            event="agnt_gemini_interactions_error",
+            category=EventCategory.GEMINI,
+            success=False,
+            error_message=error_message,
+            properties={
+                "session_id": session_id,
+                "error_type": error_type,
+                "reconnect_attempt": reconnect_attempt,
+            },
+        )
+
+    # --- Deep Research Events (P4.1) ---
+
+    @staticmethod
+    def deep_research_started(
+        query: str = "",
+        depth: str = "",
+        collaborative_planning: bool = False,
+    ) -> TelemetryEvent:
+        """agnt_deep_research_started — Deep Research sweep initiated."""
+        return TelemetryEvent(
+            event="agnt_deep_research_started",
+            category=EventCategory.RESEARCH,
+            properties={
+                "query_length": len(query),
+                "depth": depth,
+                "collaborative_planning": collaborative_planning,
+            },
+        )
+
+    @staticmethod
+    def deep_research_completed(
+        query: str = "",
+        depth: str = "",
+        sources_found: int = 0,
+        duration_ms: float = 0.0,
+        token_usage: int = 0,
+    ) -> TelemetryEvent:
+        """agnt_deep_research_completed — Deep Research sweep finished."""
+        return TelemetryEvent(
+            event="agnt_deep_research_completed",
+            category=EventCategory.RESEARCH,
+            duration_ms=duration_ms,
+            properties={
+                "query_length": len(query),
+                "depth": depth,
+                "sources_found": sources_found,
+                "token_usage": token_usage,
+            },
+        )
+
+    @staticmethod
+    def deep_research_error(
+        query: str = "",
+        error_type: str = "",
+        error_message: str = "",
+        duration_ms: float = 0.0,
+    ) -> TelemetryEvent:
+        """agnt_deep_research_error — Deep Research sweep failed."""
+        return TelemetryEvent(
+            event="agnt_deep_research_error",
+            category=EventCategory.RESEARCH,
+            success=False,
+            duration_ms=duration_ms,
+            error_message=error_message,
+            properties={
+                "query_length": len(query),
+                "error_type": error_type,
             },
         )
