@@ -5,10 +5,10 @@ mcp-truth: antigravity-mcp-config.json
 judge6-gate: active
 
 # Version & Phase Tracking
-version: "14.4"
+version: "14.5"
 phase: 3
 milestone: 3
-milestone_name: "Sandbox Session API + WebSocket State Push + Firestore Bridge Tests"
+milestone_name: "Frontend WebSocket + OTel + E2E — Phase 3 M3 Complete"
 milestone_status: "COMPLETE"
 phase_started: "2026-04-30"
 last_updated: "2026-05-01"
