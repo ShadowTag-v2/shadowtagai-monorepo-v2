@@ -277,7 +277,10 @@ def run_gitleaks_scan(scope: str = "production") -> list[dict]:
             str(REPO_ROOT),
         ]
 
-    proc = subprocess.run(cmd, capture_output=True, text=True)
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    except subprocess.TimeoutExpired:
+        return []
     if proc.returncode not in (0, 1):
         pass
 

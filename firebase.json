@@ -1,9 +1,17 @@
 {
-  "hosting": {
-    "public": "src/components/shadowtag-omega-v4",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "rewrites": [{ "source": "**", "destination": "/index.html" }]
-  },
+  "hosting": [
+    {
+      "target": "shadowtagai",
+      "public": "apps/shadowtagai/public",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [{ "source": "**", "destination": "/index.html" }]
+    },
+    {
+      "public": "src/components/shadowtag-omega-v4",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [{ "source": "**", "destination": "/index.html" }]
+    }
+  ],
   "firestore": {
     "indexes": "firestore.indexes.json"
   }

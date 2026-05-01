@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "shadowtag-omega-v4"
-  }
+  },
+  "targets": {
+    "shadowtag-omega-v4": {
+      "hosting": {
+        "shadowtagai": [
+          "shadowtagai"
+        ],
+        "kovelai": [
+          "kovelai"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
