@@ -882,8 +882,13 @@ def write_heartbeat(status: dict) -> None:
 # ---------------------------------------------------------------------------
 
 
-def main_loop(once: bool = False) -> None:
-    """KAIROS main execution loop."""
+def main_loop(once: bool = False, timeout: int | None = None) -> None:
+    """KAIROS main execution loop.
+
+    Args:
+        once: If True, run a single cycle then exit.
+        timeout: Maximum runtime in seconds. None means no limit.
+    """
     logger.info("KAIROS daemon starting (PID %d)", os.getpid())
     logger.info("Repo root: %s", REPO_ROOT)
 
@@ -907,8 +912,12 @@ def main_loop(once: bool = False) -> None:
     last_token_budget = 0.0
     last_research_sweep = 0.0
 
+    deadline = (time.time() + timeout) if timeout else None
     cycle = 0
     while _running:
+        if deadline and time.time() >= deadline:
+            logger.info("Timeout reached (%ds), shutting down gracefully...", timeout)
+            break
         cycle += 1
         now = time.time()
         status: dict[str, str] = {"cycle": str(cycle)}
@@ -1044,6 +1053,12 @@ def main() -> None:
         default=None,
         help="Custom topic for --sweep-now (overrides rotation)",
     )
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=None,
+        help="Maximum runtime in seconds (bounded execution)",
+    )
     args = parser.parse_args()
 
     # Bridge health probe — quick liveness check and exit
@@ -1078,9 +1093,9 @@ def main() -> None:
             logger.info("KAIROS daemon forked (PID %d)", pid)
             sys.exit(0)
         os.setsid()
-        main_loop(once=False)
+        main_loop(once=False, timeout=args.timeout)
     else:
-        main_loop(once=args.once)
+        main_loop(once=args.once, timeout=args.timeout)
 
 
 if __name__ == "__main__":
