@@ -74,3 +74,74 @@ def read_telemetry_events(
     except Exception:
         pass
     return events[-limit:][::-1]
+
+
+# ---------------------------------------------------------------------------
+# OpenTelemetry Span Wrappers
+# ---------------------------------------------------------------------------
+
+
+def _get_tracer() -> Any:
+    """Lazy-load OTel tracer. Returns None if opentelemetry is not installed."""
+    try:
+        from opentelemetry import trace
+
+        return trace.get_tracer("speculation_engine", "1.0.0")
+    except ImportError:
+        return None
+
+
+class SpanContext:
+    """Context manager that wraps an operation in an OTel span.
+
+    Falls back to no-op if OpenTelemetry is not available.
+
+    Usage::
+
+        with SpanContext("bridge.research_sweep", query=topic) as span:
+            result = sweep.run(topic)
+            span.set_attribute("result.length", len(result.report_text))
+    """
+
+    def __init__(self, name: str, **attributes: Any) -> None:
+        self._name = name
+        self._attributes = attributes
+        self._span: Any = None
+        self._tracer = _get_tracer()
+
+    def __enter__(self) -> SpanContext:
+        if self._tracer is not None:
+            self._span = self._tracer.start_span(self._name)
+            for k, v in self._attributes.items():
+                self._span.set_attribute(k, str(v))
+        return self
+
+    def __exit__(self, exc_type: type | None, exc_val: BaseException | None, exc_tb: Any) -> None:
+        if self._span is not None:
+            if exc_val is not None:
+                self._span.set_attribute("error", True)
+                self._span.set_attribute("error.message", str(exc_val))
+            self._span.end()
+
+    def set_attribute(self, key: str, value: Any) -> None:
+        """Set an attribute on the active span (no-op if OTel unavailable)."""
+        if self._span is not None:
+            self._span.set_attribute(key, str(value))
+
+
+def log_bridge_call(
+    *,
+    operation: str,
+    duration_ms: float,
+    success: bool,
+    **kwargs: Any,
+) -> None:
+    """Log a bridge call to both .beads/ telemetry and OTel spans."""
+    _write_event(
+        f"bridge_{operation}",
+        {
+            "duration_ms": round(duration_ms, 1),
+            "success": success,
+            **{k: v for k, v in kwargs.items() if v is not None},
+        },
+    )

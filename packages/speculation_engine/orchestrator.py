@@ -115,6 +115,46 @@ class SpeculativeResearchOrchestrator:
         self._gemini_api_key = gemini_api_key
         self._pair_programmer: Any | None = None
         self._research_sweep: Any | None = None
+        self._active_mode: Any = None  # PipelineMode, set by auto_route
+
+    def auto_route(self, query: str) -> Any:
+        """Auto-select PipelineMode based on query complexity.
+
+        Heuristics:
+          - Short queries (<100 chars) → pair_programming
+          - Keywords like 'research', 'analyze', 'compare', 'landscape' → research_sweep
+          - Default → pair_programming
+
+        Returns:
+            The PipelineMode enum value selected.
+        """
+        from speculation_engine.gemini_bridge import PipelineMode
+        from speculation_engine.telemetry import SpanContext
+
+        research_keywords = {
+            "research",
+            "analyze",
+            "compare",
+            "landscape",
+            "survey",
+            "audit",
+            "investigate",
+            "benchmark",
+            "evaluate",
+            "trend",
+        }
+
+        query_lower = query.lower()
+        is_complex = len(query) > 100 or any(kw in query_lower for kw in research_keywords)
+
+        with SpanContext("orchestrator.auto_route", query_length=len(query)):
+            if is_complex:
+                self._active_mode = PipelineMode.RESEARCH_SWEEP
+            else:
+                self._active_mode = PipelineMode.PAIR_PROGRAMMING
+
+        logger.info("Pipeline auto-routed to %s for query: %s...", self._active_mode.value, query[:60])
+        return self._active_mode
 
     @property
     def pair_programmer(self) -> Any:

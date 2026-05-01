@@ -32,7 +32,7 @@ def _load_heartbeat() -> dict:
     if hb_path.exists():
         try:
             return json.loads(hb_path.read_text())
-        except (json.JSONDecodeError, OSError):
+        except json.JSONDecodeError, OSError:
             pass
     return {}
 
@@ -109,7 +109,7 @@ def render_dashboard(model: str = "gemini-3.1-flash-lite-preview-thinking") -> s
         prompt_sections = assembler.assemble_sync()
         prompt_text = "\n\n".join(prompt_sections)
         prompt_tokens = estimate_tokens(prompt_text)
-    except (ImportError, Exception):
+    except ImportError, Exception:
         prompt_tokens = 0
 
     # Build budget breakdown
@@ -126,7 +126,7 @@ def render_dashboard(model: str = "gemini-3.1-flash-lite-preview-thinking") -> s
             server_count = len(mcp_config.get("mcpServers", {}))
             tool_tokens_est = server_count * 800  # ~800 tokens per tool def
             budget_items.append(("MCP Tool Defs", tool_tokens_est, f"{server_count} servers"))
-    except (json.JSONDecodeError, OSError):
+    except json.JSONDecodeError, OSError:
         pass
 
     budget_items.append(("Autocompact Buffer", autocompact_buffer, "reserved"))
@@ -178,7 +178,7 @@ def render_dashboard(model: str = "gemini-3.1-flash-lite-preview-thinking") -> s
         if cached_count > 0:
             for name in list(_SECTION_CACHE.keys())[:10]:
                 lines.append(f"      • {name}")
-    except (ImportError, Exception):
+    except ImportError, Exception:
         lines.append("    Cache inspection unavailable")
     lines.append("")
 
@@ -193,6 +193,27 @@ def render_dashboard(model: str = "gemini-3.1-flash-lite-preview-thinking") -> s
         lines.append("    L4: Full pipeline           ✅ available")
     else:
         lines.append("    ⚠️  context_compactor not importable")
+    lines.append("")
+
+    # ── Bridge Health ──
+    lines.append("  \033[1m── Speculation Bridge ──\033[0m")
+    bridge_status = status.get("research_sweep", "unknown")
+    try:
+        sys.path.insert(0, str(REPO_ROOT / "scripts"))
+        from kairos_daemon import _probe_bridge_health
+
+        bh = _probe_bridge_health()
+        importable = "✅" if bh.get("importable") else "❌"
+        orch = "✅" if bh.get("orchestrator_init") else "❌"
+        sweep = "✅" if bh.get("sweep_ready") else "❌"
+        lines.append(f"    Import:       {importable}")
+        lines.append(f"    Orchestrator: {orch}")
+        lines.append(f"    Sweep Ready:  {sweep}")
+        if bh.get("error"):
+            lines.append(f"    Error:        {bh['error']}")
+        lines.append(f"    Last Sweep:   {bridge_status}")
+    except (ImportError, Exception) as exc:
+        lines.append(f"    ⚠️  Bridge probe unavailable: {exc}")
     lines.append("")
 
     # ── IPI Quarantine ──
@@ -272,7 +293,25 @@ def main() -> None:
         action="store_true",
         help="Output a single-line compact status",
     )
+    parser.add_argument(
+        "--bridge-health",
+        action="store_true",
+        dest="bridge_health",
+        help="Probe speculation engine bridge health (JSON)",
+    )
     args = parser.parse_args()
+
+    if args.bridge_health:
+        try:
+            sys.path.insert(0, str(REPO_ROOT / "scripts"))
+            from kairos_daemon import _probe_bridge_health
+
+            result = _probe_bridge_health()
+            print(json.dumps(result, indent=2))
+            sys.exit(0 if result.get("healthy") else 1)
+        except ImportError as e:
+            print(json.dumps({"healthy": False, "error": str(e)}, indent=2))
+            sys.exit(1)
 
     if args.json_output:
         print(render_json(args.model))
