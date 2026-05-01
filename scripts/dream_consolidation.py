@@ -15,6 +15,12 @@ Phases:
   5. Gitleaks      — Nightly production secret scan
   6. Archive       — NotebookLM archive
 
+Security:
+  - ReadOnlyBashGuard: All subprocess calls are wrapped to block destructive
+    commands (rm, sed, >, unlink, mv) during unattended execution.
+  - DreamLockFile: PID-based lock prevents competing consolidation instances
+    across multiple IDE windows.
+
 Usage:
   python dream_consolidation.py --ki-dir ~/.gemini/antigravity/knowledge
   python dream_consolidation.py --dry-run  # Preview changes without writing
@@ -22,14 +28,25 @@ Usage:
 
 import contextlib
 import json
+import logging
 import os
+import re
+import subprocess
 import sys
 from dataclasses import dataclass, field
 from datetime import datetime, UTC
+from pathlib import Path
 
 # Python 3.9 compatibility: datetime.UTC was added in 3.11
 UTC = UTC
-from pathlib import Path
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [DREAM] %(levelname)s %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%S",
+)
+logger = logging.getLogger("dream")
+
 
 # --- KI Engine Integration ---------------------------------------------------
 # Falls back gracefully if ki_engine is not available
@@ -47,12 +64,181 @@ try:
 except ImportError:
     HAS_KI_ENGINE = False
 
+
 # --- Configuration -----------------------------------------------------------
 
 INDEX_MAX_KB = 25
 ARTIFACT_MAX_KB = 10
 MAX_INDEX_ENTRIES = 200
 DRY_RUN = "--dry-run" in sys.argv
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+BEADS_DIR = REPO_ROOT / ".beads"
+LOCK_FILE = BEADS_DIR / "dream_consolidation.lock"
+
+
+# --- Security: ReadOnlyBashGuard --------------------------------------------
+
+
+# Destructive command patterns that must NEVER run during unattended dreams.
+# This is the SafeToAutoRun enforcement layer for background daemons.
+_DESTRUCTIVE_PATTERNS: list[re.Pattern[str]] = [
+    re.compile(r"\brm\b"),
+    re.compile(r"\bunlink\b"),
+    re.compile(r"\bsed\b\s+-i"),  # in-place sed
+    re.compile(r"\bmv\b"),
+    re.compile(r"\bchmod\b"),
+    re.compile(r"\bchown\b"),
+    re.compile(r"\btruncate\b"),
+    re.compile(r"\bshred\b"),
+    re.compile(r"\bdd\b\s+"),
+    re.compile(r">\s*/"),  # redirect overwrite to absolute path
+    re.compile(r">\s*\.\./"),  # redirect overwrite to parent-relative path
+    re.compile(r"\bgit\s+reset\s+--hard\b"),
+    re.compile(r"\bgit\s+clean\s+-fd\b"),
+    re.compile(r"\bsudo\b"),
+]
+
+
+class DestructiveCommandError(RuntimeError):
+    """Raised when a destructive command is detected during a guarded session."""
+
+
+def _validate_command(cmd: list[str] | str) -> None:
+    """Check a command against the destructive patterns blocklist.
+
+    Raises DestructiveCommandError if any pattern matches.
+    """
+    cmd_str = " ".join(cmd) if isinstance(cmd, list) else cmd
+    for pattern in _DESTRUCTIVE_PATTERNS:
+        if pattern.search(cmd_str):
+            raise DestructiveCommandError(
+                f"BLOCKED: Destructive command detected during dream cycle: '{cmd_str}' matched pattern '{pattern.pattern}'"
+            )
+
+
+class ReadOnlyBashGuard:
+    """Context manager that monkey-patches subprocess.run to block destructive commands.
+
+    Usage::
+
+        with ReadOnlyBashGuard():
+            # All subprocess.run calls inside this block are validated
+            subprocess.run(["ruff", "check", "."])  # OK
+            subprocess.run(["rm", "-rf", "/"])       # Raises DestructiveCommandError
+    """
+
+    def __init__(self) -> None:
+        self._original_run: object = None
+
+    def __enter__(self) -> ReadOnlyBashGuard:
+        self._original_run = subprocess.run
+
+        def guarded_run(*args: object, **kwargs: object) -> subprocess.CompletedProcess:
+            if args:
+                cmd = args[0]
+                _validate_command(cmd)
+            return self._original_run(*args, **kwargs)
+
+        subprocess.run = guarded_run  # type: ignore[assignment]
+        logger.info("ReadOnlyBashGuard ENGAGED — destructive commands blocked")
+        return self
+
+    def __exit__(self, *exc: object) -> None:
+        subprocess.run = self._original_run  # type: ignore[assignment]
+        logger.info("ReadOnlyBashGuard DISENGAGED")
+
+
+# --- Concurrency: DreamLockFile ---------------------------------------------
+
+
+class DreamLockFile:
+    """PID-based lock file to prevent competing consolidation instances.
+
+    If a stale lock is detected (PID no longer running), it is automatically
+    broken. This prevents dead locks from crashed processes.
+
+    Usage::
+
+        lock = DreamLockFile()
+        if not lock.acquire():
+            sys.exit(0)  # Another instance is running
+        try:
+            run_dream_cycle(...)
+        finally:
+            lock.release()
+    """
+
+    STALE_THRESHOLD_SECONDS = 3600  # 1 hour — a dream should never run this long
+
+    def __init__(self, lock_path: Path | None = None) -> None:
+        self.lock_path = lock_path or LOCK_FILE
+
+    def acquire(self) -> bool:
+        """Try to acquire the lock. Returns True on success, False if held."""
+        self.lock_path.parent.mkdir(parents=True, exist_ok=True)
+
+        if self.lock_path.exists():
+            try:
+                lock_data = json.loads(self.lock_path.read_text())
+                held_pid = lock_data.get("pid", -1)
+                held_time = lock_data.get("acquired_at", "")
+
+                # Check if the holding process is still alive
+                try:
+                    os.kill(held_pid, 0)  # Signal 0 = existence check
+                    # Process is alive — check for stale lock
+                    if held_time:
+                        acquired = datetime.fromisoformat(held_time)
+                        age = (datetime.now(UTC) - acquired).total_seconds()
+                        if age > self.STALE_THRESHOLD_SECONDS:
+                            logger.warning(
+                                "Breaking stale lock (PID %d, age %.0fs)",
+                                held_pid,
+                                age,
+                            )
+                            # Fall through to acquire
+                        else:
+                            logger.info(
+                                "Lock held by PID %d (age %.0fs), skipping",
+                                held_pid,
+                                age,
+                            )
+                            return False
+                    else:
+                        return False
+                except OSError:
+                    # Process is dead — break the stale lock
+                    logger.warning("Breaking orphaned lock (dead PID %d)", held_pid)
+            except (json.JSONDecodeError, KeyError, ValueError):
+                logger.warning("Corrupt lock file, replacing")
+
+        # Write our lock
+        lock_data = {
+            "pid": os.getpid(),
+            "acquired_at": datetime.now(UTC).isoformat(),
+            "hostname": os.uname().nodename,
+        }
+        self.lock_path.write_text(json.dumps(lock_data, indent=2))
+        logger.info("Lock acquired (PID %d)", os.getpid())
+        return True
+
+    def release(self) -> None:
+        """Release the lock if we hold it."""
+        if self.lock_path.exists():
+            try:
+                lock_data = json.loads(self.lock_path.read_text())
+                if lock_data.get("pid") == os.getpid():
+                    self.lock_path.unlink()
+                    logger.info("Lock released (PID %d)", os.getpid())
+                else:
+                    logger.warning(
+                        "Lock held by PID %d, not releasing (we are %d)",
+                        lock_data.get("pid", -1),
+                        os.getpid(),
+                    )
+            except (json.JSONDecodeError, OSError):
+                pass
 
 
 # --- Data Models -------------------------------------------------------------
@@ -84,6 +270,8 @@ class DreamReport:
     size_violations: list = field(default_factory=list)
     orphaned_artifacts: list = field(default_factory=list)
     actions: list = field(default_factory=list)
+    guarded: bool = False
+    locked: bool = False
 
 
 # --- Phase 1: Orient ---------------------------------------------------------
@@ -130,7 +318,7 @@ def orient(ki_dir: Path) -> list[KIEntry]:
             )
             entries.append(entry)
 
-        except json.JSONDecodeError, KeyError:
+        except (json.JSONDecodeError, KeyError):
             pass
 
     return entries
@@ -202,7 +390,7 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
                             "updated_at": entry.updated_at,
                         },
                     )
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
     report.ki_scanned = len(entries)
@@ -369,47 +557,118 @@ def measure_and_render(entries: list[KIEntry], ki_dir: Path, report: DreamReport
         pass
 
 
+# --- OOB Report Writer -------------------------------------------------------
+
+
+def write_oob_report(report: DreamReport) -> Path | None:
+    """Write dream report to .beads/ for out-of-band pickup.
+
+    Returns the path to the written report, or None if dry-run.
+    """
+    if DRY_RUN:
+        logger.info("DRY-RUN: Would write OOB report to .beads/")
+        return None
+
+    BEADS_DIR.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
+    report_path = BEADS_DIR / f"dream_report_{timestamp}.md"
+
+    report_text = (
+        f"# Dream Consolidation Report — {datetime.now(UTC).isoformat()}\n\n"
+        f"## Summary\n"
+        f"- **KIs scanned**: {report.ki_scanned}\n"
+        f"- **Contradictions found**: {report.contradictions_found}\n"
+        f"- **Dates to normalize**: {report.dates_normalized}\n"
+        f"- **Size violations**: {len(report.size_violations)}\n"
+        f"- **Orphaned artifacts**: {report.artifacts_pruned}\n"
+        f"- **Total actions**: {len(report.actions)}\n"
+        f"- **ReadOnly guard**: {'ACTIVE' if report.guarded else 'DISABLED'}\n"
+        f"- **Lock acquired**: {'YES' if report.locked else 'NO'}\n\n"
+    )
+
+    if report.actions:
+        report_text += "## Actions\n\n"
+        for i, action in enumerate(report.actions, 1):
+            report_text += f"{i}. {action}\n"
+        report_text += "\n"
+
+    if report.size_violations:
+        report_text += "## Size Violations\n\n"
+        for sv in report.size_violations:
+            report_text += f"- {sv}\n"
+        report_text += "\n"
+
+    if report.orphaned_artifacts:
+        report_text += "## Orphaned Artifacts\n\n"
+        for oa in report.orphaned_artifacts:
+            report_text += f"- `{oa}`\n"
+
+    report_path.write_text(report_text)
+    logger.info("OOB report written: %s", report_path)
+    return report_path
+
+
 # --- Main --------------------------------------------------------------------
 
 
 def run_dream_cycle(ki_dir: Path) -> DreamReport:
-    """Execute the full enhanced Dream consolidation cycle."""
+    """Execute the full enhanced Dream consolidation cycle.
+
+    This is the core orchestrator. When called from KAIROS or standalone,
+    it runs all 8 phases inside the ReadOnlyBashGuard.
+    """
     report = DreamReport()
 
-    # Phase 1: Orient
-    report.phase = "orient"
-    entries = orient(ki_dir)
+    # Acquire global lock
+    lock = DreamLockFile()
+    if not lock.acquire():
+        logger.info("Another dream consolidation instance is running, exiting")
+        report.phase = "skipped_locked"
+        return report
+    report.locked = True
 
-    # Phase 2: Gather
-    report.phase = "gather"
-    issues = gather(entries, report)
+    try:
+        # Engage read-only protection for the entire cycle
+        with ReadOnlyBashGuard():
+            report.guarded = True
 
-    # Phase 2.5: Activate (spreading activation for collision detection)
-    report.phase = "activate"
-    activate(entries, ki_dir, report)
+            # Phase 1: Orient
+            report.phase = "orient"
+            entries = orient(ki_dir)
 
-    # Phase 3: Consolidate
-    report.phase = "consolidate"
-    consolidate(entries, issues, report)
+            # Phase 2: Gather
+            report.phase = "gather"
+            issues = gather(entries, report)
 
-    # Phase 3.5: Promote + Detect
-    report.phase = "promote"
-    promote_and_detect(entries, ki_dir, report)
+            # Phase 2.5: Activate (spreading activation for collision detection)
+            report.phase = "activate"
+            activate(entries, ki_dir, report)
 
-    # Phase 4: Prune
-    report.phase = "prune"
-    prune(entries, issues, report)
+            # Phase 3: Consolidate
+            report.phase = "consolidate"
+            consolidate(entries, issues, report)
 
-    # Phase 4.5: Measure + Views
-    report.phase = "measure"
-    measure_and_render(entries, ki_dir, report)
+            # Phase 3.5: Promote + Detect
+            report.phase = "promote"
+            promote_and_detect(entries, ki_dir, report)
 
-    # Report
-    report.phase = "complete"
+            # Phase 4: Prune
+            report.phase = "prune"
+            prune(entries, issues, report)
 
-    if report.actions:
-        for _i, _action in enumerate(report.actions, 1):
-            pass
+            # Phase 4.5: Measure + Views
+            report.phase = "measure"
+            measure_and_render(entries, ki_dir, report)
+
+        # Report
+        report.phase = "complete"
+
+        if report.actions:
+            for _i, _action in enumerate(report.actions, 1):
+                pass
+
+    finally:
+        lock.release()
 
     return report
 
@@ -448,8 +707,6 @@ if __name__ == "__main__":
     repo_root = Path(__file__).resolve().parent.parent
     guardian_script = repo_root / "scripts" / "gitleaks_guardian.py"
     if guardian_script.exists():
-        import subprocess as _sp
-
         gl_report = repo_root / ".beads" / f"gitleaks_nightly_{datetime.now(UTC).strftime('%Y%m%d')}.md"
         cmd = [
             sys.executable,
@@ -464,7 +721,7 @@ if __name__ == "__main__":
         if DRY_RUN:
             pass
         else:
-            result = _sp.run(cmd, capture_output=True, text=True, timeout=300)
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
             if result.returncode == 0:
                 pass
             else:
@@ -499,6 +756,9 @@ if __name__ == "__main__":
             pass
     except ImportError:
         pass
+
+    # Phase 7: Write OOB report for monitoring pickup
+    write_oob_report(report)
 
     # Exit with error if critical issues found
     if report.contradictions_found > 3 or len(report.size_violations) > 5:

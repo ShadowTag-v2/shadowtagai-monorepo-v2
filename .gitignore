@@ -422,6 +422,10 @@ pickle-rick-extension
 
 # Daemon heartbeat files (KAIROS, pipeline metrics — per-session state)
 .beads/kairos_heartbeat.json
+.beads/dream_report_*.md
+.beads/dream_consolidation.lock
+.beads/disk_skill_scan_*.json
+.beads/events/
 vault/monitor/pipeline_metrics.json
 
 # Scratch/temp files
