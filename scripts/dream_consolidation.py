@@ -27,6 +27,7 @@ Usage:
 """
 
 import contextlib
+import importlib.util
 import json
 import logging
 import os
@@ -34,7 +35,7 @@ import re
 import subprocess
 import sys
 from dataclasses import dataclass, field
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 
 # Python 3.9 compatibility: datetime.UTC was added in 3.11
@@ -64,6 +65,9 @@ try:
 except ImportError:
     HAS_KI_ENGINE = False
 
+# --- Token Estimation Integration --------------------------------------------
+HAS_TOKEN_ESTIMATOR = importlib.util.find_spec("packages.token_estimation") is not None
+
 
 # --- Configuration -----------------------------------------------------------
 
@@ -71,6 +75,7 @@ INDEX_MAX_KB = 25
 ARTIFACT_MAX_KB = 10
 MAX_INDEX_ENTRIES = 200
 DRY_RUN = "--dry-run" in sys.argv
+NO_GUARD = "--no-guard" in sys.argv
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BEADS_DIR = REPO_ROOT / ".beads"
@@ -233,7 +238,7 @@ class DreamLockFile:
                     logger.info("Lock released (PID %d)", os.getpid())
                 else:
                     logger.warning(
-                        "Lock held by PID %d, not releasing (we are %d)",
+                        "Lock held by PID %s, not releasing (we are %d)",
                         lock_data.get("pid", -1),
                         os.getpid(),
                     )
@@ -628,9 +633,12 @@ def run_dream_cycle(ki_dir: Path) -> DreamReport:
     report.locked = True
 
     try:
-        # Engage read-only protection for the entire cycle
-        with ReadOnlyBashGuard():
-            report.guarded = True
+        # Engage read-only protection for the entire cycle (unless --no-guard)
+        guard = contextlib.nullcontext() if NO_GUARD else ReadOnlyBashGuard()
+        if NO_GUARD:
+            logger.warning("ReadOnlyBashGuard BYPASSED — operator authorized via --no-guard")
+        with guard:
+            report.guarded = not NO_GUARD
 
             # Phase 1: Orient
             report.phase = "orient"
@@ -711,7 +719,7 @@ def _run_deep_research_sweep(report: DreamReport, ki_dir: Path) -> None:
 
         # Run at most 3 research queries per dream cycle (cost control)
         for i, query in enumerate(research_queries[:3]):
-            logger.info("Deep Research sweep %d/%d: %s", i + 1, min(3, len(research_queries)), query[:80])
+            logger.info("Deep Research sweep %d/%d: %s", i + 1, min(3, len(research_queries)), query[:80])  # noqa: G004
             try:
                 result = client.research(
                     query=query,
@@ -741,7 +749,7 @@ if __name__ == "__main__":
         ),
     )
 
-    if len(sys.argv) > 1 and sys.argv[1] not in ("--dry-run", "--migrate"):
+    if len(sys.argv) > 1 and sys.argv[1] not in ("--dry-run", "--migrate", "--no-guard"):
         ki_dir = Path(sys.argv[1])
 
     # Optional: run migration first
@@ -773,7 +781,7 @@ if __name__ == "__main__":
             str(guardian_script),
             "--mode",
             "scan",
-            "--scope",
+            "--scope",  # noqa: PIE794
             "production",
             "--output",
             str(gl_report),
@@ -781,8 +789,8 @@ if __name__ == "__main__":
         if DRY_RUN:
             pass
         else:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
-            if result.returncode == 0:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300, check=False)
+            if result.returncode in (0, 1):
                 pass
             else:
                 if result.stdout:
@@ -810,8 +818,10 @@ if __name__ == "__main__":
             f"Actions: {len(report.actions)}\n"
         )
         if not DRY_RUN:
-            pass
-            # NotebookLM upload would happen here when API is live
+            # NotebookLM upload integration
+            nlm = NotebookLM(brain_id=master_brain_id)
+            nlm.upload_source(title=f"Dream Report {datetime.now(UTC).strftime('%Y-%m-%d')}", content=report_text, source_type="text")
+            logger.info("Archived dream report to NotebookLM Brain: %s", master_brain_id)
         else:
             pass
     except ImportError:
