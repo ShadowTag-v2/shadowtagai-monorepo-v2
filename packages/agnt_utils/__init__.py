@@ -32,6 +32,11 @@ Batch 3 modules (8):
 Batch 4 modules (2):
     throttle:          Rate-limiting decorator with leading/trailing edge control
     debounce:          Delayed execution until activity settles
+
+Batch 5 modules (3):
+    context_visualizer: Context window analysis, token breakdown, grid visualization
+    effort:            4-tier effort system for reasoning compute control
+    cli_diagnostics:   Tree-based diagnostic output for CLI reporting
 """
 
 from packages.agnt_utils.array_utils import count, group_by, intersperse, uniq
@@ -139,6 +144,50 @@ from packages.agnt_utils.truncate import (
     wrap_text,
 )
 from packages.agnt_utils.xml_escape import escape_xml, escape_xml_attr
+
+# ── Batch 5 imports ────────────────────────────────────────────────────────────
+from packages.agnt_utils.cli_diagnostics import (
+    render_diagnostic_report,
+    render_mcp_status,
+    render_package_tree,
+    render_telemetry_health,
+    render_test_summary,
+)
+from packages.agnt_utils.context_visualizer import (
+    AUTOCOMPACT_BUFFER_TOKENS,
+    MODEL_CONTEXT_WINDOW_DEFAULT,
+    ContextCategory,
+    ContextData,
+    GridSquare,
+    MessageBreakdown,
+    analyze_context_usage,
+    approximate_message_tokens,
+    calculate_context_percentages,
+    generate_grid,
+    get_context_window_for_model,
+)
+from packages.agnt_utils.effort import (
+    EFFORT_DESCRIPTIONS,
+    EFFORT_LEVELS,
+    EFFORT_SYMBOLS,
+    EffortLevel,
+    EffortValue,
+    convert_effort_value_to_level,
+    effort_level_to_symbol,
+    get_default_effort_for_model,
+    get_displayed_effort_level,
+    get_effort_description,
+    get_effort_env_override,
+    get_effort_notification_text,
+    get_effort_suffix,
+    is_effort_level,
+    is_valid_numeric_effort,
+    model_supports_effort,
+    model_supports_max_effort,
+    parse_effort_value,
+    resolve_applied_effort,
+    to_persistable_effort,
+)
 
 __all__ = [
     # ── Original batch ────────────────────────────────────────────────
@@ -255,4 +304,43 @@ __all__ = [
     "ThrottledFunction",
     "debounce",
     "throttle",
+    # ── Batch 5: context_visualizer ────────────────────────────────────
+    "AUTOCOMPACT_BUFFER_TOKENS",
+    "MODEL_CONTEXT_WINDOW_DEFAULT",
+    "ContextCategory",
+    "ContextData",
+    "GridSquare",
+    "MessageBreakdown",
+    "analyze_context_usage",
+    "approximate_message_tokens",
+    "calculate_context_percentages",
+    "generate_grid",
+    "get_context_window_for_model",
+    # ── Batch 5: effort ───────────────────────────────────────────────
+    "EFFORT_DESCRIPTIONS",
+    "EFFORT_LEVELS",
+    "EFFORT_SYMBOLS",
+    "EffortLevel",
+    "EffortValue",
+    "convert_effort_value_to_level",
+    "effort_level_to_symbol",
+    "get_default_effort_for_model",
+    "get_displayed_effort_level",
+    "get_effort_description",
+    "get_effort_env_override",
+    "get_effort_notification_text",
+    "get_effort_suffix",
+    "is_effort_level",
+    "is_valid_numeric_effort",
+    "model_supports_effort",
+    "model_supports_max_effort",
+    "parse_effort_value",
+    "resolve_applied_effort",
+    "to_persistable_effort",
+    # ── Batch 5: cli_diagnostics ──────────────────────────────────────
+    "render_diagnostic_report",
+    "render_mcp_status",
+    "render_package_tree",
+    "render_telemetry_health",
+    "render_test_summary",
 ]

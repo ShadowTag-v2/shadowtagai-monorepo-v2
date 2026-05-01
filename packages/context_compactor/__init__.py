@@ -53,6 +53,24 @@ from context_compactor.micro_compact import (
     estimate_message_tokens,
     microcompact_messages,
 )
+from context_compactor.conversation_compact import (
+    CompactDirection,
+    ConversationCompactionResult,
+    PromptTooLongError,
+    build_post_compact_messages,
+    collect_read_tool_file_paths,
+    compact_conversation,
+    get_assistant_message_text,
+    get_messages_after_compact_boundary,
+    is_compact_boundary_message,
+    merge_hook_instructions,
+    partial_compact_conversation,
+    should_exclude_from_restore,
+    strip_images_from_messages,
+    strip_reinjected_attachments,
+    truncate_head_for_ptl_retry,
+    truncate_to_tokens,
+)
 from context_compactor.post_compact_cleanup import (
     register_cleanup_hook,
     run_post_compact_cleanup,
@@ -87,6 +105,23 @@ __all__ = [
     "microcompact_messages",
     # Grouping
     "group_messages_by_api_round",
+    # Conversation compact
+    "CompactDirection",
+    "ConversationCompactionResult",
+    "PromptTooLongError",
+    "build_post_compact_messages",
+    "collect_read_tool_file_paths",
+    "compact_conversation",
+    "get_assistant_message_text",
+    "get_messages_after_compact_boundary",
+    "is_compact_boundary_message",
+    "merge_hook_instructions",
+    "partial_compact_conversation",
+    "should_exclude_from_restore",
+    "strip_images_from_messages",
+    "strip_reinjected_attachments",
+    "truncate_head_for_ptl_retry",
+    "truncate_to_tokens",
     # Cleanup
     "register_cleanup_hook",
     "run_post_compact_cleanup",
