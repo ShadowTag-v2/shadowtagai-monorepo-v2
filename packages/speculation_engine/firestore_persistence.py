@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-"""Firestore persistence for SweepResult reports.
+"""Firestore persistence for SweepResult and PairSession reports.
 
 Schema (collection: ``sweep_results``):
     doc_id:             Auto-generated or ``{session_id}_{timestamp}``
@@ -36,12 +36,19 @@ Usage::
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 import time
+from pathlib import Path
 from typing import Any
 
 logger = logging.getLogger(__name__)
+
+# Rate limiting constants
+RATELIMIT_FILE = Path(os.environ.get("BEADS_DIR", ".beads")) / "sweep_ratelimit.json"
+MAX_SWEEPS_PER_HOUR = int(os.environ.get("MAX_SWEEPS_PER_HOUR", "4"))
+TTL_DAYS = int(os.environ.get("SWEEP_TTL_DAYS", "30"))
 
 # Collection name in Firestore
 COLLECTION = "sweep_results"
@@ -200,3 +207,201 @@ def get_sweep_by_id(doc_id: str) -> dict[str, Any] | None:
     except Exception as exc:
         logger.error("Firestore get failed: %s", exc)
         return None
+
+
+# ---------------------------------------------------------------------------
+# Rate Limiting
+# ---------------------------------------------------------------------------
+
+
+def _load_rate_state() -> dict[str, Any]:
+    """Load the rate limit state from disk."""
+    try:
+        if RATELIMIT_FILE.exists():
+            return json.loads(RATELIMIT_FILE.read_text())
+    except (json.JSONDecodeError, OSError):
+        pass
+    return {"timestamps": []}
+
+
+def _save_rate_state(state: dict[str, Any]) -> None:
+    """Persist rate limit state to disk."""
+    try:
+        RATELIMIT_FILE.parent.mkdir(parents=True, exist_ok=True)
+        RATELIMIT_FILE.write_text(json.dumps(state, default=str))
+    except OSError:
+        pass  # Fail-open
+
+
+def check_sweep_rate_limit() -> bool:
+    """Check if a new research sweep is allowed under rate limiting.
+
+    Uses a sliding window of MAX_SWEEPS_PER_HOUR (default 4).
+
+    Returns:
+        True if the sweep is allowed, False if rate-limited.
+    """
+    state = _load_rate_state()
+    now = time.time()
+    one_hour_ago = now - 3600.0
+
+    # Prune timestamps older than 1 hour
+    recent = [ts for ts in state.get("timestamps", []) if ts > one_hour_ago]
+
+    if len(recent) >= MAX_SWEEPS_PER_HOUR:
+        logger.warning(
+            "Research sweep rate-limited: %d/%d sweeps in the last hour",
+            len(recent),
+            MAX_SWEEPS_PER_HOUR,
+        )
+        return False
+
+    return True
+
+
+def record_sweep_invocation() -> None:
+    """Record that a sweep was just invoked (for rate limiting)."""
+    state = _load_rate_state()
+    now = time.time()
+    one_hour_ago = now - 3600.0
+
+    recent = [ts for ts in state.get("timestamps", []) if ts > one_hour_ago]
+    recent.append(now)
+    state["timestamps"] = recent
+    _save_rate_state(state)
+
+
+# ---------------------------------------------------------------------------
+# TTL Enforcement (30-day retention)
+# ---------------------------------------------------------------------------
+
+
+def enforce_ttl(*, ttl_days: int | None = None) -> int:
+    """Delete sweep_results documents older than TTL_DAYS.
+
+    Args:
+        ttl_days: Override the default TTL_DAYS (30).
+
+    Returns:
+        Number of documents deleted.
+    """
+    client = _get_firestore_client()
+    if client is None:
+        return 0
+
+    cutoff_days = ttl_days if ttl_days is not None else TTL_DAYS
+    cutoff_epoch = time.time() - (cutoff_days * 86400)
+
+    deleted = 0
+    try:
+        # Query documents older than the cutoff using the epoch timestamp
+        old_docs = (
+            client.collection(COLLECTION)
+            .where("created_at_epoch", "<", cutoff_epoch)
+            .limit(500)  # Batch size to avoid memory issues
+            .stream()
+        )
+
+        for doc in old_docs:
+            doc.reference.delete()
+            deleted += 1
+
+        if deleted > 0:
+            logger.info("TTL enforcement: deleted %d documents older than %d days", deleted, cutoff_days)
+    except Exception as exc:
+        logger.error("TTL enforcement failed: %s", exc)
+
+    return deleted
+
+
+# ---------------------------------------------------------------------------
+# Pair Programming Session Persistence
+# ---------------------------------------------------------------------------
+
+PAIR_SESSION_COLLECTION = "pair_sessions"
+
+
+def persist_pair_session(
+    session: Any,
+    *,
+    messages: list[dict[str, str]] | None = None,
+    status: str = "completed",
+) -> str | None:
+    """Persist a GeminiPairProgrammer PairSession to Firestore.
+
+    Args:
+        session: A ``PairSession`` from ``gemini_bridge``.
+        messages: Optional conversation messages for audit trail.
+        status: Completion status.
+
+    Returns:
+        The Firestore document ID, or None if persistence failed/disabled.
+    """
+    client = _get_firestore_client()
+    if client is None:
+        logger.info("Firestore persistence disabled — PairSession not persisted")
+        return None
+
+    doc_data = {
+        "session_id": getattr(session, "session_id", ""),
+        "model": getattr(session, "model", ""),
+        "turn_count": getattr(session, "turn_count", 0),
+        "total_tokens": getattr(session, "total_tokens", 0),
+        "duration_seconds": getattr(session, "duration_seconds", 0.0),
+        "interaction_chain": getattr(session, "interaction_chain", []),
+        "message_count": len(messages) if messages else 0,
+        "status": status,
+        "created_at_epoch": time.time(),
+        "daemon_pid": os.getpid(),
+    }
+
+    # Store message summaries (not full content, for security)
+    if messages:
+        doc_data["message_roles"] = [m.get("role", "unknown") for m in messages[:50]]
+
+    try:
+        from google.cloud import firestore as fs  # type: ignore[import-untyped]
+
+        doc_data["created_at"] = fs.SERVER_TIMESTAMP
+        _, doc_ref = client.collection(PAIR_SESSION_COLLECTION).add(doc_data)
+        doc_id = doc_ref.id
+        logger.info("PairSession persisted to Firestore: %s/%s", PAIR_SESSION_COLLECTION, doc_id)
+        return doc_id
+    except Exception as exc:
+        logger.error("PairSession persist failed: %s", exc)
+        return None
+
+
+def query_recent_sessions(
+    *,
+    limit: int = 10,
+    status: str | None = None,
+) -> list[dict[str, Any]]:
+    """Query recent pair programming sessions from Firestore.
+
+    Args:
+        limit: Maximum number of results.
+        status: Optional filter by status.
+
+    Returns:
+        List of session dicts, most recent first.
+    """
+    client = _get_firestore_client()
+    if client is None:
+        return []
+
+    try:
+        query = client.collection(PAIR_SESSION_COLLECTION)
+        if status:
+            query = query.where("status", "==", status)
+        query = query.order_by("created_at_epoch", direction="DESCENDING").limit(limit)
+
+        results: list[dict[str, Any]] = []
+        for doc in query.stream():
+            data = doc.to_dict()
+            data["doc_id"] = doc.id
+            results.append(data)
+        return results
+    except Exception as exc:
+        logger.error("Firestore session query failed: %s", exc)
+        return []
