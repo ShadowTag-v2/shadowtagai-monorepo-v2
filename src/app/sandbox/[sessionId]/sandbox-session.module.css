@@ -132,3 +132,107 @@
   color: var(--color-text-muted) !important;
   font-size: 0.75rem !important;
 }
+
+/* ── Rejected State ── */
+.rejectedCard {
+  max-width: 520px;
+  margin: 20vh auto 0;
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  text-align: center;
+  animation: slideUp var(--transition-slow) ease;
+  backdrop-filter: blur(12px);
+}
+
+.rejectedIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-danger);
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  box-shadow: 0 0 24px rgba(239, 68, 68, 0.2);
+}
+
+.rejectedTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-danger);
+  margin-bottom: var(--space-sm);
+}
+
+.rejectedMessage {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* ── WebSocket Connection Status ── */
+.wsStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: fixed;
+  top: var(--space-md);
+  right: var(--space-md);
+  z-index: 50;
+  padding: 4px 12px;
+  border-radius: var(--radius-full, 999px);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-base);
+}
+
+.wsStatusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  transition: background var(--transition-base);
+}
+
+.wsStatus[data-state='connected'] .wsStatusDot {
+  background: #34d399;
+  box-shadow: 0 0 6px rgba(52, 211, 153, 0.5);
+}
+
+.wsStatus[data-state='connecting'] .wsStatusDot {
+  background: #fbbf24;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.wsStatus[data-state='error'] .wsStatusDot {
+  background: #f87171;
+}
+
+.wsStatusText {
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
