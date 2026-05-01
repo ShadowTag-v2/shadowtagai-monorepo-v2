@@ -1,11 +1,14 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-"""Sandbox Session API — Phase 3 Milestone 3.
+"""Sandbox Session API — Phase 4 Milestone 1.
 
-FastAPI router for the sandbox session diff and commit endpoints.
-Wired into the main CounselConduit API app.
+FastAPI router for the sandbox session lifecycle endpoints.
+Now backed by FirestoreSessionStore for persistent session storage.
 
 Endpoints:
+    POST /api/sandbox/sessions         — Create a new sandbox session
+    GET  /api/sandbox/sessions         — List active sessions
+    GET  /api/sandbox/{session_id}     — Resume / hydrate an existing session
     GET  /api/sandbox/{session_id}/diffs  — Compute overlay diffs
     POST /api/sandbox/{session_id}/commit — Execute attorney decision
 
@@ -13,6 +16,7 @@ Security:
     - Every endpoint requires verified attorney JWT
     - Trust Level 0 enforced at bridge layer
     - All mutations produce immutable audit records
+    - Session persistence via Firestore with 30-day TTL
 """
 
 from __future__ import annotations
@@ -28,10 +32,15 @@ from apps.counselconduit.api.sandbox.firestore_bridge import (
     BridgeResult,
     FirestoreBridge,
 )
+from apps.counselconduit.api.sandbox.firestore_session_store import (
+    FirestoreSessionStore,
+)
 from apps.counselconduit.api.sandbox.session import (
     CommitAction,
     SandboxSession,
     SecurityError,
+    SessionConfig,
+    SessionState,
 )
 from apps.counselconduit.api.sandbox.ws_state_push import (
     manager as ws_manager,
@@ -47,7 +56,63 @@ router.include_router(ws_router)
 AttorneyDep = Annotated[dict[str, Any], Depends(get_current_attorney)]
 
 
+# ── Session Store (Phase 4: Firestore-backed with in-memory fallback) ──
+#
+# The store is the single source of truth for session CRUD.
+# _active_sessions kept as a compatibility shim for existing tests.
+_active_sessions: dict[str, SandboxSession] = {}
+_store = FirestoreSessionStore()
+
+
+async def _get_session(session_id: str) -> SandboxSession:
+    """Retrieve a sandbox session from Firestore, falling back to memory.
+
+    Phase 4 migration: prefers Firestore, falls back to in-memory dict
+    for backward compatibility during transition.
+    """
+    # Phase 4: Try Firestore first
+    try:
+        session = await _store.get_session(session_id)
+        if session:
+            return session
+    except Exception:
+        logger.debug("Firestore lookup failed, trying in-memory: %s", session_id[:8])
+
+    # Fallback: in-memory (Phase 3 compat + test fixtures)
+    session = _active_sessions.get(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail=f"Session {session_id} not found")
+    return session
+
+
 # ── Request / Response Models ──────────────────────────────────────────
+
+
+class CreateSessionRequest(BaseModel):
+    """Request to create a new sandbox session."""
+
+    matter_id: str = Field(..., description="Matter ID for scoping")
+    ttl_seconds: int = Field(1800, description="Session TTL in seconds (default: 30min)")
+    max_overlay_files: int = Field(50, description="Maximum overlay files")
+
+
+class CreateSessionResponse(BaseModel):
+    """Response after creating a new sandbox session."""
+
+    session_id: str
+    state: str
+    matter_id: str
+    created_at: float
+
+
+class SessionSummary(BaseModel):
+    """Summary of a sandbox session for listing."""
+
+    session_id: str
+    state: str
+    matter_id: str
+    attorney_uid: str = ""
+    created_at: float = 0.0
 
 
 class CommitRequest(BaseModel):
@@ -79,20 +144,113 @@ class CommitResponse(BaseModel):
     duration_ms: float = 0.0
 
 
-# ── Session Store (in-memory for Phase 3 — Firestore-backed in Phase 4) ──
-
-_active_sessions: dict[str, SandboxSession] = {}
+# ── Session Lifecycle Endpoints (Phase 4 NEW) ─────────────────────────
 
 
-def _get_session(session_id: str) -> SandboxSession:
-    """Retrieve an active sandbox session or raise 404."""
-    session = _active_sessions.get(session_id)
-    if not session:
-        raise HTTPException(status_code=404, detail=f"Session {session_id} not found")
-    return session
+@router.post("/sessions", response_model=CreateSessionResponse)
+async def create_session(
+    body: CreateSessionRequest,
+    attorney: AttorneyDep = None,  # type: ignore[assignment]
+) -> CreateSessionResponse:
+    """Create a new sandbox session and persist to Firestore.
+
+    The session starts in CREATED state and can be resumed later.
+    """
+    attorney_uid = attorney.get("uid", "")
+    if not attorney_uid:
+        raise HTTPException(status_code=401, detail="Attorney UID required")
+
+    config = SessionConfig(
+        matter_id=body.matter_id,
+        attorney_uid=attorney_uid,
+        ttl_seconds=body.ttl_seconds,
+        max_overlay_files=body.max_overlay_files,
+    )
+    session = SandboxSession(config=config)
+
+    # Persist to Firestore
+    try:
+        await _store.create_session(session)
+    except SecurityError as e:
+        raise HTTPException(status_code=403, detail=str(e)) from e
+    except Exception as e:
+        logger.exception("Failed to create session: %s", e)
+        raise HTTPException(status_code=500, detail="Session creation failed") from e
+
+    # Also keep in memory for fast access within this process
+    _active_sessions[session.session_id] = session
+
+    logger.info(
+        "Session created: %s (matter=%s, attorney=%s)",
+        session.session_id[:8],
+        body.matter_id[:8],
+        attorney_uid[:8],
+    )
+
+    return CreateSessionResponse(
+        session_id=session.session_id,
+        state=session.state.value,
+        matter_id=body.matter_id,
+        created_at=session.created_at,
+    )
 
 
-# ── Endpoints ──────────────────────────────────────────────────────────
+@router.get("/sessions", response_model=list[SessionSummary])
+async def list_sessions(
+    matter: str | None = Query(None, description="Filter by matter ID"),
+    attorney: AttorneyDep = None,  # type: ignore[assignment]
+) -> list[SessionSummary]:
+    """List active sandbox sessions for the current attorney."""
+    attorney_uid = attorney.get("uid", "")
+
+    try:
+        sessions = await _store.list_active_sessions(
+            attorney_uid=attorney_uid or None,
+            matter_id=matter,
+        )
+        return [
+            SessionSummary(
+                session_id=s.get("session_id", ""),
+                state=s.get("state", ""),
+                matter_id=s.get("matter_id", ""),
+                attorney_uid=s.get("attorney_uid", ""),
+                created_at=s.get("created_at", 0.0),
+            )
+            for s in sessions
+        ]
+    except Exception as e:
+        logger.exception("Failed to list sessions: %s", e)
+        raise HTTPException(status_code=500, detail="Failed to list sessions") from e
+
+
+@router.get("/{session_id}", response_model=CreateSessionResponse)
+async def resume_session(
+    session_id: str,
+    attorney: AttorneyDep = None,  # type: ignore[assignment]
+) -> CreateSessionResponse:
+    """Resume / hydrate an existing sandbox session from Firestore.
+
+    Returns the session metadata for the frontend to restore state.
+    """
+    session = await _get_session(session_id)
+
+    # Verify attorney has access to this session
+    attorney_uid = attorney.get("uid", "")
+    if session.config.attorney_uid and session.config.attorney_uid != attorney_uid:
+        raise HTTPException(
+            status_code=403,
+            detail="Not authorized to access this session",
+        )
+
+    return CreateSessionResponse(
+        session_id=session.session_id,
+        state=session.state.value,
+        matter_id=session.config.matter_id,
+        created_at=session.created_at,
+    )
+
+
+# ── Existing Endpoints (Phase 3 — updated for Phase 4) ────────────────
 
 
 @router.get("/{session_id}/diffs", response_model=DiffResponse)
@@ -107,7 +265,7 @@ async def get_session_diffs(
     vs the original document state. Results are not cached — each
     request recomputes to ensure freshness.
     """
-    session = _get_session(session_id)
+    session = await _get_session(session_id)
 
     # Verify attorney has access to this matter
     if session.config.matter_id != matter:
@@ -150,8 +308,9 @@ async def commit_session(
     """Execute the attorney's accept/reject/partial decision.
 
     Produces an immutable audit record for every call.
+    Phase 4: Also records decision in Firestore session store.
     """
-    session = _get_session(session_id)
+    session = await _get_session(session_id)
 
     # Map string action to enum
     try:
@@ -177,6 +336,34 @@ async def commit_session(
             selected_files=body.selected_files,
             rejection_reason=body.rejection_reason,
         )
+
+        # Phase 4: Record decision in Firestore session store
+        try:
+            await _store.record_decision(
+                session_id=session_id,
+                action=action,
+                attorney_uid=attorney_uid,
+                firm_id=firm_id,
+                selected_files=body.selected_files,
+                rejection_reason=body.rejection_reason,
+                result_summary=result.to_dict(),
+            )
+        except Exception:
+            logger.warning("Failed to record decision in session store (non-fatal)")
+
+        # Phase 4: Update session state in Firestore
+        new_state = SessionState.COMMITTED if action != CommitAction.REJECT else SessionState.REJECTED
+        try:
+            await _store.update_state(
+                session_id,
+                new_state,
+                extra_fields={
+                    "committed_files": result.committed_files,
+                    "rejection_reason": body.rejection_reason if action == CommitAction.REJECT else "",
+                },
+            )
+        except Exception:
+            logger.warning("Failed to update session state in store (non-fatal)")
 
         # Push real-time state notification to connected WebSocket clients
         await ws_manager.notify_state_change(
