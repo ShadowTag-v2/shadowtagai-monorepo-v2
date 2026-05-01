@@ -57,6 +57,23 @@ from speculation_engine.telemetry import (
     log_suggestion_event,
     read_telemetry_events,
 )
+from speculation_engine.streaming_executor import (
+    AbortReason,
+    MessageUpdate,
+    ProgressMessage,
+    StreamingToolExecutor,
+    ToolResult,
+    ToolStatus,
+    TrackedTool,
+)
+from speculation_engine.cache_break_detection import (
+    CACHE_TTL_1HOUR_S,
+    CACHE_TTL_5MIN_S,
+    CacheBreakDetector,
+    PendingChanges,
+    PromptStateSnapshot,
+    TrackedState,
+)
 
 __all__ = [
     # Engine
@@ -88,6 +105,21 @@ __all__ = [
     "SpeculativeResearchOrchestrator",
     "SpeculativeResearchConfig",
     "SpeculativePhaseResult",
+    # Streaming Executor
+    "StreamingToolExecutor",
+    "ToolResult",
+    "ToolStatus",
+    "AbortReason",
+    "ProgressMessage",
+    "MessageUpdate",
+    "TrackedTool",
+    # Cache Break Detection
+    "CacheBreakDetector",
+    "PromptStateSnapshot",
+    "PendingChanges",
+    "TrackedState",
+    "CACHE_TTL_5MIN_S",
+    "CACHE_TTL_1HOUR_S",
     # Telemetry
     "log_suggestion_event",
     "log_speculation_event",
