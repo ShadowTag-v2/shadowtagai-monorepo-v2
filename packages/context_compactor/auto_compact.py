@@ -36,6 +36,7 @@ from context_compactor.layers import (
     CompactionResult,
 )
 from context_compactor.post_compact_cleanup import run_post_compact_cleanup
+from context_compactor.session_memory_compact import try_session_memory_compact
 from context_compactor.token_estimator import rough_token_estimate
 
 logger = logging.getLogger(__name__)
@@ -334,9 +335,38 @@ class AutoCompactMiddleware:
 
         try:
             # Phase 1: Try session memory compaction (lightweight)
-            # This is the experimental SM-compact path from upstream
-            # Currently delegates to the pipeline since we don't have
-            # the session memory extraction infrastructure yet.
+            # This avoids the expensive L1→L4 pipeline when session memory
+            # already contains a good summary of prior context.
+            sm_result = try_session_memory_compact(
+                messages,
+                auto_compact_threshold=get_auto_compact_threshold(max_context_tokens),
+            )
+            if sm_result is not None and sm_result.success:
+                run_post_compact_cleanup(query_source)
+                self._tracker.reset_on_success()
+
+                logger.info(
+                    "SM compact succeeded: %d → %d tokens (dropped %d messages)",
+                    sm_result.tokens_before,
+                    sm_result.tokens_after,
+                    sm_result.messages_dropped,
+                )
+
+                # Wrap in CompactionResult for API consistency
+                return AutoCompactResult(
+                    was_compacted=True,
+                    compaction_result=CompactionResult(
+                        tokens_before=sm_result.tokens_before,
+                        tokens_after=sm_result.tokens_after,
+                        savings_pct=round(
+                            (1 - sm_result.tokens_after / max(sm_result.tokens_before, 1)) * 100,
+                            1,
+                        ),
+                        layer_applied="session_memory",
+                    ),
+                    consecutive_failures=0,
+                    method="session_memory",
+                )
 
             # Phase 2: Full pipeline compaction (L1→L4)
             result = self._compactor.run(
