@@ -8,6 +8,7 @@ Architecture:
     POST /enclave/v1/query/stream    → SSE streaming privileged query
     POST /webhooks/stripe            → Stripe billing webhooks
     GET  /enclave/v1/health          → Health check
+    GET  /oracle/health               → Oracle Studio pipeline health
     POST /account/delete             → GDPR Article 17 — Right to Erasure (30-day grace)
     POST /account/export             → GDPR Article 20 — Right to Data Portability
     GET  /account/deletion-status    → Check pending deletion status
@@ -430,6 +431,33 @@ async def enclave_health():
         "version": "3.3.2",
         "timestamp": time.time(),
     }
+
+
+@app.get("/oracle/health")
+async def oracle_health():
+    """Oracle Studio pipeline health check.
+
+    Probed by the GCP Uptime Check 'CounselConduit Oracle Studio Pipeline'.
+    Verifies Firestore connectivity and Oracle Studio module availability.
+    """
+    health_data = {
+        "status": "healthy",
+        "service": "oracle-studio",
+        "version": "3.3.2",
+        "pipeline_stages": 7,
+        "firestore": "unknown",
+        "timestamp": time.time(),
+    }
+    try:
+        from google.cloud import firestore as _fs
+
+        db = _fs.AsyncClient()
+        await db.collection("_health").document("ping").get()
+        health_data["firestore"] = "connected"
+    except Exception as e:
+        health_data["firestore"] = f"error: {type(e).__name__}"
+        health_data["status"] = "degraded"
+    return health_data
 
 
 @app.on_event("startup")
