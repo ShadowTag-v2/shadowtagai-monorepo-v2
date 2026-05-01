@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": true,
   "python.languageServer": "Pylance",
-  "python.defaultInterpreterPath": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
   "git.decorations.enabled": false,
   "cSpell.ignorePaths": [
     "**/dist-runtime/**",
@@ -9,13 +9,39 @@
     "**/vendor/a2ui/**",
     "**/payload-starter/**"
   ],
+  "dart.analysisExcludedFolders": [
+    "tools/dio",
+    "tools/google-cloud-dart",
+    "external_repos"
+  ],
   "files.watcherExclude": {
+    "**/external_repos/**": true,
+    "**/tools/dio/**": true,
+    "**/tools/google-cloud-dart/**": true,
+    "**/.next/**": true,
+    "**/.turbo/**": true,
     "**/.git/objects/**": true,
     "**/node_modules/**": true,
     "**/dist-runtime/**": true,
     "**/.pixi/**": true,
     "**/.venv/**": true
   },
+  "search.exclude": {
+    "**/external_repos/**": true,
+    "**/tools/dio/**": true,
+    "**/tools/google-cloud-dart/**": true,
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/.turbo/**": true
+  },
+  "todo-tree.filtering.excludeGlobs": [
+    "**/external_repos/**",
+    "**/node_modules/**",
+    "**/.next/**",
+    "**/.turbo/**",
+    "**/dist/**",
+    "**/build/**"
+  ],
   "extensions.experimental.affinity": {
     "google.geminicodeassist": 1,
     "googlecloudtools.cloudcode": 1,

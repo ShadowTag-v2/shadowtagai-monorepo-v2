@@ -1,13 +1,16 @@
 # GUARDRAIL Annotation Audit Report
 
-**Generated:** 2026-04-30T22:12:50Z
+**Generated:** 2026-05-01T00:00:25Z
 **Total moderate+ risk skills:** 12
-**Annotated:** 12
-**Missing annotations:** 0
+**Annotated:** 10
+**Missing annotations:** 2
 
 ## Status
 
-✅ All moderate+ risk skills have GUARDRAIL annotations.
+⚠️ The following skills are missing GUARDRAIL annotations:
+
+- `high-risk-command-scanner`
+- `tacsop-operational-patterns`
 
 ## Audited Skills
 
@@ -15,9 +18,9 @@
 |-------|--------|
 | `repo-mass-reduction` | ✅ Annotated |
 | `yolo-mode-operator` | ✅ Annotated |
-| `high-risk-command-scanner` | ✅ Annotated |
+| `high-risk-command-scanner` | ❌ Missing |
 | `control-plane-doctrine` | ✅ Annotated |
-| `tacsop-operational-patterns` | ✅ Annotated |
+| `tacsop-operational-patterns` | ❌ Missing |
 | `daemon-fleet-manager` | ✅ Annotated |
 | `temporal-rollback-doctrine` | ✅ Annotated |
 | `cor-cursor-vdi` | ✅ Annotated |
