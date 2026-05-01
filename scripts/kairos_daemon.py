@@ -27,6 +27,7 @@ import signal
 import subprocess
 import sys
 import time
+from typing import Any
 
 logging.basicConfig(
     level=logging.INFO,
@@ -582,6 +583,143 @@ def process_webhook_events() -> bool:
     return True
 
 
+RESEARCH_SWEEP_INTERVAL = 21600  # 6 hours
+
+
+# Predefined research topics for autonomous sweeps
+_RESEARCH_TOPICS = [
+    "Latest Python 3.14 features and migration patterns",
+    "Gemini API SDK updates and breaking changes",
+    "Firebase Hosting CDN performance optimization",
+    "Cloud Run cold start reduction strategies",
+    "OpenTelemetry Python SDK best practices 2026",
+]
+
+
+def run_research_sweep() -> bool:
+    """Execute an autonomous GeminiResearchSweep via the orchestrator.
+
+    Uses the SpeculativeResearchOrchestrator to run a short
+    background research sweep on the next topic in the rotation.
+    Results are logged to .beads/research_sweep.jsonl.
+    """
+    try:
+        from speculation_engine.orchestrator import (
+            SpeculativeResearchOrchestrator,
+            SpeculativeResearchConfig,
+        )
+    except ImportError:
+        logger.warning("speculation_engine not importable, skipping research sweep")
+        return False
+
+    # Rotate through topics
+    topic_index_file = BEADS_DIR / "research_topic_index.txt"
+    BEADS_DIR.mkdir(parents=True, exist_ok=True)
+    try:
+        idx = int(topic_index_file.read_text().strip()) if topic_index_file.exists() else 0
+    except ValueError, OSError:
+        idx = 0
+    topic = _RESEARCH_TOPICS[idx % len(_RESEARCH_TOPICS)]
+    topic_index_file.write_text(str((idx + 1) % len(_RESEARCH_TOPICS)))
+
+    logger.info("Research sweep starting: '%s'", topic)
+    start = time.time()
+
+    try:
+        orchestrator = SpeculativeResearchOrchestrator(
+            workspace=str(REPO_ROOT),
+            config=SpeculativeResearchConfig(
+                speculate_during_research=False,
+                speculate_during_synthesis=False,
+                use_cow_overlay=False,
+            ),
+        )
+        sweep = orchestrator.research_sweep
+        result = sweep.run(topic, timeout=600)  # 10 min cap for KAIROS
+
+        duration = time.time() - start
+        # Log the result
+        log_path = BEADS_DIR / "research_sweep.jsonl"
+        entry = {
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),  # noqa: UP017
+            "topic": topic,
+            "duration_seconds": round(duration, 1),
+            "report_length": len(result.report_text),
+            "agent": result.agent,
+        }
+        with open(log_path, "a") as f:
+            f.write(json.dumps(entry) + "\n")
+
+        logger.info(
+            "Research sweep completed: %s (%.1fs, %d chars)",
+            topic,
+            duration,
+            len(result.report_text),
+        )
+        return True
+    except Exception as e:
+        logger.error("Research sweep failed: %s", e)
+        return False
+
+
+def _probe_bridge_health() -> dict[str, Any]:
+    """Probe the speculation engine bridge for liveness.
+
+    Returns a dict with import health, orchestrator init, and sweep readiness.
+    Used by ``--bridge-health`` CLI flag and ``context_status.py --bridge-health``.
+    """
+    result: dict[str, Any] = {
+        "healthy": False,
+        "importable": False,
+        "orchestrator_init": False,
+        "sweep_ready": False,
+        "error": None,
+    }
+
+    # 1) Import check
+    try:
+        from speculation_engine.orchestrator import (  # noqa: F401
+            SpeculativeResearchOrchestrator,
+            SpeculativeResearchConfig,
+        )
+        from speculation_engine.gemini_bridge import (  # noqa: F401
+            GeminiResearchSweep,
+            GeminiPairProgrammer,
+            PipelineMode,
+        )
+
+        result["importable"] = True
+    except ImportError as e:
+        result["error"] = f"import: {e}"
+        return result
+
+    # 2) Orchestrator init
+    try:
+        orch = SpeculativeResearchOrchestrator(
+            workspace=str(REPO_ROOT),
+            config=SpeculativeResearchConfig(
+                speculate_during_research=False,
+                speculate_during_synthesis=False,
+                use_cow_overlay=False,
+            ),
+        )
+        result["orchestrator_init"] = True
+    except Exception as e:
+        result["error"] = f"orchestrator: {e}"
+        return result
+
+    # 3) Sweep accessor
+    try:
+        _ = orch.research_sweep  # Lazy-init the GeminiResearchSweep
+        result["sweep_ready"] = True
+    except Exception as e:
+        result["error"] = f"sweep: {e}"
+        return result
+
+    result["healthy"] = True
+    return result
+
+
 def write_heartbeat(status: dict) -> None:
     """Write heartbeat file for monitoring.
 
@@ -645,6 +783,7 @@ def main_loop(once: bool = False) -> None:
     last_webhook_check = 0.0
     last_prompt_validation = 0.0
     last_token_budget = 0.0
+    last_research_sweep = 0.0
 
     cycle = 0
     while _running:
@@ -732,6 +871,14 @@ def main_loop(once: bool = False) -> None:
             last_token_budget = now
             status["webhook_events"] = "ran"
 
+        # Research sweep (every 6 hours, off-peak 1-6 AM)
+        if now - last_research_sweep >= _jittered(RESEARCH_SWEEP_INTERVAL) and 1 <= hour <= 6:
+            if run_research_sweep():
+                status["research_sweep"] = "completed"
+            else:
+                status["research_sweep"] = "skipped_or_failed"
+            last_research_sweep = now
+
         write_heartbeat(status)
 
         if once:
@@ -759,7 +906,19 @@ def main() -> None:
         default=None,
         help="Run a specific dream tier immediately and exit",
     )
+    parser.add_argument(
+        "--bridge-health",
+        action="store_true",
+        help="Probe speculation engine bridge health and exit",
+    )
     args = parser.parse_args()
+
+    # Bridge health probe — quick liveness check and exit
+    if args.bridge_health:
+        logger.info("Bridge health probe")
+        status = _probe_bridge_health()
+        print(json.dumps(status, indent=2))
+        sys.exit(0 if status.get("healthy") else 1)
 
     # Manual tier invocation — run the specified tier and exit
     if args.tier:
