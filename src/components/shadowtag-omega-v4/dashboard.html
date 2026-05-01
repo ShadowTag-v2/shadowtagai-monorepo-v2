@@ -60,45 +60,49 @@ tr:hover td{background:rgba(108,92,231,.05)}
 <body>
 <div class="dashboard">
   <header>
-    <h1>⚡ Speculation Engine Telemetry</h1>
+    <nav aria-label="Dashboard navigation">
+      <h1>⚡ Speculation Engine Telemetry</h1>
+    </nav>
     <div class="status-pill"><span class="status-dot"></span>Live — Local Beads</div>
   </header>
 
-  <div class="kpi-grid" id="kpis"></div>
+  <main id="dashboard-main">
+    <div class="kpi-grid" id="kpis"></div>
 
-  <div class="controls">
-    <button class="btn active" onclick="setFilter('all')">All</button>
-    <button class="btn" onclick="setFilter('research_sweep')">Sweeps</button>
-    <button class="btn" onclick="setFilter('pair_programming')">Pair Sessions</button>
-    <button class="btn" onclick="loadData()">↻ Refresh</button>
-  </div>
-
-  <div class="grid-2">
-    <div class="section">
-      <div class="section-title">Duration Distribution (last 20)</div>
-      <div class="chart-container" id="durationChart"><span class="chart-label">Duration (s)</span></div>
+    <div class="controls">
+      <button class="btn active" onclick="setFilter('all')">All</button>
+      <button class="btn" onclick="setFilter('research_sweep')">Sweeps</button>
+      <button class="btn" onclick="setFilter('pair_programming')">Pair Sessions</button>
+      <button class="btn" onclick="loadData()">↻ Refresh</button>
     </div>
-    <div class="section">
-      <div class="section-title">Report Size Distribution (last 20)</div>
-      <div class="chart-container" id="sizeChart"><span class="chart-label">Chars</span></div>
+
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">Duration Distribution (last 20)</div>
+        <div class="chart-container" id="durationChart"><span class="chart-label">Duration (s)</span></div>
+      </div>
+      <div class="section">
+        <div class="section-title">Report Size Distribution (last 20)</div>
+        <div class="chart-container" id="sizeChart"><span class="chart-label">Chars</span></div>
+      </div>
     </div>
-  </div>
 
-  <div class="section">
-    <div class="section-title">Recent Research Sweeps</div>
-    <table>
-      <thead><tr><th>Time</th><th>Query</th><th>Mode</th><th>Duration</th><th>Report</th><th>Status</th></tr></thead>
-      <tbody id="sweepTable"></tbody>
-    </table>
-  </div>
+    <div class="section">
+      <div class="section-title">Recent Research Sweeps</div>
+      <table>
+        <thead><tr><th>Time</th><th>Query</th><th>Mode</th><th>Duration</th><th>Report</th><th>Status</th></tr></thead>
+        <tbody id="sweepTable"></tbody>
+      </table>
+    </div>
 
-  <div class="section">
-    <div class="section-title">Bridge Telemetry Events</div>
-    <table>
-      <thead><tr><th>Time</th><th>Event</th><th>Duration</th><th>Details</th></tr></thead>
-      <tbody id="telemetryTable"></tbody>
-    </table>
-  </div>
+    <div class="section">
+      <div class="section-title">Bridge Telemetry Events</div>
+      <table>
+        <thead><tr><th>Time</th><th>Event</th><th>Duration</th><th>Details</th></tr></thead>
+        <tbody id="telemetryTable"></tbody>
+      </table>
+    </div>
+  </main>
 </div>
 
 <script>
