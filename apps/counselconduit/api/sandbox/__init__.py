@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-"""CounselConduit Sandbox Session API — Phase 4.
+"""CounselConduit Sandbox Session API — Phase 4 M3.
 
 Provides isolated CoW overlay sessions for attorney review of AI-generated
 document edits before committing to production Firestore.
@@ -33,6 +33,7 @@ from apps.counselconduit.api.sandbox.firestore_session_store import (
     FirestoreSessionStore,
 )
 from apps.counselconduit.api.sandbox.session import (
+    AbstractSessionStore,
     CommitAction,
     SandboxSession,
     SecurityError,
@@ -41,6 +42,7 @@ from apps.counselconduit.api.sandbox.session import (
 )
 
 __all__ = [
+    "AbstractSessionStore",
     "CommitAction",
     "FirestoreSessionStore",
     "SandboxSession",

@@ -420,6 +420,10 @@ external_repos/ai-website-cloner/
 skills//
 pickle-rick-extension
 
+# Daemon heartbeat files (KAIROS, pipeline metrics — per-session state)
+.beads/kairos_heartbeat.json
+vault/monitor/pipeline_metrics.json
+
 # Scratch/temp files
 STEP_BY_STEP_GUIDE.md
 install_ext.py

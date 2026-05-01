@@ -21,7 +21,7 @@ import time
 import uuid
 from dataclasses import dataclass, field
 from enum import StrEnum, auto
-from typing import Any
+from typing import Any, Protocol, runtime_checkable
 
 
 class SessionState(StrEnum):
@@ -202,3 +202,79 @@ class SandboxSession:
 
 class SecurityError(Exception):
     """Raised when sandbox security invariants are violated."""
+
+
+@runtime_checkable
+class AbstractSessionStore(Protocol):
+    """Protocol defining the session store interface.
+
+    Any session store (Firestore, Redis, in-memory for tests) must
+    implement these methods. The API layer depends on this protocol,
+    not on concrete implementations.
+
+    Phase 4 M3: Extracted to formalize the contract and enable
+    removal of the legacy _active_sessions in-memory fallback.
+    """
+
+    async def create_session(self, session: SandboxSession) -> str:
+        """Persist a new sandbox session. Returns session_id."""
+        ...
+
+    async def get_session(self, session_id: str) -> SandboxSession | None:
+        """Load a session by ID. Returns None if not found or expired."""
+        ...
+
+    async def update_state(
+        self,
+        session_id: str,
+        new_state: SessionState,
+        *,
+        extra_fields: dict[str, Any] | None = None,
+    ) -> None:
+        """Update session state."""
+        ...
+
+    async def update_overlay(
+        self,
+        session_id: str,
+        overlay_files: dict[str, str],
+        diff_summary: list[dict[str, Any]],
+    ) -> None:
+        """Update overlay files and transition to REVIEWING."""
+        ...
+
+    async def record_decision(
+        self,
+        session_id: str,
+        *,
+        action: CommitAction,
+        attorney_uid: str,
+        firm_id: str,
+        selected_files: list[str] | None = None,
+        rejection_reason: str = "",
+        result_summary: dict[str, Any] | None = None,
+    ) -> str:
+        """Record an immutable decision. Returns decision ID."""
+        ...
+
+    async def get_decisions(self, session_id: str) -> list[dict[str, Any]]:
+        """Retrieve all decisions for a session."""
+        ...
+
+    async def expire_session(self, session_id: str) -> None:
+        """Mark a session as expired (soft delete)."""
+        ...
+
+    async def session_exists(self, session_id: str) -> bool:
+        """Check if a session document exists."""
+        ...
+
+    async def list_active_sessions(
+        self,
+        attorney_uid: str | None = None,
+        matter_id: str | None = None,
+        *,
+        limit: int = 50,
+    ) -> list[dict[str, Any]]:
+        """List active (non-terminal) sessions."""
+        ...
