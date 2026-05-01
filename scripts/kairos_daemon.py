@@ -617,7 +617,7 @@ def run_research_sweep() -> bool:
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
     try:
         idx = int(topic_index_file.read_text().strip()) if topic_index_file.exists() else 0
-    except ValueError, OSError:
+    except (ValueError, OSError):
         idx = 0
     topic = _RESEARCH_TOPICS[idx % len(_RESEARCH_TOPICS)]
     topic_index_file.write_text(str((idx + 1) % len(_RESEARCH_TOPICS)))
@@ -638,7 +638,7 @@ def run_research_sweep() -> bool:
         result = sweep.run(topic, timeout=600)  # 10 min cap for KAIROS
 
         duration = time.time() - start
-        # Log the result
+        # Log the result to .beads/ evidence trail
         log_path = BEADS_DIR / "research_sweep.jsonl"
         entry = {
             "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),  # noqa: UP017
@@ -649,6 +649,21 @@ def run_research_sweep() -> bool:
         }
         with open(log_path, "a") as f:
             f.write(json.dumps(entry) + "\n")
+
+        # Persist to Firestore (fail-open)
+        try:
+            from speculation_engine.firestore_persistence import persist_sweep_result
+
+            doc_id = persist_sweep_result(
+                result,
+                session_id=f"kairos-{os.getpid()}-{int(start)}",
+                pipeline_mode="research_sweep",
+                status="completed",
+            )
+            if doc_id:
+                logger.info("SweepResult persisted to Firestore: %s", doc_id)
+        except Exception as fs_err:
+            logger.debug("Firestore persistence skipped: %s", fs_err)
 
         logger.info(
             "Research sweep completed: %s (%.1fs, %d chars)",
