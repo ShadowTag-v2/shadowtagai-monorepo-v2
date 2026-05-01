@@ -1,9 +1,9 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-"""Sandbox Session API — Phase 4 Milestone 1.
+"""Sandbox Session API — Phase 4 Milestone 3.
 
 FastAPI router for the sandbox session lifecycle endpoints.
-Now backed by FirestoreSessionStore for persistent session storage.
+FirestoreSessionStore is the single source of truth (no in-memory fallback).
 
 Endpoints:
     POST /api/sandbox/sessions         — Create a new sandbox session
@@ -36,6 +36,7 @@ from apps.counselconduit.api.sandbox.firestore_session_store import (
     FirestoreSessionStore,
 )
 from apps.counselconduit.api.sandbox.session import (
+    AbstractSessionStore,
     CommitAction,
     SandboxSession,
     SecurityError,
@@ -56,33 +57,28 @@ router.include_router(ws_router)
 AttorneyDep = Annotated[dict[str, Any], Depends(get_current_attorney)]
 
 
-# ── Session Store (Phase 4: Firestore-backed with in-memory fallback) ──
+# ── Session Store (Phase 4 M3: Firestore-only, no in-memory fallback) ──
 #
-# The store is the single source of truth for session CRUD.
-# _active_sessions kept as a compatibility shim for existing tests.
-_active_sessions: dict[str, SandboxSession] = {}
-_store = FirestoreSessionStore()
+# The store is the single source of truth for all session CRUD.
+# AbstractSessionStore protocol enables DI for testing.
+_store: AbstractSessionStore = FirestoreSessionStore()
 
 
 async def _get_session(session_id: str) -> SandboxSession:
-    """Retrieve a sandbox session from Firestore, falling back to memory.
+    """Retrieve a sandbox session from Firestore.
 
-    Phase 4 migration: prefers Firestore, falls back to in-memory dict
-    for backward compatibility during transition.
+    Phase 4 M3: Firestore is the sole source of truth.
+    No in-memory fallback — sessions persist across processes.
     """
-    # Phase 4: Try Firestore first
     try:
         session = await _store.get_session(session_id)
         if session:
             return session
     except Exception:
-        logger.debug("Firestore lookup failed, trying in-memory: %s", session_id[:8])
+        logger.exception("Firestore lookup failed for session: %s", session_id[:8])
+        raise HTTPException(status_code=503, detail="Session store unavailable") from None
 
-    # Fallback: in-memory (Phase 3 compat + test fixtures)
-    session = _active_sessions.get(session_id)
-    if not session:
-        raise HTTPException(status_code=404, detail=f"Session {session_id} not found")
-    return session
+    raise HTTPException(status_code=404, detail=f"Session {session_id} not found")
 
 
 # ── Request / Response Models ──────────────────────────────────────────
@@ -168,7 +164,7 @@ async def create_session(
     )
     session = SandboxSession(config=config)
 
-    # Persist to Firestore
+    # Persist to Firestore (single source of truth — no in-memory copy)
     try:
         await _store.create_session(session)
     except SecurityError as e:
@@ -176,9 +172,6 @@ async def create_session(
     except Exception as e:
         logger.exception("Failed to create session: %s", e)
         raise HTTPException(status_code=500, detail="Session creation failed") from e
-
-    # Also keep in memory for fast access within this process
-    _active_sessions[session.session_id] = session
 
     logger.info(
         "Session created: %s (matter=%s, attorney=%s)",
