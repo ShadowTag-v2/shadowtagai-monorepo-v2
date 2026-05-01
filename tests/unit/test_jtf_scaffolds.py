@@ -8,18 +8,39 @@ Tests cover:
 - J-6 augmented validation results
 """
 
+import importlib
 import sys
 import os
 
-# Ensure repo root is on path for direct src.headquarters imports
-_repo_root = os.path.join(os.path.dirname(__file__), "..", "..")
+# Ensure repo root is on path for direct imports
+_repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 if _repo_root not in sys.path:
-    sys.path.insert(0, os.path.abspath(_repo_root))
+    sys.path.insert(0, _repo_root)
 
 import pytest
 
-from src.headquarters.jtf_staff_topology import JStaffDesignation, JTFHeadquarters
-from src.headquarters.j6_judge6_bridge import J6Judge6Bridge
+# Use importlib to handle the non-standard module name containing underscores
+# that conflicts with the TypeScript 'src' package
+_hq_path = os.path.join(_repo_root, "src", "headquarters")
+_topo_spec = importlib.util.spec_from_file_location(
+    "jtf_staff_topology",
+    os.path.join(_hq_path, "jtf_staff_topology.py"),
+)
+_topo_mod = importlib.util.module_from_spec(_topo_spec)
+_topo_spec.loader.exec_module(_topo_mod)
+JStaffDesignation = _topo_mod.JStaffDesignation
+JTFHeadquarters = _topo_mod.JTFHeadquarters
+
+# Patch the module into sys.modules so the bridge can import it
+sys.modules["src.headquarters.jtf_staff_topology"] = _topo_mod
+
+_bridge_spec = importlib.util.spec_from_file_location(
+    "j6_bridge",
+    os.path.join(_hq_path, "j6_Cor_Claude_Code_6_bridge.py"),
+)
+_bridge_mod = importlib.util.module_from_spec(_bridge_spec)
+_bridge_spec.loader.exec_module(_bridge_mod)
+J6Bridge = _bridge_mod.J6Cor_Claude_Code_6Bridge
 
 
 # ============================================================================
@@ -34,7 +55,7 @@ class TestJStaffDesignation:
         """Frozen dataclass prevents mutation."""
         d = JStaffDesignation("J-1", "Vault", "Custodian")
         with pytest.raises(AttributeError):
-            d.j_code = "J-99"
+            d.j_code = "J-99"  # type: ignore[misc]
 
     def test_designation_fields(self):
         """All three fields are accessible."""
@@ -113,19 +134,19 @@ class TestJ6Judge6Bridge:
 
     def test_bridge_init(self):
         """Bridge initializes with correct J-6 designation."""
-        bridge = J6Judge6Bridge()
+        bridge = J6Bridge()
         assert bridge.authority_code == "J-6"
         assert bridge.designation.agent_role == "Judge 6.1"
 
     def test_designation_property(self):
         """Designation property returns JStaffDesignation."""
-        bridge = J6Judge6Bridge()
+        bridge = J6Bridge()
         assert isinstance(bridge.designation, JStaffDesignation)
 
     @pytest.mark.asyncio
     async def test_authorize_validation(self):
         """Authorization pre-flight grants access."""
-        bridge = J6Judge6Bridge()
+        bridge = J6Bridge()
         auth = await bridge.authorize_validation({"text": "test request"}, request_id="test_001")
         assert auth["authorized"] is True
         assert auth["authority"] == "J-6"
@@ -136,7 +157,7 @@ class TestJ6Judge6Bridge:
     @pytest.mark.asyncio
     async def test_authorize_includes_doctrine(self):
         """Authorization result includes doctrine mandate."""
-        bridge = J6Judge6Bridge()
+        bridge = J6Bridge()
         auth = await bridge.authorize_validation({"text": "check"})
         assert "CSRMC" in auth["doctrine"]
         assert auth["agent_role"] == "Judge 6.1"

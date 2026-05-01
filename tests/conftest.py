@@ -11,65 +11,20 @@ _repo_root = str(Path(__file__).resolve().parent.parent)
 if _repo_root not in sys.path:
     sys.path.insert(0, _repo_root)
 
+# Add packages/ to sys.path so real packages can be imported directly
+_packages_dir = str(Path(__file__).resolve().parent.parent / "packages")
+if _packages_dir not in sys.path:
+    sys.path.insert(0, _packages_dir)
+
 # ──────────────────────────────────────────────────────────────
 # Module stubs for subsystems not present in this test context.
-# These allow pytest to collect test files that import modules
-# deployed separately (e.g., OrbStack sandbox, deep_research).
+# ONLY stub modules that do NOT have real implementations in
+# packages/. Real packages (speculation_engine, context_compactor,
+# deep_research, evaluation_bridge, orbstack_sandbox, tool_gateway,
+# agnt_classifier, agnt_tmux) are imported from packages/ directly.
 # ──────────────────────────────────────────────────────────────
 _STUB_MODULES = [
-    # Top-level modules
-    "agnt_context_compactor",
-    "agnt_tmux",
-    "agnt_vcr",
-    "agnt_classifier",
-    "agnt_bash_classifier",
-    "context_compactor",
-    "deep_research",
-    "evaluation_bridge",
-    "orbstack_sandbox",
-    "speculation_engine",
-    "tool_gateway",
-    # agnt sub-modules
-    "agnt_context_compactor.compactor",
-    "agnt_vcr.vcr",
-    "agnt_classifier.classifier",
-    "agnt_bash_classifier.telemetry",
-    "agnt_tmux.tmux_socket",
-    # context_compactor sub-modules
-    "context_compactor.api_context_management",
-    "context_compactor.auto_compact",
-    "context_compactor.compact_prompts",
-    "context_compactor.post_compact_cleanup",
-    "context_compactor.grouping",
-    "context_compactor.micro_compact",
-    # deep_research sub-modules
-    "deep_research.research_router",
-    "deep_research.state_machine",
-    "deep_research.synthesis",
-    "deep_research.telemetry",
-    # evaluation_bridge sub-modules
-    "evaluation_bridge.bridge",
-    # orbstack_sandbox sub-modules
-    "orbstack_sandbox.overlay",
-    "orbstack_sandbox.engine",
-    # speculation_engine sub-modules
-    "speculation_engine.engine",
-    "speculation_engine.orchestrator",
-    "speculation_engine.suggestion",
-    "speculation_engine.telemetry",
-    # tool_gateway sub-modules
-    "tool_gateway.block_allow_engine",
-    "tool_gateway.secret_scanner",
-    "tool_gateway.token_estimator",
-    "tool_gateway.tool_orchestrator",
-    # src sub-modules
-    "src.core",
-    "src.core.prompt_cache",
-    "src.headquarters",
-    "src.headquarters.j6_judge6_bridge",
-    "src.headquarters.jtf_staff_topology",
-    "src.services",
-    "src.services.watchdog",
+    # src sub-modules that don't exist as Python packages yet
     "src.services.secrets",
     "src.tools",
     "src.tools.bash_security",
