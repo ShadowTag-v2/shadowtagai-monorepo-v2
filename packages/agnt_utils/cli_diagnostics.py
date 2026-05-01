@@ -21,7 +21,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from agnt_utils.treeify import treeify
+from packages.agnt_utils.treeify import treeify
 
 
 def render_package_tree(

@@ -436,5 +436,8 @@ Before starting any complex implementation task, the agent MUST:
 - Skills fleet: 248 active (55 WS + 210 global − 17 overlap). 20 archived. New: `deep-think-consultation` (2026-04-26).
 - Ruler (`@intellectronica/ruler`) recommended for agent config unification.
 - Memory Kernel patterns: selective adoption only, NOT wholesale migration.
+- Batch 5 modules COMPLETE (2026-05-01): context_visualizer, effort, cli_diagnostics. 121 tests passing.
+- context_compactor.conversation_compact: migrated from agnt_utils.compact shim to direct implementation. Backward-compat shim emits DeprecationWarning.
+- Test census: 2046 collected. Manifest v15.3. Phase 4 Milestone 8.
 </session_memory_corpus>
 </system_directive>
