@@ -5,10 +5,10 @@ mcp-truth: antigravity-mcp-config.json
 judge6-gate: active
 
 # Version & Phase Tracking
-version: "14.3"
+version: "14.4"
 phase: 3
 milestone: 3
-milestone_name: "Sandbox Session API + Route Wiring + E2E Tests"
+milestone_name: "Sandbox Session API + WebSocket State Push + Firestore Bridge Tests"
 milestone_status: "COMPLETE"
 phase_started: "2026-04-30"
 last_updated: "2026-05-01"
@@ -20,7 +20,8 @@ service_account: counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com
 
 # Test Health
 test_framework: pytest
-test_count: 919
+test_count: 562
+test_count_phase3: 60
 collection_errors: 0
 collection_error_reason: "RESOLVED — conftest.py module stubbing active"
 vitest_count: 14
