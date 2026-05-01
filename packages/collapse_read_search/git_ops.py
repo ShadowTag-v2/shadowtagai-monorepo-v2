@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any
 
 from .types import BranchAction, CommitKind, PrAction
 
@@ -117,15 +116,11 @@ def detect_git_operation(command: str, output: str) -> GitOperationResult:
     else:
         delete_match = _BRANCH_DELETE_RE.search(output)
         if delete_match:
-            result.branch = BranchInfo(
-                ref=delete_match.group(1), action=BranchAction.DELETE
-            )
+            result.branch = BranchInfo(ref=delete_match.group(1), action=BranchAction.DELETE)
         else:
             checkout_match = _BRANCH_CHECKOUT_RE.search(output)
             if checkout_match:
-                result.branch = BranchInfo(
-                    ref=checkout_match.group(1), action=BranchAction.CHECKOUT
-                )
+                result.branch = BranchInfo(ref=checkout_match.group(1), action=BranchAction.CHECKOUT)
 
     # --- PR detection ---
     pr_match = _PR_URL_RE.search(output)

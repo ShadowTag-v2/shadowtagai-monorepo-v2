@@ -60,9 +60,7 @@ def _strip_dangerous_categories(text: str) -> str:
     classes, so we use ``unicodedata.category()`` per-character. This is
     equivalent to the TypeScript ``/[\\p{Cf}\\p{Co}\\p{Cn}]/gu`` regex.
     """
-    return "".join(
-        ch for ch in text if unicodedata.category(ch) not in _DANGEROUS_CATEGORIES
-    )
+    return "".join(ch for ch in text if unicodedata.category(ch) not in _DANGEROUS_CATEGORIES)
 
 
 class SanitizationOverflowError(RuntimeError):
@@ -115,10 +113,7 @@ def partially_sanitize_unicode(prompt: str) -> str:
         iterations += 1
 
     if iterations >= MAX_ITERATIONS:
-        raise SanitizationOverflowError(
-            f"Unicode sanitization reached maximum iterations ({MAX_ITERATIONS}) "
-            f"for input: {prompt[:100]!r}"
-        )
+        raise SanitizationOverflowError(f"Unicode sanitization reached maximum iterations ({MAX_ITERATIONS}) for input: {prompt[:100]!r}")
 
     return current
 
@@ -150,10 +145,7 @@ def recursively_sanitize_unicode(value: Any) -> Any:
         return {recursively_sanitize_unicode(item) for item in value}
 
     if isinstance(value, dict):
-        return {
-            recursively_sanitize_unicode(k): recursively_sanitize_unicode(v)
-            for k, v in value.items()
-        }
+        return {recursively_sanitize_unicode(k): recursively_sanitize_unicode(v) for k, v in value.items()}
 
     # Primitives (int, float, bool, None, etc.) pass through unchanged.
     return value
