@@ -5,10 +5,10 @@ mcp-truth: antigravity-mcp-config.json
 judge6-gate: active
 
 # Version & Phase Tracking
-version: "14.5"
+version: "14.6"
 phase: 3
-milestone: 3
-milestone_name: "Frontend WebSocket + OTel + E2E — Phase 3 M3 Complete"
+milestone: 4
+milestone_name: "Test Stabilization — 950 green, 5 former failures resolved"
 milestone_status: "COMPLETE"
 phase_started: "2026-04-30"
 last_updated: "2026-05-01"
@@ -20,7 +20,7 @@ service_account: counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com
 
 # Test Health
 test_framework: pytest
-test_count: 562
+test_count: 950
 test_count_phase3: 60
 collection_errors: 0
 collection_error_reason: "RESOLVED — conftest.py module stubbing active"
