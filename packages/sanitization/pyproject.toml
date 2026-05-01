@@ -1,0 +1,9 @@
+[project]
+name = "sanitization"
+version = "1.0.0"
+description = "Unicode sanitization for hidden character attack mitigation (HackerOne #3086545)"
+requires-python = ">=3.11"
+
+[build-system]
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.build_meta"
