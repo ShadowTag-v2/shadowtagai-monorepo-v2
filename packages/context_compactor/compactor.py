@@ -23,6 +23,10 @@ import time
 from pathlib import Path
 from typing import Any
 
+from context_compactor.cache_break_detector import (
+    CacheBreakDetector,
+    CacheBreakReport,
+)
 from context_compactor.layers import (
     AUTOCOMPACT_BUFFER_TOKENS,
     WARNING_THRESHOLD_BUFFER_TOKENS,
@@ -58,7 +62,7 @@ class ContextCompactor:
             from config.feature_flags import flags
 
             default_flags = flags.all_flags()
-        except (ImportError, ModuleNotFoundError):
+        except ImportError, ModuleNotFoundError:
             default_flags = {"context_compaction": True}
 
         self._layers = [
@@ -71,11 +75,23 @@ class ContextCompactor:
         self._flags = feature_flags if feature_flags is not None else default_flags
         self._run_count = 0
         self._total_tokens_saved = 0
+        self._cache_detector = CacheBreakDetector()
+        self._last_cache_report: CacheBreakReport | None = None
 
     @property
     def is_enabled(self) -> bool:
         """Check if context compaction is enabled via feature flags."""
         return self._flags.get("context_compaction", False)
+
+    @property
+    def cache_detector(self) -> CacheBreakDetector:
+        """Access the cache break detector for API param configuration."""
+        return self._cache_detector
+
+    @property
+    def last_cache_report(self) -> CacheBreakReport | None:
+        """The most recent cache break report, or None."""
+        return self._last_cache_report
 
     @property
     def stats(self) -> dict[str, Any]:
@@ -84,6 +100,7 @@ class ContextCompactor:
             "run_count": self._run_count,
             "total_tokens_saved": self._total_tokens_saved,
             "circuit_breaker_open": self._layers[3].circuit_open if isinstance(self._layers[3], Layer4FullCompaction) else False,
+            "last_cache_preserved": self._last_cache_report.cache_broken is False if self._last_cache_report else None,
         }
 
     def should_compact(self, current_tokens: int, max_tokens: int) -> bool:
@@ -168,6 +185,13 @@ class ContextCompactor:
         final_result = CompactionResult(tokens_before=current_tokens)
         running_tokens = current_tokens
 
+        # Phase 1: Cache break pre-scan — snapshot anchored messages
+        cache_anchors = self._cache_detector.pre_scan(messages)
+        logger.debug(
+            "Cache pre-scan: %d anchors identified",
+            len(cache_anchors),
+        )
+
         for layer in self._layers:
             if layer.aggressiveness > max_layer:
                 break
@@ -208,15 +232,30 @@ class ContextCompactor:
                     result.errors,
                 )
 
+        # Phase 2: Cache break post-verify — confirm cache integrity
+        cache_report = self._cache_detector.post_verify(messages, cache_anchors)
+        self._last_cache_report = cache_report
+
+        if cache_report.cache_broken:
+            final_result.cache_preserved = False
+            logger.warning(
+                "Cache break detected after compaction: vectors=%s, survival_rate=%.1f%%",
+                [v.value for v in cache_report.vectors_triggered],
+                cache_report.survival_rate,
+            )
+            # Emit cache break telemetry event
+            self._emit_cache_break_telemetry(cache_report, time.time() - start_time)
+
         final_result.tokens_after = running_tokens
         self._total_tokens_saved += final_result.tokens_saved
 
         logger.info(
-            "Compaction complete: %d → %d tokens (%.1f%% saved, layer: %s)",
+            "Compaction complete: %d → %d tokens (%.1f%% saved, layer: %s, cache_preserved: %s)",
             current_tokens,
             running_tokens,
             final_result.savings_pct,
             final_result.layer_used,
+            final_result.cache_preserved,
         )
 
         return final_result
@@ -239,6 +278,31 @@ class ContextCompactor:
             "errors": result.errors,
             "elapsed_ms": round(elapsed_ms * 1000, 2),
         }
+
+        self._write_telemetry_event(event)
+
+    def _emit_cache_break_telemetry(self, report: CacheBreakReport, elapsed_ms: float) -> None:
+        """Write cache break detection telemetry."""
+        if not self._telemetry_dir:
+            return
+
+        event = {
+            "event": "agnt_cache_break_detected",
+            "timestamp": time.time(),
+            "vectors_triggered": [v.value for v in report.vectors_triggered],
+            "anchors_surviving": report.anchors_surviving,
+            "anchors_total": report.anchors_total,
+            "survival_rate": report.survival_rate,
+            "break_position": report.break_position,
+            "elapsed_ms": round(elapsed_ms * 1000, 2),
+        }
+
+        self._write_telemetry_event(event)
+
+    def _write_telemetry_event(self, event: dict[str, Any]) -> None:
+        """Write a single telemetry event to the JSONL file."""
+        if not self._telemetry_dir:
+            return
 
         telemetry_file = self._telemetry_dir / "telemetry.jsonl"
         try:
