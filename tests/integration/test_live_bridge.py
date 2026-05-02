@@ -81,10 +81,7 @@ class TestLiveBridgeHealth:
 
         # Parse the JSON output
         # Filter out logging lines (lines starting with non-JSON chars)
-        json_lines = [
-            line for line in output.split("\n")
-            if line.strip().startswith("{") or line.strip().startswith('"')
-        ]
+
         # The full JSON is multi-line, so reconstruct
         json_text = output[output.index("{"):] if "{" in output else output
         health = json.loads(json_text)
