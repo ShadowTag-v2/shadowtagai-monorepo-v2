@@ -4,7 +4,7 @@
  * Common utilities for writing tests across the project
  */
 
-import { jest } from '@jest/globals';
+import { vi as jest } from 'vitest';
 
 /**
  * Creates a mock function with type safety

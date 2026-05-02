@@ -81,7 +81,7 @@
     },
     "antigravity-notebooklm-mcp": {
       "command": "node",
-      "args": ["external_repos/antigravity-notebooklm-mcp/build/index.js"],
+      "args": ["external_repos/PleasePrompto_notebooklm-mcp/dist/index.js"],
       "env": {},
       "note": "IPI quarantine zone. Closed RAG sandbox — cannot execute local code. All untrusted external data MUST route through this MCP before entering the agent context."
     },
