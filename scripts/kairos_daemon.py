@@ -23,6 +23,7 @@ import logging
 import os
 import pathlib
 import random
+import re
 import signal
 import subprocess
 import sys
@@ -38,9 +39,16 @@ logging.basicConfig(
 logger = logging.getLogger("kairos")
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
+MAX_SUGGESTION_WORDS = 12  # Matches speculation_engine.suggestion.MAX_SUGGESTION_WORDS
 SCRIPTS_DIR = REPO_ROOT / "scripts"
 
 # Bootstrap monorepo packages for deferred imports (speculation_engine, etc.)
+# REPO_ROOT must be on sys.path FIRST so that `from packages.X` absolute
+# imports used inside packages/ (e.g. prompt_assembler → packages.prompt_sections)
+# resolve correctly. Then packages/ so direct `import prompt_assembler` works.
+_repo_root_str = str(REPO_ROOT)
+if _repo_root_str not in sys.path:
+    sys.path.insert(0, _repo_root_str)
 _packages_dir = str(REPO_ROOT / "packages")
 if _packages_dir not in sys.path:
     sys.path.insert(0, _packages_dir)
@@ -61,6 +69,7 @@ QUARANTINE_PURGE_INTERVAL = 3600  # 1 hour
 AUTOLINT_INTERVAL = 86400  # 24 hours
 OOB_REPORT_CHECK_INTERVAL = 600  # 10 minutes
 PROMPT_VALIDATION_INTERVAL = 3600  # 1 hour — periodic prompt assembly check
+PROACTIVE_SUGGESTION_INTERVAL = 900  # 15 min — speculation prefetch cycle
 
 # Disk-Skill Dream resource limits
 DISK_SKILL_AST_TIMEOUT = 900  # 15-minute cap for deep AST scans
@@ -86,6 +95,63 @@ def _signal_handler(sig: int, _frame: object) -> None:
 
 signal.signal(signal.SIGINT, _signal_handler)
 signal.signal(signal.SIGTERM, _signal_handler)
+
+
+# ---------------------------------------------------------------------------
+# Secret resolution (GCP Secret Manager → os.environ)
+# ---------------------------------------------------------------------------
+
+
+def _resolve_gemini_api_key() -> str | None:
+    """Resolve GEMINI_API_KEY from env or GCP Secret Manager.
+
+    Priority chain:
+      1. os.environ["GEMINI_API_KEY"]    — already set (interactive shells)
+      2. gcloud secrets access            — launchd / daemon mode
+      3. None                             — fails gracefully, logged
+
+    Per secrets_manager_doctrine: no hardcoded keys. Secret Manager is the
+    sole credential source for daemonized execution.
+    """
+    existing = os.environ.get("GEMINI_API_KEY")
+    if existing:
+        return existing
+
+    project = os.environ.get("GCP_PROJECT", "shadowtag-omega-v4")
+    try:
+        result = subprocess.run(
+            [
+                "gcloud",
+                "secrets",
+                "versions",
+                "access",
+                "latest",
+                "--secret=gemini-api-key",
+                f"--project={project}",
+                "--quiet",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            api_key = result.stdout.strip()
+            os.environ["GEMINI_API_KEY"] = api_key
+            logger.info("GEMINI_API_KEY resolved from GCP Secret Manager")
+            return api_key
+        logger.warning(
+            "Secret Manager returned rc=%d: %s",
+            result.returncode,
+            result.stderr.strip()[:200],
+        )
+    except FileNotFoundError:
+        logger.warning("gcloud CLI not found — cannot resolve GEMINI_API_KEY")
+    except subprocess.TimeoutExpired:
+        logger.warning("Secret Manager access timed out (15s)")
+    except Exception as e:
+        logger.warning("Failed to resolve GEMINI_API_KEY from Secret Manager: %s", e)
+
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -182,7 +248,7 @@ def health_check() -> dict:
             timeout=15,
         )
         checks["gcp_adc"] = "ok" if result.returncode == 0 else "expired"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["gcp_adc"] = "missing"
 
     # 2. ANE dylib
@@ -208,7 +274,7 @@ def health_check() -> dict:
         )
         dirty_count = len(result.stdout.strip().splitlines()) if result.stdout.strip() else 0
         checks["git_dirty"] = f"{dirty_count} files" if dirty_count > 0 else "clean"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["git_dirty"] = "unknown"
 
     # 6. Git fetch --prune (GitHub-first context: keep remote refs fresh)
@@ -221,7 +287,7 @@ def health_check() -> dict:
             cwd=str(REPO_ROOT),
         )
         checks["git_fetch"] = "ok" if fetch_result.returncode == 0 else "failed"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["git_fetch"] = "timeout"
 
     logger.info("Health: %s", json.dumps(checks))
@@ -312,7 +378,7 @@ def run_disk_skill_dream() -> bool:
         if check.returncode != 0:
             logger.warning("ast-grep not available, skipping disk-skill phase 1")
             return run_dream_consolidation(tier="disk-skill")
-    except (FileNotFoundError, subprocess.TimeoutExpired):
+    except FileNotFoundError, subprocess.TimeoutExpired:
         logger.warning("ast-grep binary not found")
         return run_dream_consolidation(tier="disk-skill")
 
@@ -623,7 +689,7 @@ def run_research_sweep() -> bool:
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
     try:
         idx = int(topic_index_file.read_text().strip()) if topic_index_file.exists() else 0
-    except (ValueError, OSError):
+    except ValueError, OSError:
         idx = 0
     topic = _RESEARCH_TOPICS[idx % len(_RESEARCH_TOPICS)]
     topic_index_file.write_text(str((idx + 1) % len(_RESEARCH_TOPICS)))
@@ -787,7 +853,8 @@ def _run_sweep_with_topic(topic: str) -> bool:
 def _probe_bridge_health() -> dict[str, Any]:
     """Probe the speculation engine bridge for liveness.
 
-    Returns a dict with import health, orchestrator init, and sweep readiness.
+    Returns a dict with import health, orchestrator init, sweep readiness,
+    API key availability, and consumer status.
     Used by ``--bridge-health`` CLI flag and ``context_status.py --bridge-health``.
     """
     result: dict[str, Any] = {
@@ -795,6 +862,9 @@ def _probe_bridge_health() -> dict[str, Any]:
         "importable": False,
         "orchestrator_init": False,
         "sweep_ready": False,
+        "api_key_resolved": False,
+        "consumer_ready": False,
+        "suggestion_cached": False,
         "error": None,
     }
 
@@ -838,8 +908,269 @@ def _probe_bridge_health() -> dict[str, Any]:
         result["error"] = f"sweep: {e}"
         return result
 
-    result["healthy"] = True
+    # 4) API key resolution
+    api_key = _resolve_gemini_api_key()
+    result["api_key_resolved"] = bool(api_key)
+    if not api_key:
+        result["error"] = "GEMINI_API_KEY: not in env, Secret Manager unreachable"
+
+    # 5) Consumer health
+    try:
+        from speculation_engine.consumer import SuggestionConsumer
+
+        consumer = SuggestionConsumer()
+        result["consumer_ready"] = True
+        entry = consumer.get_suggestion()
+        result["suggestion_cached"] = entry is not None
+        if entry:
+            result["suggestion_age_s"] = round(entry.age_seconds, 1)
+            result["suggestion_preview"] = entry.text[:50]
+    except ImportError as e:
+        result["error"] = f"consumer import: {e}"
+
+    result["healthy"] = (
+        result["importable"] and result["orchestrator_init"] and result["sweep_ready"] and result["api_key_resolved"] and result["consumer_ready"]
+    )
     return result
+
+
+def run_proactive_suggestion_probe() -> bool:
+    """Run a proactive suggestion prefetch cycle.
+
+    Architecture (ported from Claude Code v2.1.91 promptSuggestion.ts):
+      1. Load recent conversation state from the latest .beads/ evidence.
+      2. Construct a daemon-mode SessionState (no interactive gates).
+      3. Invoke try_generate_suggestion with a lightweight Gemini bridge callback.
+      4. Cache the result in .beads/suggestion_cache.json for next session pickup.
+      5. Log telemetry to .beads/speculation_telemetry.jsonl.
+
+    Returns True if a suggestion was generated and cached, False otherwise.
+    """
+    try:
+        from speculation_engine.suggestion import (
+            SuggestionConfig,
+            SessionState,
+            SuggestionResult,
+            try_generate_suggestion,
+        )
+        from speculation_engine.telemetry import log_suggestion_event
+    except ImportError as e:
+        logger.warning("Proactive suggestion: import failed — %s", e)
+        return False
+
+    # Build a daemon-appropriate session state:
+    #   - Override interactive gate: daemon IS the proactive engine
+    #   - Set assistant_turn_count high to bypass too-few-turns gate
+    #   - No pending permissions, no plan mode
+    state = SessionState(
+        suggestion_enabled=True,
+        pending_permission=False,
+        elicitation_active=False,
+        plan_mode=False,
+        rate_limited=False,
+        assistant_turn_count=10,  # Bypass MIN_ASSISTANT_TURNS check
+        last_response_error=False,
+        last_request_tokens=0,  # Low token count = warm cache
+    )
+
+    config = SuggestionConfig(
+        enabled=True,
+        feature_flag_enabled=True,
+        is_interactive=True,  # Daemon acts as proactive interactive proxy
+        is_swarm_leader=True,
+        env_override=None,
+        min_assistant_turns=0,  # Override: daemon bypasses turn gate
+    )
+
+    # Gather recent messages from .beads/ conversation artifacts
+    messages = _gather_recent_messages()
+    if not messages:
+        logger.debug("Proactive suggestion: no recent messages, skipping")
+        log_suggestion_event(event="proactive_prefetch", status="no_messages")
+        return False
+
+    # Two-tier generation callback:
+    #   Tier 1: Direct generateContent (lightweight, always available)
+    #   Tier 2: Interactions API (stateful, requires enablement)
+    # Tier 1 is preferred for single-turn suggestion inference.
+    def _generate_fn(msgs: list[dict], prompt: str) -> tuple[str | None, str | None]:
+        # Resolve API key from env or GCP Secret Manager
+        api_key = _resolve_gemini_api_key()
+        if not api_key:
+            logger.warning("Proactive generate_fn: no GEMINI_API_KEY available")
+            return (None, None)
+
+        # Use the last 3 messages as context seed
+        context_msgs = msgs[-3:] if len(msgs) > 3 else msgs
+        context_text = "\n".join(m.get("content", "")[:200] for m in context_msgs)
+        full_prompt = f"{prompt}\n\nRecent context:\n{context_text}"
+
+        system_instruction = (
+            "You predict the developer's next action. "
+            "STRICT FORMAT: Reply with ONLY a single short phrase, 2-12 words. "
+            "NO periods. NO multiple sentences. NO explanations. NO quotation marks. "
+            "NO prefixes like 'Suggestion:'. Just the raw action phrase.\n"
+            "GOOD examples: 'Run the test suite', 'Add error handling to the parser', "
+            "'Deploy to staging', 'Fix the import statement', 'Refactor auth middleware'\n"
+            "BAD examples: 'I suggest running tests. Then deploy.', "
+            "'Here is my suggestion: run tests', 'Let me help you with that'"
+        )
+
+        gen_id = f"proactive-{int(time.time())}"
+
+        # Tier 1: Direct generateContent — lightweight, always works
+        try:
+            from google import genai
+
+            client = genai.Client(api_key=api_key)
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=full_prompt,
+                config={
+                    "system_instruction": system_instruction,
+                    "temperature": 0.3,
+                    "max_output_tokens": 50,
+                },
+            )
+            result_text = response.text if hasattr(response, "text") else None
+            if result_text and result_text.strip():
+                # Post-process: strip quotes, trailing periods, cap at 12 words
+                cleaned = result_text.strip().strip("\"'`").rstrip(".")
+                # Take only the first sentence fragment (before any sentence boundary)
+                first_frag = re.split(r"[.!?]\s+", cleaned)[0].strip()
+                words = first_frag.split()
+                if len(words) > MAX_SUGGESTION_WORDS:
+                    first_frag = " ".join(words[:MAX_SUGGESTION_WORDS])
+                if first_frag:
+                    logger.info("Tier 1 (generateContent) suggestion: '%s'", first_frag[:60])
+                    return (first_frag, gen_id)
+            logger.debug("Tier 1 returned empty text, trying Tier 2")
+        except ImportError:
+            logger.warning("google-genai SDK not installed — cannot generate suggestions")
+            return (None, None)
+        except Exception as e:
+            logger.warning("Tier 1 (generateContent) failed: %s: %s", type(e).__name__, e)
+
+        # Tier 2: Interactions API — stateful, richer but requires enablement
+        try:
+            from speculation_engine.gemini_bridge import GeminiPairProgrammer
+
+            pair = GeminiPairProgrammer(api_key=api_key)
+            session = pair.start_session(
+                system_prompt=system_instruction,
+                model="gemini-3-flash-preview",
+            )
+            result = pair.send(full_prompt, session=session)
+            result_text = getattr(result, "text", None)
+            if result_text and result_text.strip():
+                logger.info("Tier 2 (Interactions) suggestion: '%s'", result_text.strip()[:60])
+                return (result_text.strip(), gen_id)
+            logger.debug(
+                "Tier 2 returned empty text (result=%s, outputs=%s)",
+                type(result).__name__,
+                getattr(result, "outputs", "N/A"),
+            )
+        except Exception as e:
+            logger.warning("Tier 2 (Interactions API) failed: %s: %s", type(e).__name__, e)
+
+        return (None, None)
+
+    result: SuggestionResult = try_generate_suggestion(
+        messages=messages,
+        state=state,
+        config=config,
+        generate_fn=_generate_fn,
+    )
+
+    # Cache the result
+    cache_file = BEADS_DIR / "suggestion_cache.json"
+    try:
+        BEADS_DIR.mkdir(parents=True, exist_ok=True)
+        cache_entry = {
+            "timestamp": time.time(),
+            "iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "suggestion": result.suggestion,
+            "suppressed": result.suppressed,
+            "suppress_reason": result.suppress_reason.value if result.suppress_reason else None,
+            "filtered": result.filtered,
+            "filter_reason": result.filter_reason.value if result.filter_reason else None,
+            "generation_time_ms": round(result.generation_time_ms, 1),
+        }
+        with open(cache_file, "w") as f:
+            json.dump(cache_entry, f, indent=2)
+    except Exception as e:
+        logger.debug("Failed to write suggestion cache: %s", e)
+
+    # Telemetry
+    log_suggestion_event(
+        event="proactive_prefetch",
+        status="generated" if result.suggestion else "empty",
+        suppressed=result.suppressed,
+        filtered=result.filtered,
+        generation_time_ms=round(result.generation_time_ms, 1),
+    )
+
+    if result.suggestion:
+        logger.info(
+            "Proactive suggestion cached: '%s...' (%.0fms)",
+            result.suggestion[:40],
+            result.generation_time_ms,
+        )
+        return True
+
+    logger.debug(
+        "Proactive suggestion: no result (suppressed=%s, filtered=%s)",
+        result.suppressed,
+        result.filtered,
+    )
+    return False
+
+
+def _gather_recent_messages() -> list[dict]:
+    """Gather recent conversation messages from .beads/ evidence trail.
+
+    Reads the most recent entries from .beads/conversation_history.jsonl
+    (if available) or synthesizes a minimal context from the heartbeat.
+    """
+    history_file = BEADS_DIR / "conversation_history.jsonl"
+    messages: list[dict] = []
+
+    if history_file.exists():
+        try:
+            with open(history_file) as f:
+                lines = f.readlines()
+            # Take last 10 entries
+            for line in lines[-10:]:
+                line = line.strip()
+                if not line:
+                    continue
+                entry = json.loads(line)
+                if "content" in entry:
+                    messages.append({"role": entry.get("role", "user"), "content": entry["content"]})
+        except Exception:
+            pass
+
+    # Fallback: synthesize minimal context from heartbeat
+    if not messages and HEARTBEAT_FILE.exists():
+        try:
+            hb = json.loads(HEARTBEAT_FILE.read_text())
+            # Create a synthetic "last session" context
+            messages.append(
+                {
+                    "role": "user",
+                    "content": f"Continue working on the project. Last status: {hb.get('status', {})}",
+                }
+            )
+            messages.append(
+                {
+                    "role": "assistant",
+                    "content": "Ready to continue. What would you like to work on next?",
+                }
+            )
+        except Exception:
+            pass
+
+    return messages
 
 
 def write_heartbeat(status: dict) -> None:
@@ -910,6 +1241,7 @@ def main_loop(once: bool = False, timeout: int | None = None) -> None:
     last_webhook_check = 0.0
     last_prompt_validation = 0.0
     last_token_budget = 0.0
+    last_proactive_suggestion = 0.0
     last_research_sweep = 0.0
 
     deadline = (time.time() + timeout) if timeout else None
@@ -1002,6 +1334,14 @@ def main_loop(once: bool = False, timeout: int | None = None) -> None:
             last_token_budget = now
             status["webhook_events"] = "ran"
 
+        # Proactive suggestion prefetch (every 15 min, skip off-peak)
+        if now - last_proactive_suggestion >= _jittered(PROACTIVE_SUGGESTION_INTERVAL) and 6 <= hour <= 23:
+            if run_proactive_suggestion_probe():
+                status["proactive_suggestion"] = "cached"
+            else:
+                status["proactive_suggestion"] = "empty"
+            last_proactive_suggestion = now
+
         # Research sweep (every 6 hours, off-peak 1-6 AM)
         if now - last_research_sweep >= _jittered(RESEARCH_SWEEP_INTERVAL) and 1 <= hour <= 6:
             if run_research_sweep():
@@ -1043,6 +1383,11 @@ def main() -> None:
         help="Probe speculation engine bridge health and exit",
     )
     parser.add_argument(
+        "--probe-suggestions",
+        action="store_true",
+        help="Run a proactive suggestion prefetch cycle and exit",
+    )
+    parser.add_argument(
         "--sweep-now",
         action="store_true",
         help="Run an immediate research sweep and exit (ignores schedule)",
@@ -1067,6 +1412,21 @@ def main() -> None:
         status = _probe_bridge_health()
         print(json.dumps(status, indent=2))
         sys.exit(0 if status.get("healthy") else 1)
+
+    # Proactive suggestion probe — run one cycle and exit
+    if args.probe_suggestions:
+        logger.info("Proactive suggestion probe triggered")
+        success = run_proactive_suggestion_probe()
+        print(
+            json.dumps(
+                {
+                    "success": success,
+                    "cache_file": str(BEADS_DIR / "suggestion_cache.json"),
+                },
+                indent=2,
+            )
+        )
+        sys.exit(0 if success else 1)
 
     # On-demand research sweep — run immediately and exit
     if args.sweep_now:
