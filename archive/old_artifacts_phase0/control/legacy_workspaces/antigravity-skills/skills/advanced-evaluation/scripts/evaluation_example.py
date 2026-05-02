@@ -9,6 +9,7 @@ It uses pseudocode that works across Python environments without specific depend
 # DIRECT SCORING EXAMPLE
 # =============================================================================
 
+
 def direct_scoring_example():
     """
     Direct scoring: Rate a single response against defined criteria.
@@ -20,7 +21,7 @@ def direct_scoring_example():
     criteria = [
         {"name": "Accuracy", "description": "Scientific correctness", "weight": 0.4},
         {"name": "Clarity", "description": "Understandable for audience", "weight": 0.3},
-        {"name": "Engagement", "description": "Interesting and memorable", "weight": 0.3}
+        {"name": "Engagement", "description": "Interesting and memorable", "weight": 0.3},
     ]
 
     # System prompt for the evaluator
@@ -35,36 +36,35 @@ def direct_scoring_example():
                 "score": 4,
                 "evidence": ["Correctly uses analogy", "Mentions spooky action at a distance"],
                 "justification": "Core concept is correct, analogy is appropriate",
-                "improvement": "Could mention it's a quantum mechanical phenomenon"
+                "improvement": "Could mention it's a quantum mechanical phenomenon",
             },
             {
                 "criterion": "Clarity",
                 "score": 5,
                 "evidence": ["Simple coin analogy", "No jargon"],
                 "justification": "Appropriate for high school level",
-                "improvement": "None needed"
+                "improvement": "None needed",
             },
             {
                 "criterion": "Engagement",
                 "score": 4,
                 "evidence": ["Magical coins", "Spooky action quote"],
                 "justification": "Memorable imagery and Einstein quote",
-                "improvement": "Could add a real-world application"
-            }
+                "improvement": "Could add a real-world application",
+            },
         ],
         "summary": {
             "assessment": "Good explanation suitable for the target audience",
             "strengths": ["Clear analogy", "Age-appropriate language"],
-            "weaknesses": ["Could be more comprehensive"]
-        }
+            "weaknesses": ["Could be more comprehensive"],
+        },
     }
 
     # Calculate weighted score
     total_weight = sum(c["weight"] for c in criteria)
-    weighted_score = sum(
-        s["score"] * next(c["weight"] for c in criteria if c["name"] == s["criterion"])
-        for s in expected_output["scores"]
-    ) / total_weight
+    weighted_score = (
+        sum(s["score"] * next(c["weight"] for c in criteria if c["name"] == s["criterion"]) for s in expected_output["scores"]) / total_weight
+    )
 
     print(f"Weighted Score: {weighted_score:.2f}/5")
     return expected_output
@@ -74,6 +74,7 @@ def direct_scoring_example():
 # PAIRWISE COMPARISON WITH POSITION BIAS MITIGATION
 # =============================================================================
 
+
 def pairwise_comparison_example():
     """
     Pairwise comparison: Compare two responses and select the better one.
@@ -82,8 +83,6 @@ def pairwise_comparison_example():
     """
 
     prompt = "Explain machine learning to a beginner"
-
-
 
     criteria = ["clarity", "accessibility", "accuracy"]
 
@@ -101,7 +100,7 @@ def pairwise_comparison_example():
 {second_response}
 
 ## Comparison Criteria
-{', '.join(criteria)}
+{", ".join(criteria)}
 
 ## Output Format
 {{
@@ -137,15 +136,10 @@ def pairwise_comparison_example():
         final_result = {
             "winner": pass1_result["winner"],
             "confidence": (pass1_result["confidence"] + pass2_result["confidence"]) / 2,
-            "position_consistent": True
+            "position_consistent": True,
         }
     else:
-        final_result = {
-            "winner": "TIE",
-            "confidence": 0.5,
-            "position_consistent": False,
-            "bias_detected": True
-        }
+        final_result = {"winner": "TIE", "confidence": 0.5, "position_consistent": False, "bias_detected": True}
 
     print(f"\nFinal Result: {final_result}")
     return final_result
@@ -155,6 +149,7 @@ def pairwise_comparison_example():
 # RUBRIC GENERATION
 # =============================================================================
 
+
 def rubric_generation_example():
     """
     Generate a domain-specific scoring rubric.
@@ -162,8 +157,6 @@ def rubric_generation_example():
     """
 
     criterion_name = "Code Readability"
-
-
 
     # Expected rubric structure
     rubric = {
@@ -174,12 +167,8 @@ def rubric_generation_example():
                 "score": 1,
                 "label": "Poor",
                 "description": "Code is difficult to understand without significant effort",
-                "characteristics": [
-                    "No meaningful variable or function names",
-                    "No comments or documentation",
-                    "Deeply nested or convoluted logic"
-                ],
-                "example": "def f(x): return x[0]*x[1]+x[2]"
+                "characteristics": ["No meaningful variable or function names", "No comments or documentation", "Deeply nested or convoluted logic"],
+                "example": "def f(x): return x[0]*x[1]+x[2]",
             },
             {
                 "score": 3,
@@ -188,37 +177,30 @@ def rubric_generation_example():
                 "characteristics": [
                     "Most variables have meaningful names",
                     "Basic comments for complex sections",
-                    "Logic is followable but could be cleaner"
+                    "Logic is followable but could be cleaner",
                 ],
-                "example": "def calc_total(items): # calculate sum\n    total = 0\n    for i in items: total += i\n    return total"
+                "example": "def calc_total(items): # calculate sum\n    total = 0\n    for i in items: total += i\n    return total",
             },
             {
                 "score": 5,
                 "label": "Excellent",
                 "description": "Code is immediately clear and maintainable",
-                "characteristics": [
-                    "All names are descriptive and consistent",
-                    "Comprehensive documentation",
-                    "Clean, modular structure"
-                ],
-                "example": "def calculate_total_price(items: List[Item]) -> Decimal:\n    '''Calculate the total price of all items.'''\n    return sum(item.price for item in items)"
-            }
+                "characteristics": ["All names are descriptive and consistent", "Comprehensive documentation", "Clean, modular structure"],
+                "example": "def calculate_total_price(items: List[Item]) -> Decimal:\n    '''Calculate the total price of all items.'''\n    return sum(item.price for item in items)",
+            },
         ],
         "scoring_guidelines": [
             "Focus on readability, not cleverness",
             "Consider the intended audience (team skill level)",
-            "Consistency matters more than style preference"
+            "Consistency matters more than style preference",
         ],
         "edge_cases": [
             {
                 "situation": "Code uses domain-specific abbreviations",
-                "guidance": "Score based on readability for domain experts, not general audience"
+                "guidance": "Score based on readability for domain experts, not general audience",
             },
-            {
-                "situation": "Code is auto-generated",
-                "guidance": "Apply same standards but note in evaluation"
-            }
-        ]
+            {"situation": "Code is auto-generated", "guidance": "Apply same standards but note in evaluation"},
+        ],
     }
 
     print("Generated Rubric:")

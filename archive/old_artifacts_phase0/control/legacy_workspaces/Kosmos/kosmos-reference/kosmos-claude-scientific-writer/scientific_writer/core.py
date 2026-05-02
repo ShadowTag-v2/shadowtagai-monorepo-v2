@@ -53,10 +53,7 @@ def get_api_key(api_key: str | None = None) -> str:
 
     env_key = os.getenv("ANTHROPIC_API_KEY")
     if not env_key:
-        raise ValueError(
-            "ANTHROPIC_API_KEY not found. Either pass api_key parameter or set "
-            "ANTHROPIC_API_KEY environment variable."
-        )
+        raise ValueError("ANTHROPIC_API_KEY not found. Either pass api_key parameter or set ANTHROPIC_API_KEY environment variable.")
     return env_key
 
 
@@ -73,13 +70,12 @@ def load_system_instructions(work_dir: Path) -> str:
     instructions_file = work_dir / ".claude" / "WRITER.md"
 
     if instructions_file.exists():
-        with open(instructions_file, encoding='utf-8') as f:
+        with open(instructions_file, encoding="utf-8") as f:
             return f.read()
     else:
         # Fallback if WRITER.md doesn't exist
         return (
-            "You are a scientific writing assistant. Follow best practices for "
-            "scientific communication and always present a plan before execution."
+            "You are a scientific writing assistant. Follow best practices for scientific communication and always present a plan before execution."
         )
 
 
@@ -105,22 +101,22 @@ def ensure_output_folder(cwd: Path, custom_dir: str | None = None) -> Path:
 
 def get_image_extensions() -> set:
     """Return a set of common image file extensions."""
-    return {'.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.tif', '.svg', '.webp', '.ico'}
+    return {".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".tif", ".svg", ".webp", ".ico"}
 
 
 def get_manuscript_extensions() -> set:
     """Return a set of manuscript file extensions that should go to drafts/ folder."""
-    return {'.tex'}
+    return {".tex"}
 
 
 def get_source_extensions() -> set:
     """Return a set of source/context file extensions that should go to sources/ folder."""
-    return {'.md', '.docx', '.pdf'}
+    return {".md", ".docx", ".pdf"}
 
 
 def get_data_extensions() -> set:
     """Return a set of data file extensions that should go to data/ folder."""
-    return {'.csv', '.json', '.txt', '.xlsx', '.xls', '.tsv', '.xml', '.yaml', '.yml', '.sql'}
+    return {".csv", ".json", ".txt", ".xlsx", ".xls", ".tsv", ".xml", ".yaml", ".yml", ".sql"}
 
 
 def get_data_files(cwd: Path, data_files: list[str] | None = None) -> list[Path]:
@@ -168,12 +164,12 @@ def extract_images_from_docx(docx_path: Path, figures_output: Path) -> list[dict
     image_extensions = get_image_extensions()
 
     try:
-        with zipfile.ZipFile(docx_path, 'r') as zip_ref:
+        with zipfile.ZipFile(docx_path, "r") as zip_ref:
             # List all files in the archive
             all_files = zip_ref.namelist()
 
             # Filter for files in word/media/ directory that are images
-            media_files = [f for f in all_files if f.startswith('word/media/')]
+            media_files = [f for f in all_files if f.startswith("word/media/")]
 
             for media_file in media_files:
                 # Get the filename from the path
@@ -186,15 +182,10 @@ def extract_images_from_docx(docx_path: Path, figures_output: Path) -> list[dict
                     output_path = figures_output / file_name
 
                     # Read the file from the zip and write it to the output
-                    with zip_ref.open(media_file) as source:
-                        with open(output_path, 'wb') as target:
-                            target.write(source.read())
+                    with zip_ref.open(media_file) as source, open(output_path, "wb") as target:
+                        target.write(source.read())
 
-                    extracted_images.append({
-                        'name': file_name,
-                        'path': str(output_path),
-                        'source_docx': docx_path.name
-                    })
+                    extracted_images.append({"name": file_name, "path": str(output_path), "source_docx": docx_path.name})
 
     except zipfile.BadZipFile:
         print(f"Warning: {docx_path.name} is not a valid .docx file (ZIP archive)")
@@ -204,12 +195,7 @@ def extract_images_from_docx(docx_path: Path, figures_output: Path) -> list[dict
     return extracted_images
 
 
-def process_data_files(
-    cwd: Path,
-    data_files: list[Path],
-    paper_output_path: str,
-    delete_originals: bool = True
-) -> dict[str, Any] | None:
+def process_data_files(cwd: Path, data_files: list[Path], paper_output_path: str, delete_originals: bool = True) -> dict[str, Any] | None:
     """
     Process data files by copying them to the paper output folder.
     Manuscript files (.tex) go to drafts/,
@@ -247,13 +233,7 @@ def process_data_files(
     get_source_extensions()
     data_extensions = get_data_extensions()
 
-    processed_info = {
-        'data_files': [],
-        'image_files': [],
-        'manuscript_files': [],
-        'source_files': [],
-        'all_files': []
-    }
+    processed_info = {"data_files": [], "image_files": [], "manuscript_files": [], "source_files": [], "all_files": []}
 
     for file_path in data_files:
         file_ext = file_path.suffix.lower()
@@ -266,55 +246,35 @@ def process_data_files(
         if file_ext in manuscript_extensions:
             # CRITICAL: Only .tex files go to drafts/ folder for editing workflow
             destination = drafts_output / file_name
-            file_type = 'manuscript'
-            processed_info['manuscript_files'].append({
-                'name': file_name,
-                'path': str(destination),
-                'original': str(file_path),
-                'extension': file_ext
-            })
+            file_type = "manuscript"
+            processed_info["manuscript_files"].append(
+                {"name": file_name, "path": str(destination), "original": str(file_path), "extension": file_ext}
+            )
         elif file_ext in image_extensions:
             destination = figures_output / file_name
-            file_type = 'image'
-            processed_info['image_files'].append({
-                'name': file_name,
-                'path': str(destination),
-                'original': str(file_path)
-            })
+            file_type = "image"
+            processed_info["image_files"].append({"name": file_name, "path": str(destination), "original": str(file_path)})
         elif file_ext in data_extensions:
             destination = data_output / file_name
-            file_type = 'data'
-            processed_info['data_files'].append({
-                'name': file_name,
-                'path': str(destination),
-                'original': str(file_path)
-            })
+            file_type = "data"
+            processed_info["data_files"].append({"name": file_name, "path": str(destination), "original": str(file_path)})
         else:
             # Source files (.md, .docx, .pdf) and everything else go to sources/
             destination = sources_output / file_name
-            file_type = 'source'
-            processed_info['source_files'].append({
-                'name': file_name,
-                'path': str(destination),
-                'original': str(file_path),
-                'extension': file_ext
-            })
+            file_type = "source"
+            processed_info["source_files"].append({"name": file_name, "path": str(destination), "original": str(file_path), "extension": file_ext})
 
         # Copy the file
         try:
             shutil.copy2(file_path, destination)
-            processed_info['all_files'].append({
-                'name': file_name,
-                'type': file_type,
-                'destination': str(destination)
-            })
+            processed_info["all_files"].append({"name": file_name, "type": file_type, "destination": str(destination)})
 
             # If it's a .docx file, extract images to figures folder
-            if file_ext == '.docx':
+            if file_ext == ".docx":
                 extracted_images = extract_images_from_docx(file_path, figures_output)
                 if extracted_images:
                     for img_info in extracted_images:
-                        processed_info['image_files'].append(img_info)
+                        processed_info["image_files"].append(img_info)
 
             # Delete the original file after successful copy if requested
             if delete_originals:
@@ -336,16 +296,16 @@ def create_data_context_message(processed_info: dict[str, Any] | None) -> str:
     Returns:
         Context message string.
     """
-    if not processed_info or not processed_info['all_files']:
+    if not processed_info or not processed_info["all_files"]:
         return ""
 
     context_parts = ["\n[DATA FILES AVAILABLE]"]
 
     # CRITICAL: If manuscript files (.tex) are present, this is an EDITING task
-    if processed_info.get('manuscript_files'):
+    if processed_info.get("manuscript_files"):
         context_parts.append("\n⚠️  EDITING MODE - Manuscript files (.tex) detected!")
         context_parts.append("\nManuscript files (in drafts/ folder for editing):")
-        for file_info in processed_info['manuscript_files']:
+        for file_info in processed_info["manuscript_files"]:
             context_parts.append(f"  - {file_info['name']} ({file_info['extension']}): {file_info['path']}")
         context_parts.append("\n🔧 TASK: This is an EDITING task, not creating from scratch.")
         context_parts.append("   → Read the existing manuscript from drafts/")
@@ -353,22 +313,22 @@ def create_data_context_message(processed_info: dict[str, Any] | None) -> str:
         context_parts.append("   → Create new version following version numbering protocol")
         context_parts.append("   → Document changes in revision_notes.md")
 
-    if processed_info.get('source_files'):
+    if processed_info.get("source_files"):
         context_parts.append("\nSource/Context files (in sources/ folder for reference):")
-        for file_info in processed_info['source_files']:
-            ext = file_info.get('extension', '')
+        for file_info in processed_info["source_files"]:
+            ext = file_info.get("extension", "")
             context_parts.append(f"  - {file_info['name']} ({ext}): {file_info['path']}")
         context_parts.append("\nNote: These files are available as reference/context material.")
 
-    if processed_info.get('data_files'):
+    if processed_info.get("data_files"):
         context_parts.append("\nData files (in data/ folder):")
-        for file_info in processed_info['data_files']:
+        for file_info in processed_info["data_files"]:
             context_parts.append(f"  - {file_info['name']}: {file_info['path']}")
 
-    if processed_info.get('image_files'):
+    if processed_info.get("image_files"):
         # Separate images by source (direct vs extracted from docx)
-        direct_images = [img for img in processed_info['image_files'] if 'source_docx' not in img]
-        extracted_images = [img for img in processed_info['image_files'] if 'source_docx' in img]
+        direct_images = [img for img in processed_info["image_files"] if "source_docx" not in img]
+        extracted_images = [img for img in processed_info["image_files"] if "source_docx" in img]
 
         context_parts.append("\nImage files (in figures/ folder):")
 
@@ -380,13 +340,14 @@ def create_data_context_message(processed_info: dict[str, Any] | None) -> str:
         if extracted_images:
             # Group extracted images by source docx
             from collections import defaultdict
+
             images_by_docx = defaultdict(list)
             for img in extracted_images:
-                images_by_docx[img['source_docx']].append(img)
+                images_by_docx[img["source_docx"]].append(img)
 
             context_parts.append("  Extracted from .docx files:")
             for docx_name, images in images_by_docx.items():
-                img_names = ', '.join([img['name'] for img in images])
+                img_names = ", ".join([img["name"] for img in images])
                 context_parts.append(f"    - From {docx_name}: {img_names}")
 
         context_parts.append("\nNote: These images can be referenced as figures in the paper.")

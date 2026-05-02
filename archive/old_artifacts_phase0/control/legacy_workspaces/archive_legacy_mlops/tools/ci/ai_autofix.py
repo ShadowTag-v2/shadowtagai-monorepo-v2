@@ -19,8 +19,7 @@ RPM_BUDGET = int(os.getenv("OPENAI_RPM_BUDGET", "60"))
 
 def run(cmd, check=False, capture=False, cwd=REPO_ROOT):
     if capture:
-        return subprocess.run(cmd, cwd=cwd, text=True, shell=True,
-                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        return subprocess.run(cmd, cwd=cwd, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     return subprocess.run(cmd, cwd=cwd, text=True, shell=True, check=check)
 
 
@@ -77,13 +76,13 @@ def log_metric(model: str, scope: str, prompt_tokens: int, resp_max: int, note: 
 
 def changed_file_list(scope="changed"):
     if scope == "project":
-        r = run('git ls-files', capture=True)
+        r = run("git ls-files", capture=True)
         files = [f.strip() for f in r.stdout.splitlines() if f.strip()]
         return files
-    r = run('git diff --name-only HEAD~1..HEAD || git diff --name-only', capture=True)
+    r = run("git diff --name-only HEAD~1..HEAD || git diff --name-only", capture=True)
     files = [f.strip() for f in r.stdout.splitlines() if f.strip()]
     if not files:
-        r = run('git diff --name-only --cached', capture=True)
+        r = run("git diff --name-only --cached", capture=True)
         files = [f.strip() for f in r.stdout.splitlines() if f.strip()]
     return files
 
@@ -123,6 +122,7 @@ def build_prompt(failing_output, files, goal, max_chars=60000):
 
 def http_json(url, headers, data):
     import requests
+
     try:
         return requests.post(url, headers=headers, data=json.dumps(data), timeout=120)
     except Exception:
@@ -164,9 +164,9 @@ def call_openai(model, prompt, scope, resp_max=2048, tries=4):
                     except Exception:
                         wait_seconds = 0.0
         if wait_seconds:
-            time.sleep(wait_seconds + __import__('random').uniform(0.25, 0.75))
+            time.sleep(wait_seconds + __import__("random").uniform(0.25, 0.75))
         else:
-            time.sleep(0.5 * (2 ** i) + __import__('random').uniform(0.1, 0.3))
+            time.sleep(0.5 * (2**i) + __import__("random").uniform(0.1, 0.3))
     return None, "fail"
 
 
@@ -179,6 +179,7 @@ def call_anthropic(model, prompt, scope, resp_max=1200, tries=4):
     data = {"model": model, "max_tokens": resp_max, "messages": [{"role": "user", "content": prompt}], "temperature": 0}
     for i in range(tries):
         import requests
+
         r = None
         try:
             r = requests.post(url, headers=headers, data=json.dumps(data), timeout=120)
@@ -194,7 +195,7 @@ def call_anthropic(model, prompt, scope, resp_max=1200, tries=4):
                 return None, "parse"
         # Gentle backoff on 429/5xx
         if r is not None and (r.status_code == 429 or 500 <= r.status_code < 600):
-            time.sleep(0.5 * (2 ** i) + __import__('random').uniform(0.1, 0.3))
+            time.sleep(0.5 * (2**i) + __import__("random").uniform(0.1, 0.3))
         else:
             time.sleep(0.3)
     return None, "fail"
@@ -209,7 +210,7 @@ def extract_diff(text):
     if text.strip().startswith("--- a/"):
         return text.strip()
     m = re.search(r"(?s)^--- a/.+?\n\+\+\+ b/.+?$", text, re.M)
-    return text[m.start():].strip() if m else None
+    return text[m.start() :].strip() if m else None
 
 
 def apply_diff(patch_text):
@@ -227,7 +228,7 @@ def shard(lst, n):
     n = max(1, n)
     size = max(1, math.ceil(len(lst) / n))
     for i in range(0, len(lst), size):
-        yield lst[i:i + size]
+        yield lst[i : i + size]
 
 
 def attempt(goal, model, scope):
@@ -239,7 +240,7 @@ def attempt(goal, model, scope):
     candidates = failing or base or changed_file_list("project")
     batches = list(shard(candidates, 3)) if len(candidates) > 20 else [candidates]
     for files in batches:
-        run('git reset', capture=True)
+        run("git reset", capture=True)
         for f in files[:50]:
             run(f'git add "{f}"')
         prompt = build_prompt(out, files, goal)
@@ -255,7 +256,7 @@ def attempt(goal, model, scope):
         applied, log = apply_diff(diff)
         if not applied:
             continue
-        run('git add -A')
+        run("git add -A")
         run(f'git commit -m "ci: {model} autofix scope={scope} sharded" || echo "no changes"')
         ok2, _ = run_tests()
         if ok2:

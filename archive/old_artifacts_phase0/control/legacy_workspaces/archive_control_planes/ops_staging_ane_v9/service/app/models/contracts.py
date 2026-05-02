@@ -12,10 +12,12 @@ class SearchResultItem(BaseModel):
     content_preview: str = ""
     metadata: dict[str, Any] = Field(default_factory=dict)
 
+
 class SearchRequest(BaseModel):
     query: str
     repo_id: str = "ane"
     limit: int = 8
+
 
 class SearchResponse(BaseModel):
     query: str
@@ -25,9 +27,11 @@ class SearchResponse(BaseModel):
     memory: list[SearchResultItem]
     tasks: list[SearchResultItem]
 
+
 class ContextRequest(BaseModel):
     query: str
     repo_id: str = "ane"
+
 
 class ContextResponse(BaseModel):
     query: str

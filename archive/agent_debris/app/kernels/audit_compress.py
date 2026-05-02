@@ -25,7 +25,7 @@ class AuditCompressKernel(Kernel):
     def __init__(self):
         super().__init__(
             name="AuditCompressKernel",
-            max_latency_ms=None  # No strict latency requirement (deterministic)
+            max_latency_ms=None,  # No strict latency requirement (deterministic)
         )
 
         # Initialize zstd compressor
@@ -46,10 +46,7 @@ class AuditCompressKernel(Kernel):
             if isinstance(kernel_input.data, JudgeSixClassification):
                 classification = kernel_input.data
             else:
-                raise KernelChainError(
-                    f"Invalid input type: expected JudgeSixClassification, "
-                    f"got {type(kernel_input.data)}"
-                )
+                raise KernelChainError(f"Invalid input type: expected JudgeSixClassification, got {type(kernel_input.data)}")
 
             # Build audit metadata (structured for compression)
             audit_metadata = {
@@ -62,9 +59,7 @@ class AuditCompressKernel(Kernel):
             }
 
             # Serialize to JSON
-            metadata_json = json.dumps(
-                audit_metadata, sort_keys=True, separators=(",", ":")
-            )
+            metadata_json = json.dumps(audit_metadata, sort_keys=True, separators=(",", ":"))
             original_data = metadata_json.encode("utf-8")
             original_size = len(original_data)
 
@@ -90,10 +85,7 @@ class AuditCompressKernel(Kernel):
             # Check if we met target size
             if compressed_size > self.TARGET_SIZE_BYTES:
                 # Log warning but don't fail (this is informational)
-                kernel_input.metadata["size_warning"] = (
-                    f"Compressed size {compressed_size}B exceeds "
-                    f"target {self.TARGET_SIZE_BYTES}B"
-                )
+                kernel_input.metadata["size_warning"] = f"Compressed size {compressed_size}B exceeds target {self.TARGET_SIZE_BYTES}B"
 
             return KernelOutput(
                 data=audit_trail,
@@ -108,13 +100,11 @@ class AuditCompressKernel(Kernel):
                     token_count_input=0,  # No tokens (rules-based)
                     token_count_output=0,
                     cost_usd=0.0,  # Deterministic compression is free
-                )
+                ),
             )
 
         except Exception as e:
-            raise KernelChainError(
-                f"Audit compression failed: {str(e)}"
-            ) from e
+            raise KernelChainError(f"Audit compression failed: {str(e)}") from e
 
     @staticmethod
     def decompress(audit_trail: AuditTrail) -> dict:

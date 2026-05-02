@@ -18,15 +18,47 @@ class ResearchLookup:
 
     # Complexity indicators for determining which model to use
     REASONING_KEYWORDS = [
-        'compare', 'contrast', 'analyze', 'analysis', 'synthesis', 'meta-analysis',
-        'systematic review', 'evaluate', 'critique', 'trade-off', 'tradeoff',
-        'relationship', 'versus', 'vs', 'vs.', 'compared to',
-        'mechanism', 'why', 'how does', 'how do', 'explain', 'theoretical framework',
-        'implications', 'debate', 'controversy', 'conflicting', 'paradox',
-        'reconcile', 'integrate', 'multifaceted', 'complex interaction',
-        'causal relationship', 'underlying mechanism', 'interpret', 'reasoning',
-        'pros and cons', 'advantages and disadvantages', 'critical analysis',
-        'differences between', 'similarities', 'trade offs'
+        "compare",
+        "contrast",
+        "analyze",
+        "analysis",
+        "synthesis",
+        "meta-analysis",
+        "systematic review",
+        "evaluate",
+        "critique",
+        "trade-off",
+        "tradeoff",
+        "relationship",
+        "versus",
+        "vs",
+        "vs.",
+        "compared to",
+        "mechanism",
+        "why",
+        "how does",
+        "how do",
+        "explain",
+        "theoretical framework",
+        "implications",
+        "debate",
+        "controversy",
+        "conflicting",
+        "paradox",
+        "reconcile",
+        "integrate",
+        "multifaceted",
+        "complex interaction",
+        "causal relationship",
+        "underlying mechanism",
+        "interpret",
+        "reasoning",
+        "pros and cons",
+        "advantages and disadvantages",
+        "critical analysis",
+        "differences between",
+        "similarities",
+        "trade offs",
     ]
 
     def __init__(self, force_model: str | None = None):
@@ -49,7 +81,7 @@ class ResearchLookup:
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
             "HTTP-Referer": "https://scientific-writer.local",  # Replace with your domain
-            "X-Title": "Scientific Writer Research Tool"
+            "X-Title": "Scientific Writer Research Tool",
         }
 
     def _assess_query_complexity(self, query: str) -> str:
@@ -65,30 +97,30 @@ class ResearchLookup:
         reasoning_count = sum(1 for keyword in self.REASONING_KEYWORDS if keyword in query_lower)
 
         # Count questions (multiple questions suggest complexity)
-        question_count = query.count('?')
+        question_count = query.count("?")
 
         # Check for multiple clauses (complexity indicators)
-        clause_indicators = [' and ', ' or ', ' but ', ' however ', ' whereas ', ' although ']
+        clause_indicators = [" and ", " or ", " but ", " however ", " whereas ", " although "]
         clause_count = sum(1 for indicator in clause_indicators if indicator in query_lower)
 
         # Complexity score
         complexity_score = (
-            reasoning_count * 3 +      # Reasoning keywords heavily weighted
-            question_count * 2 +        # Multiple questions indicate complexity
-            clause_count * 1.5 +        # Multiple clauses suggest nuance
-            (1 if len(query) > 150 else 0)  # Long queries often more complex
+            reasoning_count * 3  # Reasoning keywords heavily weighted
+            + question_count * 2  # Multiple questions indicate complexity
+            + clause_count * 1.5  # Multiple clauses suggest nuance
+            + (1 if len(query) > 150 else 0)  # Long queries often more complex
         )
 
         # Threshold for using reasoning model (lowered to 3 to catch single reasoning keywords)
-        return 'reasoning' if complexity_score >= 3 else 'pro'
+        return "reasoning" if complexity_score >= 3 else "pro"
 
     def _select_model(self, query: str) -> str:
         """Select the appropriate model based on query complexity or force override."""
         if self.force_model:
-            return self.model_reasoning if self.force_model == 'reasoning' else self.model_pro
+            return self.model_reasoning if self.force_model == "reasoning" else self.model_pro
 
         complexity_level = self._assess_query_complexity(query)
-        return self.model_reasoning if complexity_level == 'reasoning' else self.model_pro
+        return self.model_reasoning if complexity_level == "reasoning" else self.model_pro
 
     def _make_request(self, messages: list[dict[str, str]], model: str, **kwargs) -> dict[str, Any]:
         """Make a request to the OpenRouter API."""
@@ -97,11 +129,8 @@ class ResearchLookup:
             "messages": messages,
             "max_tokens": 4000,
             "temperature": 0.1,  # Low temperature for factual research
-            "provider": {
-                "order": ["Perplexity"],
-                "allow_fallbacks": False
-            },
-            **kwargs
+            "provider": {"order": ["Perplexity"], "allow_fallbacks": False},
+            **kwargs,
         }
 
         try:
@@ -109,7 +138,7 @@ class ResearchLookup:
                 f"{self.base_url}/chat/completions",
                 headers=self.headers,
                 json=data,
-                timeout=90  # Increased timeout for reasoning model
+                timeout=90,  # Increased timeout for reasoning model
             )
             response.raise_for_status()
             return response.json()
@@ -154,9 +183,9 @@ Remember: This is for academic research purposes. Prioritize accuracy, completen
         messages = [
             {
                 "role": "system",
-                "content": "You are an academic research assistant. Focus exclusively on scholarly sources: peer-reviewed journals, academic papers, research institutions, and reputable scientific publications. Prioritize recent academic literature (2020-2024) and provide complete citations with DOIs. Use academic/scholarly search mode."
+                "content": "You are an academic research assistant. Focus exclusively on scholarly sources: peer-reviewed journals, academic papers, research institutions, and reputable scientific publications. Prioritize recent academic literature (2020-2024) and provide complete citations with DOIs. Use academic/scholarly search mode.",
             },
-            {"role": "user", "content": research_prompt}
+            {"role": "user", "content": research_prompt},
         ]
 
         try:
@@ -180,7 +209,7 @@ Remember: This is for academic research purposes. Prioritize accuracy, completen
                         "timestamp": timestamp,
                         "model": selected_model,
                         "model_type": model_type,
-                        "usage": response.get("usage", {})
+                        "usage": response.get("usage", {}),
                     }
                 else:
                     raise Exception("Invalid response format from API")
@@ -188,14 +217,7 @@ Remember: This is for academic research purposes. Prioritize accuracy, completen
                 raise Exception("No response choices received from API")
 
         except Exception as e:
-            return {
-                "success": False,
-                "query": query,
-                "error": str(e),
-                "timestamp": timestamp,
-                "model": selected_model,
-                "model_type": model_type
-            }
+            return {"success": False, "query": query, "error": str(e), "timestamp": timestamp, "model": selected_model, "model_type": model_type}
 
     def _extract_citations(self, text: str) -> list[dict[str, str]]:
         """Extract potential citations from the response text."""
@@ -208,25 +230,18 @@ Remember: This is for academic research purposes. Prioritize accuracy, completen
         import re
 
         # Pattern for author et al. year
-        author_pattern = r'([A-Z][a-z]+(?:\s+[A-Z]\.)*(?:\s+et\s+al\.)?)\s*\((\d{4})\)'
+        author_pattern = r"([A-Z][a-z]+(?:\s+[A-Z]\.)*(?:\s+et\s+al\.)?)\s*\((\d{4})\)"
         matches = re.findall(author_pattern, text)
 
         for author, year in matches:
-            citations.append({
-                "authors": author,
-                "year": year,
-                "type": "extracted"
-            })
+            citations.append({"authors": author, "year": year, "type": "extracted"})
 
         # Look for DOI patterns
-        doi_pattern = r'doi:\s*([^\s\)\]]+)'
+        doi_pattern = r"doi:\s*([^\s\)\]]+)"
         doi_matches = re.findall(doi_pattern, text, re.IGNORECASE)
 
         for doi in doi_matches:
-            citations.append({
-                "doi": doi.strip(),
-                "type": "doi"
-            })
+            citations.append({"doi": doi.strip(), "type": "doi"})
 
         return citations
 
@@ -242,18 +257,14 @@ Remember: This is for academic research purposes. Prioritize accuracy, completen
             results.append(result)
 
             # Print progress
-            print(f"[Research] Completed query {i+1}/{len(queries)}: {query[:50]}...")
+            print(f"[Research] Completed query {i + 1}/{len(queries)}: {query[:50]}...")
 
         return results
 
     def get_model_info(self) -> dict[str, Any]:
         """Get information about available models from OpenRouter."""
         try:
-            response = requests.get(
-                f"{self.base_url}/models",
-                headers=self.headers,
-                timeout=30
-            )
+            response = requests.get(f"{self.base_url}/models", headers=self.headers, timeout=30)
             response.raise_for_status()
             return response.json()
         except Exception as e:
@@ -268,8 +279,7 @@ def main():
     parser.add_argument("query", nargs="?", help="Research query to look up")
     parser.add_argument("--model-info", action="store_true", help="Show available models")
     parser.add_argument("--batch", nargs="+", help="Run multiple queries")
-    parser.add_argument("--force-model", choices=['pro', 'reasoning'],
-                       help="Force use of specific model (pro=fast lookup, reasoning=deep analysis)")
+    parser.add_argument("--force-model", choices=["pro", "reasoning"], help="Force use of specific model (pro=fast lookup, reasoning=deep analysis)")
 
     args = parser.parse_args()
 
@@ -306,22 +316,22 @@ def main():
         # Display results
         for i, result in enumerate(results):
             if result["success"]:
-                print(f"\n{'='*80}")
-                print(f"Query {i+1}: {result['query']}")
+                print(f"\n{'=' * 80}")
+                print(f"Query {i + 1}: {result['query']}")
                 print(f"Timestamp: {result['timestamp']}")
                 print(f"Model: {result['model']} ({result.get('model_type', 'unknown')})")
-                print(f"{'='*80}")
+                print(f"{'=' * 80}")
                 print(result["response"])
 
                 if result["citations"]:
                     print(f"\nExtracted Citations ({len(result['citations'])}):")
                     for j, citation in enumerate(result["citations"]):
-                        print(f"  {j+1}. {citation}")
+                        print(f"  {j + 1}. {citation}")
 
                 if result["usage"]:
                     print(f"\nUsage: {result['usage']}")
             else:
-                print(f"\nError in query {i+1}: {result['error']}")
+                print(f"\nError in query {i + 1}: {result['error']}")
 
         return 0
 

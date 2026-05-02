@@ -80,7 +80,7 @@ class _McpHttpTransportBase(ITransport, ABC):
                 # Check if all chunks are valid JSON objects (dictionaries)
                 if all(isinstance(json.loads(t), dict) for t in texts):
                     return f"[{','.join(texts)}]"
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 # Not valid JSON or not objects, fall back to simple concatenation
                 pass
 

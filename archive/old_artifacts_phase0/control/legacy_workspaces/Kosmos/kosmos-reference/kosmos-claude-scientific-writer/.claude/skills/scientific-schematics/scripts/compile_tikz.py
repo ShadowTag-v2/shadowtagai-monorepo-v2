@@ -21,7 +21,6 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import List, Optional
 
 
 class TikZCompiler:
@@ -36,18 +35,14 @@ class TikZCompiler:
         """
         self.verbose = verbose
 
-    def _run_command(self, cmd: List[str], cwd: Optional[str] = None) -> bool:
+    def _run_command(self, cmd: list[str], cwd: str | None = None) -> bool:
         """Run a command and return success status."""
         if self.verbose:
             print(f"Running: {' '.join(cmd)}")
 
         try:
             result = subprocess.run(
-                cmd,
-                cwd=cwd,
-                stdout=subprocess.PIPE if not self.verbose else None,
-                stderr=subprocess.PIPE if not self.verbose else None,
-                text=True
+                cmd, cwd=cwd, stdout=subprocess.PIPE if not self.verbose else None, stderr=subprocess.PIPE if not self.verbose else None, text=True
             )
 
             if result.returncode != 0:
@@ -63,8 +58,7 @@ class TikZCompiler:
             print(f"Error running command: {e}")
             return False
 
-    def compile_to_pdf(self, tex_file: str, output: Optional[str] = None,
-                      cleanup: bool = True) -> Optional[str]:
+    def compile_to_pdf(self, tex_file: str, output: str | None = None, cleanup: bool = True) -> str | None:
         """
         Compile TikZ file to PDF.
 
@@ -86,7 +80,7 @@ class TikZCompiler:
         if output:
             pdf_path = Path(output).resolve()
         else:
-            pdf_path = tex_path.with_suffix('.pdf')
+            pdf_path = tex_path.with_suffix(".pdf")
 
         # Create temporary directory for compilation
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -95,7 +89,7 @@ class TikZCompiler:
             shutil.copy(tex_path, temp_tex)
 
             # Copy any additional files (tikz_styles.tex, etc.)
-            for aux_file in tex_path.parent.glob('*.tex'):
+            for aux_file in tex_path.parent.glob("*.tex"):
                 if aux_file != tex_path:
                     shutil.copy(aux_file, tmpdir)
 
@@ -104,18 +98,15 @@ class TikZCompiler:
 
             # Run pdflatex (may need to run twice for references)
             for i in range(2):
-                success = self._run_command(
-                    ['pdflatex', '-interaction=nonstopmode', temp_tex.name],
-                    cwd=tmpdir
-                )
+                success = self._run_command(["pdflatex", "-interaction=nonstopmode", temp_tex.name], cwd=tmpdir)
 
                 if not success:
-                    print(f"Compilation failed (pass {i+1}/2)")
+                    print(f"Compilation failed (pass {i + 1}/2)")
                     if i == 1:  # Only fail on second pass
                         return None
 
             # Copy PDF to output location
-            temp_pdf = temp_tex.with_suffix('.pdf')
+            temp_pdf = temp_tex.with_suffix(".pdf")
             if temp_pdf.exists():
                 shutil.copy(temp_pdf, pdf_path)
                 print(f"✓ PDF created: {pdf_path}")
@@ -124,8 +115,7 @@ class TikZCompiler:
                 print("Error: PDF not created")
                 return None
 
-    def pdf_to_png(self, pdf_file: str, output: Optional[str] = None,
-                   dpi: int = 300) -> Optional[str]:
+    def pdf_to_png(self, pdf_file: str, output: str | None = None, dpi: int = 300) -> str | None:
         """
         Convert PDF to PNG using ImageMagick.
 
@@ -147,19 +137,23 @@ class TikZCompiler:
         if output:
             png_path = Path(output)
         else:
-            png_path = pdf_path.with_suffix('.png')
+            png_path = pdf_path.with_suffix(".png")
 
         print(f"Converting to PNG ({dpi} DPI)...")
 
         # Use ImageMagick convert
-        success = self._run_command([
-            'convert',
-            '-density', str(dpi),
-            '-quality', '100',
-            str(pdf_path),
-            '-flatten',  # Remove transparency
-            str(png_path)
-        ])
+        success = self._run_command(
+            [
+                "convert",
+                "-density",
+                str(dpi),
+                "-quality",
+                "100",
+                str(pdf_path),
+                "-flatten",  # Remove transparency
+                str(png_path),
+            ]
+        )
 
         if success and png_path.exists():
             print(f"✓ PNG created: {png_path}")
@@ -188,12 +182,12 @@ class TikZCompiler:
         print(f"Opening {pdf_path.name}...")
 
         # Determine system-specific open command
-        if sys.platform == 'darwin':  # macOS
-            cmd = ['open', str(pdf_path)]
-        elif sys.platform.startswith('linux'):  # Linux
-            cmd = ['xdg-open', str(pdf_path)]
-        elif sys.platform == 'win32':  # Windows
-            cmd = ['start', str(pdf_path)]
+        if sys.platform == "darwin":  # macOS
+            cmd = ["open", str(pdf_path)]
+        elif sys.platform.startswith("linux"):  # Linux
+            cmd = ["xdg-open", str(pdf_path)]
+        elif sys.platform == "win32":  # Windows
+            cmd = ["start", str(pdf_path)]
         else:
             print(f"Error: Unsupported platform: {sys.platform}")
             return False
@@ -204,7 +198,7 @@ class TikZCompiler:
 def main():
     """Command-line interface."""
     parser = argparse.ArgumentParser(
-        description='Compile TikZ diagrams to PDF and PNG',
+        description="Compile TikZ diagrams to PDF and PNG",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -223,22 +217,17 @@ Examples:
 
   # Verbose output
   python compile_tikz.py diagram.tex --verbose
-        """
+        """,
     )
 
-    parser.add_argument('input', help='Input .tex file')
-    parser.add_argument('-o', '--output', help='Output PDF filename')
-    parser.add_argument('--png', action='store_true',
-                       help='Also generate PNG')
-    parser.add_argument('--png-output', help='PNG output filename')
-    parser.add_argument('--dpi', type=int, default=300,
-                       help='DPI for PNG output (default: 300)')
-    parser.add_argument('--preview', action='store_true',
-                       help='Open PDF after compilation')
-    parser.add_argument('--no-cleanup', action='store_true',
-                       help='Keep auxiliary files')
-    parser.add_argument('-v', '--verbose', action='store_true',
-                       help='Verbose output')
+    parser.add_argument("input", help="Input .tex file")
+    parser.add_argument("-o", "--output", help="Output PDF filename")
+    parser.add_argument("--png", action="store_true", help="Also generate PNG")
+    parser.add_argument("--png-output", help="PNG output filename")
+    parser.add_argument("--dpi", type=int, default=300, help="DPI for PNG output (default: 300)")
+    parser.add_argument("--preview", action="store_true", help="Open PDF after compilation")
+    parser.add_argument("--no-cleanup", action="store_true", help="Keep auxiliary files")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
 
     args = parser.parse_args()
 
@@ -247,18 +236,14 @@ Examples:
         print(f"Error: Input file not found: {args.input}")
         sys.exit(1)
 
-    if not args.input.endswith('.tex'):
+    if not args.input.endswith(".tex"):
         print("Warning: Input file doesn't have .tex extension")
 
     # Initialize compiler
     compiler = TikZCompiler(verbose=args.verbose)
 
     # Compile to PDF
-    pdf_file = compiler.compile_to_pdf(
-        args.input,
-        output=args.output,
-        cleanup=not args.no_cleanup
-    )
+    pdf_file = compiler.compile_to_pdf(args.input, output=args.output, cleanup=not args.no_cleanup)
 
     if not pdf_file:
         print("\n❌ Compilation failed")
@@ -266,11 +251,7 @@ Examples:
 
     # Convert to PNG if requested
     if args.png:
-        png_file = compiler.pdf_to_png(
-            pdf_file,
-            output=args.png_output,
-            dpi=args.dpi
-        )
+        png_file = compiler.pdf_to_png(pdf_file, output=args.png_output, dpi=args.dpi)
 
         if not png_file:
             print("\n⚠ PDF created but PNG conversion failed")
@@ -286,5 +267,5 @@ Examples:
     print(f"  \\includegraphics{{{Path(pdf_file).name}}}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

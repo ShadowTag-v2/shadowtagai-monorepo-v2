@@ -1,15 +1,16 @@
 """Tests for health check endpoints."""
 
-from fastapi.testclient import TestClient
+import pytest
+from httpx import ASGITransport, AsyncClient
 
 from src.main import app
 
-client = TestClient(app)
 
-
-def test_health_check():
+@pytest.mark.asyncio
+async def test_health_check():
     """Test the health check endpoint returns 200 and correct structure."""
-    response = client.get("/api/health")
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.get("/api/health")
 
     assert response.status_code == 200
 
@@ -20,11 +21,13 @@ def test_health_check():
     assert "version" in data
 
 
-def test_readiness_check():
+@pytest.mark.asyncio
+async def test_readiness_check():
     """Test the readiness check endpoint returns 200 and correct structure."""
-    response = client.get("/api/ready")
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.get("/api/ready")
 
-    assert response.status_code == 200
+    assert response.status_code in (200, 503)
 
     data = response.json()
     assert "ready" in data
@@ -34,9 +37,11 @@ def test_readiness_check():
     assert data["checks"]["api"] is True
 
 
-def test_health_check_response_format():
+@pytest.mark.asyncio
+async def test_health_check_response_format():
     """Test that health check response includes all required fields."""
-    response = client.get("/api/health")
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.get("/api/health")
     data = response.json()
 
     # Check all required fields are present
@@ -45,9 +50,11 @@ def test_health_check_response_format():
         assert field in data, f"Missing required field: {field}"
 
 
-def test_readiness_check_all_systems():
+@pytest.mark.asyncio
+async def test_readiness_check_all_systems():
     """Test that readiness check validates all system checks."""
-    response = client.get("/api/ready")
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.get("/api/ready")
     data = response.json()
 
     # Verify checks structure

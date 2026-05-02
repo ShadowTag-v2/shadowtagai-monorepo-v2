@@ -49,6 +49,7 @@ from vllm.v1.kv_cache_interface import (
 if current_platform.is_rocm():
     from vllm.platforms.rocm import on_gfx9
 else:
+
     def on_gfx9(*args, **kwargs):
         return False
 

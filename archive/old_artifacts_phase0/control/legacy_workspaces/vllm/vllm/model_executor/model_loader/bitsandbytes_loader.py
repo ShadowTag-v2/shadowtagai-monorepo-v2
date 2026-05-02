@@ -342,9 +342,10 @@ class BitsAndBytesModelLoader(BaseModelLoader):
 
         global_tp_size = get_tensor_model_parallel_world_size()
         global_tp_rank = get_tensor_model_parallel_rank()
+
         def check_match(weight_name, module_name):
-            return (weight_name.removesuffix(".weight")
-                    == module_name)
+            return weight_name.removesuffix(".weight") == module_name
+
         for (
             org_weight_name,
             mapped_weight_name,

@@ -1,7 +1,7 @@
 """Base kernel data models."""
 
 from pydantic import BaseModel, Field
-from typing import Any, Optional, Dict
+from typing import Any
 from datetime import datetime
 
 
@@ -22,7 +22,7 @@ class KernelOutput(BaseModel):
     kernel_name: str
     success: bool = True
     error: str | None = None
-    metrics: Optional["KernelMetrics"] = None
+    metrics: KernelMetrics | None = None
 
 
 class KernelMetrics(BaseModel):

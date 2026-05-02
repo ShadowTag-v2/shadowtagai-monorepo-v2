@@ -36,9 +36,7 @@ def test_git_branch_contains_slashes(pipenv_instance_pypi, pypi_lockfile):
         project = Project()
         lockfile = project.load_lockfile(expand_env_vars=False)
         deps = lockfile["default"]
-        pip_installable_lines = requirements.requirements_from_lockfile(
-            deps, include_hashes=False, include_markers=True
-        )
+        pip_installable_lines = requirements.requirements_from_lockfile(deps, include_hashes=False, include_markers=True)
         assert pip_installable_lines == [
             "google-api-python-client @ git+https://github.com/thehesiod/google-api-python-client.git@03803c21fc13a345e978f32775b2f2fa23c8e706"
         ]
@@ -58,9 +56,7 @@ def test_git_branch_contains_subdirectory_fragment(pipenv_instance_pypi, pypi_lo
         project = Project()
         lockfile = project.load_lockfile(expand_env_vars=False)
         deps = lockfile["default"]
-        pip_installable_lines = requirements.requirements_from_lockfile(
-            deps, include_hashes=False, include_markers=True
-        )
+        pip_installable_lines = requirements.requirements_from_lockfile(deps, include_hashes=False, include_markers=True)
         assert pip_installable_lines == [
             "pep508_package @ git+https://github.com/techalchemy/test-project.git@03803c21fc13a345e978f32775b2f2fa23c8e706#subdirectory=parent_folder/pep508-package"
         ]

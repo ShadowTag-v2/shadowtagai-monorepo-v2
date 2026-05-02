@@ -3,7 +3,7 @@
 from datetime import datetime
 from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class AnalysisRole(StrEnum):
@@ -64,8 +64,8 @@ class AnalysisSession(BaseModel):
     parent_session_id: str | None = Field(None, description="Parent session for continuation")
     related_sessions: list[str] = Field(default_factory=list, description="Related session IDs")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "session_id": "gemini-ingestion-2025-11-15-001",
                 "issue_title": "Gemini Ingestion Layer Analysis",
@@ -78,7 +78,8 @@ class AnalysisSession(BaseModel):
                 "context_window_size": 2_000_000,
                 "status": "active",
             },
-        }
+        },
+    )
 
 
 class ChatSummary(BaseModel):
@@ -109,8 +110,8 @@ class ChatSummary(BaseModel):
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "session_id": "gemini-ingestion-2025-11-15-001",
                 "summary": "Completed comprehensive analysis of Gemini Ingestion Layer. System is architecturally sound with 3 critical risks identified around source diversity and cost scaling.",
@@ -145,7 +146,8 @@ class ChatSummary(BaseModel):
                     "architecture",
                 ],
             },
-        }
+        },
+    )
 
 
 class ContextIndex(BaseModel):
@@ -174,8 +176,8 @@ class ContextIndex(BaseModel):
     active_sessions: int = Field(default=0, description="Currently active sessions")
     total_tokens_consumed: int = Field(default=0, description="Total tokens across all sessions")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "index_id": "context-index-main",
                 "name": "PNKLN AI Analysis Context Index",
@@ -183,7 +185,8 @@ class ContextIndex(BaseModel):
                 "active_sessions": 3,
                 "total_tokens_consumed": 1_250_000,
             },
-        }
+        },
+    )
 
 
 class CreateSessionRequest(BaseModel):

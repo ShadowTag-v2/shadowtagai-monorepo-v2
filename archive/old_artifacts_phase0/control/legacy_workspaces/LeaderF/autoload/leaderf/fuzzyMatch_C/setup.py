@@ -15,19 +15,23 @@ except ImportError:
         from setuptools.command.build_ext import build_ext
     except Exception as e:
         print(f"\nFailed to install setuptools: {e}")
-        print("Please turn to https://stackoverflow.com/questions/69919970/no-module-named-distutils-util-but-distutils-is-installed/76691103#76691103 for help")
+        print(
+            "Please turn to https://stackoverflow.com/questions/69919970/no-module-named-distutils-util-but-distutils-is-installed/76691103#76691103 for help"
+        )
         sys.exit(1)
+
 
 class BuildExt(build_ext):
     def build_extensions(self):
-        if os.name == 'nt' and "MSC" in platform.python_compiler():
+        if os.name == "nt" and "MSC" in platform.python_compiler():
             pass
-        elif os.name == 'posix':
+        elif os.name == "posix":
             for ext in self.extensions:
-                ext.extra_compile_args = ['-std=c99']
+                ext.extra_compile_args = ["-std=c99"]
         build_ext.build_extensions(self)
 
-if os.name == 'nt':
+
+if os.name == "nt":
     module1 = Extension(
         "fuzzyMatchC",
         sources=["fuzzyMatch.cpp"],

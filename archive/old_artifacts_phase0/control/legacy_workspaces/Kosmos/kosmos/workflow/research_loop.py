@@ -55,7 +55,7 @@ class ResearchWorkflow:
         world_model=None,
         max_cycles: int = 20,
         seed: int | None = None,
-        temperature: float | None = None
+        temperature: float | None = None,
     ):
         """
         Initialize Research Workflow.
@@ -77,6 +77,7 @@ class ResearchWorkflow:
         # Apply seed if provided (Issue #64: Multi-Run Convergence)
         if seed is not None:
             from kosmos.safety.reproducibility import ReproducibilityManager
+
             self._reproducibility_manager = ReproducibilityManager(default_seed=seed)
             self._reproducibility_manager.set_seed(seed)
             logger.info(f"Set random seed: {seed}")
@@ -91,10 +92,7 @@ class ResearchWorkflow:
         logger.info("✓ Gap 0: Context Compression initialized")
 
         # Gap 1: State Manager
-        self.state_manager = ArtifactStateManager(
-            artifacts_dir=artifacts_dir,
-            world_model=world_model
-        )
+        self.state_manager = ArtifactStateManager(artifacts_dir=artifacts_dir, world_model=world_model)
         logger.info("✓ Gap 1: State Manager initialized")
 
         # Gap 3: Skill Loader
@@ -125,16 +123,13 @@ class ResearchWorkflow:
         # Try to get event bus
         try:
             from kosmos.core.event_bus import get_event_bus
+
             self._event_bus = get_event_bus()
         except ImportError:
             self._emit_events = False
             logger.debug("EventBus not available, streaming disabled")
 
-    async def run(
-        self,
-        num_cycles: int = 5,
-        tasks_per_cycle: int = 10
-    ) -> dict:
+    async def run(self, num_cycles: int = 5, tasks_per_cycle: int = 10) -> dict:
         """
         Run autonomous research workflow.
 
@@ -153,31 +148,22 @@ class ResearchWorkflow:
         self.start_time = datetime.now()
 
         logger.info(
-            f"\n{'='*70}\n"
+            f"\n{'=' * 70}\n"
             f"Starting Kosmos Research Workflow\n"
             f"Objective: {self.research_objective}\n"
             f"Cycles: {num_cycles}\n"
             f"Tasks per cycle: {tasks_per_cycle}\n"
-            f"{'='*70}\n"
+            f"{'=' * 70}\n"
         )
 
         # Emit workflow started event
-        await self._emit_workflow_event(
-            "started",
-            cycle=0,
-            max_cycles=num_cycles
-        )
+        await self._emit_workflow_event("started", cycle=0, max_cycles=num_cycles)
 
         for cycle in range(1, num_cycles + 1):
             logger.info(f"\n--- Cycle {cycle}/{num_cycles} ---")
 
             # Emit cycle started event
-            await self._emit_cycle_event(
-                "started",
-                cycle=cycle,
-                max_cycles=num_cycles,
-                tasks_count=tasks_per_cycle
-            )
+            await self._emit_cycle_event("started", cycle=cycle, max_cycles=num_cycles, tasks_count=tasks_per_cycle)
 
             try:
                 cycle_result = await self._execute_cycle(cycle, tasks_per_cycle)
@@ -195,31 +181,22 @@ class ResearchWorkflow:
                     cycle=cycle,
                     max_cycles=num_cycles,
                     tasks_count=tasks_per_cycle,
-                    completed_tasks=cycle_result.get('tasks_completed', 0),
-                    findings_count=cycle_result.get('validated_findings', 0)
+                    completed_tasks=cycle_result.get("tasks_completed", 0),
+                    findings_count=cycle_result.get("validated_findings", 0),
                 )
 
                 # Emit workflow progress event
                 progress_percent = (cycle / num_cycles) * 100
-                total_findings = sum(r.get('validated_findings', 0) for r in self.cycle_results)
+                total_findings = sum(r.get("validated_findings", 0) for r in self.cycle_results)
                 await self._emit_workflow_event(
-                    "progress",
-                    cycle=cycle,
-                    max_cycles=num_cycles,
-                    progress_percent=progress_percent,
-                    findings_count=total_findings
+                    "progress", cycle=cycle, max_cycles=num_cycles, progress_percent=progress_percent, findings_count=total_findings
                 )
 
             except Exception as e:
                 logger.error(f"Cycle {cycle} failed: {e}")
 
                 # Emit cycle failed event
-                await self._emit_cycle_event(
-                    "failed",
-                    cycle=cycle,
-                    max_cycles=num_cycles,
-                    tasks_count=tasks_per_cycle
-                )
+                await self._emit_cycle_event("failed", cycle=cycle, max_cycles=num_cycles, tasks_count=tasks_per_cycle)
                 continue
 
         # Compute final statistics
@@ -231,8 +208,8 @@ class ResearchWorkflow:
             cycle=num_cycles,
             max_cycles=num_cycles,
             progress_percent=100.0,
-            findings_count=results.get('validated_findings', 0),
-            validated_count=results.get('validated_findings', 0)
+            findings_count=results.get("validated_findings", 0),
+            validated_count=results.get("validated_findings", 0),
         )
 
         return results
@@ -242,16 +219,12 @@ class ResearchWorkflow:
 
         # Step 1: Get context from State Manager
         context = self.state_manager.get_cycle_context(cycle, lookback=3)
-        context['research_objective'] = self.research_objective
+        context["research_objective"] = self.research_objective
 
         logger.info(f"  Context: {context.get('findings_count', 0)} recent findings")
 
         # Step 2: Plan Creator generates tasks
-        plan = self.plan_creator.create_plan(
-            research_objective=self.research_objective,
-            context=context,
-            num_tasks=num_tasks
-        )
+        plan = self.plan_creator.create_plan(research_objective=self.research_objective, context=context, num_tasks=num_tasks)
 
         logger.info(f"  Generated plan with {len(plan.tasks)} tasks")
 
@@ -259,18 +232,12 @@ class ResearchWorkflow:
         if self.past_tasks:
             self.novelty_detector.index_past_tasks(self.past_tasks)
             plan_novelty = self.novelty_detector.check_plan_novelty(plan.to_dict())
-            logger.info(
-                f"  Novelty: {plan_novelty['novel_task_count']}/{len(plan.tasks)} "
-                f"novel tasks ({plan_novelty['plan_novelty_score']:.2f})"
-            )
+            logger.info(f"  Novelty: {plan_novelty['novel_task_count']}/{len(plan.tasks)} novel tasks ({plan_novelty['plan_novelty_score']:.2f})")
 
         # Step 4: Plan Reviewer validates quality
         review = self.plan_reviewer.review_plan(plan.to_dict(), context)
 
-        logger.info(
-            f"  Plan review: {'APPROVED' if review.approved else 'REJECTED'} "
-            f"(score: {review.average_score:.1f}/10)"
-        )
+        logger.info(f"  Plan review: {'APPROVED' if review.approved else 'REJECTED'} (score: {review.average_score:.1f}/10)")
 
         # If rejected, attempt revision (once)
         if not review.approved:
@@ -278,30 +245,22 @@ class ResearchWorkflow:
             plan = self.plan_creator.revise_plan(plan, review.to_dict(), context)
             review = self.plan_reviewer.review_plan(plan.to_dict(), context)
 
-            logger.info(
-                f"  Revised plan: {'APPROVED' if review.approved else 'REJECTED'}"
-            )
+            logger.info(f"  Revised plan: {'APPROVED' if review.approved else 'REJECTED'}")
 
         # Step 5: Delegation Manager executes approved tasks
         completed_tasks = []
         if review.approved:
-            execution_result = await self.delegation_manager.execute_plan(
-                plan.to_dict(),
-                cycle,
-                context
-            )
+            execution_result = await self.delegation_manager.execute_plan(plan.to_dict(), cycle, context)
 
-            completed_tasks = execution_result.get('completed_tasks', [])
-            logger.info(
-                f"  Execution: {len(completed_tasks)}/{num_tasks} tasks completed"
-            )
+            completed_tasks = execution_result.get("completed_tasks", [])
+            logger.info(f"  Execution: {len(completed_tasks)}/{num_tasks} tasks completed")
         else:
             logger.warning("  Plan rejected after revision, skipping execution")
 
         # Step 6 & 7: Validate and save findings
         validated_count = 0
         for task_result in completed_tasks:
-            finding = task_result.get('finding')
+            finding = task_result.get("finding")
             if not finding:
                 continue
 
@@ -310,30 +269,18 @@ class ResearchWorkflow:
 
             if eval_score.passes_threshold:
                 # Save validated finding
-                finding['scholar_eval'] = eval_score.to_dict()
-                await self.state_manager.save_finding_artifact(
-                    cycle,
-                    task_result.get('task_id', 0),
-                    finding
-                )
+                finding["scholar_eval"] = eval_score.to_dict()
+                await self.state_manager.save_finding_artifact(cycle, task_result.get("task_id", 0), finding)
                 validated_count += 1
             else:
-                logger.debug(
-                    f"    Finding rejected: score={eval_score.overall_score:.2f}"
-                )
+                logger.debug(f"    Finding rejected: score={eval_score.overall_score:.2f}")
 
         logger.info(f"  Validated: {validated_count}/{len(completed_tasks)} findings")
 
         # Step 8: Compress cycle results
         if completed_tasks:
-            compressed_cycle = self.context_compressor.compress_cycle_results(
-                cycle,
-                completed_tasks
-            )
-            logger.info(
-                f"  Compressed: {len(completed_tasks)} tasks → "
-                f"{len(compressed_cycle.summary)} chars"
-            )
+            compressed_cycle = self.context_compressor.compress_cycle_results(cycle, completed_tasks)
+            logger.info(f"  Compressed: {len(completed_tasks)} tasks → {len(compressed_cycle.summary)} chars")
 
         # Track tasks for novelty detection
         for task in plan.tasks:
@@ -343,12 +290,12 @@ class ResearchWorkflow:
         await self.state_manager.generate_cycle_summary(cycle)
 
         return {
-            'cycle': cycle,
-            'tasks_generated': len(plan.tasks),
-            'tasks_completed': len(completed_tasks),
-            'validated_findings': validated_count,
-            'plan_approved': review.approved,
-            'plan_score': review.average_score
+            "cycle": cycle,
+            "tasks_generated": len(plan.tasks),
+            "tasks_completed": len(completed_tasks),
+            "validated_findings": validated_count,
+            "plan_approved": review.approved,
+            "plan_score": review.average_score,
         }
 
     def _compute_final_statistics(self) -> dict:
@@ -358,42 +305,32 @@ class ResearchWorkflow:
         all_findings = self.state_manager.get_all_findings()
         validated_findings = self.state_manager.get_validated_findings()
 
-        total_tasks_completed = sum(
-            r.get('tasks_completed', 0) for r in self.cycle_results
-        )
-        total_tasks_generated = sum(
-            r.get('tasks_generated', 0) for r in self.cycle_results
-        )
+        total_tasks_completed = sum(r.get("tasks_completed", 0) for r in self.cycle_results)
+        total_tasks_generated = sum(r.get("tasks_generated", 0) for r in self.cycle_results)
 
         results = {
-            'cycles_completed': len(self.cycle_results),
-            'total_findings': len(all_findings),
-            'validated_findings': len(validated_findings),
-            'validation_rate': (
-                len(validated_findings) / len(all_findings)
-                if all_findings else 0
-            ),
-            'total_tasks_generated': total_tasks_generated,
-            'total_tasks_completed': total_tasks_completed,
-            'task_completion_rate': (
-                total_tasks_completed / total_tasks_generated
-                if total_tasks_generated else 0
-            ),
-            'total_time': total_time,
-            'research_objective': self.research_objective
+            "cycles_completed": len(self.cycle_results),
+            "total_findings": len(all_findings),
+            "validated_findings": len(validated_findings),
+            "validation_rate": (len(validated_findings) / len(all_findings) if all_findings else 0),
+            "total_tasks_generated": total_tasks_generated,
+            "total_tasks_completed": total_tasks_completed,
+            "task_completion_rate": (total_tasks_completed / total_tasks_generated if total_tasks_generated else 0),
+            "total_time": total_time,
+            "research_objective": self.research_objective,
         }
 
         logger.info(
-            f"\n{'='*70}\n"
+            f"\n{'=' * 70}\n"
             f"Research Workflow Complete!\n"
             f"Cycles: {results['cycles_completed']}\n"
             f"Findings: {results['total_findings']} "
             f"({results['validated_findings']} validated, "
-            f"{results['validation_rate']*100:.1f}%)\n"
+            f"{results['validation_rate'] * 100:.1f}%)\n"
             f"Tasks: {results['total_tasks_completed']}/{results['total_tasks_generated']} "
-            f"({results['task_completion_rate']*100:.1f}% completion)\n"
+            f"({results['task_completion_rate'] * 100:.1f}% completion)\n"
             f"Time: {results['total_time']:.1f}s\n"
-            f"{'='*70}\n"
+            f"{'=' * 70}\n"
         )
 
         return results
@@ -435,9 +372,9 @@ class ResearchWorkflow:
             if finding.code_provenance:
                 prov = finding.code_provenance
                 hyperlink = f"{prov['notebook_path']}#cell={prov['cell_index']}&line={prov['start_line']}"
-                filename = prov['notebook_path'].split('/')[-1]
+                filename = prov["notebook_path"].split("/")[-1]
                 report += f"**Code Citation**: [{filename}]({hyperlink})"
-                if prov.get('start_line') and prov.get('end_line'):
+                if prov.get("start_line") and prov.get("end_line"):
                     report += f" (lines {prov['start_line']}-{prov['end_line']})"
                 report += "\n\n"
             elif finding.notebook_path:
@@ -445,7 +382,7 @@ class ResearchWorkflow:
 
             # Quality score
             if finding.scholar_eval:
-                overall = finding.scholar_eval.get('overall_score', 0)
+                overall = finding.scholar_eval.get("overall_score", 0)
                 report += f"**Quality Score**: {overall:.2f}/1.0\n\n"
 
         return report
@@ -453,24 +390,14 @@ class ResearchWorkflow:
     def get_statistics(self) -> dict:
         """Get comprehensive statistics."""
         return {
-            'workflow': {
-                'research_objective': self.research_objective,
-                'max_cycles': self.max_cycles,
-                'cycles_completed': len(self.cycle_results)
-            },
-            'state_manager': self.state_manager.get_statistics(),
-            'skill_loader': self.skill_loader.get_statistics(),
-            'novelty_detector': self.novelty_detector.get_statistics()
+            "workflow": {"research_objective": self.research_objective, "max_cycles": self.max_cycles, "cycles_completed": len(self.cycle_results)},
+            "state_manager": self.state_manager.get_statistics(),
+            "skill_loader": self.skill_loader.get_statistics(),
+            "novelty_detector": self.novelty_detector.get_statistics(),
         }
 
     async def _emit_workflow_event(
-        self,
-        status: str,
-        cycle: int = 0,
-        max_cycles: int = 0,
-        progress_percent: float = 0.0,
-        findings_count: int = 0,
-        validated_count: int = 0
+        self, status: str, cycle: int = 0, max_cycles: int = 0, progress_percent: float = 0.0, findings_count: int = 0, validated_count: int = 0
     ) -> None:
         """
         Emit a workflow lifecycle event.
@@ -505,7 +432,7 @@ class ResearchWorkflow:
                 max_cycles=max_cycles,
                 progress_percent=progress_percent,
                 findings_count=findings_count,
-                validated_count=validated_count
+                validated_count=validated_count,
             )
 
             await self._event_bus.publish(event)
@@ -521,7 +448,7 @@ class ResearchWorkflow:
         tasks_count: int = 0,
         completed_tasks: int = 0,
         findings_count: int = 0,
-        duration_ms: int = None
+        duration_ms: int = None,
     ) -> None:
         """
         Emit a research cycle event.
@@ -555,7 +482,7 @@ class ResearchWorkflow:
                 tasks_count=tasks_count,
                 completed_tasks=completed_tasks,
                 findings_count=findings_count,
-                duration_ms=duration_ms
+                duration_ms=duration_ms,
             )
 
             await self._event_bus.publish(event)

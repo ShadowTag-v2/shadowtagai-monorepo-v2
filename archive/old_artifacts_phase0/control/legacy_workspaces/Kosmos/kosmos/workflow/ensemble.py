@@ -40,20 +40,22 @@ logger = logging.getLogger(__name__)
 # Data Classes
 # =============================================================================
 
+
 @dataclass
 class RunConfig:
     """Configuration for a single ensemble run."""
-    run_id: str                    # Unique identifier (e.g., "run_0", "run_1")
-    seed: int                      # Random seed for this run
-    temperature: float             # LLM temperature for this run
-    run_index: int                 # 0-based index in ensemble
+
+    run_id: str  # Unique identifier (e.g., "run_0", "run_1")
+    seed: int  # Random seed for this run
+    temperature: float  # LLM temperature for this run
+    run_index: int  # 0-based index in ensemble
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'RunConfig':
+    def from_dict(cls, data: dict[str, Any]) -> RunConfig:
         """Deserialize from dictionary."""
         return cls(**data)
 
@@ -66,22 +68,23 @@ class FindingMatch:
     Represents a cluster of similar findings from different runs,
     with statistics about their consistency.
     """
-    match_id: str                             # Unique identifier for this match
-    canonical_summary: str                    # Representative summary (from best finding)
-    matched_findings: list[dict]              # All matched Finding dicts
-    run_indices: list[int]                    # Which runs contained this finding
-    replication_count: int                    # How many runs found this
-    replication_rate: float                   # replication_count / total_runs
+
+    match_id: str  # Unique identifier for this match
+    canonical_summary: str  # Representative summary (from best finding)
+    matched_findings: list[dict]  # All matched Finding dicts
+    run_indices: list[int]  # Which runs contained this finding
+    replication_count: int  # How many runs found this
+    replication_rate: float  # replication_count / total_runs
 
     # Statistical consistency
     effect_sizes: list[float] = field(default_factory=list)
     effect_size_mean: float = 0.0
     effect_size_std: float = 0.0
-    effect_size_cv: float = 0.0              # Coefficient of variation (std/mean)
+    effect_size_cv: float = 0.0  # Coefficient of variation (std/mean)
 
     p_values: list[float] = field(default_factory=list)
-    significance_agreement: float = 0.0       # Proportion with same significance conclusion
-    direction_agreement: float = 0.0          # Proportion with same effect direction
+    significance_agreement: float = 0.0  # Proportion with same significance conclusion
+    direction_agreement: float = 0.0  # Proportion with same effect direction
 
     # ScholarEval consistency
     scholar_scores: list[float] = field(default_factory=list)
@@ -89,7 +92,7 @@ class FindingMatch:
     scholar_score_std: float = 0.0
 
     # Convergence verdict
-    convergence_strength: str = "none"        # "strong", "moderate", "weak", "none"
+    convergence_strength: str = "none"  # "strong", "moderate", "weak", "none"
     is_convergent: bool = False
 
     def to_dict(self) -> dict[str, Any]:
@@ -97,7 +100,7 @@ class FindingMatch:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'FindingMatch':
+    def from_dict(cls, data: dict[str, Any]) -> FindingMatch:
         """Deserialize from dictionary."""
         return cls(**data)
 
@@ -105,40 +108,41 @@ class FindingMatch:
 @dataclass
 class ConvergenceMetrics:
     """Aggregate convergence statistics across all runs."""
+
     total_runs: int
-    total_unique_findings: int                # After deduplication
-    total_raw_findings: int                   # Before deduplication
+    total_unique_findings: int  # After deduplication
+    total_raw_findings: int  # Before deduplication
 
     # Replication distribution
-    findings_replicated_1: int = 0            # Found in 1 run only
-    findings_replicated_2_3: int = 0          # Found in 2-3 runs
-    findings_replicated_4_plus: int = 0       # Found in 4+ runs
+    findings_replicated_1: int = 0  # Found in 1 run only
+    findings_replicated_2_3: int = 0  # Found in 2-3 runs
+    findings_replicated_4_plus: int = 0  # Found in 4+ runs
 
     # Convergence rates
-    overall_replication_rate: float = 0.0     # Avg replication rate across findings
-    strong_convergence_count: int = 0         # Findings with >= 4/5 runs
-    moderate_convergence_count: int = 0       # Findings with 3/5 runs
-    weak_convergence_count: int = 0           # Findings with 2/5 runs
+    overall_replication_rate: float = 0.0  # Avg replication rate across findings
+    strong_convergence_count: int = 0  # Findings with >= 4/5 runs
+    moderate_convergence_count: int = 0  # Findings with 3/5 runs
+    weak_convergence_count: int = 0  # Findings with 2/5 runs
 
     # Statistical consistency
-    avg_effect_size_cv: float = 0.0           # Avg coefficient of variation
-    avg_significance_agreement: float = 0.0   # Avg proportion same conclusion
-    avg_direction_agreement: float = 0.0      # Avg proportion same direction
+    avg_effect_size_cv: float = 0.0  # Avg coefficient of variation
+    avg_significance_agreement: float = 0.0  # Avg proportion same conclusion
+    avg_direction_agreement: float = 0.0  # Avg proportion same direction
 
     # Quality consistency
-    avg_scholar_score_variance: float = 0.0   # Variance in ScholarEval scores
+    avg_scholar_score_variance: float = 0.0  # Variance in ScholarEval scores
 
     # Thresholds used
-    replication_threshold: float = 0.6        # Default 0.6 (3/5 runs)
-    effect_cv_threshold: float = 0.2          # Default 0.2 (20% variation)
-    significance_threshold: float = 0.6       # Default 0.6 (60% agreement)
+    replication_threshold: float = 0.6  # Default 0.6 (3/5 runs)
+    effect_cv_threshold: float = 0.2  # Default 0.2 (20% variation)
+    significance_threshold: float = 0.6  # Default 0.6 (60% agreement)
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'ConvergenceMetrics':
+    def from_dict(cls, data: dict[str, Any]) -> ConvergenceMetrics:
         """Deserialize from dictionary."""
         return cls(**data)
 
@@ -146,12 +150,13 @@ class ConvergenceMetrics:
 @dataclass
 class EnsembleResult:
     """Complete result from an ensemble run."""
+
     research_objective: str
     n_runs: int
     run_configs: list[RunConfig]
 
     # Per-run results
-    run_results: list[dict] = field(default_factory=list)      # From ResearchWorkflow.run()
+    run_results: list[dict] = field(default_factory=list)  # From ResearchWorkflow.run()
     run_findings: list[list[dict]] = field(default_factory=list)  # Findings per run
 
     # Convergence analysis
@@ -170,18 +175,18 @@ class EnsembleResult:
     def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
         result = {
-            'research_objective': self.research_objective,
-            'n_runs': self.n_runs,
-            'run_configs': [rc.to_dict() for rc in self.run_configs],
-            'run_results': self.run_results,
-            'run_findings': self.run_findings,
-            'matched_findings': [mf.to_dict() for mf in self.matched_findings],
-            'convergence_metrics': self.convergence_metrics.to_dict() if self.convergence_metrics else None,
-            'convergent_findings': [cf.to_dict() for cf in self.convergent_findings],
-            'non_convergent_findings': [ncf.to_dict() for ncf in self.non_convergent_findings],
-            'total_time_seconds': self.total_time_seconds,
-            'start_timestamp': self.start_timestamp,
-            'end_timestamp': self.end_timestamp,
+            "research_objective": self.research_objective,
+            "n_runs": self.n_runs,
+            "run_configs": [rc.to_dict() for rc in self.run_configs],
+            "run_results": self.run_results,
+            "run_findings": self.run_findings,
+            "matched_findings": [mf.to_dict() for mf in self.matched_findings],
+            "convergence_metrics": self.convergence_metrics.to_dict() if self.convergence_metrics else None,
+            "convergent_findings": [cf.to_dict() for cf in self.convergent_findings],
+            "non_convergent_findings": [ncf.to_dict() for ncf in self.non_convergent_findings],
+            "total_time_seconds": self.total_time_seconds,
+            "start_timestamp": self.start_timestamp,
+            "end_timestamp": self.end_timestamp,
         }
         return result
 
@@ -201,6 +206,7 @@ class EnsembleResult:
 # =============================================================================
 # Convergence Analyzer
 # =============================================================================
+
 
 class ConvergenceAnalyzer:
     """
@@ -223,7 +229,7 @@ class ConvergenceAnalyzer:
         effect_cv_threshold: float = 0.2,
         significance_threshold: float = 0.6,
         scholar_variance_threshold: float = 0.15,
-        use_embeddings: bool = True
+        use_embeddings: bool = True,
     ):
         """
         Initialize ConvergenceAnalyzer.
@@ -252,21 +258,16 @@ class ConvergenceAnalyzer:
         """Initialize sentence transformer model."""
         try:
             from sentence_transformers import SentenceTransformer
+
             self.model = SentenceTransformer("all-MiniLM-L6-v2")
             logger.info("Loaded sentence transformer: all-MiniLM-L6-v2")
         except ImportError:
             logger.warning(
-                "sentence-transformers not installed. "
-                "Using fallback token-based similarity. "
-                "Install with: pip install sentence-transformers"
+                "sentence-transformers not installed. Using fallback token-based similarity. Install with: pip install sentence-transformers"
             )
             self.model = None
 
-    def analyze(
-        self,
-        run_findings: list[list[dict]],
-        run_configs: list[RunConfig] | None = None
-    ) -> tuple[list[FindingMatch], ConvergenceMetrics]:
+    def analyze(self, run_findings: list[list[dict]], run_configs: list[RunConfig] | None = None) -> tuple[list[FindingMatch], ConvergenceMetrics]:
         """
         Main analysis entry point.
 
@@ -339,10 +340,7 @@ class ConvergenceAnalyzer:
 
         return matched_findings
 
-    def _cluster_similar_findings(
-        self,
-        all_findings: list[tuple[int, dict]]
-    ) -> list[list[tuple[int, dict]]]:
+    def _cluster_similar_findings(self, all_findings: list[tuple[int, dict]]) -> list[list[tuple[int, dict]]]:
         """
         Cluster similar findings using union-find.
 
@@ -408,20 +406,14 @@ class ConvergenceAnalyzer:
             Similarity score (0-1)
         """
         # Text similarity
-        text_sim = self._compute_text_similarity(
-            finding1.get('summary', ''),
-            finding2.get('summary', '')
-        )
+        text_sim = self._compute_text_similarity(finding1.get("summary", ""), finding2.get("summary", ""))
 
         # Statistical similarity
-        stat_sim = self._compute_statistical_similarity(
-            finding1.get('statistics', {}),
-            finding2.get('statistics', {})
-        )
+        stat_sim = self._compute_statistical_similarity(finding1.get("statistics", {}), finding2.get("statistics", {}))
 
         # Evidence type match
-        type1 = finding1.get('evidence_type', 'unknown')
-        type2 = finding2.get('evidence_type', 'unknown')
+        type1 = finding1.get("evidence_type", "unknown")
+        type2 = finding2.get("evidence_type", "unknown")
         type_sim = 1.0 if type1 == type2 else 0.5
 
         # Weighted combination
@@ -471,8 +463,8 @@ class ConvergenceAnalyzer:
         scores = []
 
         # Effect size comparison
-        es1 = stats1.get('effect_size')
-        es2 = stats2.get('effect_size')
+        es1 = stats1.get("effect_size")
+        es2 = stats2.get("effect_size")
 
         if es1 is not None and es2 is not None:
             # Direction match
@@ -488,8 +480,8 @@ class ConvergenceAnalyzer:
             scores.append(0.5 * sign_match + 0.5 * magnitude_sim)
 
         # P-value / significance comparison
-        p1 = stats1.get('p_value')
-        p2 = stats2.get('p_value')
+        p1 = stats1.get("p_value")
+        p2 = stats2.get("p_value")
 
         if p1 is not None and p2 is not None:
             sig1 = p1 < 0.05
@@ -499,12 +491,7 @@ class ConvergenceAnalyzer:
 
         return np.mean(scores) if scores else 0.5
 
-    def _create_finding_match(
-        self,
-        cluster: list[tuple[int, dict]],
-        n_runs: int,
-        cluster_idx: int
-    ) -> FindingMatch:
+    def _create_finding_match(self, cluster: list[tuple[int, dict]], n_runs: int, cluster_idx: int) -> FindingMatch:
         """
         Create a FindingMatch from a cluster of similar findings.
 
@@ -523,11 +510,8 @@ class ConvergenceAnalyzer:
 
         # Select canonical summary (from finding with highest ScholarEval score)
         findings = [finding for _, finding in cluster]
-        best_finding = max(
-            findings,
-            key=lambda f: self._get_scholar_score(f)
-        )
-        canonical_summary = best_finding.get('summary', 'Unknown finding')
+        best_finding = max(findings, key=lambda f: self._get_scholar_score(f))
+        canonical_summary = best_finding.get("summary", "Unknown finding")
 
         # Extract statistics
         effect_sizes = []
@@ -535,11 +519,11 @@ class ConvergenceAnalyzer:
         scholar_scores = []
 
         for finding in findings:
-            stats = finding.get('statistics', {})
-            if 'effect_size' in stats and stats['effect_size'] is not None:
-                effect_sizes.append(float(stats['effect_size']))
-            if 'p_value' in stats and stats['p_value'] is not None:
-                p_values.append(float(stats['p_value']))
+            stats = finding.get("statistics", {})
+            if "effect_size" in stats and stats["effect_size"] is not None:
+                effect_sizes.append(float(stats["effect_size"]))
+            if "p_value" in stats and stats["p_value"] is not None:
+                p_values.append(float(stats["p_value"]))
 
             scholar_score = self._get_scholar_score(finding)
             if scholar_score > 0:
@@ -548,17 +532,12 @@ class ConvergenceAnalyzer:
         # Calculate effect size statistics
         effect_size_mean = float(np.mean(effect_sizes)) if effect_sizes else 0.0
         effect_size_std = float(np.std(effect_sizes)) if len(effect_sizes) > 1 else 0.0
-        effect_size_cv = (
-            abs(effect_size_std / effect_size_mean) if effect_size_mean != 0 else 0.0
-        )
+        effect_size_cv = abs(effect_size_std / effect_size_mean) if effect_size_mean != 0 else 0.0
 
         # Calculate significance agreement
         if p_values:
             significance_conclusions = [p < 0.05 for p in p_values]
-            most_common_count = max(
-                sum(1 for c in significance_conclusions if c),
-                sum(1 for c in significance_conclusions if not c)
-            )
+            most_common_count = max(sum(1 for c in significance_conclusions if c), sum(1 for c in significance_conclusions if not c))
             significance_agreement = most_common_count / len(significance_conclusions)
         else:
             significance_agreement = 0.0
@@ -576,17 +555,10 @@ class ConvergenceAnalyzer:
         scholar_score_std = float(np.std(scholar_scores)) if len(scholar_scores) > 1 else 0.0
 
         # Determine convergence strength
-        convergence_strength = self._determine_convergence_strength(
-            replication_rate, n_runs
-        )
+        convergence_strength = self._determine_convergence_strength(replication_rate, n_runs)
 
         # Determine if convergent
-        is_convergent = self._is_convergent(
-            convergence_strength,
-            effect_size_cv,
-            significance_agreement,
-            direction_agreement
-        )
+        is_convergent = self._is_convergent(convergence_strength, effect_size_cv, significance_agreement, direction_agreement)
 
         return FindingMatch(
             match_id=f"match_{cluster_idx:03d}",
@@ -606,21 +578,17 @@ class ConvergenceAnalyzer:
             scholar_score_mean=scholar_score_mean,
             scholar_score_std=scholar_score_std,
             convergence_strength=convergence_strength,
-            is_convergent=is_convergent
+            is_convergent=is_convergent,
         )
 
     def _get_scholar_score(self, finding: dict) -> float:
         """Extract ScholarEval overall score from finding."""
-        scholar_eval = finding.get('scholar_eval', {})
+        scholar_eval = finding.get("scholar_eval", {})
         if isinstance(scholar_eval, dict):
-            return scholar_eval.get('overall_score', 0.0)
+            return scholar_eval.get("overall_score", 0.0)
         return 0.0
 
-    def _determine_convergence_strength(
-        self,
-        replication_rate: float,
-        n_runs: int
-    ) -> str:
+    def _determine_convergence_strength(self, replication_rate: float, n_runs: int) -> str:
         """
         Determine convergence strength for a finding.
 
@@ -640,31 +608,20 @@ class ConvergenceAnalyzer:
         else:
             return "none"
 
-    def _is_convergent(
-        self,
-        convergence_strength: str,
-        effect_size_cv: float,
-        significance_agreement: float,
-        direction_agreement: float
-    ) -> bool:
+    def _is_convergent(self, convergence_strength: str, effect_size_cv: float, significance_agreement: float, direction_agreement: float) -> bool:
         """
         Determine if a finding is convergent.
 
         A finding is convergent if it has moderate+ replication AND statistical consistency.
         """
         return (
-            convergence_strength in ("strong", "moderate") and
-            effect_size_cv <= self.effect_cv_threshold and
-            significance_agreement >= self.significance_threshold and
-            direction_agreement >= 0.8  # Require 80% direction agreement
+            convergence_strength in ("strong", "moderate")
+            and effect_size_cv <= self.effect_cv_threshold
+            and significance_agreement >= self.significance_threshold
+            and direction_agreement >= 0.8  # Require 80% direction agreement
         )
 
-    def _calculate_convergence_metrics(
-        self,
-        matched_findings: list[FindingMatch],
-        n_runs: int,
-        total_raw: int
-    ) -> ConvergenceMetrics:
+    def _calculate_convergence_metrics(self, matched_findings: list[FindingMatch], n_runs: int, total_raw: int) -> ConvergenceMetrics:
         """Calculate aggregate convergence metrics."""
         total_unique = len(matched_findings)
 
@@ -691,7 +648,7 @@ class ConvergenceAnalyzer:
             dir_agreements = [m.direction_agreement for m in matched_findings if m.effect_sizes]
             avg_dir_agreement = float(np.mean(dir_agreements)) if dir_agreements else 0.0
 
-            scholar_vars = [m.scholar_score_std ** 2 for m in matched_findings if m.scholar_scores]
+            scholar_vars = [m.scholar_score_std**2 for m in matched_findings if m.scholar_scores]
             avg_scholar_var = float(np.mean(scholar_vars)) if scholar_vars else 0.0
         else:
             overall_rep_rate = 0.0
@@ -717,13 +674,14 @@ class ConvergenceAnalyzer:
             avg_scholar_score_variance=avg_scholar_var,
             replication_threshold=self.replication_threshold,
             effect_cv_threshold=self.effect_cv_threshold,
-            significance_threshold=self.significance_threshold
+            significance_threshold=self.significance_threshold,
         )
 
 
 # =============================================================================
 # Ensemble Runner
 # =============================================================================
+
 
 class EnsembleRunner:
     """
@@ -754,7 +712,7 @@ class EnsembleRunner:
         temperatures: list[float] | None = None,
         anthropic_client=None,
         artifacts_base_dir: str = "artifacts",
-        convergence_config: dict | None = None
+        convergence_config: dict | None = None,
     ):
         """
         Initialize EnsembleRunner.
@@ -788,31 +746,15 @@ class EnsembleRunner:
             self.temperatures = [self.DEFAULT_TEMPERATURE] * n_runs
 
         # Create run configs
-        self.run_configs = [
-            RunConfig(
-                run_id=f"run_{i}",
-                seed=self.seeds[i],
-                temperature=self.temperatures[i],
-                run_index=i
-            )
-            for i in range(n_runs)
-        ]
+        self.run_configs = [RunConfig(run_id=f"run_{i}", seed=self.seeds[i], temperature=self.temperatures[i], run_index=i) for i in range(n_runs)]
 
         # Initialize analyzer with config overrides
         analyzer_kwargs = convergence_config or {}
         self.analyzer = ConvergenceAnalyzer(**analyzer_kwargs)
 
-        logger.info(
-            f"Initialized EnsembleRunner with {n_runs} runs, "
-            f"seeds={self.seeds}, temperatures={self.temperatures}"
-        )
+        logger.info(f"Initialized EnsembleRunner with {n_runs} runs, seeds={self.seeds}, temperatures={self.temperatures}")
 
-    async def run(
-        self,
-        research_objective: str,
-        num_cycles: int = 5,
-        tasks_per_cycle: int = 10
-    ) -> EnsembleResult:
+    async def run(self, research_objective: str, num_cycles: int = 5, tasks_per_cycle: int = 10) -> EnsembleResult:
         """
         Run N independent research workflows and analyze convergence.
 
@@ -825,13 +767,11 @@ class EnsembleRunner:
             EnsembleResult with all findings and convergence analysis
         """
         import time
+
         start_time = time.time()
         start_timestamp = datetime.utcnow().isoformat()
 
-        logger.info(
-            f"Starting ensemble run: '{research_objective}' "
-            f"({self.n_runs} runs, {num_cycles} cycles each)"
-        )
+        logger.info(f"Starting ensemble run: '{research_objective}' ({self.n_runs} runs, {num_cycles} cycles each)")
 
         # Execute runs sequentially
         run_results = []
@@ -840,9 +780,7 @@ class EnsembleRunner:
         for config in self.run_configs:
             logger.info(f"Executing {config.run_id} with seed={config.seed}")
 
-            result, findings = await self._execute_single_run(
-                config, research_objective, num_cycles, tasks_per_cycle
-            )
+            result, findings = await self._execute_single_run(config, research_objective, num_cycles, tasks_per_cycle)
 
             run_results.append(result)
             run_findings.append(findings)
@@ -871,23 +809,15 @@ class EnsembleRunner:
             non_convergent_findings=non_convergent,
             total_time_seconds=end_time - start_time,
             start_timestamp=start_timestamp,
-            end_timestamp=end_timestamp
+            end_timestamp=end_timestamp,
         )
 
-        logger.info(
-            f"Ensemble complete: {len(convergent)} convergent, "
-            f"{len(non_convergent)} non-convergent findings "
-            f"({end_time - start_time:.1f}s)"
-        )
+        logger.info(f"Ensemble complete: {len(convergent)} convergent, {len(non_convergent)} non-convergent findings ({end_time - start_time:.1f}s)")
 
         return result
 
     async def _execute_single_run(
-        self,
-        run_config: RunConfig,
-        research_objective: str,
-        num_cycles: int,
-        tasks_per_cycle: int
+        self, run_config: RunConfig, research_objective: str, num_cycles: int, tasks_per_cycle: int
     ) -> tuple[dict, list[dict]]:
         """
         Execute a single research workflow with given config.
@@ -916,20 +846,17 @@ class EnsembleRunner:
             anthropic_client=self.anthropic_client,
             artifacts_dir=artifacts_dir,
             seed=run_config.seed,
-            temperature=run_config.temperature
+            temperature=run_config.temperature,
         )
 
         # Execute workflow
-        result = await workflow.run(
-            num_cycles=num_cycles,
-            tasks_per_cycle=tasks_per_cycle
-        )
+        result = await workflow.run(num_cycles=num_cycles, tasks_per_cycle=tasks_per_cycle)
 
         # Extract findings from state manager
         findings = []
-        if hasattr(workflow, 'state_manager'):
+        if hasattr(workflow, "state_manager"):
             all_findings = workflow.state_manager.get_all_findings()
-            findings = [f.to_dict() if hasattr(f, 'to_dict') else f for f in all_findings]
+            findings = [f.to_dict() if hasattr(f, "to_dict") else f for f in all_findings]
 
         return result, findings
 
@@ -937,6 +864,7 @@ class EnsembleRunner:
 # =============================================================================
 # Convergence Reporter
 # =============================================================================
+
 
 class ConvergenceReporter:
     """
@@ -1074,12 +1002,7 @@ class ConvergenceReporter:
         """Generate JSON-serializable report."""
         return result.to_dict()
 
-    def save_report(
-        self,
-        result: EnsembleResult,
-        output_path: str | None = None,
-        format: str = "markdown"
-    ) -> str:
+    def save_report(self, result: EnsembleResult, output_path: str | None = None, format: str = "markdown") -> str:
         """
         Save report to file.
 
@@ -1103,11 +1026,11 @@ class ConvergenceReporter:
 
         if format == "markdown":
             content = self.generate_markdown_report(result)
-            with open(output_path, 'w') as f:
+            with open(output_path, "w") as f:
                 f.write(content)
         else:
             content = self.generate_json_report(result)
-            with open(output_path, 'w') as f:
+            with open(output_path, "w") as f:
                 json.dump(content, f, indent=2, default=str)
 
         logger.info(f"Saved convergence report to {output_path}")
@@ -1118,13 +1041,8 @@ class ConvergenceReporter:
 # Convenience Functions
 # =============================================================================
 
-async def run_ensemble(
-    research_objective: str,
-    n_runs: int = 5,
-    num_cycles: int = 5,
-    tasks_per_cycle: int = 10,
-    **kwargs
-) -> EnsembleResult:
+
+async def run_ensemble(research_objective: str, n_runs: int = 5, num_cycles: int = 5, tasks_per_cycle: int = 10, **kwargs) -> EnsembleResult:
     """
     Convenience function to run an ensemble analysis.
 

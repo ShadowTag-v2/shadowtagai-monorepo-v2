@@ -54,7 +54,7 @@ class ToolboxTool(BaseTool):
     async def _arun(self, **kwargs: Any) -> str:
         return await to_thread(self.__core_tool, **kwargs)
 
-    def add_auth_token_getters(self, auth_token_getters: dict[str, Callable[[], str]]) -> "ToolboxTool":
+    def add_auth_token_getters(self, auth_token_getters: dict[str, Callable[[], str]]) -> ToolboxTool:
         """
         Registers functions to retrieve ID tokens for the corresponding
         authentication sources.
@@ -74,7 +74,7 @@ class ToolboxTool(BaseTool):
         new_core_tool = self.__core_tool.add_auth_token_getters(auth_token_getters)
         return ToolboxTool(core_tool=new_core_tool)
 
-    def add_auth_token_getter(self, auth_source: str, get_id_token: Callable[[], str]) -> "ToolboxTool":
+    def add_auth_token_getter(self, auth_source: str, get_id_token: Callable[[], str]) -> ToolboxTool:
         """
         Registers a function to retrieve an ID token for a given authentication
         source.
@@ -93,17 +93,17 @@ class ToolboxTool(BaseTool):
         return self.add_auth_token_getters({auth_source: get_id_token})
 
     @deprecated("Please use `add_auth_token_getters` instead.")
-    def add_auth_tokens(self, auth_tokens: dict[str, Callable[[], str]], strict: bool = True) -> "ToolboxTool":
+    def add_auth_tokens(self, auth_tokens: dict[str, Callable[[], str]], strict: bool = True) -> ToolboxTool:
         return self.add_auth_token_getters(auth_tokens)
 
     @deprecated("Please use `add_auth_token_getter` instead.")
-    def add_auth_token(self, auth_source: str, get_id_token: Callable[[], str], strict: bool = True) -> "ToolboxTool":
+    def add_auth_token(self, auth_source: str, get_id_token: Callable[[], str], strict: bool = True) -> ToolboxTool:
         return self.add_auth_token_getter(auth_source, get_id_token)
 
     def bind_params(
         self,
         bound_params: dict[str, Any | Callable[[], Any]],
-    ) -> "ToolboxTool":
+    ) -> ToolboxTool:
         """
         Registers values or functions to retrieve the value for the
         corresponding bound parameters.
@@ -126,7 +126,7 @@ class ToolboxTool(BaseTool):
         self,
         param_name: str,
         param_value: Any | Callable[[], Any],
-    ) -> "ToolboxTool":
+    ) -> ToolboxTool:
         """
         Registers a value or a function to retrieve the value for a given bound
         parameter.

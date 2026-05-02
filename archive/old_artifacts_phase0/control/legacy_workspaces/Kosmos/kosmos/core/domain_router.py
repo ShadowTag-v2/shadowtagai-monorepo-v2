@@ -37,39 +37,120 @@ class DomainRouter:
     # Domain keywords for classification hints
     DOMAIN_KEYWORDS = {
         ScientificDomain.BIOLOGY: [
-            "gene", "protein", "dna", "rna", "cell", "organism", "species",
-            "metabolite", "pathway", "genome", "expression", "mutation",
-            "evolution", "ecology", "metabolism", "enzyme", "gwas", "snp"
+            "gene",
+            "protein",
+            "dna",
+            "rna",
+            "cell",
+            "organism",
+            "species",
+            "metabolite",
+            "pathway",
+            "genome",
+            "expression",
+            "mutation",
+            "evolution",
+            "ecology",
+            "metabolism",
+            "enzyme",
+            "gwas",
+            "snp",
         ],
         ScientificDomain.NEUROSCIENCE: [
-            "neuron", "brain", "synapse", "neural", "cognitive", "neuronal",
-            "cortex", "hippocampus", "alzheimer", "parkinson", "connectome",
-            "spike", "fmri", "eeg", "neurotransmitter", "plasticity"
+            "neuron",
+            "brain",
+            "synapse",
+            "neural",
+            "cognitive",
+            "neuronal",
+            "cortex",
+            "hippocampus",
+            "alzheimer",
+            "parkinson",
+            "connectome",
+            "spike",
+            "fmri",
+            "eeg",
+            "neurotransmitter",
+            "plasticity",
         ],
         ScientificDomain.MATERIALS: [
-            "material", "crystal", "structure", "property", "synthesis",
-            "perovskite", "solar cell", "semiconductor", "composite",
-            "conductivity", "strength", "optimization", "parameter"
+            "material",
+            "crystal",
+            "structure",
+            "property",
+            "synthesis",
+            "perovskite",
+            "solar cell",
+            "semiconductor",
+            "composite",
+            "conductivity",
+            "strength",
+            "optimization",
+            "parameter",
         ],
         ScientificDomain.PHYSICS: [
-            "force", "energy", "momentum", "particle", "wave", "field",
-            "quantum", "thermodynamic", "mechanics", "electromagnetic",
-            "relativity", "optics", "plasma", "cosmology"
+            "force",
+            "energy",
+            "momentum",
+            "particle",
+            "wave",
+            "field",
+            "quantum",
+            "thermodynamic",
+            "mechanics",
+            "electromagnetic",
+            "relativity",
+            "optics",
+            "plasma",
+            "cosmology",
         ],
         ScientificDomain.CHEMISTRY: [
-            "molecule", "reaction", "compound", "synthesis", "catalyst",
-            "bond", "electron", "oxidation", "reduction", "spectroscopy",
-            "chromatography", "polymer", "organic", "inorganic"
+            "molecule",
+            "reaction",
+            "compound",
+            "synthesis",
+            "catalyst",
+            "bond",
+            "electron",
+            "oxidation",
+            "reduction",
+            "spectroscopy",
+            "chromatography",
+            "polymer",
+            "organic",
+            "inorganic",
         ],
         ScientificDomain.ASTRONOMY: [
-            "star", "planet", "galaxy", "universe", "cosmic", "telescope",
-            "orbit", "redshift", "black hole", "nebula", "exoplanet",
-            "supernova", "dark matter", "constellation"
+            "star",
+            "planet",
+            "galaxy",
+            "universe",
+            "cosmic",
+            "telescope",
+            "orbit",
+            "redshift",
+            "black hole",
+            "nebula",
+            "exoplanet",
+            "supernova",
+            "dark matter",
+            "constellation",
         ],
         ScientificDomain.SOCIAL_SCIENCE: [
-            "society", "behavior", "population", "survey", "demographic",
-            "psychology", "sociology", "economics", "anthropology",
-            "culture", "policy", "intervention", "cohort study"
+            "society",
+            "behavior",
+            "population",
+            "survey",
+            "demographic",
+            "psychology",
+            "sociology",
+            "economics",
+            "anthropology",
+            "culture",
+            "policy",
+            "intervention",
+            "cohort study",
         ],
     }
 
@@ -173,23 +254,23 @@ class DomainRouter:
                 api_status={api: "available" for api in api_clients},
                 analysis_modules=agents,
                 experiment_templates=templates,
-                has_ontology=domain in [
+                has_ontology=domain
+                in [
                     ScientificDomain.BIOLOGY,
                     ScientificDomain.NEUROSCIENCE,
                     ScientificDomain.MATERIALS,
                 ],
-                ontology_coverage=0.8 if domain in [
+                ontology_coverage=0.8
+                if domain
+                in [
                     ScientificDomain.BIOLOGY,
                     ScientificDomain.NEUROSCIENCE,
                     ScientificDomain.MATERIALS,
-                ] else 0.0,
+                ]
+                else 0.0,
             )
 
-    def classify_research_question(
-        self,
-        question: str,
-        context: dict[str, Any] | None = None
-    ) -> DomainClassification:
+    def classify_research_question(self, question: str, context: dict[str, Any] | None = None) -> DomainClassification:
         """
         Classify a research question to scientific domain(s).
 
@@ -216,10 +297,7 @@ class DomainRouter:
             # Parse Claude's response into DomainClassification
             classification = self._parse_classification_response(response, question)
 
-            logger.info(
-                f"Classified to {classification.primary_domain.value} "
-                f"(confidence: {classification.confidence.value})"
-            )
+            logger.info(f"Classified to {classification.primary_domain.value} (confidence: {classification.confidence.value})")
 
             return classification
 
@@ -228,11 +306,7 @@ class DomainRouter:
             # Fallback to keyword-based classification
             return self._keyword_based_classification(question)
 
-    def _build_classification_prompt(
-        self,
-        question: str,
-        context: dict[str, Any] | None = None
-    ) -> str:
+    def _build_classification_prompt(self, question: str, context: dict[str, Any] | None = None) -> str:
         """Build prompt for Claude to classify research question."""
         domains_list = ", ".join([d.value for d in ScientificDomain])
 
@@ -271,41 +345,37 @@ REASONING: <your explanation>
 """
         return prompt
 
-    def _parse_classification_response(
-        self,
-        response: str,
-        question: str
-    ) -> DomainClassification:
+    def _parse_classification_response(self, response: str, question: str) -> DomainClassification:
         """Parse Claude's classification response into DomainClassification object."""
-        lines = response.strip().split('\n')
+        lines = response.strip().split("\n")
         data = {}
 
         for line in lines:
-            if ':' in line:
-                key, value = line.split(':', 1)
+            if ":" in line:
+                key, value = line.split(":", 1)
                 data[key.strip()] = value.strip()
 
         # Extract primary domain
-        primary_domain_str = data.get('PRIMARY DOMAIN', 'general').lower()
+        primary_domain_str = data.get("PRIMARY DOMAIN", "general").lower()
         try:
             primary_domain = ScientificDomain(primary_domain_str)
         except ValueError:
             primary_domain = ScientificDomain.GENERAL
 
         # Extract confidence
-        confidence_str = data.get('CONFIDENCE', 'medium').lower().replace(' ', '_')
+        confidence_str = data.get("CONFIDENCE", "medium").lower().replace(" ", "_")
         try:
             confidence = DomainConfidence(confidence_str)
         except ValueError:
             confidence = DomainConfidence.MEDIUM
 
-        confidence_score = float(data.get('CONFIDENCE_SCORE', '0.6'))
+        confidence_score = float(data.get("CONFIDENCE_SCORE", "0.6"))
 
         # Extract secondary domains
-        secondary_str = data.get('SECONDARY DOMAINS', 'none')
+        secondary_str = data.get("SECONDARY DOMAINS", "none")
         secondary_domains = []
-        if secondary_str.lower() != 'none':
-            for domain_str in secondary_str.split(','):
+        if secondary_str.lower() != "none":
+            for domain_str in secondary_str.split(","):
                 domain_str = domain_str.strip().lower()
                 try:
                     domain = ScientificDomain(domain_str)
@@ -315,18 +385,16 @@ REASONING: <your explanation>
                     pass
 
         # Extract key terms
-        key_terms_str = data.get('KEY TERMS', '')
-        key_terms = [term.strip() for term in key_terms_str.split(',') if term.strip()]
+        key_terms_str = data.get("KEY TERMS", "")
+        key_terms = [term.strip() for term in key_terms_str.split(",") if term.strip()]
 
         # Is multi-domain
-        is_multi_domain = data.get('IS MULTI-DOMAIN', 'no').lower() in ['yes', 'true']
+        is_multi_domain = data.get("IS MULTI-DOMAIN", "no").lower() in ["yes", "true"]
 
-        reasoning = data.get('REASONING', '')
+        reasoning = data.get("REASONING", "")
 
         # Calculate domain scores (simplified)
-        domain_scores = {
-            primary_domain.value: confidence_score
-        }
+        domain_scores = {primary_domain.value: confidence_score}
         for i, sec_domain in enumerate(secondary_domains):
             # Secondary domains get progressively lower scores
             domain_scores[sec_domain.value] = confidence_score * (0.7 - i * 0.1)
@@ -393,12 +461,7 @@ REASONING: <your explanation>
             classifier_model="keyword-matcher",
         )
 
-    def route(
-        self,
-        question: str,
-        classification: DomainClassification | None = None,
-        context: dict[str, Any] | None = None
-    ) -> DomainRoute:
+    def route(self, question: str, classification: DomainClassification | None = None, context: dict[str, Any] | None = None) -> DomainRoute:
         """
         Create a complete routing decision for a research question.
 
@@ -418,9 +481,7 @@ REASONING: <your explanation>
         if classification.is_multi_domain and len(classification.secondary_domains) > 0:
             # Multi-domain routing
             selected_domains = classification.to_domain_list()
-            routing_strategy = self._determine_multi_domain_strategy(
-                classification, context
-            )
+            routing_strategy = self._determine_multi_domain_strategy(classification, context)
         else:
             # Single domain routing
             selected_domains = [classification.primary_domain]
@@ -438,9 +499,7 @@ REASONING: <your explanation>
 
         # Determine if cross-domain synthesis is needed
         synthesis_required = classification.requires_cross_domain_synthesis()
-        synthesis_strategy = self._determine_synthesis_strategy(
-            classification
-        ) if synthesis_required else None
+        synthesis_strategy = self._determine_synthesis_strategy(classification) if synthesis_required else None
 
         # Build routing decision
         route = DomainRoute(
@@ -452,23 +511,14 @@ REASONING: <your explanation>
             recommended_templates=recommended_templates,
             synthesis_required=synthesis_required,
             synthesis_strategy=synthesis_strategy,
-            routing_reasoning=self._build_routing_reasoning(
-                classification, routing_strategy, selected_domains
-            ),
+            routing_reasoning=self._build_routing_reasoning(classification, routing_strategy, selected_domains),
         )
 
-        logger.info(
-            f"Routed to {len(selected_domains)} domain(s) "
-            f"using {routing_strategy} strategy"
-        )
+        logger.info(f"Routed to {len(selected_domains)} domain(s) using {routing_strategy} strategy")
 
         return route
 
-    def _determine_multi_domain_strategy(
-        self,
-        classification: DomainClassification,
-        context: dict[str, Any] | None = None
-    ) -> str:
+    def _determine_multi_domain_strategy(self, classification: DomainClassification, context: dict[str, Any] | None = None) -> str:
         """
         Determine routing strategy for multi-domain research.
 
@@ -482,10 +532,7 @@ REASONING: <your explanation>
         # Future: Use Claude to determine dependencies
         return "parallel_multi_domain"
 
-    def _determine_synthesis_strategy(
-        self,
-        classification: DomainClassification
-    ) -> str:
+    def _determine_synthesis_strategy(self, classification: DomainClassification) -> str:
         """Determine strategy for synthesizing cross-domain results."""
         domains = classification.to_domain_list()
 
@@ -502,12 +549,7 @@ REASONING: <your explanation>
         else:
             return "general_cross_domain_synthesis"
 
-    def _build_routing_reasoning(
-        self,
-        classification: DomainClassification,
-        strategy: str,
-        domains: list[ScientificDomain]
-    ) -> str:
+    def _build_routing_reasoning(self, classification: DomainClassification, strategy: str, domains: list[ScientificDomain]) -> str:
         """Build human-readable reasoning for routing decision."""
         reasoning = f"Routing to {len(domains)} domain(s): {', '.join([d.value for d in domains])}. "
         reasoning += f"Strategy: {strategy}. "
@@ -518,10 +560,7 @@ REASONING: <your explanation>
 
         return reasoning
 
-    def assess_domain_expertise(
-        self,
-        domain: ScientificDomain
-    ) -> DomainExpertise:
+    def assess_domain_expertise(self, domain: ScientificDomain) -> DomainExpertise:
         """
         Assess Kosmos's expertise and capabilities for a specific domain.
 
@@ -583,31 +622,18 @@ REASONING: <your explanation>
             available_templates=capability.experiment_templates,
             knowledge_base_coverage=capability.ontology_coverage,
             known_limitations=limitations,
-            recommended_human_expertise=(
-                "Domain expert consultation recommended"
-                if expertise_score < 0.5 else None
-            ),
+            recommended_human_expertise=("Domain expert consultation recommended" if expertise_score < 0.5 else None),
         )
 
-    def get_domain_capabilities(
-        self,
-        domain: ScientificDomain
-    ) -> DomainCapability | None:
+    def get_domain_capabilities(self, domain: ScientificDomain) -> DomainCapability | None:
         """Get capabilities available for a specific domain."""
         return self.capabilities.get(domain)
 
     def get_all_supported_domains(self) -> list[ScientificDomain]:
         """Get list of all supported domains."""
-        return [
-            domain for domain, cap in self.capabilities.items()
-            if len(cap.api_clients) > 0 or len(cap.experiment_templates) > 0
-        ]
+        return [domain for domain, cap in self.capabilities.items() if len(cap.api_clients) > 0 or len(cap.experiment_templates) > 0]
 
-    def suggest_cross_domain_connections(
-        self,
-        source_domain: ScientificDomain,
-        target_domain: ScientificDomain
-    ) -> list[str]:
+    def suggest_cross_domain_connections(self, source_domain: ScientificDomain, target_domain: ScientificDomain) -> list[str]:
         """
         Suggest potential cross-domain connections between two domains.
 

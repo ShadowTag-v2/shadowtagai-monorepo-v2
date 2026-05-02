@@ -92,8 +92,7 @@ def cmd_remove(args, state):
 
     if state.project.s.PIPENV_USE_SYSTEM or environments.is_in_virtualenv():
         console.print(
-            "You are attempting to remove a virtualenv that "
-            "Pipenv did not create. Aborting.",
+            "You are attempting to remove a virtualenv that Pipenv did not create. Aborting.",
             style="red",
         )
         sys.exit(1)
@@ -242,8 +241,7 @@ def cmd_activate(args, state):
 
     if not state.project.virtualenv_exists:
         err.print(
-            "No virtualenv has been created for this project yet!\n"
-            "Run [green bold]pipenv install[/green bold] to create one.",
+            "No virtualenv has been created for this project yet!\nRun [green bold]pipenv install[/green bold] to create one.",
             style="red bold",
         )
         sys.exit(1)
@@ -446,14 +444,10 @@ def cmd_scripts(args, state):
         sys.exit(1)
     scripts_dict = state.project.parsed_pipfile.get("scripts", {})
     first_column_width = max(len(word) for word in ["Command"] + list(scripts_dict))
-    second_column_width = max(
-        len(word) for word in ["Script"] + list(scripts_dict.values())
-    )
+    second_column_width = max(len(word) for word in ["Script"] + list(scripts_dict.values()))
     lines = [f"{'Command':<{first_column_width}}  Script"]
     lines.append(f"{'-' * first_column_width}  {'-' * second_column_width}")
-    lines.extend(
-        f"{name:<{first_column_width}}  {script}" for name, script in scripts_dict.items()
-    )
+    lines.extend(f"{name:<{first_column_width}}  {script}" for name, script in scripts_dict.items())
     console.print("\n".join(lines))
 
 
@@ -462,9 +456,7 @@ def cmd_verify(args, state):
         err.print("No Pipfile present at project home.")
         sys.exit(1)
     if state.project.get_lockfile_hash() != state.project.calculate_pipfile_hash():
-        err.print(
-            "Pipfile.lock is out-of-date. Run [yellow bold]$ pipenv lock[/yellow bold] to update."
-        )
+        err.print("Pipfile.lock is out-of-date. Run [yellow bold]$ pipenv lock[/yellow bold] to update.")
         sys.exit(1)
     console.print("Pipfile.lock is up-to-date.", style="green")
     sys.exit(0)
@@ -509,9 +501,7 @@ def cmd_pylock(args, state):
                 dev_groups=groups,
             )
             pylock_file.write()
-            console.print(
-                f"[bold green]Generated pylock.toml at {output_path}[/bold green]"
-            )
+            console.print(f"[bold green]Generated pylock.toml at {output_path}[/bold green]")
         except Exception as e:
             err.print(f"[bold red]Error generating pylock.toml: {e}[/bold red]")
             sys.exit(1)
@@ -528,9 +518,7 @@ def cmd_pylock(args, state):
                 pylock_path=output_path,
             )
             pylock_file.write()
-            console.print(
-                f"[bold green]Generated pylock.toml skeleton at {output_path}[/bold green]"
-            )
+            console.print(f"[bold green]Generated pylock.toml skeleton at {output_path}[/bold green]")
             console.print(
                 "[yellow]Note: This is a skeleton file. Package versions and hashes "
                 "need to be resolved by running 'pipenv lock'.[/yellow]"
@@ -546,9 +534,7 @@ def cmd_pylock(args, state):
             sys.exit(1)
         try:
             pylock_file = PylockFile.from_path(pylock_path)
-            console.print(
-                f"[bold green]✓ Valid pylock.toml (version {pylock_file.lock_version})[/bold green]"
-            )
+            console.print(f"[bold green]✓ Valid pylock.toml (version {pylock_file.lock_version})[/bold green]")
             console.print(f"  Created by: {pylock_file.created_by}")
             console.print(f"  Packages: {len(pylock_file.packages)}")
             if pylock_file.requires_python:
@@ -556,9 +542,7 @@ def cmd_pylock(args, state):
             if pylock_file.extras:
                 console.print(f"  Extras: {', '.join(pylock_file.extras)}")
             if pylock_file.dependency_groups:
-                console.print(
-                    f"  Dependency Groups: {', '.join(pylock_file.dependency_groups)}"
-                )
+                console.print(f"  Dependency Groups: {', '.join(pylock_file.dependency_groups)}")
         except PylockVersionError as e:
             err.print(f"[bold red]Version error: {e}[/bold red]")
             sys.exit(1)
@@ -582,12 +566,8 @@ def cmd_pylock(args, state):
                 err.print(f"[yellow]Found pylock.toml but could not parse: {e}[/yellow]")
         else:
             console.print("[dim]No pylock.toml found.[/dim]")
-            console.print(
-                "Use [bold]pipenv pylock --generate[/bold] to create one from Pipfile.lock"
-            )
-            console.print(
-                "Use [bold]pipenv pylock --from-pyproject[/bold] to create from pyproject.toml"
-            )
+            console.print("Use [bold]pipenv pylock --generate[/bold] to create one from Pipfile.lock")
+            console.print("Use [bold]pipenv pylock --from-pyproject[/bold] to create from pyproject.toml")
 
 
 _DISPATCH = {
@@ -679,8 +659,7 @@ def cli():
 
     if "PIPENV_COLORBLIND" in os.environ:
         err.print(
-            "PIPENV_COLORBLIND is deprecated, use NO_COLOR"
-            " per https://no-color.org/ instead",
+            "PIPENV_COLORBLIND is deprecated, use NO_COLOR per https://no-color.org/ instead",
         )
 
     warn_in_virtualenv(state.project)
@@ -706,9 +685,7 @@ def cli():
                 return 1
 
         if args.envs:
-            console.print(
-                "The following environment variables can be set, to do various things:\n"
-            )
+            console.print("The following environment variables can be set, to do various things:\n")
             for key in state.project.s.__dict__:
                 if key.startswith("PIPENV"):
                     console.print(f"  - {key}", style="bold")

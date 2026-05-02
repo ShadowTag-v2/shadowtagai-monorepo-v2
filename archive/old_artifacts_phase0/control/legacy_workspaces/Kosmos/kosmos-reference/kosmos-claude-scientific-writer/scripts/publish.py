@@ -13,7 +13,6 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from typing import List, Optional
 
 
 def get_project_root() -> Path:
@@ -56,7 +55,7 @@ def read_current_version(pyproject_path: Path) -> str:
     return f"{match.group(1)}.{match.group(2)}.{match.group(3)}"
 
 
-def run_command(cmd: List[str], cwd: Optional[Path] = None, capture_output: bool = False) -> subprocess.CompletedProcess:
+def run_command(cmd: list[str], cwd: Path | None = None, capture_output: bool = False) -> subprocess.CompletedProcess:
     """
     Run a shell command and handle errors.
 
@@ -80,13 +79,7 @@ def run_command(cmd: List[str], cwd: Optional[Path] = None, capture_output: bool
         If command fails.
     """
     print(f"Running: {' '.join(cmd)}")
-    result = subprocess.run(
-        cmd,
-        cwd=cwd,
-        capture_output=capture_output,
-        text=True,
-        check=True
-    )
+    result = subprocess.run(cmd, cwd=cwd, capture_output=capture_output, text=True, check=True)
     return result
 
 
@@ -153,17 +146,10 @@ def verify_git_status(root: Path) -> None:
     RuntimeError
         If there are uncommitted changes.
     """
-    result = run_command(
-        ["git", "status", "--porcelain"],
-        cwd=root,
-        capture_output=True
-    )
+    result = run_command(["git", "status", "--porcelain"], cwd=root, capture_output=True)
 
     if result.stdout.strip():
-        raise RuntimeError(
-            "Working directory has uncommitted changes. "
-            "Please commit or stash changes before publishing."
-        )
+        raise RuntimeError("Working directory has uncommitted changes. Please commit or stash changes before publishing.")
 
 
 def create_git_tag(root: Path, version: str, push: bool = True) -> None:
@@ -184,21 +170,14 @@ def create_git_tag(root: Path, version: str, push: bool = True) -> None:
     print(f"\nCreating git tag {tag_name}...")
 
     # Check if tag already exists
-    result = run_command(
-        ["git", "tag", "-l", tag_name],
-        cwd=root,
-        capture_output=True
-    )
+    result = run_command(["git", "tag", "-l", tag_name], cwd=root, capture_output=True)
 
     if result.stdout.strip():
         print(f"  ! Tag {tag_name} already exists, skipping creation")
         return
 
     # Create annotated tag
-    run_command(
-        ["git", "tag", "-a", tag_name, "-m", f"Release v{version}"],
-        cwd=root
-    )
+    run_command(["git", "tag", "-a", tag_name, "-m", f"Release v{version}"], cwd=root)
     print(f"  ✓ Created tag {tag_name}")
 
     if push:
@@ -234,10 +213,7 @@ def publish_to_pypi(root: Path, dry_run: bool = False) -> None:
     pypirc = Path.home() / ".pypirc"
 
     if not token and not pypirc.exists():
-        raise RuntimeError(
-            "PyPI credentials not found. Please set UV_PUBLISH_TOKEN or TWINE_PASSWORD "
-            "environment variable, or configure ~/.pypirc"
-        )
+        raise RuntimeError("PyPI credentials not found. Please set UV_PUBLISH_TOKEN or TWINE_PASSWORD environment variable, or configure ~/.pypirc")
 
     print("\nPublishing to PyPI...")
 
@@ -329,29 +305,11 @@ def main() -> int:
     int
         Exit code (0 for success, 1 for error).
     """
-    parser = argparse.ArgumentParser(
-        description="Build and publish scientific-writer package to PyPI"
-    )
-    parser.add_argument(
-        "--bump",
-        choices=["major", "minor", "patch"],
-        help="Bump version before publishing"
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Build package but don't publish"
-    )
-    parser.add_argument(
-        "--skip-tag",
-        action="store_true",
-        help="Skip git tag creation"
-    )
-    parser.add_argument(
-        "--skip-git-check",
-        action="store_true",
-        help="Skip git status verification"
-    )
+    parser = argparse.ArgumentParser(description="Build and publish scientific-writer package to PyPI")
+    parser.add_argument("--bump", choices=["major", "minor", "patch"], help="Bump version before publishing")
+    parser.add_argument("--dry-run", action="store_true", help="Build package but don't publish")
+    parser.add_argument("--skip-tag", action="store_true", help="Skip git tag creation")
+    parser.add_argument("--skip-git-check", action="store_true", help="Skip git status verification")
 
     args = parser.parse_args()
 
@@ -377,7 +335,7 @@ def main() -> int:
             if not args.skip_git_check:
                 print("\n  ! Remember to commit version changes before continuing")
                 response = input("    Continue? [y/N]: ")
-                if response.lower() != 'y':
+                if response.lower() != "y":
                     print("  Aborted by user")
                     return 1
 

@@ -20,9 +20,7 @@ SCHEMA_VERSION = "2025-06-18"
 JSONRPC_VERSION = "2.0"
 
 STANDARD_DERIVE = "#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema, TS)]\n"
-STANDARD_HASHABLE_DERIVE = (
-    "#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Hash, Eq, JsonSchema, TS)]\n"
-)
+STANDARD_HASHABLE_DERIVE = "#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Hash, Eq, JsonSchema, TS)]\n"
 
 # Will be populated with the schema's `definitions` map in `main()` so that
 # helper functions (for example `define_any_of`) can perform look-ups while
@@ -49,9 +47,7 @@ def main() -> int:
         description="Embed, cluster and analyse text prompts via the OpenAI API.",
     )
 
-    default_schema_file = (
-        Path(__file__).resolve().parent / "schema" / SCHEMA_VERSION / "schema.json"
-    )
+    default_schema_file = Path(__file__).resolve().parent / "schema" / SCHEMA_VERSION / "schema.json"
     default_lib_rs = Path(__file__).resolve().parent / "src/lib.rs"
     parser.add_argument(
         "schema_file",
@@ -135,9 +131,7 @@ fn default_jsonrpc() -> String {{ JSONRPC_VERSION.to_owned() }}
     try_from_impl_lines: list[str] = []
     try_from_impl_lines.append("impl TryFrom<JSONRPCRequest> for ClientRequest {\n")
     try_from_impl_lines.append("    type Error = serde_json::Error;\n")
-    try_from_impl_lines.append(
-        "    fn try_from(req: JSONRPCRequest) -> std::result::Result<Self, Self::Error> {\n"
-    )
+    try_from_impl_lines.append("    fn try_from(req: JSONRPCRequest) -> std::result::Result<Self, Self::Error> {\n")
     try_from_impl_lines.append("        match req.method.as_str() {\n")
 
     for req_name in CLIENT_REQUEST_TYPE_NAMES:
@@ -145,12 +139,8 @@ fn default_jsonrpc() -> String {{ JSONRPC_VERSION.to_owned() }}
         method_const = defn.get("properties", {}).get("method", {}).get("const", req_name)
         payload_type = f"<{req_name} as ModelContextProtocolRequest>::Params"
         try_from_impl_lines.append(f'            "{method_const}" => {{\n')
-        try_from_impl_lines.append(
-            "                let params_json = req.params.unwrap_or(serde_json::Value::Null);\n"
-        )
-        try_from_impl_lines.append(
-            f"                let params: {payload_type} = serde_json::from_value(params_json)?;\n"
-        )
+        try_from_impl_lines.append("                let params_json = req.params.unwrap_or(serde_json::Value::Null);\n")
+        try_from_impl_lines.append(f"                let params: {payload_type} = serde_json::from_value(params_json)?;\n")
         try_from_impl_lines.append(f"                Ok(ClientRequest::{req_name}(params))\n")
         try_from_impl_lines.append("            },\n")
 
@@ -167,9 +157,7 @@ fn default_jsonrpc() -> String {{ JSONRPC_VERSION.to_owned() }}
     notif_impl_lines: list[str] = []
     notif_impl_lines.append("impl TryFrom<JSONRPCNotification> for ServerNotification {\n")
     notif_impl_lines.append("    type Error = serde_json::Error;\n")
-    notif_impl_lines.append(
-        "    fn try_from(n: JSONRPCNotification) -> std::result::Result<Self, Self::Error> {\n"
-    )
+    notif_impl_lines.append("    fn try_from(n: JSONRPCNotification) -> std::result::Result<Self, Self::Error> {\n")
     notif_impl_lines.append("        match n.method.as_str() {\n")
 
     for notif_name in SERVER_NOTIFICATION_TYPE_NAMES:
@@ -178,12 +166,8 @@ fn default_jsonrpc() -> String {{ JSONRPC_VERSION.to_owned() }}
         payload_type = f"<{notif_name} as ModelContextProtocolNotification>::Params"
         notif_impl_lines.append(f'            "{method_const}" => {{\n')
         # params may be optional
-        notif_impl_lines.append(
-            "                let params_json = n.params.unwrap_or(serde_json::Value::Null);\n"
-        )
-        notif_impl_lines.append(
-            f"                let params: {payload_type} = serde_json::from_value(params_json)?;\n"
-        )
+        notif_impl_lines.append("                let params_json = n.params.unwrap_or(serde_json::Value::Null);\n")
+        notif_impl_lines.append(f"                let params: {payload_type} = serde_json::from_value(params_json)?;\n")
         notif_impl_lines.append(f"                Ok(ServerNotification::{notif_name}(params))\n")
         notif_impl_lines.append("            },\n")
 
@@ -302,7 +286,7 @@ def add_definition(name: str, definition: dict[str, Any], out: list[str]) -> Non
         out.extend(define_any_of(name, any_of, description))
         return
 
-    type_prop = definition.get("type", None)
+    type_prop = definition.get("type")
     if type_prop:
         if type_prop == "string":
             # Newtype pattern
@@ -319,7 +303,7 @@ def add_definition(name: str, definition: dict[str, Any], out: list[str]) -> Non
             return
         raise ValueError(f"Unknown type: {type_prop} in {name}")
 
-    ref_prop = definition.get("$ref", None)
+    ref_prop = definition.get("$ref")
     if ref_prop:
         ref = type_from_ref(ref_prop)
         out.extend(f"pub type {name} = {ref};\n\n")
@@ -418,7 +402,7 @@ def define_struct(
                 "user_agent",
                 "Option<String>",
                 '#[serde(default, skip_serializing_if = "Option::is_none")]',
-                '#[ts(optional)]',
+                "#[ts(optional)]",
                 "This is an extra field that the Codex MCP server sends as part of InitializeResult.",
             )
         )
@@ -470,9 +454,7 @@ def implements_notification_trait(name: str) -> bool:
     )
 
 
-def add_trait_impl(
-    type_name: str, trait_name: str, fields: list[StructField], out: list[str]
-) -> None:
+def add_trait_impl(type_name: str, trait_name: str, fields: list[StructField], out: list[str]) -> None:
     out.append(STANDARD_DERIVE)
     out.append(f"pub enum {type_name} {{}}\n\n")
 
@@ -491,9 +473,7 @@ def add_trait_impl(
     out.append("}\n\n")
 
 
-def define_string_enum(
-    name: str, enum_values: Any, out: list[str], description: str | None
-) -> None:
+def define_string_enum(name: str, enum_values: Any, out: list[str], description: str | None) -> None:
     emit_doc_comment(description, out)
     out.append(STANDARD_DERIVE)
     out.append(f"pub enum {name} {{\n")
@@ -568,11 +548,7 @@ def define_any_of(name: str, list_of_refs: list[Any], description: str | None = 
         # For JSONRPCMessage variants, drop the common "JSONRPC" prefix to
         # make the enum easier to read (e.g. `Request` instead of
         # `JSONRPCRequest`). The payload type remains unchanged.
-        variant_name = (
-            ref_name[len("JSONRPC") :]
-            if name == "JSONRPCMessage" and ref_name.startswith("JSONRPC")
-            else ref_name
-        )
+        variant_name = ref_name[len("JSONRPC") :] if name == "JSONRPCMessage" and ref_name.startswith("JSONRPC") else ref_name
 
         # Special-case for `ClientRequest` and `ServerNotification` so the enum
         # variant's payload is the *Params type rather than the full *Request /
@@ -592,9 +568,7 @@ def define_any_of(name: str, list_of_refs: list[Any], description: str | None = 
             # specify a constant we fall back to the type name, which will at
             # least compile (although deserialization will likely fail).
             request_def = DEFINITIONS.get(ref_name, {})
-            method_const = (
-                request_def.get("properties", {}).get("method", {}).get("const", ref_name)
-            )
+            method_const = request_def.get("properties", {}).get("method", {}).get("const", ref_name)
 
             out.append(f'    #[serde(rename = "{method_const}")]\n')
             out.append(f"    {variant_name}({payload_type}),\n")
@@ -623,11 +597,11 @@ def map_type(
     struct_name: str | None = None,
 ) -> str:
     """typedef must have a `type` key, but may also have an `items`key."""
-    ref_prop = typedef.get("$ref", None)
+    ref_prop = typedef.get("$ref")
     if ref_prop:
         return type_from_ref(ref_prop)
 
-    any_of = typedef.get("anyOf", None)
+    any_of = typedef.get("anyOf")
     if any_of:
         assert prop_name is not None
         assert struct_name is not None
@@ -635,13 +609,13 @@ def map_type(
         extra_defs.extend(define_any_of(custom_type, any_of))
         return custom_type
 
-    type_prop = typedef.get("type", None)
+    type_prop = typedef.get("type")
     if type_prop is None:
         # Likely `unknown` in TypeScript, like the JSONRPCError.data property.
         return "serde_json::Value"
 
     if type_prop == "string":
-        if const_prop := typedef.get("const", None):
+        if const_prop := typedef.get("const"):
             assert isinstance(const_prop, str)
             return f'&\'static str = "{const_prop}"'
         else:
@@ -653,7 +627,7 @@ def map_type(
     elif type_prop == "boolean":
         return "bool"
     elif type_prop == "array":
-        item_type = typedef.get("items", None)
+        item_type = typedef.get("items")
         if item_type:
             item_type = map_type(item_type, prop_name, struct_name)
             assert isinstance(item_type, str)
@@ -695,6 +669,7 @@ class RustProp:
     serde: str | None = None
     # ts annotation, if necessary
     ts: str | None = None
+
 
 def rust_prop_name(name: str, is_optional: bool) -> RustProp:
     """Convert a JSON property name to a Rust property name."""

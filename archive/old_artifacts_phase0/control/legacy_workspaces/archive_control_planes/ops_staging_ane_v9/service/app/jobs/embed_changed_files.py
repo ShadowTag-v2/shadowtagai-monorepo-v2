@@ -22,6 +22,7 @@ def mark_changed_files(sqlite_db: str, pg_dsn: str, repo_id: str):
                 )
         return {"changed_doc_ids": changed, "count": len(changed)}
 
+
 def embed_only_changed():
     s = load_settings()
     change_info = mark_changed_files(s.sqlite_db, s.postgres_dsn, s.repo_id)
@@ -36,6 +37,7 @@ def embed_only_changed():
                 (doc_id,),
             )
     return {"changed": change_info, "upsert": result}
+
 
 if __name__ == "__main__":
     print(embed_only_changed())

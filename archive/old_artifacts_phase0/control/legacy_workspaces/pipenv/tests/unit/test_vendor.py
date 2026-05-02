@@ -94,9 +94,7 @@ def test_locations_falls_back_to_sysconfig_when_distutils_unavailable():
 
         # After the failed _distutils import our fix must have set _USE_SYSCONFIG
         # to True so that all subsequent scheme resolution uses sysconfig.
-        assert loc._USE_SYSCONFIG is True, (
-            f"Expected _USE_SYSCONFIG=True after distutils fallback, got {loc._USE_SYSCONFIG}"
-        )
+        assert loc._USE_SYSCONFIG is True, f"Expected _USE_SYSCONFIG=True after distutils fallback, got {loc._USE_SYSCONFIG}"
 
     finally:
         # Remove the sentinel block so it doesn't poison other imports.

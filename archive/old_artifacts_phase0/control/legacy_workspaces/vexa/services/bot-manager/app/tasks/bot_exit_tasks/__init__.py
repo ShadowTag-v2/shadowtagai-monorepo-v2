@@ -10,6 +10,7 @@ from sqlalchemy.orm import selectinload
 
 logger = logging.getLogger(__name__)
 
+
 async def run_all_tasks(meeting_id: int):
     """
     Dynamically discovers and runs all bot exit tasks for a given meeting_id.
@@ -31,16 +32,16 @@ async def run_all_tasks(meeting_id: int):
                 return
 
             current_dir = os.path.dirname(__file__)
-            current_package = 'app.tasks.bot_exit_tasks'
+            current_package = "app.tasks.bot_exit_tasks"
 
             for filename in os.listdir(current_dir):
-                if filename.endswith('.py') and filename != '__init__.py':
+                if filename.endswith(".py") and filename != "__init__.py":
                     module_name = filename[:-3]
                     try:
                         full_module_path = f"{current_package}.{module_name}"
                         module = importlib.import_module(full_module_path)
 
-                        if hasattr(module, 'run') and inspect.iscoroutinefunction(module.run):
+                        if hasattr(module, "run") and inspect.iscoroutinefunction(module.run):
                             logger.info(f"Found task in '{module_name}'. Executing for meeting {meeting_id}...")
                             try:
                                 # All tasks are now async and receive the same arguments

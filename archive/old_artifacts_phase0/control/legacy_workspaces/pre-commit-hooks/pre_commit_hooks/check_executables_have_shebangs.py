@@ -1,4 +1,5 @@
 """Check that executable text files have a shebang."""
+
 from __future__ import annotations
 
 import argparse
@@ -9,14 +10,17 @@ from typing import NamedTuple
 
 from pre_commit_hooks.util import cmd_output, zsplit
 
-EXECUTABLE_VALUES = frozenset(('1', '3', '5', '7'))
+EXECUTABLE_VALUES = frozenset(("1", "3", "5", "7"))
 
 
 def check_executables(paths: list[str]) -> int:
     fs_tracks_executable_bit = cmd_output(
-        'git', 'config', 'core.fileMode', retcode=None,
+        "git",
+        "config",
+        "core.fileMode",
+        retcode=None,
     ).strip()
-    if fs_tracks_executable_bit == 'false':  # pragma: win32 cover
+    if fs_tracks_executable_bit == "false":  # pragma: win32 cover
         return _check_git_filemode(paths)
     else:  # pragma: win32 no cover
         retv = 0
@@ -34,9 +38,9 @@ class GitLsFile(NamedTuple):
 
 
 def git_ls_files(paths: Sequence[str]) -> Generator[GitLsFile]:
-    outs = cmd_output('git', 'ls-files', '-z', '--stage', '--', *paths)
+    outs = cmd_output("git", "ls-files", "-z", "--stage", "--", *paths)
     for out in zsplit(outs):
-        metadata, filename = out.split('\t')
+        metadata, filename = out.split("\t")
         mode, _, _ = metadata.split()
         yield GitLsFile(mode, filename)
 
@@ -53,31 +57,31 @@ def _check_git_filemode(paths: Sequence[str]) -> int:
 
 
 def has_shebang(path: str) -> int:
-    with open(path, 'rb') as f:
+    with open(path, "rb") as f:
         first_bytes = f.read(2)
 
-    return first_bytes == b'#!'
+    return first_bytes == b"#!"
 
 
 def _message(path: str) -> None:
     print(
-        f'{path}: marked executable but has no (or invalid) shebang!\n'
+        f"{path}: marked executable but has no (or invalid) shebang!\n"
         f"  If it isn't supposed to be executable, try: "
-        f'`chmod -x {shlex.quote(path)}`\n'
-        f'  If on Windows, you may also need to: '
-        f'`git add --chmod=-x {shlex.quote(path)}`\n'
-        f'  If it is supposed to be executable, double-check its shebang.',
+        f"`chmod -x {shlex.quote(path)}`\n"
+        f"  If on Windows, you may also need to: "
+        f"`git add --chmod=-x {shlex.quote(path)}`\n"
+        f"  If it is supposed to be executable, double-check its shebang.",
         file=sys.stderr,
     )
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('filenames', nargs='*')
+    parser.add_argument("filenames", nargs="*")
     args = parser.parse_args(argv)
 
     return check_executables(args.filenames)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

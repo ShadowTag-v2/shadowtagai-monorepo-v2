@@ -1,8 +1,15 @@
 """Application configuration"""
 
+import logging
+import os
+import secrets
 from functools import lru_cache
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+logger = logging.getLogger(__name__)
+
+_DEV_FALLBACK_SECRET = secrets.token_urlsafe(32)
 
 
 class Settings(BaseSettings):
@@ -11,7 +18,7 @@ class Settings(BaseSettings):
     # Application
     APP_NAME: str = "AI You - Compliance Expert API"
     APP_VERSION: str = "1.0.0"
-    DEBUG: bool = True
+    DEBUG: bool = False
     ENVIRONMENT: str = "development"
 
     # Server
@@ -24,7 +31,7 @@ class Settings(BaseSettings):
     DATABASE_MAX_OVERFLOW: int = 0
 
     # Security
-    SECRET_KEY: str = "your-secret-key-change-this-in-production"
+    SECRET_KEY: str = ""
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
@@ -69,9 +76,20 @@ class Settings(BaseSettings):
     MASK_PII_IN_LOGS: bool = True
     ENCRYPT_SENSITIVE_DATA: bool = True
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = SettingsConfigDict(case_sensitive=True)
+
+    def model_post_init(self, __context: object) -> None:
+        """Ensure SECRET_KEY is never empty."""
+        if not self.SECRET_KEY:
+            env_key = os.environ.get("SECRET_KEY", "")
+            if env_key:
+                object.__setattr__(self, "SECRET_KEY", env_key)
+            else:
+                object.__setattr__(self, "SECRET_KEY", _DEV_FALLBACK_SECRET)
+                logger.warning(
+                    "SECRET_KEY not set — using random per-process fallback. "
+                    "Set SECRET_KEY env var via GCP Secret Manager for production."
+                )
 
 
 @lru_cache

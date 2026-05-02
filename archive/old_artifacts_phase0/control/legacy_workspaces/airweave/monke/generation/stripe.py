@@ -1,13 +1,10 @@
 """Stripe-specific generation adapter: customer generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.stripe import StripeArtifact
 
 
-async def generate_stripe_artifact(
-    model: str, token: str, is_update: bool = False
-) -> tuple[str, str, str]:
+async def generate_stripe_artifact(model: str, token: str, is_update: bool = False) -> tuple[str, str, str]:
     """Generate a Stripe customer via LLM.
 
     Returns (name, email, description). The token must be embedded in the output by instruction.

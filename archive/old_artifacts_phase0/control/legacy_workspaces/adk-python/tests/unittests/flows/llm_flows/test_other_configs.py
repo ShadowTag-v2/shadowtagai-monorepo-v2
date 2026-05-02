@@ -19,27 +19,27 @@ from ... import testing_utils
 
 
 def test_output_schema():
-  class CustomOutput(BaseModel):
-    custom_field: str
+    class CustomOutput(BaseModel):
+        custom_field: str
 
-  response = [
-      'response1',
-  ]
-  mockModel = testing_utils.MockModel.create(responses=response)
-  root_agent = Agent(
-      name='root_agent',
-      model=mockModel,
-      output_schema=CustomOutput,
-      disallow_transfer_to_parent=True,
-      disallow_transfer_to_peers=True,
-  )
+    response = [
+        "response1",
+    ]
+    mockModel = testing_utils.MockModel.create(responses=response)
+    root_agent = Agent(
+        name="root_agent",
+        model=mockModel,
+        output_schema=CustomOutput,
+        disallow_transfer_to_parent=True,
+        disallow_transfer_to_peers=True,
+    )
 
-  runner = testing_utils.InMemoryRunner(root_agent)
+    runner = testing_utils.InMemoryRunner(root_agent)
 
-  assert testing_utils.simplify_events(runner.run('test1')) == [
-      ('root_agent', 'response1'),
-  ]
-  assert len(mockModel.requests) == 1
-  assert mockModel.requests[0].config.response_schema == CustomOutput
-  assert mockModel.requests[0].config.response_mime_type == 'application/json'
-  assert mockModel.requests[0].config.labels == {'adk_agent_name': 'root_agent'}
+    assert testing_utils.simplify_events(runner.run("test1")) == [
+        ("root_agent", "response1"),
+    ]
+    assert len(mockModel.requests) == 1
+    assert mockModel.requests[0].config.response_schema == CustomOutput
+    assert mockModel.requests[0].config.response_mime_type == "application/json"
+    assert mockModel.requests[0].config.labels == {"adk_agent_name": "root_agent"}

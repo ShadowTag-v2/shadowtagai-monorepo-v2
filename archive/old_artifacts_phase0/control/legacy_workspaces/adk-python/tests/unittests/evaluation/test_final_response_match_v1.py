@@ -23,66 +23,54 @@ from google.genai import types as genai_types
 
 
 def _create_test_rouge_evaluator(threshold: float) -> RougeEvaluator:
-  return RougeEvaluator(
-      EvalMetric(metric_name="response_match_score", threshold=threshold)
-  )
+    return RougeEvaluator(EvalMetric(metric_name="response_match_score", threshold=threshold))
 
 
-def _create_test_invocations(
-    candidate: str, reference: str
-) -> tuple[Invocation, Invocation]:
-  """Returns tuple of (actual_invocation, expected_invocation)."""
-  return Invocation(
-      user_content=genai_types.Content(
-          parts=[genai_types.Part(text="This is a test query.")]
-      ),
-      final_response=genai_types.Content(
-          parts=[genai_types.Part(text=candidate)]
-      ),
-  ), Invocation(
-      user_content=genai_types.Content(
-          parts=[genai_types.Part(text="This is a test query.")]
-      ),
-      final_response=genai_types.Content(
-          parts=[genai_types.Part(text=reference)]
-      ),
-  )
+def _create_test_invocations(candidate: str, reference: str) -> tuple[Invocation, Invocation]:
+    """Returns tuple of (actual_invocation, expected_invocation)."""
+    return Invocation(
+        user_content=genai_types.Content(parts=[genai_types.Part(text="This is a test query.")]),
+        final_response=genai_types.Content(parts=[genai_types.Part(text=candidate)]),
+    ), Invocation(
+        user_content=genai_types.Content(parts=[genai_types.Part(text="This is a test query.")]),
+        final_response=genai_types.Content(parts=[genai_types.Part(text=reference)]),
+    )
 
 
 def test_calculate_rouge_1_scores_empty_candidate_and_reference():
-  candidate = ""
-  reference = ""
-  rouge_1_score = _calculate_rouge_1_scores(candidate, reference)
-  assert rouge_1_score.precision == 0
-  assert rouge_1_score.recall == 0
-  assert rouge_1_score.fmeasure == 0
+    candidate = ""
+    reference = ""
+    rouge_1_score = _calculate_rouge_1_scores(candidate, reference)
+    assert rouge_1_score.precision == 0
+    assert rouge_1_score.recall == 0
+    assert rouge_1_score.fmeasure == 0
 
 
 def test_calculate_rouge_1_scores_empty_candidate():
-  candidate = ""
-  reference = "This is a test reference."
-  rouge_1_score = _calculate_rouge_1_scores(candidate, reference)
-  assert rouge_1_score.precision == 0
-  assert rouge_1_score.recall == 0
-  assert rouge_1_score.fmeasure == 0
+    candidate = ""
+    reference = "This is a test reference."
+    rouge_1_score = _calculate_rouge_1_scores(candidate, reference)
+    assert rouge_1_score.precision == 0
+    assert rouge_1_score.recall == 0
+    assert rouge_1_score.fmeasure == 0
 
 
 def test_calculate_rouge_1_scores_empty_reference():
-  candidate = "This is a test candidate response."
-  reference = ""
-  rouge_1_score = _calculate_rouge_1_scores(candidate, reference)
-  assert rouge_1_score.precision == 0
-  assert rouge_1_score.recall == 0
-  assert rouge_1_score.fmeasure == 0
+    candidate = "This is a test candidate response."
+    reference = ""
+    rouge_1_score = _calculate_rouge_1_scores(candidate, reference)
+    assert rouge_1_score.precision == 0
+    assert rouge_1_score.recall == 0
+    assert rouge_1_score.fmeasure == 0
 
 
 def test_calculate_rouge_1_scores():
-  candidate = "This is a test candidate response."
-  reference = "This is a test reference."
-  rouge_1_score = _calculate_rouge_1_scores(candidate, reference)
-  assert rouge_1_score.precision == pytest.approx(2 / 3)
-  assert rouge_1_score.recall == pytest.approx(4 / 5)
-  assert rouge_1_score.fmeasure == pytest.approx(8 / 11)
+    candidate = "This is a test candidate response."
+    reference = "This is a test reference."
+    rouge_1_score = _calculate_rouge_1_scores(candidate, reference)
+    assert rouge_1_score.precision == pytest.approx(2 / 3)
+    assert rouge_1_score.recall == pytest.approx(4 / 5)
+    assert rouge_1_score.fmeasure == pytest.approx(8 / 11)
 
 
 @pytest.mark.parametrize(
@@ -120,28 +108,22 @@ def test_rouge_evaluator_multiple_invocations(
     expected_score: float,
     expected_status: EvalStatus,
 ):
-  rouge_evaluator = _create_test_rouge_evaluator(threshold=0.8)
-  actual_invocations = []
-  expected_invocations = []
-  for candidate, reference in zip(candidates, references):
-    actual_invocation, expected_invocation = _create_test_invocations(
-        candidate, reference
-    )
-    actual_invocations.append(actual_invocation)
-    expected_invocations.append(expected_invocation)
+    rouge_evaluator = _create_test_rouge_evaluator(threshold=0.8)
+    actual_invocations = []
+    expected_invocations = []
+    for candidate, reference in zip(candidates, references):
+        actual_invocation, expected_invocation = _create_test_invocations(candidate, reference)
+        actual_invocations.append(actual_invocation)
+        expected_invocations.append(expected_invocation)
 
-  evaluation_result = rouge_evaluator.evaluate_invocations(
-      actual_invocations, expected_invocations
-  )
-  assert evaluation_result.overall_score == pytest.approx(
-      expected_score, rel=1e-3
-  )
-  assert evaluation_result.overall_eval_status == expected_status
+    evaluation_result = rouge_evaluator.evaluate_invocations(actual_invocations, expected_invocations)
+    assert evaluation_result.overall_score == pytest.approx(expected_score, rel=1e-3)
+    assert evaluation_result.overall_eval_status == expected_status
 
 
 def test_get_metric_info():
-  """Test get_metric_info function for response match metric."""
-  metric_info = RougeEvaluator.get_metric_info()
-  assert metric_info.metric_name == PrebuiltMetrics.RESPONSE_MATCH_SCORE.value
-  assert metric_info.metric_value_info.interval.min_value == 0.0
-  assert metric_info.metric_value_info.interval.max_value == 1.0
+    """Test get_metric_info function for response match metric."""
+    metric_info = RougeEvaluator.get_metric_info()
+    assert metric_info.metric_name == PrebuiltMetrics.RESPONSE_MATCH_SCORE.value
+    assert metric_info.metric_value_info.interval.min_value == 0.0
+    assert metric_info.metric_value_info.interval.max_value == 1.0

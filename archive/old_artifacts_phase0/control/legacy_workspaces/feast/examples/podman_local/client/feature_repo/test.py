@@ -52,6 +52,7 @@ def run_demo():
     except Exception as e:
         print(f"An error occurred in run_demo: {e}")
 
+
 def fetch_historical_features_entity_df(store: FeatureStore, for_batch_scoring: bool):
     try:
         entity_df = pd.DataFrame.from_dict(
@@ -83,6 +84,7 @@ def fetch_historical_features_entity_df(store: FeatureStore, for_batch_scoring: 
         print(training_df.head())
     except Exception as e:
         print(f"An error occurred in fetch_historical_features_entity_df: {e}")
+
 
 def fetch_online_features(store, source: str = ""):
     try:
@@ -116,6 +118,7 @@ def fetch_online_features(store, source: str = ""):
             print(key, " : ", value)
     except Exception as e:
         print(f"An error occurred in fetch_online_features: {e}")
+
 
 if __name__ == "__main__":
     try:

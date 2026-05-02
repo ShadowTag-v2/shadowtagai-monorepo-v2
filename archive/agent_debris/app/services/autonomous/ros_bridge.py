@@ -5,7 +5,7 @@ Provides REST/WebSocket abstraction over ROS Melodic topics.
 """
 
 import asyncio
-from typing import Dict, Any, Optional, List
+from typing import Any
 from collections.abc import Callable
 from datetime import datetime
 import structlog
@@ -158,10 +158,7 @@ class ROSBridge:
 
         # Wait for response (simplified - in production use proper async queue)
         try:
-            response_msg = await asyncio.wait_for(
-                self._wait_for_response(request_id),
-                timeout=timeout
-            )
+            response_msg = await asyncio.wait_for(self._wait_for_response(request_id), timeout=timeout)
             logger.info("ros_service_response_received", service=service, request_id=request_id)
             return response_msg.get("values", {})
         except TimeoutError:

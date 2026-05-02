@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/governance/judge_six/sentinel.py
+# hypothesis_version: 6.151.5
+
+['0.0.0.0/0', 'ALLOW', 'APPROVED', 'BLOCKED', 'Gauntlet Passed', 'SUCCESS', 'drop table', 'general', 'reason', 'rm -rf', 'sk-', 'status', 'truncate', 'verdict']

@@ -8,9 +8,9 @@ from .manager import *
 from .utils import *
 
 
-#*****************************************************
+# *****************************************************
 # HistoryExplorer
-#*****************************************************
+# *****************************************************
 class HistoryExplorer(Explorer):
     def __init__(self):
         self._history_type = "History"
@@ -25,11 +25,11 @@ class HistoryExplorer(Explorer):
             if kwargs.get("history") == "cmd":
                 self._history_type = "Cmd_History"
                 lfCmd("silent history :")
-                pattern_exclude = history_pattern_exclude.get('cmd', [])
+                pattern_exclude = history_pattern_exclude.get("cmd", [])
             elif kwargs.get("history") == "search":
                 self._history_type = "Search_History"
                 lfCmd("silent history /")
-                pattern_exclude = history_pattern_exclude.get('search', [])
+                pattern_exclude = history_pattern_exclude.get("search", [])
             else:
                 self._history_type = "History"
                 lfCmd("let @x = ''")
@@ -37,7 +37,7 @@ class HistoryExplorer(Explorer):
             lfCmd("let @x = tmp")
             lfCmd("redir END")
             result_list = result.splitlines()[2:]
-            result_list = [line[1:].lstrip().split('  ', 1)[1] for line in result_list]
+            result_list = [line[1:].lstrip().split("  ", 1)[1] for line in result_list]
 
             compiled = [re.compile(p) for p in pattern_exclude]
             result_list = [line for line in result_list if all(p.search(line) is None for p in compiled)]
@@ -54,9 +54,9 @@ class HistoryExplorer(Explorer):
         return self._history_type
 
 
-#*****************************************************
+# *****************************************************
 # HistoryExplManager
-#*****************************************************
+# *****************************************************
 class HistoryExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -114,7 +114,7 @@ class HistoryExplManager(Manager):
         return help
 
     def _cmdExtension(self, cmd):
-        if equal(cmd, '<C-o>'):
+        if equal(cmd, "<C-o>"):
             self.editHistory()
         return True
 
@@ -124,7 +124,7 @@ class HistoryExplManager(Manager):
         line = instance.currentLine
         edit_prompt = lfEval("g:Lf_HistoryEditPromptIfEmpty") == "1"
         if edit_prompt and len(line.strip()) == 0:
-            line = ''.join(instance._cli._cmdline)
+            line = "".join(instance._cli._cmdline)
 
         instance.exitBuffer()
         cmd = ":"
@@ -135,9 +135,9 @@ class HistoryExplManager(Manager):
         lfCmd("call feedkeys('%s', 'n')" % (cmd + escQuote(line)))
 
 
-#*****************************************************
+# *****************************************************
 # historyExplManager is a singleton
-#*****************************************************
+# *****************************************************
 historyExplManager = HistoryExplManager()
 
-__all__ = ['historyExplManager']
+__all__ = ["historyExplManager"]

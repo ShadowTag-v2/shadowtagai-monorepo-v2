@@ -34,31 +34,24 @@ ALLOWED_LABELS = [
     "web",
 ]
 
-CONTRIBUTING_MD = read_file(
-    Path(__file__).resolve().parents[3] / "CONTRIBUTING.md"
-)
+CONTRIBUTING_MD = read_file(Path(__file__).resolve().parents[3] / "CONTRIBUTING.md")
 
-APPROVAL_INSTRUCTION = (
-    "Do not ask for user approval for labeling or commenting! If you can't find"
-    " appropriate labels for the PR, do not label it."
-)
+APPROVAL_INSTRUCTION = "Do not ask for user approval for labeling or commenting! If you can't find appropriate labels for the PR, do not label it."
 if IS_INTERACTIVE:
-  APPROVAL_INSTRUCTION = (
-      "Only label or comment when the user approves the labeling or commenting!"
-  )
+    APPROVAL_INSTRUCTION = "Only label or comment when the user approves the labeling or commenting!"
 
 
 def get_pull_request_details(pr_number: int) -> str:
-  """Get the details of the specified pull request.
+    """Get the details of the specified pull request.
 
-  Args:
-    pr_number: number of the GitHub pull request.
+    Args:
+      pr_number: number of the GitHub pull request.
 
-  Returns:
-    The status of this request, with the details when successful.
-  """
-  print(f"Fetching details for PR #{pr_number} from {OWNER}/{REPO}")
-  query = """
+    Returns:
+      The status of this request, with the details when successful.
+    """
+    print(f"Fetching details for PR #{pr_number} from {OWNER}/{REPO}")
+    query = """
     query($owner: String!, $repo: String!, $prNumber: Int!) {
       repository(owner: $owner, name: $repo) {
         pullRequest(number: $prNumber) {
@@ -120,97 +113,89 @@ def get_pull_request_details(pr_number: int) -> str:
       }
     }
   """
-  variables = {"owner": OWNER, "repo": REPO, "prNumber": pr_number}
-  url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/pulls/{pr_number}"
+    variables = {"owner": OWNER, "repo": REPO, "prNumber": pr_number}
+    url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/pulls/{pr_number}"
 
-  try:
-    response = run_graphql_query(query, variables)
-    if "errors" in response:
-      return error_response(str(response["errors"]))
+    try:
+        response = run_graphql_query(query, variables)
+        if "errors" in response:
+            return error_response(str(response["errors"]))
 
-    pr = response.get("data", {}).get("repository", {}).get("pullRequest")
-    if not pr:
-      return error_response(f"Pull Request #{pr_number} not found.")
+        pr = response.get("data", {}).get("repository", {}).get("pullRequest")
+        if not pr:
+            return error_response(f"Pull Request #{pr_number} not found.")
 
-    # Filter out main merge commits.
-    original_commits = pr.get("commits", {}).get("nodes", {})
-    if original_commits:
-      filtered_commits = [
-          commit_node
-          for commit_node in original_commits
-          if not commit_node["commit"]["message"].startswith(
-              "Merge branch 'main' into"
-          )
-      ]
-      pr["commits"]["nodes"] = filtered_commits
+        # Filter out main merge commits.
+        original_commits = pr.get("commits", {}).get("nodes", {})
+        if original_commits:
+            filtered_commits = [
+                commit_node for commit_node in original_commits if not commit_node["commit"]["message"].startswith("Merge branch 'main' into")
+            ]
+            pr["commits"]["nodes"] = filtered_commits
 
-    # Get diff of the PR and truncate it to avoid exceeding the maximum tokens.
-    pr["diff"] = get_diff(url)[:10000]
+        # Get diff of the PR and truncate it to avoid exceeding the maximum tokens.
+        pr["diff"] = get_diff(url)[:10000]
 
-    return {"status": "success", "pull_request": pr}
-  except requests.exceptions.RequestException as e:
-    return error_response(str(e))
+        return {"status": "success", "pull_request": pr}
+    except requests.exceptions.RequestException as e:
+        return error_response(str(e))
 
 
 def add_label_to_pr(pr_number: int, label: str) -> dict[str, Any]:
-  """Adds a specified label on a pull request.
+    """Adds a specified label on a pull request.
 
-  Args:
-      pr_number: the number of the GitHub pull request
-      label: the label to add
+    Args:
+        pr_number: the number of the GitHub pull request
+        label: the label to add
 
-  Returns:
-      The the status of this request, with the applied label and response when
-      successful.
-  """
-  print(f"Attempting to add label '{label}' to PR #{pr_number}")
-  if label not in ALLOWED_LABELS:
-    return error_response(
-        f"Error: Label '{label}' is not an allowed label. Will not apply."
-    )
+    Returns:
+        The the status of this request, with the applied label and response when
+        successful.
+    """
+    print(f"Attempting to add label '{label}' to PR #{pr_number}")
+    if label not in ALLOWED_LABELS:
+        return error_response(f"Error: Label '{label}' is not an allowed label. Will not apply.")
 
-  # Pull Request is a special issue in GitHub, so we can use issue url for PR.
-  label_url = (
-      f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{pr_number}/labels"
-  )
-  label_payload = [label]
+    # Pull Request is a special issue in GitHub, so we can use issue url for PR.
+    label_url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{pr_number}/labels"
+    label_payload = [label]
 
-  try:
-    response = post_request(label_url, label_payload)
-  except requests.exceptions.RequestException as e:
-    return error_response(f"Error: {e}")
+    try:
+        response = post_request(label_url, label_payload)
+    except requests.exceptions.RequestException as e:
+        return error_response(f"Error: {e}")
 
-  return {
-      "status": "success",
-      "applied_label": label,
-      "response": response,
-  }
+    return {
+        "status": "success",
+        "applied_label": label,
+        "response": response,
+    }
 
 
 def add_comment_to_pr(pr_number: int, comment: str) -> dict[str, Any]:
-  """Add the specified comment to the given PR number.
+    """Add the specified comment to the given PR number.
 
-  Args:
-    pr_number: the number of the GitHub pull request
-    comment: the comment to add
+    Args:
+      pr_number: the number of the GitHub pull request
+      comment: the comment to add
 
-  Returns:
-    The the status of this request, with the applied comment when successful.
-  """
-  print(f"Attempting to add comment '{comment}' to issue #{pr_number}")
+    Returns:
+      The the status of this request, with the applied comment when successful.
+    """
+    print(f"Attempting to add comment '{comment}' to issue #{pr_number}")
 
-  # Pull Request is a special issue in GitHub, so we can use issue url for PR.
-  url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{pr_number}/comments"
-  payload = {"body": comment}
+    # Pull Request is a special issue in GitHub, so we can use issue url for PR.
+    url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{pr_number}/comments"
+    payload = {"body": comment}
 
-  try:
-    post_request(url, payload)
-  except requests.exceptions.RequestException as e:
-    return error_response(f"Error: {e}")
-  return {
-      "status": "success",
-      "added_comment": comment,
-  }
+    try:
+        post_request(url, payload)
+    except requests.exceptions.RequestException as e:
+        return error_response(f"Error: {e}")
+    return {
+        "status": "success",
+        "added_comment": comment,
+    }
 
 
 root_agent = Agent(

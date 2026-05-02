@@ -3,7 +3,7 @@
 from datetime import datetime
 from enum import StrEnum
 
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 
 class FocusArea(StrEnum):
@@ -68,17 +68,20 @@ class OptimizePageRequest(BaseModel):
         max_length=1000,
     )
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "page_content": "<h1>Welcome to Our App</h1><p>Sign up now to get started!</p><button>Sign Up</button>",
-                "focus_areas": ["headlines", "cta"],
-                "current_conversion_rate": 2.5,
-                "target_conversion_rate": 5.0,
-                "target_audience": "Small business owners looking to improve their online presence",
-                "product_service": "Website builder platform",
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "page_content": "<h1>Welcome to Our App</h1><p>Sign up now to get started!</p><button>Sign Up</button>",
+                    "focus_areas": ["headlines", "cta"],
+                    "current_conversion_rate": 2.5,
+                    "target_conversion_rate": 5.0,
+                    "target_audience": "Small business owners looking to improve their online presence",
+                    "product_service": "Website builder platform",
+                }
+            ]
         }
+    )
 
 
 class Recommendation(BaseModel):
@@ -99,23 +102,26 @@ class Recommendation(BaseModel):
     before_example: str | None = Field(default=None, description="Example of current state")
     after_example: str | None = Field(default=None, description="Example of improved state")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "title": "Improve Primary Headline",
-                "description": "The current headline is too generic and doesn't communicate clear value",
-                "category": "headlines",
-                "priority": "high",
-                "expected_impact": "Could improve conversion rate by 15-25%",
-                "implementation_steps": [
-                    "Replace generic headline with specific benefit",
-                    "Include numbers or measurable outcomes",
-                    "Test A/B variants",
-                ],
-                "before_example": "Welcome to Our App",
-                "after_example": "Build Your Professional Website in 10 Minutes",
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "title": "Improve Primary Headline",
+                    "description": "The current headline is too generic and doesn't communicate clear value",
+                    "category": "headlines",
+                    "priority": "high",
+                    "expected_impact": "Could improve conversion rate by 15-25%",
+                    "implementation_steps": [
+                        "Replace generic headline with specific benefit",
+                        "Include numbers or measurable outcomes",
+                        "Test A/B variants",
+                    ],
+                    "before_example": "Welcome to Our App",
+                    "after_example": "Build Your Professional Website in 10 Minutes",
+                }
+            ]
         }
+    )
 
 
 class HeadlineVariation(BaseModel):
@@ -190,25 +196,28 @@ class OptimizePageResponse(BaseModel):
     )
     timestamp: datetime = Field(default_factory=datetime.now, description="Timestamp of analysis")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "status": "success",
-                "analysis": {
-                    "overall_score": 65,
-                    "key_strengths": ["Clear visual hierarchy", "Mobile responsive design"],
-                    "key_weaknesses": [
-                        "Weak value proposition",
-                        "Generic CTA text",
-                        "Missing social proof",
-                    ],
-                    "recommendations": [],
-                    "estimated_conversion_lift": "20-35%",
-                },
-                "metadata": {"focus_areas": ["headlines", "cta"], "processing_time_ms": 2500},
-                "timestamp": "2024-01-15T10:30:00Z",
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "status": "success",
+                    "analysis": {
+                        "overall_score": 65,
+                        "key_strengths": ["Clear visual hierarchy", "Mobile responsive design"],
+                        "key_weaknesses": [
+                            "Weak value proposition",
+                            "Generic CTA text",
+                            "Missing social proof",
+                        ],
+                        "recommendations": [],
+                        "estimated_conversion_lift": "20-35%",
+                    },
+                    "metadata": {"focus_areas": ["headlines", "cta"], "processing_time_ms": 2500},
+                    "timestamp": "2024-01-15T10:30:00Z",
+                }
+            ]
         }
+    )
 
 
 class GenerateHeadlinesRequest(BaseModel):

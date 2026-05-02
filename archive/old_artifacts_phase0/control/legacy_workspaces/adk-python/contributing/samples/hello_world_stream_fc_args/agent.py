@@ -17,22 +17,22 @@ from google.genai import types
 
 
 def concat_number_and_string(num: int, s: str) -> str:
-  """Concatenate a number and a string.
+    """Concatenate a number and a string.
 
-  Args:
-    num: The number to concatenate.
-    s: The string to concatenate.
+    Args:
+      num: The number to concatenate.
+      s: The string to concatenate.
 
-  Returns:
-    The concatenated string.
-  """
-  return str(num) + ': ' + s
+    Returns:
+      The concatenated string.
+    """
+    return str(num) + ": " + s
 
 
 root_agent = Agent(
-    model='gemini-3-pro-preview',
-    name='hello_world_stream_fc_args',
-    description='Demo agent showcasing streaming function call arguments.',
+    model="gemini-3-pro-preview",
+    name="hello_world_stream_fc_args",
+    description="Demo agent showcasing streaming function call arguments.",
     instruction="""
       You are a helpful assistant.
       You can use the `concat_number_and_string` tool to concatenate a number and a string.

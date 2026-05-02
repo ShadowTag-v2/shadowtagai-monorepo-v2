@@ -38,7 +38,7 @@ class ResultInterpretation:
         anomalies_detected: list[str],
         patterns_detected: list[str],
         overall_assessment: str,
-        created_at: datetime | None = None
+        created_at: datetime | None = None,
     ):
         """
         Initialize result interpretation.
@@ -90,7 +90,7 @@ class ResultInterpretation:
             "anomalies_detected": self.anomalies_detected,
             "patterns_detected": self.patterns_detected,
             "overall_assessment": self.overall_assessment,
-            "created_at": self.created_at.isoformat()
+            "created_at": self.created_at.isoformat(),
         }
 
 
@@ -125,12 +125,7 @@ class DataAnalystAgent(BaseAgent):
         ```
     """
 
-    def __init__(
-        self,
-        agent_id: str | None = None,
-        agent_type: str | None = None,
-        config: dict[str, Any] | None = None
-    ):
+    def __init__(self, agent_id: str | None = None, agent_type: str | None = None, config: dict[str, Any] | None = None):
         """
         Initialize Data Analyst Agent.
 
@@ -183,28 +178,19 @@ class DataAnalystAgent(BaseAgent):
 
                 interpretation = self.interpret_results(result, hypothesis, literature_context)
 
-                return {
-                    "success": True,
-                    "interpretation": interpretation.to_dict()
-                }
+                return {"success": True, "interpretation": interpretation.to_dict()}
 
             elif action == "detect_patterns":
                 results = task["results"]
                 patterns = self.detect_patterns_across_results(results)
 
-                return {
-                    "success": True,
-                    "patterns": patterns
-                }
+                return {"success": True, "patterns": patterns}
 
             elif action == "detect_anomalies":
                 result = task["result"]
                 anomalies = self.detect_anomalies(result)
 
-                return {
-                    "success": True,
-                    "anomalies": anomalies
-                }
+                return {"success": True, "anomalies": anomalies}
 
             else:
                 raise ValueError(f"Unknown action: {action}")
@@ -212,20 +198,12 @@ class DataAnalystAgent(BaseAgent):
         except Exception as e:
             logger.error(f"Error executing task in DataAnalystAgent: {e}")
             self.errors_encountered += 1
-            return {
-                "success": False,
-                "error": str(e)
-            }
+            return {"success": False, "error": str(e)}
         finally:
             self.status = AgentStatus.IDLE
             self.tasks_completed += 1
 
-    def analyze(
-        self,
-        results: list[ExperimentResult],
-        hypothesis: Hypothesis | None = None,
-        literature_context: str | None = None
-    ) -> dict[str, Any]:
+    def analyze(self, results: list[ExperimentResult], hypothesis: Hypothesis | None = None, literature_context: str | None = None) -> dict[str, Any]:
         """
         Analyze multiple experiment results and synthesize findings.
 
@@ -259,11 +237,7 @@ class DataAnalystAgent(BaseAgent):
         # Analyze each result individually
         for result in results:
             try:
-                interpretation = self.interpret_results(
-                    result=result,
-                    hypothesis=hypothesis,
-                    literature_context=literature_context
-                )
+                interpretation = self.interpret_results(result=result, hypothesis=hypothesis, literature_context=literature_context)
                 individual_analyses.append(interpretation)
 
                 # Detect anomalies if enabled
@@ -282,18 +256,9 @@ class DataAnalystAgent(BaseAgent):
         # Generate synthesis
         synthesis = self._generate_synthesis(individual_analyses, patterns)
 
-        return {
-            "individual_analyses": individual_analyses,
-            "synthesis": synthesis,
-            "patterns": patterns,
-            "anomalies": all_anomalies
-        }
+        return {"individual_analyses": individual_analyses, "synthesis": synthesis, "patterns": patterns, "anomalies": all_anomalies}
 
-    def _generate_synthesis(
-        self,
-        analyses: list['ResultInterpretation'],
-        patterns: list[str]
-    ) -> str:
+    def _generate_synthesis(self, analyses: list[ResultInterpretation], patterns: list[str]) -> str:
         """Generate a synthesis of multiple analyses."""
         if not analyses:
             return "No results to synthesize."
@@ -312,7 +277,7 @@ class DataAnalystAgent(BaseAgent):
         # Aggregate key findings
         all_findings = []
         for a in analyses:
-            if hasattr(a, 'key_findings'):
+            if hasattr(a, "key_findings"):
                 all_findings.extend(a.key_findings[:2])  # Top 2 findings per analysis
 
         if all_findings:
@@ -325,10 +290,7 @@ class DataAnalystAgent(BaseAgent):
     # ========================================================================
 
     def interpret_results(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis | None = None,
-        literature_context: str | None = None
+        self, result: ExperimentResult, hypothesis: Hypothesis | None = None, literature_context: str | None = None
     ) -> ResultInterpretation:
         """
         Interpret experiment results using Claude.
@@ -347,26 +309,22 @@ class DataAnalystAgent(BaseAgent):
         result_summary = self._extract_result_summary(result)
 
         # Build interpretation prompt
-        prompt = self._build_interpretation_prompt(
-            result_summary, hypothesis, literature_context
-        )
+        prompt = self._build_interpretation_prompt(result_summary, hypothesis, literature_context)
 
         # Get Claude interpretation
         try:
             response = self.llm_client.generate(
                 prompt=prompt,
                 system="You are an expert scientific data analyst. Provide nuanced, "
-                       "evidence-based interpretations of experimental results. Focus on "
-                       "scientific meaning, not just statistical significance.",
+                "evidence-based interpretations of experimental results. Focus on "
+                "scientific meaning, not just statistical significance.",
                 max_tokens=2000,
-                temperature=0.3  # Lower temperature for more focused analysis
+                temperature=0.3,  # Lower temperature for more focused analysis
             )
 
             # Parse Claude's response (extract content from LLMResponse)
-            response_text = response.content if hasattr(response, 'content') else str(response)
-            interpretation = self._parse_interpretation_response(
-                response_text, result.experiment_id, result
-            )
+            response_text = response.content if hasattr(response, "content") else str(response)
+            interpretation = self._parse_interpretation_response(response_text, result.experiment_id, result)
 
             # Store in history for pattern detection
             self.interpretation_history.append(interpretation)
@@ -388,43 +346,42 @@ class DataAnalystAgent(BaseAgent):
             "primary_p_value": result.primary_p_value,
             "primary_effect_size": result.primary_effect_size,
             "supports_hypothesis": result.supports_hypothesis,
-            "statistical_tests": []
+            "statistical_tests": [],
         }
 
         # Add statistical test details
         for test in result.statistical_tests:
-            summary["statistical_tests"].append({
-                "test_name": test.test_name,
-                "statistic": test.statistic,
-                "p_value": test.p_value,
-                "effect_size": test.effect_size,
-                "effect_size_type": test.effect_size_type,
-                "significance_label": test.significance_label,
-                "sample_size": test.sample_size
-            })
+            summary["statistical_tests"].append(
+                {
+                    "test_name": test.test_name,
+                    "statistic": test.statistic,
+                    "p_value": test.p_value,
+                    "effect_size": test.effect_size,
+                    "effect_size_type": test.effect_size_type,
+                    "significance_label": test.significance_label,
+                    "sample_size": test.sample_size,
+                }
+            )
 
         # Add variable summaries
         if result.variable_results:
             summary["variables"] = []
             for var in result.variable_results[:5]:  # Top 5 variables
-                summary["variables"].append({
-                    "name": var.variable_name,
-                    "mean": var.mean,
-                    "median": var.median,
-                    "std": var.std,
-                    "min": var.min,
-                    "max": var.max,
-                    "n_samples": var.n_samples
-                })
+                summary["variables"].append(
+                    {
+                        "name": var.variable_name,
+                        "mean": var.mean,
+                        "median": var.median,
+                        "std": var.std,
+                        "min": var.min,
+                        "max": var.max,
+                        "n_samples": var.n_samples,
+                    }
+                )
 
         return summary
 
-    def _build_interpretation_prompt(
-        self,
-        result_summary: dict[str, Any],
-        hypothesis: Hypothesis | None,
-        literature_context: str | None
-    ) -> str:
+    def _build_interpretation_prompt(self, result_summary: dict[str, Any], hypothesis: Hypothesis | None, literature_context: str | None) -> str:
         """Build prompt for Claude interpretation."""
         prompt_parts = []
 
@@ -435,29 +392,29 @@ HYPOTHESIS:
 {hypothesis.statement}
 
 Domain: {hypothesis.domain}
-Expected Outcome: {getattr(hypothesis, 'expected_outcome', 'Not specified')}
+Expected Outcome: {getattr(hypothesis, "expected_outcome", "Not specified")}
 """)
 
         # Result summary
         prompt_parts.append(f"""
 EXPERIMENTAL RESULTS:
-Status: {result_summary['status']}
-Primary Test: {result_summary['primary_test']}
-Primary P-value: {result_summary['primary_p_value']}
-Primary Effect Size: {result_summary['primary_effect_size']}
-Hypothesis Supported: {result_summary['supports_hypothesis']}
+Status: {result_summary["status"]}
+Primary Test: {result_summary["primary_test"]}
+Primary P-value: {result_summary["primary_p_value"]}
+Primary Effect Size: {result_summary["primary_effect_size"]}
+Hypothesis Supported: {result_summary["supports_hypothesis"]}
 
 Statistical Tests:
 """)
 
-        for i, test in enumerate(result_summary['statistical_tests'][:3], 1):
+        for i, test in enumerate(result_summary["statistical_tests"][:3], 1):
             prompt_parts.append(f"""
-Test {i}: {test['test_name']}
-  - Statistic: {test['statistic']:.4f}
-  - P-value: {test['p_value']:.6f}
-  - Effect Size: {test['effect_size']} ({test['effect_size_type']})
-  - Significance: {test['significance_label']}
-  - Sample Size: {test['sample_size']}
+Test {i}: {test["test_name"]}
+  - Statistic: {test["statistic"]:.4f}
+  - P-value: {test["p_value"]:.6f}
+  - Effect Size: {test["effect_size"]} ({test["effect_size_type"]})
+  - Significance: {test["significance_label"]}
+  - Sample Size: {test["sample_size"]}
 """)
 
         # Literature context
@@ -506,17 +463,12 @@ Format your response as JSON with the following structure:
 
         return "\n".join(prompt_parts)
 
-    def _parse_interpretation_response(
-        self,
-        response: str,
-        experiment_id: str,
-        result: ExperimentResult
-    ) -> ResultInterpretation:
+    def _parse_interpretation_response(self, response: str, experiment_id: str, result: ExperimentResult) -> ResultInterpretation:
         """Parse Claude's JSON response into ResultInterpretation."""
         try:
             # Extract JSON from response (Claude sometimes adds text before/after)
-            json_start = response.find('{')
-            json_end = response.rfind('}') + 1
+            json_start = response.find("{")
+            json_end = response.rfind("}") + 1
             json_str = response[json_start:json_end]
 
             data = json.loads(json_str)
@@ -538,7 +490,7 @@ Format your response as JSON with the following structure:
                 follow_up_experiments=data.get("follow_up_experiments", []),
                 anomalies_detected=anomalies,
                 patterns_detected=patterns,
-                overall_assessment=data.get("overall_assessment", "")
+                overall_assessment=data.get("overall_assessment", ""),
             )
 
         except json.JSONDecodeError as e:
@@ -553,20 +505,16 @@ Format your response as JSON with the following structure:
             hypothesis_supported=result.supports_hypothesis,
             confidence=0.5,
             summary=f"Experiment {result.status.value} with p-value {result.primary_p_value}",
-            key_findings=[
-                f"Primary test: {result.primary_test}",
-                f"P-value: {result.primary_p_value}",
-                f"Effect size: {result.primary_effect_size}"
-            ],
+            key_findings=[f"Primary test: {result.primary_test}", f"P-value: {result.primary_p_value}", f"Effect size: {result.primary_effect_size}"],
             significance_interpretation=f"P-value of {result.primary_p_value} indicates "
-                                       f"{'significant' if result.primary_p_value < 0.05 else 'non-significant'} results",
+            f"{'significant' if result.primary_p_value < 0.05 else 'non-significant'} results",
             biological_significance=None,
             comparison_to_prior_work=None,
             potential_confounds=["Automated analysis - manual review recommended"],
             follow_up_experiments=["Manual review needed for recommendations"],
             anomalies_detected=[],
             patterns_detected=[],
-            overall_assessment="Automated fallback interpretation - Claude unavailable"
+            overall_assessment="Automated fallback interpretation - Claude unavailable",
         )
 
     # ========================================================================
@@ -615,13 +563,10 @@ Format your response as JSON with the following structure:
         if result.primary_p_value is not None:
             if result.primary_p_value == 0.0:
                 anomalies.append(
-                    "ANOMALY: P-value is exactly 0.0. This is unusual and may indicate "
-                    "a computational error or extremely strong effect."
+                    "ANOMALY: P-value is exactly 0.0. This is unusual and may indicate a computational error or extremely strong effect."
                 )
             elif result.primary_p_value == 1.0:
-                anomalies.append(
-                    "ANOMALY: P-value is exactly 1.0. This may indicate a computational error."
-                )
+                anomalies.append("ANOMALY: P-value is exactly 1.0. This may indicate a computational error.")
 
         # Check for inconsistent statistical tests
         if len(result.statistical_tests) >= 2:
@@ -643,8 +588,7 @@ Format your response as JSON with the following structure:
                     cv = var.std / var.mean  # Coefficient of variation
                     if cv > 1.0:  # Very high variability
                         anomalies.append(
-                            f"ANOMALY: Variable '{var.variable_name}' has very high variability "
-                            f"(CV={cv:.2f}). This may affect result reliability."
+                            f"ANOMALY: Variable '{var.variable_name}' has very high variability (CV={cv:.2f}). This may affect result reliability."
                         )
 
         logger.debug(f"Detected {len(anomalies)} anomalies in {result.experiment_id}")
@@ -654,10 +598,7 @@ Format your response as JSON with the following structure:
     # PATTERN DETECTION
     # ========================================================================
 
-    def detect_patterns_across_results(
-        self,
-        results: list[ExperimentResult]
-    ) -> list[str]:
+    def detect_patterns_across_results(self, results: list[ExperimentResult]) -> list[str]:
         """
         Detect patterns across multiple experiment results.
 
@@ -700,8 +641,8 @@ Format your response as JSON with the following structure:
         # Pattern: Increasing/decreasing trend in effect sizes
         if len(effect_sizes) >= 4:
             # Simple monotonicity check
-            increasing = all(effect_sizes[i] <= effect_sizes[i+1] for i in range(len(effect_sizes)-1))
-            decreasing = all(effect_sizes[i] >= effect_sizes[i+1] for i in range(len(effect_sizes)-1))
+            increasing = all(effect_sizes[i] <= effect_sizes[i + 1] for i in range(len(effect_sizes) - 1))
+            decreasing = all(effect_sizes[i] >= effect_sizes[i + 1] for i in range(len(effect_sizes) - 1))
 
             if increasing:
                 patterns.append(
@@ -736,12 +677,7 @@ Format your response as JSON with the following structure:
     # SIGNIFICANCE INTERPRETATION
     # ========================================================================
 
-    def interpret_significance(
-        self,
-        p_value: float,
-        effect_size: float | None,
-        sample_size: int | None
-    ) -> str:
+    def interpret_significance(self, p_value: float, effect_size: float | None, sample_size: int | None) -> str:
         """
         Provide nuanced interpretation of statistical significance.
 
@@ -762,15 +698,9 @@ Format your response as JSON with the following structure:
 
         # Statistical significance level
         if p_value < 0.001:
-            interpretation_parts.append(
-                f"The p-value (p={p_value:.6f}) provides very strong evidence against "
-                f"the null hypothesis (p < 0.001)."
-            )
+            interpretation_parts.append(f"The p-value (p={p_value:.6f}) provides very strong evidence against the null hypothesis (p < 0.001).")
         elif p_value < 0.01:
-            interpretation_parts.append(
-                f"The p-value (p={p_value:.4f}) provides strong evidence against "
-                f"the null hypothesis (p < 0.01)."
-            )
+            interpretation_parts.append(f"The p-value (p={p_value:.4f}) provides strong evidence against the null hypothesis (p < 0.01).")
         elif p_value < 0.05:
             interpretation_parts.append(
                 f"The p-value (p={p_value:.4f}) provides moderate evidence against "
@@ -783,8 +713,7 @@ Format your response as JSON with the following structure:
             )
         else:
             interpretation_parts.append(
-                f"The p-value (p={p_value:.4f}) does not provide sufficient evidence to reject "
-                f"the null hypothesis (p > 0.1)."
+                f"The p-value (p={p_value:.4f}) does not provide sufficient evidence to reject the null hypothesis (p > 0.1)."
             )
 
         # Effect size interpretation
@@ -822,13 +751,11 @@ Format your response as JSON with the following structure:
         if sample_size is not None:
             if sample_size < 30:
                 interpretation_parts.append(
-                    f"The small sample size (n={sample_size}) limits statistical power. "
-                    f"Results should be interpreted with caution."
+                    f"The small sample size (n={sample_size}) limits statistical power. Results should be interpreted with caution."
                 )
             elif sample_size > 1000:
                 interpretation_parts.append(
-                    f"The large sample size (n={sample_size}) provides high statistical power, "
-                    f"making even small effects statistically significant."
+                    f"The large sample size (n={sample_size}) provides high statistical power, making even small effects statistically significant."
                 )
 
         return " ".join(interpretation_parts)

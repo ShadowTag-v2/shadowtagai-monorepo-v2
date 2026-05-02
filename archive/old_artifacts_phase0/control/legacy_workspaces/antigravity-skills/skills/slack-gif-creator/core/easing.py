@@ -160,9 +160,7 @@ def ease_back_in_out(t: float) -> float:
     return (pow(2 * t - 2, 2) * ((c2 + 1) * (t * 2 - 2) + c2) + 2) / 2
 
 
-def apply_squash_stretch(
-    base_scale: tuple[float, float], intensity: float, direction: str = "vertical"
-) -> tuple[float, float]:
+def apply_squash_stretch(base_scale: tuple[float, float], intensity: float, direction: str = "vertical") -> tuple[float, float]:
     """
     Calculate squash and stretch scales for more dynamic animation.
 
@@ -192,9 +190,7 @@ def apply_squash_stretch(
     return (width_scale, height_scale)
 
 
-def calculate_arc_motion(
-    start: tuple[float, float], end: tuple[float, float], height: float, t: float
-) -> tuple[float, float]:
+def calculate_arc_motion(start: tuple[float, float], end: tuple[float, float], height: float, t: float) -> tuple[float, float]:
     """
     Calculate position along a parabolic arc (natural motion path).
 

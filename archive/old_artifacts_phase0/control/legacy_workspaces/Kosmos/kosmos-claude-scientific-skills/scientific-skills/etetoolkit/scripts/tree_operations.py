@@ -102,15 +102,15 @@ def tree_stats(tree_file, format_num=0):
     branch_lengths = [node.dist for node in tree.traverse() if not node.is_root()]
     if branch_lengths:
         print("\nBranch length statistics:")
-        print(f"  Mean: {sum(branch_lengths)/len(branch_lengths):.4f}")
+        print(f"  Mean: {sum(branch_lengths) / len(branch_lengths):.4f}")
         print(f"  Min: {min(branch_lengths):.4f}")
         print(f"  Max: {max(branch_lengths):.4f}")
 
     # Support values
-    supports = [node.support for node in tree.traverse() if not node.is_leaf() and hasattr(node, 'support')]
+    supports = [node.support for node in tree.traverse() if not node.is_leaf() and hasattr(node, "support")]
     if supports:
         print("\nSupport value statistics:")
-        print(f"  Mean: {sum(supports)/len(supports):.2f}")
+        print(f"  Mean: {sum(supports) / len(supports):.2f}")
         print(f"  Min: {min(supports):.2f}")
         print(f"  Max: {max(supports):.2f}")
 
@@ -156,7 +156,7 @@ Examples:
 
   # List all leaves
   %(prog)s leaves input.nw
-        """
+        """,
     )
 
     subparsers = parser.add_subparsers(dest="command", help="Command to execute")
@@ -180,10 +180,8 @@ Examples:
     prune_parser = subparsers.add_parser("prune", help="Prune tree to specified taxa")
     prune_parser.add_argument("input", help="Input tree file")
     prune_parser.add_argument("output", help="Output tree file")
-    prune_parser.add_argument("--keep-taxa", required=True,
-                              help="Taxa to keep (comma-separated or file path)")
-    prune_parser.add_argument("--no-preserve-length", action="store_true",
-                              help="Don't preserve branch lengths")
+    prune_parser.add_argument("--keep-taxa", required=True, help="Taxa to keep (comma-separated or file path)")
+    prune_parser.add_argument("--no-preserve-length", action="store_true", help="Don't preserve branch lengths")
     prune_parser.add_argument("--format", type=int, default=0, help="Newick format (default: 0)")
 
     # Stats command
@@ -195,8 +193,7 @@ Examples:
     ascii_parser = subparsers.add_parser("ascii", help="Display tree as ASCII art")
     ascii_parser.add_argument("input", help="Input tree file")
     ascii_parser.add_argument("--format", type=int, default=0, help="Newick format (default: 0)")
-    ascii_parser.add_argument("--no-internal", action="store_true",
-                              help="Don't show internal node names")
+    ascii_parser.add_argument("--no-internal", action="store_true", help="Don't show internal node names")
 
     # Leaves command
     leaves_parser = subparsers.add_parser("leaves", help="List all leaf names")
@@ -215,8 +212,7 @@ Examples:
     elif args.command == "reroot":
         reroot_tree(args.input, args.output, args.outgroup, args.midpoint, args.format)
     elif args.command == "prune":
-        prune_tree(args.input, args.output, args.keep_taxa,
-                   not args.no_preserve_length, args.format)
+        prune_tree(args.input, args.output, args.keep_taxa, not args.no_preserve_length, args.format)
     elif args.command == "stats":
         tree_stats(args.input, args.format)
     elif args.command == "ascii":

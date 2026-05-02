@@ -3,10 +3,10 @@
 
 # Old except syntax with comma
 try:
-    with open("file.txt", "r") as f:
+    with open("file.txt") as f:
         data = f.read()
-except IOError as e:
-    print("Error reading file: {}".format(e))
+except OSError as e:
+    print(f"Error reading file: {e}")
 
 # Another example with variable
 try:
@@ -18,7 +18,7 @@ except ValueError as err:
 try:
     result = process_data(data)
 except (KeyError, TypeError) as error:
-    print("Processing failed: {}".format(error))
+    print(f"Processing failed: {error}")
 
 # Not everything needs updating
 try:

@@ -19,28 +19,28 @@ from google.genai import types
 
 
 def test_get_declaration_with_json_schema_feature_disabled():
-  """Test that _get_declaration uses parameters when feature is disabled."""
-  with temporary_feature_override(FeatureName.JSON_SCHEMA_FOR_FUNC_DECL, False):
-    declaration = load_memory_tool._get_declaration()
+    """Test that _get_declaration uses parameters when feature is disabled."""
+    with temporary_feature_override(FeatureName.JSON_SCHEMA_FOR_FUNC_DECL, False):
+        declaration = load_memory_tool._get_declaration()
 
-  assert declaration.name == 'load_memory'
-  assert declaration.parameters_json_schema is None
-  assert isinstance(declaration.parameters, types.Schema)
-  assert declaration.parameters.type == types.Type.OBJECT
-  assert 'query' in declaration.parameters.properties
+    assert declaration.name == "load_memory"
+    assert declaration.parameters_json_schema is None
+    assert isinstance(declaration.parameters, types.Schema)
+    assert declaration.parameters.type == types.Type.OBJECT
+    assert "query" in declaration.parameters.properties
 
 
 def test_get_declaration_with_json_schema_feature_enabled():
-  """Test that _get_declaration uses parameters_json_schema when feature is enabled."""
-  with temporary_feature_override(FeatureName.JSON_SCHEMA_FOR_FUNC_DECL, True):
-    declaration = load_memory_tool._get_declaration()
+    """Test that _get_declaration uses parameters_json_schema when feature is enabled."""
+    with temporary_feature_override(FeatureName.JSON_SCHEMA_FOR_FUNC_DECL, True):
+        declaration = load_memory_tool._get_declaration()
 
-  assert declaration.name == 'load_memory'
-  assert declaration.parameters is None
-  assert declaration.parameters_json_schema == {
-      'type': 'object',
-      'properties': {
-          'query': {'type': 'string'},
-      },
-      'required': ['query'],
-  }
+    assert declaration.name == "load_memory"
+    assert declaration.parameters is None
+    assert declaration.parameters_json_schema == {
+        "type": "object",
+        "properties": {
+            "query": {"type": "string"},
+        },
+        "required": ["query"],
+    }

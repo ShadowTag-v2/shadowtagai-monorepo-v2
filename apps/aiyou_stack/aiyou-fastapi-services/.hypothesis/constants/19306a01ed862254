@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/storage/checkpoint_store.py
+# hypothesis_version: 6.151.5
+
+['checkpoint_count', 'file_count', 'rb', 'storage_path', 'total_size_bytes', 'wb']

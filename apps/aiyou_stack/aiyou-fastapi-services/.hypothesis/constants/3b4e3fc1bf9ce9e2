@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/dualco/models.py
+# hypothesis_version: 6.151.5
+
+[0.0, 'Base', 'DualCoGateState', 'DualCoMetricHistory', 'DualCoStrategy', 'GateResult', 'GateStatus', 'M', 'blocked', 'create_all', 'drop_all', 'dualco_gate_state', 'failed', 'in_progress', 'metadata', 'not_started', 'passed']

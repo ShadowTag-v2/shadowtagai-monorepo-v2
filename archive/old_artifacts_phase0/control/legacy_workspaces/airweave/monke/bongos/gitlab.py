@@ -80,9 +80,7 @@ class GitLabBongo(BaseBongo):
                         await self._rate_limit()
                         token = str(uuid.uuid4())[:8]
                         self.logger.info(f"🔨 Generating issue with token: {token}")
-                        title, description, comments = await generate_gitlab_issue(
-                            self.openai_model, token
-                        )
+                        title, description, comments = await generate_gitlab_issue(self.openai_model, token)
                         self.logger.info(f"📝 Generated issue: '{title[:50]}...'")
 
                         # Create issue
@@ -102,19 +100,14 @@ class GitLabBongo(BaseBongo):
                         for comment_text in comments[:2]:
                             try:
                                 await self._rate_limit()
-                                note_url = (
-                                    f"{self.API_BASE}/projects/{self._project_id}"
-                                    f"/issues/{issue_iid}/notes"
-                                )
+                                note_url = f"{self.API_BASE}/projects/{self._project_id}/issues/{issue_iid}/notes"
                                 await client.post(
                                     note_url,
                                     headers=self._headers(),
                                     json={"body": comment_text},
                                 )
                             except Exception as ex:
-                                self.logger.warning(
-                                    f"Failed to add comment to issue {issue_iid}: {ex}"
-                                )
+                                self.logger.warning(f"Failed to add comment to issue {issue_iid}: {ex}")
 
                         # Entity descriptor
                         entity = {
@@ -130,9 +123,7 @@ class GitLabBongo(BaseBongo):
                         return entity
 
                     except Exception as e:
-                        self.logger.error(
-                            f"❌ Error creating issue: {type(e).__name__}: {str(e)}"
-                        )
+                        self.logger.error(f"❌ Error creating issue: {type(e).__name__}: {str(e)}")
                         raise
 
             async def create_one_merge_request() -> dict[str, Any] | None:
@@ -159,16 +150,11 @@ class GitLabBongo(BaseBongo):
 
                         # Create a test file in the branch
                         file_token = str(uuid.uuid4())[:8]
-                        file_content, filename = await generate_gitlab_file(
-                            self.openai_model, file_token
-                        )
+                        file_content, filename = await generate_gitlab_file(self.openai_model, file_token)
 
                         await self._rate_limit()
                         encoded_filename = quote(filename, safe="")
-                        file_url = (
-                            f"{self.API_BASE}/projects/{self._project_id}"
-                            f"/repository/files/{encoded_filename}"
-                        )
+                        file_url = f"{self.API_BASE}/projects/{self._project_id}/repository/files/{encoded_filename}"
                         await client.post(
                             file_url,
                             headers=self._headers(),
@@ -185,9 +171,7 @@ class GitLabBongo(BaseBongo):
                             title,
                             description,
                             comments,
-                        ) = await generate_gitlab_merge_request(
-                            self.openai_model, token, branch_name
-                        )
+                        ) = await generate_gitlab_merge_request(self.openai_model, token, branch_name)
                         self.logger.info(f"📝 Generated MR: '{title[:50]}...'")
 
                         # Create MR
@@ -210,19 +194,14 @@ class GitLabBongo(BaseBongo):
                         for comment_text in comments[:2]:
                             try:
                                 await self._rate_limit()
-                                note_url = (
-                                    f"{self.API_BASE}/projects/{self._project_id}"
-                                    f"/merge_requests/{mr_iid}/notes"
-                                )
+                                note_url = f"{self.API_BASE}/projects/{self._project_id}/merge_requests/{mr_iid}/notes"
                                 await client.post(
                                     note_url,
                                     headers=self._headers(),
                                     json={"body": comment_text},
                                 )
                             except Exception as ex:
-                                self.logger.warning(
-                                    f"Failed to add comment to MR {mr_iid}: {ex}"
-                                )
+                                self.logger.warning(f"Failed to add comment to MR {mr_iid}: {ex}")
 
                         # Entity descriptor
                         entity = {
@@ -239,9 +218,7 @@ class GitLabBongo(BaseBongo):
                         return entity
 
                     except Exception as e:
-                        self.logger.error(
-                            f"❌ Error creating merge request: {type(e).__name__}: {str(e)}"
-                        )
+                        self.logger.error(f"❌ Error creating merge request: {type(e).__name__}: {str(e)}")
                         raise
 
             # Create issues and merge requests
@@ -259,9 +236,7 @@ class GitLabBongo(BaseBongo):
                 elif result:
                     entities.append(result)
                     entity_type = result.get("type", "entity")
-                    self.logger.info(
-                        f"✅ Created {entity_type} {i + 1}: {result['name'][:50]}..."
-                    )
+                    self.logger.info(f"✅ Created {entity_type} {i + 1}: {result['name'][:50]}...")
 
         self.created_entities = entities
         return entities
@@ -285,13 +260,9 @@ class GitLabBongo(BaseBongo):
             if self._issues:
                 issue = self._issues[0]
                 await self._rate_limit()
-                title, description, _ = await generate_gitlab_issue(
-                    self.openai_model, issue["token"]
-                )
+                title, description, _ = await generate_gitlab_issue(self.openai_model, issue["token"])
 
-                issue_url = (
-                    f"{self.API_BASE}/projects/{self._project_id}/issues/{issue['iid']}"
-                )
+                issue_url = f"{self.API_BASE}/projects/{self._project_id}/issues/{issue['iid']}"
                 resp = await client.put(
                     issue_url,
                     headers=self._headers(),
@@ -304,14 +275,9 @@ class GitLabBongo(BaseBongo):
             if self._merge_requests:
                 mr = self._merge_requests[0]
                 await self._rate_limit()
-                title, description, _ = await generate_gitlab_merge_request(
-                    self.openai_model, mr["token"], mr["branch"]
-                )
+                title, description, _ = await generate_gitlab_merge_request(self.openai_model, mr["token"], mr["branch"])
 
-                mr_url = (
-                    f"{self.API_BASE}/projects/{self._project_id}"
-                    f"/merge_requests/{mr['iid']}"
-                )
+                mr_url = f"{self.API_BASE}/projects/{self._project_id}/merge_requests/{mr['iid']}"
                 resp = await client.put(
                     mr_url,
                     headers=self._headers(),
@@ -329,9 +295,7 @@ class GitLabBongo(BaseBongo):
         await self._delete_project()
         return deleted_ids
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         """Delete provided list of entities by id."""
         self.logger.info(f"🥁 Deleting {len(entities)} GitLab entities")
         deleted: list[str] = []
@@ -345,10 +309,7 @@ class GitLabBongo(BaseBongo):
                     if entity["type"] == "issue":
                         # GitLab doesn't allow deleting issues via API without admin permissions
                         # We'll close them instead
-                        issue_url = (
-                            f"{self.API_BASE}/projects/{self._project_id}"
-                            f"/issues/{entity['iid']}"
-                        )
+                        issue_url = f"{self.API_BASE}/projects/{self._project_id}/issues/{entity['iid']}"
                         r = await client.put(
                             issue_url,
                             headers=self._headers(),
@@ -359,10 +320,7 @@ class GitLabBongo(BaseBongo):
 
                     elif entity["type"] == "merge_request":
                         # Close the merge request
-                        mr_url = (
-                            f"{self.API_BASE}/projects/{self._project_id}"
-                            f"/merge_requests/{entity['iid']}"
-                        )
+                        mr_url = f"{self.API_BASE}/projects/{self._project_id}/merge_requests/{entity['iid']}"
                         r = await client.put(
                             mr_url,
                             headers=self._headers(),
@@ -385,9 +343,7 @@ class GitLabBongo(BaseBongo):
         try:
             # Clean up current session entities
             if self._issues or self._merge_requests:
-                deleted = await self.delete_specific_entities(
-                    self._issues + self._merge_requests
-                )
+                deleted = await self.delete_specific_entities(self._issues + self._merge_requests)
                 cleanup_stats["entities_closed"] += len(deleted)
 
             # Delete the test project
@@ -398,21 +354,15 @@ class GitLabBongo(BaseBongo):
             # Find and clean up orphaned test projects
             orphaned_projects = await self._find_monke_test_projects()
             if orphaned_projects:
-                self.logger.info(
-                    f"🔍 Found {len(orphaned_projects)} monke test projects to clean up"
-                )
+                self.logger.info(f"🔍 Found {len(orphaned_projects)} monke test projects to clean up")
                 for project in orphaned_projects:
                     try:
                         await self._delete_project_by_id(project["id"])
                         cleanup_stats["projects_deleted"] += 1
-                        self.logger.info(
-                            f"✅ Deleted project: {project['name']} ({project['id']})"
-                        )
+                        self.logger.info(f"✅ Deleted project: {project['name']} ({project['id']})")
                     except Exception as e:
                         cleanup_stats["errors"] += 1
-                        self.logger.warning(
-                            f"⚠️ Failed to delete project {project['id']}: {e}"
-                        )
+                        self.logger.warning(f"⚠️ Failed to delete project {project['id']}: {e}")
 
             self.logger.info(
                 f"🧹 Cleanup completed: {cleanup_stats['projects_deleted']} projects, "
@@ -465,9 +415,7 @@ class GitLabBongo(BaseBongo):
             if r.status_code in (200, 202, 204):
                 self.logger.debug(f"Deleted project {project_id}")
             else:
-                self.logger.warning(
-                    f"Failed to delete project {project_id}: {r.status_code}"
-                )
+                self.logger.warning(f"Failed to delete project {project_id}: {r.status_code}")
 
     async def _find_monke_test_projects(self) -> list[dict[str, Any]]:
         """Find all monke test projects."""

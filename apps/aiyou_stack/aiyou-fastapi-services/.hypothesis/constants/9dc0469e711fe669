@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/agents/market_analyst/tools.py
+# hypothesis_version: 6.151.5
+
+[0.2, 0.3, 0.4, 0.5, 0.6, 100, 'P0', 'P1', 'P2', 'Unknown', 'advantage_score', 'comparison', 'competitors', 'competitors_with_it', 'count', 'coverage', 'critical_gaps', 'customer_value', 'defensibility', 'differentiator', 'effort', 'effort_weight', 'feature', 'features', 'high', 'impact', 'impact_weight', 'improve', 'is_unfair_advantage', 'leverage', 'low', 'medium', 'opportunities', 'parity_gaps', 'percentage', 'priority', 'priority_score', 'product', 'strategic_insights', 'strengths', 'swot_analysis', 'threats', 'timestamp', 'total_features', 'unique_features', 'uniqueness', 'weaknesses']

@@ -484,37 +484,39 @@ def test_run_cutlass_moe_fp8(
 
         def activation(o, i):
             return torch.ops._C.silu_and_mul(o, i)
+
         a1q, a1q_scale = moe_kernel_quantize_input(
             mt.a, mt.a_scale, torch.float8_e4m3fn, per_act_token
         )
         global_num_experts = -1 if mt.w1_q is None else mt.w1_q.size(0)
+
         def func(output):
             return run_cutlass_moe_fp8(
-                    output,
-                    a1q,
-                    mt.w1_q,
-                    mt.w2_q,
-                    topk_ids,
-                    activation,
-                    global_num_experts,
-                    expert_map,
-                    mt.w1_scale,
-                    mt.w2_scale,
-                    a1q_scale,
-                    None,
-                    ab_strides1,
-                    ab_strides2,
-                    c_strides1,
-                    c_strides2,
-                    workspace13,
-                    workspace2,
-                    None,
-                    mt.a.dtype,
-                    per_act_token,
-                    per_out_channel,
-                    False,
-                    topk_weights,
-                )
+                output,
+                a1q,
+                mt.w1_q,
+                mt.w2_q,
+                topk_ids,
+                activation,
+                global_num_experts,
+                expert_map,
+                mt.w1_scale,
+                mt.w2_scale,
+                a1q_scale,
+                None,
+                ab_strides1,
+                ab_strides2,
+                c_strides1,
+                c_strides2,
+                workspace13,
+                workspace2,
+                None,
+                mt.a.dtype,
+                per_act_token,
+                per_out_channel,
+                False,
+                topk_weights,
+            )
 
         workspace13.random_()
         output_random_workspace = torch.empty(

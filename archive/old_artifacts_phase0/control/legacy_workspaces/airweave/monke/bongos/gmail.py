@@ -32,9 +32,7 @@ class GmailBongo(BaseBongo):
 
         # Configuration from config file
         self.entity_count = int(kwargs.get("entity_count", 3))
-        self.openai_model = kwargs.get(
-            "openai_model", "gpt-4.1-mini"
-        )  # sensible default for JSON mode
+        self.openai_model = kwargs.get("openai_model", "gpt-4.1-mini")  # sensible default for JSON mode
         self.llm_max_concurrency = int(kwargs.get("llm_max_concurrency", 8))
 
         # Test data tracking
@@ -115,9 +113,7 @@ class GmailBongo(BaseBongo):
         async def gen_update(email_info: dict[str, Any]):
             token = email_info.get("token") or str(uuid.uuid4())[:8]
             async with sem:
-                subject, body = await generate_gmail_artifact(
-                    self.openai_model, token, is_update=True
-                )
+                subject, body = await generate_gmail_artifact(self.openai_model, token, is_update=True)
                 return email_info, token, subject, body
 
         gen_results = await asyncio.gather(*[gen_update(e) for e in selected])
@@ -171,9 +167,7 @@ class GmailBongo(BaseBongo):
                 else:
                     self.logger.warning(f"⚠️ Failed to delete test email: {test_email['id']}")
             else:
-                self.logger.warning(
-                    f"⚠️ Could not find test email for entity: {entity.get('id')}"
-                )
+                self.logger.warning(f"⚠️ Could not find test email for entity: {entity.get('id')}")
 
             # Rate limiting
             if len(entities) > 10:
@@ -194,8 +188,7 @@ class GmailBongo(BaseBongo):
                     self.logger.warning(f"⚠️ Email {entity['id']} still exists in Gmail!")
 
         self.logger.info(
-            f"🔍 Verification complete: {verification_results['confirmed']} confirmed deleted, "
-            f"{verification_results['still_exists']} still exist"
+            f"🔍 Verification complete: {verification_results['confirmed']} confirmed deleted, {verification_results['still_exists']} still exist"
         )
 
         return deleted_ids
@@ -325,9 +318,7 @@ class GmailBongo(BaseBongo):
                     # No messages found
                     pass
                 else:
-                    self.logger.warning(
-                        f"⚠️ Search query failed: {response.status_code} - {response.text}"
-                    )
+                    self.logger.warning(f"⚠️ Search query failed: {response.status_code} - {response.text}")
 
         except Exception as e:
             self.logger.warning(f"⚠️ Error searching emails with query '{query}': {e}")
@@ -348,9 +339,7 @@ class GmailBongo(BaseBongo):
             )
 
             if response.status_code != 200:
-                raise Exception(
-                    f"Failed to get user profile: {response.status_code} - {response.text}"
-                )
+                raise Exception(f"Failed to get user profile: {response.status_code} - {response.text}")
 
             return response.json()["emailAddress"]
 
@@ -430,9 +419,7 @@ class GmailBongo(BaseBongo):
                     return "TRASH" in data.get("labelIds", [])
                 else:
                     # Unexpected response
-                    self.logger.warning(
-                        f"⚠️ Unexpected response checking {message_id}: {response.status_code}"
-                    )
+                    self.logger.warning(f"⚠️ Unexpected response checking {message_id}: {response.status_code}")
                     return False
 
         except Exception as e:
@@ -460,9 +447,7 @@ class GmailBongo(BaseBongo):
                     return True
 
                 if check_response.status_code != 200:
-                    self.logger.warning(
-                        f"⚠️ Unexpected response checking {message_id}: {check_response.status_code}"
-                    )
+                    self.logger.warning(f"⚠️ Unexpected response checking {message_id}: {check_response.status_code}")
                     return False
 
                 # Email exists, try to move to trash first
@@ -492,9 +477,7 @@ class GmailBongo(BaseBongo):
                     self.logger.debug(f"Email {message_id} deleted before permanent delete (404)")
                     return True
                 else:
-                    self.logger.warning(
-                        f"⚠️ Force delete failed for {message_id}: {delete_response.status_code}"
-                    )
+                    self.logger.warning(f"⚠️ Force delete failed for {message_id}: {delete_response.status_code}")
                     return False
 
         except Exception as e:

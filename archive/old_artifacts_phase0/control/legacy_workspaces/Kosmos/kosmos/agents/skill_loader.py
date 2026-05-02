@@ -43,47 +43,53 @@ class SkillLoader:
     # Predefined skill bundles mapping domains to skill files
     SKILL_BUNDLES = {
         "single_cell_analysis": [
-            "scanpy", "anndata", "scvi-tools", "cellxgene",
-            "gseapy", "scrublet", "doubletdetection", "pegasus",
-            "muon", "episcanpy", "bbknn", "harmonypy"
+            "scanpy",
+            "anndata",
+            "scvi-tools",
+            "cellxgene",
+            "gseapy",
+            "scrublet",
+            "doubletdetection",
+            "pegasus",
+            "muon",
+            "episcanpy",
+            "bbknn",
+            "harmonypy",
         ],
         "genomics_analysis": [
-            "biopython", "pysam", "pydeseq2", "biomart",
-            "ensembl-database", "ncbi-gene-database", "pybedtools",
-            "pyvcf", "scikit-allel", "pyliftover"
+            "biopython",
+            "pysam",
+            "pydeseq2",
+            "biomart",
+            "ensembl-database",
+            "ncbi-gene-database",
+            "pybedtools",
+            "pyvcf",
+            "scikit-allel",
+            "pyliftover",
         ],
         "drug_discovery": [
-            "rdkit", "datamol", "deepchem", "chembl-database",
-            "pubchem", "dockstring", "mordred", "molfeat",
-            "chemprop", "pharmacophore-modeling"
+            "rdkit",
+            "datamol",
+            "deepchem",
+            "chembl-database",
+            "pubchem",
+            "dockstring",
+            "mordred",
+            "molfeat",
+            "chemprop",
+            "pharmacophore-modeling",
         ],
-        "proteomics": [
-            "pyopenms", "matchms", "mass-spec-utils", "peptide-spectrum-match",
-            "protein-structure-prediction", "pymol-visualization"
-        ],
-        "clinical_research": [
-            "clinvar", "clinicaltrials", "omim-database",
-            "phenotype-ontology", "disease-ontology", "medical-mesh"
-        ],
-        "imaging_analysis": [
-            "napari", "scikit-image", "opencv-python", "cellpose",
-            "stardist", "ilastik", "imagej-python", "bioimage-io"
-        ],
-        "neuroscience": [
-            "mne-python", "nilearn", "nibabel", "nipype",
-            "brain-imaging", "neural-data-analysis"
-        ],
-        "machine_learning": [
-            "scikit-learn", "xgboost", "lightgbm", "tensorflow",
-            "pytorch", "keras", "neural-network-training"
-        ]
+        "proteomics": ["pyopenms", "matchms", "mass-spec-utils", "peptide-spectrum-match", "protein-structure-prediction", "pymol-visualization"],
+        "clinical_research": ["clinvar", "clinicaltrials", "omim-database", "phenotype-ontology", "disease-ontology", "medical-mesh"],
+        "imaging_analysis": ["napari", "scikit-image", "opencv-python", "cellpose", "stardist", "ilastik", "imagej-python", "bioimage-io"],
+        "neuroscience": ["mne-python", "nilearn", "nibabel", "nipype", "brain-imaging", "neural-data-analysis"],
+        "machine_learning": ["scikit-learn", "xgboost", "lightgbm", "tensorflow", "pytorch", "keras", "neural-network-training"],
     }
 
     # Common skills that exist in scientific-skills directory
     # Note: pandas, numpy, matplotlib etc. are standard imports, not skill files
-    COMMON_SKILLS = [
-        "scikit-learn", "statsmodels", "polars", "dask"
-    ]
+    COMMON_SKILLS = ["scikit-learn", "statsmodels", "polars", "dask"]
 
     # Map high-level domains to specific skill bundles
     DOMAIN_TO_BUNDLES = {
@@ -99,11 +105,7 @@ class SkillLoader:
         "imaging": ["imaging_analysis"],
     }
 
-    def __init__(
-        self,
-        skills_dir: str | None = None,
-        auto_discover: bool = True
-    ):
+    def __init__(self, skills_dir: str | None = None, auto_discover: bool = True):
         """
         Initialize SkillLoader.
 
@@ -123,10 +125,7 @@ class SkillLoader:
         if auto_discover and self.skills_dir:
             self._discover_skills()
 
-        logger.info(
-            f"SkillLoader initialized with {len(self.skills_cache)} skills "
-            f"from {self.skills_dir}"
-        )
+        logger.info(f"SkillLoader initialized with {len(self.skills_cache)} skills from {self.skills_dir}")
 
     def _find_skills_directory(self) -> str | None:
         """
@@ -143,8 +142,8 @@ class SkillLoader:
         import os
 
         # Try environment variable first
-        if 'KOSMOS_SKILLS_DIR' in os.environ:
-            skills_path = Path(os.environ['KOSMOS_SKILLS_DIR'])
+        if "KOSMOS_SKILLS_DIR" in os.environ:
+            skills_path = Path(os.environ["KOSMOS_SKILLS_DIR"])
             if skills_path.exists():
                 return str(skills_path)
 
@@ -185,10 +184,10 @@ class SkillLoader:
                 if skill_file.exists():
                     skill_name = skill_folder.name  # Use folder name as skill name
                     self.skills_cache[skill_name] = {
-                        'path': str(skill_file),
-                        'name': skill_name,
-                        'category': skill_folder.name,
-                        'loaded': False  # Lazy load content
+                        "path": str(skill_file),
+                        "name": skill_name,
+                        "category": skill_folder.name,
+                        "loaded": False,  # Lazy load content
                     }
                     skill_count += 1
 
@@ -209,12 +208,12 @@ class SkillLoader:
             skill_info = self.skills_cache[skill_name]
 
             # Load content if not already loaded
-            if not skill_info.get('loaded', False):
+            if not skill_info.get("loaded", False):
                 try:
-                    with open(skill_info['path']) as f:
+                    with open(skill_info["path"]) as f:
                         content = f.read()
-                        skill_info['content'] = content
-                        skill_info['loaded'] = True
+                        skill_info["content"] = content
+                        skill_info["loaded"] = True
 
                         # Parse markdown to extract sections
                         parsed = self._parse_skill_markdown(content)
@@ -234,7 +233,7 @@ class SkillLoader:
                 return self.load_skill_from_file(skill_file, skill_name)
 
         # Don't spam warnings for missing common skills
-        if skill_name not in ['pandas', 'numpy', 'matplotlib', 'seaborn', 'plotly', 'scipy', 'jupyter-notebook']:
+        if skill_name not in ["pandas", "numpy", "matplotlib", "seaborn", "plotly", "scipy", "jupyter-notebook"]:
             logger.warning(f"Skill not found: {skill_name}")
         return None
 
@@ -252,20 +251,14 @@ class SkillLoader:
                 else:
                     skill_name = skill_path.stem
 
-            skill_info = {
-                'path': str(skill_path),
-                'name': skill_name,
-                'category': skill_path.parent.name,
-                'content': content,
-                'loaded': True
-            }
+            skill_info = {"path": str(skill_path), "name": skill_name, "category": skill_path.parent.name, "content": content, "loaded": True}
 
             # Parse markdown
             parsed = self._parse_skill_markdown(content)
             skill_info.update(parsed)
 
             # Cache it
-            self.skills_cache[skill_info['name']] = skill_info
+            self.skills_cache[skill_info["name"]] = skill_info
 
             return skill_info
 
@@ -289,35 +282,30 @@ class SkillLoader:
         Returns:
             Dictionary with parsed sections
         """
-        lines = content.split('\n')
-        parsed = {
-            'description': '',
-            'examples': [],
-            'functions': {},
-            'best_practices': []
-        }
+        lines = content.split("\n")
+        parsed = {"description": "", "examples": [], "functions": {}, "best_practices": []}
 
         # Extract first paragraph as description
         desc_lines = []
         for line in lines:
-            if line.strip() and not line.startswith('#'):
+            if line.strip() and not line.startswith("#"):
                 desc_lines.append(line.strip())
             elif desc_lines:
                 break  # Stop at first heading after description
 
-        parsed['description'] = ' '.join(desc_lines[:3])  # First 3 lines
+        parsed["description"] = " ".join(desc_lines[:3])  # First 3 lines
 
         # Extract code examples (```python blocks)
         in_code_block = False
         current_code = []
         for line in lines:
-            if line.strip().startswith('```python'):
+            if line.strip().startswith("```python"):
                 in_code_block = True
                 current_code = []
-            elif line.strip().startswith('```') and in_code_block:
+            elif line.strip().startswith("```") and in_code_block:
                 in_code_block = False
                 if current_code:
-                    parsed['examples'].append('\n'.join(current_code))
+                    parsed["examples"].append("\n".join(current_code))
             elif in_code_block:
                 current_code.append(line)
 
@@ -329,7 +317,7 @@ class SkillLoader:
         libraries: list[str] | None = None,
         domain: str | None = None,
         include_examples: bool = False,
-        include_common: bool = True
+        include_common: bool = True,
     ) -> str:
         """
         Load relevant skills for a task.
@@ -377,16 +365,9 @@ class SkillLoader:
                 loaded_skills.append(skill)
 
         # Format for prompt
-        return self._format_skills_for_prompt(
-            loaded_skills,
-            include_examples=include_examples
-        )
+        return self._format_skills_for_prompt(loaded_skills, include_examples=include_examples)
 
-    def _format_skills_for_prompt(
-        self,
-        skills: list[dict],
-        include_examples: bool = False
-    ) -> str:
+    def _format_skills_for_prompt(self, skills: list[dict], include_examples: bool = False) -> str:
         """
         Format skills as prompt injection.
 
@@ -407,14 +388,14 @@ class SkillLoader:
             prompt += f"## {skill['name']}\n\n"
 
             # Description
-            if skill.get('description'):
+            if skill.get("description"):
                 prompt += f"{skill['description']}\n\n"
 
             # Examples (if requested)
-            if include_examples and skill.get('examples'):
+            if include_examples and skill.get("examples"):
                 prompt += "**Example Usage**:\n```python\n"
                 # Include first example only
-                prompt += skill['examples'][0][:500]  # Limit length
+                prompt += skill["examples"][0][:500]  # Limit length
                 prompt += "\n```\n\n"
 
         prompt += "---\n\n"
@@ -442,9 +423,7 @@ class SkillLoader:
         matches = []
 
         for skill_name, skill_info in self.skills_cache.items():
-            if query_lower in skill_name.lower():
-                matches.append(self.load_skill(skill_name))
-            elif query_lower in skill_info.get('description', '').lower():
+            if query_lower in skill_name.lower() or query_lower in skill_info.get("description", "").lower():
                 matches.append(self.load_skill(skill_name))
 
         return [m for m in matches if m is not None]
@@ -453,12 +432,12 @@ class SkillLoader:
         """Get statistics about available skills."""
         categories = {}
         for skill_info in self.skills_cache.values():
-            category = skill_info.get('category', 'unknown')
+            category = skill_info.get("category", "unknown")
             categories[category] = categories.get(category, 0) + 1
 
         return {
-            'total_skills': len(self.skills_cache),
-            'skills_by_category': categories,
-            'predefined_bundles': len(self.SKILL_BUNDLES),
-            'skills_dir': str(self.skills_dir) if self.skills_dir else None
+            "total_skills": len(self.skills_cache),
+            "skills_by_category": categories,
+            "predefined_bundles": len(self.SKILL_BUNDLES),
+            "skills_dir": str(self.skills_dir) if self.skills_dir else None,
         }

@@ -21,19 +21,17 @@ logger = logging.getLogger("google_adk." + __name__)
 
 
 async def close_runners(runners: list[Runner]) -> None:
-  cleanup_tasks = [asyncio.create_task(runner.close()) for runner in runners]
-  if cleanup_tasks:
-    # Wait for all cleanup tasks with timeout
-    done, pending = await asyncio.wait(
-        cleanup_tasks,
-        timeout=30.0,  # 30 second timeout for cleanup
-        return_when=asyncio.ALL_COMPLETED,
-    )
+    cleanup_tasks = [asyncio.create_task(runner.close()) for runner in runners]
+    if cleanup_tasks:
+        # Wait for all cleanup tasks with timeout
+        done, pending = await asyncio.wait(
+            cleanup_tasks,
+            timeout=30.0,  # 30 second timeout for cleanup
+            return_when=asyncio.ALL_COMPLETED,
+        )
 
-    # If any tasks are still pending, log it
-    if pending:
-      logger.warning(
-          "%s runner close tasks didn't complete in time", len(pending)
-      )
-      for task in pending:
-        task.cancel()
+        # If any tasks are still pending, log it
+        if pending:
+            logger.warning("%s runner close tasks didn't complete in time", len(pending))
+            for task in pending:
+                task.cancel()

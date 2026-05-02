@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * PanopticonProvider — Unified Telemetry Context
@@ -19,23 +19,17 @@
  *   </PanopticonProvider>
  */
 
+import { createContext, type ReactNode, useContext, useEffect, useRef } from 'react';
+import { type PanopticonActions, usePanopticon } from '@/hooks/usePanopticon';
+import { createOtelSink } from '@/lib/otel-sink';
 import {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  type ReactNode,
-} from "react";
-import {
-  type TelemetrySink,
-  type TelemetryEvent,
   attachTelemetrySink,
   flushTelemetry,
   isTelemetryDisabled,
   stripPiiFields,
-} from "@/lib/telemetry";
-import { createOtelSink } from "@/lib/otel-sink";
-import { type PanopticonActions, usePanopticon } from "@/hooks/usePanopticon";
+  type TelemetryEvent,
+  type TelemetrySink,
+} from '@/lib/telemetry';
 
 // ─────────────────────────────────────────────────────────────
 // Context
@@ -50,9 +44,7 @@ const PanopticonContext = createContext<PanopticonActions | null>(null);
 export function usePanopticonContext(): PanopticonActions {
   const ctx = useContext(PanopticonContext);
   if (!ctx) {
-    throw new Error(
-      "usePanopticonContext must be used within a <PanopticonProvider>",
-    );
+    throw new Error('usePanopticonContext must be used within a <PanopticonProvider>');
   }
   return ctx;
 }
@@ -82,18 +74,16 @@ function createHttpSink(): TelemetrySink {
     }));
 
     try {
-      const response = await fetch("/api/ops/telemetry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/ops/telemetry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ events: sanitizedEvents }),
         // Use keepalive for unload scenarios
         keepalive: true,
       });
 
       if (!response.ok) {
-        console.warn(
-          `[Panopticon] Telemetry batch failed: ${response.status}`,
-        );
+        console.warn(`[Panopticon] Telemetry batch failed: ${response.status}`);
       }
     } catch {
       // Silent failure — telemetry must never break the app
@@ -156,10 +146,7 @@ interface PanopticonProviderProps {
   disabled?: boolean;
 }
 
-export function PanopticonProvider({
-  children,
-  disabled = false,
-}: PanopticonProviderProps) {
+export function PanopticonProvider({ children, disabled = false }: PanopticonProviderProps) {
   const sinkAttached = useRef(false);
   const panopticon = usePanopticon();
 
@@ -207,9 +194,5 @@ export function PanopticonProvider({
     };
   }, [disabled]);
 
-  return (
-    <PanopticonContext.Provider value={panopticon}>
-      {children}
-    </PanopticonContext.Provider>
-  );
+  return <PanopticonContext.Provider value={panopticon}>{children}</PanopticonContext.Provider>;
 }

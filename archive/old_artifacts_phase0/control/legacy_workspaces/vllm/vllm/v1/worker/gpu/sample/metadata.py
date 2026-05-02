@@ -134,8 +134,10 @@ def expand_sampling_metadata(
     max_expand_len: int,
 ) -> SamplingMetadata:
     total_num_logits = sampling_metadata.pos.shape[0]
+
     def create_empty(x):
         return x.new_empty(total_num_logits) if x is not None else None
+
     expanded_temp = create_empty(sampling_metadata.temperature)
     expanded_top_p = create_empty(sampling_metadata.top_p)
     expanded_top_k = create_empty(sampling_metadata.top_k)

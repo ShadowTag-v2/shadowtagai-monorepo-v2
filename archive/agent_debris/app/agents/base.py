@@ -8,7 +8,7 @@ Agents are evolved versions of kernels with:
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict
+from typing import Any
 from pydantic import BaseModel, Field
 from datetime import datetime
 
@@ -57,12 +57,8 @@ class AgentPerformance(BaseModel):
 
         # Rolling average
         n = self.total_executions
-        self.average_latency_ms = (
-            self.average_latency_ms * (n - 1) + latency_ms
-        ) / n
-        self.average_cost_usd = (
-            self.average_cost_usd * (n - 1) + cost_usd
-        ) / n
+        self.average_latency_ms = (self.average_latency_ms * (n - 1) + latency_ms) / n
+        self.average_cost_usd = (self.average_cost_usd * (n - 1) + cost_usd) / n
         self.last_updated = datetime.utcnow()
 
 

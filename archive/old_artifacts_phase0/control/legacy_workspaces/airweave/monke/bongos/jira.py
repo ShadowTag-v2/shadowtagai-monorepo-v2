@@ -69,14 +69,10 @@ class JiraBongo(BaseBongo):
             # Short unique token used in summary and description for verification
             token = str(uuid.uuid4())[:8]
 
-            summary, description, _ = await generate_jira_artifact(
-                self.openai_model, token
-            )
+            summary, description, _ = await generate_jira_artifact(self.openai_model, token)
 
             # Create issue with a valid issue type
-            issue_data = await self._create_test_issue(
-                self.test_project_key, summary, description, issue_type_to_use
-            )
+            issue_data = await self._create_test_issue(self.test_project_key, summary, description, issue_type_to_use)
 
             entities.append(
                 {
@@ -115,9 +111,7 @@ class JiraBongo(BaseBongo):
                 token = issue_info.get("token") or str(uuid.uuid4())[:8]
 
                 # Generate new content with same token
-                summary, description, _ = await generate_jira_artifact(
-                    self.openai_model, token, is_update=True
-                )
+                summary, description, _ = await generate_jira_artifact(self.openai_model, token, is_update=True)
 
                 # Update issue
                 await self._update_test_issue(issue_info["id"], summary, description)
@@ -170,9 +164,7 @@ class JiraBongo(BaseBongo):
                     deleted_ids.append(test_issue["id"])  # Return ID, not key
                     self.logger.info(f"🗑️ Deleted test issue: {test_issue['key']}")
                 else:
-                    self.logger.warning(
-                        f"⚠️ Could not find test issue for entity: {entity.get('id')}"
-                    )
+                    self.logger.warning(f"⚠️ Could not find test issue for entity: {entity.get('id')}")
 
                 # Rate limiting
                 if len(entities) > 10:
@@ -293,9 +285,7 @@ class JiraBongo(BaseBongo):
             )
 
             if response.status_code != 200:
-                raise Exception(
-                    f"Failed to get project details: {response.status_code} - {response.text}"
-                )
+                raise Exception(f"Failed to get project details: {response.status_code} - {response.text}")
 
             project_data = response.json()
             issue_types = project_data.get("issueTypes", [])
@@ -305,9 +295,7 @@ class JiraBongo(BaseBongo):
 
             # Store valid issue type names
             self.valid_issue_types = [it["name"] for it in issue_types]
-            self.logger.info(
-                f"✅ Found {len(self.valid_issue_types)} valid issue types: {', '.join(self.valid_issue_types)}"
-            )
+            self.logger.info(f"✅ Found {len(self.valid_issue_types)} valid issue types: {', '.join(self.valid_issue_types)}")
 
     def _get_preferred_issue_type(self) -> str:
         """Get a preferred issue type from the available types.
@@ -331,9 +319,7 @@ class JiraBongo(BaseBongo):
         self.logger.info(f"🎯 Using fallback issue type: {fallback_type}")
         return fallback_type
 
-    async def _create_test_issue(
-        self, project_key: str, summary: str, description: str, issue_type: str = "Task"
-    ) -> dict[str, Any]:
+    async def _create_test_issue(self, project_key: str, summary: str, description: str, issue_type: str = "Task") -> dict[str, Any]:
         """Create a test issue via Jira API."""
         await self._rate_limit()
 
@@ -344,9 +330,7 @@ class JiraBongo(BaseBongo):
                 "description": {
                     "type": "doc",
                     "version": 1,
-                    "content": [
-                        {"type": "paragraph", "content": [{"type": "text", "text": description}]}
-                    ],
+                    "content": [{"type": "paragraph", "content": [{"type": "text", "text": description}]}],
                 },
                 "issuetype": {"name": issue_type},
             }
@@ -373,9 +357,7 @@ class JiraBongo(BaseBongo):
 
             return result
 
-    async def _update_test_issue(
-        self, issue_id: str, summary: str, description: str
-    ) -> dict[str, Any]:
+    async def _update_test_issue(self, issue_id: str, summary: str, description: str) -> dict[str, Any]:
         """Update a test issue via Jira API."""
         await self._rate_limit()
 
@@ -385,9 +367,7 @@ class JiraBongo(BaseBongo):
                 "description": {
                     "type": "doc",
                     "version": 1,
-                    "content": [
-                        {"type": "paragraph", "content": [{"type": "text", "text": description}]}
-                    ],
+                    "content": [{"type": "paragraph", "content": [{"type": "text", "text": description}]}],
                 },
             }
         }
@@ -438,9 +418,7 @@ class JiraBongo(BaseBongo):
                     return False
                 else:
                     # Unexpected response
-                    self.logger.warning(
-                        f"⚠️ Unexpected response checking {issue_id}: {response.status_code}"
-                    )
+                    self.logger.warning(f"⚠️ Unexpected response checking {issue_id}: {response.status_code}")
                     return False
 
         except Exception as e:

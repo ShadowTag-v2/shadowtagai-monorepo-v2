@@ -8,7 +8,7 @@ from typing import Any
 from uuid import UUID, uuid4
 
 import uuid_utils as uuid
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # ============================================================================
 # Enums
@@ -254,8 +254,8 @@ class DecisionRequest(BaseModel):
     constraints: Constraints = Field(..., description="Constraints")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "request_id": "550e8400-e29b-41d4-a716-446655440000",
                 "decision_type": "trade_approval",
@@ -278,7 +278,8 @@ class DecisionRequest(BaseModel):
                     "risk_limits": {"position_limit": 50000},
                 },
             },
-        }
+        },
+    )
 
 
 class DecisionRuling(BaseModel):
@@ -300,8 +301,8 @@ class DecisionRuling(BaseModel):
     )
     financial_impact: FinancialImpact | None = None
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "ruling_id": "018c3f5e-1234-7890-abcd-ef1234567890",
                 "request_id": "550e8400-e29b-41d4-a716-446655440000",
@@ -325,4 +326,5 @@ class DecisionRuling(BaseModel):
                     "computation_time_ms": 142.5,
                 },
             },
-        }
+        },
+    )

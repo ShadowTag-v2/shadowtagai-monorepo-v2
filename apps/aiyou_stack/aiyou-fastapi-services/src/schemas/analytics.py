@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class TimeSeriesQuery(BaseModel):
@@ -36,21 +36,24 @@ class TimeSeriesResponse(BaseModel):
     total: float
     average: float
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "metric": "user_count",
-                "interval": "day",
-                "start_date": "2025-01-01T00:00:00Z",
-                "end_date": "2025-01-07T23:59:59Z",
-                "data": [
-                    {"timestamp": "2025-01-01T00:00:00Z", "value": 150},
-                    {"timestamp": "2025-01-02T00:00:00Z", "value": 175},
-                ],
-                "total": 1200,
-                "average": 171.43,
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "metric": "user_count",
+                    "interval": "day",
+                    "start_date": "2025-01-01T00:00:00Z",
+                    "end_date": "2025-01-07T23:59:59Z",
+                    "data": [
+                        {"timestamp": "2025-01-01T00:00:00Z", "value": 150},
+                        {"timestamp": "2025-01-02T00:00:00Z", "value": 175},
+                    ],
+                    "total": 1200,
+                    "average": 171.43,
+                },
+            ],
+        },
+    )
 
 
 class UserBehaviorMetrics(BaseModel):
@@ -73,28 +76,31 @@ class UserBehaviorResponse(BaseModel):
     metrics: UserBehaviorMetrics
     top_conversion_paths: list[list[str]]
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "segment": "power_users",
-                "time_period": "30d",
-                "metrics": {
-                    "avg_session_duration": 325.5,
-                    "avg_events_per_session": 12.3,
-                    "bounce_rate": 0.25,
-                    "return_rate": 0.65,
-                    "most_common_events": [
-                        {"event_name": "page_view", "count": 5000},
-                        {"event_name": "button_click", "count": 2500},
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "segment": "power_users",
+                    "time_period": "30d",
+                    "metrics": {
+                        "avg_session_duration": 325.5,
+                        "avg_events_per_session": 12.3,
+                        "bounce_rate": 0.25,
+                        "return_rate": 0.65,
+                        "most_common_events": [
+                            {"event_name": "page_view", "count": 5000},
+                            {"event_name": "button_click", "count": 2500},
+                        ],
+                        "most_visited_pages": [{"page_url": "/dashboard", "count": 3000}],
+                    },
+                    "top_conversion_paths": [
+                        ["landing_page", "signup_form", "signup_complete"],
+                        ["landing_page", "pricing_page", "signup_complete"],
                     ],
-                    "most_visited_pages": [{"page_url": "/dashboard", "count": 3000}],
                 },
-                "top_conversion_paths": [
-                    ["landing_page", "signup_form", "signup_complete"],
-                    ["landing_page", "pricing_page", "signup_complete"],
-                ],
-            },
-        }
+            ],
+        },
+    )
 
 
 class InsightType(BaseModel):
@@ -115,23 +121,30 @@ class InsightResponse(BaseModel):
     time_period: str
     insights: list[InsightType]
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "generated_at": "2025-01-15T12:00:00Z",
-                "time_period": "7d",
-                "insights": [
-                    {
-                        "title": "Conversion Rate Increased",
-                        "description": "Sign-up conversion rate increased by 25% this week",
-                        "insight_type": "trend",
-                        "severity": "info",
-                        "data": {"previous_rate": 0.20, "current_rate": 0.25, "change_percent": 25},
-                        "recommendations": [
-                            "Continue current marketing campaign",
-                            "Analyze which changes contributed to the increase",
-                        ],
-                    },
-                ],
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "generated_at": "2025-01-15T12:00:00Z",
+                    "time_period": "7d",
+                    "insights": [
+                        {
+                            "title": "Conversion Rate Increased",
+                            "description": "Sign-up conversion rate increased by 25% this week",
+                            "insight_type": "trend",
+                            "severity": "info",
+                            "data": {
+                                "previous_rate": 0.20,
+                                "current_rate": 0.25,
+                                "change_percent": 25,
+                            },
+                            "recommendations": [
+                                "Continue current marketing campaign",
+                                "Analyze which changes contributed to the increase",
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
+    )

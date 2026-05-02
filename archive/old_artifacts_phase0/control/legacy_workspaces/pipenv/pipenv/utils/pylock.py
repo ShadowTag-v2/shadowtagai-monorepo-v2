@@ -151,13 +151,8 @@ class PylockFile:
                     # For develop packages, add dependency_groups marker only
                     # if it isn't already present (avoids duplication when
                     # re-writing an existing pylock.toml).
-                    if (
-                        section == "develop"
-                        and "dependency_groups" not in package_data["markers"]
-                    ):
-                        package["marker"] = (
-                            f"({dev_marker}) and ({package_data['markers']})"
-                        )
+                    if section == "develop" and "dependency_groups" not in package_data["markers"]:
+                        package["marker"] = f"({dev_marker}) and ({package_data['markers']})"
                     else:
                         package["marker"] = package_data["markers"]
                 elif section == "develop":
@@ -178,9 +173,7 @@ class PylockFile:
                         if hash_value.startswith("sha256:"):
                             hash_hex = hash_value[7:]  # Remove "sha256:" prefix
                             version_str = package.get("version", "0.0.0")
-                            wheel_name = (
-                                f"{name.replace('-', '_')}-{version_str}-py3-none-any.whl"
-                            )
+                            wheel_name = f"{name.replace('-', '_')}-{version_str}-py3-none-any.whl"
                             wheel = {
                                 "name": wheel_name,
                                 "url": f"{package['index']}{name}/{wheel_name}",
@@ -196,9 +189,7 @@ class PylockFile:
         pylock_data["tool"] = {
             "pipenv": {
                 "generated_from": "Pipfile.lock",
-                "generation_date": datetime.datetime.now(
-                    datetime.timezone.utc
-                ).isoformat(),
+                "generation_date": datetime.datetime.now(datetime.timezone.utc).isoformat(),
             }
         }
 
@@ -250,9 +241,7 @@ class PylockFile:
 
         # Currently, we only support version 1.0
         if lock_version != "1.0":
-            raise PylockVersionError(
-                f"Unsupported lock-version: {lock_version}. Only version 1.0 is supported."
-            )
+            raise PylockVersionError(f"Unsupported lock-version: {lock_version}. Only version 1.0 is supported.")
 
         return cls(path=path, data=data_dict)
 
@@ -372,9 +361,7 @@ class PylockFile:
             "pipenv": {
                 "generated_from": "pyproject.toml",
                 "project_name": project_name,
-                "generation_date": datetime.datetime.now(
-                    datetime.timezone.utc
-                ).isoformat(),
+                "generation_date": datetime.datetime.now(datetime.timezone.utc).isoformat(),
             }
         }
 
@@ -513,9 +500,7 @@ class PylockFile:
                         # Add hashes as a table
                         if "hashes" in package["sdist"]:
                             hashes_table = tomlkit.inline_table()
-                            for hash_algo, hash_value in package["sdist"][
-                                "hashes"
-                            ].items():
+                            for hash_algo, hash_value in package["sdist"]["hashes"].items():
                                 hashes_table[hash_algo] = hash_value
                             sdist_table["hashes"] = hashes_table
 
@@ -610,11 +595,7 @@ class PylockFile:
 
         # Set up extras and dependency_groups for marker evaluation
         _extras = frozenset(extras) if extras is not None else frozenset()
-        _dependency_groups = (
-            frozenset(dependency_groups)
-            if dependency_groups is not None
-            else frozenset(self.default_groups)
-        )
+        _dependency_groups = frozenset(dependency_groups) if dependency_groups is not None else frozenset(self.default_groups)
 
         result = []
 
@@ -710,11 +691,7 @@ class PylockFile:
                     for wheel in package["wheels"]
                     if "hashes" in wheel and "sha256" in wheel["hashes"]
                 )
-            if (
-                "sdist" in package
-                and "hashes" in package["sdist"]
-                and "sha256" in package["sdist"]["hashes"]
-            ):
+            if "sdist" in package and "hashes" in package["sdist"] and "sha256" in package["sdist"]["hashes"]:
                 hashes.append(f"sha256:{package['sdist']['hashes']['sha256']}")
             if hashes:
                 package_entry["hashes"] = hashes

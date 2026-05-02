@@ -1,10 +1,28 @@
 """Application configuration management."""
 
+import logging
+import os
+import secrets
 from functools import lru_cache
 from typing import Any
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+logger = logging.getLogger(__name__)
+
+
+def _get_secret_key() -> str:
+    """Get SECRET_KEY from environment, or generate a secure ephemeral one for dev."""
+    key = os.environ.get("SECRET_KEY")
+    if key:
+        return key
+    fallback = secrets.token_urlsafe(32)
+    logger.warning(
+        "SECRET_KEY not set — using ephemeral per-process key. "
+        "Set SECRET_KEY env var for production."
+    )
+    return fallback
 
 
 class SandboxSettings(BaseSettings):
@@ -85,18 +103,26 @@ class AppSettings(BaseSettings):
     workers: int = Field(default=1)
 
     # Security
-    secret_key: str = Field(default="your-secret-key-change-in-production")
+    secret_key: str = Field(default_factory=_get_secret_key)
     access_token_expire_minutes: int = Field(default=30)
 
     # Logging
     log_level: str = Field(default="INFO")
 
+    # Service identity
+    service_name: str = Field(default="shadowtag-v4")
+
+    # Metrics
+    enable_metrics: bool = Field(default=False)
+
+    # Performance budgets
+    max_latency_p99_ms: int = Field(default=5000)
+    max_cost_per_decision: float = Field(default=0.10)
+
     # Sandboxing
     sandbox: SandboxSettings = Field(default_factory=SandboxSettings)
 
     model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
         case_sensitive=False,
         env_nested_delimiter="__",
     )
@@ -124,3 +150,6 @@ class AppSettings(BaseSettings):
 def get_settings() -> AppSettings:
     """Get cached application settings."""
     return AppSettings()
+
+
+settings = get_settings()

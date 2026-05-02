@@ -33,6 +33,7 @@ class FailureModeScore:
         evidence: Specific evidence for the failure
         recommendations: Actionable recommendations to fix
     """
+
     score: float
     detected: bool
     confidence: float
@@ -44,7 +45,7 @@ class FailureModeScore:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'FailureModeScore':
+    def from_dict(cls, data: dict[str, Any]) -> FailureModeScore:
         """Create FailureModeScore from dictionary."""
         return cls(**data)
 
@@ -72,6 +73,7 @@ class FailureDetectionResult:
         recommendations: Aggregated recommendations
         computation_time_seconds: Time taken for detection
     """
+
     over_interpretation: FailureModeScore
     invented_metrics: FailureModeScore
     rabbit_hole: FailureModeScore
@@ -87,44 +89,40 @@ class FailureDetectionResult:
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
         return {
-            'over_interpretation': self.over_interpretation.to_dict(),
-            'invented_metrics': self.invented_metrics.to_dict(),
-            'rabbit_hole': self.rabbit_hole.to_dict(),
-            'overall_score': self.overall_score,
-            'passes_validation': self.passes_validation,
-            'finding_id': self.finding_id,
-            'hypothesis_id': self.hypothesis_id,
-            'research_question': self.research_question,
-            'warnings': self.warnings,
-            'recommendations': self.recommendations,
-            'computation_time_seconds': self.computation_time_seconds,
+            "over_interpretation": self.over_interpretation.to_dict(),
+            "invented_metrics": self.invented_metrics.to_dict(),
+            "rabbit_hole": self.rabbit_hole.to_dict(),
+            "overall_score": self.overall_score,
+            "passes_validation": self.passes_validation,
+            "finding_id": self.finding_id,
+            "hypothesis_id": self.hypothesis_id,
+            "research_question": self.research_question,
+            "warnings": self.warnings,
+            "recommendations": self.recommendations,
+            "computation_time_seconds": self.computation_time_seconds,
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'FailureDetectionResult':
+    def from_dict(cls, data: dict[str, Any]) -> FailureDetectionResult:
         """Create FailureDetectionResult from dictionary."""
         return cls(
-            over_interpretation=FailureModeScore.from_dict(data['over_interpretation']),
-            invented_metrics=FailureModeScore.from_dict(data['invented_metrics']),
-            rabbit_hole=FailureModeScore.from_dict(data['rabbit_hole']),
-            overall_score=data['overall_score'],
-            passes_validation=data['passes_validation'],
-            finding_id=data['finding_id'],
-            hypothesis_id=data.get('hypothesis_id'),
-            research_question=data.get('research_question'),
-            warnings=data.get('warnings', []),
-            recommendations=data.get('recommendations', []),
-            computation_time_seconds=data.get('computation_time_seconds', 0.0),
+            over_interpretation=FailureModeScore.from_dict(data["over_interpretation"]),
+            invented_metrics=FailureModeScore.from_dict(data["invented_metrics"]),
+            rabbit_hole=FailureModeScore.from_dict(data["rabbit_hole"]),
+            overall_score=data["overall_score"],
+            passes_validation=data["passes_validation"],
+            finding_id=data["finding_id"],
+            hypothesis_id=data.get("hypothesis_id"),
+            research_question=data.get("research_question"),
+            warnings=data.get("warnings", []),
+            recommendations=data.get("recommendations", []),
+            computation_time_seconds=data.get("computation_time_seconds", 0.0),
         )
 
     @property
     def has_failures(self) -> bool:
         """Check if any failure mode was detected."""
-        return (
-            self.over_interpretation.detected or
-            self.invented_metrics.detected or
-            self.rabbit_hole.detected
-        )
+        return self.over_interpretation.detected or self.invented_metrics.detected or self.rabbit_hole.detected
 
     def get_summary(self) -> str:
         """Generate human-readable summary."""
@@ -168,77 +166,189 @@ class FailureDetector:
     # Standard statistical metrics that are valid
     STANDARD_METRICS: set[str] = {
         # Core statistics
-        'p_value', 'p', 'pvalue',
-        'effect_size', 'cohens_d', 'd', 'r', 'r_squared', 'r2',
-        'correlation', 'rho', 'tau',
-
+        "p_value",
+        "p",
+        "pvalue",
+        "effect_size",
+        "cohens_d",
+        "d",
+        "r",
+        "r_squared",
+        "r2",
+        "correlation",
+        "rho",
+        "tau",
         # Test statistics
-        't_statistic', 't', 'f_statistic', 'f', 'chi2', 'chi_squared',
-        'z', 'z_score', 'statistic',
-
+        "t_statistic",
+        "t",
+        "f_statistic",
+        "f",
+        "chi2",
+        "chi_squared",
+        "z",
+        "z_score",
+        "statistic",
         # Sample statistics
-        'n', 'sample_size', 'df', 'degrees_of_freedom',
-        'mean', 'median', 'std', 'sd', 'variance', 'var',
-        'se', 'standard_error', 'ci', 'confidence_interval',
-        'ci_lower', 'ci_upper', 'min', 'max', 'range', 'iqr',
-
+        "n",
+        "sample_size",
+        "df",
+        "degrees_of_freedom",
+        "mean",
+        "median",
+        "std",
+        "sd",
+        "variance",
+        "var",
+        "se",
+        "standard_error",
+        "ci",
+        "confidence_interval",
+        "ci_lower",
+        "ci_upper",
+        "min",
+        "max",
+        "range",
+        "iqr",
         # Effect measures
-        'odds_ratio', 'or', 'hazard_ratio', 'hr', 'relative_risk', 'rr',
-        'auc', 'accuracy', 'precision', 'recall', 'f1', 'sensitivity',
-        'specificity', 'ppv', 'npv',
-
+        "odds_ratio",
+        "or",
+        "hazard_ratio",
+        "hr",
+        "relative_risk",
+        "rr",
+        "auc",
+        "accuracy",
+        "precision",
+        "recall",
+        "f1",
+        "sensitivity",
+        "specificity",
+        "ppv",
+        "npv",
         # Multiple testing corrections
-        'fdr', 'q_value', 'bonferroni', 'holm', 'benjamini_hochberg',
-        'adjusted_p', 'corrected_p',
-
+        "fdr",
+        "q_value",
+        "bonferroni",
+        "holm",
+        "benjamini_hochberg",
+        "adjusted_p",
+        "corrected_p",
         # Common analysis-specific
-        'fold_change', 'log_fold_change', 'logfc', 'beta', 'coefficient',
-        'slope', 'intercept', 'residual',
+        "fold_change",
+        "log_fold_change",
+        "logfc",
+        "beta",
+        "coefficient",
+        "slope",
+        "intercept",
+        "residual",
     }
 
     # Words indicating strong claims
     STRONG_CLAIM_WORDS: set[str] = {
-        'proves', 'prove', 'proven', 'proof',
-        'demonstrates', 'demonstrate', 'demonstrated',
-        'confirms', 'confirm', 'confirmed', 'confirmation',
-        'establishes', 'establish', 'established',
-        'definitively', 'definitive', 'definite',
-        'conclusively', 'conclusive', 'conclusion',
-        'clearly', 'clear', 'obvious', 'obviously',
-        'significantly', 'significant',  # Can be appropriate with p<0.05
-        'strongly', 'strong',
-        'undoubtedly', 'undoubted', 'unquestionably',
-        'certainly', 'certain', 'sure', 'surely',
-        'shows', 'show', 'shown',  # Moderate strength
-        'reveals', 'reveal', 'revealed',
-        'identifies', 'identify', 'identified',
+        "proves",
+        "prove",
+        "proven",
+        "proof",
+        "demonstrates",
+        "demonstrate",
+        "demonstrated",
+        "confirms",
+        "confirm",
+        "confirmed",
+        "confirmation",
+        "establishes",
+        "establish",
+        "established",
+        "definitively",
+        "definitive",
+        "definite",
+        "conclusively",
+        "conclusive",
+        "conclusion",
+        "clearly",
+        "clear",
+        "obvious",
+        "obviously",
+        "significantly",
+        "significant",  # Can be appropriate with p<0.05
+        "strongly",
+        "strong",
+        "undoubtedly",
+        "undoubted",
+        "unquestionably",
+        "certainly",
+        "certain",
+        "sure",
+        "surely",
+        "shows",
+        "show",
+        "shown",  # Moderate strength
+        "reveals",
+        "reveal",
+        "revealed",
+        "identifies",
+        "identify",
+        "identified",
     }
 
     # Words indicating hedged/qualified claims
     HEDGED_CLAIM_WORDS: set[str] = {
-        'suggests', 'suggest', 'suggested', 'suggestion',
-        'indicates', 'indicate', 'indicated', 'indication',
-        'may', 'might', 'could', 'would',
-        'potentially', 'potential',
-        'possibly', 'possible', 'possibility',
-        'appears', 'appear', 'appeared',
-        'seems', 'seem', 'seemed',
-        'likely', 'unlikely',
-        'tends', 'tend', 'tendency',
-        'hints', 'hint', 'hinted',
-        'implies', 'imply', 'implied', 'implication',
-        'preliminary', 'initial', 'tentative',
-        'exploratory', 'hypothesis',
-        'trend', 'trending',
-        'consistent', 'compatible',  # Neutral
-        'associated', 'association', 'correlates', 'correlated',
+        "suggests",
+        "suggest",
+        "suggested",
+        "suggestion",
+        "indicates",
+        "indicate",
+        "indicated",
+        "indication",
+        "may",
+        "might",
+        "could",
+        "would",
+        "potentially",
+        "potential",
+        "possibly",
+        "possible",
+        "possibility",
+        "appears",
+        "appear",
+        "appeared",
+        "seems",
+        "seem",
+        "seemed",
+        "likely",
+        "unlikely",
+        "tends",
+        "tend",
+        "tendency",
+        "hints",
+        "hint",
+        "hinted",
+        "implies",
+        "imply",
+        "implied",
+        "implication",
+        "preliminary",
+        "initial",
+        "tentative",
+        "exploratory",
+        "hypothesis",
+        "trend",
+        "trending",
+        "consistent",
+        "compatible",  # Neutral
+        "associated",
+        "association",
+        "correlates",
+        "correlated",
     }
 
     # Weights for overall score calculation
     FAILURE_WEIGHTS = {
-        'over_interpretation': 0.4,
-        'invented_metrics': 0.3,
-        'rabbit_hole': 0.3,
+        "over_interpretation": 0.4,
+        "invented_metrics": 0.3,
+        "rabbit_hole": 0.3,
     }
 
     def __init__(
@@ -268,11 +378,7 @@ class FailureDetector:
         self.similarity_threshold = similarity_threshold
         self.model = model
 
-    def detect_failures(
-        self,
-        finding: dict[str, Any],
-        context: dict[str, Any] | None = None
-    ) -> FailureDetectionResult:
+    def detect_failures(self, finding: dict[str, Any], context: dict[str, Any] | None = None) -> FailureDetectionResult:
         """
         Detect all failure modes in a finding.
 
@@ -295,9 +401,9 @@ class FailureDetector:
         start_time = time.time()
 
         context = context or {}
-        research_question = context.get('research_question', '')
-        dataset_schema = context.get('dataset_schema')
-        hypothesis = context.get('hypothesis')
+        research_question = context.get("research_question", "")
+        dataset_schema = context.get("dataset_schema")
+        hypothesis = context.get("hypothesis")
 
         # Detect each failure mode
         over_interp = self.detect_over_interpretation(finding)
@@ -306,9 +412,9 @@ class FailureDetector:
 
         # Calculate overall score (weighted average)
         overall = (
-            self.FAILURE_WEIGHTS['over_interpretation'] * over_interp.score +
-            self.FAILURE_WEIGHTS['invented_metrics'] * invented.score +
-            self.FAILURE_WEIGHTS['rabbit_hole'] * rabbit_hole.score
+            self.FAILURE_WEIGHTS["over_interpretation"] * over_interp.score
+            + self.FAILURE_WEIGHTS["invented_metrics"] * invented.score
+            + self.FAILURE_WEIGHTS["rabbit_hole"] * rabbit_hole.score
         )
 
         # Collect warnings
@@ -321,18 +427,10 @@ class FailureDetector:
             warnings.append("Rabbit hole detected: finding drifted from research question")
 
         # Collect recommendations (deduplicated)
-        recommendations = list(dict.fromkeys(
-            over_interp.recommendations +
-            invented.recommendations +
-            rabbit_hole.recommendations
-        ))
+        recommendations = list(dict.fromkeys(over_interp.recommendations + invented.recommendations + rabbit_hole.recommendations))
 
         # Determine if passes validation
-        passes = not any([
-            over_interp.detected,
-            invented.detected,
-            rabbit_hole.detected
-        ])
+        passes = not any([over_interp.detected, invented.detected, rabbit_hole.detected])
 
         return FailureDetectionResult(
             over_interpretation=over_interp,
@@ -340,18 +438,15 @@ class FailureDetector:
             rabbit_hole=rabbit_hole,
             overall_score=overall,
             passes_validation=passes,
-            finding_id=finding.get('finding_id', 'unknown'),
-            hypothesis_id=finding.get('hypothesis_id'),
+            finding_id=finding.get("finding_id", "unknown"),
+            hypothesis_id=finding.get("hypothesis_id"),
             research_question=research_question if research_question else None,
             warnings=warnings,
             recommendations=recommendations,
             computation_time_seconds=time.time() - start_time,
         )
 
-    def detect_over_interpretation(
-        self,
-        finding: dict[str, Any]
-    ) -> FailureModeScore:
+    def detect_over_interpretation(self, finding: dict[str, Any]) -> FailureModeScore:
         """
         Detect when claims exceed statistical support.
 
@@ -367,9 +462,9 @@ class FailureDetector:
         Returns:
             FailureModeScore with over-interpretation assessment
         """
-        interpretation = finding.get('interpretation', '') or ''
-        summary = finding.get('summary', '') or ''
-        statistics = finding.get('statistics', {}) or {}
+        interpretation = finding.get("interpretation", "") or ""
+        summary = finding.get("summary", "") or ""
+        statistics = finding.get("statistics", {}) or {}
 
         # Combine text for analysis
         text = f"{interpretation} {summary}"
@@ -395,9 +490,7 @@ class FailureDetector:
             over_interp_score = 0.0
 
         # Generate evidence
-        evidence = self._generate_over_interp_evidence(
-            claim_strength, stat_strength, text, statistics
-        )
+        evidence = self._generate_over_interp_evidence(claim_strength, stat_strength, text, statistics)
 
         # Generate recommendations
         recommendations = []
@@ -463,7 +556,7 @@ class FailureDetector:
         weights = []
 
         # P-value contribution (most important)
-        p_value = statistics.get('p_value') or statistics.get('p')
+        p_value = statistics.get("p_value") or statistics.get("p")
         if p_value is not None:
             try:
                 p = float(p_value)
@@ -478,15 +571,11 @@ class FailureDetector:
                 else:
                     scores.append(0.2)
                 weights.append(0.4)
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
         # Effect size contribution
-        effect_size = (
-            statistics.get('effect_size') or
-            statistics.get('cohens_d') or
-            statistics.get('d')
-        )
+        effect_size = statistics.get("effect_size") or statistics.get("cohens_d") or statistics.get("d")
         if effect_size is not None:
             try:
                 es = abs(float(effect_size))
@@ -499,11 +588,11 @@ class FailureDetector:
                 else:
                     scores.append(0.25)
                 weights.append(0.35)
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
         # Sample size contribution
-        n = statistics.get('sample_size') or statistics.get('n')
+        n = statistics.get("sample_size") or statistics.get("n")
         if n is not None:
             try:
                 sample = int(n)
@@ -518,7 +607,7 @@ class FailureDetector:
                 else:
                     scores.append(0.3)
                 weights.append(0.25)
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
         # Calculate weighted average
@@ -531,13 +620,7 @@ class FailureDetector:
 
         return sum(s * w for s, w in zip(scores, weights)) / total_weight
 
-    def _generate_over_interp_evidence(
-        self,
-        claim_strength: float,
-        stat_strength: float,
-        text: str,
-        statistics: dict[str, Any]
-    ) -> list[str]:
+    def _generate_over_interp_evidence(self, claim_strength: float, stat_strength: float, text: str, statistics: dict[str, Any]) -> list[str]:
         """Generate evidence for over-interpretation assessment."""
         evidence = []
 
@@ -555,22 +638,18 @@ class FailureDetector:
             evidence.append(f"Strong claim words: {', '.join(strong_used[:5])}")
 
         # Check p-value
-        p_value = statistics.get('p_value') or statistics.get('p')
+        p_value = statistics.get("p_value") or statistics.get("p")
         if p_value is not None:
             try:
                 p = float(p_value)
                 if p >= 0.05:
                     evidence.append(f"p-value ({p:.4f}) not significant at 0.05 level")
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
         return evidence
 
-    def detect_invented_metrics(
-        self,
-        finding: dict[str, Any],
-        dataset_schema: list[str] | None = None
-    ) -> FailureModeScore:
+    def detect_invented_metrics(self, finding: dict[str, Any], dataset_schema: list[str] | None = None) -> FailureModeScore:
         """
         Detect metrics that don't exist in data or standard statistics.
 
@@ -587,9 +666,9 @@ class FailureDetector:
         Returns:
             FailureModeScore with invented metrics assessment
         """
-        interpretation = finding.get('interpretation', '') or ''
-        summary = finding.get('summary', '') or ''
-        statistics = finding.get('statistics', {}) or {}
+        interpretation = finding.get("interpretation", "") or ""
+        summary = finding.get("summary", "") or ""
+        statistics = finding.get("statistics", {}) or {}
 
         # Combine text for analysis
         text = f"{interpretation} {summary}"
@@ -602,7 +681,7 @@ class FailureDetector:
 
         # Add dataset schema if provided
         if dataset_schema:
-            valid_metrics.update(set(col.lower().replace(' ', '_') for col in dataset_schema))
+            valid_metrics.update(set(col.lower().replace(" ", "_") for col in dataset_schema))
 
         # Add metrics from statistics dict (they're at least defined somewhere)
         if statistics:
@@ -677,34 +756,89 @@ class FailureDetector:
 
         # Pattern 1: metric = value or metric: value (supports compound names like metric_name)
         # Matches: synergy_index = 0.95, p_value = 0.01
-        pattern1 = r'([a-zA-Z][a-zA-Z0-9_]*)\s*[=:]\s*[-+]?[0-9]*\.?[0-9]+'
+        pattern1 = r"([a-zA-Z][a-zA-Z0-9_]*)\s*[=:]\s*[-+]?[0-9]*\.?[0-9]+"
         matches1 = re.findall(pattern1, text)
         metrics.update(matches1)
 
         # Pattern 2: metric in parentheses with value
-        pattern2 = r'\(([a-zA-Z][a-zA-Z0-9_]*)\s*[=:]\s*[-+]?[0-9]*\.?[0-9]+\)'
+        pattern2 = r"\(([a-zA-Z][a-zA-Z0-9_]*)\s*[=:]\s*[-+]?[0-9]*\.?[0-9]+\)"
         matches2 = re.findall(pattern2, text)
         metrics.update(matches2)
 
         # Pattern 3: "the <metric> was/is <value>"
-        pattern3 = r'the\s+([a-zA-Z][a-zA-Z0-9_]*)\s+(?:was|is|were|are)\s+[-+]?[0-9]*\.?[0-9]+'
+        pattern3 = r"the\s+([a-zA-Z][a-zA-Z0-9_]*)\s+(?:was|is|were|are)\s+[-+]?[0-9]*\.?[0-9]+"
         matches3 = re.findall(pattern3, text.lower())
         metrics.update(matches3)
 
         # Filter out common non-metric words that might match patterns
         non_metrics = {
-            'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been',
-            'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would',
-            'could', 'should', 'may', 'might', 'must', 'shall',
-            'this', 'that', 'these', 'those', 'it', 'its',
-            'we', 'our', 'they', 'their', 'i', 'my',
-            'figure', 'table', 'equation', 'section', 'chapter',
-            'group', 'sample', 'subject', 'patient', 'participant',
-            'year', 'month', 'day', 'time', 'date',
-            'gene', 'protein', 'cell', 'tissue', 'organ',
+            "the",
+            "a",
+            "an",
+            "is",
+            "are",
+            "was",
+            "were",
+            "be",
+            "been",
+            "have",
+            "has",
+            "had",
+            "do",
+            "does",
+            "did",
+            "will",
+            "would",
+            "could",
+            "should",
+            "may",
+            "might",
+            "must",
+            "shall",
+            "this",
+            "that",
+            "these",
+            "those",
+            "it",
+            "its",
+            "we",
+            "our",
+            "they",
+            "their",
+            "i",
+            "my",
+            "figure",
+            "table",
+            "equation",
+            "section",
+            "chapter",
+            "group",
+            "sample",
+            "subject",
+            "patient",
+            "participant",
+            "year",
+            "month",
+            "day",
+            "time",
+            "date",
+            "gene",
+            "protein",
+            "cell",
+            "tissue",
+            "organ",
             # Common verbs and adjectives that might appear before numbers
-            'value', 'score', 'rate', 'level', 'count', 'number',
-            'result', 'finding', 'total', 'average', 'mean',
+            "value",
+            "score",
+            "rate",
+            "level",
+            "count",
+            "number",
+            "result",
+            "finding",
+            "total",
+            "average",
+            "mean",
         }
 
         # Return filtered list
@@ -717,8 +851,8 @@ class FailureDetector:
         E.g., 'p_val' is a variant of 'p_value'
         """
         # Remove common separators
-        m_clean = metric.replace('_', '').replace('-', '').replace(' ', '').lower()
-        s_clean = standard.replace('_', '').replace('-', '').replace(' ', '').lower()
+        m_clean = metric.replace("_", "").replace("-", "").replace(" ", "").lower()
+        s_clean = standard.replace("_", "").replace("-", "").replace(" ", "").lower()
 
         # Only match if the shorter one is a substantial portion of the longer
         # This prevents "novelty" from matching "n" or random substrings
@@ -745,12 +879,7 @@ class FailureDetector:
 
         return overlap_ratio > 0.8 and length_ratio > 0.5
 
-    def detect_rabbit_hole(
-        self,
-        finding: dict[str, Any],
-        research_question: str,
-        hypothesis: dict[str, Any] | None = None
-    ) -> FailureModeScore:
+    def detect_rabbit_hole(self, finding: dict[str, Any], research_question: str, hypothesis: dict[str, Any] | None = None) -> FailureModeScore:
         """
         Detect when finding drifts far from original research question.
 
@@ -768,8 +897,8 @@ class FailureDetector:
         Returns:
             FailureModeScore with rabbit hole assessment
         """
-        summary = finding.get('summary', '') or ''
-        interpretation = finding.get('interpretation', '') or ''
+        summary = finding.get("summary", "") or ""
+        interpretation = finding.get("interpretation", "") or ""
         finding_text = f"{summary} {interpretation}"
 
         # Handle empty research question
@@ -790,8 +919,8 @@ class FailureDetector:
         generation_penalty = 0.0
         generation = 1
         if hypothesis:
-            generation = hypothesis.get('generation', 1)
-            refinement_count = hypothesis.get('refinement_count', 0)
+            generation = hypothesis.get("generation", 1)
+            refinement_count = hypothesis.get("refinement_count", 0)
 
             # Use max of generation and refinement_count
             depth = max(generation, refinement_count)
@@ -831,11 +960,7 @@ class FailureDetector:
             recommendations=recommendations,
         )
 
-    def _compute_relevance_similarity(
-        self,
-        finding_text: str,
-        research_question: str
-    ) -> float:
+    def _compute_relevance_similarity(self, finding_text: str, research_question: str) -> float:
         """
         Compute semantic similarity between finding and research question.
 
@@ -857,30 +982,147 @@ class FailureDetector:
 
         # Stopwords to remove
         stopwords = {
-            'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
-            'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing',
-            'will', 'would', 'could', 'should', 'may', 'might', 'must', 'shall',
-            'can', 'need', 'dare', 'ought', 'used', 'to',
-            'this', 'that', 'these', 'those', 'it', 'its', 'itself',
-            'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves',
-            'you', 'your', 'yours', 'yourself', 'yourselves',
-            'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself',
-            'they', 'them', 'their', 'theirs', 'themselves',
-            'what', 'which', 'who', 'whom', 'whose',
-            'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while',
-            'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between',
-            'into', 'through', 'during', 'before', 'after', 'above', 'below',
-            'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under',
-            'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where',
-            'why', 'how', 'all', 'each', 'few', 'more', 'most', 'other', 'some',
-            'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than',
-            'too', 'very', 's', 't', 'just', 'don', 'now',
+            "the",
+            "a",
+            "an",
+            "is",
+            "are",
+            "was",
+            "were",
+            "be",
+            "been",
+            "being",
+            "have",
+            "has",
+            "had",
+            "having",
+            "do",
+            "does",
+            "did",
+            "doing",
+            "will",
+            "would",
+            "could",
+            "should",
+            "may",
+            "might",
+            "must",
+            "shall",
+            "can",
+            "need",
+            "dare",
+            "ought",
+            "used",
+            "to",
+            "this",
+            "that",
+            "these",
+            "those",
+            "it",
+            "its",
+            "itself",
+            "i",
+            "me",
+            "my",
+            "myself",
+            "we",
+            "our",
+            "ours",
+            "ourselves",
+            "you",
+            "your",
+            "yours",
+            "yourself",
+            "yourselves",
+            "he",
+            "him",
+            "his",
+            "himself",
+            "she",
+            "her",
+            "hers",
+            "herself",
+            "they",
+            "them",
+            "their",
+            "theirs",
+            "themselves",
+            "what",
+            "which",
+            "who",
+            "whom",
+            "whose",
+            "and",
+            "but",
+            "if",
+            "or",
+            "because",
+            "as",
+            "until",
+            "while",
+            "of",
+            "at",
+            "by",
+            "for",
+            "with",
+            "about",
+            "against",
+            "between",
+            "into",
+            "through",
+            "during",
+            "before",
+            "after",
+            "above",
+            "below",
+            "from",
+            "up",
+            "down",
+            "in",
+            "out",
+            "on",
+            "off",
+            "over",
+            "under",
+            "again",
+            "further",
+            "then",
+            "once",
+            "here",
+            "there",
+            "when",
+            "where",
+            "why",
+            "how",
+            "all",
+            "each",
+            "few",
+            "more",
+            "most",
+            "other",
+            "some",
+            "such",
+            "no",
+            "nor",
+            "not",
+            "only",
+            "own",
+            "same",
+            "so",
+            "than",
+            "too",
+            "very",
+            "s",
+            "t",
+            "just",
+            "don",
+            "now",
         }
 
         # Tokenize and clean
         def tokenize(text: str) -> set[str]:
             # Convert to lowercase and split on non-alphanumeric
-            words = re.findall(r'\b[a-z]+\b', text.lower())
+            words = re.findall(r"\b[a-z]+\b", text.lower())
             # Remove stopwords and short words
             return {w for w in words if w not in stopwords and len(w) > 2}
 
@@ -896,11 +1138,7 @@ class FailureDetector:
 
         return intersection / union if union > 0 else 0.0
 
-    def batch_detect(
-        self,
-        findings: list[dict[str, Any]],
-        context: dict[str, Any] | None = None
-    ) -> list[FailureDetectionResult]:
+    def batch_detect(self, findings: list[dict[str, Any]], context: dict[str, Any] | None = None) -> list[FailureDetectionResult]:
         """
         Detect failures in multiple findings.
 
@@ -913,10 +1151,7 @@ class FailureDetector:
         """
         return [self.detect_failures(f, context) for f in findings]
 
-    def get_failure_statistics(
-        self,
-        results: list[FailureDetectionResult]
-    ) -> dict[str, Any]:
+    def get_failure_statistics(self, results: list[FailureDetectionResult]) -> dict[str, Any]:
         """
         Compute aggregate statistics from batch detection results.
 
@@ -928,9 +1163,9 @@ class FailureDetector:
         """
         if not results:
             return {
-                'count': 0,
-                'pass_rate': 0.0,
-                'failure_rates': {},
+                "count": 0,
+                "pass_rate": 0.0,
+                "failure_rates": {},
             }
 
         n = len(results)
@@ -941,19 +1176,19 @@ class FailureDetector:
         rabbit_hole_failures = sum(1 for r in results if r.rabbit_hole.detected)
 
         return {
-            'count': n,
-            'passed': passed,
-            'failed': n - passed,
-            'pass_rate': passed / n,
-            'failure_rates': {
-                'over_interpretation': over_interp_failures / n,
-                'invented_metrics': invented_failures / n,
-                'rabbit_hole': rabbit_hole_failures / n,
+            "count": n,
+            "passed": passed,
+            "failed": n - passed,
+            "pass_rate": passed / n,
+            "failure_rates": {
+                "over_interpretation": over_interp_failures / n,
+                "invented_metrics": invented_failures / n,
+                "rabbit_hole": rabbit_hole_failures / n,
             },
-            'avg_scores': {
-                'overall': sum(r.overall_score for r in results) / n,
-                'over_interpretation': sum(r.over_interpretation.score for r in results) / n,
-                'invented_metrics': sum(r.invented_metrics.score for r in results) / n,
-                'rabbit_hole': sum(r.rabbit_hole.score for r in results) / n,
+            "avg_scores": {
+                "overall": sum(r.overall_score for r in results) / n,
+                "over_interpretation": sum(r.over_interpretation.score for r in results) / n,
+                "invented_metrics": sum(r.invented_metrics.score for r in results) / n,
+                "rabbit_hole": sum(r.rabbit_hole.score for r in results) / n,
             },
         }

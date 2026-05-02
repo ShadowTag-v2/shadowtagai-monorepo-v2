@@ -1,12 +1,10 @@
 from fastapi import APIRouter, File, HTTPException, UploadFile, status
 
-# Local app imports based on conventional structure
-# Note: we stub models/database imports if they don't exist yet to prevent crashes
+# Local app imports — using src-canonical paths with fallback stubs
 try:
-    import models  # noqa: F401
-    from database import get_db
-    from routers.agents import verify_workspace_access
-    from security import get_current_user
+    from src.database import get_db
+    from src.routers.agents import verify_workspace_access
+    from src.security import get_current_user
 except ImportError:
     # Stub dependencies for compilation if the monorepo isn't fully structured yet
     def get_db():

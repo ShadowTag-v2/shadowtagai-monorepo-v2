@@ -56,29 +56,29 @@ def detect_terminal_app():
     """
     # Map TERM_PROGRAM values to macOS app names
     TERMINAL_MAP = {
-        'Apple_Terminal': 'Terminal',
-        'iTerm.app': 'iTerm',
-        'ghostty': 'Ghostty',
-        'WezTerm': 'WezTerm',
+        "Apple_Terminal": "Terminal",
+        "iTerm.app": "iTerm",
+        "ghostty": "Ghostty",
+        "WezTerm": "WezTerm",
     }
 
     # Priority 1: Check SKILL_SEEKER_TERMINAL env var (explicit preference)
-    preferred_terminal = os.environ.get('SKILL_SEEKER_TERMINAL', '').strip()
+    preferred_terminal = os.environ.get("SKILL_SEEKER_TERMINAL", "").strip()
     if preferred_terminal:
-        return preferred_terminal, 'SKILL_SEEKER_TERMINAL'
+        return preferred_terminal, "SKILL_SEEKER_TERMINAL"
 
     # Priority 2: Check TERM_PROGRAM (inherit current terminal)
-    term_program = os.environ.get('TERM_PROGRAM', '').strip()
+    term_program = os.environ.get("TERM_PROGRAM", "").strip()
     if term_program and term_program in TERMINAL_MAP:
-        return TERMINAL_MAP[term_program], 'TERM_PROGRAM'
+        return TERMINAL_MAP[term_program], "TERM_PROGRAM"
 
     # Priority 3: Fallback to Terminal.app
     if term_program:
         # TERM_PROGRAM is set but unknown
-        return 'Terminal', f'unknown TERM_PROGRAM ({term_program})'
+        return "Terminal", f"unknown TERM_PROGRAM ({term_program})"
     else:
         # No TERM_PROGRAM set
-        return 'Terminal', 'default'
+        return "Terminal", "default"
 
 
 class LocalSkillEnhancer:
@@ -91,11 +91,7 @@ class LocalSkillEnhancer:
         """Create the prompt file for Claude Code"""
 
         # Read reference files
-        references = read_reference_files(
-            self.skill_dir,
-            max_chars=LOCAL_CONTENT_LIMIT,
-            preview_limit=LOCAL_PREVIEW_LIMIT
-        )
+        references = read_reference_files(self.skill_dir, max_chars=LOCAL_CONTENT_LIMIT, preview_limit=LOCAL_PREVIEW_LIMIT)
 
         if not references:
             print("❌ No reference files found")
@@ -104,25 +100,25 @@ class LocalSkillEnhancer:
         # Read current SKILL.md
         current_skill_md = ""
         if self.skill_md_path.exists():
-            current_skill_md = self.skill_md_path.read_text(encoding='utf-8')
+            current_skill_md = self.skill_md_path.read_text(encoding="utf-8")
 
         # Build prompt
         prompt = f"""I need you to enhance the SKILL.md file for the {self.skill_dir.name} skill.
 
 CURRENT SKILL.MD:
-{'-'*60}
-{current_skill_md if current_skill_md else '(No existing SKILL.md - create from scratch)'}
-{'-'*60}
+{"-" * 60}
+{current_skill_md if current_skill_md else "(No existing SKILL.md - create from scratch)"}
+{"-" * 60}
 
 REFERENCE DOCUMENTATION:
-{'-'*60}
+{"-" * 60}
 """
 
         for filename, content in references.items():
             prompt += f"\n## {filename}\n{content[:15000]}\n"
 
         prompt += f"""
-{'-'*60}
+{"-" * 60}
 
 YOUR TASK:
 Create an EXCELLENT SKILL.md file that will help Claude use this documentation effectively.
@@ -161,7 +157,7 @@ IMPORTANT:
 SAVE THE RESULT:
 Save the complete enhanced SKILL.md to: {self.skill_md_path.absolute()}
 
-First, backup the original to: {self.skill_md_path.with_suffix('.md.backup').absolute()}
+First, backup the original to: {self.skill_md_path.with_suffix(".md.backup").absolute()}
 """
 
         return prompt
@@ -173,9 +169,9 @@ First, backup the original to: {self.skill_md_path.with_suffix('.md.backup').abs
             headless: If True, run claude directly without opening terminal (default: True)
             timeout: Maximum time to wait for enhancement in seconds (default: 600 = 10 minutes)
         """
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print(f"LOCAL ENHANCEMENT: {self.skill_dir.name}")
-        print(f"{'='*60}\n")
+        print(f"{'=' * 60}\n")
 
         # Validate
         if not self.skill_dir.exists():
@@ -184,11 +180,7 @@ First, backup the original to: {self.skill_md_path.with_suffix('.md.backup').abs
 
         # Read reference files
         print("📖 Reading reference documentation...")
-        references = read_reference_files(
-            self.skill_dir,
-            max_chars=LOCAL_CONTENT_LIMIT,
-            preview_limit=LOCAL_PREVIEW_LIMIT
-        )
+        references = read_reference_files(self.skill_dir, max_chars=LOCAL_CONTENT_LIMIT, preview_limit=LOCAL_PREVIEW_LIMIT)
 
         if not references:
             print("❌ No reference files found to analyze")
@@ -206,7 +198,7 @@ First, backup the original to: {self.skill_md_path.with_suffix('.md.backup').abs
             return False
 
         # Save prompt to temp file
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False, encoding='utf-8') as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False, encoding="utf-8") as f:
             prompt_file = f.name
             f.write(prompt)
 
@@ -226,40 +218,40 @@ First, backup the original to: {self.skill_md_path.with_suffix('.md.backup').abs
         print()
 
         # Create a shell script to run in the terminal
-        shell_script = f'''#!/bin/bash
+        shell_script = f"""#!/bin/bash
 claude {prompt_file}
 echo ""
 echo "✅ Enhancement complete!"
 echo "Press any key to close..."
 read -n 1
 rm {prompt_file}
-'''
+"""
 
         # Save shell script
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.sh', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".sh", delete=False) as f:
             script_file = f.name
             f.write(shell_script)
 
         os.chmod(script_file, 0o755)
 
         # Launch in new terminal (macOS specific)
-        if sys.platform == 'darwin':
+        if sys.platform == "darwin":
             # Detect which terminal app to use
             terminal_app, detection_method = detect_terminal_app()
 
             # Show detection info
-            if detection_method == 'SKILL_SEEKER_TERMINAL':
+            if detection_method == "SKILL_SEEKER_TERMINAL":
                 print(f"   Using terminal: {terminal_app} (from SKILL_SEEKER_TERMINAL)")
-            elif detection_method == 'TERM_PROGRAM':
+            elif detection_method == "TERM_PROGRAM":
                 print(f"   Using terminal: {terminal_app} (inherited from current terminal)")
-            elif detection_method.startswith('unknown TERM_PROGRAM'):
+            elif detection_method.startswith("unknown TERM_PROGRAM"):
                 print(f"⚠️  {detection_method}")
                 print("   → Using Terminal.app as fallback")
             else:
                 print(f"   Using terminal: {terminal_app} (default)")
 
             try:
-                subprocess.Popen(['open', '-a', terminal_app, script_file])
+                subprocess.Popen(["open", "-a", terminal_app, script_file])
             except Exception as e:
                 print(f"⚠️  Error launching {terminal_app}: {e}")
                 print(f"\nManually run: {script_file}")
@@ -302,7 +294,7 @@ rm {prompt_file}
         """
 
         print("✨ Running Claude Code enhancement (headless mode)...")
-        print(f"   Timeout: {timeout} seconds ({timeout//60} minutes)")
+        print(f"   Timeout: {timeout} seconds ({timeout // 60} minutes)")
         print()
 
         # Record initial state
@@ -318,12 +310,7 @@ rm {prompt_file}
             print("   ⏳ Please wait...")
             print()
 
-            result = subprocess.run(
-                ['claude', prompt_file],
-                capture_output=True,
-                text=True,
-                timeout=timeout
-            )
+            result = subprocess.run(["claude", prompt_file], capture_output=True, text=True, timeout=timeout)
 
             elapsed = time.time() - start_time
 
@@ -414,26 +401,14 @@ Examples:
 
   # Custom timeout
   skill-seekers enhance output/react/ --timeout 1200
-"""
+""",
     )
 
-    parser.add_argument(
-        'skill_directory',
-        help='Path to skill directory (e.g., output/react/)'
-    )
+    parser.add_argument("skill_directory", help="Path to skill directory (e.g., output/react/)")
 
-    parser.add_argument(
-        '--interactive-enhancement',
-        action='store_true',
-        help='Open terminal window for enhancement (default: headless mode)'
-    )
+    parser.add_argument("--interactive-enhancement", action="store_true", help="Open terminal window for enhancement (default: headless mode)")
 
-    parser.add_argument(
-        '--timeout',
-        type=int,
-        default=600,
-        help='Timeout in seconds for headless mode (default: 600 = 10 minutes)'
-    )
+    parser.add_argument("--timeout", type=int, default=600, help="Timeout in seconds for headless mode (default: 600 = 10 minutes)")
 
     args = parser.parse_args()
 

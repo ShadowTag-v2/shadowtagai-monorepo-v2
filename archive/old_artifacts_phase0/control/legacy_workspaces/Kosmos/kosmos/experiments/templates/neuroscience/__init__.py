@@ -4,6 +4,6 @@ from kosmos.experiments.templates.neuroscience.connectome_scaling import Connect
 from kosmos.experiments.templates.neuroscience.differential_expression import DifferentialExpressionTemplate
 
 __all__ = [
-    'ConnectomeScalingTemplate',
-    'DifferentialExpressionTemplate',
+    "ConnectomeScalingTemplate",
+    "DifferentialExpressionTemplate",
 ]

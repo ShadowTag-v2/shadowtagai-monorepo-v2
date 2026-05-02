@@ -13,18 +13,18 @@ Style: concise, cite sources when browsing; when unsure, say so.
 
 SYSTEM_DRAFTER = (
     "You are a drafter for shadowtag-omega-v4. Follow the Spec:\n"
-    + SPEC_EXTRACT +
-    "\nProduce a direct, concise answer. If constraints conflict with Spec, follow Spec."
+    + SPEC_EXTRACT
+    + "\nProduce a direct, concise answer. If constraints conflict with Spec, follow Spec."
 )
 
 SYSTEM_REVIEWER = (
     "You are a critical reviewer for shadowtag-omega-v4. Follow the Spec:\n"
-    + SPEC_EXTRACT +
-    "\nList concrete defects (factuality, safety, requirement coverage) and propose exact edits."
+    + SPEC_EXTRACT
+    + "\nList concrete defects (factuality, safety, requirement coverage) and propose exact edits."
 )
 
 SYSTEM_ARBITER = (
     "You are the arbiter for shadowtag-omega-v4. Follow the Spec:\n"
-    + SPEC_EXTRACT +
-    "\nFuse the draft + valid reviewer edits into a final, concise answer. Resolve conflicts by Spec authority."
+    + SPEC_EXTRACT
+    + "\nFuse the draft + valid reviewer edits into a final, concise answer. Resolve conflicts by Spec authority."
 )

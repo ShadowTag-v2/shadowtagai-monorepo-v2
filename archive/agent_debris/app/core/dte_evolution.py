@@ -4,19 +4,21 @@ Self-evolving test framework with GRPO/PPO comparison
 
 Test results: +3.7% accuracy improvement with evolved prompts
 """
+
 import logging
 import random
-from typing import List, Dict, Any, Optional
+from typing import Any
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime
-from enum import Enum, StrEnum
+from enum import StrEnum
 
 logger = logging.getLogger(__name__)
 
 
 class EvolutionStrategy(StrEnum):
     """Evolution strategies for DTE"""
+
     MUTATION = "mutation"  # Random variations
     CROSSOVER = "crossover"  # Combine successful strategies
     GRADIENT = "gradient"  # GRPO-style gradient-based
@@ -26,6 +28,7 @@ class EvolutionStrategy(StrEnum):
 @dataclass
 class TestCase:
     """Individual test case for evolution"""
+
     id: str
     input_data: Any
     expected_output: Any
@@ -36,6 +39,7 @@ class TestCase:
 @dataclass
 class EvolutionResult:
     """Results from DTE evolution cycle"""
+
     generation: int
     best_score: float
     average_score: float
@@ -64,10 +68,7 @@ class DTEEngine:
         self.test_cases.append(test)
 
     def evolve(
-        self,
-        evaluator: Callable[[Any], float],
-        strategy: EvolutionStrategy = EvolutionStrategy.MUTATION,
-        iterations: int = 100
+        self, evaluator: Callable[[Any], float], strategy: EvolutionStrategy = EvolutionStrategy.MUTATION, iterations: int = 100
     ) -> EvolutionResult:
         """
         Evolve test cases using specified strategy
@@ -103,20 +104,12 @@ class DTEEngine:
         self.current_generation += 1
 
         result = EvolutionResult(
-            generation=self.current_generation,
-            best_score=best_score,
-            average_score=average_score,
-            improvement=improvement,
-            strategy_used=strategy
+            generation=self.current_generation, best_score=best_score, average_score=average_score, improvement=improvement, strategy_used=strategy
         )
 
         self.evolution_history.append(result)
 
-        logger.info(
-            f"Generation {self.current_generation}: "
-            f"best={best_score:.3f}, avg={average_score:.3f}, "
-            f"improvement={improvement:+.3f}"
-        )
+        logger.info(f"Generation {self.current_generation}: best={best_score:.3f}, avg={average_score:.3f}, improvement={improvement:+.3f}")
 
         return result
 
@@ -134,7 +127,7 @@ class DTEEngine:
             input_data=test.input_data,  # Would apply actual mutation
             expected_output=test.expected_output,
             difficulty=min(1.0, test.difficulty + random.uniform(-0.1, 0.1)),
-            tags=test.tags + ["mutated"]
+            tags=test.tags + ["mutated"],
         )
 
         # Evaluate mutation
@@ -160,7 +153,7 @@ class DTEEngine:
             input_data=parent1.input_data,  # Would blend both parents
             expected_output=parent1.expected_output,
             difficulty=(parent1.difficulty + parent2.difficulty) / 2,
-            tags=list(set(parent1.tags + parent2.tags + ["crossover"]))
+            tags=list(set(parent1.tags + parent2.tags + ["crossover"])),
         )
 
         self.test_cases.append(child)
@@ -194,7 +187,7 @@ class DTEEngine:
             input_data=winner.input_data,
             expected_output=winner.expected_output,
             difficulty=winner.difficulty,
-            tags=winner.tags + ["tournament_winner"]
+            tags=winner.tags + ["tournament_winner"],
         )
         self.test_cases.append(clone)
 
@@ -226,7 +219,7 @@ class DTEEngine:
             "total_improvement": total_improvement,
             "test_cases": len(self.test_cases),
             "persona_iq": self.persona_iq,
-            "strategies_used": list(set(r.strategy_used.value for r in self.evolution_history))
+            "strategies_used": list(set(r.strategy_used.value for r in self.evolution_history)),
         }
 
 
@@ -246,11 +239,7 @@ class GRPOSimulator:
         self.group_size = group_size
         logger.info(f"GRPO Simulator initialized (G={group_size})")
 
-    def simulate_training_step(
-        self,
-        rewards: list[float],
-        baseline: float | None = None
-    ) -> dict[str, Any]:
+    def simulate_training_step(self, rewards: list[float], baseline: float | None = None) -> dict[str, Any]:
         """
         Simulate GRPO training step
 
@@ -283,14 +272,10 @@ class GRPOSimulator:
             "advantages": advantages,
             "baseline": baseline,
             "theta_update": theta_update,
-            "mean_reward": sum(rewards) / len(rewards)
+            "mean_reward": sum(rewards) / len(rewards),
         }
 
-    def compare_with_ppo(
-        self,
-        rewards: list[float],
-        epsilon: float = 0.2
-    ) -> dict[str, Any]:
+    def compare_with_ppo(self, rewards: list[float], epsilon: float = 0.2) -> dict[str, Any]:
         """
         Compare GRPO vs PPO on same rewards
 
@@ -322,5 +307,5 @@ class GRPOSimulator:
             "grpo_advantages": grpo_result["advantages"],
             "ppo_advantages": ppo_advantages,
             "grpo_better": abs(grpo_result["loss"]) < abs(ppo_loss),
-            "difference": abs(grpo_result["loss"]) - abs(ppo_loss)
+            "difference": abs(grpo_result["loss"]) - abs(ppo_loss),
         }

@@ -18,6 +18,7 @@ def test_core_imports():
 
     try:
         import kosmos
+
         print("  [OK] kosmos")
     except ImportError as e:
         print(f"  [FAIL] kosmos: {e}")
@@ -25,6 +26,7 @@ def test_core_imports():
 
     try:
         from kosmos.config import get_settings
+
         print("  [OK] kosmos.config")
     except ImportError as e:
         print(f"  [FAIL] kosmos.config: {e}")
@@ -32,6 +34,7 @@ def test_core_imports():
 
     try:
         from kosmos.workflow.research_loop import ResearchWorkflow
+
         print("  [OK] kosmos.workflow.research_loop")
     except ImportError as e:
         print(f"  [FAIL] kosmos.workflow.research_loop: {e}")
@@ -39,6 +42,7 @@ def test_core_imports():
 
     try:
         from kosmos.core.llm import get_client
+
         print("  [OK] kosmos.core.llm")
     except ImportError as e:
         print(f"  [FAIL] kosmos.core.llm: {e}")
@@ -53,6 +57,7 @@ def test_config_loading():
 
     try:
         from kosmos.config import get_settings
+
         settings = get_settings()
         print("  [OK] Settings loaded")
         print(f"       LLM Provider: {getattr(settings, 'llm_provider', 'unknown')}")
@@ -80,13 +85,11 @@ def test_provider_detection():
     print("\nTesting provider detection...")
 
     try:
-        skill_lib = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-            "lib"
-        )
+        skill_lib = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "lib")
         sys.path.insert(0, skill_lib)
 
         from provider_detector import detect_all, recommend_provider
+
         status = detect_all()
         provider = recommend_provider(status)
 

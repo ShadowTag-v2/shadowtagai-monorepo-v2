@@ -39,12 +39,10 @@ from google.adk.utils.output_schema_utils import can_use_output_schema_with_tool
         (Claude(model="claude-3.7-sonnet"), None, False),
     ],
 )
-def test_can_use_output_schema_with_tools(
-    monkeypatch, model, env_value, expected
-):
-  """Test can_use_output_schema_with_tools."""
-  if env_value is not None:
-    monkeypatch.setenv("GOOGLE_GENAI_USE_VERTEXAI", env_value)
-  else:
-    monkeypatch.delenv("GOOGLE_GENAI_USE_VERTEXAI", raising=False)
-  assert can_use_output_schema_with_tools(model) == expected
+def test_can_use_output_schema_with_tools(monkeypatch, model, env_value, expected):
+    """Test can_use_output_schema_with_tools."""
+    if env_value is not None:
+        monkeypatch.setenv("GOOGLE_GENAI_USE_VERTEXAI", env_value)
+    else:
+        monkeypatch.delenv("GOOGLE_GENAI_USE_VERTEXAI", raising=False)
+    assert can_use_output_schema_with_tools(model) == expected

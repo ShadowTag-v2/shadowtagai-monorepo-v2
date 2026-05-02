@@ -756,6 +756,7 @@ def context_attention_fwd(
 
     def grid(META):
         return (batch, head, triton.cdiv(max_input_len, META["BLOCK_M"]))
+
     _fwd_kernel[grid](
         q,
         k,

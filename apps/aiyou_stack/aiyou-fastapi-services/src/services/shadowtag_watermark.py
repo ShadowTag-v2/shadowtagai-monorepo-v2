@@ -19,7 +19,7 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.protocols.agent_protocol import (
     AgentMessage,
@@ -64,21 +64,24 @@ class WatermarkData(BaseModel):
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "watermark_id": "wm_abc123xyz",
-                "watermark_type": "visual_dct",
-                "creator_id": "creator_789",
-                "timestamp": "2025-11-29T10:00:00Z",
-                "blockchain_hash": "0x1234567890abcdef",
-                "neural_fingerprint_id": "fp_abc123",
-                "strength": 0.05,
-                "psnr_db": 42.5,
-                "imperceptibility_score": 0.96,
-                "robustness_score": 0.99,
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "watermark_id": "wm_abc123xyz",
+                    "watermark_type": "visual_dct",
+                    "creator_id": "creator_789",
+                    "timestamp": "2025-11-29T10:00:00Z",
+                    "blockchain_hash": "0x1234567890abcdef",
+                    "neural_fingerprint_id": "fp_abc123",
+                    "strength": 0.05,
+                    "psnr_db": 42.5,
+                    "imperceptibility_score": 0.96,
+                    "robustness_score": 0.99,
+                },
+            ],
+        },
+    )
 
 
 class ShadowTagWatermarkService:

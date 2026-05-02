@@ -18,7 +18,7 @@ def bootstrap():
         "repo_id": s.repo_id,
         "authority": state,
         "startup_instruction": (
-            "Hydrate from authority memory first. " "Treat codebase as a target to update, not the source of truth for standards/settings."
+            "Hydrate from authority memory first. Treat codebase as a target to update, not the source of truth for standards/settings."
         ),
     }
 

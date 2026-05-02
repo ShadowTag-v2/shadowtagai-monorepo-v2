@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """SHADOWTAGAI - Precision AI Orchestration Platform
 ============================================
 
@@ -11,13 +12,28 @@ Version: 1.0.0
 Architecture: SK-inspired patterns adapted for GKE/Python/MCP stack
 """
 
+from __future__ import annotations
+
 __version__ = "1.0.0"
 __author__ = "ShadowTagAi Architecture Team"
 
-from pnkln.core.judge_six_pipeline import JudgeSixPipeline
 
-from pnkln.core.cor_orchestrator import CorOrchestrator
-from shadowtagai.core.jr_engine import JREngine
+def __getattr__(name: str):
+    """Lazy re-exports to break circular imports with pnkln.core."""
+    if name == "JudgeSixPipeline":
+        from pnkln.core.judge_six_pipeline import JudgeSixPipeline
+
+        return JudgeSixPipeline
+    if name == "CorOrchestrator":
+        from pnkln.core.cor_orchestrator import CorOrchestrator
+
+        return CorOrchestrator
+    if name == "JREngine":
+        from shadowtagai.core.jr_engine import JREngine
+
+        return JREngine
+    raise AttributeError(f"module 'shadowtagai' has no attribute {name!r}")
+
 
 __all__ = [
     "CorOrchestrator",

@@ -83,8 +83,7 @@ TOOL_SCHEMAS = [
                 "include_base64": {
                     "type": "boolean",
                     "description": (
-                        "For images: if True, return base64-encoded content; if False, return only URL. "
-                        "Default: False (URL only for efficiency)"
+                        "For images: if True, return base64-encoded content; if False, return only URL. Default: False (URL only for efficiency)"
                     ),
                     "default": False,
                 },
@@ -107,7 +106,6 @@ TOOL_SCHEMAS = [
         },
     ),
 ]
-
 
 
 class MCPProxy:
@@ -240,9 +238,7 @@ class MCPProxy:
             logger.info("Starting backend initialization...")
 
             # Ensure backend is running
-            backend_url = await self.backend_manager.ensure_backend_running(
-                self.backend_args
-            )
+            backend_url = await self.backend_manager.ensure_backend_running(self.backend_args)
 
             # Connect to backend via streamable HTTP
             logger.info(f"Connecting to backend at {backend_url}")
@@ -270,16 +266,12 @@ class MCPProxy:
 
             # Create streamable HTTP client
             # Note: streamablehttp_client yields (read, write, session_handle)
-            read, write, _ = await self._backend_exit_stack.enter_async_context(
-                streamablehttp_client(url)
-            )
+            read, write, _ = await self._backend_exit_stack.enter_async_context(streamablehttp_client(url))
 
             # CRITICAL: ClientSession MUST be used as async context manager!
             # Enter it into the exit stack to keep it alive
             logger.info("Creating backend client session...")
-            self.backend_client = await self._backend_exit_stack.enter_async_context(
-                ClientSession(read, write)
-            )
+            self.backend_client = await self._backend_exit_stack.enter_async_context(ClientSession(read, write))
 
             # Initialize the client session
             logger.info("Initializing backend client session...")

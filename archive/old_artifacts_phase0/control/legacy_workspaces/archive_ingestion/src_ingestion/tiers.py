@@ -286,8 +286,6 @@ class TierClassifier:
             return 0.0
 
         # Weighted score: Tier 1 = 100 pts, Tier 2 = 50 pts, Tier 3 = 0 pts
-        score = (
-            self.stats["tier_1_count"] * 100 + self.stats["tier_2_count"] * 50
-        ) / total
+        score = (self.stats["tier_1_count"] * 100 + self.stats["tier_2_count"] * 50) / total
 
         return score

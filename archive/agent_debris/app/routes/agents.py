@@ -6,20 +6,18 @@ Premium tiers:
 - Strategy Engine: $20,000/month (Full orchestrator + DTE evolution)
 """
 
-from fastapi import APIRouter, HTTPException, Depends
-from typing import List, Dict, Any, Optional
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from app.agents.base import AgentConfig
 from app.agents.debate import DebateAgent, DebateOrchestrator, DebateResult
 from app.wealth.model import WealthAccelerator, WealthPlan
-from app.evolution.dte import DTESystem, EvolutionStrategy, EvolutionResult
-from app.core.gemini_client import GeminiFunctionCaller
 
 router = APIRouter(prefix="/agents", tags=["agents"])
 
 
 # Request/Response Models
+
 
 class DebateRequest(BaseModel):
     """Request for multi-agent debate (PanelGPT)."""
@@ -37,10 +35,7 @@ class WealthAnalysisRequest(BaseModel):
     cac: float = Field(..., gt=0, description="Customer acquisition cost")
     ltv: float = Field(..., gt=0, description="Lifetime value")
     churn_rate: float = Field(..., ge=0, le=100, description="Monthly churn rate (%)")
-    conversion_rates: dict[str, float] = Field(
-        default_factory=dict,
-        description="Conversion rates by funnel stage"
-    )
+    conversion_rates: dict[str, float] = Field(default_factory=dict, description="Conversion rates by funnel stage")
 
 
 @router.post("/debate", response_model=DebateResult)
@@ -60,8 +55,8 @@ async def multi_agent_debate(request: DebateRequest) -> DebateResult:
         agents = []
         for i in range(request.num_agents):
             config = AgentConfig(
-                name=f"Agent-{i+1}",
-                description=f"Debate participant {i+1}",
+                name=f"Agent-{i + 1}",
+                description=f"Debate participant {i + 1}",
                 model="gemini-2.0-flash-exp",
             )
             agents.append(DebateAgent(config, persona=personas[i % len(personas)]))

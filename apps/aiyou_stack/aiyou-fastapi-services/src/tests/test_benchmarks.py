@@ -19,14 +19,14 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 
-from src.integration.unified_orchestrator import create_unified_orchestrator
-
 
 @pytest.fixture
 def orchestrator():
     """Create unified orchestrator for testing."""
     if not os.environ.get("GOOGLE_API_KEY"):
         pytest.skip("GOOGLE_API_KEY not set")
+
+    from src.integration.unified_orchestrator import create_unified_orchestrator
 
     return create_unified_orchestrator(
         api_key=os.environ["GOOGLE_API_KEY"],

@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Any
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 class EmailStatus(StrEnum):
@@ -62,8 +62,7 @@ class RecipientResponse(RecipientBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Email Template Schemas
@@ -98,8 +97,7 @@ class EmailTemplateResponse(EmailTemplateBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Email Flow Schemas
@@ -125,8 +123,7 @@ class FlowStepResponse(FlowStepBase):
     flow_id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class EmailFlowBase(BaseModel):
@@ -163,8 +160,7 @@ class EmailFlowResponse(EmailFlowBase):
     updated_at: datetime
     steps: list[FlowStepResponse] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Flow Enrollment Schemas
@@ -188,8 +184,7 @@ class FlowEnrollmentResponse(FlowEnrollmentBase):
     completed_at: datetime | None = None
     active: bool
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Email Schemas
@@ -236,8 +231,7 @@ class EmailResponse(EmailBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Analytics Schemas
@@ -255,8 +249,7 @@ class EmailAnalyticsResponse(BaseModel):
     ip_address: str | None = None
     location: dict[str, Any] = {}
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class CampaignMetricsResponse(BaseModel):
@@ -274,8 +267,7 @@ class CampaignMetricsResponse(BaseModel):
     click_rate: float
     bounce_rate: float
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Bulk Operations

@@ -31,6 +31,7 @@ from pydantic import BaseModel, Field
 
 class BiologicalRelationType(StrEnum):
     """Types of relationships between biological concepts"""
+
     IS_A = "is_a"  # Parent-child hierarchy
     PART_OF = "part_of"  # Component relationship
     REGULATES = "regulates"  # Regulatory relationship
@@ -44,20 +45,19 @@ class BiologicalRelationType(StrEnum):
 
 class BiologicalConcept(BaseModel):
     """A concept in the biology ontology"""
+
     id: str = Field(..., description="Unique identifier")
     name: str = Field(..., description="Human-readable name")
     type: str = Field(..., description="Concept type (pathway, gene, metabolite, etc.)")
     description: str | None = None
     synonyms: list[str] = Field(default_factory=list)
-    external_ids: dict[str, str] = Field(
-        default_factory=dict,
-        description="External database IDs (KEGG, GO, UniProt, etc.)"
-    )
+    external_ids: dict[str, str] = Field(default_factory=dict, description="External database IDs (KEGG, GO, UniProt, etc.)")
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
 class BiologicalRelation(BaseModel):
     """A relationship between two biological concepts"""
+
     source_id: str
     target_id: str
     relation_type: BiologicalRelationType
@@ -89,67 +89,81 @@ class BiologyOntology:
     def _initialize_metabolic_pathways(self) -> None:
         """Initialize metabolic pathway ontology"""
         # Top-level pathways
-        self.add_concept(BiologicalConcept(
-            id="nucleotide_metabolism",
-            name="Nucleotide Metabolism",
-            type="pathway",
-            description="Biosynthesis and degradation of nucleotides",
-            external_ids={"KEGG": "map00230"}
-        ))
+        self.add_concept(
+            BiologicalConcept(
+                id="nucleotide_metabolism",
+                name="Nucleotide Metabolism",
+                type="pathway",
+                description="Biosynthesis and degradation of nucleotides",
+                external_ids={"KEGG": "map00230"},
+            )
+        )
 
         # Purine metabolism
-        self.add_concept(BiologicalConcept(
-            id="purine_metabolism",
-            name="Purine Metabolism",
-            type="pathway",
-            description="Synthesis and degradation of purine nucleotides",
-            external_ids={"KEGG": "map00230", "GO": "GO:0006163"}
-        ))
+        self.add_concept(
+            BiologicalConcept(
+                id="purine_metabolism",
+                name="Purine Metabolism",
+                type="pathway",
+                description="Synthesis and degradation of purine nucleotides",
+                external_ids={"KEGG": "map00230", "GO": "GO:0006163"},
+            )
+        )
         self.add_relation("purine_metabolism", "nucleotide_metabolism", BiologicalRelationType.IS_A)
 
-        self.add_concept(BiologicalConcept(
-            id="purine_salvage",
-            name="Purine Salvage Pathway",
-            type="pathway",
-            description="Recycling of purine bases from degradation",
-            synonyms=["salvage pathway"]
-        ))
+        self.add_concept(
+            BiologicalConcept(
+                id="purine_salvage",
+                name="Purine Salvage Pathway",
+                type="pathway",
+                description="Recycling of purine bases from degradation",
+                synonyms=["salvage pathway"],
+            )
+        )
         self.add_relation("purine_salvage", "purine_metabolism", BiologicalRelationType.PART_OF)
 
-        self.add_concept(BiologicalConcept(
-            id="purine_de_novo_synthesis",
-            name="Purine De Novo Synthesis",
-            type="pathway",
-            description="Synthesis of purines from simple precursors",
-            synonyms=["de novo purine biosynthesis"]
-        ))
+        self.add_concept(
+            BiologicalConcept(
+                id="purine_de_novo_synthesis",
+                name="Purine De Novo Synthesis",
+                type="pathway",
+                description="Synthesis of purines from simple precursors",
+                synonyms=["de novo purine biosynthesis"],
+            )
+        )
         self.add_relation("purine_de_novo_synthesis", "purine_metabolism", BiologicalRelationType.PART_OF)
 
         # Pyrimidine metabolism
-        self.add_concept(BiologicalConcept(
-            id="pyrimidine_metabolism",
-            name="Pyrimidine Metabolism",
-            type="pathway",
-            description="Synthesis and degradation of pyrimidine nucleotides",
-            external_ids={"KEGG": "map00240", "GO": "GO:0006220"}
-        ))
+        self.add_concept(
+            BiologicalConcept(
+                id="pyrimidine_metabolism",
+                name="Pyrimidine Metabolism",
+                type="pathway",
+                description="Synthesis and degradation of pyrimidine nucleotides",
+                external_ids={"KEGG": "map00240", "GO": "GO:0006220"},
+            )
+        )
         self.add_relation("pyrimidine_metabolism", "nucleotide_metabolism", BiologicalRelationType.IS_A)
 
-        self.add_concept(BiologicalConcept(
-            id="pyrimidine_salvage",
-            name="Pyrimidine Salvage Pathway",
-            type="pathway",
-            description="Recycling of pyrimidine bases from degradation"
-        ))
+        self.add_concept(
+            BiologicalConcept(
+                id="pyrimidine_salvage",
+                name="Pyrimidine Salvage Pathway",
+                type="pathway",
+                description="Recycling of pyrimidine bases from degradation",
+            )
+        )
         self.add_relation("pyrimidine_salvage", "pyrimidine_metabolism", BiologicalRelationType.PART_OF)
 
-        self.add_concept(BiologicalConcept(
-            id="pyrimidine_de_novo_synthesis",
-            name="Pyrimidine De Novo Synthesis",
-            type="pathway",
-            description="Synthesis of pyrimidines from simple precursors",
-            synonyms=["de novo pyrimidine biosynthesis"]
-        ))
+        self.add_concept(
+            BiologicalConcept(
+                id="pyrimidine_de_novo_synthesis",
+                name="Pyrimidine De Novo Synthesis",
+                type="pathway",
+                description="Synthesis of pyrimidines from simple precursors",
+                synonyms=["de novo pyrimidine biosynthesis"],
+            )
+        )
         self.add_relation("pyrimidine_de_novo_synthesis", "pyrimidine_metabolism", BiologicalRelationType.PART_OF)
 
         # Key metabolites
@@ -163,12 +177,7 @@ class BiologyOntology:
         ]
 
         for met_id, name, mtype, desc, pathways in metabolites:
-            self.add_concept(BiologicalConcept(
-                id=met_id,
-                name=name,
-                type=mtype,
-                description=desc
-            ))
+            self.add_concept(BiologicalConcept(id=met_id, name=name, type=mtype, description=desc))
             for pathway_id in pathways:
                 self.add_relation(met_id, pathway_id, BiologicalRelationType.PART_OF)
 
@@ -182,13 +191,7 @@ class BiologyOntology:
         ]
 
         for gene_id, name, desc in genes:
-            self.add_concept(BiologicalConcept(
-                id=gene_id,
-                name=name,
-                type="gene",
-                description=desc,
-                external_ids={"HGNC": gene_id}
-            ))
+            self.add_concept(BiologicalConcept(id=gene_id, name=name, type="gene", description=desc, external_ids={"HGNC": gene_id}))
 
     def _initialize_disease_concepts(self) -> None:
         """Initialize disease ontology"""
@@ -198,12 +201,7 @@ class BiologyOntology:
         ]
 
         for disease_id, name, desc in diseases:
-            self.add_concept(BiologicalConcept(
-                id=disease_id,
-                name=name,
-                type="disease",
-                description=desc
-            ))
+            self.add_concept(BiologicalConcept(id=disease_id, name=name, type="disease", description=desc))
 
         # Add gene-disease associations
         self.add_relation("TCF7L2", "type_2_diabetes", BiologicalRelationType.ASSOCIATED_WITH)
@@ -215,20 +213,11 @@ class BiologyOntology:
         self.concepts[concept.id] = concept
 
     def add_relation(
-        self,
-        source_id: str,
-        target_id: str,
-        relation_type: BiologicalRelationType,
-        confidence: float = 1.0,
-        evidence: list[str] | None = None
+        self, source_id: str, target_id: str, relation_type: BiologicalRelationType, confidence: float = 1.0, evidence: list[str] | None = None
     ) -> None:
         """Add a relationship between concepts"""
         relation = BiologicalRelation(
-            source_id=source_id,
-            target_id=target_id,
-            relation_type=relation_type,
-            confidence=confidence,
-            evidence=evidence or []
+            source_id=source_id, target_id=target_id, relation_type=relation_type, confidence=confidence, evidence=evidence or []
         )
         self.relations.append(relation)
 
@@ -236,12 +225,7 @@ class BiologyOntology:
         """Get a concept by ID"""
         return self.concepts.get(concept_id)
 
-    def find_concepts(
-        self,
-        name: str,
-        concept_type: str | None = None,
-        fuzzy: bool = True
-    ) -> list[BiologicalConcept]:
+    def find_concepts(self, name: str, concept_type: str | None = None, fuzzy: bool = True) -> list[BiologicalConcept]:
         """
         Find concepts by name.
 
@@ -264,45 +248,33 @@ class BiologyOntology:
             # Name matching
             if fuzzy:
                 # Fuzzy match: substring in name or synonyms
-                if (name_lower in concept.name.lower() or
-                    any(name_lower in syn.lower() for syn in concept.synonyms)):
+                if name_lower in concept.name.lower() or any(name_lower in syn.lower() for syn in concept.synonyms):
                     matches.append(concept)
             else:
                 # Exact match
-                if (concept.name.lower() == name_lower or
-                    name_lower in [syn.lower() for syn in concept.synonyms]):
+                if concept.name.lower() == name_lower or name_lower in [syn.lower() for syn in concept.synonyms]:
                     matches.append(concept)
 
         return matches
 
-    def get_parent_concepts(
-        self,
-        concept_id: str,
-        relation_type: BiologicalRelationType = BiologicalRelationType.IS_A
-    ) -> list[BiologicalConcept]:
+    def get_parent_concepts(self, concept_id: str, relation_type: BiologicalRelationType = BiologicalRelationType.IS_A) -> list[BiologicalConcept]:
         """Get parent concepts (via IS_A or PART_OF relations)"""
         parents = []
 
         for relation in self.relations:
-            if (relation.source_id == concept_id and
-                relation.relation_type == relation_type):
+            if relation.source_id == concept_id and relation.relation_type == relation_type:
                 parent = self.get_concept(relation.target_id)
                 if parent:
                     parents.append(parent)
 
         return parents
 
-    def get_child_concepts(
-        self,
-        concept_id: str,
-        relation_type: BiologicalRelationType = BiologicalRelationType.IS_A
-    ) -> list[BiologicalConcept]:
+    def get_child_concepts(self, concept_id: str, relation_type: BiologicalRelationType = BiologicalRelationType.IS_A) -> list[BiologicalConcept]:
         """Get child concepts (via IS_A or PART_OF relations)"""
         children = []
 
         for relation in self.relations:
-            if (relation.target_id == concept_id and
-                relation.relation_type == relation_type):
+            if relation.target_id == concept_id and relation.relation_type == relation_type:
                 child = self.get_concept(relation.source_id)
                 if child:
                     children.append(child)
@@ -310,10 +282,7 @@ class BiologyOntology:
         return children
 
     def get_related_concepts(
-        self,
-        concept_id: str,
-        relation_type: BiologicalRelationType | None = None,
-        bidirectional: bool = True
+        self, concept_id: str, relation_type: BiologicalRelationType | None = None, bidirectional: bool = True
     ) -> list[BiologicalConcept]:
         """
         Get all concepts related to given concept.
@@ -366,17 +335,9 @@ class BiologyOntology:
                 return {}
 
             # Get children
-            children = self.get_child_concepts(
-                concept_id,
-                BiologicalRelationType.PART_OF
-            )
+            children = self.get_child_concepts(concept_id, BiologicalRelationType.PART_OF)
 
-            hierarchy = {
-                'id': concept.id,
-                'name': concept.name,
-                'type': concept.type,
-                'children': [build_hierarchy(child.id) for child in children]
-            }
+            hierarchy = {"id": concept.id, "name": concept.name, "type": concept.type, "children": [build_hierarchy(child.id) for child in children]}
 
             return hierarchy
 
@@ -403,8 +364,7 @@ class BiologyOntology:
         metabolites = []
 
         for relation in self.relations:
-            if (relation.target_id == pathway_id and
-                relation.relation_type == BiologicalRelationType.PART_OF):
+            if relation.target_id == pathway_id and relation.relation_type == BiologicalRelationType.PART_OF:
                 concept = self.get_concept(relation.source_id)
                 if concept and concept.type == "metabolite":
                     metabolites.append(concept)
@@ -416,8 +376,7 @@ class BiologyOntology:
         diseases = []
 
         for relation in self.relations:
-            if (relation.source_id == gene_id and
-                relation.relation_type == BiologicalRelationType.ASSOCIATED_WITH):
+            if relation.source_id == gene_id and relation.relation_type == BiologicalRelationType.ASSOCIATED_WITH:
                 concept = self.get_concept(relation.target_id)
                 if concept and concept.type == "disease":
                     diseases.append(concept)

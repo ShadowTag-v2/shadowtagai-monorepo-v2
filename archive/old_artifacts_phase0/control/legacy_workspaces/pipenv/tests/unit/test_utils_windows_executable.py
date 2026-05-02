@@ -20,6 +20,7 @@ def test_find_windows_executable_when_not_found(mocked_which, mocked_isfile):
     # Set up the mock to ensure call_count is at least 1
     def side_effect(path):
         return False
+
     mocked_isfile.side_effect = side_effect
 
     mocked_which.return_value = None
@@ -35,6 +36,7 @@ def test_find_windows_executable_when_found(mocked_which, mocked_isfile):
     # Set up the mock to ensure call_count is at least 1
     def side_effect(path):
         return False
+
     mocked_isfile.side_effect = side_effect
 
     # Use Windows-style path for consistency
@@ -43,4 +45,4 @@ def test_find_windows_executable_when_found(mocked_which, mocked_isfile):
     found = shell.find_windows_executable("fake/path", "pyenv")
 
     # Compare normalized paths to handle slash differences
-    assert str(found).replace('/', '\\') == found_path
+    assert str(found).replace("/", "\\") == found_path

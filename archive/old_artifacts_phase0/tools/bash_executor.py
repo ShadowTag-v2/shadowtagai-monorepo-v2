@@ -1,14 +1,12 @@
 import os
-import subprocess
 import unicodedata
-import tempfile
 import asyncio
-from typing import Tuple, Optional
 from core.agent_context import get_agent_context, set_current_cwd
 import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.tools.bash_security import BashSecurityValidator
+
 
 class BashExecutor:
     """
@@ -19,7 +17,7 @@ class BashExecutor:
     def __init__(self):
         pass
 
-    async def execute(self, command: str) -> Tuple[int, str, str]:
+    async def execute(self, command: str) -> tuple[int, str, str]:
         """
         Executes a bash command, persisting the working directory (CWD)
         across invocations to support stateful shell sessions per-agent.
@@ -50,27 +48,23 @@ pwd -P >| "{tmp_cwd_file}"
         try:
             # We use asyncio.create_subprocess_shell to run without blocking the event loop
             process = await asyncio.create_subprocess_shell(
-                wrapped_command,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-                shell=True,
-                executable='/bin/bash'
+                wrapped_command, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE, shell=True, executable="/bin/bash"
             )
 
             stdout_bytes, stderr_bytes = await process.communicate()
-            stdout = stdout_bytes.decode('utf-8', errors='replace')
-            stderr = stderr_bytes.decode('utf-8', errors='replace')
+            stdout = stdout_bytes.decode("utf-8", errors="replace")
+            stderr = stderr_bytes.decode("utf-8", errors="replace")
             returncode = process.returncode
 
             # Post-execution: Read the new CWD
             if os.path.exists(tmp_cwd_file):
-                with open(tmp_cwd_file, 'r') as f:
+                with open(tmp_cwd_file) as f:
                     new_cwd_raw = f.read().strip()
 
                 # macOS APFS Unicode normalization (NFC)
                 # Apple's filesystem returns decomposed NFD strings, which can cause
                 # false "directory changed" triggers when compared to standard strings.
-                new_cwd = unicodedata.normalize('NFC', new_cwd_raw)
+                new_cwd = unicodedata.normalize("NFC", new_cwd_raw)
 
                 # Update the context variable for this specific agent
                 set_current_cwd(new_cwd)
@@ -92,6 +86,7 @@ pwd -P >| "{tmp_cwd_file}"
         """
         # Replace ' with '"'"' to safely escape inside single quotes
         return "'" + s.replace("'", "'\"'\"'") + "'"
+
 
 # Example usage function for demonstration
 async def demo_execution():

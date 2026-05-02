@@ -1,6 +1,7 @@
 """
 Custom middleware for ShadowTagAI Governance Service
 """
+
 import asyncio
 import time
 from collections import defaultdict
@@ -31,16 +32,13 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             current_time = time.time()
 
             # Clean old requests outside the window
-            self.requests[client_ip] = [
-                req_time for req_time in self.requests[client_ip]
-                if current_time - req_time < self.window_seconds
-            ]
+            self.requests[client_ip] = [req_time for req_time in self.requests[client_ip] if current_time - req_time < self.window_seconds]
 
             # Check rate limit
             if len(self.requests[client_ip]) >= self.requests_limit:
                 raise HTTPException(
                     status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-                    detail=f"Rate limit exceeded. Max {self.requests_limit} requests per {self.window_seconds}s"
+                    detail=f"Rate limit exceeded. Max {self.requests_limit} requests per {self.window_seconds}s",
                 )
 
             # Record this request
@@ -50,11 +48,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
         # Add rate limit headers
         response.headers["X-RateLimit-Limit"] = str(self.requests_limit)
-        response.headers["X-RateLimit-Remaining"] = str(
-            self.requests_limit - len(self.requests[client_ip])
-        )
-        response.headers["X-RateLimit-Reset"] = str(
-            int(current_time + self.window_seconds)
-        )
+        response.headers["X-RateLimit-Remaining"] = str(self.requests_limit - len(self.requests[client_ip]))
+        response.headers["X-RateLimit-Reset"] = str(int(current_time + self.window_seconds))
 
         return response

@@ -357,15 +357,15 @@ def test_respect_order_in_requirements_file(
 
     downloaded = [line for line in result.stdout.split("\n") if "Processing" in line]
 
-    assert (
-        "parent" in downloaded[0]
-    ), f'First download should be "parent" but was "{downloaded[0]}"'
-    assert (
-        "child" in downloaded[1]
-    ), f'Second download should be "child" but was "{downloaded[1]}"'
-    assert (
-        "simple" in downloaded[2]
-    ), f'Third download should be "simple" but was "{downloaded[2]}"'
+    assert "parent" in downloaded[0], (
+        f'First download should be "parent" but was "{downloaded[0]}"'
+    )
+    assert "child" in downloaded[1], (
+        f'Second download should be "child" but was "{downloaded[1]}"'
+    )
+    assert "simple" in downloaded[2], (
+        f'Third download should be "simple" but was "{downloaded[2]}"'
+    )
 
 
 def test_install_local_editable_with_extras(

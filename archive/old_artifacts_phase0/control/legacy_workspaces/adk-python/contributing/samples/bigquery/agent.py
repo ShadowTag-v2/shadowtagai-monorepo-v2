@@ -36,46 +36,37 @@ BIGQUERY_AGENT_NAME = "adk_sample_bigquery_agent"
 # you may want to change to BLOCKED (default write mode, effectively makes the
 # tool read-only) or PROTECTED (only allows writes in the anonymous dataset of a
 # BigQuery session) write mode.
-tool_config = BigQueryToolConfig(
-    write_mode=WriteMode.ALLOWED, application_name=BIGQUERY_AGENT_NAME
-)
+tool_config = BigQueryToolConfig(write_mode=WriteMode.ALLOWED, application_name=BIGQUERY_AGENT_NAME)
 
 if CREDENTIALS_TYPE == AuthCredentialTypes.OAUTH2:
-  # Initialize the tools to do interactive OAuth
-  # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
-  # must be set
-  credentials_config = BigQueryCredentialsConfig(
-      client_id=os.getenv("OAUTH_CLIENT_ID"),
-      client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
-  )
+    # Initialize the tools to do interactive OAuth
+    # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
+    # must be set
+    credentials_config = BigQueryCredentialsConfig(
+        client_id=os.getenv("OAUTH_CLIENT_ID"),
+        client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
+    )
 elif CREDENTIALS_TYPE == AuthCredentialTypes.SERVICE_ACCOUNT:
-  # Initialize the tools to use the credentials in the service account key.
-  # If this flow is enabled, make sure to replace the file path with your own
-  # service account key file
-  # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
-  creds, _ = google.auth.load_credentials_from_file("service_account_key.json")
-  credentials_config = BigQueryCredentialsConfig(credentials=creds)
+    # Initialize the tools to use the credentials in the service account key.
+    # If this flow is enabled, make sure to replace the file path with your own
+    # service account key file
+    # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
+    creds, _ = google.auth.load_credentials_from_file("service_account_key.json")
+    credentials_config = BigQueryCredentialsConfig(credentials=creds)
 else:
-  # Initialize the tools to use the application default credentials.
-  # https://cloud.google.com/docs/authentication/provide-credentials-adc
-  application_default_credentials, _ = google.auth.default()
-  credentials_config = BigQueryCredentialsConfig(
-      credentials=application_default_credentials
-  )
+    # Initialize the tools to use the application default credentials.
+    # https://cloud.google.com/docs/authentication/provide-credentials-adc
+    application_default_credentials, _ = google.auth.default()
+    credentials_config = BigQueryCredentialsConfig(credentials=application_default_credentials)
 
-bigquery_toolset = BigQueryToolset(
-    credentials_config=credentials_config, bigquery_tool_config=tool_config
-)
+bigquery_toolset = BigQueryToolset(credentials_config=credentials_config, bigquery_tool_config=tool_config)
 
 # The variable name `root_agent` determines what your root agent is for the
 # debug CLI
 root_agent = LlmAgent(
     model="gemini-2.0-flash",
     name=BIGQUERY_AGENT_NAME,
-    description=(
-        "Agent to answer questions about BigQuery data and models and execute"
-        " SQL queries."
-    ),
+    description=("Agent to answer questions about BigQuery data and models and execute SQL queries."),
     instruction="""\
         You are a data science agent with access to several BigQuery tools.
         Make use of those tools to answer the user's questions.

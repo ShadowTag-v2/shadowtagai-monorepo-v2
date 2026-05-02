@@ -53,12 +53,14 @@ logger = logging.getLogger("scientific_evaluation")
 def _reset_eval_state():
     """Reset all global state for phase isolation."""
     from kosmos.db import init_from_config, reset_database
+
     try:
         reset_database()
     except Exception:
         init_from_config()
 
     from kosmos.core.cache_manager import get_cache_manager, reset_cache_manager
+
     try:
         get_cache_manager().clear()
     except Exception:
@@ -66,15 +68,18 @@ def _reset_eval_state():
     reset_cache_manager()
 
     from kosmos.core.claude_cache import reset_claude_cache
+
     reset_claude_cache()
 
     from kosmos.agents.registry import get_registry
+
     try:
         get_registry().clear()
     except Exception:
         pass
 
     from kosmos.world_model import reset_world_model
+
     reset_world_model()
 
     logger.info("[ISOLATION] Evaluation state reset for clean phase")
@@ -84,9 +89,11 @@ def _reset_eval_state():
 # Data structures
 # ============================================================================
 
+
 @dataclass
 class PhaseResult:
     """Result of a single evaluation phase."""
+
     phase: int
     name: str
     status: str  # PASS, PARTIAL, FAIL, SKIP, ERROR
@@ -110,6 +117,7 @@ class PhaseResult:
 @dataclass
 class EvaluationReport:
     """Full evaluation report."""
+
     timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
     phases: list[PhaseResult] = field(default_factory=list)
     rigor_scores: dict[str, dict[str, Any]] = field(default_factory=dict)
@@ -134,6 +142,7 @@ def timed_phase(name: str):
 # Phase 1: Pre-flight Checks
 # ============================================================================
 
+
 def run_phase1_preflight() -> PhaseResult:
     """Validate config, LLM connectivity, DB, and type compatibility."""
     result = PhaseResult(phase=1, name="Pre-flight Checks", status="PASS")
@@ -143,6 +152,7 @@ def run_phase1_preflight() -> PhaseResult:
     logger.info("Phase 1.1: Config validation")
     try:
         from kosmos.config import get_config
+
         config = get_config()
         result.add_check("config_loads", True, f"Provider: {config.llm_provider}")
         result.details["llm_provider"] = config.llm_provider
@@ -168,6 +178,7 @@ def run_phase1_preflight() -> PhaseResult:
     logger.info("Phase 1.2: LLM connectivity test")
     try:
         from kosmos.core.llm import get_client
+
         client = get_client(reset=True)
         result.add_check("llm_client_created", True, type(client).__name__)
 
@@ -194,6 +205,7 @@ def run_phase1_preflight() -> PhaseResult:
     logger.info("Phase 1.3: Database initialization")
     try:
         from kosmos.db import get_session, init_from_config
+
         init_from_config()
         with get_session() as session:
             result.add_check("database_initialized", session is not None)
@@ -254,6 +266,7 @@ def run_phase1_preflight() -> PhaseResult:
 # Phase 2: Single-Iteration E2E Smoke Test
 # ============================================================================
 
+
 async def run_phase2_smoke_test(research_question: str = None, domain: str = None, data_path: Path = None) -> PhaseResult:
     """Run one research iteration and capture results."""
     result = PhaseResult(phase=2, name="Single-Iteration E2E Smoke Test", status="PASS")
@@ -297,6 +310,7 @@ async def run_phase2_smoke_test(research_question: str = None, domain: str = Non
 
         # Register with AgentRegistry
         from kosmos.agents.registry import get_registry
+
         registry = get_registry()
         registry.register(director)
 
@@ -326,11 +340,13 @@ async def run_phase2_smoke_test(research_question: str = None, domain: str = Non
         action_log = []
         for i in range(max_actions):
             next_action = director.decide_next_action()
-            action_log.append({
-                "step": i,
-                "action": next_action.value,
-                "state": director.workflow.current_state.value,
-            })
+            action_log.append(
+                {
+                    "step": i,
+                    "action": next_action.value,
+                    "state": director.workflow.current_state.value,
+                }
+            )
             logger.info(f"  Step {i}: action={next_action.value}, state={director.workflow.current_state.value}")
 
             try:
@@ -416,7 +432,10 @@ async def run_phase2_smoke_test(research_question: str = None, domain: str = Non
 # Phase 3: Multi-Iteration Full Loop (3 iterations)
 # ============================================================================
 
-async def run_phase3_multi_iteration(research_question: str = None, domain: str = None, max_iterations: int = None, data_path: Path = None) -> PhaseResult:
+
+async def run_phase3_multi_iteration(
+    research_question: str = None, domain: str = None, max_iterations: int = None, data_path: Path = None
+) -> PhaseResult:
     """Run full iterations testing complete cycle."""
     result = PhaseResult(phase=3, name="Multi-Iteration Full Loop (3 iter)", status="PASS")
     start = time.time()
@@ -456,6 +475,7 @@ async def run_phase3_multi_iteration(research_question: str = None, domain: str 
         )
 
         from kosmos.agents.registry import get_registry
+
         registry = get_registry()
         registry.register(director)
 
@@ -476,8 +496,7 @@ async def run_phase3_multi_iteration(research_question: str = None, domain: str 
             action_count += 1
 
             logger.info(
-                f"  [iter {director.research_plan.iteration_count}] "
-                f"step {i}: action={action.value}, state={director.workflow.current_state.value}"
+                f"  [iter {director.research_plan.iteration_count}] step {i}: action={action.value}, state={director.workflow.current_state.value}"
             )
 
             try:
@@ -500,7 +519,9 @@ async def run_phase3_multi_iteration(research_question: str = None, domain: str 
             if current_iter > len(iteration_snapshots):
                 snapshot = director.get_research_status()
                 iteration_snapshots.append(snapshot)
-                logger.info(f"  Snapshot at iteration {current_iter}: {json.dumps({k: snapshot[k] for k in ['workflow_state', 'hypothesis_pool_size', 'experiments_completed']}, default=str)}")
+                logger.info(
+                    f"  Snapshot at iteration {current_iter}: {json.dumps({k: snapshot[k] for k in ['workflow_state', 'hypothesis_pool_size', 'experiments_completed']}, default=str)}"
+                )
 
             if director.research_plan.has_converged:
                 logger.info(f"  Converged after {action_count} actions")
@@ -570,6 +591,7 @@ async def run_phase3_multi_iteration(research_question: str = None, domain: str 
 # Phase 4: Dataset Input Test
 # ============================================================================
 
+
 async def run_phase4_dataset_test(research_question: str = None, domain: str = None, data_path: Path = None) -> PhaseResult:
     """Test with a provided dataset (data_path required)."""
     result = PhaseResult(phase=4, name="Dataset Input Test", status="PASS")
@@ -597,6 +619,7 @@ async def run_phase4_dataset_test(research_question: str = None, domain: str = N
     # Check dataset contents
     try:
         import pandas as pd
+
         df = pd.read_csv(data_path)
         result.add_check(
             "dataset_readable",
@@ -612,6 +635,7 @@ async def run_phase4_dataset_test(research_question: str = None, domain: str = N
     # Test DataProvider loading
     try:
         from kosmos.execution.data_provider import DataProvider
+
         provider = DataProvider()
         loaded_df, source = provider.get_data(file_path=str(data_path))
         result.add_check(
@@ -659,6 +683,7 @@ async def run_phase4_dataset_test(research_question: str = None, domain: str = N
 
         # Run a few steps to see if data is used
         from kosmos.agents.registry import get_registry
+
         registry = get_registry()
         registry.register(director)
 
@@ -682,9 +707,7 @@ async def run_phase4_dataset_test(research_question: str = None, domain: str = N
 
         status = director.get_research_status()
         result.details["director_final_status"] = {
-            k: status[k]
-            for k in ["workflow_state", "hypothesis_pool_size", "experiments_completed"]
-            if k in status
+            k: status[k] for k in ["workflow_state", "hypothesis_pool_size", "experiments_completed"] if k in status
         }
 
     except Exception as e:
@@ -696,6 +719,7 @@ async def run_phase4_dataset_test(research_question: str = None, domain: str = N
         import inspect
 
         from kosmos.execution.data_provider import DataProvider
+
         source = inspect.getsource(DataProvider.get_data)
         formats_supported = []
         for fmt in [".tsv", ".parquet", ".json", ".jsonl", ".csv"]:
@@ -720,6 +744,7 @@ async def run_phase4_dataset_test(research_question: str = None, domain: str = N
 # ============================================================================
 # Phase 5: Output Quality Assessment
 # ============================================================================
+
 
 def assess_output_quality(phase2_result: PhaseResult, phase3_result: PhaseResult) -> PhaseResult:
     """Grade quality of generated hypotheses, experiments, code, and analysis."""
@@ -813,6 +838,7 @@ def assess_output_quality(phase2_result: PhaseResult, phase3_result: PhaseResult
 # Phase 6: Scientific Rigor Scorecard
 # ============================================================================
 
+
 def run_phase6_rigor_scorecard() -> PhaseResult:
     """Score each scientific rigor feature from the paper."""
     result = PhaseResult(phase=6, name="Scientific Rigor Scorecard", status="PASS")
@@ -823,6 +849,7 @@ def run_phase6_rigor_scorecard() -> PhaseResult:
     # 1. Novelty checking
     try:
         from kosmos.hypothesis.novelty_checker import NoveltyChecker
+
         checker = NoveltyChecker()
         has_check = hasattr(checker, "check_novelty")
 
@@ -830,6 +857,7 @@ def run_phase6_rigor_scorecard() -> PhaseResult:
         import inspect
 
         from kosmos.agents.hypothesis_generator import HypothesisGeneratorAgent
+
         src = inspect.getsource(HypothesisGeneratorAgent)
         wired = "NoveltyChecker" in src or "novelty_check" in src
 
@@ -847,12 +875,14 @@ def run_phase6_rigor_scorecard() -> PhaseResult:
     # 2. Power analysis
     try:
         from kosmos.experiments.statistical_power import PowerAnalyzer
+
         analyzer = PowerAnalyzer()
         has_methods = all(hasattr(analyzer, m) for m in ["ttest_sample_size", "correlation_sample_size"])
 
         import inspect
 
         from kosmos.agents.experiment_designer import ExperimentDesignerAgent
+
         src = inspect.getsource(ExperimentDesignerAgent)
         wired = "PowerAnalyzer" in src or "power_analysis" in src
 
@@ -872,6 +902,7 @@ def run_phase6_rigor_scorecard() -> PhaseResult:
         import inspect
 
         import kosmos.execution.code_generator as cg_module
+
         src = inspect.getsource(cg_module)
         has_shapiro = "shapiro" in src.lower()
         has_levene = "levene" in src.lower()
@@ -892,6 +923,7 @@ def run_phase6_rigor_scorecard() -> PhaseResult:
         import inspect
 
         from kosmos.execution.data_provider import SyntheticDataGenerator
+
         src = inspect.getsource(SyntheticDataGenerator)
         has_randomize = "randomize_effect_size" in src or "_randomize_effect_size" in src
 
@@ -910,6 +942,7 @@ def run_phase6_rigor_scorecard() -> PhaseResult:
         import inspect
 
         from kosmos.execution.data_provider import DataProvider
+
         src = inspect.getsource(DataProvider.get_data)
         formats = {
             "tsv": ".tsv" in src or "sep='\\t'" in src or 'sep="\\t"' in src,
@@ -933,12 +966,14 @@ def run_phase6_rigor_scorecard() -> PhaseResult:
     # 6. Convergence criteria
     try:
         from kosmos.core.convergence import ConvergenceDetector
+
         detector = ConvergenceDetector()
         has_check = hasattr(detector, "check_convergence")
 
         import inspect
 
         from kosmos.agents.research_director import ResearchDirectorAgent
+
         src = inspect.getsource(ResearchDirectorAgent)
         wired = "convergence_detector" in src and "check_convergence" in src
 
@@ -956,6 +991,7 @@ def run_phase6_rigor_scorecard() -> PhaseResult:
     # 7. Reproducibility (seeds)
     try:
         from kosmos.safety.reproducibility import ReproducibilityManager
+
         mgr = ReproducibilityManager()
         has_set_seed = hasattr(mgr, "set_seed")
 
@@ -972,6 +1008,7 @@ def run_phase6_rigor_scorecard() -> PhaseResult:
     # 8. Cost tracking
     try:
         from kosmos.core.metrics import get_metrics
+
         metrics = get_metrics()
         has_budget = hasattr(metrics, "enforce_budget") or hasattr(metrics, "budget_enabled")
 
@@ -1002,6 +1039,7 @@ def run_phase6_rigor_scorecard() -> PhaseResult:
 # Phase 7: Paper Compliance Gap Analysis
 # ============================================================================
 
+
 def run_phase7_paper_compliance(
     phase2_result: PhaseResult,
     phase3_result: PhaseResult,
@@ -1019,170 +1057,194 @@ def run_phase7_paper_compliance(
     claims = []
 
     # 1. Input: objective + CSV dataset
-    p4_data_path_works = any(
-        c["passed"] for c in phase4_result.checks if "data_path" in c["name"]
+    p4_data_path_works = any(c["passed"] for c in phase4_result.checks if "data_path" in c["name"])
+    claims.append(
+        claim(
+            1,
+            "Input: objective + CSV dataset",
+            "PASS" if p4_data_path_works else "PARTIAL",
+            f"CLI --data-path flag works, DataProvider loads CSV. Phase 4 status: {phase4_result.status}",
+        )
     )
-    claims.append(claim(
-        1,
-        "Input: objective + CSV dataset",
-        "PASS" if p4_data_path_works else "PARTIAL",
-        "CLI --data-path flag works, DataProvider loads CSV. "
-        f"Phase 4 status: {phase4_result.status}",
-    ))
 
     # 2. ~166 data analysis rollouts per run
     total_actions = phase3_result.details.get("total_actions", 0)
-    claims.append(claim(
-        2,
-        "~166 data analysis rollouts per run",
-        "PARTIAL",
-        f"Observed {total_actions} actions in 3-iteration run. "
-        "Full 10-iteration run not tested (would need more budget/time). "
-        "Rollout count depends on LLM response quality and iteration depth.",
-    ))
+    claims.append(
+        claim(
+            2,
+            "~166 data analysis rollouts per run",
+            "PARTIAL",
+            f"Observed {total_actions} actions in 3-iteration run. "
+            "Full 10-iteration run not tested (would need more budget/time). "
+            "Rollout count depends on LLM response quality and iteration depth.",
+        )
+    )
 
     # 3. ~42,000 lines of code executed
-    claims.append(claim(
-        3,
-        "~42,000 lines of code executed",
-        "PARTIAL",
-        "Code generation + execution pipeline exists. Volume depends on "
-        "iteration count and experiment complexity. Not measured in this eval.",
-    ))
+    claims.append(
+        claim(
+            3,
+            "~42,000 lines of code executed",
+            "PARTIAL",
+            "Code generation + execution pipeline exists. Volume depends on iteration count and experiment complexity. Not measured in this eval.",
+        )
+    )
 
     # 4. World Model as central hub
     try:
         from kosmos.world_model import get_world_model
+
         wm = get_world_model()
         wm_type = type(wm).__name__
-        claims.append(claim(
-            4,
-            "World Model as central hub",
-            "PARTIAL",
-            f"World model active ({wm_type}). Neo4j integration requires "
-            "separate Neo4j server. In-memory/simple backends available.",
-        ))
+        claims.append(
+            claim(
+                4,
+                "World Model as central hub",
+                "PARTIAL",
+                f"World model active ({wm_type}). Neo4j integration requires separate Neo4j server. In-memory/simple backends available.",
+            )
+        )
     except Exception as e:
         claims.append(claim(4, "World Model as central hub", "PARTIAL", f"World model init: {e}"))
 
     # 5. 79.4% accuracy on scientific statements
-    claims.append(claim(
-        5,
-        "79.4% accuracy on scientific statements",
-        "BLOCKER",
-        "No benchmark framework or evaluation dataset included to reproduce "
-        "this metric. Would need the paper's evaluation dataset to test.",
-    ))
+    claims.append(
+        claim(
+            5,
+            "79.4% accuracy on scientific statements",
+            "BLOCKER",
+            "No benchmark framework or evaluation dataset included to reproduce this metric. Would need the paper's evaluation dataset to test.",
+        )
+    )
 
     # 6. ~36 literature rollouts, ~1,500 papers
     try:
-        claims.append(claim(
-            6,
-            "~36 literature rollouts, ~1,500 papers",
-            "PARTIAL",
-            "LiteratureAnalyzerAgent exists but requires API keys for "
-            "Semantic Scholar / PubMed. Not tested in this evaluation.",
-        ))
+        claims.append(
+            claim(
+                6,
+                "~36 literature rollouts, ~1,500 papers",
+                "PARTIAL",
+                "LiteratureAnalyzerAgent exists but requires API keys for Semantic Scholar / PubMed. Not tested in this evaluation.",
+            )
+        )
     except Exception:
         claims.append(claim(6, "~36 literature rollouts", "PARTIAL", "Agent importable but untested"))
 
     # 7. Novelty checking
     nc = phase6_result.details.get("rigor_scores", {}).get("novelty_checking", {})
-    claims.append(claim(
-        7,
-        "Novelty checking",
-        "PASS" if nc.get("score", 0) >= 7 else "PARTIAL",
-        f"Score: {nc.get('score', 'N/A')}/10. {nc.get('notes', '')}",
-    ))
+    claims.append(
+        claim(
+            7,
+            "Novelty checking",
+            "PASS" if nc.get("score", 0) >= 7 else "PARTIAL",
+            f"Score: {nc.get('score', 'N/A')}/10. {nc.get('notes', '')}",
+        )
+    )
 
     # 8. Power analysis
     pa = phase6_result.details.get("rigor_scores", {}).get("power_analysis", {})
-    claims.append(claim(
-        8,
-        "Power analysis",
-        "PASS" if pa.get("score", 0) >= 7 else "PARTIAL",
-        f"Score: {pa.get('score', 'N/A')}/10. {pa.get('notes', '')}",
-    ))
+    claims.append(
+        claim(
+            8,
+            "Power analysis",
+            "PASS" if pa.get("score", 0) >= 7 else "PARTIAL",
+            f"Score: {pa.get('score', 'N/A')}/10. {pa.get('notes', '')}",
+        )
+    )
 
     # 9. Cost tracking
     ct = phase6_result.details.get("rigor_scores", {}).get("cost_tracking", {})
-    claims.append(claim(
-        9,
-        "Cost tracking",
-        "PASS" if ct.get("score", 0) >= 7 else "PARTIAL",
-        f"Score: {ct.get('score', 'N/A')}/10. {ct.get('notes', '')}",
-    ))
+    claims.append(
+        claim(
+            9,
+            "Cost tracking",
+            "PASS" if ct.get("score", 0) >= 7 else "PARTIAL",
+            f"Score: {ct.get('score', 'N/A')}/10. {ct.get('notes', '')}",
+        )
+    )
 
     # 10. 7 validated discoveries
-    claims.append(claim(
-        10,
-        "7 validated discoveries",
-        "PARTIAL",
-        "Discovery count depends on runtime duration and LLM quality. "
-        "Not achievable in a short evaluation run.",
-    ))
+    claims.append(
+        claim(
+            10,
+            "7 validated discoveries",
+            "PARTIAL",
+            "Discovery count depends on runtime duration and LLM quality. Not achievable in a short evaluation run.",
+        )
+    )
 
     # 11. 4-6 months expert equivalence
-    claims.append(claim(
-        11,
-        "4-6 months expert equivalence",
-        "PARTIAL",
-        "Qualitative claim. Output quality depends on LLM, iteration count, "
-        "and domain. Would need expert blind review to validate.",
-    ))
+    claims.append(
+        claim(
+            11,
+            "4-6 months expert equivalence",
+            "PARTIAL",
+            "Qualitative claim. Output quality depends on LLM, iteration count, and domain. Would need expert blind review to validate.",
+        )
+    )
 
     # 12. Parallel agent instances
     try:
         from kosmos.execution.parallel import ParallelExperimentExecutor
-        claims.append(claim(
-            12,
-            "Parallel agent instances",
-            "PASS",
-            "ParallelExperimentExecutor exists. Concurrent operations "
-            "configurable via enable_concurrent_operations flag.",
-        ))
+
+        claims.append(
+            claim(
+                12,
+                "Parallel agent instances",
+                "PASS",
+                "ParallelExperimentExecutor exists. Concurrent operations configurable via enable_concurrent_operations flag.",
+            )
+        )
     except ImportError:
         claims.append(claim(12, "Parallel agent instances", "PARTIAL", "Import not available"))
 
     # 13. Docker sandbox
     try:
         from kosmos.execution.sandbox import DockerSandbox
-        claims.append(claim(
-            13,
-            "Docker sandbox for code execution",
-            "PASS",
-            "DockerSandbox class exists. Requires Docker daemon.",
-        ))
+
+        claims.append(
+            claim(
+                13,
+                "Docker sandbox for code execution",
+                "PASS",
+                "DockerSandbox class exists. Requires Docker daemon.",
+            )
+        )
     except ImportError:
-        claims.append(claim(
-            13,
-            "Docker sandbox for code execution",
-            "PARTIAL",
-            "DockerSandbox not importable. Code execution uses subprocess fallback.",
-        ))
+        claims.append(
+            claim(
+                13,
+                "Docker sandbox for code execution",
+                "PARTIAL",
+                "DockerSandbox not importable. Code execution uses subprocess fallback.",
+            )
+        )
 
     # 14. Neo4j knowledge graph
     try:
-        claims.append(claim(
-            14,
-            "Neo4j knowledge graph",
-            "PARTIAL",
-            "World model factory exists with Neo4j option. Requires Neo4j server. "
-            "Falls back to in-memory/simple backend.",
-        ))
+        claims.append(
+            claim(
+                14,
+                "Neo4j knowledge graph",
+                "PARTIAL",
+                "World model factory exists with Neo4j option. Requires Neo4j server. Falls back to in-memory/simple backend.",
+            )
+        )
     except Exception as e:
         claims.append(claim(14, "Neo4j knowledge graph", "PARTIAL", str(e)))
 
     # 15. Reports with citations
     try:
         from kosmos.analysis.summarizer import ResultSummarizer
-        claims.append(claim(
-            15,
-            "Reports with citations",
-            "PARTIAL",
-            "ResultsSummarizer exists. Citation quality depends on "
-            "LiteratureAnalyzer integration.",
-        ))
+
+        claims.append(
+            claim(
+                15,
+                "Reports with citations",
+                "PARTIAL",
+                "ResultsSummarizer exists. Citation quality depends on LiteratureAnalyzer integration.",
+            )
+        )
     except ImportError:
         claims.append(claim(15, "Reports with citations", "PARTIAL", "Summarizer not importable"))
 
@@ -1221,6 +1283,7 @@ def run_phase7_paper_compliance(
 # Report Generator
 # ============================================================================
 
+
 def generate_report(report: EvaluationReport) -> str:
     """Generate Markdown report from evaluation results."""
     lines = []
@@ -1236,13 +1299,11 @@ def generate_report(report: EvaluationReport) -> str:
     passed_checks = sum(p.checks_passed for p in report.phases)
     lines.append(f"- **Phases run**: {len(report.phases)}")
     lines.append(f"- **Total checks**: {total_checks}")
-    lines.append(f"- **Checks passed**: {passed_checks}/{total_checks} ({100*passed_checks//max(total_checks,1)}%)")
+    lines.append(f"- **Checks passed**: {passed_checks}/{total_checks} ({100 * passed_checks // max(total_checks, 1)}%)")
     lines.append(f"- **Total duration**: {sum(p.duration_seconds for p in report.phases):.1f}s")
     lines.append("")
 
-    phase_summary = " | ".join(
-        f"P{p.phase}: **{p.status}**" for p in report.phases
-    )
+    phase_summary = " | ".join(f"P{p.phase}: **{p.status}**" for p in report.phases)
     lines.append(f"| {phase_summary} |")
     lines.append("")
 
@@ -1275,8 +1336,7 @@ def generate_report(report: EvaluationReport) -> str:
         if phase.phase in (2, 3) and "final_status" in phase.details:
             status = phase.details["final_status"]
             lines.append("**Research Status**:")
-            for key in ["workflow_state", "iteration", "hypothesis_pool_size",
-                        "hypotheses_tested", "experiments_completed", "has_converged"]:
+            for key in ["workflow_state", "iteration", "hypothesis_pool_size", "hypotheses_tested", "experiments_completed", "has_converged"]:
                 if key in status:
                     lines.append(f"- {key}: `{status[key]}`")
             lines.append("")
@@ -1322,17 +1382,21 @@ def generate_report(report: EvaluationReport) -> str:
                 lines.append(f"| {c['num']} | {c['claim']} | {c['status']} | {detail} |")
             lines.append("")
             counts = phase.details.get("status_counts", {})
-            lines.append(f"**Summary**: PASS={counts.get('PASS',0)}, PARTIAL={counts.get('PARTIAL',0)}, FAIL={counts.get('FAIL',0)}, BLOCKER={counts.get('BLOCKER',0)}")
+            lines.append(
+                f"**Summary**: PASS={counts.get('PASS', 0)}, PARTIAL={counts.get('PARTIAL', 0)}, FAIL={counts.get('FAIL', 0)}, BLOCKER={counts.get('BLOCKER', 0)}"
+            )
             lines.append("")
 
     # Honest limitations
     lines.append("## Limitations of This Evaluation")
     lines.append("")
-    lines.append("1. **LLM quality**: Results depend on the configured LLM (DeepSeek/Ollama/etc). Quality may differ from paper's Claude-based results.")
+    lines.append(
+        "1. **LLM quality**: Results depend on the configured LLM (DeepSeek/Ollama/etc). Quality may differ from paper's Claude-based results."
+    )
     lines.append("2. **Synthetic data**: Without external datasets, experiments test pipeline mechanics, not scientific validity.")
-    lines.append("3. **No benchmark**: Cannot validate the \"79.4% accuracy\" claim without the paper's evaluation dataset.")
+    lines.append('3. **No benchmark**: Cannot validate the "79.4% accuracy" claim without the paper\'s evaluation dataset.')
     lines.append("4. **Single evaluator**: Automated evaluation, not peer review. Quality scores are heuristic.")
-    lines.append("5. **Neo4j not available**: Knowledge graph features scored as \"infrastructure present but untestable\".")
+    lines.append('5. **Neo4j not available**: Knowledge graph features scored as "infrastructure present but untestable".')
     lines.append("6. **Short runtime**: Full paper claims 12+ hours of operation; this eval runs minutes.")
     lines.append("")
 
@@ -1343,9 +1407,8 @@ def generate_report(report: EvaluationReport) -> str:
 # Main
 # ============================================================================
 
-async def main(output_dir: Path = None, research_question: str = None,
-               domain: str = None, data_path: Path = None,
-               max_iterations: int = None):
+
+async def main(output_dir: Path = None, research_question: str = None, domain: str = None, data_path: Path = None, max_iterations: int = None):
     """Run all evaluation phases.
 
     Args:
@@ -1462,32 +1525,44 @@ if __name__ == "__main__":
         description="Scientific evaluation of Kosmos AI Scientist",
     )
     _parser.add_argument(
-        "--output-dir", type=Path, default=None,
+        "--output-dir",
+        type=Path,
+        default=None,
         help="Write report to this directory instead of the default location",
     )
     _parser.add_argument(
-        "--research-question", type=str, default=None,
+        "--research-question",
+        type=str,
+        default=None,
         help="Override research question for all phases",
     )
     _parser.add_argument(
-        "--domain", type=str, default=None,
+        "--domain",
+        type=str,
+        default=None,
         help="Override domain for all phases",
     )
     _parser.add_argument(
-        "--data-path", type=Path, default=None,
+        "--data-path",
+        type=Path,
+        default=None,
         help="Override dataset path for Phase 4",
     )
     _parser.add_argument(
-        "--max-iterations", type=int, default=None,
+        "--max-iterations",
+        type=int,
+        default=None,
         help="Override max iterations for Phase 3",
     )
     _args = _parser.parse_args()
 
-    exit_code = asyncio.run(main(
-        output_dir=_args.output_dir,
-        research_question=_args.research_question,
-        domain=_args.domain,
-        data_path=_args.data_path,
-        max_iterations=_args.max_iterations,
-    ))
+    exit_code = asyncio.run(
+        main(
+            output_dir=_args.output_dir,
+            research_question=_args.research_question,
+            domain=_args.domain,
+            data_path=_args.data_path,
+            max_iterations=_args.max_iterations,
+        )
+    )
     sys.exit(exit_code or 0)

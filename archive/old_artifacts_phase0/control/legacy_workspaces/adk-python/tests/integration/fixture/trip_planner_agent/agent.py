@@ -18,8 +18,8 @@ from google.adk import Agent
 
 # Agent that selects the best city for the trip.
 identify_agent = Agent(
-    name='identify_agent',
-    description='Select the best city based on weather, season, and prices.',
+    name="identify_agent",
+    description="Select the best city based on weather, season, and prices.",
     instruction="""
   Analyze and select the best city for the trip based
   on specific criteria such as weather patterns, seasonal
@@ -42,8 +42,8 @@ identify_agent = Agent(
 
 # Agent that gathers information about the city.
 gather_agent = Agent(
-    name='gather_agent',
-    description='Provide the BEST insights about the selected city',
+    name="gather_agent",
+    description="Provide the BEST insights about the selected city",
     instruction="""
   As a local expert on this city you must compile an
   in-depth guide for someone traveling there and wanting
@@ -69,7 +69,7 @@ gather_agent = Agent(
 
 # Agent that plans the trip.
 plan_agent = Agent(
-    name='plan_agent',
+    name="plan_agent",
     description="""Create the most amazing travel itineraries with budget and
     packing suggestions for the city""",
     instruction="""
@@ -99,9 +99,9 @@ plan_agent = Agent(
 )
 
 root_agent = Agent(
-    model='gemini-2.0-flash-001',
-    name='trip_planner',
-    description='Plan the best trip ever',
+    model="gemini-2.0-flash-001",
+    name="trip_planner",
+    description="Plan the best trip ever",
     instruction="""
   Your goal is to plan the best trip according to information listed above.
   You describe why did you choose the city, list top 3

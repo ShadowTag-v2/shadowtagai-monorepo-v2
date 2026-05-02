@@ -23,6 +23,7 @@ TextContent = None
 try:
     from mcp.server import Server
     from mcp.types import TextContent, Tool
+
     MCP_AVAILABLE = True
 except ImportError as e:
     if __name__ == "__main__":
@@ -38,6 +39,7 @@ app = Server("skill-seeker") if MCP_AVAILABLE and Server is not None else None
 # Path to CLI tools
 CLI_DIR = Path(__file__).parent.parent / "cli"
 
+
 # Helper decorator that works even when app is None
 def safe_decorator(decorator_func):
     """Returns the decorator if MCP is available, otherwise returns a no-op"""
@@ -47,6 +49,7 @@ def safe_decorator(decorator_func):
         # Return a decorator that just returns the function unchanged
         def noop_decorator(func):
             return func
+
         return noop_decorator
 
 
@@ -65,7 +68,7 @@ def run_subprocess_with_streaming(cmd, timeout=None):
             stderr=subprocess.PIPE,
             text=True,
             bufsize=1,  # Line buffered
-            universal_newlines=True
+            universal_newlines=True,
         )
 
         stdout_lines = []
@@ -87,6 +90,7 @@ def run_subprocess_with_streaming(cmd, timeout=None):
             # Read available output (non-blocking)
             try:
                 import select
+
                 readable, _, _ = select.select([process.stdout, process.stderr], [], [], 0.1)
 
                 if process.stdout in readable:
@@ -109,8 +113,8 @@ def run_subprocess_with_streaming(cmd, timeout=None):
         if remaining_stderr:
             stderr_lines.append(remaining_stderr)
 
-        stdout = ''.join(stdout_lines)
-        stderr = ''.join(stderr_lines)
+        stdout = "".join(stdout_lines)
+        stderr = "".join(stderr_lines)
         returncode = process.returncode
 
         return stdout, stderr, returncode
@@ -456,10 +460,7 @@ async def generate_config_tool(args: dict) -> list[TextContent]:
     rate_limit = args.get("rate_limit", 0.5)
 
     # Handle unlimited mode
-    if unlimited:
-        max_pages = None
-        limit_msg = "unlimited (no page limit)"
-    elif max_pages == -1:
+    if unlimited or max_pages == -1:
         max_pages = None
         limit_msg = "unlimited (no page limit)"
     else:
@@ -470,25 +471,18 @@ async def generate_config_tool(args: dict) -> list[TextContent]:
         "name": name,
         "description": description,
         "base_url": url,
-        "selectors": {
-            "main_content": "article",
-            "title": "h1",
-            "code_blocks": "pre code"
-        },
-        "url_patterns": {
-            "include": [],
-            "exclude": []
-        },
+        "selectors": {"main_content": "article", "title": "h1", "code_blocks": "pre code"},
+        "url_patterns": {"include": [], "exclude": []},
         "categories": {},
         "rate_limit": rate_limit,
-        "max_pages": max_pages
+        "max_pages": max_pages,
     }
 
     # Save to configs directory
     config_path = Path("configs") / f"{name}.json"
     config_path.parent.mkdir(exist_ok=True)
 
-    with open(config_path, 'w') as f:
+    with open(config_path, "w") as f:
         json.dump(config, f, indent=2)
 
     result = f"""✅ Config created: {config_path}
@@ -525,12 +519,7 @@ async def estimate_pages_tool(args: dict) -> list[TextContent]:
         timeout = max(300, max_discovery // 2)  # Minimum 5 minutes
 
     # Run estimate_pages.py
-    cmd = [
-        sys.executable,
-        str(CLI_DIR / "estimate_pages.py"),
-        config_path,
-        "--max-discovery", str(max_discovery)
-    ]
+    cmd = [sys.executable, str(CLI_DIR / "estimate_pages.py"), config_path, "--max-discovery", str(max_discovery)]
 
     progress_msg = "🔄 Estimating page count...\n"
     progress_msg += f"⏱️ Maximum time: {timeout // 60} minutes\n\n"
@@ -559,23 +548,23 @@ async def scrape_docs_tool(args: dict) -> list[TextContent]:
         config = json.load(f)
 
     # Detect if unified format (has 'sources' array)
-    is_unified = 'sources' in config and isinstance(config['sources'], list)
+    is_unified = "sources" in config and isinstance(config["sources"], list)
 
     # Handle unlimited mode by modifying config temporarily
     if unlimited:
         # Set max_pages to None (unlimited)
         if is_unified:
             # For unified configs, set max_pages on documentation sources
-            for source in config.get('sources', []):
-                if source.get('type') == 'documentation':
-                    source['max_pages'] = None
+            for source in config.get("sources", []):
+                if source.get("type") == "documentation":
+                    source["max_pages"] = None
         else:
             # For legacy configs
-            config['max_pages'] = None
+            config["max_pages"] = None
 
         # Create temporary config file
-        temp_config_path = config_path.replace('.json', '_unlimited_temp.json')
-        with open(temp_config_path, 'w') as f:
+        temp_config_path = config_path.replace(".json", "_unlimited_temp.json")
+        with open(temp_config_path, "w") as f:
             json.dump(config, f, indent=2)
 
         config_to_use = temp_config_path
@@ -593,11 +582,7 @@ async def scrape_docs_tool(args: dict) -> list[TextContent]:
         progress_msg += "📦 Config format: Legacy (single source)\n"
 
     # Build command
-    cmd = [
-        sys.executable,
-        str(CLI_DIR / scraper_script),
-        "--config", config_to_use
-    ]
+    cmd = [sys.executable, str(CLI_DIR / scraper_script), "--config", config_to_use]
 
     # Add merge mode for unified configs
     if is_unified and merge_mode:
@@ -627,12 +612,12 @@ async def scrape_docs_tool(args: dict) -> list[TextContent]:
             if is_unified:
                 # For unified configs, estimate based on all sources
                 total_pages = 0
-                for source in config.get('sources', []):
-                    if source.get('type') == 'documentation':
-                        total_pages += source.get('max_pages', 500)
+                for source in config.get("sources", []):
+                    if source.get("type") == "documentation":
+                        total_pages += source.get("max_pages", 500)
                 max_pages = total_pages or 500
             else:
-                max_pages = config.get('max_pages', 500)
+                max_pages = config.get("max_pages", 500)
 
             # Estimate: 30s per page + buffer
             timeout = max(3600, max_pages * 35)  # Minimum 1 hour, or 35s per page
@@ -668,7 +653,7 @@ async def package_skill_tool(args: dict) -> list[TextContent]:
     auto_upload = args.get("auto_upload", True)
 
     # Check if API key exists - only upload if available
-    has_api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+    has_api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     should_upload = auto_upload and has_api_key
 
     # Run package_skill.py
@@ -677,7 +662,7 @@ async def package_skill_tool(args: dict) -> list[TextContent]:
         str(CLI_DIR / "package_skill.py"),
         skill_dir,
         "--no-open",  # Don't open folder in MCP context
-        "--skip-quality-check"  # Skip interactive quality checks in MCP context
+        "--skip-quality-check",  # Skip interactive quality checks in MCP context
     ]
 
     # Add upload flag only if we have API key
@@ -728,11 +713,7 @@ async def upload_skill_tool(args: dict) -> list[TextContent]:
     skill_zip = args["skill_zip"]
 
     # Run upload_skill.py
-    cmd = [
-        sys.executable,
-        str(CLI_DIR / "upload_skill.py"),
-        skill_zip
-    ]
+    cmd = [sys.executable, str(CLI_DIR / "upload_skill.py"), skill_zip]
 
     # Timeout: 5 minutes for upload
     timeout = 300
@@ -797,6 +778,7 @@ async def validate_config_tool(args: dict) -> list[TextContent]:
         # Try unified config validator first
         try:
             from config_validator import validate_config
+
             validator = validate_config(config_path)
 
             result = "✅ Config is valid!\n\n"
@@ -808,20 +790,20 @@ async def validate_config_tool(args: dict) -> list[TextContent]:
                 result += f"  Sources: {len(validator.config.get('sources', []))}\n"
 
                 # Show sources
-                for i, source in enumerate(validator.config.get('sources', []), 1):
+                for i, source in enumerate(validator.config.get("sources", []), 1):
                     result += f"\n  Source {i}: {source['type']}\n"
-                    if source['type'] == 'documentation':
+                    if source["type"] == "documentation":
                         result += f"    URL: {source.get('base_url', 'N/A')}\n"
                         result += f"    Max pages: {source.get('max_pages', 'Not set')}\n"
-                    elif source['type'] == 'github':
+                    elif source["type"] == "github":
                         result += f"    Repo: {source.get('repo', 'N/A')}\n"
                         result += f"    Code depth: {source.get('code_analysis_depth', 'surface')}\n"
-                    elif source['type'] == 'pdf':
+                    elif source["type"] == "pdf":
                         result += f"    Path: {source.get('path', 'N/A')}\n"
 
                 # Show merge settings if applicable
                 if validator.needs_api_merge():
-                    merge_mode = validator.config.get('merge_mode', 'rule-based')
+                    merge_mode = validator.config.get("merge_mode", "rule-based")
                     result += f"\n  Merge mode: {merge_mode}\n"
                     result += "  API merging: Required (docs + code sources)\n"
 
@@ -877,13 +859,7 @@ async def split_config_tool(args: dict) -> list[TextContent]:
     dry_run = args.get("dry_run", False)
 
     # Run split_config.py
-    cmd = [
-        sys.executable,
-        str(CLI_DIR / "split_config.py"),
-        config_path,
-        "--strategy", strategy,
-        "--target-pages", str(target_pages)
-    ]
+    cmd = [sys.executable, str(CLI_DIR / "split_config.py"), config_path, "--strategy", strategy, "--target-pages", str(target_pages)]
 
     if dry_run:
         cmd.append("--dry-run")
@@ -1054,11 +1030,7 @@ async def main():
     from mcp.server.stdio import stdio_server
 
     async with stdio_server() as (read_stream, write_stream):
-        await app.run(
-            read_stream,
-            write_stream,
-            app.create_initialization_options()
-        )
+        await app.run(read_stream, write_stream, app.create_initialization_options())
 
 
 if __name__ == "__main__":

@@ -56,8 +56,8 @@ def _create_vllm_config(
         )
 
         compilation_config.post_init_cudagraph_sizes()
-        mock_config.pad_for_cudagraph = (
-            lambda batch_size: compilation_config.bs_to_padded_graph_size[batch_size]
+        mock_config.pad_for_cudagraph = lambda batch_size: (
+            compilation_config.bs_to_padded_graph_size[batch_size]
         )
 
     return mock_config

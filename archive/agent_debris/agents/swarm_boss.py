@@ -17,6 +17,7 @@ load_dotenv()
 if os.environ.get("GEMINI_API_KEY"):
     genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 
+
 # TLP Steps
 class TLPStep(Enum):
     RECEIVE_THE_MISSION = 1
@@ -27,6 +28,7 @@ class TLPStep(Enum):
     COMPLETE_THE_PLAN = 6
     ISSUE_THE_ORDER = 7
     SUPERVISE_AND_REFINE = 8
+
 
 @dataclass
 class AgentUnit:
@@ -40,8 +42,10 @@ class AgentUnit:
     papers_read: int = 0
     loc_analyzed: int = 0
 
+
 class CRM:
     """Simulated CRM (Customer Relationship Management) / Knowledge Base"""
+
     def __init__(self, doctrine_dir: str = "doctrine"):
         self.doctrine_dir = doctrine_dir
         self.doctrine_content = ""
@@ -67,12 +71,14 @@ class CRM:
             return f"CRM HIT: Found doctrine on {topic}"
         return "CRM MISS: No record found."
 
+
 class SwarmBoss:
     """
     The Boss. Oversees the Kosmos Swarm (10 Domain Agents).
     Implements Army Troop Leading Procedures (TLP).
     Integrates Hybrid Swarm Intelligence (PSO + ACO).
     """
+
     def __init__(self):
         self.tlp_step = TLPStep.RECEIVE_THE_MISSION
         # 10 Fingers = 10 Dedicated Agents
@@ -86,21 +92,13 @@ class SwarmBoss:
         self.lock = threading.Lock()
 
         # Swarm Intelligence
-        self.optimizer = HybridSwarmOptimizer(
-            num_agents=len(self.units),
-            num_tasks=50,
-            num_squads=1
-        )
+        self.optimizer = HybridSwarmOptimizer(num_agents=len(self.units), num_tasks=50, num_squads=1)
         self.optimization_result = {}
 
         # Initialize model fallback chain (Gemini high, Gemini low, then GPT-OSS 120B)
         self.model = None
         self.model_type = None  # "gemini" or "openai"
-        self.model_candidates = [
-            ("gemini-3-pro-high", "gemini"),
-            ("gemini-3-pro-low", "gemini"),
-            ("gpt-oss-120b", "openai")
-        ]
+        self.model_candidates = [("gemini-3-pro-high", "gemini"), ("gemini-3-pro-low", "gemini"), ("gpt-oss-120b", "openai")]
         for name, provider in self.model_candidates:
             try:
                 if provider == "gemini":
@@ -108,6 +106,7 @@ class SwarmBoss:
                     self.model_type = "gemini"
                 else:
                     from openai import OpenAI
+
                     # Use modern OpenAI SDK for GPT-OSS 120B
                     self.model = OpenAI()
                     self.model_type = "openai"
@@ -132,19 +131,12 @@ class SwarmBoss:
             ("07", "Marketing"),
             ("08", "RiskCompliance"),
             ("09", "ScalingModel"),
-            ("10", "ExitAsset")
+            ("10", "ExitAsset"),
         ]
 
         for idx, role in fingers:
             unit_id = f"Agent-{idx}"
-            self.units.append(AgentUnit(
-                id=unit_id,
-                squad="Audit-Team",
-                role=role,
-                status="Idle",
-                current_task="Awaiting Orders",
-                credits_burned=0.0
-            ))
+            self.units.append(AgentUnit(id=unit_id, squad="Audit-Team", role=role, status="Idle", current_task="Awaiting Orders", credits_burned=0.0))
 
     def receive_mission(self, mission: str):
         self.mission_statement = mission
@@ -189,7 +181,7 @@ class SwarmBoss:
         self.optimization_result = self.optimizer.optimize_mission()
 
         # Apply Allocation (Mock)
-        allocation = self.optimization_result.get('task_allocation', [])
+        allocation = self.optimization_result.get("task_allocation", [])
         for i, unit in enumerate(self.units):
             if i < len(allocation):
                 unit.current_task = f"Allocated Task-{allocation[i]}"
@@ -247,7 +239,7 @@ class SwarmBoss:
     def _conduct_aar(self):
         """Conduct After Action Review and update Doctrine"""
         print("///▞ BOSS :: Audit Complete. Conducting AAR...")
-        self.tlp_step = TLPStep.RECEIVE_THE_MISSION # Reset for next mission
+        self.tlp_step = TLPStep.RECEIVE_THE_MISSION  # Reset for next mission
 
         # Generate AAR
         total_loc = sum(u.loc_analyzed for u in self.units)
@@ -261,7 +253,9 @@ class SwarmBoss:
         # Append audit results to the dedicated audit log file
         log_path = os.path.join(self.crm.doctrine_dir, "audit_log.md")
         with open(log_path, "a") as log:
-            log.write(f"\n\n## {aar_text}\n- Findings: Deep structural analysis of all 10 domains.\n- Recommendation: Proceed to Phase 2 if Score > 75.")
+            log.write(
+                f"\n\n## {aar_text}\n- Findings: Deep structural analysis of all 10 domains.\n- Recommendation: Proceed to Phase 2 if Score > 75."
+            )
 
         # Reload CRM
         self.crm._load_doctrine()
@@ -295,10 +289,7 @@ class SwarmBoss:
                 elif self.model_type == "openai":
                     # Use modern OpenAI SDK (v1.0+)
                     # self.model is already an OpenAI() client instance
-                    response = self.model.chat.completions.create(
-                        model="gpt-oss-120b",
-                        messages=[{"role": "user", "content": prompt}]
-                    )
+                    response = self.model.chat.completions.create(model="gpt-oss-120b", messages=[{"role": "user", "content": prompt}])
                     # Modern SDK returns an object with choices
                     if response and response.choices:
                         text = response.choices[0].message.content
@@ -312,7 +303,7 @@ class SwarmBoss:
 
         unit.credits_burned += cost
         unit.tokens_generated += tokens
-        unit.loc_analyzed += random.randint(100, 500) # Deep Code Analysis
+        unit.loc_analyzed += random.randint(100, 500)  # Deep Code Analysis
         unit.current_task = f"Gen: {tokens}t | LoC: {unit.loc_analyzed}"
 
     def get_status_report(self) -> dict:
@@ -328,5 +319,5 @@ class SwarmBoss:
             "total_papers": sum(u.papers_read for u in self.units),
             "total_loc": total_loc,
             "viability_score": viability_score,
-            "units": self.units
+            "units": self.units,
         }

@@ -9,27 +9,39 @@ import argparse
 import os
 import sys
 from pathlib import Path
-from typing import List, Optional
 
 from markitdown import MarkItDown
 
 # Supported file extensions
 SUPPORTED_EXTENSIONS = {
-    '.pdf', '.docx', '.pptx', '.xlsx', '.xls',
-    '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff',
-    '.wav', '.mp3', '.flac', '.ogg', '.aiff',
-    '.html', '.htm', '.epub',
-    '.csv', '.json', '.xml',
-    '.zip'
+    ".pdf",
+    ".docx",
+    ".pptx",
+    ".xlsx",
+    ".xls",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".bmp",
+    ".tiff",
+    ".wav",
+    ".mp3",
+    ".flac",
+    ".ogg",
+    ".aiff",
+    ".html",
+    ".htm",
+    ".epub",
+    ".csv",
+    ".json",
+    ".xml",
+    ".zip",
 }
 
 
 def setup_markitdown(
-    use_llm: bool = False,
-    llm_model: str = "gpt-4o",
-    use_azure_di: bool = False,
-    azure_endpoint: Optional[str] = None,
-    azure_key: Optional[str] = None
+    use_llm: bool = False, llm_model: str = "gpt-4o", use_azure_di: bool = False, azure_endpoint: str | None = None, azure_key: str | None = None
 ) -> MarkItDown:
     """
     Setup MarkItDown instance with optional advanced features.
@@ -49,9 +61,10 @@ def setup_markitdown(
     if use_llm:
         try:
             from openai import OpenAI
+
             client = OpenAI()
-            kwargs['llm_client'] = client
-            kwargs['llm_model'] = llm_model
+            kwargs["llm_client"] = client
+            kwargs["llm_model"] = llm_model
             print(f"✓ LLM integration enabled ({llm_model})")
         except ImportError:
             print("✗ Warning: OpenAI not installed, LLM features disabled")
@@ -59,8 +72,8 @@ def setup_markitdown(
 
     if use_azure_di:
         if azure_endpoint and azure_key:
-            kwargs['docintel_endpoint'] = azure_endpoint
-            kwargs['docintel_key'] = azure_key
+            kwargs["docintel_endpoint"] = azure_endpoint
+            kwargs["docintel_key"] = azure_key
             print("✓ Azure Document Intelligence enabled")
         else:
             print("✗ Warning: Azure credentials not provided, Azure DI disabled")
@@ -68,12 +81,7 @@ def setup_markitdown(
     return MarkItDown(**kwargs)
 
 
-def convert_file(
-    md: MarkItDown,
-    input_path: Path,
-    output_dir: Path,
-    verbose: bool = False
-) -> bool:
+def convert_file(md: MarkItDown, input_path: Path, output_dir: Path, verbose: bool = False) -> bool:
     """
     Convert a single file to Markdown.
 
@@ -94,11 +102,11 @@ def convert_file(
         result = md.convert(str(input_path))
 
         # Create output filename
-        output_filename = input_path.stem + '.md'
+        output_filename = input_path.stem + ".md"
         output_path = output_dir / output_filename
 
         # Write output
-        with open(output_path, 'w', encoding='utf-8') as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write(result.text_content)
 
         if verbose:
@@ -111,7 +119,7 @@ def convert_file(
         return False
 
 
-def find_files(input_dir: Path, recursive: bool = False) -> List[Path]:
+def find_files(input_dir: Path, recursive: bool = False) -> list[Path]:
     """
     Find all supported files in directory.
 
@@ -141,9 +149,9 @@ def batch_convert(
     use_llm: bool = False,
     llm_model: str = "gpt-4o",
     use_azure_di: bool = False,
-    azure_endpoint: Optional[str] = None,
-    azure_key: Optional[str] = None,
-    verbose: bool = False
+    azure_endpoint: str | None = None,
+    azure_key: str | None = None,
+    verbose: bool = False,
 ) -> None:
     """
     Batch convert all supported files in a directory.
@@ -176,13 +184,7 @@ def batch_convert(
 
     # Setup MarkItDown
     print("Setting up MarkItDown...")
-    md = setup_markitdown(
-        use_llm=use_llm,
-        llm_model=llm_model,
-        use_azure_di=use_azure_di,
-        azure_endpoint=azure_endpoint,
-        azure_key=azure_key
-    )
+    md = setup_markitdown(use_llm=use_llm, llm_model=llm_model, use_azure_di=use_azure_di, azure_endpoint=azure_endpoint, azure_key=azure_key)
 
     # Find files
     print(f"\nScanning directory: {input_dir}")
@@ -209,12 +211,12 @@ def batch_convert(
             failed += 1
 
     # Summary
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("Conversion complete!")
     print(f"  Successful: {successful}")
     print(f"  Failed:     {failed}")
     print(f"  Output:     {output_dir}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
 
 def main():
@@ -249,56 +251,24 @@ Supported file types:
   Web:       HTML, EPUB
   Data:      CSV, JSON, XML
   Archives:  ZIP
-        """
+        """,
     )
 
-    parser.add_argument(
-        'input_dir',
-        help='Input directory containing files to convert'
-    )
-    parser.add_argument(
-        'output_dir',
-        help='Output directory for Markdown files'
-    )
-    parser.add_argument(
-        '-r', '--recursive',
-        action='store_true',
-        help='Recursively search subdirectories'
-    )
-    parser.add_argument(
-        '--llm',
-        action='store_true',
-        help='Enable LLM-powered image descriptions (requires OpenAI API key)'
-    )
-    parser.add_argument(
-        '--llm-model',
-        default='gpt-4o',
-        help='LLM model to use (default: gpt-4o)'
-    )
-    parser.add_argument(
-        '--azure',
-        action='store_true',
-        help='Enable Azure Document Intelligence for PDFs'
-    )
-    parser.add_argument(
-        '--azure-endpoint',
-        help='Azure Document Intelligence endpoint URL'
-    )
-    parser.add_argument(
-        '--azure-key',
-        help='Azure Document Intelligence API key'
-    )
-    parser.add_argument(
-        '-v', '--verbose',
-        action='store_true',
-        help='Print detailed progress'
-    )
+    parser.add_argument("input_dir", help="Input directory containing files to convert")
+    parser.add_argument("output_dir", help="Output directory for Markdown files")
+    parser.add_argument("-r", "--recursive", action="store_true", help="Recursively search subdirectories")
+    parser.add_argument("--llm", action="store_true", help="Enable LLM-powered image descriptions (requires OpenAI API key)")
+    parser.add_argument("--llm-model", default="gpt-4o", help="LLM model to use (default: gpt-4o)")
+    parser.add_argument("--azure", action="store_true", help="Enable Azure Document Intelligence for PDFs")
+    parser.add_argument("--azure-endpoint", help="Azure Document Intelligence endpoint URL")
+    parser.add_argument("--azure-key", help="Azure Document Intelligence API key")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Print detailed progress")
 
     args = parser.parse_args()
 
     # Environment variable fallbacks for Azure
-    azure_endpoint = args.azure_endpoint or os.getenv('AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT')
-    azure_key = args.azure_key or os.getenv('AZURE_DOCUMENT_INTELLIGENCE_KEY')
+    azure_endpoint = args.azure_endpoint or os.getenv("AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT")
+    azure_key = args.azure_key or os.getenv("AZURE_DOCUMENT_INTELLIGENCE_KEY")
 
     batch_convert(
         input_dir=args.input_dir,
@@ -309,9 +279,9 @@ Supported file types:
         use_azure_di=args.azure,
         azure_endpoint=azure_endpoint,
         azure_key=azure_key,
-        verbose=args.verbose
+        verbose=args.verbose,
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

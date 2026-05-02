@@ -6,15 +6,10 @@ API endpoints for managing and querying receipt chains.
 
 from fastapi import APIRouter, HTTPException
 from pathlib import Path
-from typing import List, Optional
 
 from shadowtag_v2.receipt_chain import ChainStorage, ChainVerifier
 from app.core.config import settings
-from app.api.schemas.chain import (
-    ChainSummary,
-    ReceiptDetail,
-    VerificationResult
-)
+from app.api.schemas.chain import ChainSummary, ReceiptDetail, VerificationResult
 
 router = APIRouter()
 
@@ -76,12 +71,7 @@ async def verify_chain(chain_id: str):
     verifier = ChainVerifier()
     result = verifier.verify_chain(chain)
 
-    return VerificationResult(
-        is_valid=result.is_valid,
-        errors=result.errors,
-        warnings=result.warnings,
-        details=result.details
-    )
+    return VerificationResult(is_valid=result.is_valid, errors=result.errors, warnings=result.warnings, details=result.details)
 
 
 @router.get("/receipt/{operation_id}", response_model=ReceiptDetail)

@@ -25,14 +25,14 @@ from .utils import TestRunner, assert_agent_says
     indirect=True,
 )
 def test_before_agent_call(agent_runner: TestRunner):
-  agent_runner.run("Hi.")
+    agent_runner.run("Hi.")
 
-  # Assert the response content
-  assert_agent_says(
-      "End invocation event before agent call.",
-      agent_name="before_agent_callback_agent",
-      agent_runner=agent_runner,
-  )
+    # Assert the response content
+    assert_agent_says(
+        "End invocation event before agent call.",
+        agent_name="before_agent_callback_agent",
+        agent_runner=agent_runner,
+    )
 
 
 @mark.parametrize(
@@ -41,14 +41,14 @@ def test_before_agent_call(agent_runner: TestRunner):
     indirect=True,
 )
 def test_before_model_call(agent_runner: TestRunner):
-  agent_runner.run("Hi.")
+    agent_runner.run("Hi.")
 
-  # Assert the response content
-  assert_agent_says(
-      "End invocation event before model call.",
-      agent_name="before_model_callback_agent",
-      agent_runner=agent_runner,
-  )
+    # Assert the response content
+    assert_agent_says(
+        "End invocation event before model call.",
+        agent_name="before_model_callback_agent",
+        agent_runner=agent_runner,
+    )
 
 
 # TODO: re-enable vertex by removing below line after fixing.
@@ -59,11 +59,9 @@ def test_before_model_call(agent_runner: TestRunner):
     indirect=True,
 )
 def test_after_model_call(agent_runner: TestRunner):
-  events = agent_runner.run("Hi.")
+    events = agent_runner.run("Hi.")
 
-  # Assert the response content
-  simplified_events = simplify_events(events)
-  assert simplified_events[0][0] == "after_model_callback_agent"
-  assert simplified_events[0][1].endswith(
-      "Update response event after model call."
-  )
+    # Assert the response content
+    simplified_events = simplify_events(events)
+    assert simplified_events[0][0] == "after_model_callback_agent"
+    assert simplified_events[0][1].endswith("Update response event after model call.")

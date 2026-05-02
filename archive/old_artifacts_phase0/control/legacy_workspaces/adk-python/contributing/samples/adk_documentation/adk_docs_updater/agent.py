@@ -15,41 +15,31 @@
 import os
 import sys
 
-SAMPLES_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..")
-)
+SAMPLES_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 if SAMPLES_DIR not in sys.path:
-  sys.path.append(SAMPLES_DIR)
+    sys.path.append(SAMPLES_DIR)
 
 from google.adk import Agent
 
 from adk_documentation.settings import CODE_OWNER, CODE_REPO, DOC_OWNER, DOC_REPO, IS_INTERACTIVE, LOCAL_REPOS_DIR_PATH
 from adk_documentation.tools import (
-  clone_or_pull_repo,
-  create_pull_request_from_changes,
-  get_issue,
-  list_directory_contents,
-  read_local_git_repo_file_content,
-  search_local_git_repo,
+    clone_or_pull_repo,
+    create_pull_request_from_changes,
+    get_issue,
+    list_directory_contents,
+    read_local_git_repo_file_content,
+    search_local_git_repo,
 )
 
 if IS_INTERACTIVE:
-  APPROVAL_INSTRUCTION = (
-      "Ask for user approval or confirmation for creating the pull request."
-  )
+    APPROVAL_INSTRUCTION = "Ask for user approval or confirmation for creating the pull request."
 else:
-  APPROVAL_INSTRUCTION = (
-      "**Do not** wait or ask for user approval or confirmation for creating"
-      " the pull request."
-  )
+    APPROVAL_INSTRUCTION = "**Do not** wait or ask for user approval or confirmation for creating the pull request."
 
 root_agent = Agent(
     model="gemini-2.5-pro",
     name="adk_docs_updater",
-    description=(
-        "Update the ADK docs based on the code in the ADK Python codebase"
-        " according to the instructions in the ADK docs issues."
-    ),
+    description=("Update the ADK docs based on the code in the ADK Python codebase according to the instructions in the ADK docs issues."),
     instruction=f"""
       # 1. Identity
       You are a helper bot that updates ADK docs in GitHub Repository {DOC_OWNER}/{DOC_REPO}

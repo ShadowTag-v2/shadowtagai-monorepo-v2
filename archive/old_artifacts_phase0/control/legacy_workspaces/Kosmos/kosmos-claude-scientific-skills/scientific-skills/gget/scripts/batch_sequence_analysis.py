@@ -17,7 +17,7 @@ def read_fasta(fasta_file):
     current_id = None
     current_seq = []
 
-    with open(fasta_file, "r") as f:
+    with open(fasta_file) as f:
         for line in f:
             line = line.strip()
             if line.startswith(">"):
@@ -69,11 +69,9 @@ def analyze_sequences(
     print("Step 1: Running BLAST searches...")
     print("-" * 60)
     for i, seq_data in enumerate(sequences):
-        print(f"\n{i+1}. BLASTing {seq_data['id']}...")
+        print(f"\n{i + 1}. BLASTing {seq_data['id']}...")
         try:
-            blast_results = gget.blast(
-                seq_data["seq"], database=blast_db, limit=10, save=False
-            )
+            blast_results = gget.blast(seq_data["seq"], database=blast_db, limit=10, save=False)
 
             output_file = output_path / f"{seq_data['id']}_blast.csv"
             blast_results.to_csv(output_file, index=False)
@@ -81,10 +79,7 @@ def analyze_sequences(
 
             if len(blast_results) > 0:
                 print(f"   Top hit: {blast_results.iloc[0]['Description']}")
-                print(
-                    f"   Max Score: {blast_results.iloc[0]['Max Score']}, "
-                    f"Query Coverage: {blast_results.iloc[0]['Query Coverage']}"
-                )
+                print(f"   Max Score: {blast_results.iloc[0]['Max Score']}, Query Coverage: {blast_results.iloc[0]['Query Coverage']}")
         except Exception as e:
             print(f"   Error: {e}")
 
@@ -107,20 +102,16 @@ def analyze_sequences(
     if predict_structure:
         print("\n\nStep 3: Predicting structures with AlphaFold...")
         print("-" * 60)
-        print(
-            "Note: This requires 'gget setup alphafold' and is computationally intensive"
-        )
+        print("Note: This requires 'gget setup alphafold' and is computationally intensive")
 
         for i, seq_data in enumerate(sequences):
-            print(f"\n{i+1}. Predicting structure for {seq_data['id']}...")
+            print(f"\n{i + 1}. Predicting structure for {seq_data['id']}...")
             try:
                 output_path / f"structure_{seq_data['id']}"
                 # Uncomment to run AlphaFold prediction:
                 # gget.alphafold(seq_data['seq'], out=str(structure_dir))
                 # print(f"   Structure saved to: {structure_dir}")
-                print(
-                    "   (Prediction skipped - uncomment code to run AlphaFold prediction)"
-                )
+                print("   (Prediction skipped - uncomment code to run AlphaFold prediction)")
             except Exception as e:
                 print(f"   Error: {e}")
     else:
@@ -140,9 +131,7 @@ def analyze_sequences(
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Perform batch sequence analysis using gget"
-    )
+    parser = argparse.ArgumentParser(description="Perform batch sequence analysis using gget")
     parser.add_argument("fasta", help="Input FASTA file with sequences")
     parser.add_argument(
         "-db",
@@ -150,17 +139,13 @@ def main():
         default="nr",
         help="BLAST database (default: nr for proteins, nt for nucleotides)",
     )
-    parser.add_argument(
-        "--no-align", action="store_true", help="Skip multiple sequence alignment"
-    )
+    parser.add_argument("--no-align", action="store_true", help="Skip multiple sequence alignment")
     parser.add_argument(
         "--predict-structure",
         action="store_true",
         help="Predict structures with AlphaFold (requires setup)",
     )
-    parser.add_argument(
-        "-o", "--output", default="output", help="Output directory (default: output)"
-    )
+    parser.add_argument("-o", "--output", default="output", help="Output directory (default: output)")
 
     args = parser.parse_args()
 

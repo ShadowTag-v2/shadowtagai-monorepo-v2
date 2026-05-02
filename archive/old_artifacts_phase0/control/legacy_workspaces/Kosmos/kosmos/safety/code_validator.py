@@ -30,34 +30,42 @@ class CodeValidator:
 
     # Dangerous modules that should not be imported
     DANGEROUS_MODULES = [
-        'os', 'subprocess', 'sys', 'shutil', 'importlib',
-        'socket', 'urllib', 'requests', 'http', 'ftplib',
-        '__import__', 'eval', 'exec', 'compile', 'pickle'
+        "os",
+        "subprocess",
+        "sys",
+        "shutil",
+        "importlib",
+        "socket",
+        "urllib",
+        "requests",
+        "http",
+        "ftplib",
+        "__import__",
+        "eval",
+        "exec",
+        "compile",
+        "pickle",
     ]
 
     # Dangerous functions/operations
     DANGEROUS_PATTERNS = [
-        'open(',  # File operations (except specific allowed cases)
-        'eval(',
-        'exec(',
-        'compile(',
-        '__import__',
-        'globals(',
-        'locals(',
-        'vars(',
-        'delattr(',
-        'setattr(',
+        "open(",  # File operations (except specific allowed cases)
+        "eval(",
+        "exec(",
+        "compile(",
+        "__import__",
+        "globals(",
+        "locals(",
+        "vars(",
+        "delattr(",
+        "setattr(",
     ]
 
     # Network-related keywords (warnings)
-    NETWORK_KEYWORDS = ['socket', 'http', 'urllib', 'requests', 'api', 'ftp']
+    NETWORK_KEYWORDS = ["socket", "http", "urllib", "requests", "api", "ftp"]
 
     def __init__(
-        self,
-        ethical_guidelines_path: str | None = None,
-        allow_file_read: bool = True,
-        allow_file_write: bool = False,
-        allow_network: bool = False
+        self, ethical_guidelines_path: str | None = None, allow_file_read: bool = True, allow_file_write: bool = False, allow_network: bool = False
     ):
         """
         Initialize code validator.
@@ -90,7 +98,7 @@ class CodeValidator:
             try:
                 with open(path) as f:
                     data = json.load(f)
-                    for item in data.get('guidelines', []):
+                    for item in data.get("guidelines", []):
                         guidelines.append(EthicalGuideline(**item))
                 logger.info(f"Loaded {len(guidelines)} ethical guidelines from {path}")
             except Exception as e:
@@ -113,7 +121,7 @@ class CodeValidator:
                 required=True,
                 validation_method="keyword",
                 keywords=["harm", "danger", "toxic", "weapon", "exploit"],
-                severity_if_violated=RiskLevel.CRITICAL
+                severity_if_violated=RiskLevel.CRITICAL,
             ),
             EthicalGuideline(
                 guideline_id="privacy",
@@ -122,7 +130,7 @@ class CodeValidator:
                 required=True,
                 validation_method="keyword",
                 keywords=["pii", "ssn", "credit card", "password", "email"],
-                severity_if_violated=RiskLevel.HIGH
+                severity_if_violated=RiskLevel.HIGH,
             ),
             EthicalGuideline(
                 guideline_id="informed_consent",
@@ -131,7 +139,7 @@ class CodeValidator:
                 required=True,
                 validation_method="keyword",
                 keywords=["human subjects", "participants", "survey", "experiment on"],
-                severity_if_violated=RiskLevel.HIGH
+                severity_if_violated=RiskLevel.HIGH,
             ),
             EthicalGuideline(
                 guideline_id="animal_welfare",
@@ -140,7 +148,7 @@ class CodeValidator:
                 required=True,
                 validation_method="keyword",
                 keywords=["animal testing", "animal experiments", "in vivo"],
-                severity_if_violated=RiskLevel.HIGH
+                severity_if_violated=RiskLevel.HIGH,
             ),
             EthicalGuideline(
                 guideline_id="environmental",
@@ -149,15 +157,11 @@ class CodeValidator:
                 required=False,
                 validation_method="keyword",
                 keywords=["toxic waste", "pollution", "environmental damage"],
-                severity_if_violated=RiskLevel.MEDIUM
+                severity_if_violated=RiskLevel.MEDIUM,
             ),
         ]
 
-    def validate(
-        self,
-        code: str,
-        context: dict[str, Any] | None = None
-    ) -> SafetyReport:
+    def validate(self, code: str, context: dict[str, Any] | None = None) -> SafetyReport:
         """
         Validate code for safety, security, and ethical compliance.
 
@@ -214,8 +218,8 @@ class CodeValidator:
                 "allow_file_read": self.allow_file_read,
                 "allow_file_write": self.allow_file_write,
                 "allow_network": self.allow_network,
-                "context": context or {}
-            }
+                "context": context or {},
+            },
         )
 
         logger.info(f"Code validation: {report.summary()}")
@@ -228,12 +232,14 @@ class CodeValidator:
         try:
             ast.parse(code)
         except SyntaxError as e:
-            violations.append(SafetyViolation(
-                type=ViolationType.DANGEROUS_CODE,
-                severity=RiskLevel.HIGH,
-                message=f"Syntax error: {e}",
-                location=f"line {e.lineno}" if hasattr(e, 'lineno') else None
-            ))
+            violations.append(
+                SafetyViolation(
+                    type=ViolationType.DANGEROUS_CODE,
+                    severity=RiskLevel.HIGH,
+                    message=f"Syntax error: {e}",
+                    location=f"line {e.lineno}" if hasattr(e, "lineno") else None,
+                )
+            )
         return violations
 
     def _check_dangerous_imports(self, code: str) -> list[SafetyViolation]:
@@ -241,35 +247,44 @@ class CodeValidator:
         violations = []
         try:
             import ast
+
             tree = ast.parse(code)
             for node in ast.walk(tree):
                 if isinstance(node, ast.Import):
                     for alias in node.names:
                         if alias.name in self.DANGEROUS_MODULES or any(alias.name.startswith(f"{m}.") for m in self.DANGEROUS_MODULES):
-                            violations.append(SafetyViolation(
+                            violations.append(
+                                SafetyViolation(
+                                    type=ViolationType.DANGEROUS_CODE,
+                                    severity=RiskLevel.CRITICAL,
+                                    message=f"Dangerous import detected: {alias.name}",
+                                    details={"module": alias.name},
+                                )
+                            )
+                elif isinstance(node, ast.ImportFrom):
+                    if node.module and (
+                        node.module in self.DANGEROUS_MODULES or any(node.module.startswith(f"{m}.") for m in self.DANGEROUS_MODULES)
+                    ):
+                        violations.append(
+                            SafetyViolation(
                                 type=ViolationType.DANGEROUS_CODE,
                                 severity=RiskLevel.CRITICAL,
-                                message=f"Dangerous import detected: {alias.name}",
-                                details={"module": alias.name}
-                            ))
-                elif isinstance(node, ast.ImportFrom):
-                    if node.module and (node.module in self.DANGEROUS_MODULES or any(node.module.startswith(f"{m}.") for m in self.DANGEROUS_MODULES)):
-                        violations.append(SafetyViolation(
-                            type=ViolationType.DANGEROUS_CODE,
-                            severity=RiskLevel.CRITICAL,
-                            message=f"Dangerous import detected: from {node.module}",
-                            details={"module": node.module}
-                        ))
+                                message=f"Dangerous import detected: from {node.module}",
+                                details={"module": node.module},
+                            )
+                        )
         except SyntaxError:
             # Fall back to string matching if code has syntax errors
             for module in self.DANGEROUS_MODULES:
                 if f"import {module}" in code or f"from {module}" in code:
-                    violations.append(SafetyViolation(
-                        type=ViolationType.DANGEROUS_CODE,
-                        severity=RiskLevel.CRITICAL,
-                        message=f"Dangerous import detected: {module}",
-                        details={"module": module}
-                    ))
+                    violations.append(
+                        SafetyViolation(
+                            type=ViolationType.DANGEROUS_CODE,
+                            severity=RiskLevel.CRITICAL,
+                            message=f"Dangerous import detected: {module}",
+                            details={"module": module},
+                        )
+                    )
         return violations
 
     def _check_dangerous_patterns(self, code: str) -> tuple:
@@ -280,34 +295,40 @@ class CodeValidator:
         for pattern in self.DANGEROUS_PATTERNS:
             if pattern in code:
                 # Special case: allow open() for reading if permitted
-                if pattern == 'open(':
+                if pattern == "open(":
                     if self.allow_file_write:
                         warnings.append(f"File operation detected: {pattern}")
                     elif self.allow_file_read:
                         # Check if it's read-only (contains "'r'" or no mode specified)
                         if any(mode in code for mode in ["'w'", "'a'", "'x'", "mode='w'", 'mode="w"']):
-                            violations.append(SafetyViolation(
-                                type=ViolationType.FILE_SYSTEM_ACCESS,
-                                severity=RiskLevel.HIGH,
-                                message="Write mode file operations not allowed",
-                                details={"pattern": pattern}
-                            ))
+                            violations.append(
+                                SafetyViolation(
+                                    type=ViolationType.FILE_SYSTEM_ACCESS,
+                                    severity=RiskLevel.HIGH,
+                                    message="Write mode file operations not allowed",
+                                    details={"pattern": pattern},
+                                )
+                            )
                         else:
                             warnings.append(f"File read operation detected: {pattern}")
                     else:
-                        violations.append(SafetyViolation(
-                            type=ViolationType.FILE_SYSTEM_ACCESS,
-                            severity=RiskLevel.HIGH,
-                            message="File operations not allowed",
-                            details={"pattern": pattern}
-                        ))
+                        violations.append(
+                            SafetyViolation(
+                                type=ViolationType.FILE_SYSTEM_ACCESS,
+                                severity=RiskLevel.HIGH,
+                                message="File operations not allowed",
+                                details={"pattern": pattern},
+                            )
+                        )
                 else:
-                    violations.append(SafetyViolation(
-                        type=ViolationType.DANGEROUS_CODE,
-                        severity=RiskLevel.CRITICAL,
-                        message=f"Dangerous operation detected: {pattern}",
-                        details={"pattern": pattern}
-                    ))
+                    violations.append(
+                        SafetyViolation(
+                            type=ViolationType.DANGEROUS_CODE,
+                            severity=RiskLevel.CRITICAL,
+                            message=f"Dangerous operation detected: {pattern}",
+                            details={"pattern": pattern},
+                        )
+                    )
 
         return violations, warnings
 
@@ -320,18 +341,14 @@ class CodeValidator:
                     warnings.append(f"Potential network operation detected: {keyword}")
         return warnings
 
-    def _check_ethical_guidelines(
-        self,
-        code: str,
-        context: dict[str, Any] | None
-    ) -> list[SafetyViolation]:
+    def _check_ethical_guidelines(self, code: str, context: dict[str, Any] | None) -> list[SafetyViolation]:
         """Check code against ethical research guidelines."""
         violations = []
 
         # Combine code and context for checking
         text_to_check = code.lower()
         if context:
-            description = context.get('description', '') or context.get('hypothesis', '')
+            description = context.get("description", "") or context.get("hypothesis", "")
             if description:
                 text_to_check += " " + str(description).lower()
 
@@ -341,16 +358,14 @@ class CodeValidator:
                 for keyword in guideline.keywords:
                     if keyword.lower() in text_to_check:
                         if guideline.required:
-                            violations.append(SafetyViolation(
-                                type=ViolationType.ETHICAL_VIOLATION,
-                                severity=guideline.severity_if_violated,
-                                message=f"Potential ethical violation: {guideline.description}",
-                                details={
-                                    "guideline_id": guideline.guideline_id,
-                                    "category": guideline.category,
-                                    "keyword": keyword
-                                }
-                            ))
+                            violations.append(
+                                SafetyViolation(
+                                    type=ViolationType.ETHICAL_VIOLATION,
+                                    severity=guideline.severity_if_violated,
+                                    message=f"Potential ethical violation: {guideline.description}",
+                                    details={"guideline_id": guideline.guideline_id, "category": guideline.category, "keyword": keyword},
+                                )
+                            )
                         break  # Only report once per guideline
 
         return violations
@@ -401,12 +416,7 @@ class CodeValidator:
 
         return False
 
-    def create_approval_request(
-        self,
-        code: str,
-        report: SafetyReport,
-        context: dict[str, Any] | None = None
-    ) -> ApprovalRequest:
+    def create_approval_request(self, code: str, report: SafetyReport, context: dict[str, Any] | None = None) -> ApprovalRequest:
         """
         Create an approval request for code that needs human review.
 
@@ -447,6 +457,6 @@ class CodeValidator:
             context={
                 "code": code[:500],  # First 500 chars
                 "report": model_to_dict(report),
-                **(context or {})
-            }
+                **(context or {}),
+            },
         )

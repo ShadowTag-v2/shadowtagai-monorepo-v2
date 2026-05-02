@@ -27,8 +27,8 @@ from .. import testing_utils
 
 
 class CallbackType(Enum):
-  SYNC = 1
-  ASYNC = 2
+    SYNC = 1
+    ASYNC = 2
 
 
 async def mock_async_before_cb_side_effect(
@@ -36,13 +36,9 @@ async def mock_async_before_cb_side_effect(
     llm_request: LlmRequest,
     ret_value=None,
 ):
-  if ret_value:
-    return LlmResponse(
-        content=testing_utils.ModelContent(
-            [types.Part.from_text(text=ret_value)]
-        )
-    )
-  return None
+    if ret_value:
+        return LlmResponse(content=testing_utils.ModelContent([types.Part.from_text(text=ret_value)]))
+    return None
 
 
 def mock_sync_before_cb_side_effect(
@@ -50,13 +46,9 @@ def mock_sync_before_cb_side_effect(
     llm_request: LlmRequest,
     ret_value=None,
 ):
-  if ret_value:
-    return LlmResponse(
-        content=testing_utils.ModelContent(
-            [types.Part.from_text(text=ret_value)]
-        )
-    )
-  return None
+    if ret_value:
+        return LlmResponse(content=testing_utils.ModelContent([types.Part.from_text(text=ret_value)]))
+    return None
 
 
 async def mock_async_after_cb_side_effect(
@@ -64,13 +56,9 @@ async def mock_async_after_cb_side_effect(
     llm_response: LlmResponse,
     ret_value=None,
 ):
-  if ret_value:
-    return LlmResponse(
-        content=testing_utils.ModelContent(
-            [types.Part.from_text(text=ret_value)]
-        )
-    )
-  return None
+    if ret_value:
+        return LlmResponse(content=testing_utils.ModelContent([types.Part.from_text(text=ret_value)]))
+    return None
 
 
 def mock_sync_after_cb_side_effect(
@@ -78,13 +66,9 @@ def mock_sync_after_cb_side_effect(
     llm_response: LlmResponse,
     ret_value=None,
 ):
-  if ret_value:
-    return LlmResponse(
-        content=testing_utils.ModelContent(
-            [types.Part.from_text(text=ret_value)]
-        )
-    )
-  return None
+    if ret_value:
+        return LlmResponse(content=testing_utils.ModelContent([types.Part.from_text(text=ret_value)]))
+    return None
 
 
 CALLBACK_PARAMS = [
@@ -132,56 +116,47 @@ async def test_before_model_callbacks_chain(
     expected_response: str,
     expected_calls: list[int],
 ):
-  responses = ["model_response"]
-  mock_model = testing_utils.MockModel.create(responses=responses)
+    responses = ["model_response"]
+    mock_model = testing_utils.MockModel.create(responses=responses)
 
-  mock_cbs = []
-  for response, callback_type in callbacks:
+    mock_cbs = []
+    for response, callback_type in callbacks:
+        if callback_type == CallbackType.ASYNC:
+            mock_cb = mock.AsyncMock(side_effect=partial(mock_async_before_cb_side_effect, ret_value=response))
+        else:
+            mock_cb = mock.Mock(side_effect=partial(mock_sync_before_cb_side_effect, ret_value=response))
+        mock_cbs.append(mock_cb)
+    # Create agent with multiple callbacks
+    agent = Agent(
+        name="root_agent",
+        model=mock_model,
+        before_model_callback=[mock_cb for mock_cb in mock_cbs],
+    )
 
-    if callback_type == CallbackType.ASYNC:
-      mock_cb = mock.AsyncMock(
-          side_effect=partial(
-              mock_async_before_cb_side_effect, ret_value=response
-          )
-      )
-    else:
-      mock_cb = mock.Mock(
-          side_effect=partial(
-              mock_sync_before_cb_side_effect, ret_value=response
-          )
-      )
-    mock_cbs.append(mock_cb)
-  # Create agent with multiple callbacks
-  agent = Agent(
-      name="root_agent",
-      model=mock_model,
-      before_model_callback=[mock_cb for mock_cb in mock_cbs],
-  )
+    runner = testing_utils.TestInMemoryRunner(agent)
+    result = await runner.run_async_with_new_session("test")
+    assert testing_utils.simplify_events(result) == [
+        ("root_agent", expected_response),
+    ]
 
-  runner = testing_utils.TestInMemoryRunner(agent)
-  result = await runner.run_async_with_new_session("test")
-  assert testing_utils.simplify_events(result) == [
-      ("root_agent", expected_response),
-  ]
-
-  # Assert that the callbacks were called the expected number of times
-  for i, mock_cb in enumerate(mock_cbs):
-    expected_calls_count = expected_calls[i]
-    if expected_calls_count == 1:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_awaited_once()
-      else:
-        mock_cb.assert_called_once()
-    elif expected_calls_count == 0:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_not_awaited()
-      else:
-        mock_cb.assert_not_called()
-    else:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_awaited(expected_calls_count)
-      else:
-        mock_cb.assert_called(expected_calls_count)
+    # Assert that the callbacks were called the expected number of times
+    for i, mock_cb in enumerate(mock_cbs):
+        expected_calls_count = expected_calls[i]
+        if expected_calls_count == 1:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_awaited_once()
+            else:
+                mock_cb.assert_called_once()
+        elif expected_calls_count == 0:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_not_awaited()
+            else:
+                mock_cb.assert_not_called()
+        else:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_awaited(expected_calls_count)
+            else:
+                mock_cb.assert_called(expected_calls_count)
 
 
 @pytest.mark.parametrize(
@@ -194,53 +169,44 @@ async def test_after_model_callbacks_chain(
     expected_response: str,
     expected_calls: list[int],
 ):
-  responses = ["model_response"]
-  mock_model = testing_utils.MockModel.create(responses=responses)
+    responses = ["model_response"]
+    mock_model = testing_utils.MockModel.create(responses=responses)
 
-  mock_cbs = []
-  for response, callback_type in callbacks:
+    mock_cbs = []
+    for response, callback_type in callbacks:
+        if callback_type == CallbackType.ASYNC:
+            mock_cb = mock.AsyncMock(side_effect=partial(mock_async_after_cb_side_effect, ret_value=response))
+        else:
+            mock_cb = mock.Mock(side_effect=partial(mock_sync_after_cb_side_effect, ret_value=response))
+        mock_cbs.append(mock_cb)
+    # Create agent with multiple callbacks
+    agent = Agent(
+        name="root_agent",
+        model=mock_model,
+        after_model_callback=[mock_cb for mock_cb in mock_cbs],
+    )
 
-    if callback_type == CallbackType.ASYNC:
-      mock_cb = mock.AsyncMock(
-          side_effect=partial(
-              mock_async_after_cb_side_effect, ret_value=response
-          )
-      )
-    else:
-      mock_cb = mock.Mock(
-          side_effect=partial(
-              mock_sync_after_cb_side_effect, ret_value=response
-          )
-      )
-    mock_cbs.append(mock_cb)
-  # Create agent with multiple callbacks
-  agent = Agent(
-      name="root_agent",
-      model=mock_model,
-      after_model_callback=[mock_cb for mock_cb in mock_cbs],
-  )
+    runner = testing_utils.TestInMemoryRunner(agent)
+    result = await runner.run_async_with_new_session("test")
+    assert testing_utils.simplify_events(result) == [
+        ("root_agent", expected_response),
+    ]
 
-  runner = testing_utils.TestInMemoryRunner(agent)
-  result = await runner.run_async_with_new_session("test")
-  assert testing_utils.simplify_events(result) == [
-      ("root_agent", expected_response),
-  ]
-
-  # Assert that the callbacks were called the expected number of times
-  for i, mock_cb in enumerate(mock_cbs):
-    expected_calls_count = expected_calls[i]
-    if expected_calls_count == 1:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_awaited_once()
-      else:
-        mock_cb.assert_called_once()
-    elif expected_calls_count == 0:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_not_awaited()
-      else:
-        mock_cb.assert_not_called()
-    else:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_awaited(expected_calls_count)
-      else:
-        mock_cb.assert_called(expected_calls_count)
+    # Assert that the callbacks were called the expected number of times
+    for i, mock_cb in enumerate(mock_cbs):
+        expected_calls_count = expected_calls[i]
+        if expected_calls_count == 1:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_awaited_once()
+            else:
+                mock_cb.assert_called_once()
+        elif expected_calls_count == 0:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_not_awaited()
+            else:
+                mock_cb.assert_not_called()
+        else:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_awaited(expected_calls_count)
+            else:
+                mock_cb.assert_called(expected_calls_count)

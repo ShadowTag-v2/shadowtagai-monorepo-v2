@@ -4,7 +4,7 @@ import time
 BATCH_SIZE = 15
 
 # Read commits in chronological order (oldest first)
-with open("commits.txt", "r") as f:
+with open("commits.txt") as f:
     commits = [line.strip() for line in f if line.strip()]
 
 total = len(commits)

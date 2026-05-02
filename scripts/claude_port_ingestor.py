@@ -1,6 +1,5 @@
 import os
 import shutil
-from pathlib import Path
 
 SRC_DIR = "/Users/pikeymickey/Downloads/Claude_Source_Code"
 DEST_DIR = "_audit_claude_code"

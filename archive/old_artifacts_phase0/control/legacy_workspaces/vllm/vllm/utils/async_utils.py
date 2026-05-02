@@ -120,10 +120,12 @@ class AsyncMicrobatchTokenizer:
                             data = {k: v[i] for k, v in results.items()}
                             fut.set_result(BatchEncoding(data))
                 else:
+
                     def encode_fn(prompts=prompts, kwargs=kwargs_list):
                         return [
-                                            self.tokenizer(p, **kw) for p, kw in zip(prompts, kwargs)
-                                        ]
+                            self.tokenizer(p, **kw) for p, kw in zip(prompts, kwargs)
+                        ]
+
                     results = await self._loop.run_in_executor(
                         self._executor, encode_fn
                     )

@@ -36,6 +36,7 @@ logger = logging.getLogger(__name__)
 
 class SourceType(Enum):
     """Source types for ingestion"""
+
     YOUTUBE = "youtube"
     TWITTER = "twitter"
     NEWS = "news"
@@ -47,6 +48,7 @@ class SourceType(Enum):
 
 class DataTier(Enum):
     """Data quality/value tiers"""
+
     TIER_1 = 1  # High value, verified, actionable
     TIER_2 = 2  # Medium value, needs validation
     TIER_3 = 3  # Low value, reference only
@@ -54,6 +56,7 @@ class DataTier(Enum):
 
 class RelevanceCategory(Enum):
     """Content relevance categories"""
+
     TRAFFIC = "traffic"
     TRANSPORTATION = "transportation"
     URBAN_MOBILITY = "urban_mobility"
@@ -67,6 +70,7 @@ class RelevanceCategory(Enum):
 @dataclass
 class EthicalCrawlingConfig:
     """Configuration for ethical web crawling"""
+
     respect_robots_txt: bool = True
     rate_limit_requests_per_minute: int = 60
     user_agent: str = "ShadowTag-v2-Ingestion-Bot/1.0 (+https://ShadowTag-v2.ai/bot)"
@@ -80,6 +84,7 @@ class EthicalCrawlingConfig:
 @dataclass
 class SourceConfig:
     """Configuration for a data source"""
+
     source_id: str
     source_type: SourceType
     url: str
@@ -95,6 +100,7 @@ class SourceConfig:
 @dataclass
 class IngestedItem:
     """Ingested data item"""
+
     item_id: str
     source_id: str
     source_type: SourceType
@@ -114,6 +120,7 @@ class IngestedItem:
 @dataclass
 class IngestionMetrics:
     """Metrics for ingestion run"""
+
     run_id: str
     started_at: datetime
     completed_at: datetime | None = None
@@ -121,11 +128,7 @@ class IngestionMetrics:
 
     # Items
     total_items_ingested: int = 0
-    items_by_tier: dict[DataTier, int] = field(default_factory=lambda: {
-        DataTier.TIER_1: 0,
-        DataTier.TIER_2: 0,
-        DataTier.TIER_3: 0
-    })
+    items_by_tier: dict[DataTier, int] = field(default_factory=lambda: {DataTier.TIER_1: 0, DataTier.TIER_2: 0, DataTier.TIER_3: 0})
     items_by_source: dict[str, int] = field(default_factory=dict)
 
     # Quality
@@ -196,6 +199,7 @@ class EthicalCrawler:
     def _get_domain(self, url: str) -> str:
         """Extract domain from URL"""
         from urllib.parse import urlparse
+
         return urlparse(url).netloc
 
     async def fetch(self, url: str, headers: dict | None = None) -> str | None:
@@ -223,12 +227,7 @@ class GeminiAnalyzer:
     def __init__(self, api_key: str | None = None):
         self.api_key = api_key
 
-    async def analyze_content(
-        self,
-        title: str,
-        content: str,
-        source_type: SourceType
-    ) -> dict[str, Any]:
+    async def analyze_content(self, title: str, content: str, source_type: SourceType) -> dict[str, Any]:
         """
         Analyze content using Gemini API
 
@@ -277,7 +276,7 @@ class GeminiAnalyzer:
             "summary": f"Analysis of {source_type.value} content about {', '.join([c.value for c in categories])}",
             "key_points": ["Point 1", "Point 2", "Point 3"],
             "sentiment": "neutral",
-            "cost_cents": 0.02  # Gemini API cost per analysis
+            "cost_cents": 0.02,  # Gemini API cost per analysis
         }
 
 
@@ -337,11 +336,7 @@ class TierClassifier:
 class IngestionPipeline:
     """Main ingestion pipeline orchestrator"""
 
-    def __init__(
-        self,
-        crawler_config: EthicalCrawlingConfig,
-        gemini_api_key: str | None = None
-    ):
+    def __init__(self, crawler_config: EthicalCrawlingConfig, gemini_api_key: str | None = None):
         self.crawler = EthicalCrawler(crawler_config)
         self.analyzer = GeminiAnalyzer(gemini_api_key)
         self.classifier = TierClassifier()
@@ -358,10 +353,7 @@ class IngestionPipeline:
     async def run(self) -> IngestionMetrics:
         """Run ingestion pipeline"""
         run_id = hashlib.sha256(str(time.time()).encode()).hexdigest()[:16]
-        self.metrics = IngestionMetrics(
-            run_id=run_id,
-            started_at=datetime.now()
-        )
+        self.metrics = IngestionMetrics(run_id=run_id, started_at=datetime.now())
 
         logger.info(f"Starting ingestion run {run_id}")
 
@@ -386,9 +378,7 @@ class IngestionPipeline:
 
         # Finalize metrics
         self.metrics.completed_at = datetime.now()
-        self.metrics.runtime_seconds = (
-            self.metrics.completed_at - self.metrics.started_at
-        ).total_seconds()
+        self.metrics.runtime_seconds = (self.metrics.completed_at - self.metrics.started_at).total_seconds()
 
         self._calculate_metrics()
 
@@ -437,7 +427,7 @@ class IngestionPipeline:
                 "title": f"Item from {source.source_id}",
                 "content": content[:200],
                 "url": source.url,
-                "published_at": datetime.now() - timedelta(hours=2)
+                "published_at": datetime.now() - timedelta(hours=2),
             }
         ]
 
@@ -455,32 +445,18 @@ class IngestionPipeline:
                 "content": "Emergency braking event at intersection, 15 vehicles affected",
                 "url": f"{source.url}/events/123",
                 "published_at": datetime.now() - timedelta(minutes=30),
-                "metadata": {
-                    "severity": 8,
-                    "affected_radius_m": 500,
-                    "event_type": "hard_brake"
-                }
+                "metadata": {"severity": 8, "affected_radius_m": 500, "event_type": "hard_brake"},
             }
         ]
 
-    async def _process_item(
-        self,
-        item_data: dict,
-        source: SourceConfig
-    ) -> IngestedItem | None:
+    async def _process_item(self, item_data: dict, source: SourceConfig) -> IngestedItem | None:
         """Process individual item"""
         # Analyze with Gemini
-        analysis = await self.analyzer.analyze_content(
-            title=item_data["title"],
-            content=item_data["content"],
-            source_type=source.source_type
-        )
+        analysis = await self.analyzer.analyze_content(title=item_data["title"], content=item_data["content"], source_type=source.source_type)
 
         # Create item
         item = IngestedItem(
-            item_id=hashlib.sha256(
-                (item_data["url"] + str(item_data["published_at"])).encode()
-            ).hexdigest()[:16],
+            item_id=hashlib.sha256((item_data["url"] + str(item_data["published_at"])).encode()).hexdigest()[:16],
             source_id=source.source_id,
             source_type=source.source_type,
             tier=source.tier,  # Initial tier from source
@@ -490,12 +466,10 @@ class IngestionPipeline:
             published_at=item_data["published_at"],
             ingested_at=datetime.now(),
             relevance_score=analysis["relevance_score"],
-            relevance_categories=[
-                RelevanceCategory(c) for c in analysis["categories"]
-            ],
+            relevance_categories=[RelevanceCategory(c) for c in analysis["categories"]],
             metadata=item_data.get("metadata", {}),
             cost_cents=analysis["cost_cents"],
-            gemini_analysis=analysis
+            gemini_analysis=analysis,
         )
 
         # Reclassify tier based on analysis
@@ -509,31 +483,19 @@ class IngestionPipeline:
             return
 
         # Average relevance
-        self.metrics.avg_relevance_score = sum(
-            i.relevance_score for i in self.ingested_items
-        ) / len(self.ingested_items)
+        self.metrics.avg_relevance_score = sum(i.relevance_score for i in self.ingested_items) / len(self.ingested_items)
 
         # Timeliness (% items <24hrs old)
-        recent = sum(
-            1 for i in self.ingested_items
-            if (datetime.now() - i.published_at).total_seconds() < 86400
-        )
+        recent = sum(1 for i in self.ingested_items if (datetime.now() - i.published_at).total_seconds() < 86400)
         self.metrics.timeliness_score = recent / len(self.ingested_items)
 
         # Completeness (% with metadata)
-        complete = sum(
-            1 for i in self.ingested_items
-            if i.metadata and len(i.metadata) >= 3
-        )
+        complete = sum(1 for i in self.ingested_items if i.metadata and len(i.metadata) >= 3)
         self.metrics.completeness_score = complete / len(self.ingested_items)
 
         # Costs
-        self.metrics.total_cost_dollars = sum(
-            i.cost_cents for i in self.ingested_items
-        ) / 100.0
-        self.metrics.cost_per_item_cents = (
-            self.metrics.total_cost_dollars * 100
-        ) / len(self.ingested_items)
+        self.metrics.total_cost_dollars = sum(i.cost_cents for i in self.ingested_items) / 100.0
+        self.metrics.cost_per_item_cents = (self.metrics.total_cost_dollars * 100) / len(self.ingested_items)
 
     def get_am_briefing(self) -> dict[str, Any]:
         """Generate AM briefing from ingested data"""
@@ -558,68 +520,65 @@ class IngestionPipeline:
                 "tier1_items": len(tier1_items),
                 "avg_relevance": f"{self.metrics.avg_relevance_score:.2f}",
                 "sources_used": self.metrics.sources_crawled,
-                "runtime_minutes": f"{self.metrics.runtime_seconds / 60:.1f}"
+                "runtime_minutes": f"{self.metrics.runtime_seconds / 60:.1f}",
             },
             "highlights": [],
-            "by_category": {}
+            "by_category": {},
         }
 
         # Top 5 highlights
-        sorted_items = sorted(
-            tier1_items,
-            key=lambda x: x.relevance_score,
-            reverse=True
-        )[:5]
+        sorted_items = sorted(tier1_items, key=lambda x: x.relevance_score, reverse=True)[:5]
 
         for item in sorted_items:
-            briefing["highlights"].append({
-                "title": item.title,
-                "category": item.relevance_categories[0].value if item.relevance_categories else "other",
-                "relevance": f"{item.relevance_score:.2f}",
-                "url": item.url
-            })
+            briefing["highlights"].append(
+                {
+                    "title": item.title,
+                    "category": item.relevance_categories[0].value if item.relevance_categories else "other",
+                    "relevance": f"{item.relevance_score:.2f}",
+                    "url": item.url,
+                }
+            )
 
         # Category breakdown
         for cat, items in by_category.items():
-            briefing["by_category"][cat.value] = {
-                "count": len(items),
-                "top_item": items[0].title if items else None
-            }
+            briefing["by_category"][cat.value] = {"count": len(items), "top_item": items[0].title if items else None}
 
         return briefing
 
 
 # Example usage
 if __name__ == "__main__":
+
     async def main():
         # Configure ethical crawling
         crawler_config = EthicalCrawlingConfig(
             rate_limit_requests_per_minute=60,
-            avoid_peak_hours=False  # For testing
+            avoid_peak_hours=False,  # For testing
         )
 
         # Create pipeline
-        pipeline = IngestionPipeline(
-            crawler_config=crawler_config,
-            gemini_api_key="mock-api-key"
-        )
+        pipeline = IngestionPipeline(crawler_config=crawler_config, gemini_api_key="mock-api-key")
 
         # Add sources
-        pipeline.add_source(SourceConfig(
-            source_id="v2x-mesh-prod",
-            source_type=SourceType.V2X_MESH,
-            url="http://v2x-mesh-gateway/v1/events",
-            tier=DataTier.TIER_1,
-            relevance_categories=[RelevanceCategory.TRAFFIC, RelevanceCategory.SAFETY]
-        ))
+        pipeline.add_source(
+            SourceConfig(
+                source_id="v2x-mesh-prod",
+                source_type=SourceType.V2X_MESH,
+                url="http://v2x-mesh-gateway/v1/events",
+                tier=DataTier.TIER_1,
+                relevance_categories=[RelevanceCategory.TRAFFIC, RelevanceCategory.SAFETY],
+            )
+        )
 
-        pipeline.add_source(SourceConfig(
-            source_id="traffic-news-rss",
-            source_type=SourceType.RSS,
-            url="https://example.com/traffic-news/rss",
-            tier=DataTier.TIER_2,
-            relevance_categories=[RelevanceCategory.TRAFFIC]
-        ))
+        pipeline.add_source(
+            SourceConfig(
+                source_id="traffic-news-rss",
+                source_type=SourceType.RSS,
+                url="https://example.com/traffic-news/rss",
+                tier=DataTier.TIER_2,
+                relevance_categories=[RelevanceCategory.TRAFFIC],
+            )
+        )
 
         # Run ingestion
         metrics = await pipeline.run()

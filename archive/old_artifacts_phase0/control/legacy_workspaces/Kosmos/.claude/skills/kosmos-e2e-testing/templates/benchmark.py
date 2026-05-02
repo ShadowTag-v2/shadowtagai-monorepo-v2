@@ -78,23 +78,27 @@ async def benchmark_provider(provider: str, prompts: list) -> dict:
             # Estimate tokens (rough)
             tokens = len(response.split()) if response else 0
 
-            results["prompts"].append({
-                "name": prompt_data["name"],
-                "time": elapsed,
-                "tokens": tokens,
-                "tokens_per_second": tokens / elapsed if elapsed > 0 else 0,
-                "success": True,
-            })
+            results["prompts"].append(
+                {
+                    "name": prompt_data["name"],
+                    "time": elapsed,
+                    "tokens": tokens,
+                    "tokens_per_second": tokens / elapsed if elapsed > 0 else 0,
+                    "success": True,
+                }
+            )
 
             results["total_time"] += elapsed
             results["total_tokens"] += tokens
 
         except Exception as e:
-            results["prompts"].append({
-                "name": prompt_data["name"],
-                "error": str(e),
-                "success": False,
-            })
+            results["prompts"].append(
+                {
+                    "name": prompt_data["name"],
+                    "error": str(e),
+                    "success": False,
+                }
+            )
 
     # Calculate averages
     successful = [p for p in results["prompts"] if p.get("success")]
@@ -124,12 +128,7 @@ def print_results(all_results: list):
         else:
             success_count = sum(1 for p in result["prompts"] if p.get("success"))
             total = len(result["prompts"])
-            print(
-                f"{result['provider']:<20} "
-                f"{result['avg_time']:.2f}s{'':<6} "
-                f"{result['avg_tps']:.1f}{'':<6} "
-                f"{success_count}/{total}"
-            )
+            print(f"{result['provider']:<20} {result['avg_time']:.2f}s{'':<6} {result['avg_tps']:.1f}{'':<6} {success_count}/{total}")
 
     # Detailed results
     print("\n" + "-" * 70)
@@ -141,10 +140,7 @@ def print_results(all_results: list):
         for result in all_results:
             if "error" in result:
                 continue
-            prompt_result = next(
-                (p for p in result["prompts"] if p["name"] == prompt["name"]),
-                None
-            )
+            prompt_result = next((p for p in result["prompts"] if p["name"] == prompt["name"]), None)
             if prompt_result and prompt_result.get("success"):
                 print(
                     f"  {result['provider']:<18}: "

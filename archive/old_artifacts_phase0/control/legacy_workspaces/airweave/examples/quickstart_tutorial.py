@@ -79,7 +79,7 @@ source_connection = client.source_connections.create(
         "credentials": {
             "api_key": "SK_TEST_YOUR_STRIPE_API_KEY"  # Replace with real API key
         }
-    }
+    },
 )
 
 print("✅ Created source connection: My Stripe Connection")
@@ -101,10 +101,7 @@ print(f"🔎 Searching for: '{query}'")
 print()
 
 try:
-    results = client.collections.search(
-        readable_id=collection_id,
-        query=query
-    )
+    results = client.collections.search(readable_id=collection_id, query=query)
 
     print(f"📊 Found {len(results.results)} results")
     print()
@@ -142,24 +139,14 @@ try:
     # Create advanced search request
     search_request = SearchRequest(
         query="customer feedback about pricing",
-        filter=Filter(
-            must=[
-                FieldCondition(
-                    key="source_name",
-                    match=MatchAny(any=["Stripe", "Zendesk", "Slack"])
-                )
-            ]
-        ),
-        recency_bias=0.5,        # Prefer newer content
-        score_threshold=0.7,     # High-quality results only
-        enable_reranking=True,   # AI reranking for better relevance
-        limit=10
+        filter=Filter(must=[FieldCondition(key="source_name", match=MatchAny(any=["Stripe", "Zendesk", "Slack"]))]),
+        recency_bias=0.5,  # Prefer newer content
+        score_threshold=0.7,  # High-quality results only
+        enable_reranking=True,  # AI reranking for better relevance
+        limit=10,
     )
 
-    advanced_results = client.collections.search_advanced(
-        readable_id=collection_id,
-        search_request=search_request
-    )
+    advanced_results = client.collections.search_advanced(readable_id=collection_id, search_request=search_request)
 
     print(f"📊 Advanced search found {len(advanced_results.results)} results")
     print("✅ Used: filters + recency bias + score threshold + AI reranking")

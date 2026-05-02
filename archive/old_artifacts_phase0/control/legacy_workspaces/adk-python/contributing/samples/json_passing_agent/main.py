@@ -27,42 +27,38 @@ logs.log_to_tmp_folder()
 
 
 async def main():
-  """Runs the pizza ordering agent."""
-  app_name = 'pizza_app'
-  user_id = 'user1'
-  runner = InMemoryRunner(
-      agent=agent.root_agent,
-      app_name=app_name,
-  )
-  session = await runner.session_service.create_session(
-      app_name=app_name, user_id=user_id
-  )
-
-  async def run_prompt(session: Session, new_message: str):
-    content = types.Content(
-        role='user', parts=[types.Part.from_text(text=new_message)]
+    """Runs the pizza ordering agent."""
+    app_name = "pizza_app"
+    user_id = "user1"
+    runner = InMemoryRunner(
+        agent=agent.root_agent,
+        app_name=app_name,
     )
-    print(f'** User says: {new_message}')
-    async for event in runner.run_async(
-        user_id=user_id,
-        session_id=session.id,
-        new_message=content,
-    ):
-      if event.content and event.content.parts and event.content.parts[0].text:
-        print(f'** {event.author}: {event.content.parts[0].text}')
+    session = await runner.session_service.create_session(app_name=app_name, user_id=user_id)
 
-  start_time = time.time()
-  print('Start time:', time.ctime(start_time))
-  print('------------------------------------')
-  await run_prompt(
-      session,
-      "I'd like a large pizza with pepperoni and mushrooms on a thin crust.",
-  )
-  print('------------------------------------')
-  end_time = time.time()
-  print('End time:', time.ctime(end_time))
-  print(f'Total time: {end_time - start_time:.2f} seconds')
+    async def run_prompt(session: Session, new_message: str):
+        content = types.Content(role="user", parts=[types.Part.from_text(text=new_message)])
+        print(f"** User says: {new_message}")
+        async for event in runner.run_async(
+            user_id=user_id,
+            session_id=session.id,
+            new_message=content,
+        ):
+            if event.content and event.content.parts and event.content.parts[0].text:
+                print(f"** {event.author}: {event.content.parts[0].text}")
+
+    start_time = time.time()
+    print("Start time:", time.ctime(start_time))
+    print("------------------------------------")
+    await run_prompt(
+        session,
+        "I'd like a large pizza with pepperoni and mushrooms on a thin crust.",
+    )
+    print("------------------------------------")
+    end_time = time.time()
+    print("End time:", time.ctime(end_time))
+    print(f"Total time: {end_time - start_time:.2f} seconds")
 
 
-if __name__ == '__main__':
-  asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

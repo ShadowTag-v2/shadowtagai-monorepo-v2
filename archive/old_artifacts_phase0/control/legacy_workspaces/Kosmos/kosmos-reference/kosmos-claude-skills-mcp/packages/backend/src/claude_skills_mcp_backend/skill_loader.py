@@ -126,9 +126,7 @@ def parse_skill_md(content: str, source: str) -> Skill | None:
     """
     try:
         # Parse YAML frontmatter (between --- markers)
-        frontmatter_match = re.match(
-            r"^---\s*\n(.*?)\n---\s*\n(.*)$", content, re.DOTALL
-        )
+        frontmatter_match = re.match(r"^---\s*\n(.*?)\n---\s*\n(.*)$", content, re.DOTALL)
 
         if not frontmatter_match:
             logger.warning(f"No YAML frontmatter found in skill from {source}")
@@ -225,9 +223,7 @@ def _load_text_file(file_path: Path) -> dict[str, Any] | None:
         return None
 
 
-def _load_image_file(
-    file_path: Path, max_size: int, url: str | None = None
-) -> dict[str, Any] | None:
+def _load_image_file(file_path: Path, max_size: int, url: str | None = None) -> dict[str, Any] | None:
     """Load an image file and return its metadata with base64 encoding.
 
     Parameters
@@ -248,10 +244,7 @@ def _load_image_file(
         file_size = file_path.stat().st_size
 
         if file_size > max_size:
-            logger.warning(
-                f"Image {file_path} exceeds size limit ({file_size} > {max_size}), "
-                "storing metadata only"
-            )
+            logger.warning(f"Image {file_path} exceeds size limit ({file_size} > {max_size}), storing metadata only")
             result = {
                 "type": "image",
                 "size": file_size,
@@ -358,9 +351,7 @@ def load_from_local(path: str, config: dict[str, Any] | None = None) -> list[Ski
         "text_file_extensions",
         [".md", ".py", ".txt", ".json", ".yaml", ".yml", ".sh", ".r", ".ipynb"],
     )
-    image_extensions = config.get(
-        "allowed_image_extensions", [".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"]
-    )
+    image_extensions = config.get("allowed_image_extensions", [".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"])
     max_image_size = config.get("max_image_size_bytes", 5242880)
 
     try:
@@ -385,14 +376,10 @@ def load_from_local(path: str, config: dict[str, Any] | None = None) -> list[Ski
                     # Load additional documents from the skill directory
                     if load_documents:
                         skill_dir = skill_file.parent
-                        documents = _load_documents_from_directory(
-                            skill_dir, text_extensions, image_extensions, max_image_size
-                        )
+                        documents = _load_documents_from_directory(skill_dir, text_extensions, image_extensions, max_image_size)
                         skill.documents = documents
                         if documents:
-                            logger.info(
-                                f"Loaded {len(documents)} additional documents for skill: {skill.name}"
-                            )
+                            logger.info(f"Loaded {len(documents)} additional documents for skill: {skill.name}")
 
                     skills.append(skill)
                     logger.info(f"Loaded skill: {skill.name} from {skill_file}")
@@ -446,9 +433,7 @@ def _get_cache_path(url: str, branch: str) -> Path:
     return cache_dir / f"{hash_key}.json"
 
 
-def _load_from_cache(
-    cache_path: Path, max_age_hours: int = 24
-) -> dict[str, Any] | None:
+def _load_from_cache(cache_path: Path, max_age_hours: int = 24) -> dict[str, Any] | None:
     """Load cached GitHub API response if available and not expired.
 
     Parameters
@@ -716,9 +701,7 @@ def _create_document_fetcher(
     return fetch_document
 
 
-def load_from_github(
-    url: str, subpath: str = "", config: dict[str, Any] | None = None
-) -> list[Skill]:
+def load_from_github(url: str, subpath: str = "", config: dict[str, Any] | None = None) -> list[Skill]:
     """Load skills from a GitHub repository.
 
     Parameters
@@ -749,9 +732,7 @@ def load_from_github(
         "text_file_extensions",
         [".md", ".py", ".txt", ".json", ".yaml", ".yml", ".sh", ".r", ".ipynb"],
     )
-    image_extensions = config.get(
-        "allowed_image_extensions", [".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"]
-    )
+    image_extensions = config.get("allowed_image_extensions", [".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"])
     max_image_size = config.get("max_image_size_bytes", 5242880)
 
     try:
@@ -779,13 +760,9 @@ def load_from_github(
                     logger.info(f"Extracted subpath from URL: {subpath}")
 
         if subpath:
-            logger.info(
-                f"Loading skills from GitHub: {owner}/{repo} (branch: {branch}, subpath: {subpath})"
-            )
+            logger.info(f"Loading skills from GitHub: {owner}/{repo} (branch: {branch}, subpath: {subpath})")
         else:
-            logger.info(
-                f"Loading skills from GitHub: {owner}/{repo} (branch: {branch})"
-            )
+            logger.info(f"Loading skills from GitHub: {owner}/{repo} (branch: {branch})")
 
         # Get repository tree (with caching to avoid API limits)
         cache_path = _get_cache_path(url, branch)
@@ -860,9 +837,7 @@ def load_from_github(
                         skill._document_fetcher = fetcher
 
                         if documents:
-                            logger.info(
-                                f"Found {len(documents)} additional documents for skill: {skill.name}"
-                            )
+                            logger.info(f"Found {len(documents)} additional documents for skill: {skill.name}")
 
                     skills.append(skill)
                     logger.info(f"Loaded skill: {skill.name} from {source}")
@@ -877,9 +852,7 @@ def load_from_github(
         if e.response.status_code == 404:
             # Try 'master' branch instead
             try:
-                logger.info(
-                    f"Branch 'main' not found, trying 'master' for {owner}/{repo}"
-                )
+                logger.info(f"Branch 'main' not found, trying 'master' for {owner}/{repo}")
                 branch = "master"
 
                 # Try cache for master branch
@@ -953,9 +926,7 @@ def load_from_github(
                                 skill._document_fetcher = fetcher
 
                                 if documents:
-                                    logger.info(
-                                        f"Found {len(documents)} additional documents for skill: {skill.name}"
-                                    )
+                                    logger.info(f"Found {len(documents)} additional documents for skill: {skill.name}")
 
                             skills.append(skill)
                             logger.info(f"Loaded skill: {skill.name} from {source}")
@@ -967,9 +938,7 @@ def load_from_github(
                 logger.info(f"Loaded {len(skills)} skills from GitHub repo {url}")
 
             except Exception as e2:
-                logger.error(
-                    f"Error loading from GitHub repo {url} (tried both main and master): {e2}"
-                )
+                logger.error(f"Error loading from GitHub repo {url} (tried both main and master): {e2}")
         else:
             logger.error(f"HTTP error loading from GitHub {url}: {e}")
 
@@ -979,9 +948,7 @@ def load_from_github(
     return skills
 
 
-def load_all_skills(
-    skill_sources: list[dict[str, Any]], config: dict[str, Any] | None = None
-) -> list[Skill]:
+def load_all_skills(skill_sources: list[dict[str, Any]], config: dict[str, Any] | None = None) -> list[Skill]:
     """Load skills from all configured sources.
 
     Parameters

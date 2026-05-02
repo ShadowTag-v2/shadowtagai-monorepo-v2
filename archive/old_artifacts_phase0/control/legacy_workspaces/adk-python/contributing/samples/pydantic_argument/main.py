@@ -32,82 +32,63 @@ logs.setup_adk_logger(level=logging.INFO)
 
 
 async def call_agent_async(runner, user_id, session_id, prompt):
-  """Helper function to call the agent and return response."""
-  content = types.Content(
-      role="user", parts=[types.Part.from_text(text=prompt)]
-  )
+    """Helper function to call the agent and return response."""
+    content = types.Content(role="user", parts=[types.Part.from_text(text=prompt)])
 
-  final_response_text = ""
-  async for event in runner.run_async(
-      user_id=user_id,
-      session_id=session_id,
-      new_message=content,
-      run_config=RunConfig(save_input_blobs_as_artifacts=False),
-  ):
-    if hasattr(event, "content") and event.content:
-      final_response_text += event.content
+    final_response_text = ""
+    async for event in runner.run_async(
+        user_id=user_id,
+        session_id=session_id,
+        new_message=content,
+        run_config=RunConfig(save_input_blobs_as_artifacts=False),
+    ):
+        if hasattr(event, "content") and event.content:
+            final_response_text += event.content
 
-  return final_response_text
+    return final_response_text
 
 
 async def main():
-  print("🚀 Testing Pydantic Argument Feature")
-  print("=" * 50)
+    print("🚀 Testing Pydantic Argument Feature")
+    print("=" * 50)
 
-  runner = InMemoryRunner(
-      agent=agent.root_agent,
-      app_name=APP_NAME,
-  )
+    runner = InMemoryRunner(
+        agent=agent.root_agent,
+        app_name=APP_NAME,
+    )
 
-  # Create a session
-  session = await runner.session_service.create_session(
-      app_name=APP_NAME, user_id=USER_ID
-  )
+    # Create a session
+    session = await runner.session_service.create_session(app_name=APP_NAME, user_id=USER_ID)
 
-  test_prompts = [
-      # Test Optional[Pydantic] type handling (UserProfile + Optional[UserPreferences])
-      (
-          "Create an account for Alice, 25 years old, email: alice@example.com,"
-          " with dark theme and Spanish language preferences"
-      ),
-      (
-          "Create a user account for Bob, age 30, no email, "
-          "with light theme, French language, and notifications disabled"
-      ),
-      (
-          "Make an account for Charlie, 28 years old, email: charlie@test.com, "
-          "but use default preferences"
-      ),
-      # Test Union type handling (Union[UserProfile, CompanyProfile])
-      (
-          "Create a profile for Tech Corp company, software industry, "
-          "with 150 employees and website techcorp.com"
-      ),
-      (
-          "Create an entity profile for Diana, 32 years old, "
-          "email diana@example.com"
-      ),
-  ]
+    test_prompts = [
+        # Test Optional[Pydantic] type handling (UserProfile + Optional[UserPreferences])
+        ("Create an account for Alice, 25 years old, email: alice@example.com, with dark theme and Spanish language preferences"),
+        ("Create a user account for Bob, age 30, no email, with light theme, French language, and notifications disabled"),
+        ("Make an account for Charlie, 28 years old, email: charlie@test.com, but use default preferences"),
+        # Test Union type handling (Union[UserProfile, CompanyProfile])
+        ("Create a profile for Tech Corp company, software industry, with 150 employees and website techcorp.com"),
+        ("Create an entity profile for Diana, 32 years old, email diana@example.com"),
+    ]
 
-  for i, prompt in enumerate(test_prompts, 1):
-    print(f"\n📝 Test {i}: {prompt}")
-    print("-" * 40)
+    for i, prompt in enumerate(test_prompts, 1):
+        print(f"\n📝 Test {i}: {prompt}")
+        print("-" * 40)
 
-    try:
-      response = await call_agent_async(runner, USER_ID, session.id, prompt)
-      print(f"✅ Response: {response}")
-    except Exception as e:
-      print(f"❌ Error: {e}")
+        try:
+            response = await call_agent_async(runner, USER_ID, session.id, prompt)
+            print(f"✅ Response: {response}")
+        except Exception as e:
+            print(f"❌ Error: {e}")
 
-  print("\n" + "=" * 50)
-  print("✨ Testing complete!")
-  print("🔧 Features demonstrated:")
-  print("   • JSON dict → Pydantic model conversion (UserProfile)")
-  print("   • Optional type handling (Optional[UserPreferences])")
-  print("   • Union type handling (Union[UserProfile, CompanyProfile])")
-  print("   • Automatic model validation and conversion")
-  print("   • No manual isinstance() checks needed!")
+    print("\n" + "=" * 50)
+    print("✨ Testing complete!")
+    print("🔧 Features demonstrated:")
+    print("   • JSON dict → Pydantic model conversion (UserProfile)")
+    print("   • Optional type handling (Optional[UserPreferences])")
+    print("   • Union type handling (Union[UserProfile, CompanyProfile])")
+    print("   • Automatic model validation and conversion")
+    print("   • No manual isinstance() checks needed!")
 
 
 if __name__ == "__main__":
-  asyncio.run(main())
+    asyncio.run(main())

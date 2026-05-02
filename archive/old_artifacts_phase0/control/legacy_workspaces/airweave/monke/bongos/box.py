@@ -92,9 +92,7 @@ class BoxBongo(BaseBongo):
         folder_data = resp.json()
 
         self._test_folder_id = folder_data["id"]
-        self.logger.info(
-            f"Created test folder: {folder_name} (ID: {self._test_folder_id})"
-        )
+        self.logger.info(f"Created test folder: {folder_name} (ID: {self._test_folder_id})")
 
     async def create_entities(self) -> list[dict[str, Any]]:
         """Create ALL types of test entities.
@@ -126,9 +124,7 @@ class BoxBongo(BaseBongo):
                     # Generate unique token for this folder
                     folder_token = str(uuid.uuid4())[:8]
 
-                    self.logger.info(
-                        f"Creating folder {i + 1}/{self.entity_count} with token {folder_token}"
-                    )
+                    self.logger.info(f"Creating folder {i + 1}/{self.entity_count} with token {folder_token}")
 
                     # Generate content
                     folder_data = await generate_folder(self.openai_model, folder_token)
@@ -137,9 +133,7 @@ class BoxBongo(BaseBongo):
                     unique_folder_name = f"{folder_data['name']}_{folder_token}"
 
                     # Put token prominently at start of description for reliable search
-                    folder_description = (
-                        f"Token: {folder_token}\n\n{folder_data['description']}"
-                    )
+                    folder_description = f"Token: {folder_token}\n\n{folder_data['description']}"
 
                     # Create via API
                     await self._rate_limit()
@@ -184,23 +178,14 @@ class BoxBongo(BaseBongo):
                     for file_idx in range(2):  # 2 files per folder
                         file_token = str(uuid.uuid4())[:8]
 
-                        self.logger.info(
-                            f"  Creating file {file_idx + 1}/2 in folder {folder['id']} "
-                            f"with token {file_token}"
-                        )
+                        self.logger.info(f"  Creating file {file_idx + 1}/2 in folder {folder['id']} with token {file_token}")
 
                         # Generate file content
-                        file_content, filename, description = await generate_file(
-                            self.openai_model, file_token
-                        )
+                        file_content, filename, description = await generate_file(self.openai_model, file_token)
 
                         # Make filename unique by appending token (Box doesn't allow duplicates)
-                        base_name = (
-                            filename.rsplit(".", 1)[0] if "." in filename else filename
-                        )
-                        extension = (
-                            filename.rsplit(".", 1)[1] if "." in filename else "txt"
-                        )
+                        base_name = filename.rsplit(".", 1)[0] if "." in filename else filename
+                        extension = filename.rsplit(".", 1)[1] if "." in filename else "txt"
                         unique_filename = f"{base_name}_{file_token}.{extension}"
 
                         # Upload the file
@@ -257,14 +242,9 @@ class BoxBongo(BaseBongo):
 
                         comment_token = str(uuid.uuid4())[:8]
 
-                        self.logger.info(
-                            f"    Creating comment on file {file['id']} "
-                            f"with token {comment_token}"
-                        )
+                        self.logger.info(f"    Creating comment on file {file['id']} with token {comment_token}")
 
-                        comment_data = await generate_comment(
-                            self.openai_model, comment_token
-                        )
+                        comment_data = await generate_comment(self.openai_model, comment_token)
 
                         await self._rate_limit()
                         resp = await client.post(
@@ -290,11 +270,7 @@ class BoxBongo(BaseBongo):
                         self._comments.append(comment_descriptor)
                         all_entities.append(comment_descriptor)
 
-        self.logger.info(
-            f"✅ Created {len(self._folders)} folders, "
-            f"{len(self._files)} files, "
-            f"{len(self._comments)} comments"
-        )
+        self.logger.info(f"✅ Created {len(self._folders)} folders, {len(self._files)} files, {len(self._comments)} comments")
 
         self.created_entities = all_entities
         return all_entities
@@ -377,9 +353,7 @@ class BoxBongo(BaseBongo):
         deleted_ids = await self.delete_specific_entities(self.created_entities)
         return deleted_ids
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         """Delete specific entities by ID.
 
         Args:
@@ -405,9 +379,7 @@ class BoxBongo(BaseBongo):
                         if resp.status_code == 204:
                             deleted.append(entity["id"])
                     except Exception as e:
-                        self.logger.warning(
-                            f"Failed to delete comment {entity['id']}: {e}"
-                        )
+                        self.logger.warning(f"Failed to delete comment {entity['id']}: {e}")
 
             # Then delete files
             for entity in entities:
@@ -421,9 +393,7 @@ class BoxBongo(BaseBongo):
                         if resp.status_code == 204:
                             deleted.append(entity["id"])
                     except Exception as e:
-                        self.logger.warning(
-                            f"Failed to delete file {entity['id']}: {e}"
-                        )
+                        self.logger.warning(f"Failed to delete file {entity['id']}: {e}")
 
             # Finally delete folders (Box deletes contents automatically with recursive=true)
             # We need to track cascade-deleted children
@@ -436,27 +406,18 @@ class BoxBongo(BaseBongo):
 
                     # Find files in this folder
                     for file in self.created_entities:
-                        if (
-                            file["type"] == "file"
-                            and file.get("parent_id") == folder_id
-                        ):
+                        if file["type"] == "file" and file.get("parent_id") == folder_id:
                             file_id = file["id"]
                             children_to_delete.append(file_id)
 
                             # Find comments on this file (comments have parent_id = file_id)
                             for comment in self.created_entities:
-                                if (
-                                    comment["type"] == "comment"
-                                    and comment.get("parent_id") == file_id
-                                ):
+                                if comment["type"] == "comment" and comment.get("parent_id") == file_id:
                                     children_to_delete.append(comment["id"])
 
                     # Find nested folders
                     for subfolder in self.created_entities:
-                        if (
-                            subfolder["type"] == "folder"
-                            and subfolder.get("parent_id") == folder_id
-                        ):
+                        if subfolder["type"] == "folder" and subfolder.get("parent_id") == folder_id:
                             children_to_delete.append(subfolder["id"])
 
                     try:
@@ -471,9 +432,7 @@ class BoxBongo(BaseBongo):
                             # Add all cascade-deleted children
                             deleted.extend(children_to_delete)
                             if children_to_delete:
-                                self.logger.info(
-                                    f"📎 Folder {folder_id} cascade-deleted {len(children_to_delete)} children"
-                                )
+                                self.logger.info(f"📎 Folder {folder_id} cascade-deleted {len(children_to_delete)} children")
                     except Exception as e:
                         self.logger.warning(f"Failed to delete folder {folder_id}: {e}")
 
@@ -504,9 +463,7 @@ class BoxBongo(BaseBongo):
                         if resp.status_code == 204:
                             cleanup_stats["comments_deleted"] += 1
                     except Exception as e:
-                        self.logger.warning(
-                            f"Failed to delete comment {comment['id']}: {e}"
-                        )
+                        self.logger.warning(f"Failed to delete comment {comment['id']}: {e}")
                         cleanup_stats["errors"] += 1
 
                 # Delete files
@@ -534,9 +491,7 @@ class BoxBongo(BaseBongo):
                         if resp.status_code == 204:
                             cleanup_stats["folders_deleted"] += 1
                     except Exception as e:
-                        self.logger.warning(
-                            f"Failed to delete folder {folder['id']}: {e}"
-                        )
+                        self.logger.warning(f"Failed to delete folder {folder['id']}: {e}")
                         cleanup_stats["errors"] += 1
 
                 # Delete test folder if it exists
@@ -556,15 +511,11 @@ class BoxBongo(BaseBongo):
                 # 2. Find and clean up orphaned test folders
                 try:
                     await self._rate_limit()
-                    resp = await client.get(
-                        f"{self.API_BASE}/folders/0/items", headers=self._headers()
-                    )
+                    resp = await client.get(f"{self.API_BASE}/folders/0/items", headers=self._headers())
                     if resp.status_code == 200:
                         items = resp.json().get("entries", [])
                         for item in items:
-                            if item.get("type") == "folder" and item.get(
-                                "name", ""
-                            ).startswith("Airweave_Test_"):
+                            if item.get("type") == "folder" and item.get("name", "").startswith("Airweave_Test_"):
                                 try:
                                     await self._rate_limit()
                                     resp = await client.delete(
@@ -573,9 +524,7 @@ class BoxBongo(BaseBongo):
                                     )
                                     if resp.status_code == 204:
                                         cleanup_stats["folders_deleted"] += 1
-                                        self.logger.info(
-                                            f"Cleaned up orphaned folder: {item['name']}"
-                                        )
+                                        self.logger.info(f"Cleaned up orphaned folder: {item['name']}")
                                 except Exception:
                                     cleanup_stats["errors"] += 1
                 except Exception as e:

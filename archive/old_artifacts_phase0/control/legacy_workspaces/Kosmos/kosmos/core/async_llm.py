@@ -15,23 +15,32 @@ from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL
 
 try:
     from anthropic import APIError, APITimeoutError, AsyncAnthropic, RateLimitError
+
     ASYNC_ANTHROPIC_AVAILABLE = True
 except ImportError:
     ASYNC_ANTHROPIC_AVAILABLE = False
+
     # Create unique placeholder classes so isinstance() checks don't match unrelated exceptions
     class APIError(Exception):
         """Placeholder for anthropic.APIError when package not installed."""
+
         pass
+
     class APITimeoutError(Exception):
         """Placeholder for anthropic.APITimeoutError when package not installed."""
+
         pass
+
     class RateLimitError(Exception):
         """Placeholder for anthropic.RateLimitError when package not installed."""
+
         pass
+
 
 # Import retry decorator
 try:
     from tenacity import before_sleep_log, retry, retry_if_exception_type, stop_after_attempt, wait_exponential
+
     TENACITY_AVAILABLE = True
 except ImportError:
     TENACITY_AVAILABLE = False
@@ -52,12 +61,7 @@ class CircuitBreaker:
     - HALF_OPEN: Testing if service recovered
     """
 
-    def __init__(
-        self,
-        failure_threshold: int = 3,
-        reset_timeout: float = 60.0,
-        half_open_max_calls: int = 1
-    ):
+    def __init__(self, failure_threshold: int = 3, reset_timeout: float = 60.0, half_open_max_calls: int = 1):
         self.failure_threshold = failure_threshold
         self.reset_timeout = reset_timeout
         self.half_open_max_calls = half_open_max_calls
@@ -76,8 +80,7 @@ class CircuitBreaker:
 
             if self.state == "OPEN":
                 # Check if reset timeout has passed
-                if self.last_failure_time and \
-                   time.time() - self.last_failure_time >= self.reset_timeout:
+                if self.last_failure_time and time.time() - self.last_failure_time >= self.reset_timeout:
                     self.state = "HALF_OPEN"
                     self.half_open_calls = 0
                     logger.info("Circuit breaker entering HALF_OPEN state")
@@ -113,9 +116,7 @@ class CircuitBreaker:
                 logger.warning("Circuit breaker re-OPENED after failure in HALF_OPEN state")
             elif self.failure_count >= self.failure_threshold:
                 self.state = "OPEN"
-                logger.warning(
-                    f"Circuit breaker OPENED after {self.failure_count} consecutive failures"
-                )
+                logger.warning(f"Circuit breaker OPENED after {self.failure_count} consecutive failures")
 
     def is_open(self) -> bool:
         """Check if circuit breaker is open (blocking requests)."""
@@ -153,7 +154,7 @@ def is_recoverable_error(error: Exception) -> bool:
     if isinstance(error, APIError):
         # Check error message for hints
         error_str = str(error).lower()
-        non_recoverable = ['invalid', 'authentication', 'unauthorized', 'forbidden']
+        non_recoverable = ["invalid", "authentication", "unauthorized", "forbidden"]
         if any(term in error_str for term in non_recoverable):
             return False
         return True  # Default to recoverable for API errors
@@ -165,6 +166,7 @@ def is_recoverable_error(error: Exception) -> bool:
 @dataclass
 class BatchRequest:
     """Single request in a batch."""
+
     id: str
     prompt: str
     system: str | None = None
@@ -177,6 +179,7 @@ class BatchRequest:
 @dataclass
 class BatchResponse:
     """Response for a single batch request."""
+
     id: str
     success: bool
     response: str | None = None
@@ -204,11 +207,7 @@ class RateLimiter:
     the rate of concurrent requests.
     """
 
-    def __init__(
-        self,
-        max_requests_per_minute: int = 50,
-        max_concurrent: int = 5
-    ):
+    def __init__(self, max_requests_per_minute: int = 50, max_concurrent: int = 5):
         """
         Initialize rate limiter.
 
@@ -239,10 +238,7 @@ class RateLimiter:
 
             # Refill tokens based on elapsed time
             tokens_to_add = elapsed * (self.max_requests_per_minute / 60.0)
-            self.tokens = min(
-                self.max_requests_per_minute,
-                self.tokens + tokens_to_add
-            )
+            self.tokens = min(self.max_requests_per_minute, self.tokens + tokens_to_add)
             self.last_update = now
 
             # If no tokens available, wait
@@ -298,7 +294,7 @@ class AsyncClaudeClient:
         max_concurrent: int = 5,
         max_requests_per_minute: int = 50,
         enable_cache: bool = False,
-        cache: Any | None = None
+        cache: Any | None = None,
     ):
         """
         Initialize async Claude client.
@@ -314,10 +310,7 @@ class AsyncClaudeClient:
             cache: Optional cache instance
         """
         if not ASYNC_ANTHROPIC_AVAILABLE:
-            raise ImportError(
-                "AsyncAnthropic not available. "
-                "Install with: pip install anthropic[async]"
-            )
+            raise ImportError("AsyncAnthropic not available. Install with: pip install anthropic[async]")
 
         self.api_key = api_key
         self.model = model
@@ -330,16 +323,10 @@ class AsyncClaudeClient:
         self.client = AsyncAnthropic(api_key=api_key)
 
         # Initialize rate limiter
-        self.rate_limiter = RateLimiter(
-            max_requests_per_minute=max_requests_per_minute,
-            max_concurrent=max_concurrent
-        )
+        self.rate_limiter = RateLimiter(max_requests_per_minute=max_requests_per_minute, max_concurrent=max_concurrent)
 
         # Initialize circuit breaker
-        self.circuit_breaker = CircuitBreaker(
-            failure_threshold=3,
-            reset_timeout=60.0
-        )
+        self.circuit_breaker = CircuitBreaker(failure_threshold=3, reset_timeout=60.0)
 
         # Statistics
         self.total_requests = 0
@@ -347,11 +334,7 @@ class AsyncClaudeClient:
         self.total_output_tokens = 0
         self.failed_requests = 0
 
-        logger.info(
-            f"Async Claude client initialized "
-            f"(max_concurrent={max_concurrent}, "
-            f"rate_limit={max_requests_per_minute}/min)"
-        )
+        logger.info(f"Async Claude client initialized (max_concurrent={max_concurrent}, rate_limit={max_requests_per_minute}/min)")
 
     async def async_generate(
         self,
@@ -361,7 +344,7 @@ class AsyncClaudeClient:
         temperature: float | None = None,
         stop_sequences: list[str] | None = None,
         model_override: str | None = None,
-        bypass_cache: bool = False
+        bypass_cache: bool = False,
     ) -> str:
         """
         Generate text asynchronously from Claude.
@@ -388,15 +371,10 @@ class AsyncClaudeClient:
         """
         # Check cache first
         if self.enable_cache and self.cache and not bypass_cache:
-            cached = self.cache.get(
-                prompt=prompt,
-                model=model_override or self.model,
-                system=system or "",
-                bypass=False
-            )
+            cached = self.cache.get(prompt=prompt, model=model_override or self.model, system=system or "", bypass=False)
             if cached:
                 logger.debug("Cache hit for async request")
-                return cached['response']
+                return cached["response"]
 
         # Check circuit breaker before proceeding
         if not await self.circuit_breaker.can_execute():
@@ -404,7 +382,7 @@ class AsyncClaudeClient:
             raise ProviderAPIError(
                 "anthropic",
                 "Circuit breaker is open - too many consecutive failures",
-                recoverable=True  # Will be retryable after timeout
+                recoverable=True,  # Will be retryable after timeout
             )
 
         # Acquire rate limit
@@ -434,12 +412,13 @@ class AsyncClaudeClient:
                 """Inner function with retry decorator."""
                 # Apply retry logic if tenacity is available
                 if TENACITY_AVAILABLE:
+
                     @retry(
                         stop=stop_after_attempt(3),
                         wait=wait_exponential(multiplier=1, min=2, max=30),
                         retry=should_retry,  # Use custom predicate
                         before_sleep=before_sleep_log(logger, logging.WARNING),
-                        reraise=True
+                        reraise=True,
                     )
                     async def _call():
                         return await self.client.messages.create(
@@ -448,8 +427,9 @@ class AsyncClaudeClient:
                             temperature=temperature or self.temperature,
                             system=system or "",
                             messages=messages,
-                            stop_sequences=stop_sequences or []
+                            stop_sequences=stop_sequences or [],
                         )
+
                     return await _call()
                 else:
                     # No retry if tenacity not available
@@ -459,15 +439,12 @@ class AsyncClaudeClient:
                         temperature=temperature or self.temperature,
                         system=system or "",
                         messages=messages,
-                        stop_sequences=stop_sequences or []
+                        stop_sequences=stop_sequences or [],
                     )
 
             # Execute with timeout
             try:
-                response = await asyncio.wait_for(
-                    _api_call_with_retry(),
-                    timeout=timeout_seconds
-                )
+                response = await asyncio.wait_for(_api_call_with_retry(), timeout=timeout_seconds)
             except TimeoutError:
                 logger.error(f"LLM API call timed out after {timeout_seconds}s")
                 await self.circuit_breaker.record_failure(APITimeoutError("timeout"))
@@ -475,7 +452,7 @@ class AsyncClaudeClient:
 
             # Update statistics
             self.total_requests += 1
-            if hasattr(response, 'usage'):
+            if hasattr(response, "usage"):
                 self.total_input_tokens += response.usage.input_tokens
                 self.total_output_tokens += response.usage.output_tokens
 
@@ -485,24 +462,15 @@ class AsyncClaudeClient:
             # Cache response
             if self.enable_cache and self.cache and not bypass_cache:
                 metadata = {}
-                if hasattr(response, 'usage'):
+                if hasattr(response, "usage"):
                     metadata = {
-                        'input_tokens': response.usage.input_tokens,
-                        'output_tokens': response.usage.output_tokens,
+                        "input_tokens": response.usage.input_tokens,
+                        "output_tokens": response.usage.output_tokens,
                     }
-                self.cache.set(
-                    prompt=prompt,
-                    model=model_override or self.model,
-                    response=text,
-                    system=system or "",
-                    metadata=metadata
-                )
+                self.cache.set(prompt=prompt, model=model_override or self.model, response=text, system=system or "", metadata=metadata)
 
             execution_time = time.time() - start_time
-            logger.debug(
-                f"Async generation completed in {execution_time:.2f}s "
-                f"({len(text)} chars)"
-            )
+            logger.debug(f"Async generation completed in {execution_time:.2f}s ({len(text)} chars)")
 
             # Record success with circuit breaker
             await self.circuit_breaker.record_success()
@@ -523,10 +491,7 @@ class AsyncClaudeClient:
         finally:
             self.rate_limiter.release()
 
-    async def batch_generate(
-        self,
-        requests: list[BatchRequest]
-    ) -> list[BatchResponse]:
+    async def batch_generate(self, requests: list[BatchRequest]) -> list[BatchResponse]:
         """
         Process multiple requests concurrently.
 
@@ -551,10 +516,7 @@ class AsyncClaudeClient:
         logger.info(f"Processing batch of {len(requests)} requests")
 
         # Create tasks for all requests
-        tasks = [
-            self._process_single_batch_request(req)
-            for req in requests
-        ]
+        tasks = [self._process_single_batch_request(req) for req in requests]
 
         # Execute concurrently and wait for all
         responses = await asyncio.gather(*tasks, return_exceptions=True)
@@ -563,25 +525,16 @@ class AsyncClaudeClient:
         final_responses = []
         for i, result in enumerate(responses):
             if isinstance(result, Exception):
-                final_responses.append(BatchResponse(
-                    id=requests[i].id,
-                    success=False,
-                    error=str(result)
-                ))
+                final_responses.append(BatchResponse(id=requests[i].id, success=False, error=str(result)))
             else:
                 final_responses.append(result)
 
         successful = sum(1 for r in final_responses if r.success)
-        logger.info(
-            f"Batch completed: {successful}/{len(requests)} successful"
-        )
+        logger.info(f"Batch completed: {successful}/{len(requests)} successful")
 
         return final_responses
 
-    async def _process_single_batch_request(
-        self,
-        request: BatchRequest
-    ) -> BatchResponse:
+    async def _process_single_batch_request(self, request: BatchRequest) -> BatchResponse:
         """Process a single batch request."""
         start_time = time.time()
 
@@ -591,33 +544,19 @@ class AsyncClaudeClient:
                 system=request.system,
                 max_tokens=request.max_tokens,
                 temperature=request.temperature,
-                model_override=request.model_override
+                model_override=request.model_override,
             )
 
             execution_time = time.time() - start_time
 
-            return BatchResponse(
-                id=request.id,
-                success=True,
-                response=response,
-                execution_time=execution_time
-            )
+            return BatchResponse(id=request.id, success=True, response=response, execution_time=execution_time)
 
         except Exception as e:
             execution_time = time.time() - start_time
-            return BatchResponse(
-                id=request.id,
-                success=False,
-                error=str(e),
-                execution_time=execution_time
-            )
+            return BatchResponse(id=request.id, success=False, error=str(e), execution_time=execution_time)
 
     async def concurrent_generate(
-        self,
-        prompts: list[str],
-        system: str | None = None,
-        max_tokens: int | None = None,
-        temperature: float | None = None
+        self, prompts: list[str], system: str | None = None, max_tokens: int | None = None, temperature: float | None = None
     ) -> list[str]:
         """
         Generate responses for multiple prompts concurrently.
@@ -649,24 +588,14 @@ class AsyncClaudeClient:
         """
         # Create batch requests
         requests = [
-            BatchRequest(
-                id=str(i),
-                prompt=prompt,
-                system=system,
-                max_tokens=max_tokens,
-                temperature=temperature
-            )
-            for i, prompt in enumerate(prompts)
+            BatchRequest(id=str(i), prompt=prompt, system=system, max_tokens=max_tokens, temperature=temperature) for i, prompt in enumerate(prompts)
         ]
 
         # Process batch
         responses = await self.batch_generate(requests)
 
         # Extract response text (maintain order, use empty string for failures)
-        return [
-            resp.response if resp.success else ""
-            for resp in responses
-        ]
+        return [resp.response if resp.success else "" for resp in responses]
 
     def get_usage_stats(self) -> dict[str, Any]:
         """
@@ -676,22 +605,13 @@ class AsyncClaudeClient:
             Dictionary with usage metrics
         """
         return {
-            'total_requests': self.total_requests,
-            'total_input_tokens': self.total_input_tokens,
-            'total_output_tokens': self.total_output_tokens,
-            'failed_requests': self.failed_requests,
-            'success_rate': (
-                (self.total_requests - self.failed_requests) / self.total_requests * 100
-                if self.total_requests > 0 else 0
-            ),
-            'average_input_tokens': (
-                self.total_input_tokens / self.total_requests
-                if self.total_requests > 0 else 0
-            ),
-            'average_output_tokens': (
-                self.total_output_tokens / self.total_requests
-                if self.total_requests > 0 else 0
-            )
+            "total_requests": self.total_requests,
+            "total_input_tokens": self.total_input_tokens,
+            "total_output_tokens": self.total_output_tokens,
+            "failed_requests": self.failed_requests,
+            "success_rate": ((self.total_requests - self.failed_requests) / self.total_requests * 100 if self.total_requests > 0 else 0),
+            "average_input_tokens": (self.total_input_tokens / self.total_requests if self.total_requests > 0 else 0),
+            "average_output_tokens": (self.total_output_tokens / self.total_requests if self.total_requests > 0 else 0),
         }
 
     async def close(self):
@@ -709,12 +629,7 @@ class AsyncClaudeClient:
 
 # Convenience function for quick async generation
 async def async_generate_text(
-    prompt: str,
-    api_key: str,
-    system: str | None = None,
-    model: str = _DEFAULT_CLAUDE_SONNET_MODEL,
-    max_tokens: int = 4096,
-    temperature: float = 0.7
+    prompt: str, api_key: str, system: str | None = None, model: str = _DEFAULT_CLAUDE_SONNET_MODEL, max_tokens: int = 4096, temperature: float = 0.7
 ) -> str:
     """
     Quick async text generation without creating a client.
@@ -739,13 +654,5 @@ async def async_generate_text(
         )
         ```
     """
-    async with AsyncClaudeClient(
-        api_key=api_key,
-        model=model,
-        max_tokens=max_tokens,
-        temperature=temperature
-    ) as client:
-        return await client.async_generate(
-            prompt=prompt,
-            system=system
-        )
+    async with AsyncClaudeClient(api_key=api_key, model=model, max_tokens=max_tokens, temperature=temperature) as client:
+        return await client.async_generate(prompt=prompt, system=system)

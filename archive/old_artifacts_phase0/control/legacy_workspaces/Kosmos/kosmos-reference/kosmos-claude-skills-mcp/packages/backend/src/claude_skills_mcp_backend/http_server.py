@@ -83,13 +83,9 @@ def register_mcp_tools(default_top_k: int = 3, max_content_chars: int | None = N
             "you are sure about the task, It performs semantic search over a curated library of proven skills "
             "and returns ranked candidates with step-by-step guidance and best practices. Do this before any "
             "searches, coding, or any other actions as this will inform you about the best approach to take."
-        )
+        ),
     )
-    async def find_helpful_skills(
-        task_description: str,
-        top_k: int = default_top_k,
-        list_documents: bool = True
-    ) -> list[TextContent]:
+    async def find_helpful_skills(task_description: str, top_k: int = default_top_k, list_documents: bool = True) -> list[TextContent]:
         """Search for relevant skills."""
         return await handle_search_skills(
             {"task_description": task_description, "top_k": top_k, "list_documents": list_documents},
@@ -106,13 +102,9 @@ def register_mcp_tools(default_top_k: int = 3, max_content_chars: int | None = N
             "Use after finding a relevant skill to retrieve specific documents (scripts, references, assets). "
             "Supports pattern matching (e.g., 'scripts/*.py') to fetch multiple files. Returns text content or URLs "
             "and never executes code. Prefer pulling only the files you need to complete the current step."
-        )
+        ),
     )
-    async def read_skill_document(
-        skill_name: str,
-        document_path: str | None = None,
-        include_base64: bool = False
-    ) -> list[TextContent]:
+    async def read_skill_document(skill_name: str, document_path: str | None = None, include_base64: bool = False) -> list[TextContent]:
         """Read a document from a skill."""
         args = {"skill_name": skill_name, "include_base64": include_base64}
         if document_path is not None:
@@ -126,7 +118,7 @@ def register_mcp_tools(default_top_k: int = 3, max_content_chars: int | None = N
             "Returns the full inventory of loaded skills (names, descriptions, sources, document counts) "
             "for exploration or debugging. For task-driven work, prefer calling 'find_helpful_skills' first "
             "to locate the most relevant option before reading documents."
-        )
+        ),
     )
     async def list_skills() -> list[TextContent]:
         """List all loaded skills."""
@@ -143,16 +135,12 @@ async def health_check(request):
         "version": "1.0.6",
         "skills_loaded": skills_loaded,
         "models_loaded": models_loaded,
-        "loading_complete": loading_state_global.is_complete
-        if loading_state_global
-        else False,
+        "loading_complete": loading_state_global.is_complete if loading_state_global else False,
     }
 
     # Add auto-update information
     if config_global:
-        response["auto_update_enabled"] = config_global.get(
-            "auto_update_enabled", False
-        )
+        response["auto_update_enabled"] = config_global.get("auto_update_enabled", False)
 
     if scheduler_global:
         scheduler_status = scheduler_global.get_status()
@@ -176,21 +164,14 @@ async def health_check(request):
     if loading_state_global:
         with loading_state_global._lock:
             if loading_state_global.errors:
-                response["update_errors"] = loading_state_global.errors[
-                    -5:
-                ]  # Last 5 errors
+                response["update_errors"] = loading_state_global.errors[-5:]  # Last 5 errors
 
     return JSONResponse(response)
 
 
 async def initialize_backend(config_path: str | None = None, verbose: bool = False):
     """Initialize search engine and load skills."""
-    global \
-        search_engine, \
-        loading_state_global, \
-        update_checker_global, \
-        scheduler_global, \
-        config_global
+    global search_engine, loading_state_global, update_checker_global, scheduler_global, config_global
 
     # Setup logging
     level = logging.DEBUG if verbose else logging.INFO
@@ -215,9 +196,7 @@ async def initialize_backend(config_path: str | None = None, verbose: bool = Fal
     # Initialize update checker
     github_token = config.get("github_api_token")
     update_checker_global = UpdateChecker(github_token)
-    logger.info(
-        f"Update checker initialized (GitHub token: {'provided' if github_token else 'not provided'})"
-    )
+    logger.info(f"Update checker initialized (GitHub token: {'provided' if github_token else 'not provided'})")
 
     # Register MCP tools
     register_mcp_tools(
@@ -263,14 +242,9 @@ async def initialize_backend(config_path: str | None = None, verbose: bool = Fal
                 logger.info("Running scheduled update check...")
 
                 # Check for updates
-                result = update_checker_global.check_for_updates(
-                    config["skill_sources"]
-                )
+                result = update_checker_global.check_for_updates(config["skill_sources"])
 
-                logger.info(
-                    f"Update check complete: {len(result.changed_sources)} sources changed, "
-                    f"{result.api_calls_made} API calls made"
-                )
+                logger.info(f"Update check complete: {len(result.changed_sources)} sources changed, {result.api_calls_made} API calls made")
 
                 if result.errors:
                     for error in result.errors:
@@ -279,16 +253,12 @@ async def initialize_backend(config_path: str | None = None, verbose: bool = Fal
 
                 # Reload skills if updates detected
                 if result.has_updates:
-                    logger.info(
-                        f"Reloading {len(result.changed_sources)} changed sources..."
-                    )
+                    logger.info(f"Reloading {len(result.changed_sources)} changed sources...")
 
                     # For simplicity, reload all skills if any changed
                     # This clears the index and reloads everything
                     logger.info("Reloading all skills...")
-                    new_skills = load_all_skills(
-                        skill_sources=config["skill_sources"], config=config
-                    )
+                    new_skills = load_all_skills(skill_sources=config["skill_sources"], config=config)
 
                     # Re-index all skills
                     search_engine.index_skills(new_skills)
@@ -298,13 +268,8 @@ async def initialize_backend(config_path: str | None = None, verbose: bool = Fal
 
                 # Warn if approaching API limit (only for non-authenticated)
                 api_usage = update_checker_global.get_api_usage()
-                if (
-                    not api_usage["authenticated"]
-                    and api_usage["calls_this_hour"] >= 50
-                ):
-                    logger.warning(
-                        f"Approaching GitHub API rate limit: {api_usage['calls_this_hour']}/60 calls this hour"
-                    )
+                if not api_usage["authenticated"] and api_usage["calls_this_hour"] >= 50:
+                    logger.warning(f"Approaching GitHub API rate limit: {api_usage['calls_this_hour']}/60 calls this hour")
 
             except Exception as e:
                 error_msg = f"Error during scheduled update: {e}"
@@ -314,9 +279,7 @@ async def initialize_backend(config_path: str | None = None, verbose: bool = Fal
         # Create and start scheduler
         scheduler_global = HourlyScheduler(interval_minutes, update_callback)
         scheduler_global.start()
-        logger.info(
-            f"Auto-update scheduler started (interval: {interval_minutes} minutes)"
-        )
+        logger.info(f"Auto-update scheduler started (interval: {interval_minutes} minutes)")
     else:
         logger.info("Auto-update disabled in configuration")
 
@@ -340,11 +303,6 @@ async def run_server(
     app = fastmcp_app
 
     # Run server with uvicorn
-    config = uvicorn.Config(
-        app,
-        host=host,
-        port=port,
-        log_level="debug" if verbose else "info"
-    )
+    config = uvicorn.Config(app, host=host, port=port, log_level="debug" if verbose else "info")
     server = uvicorn.Server(config)
     await server.serve()

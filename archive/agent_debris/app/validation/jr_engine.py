@@ -7,9 +7,9 @@ Validates each kernel against three criteria:
 - Brakes: What's p99 failure mode? Cost blowup scenario?
 """
 
-from typing import List, Optional, Dict, Any
+from typing import Any
 from pydantic import BaseModel
-from enum import Enum, StrEnum
+from enum import StrEnum
 
 
 class ValidationStatus(StrEnum):
@@ -63,10 +63,7 @@ class JREngine:
         "ATP519ScanKernel": KernelValidation(
             kernel_name="ATP519ScanKernel",
             purpose_status=ValidationStatus.PASS,
-            purpose_notes=(
-                "Advances security: Extracts ATP 5-19 violations, "
-                "enabling compliance enforcement. Direct impact on go/no-go decision."
-            ),
+            purpose_notes=("Advances security: Extracts ATP 5-19 violations, enabling compliance enforcement. Direct impact on go/no-go decision."),
             reasons_status=ValidationStatus.PASS,
             reasons_notes=(
                 "Must-have: Without violation extraction, no downstream "
@@ -80,18 +77,12 @@ class JREngine:
                 "Mitigation: Fail fast on timeout, enforce token limits."
             ),
             verdict="APPROVED",
-            overall_notes=(
-                "Critical kernel. Single responsibility (extract violations only). "
-                "Meets all JR Engine criteria."
-            ),
+            overall_notes=("Critical kernel. Single responsibility (extract violations only). Meets all JR Engine criteria."),
         ),
         "JudgeSixClassifyKernel": KernelValidation(
             kernel_name="JudgeSixClassifyKernel",
             purpose_status=ValidationStatus.PASS,
-            purpose_notes=(
-                "Advances revenue: Binary decision reduces manual review by 80%. "
-                "Enables automated governance at scale."
-            ),
+            purpose_notes=("Advances revenue: Binary decision reduces manual review by 80%. Enables automated governance at scale."),
             reasons_status=ValidationStatus.PASS,
             reasons_notes=(
                 "Must-have: Core decision engine (Judge #6 compliant). "
@@ -105,17 +96,13 @@ class JREngine:
                 "Mitigation: CPU-only inference, no GPU dependency."
             ),
             verdict="APPROVED",
-            overall_notes=(
-                "Core decision kernel. Local inference = zero cost + low latency. "
-                "Confidence threshold (0.85) provides quality gate."
-            ),
+            overall_notes=("Core decision kernel. Local inference = zero cost + low latency. Confidence threshold (0.85) provides quality gate."),
         ),
         "AuditCompressKernel": KernelValidation(
             kernel_name="AuditCompressKernel",
             purpose_status=ValidationStatus.PASS,
             purpose_notes=(
-                "Advances security: Immutable audit trail required for compliance. "
-                "10:1 compression enables long-term storage (487 bytes/decision)."
+                "Advances security: Immutable audit trail required for compliance. 10:1 compression enables long-term storage (487 bytes/decision)."
             ),
             reasons_status=ValidationStatus.PASS,
             reasons_notes=(
@@ -130,10 +117,7 @@ class JREngine:
                 "Mitigation: Graceful degradation (store uncompressed if needed)."
             ),
             verdict="APPROVED",
-            overall_notes=(
-                "Compliance-critical kernel. Deterministic + zero cost. "
-                "Compression ratio monitored (target: 10:1)."
-            ),
+            overall_notes=("Compliance-critical kernel. Deterministic + zero cost. Compression ratio monitored (target: 10:1)."),
         ),
     }
 
@@ -141,26 +125,16 @@ class JREngine:
     REJECTED_EXAMPLE = KernelValidation(
         kernel_name="SentimentAnalysisKernel",
         purpose_status=ValidationStatus.FAIL,
-        purpose_notes=(
-            "Does NOT advance revenue/security: Sentiment analysis is "
-            "informational only, doesn't affect go/no-go decision."
-        ),
+        purpose_notes=("Does NOT advance revenue/security: Sentiment analysis is informational only, doesn't affect go/no-go decision."),
         reasons_status=ValidationStatus.FAIL,
-        reasons_notes=(
-            "Nice-to-have, NOT must-have: Decision can be made without sentiment. "
-            "Adds latency/cost without improving accuracy."
-        ),
+        reasons_notes=("Nice-to-have, NOT must-have: Decision can be made without sentiment. Adds latency/cost without improving accuracy."),
         brakes_status=ValidationStatus.PASS,
         brakes_notes="Fails gracefully if removed (no downstream dependency).",
         verdict="REJECTED",
-        overall_notes=(
-            "Kill this kernel. 3-kernel chain sufficient. Violates Purpose + Reasons criteria."
-        ),
+        overall_notes=("Kill this kernel. 3-kernel chain sufficient. Violates Purpose + Reasons criteria."),
     )
 
-    def validate_kernel_chain(
-        self, kernel_names: list[str]
-    ) -> ValidationResult:
+    def validate_kernel_chain(self, kernel_names: list[str]) -> ValidationResult:
         """
         Validate a proposed kernel chain.
 
@@ -191,9 +165,7 @@ class JREngine:
                     verdict="NEEDS_REVIEW",
                     overall_notes="Kernel not in predefined validation set",
                 )
-                recommendations.append(
-                    f"Manual review required for {name}: Apply JR Engine criteria"
-                )
+                recommendations.append(f"Manual review required for {name}: Apply JR Engine criteria")
 
             validations.append(validation)
 
@@ -201,19 +173,14 @@ class JREngine:
                 approved_count += 1
             elif validation.verdict == "REJECTED":
                 rejected_count += 1
-                recommendations.append(
-                    f"Remove {name} from chain: Failed JR Engine validation"
-                )
+                recommendations.append(f"Remove {name} from chain: Failed JR Engine validation")
 
         # Overall pass: all kernels approved, none rejected
         passed = rejected_count == 0 and approved_count == len(kernel_names)
 
         # Additional recommendations based on chain composition
         if len(kernel_names) > 5:
-            recommendations.append(
-                f"Chain has {len(kernel_names)} kernels. "
-                "Consider reducing for lower latency/complexity."
-            )
+            recommendations.append(f"Chain has {len(kernel_names)} kernels. Consider reducing for lower latency/complexity.")
 
         return ValidationResult(
             passed=passed,
@@ -252,13 +219,7 @@ class JREngine:
 class YRMClient:
     """Client for ShadowTagAI Risk Engine (YRM) integration."""
 
-    def report_hazard(
-        self,
-        category: str,
-        severity: str,
-        description: str,
-        details: dict[str, Any]
-    ):
+    def report_hazard(self, category: str, severity: str, description: str, details: dict[str, Any]):
         """
         Report a hazard to the YRM.
 

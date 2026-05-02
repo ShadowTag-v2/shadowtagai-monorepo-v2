@@ -70,9 +70,7 @@ class AntigravityInterceptor:
             if match:
                 if not original_key:
                     original_key = match.group(1)
-                flow.request.url = re.sub(
-                    r"key=[^&]+", f"key={YOUR_API_KEY}", flow.request.url
-                )
+                flow.request.url = re.sub(r"key=[^&]+", f"key={YOUR_API_KEY}", flow.request.url)
                 stats["keys_replaced"] += 1
                 print("   🔄 Replaced key in URL")
                 print(f"      Old: {original_key[:15]}***")
@@ -106,9 +104,7 @@ class AntigravityInterceptor:
                 pass
 
         # Print statistics
-        print(
-            f"\n📊 Stats: {stats['requests_intercepted']} requests, {stats['keys_replaced']} keys replaced"
-        )
+        print(f"\n📊 Stats: {stats['requests_intercepted']} requests, {stats['keys_replaced']} keys replaced")
         print("=" * 60)
 
 

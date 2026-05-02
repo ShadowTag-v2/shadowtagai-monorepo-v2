@@ -22,15 +22,15 @@ from pydantic import BaseModel, Field
 
 
 class CitySummary(BaseModel):
-  """Simple structure used to verify LiteLLM JSON schema handling."""
+    """Simple structure used to verify LiteLLM JSON schema handling."""
 
-  city: str = Field(description="Name of the city being described.")
-  highlights: list[str] = Field(
-      description="Bullet points summarising the city's key highlights.",
-  )
-  recommended_visit_length_days: int = Field(
-      description="Recommended number of days for a typical visit.",
-  )
+    city: str = Field(description="Name of the city being described.")
+    highlights: list[str] = Field(
+        description="Bullet points summarising the city's key highlights.",
+    )
+    recommended_visit_length_days: int = Field(
+        description="Recommended number of days for a typical visit.",
+    )
 
 
 root_agent = Agent(

@@ -92,14 +92,10 @@ class ClickUpBongo(BaseBongo):
                         # Generate unique token for this task
                         task_token = str(uuid.uuid4())[:8]
 
-                        self.logger.info(
-                            f"Creating task {i+1}/{self.entity_count} with token {task_token}"
-                        )
+                        self.logger.info(f"Creating task {i + 1}/{self.entity_count} with token {task_token}")
 
                         # Generate content
-                        task_name, task_description = await generate_clickup_task(
-                            self.openai_model, task_token
-                        )
+                        task_name, task_description = await generate_clickup_task(self.openai_model, task_token)
 
                         # Create task via API
                         await self._rate_limit()
@@ -140,13 +136,10 @@ class ClickUpBongo(BaseBongo):
                                 subtask_token = str(uuid.uuid4())[:8]
 
                                 self.logger.info(
-                                    f"  Creating subtask {subtask_idx+1}/{subtask_count} "
-                                    f"for task {task['id']} with token {subtask_token}"
+                                    f"  Creating subtask {subtask_idx + 1}/{subtask_count} for task {task['id']} with token {subtask_token}"
                                 )
 
-                                subtask_name, subtask_description = await generate_clickup_subtask(
-                                    self.openai_model, subtask_token, task_name
-                                )
+                                subtask_name, subtask_description = await generate_clickup_subtask(self.openai_model, subtask_token, task_name)
 
                                 await self._rate_limit()
                                 resp = await client.post(
@@ -177,9 +170,7 @@ class ClickUpBongo(BaseBongo):
                                 self.logger.info(f"  ✅ Created subtask: {subtask_name[:40]}...")
 
                             except Exception as e:
-                                self.logger.warning(
-                                    f"Failed to create subtask {subtask_idx+1} for task {task['id']}: {e}"
-                                )
+                                self.logger.warning(f"Failed to create subtask {subtask_idx + 1} for task {task['id']}: {e}")
 
                         # 2. Create comments for this task (2 comments)
                         comment_count = 2
@@ -188,13 +179,10 @@ class ClickUpBongo(BaseBongo):
                                 comment_token = str(uuid.uuid4())[:8]
 
                                 self.logger.info(
-                                    f"  Creating comment {comment_idx+1}/{comment_count} "
-                                    f"for task {task['id']} with token {comment_token}"
+                                    f"  Creating comment {comment_idx + 1}/{comment_count} for task {task['id']} with token {comment_token}"
                                 )
 
-                                comment_text = await generate_clickup_comment(
-                                    self.openai_model, comment_token
-                                )
+                                comment_text = await generate_clickup_comment(self.openai_model, comment_token)
 
                                 await self._rate_limit()
                                 resp = await client.post(
@@ -222,23 +210,16 @@ class ClickUpBongo(BaseBongo):
                                 self.logger.info(f"  ✅ Created comment with token {comment_token}")
 
                             except Exception as e:
-                                self.logger.warning(
-                                    f"Failed to create comment {comment_idx+1} for task {task['id']}: {e}"
-                                )
+                                self.logger.warning(f"Failed to create comment {comment_idx + 1} for task {task['id']}: {e}")
 
                         # 3. Create file attachment for this task (1 file)
                         try:
                             file_token = str(uuid.uuid4())[:8]
 
-                            self.logger.info(
-                                f"  Creating file attachment for task {task['id']} "
-                                f"with token {file_token}"
-                            )
+                            self.logger.info(f"  Creating file attachment for task {task['id']} with token {file_token}")
 
                             # Generate a test file
-                            file_name, file_content = await generate_clickup_file(
-                                self.openai_model, file_token
-                            )
+                            file_name, file_content = await generate_clickup_file(self.openai_model, file_token)
 
                             await self._rate_limit()
 
@@ -274,19 +255,14 @@ class ClickUpBongo(BaseBongo):
                             self.logger.info(f"  ✅ Created file: {file_name}")
 
                         except Exception as e:
-                            self.logger.warning(
-                                f"Failed to create file attachment for task {task['id']}: {e}"
-                            )
+                            self.logger.warning(f"Failed to create file attachment for task {task['id']}: {e}")
 
                     except Exception as e:
-                        self.logger.error(f"Failed to create task {i+1}: {e}")
+                        self.logger.error(f"Failed to create task {i + 1}: {e}")
                         # Continue with next task
 
         self.logger.info(
-            f"✅ Created {len(self._tasks)} tasks, "
-            f"{len(self._subtasks)} subtasks, "
-            f"{len(self._comments)} comments, "
-            f"{len(self._files)} files"
+            f"✅ Created {len(self._tasks)} tasks, {len(self._subtasks)} subtasks, {len(self._comments)} comments, {len(self._files)} files"
         )
 
         self.created_entities = all_entities
@@ -316,9 +292,7 @@ class ClickUpBongo(BaseBongo):
 
                 try:
                     # Generate new content with SAME token
-                    task_name, task_description = await generate_clickup_task(
-                        self.openai_model, task["token"]
-                    )
+                    task_name, task_description = await generate_clickup_task(self.openai_model, task["token"])
 
                     await self._rate_limit()
                     resp = await client.put(
@@ -344,9 +318,7 @@ class ClickUpBongo(BaseBongo):
                     try:
                         comment_token = str(uuid.uuid4())[:8]
 
-                        comment_text = await generate_clickup_comment(
-                            self.openai_model, comment_token
-                        )
+                        comment_text = await generate_clickup_comment(self.openai_model, comment_token)
 
                         await self._rate_limit()
                         resp = await client.post(
@@ -373,9 +345,7 @@ class ClickUpBongo(BaseBongo):
                         self.logger.info(f"  ✅ Added new comment with token {comment_token}")
 
                     except Exception as e:
-                        self.logger.warning(
-                            f"Failed to add comment to updated task {task['id']}: {e}"
-                        )
+                        self.logger.warning(f"Failed to add comment to updated task {task['id']}: {e}")
 
                 except Exception as e:
                     self.logger.error(f"Failed to update task {task['id']}: {e}")
@@ -420,16 +390,12 @@ class ClickUpBongo(BaseBongo):
                 for entity in self.created_entities:
                     if entity.get("parent_id") == task_id:
                         cascade_deleted_children.append(entity["id"])
-                        self.logger.info(
-                            f"  📎 Task {task_id} deletion will cascade to {entity['type']} {entity['id']}"
-                        )
+                        self.logger.info(f"  📎 Task {task_id} deletion will cascade to {entity['type']} {entity['id']}")
 
             # Delete files first (skip those that will be cascade-deleted)
             for file in files_to_delete:
                 if file["id"] in cascade_deleted_children:
-                    self.logger.info(
-                        f"  ⏭️  Skipping file {file['id']} (will be cascade-deleted with parent task)"
-                    )
+                    self.logger.info(f"  ⏭️  Skipping file {file['id']} (will be cascade-deleted with parent task)")
                     continue
                 try:
                     await self._rate_limit()
@@ -442,9 +408,7 @@ class ClickUpBongo(BaseBongo):
             # Delete comments (skip those that will be cascade-deleted)
             for comment in comments_to_delete:
                 if comment["id"] in cascade_deleted_children:
-                    self.logger.info(
-                        f"  ⏭️  Skipping comment {comment['id']} (will be cascade-deleted with parent task)"
-                    )
+                    self.logger.info(f"  ⏭️  Skipping comment {comment['id']} (will be cascade-deleted with parent task)")
                     continue
                 try:
                     await self._rate_limit()
@@ -456,18 +420,14 @@ class ClickUpBongo(BaseBongo):
                         deleted_ids.append(comment["id"])
                         self.logger.info(f"  ✅ Deleted comment {comment['id']}")
                     else:
-                        self.logger.warning(
-                            f"Failed to delete comment {comment['id']}: {resp.status_code}"
-                        )
+                        self.logger.warning(f"Failed to delete comment {comment['id']}: {resp.status_code}")
                 except Exception as e:
                     self.logger.warning(f"Failed to delete comment {comment['id']}: {e}")
 
             # Delete subtasks (skip those that will be cascade-deleted)
             for subtask in subtasks_to_delete:
                 if subtask["id"] in cascade_deleted_children:
-                    self.logger.info(
-                        f"  ⏭️  Skipping subtask {subtask['id']} (will be cascade-deleted with parent task)"
-                    )
+                    self.logger.info(f"  ⏭️  Skipping subtask {subtask['id']} (will be cascade-deleted with parent task)")
                     continue
                 try:
                     await self._rate_limit()
@@ -479,9 +439,7 @@ class ClickUpBongo(BaseBongo):
                         deleted_ids.append(subtask["id"])
                         self.logger.info(f"  ✅ Deleted subtask {subtask['id']}")
                     else:
-                        self.logger.warning(
-                            f"Failed to delete subtask {subtask['id']}: {resp.status_code}"
-                        )
+                        self.logger.warning(f"Failed to delete subtask {subtask['id']}: {resp.status_code}")
                 except Exception as e:
                     self.logger.warning(f"Failed to delete subtask {subtask['id']}: {e}")
 
@@ -497,9 +455,7 @@ class ClickUpBongo(BaseBongo):
                         deleted_ids.append(task["id"])
                         self.logger.info(f"  ✅ Deleted task {task['id']}")
                     else:
-                        self.logger.warning(
-                            f"Failed to delete task {task['id']}: {resp.status_code}"
-                        )
+                        self.logger.warning(f"Failed to delete task {task['id']}: {resp.status_code}")
                 except Exception as e:
                     self.logger.warning(f"Failed to delete task {task['id']}: {e}")
 
@@ -507,9 +463,7 @@ class ClickUpBongo(BaseBongo):
             # (they were automatically deleted by ClickUp when parent tasks were deleted)
             deleted_ids.extend(cascade_deleted_children)
 
-        self.logger.info(
-            f"✅ Deleted {len(deleted_ids)} entities (including {len(cascade_deleted_children)} cascade-deleted children)"
-        )
+        self.logger.info(f"✅ Deleted {len(deleted_ids)} entities (including {len(cascade_deleted_children)} cascade-deleted children)")
         return deleted_ids
 
     async def cleanup(self):
@@ -612,9 +566,7 @@ class ClickUpBongo(BaseBongo):
 
                 # 2. Find and clean up orphaned test spaces
                 try:
-                    spaces_data = await self._get_with_retry(
-                        client, f"{self.API_BASE}/team/{self._workspace_id}/space"
-                    )
+                    spaces_data = await self._get_with_retry(client, f"{self.API_BASE}/team/{self._workspace_id}/space")
                     for space in spaces_data.get("spaces", []):
                         if space["name"].startswith("Monke Test Space"):
                             try:

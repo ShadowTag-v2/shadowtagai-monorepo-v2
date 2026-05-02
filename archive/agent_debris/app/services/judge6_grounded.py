@@ -18,15 +18,16 @@ import logging
 import os
 import time
 from dataclasses import dataclass
-from datetime import datetime, timezone, UTC
-from enum import Enum, StrEnum
-from typing import Any, Dict, List, Optional
+from datetime import datetime, UTC
+from enum import StrEnum
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
 class GovernanceDecision(StrEnum):
     """Governance decision outcomes."""
+
     APPROVE = "APPROVE"
     DENY = "DENY"
     REVIEW = "REVIEW"
@@ -35,6 +36,7 @@ class GovernanceDecision(StrEnum):
 @dataclass
 class ComplianceFlags:
     """Compliance domain flags."""
+
     gdpr: bool = False
     ccpa: bool = False
     pci_dss: bool = False
@@ -44,17 +46,23 @@ class ComplianceFlags:
     def active_domains(self) -> list[str]:
         """Get list of active compliance domains."""
         domains = []
-        if self.gdpr: domains.append("GDPR")
-        if self.ccpa: domains.append("CCPA")
-        if self.pci_dss: domains.append("PCI-DSS")
-        if self.coppa: domains.append("COPPA")
-        if self.hipaa: domains.append("HIPAA")
+        if self.gdpr:
+            domains.append("GDPR")
+        if self.ccpa:
+            domains.append("CCPA")
+        if self.pci_dss:
+            domains.append("PCI-DSS")
+        if self.coppa:
+            domains.append("COPPA")
+        if self.hipaa:
+            domains.append("HIPAA")
         return domains
 
 
 @dataclass
 class GroundingChunk:
     """Citation from Vertex AI Search."""
+
     source: str
     content: str
     relevance_score: float
@@ -64,6 +72,7 @@ class GroundingChunk:
 @dataclass
 class GroundedGovernanceResult:
     """Result from grounded governance scoring."""
+
     request_id: str
     decision: GovernanceDecision
     risk_score: int  # 0-100
@@ -140,10 +149,7 @@ class Judge6Grounded:
 
         # Derived paths
         self.collection_id = "default_collection"
-        self.datastore_path = (
-            f"projects/{self.project_id}/locations/{self.location}/"
-            f"collections/{self.collection_id}/dataStores/{self.datastore_id}"
-        )
+        self.datastore_path = f"projects/{self.project_id}/locations/{self.location}/collections/{self.collection_id}/dataStores/{self.datastore_id}"
 
         # Clients (lazy initialized)
         self._search_client = None
@@ -175,11 +181,7 @@ class Judge6Grounded:
             vertexai.init(project=self.project_id, location="us-central1")
 
             # Create grounding tool from datastore
-            self._grounding_tool = Tool.from_retrieval(
-                grounding.Retrieval(
-                    source=grounding.VertexAISearch(datastore=self.datastore_path)
-                )
-            )
+            self._grounding_tool = Tool.from_retrieval(grounding.Retrieval(source=grounding.VertexAISearch(datastore=self.datastore_path)))
 
             # Initialize Gemini model with grounding
             self._genai_model = GenerativeModel(
@@ -263,7 +265,7 @@ class Judge6Grounded:
 
 REQUEST: {query}
 
-COMPLIANCE DOMAINS: {', '.join(active_domains) if active_domains else 'General'}
+COMPLIANCE DOMAINS: {", ".join(active_domains) if active_domains else "General"}
 
 Provide:
 1. Applicable policy citations
@@ -280,18 +282,20 @@ Be specific and cite relevant doctrine sections."""
 
             # Extract grounding chunks from response
             citations = []
-            if hasattr(response, 'candidates') and response.candidates:
+            if hasattr(response, "candidates") and response.candidates:
                 candidate = response.candidates[0]
-                if hasattr(candidate, 'grounding_metadata'):
+                if hasattr(candidate, "grounding_metadata"):
                     grounding_metadata = candidate.grounding_metadata
-                    if hasattr(grounding_metadata, 'grounding_chunks'):
+                    if hasattr(grounding_metadata, "grounding_chunks"):
                         for chunk in grounding_metadata.grounding_chunks:
-                            citations.append(GroundingChunk(
-                                source=getattr(chunk, 'web', {}).get('uri', 'doctrine'),
-                                content=getattr(chunk, 'web', {}).get('title', '')[:200],
-                                relevance_score=getattr(chunk, 'relevance_score', 0.8),
-                                document_id=hashlib.sha256(str(chunk).encode()).hexdigest()[:8],
-                            ))
+                            citations.append(
+                                GroundingChunk(
+                                    source=getattr(chunk, "web", {}).get("uri", "doctrine"),
+                                    content=getattr(chunk, "web", {}).get("title", "")[:200],
+                                    relevance_score=getattr(chunk, "relevance_score", 0.8),
+                                    document_id=hashlib.sha256(str(chunk).encode()).hexdigest()[:8],
+                                )
+                            )
 
             return citations
 
@@ -385,10 +389,7 @@ Be specific and cite relevant doctrine sections."""
                 del self._cache[oldest_key]
             self._cache[cache_key] = result
 
-        logger.info(
-            f"Governance scored: {decision.value} (risk={risk_score}, "
-            f"latency={latency_ms:.0f}ms, citations={len(citations)})"
-        )
+        logger.info(f"Governance scored: {decision.value} (risk={risk_score}, latency={latency_ms:.0f}ms, citations={len(citations)})")
 
         return result
 
@@ -451,6 +452,7 @@ async def score_governance(
 
 
 if __name__ == "__main__":
+
     async def test():
         print("=== Judge #6 Grounded Governance Test ===\n")
 

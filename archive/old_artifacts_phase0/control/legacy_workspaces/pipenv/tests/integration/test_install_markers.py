@@ -30,9 +30,9 @@ dataclass-factory = {}
         c = p.pipenv("install -v")
         assert c.returncode == 0
         assert "markers" in p.lockfile["default"]["dataclass-factory"], p.lockfile["default"]
-        assert (
-            p.lockfile["default"]["dataclass-factory"]["markers"] == "python_version >= '3.6' and os_name == 'splashwear'"
-        ), p.lockfile["default"]["dataclass-factory"]["markers"]
+        assert p.lockfile["default"]["dataclass-factory"]["markers"] == "python_version >= '3.6' and os_name == 'splashwear'", (
+            p.lockfile["default"]["dataclass-factory"]["markers"]
+        )
         c = p.pipenv('run python -c "import dataclass_factory;"')
         assert c.returncode == 1  # dataclass-factory is not installed due to the marker
 
@@ -51,10 +51,7 @@ def test_platform_python_implementation_marker(pipenv_instance_private_pypi):
         # 'pytz; platform_python_implementation=="CPython"'
         # Verify that that marker shows up in our lockfile unaltered.
         assert "pytz" in p.lockfile["default"]
-        assert (
-            p.lockfile["default"]["pytz"].get("markers")
-            == "platform_python_implementation == 'CPython'"
-        )
+        assert p.lockfile["default"]["pytz"].get("markers") == "platform_python_implementation == 'CPython'"
 
 
 @pytest.mark.flaky(reruns=1)
@@ -93,12 +90,8 @@ funcsigs = {version = "*", os_name = "== 'splashwear'"}
 
         c = p.pipenv("install")
         assert c.returncode == 0
-        assert "markers" in p.lockfile["default"]["funcsigs"], p.lockfile["default"][
-            "funcsigs"
-        ]
-        assert (
-            p.lockfile["default"]["funcsigs"]["markers"] == "os_name == 'splashwear'"
-        ), p.lockfile["default"]["funcsigs"]
+        assert "markers" in p.lockfile["default"]["funcsigs"], p.lockfile["default"]["funcsigs"]
+        assert p.lockfile["default"]["funcsigs"]["markers"] == "os_name == 'splashwear'", p.lockfile["default"]["funcsigs"]
 
 
 @pytest.mark.flaky(reruns=1)
@@ -134,9 +127,7 @@ funcsigs = "*"
 @pytest.mark.flaky(reruns=1)
 @pytest.mark.markers
 @pytest.mark.complex
-@pytest.mark.skipif(
-    sys.version_info[:2] == (3, 8), reason="Test package that gets installed is different on 3.8"
-)
+@pytest.mark.skipif(sys.version_info[:2] == (3, 8), reason="Test package that gets installed is different on 3.8")
 def test_resolver_unique_markers(pipenv_instance_pypi):
     """Test that markers are properly cleaned and not duplicated when resolving
     dependencies. Use vcrpy as an example package that pulls in dependencies

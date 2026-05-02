@@ -12,8 +12,8 @@ PENDING_MSG_TIMEOUT_MS = 60000  # Milliseconds: Timeout after which pending mess
 # Configuration for Speaker Events Stream (NEW)
 REDIS_SPEAKER_EVENTS_STREAM_NAME = os.environ.get("REDIS_SPEAKER_EVENTS_STREAM_NAME", "speaker_events_relative")
 REDIS_SPEAKER_EVENTS_CONSUMER_GROUP = os.environ.get("REDIS_SPEAKER_EVENTS_CONSUMER_GROUP", "collector_speaker_group")
-REDIS_SPEAKER_EVENT_KEY_PREFIX = os.environ.get("REDIS_SPEAKER_EVENT_KEY_PREFIX", "speaker_events") # For sorted sets
-REDIS_SPEAKER_EVENT_TTL = int(os.environ.get("REDIS_SPEAKER_EVENT_TTL", "86400")) # 24 hours default TTL for speaker events sorted sets
+REDIS_SPEAKER_EVENT_KEY_PREFIX = os.environ.get("REDIS_SPEAKER_EVENT_KEY_PREFIX", "speaker_events")  # For sorted sets
+REDIS_SPEAKER_EVENT_TTL = int(os.environ.get("REDIS_SPEAKER_EVENT_TTL", "86400"))  # 24 hours default TTL for speaker events sorted sets
 
 # Configuration for background processing
 BACKGROUND_TASK_INTERVAL = int(os.environ.get("BACKGROUND_TASK_INTERVAL", "10"))  # seconds

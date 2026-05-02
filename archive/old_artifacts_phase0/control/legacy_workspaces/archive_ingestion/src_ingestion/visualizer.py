@@ -87,9 +87,9 @@ class BriefingVisualizer:
         elif self.output_format == "mermaid":
             # Mermaid bar chart
             lines = ["```mermaid", "xychart-beta", '    title "Items by Source Type"']
-            lines.append('    x-axis [' + ', '.join(f'"{k}"' for k in source_stats.keys()) + ']')
+            lines.append("    x-axis [" + ", ".join(f'"{k}"' for k in source_stats) + "]")
             lines.append('    y-axis "Items Collected"')
-            lines.append('    bar [' + ', '.join(str(v) for v in source_stats.values()) + ']')
+            lines.append("    bar [" + ", ".join(str(v) for v in source_stats.values()) + "]")
             lines.append("```")
             return "\n".join(lines)
         else:
@@ -116,9 +116,9 @@ class BriefingVisualizer:
             lines = ["```mermaid", "xychart-beta", '    title "Compliance Trend"']
             dates = [h.get("date", "").split("T")[0][-5:] for h in compliance_history]
             scores = [h.get("score", 0) for h in compliance_history]
-            lines.append('    x-axis [' + ', '.join(f'"{d}"' for d in dates) + ']')
+            lines.append("    x-axis [" + ", ".join(f'"{d}"' for d in dates) + "]")
             lines.append('    y-axis "Score %" 0 --> 100')
-            lines.append('    line [' + ', '.join(str(s) for s in scores) + ']')
+            lines.append("    line [" + ", ".join(str(s) for s in scores) + "]")
             lines.append("```")
             return "\n".join(lines)
         else:
@@ -254,7 +254,7 @@ class BriefingVisualizer:
         title: str = "Distribution",
     ) -> str:
         """Create Mermaid pie chart."""
-        lines = ["```mermaid", "pie", f'    title {title}']
+        lines = ["```mermaid", "pie", f"    title {title}"]
 
         for label, value in data.items():
             lines.append(f'    "{label}" : {value}')
@@ -302,11 +302,13 @@ class BriefingVisualizer:
 
         # 1. Tier Distribution
         sections.append("## 📊 Tier Distribution")
-        sections.append(self.generate_tier_distribution_chart(
-            tier_dist.get("tier_1", 0),
-            tier_dist.get("tier_2", 0),
-            tier_dist.get("tier_3", 0),
-        ))
+        sections.append(
+            self.generate_tier_distribution_chart(
+                tier_dist.get("tier_1", 0),
+                tier_dist.get("tier_2", 0),
+                tier_dist.get("tier_3", 0),
+            )
+        )
 
         # 2. Source Coverage
         sections.append("\n## 📡 Source Coverage")
@@ -314,16 +316,18 @@ class BriefingVisualizer:
 
         # 3. Quality Scorecard
         sections.append("\n## ✅ Quality Metrics")
-        sections.append(self.generate_quality_scorecard(
-            {
-                "Compliance Score": compliance_score,
-                "Budget Usage": (cost_current / cost_budget * 100) if cost_budget > 0 else 0,
-            },
-            {
-                "Compliance Score": 95.0,
-                "Budget Usage": 100.0,
-            },
-        ))
+        sections.append(
+            self.generate_quality_scorecard(
+                {
+                    "Compliance Score": compliance_score,
+                    "Budget Usage": (cost_current / cost_budget * 100) if cost_budget > 0 else 0,
+                },
+                {
+                    "Compliance Score": 95.0,
+                    "Budget Usage": 100.0,
+                },
+            )
+        )
 
         # 4. Cost Summary
         sections.append("\n## 💰 Cost Summary")

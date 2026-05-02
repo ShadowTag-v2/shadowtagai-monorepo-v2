@@ -1,4 +1,3 @@
-
 import subprocess
 
 from fastapi import APIRouter, HTTPException
@@ -6,10 +5,12 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
+
 class CommandRequest(BaseModel):
     command: str
     cwd: str = "."
     background: bool = False
+
 
 @router.post("/exec")
 async def execute_shell(req: CommandRequest):
@@ -27,18 +28,7 @@ async def execute_shell(req: CommandRequest):
             return {"status": "background_started", "command": req.command}
         else:
             # Synchronous execution
-            result = subprocess.run(
-                req.command,
-                shell=True,
-                cwd=working_dir,
-                capture_output=True,
-                text=True
-            )
-            return {
-                "status": "completed",
-                "returncode": result.returncode,
-                "stdout": result.stdout,
-                "stderr": result.stderr
-            }
+            result = subprocess.run(req.command, shell=True, cwd=working_dir, capture_output=True, text=True)
+            return {"status": "completed", "returncode": result.returncode, "stdout": result.stdout, "stderr": result.stderr}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

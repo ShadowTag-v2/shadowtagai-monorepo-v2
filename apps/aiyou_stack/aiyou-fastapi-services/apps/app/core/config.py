@@ -3,8 +3,16 @@
 Centralized configuration management using Pydantic settings.
 """
 
+import logging
+import os
+import secrets
+
 from pydantic import Field
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+logger = logging.getLogger(__name__)
+
+_DEV_FALLBACK_SECRET = secrets.token_urlsafe(32)
 
 
 class Settings(BaseSettings):
@@ -30,8 +38,8 @@ class Settings(BaseSettings):
 
     # Security
     SECRET_KEY: str = Field(
-        default="changeme-in-production",
-        description="Secret key for signing tokens",
+        default="",
+        description="Secret key for signing tokens. Set via SECRET_KEY env var.",
     )
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
@@ -45,9 +53,20 @@ class Settings(BaseSettings):
     ENABLE_ENCRYPTION: bool = True
     ENABLE_ERROR_CORRECTION: bool = True
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = SettingsConfigDict(case_sensitive=True)
+
+    def model_post_init(self, __context: object) -> None:
+        """Ensure SECRET_KEY is never empty."""
+        if not self.SECRET_KEY:
+            env_key = os.environ.get("SECRET_KEY", "")
+            if env_key:
+                object.__setattr__(self, "SECRET_KEY", env_key)
+            else:
+                object.__setattr__(self, "SECRET_KEY", _DEV_FALLBACK_SECRET)
+                logger.warning(
+                    "SECRET_KEY not set — using random per-process fallback. "
+                    "Set SECRET_KEY env var via GCP Secret Manager for production."
+                )
 
 
 settings = Settings()

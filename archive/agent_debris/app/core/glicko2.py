@@ -8,9 +8,9 @@ Advantages over Elo/PPO:
 - More accurate for sparse interactions
 - Better handles rating inflation/deflation
 """
+
 import math
 import logging
-from typing import List, Tuple
 from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
@@ -26,6 +26,7 @@ class Glicko2Player:
         phi: Rating deviation (uncertainty)
         sigma: Volatility (consistency of performance)
     """
+
     mu: float = 1500.0  # Initial rating (Glicko scale)
     phi: float = 350.0  # Initial rating deviation
     sigma: float = 0.06  # Initial volatility
@@ -68,13 +69,7 @@ class Glicko2System:
         self.tol = tol
         logger.info(f"Glicko-2 system initialized (tau={tau}, tol={tol})")
 
-    def update(
-        self,
-        player: Glicko2Player,
-        opponent_ratings: list[float],
-        opponent_rds: list[float],
-        scores: list[float]
-    ) -> Glicko2Player:
+    def update(self, player: Glicko2Player, opponent_ratings: list[float], opponent_rds: list[float], scores: list[float]) -> Glicko2Player:
         """
         Update player rating based on match results
 
@@ -99,10 +94,7 @@ class Glicko2System:
         mu, phi = player.to_glicko2_scale()
 
         # Convert opponents to Glicko-2 scale
-        opponents = [
-            ((r - 1500) / 173.7178, rd / 173.7178)
-            for r, rd in zip(opponent_ratings, opponent_rds)
-        ]
+        opponents = [((r - 1500) / 173.7178, rd / 173.7178) for r, rd in zip(opponent_ratings, opponent_rds)]
 
         # Step 1: Calculate variance (v)
         v = self._calculate_variance(mu, opponents)
@@ -119,8 +111,7 @@ class Glicko2System:
         # Step 5: Update rating and RD
         phi_prime = 1 / math.sqrt(1 / phi_star**2 + 1 / v)
         mu_prime = mu + phi_prime**2 * sum(
-            self._g(opp_phi) * (score - self._E(mu, opp_mu, opp_phi))
-            for (opp_mu, opp_phi), score in zip(opponents, scores)
+            self._g(opp_phi) * (score - self._E(mu, opp_mu, opp_phi)) for (opp_mu, opp_phi), score in zip(opponents, scores)
         )
 
         # Update player
@@ -139,32 +130,14 @@ class Glicko2System:
 
     def _calculate_variance(self, mu: float, opponents: list[tuple[float, float]]) -> float:
         """Calculate variance (v)"""
-        v_inv = sum(
-            self._g(opp_phi)**2 * self._E(mu, opp_mu, opp_phi) * (1 - self._E(mu, opp_mu, opp_phi))
-            for opp_mu, opp_phi in opponents
-        )
-        return 1 / v_inv if v_inv > 0 else float('inf')
+        v_inv = sum(self._g(opp_phi) ** 2 * self._E(mu, opp_mu, opp_phi) * (1 - self._E(mu, opp_mu, opp_phi)) for opp_mu, opp_phi in opponents)
+        return 1 / v_inv if v_inv > 0 else float("inf")
 
-    def _calculate_delta(
-        self,
-        mu: float,
-        opponents: list[tuple[float, float]],
-        scores: list[float],
-        v: float
-    ) -> float:
+    def _calculate_delta(self, mu: float, opponents: list[tuple[float, float]], scores: list[float], v: float) -> float:
         """Calculate improvement (delta)"""
-        return v * sum(
-            self._g(opp_phi) * (score - self._E(mu, opp_mu, opp_phi))
-            for (opp_mu, opp_phi), score in zip(opponents, scores)
-        )
+        return v * sum(self._g(opp_phi) * (score - self._E(mu, opp_mu, opp_phi)) for (opp_mu, opp_phi), score in zip(opponents, scores))
 
-    def _calculate_new_volatility(
-        self,
-        phi: float,
-        delta: float,
-        v: float,
-        sigma: float
-    ) -> float:
+    def _calculate_new_volatility(self, phi: float, delta: float, v: float, sigma: float) -> float:
         """
         Calculate new volatility using Illinois algorithm
         This is the complex part with the f function
@@ -176,10 +149,7 @@ class Glicko2System:
             """Volatility update function"""
             ex = math.exp(x)
             phi2 = phi**2
-            return (
-                ex * (delta**2 - phi2 - v - ex) / (2 * (phi2 + v + ex)**2)
-                - (x - a) / self.tau**2
-            )
+            return ex * (delta**2 - phi2 - v - ex) / (2 * (phi2 + v + ex) ** 2) - (x - a) / self.tau**2
 
         # Find bounds
         A = a
@@ -210,21 +180,13 @@ class Glicko2System:
 
         return math.exp(A / 2)
 
-    def expected_score(
-        self,
-        player1: Glicko2Player,
-        player2: Glicko2Player
-    ) -> float:
+    def expected_score(self, player1: Glicko2Player, player2: Glicko2Player) -> float:
         """Calculate expected score for player1 vs player2"""
         mu1, phi1 = player1.to_glicko2_scale()
         mu2, phi2 = player2.to_glicko2_scale()
         return self._E(mu1, mu2, phi2)
 
-    def match_quality(
-        self,
-        player1: Glicko2Player,
-        player2: Glicko2Player
-    ) -> float:
+    def match_quality(self, player1: Glicko2Player, player2: Glicko2Player) -> float:
         """
         Calculate match quality (0 to 1)
         Higher = more competitive/uncertain outcome
@@ -248,12 +210,7 @@ class AgentRanking:
         self.agents[agent_id] = Glicko2Player(mu=initial_rating)
         logger.info(f"Registered agent {agent_id} with rating {initial_rating}")
 
-    def record_match(
-        self,
-        agent_id: str,
-        opponent_id: str,
-        score: float
-    ):
+    def record_match(self, agent_id: str, opponent_id: str, score: float):
         """Record a match result (1=win, 0.5=draw, 0=loss)"""
         if agent_id not in self.agents:
             self.register_agent(agent_id)
@@ -264,27 +221,14 @@ class AgentRanking:
         opponent = self.agents[opponent_id]
 
         # Update agent rating
-        self.agents[agent_id] = self.system.update(
-            agent,
-            [opponent.mu],
-            [opponent.phi],
-            [score]
-        )
+        self.agents[agent_id] = self.system.update(agent, [opponent.mu], [opponent.phi], [score])
 
         # Update opponent rating (inverse score)
-        self.agents[opponent_id] = self.system.update(
-            opponent,
-            [agent.mu],
-            [agent.phi],
-            [1 - score]
-        )
+        self.agents[opponent_id] = self.system.update(opponent, [agent.mu], [agent.phi], [1 - score])
 
     def get_rankings(self) -> list[tuple[str, float, float]]:
         """Get ranked list of agents (agent_id, rating, RD)"""
-        rankings = [
-            (agent_id, player.mu, player.phi)
-            for agent_id, player in self.agents.items()
-        ]
+        rankings = [(agent_id, player.mu, player.phi) for agent_id, player in self.agents.items()]
         return sorted(rankings, key=lambda x: x[1], reverse=True)
 
     def get_top_agents(self, n: int = 10) -> list[tuple[str, float]]:

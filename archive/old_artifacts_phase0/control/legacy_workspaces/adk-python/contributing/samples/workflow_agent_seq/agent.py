@@ -101,9 +101,7 @@ Do not add any other text before or after the code block.
 code_pipeline_agent = SequentialAgent(
     name="CodePipelineAgent",
     sub_agents=[code_writer_agent, code_reviewer_agent, code_refactorer_agent],
-    description=(
-        "Executes a sequence of code writing, reviewing, and refactoring."
-    ),
+    description=("Executes a sequence of code writing, reviewing, and refactoring."),
     # The agents will run in the order provided: Writer -> Reviewer -> Refactorer
 )
 

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/training/grpo.py
+# hypothesis_version: 6.151.5
+
+[-0.5, -0.1, 0.0, 1e-05, 0.01, 0.1, 0.2, 'GRPO', 'Learning rate', 'Loss Function', 'Reasoning Tasks', 'Sample Efficiency', 'Stability', 'Tie', 'advantages_grpo', 'group_size', 'grpo_loss', 'loss_difference', 'mean_reward', 'ppo_loss', 'prompt', 'rewards']

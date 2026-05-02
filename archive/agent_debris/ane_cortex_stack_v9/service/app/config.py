@@ -2,6 +2,7 @@ from pathlib import Path
 import yaml
 from pydantic import BaseModel
 
+
 class Settings(BaseModel):
     sqlite_db: str = "./data/file_index/ane_files.db"
     lancedb_root: str = "./data/lancedb"
@@ -13,6 +14,7 @@ class Settings(BaseModel):
     monorepo_manifest_path: str = "./manifests/monorepo_manifest.yaml"
     monorepo_merge_status_path: str = "./docs/MERGE_STATUS.md"
     monorepo_control_plane_path: str = "./docs/ANTIGRAVITY_CONTROL_PLANE.md"
+
 
 def load_settings(path: str = "./config/app.yaml") -> Settings:
     p = Path(path)

@@ -22,7 +22,7 @@ def read_gene_list(file_path):
         genes = df.iloc[:, 0].tolist()
     else:
         # Plain text file
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             genes = [line.strip() for line in f if line.strip()]
 
     return genes
@@ -88,7 +88,7 @@ def enrichment_pipeline(
                         "adjusted_p_value",
                         row.get("p_value", row.get("Adjusted P-value", 1)),
                     )
-                    print(f"  {i+1}. {term}")
+                    print(f"  {i + 1}. {term}")
                     print(f"     P-value: {p_val:.2e}")
 
                 results[db_key] = enrichment
@@ -109,9 +109,7 @@ def enrichment_pipeline(
                 {
                     "Database": db_name,
                     "Total Terms": len(results[db_key]),
-                    "Top Term": results[db_key].iloc[0].get(
-                        "name", results[db_key].iloc[0].get("term", "N/A")
-                    ),
+                    "Top Term": results[db_key].iloc[0].get("name", results[db_key].iloc[0].get("term", "N/A")),
                 }
             )
 
@@ -158,7 +156,7 @@ def enrichment_pipeline(
     print("\n" + "=" * 60)
     print("Enrichment analysis complete!")
     print(f"\nOutput files (prefix: {output_prefix}):")
-    for db_key in databases.keys():
+    for db_key in databases:
         if db_key in results:
             print(f"  - {output_prefix}_{db_key}.csv")
     print(f"  - {output_prefix}_summary.csv")
@@ -168,9 +166,7 @@ def enrichment_pipeline(
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Perform comprehensive enrichment analysis using gget"
-    )
+    parser = argparse.ArgumentParser(description="Perform comprehensive enrichment analysis using gget")
     parser.add_argument(
         "genes",
         help="Gene list file (one gene per line or CSV with genes in first column)",
@@ -181,15 +177,9 @@ def main():
         default="human",
         help="Species (human, mouse, fly, yeast, worm, fish)",
     )
-    parser.add_argument(
-        "-b", "--background", help="Background gene list file (optional)"
-    )
-    parser.add_argument(
-        "-o", "--output", default="enrichment", help="Output prefix (default: enrichment)"
-    )
-    parser.add_argument(
-        "--no-plot", action="store_true", help="Disable plotting"
-    )
+    parser.add_argument("-b", "--background", help="Background gene list file (optional)")
+    parser.add_argument("-o", "--output", default="enrichment", help="Output prefix (default: enrichment)")
+    parser.add_argument("--no-plot", action="store_true", help="Disable plotting")
 
     args = parser.parse_args()
 

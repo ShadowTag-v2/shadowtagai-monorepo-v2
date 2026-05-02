@@ -29,89 +29,83 @@ from google.adk.tools.authenticated_function_tool import AuthenticatedFunctionTo
 
 # OAuth2 configuration for weather API access
 def create_auth_config() -> AuthConfig:
-  """Create OAuth2 auth configuration for weather API."""
+    """Create OAuth2 auth configuration for weather API."""
 
-  # Define OAuth2 scheme with client credentials flow
-  flows = OAuthFlows(
-      clientCredentials=OAuthFlowClientCredentials(
-          tokenUrl="http://localhost:8080/token",
-          scopes={
-              "read": "Read access to weather data",
-              "write": "Write access for data updates",
-              "admin": "Administrative access",
-          },
-      )
-  )
-  auth_scheme = OAuth2(flows=flows)
+    # Define OAuth2 scheme with client credentials flow
+    flows = OAuthFlows(
+        clientCredentials=OAuthFlowClientCredentials(
+            tokenUrl="http://localhost:8080/token",
+            scopes={
+                "read": "Read access to weather data",
+                "write": "Write access for data updates",
+                "admin": "Administrative access",
+            },
+        )
+    )
+    auth_scheme = OAuth2(flows=flows)
 
-  # Create credential with client ID and secret
-  raw_credential = AuthCredential(
-      auth_type=AuthCredentialTypes.OAUTH2,
-      oauth2=OAuth2Auth(
-          client_id="test_client",
-          client_secret="test_secret",
-      ),
-  )
+    # Create credential with client ID and secret
+    raw_credential = AuthCredential(
+        auth_type=AuthCredentialTypes.OAUTH2,
+        oauth2=OAuth2Auth(
+            client_id="test_client",
+            client_secret="test_secret",
+        ),
+    )
 
-  return AuthConfig(
-      auth_scheme=auth_scheme,
-      raw_auth_credential=raw_credential,
-      credential_key="weather_api_client",
-  )
+    return AuthConfig(
+        auth_scheme=auth_scheme,
+        raw_auth_credential=raw_credential,
+        credential_key="weather_api_client",
+    )
 
 
 def get_weather_data(city: str = "San Francisco", credential=None) -> str:
-  """Get current weather data for a specified city.
+    """Get current weather data for a specified city.
 
-  Args:
-      city: City name to get weather for
-      credential: API credential (automatically injected by AuthenticatedFunctionTool)
+    Args:
+        city: City name to get weather for
+        credential: API credential (automatically injected by AuthenticatedFunctionTool)
 
-  Returns:
-      Current weather information for the city.
-  """
+    Returns:
+        Current weather information for the city.
+    """
 
-  try:
-    # Use the credential to make authenticated requests to weather API
-    headers = {}
-    if credential and credential.oauth2 and credential.oauth2.access_token:
-      headers["Authorization"] = f"Bearer {credential.oauth2.access_token}"
+    try:
+        # Use the credential to make authenticated requests to weather API
+        headers = {}
+        if credential and credential.oauth2 and credential.oauth2.access_token:
+            headers["Authorization"] = f"Bearer {credential.oauth2.access_token}"
 
-    # Call weather API endpoint
-    params = {"city": city, "units": "metric"}
-    response = requests.get(
-        "http://localhost:8080/api/weather",
-        headers=headers,
-        params=params,
-        timeout=10,
-    )
+        # Call weather API endpoint
+        params = {"city": city, "units": "metric"}
+        response = requests.get(
+            "http://localhost:8080/api/weather",
+            headers=headers,
+            params=params,
+            timeout=10,
+        )
 
-    if response.status_code == 200:
-      data = response.json()
-      result = f"🌤️ Weather for {city}:\n"
-      result += f"Temperature: {data.get('temperature', 'N/A')}°C\n"
-      result += f"Condition: {data.get('condition', 'N/A')}\n"
-      result += f"Humidity: {data.get('humidity', 'N/A')}%\n"
-      result += f"Wind Speed: {data.get('wind_speed', 'N/A')} km/h\n"
-      result += f"Last Updated: {data.get('timestamp', 'N/A')}\n"
-      return result
-    else:
-      return (
-          f"❌ Failed to get weather data: {response.status_code} -"
-          f" {response.text}"
-      )
+        if response.status_code == 200:
+            data = response.json()
+            result = f"🌤️ Weather for {city}:\n"
+            result += f"Temperature: {data.get('temperature', 'N/A')}°C\n"
+            result += f"Condition: {data.get('condition', 'N/A')}\n"
+            result += f"Humidity: {data.get('humidity', 'N/A')}%\n"
+            result += f"Wind Speed: {data.get('wind_speed', 'N/A')} km/h\n"
+            result += f"Last Updated: {data.get('timestamp', 'N/A')}\n"
+            return result
+        else:
+            return f"❌ Failed to get weather data: {response.status_code} - {response.text}"
 
-  except Exception as e:
-    return f"❌ Error getting weather data: {str(e)}"
+    except Exception as e:
+        return f"❌ Error getting weather data: {str(e)}"
 
 
 # Create the weather assistant agent
 root_agent = Agent(
     name="WeatherAssistant",
-    description=(
-        "Weather assistant that provides current weather information for cities"
-        " worldwide."
-    ),
+    description=("Weather assistant that provides current weather information for cities worldwide."),
     model="gemini-2.5-pro",
     instruction=(
         "You are a helpful Weather Assistant that provides current weather"
@@ -123,8 +117,6 @@ root_agent = Agent(
         " trying again or checking for a different city name."
     ),
     tools=[
-        AuthenticatedFunctionTool(
-            func=get_weather_data, auth_config=create_auth_config()
-        ),
+        AuthenticatedFunctionTool(func=get_weather_data, auth_config=create_auth_config()),
     ],
 )

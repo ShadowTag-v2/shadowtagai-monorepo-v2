@@ -11,4 +11,4 @@ A comprehensive testing library for the Vexa client that provides:
 from bot import Bot
 from test_suite import TestSuite
 
-__all__ = ['TestSuite', 'Bot']
+__all__ = ["TestSuite", "Bot"]

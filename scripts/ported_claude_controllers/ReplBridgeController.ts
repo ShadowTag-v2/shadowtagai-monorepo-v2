@@ -1,9 +1,9 @@
 import { extractInboundMessageFields } from '../../bridge/inboundMessages.js';
 import { setReplBridgeHandle } from '../../bridge/replBridgeHandle.js';
-import { enqueue } from '../../utils/messageQueueManager.js';
+import { getAppStateStore, setAppState } from '../../state/AppState.js';
 import { logForDebugging } from '../../utils/debug.js';
 import { errorMessage } from '../../utils/errors.js';
-import { getAppStateStore, setAppState } from '../../state/AppState.js';
+import { enqueue } from '../../utils/messageQueueManager.js';
 
 const BRIDGE_FAILURE_DISMISS_MS = 10000;
 const MAX_CONSECUTIVE_INIT_FAILURES = 3;

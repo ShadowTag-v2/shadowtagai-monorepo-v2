@@ -30,32 +30,24 @@ async def enforce_user_concurrency_limit(
     try:
         current_bot_count = await count_running_bots_for_user()
     except Exception as e:  # noqa: BLE001
-        logger.error(
-            f"Failed to count running bots for user {user_id}: {e}", exc_info=True
-        )
+        logger.error(f"Failed to count running bots for user {user_id}: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Failed to verify current bot count.")
 
     user_limit = getattr(user, "max_concurrent_bots", None)
-    logger.info(
-        f"[Limit Check] User {user_id}: running/pending bots={current_bot_count}, limit={user_limit}"
-    )
+    logger.info(f"[Limit Check] User {user_id}: running/pending bots={current_bot_count}, limit={user_limit}")
 
     if user_limit is None:
         logger.error(f"User {user_id} missing 'max_concurrent_bots' attribute.")
         raise HTTPException(status_code=500, detail="User configuration error: Bot limit not set.")
 
     if current_bot_count >= int(user_limit):
-        logger.warning(
-            f"User {user_id} reached bot limit ({user_limit}). Rejecting new launch."
-        )
+        logger.warning(f"User {user_id} reached bot limit ({user_limit}). Rejecting new launch.")
         raise HTTPException(
             status_code=403,
             detail=f"User has reached the maximum concurrent bot limit ({user_limit}).",
         )
 
-    logger.info(
-        f"[Limit Check] User {user_id} under limit ({current_bot_count}/{user_limit})."
-    )
+    logger.info(f"[Limit Check] User {user_id} under limit ({current_bot_count}/{user_limit}).")
 
 
 async def count_user_active_bots(user_id: int) -> int:
@@ -66,12 +58,8 @@ async def count_user_active_bots(user_id: int) -> int:
     """
     try:
         async with async_session_local() as db:
-            result = await db.execute(
-                Meeting.__table__.count().where(
-                    (Meeting.user_id == user_id) & (Meeting.status.in_(['requested', 'active']))
-                )
-            )
-            count = result.scalar_one() if hasattr(result, 'scalar_one') else result.scalar() or 0
+            result = await db.execute(Meeting.__table__.count().where((Meeting.user_id == user_id) & (Meeting.status.in_(["requested", "active"]))))
+            count = result.scalar_one() if hasattr(result, "scalar_one") else result.scalar() or 0
             logger.info(f"[Seat Count] User {user_id}: active/requested meetings (excluding 'stopping') = {count}")
             return int(count)
     except Exception as e:

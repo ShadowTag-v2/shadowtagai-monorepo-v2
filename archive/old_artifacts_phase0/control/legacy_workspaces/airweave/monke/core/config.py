@@ -45,17 +45,11 @@ class ConnectorConfig(BaseModel):
     auth_mode: str = Field("composio", description="Authentication mode: 'composio' or 'direct'")
 
     # Auth configuration (one of these must be set based on auth_mode)
-    composio_config: ComposioConfig | None = Field(
-        None, description="Composio auth configuration"
-    )
-    auth_fields: dict[str, str] = Field(
-        default_factory=dict, description="Direct auth field mappings"
-    )
+    composio_config: ComposioConfig | None = Field(None, description="Composio auth configuration")
+    auth_fields: dict[str, str] = Field(default_factory=dict, description="Direct auth field mappings")
 
     # Additional configuration
-    config_fields: dict[str, Any] = Field(
-        default_factory=dict, description="Connector-specific config"
-    )
+    config_fields: dict[str, Any] = Field(default_factory=dict, description="Connector-specific config")
     rate_limit_delay_ms: int = Field(1000, description="Rate limit delay in milliseconds")
 
     @field_validator("auth_mode")
@@ -72,29 +66,20 @@ class ConnectorConfig(BaseModel):
         """Ensure all env var names in direct auth start with MONKE_."""
         for field_name, env_var in v.items():
             if not env_var.startswith("MONKE_"):
-                raise ValueError(
-                    f"Environment variable '{env_var}' for field '{field_name}' "
-                    f"must start with 'MONKE_'"
-                )
+                raise ValueError(f"Environment variable '{env_var}' for field '{field_name}' must start with 'MONKE_'")
         return v
 
     @model_validator(mode="after")
-    def validate_auth_consistency(self) -> "ConnectorConfig":
+    def validate_auth_consistency(self) -> ConnectorConfig:
         """Ensure auth configuration matches the auth_mode."""
         if self.auth_mode == "composio":
             if not self.composio_config:
                 raise ValueError("auth_mode is 'composio' but composio_config is not provided")
             if self.auth_fields:
-                raise ValueError(
-                    "auth_mode is 'composio' but auth_fields are provided. "
-                    "Cannot use both Composio and direct auth"
-                )
+                raise ValueError("auth_mode is 'composio' but auth_fields are provided. Cannot use both Composio and direct auth")
         elif self.auth_mode == "direct":
             if self.composio_config:
-                raise ValueError(
-                    "auth_mode is 'direct' but composio_config is provided. "
-                    "Cannot use both direct and Composio auth"
-                )
+                raise ValueError("auth_mode is 'direct' but composio_config is provided. Cannot use both direct and Composio auth")
             if not self.auth_fields:
                 raise ValueError("auth_mode is 'direct' but no auth_fields provided")
         return self
@@ -108,10 +93,7 @@ class ConnectorConfig(BaseModel):
         for field_name, env_var in self.auth_fields.items():
             value = os.getenv(env_var)
             if not value:
-                raise ValueError(
-                    f"Required environment variable '{env_var}' not set "
-                    f"for field '{field_name}' in {self.type}"
-                )
+                raise ValueError(f"Required environment variable '{env_var}' not set for field '{field_name}' in {self.type}")
             resolved[field_name] = value
         return resolved
 
@@ -125,9 +107,7 @@ class ConnectorConfig(BaseModel):
 class DeletionConfig(BaseModel):
     """Configuration for incremental deletion testing."""
 
-    partial_delete_count: int = Field(
-        1, description="Number of entities to delete in partial phase"
-    )
+    partial_delete_count: int = Field(1, description="Number of entities to delete in partial phase")
     verify_partial_deletion: bool = Field(True, description="Verify partial deletion worked")
     verify_remaining_entities: bool = Field(True, description="Verify remaining entities exist")
     verify_complete_deletion: bool = Field(True, description="Verify complete deletion worked")
@@ -158,9 +138,7 @@ class TestFlowConfig(BaseModel):
         ],
         description="Test flow steps to execute",
     )
-    custom_steps: dict[str, dict[str, Any]] = Field(
-        default_factory=dict, description="Custom step configurations"
-    )
+    custom_steps: dict[str, dict[str, Any]] = Field(default_factory=dict, description="Custom step configurations")
 
 
 class TestConfig(BaseModel):
@@ -171,19 +149,15 @@ class TestConfig(BaseModel):
     name: str = Field(..., description="Test name")
     description: str = Field(..., description="Test description")
     connector: ConnectorConfig = Field(..., description="Connector configuration")
-    test_flow: TestFlowConfig = Field(
-        default_factory=TestFlowConfig, description="Test flow config"
-    )
+    test_flow: TestFlowConfig = Field(default_factory=TestFlowConfig, description="Test flow config")
     deletion: DeletionConfig = Field(default_factory=DeletionConfig, description="Deletion config")
     entity_count: int = Field(10, ge=1, description="Number of entities to create")
     collection_config: dict[str, Any] = Field(default_factory=dict, description="Collection config")
-    verification_config: dict[str, Any] = Field(
-        default_factory=dict, description="Verification config"
-    )
+    verification_config: dict[str, Any] = Field(default_factory=dict, description="Verification config")
     cleanup_config: dict[str, Any] = Field(default_factory=dict, description="Cleanup config")
 
     @classmethod
-    def from_file(cls, config_path: str) -> "TestConfig":
+    def from_file(cls, config_path: str) -> TestConfig:
         """Load and validate configuration from YAML file."""
         with open(config_path) as f:
             content = f.read()
@@ -211,7 +185,7 @@ class TestConfig(BaseModel):
         return cls(**data)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "TestConfig":
+    def from_dict(cls, data: dict[str, Any]) -> TestConfig:
         """Create configuration from dictionary with validation."""
         # Map old keys to new names for backward compatibility
         data = data.copy()

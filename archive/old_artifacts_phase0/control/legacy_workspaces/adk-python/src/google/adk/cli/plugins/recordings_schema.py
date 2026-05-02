@@ -24,61 +24,61 @@ from ...models.llm_response import LlmResponse
 
 
 class LlmRecording(BaseModel):
-  """Paired LLM request and response."""
+    """Paired LLM request and response."""
 
-  model_config = ConfigDict(
-      extra="forbid",
-  )
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
-  llm_request: LlmRequest | None = None
-  """Required. The LLM request."""
+    llm_request: LlmRequest | None = None
+    """Required. The LLM request."""
 
-  llm_response: LlmResponse | None = None
-  """Required. The LLM response."""
+    llm_response: LlmResponse | None = None
+    """Required. The LLM response."""
 
 
 class ToolRecording(BaseModel):
-  """Paired tool call and response."""
+    """Paired tool call and response."""
 
-  model_config = ConfigDict(
-      extra="forbid",
-  )
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
-  tool_call: types.FunctionCall | None = None
-  """Required. The tool call."""
+    tool_call: types.FunctionCall | None = None
+    """Required. The tool call."""
 
-  tool_response: types.FunctionResponse | None = None
-  """Required. The tool response."""
+    tool_response: types.FunctionResponse | None = None
+    """Required. The tool response."""
 
 
 class Recording(BaseModel):
-  """Single interaction recording, ordered by request timestamp."""
+    """Single interaction recording, ordered by request timestamp."""
 
-  model_config = ConfigDict(
-      extra="forbid",
-  )
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
-  user_message_index: int
-  """Index of the user message this recording belongs to (0-based)."""
+    user_message_index: int
+    """Index of the user message this recording belongs to (0-based)."""
 
-  agent_name: str
-  """Name of the agent."""
+    agent_name: str
+    """Name of the agent."""
 
-  # oneof fields - start
-  llm_recording: LlmRecording | None = None
-  """LLM request-response pair."""
+    # oneof fields - start
+    llm_recording: LlmRecording | None = None
+    """LLM request-response pair."""
 
-  tool_recording: ToolRecording | None = None
-  """Tool call-response pair."""
-  # oneof fields - end
+    tool_recording: ToolRecording | None = None
+    """Tool call-response pair."""
+    # oneof fields - end
 
 
 class Recordings(BaseModel):
-  """All recordings in chronological order."""
+    """All recordings in chronological order."""
 
-  model_config = ConfigDict(
-      extra="forbid",
-  )
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
-  recordings: list[Recording] = Field(default_factory=list)
-  """Chronological list of all recordings."""
+    recordings: list[Recording] = Field(default_factory=list)
+    """Chronological list of all recordings."""

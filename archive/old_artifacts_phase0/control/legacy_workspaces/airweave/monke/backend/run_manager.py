@@ -159,9 +159,7 @@ class _RunContextFilter(logging.Filter):
 
 
 # Context variable to tag logs with the current run id
-CURRENT_RUN_ID: contextvars.ContextVar[str | None] = contextvars.ContextVar(
-    "dm_current_run_id", default=None
-)
+CURRENT_RUN_ID: contextvars.ContextVar[str | None] = contextvars.ContextVar("dm_current_run_id", default=None)
 
 
 class RunManager:
@@ -280,11 +278,7 @@ class RunManager:
                             s.status = "passed"
                             s.ended_at = ev.get("ts", time.time())
                             dur = ev.get("duration")
-                            s.duration = (
-                                float(dur)
-                                if dur is not None
-                                else ((s.ended_at - s.started_at) if s.started_at else None)
-                            )
+                            s.duration = float(dur) if dur is not None else ((s.ended_at - s.started_at) if s.started_at else None)
                             break
                 elif et == "step_failed":
                     step = ev.get("step", "").lower()
@@ -293,18 +287,12 @@ class RunManager:
                             s.status = "failed"
                             s.ended_at = ev.get("ts", time.time())
                             dur = ev.get("duration")
-                            s.duration = (
-                                float(dur)
-                                if dur is not None
-                                else ((s.ended_at - s.started_at) if s.started_at else None)
-                            )
+                            s.duration = float(dur) if dur is not None else ((s.ended_at - s.started_at) if s.started_at else None)
                             break
                 elif et in ("flow_completed", "flow_failed"):
                     record.ended_at = ev.get("ts", time.time())
                     # If any step failed -> failed; else passed
-                    record.status = (
-                        "failed" if any(s.status == "failed" for s in record.steps) else "passed"
-                    )
+                    record.status = "failed" if any(s.status == "failed" for s in record.steps) else "passed"
                 # persist
                 record.persist_state()
                 self._broadcast_run_state_local(record)

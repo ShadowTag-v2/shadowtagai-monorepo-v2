@@ -20,59 +20,43 @@ from google.genai import types
 
 
 def test_add_retry_options_with_default_request():
-  request = LlmRequest()
-  _retry_options_utils.add_default_retry_options_if_not_present(request)
-  assert request.config.http_options is not None
-  assert (
-      request.config.http_options.retry_options
-      == _retry_options_utils._DEFAULT_HTTP_RETRY_OPTIONS
-  )
+    request = LlmRequest()
+    _retry_options_utils.add_default_retry_options_if_not_present(request)
+    assert request.config.http_options is not None
+    assert request.config.http_options.retry_options == _retry_options_utils._DEFAULT_HTTP_RETRY_OPTIONS
 
 
 def test_add_retry_options_when_retry_options_is_none():
-  request = LlmRequest()
-  request.config.http_options = types.HttpOptions(retry_options=None)
-  _retry_options_utils.add_default_retry_options_if_not_present(request)
-  assert (
-      request.config.http_options.retry_options
-      == _retry_options_utils._DEFAULT_HTTP_RETRY_OPTIONS
-  )
+    request = LlmRequest()
+    request.config.http_options = types.HttpOptions(retry_options=None)
+    _retry_options_utils.add_default_retry_options_if_not_present(request)
+    assert request.config.http_options.retry_options == _retry_options_utils._DEFAULT_HTTP_RETRY_OPTIONS
 
 
 def test_add_retry_options_does_not_override_existing_options():
-  my_retry_options = types.HttpRetryOptions(attempts=1)
-  request = LlmRequest()
-  request.config.http_options = types.HttpOptions(
-      retry_options=my_retry_options
-  )
-  _retry_options_utils.add_default_retry_options_if_not_present(request)
-  assert request.config.http_options.retry_options == my_retry_options
+    my_retry_options = types.HttpRetryOptions(attempts=1)
+    request = LlmRequest()
+    request.config.http_options = types.HttpOptions(retry_options=my_retry_options)
+    _retry_options_utils.add_default_retry_options_if_not_present(request)
+    assert request.config.http_options.retry_options == my_retry_options
 
 
 def test_add_retry_options_when_config_is_none():
-  request = LlmRequest()
-  request.config = None
-  _retry_options_utils.add_default_retry_options_if_not_present(request)
-  assert request.config is not None
-  assert request.config.http_options is not None
-  assert (
-      request.config.http_options.retry_options
-      == _retry_options_utils._DEFAULT_HTTP_RETRY_OPTIONS
-  )
+    request = LlmRequest()
+    request.config = None
+    _retry_options_utils.add_default_retry_options_if_not_present(request)
+    assert request.config is not None
+    assert request.config.http_options is not None
+    assert request.config.http_options.retry_options == _retry_options_utils._DEFAULT_HTTP_RETRY_OPTIONS
 
 
 @pytest.mark.asyncio
 async def test_ensure_retry_options_plugin(mocker):
-  request = LlmRequest()
-  plugin = _retry_options_utils.EnsureRetryOptionsPlugin(name="test_plugin")
-  mock_invocation_context = mocker.MagicMock()
-  mock_invocation_context.session.state = {}
-  callback_context = CallbackContext(mock_invocation_context)
-  await plugin.before_model_callback(
-      callback_context=callback_context, llm_request=request
-  )
-  assert request.config.http_options is not None
-  assert (
-      request.config.http_options.retry_options
-      == _retry_options_utils._DEFAULT_HTTP_RETRY_OPTIONS
-  )
+    request = LlmRequest()
+    plugin = _retry_options_utils.EnsureRetryOptionsPlugin(name="test_plugin")
+    mock_invocation_context = mocker.MagicMock()
+    mock_invocation_context.session.state = {}
+    callback_context = CallbackContext(mock_invocation_context)
+    await plugin.before_model_callback(callback_context=callback_context, llm_request=request)
+    assert request.config.http_options is not None
+    assert request.config.http_options.retry_options == _retry_options_utils._DEFAULT_HTTP_RETRY_OPTIONS

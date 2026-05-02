@@ -24,81 +24,69 @@ from google.genai import types
 def before_agent_call_end_invocation(
     callback_context: CallbackContext,
 ) -> types.Content:
-  return types.Content(
-      role='model',
-      parts=[types.Part(text='End invocation event before agent call.')],
-  )
+    return types.Content(
+        role="model",
+        parts=[types.Part(text="End invocation event before agent call.")],
+    )
 
 
 def before_agent_call(
     invocation_context: InvocationContext,
 ) -> types.Content:
-  return types.Content(
-      role='model',
-      parts=[types.Part.from_text(text='Plain text event before agent call.')],
-  )
+    return types.Content(
+        role="model",
+        parts=[types.Part.from_text(text="Plain text event before agent call.")],
+    )
 
 
-def before_model_call_end_invocation(
-    callback_context: CallbackContext, llm_request: LlmRequest
-) -> LlmResponse:
-  return LlmResponse(
-      content=types.Content(
-          role='model',
-          parts=[
-              types.Part.from_text(
-                  text='End invocation event before model call.'
-              )
-          ],
-      )
-  )
+def before_model_call_end_invocation(callback_context: CallbackContext, llm_request: LlmRequest) -> LlmResponse:
+    return LlmResponse(
+        content=types.Content(
+            role="model",
+            parts=[types.Part.from_text(text="End invocation event before model call.")],
+        )
+    )
 
 
-def before_model_call(
-    invocation_context: InvocationContext, request: LlmRequest
-) -> LlmResponse:
-  request.config.system_instruction = 'Just return 999 as response.'
-  return LlmResponse(
-      content=types.Content(
-          role='model',
-          parts=[
-              types.Part.from_text(
-                  text='Update request event before model call.'
-              )
-          ],
-      )
-  )
+def before_model_call(invocation_context: InvocationContext, request: LlmRequest) -> LlmResponse:
+    request.config.system_instruction = "Just return 999 as response."
+    return LlmResponse(
+        content=types.Content(
+            role="model",
+            parts=[types.Part.from_text(text="Update request event before model call.")],
+        )
+    )
 
 
 def after_model_call(
     callback_context: CallbackContext,
     llm_response: LlmResponse,
 ) -> LlmResponse | None:
-  content = llm_response.content
-  if not content or not content.parts or not content.parts[0].text:
-    return
+    content = llm_response.content
+    if not content or not content.parts or not content.parts[0].text:
+        return
 
-  content.parts[0].text += 'Update response event after model call.'
-  return llm_response
+    content.parts[0].text += "Update response event after model call."
+    return llm_response
 
 
 before_agent_callback_agent = Agent(
-    model='gemini-1.5-flash',
-    name='before_agent_callback_agent',
-    instruction='echo 1',
+    model="gemini-1.5-flash",
+    name="before_agent_callback_agent",
+    instruction="echo 1",
     before_agent_callback=before_agent_call_end_invocation,
 )
 
 before_model_callback_agent = Agent(
-    model='gemini-1.5-flash',
-    name='before_model_callback_agent',
-    instruction='echo 2',
+    model="gemini-1.5-flash",
+    name="before_model_callback_agent",
+    instruction="echo 2",
     before_model_callback=before_model_call_end_invocation,
 )
 
 after_model_callback_agent = Agent(
-    model='gemini-1.5-flash',
-    name='after_model_callback_agent',
-    instruction='Say hello',
+    model="gemini-1.5-flash",
+    name="after_model_callback_agent",
+    instruction="Say hello",
     after_model_callback=after_model_call,
 )

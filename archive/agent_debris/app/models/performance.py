@@ -1,11 +1,12 @@
 """
 Performance metrics data models
 """
+
 from sqlalchemy import Column, Integer, String, Float, DateTime, Text, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 from pydantic import BaseModel
-from typing import Optional, Dict, List, Any
+from typing import Any
 
 Base = declarative_base()
 

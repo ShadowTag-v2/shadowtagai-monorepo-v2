@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class MetricResponse(BaseModel):
@@ -18,8 +18,7 @@ class MetricResponse(BaseModel):
     timestamp: datetime
     metadata: dict[str, Any]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class AggregatedMetricResponse(BaseModel):
@@ -42,5 +41,4 @@ class AggregatedMetricResponse(BaseModel):
     percentile_95: float | None
     percentile_99: float | None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

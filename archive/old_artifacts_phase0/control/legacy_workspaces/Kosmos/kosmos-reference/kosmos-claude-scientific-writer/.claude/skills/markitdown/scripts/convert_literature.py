@@ -12,12 +12,11 @@ import re
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List
 
 from markitdown import MarkItDown
 
 
-def extract_metadata_from_filename(filename: str) -> Dict[str, str]:
+def extract_metadata_from_filename(filename: str) -> dict[str, str]:
     """
     Try to extract metadata from filename.
     Supports patterns like: Author_Year_Title.pdf
@@ -28,27 +27,22 @@ def extract_metadata_from_filename(filename: str) -> Dict[str, str]:
     name = Path(filename).stem
 
     # Try to extract year
-    year_match = re.search(r'\b(19|20)\d{2}\b', name)
+    year_match = re.search(r"\b(19|20)\d{2}\b", name)
     if year_match:
-        metadata['year'] = year_match.group()
+        metadata["year"] = year_match.group()
 
     # Split by underscores or dashes
-    parts = re.split(r'[_\-]', name)
+    parts = re.split(r"[_\-]", name)
     if len(parts) >= 2:
-        metadata['author'] = parts[0].replace('_', ' ')
-        metadata['title'] = ' '.join(parts[1:]).replace('_', ' ')
+        metadata["author"] = parts[0].replace("_", " ")
+        metadata["title"] = " ".join(parts[1:]).replace("_", " ")
     else:
-        metadata['title'] = name.replace('_', ' ')
+        metadata["title"] = name.replace("_", " ")
 
     return metadata
 
 
-def convert_paper(
-    md: MarkItDown,
-    input_file: Path,
-    output_dir: Path,
-    organize_by_year: bool = False
-) -> tuple[bool, Dict]:
+def convert_paper(md: MarkItDown, input_file: Path, output_dir: Path, organize_by_year: bool = False) -> tuple[bool, dict]:
     """
     Convert a single paper to Markdown with metadata extraction.
 
@@ -69,16 +63,16 @@ def convert_paper(
 
         # Extract metadata from filename
         metadata = extract_metadata_from_filename(input_file.name)
-        metadata['source_file'] = input_file.name
-        metadata['converted_date'] = datetime.now().isoformat()
+        metadata["source_file"] = input_file.name
+        metadata["converted_date"] = datetime.now().isoformat()
 
         # Try to extract title from content if not in filename
-        if 'title' not in metadata and result.title:
-            metadata['title'] = result.title
+        if "title" not in metadata and result.title:
+            metadata["title"] = result.title
 
         # Create output path
-        if organize_by_year and 'year' in metadata:
-            output_subdir = output_dir / metadata['year']
+        if organize_by_year and "year" in metadata:
+            output_subdir = output_dir / metadata["year"]
             output_subdir.mkdir(parents=True, exist_ok=True)
         else:
             output_subdir = output_dir
@@ -88,13 +82,13 @@ def convert_paper(
 
         # Create formatted Markdown with front matter
         content = "---\n"
-        content += f"title: \"{metadata.get('title', input_file.stem)}\"\n"
-        if 'author' in metadata:
-            content += f"author: \"{metadata['author']}\"\n"
-        if 'year' in metadata:
+        content += f'title: "{metadata.get("title", input_file.stem)}"\n'
+        if "author" in metadata:
+            content += f'author: "{metadata["author"]}"\n'
+        if "year" in metadata:
             content += f"year: {metadata['year']}\n"
-        content += f"source: \"{metadata['source_file']}\"\n"
-        content += f"converted: \"{metadata['converted_date']}\"\n"
+        content += f'source: "{metadata["source_file"]}"\n'
+        content += f'converted: "{metadata["converted_date"]}"\n'
         content += "---\n\n"
 
         # Add title
@@ -102,9 +96,9 @@ def convert_paper(
 
         # Add metadata section
         content += "## Document Information\n\n"
-        if 'author' in metadata:
+        if "author" in metadata:
             content += f"**Author**: {metadata['author']}\n"
-        if 'year' in metadata:
+        if "year" in metadata:
             content += f"**Year**: {metadata['year']}\n"
         content += f"**Source File**: {metadata['source_file']}\n"
         content += f"**Converted**: {metadata['converted_date']}\n\n"
@@ -114,7 +108,7 @@ def convert_paper(
         content += result.text_content
 
         # Write to file
-        output_file.write_text(content, encoding='utf-8')
+        output_file.write_text(content, encoding="utf-8")
 
         print(f"✓ Saved to: {output_file}")
 
@@ -122,17 +116,14 @@ def convert_paper(
 
     except Exception as e:
         print(f"✗ Error converting {input_file.name}: {str(e)}")
-        return False, {'source_file': input_file.name, 'error': str(e)}
+        return False, {"source_file": input_file.name, "error": str(e)}
 
 
-def create_index(papers: List[Dict], output_dir: Path):
+def create_index(papers: list[dict], output_dir: Path):
     """Create an index/catalog of all converted papers."""
 
     # Sort by year (if available) and title
-    papers_sorted = sorted(
-        papers,
-        key=lambda x: (x.get('year', '9999'), x.get('title', ''))
-    )
+    papers_sorted = sorted(papers, key=lambda x: (x.get("year", "9999"), x.get("title", "")))
 
     # Create Markdown index
     index_content = "# Literature Review Index\n\n"
@@ -143,7 +134,7 @@ def create_index(papers: List[Dict], output_dir: Path):
     # Group by year
     by_year = {}
     for paper in papers_sorted:
-        year = paper.get('year', 'Unknown')
+        year = paper.get("year", "Unknown")
         if year not in by_year:
             by_year[year] = []
         by_year[year].append(paper)
@@ -152,13 +143,13 @@ def create_index(papers: List[Dict], output_dir: Path):
     for year in sorted(by_year.keys()):
         index_content += f"## {year}\n\n"
         for paper in by_year[year]:
-            title = paper.get('title', paper.get('source_file', 'Unknown'))
-            author = paper.get('author', 'Unknown Author')
-            source = paper.get('source_file', '')
+            title = paper.get("title", paper.get("source_file", "Unknown"))
+            author = paper.get("author", "Unknown Author")
+            source = paper.get("source_file", "")
 
             # Create link to markdown file
             md_file = Path(source).stem + ".md"
-            if 'year' in paper and paper['year'] != 'Unknown':
+            if "year" in paper and paper["year"] != "Unknown":
                 md_file = f"{paper['year']}/{md_file}"
 
             index_content += f"- **{title}**\n"
@@ -168,12 +159,12 @@ def create_index(papers: List[Dict], output_dir: Path):
 
     # Write index
     index_file = output_dir / "INDEX.md"
-    index_file.write_text(index_content, encoding='utf-8')
+    index_file.write_text(index_content, encoding="utf-8")
     print(f"\n✓ Created index: {index_file}")
 
     # Also create JSON catalog
     catalog_file = output_dir / "catalog.json"
-    with open(catalog_file, 'w', encoding='utf-8') as f:
+    with open(catalog_file, "w", encoding="utf-8") as f:
         json.dump(papers_sorted, f, indent=2, ensure_ascii=False)
     print(f"✓ Created catalog: {catalog_file}")
 
@@ -200,26 +191,14 @@ Filename Conventions:
   Examples:
     Smith_2023_Machine_Learning_Applications.pdf
     Jones_2022_Climate_Change_Analysis.pdf
-        """
+        """,
     )
 
-    parser.add_argument('input_dir', type=Path, help='Directory with PDF files')
-    parser.add_argument('output_dir', type=Path, help='Output directory for Markdown files')
-    parser.add_argument(
-        '--organize-by-year', '-y',
-        action='store_true',
-        help='Organize output into year subdirectories'
-    )
-    parser.add_argument(
-        '--create-index', '-i',
-        action='store_true',
-        help='Create an index/catalog of all papers'
-    )
-    parser.add_argument(
-        '--recursive', '-r',
-        action='store_true',
-        help='Search subdirectories recursively'
-    )
+    parser.add_argument("input_dir", type=Path, help="Directory with PDF files")
+    parser.add_argument("output_dir", type=Path, help="Output directory for Markdown files")
+    parser.add_argument("--organize-by-year", "-y", action="store_true", help="Organize output into year subdirectories")
+    parser.add_argument("--create-index", "-i", action="store_true", help="Create an index/catalog of all papers")
+    parser.add_argument("--recursive", "-r", action="store_true", help="Search subdirectories recursively")
 
     args = parser.parse_args()
 
@@ -252,12 +231,7 @@ Filename Conventions:
     success_count = 0
 
     for pdf_file in pdf_files:
-        success, metadata = convert_paper(
-            md,
-            pdf_file,
-            args.output_dir,
-            args.organize_by_year
-        )
+        success, metadata = convert_paper(md, pdf_file, args.output_dir, args.organize_by_year)
 
         if success:
             success_count += 1
@@ -268,16 +242,16 @@ Filename Conventions:
         create_index(results, args.output_dir)
 
     # Print summary
-    print("\n" + "="*50)
+    print("\n" + "=" * 50)
     print("CONVERSION SUMMARY")
-    print("="*50)
+    print("=" * 50)
     print(f"Total papers:    {len(pdf_files)}")
     print(f"Successful:      {success_count}")
     print(f"Failed:          {len(pdf_files) - success_count}")
-    print(f"Success rate:    {success_count/len(pdf_files)*100:.1f}%")
+    print(f"Success rate:    {success_count / len(pdf_files) * 100:.1f}%")
 
     sys.exit(0 if success_count == len(pdf_files) else 1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -37,10 +37,18 @@ export default function Footer({ onOpenModal }: FooterProps) {
                 <a href="#management">Leadership</a>
               </li>
               <li>
-                <a href="https://linkedin.com/in/erik-hancock-80442476" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a
+                  href="https://linkedin.com/in/erik-hancock-80442476"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LinkedIn
+                </a>
               </li>
               <li>
-                <a href="https://x.com/KovelAi_Inc" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+                <a href="https://x.com/KovelAi_Inc" target="_blank" rel="noopener noreferrer">
+                  X (Twitter)
+                </a>
               </li>
               <li>
                 <a href="/privacy">Privacy Policy</a>

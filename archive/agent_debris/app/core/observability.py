@@ -1,6 +1,7 @@
 """
 Observability setup using OpenTelemetry
 """
+
 import logging
 
 from fastapi import FastAPI
@@ -31,23 +32,11 @@ class Metrics:
         try:
             self.meter = otel_metrics.get_meter(__name__)
 
-            self.request_counter = self.meter.create_counter(
-                "http_requests_total",
-                description="Total HTTP requests",
-                unit="1"
-            )
+            self.request_counter = self.meter.create_counter("http_requests_total", description="Total HTTP requests", unit="1")
 
-            self.request_duration = self.meter.create_histogram(
-                "http_request_duration_seconds",
-                description="HTTP request duration",
-                unit="s"
-            )
+            self.request_duration = self.meter.create_histogram("http_request_duration_seconds", description="HTTP request duration", unit="s")
 
-            self.error_counter = self.meter.create_counter(
-                "http_errors_total",
-                description="Total HTTP errors",
-                unit="1"
-            )
+            self.error_counter = self.meter.create_counter("http_errors_total", description="Total HTTP errors", unit="1")
 
             logger.info("Metrics initialized successfully")
         except Exception as e:
@@ -59,11 +48,7 @@ class Metrics:
             return
 
         try:
-            attributes = {
-                "method": method,
-                "path": path,
-                "status_code": str(status_code)
-            }
+            attributes = {"method": method, "path": path, "status_code": str(status_code)}
 
             self.request_counter.add(1, attributes)
             self.request_duration.record(duration, attributes)
@@ -81,11 +66,9 @@ metrics = Metrics()
 def setup_observability(app: FastAPI):
     """Setup OpenTelemetry observability"""
 
-    resource = Resource.create({
-        "service.name": settings.service_name,
-        "service.version": settings.service_version,
-        "deployment.environment": settings.environment
-    })
+    resource = Resource.create(
+        {"service.name": settings.service_name, "service.version": settings.service_version, "deployment.environment": settings.environment}
+    )
 
     # Setup tracing
     if settings.enable_tracing:

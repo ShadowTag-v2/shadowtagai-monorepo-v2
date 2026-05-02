@@ -8,10 +8,7 @@ from .base import BaseSchemaValidator
 
 
 class PPTXSchemaValidator(BaseSchemaValidator):
-
-    PRESENTATIONML_NAMESPACE = (
-        "http://schemas.openxmlformats.org/presentationml/2006/main"
-    )
+    PRESENTATIONML_NAMESPACE = "http://schemas.openxmlformats.org/presentationml/2006/main"
 
     ELEMENT_RELATIONSHIP_TYPES = {
         "sldid": "slide",
@@ -63,9 +60,7 @@ class PPTXSchemaValidator(BaseSchemaValidator):
         import lxml.etree
 
         errors = []
-        uuid_pattern = re.compile(
-            r"^[\{\(]?[0-9A-Fa-f]{8}-?[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}[\}\)]?$"
-        )
+        uuid_pattern = re.compile(r"^[\{\(]?[0-9A-Fa-f]{8}-?[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}[\}\)]?$")
 
         for xml_file in self.xml_files:
             try:
@@ -83,9 +78,7 @@ class PPTXSchemaValidator(BaseSchemaValidator):
                                     )
 
             except (lxml.etree.XMLSyntaxError, Exception) as e:
-                errors.append(
-                    f"  {xml_file.relative_to(self.unpacked_dir)}: Error: {e}"
-                )
+                errors.append(f"  {xml_file.relative_to(self.unpacked_dir)}: Error: {e}")
 
         if errors:
             print(f"FAILED - Found {len(errors)} UUID ID validation errors:")
@@ -121,27 +114,20 @@ class PPTXSchemaValidator(BaseSchemaValidator):
 
                 if not rels_file.exists():
                     errors.append(
-                        f"  {slide_master.relative_to(self.unpacked_dir)}: "
-                        f"Missing relationships file: {rels_file.relative_to(self.unpacked_dir)}"
+                        f"  {slide_master.relative_to(self.unpacked_dir)}: Missing relationships file: {rels_file.relative_to(self.unpacked_dir)}"
                     )
                     continue
 
                 rels_root = lxml.etree.parse(str(rels_file)).getroot()
 
                 valid_layout_rids = set()
-                for rel in rels_root.findall(
-                    f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship"
-                ):
+                for rel in rels_root.findall(f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship"):
                     rel_type = rel.get("Type", "")
                     if "slideLayout" in rel_type:
                         valid_layout_rids.add(rel.get("Id"))
 
-                for sld_layout_id in root.findall(
-                    f".//{{{self.PRESENTATIONML_NAMESPACE}}}sldLayoutId"
-                ):
-                    r_id = sld_layout_id.get(
-                        f"{{{self.OFFICE_RELATIONSHIPS_NAMESPACE}}}id"
-                    )
+                for sld_layout_id in root.findall(f".//{{{self.PRESENTATIONML_NAMESPACE}}}sldLayoutId"):
+                    r_id = sld_layout_id.get(f"{{{self.OFFICE_RELATIONSHIPS_NAMESPACE}}}id")
                     layout_id = sld_layout_id.get("id")
 
                     if r_id and r_id not in valid_layout_rids:
@@ -152,17 +138,13 @@ class PPTXSchemaValidator(BaseSchemaValidator):
                         )
 
             except (lxml.etree.XMLSyntaxError, Exception) as e:
-                errors.append(
-                    f"  {slide_master.relative_to(self.unpacked_dir)}: Error: {e}"
-                )
+                errors.append(f"  {slide_master.relative_to(self.unpacked_dir)}: Error: {e}")
 
         if errors:
             print(f"FAILED - Found {len(errors)} slide layout ID validation errors:")
             for error in errors:
                 print(error)
-            print(
-                "Remove invalid references or add missing slide layouts to the relationships file."
-            )
+            print("Remove invalid references or add missing slide layouts to the relationships file.")
             return False
         else:
             if self.verbose:
@@ -180,22 +162,14 @@ class PPTXSchemaValidator(BaseSchemaValidator):
                 root = lxml.etree.parse(str(rels_file)).getroot()
 
                 layout_rels = [
-                    rel
-                    for rel in root.findall(
-                        f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship"
-                    )
-                    if "slideLayout" in rel.get("Type", "")
+                    rel for rel in root.findall(f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship") if "slideLayout" in rel.get("Type", "")
                 ]
 
                 if len(layout_rels) > 1:
-                    errors.append(
-                        f"  {rels_file.relative_to(self.unpacked_dir)}: has {len(layout_rels)} slideLayout references"
-                    )
+                    errors.append(f"  {rels_file.relative_to(self.unpacked_dir)}: has {len(layout_rels)} slideLayout references")
 
             except Exception as e:
-                errors.append(
-                    f"  {rels_file.relative_to(self.unpacked_dir)}: Error: {e}"
-                )
+                errors.append(f"  {rels_file.relative_to(self.unpacked_dir)}: Error: {e}")
 
         if errors:
             print("FAILED - Found slides with duplicate slideLayout references:")
@@ -224,43 +198,31 @@ class PPTXSchemaValidator(BaseSchemaValidator):
             try:
                 root = lxml.etree.parse(str(rels_file)).getroot()
 
-                for rel in root.findall(
-                    f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship"
-                ):
+                for rel in root.findall(f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship"):
                     rel_type = rel.get("Type", "")
                     if "notesSlide" in rel_type:
                         target = rel.get("Target", "")
                         if target:
                             normalized_target = target.replace("../", "")
 
-                            slide_name = rels_file.stem.replace(
-                                ".xml", ""
-                            )
+                            slide_name = rels_file.stem.replace(".xml", "")
 
                             if normalized_target not in notes_slide_references:
                                 notes_slide_references[normalized_target] = []
-                            notes_slide_references[normalized_target].append(
-                                (slide_name, rels_file)
-                            )
+                            notes_slide_references[normalized_target].append((slide_name, rels_file))
 
             except (lxml.etree.XMLSyntaxError, Exception) as e:
-                errors.append(
-                    f"  {rels_file.relative_to(self.unpacked_dir)}: Error: {e}"
-                )
+                errors.append(f"  {rels_file.relative_to(self.unpacked_dir)}: Error: {e}")
 
         for target, references in notes_slide_references.items():
             if len(references) > 1:
                 slide_names = [ref[0] for ref in references]
-                errors.append(
-                    f"  Notes slide '{target}' is referenced by multiple slides: {', '.join(slide_names)}"
-                )
+                errors.append(f"  Notes slide '{target}' is referenced by multiple slides: {', '.join(slide_names)}")
                 for slide_name, rels_file in references:
                     errors.append(f"    - {rels_file.relative_to(self.unpacked_dir)}")
 
         if errors:
-            print(
-                f"FAILED - Found {len([e for e in errors if not e.startswith('    ')])} notes slide reference validation errors:"
-            )
+            print(f"FAILED - Found {len([e for e in errors if not e.startswith('    ')])} notes slide reference validation errors:")
             for error in errors:
                 print(error)
             print("Each slide may optionally have its own slide file.")

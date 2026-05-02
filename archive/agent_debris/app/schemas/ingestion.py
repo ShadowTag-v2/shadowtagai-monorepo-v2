@@ -2,14 +2,14 @@
 Gemini Ingestion Layer data models for intelligence collection and analysis
 Integrated with Cor.57 Unified Sky-Ground GPU Mesh
 """
-from typing import Optional, List, Dict
+
 from pydantic import BaseModel, Field
-from datetime import datetime
-from enum import Enum, StrEnum
+from enum import StrEnum
 
 
 class DataTier(StrEnum):
     """Data quality tier classification"""
+
     TIER_1 = "tier_1"  # High-value, verified sources
     TIER_2 = "tier_2"  # Medium-value, partially verified
     TIER_3 = "tier_3"  # Low-value, unverified
@@ -17,6 +17,7 @@ class DataTier(StrEnum):
 
 class SourceType(StrEnum):
     """Intelligence source types"""
+
     YOUTUBE = "youtube"
     TWITTER = "twitter"
     NEWS = "news"
@@ -30,6 +31,7 @@ class SourceType(StrEnum):
 
 class ComplianceStatus(StrEnum):
     """Ethical compliance status"""
+
     COMPLIANT = "compliant"
     WARNING = "warning"
     VIOLATION = "violation"
@@ -38,6 +40,7 @@ class ComplianceStatus(StrEnum):
 
 class IngestionMetrics(BaseModel):
     """Core ingestion performance metrics"""
+
     items_per_day: int = Field(..., description="Total items ingested per day")
     unique_sources: int = Field(..., description="Number of unique sources accessed")
     cost_per_item: float = Field(..., description="Cost per item in USD")
@@ -55,13 +58,14 @@ class IngestionMetrics(BaseModel):
                 "average_relevance_score": 87.3,
                 "timeliness_score": 92.1,
                 "completeness_percentage": 94.5,
-                "runtime_minutes": 43.2
+                "runtime_minutes": 43.2,
             }
         }
 
 
 class EthicalComplianceMetrics(BaseModel):
     """Ethical crawling and compliance metrics"""
+
     robots_txt_compliance: float = Field(..., ge=0, le=100, description="robots.txt compliance percentage")
     rate_limiting_adherence: float = Field(..., ge=0, le=100, description="Rate limiting adherence percentage")
     transparency_score: float = Field(..., ge=0, le=100, description="Transparency score")
@@ -77,13 +81,14 @@ class EthicalComplianceMetrics(BaseModel):
                 "transparency_score": 95.0,
                 "legal_violations": 0,
                 "ethical_flags": 2,
-                "compliance_status": "compliant"
+                "compliance_status": "compliant",
             }
         }
 
 
 class SourceCoverage(BaseModel):
     """Multi-source coverage metrics"""
+
     source_type: SourceType
     items_collected: int = Field(..., description="Items collected from this source")
     coverage_percentage: float = Field(..., ge=0, le=100, description="Coverage percentage of available data")
@@ -97,17 +102,14 @@ class SourceCoverage(BaseModel):
                 "items_collected": 45000,
                 "coverage_percentage": 78.3,
                 "reliability_score": 85.0,
-                "tier_distribution": {
-                    "tier_1": 12000,
-                    "tier_2": 25000,
-                    "tier_3": 8000
-                }
+                "tier_distribution": {"tier_1": 12000, "tier_2": 25000, "tier_3": 8000},
             }
         }
 
 
 class TierClassification(BaseModel):
     """Data tier classification and distribution"""
+
     tier: DataTier
     item_count: int = Field(..., description="Number of items in this tier")
     percentage: float = Field(..., ge=0, le=100, description="Percentage of total items")
@@ -115,19 +117,12 @@ class TierClassification(BaseModel):
     quality_score: float = Field(..., ge=0, le=100, description="Quality score for this tier")
 
     class Config:
-        json_schema_extra = {
-            "example": {
-                "tier": "tier_1",
-                "item_count": 35000,
-                "percentage": 28.0,
-                "average_cost": 0.00142,
-                "quality_score": 94.5
-            }
-        }
+        json_schema_extra = {"example": {"tier": "tier_1", "item_count": 35000, "percentage": 28.0, "average_cost": 0.00142, "quality_score": 94.5}}
 
 
 class GKEArchitecture(BaseModel):
     """GKE CronJob architecture configuration"""
+
     cluster_name: str = Field(default="shadowtag-omega-v4-ingestion-cluster")
     namespace: str = Field(default="intelligence-pipeline")
     cron_schedule: str = Field(default="0 2 * * *", description="Cron schedule (2 AM daily)")
@@ -147,13 +142,14 @@ class GKEArchitecture(BaseModel):
                 "cpu_allocation": "2000m",
                 "memory_allocation": "4Gi",
                 "average_runtime_minutes": 45.0,
-                "success_rate": 99.7
+                "success_rate": 99.7,
             }
         }
 
 
 class QualityGates(BaseModel):
     """Quality gates for ingestion validation"""
+
     minimum_items_per_day: int = Field(..., description="Minimum items threshold")
     minimum_sources: int = Field(..., description="Minimum unique sources threshold")
     maximum_cost_per_item: float = Field(..., description="Maximum acceptable cost per item")
@@ -171,13 +167,14 @@ class QualityGates(BaseModel):
                 "minimum_relevance_score": 85.0,
                 "gates_passed": 4,
                 "gates_total": 4,
-                "overall_status": "PASSED"
+                "overall_status": "PASSED",
             }
         }
 
 
 class AMBriefingMetrics(BaseModel):
     """AM Briefing delivery effectiveness metrics"""
+
     delivery_time: str = Field(..., description="Target delivery time (e.g., '06:00 AM')")
     on_time_delivery_rate: float = Field(..., ge=0, le=100, description="On-time delivery percentage")
     average_items_per_briefing: int = Field(..., description="Average items per briefing")
@@ -193,13 +190,14 @@ class AMBriefingMetrics(BaseModel):
                 "average_items_per_briefing": 45,
                 "user_engagement_score": 89.3,
                 "actionability_score": 91.7,
-                "format_quality": "Excellent"
+                "format_quality": "Excellent",
             }
         }
 
 
 class OperationalCostBreakdown(BaseModel):
     """Monthly operational cost breakdown"""
+
     gke_infrastructure: float = Field(..., description="GKE infrastructure cost in USD")
     api_calls: float = Field(..., description="API calls cost in USD")
     data_storage: float = Field(..., description="Data storage cost in USD")
@@ -215,13 +213,14 @@ class OperationalCostBreakdown(BaseModel):
                 "data_storage": 12.30,
                 "network_egress": 8.45,
                 "gemini_api": 9.00,
-                "total_monthly_cost": 77.00
+                "total_monthly_cost": 77.00,
             }
         }
 
 
 class IngestionIntegration(BaseModel):
     """Integration with PNKLN Core Stack and Cor.57 infrastructure"""
+
     called_by_services: list[str] = Field(..., description="Services that trigger ingestion")
     feeds_into_services: list[str] = Field(..., description="Services that consume ingested data")
     namespace_count: int = Field(default=4, description="Number of Kubernetes namespaces")
@@ -235,23 +234,19 @@ class IngestionIntegration(BaseModel):
                     "starlink-orbital-monitor",
                     "tower-terrestrial-analytics",
                     "vehicle-mesh-collector",
-                    "defense-intelligence-hub"
+                    "defense-intelligence-hub",
                 ],
-                "feeds_into_services": [
-                    "judge-six-validator",
-                    "am-briefing-generator",
-                    "strategic-dashboard",
-                    "defense-reporting"
-                ],
+                "feeds_into_services": ["judge-six-validator", "am-briefing-generator", "strategic-dashboard", "defense-reporting"],
                 "namespace_count": 4,
                 "integration_points": 8,
-                "data_handoff_latency_ms": 125
+                "data_handoff_latency_ms": 125,
             }
         }
 
 
 class GeminiIngestionLayer(BaseModel):
     """Complete Gemini Ingestion Layer analysis model"""
+
     timestamp: str = Field(..., description="Analysis timestamp")
     version: str = Field(default="2.0", description="Ingestion layer version")
     architecture: GKEArchitecture
@@ -275,14 +270,15 @@ class GeminiIngestionLayer(BaseModel):
                 "recommendations": [
                     "Increase Tier 1 source coverage by 15%",
                     "Optimize GKE container resource allocation",
-                    "Expand Twitter API rate limits for better coverage"
-                ]
+                    "Expand Twitter API rate limits for better coverage",
+                ],
             }
         }
 
 
 class IngestionVsValidation(BaseModel):
     """Comparison model: Ingestion Layer vs Judge #6 Validator"""
+
     component: str
     ingestion_layer: str = Field(..., description="Ingestion Layer characteristic")
     judge_six: str = Field(..., description="Judge #6 characteristic")
@@ -294,6 +290,6 @@ class IngestionVsValidation(BaseModel):
                 "component": "Architecture",
                 "ingestion_layer": "GKE CronJob Multi-Container (Batch)",
                 "judge_six": "Hybrid Gemini+PyTorch (Real-time)",
-                "strategic_impact": "Complementary: Ingestion feeds validated data to Judge #6"
+                "strategic_impact": "Complementary: Ingestion feeds validated data to Judge #6",
             }
         }

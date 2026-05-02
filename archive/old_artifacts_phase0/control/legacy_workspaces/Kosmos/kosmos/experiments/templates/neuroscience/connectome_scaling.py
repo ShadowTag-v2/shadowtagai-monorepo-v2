@@ -68,15 +68,15 @@ class ConnectomeScalingTemplate(TemplateBase):
                 "Connectome scaling law analysis",
                 "Neural network topology studies",
                 "Cross-species comparisons",
-                "Power law relationship testing"
+                "Power law relationship testing",
             ],
             requirements=[
                 "Connectome data (neurons × properties: Length, Synapses, Degree)",
                 "At least 50+ neurons for reliable power law fitting",
-                "Data in CSV format with neuron-level measurements"
+                "Data in CSV format with neuron-level measurements",
             ],
             complexity_score=0.7,
-            rigor_score=0.9
+            rigor_score=0.9,
         )
 
     def is_applicable(self, hypothesis: Hypothesis) -> bool:
@@ -92,16 +92,10 @@ class ConnectomeScalingTemplate(TemplateBase):
         statement_lower = hypothesis.statement.lower()
 
         # Check for connectome keywords
-        connectome_keywords = [
-            'connectome', 'neural network', 'neuron', 'synapse',
-            'connectivity', 'brain network', 'neuronal'
-        ]
+        connectome_keywords = ["connectome", "neural network", "neuron", "synapse", "connectivity", "brain network", "neuronal"]
 
         # Check for scaling keywords
-        scaling_keywords = [
-            'scale', 'scaling', 'power law', 'log-log',
-            'relationship', 'correlation', 'universal'
-        ]
+        scaling_keywords = ["scale", "scaling", "power law", "log-log", "relationship", "correlation", "universal"]
 
         has_connectome = any(kw in statement_lower for kw in connectome_keywords)
         has_scaling = any(kw in statement_lower for kw in scaling_keywords)
@@ -128,11 +122,11 @@ class ConnectomeScalingTemplate(TemplateBase):
             - min_neurons: Minimum number of neurons required (default: 50)
         """
         # Extract parameters
-        data_path = params.custom_variables.get('connectome_data_path', 'connectome_data.csv')
-        species_name = params.custom_variables.get('species_name', 'Unknown')
-        properties = params.custom_variables.get('properties', ['Length', 'Synapses', 'Degree'])
-        additional_datasets = params.custom_variables.get('additional_datasets', {})
-        min_neurons = params.custom_variables.get('min_neurons', 50)
+        data_path = params.custom_variables.get("connectome_data_path", "connectome_data.csv")
+        species_name = params.custom_variables.get("species_name", "Unknown")
+        properties = params.custom_variables.get("properties", ["Length", "Synapses", "Degree"])
+        additional_datasets = params.custom_variables.get("additional_datasets", {})
+        min_neurons = params.custom_variables.get("min_neurons", 50)
 
         # Create protocol steps
         steps = [
@@ -141,28 +135,22 @@ class ConnectomeScalingTemplate(TemplateBase):
                 description="Load connectome data from CSV",
                 code_template=self._generate_load_data_code(data_path, species_name),
                 expected_output="Pandas DataFrame with neuron properties",
-                validation=["Data has required columns: " + ", ".join(properties)]
+                validation=["Data has required columns: " + ", ".join(properties)],
             ),
             ProtocolStep(
                 name="analyze_scaling",
                 description="Analyze power law scaling relationships",
-                code_template=self._generate_scaling_analysis_code(
-                    species_name, properties, min_neurons
-                ),
+                code_template=self._generate_scaling_analysis_code(species_name, properties, min_neurons),
                 expected_output="ConnectomicsResult with scaling relationships",
-                validation=[
-                    f"At least {min_neurons} neurons after cleaning",
-                    "All correlations have p-values",
-                    "Power law exponents are finite"
-                ]
+                validation=[f"At least {min_neurons} neurons after cleaning", "All correlations have p-values", "Power law exponents are finite"],
             ),
             ProtocolStep(
                 name="visualize_results",
                 description="Create log-log scatter plots",
                 code_template=self._generate_visualization_code(properties),
                 expected_output="Matplotlib figures showing power law relationships",
-                validation=["Plots created successfully"]
-            )
+                validation=["Plots created successfully"],
+            ),
         ]
 
         # Add cross-species comparison if additional datasets provided
@@ -171,89 +159,46 @@ class ConnectomeScalingTemplate(TemplateBase):
                 ProtocolStep(
                     name="cross_species_comparison",
                     description="Compare scaling relationships across species",
-                    code_template=self._generate_cross_species_code(
-                        data_path, species_name, additional_datasets, properties
-                    ),
+                    code_template=self._generate_cross_species_code(data_path, species_name, additional_datasets, properties),
                     expected_output="CrossSpeciesComparison with summary DataFrame",
-                    validation=[
-                        "All species analyzed successfully",
-                        "Universality assessment completed"
-                    ]
+                    validation=["All species analyzed successfully", "Universality assessment completed"],
                 )
             )
 
         # Variables
         variables = [
-            Variable(
-                name="species_name",
-                type="string",
-                value=species_name,
-                description="Species being analyzed"
-            ),
-            Variable(
-                name="properties",
-                type="list",
-                value=str(properties),
-                description="Neuron properties to analyze"
-            ),
-            Variable(
-                name="min_neurons",
-                type="integer",
-                value=str(min_neurons),
-                description="Minimum number of neurons required"
-            )
+            Variable(name="species_name", type="string", value=species_name, description="Species being analyzed"),
+            Variable(name="properties", type="list", value=str(properties), description="Neuron properties to analyze"),
+            Variable(name="min_neurons", type="integer", value=str(min_neurons), description="Minimum number of neurons required"),
         ]
 
         # Statistical tests
         statistical_tests = [
             StatisticalTestSpec(
                 test_type="spearman_correlation",
-                parameters={
-                    "alternative": "two-sided",
-                    "significance_level": 0.05
-                },
-                description="Non-parametric correlation between neuron properties"
+                parameters={"alternative": "two-sided", "significance_level": 0.05},
+                description="Non-parametric correlation between neuron properties",
             ),
             StatisticalTestSpec(
                 test_type="linear_regression",
-                parameters={
-                    "transform": "log-log",
-                    "robust": True
-                },
-                description="Power law exponent extraction via log-log regression"
-            )
+                parameters={"transform": "log-log", "robust": True},
+                description="Power law exponent extraction via log-log regression",
+            ),
         ]
 
         # Validation checks
         validation_checks = [
             ValidationCheck(
                 check_type="data_quality",
-                parameters={
-                    "min_sample_size": min_neurons,
-                    "allow_missing": False,
-                    "positive_values_only": True
-                },
-                description="Ensure sufficient high-quality data"
+                parameters={"min_sample_size": min_neurons, "allow_missing": False, "positive_values_only": True},
+                description="Ensure sufficient high-quality data",
             ),
-            ValidationCheck(
-                check_type="statistical_significance",
-                parameters={"p_threshold": 0.05},
-                description="Check correlation significance"
-            ),
-            ValidationCheck(
-                check_type="goodness_of_fit",
-                parameters={"min_r_squared": 0.5},
-                description="Ensure power law fits are reasonable"
-            )
+            ValidationCheck(check_type="statistical_significance", parameters={"p_threshold": 0.05}, description="Check correlation significance"),
+            ValidationCheck(check_type="goodness_of_fit", parameters={"min_r_squared": 0.5}, description="Ensure power law fits are reasonable"),
         ]
 
         # Resource requirements
-        resources = ResourceRequirements(
-            estimated_runtime_seconds=60,
-            memory_mb=512,
-            cpu_cores=1,
-            requires_gpu=False
-        )
+        resources = ResourceRequirements(estimated_runtime_seconds=60, memory_mb=512, cpu_cores=1, requires_gpu=False)
 
         # Create protocol
         protocol = ExperimentProtocol(
@@ -270,15 +215,15 @@ class ConnectomeScalingTemplate(TemplateBase):
             reproducibility_notes=[
                 "Analysis is deterministic (no random components)",
                 "Power law fitting uses standard scipy.stats.linregress",
-                "Results depend on data cleaning thresholds"
-            ]
+                "Results depend on data cleaning thresholds",
+            ],
         )
 
         return protocol
 
     def _generate_load_data_code(self, data_path: str, species_name: str) -> str:
         """Generate code to load connectome data"""
-        return f'''
+        return f"""
 import pandas as pd
 import numpy as np
 from kosmos.domains.neuroscience.connectomics import ConnectomicsAnalyzer
@@ -294,16 +239,11 @@ print(connectome_df.head())
 # Basic statistics
 print(f"\\nBasic statistics:")
 print(connectome_df.describe())
-'''
+"""
 
-    def _generate_scaling_analysis_code(
-        self,
-        species_name: str,
-        properties: list[str],
-        min_neurons: int
-    ) -> str:
+    def _generate_scaling_analysis_code(self, species_name: str, properties: list[str], min_neurons: int) -> str:
         """Generate code for scaling analysis"""
-        return f'''
+        return f"""
 from kosmos.domains.neuroscience.connectomics import ConnectomicsAnalyzer
 
 # Initialize analyzer
@@ -354,11 +294,11 @@ for note in results.analysis_notes:
     print(f"  - {{note}}")
 
 scaling_results = results
-'''
+"""
 
     def _generate_visualization_code(self, properties: list[str]) -> str:
         """Generate code for log-log visualization"""
-        return f'''
+        return f"""
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
@@ -424,20 +364,16 @@ if n_plots > 0:
     plt.show()
 else:
     print("No relationships to plot")
-'''
+"""
 
     def _generate_cross_species_code(
-        self,
-        primary_data_path: str,
-        primary_species: str,
-        additional_datasets: dict[str, str],
-        properties: list[str]
+        self, primary_data_path: str, primary_species: str, additional_datasets: dict[str, str], properties: list[str]
     ) -> str:
         """Generate code for cross-species comparison"""
         datasets_dict = {primary_species: primary_data_path}
         datasets_dict.update(additional_datasets)
 
-        return f'''
+        return f"""
 from kosmos.domains.neuroscience.connectomics import ConnectomicsAnalyzer
 import pandas as pd
 
@@ -486,4 +422,4 @@ if comparison.mean_length_synapses_exponent:
     print(f"  CV:   {{comparison.std_length_synapses_exponent/comparison.mean_length_synapses_exponent:.1%}}")
 
 cross_species_results = comparison
-'''
+"""

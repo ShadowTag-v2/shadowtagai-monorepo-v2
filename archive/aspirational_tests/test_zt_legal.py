@@ -16,16 +16,13 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from control.pnkln.pnkln_core.agents.legal import (
-    ExtractedDeadline,
     _coerce_item,
-    _parse_extraction_results,
     extract_deadlines_from_filing,
 )
 from control.pnkln.pnkln_core.engines.jurisdiction import (
     FRCP_RULES,
     DeadlineMath,
     JurisdictionEngine,
-    RulePack,
 )
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────

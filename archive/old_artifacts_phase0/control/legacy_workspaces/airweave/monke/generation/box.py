@@ -3,7 +3,6 @@
 Generates realistic test content using LLM.
 """
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.box import BoxComment, BoxFile, BoxFolder
 

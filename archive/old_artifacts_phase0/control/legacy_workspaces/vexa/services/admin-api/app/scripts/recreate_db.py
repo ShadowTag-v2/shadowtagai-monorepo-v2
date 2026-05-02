@@ -7,8 +7,8 @@ import sys
 # --- Configuration ---
 # Attempt to configure path if running standalone. Assumes script is in services/admin-api/app/scripts
 script_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(script_dir, '..', '..', '..', '..'))
-libs_dir = os.path.join(project_root, 'libs')
+project_root = os.path.abspath(os.path.join(script_dir, "..", "..", "..", ".."))
+libs_dir = os.path.join(project_root, "libs")
 if libs_dir not in sys.path:
     sys.path.insert(0, libs_dir)
 # --------------------
@@ -21,10 +21,11 @@ from shared_models.database import recreate_db
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    stream=sys.stdout # Ensure logs go to stdout for docker exec visibility
+    stream=sys.stdout,  # Ensure logs go to stdout for docker exec visibility
 )
 # Ensure the database logger also outputs INFO level messages
 db_logger.setLevel(logging.INFO)
+
 
 async def main():
     print("\n--- Starting Database Recreation ---\n", flush=True)
@@ -34,6 +35,7 @@ async def main():
     await recreate_db()
     print("-" * 40, flush=True)
     print("--- Database Recreation Process Finished ---\n", flush=True)
+
 
 if __name__ == "__main__":
     print("+" * 60)
@@ -46,7 +48,7 @@ if __name__ == "__main__":
     # Simple confirmation prompt
     confirm = input("Type 'recreate' to proceed: ")
 
-    if confirm == 'recreate':
+    if confirm == "recreate":
         print("\nConfirmation received. Proceeding with database recreation...\n", flush=True)
         try:
             asyncio.run(main())

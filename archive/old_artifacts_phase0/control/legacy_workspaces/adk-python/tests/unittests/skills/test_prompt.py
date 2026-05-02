@@ -18,30 +18,29 @@ from google.adk.skills import models, prompt
 
 
 class TestPrompt:
+    def test_format_skills_as_xml(self):
+        skills = [
+            models.Frontmatter(name="skill1", description="desc1"),
+            models.Frontmatter(name="skill2", description="desc2"),
+        ]
+        xml = prompt.format_skills_as_xml(skills)
 
-  def test_format_skills_as_xml(self):
-    skills = [
-        models.Frontmatter(name="skill1", description="desc1"),
-        models.Frontmatter(name="skill2", description="desc2"),
-    ]
-    xml = prompt.format_skills_as_xml(skills)
+        assert "<name>\nskill1\n</name>" in xml
+        assert "<description>\ndesc1\n</description>" in xml
+        assert "<location>" not in xml
+        assert "<name>\nskill2\n</name>" in xml
+        assert "<description>\ndesc2\n</description>" in xml
+        assert xml.startswith("<available_skills>")
+        assert xml.endswith("</available_skills>")
 
-    assert "<name>\nskill1\n</name>" in xml
-    assert "<description>\ndesc1\n</description>" in xml
-    assert "<location>" not in xml
-    assert "<name>\nskill2\n</name>" in xml
-    assert "<description>\ndesc2\n</description>" in xml
-    assert xml.startswith("<available_skills>")
-    assert xml.endswith("</available_skills>")
+    def test_format_skills_as_xml_empty(self):
+        xml = prompt.format_skills_as_xml([])
+        assert xml == "<available_skills>\n</available_skills>"
 
-  def test_format_skills_as_xml_empty(self):
-    xml = prompt.format_skills_as_xml([])
-    assert xml == "<available_skills>\n</available_skills>"
-
-  def test_format_skills_as_xml_escaping(self):
-    skills = [
-        models.Frontmatter(name="my-skill", description="desc<ription>"),
-    ]
-    xml = prompt.format_skills_as_xml(skills)
-    assert "my-skill" in xml
-    assert "desc&lt;ription&gt;" in xml
+    def test_format_skills_as_xml_escaping(self):
+        skills = [
+            models.Frontmatter(name="my-skill", description="desc<ription>"),
+        ]
+        xml = prompt.format_skills_as_xml(skills)
+        assert "my-skill" in xml
+        assert "desc&lt;ription&gt;" in xml

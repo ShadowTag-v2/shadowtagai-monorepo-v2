@@ -79,7 +79,7 @@ class ParameterSchema(BaseModel):
     required: bool = True
     description: str
     authSources: list[str] | None = None
-    items: Optional["ParameterSchema"] = None
+    items: ParameterSchema | None = None
     additionalProperties: bool | AdditionalPropertiesSchema | None = None
     default: Any | None = None
 

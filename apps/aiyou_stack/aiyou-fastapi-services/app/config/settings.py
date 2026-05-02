@@ -1,6 +1,4 @@
-"""Application configuration using Pydantic Settings"""
-
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -62,18 +60,19 @@ class Settings(BaseSettings):
     ENABLE_METRICS: bool = True
     ENABLE_TRACING: bool = True
 
+    # Gemini
+    gemini_api_key: str | None = None
+
     # Security
     API_KEY_HEADER: str = "X-API-Key"
-    CORS_ORIGINS: str = "*"
+    CORS_ORIGINS: list[str] = []
     ENABLE_RATE_LIMITING: bool = True
 
     # Logging
     LOG_LEVEL: str = "INFO"
     LOG_FORMAT: str = "json"
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = SettingsConfigDict(case_sensitive=True)
 
 
 # Global settings instance

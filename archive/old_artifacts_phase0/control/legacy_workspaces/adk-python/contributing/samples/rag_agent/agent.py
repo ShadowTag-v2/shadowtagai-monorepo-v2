@@ -23,10 +23,7 @@ load_dotenv()
 
 ask_vertex_retrieval = VertexAiRagRetrieval(
     name="retrieve_rag_documentation",
-    description=(
-        "Use this tool to retrieve documentation and reference materials for"
-        " the question from the RAG corpus,"
-    ),
+    description=("Use this tool to retrieve documentation and reference materials for the question from the RAG corpus,"),
     rag_resources=[
         rag.RagResource(
             # please fill in your own rag corpus

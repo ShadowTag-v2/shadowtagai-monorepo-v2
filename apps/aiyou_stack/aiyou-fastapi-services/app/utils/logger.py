@@ -17,7 +17,7 @@ from app.core.config import get_settings
 settings = get_settings()
 
 
-def setup_logging() -> None:
+def setup_logging(name: str | None = None) -> None:
     """Configure structured logging
 
     Features:
@@ -102,3 +102,7 @@ def sanitize_log_data(data: dict) -> dict:
             sanitized[key] = value
 
     return sanitized
+
+
+# Alias for legacy imports expecting `setup_logger`
+setup_logger = setup_logging

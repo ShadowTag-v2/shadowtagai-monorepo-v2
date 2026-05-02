@@ -2,7 +2,6 @@
 
 import logging
 from datetime import datetime
-from typing import List, Optional
 from sqlalchemy import select, and_, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -23,18 +22,10 @@ logger = logging.getLogger(__name__)
 class ConversationService:
     """Service for managing conversations and messages."""
 
-    async def create_conversation(
-        self,
-        db: AsyncSession,
-        user_id: int,
-        conversation_data: ConversationCreate
-    ) -> Conversation:
+    async def create_conversation(self, db: AsyncSession, user_id: int, conversation_data: ConversationCreate) -> Conversation:
         """Create a new conversation."""
         conversation = Conversation(
-            user_id=user_id,
-            project_id=conversation_data.project_id,
-            title=conversation_data.title,
-            is_incognito=conversation_data.is_incognito
+            user_id=user_id, project_id=conversation_data.project_id, title=conversation_data.title, is_incognito=conversation_data.is_incognito
         )
 
         db.add(conversation)
@@ -44,20 +35,9 @@ class ConversationService:
         logger.info(f"Created conversation {conversation.id} for user {user_id}")
         return conversation
 
-    async def get_conversation(
-        self,
-        db: AsyncSession,
-        conversation_id: int,
-        user_id: int,
-        include_messages: bool = False
-    ) -> Conversation | None:
+    async def get_conversation(self, db: AsyncSession, conversation_id: int, user_id: int, include_messages: bool = False) -> Conversation | None:
         """Get a conversation by ID."""
-        stmt = select(Conversation).where(
-            and_(
-                Conversation.id == conversation_id,
-                Conversation.user_id == user_id
-            )
-        )
+        stmt = select(Conversation).where(and_(Conversation.id == conversation_id, Conversation.user_id == user_id))
 
         if include_messages:
             stmt = stmt.options(selectinload(Conversation.messages))
@@ -65,12 +45,7 @@ class ConversationService:
         result = await db.execute(stmt)
         return result.scalar_one_or_none()
 
-    async def get_recent_conversations(
-        self,
-        db: AsyncSession,
-        user_id: int,
-        query: RecentChatsQuery
-    ) -> list[Conversation]:
+    async def get_recent_conversations(self, db: AsyncSession, user_id: int, query: RecentChatsQuery) -> list[Conversation]:
         """Get recent conversations."""
         stmt = select(Conversation).where(Conversation.user_id == user_id)
 
@@ -82,21 +57,13 @@ class ConversationService:
         if not query.include_incognito:
             stmt = stmt.where(not Conversation.is_incognito)
 
-        stmt = (
-            stmt.where(Conversation.is_active)
-            .order_by(Conversation.last_message_at.desc())
-            .limit(query.limit)
-        )
+        stmt = stmt.where(Conversation.is_active).order_by(Conversation.last_message_at.desc()).limit(query.limit)
 
         result = await db.execute(stmt)
         return list(result.scalars().all())
 
     async def update_conversation(
-        self,
-        db: AsyncSession,
-        conversation_id: int,
-        user_id: int,
-        conversation_data: ConversationUpdate
+        self, db: AsyncSession, conversation_id: int, user_id: int, conversation_data: ConversationUpdate
     ) -> Conversation | None:
         """Update a conversation."""
         conversation = await self.get_conversation(db, conversation_id, user_id)
@@ -115,12 +82,7 @@ class ConversationService:
         logger.info(f"Updated conversation {conversation_id}")
         return conversation
 
-    async def delete_conversation(
-        self,
-        db: AsyncSession,
-        conversation_id: int,
-        user_id: int
-    ) -> bool:
+    async def delete_conversation(self, db: AsyncSession, conversation_id: int, user_id: int) -> bool:
         """Soft delete a conversation."""
         conversation = await self.get_conversation(db, conversation_id, user_id)
 
@@ -133,12 +95,7 @@ class ConversationService:
         logger.info(f"Deleted conversation {conversation_id}")
         return True
 
-    async def add_message(
-        self,
-        db: AsyncSession,
-        user_id: int,
-        message_data: MessageCreate
-    ) -> Message | None:
+    async def add_message(self, db: AsyncSession, user_id: int, message_data: MessageCreate) -> Message | None:
         """
         Add a message to a conversation.
 
@@ -151,21 +108,13 @@ class ConversationService:
             Created message or None if conversation not found
         """
         # Verify conversation belongs to user
-        conversation = await self.get_conversation(
-            db,
-            message_data.conversation_id,
-            user_id
-        )
+        conversation = await self.get_conversation(db, message_data.conversation_id, user_id)
 
         if not conversation:
             return None
 
         # Create message
-        message = Message(
-            conversation_id=message_data.conversation_id,
-            role=message_data.role,
-            content=message_data.content
-        )
+        message = Message(conversation_id=message_data.conversation_id, role=message_data.role, content=message_data.content)
 
         db.add(message)
         await db.flush()
@@ -175,10 +124,7 @@ class ConversationService:
         embedding_bytes = embedding_service.embedding_to_bytes(embedding_vector)
 
         vector_embedding = VectorEmbedding(
-            message_id=message.id,
-            embedding=embedding_bytes,
-            model_name=settings.embedding_model,
-            dimension=settings.vector_dimension
+            message_id=message.id, embedding=embedding_bytes, model_name=settings.embedding_model, dimension=settings.vector_dimension
         )
 
         db.add(vector_embedding)
@@ -188,9 +134,7 @@ class ConversationService:
 
         # Auto-generate title if this is the first user message
         if not conversation.title:
-            stmt = select(func.count(Message.id)).where(
-                Message.conversation_id == message_data.conversation_id
-            )
+            stmt = select(func.count(Message.id)).where(Message.conversation_id == message_data.conversation_id)
             result = await db.execute(stmt)
             message_count = result.scalar()
 
@@ -204,14 +148,7 @@ class ConversationService:
         logger.info(f"Added message {message.id} to conversation {message_data.conversation_id}")
         return message
 
-    async def get_messages(
-        self,
-        db: AsyncSession,
-        conversation_id: int,
-        user_id: int,
-        limit: int = 100,
-        offset: int = 0
-    ) -> list[Message]:
+    async def get_messages(self, db: AsyncSession, conversation_id: int, user_id: int, limit: int = 100, offset: int = 0) -> list[Message]:
         """Get messages from a conversation."""
         # Verify conversation belongs to user
         conversation = await self.get_conversation(db, conversation_id, user_id)
@@ -219,13 +156,7 @@ class ConversationService:
         if not conversation:
             return []
 
-        stmt = (
-            select(Message)
-            .where(Message.conversation_id == conversation_id)
-            .order_by(Message.created_at)
-            .limit(limit)
-            .offset(offset)
-        )
+        stmt = select(Message).where(Message.conversation_id == conversation_id).order_by(Message.created_at).limit(limit).offset(offset)
 
         result = await db.execute(stmt)
         return list(result.scalars().all())

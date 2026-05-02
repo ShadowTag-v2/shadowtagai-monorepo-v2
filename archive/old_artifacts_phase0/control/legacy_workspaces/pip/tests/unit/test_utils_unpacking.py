@@ -107,9 +107,9 @@ class TestUnpackArchives:
                 # because os.chmod() ignores the execute bit
                 continue
             mode = self.mode(path)
-            assert (
-                mode == expected_mode
-            ), f"mode: {mode}, expected mode: {expected_mode}"
+            assert mode == expected_mode, (
+                f"mode: {mode}, expected mode: {expected_mode}"
+            )
 
     def make_zip_file(self, filename: str, file_list: list[str]) -> str:
         """

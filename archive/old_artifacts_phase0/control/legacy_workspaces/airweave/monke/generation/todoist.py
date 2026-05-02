@@ -1,13 +1,10 @@
 """Todoist-specific generation adapter: task generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.todoist import TodoistArtifact
 
 
-async def generate_todoist_artifact(
-    model: str, token: str, is_update: bool = False
-) -> tuple[str, str, int]:
+async def generate_todoist_artifact(model: str, token: str, is_update: bool = False) -> tuple[str, str, int]:
     """Generate a Todoist task via LLM.
 
     Returns (content, description, priority). The token must be embedded in the output by instruction.

@@ -8,6 +8,7 @@ from typing import Any
 @dataclass
 class ProgressUpdate:
     """Progress update during paper generation."""
+
     type: str = "progress"
     timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
     message: str = ""
@@ -22,6 +23,7 @@ class ProgressUpdate:
 @dataclass
 class PaperMetadata:
     """Metadata about the generated paper."""
+
     title: str | None = None
     created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
     topic: str = ""
@@ -35,6 +37,7 @@ class PaperMetadata:
 @dataclass
 class PaperFiles:
     """File paths for all generated paper artifacts."""
+
     pdf_final: str | None = None
     tex_final: str | None = None
     pdf_drafts: list[str] = field(default_factory=list)
@@ -53,6 +56,7 @@ class PaperFiles:
 @dataclass
 class PaperResult:
     """Final result containing all information about the generated paper."""
+
     type: str = "result"
     status: str = "success"  # success|partial|failed
     paper_directory: str = ""
@@ -69,7 +73,7 @@ class PaperResult:
         result = asdict(self)
         # Ensure nested objects are also dictionaries
         if isinstance(self.metadata, PaperMetadata):
-            result['metadata'] = self.metadata.to_dict()
+            result["metadata"] = self.metadata.to_dict()
         if isinstance(self.files, PaperFiles):
-            result['files'] = self.files.to_dict()
+            result["files"] = self.files.to_dict()
         return result

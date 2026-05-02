@@ -13,7 +13,7 @@ License: Creative Commons Attribution-ShareAlike 4.0 International
 import json
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import requests
 
@@ -22,7 +22,7 @@ BASE_URL = "https://api.clinpgx.org/v1/"
 RATE_LIMIT_DELAY = 0.5  # 500ms delay = 2 requests/second
 
 
-def rate_limited_request(url: str, params: Optional[Dict] = None, delay: float = RATE_LIMIT_DELAY) -> requests.Response:
+def rate_limited_request(url: str, params: dict | None = None, delay: float = RATE_LIMIT_DELAY) -> requests.Response:
     """
     Make API request with rate limiting compliance.
 
@@ -39,7 +39,7 @@ def rate_limited_request(url: str, params: Optional[Dict] = None, delay: float =
     return response
 
 
-def safe_api_call(url: str, params: Optional[Dict] = None, max_retries: int = 3) -> Optional[Dict]:
+def safe_api_call(url: str, params: dict | None = None, max_retries: int = 3) -> dict | None:
     """
     Make API call with error handling and exponential backoff retry.
 
@@ -60,7 +60,7 @@ def safe_api_call(url: str, params: Optional[Dict] = None, max_retries: int = 3)
                 return response.json()
             elif response.status_code == 429:
                 # Rate limit exceeded
-                wait_time = 2 ** attempt  # Exponential backoff: 1s, 2s, 4s
+                wait_time = 2**attempt  # Exponential backoff: 1s, 2s, 4s
                 print(f"Rate limit exceeded. Waiting {wait_time}s before retry...")
                 time.sleep(wait_time)
             elif response.status_code == 404:
@@ -103,7 +103,7 @@ def cached_query(cache_file: str, query_func, *args, **kwargs) -> Any:
 
     if result is not None:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(cache_path, 'w') as f:
+        with open(cache_path, "w") as f:
             json.dump(result, f, indent=2)
         print(f"Cached to: {cache_file}")
 
@@ -112,7 +112,8 @@ def cached_query(cache_file: str, query_func, *args, **kwargs) -> Any:
 
 # Core Query Functions
 
-def get_gene_info(gene_symbol: str) -> Optional[Dict]:
+
+def get_gene_info(gene_symbol: str) -> dict | None:
     """
     Retrieve detailed information about a pharmacogene.
 
@@ -130,7 +131,7 @@ def get_gene_info(gene_symbol: str) -> Optional[Dict]:
     return safe_api_call(url)
 
 
-def get_drug_info(drug_name: str) -> Optional[List[Dict]]:
+def get_drug_info(drug_name: str) -> list[dict] | None:
     """
     Search for drug/chemical information by name.
 
@@ -150,7 +151,7 @@ def get_drug_info(drug_name: str) -> Optional[List[Dict]]:
     return safe_api_call(url, params)
 
 
-def get_gene_drug_pairs(gene: Optional[str] = None, drug: Optional[str] = None) -> Optional[List[Dict]]:
+def get_gene_drug_pairs(gene: str | None = None, drug: str | None = None) -> list[dict] | None:
     """
     Query gene-drug interaction pairs.
 
@@ -178,7 +179,7 @@ def get_gene_drug_pairs(gene: Optional[str] = None, drug: Optional[str] = None) 
     return safe_api_call(url, params)
 
 
-def get_cpic_guidelines(gene: Optional[str] = None, drug: Optional[str] = None) -> Optional[List[Dict]]:
+def get_cpic_guidelines(gene: str | None = None, drug: str | None = None) -> list[dict] | None:
     """
     Retrieve CPIC clinical practice guidelines.
 
@@ -206,7 +207,7 @@ def get_cpic_guidelines(gene: Optional[str] = None, drug: Optional[str] = None) 
     return safe_api_call(url, params)
 
 
-def get_alleles(gene: str) -> Optional[List[Dict]]:
+def get_alleles(gene: str) -> list[dict] | None:
     """
     Get all alleles for a pharmacogene including function and frequency.
 
@@ -226,7 +227,7 @@ def get_alleles(gene: str) -> Optional[List[Dict]]:
     return safe_api_call(url, params)
 
 
-def get_allele_info(allele_name: str) -> Optional[Dict]:
+def get_allele_info(allele_name: str) -> dict | None:
     """
     Get detailed information about a specific allele.
 
@@ -244,11 +245,7 @@ def get_allele_info(allele_name: str) -> Optional[Dict]:
     return safe_api_call(url)
 
 
-def get_clinical_annotations(
-    gene: Optional[str] = None,
-    drug: Optional[str] = None,
-    evidence_level: Optional[str] = None
-) -> Optional[List[Dict]]:
+def get_clinical_annotations(gene: str | None = None, drug: str | None = None, evidence_level: str | None = None) -> list[dict] | None:
     """
     Retrieve curated literature annotations for gene-drug interactions.
 
@@ -279,7 +276,7 @@ def get_clinical_annotations(
     return safe_api_call(url, params)
 
 
-def get_drug_labels(drug: str, source: Optional[str] = None) -> Optional[List[Dict]]:
+def get_drug_labels(drug: str, source: str | None = None) -> list[dict] | None:
     """
     Retrieve pharmacogenomic drug label information.
 
@@ -305,8 +302,7 @@ def get_drug_labels(drug: str, source: Optional[str] = None) -> Optional[List[Di
     return safe_api_call(url, params)
 
 
-def search_variants(rsid: Optional[str] = None, chromosome: Optional[str] = None,
-                   position: Optional[str] = None) -> Optional[List[Dict]]:
+def search_variants(rsid: str | None = None, chromosome: str | None = None, position: str | None = None) -> list[dict] | None:
     """
     Search for genetic variants by rsID or genomic position.
 
@@ -340,7 +336,7 @@ def search_variants(rsid: Optional[str] = None, chromosome: Optional[str] = None
     return safe_api_call(url, params)
 
 
-def get_pathway_info(pathway_id: Optional[str] = None, drug: Optional[str] = None) -> Optional[Any]:
+def get_pathway_info(pathway_id: str | None = None, drug: str | None = None) -> Any | None:
     """
     Retrieve pharmacokinetic/pharmacodynamic pathway information.
 
@@ -372,7 +368,8 @@ def get_pathway_info(pathway_id: Optional[str] = None, drug: Optional[str] = Non
 
 # Utility Functions
 
-def export_to_dataframe(data: List[Dict], output_file: Optional[str] = None):
+
+def export_to_dataframe(data: list[dict], output_file: str | None = None):
     """
     Convert API results to pandas DataFrame for analysis.
 
@@ -403,7 +400,7 @@ def export_to_dataframe(data: List[Dict], output_file: Optional[str] = None):
     return df
 
 
-def batch_gene_query(gene_list: List[str], delay: float = 0.5) -> Dict[str, Dict]:
+def batch_gene_query(gene_list: list[str], delay: float = 0.5) -> dict[str, dict]:
     """
     Query multiple genes in batch with rate limiting.
 
@@ -435,7 +432,7 @@ def batch_gene_query(gene_list: List[str], delay: float = 0.5) -> Dict[str, Dict
     return results
 
 
-def find_actionable_gene_drug_pairs(cpic_level: str = "A") -> Optional[List[Dict]]:
+def find_actionable_gene_drug_pairs(cpic_level: str = "A") -> list[dict] | None:
     """
     Find all clinically actionable gene-drug pairs with CPIC guidelines.
 

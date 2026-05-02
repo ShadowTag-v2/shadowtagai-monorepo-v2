@@ -5,7 +5,7 @@ Based on Pinkln Ultrathink wealth acceleration framework
 from datetime import datetime
 from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class LeakType(StrEnum):
@@ -29,8 +29,8 @@ class FinancialLeak(BaseModel):
     impact_severity: int = Field(..., ge=1, le=10, description="Severity rating 1-10")
     evidence: list[str] = Field(default_factory=list, description="Data points proving this leak")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "leak_type": "CHURN_RATE",
                 "current_state": "Losing 15% of customers monthly - bleeding $30K/month in MRR",
@@ -42,7 +42,8 @@ class FinancialLeak(BaseModel):
                     "Exit survey shows 60% leave due to lack of onboarding",
                 ],
             },
-        }
+        },
+    )
 
 
 class FunnelStage(StrEnum):
@@ -66,8 +67,8 @@ class FunnelRedesign(BaseModel):
     expected_roi: float | None = Field(None, description="Expected ROI multiple (e.g., 3.5 = 3.5x)")
     implementation_difficulty: int = Field(..., ge=1, le=5, description="1=Easy, 5=Very Hard")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "stage": "ACTIVATION",
                 "current_conversion": 0.25,
@@ -81,7 +82,8 @@ class FunnelRedesign(BaseModel):
                 "expected_roi": 4.2,
                 "implementation_difficulty": 3,
             },
-        }
+        },
+    )
 
 
 class WealthAccelerationAction(BaseModel):
@@ -127,8 +129,8 @@ class WealthAnalysis(BaseModel):
     success_metrics: list[str] = Field(..., description="How to measure success")
     accountability_partner: str | None = None
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "business_name": "SaaS Startup XYZ",
                 "hard_truth": "You're bleeding $45K/month through churn and have 6 months of runway left. CAC/LTV ratio is 0.67 (should be <0.33). You're acquiring customers faster than you're retaining them - this is a treadmill to bankruptcy.",
@@ -177,7 +179,8 @@ class WealthAnalysis(BaseModel):
                     "Runway: 6 months → 12 months",
                 ],
             },
-        }
+        },
+    )
 
 
 class MoneyOptimizationStrategy(BaseModel):

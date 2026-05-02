@@ -9,6 +9,7 @@ from app.database.service import TranscriptionService
 
 logger = logging.getLogger(__name__)
 
+
 class DockerClient:
     """Client for Docker operations in local development environment"""
 
@@ -24,9 +25,7 @@ class DockerClient:
     def _count_running_bots_for_user(self, user_id: str) -> int:
         """Counts the number of running bot containers for a specific user using labels."""
         try:
-            containers = self.client.containers.list(
-                filters={"label": f"vexa.user_id={user_id}", "status": "running"}
-            )
+            containers = self.client.containers.list(filters={"label": f"vexa.user_id={user_id}", "status": "running"})
             count = len(containers)
             logger.debug(f"Found {count} running bot containers for user {user_id}")
             return count
@@ -65,40 +64,40 @@ class DockerClient:
             # Fetch user details (including max_concurrent_bots)
             # Convert user_id to int if necessary for DB query, depends on get_or_create_user expectation
             # Assuming user_id is passed as string and DB service handles conversion if needed
-            user = TranscriptionService.get_or_create_user(user_id) # Ensure this doesn't error if user MUST exist
+            user = TranscriptionService.get_or_create_user(user_id)  # Ensure this doesn't error if user MUST exist
             if not user:
-                 # This case might depend on how get_or_create_user handles failures
-                 logger.error(f"User with ID {user_id} not found and could not be created.")
-                 raise HTTPException(status_code=404, detail=f"User {user_id} not found.")
+                # This case might depend on how get_or_create_user handles failures
+                logger.error(f"User with ID {user_id} not found and could not be created.")
+                raise HTTPException(status_code=404, detail=f"User {user_id} not found.")
 
             # Count currently running bots for this user
             current_bot_count = self._count_running_bots_for_user(user_id)
 
             # Check against the user's limit
             # Ensure user.max_concurrent_bots is accessed correctly (it should be an attribute)
-            user_limit = user.max_concurrent_bots # Store in variable for logging/checking
-            logger.info(f"Checking bot limit for user {user_id}: Found {current_bot_count} running bots, limit is {user_limit}") # Added logging
+            user_limit = user.max_concurrent_bots  # Store in variable for logging/checking
+            logger.info(f"Checking bot limit for user {user_id}: Found {current_bot_count} running bots, limit is {user_limit}")  # Added logging
 
-            if not hasattr(user, 'max_concurrent_bots') or user_limit is None: # Check variable
-                 logger.error(f"User {user_id} is missing the max_concurrent_bots attribute or it's None.")
-                 # Default to a safe limit (e.g., 1) or deny if the attribute should always exist
-                 raise HTTPException(status_code=500, detail="User configuration error: Bot limit not set.")
+            if not hasattr(user, "max_concurrent_bots") or user_limit is None:  # Check variable
+                logger.error(f"User {user_id} is missing the max_concurrent_bots attribute or it's None.")
+                # Default to a safe limit (e.g., 1) or deny if the attribute should always exist
+                raise HTTPException(status_code=500, detail="User configuration error: Bot limit not set.")
 
-            if current_bot_count >= user_limit: # Check variable
-                logger.warning(f"User {user_id} reached bot limit ({user_limit}). Cannot create new bot.") # Use variable in log
+            if current_bot_count >= user_limit:  # Check variable
+                logger.warning(f"User {user_id} reached bot limit ({user_limit}). Cannot create new bot.")  # Use variable in log
                 raise HTTPException(
-                    status_code=403, # Forbidden
-                    detail=f"User has reached the maximum concurrent bot limit ({user_limit})." # Use variable in detail
+                    status_code=403,  # Forbidden
+                    detail=f"User has reached the maximum concurrent bot limit ({user_limit}).",  # Use variable in detail
                 )
-            logger.info(f"User {user_id} is under bot limit ({current_bot_count}/{user_limit}). Proceeding...") # Use variable in log
+            logger.info(f"User {user_id} is under bot limit ({current_bot_count}/{user_limit}). Proceeding...")  # Use variable in log
 
         except HTTPException as http_exc:
-             raise http_exc # Re-raise HTTP exceptions directly
+            raise http_exc  # Re-raise HTTP exceptions directly
         except Exception as e:
-             # Catch potential DB or Docker errors during the check
-             logger.error(f"Error during bot limit check for user {user_id}: {e}")
-             # Return a generic server error
-             raise HTTPException(status_code=500, detail="Failed to verify bot limit.")
+            # Catch potential DB or Docker errors during the check
+            logger.error(f"Error during bot limit check for user {user_id}: {e}")
+            # Return a generic server error
+            raise HTTPException(status_code=500, detail="Failed to verify bot limit.")
         # --- END: Bot Limit Check ---
 
         # Set default meeting URL if not provided
@@ -118,10 +117,10 @@ class DockerClient:
                     "USER_ID": user_id,
                     "MEETING_ID": meeting_id,
                     "MEETING_URL": meeting_url,
-                    "TRANSCRIPTION_SERVICE": self.transcription_service
+                    "TRANSCRIPTION_SERVICE": self.transcription_service,
                 },
                 labels={"vexa.user_id": str(user_id)},
-                restart_policy={"Name": "on-failure", "MaximumRetryCount": 3}
+                restart_policy={"Name": "on-failure", "MaximumRetryCount": 3},
             )
 
             logger.info(f"Created container {container_name} with label vexa.user_id={user_id}")
@@ -142,10 +141,7 @@ class DockerClient:
                 return {"status": "deleted", "container_name": container_name}
             else:
                 # Delete all containers for user
-                containers = self.client.containers.list(
-                    all=True,
-                    filters={"name": f"bot-{user_id}"}
-                )
+                containers = self.client.containers.list(all=True, filters={"name": f"bot-{user_id}"})
                 for container in containers:
                     container.stop()
                     container.remove()
@@ -161,24 +157,23 @@ class DockerClient:
     def get_bot_status(self, user_id: str) -> list:
         """Get status of all bot containers for a user"""
         try:
-            containers = self.client.containers.list(
-                all=True,
-                filters={"name": f"bot-{user_id}"}
-            )
+            containers = self.client.containers.list(all=True, filters={"name": f"bot-{user_id}"})
 
             result = []
             for container in containers:
                 # Extract meeting_id from container name (format: bot-{user_id}-{meeting_id})
-                name_parts = container.name.split('-')
+                name_parts = container.name.split("-")
                 meeting_id = name_parts[2] if len(name_parts) > 2 else "unknown"
 
-                result.append({
-                    "container_name": container.name,
-                    "user_id": user_id,
-                    "meeting_id": meeting_id,
-                    "status": container.status,
-                    "creation_time": container.attrs['Created'] if 'Created' in container.attrs else None
-                })
+                result.append(
+                    {
+                        "container_name": container.name,
+                        "user_id": user_id,
+                        "meeting_id": meeting_id,
+                        "status": container.status,
+                        "creation_time": container.attrs["Created"] if "Created" in container.attrs else None,
+                    }
+                )
 
             return result
         except Exception as e:

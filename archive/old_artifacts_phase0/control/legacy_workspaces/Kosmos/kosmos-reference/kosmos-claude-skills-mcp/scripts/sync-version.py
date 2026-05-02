@@ -20,7 +20,6 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import List, Tuple
 
 
 def read_version() -> str:
@@ -35,9 +34,7 @@ def read_version() -> str:
     return version_file.read_text().strip()
 
 
-def update_file(
-    file_path: Path, pattern: str, replacement: str, check_only: bool = False
-) -> Tuple[bool, int]:
+def update_file(file_path: Path, pattern: str, replacement: str, check_only: bool = False) -> tuple[bool, int]:
     """Update version in a file using regex pattern.
 
     Parameters
@@ -93,7 +90,7 @@ def sync_versions(check_only: bool = False) -> bool:
     print()
 
     repo_root = Path(__file__).parent.parent
-    updates: List[Tuple[str, Path, str, str]] = [
+    updates: list[tuple[str, Path, str, str]] = [
         # (description, file_path, pattern, replacement)
         (
             "Backend pyproject.toml",
@@ -140,14 +137,14 @@ def sync_versions(check_only: bool = False) -> bool:
         (
             "GitHub workflow (backend wheel)",
             repo_root / ".github/workflows/test.yml",
-            r'claude_skills_mcp_backend-[0-9]+\.[0-9]+\.[0-9]+-py3-none-any\.whl',
-            f'claude_skills_mcp_backend-{version}-py3-none-any.whl',
+            r"claude_skills_mcp_backend-[0-9]+\.[0-9]+\.[0-9]+-py3-none-any\.whl",
+            f"claude_skills_mcp_backend-{version}-py3-none-any.whl",
         ),
         (
             "GitHub workflow (frontend wheel)",
             repo_root / ".github/workflows/test.yml",
-            r'claude_skills_mcp-[0-9]+\.[0-9]+\.[0-9]+-py3-none-any\.whl',
-            f'claude_skills_mcp-{version}-py3-none-any.whl',
+            r"claude_skills_mcp-[0-9]+\.[0-9]+\.[0-9]+-py3-none-any\.whl",
+            f"claude_skills_mcp-{version}-py3-none-any.whl",
         ),
     ]
 

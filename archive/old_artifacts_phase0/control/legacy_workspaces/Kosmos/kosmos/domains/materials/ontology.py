@@ -32,6 +32,7 @@ from pydantic import BaseModel, Field
 
 class MaterialsRelationType(StrEnum):
     """Types of relationships between materials concepts"""
+
     IS_A = "is_a"  # Parent-child hierarchy
     PART_OF = "part_of"  # Component relationship
     HAS_STRUCTURE = "has_structure"  # Material-structure relationship
@@ -45,20 +46,19 @@ class MaterialsRelationType(StrEnum):
 
 class MaterialsConcept(BaseModel):
     """A concept in the materials science ontology"""
+
     id: str = Field(..., description="Unique identifier")
     name: str = Field(..., description="Human-readable name")
     type: str = Field(..., description="Concept type (structure, property, material, etc.)")
     description: str | None = None
     synonyms: list[str] = Field(default_factory=list)
-    external_ids: dict[str, str] = Field(
-        default_factory=dict,
-        description="External database IDs (Materials Project, AFLOW, etc.)"
-    )
+    external_ids: dict[str, str] = Field(default_factory=dict, description="External database IDs (Materials Project, AFLOW, etc.)")
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
 class MaterialsRelation(BaseModel):
     """A relationship between two materials concepts"""
+
     source_id: str
     target_id: str
     relation_type: MaterialsRelationType
@@ -95,31 +95,24 @@ class MaterialsOntology:
         self.concepts[concept.id] = concept
 
     def add_relation(
-        self,
-        source_id: str,
-        target_id: str,
-        relation_type: MaterialsRelationType,
-        confidence: float = 1.0,
-        evidence: list[str] | None = None
+        self, source_id: str, target_id: str, relation_type: MaterialsRelationType, confidence: float = 1.0, evidence: list[str] | None = None
     ) -> None:
         """Add a relationship between concepts"""
-        self.relations.append(MaterialsRelation(
-            source_id=source_id,
-            target_id=target_id,
-            relation_type=relation_type,
-            confidence=confidence,
-            evidence=evidence or []
-        ))
+        self.relations.append(
+            MaterialsRelation(source_id=source_id, target_id=target_id, relation_type=relation_type, confidence=confidence, evidence=evidence or [])
+        )
 
     def _initialize_crystal_structures(self) -> None:
         """Initialize crystal structure hierarchy"""
         # Top-level crystal systems
-        self.add_concept(MaterialsConcept(
-            id="crystal_structure",
-            name="Crystal Structure",
-            type="structure_category",
-            description="Periodic arrangement of atoms in crystalline materials"
-        ))
+        self.add_concept(
+            MaterialsConcept(
+                id="crystal_structure",
+                name="Crystal Structure",
+                type="structure_category",
+                description="Periodic arrangement of atoms in crystalline materials",
+            )
+        )
 
         # Cubic structures
         structures = [
@@ -129,50 +122,45 @@ class MaterialsOntology:
         ]
 
         for struct_id, name, desc in structures:
-            self.add_concept(MaterialsConcept(
-                id=struct_id,
-                name=name,
-                type="crystal_structure",
-                description=desc
-            ))
+            self.add_concept(MaterialsConcept(id=struct_id, name=name, type="crystal_structure", description=desc))
             self.add_relation(struct_id, "crystal_structure", MaterialsRelationType.IS_A)
 
         # Hexagonal structures
-        self.add_concept(MaterialsConcept(
-            id="hcp",
-            name="Hexagonal Close-Packed",
-            type="crystal_structure",
-            description="Close-packed hexagonal structure, CN=12"
-        ))
+        self.add_concept(
+            MaterialsConcept(id="hcp", name="Hexagonal Close-Packed", type="crystal_structure", description="Close-packed hexagonal structure, CN=12")
+        )
         self.add_relation("hcp", "crystal_structure", MaterialsRelationType.IS_A)
 
         # Complex structures
-        self.add_concept(MaterialsConcept(
-            id="perovskite",
-            name="Perovskite Structure",
-            type="crystal_structure",
-            description="ABX3 structure, important for solar cells and catalysts",
-            synonyms=["ABX3"]
-        ))
+        self.add_concept(
+            MaterialsConcept(
+                id="perovskite",
+                name="Perovskite Structure",
+                type="crystal_structure",
+                description="ABX3 structure, important for solar cells and catalysts",
+                synonyms=["ABX3"],
+            )
+        )
         self.add_relation("perovskite", "crystal_structure", MaterialsRelationType.IS_A)
 
         # Diamond structure
-        self.add_concept(MaterialsConcept(
-            id="diamond",
-            name="Diamond Structure",
-            type="crystal_structure",
-            description="Cubic structure with tetrahedral coordination, CN=4",
-            synonyms=["diamond_cubic"]
-        ))
+        self.add_concept(
+            MaterialsConcept(
+                id="diamond",
+                name="Diamond Structure",
+                type="crystal_structure",
+                description="Cubic structure with tetrahedral coordination, CN=4",
+                synonyms=["diamond_cubic"],
+            )
+        )
         self.add_relation("diamond", "crystal_structure", MaterialsRelationType.IS_A)
 
         # Wurtzite
-        self.add_concept(MaterialsConcept(
-            id="wurtzite",
-            name="Wurtzite Structure",
-            type="crystal_structure",
-            description="Hexagonal structure common in semiconductors"
-        ))
+        self.add_concept(
+            MaterialsConcept(
+                id="wurtzite", name="Wurtzite Structure", type="crystal_structure", description="Hexagonal structure common in semiconductors"
+            )
+        )
         self.add_relation("wurtzite", "crystal_structure", MaterialsRelationType.IS_A)
 
     def _initialize_material_properties(self) -> None:
@@ -187,12 +175,7 @@ class MaterialsOntology:
         ]
 
         for prop_id, name, desc in property_categories:
-            self.add_concept(MaterialsConcept(
-                id=f"{prop_id}_properties",
-                name=name,
-                type="property_category",
-                description=desc
-            ))
+            self.add_concept(MaterialsConcept(id=f"{prop_id}_properties", name=name, type="property_category", description=desc))
 
         # Electrical properties
         electrical_props = [
@@ -203,12 +186,7 @@ class MaterialsOntology:
         ]
 
         for prop_id, name, desc in electrical_props:
-            self.add_concept(MaterialsConcept(
-                id=prop_id,
-                name=name,
-                type="property",
-                description=desc
-            ))
+            self.add_concept(MaterialsConcept(id=prop_id, name=name, type="property", description=desc))
             self.add_relation(prop_id, "electrical_properties", MaterialsRelationType.PART_OF)
 
         # Mechanical properties
@@ -220,12 +198,7 @@ class MaterialsOntology:
         ]
 
         for prop_id, name, desc in mechanical_props:
-            self.add_concept(MaterialsConcept(
-                id=prop_id,
-                name=name,
-                type="property",
-                description=desc
-            ))
+            self.add_concept(MaterialsConcept(id=prop_id, name=name, type="property", description=desc))
             self.add_relation(prop_id, "mechanical_properties", MaterialsRelationType.PART_OF)
 
         # Optical properties
@@ -236,12 +209,7 @@ class MaterialsOntology:
         ]
 
         for prop_id, name, desc in optical_props:
-            self.add_concept(MaterialsConcept(
-                id=prop_id,
-                name=name,
-                type="property",
-                description=desc
-            ))
+            self.add_concept(MaterialsConcept(id=prop_id, name=name, type="property", description=desc))
             self.add_relation(prop_id, "optical_properties", MaterialsRelationType.PART_OF)
 
         # Thermal properties
@@ -252,12 +220,7 @@ class MaterialsOntology:
         ]
 
         for prop_id, name, desc in thermal_props:
-            self.add_concept(MaterialsConcept(
-                id=prop_id,
-                name=name,
-                type="property",
-                description=desc
-            ))
+            self.add_concept(MaterialsConcept(id=prop_id, name=name, type="property", description=desc))
             self.add_relation(prop_id, "thermal_properties", MaterialsRelationType.PART_OF)
 
     def _initialize_materials_classes(self) -> None:
@@ -272,12 +235,7 @@ class MaterialsOntology:
         ]
 
         for class_id, name, desc in materials_classes:
-            self.add_concept(MaterialsConcept(
-                id=class_id,
-                name=name,
-                type="material_class",
-                description=desc
-            ))
+            self.add_concept(MaterialsConcept(id=class_id, name=name, type="material_class", description=desc))
 
         # Semiconductor subclasses
         semiconductor_types = [
@@ -287,12 +245,7 @@ class MaterialsOntology:
         ]
 
         for semi_id, name, desc in semiconductor_types:
-            self.add_concept(MaterialsConcept(
-                id=semi_id,
-                name=name,
-                type="material_subclass",
-                description=desc
-            ))
+            self.add_concept(MaterialsConcept(id=semi_id, name=name, type="material_subclass", description=desc))
             self.add_relation(semi_id, "semiconductor", MaterialsRelationType.IS_A)
 
     def _initialize_processing_methods(self) -> None:
@@ -310,75 +263,69 @@ class MaterialsOntology:
         ]
 
         for proc_id, name, desc in processing_methods:
-            self.add_concept(MaterialsConcept(
-                id=proc_id,
-                name=name,
-                type="processing_method",
-                description=desc
-            ))
+            self.add_concept(MaterialsConcept(id=proc_id, name=name, type="processing_method", description=desc))
 
     def _initialize_common_materials(self) -> None:
         """Initialize common materials with their properties"""
         # Silicon
-        self.add_concept(MaterialsConcept(
-            id="silicon",
-            name="Silicon",
-            type="material",
-            description="Elemental semiconductor, basis of electronics industry",
-            synonyms=["Si"],
-            external_ids={"Materials_Project": "mp-149"}
-        ))
+        self.add_concept(
+            MaterialsConcept(
+                id="silicon",
+                name="Silicon",
+                type="material",
+                description="Elemental semiconductor, basis of electronics industry",
+                synonyms=["Si"],
+                external_ids={"Materials_Project": "mp-149"},
+            )
+        )
         self.add_relation("silicon", "elemental_semiconductor", MaterialsRelationType.IS_A)
         self.add_relation("silicon", "diamond", MaterialsRelationType.HAS_STRUCTURE)
 
         # Gallium Arsenide
-        self.add_concept(MaterialsConcept(
-            id="gaas",
-            name="Gallium Arsenide",
-            type="material",
-            description="III-V compound semiconductor for optoelectronics",
-            synonyms=["GaAs"],
-            external_ids={"Materials_Project": "mp-2534"}
-        ))
+        self.add_concept(
+            MaterialsConcept(
+                id="gaas",
+                name="Gallium Arsenide",
+                type="material",
+                description="III-V compound semiconductor for optoelectronics",
+                synonyms=["GaAs"],
+                external_ids={"Materials_Project": "mp-2534"},
+            )
+        )
         self.add_relation("gaas", "compound_semiconductor", MaterialsRelationType.IS_A)
 
         # Perovskite solar cell materials
-        self.add_concept(MaterialsConcept(
-            id="mapi",
-            name="Methylammonium Lead Iodide",
-            type="material",
-            description="Hybrid perovskite for solar cells",
-            synonyms=["MAPbI3", "CH3NH3PbI3"],
-            metadata={"applications": ["solar_cells", "LEDs"]}
-        ))
+        self.add_concept(
+            MaterialsConcept(
+                id="mapi",
+                name="Methylammonium Lead Iodide",
+                type="material",
+                description="Hybrid perovskite for solar cells",
+                synonyms=["MAPbI3", "CH3NH3PbI3"],
+                metadata={"applications": ["solar_cells", "LEDs"]},
+            )
+        )
         self.add_relation("mapi", "perovskite", MaterialsRelationType.HAS_STRUCTURE)
 
         # Titanium Dioxide
-        self.add_concept(MaterialsConcept(
-            id="tio2",
-            name="Titanium Dioxide",
-            type="material",
-            description="Oxide semiconductor, photocatalyst",
-            synonyms=["TiO2", "titania"],
-            external_ids={"Materials_Project": "mp-2657"}
-        ))
-        self.add_concept(MaterialsConcept(
-            id="steel",
-            name="Steel",
-            type="material",
-            description="Iron-carbon alloy",
-            synonyms=["Fe-C alloy"]
-        ))
+        self.add_concept(
+            MaterialsConcept(
+                id="tio2",
+                name="Titanium Dioxide",
+                type="material",
+                description="Oxide semiconductor, photocatalyst",
+                synonyms=["TiO2", "titania"],
+                external_ids={"Materials_Project": "mp-2657"},
+            )
+        )
+        self.add_concept(MaterialsConcept(id="steel", name="Steel", type="material", description="Iron-carbon alloy", synonyms=["Fe-C alloy"]))
         self.add_relation("steel", "metal", MaterialsRelationType.IS_A)
 
     # Query methods
 
     def get_crystal_structures(self) -> list[MaterialsConcept]:
         """Get all crystal structures"""
-        return [
-            concept for concept in self.concepts.values()
-            if concept.type == "crystal_structure"
-        ]
+        return [concept for concept in self.concepts.values() if concept.type == "crystal_structure"]
 
     def get_material_properties(self, category: str | None = None) -> list[MaterialsConcept]:
         """
@@ -396,24 +343,17 @@ class MaterialsOntology:
             property_ids = set()
 
             for relation in self.relations:
-                if (relation.target_id == category_id and
-                    relation.relation_type == MaterialsRelationType.PART_OF):
+                if relation.target_id == category_id and relation.relation_type == MaterialsRelationType.PART_OF:
                     property_ids.add(relation.source_id)
 
             return [self.concepts[pid] for pid in property_ids if pid in self.concepts]
         else:
             # Get all properties
-            return [
-                concept for concept in self.concepts.values()
-                if concept.type == "property"
-            ]
+            return [concept for concept in self.concepts.values() if concept.type == "property"]
 
     def get_processing_methods(self) -> list[MaterialsConcept]:
         """Get all processing methods"""
-        return [
-            concept for concept in self.concepts.values()
-            if concept.type == "processing_method"
-        ]
+        return [concept for concept in self.concepts.values() if concept.type == "processing_method"]
 
     def get_materials_by_class(self, material_class: str) -> list[MaterialsConcept]:
         """Get materials belonging to a specific class"""
@@ -421,10 +361,12 @@ class MaterialsOntology:
         material_ids = set()
 
         for relation in self.relations:
-            if (relation.target_id == material_class and
-                relation.relation_type == MaterialsRelationType.IS_A and
-                relation.source_id in self.concepts and
-                self.concepts[relation.source_id].type == "material"):
+            if (
+                relation.target_id == material_class
+                and relation.relation_type == MaterialsRelationType.IS_A
+                and relation.source_id in self.concepts
+                and self.concepts[relation.source_id].type == "material"
+            ):
                 material_ids.add(relation.source_id)
 
         return [self.concepts[mid] for mid in material_ids]
@@ -439,17 +381,12 @@ class MaterialsOntology:
 
         # Try name and synonym matching
         for concept in self.concepts.values():
-            if (concept.name.lower() == query_lower or
-                query_lower in [s.lower() for s in concept.synonyms]):
+            if concept.name.lower() == query_lower or query_lower in [s.lower() for s in concept.synonyms]:
                 return concept
 
         return None
 
-    def get_related_concepts(
-        self,
-        concept_id: str,
-        relation_type: MaterialsRelationType | None = None
-    ) -> list[MaterialsConcept]:
+    def get_related_concepts(self, concept_id: str, relation_type: MaterialsRelationType | None = None) -> list[MaterialsConcept]:
         """Get concepts related to a given concept"""
         related_ids = set()
 

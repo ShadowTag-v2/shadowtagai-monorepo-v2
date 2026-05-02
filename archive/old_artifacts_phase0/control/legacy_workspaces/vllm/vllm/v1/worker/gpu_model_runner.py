@@ -2777,14 +2777,16 @@ class GPUModelRunner(
         )
 
         def dispatch_cudagraph(num_tokens):
-            return (self.cudagraph_dispatcher.dispatch(
-                        num_tokens=num_tokens,
-                        has_lora=has_lora,
-                        use_cascade_attn=use_cascade_attn,
-                        uniform_decode=uniform_decode,
-                    )
-                    if not force_eager
-                    else (CUDAGraphMode.NONE, BatchDescriptor(num_tokens_padded)))
+            return (
+                self.cudagraph_dispatcher.dispatch(
+                    num_tokens=num_tokens,
+                    has_lora=has_lora,
+                    use_cascade_attn=use_cascade_attn,
+                    uniform_decode=uniform_decode,
+                )
+                if not force_eager
+                else (CUDAGraphMode.NONE, BatchDescriptor(num_tokens_padded))
+            )
 
         cudagraph_mode, batch_descriptor = dispatch_cudagraph(num_tokens_padded)
         num_tokens_padded = batch_descriptor.num_tokens
@@ -4805,6 +4807,7 @@ class GPUModelRunner(
         just may have a performance penalty due to that backend treating decodes
         as prefills.
         """
+
         def min_none_high(a, b):
             return a if b is None else b if a is None else min(a, b)
 

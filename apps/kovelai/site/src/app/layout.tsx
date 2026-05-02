@@ -3,7 +3,6 @@ import { Geist_Mono, Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 
-
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
@@ -198,9 +197,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-[#071325] text-[#d7e3fc]">
-        {children}
-      </body>
+      <body className="min-h-screen flex flex-col bg-[#071325] text-[#d7e3fc]">{children}</body>
     </html>
   );
 }

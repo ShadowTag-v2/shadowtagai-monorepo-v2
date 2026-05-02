@@ -66,64 +66,56 @@ _TOOL_SPEC_MOCK_PROMPT_TEMPLATE = """
 
 
 def _find_value_by_key(data: Any, target_key: str) -> Any | None:
-  """Recursively searches for a value by key in a nested structure."""
-  if isinstance(data, dict):
-    if target_key in data:
-      return data[target_key]
-    for key, value in data.items():
-      result = _find_value_by_key(value, target_key)
-      if result is not None:
-        return result
-  elif isinstance(data, list):
-    for item in data:
-      result = _find_value_by_key(item, target_key)
-      if result is not None:
-        return result
-  return None
+    """Recursively searches for a value by key in a nested structure."""
+    if isinstance(data, dict):
+        if target_key in data:
+            return data[target_key]
+        for key, value in data.items():
+            result = _find_value_by_key(value, target_key)
+            if result is not None:
+                return result
+    elif isinstance(data, list):
+        for item in data:
+            result = _find_value_by_key(item, target_key)
+            if result is not None:
+                return result
+    return None
 
 
 class ToolSpecMockStrategy(MockStrategy):
-  """Mocks a tool response based on the tool's specification."""
+    """Mocks a tool response based on the tool's specification."""
 
-  def __init__(
-      self, llm_name: str, llm_config: genai_types.GenerateContentConfig
-  ):
-    self._llm_name = llm_name
-    self._llm_config = llm_config
-    llm_registry = LLMRegistry()
-    llm_class = llm_registry.resolve(self._llm_name)
-    self._llm = llm_class(model=self._llm_name)
+    def __init__(self, llm_name: str, llm_config: genai_types.GenerateContentConfig):
+        self._llm_name = llm_name
+        self._llm_config = llm_config
+        llm_registry = LLMRegistry()
+        llm_class = llm_registry.resolve(self._llm_name)
+        self._llm = llm_class(model=self._llm_name)
 
-  async def mock(
-      self,
-      tool: BaseTool,
-      args: dict[str, Any],
-      tool_context: Any,
-      tool_connection_map: ToolConnectionMap | None,
-      state_store: dict[str, Any],
-      environment_data: str | None = None,
-  ) -> dict[str, Any]:
-    declaration = tool._get_declaration()
-    if not declaration:
-      return {
-          "status": "error",
-          "error_message": "Could not get tool declaration.",
-      }
+    async def mock(
+        self,
+        tool: BaseTool,
+        args: dict[str, Any],
+        tool_context: Any,
+        tool_connection_map: ToolConnectionMap | None,
+        state_store: dict[str, Any],
+        environment_data: str | None = None,
+    ) -> dict[str, Any]:
+        declaration = tool._get_declaration()
+        if not declaration:
+            return {
+                "status": "error",
+                "error_message": "Could not get tool declaration.",
+            }
 
-    tool_connection_map_json = (
-        json.dumps(tool_connection_map.model_dump(exclude_none=True), indent=2)
-        if tool_connection_map
-        else "''"
-    )
-    state_store_json = json.dumps(state_store, indent=2)
-    tool_schema_json = json.dumps(
-        declaration.model_dump(exclude_none=True), indent=2
-    )
-    tool_arguments_json = json.dumps(args, indent=2)
+        tool_connection_map_json = json.dumps(tool_connection_map.model_dump(exclude_none=True), indent=2) if tool_connection_map else "''"
+        state_store_json = json.dumps(state_store, indent=2)
+        tool_schema_json = json.dumps(declaration.model_dump(exclude_none=True), indent=2)
+        tool_arguments_json = json.dumps(args, indent=2)
 
-    environment_data_snippet = ""
-    if environment_data:
-      environment_data_snippet = f"""
+        environment_data_snippet = ""
+        if environment_data:
+            environment_data_snippet = f"""
         Here is relevant environment data (e.g., database snippet, context information):
         <environment_data>
         {environment_data}
@@ -131,71 +123,63 @@ class ToolSpecMockStrategy(MockStrategy):
         Use this information to generate more realistic responses.
       """
 
-    prompt = _TOOL_SPEC_MOCK_PROMPT_TEMPLATE.format(
-        environment_data_snippet=environment_data_snippet,
-        tool_connection_map_json=tool_connection_map_json,
-        state_store_json=state_store_json,
-        tool_name=tool.name,
-        tool_description=tool.description,
-        tool_schema_json=tool_schema_json,
-        tool_arguments_json=tool_arguments_json,
-    )
+        prompt = _TOOL_SPEC_MOCK_PROMPT_TEMPLATE.format(
+            environment_data_snippet=environment_data_snippet,
+            tool_connection_map_json=tool_connection_map_json,
+            state_store_json=state_store_json,
+            tool_name=tool.name,
+            tool_description=tool.description,
+            tool_schema_json=tool_schema_json,
+            tool_arguments_json=tool_arguments_json,
+        )
 
-    request_contents = [
-        genai_types.Content(parts=[genai_types.Part(text=prompt)], role="user")
-    ]
-    request = LlmRequest(
-        contents=request_contents,
-        model=self._llm_name,
-        config=self._llm_config,
-        generation_config=genai_types.GenerateContentConfig(
-            response_mime_type="application/json"
-        ),
-    )
-    response_text = ""
-    async with Aclosing(self._llm.generate_content_async(request)) as agen:
-      async for llm_response in agen:
-        generated_content: genai_types.Content = llm_response.content
-        if generated_content.parts:
-          for part in generated_content.parts:
-            if part.text:
-              response_text += part.text
+        request_contents = [genai_types.Content(parts=[genai_types.Part(text=prompt)], role="user")]
+        request = LlmRequest(
+            contents=request_contents,
+            model=self._llm_name,
+            config=self._llm_config,
+            generation_config=genai_types.GenerateContentConfig(response_mime_type="application/json"),
+        )
+        response_text = ""
+        async with Aclosing(self._llm.generate_content_async(request)) as agen:
+            async for llm_response in agen:
+                generated_content: genai_types.Content = llm_response.content
+                if generated_content.parts:
+                    for part in generated_content.parts:
+                        if part.text:
+                            response_text += part.text
 
-    try:
-      clean_json_text = re.sub(r"^```[a-zA-Z]*\n", "", response_text)
-      clean_json_text = re.sub(r"\n```$", "", clean_json_text)
-      mock_response = json.loads(clean_json_text.strip())
-      # Determine if the current tool is mutative by checking the connection map.
-      is_mutative = False
-      if tool_connection_map:
-        all_creating_tools = {
-            tool_name
-            for param in tool_connection_map.stateful_parameters
-            for tool_name in param.creating_tools
-        }
-        if tool.name in all_creating_tools:
-          is_mutative = True
+        try:
+            clean_json_text = re.sub(r"^```[a-zA-Z]*\n", "", response_text)
+            clean_json_text = re.sub(r"\n```$", "", clean_json_text)
+            mock_response = json.loads(clean_json_text.strip())
+            # Determine if the current tool is mutative by checking the connection map.
+            is_mutative = False
+            if tool_connection_map:
+                all_creating_tools = {tool_name for param in tool_connection_map.stateful_parameters for tool_name in param.creating_tools}
+                if tool.name in all_creating_tools:
+                    is_mutative = True
 
-      # After getting the response, update the state if this was a mutative tool.
-      if is_mutative:
-        for param_info in tool_connection_map.stateful_parameters:
-          param_name = param_info.parameter_name
-          # Only update the state for the specific parameter this tool
-          # creates/modifies.
-          if tool.name in param_info.creating_tools:
-            param_value = _find_value_by_key(mock_response, param_name)
-            if param_value is not None:
-              if param_name not in state_store:
-                state_store[param_name] = {}
-              # Store the entire response as the new state for this entity.
-              # This correctly captures creations and modifications (like
-              # cancellation).
-              state_store[param_name][param_value] = mock_response
+            # After getting the response, update the state if this was a mutative tool.
+            if is_mutative:
+                for param_info in tool_connection_map.stateful_parameters:
+                    param_name = param_info.parameter_name
+                    # Only update the state for the specific parameter this tool
+                    # creates/modifies.
+                    if tool.name in param_info.creating_tools:
+                        param_value = _find_value_by_key(mock_response, param_name)
+                        if param_value is not None:
+                            if param_name not in state_store:
+                                state_store[param_name] = {}
+                            # Store the entire response as the new state for this entity.
+                            # This correctly captures creations and modifications (like
+                            # cancellation).
+                            state_store[param_name][param_value] = mock_response
 
-      return mock_response
-    except json.JSONDecodeError:
-      return {
-          "status": "error",
-          "error_message": "Failed to generate valid JSON mock response.",
-          "llm_output": response_text,
-      }
+            return mock_response
+        except json.JSONDecodeError:
+            return {
+                "status": "error",
+                "error_message": "Failed to generate valid JSON mock response.",
+                "llm_output": response_text,
+            }

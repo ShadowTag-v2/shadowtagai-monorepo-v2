@@ -20,52 +20,48 @@ VENUE_REQUIREMENTS = {
         "margins": {"top": 2.5, "bottom": 2.5, "left": 2.5, "right": 2.5},  # cm
         "font_size": 12,  # pt
         "font_family": "Times",
-        "line_spacing": "double"
+        "line_spacing": "double",
     },
     "neurips": {
         "page_limit": 8,  # Excluding refs
         "margins": {"top": 2.54, "bottom": 2.54, "left": 2.54, "right": 2.54},  # cm (1 inch)
         "font_size": 10,
         "font_family": "Times",
-        "format": "two-column"
+        "format": "two-column",
     },
     "plos_one": {
         "page_limit": None,  # No limit
         "margins": {"top": 2.54, "bottom": 2.54, "left": 2.54, "right": 2.54},
         "font_size": 10,
         "font_family": "Arial",
-        "line_spacing": "double"
+        "line_spacing": "double",
     },
     "nsf": {
         "page_limit": 15,  # Project description
         "margins": {"top": 2.54, "bottom": 2.54, "left": 2.54, "right": 2.54},  # 1 inch required
         "font_size": 11,  # Minimum
         "font_family": "Times Roman",
-        "line_spacing": "single or double"
+        "line_spacing": "single or double",
     },
     "nih": {
         "page_limit": 12,  # Research strategy
         "margins": {"top": 1.27, "bottom": 1.27, "left": 1.27, "right": 1.27},  # 0.5 inch minimum
         "font_size": 11,  # Arial 11pt minimum
         "font_family": "Arial",
-        "line_spacing": "any"
-    }
+        "line_spacing": "any",
+    },
 }
+
 
 def get_pdf_info(pdf_path):
     """Extract information from PDF using pdfinfo."""
     try:
-        result = subprocess.run(
-            ['pdfinfo', str(pdf_path)],
-            capture_output=True,
-            text=True,
-            check=True
-        )
+        result = subprocess.run(["pdfinfo", str(pdf_path)], capture_output=True, text=True, check=True)
 
         info = {}
-        for line in result.stdout.split('\n'):
-            if ':' in line:
-                key, value = line.split(':', 1)
+        for line in result.stdout.split("\n"):
+            if ":" in line:
+                key, value = line.split(":", 1)
                 info[key.strip()] = value.strip()
 
         return info
@@ -78,6 +74,7 @@ def get_pdf_info(pdf_path):
         print(f"Error running pdfinfo: {e}")
         return None
 
+
 def check_page_count(pdf_path, venue_reqs):
     """Check if page count is within limit."""
     pdf_info = get_pdf_info(pdf_path)
@@ -85,8 +82,8 @@ def check_page_count(pdf_path, venue_reqs):
     if not pdf_info:
         return {"status": "skip", "message": "Could not determine page count"}
 
-    pages = int(pdf_info.get('Pages', 0))
-    limit = venue_reqs.get('page_limit')
+    pages = int(pdf_info.get("Pages", 0))
+    limit = venue_reqs.get("page_limit")
 
     if limit is None:
         return {"status": "pass", "message": f"No page limit. Document has {pages} pages."}
@@ -96,39 +93,33 @@ def check_page_count(pdf_path, venue_reqs):
     else:
         return {"status": "fail", "message": f"✗ Page count exceeded: {pages}/{limit} pages"}
 
+
 def check_margins(pdf_path, venue_reqs):
     """Check if margins meet requirements."""
     # Note: This is a simplified check. Full margin analysis requires more sophisticated tools.
-    req_margins = venue_reqs.get('margins', {})
+    req_margins = venue_reqs.get("margins", {})
 
     if not req_margins:
         return {"status": "skip", "message": "No margin requirements specified"}
 
     # This is a placeholder - accurate margin checking requires parsing PDF content
-    return {
-        "status": "info",
-        "message": f"ℹ️  Required margins: {req_margins} cm (manual verification recommended)"
-    }
+    return {"status": "info", "message": f"ℹ️  Required margins: {req_margins} cm (manual verification recommended)"}
+
 
 def check_fonts(pdf_path, venue_reqs):
     """Check fonts in PDF."""
     try:
-        result = subprocess.run(
-            ['pdffonts', str(pdf_path)],
-            capture_output=True,
-            text=True,
-            check=True
-        )
+        result = subprocess.run(["pdffonts", str(pdf_path)], capture_output=True, text=True, check=True)
 
         fonts_found = []
-        for line in result.stdout.split('\n')[2:]:  # Skip header
+        for line in result.stdout.split("\n")[2:]:  # Skip header
             if line.strip():
                 parts = line.split()
                 if parts:
                     fonts_found.append(parts[0])
 
-        req_font = venue_reqs.get('font_family', '')
-        req_size = venue_reqs.get('font_size')
+        req_font = venue_reqs.get("font_family", "")
+        req_size = venue_reqs.get("font_size")
 
         message = f"ℹ️  Fonts found: {', '.join(set(fonts_found))}\n"
         message += f"   Required: {req_font}"
@@ -142,6 +133,7 @@ def check_fonts(pdf_path, venue_reqs):
     except subprocess.CalledProcessError:
         return {"status": "skip", "message": "Could not extract font information"}
 
+
 def validate_document(pdf_path, venue, checks):
     """Validate document against venue requirements."""
 
@@ -154,22 +146,22 @@ def validate_document(pdf_path, venue, checks):
 
     venue_reqs = VENUE_REQUIREMENTS[venue_key]
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"VALIDATING: {pdf_path.name}")
     print(f"VENUE: {venue}")
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
 
     results = {}
 
     # Run requested checks
-    if 'page-count' in checks or 'all' in checks:
-        results['page-count'] = check_page_count(pdf_path, venue_reqs)
+    if "page-count" in checks or "all" in checks:
+        results["page-count"] = check_page_count(pdf_path, venue_reqs)
 
-    if 'margins' in checks or 'all' in checks:
-        results['margins'] = check_margins(pdf_path, venue_reqs)
+    if "margins" in checks or "all" in checks:
+        results["margins"] = check_margins(pdf_path, venue_reqs)
 
-    if 'fonts' in checks or 'all' in checks:
-        results['fonts'] = check_fonts(pdf_path, venue_reqs)
+    if "fonts" in checks or "all" in checks:
+        results["fonts"] = check_fonts(pdf_path, venue_reqs)
 
     # Print results
     for check_name, result in results.items():
@@ -177,24 +169,25 @@ def validate_document(pdf_path, venue, checks):
         print(f"  {result['message']}\n")
 
     # Summary
-    failures = sum(1 for r in results.values() if r['status'] == 'fail')
-    passes = sum(1 for r in results.values() if r['status'] == 'pass')
+    failures = sum(1 for r in results.values() if r["status"] == "fail")
+    passes = sum(1 for r in results.values() if r["status"] == "pass")
 
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     if failures == 0:
         print(f"✓ VALIDATION PASSED ({passes} checks)")
     else:
         print(f"✗ VALIDATION FAILED ({failures} issues)")
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
 
     return results
+
 
 def generate_report(pdf_path, venue, results, report_path):
     """Generate validation report."""
 
-    with open(report_path, 'w') as f:
+    with open(report_path, "w") as f:
         f.write("Validation Report\n")
-        f.write(f"{'='*60}\n\n")
+        f.write(f"{'=' * 60}\n\n")
         f.write(f"File: {pdf_path}\n")
         f.write(f"Venue: {venue}\n")
         f.write(f"Date: {Path.ctime(pdf_path)}\n\n")
@@ -204,10 +197,11 @@ def generate_report(pdf_path, venue, results, report_path):
             f.write(f"  Status: {result['status']}\n")
             f.write(f"  {result['message']}\n\n")
 
-        failures = sum(1 for r in results.values() if r['status'] == 'fail')
+        failures = sum(1 for r in results.values() if r["status"] == "fail")
         f.write(f"\nSummary: {'PASSED' if failures == 0 else 'FAILED'}\n")
 
     print(f"Report saved to: {report_path}")
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -218,15 +212,14 @@ Examples:
   %(prog)s --file my_paper.pdf --venue "Nature" --check-all
   %(prog)s --file my_paper.pdf --venue "NeurIPS" --check page-count,fonts
   %(prog)s --file proposal.pdf --venue "NSF" --report validation.txt
-        """
+        """,
     )
 
-    parser.add_argument('--file', type=str, required=True, help='PDF file to validate')
-    parser.add_argument('--venue', type=str, required=True, help='Target venue')
-    parser.add_argument('--check', type=str, default='all',
-                      help='Checks to perform: page-count, margins, fonts, all (comma-separated)')
-    parser.add_argument('--check-all', action='store_true', help='Perform all checks')
-    parser.add_argument('--report', type=str, help='Save report to file')
+    parser.add_argument("--file", type=str, required=True, help="PDF file to validate")
+    parser.add_argument("--venue", type=str, required=True, help="Target venue")
+    parser.add_argument("--check", type=str, default="all", help="Checks to perform: page-count, margins, fonts, all (comma-separated)")
+    parser.add_argument("--check-all", action="store_true", help="Perform all checks")
+    parser.add_argument("--report", type=str, help="Save report to file")
 
     args = parser.parse_args()
 
@@ -238,9 +231,9 @@ Examples:
 
     # Parse checks
     if args.check_all:
-        checks = ['all']
+        checks = ["all"]
     else:
-        checks = [c.strip() for c in args.check.split(',')]
+        checks = [c.strip() for c in args.check.split(",")]
 
     # Validate
     results = validate_document(pdf_path, args.venue, checks)
@@ -248,6 +241,7 @@ Examples:
     # Generate report if requested
     if args.report and results:
         generate_report(pdf_path, args.venue, results, Path(args.report))
+
 
 if __name__ == "__main__":
     main()

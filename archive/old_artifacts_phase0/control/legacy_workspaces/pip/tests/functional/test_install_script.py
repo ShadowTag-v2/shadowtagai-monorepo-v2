@@ -44,7 +44,7 @@ def test_multiple_scripts(script: PipTestEnvironment) -> None:
 
     assert (
         "ERROR: --requirements-from-script can only be given once" in result.stderr
-    ), ("multiple script did not fail as expected -- " + result.stderr)
+    ), "multiple script did not fail as expected -- " + result.stderr
 
 
 def test_script_file_python_version(script: PipTestEnvironment) -> None:

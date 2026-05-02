@@ -13,6 +13,7 @@ def sqlite_conn(path: str):
     finally:
         conn.close()
 
+
 @contextmanager
 def pg_conn(dsn: str):
     conn = psycopg2.connect(dsn)

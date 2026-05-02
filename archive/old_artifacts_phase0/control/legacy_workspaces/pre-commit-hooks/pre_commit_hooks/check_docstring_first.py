@@ -6,13 +6,18 @@ import tokenize
 from collections.abc import Sequence
 from tokenize import tokenize as tokenize_tokenize
 
-NON_CODE_TOKENS = frozenset((
-    tokenize.COMMENT, tokenize.ENDMARKER, tokenize.NEWLINE, tokenize.NL,
-    tokenize.ENCODING,
-))
+NON_CODE_TOKENS = frozenset(
+    (
+        tokenize.COMMENT,
+        tokenize.ENDMARKER,
+        tokenize.NEWLINE,
+        tokenize.NL,
+        tokenize.ENCODING,
+    )
+)
 
 
-def check_docstring_first(src: bytes, filename: str = '<unknown>') -> int:
+def check_docstring_first(src: bytes, filename: str = "<unknown>") -> int:
     """Returns nonzero if the source has what looks like a docstring that is
     not at the beginning of the source.
 
@@ -28,14 +33,12 @@ def check_docstring_first(src: bytes, filename: str = '<unknown>') -> int:
         if tok_type == tokenize.STRING and scol == 0:
             if found_docstring_line is not None:
                 print(
-                    f'{filename}:{sline}: Multiple module docstrings '
-                    f'(first docstring on line {found_docstring_line}).',
+                    f"{filename}:{sline}: Multiple module docstrings (first docstring on line {found_docstring_line}).",
                 )
                 return 1
             elif found_code_line is not None:
                 print(
-                    f'{filename}:{sline}: Module docstring appears after code '
-                    f'(code seen on line {found_code_line}).',
+                    f"{filename}:{sline}: Module docstring appears after code (code seen on line {found_code_line}).",
                 )
                 return 1
             else:
@@ -48,13 +51,13 @@ def check_docstring_first(src: bytes, filename: str = '<unknown>') -> int:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument('filenames', nargs='*')
+    parser.add_argument("filenames", nargs="*")
     args = parser.parse_args(argv)
 
     retv = 0
 
     for filename in args.filenames:
-        with open(filename, 'rb') as f:
+        with open(filename, "rb") as f:
             contents = f.read()
         retv |= check_docstring_first(contents, filename=filename)
 

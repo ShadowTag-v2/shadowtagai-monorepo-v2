@@ -12,7 +12,7 @@ Usage:
 import argparse
 import json
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import requests
 
@@ -48,14 +48,7 @@ class EnsemblAPIClient:
             self.request_count = 0
             self.last_request_time = current_time
 
-    def _make_request(
-        self,
-        endpoint: str,
-        params: Optional[Dict] = None,
-        max_retries: int = 3,
-        method: str = "GET",
-        data: Optional[Dict] = None
-    ) -> Any:
+    def _make_request(self, endpoint: str, params: dict | None = None, max_retries: int = 3, method: str = "GET", data: dict | None = None) -> Any:
         """
         Make an API request with error handling and retries.
 
@@ -89,7 +82,7 @@ class EnsemblAPIClient:
                     return response.json()
                 elif response.status_code == 429:
                     # Rate limited - wait and retry
-                    retry_after = int(response.headers.get('Retry-After', 1))
+                    retry_after = int(response.headers.get("Retry-After", 1))
                     print(f"Rate limited. Waiting {retry_after} seconds...")
                     time.sleep(retry_after)
                 elif response.status_code == 404:
@@ -99,11 +92,11 @@ class EnsemblAPIClient:
             except requests.exceptions.RequestException as e:
                 if attempt == max_retries - 1:
                     raise Exception(f"Request failed after {max_retries} attempts: {e}")
-                time.sleep(2 ** attempt)  # Exponential backoff
+                time.sleep(2**attempt)  # Exponential backoff
 
         raise Exception(f"Failed after {max_retries} attempts")
 
-    def lookup_gene_by_symbol(self, species: str, symbol: str, expand: bool = True) -> Dict:
+    def lookup_gene_by_symbol(self, species: str, symbol: str, expand: bool = True) -> dict:
         """
         Look up gene information by symbol.
 
@@ -119,7 +112,7 @@ class EnsemblAPIClient:
         params = {"expand": 1} if expand else {}
         return self._make_request(endpoint, params=params)
 
-    def lookup_by_id(self, ensembl_id: str, expand: bool = False) -> Dict:
+    def lookup_by_id(self, ensembl_id: str, expand: bool = False) -> dict:
         """
         Look up object by Ensembl ID.
 
@@ -134,12 +127,7 @@ class EnsemblAPIClient:
         params = {"expand": 1} if expand else {}
         return self._make_request(endpoint, params=params)
 
-    def get_sequence(
-        self,
-        ensembl_id: str,
-        seq_type: str = "genomic",
-        format: str = "json"
-    ) -> Any:
+    def get_sequence(self, ensembl_id: str, seq_type: str = "genomic", format: str = "json") -> Any:
         """
         Retrieve sequence by Ensembl ID.
 
@@ -162,12 +150,7 @@ class EnsemblAPIClient:
 
         return self._make_request(endpoint, params=params)
 
-    def get_region_sequence(
-        self,
-        species: str,
-        region: str,
-        format: str = "json"
-    ) -> Any:
+    def get_region_sequence(self, species: str, region: str, format: str = "json") -> Any:
         """
         Get genomic sequence for a region.
 
@@ -189,7 +172,7 @@ class EnsemblAPIClient:
 
         return self._make_request(endpoint)
 
-    def get_variant(self, species: str, variant_id: str, include_pops: bool = True) -> Dict:
+    def get_variant(self, species: str, variant_id: str, include_pops: bool = True) -> dict:
         """
         Get variant information by ID.
 
@@ -205,11 +188,7 @@ class EnsemblAPIClient:
         params = {"pops": 1} if include_pops else {}
         return self._make_request(endpoint, params=params)
 
-    def predict_variant_effect(
-        self,
-        species: str,
-        hgvs_notation: str
-    ) -> List[Dict]:
+    def predict_variant_effect(self, species: str, hgvs_notation: str) -> list[dict]:
         """
         Predict variant consequences using VEP.
 
@@ -223,11 +202,7 @@ class EnsemblAPIClient:
         endpoint = f"/vep/{species}/hgvs/{hgvs_notation}"
         return self._make_request(endpoint)
 
-    def find_orthologs(
-        self,
-        ensembl_id: str,
-        target_species: Optional[str] = None
-    ) -> Dict:
+    def find_orthologs(self, ensembl_id: str, target_species: str | None = None) -> dict:
         """
         Find orthologs for a gene.
 
@@ -244,12 +219,7 @@ class EnsemblAPIClient:
             params["target_species"] = target_species
         return self._make_request(endpoint, params=params)
 
-    def get_region_features(
-        self,
-        species: str,
-        region: str,
-        feature_type: str = "gene"
-    ) -> List[Dict]:
+    def get_region_features(self, species: str, region: str, feature_type: str = "gene") -> list[dict]:
         """
         Get genomic features in a region.
 
@@ -265,7 +235,7 @@ class EnsemblAPIClient:
         params = {"feature": feature_type}
         return self._make_request(endpoint, params=params)
 
-    def get_species_info(self) -> List[Dict]:
+    def get_species_info(self) -> list[dict]:
         """
         Get information about all available species.
 
@@ -276,7 +246,7 @@ class EnsemblAPIClient:
         result = self._make_request(endpoint)
         return result.get("species", [])
 
-    def get_assembly_info(self, species: str) -> Dict:
+    def get_assembly_info(self, species: str) -> dict:
         """
         Get assembly information for a species.
 
@@ -289,13 +259,7 @@ class EnsemblAPIClient:
         endpoint = f"/info/assembly/{species}"
         return self._make_request(endpoint)
 
-    def map_coordinates(
-        self,
-        species: str,
-        asm_from: str,
-        region: str,
-        asm_to: str
-    ) -> Dict:
+    def map_coordinates(self, species: str, asm_from: str, region: str, asm_to: str) -> dict:
         """
         Map coordinates between genome assemblies.
 
@@ -314,42 +278,17 @@ class EnsemblAPIClient:
 
 def main():
     """Command-line interface for common Ensembl queries."""
-    parser = argparse.ArgumentParser(
-        description="Query the Ensembl database via REST API"
-    )
+    parser = argparse.ArgumentParser(description="Query the Ensembl database via REST API")
     parser.add_argument("--gene", help="Gene symbol to look up")
     parser.add_argument("--ensembl-id", help="Ensembl ID to look up")
     parser.add_argument("--variant", help="Variant ID (e.g., rs699)")
     parser.add_argument("--region", help="Genomic region (chr:start-end)")
-    parser.add_argument(
-        "--species",
-        default="human",
-        help="Species name (default: human)"
-    )
-    parser.add_argument(
-        "--orthologs",
-        help="Find orthologs for gene (provide Ensembl ID)"
-    )
-    parser.add_argument(
-        "--target-species",
-        help="Target species for ortholog search"
-    )
-    parser.add_argument(
-        "--sequence",
-        action="store_true",
-        help="Retrieve sequence (requires --gene or --ensembl-id or --region)"
-    )
-    parser.add_argument(
-        "--format",
-        choices=["json", "fasta"],
-        default="json",
-        help="Output format (default: json)"
-    )
-    parser.add_argument(
-        "--assembly",
-        default="GRCh37",
-        help="For GRCh37, use grch37.rest.ensembl.org server"
-    )
+    parser.add_argument("--species", default="human", help="Species name (default: human)")
+    parser.add_argument("--orthologs", help="Find orthologs for gene (provide Ensembl ID)")
+    parser.add_argument("--target-species", help="Target species for ortholog search")
+    parser.add_argument("--sequence", action="store_true", help="Retrieve sequence (requires --gene or --ensembl-id or --region)")
+    parser.add_argument("--format", choices=["json", "fasta"], default="json", help="Output format (default: json)")
+    parser.add_argument("--assembly", default="GRCh37", help="For GRCh37, use grch37.rest.ensembl.org server")
 
     args = parser.parse_args()
 
@@ -366,10 +305,7 @@ def main():
             result = client.lookup_gene_by_symbol(args.species, args.gene)
             if args.sequence:
                 print(f"\nRetrieving sequence for {result['id']}...")
-                seq_result = client.get_sequence(
-                    result['id'],
-                    format=args.format
-                )
+                seq_result = client.get_sequence(result["id"], format=args.format)
                 print(json.dumps(seq_result, indent=2) if args.format == "json" else seq_result)
             else:
                 print(json.dumps(result, indent=2))
@@ -379,10 +315,7 @@ def main():
             result = client.lookup_by_id(args.ensembl_id, expand=True)
             if args.sequence:
                 print("\nRetrieving sequence...")
-                seq_result = client.get_sequence(
-                    args.ensembl_id,
-                    format=args.format
-                )
+                seq_result = client.get_sequence(args.ensembl_id, format=args.format)
                 print(json.dumps(seq_result, indent=2) if args.format == "json" else seq_result)
             else:
                 print(json.dumps(result, indent=2))
@@ -395,11 +328,7 @@ def main():
         elif args.region:
             if args.sequence:
                 print(f"Retrieving sequence for region: {args.region}")
-                result = client.get_region_sequence(
-                    args.species,
-                    args.region,
-                    format=args.format
-                )
+                result = client.get_region_sequence(args.species, args.region, format=args.format)
                 print(json.dumps(result, indent=2) if args.format == "json" else result)
             else:
                 print(f"Finding features in region: {args.region}")
@@ -408,10 +337,7 @@ def main():
 
         elif args.orthologs:
             print(f"Finding orthologs for: {args.orthologs}")
-            result = client.find_orthologs(
-                args.orthologs,
-                target_species=args.target_species
-            )
+            result = client.find_orthologs(args.orthologs, target_species=args.target_species)
             print(json.dumps(result, indent=2))
 
         else:

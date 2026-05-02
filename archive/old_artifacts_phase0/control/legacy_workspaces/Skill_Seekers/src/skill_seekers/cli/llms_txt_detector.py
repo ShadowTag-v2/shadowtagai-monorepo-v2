@@ -9,14 +9,10 @@ import requests
 class LlmsTxtDetector:
     """Detect llms.txt files at documentation URLs"""
 
-    VARIANTS = [
-        ('llms-full.txt', 'full'),
-        ('llms.txt', 'standard'),
-        ('llms-small.txt', 'small')
-    ]
+    VARIANTS = [("llms-full.txt", "full"), ("llms.txt", "standard"), ("llms-small.txt", "small")]
 
     def __init__(self, base_url: str):
-        self.base_url = base_url.rstrip('/')
+        self.base_url = base_url.rstrip("/")
 
     def detect(self) -> dict[str, str] | None:
         """
@@ -32,7 +28,7 @@ class LlmsTxtDetector:
             url = f"{root_url}/{filename}"
 
             if self._check_url_exists(url):
-                return {'url': url, 'variant': variant}
+                return {"url": url, "variant": variant}
 
         return None
 
@@ -51,10 +47,7 @@ class LlmsTxtDetector:
             url = f"{root_url}/{filename}"
 
             if self._check_url_exists(url):
-                found_variants.append({
-                    'url': url,
-                    'variant': variant
-                })
+                found_variants.append({"url": url, "variant": variant})
 
         return found_variants
 

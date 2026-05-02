@@ -22,7 +22,7 @@ GITHUB_BASE_URL = "https://api.github.com"
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 if not GITHUB_TOKEN:
-  raise ValueError("GITHUB_TOKEN environment variable not set")
+    raise ValueError("GITHUB_TOKEN environment variable not set")
 
 DOC_OWNER = os.getenv("DOC_OWNER", "google")
 CODE_OWNER = os.getenv("CODE_OWNER", "google")

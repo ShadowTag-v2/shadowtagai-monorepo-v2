@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class QueryAnalysisRequest(BaseModel):
@@ -12,14 +12,17 @@ class QueryAnalysisRequest(BaseModel):
     row_count: int | None = Field(None, description="Number of rows in table(s)", ge=0)
     has_indexes: bool = Field(True, description="Whether appropriate indexes exist")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "sql_query": "SELECT * FROM users WHERE email LIKE '%@gmail.com'",
-                "row_count": 1000000,
-                "has_indexes": False,
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "sql_query": "SELECT * FROM users WHERE email LIKE '%@gmail.com'",
+                    "row_count": 1000000,
+                    "has_indexes": False,
+                }
+            ]
         }
+    )
 
 
 class SchemaAnalysisRequest(BaseModel):
@@ -27,22 +30,25 @@ class SchemaAnalysisRequest(BaseModel):
 
     schema: dict[str, Any] = Field(..., description="Database schema to analyze")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "schema": {
-                    "users": {
-                        "columns": [
-                            {"name": "id", "type": "BIGINT", "primary_key": True},
-                            {"name": "email", "type": "VARCHAR(255)", "nullable": False},
-                            {"name": "created_at", "type": "TIMESTAMP", "nullable": False},
-                        ],
-                        "indexes": [{"name": "idx_email", "columns": ["email"]}],
-                        "row_count": 5000000,
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "schema": {
+                        "users": {
+                            "columns": [
+                                {"name": "id", "type": "BIGINT", "primary_key": True},
+                                {"name": "email", "type": "VARCHAR(255)", "nullable": False},
+                                {"name": "created_at", "type": "TIMESTAMP", "nullable": False},
+                            ],
+                            "indexes": [{"name": "idx_email", "columns": ["email"]}],
+                            "row_count": 5000000,
+                        },
                     },
-                },
-            },
+                }
+            ]
         }
+    )
 
 
 class SchemaDesignRequest(BaseModel):
@@ -52,14 +58,17 @@ class SchemaDesignRequest(BaseModel):
     expected_scale: str | None = Field(None, description="Expected data scale")
     database_type: str | None = Field("postgresql", description="Target database type")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "requirements": "E-commerce platform with users, products, orders, and reviews",
-                "expected_scale": "10 million users, 100 million orders",
-                "database_type": "postgresql",
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "requirements": "E-commerce platform with users, products, orders, and reviews",
+                    "expected_scale": "10 million users, 100 million orders",
+                    "database_type": "postgresql",
+                }
+            ]
         }
+    )
 
 
 class IndexSuggestionRequest(BaseModel):
@@ -68,12 +77,15 @@ class IndexSuggestionRequest(BaseModel):
     sql_query: str = Field(..., description="SQL query to analyze for indexes", min_length=1)
     schema: dict[str, Any] | None = Field(None, description="Optional schema information")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "sql_query": "SELECT u.name, o.total FROM users u JOIN orders o ON u.id = o.user_id WHERE o.status = 'pending' ORDER BY o.created_at DESC",
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "sql_query": "SELECT u.name, o.total FROM users u JOIN orders o ON u.id = o.user_id WHERE o.status = 'pending' ORDER BY o.created_at DESC",
+                }
+            ]
         }
+    )
 
 
 class ChatRequest(BaseModel):
@@ -85,19 +97,25 @@ class ChatRequest(BaseModel):
         description="Conversation history",
     )
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "message": "How can I optimize a query that's doing a full table scan on a 10 million row table?",
-                "conversation_history": [
-                    {"role": "user", "content": "Hello, I need help with database optimization"},
-                    {
-                        "role": "assistant",
-                        "content": "Hello! I'd be happy to help with database optimization. What specific issues are you experiencing?",
-                    },
-                ],
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "message": "How can I optimize a query that's doing a full table scan on a 10 million row table?",
+                    "conversation_history": [
+                        {
+                            "role": "user",
+                            "content": "Hello, I need help with database optimization",
+                        },
+                        {
+                            "role": "assistant",
+                            "content": "Hello! I'd be happy to help with database optimization. What specific issues are you experiencing?",
+                        },
+                    ],
+                }
+            ]
         }
+    )
 
 
 class PerformanceEstimationRequest(BaseModel):
@@ -107,11 +125,14 @@ class PerformanceEstimationRequest(BaseModel):
     row_count: int = Field(..., description="Number of rows in table(s)", ge=1)
     has_indexes: bool = Field(True, description="Whether appropriate indexes exist")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "sql_query": "SELECT COUNT(*) FROM orders WHERE status = 'pending' AND created_at > NOW() - INTERVAL '30 days'",
-                "row_count": 50000000,
-                "has_indexes": True,
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "sql_query": "SELECT COUNT(*) FROM orders WHERE status = 'pending' AND created_at > NOW() - INTERVAL '30 days'",
+                    "row_count": 50000000,
+                    "has_indexes": True,
+                }
+            ]
         }
+    )

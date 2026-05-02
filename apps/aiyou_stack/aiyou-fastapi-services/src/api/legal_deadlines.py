@@ -9,7 +9,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, File, HTTPException, Query, UploadFile, status
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -118,21 +118,24 @@ class DeadlineRule(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "jurisdiction": "federal",
-                "jurisdiction_type": "federal",
-                "deadline_type": "response",
-                "base_days": 21,
-                "exclude_weekends": True,
-                "exclude_holidays": True,
-                "service_method_additions": {"personal": 0, "mail": 3, "electronic": 0},
-                "trigger_event": "service_of_complaint",
-                "rule_source": "FRCP 12(a)(1)(A)",
-                "notes": "Answer to complaint deadline for federal civil cases",
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "jurisdiction": "federal",
+                    "jurisdiction_type": "federal",
+                    "deadline_type": "response",
+                    "base_days": 21,
+                    "exclude_weekends": True,
+                    "exclude_holidays": True,
+                    "service_method_additions": {"personal": 0, "mail": 3, "electronic": 0},
+                    "trigger_event": "service_of_complaint",
+                    "rule_source": "FRCP 12(a)(1)(A)",
+                    "notes": "Answer to complaint deadline for federal civil cases",
+                },
+            ],
+        },
+    )
 
 
 class ExtractedDeadline(BaseModel):
@@ -166,32 +169,35 @@ class ExtractedDeadline(BaseModel):
     verified_by: str | None = Field(None, description="Verifying user")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "id": "dl_20251117_abc123",
-                "document_id": "doc_complaint_xyz789",
-                "deadline_type": "response",
-                "deadline_date": "2025-12-08",
-                "trigger_date": "2025-11-17",
-                "trigger_event": "Service of summons and complaint",
-                "description": "Deadline to file answer to complaint",
-                "jurisdiction": "federal",
-                "case_number": "1:25-cv-12345",
-                "party_names": ["Smith", "Jones Corp"],
-                "confidence": "high",
-                "status": "pending",
-                "requires_review": False,
-                "calculation_details": {
-                    "base_days": 21,
-                    "service_method": "personal",
-                    "weekends_excluded": 3,
-                    "holidays_excluded": 1,
-                    "total_calendar_days": 25,
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "id": "dl_20251117_abc123",
+                    "document_id": "doc_complaint_xyz789",
+                    "deadline_type": "response",
+                    "deadline_date": "2025-12-08",
+                    "trigger_date": "2025-11-17",
+                    "trigger_event": "Service of summons and complaint",
+                    "description": "Deadline to file answer to complaint",
+                    "jurisdiction": "federal",
+                    "case_number": "1:25-cv-12345",
+                    "party_names": ["Smith", "Jones Corp"],
+                    "confidence": "high",
+                    "status": "pending",
+                    "requires_review": False,
+                    "calculation_details": {
+                        "base_days": 21,
+                        "service_method": "personal",
+                        "weekends_excluded": 3,
+                        "holidays_excluded": 1,
+                        "total_calendar_days": 25,
+                    },
+                    "reminder_schedule": ["2025-11-08", "2025-11-24", "2025-12-01", "2025-12-07"],
                 },
-                "reminder_schedule": ["2025-11-08", "2025-11-24", "2025-12-01", "2025-12-07"],
-            },
-        }
+            ],
+        },
+    )
 
 
 class LegalDocument(BaseModel):

@@ -39,10 +39,7 @@ bigquery_mcp_toolset = McpToolset(
 root_agent = LlmAgent(
     model="gemini-2.5-flash",
     name=BIGQUERY_AGENT_NAME,
-    description=(
-        "Agent to answer questions about BigQuery data and models and execute"
-        " SQL queries using MCP."
-    ),
+    description=("Agent to answer questions about BigQuery data and models and execute SQL queries using MCP."),
     instruction="""\
         You are a data science agent with access to several BigQuery tools provided via MCP.
         Make use of those tools to answer the user's questions.

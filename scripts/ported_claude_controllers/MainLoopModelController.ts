@@ -1,10 +1,10 @@
 import { onGrowthBookRefresh } from '../../services/analytics/growthbook.js';
+import { getAppStateStore } from '../../state/AppState.js';
 import {
   getDefaultMainLoopModelSetting,
   type ModelName,
   parseUserSpecifiedModel,
 } from '../../utils/model/model.js';
-import { getAppStateStore } from '../../state/AppState.js';
 
 /**
  * Headless controller for the main loop model.

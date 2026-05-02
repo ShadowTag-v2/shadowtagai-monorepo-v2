@@ -1,7 +1,7 @@
 """Safety & Compliance API endpoints"""
+
 from fastapi import APIRouter, Request, HTTPException
 from pydantic import BaseModel
-from typing import Dict, List, Any, Optional
 
 router = APIRouter()
 
@@ -27,10 +27,7 @@ async def moderate_content(request: ModerateContentRequest, req: Request):
         raise HTTPException(status_code=503, detail="Safety service not initialized")
 
     result = await safety.moderate_content(
-        content=request.content,
-        content_type=request.content_type,
-        check_pii=request.check_pii,
-        check_toxicity=request.check_toxicity
+        content=request.content, content_type=request.content_type, check_pii=request.check_pii, check_toxicity=request.check_toxicity
     )
 
     return result
@@ -44,10 +41,7 @@ async def moderate_media(request: ModerateMediaRequest, req: Request):
     if not safety:
         raise HTTPException(status_code=503, detail="Safety service not initialized")
 
-    result = await safety.moderate_media(
-        media_url=request.media_url,
-        media_type=request.media_type
-    )
+    result = await safety.moderate_media(media_url=request.media_url, media_type=request.media_type)
 
     return result
 

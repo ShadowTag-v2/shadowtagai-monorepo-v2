@@ -165,9 +165,7 @@ class MCPClientManager:
         connection = MCPServerConnection(config=config)
 
         try:
-            print(
-                f"   🔗 Connecting to MCP server: {config.name} ({config.transport})..."
-            )
+            print(f"   🔗 Connecting to MCP server: {config.name} ({config.transport})...")
 
             if config.transport == "stdio":
                 await self._connect_stdio(connection)
@@ -181,15 +179,11 @@ class MCPClientManager:
             # Discover tools if connected
             if connection.connected and connection.session:
                 await self._discover_tools(connection)
-                print(
-                    f"      ✓ {config.name}: {len(connection.tools)} tools discovered"
-                )
+                print(f"      ✓ {config.name}: {len(connection.tools)} tools discovered")
 
         except ImportError as e:
             connection.error = f"MCP library not installed: {e}"
-            print(
-                f"      ⚠️ {config.name}: MCP library not installed. Run: pip install 'mcp[cli]'"
-            )
+            print(f"      ⚠️ {config.name}: MCP library not installed. Run: pip install 'mcp[cli]'")
         except Exception as e:
             connection.error = str(e)
             print(f"      ⚠️ {config.name}: Connection failed - {e}")
@@ -292,9 +286,7 @@ class MCPClientManager:
                     name=tool.name,
                     description=tool.description or "No description provided",
                     server_name=connection.config.name,
-                    input_schema=tool.inputSchema
-                    if hasattr(tool, "inputSchema")
-                    else {},
+                    input_schema=tool.inputSchema if hasattr(tool, "inputSchema") else {},
                     original_name=tool.name,
                 )
                 connection.tools.append(mcp_tool)
@@ -334,9 +326,7 @@ class MCPClientManager:
 
         return callables
 
-    def _create_tool_wrapper(
-        self, connection: MCPServerConnection, tool: MCPTool
-    ) -> Callable[..., Any]:
+    def _create_tool_wrapper(self, connection: MCPServerConnection, tool: MCPTool) -> Callable[..., Any]:
         """
         Create a callable wrapper for an MCP tool.
 
@@ -362,9 +352,7 @@ class MCPClientManager:
                 return f"Error: MCP server '{connection.config.name}' is not connected"
 
             try:
-                result = await connection.session.call_tool(
-                    tool.original_name, arguments=kwargs
-                )
+                result = await connection.session.call_tool(tool.original_name, arguments=kwargs)
 
                 # Extract content from result
                 if hasattr(result, "content") and result.content:
@@ -415,15 +403,11 @@ Input Schema:
             for tool in connection.tools:
                 prefixed_name = tool.get_prefixed_name(self.tool_prefix)
                 desc = tool.description.strip().replace("\n", " ")
-                descriptions.append(
-                    f"- {prefixed_name} [MCP:{connection.config.name}]: {desc}"
-                )
+                descriptions.append(f"- {prefixed_name} [MCP:{connection.config.name}]: {desc}")
 
         return "\n".join(descriptions)
 
-    async def call_tool(
-        self, tool_name: str, arguments: dict[str, Any]
-    ) -> tuple[bool, Any]:
+    async def call_tool(self, tool_name: str, arguments: dict[str, Any]) -> tuple[bool, Any]:
         """
         Call an MCP tool by its prefixed name.
 

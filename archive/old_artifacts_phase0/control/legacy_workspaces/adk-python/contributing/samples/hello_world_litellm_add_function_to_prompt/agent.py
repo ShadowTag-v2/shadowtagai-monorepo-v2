@@ -21,37 +21,37 @@ from langchain_core.utils.function_calling import convert_to_openai_function
 
 
 def roll_die(sides: int) -> int:
-  """Roll a die and return the rolled result.
+    """Roll a die and return the rolled result.
 
-  Args:
-    sides: The integer number of sides the die has.
+    Args:
+      sides: The integer number of sides the die has.
 
-  Returns:
-    An integer of the result of rolling the die.
-  """
-  return random.randint(1, sides)
+    Returns:
+      An integer of the result of rolling the die.
+    """
+    return random.randint(1, sides)
 
 
 def check_prime(number: int) -> str:
-  """Check if a given number is prime.
+    """Check if a given number is prime.
 
-  Args:
-    number: The input number to check.
+    Args:
+      number: The input number to check.
 
-  Returns:
-    A str indicating the number is prime or not.
-  """
-  if number <= 1:
-    return f"{number} is not prime."
-  is_prime = True
-  for i in range(2, int(number**0.5) + 1):
-    if number % i == 0:
-      is_prime = False
-      break
-  if is_prime:
-    return f"{number} is prime."
-  else:
-    return f"{number} is not prime."
+    Returns:
+      A str indicating the number is prime or not.
+    """
+    if number <= 1:
+        return f"{number} is not prime."
+    is_prime = True
+    for i in range(2, int(number**0.5) + 1):
+        if number % i == 0:
+            is_prime = False
+            break
+    if is_prime:
+        return f"{number} is prime."
+    else:
+        return f"{number} is not prime."
 
 
 root_agent = Agent(

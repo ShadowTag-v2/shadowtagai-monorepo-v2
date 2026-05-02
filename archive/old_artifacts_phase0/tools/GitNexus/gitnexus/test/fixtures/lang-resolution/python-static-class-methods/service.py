@@ -8,7 +8,7 @@ class UserService:
         return name
 
     @classmethod
-    def from_config(cls, config: dict) -> "UserService":
+    def from_config(cls, config: dict) -> UserService:
         return cls()
 
 

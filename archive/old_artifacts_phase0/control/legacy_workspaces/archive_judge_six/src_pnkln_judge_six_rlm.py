@@ -29,6 +29,7 @@ except ImportError:
     class ValidationResult:
         APPROVED = "approved"
         BLOCKED = "blocked"
+
     class JudgeSix:
         def __init__(self):
             pass
@@ -37,6 +38,7 @@ except ImportError:
 @dataclass
 class RLMDecision:
     """Compressed decision output from RLM Judge"""
+
     result: str  # APPROVED | BLOCKED
     confidence: float
     focus_areas: list[str]
@@ -68,16 +70,9 @@ class RecursiveJudge:
 
     def __init__(self, base_judge: JudgeSix | None = None):
         self.base_judge = base_judge or JudgeSix()
-        self.audit_path = os.getenv(
-            "RLM_AUDIT_PATH",
-            "/var/log/pnkln/rlm-judge-audit.jsonl"
-        )
+        self.audit_path = os.getenv("RLM_AUDIT_PATH", "/var/log/pnkln/rlm-judge-audit.jsonl")
 
-    async def validate_large_context(
-        self,
-        payload: dict[str, Any],
-        context_tokens: int
-    ) -> RLMDecision:
+    async def validate_large_context(self, payload: dict[str, Any], context_tokens: int) -> RLMDecision:
         """
         Main entry point for large context validation
 
@@ -102,7 +97,7 @@ class RecursiveJudge:
                 specialist_results=[],
                 compressed_context=self._compress_context(payload, self.COMPRESSION_TARGET),
                 token_savings_pct=0.0,  # No savings on standard path
-                latency_ms=latency_ms
+                latency_ms=latency_ms,
             )
 
         # RLM path: Decompose and recurse
@@ -110,10 +105,7 @@ class RecursiveJudge:
 
         if root_decision["needs_recursion"]:
             # Spawn specialist judges in parallel
-            specialists = await self._spawn_specialists(
-                payload,
-                root_decision["focus_areas"]
-            )
+            specialists = await self._spawn_specialists(payload, root_decision["focus_areas"])
 
             # Map/reduce: Aggregate decisions
             final_decision = self._aggregate_specialist_decisions(specialists)
@@ -137,7 +129,7 @@ class RecursiveJudge:
             specialist_results=specialists,
             compressed_context=self._compress_context(payload, self.COMPRESSION_TARGET),
             token_savings_pct=token_savings_pct,
-            latency_ms=latency_ms
+            latency_ms=latency_ms,
         )
 
         # Audit log
@@ -150,11 +142,7 @@ class RecursiveJudge:
         # Mock implementation - replace with actual Judge #6 call
         await asyncio.sleep(0.05)  # Simulate 50ms validation
 
-        return {
-            "result": ValidationResult.APPROVED,
-            "confidence": 0.95,
-            "explanation": "Standard path: Context within normal limits"
-        }
+        return {"result": ValidationResult.APPROVED, "confidence": 0.95, "explanation": "Standard path: Context within normal limits"}
 
     async def _root_classify(self, payload: dict, context_tokens: int) -> dict:
         """
@@ -170,33 +158,19 @@ class RecursiveJudge:
         # Heuristic: Always recurse if >128K tokens
         if context_tokens > self.STANDARD_CONTEXT_LIMIT:
             # Identify focus areas (mock)
-            focus_areas = [
-                "data_access_patterns",
-                "budget_constraints",
-                "risk_thresholds",
-                "compliance_rules"
-            ]
+            focus_areas = ["data_access_patterns", "budget_constraints", "risk_thresholds", "compliance_rules"]
 
             return {
                 "needs_recursion": True,
-                "focus_areas": focus_areas[:min(len(focus_areas), self.MAX_SPECIALISTS)],
+                "focus_areas": focus_areas[: min(len(focus_areas), self.MAX_SPECIALISTS)],
                 "result": None,  # Deferred to specialists
-                "confidence": 0.0
+                "confidence": 0.0,
             }
         else:
             # No recursion needed
-            return {
-                "needs_recursion": False,
-                "focus_areas": [],
-                "result": ValidationResult.APPROVED,
-                "confidence": 0.92
-            }
+            return {"needs_recursion": False, "focus_areas": [], "result": ValidationResult.APPROVED, "confidence": 0.92}
 
-    async def _spawn_specialists(
-        self,
-        payload: dict,
-        focus_areas: list[str]
-    ) -> list[dict]:
+    async def _spawn_specialists(self, payload: dict, focus_areas: list[str]) -> list[dict]:
         """
         Spawn parallel specialist judges for each focus area
 
@@ -206,10 +180,7 @@ class RecursiveJudge:
         - Runs independently (parallel execution)
         """
         # Create specialist tasks
-        tasks = [
-            self._specialist_judge(payload, area)
-            for area in focus_areas
-        ]
+        tasks = [self._specialist_judge(payload, area) for area in focus_areas]
 
         # Execute in parallel
         results = await asyncio.gather(*tasks)
@@ -241,10 +212,7 @@ class RecursiveJudge:
             "confidence": 0.89,
             "explanation": f"Specialist validation for {focus_area}",
             "tokens_used": min(tokens_used, self.SPECIALIST_CONTEXT_LIMIT),
-            "compressed_context": self._compress_context(
-                {"focus": focus_area, "context": relevant_context},
-                self.COMPRESSION_TARGET
-            )
+            "compressed_context": self._compress_context({"focus": focus_area, "context": relevant_context}, self.COMPRESSION_TARGET),
         }
 
         return specialist_result
@@ -259,15 +227,12 @@ class RecursiveJudge:
             "data_access_patterns": ["read", "write", "query", "database"],
             "budget_constraints": ["cost", "budget", "spend", "limit"],
             "risk_thresholds": ["risk", "probability", "impact"],
-            "compliance_rules": ["compliance", "regulation", "policy"]
+            "compliance_rules": ["compliance", "regulation", "policy"],
         }
 
         focus_keywords = keywords.get(focus_area, [])
         lines = full_context.split("\n")
-        relevant_lines = [
-            line for line in lines
-            if any(kw in line.lower() for kw in focus_keywords)
-        ]
+        relevant_lines = [line for line in lines if any(kw in line.lower() for kw in focus_keywords)]
 
         return "\n".join(relevant_lines[:100])  # Cap at 100 lines
 
@@ -281,24 +246,14 @@ class RecursiveJudge:
         - Explanation = synthesis of specialist findings
         """
         if not specialists:
-            return {
-                "result": ValidationResult.BLOCKED,
-                "confidence": 0.0,
-                "explanation": "No specialist results available"
-            }
+            return {"result": ValidationResult.BLOCKED, "confidence": 0.0, "explanation": "No specialist results available"}
 
         # Check for blocks
-        blocked = any(
-            s["result"] == ValidationResult.BLOCKED
-            for s in specialists
-        )
+        blocked = any(s["result"] == ValidationResult.BLOCKED for s in specialists)
 
         if blocked:
             result = ValidationResult.BLOCKED
-            blocking_areas = [
-                s["focus_area"] for s in specialists
-                if s["result"] == ValidationResult.BLOCKED
-            ]
+            blocking_areas = [s["focus_area"] for s in specialists if s["result"] == ValidationResult.BLOCKED]
             explanation = f"Blocked by specialists: {', '.join(blocking_areas)}"
         else:
             result = ValidationResult.APPROVED
@@ -308,11 +263,7 @@ class RecursiveJudge:
         confidences = [s["confidence"] for s in specialists]
         avg_confidence = sum(confidences) / len(confidences) if confidences else 0.0
 
-        return {
-            "result": result,
-            "confidence": avg_confidence,
-            "explanation": explanation
-        }
+        return {"result": result, "confidence": avg_confidence, "explanation": explanation}
 
     def _compress_context(self, payload: dict, target_bytes: int) -> str:
         """
@@ -322,13 +273,13 @@ class RecursiveJudge:
         Target: ≤487 bytes
         """
         # Mock compression - replace with actual ATP 519 + zstd
-        context_str = json.dumps(payload, separators=(',', ':'))
+        context_str = json.dumps(payload, separators=(",", ":"))
 
         if len(context_str) <= target_bytes:
             return context_str
 
         # Naive truncation (real impl would use semantic compression)
-        truncated = context_str[:target_bytes - 3] + "..."
+        truncated = context_str[: target_bytes - 3] + "..."
         return truncated
 
     def _log_decision(self, decision: RLMDecision, payload: dict):
@@ -336,10 +287,7 @@ class RecursiveJudge:
         log_entry = {
             "timestamp": datetime.utcnow().isoformat(),
             "decision": decision.to_dict(),
-            "payload_summary": {
-                "fn_name": payload.get("fn_name"),
-                "context_size": len(str(payload.get("context", "")))
-            }
+            "payload_summary": {"fn_name": payload.get("fn_name"), "context_size": len(str(payload.get("context", "")))},
         }
 
         try:
@@ -350,11 +298,7 @@ class RecursiveJudge:
 
 
 # Convenience wrapper
-async def validate_with_rlm(
-    payload: dict,
-    context_tokens: int,
-    base_judge: JudgeSix | None = None
-) -> RLMDecision:
+async def validate_with_rlm(payload: dict, context_tokens: int, base_judge: JudgeSix | None = None) -> RLMDecision:
     """
     Convenience function for RLM-augmented validation
 
@@ -376,7 +320,7 @@ if __name__ == "__main__":
         small_payload = {
             "fn_name": "test_operation",
             "fn_args": {"param": "value"},
-            "context": "x" * 10_000  # ~10K chars ≈ 2.5K tokens
+            "context": "x" * 10_000,  # ~10K chars ≈ 2.5K tokens
         }
 
         result1 = await validate_with_rlm(small_payload, context_tokens=2_500)
@@ -389,7 +333,7 @@ if __name__ == "__main__":
         large_payload = {
             "fn_name": "audit_operation",
             "fn_args": {"audit_log": "massive_log"},
-            "context": "x" * 200_000  # ~200K chars ≈ 50K tokens
+            "context": "x" * 200_000,  # ~200K chars ≈ 50K tokens
         }
 
         result2 = await validate_with_rlm(large_payload, context_tokens=150_000)

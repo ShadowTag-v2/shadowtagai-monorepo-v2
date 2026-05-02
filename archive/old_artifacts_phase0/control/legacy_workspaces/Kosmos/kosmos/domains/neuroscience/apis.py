@@ -32,9 +32,11 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 
 # Data models for API responses
 
+
 @dataclass
 class NeuronData:
     """Neuron information from connectome"""
+
     neuron_id: str
     cell_type: str | None = None
     n_synapses: int | None = None
@@ -47,6 +49,7 @@ class NeuronData:
 @dataclass
 class GeneExpressionData:
     """Gene expression data"""
+
     gene_symbol: str
     gene_id: str | None = None
     expression_level: float | None = None
@@ -59,6 +62,7 @@ class GeneExpressionData:
 @dataclass
 class ConnectomeDataset:
     """Connectome dataset information"""
+
     dataset_id: str
     species: str
     n_neurons: int
@@ -72,6 +76,7 @@ class ConnectomeDataset:
 @dataclass
 class DifferentialExpressionResult:
     """Differential expression analysis result"""
+
     gene: str
     log2_fold_change: float
     p_value: float
@@ -81,6 +86,7 @@ class DifferentialExpressionResult:
 
 
 # API Clients
+
 
 class FlyWireClient:
     """
@@ -118,17 +124,9 @@ class FlyWireClient:
         # This is a simplified placeholder implementation
         # Real implementation would use FlyWire's CAVE API
 
-        return NeuronData(
-            neuron_id=neuron_id,
-            cell_type="placeholder",
-            metadata={"source": "flywire", "note": "API implementation placeholder"}
-        )
+        return NeuronData(neuron_id=neuron_id, cell_type="placeholder", metadata={"source": "flywire", "note": "API implementation placeholder"})
 
-    def get_connectivity(
-        self,
-        neuron_id: str,
-        direction: str = "both"
-    ) -> dict[str, list[str]]:
+    def get_connectivity(self, neuron_id: str, direction: str = "both") -> dict[str, list[str]]:
         """
         Get synaptic partners of a neuron.
 
@@ -172,11 +170,7 @@ class AllenBrainClient:
         self.client = httpx.Client(timeout=timeout)
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=10))
-    def get_gene_expression(
-        self,
-        gene: str,
-        structure: str | None = None
-    ) -> GeneExpressionData | None:
+    def get_gene_expression(self, gene: str, structure: str | None = None) -> GeneExpressionData | None:
         """
         Get gene expression data from Allen Brain Atlas.
 
@@ -190,27 +184,19 @@ class AllenBrainClient:
         try:
             # Query gene information
             url = f"{self.BASE_URL}/data/query.json"
-            params = {
-                "criteria": f"model::Gene,rma::criteria,[acronym$eq'{gene}']",
-                "include": "probes,gene_aliases",
-                "num_rows": "1"
-            }
+            params = {"criteria": f"model::Gene,rma::criteria,[acronym$eq'{gene}']", "include": "probes,gene_aliases", "num_rows": "1"}
 
             response = self.client.get(url, params=params)
             response.raise_for_status()
 
             data = response.json()
 
-            if not data.get('success') or not data.get('msg'):
+            if not data.get("success") or not data.get("msg"):
                 return None
 
-            gene_info = data['msg'][0]
+            gene_info = data["msg"][0]
 
-            return GeneExpressionData(
-                gene_symbol=gene,
-                gene_id=str(gene_info.get('id')),
-                metadata=gene_info
-            )
+            return GeneExpressionData(gene_symbol=gene, gene_id=str(gene_info.get("id")), metadata=gene_info)
 
         except Exception:
             return None
@@ -219,7 +205,7 @@ class AllenBrainClient:
     def search_experiments(
         self,
         product_id: int = 1,  # 1 = Mouse Brain Atlas
-        limit: int = 10
+        limit: int = 10,
     ) -> list[dict[str, Any]]:
         """
         Search for experiments in Allen Brain Atlas.
@@ -233,16 +219,13 @@ class AllenBrainClient:
         """
         try:
             url = f"{self.BASE_URL}/data/SectionDataSet/query.json"
-            params = {
-                "criteria": f"products[id$eq{product_id}]",
-                "num_rows": limit
-            }
+            params = {"criteria": f"products[id$eq{product_id}]", "num_rows": limit}
 
             response = self.client.get(url, params=params)
             response.raise_for_status()
 
             data = response.json()
-            return data.get('msg', [])
+            return data.get("msg", [])
 
         except Exception:
             return []
@@ -287,7 +270,7 @@ class MICrONSClient:
             n_synapses=500_000_000,  # Approximate
             brain_region="Visual cortex (V1)",
             resolution_nm=4.0,
-            url="https://www.microns-explorer.org/"
+            url="https://www.microns-explorer.org/",
         )
 
     def close(self) -> None:
@@ -317,11 +300,7 @@ class GEOClient:
         self.client = httpx.Client(timeout=timeout)
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=10))
-    def get_dataset(
-        self,
-        geo_id: str,
-        format: str = "text"
-    ) -> dict[str, Any] | None:
+    def get_dataset(self, geo_id: str, format: str = "text") -> dict[str, Any] | None:
         """
         Get GEO dataset information.
 
@@ -333,33 +312,19 @@ class GEOClient:
             Dataset information dictionary or None
         """
         try:
-            params = {
-                "acc": geo_id,
-                "targ": "self",
-                "view": "quick",
-                "form": format
-            }
+            params = {"acc": geo_id, "targ": "self", "view": "quick", "form": format}
 
             response = self.client.get(self.BASE_URL, params=params)
             response.raise_for_status()
 
             # Parse response (simplified - real implementation would parse SOFT format)
-            return {
-                "geo_id": geo_id,
-                "title": f"Dataset {geo_id}",
-                "raw_data": response.text
-            }
+            return {"geo_id": geo_id, "title": f"Dataset {geo_id}", "raw_data": response.text}
 
         except Exception:
             return None
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=10))
-    def search_datasets(
-        self,
-        query: str,
-        organism: str = "Homo sapiens",
-        limit: int = 10
-    ) -> list[str]:
+    def search_datasets(self, query: str, organism: str = "Homo sapiens", limit: int = 10) -> list[str]:
         """
         Search for GEO datasets.
 
@@ -413,16 +378,9 @@ class AMPADClient:
             Study information dictionary or None
         """
         # Placeholder - real implementation requires Synapse Python client
-        return {
-            "study_id": study_id,
-            "title": f"AMP-AD Study {study_id}",
-            "note": "Requires Synapse authentication for real data access"
-        }
+        return {"study_id": study_id, "title": f"AMP-AD Study {study_id}", "note": "Requires Synapse authentication for real data access"}
 
-    def list_datasets(
-        self,
-        data_type: str = "transcriptomics"
-    ) -> list[dict[str, Any]]:
+    def list_datasets(self, data_type: str = "transcriptomics") -> list[dict[str, Any]]:
         """
         List available datasets.
 
@@ -493,7 +451,7 @@ class OpenConnectomeClient:
                 n_neurons=1700,
                 brain_region="Cortex",
                 resolution_nm=3.0,
-                url=f"{self.BASE_URL}/kasthuri11"
+                url=f"{self.BASE_URL}/kasthuri11",
             ),
             "bock11": ConnectomeDataset(
                 dataset_id="bock11",
@@ -501,7 +459,7 @@ class OpenConnectomeClient:
                 n_neurons=379,
                 brain_region="Larval CNS",
                 resolution_nm=4.0,
-                url=f"{self.BASE_URL}/bock11"
+                url=f"{self.BASE_URL}/bock11",
             ),
         }
 
@@ -553,11 +511,7 @@ class WormBaseClient:
 
             data = response.json()
 
-            return NeuronData(
-                neuron_id=neuron_name,
-                cell_type=neuron_name,
-                metadata=data
-            )
+            return NeuronData(neuron_id=neuron_name, cell_type=neuron_name, metadata=data)
 
         except Exception:
             return None
@@ -597,7 +551,7 @@ class WormBaseClient:
             n_neurons=302,
             n_synapses=7000,
             brain_region="Full nervous system",
-            url="https://wormbase.org/"
+            url="https://wormbase.org/",
         )
 
     def close(self) -> None:

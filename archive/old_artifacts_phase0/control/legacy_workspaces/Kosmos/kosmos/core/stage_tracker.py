@@ -24,6 +24,7 @@ StageCallback = Callable[["StageEvent"], None]
 @dataclass
 class StageEvent:
     """Represents a single stage event for tracking."""
+
     timestamp: str
     process_id: str
     stage: str
@@ -59,7 +60,7 @@ class StageTracker:
         emit_to_stdout: bool = False,
         enabled: bool = True,
         callbacks: list[StageCallback] | None = None,
-        emit_to_event_bus: bool = True
+        emit_to_event_bus: bool = True,
     ):
         self.process_id = process_id
         self.output_file = output_file or "logs/stages.jsonl"
@@ -100,7 +101,7 @@ class StageTracker:
             status="started",
             iteration=self.current_iteration,
             parent_stage=self._stage_stack[-1] if self._stage_stack else None,
-            metadata=metadata
+            metadata=metadata,
         )
 
         self._emit(event)
@@ -113,10 +114,7 @@ class StageTracker:
         except Exception as e:
             event.status = "failed"
             event.duration_ms = int((time.time() - start) * 1000)
-            event.error = {
-                "type": type(e).__name__,
-                "message": str(e)[:500]
-            }
+            event.error = {"type": type(e).__name__, "message": str(e)[:500]}
             raise
         finally:
             self._stage_stack.pop()
@@ -135,7 +133,7 @@ class StageTracker:
             substage=substage,
             status="completed",
             iteration=self.current_iteration,
-            metadata=metadata
+            metadata=metadata,
         )
         self._emit(event)
 
@@ -208,7 +206,7 @@ class StageTracker:
                 iteration=event.iteration,
                 duration_ms=event.duration_ms,
                 output_summary=event.output_summary,
-                metadata=event.metadata
+                metadata=event.metadata,
             )
 
             get_event_bus().publish_sync(streaming_event)
@@ -235,7 +233,7 @@ class StageTracker:
             "completed": len(completed),
             "failed": len(failed),
             "total_duration_ms": total_duration,
-            "iterations": self.current_iteration
+            "iterations": self.current_iteration,
         }
 
 
@@ -251,18 +249,16 @@ def get_stage_tracker(process_id: str | None = None) -> StageTracker:
         # Check config for settings
         try:
             from kosmos.config import get_config
+
             config = get_config()
             _tracker = StageTracker(
                 process_id=process_id or f"research_{int(time.time())}",
                 output_file=config.logging.stage_tracking_file,
-                enabled=config.logging.stage_tracking_enabled
+                enabled=config.logging.stage_tracking_enabled,
             )
         except Exception:
             # Fallback if config not available
-            _tracker = StageTracker(
-                process_id=process_id or f"research_{int(time.time())}",
-                enabled=False
-            )
+            _tracker = StageTracker(process_id=process_id or f"research_{int(time.time())}", enabled=False)
 
     return _tracker
 

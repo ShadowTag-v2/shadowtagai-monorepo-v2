@@ -24,34 +24,32 @@ from ...events.event import Event
 from ._base_llm_processor import BaseLlmRequestProcessor
 
 if TYPE_CHECKING:
-  from ...agents.invocation_context import InvocationContext
-  from ...models.llm_request import LlmRequest
+    from ...agents.invocation_context import InvocationContext
+    from ...models.llm_request import LlmRequest
 
 
 class CompactionRequestProcessor(BaseLlmRequestProcessor):
-  """Compacts session events before contents are prepared for model calls."""
+    """Compacts session events before contents are prepared for model calls."""
 
-  async def run_async(
-      self, invocation_context: InvocationContext, llm_request: LlmRequest
-  ) -> AsyncGenerator[Event, None]:
-    del llm_request
-    config = invocation_context.events_compaction_config
-    if not _has_token_threshold_config(config):
-      return
-      yield  # Required for AsyncGenerator.
+    async def run_async(self, invocation_context: InvocationContext, llm_request: LlmRequest) -> AsyncGenerator[Event]:
+        del llm_request
+        config = invocation_context.events_compaction_config
+        if not _has_token_threshold_config(config):
+            return
+            yield  # Required for AsyncGenerator.
 
-    token_compacted = await _run_compaction_for_token_threshold_config(
-        config=config,
-        session=invocation_context.session,
-        session_service=invocation_context.session_service,
-        agent=invocation_context.agent,
-        agent_name=invocation_context.agent.name,
-        current_branch=invocation_context.branch,
-    )
-    if token_compacted:
-      invocation_context.token_compaction_checked = True
-    return
-    yield  # Required for AsyncGenerator.
+        token_compacted = await _run_compaction_for_token_threshold_config(
+            config=config,
+            session=invocation_context.session,
+            session_service=invocation_context.session_service,
+            agent=invocation_context.agent,
+            agent_name=invocation_context.agent.name,
+            current_branch=invocation_context.branch,
+        )
+        if token_compacted:
+            invocation_context.token_compaction_checked = True
+        return
+        yield  # Required for AsyncGenerator.
 
 
 request_processor = CompactionRequestProcessor()

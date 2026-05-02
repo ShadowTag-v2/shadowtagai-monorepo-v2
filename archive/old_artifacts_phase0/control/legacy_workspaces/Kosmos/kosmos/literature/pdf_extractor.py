@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 
 class PDFExtractionError(Exception):
     """Exception raised for PDF extraction errors."""
+
     pass
 
 
@@ -86,7 +87,7 @@ class PDFExtractor:
             # Save to cache if paper_id provided
             if paper_id:
                 cached_pdf = self.cache_dir / f"{paper_id}.pdf"
-                with open(cached_pdf, 'wb') as f:
+                with open(cached_pdf, "wb") as f:
                     f.write(pdf_bytes)
 
             # Extract text
@@ -123,7 +124,7 @@ class PDFExtractor:
                 logger.error(f"PDF file not found: {file_path}")
                 return None
 
-            with open(pdf_path, 'rb') as f:
+            with open(pdf_path, "rb") as f:
                 pdf_bytes = f.read()
 
             text = self._extract_text_from_bytes(pdf_bytes)
@@ -160,7 +161,7 @@ class PDFExtractor:
         if is_url:
             pdf_bytes = self._download_pdf(url_or_path)
         else:
-            with open(url_or_path, 'rb') as f:
+            with open(url_or_path, "rb") as f:
                 pdf_bytes = f.read()
 
         if not pdf_bytes:
@@ -202,10 +203,7 @@ class PDFExtractor:
         """
         # Try PDF extraction if URL available
         if paper.pdf_url:
-            full_text = self.extract_from_url(
-                paper.pdf_url,
-                paper_id=paper.primary_identifier.replace("/", "_").replace(":", "_")
-            )
+            full_text = self.extract_from_url(paper.pdf_url, paper_id=paper.primary_identifier.replace("/", "_").replace(":", "_"))
 
             if full_text:
                 # Store in paper object
@@ -324,7 +322,7 @@ class PDFExtractor:
                 "producer": metadata.get("producer", ""),
                 "creation_date": metadata.get("creationDate", ""),
                 "mod_date": metadata.get("modDate", ""),
-                "page_count": len(doc)
+                "page_count": len(doc),
             }
 
         except Exception as e:
@@ -342,16 +340,16 @@ class PDFExtractor:
             Cleaned text
         """
         # Remove excessive whitespace
-        text = re.sub(r'\s+', ' ', text)
+        text = re.sub(r"\s+", " ", text)
 
         # Remove page numbers (common patterns)
-        text = re.sub(r'\n\d+\n', '\n', text)
+        text = re.sub(r"\n\d+\n", "\n", text)
 
         # Remove common PDF artifacts
-        text = re.sub(r'[^\x00-\x7F]+', '', text)  # Remove non-ASCII
+        text = re.sub(r"[^\x00-\x7F]+", "", text)  # Remove non-ASCII
 
         # Normalize line breaks
-        text = re.sub(r'\n{3,}', '\n\n', text)
+        text = re.sub(r"\n{3,}", "\n\n", text)
 
         return text.strip()
 
@@ -365,11 +363,7 @@ class PDFExtractor:
         pdf_files = list(self.cache_dir.glob("*.pdf"))
         total_size_mb = sum(f.stat().st_size for f in pdf_files) / (1024 * 1024)
 
-        return {
-            "cache_dir": str(self.cache_dir),
-            "file_count": len(pdf_files),
-            "size_mb": round(total_size_mb, 2)
-        }
+        return {"cache_dir": str(self.cache_dir), "file_count": len(pdf_files), "size_mb": round(total_size_mb, 2)}
 
     def clear_cache(self):
         """Clear all cached PDFs."""

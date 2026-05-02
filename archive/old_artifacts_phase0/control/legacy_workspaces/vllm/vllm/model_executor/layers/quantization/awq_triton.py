@@ -265,6 +265,7 @@ def awq_dequantize_triton(
             triton.cdiv(X, META["BLOCK_SIZE_X"]),
             triton.cdiv(Y, META["BLOCK_SIZE_Y"]),
         )
+
     awq_dequantize_kernel[grid](
         qweight,
         scales,

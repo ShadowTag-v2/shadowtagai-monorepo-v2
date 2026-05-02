@@ -256,20 +256,13 @@ class AgentRegistry:
         """
         try:
             loop = asyncio.get_running_loop()
-            future = asyncio.run_coroutine_threadsafe(
-                self._route_message(message), loop
-            )
+            future = asyncio.run_coroutine_threadsafe(self._route_message(message), loop)
             return future.result(timeout=30)
         except RuntimeError:
             return asyncio.run(self._route_message(message))
 
     async def send_message(
-        self,
-        from_agent_id: str,
-        to_agent_id: str,
-        content: dict[str, Any],
-        message_type: str = "request",
-        correlation_id: str | None = None
+        self, from_agent_id: str, to_agent_id: str, content: dict[str, Any], message_type: str = "request", correlation_id: str | None = None
     ) -> AgentMessage:
         """
         Route message from one agent to another asynchronously.
@@ -294,11 +287,9 @@ class AgentRegistry:
 
         # Create and send message asynchronously
         from kosmos.agents.base import MessageType
+
         message = await from_agent.send_message(
-            to_agent=to_agent_id,
-            content=content,
-            message_type=MessageType(message_type),
-            correlation_id=correlation_id
+            to_agent=to_agent_id, content=content, message_type=MessageType(message_type), correlation_id=correlation_id
         )
 
         # Note: message is already delivered via _route_message callback
@@ -310,34 +301,19 @@ class AgentRegistry:
         return message
 
     def send_message_sync(
-        self,
-        from_agent_id: str,
-        to_agent_id: str,
-        content: dict[str, Any],
-        message_type: str = "request",
-        correlation_id: str | None = None
+        self, from_agent_id: str, to_agent_id: str, content: dict[str, Any], message_type: str = "request", correlation_id: str | None = None
     ) -> AgentMessage:
         """
         Synchronous wrapper for send_message (backwards compatibility).
         """
         try:
             loop = asyncio.get_running_loop()
-            future = asyncio.run_coroutine_threadsafe(
-                self.send_message(from_agent_id, to_agent_id, content, message_type, correlation_id),
-                loop
-            )
+            future = asyncio.run_coroutine_threadsafe(self.send_message(from_agent_id, to_agent_id, content, message_type, correlation_id), loop)
             return future.result(timeout=30)
         except RuntimeError:
-            return asyncio.run(
-                self.send_message(from_agent_id, to_agent_id, content, message_type, correlation_id)
-            )
+            return asyncio.run(self.send_message(from_agent_id, to_agent_id, content, message_type, correlation_id))
 
-    async def broadcast_message(
-        self,
-        from_agent_id: str,
-        content: dict[str, Any],
-        target_types: list[str] | None = None
-    ) -> list[AgentMessage]:
+    async def broadcast_message(self, from_agent_id: str, content: dict[str, Any], target_types: list[str] | None = None) -> list[AgentMessage]:
         """
         Broadcast message to multiple agents asynchronously.
 
@@ -365,12 +341,7 @@ class AgentRegistry:
 
         # Send to all targets concurrently
         send_tasks = [
-            self.send_message(
-                from_agent_id=from_agent_id,
-                to_agent_id=target.agent_id,
-                content=content,
-                message_type="notification"
-            )
+            self.send_message(from_agent_id=from_agent_id, to_agent_id=target.agent_id, content=content, message_type="notification")
             for target in targets
         ]
         messages = await asyncio.gather(*send_tasks)
@@ -378,32 +349,18 @@ class AgentRegistry:
         logger.info(f"Broadcast message from {from_agent_id} to {len(targets)} agents")
         return list(messages)
 
-    def broadcast_message_sync(
-        self,
-        from_agent_id: str,
-        content: dict[str, Any],
-        target_types: list[str] | None = None
-    ) -> list[AgentMessage]:
+    def broadcast_message_sync(self, from_agent_id: str, content: dict[str, Any], target_types: list[str] | None = None) -> list[AgentMessage]:
         """
         Synchronous wrapper for broadcast_message (backwards compatibility).
         """
         try:
             loop = asyncio.get_running_loop()
-            future = asyncio.run_coroutine_threadsafe(
-                self.broadcast_message(from_agent_id, content, target_types),
-                loop
-            )
+            future = asyncio.run_coroutine_threadsafe(self.broadcast_message(from_agent_id, content, target_types), loop)
             return future.result(timeout=60)
         except RuntimeError:
-            return asyncio.run(
-                self.broadcast_message(from_agent_id, content, target_types)
-            )
+            return asyncio.run(self.broadcast_message(from_agent_id, content, target_types))
 
-    def get_message_history(
-        self,
-        agent_id: str | None = None,
-        limit: int = 100
-    ) -> list[dict[str, Any]]:
+    def get_message_history(self, agent_id: str | None = None, limit: int = 100) -> list[dict[str, Any]]:
         """
         Get message history.
 
@@ -417,10 +374,7 @@ class AgentRegistry:
         messages = self._message_history
 
         if agent_id:
-            messages = [
-                m for m in messages
-                if m.from_agent == agent_id or m.to_agent == agent_id
-            ]
+            messages = [m for m in messages if m.from_agent == agent_id or m.to_agent == agent_id]
 
         # Return most recent messages
         messages = messages[-limit:]
@@ -446,7 +400,7 @@ class AgentRegistry:
                 "status": agent.status,
                 "is_healthy": agent.is_healthy(),
                 "message_queue_length": len(agent.message_queue),
-                "errors": agent.errors_encountered
+                "errors": agent.errors_encountered,
             }
             for agent_id, agent in self._agents.items()
         }
@@ -459,7 +413,7 @@ class AgentRegistry:
             "unhealthy_agents": total_agents - healthy_agents,
             "agent_health": agent_health,
             "message_history_size": len(self._message_history),
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.utcnow().isoformat(),
         }
 
     def get_agent_statistics(self) -> dict[str, Any]:
@@ -471,10 +425,7 @@ class AgentRegistry:
         """
         return {
             "total_agents": len(self._agents),
-            "agents_by_type": {
-                agent_type: len(agent_ids)
-                for agent_type, agent_ids in self._agent_types.items()
-            },
+            "agents_by_type": {agent_type: len(agent_ids) for agent_type, agent_ids in self._agent_types.items()},
             "total_messages_sent": sum(a.messages_sent for a in self._agents.values()),
             "total_messages_received": sum(a.messages_received for a in self._agents.values()),
             "total_tasks_completed": sum(a.tasks_completed for a in self._agents.values()),

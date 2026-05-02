@@ -54,15 +54,11 @@ class ExcelBongo(BaseBongo):
             self._Workbook = Workbook
             self._get_column_letter = get_column_letter
         except ImportError as e:
-            raise ImportError(
-                f"openpyxl is required for Excel bongo. Install with: pip install openpyxl. Error: {e}"
-            )
+            raise ImportError(f"openpyxl is required for Excel bongo. Install with: pip install openpyxl. Error: {e}")
 
     async def create_entities(self) -> list[dict[str, Any]]:
         """Create test Excel workbook with worksheets in OneDrive."""
-        self.logger.info(
-            f"🥁 Creating Excel test workbook with {self.entity_count} worksheets"
-        )
+        self.logger.info(f"🥁 Creating Excel test workbook with {self.entity_count} worksheets")
         out: list[dict[str, Any]] = []
 
         # Generate tokens for each worksheet
@@ -70,9 +66,7 @@ class ExcelBongo(BaseBongo):
 
         # Generate workbook content
         test_name = f"TestData_{uuid.uuid4().hex[:8]}"
-        filename, worksheet_data = await generate_workbook_content(
-            self.openai_model, tokens, test_name
-        )
+        filename, worksheet_data = await generate_workbook_content(self.openai_model, tokens, test_name)
         self._test_workbook_name = filename
 
         self.logger.info(f"📊 Generated {len(worksheet_data)} worksheets")
@@ -90,10 +84,7 @@ class ExcelBongo(BaseBongo):
                 upload_url,
                 headers={
                     "Authorization": f"Bearer {self.access_token}",
-                    "Content-Type": (
-                        "application/vnd.openxmlformats-officedocument."
-                        "spreadsheetml.sheet"
-                    ),
+                    "Content-Type": ("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
                 },
                 content=workbook_bytes,
             )
@@ -104,24 +95,18 @@ class ExcelBongo(BaseBongo):
 
             workbook_file = r.json()
             self._test_workbook_id = workbook_file["id"]
-            self.logger.info(
-                f"✅ Uploaded workbook: {self._test_workbook_id} - {filename}"
-            )
+            self.logger.info(f"✅ Uploaded workbook: {self._test_workbook_id} - {filename}")
 
             # Wait for Excel to process the file
             # Excel Online needs more time to fully index content for usedRange API
-            self.logger.info(
-                "⏳ Waiting for Excel Online to process the uploaded file..."
-            )
+            self.logger.info("⏳ Waiting for Excel Online to process the uploaded file...")
             await asyncio.sleep(10)
 
             # Step 2: Get worksheet IDs from the workbook
             await self._pace()
             self.logger.info("📋 Fetching worksheet details from workbook")
 
-            worksheets_url = (
-                f"/me/drive/items/{self._test_workbook_id}/workbook/worksheets"
-            )
+            worksheets_url = f"/me/drive/items/{self._test_workbook_id}/workbook/worksheets"
             r = await client.get(worksheets_url, headers=self._hdrs())
 
             if r.status_code != 200:
@@ -147,9 +132,7 @@ class ExcelBongo(BaseBongo):
                 out.append(ent)
                 self._worksheets.append(ent)
                 self.created_entities.append({"id": ws_id, "name": ws_name})
-                self.logger.info(
-                    f"📄 Worksheet '{ws_name}' created with token: {token}"
-                )
+                self.logger.info(f"📄 Worksheet '{ws_name}' created with token: {token}")
 
         self.logger.info(f"✅ Created workbook with {len(self._worksheets)} worksheets")
         return out
@@ -191,9 +174,7 @@ class ExcelBongo(BaseBongo):
         if not self._worksheets:
             return []
 
-        self.logger.info(
-            f"🥁 Updating {min(2, len(self._worksheets))} Excel worksheets"
-        )
+        self.logger.info(f"🥁 Updating {min(2, len(self._worksheets))} Excel worksheets")
         updated = []
 
         async with httpx.AsyncClient(base_url=GRAPH, timeout=60) as client:
@@ -201,16 +182,11 @@ class ExcelBongo(BaseBongo):
                 await self._pace()
 
                 # Get current used range to find next empty row
-                range_url = (
-                    f"/me/drive/items/{self._test_workbook_id}"
-                    f"/workbook/worksheets/{ent['id']}/usedRange"
-                )
+                range_url = f"/me/drive/items/{self._test_workbook_id}/workbook/worksheets/{ent['id']}/usedRange"
                 r = await client.get(range_url, headers=self._hdrs())
 
                 if r.status_code != 200:
-                    self.logger.warning(
-                        f"Failed to get range: {r.status_code} - {r.text[:200]}"
-                    )
+                    self.logger.warning(f"Failed to get range: {r.status_code} - {r.text[:200]}")
                     continue
 
                 range_data = r.json()
@@ -228,10 +204,7 @@ class ExcelBongo(BaseBongo):
                 ]
 
                 # Update specific range
-                update_url = (
-                    f"/me/drive/items/{self._test_workbook_id}"
-                    f"/workbook/worksheets/{ent['id']}/range(address='A{next_row}:D{next_row}')"
-                )
+                update_url = f"/me/drive/items/{self._test_workbook_id}/workbook/worksheets/{ent['id']}/range(address='A{next_row}:D{next_row}')"
 
                 r = await client.patch(
                     update_url,
@@ -241,13 +214,9 @@ class ExcelBongo(BaseBongo):
 
                 if r.status_code in (200, 204):
                     updated.append({**ent, "updated": True})
-                    self.logger.info(
-                        f"📝 Updated worksheet '{ent['name']}' with token: {ent['token']}"
-                    )
+                    self.logger.info(f"📝 Updated worksheet '{ent['name']}' with token: {ent['token']}")
                 else:
-                    self.logger.warning(
-                        f"Failed to update worksheet: {r.status_code} - {r.text[:200]}"
-                    )
+                    self.logger.warning(f"Failed to update worksheet: {r.status_code} - {r.text[:200]}")
 
                 # Brief delay between updates
                 await asyncio.sleep(0.5)
@@ -258,9 +227,7 @@ class ExcelBongo(BaseBongo):
         """Delete the entire test workbook."""
         return await self.delete_specific_entities([])
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         """Delete the test workbook (can't delete individual worksheets easily)."""
         if not self._test_workbook_id:
             return []
@@ -273,23 +240,16 @@ class ExcelBongo(BaseBongo):
                 await self._pace()
 
                 # Delete the workbook file from OneDrive
-                r = await client.delete(
-                    f"/me/drive/items/{self._test_workbook_id}", headers=self._hdrs()
-                )
+                r = await client.delete(f"/me/drive/items/{self._test_workbook_id}", headers=self._hdrs())
 
                 if r.status_code == 204:
                     # Return worksheet IDs as deleted
                     deleted = [ws["id"] for ws in self._worksheets]
-                    self.logger.info(
-                        f"✅ Deleted workbook: {self._test_workbook_name} "
-                        f"({len(deleted)} worksheets)"
-                    )
+                    self.logger.info(f"✅ Deleted workbook: {self._test_workbook_name} ({len(deleted)} worksheets)")
                     self._worksheets.clear()
                     self._test_workbook_id = None
                 else:
-                    self.logger.warning(
-                        f"Delete failed: {r.status_code} - {r.text[:200]}"
-                    )
+                    self.logger.warning(f"Delete failed: {r.status_code} - {r.text[:200]}")
 
             except Exception as e:
                 self.logger.warning(f"Delete error: {e}")
@@ -309,9 +269,7 @@ class ExcelBongo(BaseBongo):
             async with httpx.AsyncClient(base_url=GRAPH, timeout=30) as client:
                 # Delete current test workbook
                 if self._test_workbook_id:
-                    self.logger.info(
-                        f"🗑️ Deleting test workbook: {self._test_workbook_name}"
-                    )
+                    self.logger.info(f"🗑️ Deleting test workbook: {self._test_workbook_name}")
                     deleted = await self.delete_specific_entities([])
                     if deleted:
                         cleanup_stats["workbooks_deleted"] += 1
@@ -319,16 +277,11 @@ class ExcelBongo(BaseBongo):
                 # Search for and cleanup any orphaned test workbooks
                 await self._cleanup_orphaned_workbooks(client, cleanup_stats)
 
-            self.logger.info(
-                f"🧹 Cleanup completed: {cleanup_stats['workbooks_deleted']} "
-                f"workbooks deleted, {cleanup_stats['errors']} errors"
-            )
+            self.logger.info(f"🧹 Cleanup completed: {cleanup_stats['workbooks_deleted']} workbooks deleted, {cleanup_stats['errors']} errors")
         except Exception as e:
             self.logger.error(f"❌ Error during comprehensive cleanup: {e}")
 
-    async def _cleanup_orphaned_workbooks(
-        self, client: httpx.AsyncClient, stats: dict[str, Any]
-    ):
+    async def _cleanup_orphaned_workbooks(self, client: httpx.AsyncClient, stats: dict[str, Any]):
         """Find and delete orphaned test workbooks from previous runs."""
         try:
             await self._pace()
@@ -338,17 +291,10 @@ class ExcelBongo(BaseBongo):
                 files = r.json().get("value", [])
 
                 # Find test workbooks
-                test_workbooks = [
-                    f
-                    for f in files
-                    if f.get("name", "").startswith("Monke_")
-                    and f.get("name", "").endswith(".xlsx")
-                ]
+                test_workbooks = [f for f in files if f.get("name", "").startswith("Monke_") and f.get("name", "").endswith(".xlsx")]
 
                 if test_workbooks:
-                    self.logger.info(
-                        f"🔍 Found {len(test_workbooks)} orphaned test workbooks"
-                    )
+                    self.logger.info(f"🔍 Found {len(test_workbooks)} orphaned test workbooks")
                     for wb in test_workbooks:
                         try:
                             await self._pace()
@@ -358,16 +304,12 @@ class ExcelBongo(BaseBongo):
                             )
                             if del_r.status_code == 204:
                                 stats["workbooks_deleted"] += 1
-                                self.logger.info(
-                                    f"✅ Deleted orphaned workbook: {wb.get('name', 'Unknown')}"
-                                )
+                                self.logger.info(f"✅ Deleted orphaned workbook: {wb.get('name', 'Unknown')}")
                             else:
                                 stats["errors"] += 1
                         except Exception as e:
                             stats["errors"] += 1
-                            self.logger.warning(
-                                f"⚠️ Failed to delete workbook {wb['id']}: {e}"
-                            )
+                            self.logger.warning(f"⚠️ Failed to delete workbook {wb['id']}: {e}")
         except Exception as e:
             self.logger.warning(f"⚠️ Could not search for orphaned workbooks: {e}")
 

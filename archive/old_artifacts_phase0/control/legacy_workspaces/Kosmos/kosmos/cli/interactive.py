@@ -113,11 +113,7 @@ def select_domain() -> str:
     domains = list(DOMAIN_DESCRIPTIONS.keys())
     for i, domain in enumerate(domains, 1):
         color = get_domain_color(domain)
-        table.add_row(
-            str(i),
-            Text(domain.title(), style=color),
-            DOMAIN_DESCRIPTIONS[domain]
-        )
+        table.add_row(str(i), Text(domain.title(), style=color), DOMAIN_DESCRIPTIONS[domain])
 
     console.print(table)
     console.print()
@@ -127,7 +123,7 @@ def select_domain() -> str:
         choice = Prompt.ask(
             "[cyan]Choose domain[/cyan]",
             choices=[str(i) for i in range(1, len(domains) + 1)],
-            default="6"  # general
+            default="6",  # general
         )
 
         try:
@@ -136,7 +132,7 @@ def select_domain() -> str:
             console.print(f"[success]Selected: {selected_domain.title()}[/success]")
             console.print()
             return selected_domain
-        except (ValueError, IndexError):
+        except ValueError, IndexError:
             print_error("Invalid selection. Please try again.")
 
 
@@ -257,11 +253,7 @@ def configure_research_parameters() -> dict[str, Any]:
     return params
 
 
-def show_configuration_summary(
-    domain: str,
-    question: str,
-    params: dict[str, Any]
-):
+def show_configuration_summary(domain: str, question: str, params: dict[str, Any]):
     """Show summary of research configuration."""
     console.print()
     console.print(f"[h2]{get_icon('info')} Research Configuration Summary[/h2]")
@@ -303,20 +295,14 @@ def confirm_and_start() -> bool:
     console.print("[cyan]Ready to start research?[/cyan]")
     console.print()
 
-    confirmed = Confirm.ask(
-        "[bright_blue]Start autonomous research[/bright_blue]",
-        default=True
-    )
+    confirmed = Confirm.ask("[bright_blue]Start autonomous research[/bright_blue]", default=True)
 
     if not confirmed:
         console.print("[warning]Research cancelled by user.[/warning]")
         return False
 
     console.print()
-    print_success(
-        "Research started! This may take several minutes to hours depending on complexity.",
-        title="Starting Research"
-    )
+    print_success("Research started! This may take several minutes to hours depending on complexity.", title="Starting Research")
     console.print()
 
     return True
@@ -350,11 +336,7 @@ def run_interactive_mode() -> dict[str, Any] | None:
             return None
 
         # Return configuration
-        return {
-            "domain": domain,
-            "question": question,
-            **params
-        }
+        return {"domain": domain, "question": question, **params}
 
     except KeyboardInterrupt:
         console.print("\n[warning]Operation cancelled by user[/warning]")

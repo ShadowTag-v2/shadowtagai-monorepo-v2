@@ -8,17 +8,13 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
 from app.core.config import settings
-from app.models import User, Project, Conversation
+from app.models import Project, Conversation
 from app.services import memory_service, summarization_service
 
 logger = logging.getLogger(__name__)
 
 # Create Celery app
-celery_app = Celery(
-    "claude_memory_tasks",
-    broker=settings.celery_broker_url,
-    backend=settings.celery_result_backend
-)
+celery_app = Celery("claude_memory_tasks", broker=settings.celery_broker_url, backend=settings.celery_result_backend)
 
 celery_app.conf.update(
     task_serializer="json",
@@ -47,26 +43,13 @@ async def synthesize_user_memories_task(user_id: int, project_id: int = None):
             # Synthesize memories
             result = await memory_service.synthesize_user_memories(db, user_id, project_id)
 
-            logger.info(
-                f"Completed memory synthesis for user {user_id}: "
-                f"{result.total_memories} memories synthesized"
-            )
+            logger.info(f"Completed memory synthesis for user {user_id}: {result.total_memories} memories synthesized")
 
-            return {
-                "user_id": user_id,
-                "project_id": project_id,
-                "total_memories": result.total_memories,
-                "success": True
-            }
+            return {"user_id": user_id, "project_id": project_id, "total_memories": result.total_memories, "success": True}
 
         except Exception as e:
             logger.error(f"Error synthesizing memories for user {user_id}: {e}")
-            return {
-                "user_id": user_id,
-                "project_id": project_id,
-                "error": str(e),
-                "success": False
-            }
+            return {"user_id": user_id, "project_id": project_id, "error": str(e), "success": False}
 
 
 @celery_app.task(name="summarize_conversation")
@@ -92,9 +75,7 @@ async def summarize_conversation_task(conversation_id: int):
                 return {"conversation_id": conversation_id, "skipped": True}
 
             # Get messages
-            stmt = select(Message).where(
-                Message.conversation_id == conversation_id
-            ).order_by(Message.created_at)
+            stmt = select(Message).where(Message.conversation_id == conversation_id).order_by(Message.created_at)
             result = await db.execute(stmt)
             messages = list(result.scalars().all())
 
@@ -107,19 +88,11 @@ async def summarize_conversation_task(conversation_id: int):
 
             logger.info(f"Completed conversation summarization for conversation {conversation_id}")
 
-            return {
-                "conversation_id": conversation_id,
-                "message_count": len(messages),
-                "success": True
-            }
+            return {"conversation_id": conversation_id, "message_count": len(messages), "success": True}
 
         except Exception as e:
             logger.error(f"Error summarizing conversation {conversation_id}: {e}")
-            return {
-                "conversation_id": conversation_id,
-                "error": str(e),
-                "success": False
-            }
+            return {"conversation_id": conversation_id, "error": str(e), "success": False}
 
 
 @celery_app.task(name="auto_extract_memories")
@@ -133,27 +106,15 @@ async def auto_extract_memories_task(conversation_id: int, user_id: int):
 
     async with AsyncSessionLocal() as db:
         try:
-            memories = await memory_service.auto_extract_memories_from_conversation(
-                db, conversation_id, user_id
-            )
+            memories = await memory_service.auto_extract_memories_from_conversation(db, conversation_id, user_id)
 
-            logger.info(
-                f"Extracted {len(memories)} memories from conversation {conversation_id}"
-            )
+            logger.info(f"Extracted {len(memories)} memories from conversation {conversation_id}")
 
-            return {
-                "conversation_id": conversation_id,
-                "memories_created": len(memories),
-                "success": True
-            }
+            return {"conversation_id": conversation_id, "memories_created": len(memories), "success": True}
 
         except Exception as e:
             logger.error(f"Error extracting memories from conversation {conversation_id}: {e}")
-            return {
-                "conversation_id": conversation_id,
-                "error": str(e),
-                "success": False
-            }
+            return {"conversation_id": conversation_id, "error": str(e), "success": False}
 
 
 @celery_app.task(name="periodic_synthesis")
@@ -168,16 +129,9 @@ async def periodic_synthesis_task():
     async with AsyncSessionLocal() as db:
         try:
             # Get all projects that need synthesis
-            threshold = datetime.utcnow() - timedelta(
-                hours=settings.memory_synthesis_interval_hours
-            )
+            threshold = datetime.utcnow() - timedelta(hours=settings.memory_synthesis_interval_hours)
 
-            stmt = select(Project).where(
-                and_(
-                    Project.memory_enabled,
-                    (Project.last_synthesis_at is None) | (Project.last_synthesis_at < threshold)
-                )
-            )
+            stmt = select(Project).where(and_(Project.memory_enabled, (Project.last_synthesis_at is None) | (Project.last_synthesis_at < threshold)))
 
             result = await db.execute(stmt)
             projects = result.scalars().all()
@@ -185,26 +139,18 @@ async def periodic_synthesis_task():
             synthesized_count = 0
             for project in projects:
                 try:
-                    await memory_service.synthesize_user_memories(
-                        db, project.user_id, project.id
-                    )
+                    await memory_service.synthesize_user_memories(db, project.user_id, project.id)
                     synthesized_count += 1
                 except Exception as e:
                     logger.error(f"Error synthesizing project {project.id}: {e}")
 
             logger.info(f"Periodic synthesis completed: {synthesized_count} projects synthesized")
 
-            return {
-                "projects_synthesized": synthesized_count,
-                "success": True
-            }
+            return {"projects_synthesized": synthesized_count, "success": True}
 
         except Exception as e:
             logger.error(f"Error in periodic synthesis: {e}")
-            return {
-                "error": str(e),
-                "success": False
-            }
+            return {"error": str(e), "success": False}
 
 
 # Schedule periodic tasks

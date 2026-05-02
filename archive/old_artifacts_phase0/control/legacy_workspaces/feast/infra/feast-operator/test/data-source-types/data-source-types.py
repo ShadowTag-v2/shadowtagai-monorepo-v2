@@ -12,9 +12,10 @@ def save_in_script_directory(filename: str, typedict: dict[str, str]):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(script_dir, filename)
 
-    with open(file_path, 'w') as file:
+    with open(file_path, "w") as file:
         for k in typedict.keys():
-            file.write(k+"\n")
+            file.write(k + "\n")
+
 
 for legacyType in LEGACY_ONLINE_STORE_CLASS_FOR_TYPE.keys():
     if legacyType in ONLINE_STORE_CLASS_FOR_TYPE:

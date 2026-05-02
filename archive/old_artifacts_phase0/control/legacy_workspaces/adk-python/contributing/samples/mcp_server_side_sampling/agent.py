@@ -22,16 +22,16 @@ from mcp import StdioServerParameters
 
 # This example uses the OpenAI API for both the agent and the server.
 # Ensure your OPENAI_API_KEY is available as an environment variable.
-api_key = os.getenv('OPENAI_API_KEY')
+api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
-  raise ValueError('The OPENAI_API_KEY environment variable must be set.')
+    raise ValueError("The OPENAI_API_KEY environment variable must be set.")
 
 # Configure the StdioServerParameters to start the mcp_server.py script
 # as a subprocess. The OPENAI_API_KEY is passed to the server's environment.
 server_params = StdioServerParameters(
-    command='python',
-    args=['mcp_server.py'],
-    env={'OPENAI_API_KEY': api_key},
+    command="python",
+    args=["mcp_server.py"],
+    env={"OPENAI_API_KEY": api_key},
 )
 
 # Create the ADK MCPToolset, which connects to the FastMCP server.
@@ -41,16 +41,13 @@ mcp_toolset = MCPToolset(
     connection_params=StdioConnectionParams(
         server_params=server_params,
     ),
-    tool_filter=['analyze_sentiment'],
+    tool_filter=["analyze_sentiment"],
 )
 
 # Define the ADK agent that uses the MCP toolset.
 root_agent = LlmAgent(
-    model=LiteLlm(model='openai/gpt-4o'),
-    name='SentimentAgent',
-    instruction=(
-        'You are an expert at analyzing text sentiment. Use the'
-        ' analyze_sentiment tool to classify user input.'
-    ),
+    model=LiteLlm(model="openai/gpt-4o"),
+    name="SentimentAgent",
+    instruction=("You are an expert at analyzing text sentiment. Use the analyze_sentiment tool to classify user input."),
     tools=[mcp_toolset],
 )

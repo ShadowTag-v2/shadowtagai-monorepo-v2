@@ -1,13 +1,10 @@
 """Confluence-specific generation adapter: page generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.confluence import ConfluenceArtifact
 
 
-async def generate_confluence_artifact(
-    model: str, token: str, is_update: bool = False
-) -> tuple[str, str]:
+async def generate_confluence_artifact(model: str, token: str, is_update: bool = False) -> tuple[str, str]:
     """Generate a Confluence page via LLM.
 
     Returns (title, content). The token must be embedded in the output by instruction.

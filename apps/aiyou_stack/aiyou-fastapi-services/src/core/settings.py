@@ -1,8 +1,15 @@
 """Application settings and configuration"""
 
+import logging
+import os
+import secrets
 from functools import lru_cache
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+logger = logging.getLogger(__name__)
+
+_DEV_FALLBACK_SECRET = secrets.token_urlsafe(32)
 
 
 class Settings(BaseSettings):
@@ -48,7 +55,7 @@ class Settings(BaseSettings):
     EMAIL_RATE_LIMIT_PER_DAY: int = 1000
 
     # Security
-    SECRET_KEY: str = "your-secret-key-here-change-in-production"
+    SECRET_KEY: str = ""
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
@@ -56,10 +63,21 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
 
     model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
         case_sensitive=True,
     )
+
+    def model_post_init(self, __context: object) -> None:
+        """Ensure SECRET_KEY is never empty; warn if using dev fallback."""
+        if not self.SECRET_KEY:
+            env_key = os.environ.get("SECRET_KEY", "")
+            if env_key:
+                object.__setattr__(self, "SECRET_KEY", env_key)
+            else:
+                object.__setattr__(self, "SECRET_KEY", _DEV_FALLBACK_SECRET)
+                logger.warning(
+                    "SECRET_KEY not set — using random per-process fallback. "
+                    "Set SECRET_KEY env var via GCP Secret Manager for production."
+                )
 
 
 @lru_cache

@@ -23,7 +23,7 @@ load_dotenv(override=True)
 GITHUB_BASE_URL = "https://api.github.com"
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 if not GITHUB_TOKEN:
-  raise ValueError("GITHUB_TOKEN environment variable not set")
+    raise ValueError("GITHUB_TOKEN environment variable not set")
 
 OWNER = os.getenv("OWNER", "google")
 REPO = os.getenv("REPO", "adk-python")
@@ -39,9 +39,7 @@ STALE_HOURS_THRESHOLD = float(os.getenv("STALE_HOURS_THRESHOLD", 168))
 
 # Default: 168 hours (7 days)
 # The number of hours of inactivity after an issue is marked 'stale' before it is closed.
-CLOSE_HOURS_AFTER_STALE_THRESHOLD = float(
-    os.getenv("CLOSE_HOURS_AFTER_STALE_THRESHOLD", 168)
-)
+CLOSE_HOURS_AFTER_STALE_THRESHOLD = float(os.getenv("CLOSE_HOURS_AFTER_STALE_THRESHOLD", 168))
 
 # --- Performance Configuration ---
 # The number of issues to process concurrently.

@@ -6,9 +6,7 @@ from pydantic import BaseModel, Field
 class SharePointFileSpec(BaseModel):
     """Metadata for file generation."""
 
-    filename: str = Field(
-        description="Name of the file with .txt or .md extension (e.g., 'Project Plan.txt' or 'Project Plan.md')"
-    )
+    filename: str = Field(description="Name of the file with .txt or .md extension (e.g., 'Project Plan.txt' or 'Project Plan.md')")
     token: str = Field(description="Unique verification token to embed in the content")
     file_type: str = Field(
         default="text/plain",
@@ -20,12 +18,8 @@ class SharePointFileContent(BaseModel):
     """Content structure for a generated file."""
 
     title: str = Field(description="Document title/heading")
-    content: str = Field(
-        description="Main document content with verification token embedded"
-    )
-    sections: list[str] = Field(
-        default_factory=list, description="List of section contents for the document"
-    )
+    content: str = Field(description="Main document content with verification token embedded")
+    sections: list[str] = Field(default_factory=list, description="List of section contents for the document")
     summary: str = Field(default="", description="Brief summary of the document")
 
 
@@ -56,9 +50,7 @@ class SharePointListItemContent(BaseModel):
 
     title: str = Field(description="Title field with token embedded")
     description: str = Field(description="Description or notes field")
-    additional_fields: dict[str, str] = Field(
-        default_factory=dict, description="Additional custom fields"
-    )
+    additional_fields: dict[str, str] = Field(default_factory=dict, description="Additional custom fields")
 
 
 class SharePointPageContent(BaseModel):

@@ -3,8 +3,7 @@
 import logging
 import time
 import numpy as np
-from typing import List, Optional, Tuple
-from sqlalchemy import select, and_, or_
+from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Message, Memory, VectorEmbedding, Conversation
@@ -22,12 +21,7 @@ logger = logging.getLogger(__name__)
 class SearchService:
     """Service for semantic search across conversations and memories."""
 
-    async def search(
-        self,
-        db: AsyncSession,
-        user_id: int,
-        query: SearchQuery
-    ) -> SearchResponse:
+    async def search(self, db: AsyncSession, user_id: int, query: SearchQuery) -> SearchResponse:
         """
         Perform semantic search across conversations and memories.
 
@@ -49,15 +43,11 @@ class SearchService:
 
         # Search conversations if enabled
         if query.search_conversations:
-            conversation_results = await self._search_conversations(
-                db, user_id, query_embedding, query
-            )
+            conversation_results = await self._search_conversations(db, user_id, query_embedding, query)
 
         # Search memories if enabled
         if query.search_memories:
-            memory_results = await self._search_memories(
-                db, user_id, query_embedding, query
-            )
+            memory_results = await self._search_memories(db, user_id, query_embedding, query)
 
         search_time_ms = (time.time() - start_time) * 1000
 
@@ -66,15 +56,11 @@ class SearchService:
             total_results=len(conversation_results) + len(memory_results),
             conversation_results=conversation_results,
             memory_results=memory_results,
-            search_time_ms=search_time_ms
+            search_time_ms=search_time_ms,
         )
 
     async def _search_conversations(
-        self,
-        db: AsyncSession,
-        user_id: int,
-        query_embedding: np.ndarray,
-        query: SearchQuery
+        self, db: AsyncSession, user_id: int, query_embedding: np.ndarray, query: SearchQuery
     ) -> list[ConversationSearchResult]:
         """Search in conversation messages."""
         # Build query for message embeddings
@@ -86,7 +72,7 @@ class SearchService:
                 and_(
                     Conversation.user_id == user_id,
                     not Conversation.is_incognito,  # Exclude incognito
-                    Conversation.is_active
+                    Conversation.is_active,
                 )
             )
         )
@@ -118,7 +104,7 @@ class SearchService:
         results_with_scores.sort(key=lambda x: x[2], reverse=True)
 
         # Limit to top_k
-        results_with_scores = results_with_scores[:query.top_k]
+        results_with_scores = results_with_scores[: query.top_k]
 
         # Convert to response format
         conversation_results = [
@@ -130,31 +116,20 @@ class SearchService:
                 message_role=message.role,
                 relevance_score=score,
                 created_at=message.created_at,
-                project_id=conversation.project_id
+                project_id=conversation.project_id,
             )
             for message, conversation, score in results_with_scores
         ]
 
         return conversation_results
 
-    async def _search_memories(
-        self,
-        db: AsyncSession,
-        user_id: int,
-        query_embedding: np.ndarray,
-        query: SearchQuery
-    ) -> list[MemorySearchResult]:
+    async def _search_memories(self, db: AsyncSession, user_id: int, query_embedding: np.ndarray, query: SearchQuery) -> list[MemorySearchResult]:
         """Search in memories."""
         # Build query for memory embeddings
         stmt = (
             select(Memory, VectorEmbedding)
             .join(VectorEmbedding, Memory.id == VectorEmbedding.memory_id)
-            .where(
-                and_(
-                    Memory.user_id == user_id,
-                    Memory.is_active
-                )
-            )
+            .where(and_(Memory.user_id == user_id, Memory.is_active))
         )
 
         # Filter by project if specified
@@ -184,7 +159,7 @@ class SearchService:
         results_with_scores.sort(key=lambda x: x[1], reverse=True)
 
         # Limit to top_k
-        results_with_scores = results_with_scores[:query.top_k]
+        results_with_scores = results_with_scores[: query.top_k]
 
         # Convert to response format
         memory_results = [
@@ -201,7 +176,7 @@ class SearchService:
                 created_at=memory.created_at,
                 updated_at=memory.updated_at,
                 last_accessed_at=memory.last_accessed_at,
-                relevance_score=score
+                relevance_score=score,
             )
             for memory, score in results_with_scores
         ]

@@ -19,6 +19,7 @@ from typing import Any
 
 class MaintenanceTaskType(Enum):
     """Types of maintenance tasks"""
+
     SYSTEM = "system"
     CODEBASE = "codebase"
     INTELLIGENCE = "intelligence"
@@ -28,6 +29,7 @@ class MaintenanceTaskType(Enum):
 @dataclass
 class MaintenanceTask:
     """Represents a maintenance task"""
+
     id: str
     type: MaintenanceTaskType
     description: str
@@ -63,62 +65,39 @@ class IdleWorker:
                 type=MaintenanceTaskType.SYSTEM,
                 description="Rotate and compress old log files",
                 priority=3,
-                estimated_duration=30
+                estimated_duration=30,
             ),
             MaintenanceTask(
-                id="sys-dep-update",
-                type=MaintenanceTaskType.SYSTEM,
-                description="Check for dependency updates",
-                priority=5,
-                estimated_duration=120
+                id="sys-dep-update", type=MaintenanceTaskType.SYSTEM, description="Check for dependency updates", priority=5, estimated_duration=120
             ),
-
             # Codebase Maintenance
             MaintenanceTask(
-                id="code-dead-import",
-                type=MaintenanceTaskType.CODEBASE,
-                description="Remove unused imports",
-                priority=4,
-                estimated_duration=45
+                id="code-dead-import", type=MaintenanceTaskType.CODEBASE, description="Remove unused imports", priority=4, estimated_duration=45
             ),
             MaintenanceTask(
-                id="code-docstring",
-                type=MaintenanceTaskType.CODEBASE,
-                description="Add missing docstrings",
-                priority=6,
-                estimated_duration=90
+                id="code-docstring", type=MaintenanceTaskType.CODEBASE, description="Add missing docstrings", priority=6, estimated_duration=90
             ),
             MaintenanceTask(
-                id="code-type-hints",
-                type=MaintenanceTaskType.CODEBASE,
-                description="Add type hints to functions",
-                priority=7,
-                estimated_duration=120
+                id="code-type-hints", type=MaintenanceTaskType.CODEBASE, description="Add type hints to functions", priority=7, estimated_duration=120
             ),
-
             # Intelligence Ingestion
             MaintenanceTask(
                 id="intel-conversation",
                 type=MaintenanceTaskType.INTELLIGENCE,
                 description="Process recent conversation exports",
                 priority=2,
-                estimated_duration=180
+                estimated_duration=180,
             ),
             MaintenanceTask(
                 id="intel-knowledge-base",
                 type=MaintenanceTaskType.INTELLIGENCE,
                 description="Update knowledge base from ingestion pipeline",
                 priority=1,
-                estimated_duration=240
+                estimated_duration=240,
             ),
-
             # Security
             MaintenanceTask(
-                id="sec-audit",
-                type=MaintenanceTaskType.SECURITY,
-                description="Run security audit on dependencies",
-                priority=2,
-                estimated_duration=60
+                id="sec-audit", type=MaintenanceTaskType.SECURITY, description="Run security audit on dependencies", priority=2, estimated_duration=60
             ),
         ]
 
@@ -251,12 +230,9 @@ class IdleWorker:
             by_type[task_type.value] = len(completed)
 
         return {
-            'total_completed': total_completed,
-            'queue_size': self.task_queue.qsize(),
-            'running': self.running,
-            'completed_by_type': by_type,
-            'recent_tasks': [
-                {'id': t.id, 'type': t.type.value, 'description': t.description}
-                for t in self.completed_tasks[-5:]
-            ]
+            "total_completed": total_completed,
+            "queue_size": self.task_queue.qsize(),
+            "running": self.running,
+            "completed_by_type": by_type,
+            "recent_tasks": [{"id": t.id, "type": t.type.value, "description": t.description} for t in self.completed_tasks[-5:]],
         }

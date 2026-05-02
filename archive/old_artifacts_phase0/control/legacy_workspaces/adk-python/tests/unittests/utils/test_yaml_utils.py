@@ -22,53 +22,58 @@ from pydantic import BaseModel
 
 
 class SimpleModel(BaseModel):
-  """Simple test model."""
+    """Simple test model."""
 
-  name: str
-  age: int
-  active: bool
-  finish_reason: types.FinishReason | None = None
-  multiline_text: str | None = None
-  items: list[str] | None = None
+    name: str
+    age: int
+    active: bool
+    finish_reason: types.FinishReason | None = None
+    multiline_text: str | None = None
+    items: list[str] | None = None
 
 
 def test_yaml_file_generation(tmp_path: Path):
-  """Test that YAML file is correctly generated."""
-  model = SimpleModel(
-      name="Alice",
-      age=30,
-      active=True,
-      finish_reason=types.FinishReason.STOP,
-  )
-  yaml_file = tmp_path / "test.yaml"
+    """Test that YAML file is correctly generated."""
+    model = SimpleModel(
+        name="Alice",
+        age=30,
+        active=True,
+        finish_reason=types.FinishReason.STOP,
+    )
+    yaml_file = tmp_path / "test.yaml"
 
-  dump_pydantic_to_yaml(model, yaml_file)
+    dump_pydantic_to_yaml(model, yaml_file)
 
-  assert yaml_file.read_text(encoding="utf-8") == """\
+    assert (
+        yaml_file.read_text(encoding="utf-8")
+        == """\
 active: true
 age: 30
 finish_reason: STOP
 name: Alice
 """
+    )
 
 
 def test_multiline_string_pipe_style(tmp_path: Path):
-  """Test that multiline strings use | style."""
-  multiline_text = """\
+    """Test that multiline strings use | style."""
+    multiline_text = """\
 This is a long description
 that spans multiple lines
 and should be formatted with pipe style"""
-  model = SimpleModel(
-      name="Test",
-      age=25,
-      active=False,
-      multiline_text=multiline_text,
-  )
-  yaml_file = tmp_path / "test.yaml"
+    model = SimpleModel(
+        name="Test",
+        age=25,
+        active=False,
+        multiline_text=multiline_text,
+    )
+    yaml_file = tmp_path / "test.yaml"
 
-  dump_pydantic_to_yaml(model, yaml_file)
+    dump_pydantic_to_yaml(model, yaml_file)
 
-  assert yaml_file.read_text(encoding="utf-8") == """\
+    assert (
+        yaml_file.read_text(encoding="utf-8")
+        == """\
 active: false
 age: 25
 multiline_text: |-
@@ -77,21 +82,22 @@ multiline_text: |-
   and should be formatted with pipe style
 name: Test
 """
+    )
 
 
 def test_list_indentation(tmp_path: Path):
-  """Test that lists in mappings are properly indented."""
-  model = SimpleModel(
-      name="Test",
-      age=25,
-      active=True,
-      items=["item1", "item2", "item3"],
-  )
-  yaml_file = tmp_path / "test.yaml"
+    """Test that lists in mappings are properly indented."""
+    model = SimpleModel(
+        name="Test",
+        age=25,
+        active=True,
+        items=["item1", "item2", "item3"],
+    )
+    yaml_file = tmp_path / "test.yaml"
 
-  dump_pydantic_to_yaml(model, yaml_file)
+    dump_pydantic_to_yaml(model, yaml_file)
 
-  expected = """\
+    expected = """\
 active: true
 age: 25
 items:
@@ -100,44 +106,46 @@ items:
   - item3
 name: Test
 """
-  assert yaml_file.read_text(encoding="utf-8") == expected
+    assert yaml_file.read_text(encoding="utf-8") == expected
 
 
 def test_empty_list_formatting(tmp_path: Path):
-  """Test that empty lists are formatted properly."""
-  model = SimpleModel(
-      name="Test",
-      age=25,
-      active=True,
-      items=[],
-  )
-  yaml_file = tmp_path / "test.yaml"
+    """Test that empty lists are formatted properly."""
+    model = SimpleModel(
+        name="Test",
+        age=25,
+        active=True,
+        items=[],
+    )
+    yaml_file = tmp_path / "test.yaml"
 
-  dump_pydantic_to_yaml(model, yaml_file)
+    dump_pydantic_to_yaml(model, yaml_file)
 
-  expected = """\
+    expected = """\
 active: true
 age: 25
 items: []
 name: Test
 """
-  assert yaml_file.read_text(encoding="utf-8") == expected
+    assert yaml_file.read_text(encoding="utf-8") == expected
 
 
 def test_non_ascii_character_preservation(tmp_path: Path):
-  """Test that non-ASCII characters are preserved in YAML output."""
-  model = SimpleModel(
-      name="你好世界",  # Chinese
-      age=30,
-      active=True,
-      multiline_text="🌍 Hello World 🌏\nこんにちは世界\nHola Mundo 🌎",
-      items=["Château", "naïve", "café", "🎉"],
-  )
-  yaml_file = tmp_path / "test.yaml"
+    """Test that non-ASCII characters are preserved in YAML output."""
+    model = SimpleModel(
+        name="你好世界",  # Chinese
+        age=30,
+        active=True,
+        multiline_text="🌍 Hello World 🌏\nこんにちは世界\nHola Mundo 🌎",
+        items=["Château", "naïve", "café", "🎉"],
+    )
+    yaml_file = tmp_path / "test.yaml"
 
-  dump_pydantic_to_yaml(model, yaml_file)
+    dump_pydantic_to_yaml(model, yaml_file)
 
-  assert yaml_file.read_text(encoding="utf-8") == """\
+    assert (
+        yaml_file.read_text(encoding="utf-8")
+        == """\
 active: true
 age: 30
 items:
@@ -151,3 +159,4 @@ multiline_text: |-
   Hola Mundo 🌎
 name: 你好世界
 """
+    )

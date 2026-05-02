@@ -1061,11 +1061,15 @@ export function setSdkAgentProgressSummariesEnabled(value: boolean): void {
   STATE.sdkAgentProgressSummariesEnabled = value;
 }
 
-export function getCor.KairosActive(): boolean {
+export function getCor
+.KairosActive(): boolean
+{
   return STATE.kairosActive;
 }
 
-export function setCor.KairosActive(value: boolean): void {
+export function setCor
+.KairosActive(value: boolean): void
+{
   STATE.kairosActive = value;
 }
 

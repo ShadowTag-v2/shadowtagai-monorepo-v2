@@ -4,14 +4,16 @@ import * as ts from 'typescript';
 function stripChunks(sourceFile: ts.SourceFile): string {
   const transformer = (context: ts.TransformationContext) => (rootNode: ts.Node) => {
     function visit(node: ts.Node): ts.Node {
-      if (ts.isBlock(node) && node.parent && (
-        ts.isFunctionDeclaration(node.parent) ||
-        ts.isMethodDeclaration(node.parent) ||
-        ts.isGetAccessor(node.parent) ||
-        ts.isSetAccessor(node.parent) ||
-        ts.isConstructorDeclaration(node.parent) ||
-        ts.isArrowFunction(node.parent)
-      )) {
+      if (
+        ts.isBlock(node) &&
+        node.parent &&
+        (ts.isFunctionDeclaration(node.parent) ||
+          ts.isMethodDeclaration(node.parent) ||
+          ts.isGetAccessor(node.parent) ||
+          ts.isSetAccessor(node.parent) ||
+          ts.isConstructorDeclaration(node.parent) ||
+          ts.isArrowFunction(node.parent))
+      ) {
         // Return an empty block with a comment indicating it was stripped
         const strippedComment = ts.factory.createIdentifier('/* stripped */');
         const stmt = ts.factory.createExpressionStatement(strippedComment);

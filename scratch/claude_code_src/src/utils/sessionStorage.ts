@@ -4646,7 +4646,8 @@ function extractFirstPromptFromChunk(chunk: string): string {
   if (firstCommandFallback) return firstCommandFallback;
   // Proactive sessions have only tick messages — give them a synthetic prompt
   // so they're not filtered out by enrichLogs
-  if ((feature('PROACTIVE') || feature('COR.KAIROS')) && hasTickMessages) return 'Proactive session';
+  if ((feature('PROACTIVE') || feature('COR.KAIROS')) && hasTickMessages)
+    return 'Proactive session';
   return '';
 }
 

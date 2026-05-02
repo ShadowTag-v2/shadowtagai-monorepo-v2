@@ -18,7 +18,6 @@ This sample shows how CrewaiTool correctly passes arbitrary parameters
 through **kwargs, which is a common pattern in CrewAI tools.
 """
 
-
 from crewai.tools import BaseTool
 from google.adk import Agent
 from google.adk.tools.crewai_tool import CrewaiTool
@@ -26,58 +25,52 @@ from pydantic import BaseModel, Field
 
 
 class SearchInput(BaseModel):
-  """Input schema for the search tool."""
+    """Input schema for the search tool."""
 
-  query: str = Field(..., description="The search query string")
-  category: str | None = Field(
-      None, description="Filter by category (e.g., 'technology', 'science')"
-  )
-  date_range: str | None = Field(
-      None, description="Filter by date range (e.g., 'last_week', '2024')"
-  )
-  limit: int | None = Field(
-      None, description="Limit the number of results (e.g., 10, 20)"
-  )
+    query: str = Field(..., description="The search query string")
+    category: str | None = Field(None, description="Filter by category (e.g., 'technology', 'science')")
+    date_range: str | None = Field(None, description="Filter by date range (e.g., 'last_week', '2024')")
+    limit: int | None = Field(None, description="Limit the number of results (e.g., 10, 20)")
 
 
 class CustomSearchTool(BaseTool):
-  """A custom CrewAI tool that accepts arbitrary search parameters via **kwargs.
+    """A custom CrewAI tool that accepts arbitrary search parameters via **kwargs.
 
-  This demonstrates the key CrewAI tool pattern where tools accept
-  flexible parameters through **kwargs.
-  """
-
-  name: str = "custom_search"
-  description: str = (
-      "Search for information with flexible filtering options. "
-      "Accepts a query and optional filter parameters like category, "
-      "date_range, limit, etc."
-  )
-  args_schema: type[BaseModel] = SearchInput
-
-  def _run(self, query: str, **kwargs) -> str:
-    """Execute search with arbitrary filter parameters.
-
-    Args:
-      query: The search query string.
-      **kwargs: Additional filter parameters like category, date_range, limit.
-
-    Returns:
-      A formatted string showing the query and applied filters.
+    This demonstrates the key CrewAI tool pattern where tools accept
+    flexible parameters through **kwargs.
     """
-    result_parts = [f"Searching for: '{query}'"]
 
-    if kwargs:
-      result_parts.append("Applied filters:")
-      for key, value in kwargs.items():
-        result_parts.append(f"  - {key}: {value}")
-    else:
-      result_parts.append("No additional filters applied.")
+    name: str = "custom_search"
+    description: str = (
+        "Search for information with flexible filtering options. "
+        "Accepts a query and optional filter parameters like category, "
+        "date_range, limit, etc."
+    )
+    args_schema: type[BaseModel] = SearchInput
 
-    # Simulate search results
-    result_parts.append("\nFound 3 results matching your criteria.")
+    def _run(self, query: str, **kwargs) -> str:
+        """Execute search with arbitrary filter parameters.
 
-    return "\n".join(result_parts)
+        Args:
+          query: The search query string.
+          **kwargs: Additional filter parameters like category, date_range, limit.
+
+        Returns:
+          A formatted string showing the query and applied filters.
+        """
+        result_parts = [f"Searching for: '{query}'"]
+
+        if kwargs:
+            result_parts.append("Applied filters:")
+            for key, value in kwargs.items():
+                result_parts.append(f"  - {key}: {value}")
+        else:
+            result_parts.append("No additional filters applied.")
+
+        # Simulate search results
+        result_parts.append("\nFound 3 results matching your criteria.")
+
+        return "\n".join(result_parts)
 
 
 crewai_search_tool = CustomSearchTool()
@@ -86,10 +79,7 @@ crewai_search_tool = CustomSearchTool()
 adk_search_tool = CrewaiTool(
     crewai_search_tool,
     name="search_with_filters",
-    description=(
-        "Search for information with optional filters like category, "
-        "date_range, or limit"
-    ),
+    description=("Search for information with optional filters like category, date_range, or limit"),
 )
 
 root_agent = Agent(

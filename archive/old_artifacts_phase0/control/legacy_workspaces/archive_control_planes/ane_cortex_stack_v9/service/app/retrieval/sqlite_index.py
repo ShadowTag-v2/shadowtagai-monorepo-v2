@@ -107,7 +107,7 @@ def chunk_text(sqlite_db: str):
                 if not content:
                     continue
                 chunk_id = sha256_text(f"{doc_id}:{start}:{end}")
-                section_path = f"{rel_path}:{start+1}-{end}"
+                section_path = f"{rel_path}:{start + 1}-{end}"
                 chunks.append(
                     {
                         "chunk_id": chunk_id,

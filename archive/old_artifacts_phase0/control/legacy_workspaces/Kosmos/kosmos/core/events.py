@@ -63,6 +63,7 @@ class BaseEvent:
 
     All events share common fields for identification and correlation.
     """
+
     type: EventType
     timestamp: str = field(default_factory=_default_timestamp)
     process_id: str | None = None
@@ -71,7 +72,7 @@ class BaseEvent:
     def to_dict(self) -> dict[str, Any]:
         """Convert event to dictionary."""
         data = asdict(self)
-        data['type'] = self.type.value
+        data["type"] = self.type.value
         return data
 
     def to_json(self) -> str:
@@ -79,11 +80,11 @@ class BaseEvent:
         return json.dumps(self.to_dict(), default=str)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "BaseEvent":
+    def from_dict(cls, data: dict[str, Any]) -> BaseEvent:
         """Create event from dictionary."""
         data = data.copy()
-        if isinstance(data.get('type'), str):
-            data['type'] = EventType(data['type'])
+        if isinstance(data.get("type"), str):
+            data["type"] = EventType(data["type"])
         return cls(**data)
 
 
@@ -94,6 +95,7 @@ class WorkflowEvent(BaseEvent):
 
     Emitted at workflow start, progress updates, and completion.
     """
+
     research_question: str = ""
     domain: str | None = None
     state: str = ""
@@ -115,6 +117,7 @@ class CycleEvent(BaseEvent):
 
     Emitted at cycle start and completion within a workflow.
     """
+
     cycle: int = 0
     max_cycles: int = 0
     tasks_count: int = 0
@@ -134,6 +137,7 @@ class TaskEvent(BaseEvent):
 
     Emitted when tasks are created, started, and completed.
     """
+
     task_id: str = ""
     task_type: str = ""
     description: str = ""
@@ -156,6 +160,7 @@ class LLMEvent(BaseEvent):
 
     Emitted at call start, for each token (streaming), and at completion.
     """
+
     model: str = ""
     provider: str = ""
     prompt_tokens: int = 0
@@ -178,6 +183,7 @@ class ExecutionEvent(BaseEvent):
 
     Emitted during code validation, execution, and output streaming.
     """
+
     code_hash: str = ""  # Short hash for identification
     language: str = "python"
     output_line: str | None = None  # For streaming stdout/stderr
@@ -198,6 +204,7 @@ class StageEvent(BaseEvent):
 
     Bridges with existing StageTracker infrastructure.
     """
+
     stage: str = ""
     substage: str | None = None
     parent_stage: str | None = None
@@ -213,15 +220,7 @@ class StageEvent(BaseEvent):
 
 
 # Union type for all streaming events
-StreamingEvent = Union[
-    BaseEvent,
-    WorkflowEvent,
-    CycleEvent,
-    TaskEvent,
-    LLMEvent,
-    ExecutionEvent,
-    StageEvent
-]
+StreamingEvent = Union[BaseEvent, WorkflowEvent, CycleEvent, TaskEvent, LLMEvent, ExecutionEvent, StageEvent]
 
 
 # Event type to class mapping for deserialization
@@ -265,7 +264,7 @@ def parse_event(data: dict[str, Any]) -> StreamingEvent:
     Raises:
         ValueError: If event type is unknown
     """
-    event_type_str = data.get('type')
+    event_type_str = data.get("type")
     if not event_type_str:
         raise ValueError("Event data missing 'type' field")
 

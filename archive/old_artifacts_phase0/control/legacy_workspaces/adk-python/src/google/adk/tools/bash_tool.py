@@ -31,119 +31,108 @@ from .tool_context import ToolContext
 
 @dataclasses.dataclass(frozen=True)
 class BashToolPolicy:
-  """Configuration for allowed bash commands based on prefix matching.
+    """Configuration for allowed bash commands based on prefix matching.
 
-  Set allowed_command_prefixes to ("*",) to allow all commands (default),
-  or explicitly list allowed prefixes.
-  """
+    Set allowed_command_prefixes to ("*",) to allow all commands (default),
+    or explicitly list allowed prefixes.
+    """
 
-  allowed_command_prefixes: tuple[str, ...] = ("*",)
+    allowed_command_prefixes: tuple[str, ...] = ("*",)
 
 
 def _validate_command(command: str, policy: BashToolPolicy) -> str | None:
-  """Validates a bash command against the permitted prefixes."""
-  stripped = command.strip()
-  if not stripped:
-    return "Command is required."
+    """Validates a bash command against the permitted prefixes."""
+    stripped = command.strip()
+    if not stripped:
+        return "Command is required."
 
-  if "*" in policy.allowed_command_prefixes:
-    return None
+    if "*" in policy.allowed_command_prefixes:
+        return None
 
-  for prefix in policy.allowed_command_prefixes:
-    if stripped.startswith(prefix):
-      return None
+    for prefix in policy.allowed_command_prefixes:
+        if stripped.startswith(prefix):
+            return None
 
-  allowed = ", ".join(policy.allowed_command_prefixes)
-  return f"Command blocked. Permitted prefixes are: {allowed}"
+    allowed = ", ".join(policy.allowed_command_prefixes)
+    return f"Command blocked. Permitted prefixes are: {allowed}"
 
 
 @features.experimental(features.FeatureName.SKILL_TOOLSET)
 class ExecuteBashTool(BaseTool):
-  """Tool to execute a validated bash command within a workspace directory."""
+    """Tool to execute a validated bash command within a workspace directory."""
 
-  def __init__(
-      self,
-      *,
-      workspace: pathlib.Path | None = None,
-      policy: BashToolPolicy | None = None,
-  ):
-    if workspace is None:
-      workspace = pathlib.Path.cwd()
-    policy = policy or BashToolPolicy()
-    allowed_hint = (
-        "any command"
-        if "*" in policy.allowed_command_prefixes
-        else (
-            "commands matching prefixes:"
-            f" {', '.join(policy.allowed_command_prefixes)}"
+    def __init__(
+        self,
+        *,
+        workspace: pathlib.Path | None = None,
+        policy: BashToolPolicy | None = None,
+    ):
+        if workspace is None:
+            workspace = pathlib.Path.cwd()
+        policy = policy or BashToolPolicy()
+        allowed_hint = (
+            "any command" if "*" in policy.allowed_command_prefixes else (f"commands matching prefixes: {', '.join(policy.allowed_command_prefixes)}")
         )
-    )
-    super().__init__(
-        name="execute_bash",
-        description=(
-            "Executes a bash command with the working directory set to the"
-            f" workspace. Allowed: {allowed_hint}. All commands require user"
-            " confirmation."
-        ),
-    )
-    self._workspace = workspace
-    self._policy = policy
+        super().__init__(
+            name="execute_bash",
+            description=(
+                "Executes a bash command with the working directory set to the"
+                f" workspace. Allowed: {allowed_hint}. All commands require user"
+                " confirmation."
+            ),
+        )
+        self._workspace = workspace
+        self._policy = policy
 
-  def _get_declaration(self) -> types.FunctionDeclaration | None:
-    return types.FunctionDeclaration(
-        name=self.name,
-        description=self.description,
-        parameters_json_schema={
-            "type": "object",
-            "properties": {
-                "command": {
-                    "type": "string",
-                    "description": "The bash command to execute.",
+    def _get_declaration(self) -> types.FunctionDeclaration | None:
+        return types.FunctionDeclaration(
+            name=self.name,
+            description=self.description,
+            parameters_json_schema={
+                "type": "object",
+                "properties": {
+                    "command": {
+                        "type": "string",
+                        "description": "The bash command to execute.",
+                    },
                 },
+                "required": ["command"],
             },
-            "required": ["command"],
-        },
-    )
+        )
 
-  async def run_async(
-      self, *, args: dict[str, Any], tool_context: ToolContext
-  ) -> Any:
-    command = args.get("command")
-    if not command:
-      return {"error": "Command is required."}
+    async def run_async(self, *, args: dict[str, Any], tool_context: ToolContext) -> Any:
+        command = args.get("command")
+        if not command:
+            return {"error": "Command is required."}
 
-    # Static validation.
-    error = _validate_command(command, self._policy)
-    if error:
-      return {"error": error}
+        # Static validation.
+        error = _validate_command(command, self._policy)
+        if error:
+            return {"error": error}
 
-    # Always request user confirmation.
-    if not tool_context.tool_confirmation:
-      tool_context.request_confirmation(
-          hint=f"Please approve or reject the bash command: {command}",
-      )
-      tool_context.actions.skip_summarization = True
-      return {
-          "error": (
-              "This tool call requires confirmation, please approve or reject."
-          )
-      }
-    elif not tool_context.tool_confirmation.confirmed:
-      return {"error": "This tool call is rejected."}
+        # Always request user confirmation.
+        if not tool_context.tool_confirmation:
+            tool_context.request_confirmation(
+                hint=f"Please approve or reject the bash command: {command}",
+            )
+            tool_context.actions.skip_summarization = True
+            return {"error": ("This tool call requires confirmation, please approve or reject.")}
+        elif not tool_context.tool_confirmation.confirmed:
+            return {"error": "This tool call is rejected."}
 
-    try:
-      result = subprocess.run(
-          shlex.split(command),
-          shell=False,
-          cwd=str(self._workspace),
-          capture_output=True,
-          text=True,
-          timeout=30,
-      )
-      return {
-          "stdout": result.stdout,
-          "stderr": result.stderr,
-          "returncode": result.returncode,
-      }
-    except subprocess.TimeoutExpired:
-      return {"error": "Command timed out after 30 seconds."}
+        try:
+            result = subprocess.run(
+                shlex.split(command),
+                shell=False,
+                cwd=str(self._workspace),
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            return {
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+                "returncode": result.returncode,
+            }
+        except subprocess.TimeoutExpired:
+            return {"error": "Command timed out after 30 seconds."}

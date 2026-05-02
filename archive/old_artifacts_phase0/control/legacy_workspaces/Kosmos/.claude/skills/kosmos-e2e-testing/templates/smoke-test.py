@@ -20,6 +20,7 @@ def test_llm_client_initialization():
 
     try:
         from kosmos.core.llm import get_client
+
         client = get_client()
         print(f"  [OK] Client created: {type(client).__name__}")
         return True
@@ -35,10 +36,7 @@ def test_workflow_initialization():
     try:
         from kosmos.workflow.research_loop import ResearchWorkflow
 
-        ResearchWorkflow(
-            research_objective="Test objective",
-            artifacts_dir="./test_artifacts"
-        )
+        ResearchWorkflow(research_objective="Test objective", artifacts_dir="./test_artifacts")
         print("  [OK] Workflow created")
         return True
     except Exception as e:
@@ -53,12 +51,14 @@ def test_provider_modules():
     providers = []
     try:
         from kosmos.core.providers import anthropic_provider
+
         providers.append("anthropic")
     except ImportError:
         pass
 
     try:
         from kosmos.core.providers import openai_provider
+
         providers.append("openai")
     except ImportError:
         pass
@@ -127,6 +127,7 @@ def test_database_operations():
 
     try:
         import sqlite3
+
         db_path = os.path.join(PROJECT_ROOT, "kosmos.db")
 
         if not os.path.exists(db_path):

@@ -8,7 +8,7 @@ import os
 import sys
 
 # Import the main research lookup class
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts'))
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "scripts"))
 from research_lookup import ResearchLookup
 
 
@@ -23,9 +23,9 @@ def format_response(result: dict) -> str:
     # Format the output for Claude Code
     output = f"""🔍 **Research Results**
 
-**Query:** {result['query']}
-**Model:** {result['model']}
-**Timestamp:** {result['timestamp']}
+**Query:** {result["query"]}
+**Model:** {result["model"]}
+**Timestamp:** {result["timestamp"]}
 
 ---
 

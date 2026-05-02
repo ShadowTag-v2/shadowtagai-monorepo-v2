@@ -12,7 +12,7 @@ from opentelemetry import trace
 from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from src.agents.base import GovernanceDecision
 from src.gov_config import settings
@@ -57,8 +57,7 @@ class AuditLogEntry(BaseModel):
     total_cost_usd: float
     cached_savings_usd: float
 
-    class Config:
-        json_encoders = {datetime: lambda v: v.isoformat()}
+    model_config = ConfigDict()
 
 
 class ObservabilityManager:

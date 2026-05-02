@@ -38,13 +38,8 @@ oauth2_data_google_cloud = {
             "authorizationUrl": "https://accounts.google.com/o/oauth2/auth",
             "tokenUrl": "https://oauth2.googleapis.com/token",
             "scopes": {
-                "https://www.googleapis.com/auth/cloud-platform": (
-                    "View and manage your data across Google Cloud Platform"
-                    " services"
-                ),
-                "https://www.googleapis.com/auth/calendar.readonly": (
-                    "View your calendars"
-                ),
+                "https://www.googleapis.com/auth/cloud-platform": ("View and manage your data across Google Cloud Platform services"),
+                "https://www.googleapis.com/auth/calendar.readonly": ("View your calendars"),
             },
         }
     },

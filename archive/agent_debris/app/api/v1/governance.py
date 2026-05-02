@@ -2,6 +2,7 @@
 Governance API endpoints
 Implements EU AI Act, DSA, NIST RMF, and ISO 42001 assessments
 """
+
 import uuid
 from datetime import datetime
 
@@ -40,11 +41,7 @@ async def assess_governance(request: GovernanceAssessmentRequest):
     # Perform governance assessment
     result = await governance_engine.assess(request)
 
-    return GovernanceAssessmentResponse(
-        assessment_id=assessment_id,
-        timestamp=datetime.utcnow(),
-        **result
-    )
+    return GovernanceAssessmentResponse(assessment_id=assessment_id, timestamp=datetime.utcnow(), **result)
 
 
 @router.post("/eu-ai-act/assess", response_model=EUAIActAssessment)
@@ -105,43 +102,37 @@ async def list_frameworks():
             "name": "EU AI Act",
             "description": "European Union Artificial Intelligence Act",
             "version": "2024",
-            "enabled": True
+            "enabled": True,
         },
         {
             "id": ComplianceFramework.DSA_VLOP,
             "name": "DSA VLOP",
             "description": "Digital Services Act - Very Large Online Platform",
             "version": "2024",
-            "enabled": True
+            "enabled": True,
         },
         {
             "id": ComplianceFramework.NIST_RMF,
             "name": "NIST AI RMF",
             "description": "NIST AI Risk Management Framework",
             "version": "1.0",
-            "enabled": True
+            "enabled": True,
         },
         {
             "id": ComplianceFramework.ISO_42001,
             "name": "ISO/IEC 42001",
             "description": "AI Management System Standard",
             "version": "2023",
-            "enabled": True
+            "enabled": True,
         },
-        {
-            "id": ComplianceFramework.GDPR,
-            "name": "GDPR",
-            "description": "General Data Protection Regulation",
-            "version": "2018",
-            "enabled": True
-        },
+        {"id": ComplianceFramework.GDPR, "name": "GDPR", "description": "General Data Protection Regulation", "version": "2018", "enabled": True},
         {
             "id": ComplianceFramework.COPPA,
             "name": "COPPA",
             "description": "Children's Online Privacy Protection Act",
             "version": "2013",
-            "enabled": True
-        }
+            "enabled": True,
+        },
     ]
 
 
@@ -149,35 +140,16 @@ async def list_frameworks():
 async def list_risk_levels():
     """List risk level classifications"""
     return [
-        {
-            "level": RiskLevel.UNACCEPTABLE,
-            "description": "Poses unacceptable risk - prohibited",
-            "color": "red"
-        },
-        {
-            "level": RiskLevel.HIGH,
-            "description": "High risk - requires conformity assessment",
-            "color": "orange"
-        },
-        {
-            "level": RiskLevel.LIMITED,
-            "description": "Limited risk - transparency obligations",
-            "color": "yellow"
-        },
-        {
-            "level": RiskLevel.MINIMAL,
-            "description": "Minimal/no risk - voluntary compliance",
-            "color": "green"
-        }
+        {"level": RiskLevel.UNACCEPTABLE, "description": "Poses unacceptable risk - prohibited", "color": "red"},
+        {"level": RiskLevel.HIGH, "description": "High risk - requires conformity assessment", "color": "orange"},
+        {"level": RiskLevel.LIMITED, "description": "Limited risk - transparency obligations", "color": "yellow"},
+        {"level": RiskLevel.MINIMAL, "description": "Minimal/no risk - voluntary compliance", "color": "green"},
     ]
 
 
 @router.post("/assess/batch")
 async def assess_batch_governance(
-    items: list[dict],
-    frameworks: list[ComplianceFramework],
-    top_k_violations: int = None,
-    similarity_threshold: float = 0.8
+    items: list[dict], frameworks: list[ComplianceFramework], top_k_violations: int = None, similarity_threshold: float = 0.8
 ):
     """
     Batch governance assessment with MCP efficiency patterns
@@ -237,10 +209,7 @@ async def assess_batch_governance(
     try:
         # Execute batch assessment
         results, analytics = await batch_engine.assess_batch(
-            items=items,
-            frameworks=frameworks,
-            top_k_violations=top_k_violations,
-            similarity_threshold=similarity_threshold
+            items=items, frameworks=frameworks, top_k_violations=top_k_violations, similarity_threshold=similarity_threshold
         )
 
         return {
@@ -251,7 +220,7 @@ async def assess_batch_governance(
                     "compliance_score": r.compliance_score,
                     "risk_level": r.risk_level.value,
                     "violations": r.violations,
-                    "assessment_summary": r.assessment_summary
+                    "assessment_summary": r.assessment_summary,
                 }
                 for r in results
             ],
@@ -262,12 +231,9 @@ async def assess_batch_governance(
                 "total_violations": analytics.total_violations,
                 "top_violation_types": analytics.top_violation_types,
                 "tokens_used": analytics.tokens_used,
-                "cost_usd": analytics.cost_usd
-            }
+                "cost_usd": analytics.cost_usd,
+            },
         }
 
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Batch assessment failed: {str(e)}"
-        )
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Batch assessment failed: {str(e)}")

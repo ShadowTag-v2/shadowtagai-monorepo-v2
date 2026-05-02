@@ -20,6 +20,7 @@ def get_skill_path():
     skill_dir = script_dir.parent
     return skill_dir
 
+
 def find_template(template_name):
     """Find template file in assets directory."""
     skill_path = get_skill_path()
@@ -33,34 +34,26 @@ def find_template(template_name):
 
     return None
 
+
 def customize_template(template_path, output_path, **kwargs):
     """Customize a template with provided information."""
 
     # Read template
-    with open(template_path, 'r') as f:
+    with open(template_path) as f:
         content = f.read()
 
     # Replace placeholders
     replacements = {
-        'title': (
-            [r'Insert Your Title Here[^}]*', r'Your [^}]*Title[^}]*Here[^}]*'],
-            kwargs.get('title', '')
+        "title": ([r"Insert Your Title Here[^}]*", r"Your [^}]*Title[^}]*Here[^}]*"], kwargs.get("title", "")),
+        "authors": (
+            [r"First Author\\textsuperscript\{1\}, Second Author[^}]*", r"First Author.*Second Author.*Third Author"],
+            kwargs.get("authors", ""),
         ),
-        'authors': (
-            [r'First Author\\textsuperscript\{1\}, Second Author[^}]*',
-             r'First Author.*Second Author.*Third Author'],
-            kwargs.get('authors', '')
+        "affiliations": (
+            [r"Department Name, Institution Name, City, State[^\\]*", r"Department of [^,]*, University Name[^\\]*"],
+            kwargs.get("affiliations", ""),
         ),
-        'affiliations': (
-            [r'Department Name, Institution Name, City, State[^\\]*',
-             r'Department of [^,]*, University Name[^\\]*'],
-            kwargs.get('affiliations', '')
-        ),
-        'email': (
-            [r'first\.author@university\.edu',
-             r'\[email protected\]'],
-            kwargs.get('email', '')
-        )
+        "email": ([r"first\.author@university\.edu", r"\[email protected\]"], kwargs.get("email", "")),
     }
 
     # Apply replacements
@@ -74,7 +67,7 @@ def customize_template(template_path, output_path, **kwargs):
                     print(f"✓ Replaced {key}")
 
     # Write output
-    with open(output_path, 'w') as f:
+    with open(output_path, "w") as f:
         f.write(content)
 
     if modified:
@@ -88,6 +81,7 @@ def customize_template(template_path, output_path, **kwargs):
     print("2. Replace remaining placeholders")
     print("3. Add your content")
     print("4. Compile with pdflatex or your preferred LaTeX compiler")
+
 
 def interactive_mode():
     """Run in interactive mode."""
@@ -139,14 +133,8 @@ def interactive_mode():
 
     # Customize
     print()
-    customize_template(
-        template_path,
-        output_path,
-        title=title,
-        authors=authors,
-        affiliations=affiliations,
-        email=email
-    )
+    customize_template(template_path, output_path, title=title, authors=authors, affiliations=affiliations, email=email)
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -157,16 +145,16 @@ Examples:
   %(prog)s --interactive
   %(prog)s --template nature_article.tex --output my_paper.tex
   %(prog)s --template neurips_article.tex --title "My ML Research" --output my_neurips.tex
-        """
+        """,
     )
 
-    parser.add_argument('--template', type=str, help='Template filename')
-    parser.add_argument('--output', type=str, help='Output filename')
-    parser.add_argument('--title', type=str, help='Paper title')
-    parser.add_argument('--authors', type=str, help='Author names')
-    parser.add_argument('--affiliations', type=str, help='Institutions/affiliations')
-    parser.add_argument('--email', type=str, help='Corresponding author email')
-    parser.add_argument('--interactive', action='store_true', help='Run in interactive mode')
+    parser.add_argument("--template", type=str, help="Template filename")
+    parser.add_argument("--output", type=str, help="Output filename")
+    parser.add_argument("--title", type=str, help="Paper title")
+    parser.add_argument("--authors", type=str, help="Author names")
+    parser.add_argument("--affiliations", type=str, help="Institutions/affiliations")
+    parser.add_argument("--email", type=str, help="Corresponding author email")
+    parser.add_argument("--interactive", action="store_true", help="Run in interactive mode")
 
     args = parser.parse_args()
 
@@ -193,14 +181,8 @@ Examples:
 
     # Customize
     output_path = Path(args.output)
-    customize_template(
-        template_path,
-        output_path,
-        title=args.title,
-        authors=args.authors,
-        affiliations=args.affiliations,
-        email=args.email
-    )
+    customize_template(template_path, output_path, title=args.title, authors=args.authors, affiliations=args.affiliations, email=args.email)
+
 
 if __name__ == "__main__":
     main()

@@ -48,51 +48,27 @@ class TrelloBongo(BaseBongo):
         # 1. Composio credentials (api_key, key)
         # 2. Config fields from YAML
         # 3. Integration settings from backend
-        self.consumer_key: str = (
-            credentials.get("api_key")
-            or credentials.get("key")
-            or kwargs.get("consumer_key", "")
-        )
-        self.consumer_secret: str = credentials.get(
-            "consumer_secret", ""
-        ) or kwargs.get("consumer_secret", "")
+        self.consumer_key: str = credentials.get("api_key") or credentials.get("key") or kwargs.get("consumer_key", "")
+        self.consumer_secret: str = credentials.get("consumer_secret", "") or kwargs.get("consumer_secret", "")
 
         # Debug: Log ALL fields from Composio to see what's available
         self.logger.info(f"🔍 All fields from Composio: {list(credentials.keys())}")
 
         # If consumer credentials look like unresolved env vars, try integration settings
-        if (
-            self.consumer_key.startswith("${")
-            or self.consumer_secret.startswith("${")
-            or not self.consumer_key
-            or not self.consumer_secret
-        ):
-            self.logger.info(
-                "🔍 Consumer credentials not resolved from config, trying integration settings..."
-            )
+        if self.consumer_key.startswith("${") or self.consumer_secret.startswith("${") or not self.consumer_key or not self.consumer_secret:
+            self.logger.info("🔍 Consumer credentials not resolved from config, trying integration settings...")
             self._load_from_integration_settings()
 
         # Debug: Log what we're using
         self.logger.info("🔑 OAuth1 Credentials Check:")
-        self.logger.info(
-            f"  oauth_token: {'✅ Present' if self.oauth_token else '❌ MISSING'}"
-        )
-        self.logger.info(
-            f"  oauth_token_secret: {'✅ Present' if self.oauth_token_secret else '❌ MISSING'}"
-        )
+        self.logger.info(f"  oauth_token: {'✅ Present' if self.oauth_token else '❌ MISSING'}")
+        self.logger.info(f"  oauth_token_secret: {'✅ Present' if self.oauth_token_secret else '❌ MISSING'}")
         self.logger.info(
             f"  consumer_key: {self.consumer_key[:10] + '...' if self.consumer_key and not self.consumer_key.startswith('${') else '❌ MISSING'}"
         )
-        self.logger.info(
-            f"  consumer_secret: {'✅ Present' if self.consumer_secret and not self.consumer_secret.startswith('${') else '❌ MISSING'}"
-        )
+        self.logger.info(f"  consumer_secret: {'✅ Present' if self.consumer_secret and not self.consumer_secret.startswith('${') else '❌ MISSING'}")
 
-        if (
-            not self.consumer_key
-            or not self.consumer_secret
-            or self.consumer_key.startswith("${")
-            or self.consumer_secret.startswith("${")
-        ):
+        if not self.consumer_key or not self.consumer_secret or self.consumer_key.startswith("${") or self.consumer_secret.startswith("${"):
             raise ValueError(
                 "Trello requires consumer_key and consumer_secret. "
                 "Options:\n"
@@ -134,19 +110,10 @@ class TrelloBongo(BaseBongo):
 
             # Find the integration settings YAML file
             backend_path = Path(__file__).parent.parent.parent / "backend"
-            integrations_yaml = (
-                backend_path
-                / "airweave"
-                / "platform"
-                / "auth"
-                / "yaml"
-                / "dev.integrations.yaml"
-            )
+            integrations_yaml = backend_path / "airweave" / "platform" / "auth" / "yaml" / "dev.integrations.yaml"
 
             if not integrations_yaml.exists():
-                self.logger.warning(
-                    f"Integration settings file not found: {integrations_yaml}"
-                )
+                self.logger.warning(f"Integration settings file not found: {integrations_yaml}")
                 return
 
             # Load and parse the YAML file
@@ -160,28 +127,18 @@ class TrelloBongo(BaseBongo):
                 consumer_key = trello_settings.get("consumer_key")
                 consumer_secret = trello_settings.get("consumer_secret")
 
-                if consumer_key and (
-                    not self.consumer_key or self.consumer_key.startswith("${")
-                ):
+                if consumer_key and (not self.consumer_key or self.consumer_key.startswith("${")):
                     self.consumer_key = consumer_key
                     self.logger.info("✅ Loaded consumer_key from integration settings")
 
-                if consumer_secret and (
-                    not self.consumer_secret or self.consumer_secret.startswith("${")
-                ):
+                if consumer_secret and (not self.consumer_secret or self.consumer_secret.startswith("${")):
                     self.consumer_secret = consumer_secret
-                    self.logger.info(
-                        "✅ Loaded consumer_secret from integration settings"
-                    )
+                    self.logger.info("✅ Loaded consumer_secret from integration settings")
             else:
-                self.logger.warning(
-                    "Trello settings not found in integration settings file"
-                )
+                self.logger.warning("Trello settings not found in integration settings file")
 
         except Exception as e:
-            self.logger.warning(
-                f"Could not load consumer credentials from integration settings: {e}"
-            )
+            self.logger.warning(f"Could not load consumer credentials from integration settings: {e}")
             # Not a fatal error - caller will check if credentials are valid
 
     def _percent_encode(self, value: str) -> str:
@@ -214,10 +171,7 @@ class TrelloBongo(BaseBongo):
         """Sign OAuth1 request using HMAC-SHA1."""
         # Build signature base string
         sorted_params = sorted(params.items())
-        param_str = "&".join(
-            f"{self._percent_encode(k)}={self._percent_encode(v)}"
-            for k, v in sorted_params
-        )
+        param_str = "&".join(f"{self._percent_encode(k)}={self._percent_encode(v)}" for k, v in sorted_params)
 
         base_parts = [
             method.upper(),
@@ -227,10 +181,7 @@ class TrelloBongo(BaseBongo):
         base_string = "&".join(base_parts)
 
         # Build signing key
-        signing_key = (
-            f"{self._percent_encode(self.consumer_secret)}&"
-            f"{self._percent_encode(self.oauth_token_secret)}"
-        )
+        signing_key = f"{self._percent_encode(self.consumer_secret)}&{self._percent_encode(self.oauth_token_secret)}"
 
         # Sign with HMAC-SHA1
         signature_bytes = hmac.new(
@@ -247,10 +198,7 @@ class TrelloBongo(BaseBongo):
     def _build_auth_header(self, oauth_params: dict[str, str]) -> str:
         """Build OAuth1 Authorization header."""
         sorted_items = sorted(oauth_params.items())
-        param_strings = [
-            f'{self._percent_encode(k)}="{self._percent_encode(v)}"'
-            for k, v in sorted_items
-        ]
+        param_strings = [f'{self._percent_encode(k)}="{self._percent_encode(v)}"' for k, v in sorted_items]
         return "OAuth " + ", ".join(param_strings)
 
     async def _rate_limit(self):
@@ -312,9 +260,7 @@ class TrelloBongo(BaseBongo):
         Returns:
             List of entity descriptors for verification
         """
-        self.logger.info(
-            f"🥁 Creating {self.entity_count} Trello cards with checklists"
-        )
+        self.logger.info(f"🥁 Creating {self.entity_count} Trello cards with checklists")
 
         # Ensure test board and list exist
         await self._ensure_board()
@@ -340,9 +286,7 @@ class TrelloBongo(BaseBongo):
                         self.logger.info(f"Creating card with token {card_token}")
 
                         # Generate card content
-                        title, description, labels = await generate_trello_card(
-                            self.openai_model, card_token
-                        )
+                        title, description, labels = await generate_trello_card(self.openai_model, card_token)
 
                         # Create card
                         card_data = await self._request(
@@ -370,13 +314,9 @@ class TrelloBongo(BaseBongo):
                         # Create checklist for this card
                         checklist_token = str(uuid.uuid4())[:8]
 
-                        self.logger.info(
-                            f"  Creating checklist for card {card_data['id']} with token {checklist_token}"
-                        )
+                        self.logger.info(f"  Creating checklist for card {card_data['id']} with token {checklist_token}")
 
-                        checklist_data_generated = await generate_trello_checklist(
-                            self.openai_model, checklist_token
-                        )
+                        checklist_data_generated = await generate_trello_checklist(self.openai_model, checklist_token)
 
                         # Create checklist
                         checklist = await self._request(
@@ -410,16 +350,12 @@ class TrelloBongo(BaseBongo):
                         self._checklists.append(checklist_descriptor)
                         all_entities.append(checklist_descriptor)
 
-                        self.logger.info(
-                            f"✅ Created card and checklist: {title[:50]}..."
-                        )
+                        self.logger.info(f"✅ Created card and checklist: {title[:50]}...")
 
                         return card_descriptor
 
                     except Exception as e:
-                        self.logger.error(
-                            f"❌ Error creating card: {type(e).__name__}: {str(e)}"
-                        )
+                        self.logger.error(f"❌ Error creating card: {type(e).__name__}: {str(e)}")
                         raise
 
             # Create all cards in parallel
@@ -432,9 +368,7 @@ class TrelloBongo(BaseBongo):
                     self.logger.error(f"Failed to create card {i + 1}: {result}")
                     raise result
 
-        self.logger.info(
-            f"✅ Created {len(self._cards)} cards and {len(self._checklists)} checklists"
-        )
+        self.logger.info(f"✅ Created {len(self._cards)} cards and {len(self._checklists)} checklists")
 
         self.created_entities = all_entities
         return all_entities
@@ -460,9 +394,7 @@ class TrelloBongo(BaseBongo):
                 card = self._cards[i]
 
                 # Generate new content with SAME token
-                title, description, _ = await generate_trello_card(
-                    self.openai_model, card["token"]
-                )
+                title, description, _ = await generate_trello_card(self.openai_model, card["token"])
 
                 # Update card
                 await self._request(
@@ -490,9 +422,7 @@ class TrelloBongo(BaseBongo):
         await self._delete_board()
         return deleted_ids
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         """Delete specific entities.
 
         Handles Trello's cascade deletion: when a card is deleted, its checklists
@@ -511,19 +441,12 @@ class TrelloBongo(BaseBongo):
         cards_to_delete = {e["id"] for e in entities if e["type"] == "card"}
 
         # Find checklists that belong to those cards (they'll be cascade-deleted)
-        cascade_deleted_checklists = [
-            e["id"]
-            for e in self.created_entities
-            if e["type"] == "checklist" and e.get("parent_id") in cards_to_delete
-        ]
+        cascade_deleted_checklists = [e["id"] for e in self.created_entities if e["type"] == "checklist" and e.get("parent_id") in cards_to_delete]
 
         async with httpx.AsyncClient() as client:
             # Delete standalone checklists first (ones not attached to cards we're deleting)
             for entity in entities:
-                if (
-                    entity["type"] == "checklist"
-                    and entity.get("parent_id") not in cards_to_delete
-                ):
+                if entity["type"] == "checklist" and entity.get("parent_id") not in cards_to_delete:
                     try:
                         await self._request(
                             client,
@@ -533,9 +456,7 @@ class TrelloBongo(BaseBongo):
                         deleted.append(entity["id"])
                         self.logger.debug(f"Deleted checklist {entity['id']}")
                     except Exception as e:
-                        self.logger.warning(
-                            f"Failed to delete checklist {entity['id']}: {e}"
-                        )
+                        self.logger.warning(f"Failed to delete checklist {entity['id']}: {e}")
 
             # Then delete cards (which will cascade-delete their checklists)
             for entity in entities:
@@ -549,15 +470,11 @@ class TrelloBongo(BaseBongo):
                         deleted.append(entity["id"])
                         self.logger.debug(f"Deleted card {entity['id']}")
                     except Exception as e:
-                        self.logger.warning(
-                            f"Failed to delete card {entity['id']}: {e}"
-                        )
+                        self.logger.warning(f"Failed to delete card {entity['id']}: {e}")
 
         # Add cascade-deleted checklist IDs
         if cascade_deleted_checklists:
-            self.logger.info(
-                f"📎 {len(cascade_deleted_checklists)} checklists cascade-deleted with cards"
-            )
+            self.logger.info(f"📎 {len(cascade_deleted_checklists)} checklists cascade-deleted with cards")
             deleted.extend(cascade_deleted_checklists)
 
         return deleted
@@ -581,9 +498,7 @@ class TrelloBongo(BaseBongo):
                         await self._delete_checklist(checklist["id"])
                         cleanup_stats["checklists_deleted"] += 1
                     except Exception as e:
-                        self.logger.warning(
-                            f"Failed to delete checklist {checklist['id']}: {e}"
-                        )
+                        self.logger.warning(f"Failed to delete checklist {checklist['id']}: {e}")
                         cleanup_stats["errors"] += 1
 
             if self._cards:
@@ -670,9 +585,7 @@ class TrelloBongo(BaseBongo):
     async def _delete_checklist(self, checklist_id: str):
         """Delete a checklist by ID."""
         async with httpx.AsyncClient() as client:
-            await self._request(
-                client, "DELETE", f"{self.API_BASE}/checklists/{checklist_id}"
-            )
+            await self._request(client, "DELETE", f"{self.API_BASE}/checklists/{checklist_id}")
             self.logger.debug(f"Deleted checklist {checklist_id}")
 
     async def _delete_board(self):

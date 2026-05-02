@@ -1,6 +1,6 @@
 """Core kernel chain orchestration."""
 
-from typing import List, Dict, Any, Optional
+from typing import Any
 import uuid
 import time
 from app.kernels.base import Kernel, KernelChainError
@@ -73,17 +73,13 @@ class KernelChain:
 
             # Check success
             if not output.success:
-                raise KernelChainError(
-                    f"Kernel {kernel.name} failed: {output.error}"
-                )
+                raise KernelChainError(f"Kernel {kernel.name} failed: {output.error}")
 
             # Check confidence threshold (if applicable)
             if output.metrics and output.metrics.confidence is not None:
                 if output.metrics.confidence < settings.confidence_threshold:
                     raise KernelChainError(
-                        f"Kernel {kernel.name} confidence "
-                        f"{output.metrics.confidence:.2%} below threshold "
-                        f"{settings.confidence_threshold:.2%}"
+                        f"Kernel {kernel.name} confidence {output.metrics.confidence:.2%} below threshold {settings.confidence_threshold:.2%}"
                     )
 
             # Prepare input for next kernel (feed forward)
@@ -142,22 +138,14 @@ class ChainExecutor:
 
             # Calculate total metrics
             total_latency_ms = (time.perf_counter() - start_time) * 1000
-            total_cost_usd = sum(
-                o.metrics.cost_usd for o in outputs if o.metrics and o.metrics.cost_usd
-            )
+            total_cost_usd = sum(o.metrics.cost_usd for o in outputs if o.metrics and o.metrics.cost_usd)
 
             # Check SLA compliance
             if total_latency_ms > settings.max_latency_p99_ms:
-                raise KernelChainError(
-                    f"Chain exceeded p99 latency SLA: "
-                    f"{total_latency_ms:.2f}ms > {settings.max_latency_p99_ms}ms"
-                )
+                raise KernelChainError(f"Chain exceeded p99 latency SLA: {total_latency_ms:.2f}ms > {settings.max_latency_p99_ms}ms")
 
             if total_cost_usd > settings.max_cost_per_decision:
-                raise KernelChainError(
-                    f"Chain exceeded cost SLA: "
-                    f"${total_cost_usd:.6f} > ${settings.max_cost_per_decision}"
-                )
+                raise KernelChainError(f"Chain exceeded cost SLA: ${total_cost_usd:.6f} > ${settings.max_cost_per_decision}")
 
             # Build kernel metrics summary
             kernel_metrics = {
@@ -190,6 +178,4 @@ class ChainExecutor:
             raise
         except Exception as e:
             total_latency_ms = (time.perf_counter() - start_time) * 1000
-            raise KernelChainError(
-                f"Chain execution failed after {total_latency_ms:.2f}ms: {str(e)}"
-            ) from e
+            raise KernelChainError(f"Chain execution failed after {total_latency_ms:.2f}ms: {str(e)}") from e

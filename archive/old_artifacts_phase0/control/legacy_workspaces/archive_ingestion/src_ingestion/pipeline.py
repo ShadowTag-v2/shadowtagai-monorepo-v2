@@ -234,7 +234,7 @@ class IngestionPipeline:
         logger.info(f"   - Tier 3 (Low):  {briefing.tier_3_items}")
 
         # Performance assessment
-        runtime_minutes = self.metrics['runtime_seconds'] / 60
+        runtime_minutes = self.metrics["runtime_seconds"] / 60
         target_runtime = 45  # minutes
 
         logger.info("\n⚡ Performance:")

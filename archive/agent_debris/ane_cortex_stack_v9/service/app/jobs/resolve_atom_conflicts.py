@@ -2,6 +2,7 @@ from __future__ import annotations
 from ..config import load_settings
 from ..utils.db import pg_conn
 
+
 def detect_conflicts():
     s = load_settings()
     conflicts = []
@@ -25,14 +26,16 @@ def detect_conflicts():
                 continue
             canon_id, canon_value, canon_source, canon_weight = seen[key]
             if str(object_text) != str(canon_value):
-                conflicts.append({
-                    "subject": subject,
-                    "predicate": predicate,
-                    "canonical_atom_id": str(canon_id),
-                    "conflicting_source_type": source_type,
-                    "conflicting_source_ref": str(atom_id),
-                    "conflicting_value": str(object_text),
-                })
+                conflicts.append(
+                    {
+                        "subject": subject,
+                        "predicate": predicate,
+                        "canonical_atom_id": str(canon_id),
+                        "conflicting_source_type": source_type,
+                        "conflicting_source_ref": str(atom_id),
+                        "conflicting_value": str(object_text),
+                    }
+                )
         for c in conflicts:
             cur.execute(
                 """
@@ -41,11 +44,17 @@ def detect_conflicts():
                 VALUES (%s, %s, %s, %s::uuid, %s, %s, %s)
                 """,
                 (
-                    s.repo_id, c["subject"], c["predicate"], c["canonical_atom_id"],
-                    c["conflicting_source_type"], c["conflicting_source_ref"], c["conflicting_value"]
+                    s.repo_id,
+                    c["subject"],
+                    c["predicate"],
+                    c["canonical_atom_id"],
+                    c["conflicting_source_type"],
+                    c["conflicting_source_ref"],
+                    c["conflicting_value"],
                 ),
             )
     return {"conflicts_detected": len(conflicts), "conflicts": conflicts}
+
 
 if __name__ == "__main__":
     print(detect_conflicts())

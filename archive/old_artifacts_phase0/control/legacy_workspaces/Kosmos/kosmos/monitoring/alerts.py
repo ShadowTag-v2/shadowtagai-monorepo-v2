@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 class AlertSeverity(StrEnum):
     """Alert severity levels."""
+
     INFO = "info"
     WARNING = "warning"
     ERROR = "error"
@@ -26,6 +27,7 @@ class AlertSeverity(StrEnum):
 
 class AlertStatus(StrEnum):
     """Alert status."""
+
     ACTIVE = "active"
     RESOLVED = "resolved"
     ACKNOWLEDGED = "acknowledged"
@@ -57,7 +59,7 @@ class Alert:
             "message": self.message,
             "timestamp": self.timestamp.isoformat(),
             "status": self.status.value,
-            "details": self.details
+            "details": self.details,
         }
 
 
@@ -103,12 +105,7 @@ class AlertRule:
             Alert instance
         """
         self.last_triggered = datetime.utcnow()
-        return Alert(
-            name=self.name,
-            severity=self.severity,
-            message=self.message_template,
-            details=details or {}
-        )
+        return Alert(name=self.name, severity=self.severity, message=self.message_template, details=details or {})
 
 
 class AlertManager:
@@ -138,67 +135,81 @@ class AlertManager:
         """Initialize default alert rules."""
 
         # Database connection failure
-        self.alert_rules.append(AlertRule(
-            name="database_connection_failed",
-            condition=self._check_database_connection,
-            severity=AlertSeverity.CRITICAL,
-            message_template="Database connection failed",
-            cooldown_seconds=60
-        ))
+        self.alert_rules.append(
+            AlertRule(
+                name="database_connection_failed",
+                condition=self._check_database_connection,
+                severity=AlertSeverity.CRITICAL,
+                message_template="Database connection failed",
+                cooldown_seconds=60,
+            )
+        )
 
         # High API failure rate
-        self.alert_rules.append(AlertRule(
-            name="high_api_failure_rate",
-            condition=self._check_api_failure_rate,
-            severity=AlertSeverity.ERROR,
-            message_template="High API failure rate detected",
-            cooldown_seconds=300
-        ))
+        self.alert_rules.append(
+            AlertRule(
+                name="high_api_failure_rate",
+                condition=self._check_api_failure_rate,
+                severity=AlertSeverity.ERROR,
+                message_template="High API failure rate detected",
+                cooldown_seconds=300,
+            )
+        )
 
         # API rate limit approaching
-        self.alert_rules.append(AlertRule(
-            name="api_rate_limit_warning",
-            condition=self._check_api_rate_limit,
-            severity=AlertSeverity.WARNING,
-            message_template="Approaching API rate limit",
-            cooldown_seconds=600
-        ))
+        self.alert_rules.append(
+            AlertRule(
+                name="api_rate_limit_warning",
+                condition=self._check_api_rate_limit,
+                severity=AlertSeverity.WARNING,
+                message_template="Approaching API rate limit",
+                cooldown_seconds=600,
+            )
+        )
 
         # High memory usage
-        self.alert_rules.append(AlertRule(
-            name="high_memory_usage",
-            condition=self._check_memory_usage,
-            severity=AlertSeverity.WARNING,
-            message_template="High memory usage detected",
-            cooldown_seconds=300
-        ))
+        self.alert_rules.append(
+            AlertRule(
+                name="high_memory_usage",
+                condition=self._check_memory_usage,
+                severity=AlertSeverity.WARNING,
+                message_template="High memory usage detected",
+                cooldown_seconds=300,
+            )
+        )
 
         # High disk usage
-        self.alert_rules.append(AlertRule(
-            name="high_disk_usage",
-            condition=self._check_disk_usage,
-            severity=AlertSeverity.WARNING,
-            message_template="High disk usage detected",
-            cooldown_seconds=600
-        ))
+        self.alert_rules.append(
+            AlertRule(
+                name="high_disk_usage",
+                condition=self._check_disk_usage,
+                severity=AlertSeverity.WARNING,
+                message_template="High disk usage detected",
+                cooldown_seconds=600,
+            )
+        )
 
         # Experiment failure rate
-        self.alert_rules.append(AlertRule(
-            name="high_experiment_failure_rate",
-            condition=self._check_experiment_failure_rate,
-            severity=AlertSeverity.ERROR,
-            message_template="High experiment failure rate",
-            cooldown_seconds=300
-        ))
+        self.alert_rules.append(
+            AlertRule(
+                name="high_experiment_failure_rate",
+                condition=self._check_experiment_failure_rate,
+                severity=AlertSeverity.ERROR,
+                message_template="High experiment failure rate",
+                cooldown_seconds=300,
+            )
+        )
 
         # Cache unavailable
-        self.alert_rules.append(AlertRule(
-            name="cache_unavailable",
-            condition=self._check_cache_availability,
-            severity=AlertSeverity.WARNING,
-            message_template="Cache service unavailable",
-            cooldown_seconds=120
-        ))
+        self.alert_rules.append(
+            AlertRule(
+                name="cache_unavailable",
+                condition=self._check_cache_availability,
+                severity=AlertSeverity.WARNING,
+                message_template="Cache service unavailable",
+                cooldown_seconds=120,
+            )
+        )
 
     def add_alert_rule(self, rule: AlertRule):
         """Add a custom alert rule."""
@@ -274,6 +285,7 @@ class AlertManager:
         """Check if database connection is failing."""
         try:
             from kosmos.api.health import get_health_checker
+
             health_checker = get_health_checker()
             db_status = health_checker._check_database()
             return db_status["status"] != "healthy"
@@ -297,6 +309,7 @@ class AlertManager:
         """Check if memory usage is high."""
         try:
             import psutil
+
             memory = psutil.virtual_memory()
             # Alert if memory usage > 85%
             return memory.percent > 85
@@ -308,7 +321,8 @@ class AlertManager:
         """Check if disk usage is high."""
         try:
             import psutil
-            disk = psutil.disk_usage('/')
+
+            disk = psutil.disk_usage("/")
             # Alert if disk usage > 90%
             return disk.percent > 90
         except Exception as e:
@@ -325,6 +339,7 @@ class AlertManager:
         """Check if cache is unavailable."""
         try:
             from kosmos.api.health import get_health_checker
+
             health_checker = get_health_checker()
             cache_status = health_checker._check_cache()
             return cache_status["status"] == "unhealthy"
@@ -340,7 +355,7 @@ def log_notification_handler(alert: Alert):
         AlertSeverity.INFO: logger.info,
         AlertSeverity.WARNING: logger.warning,
         AlertSeverity.ERROR: logger.error,
-        AlertSeverity.CRITICAL: logger.critical
+        AlertSeverity.CRITICAL: logger.critical,
     }.get(alert.severity, logger.info)
 
     log_func(f"ALERT [{alert.severity.value.upper()}]: {alert.message} | {alert.details}")
@@ -367,9 +382,9 @@ def email_notification_handler(alert: Alert):
         from email.message import EmailMessage
 
         msg = EmailMessage()
-        msg['Subject'] = f"[{alert.severity.value.upper()}] Kosmos Alert: {alert.name}"
-        msg['From'] = os.getenv("ALERT_EMAIL_FROM", "alerts@kosmos.ai")
-        msg['To'] = os.getenv("ALERT_EMAIL_TO", "admin@example.com")
+        msg["Subject"] = f"[{alert.severity.value.upper()}] Kosmos Alert: {alert.name}"
+        msg["From"] = os.getenv("ALERT_EMAIL_FROM", "alerts@kosmos.ai")
+        msg["To"] = os.getenv("ALERT_EMAIL_TO", "admin@example.com")
 
         body = f"""
 Kosmos Alert
@@ -428,7 +443,7 @@ def slack_notification_handler(alert: Alert):
             AlertSeverity.INFO: "#36a64f",
             AlertSeverity.WARNING: "#ff9900",
             AlertSeverity.ERROR: "#ff0000",
-            AlertSeverity.CRITICAL: "#8b0000"
+            AlertSeverity.CRITICAL: "#8b0000",
         }.get(alert.severity, "#808080")
 
         payload = {
@@ -438,30 +453,18 @@ def slack_notification_handler(alert: Alert):
                     "title": f"{alert.severity.value.upper()}: {alert.name}",
                     "text": alert.message,
                     "fields": [
-                        {
-                            "title": "Timestamp",
-                            "value": alert.timestamp.isoformat(),
-                            "short": True
-                        },
-                        {
-                            "title": "Alert ID",
-                            "value": alert.alert_id,
-                            "short": True
-                        }
+                        {"title": "Timestamp", "value": alert.timestamp.isoformat(), "short": True},
+                        {"title": "Alert ID", "value": alert.alert_id, "short": True},
                     ],
                     "footer": "Kosmos Alert System",
-                    "ts": int(alert.timestamp.timestamp())
+                    "ts": int(alert.timestamp.timestamp()),
                 }
             ]
         }
 
         # Add details if present
         if alert.details:
-            payload["attachments"][0]["fields"].append({
-                "title": "Details",
-                "value": f"```{json.dumps(alert.details, indent=2)}```",
-                "short": False
-            })
+            payload["attachments"][0]["fields"].append({"title": "Details", "value": f"```{json.dumps(alert.details, indent=2)}```", "short": False})
 
         response = requests.post(webhook_url, json=payload, timeout=10)
         response.raise_for_status()
@@ -504,15 +507,11 @@ def pagerduty_notification_handler(alert: Alert):
                 "severity": alert.severity.value,
                 "source": "kosmos-ai-scientist",
                 "timestamp": alert.timestamp.isoformat(),
-                "custom_details": alert.details
-            }
+                "custom_details": alert.details,
+            },
         }
 
-        response = requests.post(
-            "https://events.pagerduty.com/v2/enqueue",
-            json=payload,
-            timeout=10
-        )
+        response = requests.post("https://events.pagerduty.com/v2/enqueue", json=payload, timeout=10)
         response.raise_for_status()
 
         logger.info(f"PagerDuty notification sent for alert: {alert.name}")

@@ -27,6 +27,7 @@ class RolloutTracker:
         experiment_design: Count of ExperimentDesignerAgent rollouts
         code_execution: Count of code execution rollouts
     """
+
     data_analysis: int = 0
     literature: int = 0
     hypothesis_generation: int = 0
@@ -36,13 +37,7 @@ class RolloutTracker:
     @property
     def total(self) -> int:
         """Get total rollout count across all agent types."""
-        return sum([
-            self.data_analysis,
-            self.literature,
-            self.hypothesis_generation,
-            self.experiment_design,
-            self.code_execution
-        ])
+        return sum([self.data_analysis, self.literature, self.hypothesis_generation, self.experiment_design, self.code_execution])
 
     def increment(self, agent_type: str) -> None:
         """
@@ -73,7 +68,7 @@ class RolloutTracker:
             "hypothesis_generation": self.hypothesis_generation,
             "experiment_design": self.experiment_design,
             "code_execution": self.code_execution,
-            "total": self.total
+            "total": self.total,
         }
 
     def summary(self) -> str:
@@ -83,11 +78,7 @@ class RolloutTracker:
         Returns:
             String like "166 data analysis + 36 literature = 202 total rollouts"
         """
-        return (
-            f"{self.data_analysis} data analysis + "
-            f"{self.literature} literature = "
-            f"{self.total} total rollouts"
-        )
+        return f"{self.data_analysis} data analysis + {self.literature} literature = {self.total} total rollouts"
 
     def reset(self) -> None:
         """Reset all counters to zero."""

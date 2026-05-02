@@ -57,11 +57,17 @@ export default function Management() {
               </div>
               <div className="ceo-contact-item">
                 <span className="ceo-contact-label">Address</span>
-                <span className="ceo-contact-value">495 N Main St., #119<br />Lakeport, CA 95453</span>
+                <span className="ceo-contact-value">
+                  495 N Main St., #119
+                  <br />
+                  Lakeport, CA 95453
+                </span>
               </div>
               <div className="ceo-contact-item">
                 <span className="ceo-contact-label">Telephone</span>
-                <a href="tel:+13692355643" className="ceo-contact-value ceo-contact-link">(369) 235-5643</a>
+                <a href="tel:+13692355643" className="ceo-contact-value ceo-contact-link">
+                  (369) 235-5643
+                </a>
               </div>
               <div className="ceo-contact-item">
                 <span className="ceo-contact-label">Facsimile</span>
@@ -74,4 +80,3 @@ export default function Management() {
     </section>
   );
 }
-

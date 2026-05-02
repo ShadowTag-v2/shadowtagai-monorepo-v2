@@ -28,6 +28,7 @@ import pandas as pd
 
 try:
     from scipy import stats as sp_stats
+
     HAS_SCIPY = True
 except ImportError:
     HAS_SCIPY = False
@@ -74,13 +75,13 @@ class NullModelResult:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'NullModelResult':
+    def from_dict(cls, data: dict[str, Any]) -> NullModelResult:
         """Create NullModelResult from dictionary."""
         # Handle missing optional fields
-        data.setdefault('observed_effect_size', None)
-        data.setdefault('null_effect_sizes', None)
-        data.setdefault('computation_time_seconds', 0.0)
-        data.setdefault('warnings', [])
+        data.setdefault("observed_effect_size", None)
+        data.setdefault("null_effect_sizes", None)
+        data.setdefault("computation_time_seconds", 0.0)
+        data.setdefault("warnings", [])
         return cls(**data)
 
     @property
@@ -91,20 +92,11 @@ class NullModelResult:
     def get_summary(self) -> str:
         """Generate human-readable summary of validation result."""
         if self.is_valid:
-            return (
-                f"VALID: p={self.permutation_p_value:.4f} (< {self.alpha}), "
-                f"percentile={self.null_percentile:.1f}%"
-            )
+            return f"VALID: p={self.permutation_p_value:.4f} (< {self.alpha}), percentile={self.null_percentile:.1f}%"
         elif self.persists_in_noise:
-            return (
-                f"WARNING: Finding persists in noise (percentile={self.null_percentile:.1f}%). "
-                f"Potential false positive."
-            )
+            return f"WARNING: Finding persists in noise (percentile={self.null_percentile:.1f}%). Potential false positive."
         else:
-            return (
-                f"INVALID: p={self.permutation_p_value:.4f} (>= {self.alpha}). "
-                f"Finding not significant against null model."
-            )
+            return f"INVALID: p={self.permutation_p_value:.4f} (>= {self.alpha}). Finding not significant against null model."
 
 
 class NullModelValidator:
@@ -126,9 +118,17 @@ class NullModelValidator:
 
     # Test statistic keys to look for in findings
     STATISTIC_KEYS = [
-        'statistic', 't_statistic', 'f_statistic', 'chi2',
-        'correlation', 'r', 'r_squared', 'effect_size',
-        'coefficient', 'odds_ratio', 'hazard_ratio'
+        "statistic",
+        "t_statistic",
+        "f_statistic",
+        "chi2",
+        "correlation",
+        "r",
+        "r_squared",
+        "effect_size",
+        "coefficient",
+        "odds_ratio",
+        "hazard_ratio",
     ]
 
     def __init__(
@@ -136,7 +136,7 @@ class NullModelValidator:
         n_permutations: int = 1000,
         alpha: float = 0.05,
         random_seed: int | None = None,
-        persistence_threshold: float = 0.5  # IQR threshold for persistence
+        persistence_threshold: float = 0.5,  # IQR threshold for persistence
     ):
         """
         Initialize NullModelValidator.
@@ -157,10 +157,7 @@ class NullModelValidator:
             logger.warning("scipy not available; parametric null distributions limited")
 
     def validate_finding(
-        self,
-        finding: dict[str, Any],
-        data: pd.DataFrame | None = None,
-        analysis_func: Callable[[pd.DataFrame], dict[str, Any]] | None = None
+        self, finding: dict[str, Any], data: pd.DataFrame | None = None, analysis_func: Callable[[pd.DataFrame], dict[str, Any]] | None = None
     ) -> NullModelResult:
         """
         Validate a finding using permutation testing.
@@ -191,10 +188,10 @@ class NullModelValidator:
                 passes_null_test=False,
                 persists_in_noise=True,
                 n_permutations=0,
-                shuffle_method='none',
+                shuffle_method="none",
                 alpha=self.alpha,
                 warnings=[str(e)],
-                computation_time_seconds=time.time() - start_time
+                computation_time_seconds=time.time() - start_time,
             )
 
         # Extract effect size if available
@@ -206,13 +203,9 @@ class NullModelValidator:
         # Generate null distribution
         if data is not None and analysis_func is not None:
             # Full permutation: shuffle data and re-run analysis
-            null_dist, null_effects = self._full_permutation_test(
-                data, analysis_func, shuffle_method
-            )
+            null_dist, null_effects = self._full_permutation_test(data, analysis_func, shuffle_method)
             if len(null_dist) < self.n_permutations * 0.5:
-                warnings.append(
-                    f"Only {len(null_dist)}/{self.n_permutations} permutations succeeded"
-                )
+                warnings.append(f"Only {len(null_dist)}/{self.n_permutations} permutations succeeded")
         else:
             # Approximate: use parametric null distribution
             null_dist = self._parametric_null(finding)
@@ -245,16 +238,12 @@ class NullModelValidator:
             observed_effect_size=effect_size,
             null_effect_sizes=self._summarize_distribution(null_effects) if null_effects is not None else None,
             computation_time_seconds=computation_time,
-            warnings=warnings
+            warnings=warnings,
         )
 
     # === Shuffle Methods ===
 
-    def shuffle_columns(
-        self,
-        df: pd.DataFrame,
-        columns: list[str] | None = None
-    ) -> pd.DataFrame:
+    def shuffle_columns(self, df: pd.DataFrame, columns: list[str] | None = None) -> pd.DataFrame:
         """
         Shuffle specified columns independently (breaks correlations).
 
@@ -285,11 +274,7 @@ class NullModelValidator:
         indices = self.rng.permutation(len(df))
         return df.iloc[indices].reset_index(drop=True)
 
-    def shuffle_labels(
-        self,
-        df: pd.DataFrame,
-        label_col: str
-    ) -> pd.DataFrame:
+    def shuffle_labels(self, df: pd.DataFrame, label_col: str) -> pd.DataFrame:
         """
         Shuffle group labels (breaks group assignments for t-tests, ANOVA).
 
@@ -305,11 +290,7 @@ class NullModelValidator:
             result[label_col] = self.rng.permutation(result[label_col].values)
         return result
 
-    def shuffle_residuals(
-        self,
-        y: np.ndarray,
-        y_pred: np.ndarray
-    ) -> np.ndarray:
+    def shuffle_residuals(self, y: np.ndarray, y_pred: np.ndarray) -> np.ndarray:
         """
         Shuffle regression residuals (for regression analyses).
 
@@ -339,45 +320,37 @@ class NullModelValidator:
         Raises:
             ValueError: If no test statistic found
         """
-        stats = finding.get('statistics', {})
+        stats = finding.get("statistics", {})
 
         # Try various common keys
         for key in self.STATISTIC_KEYS:
             if key in stats and stats[key] is not None:
                 try:
                     return abs(float(stats[key]))
-                except (ValueError, TypeError):
+                except ValueError, TypeError:
                     continue
 
         # Fall back to p-value if available (convert to z-score)
-        if 'p_value' in stats and stats['p_value'] is not None and HAS_SCIPY:
-            p = float(stats['p_value'])
+        if "p_value" in stats and stats["p_value"] is not None and HAS_SCIPY:
+            p = float(stats["p_value"])
             if 0 < p < 1:
                 # Convert p-value to z-score (two-tailed)
                 return abs(sp_stats.norm.ppf(p / 2))
 
-        raise ValueError(
-            f"No test statistic found in finding. "
-            f"Expected one of: {self.STATISTIC_KEYS}"
-        )
+        raise ValueError(f"No test statistic found in finding. Expected one of: {self.STATISTIC_KEYS}")
 
     def _extract_effect_size(self, finding: dict[str, Any]) -> float | None:
         """Extract effect size from finding if available."""
-        stats = finding.get('statistics', {})
-        for key in ['effect_size', 'cohens_d', 'd', 'eta_squared', 'r_squared']:
+        stats = finding.get("statistics", {})
+        for key in ["effect_size", "cohens_d", "d", "eta_squared", "r_squared"]:
             if key in stats and stats[key] is not None:
                 try:
                     return float(stats[key])
-                except (ValueError, TypeError):
+                except ValueError, TypeError:
                     continue
         return None
 
-    def _full_permutation_test(
-        self,
-        data: pd.DataFrame,
-        analysis_func: Callable[[pd.DataFrame], dict[str, Any]],
-        shuffle_method: str
-    ) -> tuple:
+    def _full_permutation_test(self, data: pd.DataFrame, analysis_func: Callable[[pd.DataFrame], dict[str, Any]], shuffle_method: str) -> tuple:
         """
         Run full permutation test by shuffling data and re-running analysis.
 
@@ -394,11 +367,11 @@ class NullModelValidator:
 
         for _ in range(self.n_permutations):
             # Shuffle data based on method
-            if shuffle_method == 'column':
+            if shuffle_method == "column":
                 shuffled = self.shuffle_columns(data)
-            elif shuffle_method == 'row':
+            elif shuffle_method == "row":
                 shuffled = self.shuffle_rows(data)
-            elif shuffle_method == 'label':
+            elif shuffle_method == "label":
                 # Try to detect label column
                 label_col = self._detect_label_column(data)
                 if label_col:
@@ -410,21 +383,18 @@ class NullModelValidator:
 
             try:
                 result = analysis_func(shuffled)
-                stat = self._extract_test_statistic({'statistics': result})
+                stat = self._extract_test_statistic({"statistics": result})
                 null_statistics.append(stat)
 
                 # Also track effect size if available
-                effect = self._extract_effect_size({'statistics': result})
+                effect = self._extract_effect_size({"statistics": result})
                 if effect is not None:
                     null_effects.append(effect)
             except Exception as e:
                 logger.debug(f"Permutation failed: {e}")
                 continue
 
-        return (
-            np.array(null_statistics),
-            np.array(null_effects) if null_effects else None
-        )
+        return (np.array(null_statistics), np.array(null_effects) if null_effects else None)
 
     def _parametric_null(self, finding: dict[str, Any]) -> np.ndarray:
         """
@@ -440,37 +410,33 @@ class NullModelValidator:
             # Fallback: uniform distribution
             return self.rng.uniform(0, 3, size=self.n_permutations)
 
-        stats = finding.get('statistics', {})
+        stats = finding.get("statistics", {})
 
         # Determine distribution based on test type
-        test_type = str(stats.get('test_type', '')).lower()
-        df = stats.get('degrees_of_freedom', 100)
+        test_type = str(stats.get("test_type", "")).lower()
+        df = stats.get("degrees_of_freedom", 100)
 
         # Ensure df is valid
         if df is None or df < 1:
             df = 100
 
-        if 't' in test_type or 't_test' in test_type:
+        if "t" in test_type or "t_test" in test_type:
             # T-distribution
             return np.abs(sp_stats.t.rvs(df, size=self.n_permutations, random_state=self.rng))
-        elif 'f' in test_type or 'anova' in test_type:
+        elif "f" in test_type or "anova" in test_type:
             # F-distribution
             return sp_stats.f.rvs(1, max(1, df), size=self.n_permutations, random_state=self.rng)
-        elif 'chi' in test_type:
+        elif "chi" in test_type:
             # Chi-squared distribution
             return sp_stats.chi2.rvs(max(1, df), size=self.n_permutations, random_state=self.rng)
-        elif 'correlation' in test_type or 'pearson' in test_type or 'spearman' in test_type:
+        elif "correlation" in test_type or "pearson" in test_type or "spearman" in test_type:
             # Correlation: use Fisher z-transformation null
             return np.abs(sp_stats.norm.rvs(size=self.n_permutations, random_state=self.rng))
         else:
             # Default: standard normal (absolute values)
             return np.abs(sp_stats.norm.rvs(size=self.n_permutations, random_state=self.rng))
 
-    def _calculate_permutation_pvalue(
-        self,
-        observed: float,
-        null_dist: np.ndarray
-    ) -> float:
+    def _calculate_permutation_pvalue(self, observed: float, null_dist: np.ndarray) -> float:
         """
         Calculate empirical p-value from permutation distribution.
 
@@ -493,11 +459,7 @@ class NullModelValidator:
         # Add 1 to numerator and denominator (correction)
         return (n_extreme + 1) / (len(null_dist) + 1)
 
-    def _check_persistence_in_noise(
-        self,
-        observed: float,
-        null_dist: np.ndarray
-    ) -> bool:
+    def _check_persistence_in_noise(self, observed: float, null_dist: np.ndarray) -> bool:
         """
         Check if finding persists even in shuffled/noise data.
 
@@ -524,11 +486,7 @@ class NullModelValidator:
         # Check if observed falls within IQR (bad sign)
         return q_low <= abs(observed) <= q_high
 
-    def _calculate_percentile(
-        self,
-        observed: float,
-        null_dist: np.ndarray
-    ) -> float:
+    def _calculate_percentile(self, observed: float, null_dist: np.ndarray) -> float:
         """
         Calculate where observed falls in null distribution.
 
@@ -544,10 +502,7 @@ class NullModelValidator:
 
         return float(np.sum(null_dist <= abs(observed)) / len(null_dist) * 100)
 
-    def _summarize_distribution(
-        self,
-        dist: np.ndarray | None
-    ) -> list[float]:
+    def _summarize_distribution(self, dist: np.ndarray | None) -> list[float]:
         """
         Summarize distribution as percentiles (for storage efficiency).
 
@@ -573,19 +528,19 @@ class NullModelValidator:
         Returns:
             Shuffle method: 'column', 'row', 'label', or 'residual'
         """
-        stats = finding.get('statistics', {})
-        test_type = str(stats.get('test_type', '')).lower()
+        stats = finding.get("statistics", {})
+        test_type = str(stats.get("test_type", "")).lower()
 
-        if 't_test' in test_type or 'anova' in test_type or 'group' in test_type:
-            return 'label'
-        elif 'correlation' in test_type or 'pearson' in test_type or 'spearman' in test_type:
-            return 'column'
-        elif 'regression' in test_type or 'linear' in test_type:
-            return 'residual'
-        elif 'time' in test_type or 'series' in test_type:
-            return 'row'
+        if "t_test" in test_type or "anova" in test_type or "group" in test_type:
+            return "label"
+        elif "correlation" in test_type or "pearson" in test_type or "spearman" in test_type:
+            return "column"
+        elif "regression" in test_type or "linear" in test_type:
+            return "residual"
+        elif "time" in test_type or "series" in test_type:
+            return "row"
         else:
-            return 'column'  # Default
+            return "column"  # Default
 
     def _detect_label_column(self, df: pd.DataFrame) -> str | None:
         """
@@ -598,7 +553,7 @@ class NullModelValidator:
             Column name or None if not detected
         """
         # Common label column names
-        label_names = ['group', 'label', 'class', 'category', 'condition', 'treatment']
+        label_names = ["group", "label", "class", "category", "condition", "treatment"]
 
         for col in df.columns:
             col_lower = col.lower()
@@ -608,15 +563,12 @@ class NullModelValidator:
 
         # Check for columns with few unique values (likely categorical)
         for col in df.columns:
-            if df[col].dtype == 'object' or df[col].nunique() <= 5:
+            if df[col].dtype == "object" or df[col].nunique() <= 5:
                 return col
 
         return None
 
-    def batch_validate(
-        self,
-        findings: list[dict[str, Any]]
-    ) -> list[NullModelResult]:
+    def batch_validate(self, findings: list[dict[str, Any]]) -> list[NullModelResult]:
         """
         Validate multiple findings.
 
@@ -628,10 +580,7 @@ class NullModelValidator:
         """
         return [self.validate_finding(f) for f in findings]
 
-    def get_validation_statistics(
-        self,
-        results: list[NullModelResult]
-    ) -> dict[str, Any]:
+    def get_validation_statistics(self, results: list[NullModelResult]) -> dict[str, Any]:
         """
         Compute aggregate statistics from multiple validations.
 
@@ -642,7 +591,7 @@ class NullModelValidator:
             Dictionary with validation statistics
         """
         if not results:
-            return {'count': 0}
+            return {"count": 0}
 
         valid_count = sum(1 for r in results if r.is_valid)
         passes_null = sum(1 for r in results if r.passes_null_test)
@@ -651,15 +600,15 @@ class NullModelValidator:
         p_values = [r.permutation_p_value for r in results]
 
         return {
-            'count': len(results),
-            'valid_count': valid_count,
-            'valid_rate': valid_count / len(results),
-            'passes_null_test_count': passes_null,
-            'passes_null_test_rate': passes_null / len(results),
-            'persists_in_noise_count': persists_noise,
-            'persists_in_noise_rate': persists_noise / len(results),
-            'mean_p_value': float(np.mean(p_values)),
-            'median_p_value': float(np.median(p_values)),
-            'min_p_value': float(np.min(p_values)),
-            'max_p_value': float(np.max(p_values))
+            "count": len(results),
+            "valid_count": valid_count,
+            "valid_rate": valid_count / len(results),
+            "passes_null_test_count": passes_null,
+            "passes_null_test_rate": passes_null / len(results),
+            "persists_in_noise_count": persists_noise,
+            "persists_in_noise_rate": persists_noise / len(results),
+            "mean_p_value": float(np.mean(p_values)),
+            "median_p_value": float(np.median(p_values)),
+            "min_p_value": float(np.min(p_values)),
+            "max_p_value": float(np.max(p_values)),
         }

@@ -30,6 +30,7 @@ from kosmos.domains.neuroscience.ontology import NeuroscienceOntology
 
 class Domain(StrEnum):
     """Scientific domains"""
+
     BIOLOGY = "biology"
     NEUROSCIENCE = "neuroscience"
     MATERIALS = "materials"
@@ -37,6 +38,7 @@ class Domain(StrEnum):
 
 class CrossDomainMapping(BaseModel):
     """Mapping between concepts across different domains"""
+
     source_domain: Domain
     source_concept_id: str
     target_domain: Domain
@@ -48,6 +50,7 @@ class CrossDomainMapping(BaseModel):
 
 class DomainConcept(BaseModel):
     """Unified concept representation across domains"""
+
     domain: Domain
     concept_id: str
     name: str
@@ -93,7 +96,7 @@ class DomainKnowledgeBase:
             target_concept_id="neural_conductance",
             mapping_type="analogous",
             confidence=0.8,
-            rationale="Both involve electrical signal propagation"
+            rationale="Both involve electrical signal propagation",
         )
 
         self._add_mapping(
@@ -103,7 +106,7 @@ class DomainKnowledgeBase:
             target_concept_id="action_potential_threshold",
             mapping_type="analogous",
             confidence=0.7,
-            rationale="Energy barriers for activation/conduction"
+            rationale="Energy barriers for activation/conduction",
         )
 
         # Structural concepts: Materials ↔ Biology
@@ -114,7 +117,7 @@ class DomainKnowledgeBase:
             target_concept_id="protein_structure",
             mapping_type="analogous",
             confidence=0.6,
-            rationale="Ordered structural organization at different scales"
+            rationale="Ordered structural organization at different scales",
         )
 
         # Network concepts: Neuroscience ↔ Biology
@@ -125,7 +128,7 @@ class DomainKnowledgeBase:
             target_concept_id="metabolic_pathway",
             mapping_type="analogous",
             confidence=0.7,
-            rationale="Network structures with interconnected nodes"
+            rationale="Network structures with interconnected nodes",
         )
 
         # Optimization concepts: All domains
@@ -136,7 +139,7 @@ class DomainKnowledgeBase:
             target_concept_id="metabolic_optimization",
             mapping_type="related",
             confidence=0.85,
-            rationale="Parameter optimization methodologies"
+            rationale="Parameter optimization methodologies",
         )
 
         # Degenerative processes: Neuroscience ↔ Materials
@@ -147,7 +150,7 @@ class DomainKnowledgeBase:
             target_concept_id="material_degradation",
             mapping_type="analogous",
             confidence=0.6,
-            rationale="Progressive structural deterioration over time"
+            rationale="Progressive structural deterioration over time",
         )
 
         # Signal transmission: Neuroscience ↔ Materials
@@ -158,7 +161,7 @@ class DomainKnowledgeBase:
             target_concept_id="carrier_transport",
             mapping_type="analogous",
             confidence=0.75,
-            rationale="Information/charge carrier transmission mechanisms"
+            rationale="Information/charge carrier transmission mechanisms",
         )
 
     def _add_mapping(
@@ -169,29 +172,27 @@ class DomainKnowledgeBase:
         target_concept_id: str,
         mapping_type: str,
         confidence: float,
-        rationale: str | None = None
+        rationale: str | None = None,
     ) -> None:
         """Add a cross-domain mapping"""
-        self.cross_domain_mappings.append(CrossDomainMapping(
-            source_domain=source_domain,
-            source_concept_id=source_concept_id,
-            target_domain=target_domain,
-            target_concept_id=target_concept_id,
-            mapping_type=mapping_type,
-            confidence=confidence,
-            rationale=rationale
-        ))
+        self.cross_domain_mappings.append(
+            CrossDomainMapping(
+                source_domain=source_domain,
+                source_concept_id=source_concept_id,
+                target_domain=target_domain,
+                target_concept_id=target_concept_id,
+                mapping_type=mapping_type,
+                confidence=confidence,
+                rationale=rationale,
+            )
+        )
 
     def get_domain_ontology(self, domain: str | Domain) -> BiologyOntology | NeuroscienceOntology | MaterialsOntology:
         """Get ontology for a specific domain"""
         if isinstance(domain, str):
             domain = Domain(domain)
 
-        ontology_map = {
-            Domain.BIOLOGY: self.biology,
-            Domain.NEUROSCIENCE: self.neuroscience,
-            Domain.MATERIALS: self.materials
-        }
+        ontology_map = {Domain.BIOLOGY: self.biology, Domain.NEUROSCIENCE: self.neuroscience, Domain.MATERIALS: self.materials}
 
         return ontology_map[domain]
 
@@ -218,28 +219,28 @@ class DomainKnowledgeBase:
             # Search in domain-specific ontology
             for concept_id, concept in ontology.concepts.items():
                 # Check name, ID, and synonyms
-                if (query_lower in concept.name.lower() or
-                    query_lower in concept_id.lower() or
-                    any(query_lower in syn.lower() for syn in concept.synonyms)):
-
-                    results.append(DomainConcept(
-                        domain=domain,
-                        concept_id=concept_id,
-                        name=concept.name,
-                        type=concept.type,
-                        description=concept.description,
-                        synonyms=concept.synonyms,
-                        external_ids=concept.external_ids,
-                        metadata=concept.metadata
-                    ))
+                if (
+                    query_lower in concept.name.lower()
+                    or query_lower in concept_id.lower()
+                    or any(query_lower in syn.lower() for syn in concept.synonyms)
+                ):
+                    results.append(
+                        DomainConcept(
+                            domain=domain,
+                            concept_id=concept_id,
+                            name=concept.name,
+                            type=concept.type,
+                            description=concept.description,
+                            synonyms=concept.synonyms,
+                            external_ids=concept.external_ids,
+                            metadata=concept.metadata,
+                        )
+                    )
 
         return results
 
     def map_cross_domain_concepts(
-        self,
-        concept_id: str,
-        source_domain: Domain | None = None,
-        min_confidence: float = 0.5
+        self, concept_id: str, source_domain: Domain | None = None, min_confidence: float = 0.5
     ) -> list[CrossDomainMapping]:
         """
         Find cross-domain mappings for a concept.
@@ -267,24 +268,22 @@ class DomainKnowledgeBase:
             if mapping.target_concept_id == concept_id:
                 if source_domain is None or mapping.target_domain == source_domain:
                     # Reverse the mapping
-                    results.append(CrossDomainMapping(
-                        source_domain=mapping.target_domain,
-                        source_concept_id=mapping.target_concept_id,
-                        target_domain=mapping.source_domain,
-                        target_concept_id=mapping.source_concept_id,
-                        mapping_type=mapping.mapping_type,
-                        confidence=mapping.confidence,
-                        rationale=mapping.rationale
-                    ))
+                    results.append(
+                        CrossDomainMapping(
+                            source_domain=mapping.target_domain,
+                            source_concept_id=mapping.target_concept_id,
+                            target_domain=mapping.source_domain,
+                            target_concept_id=mapping.source_concept_id,
+                            mapping_type=mapping.mapping_type,
+                            confidence=mapping.confidence,
+                            rationale=mapping.rationale,
+                        )
+                    )
 
         return results
 
     def find_related_concepts(
-        self,
-        concept_id: str,
-        source_domain: Domain,
-        include_cross_domain: bool = True,
-        min_confidence: float = 0.5
+        self, concept_id: str, source_domain: Domain, include_cross_domain: bool = True, min_confidence: float = 0.5
     ) -> dict[str, list[DomainConcept]]:
         """
         Find all related concepts (within domain and cross-domain).
@@ -298,10 +297,7 @@ class DomainKnowledgeBase:
         Returns:
             Dict with keys "same_domain" and "cross_domain" containing lists of related concepts
         """
-        results = {
-            "same_domain": [],
-            "cross_domain": []
-        }
+        results = {"same_domain": [], "cross_domain": []}
 
         # Same-domain relations
         ontology = self.get_domain_ontology(source_domain)
@@ -318,39 +314,39 @@ class DomainKnowledgeBase:
         for related_id in related_ids:
             if related_id in ontology.concepts:
                 concept = ontology.concepts[related_id]
-                results["same_domain"].append(DomainConcept(
-                    domain=source_domain,
-                    concept_id=related_id,
-                    name=concept.name,
-                    type=concept.type,
-                    description=concept.description,
-                    synonyms=concept.synonyms,
-                    external_ids=concept.external_ids,
-                    metadata=concept.metadata
-                ))
-
-        # Cross-domain mappings
-        if include_cross_domain:
-            mappings = self.map_cross_domain_concepts(
-                concept_id=concept_id,
-                source_domain=source_domain,
-                min_confidence=min_confidence
-            )
-
-            for mapping in mappings:
-                target_ontology = self.get_domain_ontology(mapping.target_domain)
-                if mapping.target_concept_id in target_ontology.concepts:
-                    concept = target_ontology.concepts[mapping.target_concept_id]
-                    results["cross_domain"].append(DomainConcept(
-                        domain=mapping.target_domain,
-                        concept_id=mapping.target_concept_id,
+                results["same_domain"].append(
+                    DomainConcept(
+                        domain=source_domain,
+                        concept_id=related_id,
                         name=concept.name,
                         type=concept.type,
                         description=concept.description,
                         synonyms=concept.synonyms,
                         external_ids=concept.external_ids,
-                        metadata={**concept.metadata, "mapping_type": mapping.mapping_type, "confidence": mapping.confidence}
-                    ))
+                        metadata=concept.metadata,
+                    )
+                )
+
+        # Cross-domain mappings
+        if include_cross_domain:
+            mappings = self.map_cross_domain_concepts(concept_id=concept_id, source_domain=source_domain, min_confidence=min_confidence)
+
+            for mapping in mappings:
+                target_ontology = self.get_domain_ontology(mapping.target_domain)
+                if mapping.target_concept_id in target_ontology.concepts:
+                    concept = target_ontology.concepts[mapping.target_concept_id]
+                    results["cross_domain"].append(
+                        DomainConcept(
+                            domain=mapping.target_domain,
+                            concept_id=mapping.target_concept_id,
+                            name=concept.name,
+                            type=concept.type,
+                            description=concept.description,
+                            synonyms=concept.synonyms,
+                            external_ids=concept.external_ids,
+                            metadata={**concept.metadata, "mapping_type": mapping.mapping_type, "confidence": mapping.confidence},
+                        )
+                    )
 
         return results
 
@@ -373,16 +369,18 @@ class DomainKnowledgeBase:
         for dom in domains:
             ontology = self.get_domain_ontology(dom)
             for concept_id, concept in ontology.concepts.items():
-                results.append(DomainConcept(
-                    domain=dom,
-                    concept_id=concept_id,
-                    name=concept.name,
-                    type=concept.type,
-                    description=concept.description,
-                    synonyms=concept.synonyms,
-                    external_ids=concept.external_ids,
-                    metadata=concept.metadata
-                ))
+                results.append(
+                    DomainConcept(
+                        domain=dom,
+                        concept_id=concept_id,
+                        name=concept.name,
+                        type=concept.type,
+                        description=concept.description,
+                        synonyms=concept.synonyms,
+                        external_ids=concept.external_ids,
+                        metadata=concept.metadata,
+                    )
+                )
 
         return results
 
@@ -400,7 +398,7 @@ class DomainKnowledgeBase:
                 description=concept.description,
                 synonyms=concept.synonyms,
                 external_ids=concept.external_ids,
-                metadata=concept.metadata
+                metadata=concept.metadata,
             )
 
         return None
@@ -416,11 +414,7 @@ class DomainKnowledgeBase:
             List of (domain, relevance_score) tuples, sorted by relevance
         """
         hypothesis_lower = hypothesis_text.lower()
-        domain_scores = {
-            Domain.BIOLOGY: 0.0,
-            Domain.NEUROSCIENCE: 0.0,
-            Domain.MATERIALS: 0.0
-        }
+        domain_scores = {Domain.BIOLOGY: 0.0, Domain.NEUROSCIENCE: 0.0, Domain.MATERIALS: 0.0}
 
         # Score based on concept matches
         for domain in [Domain.BIOLOGY, Domain.NEUROSCIENCE, Domain.MATERIALS]:

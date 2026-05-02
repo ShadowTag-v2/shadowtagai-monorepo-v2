@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """ADK knowledge search tool."""
+
 from __future__ import annotations
 
 import uuid
@@ -33,54 +34,56 @@ HEADERS = {
 def search_adk_knowledge(
     query: str,
 ) -> dict[str, Any]:
-  """Searches ADK knowledge base for relevant information.
+    """Searches ADK knowledge base for relevant information.
 
-  Args:
-    query: The query to search in ADK knowledge base.
+    Args:
+      query: The query to search in ADK knowledge base.
 
-  Returns:
-    A dict with status and the response from the knowledge service.
-  """
-  # Create a new session
-  session_id = uuid.uuid4()
-  create_session_url = f"{KNOWLEDGE_SERVICE_APP_URL}/apps/{KNOWLEDGE_SERVICE_APP_NAME}/users/{KNOWLEDGE_SERVICE_APP_USER_NAME}/sessions/{session_id}"
-
-  try:
-    create_session_response = post_request(
-        create_session_url,
-        {},
+    Returns:
+      A dict with status and the response from the knowledge service.
+    """
+    # Create a new session
+    session_id = uuid.uuid4()
+    create_session_url = (
+        f"{KNOWLEDGE_SERVICE_APP_URL}/apps/{KNOWLEDGE_SERVICE_APP_NAME}/users/{KNOWLEDGE_SERVICE_APP_USER_NAME}/sessions/{session_id}"
     )
-  except requests.exceptions.RequestException as e:
-    return error_response(f"Failed to create session: {e}")
-  session_id = create_session_response["id"]
 
-  # Search ADK knowledge base
-  search_url = f"{KNOWLEDGE_SERVICE_APP_URL}/run"
-  try:
-    search_response = post_request(
-        search_url,
-        {
-            "app_name": KNOWLEDGE_SERVICE_APP_NAME,
-            "user_id": KNOWLEDGE_SERVICE_APP_USER_NAME,
-            "session_id": session_id,
-            "new_message": {"role": "user", "parts": [{"text": query}]},
-        },
-    )
-  except requests.exceptions.RequestException as e:
-    return error_response(f"Failed to search ADK knowledge base: {e}")
-  return {
-      "status": "success",
-      "response": search_response,
-  }
+    try:
+        create_session_response = post_request(
+            create_session_url,
+            {},
+        )
+    except requests.exceptions.RequestException as e:
+        return error_response(f"Failed to create session: {e}")
+    session_id = create_session_response["id"]
+
+    # Search ADK knowledge base
+    search_url = f"{KNOWLEDGE_SERVICE_APP_URL}/run"
+    try:
+        search_response = post_request(
+            search_url,
+            {
+                "app_name": KNOWLEDGE_SERVICE_APP_NAME,
+                "user_id": KNOWLEDGE_SERVICE_APP_USER_NAME,
+                "session_id": session_id,
+                "new_message": {"role": "user", "parts": [{"text": query}]},
+            },
+        )
+    except requests.exceptions.RequestException as e:
+        return error_response(f"Failed to search ADK knowledge base: {e}")
+    return {
+        "status": "success",
+        "response": search_response,
+    }
 
 
 def error_response(error_message: str) -> dict[str, Any]:
-  """Returns an error response."""
-  return {"status": "error", "error_message": error_message}
+    """Returns an error response."""
+    return {"status": "error", "error_message": error_message}
 
 
 def post_request(url: str, payload: dict[str, Any]) -> dict[str, Any]:
-  """Executes a POST request."""
-  response = requests.post(url, headers=HEADERS, json=payload, timeout=60)
-  response.raise_for_status()
-  return response.json()
+    """Executes a POST request."""
+    response = requests.post(url, headers=HEADERS, json=payload, timeout=60)
+    response.raise_for_status()
+    return response.json()

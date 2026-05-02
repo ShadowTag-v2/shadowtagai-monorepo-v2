@@ -19,9 +19,9 @@ from pydantic import BaseModel
 from ...utils.feature_decorator import experimental
 
 
-@experimental('Tool settings defaults may have breaking change in the future.')
+@experimental("Tool settings defaults may have breaking change in the future.")
 class BigtableToolSettings(BaseModel):
-  """Settings for Bigtable tools."""
+    """Settings for Bigtable tools."""
 
-  max_query_result_rows: int = 50
-  """Maximum number of rows to return from a query result."""
+    max_query_result_rows: int = 50
+    """Maximum number of rows to return from a query result."""

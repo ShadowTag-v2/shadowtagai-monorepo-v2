@@ -14,8 +14,8 @@ import argparse
 from pathlib import Path
 
 TEMPLATES = {
-    'node_classification': {
-        'gcn': '''import torch
+    "node_classification": {
+        "gcn": '''import torch
 import torch.nn.functional as F
 from torch_geometric.nn import GCNConv
 from torch_geometric.datasets import Planetoid
@@ -120,8 +120,7 @@ def main():
 if __name__ == '__main__':
     main()
 ''',
-
-        'gat': '''import torch
+        "gat": '''import torch
 import torch.nn.functional as F
 from torch_geometric.nn import GATConv
 from torch_geometric.datasets import Planetoid
@@ -216,8 +215,7 @@ def main():
 if __name__ == '__main__':
     main()
 ''',
-
-        'graphsage': '''import torch
+        "graphsage": '''import torch
 import torch.nn.functional as F
 from torch_geometric.nn import SAGEConv
 from torch_geometric.datasets import Planetoid
@@ -310,9 +308,8 @@ if __name__ == '__main__':
     main()
 ''',
     },
-
-    'graph_classification': {
-        'gin': '''import torch
+    "graph_classification": {
+        "gin": '''import torch
 import torch.nn.functional as F
 from torch_geometric.nn import GINConv, global_add_pool
 from torch_geometric.datasets import TUDataset
@@ -454,8 +451,7 @@ def generate_template(model_type: str, task: str, output_path: str):
         raise ValueError(f"Unknown task: {task}. Available: {list(TEMPLATES.keys())}")
 
     if model_type not in TEMPLATES[task]:
-        raise ValueError(f"Model {model_type} not available for task {task}. "
-                         f"Available: {list(TEMPLATES[task].keys())}")
+        raise ValueError(f"Model {model_type} not available for task {task}. Available: {list(TEMPLATES[task].keys())}")
 
     template = TEMPLATES[task][model_type]
 
@@ -463,7 +459,7 @@ def generate_template(model_type: str, task: str, output_path: str):
     output_file = Path(output_path)
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(output_file, 'w') as f:
+    with open(output_file, "w") as f:
         f.write(template)
 
     print(f"✓ Generated {model_type.upper()} template for {task}")
@@ -493,17 +489,13 @@ Examples:
   python create_gnn_template.py --model gcn --task node_classification --output gcn_model.py
   python create_gnn_template.py --model gin --task graph_classification --output gin_model.py
   python create_gnn_template.py --list
-        """
+        """,
     )
 
-    parser.add_argument('--model', type=str,
-                        help='Model type (gcn, gat, graphsage, gin)')
-    parser.add_argument('--task', type=str,
-                        help='Task type (node_classification, graph_classification)')
-    parser.add_argument('--output', type=str, default='gnn_model.py',
-                        help='Output file path (default: gnn_model.py)')
-    parser.add_argument('--list', action='store_true',
-                        help='List all available templates')
+    parser.add_argument("--model", type=str, help="Model type (gcn, gat, graphsage, gin)")
+    parser.add_argument("--task", type=str, help="Task type (node_classification, graph_classification)")
+    parser.add_argument("--output", type=str, default="gnn_model.py", help="Output file path (default: gnn_model.py)")
+    parser.add_argument("--list", action="store_true", help="List all available templates")
 
     args = parser.parse_args()
 
@@ -524,5 +516,5 @@ Examples:
         print("\\nUse --list to see available templates")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -22,8 +22,11 @@ from shared_models.models import Meeting, Transcription
 
 logger = logging.getLogger(__name__)
 
+
 # This helper is used by process_redis_to_postgres
-def create_transcription_object(meeting_id: int, start: float, end: float, text: str, language: str | None, session_uid: str | None, mapped_speaker_name: str | None) -> Transcription:
+def create_transcription_object(
+    meeting_id: int, start: float, end: float, text: str, language: str | None, session_uid: str | None, mapped_speaker_name: str | None
+) -> Transcription:
     """Creates a Transcription ORM object without adding/committing."""
     return Transcription(
         meeting_id=meeting_id,
@@ -33,8 +36,9 @@ def create_transcription_object(meeting_id: int, start: float, end: float, text:
         speaker=mapped_speaker_name,
         language=language,
         session_uid=session_uid,
-        created_at=datetime.utcnow()
+        created_at=datetime.utcnow(),
     )
+
 
 async def process_redis_to_postgres(redis_c: aioredis.Redis, local_transcription_filter: TranscriptionFilter):
     """
@@ -84,14 +88,16 @@ async def process_redis_to_postgres(redis_c: aioredis.Redis, local_transcription
                             try:
                                 segment_data = json.loads(segment_json)
                                 segment_session_uid = segment_data.get("session_uid")
-                                if 'updated_at' not in segment_data:
-                                     logger.warning(f"Segment {start_time_str} in meeting {meeting_id} hash is missing 'updated_at'. Skipping immutability check.")
-                                     continue
+                                if "updated_at" not in segment_data:
+                                    logger.warning(
+                                        f"Segment {start_time_str} in meeting {meeting_id} hash is missing 'updated_at'. Skipping immutability check."
+                                    )
+                                    continue
 
                                 # Handle 'Z' suffix in timestamps
-                                updated_at_str = segment_data['updated_at']
-                                if updated_at_str.endswith('Z'):
-                                    updated_at_str = updated_at_str[:-1] + '+00:00'
+                                updated_at_str = segment_data["updated_at"]
+                                if updated_at_str.endswith("Z"):
+                                    updated_at_str = updated_at_str[:-1] + "+00:00"
                                 segment_updated_at = datetime.fromisoformat(updated_at_str)
                                 if segment_updated_at.tzinfo is None:
                                     segment_updated_at = segment_updated_at.replace(tzinfo=UTC)
@@ -101,9 +107,10 @@ async def process_redis_to_postgres(redis_c: aioredis.Redis, local_transcription
                                     mapped_speaker_name: str | None = segment_data.get("speaker")
                                     mapping_status: str = segment_data.get("speaker_mapping_status", STATUS_UNKNOWN)
 
-                                    needs_remap = (
-                                        (not mapped_speaker_name)
-                                        or mapping_status in (STATUS_UNKNOWN, STATUS_NO_SPEAKER_EVENTS, STATUS_ERROR)
+                                    needs_remap = (not mapped_speaker_name) or mapping_status in (
+                                        STATUS_UNKNOWN,
+                                        STATUS_NO_SPEAKER_EVENTS,
+                                        STATUS_ERROR,
                                     )
 
                                     if needs_remap and segment_session_uid:
@@ -118,7 +125,7 @@ async def process_redis_to_postgres(redis_c: aioredis.Redis, local_transcription
                                                 segment_start_ms=segment_start_ms,
                                                 segment_end_ms=segment_end_ms,
                                                 config_speaker_event_key_prefix=REDIS_SPEAKER_EVENT_KEY_PREFIX,
-                                                context_log_msg=context_log
+                                                context_log_msg=context_log,
                                             )
 
                                             mapped_speaker_name = mapping_result.get("speaker_name")
@@ -145,28 +152,30 @@ async def process_redis_to_postgres(redis_c: aioredis.Redis, local_transcription
 
                                     # Filter the segment (deduplication, etc.)
                                     segment_start_time_float = float(start_time_str)
-                                    segment_end_time_float = segment_data['end_time']
+                                    segment_end_time_float = segment_data["end_time"]
 
                                     # Fix inverted timestamps before filtering
                                     if segment_end_time_float < segment_start_time_float:
                                         segment_start_time_float, segment_end_time_float = segment_end_time_float, segment_start_time_float
-                                        logger.warning(f"[FinalMap] Corrected inverted segment times for meet {meeting_id}, start={segment_start_time_float}, end={segment_end_time_float}")
+                                        logger.warning(
+                                            f"[FinalMap] Corrected inverted segment times for meet {meeting_id}, start={segment_start_time_float}, end={segment_end_time_float}"
+                                        )
 
                                     if local_transcription_filter.filter_segment(
-                                        segment_data['text'],
+                                        segment_data["text"],
                                         start_time=segment_start_time_float,
                                         end_time=segment_end_time_float,
                                         meeting_id=meeting_id,
-                                        language=segment_data.get('language')
+                                        language=segment_data.get("language"),
                                     ):
                                         new_transcription = create_transcription_object(
                                             meeting_id=meeting_id,
                                             start=segment_start_time_float,
                                             end=segment_end_time_float,
-                                            text=segment_data['text'],
-                                            language=segment_data.get('language'),
+                                            text=segment_data["text"],
+                                            language=segment_data.get("language"),
                                             session_uid=segment_session_uid,
-                                            mapped_speaker_name=mapped_speaker_name
+                                            mapped_speaker_name=mapped_speaker_name,
                                         )
                                         batch_to_store.append(new_transcription)
                                     segments_to_delete_from_redis.setdefault(meeting_id, set()).add(start_time_str)
@@ -186,14 +195,16 @@ async def process_redis_to_postgres(redis_c: aioredis.Redis, local_transcription
                             # Group by meeting for channel fan-out
                             segments_by_meeting: dict[int, list] = {}
                             for t in batch_to_store:
-                                segments_by_meeting.setdefault(t.meeting_id, []).append({
-                                    "start": t.start_time,
-                                    "end": t.end_time,
-                                    "text": t.text,
-                                    "language": t.language,
-                                    "speaker": t.speaker,
-                                    "session_uid": t.session_uid,
-                                })
+                                segments_by_meeting.setdefault(t.meeting_id, []).append(
+                                    {
+                                        "start": t.start_time,
+                                        "end": t.end_time,
+                                        "text": t.text,
+                                        "language": t.language,
+                                        "speaker": t.speaker,
+                                        "session_uid": t.session_uid,
+                                    }
+                                )
                             for m_id, segs in segments_by_meeting.items():
                                 try:
                                     meet_row = await db.get(Meeting, m_id)
@@ -224,8 +235,8 @@ async def process_redis_to_postgres(redis_c: aioredis.Redis, local_transcription
             logger.info("Redis-to-PostgreSQL processor task cancelled")
             break
         except redis.exceptions.ConnectionError as e:
-             logger.error(f"Redis connection error in Redis-to-PG task: {e}. Retrying after delay...", exc_info=True)
-             await asyncio.sleep(5)
+            logger.error(f"Redis connection error in Redis-to-PG task: {e}. Retrying after delay...", exc_info=True)
+            await asyncio.sleep(5)
         except Exception as e:
             logger.error(f"Unhandled error in Redis-to-PostgreSQL processor: {e}", exc_info=True)
             await asyncio.sleep(BACKGROUND_TASK_INTERVAL)

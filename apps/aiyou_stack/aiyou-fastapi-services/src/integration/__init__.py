@@ -11,9 +11,9 @@ This is the bridge between:
 import asyncio
 from typing import Any, Dict, List  # noqa: F401, UP035
 
-from pnkln.core.judge_six_pipeline import JudgeSixKernel
-
-from src.agents.debate import DebateAgent, DebateConfig, DebateOrchestrator
+from app.agents.base import AgentConfig
+from pnkln.core.judge_six_pipeline import JudgeSixPipeline as JudgeSixKernel
+from src.agents.debate import DebateAgent, DebateOrchestrator
 from src.core import FunctionRegistry, FunctionTool
 from src.evolution.dte import DTESystem, EvolutionStrategy
 from src.kernels.atp_519_scan import ATP519ScanKernel
@@ -153,10 +153,12 @@ class KernelFunctionRegistry:
             """
             try:
                 # Create debate agents
-                config = DebateConfig(max_rounds=3, consensus_threshold=0.8)
-                agents = [DebateAgent(config, persona=f"Expert {i + 1}") for i in range(num_agents)]
+                agents = [
+                    DebateAgent(AgentConfig(name=f"Expert_{i + 1}"), persona=f"Expert {i + 1}")
+                    for i in range(num_agents)
+                ]
 
-                orchestrator = DebateOrchestrator(agents, config)
+                orchestrator = DebateOrchestrator(agents, max_rounds=3, consensus_threshold=0.8)
 
                 # Run debate synchronously
                 result = asyncio.run(orchestrator.run_debate(question))

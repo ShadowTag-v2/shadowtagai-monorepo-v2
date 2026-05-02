@@ -8,8 +8,13 @@ import logging
 from collections.abc import Callable
 from typing import Any
 
-from genkit.ai import Genkit
-from genkit.core.action import Action
+try:
+    from genkit.ai import Genkit
+    from genkit.core.action import Action
+except ImportError:
+    # genkit SDK not installed — provide stubs for import-only usage.
+    Genkit = None  # type: ignore[assignment,misc]
+    Action = None  # type: ignore[assignment,misc]
 
 logger = logging.getLogger(__name__)
 

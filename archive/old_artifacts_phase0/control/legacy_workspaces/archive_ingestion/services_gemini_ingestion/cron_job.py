@@ -18,10 +18,7 @@ from pathlib import Path
 
 from ingestion_core import DataTier, EthicalCrawlingConfig, IngestionPipeline, RelevanceCategory, SourceConfig, SourceType
 
-logging.basicConfig(
-    level=os.getenv("LOG_LEVEL", "INFO"),
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -82,83 +79,73 @@ class CronJobRunner:
     async def _initialize_pipeline(self) -> IngestionPipeline:
         """Initialize pipeline with sources"""
         # Configure ethical crawling
-        crawler_config = EthicalCrawlingConfig(
-            rate_limit_requests_per_minute=60,
-            avoid_peak_hours=True
-        )
+        crawler_config = EthicalCrawlingConfig(rate_limit_requests_per_minute=60, avoid_peak_hours=True)
 
         # Create pipeline
-        pipeline = IngestionPipeline(
-            crawler_config=crawler_config,
-            gemini_api_key=self.config["gemini_api_key"]
-        )
+        pipeline = IngestionPipeline(crawler_config=crawler_config, gemini_api_key=self.config["gemini_api_key"])
 
         # Add V2X Mesh source (Tier 1 - highest priority)
-        pipeline.add_source(SourceConfig(
-            source_id="v2x-mesh-prod",
-            source_type=SourceType.V2X_MESH,
-            url=self.config["v2x_mesh_url"],
-            tier=DataTier.TIER_1,
-            relevance_categories=[
-                RelevanceCategory.TRAFFIC,
-                RelevanceCategory.SAFETY,
-                RelevanceCategory.TRANSPORTATION
-            ],
-            crawl_frequency_hours=1  # Frequent updates
-        ))
+        pipeline.add_source(
+            SourceConfig(
+                source_id="v2x-mesh-prod",
+                source_type=SourceType.V2X_MESH,
+                url=self.config["v2x_mesh_url"],
+                tier=DataTier.TIER_1,
+                relevance_categories=[RelevanceCategory.TRAFFIC, RelevanceCategory.SAFETY, RelevanceCategory.TRANSPORTATION],
+                crawl_frequency_hours=1,  # Frequent updates
+            )
+        )
 
         # Add YouTube source (Tier 2)
         if self.config["youtube_api_key"]:
-            pipeline.add_source(SourceConfig(
-                source_id="youtube-traffic-updates",
-                source_type=SourceType.YOUTUBE,
-                url="https://youtube.com",
-                tier=DataTier.TIER_2,
-                relevance_categories=[
-                    RelevanceCategory.TRAFFIC,
-                    RelevanceCategory.URBAN_MOBILITY
-                ],
-                api_key=self.config["youtube_api_key"]
-            ))
+            pipeline.add_source(
+                SourceConfig(
+                    source_id="youtube-traffic-updates",
+                    source_type=SourceType.YOUTUBE,
+                    url="https://youtube.com",
+                    tier=DataTier.TIER_2,
+                    relevance_categories=[RelevanceCategory.TRAFFIC, RelevanceCategory.URBAN_MOBILITY],
+                    api_key=self.config["youtube_api_key"],
+                )
+            )
 
         # Add Twitter source (Tier 2)
         if self.config["twitter_bearer_token"]:
-            pipeline.add_source(SourceConfig(
-                source_id="twitter-traffic-alerts",
-                source_type=SourceType.TWITTER,
-                url="https://twitter.com",
-                tier=DataTier.TIER_2,
-                relevance_categories=[
-                    RelevanceCategory.TRAFFIC,
-                    RelevanceCategory.SAFETY
-                ],
-                api_key=self.config["twitter_bearer_token"]
-            ))
+            pipeline.add_source(
+                SourceConfig(
+                    source_id="twitter-traffic-alerts",
+                    source_type=SourceType.TWITTER,
+                    url="https://twitter.com",
+                    tier=DataTier.TIER_2,
+                    relevance_categories=[RelevanceCategory.TRAFFIC, RelevanceCategory.SAFETY],
+                    api_key=self.config["twitter_bearer_token"],
+                )
+            )
 
         # Add News API source (Tier 2)
         if self.config["news_api_key"]:
-            pipeline.add_source(SourceConfig(
-                source_id="newsapi-transportation",
-                source_type=SourceType.NEWS,
-                url="https://newsapi.org",
-                tier=DataTier.TIER_2,
-                relevance_categories=[
-                    RelevanceCategory.TRANSPORTATION,
-                    RelevanceCategory.POLICY,
-                    RelevanceCategory.INFRASTRUCTURE
-                ],
-                api_key=self.config["news_api_key"]
-            ))
+            pipeline.add_source(
+                SourceConfig(
+                    source_id="newsapi-transportation",
+                    source_type=SourceType.NEWS,
+                    url="https://newsapi.org",
+                    tier=DataTier.TIER_2,
+                    relevance_categories=[RelevanceCategory.TRANSPORTATION, RelevanceCategory.POLICY, RelevanceCategory.INFRASTRUCTURE],
+                    api_key=self.config["news_api_key"],
+                )
+            )
 
         # Add RSS feeds (Tier 3)
-        pipeline.add_source(SourceConfig(
-            source_id="transport-blog-rss",
-            source_type=SourceType.RSS,
-            url="https://transport.blog/feed",
-            tier=DataTier.TIER_3,
-            relevance_categories=[RelevanceCategory.TRANSPORTATION],
-            crawl_frequency_hours=24
-        ))
+        pipeline.add_source(
+            SourceConfig(
+                source_id="transport-blog-rss",
+                source_type=SourceType.RSS,
+                url="https://transport.blog/feed",
+                tier=DataTier.TIER_3,
+                relevance_categories=[RelevanceCategory.TRANSPORTATION],
+                crawl_frequency_hours=24,
+            )
+        )
 
         logger.info(f"Initialized pipeline with {len(pipeline.sources)} sources")
         return pipeline
@@ -169,43 +156,40 @@ class CronJobRunner:
 
         # Export metrics
         metrics_file = self.output_dir / f"metrics_{timestamp}.json"
-        with open(metrics_file, 'w') as f:
-            json.dump({
-                "run_id": metrics.run_id,
-                "started_at": metrics.started_at.isoformat(),
-                "completed_at": metrics.completed_at.isoformat() if metrics.completed_at else None,
-                "runtime_seconds": metrics.runtime_seconds,
-                "total_items": metrics.total_items_ingested,
-                "tier_distribution": {
-                    "tier_1": metrics.items_by_tier[DataTier.TIER_1],
-                    "tier_2": metrics.items_by_tier[DataTier.TIER_2],
-                    "tier_3": metrics.items_by_tier[DataTier.TIER_3]
+        with open(metrics_file, "w") as f:
+            json.dump(
+                {
+                    "run_id": metrics.run_id,
+                    "started_at": metrics.started_at.isoformat(),
+                    "completed_at": metrics.completed_at.isoformat() if metrics.completed_at else None,
+                    "runtime_seconds": metrics.runtime_seconds,
+                    "total_items": metrics.total_items_ingested,
+                    "tier_distribution": {
+                        "tier_1": metrics.items_by_tier[DataTier.TIER_1],
+                        "tier_2": metrics.items_by_tier[DataTier.TIER_2],
+                        "tier_3": metrics.items_by_tier[DataTier.TIER_3],
+                    },
+                    "quality_scores": {
+                        "avg_relevance": metrics.avg_relevance_score,
+                        "timeliness": metrics.timeliness_score,
+                        "completeness": metrics.completeness_score,
+                    },
+                    "costs": {"total_dollars": metrics.total_cost_dollars, "cost_per_item_cents": metrics.cost_per_item_cents},
+                    "sources": {"crawled": metrics.sources_crawled, "failed": metrics.sources_failed, "by_source": metrics.items_by_source},
+                    "ethical_compliance": {
+                        "robots_txt_violations": metrics.robots_txt_violations,
+                        "rate_limit_violations": metrics.rate_limit_violations,
+                    },
                 },
-                "quality_scores": {
-                    "avg_relevance": metrics.avg_relevance_score,
-                    "timeliness": metrics.timeliness_score,
-                    "completeness": metrics.completeness_score
-                },
-                "costs": {
-                    "total_dollars": metrics.total_cost_dollars,
-                    "cost_per_item_cents": metrics.cost_per_item_cents
-                },
-                "sources": {
-                    "crawled": metrics.sources_crawled,
-                    "failed": metrics.sources_failed,
-                    "by_source": metrics.items_by_source
-                },
-                "ethical_compliance": {
-                    "robots_txt_violations": metrics.robots_txt_violations,
-                    "rate_limit_violations": metrics.rate_limit_violations
-                }
-            }, f, indent=2)
+                f,
+                indent=2,
+            )
 
         logger.info(f"Exported metrics to {metrics_file}")
 
         # Export AM briefing
         briefing_file = self.output_dir / f"am_briefing_{timestamp}.json"
-        with open(briefing_file, 'w') as f:
+        with open(briefing_file, "w") as f:
             json.dump(briefing, f, indent=2)
 
         logger.info(f"Exported AM briefing to {briefing_file}")
@@ -220,12 +204,12 @@ class CronJobRunner:
                 "title": item.title,
                 "relevance_score": item.relevance_score,
                 "published_at": item.published_at.isoformat(),
-                "url": item.url
+                "url": item.url,
             }
             for item in items[:50]  # First 50 items
         ]
 
-        with open(items_file, 'w') as f:
+        with open(items_file, "w") as f:
             json.dump(sample_items, f, indent=2)
 
         logger.info(f"Exported {len(sample_items)} sample items to {items_file}")
@@ -238,23 +222,27 @@ class CronJobRunner:
         logger.info("\n📊 INGESTION RUN SUMMARY")
         logger.info("-" * 80)
         logger.info(f"Run ID: {metrics.run_id}")
-        logger.info(f"Runtime: {runtime_minutes:.1f} min (target: {target_minutes} min) " +
-                   ("✅" if runtime_minutes <= target_minutes else "⚠️"))
+        logger.info(f"Runtime: {runtime_minutes:.1f} min (target: {target_minutes} min) " + ("✅" if runtime_minutes <= target_minutes else "⚠️"))
 
         logger.info("\n📦 ITEMS:")
         logger.info(f"  Total: {metrics.total_items_ingested}")
-        logger.info(f"  Tier 1: {metrics.items_by_tier[DataTier.TIER_1]} " +
-                   f"({metrics.items_by_tier[DataTier.TIER_1]/max(1, metrics.total_items_ingested)*100:.1f}%)")
-        logger.info(f"  Tier 2: {metrics.items_by_tier[DataTier.TIER_2]} " +
-                   f"({metrics.items_by_tier[DataTier.TIER_2]/max(1, metrics.total_items_ingested)*100:.1f}%)")
-        logger.info(f"  Tier 3: {metrics.items_by_tier[DataTier.TIER_3]} " +
-                   f"({metrics.items_by_tier[DataTier.TIER_3]/max(1, metrics.total_items_ingested)*100:.1f}%)")
+        logger.info(
+            f"  Tier 1: {metrics.items_by_tier[DataTier.TIER_1]} "
+            + f"({metrics.items_by_tier[DataTier.TIER_1] / max(1, metrics.total_items_ingested) * 100:.1f}%)"
+        )
+        logger.info(
+            f"  Tier 2: {metrics.items_by_tier[DataTier.TIER_2]} "
+            + f"({metrics.items_by_tier[DataTier.TIER_2] / max(1, metrics.total_items_ingested) * 100:.1f}%)"
+        )
+        logger.info(
+            f"  Tier 3: {metrics.items_by_tier[DataTier.TIER_3]} "
+            + f"({metrics.items_by_tier[DataTier.TIER_3] / max(1, metrics.total_items_ingested) * 100:.1f}%)"
+        )
 
         logger.info("\n📈 QUALITY:")
-        logger.info(f"  Relevance: {metrics.avg_relevance_score:.2f} (target: ≥0.7) " +
-                   ("✅" if metrics.avg_relevance_score >= 0.7 else "⚠️"))
-        logger.info(f"  Timeliness: {metrics.timeliness_score*100:.1f}% (target: ≥70%)")
-        logger.info(f"  Completeness: {metrics.completeness_score*100:.1f}% (target: ≥80%)")
+        logger.info(f"  Relevance: {metrics.avg_relevance_score:.2f} (target: ≥0.7) " + ("✅" if metrics.avg_relevance_score >= 0.7 else "⚠️"))
+        logger.info(f"  Timeliness: {metrics.timeliness_score * 100:.1f}% (target: ≥70%)")
+        logger.info(f"  Completeness: {metrics.completeness_score * 100:.1f}% (target: ≥80%)")
 
         logger.info("\n💰 COSTS:")
         logger.info(f"  Total: ${metrics.total_cost_dollars:.2f}")

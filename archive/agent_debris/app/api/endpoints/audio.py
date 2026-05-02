@@ -6,7 +6,6 @@ API endpoints for audio encoding and decoding operations.
 
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from pathlib import Path
-from typing import Optional
 import hashlib
 from datetime import datetime
 
@@ -43,10 +42,7 @@ async def encode_audio(
     """
     # Validate audio file
     if not any(audio.filename.endswith(ext) for ext in settings.ALLOWED_AUDIO_EXTENSIONS):
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid audio format. Allowed: {settings.ALLOWED_AUDIO_EXTENSIONS}"
-        )
+        raise HTTPException(status_code=400, detail=f"Invalid audio format. Allowed: {settings.ALLOWED_AUDIO_EXTENSIONS}")
 
     # Save uploaded files
     upload_dir = Path(settings.UPLOAD_DIR)
@@ -82,20 +78,9 @@ async def encode_audio(
         # Create receipt if requested
         receipt_id = None
         if create_receipt:
-            receipt_id = _create_audio_receipt(
-                "encode",
-                audio_path,
-                payload_data,
-                stats,
-                config
-            )
+            receipt_id = _create_audio_receipt("encode", audio_path, payload_data, stats, config)
 
-        return EncodeResponse(
-            success=True,
-            output_file=str(output_path),
-            stats=stats,
-            receipt_id=receipt_id
-        )
+        return EncodeResponse(success=True, output_file=str(output_path), stats=stats, receipt_id=receipt_id)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -148,13 +133,7 @@ async def decode_audio(
         # Create receipt if requested
         receipt_id = None
         if create_receipt:
-            receipt_id = _create_audio_receipt(
-                "decode",
-                audio_path,
-                payload,
-                stats,
-                None
-            )
+            receipt_id = _create_audio_receipt("decode", audio_path, payload, stats, None)
 
         return DecodeResponse(
             success=True,
@@ -162,28 +141,20 @@ async def decode_audio(
             payload_size=len(payload),
             stats=stats,
             receipt_id=receipt_id,
-            integrity_verified=verify_hash is not None
+            integrity_verified=verify_hash is not None,
         )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-def _create_audio_receipt(
-    operation_type: str,
-    audio_path: Path,
-    payload: bytes,
-    stats: dict,
-    config: AudioEncoderConfig | None
-) -> str:
+def _create_audio_receipt(operation_type: str, audio_path: Path, payload: bytes, stats: dict, config: AudioEncoderConfig | None) -> str:
     """Create a receipt for an audio operation"""
     payload_hash = hashlib.sha256(payload).hexdigest()
     media_hash = hashlib.sha256(audio_path.read_bytes()).hexdigest()
 
     receipt = Receipt(
-        operation_id=hashlib.sha256(
-            f"{datetime.utcnow().isoformat()}_{media_hash}".encode()
-        ).hexdigest()[:16],
+        operation_id=hashlib.sha256(f"{datetime.utcnow().isoformat()}_{media_hash}".encode()).hexdigest()[:16],
         operation_type=operation_type,
         timestamp=datetime.utcnow().isoformat(),
         media_type="audio",

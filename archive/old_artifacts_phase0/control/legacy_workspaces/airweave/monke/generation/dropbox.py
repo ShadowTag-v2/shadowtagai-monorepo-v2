@@ -1,6 +1,5 @@
 """Dropbox-specific generation adapter: file content generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.dropbox import DropboxArtifact
 
@@ -9,21 +8,19 @@ def render_body(artifact: DropboxArtifact, file_type: str) -> str:
     """Render the artifact body based on file type."""
     if file_type == "json":
         import json
+
         data = {
             "title": artifact.title,
             "description": artifact.description,
             "token": artifact.token,
             "created_at": artifact.created_at.isoformat(),
-            "metadata": getattr(artifact, "metadata", {})
+            "metadata": getattr(artifact, "metadata", {}),
         }
         return json.dumps(data, indent=2)
     elif file_type == "csv":
         # Create CSV content
-        rows = [
-            "Title,Description,Token,Created",
-            f'"{artifact.title}","{artifact.description}","{artifact.token}","{artifact.created_at}"'
-        ]
-        if hasattr(artifact, 'data_rows') and artifact.data_rows:
+        rows = ["Title,Description,Token,Created", f'"{artifact.title}","{artifact.description}","{artifact.token}","{artifact.created_at}"']
+        if hasattr(artifact, "data_rows") and artifact.data_rows:
             rows.extend(artifact.data_rows)
         return "\n".join(rows)
     elif file_type == "yaml":
@@ -34,7 +31,7 @@ def render_body(artifact: DropboxArtifact, file_type: str) -> str:
             f"token: {artifact.token}",
             f"created_at: {artifact.created_at.isoformat()}",
         ]
-        if hasattr(artifact, 'metadata') and artifact.metadata:
+        if hasattr(artifact, "metadata") and artifact.metadata:
             lines.append("metadata:")
             for key, value in artifact.metadata.items():
                 lines.append(f"  {key}: {value}")
@@ -42,14 +39,12 @@ def render_body(artifact: DropboxArtifact, file_type: str) -> str:
     else:
         # For markdown and text files
         parts = [f"# {artifact.title}", artifact.description, f"Token: {artifact.token}"]
-        if hasattr(artifact, 'sections') and artifact.sections:
+        if hasattr(artifact, "sections") and artifact.sections:
             parts.extend([f"\n## {s.get('heading', '')}\n{s.get('body', '')}" for s in artifact.sections])
         return "\n\n".join(parts)
 
 
-async def generate_dropbox_artifact(
-    file_type: str, model: str, token: str, is_update: bool = False
-) -> tuple[str, str]:
+async def generate_dropbox_artifact(file_type: str, model: str, token: str, is_update: bool = False) -> tuple[str, str]:
     """Generate a Dropbox file via LLM.
 
     Returns (title, content). The token must be embedded in the output by instruction.
@@ -80,7 +75,7 @@ async def generate_dropbox_artifact(
             "Generate a YAML configuration for a synthetic deployment pipeline. "
             "Include the literal token '{token}' somewhere in the configuration. "
             "Use proper YAML formatting."
-        )
+        ),
     }
 
     if is_update:

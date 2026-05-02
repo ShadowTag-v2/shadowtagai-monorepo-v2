@@ -28,12 +28,7 @@ class QualityGateValidator:
         self.target_tier1_min = 25.0
         self.target_tier1_max = 35.0
 
-    def validate_all_gates(
-        self,
-        scenarios: list[Scenario],
-        total_cost_usd: float,
-        relevance_score: float = 85.0
-    ) -> list[QualityGateResult]:
+    def validate_all_gates(self, scenarios: list[Scenario], total_cost_usd: float, relevance_score: float = 85.0) -> list[QualityGateResult]:
         """
         Run all quality gates
 
@@ -83,7 +78,7 @@ class QualityGateValidator:
                 measured_value=count,
                 target_value=target,
                 status_emoji="✅",
-                message=f"Volume {count} within target range"
+                message=f"Volume {count} within target range",
             )
         else:
             return QualityGateResult(
@@ -92,7 +87,7 @@ class QualityGateValidator:
                 measured_value=count,
                 target_value=target,
                 status_emoji="❌",
-                message=f"Volume {count} outside target range {target}"
+                message=f"Volume {count} outside target range {target}",
             )
 
     def _validate_source_diversity(self, scenarios: list[Scenario]) -> QualityGateResult:
@@ -107,7 +102,7 @@ class QualityGateValidator:
                 measured_value=num_sources,
                 target_value=f"≥{self.target_min_sources}",
                 status_emoji="✅",
-                message=f"{num_sources} sources active (target ≥{self.target_min_sources})"
+                message=f"{num_sources} sources active (target ≥{self.target_min_sources})",
             )
         else:
             return QualityGateResult(
@@ -116,14 +111,10 @@ class QualityGateValidator:
                 measured_value=num_sources,
                 target_value=f"≥{self.target_min_sources}",
                 status_emoji="❌",
-                message=f"Only {num_sources} sources active (target ≥{self.target_min_sources})"
+                message=f"Only {num_sources} sources active (target ≥{self.target_min_sources})",
             )
 
-    def _validate_cost_efficiency(
-        self,
-        scenarios: list[Scenario],
-        total_cost_usd: float
-    ) -> QualityGateResult:
+    def _validate_cost_efficiency(self, scenarios: list[Scenario], total_cost_usd: float) -> QualityGateResult:
         """Gate 3: Cost efficiency"""
         count = len(scenarios)
         if count == 0:
@@ -138,7 +129,7 @@ class QualityGateValidator:
                 measured_value=f"${cost_per_item:.4f}",
                 target_value=f"<${self.target_cost_per_item}",
                 status_emoji="✅",
-                message=f"Cost per item ${cost_per_item:.4f} under target"
+                message=f"Cost per item ${cost_per_item:.4f} under target",
             )
         else:
             return QualityGateResult(
@@ -147,7 +138,7 @@ class QualityGateValidator:
                 measured_value=f"${cost_per_item:.4f}",
                 target_value=f"<${self.target_cost_per_item}",
                 status_emoji="❌",
-                message=f"Cost per item ${cost_per_item:.4f} exceeds target"
+                message=f"Cost per item ${cost_per_item:.4f} exceeds target",
             )
 
     def _validate_relevance(self, relevance_score: float) -> QualityGateResult:
@@ -159,7 +150,7 @@ class QualityGateValidator:
                 measured_value=relevance_score,
                 target_value=f"≥{self.target_min_relevance}",
                 status_emoji="✅",
-                message=f"Relevance {relevance_score:.1f} meets target"
+                message=f"Relevance {relevance_score:.1f} meets target",
             )
         else:
             return QualityGateResult(
@@ -168,7 +159,7 @@ class QualityGateValidator:
                 measured_value=relevance_score,
                 target_value=f"≥{self.target_min_relevance}",
                 status_emoji="⚠️",
-                message=f"Relevance {relevance_score:.1f} below target"
+                message=f"Relevance {relevance_score:.1f} below target",
             )
 
     def _validate_tier_distribution(self, scenarios: list[Scenario]) -> QualityGateResult:
@@ -180,7 +171,7 @@ class QualityGateValidator:
                 measured_value="0%",
                 target_value=f"{self.target_tier1_min}-{self.target_tier1_max}%",
                 status_emoji="❌",
-                message="No scenarios to analyze"
+                message="No scenarios to analyze",
             )
 
         tier_counts = Counter(s.tier for s in scenarios)
@@ -194,7 +185,7 @@ class QualityGateValidator:
                 measured_value=f"{tier1_pct:.1f}%",
                 target_value=f"{self.target_tier1_min}-{self.target_tier1_max}%",
                 status_emoji="✅",
-                message=f"Tier 1 at {tier1_pct:.1f}% (target {self.target_tier1_min}-{self.target_tier1_max}%)"
+                message=f"Tier 1 at {tier1_pct:.1f}% (target {self.target_tier1_min}-{self.target_tier1_max}%)",
             )
         else:
             return QualityGateResult(
@@ -203,7 +194,7 @@ class QualityGateValidator:
                 measured_value=f"{tier1_pct:.1f}%",
                 target_value=f"{self.target_tier1_min}-{self.target_tier1_max}%",
                 status_emoji="⚠️",
-                message=f"Tier 1 at {tier1_pct:.1f}% outside target range"
+                message=f"Tier 1 at {tier1_pct:.1f}% outside target range",
             )
 
 
@@ -226,17 +217,13 @@ if __name__ == "__main__":
             time_of_day=TimeOfDay.DAY,
             sensor_data=SensorData(timestamp=datetime.utcnow()),
             consent_verified=True,
-            privacy_scrubbed=True
+            privacy_scrubbed=True,
         )
         for i in range(6000)
     ]
 
     validator = QualityGateValidator()
-    results = validator.validate_all_gates(
-        test_scenarios,
-        total_cost_usd=77.0,
-        relevance_score=87.5
-    )
+    results = validator.validate_all_gates(test_scenarios, total_cost_usd=77.0, relevance_score=87.5)
 
     for result in results:
         print(f"{result.status_emoji} {result.gate_name}: {result.message}")

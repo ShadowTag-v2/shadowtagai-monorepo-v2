@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class EventCreate(BaseModel):
@@ -54,22 +54,25 @@ class EventCreate(BaseModel):
 
     timestamp: datetime | None = Field(None, description="Event timestamp")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "event_name": "purchase_completed",
-                "event_type": "conversion",
-                "user_id": "user_123",
-                "session_id": "session_abc",
-                "properties": {
-                    "product_id": "prod_456",
-                    "product_name": "Premium Plan",
-                    "quantity": 1,
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "event_name": "purchase_completed",
+                    "event_type": "conversion",
+                    "user_id": "user_123",
+                    "session_id": "session_abc",
+                    "properties": {
+                        "product_id": "prod_456",
+                        "product_name": "Premium Plan",
+                        "quantity": 1,
+                    },
+                    "revenue": 99.99,
+                    "currency": "USD",
                 },
-                "revenue": 99.99,
-                "currency": "USD",
-            },
-        }
+            ],
+        },
+    )
 
 
 class EventResponse(BaseModel):
@@ -85,8 +88,7 @@ class EventResponse(BaseModel):
     timestamp: datetime
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class EventQuery(BaseModel):
@@ -101,12 +103,15 @@ class EventQuery(BaseModel):
     limit: int = Field(default=100, le=1000)
     offset: int = Field(default=0, ge=0)
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "event_name": "page_view",
-                "start_date": "2025-01-01T00:00:00Z",
-                "end_date": "2025-01-31T23:59:59Z",
-                "limit": 100,
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "event_name": "page_view",
+                    "start_date": "2025-01-01T00:00:00Z",
+                    "end_date": "2025-01-31T23:59:59Z",
+                    "limit": 100,
+                },
+            ],
+        },
+    )

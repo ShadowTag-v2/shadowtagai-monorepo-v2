@@ -3,19 +3,14 @@ Multi-Agent System for Pinkln
 Includes: Debate Panel, Code Crafter, Wealth Accelerator, Deep Reasoning
 All enhanced with cheat sheet fusion and DTE evolution
 """
+
 import logging
-from typing import List, Dict, Any
+from typing import Any
 from dataclasses import dataclass, field
 from datetime import datetime
-from enum import Enum, StrEnum
+from enum import StrEnum
 
-from app.core.pinkln_framework import (
-    UltrathinkPersona,
-    ReasoningFramework,
-    CheatSheetEssentials,
-    WealthLeakDetection,
-    PinklnFramework
-)
+from app.core.pinkln_framework import UltrathinkPersona, ReasoningFramework, CheatSheetEssentials, WealthLeakDetection, PinklnFramework
 from app.core.glicko2 import AgentRanking
 from app.core.dte_evolution import DTEEngine
 
@@ -24,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 class AgentRole(StrEnum):
     """Agent roles in the system"""
+
     DESIGNER = "ultrathink_designer"  # UX/architecture design
     WEALTH_ACCELERATOR = "wealth_accelerator"  # Revenue optimization
     DEEP_REASONING = "deep_reasoning"  # Complex problem solving
@@ -34,6 +30,7 @@ class AgentRole(StrEnum):
 @dataclass
 class AgentResponse:
     """Response from an agent"""
+
     agent_id: str
     role: AgentRole
     content: str
@@ -46,6 +43,7 @@ class AgentResponse:
 @dataclass
 class DebateParticipant:
     """Participant in a debate"""
+
     agent_id: str
     position: str  # Their stance
     arguments: list[str]
@@ -82,33 +80,19 @@ class MultiAgentSystem:
             ("wealth_001", AgentRole.WEALTH_ACCELERATOR, 1600.0),
             ("reasoning_001", AgentRole.DEEP_REASONING, 1650.0),
             ("debate_001", AgentRole.PANEL_DEBATE, 1500.0),
-            ("code_001", AgentRole.CODE_CRAFTER, 1575.0)
+            ("code_001", AgentRole.CODE_CRAFTER, 1575.0),
         ]
 
         for agent_id, role, rating in default_agents:
             self.register_agent(agent_id, role, rating)
 
-    def register_agent(
-        self,
-        agent_id: str,
-        role: AgentRole,
-        initial_rating: float = 1500.0
-    ):
+    def register_agent(self, agent_id: str, role: AgentRole, initial_rating: float = 1500.0):
         """Register new agent in the system"""
-        self.agents[agent_id] = {
-            "role": role,
-            "created_at": datetime.utcnow(),
-            "tasks_completed": 0
-        }
+        self.agents[agent_id] = {"role": role, "created_at": datetime.utcnow(), "tasks_completed": 0}
         self.ranking.register_agent(agent_id, initial_rating)
         logger.info(f"Registered agent {agent_id} ({role.value}) with rating {initial_rating}")
 
-    async def run_debate(
-        self,
-        topic: str,
-        num_participants: int = 3,
-        rounds: int = 2
-    ) -> dict[str, Any]:
+    async def run_debate(self, topic: str, num_participants: int = 3, rounds: int = 2) -> dict[str, Any]:
         """
         Run multi-agent debate panel
 
@@ -123,10 +107,7 @@ class MultiAgentSystem:
         logger.info(f"Starting debate: {topic} ({num_participants} agents, {rounds} rounds)")
 
         # Select debate agents
-        debate_agents = [
-            agent_id for agent_id, info in self.agents.items()
-            if info["role"] == AgentRole.PANEL_DEBATE
-        ][:num_participants]
+        debate_agents = [agent_id for agent_id, info in self.agents.items() if info["role"] == AgentRole.PANEL_DEBATE][:num_participants]
 
         if not debate_agents:
             # Fallback to any agents
@@ -144,12 +125,7 @@ class MultiAgentSystem:
             player = self.ranking.agents.get(agent_id)
             rating = player.mu if player else 1500.0
 
-            participant = DebateParticipant(
-                agent_id=agent_id,
-                position=position,
-                arguments=[],
-                rating=rating
-            )
+            participant = DebateParticipant(agent_id=agent_id, position=position, arguments=[], rating=rating)
             participants.append(participant)
 
         # Run debate rounds
@@ -158,11 +134,7 @@ class MultiAgentSystem:
 
             for participant in participants:
                 # Generate argument (at IQ 160)
-                argument = self._generate_argument(
-                    topic=topic,
-                    position=participant.position,
-                    round_num=round_num
-                )
+                argument = self._generate_argument(topic=topic, position=participant.position, round_num=round_num)
                 participant.arguments.append(argument)
 
         # Calculate consensus
@@ -181,7 +153,7 @@ class MultiAgentSystem:
             "consensus": consensus,
             "arguments_generated": sum(len(p.arguments) for p in participants),
             "debate_summary": self._summarize_debate(participants),
-            "persona_iq": self.persona_iq
+            "persona_iq": self.persona_iq,
         }
 
     def _generate_argument(self, topic: str, position: str, round_num: int) -> str:
@@ -193,7 +165,7 @@ class MultiAgentSystem:
         arguments = {
             "strongly_for": f"[Round {round_num}] Strong support for {topic} based on evidence and analysis at IQ {self.persona_iq}",
             "neutral": f"[Round {round_num}] Balanced perspective on {topic} considering multiple viewpoints",
-            "strongly_against": f"[Round {round_num}] Critical analysis reveals concerns with {topic}"
+            "strongly_against": f"[Round {round_num}] Critical analysis reveals concerns with {topic}",
         }
 
         return arguments.get(position, "No position")
@@ -213,17 +185,9 @@ class MultiAgentSystem:
         total_arguments = sum(len(p.arguments) for p in participants)
         positions = ", ".join(set(p.position for p in participants))
 
-        return (
-            f"{len(participants)} agents generated {total_arguments} arguments "
-            f"across positions: {positions}"
-        )
+        return f"{len(participants)} agents generated {total_arguments} arguments across positions: {positions}"
 
-    async def craft_code(
-        self,
-        task: str,
-        language: str = "python",
-        use_cheat_sheet: bool = True
-    ) -> AgentResponse:
+    async def craft_code(self, task: str, language: str = "python", use_cheat_sheet: bool = True) -> AgentResponse:
         """
         Code crafter agent enhanced with cheat sheet fusion
 
@@ -254,7 +218,7 @@ class MultiAgentSystem:
                 keywords=[language, "best_practices", "clean_code"],
                 audience="developers",
                 citations=True,
-                call_to_action="Review and test code"
+                call_to_action="Review and test code",
             )
             prompt = self.framework.fuse_cheat_sheet(cheat_sheet)
         else:
@@ -285,17 +249,10 @@ if __name__ == "__main__":
             content=code,
             reasoning_path=self.framework.reasoning_stack.copy(),
             confidence=0.92,
-            metadata={
-                "language": language,
-                "cheat_sheet_used": use_cheat_sheet,
-                "prompt": prompt if use_cheat_sheet else None
-            }
+            metadata={"language": language, "cheat_sheet_used": use_cheat_sheet, "prompt": prompt if use_cheat_sheet else None},
         )
 
-    async def accelerate_wealth(
-        self,
-        business_metrics: dict[str, float]
-    ) -> dict[str, Any]:
+    async def accelerate_wealth(self, business_metrics: dict[str, float]) -> dict[str, Any]:
         """
         Wealth accelerator agent
 
@@ -325,7 +282,7 @@ if __name__ == "__main__":
             ("conversion", business_metrics.get("conversion_rate", 0.02), 0.05),
             ("retention", business_metrics.get("retention_rate", 0.60), 0.80),
             ("upsell", business_metrics.get("upsell_rate", 0.10), 0.25),
-            ("viral", business_metrics.get("viral_coefficient", 0.5), 1.2)
+            ("viral", business_metrics.get("viral_coefficient", 0.5), 1.2),
         ]
 
         for leak_type, current, target in leak_configs:
@@ -351,19 +308,15 @@ if __name__ == "__main__":
                     "hard_truth": leak.hard_truth,
                     "plan": leak.plan,
                     "challenge": leak.challenge,
-                    "potential_gain": leak.potential_gain
+                    "potential_gain": leak.potential_gain,
                 }
                 for leak in prioritized
             ],
             "persona_iq": self.persona_iq,
-            "ultrathink_mode": self.framework.active_persona.value
+            "ultrathink_mode": self.framework.active_persona.value,
         }
 
-    async def deep_reasoning(
-        self,
-        problem: str,
-        use_dte_evolution: bool = True
-    ) -> AgentResponse:
+    async def deep_reasoning(self, problem: str, use_dte_evolution: bool = True) -> AgentResponse:
         """
         Deep reasoning agent with DTE evolution
 
@@ -414,7 +367,7 @@ Running at maximum intelligence with {len(self.framework.reasoning_stack)} frame
             content=reasoning,
             reasoning_path=self.framework.reasoning_stack.copy(),
             confidence=0.95,
-            metadata=metadata
+            metadata=metadata,
         )
 
     def get_agent_rankings(self) -> list[dict[str, Any]]:
@@ -427,7 +380,7 @@ Running at maximum intelligence with {len(self.framework.reasoning_stack)} frame
                 "rating": rating,
                 "rating_deviation": rd,
                 "role": self.agents[agent_id]["role"].value if agent_id in self.agents else "unknown",
-                "tasks_completed": self.agents[agent_id].get("tasks_completed", 0) if agent_id in self.agents else 0
+                "tasks_completed": self.agents[agent_id].get("tasks_completed", 0) if agent_id in self.agents else 0,
             }
             for agent_id, rating, rd in rankings
         ]

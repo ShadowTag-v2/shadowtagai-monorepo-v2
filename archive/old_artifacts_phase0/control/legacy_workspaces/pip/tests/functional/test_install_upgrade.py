@@ -23,9 +23,9 @@ def test_no_upgrade_unless_requested(script: PipTestEnvironment) -> None:
     """
     script.pip_install_local("simplewheel==1.0")
     result = script.pip_install_local("simplewheel")
-    assert (
-        not result.files_created
-    ), "pip install INITools upgraded when it should not have"
+    assert not result.files_created, (
+        "pip install INITools upgraded when it should not have"
+    )
 
 
 def test_invalid_upgrade_strategy_causes_error(script: PipTestEnvironment) -> None:
@@ -63,9 +63,9 @@ def test_only_if_needed_does_not_upgrade_deps_when_satisfied(
     msg = "Requirement already satisfied"
     if resolver_variant == "legacy":
         msg = msg + ", skipping upgrade: simple"
-    assert (
-        msg in result.stdout
-    ), "did not print correct message for not-upgraded requirement"
+    assert msg in result.stdout, (
+        "did not print correct message for not-upgraded requirement"
+    )
 
 
 def test_only_if_needed_does_upgrade_deps_when_no_longer_satisfied(
@@ -104,9 +104,9 @@ def test_eager_does_upgrade_dependencies_when_currently_satisfied(
     assert (
         script.site_packages / "require_simple-1.0.dist-info"
     ) not in result.files_deleted, "should have installed require_simple==1.0"
-    assert (
-        script.site_packages / "simple-2.0.dist-info"
-    ) in result.files_deleted, "should have uninstalled simple==2.0"
+    assert (script.site_packages / "simple-2.0.dist-info") in result.files_deleted, (
+        "should have uninstalled simple==2.0"
+    )
 
 
 def test_eager_does_upgrade_dependencies_when_no_longer_satisfied(
@@ -128,9 +128,9 @@ def test_eager_does_upgrade_dependencies_when_no_longer_satisfied(
         script.site_packages / "simple-3.0.dist-info",
         message="should have installed simple==3.0",
     )
-    assert (
-        script.site_packages / "simple-1.0.dist-info" in result.files_deleted
-    ), "should have uninstalled simple==1.0"
+    assert script.site_packages / "simple-1.0.dist-info" in result.files_deleted, (
+        "should have uninstalled simple==1.0"
+    )
 
 
 def test_upgrade_to_specific_version(script: PipTestEnvironment) -> None:
@@ -244,9 +244,9 @@ def test_upgrade_to_same_version_from_url(script: PipTestEnvironment) -> None:
         "install",
         "https://files.pythonhosted.org/packages/source/I/INITools/INITools-0.3.tar.gz",
     )
-    assert (
-        script.site_packages / "initools" not in result2.files_updated
-    ), "INITools 0.3 reinstalled same version"
+    assert script.site_packages / "initools" not in result2.files_updated, (
+        "INITools 0.3 reinstalled same version"
+    )
     result3 = script.pip("uninstall", "initools", "-y")
     assert_all_changes(result, result3, [script.venv / "build", "cache"])
 

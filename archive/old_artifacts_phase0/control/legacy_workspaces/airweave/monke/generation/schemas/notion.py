@@ -8,9 +8,7 @@ from pydantic import BaseModel, Field
 class NotionPageSpec(BaseModel):
     title: str = Field(description="The page title")
     token: str = Field(description="Unique verification token")
-    category: Literal["documentation", "guide", "reference"] = Field(
-        default="documentation"
-    )
+    category: Literal["documentation", "guide", "reference"] = Field(default="documentation")
     tags: list[str] = Field(default_factory=list, description="Page tags")
 
 

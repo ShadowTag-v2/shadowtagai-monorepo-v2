@@ -51,7 +51,7 @@ def hello():
         # Test with escaped spaces
         p.pipenv("uninstall simple-package")
         escaped_path = package_dir.as_posix().replace(" ", "\\ ")
-        c = p.pipenv(f'install {escaped_path}')
+        c = p.pipenv(f"install {escaped_path}")
         assert c.returncode == 0
 
         # Verify the package was installed correctly

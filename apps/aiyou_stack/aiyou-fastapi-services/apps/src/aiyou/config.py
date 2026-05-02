@@ -1,7 +1,9 @@
 """Configuration settings for ShadowTag-v4."""
 
-from pydantic import Field, SecretStr, validator
-from pydantic_settings import BaseSettings
+import os
+
+from pydantic import Field, SecretStr, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -77,13 +79,17 @@ class Settings(BaseSettings):
 
     # Security
     secret_key: SecretStr = Field(
-        "CHANGE_ME",
-        min_length=32,
-    )  # Default placeholder, should be overridden in .env
+        default_factory=lambda: SecretStr(os.environ.get("SECRET_KEY", "")),
+        min_length=1,
+        description="MUST be set via SECRET_KEY env var. No default.",
+    )
     access_token_expire_minutes: int = 30
     refresh_token_expire_days: int = 7
-    cors_origins: list[str] = ["*"]
-    auth_enabled: bool = False
+    cors_origins: list[str] = Field(
+        default_factory=list,
+        description="Set via CORS_ORIGINS env var as comma-separated origins.",
+    )
+    auth_enabled: bool = True
     jwt_secret: SecretStr | None = None
     jwt_algorithm: str = "HS256"
     admin_api_key: SecretStr | None = None
@@ -98,21 +104,23 @@ class Settings(BaseSettings):
     kernel_1_max_latency_ms: int = 1000
     kernel_2_max_latency_ms: int = 1000
 
-    @validator("cors_origins", pre=True)
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore",
+    )
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
     def parse_cors_origins(cls, v):
         if isinstance(v, str):
-            return [origin.strip() for origin in v.split(",")]
+            return [origin.strip() for origin in v.split(",") if origin.strip()]
         return v
 
     @property
     def is_production(self) -> bool:
         return self.environment == "production"
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = False
-        extra = "ignore"
 
 
 settings = Settings()
