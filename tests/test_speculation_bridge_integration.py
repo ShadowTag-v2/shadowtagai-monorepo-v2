@@ -248,12 +248,13 @@ class TestPipelineModeIntegration:
 
     def test_mode_selection(self):
         modes = list(PipelineMode)
-        assert len(modes) == 3
+        assert len(modes) == 4
 
     def test_mode_string_comparison(self):
         assert PipelineMode("pair_programming") == PipelineMode.PAIR_PROGRAMMING
         assert PipelineMode("research_sweep") == PipelineMode.RESEARCH_SWEEP
         assert PipelineMode("hybrid") == PipelineMode.HYBRID
+        assert PipelineMode("suggestion") == PipelineMode.SUGGESTION
 
     def test_mode_iteration(self):
         """Modes are iterable for UI display."""
@@ -261,3 +262,4 @@ class TestPipelineModeIntegration:
         assert "pair_programming" in labels
         assert "research_sweep" in labels
         assert "hybrid" in labels
+        assert "suggestion" in labels

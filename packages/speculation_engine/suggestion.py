@@ -163,7 +163,7 @@ def get_suggestion_suppress_reason(
 SUGGESTION_PROMPT = (
     "[SUGGESTION MODE: Suggest what the user might naturally type next.]\n"
     'THE TEST: Would they think "I was just about to type that"?\n'
-    "Rules: 2-12 words max. Match user style. No Claude voice. Silence is valid."
+    "Rules: 2-12 words max. Match user style. No Claude voice. Always suggest something."
 )
 
 _META_PATTERNS = re.compile(r"nothing found|no suggestion|stay silent|^silence$", re.I)

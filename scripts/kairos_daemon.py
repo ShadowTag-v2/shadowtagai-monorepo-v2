@@ -1018,19 +1018,23 @@ def run_proactive_suggestion_probe() -> bool:
 
         gen_id = f"proactive-{int(time.time())}"
 
-        # Tier 1: Direct generateContent — lightweight, always works
+        # Tier 1: Gemini 3.1 Flash-Lite — ultra-low-latency, MINIMAL thinking
         try:
             from google import genai
+            from google.genai import types
 
             client = genai.Client(api_key=api_key)
             response = client.models.generate_content(
-                model="gemini-2.5-flash",
+                model="gemini-3.1-flash-lite-preview",
                 contents=full_prompt,
-                config={
-                    "system_instruction": system_instruction,
-                    "temperature": 0.3,
-                    "max_output_tokens": 50,
-                },
+                config=types.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    temperature=0.3,
+                    max_output_tokens=60,
+                    thinking_config=types.ThinkingConfig(
+                        thinking_level="minimal",
+                    ),
+                ),
             )
             result_text = response.text if hasattr(response, "text") else None
             if result_text and result_text.strip():
@@ -1051,8 +1055,10 @@ def run_proactive_suggestion_probe() -> bool:
         except Exception as e:
             logger.warning("Tier 1 (generateContent) failed: %s: %s", type(e).__name__, e)
 
-        # Tier 2: Interactions API — stateful, richer but requires enablement
+        # Tier 2: Interactions API — DEPRECATED for suggestions (overkill for 2-12 word phrases)
+        # Kept as last-resort fallback; Flash-Lite with MINIMAL thinking should always suffice.
         try:
+            logger.warning("Tier 2 (Interactions API) fallback fired — consider investigating Tier 1 failures")
             from speculation_engine.gemini_bridge import GeminiPairProgrammer
 
             pair = GeminiPairProgrammer(api_key=api_key)
