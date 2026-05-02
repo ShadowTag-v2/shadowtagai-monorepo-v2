@@ -37,9 +37,7 @@ class SkillSearchEngine:
         model_name : str
             Name of the sentence-transformers model to use.
         """
-        logger.info(
-            f"Search engine initialized (model: {model_name}, lazy-loading enabled)"
-        )
+        logger.info(f"Search engine initialized (model: {model_name}, lazy-loading enabled)")
         self.model: SentenceTransformer | None = None
         self.model_name = model_name
         self.skills: list[Skill] = []
@@ -114,9 +112,7 @@ class SkillSearchEngine:
                 # Append to existing embeddings
                 self.embeddings = np.vstack([self.embeddings, new_embeddings])
 
-            logger.info(
-                f"Successfully added {len(skills)} skills. Total: {len(self.skills)} skills"
-            )
+            logger.info(f"Successfully added {len(skills)} skills. Total: {len(self.skills)} skills")
 
     def search(self, query: str, top_k: int = 3) -> list[dict[str, Any]]:
         """Search for the most relevant skills based on a query.

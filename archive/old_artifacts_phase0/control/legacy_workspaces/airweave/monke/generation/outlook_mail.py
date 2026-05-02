@@ -1,13 +1,10 @@
 """Outlook Mail-specific generation adapter: email generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.outlook_mail import OutlookMessage
 
 
-async def generate_outlook_message(
-    model: str, token: str, is_update: bool = False
-) -> tuple[str, str]:
+async def generate_outlook_message(model: str, token: str, is_update: bool = False) -> tuple[str, str]:
     """
     Returns (subject, body). The literal token must appear in the body.
     Uses structured generation with JSON mode under the hood.

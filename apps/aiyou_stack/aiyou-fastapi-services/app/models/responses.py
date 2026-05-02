@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class QueryAnalysisResponse(BaseModel):
@@ -14,26 +14,29 @@ class QueryAnalysisResponse(BaseModel):
     index_suggestions: list[dict[str, Any]] | None = None
     expert_recommendations: str | None = None
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "success": True,
-                "query": "SELECT * FROM users WHERE email LIKE '%@gmail.com'",
-                "analysis": {
-                    "query_type": "SELECT",
-                    "complexity": 45,
-                    "issues": [
-                        "Using SELECT * - retrieves all columns",
-                        "Leading wildcard in LIKE - prevents index usage",
-                    ],
-                    "suggestions": [
-                        "Specify only needed columns to reduce data transfer",
-                        "Avoid leading wildcards or use full-text search",
-                    ],
-                },
-                "expert_recommendations": "This query has several performance issues...",
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "success": True,
+                    "query": "SELECT * FROM users WHERE email LIKE '%@gmail.com'",
+                    "analysis": {
+                        "query_type": "SELECT",
+                        "complexity": 45,
+                        "issues": [
+                            "Using SELECT * - retrieves all columns",
+                            "Leading wildcard in LIKE - prevents index usage",
+                        ],
+                        "suggestions": [
+                            "Specify only needed columns to reduce data transfer",
+                            "Avoid leading wildcards or use full-text search",
+                        ],
+                    },
+                    "expert_recommendations": "This query has several performance issues...",
+                }
+            ]
         }
+    )
 
 
 class SchemaAnalysisResponse(BaseModel):
@@ -43,30 +46,33 @@ class SchemaAnalysisResponse(BaseModel):
     analysis: dict[str, Any]
     summary: str
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "success": True,
-                "analysis": {
-                    "tables": {
-                        "users": {
-                            "name": "users",
-                            "recommendations": [
-                                "Add index on users.email for better lookup performance",
-                            ],
-                            "issues": [],
-                            "stats": {
-                                "column_count": 10,
-                                "index_count": 2,
-                                "row_count": 5000000,
-                                "estimated_size_mb": 512.5,
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "success": True,
+                    "analysis": {
+                        "tables": {
+                            "users": {
+                                "name": "users",
+                                "recommendations": [
+                                    "Add index on users.email for better lookup performance",
+                                ],
+                                "issues": [],
+                                "stats": {
+                                    "column_count": 10,
+                                    "index_count": 2,
+                                    "row_count": 5000000,
+                                    "estimated_size_mb": 512.5,
+                                },
                             },
                         },
                     },
-                },
-                "summary": "Analyzed 1 tables, Found 0 issues, 1 recommendations",
-            },
+                    "summary": "Analyzed 1 tables, Found 0 issues, 1 recommendations",
+                }
+            ]
         }
+    )
 
 
 class SchemaDesignResponse(BaseModel):
@@ -77,15 +83,18 @@ class SchemaDesignResponse(BaseModel):
     scale: str | None
     design: str
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "success": True,
-                "requirements": "E-commerce platform with users, products, orders",
-                "scale": "10 million users",
-                "design": "Here's the recommended schema design...",
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "success": True,
+                    "requirements": "E-commerce platform with users, products, orders",
+                    "scale": "10 million users",
+                    "design": "Here's the recommended schema design...",
+                }
+            ]
         }
+    )
 
 
 class IndexSuggestionResponse(BaseModel):
@@ -96,22 +105,25 @@ class IndexSuggestionResponse(BaseModel):
     count: int
     summary: str
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "success": True,
-                "suggestions": [
-                    {
-                        "type": "single_column",
-                        "columns": ["status"],
-                        "reason": "Used in WHERE clause",
-                        "priority": "high",
-                    },
-                ],
-                "count": 1,
-                "summary": "Found 1 index optimization opportunities",
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "success": True,
+                    "suggestions": [
+                        {
+                            "type": "single_column",
+                            "columns": ["status"],
+                            "reason": "Used in WHERE clause",
+                            "priority": "high",
+                        },
+                    ],
+                    "count": 1,
+                    "summary": "Found 1 index optimization opportunities",
+                }
+            ]
         }
+    )
 
 
 class PerformanceEstimationResponse(BaseModel):
@@ -122,19 +134,22 @@ class PerformanceEstimationResponse(BaseModel):
     query_analysis: dict[str, Any]
     summary: str
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "success": True,
-                "estimation": {
-                    "estimated_time_ms": 250.5,
-                    "estimated_time_readable": "250.50ms",
-                    "recommendation": "Acceptable performance",
-                },
-                "query_analysis": {"query_type": "SELECT", "complexity": 25},
-                "summary": "Estimated time: 250.50ms - Acceptable performance",
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "success": True,
+                    "estimation": {
+                        "estimated_time_ms": 250.5,
+                        "estimated_time_readable": "250.50ms",
+                        "recommendation": "Acceptable performance",
+                    },
+                    "query_analysis": {"query_type": "SELECT", "complexity": 25},
+                    "summary": "Estimated time: 250.50ms - Acceptable performance",
+                }
+            ]
         }
+    )
 
 
 class ChatResponse(BaseModel):
@@ -144,14 +159,17 @@ class ChatResponse(BaseModel):
     message: str
     response: str
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "success": True,
-                "message": "How can I optimize this query?",
-                "response": "Based on the query you provided, here are my recommendations...",
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "success": True,
+                    "message": "How can I optimize this query?",
+                    "response": "Based on the query you provided, here are my recommendations...",
+                }
+            ]
         }
+    )
 
 
 class ErrorResponse(BaseModel):
@@ -161,14 +179,17 @@ class ErrorResponse(BaseModel):
     error: str
     details: str | None = None
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "success": False,
-                "error": "Invalid SQL query",
-                "details": "Query parsing failed at line 1",
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "success": False,
+                    "error": "Invalid SQL query",
+                    "details": "Query parsing failed at line 1",
+                }
+            ]
         }
+    )
 
 
 class HealthResponse(BaseModel):
@@ -178,7 +199,8 @@ class HealthResponse(BaseModel):
     version: str
     agent: str
 
-    class Config:
-        json_schema_extra = {
-            "example": {"status": "healthy", "version": "0.1.0", "agent": "Database Expert"},
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [{"status": "healthy", "version": "0.1.0", "agent": "Database Expert"}]
         }
+    )

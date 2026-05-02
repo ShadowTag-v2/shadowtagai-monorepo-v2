@@ -3,7 +3,6 @@
 Generates realistic CRM content for testing Attio integration using LLM.
 """
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.attio import AttioCompany, AttioNoteContent, AttioPerson
 
@@ -38,9 +37,7 @@ async def generate_attio_company(model: str, token: str) -> dict:
     # Build the full description with all context
     full_description = (
         f"{company.content.description}\n\n"
-        f"**Key Products/Services:**\n"
-        + "\n".join(f"- {p}" for p in company.content.key_products)
-        + f"\n\n**Notes:**\n{company.content.notes}"
+        f"**Key Products/Services:**\n" + "\n".join(f"- {p}" for p in company.content.key_products) + f"\n\n**Notes:**\n{company.content.notes}"
     )
 
     # Make domain unique by incorporating the token to avoid conflicts
@@ -86,13 +83,11 @@ async def generate_attio_person(model: str, token: str) -> dict:
     # Build full bio with context
     full_bio = (
         f"{person.content.bio}\n\n"
-        f"**Professional Interests:**\n"
-        + "\n".join(f"- {i}" for i in person.content.interests)
-        + f"\n\n**Notes:**\n{person.content.notes}"
+        f"**Professional Interests:**\n" + "\n".join(f"- {i}" for i in person.content.interests) + f"\n\n**Notes:**\n{person.content.notes}"
     )
 
     # Make email unique by incorporating the token to avoid conflicts
-    email_parts = person.spec.email.split('@')
+    email_parts = person.spec.email.split("@")
     unique_email = f"{email_parts[0]}-{token}@{email_parts[1]}"
 
     return {
@@ -132,9 +127,6 @@ async def generate_attio_note(model: str, token: str) -> tuple[str, str]:
         note.content += f"\n\nVerification Token: {token}"
 
     # Build full content
-    full_content = (
-        f"{note.content}\n\n"
-        f"**Key Points:**\n" + "\n".join(f"- {p}" for p in note.key_points)
-    )
+    full_content = f"{note.content}\n\n**Key Points:**\n" + "\n".join(f"- {p}" for p in note.key_points)
 
     return note.title, full_content

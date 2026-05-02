@@ -21,15 +21,12 @@ from pydantic import BaseModel, Field
 
 
 class BaseSamplingResult(BaseModel):
-  """Base class for evaluation results of the candidate agent on the batch of examples."""
+    """Base class for evaluation results of the candidate agent on the batch of examples."""
 
-  scores: dict[str, float] = Field(
-      required=True,
-      description=(
-          "A map from example UID to the agent's overall score on that example."
-          " (higher is better)."
-      ),
-  )
+    scores: dict[str, float] = Field(
+        required=True,
+        description=("A map from example UID to the agent's overall score on that example. (higher is better)."),
+    )
 
 
 # SamplingResult: the per-component evaluation results for a batch of examples.
@@ -39,48 +36,48 @@ SamplingResult = TypeVar("SamplingResult", bound=BaseSamplingResult)
 
 
 class BaseAgentWithScores(BaseModel):
-  """An optimized agent with its scores.
+    """An optimized agent with its scores.
 
-  Optimizers may use the overall_score field and can return custom metrics by
-  sub-classing this class.
-  """
+    Optimizers may use the overall_score field and can return custom metrics by
+    sub-classing this class.
+    """
 
-  optimized_agent: Agent = Field(
-      required=True,
-      description="The optimized agent.",
-  )
+    optimized_agent: Agent = Field(
+        required=True,
+        description="The optimized agent.",
+    )
 
-  overall_score: float | None = Field(
-      default=None,
-      description="The overall score of the optimized agent.",
-  )
+    overall_score: float | None = Field(
+        default=None,
+        description="The overall score of the optimized agent.",
+    )
 
 
 AgentWithScores = TypeVar("AgentWithScores", bound=BaseAgentWithScores)
 
 
 class OptimizerResult(BaseModel, Generic[AgentWithScores]):
-  """Base class for optimizer final results."""
+    """Base class for optimizer final results."""
 
-  optimized_agents: list[AgentWithScores] = Field(
-      required=True,
-      description=(
-          "A list of optimized agents which cannot be considered strictly"
-          " better than one another (see"
-          " https://en.wikipedia.org/wiki/Pareto_front), along with scores."
-      ),
-  )
+    optimized_agents: list[AgentWithScores] = Field(
+        required=True,
+        description=(
+            "A list of optimized agents which cannot be considered strictly"
+            " better than one another (see"
+            " https://en.wikipedia.org/wiki/Pareto_front), along with scores."
+        ),
+    )
 
 
 class UnstructuredSamplingResult(BaseSamplingResult):
-  """Evaluation result providing per-example unstructured evaluation data."""
+    """Evaluation result providing per-example unstructured evaluation data."""
 
-  data: dict[str, dict[str, Any]] | None = Field(
-      default=None,
-      description=(
-          "A map from example UID to JSON-serializable evaluation data useful"
-          " for agent optimization. Recommended contents include inputs,"
-          " trajectories, and metrics. Must be provided if requested by the"
-          " optimizer."
-      ),
-  )
+    data: dict[str, dict[str, Any]] | None = Field(
+        default=None,
+        description=(
+            "A map from example UID to JSON-serializable evaluation data useful"
+            " for agent optimization. Recommended contents include inputs,"
+            " trajectories, and metrics. Must be provided if requested by the"
+            " optimizer."
+        ),
+    )

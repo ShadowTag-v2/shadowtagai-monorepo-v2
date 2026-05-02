@@ -111,9 +111,7 @@ class JudgeSix:
         """
         self.caller = caller
         self.mission_statement = mission_statement
-        self.audit_log_path = audit_log_path or os.environ.get(
-            "JR_AUDIT_LOG_PATH", "./logs/jr_audit.log"
-        )
+        self.audit_log_path = audit_log_path or os.environ.get("JR_AUDIT_LOG_PATH", "./logs/jr_audit.log")
         self.purpose_threshold = purpose_threshold
         self.reasons_threshold = reasons_threshold
         self.brakes_threshold = brakes_threshold
@@ -150,10 +148,7 @@ class JudgeSix:
             # Block if validation failed
             if validation.result != ValidationResult.APPROVED:
                 raise ValueError(
-                    f"JR VALIDATION FAILED: {validation.result.value}\n"
-                    f"Function: {fn_name}\n"
-                    f"Args: {fn_args}\n"
-                    f"Explanation: {validation.explanation}"
+                    f"JR VALIDATION FAILED: {validation.result.value}\nFunction: {fn_name}\nArgs: {fn_args}\nExplanation: {validation.explanation}"
                 )
 
             return True
@@ -209,9 +204,7 @@ class JudgeSix:
             explanation=explanation,
         )
 
-    def _validate_purpose(
-        self, fn_name: str, fn_args: dict[str, Any], context: str
-    ) -> tuple[bool, float]:
+    def _validate_purpose(self, fn_name: str, fn_args: dict[str, Any], context: str) -> tuple[bool, float]:
         """
         Validate PURPOSE: Does this function call advance the mission?
 
@@ -235,9 +228,7 @@ class JudgeSix:
 
         return score >= self.purpose_threshold, score
 
-    def _validate_reasons(
-        self, fn_name: str, fn_args: dict[str, Any], context: str
-    ) -> tuple[bool, float]:
+    def _validate_reasons(self, fn_name: str, fn_args: dict[str, Any], context: str) -> tuple[bool, float]:
         """
         Validate REASONS: Is this function call defensible and logical?
 
@@ -261,9 +252,7 @@ class JudgeSix:
         # Arguments seem reasonable
         return True, 0.85
 
-    def _check_brakes(
-        self, fn_name: str, fn_args: dict[str, Any], context: str
-    ) -> tuple[bool, float]:
+    def _check_brakes(self, fn_name: str, fn_args: dict[str, Any], context: str) -> tuple[bool, float]:
         """
         Check BRAKES: Will this function call cause catastrophic failure?
 

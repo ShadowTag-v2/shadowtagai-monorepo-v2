@@ -35,12 +35,9 @@ class SkillEnhancer:
         self.skill_md_path = self.skill_dir / "SKILL.md"
 
         # Get API key
-        self.api_key = api_key or os.environ.get('ANTHROPIC_API_KEY')
+        self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
         if not self.api_key:
-            raise ValueError(
-                "No API key provided. Set ANTHROPIC_API_KEY environment variable "
-                "or use --api-key argument"
-            )
+            raise ValueError("No API key provided. Set ANTHROPIC_API_KEY environment variable or use --api-key argument")
 
         self.client = anthropic.Anthropic(api_key=self.api_key)
 
@@ -48,7 +45,7 @@ class SkillEnhancer:
         """Read existing SKILL.md"""
         if not self.skill_md_path.exists():
             return None
-        return self.skill_md_path.read_text(encoding='utf-8')
+        return self.skill_md_path.read_text(encoding="utf-8")
 
     def enhance_skill_md(self, references, current_skill_md):
         """Use Claude to enhance SKILL.md"""
@@ -61,13 +58,7 @@ class SkillEnhancer:
 
         try:
             message = self.client.messages.create(
-                model="claude-sonnet-4-20250514",
-                max_tokens=4096,
-                temperature=0.3,
-                messages=[{
-                    "role": "user",
-                    "content": prompt
-                }]
+                model="claude-sonnet-4-20250514", max_tokens=4096, temperature=0.3, messages=[{"role": "user", "content": prompt}]
             )
 
             enhanced_content = message.content[0].text
@@ -88,9 +79,9 @@ class SkillEnhancer:
 I've scraped documentation and organized it into reference files. Your job is to create an EXCELLENT SKILL.md that will help Claude use this documentation effectively.
 
 CURRENT SKILL.MD:
-{'```markdown' if current_skill_md else '(none - create from scratch)'}
-{current_skill_md or 'No existing SKILL.md'}
-{'```' if current_skill_md else ''}
+{"```markdown" if current_skill_md else "(none - create from scratch)"}
+{current_skill_md or "No existing SKILL.md"}
+{"```" if current_skill_md else ""}
 
 REFERENCE DOCUMENTATION:
 """
@@ -132,27 +123,23 @@ Return ONLY the complete SKILL.md content, starting with the frontmatter (---).
         """Save the enhanced SKILL.md"""
         # Backup original
         if self.skill_md_path.exists():
-            backup_path = self.skill_md_path.with_suffix('.md.backup')
+            backup_path = self.skill_md_path.with_suffix(".md.backup")
             self.skill_md_path.rename(backup_path)
             print(f"  💾 Backed up original to: {backup_path.name}")
 
         # Save enhanced version
-        self.skill_md_path.write_text(content, encoding='utf-8')
+        self.skill_md_path.write_text(content, encoding="utf-8")
         print("  ✅ Saved enhanced SKILL.md")
 
     def run(self):
         """Main enhancement workflow"""
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print(f"ENHANCING SKILL: {self.skill_dir.name}")
-        print(f"{'='*60}\n")
+        print(f"{'=' * 60}\n")
 
         # Read reference files
         print("📖 Reading reference documentation...")
-        references = read_reference_files(
-            self.skill_dir,
-            max_chars=API_CONTENT_LIMIT,
-            preview_limit=API_PREVIEW_LIMIT
-        )
+        references = read_reference_files(self.skill_dir, max_chars=API_CONTENT_LIMIT, preview_limit=API_PREVIEW_LIMIT)
 
         if not references:
             print("❌ No reference files found to analyze")
@@ -194,7 +181,7 @@ Return ONLY the complete SKILL.md content, starting with the frontmatter (---).
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Enhance SKILL.md using Claude API',
+        description="Enhance SKILL.md using Claude API",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -207,15 +194,12 @@ Examples:
 
   # Show what would be done (dry run)
   skill-seekers enhance output/godot/ --dry-run
-"""
+""",
     )
 
-    parser.add_argument('skill_dir', type=str,
-                       help='Path to skill directory (e.g., output/steam-inventory/)')
-    parser.add_argument('--api-key', type=str,
-                       help='Anthropic API key (or set ANTHROPIC_API_KEY env var)')
-    parser.add_argument('--dry-run', action='store_true',
-                       help='Show what would be done without calling API')
+    parser.add_argument("skill_dir", type=str, help="Path to skill directory (e.g., output/steam-inventory/)")
+    parser.add_argument("--api-key", type=str, help="Anthropic API key (or set ANTHROPIC_API_KEY env var)")
+    parser.add_argument("--dry-run", action="store_true", help="Show what would be done without calling API")
 
     args = parser.parse_args()
 
@@ -264,6 +248,7 @@ Examples:
     except Exception as e:
         print(f"❌ Unexpected error: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 

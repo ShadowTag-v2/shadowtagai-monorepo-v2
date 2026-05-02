@@ -30,9 +30,7 @@ def test_venv_in_project_disabled_ignores_venv(false_value, pipenv_instance_pypi
             with open(file_path, "w") as f:
                 f.write(venv_name)
 
-            with temp_environ(), TemporaryDirectory(
-                prefix="pipenv-", suffix="temp_workon_home"
-            ) as workon_home:
+            with temp_environ(), TemporaryDirectory(prefix="pipenv-", suffix="temp_workon_home") as workon_home:
                 os.environ["WORKON_HOME"] = workon_home
                 c = p.pipenv("install dataclasses-json")
                 assert c.returncode == 0
@@ -63,13 +61,9 @@ def test_venv_at_project_root(true_value, pipenv_instance_pypi):
 
 @pytest.mark.dotvenv
 @pytest.mark.parametrize("false_value", FALSE_VALUES)
-def test_venv_in_project_disabled_with_existing_venv_dir(
-    false_value, pipenv_instance_pypi
-):
+def test_venv_in_project_disabled_with_existing_venv_dir(false_value, pipenv_instance_pypi):
     venv_name = "my_project"
-    with temp_environ(), pipenv_instance_pypi() as p, TemporaryDirectory(
-        prefix="pipenv-", suffix="temp_workon_home"
-    ) as workon_home:
+    with temp_environ(), pipenv_instance_pypi() as p, TemporaryDirectory(prefix="pipenv-", suffix="temp_workon_home") as workon_home:
         os.environ["PIPENV_VENV_IN_PROJECT"] = false_value
         os.environ["PIPENV_CUSTOM_VENV_NAME"] = venv_name
         os.environ["WORKON_HOME"] = workon_home
@@ -106,9 +100,7 @@ def test_venv_file(venv_name, pipenv_instance_pypi):
         with open(file_path, "w") as f:
             f.write(venv_name)
 
-        with temp_environ(), TemporaryDirectory(
-            prefix="pipenv-", suffix="temp_workon_home"
-        ) as workon_home:
+        with temp_environ(), TemporaryDirectory(prefix="pipenv-", suffix="temp_workon_home") as workon_home:
             os.environ["WORKON_HOME"] = workon_home
 
             c = p.pipenv("install")
@@ -135,9 +127,7 @@ def test_empty_venv_file(pipenv_instance_pypi):
         with open(file_path, "w"):
             pass
 
-        with temp_environ(), TemporaryDirectory(
-            prefix="pipenv-", suffix="temp_workon_home"
-        ) as workon_home:
+        with temp_environ(), TemporaryDirectory(prefix="pipenv-", suffix="temp_workon_home") as workon_home:
             os.environ["WORKON_HOME"] = workon_home
 
             c = p.pipenv("install")
@@ -156,9 +146,7 @@ def test_empty_venv_file(pipenv_instance_pypi):
 @pytest.mark.dotvenv
 def test_venv_in_project_default_when_venv_exists(pipenv_instance_pypi):
     """Tests virtualenv creation when a .venv file exists at the project root."""
-    with temp_environ(), pipenv_instance_pypi() as p, TemporaryDirectory(
-        prefix="pipenv-", suffix="-test_venv"
-    ) as venv_path:
+    with temp_environ(), pipenv_instance_pypi() as p, TemporaryDirectory(prefix="pipenv-", suffix="-test_venv") as venv_path:
         file_path = os.path.join(p.path, ".venv")
         with open(file_path, "w") as f:
             f.write(venv_path)
@@ -181,9 +169,7 @@ def test_rm_prefers_workon_home_venv_over_dot_venv_dir(pipenv_instance_pypi):
     independently creates a .venv directory (e.g. via `python -m venv .venv`),
     `pipenv --rm` must remove the pipenv-managed venv, not the user-created .venv.
     """
-    with temp_environ(), pipenv_instance_pypi() as p, TemporaryDirectory(
-        prefix="pipenv-", suffix="temp_workon_home"
-    ) as workon_home:
+    with temp_environ(), pipenv_instance_pypi() as p, TemporaryDirectory(prefix="pipenv-", suffix="temp_workon_home") as workon_home:
         os.environ["WORKON_HOME"] = workon_home
         # Step 1: create the pipenv-managed virtualenv in WORKON_HOME.
         c = p.pipenv("install")
@@ -202,9 +188,7 @@ def test_rm_prefers_workon_home_venv_over_dot_venv_dir(pipenv_instance_pypi):
         c = p.pipenv("--venv")
         assert c.returncode == 0
         reported_venv = Path(c.stdout.strip())
-        assert reported_venv == pipenv_venv, (
-            f"Expected pipenv-managed venv {pipenv_venv}, got {reported_venv}"
-        )
+        assert reported_venv == pipenv_venv, f"Expected pipenv-managed venv {pipenv_venv}, got {reported_venv}"
 
         # Step 4: `--rm` must remove the pipenv-managed venv, not .venv.
         c = p.pipenv("--rm")
@@ -226,7 +210,6 @@ def test_venv_name_accepts_custom_name_environment_variable(pipenv_instance_pypi
             assert c.returncode == 0
             venv_path = c.stdout.strip()
             assert test_name == Path(venv_path).parts[-1]
-
 
 
 @pytest.mark.dotvenv

@@ -17,8 +17,8 @@
 
 import { type NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = process.env.COUNSELCONDUIT_API_URL
-  ?? 'https://counselconduit-767252945109.us-central1.run.app';
+const BACKEND_URL =
+  process.env.COUNSELCONDUIT_API_URL ?? 'https://counselconduit-767252945109.us-central1.run.app';
 
 interface CommitRequestBody {
   action: 'accept' | 'reject' | 'partial_accept';
@@ -27,20 +27,14 @@ interface CommitRequestBody {
   rejectionReason?: string;
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { sessionId: string } },
-) {
+export async function POST(request: NextRequest, { params }: { params: { sessionId: string } }) {
   const sessionId = params.sessionId;
 
   let body: CommitRequestBody;
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json(
-      { error: 'Invalid JSON body' },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
   const { action, selectedFiles, matterId, rejectionReason } = body;
@@ -62,29 +56,26 @@ export async function POST(
   }
 
   try {
-    const backendRes = await fetch(
-      `${BACKEND_URL}/api/sandbox/${sessionId}/commit`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // Forward auth + idempotency
-          ...(request.headers.get('authorization')
-            ? { Authorization: request.headers.get('authorization')! }
-            : {}),
-          ...(request.headers.get('x-idempotency-key')
-            ? { 'X-Idempotency-Key': request.headers.get('x-idempotency-key')! }
-            : {}),
-        },
-        body: JSON.stringify({
-          action,
-          selected_files: selectedFiles,
-          matter_id: matterId,
-          rejection_reason: rejectionReason ?? '',
-        }),
-        signal: AbortSignal.timeout(30_000),
+    const backendRes = await fetch(`${BACKEND_URL}/api/sandbox/${sessionId}/commit`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Forward auth + idempotency
+        ...(request.headers.get('authorization')
+          ? { Authorization: request.headers.get('authorization')! }
+          : {}),
+        ...(request.headers.get('x-idempotency-key')
+          ? { 'X-Idempotency-Key': request.headers.get('x-idempotency-key')! }
+          : {}),
       },
-    );
+      body: JSON.stringify({
+        action,
+        selected_files: selectedFiles,
+        matter_id: matterId,
+        rejection_reason: rejectionReason ?? '',
+      }),
+      signal: AbortSignal.timeout(30_000),
+    });
 
     if (!backendRes.ok) {
       const errorBody = await backendRes.text();
@@ -99,9 +90,6 @@ export async function POST(
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Internal error';
     console.error('[sandbox/commit] Failed:', message);
-    return NextResponse.json(
-      { error: message },
-      { status: 502 },
-    );
+    return NextResponse.json({ error: message }, { status: 502 });
   }
 }

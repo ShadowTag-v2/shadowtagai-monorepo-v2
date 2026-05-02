@@ -34,9 +34,7 @@ class AuditWorker:
         self.gcs_bucket = gcs_bucket
 
         self.subscriber = pubsub_v1.SubscriberClient()
-        self.subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.subscription_id
-        )
+        self.subscription_path = self.subscriber.subscription_path(self.project_id, self.subscription_id)
 
         # GCS client for audit storage
         self.storage_client = storage.Client()
@@ -61,17 +59,10 @@ class AuditWorker:
         blob = bucket.blob(blob_name)
 
         # Upload trace
-        blob.upload_from_string(
-            json.dumps(trace_data, indent=2),
-            content_type="application/json"
-        )
+        blob.upload_from_string(json.dumps(trace_data, indent=2), content_type="application/json")
 
         # Generate signed URL (7 days)
-        signed_url = blob.generate_signed_url(
-            version="v4",
-            expiration=timedelta(days=7),
-            method="GET"
-        )
+        signed_url = blob.generate_signed_url(version="v4", expiration=timedelta(days=7), method="GET")
 
         return signed_url
 
@@ -99,9 +90,9 @@ class AuditWorker:
                     "event": "audit_trace_created",
                     "decision_id": decision_id,
                     "trace_url": signed_url,
-                    "timestamp": datetime.utcnow().isoformat() + "Z"
+                    "timestamp": datetime.utcnow().isoformat() + "Z",
                 },
-                timeout=10
+                timeout=10,
             )
             return response.status_code == 200
         except requests.RequestException:
@@ -154,10 +145,7 @@ class AuditWorker:
         print(f"Starting Audit Worker on {self.subscription_path}")
         print("Waiting for messages...")
 
-        streaming_pull_future = self.subscriber.subscribe(
-            self.subscription_path,
-            callback=self.process_message
-        )
+        streaming_pull_future = self.subscriber.subscribe(self.subscription_path, callback=self.process_message)
 
         try:
             streaming_pull_future.result(timeout=timeout)
@@ -166,11 +154,7 @@ class AuditWorker:
             streaming_pull_future.cancel()
             streaming_pull_future.result()
 
-    def start_with_callback(
-        self,
-        callback: Callable[[dict], None],
-        timeout: float | None = None
-    ) -> None:
+    def start_with_callback(self, callback: Callable[[dict], None], timeout: float | None = None) -> None:
         """
         Start worker with custom callback for processing.
 
@@ -178,6 +162,7 @@ class AuditWorker:
             callback: Function to call with parsed trace data
             timeout: Optional timeout in seconds
         """
+
         def wrapped_callback(message: pubsub_v1.subscriber.message.Message) -> None:
             print(f"\n[RECEIVED] Msg ID: {message.message_id} | Attempt: {message.delivery_attempt}")
 
@@ -201,10 +186,7 @@ class AuditWorker:
 
         print(f"Starting Audit Worker (custom callback) on {self.subscription_path}")
 
-        streaming_pull_future = self.subscriber.subscribe(
-            self.subscription_path,
-            callback=wrapped_callback
-        )
+        streaming_pull_future = self.subscriber.subscribe(self.subscription_path, callback=wrapped_callback)
 
         try:
             streaming_pull_future.result(timeout=timeout)

@@ -21,75 +21,67 @@ from typing import TYPE_CHECKING
 from google.adk.memory.base_memory_service import BaseMemoryService, SearchMemoryResponse
 from google.adk.memory.memory_entry import MemoryEntry
 from google.genai import types
-from typing_extensions import override
+from typing import override
 
 if TYPE_CHECKING:
-  from google.adk.sessions.session import Session
+    from google.adk.sessions.session import Session
 
 
 class FooMemoryService(BaseMemoryService):
-  """A dummy memory service that returns a fixed response."""
+    """A dummy memory service that returns a fixed response."""
 
-  def __init__(self, uri: str | None = None, **kwargs):
-    """Initializes the foo memory service.
+    def __init__(self, uri: str | None = None, **kwargs):
+        """Initializes the foo memory service.
 
-    Args:
-      uri: The service URI.
-      **kwargs: Additional keyword arguments.
-    """
-    del uri, kwargs  # Unused in this dummy implementation.
+        Args:
+          uri: The service URI.
+          **kwargs: Additional keyword arguments.
+        """
+        del uri, kwargs  # Unused in this dummy implementation.
 
-  @override
-  async def add_session_to_memory(self, session: Session):
-    print('FooMemoryService.add_session_to_memory')
+    @override
+    async def add_session_to_memory(self, session: Session):
+        print("FooMemoryService.add_session_to_memory")
 
-  @override
-  async def search_memory(
-      self, *, app_name: str, user_id: str, query: str
-  ) -> SearchMemoryResponse:
-    print('FooMemoryService.search_memory')
-    return SearchMemoryResponse(
-        memories=[
-            MemoryEntry(
-                content=types.Content(
-                    parts=[types.Part(text='I love ADK from Foo')]
-                ),
-                author='bot',
-                timestamp=datetime.now().isoformat(),
-            )
-        ]
-    )
+    @override
+    async def search_memory(self, *, app_name: str, user_id: str, query: str) -> SearchMemoryResponse:
+        print("FooMemoryService.search_memory")
+        return SearchMemoryResponse(
+            memories=[
+                MemoryEntry(
+                    content=types.Content(parts=[types.Part(text="I love ADK from Foo")]),
+                    author="bot",
+                    timestamp=datetime.now().isoformat(),
+                )
+            ]
+        )
 
 
 class BarMemoryService(BaseMemoryService):
-  """A dummy memory service that returns a fixed response."""
+    """A dummy memory service that returns a fixed response."""
 
-  def __init__(self, uri: str | None = None, **kwargs):
-    """Initializes the bar memory service.
+    def __init__(self, uri: str | None = None, **kwargs):
+        """Initializes the bar memory service.
 
-    Args:
-      uri: The service URI.
-      **kwargs: Additional keyword arguments.
-    """
-    del uri, kwargs  # Unused in this dummy implementation.
+        Args:
+          uri: The service URI.
+          **kwargs: Additional keyword arguments.
+        """
+        del uri, kwargs  # Unused in this dummy implementation.
 
-  @override
-  async def add_session_to_memory(self, session: Session):
-    print('BarMemoryService.add_session_to_memory')
+    @override
+    async def add_session_to_memory(self, session: Session):
+        print("BarMemoryService.add_session_to_memory")
 
-  @override
-  async def search_memory(
-      self, *, app_name: str, user_id: str, query: str
-  ) -> SearchMemoryResponse:
-    print('BarMemoryService.search_memory')
-    return SearchMemoryResponse(
-        memories=[
-            MemoryEntry(
-                content=types.Content(
-                    parts=[types.Part(text='I love ADK from Bar')]
-                ),
-                author='bot',
-                timestamp=datetime.now().isoformat(),
-            )
-        ]
-    )
+    @override
+    async def search_memory(self, *, app_name: str, user_id: str, query: str) -> SearchMemoryResponse:
+        print("BarMemoryService.search_memory")
+        return SearchMemoryResponse(
+            memories=[
+                MemoryEntry(
+                    content=types.Content(parts=[types.Part(text="I love ADK from Bar")]),
+                    author="bot",
+                    timestamp=datetime.now().isoformat(),
+                )
+            ]
+        )

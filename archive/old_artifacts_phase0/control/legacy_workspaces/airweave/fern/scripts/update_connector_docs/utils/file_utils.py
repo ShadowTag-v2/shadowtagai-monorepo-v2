@@ -36,7 +36,7 @@ def get_connectors_from_sources():
         connector_name = source_file.stem
 
         try:
-            with open(source_file, "r") as f:
+            with open(source_file) as f:
                 content = f.read()
 
             # Parse the Python file
@@ -46,24 +46,15 @@ def get_connectors_from_sources():
             for node in ast.walk(tree):
                 if isinstance(node, ast.ClassDef):
                     # Check if it inherits from BaseSource
-                    inherits_from_base_source = any(
-                        isinstance(base, ast.Name) and base.id == "BaseSource"
-                        for base in node.bases
-                    )
+                    inherits_from_base_source = any(isinstance(base, ast.Name) and base.id == "BaseSource" for base in node.bases)
 
                     if not inherits_from_base_source:
                         continue
 
                     # Check if it has @source decorator
                     has_source_decorator = any(
-                        (
-                            isinstance(decorator, ast.Call)
-                            and isinstance(decorator.func, ast.Name)
-                            and decorator.func.id == "source"
-                        )
-                        or (
-                            isinstance(decorator, ast.Name) and decorator.id == "source"
-                        )
+                        (isinstance(decorator, ast.Call) and isinstance(decorator.func, ast.Name) and decorator.func.id == "source")
+                        or (isinstance(decorator, ast.Name) and decorator.id == "source")
                         for decorator in node.decorator_list
                     )
 
@@ -133,23 +124,17 @@ def update_docs_yml(valid_connectors):
         print(f"Reading docs.yml from: {DOCS_YML_PATH}")
         print(f"File exists: {DOCS_YML_PATH.exists()}")
 
-        with open(DOCS_YML_PATH, "r") as f:
+        with open(DOCS_YML_PATH) as f:
             docs_config = yaml.safe_load(f)
 
         print(f"Loaded YAML config with keys: {docs_config.keys()}")
-        print(
-            f"Navigation structure: {[item.get('section', item.get('api', 'unknown')) for item in docs_config['navigation']]}"
-        )
+        print(f"Navigation structure: {[item.get('section', item.get('api', 'unknown')) for item in docs_config['navigation']]}")
 
         # Find the Docs section
         docs_section = None
         for i, section in enumerate(docs_config["navigation"]):
             print(f"  Section {i}: {section}")
-            if (
-                isinstance(section, dict)
-                and "section" in section
-                and section["section"] == "Docs"
-            ):
+            if isinstance(section, dict) and "section" in section and section["section"] == "Docs":
                 docs_section = section
                 print(f"  Found Docs section at index {i}")
                 break
@@ -168,11 +153,7 @@ def update_docs_yml(valid_connectors):
         connectors_section = None
         for i, item in enumerate(docs_section["contents"]):
             print(f"  Content item {i}: {item}")
-            if (
-                isinstance(item, dict)
-                and "section" in item
-                and item["section"] == "Connectors"
-            ):
+            if isinstance(item, dict) and "section" in item and item["section"] == "Connectors":
                 connectors_section = item
                 print(f"  Found existing Connectors section at index {i}")
                 break
@@ -200,9 +181,7 @@ def update_docs_yml(valid_connectors):
         # Write back the updated config
         print(f"Writing back to: {DOCS_YML_PATH}")
         with open(DOCS_YML_PATH, "w") as f:
-            yaml.dump(
-                docs_config, f, default_flow_style=False, sort_keys=False, indent=2
-            )
+            yaml.dump(docs_config, f, default_flow_style=False, sort_keys=False, indent=2)
 
         print(f"Updated docs.yml with {len(valid_connectors)} connectors")
 
@@ -237,7 +216,7 @@ description: "{display_name} integration with Airweave"
 
     if main_mdx_path.exists():
         # If file exists, preserve custom content and update only auto-generated part
-        with open(main_mdx_path, "r") as f:
+        with open(main_mdx_path) as f:
             existing_content = f.read()
 
         # Replace content between auto-generated markers
@@ -250,9 +229,7 @@ description: "{display_name} integration with Airweave"
                 existing_content[:start_index]
                 + CONTENT_START_MARKER
                 + "\n\n"
-                + mdx_content.replace(CONTENT_START_MARKER, "").replace(
-                    CONTENT_END_MARKER, ""
-                )
+                + mdx_content.replace(CONTENT_START_MARKER, "").replace(CONTENT_END_MARKER, "")
                 + "\n\n"
                 + CONTENT_END_MARKER
                 + existing_content[end_index:]
@@ -267,9 +244,7 @@ description: "{display_name} integration with Airweave"
             with open(main_mdx_path, "w") as f:
                 f.write(frontmatter + mdx_content)
 
-            print(
-                f"  Created new main.mdx for {connector_name} (no markers found in existing file)"
-            )
+            print(f"  Created new main.mdx for {connector_name} (no markers found in existing file)")
     else:
         # Create the file with the frontmatter and generated content
         with open(main_mdx_path, "w") as f:

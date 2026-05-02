@@ -7,9 +7,9 @@ from .manager import *
 from .utils import *
 
 
-#*****************************************************
+# *****************************************************
 # QfLocListExplorer
-#*****************************************************
+# *****************************************************
 class QfLocListExplorer(Explorer):
     def __init__(self):
         self._list_type = "QuickFix"
@@ -23,13 +23,11 @@ class QfLocListExplorer(Explorer):
 
         if kwargs.get("list_type") == "loclist":
             self._list_type = "LocList"
-            cmd = 'getloclist(0)'
+            cmd = "getloclist(0)"
         else:
             self._list_type = "QuickFix"
-            cmd = 'getqflist()'
-        return lfEval(
-            f"""map({cmd}, 'bufname(v:val.bufnr) . ":" . v:val.lnum . ":" . v:val.col . ":" . v:val.text')"""
-        )
+            cmd = "getqflist()"
+        return lfEval(f"""map({cmd}, 'bufname(v:val.bufnr) . ":" . v:val.lnum . ":" . v:val.col . ":" . v:val.text')""")
 
     def getStlCategory(self):
         return self._list_type
@@ -62,7 +60,7 @@ class QfLocListExplManager(Manager):
             return
         line = args[0]
 
-        m = re.match(r'^(.+?):(\d+):(\d+):', line)
+        m = re.match(r"^(.+?):(\d+):(\d+):", line)
         file, line_num, col = m.group(1, 2, 3)
 
         try:
@@ -70,21 +68,21 @@ class QfLocListExplManager(Manager):
                 file = os.path.join(self._getInstance().getCwd(), lfDecode(file))
                 file = os.path.normpath(lfEncode(file))
 
-            if kwargs.get("mode", '') == 't':
-                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == '1' and lfEval(f"bufloaded('{escQuote(file)}')") == '1':
-                    lfDrop('tab', file)
+            if kwargs.get("mode", "") == "t":
+                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == "1" and lfEval(f"bufloaded('{escQuote(file)}')") == "1":
+                    lfDrop("tab", file)
                 else:
                     lfCmd(f"tabe {escSpecial(file)}")
             else:
-                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == '1' and lfEval(f"bufloaded('{escQuote(file)}')") == '1':
-                    lfDrop('', file)
+                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == "1" and lfEval(f"bufloaded('{escQuote(file)}')") == "1":
+                    lfDrop("", file)
                 else:
                     lfCmd(f"hide edit {escSpecial(file)}")
             lfCmd(f"call cursor({line_num}, {col})")
             lfCmd("norm! zv")
             lfCmd("norm! zz")
-        except vim.error as e: # E37
-            if 'E325' not in str(e).split(':'):
+        except vim.error as e:  # E37
+            if "E325" not in str(e).split(":"):
                 lfPrintTraceback()
 
     def _getDigest(self, line, mode):
@@ -160,19 +158,13 @@ class QfLocListExplManager(Manager):
             self._match_ids.append(id)
 
         else:
-            id = int(
-                lfEval(rf"""matchadd('Lf_hl_{list_type}FileName', '^.\{{-}}:\ze\d\+:')""")
-            )
+            id = int(lfEval(rf"""matchadd('Lf_hl_{list_type}FileName', '^.\{{-}}:\ze\d\+:')"""))
             self._match_ids.append(id)
 
-            id = int(
-                lfEval(rf"""matchadd('Lf_hl_{list_type}LineNumber', '^.\{{-}}:\zs\d\+:')""")
-            )
+            id = int(lfEval(rf"""matchadd('Lf_hl_{list_type}LineNumber', '^.\{{-}}:\zs\d\+:')"""))
             self._match_ids.append(id)
 
-            id = int(
-                lfEval(rf"""matchadd('Lf_hl_{list_type}ColumnNumber', '^.\{{-}}:\d\+:\zs\d\+:')""")
-            )
+            id = int(lfEval(rf"""matchadd('Lf_hl_{list_type}ColumnNumber', '^.\{{-}}:\d\+:\zs\d\+:')"""))
             self._match_ids.append(id)
 
     def _createHelp(self):
@@ -189,19 +181,19 @@ class QfLocListExplManager(Manager):
         return help
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         line = args[0]
 
-        m = re.match(r'^(.+?):(\d+):', line)
+        m = re.match(r"^(.+?):(\d+):", line)
         file, line_num = m.group(1, 2)
 
         if not os.path.isabs(file):
             file = os.path.join(self._getInstance().getCwd(), lfDecode(file))
             file = os.path.normpath(lfEncode(file))
 
-        if lfEval(f"bufloaded('{escQuote(file)}')") == '1':
+        if lfEval(f"bufloaded('{escQuote(file)}')") == "1":
             source = int(lfEval(f"bufadd('{escQuote(file)}')"))
         else:
             source = file

@@ -74,9 +74,7 @@ class ZendeskBongo(BaseBongo):
                         await self._rate_limit()
                         token = str(uuid.uuid4())[:8]
                         self.logger.info(f"🔨 Generating content for ticket with token: {token}")
-                        subject, description = await generate_zendesk_ticket(
-                            self.openai_model, token
-                        )
+                        subject, description = await generate_zendesk_ticket(self.openai_model, token)
                         self.logger.info(f"📝 Generated ticket: '{subject[:50]}...'")
 
                         # Create ticket
@@ -101,12 +99,8 @@ class ZendeskBongo(BaseBongo):
                                 error_data = error_json
                             except Exception:
                                 pass
-                            self.logger.error(
-                                f"Failed to create ticket: {resp.status_code} - {error_data}"
-                            )
-                            self.logger.error(
-                                f"Request data: subject='{subject[:50]}...', description='{description[:50]}...'"
-                            )
+                            self.logger.error(f"Failed to create ticket: {resp.status_code} - {error_data}")
+                            self.logger.error(f"Request data: subject='{subject[:50]}...', description='{description[:50]}...'")
 
                         resp.raise_for_status()
                         ticket = resp.json()["ticket"]
@@ -134,15 +128,13 @@ class ZendeskBongo(BaseBongo):
             # Process results and handle any exceptions
             for i, result in enumerate(results):
                 if isinstance(result, Exception):
-                    self.logger.error(f"Failed to create ticket {i+1}: {result}")
+                    self.logger.error(f"Failed to create ticket {i + 1}: {result}")
                     # Re-raise the first exception we encounter
                     raise result
                 elif result:
                     entities.append(result)
                     self._tickets.append(result)
-                    self.logger.info(
-                        f"✅ Created ticket {i+1}/{self.entity_count}: {result['name'][:50]}..."
-                    )
+                    self.logger.info(f"✅ Created ticket {i + 1}/{self.entity_count}: {result['name'][:50]}...")
 
         self.created_entities = entities
         return entities
@@ -194,9 +186,7 @@ class ZendeskBongo(BaseBongo):
                     if r.status_code in (200, 204):
                         deleted.append(e["id"])
                     else:
-                        self.logger.warning(
-                            f"Delete failed for {e.get('id')}: {r.status_code} - {r.text}"
-                        )
+                        self.logger.warning(f"Delete failed for {e.get('id')}: {r.status_code} - {r.text}")
                 except Exception as ex:
                     self.logger.warning(f"Delete error for {e.get('id')}: {ex}")
         return deleted
@@ -217,25 +207,18 @@ class ZendeskBongo(BaseBongo):
             # Find and clean up orphaned monke test tickets
             orphaned_tickets = await self._find_orphaned_monke_tickets()
             if orphaned_tickets:
-                self.logger.info(
-                    f"🔍 Found {len(orphaned_tickets)} orphaned monke test tickets to clean up"
-                )
+                self.logger.info(f"🔍 Found {len(orphaned_tickets)} orphaned monke test tickets to clean up")
                 for ticket in orphaned_tickets:
                     try:
                         await self._delete_ticket_by_id(ticket["id"])
                         cleanup_stats["tickets_deleted"] += 1
-                        self.logger.info(
-                            f"✅ Deleted orphaned ticket: {ticket['subject']} ({ticket['id']})"
-                        )
+                        self.logger.info(f"✅ Deleted orphaned ticket: {ticket['subject']} ({ticket['id']})")
                     except Exception as e:
                         cleanup_stats["errors"] += 1
                         self.logger.warning(f"⚠️ Failed to delete ticket {ticket['id']}: {e}")
 
             # Log cleanup summary
-            self.logger.info(
-                f"🧹 Cleanup completed: {cleanup_stats['tickets_deleted']} tickets deleted, "
-                f"{cleanup_stats['errors']} errors"
-            )
+            self.logger.info(f"🧹 Cleanup completed: {cleanup_stats['tickets_deleted']} tickets deleted, {cleanup_stats['errors']} errors")
 
         except Exception as e:
             self.logger.error(f"❌ Error during comprehensive cleanup: {e}")
@@ -252,9 +235,7 @@ class ZendeskBongo(BaseBongo):
             if r.status_code in (200, 204):
                 self.logger.debug(f"Deleted ticket {ticket_id}")
             else:
-                self.logger.warning(
-                    f"Failed to delete ticket {ticket_id}: {r.status_code} - {r.text}"
-                )
+                self.logger.warning(f"Failed to delete ticket {ticket_id}: {r.status_code} - {r.text}")
                 r.raise_for_status()
 
     async def _find_orphaned_monke_tickets(self) -> list[dict[str, Any]]:
@@ -289,9 +270,7 @@ class ZendeskBongo(BaseBongo):
                     if is_monke_ticket:
                         orphaned_tickets.append(ticket)
             else:
-                self.logger.warning(
-                    f"Failed to search for orphaned tickets: {r.status_code} - {r.text}"
-                )
+                self.logger.warning(f"Failed to search for orphaned tickets: {r.status_code} - {r.text}")
 
         return orphaned_tickets
 

@@ -22,9 +22,7 @@ class BaseAuthBroker(ABC):
     """
 
     @abstractmethod
-    async def get_credentials(
-        self, source_short_name: str, required_fields: list[str] | None = None
-    ) -> dict[str, Any]:
+    async def get_credentials(self, source_short_name: str, required_fields: list[str] | None = None) -> dict[str, Any]:
         """Return credentials for the given source.
 
         Args:
@@ -55,9 +53,7 @@ class ComposioBroker(BaseAuthBroker):
         if not self.api_key:
             raise ValueError("Missing Composio API key (MONKE_COMPOSIO_API_KEY)")
 
-    async def _get(
-        self, path: str, params: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    async def _get(self, path: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
         async with httpx.AsyncClient() as client:
             r = await client.get(
                 f"{self.BASE_URL}{path}",
@@ -79,9 +75,7 @@ class ComposioBroker(BaseAuthBroker):
         page_size = 100
 
         while True:
-            response = await self._get(
-                "/connected_accounts", params={"limit": page_size, "page": page}
-            )
+            response = await self._get("/connected_accounts", params={"limit": page_size, "page": page})
             items = response.get("items", [])
 
             if not items:
@@ -96,14 +90,10 @@ class ComposioBroker(BaseAuthBroker):
 
             page += 1
 
-        self.logger.info(
-            f"Fetched {len(all_accounts)} total connected accounts from Composio"
-        )
+        self.logger.info(f"Fetched {len(all_accounts)} total connected accounts from Composio")
         return all_accounts
 
-    async def get_credentials(
-        self, source_short_name: str, required_fields: list[str] | None = None
-    ) -> dict[str, Any]:
+    async def get_credentials(self, source_short_name: str, required_fields: list[str] | None = None) -> dict[str, Any]:
         # Mapping of Airweave source short names to Composio toolkit slugs
         # This should match the SLUG_NAME_MAPPING in platform/auth_providers/composio.py
         SLUG_MAPPING = {
@@ -137,32 +127,18 @@ class ComposioBroker(BaseAuthBroker):
         selected = None
         if self.auth_config_id and self.account_id:
             for a in matching:
-                if (
-                    a.get("auth_config", {}).get("id") == self.auth_config_id
-                    and a.get("id") == self.account_id
-                ):
+                if a.get("auth_config", {}).get("id") == self.auth_config_id and a.get("id") == self.account_id:
                     selected = a
                     break
             if not selected:
-                raise RuntimeError(
-                    "No Composio account found for provided auth_config_id/account_id and slug '"
-                    + slug
-                    + "'"
-                )
+                raise RuntimeError("No Composio account found for provided auth_config_id/account_id and slug '" + slug + "'")
         else:
             selected = matching[0]
 
         creds = selected.get("state", {}).get("val") or {}
 
         # Log credential resolution safely without exposing sensitive data
-        sensitive_fields = [
-            k
-            for k in creds.keys()
-            if any(
-                sensitive in k.lower()
-                for sensitive in ["token", "key", "secret", "password"]
-            )
-        ]
+        sensitive_fields = [k for k in creds.keys() if any(sensitive in k.lower() for sensitive in ["token", "key", "secret", "password"])]
         non_sensitive_fields = [k for k in creds.keys() if k not in sensitive_fields]
 
         self.logger.info(

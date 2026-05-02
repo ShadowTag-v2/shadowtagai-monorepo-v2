@@ -16,33 +16,31 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import Context, FastMCP
 
-mcp = FastMCP('Header Check Server', host='localhost', port=3000)
+mcp = FastMCP("Header Check Server", host="localhost", port=3000)
 
 TENANT_DATA = {
-    'tenant1': {'name': 'Tenant 1', 'data': 'Data for tenant 1'},
-    'tenant2': {'name': 'Tenant 2', 'data': 'Data for tenant 2'},
+    "tenant1": {"name": "Tenant 1", "data": "Data for tenant 1"},
+    "tenant2": {"name": "Tenant 2", "data": "Data for tenant 2"},
 }
 
 
-@mcp.tool(
-    description='Returns tenant specific data based on X-Tenant-ID header.'
-)
+@mcp.tool(description="Returns tenant specific data based on X-Tenant-ID header.")
 def get_tenant_data(context: Context) -> dict:
-  """Return tenant specific data."""
-  if context.request_context and context.request_context.request:
-    headers = context.request_context.request.headers
-    tenant_id = headers.get('x-tenant-id')
-    if tenant_id in TENANT_DATA:
-      return TENANT_DATA[tenant_id]
+    """Return tenant specific data."""
+    if context.request_context and context.request_context.request:
+        headers = context.request_context.request.headers
+        tenant_id = headers.get("x-tenant-id")
+        if tenant_id in TENANT_DATA:
+            return TENANT_DATA[tenant_id]
+        else:
+            return {"error": f"Tenant {tenant_id} not found"}
     else:
-      return {'error': f'Tenant {tenant_id} not found'}
-  else:
-    return {'error': 'Could not get request context'}
+        return {"error": "Could not get request context"}
 
 
-if __name__ == '__main__':
-  try:
-    print('Starting Header Check MCP server on http://localhost:3000')
-    mcp.run(transport='streamable-http')
-  except KeyboardInterrupt:
-    print('\nServer stopped.')
+if __name__ == "__main__":
+    try:
+        print("Starting Header Check MCP server on http://localhost:3000")
+        mcp.run(transport="streamable-http")
+    except KeyboardInterrupt:
+        print("\nServer stopped.")

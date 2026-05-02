@@ -39,6 +39,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ProductionConfig:
     """Configuration for production executor."""
+
     # Resource limits
     memory_limit: str = "4g"
     cpu_limit: float = 2.0
@@ -133,26 +134,18 @@ class ProductionExecutor:
             cpu_limit=self.config.cpu_limit,
             timeout_seconds=self.config.timeout_seconds,
             network_mode="bridge" if self.config.network_enabled else "none",
-            readonly_rootfs=self.config.readonly_filesystem
+            readonly_rootfs=self.config.readonly_filesystem,
         )
 
         # Initialize Docker manager with pool
-        self._docker_manager = DockerManager(
-            config=container_config,
-            pool_size=self.config.pool_size
-        )
+        self._docker_manager = DockerManager(config=container_config, pool_size=self.config.pool_size)
 
         await self._docker_manager.initialize_pool()
 
         self._initialized = True
         logger.info("ProductionExecutor initialized successfully")
 
-    async def execute_code(
-        self,
-        code: str,
-        timeout: int | None = None,
-        install_packages: bool | None = None
-    ) -> ExecutionResult:
+    async def execute_code(self, code: str, timeout: int | None = None, install_packages: bool | None = None) -> ExecutionResult:
         """
         Execute code in sandboxed environment.
 
@@ -168,10 +161,7 @@ class ProductionExecutor:
             await self.initialize()
 
         timeout = timeout or self.config.timeout_seconds
-        should_install = (
-            install_packages if install_packages is not None
-            else self.config.auto_install_packages
-        )
+        should_install = install_packages if install_packages is not None else self.config.auto_install_packages
 
         start_time = time.time()
         self._execution_count += 1
@@ -185,23 +175,15 @@ class ProductionExecutor:
 
         try:
             # Create clients for this container
-            jupyter = JupyterClient(
-                container.container_id,
-                self._docker_manager.client
-            )
+            jupyter = JupyterClient(container.container_id, self._docker_manager.client)
 
             # Auto-install dependencies if enabled
             if should_install:
-                resolver = PackageResolver(
-                    self._docker_manager.client,
-                    container.container_id
-                )
+                resolver = PackageResolver(self._docker_manager.client, container.container_id)
 
                 success, failed = await resolver.ensure_dependencies(code)
                 if not success:
-                    logger.warning(
-                        f"Execution {execution_id}: Failed to install packages: {failed}"
-                    )
+                    logger.warning(f"Execution {execution_id}: Failed to install packages: {failed}")
                     # Continue execution - might still work with pre-installed packages
 
             # Execute code
@@ -211,13 +193,9 @@ class ProductionExecutor:
             result.execution_time = execution_time
 
             if result.success:
-                logger.info(
-                    f"Execution {execution_id}: Completed successfully in {execution_time:.2f}s"
-                )
+                logger.info(f"Execution {execution_id}: Completed successfully in {execution_time:.2f}s")
             else:
-                logger.warning(
-                    f"Execution {execution_id}: Failed - {result.error_message}"
-                )
+                logger.warning(f"Execution {execution_id}: Failed - {result.error_message}")
                 # Mark container as potentially unhealthy on error
                 if result.status == ExecutionStatus.TIMEOUT:
                     container_healthy = False
@@ -228,24 +206,14 @@ class ProductionExecutor:
             logger.error(f"Execution {execution_id}: Unexpected error - {e}")
             container_healthy = False
 
-            return ExecutionResult(
-                status=ExecutionStatus.FAILED,
-                error_message=str(e),
-                execution_time=time.time() - start_time
-            )
+            return ExecutionResult(status=ExecutionStatus.FAILED, error_message=str(e), execution_time=time.time() - start_time)
 
         finally:
             # Release container back to pool
-            await self._docker_manager.release_container(
-                container.container_id,
-                healthy=container_healthy
-            )
+            await self._docker_manager.release_container(container.container_id, healthy=container_healthy)
 
     async def execute_notebook(
-        self,
-        notebook_content: dict[str, Any],
-        timeout_per_cell: int = 300,
-        stop_on_error: bool = True
+        self, notebook_content: dict[str, Any], timeout_per_cell: int = 300, stop_on_error: bool = True
     ) -> list[ExecutionResult]:
         """
         Execute a Jupyter notebook.
@@ -267,30 +235,17 @@ class ProductionExecutor:
         container_healthy = True
 
         try:
-            jupyter = JupyterClient(
-                container.container_id,
-                self._docker_manager.client
-            )
+            jupyter = JupyterClient(container.container_id, self._docker_manager.client)
 
             # Install all dependencies from notebook first
             if self.config.auto_install_packages:
-                await self._install_notebook_dependencies(
-                    container.container_id,
-                    notebook_content
-                )
+                await self._install_notebook_dependencies(container.container_id, notebook_content)
 
             # Execute notebook
-            results = await jupyter.execute_notebook(
-                notebook_content,
-                timeout_per_cell,
-                stop_on_error
-            )
+            results = await jupyter.execute_notebook(notebook_content, timeout_per_cell, stop_on_error)
 
             # Check if last result was a failure/timeout
-            if results and results[-1].status in (
-                ExecutionStatus.FAILED,
-                ExecutionStatus.TIMEOUT
-            ):
+            if results and results[-1].status in (ExecutionStatus.FAILED, ExecutionStatus.TIMEOUT):
                 container_healthy = False
 
             logger.info(f"Notebook execution complete: {len(results)} cells executed")
@@ -299,27 +254,14 @@ class ProductionExecutor:
         except Exception as e:
             logger.error(f"Notebook execution error: {e}")
             container_healthy = False
-            return [ExecutionResult(
-                status=ExecutionStatus.FAILED,
-                error_message=str(e)
-            )]
+            return [ExecutionResult(status=ExecutionStatus.FAILED, error_message=str(e))]
 
         finally:
-            await self._docker_manager.release_container(
-                container.container_id,
-                healthy=container_healthy
-            )
+            await self._docker_manager.release_container(container.container_id, healthy=container_healthy)
 
-    async def _install_notebook_dependencies(
-        self,
-        container_id: str,
-        notebook_content: dict[str, Any]
-    ):
+    async def _install_notebook_dependencies(self, container_id: str, notebook_content: dict[str, Any]):
         """Install all dependencies needed by a notebook."""
-        resolver = PackageResolver(
-            self._docker_manager.client,
-            container_id
-        )
+        resolver = PackageResolver(self._docker_manager.client, container_id)
 
         # Extract code from all cells
         all_code = []
@@ -342,10 +284,7 @@ class ProductionExecutor:
             Dictionary with health status
         """
         if not self._initialized:
-            return {
-                "status": "not_initialized",
-                "pool": None
-            }
+            return {"status": "not_initialized", "pool": None}
 
         pool_stats = self._docker_manager.get_pool_stats()
 
@@ -353,7 +292,7 @@ class ProductionExecutor:
             "status": "healthy" if pool_stats["ready"] > 0 else "degraded",
             "initialized": self._initialized,
             "execution_count": self._execution_count,
-            "pool": pool_stats
+            "pool": pool_stats,
         }
 
     async def cleanup(self):
@@ -377,11 +316,7 @@ class ProductionExecutor:
 
 
 # Convenience function for one-off execution
-async def execute_code_safely(
-    code: str,
-    timeout: int = 300,
-    memory_limit: str = "4g"
-) -> ExecutionResult:
+async def execute_code_safely(code: str, timeout: int = 300, memory_limit: str = "4g") -> ExecutionResult:
     """
     Execute code safely in an isolated container.
 
@@ -408,7 +343,7 @@ async def execute_code_safely(
     config = ProductionConfig(
         memory_limit=memory_limit,
         timeout_seconds=timeout,
-        pool_size=1  # Single container for one-off execution
+        pool_size=1,  # Single container for one-off execution
     )
 
     async with ProductionExecutor(config) as executor:

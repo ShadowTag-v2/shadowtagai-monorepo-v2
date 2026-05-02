@@ -25,9 +25,7 @@ def test_suppress_nested_venv_warning(capsys, project):
 
 @pytest.mark.core
 def test_load_dot_env_from_environment_variable_location(monkeypatch, capsys, project):
-    with temp_environ(), monkeypatch.context(), TemporaryDirectory(
-        prefix="pipenv-", suffix=""
-    ) as tempdir:
+    with temp_environ(), monkeypatch.context(), TemporaryDirectory(prefix="pipenv-", suffix="") as tempdir:
         dotenv_path = os.path.join(tempdir, "test.env")
         key, val = "SOME_KEY", "some_value"
         with open(dotenv_path, "w") as f:
@@ -40,9 +38,7 @@ def test_load_dot_env_from_environment_variable_location(monkeypatch, capsys, pr
 
 @pytest.mark.core
 def test_doesnt_load_dot_env_if_disabled(monkeypatch, capsys, project):
-    with temp_environ(), monkeypatch.context(), TemporaryDirectory(
-        prefix="pipenv-", suffix=""
-    ) as tempdir:
+    with temp_environ(), monkeypatch.context(), TemporaryDirectory(prefix="pipenv-", suffix="") as tempdir:
         dotenv_path = os.path.join(tempdir, "test.env")
         key, val = "SOME_KEY", "some_value"
         with open(dotenv_path, "w") as f:
@@ -59,9 +55,7 @@ def test_doesnt_load_dot_env_if_disabled(monkeypatch, capsys, project):
 
 @pytest.mark.core
 def test_load_dot_env_warns_if_file_doesnt_exist(monkeypatch, capsys, project):
-    with temp_environ(), monkeypatch.context(), TemporaryDirectory(
-        prefix="pipenv-", suffix=""
-    ) as tempdir:
+    with temp_environ(), monkeypatch.context(), TemporaryDirectory(prefix="pipenv-", suffix="") as tempdir:
         dotenv_path = os.path.join(tempdir, "does-not-exist.env")
         project.s.PIPENV_DOTENV_LOCATION = str(dotenv_path)
         load_dot_env(project)
@@ -72,9 +66,7 @@ def test_load_dot_env_warns_if_file_doesnt_exist(monkeypatch, capsys, project):
 @pytest.mark.core
 def test_load_dot_env_quiet_with_verbosity(monkeypatch, capsys, project):
     """Test that PIPENV_VERBOSITY=-1 suppresses the .env loading message."""
-    with temp_environ(), monkeypatch.context(), TemporaryDirectory(
-        prefix="pipenv-", suffix=""
-    ) as tempdir:
+    with temp_environ(), monkeypatch.context(), TemporaryDirectory(prefix="pipenv-", suffix="") as tempdir:
         dotenv_path = os.path.join(tempdir, "test.env")
         key, val = "SOME_KEY", "some_value"
         with open(dotenv_path, "w") as f:
@@ -94,9 +86,7 @@ def test_load_dot_env_quiet_with_verbosity(monkeypatch, capsys, project):
 @pytest.mark.core
 def test_load_dot_env_shows_message_without_quiet(monkeypatch, capsys, project):
     """Test that the .env loading message is shown when not in quiet mode."""
-    with temp_environ(), monkeypatch.context(), TemporaryDirectory(
-        prefix="pipenv-", suffix=""
-    ) as tempdir:
+    with temp_environ(), monkeypatch.context(), TemporaryDirectory(prefix="pipenv-", suffix="") as tempdir:
         dotenv_path = os.path.join(tempdir, "test.env")
         key, val = "ANOTHER_KEY", "another_value"
         with open(dotenv_path, "w") as f:
@@ -125,9 +115,7 @@ def test_load_dot_env_suppresses_message_when_pipenv_active(monkeypatch, capsys,
 
     Fixes #6328
     """
-    with temp_environ(), monkeypatch.context(), TemporaryDirectory(
-        prefix="pipenv-", suffix=""
-    ) as tempdir:
+    with temp_environ(), monkeypatch.context(), TemporaryDirectory(prefix="pipenv-", suffix="") as tempdir:
         dotenv_path = os.path.join(tempdir, "test.env")
         key, val = "NESTED_KEY", "nested_value"
         with open(dotenv_path, "w") as f:
@@ -237,9 +225,7 @@ class TestParsePipConfIndexes:
     # ------------------------------------------------------------------
 
     def test_index_url_https_verify_ssl_true(self):
-        indexes, extras = self._call(
-            {"global.index-url": "https://pypi.example.com/simple"}
-        )
+        indexes, extras = self._call({"global.index-url": "https://pypi.example.com/simple"})
         assert len(indexes) == 1
         assert indexes[0]["url"] == "https://pypi.example.com/simple"
         assert indexes[0]["verify_ssl"] is True
@@ -247,9 +233,7 @@ class TestParsePipConfIndexes:
         assert extras == []
 
     def test_index_url_http_verify_ssl_false(self):
-        indexes, extras = self._call(
-            {"global.index-url": "http://internal.repo/simple"}
-        )
+        indexes, extras = self._call({"global.index-url": "http://internal.repo/simple"})
         assert len(indexes) == 1
         assert indexes[0]["verify_ssl"] is False
 
@@ -265,9 +249,7 @@ class TestParsePipConfIndexes:
         """trusted-host with space-separated hosts – only matching host disables SSL."""
         indexes, _ = self._call(
             {"global.index-url": "https://other.repo/simple"},
-            trusted_host_map={
-                "global.trusted-host": "private.repo other.repo yetanother.repo"
-            },
+            trusted_host_map={"global.trusted-host": "private.repo other.repo yetanother.repo"},
         )
         assert indexes[0]["verify_ssl"] is False
 
@@ -293,9 +275,7 @@ class TestParsePipConfIndexes:
 
     def test_extra_index_url_single(self):
         """A single extra-index-url is returned in pip_conf_extra_indexes."""
-        indexes, extras = self._call(
-            {"global.extra-index-url": "https://extra.repo/simple"}
-        )
+        indexes, extras = self._call({"global.extra-index-url": "https://extra.repo/simple"})
         assert indexes == []
         assert len(extras) == 1
         assert extras[0]["url"] == "https://extra.repo/simple"
@@ -304,13 +284,7 @@ class TestParsePipConfIndexes:
 
     def test_extra_index_url_multiple_space_separated(self):
         """Multiple whitespace-separated URLs in extra-index-url become separate entries."""
-        _, extras = self._call(
-            {
-                "global.extra-index-url": (
-                    "https://repo1.example.com/simple https://repo2.example.com/simple"
-                )
-            }
-        )
+        _, extras = self._call({"global.extra-index-url": ("https://repo1.example.com/simple https://repo2.example.com/simple")})
         assert len(extras) == 2
         assert extras[0]["url"] == "https://repo1.example.com/simple"
         assert extras[0]["name"] == "pip_conf_extra_index_global_0"
@@ -319,13 +293,7 @@ class TestParsePipConfIndexes:
 
     def test_extra_index_url_multiple_newline_separated(self):
         """Newline-separated URLs (pip multi-line) also expand to separate entries."""
-        _, extras = self._call(
-            {
-                "global.extra-index-url": (
-                    "https://repo1.example.com/simple\nhttps://repo2.example.com/simple"
-                )
-            }
-        )
+        _, extras = self._call({"global.extra-index-url": ("https://repo1.example.com/simple\nhttps://repo2.example.com/simple")})
         assert len(extras) == 2
 
     def test_extra_index_url_trusted_host(self):
@@ -363,9 +331,7 @@ class TestParsePipConfIndexes:
         assert extras == []
 
     def test_irrelevant_keys_are_ignored(self):
-        indexes, extras = self._call(
-            {"global.timeout": "60", "global.retries": "5"}
-        )
+        indexes, extras = self._call({"global.timeout": "60", "global.retries": "5"})
         assert indexes == []
         assert extras == []
 
@@ -382,15 +348,11 @@ def test_get_activate_script_windows_full_path():
     venv = "/path/to/venv"
 
     # PowerShell 7 (pwsh) - Windows full path
-    script = _get_activate_script(
-        r"C:\Program Files\PowerShell\7\pwsh.exe", venv
-    )
+    script = _get_activate_script(r"C:\Program Files\PowerShell\7\pwsh.exe", venv)
     assert ".ps1" in script
 
     # Windows PowerShell (powershell) - Windows full path
-    script = _get_activate_script(
-        r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe", venv
-    )
+    script = _get_activate_script(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe", venv)
     assert ".ps1" in script
 
     # Bare shell names still work (POSIX-style)
@@ -450,27 +412,19 @@ def test_fork_compat_sentinel_restores_echo():
     mock_child.sendline.side_effect = _sendline
     mock_child.expect.side_effect = _expect
 
-    with patch("pipenv.vendor.pexpect.spawn", return_value=mock_child), \
-         patch("pipenv.shells._get_activate_script", return_value="source /venv/bin/activate"), \
-         patch("pipenv.shells._get_deactivate_wrapper_script", return_value=""), \
-         patch("pipenv.shells.get_terminal_size") as mock_size, \
-         patch("pipenv.shells.temp_environ"), \
-         patch("pipenv.shells.signal.signal"), \
-         patch("sys.exit"):
+    with patch("pipenv.vendor.pexpect.spawn", return_value=mock_child), patch(
+        "pipenv.shells._get_activate_script", return_value="source /venv/bin/activate"
+    ), patch("pipenv.shells._get_deactivate_wrapper_script", return_value=""), patch(
+        "pipenv.shells.get_terminal_size"
+    ) as mock_size, patch("pipenv.shells.temp_environ"), patch("pipenv.shells.signal.signal"), patch("sys.exit"):
         mock_size.return_value = MagicMock(lines=24, columns=80)
 
         shell.fork_compat("/path/to/venv", "/project", [])
 
     # Verify setecho(False) was called before any sendline.
-    setecho_false_idx = next(
-        i for i, item in enumerate(call_order) if item == ("setecho", False)
-    )
-    first_sendline_idx = next(
-        i for i, item in enumerate(call_order) if item[0] == "sendline"
-    )
-    assert setecho_false_idx < first_sendline_idx, (
-        "setecho(False) must be called before any sendline"
-    )
+    setecho_false_idx = next(i for i, item in enumerate(call_order) if item == ("setecho", False))
+    first_sendline_idx = next(i for i, item in enumerate(call_order) if item[0] == "sendline")
+    assert setecho_false_idx < first_sendline_idx, "setecho(False) must be called before any sendline"
 
     # Verify the startup sentinel was sent and expected *before* activate.
     startup_send = [item for item in call_order if item[0] == "sendline" and "__PIPENV_STARTUP_READY__" in item[1]]
@@ -482,12 +436,8 @@ def test_fork_compat_sentinel_restores_echo():
     startup_expect_idx = next(
         i for i, item in enumerate(call_order) if item[0] == "expect" and "__PIPENV_STARTUP_READY__" in str(item[1])
     )
-    activate_idx = next(
-        i for i, item in enumerate(call_order) if item == ("sendline", "source /venv/bin/activate")
-    )
-    assert startup_expect_idx < activate_idx, (
-        "Startup sentinel expect must complete before the activate script is sent (GH-3615)"
-    )
+    activate_idx = next(i for i, item in enumerate(call_order) if item == ("sendline", "source /venv/bin/activate"))
+    assert startup_expect_idx < activate_idx, "Startup sentinel expect must complete before the activate script is sent (GH-3615)"
 
     # Verify the ready sentinel was sent and expected *after* activate.
     ready_send = [item for item in call_order if item[0] == "sendline" and "__PIPENV_SHELL_READY__" in item[1]]
@@ -496,20 +446,12 @@ def test_fork_compat_sentinel_restores_echo():
     ready_expect = [item for item in call_order if item[0] == "expect" and "__PIPENV_SHELL_READY__" in str(item[1])]
     assert ready_expect, "Ready sentinel must be waited for via expect"
 
-    ready_expect_idx = next(
-        i for i, item in enumerate(call_order) if item[0] == "expect" and "__PIPENV_SHELL_READY__" in str(item[1])
-    )
-    assert activate_idx < ready_expect_idx, (
-        "Ready sentinel expect must happen after the activate script"
-    )
+    ready_expect_idx = next(i for i, item in enumerate(call_order) if item[0] == "expect" and "__PIPENV_SHELL_READY__" in str(item[1]))
+    assert activate_idx < ready_expect_idx, "Ready sentinel expect must happen after the activate script"
 
     # Verify ready sentinel expect happens before setecho(True).
-    setecho_true_idx = next(
-        i for i, item in enumerate(call_order) if item == ("setecho", True)
-    )
-    assert ready_expect_idx < setecho_true_idx, (
-        "Ready sentinel expect must complete before setecho(True) to avoid the race condition"
-    )
+    setecho_true_idx = next(i for i, item in enumerate(call_order) if item == ("setecho", True))
+    assert ready_expect_idx < setecho_true_idx, "Ready sentinel expect must complete before setecho(True) to avoid the race condition"
 
 
 @pytest.mark.core
@@ -553,13 +495,9 @@ def test_install_uses_metadata_name_for_headers():
     # InstallRequirement, so they must be patched at the class level.
     # metadata returns a dict-like object mimicking the wheel's METADATA file.
     metadata_mock = {"Name": "CPyCppyy"}
-    with patch.object(
-        InstallRequirement, "is_wheel", new_callable=PropertyMock, return_value=True
-    ), patch.object(
+    with patch.object(InstallRequirement, "is_wheel", new_callable=PropertyMock, return_value=True), patch.object(
         InstallRequirement, "is_direct", new_callable=PropertyMock, return_value=False
-    ), patch.object(
-        InstallRequirement, "metadata", new_callable=PropertyMock, return_value=metadata_mock
-    ), patch(
+    ), patch.object(InstallRequirement, "metadata", new_callable=PropertyMock, return_value=metadata_mock), patch(
         "pipenv.patched.pip._internal.req.req_install.get_scheme",
         side_effect=fake_get_scheme,
     ), patch(
@@ -583,16 +521,12 @@ def test_get_deactivate_wrapper_script_windows_full_path():
     See: https://github.com/pypa/pipenv/issues/6532
     """
     # PowerShell 7 (pwsh) - Windows full path
-    script = _get_deactivate_wrapper_script(
-        r"C:\Program Files\PowerShell\7\pwsh.exe"
-    )
+    script = _get_deactivate_wrapper_script(r"C:\Program Files\PowerShell\7\pwsh.exe")
     assert "PIPENV_ACTIVE" in script
     assert "Remove-Item" in script
 
     # Windows PowerShell (powershell) - Windows full path
-    script = _get_deactivate_wrapper_script(
-        r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-    )
+    script = _get_deactivate_wrapper_script(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe")
     assert "PIPENV_ACTIVE" in script
     assert "Remove-Item" in script
 
@@ -696,9 +630,7 @@ def test_install_build_system_packages_no_op_when_empty(project):
         "pipfile_build_requires",
         new_callable=PropertyMock,
         return_value=[],
-    ), patch(
-        "pipenv.routines.install.pip_install_deps"
-    ) as mock_pip_install:
+    ), patch("pipenv.routines.install.pip_install_deps") as mock_pip_install:
         install_build_system_packages(project)
         mock_pip_install.assert_not_called()
 
@@ -738,7 +670,6 @@ def test_install_build_system_packages_calls_pip_install(project):
     call_kwargs = mock_pip_install.call_args
     assert call_kwargs[1]["deps"] == build_requires
     assert call_kwargs[1]["ignore_hashes"] is True
-
 
 
 # --- Tests for --extras CLI option ---
@@ -841,8 +772,7 @@ def test_detect_info_prefers_shell_env_on_windows():
     mock_project.s.PIPENV_SHELL = "/usr/bin/bash"
 
     # Patch both os.name and Path to avoid WindowsPath instantiation on Linux.
-    with patch("pipenv.shells.os.name", "nt"), \
-         patch("pipenv.shells.Path", PurePosixPath):
+    with patch("pipenv.shells.os.name", "nt"), patch("pipenv.shells.Path", PurePosixPath):
         name, path = detect_info(mock_project)
         assert name == "bash"
         assert path == "/usr/bin/bash"
@@ -860,8 +790,7 @@ def test_detect_info_explicit_takes_priority_over_shell_env():
     mock_project.s.PIPENV_SHELL = "/usr/bin/bash"
 
     # Patch both os.name and Path to avoid WindowsPath instantiation on Linux.
-    with patch("pipenv.shells.os.name", "nt"), \
-         patch("pipenv.shells.Path", PurePosixPath):
+    with patch("pipenv.shells.os.name", "nt"), patch("pipenv.shells.Path", PurePosixPath):
         name, path = detect_info(mock_project)
         assert name == "cmd"
         assert path == "/usr/bin/cmd"
@@ -878,9 +807,9 @@ def test_detect_info_falls_through_to_shellingham_on_posix():
     mock_project.s.PIPENV_SHELL_EXPLICIT = None
     mock_project.s.PIPENV_SHELL = "/bin/bash"
 
-    with patch("pipenv.shells.os.name", "posix"), \
-         patch("pipenv.shells.Path", PurePosixPath), \
-         patch("pipenv.shells.shellingham.detect_shell", return_value=("zsh", "/bin/zsh")):
+    with patch("pipenv.shells.os.name", "posix"), patch("pipenv.shells.Path", PurePosixPath), patch(
+        "pipenv.shells.shellingham.detect_shell", return_value=("zsh", "/bin/zsh")
+    ):
         name, path = detect_info(mock_project)
         assert name == "zsh"
         assert path == "/bin/zsh"
@@ -897,14 +826,12 @@ def test_detect_info_falls_back_to_shell_env_when_shellingham_fails():
     mock_project.s.PIPENV_SHELL_EXPLICIT = None
     mock_project.s.PIPENV_SHELL = "/bin/bash"
 
-    with patch("pipenv.shells.os.name", "posix"), \
-         patch("pipenv.shells.Path", PurePosixPath), \
-         patch("pipenv.shells.shellingham.detect_shell",
-               side_effect=shellingham.ShellDetectionFailure()):
+    with patch("pipenv.shells.os.name", "posix"), patch("pipenv.shells.Path", PurePosixPath), patch(
+        "pipenv.shells.shellingham.detect_shell", side_effect=shellingham.ShellDetectionFailure()
+    ):
         name, path = detect_info(mock_project)
         assert name == "bash"
         assert path == "/bin/bash"
-
 
 
 # --- Regression tests for argparse migration (GH-6628, GH-6626) ---
@@ -966,9 +893,7 @@ def test_run_passes_verbose_to_remaining():
     from pipenv.cli.options import build_parser
 
     parser = build_parser()
-    args, remaining = parser.parse_known_args(
-        ["run", "./manage.py", "test", "--verbose"]
-    )
+    args, remaining = parser.parse_known_args(["run", "./manage.py", "test", "--verbose"])
     assert "--verbose" in remaining
 
 
@@ -980,9 +905,7 @@ def test_run_passes_short_v_to_remaining():
     from pipenv.cli.options import build_parser
 
     parser = build_parser()
-    args, remaining = parser.parse_known_args(
-        ["run", "./manage.py", "test", "-v"]
-    )
+    args, remaining = parser.parse_known_args(["run", "./manage.py", "test", "-v"])
     assert "-v" in remaining
 
 
@@ -992,9 +915,7 @@ def test_run_passes_quiet_to_remaining():
     from pipenv.cli.options import build_parser
 
     parser = build_parser()
-    args, remaining = parser.parse_known_args(
-        ["run", "pytest", "-q", "--tb=short"]
-    )
+    args, remaining = parser.parse_known_args(["run", "pytest", "-q", "--tb=short"])
     assert "-q" in remaining
     assert "--tb=short" in remaining
 
@@ -1005,9 +926,7 @@ def test_run_system_flag_still_works():
     from pipenv.cli.options import build_parser
 
     parser = build_parser()
-    args, remaining = parser.parse_known_args(
-        ["run", "--system", "python", "-c", "print('hi')"]
-    )
+    args, remaining = parser.parse_known_args(["run", "--system", "python", "-c", "print('hi')"])
 
     for attr in ("python", "pypi_mirror", "verbose", "quiet", "clear", "system"):
         if not hasattr(args, attr):
@@ -1045,21 +964,15 @@ def test_fork_compat_sendline_commands_have_leading_space():
 
     mock_child.sendline.side_effect = _sendline
 
-    with patch("pipenv.vendor.pexpect.spawn", return_value=mock_child), \
-         patch("pipenv.shells._get_activate_script",
-               return_value=" source /venv/bin/activate"), \
-         patch("pipenv.shells._get_deactivate_wrapper_script",
-               return_value='eval "deactivate() { builtin deactivate; }"'), \
-         patch("pipenv.shells.get_terminal_size") as mock_size, \
-         patch("pipenv.shells.temp_environ"), \
-         patch("pipenv.shells.signal.signal"), \
-         patch("sys.exit"):
+    with patch("pipenv.vendor.pexpect.spawn", return_value=mock_child), patch(
+        "pipenv.shells._get_activate_script", return_value=" source /venv/bin/activate"
+    ), patch("pipenv.shells._get_deactivate_wrapper_script", return_value='eval "deactivate() { builtin deactivate; }"'), patch(
+        "pipenv.shells.get_terminal_size"
+    ) as mock_size, patch("pipenv.shells.temp_environ"), patch("pipenv.shells.signal.signal"), patch("sys.exit"):
         mock_size.return_value = MagicMock(lines=24, columns=80)
 
         shell.fork_compat("/path/to/venv", "/project", [])
 
     # Every internal sendline must start with a space.
     for line in sent_lines:
-        assert line.startswith(" "), (
-            f"sendline {line!r} must start with a space to avoid history pollution"
-        )
+        assert line.startswith(" "), f"sendline {line!r} must start with a space to avoid history pollution"

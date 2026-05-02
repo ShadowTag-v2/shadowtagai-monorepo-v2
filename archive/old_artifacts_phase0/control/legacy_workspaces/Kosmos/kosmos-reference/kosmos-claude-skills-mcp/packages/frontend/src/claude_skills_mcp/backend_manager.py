@@ -71,9 +71,7 @@ class BackendManager:
         str
             Backend URL (http://host:port/mcp).
         """
-        logger.info(
-            f"Starting backend server on {self.backend_host}:{self.backend_port}"
-        )
+        logger.info(f"Starting backend server on {self.backend_host}:{self.backend_port}")
 
         # Build shell command with unbuffered output
         args_str = " ".join(backend_args)
@@ -110,9 +108,7 @@ class BackendManager:
             logger.error(f"Failed to start backend: {e}")
             raise RuntimeError(f"Failed to start backend server: {e}")
 
-    async def _consume_stream(
-        self, stream: asyncio.StreamReader, prefix: str
-    ) -> None:
+    async def _consume_stream(self, stream: asyncio.StreamReader, prefix: str) -> None:
         """Consume a stream and relay lines to logger.
 
         This prevents broken pipe errors by continuously reading from the stream.
@@ -187,9 +183,7 @@ class BackendManager:
             # Check timeout
             elapsed = asyncio.get_event_loop().time() - start_time
             if elapsed > timeout:
-                raise TimeoutError(
-                    f"Backend failed to start within {timeout}s. Last error: {last_error}"
-                )
+                raise TimeoutError(f"Backend failed to start within {timeout}s. Last error: {last_error}")
 
             # Show progress
             if int(elapsed) % 10 == 0 and int(elapsed) > 0:
@@ -233,14 +227,10 @@ class BackendManager:
         """
         try:
             import subprocess
+
             logger.info(f"Attempting to kill any process on port {port}")
             # Find and kill process on port
-            subprocess.run(
-                f"lsof -ti :{port} | xargs kill -9 2>/dev/null || true",
-                shell=True,
-                timeout=2,
-                capture_output=True
-            )
+            subprocess.run(f"lsof -ti :{port} | xargs kill -9 2>/dev/null || true", shell=True, timeout=2, capture_output=True)
             logger.info(f"Cleanup attempt completed for port {port}")
         except Exception as e:
             logger.debug(f"Error during port cleanup: {e}")

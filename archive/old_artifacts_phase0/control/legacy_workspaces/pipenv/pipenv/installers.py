@@ -104,17 +104,11 @@ class Installer(metaclass=ABCMeta):
             # strategy will work.
             find_windows_executable("", name),
             # Check for explicitly set install locations (e.g. PYENV_ROOT, ASDF_DIR).
-            os.path.join(
-                os.path.expanduser(os.getenv(env_var, "/dev/null")), "bin", name
-            ),
+            os.path.join(os.path.expanduser(os.getenv(env_var, "/dev/null")), "bin", name),
             # Check the pyenv/asdf-recommended from-source install locations
             os.path.join(os.path.expanduser(f"~/.{name}"), "bin", name),
         ):
-            if (
-                candidate is not None
-                and os.path.isfile(candidate)
-                and os.access(candidate, os.X_OK)
-            ):
+            if candidate is not None and os.path.isfile(candidate) and os.access(candidate, os.X_OK):
                 return candidate
         raise InstallerNotFound()
 
@@ -145,11 +139,7 @@ class Installer(metaclass=ABCMeta):
             return name
         try:
             best_match = max(
-                (
-                    inst_version
-                    for inst_version in self.iter_installable_versions()
-                    if inst_version.matches_minor(version)
-                ),
+                (inst_version for inst_version in self.iter_installable_versions() if inst_version.matches_minor(version)),
                 key=operator.attrgetter("cmpkey"),
             )
         except ValueError:
@@ -264,11 +254,7 @@ class PyManager(Installer):
         # Unlike ``py``, ``pymanager`` is not provided by the legacy py.exe launcher,
         # so finding it is sufficient to confirm pymanager is available.
         candidate = find_windows_executable("", "pymanager")
-        if (
-            candidate is not None
-            and os.path.isfile(str(candidate))
-            and os.access(str(candidate), os.X_OK)
-        ):
+        if candidate is not None and os.path.isfile(str(candidate)) and os.access(str(candidate), os.X_OK):
             return str(candidate)
 
         # pymanager may be installed as an MSIX but not on PATH yet.
@@ -277,11 +263,7 @@ class PyManager(Installer):
         if local_app_data:
             windows_apps = os.path.join(local_app_data, "Microsoft", "WindowsApps")
             candidate = find_windows_executable(windows_apps, "pymanager")
-            if (
-                candidate is not None
-                and os.path.isfile(str(candidate))
-                and os.access(str(candidate), os.X_OK)
-            ):
+            if candidate is not None and os.path.isfile(str(candidate)) and os.access(str(candidate), os.X_OK):
                 return str(candidate)
 
         raise InstallerNotFound()

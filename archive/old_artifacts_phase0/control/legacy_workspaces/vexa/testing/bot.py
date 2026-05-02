@@ -15,7 +15,7 @@ from typing import Any
 import pandas as pd
 
 # Use the fixed PyPI client
-sys.path.insert(0, '/Users/dmitriygrankin/dev/vexa-pypi-client')
+sys.path.insert(0, "/Users/dmitriygrankin/dev/vexa-pypi-client")
 from vexa_client import VexaClient
 from vexa_client.vexa import parse_url
 
@@ -51,7 +51,7 @@ class Bot:
         self.last_transcript_time = None
         self.first_transcript_time = None
 
-    def create(self, bot_name: str | None = None, language: str = 'en', task: str = 'transcribe') -> dict[str, Any]:
+    def create(self, bot_name: str | None = None, language: str = "en", task: str = "transcribe") -> dict[str, Any]:
         """
         Create/request a bot for this meeting using a separate thread.
 
@@ -63,6 +63,7 @@ class Bot:
         Returns:
             Dictionary representing the created/updated Meeting object
         """
+
         def _create_bot():
             return self.user_client.request_bot(
                 platform=self.platform,
@@ -70,7 +71,7 @@ class Bot:
                 bot_name=bot_name or f"Vexa-{self.bot_id}",
                 language=language,
                 task=task,
-                passcode=self.passcode
+                passcode=self.passcode,
             )
 
         try:
@@ -93,10 +94,7 @@ class Bot:
             raise Exception(f"Bot {self.bot_id} has not been created yet. Call create() first.")
 
         def _get_transcript():
-            return self.user_client.get_transcript(
-                platform=self.platform,
-                native_meeting_id=self.native_meeting_id
-            )
+            return self.user_client.get_transcript(platform=self.platform, native_meeting_id=self.native_meeting_id)
 
         try:
             with ThreadPoolExecutor(max_workers=3) as executor:
@@ -104,14 +102,14 @@ class Bot:
                 transcript = future.result()
 
             # Track transcript timing using segment absolute timestamps
-            segments = transcript.get('segments') or []
+            segments = transcript.get("segments") or []
             if segments:
                 # Extract first absolute start and last absolute end times (no fallback)
                 first_abs_start = None
                 last_abs_end = None
                 for seg in segments:
-                    abs_start = seg.get('absolute_start_time')
-                    abs_end = seg.get('absolute_end_time')
+                    abs_start = seg.get("absolute_start_time")
+                    abs_end = seg.get("absolute_end_time")
                     if abs_start:
                         if first_abs_start is None or pd.to_datetime(abs_start) < pd.to_datetime(first_abs_start):
                             first_abs_start = abs_start
@@ -139,10 +137,7 @@ class Bot:
             return None
 
         def _get_meeting_status():
-            return self.user_client.get_meeting_by_id(
-                platform=self.platform,
-                native_meeting_id=self.native_meeting_id
-            )
+            return self.user_client.get_meeting_by_id(platform=self.platform, native_meeting_id=self.native_meeting_id)
 
         try:
             with ThreadPoolExecutor(max_workers=3) as executor:
@@ -163,10 +158,7 @@ class Bot:
             raise Exception(f"Bot {self.bot_id} has not been created yet.")
 
         def _stop_bot():
-            return self.user_client.stop_bot(
-                platform=self.platform,
-                native_meeting_id=self.native_meeting_id
-            )
+            return self.user_client.stop_bot(platform=self.platform, native_meeting_id=self.native_meeting_id)
 
         try:
             with ThreadPoolExecutor(max_workers=3) as executor:
@@ -192,12 +184,7 @@ class Bot:
             raise Exception(f"Bot {self.bot_id} has not been created yet.")
 
         def _update_config():
-            return self.user_client.update_bot_config(
-                platform=self.platform,
-                native_meeting_id=self.native_meeting_id,
-                language=language,
-                task=task
-            )
+            return self.user_client.update_bot_config(platform=self.platform, native_meeting_id=self.native_meeting_id, language=language, task=task)
 
         try:
             with ThreadPoolExecutor(max_workers=3) as executor:
@@ -214,25 +201,27 @@ class Bot:
             Dictionary with bot statistics
         """
         stats = {
-            'bot_id': self.bot_id,
-            'meeting_url': self.meeting_url,
-            'platform': self.platform,
-            'native_meeting_id': self.native_meeting_id,
-            'created': self.created,
-            'first_transcript_time': self.first_transcript_time,
-            'last_transcript_time': self.last_transcript_time,
+            "bot_id": self.bot_id,
+            "meeting_url": self.meeting_url,
+            "platform": self.platform,
+            "native_meeting_id": self.native_meeting_id,
+            "created": self.created,
+            "first_transcript_time": self.first_transcript_time,
+            "last_transcript_time": self.last_transcript_time,
         }
 
         if self.created:
             meeting_status = self.get_meeting_status()
             if meeting_status:
-                stats.update({
-                    'meeting_status': meeting_status.get('status'),
-                    'start_time': meeting_status.get('start_time'),
-                    'end_time': meeting_status.get('end_time'),
-                    'created_at': meeting_status.get('created_at'),
-                    'updated_at': meeting_status.get('updated_at'),
-                })
+                stats.update(
+                    {
+                        "meeting_status": meeting_status.get("status"),
+                        "start_time": meeting_status.get("start_time"),
+                        "end_time": meeting_status.get("end_time"),
+                        "created_at": meeting_status.get("created_at"),
+                        "updated_at": meeting_status.get("updated_at"),
+                    }
+                )
 
         return stats
 
@@ -248,12 +237,6 @@ class Bot:
             raise Exception(f"Bot {self.bot_id} has not been created yet. Call create() first.")
 
         try:
-            get_transcript(
-                client=self.user_client,
-                platform=self.platform,
-                native_meeting_id=self.native_meeting_id,
-                tail=tail,
-                duration=duration
-            )
+            get_transcript(client=self.user_client, platform=self.platform, native_meeting_id=self.native_meeting_id, tail=tail, duration=duration)
         except Exception as e:
             raise Exception(f"Failed to display transcript for bot {self.bot_id}: {e}")

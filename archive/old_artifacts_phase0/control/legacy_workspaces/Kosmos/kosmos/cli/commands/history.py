@@ -67,12 +67,9 @@ def show_history(
         # Offer to view specific run
         if not show_details and len(runs) > 0:
             console.print()
-            view_run = Prompt.ask(
-                "[cyan]View details for a run?[/cyan] (Enter run # or 'n' to skip)",
-                default="n"
-            )
+            view_run = Prompt.ask("[cyan]View details for a run?[/cyan] (Enter run # or 'n' to skip)", default="n")
 
-            if view_run.lower() != 'n':
+            if view_run.lower() != "n":
                 try:
                     run_idx = int(view_run) - 1
                     if 0 <= run_idx < len(runs):
@@ -131,16 +128,18 @@ def get_research_runs(
             # Convert to dictionaries
             runs = []
             for run in query.all():
-                runs.append({
-                    "id": run.id,
-                    "question": run.research_question,
-                    "domain": run.domain or "general",
-                    "state": run.state,
-                    "current_iteration": run.current_iteration,
-                    "max_iterations": run.max_iterations,
-                    "created_at": run.created_at,
-                    "updated_at": run.updated_at,
-                })
+                runs.append(
+                    {
+                        "id": run.id,
+                        "question": run.research_question,
+                        "domain": run.domain or "general",
+                        "state": run.state,
+                        "current_iteration": run.current_iteration,
+                        "max_iterations": run.max_iterations,
+                        "created_at": run.created_at,
+                        "updated_at": run.updated_at,
+                    }
+                )
 
             return runs
 

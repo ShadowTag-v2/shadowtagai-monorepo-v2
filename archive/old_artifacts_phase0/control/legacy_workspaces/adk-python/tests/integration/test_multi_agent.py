@@ -18,10 +18,8 @@ from google.adk.evaluation.agent_evaluator import AgentEvaluator
 
 @pytest.mark.asyncio
 async def test_eval_agent():
-  await AgentEvaluator.evaluate(
-      agent_module="tests.integration.fixture.trip_planner_agent",
-      eval_dataset_file_path_or_dir=(
-          "tests/integration/fixture/trip_planner_agent/trip_inquiry_multi_turn.test.json"
-      ),
-      num_runs=4,
-  )
+    await AgentEvaluator.evaluate(
+        agent_module="tests.integration.fixture.trip_planner_agent",
+        eval_dataset_file_path_or_dir=("tests/integration/fixture/trip_planner_agent/trip_inquiry_multi_turn.test.json"),
+        num_runs=4,
+    )

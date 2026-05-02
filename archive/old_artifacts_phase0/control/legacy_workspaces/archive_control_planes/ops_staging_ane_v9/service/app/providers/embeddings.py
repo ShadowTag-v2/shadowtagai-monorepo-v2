@@ -7,9 +7,11 @@ import requests
 
 EMBED_DIM = 1536
 
+
 def fake_embed(text: str, dim: int = EMBED_DIM) -> list[float]:
     seed = hashlib.sha256(text.encode("utf-8")).digest()
     return [((seed[i % len(seed)] / 255.0) - 0.5) for i in range(dim)]
+
 
 class Embedder:
     def __init__(
@@ -56,7 +58,9 @@ class Embedder:
         except Exception:
             return fake_embed(text, self.dim)
 
+
 _default_embedder = Embedder()
+
 
 def embed_text(text: str) -> list[float]:
     return _default_embedder.embed(text)

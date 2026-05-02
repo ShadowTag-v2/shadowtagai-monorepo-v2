@@ -27,34 +27,32 @@ def test_get_gcp_exporters(
     enable_cloud_logging: bool,
     monkeypatch: pytest.MonkeyPatch,
 ):
-  """
-  Test initializing correct providers in setup_otel
-  when enabling telemetry via Google O11y.
-  """
-  # Arrange.
-  # Mocking google.auth.default to improve the test time.
-  auth_mock = mock.MagicMock()
-  auth_mock.return_value = ("", "project-id")
-  monkeypatch.setattr(
-      "google.auth.default",
-      auth_mock,
-  )
+    """
+    Test initializing correct providers in setup_otel
+    when enabling telemetry via Google O11y.
+    """
+    # Arrange.
+    # Mocking google.auth.default to improve the test time.
+    auth_mock = mock.MagicMock()
+    auth_mock.return_value = ("", "project-id")
+    monkeypatch.setattr(
+        "google.auth.default",
+        auth_mock,
+    )
 
-  # Act.
-  otel_hooks = get_gcp_exporters(
-      enable_cloud_tracing=enable_cloud_tracing,
-      enable_cloud_metrics=enable_cloud_metrics,
-      enable_cloud_logging=enable_cloud_logging,
-  )
+    # Act.
+    otel_hooks = get_gcp_exporters(
+        enable_cloud_tracing=enable_cloud_tracing,
+        enable_cloud_metrics=enable_cloud_metrics,
+        enable_cloud_logging=enable_cloud_logging,
+    )
 
-  # Assert.
-  # If given telemetry type was enabled,
-  # the corresponding provider should be set.
-  assert len(otel_hooks.span_processors) == (1 if enable_cloud_tracing else 0)
-  assert len(otel_hooks.metric_readers) == (1 if enable_cloud_metrics else 0)
-  assert len(otel_hooks.log_record_processors) == (
-      1 if enable_cloud_logging else 0
-  )
+    # Assert.
+    # If given telemetry type was enabled,
+    # the corresponding provider should be set.
+    assert len(otel_hooks.span_processors) == (1 if enable_cloud_tracing else 0)
+    assert len(otel_hooks.metric_readers) == (1 if enable_cloud_metrics else 0)
+    assert len(otel_hooks.log_record_processors) == (1 if enable_cloud_logging else 0)
 
 
 @pytest.mark.parametrize("project_id_in_arg", ["project_id_in_arg", None])
@@ -64,25 +62,14 @@ def test_get_gcp_resource(
     project_id_on_env: str | None,
     monkeypatch: pytest.MonkeyPatch,
 ):
-  # Arrange.
-  if project_id_on_env is not None:
-    monkeypatch.setenv(
-        "OTEL_RESOURCE_ATTRIBUTES", f"gcp.project_id={project_id_on_env}"
-    )
+    # Arrange.
+    if project_id_on_env is not None:
+        monkeypatch.setenv("OTEL_RESOURCE_ATTRIBUTES", f"gcp.project_id={project_id_on_env}")
 
-  # Act.
-  otel_resource = get_gcp_resource(project_id_in_arg)
+    # Act.
+    otel_resource = get_gcp_resource(project_id_in_arg)
 
-  # Assert.
-  expected_project_id = (
-      project_id_on_env
-      if project_id_on_env is not None
-      else project_id_in_arg
-      if project_id_in_arg is not None
-      else None
-  )
-  assert otel_resource is not None
-  assert (
-      otel_resource.attributes.get("gcp.project_id", None)
-      == expected_project_id
-  )
+    # Assert.
+    expected_project_id = project_id_on_env if project_id_on_env is not None else project_id_in_arg if project_id_in_arg is not None else None
+    assert otel_resource is not None
+    assert otel_resource.attributes.get("gcp.project_id", None) == expected_project_id

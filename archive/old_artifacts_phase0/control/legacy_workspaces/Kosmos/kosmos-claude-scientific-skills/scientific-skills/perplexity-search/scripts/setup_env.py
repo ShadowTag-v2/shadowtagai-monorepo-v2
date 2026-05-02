@@ -34,21 +34,18 @@ def create_env_file(api_key: str, env_file: str = ".env") -> bool:
         # Read existing content if file exists
         existing_content = []
         if env_path.exists():
-            with open(env_path, 'r') as f:
-                existing_content = [
-                    line for line in f.readlines()
-                    if not line.startswith('OPENROUTER_API_KEY=')
-                ]
+            with open(env_path) as f:
+                existing_content = [line for line in f.readlines() if not line.startswith("OPENROUTER_API_KEY=")]
 
         # Write new content
-        with open(env_path, 'w') as f:
+        with open(env_path, "w") as f:
             # Write existing content (excluding old OPENROUTER_API_KEY)
             f.writelines(existing_content)
 
             # Add new API key
-            if existing_content and not existing_content[-1].endswith('\n'):
-                f.write('\n')
-            f.write(f'OPENROUTER_API_KEY={api_key}\n')
+            if existing_content and not existing_content[-1].endswith("\n"):
+                f.write("\n")
+            f.write(f"OPENROUTER_API_KEY={api_key}\n")
 
         print(f"✓ API key saved to {env_file}")
         return True
@@ -87,6 +84,7 @@ def validate_setup() -> bool:
     # Check for LiteLLM
     try:
         import litellm
+
         print(f"✓ LiteLLM is installed (version {litellm.__version__})")
     except ImportError:
         print("✗ LiteLLM is not installed")
@@ -119,25 +117,14 @@ Examples:
 
 Get your OpenRouter API key from:
   https://openrouter.ai/keys
-        """
+        """,
     )
 
-    parser.add_argument(
-        "--api-key",
-        help="Your OpenRouter API key"
-    )
+    parser.add_argument("--api-key", help="Your OpenRouter API key")
 
-    parser.add_argument(
-        "--env-file",
-        default=".env",
-        help="Path to .env file (default: .env)"
-    )
+    parser.add_argument("--env-file", default=".env", help="Path to .env file (default: .env)")
 
-    parser.add_argument(
-        "--validate",
-        action="store_true",
-        help="Validate existing setup"
-    )
+    parser.add_argument("--validate", action="store_true", help="Validate existing setup")
 
     args = parser.parse_args()
 

@@ -58,6 +58,7 @@ def test_ensure_python_non_interactive_with_yes(monkeypatch, project):
         def install(self, *args, **kwargs):
             class Result:
                 stdout = "Installed successfully"
+
             return Result()
 
     monkeypatch.setattr("pipenv.installers.Pyenv", MockInstaller)

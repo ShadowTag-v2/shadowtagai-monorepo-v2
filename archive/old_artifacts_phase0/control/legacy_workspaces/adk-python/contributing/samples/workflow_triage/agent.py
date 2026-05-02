@@ -19,13 +19,11 @@ from google.adk.tools.tool_context import ToolContext
 from . import execution_agent
 
 
-def update_execution_plan(
-    execution_agents: list[str], tool_context: ToolContext
-) -> str:
-  """Updates the execution plan for the agents to run."""
+def update_execution_plan(execution_agents: list[str], tool_context: ToolContext) -> str:
+    """Updates the execution plan for the agents to run."""
 
-  tool_context.state["execution_agents"] = execution_agents
-  return "execution_agents updated."
+    tool_context.state["execution_agents"] = execution_agents
+    return "execution_agents updated."
 
 
 root_agent = Agent(

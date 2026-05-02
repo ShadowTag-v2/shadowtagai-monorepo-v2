@@ -163,9 +163,7 @@ def translate_markers(pipfile_entry):
                 marker_set.add(str(Marker(f"{m} {entry}")))
             new_pipfile.pop(m)
     if marker_set:
-        markers_str = " and ".join(
-            f"{s}" if " and " in s else s for s in sorted(dict.fromkeys(marker_set))
-        )
+        markers_str = " and ".join(f"{s}" if " and " in s else s for s in sorted(dict.fromkeys(marker_set)))
         if os_name_marker:
             markers_str = f"({markers_str}) and {os_name_marker}"
         new_pipfile["markers"] = str(Marker(markers_str)).replace('"', "'")
@@ -314,9 +312,7 @@ def clean_resolved_dep(  # noqa: PLR0912
             vcs_url = dep[vcs_type]
             if "[" in vcs_url and "]" in vcs_url:
                 extras_section = vcs_url.split("[").pop().replace("]", "")
-                lockfile["extras"] = sorted(
-                    [extra.strip() for extra in extras_section.split(",")]
-                )
+                lockfile["extras"] = sorted([extra.strip() for extra in extras_section.split(",")])
 
             lockfile[vcs_type] = vcs_url
             lockfile["ref"] = dep.get("ref")
@@ -485,9 +481,7 @@ def dependency_as_pip_install_line(
                 #  2. The `editable` flag in the dep dict is the authoritative
                 #     source of truth, set at `pipenv install` time.
                 # Remote HTTP/HTTPS URLs are never editable.
-                if dep.get("editable") and not location.startswith(
-                    ("http:", "https:", "ftp:")
-                ):
+                if dep.get("editable") and not location.startswith(("http:", "https:", "ftp:")):
                     line.append("-e")
                 if location.startswith(("http:", "https:")):
                     req_str = f"{dep_name}{extras} @ {location}"
@@ -495,7 +489,7 @@ def dependency_as_pip_install_line(
                     req_str = f"{location}{extras}"
                 # Add markers for file/path dependencies
                 if include_markers and dep.get("markers"):
-                    req_str = f'{req_str}; {dep["markers"]}'
+                    req_str = f"{req_str}; {dep['markers']}"
                 line.append(req_str)
                 break
         else:
@@ -511,7 +505,7 @@ def dependency_as_pip_install_line(
                         version = f"=={version}"
                     line[-1] += version
             if include_markers and dep.get("markers"):
-                line[-1] = f'{line[-1]}; {dep["markers"]}'
+                line[-1] = f"{line[-1]}; {dep['markers']}"
 
             if include_hashes and dep.get("hashes"):
                 line.extend([f" --hash={hash}" for hash in dep["hashes"]])
@@ -553,7 +547,7 @@ def dependency_as_pip_install_line(
                 git_req += f"#subdirectory={dep['subdirectory']}"
             # Add markers for VCS dependencies (PEP 508 format supports this)
             if include_markers and dep.get("markers"):
-                git_req = f'{git_req}; {dep["markers"]}'
+                git_req = f"{git_req}; {dep['markers']}"
 
         line.append(git_req)
 
@@ -576,9 +570,7 @@ def convert_deps_to_pip(
     if indexes is None:
         indexes = []
     for dep_name, dep in deps.items():
-        req = dependency_as_pip_install_line(
-            dep_name, dep, include_hashes, include_markers, include_index, indexes
-        )
+        req = dependency_as_pip_install_line(dep_name, dep, include_hashes, include_markers, include_index, indexes)
         dependencies[dep_name] = req
     return dependencies
 
@@ -628,56 +620,32 @@ def parse_setup_file(content):
             if isinstance(node, ast.Assign):
                 for target in node.targets:
                     if isinstance(target, ast.Name):
-                        if isinstance(node.value, ast.Constant) and isinstance(
-                            node.value.value, str
-                        ):
+                        if isinstance(node.value, ast.Constant) and isinstance(node.value.value, str):
                             variables[target.id] = node.value.value
 
             # Check function calls to extract the 'name' attribute from the setup function
             if isinstance(node, ast.Call):
-                if (
-                    getattr(node.func, "id", "") == "setup"
-                    or isinstance(node.func, ast.Attribute)
-                    and node.func.attr == "setup"
-                ):
+                if getattr(node.func, "id", "") == "setup" or isinstance(node.func, ast.Attribute) and node.func.attr == "setup":
                     for keyword in node.keywords:
                         if keyword.arg == "name":
                             # If it's a variable, retrieve its value
-                            if (
-                                isinstance(keyword.value, ast.Name)
-                                and keyword.value.id in variables
-                            ):
+                            if isinstance(keyword.value, ast.Name) and keyword.value.id in variables:
                                 return variables[keyword.value.id]
                             # Otherwise, check if it's directly provided
-                            elif isinstance(keyword.value, ast.Constant) and isinstance(
-                                keyword.value.value, str
-                            ):
+                            elif isinstance(keyword.value, ast.Constant) and isinstance(keyword.value.value, str):
                                 return keyword.value.value
                             # Additional handling for Python versions and specific ways of defining the name
-                            elif sys.version_info < (3, 9) and isinstance(
-                                keyword.value, ast.Subscript
-                            ):
-                                if (
-                                    isinstance(keyword.value.value, ast.Name)
-                                    and keyword.value.value.id == "about"
-                                ):
-                                    if isinstance(
-                                        keyword.value.slice, ast.Index
-                                    ) and isinstance(
+                            elif sys.version_info < (3, 9) and isinstance(keyword.value, ast.Subscript):
+                                if isinstance(keyword.value.value, ast.Name) and keyword.value.value.id == "about":
+                                    if isinstance(keyword.value.slice, ast.Index) and isinstance(
                                         keyword.value.slice.value, ast.Constant
                                     ):
-                                        if isinstance(
-                                            keyword.value.slice.value.value, str
-                                        ):
+                                        if isinstance(keyword.value.slice.value.value, str):
                                             return keyword.value.slice.value.value
                                 # Handle ast.Constant for the subscript value
-                                if isinstance(keyword.value, ast.Constant) and isinstance(
-                                    keyword.value.value, str
-                                ):
+                                if isinstance(keyword.value, ast.Constant) and isinstance(keyword.value.value, str):
                                     return keyword.value.value
-                            elif sys.version_info >= (3, 9) and isinstance(
-                                keyword.value, ast.Subscript
-                            ):
+                            elif sys.version_info >= (3, 9) and isinstance(keyword.value, ast.Subscript):
                                 if (
                                     isinstance(keyword.value.value, ast.Name)
                                     and isinstance(keyword.value.slice, ast.Constant)
@@ -756,9 +724,7 @@ def find_package_name_from_directory(directory):
     # Windows path normalization for file:// URLs
     directory_str = str(directory_path)
     if os.name == "nt":
-        if directory_str.startswith("\\") and (
-            ":\\" in directory_str or ":/" in directory_str
-        ):
+        if directory_str.startswith("\\") and (":\\" in directory_str or ":/" in directory_str):
             directory_path = Path(directory_str[1:])
         if directory_str.startswith("\\\\"):
             directory_path = Path(directory_str[1:])
@@ -771,9 +737,7 @@ def find_package_name_from_directory(directory):
 
     try:
         # Sort contents - files first, then directories
-        directory_contents = sorted(
-            directory_path.iterdir(), key=lambda x: (x.is_dir(), x.name)
-        )
+        directory_contents = sorted(directory_path.iterdir(), key=lambda x: (x.is_dir(), x.name))
 
         for path in directory_contents:
             if path.is_file():
@@ -788,14 +752,9 @@ def find_package_name_from_directory(directory):
                 # picking up setup() calls from test files or other non-project files
                 if path.name.endswith((".egg-info", ".dist-info")):
                     for metadata_path in path.iterdir():
-                        if (
-                            metadata_path.is_file()
-                            and metadata_path.name in metadata_files
-                        ):
+                        if metadata_path.is_file() and metadata_path.name in metadata_files:
                             with metadata_path.open("rb") as file:
-                                possible_name = find_package_name_from_filename(
-                                    metadata_path.name, file
-                                )
+                                possible_name = find_package_name_from_filename(metadata_path.name, file)
                                 if possible_name:
                                     return possible_name
     except (FileNotFoundError, PermissionError):
@@ -874,18 +833,14 @@ def generate_temp_dir_path():
     return temp_dir
 
 
-def determine_vcs_revision_hash(
-    package: InstallRequirement, vcs_type: str, revision: str
-):
+def determine_vcs_revision_hash(package: InstallRequirement, vcs_type: str, revision: str):
     try:  # Windows python 3.7 will sometimes raise PermissionError cleaning up
         checkout_directory = generate_temp_dir_path()
         repo_backend = get_vcs_backend(vcs_type)
         repo_backend.obtain(checkout_directory, hide_url(package.link.url), verbosity=1)
         return repo_backend.get_revision(checkout_directory)
     except Exception as e:
-        err.print(
-            f"Error {e} obtaining {vcs_type} revision hash for {package}; falling back to {revision}."
-        )
+        err.print(f"Error {e} obtaining {vcs_type} revision hash for {package}; falling back to {revision}.")
         return revision
 
 
@@ -915,9 +870,7 @@ def determine_package_name(package: InstallRequirement):
                 )
                 if local_file.path.endswith(".whl") or local_file.path.endswith(".zip"):
                     req_name = find_package_name_from_zipfile(local_file.path)
-                elif local_file.path.endswith(".tar.gz") or local_file.path.endswith(
-                    ".tar.bz2"
-                ):
+                elif local_file.path.endswith(".tar.gz") or local_file.path.endswith(".tar.bz2"):
                     req_name = find_package_name_from_tarball(local_file.path)
                 else:
                     req_name = find_package_name_from_directory(local_file.path)
@@ -931,19 +884,13 @@ def determine_package_name(package: InstallRequirement):
     ]:
         parsed_url = urlparse(package.link.url)
         repository_path = parsed_url.path
-        repository_path = repository_path.rsplit("@", 1)[
-            0
-        ]  # extract the actual directory path
+        repository_path = repository_path.rsplit("@", 1)[0]  # extract the actual directory path
         repository_path = repository_path.split("#egg=")[0]
         req_name = find_package_name_from_directory(repository_path)
     elif package.link and package.link.scheme == "file":
-        if package.link.file_path.endswith(".whl") or package.link.file_path.endswith(
-            ".zip"
-        ):
+        if package.link.file_path.endswith(".whl") or package.link.file_path.endswith(".zip"):
             req_name = find_package_name_from_zipfile(package.link.file_path)
-        elif package.link.file_path.endswith(
-            ".tar.gz"
-        ) or package.link.file_path.endswith(".tar.bz2"):
+        elif package.link.file_path.endswith(".tar.gz") or package.link.file_path.endswith(".tar.bz2"):
             req_name = find_package_name_from_tarball(package.link.file_path)
         else:
             req_name = find_package_name_from_directory(package.link.file_path)
@@ -1155,9 +1102,7 @@ def expansive_install_req_from_line(
                 user_supplied=user_supplied,
             )
             return install_req, name
-    if urlparse(pip_line).scheme in ("http", "https", "file") or any(
-        pip_line.endswith(s) for s in INSTALLABLE_EXTENSIONS
-    ):
+    if urlparse(pip_line).scheme in ("http", "https", "file") or any(pip_line.endswith(s) for s in INSTALLABLE_EXTENSIONS):
         parts = parse_req_from_line(pip_line, line_source)
     else:
         # It's a requirement
@@ -1241,8 +1186,7 @@ class VCSURLProcessor:
             var_name = match.group(1) or match.group(2)
             if var_name not in os.environ:
                 raise PipenvUsageError(
-                    f"Environment variable '${var_name}' not found. "
-                    "Please ensure all required environment variables are set."
+                    f"Environment variable '${var_name}' not found. Please ensure all required environment variables are set."
                 )
             return os.environ[var_name]
 
@@ -1328,9 +1272,7 @@ def install_req_from_pipfile(name: str, pipfile: Dict[str, Any]) -> Tuple[Any, A
                 req_str = f"{name}{extras_str} @ {req_str}{subdirectory}"
 
         except PipenvUsageError as e:
-            raise PipenvUsageError(
-                f"Error processing VCS URL for requirement '{name}': {str(e)}"
-            )
+            raise PipenvUsageError(f"Error processing VCS URL for requirement '{name}': {str(e)}")
     else:
         # Handle non-VCS requirements (unchanged)
         req_str = handle_non_vcs_requirement(name, _pipfile, extras_str)
@@ -1350,9 +1292,7 @@ def install_req_from_pipfile(name: str, pipfile: Dict[str, Any]) -> Tuple[Any, A
     return install_req, markers, req_str
 
 
-def handle_non_vcs_requirement(
-    name: str, _pipfile: Dict[str, Any], extras_str: str
-) -> str:
+def handle_non_vcs_requirement(name: str, _pipfile: Dict[str, Any], extras_str: str) -> str:
     """Helper function to handle non-VCS requirements."""
     if "path" in _pipfile:
         return file_path_from_pipfile(_pipfile["path"], _pipfile)
@@ -1362,9 +1302,7 @@ def handle_non_vcs_requirement(
         version = get_version(_pipfile)
         if is_star(version) or version == "==*":
             version = ""
-        elif version and not any(
-            version.startswith(op) for op in ("==", ">=", "<=", "~=", "!=", ">", "<")
-        ):
+        elif version and not any(version.startswith(op) for op in ("==", ">=", "<=", "~=", "!=", ">", "<")):
             # A bare version like "2.23.0" has no operator; normalise to "==2.23.0"
             # so that pip/the resolver treats it as a pinned constraint rather
             # than silently ignoring it.
@@ -1473,9 +1411,7 @@ def prepare_constraint_file(
 
     if sources and pip_args:
         skip_args = ("build-isolation", "use-pep517", "cache-dir")
-        args_to_add = [
-            arg for arg in pip_args if not any(bad_arg in arg for bad_arg in skip_args)
-        ]
+        args_to_add = [arg for arg in pip_args if not any(bad_arg in arg for bad_arg in skip_args)]
         requirementstxt_sources = " ".join(args_to_add) if args_to_add else ""
         requirementstxt_sources = requirementstxt_sources.replace(" --", "\n--")
         constraints_file.write(f"{requirementstxt_sources}\n")

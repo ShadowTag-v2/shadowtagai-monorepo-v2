@@ -31,14 +31,14 @@ logger = logging.getLogger(__name__)
 
 # Cell marker patterns for splitting code into cells
 CELL_MARKERS = [
-    r'^# %%',           # VS Code / Spyder cell marker
-    r'^# In\[\d*\]:',   # Jupyter cell marker
-    r'^# CELL:',        # Explicit cell marker
-    r'^# ---',          # Alternate marker
+    r"^# %%",  # VS Code / Spyder cell marker
+    r"^# In\[\d*\]:",  # Jupyter cell marker
+    r"^# CELL:",  # Explicit cell marker
+    r"^# ---",  # Alternate marker
 ]
 
 # Compiled pattern for cell splitting
-CELL_PATTERN = re.compile('|'.join(CELL_MARKERS), re.MULTILINE)
+CELL_PATTERN = re.compile("|".join(CELL_MARKERS), re.MULTILINE)
 
 
 @dataclass
@@ -48,6 +48,7 @@ class NotebookMetadata:
 
     Tracks information about the notebook for reporting and provenance.
     """
+
     path: str
     title: str
     cycle: int
@@ -69,7 +70,7 @@ class NotebookMetadata:
         """Convert to dictionary for JSON serialization."""
         data = asdict(self)
         if self.timestamp is None:
-            data['timestamp'] = datetime.now().isoformat()
+            data["timestamp"] = datetime.now().isoformat()
         return data
 
 
@@ -101,11 +102,7 @@ class NotebookGenerator:
         ```
     """
 
-    def __init__(
-        self,
-        artifacts_dir: str | Path,
-        default_kernel: str = "python3"
-    ):
+    def __init__(self, artifacts_dir: str | Path, default_kernel: str = "python3"):
         """
         Initialize NotebookGenerator.
 
@@ -136,13 +133,7 @@ class NotebookGenerator:
         notebooks_dir.mkdir(parents=True, exist_ok=True)
         return notebooks_dir
 
-    def get_notebook_path(
-        self,
-        cycle: int,
-        task_id: int,
-        analysis_type: str,
-        suffix: str = "ipynb"
-    ) -> Path:
+    def get_notebook_path(self, cycle: int, task_id: int, analysis_type: str, suffix: str = "ipynb") -> Path:
         """
         Generate unique notebook path.
 
@@ -159,7 +150,7 @@ class NotebookGenerator:
         """
         notebooks_dir = self.get_notebooks_dir(cycle)
         # Sanitize analysis type for filename (replace non-alphanumeric with underscore)
-        safe_type = re.sub(r'[^\w]', '_', analysis_type.lower())
+        safe_type = re.sub(r"[^\w]", "_", analysis_type.lower())
         filename = f"task_{task_id}_{safe_type}.{suffix}"
         return notebooks_dir / filename
 
@@ -174,7 +165,7 @@ class NotebookGenerator:
         hypothesis: str | None = None,
         figure_paths: list[str] | None = None,
         kernel: str | None = None,
-        execution_time: float | None = None
+        execution_time: float | None = None,
     ) -> NotebookMetadata | None:
         """
         Create a complete Jupyter notebook with code and outputs.
@@ -203,8 +194,8 @@ class NotebookGenerator:
         try:
             # Create new notebook
             nb = new_notebook()
-            nb.metadata['kernelspec'] = self._get_kernel_spec(kernel)
-            nb.metadata['language_info'] = self._get_language_info(kernel)
+            nb.metadata["kernelspec"] = self._get_kernel_spec(kernel)
+            nb.metadata["language_info"] = self._get_language_info(kernel)
 
             markdown_count = 0
             code_cell_count = 0
@@ -215,11 +206,7 @@ class NotebookGenerator:
 
             # Add header markdown cell
             header_content = self._create_header(
-                title=title or f"Analysis {task_id}",
-                hypothesis=hypothesis,
-                analysis_type=analysis_type,
-                cycle=cycle,
-                task_id=task_id
+                title=title or f"Analysis {task_id}", hypothesis=hypothesis, analysis_type=analysis_type, cycle=cycle, task_id=task_id
             )
             nb.cells.append(new_markdown_cell(header_content))
             markdown_count += 1
@@ -242,16 +229,19 @@ class NotebookGenerator:
 
                 # Issue #62: Build cell-to-line mapping for provenance
                 import hashlib
-                code_hash = hashlib.sha256(cell_code.encode('utf-8')).hexdigest()[:16]
-                cell_line_mappings.append({
-                    'cell_index': code_cell_count,  # 0-based index within code cells
-                    'notebook_cell_index': len(nb.cells) - 1,  # Actual cell index in notebook
-                    'start_line': cumulative_line,
-                    'end_line': cumulative_line + cell_lines - 1,
-                    'line_count': cell_lines,
-                    'cell_type': 'code',
-                    'code_hash': code_hash,
-                })
+
+                code_hash = hashlib.sha256(cell_code.encode("utf-8")).hexdigest()[:16]
+                cell_line_mappings.append(
+                    {
+                        "cell_index": code_cell_count,  # 0-based index within code cells
+                        "notebook_cell_index": len(nb.cells) - 1,  # Actual cell index in notebook
+                        "start_line": cumulative_line,
+                        "end_line": cumulative_line + cell_lines - 1,
+                        "line_count": cell_lines,
+                        "cell_type": "code",
+                        "code_hash": code_hash,
+                    }
+                )
 
                 code_cell_count += 1
                 line_count += cell_lines
@@ -262,15 +252,13 @@ class NotebookGenerator:
                 for fig_path in figure_paths:
                     # Make path relative to notebook location
                     rel_path = self._get_relative_figure_path(fig_path, cycle)
-                    fig_cell = new_markdown_cell(
-                        f"## Generated Figure\n\n![Figure]({rel_path})"
-                    )
+                    fig_cell = new_markdown_cell(f"## Generated Figure\n\n![Figure]({rel_path})")
                     nb.cells.append(fig_cell)
                     markdown_count += 1
 
             # Write notebook
             output_path = self.get_notebook_path(cycle, task_id, analysis_type)
-            with open(output_path, 'w', encoding='utf-8') as f:
+            with open(output_path, "w", encoding="utf-8") as f:
                 nbformat.write(nb, f)
 
             # Update total line count
@@ -307,61 +295,44 @@ class NotebookGenerator:
 
     def _get_kernel_spec(self, kernel: str) -> dict[str, str]:
         """Get Jupyter kernel specification."""
-        if kernel == 'ir':
-            return {
-                'name': 'ir',
-                'display_name': 'R',
-                'language': 'R'
-            }
+        if kernel == "ir":
+            return {"name": "ir", "display_name": "R", "language": "R"}
         else:
-            return {
-                'name': 'python3',
-                'display_name': 'Python 3',
-                'language': 'python'
-            }
+            return {"name": "python3", "display_name": "Python 3", "language": "python"}
 
     def _get_language_info(self, kernel: str) -> dict[str, Any]:
         """Get language info for notebook metadata."""
-        if kernel == 'ir':
-            return {
-                'name': 'R',
-                'file_extension': '.r',
-                'mimetype': 'text/x-r-source'
-            }
+        if kernel == "ir":
+            return {"name": "R", "file_extension": ".r", "mimetype": "text/x-r-source"}
         else:
             return {
-                'name': 'python',
-                'version': '3.11',
-                'file_extension': '.py',
-                'mimetype': 'text/x-python',
-                'codemirror_mode': {'name': 'ipython', 'version': 3}
+                "name": "python",
+                "version": "3.11",
+                "file_extension": ".py",
+                "mimetype": "text/x-python",
+                "codemirror_mode": {"name": "ipython", "version": 3},
             }
 
-    def _create_header(
-        self,
-        title: str,
-        hypothesis: str | None,
-        analysis_type: str,
-        cycle: int,
-        task_id: int
-    ) -> str:
+    def _create_header(self, title: str, hypothesis: str | None, analysis_type: str, cycle: int, task_id: int) -> str:
         """Create header markdown for notebook."""
         lines = [f"# {title}", ""]
 
         if hypothesis:
             lines.extend([f"**Hypothesis**: {hypothesis}", ""])
 
-        lines.extend([
-            f"**Analysis Type**: {analysis_type.replace('_', ' ').title()}",
-            f"**Cycle**: {cycle}",
-            f"**Task ID**: {task_id}",
-            f"**Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-            "",
-            "---",
-            ""
-        ])
+        lines.extend(
+            [
+                f"**Analysis Type**: {analysis_type.replace('_', ' ').title()}",
+                f"**Cycle**: {cycle}",
+                f"**Task ID**: {task_id}",
+                f"**Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+                "",
+                "---",
+                "",
+            ]
+        )
 
-        return '\n'.join(lines)
+        return "\n".join(lines)
 
     def _split_code_into_cells(self, code: str) -> list[str]:
         """
@@ -393,23 +364,23 @@ class NotebookGenerator:
             stripped = line.strip()
 
             # Check for transition from imports to main code
-            if in_imports and stripped and not stripped.startswith(('import ', 'from ', '#')):
+            if in_imports and stripped and not stripped.startswith(("import ", "from ", "#")):
                 if current_cell:
-                    cells.append('\n'.join(current_cell))
+                    cells.append("\n".join(current_cell))
                     current_cell = []
                 in_imports = False
 
             # Check for function/class definitions (start new cell)
-            if stripped.startswith(('def ', 'class ', 'async def ')):
+            if stripped.startswith(("def ", "class ", "async def ")):
                 if current_cell:
-                    cells.append('\n'.join(current_cell))
+                    cells.append("\n".join(current_cell))
                     current_cell = []
 
             current_cell.append(line)
 
         # Add remaining code
         if current_cell:
-            cells.append('\n'.join(current_cell))
+            cells.append("\n".join(current_cell))
 
         # If no splitting happened, return original as single cell
         return cells if cells else [code]
@@ -427,40 +398,31 @@ class NotebookGenerator:
         outputs = []
 
         # Handle ExecutionResult object
-        if hasattr(execution_result, 'stdout') and execution_result.stdout:
-            outputs.append(new_output(
-                output_type='stream',
-                name='stdout',
-                text=execution_result.stdout
-            ))
+        if hasattr(execution_result, "stdout") and execution_result.stdout:
+            outputs.append(new_output(output_type="stream", name="stdout", text=execution_result.stdout))
 
-        if hasattr(execution_result, 'stderr') and execution_result.stderr:
-            outputs.append(new_output(
-                output_type='stream',
-                name='stderr',
-                text=execution_result.stderr
-            ))
+        if hasattr(execution_result, "stderr") and execution_result.stderr:
+            outputs.append(new_output(output_type="stream", name="stderr", text=execution_result.stderr))
 
-        if hasattr(execution_result, 'return_value') and execution_result.return_value is not None:
-            outputs.append(new_output(
-                output_type='execute_result',
-                data={'text/plain': str(execution_result.return_value)},
-                metadata={},
-                execution_count=1
-            ))
+        if hasattr(execution_result, "return_value") and execution_result.return_value is not None:
+            outputs.append(
+                new_output(output_type="execute_result", data={"text/plain": str(execution_result.return_value)}, metadata={}, execution_count=1)
+            )
 
-        if hasattr(execution_result, 'error_message') and execution_result.error_message:
-            outputs.append(new_output(
-                output_type='error',
-                ename='ExecutionError',
-                evalue=execution_result.error_message,
-                traceback=[execution_result.error_traceback or '']
-            ))
+        if hasattr(execution_result, "error_message") and execution_result.error_message:
+            outputs.append(
+                new_output(
+                    output_type="error",
+                    ename="ExecutionError",
+                    evalue=execution_result.error_message,
+                    traceback=[execution_result.error_traceback or ""],
+                )
+            )
 
         # Handle CellOutput objects
-        if hasattr(execution_result, 'outputs'):
+        if hasattr(execution_result, "outputs"):
             for cell_output in execution_result.outputs:
-                if hasattr(cell_output, 'output_type'):
+                if hasattr(cell_output, "output_type"):
                     output = self._convert_cell_output(cell_output)
                     if output:
                         outputs.append(output)
@@ -477,36 +439,18 @@ class NotebookGenerator:
         Returns:
             nbformat NotebookNode output or None
         """
-        output_type = getattr(cell_output, 'output_type', 'stream')
-        content = getattr(cell_output, 'content', '')
+        output_type = getattr(cell_output, "output_type", "stream")
+        content = getattr(cell_output, "content", "")
 
-        if output_type == 'stream':
-            return new_output(
-                output_type='stream',
-                name='stdout',
-                text=content
-            )
-        elif output_type == 'execute_result':
-            return new_output(
-                output_type='execute_result',
-                data={'text/plain': content},
-                metadata={},
-                execution_count=1
-            )
-        elif output_type == 'error':
-            return new_output(
-                output_type='error',
-                ename='Error',
-                evalue=content,
-                traceback=[]
-            )
-        elif output_type == 'display_data':
-            mime_type = getattr(cell_output, 'mime_type', 'text/plain')
-            return new_output(
-                output_type='display_data',
-                data={mime_type: content},
-                metadata={}
-            )
+        if output_type == "stream":
+            return new_output(output_type="stream", name="stdout", text=content)
+        elif output_type == "execute_result":
+            return new_output(output_type="execute_result", data={"text/plain": content}, metadata={}, execution_count=1)
+        elif output_type == "error":
+            return new_output(output_type="error", ename="Error", evalue=content, traceback=[])
+        elif output_type == "display_data":
+            mime_type = getattr(cell_output, "mime_type", "text/plain")
+            return new_output(output_type="display_data", data={mime_type: content}, metadata={})
 
         return None
 
@@ -524,7 +468,7 @@ class NotebookGenerator:
         fig_path = Path(figure_path)
 
         # If path contains 'figures', construct relative path
-        if 'figures' in fig_path.parts:
+        if "figures" in fig_path.parts:
             # Path from notebooks/ to figures/ is ../figures/
             return f"../figures/{fig_path.name}"
 
@@ -557,20 +501,16 @@ class NotebookGenerator:
     def to_dict(self) -> dict[str, Any]:
         """Serialize notebook generator state to dictionary."""
         return {
-            'artifacts_dir': str(self.artifacts_dir),
-            'default_kernel': self.default_kernel,
-            'notebook_count': self.get_notebook_count(),
-            'total_line_count': self.total_line_count,
-            'notebooks': [nb.to_dict() for nb in self.generated_notebooks]
+            "artifacts_dir": str(self.artifacts_dir),
+            "default_kernel": self.default_kernel,
+            "notebook_count": self.get_notebook_count(),
+            "total_line_count": self.total_line_count,
+            "notebooks": [nb.to_dict() for nb in self.generated_notebooks],
         }
 
 
 def create_notebook_from_code(
-    code: str,
-    output_path: str | Path,
-    title: str = "Analysis",
-    kernel: str = "python3",
-    execution_result: Any | None = None
+    code: str, output_path: str | Path, title: str = "Analysis", kernel: str = "python3", execution_result: Any | None = None
 ) -> Path:
     """
     Convenience function to create a standalone notebook.
@@ -589,10 +529,7 @@ def create_notebook_from_code(
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     nb = new_notebook()
-    nb.metadata['kernelspec'] = {
-        'name': kernel,
-        'display_name': 'Python 3' if kernel == 'python3' else 'R'
-    }
+    nb.metadata["kernelspec"] = {"name": kernel, "display_name": "Python 3" if kernel == "python3" else "R"}
 
     # Add title cell
     nb.cells.append(new_markdown_cell(f"# {title}"))
@@ -601,7 +538,7 @@ def create_notebook_from_code(
     cell = new_code_cell(code)
     nb.cells.append(cell)
 
-    with open(output_path, 'w', encoding='utf-8') as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         nbformat.write(nb, f)
 
     return output_path

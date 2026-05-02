@@ -37,6 +37,31 @@ DEFAULT_CACHE_DIR = pathlib.Path(__file__).resolve().parent.parent.parent / ".be
 # Suggestion TTL: 10 minutes
 SUGGESTION_TTL_SECONDS = 600.0
 
+# Imperative verbs that boost quality score — module-level for performance
+_IMPERATIVE_VERBS = frozenset(
+    {
+        "run",
+        "fix",
+        "add",
+        "deploy",
+        "test",
+        "build",
+        "commit",
+        "push",
+        "check",
+        "update",
+        "refactor",
+        "lint",
+        "install",
+        "create",
+        "delete",
+        "remove",
+        "move",
+        "rename",
+        "merge",
+    }
+)
+
 
 @dataclass
 class SuggestionEntry:
@@ -106,29 +131,6 @@ class SuggestionEntry:
             score = min(1.0, score + 0.1)
 
         # Imperative verb boost
-        _IMPERATIVE_VERBS = frozenset(
-            {
-                "run",
-                "fix",
-                "add",
-                "deploy",
-                "test",
-                "build",
-                "commit",
-                "push",
-                "check",
-                "update",
-                "refactor",
-                "lint",
-                "install",
-                "create",
-                "delete",
-                "remove",
-                "move",
-                "rename",
-                "merge",
-            }
-        )
         if words and words[0].lower() in _IMPERATIVE_VERBS:
             score = min(1.0, score + 0.1)
 
@@ -258,7 +260,7 @@ class SuggestionConsumer:
 
         try:
             data = json.loads(self._cache_file.read_text())
-        except json.JSONDecodeError, OSError:
+        except (json.JSONDecodeError, OSError):
             return {"state": "corrupt", "suggestion": None, "age_s": None, "quality": None}
 
         suggestion_text = data.get("suggestion")

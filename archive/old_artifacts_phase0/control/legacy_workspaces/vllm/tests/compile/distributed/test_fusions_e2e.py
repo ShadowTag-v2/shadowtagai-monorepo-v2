@@ -23,6 +23,8 @@ from ...utils import flat_product, multi_gpu_test
 
 def is_blackwell():
     return current_platform.is_device_capability(100)
+
+
 """Are we running on Blackwell, a lot of tests depend on it"""
 
 

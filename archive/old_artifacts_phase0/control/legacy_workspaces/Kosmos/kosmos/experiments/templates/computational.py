@@ -31,7 +31,7 @@ class AlgorithmComparisonTemplate(TemplateBase):
             experiment_type=ExperimentType.COMPUTATIONAL,
             title="Algorithm Comparison Template",
             description="Compare performance of different algorithms on benchmark tasks.",
-            version="1.0.0"
+            version="1.0.0",
         )
         self.metadata.suitable_for = ["Algorithm evaluation", "Performance benchmarking", "Runtime analysis"]
         self.metadata.rigor_score = 0.80
@@ -47,29 +47,114 @@ class AlgorithmComparisonTemplate(TemplateBase):
         hypothesis = params.hypothesis
 
         steps = [
-            ProtocolStep(step_number=1, title="Algorithm Implementation", description="Implement or import algorithms to compare", action="Implement both algorithms with same interface, ensure correctness with unit tests", expected_duration_minutes=120, library_imports=["numpy"]),
-            ProtocolStep(step_number=2, title="Benchmark Setup", description="Create benchmark datasets of varying sizes", action="Generate test datasets with N=[100, 1000, 10000, 100000] samples, ensure reproducibility with fixed seed", expected_duration_minutes=30, requires_steps=[1], library_imports=["numpy"]),
-            ProtocolStep(step_number=3, title="Performance Measurement", description="Run algorithms and measure runtime", action="For each dataset size: run each algorithm 30 times, measure wall-clock time with time.perf_counter(), record memory usage", expected_duration_minutes=180, requires_steps=[2], library_imports=["time", "tracemalloc"]),
-            ProtocolStep(step_number=4, title="Statistical Analysis", description="Compare runtime distributions", action="For each dataset size: run t-test comparing mean runtimes, calculate effect sizes, fit complexity curves (O(n), O(n log n), O(n²))", expected_duration_minutes=45, requires_steps=[3], library_imports=["scipy", "numpy"]),
-            ProtocolStep(step_number=5, title="Visualization", description="Create performance comparison plots", action="Plot runtime vs dataset size for both algorithms, add complexity curve fits, create box plots for each size", expected_duration_minutes=30, requires_steps=[4], library_imports=["matplotlib"]),
+            ProtocolStep(
+                step_number=1,
+                title="Algorithm Implementation",
+                description="Implement or import algorithms to compare",
+                action="Implement both algorithms with same interface, ensure correctness with unit tests",
+                expected_duration_minutes=120,
+                library_imports=["numpy"],
+            ),
+            ProtocolStep(
+                step_number=2,
+                title="Benchmark Setup",
+                description="Create benchmark datasets of varying sizes",
+                action="Generate test datasets with N=[100, 1000, 10000, 100000] samples, ensure reproducibility with fixed seed",
+                expected_duration_minutes=30,
+                requires_steps=[1],
+                library_imports=["numpy"],
+            ),
+            ProtocolStep(
+                step_number=3,
+                title="Performance Measurement",
+                description="Run algorithms and measure runtime",
+                action="For each dataset size: run each algorithm 30 times, measure wall-clock time with time.perf_counter(), record memory usage",
+                expected_duration_minutes=180,
+                requires_steps=[2],
+                library_imports=["time", "tracemalloc"],
+            ),
+            ProtocolStep(
+                step_number=4,
+                title="Statistical Analysis",
+                description="Compare runtime distributions",
+                action="For each dataset size: run t-test comparing mean runtimes, calculate effect sizes, fit complexity curves (O(n), O(n log n), O(n²))",
+                expected_duration_minutes=45,
+                requires_steps=[3],
+                library_imports=["scipy", "numpy"],
+            ),
+            ProtocolStep(
+                step_number=5,
+                title="Visualization",
+                description="Create performance comparison plots",
+                action="Plot runtime vs dataset size for both algorithms, add complexity curve fits, create box plots for each size",
+                expected_duration_minutes=30,
+                requires_steps=[4],
+                library_imports=["matplotlib"],
+            ),
         ]
 
         variables = {
-            "algorithm": Variable(name="algorithm", type=VariableType.INDEPENDENT, description="Algorithm being tested", values=["algorithm_A", "algorithm_B"], unit="category"),
-            "dataset_size": Variable(name="dataset_size", type=VariableType.INDEPENDENT, description="Size of input dataset", values=[100, 1000, 10000, 100000], unit="count"),
-            "runtime_seconds": Variable(name="runtime_seconds", type=VariableType.DEPENDENT, description="Algorithm execution time", unit="seconds", measurement_method="time.perf_counter()"),
-            "memory_mb": Variable(name="memory_mb", type=VariableType.DEPENDENT, description="Peak memory usage", unit="megabytes", measurement_method="tracemalloc"),
+            "algorithm": Variable(
+                name="algorithm",
+                type=VariableType.INDEPENDENT,
+                description="Algorithm being tested",
+                values=["algorithm_A", "algorithm_B"],
+                unit="category",
+            ),
+            "dataset_size": Variable(
+                name="dataset_size",
+                type=VariableType.INDEPENDENT,
+                description="Size of input dataset",
+                values=[100, 1000, 10000, 100000],
+                unit="count",
+            ),
+            "runtime_seconds": Variable(
+                name="runtime_seconds",
+                type=VariableType.DEPENDENT,
+                description="Algorithm execution time",
+                unit="seconds",
+                measurement_method="time.perf_counter()",
+            ),
+            "memory_mb": Variable(
+                name="memory_mb", type=VariableType.DEPENDENT, description="Peak memory usage", unit="megabytes", measurement_method="tracemalloc"
+            ),
         }
 
         control_groups = [
-            ControlGroup(name="baseline_algorithm", description="Baseline algorithm for comparison", variables={"algorithm": "algorithm_A"}, rationale="Established baseline algorithm", sample_size=30)
+            ControlGroup(
+                name="baseline_algorithm",
+                description="Baseline algorithm for comparison",
+                variables={"algorithm": "algorithm_A"},
+                rationale="Established baseline algorithm",
+                sample_size=30,
+            )
         ]
 
         statistical_tests = [
-            StatisticalTestSpec(test_type=StatisticalTest.T_TEST, description="Compare mean runtime at each dataset size", null_hypothesis="H0: No difference in mean runtime", alternative="two-sided", alpha=0.05, variables=["runtime_seconds"], groups=["algorithm_A", "algorithm_B"], required_power=0.8, expected_effect_size=0.5)
+            StatisticalTestSpec(
+                test_type=StatisticalTest.T_TEST,
+                description="Compare mean runtime at each dataset size",
+                null_hypothesis="H0: No difference in mean runtime",
+                alternative="two-sided",
+                alpha=0.05,
+                variables=["runtime_seconds"],
+                groups=["algorithm_A", "algorithm_B"],
+                required_power=0.8,
+                expected_effect_size=0.5,
+            )
         ]
 
-        resources = ResourceRequirements(compute_hours=5.0, memory_gb=8, gpu_required=False, estimated_cost_usd=5.0, estimated_duration_days=0.5, required_libraries=["numpy", "scipy", "matplotlib"], python_version="3.9+", can_parallelize=True, parallelization_factor=4)
+        resources = ResourceRequirements(
+            compute_hours=5.0,
+            memory_gb=8,
+            gpu_required=False,
+            estimated_cost_usd=5.0,
+            estimated_duration_days=0.5,
+            required_libraries=["numpy", "scipy", "matplotlib"],
+            python_version="3.9+",
+            can_parallelize=True,
+            parallelization_factor=4,
+        )
 
         return ExperimentProtocol(
             name=f"Algorithm Comparison: {hypothesis.statement[:60]}",
@@ -101,7 +186,7 @@ class SimulationExperimentTemplate(TemplateBase):
             experiment_type=ExperimentType.COMPUTATIONAL,
             title="Simulation Experiment Template",
             description="Test hypotheses using computational simulations and models.",
-            version="1.0.0"
+            version="1.0.0",
         )
         self.metadata.suitable_for = ["Monte Carlo simulations", "Agent-based models", "Physical simulations", "Stochastic processes"]
         self.metadata.rigor_score = 0.78
@@ -117,23 +202,87 @@ class SimulationExperimentTemplate(TemplateBase):
         hypothesis = params.hypothesis
 
         steps = [
-            ProtocolStep(step_number=1, title="Simulation Setup", description="Implement simulation model", action="Code simulation with configurable parameters, validate against simple test cases", expected_duration_minutes=180, library_imports=["numpy", "scipy"]),
-            ProtocolStep(step_number=2, title="Parameter Configuration", description="Set up experimental conditions", action="Define parameter ranges, create experimental design (factorial or Latin hypercube sampling)", expected_duration_minutes=60, requires_steps=[1], library_imports=["numpy"]),
-            ProtocolStep(step_number=3, title="Simulation Execution", description="Run simulations for all conditions", action="For each parameter combination: run N=1000 simulations, record outcomes, save intermediate results", expected_duration_minutes=300, requires_steps=[2], library_imports=["numpy", "multiprocessing"]),
-            ProtocolStep(step_number=4, title="Statistical Analysis", description="Analyze simulation results", action="Aggregate results across replications, compute mean and CI for each condition, run ANOVA or regression on outcomes", expected_duration_minutes=45, requires_steps=[3], library_imports=["scipy", "statsmodels"]),
-            ProtocolStep(step_number=5, title="Visualization", description="Create results visualizations", action="Plot outcome distributions, create heatmaps for parameter effects, visualize convergence", expected_duration_minutes=40, requires_steps=[4], library_imports=["matplotlib", "seaborn"]),
+            ProtocolStep(
+                step_number=1,
+                title="Simulation Setup",
+                description="Implement simulation model",
+                action="Code simulation with configurable parameters, validate against simple test cases",
+                expected_duration_minutes=180,
+                library_imports=["numpy", "scipy"],
+            ),
+            ProtocolStep(
+                step_number=2,
+                title="Parameter Configuration",
+                description="Set up experimental conditions",
+                action="Define parameter ranges, create experimental design (factorial or Latin hypercube sampling)",
+                expected_duration_minutes=60,
+                requires_steps=[1],
+                library_imports=["numpy"],
+            ),
+            ProtocolStep(
+                step_number=3,
+                title="Simulation Execution",
+                description="Run simulations for all conditions",
+                action="For each parameter combination: run N=1000 simulations, record outcomes, save intermediate results",
+                expected_duration_minutes=300,
+                requires_steps=[2],
+                library_imports=["numpy", "multiprocessing"],
+            ),
+            ProtocolStep(
+                step_number=4,
+                title="Statistical Analysis",
+                description="Analyze simulation results",
+                action="Aggregate results across replications, compute mean and CI for each condition, run ANOVA or regression on outcomes",
+                expected_duration_minutes=45,
+                requires_steps=[3],
+                library_imports=["scipy", "statsmodels"],
+            ),
+            ProtocolStep(
+                step_number=5,
+                title="Visualization",
+                description="Create results visualizations",
+                action="Plot outcome distributions, create heatmaps for parameter effects, visualize convergence",
+                expected_duration_minutes=40,
+                requires_steps=[4],
+                library_imports=["matplotlib", "seaborn"],
+            ),
         ]
 
         variables = {
             "parameter": Variable(name="parameter", type=VariableType.INDEPENDENT, description="Simulation parameter to vary", unit="TBD"),
-            "outcome": Variable(name="outcome", type=VariableType.DEPENDENT, description="Simulation outcome measure", unit="TBD", measurement_method="Aggregate over simulation runs"),
+            "outcome": Variable(
+                name="outcome",
+                type=VariableType.DEPENDENT,
+                description="Simulation outcome measure",
+                unit="TBD",
+                measurement_method="Aggregate over simulation runs",
+            ),
         }
 
         statistical_tests = [
-            StatisticalTestSpec(test_type=StatisticalTest.ANOVA, description="Test effect of parameters on outcome", null_hypothesis="H0: No effect of parameters", alternative="two-sided", alpha=0.05, variables=["outcome"], required_power=0.8, expected_effect_size=0.25)
+            StatisticalTestSpec(
+                test_type=StatisticalTest.ANOVA,
+                description="Test effect of parameters on outcome",
+                null_hypothesis="H0: No effect of parameters",
+                alternative="two-sided",
+                alpha=0.05,
+                variables=["outcome"],
+                required_power=0.8,
+                expected_effect_size=0.25,
+            )
         ]
 
-        resources = ResourceRequirements(compute_hours=12.0, memory_gb=16, gpu_required=False, estimated_cost_usd=15.0, estimated_duration_days=1.0, required_libraries=["numpy", "scipy", "statsmodels", "matplotlib"], python_version="3.9+", can_parallelize=True, parallelization_factor=8)
+        resources = ResourceRequirements(
+            compute_hours=12.0,
+            memory_gb=16,
+            gpu_required=False,
+            estimated_cost_usd=15.0,
+            estimated_duration_days=1.0,
+            required_libraries=["numpy", "scipy", "statsmodels", "matplotlib"],
+            python_version="3.9+",
+            can_parallelize=True,
+            parallelization_factor=8,
+        )
 
         return ExperimentProtocol(
             name=f"Simulation Experiment: {hypothesis.statement[:60]}",
@@ -165,7 +314,7 @@ class GenericComputationalTemplate(TemplateBase):
             experiment_type=ExperimentType.COMPUTATIONAL,
             title="Generic Computational Experiment Template",
             description="Fallback template for computational experiments that don't match specialized templates.",
-            version="1.0.0"
+            version="1.0.0",
         )
         self.metadata.suitable_for = ["General computational analysis", "Custom simulations", "Numerical experiments"]
         self.metadata.rigor_score = 0.65
@@ -183,11 +332,50 @@ class GenericComputationalTemplate(TemplateBase):
         hypothesis = params.hypothesis
 
         steps = [
-            ProtocolStep(step_number=1, title="Setup", description="Define computational parameters", action="Configure experiment parameters based on hypothesis variables", expected_duration_minutes=30, library_imports=["numpy"]),
-            ProtocolStep(step_number=2, title="Data Preparation", description="Generate or load data", action="Load dataset or generate synthetic data with fixed random seed for reproducibility", expected_duration_minutes=30, requires_steps=[1], library_imports=["numpy", "pandas"]),
-            ProtocolStep(step_number=3, title="Computation", description="Execute computational analysis", action="Run the computational analysis on prepared data, record all outputs", expected_duration_minutes=120, requires_steps=[2], library_imports=["numpy", "scipy"]),
-            ProtocolStep(step_number=4, title="Statistical Analysis", description="Analyze results statistically", action="Compute relevant statistics, confidence intervals, and effect sizes", expected_duration_minutes=45, requires_steps=[3], library_imports=["scipy"]),
-            ProtocolStep(step_number=5, title="Visualization", description="Create result visualizations", action="Generate plots summarizing computational results", expected_duration_minutes=30, requires_steps=[4], library_imports=["matplotlib"]),
+            ProtocolStep(
+                step_number=1,
+                title="Setup",
+                description="Define computational parameters",
+                action="Configure experiment parameters based on hypothesis variables",
+                expected_duration_minutes=30,
+                library_imports=["numpy"],
+            ),
+            ProtocolStep(
+                step_number=2,
+                title="Data Preparation",
+                description="Generate or load data",
+                action="Load dataset or generate synthetic data with fixed random seed for reproducibility",
+                expected_duration_minutes=30,
+                requires_steps=[1],
+                library_imports=["numpy", "pandas"],
+            ),
+            ProtocolStep(
+                step_number=3,
+                title="Computation",
+                description="Execute computational analysis",
+                action="Run the computational analysis on prepared data, record all outputs",
+                expected_duration_minutes=120,
+                requires_steps=[2],
+                library_imports=["numpy", "scipy"],
+            ),
+            ProtocolStep(
+                step_number=4,
+                title="Statistical Analysis",
+                description="Analyze results statistically",
+                action="Compute relevant statistics, confidence intervals, and effect sizes",
+                expected_duration_minutes=45,
+                requires_steps=[3],
+                library_imports=["scipy"],
+            ),
+            ProtocolStep(
+                step_number=5,
+                title="Visualization",
+                description="Create result visualizations",
+                action="Generate plots summarizing computational results",
+                expected_duration_minutes=30,
+                requires_steps=[4],
+                library_imports=["matplotlib"],
+            ),
         ]
 
         variables = {
@@ -196,10 +384,29 @@ class GenericComputationalTemplate(TemplateBase):
         }
 
         statistical_tests = [
-            StatisticalTestSpec(test_type=StatisticalTest.T_TEST, description="Test for significant effect", null_hypothesis="H0: No significant effect", alternative="two-sided", alpha=0.05, variables=["output_measure"], required_power=0.8, expected_effect_size=0.5)
+            StatisticalTestSpec(
+                test_type=StatisticalTest.T_TEST,
+                description="Test for significant effect",
+                null_hypothesis="H0: No significant effect",
+                alternative="two-sided",
+                alpha=0.05,
+                variables=["output_measure"],
+                required_power=0.8,
+                expected_effect_size=0.5,
+            )
         ]
 
-        resources = ResourceRequirements(compute_hours=2.0, memory_gb=4, gpu_required=False, estimated_cost_usd=2.0, estimated_duration_days=0.25, required_libraries=["numpy", "scipy", "matplotlib"], python_version="3.9+", can_parallelize=False, parallelization_factor=1)
+        resources = ResourceRequirements(
+            compute_hours=2.0,
+            memory_gb=4,
+            gpu_required=False,
+            estimated_cost_usd=2.0,
+            estimated_duration_days=0.25,
+            required_libraries=["numpy", "scipy", "matplotlib"],
+            python_version="3.9+",
+            can_parallelize=False,
+            parallelization_factor=1,
+        )
 
         return ExperimentProtocol(
             name=f"Computational Experiment: {hypothesis.statement[:60]}",

@@ -27,8 +27,8 @@ def my_sync_metric_function(
     expected_invocations: list[Invocation] | None,
     conversation_scenario: ConversationScenario | None,
 ) -> EvaluationResult:
-  """Sync metric function for testing."""
-  return EvaluationResult(overall_score=1.0)
+    """Sync metric function for testing."""
+    return EvaluationResult(overall_score=1.0)
 
 
 async def my_async_metric_function(
@@ -37,43 +37,39 @@ async def my_async_metric_function(
     expected_invocations: list[Invocation] | None,
     conversation_scenario: ConversationScenario | None,
 ) -> EvaluationResult:
-  """Async metric function for testing."""
-  return EvaluationResult(overall_score=0.5)
+    """Async metric function for testing."""
+    return EvaluationResult(overall_score=0.5)
 
 
 @mock.patch("importlib.import_module")
 def test_get_metric_function_success(mock_import_module):
-  """Tests that _get_metric_function successfully returns a function."""
-  mock_module = mock.MagicMock()
-  mock_module.my_sync_metric_function = my_sync_metric_function
-  mock_import_module.return_value = mock_module
-  func = _get_metric_function(
-      "test_custom_metric_evaluator.my_sync_metric_function"
-  )
-  assert func == my_sync_metric_function
+    """Tests that _get_metric_function successfully returns a function."""
+    mock_module = mock.MagicMock()
+    mock_module.my_sync_metric_function = my_sync_metric_function
+    mock_import_module.return_value = mock_module
+    func = _get_metric_function("test_custom_metric_evaluator.my_sync_metric_function")
+    assert func == my_sync_metric_function
 
 
 @mock.patch("importlib.import_module", side_effect=ImportError)
 def test_get_metric_function_module_not_found(mock_import_module):
-  """Tests that _get_metric_function raises ImportError for non-existent module."""
-  with pytest.raises(ImportError):
-    _get_metric_function("non_existent_module.my_sync_metric_function")
+    """Tests that _get_metric_function raises ImportError for non-existent module."""
+    with pytest.raises(ImportError):
+        _get_metric_function("non_existent_module.my_sync_metric_function")
 
 
 @mock.patch("importlib.import_module")
 def test_get_metric_function_function_not_found(mock_import_module):
-  """Tests that _get_metric_function raises ImportError for non-existent function."""
-  mock_import_module.return_value = object()
-  with pytest.raises(ImportError):
-    _get_metric_function(
-        "google.adk.tests.unittests.evaluation.test_custom_metric_evaluator.non_existent_function"
-    )
+    """Tests that _get_metric_function raises ImportError for non-existent function."""
+    mock_import_module.return_value = object()
+    with pytest.raises(ImportError):
+        _get_metric_function("google.adk.tests.unittests.evaluation.test_custom_metric_evaluator.non_existent_function")
 
 
 def test_get_metric_function_malformed_path():
-  """Tests that _get_metric_function raises ImportError for malformed path."""
-  with pytest.raises(ImportError):
-    _get_metric_function("malformed_path")
+    """Tests that _get_metric_function raises ImportError for malformed path."""
+    with pytest.raises(ImportError):
+        _get_metric_function("malformed_path")
 
 
 @mock.patch(
@@ -82,14 +78,14 @@ def test_get_metric_function_malformed_path():
 )
 @pytest.mark.asyncio
 async def test_custom_metric_evaluator_sync_function(mock_get_metric_function):
-  """Tests that _CustomMetricEvaluator works with a sync metric function."""
-  eval_metric = EvalMetric(metric_name="sync_metric")
-  evaluator = _CustomMetricEvaluator(
-      eval_metric=eval_metric,
-      custom_function_path="google.adk.tests.unittests.evaluation.test_custom_metric_evaluator.my_sync_metric_function",
-  )
-  result = await evaluator.evaluate_invocations([], None)
-  assert result.overall_score == 1.0
+    """Tests that _CustomMetricEvaluator works with a sync metric function."""
+    eval_metric = EvalMetric(metric_name="sync_metric")
+    evaluator = _CustomMetricEvaluator(
+        eval_metric=eval_metric,
+        custom_function_path="google.adk.tests.unittests.evaluation.test_custom_metric_evaluator.my_sync_metric_function",
+    )
+    result = await evaluator.evaluate_invocations([], None)
+    assert result.overall_score == 1.0
 
 
 @mock.patch(
@@ -98,11 +94,11 @@ async def test_custom_metric_evaluator_sync_function(mock_get_metric_function):
 )
 @pytest.mark.asyncio
 async def test_custom_metric_evaluator_async_function(mock_get_metric_function):
-  """Tests that _CustomMetricEvaluator works with an async metric function."""
-  eval_metric = EvalMetric(metric_name="async_metric")
-  evaluator = _CustomMetricEvaluator(
-      eval_metric=eval_metric,
-      custom_function_path="google.adk.tests.unittests.evaluation.test_custom_metric_evaluator.my_async_metric_function",
-  )
-  result = await evaluator.evaluate_invocations([], None)
-  assert result.overall_score == 0.5
+    """Tests that _CustomMetricEvaluator works with an async metric function."""
+    eval_metric = EvalMetric(metric_name="async_metric")
+    evaluator = _CustomMetricEvaluator(
+        eval_metric=eval_metric,
+        custom_function_path="google.adk.tests.unittests.evaluation.test_custom_metric_evaluator.my_async_metric_function",
+    )
+    result = await evaluator.evaluate_invocations([], None)
+    assert result.overall_score == 0.5

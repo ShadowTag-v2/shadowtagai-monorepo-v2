@@ -26,6 +26,7 @@ class Message:
         name: Optional name for the message sender
         metadata: Optional provider-specific metadata
     """
+
     role: str  # "system", "user", "assistant"
     content: str
     name: str | None = None
@@ -46,6 +47,7 @@ class UsageStats:
         provider: Provider name
         timestamp: When the request was made
     """
+
     input_tokens: int
     output_tokens: int
     total_tokens: int
@@ -71,6 +73,7 @@ class LLMResponse:
         raw_response: Original provider-specific response object
         metadata: Additional provider-specific metadata
     """
+
     content: str
     usage: UsageStats
     model: str
@@ -203,7 +206,7 @@ class LLMProvider(ABC):
         max_tokens: int = 4096,
         temperature: float = 0.7,
         stop_sequences: list[str] | None = None,
-        **kwargs
+        **kwargs,
     ) -> LLMResponse:
         """
         Generate text from a prompt (synchronous).
@@ -232,7 +235,7 @@ class LLMProvider(ABC):
         max_tokens: int = 4096,
         temperature: float = 0.7,
         stop_sequences: list[str] | None = None,
-        **kwargs
+        **kwargs,
     ) -> LLMResponse:
         """
         Generate text from a prompt (asynchronous).
@@ -254,13 +257,7 @@ class LLMProvider(ABC):
         pass
 
     @abstractmethod
-    def generate_with_messages(
-        self,
-        messages: list[Message],
-        max_tokens: int = 4096,
-        temperature: float = 0.7,
-        **kwargs
-    ) -> LLMResponse:
+    def generate_with_messages(self, messages: list[Message], max_tokens: int = 4096, temperature: float = 0.7, **kwargs) -> LLMResponse:
         """
         Generate text from a conversation history.
 
@@ -280,13 +277,7 @@ class LLMProvider(ABC):
 
     @abstractmethod
     def generate_structured(
-        self,
-        prompt: str,
-        schema: dict[str, Any],
-        system: str | None = None,
-        max_tokens: int = 4096,
-        temperature: float = 0.7,
-        **kwargs
+        self, prompt: str, schema: dict[str, Any], system: str | None = None, max_tokens: int = 4096, temperature: float = 0.7, **kwargs
     ) -> dict[str, Any]:
         """
         Generate structured JSON output matching a schema.
@@ -308,14 +299,7 @@ class LLMProvider(ABC):
         """
         pass
 
-    def generate_stream(
-        self,
-        prompt: str,
-        system: str | None = None,
-        max_tokens: int = 4096,
-        temperature: float = 0.7,
-        **kwargs
-    ) -> Iterator[str]:
+    def generate_stream(self, prompt: str, system: str | None = None, max_tokens: int = 4096, temperature: float = 0.7, **kwargs) -> Iterator[str]:
         """
         Generate text with streaming (optional, not all providers support).
 
@@ -335,12 +319,7 @@ class LLMProvider(ABC):
         raise NotImplementedError(f"{self.provider_name} does not support streaming")
 
     async def generate_stream_async(
-        self,
-        prompt: str,
-        system: str | None = None,
-        max_tokens: int = 4096,
-        temperature: float = 0.7,
-        **kwargs
+        self, prompt: str, system: str | None = None, max_tokens: int = 4096, temperature: float = 0.7, **kwargs
     ) -> AsyncIterator[str]:
         """
         Generate text with async streaming (optional).
@@ -427,14 +406,7 @@ class ProviderAPIError(Exception):
         recoverable: Whether this error can be retried
     """
 
-    def __init__(
-        self,
-        provider: str,
-        message: str,
-        status_code: int | None = None,
-        raw_error: Exception | None = None,
-        recoverable: bool = True
-    ):
+    def __init__(self, provider: str, message: str, status_code: int | None = None, raw_error: Exception | None = None, recoverable: bool = True):
         self.provider = provider
         self.message = message
         self.status_code = status_code
@@ -464,13 +436,34 @@ class ProviderAPIError(Exception):
         # Check message patterns for recoverable errors
         message_lower = self.message.lower()
         recoverable_patterns = (
-            'timeout', 'connection', 'network', 'rate_limit', 'rate limit',
-            'overloaded', 'service_unavailable', 'service unavailable',
-            'temporarily', 'retry', '429', '503', '502', '504'
+            "timeout",
+            "connection",
+            "network",
+            "rate_limit",
+            "rate limit",
+            "overloaded",
+            "service_unavailable",
+            "service unavailable",
+            "temporarily",
+            "retry",
+            "429",
+            "503",
+            "502",
+            "504",
         )
         non_recoverable_patterns = (
-            'json', 'parse', 'invalid', 'authentication', 'unauthorized',
-            'forbidden', 'not found', 'bad request', '401', '403', '404', '400'
+            "json",
+            "parse",
+            "invalid",
+            "authentication",
+            "unauthorized",
+            "forbidden",
+            "not found",
+            "bad request",
+            "401",
+            "403",
+            "404",
+            "400",
         )
 
         # If explicitly mentions recoverable error type

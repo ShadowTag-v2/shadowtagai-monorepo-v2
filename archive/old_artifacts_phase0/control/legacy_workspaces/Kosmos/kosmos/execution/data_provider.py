@@ -22,9 +22,10 @@ logger = logging.getLogger(__name__)
 
 class DataSourceType(StrEnum):
     """Types of data sources for experiments."""
-    FILE = "file"              # Load from file path
-    SYNTHETIC = "synthetic"    # Generate synthetic data
-    INLINE = "inline"          # Data provided inline in protocol
+
+    FILE = "file"  # Load from file path
+    SYNTHETIC = "synthetic"  # Generate synthetic data
+    INLINE = "inline"  # Data provided inline in protocol
 
 
 class SyntheticDataGenerator:
@@ -42,76 +43,52 @@ class SyntheticDataGenerator:
                 "columns": {"group": "categorical", "measurement": "continuous"},
                 "groups": ["control", "treatment"],
                 "effect_size": 0.5,
-                "n_per_group": 50
+                "n_per_group": 50,
             },
             "gene_expression": {
                 "columns": {"gene_id": "identifier", "expression": "continuous", "condition": "categorical"},
                 "conditions": ["baseline", "treated"],
-                "n_genes": 100
+                "n_genes": 100,
             },
-            "metabolomics": {
-                "columns": {"metabolite": "identifier", "concentration": "continuous", "sample": "categorical"},
-                "effect_size": 0.3
-            }
+            "metabolomics": {"columns": {"metabolite": "identifier", "concentration": "continuous", "sample": "categorical"}, "effect_size": 0.3},
         },
         "neuroscience": {
             "ttest_comparison": {
                 "columns": {"group": "categorical", "measurement": "continuous"},
                 "groups": ["control", "experimental"],
                 "effect_size": 0.4,
-                "n_per_group": 30
+                "n_per_group": 30,
             },
-            "connectivity": {
-                "columns": {"source": "identifier", "target": "identifier", "weight": "continuous"},
-                "n_nodes": 50,
-                "density": 0.1
-            }
+            "connectivity": {"columns": {"source": "identifier", "target": "identifier", "weight": "continuous"}, "n_nodes": 50, "density": 0.1},
         },
         "physics": {
-            "correlation_analysis": {
-                "columns": {"x": "continuous", "y": "continuous"},
-                "correlation": 0.7,
-                "n_samples": 100
-            },
-            "parameter_sweep": {
-                "columns": {"parameter": "continuous", "output": "continuous"},
-                "relationship": "linear",
-                "noise_level": 0.1
-            }
+            "correlation_analysis": {"columns": {"x": "continuous", "y": "continuous"}, "correlation": 0.7, "n_samples": 100},
+            "parameter_sweep": {"columns": {"parameter": "continuous", "output": "continuous"}, "relationship": "linear", "noise_level": 0.1},
         },
         "statistics": {
             "ttest_comparison": {
                 "columns": {"group": "categorical", "measurement": "continuous"},
                 "groups": ["control", "experimental"],
                 "effect_size": 0.5,
-                "n_per_group": 50
+                "n_per_group": 50,
             },
-            "correlation_analysis": {
-                "columns": {"x": "continuous", "y": "continuous"},
-                "correlation": 0.7,
-                "n_samples": 100
-            },
+            "correlation_analysis": {"columns": {"x": "continuous", "y": "continuous"}, "correlation": 0.7, "n_samples": 100},
             "anova": {
                 "columns": {"group": "categorical", "measurement": "continuous"},
                 "groups": ["A", "B", "C"],
                 "effect_size": 0.4,
-                "n_per_group": 30
-            }
+                "n_per_group": 30,
+            },
         },
         "machine_learning": {
             "classification": {
                 "columns": {"feature_1": "continuous", "feature_2": "continuous", "label": "categorical"},
                 "classes": ["class_0", "class_1"],
                 "n_samples": 200,
-                "separability": 0.8
+                "separability": 0.8,
             },
-            "regression": {
-                "columns": {"x": "continuous", "y": "continuous"},
-                "relationship": "linear",
-                "noise_level": 0.2,
-                "n_samples": 150
-            }
-        }
+            "regression": {"columns": {"x": "continuous", "y": "continuous"}, "relationship": "linear", "noise_level": 0.2, "n_samples": 150},
+        },
     }
 
     def __init__(self, seed: int = 42):
@@ -125,12 +102,7 @@ class SyntheticDataGenerator:
         self.seed = seed
 
     def generate(
-        self,
-        domain: str | None = None,
-        experiment_type: str | None = None,
-        n_samples: int = 100,
-        columns: dict[str, str] | None = None,
-        **kwargs
+        self, domain: str | None = None, experiment_type: str | None = None, n_samples: int = 100, columns: dict[str, str] | None = None, **kwargs
     ) -> pd.DataFrame:
         """
         Generate synthetic data based on specification.
@@ -158,11 +130,7 @@ class SyntheticDataGenerator:
         # Default: generate basic two-group comparison data
         return self._generate_default_data(n_samples, **kwargs)
 
-    def _get_template(
-        self,
-        domain: str | None,
-        experiment_type: str | None
-    ) -> dict | None:
+    def _get_template(self, domain: str | None, experiment_type: str | None) -> dict | None:
         """Get domain-specific template if available."""
         if not domain or not experiment_type:
             return None
@@ -173,12 +141,7 @@ class SyntheticDataGenerator:
         domain_templates = self.DOMAIN_TEMPLATES.get(domain_key, {})
         return domain_templates.get(exp_key)
 
-    def _generate_from_template(
-        self,
-        template: dict,
-        n_samples: int,
-        **kwargs
-    ) -> pd.DataFrame:
+    def _generate_from_template(self, template: dict, n_samples: int, **kwargs) -> pd.DataFrame:
         """Generate data using domain-specific template."""
         columns = template.get("columns", {})
         effect_size = kwargs.get("effect_size")
@@ -210,12 +173,7 @@ class SyntheticDataGenerator:
         # Shuffle to avoid ordering effects
         return df.sample(frac=1, random_state=self.seed).reset_index(drop=True)
 
-    def _generate_from_columns(
-        self,
-        columns: dict[str, str],
-        n_samples: int,
-        **kwargs
-    ) -> pd.DataFrame:
+    def _generate_from_columns(self, columns: dict[str, str], n_samples: int, **kwargs) -> pd.DataFrame:
         """Generate data from column specifications."""
         data = {}
 
@@ -253,11 +211,7 @@ class SyntheticDataGenerator:
         else:
             return float(self.rng.uniform(0.0, 1.0))
 
-    def _generate_default_data(
-        self,
-        n_samples: int,
-        **kwargs
-    ) -> pd.DataFrame:
+    def _generate_default_data(self, n_samples: int, **kwargs) -> pd.DataFrame:
         """Generate default two-group comparison data."""
         effect_size = kwargs.get("effect_size")
         if effect_size is None:
@@ -268,10 +222,9 @@ class SyntheticDataGenerator:
         control = self.rng.normal(0, 1, n_per_group)
         experimental = self.rng.normal(effect_size, 1, n_per_group)
 
-        df = pd.DataFrame({
-            "group": ["control"] * n_per_group + ["experimental"] * n_per_group,
-            "measurement": np.concatenate([control, experimental])
-        })
+        df = pd.DataFrame(
+            {"group": ["control"] * n_per_group + ["experimental"] * n_per_group, "measurement": np.concatenate([control, experimental])}
+        )
 
         return df.sample(frac=1, random_state=self.seed).reset_index(drop=True)
 
@@ -313,7 +266,7 @@ class DataProvider:
         experiment_type: str | None = None,
         n_samples: int = 100,
         allow_synthetic: bool = True,
-        **kwargs
+        **kwargs,
     ) -> tuple[pd.DataFrame, str]:
         """
         Get data for experiment execution.
@@ -338,13 +291,13 @@ class DataProvider:
             if path.exists():
                 try:
                     suffix = path.suffix.lower()
-                    if suffix == '.tsv':
-                        df = pd.read_csv(path, sep='\t')
-                    elif suffix == '.parquet':
+                    if suffix == ".tsv":
+                        df = pd.read_csv(path, sep="\t")
+                    elif suffix == ".parquet":
                         df = pd.read_parquet(path)
-                    elif suffix == '.json':
+                    elif suffix == ".json":
                         df = pd.read_json(path)
-                    elif suffix == '.jsonl':
+                    elif suffix == ".jsonl":
                         df = pd.read_json(path, lines=True)
                     else:
                         df = pd.read_csv(path)
@@ -361,23 +314,14 @@ class DataProvider:
 
         # Generate synthetic data
         if allow_synthetic:
-            df = self.generator.generate(
-                domain=domain,
-                experiment_type=experiment_type,
-                n_samples=n_samples,
-                **kwargs
-            )
+            df = self.generator.generate(domain=domain, experiment_type=experiment_type, n_samples=n_samples, **kwargs)
             source = f"synthetic:{domain or 'general'}/{experiment_type or 'default'}"
             logger.info(f"Generated synthetic data: {source} ({len(df)} rows)")
             return df, source
 
         raise ValueError("No data source available and synthetic generation not allowed")
 
-    def validate_data(
-        self,
-        file_path: str | None = None,
-        allow_synthetic: bool = True
-    ) -> tuple[bool, str]:
+    def validate_data(self, file_path: str | None = None, allow_synthetic: bool = True) -> tuple[bool, str]:
         """
         Check if data is available without loading it.
 
@@ -405,7 +349,7 @@ def generate_inline_data_code(
     measure_var: str = "measurement",
     groups: list[str] | None = None,
     effect_size: float = 0.5,
-    seed: int = 42
+    seed: int = 42,
 ) -> str:
     """
     Generate Python code that creates synthetic data inline.

@@ -3,7 +3,6 @@
 Generates realistic message and channel content for testing Teams integration using LLM.
 """
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.teams import TeamsChannel, TeamsMessage
 

@@ -20,9 +20,9 @@ from typing import Any
 from pydantic import BaseModel
 
 try:
-  from a2a.server.agent_execution import RequestContext
+    from a2a.server.agent_execution import RequestContext
 except ImportError as e:
-  raise e
+    raise e
 
 from google.genai import types as genai_types
 
@@ -33,14 +33,14 @@ from .part_converter import A2APartToGenAIPartConverter, convert_a2a_part_to_gen
 
 @a2a_experimental
 class AgentRunRequest(BaseModel):
-  """Data model for arguments passed to the ADK runner."""
+    """Data model for arguments passed to the ADK runner."""
 
-  user_id: str | None = None
-  session_id: str | None = None
-  invocation_id: str | None = None
-  new_message: genai_types.Content | None = None
-  state_delta: dict[str, Any] | None = None
-  run_config: RunConfig | None = None
+    user_id: str | None = None
+    session_id: str | None = None
+    invocation_id: str | None = None
+    new_message: genai_types.Content | None = None
+    state_delta: dict[str, Any] | None = None
+    run_config: RunConfig | None = None
 
 
 A2ARequestToAgentRunRequestConverter = Callable[
@@ -65,16 +65,12 @@ Returns:
 
 
 def _get_user_id(request: RequestContext) -> str:
-  # Get user from call context if available (auth is enabled on a2a server)
-  if (
-      request.call_context
-      and request.call_context.user
-      and request.call_context.user.user_name
-  ):
-    return request.call_context.user.user_name
+    # Get user from call context if available (auth is enabled on a2a server)
+    if request.call_context and request.call_context.user and request.call_context.user.user_name:
+        return request.call_context.user.user_name
 
-  # Get user from context id
-  return f'A2A_USER_{request.context_id}'
+    # Get user from context id
+    return f"A2A_USER_{request.context_id}"
 
 
 @a2a_experimental
@@ -82,39 +78,39 @@ def convert_a2a_request_to_agent_run_request(
     request: RequestContext,
     part_converter: A2APartToGenAIPartConverter = convert_a2a_part_to_genai_part,
 ) -> AgentRunRequest:
-  """Converts an A2A RequestContext to an AgentRunRequest model.
+    """Converts an A2A RequestContext to an AgentRunRequest model.
 
-  Args:
-    request: The incoming request context from the A2A server.
-    part_converter: A function to convert A2A content parts to GenAI parts.
+    Args:
+      request: The incoming request context from the A2A server.
+      part_converter: A function to convert A2A content parts to GenAI parts.
 
-  Returns:
-    A AgentRunRequest object ready to be used as arguments for the ADK runner.
+    Returns:
+      A AgentRunRequest object ready to be used as arguments for the ADK runner.
 
-  Raises:
-    ValueError: If the request message is None.
-  """
+    Raises:
+      ValueError: If the request message is None.
+    """
 
-  if not request.message:
-    raise ValueError('Request message cannot be None')
+    if not request.message:
+        raise ValueError("Request message cannot be None")
 
-  custom_metadata = {}
-  if request.metadata:
-    custom_metadata['a2a_metadata'] = request.metadata
+    custom_metadata = {}
+    if request.metadata:
+        custom_metadata["a2a_metadata"] = request.metadata
 
-  output_parts = []
-  for a2a_part in request.message.parts:
-    genai_parts = part_converter(a2a_part)
-    if not isinstance(genai_parts, list):
-      genai_parts = [genai_parts] if genai_parts else []
-    output_parts.extend(genai_parts)
+    output_parts = []
+    for a2a_part in request.message.parts:
+        genai_parts = part_converter(a2a_part)
+        if not isinstance(genai_parts, list):
+            genai_parts = [genai_parts] if genai_parts else []
+        output_parts.extend(genai_parts)
 
-  return AgentRunRequest(
-      user_id=_get_user_id(request),
-      session_id=request.context_id,
-      new_message=genai_types.Content(
-          role='user',
-          parts=output_parts,
-      ),
-      run_config=RunConfig(custom_metadata=custom_metadata),
-  )
+    return AgentRunRequest(
+        user_id=_get_user_id(request),
+        session_id=request.context_id,
+        new_message=genai_types.Content(
+            role="user",
+            parts=output_parts,
+        ),
+        run_config=RunConfig(custom_metadata=custom_metadata),
+    )

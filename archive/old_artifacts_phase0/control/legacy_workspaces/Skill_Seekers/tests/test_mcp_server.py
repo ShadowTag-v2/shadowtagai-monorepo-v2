@@ -20,9 +20,10 @@ from unittest.mock import MagicMock, patch
 # This avoids our local mcp/ directory being in the import path
 _original_dir = os.getcwd()
 try:
-    os.chdir('/tmp')  # Change away from project directory
+    os.chdir("/tmp")  # Change away from project directory
     from mcp.server import Server
     from mcp.types import TextContent, Tool
+
     MCP_AVAILABLE = True
 except ImportError:
     MCP_AVAILABLE = False
@@ -50,11 +51,13 @@ class TestMCPServerInitialization(unittest.TestCase):
     def test_server_import(self):
         """Test that server module can be imported"""
         from mcp import server as mcp_server_module
+
         self.assertIsNotNone(mcp_server_module)
 
     def test_server_initialization(self):
         """Test server initializes correctly"""
         import mcp.server
+
         app = mcp.server.Server("test-skill-seeker")
         self.assertEqual(app.name, "test-skill-seeker")
 
@@ -72,14 +75,7 @@ class TestListTools(unittest.IsolatedAsyncioTestCase):
 
         # Check all expected tools are present
         tool_names = [tool.name for tool in tools]
-        expected_tools = [
-            "generate_config",
-            "estimate_pages",
-            "scrape_docs",
-            "package_skill",
-            "list_configs",
-            "validate_config"
-        ]
+        expected_tools = ["generate_config", "estimate_pages", "scrape_docs", "package_skill", "list_configs", "validate_config"]
 
         for expected in expected_tools:
             self.assertIn(expected, tool_names, f"Missing tool: {expected}")
@@ -116,11 +112,7 @@ class TestGenerateConfigTool(unittest.IsolatedAsyncioTestCase):
 
     async def test_generate_config_basic(self):
         """Test basic config generation"""
-        args = {
-            "name": "test-framework",
-            "url": "https://test-framework.dev/",
-            "description": "Test framework skill"
-        }
+        args = {"name": "test-framework", "url": "https://test-framework.dev/", "description": "Test framework skill"}
 
         result = await skill_seeker_server.generate_config_tool(args)
 
@@ -142,13 +134,7 @@ class TestGenerateConfigTool(unittest.IsolatedAsyncioTestCase):
 
     async def test_generate_config_with_options(self):
         """Test config generation with custom options"""
-        args = {
-            "name": "custom-framework",
-            "url": "https://custom.dev/",
-            "description": "Custom skill",
-            "max_pages": 200,
-            "rate_limit": 1.0
-        }
+        args = {"name": "custom-framework", "url": "https://custom.dev/", "description": "Custom skill", "max_pages": 200, "rate_limit": 1.0}
 
         await skill_seeker_server.generate_config_tool(args)
 
@@ -161,11 +147,7 @@ class TestGenerateConfigTool(unittest.IsolatedAsyncioTestCase):
 
     async def test_generate_config_defaults(self):
         """Test that default values are applied correctly"""
-        args = {
-            "name": "default-test",
-            "url": "https://test.dev/",
-            "description": "Test defaults"
-        }
+        args = {"name": "default-test", "url": "https://test.dev/", "description": "Test defaults"}
 
         await skill_seeker_server.generate_config_tool(args)
 
@@ -192,15 +174,11 @@ class TestEstimatePagesTool(unittest.IsolatedAsyncioTestCase):
         config_data = {
             "name": "test",
             "base_url": "https://example.com/",
-            "selectors": {
-                "main_content": "article",
-                "title": "h1",
-                "code_blocks": "pre"
-            },
+            "selectors": {"main_content": "article", "title": "h1", "code_blocks": "pre"},
             "rate_limit": 0.5,
-            "max_pages": 50
+            "max_pages": 50,
         }
-        with open(self.config_path, 'w') as f:
+        with open(self.config_path, "w") as f:
             json.dump(config_data, f)
 
     async def asyncTearDown(self):
@@ -208,16 +186,14 @@ class TestEstimatePagesTool(unittest.IsolatedAsyncioTestCase):
         os.chdir(self.original_cwd)
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    @patch('skill_seekers.mcp.server.run_subprocess_with_streaming')
+    @patch("skill_seekers.mcp.server.run_subprocess_with_streaming")
     async def test_estimate_pages_success(self, mock_streaming):
         """Test successful page estimation"""
         # Mock successful subprocess run with streaming
         # Returns (stdout, stderr, returncode)
         mock_streaming.return_value = ("Estimated 50 pages", "", 0)
 
-        args = {
-            "config_path": str(self.config_path)
-        }
+        args = {"config_path": str(self.config_path)}
 
         result = await skill_seeker_server.estimate_pages_tool(args)
 
@@ -227,16 +203,13 @@ class TestEstimatePagesTool(unittest.IsolatedAsyncioTestCase):
         # Should also have progress message
         self.assertIn("Estimating page count", result[0].text)
 
-    @patch('skill_seekers.mcp.server.run_subprocess_with_streaming')
+    @patch("skill_seekers.mcp.server.run_subprocess_with_streaming")
     async def test_estimate_pages_with_max_discovery(self, mock_streaming):
         """Test page estimation with custom max_discovery"""
         # Mock successful subprocess run with streaming
         mock_streaming.return_value = ("Estimated 100 pages", "", 0)
 
-        args = {
-            "config_path": str(self.config_path),
-            "max_discovery": 500
-        }
+        args = {"config_path": str(self.config_path), "max_discovery": 500}
 
         await skill_seeker_server.estimate_pages_tool(args)
 
@@ -246,15 +219,13 @@ class TestEstimatePagesTool(unittest.IsolatedAsyncioTestCase):
         self.assertIn("--max-discovery", call_args)
         self.assertIn("500", call_args)
 
-    @patch('skill_seekers.mcp.server.run_subprocess_with_streaming')
+    @patch("skill_seekers.mcp.server.run_subprocess_with_streaming")
     async def test_estimate_pages_error(self, mock_streaming):
         """Test error handling in page estimation"""
         # Mock failed subprocess run with streaming
         mock_streaming.return_value = ("", "Config file not found", 1)
 
-        args = {
-            "config_path": "nonexistent.json"
-        }
+        args = {"config_path": "nonexistent.json"}
 
         result = await skill_seeker_server.estimate_pages_tool(args)
 
@@ -277,13 +248,9 @@ class TestScrapeDocsTool(unittest.IsolatedAsyncioTestCase):
         config_data = {
             "name": "test",
             "base_url": "https://example.com/",
-            "selectors": {
-                "main_content": "article",
-                "title": "h1",
-                "code_blocks": "pre"
-            }
+            "selectors": {"main_content": "article", "title": "h1", "code_blocks": "pre"},
         }
-        with open(self.config_path, 'w') as f:
+        with open(self.config_path, "w") as f:
             json.dump(config_data, f)
 
     async def asyncTearDown(self):
@@ -291,31 +258,26 @@ class TestScrapeDocsTool(unittest.IsolatedAsyncioTestCase):
         os.chdir(self.original_cwd)
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    @patch('skill_seekers.mcp.server.run_subprocess_with_streaming')
+    @patch("skill_seekers.mcp.server.run_subprocess_with_streaming")
     async def test_scrape_docs_basic(self, mock_streaming):
         """Test basic documentation scraping"""
         # Mock successful subprocess run with streaming
         mock_streaming.return_value = ("Scraping completed successfully", "", 0)
 
-        args = {
-            "config_path": str(self.config_path)
-        }
+        args = {"config_path": str(self.config_path)}
 
         result = await skill_seeker_server.scrape_docs_tool(args)
 
         self.assertIsInstance(result, list)
         self.assertIn("success", result[0].text.lower())
 
-    @patch('skill_seekers.mcp.server.run_subprocess_with_streaming')
+    @patch("skill_seekers.mcp.server.run_subprocess_with_streaming")
     async def test_scrape_docs_with_skip_scrape(self, mock_streaming):
         """Test scraping with skip_scrape flag"""
         # Mock successful subprocess run with streaming
         mock_streaming.return_value = ("Using cached data", "", 0)
 
-        args = {
-            "config_path": str(self.config_path),
-            "skip_scrape": True
-        }
+        args = {"config_path": str(self.config_path), "skip_scrape": True}
 
         await skill_seeker_server.scrape_docs_tool(args)
 
@@ -323,32 +285,26 @@ class TestScrapeDocsTool(unittest.IsolatedAsyncioTestCase):
         call_args = mock_streaming.call_args[0][0]
         self.assertIn("--skip-scrape", call_args)
 
-    @patch('skill_seekers.mcp.server.run_subprocess_with_streaming')
+    @patch("skill_seekers.mcp.server.run_subprocess_with_streaming")
     async def test_scrape_docs_with_dry_run(self, mock_streaming):
         """Test scraping with dry_run flag"""
         # Mock successful subprocess run with streaming
         mock_streaming.return_value = ("Dry run completed", "", 0)
 
-        args = {
-            "config_path": str(self.config_path),
-            "dry_run": True
-        }
+        args = {"config_path": str(self.config_path), "dry_run": True}
 
         await skill_seeker_server.scrape_docs_tool(args)
 
         call_args = mock_streaming.call_args[0][0]
         self.assertIn("--dry-run", call_args)
 
-    @patch('skill_seekers.mcp.server.run_subprocess_with_streaming')
+    @patch("skill_seekers.mcp.server.run_subprocess_with_streaming")
     async def test_scrape_docs_with_enhance_local(self, mock_streaming):
         """Test scraping with local enhancement"""
         # Mock successful subprocess run with streaming
         mock_streaming.return_value = ("Scraping with enhancement", "", 0)
 
-        args = {
-            "config_path": str(self.config_path),
-            "enhance_local": True
-        }
+        args = {"config_path": str(self.config_path), "enhance_local": True}
 
         await skill_seeker_server.scrape_docs_tool(args)
 
@@ -378,7 +334,7 @@ class TestPackageSkillTool(unittest.IsolatedAsyncioTestCase):
         os.chdir(self.original_cwd)
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    @patch('subprocess.run')
+    @patch("subprocess.run")
     async def test_package_skill_success(self, mock_run):
         """Test successful skill packaging"""
         mock_result = MagicMock()
@@ -386,16 +342,14 @@ class TestPackageSkillTool(unittest.IsolatedAsyncioTestCase):
         mock_result.stdout = "Package created: test-skill.zip"
         mock_run.return_value = mock_result
 
-        args = {
-            "skill_dir": str(self.skill_dir)
-        }
+        args = {"skill_dir": str(self.skill_dir)}
 
         result = await skill_seeker_server.package_skill_tool(args)
 
         self.assertIsInstance(result, list)
         self.assertIn("test-skill", result[0].text)
 
-    @patch('subprocess.run')
+    @patch("subprocess.run")
     async def test_package_skill_error(self, mock_run):
         """Test error handling in skill packaging"""
         mock_result = MagicMock()
@@ -403,9 +357,7 @@ class TestPackageSkillTool(unittest.IsolatedAsyncioTestCase):
         mock_result.stderr = "Directory not found"
         mock_run.return_value = mock_result
 
-        args = {
-            "skill_dir": "nonexistent-dir"
-        }
+        args = {"skill_dir": "nonexistent-dir"}
 
         result = await skill_seeker_server.package_skill_tool(args)
 
@@ -426,21 +378,13 @@ class TestListConfigsTool(unittest.IsolatedAsyncioTestCase):
         os.makedirs("configs", exist_ok=True)
 
         configs = [
-            {
-                "name": "test1",
-                "description": "Test 1 skill",
-                "base_url": "https://test1.dev/"
-            },
-            {
-                "name": "test2",
-                "description": "Test 2 skill",
-                "base_url": "https://test2.dev/"
-            }
+            {"name": "test1", "description": "Test 1 skill", "base_url": "https://test1.dev/"},
+            {"name": "test2", "description": "Test 2 skill", "base_url": "https://test2.dev/"},
         ]
 
         for config in configs:
             path = Path(f"configs/{config['name']}.json")
-            with open(path, 'w') as f:
+            with open(path, "w") as f:
                 json.dump(config, f)
 
     async def asyncTearDown(self):
@@ -503,20 +447,14 @@ class TestValidateConfigTool(unittest.IsolatedAsyncioTestCase):
         valid_config = {
             "name": "valid-test",
             "base_url": "https://example.com/",
-            "selectors": {
-                "main_content": "article",
-                "title": "h1",
-                "code_blocks": "pre"
-            },
+            "selectors": {"main_content": "article", "title": "h1", "code_blocks": "pre"},
             "rate_limit": 0.5,
-            "max_pages": 100
+            "max_pages": 100,
         }
-        with open(config_path, 'w') as f:
+        with open(config_path, "w") as f:
             json.dump(valid_config, f)
 
-        args = {
-            "config_path": str(config_path)
-        }
+        args = {"config_path": str(config_path)}
 
         result = await skill_seeker_server.validate_config_tool(args)
 
@@ -532,14 +470,12 @@ class TestValidateConfigTool(unittest.IsolatedAsyncioTestCase):
             "description": "Missing name field",
             "sources": [
                 {"type": "invalid_type", "url": "https://example.com"}  # Invalid source type
-            ]
+            ],
         }
-        with open(config_path, 'w') as f:
+        with open(config_path, "w") as f:
             json.dump(invalid_config, f)
 
-        args = {
-            "config_path": str(config_path)
-        }
+        args = {"config_path": str(config_path)}
 
         result = await skill_seeker_server.validate_config_tool(args)
 
@@ -548,9 +484,7 @@ class TestValidateConfigTool(unittest.IsolatedAsyncioTestCase):
 
     async def test_validate_nonexistent_config(self):
         """Test validating a nonexistent config"""
-        args = {
-            "config_path": "configs/nonexistent.json"
-        }
+        args = {"config_path": "configs/nonexistent.json"}
 
         result = await skill_seeker_server.validate_config_tool(args)
 
@@ -589,18 +523,12 @@ class TestMCPServerIntegration(unittest.IsolatedAsyncioTestCase):
 
         try:
             # Step 1: Generate config using skill_seeker_server
-            generate_args = {
-                "name": "workflow-test",
-                "url": "https://workflow-test.dev/",
-                "description": "Workflow test skill"
-            }
+            generate_args = {"name": "workflow-test", "url": "https://workflow-test.dev/", "description": "Workflow test skill"}
             result1 = await skill_seeker_server.generate_config_tool(generate_args)
             self.assertIn("✅", result1[0].text)
 
             # Step 2: Validate config
-            validate_args = {
-                "config_path": "configs/workflow-test.json"
-            }
+            validate_args = {"config_path": "configs/workflow-test.json"}
             result2 = await skill_seeker_server.validate_config_tool(validate_args)
             self.assertIn("✅", result2[0].text)
 
@@ -613,5 +541,5 @@ class TestMCPServerIntegration(unittest.IsolatedAsyncioTestCase):
             shutil.rmtree(temp_dir, ignore_errors=True)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

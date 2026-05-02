@@ -19,8 +19,9 @@ import pytest
 _original_dir = os.getcwd()
 MCP_AVAILABLE = False
 try:
-    os.chdir('/tmp')  # Change away from project directory
+    os.chdir("/tmp")  # Change away from project directory
     from mcp.types import TextContent
+
     MCP_AVAILABLE = True
 except ImportError:
     pass
@@ -94,29 +95,17 @@ async def test_mcp_scrape_docs_detection():
         "name": "test_mcp_unified",
         "description": "Test unified via MCP",
         "merge_mode": "rule-based",
-        "sources": [
-            {
-                "type": "documentation",
-                "base_url": "https://example.com",
-                "extract_api": True,
-                "max_pages": 5
-            }
-        ]
+        "sources": [{"type": "documentation", "base_url": "https://example.com", "extract_api": True, "max_pages": 5}],
     }
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         json.dump(unified_config, f)
         unified_config_path = f.name
 
     # Create temporary legacy config
-    legacy_config = {
-        "name": "test_mcp_legacy",
-        "description": "Test legacy via MCP",
-        "base_url": "https://example.com",
-        "max_pages": 5
-    }
+    legacy_config = {"name": "test_mcp_legacy", "description": "Test legacy via MCP", "base_url": "https://example.com", "max_pages": 5}
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         json.dump(legacy_config, f)
         legacy_config_path = f.name
 
@@ -125,7 +114,7 @@ async def test_mcp_scrape_docs_detection():
         with open(unified_config_path) as f:
             config = json.load(f)
 
-        is_unified = 'sources' in config and isinstance(config['sources'], list)
+        is_unified = "sources" in config and isinstance(config["sources"], list)
         assert is_unified, "Should detect unified format"
         print("  ✅ Unified format detected correctly")
 
@@ -133,7 +122,7 @@ async def test_mcp_scrape_docs_detection():
         with open(legacy_config_path) as f:
             config = json.load(f)
 
-        is_unified = 'sources' in config and isinstance(config['sources'], list)
+        is_unified = "sources" in config and isinstance(config["sources"], list)
         assert not is_unified, "Should detect legacy format"
         print("  ✅ Legacy format detected correctly")
 
@@ -153,12 +142,10 @@ async def test_mcp_merge_mode_override():
         "name": "test_merge_override",
         "description": "Test merge mode override",
         "merge_mode": "rule-based",
-        "sources": [
-            {"type": "documentation", "base_url": "https://example.com"}
-        ]
+        "sources": [{"type": "documentation", "base_url": "https://example.com"}],
     }
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         json.dump(config, f)
         config_path = f.name
 
@@ -166,7 +153,7 @@ async def test_mcp_merge_mode_override():
         # Test that we can override merge_mode in args
         args = {
             "config_path": config_path,
-            "merge_mode": "claude-enhanced"  # Override
+            "merge_mode": "claude-enhanced",  # Override
         }
 
         # Check that args has merge_mode
@@ -199,9 +186,10 @@ async def run_all_tests():
     except Exception as e:
         print(f"\n❌ Unexpected error: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(run_all_tests())

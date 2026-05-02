@@ -96,10 +96,12 @@ class HubSpotBongo(BaseBongo):
                 r = await client.patch(
                     f"/crm/v3/objects/contacts/{ent['id']}",
                     headers=self._hdrs(),
-                    json={"properties": {
-                        "phone": "+1-555-0100",
-                        "company": f"Monke QA Updated [{token}]"  # Preserve token
-                    }},
+                    json={
+                        "properties": {
+                            "phone": "+1-555-0100",
+                            "company": f"Monke QA Updated [{token}]",  # Preserve token
+                        }
+                    },
                 )
                 r.raise_for_status()
                 updated.append({**ent, "updated": True})
@@ -115,9 +117,7 @@ class HubSpotBongo(BaseBongo):
             for ent in entities:
                 try:
                     await self._pace()
-                    r = await client.delete(
-                        f"/crm/v3/objects/contacts/{ent['id']}", headers=self._hdrs()
-                    )
+                    r = await client.delete(f"/crm/v3/objects/contacts/{ent['id']}", headers=self._hdrs())
                     if r.status_code in (200, 204):
                         deleted.append(ent["id"])
                     else:
@@ -143,10 +143,7 @@ class HubSpotBongo(BaseBongo):
             # Search for any remaining monke test contacts
             await self._cleanup_orphaned_test_contacts(cleanup_stats)
 
-            self.logger.info(
-                f"🧹 Cleanup completed: {cleanup_stats['contacts_deleted']} contacts deleted, "
-                f"{cleanup_stats['errors']} errors"
-            )
+            self.logger.info(f"🧹 Cleanup completed: {cleanup_stats['contacts_deleted']} contacts deleted, {cleanup_stats['errors']} errors")
         except Exception as e:
             self.logger.error(f"❌ Error during comprehensive cleanup: {e}")
 
@@ -155,9 +152,7 @@ class HubSpotBongo(BaseBongo):
         try:
             async with httpx.AsyncClient(base_url=HUBSPOT_API, timeout=30) as client:
                 # Search for contacts with test patterns in name or email
-                r = await client.get(
-                    "/crm/v3/objects/contacts", headers=self._hdrs(), params={"limit": 100}
-                )
+                r = await client.get("/crm/v3/objects/contacts", headers=self._hdrs(), params={"limit": 100})
 
                 if r.status_code == 200:
                     contacts = r.json().get("results", [])
@@ -178,9 +173,7 @@ class HubSpotBongo(BaseBongo):
                             test_contacts.append(contact)
 
                     if test_contacts:
-                        self.logger.info(
-                            f"🔍 Found {len(test_contacts)} potential test contacts to clean"
-                        )
+                        self.logger.info(f"🔍 Found {len(test_contacts)} potential test contacts to clean")
                         for contact in test_contacts:
                             try:
                                 await self._pace()
@@ -191,17 +184,12 @@ class HubSpotBongo(BaseBongo):
                                 if del_r.status_code in (204, 202):
                                     stats["contacts_deleted"] += 1
                                     props = contact.get("properties", {})
-                                    self.logger.info(
-                                        f"✅ Deleted orphaned contact: "
-                                        f"{props.get('email', 'unknown')}"
-                                    )
+                                    self.logger.info(f"✅ Deleted orphaned contact: {props.get('email', 'unknown')}")
                                 else:
                                     stats["errors"] += 1
                             except Exception as e:
                                 stats["errors"] += 1
-                                self.logger.warning(
-                                    f"⚠️ Failed to delete contact {contact['id']}: {e}"
-                                )
+                                self.logger.warning(f"⚠️ Failed to delete contact {contact['id']}: {e}")
         except Exception as e:
             self.logger.warning(f"⚠️ Could not search for orphaned contacts: {e}")
 

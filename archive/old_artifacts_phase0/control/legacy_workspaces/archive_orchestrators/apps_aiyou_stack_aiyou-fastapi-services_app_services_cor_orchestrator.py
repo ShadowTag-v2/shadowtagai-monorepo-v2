@@ -121,9 +121,7 @@ class SessionManager:
         if session_id in self._sessions:
             self._sessions[session_id]["last_break_reminder"] = datetime.utcnow()
 
-    def should_send_break_reminder(
-        self, session_id: str, user_age: UserAgeCategory
-    ) -> tuple[bool, str | None]:
+    def should_send_break_reminder(self, session_id: str, user_age: UserAgeCategory) -> tuple[bool, str | None]:
         """Check if break reminder should be sent"""
         session = self._sessions.get(session_id)
         if not session:
@@ -248,9 +246,7 @@ class AttestationGenerator:
         )
 
         # Generate signature (in production, use ShadowTag)
-        signature_data = (
-            f"{attestation.attestation_id}:{content_hash}:{attestation.issued_at.isoformat()}"
-        )
+        signature_data = f"{attestation.attestation_id}:{content_hash}:{attestation.issued_at.isoformat()}"
         attestation.signature = hashlib.sha256(signature_data.encode()).hexdigest()[:32]
 
         return attestation
@@ -287,9 +283,7 @@ class CorOrchestrator:
         # Session and audit management
         self.session_manager = SessionManager(ttl_hours=self.config.session_ttl_hours)
         self.audit_manager = AuditTrailManager(retention_days=self.config.audit_retention_days)
-        self.attestation_generator = AttestationGenerator(
-            validity_hours=self.config.attestation_validity_hours
-        )
+        self.attestation_generator = AttestationGenerator(validity_hours=self.config.attestation_validity_hours)
 
         # Webhook and ShadowTag integration
         self.crisis_webhook = get_crisis_webhook()
@@ -364,9 +358,7 @@ class CorOrchestrator:
                 stage="NS",
                 action="detect",
                 input_hash=content_hash,
-                output_hash=hashlib.sha256(str(ns_output.overall_risk_score).encode()).hexdigest()[
-                    :16
-                ],
+                output_hash=hashlib.sha256(str(ns_output.overall_risk_score).encode()).hexdigest()[:16],
                 latency_ms=ns_latency,
                 metadata={"content_id": request.content_id or content_hash},
             )
@@ -388,9 +380,7 @@ class CorOrchestrator:
             self.audit_manager.log_entry(
                 stage="JR",
                 action="classify",
-                input_hash=hashlib.sha256(str(ns_output.overall_risk_score).encode()).hexdigest()[
-                    :16
-                ],
+                input_hash=hashlib.sha256(str(ns_output.overall_risk_score).encode()).hexdigest()[:16],
                 output_hash=hashlib.sha256(str(jr_output.go_decision).encode()).hexdigest()[:16],
                 latency_ms=jr_latency,
                 metadata={"content_id": request.content_id or content_hash},
@@ -402,9 +392,7 @@ class CorOrchestrator:
         break_reminder_due = False
         break_reminder_text = None
         if request.session_id:
-            break_reminder_due, break_reminder_text = (
-                self.session_manager.should_send_break_reminder(request.session_id, user_age)
-            )
+            break_reminder_due, break_reminder_text = self.session_manager.should_send_break_reminder(request.session_id, user_age)
             if break_reminder_due:
                 self.session_manager.record_break_reminder(request.session_id)
 
@@ -413,10 +401,7 @@ class CorOrchestrator:
         crisis_resources = []
         if self_harm_detected:
             self._stats["crisis_responses"] += 1
-            crisis_resources = [
-                CRISIS_RESOURCES[k]["name"]
-                for k in ["988_LIFELINE", "CRISIS_TEXT", "TREVOR_PROJECT"]
-            ]
+            crisis_resources = [CRISIS_RESOURCES[k]["name"] for k in ["988_LIFELINE", "CRISIS_TEXT", "TREVOR_PROJECT"]]
 
             # Send crisis alert webhook (async, non-blocking)
             max_confidence = max(s.confidence for s in ns_output.self_harm_signals)
@@ -430,17 +415,13 @@ class CorOrchestrator:
             )
 
         # Determine disclosure text
-        disclosure_required = (
-            is_conversation_start or ComplianceAction.DISCLOSE in jr_output.required_actions
-        )
+        disclosure_required = is_conversation_start or ComplianceAction.DISCLOSE in jr_output.required_actions
         disclosure_text = "I am an AI assistant. I am not a human." if disclosure_required else ""
 
         # Build action details
         action_details = {}
         if self_harm_detected:
-            action_details["crisis_response"] = (
-                ca_comprehensive_compliance.generate_crisis_response()
-            )
+            action_details["crisis_response"] = ca_comprehensive_compliance.generate_crisis_response()
         if break_reminder_due:
             action_details["break_reminder"] = break_reminder_text
 
@@ -510,9 +491,7 @@ class CorOrchestrator:
 
         # Update average latency
         n = self._stats["total_assessments"]
-        self._stats["avg_latency_ms"] = (
-            self._stats["avg_latency_ms"] * (n - 1) + total_latency
-        ) / n
+        self._stats["avg_latency_ms"] = (self._stats["avg_latency_ms"] * (n - 1) + total_latency) / n
 
         return result
 

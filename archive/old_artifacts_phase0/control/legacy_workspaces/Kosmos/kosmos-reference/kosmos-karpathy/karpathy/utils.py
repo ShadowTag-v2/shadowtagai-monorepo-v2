@@ -20,7 +20,7 @@ def download_scientific_skills(
     target_dir: str = "sandbox/.claude/skills",
     github_repo: str = "K-Dense-AI/claude-scientific-skills",
     source_path: str = "scientific-skills",
-    branch: str = "main"
+    branch: str = "main",
 ) -> None:
     """
     Download all directories from the scientific-skills folder in the GitHub repository
@@ -43,12 +43,7 @@ def download_scientific_skills(
         try:
             # Clone the repository with depth 1 for faster download
             print("Cloning Claude Scientific Skills repository (this may take a moment)...")
-            subprocess.run(
-                ["git", "clone", "--depth", "1", "--branch", branch, repo_url, str(temp_path)],
-                check=True,
-                capture_output=True,
-                text=True
-            )
+            subprocess.run(["git", "clone", "--depth", "1", "--branch", branch, repo_url, str(temp_path)], check=True, capture_output=True, text=True)
 
             # Path to the scientific-skills folder in the cloned repo
             source_dir = temp_path / source_path
@@ -82,10 +77,8 @@ def download_scientific_skills(
             print(f"Error: {e}")
             raise
 
-def setup_uv_environment(
-    sandbox_path: Path,
-    ml_packages: list[str] | None = None
-) -> None:
+
+def setup_uv_environment(sandbox_path: Path, ml_packages: list[str] | None = None) -> None:
     """
     Create a uv virtual environment and install machine learning packages.
 
@@ -116,12 +109,7 @@ def setup_uv_environment(
 
     try:
         # Create uv environment
-        subprocess.run(
-            ["uv", "venv", str(venv_path)],
-            check=True,
-            capture_output=True,
-            text=True
-        )
+        subprocess.run(["uv", "venv", str(venv_path)], check=True, capture_output=True, text=True)
         print(f"  [+] Virtual environment created at {venv_path}")
 
         # Install machine learning packages
@@ -133,15 +121,9 @@ def setup_uv_environment(
         print(f"  Installing: {', '.join(ml_packages)}")
         print("  (This may take a few minutes...)")
 
-        subprocess.run(
-            install_cmd,
-            check=True,
-            capture_output=True,
-            text=True
-        )
+        subprocess.run(install_cmd, check=True, capture_output=True, text=True)
 
         print("  [+] All packages installed successfully")
-
 
         print(f"\nVirtual environment ready at {venv_path.absolute()}")
 

@@ -167,9 +167,7 @@ class TestDocumentDirectoryLoading:
         image_extensions = [".png"]
         max_image_size = 1024
 
-        documents = _load_documents_from_directory(
-            tmp_path, text_extensions, image_extensions, max_image_size
-        )
+        documents = _load_documents_from_directory(tmp_path, text_extensions, image_extensions, max_image_size)
 
         # Should have 3 files (script.py, data.json, scripts/helper.py, image.png)
         # SKILL.md should be excluded

@@ -2,6 +2,7 @@
 Adtech Compliance Engine
 Implements VAST 4.x, OM SDK, Privacy Sandbox verification
 """
+
 import logging
 import re
 
@@ -56,32 +57,28 @@ class AdtechEngine:
             version_detected = request.version
 
         # Check for required elements
-        required_elements = ['<Ad>', '<InLine>', '<Creatives>', '<Creative>']
+        required_elements = ["<Ad>", "<InLine>", "<Creatives>", "<Creative>"]
         for element in required_elements:
             if element not in request.vast_xml:
                 errors.append(f"Required element {element} not found")
 
         # Check for viewability tracking
-        if '<Impression>' in request.vast_xml:
-            tracking_events.append('impression')
-        if '<Start>' in request.vast_xml:
-            tracking_events.append('start')
-        if '<Complete>' in request.vast_xml:
-            tracking_events.append('complete')
+        if "<Impression>" in request.vast_xml:
+            tracking_events.append("impression")
+        if "<Start>" in request.vast_xml:
+            tracking_events.append("start")
+        if "<Complete>" in request.vast_xml:
+            tracking_events.append("complete")
 
-        viewability_compliant = (
-            'impression' in tracking_events and
-            'start' in tracking_events and
-            'complete' in tracking_events
-        )
+        viewability_compliant = "impression" in tracking_events and "start" in tracking_events and "complete" in tracking_events
 
         if not viewability_compliant:
             warnings.append("Missing recommended viewability tracking events")
 
         # Detect ad format
-        if '<Linear>' in request.vast_xml:
+        if "<Linear>" in request.vast_xml:
             ad_format = AdFormat.LINEAR
-        elif '<NonLinearAds>' in request.vast_xml:
+        elif "<NonLinearAds>" in request.vast_xml:
             ad_format = AdFormat.NON_LINEAR
         else:
             ad_format = None
@@ -89,7 +86,7 @@ class AdtechEngine:
 
         # Duration detection
         duration = None
-        duration_match = re.search(r'<Duration>(\d{2}):(\d{2}):(\d{2})</Duration>', request.vast_xml)
+        duration_match = re.search(r"<Duration>(\d{2}):(\d{2}):(\d{2})</Duration>", request.vast_xml)
         if duration_match:
             hours, mins, secs = map(int, duration_match.groups())
             duration = hours * 3600 + mins * 60 + secs
@@ -104,7 +101,7 @@ class AdtechEngine:
             ad_format=ad_format,
             duration=duration,
             tracking_events=tracking_events,
-            viewability_compliant=viewability_compliant
+            viewability_compliant=viewability_compliant,
         )
 
     async def verify_omsdk(self, request: OMSDKVerificationRequest) -> OMSDKVerificationResponse:
@@ -131,12 +128,10 @@ class AdtechEngine:
             audible=audible,
             player_state=player_state,
             creative_type=creative_type,
-            errors=errors
+            errors=errors,
         )
 
-    async def check_privacy_sandbox(
-        self, request: PrivacySandboxComplianceRequest
-    ) -> PrivacySandboxComplianceResponse:
+    async def check_privacy_sandbox(self, request: PrivacySandboxComplianceRequest) -> PrivacySandboxComplianceResponse:
         """Check Privacy Sandbox compliance"""
         logger.info(f"Checking Privacy Sandbox compliance at IQ {self.persona_iq}")
 
@@ -173,11 +168,7 @@ class AdtechEngine:
         topics_configured = platform == "android" and PrivacySandboxAPI.TOPICS in request.apis_used
 
         # Determine compliance
-        compliant = (
-            request.user_consent and
-            not request.third_party_cookies and
-            any(apis_validated.values())
-        )
+        compliant = request.user_consent and not request.third_party_cookies and any(apis_validated.values())
 
         migration_required = request.third_party_cookies
 
@@ -188,7 +179,7 @@ class AdtechEngine:
             warnings=warnings,
             migration_required=migration_required,
             skan_configured=skan_configured,
-            topics_configured=topics_configured
+            topics_configured=topics_configured,
         )
 
     async def check_brand_safety(self, request: BrandSafetyCheck) -> BrandSafetyResponse:
@@ -196,13 +187,7 @@ class AdtechEngine:
         logger.info(f"Checking brand safety at IQ {self.persona_iq}")
 
         # Define blocked categories
-        blocked_categories_list = [
-            "adult_content",
-            "violence",
-            "hate_speech",
-            "illegal_content",
-            "misinformation"
-        ]
+        blocked_categories_list = ["adult_content", "violence", "hate_speech", "illegal_content", "misinformation"]
 
         # Check content tags against blocked categories
         blocked = [cat for cat in request.category_tags if cat in blocked_categories_list]
@@ -233,9 +218,5 @@ class AdtechEngine:
             recommended_action = "block"
 
         return BrandSafetyResponse(
-            safe=safe,
-            safety_score=safety_score,
-            blocked_categories=blocked,
-            warnings=warnings,
-            recommended_action=recommended_action
+            safe=safe, safety_score=safety_score, blocked_categories=blocked, warnings=warnings, recommended_action=recommended_action
         )

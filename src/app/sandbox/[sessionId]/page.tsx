@@ -25,19 +25,28 @@
 
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 import { DiffView } from '@/components/diff-view/DiffView';
+import type {
+  CommitAction,
+  CommitResponse,
+  DiffFile,
+  DiffResponse,
+} from '@/components/diff-view/types';
 import { usePanopticonContext } from '@/components/telemetry/PanopticonProvider';
-import {
-  useSandboxWebSocket,
-  type StateChangeEvent,
-} from '@/hooks/useSandboxWebSocket';
-import type { CommitAction, CommitResponse, DiffFile, DiffResponse } from '@/components/diff-view/types';
+import { type StateChangeEvent, useSandboxWebSocket } from '@/hooks/useSandboxWebSocket';
 import styles from './sandbox-session.module.css';
 
 /** Session state machine — aligns with Python SandboxSession.lifecycle */
-type SessionPhase = 'hydrating' | 'loading' | 'reviewing' | 'committing' | 'committed' | 'rejected' | 'error';
+type SessionPhase =
+  | 'hydrating'
+  | 'loading'
+  | 'reviewing'
+  | 'committing'
+  | 'committed'
+  | 'rejected'
+  | 'error';
 
 interface SessionMeta {
   sessionId: string;
@@ -266,10 +275,7 @@ export default function SandboxSessionPage() {
           <div className={styles.errorIcon}>⚠</div>
           <h2 className={styles.errorTitle}>Session Error</h2>
           <p className={styles.errorMessage}>{state.error}</p>
-          <button
-            className={styles.retryButton}
-            onClick={() => window.location.reload()}
-          >
+          <button className={styles.retryButton} onClick={() => window.location.reload()}>
             Retry
           </button>
         </div>
@@ -284,8 +290,8 @@ export default function SandboxSessionPage() {
           <div className={styles.rejectedIcon}>✕</div>
           <h2 className={styles.rejectedTitle}>Session Rejected</h2>
           <p className={styles.rejectedMessage}>
-            This sandbox session has been rejected. Speculative changes were
-            discarded and will not be applied to the matter.
+            This sandbox session has been rejected. Speculative changes were discarded and will not
+            be applied to the matter.
           </p>
           <p className={styles.auditNote}>
             Session: <code>{sessionId.slice(0, 8)}…</code>

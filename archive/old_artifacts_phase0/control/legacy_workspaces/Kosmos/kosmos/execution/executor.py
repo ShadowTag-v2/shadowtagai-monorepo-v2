@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 # Optional sandbox import
 try:
     from kosmos.execution.sandbox import DockerSandbox, SandboxExecutionResult
+
     SANDBOX_AVAILABLE = True
 except ImportError:
     SANDBOX_AVAILABLE = False
@@ -27,6 +28,7 @@ except ImportError:
 # Optional R executor import
 try:
     from kosmos.execution.r_executor import RExecutionResult, RExecutor, is_r_code
+
     R_EXECUTOR_AVAILABLE = True
 except ImportError:
     R_EXECUTOR_AVAILABLE = False
@@ -46,7 +48,7 @@ class ExecutionResult:
         error_type: str | None = None,
         execution_time: float = 0.0,
         profile_result: Any | None = None,  # ProfileResult from kosmos.core.profiling
-        data_source: str | None = None  # 'file' or 'synthetic'
+        data_source: str | None = None,  # 'file' or 'synthetic'
     ):
         self.success = success
         self.return_value = return_value
@@ -61,23 +63,23 @@ class ExecutionResult:
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
         result = {
-            'success': self.success,
-            'return_value': self.return_value,
-            'stdout': self.stdout,
-            'stderr': self.stderr,
-            'error': self.error,
-            'error_type': self.error_type,
-            'execution_time': self.execution_time,
-            'data_source': self.data_source,
+            "success": self.success,
+            "return_value": self.return_value,
+            "stdout": self.stdout,
+            "stderr": self.stderr,
+            "error": self.error,
+            "error_type": self.error_type,
+            "execution_time": self.execution_time,
+            "data_source": self.data_source,
         }
 
         # Include profile data if available
         if self.profile_result:
             try:
-                result['profile_data'] = model_to_dict(self.profile_result)
+                result["profile_data"] = model_to_dict(self.profile_result)
             except Exception as e:
                 logger.debug("Failed to serialize profile data: %s", e)
-                result['profile_data'] = None
+                result["profile_data"] = None
 
         return result
 
@@ -103,7 +105,7 @@ class CodeExecutor:
         sandbox_config: dict[str, Any] | None = None,
         enable_profiling: bool = False,
         profiling_mode: str = "light",
-        test_determinism: bool = False
+        test_determinism: bool = False,
     ):
         """
         Initialize code executor.
@@ -142,12 +144,8 @@ class CodeExecutor:
         # Initialize R executor for R language support (Issue #69)
         self.r_executor = None
         if R_EXECUTOR_AVAILABLE:
-            r_timeout = self.sandbox_config.get('timeout', 300) if self.sandbox_config else 300
-            self.r_executor = RExecutor(
-                timeout=r_timeout,
-                use_docker=self.use_sandbox,
-                docker_image="kosmos-sandbox-r:latest"
-            )
+            r_timeout = self.sandbox_config.get("timeout", 300) if self.sandbox_config else 300
+            self.r_executor = RExecutor(timeout=r_timeout, use_docker=self.use_sandbox, docker_image="kosmos-sandbox-r:latest")
             logger.info("R executor initialized for R language support")
 
     def execute(
@@ -156,7 +154,7 @@ class CodeExecutor:
         local_vars: dict[str, Any] | None = None,
         retry_on_error: bool = False,
         llm_client: Any | None = None,
-        language: str | None = None
+        language: str | None = None,
     ) -> ExecutionResult:
         """
         Execute code and capture results with self-correcting retry (Issue #54).
@@ -179,10 +177,10 @@ class CodeExecutor:
                 detected_lang = self.r_executor.detect_language(code)
                 language = detected_lang
             else:
-                language = 'python'
+                language = "python"
 
         # Route to R executor for R code
-        if language == 'r':
+        if language == "r":
             return self._execute_r(code)
 
         # Python execution continues below
@@ -200,26 +198,22 @@ class CodeExecutor:
                 if result.success:
                     # Track successful repair if code was modified
                     if current_code != code and attempt > 1:
-                        self.retry_strategy.record_repair_attempt(
-                            result.error_type or "Unknown", True
-                        )
+                        self.retry_strategy.record_repair_attempt(result.error_type or "Unknown", True)
                     logger.info(f"Code executed successfully in {result.execution_time:.2f}s")
 
                     # Optional determinism check
                     if self.test_determinism:
                         try:
                             from kosmos.safety.reproducibility import ReproducibilityManager
+
                             mgr = ReproducibilityManager()
                             is_deterministic = mgr.test_determinism(
-                                experiment_function=lambda: self._execute_once(current_code, local_vars),
-                                seed=42, n_runs=2
+                                experiment_function=lambda: self._execute_once(current_code, local_vars), seed=42, n_runs=2
                             )
                             if not is_deterministic:
                                 logger.warning("Non-deterministic results detected")
                                 if result.return_value and isinstance(result.return_value, dict):
-                                    result.return_value.setdefault('warnings', []).append(
-                                        "Non-deterministic results detected"
-                                    )
+                                    result.return_value.setdefault("warnings", []).append("Non-deterministic results detected")
                         except Exception as det_err:
                             logger.debug(f"Determinism check failed (non-fatal): {det_err}")
 
@@ -236,7 +230,7 @@ class CodeExecutor:
                             error_type=error_type,
                             traceback_str=result.stderr or "",
                             attempt=attempt,
-                            llm_client=llm_client
+                            llm_client=llm_client,
                         )
 
                         if fixed_code and fixed_code != current_code:
@@ -268,7 +262,7 @@ class CodeExecutor:
                         error_type=error_type,
                         traceback_str=traceback.format_exc(),
                         attempt=attempt,
-                        llm_client=llm_client
+                        llm_client=llm_client,
                     )
 
                     if fixed_code and fixed_code != current_code:
@@ -278,17 +272,11 @@ class CodeExecutor:
                     delay = self.retry_strategy.get_delay(attempt)
                     time.sleep(delay)
                 else:
-                    return ExecutionResult(
-                        success=False,
-                        error=str(e),
-                        error_type=error_type
-                    )
+                    return ExecutionResult(success=False, error=str(e), error_type=error_type)
 
         # All retries failed
         return ExecutionResult(
-            success=False,
-            error=f"Failed after {self.max_retries} attempts. Last error: {last_error}",
-            error_type="MaxRetriesExceeded"
+            success=False, error=f"Failed after {self.max_retries} attempts. Last error: {last_error}", error_type="MaxRetriesExceeded"
         )
 
     def _execute_r(self, code: str) -> ExecutionResult:
@@ -302,11 +290,7 @@ class CodeExecutor:
             ExecutionResult converted from RExecutionResult
         """
         if not R_EXECUTOR_AVAILABLE or self.r_executor is None:
-            return ExecutionResult(
-                success=False,
-                error="R execution not available. Install R and the r_executor module.",
-                error_type="RNotAvailable"
-            )
+            return ExecutionResult(success=False, error="R execution not available. Install R and the r_executor module.", error_type="RNotAvailable")
 
         logger.info("Executing R code")
         r_result = self.r_executor.execute(code, capture_results=True)
@@ -319,15 +303,10 @@ class CodeExecutor:
             stderr=r_result.stderr,
             error=r_result.error,
             error_type=r_result.error_type,
-            execution_time=r_result.execution_time
+            execution_time=r_result.execution_time,
         )
 
-    def execute_r(
-        self,
-        code: str,
-        capture_results: bool = True,
-        output_dir: str | None = None
-    ) -> ExecutionResult:
+    def execute_r(self, code: str, capture_results: bool = True, output_dir: str | None = None) -> ExecutionResult:
         """
         Explicitly execute R code (Issue #69).
 
@@ -343,18 +322,10 @@ class CodeExecutor:
             ExecutionResult with R execution results
         """
         if not R_EXECUTOR_AVAILABLE or self.r_executor is None:
-            return ExecutionResult(
-                success=False,
-                error="R execution not available. Install R and the r_executor module.",
-                error_type="RNotAvailable"
-            )
+            return ExecutionResult(success=False, error="R execution not available. Install R and the r_executor module.", error_type="RNotAvailable")
 
         logger.info("Explicitly executing R code")
-        r_result = self.r_executor.execute(
-            code,
-            capture_results=capture_results,
-            output_dir=output_dir
-        )
+        r_result = self.r_executor.execute(code, capture_results=capture_results, output_dir=output_dir)
 
         # Convert RExecutionResult to ExecutionResult
         return ExecutionResult(
@@ -364,7 +335,7 @@ class CodeExecutor:
             stderr=r_result.stderr,
             error=r_result.error,
             error_type=r_result.error_type,
-            execution_time=r_result.execution_time
+            execution_time=r_result.execution_time,
         )
 
     def is_r_available(self) -> bool:
@@ -379,11 +350,7 @@ class CodeExecutor:
             return None
         return self.r_executor.get_r_version()
 
-    def _execute_once(
-        self,
-        code: str,
-        local_vars: dict[str, Any] | None = None
-    ) -> ExecutionResult:
+    def _execute_once(self, code: str, local_vars: dict[str, Any] | None = None) -> ExecutionResult:
         """Execute code once with output capture and optional profiling."""
 
         # Route to sandbox if enabled
@@ -396,6 +363,7 @@ class CodeExecutor:
         if self.enable_profiling:
             try:
                 from kosmos.core.profiling import ExecutionProfiler, ProfilingMode
+
                 mode = ProfilingMode(self.profiling_mode)
                 profiler = ExecutionProfiler(mode=mode)
             except Exception as e:
@@ -429,8 +397,8 @@ class CodeExecutor:
             execution_time = time.time() - start_time
 
             # Extract return value (look for 'results' variable)
-            return_value = exec_locals.get('results', exec_locals.get('result'))
-            data_source = exec_locals.get('_data_source')
+            return_value = exec_locals.get("results", exec_locals.get("result"))
+            data_source = exec_locals.get("_data_source")
 
             return ExecutionResult(
                 success=True,
@@ -465,23 +433,20 @@ class CodeExecutor:
                 error=str(e),
                 error_type=type(e).__name__,
                 execution_time=execution_time,
-                profile_result=profile_result
+                profile_result=profile_result,
             )
 
-    def _execute_in_sandbox(
-        self,
-        code: str,
-        local_vars: dict[str, Any] | None = None
-    ) -> ExecutionResult:
+    def _execute_in_sandbox(self, code: str, local_vars: dict[str, Any] | None = None) -> ExecutionResult:
         """Execute code in Docker sandbox."""
         logger.info("Executing code in Docker sandbox")
 
         # Prepare data files if data_path provided
         data_files = {}
-        if local_vars and 'data_path' in local_vars:
-            data_path = local_vars['data_path']
+        if local_vars and "data_path" in local_vars:
+            data_path = local_vars["data_path"]
             # Extract filename from path
             import os
+
             filename = os.path.basename(data_path)
             data_files[filename] = data_path
 
@@ -499,7 +464,7 @@ class CodeExecutor:
             stderr=sandbox_result.stderr,
             error=sandbox_result.error,
             error_type=sandbox_result.error_type,
-            execution_time=sandbox_result.execution_time
+            execution_time=sandbox_result.execution_time,
         )
 
     def _prepare_globals(self) -> dict[str, Any]:
@@ -508,16 +473,11 @@ class CodeExecutor:
         exec_globals = self.allowed_globals.copy()
 
         # Add standard builtins
-        exec_globals['__builtins__'] = __builtins__
+        exec_globals["__builtins__"] = __builtins__
 
         return exec_globals
 
-    def execute_with_data(
-        self,
-        code: str,
-        data_path: str,
-        retry_on_error: bool = False
-    ) -> ExecutionResult:
+    def execute_with_data(self, code: str, data_path: str, retry_on_error: bool = False) -> ExecutionResult:
         """
         Execute code with data file path provided.
 
@@ -538,7 +498,7 @@ class CodeExecutor:
         augmented_code = f"# Data path injected by executor\ndata_path = {repr(data_path)}\n\n{code}"
 
         # Also inject as local variable for safety
-        local_vars = {'data_path': data_path}
+        local_vars = {"data_path": data_path}
 
         return self.execute(augmented_code, local_vars, retry_on_error)
 
@@ -555,21 +515,31 @@ class CodeValidator:
 
     # Dangerous modules that should not be imported
     DANGEROUS_MODULES = [
-        'os', 'subprocess', 'sys', 'shutil', 'importlib',
-        'socket', 'urllib', 'requests', 'http',
-        '__import__', 'eval', 'exec', 'compile'
+        "os",
+        "subprocess",
+        "sys",
+        "shutil",
+        "importlib",
+        "socket",
+        "urllib",
+        "requests",
+        "http",
+        "__import__",
+        "eval",
+        "exec",
+        "compile",
     ]
 
     # Dangerous functions/operations
     DANGEROUS_PATTERNS = [
-        'open(',  # File operations (except specific allowed cases)
-        'eval(',
-        'exec(',
-        'compile(',
-        '__import__',
-        'globals(',
-        'locals(',
-        'vars(',
+        "open(",  # File operations (except specific allowed cases)
+        "eval(",
+        "exec(",
+        "compile(",
+        "__import__",
+        "globals(",
+        "locals(",
+        "vars(",
     ]
 
     @staticmethod
@@ -593,10 +563,11 @@ class CodeValidator:
         # Check syntax
         try:
             import ast
+
             ast.parse(code)
         except SyntaxError as e:
             errors.append(f"Syntax error: {e}")
-            return {'valid': False, 'errors': errors, 'warnings': warnings}
+            return {"valid": False, "errors": errors, "warnings": warnings}
 
         # Check for dangerous imports
         for module in CodeValidator.DANGEROUS_MODULES:
@@ -607,7 +578,7 @@ class CodeValidator:
         for pattern in CodeValidator.DANGEROUS_PATTERNS:
             if pattern in code:
                 # Special case: allow open() for reading if permitted
-                if pattern == 'open(' and allow_file_read:
+                if pattern == "open(" and allow_file_read:
                     # Check if it's read-only (contains "'r'" or no mode specified)
                     if "'w'" in code or "'a'" in code or "'x'" in code or "mode='w'" in code:
                         errors.append("Dangerous operation detected: write mode file operations")
@@ -617,21 +588,16 @@ class CodeValidator:
                     errors.append(f"Dangerous operation detected: {pattern}")
 
         # Check for network operations
-        network_keywords = ['socket', 'http', 'urllib', 'requests', 'api']
+        network_keywords = ["socket", "http", "urllib", "requests", "api"]
         for keyword in network_keywords:
             if keyword in code.lower():
                 warnings.append(f"Potential network operation detected: {keyword}")
 
         is_valid = len(errors) == 0
 
-        logger.info(f"Code validation: {'PASSED' if is_valid else 'FAILED'}, "
-                   f"{len(errors)} errors, {len(warnings)} warnings")
+        logger.info(f"Code validation: {'PASSED' if is_valid else 'FAILED'}, {len(errors)} errors, {len(warnings)} warnings")
 
-        return {
-            'valid': is_valid,
-            'errors': errors,
-            'warnings': warnings
-        }
+        return {"valid": is_valid, "errors": errors, "warnings": warnings}
 
 
 class RetryStrategy:
@@ -648,22 +614,22 @@ class RetryStrategy:
 
     # Common missing imports for auto-fix
     COMMON_IMPORTS = {
-        'pd': 'import pandas as pd',
-        'np': 'import numpy as np',
-        'plt': 'import matplotlib.pyplot as plt',
-        'sns': 'import seaborn as sns',
-        'os': 'import os',
-        'sys': 'import sys',
-        'json': 'import json',
-        're': 'import re',
-        'math': 'import math',
-        'datetime': 'from datetime import datetime',
-        'Path': 'from pathlib import Path',
-        'defaultdict': 'from collections import defaultdict',
-        'Counter': 'from collections import Counter',
-        'scipy': 'import scipy',
-        'stats': 'from scipy import stats',
-        'sklearn': 'import sklearn',
+        "pd": "import pandas as pd",
+        "np": "import numpy as np",
+        "plt": "import matplotlib.pyplot as plt",
+        "sns": "import seaborn as sns",
+        "os": "import os",
+        "sys": "import sys",
+        "json": "import json",
+        "re": "import re",
+        "math": "import math",
+        "datetime": "from datetime import datetime",
+        "Path": "from pathlib import Path",
+        "defaultdict": "from collections import defaultdict",
+        "Counter": "from collections import Counter",
+        "scipy": "import scipy",
+        "stats": "from scipy import stats",
+        "sklearn": "import sklearn",
     }
 
     def __init__(self, max_retries: int = 3, base_delay: float = 1.0):
@@ -678,11 +644,7 @@ class RetryStrategy:
         self.base_delay = base_delay
 
         # Repair statistics tracking (Issue #54)
-        self.repair_stats = {
-            "attempted": 0,
-            "successful": 0,
-            "by_error_type": {}
-        }
+        self.repair_stats = {"attempted": 0, "successful": 0, "by_error_type": {}}
 
     def should_retry(self, attempt: int, error_type: str) -> bool:
         """Determine if execution should be retried."""
@@ -692,9 +654,9 @@ class RetryStrategy:
         # Don't retry on certain errors that can't be fixed
         # Issue #51 fix: FileNotFoundError is terminal - use synthetic data instead
         non_retryable_errors = [
-            'SyntaxError',           # Requires code rewrite
-            'FileNotFoundError',     # Missing data is terminal - use synthetic data
-            'DataUnavailableError',  # Custom error for missing data
+            "SyntaxError",  # Requires code rewrite
+            "FileNotFoundError",  # Missing data is terminal - use synthetic data
+            "DataUnavailableError",  # Custom error for missing data
         ]
 
         return error_type not in non_retryable_errors
@@ -710,22 +672,13 @@ class RetryStrategy:
             self.repair_stats["successful"] += 1
 
         if error_type not in self.repair_stats["by_error_type"]:
-            self.repair_stats["by_error_type"][error_type] = {
-                "attempted": 0,
-                "successful": 0
-            }
+            self.repair_stats["by_error_type"][error_type] = {"attempted": 0, "successful": 0}
         self.repair_stats["by_error_type"][error_type]["attempted"] += 1
         if success:
             self.repair_stats["by_error_type"][error_type]["successful"] += 1
 
     def modify_code_for_retry(
-        self,
-        original_code: str,
-        error: str,
-        error_type: str,
-        traceback_str: str = "",
-        attempt: int = 1,
-        llm_client: Any | None = None
+        self, original_code: str, error: str, error_type: str, traceback_str: str = "", attempt: int = 1, llm_client: Any | None = None
     ) -> str | None:
         """
         Modify code based on error for retry (Issue #54 - Enhanced).
@@ -747,9 +700,7 @@ class RetryStrategy:
         # Try LLM-based repair first if available (only first 2 attempts)
         if llm_client and attempt <= 2:
             try:
-                fixed = self._repair_with_llm(
-                    original_code, error, traceback_str, llm_client
-                )
+                fixed = self._repair_with_llm(original_code, error, traceback_str, llm_client)
                 if fixed and fixed != original_code:
                     logger.info(f"LLM repair applied for {error_type}")
                     return fixed
@@ -757,49 +708,43 @@ class RetryStrategy:
                 logger.warning(f"LLM repair failed: {e}")
 
         # Pattern-based fixes for common error types
-        if 'KeyError' in error_type:
+        if "KeyError" in error_type:
             return self._fix_key_error(original_code, error)
 
-        elif 'FileNotFoundError' in error_type:
+        elif "FileNotFoundError" in error_type:
             return self._fix_file_not_found(original_code, error)
 
-        elif 'NameError' in error_type:
+        elif "NameError" in error_type:
             return self._fix_name_error(original_code, error)
 
-        elif 'TypeError' in error_type:
+        elif "TypeError" in error_type:
             return self._fix_type_error(original_code, error)
 
-        elif 'IndexError' in error_type:
+        elif "IndexError" in error_type:
             return self._fix_index_error(original_code, error)
 
-        elif 'AttributeError' in error_type:
+        elif "AttributeError" in error_type:
             return self._fix_attribute_error(original_code, error)
 
-        elif 'ValueError' in error_type:
+        elif "ValueError" in error_type:
             return self._fix_value_error(original_code, error)
 
-        elif 'ZeroDivisionError' in error_type:
+        elif "ZeroDivisionError" in error_type:
             return self._fix_zero_division(original_code, error)
 
-        elif 'ImportError' in error_type or 'ModuleNotFoundError' in error_type:
+        elif "ImportError" in error_type or "ModuleNotFoundError" in error_type:
             return self._fix_import_error(original_code, error)
 
-        elif 'PermissionError' in error_type:
+        elif "PermissionError" in error_type:
             return self._fix_permission_error(original_code, error)
 
-        elif 'MemoryError' in error_type:
+        elif "MemoryError" in error_type:
             return self._fix_memory_error(original_code, error)
 
         # No specific fix available
         return None
 
-    def _repair_with_llm(
-        self,
-        code: str,
-        error: str,
-        traceback_str: str,
-        llm_client: Any
-    ) -> str | None:
+    def _repair_with_llm(self, code: str, error: str, traceback_str: str, llm_client: Any) -> str | None:
         """Use LLM to analyze error and fix code."""
         prompt = f"""Fix the following Python code that produced an error.
 
@@ -862,13 +807,13 @@ except KeyError as e:
             None to indicate no fix possible - caller should handle differently
         """
         import re as regex_module
+
         # Try to extract the file path from error
         match = regex_module.search(r"'([^']+)'", error)
         file_path = match.group(1) if match else "unknown"
 
         logger.error(
-            f"FileNotFoundError is terminal - data file missing: {file_path}. "
-            "Code templates should use synthetic data generation (Issue #51)."
+            f"FileNotFoundError is terminal - data file missing: {file_path}. Code templates should use synthetic data generation (Issue #51)."
         )
 
         # Return None to indicate no fix possible - this is a terminal error
@@ -877,11 +822,12 @@ except KeyError as e:
     def _fix_name_error(self, code: str, error: str) -> str:
         """Fix NameError by adding missing imports or definitions."""
         import re as regex_module
+
         match = regex_module.search(r"name '(\w+)' is not defined", error)
         if match:
             name = match.group(1)
             if name in self.COMMON_IMPORTS:
-                return self.COMMON_IMPORTS[name] + '\n' + code
+                return self.COMMON_IMPORTS[name] + "\n" + code
 
         # Generic fix: wrap in try-except
         indented = self._indent(code, 4)
@@ -945,6 +891,7 @@ except ZeroDivisionError as e:
     def _fix_import_error(self, code: str, error: str) -> str:
         """Fix ImportError by providing fallback."""
         import re as regex_module
+
         match = regex_module.search(r"No module named '(\w+)'", error)
         module = match.group(1) if match else "unknown"
 
@@ -978,9 +925,9 @@ except MemoryError as e:
 
     def _indent(self, code: str, spaces: int) -> str:
         """Indent code by specified number of spaces."""
-        indent = ' ' * spaces
-        lines = code.split('\n')
-        return '\n'.join(indent + line if line.strip() else line for line in lines)
+        indent = " " * spaces
+        lines = code.split("\n")
+        return "\n".join(indent + line if line.strip() else line for line in lines)
 
 
 def execute_protocol_code(
@@ -989,7 +936,7 @@ def execute_protocol_code(
     max_retries: int = 2,
     validate_safety: bool = True,
     use_sandbox: bool = False,
-    sandbox_config: dict[str, Any] | None = None
+    sandbox_config: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
     Convenience function to execute protocol code with full pipeline.
@@ -1008,20 +955,16 @@ def execute_protocol_code(
     # Validate code if requested
     if validate_safety:
         validation = CodeValidator.validate(code, allow_file_read=True)
-        if not validation['valid']:
+        if not validation["valid"]:
             return {
-                'success': False,
-                'error': 'Code validation failed',
-                'validation_errors': validation['errors'],
-                'validation_warnings': validation['warnings']
+                "success": False,
+                "error": "Code validation failed",
+                "validation_errors": validation["errors"],
+                "validation_warnings": validation["warnings"],
             }
 
     # Execute code
-    executor = CodeExecutor(
-        max_retries=max_retries,
-        use_sandbox=use_sandbox,
-        sandbox_config=sandbox_config or {}
-    )
+    executor = CodeExecutor(max_retries=max_retries, use_sandbox=use_sandbox, sandbox_config=sandbox_config or {})
 
     if data_path:
         result = executor.execute_with_data(code, data_path, retry_on_error=True)
@@ -1031,6 +974,6 @@ def execute_protocol_code(
     # Convert to dict and add validation info
     result_dict = result.to_dict()
     if validate_safety:
-        result_dict['validation_warnings'] = validation.get('warnings', [])
+        result_dict["validation_warnings"] = validation.get("warnings", [])
 
     return result_dict

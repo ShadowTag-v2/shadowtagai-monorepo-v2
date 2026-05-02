@@ -38,25 +38,25 @@ from bioservices import UniProt
 
 # Common database code mappings
 DATABASE_CODES = {
-    'uniprot': 'UniProtKB_AC-ID',
-    'uniprotkb': 'UniProtKB_AC-ID',
-    'kegg': 'KEGG',
-    'geneid': 'GeneID',
-    'entrez': 'GeneID',
-    'ensembl': 'Ensembl',
-    'ensembl_protein': 'Ensembl_Protein',
-    'ensembl_transcript': 'Ensembl_Transcript',
-    'refseq': 'RefSeq_Protein',
-    'refseq_protein': 'RefSeq_Protein',
-    'pdb': 'PDB',
-    'hgnc': 'HGNC',
-    'mgi': 'MGI',
-    'go': 'GO',
-    'pfam': 'Pfam',
-    'interpro': 'InterPro',
-    'reactome': 'Reactome',
-    'string': 'STRING',
-    'biogrid': 'BioGRID'
+    "uniprot": "UniProtKB_AC-ID",
+    "uniprotkb": "UniProtKB_AC-ID",
+    "kegg": "KEGG",
+    "geneid": "GeneID",
+    "entrez": "GeneID",
+    "ensembl": "Ensembl",
+    "ensembl_protein": "Ensembl_Protein",
+    "ensembl_transcript": "Ensembl_Transcript",
+    "refseq": "RefSeq_Protein",
+    "refseq_protein": "RefSeq_Protein",
+    "pdb": "PDB",
+    "hgnc": "HGNC",
+    "mgi": "MGI",
+    "go": "GO",
+    "pfam": "Pfam",
+    "interpro": "InterPro",
+    "reactome": "Reactome",
+    "string": "STRING",
+    "biogrid": "BioGRID",
 }
 
 
@@ -80,10 +80,10 @@ def read_ids_from_file(filename):
     print(f"Reading identifiers from {filename}...")
 
     ids = []
-    with open(filename, 'r') as f:
+    with open(filename) as f:
         for line in f:
             line = line.strip()
-            if line and not line.startswith('#'):
+            if line and not line.startswith("#"):
                 ids.append(line)
 
     print(f"✓ Read {len(ids)} identifier(s)")
@@ -106,7 +106,7 @@ def batch_convert(ids, from_db, to_db, chunk_size=100, delay=0.5):
     total_chunks = (len(ids) + chunk_size - 1) // chunk_size
 
     for i in range(0, len(ids), chunk_size):
-        chunk = ids[i:i+chunk_size]
+        chunk = ids[i : i + chunk_size]
         chunk_num = (i // chunk_size) + 1
 
         query = ",".join(chunk)
@@ -165,11 +165,11 @@ def save_mapping_csv(mapping, output_file, from_db, to_db):
     """Save mapping results to CSV."""
     print(f"\nSaving results to {output_file}...")
 
-    with open(output_file, 'w', newline='') as f:
+    with open(output_file, "w", newline="") as f:
         writer = csv.writer(f)
 
         # Header
-        writer.writerow(['Source_ID', 'Source_DB', 'Target_IDs', 'Target_DB', 'Mapping_Status'])
+        writer.writerow(["Source_ID", "Source_DB", "Target_IDs", "Target_DB", "Mapping_Status"])
 
         # Data
         for source_id, target_ids in sorted(mapping.items()):
@@ -192,7 +192,7 @@ def save_failed_ids(failed_ids, output_file):
 
     print(f"\nSaving failed IDs to {output_file}...")
 
-    with open(output_file, 'w') as f:
+    with open(output_file, "w") as f:
         for id_ in failed_ids:
             f.write(f"{id_}\n")
 
@@ -201,9 +201,9 @@ def save_failed_ids(failed_ids, output_file):
 
 def print_mapping_summary(mapping, from_db, to_db):
     """Print summary of mapping results."""
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print("MAPPING SUMMARY")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
 
     total = len(mapping)
     mapped = len([v for v in mapping.values() if v])
@@ -212,8 +212,8 @@ def print_mapping_summary(mapping, from_db, to_db):
     print(f"\nSource database: {from_db}")
     print(f"Target database: {to_db}")
     print(f"\nTotal identifiers: {total}")
-    print(f"Successfully mapped: {mapped} ({mapped/total*100:.1f}%)")
-    print(f"Failed to map: {failed} ({failed/total*100:.1f}%)")
+    print(f"Successfully mapped: {mapped} ({mapped / total * 100:.1f}%)")
+    print(f"Failed to map: {failed} ({failed / total * 100:.1f}%)")
 
     # Show some examples
     if mapped > 0:
@@ -223,7 +223,7 @@ def print_mapping_summary(mapping, from_db, to_db):
             if target_ids:
                 target_str = ", ".join(target_ids[:3])
                 if len(target_ids) > 3:
-                    target_str += f" ... +{len(target_ids)-3} more"
+                    target_str += f" ... +{len(target_ids) - 3} more"
                 print(f"  {source_id} → {target_str}")
                 count += 1
                 if count >= 5:
@@ -235,7 +235,7 @@ def print_mapping_summary(mapping, from_db, to_db):
         print(f"\nMultiple target mappings: {len(multiple_mappings)} ID(s)")
         print("  (These source IDs map to multiple target IDs)")
 
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
 
 
 def list_common_databases():
@@ -270,23 +270,16 @@ Common database codes:
   RefSeq_Protein, PDB, HGNC, GO, Pfam, InterPro, Reactome
 
 Use --list-databases to see all supported aliases.
-        """
+        """,
     )
     parser.add_argument("input_file", help="Input file with IDs (one per line)")
-    parser.add_argument("--from", dest="from_db", required=True,
-                       help="Source database code")
-    parser.add_argument("--to", dest="to_db", required=True,
-                       help="Target database code")
-    parser.add_argument("-o", "--output", default=None,
-                       help="Output CSV file (default: mapping_results.csv)")
-    parser.add_argument("--chunk-size", type=int, default=100,
-                       help="Number of IDs per batch (default: 100)")
-    parser.add_argument("--delay", type=float, default=0.5,
-                       help="Delay between batches in seconds (default: 0.5)")
-    parser.add_argument("--save-failed", action="store_true",
-                       help="Save failed IDs to separate file")
-    parser.add_argument("--list-databases", action="store_true",
-                       help="List common database codes and exit")
+    parser.add_argument("--from", dest="from_db", required=True, help="Source database code")
+    parser.add_argument("--to", dest="to_db", required=True, help="Target database code")
+    parser.add_argument("-o", "--output", default=None, help="Output CSV file (default: mapping_results.csv)")
+    parser.add_argument("--chunk-size", type=int, default=100, help="Number of IDs per batch (default: 100)")
+    parser.add_argument("--delay", type=float, default=0.5, help="Delay between batches in seconds (default: 0.5)")
+    parser.add_argument("--save-failed", action="store_true", help="Save failed IDs to separate file")
+    parser.add_argument("--list-databases", action="store_true", help="List common database codes and exit")
 
     args = parser.parse_args()
 
@@ -320,13 +313,7 @@ Use --list-databases to see all supported aliases.
         sys.exit(1)
 
     # Perform conversion
-    mapping, failed_ids = batch_convert(
-        ids,
-        from_db,
-        to_db,
-        chunk_size=args.chunk_size,
-        delay=args.delay
-    )
+    mapping, failed_ids = batch_convert(ids, from_db, to_db, chunk_size=args.chunk_size, delay=args.delay)
 
     # Print summary
     print_mapping_summary(mapping, from_db, to_db)

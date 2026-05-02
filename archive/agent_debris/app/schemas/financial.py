@@ -1,14 +1,14 @@
 """
 Financial projection models for Cor.57 Unified Sky-Ground GPU Mesh
 """
-from typing import Optional, List, Dict
+
 from pydantic import BaseModel, Field
-from enum import Enum, StrEnum
-from decimal import Decimal
+from enum import StrEnum
 
 
 class RevenueSource(StrEnum):
     """Revenue source categories"""
+
     STARLINK_INFERENCE = "starlink_inference"
     CELLULAR_AI = "cellular_ai"
     DEFENSE_PNT = "defense_pnt"
@@ -18,6 +18,7 @@ class RevenueSource(StrEnum):
 
 class RevenueStream(BaseModel):
     """Revenue stream model"""
+
     source: RevenueSource
     description: str
     annual_revenue: int = Field(..., description="Annual revenue in USD")
@@ -31,13 +32,14 @@ class RevenueStream(BaseModel):
                 "description": "Starlink inference traffic",
                 "annual_revenue": 2100000000,
                 "margin_percentage": 85.0,
-                "notes": "AI overlay + data compression"
+                "notes": "AI overlay + data compression",
             }
         }
 
 
 class FinancialProjection(BaseModel):
     """Financial projection for a specific year"""
+
     year: int = Field(..., ge=2025, le=2035, description="Projection year")
     arr: int = Field(..., description="Annual Recurring Revenue in USD")
     ebitda: int = Field(..., description="EBITDA in USD")
@@ -53,13 +55,14 @@ class FinancialProjection(BaseModel):
                 "ebitda": 8400000000,
                 "ebitda_margin": 84.0,
                 "free_cash_flow": 7000000000,
-                "revenue_streams": []
+                "revenue_streams": [],
             }
         }
 
 
 class ValuationScenario(StrEnum):
     """Valuation scenario types"""
+
     IPO_GLOBAL_AI = "ipo_global_ai"
     PRIVATE_RETENTION = "private_retention"
     STRATEGIC_SALE = "strategic_sale"
@@ -68,6 +71,7 @@ class ValuationScenario(StrEnum):
 
 class Valuation(BaseModel):
     """Valuation model"""
+
     scenario: ValuationScenario
     rationale: str
     estimated_value: int = Field(..., description="Estimated value in USD")
@@ -83,13 +87,14 @@ class Valuation(BaseModel):
                 "estimated_value": 310000000000,
                 "control_percentage": 80.0,
                 "tax_exposure_percentage": 8.0,
-                "liquidity_level": "High"
+                "liquidity_level": "High",
             }
         }
 
 
 class CustomerSegment(BaseModel):
     """Customer segment financial model"""
+
     customer_name: str
     annual_spend: int = Field(..., description="Annual spend in USD")
     description: str
@@ -101,13 +106,14 @@ class CustomerSegment(BaseModel):
                 "customer_name": "SpaceX / Starlink",
                 "annual_spend": 400000000,
                 "description": "Starlink + shadowtag-omega-v4 hybrid AI routing",
-                "contract_type": "IaaS"
+                "contract_type": "IaaS",
             }
         }
 
 
 class ConsolidatedFinancials(BaseModel):
     """Consolidated financial overview"""
+
     total_arr: int = Field(..., description="Total ARR in USD")
     total_ebitda: int = Field(..., description="Total EBITDA in USD")
     blended_margin: float = Field(..., ge=0, le=100, description="Blended margin percentage")
@@ -119,6 +125,7 @@ class ConsolidatedFinancials(BaseModel):
 
 class OperatingModel(BaseModel):
     """Operating model metrics"""
+
     annual_opex: int = Field(..., description="Annual OPEX in USD")
     average_uptime: float = Field(..., ge=0, le=100, description="Average uptime percentage")
     compute_utilization: float = Field(..., ge=0, le=100, description="Compute utilization percentage")
@@ -132,6 +139,6 @@ class OperatingModel(BaseModel):
                 "average_uptime": 99.98,
                 "compute_utilization": 70.0,
                 "roi_period_years": 2.4,
-                "break_even_milestone": "Mid-Year 3"
+                "break_even_milestone": "Mid-Year 3",
             }
         }

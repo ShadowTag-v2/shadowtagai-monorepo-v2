@@ -54,9 +54,19 @@ def _telemetry_state_change_handler(
             from telemetry.sink import TelemetrySink
 
             sink = TelemetrySink()
+
+            # Enrich with live breaker snapshot metadata
+            failure_count = 0
+            try:
+                breaker = default_registry.get(service_name)
+                snap = breaker.snapshot()
+                failure_count = snap.get("consecutive_failures", 0)
+            except (KeyError, Exception):
+                pass  # Fallback to 0 if breaker not yet accessible
+
             event = EventCatalog.circuit_breaker_open(
                 subsystem=service_name,
-                failure_count=0,  # Will be enriched by the breaker snapshot
+                failure_count=failure_count,
             )
             sink.emit(event)
             sink.flush()

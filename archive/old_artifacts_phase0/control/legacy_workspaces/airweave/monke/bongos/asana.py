@@ -98,12 +98,8 @@ class AsanaBongo(BaseBongo):
                                 error_data = error_json
                             except Exception:
                                 pass
-                            self.logger.error(
-                                f"Failed to create task: {resp.status_code} - {error_data}"
-                            )
-                            self.logger.error(
-                                f"Request data: name='{title[:50]}...', notes='{notes[:50]}...', project={self._project_gid}"
-                            )
+                            self.logger.error(f"Failed to create task: {resp.status_code} - {error_data}")
+                            self.logger.error(f"Request data: name='{title[:50]}...', notes='{notes[:50]}...', project={self._project_gid}")
 
                         resp.raise_for_status()
                         task = resp.json()["data"]
@@ -149,9 +145,7 @@ class AsanaBongo(BaseBongo):
                 elif result:
                     entities.append(result)
                     self._tasks.append(result)
-                    self.logger.info(
-                        f"✅ Created task {i + 1}/{self.entity_count}: {result['name'][:50]}..."
-                    )
+                    self.logger.info(f"✅ Created task {i + 1}/{self.entity_count}: {result['name'][:50]}...")
 
         self.created_entities = entities
         return entities
@@ -197,15 +191,11 @@ class AsanaBongo(BaseBongo):
             for e in entities:
                 try:
                     await self._rate_limit()
-                    r = await client.delete(
-                        f"{self.API_BASE}/tasks/{e['id']}", headers=self._headers()
-                    )
+                    r = await client.delete(f"{self.API_BASE}/tasks/{e['id']}", headers=self._headers())
                     if r.status_code in (200, 204):
                         deleted.append(e["id"])
                     else:
-                        self.logger.warning(
-                            f"Delete failed for {e.get('id')}: {r.status_code} - {r.text}"
-                        )
+                        self.logger.warning(f"Delete failed for {e.get('id')}: {r.status_code} - {r.text}")
                 except Exception as ex:
                     self.logger.warning(f"Delete error for {e.get('id')}: {ex}")
         return deleted
@@ -239,9 +229,7 @@ class AsanaBongo(BaseBongo):
                     try:
                         await self._delete_project_by_gid(project["gid"])
                         cleanup_stats["projects_deleted"] += 1
-                        self.logger.info(
-                            f"✅ Deleted project: {project['name']} ({project['gid']})"
-                        )
+                        self.logger.info(f"✅ Deleted project: {project['name']} ({project['gid']})")
                     except Exception as e:
                         cleanup_stats["errors"] += 1
                         self.logger.warning(f"⚠️ Failed to delete project {project['gid']}: {e}")
@@ -249,16 +237,12 @@ class AsanaBongo(BaseBongo):
             # Find and clean up orphaned monke test tasks
             orphaned_tasks = await self._find_orphaned_monke_tasks()
             if orphaned_tasks:
-                self.logger.info(
-                    f"🔍 Found {len(orphaned_tasks)} orphaned monke test tasks to clean up"
-                )
+                self.logger.info(f"🔍 Found {len(orphaned_tasks)} orphaned monke test tasks to clean up")
                 for task in orphaned_tasks:
                     try:
                         await self._delete_task_by_gid(task["gid"])
                         cleanup_stats["tasks_deleted"] += 1
-                        self.logger.info(
-                            f"✅ Deleted orphaned task: {task['name']} ({task['gid']})"
-                        )
+                        self.logger.info(f"✅ Deleted orphaned task: {task['name']} ({task['gid']})")
                     except Exception as e:
                         cleanup_stats["errors"] += 1
                         self.logger.warning(f"⚠️ Failed to delete task {task['gid']}: {e}")
@@ -303,9 +287,7 @@ class AsanaBongo(BaseBongo):
                 if teams:
                     team_gid = teams[0]["gid"]
             except Exception as e:
-                self.logger.warning(
-                    f"Could not list teams for workspace {self._workspace_gid}: {e}"
-                )
+                self.logger.warning(f"Could not list teams for workspace {self._workspace_gid}: {e}")
 
             # Prefer the team endpoint if we found one; otherwise fall back to workspace create
             if team_gid:
@@ -335,15 +317,11 @@ class AsanaBongo(BaseBongo):
         """Delete a project by its GID."""
         async with httpx.AsyncClient() as client:
             await self._rate_limit()
-            r = await client.delete(
-                f"{self.API_BASE}/projects/{project_gid}", headers=self._headers()
-            )
+            r = await client.delete(f"{self.API_BASE}/projects/{project_gid}", headers=self._headers())
             if r.status_code in (200, 204):
                 self.logger.debug(f"Deleted project {project_gid}")
             else:
-                self.logger.warning(
-                    f"Failed to delete project {project_gid}: {r.status_code} - {r.text}"
-                )
+                self.logger.warning(f"Failed to delete project {project_gid}: {r.status_code} - {r.text}")
                 r.raise_for_status()
 
     async def _delete_task_by_gid(self, task_gid: str):
@@ -417,9 +395,7 @@ class AsanaBongo(BaseBongo):
                     if is_monke_task:
                         orphaned_tasks.append(task)
             else:
-                self.logger.warning(
-                    f"Failed to search for orphaned tasks: {r.status_code} - {r.text}"
-                )
+                self.logger.warning(f"Failed to search for orphaned tasks: {r.status_code} - {r.text}")
 
         return orphaned_tasks
 

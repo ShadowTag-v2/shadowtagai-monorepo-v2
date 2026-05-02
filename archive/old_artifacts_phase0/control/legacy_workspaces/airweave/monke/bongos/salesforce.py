@@ -19,9 +19,7 @@ class SalesforceBongo(BaseBongo):
         super().__init__(credentials)
         self.access_token: str = credentials["access_token"]
         # instance_url is now in config_fields, passed via kwargs
-        self.instance_url: str = (
-            kwargs.get("instance_url", "").replace("https://", "").replace("http://", "")
-        )
+        self.instance_url: str = kwargs.get("instance_url", "").replace("https://", "").replace("http://", "")
         self.api_version: str = kwargs.get("api_version", "58.0")
         self.entity_count: int = int(kwargs.get("entity_count", 3))
         self.openai_model: str = kwargs.get("openai_model", "gpt-4.1-mini")
@@ -66,11 +64,7 @@ class SalesforceBongo(BaseBongo):
                     **({"MailingStreet": c.mailing_street} if c.mailing_street else {}),
                     **({"MailingCity": c.mailing_city} if c.mailing_city else {}),
                     **({"MailingState": c.mailing_state} if c.mailing_state else {}),
-                    **(
-                        {"MailingPostalCode": c.mailing_postal_code}
-                        if c.mailing_postal_code
-                        else {}
-                    ),
+                    **({"MailingPostalCode": c.mailing_postal_code} if c.mailing_postal_code else {}),
                     **({"MailingCountry": c.mailing_country} if c.mailing_country else {}),
                 }
                 r = await client.post(
@@ -128,9 +122,7 @@ class SalesforceBongo(BaseBongo):
             for ent in entities:
                 try:
                     await self._pace()
-                    r = await client.delete(
-                        f"{self._get_base_url()}/sobjects/Contact/{ent['id']}", headers=self._hdrs()
-                    )
+                    r = await client.delete(f"{self._get_base_url()}/sobjects/Contact/{ent['id']}", headers=self._hdrs())
                     if r.status_code in (200, 204):
                         deleted.append(ent["id"])
                     else:
@@ -156,10 +148,7 @@ class SalesforceBongo(BaseBongo):
             # Search for any remaining monke test contacts
             await self._cleanup_orphaned_test_contacts(cleanup_stats)
 
-            self.logger.info(
-                f"🧹 Cleanup completed: {cleanup_stats['contacts_deleted']} contacts deleted, "
-                f"{cleanup_stats['errors']} errors"
-            )
+            self.logger.info(f"🧹 Cleanup completed: {cleanup_stats['contacts_deleted']} contacts deleted, {cleanup_stats['errors']} errors")
         except Exception as e:
             self.logger.error(f"❌ Error during comprehensive cleanup: {e}")
 
@@ -187,9 +176,7 @@ class SalesforceBongo(BaseBongo):
                     contacts = r.json().get("records", [])
 
                     if contacts:
-                        self.logger.info(
-                            f"🔍 Found {len(contacts)} potential test contacts to clean"
-                        )
+                        self.logger.info(f"🔍 Found {len(contacts)} potential test contacts to clean")
                         for contact in contacts:
                             try:
                                 await self._pace()
@@ -199,17 +186,12 @@ class SalesforceBongo(BaseBongo):
                                 )
                                 if del_r.status_code in (204, 200):
                                     stats["contacts_deleted"] += 1
-                                    self.logger.info(
-                                        f"✅ Deleted orphaned contact: "
-                                        f"{contact.get('Email', 'unknown')}"
-                                    )
+                                    self.logger.info(f"✅ Deleted orphaned contact: {contact.get('Email', 'unknown')}")
                                 else:
                                     stats["errors"] += 1
                             except Exception as e:
                                 stats["errors"] += 1
-                                self.logger.warning(
-                                    f"⚠️ Failed to delete contact {contact['Id']}: {e}"
-                                )
+                                self.logger.warning(f"⚠️ Failed to delete contact {contact['Id']}: {e}")
         except Exception as e:
             self.logger.warning(f"⚠️ Could not search for orphaned contacts: {e}")
 

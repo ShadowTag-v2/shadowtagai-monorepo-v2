@@ -32,10 +32,7 @@ except ImportError as e:
     print("Make sure you're running from the project root directory")
     sys.exit(1)
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -67,14 +64,14 @@ class UnifiedScraper:
         self.config = self.validator.config
 
         # Determine merge mode
-        self.merge_mode = merge_mode or self.config.get('merge_mode', 'rule-based')
+        self.merge_mode = merge_mode or self.config.get("merge_mode", "rule-based")
         logger.info(f"Merge mode: {self.merge_mode}")
 
         # Storage for scraped data
         self.scraped_data = {}
 
         # Output paths
-        self.name = self.config['name']
+        self.name = self.config["name"]
         self.output_dir = f"output/{self.name}"
         self.data_dir = f"output/{self.name}_unified_data"
 
@@ -95,18 +92,18 @@ class UnifiedScraper:
             logger.warning("Config is not unified format, converting...")
             self.config = self.validator.convert_legacy_to_unified()
 
-        sources = self.config.get('sources', [])
+        sources = self.config.get("sources", [])
 
         for i, source in enumerate(sources):
-            source_type = source['type']
-            logger.info(f"\n[{i+1}/{len(sources)}] Scraping {source_type} source...")
+            source_type = source["type"]
+            logger.info(f"\n[{i + 1}/{len(sources)}] Scraping {source_type} source...")
 
             try:
-                if source_type == 'documentation':
+                if source_type == "documentation":
                     self._scrape_documentation(source)
-                elif source_type == 'github':
+                elif source_type == "github":
                     self._scrape_github(source)
-                elif source_type == 'pdf':
+                elif source_type == "pdf":
                     self._scrape_pdf(source)
                 else:
                     logger.warning(f"Unknown source type: {source_type}")
@@ -120,25 +117,25 @@ class UnifiedScraper:
         """Scrape documentation website."""
         # Create temporary config for doc scraper
         doc_config = {
-            'name': f"{self.name}_docs",
-            'base_url': source['base_url'],
-            'selectors': source.get('selectors', {}),
-            'url_patterns': source.get('url_patterns', {}),
-            'categories': source.get('categories', {}),
-            'rate_limit': source.get('rate_limit', 0.5),
-            'max_pages': source.get('max_pages', 100)
+            "name": f"{self.name}_docs",
+            "base_url": source["base_url"],
+            "selectors": source.get("selectors", {}),
+            "url_patterns": source.get("url_patterns", {}),
+            "categories": source.get("categories", {}),
+            "rate_limit": source.get("rate_limit", 0.5),
+            "max_pages": source.get("max_pages", 100),
         }
 
         # Write temporary config
-        temp_config_path = os.path.join(self.data_dir, 'temp_docs_config.json')
-        with open(temp_config_path, 'w') as f:
+        temp_config_path = os.path.join(self.data_dir, "temp_docs_config.json")
+        with open(temp_config_path, "w") as f:
             json.dump(doc_config, f, indent=2)
 
         # Run doc_scraper as subprocess
         logger.info(f"Scraping documentation from {source['base_url']}")
 
         doc_scraper_path = Path(__file__).parent / "doc_scraper.py"
-        cmd = [sys.executable, str(doc_scraper_path), '--config', temp_config_path]
+        cmd = [sys.executable, str(doc_scraper_path), "--config", temp_config_path]
 
         result = subprocess.run(cmd, capture_output=True, text=True)
 
@@ -153,10 +150,7 @@ class UnifiedScraper:
             with open(docs_data_file) as f:
                 summary = json.load(f)
 
-            self.scraped_data['documentation'] = {
-                'pages': summary.get('pages', []),
-                'data_file': docs_data_file
-            }
+            self.scraped_data["documentation"] = {"pages": summary.get("pages", []), "data_file": docs_data_file}
 
             logger.info(f"✅ Documentation: {summary.get('total_pages', 0)} pages scraped")
         else:
@@ -178,17 +172,17 @@ class UnifiedScraper:
 
         # Create config for GitHub scraper
         github_config = {
-            'repo': source['repo'],
-            'name': f"{self.name}_github",
-            'github_token': source.get('github_token'),
-            'include_issues': source.get('include_issues', True),
-            'max_issues': source.get('max_issues', 100),
-            'include_changelog': source.get('include_changelog', True),
-            'include_releases': source.get('include_releases', True),
-            'include_code': source.get('include_code', True),
-            'code_analysis_depth': source.get('code_analysis_depth', 'surface'),
-            'file_patterns': source.get('file_patterns', []),
-            'local_repo_path': source.get('local_repo_path')  # Pass local_repo_path from config
+            "repo": source["repo"],
+            "name": f"{self.name}_github",
+            "github_token": source.get("github_token"),
+            "include_issues": source.get("include_issues", True),
+            "max_issues": source.get("max_issues", 100),
+            "include_changelog": source.get("include_changelog", True),
+            "include_releases": source.get("include_releases", True),
+            "include_code": source.get("include_code", True),
+            "code_analysis_depth": source.get("code_analysis_depth", "surface"),
+            "file_patterns": source.get("file_patterns", []),
+            "local_repo_path": source.get("local_repo_path"),  # Pass local_repo_path from config
         }
 
         # Scrape
@@ -197,14 +191,11 @@ class UnifiedScraper:
         github_data = scraper.scrape()
 
         # Save data
-        github_data_file = os.path.join(self.data_dir, 'github_data.json')
-        with open(github_data_file, 'w') as f:
+        github_data_file = os.path.join(self.data_dir, "github_data.json")
+        with open(github_data_file, "w") as f:
             json.dump(github_data, f, indent=2, ensure_ascii=False)
 
-        self.scraped_data['github'] = {
-            'data': github_data,
-            'data_file': github_data_file
-        }
+        self.scraped_data["github"] = {"data": github_data, "data_file": github_data_file}
 
         logger.info("✅ GitHub: Repository scraped successfully")
 
@@ -220,11 +211,11 @@ class UnifiedScraper:
 
         # Create config for PDF scraper
         pdf_config = {
-            'name': f"{self.name}_pdf",
-            'pdf': source['path'],
-            'extract_tables': source.get('extract_tables', False),
-            'ocr': source.get('ocr', False),
-            'password': source.get('password')
+            "name": f"{self.name}_pdf",
+            "pdf": source["path"],
+            "extract_tables": source.get("extract_tables", False),
+            "ocr": source.get("ocr", False),
+            "password": source.get("password"),
         }
 
         # Scrape
@@ -233,14 +224,11 @@ class UnifiedScraper:
         pdf_data = converter.extract_all()
 
         # Save data
-        pdf_data_file = os.path.join(self.data_dir, 'pdf_data.json')
-        with open(pdf_data_file, 'w') as f:
+        pdf_data_file = os.path.join(self.data_dir, "pdf_data.json")
+        with open(pdf_data_file, "w") as f:
             json.dump(pdf_data, f, indent=2, ensure_ascii=False)
 
-        self.scraped_data['pdf'] = {
-            'data': pdf_data,
-            'data_file': pdf_data_file
-        }
+        self.scraped_data["pdf"] = {"data": pdf_data, "data_file": pdf_data_file}
 
         logger.info(f"✅ PDF: {len(pdf_data.get('pages', []))} pages extracted")
 
@@ -262,18 +250,18 @@ class UnifiedScraper:
             return []
 
         # Get documentation and GitHub data
-        docs_data = self.scraped_data.get('documentation', {})
-        github_data = self.scraped_data.get('github', {})
+        docs_data = self.scraped_data.get("documentation", {})
+        github_data = self.scraped_data.get("github", {})
 
         if not docs_data or not github_data:
             logger.warning("Missing documentation or GitHub data for conflict detection")
             return []
 
         # Load data files
-        with open(docs_data['data_file']) as f:
+        with open(docs_data["data_file"]) as f:
             docs_json = json.load(f)
 
-        with open(github_data['data_file']) as f:
+        with open(github_data["data_file"]) as f:
             github_json = json.load(f)
 
         # Detect conflicts
@@ -281,7 +269,7 @@ class UnifiedScraper:
         conflicts = detector.detect_all_conflicts()
 
         # Save conflicts
-        conflicts_file = os.path.join(self.data_dir, 'conflicts.json')
+        conflicts_file = os.path.join(self.data_dir, "conflicts.json")
         detector.save_conflicts(conflicts, conflicts_file)
 
         # Print summary
@@ -289,13 +277,13 @@ class UnifiedScraper:
         logger.info("\n📊 Conflict Summary:")
         logger.info(f"   Total: {summary['total']}")
         logger.info("   By Type:")
-        for ctype, count in summary['by_type'].items():
+        for ctype, count in summary["by_type"].items():
             if count > 0:
                 logger.info(f"     - {ctype}: {count}")
         logger.info("   By Severity:")
-        for severity, count in summary['by_severity'].items():
+        for severity, count in summary["by_severity"].items():
             if count > 0:
-                emoji = '🔴' if severity == 'high' else '🟡' if severity == 'medium' else '🟢'
+                emoji = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
                 logger.info(f"     {emoji} {severity}: {count}")
 
         return conflicts
@@ -316,18 +304,18 @@ class UnifiedScraper:
             return None
 
         # Get data files
-        docs_data = self.scraped_data.get('documentation', {})
-        github_data = self.scraped_data.get('github', {})
+        docs_data = self.scraped_data.get("documentation", {})
+        github_data = self.scraped_data.get("github", {})
 
         # Load data
-        with open(docs_data['data_file']) as f:
+        with open(docs_data["data_file"]) as f:
             docs_json = json.load(f)
 
-        with open(github_data['data_file']) as f:
+        with open(github_data["data_file"]) as f:
             github_json = json.load(f)
 
         # Choose merger
-        if self.merge_mode == 'claude-enhanced':
+        if self.merge_mode == "claude-enhanced":
             merger = ClaudeEnhancedMerger(docs_json, github_json, conflicts)
         else:
             merger = RuleBasedMerger(docs_json, github_json, conflicts)
@@ -336,8 +324,8 @@ class UnifiedScraper:
         merged_data = merger.merge_all()
 
         # Save merged data
-        merged_file = os.path.join(self.data_dir, 'merged_data.json')
-        with open(merged_file, 'w') as f:
+        merged_file = os.path.join(self.data_dir, "merged_data.json")
+        with open(merged_file, "w") as f:
             json.dump(merged_data, f, indent=2, ensure_ascii=False)
 
         logger.info(f"✅ Merged data saved: {merged_file}")
@@ -357,19 +345,14 @@ class UnifiedScraper:
 
         # Load conflicts if they exist
         conflicts = []
-        conflicts_file = os.path.join(self.data_dir, 'conflicts.json')
+        conflicts_file = os.path.join(self.data_dir, "conflicts.json")
         if os.path.exists(conflicts_file):
             with open(conflicts_file) as f:
                 conflicts_data = json.load(f)
-                conflicts = conflicts_data.get('conflicts', [])
+                conflicts = conflicts_data.get("conflicts", [])
 
         # Build skill
-        builder = UnifiedSkillBuilder(
-            self.config,
-            self.scraped_data,
-            merged_data,
-            conflicts
-        )
+        builder = UnifiedSkillBuilder(self.config, self.scraped_data, merged_data, conflicts)
 
         builder.build()
 
@@ -411,6 +394,7 @@ class UnifiedScraper:
         except Exception as e:
             logger.error(f"\n\n❌ Error during scraping: {e}")
             import traceback
+
             traceback.print_exc()
             sys.exit(1)
 
@@ -418,7 +402,7 @@ class UnifiedScraper:
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(
-        description='Unified multi-source scraper',
+        description="Unified multi-source scraper",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -430,14 +414,11 @@ Examples:
 
   # Backward compatible with legacy configs
   skill-seekers unified --config configs/react.json
-        """
+        """,
     )
 
-    parser.add_argument('--config', '-c', required=True,
-                       help='Path to unified config JSON file')
-    parser.add_argument('--merge-mode', '-m',
-                       choices=['rule-based', 'claude-enhanced'],
-                       help='Override config merge mode')
+    parser.add_argument("--config", "-c", required=True, help="Path to unified config JSON file")
+    parser.add_argument("--merge-mode", "-m", choices=["rule-based", "claude-enhanced"], help="Override config merge mode")
 
     args = parser.parse_args()
 
@@ -446,5 +427,5 @@ Examples:
     scraper.run()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

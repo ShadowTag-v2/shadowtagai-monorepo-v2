@@ -21,105 +21,95 @@ from google.adk import Agent
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
 if not GITHUB_TOKEN:
-  raise ValueError("GITHUB_TOKEN environment variable not set")
+    raise ValueError("GITHUB_TOKEN environment variable not set")
 
 OWNER = os.getenv("OWNER", "google")
 REPO = os.getenv("REPO", "adk-python")
 
 
 def get_github_pr_info_http(pr_number: int) -> str | None:
-  """Fetches information for a GitHub Pull Request by sending direct HTTP requests.
+    """Fetches information for a GitHub Pull Request by sending direct HTTP requests.
 
-  Args:
-      pr_number (int): The number of the Pull Request.
+    Args:
+        pr_number (int): The number of the Pull Request.
 
-  Returns:
-      pr_message: A string.
-  """
-  base_url = "https://api.github.com"
+    Returns:
+        pr_message: A string.
+    """
+    base_url = "https://api.github.com"
 
-  headers = {
-      "Accept": "application/vnd.github+json",
-      "Authorization": f"Bearer {GITHUB_TOKEN}",
-      "X-GitHub-Api-Version": "2022-11-28",
-  }
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {GITHUB_TOKEN}",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
 
-  pr_message = ""
+    pr_message = ""
 
-  # --- 1. Get main PR details ---
-  pr_url = f"{base_url}/repos/{OWNER}/{REPO}/pulls/{pr_number}"
-  print(f"Fetching PR details from: {pr_url}")
-  try:
-    response = requests.get(pr_url, headers=headers)
-    response.raise_for_status()
-    pr_data = response.json()
-    pr_message += f"The PR title is: {pr_data.get('title')}\n"
-  except requests.exceptions.HTTPError as e:
-    print(
-        f"HTTP Error fetching PR details: {e.response.status_code} - "
-        f" {e.response.text}"
-    )
-    return None
-  except requests.exceptions.RequestException as e:
-    print(f"Network or request error fetching PR details: {e}")
-    return None
-  except Exception as e:  # pylint: disable=broad-except
-    print(f"An unexpected error occurred: {e}")
-    return None
-
-  # --- 2. Fetching associated commits (paginated) ---
-  commits_url = pr_data.get(
-      "commits_url"
-  )  # This URL is provided in the initial PR response
-  if commits_url:
-    print("\n--- Associated Commits in this PR: ---")
-    page = 1
-    while True:
-      # GitHub API often uses 'per_page' and 'page' for pagination
-      params = {
-          "per_page": 100,
-          "page": page,
-      }  # Fetch up to 100 commits per page
-      try:
-        response = requests.get(commits_url, headers=headers, params=params)
+    # --- 1. Get main PR details ---
+    pr_url = f"{base_url}/repos/{OWNER}/{REPO}/pulls/{pr_number}"
+    print(f"Fetching PR details from: {pr_url}")
+    try:
+        response = requests.get(pr_url, headers=headers)
         response.raise_for_status()
-        commits_data = response.json()
+        pr_data = response.json()
+        pr_message += f"The PR title is: {pr_data.get('title')}\n"
+    except requests.exceptions.HTTPError as e:
+        print(f"HTTP Error fetching PR details: {e.response.status_code} -  {e.response.text}")
+        return None
+    except requests.exceptions.RequestException as e:
+        print(f"Network or request error fetching PR details: {e}")
+        return None
+    except Exception as e:  # pylint: disable=broad-except
+        print(f"An unexpected error occurred: {e}")
+        return None
 
-        if not commits_data:  # No more commits
-          break
+    # --- 2. Fetching associated commits (paginated) ---
+    commits_url = pr_data.get("commits_url")  # This URL is provided in the initial PR response
+    if commits_url:
+        print("\n--- Associated Commits in this PR: ---")
+        page = 1
+        while True:
+            # GitHub API often uses 'per_page' and 'page' for pagination
+            params = {
+                "per_page": 100,
+                "page": page,
+            }  # Fetch up to 100 commits per page
+            try:
+                response = requests.get(commits_url, headers=headers, params=params)
+                response.raise_for_status()
+                commits_data = response.json()
 
-        pr_message += "The associated commits are:\n"
-        for commit in commits_data:
-          message = commit.get("commit", {}).get("message", "").splitlines()[0]
-          if message:
-            pr_message += message + "\n"
+                if not commits_data:  # No more commits
+                    break
 
-        # Check for 'Link' header to determine if more pages exist
-        # This is how GitHub's API indicates pagination
-        if "Link" in response.headers:
-          link_header = response.headers["Link"]
-          if 'rel="next"' in link_header:
-            page += 1  # Move to the next page
-          else:
-            break  # No more pages
-        else:
-          break  # No Link header, so probably only one page
+                pr_message += "The associated commits are:\n"
+                for commit in commits_data:
+                    message = commit.get("commit", {}).get("message", "").splitlines()[0]
+                    if message:
+                        pr_message += message + "\n"
 
-      except requests.exceptions.HTTPError as e:
-        print(
-            f"HTTP Error fetching PR commits (page {page}):"
-            f" {e.response.status_code} - {e.response.text}"
-        )
-        break
-      except requests.exceptions.RequestException as e:
-        print(
-            f"Network or request error fetching PR commits (page {page}): {e}"
-        )
-        break
-  else:
-    print("Commits URL not found in PR data.")
+                # Check for 'Link' header to determine if more pages exist
+                # This is how GitHub's API indicates pagination
+                if "Link" in response.headers:
+                    link_header = response.headers["Link"]
+                    if 'rel="next"' in link_header:
+                        page += 1  # Move to the next page
+                    else:
+                        break  # No more pages
+                else:
+                    break  # No Link header, so probably only one page
 
-  return pr_message
+            except requests.exceptions.HTTPError as e:
+                print(f"HTTP Error fetching PR commits (page {page}): {e.response.status_code} - {e.response.text}")
+                break
+            except requests.exceptions.RequestException as e:
+                print(f"Network or request error fetching PR commits (page {page}): {e}")
+                break
+    else:
+        print("Commits URL not found in PR data.")
+
+    return pr_message
 
 
 system_prompt = """

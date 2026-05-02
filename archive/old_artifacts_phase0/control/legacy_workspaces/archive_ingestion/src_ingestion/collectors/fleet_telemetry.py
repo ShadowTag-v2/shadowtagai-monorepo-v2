@@ -53,11 +53,11 @@ class FleetTelemetryCollector:
                     timestamp=datetime.utcnow() - timedelta(hours=(i % 24)),
                     camera_frames=[f"gs://fleet-raw/cam_{i}.jpg"],
                     lidar_pointclouds=[f"gs://fleet-raw/lidar_{i}.pcd"],
-                    gps_data={"lat": 37.7749 + (i % 100) * 0.001, "lon": -122.4194}
+                    gps_data={"lat": 37.7749 + (i % 100) * 0.001, "lon": -122.4194},
                 ),
                 # Fleet data has consent verified
                 consent_verified=True,
-                privacy_scrubbed=False  # Will be scrubbed later
+                privacy_scrubbed=False,  # Will be scrubbed later
             )
 
             # Simulate safety scoring (fleet data tends to be higher quality)
@@ -84,6 +84,7 @@ class FleetTelemetryCollector:
 
 
 if __name__ == "__main__":
+
     async def main():
         collector = FleetTelemetryCollector()
         scenarios = await collector.collect_daily_scenarios()

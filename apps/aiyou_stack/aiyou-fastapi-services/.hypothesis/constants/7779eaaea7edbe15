@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/agents/policy_agent.py
+# hypothesis_version: 6.151.5
+
+[0.0, 1000, ' | ', '## Request Details', 'ESCALATED', 'H', 'action', 'application/json', 'confidence_score', 'decision', 'department', 'escalation_needed', 'escalation_reason', 'evidence', 'id', 'policy-enforcer-01', 'policy_references', 'precedents', 'prompt_token_count', 'reasoning_steps', 'resource', 'risk_level', 'role', 'trust_score', 'usage_metadata', 'user', 'user_context', 'user_id']

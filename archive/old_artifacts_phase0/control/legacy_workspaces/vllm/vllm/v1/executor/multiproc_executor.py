@@ -314,6 +314,7 @@ class MultiprocExecutor(Executor):
             )
         else:
             output_rank = unique_reply_rank
+
             def aggregate(x):
                 return x
 

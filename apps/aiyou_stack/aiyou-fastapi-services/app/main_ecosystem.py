@@ -114,8 +114,11 @@ def create_kernel_chain() -> ChainExecutor:
     return ChainExecutor(chain)
 
 
-# Global instances
-chain_executor = create_kernel_chain()
+# Global instances (lazy — chain requires API keys not always available)
+try:
+    chain_executor = create_kernel_chain()
+except Exception:
+    chain_executor = None  # type: ignore[assignment]
 glicko_system = Glicko2System(tau=0.5, tol=1e-6)
 grpo_simulator = GRPOSimulator(GRPOConfig())
 dte_system = DTESystem()

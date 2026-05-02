@@ -33,6 +33,25 @@ logger = logging.getLogger("counselconduit.stripe")
 
 router = APIRouter(prefix="/webhooks", tags=["webhooks"])
 
+
+def _get_stripe_breaker():
+    """Lazy-load the circuit breaker for Stripe billing API calls.
+
+    Uses the same 'stripe' service profile as stripe_connect_webhook.py
+    so both endpoints share a single breaker instance (coordinated failure state).
+    """
+    try:
+        from circuit_breaker.telemetry_bridge import default_registry
+
+        return default_registry.get_or_create(
+            "stripe",
+            failure_threshold=3,
+            reset_timeout_s=60.0,
+        )
+    except Exception:
+        return None
+
+
 # Stripe sends events signed with this secret.
 # Reads from env (--set-secrets in Cloud Run) with SM API fallback.
 _WEBHOOK_SECRET: str | None = None
@@ -247,7 +266,22 @@ async def stripe_webhook(request: Request) -> dict[str, Any]:
     The endpoint reads the raw body for HMAC verification,
     then dispatches to the appropriate event handler.
     Returns 200 immediately — Stripe retries on 4xx/5xx.
+
+    Circuit breaker: Returns 503 if the 'stripe' breaker is OPEN,
+    signaling Stripe to retry per its own backoff schedule.
     """
+    # Circuit breaker gate — fail fast if Stripe API is down
+    breaker = _get_stripe_breaker()
+    if breaker and not breaker.allow_request():
+        logger.warning(
+            "Circuit breaker OPEN for stripe — rejecting billing webhook (probe in %.0fs)",
+            breaker.seconds_until_probe,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Stripe API circuit breaker is OPEN — retrying later.",
+        )
+
     secret = _get_webhook_secret()
     if not secret:
         logger.error("STRIPE_WEBHOOK_SECRET is not set — rejecting all webhooks.")
@@ -270,9 +304,19 @@ async def stripe_webhook(request: Request) -> dict[str, Any]:
     # Dispatch to handler
     handler = _EVENT_HANDLERS.get(event_type)
     if handler:
-        result = handler(event)
-        return {"received": True, "event_type": event_type, "result": result}
+        try:
+            result = handler(event)
+            if breaker:
+                breaker.record_success()
+            return {"received": True, "event_type": event_type, "result": result}
+        except Exception:
+            if breaker:
+                breaker.record_failure()
+            raise
 
     # Unhandled event type — acknowledge but don't process
+    # Still counts as success (Stripe delivered, we parsed correctly)
+    if breaker:
+        breaker.record_success()
     logger.debug("Unhandled Stripe event type: %s", event_type)
     return {"received": True, "event_type": event_type, "result": "no_handler"}

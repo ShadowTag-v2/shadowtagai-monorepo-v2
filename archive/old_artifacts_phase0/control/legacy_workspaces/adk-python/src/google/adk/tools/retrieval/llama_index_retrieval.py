@@ -18,23 +18,20 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from typing_extensions import override
+from typing import override
 
 from ..tool_context import ToolContext
 from .base_retrieval_tool import BaseRetrievalTool
 
 if TYPE_CHECKING:
-  from llama_index.core.base.base_retriever import BaseRetriever
+    from llama_index.core.base.base_retriever import BaseRetriever
 
 
 class LlamaIndexRetrieval(BaseRetrievalTool):
+    def __init__(self, *, name: str, description: str, retriever: BaseRetriever):
+        super().__init__(name=name, description=description)
+        self.retriever = retriever
 
-  def __init__(self, *, name: str, description: str, retriever: BaseRetriever):
-    super().__init__(name=name, description=description)
-    self.retriever = retriever
-
-  @override
-  async def run_async(
-      self, *, args: dict[str, Any], tool_context: ToolContext
-  ) -> Any:
-    return self.retriever.retrieve(args['query'])[0].text
+    @override
+    async def run_async(self, *, args: dict[str, Any], tool_context: ToolContext) -> Any:
+        return self.retriever.retrieve(args["query"])[0].text

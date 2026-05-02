@@ -1,155 +1,155 @@
 {
   "score": "F",
-  "total_findings": 45,
+  "total_findings": 42,
   "critical": 10,
   "errors": 1,
-  "warnings": 31,
+  "warnings": 28,
   "info": 3,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "agent/scratch/ant_src/src/QueryEngine.ts",
-      "fix": "git checkout -- agent/scratch/ant_src/src/QueryEngine.ts"
+      "path": "agents/ops/playwright.network.config.ts",
+      "fix": "git checkout -- agents/ops/playwright.network.config.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/Task.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/Task.ts"
+      "path": ".antigravity/orchestrator/LocalSandboxOrchestrator.ts",
+      "fix": "git checkout -- .antigravity/orchestrator/LocalSandboxOrchestrator.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/Tool.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/Tool.ts"
+      "path": ".beads/heartbeat.json",
+      "fix": "git checkout -- .beads/heartbeat.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/assistant/sessionHistory.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/assistant/sessionHistory.ts"
+      "path": ".beads/issues.jsonl",
+      "fix": "git checkout -- .beads/issues.jsonl"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bootstrap/state.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bootstrap/state.ts"
+      "path": ".beads/kairos_heartbeat.json",
+      "fix": "git checkout -- .beads/kairos_heartbeat.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/bridgeApi.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeApi.ts"
+      "path": ".reports/secrets/betterleaks-dir.json",
+      "fix": "git checkout -- .reports/secrets/betterleaks-dir.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/bridgeConfig.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeConfig.ts"
+      "path": ".reports/skills/guardrail_annotation_audit.md",
+      "fix": "git checkout -- .reports/skills/guardrail_annotation_audit.md"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/bridgeDebug.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeDebug.ts"
+      "path": ".vscode/settings.json",
+      "fix": "git checkout -- .vscode/settings.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/bridgeEnabled.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeEnabled.ts"
+      "path": "TASK.md",
+      "fix": "git checkout -- TASK.md"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/bridgeMain.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeMain.ts"
+      "path": "_archive/stale_middleware_2026-05-01/kovelai_stale_app_dir/globals.css",
+      "fix": "git checkout -- _archive/stale_middleware_2026-05-01/kovelai_stale_app_dir/globals.css"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/bridgeMessaging.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeMessaging.ts"
+      "path": "_archive/stale_middleware_2026-05-01/middleware.ts",
+      "fix": "git checkout -- _archive/stale_middleware_2026-05-01/middleware.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/bridgePermissionCallbacks.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgePermissionCallbacks.ts"
+      "path": "_archive/stale_middleware_2026-05-01/next.config.mjs",
+      "fix": "git checkout -- _archive/stale_middleware_2026-05-01/next.config.mjs"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/bridgePointer.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgePointer.ts"
+      "path": "_archive_redundant_2026-04-30/src_extracted/scripts/ast_chunk_stripping.ts",
+      "fix": "git checkout -- _archive_redundant_2026-04-30/src_extracted/scripts/ast_chunk_stripping.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/bridgeStatusUtil.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeStatusUtil.ts"
+      "path": "_audit_claude_code/ai-modes/coordinatorHandler.ts",
+      "fix": "git checkout -- _audit_claude_code/ai-modes/coordinatorHandler.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/bridgeUI.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/bridgeUI.ts"
+      "path": "_audit_claude_code/ai-modes/coordinatorMode.ts",
+      "fix": "git checkout -- _audit_claude_code/ai-modes/coordinatorMode.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/capacityWake.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/capacityWake.ts"
+      "path": "_audit_claude_code/src/bootstrap/state.ts",
+      "fix": "git checkout -- _audit_claude_code/src/bootstrap/state.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/codeSessionApi.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/codeSessionApi.ts"
+      "path": "_audit_claude_code/src/commands.ts",
+      "fix": "git checkout -- _audit_claude_code/src/commands.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/createSession.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/createSession.ts"
+      "path": "_audit_claude_code/src/tools/AskUserQuestionTool/AskUserQuestionTool.tsx",
+      "fix": "git checkout -- _audit_claude_code/src/tools/AskUserQuestionTool/AskUserQuestionTool.tsx"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/debugUtils.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/debugUtils.ts"
+      "path": "_audit_claude_code/src/tools/BriefTool/BriefTool.ts",
+      "fix": "git checkout -- _audit_claude_code/src/tools/BriefTool/BriefTool.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scratch/ant_src/src/bridge/envLessBridgeConfig.ts",
-      "fix": "git checkout -- .agent/scratch/ant_src/src/bridge/envLessBridgeConfig.ts"
+      "path": "_audit_claude_code/src/tools/EnterPlanModeTool/EnterPlanModeTool.ts",
+      "fix": "git checkout -- _audit_claude_code/src/tools/EnterPlanModeTool/EnterPlanModeTool.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "... and 3774 more dirty files",
+      "message": "... and 514 more dirty files",
       "path": "",
       "fix": ""
     },
@@ -226,77 +226,56 @@
     {
       "gate": "secrets",
       "severity": "error",
-      "message": "Betterleaks found 693 potential secrets",
+      "message": "Command '['/Users/pikeymickey/go/bin/betterleaks', 'dir', '-c', '.betterleaks.toml', '--report-format', 'json', '--report-path', '/tmp/repo_doctor_secrets.json', '.']' timed out after 120 seconds",
       "path": "",
-      "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
+      "fix": ""
     },
     {
       "gate": "large_files",
       "severity": "warn",
       "message": "Large file (805 KB > 500 KB)",
-      "path": ".agent/scratch/ant_src/src/main.tsx",
-      "fix": "Add .agent/scratch/ant_src/src/main.tsx to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (900 KB > 500 KB)",
-      "path": ".agent/scratch/ant_src/src/screens/REPL.tsx",
-      "fix": "Add .agent/scratch/ant_src/src/screens/REPL.tsx to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (805 KB > 500 KB)",
-      "path": ".agent/scratch/src_zip_extracted/src/main.tsx",
-      "fix": "Add .agent/scratch/src_zip_extracted/src/main.tsx to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (900 KB > 500 KB)",
-      "path": ".agent/scratch/src_zip_extracted/src/screens/REPL.tsx",
-      "fix": "Add .agent/scratch/src_zip_extracted/src/screens/REPL.tsx to .gitignore or compress"
+      "path": "_audit_claude_code/main.tsx",
+      "fix": "Add _audit_claude_code/main.tsx to .gitignore or compress"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "cmd/gideon-go/go.mod",
+      "path": "Claude_Code_6/Cor.Claude_Code_6",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "configs/feature_flags.yaml",
+      "path": "Claude_Code_6/go.mod",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "contracts/README.md",
+      "path": "Claude_Code_6/main.go",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "control/aiyou_stack_bridge/antigravity/v11/execute_fold_in.py",
+      "path": "Claude_Code_6/main_test.go",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "control/antigravity/ane_cortex_stack_v10/.agent/memory/architecture.md",
+      "path": "_archive/stale_middleware_2026-05-01/frames_symlink",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 2193 more drift files",
+      "message": "... and 6933 more drift files",
       "path": "",
       "fix": ""
     },
@@ -310,14 +289,14 @@
     {
       "gate": "manifest",
       "severity": "info",
-      "message": "Manifest vunknown valid",
+      "message": "Manifest v15.4 valid",
       "path": "",
       "fix": ""
     },
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ========================= 485 tests collected in 2.07s =========================",
+      "message": "Tests: ======================== 2303 tests collected in 13.33s ========================",
       "path": "",
       "fix": ""
     }

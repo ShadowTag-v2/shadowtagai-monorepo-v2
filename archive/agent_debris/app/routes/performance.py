@@ -1,6 +1,7 @@
 """
 Performance monitoring API endpoints
 """
+
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_session
@@ -8,16 +9,12 @@ from app.services.bottleneck_detector import BottleneckDetector
 from app.services.optimizer import PerformanceOptimizer
 from app.services.caching import cache
 from app.models.performance import PerformanceReport
-from typing import Optional, List, Dict, Any
 
 router = APIRouter(prefix="/performance", tags=["performance"])
 
 
 @router.get("/report", response_model=PerformanceReport)
-async def get_performance_report(
-    hours: int = Query(default=24, ge=1, le=168),
-    session: AsyncSession = Depends(get_session)
-):
+async def get_performance_report(hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session)):
     """
     Get comprehensive performance report
 
@@ -45,11 +42,8 @@ async def get_performance_report(
     cache_stats = await cache.get_stats()
 
     # Calculate totals
-    total_requests = sum(ep['request_count'] for ep in slow_endpoints)
-    avg_response_time = (
-        sum(ep['avg_duration'] * ep['request_count'] for ep in slow_endpoints) /
-        total_requests if total_requests > 0 else 0
-    )
+    total_requests = sum(ep["request_count"] for ep in slow_endpoints)
+    avg_response_time = sum(ep["avg_duration"] * ep["request_count"] for ep in slow_endpoints) / total_requests if total_requests > 0 else 0
 
     return PerformanceReport(
         total_requests=total_requests,
@@ -58,18 +52,18 @@ async def get_performance_report(
         top_bottlenecks=bottlenecks,
         optimization_suggestions=[
             {
-                'id': i,
-                'endpoint': s['endpoint'],
-                'suggestion_type': s['type'],
-                'description': s['description'],
-                'impact': s['impact'],
-                'implementation': s['implementation'],
-                'created_at': 'now',
-                'applied': False,
+                "id": i,
+                "endpoint": s["endpoint"],
+                "suggestion_type": s["type"],
+                "description": s["description"],
+                "impact": s["impact"],
+                "implementation": s["implementation"],
+                "created_at": "now",
+                "applied": False,
             }
-            for i, s in enumerate(opt_report['top_suggestions'])
+            for i, s in enumerate(opt_report["top_suggestions"])
         ],
-        cache_hit_rate=cache_stats['hit_rate'],
+        cache_hit_rate=cache_stats["hit_rate"],
         time_period=f"{hours} hours",
     )
 
@@ -79,7 +73,7 @@ async def get_bottlenecks(
     limit: int = Query(default=10, ge=1, le=100),
     endpoint: str | None = None,
     severity: str | None = None,
-    session: AsyncSession = Depends(get_session)
+    session: AsyncSession = Depends(get_session),
 ):
     """
     Get detected bottlenecks
@@ -90,16 +84,13 @@ async def get_bottlenecks(
     bottlenecks = await detector.find_top_bottlenecks(limit, endpoint, severity)
 
     return {
-        'count': len(bottlenecks),
-        'bottlenecks': bottlenecks,
+        "count": len(bottlenecks),
+        "bottlenecks": bottlenecks,
     }
 
 
 @router.get("/bottlenecks/{bottleneck_id}/fix")
-async def get_bottleneck_fix(
-    bottleneck_id: int,
-    session: AsyncSession = Depends(get_session)
-):
+async def get_bottleneck_fix(bottleneck_id: int, session: AsyncSession = Depends(get_session)):
     """
     Get specific fix suggestions for a bottleneck
 
@@ -108,17 +99,14 @@ async def get_bottleneck_fix(
     detector = BottleneckDetector(session)
     fix_suggestions = await detector.generate_fix_suggestions(bottleneck_id)
 
-    if 'error' in fix_suggestions:
-        raise HTTPException(status_code=404, detail=fix_suggestions['error'])
+    if "error" in fix_suggestions:
+        raise HTTPException(status_code=404, detail=fix_suggestions["error"])
 
     return fix_suggestions
 
 
 @router.get("/slow-endpoints")
-async def get_slow_endpoints(
-    hours: int = Query(default=24, ge=1, le=168),
-    session: AsyncSession = Depends(get_session)
-):
+async def get_slow_endpoints(hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session)):
     """
     Analyze slowest endpoints
 
@@ -128,18 +116,14 @@ async def get_slow_endpoints(
     slow_endpoints = await detector.analyze_slow_endpoints(hours)
 
     return {
-        'count': len(slow_endpoints),
-        'time_window_hours': hours,
-        'endpoints': slow_endpoints,
+        "count": len(slow_endpoints),
+        "time_window_hours": hours,
+        "endpoints": slow_endpoints,
     }
 
 
 @router.get("/trends/{endpoint:path}")
-async def get_endpoint_trends(
-    endpoint: str,
-    hours: int = Query(default=24, ge=1, le=168),
-    session: AsyncSession = Depends(get_session)
-):
+async def get_endpoint_trends(endpoint: str, hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session)):
     """
     Get performance trends for a specific endpoint
 
@@ -148,16 +132,14 @@ async def get_endpoint_trends(
     detector = BottleneckDetector(session)
     trends = await detector.get_performance_trends(f"/{endpoint}", hours)
 
-    if 'error' in trends:
-        raise HTTPException(status_code=404, detail=trends['error'])
+    if "error" in trends:
+        raise HTTPException(status_code=404, detail=trends["error"])
 
     return trends
 
 
 @router.get("/n-plus-one")
-async def detect_n_plus_one(
-    session: AsyncSession = Depends(get_session)
-):
+async def detect_n_plus_one(session: AsyncSession = Depends(get_session)):
     """
     Detect N+1 query problems
 
@@ -167,16 +149,13 @@ async def detect_n_plus_one(
     issues = await detector.detect_n_plus_one_queries()
 
     return {
-        'count': len(issues),
-        'issues': issues,
+        "count": len(issues),
+        "issues": issues,
     }
 
 
 @router.get("/memory-leaks")
-async def detect_memory_leaks(
-    hours: int = Query(default=24, ge=1, le=168),
-    session: AsyncSession = Depends(get_session)
-):
+async def detect_memory_leaks(hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session)):
     """
     Detect potential memory leaks
 
@@ -186,16 +165,14 @@ async def detect_memory_leaks(
     leaks = await detector.find_memory_leaks(hours)
 
     return {
-        'count': len(leaks),
-        'time_window_hours': hours,
-        'potential_leaks': leaks,
+        "count": len(leaks),
+        "time_window_hours": hours,
+        "potential_leaks": leaks,
     }
 
 
 @router.get("/optimization-suggestions")
-async def get_optimization_suggestions(
-    session: AsyncSession = Depends(get_session)
-):
+async def get_optimization_suggestions(session: AsyncSession = Depends(get_session)):
     """
     Get all optimization suggestions
 
@@ -218,8 +195,8 @@ async def get_cache_stats():
     suggestions = cache.get_cache_suggestions()
 
     return {
-        'stats': stats,
-        'suggestions': suggestions,
+        "stats": stats,
+        "suggestions": suggestions,
     }
 
 
@@ -233,15 +210,13 @@ async def clear_cache():
     success = await cache.clear()
 
     if success:
-        return {'message': 'Cache cleared successfully'}
+        return {"message": "Cache cleared successfully"}
     else:
-        raise HTTPException(status_code=500, detail='Failed to clear cache')
+        raise HTTPException(status_code=500, detail="Failed to clear cache")
 
 
 @router.get("/summary")
-async def get_performance_summary(
-    session: AsyncSession = Depends(get_session)
-):
+async def get_performance_summary(session: AsyncSession = Depends(get_session)):
     """
     Get quick performance summary
 
@@ -251,23 +226,23 @@ async def get_performance_summary(
     optimizer = PerformanceOptimizer(session)
 
     # Get top 5 critical bottlenecks
-    bottlenecks = await detector.find_top_bottlenecks(limit=5, severity='critical')
+    bottlenecks = await detector.find_top_bottlenecks(limit=5, severity="critical")
 
     # Get high-impact optimization suggestions
     opt_report = await optimizer.get_optimization_report()
-    high_impact_suggestions = opt_report['top_suggestions'][:5]
+    high_impact_suggestions = opt_report["top_suggestions"][:5]
 
     return {
-        'title': '🔥 Performance Summary: Fix These 5 Things Now',
-        'critical_bottlenecks': [
+        "title": "🔥 Performance Summary: Fix These 5 Things Now",
+        "critical_bottlenecks": [
             {
-                'location': f"{b.file_path}:{b.line_number}" if b.file_path else 'unknown',
-                'function': b.function_name,
-                'impact': f"{b.percentage:.1f}% of request time",
-                'severity': b.severity,
+                "location": f"{b.file_path}:{b.line_number}" if b.file_path else "unknown",
+                "function": b.function_name,
+                "impact": f"{b.percentage:.1f}% of request time",
+                "severity": b.severity,
             }
             for b in bottlenecks
         ],
-        'top_optimizations': high_impact_suggestions,
-        'cache_stats': await cache.get_stats(),
+        "top_optimizations": high_impact_suggestions,
+        "cache_stats": await cache.get_stats(),
     }

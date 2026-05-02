@@ -27,47 +27,43 @@ logger = logging.getLogger(__name__)
 # Analysis type to plot type mapping
 ANALYSIS_PLOT_MAPPING = {
     # Statistical tests
-    't_test': 'box_plot_with_points',
-    't-test': 'box_plot_with_points',
-    'ttest': 'box_plot_with_points',
-    'anova': 'box_plot_with_points',
-    'mann_whitney': 'box_plot_with_points',
-    'wilcoxon': 'box_plot_with_points',
-
+    "t_test": "box_plot_with_points",
+    "t-test": "box_plot_with_points",
+    "ttest": "box_plot_with_points",
+    "anova": "box_plot_with_points",
+    "mann_whitney": "box_plot_with_points",
+    "wilcoxon": "box_plot_with_points",
     # Correlation/regression
-    'correlation': 'scatter_with_regression',
-    'regression': 'scatter_with_regression',
-    'pearson': 'scatter_with_regression',
-    'spearman': 'scatter_with_regression',
-    'linear_regression': 'scatter_with_regression',
-
+    "correlation": "scatter_with_regression",
+    "regression": "scatter_with_regression",
+    "pearson": "scatter_with_regression",
+    "spearman": "scatter_with_regression",
+    "linear_regression": "scatter_with_regression",
     # Scaling analysis
-    'log_log': 'log_log_plot',
-    'log-log': 'log_log_plot',
-    'power_law': 'log_log_plot',
-    'scaling': 'log_log_plot',
-
+    "log_log": "log_log_plot",
+    "log-log": "log_log_plot",
+    "power_law": "log_log_plot",
+    "scaling": "log_log_plot",
     # Distribution
-    'distribution': 'violin_plot',
-    'normality': 'qq_plot',
-    'qq': 'qq_plot',
-
+    "distribution": "violin_plot",
+    "normality": "qq_plot",
+    "qq": "qq_plot",
     # Multi-variable
-    'heatmap': 'custom_heatmap',
-    'correlation_matrix': 'custom_heatmap',
-    'differential_expression': 'volcano_plot',
-    'volcano': 'volcano_plot',
-
+    "heatmap": "custom_heatmap",
+    "correlation_matrix": "custom_heatmap",
+    "differential_expression": "volcano_plot",
+    "volcano": "volcano_plot",
     # ML
-    'ml': 'scatter_with_regression',
-    'classification': 'scatter_with_regression',
-    'prediction': 'scatter_with_regression',
+    "ml": "scatter_with_regression",
+    "classification": "scatter_with_regression",
+    "prediction": "scatter_with_regression",
 }
 
 
 @dataclass
 class FigureMetadata:
     """Metadata for a generated figure."""
+
     path: str
     plot_type: str
     analysis_type: str
@@ -113,12 +109,7 @@ class FigureManager:
         ```
     """
 
-    def __init__(
-        self,
-        artifacts_dir: str | Path,
-        default_dpi: int = 300,
-        use_visualizer: bool = True
-    ):
+    def __init__(self, artifacts_dir: str | Path, default_dpi: int = 300, use_visualizer: bool = True):
         """
         Initialize FigureManager.
 
@@ -143,6 +134,7 @@ class FigureManager:
         if self._visualizer is None and self._use_visualizer:
             try:
                 from kosmos.analysis.visualization import PublicationVisualizer
+
                 self._visualizer = PublicationVisualizer()
                 logger.info("PublicationVisualizer loaded")
             except ImportError as e:
@@ -166,13 +158,7 @@ class FigureManager:
         figures_dir.mkdir(parents=True, exist_ok=True)
         return figures_dir
 
-    def get_figure_path(
-        self,
-        cycle: int,
-        task_id: int,
-        plot_type: str,
-        suffix: str = "png"
-    ) -> Path:
+    def get_figure_path(self, cycle: int, task_id: int, plot_type: str, suffix: str = "png") -> Path:
         """
         Generate unique figure path.
 
@@ -191,12 +177,7 @@ class FigureManager:
         filename = f"task_{task_id}_{plot_type}.{suffix}"
         return figures_dir / filename
 
-    def select_plot_type(
-        self,
-        analysis_type: str,
-        n_groups: int | None = None,
-        n_variables: int | None = None
-    ) -> str:
+    def select_plot_type(self, analysis_type: str, n_groups: int | None = None, n_variables: int | None = None) -> str:
         """
         Select appropriate plot type based on analysis type.
 
@@ -209,7 +190,7 @@ class FigureManager:
             Plot type string (e.g., "box_plot_with_points", "scatter_with_regression")
         """
         # Normalize analysis type
-        analysis_lower = analysis_type.lower().replace(' ', '_').replace('-', '_')
+        analysis_lower = analysis_type.lower().replace(" ", "_").replace("-", "_")
 
         # Check direct mapping
         if analysis_lower in ANALYSIS_PLOT_MAPPING:
@@ -223,25 +204,19 @@ class FigureManager:
         # Heuristics based on data shape
         if n_groups is not None and n_groups >= 2:
             if n_groups <= 4:
-                return 'box_plot_with_points'
+                return "box_plot_with_points"
             else:
-                return 'violin_plot'
+                return "violin_plot"
 
         if n_variables is not None and n_variables >= 3:
-            return 'custom_heatmap'
+            return "custom_heatmap"
 
         # Default to box plot
         logger.warning(f"No plot type mapping for '{analysis_type}', defaulting to box_plot_with_points")
-        return 'box_plot_with_points'
+        return "box_plot_with_points"
 
     def generate_figure(
-        self,
-        data: dict[str, Any],
-        analysis_type: str,
-        cycle: int,
-        task_id: int,
-        title: str | None = None,
-        **kwargs
+        self, data: dict[str, Any], analysis_type: str, cycle: int, task_id: int, title: str | None = None, **kwargs
     ) -> FigureMetadata | None:
         """
         Generate a figure and track metadata.
@@ -268,7 +243,7 @@ class FigureManager:
         output_path = self.get_figure_path(cycle, task_id, plot_type)
 
         # Get DPI (higher for log-log plots)
-        dpi = 600 if plot_type == 'log_log_plot' else self.default_dpi
+        dpi = 600 if plot_type == "log_log_plot" else self.default_dpi
 
         try:
             # Route to appropriate visualization method
@@ -277,7 +252,7 @@ class FigureManager:
                 data=data,
                 output_path=output_path,
                 title=title or f"Task {task_id} - {analysis_type.replace('_', ' ').title()}",
-                **kwargs
+                **kwargs,
             )
 
             # Create metadata
@@ -286,9 +261,9 @@ class FigureManager:
                 plot_type=plot_type,
                 analysis_type=analysis_type,
                 dpi=dpi,
-                caption=kwargs.get('caption', f"Figure for {analysis_type} analysis"),
+                caption=kwargs.get("caption", f"Figure for {analysis_type} analysis"),
                 cycle=cycle,
-                task_id=task_id
+                task_id=task_id,
             )
 
             self.generated_figures.append(metadata)
@@ -300,14 +275,7 @@ class FigureManager:
             logger.error(f"Failed to generate figure: {e}")
             return None
 
-    def _render_figure(
-        self,
-        plot_type: str,
-        data: dict[str, Any],
-        output_path: Path,
-        title: str,
-        **kwargs
-    ) -> str:
+    def _render_figure(self, plot_type: str, data: dict[str, Any], output_path: Path, title: str, **kwargs) -> str:
         """
         Render figure using PublicationVisualizer.
 
@@ -323,65 +291,53 @@ class FigureManager:
         """
         viz = self.visualizer
 
-        if plot_type == 'box_plot_with_points':
+        if plot_type == "box_plot_with_points":
             return viz.box_plot_with_points(
-                data=data.get('groups', data),
-                title=title,
-                y_label=kwargs.get('y_label', 'Value'),
-                output_path=str(output_path)
+                data=data.get("groups", data), title=title, y_label=kwargs.get("y_label", "Value"), output_path=str(output_path)
             )
 
-        elif plot_type == 'scatter_with_regression':
+        elif plot_type == "scatter_with_regression":
             return viz.scatter_with_regression(
-                x=np.array(data.get('x', [])),
-                y=np.array(data.get('y', [])),
-                x_label=kwargs.get('x_label', 'X'),
-                y_label=kwargs.get('y_label', 'Y'),
+                x=np.array(data.get("x", [])),
+                y=np.array(data.get("y", [])),
+                x_label=kwargs.get("x_label", "X"),
+                y_label=kwargs.get("y_label", "Y"),
                 title=title,
-                output_path=str(output_path)
+                output_path=str(output_path),
             )
 
-        elif plot_type == 'log_log_plot':
+        elif plot_type == "log_log_plot":
             return viz.log_log_plot(
-                x=np.array(data.get('x', [])),
-                y=np.array(data.get('y', [])),
-                x_label=kwargs.get('x_label', 'X'),
-                y_label=kwargs.get('y_label', 'Y'),
+                x=np.array(data.get("x", [])),
+                y=np.array(data.get("y", [])),
+                x_label=kwargs.get("x_label", "X"),
+                y_label=kwargs.get("y_label", "Y"),
                 title=title,
-                output_path=str(output_path)
+                output_path=str(output_path),
             )
 
-        elif plot_type == 'violin_plot':
-            return viz.violin_plot(
-                data=data.get('groups', data),
-                title=title,
-                y_label=kwargs.get('y_label', 'Value'),
-                output_path=str(output_path)
-            )
+        elif plot_type == "violin_plot":
+            return viz.violin_plot(data=data.get("groups", data), title=title, y_label=kwargs.get("y_label", "Value"), output_path=str(output_path))
 
-        elif plot_type == 'qq_plot':
-            return viz.qq_plot(
-                data=np.array(data.get('values', data.get('data', []))),
-                title=title,
-                output_path=str(output_path)
-            )
+        elif plot_type == "qq_plot":
+            return viz.qq_plot(data=np.array(data.get("values", data.get("data", []))), title=title, output_path=str(output_path))
 
-        elif plot_type == 'custom_heatmap':
+        elif plot_type == "custom_heatmap":
             return viz.custom_heatmap(
-                data=np.array(data.get('matrix', [])),
-                row_labels=data.get('row_labels', []),
-                col_labels=data.get('col_labels', []),
+                data=np.array(data.get("matrix", [])),
+                row_labels=data.get("row_labels", []),
+                col_labels=data.get("col_labels", []),
                 title=title,
-                output_path=str(output_path)
+                output_path=str(output_path),
             )
 
-        elif plot_type == 'volcano_plot':
+        elif plot_type == "volcano_plot":
             return viz.volcano_plot(
-                log2fc=np.array(data.get('log2fc', [])),
-                p_values=np.array(data.get('p_values', [])),
-                labels=data.get('labels'),
+                log2fc=np.array(data.get("log2fc", [])),
+                p_values=np.array(data.get("p_values", [])),
+                labels=data.get("labels"),
                 title=title,
-                output_path=str(output_path)
+                output_path=str(output_path),
             )
 
         else:
@@ -402,10 +358,10 @@ class FigureManager:
     def to_dict(self) -> dict:
         """Serialize figure manager state to dictionary."""
         return {
-            'artifacts_dir': str(self.artifacts_dir),
-            'default_dpi': self.default_dpi,
-            'figure_count': self.get_figure_count(),
-            'figures': [f.to_dict() for f in self.generated_figures]
+            "artifacts_dir": str(self.artifacts_dir),
+            "default_dpi": self.default_dpi,
+            "figure_count": self.get_figure_count(),
+            "figures": [f.to_dict() for f in self.generated_figures],
         }
 
 
@@ -415,7 +371,7 @@ def generate_code_figure_block(
     measure_var: str | None = None,
     x_var: str | None = None,
     y_var: str | None = None,
-    title: str = "Analysis Results"
+    title: str = "Analysis Results",
 ) -> list[str]:
     """
     Generate code lines for figure creation in code templates.
@@ -438,73 +394,85 @@ def generate_code_figure_block(
         "# Generate publication-quality figure",
         "from kosmos.analysis.visualization import PublicationVisualizer",
         "viz = PublicationVisualizer()",
-        ""
+        "",
     ]
 
-    if plot_type == 'box_plot_with_points':
+    if plot_type == "box_plot_with_points":
         if group_var and measure_var:
-            code_lines.extend([
-                "# Create data dictionary for box plot",
-                f"groups = df['{group_var}'].unique()",
-                f"plot_data = {{str(g): df[df['{group_var}']==g]['{measure_var}'].values for g in groups}}",
-                "",
-                "# Generate box plot",
-                "if 'figure_path' in dir():",
-                "    viz.box_plot_with_points(",
-                "        data=plot_data,",
-                f"        title='{title}',",
-                f"        y_label='{measure_var}',",
-                "        output_path=str(figure_path)",
-                "    )",
-                "    results['figure_path'] = str(figure_path)",
-            ])
+            code_lines.extend(
+                [
+                    "# Create data dictionary for box plot",
+                    f"groups = df['{group_var}'].unique()",
+                    f"plot_data = {{str(g): df[df['{group_var}']==g]['{measure_var}'].values for g in groups}}",
+                    "",
+                    "# Generate box plot",
+                    "if 'figure_path' in dir():",
+                    "    viz.box_plot_with_points(",
+                    "        data=plot_data,",
+                    f"        title='{title}',",
+                    f"        y_label='{measure_var}',",
+                    "        output_path=str(figure_path)",
+                    "    )",
+                    "    results['figure_path'] = str(figure_path)",
+                ]
+            )
         else:
-            code_lines.extend([
-                "# Box plot (requires group and measure variables)",
-                "# plot_data = {'Group1': values1, 'Group2': values2}",
-                "# viz.box_plot_with_points(data=plot_data, output_path=figure_path)",
-            ])
+            code_lines.extend(
+                [
+                    "# Box plot (requires group and measure variables)",
+                    "# plot_data = {'Group1': values1, 'Group2': values2}",
+                    "# viz.box_plot_with_points(data=plot_data, output_path=figure_path)",
+                ]
+            )
 
-    elif plot_type == 'scatter_with_regression':
+    elif plot_type == "scatter_with_regression":
         if x_var and y_var:
-            code_lines.extend([
-                "# Generate scatter plot with regression",
-                "if 'figure_path' in dir():",
-                "    viz.scatter_with_regression(",
-                f"        x=df['{x_var}'].values,",
-                f"        y=df['{y_var}'].values,",
-                f"        x_label='{x_var}',",
-                f"        y_label='{y_var}',",
-                f"        title='{title}',",
-                "        output_path=str(figure_path)",
-                "    )",
-                "    results['figure_path'] = str(figure_path)",
-            ])
+            code_lines.extend(
+                [
+                    "# Generate scatter plot with regression",
+                    "if 'figure_path' in dir():",
+                    "    viz.scatter_with_regression(",
+                    f"        x=df['{x_var}'].values,",
+                    f"        y=df['{y_var}'].values,",
+                    f"        x_label='{x_var}',",
+                    f"        y_label='{y_var}',",
+                    f"        title='{title}',",
+                    "        output_path=str(figure_path)",
+                    "    )",
+                    "    results['figure_path'] = str(figure_path)",
+                ]
+            )
         else:
-            code_lines.extend([
-                "# Scatter plot (requires x and y variables)",
-                "# viz.scatter_with_regression(x=x_data, y=y_data, output_path=figure_path)",
-            ])
+            code_lines.extend(
+                [
+                    "# Scatter plot (requires x and y variables)",
+                    "# viz.scatter_with_regression(x=x_data, y=y_data, output_path=figure_path)",
+                ]
+            )
 
-    elif plot_type == 'log_log_plot':
+    elif plot_type == "log_log_plot":
         if x_var and y_var:
-            code_lines.extend([
-                "# Generate log-log plot",
-                "if 'figure_path' in dir():",
-                "    viz.log_log_plot(",
-                f"        x=df['{x_var}'].values,",
-                f"        y=df['{y_var}'].values,",
-                f"        x_label='{x_var}',",
-                f"        y_label='{y_var}',",
-                f"        title='{title}',",
-                "        output_path=str(figure_path)",
-                "    )",
-                "    results['figure_path'] = str(figure_path)",
-            ])
+            code_lines.extend(
+                [
+                    "# Generate log-log plot",
+                    "if 'figure_path' in dir():",
+                    "    viz.log_log_plot(",
+                    f"        x=df['{x_var}'].values,",
+                    f"        y=df['{y_var}'].values,",
+                    f"        x_label='{x_var}',",
+                    f"        y_label='{y_var}',",
+                    f"        title='{title}',",
+                    "        output_path=str(figure_path)",
+                    "    )",
+                    "    results['figure_path'] = str(figure_path)",
+                ]
+            )
         else:
-            code_lines.extend([
-                "# Log-log plot (requires x and y variables)",
-                "# viz.log_log_plot(x=x_data, y=y_data, output_path=figure_path)",
-            ])
+            code_lines.extend(
+                [
+                    "# Log-log plot (requires x and y variables)",
+                    "# viz.log_log_plot(x=x_data, y=y_data, output_path=figure_path)",
+                ]
+            )
 
     return code_lines

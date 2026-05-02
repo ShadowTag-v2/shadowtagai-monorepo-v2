@@ -100,9 +100,11 @@ def benchmark_quantization(
     quant_fp8 = QuantFP8(False, group_shape, column_major_scales=col_major)
 
     if provider == "torch":
+
         def fn():
             return bench_compile(quant_fp8.forward_native)(x.clone())
     elif provider == "cuda":
+
         def fn():
             return quant_fp8.forward_cuda(x.clone())
     elif provider == "triton":

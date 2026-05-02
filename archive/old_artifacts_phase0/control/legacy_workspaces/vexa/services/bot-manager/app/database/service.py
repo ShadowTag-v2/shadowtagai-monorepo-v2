@@ -10,6 +10,7 @@ from .models import Meeting, Transcription, User
 
 logger = logging.getLogger(__name__)
 
+
 class TranscriptionService:
     """Service for managing transcription data in the database"""
 
@@ -39,12 +40,7 @@ class TranscriptionService:
             TranscriptionService.get_or_create_user(user_id)
 
             # Create meeting
-            meeting = Meeting(
-                id=meeting_id,
-                user_id=user_id,
-                title=title,
-                start_time=datetime.utcnow()
-            )
+            meeting = Meeting(id=meeting_id, user_id=user_id, title=title, start_time=datetime.utcnow())
             session.add(meeting)
             session.commit()
             logger.info(f"Created meeting: {meeting_id} for user: {user_id}")
@@ -88,13 +84,7 @@ class TranscriptionService:
                 return None
 
             # Create transcription
-            transcription = Transcription(
-                meeting_id=meeting_id,
-                speaker=speaker,
-                content=content,
-                timestamp=datetime.utcnow(),
-                confidence=confidence
-            )
+            transcription = Transcription(meeting_id=meeting_id, speaker=speaker, content=content, timestamp=datetime.utcnow(), confidence=confidence)
             session.add(transcription)
             session.commit()
             logger.info(f"Added transcription to meeting: {meeting_id}")
@@ -123,13 +113,9 @@ class TranscriptionService:
 
             result = []
             for t in transcriptions:
-                result.append({
-                    "id": t.id,
-                    "speaker": t.speaker,
-                    "content": t.content,
-                    "timestamp": t.timestamp.isoformat(),
-                    "confidence": t.confidence
-                })
+                result.append(
+                    {"id": t.id, "speaker": t.speaker, "content": t.content, "timestamp": t.timestamp.isoformat(), "confidence": t.confidence}
+                )
 
             return result
         except SQLAlchemyError as e:
@@ -147,12 +133,14 @@ class TranscriptionService:
 
             result = []
             for m in meetings:
-                result.append({
-                    "id": m.id,
-                    "title": m.title,
-                    "start_time": m.start_time.isoformat() if m.start_time else None,
-                    "end_time": m.end_time.isoformat() if m.end_time else None
-                })
+                result.append(
+                    {
+                        "id": m.id,
+                        "title": m.title,
+                        "start_time": m.start_time.isoformat() if m.start_time else None,
+                        "end_time": m.end_time.isoformat() if m.end_time else None,
+                    }
+                )
 
             return result
         except SQLAlchemyError as e:

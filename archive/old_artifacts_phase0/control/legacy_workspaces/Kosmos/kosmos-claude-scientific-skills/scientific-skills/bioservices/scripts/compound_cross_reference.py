@@ -26,9 +26,9 @@ from bioservices import KEGG, ChEBI, ChEMBL, UniChem
 
 def search_kegg_compound(compound_name):
     """Search KEGG for compound by name."""
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print("STEP 1: KEGG Compound Search")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
 
     k = KEGG()
 
@@ -66,9 +66,9 @@ def search_kegg_compound(compound_name):
 
 def get_kegg_info(kegg, kegg_id):
     """Retrieve detailed KEGG compound information."""
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print("STEP 2: KEGG Compound Details")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
 
     try:
         print(f"Retrieving KEGG entry for {kegg_id}...")
@@ -80,46 +80,38 @@ def get_kegg_info(kegg, kegg_id):
             return None
 
         # Parse entry
-        compound_info = {
-            'kegg_id': kegg_id,
-            'name': None,
-            'formula': None,
-            'exact_mass': None,
-            'mol_weight': None,
-            'chebi_id': None,
-            'pathways': []
-        }
+        compound_info = {"kegg_id": kegg_id, "name": None, "formula": None, "exact_mass": None, "mol_weight": None, "chebi_id": None, "pathways": []}
 
         current_section = None
 
         for line in entry.split("\n"):
             if line.startswith("NAME"):
-                compound_info['name'] = line.replace("NAME", "").strip().rstrip(";")
+                compound_info["name"] = line.replace("NAME", "").strip().rstrip(";")
 
             elif line.startswith("FORMULA"):
-                compound_info['formula'] = line.replace("FORMULA", "").strip()
+                compound_info["formula"] = line.replace("FORMULA", "").strip()
 
             elif line.startswith("EXACT_MASS"):
-                compound_info['exact_mass'] = line.replace("EXACT_MASS", "").strip()
+                compound_info["exact_mass"] = line.replace("EXACT_MASS", "").strip()
 
             elif line.startswith("MOL_WEIGHT"):
-                compound_info['mol_weight'] = line.replace("MOL_WEIGHT", "").strip()
+                compound_info["mol_weight"] = line.replace("MOL_WEIGHT", "").strip()
 
             elif "ChEBI:" in line:
                 parts = line.split("ChEBI:")
                 if len(parts) > 1:
-                    compound_info['chebi_id'] = parts[1].strip().split()[0]
+                    compound_info["chebi_id"] = parts[1].strip().split()[0]
 
             elif line.startswith("PATHWAY"):
                 current_section = "pathway"
                 pathway = line.replace("PATHWAY", "").strip()
                 if pathway:
-                    compound_info['pathways'].append(pathway)
+                    compound_info["pathways"].append(pathway)
 
             elif current_section == "pathway" and line.startswith("            "):
                 pathway = line.strip()
                 if pathway:
-                    compound_info['pathways'].append(pathway)
+                    compound_info["pathways"].append(pathway)
 
             elif line.startswith(" ") and not line.startswith("            "):
                 current_section = None
@@ -132,10 +124,10 @@ def get_kegg_info(kegg, kegg_id):
         print(f"  Exact Mass: {compound_info['exact_mass']}")
         print(f"  Molecular Weight: {compound_info['mol_weight']}")
 
-        if compound_info['chebi_id']:
+        if compound_info["chebi_id"]:
             print(f"  ChEBI ID: {compound_info['chebi_id']}")
 
-        if compound_info['pathways']:
+        if compound_info["pathways"]:
             print(f"  Pathways: {len(compound_info['pathways'])} found")
 
         return compound_info
@@ -147,9 +139,9 @@ def get_kegg_info(kegg, kegg_id):
 
 def get_chembl_id(kegg_id):
     """Map KEGG ID to ChEMBL via UniChem."""
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print("STEP 3: ChEMBL Mapping (via UniChem)")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
 
     try:
         u = UniChem()
@@ -172,9 +164,9 @@ def get_chembl_id(kegg_id):
 
 def get_chebi_info(chebi_id):
     """Retrieve ChEBI compound information."""
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print("STEP 4: ChEBI Details")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
 
     if not chebi_id:
         print("⊘ No ChEBI ID available")
@@ -196,20 +188,20 @@ def get_chebi_info(chebi_id):
             print(f"  ID: {entity.chebiId}")
             print(f"  Name: {entity.chebiAsciiName}")
 
-            if hasattr(entity, 'Formulae') and entity.Formulae:
+            if hasattr(entity, "Formulae") and entity.Formulae:
                 print(f"  Formula: {entity.Formulae}")
 
-            if hasattr(entity, 'mass') and entity.mass:
+            if hasattr(entity, "mass") and entity.mass:
                 print(f"  Mass: {entity.mass}")
 
-            if hasattr(entity, 'charge') and entity.charge:
+            if hasattr(entity, "charge") and entity.charge:
                 print(f"  Charge: {entity.charge}")
 
             return {
-                'chebi_id': entity.chebiId,
-                'name': entity.chebiAsciiName,
-                'formula': entity.Formulae if hasattr(entity, 'Formulae') else None,
-                'mass': entity.mass if hasattr(entity, 'mass') else None
+                "chebi_id": entity.chebiId,
+                "name": entity.chebiAsciiName,
+                "formula": entity.Formulae if hasattr(entity, "Formulae") else None,
+                "mass": entity.mass if hasattr(entity, "mass") else None,
             }
         else:
             print("✗ Failed to retrieve ChEBI entry")
@@ -222,9 +214,9 @@ def get_chebi_info(chebi_id):
 
 def get_chembl_info(chembl_id):
     """Retrieve ChEMBL compound information."""
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print("STEP 5: ChEMBL Details")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
 
     if not chembl_id:
         print("⊘ No ChEMBL ID available")
@@ -241,29 +233,29 @@ def get_chembl_info(chembl_id):
             print("\n✓ ChEMBL Information:")
             print(f"  ID: {chembl_id}")
 
-            if 'pref_name' in compound and compound['pref_name']:
+            if "pref_name" in compound and compound["pref_name"]:
                 print(f"  Preferred Name: {compound['pref_name']}")
 
-            if 'molecule_properties' in compound:
-                props = compound['molecule_properties']
+            if "molecule_properties" in compound:
+                props = compound["molecule_properties"]
 
-                if 'full_mwt' in props:
+                if "full_mwt" in props:
                     print(f"  Molecular Weight: {props['full_mwt']}")
 
-                if 'alogp' in props:
+                if "alogp" in props:
                     print(f"  LogP: {props['alogp']}")
 
-                if 'hba' in props:
+                if "hba" in props:
                     print(f"  H-Bond Acceptors: {props['hba']}")
 
-                if 'hbd' in props:
+                if "hbd" in props:
                     print(f"  H-Bond Donors: {props['hbd']}")
 
-            if 'molecule_structures' in compound:
-                structs = compound['molecule_structures']
+            if "molecule_structures" in compound:
+                structs = compound["molecule_structures"]
 
-                if 'canonical_smiles' in structs:
-                    smiles = structs['canonical_smiles']
+                if "canonical_smiles" in structs:
+                    smiles = structs["canonical_smiles"]
                     print(f"  SMILES: {smiles[:60]}{'...' if len(smiles) > 60 else ''}")
 
             return compound
@@ -278,11 +270,11 @@ def get_chembl_info(chembl_id):
 
 def save_results(compound_name, kegg_info, chembl_id, output_file):
     """Save results to file."""
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print(f"Saving results to {output_file}")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
 
-    with open(output_file, 'w') as f:
+    with open(output_file, "w") as f:
         f.write("=" * 70 + "\n")
         f.write(f"Compound Cross-Reference Report: {compound_name}\n")
         f.write("=" * 70 + "\n\n")
@@ -304,7 +296,7 @@ def save_results(compound_name, kegg_info, chembl_id, output_file):
         f.write("-" * 70 + "\n")
         if kegg_info:
             f.write(f"KEGG: {kegg_info['kegg_id']}\n")
-            if kegg_info['chebi_id']:
+            if kegg_info["chebi_id"]:
                 f.write(f"ChEBI: {kegg_info['chebi_id']}\n")
         if chembl_id:
             f.write(f"ChEMBL: {chembl_id}\n")
@@ -323,11 +315,10 @@ Examples:
   python compound_cross_reference.py Geldanamycin
   python compound_cross_reference.py "Adenosine triphosphate"
   python compound_cross_reference.py Aspirin --output aspirin_info.txt
-        """
+        """,
     )
     parser.add_argument("compound", help="Compound name to search")
-    parser.add_argument("--output", default=None,
-                       help="Output file for results (optional)")
+    parser.add_argument("--output", default=None, help="Output file for results (optional)")
 
     args = parser.parse_args()
 
@@ -348,25 +339,25 @@ Examples:
     chembl_id = get_chembl_id(kegg_id)
 
     # Step 4: Get ChEBI details
-    if kegg_info and kegg_info['chebi_id']:
-        get_chebi_info(kegg_info['chebi_id'])
+    if kegg_info and kegg_info["chebi_id"]:
+        get_chebi_info(kegg_info["chebi_id"])
 
     # Step 5: Get ChEMBL details
     if chembl_id:
         get_chembl_info(chembl_id)
 
     # Summary
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print("SUMMARY")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
     print(f"  Compound: {args.compound}")
     if kegg_info:
         print(f"  KEGG ID: {kegg_info['kegg_id']}")
-        if kegg_info['chebi_id']:
+        if kegg_info["chebi_id"]:
             print(f"  ChEBI ID: {kegg_info['chebi_id']}")
     if chembl_id:
         print(f"  ChEMBL ID: {chembl_id}")
-    print(f"{'='*70}")
+    print(f"{'=' * 70}")
 
     # Save to file if requested
     if args.output:

@@ -20,38 +20,28 @@ from .common import EvalBaseModel
 
 
 class RubricContent(EvalBaseModel):
-  """The content of a rubric."""
+    """The content of a rubric."""
 
-  text_property: str | None = Field(
-      description=(
-          "The property being evaluated. Example: \"The agent's response is"
-          ' grammatically correct." '
-      )
-  )
+    text_property: str | None = Field(description=('The property being evaluated. Example: "The agent\'s response is grammatically correct." '))
 
 
 class Rubric(EvalBaseModel):
-  """This class represents a single Rubric."""
+    """This class represents a single Rubric."""
 
-  rubric_id: str = Field(
-      description="Unique identifier for the rubric.",
-  )
+    rubric_id: str = Field(
+        description="Unique identifier for the rubric.",
+    )
 
-  rubric_content: RubricContent = Field(
-      description="The actual testable criterion for the rubric."
-  )
+    rubric_content: RubricContent = Field(description="The actual testable criterion for the rubric.")
 
-  description: str | None = Field(
-      default=None,
-      description=(
-          "A description of the rubric that provide details on how the results"
-          " of the rubric assessment be interpreted."
-      ),
-  )
+    description: str | None = Field(
+        default=None,
+        description=("A description of the rubric that provide details on how the results of the rubric assessment be interpreted."),
+    )
 
-  type: str | None = Field(
-      default=None,
-      description="""Optional. A type designator for the rubric, which can
+    type: str | None = Field(
+        default=None,
+        description="""Optional. A type designator for the rubric, which can
       inform how it's evaluated or interpreted by systems or users.
 
       It's recommended to use consistent, well-defined, upper snake_case
@@ -59,22 +49,17 @@ class Rubric(EvalBaseModel):
 
       Examples: "TOOL_USE_QUALITY", "FINAL_RESPONSE_QUALITY",
       "INSTRUCTION_ADHERENCE".""",
-  )
+    )
 
 
 class RubricScore(EvalBaseModel):
-  """The score obtained after applying the rubric to the Agent's response."""
+    """The score obtained after applying the rubric to the Agent's response."""
 
-  rubric_id: str = Field(description="The id of the rubric that was assessed.")
+    rubric_id: str = Field(description="The id of the rubric that was assessed.")
 
-  rationale: str | None = Field(
-      default=None, description="Reasoning/rationale for the score."
-  )
+    rationale: str | None = Field(default=None, description="Reasoning/rationale for the score.")
 
-  score: float | None = Field(
-      default=None,
-      description=(
-          "Score obtained after assessing the rubric. Optional, as assessment"
-          " might not have happened."
-      ),
-  )
+    score: float | None = Field(
+        default=None,
+        description=("Score obtained after assessing the rubric. Optional, as assessment might not have happened."),
+    )

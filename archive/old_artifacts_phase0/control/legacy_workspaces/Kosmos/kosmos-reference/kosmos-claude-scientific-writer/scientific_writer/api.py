@@ -34,7 +34,7 @@ async def generate_paper(
     model: str = "claude-sonnet-4-20250514",
     data_files: list[str] | None = None,
     cwd: str | None = None,
-) -> AsyncGenerator[dict[str, Any], None]:
+) -> AsyncGenerator[dict[str, Any]]:
     """
     Generate a scientific paper asynchronously with progress updates.
 
@@ -105,7 +105,9 @@ async def generate_paper(
     system_instructions = load_system_instructions(work_dir)
 
     # Add conversation continuity instruction
-    system_instructions += "\n\n" + f"""
+    system_instructions += (
+        "\n\n"
+        + f"""
 IMPORTANT - WORKING DIRECTORY:
 - Your working directory is: {work_dir}
 - ALWAYS create paper_outputs folder in this directory: {work_dir}/paper_outputs/
@@ -117,6 +119,7 @@ IMPORTANT - CONVERSATION CONTINUITY:
 - Create a unique timestamped directory in the paper_outputs folder
 - Do NOT assume there's an existing paper unless explicitly told in the prompt context
 """
+    )
 
     # Process data files if provided
 
@@ -196,10 +199,10 @@ IMPORTANT - CONVERSATION CONTINUITY:
                     work_dir,
                     data_file_paths,
                     str(paper_directory),
-                    delete_originals=False  # Don't delete when using programmatic API
+                    delete_originals=False,  # Don't delete when using programmatic API
                 )
                 if processed_info:
-                    manuscript_count = len(processed_info.get('manuscript_files', []))
+                    manuscript_count = len(processed_info.get("manuscript_files", []))
                     message = f"Processed {len(processed_info['all_files'])} file(s)"
                     if manuscript_count > 0:
                         message += f" ({manuscript_count} manuscript(s) copied to drafts/)"
@@ -277,7 +280,8 @@ def _find_most_recent_paper(output_folder: Path, start_time: float) -> Path | No
 
         # Filter to only directories modified after start_time
         recent_dirs = [
-            d for d in paper_dirs
+            d
+            for d in paper_dirs
             if d.stat().st_mtime >= start_time - 5  # 5 second buffer
         ]
 
@@ -304,16 +308,16 @@ def _build_paper_result(paper_dir: Path, file_info: dict[str, Any]) -> PaperResu
         PaperResult object
     """
     # Extract metadata
-    tex_file = file_info['tex_final'] or (file_info['tex_drafts'][0] if file_info['tex_drafts'] else None)
+    tex_file = file_info["tex_final"] or (file_info["tex_drafts"][0] if file_info["tex_drafts"] else None)
 
     title = extract_title_from_tex(tex_file)
     word_count = count_words_in_tex(tex_file)
 
     # Extract topic from directory name
     topic = ""
-    parts = paper_dir.name.split('_', 2)
+    parts = paper_dir.name.split("_", 2)
     if len(parts) >= 3:
-        topic = parts[2].replace('_', ' ')
+        topic = parts[2].replace("_", " ")
 
     metadata = PaperMetadata(
         title=title,
@@ -324,33 +328,33 @@ def _build_paper_result(paper_dir: Path, file_info: dict[str, Any]) -> PaperResu
 
     # Build files object
     files = PaperFiles(
-        pdf_final=file_info['pdf_final'],
-        tex_final=file_info['tex_final'],
-        pdf_drafts=file_info['pdf_drafts'],
-        tex_drafts=file_info['tex_drafts'],
-        bibliography=file_info['bibliography'],
-        figures=file_info['figures'],
-        data=file_info['data'],
-        progress_log=file_info['progress_log'],
-        summary=file_info['summary'],
+        pdf_final=file_info["pdf_final"],
+        tex_final=file_info["tex_final"],
+        pdf_drafts=file_info["pdf_drafts"],
+        tex_drafts=file_info["tex_drafts"],
+        bibliography=file_info["bibliography"],
+        figures=file_info["figures"],
+        data=file_info["data"],
+        progress_log=file_info["progress_log"],
+        summary=file_info["summary"],
     )
 
     # Citations info
-    citation_count = count_citations_in_bib(file_info['bibliography'])
-    citation_style = extract_citation_style(file_info['bibliography'])
+    citation_count = count_citations_in_bib(file_info["bibliography"])
+    citation_style = extract_citation_style(file_info["bibliography"])
 
     citations = {
-        'count': citation_count,
-        'style': citation_style,
-        'file': file_info['bibliography'],
+        "count": citation_count,
+        "style": citation_style,
+        "file": file_info["bibliography"],
     }
 
     # Determine status
     status = "success"
-    compilation_success = file_info['pdf_final'] is not None
+    compilation_success = file_info["pdf_final"] is not None
 
     if not compilation_success:
-        if file_info['tex_final']:
+        if file_info["tex_final"]:
             status = "partial"  # TeX created but PDF failed
         else:
             status = "failed"
@@ -362,7 +366,7 @@ def _build_paper_result(paper_dir: Path, file_info: dict[str, Any]) -> PaperResu
         metadata=metadata,
         files=files,
         citations=citations,
-        figures_count=len(file_info['figures']),
+        figures_count=len(file_info["figures"]),
         compilation_success=compilation_success,
         errors=[],
     )

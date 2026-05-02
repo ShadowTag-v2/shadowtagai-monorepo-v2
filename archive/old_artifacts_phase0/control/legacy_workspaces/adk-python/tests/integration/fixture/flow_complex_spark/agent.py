@@ -87,10 +87,7 @@ Here is an example of the generated question list:
 information_retrieval_agent = Agent(
     model="gemini-1.5-flash",
     name="information_retrieval_agent",
-    description=(
-        "I can help retrieve information related to question_generation_agent's"
-        " question."
-    ),
+    description=("I can help retrieve information related to question_generation_agent's question."),
     instruction="""\
 Inspect all the questions after "[question_generation_agent]: " and answer them.
 
@@ -119,9 +116,7 @@ For the answer of one question:
 question_sources_generation_agent = Agent(
     model="gemini-1.5-flash",
     name="question_sources_generation_agent",
-    description=(
-        "I can help generate questions and retrieve related information."
-    ),
+    description=("I can help generate questions and retrieve related information."),
     instruction="Generate questions and retrieve information.",
     flow="loop",
     sub_agents=[

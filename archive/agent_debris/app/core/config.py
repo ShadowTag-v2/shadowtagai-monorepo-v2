@@ -4,7 +4,6 @@ Application Configuration
 Centralized configuration management using Pydantic settings.
 """
 
-from typing import List
 from pydantic_settings import BaseSettings
 from pydantic import Field
 
@@ -31,10 +30,7 @@ class Settings(BaseSettings):
     CHAIN_DB_PATH: str = "/tmp/shadowtag/chains.db"
 
     # Security
-    SECRET_KEY: str = Field(
-        default="changeme-in-production",
-        description="Secret key for signing tokens"
-    )
+    SECRET_KEY: str = Field(default="changeme-in-production", description="Secret key for signing tokens")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 

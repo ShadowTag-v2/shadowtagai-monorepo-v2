@@ -86,6 +86,7 @@ def run_benchmark(
         with torch.cuda.graph(g):
             function_under_test()
         torch.cuda.synchronize()
+
         def function_under_test():
             return g.replay()
 

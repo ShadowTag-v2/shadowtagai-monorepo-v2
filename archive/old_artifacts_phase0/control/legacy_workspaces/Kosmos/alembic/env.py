@@ -28,6 +28,7 @@ if config.config_file_name is not None:
 # Set target metadata for autogenerate
 target_metadata = Base.metadata
 
+
 def get_url():
     """Get database URL from Kosmos config."""
     try:
@@ -76,10 +77,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection,
-            target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

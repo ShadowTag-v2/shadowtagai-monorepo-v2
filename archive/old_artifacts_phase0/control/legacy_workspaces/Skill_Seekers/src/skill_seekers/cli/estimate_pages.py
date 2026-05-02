@@ -31,20 +31,20 @@ def estimate_pages(config, max_discovery=DEFAULT_MAX_DISCOVERY, timeout=30):
     Returns:
         dict with estimation results
     """
-    base_url = config['base_url']
-    start_urls = config.get('start_urls', [base_url])
-    url_patterns = config.get('url_patterns', {'include': [], 'exclude': []})
-    rate_limit = config.get('rate_limit', DEFAULT_RATE_LIMIT)
+    base_url = config["base_url"]
+    start_urls = config.get("start_urls", [base_url])
+    url_patterns = config.get("url_patterns", {"include": [], "exclude": []})
+    rate_limit = config.get("rate_limit", DEFAULT_RATE_LIMIT)
 
     visited = set()
     pending = list(start_urls)
     discovered = 0
 
-    include_patterns = url_patterns.get('include', [])
-    exclude_patterns = url_patterns.get('exclude', [])
+    include_patterns = url_patterns.get("include", [])
+    exclude_patterns = url_patterns.get("exclude", [])
 
     # Handle unlimited mode
-    unlimited = (max_discovery == -1 or max_discovery is None)
+    unlimited = max_discovery == -1 or max_discovery is None
 
     print(f"🔍 Estimating pages for: {config['name']}")
     print(f"📍 Base URL: {base_url}")
@@ -76,26 +76,26 @@ def estimate_pages(config, max_discovery=DEFAULT_MAX_DISCOVERY, timeout=30):
         if discovered % 10 == 0:
             elapsed = time.time() - start_time
             rate = discovered / elapsed if elapsed > 0 else 0
-            print(f"⏳ Discovered: {discovered} pages ({rate:.1f} pages/sec)", end='\r')
+            print(f"⏳ Discovered: {discovered} pages ({rate:.1f} pages/sec)", end="\r")
 
         try:
             # HEAD request first to check if page exists (faster)
             head_response = requests.head(url, timeout=timeout, allow_redirects=True)
 
             # Skip non-HTML content
-            content_type = head_response.headers.get('Content-Type', '')
-            if 'text/html' not in content_type:
+            content_type = head_response.headers.get("Content-Type", "")
+            if "text/html" not in content_type:
                 continue
 
             # Now GET the page to find links
             response = requests.get(url, timeout=timeout)
             response.raise_for_status()
 
-            soup = BeautifulSoup(response.content, 'html.parser')
+            soup = BeautifulSoup(response.content, "html.parser")
 
             # Find all links
-            for link in soup.find_all('a', href=True):
-                href = link['href']
+            for link in soup.find_all("a", href=True):
+                href = link["href"]
                 full_url = urljoin(url, href)
 
                 # Normalize URL
@@ -124,13 +124,13 @@ def estimate_pages(config, max_discovery=DEFAULT_MAX_DISCOVERY, timeout=30):
 
     # Results
     results = {
-        'discovered': discovered,
-        'pending': len(pending),
-        'estimated_total': discovered + len(pending),
-        'elapsed_seconds': round(elapsed, 2),
-        'discovery_rate': round(discovered / elapsed if elapsed > 0 else 0, 2),
-        'hit_limit': (not unlimited) and (discovered >= max_discovery),
-        'unlimited': unlimited
+        "discovered": discovered,
+        "pending": len(pending),
+        "estimated_total": discovered + len(pending),
+        "elapsed_seconds": round(elapsed, 2),
+        "discovery_rate": round(discovered / elapsed if elapsed > 0 else 0, 2),
+        "hit_limit": (not unlimited) and (discovered >= max_discovery),
+        "unlimited": unlimited,
     }
 
     return results
@@ -139,7 +139,7 @@ def estimate_pages(config, max_discovery=DEFAULT_MAX_DISCOVERY, timeout=30):
 def is_valid_url(url, base_url, include_patterns, exclude_patterns):
     """Check if URL should be crawled"""
     # Must be same domain
-    if not url.startswith(base_url.rstrip('/')):
+    if not url.startswith(base_url.rstrip("/")):
         return False
 
     # Check exclude patterns first
@@ -176,11 +176,11 @@ def print_results(results, config):
     print(f"⏱️  Time Elapsed: {results['elapsed_seconds']}s")
     print(f"⚡ Discovery Rate: {results['discovery_rate']} pages/sec")
 
-    if results.get('unlimited', False):
+    if results.get("unlimited", False):
         print()
         print("✅ UNLIMITED MODE - Discovered all reachable pages")
         print(f"   Total pages: {results['estimated_total']}")
-    elif results['hit_limit']:
+    elif results["hit_limit"]:
         print()
         print("⚠️  Hit discovery limit - actual total may be higher")
         print("   Increase max_discovery parameter for more accurate estimate")
@@ -191,8 +191,8 @@ def print_results(results, config):
     print("=" * 70)
     print()
 
-    estimated = results['estimated_total']
-    current_max = config.get('max_pages', 100)
+    estimated = results["estimated_total"]
+    current_max = config.get("max_pages", 100)
 
     if estimated <= current_max:
         print(f"✅ Current max_pages ({current_max}) is sufficient")
@@ -203,7 +203,7 @@ def print_results(results, config):
         print(f"   (Estimated {estimated} + 50 buffer)")
 
     # Estimate time for full scrape
-    rate_limit = config.get('rate_limit', DEFAULT_RATE_LIMIT)
+    rate_limit = config.get("rate_limit", DEFAULT_RATE_LIMIT)
     estimated_time = (estimated * rate_limit) / 60  # in minutes
 
     print()
@@ -232,7 +232,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description='Estimate page count for Skill Seeker configs',
+        description="Estimate page count for Skill Seeker configs",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -244,16 +244,19 @@ Examples:
 
   # Quick estimate (stop at 100 pages)
   skill-seekers estimate configs/vue.json --max-discovery 100
-        """
+        """,
     )
 
-    parser.add_argument('config', help='Path to config JSON file')
-    parser.add_argument('--max-discovery', '-m', type=int, default=DEFAULT_MAX_DISCOVERY,
-                       help=f'Maximum pages to discover (default: {DEFAULT_MAX_DISCOVERY}, use -1 for unlimited)')
-    parser.add_argument('--unlimited', '-u', action='store_true',
-                       help='Remove discovery limit - discover all pages (same as --max-discovery -1)')
-    parser.add_argument('--timeout', '-t', type=int, default=30,
-                       help='HTTP request timeout in seconds (default: 30)')
+    parser.add_argument("config", help="Path to config JSON file")
+    parser.add_argument(
+        "--max-discovery",
+        "-m",
+        type=int,
+        default=DEFAULT_MAX_DISCOVERY,
+        help=f"Maximum pages to discover (default: {DEFAULT_MAX_DISCOVERY}, use -1 for unlimited)",
+    )
+    parser.add_argument("--unlimited", "-u", action="store_true", help="Remove discovery limit - discover all pages (same as --max-discovery -1)")
+    parser.add_argument("--timeout", "-t", type=int, default=30, help="HTTP request timeout in seconds (default: 30)")
 
     args = parser.parse_args()
 
@@ -269,7 +272,7 @@ Examples:
         print_results(results, config)
 
         # Return exit code based on results
-        if results['hit_limit']:
+        if results["hit_limit"]:
             return 2  # Warning: hit limit
         return 0  # Success
 
@@ -281,5 +284,5 @@ Examples:
         return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

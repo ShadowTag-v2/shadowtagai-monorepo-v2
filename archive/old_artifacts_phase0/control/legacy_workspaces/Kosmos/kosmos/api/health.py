@@ -52,7 +52,7 @@ class HealthChecker:
             "uptime_seconds": round(uptime, 2),
             "checks_performed": self.checks_performed,
             "service": "kosmos-ai-scientist",
-            "version": self._get_version()
+            "version": self._get_version(),
         }
 
     def get_readiness_check(self) -> dict[str, Any]:
@@ -103,7 +103,7 @@ class HealthChecker:
             "timestamp": datetime.utcnow().isoformat(),
             "components": components,
             "service": "kosmos-ai-scientist",
-            "version": self._get_version()
+            "version": self._get_version(),
         }
 
     def get_metrics(self) -> dict[str, Any]:
@@ -128,7 +128,7 @@ class HealthChecker:
         memory_percent = memory.percent
 
         # Disk metrics
-        disk = psutil.disk_usage('/')
+        disk = psutil.disk_usage("/")
         disk_total = disk.total
         disk_used = disk.used
         disk_free = disk.free
@@ -148,13 +148,9 @@ class HealthChecker:
                 "platform_version": platform.version(),
                 "architecture": platform.machine(),
                 "processor": platform.processor(),
-                "python_version": platform.python_version()
+                "python_version": platform.python_version(),
             },
-            "cpu": {
-                "percent": round(cpu_percent, 2),
-                "count": cpu_count,
-                "load_average": self._get_load_average()
-            },
+            "cpu": {"percent": round(cpu_percent, 2), "count": cpu_count, "load_average": self._get_load_average()},
             "memory": {
                 "total_bytes": memory_total,
                 "available_bytes": memory_available,
@@ -162,7 +158,7 @@ class HealthChecker:
                 "percent": round(memory_percent, 2),
                 "total_gb": round(memory_total / (1024**3), 2),
                 "available_gb": round(memory_available / (1024**3), 2),
-                "used_gb": round(memory_used / (1024**3), 2)
+                "used_gb": round(memory_used / (1024**3), 2),
             },
             "disk": {
                 "total_bytes": disk_total,
@@ -171,7 +167,7 @@ class HealthChecker:
                 "percent": round(disk_percent, 2),
                 "total_gb": round(disk_total / (1024**3), 2),
                 "used_gb": round(disk_used / (1024**3), 2),
-                "free_gb": round(disk_free / (1024**3), 2)
+                "free_gb": round(disk_free / (1024**3), 2),
             },
             "process": {
                 "memory_rss_bytes": process_memory.rss,
@@ -180,9 +176,9 @@ class HealthChecker:
                 "memory_vms_mb": round(process_memory.vms / (1024**2), 2),
                 "cpu_percent": round(process_cpu_percent, 2),
                 "num_threads": process.num_threads(),
-                "num_fds": self._get_num_fds(process)
+                "num_fds": self._get_num_fds(process),
             },
-            "uptime_seconds": round(time.time() - self.start_time, 2)
+            "uptime_seconds": round(time.time() - self.start_time, 2),
         }
 
     def _check_database(self) -> dict[str, Any]:
@@ -201,19 +197,11 @@ class HealthChecker:
                 session.execute("SELECT 1")
                 query_time = time.time() - start_time
 
-                return {
-                    "status": "healthy",
-                    "response_time_ms": round(query_time * 1000, 2),
-                    "details": "Database connection successful"
-                }
+                return {"status": "healthy", "response_time_ms": round(query_time * 1000, 2), "details": "Database connection successful"}
 
         except Exception as e:
             logger.error(f"Database health check failed: {e}")
-            return {
-                "status": "unhealthy",
-                "error": str(e),
-                "details": "Database connection failed"
-            }
+            return {"status": "unhealthy", "error": str(e), "details": "Database connection failed"}
 
     def _check_cache(self) -> dict[str, Any]:
         """
@@ -229,15 +217,11 @@ class HealthChecker:
             if redis_enabled:
                 # Try to connect to Redis
                 import redis
+
                 redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 
                 start_time = time.time()
-                client = redis.from_url(
-                    redis_url,
-                    socket_timeout=5,
-                    socket_connect_timeout=5,
-                    decode_responses=True
-                )
+                client = redis.from_url(redis_url, socket_timeout=5, socket_connect_timeout=5, decode_responses=True)
                 client.ping()
                 response_time = time.time() - start_time
 
@@ -252,25 +236,16 @@ class HealthChecker:
                     "info": {
                         "version": info.get("redis_version"),
                         "used_memory_mb": round(info.get("used_memory", 0) / (1024**2), 2),
-                        "connected_clients": info.get("connected_clients", 0)
-                    }
+                        "connected_clients": info.get("connected_clients", 0),
+                    },
                 }
             else:
                 # In-memory cache (always available)
-                return {
-                    "status": "healthy",
-                    "type": "memory",
-                    "details": "In-memory cache active"
-                }
+                return {"status": "healthy", "type": "memory", "details": "In-memory cache active"}
 
         except Exception as e:
             logger.error(f"Cache health check failed: {e}")
-            return {
-                "status": "unhealthy",
-                "type": "redis" if redis_enabled else "memory",
-                "error": str(e),
-                "details": "Cache connection failed"
-            }
+            return {"status": "unhealthy", "type": "redis" if redis_enabled else "memory", "error": str(e), "details": "Cache connection failed"}
 
     def _check_external_apis(self) -> dict[str, Any]:
         """
@@ -284,45 +259,24 @@ class HealthChecker:
             api_key = os.getenv("ANTHROPIC_API_KEY")
 
             if not api_key:
-                return {
-                    "status": "unhealthy",
-                    "details": "Anthropic API key not configured",
-                    "error": "ANTHROPIC_API_KEY not set"
-                }
+                return {"status": "unhealthy", "details": "Anthropic API key not configured", "error": "ANTHROPIC_API_KEY not set"}
 
             # Check if it's the CLI mode (all 9s)
             is_cli_mode = api_key == "9" * len(api_key)
 
             if is_cli_mode:
-                return {
-                    "status": "healthy",
-                    "mode": "cli",
-                    "details": "Claude Code CLI mode configured"
-                }
+                return {"status": "healthy", "mode": "cli", "details": "Claude Code CLI mode configured"}
             else:
                 # For API mode, we don't want to make actual API calls in health checks
                 # Just verify the key format
                 if api_key.startswith("sk-ant-"):
-                    return {
-                        "status": "healthy",
-                        "mode": "api",
-                        "details": "Anthropic API key configured"
-                    }
+                    return {"status": "healthy", "mode": "api", "details": "Anthropic API key configured"}
                 else:
-                    return {
-                        "status": "warning",
-                        "mode": "api",
-                        "details": "API key format unexpected",
-                        "warning": "Key doesn't start with sk-ant-"
-                    }
+                    return {"status": "warning", "mode": "api", "details": "API key format unexpected", "warning": "Key doesn't start with sk-ant-"}
 
         except Exception as e:
             logger.error(f"External API health check failed: {e}")
-            return {
-                "status": "unhealthy",
-                "error": str(e),
-                "details": "External API check failed"
-            }
+            return {"status": "unhealthy", "error": str(e), "details": "External API check failed"}
 
     def _check_neo4j(self) -> dict[str, Any]:
         """
@@ -339,10 +293,7 @@ class HealthChecker:
             password = os.getenv("NEO4J_PASSWORD")
 
             if not password:
-                return {
-                    "status": "not_configured",
-                    "details": "Neo4j password not configured (optional)"
-                }
+                return {"status": "not_configured", "details": "Neo4j password not configured (optional)"}
 
             start_time = time.time()
             driver = GraphDatabase.driver(uri, auth=(user, password))
@@ -353,24 +304,17 @@ class HealthChecker:
 
             driver.close()
 
-            return {
-                "status": "healthy",
-                "response_time_ms": round(response_time * 1000, 2),
-                "details": "Neo4j connection successful"
-            }
+            return {"status": "healthy", "response_time_ms": round(response_time * 1000, 2), "details": "Neo4j connection successful"}
 
         except Exception as e:
             logger.warning(f"Neo4j health check failed (optional component): {e}")
-            return {
-                "status": "unavailable",
-                "details": "Neo4j not available (optional component)",
-                "error": str(e)
-            }
+            return {"status": "unavailable", "details": "Neo4j not available (optional component)", "error": str(e)}
 
     def _get_version(self) -> str:
         """Get Kosmos version."""
         try:
             from kosmos import __version__
+
             return __version__
         except Exception:
             return "unknown"
@@ -378,7 +322,7 @@ class HealthChecker:
     def _get_load_average(self) -> list | None:
         """Get system load average (Unix only)."""
         try:
-            if hasattr(os, 'getloadavg'):
+            if hasattr(os, "getloadavg"):
                 load = os.getloadavg()
                 return [round(l, 2) for l in load]
             return None
@@ -388,7 +332,7 @@ class HealthChecker:
     def _get_num_fds(self, process) -> int | None:
         """Get number of file descriptors (Unix only)."""
         try:
-            if hasattr(process, 'num_fds'):
+            if hasattr(process, "num_fds"):
                 return process.num_fds()
             return None
         except Exception:

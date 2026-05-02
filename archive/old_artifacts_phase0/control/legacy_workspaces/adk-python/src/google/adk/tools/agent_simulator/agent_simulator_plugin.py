@@ -23,15 +23,13 @@ from google.adk.tools.tool_context import ToolContext
 
 
 class AgentSimulatorPlugin(BasePlugin):
-  """ADK Plugin for AgentSimulator."""
+    """ADK Plugin for AgentSimulator."""
 
-  name: str = "AgentSimulator"
+    name: str = "AgentSimulator"
 
-  def __init__(self, simulator_engine: AgentSimulatorEngine):
-    self._simulator_engine = simulator_engine
+    def __init__(self, simulator_engine: AgentSimulatorEngine):
+        self._simulator_engine = simulator_engine
 
-  async def before_tool_callback(
-      self, tool: BaseTool, tool_args: dict[str, Any], tool_context: ToolContext
-  ) -> dict[str, Any] | None:
-    """Invokes the AgentSimulatorEngine before a tool call."""
-    return await self._simulator_engine.simulate(tool, tool_args, tool_context)
+    async def before_tool_callback(self, tool: BaseTool, tool_args: dict[str, Any], tool_context: ToolContext) -> dict[str, Any] | None:
+        """Invokes the AgentSimulatorEngine before a tool call."""
+        return await self._simulator_engine.simulate(tool, tool_args, tool_context)

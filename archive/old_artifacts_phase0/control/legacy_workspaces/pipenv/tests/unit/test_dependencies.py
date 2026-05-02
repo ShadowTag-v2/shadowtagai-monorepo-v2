@@ -33,10 +33,12 @@ def test_entry_get_cleaned_dict_preserves_file_url():
     When a transitive dependency uses a PEP 508 file:// URL,
     the file key must be preserved in the lockfile entry.
     """
-    entry = _make_entry({
-        "name": "local-child-pkg",
-        "file": "file:///home/user/project/vendor/local-child-pkg",
-    })
+    entry = _make_entry(
+        {
+            "name": "local-child-pkg",
+            "file": "file:///home/user/project/vendor/local-child-pkg",
+        }
+    )
     cleaned = entry.get_cleaned_dict
     assert "file" in cleaned
     assert cleaned["file"] == "file:///home/user/project/vendor/local-child-pkg"
@@ -45,10 +47,12 @@ def test_entry_get_cleaned_dict_preserves_file_url():
 
 def test_entry_get_cleaned_dict_preserves_path():
     """Test that path entries are preserved in get_cleaned_dict."""
-    entry = _make_entry({
-        "name": "my-local-pkg",
-        "path": "vendor/my-local-pkg",
-    })
+    entry = _make_entry(
+        {
+            "name": "my-local-pkg",
+            "path": "vendor/my-local-pkg",
+        }
+    )
     cleaned = entry.get_cleaned_dict
     assert "path" in cleaned
     assert cleaned["path"] == "vendor/my-local-pkg"
@@ -56,11 +60,13 @@ def test_entry_get_cleaned_dict_preserves_path():
 
 def test_entry_get_cleaned_dict_no_file_or_path():
     """Test that regular PyPI packages don't get spurious file/path keys."""
-    entry = _make_entry({
-        "name": "requests",
-        "version": "==2.28.1",
-        "hashes": ["sha256:abc123"],
-    })
+    entry = _make_entry(
+        {
+            "name": "requests",
+            "version": "==2.28.1",
+            "hashes": ["sha256:abc123"],
+        }
+    )
     cleaned = entry.get_cleaned_dict
     assert "file" not in cleaned
     assert "path" not in cleaned
@@ -69,11 +75,7 @@ def test_entry_get_cleaned_dict_no_file_or_path():
 
 def test_clean_resolved_dep_with_vcs_url():
     project = {}  # Mock project object, adjust as needed
-    dep = {
-        "name": "example-package",
-        "git": "git+https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/username/repo.git",
-        "ref": "main"
-    }
+    dep = {"name": "example-package", "git": "git+https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/username/repo.git", "ref": "main"}
 
     result = clean_resolved_dep(project, dep)
 
@@ -81,12 +83,13 @@ def test_clean_resolved_dep_with_vcs_url():
     assert result["example-package"]["git"] == "git+https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/username/repo.git"
     assert result["example-package"]["ref"] == "main"
 
+
 def test_clean_resolved_dep_with_vcs_url_and_extras():
     project = {}  # Mock project object, adjust as needed
     dep = {
         "name": "example-package",
         "git": "git+https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/username/repo.git[extra1,extra2]",
-        "ref": "main"
+        "ref": "main",
     }
 
     result = clean_resolved_dep(project, dep)
@@ -100,6 +103,7 @@ def test_clean_resolved_dep_with_vcs_url_and_extras():
 # ---------------------------------------------------------------------------
 # Tests for GH-6119: transitive local-file sub-dependency path normalisation
 # ---------------------------------------------------------------------------
+
 
 class TestFileUrlToRelativePath:
     """Unit tests for the _file_url_to_relative_path helper."""
@@ -150,9 +154,7 @@ def test_clean_resolved_dep_converts_file_url_subdep():
     entry = result["namespace-utils"]
     assert "file" in entry
     # Must be a relative path, not an absolute file:// URL
-    assert not entry["file"].startswith("file://"), (
-        f"Expected a relative path but got: {entry['file']!r}"
-    )
+    assert not entry["file"].startswith("file://"), f"Expected a relative path but got: {entry['file']!r}"
     assert entry["file"] == "../namespace-utils"
 
 
@@ -367,6 +369,7 @@ class TestCandidateEvaluatorPrereleases:
     def _make_candidate(self, name, version):
         """Create a mock InstallationCandidate."""
         from pipenv.patched.pip._internal.models.link import Link
+
         link = Link(f"https://example.com/{name}-{version}.tar.gz")
         # InstallationCandidate expects a string version, not a parsed version
         return InstallationCandidate(name, version, link)
@@ -458,10 +461,10 @@ class TestCandidateEvaluatorPrereleases:
         assert "0.60b0" in versions
 
 
-
 # ---------------------------------------------------------------------------
 # Tests for no_binary handling (GitHub issue #5362)
 # ---------------------------------------------------------------------------
+
 
 class TestNoBinaryCleanResolvedDep:
     """Ensure clean_resolved_dep preserves the no_binary flag."""
@@ -705,7 +708,6 @@ class TestDependencyAsPipInstallLineEditable:
         dep = {"file": "https://example.com/pkg-1.0-py3-none-any.whl"}
         result = self._call("pkg", dep)
         assert result == "pkg @ https://example.com/pkg-1.0-py3-none-any.whl"
-
 
 
 class TestGetConstraintsFromResolvedDeps:

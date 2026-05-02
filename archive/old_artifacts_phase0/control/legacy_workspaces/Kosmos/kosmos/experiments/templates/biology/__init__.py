@@ -4,6 +4,6 @@ from kosmos.experiments.templates.biology.gwas_multimodal import GWASMultiModalT
 from kosmos.experiments.templates.biology.metabolomics_comparison import MetabolomicsComparisonTemplate
 
 __all__ = [
-    'MetabolomicsComparisonTemplate',
-    'GWASMultiModalTemplate',
+    "MetabolomicsComparisonTemplate",
+    "GWASMultiModalTemplate",
 ]

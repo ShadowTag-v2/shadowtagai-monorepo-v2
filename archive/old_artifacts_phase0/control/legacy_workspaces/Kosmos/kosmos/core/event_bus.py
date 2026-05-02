@@ -52,12 +52,7 @@ class EventBus:
         self._enabled = True
         self._lock = asyncio.Lock()
 
-    def subscribe(
-        self,
-        callback: Callback,
-        event_types: list[EventType] | None = None,
-        process_ids: list[str] | None = None
-    ) -> None:
+    def subscribe(self, callback: Callback, event_types: list[EventType] | None = None, process_ids: list[str] | None = None) -> None:
         """
         Subscribe to events.
 
@@ -172,10 +167,7 @@ class EventBus:
                         loop.create_task(callback(event))
                     except RuntimeError:
                         # No running event loop, skip async callback
-                        logger.debug(
-                            f"Skipping async callback {callback.__name__} - "
-                            "no event loop"
-                        )
+                        logger.debug(f"Skipping async callback {callback.__name__} - no event loop")
                 else:
                     callback(event)
             except Exception as e:
@@ -189,16 +181,12 @@ class EventBus:
         callbacks.extend(self._subscribers.get(None, []))
 
         # Type-specific subscribers
-        if hasattr(event, 'type'):
+        if hasattr(event, "type"):
             callbacks.extend(self._subscribers.get(event.type, []))
 
         return callbacks
 
-    def _passes_process_filter(
-        self,
-        callback: Callback,
-        event: StreamingEvent
-    ) -> bool:
+    def _passes_process_filter(self, callback: Callback, event: StreamingEvent) -> bool:
         """Check if event passes callback's process filter."""
         filter_set = self._process_filters.get(callback)
 
@@ -206,7 +194,7 @@ class EventBus:
             # No filter, accept all
             return True
 
-        if not hasattr(event, 'process_id') or event.process_id is None:
+        if not hasattr(event, "process_id") or event.process_id is None:
             # Event has no process_id, accept if filter allows None
             return None in filter_set
 
@@ -225,10 +213,7 @@ class EventBus:
         """Check if event bus is enabled."""
         return self._enabled
 
-    def subscriber_count(
-        self,
-        event_type: EventType | None = None
-    ) -> int:
+    def subscriber_count(self, event_type: EventType | None = None) -> int:
         """
         Get number of subscribers.
 
@@ -292,30 +277,22 @@ class EventSubscription:
     """
 
     def __init__(
-        self,
-        callback: Callback,
-        event_types: list[EventType] | None = None,
-        process_ids: list[str] | None = None,
-        event_bus: EventBus | None = None
+        self, callback: Callback, event_types: list[EventType] | None = None, process_ids: list[str] | None = None, event_bus: EventBus | None = None
     ):
         self.callback = callback
         self.event_types = event_types
         self.process_ids = process_ids
         self.event_bus = event_bus or get_event_bus()
 
-    def __enter__(self) -> "EventSubscription":
-        self.event_bus.subscribe(
-            self.callback,
-            self.event_types,
-            self.process_ids
-        )
+    def __enter__(self) -> EventSubscription:
+        self.event_bus.subscribe(self.callback, self.event_types, self.process_ids)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.event_bus.unsubscribe(self.callback)
         return False
 
-    async def __aenter__(self) -> "EventSubscription":
+    async def __aenter__(self) -> EventSubscription:
         return self.__enter__()
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):

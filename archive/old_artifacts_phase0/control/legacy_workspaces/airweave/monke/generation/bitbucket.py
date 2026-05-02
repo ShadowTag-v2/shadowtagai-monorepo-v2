@@ -1,13 +1,10 @@
 """Bitbucket-specific generation adapter: code file generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.bitbucket import BitbucketArtifact
 
 
-async def generate_bitbucket_artifact(
-    model: str, token: str, is_update: bool = False
-) -> tuple[str, str, str]:
+async def generate_bitbucket_artifact(model: str, token: str, is_update: bool = False) -> tuple[str, str, str]:
     """Generate a Bitbucket code file via LLM.
 
     Returns (filename, content, file_type). The token must be embedded in the output by instruction.

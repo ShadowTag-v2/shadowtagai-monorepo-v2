@@ -19,9 +19,7 @@ class JudgeSixService:
             logger.warning("Judge #6 is disabled")
         logger.info("Judge #6 Validation Service initialized")
 
-    async def validate_item(
-        self, item: IngestedItem, use_hybrid: bool = True
-    ) -> tuple[ValidationStatus, float]:
+    async def validate_item(self, item: IngestedItem, use_hybrid: bool = True) -> tuple[ValidationStatus, float]:
         """
         Validate a single ingested item
 

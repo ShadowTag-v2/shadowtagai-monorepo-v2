@@ -47,7 +47,7 @@ _POSTGRESQL_PARAMETER_QUERY_EMBEDDING = "1"
 def _generate_googlesql_for_embedding_query(
     spanner_embedding_model_name: str,
 ) -> str:
-  return f"""
+    return f"""
     SELECT embeddings.values
     FROM ML.PREDICT(
       MODEL {spanner_embedding_model_name},
@@ -59,7 +59,7 @@ def _generate_googlesql_for_embedding_query(
 def _generate_postgresql_for_embedding_query(
     vertex_ai_embedding_model_endpoint: str,
 ) -> str:
-  return f"""
+    return f"""
     SELECT spanner.FLOAT32_ARRAY( spanner.ML_PREDICT_ROW(
       '{vertex_ai_embedding_model_endpoint}',
       JSONB_BUILD_OBJECT(
@@ -80,42 +80,38 @@ def _get_embedding_for_query(
     vertex_ai_embedding_model_endpoint: str | None,
     query: str,
 ) -> list[float]:
-  """Gets the embedding for the query."""
-  if dialect == DatabaseDialect.POSTGRESQL:
-    embedding_query = _generate_postgresql_for_embedding_query(
-        vertex_ai_embedding_model_endpoint
-    )
-    params = {f"p{_POSTGRESQL_PARAMETER_TEXT_QUERY}": query}
-  else:
-    embedding_query = _generate_googlesql_for_embedding_query(
-        spanner_embedding_model_name
-    )
-    params = {_GOOGLESQL_PARAMETER_TEXT_QUERY: query}
-  with database.snapshot() as snapshot:
-    result_set = snapshot.execute_sql(embedding_query, params=params)
-    return result_set.one()[0]
+    """Gets the embedding for the query."""
+    if dialect == DatabaseDialect.POSTGRESQL:
+        embedding_query = _generate_postgresql_for_embedding_query(vertex_ai_embedding_model_endpoint)
+        params = {f"p{_POSTGRESQL_PARAMETER_TEXT_QUERY}": query}
+    else:
+        embedding_query = _generate_googlesql_for_embedding_query(spanner_embedding_model_name)
+        params = {_GOOGLESQL_PARAMETER_TEXT_QUERY: query}
+    with database.snapshot() as snapshot:
+        result_set = snapshot.execute_sql(embedding_query, params=params)
+        return result_set.one()[0]
 
 
 def _get_postgresql_distance_function(distance_type: str) -> str:
-  return {
-      "COSINE_DISTANCE": "spanner.cosine_distance",
-      "EUCLIDEAN_DISTANCE": "spanner.euclidean_distance",
-      "DOT_PRODUCT": "spanner.dot_product",
-  }[distance_type]
+    return {
+        "COSINE_DISTANCE": "spanner.cosine_distance",
+        "EUCLIDEAN_DISTANCE": "spanner.euclidean_distance",
+        "DOT_PRODUCT": "spanner.dot_product",
+    }[distance_type]
 
 
 def _get_googlesql_distance_function(distance_type: str, ann: bool) -> str:
-  if ann:
+    if ann:
+        return {
+            "COSINE_DISTANCE": "APPROX_COSINE_DISTANCE",
+            "EUCLIDEAN_DISTANCE": "APPROX_EUCLIDEAN_DISTANCE",
+            "DOT_PRODUCT": "APPROX_DOT_PRODUCT",
+        }[distance_type]
     return {
-        "COSINE_DISTANCE": "APPROX_COSINE_DISTANCE",
-        "EUCLIDEAN_DISTANCE": "APPROX_EUCLIDEAN_DISTANCE",
-        "DOT_PRODUCT": "APPROX_DOT_PRODUCT",
+        "COSINE_DISTANCE": "COSINE_DISTANCE",
+        "EUCLIDEAN_DISTANCE": "EUCLIDEAN_DISTANCE",
+        "DOT_PRODUCT": "DOT_PRODUCT",
     }[distance_type]
-  return {
-      "COSINE_DISTANCE": "COSINE_DISTANCE",
-      "EUCLIDEAN_DISTANCE": "EUCLIDEAN_DISTANCE",
-      "DOT_PRODUCT": "DOT_PRODUCT",
-  }[distance_type]
 
 
 def _generate_sql_for_knn(
@@ -127,27 +123,27 @@ def _generate_sql_for_knn(
     distance_type: str,
     top_k: int,
 ) -> str:
-  """Generates a SQL query for kNN search."""
-  if dialect == DatabaseDialect.POSTGRESQL:
-    distance_function = _get_postgresql_distance_function(distance_type)
-    embedding_parameter = f"${_POSTGRESQL_PARAMETER_QUERY_EMBEDDING}"
-  else:
-    distance_function = _get_googlesql_distance_function(
-        distance_type, ann=False
-    )
-    embedding_parameter = f"@{_GOOGLESQL_PARAMETER_QUERY_EMBEDDING}"
-  columns = columns + [f"""{distance_function}(
+    """Generates a SQL query for kNN search."""
+    if dialect == DatabaseDialect.POSTGRESQL:
+        distance_function = _get_postgresql_distance_function(distance_type)
+        embedding_parameter = f"${_POSTGRESQL_PARAMETER_QUERY_EMBEDDING}"
+    else:
+        distance_function = _get_googlesql_distance_function(distance_type, ann=False)
+        embedding_parameter = f"@{_GOOGLESQL_PARAMETER_QUERY_EMBEDDING}"
+    columns = columns + [
+        f"""{distance_function}(
       {embedding_column_to_search},
       {embedding_parameter}) AS {_DISTANCE_ALIAS}
-  """]
-  columns = ", ".join(columns)
-  if additional_filter is None:
-    additional_filter = "1=1"
+  """
+    ]
+    columns = ", ".join(columns)
+    if additional_filter is None:
+        additional_filter = "1=1"
 
-  optional_limit_clause = ""
-  if top_k > 0:
-    optional_limit_clause = f"""LIMIT {top_k}"""
-  return f"""
+    optional_limit_clause = ""
+    if top_k > 0:
+        optional_limit_clause = f"""LIMIT {top_k}"""
+    return f"""
     SELECT {columns}
     FROM {table_name}
     WHERE {additional_filter}
@@ -166,25 +162,24 @@ def _generate_sql_for_ann(
     top_k: int,
     num_leaves_to_search: int,
 ):
-  """Generates a SQL query for ANN search."""
-  if dialect == DatabaseDialect.POSTGRESQL:
-    raise NotImplementedError(
-        f"{_APPROXIMATE_NEAREST_NEIGHBORS} is not supported for PostgreSQL"
-        " dialect."
-    )
-  distance_function = _get_googlesql_distance_function(distance_type, ann=True)
-  columns = columns + [f"""{distance_function}(
+    """Generates a SQL query for ANN search."""
+    if dialect == DatabaseDialect.POSTGRESQL:
+        raise NotImplementedError(f"{_APPROXIMATE_NEAREST_NEIGHBORS} is not supported for PostgreSQL dialect.")
+    distance_function = _get_googlesql_distance_function(distance_type, ann=True)
+    columns = columns + [
+        f"""{distance_function}(
       {embedding_column_to_search},
       @{_GOOGLESQL_PARAMETER_QUERY_EMBEDDING},
       options => JSON '{{"num_leaves_to_search": {num_leaves_to_search}}}'
   ) AS {_DISTANCE_ALIAS}
-  """]
-  columns = ", ".join(columns)
-  query_filter = f"{embedding_column_to_search} IS NOT NULL"
-  if additional_filter is not None:
-    query_filter = f"{query_filter} AND {additional_filter}"
+  """
+    ]
+    columns = ", ".join(columns)
+    query_filter = f"{embedding_column_to_search} IS NOT NULL"
+    if additional_filter is not None:
+        query_filter = f"{query_filter} AND {additional_filter}"
 
-  return f"""
+    return f"""
     SELECT {columns}
     FROM {table_name}
     WHERE {query_filter}
@@ -208,8 +203,8 @@ def similarity_search(
     additional_filter: str | None = None,
     search_options: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-  # fmt: off
-  """Similarity search in Spanner using a text query.
+    # fmt: off
+    """Similarity search in Spanner using a text query.
 
   The function will use embedding service (provided from options) to embed
   the text query automatically, then use the embedding vector to do similarity
@@ -313,127 +308,102 @@ def similarity_search(
           ],
         }
   """
-  # fmt: on
-  try:
-    # Get Spanner client
-    spanner_client = client.get_spanner_client(
-        project=project_id, credentials=credentials
-    )
-    instance = spanner_client.instance(instance_id)
-    database = instance.database(database_id)
+    # fmt: on
+    try:
+        # Get Spanner client
+        spanner_client = client.get_spanner_client(project=project_id, credentials=credentials)
+        instance = spanner_client.instance(instance_id)
+        database = instance.database(database_id)
 
-    assert database.database_dialect in [
-        DatabaseDialect.GOOGLE_STANDARD_SQL,
-        DatabaseDialect.POSTGRESQL,
-    ], (
-        f"Unsupported database dialect: {database.database_dialect}"
-    )
+        assert database.database_dialect in [
+            DatabaseDialect.GOOGLE_STANDARD_SQL,
+            DatabaseDialect.POSTGRESQL,
+        ], f"Unsupported database dialect: {database.database_dialect}"
 
-    if embedding_options is None:
-      embedding_options = {}
-    if search_options is None:
-      search_options = {}
-    spanner_embedding_model_name = embedding_options.get(
-        _SPANNER_EMBEDDING_MODEL_NAME
-    )
-    if (
-        database.database_dialect == DatabaseDialect.GOOGLE_STANDARD_SQL
-        and spanner_embedding_model_name is None
-    ):
-      raise ValueError(
-          f"embedding_options['{_SPANNER_EMBEDDING_MODEL_NAME}']"
-          " must be specified for GoogleSQL dialect."
-      )
-    vertex_ai_embedding_model_endpoint = embedding_options.get(
-        _VERTEX_AI_EMBEDDING_MODEL_ENDPOINT
-    )
-    if (
-        database.database_dialect == DatabaseDialect.POSTGRESQL
-        and vertex_ai_embedding_model_endpoint is None
-    ):
-      raise ValueError(
-          f"embedding_options['{_VERTEX_AI_EMBEDDING_MODEL_ENDPOINT}']"
-          " must be specified for PostgreSQL dialect."
-      )
+        if embedding_options is None:
+            embedding_options = {}
+        if search_options is None:
+            search_options = {}
+        spanner_embedding_model_name = embedding_options.get(_SPANNER_EMBEDDING_MODEL_NAME)
+        if database.database_dialect == DatabaseDialect.GOOGLE_STANDARD_SQL and spanner_embedding_model_name is None:
+            raise ValueError(f"embedding_options['{_SPANNER_EMBEDDING_MODEL_NAME}'] must be specified for GoogleSQL dialect.")
+        vertex_ai_embedding_model_endpoint = embedding_options.get(_VERTEX_AI_EMBEDDING_MODEL_ENDPOINT)
+        if database.database_dialect == DatabaseDialect.POSTGRESQL and vertex_ai_embedding_model_endpoint is None:
+            raise ValueError(f"embedding_options['{_VERTEX_AI_EMBEDDING_MODEL_ENDPOINT}'] must be specified for PostgreSQL dialect.")
 
-    # Use cosine distance by default.
-    distance_type = search_options.get(_DISTANCE_TYPE)
-    if distance_type is None:
-      distance_type = "COSINE_DISTANCE"
+        # Use cosine distance by default.
+        distance_type = search_options.get(_DISTANCE_TYPE)
+        if distance_type is None:
+            distance_type = "COSINE_DISTANCE"
 
-    top_k = search_options.get(_TOP_K)
-    if top_k is None:
-      top_k = 4
+        top_k = search_options.get(_TOP_K)
+        if top_k is None:
+            top_k = 4
 
-    # Use EXACT_NEAREST_NEIGHBORS (i.e. kNN) by default.
-    nearest_neighbors_algorithm = search_options.get(
-        _NEAREST_NEIGHBORS_ALGORITHM, _EXACT_NEAREST_NEIGHBORS
-    )
-    if nearest_neighbors_algorithm not in (
-        _EXACT_NEAREST_NEIGHBORS,
-        _APPROXIMATE_NEAREST_NEIGHBORS,
-    ):
-      raise NotImplementedError(
-          f"Unsupported search_options['{_NEAREST_NEIGHBORS_ALGORITHM}']:"
-          f" {nearest_neighbors_algorithm}"
-      )
+        # Use EXACT_NEAREST_NEIGHBORS (i.e. kNN) by default.
+        nearest_neighbors_algorithm = search_options.get(_NEAREST_NEIGHBORS_ALGORITHM, _EXACT_NEAREST_NEIGHBORS)
+        if nearest_neighbors_algorithm not in (
+            _EXACT_NEAREST_NEIGHBORS,
+            _APPROXIMATE_NEAREST_NEIGHBORS,
+        ):
+            raise NotImplementedError(f"Unsupported search_options['{_NEAREST_NEIGHBORS_ALGORITHM}']: {nearest_neighbors_algorithm}")
 
-    embedding = _get_embedding_for_query(
-        database,
-        database.database_dialect,
-        spanner_embedding_model_name,
-        vertex_ai_embedding_model_endpoint,
-        query,
-    )
+        embedding = _get_embedding_for_query(
+            database,
+            database.database_dialect,
+            spanner_embedding_model_name,
+            vertex_ai_embedding_model_endpoint,
+            query,
+        )
 
-    if nearest_neighbors_algorithm == _EXACT_NEAREST_NEIGHBORS:
-      sql = _generate_sql_for_knn(
-          database.database_dialect,
-          table_name,
-          embedding_column_to_search,
-          columns,
-          additional_filter,
-          distance_type,
-          top_k,
-      )
-    else:
-      num_leaves_to_search = search_options.get(_NUM_LEAVES_TO_SEARCH)
-      if num_leaves_to_search is None:
-        num_leaves_to_search = 1000
-      sql = _generate_sql_for_ann(
-          database.database_dialect,
-          table_name,
-          embedding_column_to_search,
-          columns,
-          additional_filter,
-          distance_type,
-          top_k,
-          num_leaves_to_search,
-      )
+        if nearest_neighbors_algorithm == _EXACT_NEAREST_NEIGHBORS:
+            sql = _generate_sql_for_knn(
+                database.database_dialect,
+                table_name,
+                embedding_column_to_search,
+                columns,
+                additional_filter,
+                distance_type,
+                top_k,
+            )
+        else:
+            num_leaves_to_search = search_options.get(_NUM_LEAVES_TO_SEARCH)
+            if num_leaves_to_search is None:
+                num_leaves_to_search = 1000
+            sql = _generate_sql_for_ann(
+                database.database_dialect,
+                table_name,
+                embedding_column_to_search,
+                columns,
+                additional_filter,
+                distance_type,
+                top_k,
+                num_leaves_to_search,
+            )
 
-    if database.database_dialect == DatabaseDialect.POSTGRESQL:
-      params = {f"p{_POSTGRESQL_PARAMETER_QUERY_EMBEDDING}": embedding}
-    else:
-      params = {_GOOGLESQL_PARAMETER_QUERY_EMBEDDING: embedding}
+        if database.database_dialect == DatabaseDialect.POSTGRESQL:
+            params = {f"p{_POSTGRESQL_PARAMETER_QUERY_EMBEDDING}": embedding}
+        else:
+            params = {_GOOGLESQL_PARAMETER_QUERY_EMBEDDING: embedding}
 
-    with database.snapshot() as snapshot:
-      result_set = snapshot.execute_sql(sql, params=params)
-      rows = []
-      result = {}
-      for row in result_set:
-        try:
-          # if the json serialization of the row succeeds, use it as is
-          json.dumps(row)
-        except:
-          row = str(row)
+        with database.snapshot() as snapshot:
+            result_set = snapshot.execute_sql(sql, params=params)
+            rows = []
+            result = {}
+            for row in result_set:
+                try:
+                    # if the json serialization of the row succeeds, use it as is
+                    json.dumps(row)
+                except:
+                    row = str(row)
 
-        rows.append(row)
+                rows.append(row)
 
-      result["status"] = "SUCCESS"
-      result["rows"] = rows
-      return result
-  except Exception as ex:
-    return {
-        "status": "ERROR",
-        "error_details": str(ex),
-    }
+            result["status"] = "SUCCESS"
+            result["rows"] = rows
+            return result
+    except Exception as ex:
+        return {
+            "status": "ERROR",
+            "error_details": str(ex),
+        }

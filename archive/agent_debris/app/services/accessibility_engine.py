@@ -2,6 +2,7 @@
 Accessibility and Safety Compliance Engine
 Implements WCAG 2.2, COPPA, and Age Appropriate Design Code
 """
+
 import logging
 
 from app.config import get_settings
@@ -44,34 +45,38 @@ class AccessibilityEngine:
         # Simulate accessibility audit
         # In production, this would use axe-core or similar
         if request.html_content:
-            tested_elements = request.html_content.count('<')
+            tested_elements = request.html_content.count("<")
 
             # Check for common issues
-            if 'alt=""' in request.html_content or 'alt=' not in request.html_content:
-                violations.append(WCAGViolation(
-                    principle=WCAGPrinciple.PERCEIVABLE,
-                    guideline="1.1 Text Alternatives",
-                    success_criterion="1.1.1 Non-text Content",
-                    level=WCAGLevel.A,
-                    description="Images missing alt text",
-                    impact="serious",
-                    element="img",
-                    remediation="Add descriptive alt text to all images"
-                ))
+            if 'alt=""' in request.html_content or "alt=" not in request.html_content:
+                violations.append(
+                    WCAGViolation(
+                        principle=WCAGPrinciple.PERCEIVABLE,
+                        guideline="1.1 Text Alternatives",
+                        success_criterion="1.1.1 Non-text Content",
+                        level=WCAGLevel.A,
+                        description="Images missing alt text",
+                        impact="serious",
+                        element="img",
+                        remediation="Add descriptive alt text to all images",
+                    )
+                )
 
-            if '<input' in request.html_content and 'aria-label' not in request.html_content:
-                violations.append(WCAGViolation(
-                    principle=WCAGPrinciple.PERCEIVABLE,
-                    guideline="4.1 Compatible",
-                    success_criterion="4.1.2 Name, Role, Value",
-                    level=WCAGLevel.A,
-                    description="Form inputs missing labels",
-                    impact="serious",
-                    element="input",
-                    remediation="Add aria-label or associated label elements"
-                ))
+            if "<input" in request.html_content and "aria-label" not in request.html_content:
+                violations.append(
+                    WCAGViolation(
+                        principle=WCAGPrinciple.PERCEIVABLE,
+                        guideline="4.1 Compatible",
+                        success_criterion="4.1.2 Name, Role, Value",
+                        level=WCAGLevel.A,
+                        description="Form inputs missing labels",
+                        impact="serious",
+                        element="input",
+                        remediation="Add aria-label or associated label elements",
+                    )
+                )
 
-            if 'tabindex' not in request.html_content:
+            if "tabindex" not in request.html_content:
                 warnings.append("Consider adding tabindex for keyboard navigation")
 
         # Calculate score
@@ -89,12 +94,7 @@ class AccessibilityEngine:
             level_achieved = None
 
         return WCAGAuditResponse(
-            compliant=compliant,
-            level_achieved=level_achieved,
-            violations=violations,
-            warnings=warnings,
-            score=score,
-            tested_elements=tested_elements
+            compliant=compliant, level_achieved=level_achieved, violations=violations, warnings=warnings, score=score, tested_elements=tested_elements
         )
 
     async def check_coppa(self, request: COPPAComplianceRequest) -> COPPAComplianceResponse:
@@ -128,12 +128,14 @@ class AccessibilityEngine:
                 violations.append("Disclosing children's data to third parties without consent")
 
             # Recommendations
-            recommendations.extend([
-                "Implement verifiable parental consent mechanism",
-                "Provide clear privacy policy in plain language",
-                "Enable data deletion requests",
-                "Limit data collection to what's necessary"
-            ])
+            recommendations.extend(
+                [
+                    "Implement verifiable parental consent mechanism",
+                    "Provide clear privacy policy in plain language",
+                    "Enable data deletion requests",
+                    "Limit data collection to what's necessary",
+                ]
+            )
 
         compliant = len(violations) == 0
 
@@ -142,7 +144,7 @@ class AccessibilityEngine:
             age_group=age_group,
             requires_parental_consent=requires_parental_consent,
             violations=violations,
-            recommendations=recommendations
+            recommendations=recommendations,
         )
 
     async def check_aadc(self, request: AADCComplianceRequest) -> AADCComplianceResponse:
@@ -189,10 +191,10 @@ class AccessibilityEngine:
 
         # Age-appropriate defaults check
         age_appropriate_defaults = (
-            request.privacy_settings_default_high and
-            not request.geolocation_enabled and
-            not request.profiling_enabled and
-            not request.data_shared_with_third_parties
+            request.privacy_settings_default_high
+            and not request.geolocation_enabled
+            and not request.profiling_enabled
+            and not request.data_shared_with_third_parties
         )
 
         compliant = len(violations) == 0
@@ -202,5 +204,5 @@ class AccessibilityEngine:
             age_group=age_group,
             violations=violations,
             required_controls=required_controls,
-            age_appropriate_defaults=age_appropriate_defaults
+            age_appropriate_defaults=age_appropriate_defaults,
         )

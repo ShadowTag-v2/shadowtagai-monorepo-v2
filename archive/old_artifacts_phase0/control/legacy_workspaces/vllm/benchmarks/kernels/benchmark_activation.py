@@ -47,9 +47,11 @@ def benchmark_activation(
     compiled_layer = torch.compile(layer.forward_native)
 
     if provider == "custom":
+
         def fn():
             return layer(x)
     elif provider == "compiled":
+
         def fn():
             return compiled_layer(x)
 

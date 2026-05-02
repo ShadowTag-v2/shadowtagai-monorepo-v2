@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/aws/ce_client.py
+# hypothesis_version: 6.151.5
+
+['AmazonEC2', 'COMPUTE_SP', 'CostCategoryArn', 'DAILY', 'End', 'Filter', 'Granularity', 'GroupBy', 'MONTHLY', 'Metrics', 'NO_UPFRONT', 'Start', 'THIRTY_DAYS', 'TimePeriod', 'UNBLENDED_COST', 'UnblendedCost', 'UsageQuantity', 'aws_access_key_id', 'aws_session_token', 'ce', 'region_name']

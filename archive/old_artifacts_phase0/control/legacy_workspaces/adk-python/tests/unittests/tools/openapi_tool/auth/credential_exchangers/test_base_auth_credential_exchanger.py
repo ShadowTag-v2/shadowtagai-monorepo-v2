@@ -23,43 +23,36 @@ from google.adk.tools.openapi_tool.auth.credential_exchangers.base_credential_ex
 
 
 class MockAuthCredentialExchanger(BaseAuthCredentialExchanger):
-
-  def exchange_credential(
-      self,
-      auth_scheme: AuthScheme,
-      auth_credential: AuthCredential | None = None,
-  ) -> AuthCredential:
-    return AuthCredential(token="some-token")
+    def exchange_credential(
+        self,
+        auth_scheme: AuthScheme,
+        auth_credential: AuthCredential | None = None,
+    ) -> AuthCredential:
+        return AuthCredential(token="some-token")
 
 
 class TestBaseAuthCredentialExchanger:
-  """Tests for the BaseAuthCredentialExchanger class."""
+    """Tests for the BaseAuthCredentialExchanger class."""
 
-  @pytest.fixture
-  def base_exchanger(self):
-    return BaseAuthCredentialExchanger()
+    @pytest.fixture
+    def base_exchanger(self):
+        return BaseAuthCredentialExchanger()
 
-  @pytest.fixture
-  def auth_scheme(self):
-    scheme = MagicMock(spec=AuthScheme)
-    scheme.type = "apiKey"
-    scheme.name = "x-api-key"
-    return scheme
+    @pytest.fixture
+    def auth_scheme(self):
+        scheme = MagicMock(spec=AuthScheme)
+        scheme.type = "apiKey"
+        scheme.name = "x-api-key"
+        return scheme
 
-  def test_exchange_credential_not_implemented(
-      self, base_exchanger, auth_scheme
-  ):
-    auth_credential = AuthCredential(
-        auth_type=AuthCredentialTypes.API_KEY, token="some-token"
-    )
-    with pytest.raises(NotImplementedError) as exc_info:
-      base_exchanger.exchange_credential(auth_scheme, auth_credential)
-    assert "Subclasses must implement exchange_credential." in str(
-        exc_info.value
-    )
+    def test_exchange_credential_not_implemented(self, base_exchanger, auth_scheme):
+        auth_credential = AuthCredential(auth_type=AuthCredentialTypes.API_KEY, token="some-token")
+        with pytest.raises(NotImplementedError) as exc_info:
+            base_exchanger.exchange_credential(auth_scheme, auth_credential)
+        assert "Subclasses must implement exchange_credential." in str(exc_info.value)
 
-  def test_auth_credential_missing_error(self):
-    error_message = "Test missing credential"
-    error = AuthCredentialMissingError(error_message)
-    # assert error.message == error_message
-    assert str(error) == error_message
+    def test_auth_credential_missing_error(self):
+        error_message = "Test missing credential"
+        error = AuthCredentialMissingError(error_message)
+        # assert error.message == error_message
+        assert str(error) == error_message

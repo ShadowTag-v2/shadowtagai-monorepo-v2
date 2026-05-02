@@ -54,12 +54,7 @@ def extract_medications(content: str) -> list:
     matches = re.findall(pattern, content)
 
     for match in matches:
-        meds.append({
-            "drug": match[0],
-            "dose": match[1],
-            "route": match[2],
-            "frequency": match[3]
-        })
+        meds.append({"drug": match[0], "dose": match[1], "route": match[2], "frequency": match[3]})
 
     return meds
 
@@ -73,7 +68,7 @@ def main():
     args = parser.parse_args()
 
     try:
-        with open(args.input_file, 'r', encoding='utf-8') as f:
+        with open(args.input_file, encoding="utf-8") as f:
             content = f.read()
 
         extracted_data = {
@@ -83,7 +78,7 @@ def main():
         }
 
         if args.output:
-            with open(args.output, 'w') as f:
+            with open(args.output, "w") as f:
                 json.dump(extracted_data, f, indent=2)
             print(f"✓ Data extracted to: {args.output}")
         else:
@@ -98,4 +93,5 @@ def main():
 
 if __name__ == "__main__":
     import sys
+
     sys.exit(main())

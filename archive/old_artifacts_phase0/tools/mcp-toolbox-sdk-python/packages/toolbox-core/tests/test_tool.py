@@ -113,7 +113,7 @@ def sample_tool_description() -> str:
 
 
 @pytest_asyncio.fixture
-async def http_session() -> AsyncGenerator[ClientSession, None]:
+async def http_session() -> AsyncGenerator[ClientSession]:
     """Provides an aiohttp ClientSession that is closed after the test."""
     async with ClientSession() as session:
         yield session

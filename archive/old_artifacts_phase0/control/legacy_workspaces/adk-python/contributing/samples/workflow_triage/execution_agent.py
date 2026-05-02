@@ -13,7 +13,6 @@
 # limitations under the License.
 
 
-
 from google.adk.agents import Agent, ParallelAgent
 from google.adk.agents.base_agent import BeforeAgentCallback
 from google.adk.agents.callback_context import CallbackContext
@@ -25,23 +24,14 @@ from google.genai import types
 def before_agent_callback_check_relevance(
     agent_name: str,
 ) -> BeforeAgentCallback:
-  """Callback to check if the state is relevant before executing the agent."""
+    """Callback to check if the state is relevant before executing the agent."""
 
-  def callback(callback_context: CallbackContext) -> types.Content | None:
-    """Check if the state is relevant."""
-    if agent_name not in callback_context.state["execution_agents"]:
-      return types.Content(
-          parts=[
-              types.Part(
-                  text=(
-                      f"Skipping execution agent {agent_name} as it is not"
-                      " relevant to the current state."
-                  )
-              )
-          ]
-      )
+    def callback(callback_context: CallbackContext) -> types.Content | None:
+        """Check if the state is relevant."""
+        if agent_name not in callback_context.state["execution_agents"]:
+            return types.Content(parts=[types.Part(text=(f"Skipping execution agent {agent_name} as it is not relevant to the current state."))])
 
-  return callback
+    return callback
 
 
 code_agent = Agent(
@@ -81,24 +71,21 @@ worker_parallel_agent = ParallelAgent(
 def instruction_provider_for_execution_summary_agent(
     readonly_context: ReadonlyContext,
 ) -> str:
-  """Provides the instruction for the execution agent."""
-  activated_agents = readonly_context.state["execution_agents"]
-  prompt = f"""\
+    """Provides the instruction for the execution agent."""
+    activated_agents = readonly_context.state["execution_agents"]
+    prompt = f"""\
 You are the Execution Summary Agent, responsible for summarizing the execution of the plan in the current invocation.
 
-In this invocation, the following agents were involved: {', '.join(activated_agents)}.
+In this invocation, the following agents were involved: {", ".join(activated_agents)}.
 
 Below are their outputs:
 """
-  for agent_name in activated_agents:
-    output = readonly_context.state.get(f"{agent_name}_output", "")
-    prompt += f"\n\n{agent_name} output:\n{output}"
+    for agent_name in activated_agents:
+        output = readonly_context.state.get(f"{agent_name}_output", "")
+        prompt += f"\n\n{agent_name} output:\n{output}"
 
-  prompt += (
-      "\n\nPlease summarize the execution of the plan based on the above"
-      " outputs."
-  )
-  return prompt.strip()
+    prompt += "\n\nPlease summarize the execution of the plan based on the above outputs."
+    return prompt.strip()
 
 
 execution_summary_agent = Agent(

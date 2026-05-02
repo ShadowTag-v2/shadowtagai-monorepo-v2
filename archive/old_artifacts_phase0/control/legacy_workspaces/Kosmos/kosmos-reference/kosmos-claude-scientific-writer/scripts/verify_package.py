@@ -9,7 +9,6 @@ API and CLI usage.
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List
 
 
 def get_project_root() -> Path:
@@ -24,7 +23,7 @@ def get_project_root() -> Path:
     return Path(__file__).parent.parent.resolve()
 
 
-def check_version_consistency() -> Dict[str, str]:
+def check_version_consistency() -> dict[str, str]:
     """
     Check version consistency across files.
 
@@ -41,19 +40,19 @@ def check_version_consistency() -> Dict[str, str]:
     content = pyproject.read_text()
     match = re.search(r'^version\s*=\s*"([^"]+)"', content, re.MULTILINE)
     if match:
-        versions['pyproject.toml'] = match.group(1)
+        versions["pyproject.toml"] = match.group(1)
 
     # Check __init__.py
     init_file = root / "scientific_writer" / "__init__.py"
     content = init_file.read_text()
     match = re.search(r'^__version__\s*=\s*"([^"]+)"', content, re.MULTILINE)
     if match:
-        versions['__init__.py'] = match.group(1)
+        versions["__init__.py"] = match.group(1)
 
     return versions
 
 
-def check_api_exports() -> List[str]:
+def check_api_exports() -> list[str]:
     """
     Check what's exported from __init__.py.
 
@@ -66,7 +65,7 @@ def check_api_exports() -> List[str]:
     init_file = root / "scientific_writer" / "__init__.py"
     content = init_file.read_text()
 
-    match = re.search(r'__all__\s*=\s*\[(.*?)\]', content, re.DOTALL)
+    match = re.search(r"__all__\s*=\s*\[(.*?)\]", content, re.DOTALL)
     if not match:
         return []
 
@@ -89,14 +88,10 @@ def check_cli_entry_point() -> bool:
     content = pyproject.read_text()
 
     # Check for [project.scripts] section
-    return bool(re.search(
-        r'\[project\.scripts\].*?scientific-writer\s*=\s*"scientific_writer\.cli:cli_main"',
-        content,
-        re.DOTALL
-    ))
+    return bool(re.search(r'\[project\.scripts\].*?scientific-writer\s*=\s*"scientific_writer\.cli:cli_main"', content, re.DOTALL))
 
 
-def check_package_structure() -> Dict[str, bool]:
+def check_package_structure() -> dict[str, bool]:
     """
     Check if required package files exist.
 
@@ -108,15 +103,15 @@ def check_package_structure() -> Dict[str, bool]:
     root = get_project_root()
 
     required_files = {
-        'pyproject.toml': root / "pyproject.toml",
-        'README.md': root / "README.md",
-        'LICENSE': root / "LICENSE",
-        '__init__.py': root / "scientific_writer" / "__init__.py",
-        'api.py': root / "scientific_writer" / "api.py",
-        'cli.py': root / "scientific_writer" / "cli.py",
-        'core.py': root / "scientific_writer" / "core.py",
-        'models.py': root / "scientific_writer" / "models.py",
-        'utils.py': root / "scientific_writer" / "utils.py",
+        "pyproject.toml": root / "pyproject.toml",
+        "README.md": root / "README.md",
+        "LICENSE": root / "LICENSE",
+        "__init__.py": root / "scientific_writer" / "__init__.py",
+        "api.py": root / "scientific_writer" / "api.py",
+        "cli.py": root / "scientific_writer" / "cli.py",
+        "core.py": root / "scientific_writer" / "core.py",
+        "models.py": root / "scientific_writer" / "models.py",
+        "utils.py": root / "scientific_writer" / "utils.py",
     }
 
     return {name: path.exists() for name, path in required_files.items()}

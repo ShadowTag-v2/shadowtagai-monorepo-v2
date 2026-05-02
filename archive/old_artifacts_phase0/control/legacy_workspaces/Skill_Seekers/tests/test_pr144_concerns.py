@@ -7,11 +7,11 @@ import sys
 from pathlib import Path
 
 # Add cli to path
-sys.path.insert(0, str(Path(__file__).parent / 'cli'))
+sys.path.insert(0, str(Path(__file__).parent / "cli"))
 
-print("="*60)
+print("=" * 60)
 print("PR #144 CONCERN INVESTIGATION")
-print("="*60)
+print("=" * 60)
 
 ## CONCERN 1: Thread Safety
 print("\n1. THREAD SAFETY ANALYSIS")
@@ -123,9 +123,9 @@ print("\n✓ Process cleanup:")
 print("  - Line 88: communicate() gets remaining output")
 print("  - process.returncode properly captured")
 
-print("\n" + "="*60)
+print("\n" + "=" * 60)
 print("SUMMARY OF FINDINGS")
-print("="*60)
+print("=" * 60)
 
 print("\n🚨 CRITICAL ISSUES FOUND:")
 print("1. Race condition on visited_urls.add() (line 414)")
@@ -143,4 +143,4 @@ print("8. Checkpoint saves are protected")
 print("9. save_page() file I/O protected")
 print("10. Timeout mechanism solid")
 
-print("\n" + "="*60)
+print("\n" + "=" * 60)

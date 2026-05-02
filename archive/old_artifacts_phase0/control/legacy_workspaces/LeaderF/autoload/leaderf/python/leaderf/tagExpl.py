@@ -11,13 +11,13 @@ from .manager import *
 from .utils import *
 
 
-#*****************************************************
+# *****************************************************
 # TagExplorer
-#*****************************************************
+# *****************************************************
 class TagExplorer(Explorer):
     def __init__(self):
         self._tag_list = []
-        self._file_tags = {}    # a dict with (key, value) = (tag file name, [mtime,taglist])
+        self._file_tags = {}  # a dict with (key, value) = (tag file name, [mtime,taglist])
 
     def getContent(self, *args, **kwargs):
         return self.getFreshContent(*args, **kwargs)
@@ -31,13 +31,13 @@ class TagExplorer(Explorer):
             mtime = os.path.getmtime(tagfile)
             if tagfile not in self._file_tags:
                 has_new_tagfile = True
-                with lfOpen(tagfile, 'r', encoding='utf-8', errors='ignore') as f:
+                with lfOpen(tagfile, "r", encoding="utf-8", errors="ignore") as f:
                     self._file_tags[tagfile] = [mtime, f.readlines()[6:]]
             else:
                 filenames.remove(tagfile)
                 if mtime != self._file_tags[tagfile][0]:
                     has_changed_tagfile = True
-                    with lfOpen(tagfile, 'r', encoding='utf-8', errors='ignore') as f:
+                    with lfOpen(tagfile, "r", encoding="utf-8", errors="ignore") as f:
                         self._file_tags[tagfile] = [mtime, f.readlines()[6:]]
 
         for name in filenames:
@@ -50,15 +50,15 @@ class TagExplorer(Explorer):
             return self._tag_list
 
     def getStlCategory(self):
-        return 'Tag'
+        return "Tag"
 
     def getStlCurDir(self):
         return escQuote(lfEncode(lfGetCwd()))
 
 
-#*****************************************************
+# *****************************************************
 # TagExplManager
-#*****************************************************
+# *****************************************************
 class TagExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -74,38 +74,38 @@ class TagExplManager(Manager):
             return
         line = args[0]
         # {tagname}<Tab>{tagfile}<Tab>{tagaddress}[;"<Tab>{tagfield}..]
-        tagname, tagfile, right = line.split('\t', 2)
+        tagname, tagfile, right = line.split("\t", 2)
         res = right.split(';"\t', 1)
         tagaddress = res[0]
         try:
-            if kwargs.get("mode", '') == 't':
-                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == '1' and lfEval(f"bufloaded('{escQuote(tagfile)}')") == '1':
-                    lfDrop('tab', tagfile)
+            if kwargs.get("mode", "") == "t":
+                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == "1" and lfEval(f"bufloaded('{escQuote(tagfile)}')") == "1":
+                    lfDrop("tab", tagfile)
                 else:
                     lfCmd(f"tabe {escSpecial(tagfile)}")
             else:
-                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == '1' and lfEval(f"bufloaded('{escQuote(tagfile)}')") == '1':
-                    lfDrop('', tagfile)
+                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == "1" and lfEval(f"bufloaded('{escQuote(tagfile)}')") == "1":
+                    lfDrop("", tagfile)
                 else:
                     lfCmd(f"hide edit {escSpecial(tagfile)}")
-        except vim.error as e: # E37
-            if 'E325' not in str(e).split(':'):
+        except vim.error as e:  # E37
+            if "E325" not in str(e).split(":"):
                 lfPrintTraceback()
 
-        if tagaddress[0] not in '/?':
+        if tagaddress[0] not in "/?":
             lfCmd(tagaddress)
         else:
             self._gotoFirstLine()
 
             # In case there are mutiple matches.
             if len(res) > 1:
-                result = re.search(r'(?<=\t)line:\d+', res[1])
+                result = re.search(r"(?<=\t)line:\d+", res[1])
                 if result:
-                    line_num = result.group(0).split(':')[1]
+                    line_num = result.group(0).split(":")[1]
                     lfCmd(line_num)
-                else: # for c, c++
+                else:  # for c, c++
                     keyword = "(class|enum|struct|union)"
-                    result = re.search(rf'(?<=\t){keyword}:\S+', res[1])
+                    result = re.search(rf"(?<=\t){keyword}:\S+", res[1])
                     if result:
                         tagfield = result.group(0).split(":")
                         name = tagfield[0]
@@ -115,7 +115,7 @@ class TagExplManager(Manager):
             pattern = r"\M" + tagaddress[1:-1]
             lfCmd(f"call search('{escQuote(pattern)}', 'w')")
 
-        if lfEval(rf"search('\V{escQuote(tagname)}', 'wc')") == '0':
+        if lfEval(rf"search('\V{escQuote(tagname)}', 'wc')") == "0":
             lfCmd("norm! ^")
         lfCmd("norm! zv")
         lfCmd("norm! zz")
@@ -136,7 +136,7 @@ class TagExplManager(Manager):
                   1, return the name only
                   2, return the directory name
         """
-        return line[:line.find('\t')]
+        return line[: line.find("\t")]
 
     def _getDigestStartPos(self, line, mode):
         """
@@ -163,29 +163,35 @@ class TagExplManager(Manager):
 
     def _afterEnter(self):
         super()._afterEnter()
-        if self._getInstance().getWinPos() == 'popup':
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_tagFile'', ''^.\{-}\t\zs.\{-}\ze\t'')')"""
-                    % self._getInstance().getPopupWinId())
+        if self._getInstance().getWinPos() == "popup":
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_tagFile'', ''^.\{-}\t\zs.\{-}\ze\t'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_tagType'', '';"\t\zs[cdefFgmpstuv]\ze\(\t\|$\)'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_tagType'', '';"\t\zs[cdefFgmpstuv]\ze\(\t\|$\)'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
             keyword = ["namespace", "class", "enum", "file", "function", "kind", "struct", "union"]
             for i in keyword:
-                lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_tagKeyword'', ''\(;"\t.\{-}\)\@<=%s:'')')"""
-                    % (self._getInstance().getPopupWinId(), i))
+                lfCmd(
+                    r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_tagKeyword'', ''\(;"\t.\{-}\)\@<=%s:'')')"""
+                    % (self._getInstance().getPopupWinId(), i)
+                )
                 id = int(lfEval("matchid"))
                 self._match_ids.append(id)
         else:
-            id = int(lfEval(r'''matchadd('Lf_hl_tagFile', '^.\{-}\t\zs.\{-}\ze\t')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_tagFile', '^.\{-}\t\zs.\{-}\ze\t')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_tagType', ';"\t\zs[cdefFgmpstuv]\ze\(\t\|$\)')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_tagType', ';"\t\zs[cdefFgmpstuv]\ze\(\t\|$\)')"""))
             self._match_ids.append(id)
             keyword = ["namespace", "class", "enum", "file", "function", "kind", "struct", "union"]
             for i in keyword:
-                id = int(lfEval(rf'''matchadd('Lf_hl_tagKeyword', '\(;"\t.\{{-}}\)\@<={i}:')'''))
+                id = int(lfEval(rf"""matchadd('Lf_hl_tagKeyword', '\(;"\t.\{{-}}\)\@<={i}:')"""))
                 self._match_ids.append(id)
 
     def _beforeExit(self):
@@ -204,34 +210,34 @@ class TagExplManager(Manager):
         else:
             instance.window.cursor = (instance.cursorRow, 0)
 
-        if instance.getWinPos() == 'popup':
+        if instance.getWinPos() == "popup":
             lfCmd("call win_execute(%d, 'setlocal cursorline')" % instance.getPopupWinId())
-        elif instance.getWinPos() == 'floatwin':
+        elif instance.getWinPos() == "floatwin":
             lfCmd("call nvim_win_set_option(%d, 'cursorline', v:true)" % instance.getPopupWinId())
         else:
             instance.window.options["cursorline"] = True
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         line = args[0]
         # {tagname}<Tab>{tagfile}<Tab>{tagaddress}[;"<Tab>{tagfield}..]
-        tagname, tagfile, right = line.split('\t', 2)
+        tagname, tagfile, right = line.split("\t", 2)
         res = right.split(';"\t', 1)
         tagaddress = res[0]
-        if tagaddress[0] not in '/?':
+        if tagaddress[0] not in "/?":
             self._createPopupPreview("", tagfile, tagaddress)
         else:
             # In case there are mutiple matches.
             if len(res) > 1:
-                result = re.search(r'(?<=\t)line:\d+', res[1])
+                result = re.search(r"(?<=\t)line:\d+", res[1])
                 if result:
-                    line_num = result.group(0).split(':')[1]
+                    line_num = result.group(0).split(":")[1]
                     self._createPopupPreview("", tagfile, line_num)
-                else: # for c, c++
+                else:  # for c, c++
                     keyword = "(class|enum|struct|union)"
-                    result = re.search(rf'(?<=\t){keyword}:\S+', res[1])
+                    result = re.search(rf"(?<=\t){keyword}:\S+", res[1])
                     jump_cmd = 'exec "norm! gg"'
                     if result:
                         tagfield = result.group(0).split(":")
@@ -244,9 +250,9 @@ class TagExplManager(Manager):
                     self._createPopupPreview("", tagfile, 0, jump_cmd)
 
 
-#*****************************************************
+# *****************************************************
 # tagExplManager is a singleton
-#*****************************************************
+# *****************************************************
 tagExplManager = TagExplManager()
 
-__all__ = ['tagExplManager']
+__all__ = ["tagExplManager"]

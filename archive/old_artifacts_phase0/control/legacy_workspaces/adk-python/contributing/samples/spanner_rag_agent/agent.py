@@ -37,31 +37,29 @@ CREDENTIALS_TYPE = None
 tool_settings = SpannerToolSettings(capabilities=[Capabilities.DATA_READ])
 
 if CREDENTIALS_TYPE == AuthCredentialTypes.OAUTH2:
-  # Initialize the tools to do interactive OAuth
-  # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
-  # must be set
-  credentials_config = SpannerCredentialsConfig(
-      client_id=os.getenv("OAUTH_CLIENT_ID"),
-      client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
-      scopes=[
-          "https://www.googleapis.com/auth/spanner.admin",
-          "https://www.googleapis.com/auth/spanner.data",
-      ],
-  )
+    # Initialize the tools to do interactive OAuth
+    # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
+    # must be set
+    credentials_config = SpannerCredentialsConfig(
+        client_id=os.getenv("OAUTH_CLIENT_ID"),
+        client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
+        scopes=[
+            "https://www.googleapis.com/auth/spanner.admin",
+            "https://www.googleapis.com/auth/spanner.data",
+        ],
+    )
 elif CREDENTIALS_TYPE == AuthCredentialTypes.SERVICE_ACCOUNT:
-  # Initialize the tools to use the credentials in the service account key.
-  # If this flow is enabled, make sure to replace the file path with your own
-  # service account key file
-  # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
-  creds, _ = google.auth.load_credentials_from_file("service_account_key.json")
-  credentials_config = SpannerCredentialsConfig(credentials=creds)
+    # Initialize the tools to use the credentials in the service account key.
+    # If this flow is enabled, make sure to replace the file path with your own
+    # service account key file
+    # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
+    creds, _ = google.auth.load_credentials_from_file("service_account_key.json")
+    credentials_config = SpannerCredentialsConfig(credentials=creds)
 else:
-  # Initialize the tools to use the application default credentials.
-  # https://cloud.google.com/docs/authentication/provide-credentials-adc
-  application_default_credentials, _ = google.auth.default()
-  credentials_config = SpannerCredentialsConfig(
-      credentials=application_default_credentials
-  )
+    # Initialize the tools to use the application default credentials.
+    # https://cloud.google.com/docs/authentication/provide-credentials-adc
+    application_default_credentials, _ = google.auth.default()
+    credentials_config = SpannerCredentialsConfig(credentials=application_default_credentials)
 
 
 ### Section 1: Extending the built-in Spanner Toolset for Custom Use Cases ###
@@ -77,32 +75,32 @@ else:
 #     execution, and result processing, providing greater control over the
 #     tool's behavior.
 class SpannerRagSetting(BaseModel):
-  """Customized Spanner RAG settings for an example use case."""
+    """Customized Spanner RAG settings for an example use case."""
 
-  # Replace the following settings for your Spanner database used in the sample.
-  project_id: str = "<PROJECT_ID>"
-  instance_id: str = "<INSTANCE_ID>"
-  database_id: str = "<DATABASE_ID>"
+    # Replace the following settings for your Spanner database used in the sample.
+    project_id: str = "<PROJECT_ID>"
+    instance_id: str = "<INSTANCE_ID>"
+    database_id: str = "<DATABASE_ID>"
 
-  # Follow the instructions in README.md, the table name is "products" and the
-  # Spanner embedding model name is "EmbeddingsModel" in this sample.
-  table_name: str = "products"
-  # Learn more about Spanner Vertex AI integration for embedding and Spanner
-  # vector search.
-  # https://cloud.google.com/spanner/docs/ml-tutorial-embeddings
-  # https://cloud.google.com/spanner/docs/vector-search/overview
-  embedding_model_name: str = "EmbeddingsModel"
+    # Follow the instructions in README.md, the table name is "products" and the
+    # Spanner embedding model name is "EmbeddingsModel" in this sample.
+    table_name: str = "products"
+    # Learn more about Spanner Vertex AI integration for embedding and Spanner
+    # vector search.
+    # https://cloud.google.com/spanner/docs/ml-tutorial-embeddings
+    # https://cloud.google.com/spanner/docs/vector-search/overview
+    embedding_model_name: str = "EmbeddingsModel"
 
-  selected_columns: list[str] = [
-      "productId",
-      "productName",
-      "productDescription",
-  ]
-  embedding_column_name: str = "productDescriptionEmbedding"
+    selected_columns: list[str] = [
+        "productId",
+        "productName",
+        "productDescription",
+    ]
+    embedding_column_name: str = "productDescriptionEmbedding"
 
-  additional_filter_expression: str = "inventoryCount > 0"
-  vector_distance_function: str = "EUCLIDEAN_DISTANCE"
-  top_k: int = 3
+    additional_filter_expression: str = "inventoryCount > 0"
+    vector_distance_function: str = "EUCLIDEAN_DISTANCE"
+    top_k: int = 3
 
 
 RAG_SETTINGS = SpannerRagSetting()
@@ -119,38 +117,38 @@ def wrapped_spanner_similarity_search(
     settings: SpannerToolSettings,  # GoogleTool handles `settings` automatically
     tool_context: ToolContext,  # GoogleTool handles `tool_context` automatically
 ) -> str:
-  """Perform a similarity search on the product catalog.
+    """Perform a similarity search on the product catalog.
 
-  Args:
-    search_query: The search query to find relevant content.
+    Args:
+      search_query: The search query to find relevant content.
 
-  Returns:
-      Relevant product catalog content with sources
-  """
-  columns = RAG_SETTINGS.selected_columns.copy()
+    Returns:
+        Relevant product catalog content with sources
+    """
+    columns = RAG_SETTINGS.selected_columns.copy()
 
-  # Instead of fixing all parameters, you can also expose some of them for
-  # the LLM to decide.
-  return search_tool.similarity_search(
-      RAG_SETTINGS.project_id,
-      RAG_SETTINGS.instance_id,
-      RAG_SETTINGS.database_id,
-      RAG_SETTINGS.table_name,
-      search_query,
-      RAG_SETTINGS.embedding_column_name,
-      columns,
-      {
-          "spanner_embedding_model_name": RAG_SETTINGS.embedding_model_name,
-      },
-      credentials,
-      settings,
-      tool_context,
-      RAG_SETTINGS.additional_filter_expression,
-      {
-          "top_k": RAG_SETTINGS.top_k,
-          "distance_type": RAG_SETTINGS.vector_distance_function,
-      },
-  )
+    # Instead of fixing all parameters, you can also expose some of them for
+    # the LLM to decide.
+    return search_tool.similarity_search(
+        RAG_SETTINGS.project_id,
+        RAG_SETTINGS.instance_id,
+        RAG_SETTINGS.database_id,
+        RAG_SETTINGS.table_name,
+        search_query,
+        RAG_SETTINGS.embedding_column_name,
+        columns,
+        {
+            "spanner_embedding_model_name": RAG_SETTINGS.embedding_model_name,
+        },
+        credentials,
+        settings,
+        tool_context,
+        RAG_SETTINGS.additional_filter_expression,
+        {
+            "top_k": RAG_SETTINGS.top_k,
+            "distance_type": RAG_SETTINGS.vector_distance_function,
+        },
+    )
 
 
 ### (Option 2) Use the built-in execute_sql tool ###
@@ -169,31 +167,33 @@ def wrapped_spanner_execute_sql_tool(
     settings: SpannerToolSettings,  # GoogleTool handles `settings` automatically
     tool_context: ToolContext,  # GoogleTool handles `tool_context` automatically
 ) -> str:
-  """Perform a similarity search on the product catalog.
+    """Perform a similarity search on the product catalog.
 
-  Args:
-    search_query: The search query to find relevant content.
+    Args:
+      search_query: The search query to find relevant content.
 
-  Returns:
-      Relevant product catalog content with sources
-  """
+    Returns:
+        Relevant product catalog content with sources
+    """
 
-  embedding_query = f"""SELECT embeddings.values
+    embedding_query = f"""SELECT embeddings.values
       FROM ML.PREDICT(
         MODEL {RAG_SETTINGS.embedding_model_name},
         (SELECT "{search_query}" as content)
       )
     """
 
-  distance_alias = "distance"
-  columns = [f"{column}" for column in RAG_SETTINGS.selected_columns]
-  columns += [f"""{RAG_SETTINGS.vector_distance_function}(
+    distance_alias = "distance"
+    columns = [f"{column}" for column in RAG_SETTINGS.selected_columns]
+    columns += [
+        f"""{RAG_SETTINGS.vector_distance_function}(
         {RAG_SETTINGS.embedding_column_name},
         ({embedding_query})) AS {distance_alias}
-    """]
-  columns = ", ".join(columns)
+    """
+    ]
+    columns = ", ".join(columns)
 
-  knn_query = f"""
+    knn_query = f"""
       SELECT {columns}
       FROM {RAG_SETTINGS.table_name}
       WHERE {RAG_SETTINGS.additional_filter_expression}
@@ -201,16 +201,16 @@ def wrapped_spanner_execute_sql_tool(
       LIMIT {RAG_SETTINGS.top_k}
     """
 
-  # Customized tool based on the built-in Spanner toolset.
-  return query_tool.execute_sql(
-      project_id=RAG_SETTINGS.project_id,
-      instance_id=RAG_SETTINGS.instance_id,
-      database_id=RAG_SETTINGS.database_id,
-      query=knn_query,
-      credentials=credentials,
-      settings=settings,
-      tool_context=tool_context,
-  )
+    # Customized tool based on the built-in Spanner toolset.
+    return query_tool.execute_sql(
+        project_id=RAG_SETTINGS.project_id,
+        instance_id=RAG_SETTINGS.instance_id,
+        database_id=RAG_SETTINGS.database_id,
+        query=knn_query,
+        credentials=credentials,
+        settings=settings,
+        tool_context=tool_context,
+    )
 
 
 def inspect_tool_params(
@@ -218,23 +218,21 @@ def inspect_tool_params(
     args: dict[str, Any],
     tool_context: ToolContext,
 ) -> dict | None:
-  """A callback function to inspect tool parameters before execution."""
-  print("Inspect for tool: " + tool.name)
+    """A callback function to inspect tool parameters before execution."""
+    print("Inspect for tool: " + tool.name)
 
-  actual_search_query_in_args = args.get("search_query")
-  # Inspect the `search_query` when calling the tool for tutorial purposes.
-  print(f"Tool args `search_query`: {actual_search_query_in_args}")
+    actual_search_query_in_args = args.get("search_query")
+    # Inspect the `search_query` when calling the tool for tutorial purposes.
+    print(f"Tool args `search_query`: {actual_search_query_in_args}")
 
-  pass
+    pass
 
 
 ### Section 2: Create the root agent ###
 root_agent = LlmAgent(
     model="gemini-2.5-flash",
     name="spanner_knowledge_base_agent",
-    description=(
-        "Agent to answer questions about product-specific recommendations."
-    ),
+    description=("Agent to answer questions about product-specific recommendations."),
     instruction="""
     You are a helpful assistant that answers user questions about product-specific recommendations.
     1. Always use the `wrapped_spanner_similarity_search` tool to find relevant information.

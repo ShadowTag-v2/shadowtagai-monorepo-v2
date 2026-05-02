@@ -1,7 +1,6 @@
 """Search schemas."""
 
 from datetime import datetime
-from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -11,12 +10,7 @@ class SearchQuery(BaseModel):
     query: str = Field(..., description="Search query text")
     project_id: int | None = Field(None, description="Limit search to specific project")
     top_k: int = Field(default=10, ge=1, le=100, description="Number of results to return")
-    min_relevance: float = Field(
-        default=0.5,
-        ge=0.0,
-        le=1.0,
-        description="Minimum relevance score (0-1)"
-    )
+    min_relevance: float = Field(default=0.5, ge=0.0, le=1.0, description="Minimum relevance score (0-1)")
     search_conversations: bool = Field(default=True, description="Search in conversations")
     search_memories: bool = Field(default=True, description="Search in memories")
 
@@ -40,7 +34,7 @@ class SearchResponse(BaseModel):
     query: str
     total_results: int
     conversation_results: list[ConversationSearchResult] = []
-    memory_results: list["MemorySearchResult"] = []
+    memory_results: list[MemorySearchResult] = []
     search_time_ms: float
 
 
@@ -55,7 +49,7 @@ class RecentChatsQuery(BaseModel):
 class RecentChatsResponse(BaseModel):
     """Schema for recent chats response."""
 
-    conversations: list["ConversationResponse"] = []
+    conversations: list[ConversationResponse] = []
     total: int
 
 

@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ValidationResult:
     """Result of validating a single finding."""
+
     finding_id: str
     evidence_type: str
     ground_truth: bool
@@ -31,6 +32,7 @@ class ValidationResult:
 @dataclass
 class AccuracyValidationReport:
     """Report from running accuracy validation against a benchmark dataset."""
+
     dataset_name: str
     dataset_version: str
     total_findings: int
@@ -48,10 +50,7 @@ class AccuracyValidationReport:
         ]
         for etype, acc in sorted(self.accuracy_by_type.items()):
             counts = self.counts_by_type.get(etype, {})
-            lines.append(
-                f"  {etype}: {acc:.1%} "
-                f"({counts.get('correct', 0)}/{counts.get('total', 0)})"
-            )
+            lines.append(f"  {etype}: {acc:.1%} ({counts.get('correct', 0)}/{counts.get('total', 0)})")
         return "\n".join(lines)
 
 
@@ -95,13 +94,15 @@ class AccuracyValidator:
                 continue
 
             correct = conclusion == finding.ground_truth_accurate
-            results.append(ValidationResult(
-                finding_id=finding.finding_id,
-                evidence_type=finding.evidence_type,
-                ground_truth=finding.ground_truth_accurate,
-                kosmos_conclusion=conclusion,
-                correct=correct,
-            ))
+            results.append(
+                ValidationResult(
+                    finding_id=finding.finding_id,
+                    evidence_type=finding.evidence_type,
+                    ground_truth=finding.ground_truth_accurate,
+                    kosmos_conclusion=conclusion,
+                    correct=correct,
+                )
+            )
 
             etype = finding.evidence_type
             type_total[etype] = type_total.get(etype, 0) + 1

@@ -20,7 +20,10 @@ class Settings(BaseSettings):
     api_prefix: str = "/api/v1"
 
     # CORS
-    cors_origins: list[str] = Field(default_factory=lambda: ["*"])
+    cors_origins: list[str] = Field(
+        default_factory=list,
+        description="Set via CORS_ORIGINS env var. Empty = no CORS.",
+    )
     cors_allow_credentials: bool = True
     cors_allow_methods: list[str] = Field(default_factory=lambda: ["*"])
     cors_allow_headers: list[str] = Field(default_factory=lambda: ["*"])

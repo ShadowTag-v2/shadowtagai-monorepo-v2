@@ -7,7 +7,7 @@ from datetime import datetime
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, ConfigDict, HttpUrl
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
@@ -66,8 +66,7 @@ class ContentResponse(BaseModel):
     created_at: datetime
     published_at: datetime | None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class StreamStartResponse(BaseModel):

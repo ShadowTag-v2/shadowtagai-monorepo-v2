@@ -15,28 +15,30 @@
 __all__ = []
 
 try:
-  from .conversion_utils import adk_to_mcp_tool_type, gemini_to_json_schema
-  from .mcp_session_manager import SseConnectionParams, StdioConnectionParams, StreamableHTTPConnectionParams
-  from .mcp_tool import MCPTool, McpTool
-  from .mcp_toolset import MCPToolset, McpToolset
+    from .conversion_utils import adk_to_mcp_tool_type, gemini_to_json_schema
+    from .mcp_session_manager import SseConnectionParams, StdioConnectionParams, StreamableHTTPConnectionParams
+    from .mcp_tool import MCPTool, McpTool
+    from .mcp_toolset import MCPToolset, McpToolset
 
-  __all__.extend([
-      'adk_to_mcp_tool_type',
-      'gemini_to_json_schema',
-      'McpTool',
-      'MCPTool',
-      'McpToolset',
-      'MCPToolset',
-      'SseConnectionParams',
-      'StdioConnectionParams',
-      'StreamableHTTPConnectionParams',
-  ])
+    __all__.extend(
+        [
+            "adk_to_mcp_tool_type",
+            "gemini_to_json_schema",
+            "McpTool",
+            "MCPTool",
+            "McpToolset",
+            "MCPToolset",
+            "SseConnectionParams",
+            "StdioConnectionParams",
+            "StreamableHTTPConnectionParams",
+        ]
+    )
 
 except ImportError as e:
-  import logging
-  import sys
+    import logging
+    import sys
 
-  logger = logging.getLogger('google_adk.' + __name__)
+    logger = logging.getLogger("google_adk." + __name__)
 
-  logger.debug('MCP Tool is not installed')
-  logger.debug(e)
+    logger.debug("MCP Tool is not installed")
+    logger.debug(e)

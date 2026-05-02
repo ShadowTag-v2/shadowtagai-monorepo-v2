@@ -23,13 +23,13 @@ COMPLIANCE_CHECKS = {
     "fda": {
         "study_id": r"(?i)(IND|IDE|protocol)\s+(number|#)[:]\s*\S+",
         "safety_reporting": r"(?i)(adverse\s+event|SAE)",
-    }
+    },
 }
 
 
 def check_compliance(filename: str) -> dict:
     """Check regulatory compliance."""
-    with open(filename, 'r', encoding='utf-8') as f:
+    with open(filename, encoding="utf-8") as f:
         content = f.read()
 
     results = {}
@@ -73,4 +73,5 @@ def main():
 
 if __name__ == "__main__":
     import sys
+
     sys.exit(main())

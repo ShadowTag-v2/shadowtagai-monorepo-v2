@@ -7,6 +7,7 @@ All new code:    from pnkln.agents import CorAutoresearch
 Legacy code:     from agents.autoresearch import Autoresearch  ← still works
                  from agents.autoresearch import AgentOrchestrator  ← still works
 """
+
 from pnkln.agents import (
     MNFST,
     AgentContainment,
@@ -40,11 +41,27 @@ from pnkln.agents import (
 )
 
 __all__ = [
-    "CorAutoresearch", "AgentOrchestrator", "Autoresearch",
-    "AgentState", "AgentUnit",
-    "AgentTier", "AgentSpecialization", "AgentContainment",
-    "CircuitBreaker", "SelfHealingState", "LLMProvider",
-    "MNFST", "Note", "SauronsPanorama", "LegalReasoningFramework",
-    "CircuitState", "ContainmentLevel", "UnitType", "ShiftRotation",
-    "LegalWhiteboard", "AntigravityRouter", "ComputerUseSpawner", "LLMConfig",
+    "CorAutoresearch",
+    "AgentOrchestrator",
+    "Autoresearch",
+    "AgentState",
+    "AgentUnit",
+    "AgentTier",
+    "AgentSpecialization",
+    "AgentContainment",
+    "CircuitBreaker",
+    "SelfHealingState",
+    "LLMProvider",
+    "MNFST",
+    "Note",
+    "SauronsPanorama",
+    "LegalReasoningFramework",
+    "CircuitState",
+    "ContainmentLevel",
+    "UnitType",
+    "ShiftRotation",
+    "LegalWhiteboard",
+    "AntigravityRouter",
+    "ComputerUseSpawner",
+    "LLMConfig",
 ]

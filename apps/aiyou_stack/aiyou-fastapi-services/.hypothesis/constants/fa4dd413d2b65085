@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/cor.py
+# hypothesis_version: 6.151.5
+
+[0.85, 0.99, 1000, 'Return result', 'Watermark output', 'average_latency_ms', 'complexity', 'context', 'cost_usd', 'execution_metrics', 'function_calls', 'latency_ms', 'legacy', 'max_latency_ms', 'meets_sla', 'memories', 'min_latency_ms', 'mode', 'multi_provider', 'p99_latency_ms', 'primary_provider', 'provider', 'result', 'task', 'timestamp', 'tokens_in', 'tokens_out', 'total_executions']

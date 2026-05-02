@@ -18,9 +18,7 @@ class LinearBongo(BaseBongo):
     def __init__(self, credentials: dict[str, Any], **kwargs):
         super().__init__(credentials)
         self._credentials = credentials  # Store for token refresh
-        self.access_token: str = credentials[
-            "access_token"
-        ]  # Personal API key or OAuth token
+        self.access_token: str = credentials["access_token"]  # Personal API key or OAuth token
         self.entity_count: int = int(kwargs.get("entity_count", 3))
         self.openai_model: str = kwargs.get("openai_model", "gpt-4.1-mini")
         self.rate_limit_delay = float(kwargs.get("rate_limit_delay_ms", 500)) / 1000.0
@@ -68,9 +66,7 @@ class LinearBongo(BaseBongo):
                 }
                 out.append(ent)
                 self._issues.append(ent)
-                self.created_entities.append(
-                    {"id": issue["id"], "name": issue["title"]}
-                )
+                self.created_entities.append({"id": issue["id"], "name": issue["title"]})
 
                 # add 1-2 comments (best effort)
                 for c in data.content.comments[:2]:
@@ -79,9 +75,7 @@ class LinearBongo(BaseBongo):
                     mutation CommentCreate($input: CommentCreateInput!) {
                       commentCreate(input: $input) { success comment { id } }
                     }"""
-                    _ = await self._gql(
-                        client, qc, {"input": {"issueId": issue["id"], "body": c}}
-                    )
+                    _ = await self._gql(client, qc, {"input": {"issueId": issue["id"], "body": c}})
             return out
 
     async def update_entities(self) -> list[dict[str, Any]]:
@@ -107,9 +101,7 @@ class LinearBongo(BaseBongo):
     async def delete_entities(self) -> list[str]:
         return await self.delete_specific_entities(self._issues)
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         self.logger.info(f"🥁 Deleting/archiving {len(entities)} Linear issues")
         deleted: list[str] = []
         async with httpx.AsyncClient(timeout=30) as client:
@@ -132,9 +124,7 @@ class LinearBongo(BaseBongo):
         try:
             # First, delete current session issues
             if self._issues:
-                self.logger.info(
-                    f"🗑️ Cleaning up {len(self._issues)} current session issues"
-                )
+                self.logger.info(f"🗑️ Cleaning up {len(self._issues)} current session issues")
                 deleted = await self.delete_specific_entities(self._issues)
                 cleanup_stats["issues_deleted"] += len(deleted)
                 self._issues.clear()
@@ -142,19 +132,14 @@ class LinearBongo(BaseBongo):
             # Search for any remaining monke test issues
             await self._cleanup_orphaned_test_issues(cleanup_stats)
 
-            self.logger.info(
-                f"🧹 Cleanup completed: {cleanup_stats['issues_deleted']} issues deleted, "
-                f"{cleanup_stats['errors']} errors"
-            )
+            self.logger.info(f"🧹 Cleanup completed: {cleanup_stats['issues_deleted']} issues deleted, {cleanup_stats['errors']} errors")
         except Exception as e:
             self.logger.error(f"❌ Error during comprehensive cleanup: {e}")
 
     async def _cleanup_orphaned_test_issues(self, stats: dict[str, Any]):
         """Find and delete orphaned test issues from previous runs."""
         try:
-            async with httpx.AsyncClient(
-                base_url="https://api.linear.app", timeout=30
-            ) as client:
+            async with httpx.AsyncClient(base_url="https://api.linear.app", timeout=30) as client:
                 # Search for issues with test patterns in title
                 query = """query {
                     issues(filter: {
@@ -169,48 +154,29 @@ class LinearBongo(BaseBongo):
                 }"""
 
                 resp = await self._gql(client, query, {})
-                issues = ((resp.get("data") or {}).get("issues") or {}).get(
-                    "nodes"
-                ) or []
+                issues = ((resp.get("data") or {}).get("issues") or {}).get("nodes") or []
 
                 # Filter for actual test issues
                 test_issues = [
-                    issue
-                    for issue in issues
-                    if any(
-                        pattern in issue.get("title", "").lower()
-                        for pattern in ["test", "monke", "demo", "sample"]
-                    )
+                    issue for issue in issues if any(pattern in issue.get("title", "").lower() for pattern in ["test", "monke", "demo", "sample"])
                 ]
 
                 if test_issues:
-                    self.logger.info(
-                        f"🔍 Found {len(test_issues)} potential test issues to clean"
-                    )
+                    self.logger.info(f"🔍 Found {len(test_issues)} potential test issues to clean")
                     for issue in test_issues:
                         try:
                             await self._pace()
                             mutation = "mutation($id: String!) { issueDelete(id: $id) { success } }"
-                            result = await self._gql(
-                                client, mutation, {"id": issue["id"]}
-                            )
+                            result = await self._gql(client, mutation, {"id": issue["id"]})
 
-                            if (
-                                result.get("data", {})
-                                .get("issueDelete", {})
-                                .get("success")
-                            ):
+                            if result.get("data", {}).get("issueDelete", {}).get("success"):
                                 stats["issues_deleted"] += 1
-                                self.logger.info(
-                                    f"✅ Deleted orphaned issue: {issue.get('title')}"
-                                )
+                                self.logger.info(f"✅ Deleted orphaned issue: {issue.get('title')}")
                             else:
                                 stats["errors"] += 1
                         except Exception as e:
                             stats["errors"] += 1
-                            self.logger.warning(
-                                f"⚠️ Failed to delete issue {issue['id']}: {e}"
-                            )
+                            self.logger.warning(f"⚠️ Failed to delete issue {issue['id']}: {e}")
         except Exception as e:
             self.logger.warning(f"⚠️ Could not search for orphaned issues: {e}")
 
@@ -239,6 +205,7 @@ class LinearBongo(BaseBongo):
             else:
                 # Fallback to generic credentials resolver
                 from monke.auth.credentials_resolver import resolve_credentials
+
                 fresh_creds = await resolve_credentials("linear", self._credentials)
 
             self.access_token = fresh_creds["access_token"]
@@ -247,9 +214,7 @@ class LinearBongo(BaseBongo):
             self.logger.error(f"❌ Failed to refresh Linear token: {e}")
             raise
 
-    async def _gql(
-        self, client: httpx.AsyncClient, query: str, variables: dict[str, Any]
-    ) -> dict[str, Any]:
+    async def _gql(self, client: httpx.AsyncClient, query: str, variables: dict[str, Any]) -> dict[str, Any]:
         r = await client.post(
             LINEAR_GQL,
             headers={

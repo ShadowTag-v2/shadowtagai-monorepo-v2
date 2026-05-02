@@ -23,7 +23,7 @@ class TestFlow:
         self._step_idx = 0  # ensure unique metric keys
 
     @classmethod
-    def create(cls, config: TestConfig, run_id: str | None = None) -> "TestFlow":
+    def create(cls, config: TestConfig, run_id: str | None = None) -> TestFlow:
         return cls(config, run_id=run_id)
 
     async def execute(self):
@@ -95,9 +95,7 @@ class TestFlow:
             try:
                 await self.cleanup()
             except Exception as cleanup_error:
-                self.logger.error(
-                    f"❌ Cleanup failed after test failure: {cleanup_error}"
-                )
+                self.logger.error(f"❌ Cleanup failed after test failure: {cleanup_error}")
             raise
 
     async def _execute_step(self, step_name: str, step_idx: int = 0, total_steps: int = 0):
@@ -192,9 +190,7 @@ class TestFlow:
             await self._emit_event("cleanup_failed", extra={"error": str(e)})
             return False
 
-    async def _emit_event(
-        self, event_type: str, extra: dict[str, Any] | None = None
-    ) -> None:
+    async def _emit_event(self, event_type: str, extra: dict[str, Any] | None = None) -> None:
         payload: dict[str, Any] = {
             "type": event_type,
             "run_id": self.run_id,

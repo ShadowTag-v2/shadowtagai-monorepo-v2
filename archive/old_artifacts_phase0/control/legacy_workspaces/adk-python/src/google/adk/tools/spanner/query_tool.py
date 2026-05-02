@@ -30,45 +30,45 @@ def execute_sql(
     settings: SpannerToolSettings,
     tool_context: ToolContext,
 ) -> dict:
-  """Run a Spanner Read-Only query in the spanner database and return the result.
+    """Run a Spanner Read-Only query in the spanner database and return the result.
 
-  Args:
-      project_id (str): The GCP project id in which the spanner database
-        resides.
-      instance_id (str): The instance id of the spanner database.
-      database_id (str): The database id of the spanner database.
-      query (str): The Spanner SQL query to be executed.
-      credentials (Credentials): The credentials to use for the request.
-      settings (SpannerToolSettings): The settings for the tool.
-      tool_context (ToolContext): The context for the tool.
+    Args:
+        project_id (str): The GCP project id in which the spanner database
+          resides.
+        instance_id (str): The instance id of the spanner database.
+        database_id (str): The database id of the spanner database.
+        query (str): The Spanner SQL query to be executed.
+        credentials (Credentials): The credentials to use for the request.
+        settings (SpannerToolSettings): The settings for the tool.
+        tool_context (ToolContext): The context for the tool.
 
-  Returns:
-      dict: Dictionary with the result of the query.
-            If the result contains the key "result_is_likely_truncated" with
-            value True, it means that there may be additional rows matching the
-            query not returned in the result.
+    Returns:
+        dict: Dictionary with the result of the query.
+              If the result contains the key "result_is_likely_truncated" with
+              value True, it means that there may be additional rows matching the
+              query not returned in the result.
 
-  Examples:
-      Fetch data or insights from a table:
+    Examples:
+        Fetch data or insights from a table:
 
-          >>> execute_sql("my_project", "my_instance", "my_database",
-          ... "SELECT COUNT(*) AS count FROM my_table")
-          {
-            "status": "SUCCESS",
-            "rows": [
-              [100]
-            ]
-          }
+            >>> execute_sql("my_project", "my_instance", "my_database",
+            ... "SELECT COUNT(*) AS count FROM my_table")
+            {
+              "status": "SUCCESS",
+              "rows": [
+                [100]
+              ]
+            }
 
-  Note:
-    This is running with Read-Only Transaction for query that only read data.
-  """
-  return utils.execute_sql(
-      project_id,
-      instance_id,
-      database_id,
-      query,
-      credentials,
-      settings,
-      tool_context,
-  )
+    Note:
+      This is running with Read-Only Transaction for query that only read data.
+    """
+    return utils.execute_sql(
+        project_id,
+        instance_id,
+        database_id,
+        query,
+        credentials,
+        settings,
+        tool_context,
+    )

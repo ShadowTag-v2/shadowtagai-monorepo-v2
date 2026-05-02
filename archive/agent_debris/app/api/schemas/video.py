@@ -1,11 +1,12 @@
 """Video API Schemas"""
 
 from pydantic import BaseModel
-from typing import Optional, Dict, Any
+from typing import Any
 
 
 class EncodeRequest(BaseModel):
     """Request schema for video encoding"""
+
     bits_per_channel: int = 2
     use_encryption: bool = True
     error_correction: bool = True
@@ -14,6 +15,7 @@ class EncodeRequest(BaseModel):
 
 class EncodeResponse(BaseModel):
     """Response schema for video encoding"""
+
     success: bool
     output_file: str
     verification_hash: str
@@ -23,6 +25,7 @@ class EncodeResponse(BaseModel):
 
 class DecodeResponse(BaseModel):
     """Response schema for video decoding"""
+
     success: bool
     payload_file: str
     payload_size: int
@@ -33,6 +36,7 @@ class DecodeResponse(BaseModel):
 
 class CapacityResponse(BaseModel):
     """Response schema for capacity estimation"""
+
     total_bytes: int
     usable_bytes: int
     recommended_max_bytes: int

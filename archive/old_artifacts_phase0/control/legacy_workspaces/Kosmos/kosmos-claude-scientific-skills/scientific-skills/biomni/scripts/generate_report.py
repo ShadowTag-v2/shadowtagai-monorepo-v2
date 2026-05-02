@@ -18,14 +18,11 @@ import argparse
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 def format_conversation_history(
-    messages: List[Dict[str, Any]],
-    include_metadata: bool = True,
-    include_code: bool = True,
-    include_timestamps: bool = False
+    messages: list[dict[str, Any]], include_metadata: bool = True, include_code: bool = True, include_timestamps: bool = False
 ) -> str:
     """
     Format conversation history into structured markdown.
@@ -55,20 +52,20 @@ def format_conversation_history(
     sections.append("## Analysis\n")
 
     for i, msg in enumerate(messages, 1):
-        role = msg.get('role', 'unknown')
-        content = msg.get('content', '')
+        role = msg.get("role", "unknown")
+        content = msg.get("content", "")
 
-        if role == 'user':
+        if role == "user":
             sections.append(f"### Task {i // 2 + 1}\n")
             sections.append(f"**Query:**\n```\n{content}\n```\n")
 
-        elif role == 'assistant':
+        elif role == "assistant":
             sections.append("**Response:**\n")
 
             # Check if content contains code
-            if include_code and ('```' in content or 'import ' in content):
+            if include_code and ("```" in content or "import " in content):
                 # Attempt to separate text and code
-                parts = content.split('```')
+                parts = content.split("```")
                 for j, part in enumerate(parts):
                     if j % 2 == 0:
                         # Text content
@@ -77,12 +74,12 @@ def format_conversation_history(
                     else:
                         # Code content
                         # Check if language is specified
-                        lines = part.split('\n', 1)
-                        if len(lines) > 1 and lines[0].strip() in ['python', 'r', 'bash', 'sql']:
+                        lines = part.split("\n", 1)
+                        if len(lines) > 1 and lines[0].strip() in ["python", "r", "bash", "sql"]:
                             lang = lines[0].strip()
                             code = lines[1]
                         else:
-                            lang = 'python'  # Default to python
+                            lang = "python"  # Default to python
                             code = part
 
                         sections.append(f"```{lang}\n{code}\n```\n")
@@ -91,7 +88,7 @@ def format_conversation_history(
 
             sections.append("\n---\n")
 
-    return '\n'.join(sections)
+    return "\n".join(sections)
 
 
 def markdown_to_html(markdown_content: str, title: str = "Biomni Report") -> str:
@@ -196,16 +193,16 @@ def markdown_to_html(markdown_content: str, title: str = "Biomni Report") -> str
 
 def markdown_to_html_simple(md: str) -> str:
     """Simple markdown to HTML converter (basic implementation)."""
-    lines = md.split('\n')
+    lines = md.split("\n")
     html_lines = []
     in_code_block = False
     in_list = False
 
     for line in lines:
         # Code blocks
-        if line.startswith('```'):
+        if line.startswith("```"):
             if in_code_block:
-                html_lines.append('</code></pre>')
+                html_lines.append("</code></pre>")
                 in_code_block = False
             else:
                 lang = line[3:].strip()
@@ -218,48 +215,43 @@ def markdown_to_html_simple(md: str) -> str:
             continue
 
         # Headers
-        if line.startswith('# '):
-            html_lines.append(f'<h1>{line[2:]}</h1>')
-        elif line.startswith('## '):
-            html_lines.append(f'<h2>{line[3:]}</h2>')
-        elif line.startswith('### '):
-            html_lines.append(f'<h3>{line[4:]}</h3>')
+        if line.startswith("# "):
+            html_lines.append(f"<h1>{line[2:]}</h1>")
+        elif line.startswith("## "):
+            html_lines.append(f"<h2>{line[3:]}</h2>")
+        elif line.startswith("### "):
+            html_lines.append(f"<h3>{line[4:]}</h3>")
         # Lists
-        elif line.startswith('- '):
+        elif line.startswith("- "):
             if not in_list:
-                html_lines.append('<ul>')
+                html_lines.append("<ul>")
                 in_list = True
-            html_lines.append(f'<li>{line[2:]}</li>')
+            html_lines.append(f"<li>{line[2:]}</li>")
         else:
             if in_list:
-                html_lines.append('</ul>')
+                html_lines.append("</ul>")
                 in_list = False
 
             # Horizontal rule
-            if line.strip() == '---':
-                html_lines.append('<hr>')
+            if line.strip() == "---":
+                html_lines.append("<hr>")
             # Bold
-            elif '**' in line:
-                line = line.replace('**', '<strong>', 1).replace('**', '</strong>', 1)
-                html_lines.append(f'<p>{line}</p>')
+            elif "**" in line:
+                line = line.replace("**", "<strong>", 1).replace("**", "</strong>", 1)
+                html_lines.append(f"<p>{line}</p>")
             # Regular paragraph
             elif line.strip():
-                html_lines.append(f'<p>{line}</p>')
+                html_lines.append(f"<p>{line}</p>")
             else:
-                html_lines.append('<br>')
+                html_lines.append("<br>")
 
     if in_list:
-        html_lines.append('</ul>')
+        html_lines.append("</ul>")
 
-    return '\n'.join(html_lines)
+    return "\n".join(html_lines)
 
 
-def generate_report(
-    conversation_data: Dict[str, Any],
-    output_path: Path,
-    format: str = 'markdown',
-    title: Optional[str] = None
-):
+def generate_report(conversation_data: dict[str, Any], output_path: Path, format: str = "markdown", title: str | None = None):
     """
     Generate formatted report from conversation data.
 
@@ -269,7 +261,7 @@ def generate_report(
         format: Output format ('markdown', 'html', or 'pdf')
         title: Report title
     """
-    messages = conversation_data.get('messages', [])
+    messages = conversation_data.get("messages", [])
 
     if not title:
         title = f"Biomni Analysis - {datetime.now().strftime('%Y-%m-%d')}"
@@ -277,22 +269,22 @@ def generate_report(
     # Generate markdown
     markdown_content = format_conversation_history(messages)
 
-    if format == 'markdown':
+    if format == "markdown":
         output_path.write_text(markdown_content)
         print(f"✓ Markdown report saved to {output_path}")
 
-    elif format == 'html':
+    elif format == "html":
         html_content = markdown_to_html(markdown_content, title)
         output_path.write_text(html_content)
         print(f"✓ HTML report saved to {output_path}")
 
-    elif format == 'pdf':
+    elif format == "pdf":
         # For PDF generation, we'd typically use a library like weasyprint or reportlab
         # This is a placeholder implementation
         print("PDF generation requires additional dependencies (weasyprint or reportlab)")
         print("Falling back to HTML format...")
 
-        html_path = output_path.with_suffix('.html')
+        html_path = output_path.with_suffix(".html")
         html_content = markdown_to_html(markdown_content, title)
         html_path.write_text(html_content)
 
@@ -307,42 +299,21 @@ def generate_report(
 
 def main():
     """Main entry point for CLI usage."""
-    parser = argparse.ArgumentParser(
-        description="Generate enhanced reports from biomni conversation histories"
-    )
+    parser = argparse.ArgumentParser(description="Generate enhanced reports from biomni conversation histories")
 
-    parser.add_argument(
-        '--input',
-        type=Path,
-        required=True,
-        help='Input conversation history JSON file'
-    )
+    parser.add_argument("--input", type=Path, required=True, help="Input conversation history JSON file")
 
-    parser.add_argument(
-        '--output',
-        type=Path,
-        required=True,
-        help='Output report file path'
-    )
+    parser.add_argument("--output", type=Path, required=True, help="Output report file path")
 
-    parser.add_argument(
-        '--format',
-        choices=['markdown', 'html', 'pdf'],
-        default='markdown',
-        help='Output format (default: markdown)'
-    )
+    parser.add_argument("--format", choices=["markdown", "html", "pdf"], default="markdown", help="Output format (default: markdown)")
 
-    parser.add_argument(
-        '--title',
-        type=str,
-        help='Report title (optional)'
-    )
+    parser.add_argument("--title", type=str, help="Report title (optional)")
 
     args = parser.parse_args()
 
     # Load conversation data
     try:
-        with open(args.input, 'r') as f:
+        with open(args.input) as f:
             conversation_data = json.load(f)
     except FileNotFoundError:
         print(f"❌ Input file not found: {args.input}")
@@ -353,18 +324,14 @@ def main():
 
     # Generate report
     try:
-        generate_report(
-            conversation_data,
-            args.output,
-            format=args.format,
-            title=args.title
-        )
+        generate_report(conversation_data, args.output, format=args.format, title=args.title)
         return 0
     except Exception as e:
         print(f"❌ Error generating report: {e}")
         return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
+
     sys.exit(main())

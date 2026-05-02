@@ -28,92 +28,90 @@ from google.adk.tools.bigquery import data_insights_tool
 )
 @mock.patch.object(data_insights_tool.requests.Session, "post")
 def test_ask_data_insights_pipeline_from_file(mock_post, case_file_path):
-  """Runs a full integration test for the ask_data_insights pipeline using data from a specific file."""
-  # 1. Construct the full, absolute path to the data file
-  full_path = pathlib.Path(__file__).parent / case_file_path
+    """Runs a full integration test for the ask_data_insights pipeline using data from a specific file."""
+    # 1. Construct the full, absolute path to the data file
+    full_path = pathlib.Path(__file__).parent / case_file_path
 
-  # 2. Load the test case data from the specified YAML file
-  with open(full_path, "r", encoding="utf-8") as f:
-    case_data = yaml.safe_load(f)
+    # 2. Load the test case data from the specified YAML file
+    with open(full_path, encoding="utf-8") as f:
+        case_data = yaml.safe_load(f)
 
-  # 3. Prepare the mock stream and expected output from the loaded data
-  mock_stream_str = case_data["mock_api_stream"]
-  fake_stream_lines = [
-      line.encode("utf-8") for line in mock_stream_str.splitlines()
-  ]
-  # Load the expected output as a list of dictionaries, not a single string
-  expected_final_list = case_data["expected_output"]
+    # 3. Prepare the mock stream and expected output from the loaded data
+    mock_stream_str = case_data["mock_api_stream"]
+    fake_stream_lines = [line.encode("utf-8") for line in mock_stream_str.splitlines()]
+    # Load the expected output as a list of dictionaries, not a single string
+    expected_final_list = case_data["expected_output"]
 
-  # 4. Configure the mock for requests.post
-  mock_response = mock.Mock()
-  mock_response.iter_lines.return_value = fake_stream_lines
-  # Add raise_for_status mock which is called in the updated code
-  mock_response.raise_for_status.return_value = None
-  mock_post.return_value.__enter__.return_value = mock_response
+    # 4. Configure the mock for requests.post
+    mock_response = mock.Mock()
+    mock_response.iter_lines.return_value = fake_stream_lines
+    # Add raise_for_status mock which is called in the updated code
+    mock_response.raise_for_status.return_value = None
+    mock_post.return_value.__enter__.return_value = mock_response
 
-  # 5. Call the function under test
-  result = data_insights_tool._get_stream(  # pylint: disable=protected-access
-      url="fake_url",
-      ca_payload={},
-      headers={},
-      max_query_result_rows=50,
-  )
+    # 5. Call the function under test
+    result = data_insights_tool._get_stream(  # pylint: disable=protected-access
+        url="fake_url",
+        ca_payload={},
+        headers={},
+        max_query_result_rows=50,
+    )
 
-  # 6. Assert that the final list of dicts matches the expected output
-  assert result == expected_final_list
+    # 6. Assert that the final list of dicts matches the expected output
+    assert result == expected_final_list
 
 
 @mock.patch.object(data_insights_tool, "_get_stream")
 def test_ask_data_insights_success(mock_get_stream):
-  """Tests the success path of ask_data_insights using decorators."""
-  # 1. Configure the behavior of the mocked functions
-  mock_get_stream.return_value = "Final formatted string from stream"
+    """Tests the success path of ask_data_insights using decorators."""
+    # 1. Configure the behavior of the mocked functions
+    mock_get_stream.return_value = "Final formatted string from stream"
 
-  # 2. Create mock inputs for the function call
-  mock_creds = mock.Mock()
-  mock_creds.token = "fake-token"
-  mock_settings = mock.Mock()
-  mock_settings.max_query_result_rows = 100
+    # 2. Create mock inputs for the function call
+    mock_creds = mock.Mock()
+    mock_creds.token = "fake-token"
+    mock_settings = mock.Mock()
+    mock_settings.max_query_result_rows = 100
 
-  # 3. Call the function under test
-  result = data_insights_tool.ask_data_insights(
-      project_id="test-project",
-      user_query_with_context="test query",
-      table_references=[],
-      credentials=mock_creds,
-      settings=mock_settings,
-  )
+    # 3. Call the function under test
+    result = data_insights_tool.ask_data_insights(
+        project_id="test-project",
+        user_query_with_context="test query",
+        table_references=[],
+        credentials=mock_creds,
+        settings=mock_settings,
+    )
 
-  # 4. Assert the results are as expected
-  assert result["status"] == "SUCCESS"
-  assert result["response"] == "Final formatted string from stream"
-  mock_get_stream.assert_called_once()
+    # 4. Assert the results are as expected
+    assert result["status"] == "SUCCESS"
+    assert result["response"] == "Final formatted string from stream"
+    mock_get_stream.assert_called_once()
 
 
 @mock.patch.object(data_insights_tool, "_get_stream")
 def test_ask_data_insights_handles_exception(mock_get_stream):
-  """Tests the exception path of ask_data_insights using decorators."""
-  # 1. Configure one of the mocks to raise an error
-  mock_get_stream.side_effect = Exception("API call failed!")
+    """Tests the exception path of ask_data_insights using decorators."""
+    # 1. Configure one of the mocks to raise an error
+    mock_get_stream.side_effect = Exception("API call failed!")
 
-  # 2. Create mock inputs
-  mock_creds = mock.Mock()
-  mock_creds.token = "fake-token"
-  mock_settings = mock.Mock()
+    # 2. Create mock inputs
+    mock_creds = mock.Mock()
+    mock_creds.token = "fake-token"
+    mock_settings = mock.Mock()
 
-  # 3. Call the function
-  result = data_insights_tool.ask_data_insights(
-      project_id="test-project",
-      user_query_with_context="test query",
-      table_references=[],
-      credentials=mock_creds,
-      settings=mock_settings,
-  )
+    # 3. Call the function
+    result = data_insights_tool.ask_data_insights(
+        project_id="test-project",
+        user_query_with_context="test query",
+        table_references=[],
+        credentials=mock_creds,
+        settings=mock_settings,
+    )
 
-  # 4. Assert that the error was caught and formatted correctly
-  assert result["status"] == "ERROR"
-  assert "API call failed!" in result["error_details"]
-  mock_get_stream.assert_called_once()
+    # 4. Assert that the error was caught and formatted correctly
+    assert result["status"] == "ERROR"
+    assert "API call failed!" in result["error_details"]
+    mock_get_stream.assert_called_once()
 
 
 @pytest.mark.parametrize(
@@ -150,10 +148,10 @@ def test_ask_data_insights_handles_exception(mock_get_stream):
     ],
 )
 def test_append_message(initial_messages, new_message, expected_list):
-  """Tests the logic of replacing the last message if it's a data message."""
-  messages_copy = initial_messages.copy()
-  data_insights_tool._append_message(messages_copy, new_message)  # pylint: disable=protected-access
-  assert messages_copy == expected_list
+    """Tests the logic of replacing the last message if it's a data message."""
+    messages_copy = initial_messages.copy()
+    data_insights_tool._append_message(messages_copy, new_message)  # pylint: disable=protected-access
+    assert messages_copy == expected_list
 
 
 @pytest.mark.parametrize(
@@ -164,16 +162,14 @@ def test_append_message(initial_messages, new_message, expected_list):
             {"Answer": "The answer is 42."},
             id="multiple_parts",
         ),
-        pytest.param(
-            {"parts": ["Hello"]}, {"Answer": "Hello"}, id="single_part"
-        ),
+        pytest.param({"parts": ["Hello"]}, {"Answer": "Hello"}, id="single_part"),
         pytest.param({}, {"Answer": ""}, id="empty_response"),
     ],
 )
 def test_handle_text_response(response_dict, expected_output):
-  """Tests the text response handler."""
-  result = data_insights_tool._handle_text_response(response_dict)  # pylint: disable=protected-access
-  assert result == expected_output
+    """Tests the text response handler."""
+    result = data_insights_tool._handle_text_response(response_dict)  # pylint: disable=protected-access
+    assert result == expected_output
 
 
 @pytest.mark.parametrize(
@@ -187,35 +183,37 @@ def test_handle_text_response(response_dict, expected_output):
         pytest.param(
             {
                 "result": {
-                    "datasources": [{
-                        "bigqueryTableReference": {
-                            "projectId": "p",
-                            "datasetId": "d",
-                            "tableId": "t",
-                        },
-                        "schema": {
-                            "fields": [{"name": "col1", "type": "STRING"}]
-                        },
-                    }]
+                    "datasources": [
+                        {
+                            "bigqueryTableReference": {
+                                "projectId": "p",
+                                "datasetId": "d",
+                                "tableId": "t",
+                            },
+                            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+                        }
+                    ]
                 }
             },
             {
-                "Schema Resolved": [{
-                    "source_name": "p.d.t",
-                    "schema": {
-                        "headers": ["Column", "Type", "Description", "Mode"],
-                        "rows": [["col1", "STRING", "", ""]],
-                    },
-                }]
+                "Schema Resolved": [
+                    {
+                        "source_name": "p.d.t",
+                        "schema": {
+                            "headers": ["Column", "Type", "Description", "Mode"],
+                            "rows": [["col1", "STRING", "", ""]],
+                        },
+                    }
+                ]
             },
             id="schema_result_path",
         ),
     ],
 )
 def test_handle_schema_response(response_dict, expected_output):
-  """Tests different paths of the schema response handler."""
-  result = data_insights_tool._handle_schema_response(response_dict)  # pylint: disable=protected-access
-  assert result == expected_output
+    """Tests different paths of the schema response handler."""
+    result = data_insights_tool._handle_schema_response(response_dict)  # pylint: disable=protected-access
+    assert result == expected_output
 
 
 @pytest.mark.parametrize(
@@ -245,9 +243,9 @@ def test_handle_schema_response(response_dict, expected_output):
     ],
 )
 def test_handle_data_response(response_dict, expected_output):
-  """Tests different paths of the data response handler, including truncation."""
-  result = data_insights_tool._handle_data_response(response_dict, 100)  # pylint: disable=protected-access
-  assert result == expected_output
+    """Tests different paths of the data response handler, including truncation."""
+    result = data_insights_tool._handle_data_response(response_dict, 100)  # pylint: disable=protected-access
+    assert result == expected_output
 
 
 @pytest.mark.parametrize(
@@ -266,6 +264,6 @@ def test_handle_data_response(response_dict, expected_output):
     ],
 )
 def test_handle_error(response_dict, expected_output):
-  """Tests the error response handler."""
-  result = data_insights_tool._handle_error(response_dict)  # pylint: disable=protected-access
-  assert result == expected_output
+    """Tests the error response handler."""
+    result = data_insights_tool._handle_error(response_dict)  # pylint: disable=protected-access
+    assert result == expected_output

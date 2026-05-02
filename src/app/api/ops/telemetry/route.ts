@@ -16,8 +16,8 @@
  * Future: Route events to BigQuery, PostHog, or OpenTelemetry collectors.
  */
 
-import { NextResponse, type NextRequest } from "next/server";
-import { stripPiiFields, isTelemetryDisabled } from "@/lib/telemetry";
+import { type NextRequest, NextResponse } from 'next/server';
+import { isTelemetryDisabled, stripPiiFields } from '@/lib/telemetry';
 
 // ─────────────────────────────────────────────────────────────
 // Validation (inline Zod-like validation without import weight)
@@ -36,58 +36,47 @@ interface TelemetryPayload {
   events: IncomingEvent[];
 }
 
-const VALID_SEVERITIES = new Set(["info", "warn", "error", "critical"]);
-const VALID_SOURCES = new Set(["client", "server", "edge"]);
+const VALID_SEVERITIES = new Set(['info', 'warn', 'error', 'critical']);
+const VALID_SOURCES = new Set(['client', 'server', 'edge']);
 const MAX_EVENTS_PER_BATCH = 50;
 const MAX_EVENT_NAME_LENGTH = 128;
 const MAX_METADATA_KEYS = 20;
 
 function validateEvent(event: unknown): event is IncomingEvent {
-  if (!event || typeof event !== "object") return false;
+  if (!event || typeof event !== 'object') return false;
   const e = event as Record<string, unknown>;
 
   // Event name
-  if (typeof e.eventName !== "string" || e.eventName.length === 0) return false;
+  if (typeof e.eventName !== 'string' || e.eventName.length === 0) return false;
   if (e.eventName.length > MAX_EVENT_NAME_LENGTH) return false;
   // Reject event names containing path separators or suspicious patterns
   if (/[/\\<>|]/.test(e.eventName)) return false;
 
   // Timestamp
-  if (typeof e.timestamp !== "number" || !Number.isFinite(e.timestamp))
-    return false;
+  if (typeof e.timestamp !== 'number' || !Number.isFinite(e.timestamp)) return false;
   // Reject timestamps more than 1 hour in the past or future
   const now = Date.now();
   if (Math.abs(now - e.timestamp) > 3_600_000) return false;
 
   // Session ID (UUID format)
-  if (typeof e.sessionId !== "string") return false;
-  if (
-    !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
-      e.sessionId,
-    )
-  )
+  if (typeof e.sessionId !== 'string') return false;
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(e.sessionId))
     return false;
 
   // Severity
-  if (typeof e.severity !== "string" || !VALID_SEVERITIES.has(e.severity))
-    return false;
+  if (typeof e.severity !== 'string' || !VALID_SEVERITIES.has(e.severity)) return false;
 
   // Source
-  if (typeof e.source !== "string" || !VALID_SOURCES.has(e.source))
-    return false;
+  if (typeof e.source !== 'string' || !VALID_SOURCES.has(e.source)) return false;
 
   // Metadata — only allow primitives (defense against injection)
-  if (e.metadata && typeof e.metadata === "object") {
+  if (e.metadata && typeof e.metadata === 'object') {
     const meta = e.metadata as Record<string, unknown>;
     const keys = Object.keys(meta);
     if (keys.length > MAX_METADATA_KEYS) return false;
     for (const key of keys) {
       const val = meta[key];
-      if (
-        val !== undefined &&
-        typeof val !== "boolean" &&
-        typeof val !== "number"
-      ) {
+      if (val !== undefined && typeof val !== 'boolean' && typeof val !== 'number') {
         return false;
       }
     }
@@ -97,12 +86,11 @@ function validateEvent(event: unknown): event is IncomingEvent {
 }
 
 function validatePayload(body: unknown): body is TelemetryPayload {
-  if (!body || typeof body !== "object") return false;
+  if (!body || typeof body !== 'object') return false;
   const payload = body as Record<string, unknown>;
 
   if (!Array.isArray(payload.events)) return false;
-  if (payload.events.length === 0 || payload.events.length > MAX_EVENTS_PER_BATCH)
-    return false;
+  if (payload.events.length === 0 || payload.events.length > MAX_EVENTS_PER_BATCH) return false;
 
   return payload.events.every(validateEvent);
 }
@@ -121,18 +109,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json(
-      { error: "Invalid JSON" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
   // Validate structure
   if (!validatePayload(body)) {
-    return NextResponse.json(
-      { error: "Invalid payload structure" },
-      { status: 422 },
-    );
+    return NextResponse.json({ error: 'Invalid payload structure' }, { status: 422 });
   }
 
   // Process events
@@ -142,9 +124,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Add server-side enrichment
     _server_received_at: Date.now(),
     _client_ip_hash: hashIp(
-      request.headers.get("x-forwarded-for") ??
-        request.headers.get("x-real-ip") ??
-        "unknown",
+      request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? 'unknown',
     ),
   }));
 
@@ -161,9 +141,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   // ──────────────────────────────────────────────────────
   for (const event of sanitizedEvents) {
     const logEntry = {
-      severity: event.severity === "error" ? "ERROR" : "INFO",
+      severity: event.severity === 'error' ? 'ERROR' : 'INFO',
       message: `[Panopticon] ${event.eventName}`,
-      "logging.googleapis.com/labels": {
+      'logging.googleapis.com/labels': {
         session_id: event.sessionId,
         source: event.source,
       },
@@ -176,17 +156,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     };
 
     // Structured logging compatible with Cloud Logging
-    if (event.severity === "error" || event.severity === "critical") {
+    if (event.severity === 'error' || event.severity === 'critical') {
       console.error(JSON.stringify(logEntry));
     } else {
       console.log(JSON.stringify(logEntry));
     }
   }
 
-  return NextResponse.json(
-    { accepted: sanitizedEvents.length },
-    { status: 200 },
-  );
+  return NextResponse.json({ accepted: sanitizedEvents.length }, { status: 200 });
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -212,9 +189,9 @@ export async function OPTIONS(): Promise<NextResponse> {
   return new NextResponse(null, {
     status: 204,
     headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
     },
   });
 }

@@ -18,6 +18,7 @@ from enum import StrEnum
 # ENUMS
 # =============================================================================
 
+
 class Decision(StrEnum):
     APPROVE = "APPROVE"
     REJECT = "REJECT"
@@ -55,14 +56,13 @@ _STRATEGY_AGENTS = 20
 _EXECUTION_AGENTS = 120
 _WORKER_AGENTS = 60
 _TOTAL_AGENTS = 200
-_WEIGHTED_TOTAL = (
-    _STRATEGY_AGENTS * 3.0 + _EXECUTION_AGENTS * 1.5 + _WORKER_AGENTS * 1.0
-)
+_WEIGHTED_TOTAL = _STRATEGY_AGENTS * 3.0 + _EXECUTION_AGENTS * 1.5 + _WORKER_AGENTS * 1.0
 
 
 # =============================================================================
 # RESULT TYPE
 # =============================================================================
+
 
 @dataclass
 class VoteDecision:
@@ -73,6 +73,7 @@ class VoteDecision:
         result.decision, result.confidence, result.method,
         result.strategy_votes, result.execution_votes, result.worker_votes
     """
+
     decision: Decision
     confidence: float
     method: VoteMethod
@@ -92,6 +93,7 @@ class VoteDecision:
 # =============================================================================
 # CORE FUNCTION
 # =============================================================================
+
 
 def execute_internal_swarm(
     intent: str,
@@ -128,11 +130,7 @@ def execute_internal_swarm(
 
     # Weighted tallies
     if agent_decision == Decision.APPROVE:
-        weighted_approve = (
-            _STRATEGY_AGENTS * 3.0
-            + _EXECUTION_AGENTS * 1.5
-            + _WORKER_AGENTS * 1.0
-        )
+        weighted_approve = _STRATEGY_AGENTS * 3.0 + _EXECUTION_AGENTS * 1.5 + _WORKER_AGENTS * 1.0
     elif agent_decision == Decision.REJECT:
         weighted_approve = 0.0
     else:
@@ -183,6 +181,7 @@ def execute_internal_swarm(
 # =============================================================================
 # CONVENIENCE WRAPPER
 # =============================================================================
+
 
 class SwarmVoter:
     """

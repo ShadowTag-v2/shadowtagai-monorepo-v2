@@ -86,7 +86,7 @@ def interactive_mode():
     while True:
         choice = input("Select template number (or 'q' to quit): ").strip()
 
-        if choice.lower() == 'q':
+        if choice.lower() == "q":
             print("Goodbye!")
             return
 
@@ -104,7 +104,7 @@ def interactive_mode():
                 generate_template(template_type, output_file)
 
                 another = input("\nGenerate another template? (y/n): ").strip().lower()
-                if another != 'y':
+                if another != "y":
                     print("Goodbye!")
                     return
                 else:
@@ -113,30 +113,16 @@ def interactive_mode():
                     print()
             else:
                 print("Invalid selection. Please try again.")
-        except (ValueError, IndexError):
+        except ValueError, IndexError:
             print("Invalid input. Please enter a number or 'q' to quit.")
 
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Generate clinical report templates"
-    )
-    parser.add_argument(
-        "--type",
-        choices=list(TEMPLATES.keys()),
-        help="Template type to generate"
-    )
-    parser.add_argument(
-        "--output",
-        "-o",
-        help="Output filename"
-    )
-    parser.add_argument(
-        "--list",
-        action="store_true",
-        help="List available templates"
-    )
+    parser = argparse.ArgumentParser(description="Generate clinical report templates")
+    parser.add_argument("--type", choices=list(TEMPLATES.keys()), help="Template type to generate")
+    parser.add_argument("--output", "-o", help="Output filename")
+    parser.add_argument("--list", action="store_true", help="List available templates")
 
     args = parser.parse_args()
 
@@ -158,4 +144,5 @@ def main():
 
 if __name__ == "__main__":
     import sys
+
     sys.exit(main())

@@ -21,10 +21,7 @@ from fastapi import FastAPI
 from filters import TranscriptionFilter
 from streaming.consumer import claim_stale_messages, consume_redis_stream, consume_speaker_events_stream
 
-app = FastAPI(
-    title="Transcription Collector",
-    description="Collects and stores transcriptions from WhisperLive instances via Redis Streams."
-)
+app = FastAPI(title="Transcription Collector", description="Collects and stores transcriptions from WhisperLive instances via Redis Streams.")
 app.include_router(api_router)
 
 # Configure logging
@@ -45,17 +42,13 @@ redis_to_pg_task = None
 stream_consumer_task = None
 speaker_stream_consumer_task = None
 
+
 @app.on_event("startup")
 async def startup():
     global redis_client, redis_to_pg_task, stream_consumer_task, speaker_stream_consumer_task, transcription_filter
 
     logger.info(f"Connecting to Redis at {REDIS_HOST}:{REDIS_PORT}")
-    temp_redis_client = aioredis.Redis(
-        host=REDIS_HOST,
-        port=REDIS_PORT,
-        db=0,
-        decode_responses=True
-    )
+    temp_redis_client = aioredis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0, decode_responses=True)
     await temp_redis_client.ping()
     redis_client = temp_redis_client
     app.state.redis_client = redis_client
@@ -63,12 +56,7 @@ async def startup():
 
     try:
         logger.info(f"Ensuring Redis Stream group '{REDIS_CONSUMER_GROUP}' exists for stream '{REDIS_STREAM_NAME}'...")
-        await redis_client.xgroup_create(
-            name=REDIS_STREAM_NAME,
-            groupname=REDIS_CONSUMER_GROUP,
-            id='0',
-            mkstream=True
-        )
+        await redis_client.xgroup_create(name=REDIS_STREAM_NAME, groupname=REDIS_CONSUMER_GROUP, id="0", mkstream=True)
         logger.info(f"Consumer group '{REDIS_CONSUMER_GROUP}' ensured for stream '{REDIS_STREAM_NAME}'.")
     except redis.exceptions.ResponseError as e:
         if "BUSYGROUP Consumer Group name already exists" in str(e):
@@ -80,12 +68,7 @@ async def startup():
     # Ensure speaker events stream and consumer group exist
     try:
         logger.info(f"Ensuring Redis Stream group '{REDIS_SPEAKER_EVENTS_CONSUMER_GROUP}' exists for stream '{REDIS_SPEAKER_EVENTS_STREAM_NAME}'...")
-        await redis_client.xgroup_create(
-            name=REDIS_SPEAKER_EVENTS_STREAM_NAME,
-            groupname=REDIS_SPEAKER_EVENTS_CONSUMER_GROUP,
-            id='0',
-            mkstream=True
-        )
+        await redis_client.xgroup_create(name=REDIS_SPEAKER_EVENTS_STREAM_NAME, groupname=REDIS_SPEAKER_EVENTS_CONSUMER_GROUP, id="0", mkstream=True)
         logger.info(f"Consumer group '{REDIS_SPEAKER_EVENTS_CONSUMER_GROUP}' ensured for stream '{REDIS_SPEAKER_EVENTS_STREAM_NAME}'.")
     except redis.exceptions.ResponseError as e:
         if "BUSYGROUP Consumer Group name already exists" in str(e):
@@ -106,7 +89,10 @@ async def startup():
 
     # Start speaker events consumer task
     speaker_stream_consumer_task = asyncio.create_task(consume_speaker_events_stream(redis_client))
-    logger.info(f"Speaker Events Redis Stream consumer task started (Stream: {REDIS_SPEAKER_EVENTS_STREAM_NAME}, Group: {REDIS_SPEAKER_EVENTS_CONSUMER_GROUP}, Consumer: {CONSUMER_NAME + '-speaker'})")
+    logger.info(
+        f"Speaker Events Redis Stream consumer task started (Stream: {REDIS_SPEAKER_EVENTS_STREAM_NAME}, Group: {REDIS_SPEAKER_EVENTS_CONSUMER_GROUP}, Consumer: {CONSUMER_NAME + '-speaker'})"
+    )
+
 
 @app.on_event("shutdown")
 async def shutdown():
@@ -119,9 +105,9 @@ async def shutdown():
             try:
                 await task
             except asyncio.CancelledError:
-                logger.info(f"Background task {i+1} cancelled.")
+                logger.info(f"Background task {i + 1} cancelled.")
             except Exception as e:
-                logger.error(f"Error during background task {i+1} cancellation: {e}", exc_info=True)
+                logger.error(f"Error during background task {i + 1} cancellation: {e}", exc_info=True)
 
     # Close Redis connection
     if redis_client:
@@ -129,6 +115,7 @@ async def shutdown():
         logger.info("Redis connection closed.")
 
     logger.info("Shutdown complete.")
+
 
 if __name__ == "__main__":
     # Removed uvicorn runner, rely on Docker CMD

@@ -55,13 +55,11 @@ class NeuroscienceOntology:
     def _initialize_brain_regions(self) -> None:
         """Initialize brain region hierarchy"""
         # Top-level brain
-        self.add_concept(BiologicalConcept(
-            id="brain",
-            name="Brain",
-            type="anatomical_structure",
-            description="Central nervous system organ",
-            external_ids={"UBERON": "0000955"}
-        ))
+        self.add_concept(
+            BiologicalConcept(
+                id="brain", name="Brain", type="anatomical_structure", description="Central nervous system organ", external_ids={"UBERON": "0000955"}
+            )
+        )
 
         # Major brain regions
         regions = [
@@ -75,13 +73,7 @@ class NeuroscienceOntology:
         ]
 
         for region_id, name, desc, ext_ids in regions:
-            self.add_concept(BiologicalConcept(
-                id=region_id,
-                name=name,
-                type="brain_region",
-                description=desc,
-                external_ids=ext_ids
-            ))
+            self.add_concept(BiologicalConcept(id=region_id, name=name, type="brain_region", description=desc, external_ids=ext_ids))
             self.add_relation(region_id, "brain", BiologicalRelationType.PART_OF)
 
         # Cortical subregions
@@ -94,30 +86,15 @@ class NeuroscienceOntology:
         ]
 
         for region_id, name, desc in cortical_regions:
-            self.add_concept(BiologicalConcept(
-                id=region_id,
-                name=name,
-                type="cortical_region",
-                description=desc
-            ))
+            self.add_concept(BiologicalConcept(id=region_id, name=name, type="cortical_region", description=desc))
             self.add_relation(region_id, "cortex", BiologicalRelationType.PART_OF)
 
     def _initialize_cell_types(self) -> None:
         """Initialize neuron and glial cell types"""
         # Top-level cell types
-        self.add_concept(BiologicalConcept(
-            id="neuron",
-            name="Neuron",
-            type="cell_type",
-            description="Electrically excitable nerve cell"
-        ))
+        self.add_concept(BiologicalConcept(id="neuron", name="Neuron", type="cell_type", description="Electrically excitable nerve cell"))
 
-        self.add_concept(BiologicalConcept(
-            id="glia",
-            name="Glial Cell",
-            type="cell_type",
-            description="Non-neuronal support cells"
-        ))
+        self.add_concept(BiologicalConcept(id="glia", name="Glial Cell", type="cell_type", description="Non-neuronal support cells"))
 
         # Neuron types
         neuron_types = [
@@ -130,12 +107,7 @@ class NeuroscienceOntology:
         ]
 
         for neuron_id, name, desc in neuron_types:
-            self.add_concept(BiologicalConcept(
-                id=neuron_id,
-                name=name,
-                type="neuron_subtype",
-                description=desc
-            ))
+            self.add_concept(BiologicalConcept(id=neuron_id, name=name, type="neuron_subtype", description=desc))
             self.add_relation(neuron_id, "neuron", BiologicalRelationType.IS_A)
 
         # Glial cell types
@@ -146,12 +118,7 @@ class NeuroscienceOntology:
         ]
 
         for glia_id, name, desc in glia_types:
-            self.add_concept(BiologicalConcept(
-                id=glia_id,
-                name=name,
-                type="glial_subtype",
-                description=desc
-            ))
+            self.add_concept(BiologicalConcept(id=glia_id, name=name, type="glial_subtype", description=desc))
             self.add_relation(glia_id, "glia", BiologicalRelationType.IS_A)
 
     def _initialize_neurotransmitters(self) -> None:
@@ -166,13 +133,7 @@ class NeuroscienceOntology:
         ]
 
         for nt_id, name, desc, ext_ids in neurotransmitters:
-            self.add_concept(BiologicalConcept(
-                id=nt_id,
-                name=name,
-                type="neurotransmitter",
-                description=desc,
-                external_ids=ext_ids
-            ))
+            self.add_concept(BiologicalConcept(id=nt_id, name=name, type="neurotransmitter", description=desc, external_ids=ext_ids))
 
         # Associate neurotransmitters with neuron types
         self.add_relation("dopaminergic_neuron", "dopamine", BiologicalRelationType.ENCODES)
@@ -190,13 +151,7 @@ class NeuroscienceOntology:
         ]
 
         for disease_id, name, desc, ext_ids in diseases:
-            self.add_concept(BiologicalConcept(
-                id=disease_id,
-                name=name,
-                type="disease",
-                description=desc,
-                external_ids=ext_ids
-            ))
+            self.add_concept(BiologicalConcept(id=disease_id, name=name, type="disease", description=desc, external_ids=ext_ids))
 
         # Disease-region associations
         self.add_relation("alzheimers_disease", "hippocampus", BiologicalRelationType.ASSOCIATED_WITH)
@@ -220,13 +175,7 @@ class NeuroscienceOntology:
         ]
 
         for gene_id, name, desc in ad_genes:
-            self.add_concept(BiologicalConcept(
-                id=gene_id,
-                name=name,
-                type="gene",
-                description=desc,
-                external_ids={"HGNC": gene_id}
-            ))
+            self.add_concept(BiologicalConcept(id=gene_id, name=name, type="gene", description=desc, external_ids={"HGNC": gene_id}))
             self.add_relation(gene_id, "alzheimers_disease", BiologicalRelationType.ASSOCIATED_WITH)
 
     def _initialize_processes(self) -> None:
@@ -241,13 +190,7 @@ class NeuroscienceOntology:
         ]
 
         for process_id, name, desc, ext_ids in processes:
-            self.add_concept(BiologicalConcept(
-                id=process_id,
-                name=name,
-                type="biological_process",
-                description=desc,
-                external_ids=ext_ids
-            ))
+            self.add_concept(BiologicalConcept(id=process_id, name=name, type="biological_process", description=desc, external_ids=ext_ids))
 
         # Process associations
         self.add_relation("synaptic_transmission", "neuron", BiologicalRelationType.PART_OF)
@@ -260,20 +203,11 @@ class NeuroscienceOntology:
         self.concepts[concept.id] = concept
 
     def add_relation(
-        self,
-        source_id: str,
-        target_id: str,
-        relation_type: BiologicalRelationType,
-        confidence: float = 1.0,
-        evidence: list[str] | None = None
+        self, source_id: str, target_id: str, relation_type: BiologicalRelationType, confidence: float = 1.0, evidence: list[str] | None = None
     ) -> None:
         """Add a relationship between concepts"""
         relation = BiologicalRelation(
-            source_id=source_id,
-            target_id=target_id,
-            relation_type=relation_type,
-            confidence=confidence,
-            evidence=evidence or []
+            source_id=source_id, target_id=target_id, relation_type=relation_type, confidence=confidence, evidence=evidence or []
         )
         self.relations.append(relation)
 
@@ -281,12 +215,7 @@ class NeuroscienceOntology:
         """Get a concept by ID"""
         return self.concepts.get(concept_id)
 
-    def find_concepts(
-        self,
-        name: str,
-        concept_type: str | None = None,
-        fuzzy: bool = True
-    ) -> list[BiologicalConcept]:
+    def find_concepts(self, name: str, concept_type: str | None = None, fuzzy: bool = True) -> list[BiologicalConcept]:
         """
         Find concepts by name.
 
@@ -308,44 +237,32 @@ class NeuroscienceOntology:
 
             # Name matching
             if fuzzy:
-                if (name_lower in concept.name.lower() or
-                    any(name_lower in syn.lower() for syn in concept.synonyms)):
+                if name_lower in concept.name.lower() or any(name_lower in syn.lower() for syn in concept.synonyms):
                     matches.append(concept)
             else:
-                if (concept.name.lower() == name_lower or
-                    name_lower in [syn.lower() for syn in concept.synonyms]):
+                if concept.name.lower() == name_lower or name_lower in [syn.lower() for syn in concept.synonyms]:
                     matches.append(concept)
 
         return matches
 
-    def get_parent_concepts(
-        self,
-        concept_id: str,
-        relation_type: BiologicalRelationType = BiologicalRelationType.IS_A
-    ) -> list[BiologicalConcept]:
+    def get_parent_concepts(self, concept_id: str, relation_type: BiologicalRelationType = BiologicalRelationType.IS_A) -> list[BiologicalConcept]:
         """Get parent concepts (via IS_A or PART_OF relations)"""
         parents = []
 
         for relation in self.relations:
-            if (relation.source_id == concept_id and
-                relation.relation_type == relation_type):
+            if relation.source_id == concept_id and relation.relation_type == relation_type:
                 parent = self.get_concept(relation.target_id)
                 if parent:
                     parents.append(parent)
 
         return parents
 
-    def get_child_concepts(
-        self,
-        concept_id: str,
-        relation_type: BiologicalRelationType = BiologicalRelationType.IS_A
-    ) -> list[BiologicalConcept]:
+    def get_child_concepts(self, concept_id: str, relation_type: BiologicalRelationType = BiologicalRelationType.IS_A) -> list[BiologicalConcept]:
         """Get child concepts (via IS_A or PART_OF relations)"""
         children = []
 
         for relation in self.relations:
-            if (relation.target_id == concept_id and
-                relation.relation_type == relation_type):
+            if relation.target_id == concept_id and relation.relation_type == relation_type:
                 child = self.get_concept(relation.source_id)
                 if child:
                     children.append(child)
@@ -353,10 +270,7 @@ class NeuroscienceOntology:
         return children
 
     def get_related_concepts(
-        self,
-        concept_id: str,
-        relation_type: BiologicalRelationType | None = None,
-        bidirectional: bool = True
+        self, concept_id: str, relation_type: BiologicalRelationType | None = None, bidirectional: bool = True
     ) -> list[BiologicalConcept]:
         """
         Get all concepts related to given concept.
@@ -406,8 +320,7 @@ class NeuroscienceOntology:
         genes = []
 
         for relation in self.relations:
-            if (relation.target_id == disease_id and
-                relation.relation_type == BiologicalRelationType.ASSOCIATED_WITH):
+            if relation.target_id == disease_id and relation.relation_type == BiologicalRelationType.ASSOCIATED_WITH:
                 concept = self.get_concept(relation.source_id)
                 if concept and concept.type == "gene":
                     genes.append(concept)
@@ -419,8 +332,7 @@ class NeuroscienceOntology:
         regions = []
 
         for relation in self.relations:
-            if (relation.source_id == disease_id and
-                relation.relation_type == BiologicalRelationType.ASSOCIATED_WITH):
+            if relation.source_id == disease_id and relation.relation_type == BiologicalRelationType.ASSOCIATED_WITH:
                 concept = self.get_concept(relation.target_id)
                 if concept and concept.type in ["brain_region", "cortical_region"]:
                     regions.append(concept)
@@ -447,17 +359,9 @@ class NeuroscienceOntology:
                 return {}
 
             # Get children (subregions)
-            children = self.get_child_concepts(
-                concept_id,
-                BiologicalRelationType.PART_OF
-            )
+            children = self.get_child_concepts(concept_id, BiologicalRelationType.PART_OF)
 
-            hierarchy = {
-                'id': concept.id,
-                'name': concept.name,
-                'type': concept.type,
-                'children': [build_hierarchy(child.id) for child in children]
-            }
+            hierarchy = {"id": concept.id, "name": concept.name, "type": concept.type, "children": [build_hierarchy(child.id) for child in children]}
 
             return hierarchy
 

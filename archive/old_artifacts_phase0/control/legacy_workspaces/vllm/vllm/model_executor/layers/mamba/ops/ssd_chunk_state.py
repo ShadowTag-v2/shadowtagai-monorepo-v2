@@ -525,8 +525,10 @@ def _chunk_cumsum_fwd(
     dA_cumsum = torch.empty(
         nheads, nchunks, chunk_size, device=dt.device, dtype=torch.float32
     )
+
     def grid_chunk_cs(META):
         return (nchunks, triton.cdiv(nheads, META["BLOCK_SIZE_H"]))
+
     with torch.cuda.device(dt.device.index):
         _chunk_cumsum_fwd_kernel[grid_chunk_cs](
             dt_ptr=dt,
@@ -583,6 +585,7 @@ def _chunk_state_fwd(
             nchunks,
             nheads,
         )
+
     with torch.cuda.device(x.device.index):
         _chunk_state_fwd_kernel[grid](
             x_ptr=x,
@@ -660,6 +663,7 @@ def chunk_state_varlen(
             batch,
             nheads,
         )
+
     with torch.cuda.device(x.device.index):
         _chunk_state_varlen_kernel[grid](
             x_ptr=x,

@@ -227,7 +227,10 @@ export const AskUserQuestionTool: Tool<InputSchema, Output> = buildTool({
     // the keyboard. Channel permission relay already skips
     // requiresUserInteraction() tools (interactiveHandler.ts) so there's
     // no alternate approval path.
-    if ((feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) && getAllowedChannels().length > 0) {
+    if (
+      (feature('COR.KAIROS') || feature('COR.KAIROS_CHANNELS')) &&
+      getAllowedChannels().length > 0
+    ) {
       return false;
     }
     return true;

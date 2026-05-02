@@ -9,10 +9,13 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 # Zero-Trust Identity via Pydantic + GCP JWT
-from src.api.zt_identity import TemporalIdentityPayload, parse_and_lock_identity
+# NOTE: Use relative imports to avoid circular dependency.
+# Absolute `from src.api.zt_identity` triggers src/api/__init__.py which
+# imports main.py, which imports this module — creating a cycle.
+from ..api.zt_identity import TemporalIdentityPayload, parse_and_lock_identity
 
 try:
-    from src.api.tools import COMFYUI_IMAGE_TOOL_SCHEMA, WORKSPACE_SEARCH_TOOL_SCHEMA
+    from ..api.tools import COMFYUI_IMAGE_TOOL_SCHEMA, WORKSPACE_SEARCH_TOOL_SCHEMA
 except ImportError:
     try:
         from tools import (
@@ -98,7 +101,7 @@ async def chat_with_agent(request: ChatRequest):
     # Stubbed execution for the pipeline
     if "draw" in request.message.lower() or "generate" in request.message.lower():
         try:
-            from src.api.tools import generate_local_image
+            from ..api.tools import generate_local_image
         except ImportError:
             from tools import generate_local_image
 

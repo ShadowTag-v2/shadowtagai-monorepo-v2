@@ -27,48 +27,40 @@ IMPORT_TO_PIP: dict[str, str] = {
     "cv2": "opencv-python",
     "PIL": "Pillow",
     "skimage": "scikit-image",
-
     # Machine Learning
     "sklearn": "scikit-learn",
     "xgboost": "xgboost",
     "lightgbm": "lightgbm",
     "catboost": "catboost",
     "keras": "keras",
-
     # Deep Learning
     "torch": "torch",
     "torchvision": "torchvision",
     "tensorflow": "tensorflow",
     "tf": "tensorflow",
-
     # Data Science
     "pandas": "pandas",
     "numpy": "numpy",
     "scipy": "scipy",
     "statsmodels": "statsmodels",
-
     # Visualization
     "matplotlib": "matplotlib",
     "seaborn": "seaborn",
     "plotly": "plotly",
     "bokeh": "bokeh",
     "altair": "altair",
-
     # Bioinformatics
     "Bio": "biopython",
     "scanpy": "scanpy",
     "anndata": "anndata",
     "pysam": "pysam",
-
     # Chemistry
     "rdkit": "rdkit-pypi",
-
     # NLP
     "nltk": "nltk",
     "spacy": "spacy",
     "transformers": "transformers",
     "gensim": "gensim",
-
     # Utilities
     "yaml": "pyyaml",
     "bs4": "beautifulsoup4",
@@ -76,31 +68,25 @@ IMPORT_TO_PIP: dict[str, str] = {
     "requests": "requests",
     "httpx": "httpx",
     "aiohttp": "aiohttp",
-
     # Data formats
     "openpyxl": "openpyxl",
     "xlrd": "xlrd",
     "pyarrow": "pyarrow",
     "h5py": "h5py",
     "netCDF4": "netcdf4",
-
     # Scientific
     "sympy": "sympy",
     "networkx": "networkx",
     "igraph": "python-igraph",
-
     # Statistics
     "pingouin": "pingouin",
     "lifelines": "lifelines",
-
     # Jupyter
     "nbformat": "nbformat",
     "nbconvert": "nbconvert",
-
     # Feature engineering
     "shap": "shap",
     "lime": "lime",
-
     # Pathway analysis
     "gseapy": "gseapy",
 }
@@ -109,53 +95,231 @@ IMPORT_TO_PIP: dict[str, str] = {
 # Standard library modules that don't need installation
 STDLIB_MODULES: set[str] = {
     # Built-in modules
-    "abc", "aifc", "argparse", "array", "ast", "asynchat", "asyncio",
-    "asyncore", "atexit", "audioop", "base64", "bdb", "binascii",
-    "binhex", "bisect", "builtins", "bz2", "calendar", "cgi", "cgitb",
-    "chunk", "cmath", "cmd", "code", "codecs", "codeop", "collections",
-    "colorsys", "compileall", "concurrent", "configparser", "contextlib",
-    "contextvars", "copy", "copyreg", "cProfile", "crypt", "csv",
-    "ctypes", "curses", "dataclasses", "datetime", "dbm", "decimal",
-    "difflib", "dis", "distutils", "doctest", "email", "encodings",
-    "enum", "errno", "faulthandler", "fcntl", "filecmp", "fileinput",
-    "fnmatch", "fractions", "ftplib", "functools", "gc", "getopt",
-    "getpass", "gettext", "glob", "graphlib", "grp", "gzip", "hashlib",
-    "heapq", "hmac", "html", "http", "idlelib", "imaplib", "imghdr",
-    "imp", "importlib", "inspect", "io", "ipaddress", "itertools",
-    "json", "keyword", "lib2to3", "linecache", "locale", "logging",
-    "lzma", "mailbox", "mailcap", "marshal", "math", "mimetypes",
-    "mmap", "modulefinder", "multiprocessing", "netrc", "nis",
-    "nntplib", "numbers", "operator", "optparse", "os", "ossaudiodev",
-    "parser", "pathlib", "pdb", "pickle", "pickletools", "pipes",
-    "pkgutil", "platform", "plistlib", "poplib", "posix", "posixpath",
-    "pprint", "profile", "pstats", "pty", "pwd", "py_compile",
-    "pyclbr", "pydoc", "queue", "quopri", "random", "re", "readline",
-    "reprlib", "resource", "rlcompleter", "runpy", "sched", "secrets",
-    "select", "selectors", "shelve", "shlex", "shutil", "signal",
-    "site", "smtpd", "smtplib", "sndhdr", "socket", "socketserver",
-    "spwd", "sqlite3", "ssl", "stat", "statistics", "string",
-    "stringprep", "struct", "subprocess", "sunau", "symbol", "symtable",
-    "sys", "sysconfig", "syslog", "tabnanny", "tarfile", "telnetlib",
-    "tempfile", "termios", "test", "textwrap", "threading", "time",
-    "timeit", "tkinter", "token", "tokenize", "trace", "traceback",
-    "tracemalloc", "tty", "turtle", "turtledemo", "types", "typing",
-    "unicodedata", "unittest", "urllib", "uu", "uuid", "venv",
-    "warnings", "wave", "weakref", "webbrowser", "winreg", "winsound",
-    "wsgiref", "xdrlib", "xml", "xmlrpc", "zipapp", "zipfile",
-    "zipimport", "zlib", "_thread",
+    "abc",
+    "aifc",
+    "argparse",
+    "array",
+    "ast",
+    "asynchat",
+    "asyncio",
+    "asyncore",
+    "atexit",
+    "audioop",
+    "base64",
+    "bdb",
+    "binascii",
+    "binhex",
+    "bisect",
+    "builtins",
+    "bz2",
+    "calendar",
+    "cgi",
+    "cgitb",
+    "chunk",
+    "cmath",
+    "cmd",
+    "code",
+    "codecs",
+    "codeop",
+    "collections",
+    "colorsys",
+    "compileall",
+    "concurrent",
+    "configparser",
+    "contextlib",
+    "contextvars",
+    "copy",
+    "copyreg",
+    "cProfile",
+    "crypt",
+    "csv",
+    "ctypes",
+    "curses",
+    "dataclasses",
+    "datetime",
+    "dbm",
+    "decimal",
+    "difflib",
+    "dis",
+    "distutils",
+    "doctest",
+    "email",
+    "encodings",
+    "enum",
+    "errno",
+    "faulthandler",
+    "fcntl",
+    "filecmp",
+    "fileinput",
+    "fnmatch",
+    "fractions",
+    "ftplib",
+    "functools",
+    "gc",
+    "getopt",
+    "getpass",
+    "gettext",
+    "glob",
+    "graphlib",
+    "grp",
+    "gzip",
+    "hashlib",
+    "heapq",
+    "hmac",
+    "html",
+    "http",
+    "idlelib",
+    "imaplib",
+    "imghdr",
+    "imp",
+    "importlib",
+    "inspect",
+    "io",
+    "ipaddress",
+    "itertools",
+    "json",
+    "keyword",
+    "lib2to3",
+    "linecache",
+    "locale",
+    "logging",
+    "lzma",
+    "mailbox",
+    "mailcap",
+    "marshal",
+    "math",
+    "mimetypes",
+    "mmap",
+    "modulefinder",
+    "multiprocessing",
+    "netrc",
+    "nis",
+    "nntplib",
+    "numbers",
+    "operator",
+    "optparse",
+    "os",
+    "ossaudiodev",
+    "parser",
+    "pathlib",
+    "pdb",
+    "pickle",
+    "pickletools",
+    "pipes",
+    "pkgutil",
+    "platform",
+    "plistlib",
+    "poplib",
+    "posix",
+    "posixpath",
+    "pprint",
+    "profile",
+    "pstats",
+    "pty",
+    "pwd",
+    "py_compile",
+    "pyclbr",
+    "pydoc",
+    "queue",
+    "quopri",
+    "random",
+    "re",
+    "readline",
+    "reprlib",
+    "resource",
+    "rlcompleter",
+    "runpy",
+    "sched",
+    "secrets",
+    "select",
+    "selectors",
+    "shelve",
+    "shlex",
+    "shutil",
+    "signal",
+    "site",
+    "smtpd",
+    "smtplib",
+    "sndhdr",
+    "socket",
+    "socketserver",
+    "spwd",
+    "sqlite3",
+    "ssl",
+    "stat",
+    "statistics",
+    "string",
+    "stringprep",
+    "struct",
+    "subprocess",
+    "sunau",
+    "symbol",
+    "symtable",
+    "sys",
+    "sysconfig",
+    "syslog",
+    "tabnanny",
+    "tarfile",
+    "telnetlib",
+    "tempfile",
+    "termios",
+    "test",
+    "textwrap",
+    "threading",
+    "time",
+    "timeit",
+    "tkinter",
+    "token",
+    "tokenize",
+    "trace",
+    "traceback",
+    "tracemalloc",
+    "tty",
+    "turtle",
+    "turtledemo",
+    "types",
+    "typing",
+    "unicodedata",
+    "unittest",
+    "urllib",
+    "uu",
+    "uuid",
+    "venv",
+    "warnings",
+    "wave",
+    "weakref",
+    "webbrowser",
+    "winreg",
+    "winsound",
+    "wsgiref",
+    "xdrlib",
+    "xml",
+    "xmlrpc",
+    "zipapp",
+    "zipfile",
+    "zipimport",
+    "zlib",
+    "_thread",
 }
 
 
 # Packages typically pre-installed in scientific environments
 PREINSTALLED_PACKAGES: set[str] = {
-    "numpy", "pandas", "scipy", "matplotlib", "seaborn",
-    "scikit-learn", "statsmodels", "pydantic",
+    "numpy",
+    "pandas",
+    "scipy",
+    "matplotlib",
+    "seaborn",
+    "scikit-learn",
+    "statsmodels",
+    "pydantic",
 }
 
 
 @dataclass
 class PackageRequirement:
     """A required package with optional version."""
+
     name: str
     version: str | None = None
     import_name: str = ""
@@ -224,12 +388,12 @@ class PackageResolver:
                 if isinstance(node, ast.Import):
                     for alias in node.names:
                         # Get top-level module
-                        module = alias.name.split('.')[0]
+                        module = alias.name.split(".")[0]
                         imports.add(module)
                 elif isinstance(node, ast.ImportFrom):
                     if node.module:
                         # Get top-level module
-                        module = node.module.split('.')[0]
+                        module = node.module.split(".")[0]
                         imports.add(module)
         except SyntaxError as e:
             logger.warning(f"Syntax error parsing code for imports: {e}")
@@ -247,9 +411,9 @@ class PackageResolver:
         imports = set()
 
         # Match import statements
-        import_pattern = r'^(?:from|import)\s+([\w\.]+)'
+        import_pattern = r"^(?:from|import)\s+([\w\.]+)"
         for match in re.finditer(import_pattern, code, re.MULTILINE):
-            module = match.group(1).split('.')[0]
+            module = match.group(1).split(".")[0]
             imports.add(module)
 
         return imports
@@ -275,11 +439,7 @@ class PackageResolver:
                 continue
             seen.add(pip_name)
 
-            packages.append(PackageRequirement(
-                name=pip_name,
-                import_name=imp,
-                optional=pip_name not in PREINSTALLED_PACKAGES
-            ))
+            packages.append(PackageRequirement(name=pip_name, import_name=imp, optional=pip_name not in PREINSTALLED_PACKAGES))
 
         logger.debug(f"Resolved packages: {[p.name for p in packages]}")
         return packages
@@ -304,10 +464,7 @@ class PackageResolver:
 
         # Try to import the package
         import_name = package.import_name or package.name
-        result = container.exec_run(
-            ["python3", "-c", f"import {import_name}"],
-            workdir="/workspace"
-        )
+        result = container.exec_run(["python3", "-c", f"import {import_name}"], workdir="/workspace")
 
         installed = result.exit_code == 0
         if installed:
@@ -315,11 +472,7 @@ class PackageResolver:
 
         return installed
 
-    async def install_packages(
-        self,
-        packages: list[PackageRequirement],
-        skip_installed: bool = True
-    ) -> dict[str, bool]:
+    async def install_packages(self, packages: list[PackageRequirement], skip_installed: bool = True) -> dict[str, bool]:
         """
         Install packages in container.
 
@@ -363,7 +516,7 @@ class PackageResolver:
                 logger.info(f"Installed {pkg.name}")
             else:
                 self._failed_cache.add(pkg.name)
-                output = result.output.decode('utf-8', errors='replace')
+                output = result.output.decode("utf-8", errors="replace")
                 logger.warning(f"Failed to install {pkg.name}: {output[:200]}")
 
         return results

@@ -4,7 +4,6 @@ Cache command for Kosmos CLI.
 Manage caching system - view stats, clear cache, health check.
 """
 
-
 import typer
 from rich.panel import Panel
 
@@ -109,10 +108,7 @@ def display_cache_stats(cache_manager):
     overall_table.add_row("Total Requests", str(total_requests))
     overall_table.add_row("Cache Hits", str(total_hits))
     overall_table.add_row("Cache Misses", str(total_misses))
-    overall_table.add_row(
-        "Hit Rate",
-        create_metric_text(hit_rate / 100, format_type="percentage")
-    )
+    overall_table.add_row("Hit Rate", create_metric_text(hit_rate / 100, format_type="percentage"))
 
     console.print(overall_table)
     console.print()

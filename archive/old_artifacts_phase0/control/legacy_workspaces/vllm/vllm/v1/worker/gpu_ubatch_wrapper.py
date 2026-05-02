@@ -125,6 +125,7 @@ class UBatchWrapper:
 
         def set_comm_sms(sms):
             return None
+
         if vllm_config.parallel_config.enable_expert_parallel:
             # Currently only DeepEP highthroughput supports SM control so this
             # only affects that case.
@@ -140,12 +141,14 @@ class UBatchWrapper:
                     comm_sms = min(comm_sms, max_sms_used)
 
             if comm_sms > 0 and all2all_manager is not None:
+
                 def set_comm_sms(sms):
                     return all2all_manager.set_num_sms(sms)
 
         # TODO(lucas): support other kernels besides DeepGEMM
         def set_compute_sms(sms):
             return None
+
         if has_deep_gemm() and comm_sms > 0:
             import deep_gemm as dg
 

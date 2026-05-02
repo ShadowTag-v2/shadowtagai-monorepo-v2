@@ -45,48 +45,46 @@ logger = logging.getLogger("admin_api")
 # App initialization
 app = FastAPI(title="Vexa Admin API")
 
+
 # --- Pydantic Schemas for new endpoint ---
 class WebhookUpdate(BaseModel):
     webhook_url: HttpUrl
 
-class MeetingUserStat(MeetingResponse): # Inherit from MeetingResponse to get meeting fields
-    user: UserResponse # Embed UserResponse
+
+class MeetingUserStat(MeetingResponse):  # Inherit from MeetingResponse to get meeting fields
+    user: UserResponse  # Embed UserResponse
+
 
 class PaginatedMeetingUserStatResponse(BaseModel):
     total: int
     items: list[MeetingUserStat]
 
+
 # Security - Reuse logic from bot-manager/auth.py for admin token verification
-API_KEY_HEADER = APIKeyHeader(name="X-Admin-API-Key", auto_error=False) # Use a distinct header
-USER_API_KEY_HEADER = APIKeyHeader(name="X-API-Key", auto_error=False) # For user-facing endpoints
-ADMIN_API_TOKEN = os.getenv("ADMIN_API_TOKEN") # Read from environment
+API_KEY_HEADER = APIKeyHeader(name="X-Admin-API-Key", auto_error=False)  # Use a distinct header
+USER_API_KEY_HEADER = APIKeyHeader(name="X-API-Key", auto_error=False)  # For user-facing endpoints
+ADMIN_API_TOKEN = os.getenv("ADMIN_API_TOKEN")  # Read from environment
+
 
 async def verify_admin_token(admin_api_key: str = Security(API_KEY_HEADER)):
     """Dependency to verify the admin API token."""
     if not ADMIN_API_TOKEN:
         logger.error("CRITICAL: ADMIN_API_TOKEN environment variable not set!")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Admin authentication is not configured on the server."
-        )
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Admin authentication is not configured on the server.")
 
     if not admin_api_key or admin_api_key != ADMIN_API_TOKEN:
         logger.warning("Invalid admin token provided.")
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Invalid or missing admin token."
-        )
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid or missing admin token.")
     logger.info("Admin token verified successfully.")
     # No need to return anything, just raises exception on failure
+
 
 async def get_current_user(api_key: str = Security(USER_API_KEY_HEADER), db: AsyncSession = Depends(get_db)) -> User:
     """Dependency to verify user API key and return user object."""
     if not api_key:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing API Key")
 
-    result = await db.execute(
-        select(APIToken).where(APIToken.token == api_key).options(selectinload(APIToken.user))
-    )
+    result = await db.execute(select(APIToken).where(APIToken.token == api_key).options(selectinload(APIToken.user)))
     db_token = result.scalars().first()
 
     if not db_token or not db_token.user:
@@ -94,35 +92,28 @@ async def get_current_user(api_key: str = Security(USER_API_KEY_HEADER), db: Asy
 
     return db_token.user
 
+
 # Router setup (all routes require admin token verification)
-admin_router = APIRouter(
-    prefix="/admin",
-    tags=["Admin"],
-    dependencies=[Depends(verify_admin_token)]
-)
+admin_router = APIRouter(prefix="/admin", tags=["Admin"], dependencies=[Depends(verify_admin_token)])
 
 # New router for user-facing actions
-user_router = APIRouter(
-    prefix="/user",
-    tags=["User"],
-    dependencies=[Depends(get_current_user)]
-)
+user_router = APIRouter(prefix="/user", tags=["User"], dependencies=[Depends(get_current_user)])
+
 
 # --- Helper Functions ---
 def generate_secure_token(length=40):
     alphabet = string.ascii_letters + string.digits
-    return ''.join(secrets.choice(alphabet) for i in range(length))
+    return "".join(secrets.choice(alphabet) for i in range(length))
+
 
 # --- User Endpoints ---
-@user_router.put("/webhook",
-             response_model=UserResponse,
-             summary="Set user webhook URL",
-             description="Set a webhook URL for the authenticated user to receive notifications.")
-async def set_user_webhook(
-    webhook_update: WebhookUpdate,
-    user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db)
-):
+@user_router.put(
+    "/webhook",
+    response_model=UserResponse,
+    summary="Set user webhook URL",
+    description="Set a webhook URL for the authenticated user to receive notifications.",
+)
+async def set_user_webhook(webhook_update: WebhookUpdate, user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     """
     Updates the webhook_url for the currently authenticated user.
     The URL is stored in the user's 'data' JSONB field.
@@ -130,7 +121,7 @@ async def set_user_webhook(
     if user.data is None:
         user.data = {}
 
-    user.data['webhook_url'] = str(webhook_update.webhook_url)
+    user.data["webhook_url"] = str(webhook_update.webhook_url)
 
     # Flag the 'data' field as modified for SQLAlchemy to detect the change
     attributes.flag_modified(user, "data")
@@ -142,21 +133,24 @@ async def set_user_webhook(
 
     return UserResponse.from_orm(user)
 
+
 # --- Admin Endpoints (Copied and adapted from bot-manager/admin.py) ---
-@admin_router.post("/users",
-             response_model=UserResponse,
-             status_code=status.HTTP_201_CREATED,
-             summary="Find or create a user by email",
-             responses={
-                 status.HTTP_200_OK: {
-                     "description": "User found and returned",
-                     "model": UserResponse,
-                 },
-                 status.HTTP_201_CREATED: {
-                     "description": "User created successfully",
-                     "model": UserResponse,
-                 }
-             })
+@admin_router.post(
+    "/users",
+    response_model=UserResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Find or create a user by email",
+    responses={
+        status.HTTP_200_OK: {
+            "description": "User found and returned",
+            "model": UserResponse,
+        },
+        status.HTTP_201_CREATED: {
+            "description": "User created successfully",
+            "model": UserResponse,
+        },
+    },
+)
 async def create_user(user_in: UserCreate, response: Response, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.email == user_in.email))
     existing_user = result.scalars().first()
@@ -168,10 +162,10 @@ async def create_user(user_in: UserCreate, response: Response, db: AsyncSession 
 
     user_data = user_in.dict()
     db_user = User(
-        email=user_data['email'],
-        name=user_data.get('name'),
-        image_url=user_data.get('image_url'),
-        max_concurrent_bots=user_data.get('max_concurrent_bots', 0)
+        email=user_data["email"],
+        name=user_data.get("name"),
+        image_url=user_data.get("image_url"),
+        max_concurrent_bots=user_data.get("max_concurrent_bots", 0),
     )
     db.add(db_user)
     await db.commit()
@@ -179,61 +173,60 @@ async def create_user(user_in: UserCreate, response: Response, db: AsyncSession 
     logger.info(f"Admin created user: {db_user.email} (ID: {db_user.id})")
     return UserResponse.from_orm(db_user)
 
-@admin_router.get("/users",
-            response_model=list[UserResponse], # Use List import
-            summary="List all users")
+
+@admin_router.get(
+    "/users",
+    response_model=list[UserResponse],  # Use List import
+    summary="List all users",
+)
 async def list_users(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).offset(skip).limit(limit))
     users = result.scalars().all()
     return [UserResponse.from_orm(u) for u in users]
 
-@admin_router.get("/users/email/{user_email}",
-            response_model=UserResponse, # Changed from UserDetailResponse
-            summary="Get a specific user by email") # Removed ', including their API tokens'
+
+@admin_router.get(
+    "/users/email/{user_email}",
+    response_model=UserResponse,  # Changed from UserDetailResponse
+    summary="Get a specific user by email",
+)  # Removed ', including their API tokens'
 async def get_user_by_email(user_email: str, db: AsyncSession = Depends(get_db)):
-    """Gets a user by their email.""" # Removed ', eagerly loading their API tokens.'
+    """Gets a user by their email."""  # Removed ', eagerly loading their API tokens.'
     # Removed .options(selectinload(User.api_tokens))
-    result = await db.execute(
-        select(User)
-        .where(User.email == user_email)
-    )
+    result = await db.execute(select(User).where(User.email == user_email))
     user = result.scalars().first()
 
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
     # Return the user object. Pydantic will handle serialization using UserDetailResponse.
     return user
 
-@admin_router.get("/users/{user_id}",
-            response_model=UserDetailResponse, # Use the detailed response schema
-            summary="Get a specific user by ID, including their API tokens")
+
+@admin_router.get(
+    "/users/{user_id}",
+    response_model=UserDetailResponse,  # Use the detailed response schema
+    summary="Get a specific user by ID, including their API tokens",
+)
 async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
     """Gets a user by their ID, eagerly loading their API tokens."""
     # Eagerly load the api_tokens relationship
-    result = await db.execute(
-        select(User)
-        .where(User.id == user_id)
-        .options(selectinload(User.api_tokens))
-    )
+    result = await db.execute(select(User).where(User.id == user_id).options(selectinload(User.api_tokens)))
     user = result.scalars().first()
 
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
     # Return the user object. Pydantic will handle serialization using UserDetailResponse.
     return user
 
-@admin_router.patch("/users/{user_id}",
-             response_model=UserResponse,
-             summary="Update user details",
-             description="Update user's name, image URL, max concurrent bots, or data.")
+
+@admin_router.patch(
+    "/users/{user_id}",
+    response_model=UserResponse,
+    summary="Update user details",
+    description="Update user's name, image URL, max concurrent bots, or data.",
+)
 async def update_user(user_id: int, user_update: UserUpdate, db: AsyncSession = Depends(get_db)):
     """
     Updates specific fields of a user.
@@ -255,15 +248,15 @@ async def update_user(user_id: int, user_update: UserUpdate, db: AsyncSession = 
     logger.info(f"Admin PATCH for user {user_id}. Raw update_data: {update_data}")
 
     # Prevent changing email via this endpoint (if desired)
-    if 'email' in update_data and update_data['email'] != db_user.email:
-         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cannot change user email via this endpoint.")
-    elif 'email' in update_data:
-         del update_data['email'] # Don't attempt to update email to the same value
+    if "email" in update_data and update_data["email"] != db_user.email:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cannot change user email via this endpoint.")
+    elif "email" in update_data:
+        del update_data["email"]  # Don't attempt to update email to the same value
 
     # Handle data field specially for JSONB
     updated = False
-    if 'data' in update_data:
-        new_data = update_data.pop('data')  # Remove from update_data to handle separately
+    if "data" in update_data:
+        new_data = update_data.pop("data")  # Remove from update_data to handle separately
         if new_data is not None:
             logger.info(f"Admin updating data field for user ID: {user_id}. Current: {db_user.data}, New: {new_data}")
 
@@ -292,7 +285,7 @@ async def update_user(user_id: int, user_update: UserUpdate, db: AsyncSession = 
             await db.commit()
             await db.refresh(db_user)
             logger.info(f"Admin updated user ID: {user_id}")
-        except Exception as e: # Catch potential DB errors (e.g., constraints)
+        except Exception as e:  # Catch potential DB errors (e.g., constraints)
             await db.rollback()
             logger.error(f"Error updating user {user_id}: {e}")
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to update user.")
@@ -301,10 +294,10 @@ async def update_user(user_id: int, user_update: UserUpdate, db: AsyncSession = 
 
     return UserResponse.from_orm(db_user)
 
-@admin_router.post("/users/{user_id}/tokens",
-             response_model=TokenResponse,
-             status_code=status.HTTP_201_CREATED,
-             summary="Generate a new API token for a user")
+
+@admin_router.post(
+    "/users/{user_id}/tokens", response_model=TokenResponse, status_code=status.HTTP_201_CREATED, summary="Generate a new API token for a user"
+)
 async def create_token_for_user(user_id: int, db: AsyncSession = Depends(get_db)):
     user = await db.get(User, user_id)
     if not user:
@@ -320,19 +313,15 @@ async def create_token_for_user(user_id: int, db: AsyncSession = Depends(get_db)
     # Use TokenResponse for consistency with schema definition (datetime object)
     return TokenResponse.from_orm(db_token)
 
-@admin_router.delete("/tokens/{token_id}",
-                status_code=status.HTTP_204_NO_CONTENT,
-                summary="Revoke/Delete an API token by its ID")
+
+@admin_router.delete("/tokens/{token_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Revoke/Delete an API token by its ID")
 async def delete_token(token_id: int, db: AsyncSession = Depends(get_db)):
     """Deletes an API token by its database ID."""
     # Fetch the token by its primary key ID
     db_token = await db.get(APIToken, token_id)
 
     if not db_token:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Token not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Token not found")
 
     # Delete the token
     await db.delete(db_token)
@@ -341,15 +330,12 @@ async def delete_token(token_id: int, db: AsyncSession = Depends(get_db)):
     # No body needed for 204 response
     return
 
+
 # --- Usage Stats Endpoints ---
-@admin_router.get("/stats/meetings-users",
-            response_model=PaginatedMeetingUserStatResponse,
-            summary="Get paginated list of meetings joined with users")
-async def list_meetings_with_users(
-    skip: int = 0,
-    limit: int = 100,
-    db: AsyncSession = Depends(get_db)
-):
+@admin_router.get(
+    "/stats/meetings-users", response_model=PaginatedMeetingUserStatResponse, summary="Get paginated list of meetings joined with users"
+)
+async def list_meetings_with_users(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
     """
     Retrieves a paginated list of all meetings, with user details embedded.
     This provides a comprehensive overview for administrators.
@@ -359,35 +345,18 @@ async def list_meetings_with_users(
     total = count_result.scalar_one()
 
     # Then, fetch the paginated list of meetings, joining with users
-    result = await db.execute(
-        select(Meeting)
-        .options(selectinload(Meeting.user))
-        .order_by(Meeting.created_at.desc())
-        .offset(skip)
-        .limit(limit)
-    )
+    result = await db.execute(select(Meeting).options(selectinload(Meeting.user)).order_by(Meeting.created_at.desc()).offset(skip).limit(limit))
     meetings = result.scalars().all()
 
     # Now, construct the response using Pydantic models
-    response_items = [
-        MeetingUserStat(
-            **meeting.__dict__,
-            user=UserResponse.from_orm(meeting.user)
-        )
-        for meeting in meetings if meeting.user
-    ]
+    response_items = [MeetingUserStat(**meeting.__dict__, user=UserResponse.from_orm(meeting.user)) for meeting in meetings if meeting.user]
 
     return PaginatedMeetingUserStatResponse(total=total, items=response_items)
 
+
 # --- Analytics Endpoints ---
-@admin_router.get("/analytics/users",
-                  response_model=list[UserTableResponse],
-                  summary="Get users table structure without sensitive data")
-async def get_users_table(
-    skip: int = 0,
-    limit: int = 1000,
-    db: AsyncSession = Depends(get_db)
-):
+@admin_router.get("/analytics/users", response_model=list[UserTableResponse], summary="Get users table structure without sensitive data")
+async def get_users_table(skip: int = 0, limit: int = 1000, db: AsyncSession = Depends(get_db)):
     """
     Returns user table data for analytics without exposing sensitive information.
     Excludes: data JSONB field, API tokens
@@ -396,14 +365,9 @@ async def get_users_table(
     users = result.scalars().all()
     return [UserTableResponse.from_orm(u) for u in users]
 
-@admin_router.get("/analytics/meetings",
-                  response_model=list[MeetingTableResponse],
-                  summary="Get meetings table structure without sensitive data")
-async def get_meetings_table(
-    skip: int = 0,
-    limit: int = 1000,
-    db: AsyncSession = Depends(get_db)
-):
+
+@admin_router.get("/analytics/meetings", response_model=list[MeetingTableResponse], summary="Get meetings table structure without sensitive data")
+async def get_meetings_table(skip: int = 0, limit: int = 1000, db: AsyncSession = Depends(get_db)):
     """
     Returns meeting table data for analytics without exposing sensitive information.
     Excludes: data JSONB field, transcriptions content
@@ -412,14 +376,14 @@ async def get_meetings_table(
     meetings = result.scalars().all()
     return [MeetingTableResponse.from_orm(m) for m in meetings]
 
-@admin_router.get("/analytics/meetings/{meeting_id}/telematics",
-                  response_model=MeetingTelematicsResponse,
-                  summary="Get detailed telematics data for a specific meeting")
+
+@admin_router.get(
+    "/analytics/meetings/{meeting_id}/telematics",
+    response_model=MeetingTelematicsResponse,
+    summary="Get detailed telematics data for a specific meeting",
+)
 async def get_meeting_telematics(
-    meeting_id: int,
-    include_transcriptions: bool = False,
-    include_sessions: bool = True,
-    db: AsyncSession = Depends(get_db)
+    meeting_id: int, include_transcriptions: bool = False, include_sessions: bool = True, db: AsyncSession = Depends(get_db)
 ):
     """
     Returns comprehensive telematics data for a specific meeting including:
@@ -438,17 +402,13 @@ async def get_meeting_telematics(
     # Get sessions if requested
     sessions = []
     if include_sessions:
-        sessions_result = await db.execute(
-            select(MeetingSession).where(MeetingSession.meeting_id == meeting_id)
-        )
+        sessions_result = await db.execute(select(MeetingSession).where(MeetingSession.meeting_id == meeting_id))
         sessions = sessions_result.scalars().all()
 
     # Calculate transcription stats if requested
     transcription_stats = None
     if include_transcriptions:
-        transcriptions_result = await db.execute(
-            select(Transcription).where(Transcription.meeting_id == meeting_id)
-        )
+        transcriptions_result = await db.execute(select(Transcription).where(Transcription.meeting_id == meeting_id))
         transcriptions = transcriptions_result.scalars().all()
 
         if transcriptions:
@@ -460,7 +420,7 @@ async def get_meeting_telematics(
                 total_transcriptions=len(transcriptions),
                 total_duration=total_duration,
                 unique_speakers=unique_speakers,
-                languages_detected=languages_detected
+                languages_detected=languages_detected,
             )
 
     # Calculate performance metrics
@@ -470,27 +430,25 @@ async def get_meeting_telematics(
         performance_metrics = MeetingPerformanceMetrics(
             total_duration=total_duration,
             # Additional metrics can be calculated from meeting.data if available
-            join_time=meeting.data.get('join_time') if meeting.data else None,
-            admission_time=meeting.data.get('admission_time') if meeting.data else None,
-            bot_uptime=meeting.data.get('bot_uptime') if meeting.data else None
+            join_time=meeting.data.get("join_time") if meeting.data else None,
+            admission_time=meeting.data.get("admission_time") if meeting.data else None,
+            bot_uptime=meeting.data.get("bot_uptime") if meeting.data else None,
         )
 
     return MeetingTelematicsResponse(
         meeting=MeetingResponse.from_orm(meeting),
         sessions=[MeetingSessionResponse.from_orm(s) for s in sessions],
         transcription_stats=transcription_stats,
-        performance_metrics=performance_metrics
+        performance_metrics=performance_metrics,
     )
 
-@admin_router.get("/analytics/users/{user_id}/details",
-                  response_model=UserAnalyticsResponse,
-                  summary="Get comprehensive user analytics data including full user record")
-async def get_user_details(
-    user_id: int,
-    include_meetings: bool = True,
-    include_tokens: bool = False,
-    db: AsyncSession = Depends(get_db)
-):
+
+@admin_router.get(
+    "/analytics/users/{user_id}/details",
+    response_model=UserAnalyticsResponse,
+    summary="Get comprehensive user analytics data including full user record",
+)
+async def get_user_details(user_id: int, include_meetings: bool = True, include_tokens: bool = False, db: AsyncSession = Depends(get_db)):
     """
     Returns full user record with analytics data including:
     - Complete user profile information (including data JSONB field)
@@ -514,12 +472,12 @@ async def get_user_details(
     meetings = meetings_result.scalars().all()
 
     total_meetings = len(meetings)
-    completed_meetings = len([m for m in meetings if m.status == 'completed'])
-    failed_meetings = len([m for m in meetings if m.status == 'failed'])
-    active_meetings = len([m for m in meetings if m.status in ['requested', 'joining', 'awaiting_admission', 'active']])
+    completed_meetings = len([m for m in meetings if m.status == "completed"])
+    failed_meetings = len([m for m in meetings if m.status == "failed"])
+    active_meetings = len([m for m in meetings if m.status in ["requested", "joining", "awaiting_admission", "active"]])
 
     # Calculate duration stats
-    completed_with_duration = [m for m in meetings if m.status == 'completed' and m.start_time and m.end_time]
+    completed_with_duration = [m for m in meetings if m.status == "completed" and m.start_time and m.end_time]
     total_duration = sum((m.end_time - m.start_time).total_seconds() for m in completed_with_duration) if completed_with_duration else None
     average_duration = total_duration / len(completed_with_duration) if completed_with_duration else None
 
@@ -529,7 +487,7 @@ async def get_user_details(
         failed_meetings=failed_meetings,
         active_meetings=active_meetings,
         total_duration=total_duration,
-        average_duration=average_duration
+        average_duration=average_duration,
     )
 
     # Calculate usage patterns
@@ -560,18 +518,16 @@ async def get_user_details(
         last_activity = None
 
     usage_patterns = UserUsagePatterns(
-        most_used_platform=most_used_platform,
-        meetings_per_day=meetings_per_day,
-        peak_usage_hours=peak_usage_hours,
-        last_activity=last_activity
+        most_used_platform=most_used_platform, meetings_per_day=meetings_per_day, peak_usage_hours=peak_usage_hours, last_activity=last_activity
     )
 
     return UserAnalyticsResponse(
         user=UserDetailResponse.from_orm(user),
         meeting_stats=meeting_stats,
         usage_patterns=usage_patterns,
-        api_tokens=[TokenResponse.from_orm(t) for t in user.api_tokens] if include_tokens else None
+        api_tokens=[TokenResponse.from_orm(t) for t in user.api_tokens] if include_tokens else None,
     )
+
 
 # App events
 @app.on_event("startup")
@@ -581,9 +537,11 @@ async def startup_event():
     # await init_db()
     pass
 
+
 # Include the admin router
 app.include_router(admin_router)
 app.include_router(user_router)
+
 
 # Root endpoint (optional)
 @app.get("/")

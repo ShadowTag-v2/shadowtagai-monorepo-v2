@@ -64,7 +64,7 @@ def format_timestamp(dt: datetime, relative: bool = True) -> str:
 def format_duration(seconds: float) -> str:
     """Format duration in seconds to human-readable string."""
     if seconds < 1:
-        return f"{seconds*1000:.0f}ms"
+        return f"{seconds * 1000:.0f}ms"
     elif seconds < 60:
         return f"{seconds:.1f}s"
     elif seconds < 3600:
@@ -100,7 +100,7 @@ def truncate_text(text: str, max_length: int = 50, suffix: str = "...") -> str:
     """Truncate text to max length with suffix."""
     if len(text) <= max_length:
         return text
-    return text[:max_length - len(suffix)] + suffix
+    return text[: max_length - len(suffix)] + suffix
 
 
 def print_success(message: str, title: str = "Success"):
@@ -165,11 +165,7 @@ def create_domain_text(domain: str) -> Text:
     return Text(domain, style=color)
 
 
-def create_metric_text(
-    value: float,
-    format_type: str = "percentage",
-    thresholds: dict | None = None
-) -> Text:
+def create_metric_text(value: float, format_type: str = "percentage", thresholds: dict | None = None) -> Text:
     """
     Create colored metric text based on value.
 
@@ -305,10 +301,7 @@ def format_hypothesis_summary(hypothesis: dict) -> str:
     novelty = hypothesis.get("novelty_score", 0.0)
     priority = hypothesis.get("priority_score", 0.0)
 
-    return (
-        f"{truncate_text(claim, 60)}\n"
-        f"  Novelty: {novelty:.2f} | Priority: {priority:.2f}"
-    )
+    return f"{truncate_text(claim, 60)}\n  Novelty: {novelty:.2f} | Priority: {priority:.2f}"
 
 
 def format_experiment_summary(experiment: dict) -> str:
@@ -317,10 +310,7 @@ def format_experiment_summary(experiment: dict) -> str:
     status = experiment.get("status", "Unknown")
     duration = experiment.get("duration_seconds", 0)
 
-    return (
-        f"{exp_type} [{status}]\n"
-        f"  Duration: {format_duration(duration)}"
-    )
+    return f"{exp_type} [{status}]\n  Duration: {format_duration(duration)}"
 
 
 def confirm_action(message: str, default: bool = False) -> bool:
@@ -335,6 +325,7 @@ def confirm_action(message: str, default: bool = False) -> bool:
         True if user confirms
     """
     from rich.prompt import Confirm
+
     return Confirm.ask(message, default=default, console=console)
 
 

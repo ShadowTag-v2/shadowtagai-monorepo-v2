@@ -11,9 +11,9 @@ from .manager import *
 from .utils import *
 
 
-#*****************************************************
+# *****************************************************
 # JumpsExplorer
-#*****************************************************
+# *****************************************************
 class JumpsExplorer(Explorer):
     def __init__(self):
         pass
@@ -24,27 +24,27 @@ class JumpsExplorer(Explorer):
     def getFreshContent(self, *args, **kwargs):
         content = lfEval("split(leaderf#execute('jumps'), '\n')")
 
-        flag = ' '
+        flag = " "
         self._content = []
         self._content.append(content[0])
         for line in reversed(content[1:]):
-            if line.endswith('LeaderF'):
+            if line.endswith("LeaderF"):
                 continue
-            if line.startswith('>'):
-                flag = '\t'
+            if line.startswith(">"):
+                flag = "\t"
             self._content.append(line + flag)
         return self._content
 
     def getStlCategory(self):
-        return 'Jumps'
+        return "Jumps"
 
     def getStlCurDir(self):
         return escQuote(lfEncode(lfGetCwd()))
 
 
-#*****************************************************
+# *****************************************************
 # JumpsExplManager
-#*****************************************************
+# *****************************************************
 class JumpsExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -60,15 +60,14 @@ class JumpsExplManager(Manager):
             return
 
         line = args[0]
-        if line.startswith('>'):
+        if line.startswith(">"):
             return
 
         # title
-        if re.match('[^0-9]', line.lstrip()):
+        if re.match("[^0-9]", line.lstrip()):
             return
 
-        if "--recall" in self._arguments or "--stayOpen" in self._arguments \
-                or "preview" in kwargs:
+        if "--recall" in self._arguments or "--stayOpen" in self._arguments or "preview" in kwargs:
             res = line.split(None, 3)
             if len(res) < 4:
                 return
@@ -86,7 +85,7 @@ class JumpsExplManager(Manager):
                 lfCmd(f"hide edit {escSpecial(os.path.expanduser(file_text))} | {line}")
         else:
             number = line.split(None, 1)[0]
-            if line.endswith('\t'):
+            if line.endswith("\t"):
                 lfCmd(rf':exec "norm! {number}\<C-O>"')
             else:
                 lfCmd(rf':exec "norm! {number}\<C-I>"')
@@ -98,7 +97,6 @@ class JumpsExplManager(Manager):
             self._cursorline_dict[vim.current.window] = vim.current.window.options["cursorline"]
 
         lfCmd("setlocal cursorline")
-
 
     def _getDigest(self, line, mode):
         """
@@ -132,31 +130,32 @@ class JumpsExplManager(Manager):
 
     def _afterEnter(self):
         super()._afterEnter()
-        if self._getInstance().getWinPos() == 'popup':
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_jumpsTitle'', ''^ \D\+'')')"""
-                    % self._getInstance().getPopupWinId())
+        if self._getInstance().getWinPos() == "popup":
+            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_jumpsTitle'', ''^ \D\+'')')""" % self._getInstance().getPopupWinId())
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_jumpsNumber'', ''^>\?\s*\zs\d\+'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_jumpsNumber'', ''^>\?\s*\zs\d\+'')')""" % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_jumpsLineCol'', ''^>\?\s*\d\+\s*\zs\d\+\s*\d\+'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_jumpsLineCol'', ''^>\?\s*\d\+\s*\zs\d\+\s*\d\+'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_jumpsIndicator'', ''^>'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_jumpsIndicator'', ''^>'')')""" % self._getInstance().getPopupWinId())
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
         else:
-            id = int(lfEval(r'''matchadd('Lf_hl_jumpsTitle', '^ \D\+')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_jumpsTitle', '^ \D\+')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_jumpsNumber', '^>\?\s*\zs\d\+')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_jumpsNumber', '^>\?\s*\zs\d\+')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_jumpsLineCol', '^>\?\s*\d\+\s*\zs\d\+\s*\d\+')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_jumpsLineCol', '^>\?\s*\d\+\s*\zs\d\+\s*\d\+')"""))
             self._match_ids.append(id)
-            id = int(lfEval('''matchadd('Lf_hl_jumpsIndicator', '^>')'''))
+            id = int(lfEval("""matchadd('Lf_hl_jumpsIndicator', '^>')"""))
             self._match_ids.append(id)
 
     def _beforeExit(self):
@@ -173,7 +172,7 @@ class JumpsExplManager(Manager):
         indicator = 0
         for line in instance.buffer:
             indicator += 1
-            if line.startswith('>'):
+            if line.startswith(">"):
                 instance.window.cursor = (indicator, 0)
                 self._getInstance().mimicCursor()
                 break
@@ -183,13 +182,13 @@ class JumpsExplManager(Manager):
         self._readFinished()
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         line = args[0]
 
         # title
-        if re.match('[^0-9]', line.lstrip()):
+        if re.match("[^0-9]", line.lstrip()):
             return
 
         res = line.split(None, 3)
@@ -206,9 +205,9 @@ class JumpsExplManager(Manager):
             self._createPopupPreview("", os.path.expanduser(file_text), line)
 
 
-#*****************************************************
+# *****************************************************
 # jumpsExplManager is a singleton
-#*****************************************************
+# *****************************************************
 jumpsExplManager = JumpsExplManager()
 
-__all__ = ['jumpsExplManager']
+__all__ = ["jumpsExplManager"]

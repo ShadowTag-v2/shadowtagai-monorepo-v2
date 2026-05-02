@@ -126,9 +126,7 @@ def _add_ignore_pipfile_option(p):
 
 
 def _add_dev_option(p, help_text="Install both develop and default packages."):
-    p.add_argument(
-        "--dev", "-d", dest="dev", action="store_true", default=None, help=help_text
-    )
+    p.add_argument("--dev", "-d", dest="dev", action="store_true", default=None, help=help_text)
 
 
 def _add_categories_option(p):
@@ -160,9 +158,7 @@ def _add_all_categories_option(p):
 
 
 def _add_pre_option(p):
-    p.add_argument(
-        "--pre", dest="pre", action="store_true", default=None, help="Allow pre-releases."
-    )
+    p.add_argument("--pre", dest="pre", action="store_true", default=None, help="Allow pre-releases.")
 
 
 def _add_package_arg(p):
@@ -188,9 +184,7 @@ def _add_python_option(p):
 
 
 def _add_pypi_mirror_option(p):
-    p.add_argument(
-        "--pypi-mirror", dest="pypi_mirror", default=_SHARED_DEFAULT, help="Specify a PyPI mirror."
-    )
+    p.add_argument("--pypi-mirror", dest="pypi_mirror", default=_SHARED_DEFAULT, help="Specify a PyPI mirror.")
 
 
 def _add_verbose_option(p):
@@ -469,9 +463,7 @@ def build_parser():
         default=False,
         help="Show this message and exit.",
     )
-    parser.add_argument(
-        "--version", action="version", version=f"pipenv, version {__version__}"
-    )
+    parser.add_argument("--version", action="version", version=f"pipenv, version {__version__}")
     parser.add_argument(
         "--where",
         action="store_true",
@@ -502,12 +494,8 @@ def build_parser():
         default=False,
         help="Remove the virtualenv. [deprecated: use `pipenv remove`]",
     )
-    parser.add_argument(
-        "--bare", action="store_true", default=False, help="Minimal output."
-    )
-    parser.add_argument(
-        "--man", action="store_true", default=False, help="Display manpage."
-    )
+    parser.add_argument("--bare", action="store_true", default=False, help="Minimal output.")
+    parser.add_argument("--man", action="store_true", default=False, help="Display manpage.")
     parser.add_argument(
         "--support",
         action="store_true",
@@ -531,9 +519,7 @@ def build_parser():
     _add_install_options(p)
 
     # ── remove ───────────────────────────────────────────────────────────────
-    p = subs.add_parser(
-        "remove", add_help=False, help="Remove the virtualenv for the current project."
-    )
+    p = subs.add_parser("remove", add_help=False, help="Remove the virtualenv for the current project.")
     p.add_argument("-h", "--help", dest="help", action="store_true", default=False)
 
     # ── upgrade ──────────────────────────────────────────────────────────────
@@ -577,13 +563,9 @@ def build_parser():
     _add_lock_options(p)
 
     # ── shell ─────────────────────────────────────────────────────────────────
-    p = subs.add_parser(
-        "shell", add_help=False, help="Spawn a shell within the virtualenv."
-    )
+    p = subs.add_parser("shell", add_help=False, help="Spawn a shell within the virtualenv.")
     p.add_argument("-h", "--help", dest="help", action="store_true", default=False)
-    p.add_argument(
-        "--fancy", action="store_true", default=False, help="Run shell in fancy mode."
-    )
+    p.add_argument("--fancy", action="store_true", default=False, help="Run shell in fancy mode.")
     p.add_argument(
         "--anyway",
         action="store_true",
@@ -613,9 +595,7 @@ def build_parser():
     _add_python_option(p)
 
     # ── run ───────────────────────────────────────────────────────────────────
-    p = subs.add_parser(
-        "run", add_help=False, help="Spawn a command installed into the virtualenv."
-    )
+    p = subs.add_parser("run", add_help=False, help="Spawn a command installed into the virtualenv.")
     # Only -h/--help and --system are intentionally kept on the run subparser:
     #   -h/--help — needed so ``pipenv run --help`` shows run-specific help.
     #     Note: ``pipenv run cmd -h`` will also be consumed by argparse; users
@@ -634,9 +614,7 @@ def build_parser():
     # Do NOT add an "args" positional — everything after run_command is captured
     # in parse_known_args()'s remaining list so flags like -c/-v/-x are not split
     # from their values by argparse's option-detection heuristic.
-    p.add_argument(
-        "run_command", metavar="command", nargs="?", default=None, help="Command to run."
-    )
+    p.add_argument("run_command", metavar="command", nargs="?", default=None, help="Command to run.")
 
     # ── check ─────────────────────────────────────────────────────────────────
     p = subs.add_parser(
@@ -670,21 +648,13 @@ def build_parser():
     p.add_argument("--policy-file", dest="policy_file", default="")
     p.add_argument("--exit-code", dest="exit_code", action="store_true", default=True)
     p.add_argument("--continue-on-error", dest="exit_code", action="store_false")
-    p.add_argument(
-        "--audit-and-monitor", dest="audit_and_monitor", action="store_true", default=True
-    )
-    p.add_argument(
-        "--disable-audit-and-monitor", dest="audit_and_monitor", action="store_false"
-    )
+    p.add_argument("--audit-and-monitor", dest="audit_and_monitor", action="store_true", default=True)
+    p.add_argument("--disable-audit-and-monitor", dest="audit_and_monitor", action="store_false")
     p.add_argument("--project", dest="project", default=None)
     p.add_argument("--save-json", dest="save_json", default="")
-    p.add_argument(
-        "--use-installed", dest="use_installed", action="store_true", default=False
-    )
+    p.add_argument("--use-installed", dest="use_installed", action="store_true", default=False)
     p.add_argument("--categories", dest="categories", default="")
-    p.add_argument(
-        "--auto-install", dest="auto_install", action="store_true", default=False
-    )
+    p.add_argument("--auto-install", dest="auto_install", action="store_true", default=False)
     p.add_argument(
         "--scan",
         dest="scan",
@@ -720,9 +690,7 @@ def build_parser():
     p.add_argument("--fix", dest="fix", action="store_true", default=False)
     p.add_argument("--dry-run", dest="dry_run", action="store_true", default=False)
     p.add_argument("--strict", dest="strict", action="store_true", default=False)
-    p.add_argument(
-        "--skip-editable", dest="skip_editable", action="store_true", default=False
-    )
+    p.add_argument("--skip-editable", dest="skip_editable", action="store_true", default=False)
     p.add_argument("--no-deps", dest="no_deps", action="store_true", default=False)
     p.add_argument("--local", dest="local", action="store_true", default=False)
     p.add_argument("--desc", dest="desc", action="store_true", default=False)
@@ -761,17 +729,13 @@ def build_parser():
     p.add_argument("--reverse", action="store_true", default=False)
 
     # ── open ──────────────────────────────────────────────────────────────────
-    p = subs.add_parser(
-        "open", add_help=False, help="View a given module in your editor."
-    )
+    p = subs.add_parser("open", add_help=False, help="View a given module in your editor.")
     p.add_argument("-h", "--help", dest="help", action="store_true", default=False)
     _add_common_options(p)
     p.add_argument("module", help="Module to open.")
 
     # ── sync ──────────────────────────────────────────────────────────────────
-    p = subs.add_parser(
-        "sync", add_help=False, help="Install all packages specified in Pipfile.lock."
-    )
+    p = subs.add_parser("sync", add_help=False, help="Install all packages specified in Pipfile.lock.")
     p.add_argument("-h", "--help", dest="help", action="store_true", default=False)
     _add_system_option(p)
     p.add_argument("--bare", action="store_true", default=False)
@@ -791,16 +755,12 @@ def build_parser():
     _add_python_option(p)
 
     # ── scripts ───────────────────────────────────────────────────────────────
-    p = subs.add_parser(
-        "scripts", add_help=False, help="List scripts in current environment config."
-    )
+    p = subs.add_parser("scripts", add_help=False, help="List scripts in current environment config.")
     p.add_argument("-h", "--help", dest="help", action="store_true", default=False)
     _add_common_options(p)
 
     # ── verify ────────────────────────────────────────────────────────────────
-    p = subs.add_parser(
-        "verify", add_help=False, help="Verify the hash in Pipfile.lock is up-to-date."
-    )
+    p = subs.add_parser("verify", add_help=False, help="Verify the hash in Pipfile.lock is up-to-date.")
     p.add_argument("-h", "--help", dest="help", action="store_true", default=False)
 
     # ── requirements ──────────────────────────────────────────────────────────
@@ -813,27 +773,17 @@ def build_parser():
     p.add_argument("--dev", dest="dev", action="store_true", default=False)
     p.add_argument("--dev-only", dest="dev_only", action="store_true", default=False)
     p.add_argument("--hash", dest="hash", action="store_true", default=False)
-    p.add_argument(
-        "--exclude-markers", dest="exclude_markers", action="store_true", default=False
-    )
-    p.add_argument(
-        "--exclude-index", dest="exclude_index", action="store_true", default=False
-    )
+    p.add_argument("--exclude-markers", dest="exclude_markers", action="store_true", default=False)
+    p.add_argument("--exclude-index", dest="exclude_index", action="store_true", default=False)
     p.add_argument("--categories", dest="categories", default="")
-    p.add_argument(
-        "--from-pipfile", dest="from_pipfile", action="store_true", default=False
-    )
+    p.add_argument("--from-pipfile", dest="from_pipfile", action="store_true", default=False)
     p.add_argument("--no-lock", dest="no_lock", action="store_true", default=False)
 
     # ── pylock ────────────────────────────────────────────────────────────────
-    p = subs.add_parser(
-        "pylock", add_help=False, help="Manage PEP 751 pylock.toml files."
-    )
+    p = subs.add_parser("pylock", add_help=False, help="Manage PEP 751 pylock.toml files.")
     p.add_argument("-h", "--help", dest="help", action="store_true", default=False)
     p.add_argument("--generate", action="store_true", default=False)
-    p.add_argument(
-        "--from-pyproject", dest="from_pyproject", action="store_true", default=False
-    )
+    p.add_argument("--from-pyproject", dest="from_pyproject", action="store_true", default=False)
     p.add_argument("--validate", action="store_true", default=False)
     p.add_argument("--output", "-o", dest="output", default=None)
     p.add_argument("--dev-groups", dest="dev_groups", default="dev")
@@ -887,9 +837,7 @@ def build_state(args):
     if state.verbose and state.quiet:
         from pipenv.exceptions import PipenvUsageError
 
-        raise PipenvUsageError(
-            "--verbose and --quiet are mutually exclusive! Please choose one!"
-        )
+        raise PipenvUsageError("--verbose and --quiet are mutually exclusive! Please choose one!")
     if state.verbose:
         setup_verbosity(state, 1)
     elif state.quiet:

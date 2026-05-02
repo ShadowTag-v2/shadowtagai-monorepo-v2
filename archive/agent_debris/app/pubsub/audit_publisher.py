@@ -22,11 +22,7 @@ class AuditPublisher:
     - Future-based async publishing
     """
 
-    def __init__(
-        self,
-        project_id: str | None = None,
-        topic_id: str = "audit-trace-events"
-    ):
+    def __init__(self, project_id: str | None = None, topic_id: str = "audit-trace-events"):
         self.project_id = project_id or os.environ.get("GCP_PROJECT_ID", "acquired-jet-478701-b3")
         self.topic_id = topic_id
 
@@ -41,12 +37,7 @@ class AuditPublisher:
         self.topic_path = self.publisher.topic_path(self.project_id, self.topic_id)
 
     def publish(
-        self,
-        decision_id: str,
-        decision: str,
-        inputs: dict[str, Any],
-        outputs: dict[str, Any],
-        metadata: dict[str, Any] | None = None
+        self, decision_id: str, decision: str, inputs: dict[str, Any], outputs: dict[str, Any], metadata: dict[str, Any] | None = None
     ) -> str:
         """
         Publish an audit trace event.
@@ -68,32 +59,21 @@ class AuditPublisher:
             "outputs": outputs,
             "metadata": metadata or {},
             "timestamp": datetime.utcnow().isoformat() + "Z",
-            "version": "1.0.0"
+            "version": "1.0.0",
         }
 
         # Serialize to JSON bytes
         data = json.dumps(trace_data).encode("utf-8")
 
         # Publish with retry
-        future = self.publisher.publish(
-            self.topic_path,
-            data,
-            decision_id=decision_id,
-            decision=decision,
-            retry=retry.Retry(deadline=30.0)
-        )
+        future = self.publisher.publish(self.topic_path, data, decision_id=decision_id, decision=decision, retry=retry.Retry(deadline=30.0))
 
         # Wait for result (blocking)
         message_id = future.result()
         return message_id
 
     def publish_async(
-        self,
-        decision_id: str,
-        decision: str,
-        inputs: dict[str, Any],
-        outputs: dict[str, Any],
-        metadata: dict[str, Any] | None = None
+        self, decision_id: str, decision: str, inputs: dict[str, Any], outputs: dict[str, Any], metadata: dict[str, Any] | None = None
     ) -> pubsub_v1.publisher.futures.Future:
         """
         Publish an audit trace event asynchronously.
@@ -108,22 +88,14 @@ class AuditPublisher:
             "outputs": outputs,
             "metadata": metadata or {},
             "timestamp": datetime.utcnow().isoformat() + "Z",
-            "version": "1.0.0"
+            "version": "1.0.0",
         }
 
         data = json.dumps(trace_data).encode("utf-8")
 
-        return self.publisher.publish(
-            self.topic_path,
-            data,
-            decision_id=decision_id,
-            decision=decision
-        )
+        return self.publisher.publish(self.topic_path, data, decision_id=decision_id, decision=decision)
 
-    def publish_batch(
-        self,
-        events: list[dict[str, Any]]
-    ) -> list[str]:
+    def publish_batch(self, events: list[dict[str, Any]]) -> list[str]:
         """
         Publish multiple audit events efficiently.
 
@@ -141,7 +113,7 @@ class AuditPublisher:
                 decision=event["decision"],
                 inputs=event.get("inputs", {}),
                 outputs=event.get("outputs", {}),
-                metadata=event.get("metadata")
+                metadata=event.get("metadata"),
             )
             futures.append(future)
 
@@ -171,7 +143,7 @@ if __name__ == "__main__":
         decision="APPROVE",
         inputs={"user_id": "u123", "amount": 100.00},
         outputs={"risk_score": 0.15, "approved": True},
-        metadata={"source": "test_script"}
+        metadata={"source": "test_script"},
     )
 
     print(f"Published message: {msg_id}")

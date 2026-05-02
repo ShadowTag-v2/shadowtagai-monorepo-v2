@@ -36,6 +36,7 @@ class ExperimentTask:
         config: Experiment configuration
         priority: Task priority (higher = more urgent)
     """
+
     experiment_id: str
     code: str
     data_path: str | None = None
@@ -55,6 +56,7 @@ class ParallelExecutionResult:
         execution_time: Time taken in seconds
         error: Error message if failed
     """
+
     experiment_id: str
     success: bool
     result: Any
@@ -82,13 +84,7 @@ class ParallelExperimentExecutor:
         >>> print(f"Completed {len(results)} experiments")
     """
 
-    def __init__(
-        self,
-        max_workers: int | None = None,
-        max_workers_io: int | None = None,
-        enable_progress_logging: bool = True,
-        chunk_size: int = 1
-    ):
+    def __init__(self, max_workers: int | None = None, max_workers_io: int | None = None, enable_progress_logging: bool = True, chunk_size: int = 1):
         """
         Initialize parallel executor.
 
@@ -111,18 +107,10 @@ class ParallelExperimentExecutor:
         self.enable_progress_logging = enable_progress_logging
         self.chunk_size = chunk_size
 
-        logger.info(
-            f"Parallel executor initialized: "
-            f"{self.max_workers} CPU workers, "
-            f"{self.max_workers_io} I/O workers, "
-            f"{cpu_count} total cores"
-        )
+        logger.info(f"Parallel executor initialized: {self.max_workers} CPU workers, {self.max_workers_io} I/O workers, {cpu_count} total cores")
 
     def execute_batch(
-        self,
-        tasks: list[ExperimentTask],
-        use_sandbox: bool = False,
-        timeout_per_task: float | None = None
+        self, tasks: list[ExperimentTask], use_sandbox: bool = False, timeout_per_task: float | None = None
     ) -> list[ParallelExecutionResult]:
         """
         Execute a batch of experiments in parallel.
@@ -164,15 +152,7 @@ class ParallelExperimentExecutor:
         # Execute tasks in parallel using ProcessPoolExecutor
         with ProcessPoolExecutor(max_workers=self.max_workers) as executor:
             # Submit all tasks
-            future_to_task = {
-                executor.submit(
-                    _execute_single_experiment,
-                    task,
-                    use_sandbox,
-                    timeout_per_task
-                ): task
-                for task in tasks_sorted
-            }
+            future_to_task = {executor.submit(_execute_single_experiment, task, use_sandbox, timeout_per_task): task for task in tasks_sorted}
 
             # Process completed tasks as they finish
             for future in as_completed(future_to_task):
@@ -191,37 +171,27 @@ class ParallelExperimentExecutor:
                     if self.enable_progress_logging:
                         progress = (completed + failed) / len(tasks) * 100
                         logger.info(
-                            f"Progress: {progress:.1f}% "
-                            f"({completed} completed, {failed} failed, "
-                            f"{len(tasks) - completed - failed} remaining)"
+                            f"Progress: {progress:.1f}% ({completed} completed, {failed} failed, {len(tasks) - completed - failed} remaining)"
                         )
 
                 except Exception as e:
                     logger.error(f"Task {task.experiment_id} raised exception: {e}")
                     failed += 1
-                    results.append(ParallelExecutionResult(
-                        experiment_id=task.experiment_id,
-                        success=False,
-                        result=None,
-                        execution_time=0.0,
-                        error=str(e)
-                    ))
+                    results.append(
+                        ParallelExecutionResult(experiment_id=task.experiment_id, success=False, result=None, execution_time=0.0, error=str(e))
+                    )
 
         total_time = time.time() - start_time
 
         logger.info(
             f"Parallel execution complete: "
             f"{completed} succeeded, {failed} failed, "
-            f"{total_time:.2f}s total ({total_time/len(tasks):.2f}s avg per task)"
+            f"{total_time:.2f}s total ({total_time / len(tasks):.2f}s avg per task)"
         )
 
         return results
 
-    def execute_batch_async(
-        self,
-        tasks: list[ExperimentTask],
-        callback: Callable[[ParallelExecutionResult], None] | None = None
-    ) -> Future:
+    def execute_batch_async(self, tasks: list[ExperimentTask], callback: Callable[[ParallelExecutionResult], None] | None = None) -> Future:
         """
         Execute tasks asynchronously with optional callback on completion.
 
@@ -244,9 +214,7 @@ class ParallelExperimentExecutor:
             return future
 
     def _execute_with_callbacks(
-        self,
-        tasks: list[ExperimentTask],
-        callback: Callable[[ParallelExecutionResult], None] | None
+        self, tasks: list[ExperimentTask], callback: Callable[[ParallelExecutionResult], None] | None
     ) -> list[ParallelExecutionResult]:
         """Internal method to execute tasks with callbacks."""
         results = self.execute_batch(tasks)
@@ -261,11 +229,7 @@ class ParallelExperimentExecutor:
         return results
 
 
-def _execute_single_experiment(
-    task: ExperimentTask,
-    use_sandbox: bool = False,
-    timeout: float | None = None
-) -> ParallelExecutionResult:
+def _execute_single_experiment(task: ExperimentTask, use_sandbox: bool = False, timeout: float | None = None) -> ParallelExecutionResult:
     """
     Execute a single experiment task.
 
@@ -290,24 +254,19 @@ def _execute_single_experiment(
         from kosmos.execution.executor import execute_protocol_code
 
         # Execute the experiment code
-        result = execute_protocol_code(
-            code=task.code,
-            data_path=task.data_path,
-            use_sandbox=use_sandbox,
-            sandbox_config=task.config or {}
-        )
+        result = execute_protocol_code(code=task.code, data_path=task.data_path, use_sandbox=use_sandbox, sandbox_config=task.config or {})
 
         execution_time = time.time() - start_time
         completed_at = datetime.utcnow()
 
         return ParallelExecutionResult(
             experiment_id=task.experiment_id,
-            success=result.get('success', False),
+            success=result.get("success", False),
             result=result,
             execution_time=execution_time,
-            error=result.get('error'),
+            error=result.get("error"),
             started_at=started_at,
-            completed_at=completed_at
+            completed_at=completed_at,
         )
 
     except Exception as e:
@@ -323,7 +282,7 @@ def _execute_single_experiment(
             execution_time=execution_time,
             error=str(e),
             started_at=started_at,
-            completed_at=completed_at
+            completed_at=completed_at,
         )
 
 
@@ -343,12 +302,7 @@ class ResourceAwareScheduler:
         >>> executor = ParallelExperimentExecutor(max_workers=workers)
     """
 
-    def __init__(
-        self,
-        max_cpu_percent: float = 85.0,
-        max_memory_percent: float = 85.0,
-        min_workers: int = 1
-    ):
+    def __init__(self, max_cpu_percent: float = 85.0, max_memory_percent: float = 85.0, min_workers: int = 1):
         """
         Initialize resource-aware scheduler.
 

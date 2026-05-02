@@ -235,8 +235,10 @@ class Worker(WorkerBase):
                 * self.cache_config.gpu_memory_utilization
             )
             if self.init_snapshot.free_memory < self.requested_memory:
+
                 def GiB(b):
                     return round(b / GiB_bytes, 2)
+
                 raise ValueError(
                     f"Free memory on device "
                     f"({GiB(self.init_snapshot.free_memory)}/"
@@ -292,8 +294,10 @@ class Worker(WorkerBase):
             You may limit the usage of GPU memory
             by adjusting the `gpu_memory_utilization` parameter.
         """
+
         def GiB(b):
             return b / GiB_bytes
+
         if kv_cache_memory_bytes := self.cache_config.kv_cache_memory_bytes:
             # still need a profile run which compiles the model for
             # max_num_batched_tokens

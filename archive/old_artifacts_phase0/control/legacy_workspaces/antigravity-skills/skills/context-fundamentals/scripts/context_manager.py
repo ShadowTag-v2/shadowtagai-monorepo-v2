@@ -9,7 +9,6 @@ model-specific tokenizers for other providers) for accurate token counts.
 """
 
 import hashlib
-from typing import Dict, List
 
 
 def estimate_token_count(text: str) -> int:
@@ -42,16 +41,9 @@ def estimate_message_tokens(messages: list) -> int:
     return total
 
 
-def count_tokens_by_type(context: Dict) -> Dict:
+def count_tokens_by_type(context: dict) -> dict:
     """Break down token usage by context type."""
-    breakdown = {
-        "system_prompt": 0,
-        "tool_definitions": 0,
-        "retrieved_documents": 0,
-        "message_history": 0,
-        "tool_outputs": 0,
-        "other": 0
-    }
+    breakdown = {"system_prompt": 0, "tool_definitions": 0, "retrieved_documents": 0, "message_history": 0, "tool_outputs": 0, "other": 0}
 
     # System prompt
     if "system" in context:
@@ -76,37 +68,28 @@ def count_tokens_by_type(context: Dict) -> Dict:
 
 # Context Builder
 
+
 class ContextBuilder:
     """Build context with budget management."""
 
     def __init__(self, context_limit: int = 100000):
         self.context_limit = context_limit
-        self.sections: Dict[str, str] = {}
-        self.order: List[str] = []
+        self.sections: dict[str, str] = {}
+        self.order: list[str] = []
 
-    def add_section(self, name: str, content: str,
-                    priority: int = 0, category: str = "other"):
+    def add_section(self, name: str, content: str, priority: int = 0, category: str = "other"):
         """Add section to context."""
         if name not in self.sections:
             self.order.append(name)
 
-        self.sections[name] = {
-            "content": content,
-            "priority": priority,
-            "category": category,
-            "tokens": estimate_token_count(content)
-        }
+        self.sections[name] = {"content": content, "priority": priority, "category": category, "tokens": estimate_token_count(content)}
 
     def build(self, max_tokens: int = None) -> str:
         """Build context within token limit."""
         limit = max_tokens or self.context_limit
 
         # Sort by priority (higher first)
-        sorted_sections = sorted(
-            self.order,
-            key=lambda n: self.sections[n]["priority"],
-            reverse=True
-        )
+        sorted_sections = sorted(self.order, key=lambda n: self.sections[n]["priority"], reverse=True)
 
         # Build context
         context_parts = []
@@ -122,18 +105,15 @@ class ContextBuilder:
 
         return "\n\n".join(context_parts)
 
-    def get_usage_report(self) -> Dict:
+    def get_usage_report(self) -> dict:
         """Get current context usage report."""
         total = sum(s["tokens"] for s in self.sections.values())
         return {
             "total_tokens": total,
             "limit": self.context_limit,
             "utilization": total / self.context_limit,
-            "by_section": {
-                name: s["tokens"]
-                for name, s in self.sections.items()
-            },
-            "status": self._get_status(total)
+            "by_section": {name: s["tokens"] for name, s in self.sections.items()},
+            "status": self._get_status(total),
         }
 
     def _get_status(self, total: int) -> str:
@@ -149,8 +129,8 @@ class ContextBuilder:
 
 # Context Truncation
 
-def truncate_context(context: str, max_tokens: int,
-                     preserve_start: bool = True) -> str:
+
+def truncate_context(context: str, max_tokens: int, preserve_start: bool = True) -> str:
     """
     Truncate context to fit within token limit.
 
@@ -232,7 +212,8 @@ def truncate_messages(messages: list, max_tokens: int) -> list:
 
 # Context Validation
 
-def validate_context_structure(context: Dict) -> Dict:
+
+def validate_context_structure(context: dict) -> dict:
     """
     Validate context structure for common issues.
 
@@ -270,21 +251,18 @@ def validate_context_structure(context: Dict) -> Dict:
             issues.append(f"Potential duplicate content in {section}")
         seen_content.add(content_hash)
 
-    return {
-        "valid": len(issues) == 0,
-        "issues": issues,
-        "recommendations": recommendations
-    }
+    return {"valid": len(issues) == 0, "issues": issues, "recommendations": recommendations}
 
 
 # Progressive Disclosure
+
 
 class ProgressiveDisclosureManager:
     """Manage progressive disclosure of context."""
 
     def __init__(self, base_dir: str = "."):
         self.base_dir = base_dir
-        self.loaded_files: Dict[str, str] = {}
+        self.loaded_files: dict[str, str] = {}
 
     def load_summary(self, summary_path: str) -> str:
         """Load summary without loading full content."""
@@ -292,7 +270,7 @@ class ProgressiveDisclosureManager:
             return self.loaded_files[summary_path]
 
         try:
-            with open(summary_path, 'r') as f:
+            with open(summary_path) as f:
                 content = f.read()
             self.loaded_files[summary_path] = content
             return content
@@ -305,14 +283,14 @@ class ProgressiveDisclosureManager:
             return self.loaded_files[detail_path]
 
         try:
-            with open(detail_path, 'r') as f:
+            with open(detail_path) as f:
                 content = f.read()
             self.loaded_files[detail_path] = content
             return content
         except FileNotFoundError:
             return ""
 
-    def get_contextual_info(self, reference: Dict) -> str:
+    def get_contextual_info(self, reference: dict) -> str:
         """
         Get information following progressive disclosure.
 
@@ -332,14 +310,13 @@ class ProgressiveDisclosureManager:
 
 # Usage Example
 
-def build_agent_context(task: str, system_prompt: str,
-                        documents: List[str] = None) -> Dict:
+
+def build_agent_context(task: str, system_prompt: str, documents: list[str] = None) -> dict:
     """Build optimized context for agent task."""
     builder = ContextBuilder(context_limit=80000)
 
     # Add system prompt (highest priority)
-    builder.add_section("system", system_prompt, priority=10,
-                        category="system")
+    builder.add_section("system", system_prompt, priority=10, category="system")
 
     # Add task description
     builder.add_section("task", task, priority=9, category="task")
@@ -347,24 +324,11 @@ def build_agent_context(task: str, system_prompt: str,
     # Add retrieved documents
     if documents:
         for i, doc in enumerate(documents):
-            builder.add_section(
-                f"document_{i}",
-                doc,
-                priority=5,
-                category="retrieved"
-            )
+            builder.add_section(f"document_{i}", doc, priority=5, category="retrieved")
 
     # Build and validate
-    context = {
-        "system": system_prompt,
-        "task": task,
-        "documents": documents or []
-    }
+    context = {"system": system_prompt, "task": task, "documents": documents or []}
 
     validation = validate_context_structure(context)
 
-    return {
-        "context": builder.build(),
-        "usage_report": builder.get_usage_report(),
-        "validation": validation
-    }
+    return {"context": builder.build(), "usage_report": builder.get_usage_report(), "validation": validation}

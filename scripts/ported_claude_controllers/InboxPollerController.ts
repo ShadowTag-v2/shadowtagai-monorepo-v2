@@ -1,22 +1,22 @@
 import { randomUUID } from 'crypto';
+import { TEAMMATE_MESSAGE_TAG } from '../../constants/xml.js';
 import { getAppStateStore, setAppState } from '../../state/AppState.js';
 import { logForDebugging } from '../../utils/debug.js';
 import { TEAM_LEAD_NAME } from '../../utils/swarm/constants.js';
 import { getAgentName, isTeamLead, isTeammate } from '../../utils/teammate.js';
 import { isInProcessTeammate } from '../../utils/teammateContext.js';
 import {
+  isModeSetRequest,
   isPermissionRequest,
   isPermissionResponse,
+  isPlanApprovalRequest,
   isSandboxPermissionRequest,
   isSandboxPermissionResponse,
   isShutdownApproved,
   isTeamPermissionUpdate,
-  isModeSetRequest,
-  isPlanApprovalRequest,
   markMessagesAsRead,
   readUnreadMessages,
 } from '../../utils/teammateMailbox.js';
-import { TEAMMATE_MESSAGE_TAG } from '../../constants/xml.js';
 
 const INBOX_POLL_INTERVAL_MS = 1000;
 

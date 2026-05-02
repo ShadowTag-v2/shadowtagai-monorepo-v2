@@ -160,18 +160,12 @@ class JudgeSixLite:
         # Check SLA
         verification_time_ms = (time.perf_counter() - start_time) * 1000
         if verification_time_ms > sla_target:
-            warnings.append(
-                f"Verification exceeded SLA target: {verification_time_ms:.2f}ms > {sla_target}ms"
-            )
+            warnings.append(f"Verification exceeded SLA target: {verification_time_ms:.2f}ms > {sla_target}ms")
 
         metadata["verification_time_ms"] = verification_time_ms
 
         # Determine if verification passed
-        critical_violations = [
-            v
-            for v in violations
-            if v.severity in [ViolationSeverity.CRITICAL, ViolationSeverity.HIGH]
-        ]
+        critical_violations = [v for v in violations if v.severity in [ViolationSeverity.CRITICAL, ViolationSeverity.HIGH]]
         passed = len(critical_violations) == 0
 
         # Build audit report
@@ -212,14 +206,7 @@ class JudgeSixLite:
                 for v in violations
             ],
             "warnings": warnings,
-            "passed": len(
-                [
-                    v
-                    for v in violations
-                    if v.severity in [ViolationSeverity.CRITICAL, ViolationSeverity.HIGH]
-                ]
-            )
-            == 0,
+            "passed": len([v for v in violations if v.severity in [ViolationSeverity.CRITICAL, ViolationSeverity.HIGH]]) == 0,
             "data_summary": {
                 "keys": list(data.keys()),
                 "size_bytes": len(json.dumps(data)),
@@ -265,9 +252,7 @@ class CANSPAMUnsubscribeRule(ComplianceRule):
 
         # Check for unsubscribe link
         content_lower = content.lower()
-        has_unsubscribe = any(
-            re.search(pattern, content_lower) for pattern in self.unsubscribe_patterns
-        )
+        has_unsubscribe = any(re.search(pattern, content_lower) for pattern in self.unsubscribe_patterns)
 
         if not has_unsubscribe:
             return Violation(
@@ -303,9 +288,7 @@ class CANSPAMPhysicalAddressRule(ComplianceRule):
             return None
 
         # Simple check for address patterns (street number + street name)
-        address_pattern = (
-            r"\d+\s+[A-Za-z]+\s+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln)"
-        )
+        address_pattern = r"\d+\s+[A-Za-z]+\s+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln)"
         has_address = re.search(address_pattern, content, re.IGNORECASE)
 
         if not has_address:

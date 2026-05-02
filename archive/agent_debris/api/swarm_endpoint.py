@@ -23,6 +23,7 @@ from pydantic import BaseModel, Field
 # Import swarm voter
 try:
     from agents.autoresearch2 import SwarmVoter, VoteDecision, swarm_vote
+
     SWARM_AVAILABLE = True
 except ImportError:
     SWARM_AVAILABLE = False
@@ -34,6 +35,7 @@ router = APIRouter(prefix="/v1/swarm", tags=["n-autoresearch/Kosmos/BioAgentss S
 # =============================================================================
 # MODELS
 # =============================================================================
+
 
 class RiskLevel(StrEnum):
     LOW = "L"
@@ -55,6 +57,7 @@ class VoteMethod(StrEnum):
 
 class SwarmVoteRequest(BaseModel):
     """Request to invoke swarm voting."""
+
     intent: str = Field(..., description="What action is being decided")
     risk_level: RiskLevel = Field(default=RiskLevel.MEDIUM, description="ATP 5-19 risk level")
     brake_count: int = Field(default=0, ge=0, le=10, description="Number of safety brakes triggered")
@@ -64,6 +67,7 @@ class SwarmVoteRequest(BaseModel):
 
 class SwarmVoteResponse(BaseModel):
     """Response from swarm voting."""
+
     decision_id: str
     decision: Decision
     confidence: float = Field(ge=0, le=1)
@@ -88,6 +92,7 @@ class SwarmVoteResponse(BaseModel):
 
 class SwarmStatusResponse(BaseModel):
     """Swarm status information."""
+
     status: str
     version: str
     active_agents: int
@@ -100,6 +105,7 @@ class SwarmStatusResponse(BaseModel):
 
 class UsageResponse(BaseModel):
     """API usage statistics."""
+
     api_key_id: str
     tier: str
     decisions_today: int
@@ -146,6 +152,7 @@ PRICING = {
 # =============================================================================
 # INTERNAL SWARM EXECUTION
 # =============================================================================
+
 
 def execute_internal_swarm(
     intent: str,
@@ -239,6 +246,7 @@ def execute_internal_swarm(
 # API KEY VALIDATION (Stub)
 # =============================================================================
 
+
 async def validate_api_key(x_api_key: str = Header(...)) -> dict[str, Any]:
     """Validate API key and return tier info."""
     # Stub - replace with real validation
@@ -255,6 +263,7 @@ async def validate_api_key(x_api_key: str = Header(...)) -> dict[str, Any]:
 # =============================================================================
 # ENDPOINTS
 # =============================================================================
+
 
 @router.post("/vote", response_model=SwarmVoteResponse)
 async def vote(
@@ -358,6 +367,7 @@ async def batch_vote(
 # =============================================================================
 # HEALTH CHECK
 # =============================================================================
+
 
 @router.get("/health")
 async def health():

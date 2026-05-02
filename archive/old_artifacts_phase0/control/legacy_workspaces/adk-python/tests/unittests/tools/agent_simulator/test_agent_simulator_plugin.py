@@ -20,25 +20,23 @@ from google.adk.tools.agent_simulator.agent_simulator_plugin import AgentSimulat
 
 @pytest.mark.asyncio
 class TestAgentSimulatorPlugin:
-  """Test cases for the AgentSimulatorPlugin."""
+    """Test cases for the AgentSimulatorPlugin."""
 
-  @pytest.fixture
-  def mock_simulator_engine(self):
-    """Fixture for a mock AgentSimulatorEngine."""
-    engine = MagicMock()
-    engine.simulate = AsyncMock()
-    return engine
+    @pytest.fixture
+    def mock_simulator_engine(self):
+        """Fixture for a mock AgentSimulatorEngine."""
+        engine = MagicMock()
+        engine.simulate = AsyncMock()
+        return engine
 
-  async def test_before_tool_callback(self, mock_simulator_engine):
-    """Test that the before_tool_callback calls the engine's simulate method."""
-    plugin = AgentSimulatorPlugin(mock_simulator_engine)
+    async def test_before_tool_callback(self, mock_simulator_engine):
+        """Test that the before_tool_callback calls the engine's simulate method."""
+        plugin = AgentSimulatorPlugin(mock_simulator_engine)
 
-    mock_tool = MagicMock()
-    mock_args = {}
-    mock_context = MagicMock()
+        mock_tool = MagicMock()
+        mock_args = {}
+        mock_context = MagicMock()
 
-    await plugin.before_tool_callback(mock_tool, mock_args, mock_context)
+        await plugin.before_tool_callback(mock_tool, mock_args, mock_context)
 
-    mock_simulator_engine.simulate.assert_awaited_once_with(
-        mock_tool, mock_args, mock_context
-    )
+        mock_simulator_engine.simulate.assert_awaited_once_with(mock_tool, mock_args, mock_context)

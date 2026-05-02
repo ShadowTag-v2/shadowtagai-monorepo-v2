@@ -4,9 +4,7 @@ import time
 import tempfile
 import base64
 from pathlib import Path
-from typing import Optional
-from fastapi import APIRouter, HTTPException, UploadFile, File
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, HTTPException
 import structlog
 
 from app.models.vision import (
@@ -109,6 +107,7 @@ async def detect_objects(request: ObjectDetectionRequest):
 
         # Get image dimensions
         from PIL import Image
+
         img = Image.open(image_path)
         image_dimensions = {"width": img.width, "height": img.height}
 
@@ -370,6 +369,7 @@ async def list_models():
 
 
 # Helper functions
+
 
 async def _prepare_image(image_url: str | None, image_base64: str | None) -> str:
     """Download or decode image to temporary file."""

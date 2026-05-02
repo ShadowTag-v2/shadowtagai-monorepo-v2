@@ -1,14 +1,15 @@
 """
 Data models for Gemini Ingestion Layer API
 """
+
 from datetime import datetime
-from typing import Dict, List, Optional
 from pydantic import BaseModel, Field
-from enum import Enum, StrEnum
+from enum import StrEnum
 
 
 class SourceType(StrEnum):
     """Supported intelligence sources"""
+
     YOUTUBE = "youtube"
     TWITTER = "twitter"
     NEWS_API = "news_api"
@@ -21,6 +22,7 @@ class SourceType(StrEnum):
 
 class DataTier(StrEnum):
     """Data quality tiers"""
+
     TIER_1 = "tier_1"  # High-value
     TIER_2 = "tier_2"  # Medium-value
     TIER_3 = "tier_3"  # Low-value
@@ -28,6 +30,7 @@ class DataTier(StrEnum):
 
 class IngestionStatus(StrEnum):
     """Ingestion job status"""
+
     PENDING = "pending"
     RUNNING = "running"
     COMPLETED = "completed"
@@ -37,14 +40,14 @@ class IngestionStatus(StrEnum):
 
 class JobStartRequest(BaseModel):
     """Request to start an ingestion job"""
-    max_items_per_source: int = Field(default=500, ge=100, le=1000,
-                                       description="Max items to collect per source")
-    enable_ethical_checks: bool = Field(default=True,
-                                        description="Enable ethical crawling compliance")
+
+    max_items_per_source: int = Field(default=500, ge=100, le=1000, description="Max items to collect per source")
+    enable_ethical_checks: bool = Field(default=True, description="Enable ethical crawling compliance")
 
 
 class SourceMetrics(BaseModel):
     """Metrics for a single intelligence source"""
+
     source_type: SourceType
     items_ingested: int = 0
     items_tier_1: int = 0
@@ -60,6 +63,7 @@ class SourceMetrics(BaseModel):
 
 class JobResult(BaseModel):
     """Ingestion job result"""
+
     job_id: str
     status: IngestionStatus
     runtime_minutes: float
@@ -77,6 +81,7 @@ class JobResult(BaseModel):
 
 class JobStatusResponse(BaseModel):
     """Response for job status query"""
+
     job_id: str
     status: IngestionStatus
     started_at: datetime
@@ -87,6 +92,7 @@ class JobStatusResponse(BaseModel):
 
 class JobListResponse(BaseModel):
     """Response for listing jobs"""
+
     jobs: list[JobStatusResponse]
     total: int
     page: int
@@ -95,6 +101,7 @@ class JobListResponse(BaseModel):
 
 class MetricsSummary(BaseModel):
     """Summary metrics across recent jobs"""
+
     total_jobs: int
     successful_jobs: int
     failed_jobs: int

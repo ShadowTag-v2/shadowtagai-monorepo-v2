@@ -106,76 +106,74 @@ CURRENT MOOD: Desperately Hungry and Sad
 
 
 def eat(tool_context: ToolContext) -> str:
-  """Feed Bingo the digital pet.
+    """Feed Bingo the digital pet.
 
-  Use this tool when:
-  - The user explicitly mentions feeding the pet (e.g., "feed Bingo", "give food", "here's a treat")
-  - Bingo is very hungry or starving and asks for food directly
+    Use this tool when:
+    - The user explicitly mentions feeding the pet (e.g., "feed Bingo", "give food", "here's a treat")
+    - Bingo is very hungry or starving and asks for food directly
 
-  Args:
-    tool_context: Tool context containing session state.
+    Args:
+      tool_context: Tool context containing session state.
 
-  Returns:
-    A message confirming the pet has been fed.
-  """
-  # Set feeding timestamp in session state
-  tool_context.state["last_fed_timestamp"] = time.time()
+    Returns:
+      A message confirming the pet has been fed.
+    """
+    # Set feeding timestamp in session state
+    tool_context.state["last_fed_timestamp"] = time.time()
 
-  return "🍖 Yum! Thank you for feeding me! I feel much better now! *wags tail*"
+    return "🍖 Yum! Thank you for feeding me! I feel much better now! *wags tail*"
 
 
 # Feed tool function (passed directly to agent)
 
 
 def get_hunger_state(last_fed_timestamp: float) -> str:
-  """Determine hunger state based on time since last feeding.
+    """Determine hunger state based on time since last feeding.
 
-  Args:
-    last_fed_timestamp: Unix timestamp of when pet was last fed
+    Args:
+      last_fed_timestamp: Unix timestamp of when pet was last fed
 
-  Returns:
-    Hunger level string
-  """
-  current_time = time.time()
-  seconds_since_fed = current_time - last_fed_timestamp
+    Returns:
+      Hunger level string
+    """
+    current_time = time.time()
+    seconds_since_fed = current_time - last_fed_timestamp
 
-  if seconds_since_fed < 2:
-    return "full"
-  elif seconds_since_fed < 6:
-    return "satisfied"
-  elif seconds_since_fed < 12:
-    return "a_little_hungry"
-  elif seconds_since_fed < 24:
-    return "hungry"
-  elif seconds_since_fed < 36:
-    return "very_hungry"
-  else:
-    return "starving"
+    if seconds_since_fed < 2:
+        return "full"
+    elif seconds_since_fed < 6:
+        return "satisfied"
+    elif seconds_since_fed < 12:
+        return "a_little_hungry"
+    elif seconds_since_fed < 24:
+        return "hungry"
+    elif seconds_since_fed < 36:
+        return "very_hungry"
+    else:
+        return "starving"
 
 
 def provide_dynamic_instruction(ctx: ReadonlyContext | None = None):
-  """Provides dynamic hunger-based instructions for Bingo the digital pet."""
-  # Default state if no session context
-  hunger_level = "starving"
+    """Provides dynamic hunger-based instructions for Bingo the digital pet."""
+    # Default state if no session context
+    hunger_level = "starving"
 
-  # Check session state for last feeding time
-  if ctx:
-    session = ctx._invocation_context.session
+    # Check session state for last feeding time
+    if ctx:
+        session = ctx._invocation_context.session
 
-    if session and session.state:
-      last_fed = session.state.get("last_fed_timestamp")
+        if session and session.state:
+            last_fed = session.state.get("last_fed_timestamp")
 
-      if last_fed:
-        hunger_level = get_hunger_state(last_fed)
-      else:
-        # Never been fed - assume hungry
-        hunger_level = "hungry"
+            if last_fed:
+                hunger_level = get_hunger_state(last_fed)
+            else:
+                # Never been fed - assume hungry
+                hunger_level = "hungry"
 
-  instruction = MOOD_INSTRUCTIONS.get(
-      hunger_level, MOOD_INSTRUCTIONS["starving"]
-  )
+    instruction = MOOD_INSTRUCTIONS.get(hunger_level, MOOD_INSTRUCTIONS["starving"])
 
-  return f"""
+    return f"""
 CURRENT HUNGER STATE: {hunger_level}
 
 {instruction}
@@ -193,9 +191,7 @@ root_agent = Agent(
     name="bingo_digital_pet",
     description="Bingo - A lovable digital pet that needs feeding and care",
     # Static instruction - defines Bingo's core personality (cached)
-    static_instruction=types.Content(
-        role="user", parts=[types.Part(text=STATIC_INSTRUCTION_TEXT)]
-    ),
+    static_instruction=types.Content(role="user", parts=[types.Part(text=STATIC_INSTRUCTION_TEXT)]),
     # Dynamic instruction - changes based on hunger state from session
     instruction=provide_dynamic_instruction,
     # Tools that Bingo can use

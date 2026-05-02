@@ -11,10 +11,10 @@ def lower_set(iterable: Iterable[str]) -> set[str]:
 
 
 def parents(file: str) -> Iterator[str]:
-    path_parts = file.split('/')
+    path_parts = file.split("/")
     path_parts.pop()
     while path_parts:
-        yield '/'.join(path_parts)
+        yield "/".join(path_parts)
         path_parts.pop()
 
 
@@ -23,7 +23,7 @@ def directories_for(files: set[str]) -> set[str]:
 
 
 def find_conflicting_filenames(filenames: Sequence[str]) -> int:
-    repo_files = set(cmd_output('git', 'ls-files').splitlines())
+    repo_files = set(cmd_output("git", "ls-files").splitlines())
     repo_files |= directories_for(repo_files)
     relevant_files = set(filenames) | added_files()
     relevant_files |= directories_for(relevant_files)
@@ -42,12 +42,9 @@ def find_conflicting_filenames(filenames: Sequence[str]) -> int:
             conflicts.add(filename.lower())
 
     if conflicts:
-        conflicting_files = [
-            x for x in repo_files | relevant_files
-            if x.lower() in conflicts
-        ]
+        conflicting_files = [x for x in repo_files | relevant_files if x.lower() in conflicts]
         for filename in sorted(conflicting_files):
-            print(f'Case-insensitivity conflict found: {filename}')
+            print(f"Case-insensitivity conflict found: {filename}")
         retv = 1
 
     return retv
@@ -56,8 +53,9 @@ def find_conflicting_filenames(filenames: Sequence[str]) -> int:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        'filenames', nargs='*',
-        help='Filenames pre-commit believes are changed.',
+        "filenames",
+        nargs="*",
+        help="Filenames pre-commit believes are changed.",
     )
 
     args = parser.parse_args(argv)
@@ -65,5 +63,5 @@ def main(argv: Sequence[str] | None = None) -> int:
     return find_conflicting_filenames(args.filenames)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

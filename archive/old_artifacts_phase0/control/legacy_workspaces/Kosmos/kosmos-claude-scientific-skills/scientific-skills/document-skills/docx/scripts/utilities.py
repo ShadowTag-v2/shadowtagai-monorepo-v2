@@ -32,7 +32,6 @@ Example usage:
 
 import html
 from pathlib import Path
-from typing import Optional, Union
 
 import defusedxml.minidom
 import defusedxml.sax
@@ -76,9 +75,9 @@ class XMLEditor:
     def get_node(
         self,
         tag: str,
-        attrs: Optional[dict[str, str]] = None,
-        line_number: Optional[Union[int, range]] = None,
-        contains: Optional[str] = None,
+        attrs: dict[str, str] | None = None,
+        line_number: int | range | None = None,
+        contains: str | None = None,
     ):
         """
         Get a DOM element by tag and identifier.
@@ -126,10 +125,7 @@ class XMLEditor:
 
             # Check attrs filter
             if attrs is not None:
-                if not all(
-                    elem.getAttribute(attr_name) == attr_value
-                    for attr_name, attr_value in attrs.items()
-                ):
+                if not all(elem.getAttribute(attr_name) == attr_value for attr_name, attr_value in attrs.items()):
                     continue
 
             # Check contains filter
@@ -148,11 +144,7 @@ class XMLEditor:
             # Build descriptive error message
             filters = []
             if line_number is not None:
-                line_str = (
-                    f"lines {line_number.start}-{line_number.stop - 1}"
-                    if isinstance(line_number, range)
-                    else f"line {line_number}"
-                )
+                line_str = f"lines {line_number.start}-{line_number.stop - 1}" if isinstance(line_number, range) else f"line {line_number}"
                 filters.append(f"at {line_str}")
             if attrs is not None:
                 filters.append(f"with attributes {attrs}")
@@ -174,10 +166,7 @@ class XMLEditor:
 
             raise ValueError(f"{base_msg}. {hint}")
         if len(matches) > 1:
-            raise ValueError(
-                f"Multiple nodes found: <{tag}>. "
-                f"Add more filters (attrs, line_number, or contains) to narrow the search."
-            )
+            raise ValueError(f"Multiple nodes found: <{tag}>. Add more filters (attrs, line_number, or contains) to narrow the search.")
         return matches[0]
 
     def _get_element_text(self, elem):

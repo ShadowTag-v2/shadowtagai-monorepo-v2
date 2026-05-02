@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtag_v2/audio_stego.py
+# hypothesis_version: 6.151.5
+
+[-1.0, 0.0, 0.01, 0.5, 1.0, 100.0, 1000.0, 100, 128, 256, 44100, 'AudioWatermarkConfig', 'bits_to_bytes', 'butter_highpass', 'bytes_to_bits', 'prompt_hash']

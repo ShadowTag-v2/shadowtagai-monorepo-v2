@@ -4,6 +4,7 @@ from ..utils.db import sqlite_conn, pg_conn
 from ..retrieval.sqlite_index import chunk_text
 from ..retrieval.lancedb_store import upsert_chunks
 
+
 def mark_changed_files(sqlite_db: str, pg_dsn: str, repo_id: str):
     with sqlite_conn(sqlite_db) as sconn, pg_conn(pg_dsn) as pconn:
         srows = sconn.execute("SELECT doc_id, rel_path, sha256 FROM documents").fetchall()
@@ -20,6 +21,7 @@ def mark_changed_files(sqlite_db: str, pg_dsn: str, repo_id: str):
                 )
         return {"changed_doc_ids": changed, "count": len(changed)}
 
+
 def embed_only_changed():
     s = load_settings()
     change_info = mark_changed_files(s.sqlite_db, s.postgres_dsn, s.repo_id)
@@ -34,6 +36,7 @@ def embed_only_changed():
                 (doc_id,),
             )
     return {"changed": change_info, "upsert": result}
+
 
 if __name__ == "__main__":
     print(embed_only_changed())

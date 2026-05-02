@@ -13,6 +13,7 @@ from typing import Any
 
 try:
     from anthropic import Anthropic, AsyncAnthropic
+
     HAS_ANTHROPIC = True
 except ImportError:
     HAS_ANTHROPIC = False
@@ -76,34 +77,32 @@ class AnthropicProvider(LLMProvider):
         super().__init__(config)
 
         if not HAS_ANTHROPIC:
-            raise ImportError(
-                "anthropic package is required. Install with: pip install anthropic"
-            )
+            raise ImportError("anthropic package is required. Install with: pip install anthropic")
 
         # Extract configuration
-        self.api_key = config.get('api_key') or os.environ.get('ANTHROPIC_API_KEY')
+        self.api_key = config.get("api_key") or os.environ.get("ANTHROPIC_API_KEY")
         if not self.api_key:
             raise ValueError(
                 "ANTHROPIC_API_KEY not provided in config or environment. "
                 "Set to your API key or '999999999999999999999999999999999999999999999999' for CLI mode."
             )
 
-        self.model = config.get('model', _DEFAULT_CLAUDE_SONNET_MODEL)
+        self.model = config.get("model", _DEFAULT_CLAUDE_SONNET_MODEL)
         self.default_model = self.model
-        self.max_tokens = config.get('max_tokens', 4096)
-        self.temperature = config.get('temperature', 0.7)
-        self.enable_cache = config.get('enable_cache', True)
-        self.enable_auto_model_selection = config.get('enable_auto_model_selection', False)
-        self.timeout = config.get('timeout', 120)
+        self.max_tokens = config.get("max_tokens", 4096)
+        self.temperature = config.get("temperature", 0.7)
+        self.enable_cache = config.get("enable_cache", True)
+        self.enable_auto_model_selection = config.get("enable_auto_model_selection", False)
+        self.timeout = config.get("timeout", 120)
 
         # Model variants for auto-selection
         self.haiku_model = _DEFAULT_CLAUDE_HAIKU_MODEL
         self.sonnet_model = _DEFAULT_CLAUDE_SONNET_MODEL
 
-        self.base_url = config.get('base_url') or os.environ.get('CLAUDE_BASE_URL') # NEW: get user-supplied endpoint if any
+        self.base_url = config.get("base_url") or os.environ.get("CLAUDE_BASE_URL")  # NEW: get user-supplied endpoint if any
 
         # Detect mode (CLI or API)
-        self.is_cli_mode = self.api_key.replace('9', '') == ''
+        self.is_cli_mode = self.api_key.replace("9", "") == ""
 
         # Initialize Anthropic client
         try:
@@ -141,7 +140,7 @@ class AnthropicProvider(LLMProvider):
         max_tokens: int = 4096,
         temperature: float = 0.7,
         stop_sequences: list[str] | None = None,
-        **kwargs
+        **kwargs,
     ) -> LLMResponse:
         """
         Generate text from Claude.
@@ -161,13 +160,14 @@ class AnthropicProvider(LLMProvider):
             ProviderAPIError: If the API call fails
         """
         try:
-            bypass_cache = kwargs.get('bypass_cache', False)
-            model_override = kwargs.get('model_override', None)
+            bypass_cache = kwargs.get("bypass_cache", False)
+            model_override = kwargs.get("model_override")
 
             # Check if LLM call logging is enabled
             log_llm = False
             try:
                 from kosmos.config import get_config
+
                 config = get_config()
                 log_llm = config.logging.log_llm_calls
             except Exception:
@@ -183,9 +183,10 @@ class AnthropicProvider(LLMProvider):
             elif self.enable_auto_model_selection and not self.is_cli_mode:
                 # Auto-select based on complexity
                 from kosmos.core.llm import ModelComplexity
+
                 complexity_analysis = ModelComplexity.estimate_complexity(prompt, system)
 
-                if complexity_analysis['recommendation'] == 'haiku':
+                if complexity_analysis["recommendation"] == "haiku":
                     selected_model = self.haiku_model
                     self.haiku_requests += 1
                 else:
@@ -193,56 +194,43 @@ class AnthropicProvider(LLMProvider):
                     self.sonnet_requests += 1
 
                 logger.info(
-                    f"Auto-selected {selected_model} "
-                    f"(complexity: {complexity_analysis['complexity_score']}, "
-                    f"reason: {complexity_analysis['reason']})"
+                    f"Auto-selected {selected_model} (complexity: {complexity_analysis['complexity_score']}, reason: {complexity_analysis['reason']})"
                 )
             else:
                 # Track model usage
-                if 'haiku' in selected_model.lower():
+                if "haiku" in selected_model.lower():
                     self.haiku_requests += 1
-                elif 'sonnet' in selected_model.lower():
+                elif "sonnet" in selected_model.lower():
                     self.sonnet_requests += 1
 
             # Check cache first
             if self.cache and not bypass_cache:
                 cache_key_params = {
-                    'system': system or "",
-                    'max_tokens': max_tokens,
-                    'temperature': temperature,
-                    'stop_sequences': stop_sequences or [],
+                    "system": system or "",
+                    "max_tokens": max_tokens,
+                    "temperature": temperature,
+                    "stop_sequences": stop_sequences or [],
                 }
 
-                cached_response = self.cache.get(
-                    prompt=prompt,
-                    model=selected_model,
-                    bypass=False,
-                    **cache_key_params
-                )
+                cached_response = self.cache.get(prompt=prompt, model=selected_model, bypass=False, **cache_key_params)
 
                 if cached_response is not None:
                     # Cache hit!
                     self.cache_hits += 1
-                    response_text = cached_response['response']
+                    response_text = cached_response["response"]
                     logger.info("Cache hit: saved API call")
 
                     # Return as LLMResponse
                     usage = UsageStats(
-                        input_tokens=cached_response.get('metadata', {}).get('input_tokens', 0),
-                        output_tokens=cached_response.get('metadata', {}).get('output_tokens', 0),
-                        total_tokens=cached_response.get('metadata', {}).get('input_tokens', 0) +
-                                     cached_response.get('metadata', {}).get('output_tokens', 0),
+                        input_tokens=cached_response.get("metadata", {}).get("input_tokens", 0),
+                        output_tokens=cached_response.get("metadata", {}).get("output_tokens", 0),
+                        total_tokens=cached_response.get("metadata", {}).get("input_tokens", 0)
+                        + cached_response.get("metadata", {}).get("output_tokens", 0),
                         model=selected_model,
                         provider="anthropic",
-                        timestamp=datetime.now()
+                        timestamp=datetime.now(),
                     )
-                    return LLMResponse(
-                        content=response_text,
-                        usage=usage,
-                        model=selected_model,
-                        finish_reason="stop",
-                        metadata={'cache_hit': True}
-                    )
+                    return LLMResponse(content=response_text, usage=usage, model=selected_model, finish_reason="stop", metadata={"cache_hit": True})
                 else:
                     self.cache_misses += 1
 
@@ -252,13 +240,12 @@ class AnthropicProvider(LLMProvider):
             # Pre-call logging
             if log_llm:
                 logger.debug(
-                    "[LLM] Request: model=%s, prompt_len=%d, system_len=%d, "
-                    "max_tokens=%d, temp=%.2f",
+                    "[LLM] Request: model=%s, prompt_len=%d, system_len=%d, max_tokens=%d, temp=%.2f",
                     selected_model,
                     len(prompt),
                     len(system or ""),
                     max_tokens,
-                    temperature
+                    temperature,
                 )
 
             start_time = time_module.time()
@@ -281,22 +268,23 @@ class AnthropicProvider(LLMProvider):
             latency_ms = int((time_module.time() - start_time) * 1000)
             if log_llm:
                 logger.debug(
-                    "[LLM] Response: model=%s, in_tokens=%d, out_tokens=%d, "
-                    "latency=%dms, finish=%s",
+                    "[LLM] Response: model=%s, in_tokens=%d, out_tokens=%d, latency=%dms, finish=%s",
                     selected_model,
                     response.usage.input_tokens,
                     response.usage.output_tokens,
                     latency_ms,
-                    response.stop_reason if hasattr(response, 'stop_reason') else "unknown"
+                    response.stop_reason if hasattr(response, "stop_reason") else "unknown",
                 )
             usage_stats = UsageStats(
                 input_tokens=response.usage.input_tokens,
                 output_tokens=response.usage.output_tokens,
                 total_tokens=response.usage.input_tokens + response.usage.output_tokens,
-                cost_usd=self._calculate_cost(response.usage.input_tokens, response.usage.output_tokens, selected_model) if not self.is_cli_mode else None,
+                cost_usd=self._calculate_cost(response.usage.input_tokens, response.usage.output_tokens, selected_model)
+                if not self.is_cli_mode
+                else None,
                 model=selected_model,
                 provider="anthropic",
-                timestamp=datetime.now()
+                timestamp=datetime.now(),
             )
 
             # Update stats
@@ -305,22 +293,16 @@ class AnthropicProvider(LLMProvider):
             # Cache the response
             if self.cache and not bypass_cache:
                 metadata = {
-                    'input_tokens': response.usage.input_tokens,
-                    'output_tokens': response.usage.output_tokens,
+                    "input_tokens": response.usage.input_tokens,
+                    "output_tokens": response.usage.output_tokens,
                 }
                 cache_key_params = {
-                    'system': system or "",
-                    'max_tokens': max_tokens,
-                    'temperature': temperature,
-                    'stop_sequences': stop_sequences or [],
+                    "system": system or "",
+                    "max_tokens": max_tokens,
+                    "temperature": temperature,
+                    "stop_sequences": stop_sequences or [],
                 }
-                self.cache.set(
-                    prompt=prompt,
-                    model=selected_model,
-                    response=text,
-                    metadata=metadata,
-                    **cache_key_params
-                )
+                self.cache.set(prompt=prompt, model=selected_model, response=text, metadata=metadata, **cache_key_params)
 
             logger.debug(f"Generated {len(text)} characters from Claude")
 
@@ -328,9 +310,9 @@ class AnthropicProvider(LLMProvider):
                 content=text,
                 usage=usage_stats,
                 model=selected_model,
-                finish_reason=response.stop_reason if hasattr(response, 'stop_reason') else "stop",
+                finish_reason=response.stop_reason if hasattr(response, "stop_reason") else "stop",
                 raw_response=response,
-                metadata={'cache_hit': False}
+                metadata={"cache_hit": False},
             )
 
         except Exception as e:
@@ -338,7 +320,7 @@ class AnthropicProvider(LLMProvider):
             raise ProviderAPIError("anthropic", f"Generation failed: {e}", raw_error=e)
 
     @property
-    def async_client(self) -> 'AsyncAnthropic':
+    def async_client(self) -> AsyncAnthropic:
         """
         Lazy-initialize async client with same config as sync client.
 
@@ -361,7 +343,7 @@ class AnthropicProvider(LLMProvider):
         max_tokens: int = 4096,
         temperature: float = 0.7,
         stop_sequences: list[str] | None = None,
-        **kwargs
+        **kwargs,
     ) -> LLMResponse:
         """
         Generate text asynchronously using true async Anthropic client.
@@ -387,13 +369,13 @@ class AnthropicProvider(LLMProvider):
                 system=system or "",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=temperature,
-                stop_sequences=stop_sequences or []
+                stop_sequences=stop_sequences or [],
             )
 
             # Parse response (same as sync)
             content = ""
             for block in response.content:
-                if hasattr(block, 'text'):
+                if hasattr(block, "text"):
                     content += block.text
 
             input_tokens = response.usage.input_tokens if response.usage else 0
@@ -404,34 +386,19 @@ class AnthropicProvider(LLMProvider):
             # Log if enabled
             try:
                 from kosmos.config import get_config
+
                 if get_config().logging.log_llm_calls:
-                    logger.debug(
-                        "[LLM] Anthropic async: model=%s, in=%d, out=%d, duration=%.2fs",
-                        self.model, input_tokens, output_tokens, duration
-                    )
+                    logger.debug("[LLM] Anthropic async: model=%s, in=%d, out=%d, duration=%.2fs", self.model, input_tokens, output_tokens, duration)
             except Exception:
                 pass
 
-            return LLMResponse(
-                content=content,
-                model=self.model,
-                usage=UsageStats(
-                    input_tokens=input_tokens,
-                    output_tokens=output_tokens
-                )
-            )
+            return LLMResponse(content=content, model=self.model, usage=UsageStats(input_tokens=input_tokens, output_tokens=output_tokens))
 
         except Exception as e:
             logger.error(f"Async Anthropic API error: {e}")
             raise ProviderAPIError("anthropic", f"Async generation failed: {e}", raw_error=e)
 
-    def generate_with_messages(
-        self,
-        messages: list[Message],
-        max_tokens: int = 4096,
-        temperature: float = 0.7,
-        **kwargs
-    ) -> LLMResponse:
+    def generate_with_messages(self, messages: list[Message], max_tokens: int = 4096, temperature: float = 0.7, **kwargs) -> LLMResponse:
         """
         Generate text from conversation history.
 
@@ -454,10 +421,7 @@ class AnthropicProvider(LLMProvider):
                     # Anthropic handles system as separate parameter
                     system_prompt = msg.content
                 else:
-                    anthropic_messages.append({
-                        "role": msg.role,
-                        "content": msg.content
-                    })
+                    anthropic_messages.append({"role": msg.role, "content": msg.content})
 
             # Call API
             response = self.client.messages.create(
@@ -475,10 +439,12 @@ class AnthropicProvider(LLMProvider):
                 input_tokens=response.usage.input_tokens,
                 output_tokens=response.usage.output_tokens,
                 total_tokens=response.usage.input_tokens + response.usage.output_tokens,
-                cost_usd=self._calculate_cost(response.usage.input_tokens, response.usage.output_tokens, self.model) if not self.is_cli_mode else None,
+                cost_usd=self._calculate_cost(response.usage.input_tokens, response.usage.output_tokens, self.model)
+                if not self.is_cli_mode
+                else None,
                 model=self.model,
                 provider="anthropic",
-                timestamp=datetime.now()
+                timestamp=datetime.now(),
             )
 
             self._update_usage_stats(usage_stats)
@@ -487,8 +453,8 @@ class AnthropicProvider(LLMProvider):
                 content=text,
                 usage=usage_stats,
                 model=self.model,
-                finish_reason=response.stop_reason if hasattr(response, 'stop_reason') else "stop",
-                raw_response=response
+                finish_reason=response.stop_reason if hasattr(response, "stop_reason") else "stop",
+                raw_response=response,
             )
 
         except Exception as e:
@@ -496,13 +462,7 @@ class AnthropicProvider(LLMProvider):
             raise ProviderAPIError("anthropic", f"Multi-turn generation failed: {e}", raw_error=e)
 
     def generate_structured(
-        self,
-        prompt: str,
-        schema: dict[str, Any],
-        system: str | None = None,
-        max_tokens: int = 4096,
-        temperature: float = 0.7,
-        **kwargs
+        self, prompt: str, schema: dict[str, Any], system: str | None = None, max_tokens: int = 4096, temperature: float = 0.7, **kwargs
     ) -> dict[str, Any]:
         """
         Generate structured JSON output.
@@ -526,13 +486,7 @@ class AnthropicProvider(LLMProvider):
             json_system = (system or "") + "\n\nYou must respond with valid JSON matching this schema:\n" + json.dumps(schema, indent=2)
 
             # Generate response
-            response = self.generate(
-                prompt=prompt,
-                system=json_system,
-                max_tokens=max_tokens,
-                temperature=temperature,
-                **kwargs
-            )
+            response = self.generate(prompt=prompt, system=json_system, max_tokens=max_tokens, temperature=temperature, **kwargs)
 
             response_text = response.content
 
@@ -544,12 +498,7 @@ class AnthropicProvider(LLMProvider):
                 logger.error(f"Failed to parse JSON after {e.attempts} attempts")
                 logger.error(f"Response text: {response_text[:500]}")
                 # JSON parse errors are NOT recoverable - retrying won't help
-                raise ProviderAPIError(
-                    "anthropic",
-                    f"Invalid JSON response: {e.message}",
-                    raw_error=e,
-                    recoverable=False
-                )
+                raise ProviderAPIError("anthropic", f"Invalid JSON response: {e.message}", raw_error=e, recoverable=False)
 
         except Exception as e:
             if isinstance(e, ProviderAPIError):
@@ -632,19 +581,17 @@ class AnthropicProvider(LLMProvider):
 
         # Add Anthropic-specific stats
         total_requests_with_cache = self.request_count + self.cache_hits
-        cache_hit_rate = (
-            (self.cache_hits / total_requests_with_cache * 100)
-            if total_requests_with_cache > 0
-            else 0.0
-        )
+        cache_hit_rate = (self.cache_hits / total_requests_with_cache * 100) if total_requests_with_cache > 0 else 0.0
 
-        stats.update({
-            "cache_enabled": self.enable_cache,
-            "cache_hits": self.cache_hits,
-            "cache_misses": self.cache_misses,
-            "cache_hit_rate_percent": round(cache_hit_rate, 2),
-            "mode": "cli" if self.is_cli_mode else "api",
-        })
+        stats.update(
+            {
+                "cache_enabled": self.enable_cache,
+                "cache_hits": self.cache_hits,
+                "cache_misses": self.cache_misses,
+                "cache_hit_rate_percent": round(cache_hit_rate, 2),
+                "mode": "cli" if self.is_cli_mode else "api",
+            }
+        )
 
         # Model selection stats
         if self.enable_auto_model_selection:
@@ -654,10 +601,7 @@ class AnthropicProvider(LLMProvider):
                 "haiku_requests": self.haiku_requests,
                 "sonnet_requests": self.sonnet_requests,
                 "total_model_requests": total_model_requests,
-                "haiku_percent": round(
-                    (self.haiku_requests / total_model_requests * 100)
-                    if total_model_requests > 0 else 0, 2
-                ),
+                "haiku_percent": round((self.haiku_requests / total_model_requests * 100) if total_model_requests > 0 else 0, 2),
                 "model_overrides": self.model_overrides,
             }
 
@@ -667,10 +611,9 @@ class AnthropicProvider(LLMProvider):
 
         return stats
 
-
     def _resolve_model(self, **kwargs) -> str:
         """Resolve which model to use based on kwargs or defaults."""
-        return kwargs.get('model_override') or self.model
+        return kwargs.get("model_override") or self.model
 
     def generate_stream(
         self,
@@ -679,7 +622,7 @@ class AnthropicProvider(LLMProvider):
         max_tokens: int = 4096,
         temperature: float = 0.7,
         stop_sequences: list[str] | None = None,
-        **kwargs
+        **kwargs,
     ) -> Iterator[str]:
         """
         Generate text with streaming (token-by-token).
@@ -703,12 +646,13 @@ class AnthropicProvider(LLMProvider):
         """
         selected_model = self._resolve_model(**kwargs)
         messages = [{"role": "user", "content": prompt}]
-        process_id = kwargs.get('process_id')
+        process_id = kwargs.get("process_id")
 
         # Try to emit LLM events
         try:
             from kosmos.core.event_bus import get_event_bus
             from kosmos.core.events import EventType, LLMEvent
+
             event_bus = get_event_bus()
             emit_events = True
         except ImportError:
@@ -717,12 +661,7 @@ class AnthropicProvider(LLMProvider):
 
         # Emit start event
         if emit_events:
-            event_bus.publish_sync(LLMEvent(
-                type=EventType.LLM_CALL_STARTED,
-                process_id=process_id,
-                model=selected_model,
-                provider="anthropic"
-            ))
+            event_bus.publish_sync(LLMEvent(type=EventType.LLM_CALL_STARTED, process_id=process_id, model=selected_model, provider="anthropic"))
 
         start_time = time_module.time()
         total_tokens = 0
@@ -743,39 +682,32 @@ class AnthropicProvider(LLMProvider):
 
                     # Emit token event
                     if emit_events:
-                        event_bus.publish_sync(LLMEvent(
-                            type=EventType.LLM_TOKEN,
-                            process_id=process_id,
-                            model=selected_model,
-                            provider="anthropic",
-                            token=text
-                        ))
+                        event_bus.publish_sync(
+                            LLMEvent(type=EventType.LLM_TOKEN, process_id=process_id, model=selected_model, provider="anthropic", token=text)
+                        )
 
                     yield text
 
             # Emit completion event
             duration_ms = int((time_module.time() - start_time) * 1000)
             if emit_events:
-                event_bus.publish_sync(LLMEvent(
-                    type=EventType.LLM_CALL_COMPLETED,
-                    process_id=process_id,
-                    model=selected_model,
-                    provider="anthropic",
-                    completion_tokens=total_tokens,
-                    content=full_content[:200] if full_content else None,  # Summary
-                    duration_ms=duration_ms
-                ))
+                event_bus.publish_sync(
+                    LLMEvent(
+                        type=EventType.LLM_CALL_COMPLETED,
+                        process_id=process_id,
+                        model=selected_model,
+                        provider="anthropic",
+                        completion_tokens=total_tokens,
+                        content=full_content[:200] if full_content else None,  # Summary
+                        duration_ms=duration_ms,
+                    )
+                )
 
             logger.debug(f"Streamed {total_tokens} tokens in {duration_ms}ms")
 
         except Exception as e:
             if emit_events:
-                event_bus.publish_sync(LLMEvent(
-                    type=EventType.LLM_CALL_FAILED,
-                    process_id=process_id,
-                    model=selected_model,
-                    provider="anthropic"
-                ))
+                event_bus.publish_sync(LLMEvent(type=EventType.LLM_CALL_FAILED, process_id=process_id, model=selected_model, provider="anthropic"))
             logger.error(f"Anthropic streaming failed: {e}")
             raise ProviderAPIError("anthropic", f"Streaming failed: {e}", raw_error=e)
 
@@ -786,7 +718,7 @@ class AnthropicProvider(LLMProvider):
         max_tokens: int = 4096,
         temperature: float = 0.7,
         stop_sequences: list[str] | None = None,
-        **kwargs
+        **kwargs,
     ) -> AsyncIterator[str]:
         """
         Generate text with async streaming (token-by-token).
@@ -810,12 +742,13 @@ class AnthropicProvider(LLMProvider):
         """
         selected_model = self._resolve_model(**kwargs)
         messages = [{"role": "user", "content": prompt}]
-        process_id = kwargs.get('process_id')
+        process_id = kwargs.get("process_id")
 
         # Try to emit LLM events
         try:
             from kosmos.core.event_bus import get_event_bus
             from kosmos.core.events import EventType, LLMEvent
+
             event_bus = get_event_bus()
             emit_events = True
         except ImportError:
@@ -824,12 +757,7 @@ class AnthropicProvider(LLMProvider):
 
         # Emit start event
         if emit_events:
-            await event_bus.publish(LLMEvent(
-                type=EventType.LLM_CALL_STARTED,
-                process_id=process_id,
-                model=selected_model,
-                provider="anthropic"
-            ))
+            await event_bus.publish(LLMEvent(type=EventType.LLM_CALL_STARTED, process_id=process_id, model=selected_model, provider="anthropic"))
 
         start_time = time_module.time()
         total_tokens = 0
@@ -850,39 +778,32 @@ class AnthropicProvider(LLMProvider):
 
                     # Emit token event
                     if emit_events:
-                        await event_bus.publish(LLMEvent(
-                            type=EventType.LLM_TOKEN,
-                            process_id=process_id,
-                            model=selected_model,
-                            provider="anthropic",
-                            token=text
-                        ))
+                        await event_bus.publish(
+                            LLMEvent(type=EventType.LLM_TOKEN, process_id=process_id, model=selected_model, provider="anthropic", token=text)
+                        )
 
                     yield text
 
             # Emit completion event
             duration_ms = int((time_module.time() - start_time) * 1000)
             if emit_events:
-                await event_bus.publish(LLMEvent(
-                    type=EventType.LLM_CALL_COMPLETED,
-                    process_id=process_id,
-                    model=selected_model,
-                    provider="anthropic",
-                    completion_tokens=total_tokens,
-                    content=full_content[:200] if full_content else None,
-                    duration_ms=duration_ms
-                ))
+                await event_bus.publish(
+                    LLMEvent(
+                        type=EventType.LLM_CALL_COMPLETED,
+                        process_id=process_id,
+                        model=selected_model,
+                        provider="anthropic",
+                        completion_tokens=total_tokens,
+                        content=full_content[:200] if full_content else None,
+                        duration_ms=duration_ms,
+                    )
+                )
 
             logger.debug(f"Async streamed {total_tokens} tokens in {duration_ms}ms")
 
         except Exception as e:
             if emit_events:
-                await event_bus.publish(LLMEvent(
-                    type=EventType.LLM_CALL_FAILED,
-                    process_id=process_id,
-                    model=selected_model,
-                    provider="anthropic"
-                ))
+                await event_bus.publish(LLMEvent(type=EventType.LLM_CALL_FAILED, process_id=process_id, model=selected_model, provider="anthropic"))
             logger.error(f"Anthropic async streaming failed: {e}")
             raise ProviderAPIError("anthropic", f"Async streaming failed: {e}", raw_error=e)
 

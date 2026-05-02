@@ -19,7 +19,7 @@ def parse_source_file(connector_name):
     if not source_file.exists():
         return None
 
-    with open(source_file, "r") as f:
+    with open(source_file) as f:
         content = f.read()
 
     # Parse the Python file
@@ -46,11 +46,7 @@ def parse_source_file(connector_name):
 
             # Check decorators for @source
             for decorator in node.decorator_list:
-                if (
-                    isinstance(decorator, ast.Call)
-                    and isinstance(decorator.func, ast.Name)
-                    and decorator.func.id == "source"
-                ):
+                if isinstance(decorator, ast.Call) and isinstance(decorator.func, ast.Name) and decorator.func.id == "source":
                     # Extract keyword arguments from the new decorator format
                     for keyword in decorator.keywords:
                         if keyword.arg == "auth_methods":
@@ -61,9 +57,7 @@ def parse_source_file(connector_name):
                                         auth_methods.append(elem.attr)
                                     elif isinstance(elem, ast.Name):
                                         # Handle cases like AuthenticationMethod.OAUTH_BROWSER
-                                        auth_methods.append(
-                                            elem.id.replace("AuthenticationMethod.", "")
-                                        )
+                                        auth_methods.append(elem.id.replace("AuthenticationMethod.", ""))
 
                         elif keyword.arg == "oauth_type":
                             # Handle OAuthType enum
@@ -71,10 +65,7 @@ def parse_source_file(connector_name):
                                 oauth_type = keyword.value.attr
                             elif isinstance(keyword.value, ast.Name):
                                 oauth_type = keyword.value.id.replace("OAuthType.", "")
-                            elif (
-                                isinstance(keyword.value, ast.Constant)
-                                and keyword.value.value is None
-                            ):
+                            elif isinstance(keyword.value, ast.Constant) and keyword.value.value is None:
                                 oauth_type = None
 
                         elif keyword.arg == "auth_config_class":
@@ -83,14 +74,10 @@ def parse_source_file(connector_name):
                             elif isinstance(keyword.value, ast.Name) and keyword.value.id == "None":
                                 auth_config_class = None
 
-                        elif keyword.arg == "config_class" and isinstance(
-                            keyword.value, ast.Constant
-                        ):
+                        elif keyword.arg == "config_class" and isinstance(keyword.value, ast.Constant):
                             config_class = keyword.value.value
 
-                        elif keyword.arg == "requires_byoc" and isinstance(
-                            keyword.value, ast.Constant
-                        ):
+                        elif keyword.arg == "requires_byoc" and isinstance(keyword.value, ast.Constant):
                             requires_byoc = keyword.value.value
 
                     decorators_info[class_name] = {

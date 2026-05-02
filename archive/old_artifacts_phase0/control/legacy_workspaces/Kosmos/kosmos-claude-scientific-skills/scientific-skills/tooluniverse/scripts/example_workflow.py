@@ -30,10 +30,7 @@ def drug_discovery_workflow(disease_efo_id: str, max_targets: int = 3):
 
     # Step 1: Find disease-associated targets
     print(f"\nStep 1: Finding targets for disease {disease_efo_id}...")
-    targets = tu.run({
-        "name": "OpenTargets_get_associated_targets_by_disease_efoId",
-        "arguments": {"efoId": disease_efo_id}
-    })
+    targets = tu.run({"name": "OpenTargets_get_associated_targets_by_disease_efoId", "arguments": {"efoId": disease_efo_id}})
     print(f"✓ Found {len(targets)} disease-associated targets")
 
     # Process top targets
@@ -47,14 +44,8 @@ def drug_discovery_workflow(disease_efo_id: str, max_targets: int = 3):
     sequences = []
     for target in top_targets:
         try:
-            seq = tu.run({
-                "name": "UniProt_get_sequence",
-                "arguments": {"uniprot_id": target['uniprot_id']}
-            })
-            sequences.append({
-                "target": target,
-                "sequence": seq
-            })
+            seq = tu.run({"name": "UniProt_get_sequence", "arguments": {"uniprot_id": target["uniprot_id"]}})
+            sequences.append({"target": target, "sequence": seq})
             print(f"  ✓ Retrieved sequence for {target.get('target_name', 'Unknown')}")
         except Exception as e:
             print(f"  ✗ Failed to get sequence: {e}")
@@ -64,14 +55,8 @@ def drug_discovery_workflow(disease_efo_id: str, max_targets: int = 3):
     structures = []
     for seq_data in sequences:
         try:
-            structure = tu.run({
-                "name": "AlphaFold_get_structure",
-                "arguments": {"uniprot_id": seq_data['target']['uniprot_id']}
-            })
-            structures.append({
-                "target": seq_data['target'],
-                "structure": structure
-            })
+            structure = tu.run({"name": "AlphaFold_get_structure", "arguments": {"uniprot_id": seq_data["target"]["uniprot_id"]}})
+            structures.append({"target": seq_data["target"], "structure": structure})
             print(f"  ✓ Predicted structure for {seq_data['target'].get('target_name', 'Unknown')}")
         except Exception as e:
             print(f"  ✗ Failed to predict structure: {e}")
@@ -81,14 +66,8 @@ def drug_discovery_workflow(disease_efo_id: str, max_targets: int = 3):
     binding_sites = []
     for struct_data in structures:
         try:
-            sites = tu.run({
-                "name": "Fpocket_find_binding_sites",
-                "arguments": {"structure": struct_data['structure']}
-            })
-            binding_sites.append({
-                "target": struct_data['target'],
-                "sites": sites
-            })
+            sites = tu.run({"name": "Fpocket_find_binding_sites", "arguments": {"structure": struct_data["structure"]}})
+            binding_sites.append({"target": struct_data["target"], "sites": sites})
             print(f"  ✓ Found {len(sites)} binding sites for {struct_data['target'].get('target_name', 'Unknown')}")
         except Exception as e:
             print(f"  ✗ Failed to find binding sites: {e}")
@@ -97,16 +76,9 @@ def drug_discovery_workflow(disease_efo_id: str, max_targets: int = 3):
     print("\nStep 5: Screening compound libraries...")
     all_hits = []
     for site_data in binding_sites:
-        for site in site_data['sites'][:1]:  # Top site only
+        for site in site_data["sites"][:1]:  # Top site only
             try:
-                compounds = tu.run({
-                    "name": "ZINC_virtual_screening",
-                    "arguments": {
-                        "binding_site": site,
-                        "library": "lead-like",
-                        "top_n": 10
-                    }
-                })
+                compounds = tu.run({"name": "ZINC_virtual_screening", "arguments": {"binding_site": site, "library": "lead-like", "top_n": 10}})
                 all_hits.extend(compounds)
                 print(f"  ✓ Found {len(compounds)} hit compounds for {site_data['target'].get('target_name', 'Unknown')}")
             except Exception as e:
@@ -117,16 +89,10 @@ def drug_discovery_workflow(disease_efo_id: str, max_targets: int = 3):
     drug_candidates = []
     for compound in all_hits:
         try:
-            properties = tu.run({
-                "name": "RDKit_calculate_drug_properties",
-                "arguments": {"smiles": compound['smiles']}
-            })
+            properties = tu.run({"name": "RDKit_calculate_drug_properties", "arguments": {"smiles": compound["smiles"]}})
 
-            if properties.get('lipinski_pass', False):
-                drug_candidates.append({
-                    "compound": compound,
-                    "properties": properties
-                })
+            if properties.get("lipinski_pass", False):
+                drug_candidates.append({"compound": compound, "properties": properties})
         except Exception as e:
             print(f"  ✗ Property calculation failed: {e}")
 
@@ -163,10 +129,7 @@ def genomics_workflow(geo_id: str):
     # Step 1: Download gene expression data
     print(f"\nStep 1: Downloading dataset {geo_id}...")
     try:
-        expression_data = tu.run({
-            "name": "GEO_download_dataset",
-            "arguments": {"geo_id": geo_id}
-        })
+        expression_data = tu.run({"name": "GEO_download_dataset", "arguments": {"geo_id": geo_id}})
         print("  ✓ Downloaded expression data")
     except Exception as e:
         print(f"  ✗ Failed: {e}")
@@ -175,14 +138,9 @@ def genomics_workflow(geo_id: str):
     # Step 2: Differential expression analysis
     print("\nStep 2: Performing differential expression analysis...")
     try:
-        de_genes = tu.run({
-            "name": "DESeq2_differential_expression",
-            "arguments": {
-                "data": expression_data,
-                "condition1": "control",
-                "condition2": "treated"
-            }
-        })
+        de_genes = tu.run(
+            {"name": "DESeq2_differential_expression", "arguments": {"data": expression_data, "condition1": "control", "condition2": "treated"}}
+        )
         print(f"  ✓ Found {len(de_genes.get('significant_genes', []))} differentially expressed genes")
     except Exception as e:
         print(f"  ✗ Failed: {e}")
@@ -191,13 +149,7 @@ def genomics_workflow(geo_id: str):
     # Step 3: Pathway enrichment
     print("\nStep 3: Running pathway enrichment analysis...")
     try:
-        pathways = tu.run({
-            "name": "KEGG_pathway_enrichment",
-            "arguments": {
-                "gene_list": de_genes['significant_genes'],
-                "organism": "hsa"
-            }
-        })
+        pathways = tu.run({"name": "KEGG_pathway_enrichment", "arguments": {"gene_list": de_genes["significant_genes"], "organism": "hsa"}})
         print(f"  ✓ Found {len(pathways)} enriched pathways")
         if pathways:
             print(f"    Top pathway: {pathways[0].get('pathway_name', 'Unknown')}")

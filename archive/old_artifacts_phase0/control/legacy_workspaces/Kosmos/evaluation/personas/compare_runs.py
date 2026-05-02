@@ -36,8 +36,7 @@ def parse_evaluation_report(run_dir: Path) -> dict:
     """Parse an evaluation report markdown into structured data."""
     report_path = run_dir / "tier1" / "EVALUATION_REPORT.md"
     if not report_path.exists():
-        return {"checks": {}, "quality_scores": {}, "rigor_scores": {},
-                "paper_claims": {}, "summary": {}}
+        return {"checks": {}, "quality_scores": {}, "rigor_scores": {}, "paper_claims": {}, "summary": {}}
 
     content = report_path.read_text()
     result = {
@@ -62,18 +61,14 @@ def parse_evaluation_report(run_dir: Path) -> dict:
         result["summary"]["duration_seconds"] = float(match.group(1))
 
     # Parse check table rows: "| check_name | PASS/FAIL | detail |"
-    check_pattern = re.compile(
-        r"\|\s*(\w+)\s*\|\s*(PASS|FAIL)\s*\|([^|]*)\|"
-    )
+    check_pattern = re.compile(r"\|\s*(\w+)\s*\|\s*(PASS|FAIL)\s*\|([^|]*)\|")
     for match in check_pattern.finditer(content):
         name = match.group(1).strip()
         passed = match.group(2).strip() == "PASS"
         result["checks"][name] = passed
 
     # Parse quality scores: "| dimension | N/10 | details |"
-    quality_pattern = re.compile(
-        r"\|\s*(phase\d+_\w+)\s*\|\s*(\d+)/10\s*\|([^|]*)\|"
-    )
+    quality_pattern = re.compile(r"\|\s*(phase\d+_\w+)\s*\|\s*(\d+)/10\s*\|([^|]*)\|")
     for match in quality_pattern.finditer(content):
         dimension = match.group(1).strip()
         score = int(match.group(2))
@@ -85,14 +80,13 @@ def parse_evaluation_report(run_dir: Path) -> dict:
         result["summary"]["quality_score"] = float(match.group(1))
 
     # Parse rigor scores: "| feature | N/10 | notes |"
-    rigor_pattern = re.compile(
-        r"\|\s*(\w+)\s*\|\s*(\d+)/10\s*\|\s*([^|]+)\|"
-    )
+    rigor_pattern = re.compile(r"\|\s*(\w+)\s*\|\s*(\d+)/10\s*\|\s*([^|]+)\|")
     # Only capture rigor scores from the rigor section
     rigor_section = ""
     rigor_match = re.search(
         r"Scientific Rigor Scorecard.*?\n(.*?)(?=\n##|\Z)",
-        content, re.DOTALL,
+        content,
+        re.DOTALL,
     )
     if rigor_match:
         rigor_section = rigor_match.group(1)
@@ -110,9 +104,7 @@ def parse_evaluation_report(run_dir: Path) -> dict:
         result["summary"]["rigor_score"] = float(match.group(1))
 
     # Parse paper claims: "| N | claim | STATUS | detail |"
-    claims_pattern = re.compile(
-        r"\|\s*(\d+)\s*\|\s*([^|]+)\|\s*(PASS|PARTIAL|FAIL|BLOCKER)\s*\|([^|]*)\|"
-    )
+    claims_pattern = re.compile(r"\|\s*(\d+)\s*\|\s*([^|]+)\|\s*(PASS|PARTIAL|FAIL|BLOCKER)\s*\|([^|]*)\|")
     for match in claims_pattern.finditer(content):
         claim_num = int(match.group(1))
         status = match.group(3).strip()
@@ -165,8 +157,7 @@ def compare_runs(persona_name: str, v1_name: str, v2_name: str) -> dict:
 
     # Summary comparison
     summary = {}
-    for key in ["checks_passed", "checks_total", "quality_score",
-                "rigor_score", "paper_claims_pass"]:
+    for key in ["checks_passed", "checks_total", "quality_score", "rigor_score", "paper_claims_pass"]:
         v1_val = report1["summary"].get(key)
         v2_val = report2["summary"].get(key)
         summary[key] = {
@@ -250,19 +241,24 @@ def main():
         description="Compare two versioned persona evaluation runs",
     )
     parser.add_argument(
-        "--persona", required=True,
+        "--persona",
+        required=True,
         help="Persona name (e.g., 001_enzyme_kinetics_biologist)",
     )
     parser.add_argument(
-        "--v1", required=True,
+        "--v1",
+        required=True,
         help="Baseline version directory name (e.g., v001_20260207)",
     )
     parser.add_argument(
-        "--v2", required=True,
+        "--v2",
+        required=True,
         help="Current version directory name (e.g., v002_20260210)",
     )
     parser.add_argument(
-        "--output", type=str, default=None,
+        "--output",
+        type=str,
+        default=None,
         help="Output file path (default: regression/{v1}_vs_{v2}.json)",
     )
     args = parser.parse_args()

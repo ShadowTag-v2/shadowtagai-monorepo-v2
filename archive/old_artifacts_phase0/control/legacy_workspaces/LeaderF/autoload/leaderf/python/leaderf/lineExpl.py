@@ -10,20 +10,20 @@ from .manager import *
 from .utils import *
 
 
-#*****************************************************
+# *****************************************************
 # LineExplorer
-#*****************************************************
+# *****************************************************
 class LineExplorer(Explorer):
     def __init__(self):
         pass
 
     def getContent(self, *args, **kwargs):
         line_list = []
-        if "--all" in kwargs.get("arguments", {}): # all buffers
+        if "--all" in kwargs.get("arguments", {}):  # all buffers
             cur_buffer = vim.current.buffer
             for b in vim.buffers:
                 if b.options["buflisted"]:
-                    if lfEval("bufloaded(%d)" % b.number) == '0':
+                    if lfEval("bufloaded(%d)" % b.number) == "0":
                         lfCmd("silent hide buffer %d" % b.number)
                     line_list.extend(self._getLineList(b))
             if vim.current.buffer != cur_buffer:
@@ -35,22 +35,24 @@ class LineExplorer(Explorer):
     def _getLineList(self, buffer):
         bufname = os.path.basename(buffer.name)
         if sys.version_info >= (3, 0):
-            return ["%s\t[%s:%d %d]" % (line.encode('utf-8', "replace").decode('utf-8', "replace"), bufname, i, buffer.number)
-                    for i, line in enumerate(buffer, 1) if line and not line.isspace()]
+            return [
+                "%s\t[%s:%d %d]" % (line.encode("utf-8", "replace").decode("utf-8", "replace"), bufname, i, buffer.number)
+                for i, line in enumerate(buffer, 1)
+                if line and not line.isspace()
+            ]
         else:
-            return ["%s\t[%s:%d %d]" % (line, bufname, i, buffer.number)
-                    for i, line in enumerate(buffer, 1) if line and not line.isspace()]
+            return ["%s\t[%s:%d %d]" % (line, bufname, i, buffer.number) for i, line in enumerate(buffer, 1) if line and not line.isspace()]
 
     def getStlCategory(self):
-        return 'Line'
+        return "Line"
 
     def getStlCurDir(self):
         return escQuote(lfEncode(lfGetCwd()))
 
 
-#*****************************************************
+# *****************************************************
 # LineExplManager
-#*****************************************************
+# *****************************************************
 class LineExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -65,7 +67,7 @@ class LineExplManager(Manager):
         if len(args) == 0:
             return
         line = args[0]
-        line = line.rsplit("\t", 1)[1][1:-1]    # file:line buf_number
+        line = line.rsplit("\t", 1)[1][1:-1]  # file:line buf_number
         line_num, buf_number = line.rsplit(":", 1)[1].split()
         lfCmd(f"hide buffer +{line_num} {buf_number}")
         lfCmd("norm! ^zv")
@@ -115,13 +117,15 @@ class LineExplManager(Manager):
 
     def _afterEnter(self):
         super()._afterEnter()
-        if self._getInstance().getWinPos() == 'popup':
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_lineLocation'', ''\t\zs\[.*:\d\+ \d\+]$'')')"""
-                    % self._getInstance().getPopupWinId())
+        if self._getInstance().getWinPos() == "popup":
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_lineLocation'', ''\t\zs\[.*:\d\+ \d\+]$'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
         else:
-            id = int(lfEval(r'''matchadd('Lf_hl_lineLocation', '\t\zs\[.*:\d\+ \d\+]$')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_lineLocation', '\t\zs\[.*:\d\+ \d\+]$')"""))
             self._match_ids.append(id)
 
     def _beforeExit(self):
@@ -132,11 +136,11 @@ class LineExplManager(Manager):
         self._cursorline_dict.clear()
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         line = args[0]
-        line = line.rsplit("\t", 1)[1][1:-1]    # file:line buf_number
+        line = line.rsplit("\t", 1)[1][1:-1]  # file:line buf_number
         line_num, buf_number = line.rsplit(":", 1)[1].split()
         buf_number = int(buf_number)
         self._createPopupPreview(vim.buffers[int(buf_number)].name, buf_number, line_num)
@@ -148,28 +152,30 @@ class LineExplManager(Manager):
 
     def outputToLoclist(self, *args, **kwargs):
         items = self._getFormatedContents()
-        winnr = lfEval(f'bufwinnr({self._cur_buffer.number})')
+        winnr = lfEval(f"bufwinnr({self._cur_buffer.number})")
         lfCmd("call setloclist(%d, %s, 'r')" % (int(winnr), json.dumps(items)))
         lfCmd("echohl WarningMsg | redraw | echo ' Output result to location list.' | echohl NONE")
 
     def _getFormatedContents(self):
         items = []
-        for line in self._instance._buffer_object[self._help_length:]:
+        for line in self._instance._buffer_object[self._help_length :]:
             text, info = line.rsplit("\t", 1)
-            info = info[1:-1]    # file:line buf_number
+            info = info[1:-1]  # file:line buf_number
             line_num, buf_number = info.rsplit(":", 1)[1].split()
-            items.append({
-                "filename": lfEval("getbufinfo(%d)[0]['name']" % int(buf_number)),
-                "lnum": line_num,
-                "col": 1,
-                "text": text,
-            })
+            items.append(
+                {
+                    "filename": lfEval("getbufinfo(%d)[0]['name']" % int(buf_number)),
+                    "lnum": line_num,
+                    "col": 1,
+                    "text": text,
+                }
+            )
         return items
 
 
-#*****************************************************
+# *****************************************************
 # lineExplManager is a singleton
-#*****************************************************
+# *****************************************************
 lineExplManager = LineExplManager()
 
-__all__ = ['lineExplManager']
+__all__ = ["lineExplManager"]

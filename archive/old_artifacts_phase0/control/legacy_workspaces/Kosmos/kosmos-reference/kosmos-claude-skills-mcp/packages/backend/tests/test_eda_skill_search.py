@@ -52,14 +52,9 @@ def test_eda_skill_search_ranking():
         eda_rank = None
 
         for i, result in enumerate(results, 1):
-            is_eda = (
-                "exploratory" in result["name"].lower()
-                or "eda" in result["name"].lower()
-            )
+            is_eda = "exploratory" in result["name"].lower() or "eda" in result["name"].lower()
             marker = " <- EDA SKILL" if is_eda else ""
-            print(
-                f"  {i}. {result['name']} (score: {result['relevance_score']:.4f}){marker}"
-            )
+            print(f"  {i}. {result['name']} (score: {result['relevance_score']:.4f}){marker}")
 
             if is_eda:
                 eda_found = True
@@ -68,9 +63,7 @@ def test_eda_skill_search_ranking():
         if eda_found:
             print(f"\n  ✓ EDA skill found at rank {eda_rank}")
             # Should be in top 5 for these specific queries
-            assert eda_rank <= 5, (
-                f"EDA skill ranked too low ({eda_rank}) for query '{query}'"
-            )
+            assert eda_rank <= 5, f"EDA skill ranked too low ({eda_rank}) for query '{query}'"
         else:
             print("\n  ✗ EDA skill NOT in top 10")
             pytest.fail(f"EDA skill not found in top 10 results for query '{query}'")
@@ -106,10 +99,7 @@ def test_description_length_impact():
     print("\nCorrelation between description length and search rank:")
     for i, result in enumerate(results[:10], 1):
         desc_len = length_map.get(result["name"], 0)
-        print(
-            f"  Rank {i}: {result['name'][:40]:40} "
-            f"length={desc_len:5} score={result['relevance_score']:.4f}"
-        )
+        print(f"  Rank {i}: {result['name'][:40]:40} length={desc_len:5} score={result['relevance_score']:.4f}")
 
     # Calculate correlation between rank and description length
     ranks = list(range(1, len(results) + 1))

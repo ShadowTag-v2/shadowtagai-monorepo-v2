@@ -33,15 +33,11 @@ def _parse_toml_inline_table(value: tomlkit.items.InlineTable) -> str:
         raise ScriptParseError("More than 1 key in toml script line")
     cmd_key = keys_list[0]
     if cmd_key not in Script.script_types:
-        raise ScriptParseError(
-            f"Not an accepted script callabale, options are: {Script.script_types}"
-        )
+        raise ScriptParseError(f"Not an accepted script callabale, options are: {Script.script_types}")
     if cmd_key == "call":
         module, _, func = str(value["call"]).partition(":")
         if not module or not func:
-            raise ScriptParseError(
-                "Callable must be like: name = {call = \"package.module:func('arg')\"}"
-            )
+            raise ScriptParseError("Callable must be like: name = {call = \"package.module:func('arg')\"}")
         if re.search(r"\(.*?\)", func) is None:
             func += "()"
         return f'python -c "import {module} as _m; _m.{func}"'
@@ -111,9 +107,7 @@ class Script:
         scripts = []
         for item in items:
             if not isinstance(item, str):
-                raise ScriptParseError(
-                    f"Each item in a script sequence must be a string, got {type(item)!r}"
-                )
+                raise ScriptParseError(f"Each item in a script sequence must be a string, got {type(item)!r}")
             parts = shlex.split(item)
             if not parts:
                 raise ScriptEmptyError(item)

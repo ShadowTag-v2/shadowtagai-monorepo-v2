@@ -25,9 +25,7 @@ class TestGitHubSourceTracker:
         assert result == ("owner", "repo", "develop")
 
         # URL with branch and subpath
-        result = tracker._parse_github_url(
-            "https://github.com/owner/repo/tree/main/subdir"
-        )
+        result = tracker._parse_github_url("https://github.com/owner/repo/tree/main/subdir")
         assert result == ("owner", "repo", "main")
 
         # Invalid URL

@@ -27,13 +27,19 @@ tokenizer = AutoTokenizer.from_pretrained(EMBED_MODEL_ID)
 embedding_model = SentenceTransformer(EMBED_MODEL_ID)
 chunker = HybridChunker(tokenizer=tokenizer, max_tokens=MAX_TOKENS, merge_peers=True)
 
+
 def embed_text(text: str) -> list[float]:
     """Generate an embedding for a given text."""
     return embedding_model.encode([text], normalize_embeddings=True).tolist()[0]
 
-def generate_chunk_id(file_name: str, raw_chunk_markdown: str="") -> str:
+
+def generate_chunk_id(file_name: str, raw_chunk_markdown: str = "") -> str:
     """Generate a unique chunk ID based on file_name and raw_chunk_markdown."""
-    unique_string = f"{file_name}-{raw_chunk_markdown}" if raw_chunk_markdown != "" else f"{file_name}"
+    unique_string = (
+        f"{file_name}-{raw_chunk_markdown}"
+        if raw_chunk_markdown != ""
+        else f"{file_name}"
+    )
     return hashlib.sha256(unique_string.encode()).hexdigest()
 
 
@@ -83,6 +89,7 @@ docling_example_feature_view = FeatureView(
     source=source,
     ttl=timedelta(hours=2),
 )
+
 
 @on_demand_feature_view(
     entities=[chunk, document],

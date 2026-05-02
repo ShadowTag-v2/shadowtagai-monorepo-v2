@@ -3,7 +3,6 @@
 from datetime import datetime
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, Float, Index
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import ARRAY
 
 from app.db.base import Base
 
@@ -22,7 +21,7 @@ class Memory(Base):
     content = Column(Text, nullable=False)
 
     # Memory type: 'fact', 'preference', 'context', 'insight'
-    memory_type = Column(String, nullable=False, default='fact')
+    memory_type = Column(String, nullable=False, default="fact")
 
     # Source tracking
     source_conversation_ids = Column(Text, nullable=True)  # JSON array of conversation IDs
@@ -43,8 +42,8 @@ class Memory(Base):
     embeddings = relationship("VectorEmbedding", back_populates="memory", cascade="all, delete-orphan")
 
     __table_args__ = (
-        Index('ix_memories_user_project', 'user_id', 'project_id'),
-        Index('ix_memories_created_at', 'created_at'),
+        Index("ix_memories_user_project", "user_id", "project_id"),
+        Index("ix_memories_created_at", "created_at"),
     )
 
     def __repr__(self) -> str:
@@ -52,4 +51,3 @@ class Memory(Base):
 
 
 # Import Boolean that was missing
-from sqlalchemy import Boolean

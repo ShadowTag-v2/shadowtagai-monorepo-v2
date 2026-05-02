@@ -27,25 +27,25 @@ from .executor_context import ExecutorContext
 
 @dataclasses.dataclass
 class ExecuteInterceptor:
-  """Interceptor for the A2aAgentExecutor."""
+    """Interceptor for the A2aAgentExecutor."""
 
-  before_agent: Callable[[RequestContext], Awaitable[RequestContext]] | None = None
-  """Hook executed before the agent starts processing the request.
+    before_agent: Callable[[RequestContext], Awaitable[RequestContext]] | None = None
+    """Hook executed before the agent starts processing the request.
 
     Allows inspection or modification of the incoming request context.
     Must return a valid `RequestContext` to continue execution.
   """
 
-  after_event: Callable[[ExecutorContext, A2AEvent, Event], Awaitable[A2AEvent | None]] | None = None
-  """Hook executed after an ADK event is converted to an A2A event.
+    after_event: Callable[[ExecutorContext, A2AEvent, Event], Awaitable[A2AEvent | None]] | None = None
+    """Hook executed after an ADK event is converted to an A2A event.
 
     Allows mutating the outgoing event before it is enqueued.
     Return `None` to filter out and drop the event entirely,
     which also halts any subsequent interceptors in the chain.
     """
 
-  after_agent: Callable[[ExecutorContext, TaskStatusUpdateEvent], Awaitable[TaskStatusUpdateEvent]] | None = None
-  """Hook executed after the agent finishes and the final event is prepared.
+    after_agent: Callable[[ExecutorContext, TaskStatusUpdateEvent], Awaitable[TaskStatusUpdateEvent]] | None = None
+    """Hook executed after the agent finishes and the final event is prepared.
 
     Allows inspection or modification of the terminal status event (e.g.,
     completed or failed) before it is enqueued. Must return a valid

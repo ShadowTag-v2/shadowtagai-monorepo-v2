@@ -178,7 +178,7 @@ export function useSandboxWebSocket({
       if (event.code === 1000 || reconnectCount >= maxReconnectAttempts) return;
 
       // Exponential backoff: 1s, 2s, 4s, 8s, 16s, max 30s
-      const delay = Math.min(1000 * Math.pow(2, reconnectCount), 30_000);
+      const delay = Math.min(1000 * 2 ** reconnectCount, 30_000);
       setReconnectCount((prev) => prev + 1);
 
       reconnectTimerRef.current = setTimeout(() => {

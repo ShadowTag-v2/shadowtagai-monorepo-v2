@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/kernels/atp_519_scan.py
+# hypothesis_version: 6.151.5
+
+[1e-05, 0.1, 0.95, 1000, 'ATP519ScanKernel', '```', 'context_size_bytes', 'max_output_tokens', 'model', 'temperature', 'top_k', 'top_p', 'violations']

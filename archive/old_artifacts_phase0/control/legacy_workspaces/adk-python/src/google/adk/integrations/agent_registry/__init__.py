@@ -13,5 +13,5 @@
 from .agent_registry import AgentRegistry, _ProtocolType
 
 __all__ = [
-    'AgentRegistry',
+    "AgentRegistry",
 ]

@@ -40,6 +40,7 @@ def test_range():
     assert r1 == r2
     assert hash(r1) == hash(r2)
 
+
 def test_unicode():
     source = "ハロ = console.log(世界)".strip()
     sg = SgRoot(source, "javascript")
@@ -49,6 +50,7 @@ def test_unicode():
     assert node.range().start.index == 5
     assert node.range().start.line == 0
     assert node.range().start.column == 5
+
 
 def test_unicode_range_rule():
     source = "ハロ = console.log(世界)".strip()

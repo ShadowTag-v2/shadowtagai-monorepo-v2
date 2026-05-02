@@ -132,9 +132,7 @@ class AttioBongo(BaseBongo):
                         )
 
                         if resp.status_code not in (200, 201):
-                            self.logger.error(
-                                f"Failed to create company: {resp.status_code} - {resp.text}"
-                            )
+                            self.logger.error(f"Failed to create company: {resp.status_code} - {resp.text}")
                         resp.raise_for_status()
 
                         record_data = resp.json()["data"]
@@ -169,9 +167,7 @@ class AttioBongo(BaseBongo):
                         self.logger.info(f"👤 Generating person with token: {token}")
 
                         person_data = await generate_attio_person(self.openai_model, token)
-                        self.logger.info(
-                            f"📝 Generated person: '{person_data['first_name']} {person_data['last_name']}'"
-                        )
+                        self.logger.info(f"📝 Generated person: '{person_data['first_name']} {person_data['last_name']}'")
 
                         # Create person record
                         # Note: Attio requires full_name format, not first/last separately
@@ -197,9 +193,7 @@ class AttioBongo(BaseBongo):
                         )
 
                         if resp.status_code not in (200, 201):
-                            self.logger.error(
-                                f"Failed to create person: {resp.status_code} - {resp.text}"
-                            )
+                            self.logger.error(f"Failed to create person: {resp.status_code} - {resp.text}")
                         resp.raise_for_status()
 
                         record_data = resp.json()["data"]
@@ -246,9 +240,7 @@ class AttioBongo(BaseBongo):
                         self._person_records.append(result)
 
         self.created_entities = entities
-        self.logger.info(
-            f"✅ Created {len(self._company_records)} companies and {len(self._person_records)} people"
-        )
+        self.logger.info(f"✅ Created {len(self._company_records)} companies and {len(self._person_records)} people")
         return entities
 
     async def update_entities(self) -> list[dict[str, Any]]:
@@ -269,16 +261,12 @@ class AttioBongo(BaseBongo):
 
                 try:
                     if entity["type"] == "company":
-                        company_data = await generate_attio_company(
-                            self.openai_model, entity["token"]
-                        )
+                        company_data = await generate_attio_company(self.openai_model, entity["token"])
                         attributes = {
                             "description": [{"value": company_data["description"]}],
                         }
                     else:  # person
-                        person_data = await generate_attio_person(
-                            self.openai_model, entity["token"]
-                        )
+                        person_data = await generate_attio_person(self.openai_model, entity["token"])
                         attributes = {
                             "description": [{"value": person_data["bio"]}],
                         }
@@ -320,9 +308,7 @@ class AttioBongo(BaseBongo):
                         deleted.append(entity["id"])
                         self.logger.info(f"✅ Deleted {entity['type']}: {entity['id']}")
                     else:
-                        self.logger.warning(
-                            f"Unexpected status {resp.status_code} deleting {entity['id']}"
-                        )
+                        self.logger.warning(f"Unexpected status {resp.status_code} deleting {entity['id']}")
                 except Exception as e:
                     self.logger.error(f"Failed to delete {entity['id']}: {e}")
 

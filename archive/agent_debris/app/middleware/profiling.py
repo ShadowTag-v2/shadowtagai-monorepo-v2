@@ -2,6 +2,7 @@
 Performance profiling middleware
 Automatically profiles every request and stores metrics
 """
+
 import time
 import psutil
 import traceback
@@ -10,14 +11,12 @@ import pstats
 import io
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
-from sqlalchemy import insert
 from app.core.config import settings
 from app.core.database import async_session_maker
 from app.models.performance import PerformanceMetric, Bottleneck
-from typing import Dict, Any
+from typing import Any
 from collections.abc import Callable
 import asyncio
-import sys
 
 
 class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
@@ -50,9 +49,7 @@ class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
         profiler = None
         profile_data = None
 
-        if settings.PROFILING_SAMPLE_RATE >= 1.0 or \
-           (settings.PROFILING_SAMPLE_RATE > 0 and
-            time.time() % (1/settings.PROFILING_SAMPLE_RATE) < 1):
+        if settings.PROFILING_SAMPLE_RATE >= 1.0 or (settings.PROFILING_SAMPLE_RATE > 0 and time.time() % (1 / settings.PROFILING_SAMPLE_RATE) < 1):
             profiler = cProfile.Profile()
             profiler.enable()
 
@@ -107,22 +104,24 @@ class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
         """Extract useful data from profiler"""
         s = io.StringIO()
         stats = pstats.Stats(profiler, stream=s)
-        stats.sort_stats('cumulative')
+        stats.sort_stats("cumulative")
 
         # Get top 10 functions by cumulative time
         top_functions = []
         for func, (cc, nc, tt, ct, callers) in list(stats.stats.items())[:10]:
             filename, line, func_name = func
-            top_functions.append({
-                'file': filename,
-                'line': line,
-                'function': func_name,
-                'cumulative_time': ct,
-                'total_time': tt,
-                'calls': cc,
-            })
+            top_functions.append(
+                {
+                    "file": filename,
+                    "line": line,
+                    "function": func_name,
+                    "cumulative_time": ct,
+                    "total_time": tt,
+                    "calls": cc,
+                }
+            )
 
-        return {'top_functions': top_functions}
+        return {"top_functions": top_functions}
 
     async def _store_metrics(
         self,
@@ -152,45 +151,34 @@ class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
 
                 # Store bottlenecks if we have profile data
                 if profile_data and duration >= settings.BOTTLENECK_THRESHOLD:
-                    await self._store_bottlenecks(
-                        session,
-                        request.url.path,
-                        profile_data,
-                        duration
-                    )
+                    await self._store_bottlenecks(session, request.url.path, profile_data, duration)
 
                 await session.commit()
         except Exception as e:
             print(f"Error storing metrics: {e}")
 
-    async def _store_bottlenecks(
-        self,
-        session,
-        endpoint: str,
-        profile_data: dict[str, Any],
-        total_duration: float
-    ):
+    async def _store_bottlenecks(self, session, endpoint: str, profile_data: dict[str, Any], total_duration: float):
         """Store detected bottlenecks"""
-        for func_data in profile_data.get('top_functions', [])[:5]:
+        for func_data in profile_data.get("top_functions", [])[:5]:
             # Calculate severity based on time percentage
-            percentage = (func_data['cumulative_time'] / total_duration) * 100
+            percentage = (func_data["cumulative_time"] / total_duration) * 100
 
             if percentage < 5:
-                severity = 'low'
+                severity = "low"
             elif percentage < 15:
-                severity = 'medium'
+                severity = "medium"
             elif percentage < 30:
-                severity = 'high'
+                severity = "high"
             else:
-                severity = 'critical'
+                severity = "critical"
 
             bottleneck = Bottleneck(
                 endpoint=endpoint,
-                line_number=func_data['line'],
-                file_path=func_data['file'],
-                function_name=func_data['function'],
-                duration=func_data['cumulative_time'],
-                call_count=func_data['calls'],
+                line_number=func_data["line"],
+                file_path=func_data["file"],
+                function_name=func_data["function"],
+                duration=func_data["cumulative_time"],
+                call_count=func_data["calls"],
                 percentage=percentage,
                 severity=severity,
             )

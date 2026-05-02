@@ -61,9 +61,7 @@ def get_project_index(
     except SourceNotFound:
         # If the index is not found and it's not a valid URL, raise an error
         if not is_valid_url(index):
-            available_sources = ", ".join(
-                f"'{s.get('name')}'" for s in project.sources if s.get("name")
-            )
+            available_sources = ", ".join(f"'{s.get('name')}'" for s in project.sources if s.get("name"))
             raise PipenvUsageError(
                 f"Index '{index}' was not found in Pipfile sources and is not a valid URL.\n"
                 f"Available sources: {available_sources or 'none'}\n"
@@ -100,14 +98,7 @@ def get_source_list(
                 sources.append(source)
 
     if pypi_mirror:
-        sources = [
-            (
-                create_mirror_source(pypi_mirror, source["name"])
-                if is_pypi_url(source["url"])
-                else source
-            )
-            for source in sources
-        ]
+        sources = [(create_mirror_source(pypi_mirror, source["name"]) if is_pypi_url(source["url"]) else source) for source in sources]
     return sources
 
 
@@ -124,9 +115,6 @@ def parse_indexes(line, strict=False):
     index = args.index
     extra_index = args.extra_index
     trusted_host = args.trusted_host
-    if (
-        strict
-        and sum(bool(arg) for arg in (index, extra_index, trusted_host, remainder)) > 1
-    ):
+    if strict and sum(bool(arg) for arg in (index, extra_index, trusted_host, remainder)) > 1:
         raise ValueError("Index arguments must be on their own lines.")
     return index, extra_index, trusted_host, remainder

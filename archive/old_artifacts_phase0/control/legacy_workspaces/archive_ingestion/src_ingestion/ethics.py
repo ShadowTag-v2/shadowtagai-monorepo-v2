@@ -194,26 +194,17 @@ class EthicalComplianceChecker:
 
         # Check limits
         if requests_last_minute >= rule.requests_per_minute:
-            logger.warning(
-                f"Rate limit exceeded for {source_name}: "
-                f"{requests_last_minute}/min (limit: {rule.requests_per_minute})"
-            )
+            logger.warning(f"Rate limit exceeded for {source_name}: {requests_last_minute}/min (limit: {rule.requests_per_minute})")
             self.stats["blocked_by_rate_limit"] += 1
             return False
 
         if requests_last_hour >= rule.requests_per_hour:
-            logger.warning(
-                f"Rate limit exceeded for {source_name}: "
-                f"{requests_last_hour}/hour (limit: {rule.requests_per_hour})"
-            )
+            logger.warning(f"Rate limit exceeded for {source_name}: {requests_last_hour}/hour (limit: {rule.requests_per_hour})")
             self.stats["blocked_by_rate_limit"] += 1
             return False
 
         if requests_last_day >= rule.requests_per_day:
-            logger.warning(
-                f"Rate limit exceeded for {source_name}: "
-                f"{requests_last_day}/day (limit: {rule.requests_per_day})"
-            )
+            logger.warning(f"Rate limit exceeded for {source_name}: {requests_last_day}/day (limit: {rule.requests_per_day})")
             self.stats["blocked_by_rate_limit"] += 1
             return False
 

@@ -4,7 +4,7 @@ import json
 import os
 import sys
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from airweave.main import app
 from api_config import API_GROUPS, is_included_endpoint
@@ -21,7 +21,7 @@ sys.path.append(str(backend_dir))
 os.chdir(backend_dir)  # Change working directory to backend
 
 
-def filter_paths(openapi_schema: Dict[str, Any]) -> Dict[str, Any]:
+def filter_paths(openapi_schema: dict[str, Any]) -> dict[str, Any]:
     """Filter OpenAPI paths to only include allowed endpoints."""
     if "paths" not in openapi_schema:
         return openapi_schema
@@ -49,7 +49,7 @@ def filter_paths(openapi_schema: Dict[str, Any]) -> Dict[str, Any]:
     return openapi_schema
 
 
-def fix_security_scheme(openapi_schema: Dict[str, Any]) -> Dict[str, Any]:
+def fix_security_scheme(openapi_schema: dict[str, Any]) -> dict[str, Any]:
     """Fix the security scheme definition to handle authentication properly.
 
     We'll completely replace the existing Auth0HTTPBearer security scheme with
@@ -93,10 +93,7 @@ def fix_security_scheme(openapi_schema: Dict[str, Any]) -> Dict[str, Any]:
                             # Remove X-API-Key (capitalized)
                             or (param.get("name") == "X-API-Key" and param.get("in") == "header")
                             # Remove X-Organization-ID (we don't want this in the public API spec)
-                            or (
-                                param.get("name") == "X-Organization-ID"
-                                and param.get("in") == "header"
-                            )
+                            or (param.get("name") == "X-Organization-ID" and param.get("in") == "header")
                         )
                     ]
 
@@ -107,7 +104,7 @@ def fix_security_scheme(openapi_schema: Dict[str, Any]) -> Dict[str, Any]:
     return openapi_schema
 
 
-def add_tag_display_names(openapi_schema: Dict[str, Any]) -> Dict[str, Any]:
+def add_tag_display_names(openapi_schema: dict[str, Any]) -> dict[str, Any]:
     """Add display names to tags in the OpenAPI schema."""
     # Mapping from tag name to display name
     tag_display_names = {
@@ -129,9 +126,7 @@ def add_tag_display_names(openapi_schema: Dict[str, Any]) -> Dict[str, Any]:
                 {
                     "name": tag_name,
                     "x-display-name": display_name,
-                    "description": API_GROUPS.get(
-                        display_name, f"API endpoints for {display_name}"
-                    ),
+                    "description": API_GROUPS.get(display_name, f"API endpoints for {display_name}"),
                 }
             )
 
@@ -178,9 +173,7 @@ def generate_openapi():
 
     # Add info about included API groups
     if "info" in filtered_schema:
-        api_groups_desc = (
-            "\n\n## API Groups\nThis API spec only includes the following API groups:\n"
-        )
+        api_groups_desc = "\n\n## API Groups\nThis API spec only includes the following API groups:\n"
         for group, description in API_GROUPS.items():
             api_groups_desc += f"- **{group}**: {description}\n"
 
@@ -192,16 +185,8 @@ def generate_openapi():
     # Add Fern global headers extension for framework tracking
     print("Adding Fern global headers for framework tracking...")
     filtered_schema["x-fern-global-headers"] = [
-        {
-            "header": "X-Framework-Name",
-            "name": "framework_name",
-            "optional": True
-        },
-        {
-            "header": "X-Framework-Version",
-            "name": "framework_version",
-            "optional": True
-        }
+        {"header": "X-Framework-Name", "name": "framework_name", "optional": True},
+        {"header": "X-Framework-Version", "name": "framework_version", "optional": True},
     ]
 
     # Path to fern/definition directory from project root
@@ -220,18 +205,10 @@ def generate_openapi():
     if "paths" in filtered_schema:
         endpoint_count = len(filtered_schema["paths"])
         for path_item in filtered_schema["paths"].values():
-            method_count += len(
-                [
-                    m
-                    for m in path_item.keys()
-                    if m.lower() in ["get", "post", "put", "delete", "patch"]
-                ]
-            )
+            method_count += len([m for m in path_item.keys() if m.lower() in ["get", "post", "put", "delete", "patch"]])
 
     print(f"✅ Filtered OpenAPI schema saved to {output_path}")
-    print(
-        f"Included {endpoint_count} endpoints with {method_count} HTTP methods in the OpenAPI spec"
-    )
+    print(f"Included {endpoint_count} endpoints with {method_count} HTTP methods in the OpenAPI spec")
     print("API groups included:")
     for group in API_GROUPS:
         print(f"- {group}")

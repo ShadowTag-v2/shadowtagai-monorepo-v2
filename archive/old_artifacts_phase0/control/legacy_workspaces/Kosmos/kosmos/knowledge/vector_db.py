@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 try:
     import chromadb
     from chromadb.config import Settings
+
     HAS_CHROMADB = True
 except ImportError:
     logger.warning("chromadb not installed. Install with: pip install chromadb")
@@ -35,12 +36,7 @@ class PaperVectorDB:
     Uses ChromaDB for persistent vector storage with semantic search capabilities.
     """
 
-    def __init__(
-        self,
-        collection_name: str = "papers",
-        persist_directory: str | None = None,
-        reset: bool = False
-    ):
+    def __init__(self, collection_name: str = "papers", persist_directory: str | None = None, reset: bool = False):
         """
         Initialize the vector database.
 
@@ -77,13 +73,7 @@ class PaperVectorDB:
         persist_path.mkdir(parents=True, exist_ok=True)
 
         # Initialize ChromaDB client
-        self.client = chromadb.PersistentClient(
-            path=str(persist_path),
-            settings=Settings(
-                anonymized_telemetry=False,
-                allow_reset=True
-            )
-        )
+        self.client = chromadb.PersistentClient(path=str(persist_path), settings=Settings(anonymized_telemetry=False, allow_reset=True))
 
         # Get or create collection
         self.collection_name = collection_name
@@ -97,22 +87,15 @@ class PaperVectorDB:
 
         self.collection = self.client.get_or_create_collection(
             name=collection_name,
-            metadata={"hnsw:space": "cosine"}  # Use cosine similarity
+            metadata={"hnsw:space": "cosine"},  # Use cosine similarity
         )
 
         # Initialize embedder
         self.embedder = get_embedder()
 
-        logger.info(
-            f"Initialized PaperVectorDB (collection={collection_name}, "
-            f"persist_dir={persist_directory}, count={self.collection.count()})"
-        )
+        logger.info(f"Initialized PaperVectorDB (collection={collection_name}, persist_dir={persist_directory}, count={self.collection.count()})")
 
-    def add_paper(
-        self,
-        paper: PaperMetadata,
-        embedding: np.ndarray | None = None
-    ):
+    def add_paper(self, paper: PaperMetadata, embedding: np.ndarray | None = None):
         """
         Add a single paper to the vector database.
 
@@ -127,12 +110,7 @@ class PaperVectorDB:
         """
         self.add_papers([paper], embeddings=[embedding] if embedding is not None else None)
 
-    def add_papers(
-        self,
-        papers: list[PaperMetadata],
-        embeddings: np.ndarray | None = None,
-        batch_size: int = 100
-    ):
+    def add_papers(self, papers: list[PaperMetadata], embeddings: np.ndarray | None = None, batch_size: int = 100):
         """
         Add multiple papers to the vector database.
 
@@ -174,20 +152,12 @@ class PaperVectorDB:
             batch_end = min(i + batch_size, len(papers))
 
             self.collection.add(
-                ids=ids[i:batch_end],
-                embeddings=embeddings[i:batch_end].tolist(),
-                metadatas=metadatas[i:batch_end],
-                documents=documents[i:batch_end]
+                ids=ids[i:batch_end], embeddings=embeddings[i:batch_end].tolist(), metadatas=metadatas[i:batch_end], documents=documents[i:batch_end]
             )
 
         logger.info(f"Added {len(papers)} papers to vector database")
 
-    def search(
-        self,
-        query: str,
-        top_k: int = 10,
-        filters: dict[str, Any] | None = None
-    ) -> list[dict[str, Any]]:
+    def search(self, query: str, top_k: int = 10, filters: dict[str, Any] | None = None) -> list[dict[str, Any]]:
         """
         Search for papers by query string.
 
@@ -224,11 +194,7 @@ class PaperVectorDB:
         query_embedding = self.embedder.embed_query(query)
 
         # Search
-        results = self.collection.query(
-            query_embeddings=[query_embedding.tolist()],
-            n_results=top_k,
-            where=filters
-        )
+        results = self.collection.query(query_embeddings=[query_embedding.tolist()], n_results=top_k, where=filters)
 
         # Format results
         formatted_results = []
@@ -239,18 +205,13 @@ class PaperVectorDB:
                     "id": results["ids"][0][i],
                     "score": float(1 - results["distances"][0][i]) if "distances" in results else 1.0,  # Convert distance to similarity
                     "metadata": results["metadatas"][0][i] if "metadatas" in results else {},
-                    "document": results["documents"][0][i] if "documents" in results else ""
+                    "document": results["documents"][0][i] if "documents" in results else "",
                 }
                 formatted_results.append(result)
 
         return formatted_results
 
-    def search_by_paper(
-        self,
-        paper: PaperMetadata,
-        top_k: int = 10,
-        filters: dict[str, Any] | None = None
-    ) -> list[dict[str, Any]]:
+    def search_by_paper(self, paper: PaperMetadata, top_k: int = 10, filters: dict[str, Any] | None = None) -> list[dict[str, Any]]:
         """
         Find similar papers to a given paper.
 
@@ -274,7 +235,7 @@ class PaperVectorDB:
         results = self.collection.query(
             query_embeddings=[paper_embedding.tolist()],
             n_results=top_k + 1,  # +1 to account for self-match
-            where=filters
+            where=filters,
         )
 
         # Format results (exclude self)
@@ -293,7 +254,7 @@ class PaperVectorDB:
                     "id": result_id,
                     "score": float(1 - results["distances"][0][i]) if "distances" in results else 1.0,
                     "metadata": results["metadatas"][0][i] if "metadatas" in results else {},
-                    "document": results["documents"][0][i] if "documents" in results else ""
+                    "document": results["documents"][0][i] if "documents" in results else "",
                 }
                 formatted_results.append(result)
 
@@ -319,7 +280,7 @@ class PaperVectorDB:
                 return {
                     "id": result["ids"][0],
                     "metadata": result["metadatas"][0] if "metadatas" in result else {},
-                    "document": result["documents"][0] if "documents" in result else ""
+                    "document": result["documents"][0] if "documents" in result else "",
                 }
 
             return None
@@ -360,19 +321,12 @@ class PaperVectorDB:
         Returns:
             Dictionary with stats
         """
-        return {
-            "collection_name": self.collection_name,
-            "paper_count": self.count(),
-            "embedding_dim": self.embedder.embedding_dim
-        }
+        return {"collection_name": self.collection_name, "paper_count": self.count(), "embedding_dim": self.embedder.embedding_dim}
 
     def clear(self):
         """Clear all papers from the database."""
         self.client.delete_collection(name=self.collection_name)
-        self.collection = self.client.create_collection(
-            name=self.collection_name,
-            metadata={"hnsw:space": "cosine"}
-        )
+        self.collection = self.client.create_collection(name=self.collection_name, metadata={"hnsw:space": "cosine"})
         logger.info(f"Cleared collection: {self.collection_name}")
 
     def _paper_id(self, paper: PaperMetadata) -> str:
@@ -404,7 +358,7 @@ class PaperVectorDB:
             "title": paper.title[:500] if paper.title else "",  # ChromaDB has size limits
             "year": paper.year or 0,
             "citation_count": paper.citation_count,
-            "domain": paper.fields[0] if paper.fields and len(paper.fields) > 0 else "unknown"
+            "domain": paper.fields[0] if paper.fields and len(paper.fields) > 0 else "unknown",
         }
 
         # Add identifiers
@@ -445,11 +399,7 @@ class PaperVectorDB:
 _vector_db: PaperVectorDB | None = None
 
 
-def get_vector_db(
-    collection_name: str = "papers",
-    persist_directory: str | None = None,
-    reset: bool = False
-) -> PaperVectorDB:
+def get_vector_db(collection_name: str = "papers", persist_directory: str | None = None, reset: bool = False) -> PaperVectorDB:
     """
     Get or create the singleton vector database instance.
 
@@ -463,11 +413,7 @@ def get_vector_db(
     """
     global _vector_db
     if _vector_db is None or reset:
-        _vector_db = PaperVectorDB(
-            collection_name=collection_name,
-            persist_directory=persist_directory,
-            reset=reset
-        )
+        _vector_db = PaperVectorDB(collection_name=collection_name, persist_directory=persist_directory, reset=reset)
     return _vector_db
 
 

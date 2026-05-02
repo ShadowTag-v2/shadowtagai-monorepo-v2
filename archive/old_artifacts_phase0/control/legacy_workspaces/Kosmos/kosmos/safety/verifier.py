@@ -84,7 +84,7 @@ class ResultVerifier:
         enable_outlier_detection: bool = True,
         enable_statistical_validation: bool = True,
         outlier_threshold: float = 3.0,  # Z-score threshold
-        min_sample_size: int = 10
+        min_sample_size: int = 10,
     ):
         """
         Initialize result verifier.
@@ -103,8 +103,7 @@ class ResultVerifier:
         self.min_sample_size = min_sample_size
 
         logger.info(
-            f"ResultVerifier initialized (sanity={enable_sanity_checks}, "
-            f"outliers={enable_outlier_detection}, stats={enable_statistical_validation})"
+            f"ResultVerifier initialized (sanity={enable_sanity_checks}, outliers={enable_outlier_detection}, stats={enable_statistical_validation})"
         )
 
     def verify(self, result: ExperimentResult) -> VerificationReport:
@@ -144,10 +143,7 @@ class ResultVerifier:
         checks_performed.append("consistency_checks")
 
         # Determine if passed (no errors or critical issues)
-        passed = not any(
-            issue.severity in ["error", "critical"]
-            for issue in issues
-        )
+        passed = not any(issue.severity in ["error", "critical"] for issue in issues)
 
         report = VerificationReport(
             result_id=result.id or result.experiment_id,
@@ -157,8 +153,8 @@ class ResultVerifier:
             metadata={
                 "result_status": result.status.value,
                 "has_statistical_tests": len(result.statistical_tests) > 0,
-                "hypothesis_id": result.hypothesis_id
-            }
+                "hypothesis_id": result.hypothesis_id,
+            },
         )
 
         logger.info(f"Result verification: {report.summary()}")
@@ -172,56 +168,56 @@ class ResultVerifier:
         # Check p-value range
         if result.primary_p_value is not None:
             if not (0 <= result.primary_p_value <= 1):
-                issues.append(VerificationIssue(
-                    severity="error",
-                    category="sanity",
-                    message=f"P-value out of range [0, 1]: {result.primary_p_value}",
-                    details={"p_value": result.primary_p_value}
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="error",
+                        category="sanity",
+                        message=f"P-value out of range [0, 1]: {result.primary_p_value}",
+                        details={"p_value": result.primary_p_value},
+                    )
+                )
 
         # Check for inf/nan in primary metrics
         if result.primary_effect_size is not None:
             if np.isnan(result.primary_effect_size) or np.isinf(result.primary_effect_size):
-                issues.append(VerificationIssue(
-                    severity="error",
-                    category="sanity",
-                    message=f"Effect size is NaN or Inf: {result.primary_effect_size}",
-                    details={"effect_size": result.primary_effect_size}
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="error",
+                        category="sanity",
+                        message=f"Effect size is NaN or Inf: {result.primary_effect_size}",
+                        details={"effect_size": result.primary_effect_size},
+                    )
+                )
 
         # Check statistical test results
         for test in result.statistical_tests:
             if test.p_value is not None and not (0 <= test.p_value <= 1):
-                issues.append(VerificationIssue(
-                    severity="error",
-                    category="sanity",
-                    message=f"Test '{test.test_name}' has invalid p-value: {test.p_value}",
-                    details={"test_name": test.test_name, "p_value": test.p_value}
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="error",
+                        category="sanity",
+                        message=f"Test '{test.test_name}' has invalid p-value: {test.p_value}",
+                        details={"test_name": test.test_name, "p_value": test.p_value},
+                    )
+                )
 
         # Check for empty results
         if result.status == ResultStatus.SUCCESS:
             if not result.raw_data and not result.processed_data:
-                issues.append(VerificationIssue(
-                    severity="warning",
-                    category="sanity",
-                    message="Successful result has no data",
-                    details={}
-                ))
+                issues.append(VerificationIssue(severity="warning", category="sanity", message="Successful result has no data", details={}))
 
         # Check for contradictions
         if result.supports_hypothesis is not None and result.primary_p_value is not None:
             # If p < 0.05, should generally support hypothesis
             if result.primary_p_value < 0.05 and result.supports_hypothesis is False:
-                issues.append(VerificationIssue(
-                    severity="warning",
-                    category="sanity",
-                    message="Significant p-value but hypothesis not supported",
-                    details={
-                        "p_value": result.primary_p_value,
-                        "supports_hypothesis": result.supports_hypothesis
-                    }
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="warning",
+                        category="sanity",
+                        message="Significant p-value but hypothesis not supported",
+                        details={"p_value": result.primary_p_value, "supports_hypothesis": result.supports_hypothesis},
+                    )
+                )
 
         return issues
 
@@ -240,19 +236,21 @@ class ResultVerifier:
                             if len(outliers) > 0:
                                 outlier_ratio = len(outliers) / len(data)
                                 severity = "error" if outlier_ratio > 0.2 else "warning"
-                                issues.append(VerificationIssue(
-                                    severity=severity,
-                                    category="outlier",
-                                    message=f"Outliers detected in '{key}': {len(outliers)} / {len(data)}",
-                                    details={
-                                        "field": key,
-                                        "outlier_count": len(outliers),
-                                        "total_count": len(data),
-                                        "outlier_ratio": outlier_ratio,
-                                        "outlier_indices": outliers.tolist()
-                                    }
-                                ))
-                    except (ValueError, TypeError):
+                                issues.append(
+                                    VerificationIssue(
+                                        severity=severity,
+                                        category="outlier",
+                                        message=f"Outliers detected in '{key}': {len(outliers)} / {len(data)}",
+                                        details={
+                                            "field": key,
+                                            "outlier_count": len(outliers),
+                                            "total_count": len(data),
+                                            "outlier_ratio": outlier_ratio,
+                                            "outlier_indices": outliers.tolist(),
+                                        },
+                                    )
+                                )
+                    except ValueError, TypeError:
                         # Not numeric data, skip
                         pass
 
@@ -265,17 +263,15 @@ class ResultVerifier:
                     if len(data) > 1:
                         outliers = self._find_outliers(data)
                         if len(outliers) > 0:
-                            issues.append(VerificationIssue(
-                                severity="warning",
-                                category="outlier",
-                                message=f"Outliers in variable '{var_result.name}': {len(outliers)} / {len(data)}",
-                                details={
-                                    "variable": var_result.name,
-                                    "outlier_count": len(outliers),
-                                    "total_count": len(data)
-                                }
-                            ))
-                except (ValueError, TypeError):
+                            issues.append(
+                                VerificationIssue(
+                                    severity="warning",
+                                    category="outlier",
+                                    message=f"Outliers in variable '{var_result.name}': {len(outliers)} / {len(data)}",
+                                    details={"variable": var_result.name, "outlier_count": len(outliers), "total_count": len(data)},
+                                )
+                            )
+                except ValueError, TypeError:
                     pass
 
         return issues
@@ -305,58 +301,58 @@ class ResultVerifier:
 
         # Check sample sizes
         for test in result.statistical_tests:
-            sample_size = test.details.get('sample_size')
+            sample_size = test.details.get("sample_size")
             if sample_size is not None and sample_size < self.min_sample_size:
-                issues.append(VerificationIssue(
-                    severity="warning",
-                    category="statistical",
-                    message=f"Test '{test.test_name}' has small sample size: {sample_size}",
-                    details={"test_name": test.test_name, "sample_size": sample_size}
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="warning",
+                        category="statistical",
+                        message=f"Test '{test.test_name}' has small sample size: {sample_size}",
+                        details={"test_name": test.test_name, "sample_size": sample_size},
+                    )
+                )
 
         # Check effect size and significance alignment
         if result.primary_p_value is not None and result.primary_effect_size is not None:
             # Large effect size but not significant -> underpowered
             if abs(result.primary_effect_size) > 0.5 and result.primary_p_value > 0.05:
-                issues.append(VerificationIssue(
-                    severity="warning",
-                    category="statistical",
-                    message="Large effect size but not statistically significant (underpowered study)",
-                    details={
-                        "effect_size": result.primary_effect_size,
-                        "p_value": result.primary_p_value
-                    }
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="warning",
+                        category="statistical",
+                        message="Large effect size but not statistically significant (underpowered study)",
+                        details={"effect_size": result.primary_effect_size, "p_value": result.primary_p_value},
+                    )
+                )
 
             # Small effect size but significant -> overpowered or noise
             if abs(result.primary_effect_size) < 0.1 and result.primary_p_value < 0.05:
-                issues.append(VerificationIssue(
-                    severity="warning",
-                    category="statistical",
-                    message="Statistically significant but small effect size (may not be practically significant)",
-                    details={
-                        "effect_size": result.primary_effect_size,
-                        "p_value": result.primary_p_value
-                    }
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="warning",
+                        category="statistical",
+                        message="Statistically significant but small effect size (may not be practically significant)",
+                        details={"effect_size": result.primary_effect_size, "p_value": result.primary_p_value},
+                    )
+                )
 
         # Check for multiple testing without correction
         if len(result.statistical_tests) > 1:
             # Check if any test mentions correction
             has_correction = any(
-                "bonferroni" in test.test_name.lower() or
-                "fdr" in test.test_name.lower() or
-                "holm" in test.test_name.lower()
+                "bonferroni" in test.test_name.lower() or "fdr" in test.test_name.lower() or "holm" in test.test_name.lower()
                 for test in result.statistical_tests
             )
 
             if not has_correction:
-                issues.append(VerificationIssue(
-                    severity="warning",
-                    category="statistical",
-                    message=f"Multiple tests ({len(result.statistical_tests)}) without multiple testing correction",
-                    details={"test_count": len(result.statistical_tests)}
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="warning",
+                        category="statistical",
+                        message=f"Multiple tests ({len(result.statistical_tests)}) without multiple testing correction",
+                        details={"test_count": len(result.statistical_tests)},
+                    )
+                )
 
         return issues
 
@@ -367,51 +363,49 @@ class ResultVerifier:
         # Check status matches data
         if result.status == ResultStatus.SUCCESS:
             if result.stderr and "error" in result.stderr.lower():
-                issues.append(VerificationIssue(
-                    severity="warning",
-                    category="consistency",
-                    message="Result marked as SUCCESS but stderr contains errors",
-                    details={"stderr_preview": result.stderr[:200]}
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="warning",
+                        category="consistency",
+                        message="Result marked as SUCCESS but stderr contains errors",
+                        details={"stderr_preview": result.stderr[:200]},
+                    )
+                )
 
         if result.status == ResultStatus.FAILED:
             if result.primary_p_value is not None or result.supports_hypothesis is not None:
-                issues.append(VerificationIssue(
-                    severity="warning",
-                    category="consistency",
-                    message="Result marked as FAILED but has statistical results",
-                    details={}
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="warning", category="consistency", message="Result marked as FAILED but has statistical results", details={}
+                    )
+                )
 
         # Check supports_hypothesis matches p_value
         if result.supports_hypothesis is True and result.primary_p_value is not None:
             if result.primary_p_value > 0.05:
-                issues.append(VerificationIssue(
-                    severity="warning",
-                    category="consistency",
-                    message="Hypothesis marked as supported but p-value not significant",
-                    details={
-                        "supports_hypothesis": True,
-                        "p_value": result.primary_p_value
-                    }
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="warning",
+                        category="consistency",
+                        message="Hypothesis marked as supported but p-value not significant",
+                        details={"supports_hypothesis": True, "p_value": result.primary_p_value},
+                    )
+                )
 
         # Check primary test exists if primary p-value exists
         if result.primary_p_value is not None and not result.primary_test:
-            issues.append(VerificationIssue(
-                severity="warning",
-                category="consistency",
-                message="Primary p-value present but no primary test specified",
-                details={"primary_p_value": result.primary_p_value}
-            ))
+            issues.append(
+                VerificationIssue(
+                    severity="warning",
+                    category="consistency",
+                    message="Primary p-value present but no primary test specified",
+                    details={"primary_p_value": result.primary_p_value},
+                )
+            )
 
         return issues
 
-    def cross_validate(
-        self,
-        original: ExperimentResult,
-        replication: ExperimentResult
-    ) -> VerificationReport:
+    def cross_validate(self, original: ExperimentResult, replication: ExperimentResult) -> VerificationReport:
         """
         Cross-validate results from replicated experiments.
 
@@ -432,43 +426,43 @@ class ResultVerifier:
             repl_sig = replication.primary_p_value < 0.05
 
             if orig_sig != repl_sig:
-                issues.append(VerificationIssue(
-                    severity="error",
-                    category="consistency",
-                    message="Replication failed: significance differs",
-                    details={
-                        "original_p": original.primary_p_value,
-                        "replication_p": replication.primary_p_value
-                    }
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="error",
+                        category="consistency",
+                        message="Replication failed: significance differs",
+                        details={"original_p": original.primary_p_value, "replication_p": replication.primary_p_value},
+                    )
+                )
 
         # Check effect sizes are consistent (within 50% of each other)
         if original.primary_effect_size is not None and replication.primary_effect_size is not None:
             ratio = abs(original.primary_effect_size) / (abs(replication.primary_effect_size) + 1e-10)
             if ratio < 0.5 or ratio > 2.0:
-                issues.append(VerificationIssue(
-                    severity="warning",
-                    category="consistency",
-                    message="Effect sizes differ substantially between original and replication",
-                    details={
-                        "original_effect": original.primary_effect_size,
-                        "replication_effect": replication.primary_effect_size,
-                        "ratio": ratio
-                    }
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="warning",
+                        category="consistency",
+                        message="Effect sizes differ substantially between original and replication",
+                        details={
+                            "original_effect": original.primary_effect_size,
+                            "replication_effect": replication.primary_effect_size,
+                            "ratio": ratio,
+                        },
+                    )
+                )
 
         # Check hypothesis support is consistent
         if original.supports_hypothesis is not None and replication.supports_hypothesis is not None:
             if original.supports_hypothesis != replication.supports_hypothesis:
-                issues.append(VerificationIssue(
-                    severity="error",
-                    category="consistency",
-                    message="Replication failed: hypothesis support differs",
-                    details={
-                        "original_supports": original.supports_hypothesis,
-                        "replication_supports": replication.supports_hypothesis
-                    }
-                ))
+                issues.append(
+                    VerificationIssue(
+                        severity="error",
+                        category="consistency",
+                        message="Replication failed: hypothesis support differs",
+                        details={"original_supports": original.supports_hypothesis, "replication_supports": replication.supports_hypothesis},
+                    )
+                )
 
         passed = not any(issue.severity in ["error", "critical"] for issue in issues)
 
@@ -480,8 +474,8 @@ class ResultVerifier:
             metadata={
                 "original_id": original.id or original.experiment_id,
                 "replication_id": replication.id or replication.experiment_id,
-                "cross_validation": True
-            }
+                "cross_validation": True,
+            },
         )
 
     def detect_errors(self, result: ExperimentResult) -> list[str]:
@@ -499,10 +493,7 @@ class ResultVerifier:
         # Check stderr
         if result.stderr:
             stderr_lower = result.stderr.lower()
-            error_keywords = [
-                "error", "exception", "traceback", "failed",
-                "critical", "fatal", "abort"
-            ]
+            error_keywords = ["error", "exception", "traceback", "failed", "critical", "fatal", "abort"]
             for keyword in error_keywords:
                 if keyword in stderr_lower:
                     errors.append(f"Stderr contains '{keyword}'")
@@ -519,8 +510,8 @@ class ResultVerifier:
             errors.append("Result status is FAILED")
 
         # Check metadata for errors
-        if hasattr(result, 'metadata') and result.metadata:
-            error_msg = result.metadata.error_message if hasattr(result.metadata, 'error_message') else None
+        if hasattr(result, "metadata") and result.metadata:
+            error_msg = result.metadata.error_message if hasattr(result.metadata, "error_message") else None
             if error_msg:
                 errors.append(f"Metadata error: {error_msg}")
 

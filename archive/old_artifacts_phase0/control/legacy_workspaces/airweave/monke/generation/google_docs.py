@@ -1,13 +1,10 @@
 """Google Docs-specific generation adapter: document generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.google_docs import GoogleDocsDocument
 
 
-async def generate_google_doc(
-    model: str, token: str, doc_title: str
-) -> GoogleDocsDocument:
+async def generate_google_doc(model: str, token: str, doc_title: str) -> GoogleDocsDocument:
     """Generate realistic Google Docs document content with embedded verification token.
 
     Args:
@@ -39,9 +36,7 @@ async def generate_google_doc(
     return doc
 
 
-async def generate_documents(
-    model: str, tokens: list[str], base_name: str = "Test Document"
-) -> list[GoogleDocsDocument]:
+async def generate_documents(model: str, tokens: list[str], base_name: str = "Test Document") -> list[GoogleDocsDocument]:
     """Generate multiple Google Docs documents.
 
     Args:

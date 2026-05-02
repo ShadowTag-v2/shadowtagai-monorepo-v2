@@ -48,9 +48,7 @@ class GoogleSlidesBongo(BaseBongo):
 
     async def create_entities(self) -> list[dict[str, Any]]:
         """Create test Google Slides presentations using the Google Slides API."""
-        self.logger.info(
-            f"🥁 Creating {self.entity_count} Google Slides test presentations"
-        )
+        self.logger.info(f"🥁 Creating {self.entity_count} Google Slides test presentations")
         out: list[dict[str, Any]] = []
 
         # Generate tokens for each presentation
@@ -58,18 +56,14 @@ class GoogleSlidesBongo(BaseBongo):
 
         # Generate presentation content
         test_name = f"Monke_TestSlides_{uuid.uuid4().hex[:8]}"
-        presentations = await generate_presentations(
-            self.openai_model, tokens, test_name
-        )
+        presentations = await generate_presentations(self.openai_model, tokens, test_name)
 
         self.logger.info(f"📝 Generated {len(presentations)} presentations")
 
         async with httpx.AsyncClient(timeout=60) as client:
             for pres_data, token in zip(presentations, tokens):
                 await self._pace()
-                self.logger.info(
-                    f"📤 Creating Google Slides presentation: {pres_data.title}"
-                )
+                self.logger.info(f"📤 Creating Google Slides presentation: {pres_data.title}")
 
                 # Step 1: Create presentation directly via Google Slides API
                 create_response = await client.post(
@@ -84,16 +78,12 @@ class GoogleSlidesBongo(BaseBongo):
                 )
 
                 if create_response.status_code not in (200, 201):
-                    self.logger.error(
-                        f"Create failed {create_response.status_code}: {create_response.text}"
-                    )
+                    self.logger.error(f"Create failed {create_response.status_code}: {create_response.text}")
                     create_response.raise_for_status()
 
                 pres_file = create_response.json()
                 pres_id = pres_file["presentationId"]
-                self.logger.info(
-                    f"✅ Created presentation: {pres_id} - {pres_data.title}"
-                )
+                self.logger.info(f"✅ Created presentation: {pres_id} - {pres_data.title}")
 
                 # Step 2: Create multiple slides and distribute content
                 await self._pace()
@@ -106,9 +96,7 @@ class GoogleSlidesBongo(BaseBongo):
 
                 # Parse content into slides (split by "---" separator)
                 slide_contents = pres_data.content.split("---")
-                slide_contents = [
-                    content.strip() for content in slide_contents if content.strip()
-                ]
+                slide_contents = [content.strip() for content in slide_contents if content.strip()]
 
                 # If no separators found, treat as single slide
                 if len(slide_contents) == 1:
@@ -182,14 +170,10 @@ class GoogleSlidesBongo(BaseBongo):
                 )
 
                 if content_response.status_code not in (200, 201):
-                    self.logger.error(
-                        f"Content insert failed {content_response.status_code}: {content_response.text[:200]}"
-                    )
+                    self.logger.error(f"Content insert failed {content_response.status_code}: {content_response.text[:200]}")
                     # Continue anyway - presentation exists even if content failed
                 else:
-                    self.logger.info(
-                        f"📄 Inserted {len(pres_data.content)} chars into presentation: {pres_data.title}"
-                    )
+                    self.logger.info(f"📄 Inserted {len(pres_data.content)} chars into presentation: {pres_data.title}")
 
                 # Store entity info
                 ent = {
@@ -206,9 +190,7 @@ class GoogleSlidesBongo(BaseBongo):
                 # Brief delay between creates
                 await asyncio.sleep(0.5)
 
-        self.logger.info(
-            f"✅ Created {len(self._test_presentations)} Google Slides presentations"
-        )
+        self.logger.info(f"✅ Created {len(self._test_presentations)} Google Slides presentations")
         return out
 
     async def update_entities(self) -> list[dict[str, Any]]:
@@ -216,15 +198,11 @@ class GoogleSlidesBongo(BaseBongo):
         if not self._test_presentations:
             return []
 
-        self.logger.info(
-            f"🥁 Updating {min(2, len(self._test_presentations))} Google Slides presentations"
-        )
+        self.logger.info(f"🥁 Updating {min(2, len(self._test_presentations))} Google Slides presentations")
         updated = []
 
         async with httpx.AsyncClient(timeout=60) as client:
-            for ent in self._test_presentations[
-                : min(2, len(self._test_presentations))
-            ]:
+            for ent in self._test_presentations[: min(2, len(self._test_presentations))]:
                 await self._pace()
 
                 # Get presentation to find insertion point
@@ -236,9 +214,7 @@ class GoogleSlidesBongo(BaseBongo):
                 )
 
                 if pres_response.status_code != 200:
-                    self.logger.warning(
-                        f"Could not get presentation for update: {pres_response.status_code}"
-                    )
+                    self.logger.warning(f"Could not get presentation for update: {pres_response.status_code}")
                     continue
 
                 pres_info = pres_response.json()
@@ -251,9 +227,7 @@ class GoogleSlidesBongo(BaseBongo):
 
                 # Create a new text box for the update
                 textbox_id = f"update_textbox_{uuid.uuid4().hex[:8]}"
-                update_text = (
-                    f"Update: This presentation was updated. Token: {ent['token']}"
-                )
+                update_text = f"Update: This presentation was updated. Token: {ent['token']}"
 
                 await self._pace()
 
@@ -297,13 +271,9 @@ class GoogleSlidesBongo(BaseBongo):
 
                 if r.status_code in (200, 201):
                     updated.append({**ent, "updated": True})
-                    self.logger.info(
-                        f"📝 Updated presentation '{ent['name']}' with token: {ent['token']}"
-                    )
+                    self.logger.info(f"📝 Updated presentation '{ent['name']}' with token: {ent['token']}")
                 else:
-                    self.logger.warning(
-                        f"Failed to update presentation: {r.status_code} - {r.text[:200]}"
-                    )
+                    self.logger.warning(f"Failed to update presentation: {r.status_code} - {r.text[:200]}")
 
                 # Brief delay between updates
                 await asyncio.sleep(0.5)
@@ -314,9 +284,7 @@ class GoogleSlidesBongo(BaseBongo):
         """Delete all test presentations."""
         return await self.delete_specific_entities(self._test_presentations)
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         """Delete specific test presentations."""
         if not entities:
             # Delete all if no specific entities provided
@@ -346,9 +314,7 @@ class GoogleSlidesBongo(BaseBongo):
                         if ent in self._test_presentations:
                             self._test_presentations.remove(ent)
                     else:
-                        self.logger.warning(
-                            f"Delete failed: {r.status_code} - {r.text[:200]}"
-                        )
+                        self.logger.warning(f"Delete failed: {r.status_code} - {r.text[:200]}")
 
                 except Exception as e:
                     self.logger.warning(f"Delete error for {ent['id']}: {e}")
@@ -368,27 +334,20 @@ class GoogleSlidesBongo(BaseBongo):
             async with httpx.AsyncClient(timeout=30) as client:
                 # Delete current test presentations
                 if self._test_presentations:
-                    self.logger.info(
-                        f"🗑️ Deleting {len(self._test_presentations)} test presentations"
-                    )
-                    deleted = await self.delete_specific_entities(
-                        self._test_presentations[:]
-                    )
+                    self.logger.info(f"🗑️ Deleting {len(self._test_presentations)} test presentations")
+                    deleted = await self.delete_specific_entities(self._test_presentations[:])
                     cleanup_stats["presentations_deleted"] += len(deleted)
 
                 # Search for and cleanup any orphaned test presentations
                 await self._cleanup_orphaned_presentations(client, cleanup_stats)
 
             self.logger.info(
-                f"🧹 Cleanup completed: {cleanup_stats['presentations_deleted']} "
-                f"presentations deleted, {cleanup_stats['errors']} errors"
+                f"🧹 Cleanup completed: {cleanup_stats['presentations_deleted']} presentations deleted, {cleanup_stats['errors']} errors"
             )
         except Exception as e:
             self.logger.error(f"❌ Error during comprehensive cleanup: {e}")
 
-    async def _cleanup_orphaned_presentations(
-        self, client: httpx.AsyncClient, stats: dict[str, Any]
-    ):
+    async def _cleanup_orphaned_presentations(self, client: httpx.AsyncClient, stats: dict[str, Any]):
         """Find and delete orphaned test presentations from previous runs."""
         try:
             await self._pace()
@@ -407,30 +366,22 @@ class GoogleSlidesBongo(BaseBongo):
                 files = r.json().get("files", [])
 
                 if files:
-                    self.logger.info(
-                        f"🔍 Found {len(files)} orphaned test presentations"
-                    )
+                    self.logger.info(f"🔍 Found {len(files)} orphaned test presentations")
                     for presentation in files:
                         try:
                             await self._pace()
                             del_r = await client.delete(
                                 f"{DRIVE_API}/files/{presentation['id']}",
-                                headers={
-                                    "Authorization": f"Bearer {self.access_token}"
-                                },
+                                headers={"Authorization": f"Bearer {self.access_token}"},
                             )
                             if del_r.status_code == 204:
                                 stats["presentations_deleted"] += 1
-                                self.logger.info(
-                                    f"✅ Deleted orphaned presentation: {presentation.get('name', 'Unknown')}"
-                                )
+                                self.logger.info(f"✅ Deleted orphaned presentation: {presentation.get('name', 'Unknown')}")
                             else:
                                 stats["errors"] += 1
                         except Exception as e:
                             stats["errors"] += 1
-                            self.logger.warning(
-                                f"⚠️ Failed to delete presentation {presentation['id']}: {e}"
-                            )
+                            self.logger.warning(f"⚠️ Failed to delete presentation {presentation['id']}: {e}")
         except Exception as e:
             self.logger.warning(f"⚠️ Could not search for orphaned presentations: {e}")
 

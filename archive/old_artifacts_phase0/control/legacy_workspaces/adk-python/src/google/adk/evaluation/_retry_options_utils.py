@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 from google.genai import types
-from typing_extensions import override
+from typing import override
 
 from ..agents.callback_context import CallbackContext
 from ..models.llm_request import LlmRequest
@@ -40,34 +40,27 @@ _DEFAULT_HTTP_RETRY_OPTIONS = types.HttpRetryOptions(
 
 
 def add_default_retry_options_if_not_present(llm_request: LlmRequest):
-  """Adds default HTTP Retry Options, if they are not present on the llm_request.
+    """Adds default HTTP Retry Options, if they are not present on the llm_request.
 
-  NOTE: This implementation is intended for eval systems internal usage. Do not
-  take direct dependency on it.
-  """
-  llm_request.config = llm_request.config or types.GenerateContentConfig()
+    NOTE: This implementation is intended for eval systems internal usage. Do not
+    take direct dependency on it.
+    """
+    llm_request.config = llm_request.config or types.GenerateContentConfig()
 
-  llm_request.config.http_options = (
-      llm_request.config.http_options or types.HttpOptions()
-  )
-  llm_request.config.http_options.retry_options = (
-      llm_request.config.http_options.retry_options
-      or _DEFAULT_HTTP_RETRY_OPTIONS
-  )
+    llm_request.config.http_options = llm_request.config.http_options or types.HttpOptions()
+    llm_request.config.http_options.retry_options = llm_request.config.http_options.retry_options or _DEFAULT_HTTP_RETRY_OPTIONS
 
 
 class EnsureRetryOptionsPlugin(BasePlugin):
-  """This plugin adds retry options to llm_request, if they are not present.
+    """This plugin adds retry options to llm_request, if they are not present.
 
-  This is done to ensure that temporary outages with the model provider don't
-  affect eval runs.
+    This is done to ensure that temporary outages with the model provider don't
+    affect eval runs.
 
-  NOTE: This implementation is intended for eval systems internal usage. Do not
-  take direct dependency on it.
-  """
+    NOTE: This implementation is intended for eval systems internal usage. Do not
+    take direct dependency on it.
+    """
 
-  @override
-  async def before_model_callback(
-      self, *, callback_context: CallbackContext, llm_request: LlmRequest
-  ) -> LlmResponse | None:
-    add_default_retry_options_if_not_present(llm_request)
+    @override
+    async def before_model_callback(self, *, callback_context: CallbackContext, llm_request: LlmRequest) -> LlmResponse | None:
+        add_default_retry_options_if_not_present(llm_request)

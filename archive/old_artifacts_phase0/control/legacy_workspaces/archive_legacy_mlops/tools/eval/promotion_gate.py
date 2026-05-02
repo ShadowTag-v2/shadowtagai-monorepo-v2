@@ -7,7 +7,8 @@ import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 POLICY = ROOT / "policy" / "config" / "strict_policy.yml"
-EVAL   = ROOT / ".ci" / "offline_eval.json"
+EVAL = ROOT / ".ci" / "offline_eval.json"
+
 
 def main():
     if not POLICY.exists() or not EVAL.exists():
@@ -19,6 +20,7 @@ def main():
     ok = float(res.get("uplift_pct", 0.0)) >= min_uplift
     print(f"[GATE] uplift={res.get('uplift_pct')}% min={min_uplift}% -> {'PASS' if ok else 'BLOCK'}")
     sys.exit(0 if ok else 1)
+
 
 if __name__ == "__main__":
     main()

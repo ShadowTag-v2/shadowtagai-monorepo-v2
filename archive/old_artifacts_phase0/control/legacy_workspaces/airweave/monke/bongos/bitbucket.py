@@ -33,11 +33,7 @@ class BitbucketBongo(BaseBongo):
         # Support both Basic and Bearer auth
         self.username: str | None = credentials.get("username")
         self.app_password: str | None = credentials.get("app_password")
-        self.access_token: str | None = (
-            credentials.get("access_token")
-            or credentials.get("token")
-            or credentials.get("generic_api_key")
-        )
+        self.access_token: str | None = credentials.get("access_token") or credentials.get("token") or credentials.get("generic_api_key")
 
         # Configuration from kwargs
         self.entity_count = int(kwargs.get("entity_count", 3))
@@ -47,9 +43,7 @@ class BitbucketBongo(BaseBongo):
         self.openai_model = kwargs.get("openai_model", "gpt-4.1-mini")
 
         if not self.workspace:
-            raise ValueError(
-                "workspace is required (set config_fields.workspace or provide username)"
-            )
+            raise ValueError("workspace is required (set config_fields.workspace or provide username)")
 
         # Test data tracking
         self.test_files = []
@@ -90,9 +84,7 @@ class BitbucketBongo(BaseBongo):
             # Short unique token used in filename and content for verification
             token = str(uuid.uuid4())[:8]
 
-            filename, content, file_type = await generate_bitbucket_artifact(
-                self.openai_model, token
-            )
+            filename, content, file_type = await generate_bitbucket_artifact(self.openai_model, token)
             filepath = f"monke-test/{filename}-{token}.{file_type}"
 
             # Create file
@@ -136,9 +128,7 @@ class BitbucketBongo(BaseBongo):
                 file_type = file_info.get("file_type", "py")
 
                 # Generate new content with same token
-                _, content, _ = await generate_bitbucket_artifact(
-                    self.openai_model, token, is_update=True
-                )
+                _, content, _ = await generate_bitbucket_artifact(self.openai_model, token, is_update=True)
 
                 # Update file
                 await self._update_test_file(file_info["path"], content)
@@ -190,9 +180,7 @@ class BitbucketBongo(BaseBongo):
                     deleted_paths.append(test_file["path"])
                     self.logger.info(f"🗑️ Deleted test file: {test_file['path']}")
                 else:
-                    self.logger.warning(
-                        f"⚠️ Could not find test file for entity: {entity.get('path')}"
-                    )
+                    self.logger.warning(f"⚠️ Could not find test file for entity: {entity.get('path')}")
 
                 # Rate limiting
                 if len(entities) > 10:
@@ -251,16 +239,12 @@ class BitbucketBongo(BaseBongo):
                 )
 
                 if response.status_code not in [200, 201]:
-                    raise Exception(
-                        f"Failed to create repository: {response.status_code} - {response.text}"
-                    )
+                    raise Exception(f"Failed to create repository: {response.status_code} - {response.text}")
 
             elif response.status_code == 200:
                 self.logger.info(f"📁 Using existing repository: {self.repo_slug}")
             else:
-                raise Exception(
-                    f"Failed to check repository: {response.status_code} - {response.text}"
-                )
+                raise Exception(f"Failed to check repository: {response.status_code} - {response.text}")
 
     async def _create_test_file(self, filepath: str, content: str):
         """Create a test file via Bitbucket API."""
@@ -340,9 +324,7 @@ class BitbucketBongo(BaseBongo):
                     return False
                 else:
                     # Unexpected response
-                    self.logger.warning(
-                        f"⚠️ Unexpected response checking {filepath}: {response.status_code}"
-                    )
+                    self.logger.warning(f"⚠️ Unexpected response checking {filepath}: {response.status_code}")
                     return False
 
         except Exception as e:

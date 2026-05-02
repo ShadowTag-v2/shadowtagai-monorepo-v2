@@ -16,6 +16,7 @@ class Settings(BaseModel):
     monorepo_merge_status_path: str = "./docs/MERGE_STATUS.md"
     monorepo_control_plane_path: str = "./docs/ANTIGRAVITY_CONTROL_PLANE.md"
 
+
 def load_settings(path: str = "./config/app.yaml") -> Settings:
     p = Path(path)
     if not p.exists():

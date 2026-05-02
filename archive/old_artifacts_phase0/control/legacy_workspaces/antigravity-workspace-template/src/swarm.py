@@ -36,13 +36,7 @@ class MessageBus:
             message_type: Type of message (task, result, query).
             content: The message content.
         """
-        message = {
-            "from": from_agent,
-            "to": to_agent,
-            "type": message_type,
-            "content": content,
-            "timestamp": datetime.now().isoformat()
-        }
+        message = {"from": from_agent, "to": to_agent, "type": message_type, "content": content, "timestamp": datetime.now().isoformat()}
         self.messages.append(message)
 
     def get_context_for(self, agent_name: str) -> list[dict[str, Any]]:
@@ -89,11 +83,7 @@ class SwarmOrchestrator:
         print("   💻 Creating Coder agent...")
         print("   🔍 Creating Reviewer agent...")
         print("   📚 Creating Researcher agent...")
-        self.workers = {
-            "coder": CoderAgent(),
-            "reviewer": ReviewerAgent(),
-            "researcher": ResearcherAgent()
-        }
+        self.workers = {"coder": CoderAgent(), "reviewer": ReviewerAgent(), "researcher": ResearcherAgent()}
 
         print(f"✅ Swarm initialized with {len(self.workers)} specialist agents!\n")
 
@@ -126,8 +116,8 @@ class SwarmOrchestrator:
         # Step 2: Execute delegations
         results = []
         for i, delegation in enumerate(delegations, 1):
-            agent_name = delegation['agent']
-            agent_task = delegation['task']
+            agent_name = delegation["agent"]
+            agent_task = delegation["task"]
 
             if verbose:
                 print(f"\n{'=' * 70}")

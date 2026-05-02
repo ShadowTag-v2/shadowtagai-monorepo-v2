@@ -8,10 +8,21 @@ Date: 2025-11-17
 
 import pytest
 from src.core import (
-    PicoTrace, PrismKernel, ValueLock, PrismRuntime,
-    VerticalType, BusinessMetrics, VerticalPortfolio, KillSwitchGates,
-    RiskProbability, RiskSeverity, RiskLevel, OperatingFramework,
-    TransferPackage, StateSummary, ImmediateAction
+    PicoTrace,
+    PrismKernel,
+    ValueLock,
+    PrismRuntime,
+    VerticalType,
+    BusinessMetrics,
+    VerticalPortfolio,
+    KillSwitchGates,
+    RiskProbability,
+    RiskSeverity,
+    RiskLevel,
+    OperatingFramework,
+    TransferPackage,
+    StateSummary,
+    ImmediateAction,
 )
 
 
@@ -21,10 +32,7 @@ class TestPrismKernel:
     def test_pico_trace_validation(self):
         """Test PiCO trace validation"""
         trace = PicoTrace(
-            bind_input={"data": "test"},
-            direct_flow={"flow": "active"},
-            carry_motion={"motion": "forward"},
-            project_output={"output": "result"}
+            bind_input={"data": "test"}, direct_flow={"flow": "active"}, carry_motion={"motion": "forward"}, project_output={"output": "result"}
         )
         assert trace.validate() is True
 
@@ -40,18 +48,13 @@ class TestPrismKernel:
     def test_prism_runtime_initialization(self):
         """Test PRISM runtime initialization"""
         runtime = PrismRuntime()
-        trace = PicoTrace(
-            bind_input={"x": 1},
-            direct_flow={"y": 2},
-            carry_motion={"z": 3},
-            project_output={"result": 4}
-        )
+        trace = PicoTrace(bind_input={"x": 1}, direct_flow={"y": 2}, carry_motion={"z": 3}, project_output={"result": 4})
         kernel = PrismKernel(
             position_sequence=["pos1"],
             role_disciplines=["role1"],
             intent_targets=["intent1"],
             structure_pipeline=["struct1"],
-            modality_modes=["mode1"]
+            modality_modes=["mode1"],
         )
 
         assert runtime.initialize(trace, kernel) is True
@@ -62,19 +65,8 @@ class TestPrismKernel:
     def test_prism_flow_execution(self):
         """Test PiCO flow execution"""
         runtime = PrismRuntime()
-        trace = PicoTrace(
-            bind_input={"a": 1},
-            direct_flow={"b": 2},
-            carry_motion={"c": 3},
-            project_output={"d": 4}
-        )
-        kernel = PrismKernel(
-            position_sequence=["p"],
-            role_disciplines=["r"],
-            intent_targets=["i"],
-            structure_pipeline=["s"],
-            modality_modes=["m"]
-        )
+        trace = PicoTrace(bind_input={"a": 1}, direct_flow={"b": 2}, carry_motion={"c": 3}, project_output={"d": 4})
+        kernel = PrismKernel(position_sequence=["p"], role_disciplines=["r"], intent_targets=["i"], structure_pipeline=["s"], modality_modes=["m"])
 
         runtime.initialize(trace, kernel)
         output = runtime.execute_flow()
@@ -142,17 +134,11 @@ class TestOperatingFramework:
         framework = OperatingFramework()
 
         # Extremely high risk
-        risk = framework.risk_matrix.assess(
-            RiskProbability.A_FREQUENT,
-            RiskSeverity.I_CATASTROPHIC
-        )
+        risk = framework.risk_matrix.assess(RiskProbability.A_FREQUENT, RiskSeverity.I_CATASTROPHIC)
         assert risk == RiskLevel.EH_EXTREMELY_HIGH
 
         # Low risk
-        risk = framework.risk_matrix.assess(
-            RiskProbability.E_UNLIKELY,
-            RiskSeverity.IV_NEGLIGIBLE
-        )
+        risk = framework.risk_matrix.assess(RiskProbability.E_UNLIKELY, RiskSeverity.IV_NEGLIGIBLE)
         assert risk == RiskLevel.L_LOW
 
     def test_action_gates(self):
@@ -175,7 +161,7 @@ class TestOperatingFramework:
             probability=RiskProbability.D_SELDOM,
             severity=RiskSeverity.III_MODERATE,
             mission_aligned=True,
-            doctrine_compliant=True
+            doctrine_compliant=True,
         )
 
         assert result["approved"] is True
@@ -187,7 +173,7 @@ class TestOperatingFramework:
             probability=RiskProbability.A_FREQUENT,
             severity=RiskSeverity.I_CATASTROPHIC,
             mission_aligned=False,
-            doctrine_compliant=False
+            doctrine_compliant=False,
         )
 
         assert result["approved"] is False
@@ -230,15 +216,11 @@ class TestContextManagement:
             technical_foundation={"stack": "Python"},
             business_model={"type": "SaaS"},
             go_to_market={"phase": "Week 1"},
-            critical_frameworks=["ATP 5-19"]
+            critical_frameworks=["ATP 5-19"],
         )
 
         action = ImmediateAction(
-            priority=1,
-            category="revenue",
-            task="Build Sales Agent MVP",
-            subtasks=["Setup", "Integrate", "Deploy"],
-            deadline="Week 1"
+            priority=1, category="revenue", task="Build Sales Agent MVP", subtasks=["Setup", "Integrate", "Deploy"], deadline="Week 1"
         )
 
         context = package.create_context(
@@ -250,7 +232,7 @@ class TestContextManagement:
             decision_framework={},
             actions=[action],
             principles={},
-            frameworks={}
+            frameworks={},
         )
 
         assert context is not None
@@ -271,7 +253,7 @@ class TestContextManagement:
             switches=["Month 3: <$10K MRR"],
             posture={"mode": "strict"},
             question="What's next?",
-            options=["Build", "Deploy", "Test"]
+            options=["Build", "Deploy", "Test"],
         )
 
         markdown = prompt.format_markdown()
@@ -284,13 +266,7 @@ class TestContextManagement:
         package = TransferPackage()
 
         state = StateSummary(
-            what_built="Test",
-            core_asset=[],
-            key_verticals=[],
-            technical_foundation={},
-            business_model={},
-            go_to_market={},
-            critical_frameworks=[]
+            what_built="Test", core_asset=[], key_verticals=[], technical_foundation={}, business_model={}, go_to_market={}, critical_frameworks=[]
         )
 
         package.create_context(
@@ -302,7 +278,7 @@ class TestContextManagement:
             decision_framework={},
             actions=[],
             principles={},
-            frameworks={}
+            frameworks={},
         )
 
         validation = package.validate()

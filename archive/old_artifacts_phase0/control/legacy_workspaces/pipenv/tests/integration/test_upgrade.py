@@ -77,7 +77,7 @@ def test_pipenv_dependency_incompatibility_resolution(pipenv_instance_pypi):
         with open(pipfile_path) as pipfile:
             pipfile_content = pipfile.read()
 
-        updated_pipfile_content = pipfile_content.replace("google-api-core = \"==2.18.0\"", "google-api-core = \"*\"")
+        updated_pipfile_content = pipfile_content.replace('google-api-core = "==2.18.0"', 'google-api-core = "*"')
         with open(pipfile_path, "w") as pipfile:
             pipfile.write(updated_pipfile_content)
 

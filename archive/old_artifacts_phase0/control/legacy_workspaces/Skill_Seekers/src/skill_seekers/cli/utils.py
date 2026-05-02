@@ -56,7 +56,7 @@ def has_api_key() -> bool:
     Returns:
         bool: True if API key is set, False otherwise
     """
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     return len(api_key) > 0
 
 
@@ -67,7 +67,7 @@ def get_api_key() -> str | None:
     Returns:
         str: API key or None if not set
     """
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     return api_key if api_key else None
 
 
@@ -98,7 +98,7 @@ def print_upload_instructions(zip_path: str | Path) -> None:
     print(f"📤 Upload to Claude: {get_upload_url()}")
     print()
     print(f"1. Go to {get_upload_url()}")
-    print("2. Click \"Upload Skill\"")
+    print('2. Click "Upload Skill"')
     print(f"3. Select: {zip_path}")
     print("4. Done! ✅")
     print()
@@ -165,7 +165,7 @@ def validate_zip_file(zip_path: str | Path) -> tuple[bool, str | None]:
     if not zip_path.is_file():
         return False, f"Not a file: {zip_path}"
 
-    if not zip_path.suffix == '.zip':
+    if not zip_path.suffix == ".zip":
         return False, f"Not a .zip file: {zip_path}"
 
     return True, None
@@ -205,7 +205,7 @@ def read_reference_files(skill_dir: str | Path, max_chars: int = 100000, preview
         if ref_file.name == "index.md":
             continue
 
-        content = ref_file.read_text(encoding='utf-8')
+        content = ref_file.read_text(encoding="utf-8")
 
         # Limit size per file
         if len(content) > preview_limit:

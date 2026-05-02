@@ -1,11 +1,12 @@
 """Pydantic models for autonomous systems API."""
 
-from typing import List, Optional, Dict, Any
+from typing import Any
 from pydantic import BaseModel, Field
 
 
 class Position3D(BaseModel):
     """3D position."""
+
     x: float = Field(..., description="X coordinate (meters)")
     y: float = Field(..., description="Y coordinate (meters)")
     z: float = Field(..., description="Z coordinate (meters)")
@@ -13,6 +14,7 @@ class Position3D(BaseModel):
 
 class Waypoint(BaseModel):
     """Flight waypoint."""
+
     x: float
     y: float
     z: float
@@ -22,6 +24,7 @@ class Waypoint(BaseModel):
 
 class PathPlanningRequest(BaseModel):
     """Request for path planning."""
+
     start: Position3D
     goal: Position3D
     map_id: str = Field(..., description="HD map identifier")
@@ -32,6 +35,7 @@ class PathPlanningRequest(BaseModel):
 
 class PathPlanningResponse(BaseModel):
     """Response for path planning."""
+
     waypoints: list[Waypoint]
     total_distance: float
     estimated_time: float
@@ -43,6 +47,7 @@ class PathPlanningResponse(BaseModel):
 
 class LocalizationRequest(BaseModel):
     """Request for localization."""
+
     lidar_scan: str | None = Field(None, description="Base64-encoded point cloud (PCD format)")
     map_id: str
     initial_pose: Position3D | None = Field(None, description="Initial pose estimate")
@@ -50,6 +55,7 @@ class LocalizationRequest(BaseModel):
 
 class Pose(BaseModel):
     """6-DOF pose."""
+
     position: Position3D
     orientation: dict[str, float] = Field(..., description="Quaternion {x, y, z, w}")
     covariance: list[float] | None = Field(None, description="6x6 covariance matrix (flattened)")
@@ -57,6 +63,7 @@ class Pose(BaseModel):
 
 class LocalizationResponse(BaseModel):
     """Response for localization."""
+
     pose: Pose
     accuracy: float = Field(..., description="Localization accuracy (meters)")
     confidence: float = Field(..., ge=0.0, le=1.0)
@@ -65,6 +72,7 @@ class LocalizationResponse(BaseModel):
 
 class Obstacle(BaseModel):
     """Detected obstacle."""
+
     id: str
     position: Position3D
     dimensions: dict[str, float]  # {length, width, height} in meters
@@ -74,6 +82,7 @@ class Obstacle(BaseModel):
 
 class ObstacleDetectionRequest(BaseModel):
     """Request for obstacle detection."""
+
     lidar_scan: str = Field(..., description="Base64-encoded point cloud")
     detection_range: float = Field(50.0, ge=10.0, le=100.0, description="Detection range (meters)")
     include_static: bool = Field(True, description="Include static obstacles")
@@ -82,6 +91,7 @@ class ObstacleDetectionRequest(BaseModel):
 
 class ObstacleDetectionResponse(BaseModel):
     """Response for obstacle detection."""
+
     obstacles: list[Obstacle]
     timestamp: str
     latency_ms: float
@@ -89,6 +99,7 @@ class ObstacleDetectionResponse(BaseModel):
 
 class MissionPlanningRequest(BaseModel):
     """Request for high-level mission planning."""
+
     mission_type: str = Field(..., description="Mission type (patrol, inspection, delivery, search_rescue)")
     area_bounds: dict[str, Any] | None = Field(None, description="Geographic bounds {min_lat, max_lat, min_lon, max_lon}")
     waypoints: list[Waypoint] | None = Field(None, description="Pre-defined waypoints")
@@ -98,6 +109,7 @@ class MissionPlanningRequest(BaseModel):
 
 class MissionPlan(BaseModel):
     """Mission plan."""
+
     mission_id: str
     waypoints: list[Waypoint]
     estimated_duration: float  # seconds
@@ -108,12 +120,14 @@ class MissionPlan(BaseModel):
 
 class MissionPlanningResponse(BaseModel):
     """Response for mission planning."""
+
     mission_plan: MissionPlan
     latency_ms: float
 
 
 class BuildMapRequest(BaseModel):
     """Request for HD map building."""
+
     map_id: str
     lidar_scans: list[str] = Field(..., description="List of base64-encoded point clouds")
     initial_pose: Position3D
@@ -122,6 +136,7 @@ class BuildMapRequest(BaseModel):
 
 class BuildMapResponse(BaseModel):
     """Response for map building."""
+
     map_id: str
     map_size: dict[str, float]  # {x_meters, y_meters, z_meters}
     point_count: int
@@ -131,6 +146,7 @@ class BuildMapResponse(BaseModel):
 
 class SimulationRequest(BaseModel):
     """Request for Gazebo simulation."""
+
     scenario: str = Field(..., description="Simulation scenario (warehouse, city, outdoor)")
     drone_model: str = Field("iris", description="Drone model (iris, solo, custom)")
     mission_plan: MissionPlan | None = Field(None, description="Mission to simulate")
@@ -139,6 +155,7 @@ class SimulationRequest(BaseModel):
 
 class SimulationMetrics(BaseModel):
     """Simulation metrics."""
+
     success: bool
     completion_time: float  # seconds
     collisions: int
@@ -149,6 +166,7 @@ class SimulationMetrics(BaseModel):
 
 class SimulationResponse(BaseModel):
     """Response for simulation."""
+
     simulation_id: str
     metrics: SimulationMetrics
     trajectory_log: str | None = Field(None, description="Path to trajectory CSV")
@@ -158,6 +176,7 @@ class SimulationResponse(BaseModel):
 
 class FlightTelemetry(BaseModel):
     """Real-time flight telemetry."""
+
     timestamp: str
     pose: Pose
     velocity: Position3D  # m/s
@@ -169,12 +188,14 @@ class FlightTelemetry(BaseModel):
 
 class FlightCommand(BaseModel):
     """Flight controller command."""
+
     command_type: str = Field(..., description="Command type (arm, disarm, takeoff, land, goto, rtl)")
     parameters: dict[str, Any] | None = Field(None, description="Command-specific parameters")
 
 
 class FlightCommandResponse(BaseModel):
     """Response for flight command."""
+
     command_id: str
     status: str  # accepted, rejected, executing, completed, failed
     message: str

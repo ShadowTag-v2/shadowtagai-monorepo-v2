@@ -68,9 +68,7 @@ class AirtableBongo(BaseBongo):
 
         Returns a list of created entity descriptors used by the test flow.
         """
-        self.logger.info(
-            f"🥁 Creating {self.entity_count} Airtable records with table and comments"
-        )
+        self.logger.info(f"🥁 Creating {self.entity_count} Airtable records with table and comments")
 
         # First, create a test base (or use existing)
         await self._ensure_base()
@@ -91,16 +89,9 @@ class AirtableBongo(BaseBongo):
                     try:
                         await self._rate_limit()
                         token = str(uuid.uuid4())[:8]
-                        self.logger.info(
-                            f"🔨 Generating content for record with token: {token}"
-                        )
-                        fields, _, comments = await generate_airtable_record(
-                            self.openai_model, token
-                        )
-                        self.logger.info(
-                            f"📝 Generated record: '{fields.get('Name', '')[:50]}...' "
-                            f"with {len(comments)} comments"
-                        )
+                        self.logger.info(f"🔨 Generating content for record with token: {token}")
+                        fields, _, comments = await generate_airtable_record(self.openai_model, token)
+                        self.logger.info(f"📝 Generated record: '{fields.get('Name', '')[:50]}...' with {len(comments)} comments")
 
                         # Create record
                         resp = await client.post(
@@ -116,9 +107,7 @@ class AirtableBongo(BaseBongo):
                                 error_data = error_json
                             except Exception:
                                 pass
-                            self.logger.error(
-                                f"Failed to create record: {resp.status_code} - {error_data}"
-                            )
+                            self.logger.error(f"Failed to create record: {resp.status_code} - {error_data}")
 
                         resp.raise_for_status()
                         record = resp.json()
@@ -143,18 +132,11 @@ class AirtableBongo(BaseBongo):
                                             "text": comment_text,
                                         }
                                     )
-                                    self.logger.debug(
-                                        f"Added comment to record {record_id}: "
-                                        f"'{comment_text[:50]}...'"
-                                    )
+                                    self.logger.debug(f"Added comment to record {record_id}: '{comment_text[:50]}...'")
                                 else:
-                                    self.logger.warning(
-                                        f"Failed to create comment: {comment_resp.status_code}"
-                                    )
+                                    self.logger.warning(f"Failed to create comment: {comment_resp.status_code}")
                             except Exception as ex:
-                                self.logger.warning(
-                                    f"Failed to add comment to {record_id}: {ex}"
-                                )
+                                self.logger.warning(f"Failed to add comment to {record_id}: {ex}")
 
                         # Entity descriptor used by generic verification
                         return {
@@ -166,9 +148,7 @@ class AirtableBongo(BaseBongo):
                             "path": f"airtable/record/{record_id}",
                         }
                     except Exception as e:
-                        self.logger.error(
-                            f"❌ Error in create_one: {type(e).__name__}: {str(e)}"
-                        )
+                        self.logger.error(f"❌ Error in create_one: {type(e).__name__}: {str(e)}")
                         raise
 
             # Create all records in parallel
@@ -183,9 +163,7 @@ class AirtableBongo(BaseBongo):
                 elif result:
                     entities.append(result)
                     self._records.append(result)
-                    self.logger.info(
-                        f"✅ Created record {i + 1}/{self.entity_count}: {result['name'][:50]}..."
-                    )
+                    self.logger.info(f"✅ Created record {i + 1}/{self.entity_count}: {result['name'][:50]}...")
 
         self.created_entities = entities
 
@@ -214,9 +192,7 @@ class AirtableBongo(BaseBongo):
             for i in range(count):
                 await self._rate_limit()
                 record = self._records[i]
-                fields, _, comments = await generate_airtable_record(
-                    self.openai_model, record["token"]
-                )
+                fields, _, comments = await generate_airtable_record(self.openai_model, record["token"])
                 # Note: We don't re-add comments during updates, just update the record fields
                 resp = await client.patch(
                     f"{self.API_BASE}/{self._base_id}/{self._table_id}/{record['id']}",
@@ -242,9 +218,7 @@ class AirtableBongo(BaseBongo):
         # a programmatic way to delete bases via API
         return deleted_ids
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         """Delete provided list of records by id."""
         self.logger.info(f"🥁 Deleting {len(entities)} Airtable records")
         deleted: list[str] = []
@@ -259,9 +233,7 @@ class AirtableBongo(BaseBongo):
                     if r.status_code in (200, 204):
                         deleted.append(e["id"])
                     else:
-                        self.logger.warning(
-                            f"Delete failed for {e.get('id')}: {r.status_code} - {r.text}"
-                        )
+                        self.logger.warning(f"Delete failed for {e.get('id')}: {r.status_code} - {r.text}")
                 except Exception as ex:
                     self.logger.warning(f"Delete error for {e.get('id')}: {ex}")
         return deleted
@@ -280,10 +252,7 @@ class AirtableBongo(BaseBongo):
         try:
             # Clean up current session data first
             if self._records:
-                self.logger.info(
-                    f"🗑️ Cleaning up {len(self._records)} current session records "
-                    f"(and {len(self._comments)} comments)"
-                )
+                self.logger.info(f"🗑️ Cleaning up {len(self._records)} current session records (and {len(self._comments)} comments)")
                 deleted = await self.delete_specific_entities(self._records)
                 cleanup_stats["records_deleted"] += len(deleted)
                 # Comments are automatically deleted with records
@@ -325,16 +294,11 @@ class AirtableBongo(BaseBongo):
                 bases = r.json().get("bases", [])
 
                 if not bases:
-                    raise RuntimeError(
-                        "No accessible Airtable bases found. "
-                        "Please create a base and grant access to your OAuth app."
-                    )
+                    raise RuntimeError("No accessible Airtable bases found. Please create a base and grant access to your OAuth app.")
 
                 # Use the first base
                 self._base_id = bases[0]["id"]
-                self.logger.info(
-                    f"Using base {self._base_id} ({bases[0].get('name', 'Unknown')})"
-                )
+                self.logger.info(f"Using base {self._base_id} ({bases[0].get('name', 'Unknown')})")
 
             except Exception as e:
                 self.logger.error(f"Failed to find accessible base: {e}")

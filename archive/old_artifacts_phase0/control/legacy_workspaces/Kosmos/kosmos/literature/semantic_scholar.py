@@ -49,24 +49,27 @@ class SemanticScholarClient(BaseLiteratureClient):
 
         # Paper fields to request
         self.paper_fields = [
-            'paperId', 'externalIds', 'title', 'abstract', 'authors',
-            'year', 'publicationDate', 'venue', 'journal', 'url',
-            'citationCount', 'referenceCount', 'influentialCitationCount',
-            'fieldsOfStudy', 'openAccessPdf'
+            "paperId",
+            "externalIds",
+            "title",
+            "abstract",
+            "authors",
+            "year",
+            "publicationDate",
+            "venue",
+            "journal",
+            "url",
+            "citationCount",
+            "referenceCount",
+            "influentialCitationCount",
+            "fieldsOfStudy",
+            "openAccessPdf",
         ]
 
-        self.logger.info(
-            f"Initialized Semantic Scholar client (with{'out' if not self.api_key else ''} API key)"
-        )
+        self.logger.info(f"Initialized Semantic Scholar client (with{'out' if not self.api_key else ''} API key)")
 
     def search(
-        self,
-        query: str,
-        max_results: int = 10,
-        fields: list[str] | None = None,
-        year_from: int | None = None,
-        year_to: int | None = None,
-        **kwargs
+        self, query: str, max_results: int = 10, fields: list[str] | None = None, year_from: int | None = None, year_to: int | None = None, **kwargs
     ) -> list[PaperMetadata]:
         """
         Search for papers on Semantic Scholar.
@@ -105,14 +108,7 @@ class SemanticScholarClient(BaseLiteratureClient):
             return []
 
         # Check cache
-        cache_params = {
-            "query": query,
-            "max_results": max_results,
-            "fields": fields,
-            "year_from": year_from,
-            "year_to": year_to,
-            **kwargs
-        }
+        cache_params = {"query": query, "max_results": max_results, "fields": fields, "year_from": year_from, "year_to": year_to, **kwargs}
 
         if self.cache:
             cached_result = self.cache.get("semantic_scholar", "search", cache_params)
@@ -126,7 +122,7 @@ class SemanticScholarClient(BaseLiteratureClient):
                 limit=min(max_results, self.max_results),
                 fields=self.paper_fields,
                 year=f"{year_from}-{year_to}" if year_from and year_to else None,
-                fields_of_study=fields
+                fields_of_study=fields,
             )
 
             # Convert to PaperMetadata
@@ -190,10 +186,7 @@ class SemanticScholarClient(BaseLiteratureClient):
                 return cached_result
 
         try:
-            result = self.client.get_paper(
-                paper_id=paper_id,
-                fields=self.paper_fields
-            )
+            result = self.client.get_paper(paper_id=paper_id, fields=self.paper_fields)
 
             if not result:
                 self.logger.warning(f"Paper not found: {paper_id}")
@@ -236,11 +229,7 @@ class SemanticScholarClient(BaseLiteratureClient):
                 return cached_result
 
         try:
-            result = self.client.get_paper_references(
-                paper_id=paper_id,
-                limit=max_refs,
-                fields=self.paper_fields
-            )
+            result = self.client.get_paper_references(paper_id=paper_id, limit=max_refs, fields=self.paper_fields)
 
             # Extract and convert papers
             papers = [self._s2_to_metadata(ref.citedPaper) for ref in result if ref.citedPaper]
@@ -281,11 +270,7 @@ class SemanticScholarClient(BaseLiteratureClient):
                 return cached_result
 
         try:
-            result = self.client.get_paper_citations(
-                paper_id=paper_id,
-                limit=max_cites,
-                fields=self.paper_fields
-            )
+            result = self.client.get_paper_citations(paper_id=paper_id, limit=max_cites, fields=self.paper_fields)
 
             # Extract and convert papers
             papers = [self._s2_to_metadata(cite.citingPaper) for cite in result if cite.citingPaper]
@@ -321,10 +306,7 @@ class SemanticScholarClient(BaseLiteratureClient):
         authors = []
         if result.authors:
             for author in result.authors:
-                authors.append(Author(
-                    name=author.name,
-                    author_id=author.authorId if hasattr(author, 'authorId') else None
-                ))
+                authors.append(Author(name=author.name, author_id=author.authorId if hasattr(author, "authorId") else None))
 
         # Parse publication date
         pub_date = None
@@ -335,12 +317,12 @@ class SemanticScholarClient(BaseLiteratureClient):
                     pub_date = result.publicationDate
                 else:
                     pub_date = datetime.strptime(result.publicationDate, "%Y-%m-%d")
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
         # Get PDF URL from open access
         pdf_url = None
-        if result.openAccessPdf and hasattr(result.openAccessPdf, 'url'):
+        if result.openAccessPdf and hasattr(result.openAccessPdf, "url"):
             pdf_url = result.openAccessPdf.url
 
         # Extract fields of study
@@ -356,8 +338,7 @@ class SemanticScholarClient(BaseLiteratureClient):
             abstract=result.abstract or "",
             authors=authors,
             publication_date=pub_date,
-            journal=(result.journal.get("name") if isinstance(result.journal, dict)
-                    else result.journal) if result.journal else None,
+            journal=(result.journal.get("name") if isinstance(result.journal, dict) else result.journal) if result.journal else None,
             venue=result.venue,
             year=result.year,
             url=result.url,
@@ -366,8 +347,5 @@ class SemanticScholarClient(BaseLiteratureClient):
             reference_count=result.referenceCount or 0,
             influential_citation_count=result.influentialCitationCount or 0,
             fields=[f.lower() for f in fields],
-            raw_data={
-                "paperId": result.paperId,
-                "externalIds": external_ids
-            }
+            raw_data={"paperId": result.paperId, "externalIds": external_ids},
         )

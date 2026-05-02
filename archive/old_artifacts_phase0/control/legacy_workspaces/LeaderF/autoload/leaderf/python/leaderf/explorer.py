@@ -3,4 +3,4 @@
 
 from .explorer3 import Explorer
 
-__all__ = ['Explorer']
+__all__ = ["Explorer"]

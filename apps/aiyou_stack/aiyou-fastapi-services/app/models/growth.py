@@ -6,7 +6,7 @@ Pydantic models for growth engineering requests and responses.
 from enum import StrEnum
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class AnalysisType(StrEnum):
@@ -31,19 +31,22 @@ class UserHookAnalysisRequest(BaseModel):
     metrics: dict[str, Any] | None = Field(None, description="Current metrics data")
     goals: list[str] | None = Field(None, description="Specific goals for analysis")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "app_name": "MyApp",
-                "user_flows": [
-                    {"step": "signup", "conversion_rate": 0.65},
-                    {"step": "first_action", "conversion_rate": 0.45},
-                ],
-                "current_features": ["profile", "sharing", "notifications"],
-                "metrics": {"dau": 1000, "retention_d7": 0.30},
-                "goals": ["improve_activation", "increase_retention"],
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "app_name": "MyApp",
+                    "user_flows": [
+                        {"step": "signup", "conversion_rate": 0.65},
+                        {"step": "first_action", "conversion_rate": 0.45},
+                    ],
+                    "current_features": ["profile", "sharing", "notifications"],
+                    "metrics": {"dau": 1000, "retention_d7": 0.30},
+                    "goals": ["improve_activation", "increase_retention"],
+                }
+            ]
         }
+    )
 
 
 class ViralLoopRequest(BaseModel):
@@ -56,17 +59,20 @@ class ViralLoopRequest(BaseModel):
     sharing_incentive: str | None = Field(None, description="Proposed sharing incentive")
     constraints: list[str] | None = Field(None, description="Technical or business constraints")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "product_name": "CollabTool",
-                "value_proposition": "Team collaboration made simple",
-                "target_audience": "Remote teams and startups",
-                "current_users": 5000,
-                "sharing_incentive": "Extra storage for referrals",
-                "constraints": ["budget_limited", "mobile_first"],
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "product_name": "CollabTool",
+                    "value_proposition": "Team collaboration made simple",
+                    "target_audience": "Remote teams and startups",
+                    "current_users": 5000,
+                    "sharing_incentive": "Extra storage for referrals",
+                    "constraints": ["budget_limited", "mobile_first"],
+                }
+            ]
         }
+    )
 
 
 class ABTestRequest(BaseModel):
@@ -80,21 +86,24 @@ class ABTestRequest(BaseModel):
     expected_effect_size: float | None = Field(None, description="Expected effect size")
     traffic_allocation: dict[str, float] | None = Field(None, description="Traffic split")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "experiment_name": "Onboarding_Flow_V2",
-                "hypothesis": "Simplified onboarding increases activation by 15%",
-                "variants": [
-                    {"name": "control", "description": "Current 5-step flow"},
-                    {"name": "treatment", "description": "New 3-step flow"},
-                ],
-                "primary_metric": "activation_rate",
-                "secondary_metrics": ["time_to_first_action", "completion_rate"],
-                "expected_effect_size": 0.15,
-                "traffic_allocation": {"control": 0.5, "treatment": 0.5},
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "experiment_name": "Onboarding_Flow_V2",
+                    "hypothesis": "Simplified onboarding increases activation by 15%",
+                    "variants": [
+                        {"name": "control", "description": "Current 5-step flow"},
+                        {"name": "treatment", "description": "New 3-step flow"},
+                    ],
+                    "primary_metric": "activation_rate",
+                    "secondary_metrics": ["time_to_first_action", "completion_rate"],
+                    "expected_effect_size": 0.15,
+                    "traffic_allocation": {"control": 0.5, "treatment": 0.5},
+                }
+            ]
         }
+    )
 
 
 class GrowthMetricsRequest(BaseModel):
@@ -105,21 +114,24 @@ class GrowthMetricsRequest(BaseModel):
     goals: list[str] | None = Field(None, description="Growth goals")
     benchmarks: dict[str, float] | None = Field(None, description="Industry benchmarks")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "metrics": {
-                    "signups": 1500,
-                    "activated_users": 800,
-                    "dau": 600,
-                    "retention_d7": 0.35,
-                    "viral_coefficient": 0.4,
-                },
-                "time_period": "last_30_days",
-                "goals": ["reach_1000_dau", "improve_retention"],
-                "benchmarks": {"retention_d7": 0.40, "viral_coefficient": 0.6},
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "metrics": {
+                        "signups": 1500,
+                        "activated_users": 800,
+                        "dau": 600,
+                        "retention_d7": 0.35,
+                        "viral_coefficient": 0.4,
+                    },
+                    "time_period": "last_30_days",
+                    "goals": ["reach_1000_dau", "improve_retention"],
+                    "benchmarks": {"retention_d7": 0.40, "viral_coefficient": 0.6},
+                }
+            ]
         }
+    )
 
 
 class EngagementFeatureRequest(BaseModel):
@@ -137,16 +149,19 @@ class EngagementFeatureRequest(BaseModel):
         description="Existing features to integrate with",
     )
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "feature_type": "gamification",
-                "objective": "Increase daily engagement by 25%",
-                "target_users": "Active users with 7+ day streak",
-                "constraints": ["mobile_friendly", "low_development_cost"],
-                "existing_features": ["profile", "achievements", "leaderboard"],
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "feature_type": "gamification",
+                    "objective": "Increase daily engagement by 25%",
+                    "target_users": "Active users with 7+ day streak",
+                    "constraints": ["mobile_friendly", "low_development_cost"],
+                    "existing_features": ["profile", "achievements", "leaderboard"],
+                }
+            ]
         }
+    )
 
 
 class AnalyticsTrackingRequest(BaseModel):
@@ -158,19 +173,22 @@ class AnalyticsTrackingRequest(BaseModel):
     tools: list[str] | None = Field(None, description="Analytics tools to use")
     compliance_requirements: list[str] | None = Field(None, description="Privacy/compliance needs")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "events_to_track": [
-                    {"name": "user_signup", "properties": ["source", "device"]},
-                    {"name": "feature_used", "properties": ["feature_name", "duration"]},
-                ],
-                "metrics_needed": ["dau", "retention", "funnel_conversion"],
-                "platform": "web",
-                "tools": ["mixpanel", "amplitude"],
-                "compliance_requirements": ["gdpr", "ccpa"],
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "events_to_track": [
+                        {"name": "user_signup", "properties": ["source", "device"]},
+                        {"name": "feature_used", "properties": ["feature_name", "duration"]},
+                    ],
+                    "metrics_needed": ["dau", "retention", "funnel_conversion"],
+                    "platform": "web",
+                    "tools": ["mixpanel", "amplitude"],
+                    "compliance_requirements": ["gdpr", "ccpa"],
+                }
+            ]
         }
+    )
 
 
 class ReferralOptimizationRequest(BaseModel):
@@ -181,20 +199,28 @@ class ReferralOptimizationRequest(BaseModel):
     incentives: dict[str, Any] = Field(..., description="Current incentive structure")
     issues: list[str] | None = Field(None, description="Known issues or concerns")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "referral_metrics": {
-                    "invites_sent": 1000,
-                    "invites_clicked": 300,
-                    "signups_from_referrals": 100,
-                    "referrer_conversion": 0.25,
-                },
-                "referral_flow": ["share_button", "invite_modal", "share_link", "friend_signup"],
-                "incentives": {"referrer": "10 credits", "referee": "5 credits"},
-                "issues": ["low_click_rate", "high_dropoff_at_signup"],
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "referral_metrics": {
+                        "invites_sent": 1000,
+                        "invites_clicked": 300,
+                        "signups_from_referrals": 100,
+                        "referrer_conversion": 0.25,
+                    },
+                    "referral_flow": [
+                        "share_button",
+                        "invite_modal",
+                        "share_link",
+                        "friend_signup",
+                    ],
+                    "incentives": {"referrer": "10 credits", "referee": "5 credits"},
+                    "issues": ["low_click_rate", "high_dropoff_at_signup"],
+                }
+            ]
         }
+    )
 
 
 class GeneralGrowthQuery(BaseModel):
@@ -203,17 +229,20 @@ class GeneralGrowthQuery(BaseModel):
     query: str = Field(..., description="Growth engineering question")
     context: dict[str, Any] | None = Field(None, description="Additional context")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "query": "How can I improve my product's viral coefficient?",
-                "context": {
-                    "current_k_factor": 0.3,
-                    "product_type": "social_app",
-                    "stage": "early_growth",
-                },
-            },
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "query": "How can I improve my product's viral coefficient?",
+                    "context": {
+                        "current_k_factor": 0.3,
+                        "product_type": "social_app",
+                        "stage": "early_growth",
+                    },
+                }
+            ]
         }
+    )
 
 
 class AgentResponse(BaseModel):

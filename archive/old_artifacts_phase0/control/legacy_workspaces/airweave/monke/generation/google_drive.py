@@ -1,6 +1,5 @@
 """Google Drive-specific generation adapter: file content generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.google_drive import GoogleDriveArtifact
 
@@ -61,18 +60,11 @@ def render_body(artifact: GoogleDriveArtifact, file_type: str) -> str:
             f"Token: {artifact.token}",
         ]
         if hasattr(artifact, "sections") and artifact.sections:
-            parts.extend(
-                [
-                    f"\n## {s.get('heading', '')}\n{s.get('body', '')}"
-                    for s in artifact.sections
-                ]
-            )
+            parts.extend([f"\n## {s.get('heading', '')}\n{s.get('body', '')}" for s in artifact.sections])
         return "\n\n".join(parts)
 
 
-async def generate_google_drive_artifact(
-    file_type: str, model: str, token: str, is_update: bool = False
-) -> tuple[str, str, str]:
+async def generate_google_drive_artifact(file_type: str, model: str, token: str, is_update: bool = False) -> tuple[str, str, str]:
     """Generate a Google Drive file via LLM.
 
     Returns (title, content, mime_type). The token must be embedded in the output by instruction.
@@ -107,13 +99,9 @@ async def generate_google_drive_artifact(
     }
 
     if is_update:
-        instruction = f"Type: {file_type} (UPDATED VERSION)\n" + instructions.get(
-            file_type, instructions["text"]
-        ).format(token=token)
+        instruction = f"Type: {file_type} (UPDATED VERSION)\n" + instructions.get(file_type, instructions["text"]).format(token=token)
     else:
-        instruction = f"Type: {file_type}\n" + instructions.get(
-            file_type, instructions["text"]
-        ).format(token=token)
+        instruction = f"Type: {file_type}\n" + instructions.get(file_type, instructions["text"]).format(token=token)
 
     artifact = await llm.generate_structured(GoogleDriveArtifact, instruction)
 

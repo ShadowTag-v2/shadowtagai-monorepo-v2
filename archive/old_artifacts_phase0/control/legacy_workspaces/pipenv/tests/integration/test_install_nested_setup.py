@@ -49,13 +49,11 @@ def configure():
         # Install the package using a path with spaces
         # Use both escaped spaces and quoted path to test both scenarios
         relative_package_dir = f'"{package_dir.relative_to(p.path)}"'
-        c = p.pipenv(f'install -e {relative_package_dir}')
+        c = p.pipenv(f"install -e {relative_package_dir}")
         assert c.returncode == 0
 
         # Verify the package was installed correctly
-        c = p.pipenv('run python -c "'
-                     'import simple_package.test_setup; '
-                     'print(simple_package.test_setup.configure())"')
+        c = p.pipenv('run python -c "import simple_package.test_setup; print(simple_package.test_setup.configure())"')
         assert c.returncode == 0
         assert "Setup package my_simple_package" in c.stdout
 

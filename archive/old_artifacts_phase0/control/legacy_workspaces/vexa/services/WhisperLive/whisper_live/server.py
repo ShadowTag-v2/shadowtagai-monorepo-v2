@@ -19,6 +19,7 @@ from whisper_live.vad import VoiceActivityDetector
 
 try:
     from whisper_live.transcriber_tensorrt import WhisperTRTLLM
+
     TENSORRT_AVAILABLE = True
 except Exception:
     TENSORRT_AVAILABLE = False
@@ -39,9 +40,12 @@ try:
 except Exception:
     logging.basicConfig(level=logging.INFO)
 
+
 # Env-driven logging flags
 def _def_bool(v):
     return str(v).strip().lower() in ("1", "true", "yes", "on")
+
+
 WL_LOG_TRANSCRIPTS = _def_bool(os.getenv("WL_LOG_TRANSCRIPTS", "false"))
 WL_LOG_TRANSCRIPT_SUMMARY = _def_bool(os.getenv("WL_LOG_TRANSCRIPT_SUMMARY", "true"))
 WL_LOG_HALLUCINATIONS = _def_bool(os.getenv("WL_LOG_HALLUCINATIONS", "false"))
@@ -62,11 +66,12 @@ os.makedirs(LOG_DIR, exist_ok=True)
 log_filename = os.path.join(LOG_DIR, f"transcription_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
 file_handler = logging.FileHandler(log_filename)
 file_handler.setLevel(logging.INFO)
-file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+file_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 file_handler.setFormatter(file_formatter)
 logger = logging.getLogger("transcription")
 logger.setLevel(logging.INFO)
 logger.addHandler(file_handler)
+
 
 class TranscriptionCollectorClient:
     """Client that maintains connection to Redis on a separate thread
@@ -81,11 +86,7 @@ class TranscriptionCollectorClient:
             redis_stream_url: URL to redis server with the stream
         """
         # Use provided URL or environment variable with fallback to localhost
-        self.redis_url = (
-            redis_stream_url or
-            os.getenv("REDIS_STREAM_URL") or
-            "redis://localhost:6379/0"
-        )
+        self.redis_url = redis_stream_url or os.getenv("REDIS_STREAM_URL") or "redis://localhost:6379/0"
         logging.info(f"TranscriptionCollectorClient instance creating with Redis URL: {self.redis_url}")
 
         self.redis_client = None
@@ -116,10 +117,7 @@ class TranscriptionCollectorClient:
                 return
 
             self.stop_requested = False
-            self.connection_thread = threading.Thread(
-                target=self._connection_worker,
-                daemon=True
-            )
+            self.connection_thread = threading.Thread(target=self._connection_worker, daemon=True)
             self.connection_thread.start()
             logging.info("Started connection thread.")
 
@@ -133,10 +131,7 @@ class TranscriptionCollectorClient:
             try:
                 # Parse Redis URL
                 logging.info(f"Connecting to Redis at {self.redis_url}")
-                self.redis_client = redis.from_url(
-                    self.redis_url,
-                    decode_responses=True
-                )
+                self.redis_client = redis.from_url(self.redis_url, decode_responses=True)
 
                 # Test connection
                 self.redis_client.ping()
@@ -231,18 +226,13 @@ class TranscriptionCollectorClient:
                 "platform": platform,
                 "meeting_id": meeting_id,
                 "uid": session_uid,
-                "start_timestamp": timestamp_iso
+                "start_timestamp": timestamp_iso,
             }
 
             # Publish to Redis stream
-            message = {
-                "payload": json.dumps(payload)
-            }
+            message = {"payload": json.dumps(payload)}
 
-            result = self.redis_client.xadd(
-                self.stream_key,
-                message
-            )
+            result = self.redis_client.xadd(self.stream_key, message)
 
             if result:
                 logging.info(f"Published session_start event for session {session_uid}")
@@ -288,24 +278,21 @@ class TranscriptionCollectorClient:
             # (typically strings, numbers, or booleans)
             # For simplicity, we assume the structure is already flat as per planstate.md
 
-            result = self.redis_client.xadd(
-                self.speaker_events_stream_key,
-                redis_message_payload
-            )
+            result = self.redis_client.xadd(self.speaker_events_stream_key, redis_message_payload)
 
             if result:
                 if WL_LOG_SPEAKER_PUBLISH:
-                    uid = redis_message_payload.get('uid', 'N/A')
-                    event_type = redis_message_payload.get('event_type', 'N/A')
+                    uid = redis_message_payload.get("uid", "N/A")
+                    event_type = redis_message_payload.get("event_type", "N/A")
                     logging.info(f"Published speaker event ({event_type}) for UID {uid} to {self.speaker_events_stream_key}")
                 return True
             else:
-                uid = redis_message_payload.get('uid', 'N/A')
+                uid = redis_message_payload.get("uid", "N/A")
                 logging.error(f"Failed to publish speaker event for UID {uid} to {self.speaker_events_stream_key}")
                 return False
 
         except Exception as e:
-            uid = event_data.get('uid', 'N/A')
+            uid = event_data.get("uid", "N/A")
             logging.error(f"Error publishing speaker event for UID {uid} to {self.speaker_events_stream_key}: {e}")
             logging.error(f"Error publishing transcription: {e}")
             return False
@@ -335,7 +322,7 @@ class TranscriptionCollectorClient:
                 "platform": platform,
                 "meeting_id": meeting_id,
                 "uid": session_uid,
-                "end_timestamp": timestamp_iso
+                "end_timestamp": timestamp_iso,
             }
             message = {"payload": json.dumps(payload)}
             result = self.redis_client.xadd(self.stream_key, message)
@@ -392,7 +379,7 @@ class TranscriptionCollectorClient:
                 "platform": platform,
                 "meeting_id": meeting_id,
                 "segments": segments,
-                "uid": session_uid
+                "uid": session_uid,
             }
 
             message = {
@@ -400,10 +387,7 @@ class TranscriptionCollectorClient:
                 "payload": json.dumps(payload)
             }
 
-            result = self.redis_client.xadd(
-                self.stream_key,
-                message
-            )
+            result = self.redis_client.xadd(self.stream_key, message)
 
             if result:
                 logging.debug(f"Published transcription with {len(segments)} segments for UID {session_uid} to {self.stream_key}")
@@ -415,6 +399,7 @@ class TranscriptionCollectorClient:
         except Exception as e:
             logging.error(f"Error publishing transcription for UID {session_uid} to {self.stream_key}: {e}")
             return False
+
 
 class ClientManager:
     def __init__(self, max_clients=4, max_connection_time=3600):
@@ -558,17 +543,17 @@ class TranscriptionServer:
             except Exception:
                 pass
             # Attempt to connect the collector client immediately if needed, or rely on its internal connect()
-            if hasattr(self.collector_client, 'connect') and callable(getattr(self.collector_client, 'connect')) and not self.collector_client.is_connected:
-                 # This connect call is from the original global init, ensuring it's still triggered
-                 # if TranscriptionCollectorClient's own __init__ doesn't auto-connect fully.
-                 # Based on its code, __init__ calls self.connect() which starts a thread.
-                 pass # self.collector_client.connect() is called in its __init__
+            if hasattr(self.collector_client, "connect") and callable(self.collector_client.connect) and not self.collector_client.is_connected:
+                # This connect call is from the original global init, ensuring it's still triggered
+                # if TranscriptionCollectorClient's own __init__ doesn't auto-connect fully.
+                # Based on its code, __init__ calls self.connect() which starts a thread.
+                pass  # self.collector_client.connect() is called in its __init__
         else:
             logging.warning("REDIS_STREAM_URL not set. TranscriptionCollectorClient will not be initialized in TranscriptionServer.")
 
         self.is_healthy = False  # Represents WebSocket server readiness primarily
         self.health_server = None
-        self.backend = None # Initialize backend attribute
+        self.backend = None  # Initialize backend attribute
 
         # Self-monitoring
         self.unhealthy_streak = 0
@@ -603,7 +588,7 @@ class TranscriptionServer:
         # Timestamps tracked globally across all sessions
         self.server_start_ts = time.time()
         self.server_last_transcription_ts = None  # updated whenever any session emits segments
-        self.last_speaker_event_ts = None         # updated on incoming speaker_activity events
+        self.last_speaker_event_ts = None  # updated on incoming speaker_activity events
 
         # Circuit breaker consecutive trigger requirement (avoid single-check flaps)
         try:
@@ -665,7 +650,7 @@ class TranscriptionServer:
         if self._consul_enabled:
             self._consul_http_addr = os.getenv("CONSUL_HTTP_ADDR", "http://consul:8500")
             # Make service ID stable per ip:port to avoid duplicates across restarts
-            safe_ip = self._pod_ip.replace('.', '-')
+            safe_ip = self._pod_ip.replace(".", "-")
             self._consul_service_id = f"whisperlive-{safe_ip}-{self._listen_port}"
             logging.info(f"🔍 CONSUL ENABLED: {self._consul_http_addr}, service_id={self._consul_service_id}")
         # Register OS signal handlers to gracefully deregister on shutdown
@@ -685,7 +670,7 @@ class TranscriptionServer:
         for websocket in list(self.client_manager.clients.keys()):
             try:
                 # Check if websocket is still open
-                if hasattr(websocket, 'closed') and websocket.closed:
+                if hasattr(websocket, "closed") and websocket.closed:
                     stale_websockets.append(websocket)
                     continue
 
@@ -703,7 +688,7 @@ class TranscriptionServer:
         for websocket in stale_websockets:
             try:
                 client = self.client_manager.clients.get(websocket)
-                client_uid = client.client_uid if client else 'unknown'
+                client_uid = client.client_uid if client else "unknown"
                 logging.info(f"Removing stale connection: {client_uid}")
                 self.client_manager.remove_client(websocket)
                 removed_count += 1
@@ -721,16 +706,19 @@ class TranscriptionServer:
             except Exception as e:
                 logging.warning(f"Error in periodic cleanup: {e}")
             self._metric_stop_evt.wait(30)  # Check every 30 seconds
+
     # --- End connection cleanup methods ---
 
     def _register_signal_handlers(self):
         import signal
+
         def _handler(signum, frame):
             try:
                 self._on_shutdown(signum)
             finally:
                 # Best-effort immediate process exit after cleanup
                 pass
+
         # Register common termination signals
         signal.signal(signal.SIGTERM, _handler)
         signal.signal(signal.SIGINT, _handler)
@@ -756,10 +744,7 @@ class TranscriptionServer:
         except Exception as exc:
             logging.warning(f"Failed to clean up connections on shutdown: {exc}")
 
-    def initialize_client(
-        self, websocket, options, faster_whisper_custom_model_path,
-        whisper_tensorrt_path, trt_multilingual
-    ):
+    def initialize_client(self, websocket, options, faster_whisper_custom_model_path, whisper_tensorrt_path, trt_multilingual):
         """
         Initializes a client based on the backend type.
         """
@@ -783,7 +768,7 @@ class TranscriptionServer:
                 token=options.get("token"),
                 meeting_id=options.get("meeting_id"),
                 collector_client_ref=self.collector_client,
-                server_options=self.server_options
+                server_options=self.server_options,
             )
         # faster-whisper client
         else:
@@ -802,7 +787,7 @@ class TranscriptionServer:
                 token=options.get("token"),
                 meeting_id=options.get("meeting_id"),
                 collector_client_ref=self.collector_client,
-                server_options=self.server_options
+                server_options=self.server_options,
             )
         self.client_manager.add_client(websocket, client)
         logging.info(f"Added client {client.client_uid}, total clients: {len(self.client_manager.clients)}")
@@ -827,10 +812,10 @@ class TranscriptionServer:
         # Check if this is a JSON control message (string) or binary audio data
         try:
             # Try to decode as JSON string first
-            if isinstance(frame_data, str) or (isinstance(frame_data, bytes) and frame_data.startswith(b'{')):
+            if isinstance(frame_data, str) or (isinstance(frame_data, bytes) and frame_data.startswith(b"{")):
                 # This is a JSON control message
                 if isinstance(frame_data, bytes):
-                    frame_data = frame_data.decode('utf-8')
+                    frame_data = frame_data.decode("utf-8")
 
                 control_message = json.loads(frame_data)
                 message_type = control_message.get("type", "unknown")
@@ -856,7 +841,7 @@ class TranscriptionServer:
                 # Return None to indicate control message was processed (not audio)
                 return None
 
-        except (json.JSONDecodeError, UnicodeDecodeError):
+        except json.JSONDecodeError, UnicodeDecodeError:
             # Not a JSON message, treat as binary audio data
             pass
 
@@ -952,8 +937,7 @@ class TranscriptionServer:
         except Exception as e:
             logging.error(f"Error processing audio chunk metadata: {e}")
 
-    def handle_new_connection(self, websocket, faster_whisper_custom_model_path,
-                              whisper_tensorrt_path, trt_multilingual):
+    def handle_new_connection(self, websocket, faster_whisper_custom_model_path, whisper_tensorrt_path, trt_multilingual):
         try:
             logging.info("New client connected")
             options = websocket.recv()
@@ -967,33 +951,30 @@ class TranscriptionServer:
             if missing_fields:
                 error_msg = f"Missing required fields: {', '.join(missing_fields)}"
                 logging.error(error_msg)
-                websocket.send(json.dumps({
-                    "uid": options.get("uid", "unknown"),
-                    "status": "ERROR",
-                    "message": error_msg
-                }))
+                websocket.send(json.dumps({"uid": options.get("uid", "unknown"), "status": "ERROR", "message": error_msg}))
                 websocket.close()
                 return False
 
             # Log the connection with critical parameters
-            logging.info(f"Connection parameters received: uid={options['uid']}, platform={options['platform']}, meeting_url={options['meeting_url']}, token={options['token']}, meeting_id={options['meeting_id']}")
+            logging.info(
+                f"Connection parameters received: uid={options['uid']}, platform={options['platform']}, meeting_url={options['meeting_url']}, token={options['token']}, meeting_id={options['meeting_id']}"
+            )
 
             if self.client_manager is None:
                 # Enforce server-side capacity from env (ignore client-provided max_clients)
                 max_clients = int(self.config_max_clients)
-                max_connection_time = options.get('max_connection_time', 3600)
+                max_connection_time = options.get("max_connection_time", 3600)
                 self.client_manager = ClientManager(max_clients, max_connection_time)
                 logging.info(f"CAPACITY: Initialized ClientManager with max_clients={max_clients}, max_connection_time={max_connection_time}")
 
-            self.use_vad = options.get('use_vad')
+            self.use_vad = options.get("use_vad")
             if self.client_manager.is_server_full(websocket, options):
                 websocket.close()
                 return False  # Indicates that the connection should not continue
 
-            if self.backend and self.backend.is_tensorrt(): # Check if self.backend is not None
+            if self.backend and self.backend.is_tensorrt():  # Check if self.backend is not None
                 self.vad_detector = VoiceActivityDetector(frame_rate=self.RATE)
-            self.initialize_client(websocket, options, faster_whisper_custom_model_path,
-                                   whisper_tensorrt_path, trt_multilingual)
+            self.initialize_client(websocket, options, faster_whisper_custom_model_path, whisper_tensorrt_path, trt_multilingual)
             return True
         except json.JSONDecodeError:
             logging.error("Failed to decode JSON from client")
@@ -1030,15 +1011,16 @@ class TranscriptionServer:
         client.add_frames(frame_np)
         return True
 
-    def recv_audio(self,
-                   websocket,
-                   backend: BackendType = BackendType.FASTER_WHISPER,
-                   faster_whisper_custom_model_path=None,
-                   whisper_tensorrt_path=None,
-                   trt_multilingual=False):
-        self.backend = backend # Set the backend for the TranscriptionServer instance
-        if not self.handle_new_connection(websocket, faster_whisper_custom_model_path,
-                                          whisper_tensorrt_path, trt_multilingual):
+    def recv_audio(
+        self,
+        websocket,
+        backend: BackendType = BackendType.FASTER_WHISPER,
+        faster_whisper_custom_model_path=None,
+        whisper_tensorrt_path=None,
+        trt_multilingual=False,
+    ):
+        self.backend = backend  # Set the backend for the TranscriptionServer instance
+        if not self.handle_new_connection(websocket, faster_whisper_custom_model_path, whisper_tensorrt_path, trt_multilingual):
             return
 
         try:
@@ -1055,15 +1037,17 @@ class TranscriptionServer:
                 websocket.close()
             del websocket
 
-    def run(self,
-            host,
-            port=9090,  # Unified port for both GPU and CPU versions
-            backend="tensorrt",
-            faster_whisper_custom_model_path=None,
-            whisper_tensorrt_path=None,
-            trt_multilingual=False,
-            single_model=False,
-            server_options=None):
+    def run(
+        self,
+        host,
+        port=9090,  # Unified port for both GPU and CPU versions
+        backend="tensorrt",
+        faster_whisper_custom_model_path=None,
+        whisper_tensorrt_path=None,
+        trt_multilingual=False,
+        single_model=False,
+        server_options=None,
+    ):
         """
         Run the transcription server.
         """
@@ -1094,16 +1078,18 @@ class TranscriptionServer:
         with serve(
             functools.partial(
                 self.recv_audio,
-                backend=self.backend, # Pass the enum member
+                backend=self.backend,  # Pass the enum member
                 faster_whisper_custom_model_path=faster_whisper_custom_model_path,
                 whisper_tensorrt_path=whisper_tensorrt_path,
-                trt_multilingual=trt_multilingual
+                trt_multilingual=trt_multilingual,
             ),
             host,
-            port
+            port,
         ) as server:
-            self.is_healthy = True # WebSocket server is up
-            logger.info(f"SERVER_RUNNING: WhisperLive server running on {host}:{port} with health check on {host}:9091/health and max_clients={self.config_max_clients}")
+            self.is_healthy = True  # WebSocket server is up
+            logger.info(
+                f"SERVER_RUNNING: WhisperLive server running on {host}:{port} with health check on {host}:9091/health and max_clients={self.config_max_clients}"
+            )
 
             # Server started successfully
             logging.info(f"WhisperLive server started successfully on {host}:{port}")
@@ -1113,7 +1099,9 @@ class TranscriptionServer:
                 self._stop_self_monitor.clear()
                 self.self_monitor_thread = threading.Thread(target=self._self_monitor, daemon=True)
                 self.self_monitor_thread.start()
-                logger.info(f"SELF_MONITOR: Started self-monitoring thread. Interval: {self.health_monitor_interval}s, Max Streak: {self.max_unhealthy_streak}")
+                logger.info(
+                    f"SELF_MONITOR: Started self-monitoring thread. Interval: {self.health_monitor_interval}s, Max Streak: {self.max_unhealthy_streak}"
+                )
 
             server.serve_forever()
 
@@ -1125,12 +1113,20 @@ class TranscriptionServer:
         try:
             import json as _json
             import urllib.request as _urllib_request
+
             with _urllib_request.urlopen(f"{self._consul_http_addr}/v1/agent/services", timeout=3) as resp:
                 services = _json.loads(resp.read().decode("utf-8"))
             for sid, s in services.items():
-                if s.get("Service") == "whisperlive" and s.get("Address") == self._pod_ip and int(s.get("Port", 0)) == int(self._listen_port) and sid != self._consul_service_id:
+                if (
+                    s.get("Service") == "whisperlive"
+                    and s.get("Address") == self._pod_ip
+                    and int(s.get("Port", 0)) == int(self._listen_port)
+                    and sid != self._consul_service_id
+                ):
                     try:
-                        _urllib_request.urlopen(_urllib_request.Request(f"{self._consul_http_addr}/v1/agent/service/deregister/{sid}", method="PUT"), timeout=3)
+                        _urllib_request.urlopen(
+                            _urllib_request.Request(f"{self._consul_http_addr}/v1/agent/service/deregister/{sid}", method="PUT"), timeout=3
+                        )
                         logging.info(f"CONSUL_DEDUP: Deregistered duplicate service {sid} for {self._pod_ip}:{self._listen_port}")
                     except Exception as _e:
                         logging.warning(f"CONSUL_DEDUP failed for {sid}: {_e}")
@@ -1141,27 +1137,28 @@ class TranscriptionServer:
             "ID": self._consul_service_id,
             "Address": self._pod_ip,
             "Port": int(self._listen_port),
-          "Tags": [
-              "websocket",
-              "vexa",
-              "traefik.enable=true",
-              "traefik.http.routers.whisperlive.rule=PathPrefix(`/ws`)",
-              "traefik.http.routers.whisperlive.service=whisperlive",
-              f"traefik.http.services.whisperlive.loadbalancer.server.port={self._listen_port}"
-          ],
+            "Tags": [
+                "websocket",
+                "vexa",
+                "traefik.enable=true",
+                "traefik.http.routers.whisperlive.rule=PathPrefix(`/ws`)",
+                "traefik.http.routers.whisperlive.service=whisperlive",
+                f"traefik.http.services.whisperlive.loadbalancer.server.port={self._listen_port}",
+            ],
             "Checks": [
                 {
                     "Name": "whisperlive-health",
                     "HTTP": f"http://{self._pod_ip}:9091/health",
                     "Interval": "10s",
                     "Timeout": "2s",
-                    "DeregisterCriticalServiceAfter": "1m"
+                    "DeregisterCriticalServiceAfter": "1m",
                 }
-            ]
+            ],
         }
         data = json.dumps(service_payload).encode("utf-8")
         url = f"{self._consul_http_addr}/v1/agent/service/register"
         import urllib.request as _urllib_request
+
         req = _urllib_request.Request(url, data=data, headers={"Content-Type": "application/json"}, method="PUT")
         with _urllib_request.urlopen(req, timeout=3) as resp:
             if resp.status not in (200, 204):
@@ -1173,6 +1170,7 @@ class TranscriptionServer:
             return
         url = f"{self._consul_http_addr}/v1/agent/service/deregister/{self._consul_service_id}"
         import urllib.request as _urllib_request
+
         req = _urllib_request.Request(url, method="PUT")
         try:
             with _urllib_request.urlopen(req, timeout=3) as resp:
@@ -1217,16 +1215,13 @@ class TranscriptionServer:
                         # During warmup do not evaluate breaker
                         self.no_tx_while_speaker_streak = 0
                     else:
-                    # Consider there is current speaking activity if we saw a speaker event recently
-                        speaker_active = (
-                            self.last_speaker_event_ts is not None and
-                            (now - self.last_speaker_event_ts) <= self.speaker_active_window_s
-                        )
+                        # Consider there is current speaking activity if we saw a speaker event recently
+                        speaker_active = self.last_speaker_event_ts is not None and (now - self.last_speaker_event_ts) <= self.speaker_active_window_s
                         # Only evaluate breaker if core dependencies look OK (avoid tripping while already unhealthy)
                         if websocket_ok and redis_ok and speaker_active:
                             no_tx_age = None
                             if self.server_last_transcription_ts is None:
-                                no_tx_age = float('inf')
+                                no_tx_age = float("inf")
                             else:
                                 no_tx_age = now - self.server_last_transcription_ts
 
@@ -1266,16 +1261,16 @@ class TranscriptionServer:
                         f"Max streak of {self.max_unhealthy_streak} reached. Initiating self-termination."
                     )
                     self._graceful_shutdown_and_exit()
-                    return # Exit thread
+                    return  # Exit thread
 
             except Exception as e:
                 # Catch any unexpected errors in the monitoring loop itself
                 logging.error(f"Self-monitor: Unexpected error in monitoring loop: {e}", exc_info=True)
-                self.unhealthy_streak +=1 # Count this as an unhealthy check to be safe
+                self.unhealthy_streak += 1  # Count this as an unhealthy check to be safe
                 if self.unhealthy_streak >= self.max_unhealthy_streak:
                     logging.critical("Self-monitor: Exiting due to repeated errors in monitoring loop.")
                     self._graceful_shutdown_and_exit()
-                    return # Exit thread
+                    return  # Exit thread
 
             self._stop_self_monitor.wait(self.health_monitor_interval)
 
@@ -1293,8 +1288,8 @@ class TranscriptionServer:
         if self.health_server:
             try:
                 logging.info("Self-monitor: Shutting down HTTP health check server...")
-                self.health_server.shutdown() # Graceful shutdown
-                self.health_server.server_close() # Release port
+                self.health_server.shutdown()  # Graceful shutdown
+                self.health_server.server_close()  # Release port
                 logging.info("Self-monitor: HTTP health check server shut down.")
             except Exception as e:
                 logging.error(f"Self-monitor: Error shutting down HTTP health_server: {e}", exc_info=True)
@@ -1309,6 +1304,7 @@ class TranscriptionServer:
         logging.critical("Self-monitor: Shutdown sequence complete. Forcing process exit with code 1.")
         try:
             import os
+
             os._exit(1)  # Ensure the whole process terminates even if called from a non-main thread
         except Exception:
             sys.exit(1)
@@ -1339,7 +1335,7 @@ class TranscriptionServer:
                 client = self.client_manager.get_client(websocket)
                 if not client.eos:
                     client.set_eos(True)
-                time.sleep(0.1)    # Sleep 100m; wait some voice activity.
+                time.sleep(0.1)  # Sleep 100m; wait some voice activity.
             return False
         return True
 
@@ -1352,7 +1348,7 @@ class TranscriptionServer:
         """
         client = self.client_manager.get_client(websocket)
         if client:
-            client_uid = client.client_uid if hasattr(client, 'client_uid') else 'unknown'
+            client_uid = client.client_uid if hasattr(client, "client_uid") else "unknown"
             self.client_manager.remove_client(websocket)
             logging.info(f"Removed client {client_uid}, remaining clients: {len(self.client_manager.clients)}")
         else:
@@ -1363,13 +1359,13 @@ class TranscriptionServer:
 
         This runs in a separate thread and listens on a different port than the WebSocket server.
         """
-        parent_server_instance = self # This is the TranscriptionServer instance
+        parent_server_instance = self  # This is the TranscriptionServer instance
 
         class HealthCheckHandler(http.server.SimpleHTTPRequestHandler):
             # Store references passed via functools.partial
             def __init__(self, *args, transcription_server_ref, redis_collector_ref, **kwargs):
                 self.transcription_server_instance = transcription_server_ref
-                self.redis_collector = redis_collector_ref # This is the TranscriptionCollectorClient instance
+                self.redis_collector = redis_collector_ref  # This is the TranscriptionCollectorClient instance
                 super().__init__(*args, **kwargs)
 
             def do_GET(self):
@@ -1377,32 +1373,32 @@ class TranscriptionServer:
 
                 redis_healthy = False
                 redis_ping_error = "Collector client not initialized"
-                if self.redis_collector: # Check if collector_client was initialized
+                if self.redis_collector:  # Check if collector_client was initialized
                     # Access redis_client via the stored reference
                     if self.redis_collector.redis_client:
                         try:
                             with self.redis_collector.connection_lock:
-                                if self.redis_collector.redis_client: # Double check under lock
+                                if self.redis_collector.redis_client:  # Double check under lock
                                     self.redis_collector.redis_client.ping()
                                     redis_healthy = True
                                     redis_ping_error = "None"
                                 else:
                                     redis_ping_error = "redis_collector.redis_client is None (within lock)"
                         except redis.exceptions.RedisError as e:
-                            redis_ping_error = str(e) # Typo fixed: redis_ping_Error -> redis_ping_error
+                            redis_ping_error = str(e)  # Typo fixed: redis_ping_Error -> redis_ping_error
                             logging.warning(f"Health check: Redis ping failed: {e}")
                         except Exception as e:
                             redis_ping_error = f"Unexpected error during ping: {str(e)}"
                             logging.warning(f"Health check: Unexpected error during Redis ping: {e}")
-                    else: # redis_collector exists but its redis_client is None
+                    else:  # redis_collector exists but its redis_client is None
                         redis_ping_error = "redis_collector.redis_client is None (implies not connected or error in worker)"
 
-                if self.path == '/health':
+                if self.path == "/health":
                     if server_websocket_healthy and redis_healthy:
                         self.send_response(200)
-                        self.send_header('Content-type', 'text/plain')
+                        self.send_header("Content-type", "text/plain")
                         self.end_headers()
-                        self.wfile.write(b'OK')
+                        self.wfile.write(b"OK")
                     else:
                         unhealthy_reasons = []
                         if not server_websocket_healthy:
@@ -1412,11 +1408,11 @@ class TranscriptionServer:
 
                         logging.warning(f"Health check failed: {', '.join(unhealthy_reasons)}")
                         self.send_response(503)
-                        self.send_header('Content-type', 'text/plain')
+                        self.send_header("Content-type", "text/plain")
                         self.end_headers()
                         self.wfile.write(f"Service Unavailable: {', '.join(unhealthy_reasons)}".encode())
 
-                elif self.path == '/metrics':
+                elif self.path == "/metrics":
                     # Provide JSON metrics for load monitoring
                     import hashlib
                     import json
@@ -1425,29 +1421,26 @@ class TranscriptionServer:
                     if self.transcription_server_instance is None:
                         current_sessions = 0
                         max_clients = 10
-                        server_id = 'unknown'
+                        server_id = "unknown"
                         uid_list = []
                         token_hashes = []
                     else:
                         current_sessions = len(self.transcription_server_instance.client_manager.clients)
-                        max_clients = getattr(self.transcription_server_instance, 'max_clients', 10)
-                        server_id = getattr(self.transcription_server_instance, '_consul_service_id', 'unknown')
+                        max_clients = getattr(self.transcription_server_instance, "max_clients", 10)
+                        server_id = getattr(self.transcription_server_instance, "_consul_service_id", "unknown")
                         # Collect current client UIDs and token hashes for deduplication across servers
                         try:
                             uid_list = [
-                                getattr(client, 'client_uid', None)
+                                getattr(client, "client_uid", None)
                                 for client in self.transcription_server_instance.client_manager.clients.values()
                                 if client is not None
                             ]
                             raw_tokens = [
-                                getattr(client, 'token', None)
+                                getattr(client, "token", None)
                                 for client in self.transcription_server_instance.client_manager.clients.values()
                                 if client is not None
                             ]
-                            token_hashes = [
-                                hashlib.sha1(t.encode('utf-8')).hexdigest()[:16]
-                                for t in raw_tokens if isinstance(t, str) and len(t) > 0
-                            ]
+                            token_hashes = [hashlib.sha1(t.encode("utf-8")).hexdigest()[:16] for t in raw_tokens if isinstance(t, str) and len(t) > 0]
                         except Exception:
                             uid_list = []
                             token_hashes = []
@@ -1462,18 +1455,18 @@ class TranscriptionServer:
                         "active_uid_count": len([u for u in uid_list if u]),
                         "active_token_count": len(set(token_hashes)),
                         "active_token_hashes": token_hashes,
-                        "timestamp": time.time()
+                        "timestamp": time.time(),
                     }
 
                     self.send_response(200)
-                    self.send_header('Content-type', 'application/json')
+                    self.send_header("Content-type", "application/json")
                     self.end_headers()
-                    self.wfile.write(json.dumps(metrics).encode('utf-8'))
+                    self.wfile.write(json.dumps(metrics).encode("utf-8"))
                 else:
                     self.send_response(404)
-                    self.send_header('Content-type', 'text/plain')
+                    self.send_header("Content-type", "text/plain")
                     self.end_headers()
-                    self.wfile.write(b'Not Found')
+                    self.wfile.write(b"Not Found")
 
             # Silence server logs by default, can be enabled for debugging
             def log_message(self, format, *args):
@@ -1483,8 +1476,8 @@ class TranscriptionServer:
         # Create a partial function to pass instance references to the handler
         handler_with_context = functools.partial(
             HealthCheckHandler,
-            transcription_server_ref=parent_server_instance, # TranscriptionServer's self
-            redis_collector_ref=parent_server_instance.collector_client # The collector instance from TranscriptionServer
+            transcription_server_ref=parent_server_instance,  # TranscriptionServer's self
+            redis_collector_ref=parent_server_instance.collector_client,  # The collector instance from TranscriptionServer
         )
 
         try:
@@ -1504,7 +1497,7 @@ class TranscriptionServer:
 
     def handle_control_message(self, websocket, message):
         """Handles incoming control messages from the client."""
-        client = self.client_manager.get_client(websocket) # CORRECTED
+        client = self.client_manager.get_client(websocket)  # CORRECTED
         if not client:
             logging.warning("Control message from unknown client (websocket not in client list).")
             # Optionally, close websocket if it's unrecognized and sending control messages
@@ -1531,8 +1524,10 @@ class TranscriptionServer:
                 self.handle_speaker_event(websocket, control_message)
             elif message_type == "session_control":
                 self.handle_session_control(websocket, control_message)
-            elif message_type == "speaker_activity": # TARGET FOR PHASE 2
-                logging.info(f"DISPATCH_DEBUG: Entered 'speaker_activity' branch for UID {client.uid if client else 'N/A'}. Calling handle_speaker_activity_update.") # <-- ADDED THIS LINE
+            elif message_type == "speaker_activity":  # TARGET FOR PHASE 2
+                logging.info(
+                    f"DISPATCH_DEBUG: Entered 'speaker_activity' branch for UID {client.uid if client else 'N/A'}. Calling handle_speaker_activity_update."
+                )  # <-- ADDED THIS LINE
                 self.handle_speaker_activity_update(websocket, control_message)
             elif message_type == "audio_chunk_metadata":
                 self.handle_audio_chunk_metadata(websocket, control_message)
@@ -1543,13 +1538,12 @@ class TranscriptionServer:
         except Exception as e:
             logging.error(f"Error processing control message from UID {client.uid if client else 'N/A'}: {e}")
 
-
     def handle_speaker_activity_update(self, websocket, control_message):
         """
         Handles incoming 'speaker_activity' updates from the client (Vexa Bot).
         For Phase 2, this will forward the event payload to a new Redis stream.
         """
-        client = self.client_manager.get_client(websocket) # CORRECTED
+        client = self.client_manager.get_client(websocket)  # CORRECTED
         # This check is good even if also done in handle_control_message,
         # in case this method is ever called directly.
         if not client:
@@ -1558,14 +1552,16 @@ class TranscriptionServer:
 
         event_payload = control_message.get("payload")
         if not event_payload or not isinstance(event_payload, dict):
-            logging.warning(f"Received speaker_activity with missing or invalid payload from UID {client.client_uid if client else 'N/A'}") # CORRECTED
+            logging.warning(
+                f"Received speaker_activity with missing or invalid payload from UID {client.client_uid if client else 'N/A'}"
+            )  # CORRECTED
             return
 
         # Use UID from payload if available, fallback to client.client_uid (they should match)
-        uid_for_log = event_payload.get('uid', client.client_uid if client else 'N/A_CLIENT_FALLBACK')  # CORRECTED
-        event_type = event_payload.get('event_type', 'N/A')
-        participant_name = event_payload.get('participant_name', 'N/A')
-        relative_ts = event_payload.get('relative_client_timestamp_ms', 'N/A')
+        uid_for_log = event_payload.get("uid", client.client_uid if client else "N/A_CLIENT_FALLBACK")  # CORRECTED
+        event_type = event_payload.get("event_type", "N/A")
+        participant_name = event_payload.get("participant_name", "N/A")
+        relative_ts = event_payload.get("relative_client_timestamp_ms", "N/A")
 
         if WL_LOG_SPEAKER_EVENTS:
             logging.info(
@@ -1582,14 +1578,15 @@ class TranscriptionServer:
             else:
                 logging.error(f"Failed to queue speaker event for UID {uid_for_log} to Redis via collector_client.")
         else:
-            logging.warning(f"Cannot forward speaker event for UID {uid_for_log}: collector_client not found for client {client.client_uid if client else 'N/A_CLIENT_FALLBACK'}.") # CORRECTED: changed from collector_client_ref to collector_client
+            logging.warning(
+                f"Cannot forward speaker event for UID {uid_for_log}: collector_client not found for client {client.client_uid if client else 'N/A_CLIENT_FALLBACK'}."
+            )  # CORRECTED: changed from collector_client_ref to collector_client
 
         # Update server-level last speaker-event timestamp
         try:
             self.last_speaker_event_ts = time.time()
         except Exception:
             pass
-
 
     def handle_audio_chunk_metadata(self, websocket, control_message):
         client = self.client_manager.get_client(websocket)
@@ -1617,10 +1614,19 @@ class ServeClientBase:
     _hallucinations = None
     _hallucinations_loaded = False
 
-    def __init__(self, websocket, language="en", task="transcribe", client_uid=None,
-                 platform=None, meeting_url=None, token=None, meeting_id=None,
-                 collector_client_ref: TranscriptionCollectorClient | None = None,
-                 server_options: dict | None = None):
+    def __init__(
+        self,
+        websocket,
+        language="en",
+        task="transcribe",
+        client_uid=None,
+        platform=None,
+        meeting_url=None,
+        token=None,
+        meeting_id=None,
+        collector_client_ref: TranscriptionCollectorClient | None = None,
+        server_options: dict | None = None,
+    ):
         self.websocket = websocket
         self.language = language
         self.task = task
@@ -1629,7 +1635,7 @@ class ServeClientBase:
         self.meeting_url = meeting_url
         self.token = token
         self.meeting_id = meeting_id
-        self.collector_client = collector_client_ref # Store the passed collector client
+        self.collector_client = collector_client_ref  # Store the passed collector client
 
         # Restore all the original instance variables that were deleted
         self.transcription_buffer = TranscriptionBuffer(self.client_uid)
@@ -1640,8 +1646,8 @@ class ServeClientBase:
         self.frames_np = None
         self.frames_offset = 0.0
         self.text = []
-        self.current_out = ''
-        self.prev_out = ''
+        self.current_out = ""
+        self.prev_out = ""
         self.t_start = None
         self.exit = False
         self.same_output_count = 0
@@ -1652,8 +1658,10 @@ class ServeClientBase:
         self.clip_if_no_segment_s = server_options.get("clip_if_no_segment_s", 25)
         self.clip_retain_s = server_options.get("clip_retain_s", 5)
 
-        self.show_prev_out_thresh = server_options.get("show_prev_out_thresh_s", 5)   # if pause(no output from whisper) show previous output for 5 seconds
-        self.add_pause_thresh = server_options.get("add_pause_thresh_s", 3)       # add a blank to segment list as a pause(no speech) for 3 seconds
+        self.show_prev_out_thresh = server_options.get(
+            "show_prev_out_thresh_s", 5
+        )  # if pause(no output from whisper) show previous output for 5 seconds
+        self.add_pause_thresh = server_options.get("add_pause_thresh_s", 3)  # add a blank to segment list as a pause(no speech) for 3 seconds
         self.transcript = []
         self.send_last_n_segments = 10
 
@@ -1715,7 +1723,7 @@ class ServeClientBase:
             loaded_files = 0
             for path in candidates:
                 try:
-                    with open(path, encoding='utf-8') as f:
+                    with open(path, encoding="utf-8") as f:
                         for line in f:
                             normalized = line.strip().lower()
                             if normalized:
@@ -1726,9 +1734,7 @@ class ServeClientBase:
                     logging.warning(f"Failed to read hallucination file {path}: {read_err}")
 
             ServeClientBase._hallucinations = sorted(unique_entries)
-            logging.info(
-                f"Loaded {len(ServeClientBase._hallucinations)} unique hallucination filters from {loaded_files} file(s)"
-            )
+            logging.info(f"Loaded {len(ServeClientBase._hallucinations)} unique hallucination filters from {loaded_files} file(s)")
         except Exception as e:
             logging.error(f"Error loading hallucination filters: {e}")
             ServeClientBase._hallucinations = []
@@ -1776,7 +1782,7 @@ class ServeClientBase:
         self.lock.acquire()
         if self.frames_np is not None and self.frames_np.shape[0] > self.max_buffer_s * self.RATE:
             self.frames_offset += self.discard_buffer_s
-            self.frames_np = self.frames_np[int(self.discard_buffer_s * self.RATE):]
+            self.frames_np = self.frames_np[int(self.discard_buffer_s * self.RATE) :]
             # check timestamp offset(should be >= self.frame_offset)
             # this basically means that there is no speech as timestamp offset hasnt updated
             # and is less than frame_offset
@@ -1795,7 +1801,7 @@ class ServeClientBase:
         no valid segment for the last 30 seconds from whisper
         """
         with self.lock:
-            if self.frames_np[int((self.timestamp_offset - self.frames_offset)*self.RATE):].shape[0] > self.clip_if_no_segment_s * self.RATE:
+            if self.frames_np[int((self.timestamp_offset - self.frames_offset) * self.RATE) :].shape[0] > self.clip_if_no_segment_s * self.RATE:
                 duration = self.frames_np.shape[0] / self.RATE
                 self.timestamp_offset = self.frames_offset + duration - self.clip_retain_s
 
@@ -1815,7 +1821,7 @@ class ServeClientBase:
         """
         with self.lock:
             samples_take = max(0, (self.timestamp_offset - self.frames_offset) * self.RATE)
-            input_bytes = self.frames_np[int(samples_take):].copy()
+            input_bytes = self.frames_np[int(samples_take) :].copy()
         duration = input_bytes.shape[0] / self.RATE
         return input_bytes, duration
 
@@ -1837,7 +1843,7 @@ class ServeClientBase:
         """
         segments = []
         if len(self.transcript) >= self.send_last_n_segments:
-            segments = self.transcript[-self.send_last_n_segments:].copy()
+            segments = self.transcript[-self.send_last_n_segments :].copy()
         else:
             segments = self.transcript.copy()
         if last_segment is not None:
@@ -1869,7 +1875,9 @@ class ServeClientBase:
         try:
             # Validate required client properties
             if not self.platform or not self.meeting_url or not self.token:
-                logging.error(f"ERROR: Missing required fields for client {self.client_uid}: platform={self.platform}, meeting_url={self.meeting_url}, token={self.token}")
+                logging.error(
+                    f"ERROR: Missing required fields for client {self.client_uid}: platform={self.platform}, meeting_url={self.meeting_url}, token={self.token}"
+                )
                 # Don't default to unknown anymore, force these to be set properly
                 return
 
@@ -1882,35 +1890,31 @@ class ServeClientBase:
             # Use the instance's self.collector_client
             if self.collector_client:
                 self.collector_client.send_transcription(
-                    token=self.token,
-                    platform=self.platform,
-                    meeting_id=self.meeting_id,
-                    segments=segments,
-                    session_uid=self.client_uid
+                    token=self.token, platform=self.platform, meeting_id=self.meeting_id, segments=segments, session_uid=self.client_uid
                 )
 
             # Logging: summary by default; full text only if WL_LOG_TRANSCRIPTS=true
             try:
                 total = len(segments)
-                completed = sum(1 for s in segments if s.get('completed'))
+                completed = sum(1 for s in segments if s.get("completed"))
                 last = segments[-1] if total else {}
-                last_range = f"{last.get('start','N/A')}-{last.get('end','N/A')}" if last else "N/A"
-                last_completed = bool(last.get('completed')) if last else None
-                lang = last.get('language') if last else None
+                last_range = f"{last.get('start', 'N/A')}-{last.get('end', 'N/A')}" if last else "N/A"
+                last_completed = bool(last.get("completed")) if last else None
+                lang = last.get("language") if last else None
                 if WL_LOG_TRANSCRIPTS:
                     formatted_segments = []
                     for i, segment in enumerate(segments):
-                        if 'start' in segment and 'end' in segment:
+                        if "start" in segment and "end" in segment:
                             formatted_segments.append(
                                 f"[{i}] ({segment.get('start', 'N/A')}-{segment.get('end', 'N/A')}) "
                                 f"[{'COMPLETE' if segment.get('completed', False) else 'PARTIAL'}]: "
-                                f"\"{segment.get('text', '')}\""
+                                f'"{segment.get("text", "")}"'
                             )
                         else:
-                            formatted_segments.append(f"[{i}]: \"{segment.get('text', '')}\"")
+                            formatted_segments.append(f'[{i}]: "{segment.get("text", "")}"')
                     logger.info(
-                        f"TRANSCRIPTION_FULL: client={self.client_uid}, platform={self.platform}, meeting_id={self.meeting_id}, count={total}\n" +
-                        "\n".join(formatted_segments)
+                        f"TRANSCRIPTION_FULL: client={self.client_uid}, platform={self.platform}, meeting_id={self.meeting_id}, count={total}\n"
+                        + "\n".join(formatted_segments)
                     )
                 elif WL_LOG_TRANSCRIPT_SUMMARY:
                     logger.info(
@@ -1921,11 +1925,12 @@ class ServeClientBase:
             # Update server-level last transcription timestamp for circuit breaker
             try:
                 from time import time as _now
-                if self.collector_client and hasattr(self.collector_client, 'server_ref') and self.collector_client.server_ref:
+
+                if self.collector_client and hasattr(self.collector_client, "server_ref") and self.collector_client.server_ref:
                     self.collector_client.server_ref.server_last_transcription_ts = _now()
                 else:
-                    globals().setdefault('_WL_SERVER_LAST_TX', 0)
-                    globals()['_WL_SERVER_LAST_TX'] = _now()
+                    globals().setdefault("_WL_SERVER_LAST_TX", 0)
+                    globals()["_WL_SERVER_LAST_TX"] = _now()
             except Exception:
                 pass
         except Exception as e:
@@ -1939,10 +1944,7 @@ class ServeClientBase:
         that the transcription service is disconnecting gracefully.
 
         """
-        self.websocket.send(json.dumps({
-            "uid": self.client_uid,
-            "message": self.DISCONNECT
-        }))
+        self.websocket.send(json.dumps({"uid": self.client_uid, "message": self.DISCONNECT}))
 
     def cleanup(self):
         """
@@ -1961,26 +1963,42 @@ class ServeClientBase:
         if self.collector_client and segments:
             # Send transcription to collector
             self.collector_client.send_transcription(
-                token=self.token,
-                platform=self.platform,
-                meeting_id=self.meeting_id,
-                segments=segments,
-                session_uid=self.client_uid
+                token=self.token, platform=self.platform, meeting_id=self.meeting_id, segments=segments, session_uid=self.client_uid
             )
 
 
 class ServeClientTensorRT(ServeClientBase):
-
     SINGLE_MODEL = None
     SINGLE_MODEL_LOCK = threading.Lock()
 
-    def __init__(self, websocket, task="transcribe", multilingual=False, language=None,
-                 client_uid=None, model=None, single_model=False,
-                 platform=None, meeting_url=None, token=None, meeting_id=None,
-                 collector_client_ref: TranscriptionCollectorClient | None = None,
-                 server_options: dict | None = None):
-        super().__init__(websocket, language, task, client_uid, platform, meeting_url, token, meeting_id,
-                         collector_client_ref=collector_client_ref, server_options=server_options)
+    def __init__(
+        self,
+        websocket,
+        task="transcribe",
+        multilingual=False,
+        language=None,
+        client_uid=None,
+        model=None,
+        single_model=False,
+        platform=None,
+        meeting_url=None,
+        token=None,
+        meeting_id=None,
+        collector_client_ref: TranscriptionCollectorClient | None = None,
+        server_options: dict | None = None,
+    ):
+        super().__init__(
+            websocket,
+            language,
+            task,
+            client_uid,
+            platform,
+            meeting_url,
+            token,
+            meeting_id,
+            collector_client_ref=collector_client_ref,
+            server_options=server_options,
+        )
         self.eos = False
 
         # Log the critical parameters
@@ -1999,11 +2017,7 @@ class ServeClientTensorRT(ServeClientBase):
         self.trans_thread = threading.Thread(target=self.speech_to_text)
         self.trans_thread.start()
 
-        self.websocket.send(json.dumps({
-            "uid": self.client_uid,
-            "message": self.SERVER_READY,
-            "backend": "tensorrt"
-        }))
+        self.websocket.send(json.dumps({"uid": self.client_uid, "message": self.SERVER_READY, "backend": "tensorrt"}))
 
     def create_model(self, model, multilingual, warmup=True):
         """
@@ -2017,10 +2031,10 @@ class ServeClientTensorRT(ServeClientBase):
         self.transcriber = WhisperTRTLLM(
             model,
             assets_dir="assets",
-            device="cuda", #NOTE: why is this hard coded?
+            device="cuda",  # NOTE: why is this hard coded?
             is_multilingual=multilingual,
             language=self.language,
-            task=self.task
+            task=self.task,
         )
         if warmup:
             self.warmup()
@@ -2073,10 +2087,7 @@ class ServeClientTensorRT(ServeClientBase):
             ServeClientTensorRT.SINGLE_MODEL_LOCK.acquire()
         logging.debug(f"[WhisperTensorRT:] Processing audio with duration: {input_bytes.shape[0] / self.RATE}")
         mel, duration = self.transcriber.log_mel_spectrogram(input_bytes)
-        last_segment = self.transcriber.transcribe(
-            mel,
-            text_prefix=f"<|startoftranscript|><|{self.language}|><|{self.task}|><|notimestamps|>"
-        )
+        last_segment = self.transcriber.transcribe(mel, text_prefix=f"<|startoftranscript|><|{self.language}|><|{self.task}|><|notimestamps|>")
         if ServeClientTensorRT.SINGLE_MODEL:
             ServeClientTensorRT.SINGLE_MODEL_LOCK.release()
         if last_segment:
@@ -2094,20 +2105,13 @@ class ServeClientTensorRT(ServeClientBase):
             start_time = self.timestamp_offset
             end_time = self.timestamp_offset + duration
 
-            segment_data = {
-                "text": last_segment + " ",
-                "start": f"{start_time:.3f}",
-                "end": f"{end_time:.3f}",
-                "completed": True
-            }
+            segment_data = {"text": last_segment + " ", "start": f"{start_time:.3f}", "end": f"{end_time:.3f}", "completed": True}
 
             # Add language if available
             if self.language is not None:
                 segment_data["language"] = self.language
 
-            if not len(self.transcript):
-                self.transcript.append(segment_data)
-            elif self.transcript[-1]["text"].strip() != last_segment:
+            if not len(self.transcript) or self.transcript[-1]["text"].strip() != last_segment:
                 self.transcript.append(segment_data)
 
             self.timestamp_offset += duration
@@ -2135,7 +2139,7 @@ class ServeClientTensorRT(ServeClientBase):
                 break
 
             if self.frames_np is None:
-                time.sleep(0.02)    # wait for any audio to arrive
+                time.sleep(0.02)  # wait for any audio to arrive
                 continue
 
             self.clip_audio_if_no_valid_segment()
@@ -2168,16 +2172,11 @@ class ServeClientTensorRT(ServeClientBase):
                 'start' and 'end' times as strings with three decimal places, the 'text'
                 of the transcription, 'completed' status, and 'language' if provided.
         """
-        segment = {
-            'start': f"{start:.3f}",
-            'end': f"{end:.3f}",
-            'text': text,
-            'completed': completed
-        }
+        segment = {"start": f"{start:.3f}", "end": f"{end:.3f}", "text": text, "completed": completed}
 
         # Add language if provided
         if language is not None:
-            segment['language'] = language
+            segment["language"] = language
 
         return segment
 
@@ -2203,7 +2202,7 @@ class ServeClientTensorRT(ServeClientBase):
                      Returns None if there are no valid segments to process.
         """
         offset = None
-        self.current_out = ''
+        self.current_out = ""
         last_segment = None
 
         # process complete segments
@@ -2212,7 +2211,7 @@ class ServeClientTensorRT(ServeClientBase):
                 text_ = s.text
                 # Update circuit-breaker timestamp BEFORE filtering, so hallucinations still count as activity
                 try:
-                    if self.collector_client and hasattr(self.collector_client, 'server_ref') and self.collector_client.server_ref:
+                    if self.collector_client and hasattr(self.collector_client, "server_ref") and self.collector_client.server_ref:
                         self.collector_client.server_ref.server_last_transcription_ts = time.time()
                 except Exception:
                     pass
@@ -2244,7 +2243,7 @@ class ServeClientTensorRT(ServeClientBase):
         if segments[-1].no_speech_prob <= self.no_speech_thresh:
             # Update circuit-breaker timestamp BEFORE filtering for the last (partial) segment
             try:
-                if self.collector_client and hasattr(self.collector_client, 'server_ref') and self.collector_client.server_ref:
+                if self.collector_client and hasattr(self.collector_client, "server_ref") and self.collector_client.server_ref:
                     self.collector_client.server_ref.server_last_transcription_ts = time.time()
             except Exception:
                 pass
@@ -2259,7 +2258,7 @@ class ServeClientTensorRT(ServeClientBase):
                         self.timestamp_offset + min(duration, segments[-1].end),
                         self.current_out,
                         completed=False,
-                        language=self.language
+                        language=self.language,
                     )
             else:
                 # Log and skip this segment if it's a hallucination
@@ -2270,14 +2269,14 @@ class ServeClientTensorRT(ServeClientBase):
                     pass
                 last_segment = None
 
-        if self.current_out.strip() == self.prev_out.strip() and self.current_out != '':
+        if self.current_out.strip() == self.prev_out.strip() and self.current_out != "":
             self.same_output_count += 1
 
             # if we remove the audio because of same output on the nth reptition we might remove the
             # audio thats not yet transcribed so, capturing the time when it was repeated for the first time
             if self.end_time_for_same_output is None:
                 self.end_time_for_same_output = segments[-1].end
-            time.sleep(0.1)     # wait for some voice activity just in case there is an unitended pause from the speaker for better punctuations.
+            time.sleep(0.1)  # wait for some voice activity just in case there is an unitended pause from the speaker for better punctuations.
         else:
             self.same_output_count = 0
             self.end_time_for_same_output = None
@@ -2288,7 +2287,7 @@ class ServeClientTensorRT(ServeClientBase):
             if not len(self.text) or self.text[-1].strip().lower() != self.current_out.strip().lower():
                 # Update circuit-breaker timestamp BEFORE filtering repeated incomplete output
                 try:
-                    if self.collector_client and hasattr(self.collector_client, 'server_ref') and self.collector_client.server_ref:
+                    if self.collector_client and hasattr(self.collector_client, "server_ref") and self.collector_client.server_ref:
                         self.collector_client.server_ref.server_last_transcription_ts = time.time()
                 except Exception:
                     pass
@@ -2298,13 +2297,15 @@ class ServeClientTensorRT(ServeClientBase):
                 if filtered_current_out is not None:
                     self.text.append(filtered_current_out)
                     with self.lock:
-                        self.transcript.append(self.format_segment(
-                            self.timestamp_offset,
-                            self.timestamp_offset + min(duration, self.end_time_for_same_output),
-                            filtered_current_out,
-                            completed=True,
-                            language=self.language
-                        ))
+                        self.transcript.append(
+                            self.format_segment(
+                                self.timestamp_offset,
+                                self.timestamp_offset + min(duration, self.end_time_for_same_output),
+                                filtered_current_out,
+                                completed=True,
+                                language=self.language,
+                            )
+                        )
                 else:
                     # Log filtered repeated hallucination
                     try:
@@ -2312,7 +2313,7 @@ class ServeClientTensorRT(ServeClientBase):
                             logger.info(f'HALLUCINATION_FILTERED: "{self.current_out}"')
                     except Exception:
                         pass
-            self.current_out = ''
+            self.current_out = ""
             offset = min(duration, self.end_time_for_same_output)
             self.same_output_count = 0
             last_segment = None
@@ -2337,38 +2338,69 @@ class ServeClientTensorRT(ServeClientBase):
                         language, and `language_probability`, a float representing the confidence level
                         of the language detection.
         """
-        if hasattr(info, 'language_probability') and info.language_probability > 0.5:
+        if hasattr(info, "language_probability") and info.language_probability > 0.5:
             self.language = info.language
             logging.info(f"Detected language {self.language} with probability {info.language_probability}")
 
-            language_data = {
-                "uid": self.client_uid,
-                "language": self.language,
-                "language_prob": info.language_probability
-            }
+            language_data = {"uid": self.client_uid, "language": self.language, "language_prob": info.language_probability}
             self.websocket.send(json.dumps(language_data))
 
             # Log the language detection to file in a more readable format
             logger.info(f"LANGUAGE_DETECTION: client={self.client_uid}, language={self.language}, confidence={info.language_probability:.4f}")
 
-class ServeClientFasterWhisper(ServeClientBase):
 
+class ServeClientFasterWhisper(ServeClientBase):
     SINGLE_MODEL = None
     SINGLE_MODEL_LOCK = threading.Lock()
 
-    def __init__(self, websocket, task="transcribe", device=None, language=None,
-                 client_uid=None, model="small.en", initial_prompt=None,
-                 vad_parameters=None, use_vad=True, single_model=False,
-                 platform=None, meeting_url=None, token=None, meeting_id=None,
-                 collector_client_ref: TranscriptionCollectorClient | None = None,
-                 server_options: dict | None = None):
-        super().__init__(websocket, language, task, client_uid, platform, meeting_url, token, meeting_id,
-                         collector_client_ref=collector_client_ref, server_options=server_options)
+    def __init__(
+        self,
+        websocket,
+        task="transcribe",
+        device=None,
+        language=None,
+        client_uid=None,
+        model="small.en",
+        initial_prompt=None,
+        vad_parameters=None,
+        use_vad=True,
+        single_model=False,
+        platform=None,
+        meeting_url=None,
+        token=None,
+        meeting_id=None,
+        collector_client_ref: TranscriptionCollectorClient | None = None,
+        server_options: dict | None = None,
+    ):
+        super().__init__(
+            websocket,
+            language,
+            task,
+            client_uid,
+            platform,
+            meeting_url,
+            token,
+            meeting_id,
+            collector_client_ref=collector_client_ref,
+            server_options=server_options,
+        )
         self.model_sizes = [
-            "tiny", "tiny.en", "base", "base.en", "small", "small.en",
-            "medium", "medium.en", "large-v2", "large-v3", "distil-small.en",
-            "distil-medium.en", "distil-large-v2", "distil-large-v3",
-            "large-v3-turbo", "turbo"
+            "tiny",
+            "tiny.en",
+            "base",
+            "base.en",
+            "small",
+            "small.en",
+            "medium",
+            "medium.en",
+            "large-v2",
+            "large-v3",
+            "distil-small.en",
+            "distil-medium.en",
+            "distil-large-v2",
+            "distil-large-v3",
+            "large-v3-turbo",
+            "turbo",
         ]
 
         # Log the critical parameters
@@ -2391,7 +2423,7 @@ class ServeClientFasterWhisper(ServeClientBase):
             major, _ = torch.cuda.get_device_capability(device)
             self.compute_type = "float16" if major >= 7 else "float32"
         else:
-            self.compute_type = "default" #"int8" #NOTE: maybe we use default here...
+            self.compute_type = "default"  # "int8" #NOTE: maybe we use default here...
 
         if self.model_size_or_path is None:
             return
@@ -2408,11 +2440,9 @@ class ServeClientFasterWhisper(ServeClientBase):
                 self.create_model(device)
         except Exception as e:
             logging.error(f"Failed to load model: {e}")
-            self.websocket.send(json.dumps({
-                "uid": self.client_uid,
-                "status": "ERROR",
-                "message": f"Failed to load model: {str(self.model_size_or_path)}"
-            }))
+            self.websocket.send(
+                json.dumps({"uid": self.client_uid, "status": "ERROR", "message": f"Failed to load model: {str(self.model_size_or_path)}"})
+            )
             self.websocket.close()
             return
 
@@ -2421,15 +2451,7 @@ class ServeClientFasterWhisper(ServeClientBase):
         # threading
         self.trans_thread = threading.Thread(target=self.speech_to_text)
         self.trans_thread.start()
-        self.websocket.send(
-            json.dumps(
-                {
-                    "uid": self.client_uid,
-                    "message": self.SERVER_READY,
-                    "backend": "faster_whisper"
-                }
-            )
-        )
+        self.websocket.send(json.dumps({"uid": self.client_uid, "message": self.SERVER_READY, "backend": "faster_whisper"}))
 
     def create_model(self, device):
         """
@@ -2455,11 +2477,7 @@ class ServeClientFasterWhisper(ServeClientBase):
         if model_size not in self.model_sizes:
             self.websocket.send(
                 json.dumps(
-                    {
-                        "uid": self.client_uid,
-                        "status": "ERROR",
-                        "message": f"Invalid model size {model_size}. Available choices: {self.model_sizes}"
-                    }
+                    {"uid": self.client_uid, "status": "ERROR", "message": f"Invalid model size {model_size}. Available choices: {self.model_sizes}"}
                 )
             )
             return None
@@ -2479,11 +2497,7 @@ class ServeClientFasterWhisper(ServeClientBase):
             self.language = info.language
             logging.info(f"Detected language {self.language} with probability {info.language_probability}")
 
-            language_data = {
-                "uid": self.client_uid,
-                "language": self.language,
-                "language_prob": info.language_probability
-            }
+            language_data = {"uid": self.client_uid, "language": self.language, "language_prob": info.language_probability}
             self.websocket.send(json.dumps(language_data))
 
             # Log the language detection to file in a more readable format
@@ -2513,7 +2527,8 @@ class ServeClientFasterWhisper(ServeClientBase):
             language=self.language,
             task=self.task,
             vad_filter=self.use_vad,
-            vad_parameters=self.vad_parameters if self.use_vad else None)
+            vad_parameters=self.vad_parameters if self.use_vad else None,
+        )
         if ServeClientFasterWhisper.SINGLE_MODEL:
             ServeClientFasterWhisper.SINGLE_MODEL_LOCK.release()
 
@@ -2543,9 +2558,9 @@ class ServeClientFasterWhisper(ServeClientBase):
             segments = self.prepare_segments()
 
         # add a blank if there is no speech for 3 seconds
-        if len(self.text) and self.text[-1] != '':
+        if len(self.text) and self.text[-1] != "":
             if time.time() - self.t_start > self.add_pause_thresh:
-                self.text.append('')
+                self.text.append("")
         return segments
 
     def handle_transcription_output(self, result, duration):
@@ -2597,7 +2612,7 @@ class ServeClientFasterWhisper(ServeClientBase):
 
             input_bytes, duration = self.get_audio_chunk_for_processing()
             if duration < self.min_audio_s:
-                time.sleep(0.1)     # wait for audio chunks to arrive
+                time.sleep(0.1)  # wait for audio chunks to arrive
                 continue
             try:
                 input_sample = input_bytes.copy()
@@ -2605,7 +2620,7 @@ class ServeClientFasterWhisper(ServeClientBase):
 
                 if result is None or self.language is None:
                     self.timestamp_offset += duration
-                    time.sleep(0.25)    # wait for voice activity, result is None when no voice activity
+                    time.sleep(0.25)  # wait for voice activity, result is None when no voice activity
                     continue
                 self.handle_transcription_output(result, duration)
 
@@ -2629,16 +2644,11 @@ class ServeClientFasterWhisper(ServeClientBase):
                 'start' and 'end' times as strings with three decimal places, the 'text'
                 of the transcription, 'completed' status, and 'language' if provided.
         """
-        segment = {
-            'start': f"{start:.3f}",
-            'end': f"{end:.3f}",
-            'text': text,
-            'completed': completed
-        }
+        segment = {"start": f"{start:.3f}", "end": f"{end:.3f}", "text": text, "completed": completed}
 
         # Add language if provided
         if language is not None:
-            segment['language'] = language
+            segment["language"] = language
 
         return segment
 
@@ -2664,7 +2674,7 @@ class ServeClientFasterWhisper(ServeClientBase):
                      Returns None if there are no valid segments to process.
         """
         offset = None
-        self.current_out = ''
+        self.current_out = ""
         last_segment = None
 
         # process complete segments
@@ -2674,7 +2684,7 @@ class ServeClientFasterWhisper(ServeClientBase):
 
                 # Update circuit-breaker timestamp BEFORE filtering, so hallucinations still count as activity
                 try:
-                    if self.collector_client and hasattr(self.collector_client, 'server_ref') and self.collector_client.server_ref:
+                    if self.collector_client and hasattr(self.collector_client, "server_ref") and self.collector_client.server_ref:
                         self.collector_client.server_ref.server_last_transcription_ts = time.time()
                 except Exception:
                     pass
@@ -2706,7 +2716,7 @@ class ServeClientFasterWhisper(ServeClientBase):
         if segments[-1].no_speech_prob <= self.no_speech_thresh:
             # Update circuit-breaker timestamp BEFORE filtering for the last (partial) segment
             try:
-                if self.collector_client and hasattr(self.collector_client, 'server_ref') and self.collector_client.server_ref:
+                if self.collector_client and hasattr(self.collector_client, "server_ref") and self.collector_client.server_ref:
                     self.collector_client.server_ref.server_last_transcription_ts = time.time()
             except Exception:
                 pass
@@ -2721,7 +2731,7 @@ class ServeClientFasterWhisper(ServeClientBase):
                         self.timestamp_offset + min(duration, segments[-1].end),
                         self.current_out,
                         completed=False,
-                        language=self.language
+                        language=self.language,
                     )
             else:
                 # Log and skip this segment if it's a hallucination
@@ -2732,14 +2742,14 @@ class ServeClientFasterWhisper(ServeClientBase):
                     pass
                 last_segment = None
 
-        if self.current_out.strip() == self.prev_out.strip() and self.current_out != '':
+        if self.current_out.strip() == self.prev_out.strip() and self.current_out != "":
             self.same_output_count += 1
 
             # if we remove the audio because of same output on the nth reptition we might remove the
             # audio thats not yet transcribed so, capturing the time when it was repeated for the first time
             if self.end_time_for_same_output is None:
                 self.end_time_for_same_output = segments[-1].end
-            time.sleep(0.1)     # wait for some voice activity just in case there is an unitended pause from the speaker for better punctuations.
+            time.sleep(0.1)  # wait for some voice activity just in case there is an unitended pause from the speaker for better punctuations.
         else:
             self.same_output_count = 0
             self.end_time_for_same_output = None
@@ -2750,7 +2760,7 @@ class ServeClientFasterWhisper(ServeClientBase):
             if not len(self.text) or self.text[-1].strip().lower() != self.current_out.strip().lower():
                 # Update circuit-breaker timestamp BEFORE filtering repeated incomplete output
                 try:
-                    if self.collector_client and hasattr(self.collector_client, 'server_ref') and self.collector_client.server_ref:
+                    if self.collector_client and hasattr(self.collector_client, "server_ref") and self.collector_client.server_ref:
                         self.collector_client.server_ref.server_last_transcription_ts = time.time()
                 except Exception:
                     pass
@@ -2760,13 +2770,15 @@ class ServeClientFasterWhisper(ServeClientBase):
                 if filtered_current_out is not None:
                     self.text.append(filtered_current_out)
                     with self.lock:
-                        self.transcript.append(self.format_segment(
-                            self.timestamp_offset,
-                            self.timestamp_offset + min(duration, self.end_time_for_same_output),
-                            filtered_current_out,
-                            completed=True,
-                            language=self.language
-                        ))
+                        self.transcript.append(
+                            self.format_segment(
+                                self.timestamp_offset,
+                                self.timestamp_offset + min(duration, self.end_time_for_same_output),
+                                filtered_current_out,
+                                completed=True,
+                                language=self.language,
+                            )
+                        )
                 else:
                     # Log filtered repeated hallucination
                     try:
@@ -2774,7 +2786,7 @@ class ServeClientFasterWhisper(ServeClientBase):
                             logger.info(f'HALLUCINATION_FILTERED: "{self.current_out}"')
                     except Exception:
                         pass
-            self.current_out = ''
+            self.current_out = ""
             offset = min(duration, self.end_time_for_same_output)
             self.same_output_count = 0
             last_segment = None
@@ -2788,6 +2800,7 @@ class ServeClientFasterWhisper(ServeClientBase):
                 self.timestamp_offset += offset
 
         return last_segment
+
 
 # Add the missing TranscriptionBuffer class
 class TranscriptionBuffer:
@@ -2810,7 +2823,7 @@ class TranscriptionBuffer:
             self.completed_segments.extend(completed_segments)
             # Trim if exceeding max size
             if len(self.completed_segments) > self.max_segments:
-                self.completed_segments = self.completed_segments[-self.max_segments:]
+                self.completed_segments = self.completed_segments[-self.max_segments :]
 
     def get_segments_for_response(self):
         """Get formatted segments for client response"""

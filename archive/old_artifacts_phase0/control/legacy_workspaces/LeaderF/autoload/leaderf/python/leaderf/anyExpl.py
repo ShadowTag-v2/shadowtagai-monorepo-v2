@@ -50,16 +50,18 @@ let g:Lf_Extensions = {
 \}
 """
 
+
 def lfFunction(name):
-    if lfEval("has('nvim')") == '1':
+    if lfEval("has('nvim')") == "1":
         func = partial(vim.call, name)
     else:
         func = vim.Function(name)
     return func
 
-#*****************************************************
+
+# *****************************************************
 # AnyExplorer
-#*****************************************************
+# *****************************************************
 class AnyExplorer(Explorer):
     def __init__(self):
         self._executor = []
@@ -78,27 +80,28 @@ class AnyExplorer(Explorer):
             try:
                 source = lfFunction(source)
                 result = source(kwargs["arguments"])
-                if lfEval("has('nvim')") == '0':    # result is vim.List
+                if lfEval("has('nvim')") == "0":  # result is vim.List
                     result = list(result)
             except vim.error as err:
                 raise Exception(f"Error occurred in user defined {str(source)}: {err}")
         elif isinstance(source, dict):
-            if lfEval("has('nvim')") == '0' and isinstance(source["command"], vim.Function):
+            if lfEval("has('nvim')") == "0" and isinstance(source["command"], vim.Function):
                 try:
                     source_cmd = lfBytes2Str(source["command"](kwargs.get("arguments", {})))
                 except vim.error as err:
                     raise Exception("Error occurred in user defined {}: {}".format(str(source["command"]), err))
             elif type(source["command"]) == str:
-                if lfEval("has('nvim')") == '1' and source["command"].startswith("function("):
-                    function_name = source["command"][10:-2]    # source["command"] is like "function('FuncName')"
+                if lfEval("has('nvim')") == "1" and source["command"].startswith("function("):
+                    function_name = source["command"][10:-2]  # source["command"] is like "function('FuncName')"
                     source_cmd = lfFunction(function_name)(kwargs.get("arguments", {}))
                 else:
                     source_cmd = source["command"]
 
                     positional_args = kwargs["positional_args"]
                     if source_cmd.count("%s") != len(positional_args):
-                        raise Exception("Number of positional arguments does not match!\n"
-                                        f"source_cmd = '{source_cmd}', positional_args = {str(positional_args)}")
+                        raise Exception(
+                            f"Number of positional arguments does not match!\nsource_cmd = '{source_cmd}', positional_args = {str(positional_args)}"
+                        )
                     else:
                         arguments = kwargs["arguments"]
                         source_cmd = source_cmd % tuple(arguments[name][0] for name in positional_args)
@@ -108,9 +111,9 @@ class AnyExplorer(Explorer):
             lfCmd(f"let g:Lf_Debug_SourceCmd = '{escQuote(source_cmd)}'")
             executor = AsyncExecutor()
             self._executor.append(executor)
-            if re.search(r'\brg\b|\bag\b|\bpt\b|\bfd\b|\bgit\b', source_cmd): # encoding of output is utf-8
+            if re.search(r"\brg\b|\bag\b|\bpt\b|\bfd\b|\bgit\b", source_cmd):  # encoding of output is utf-8
                 result = executor.execute(source_cmd, encoding=lfEval("&encoding"))
-            else: # buildin command such as dir, grep arguments
+            else:  # buildin command such as dir, grep arguments
                 result = executor.execute(source_cmd)
         else:
             raise Exception(f"Invalid source `{str(source)}`!")
@@ -119,7 +122,7 @@ class AnyExplorer(Explorer):
         if format_line:
             try:
                 format_line = lfFunction(format_line)
-                if sys.version_info >= (3, 0) and lfEval("has('nvim')") == '0':
+                if sys.version_info >= (3, 0) and lfEval("has('nvim')") == "0":
                     result = (lfBytes2Str(format_line(line, kwargs["arguments"])) for line in result)
                 else:
                     result = (format_line(line, kwargs["arguments"]) for line in result)
@@ -134,7 +137,7 @@ class AnyExplorer(Explorer):
             except vim.error as err:
                 raise Exception(f"Error occurred in user defined {str(format_list)}: {err}")
 
-        if lfEval("has('nvim')") != '1' and isinstance(result, vim.List):
+        if lfEval("has('nvim')") != "1" and isinstance(result, vim.List):
             result = list(result)
 
         if isinstance(result, list) and result and isinstance(result[0], bytes):
@@ -159,13 +162,14 @@ class AnyExplorer(Explorer):
             exe.killProcess()
         self._executor = []
 
-#*****************************************************
+
+# *****************************************************
 # AnyExplManager
-#*****************************************************
+# *****************************************************
 class AnyExplManager(Manager):
     def __init__(self, category, config):
         super().__init__()
-        self._has_nvim = lfEval("has('nvim')") == '1'
+        self._has_nvim = lfEval("has('nvim')") == "1"
         self._getExplorer().setConfig(category, config)
         self._category = category
         self._config = config
@@ -274,12 +278,14 @@ class AnyExplManager(Manager):
             orig_buf_num = self._getInstance().getOriginalPos()[2].number
             line, col = self._getInstance().getOriginalCursor()
             try:
-                if self._getInstance().getWinPos() == 'popup':
-                    lfCmd("""call win_execute(%d, "call %s(%d, [%d, %d], %s)")"""
-                            % (self._getInstance().getPopupWinId(), after_enter, orig_buf_num, line, col+1, str(self._arguments)))
+                if self._getInstance().getWinPos() == "popup":
+                    lfCmd(
+                        """call win_execute(%d, "call %s(%d, [%d, %d], %s)")"""
+                        % (self._getInstance().getPopupWinId(), after_enter, orig_buf_num, line, col + 1, str(self._arguments))
+                    )
                 else:
                     after_enter = lfFunction(after_enter)
-                    after_enter(orig_buf_num, [line, col+1], self._arguments)
+                    after_enter(orig_buf_num, [line, col + 1], self._arguments)
             except vim.error as err:
                 raise Exception(f"Error occurred in user defined {str(after_enter)}: {err}")
 
@@ -289,10 +295,12 @@ class AnyExplManager(Manager):
 
         highlights_def = self._config.get("highlights_def", {})
 
-        if self._getInstance().getWinPos() == 'popup':
+        if self._getInstance().getWinPos() == "popup":
             for group, pattern in highlights_def.items():
-                lfCmd("""call win_execute(%d, 'let matchid = matchadd(''%s'', ''%s'')')"""
-                        % (self._getInstance().getPopupWinId(), group, escQuote(pattern)))
+                lfCmd(
+                    """call win_execute(%d, 'let matchid = matchadd(''%s'', ''%s'')')"""
+                    % (self._getInstance().getPopupWinId(), group, escQuote(pattern))
+                )
                 id = int(lfEval("matchid"))
                 self._match_ids.append(id)
         else:
@@ -303,9 +311,10 @@ class AnyExplManager(Manager):
         highlight = self._config.get("highlight")
         if highlight:
             try:
-                if self._getInstance().getWinPos() == 'popup':
-                    lfCmd("""call win_execute(%d, "let matchids = %s(%s)")"""
-                            % (self._getInstance().getPopupWinId(), highlight, str(self._arguments)))
+                if self._getInstance().getWinPos() == "popup":
+                    lfCmd(
+                        """call win_execute(%d, "let matchids = %s(%s)")""" % (self._getInstance().getPopupWinId(), highlight, str(self._arguments))
+                    )
                     self._match_ids += [int(i) for i in lfEval("matchids")]
                 else:
                     highlight = lfFunction(highlight)
@@ -320,12 +329,14 @@ class AnyExplManager(Manager):
             orig_buf_num = self._getInstance().getOriginalPos()[2].number
             line, col = self._getInstance().getOriginalCursor()
             try:
-                if self._getInstance().getWinPos() == 'popup':
-                    lfCmd("""call win_execute(%d, "call %s(%d, [%d, %d], %s)")"""
-                            % (self._getInstance().getPopupWinId(), bang_enter, orig_buf_num, line, col+1, str(self._arguments)))
+                if self._getInstance().getWinPos() == "popup":
+                    lfCmd(
+                        """call win_execute(%d, "call %s(%d, [%d, %d], %s)")"""
+                        % (self._getInstance().getPopupWinId(), bang_enter, orig_buf_num, line, col + 1, str(self._arguments))
+                    )
                 else:
                     bang_enter = lfFunction(bang_enter)
-                    bang_enter(orig_buf_num, [line, col+1], self._arguments)
+                    bang_enter(orig_buf_num, [line, col + 1], self._arguments)
             except vim.error as err:
                 raise Exception(f"Error occurred in user defined {str(bang_enter)}: {err}")
 
@@ -336,12 +347,14 @@ class AnyExplManager(Manager):
             orig_buf_num = self._getInstance().getOriginalPos()[2].number
             line, col = self._getInstance().getOriginalCursor()
             try:
-                if self._getInstance().getWinPos() == 'popup':
-                    lfCmd("""call win_execute(%d, "call %s(%d, [%d, %d], %s)")"""
-                            % (self._getInstance().getPopupWinId(), before_exit, orig_buf_num, line, col+1, str(self._arguments)))
+                if self._getInstance().getWinPos() == "popup":
+                    lfCmd(
+                        """call win_execute(%d, "call %s(%d, [%d, %d], %s)")"""
+                        % (self._getInstance().getPopupWinId(), before_exit, orig_buf_num, line, col + 1, str(self._arguments))
+                    )
                 else:
                     before_exit = lfFunction(before_exit)
-                    before_exit(orig_buf_num, [line, col+1], self._arguments)
+                    before_exit(orig_buf_num, [line, col + 1], self._arguments)
             except vim.error as err:
                 raise Exception(f"Error occurred in user defined {str(before_exit)}: {err}")
 
@@ -363,7 +376,7 @@ class AnyExplManager(Manager):
         super().startExplorer(win_pos, *args, **kwargs)
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         line = args[0]
@@ -374,46 +387,40 @@ class AnyExplManager(Manager):
             l, c = self._getInstance().getOriginalCursor()
             try:
                 preview = lfFunction(preview)
-                result = preview(orig_buf_num, [l, c+1], line, self._arguments)
+                result = preview(orig_buf_num, [l, c + 1], line, self._arguments)
                 if result:
                     filename, line_num, jump_cmd = result
                     # for backward compatibility
-                    if isinstance(filename, int): # it is a buffer number
+                    if isinstance(filename, int):  # it is a buffer number
                         lfCmd("silent call bufload(%d)" % filename)
                     else:
                         if not self._has_nvim:  # py3 in nvim return str, in vim return bytes
                             filename = lfBytes2Str(filename)
-                        if lfEval(f"bufloaded('{escQuote(filename)}')") == '1':
-                            filename = int(lfEval(f"bufnr('{escQuote(filename)}')")) # actually, it's a buffer number
+                        if lfEval(f"bufloaded('{escQuote(filename)}')") == "1":
+                            filename = int(lfEval(f"bufnr('{escQuote(filename)}')"))  # actually, it's a buffer number
                     self._createPopupPreview("", filename, line_num, lfBytes2Str(jump_cmd) if not self._has_nvim else jump_cmd)
             except vim.error as err:
                 raise Exception(f"Error occurred in user defined {str(preview)}: {err}")
 
+
 class OptionalAction(argparse.Action):
-    def __init__(self,
-                 option_strings,
-                 dest,
-                 nargs=None,
-                 const=None,
-                 default=None,
-                 type=None,
-                 choices=None,
-                 required=False,
-                 help=None,
-                 metavar=None):
-        super().__init__(option_strings=option_strings,
-                                             dest=dest,
-                                             nargs=nargs,
-                                             const=const,
-                                             default=default,
-                                             type=type,
-                                             choices=choices,
-                                             required=required,
-                                             help=help,
-                                             metavar=metavar)
+    def __init__(self, option_strings, dest, nargs=None, const=None, default=None, type=None, choices=None, required=False, help=None, metavar=None):
+        super().__init__(
+            option_strings=option_strings,
+            dest=dest,
+            nargs=nargs,
+            const=const,
+            default=default,
+            type=type,
+            choices=choices,
+            required=required,
+            help=help,
+            metavar=metavar,
+        )
 
     def __call__(self, parser, namespace, values, option_string=None):
         setattr(namespace, self.dest, [] if values is None else [values])
+
 
 class LfShlex(shlex.shlex):
     """
@@ -421,20 +428,20 @@ class LfShlex(shlex.shlex):
     which is not expected.
     I want the result to be ['"aaa\\"bbb"']
     """
+
     def read_token(self):
         quoted = False
-        escapedstate = ' '
+        escapedstate = " "
         while True:
             nextchar = self.instream.read(1)
-            if nextchar == '\n':
+            if nextchar == "\n":
                 self.lineno = self.lineno + 1
             if self.debug >= 3:
-                print("shlex: in state", repr(self.state), \
-                      "I see character:", repr(nextchar))
+                print("shlex: in state", repr(self.state), "I see character:", repr(nextchar))
             if self.state is None:
-                self.token = ''        # past end of file
+                self.token = ""  # past end of file
                 break
-            elif self.state == ' ':
+            elif self.state == " ":
                 if not nextchar:
                     self.state = None  # end of file
                     break
@@ -442,31 +449,31 @@ class LfShlex(shlex.shlex):
                     if self.debug >= 2:
                         print("shlex: I see whitespace in whitespace state")
                     if self.token or (self.posix and quoted):
-                        break   # emit current token
+                        break  # emit current token
                     else:
                         continue
                 elif self.posix and nextchar in self.escape:
-                    escapedstate = 'a'
+                    escapedstate = "a"
                     self.state = nextchar
                 elif nextchar in self.wordchars:
                     self.token = nextchar
-                    self.state = 'a'
+                    self.state = "a"
                 elif nextchar in self.quotes:
                     if not self.posix:
                         self.token = nextchar
                     self.state = nextchar
                 elif self.whitespace_split:
                     self.token = nextchar
-                    self.state = 'a'
+                    self.state = "a"
                 else:
                     self.token = nextchar
                     if self.token or (self.posix and quoted):
-                        break   # emit current token
+                        break  # emit current token
                     else:
                         continue
             elif self.state in self.quotes:
                 quoted = True
-                if not nextchar:      # end of file
+                if not nextchar:  # end of file
                     if self.debug >= 2:
                         print("shlex: I see EOF in quotes state")
                     # XXX what error should be raised here?
@@ -474,12 +481,11 @@ class LfShlex(shlex.shlex):
                 if nextchar == self.state:
                     if not self.posix:
                         self.token = self.token + nextchar
-                        self.state = ' '
+                        self.state = " "
                         break
                     else:
-                        self.state = 'a'
-                elif self.posix and nextchar in self.escape and \
-                     self.state in self.escapedquotes:
+                        self.state = "a"
+                elif self.posix and nextchar in self.escape and self.state in self.escapedquotes:
                     escapedstate = self.state
                     self.state = nextchar
                 else:
@@ -488,7 +494,7 @@ class LfShlex(shlex.shlex):
                         self.state = nextchar
                     self.token = self.token + nextchar
             elif self.state in self.escape:
-                if not nextchar:      # end of file
+                if not nextchar:  # end of file
                     if self.debug >= 2:
                         print("shlex: I see EOF in escape state")
                     # XXX what error should be raised here?
@@ -500,38 +506,37 @@ class LfShlex(shlex.shlex):
                 #     self.token = self.token + self.state
                 self.token = self.token + nextchar
                 self.state = escapedstate
-            elif self.state == 'a':
+            elif self.state == "a":
                 if not nextchar:
-                    self.state = None   # end of file
+                    self.state = None  # end of file
                     break
                 elif nextchar in self.whitespace:
                     if self.debug >= 2:
                         print("shlex: I see whitespace in word state")
-                    self.state = ' '
+                    self.state = " "
                     if self.token or (self.posix and quoted):
-                        break   # emit current token
+                        break  # emit current token
                     else:
                         continue
                 elif self.posix and nextchar in self.quotes:
                     self.state = nextchar
                 elif self.posix and nextchar in self.escape:
-                    escapedstate = 'a'
+                    escapedstate = "a"
                     self.state = nextchar
-                elif nextchar in self.wordchars or nextchar in self.quotes \
-                    or self.whitespace_split:
+                elif nextchar in self.wordchars or nextchar in self.quotes or self.whitespace_split:
                     self.token = self.token + nextchar
                 else:
                     self.pushback.appendleft(nextchar)
                     if self.debug >= 2:
                         print("shlex: I see punctuation in word state")
-                    self.state = ' '
+                    self.state = " "
                     if self.token:
-                        break   # emit current token
+                        break  # emit current token
                     else:
                         continue
         result = self.token
-        self.token = ''
-        if self.posix and not quoted and result == '':
+        self.token = ""
+        if self.posix and not quoted and result == "":
             result = None
         if self.debug > 1:
             if result:
@@ -544,13 +549,11 @@ class LfShlex(shlex.shlex):
         self.whitespace_split = True
         return list(self)
 
+
 class LfHelpFormatter(argparse.HelpFormatter):
-    def __init__(self,
-                 prog,
-                 indent_increment=2,
-                 max_help_position=24,
-                 width=105):
+    def __init__(self, prog, indent_increment=2, max_help_position=24, width=105):
         super().__init__(prog, indent_increment, max_help_position, width)
+
 
 gtags_usage = """
 \n
@@ -574,6 +577,7 @@ Leaderf[!] gtags --by-context [--auto-jump [<TYPE>]] [-i] [--literal] [--path-st
                   [--nameOnly | --fullPath | --fuzzy | --regexMode] [--nowrap] [--next | --previous]
  \n
 """
+
 
 class AnyHub:
     def __init__(self):
@@ -609,7 +613,7 @@ class AnyHub:
                 metavar = arg.get("metavar", None)
                 if arg_name.startswith("-"):
                     if metavar is None:
-                        metavar = '<' + arg_name.lstrip("-").upper().replace("-", "_") + '>'
+                        metavar = "<" + arg_name.lstrip("-").upper().replace("-", "_") + ">"
                     add_argument = partial(parser.add_argument, metavar=metavar, dest=arg_name)
                 else:
                     positional_args.append(arg["name"][0])
@@ -619,31 +623,36 @@ class AnyHub:
                 if nargs is not None:
                     try:
                         nargs = int(arg["nargs"])
-                    except: # ? * +
+                    except:  # ? * +
                         nargs = arg["nargs"]
 
                 choices = arg.get("choices", None)
                 if nargs == 0:
-                    add_argument(*arg["name"], action='store_const', const=[],
-                                 default=argparse.SUPPRESS, help=arg.get("help", ""))
+                    add_argument(*arg["name"], action="store_const", const=[], default=argparse.SUPPRESS, help=arg.get("help", ""))
                 elif nargs == "?":
-                    add_argument(*arg["name"], choices=choices, action=OptionalAction, nargs=nargs,
-                                 default=argparse.SUPPRESS, help=arg.get("help", ""))
+                    add_argument(
+                        *arg["name"], choices=choices, action=OptionalAction, nargs=nargs, default=argparse.SUPPRESS, help=arg.get("help", "")
+                    )
                 else:
-                    add_argument(*arg["name"], choices=choices, nargs=nargs, action=arg.get("action", None), default=argparse.SUPPRESS,
-                                 help=arg.get("help", ""))
+                    add_argument(
+                        *arg["name"],
+                        choices=choices,
+                        nargs=nargs,
+                        action=arg.get("action", None),
+                        default=argparse.SUPPRESS,
+                        help=arg.get("help", ""),
+                    )
 
     def _default_action(self, category, positional_args, arguments, *args, **kwargs):
-        if lfEval(f"has_key(g:Lf_Extensions, '{category}')") == '1':
+        if lfEval(f"has_key(g:Lf_Extensions, '{category}')") == "1":
             if category not in self._managers:
                 # In python3, string in g:Lf_Extensions is converted to bytes by vim.bindeval(),
                 # so using vim.eval() instead.
                 # But Funcref object will be converted to None by vim.eval()
                 config = lfEval(f"g:Lf_Extensions['{category}']")
 
-                if "source" in config and isinstance(config["source"], dict) \
-                        and config["source"].get("command", "") is None:
-                    if lfEval("has('nvim')") == '1':
+                if "source" in config and isinstance(config["source"], dict) and config["source"].get("command", "") is None:
+                    if lfEval("has('nvim')") == "1":
                         config["source"]["command"] = vim.eval(f"string(g:Lf_Extensions['{category}']['source']['command'])")
                     else:
                         config["source"]["command"] = vim.bindeval(f"g:Lf_Extensions['{category}']['source']['command']")
@@ -653,77 +662,100 @@ class AnyHub:
         else:
             if category == "file":
                 from .fileExpl import fileExplManager
+
                 manager = fileExplManager
             elif category == "buffer":
                 from .bufExpl import bufExplManager
+
                 manager = bufExplManager
             elif category == "mru":
                 from .mruExpl import mruExplManager
+
                 manager = mruExplManager
                 kwargs["cb_name"] = vim.current.buffer.name
             elif category == "tag":
                 from .tagExpl import tagExplManager
+
                 manager = tagExplManager
             elif category == "bufTag":
                 from .bufTagExpl import bufTagExplManager
+
                 manager = bufTagExplManager
             elif category == "function":
                 from .functionExpl import functionExplManager
+
                 manager = functionExplManager
             elif category == "line":
                 from .lineExpl import lineExplManager
+
                 manager = lineExplManager
             elif category == "cmdHistory":
                 from .historyExpl import historyExplManager
+
                 manager = historyExplManager
                 kwargs["history"] = "cmd"
             elif category == "searchHistory":
                 from .historyExpl import historyExplManager
+
                 manager = historyExplManager
                 kwargs["history"] = "search"
             elif category == "help":
                 from .helpExpl import helpExplManager
+
                 manager = helpExplManager
             elif category == "colorscheme":
                 from .colorschemeExpl import colorschemeExplManager
+
                 manager = colorschemeExplManager
             elif category == "self":
                 from .selfExpl import selfExplManager
+
                 manager = selfExplManager
             elif category == "rg":
                 from .rgExpl import rgExplManager
+
                 manager = rgExplManager
             elif category == "gtags":
                 from .gtagsExpl import gtagsExplManager
+
                 manager = gtagsExplManager
             elif category == "filetype":
                 from .filetypeExpl import filetypeExplManager
+
                 manager = filetypeExplManager
             elif category == "command":
                 from .commandExpl import commandExplManager
+
                 manager = commandExplManager
             elif category == "window":
                 from .windowExpl import windowExplManager
+
                 manager = windowExplManager
             elif category == "quickfix":
                 from .qfloclistExpl import qfloclistExplManager
+
                 manager = qfloclistExplManager
                 kwargs["list_type"] = "quickfix"
             elif category == "loclist":
                 from .qfloclistExpl import qfloclistExplManager
+
                 manager = qfloclistExplManager
                 kwargs["list_type"] = "loclist"
             elif category == "jumps":
                 from .jumpsExpl import jumpsExplManager
+
                 manager = jumpsExplManager
             elif category == "git":
                 from .gitExpl import gitExplManager
+
                 manager = gitExplManager
             elif category == "coc":
                 from .cocExpl import cocExplManager
+
                 manager = cocExplManager
             else:
                 import ctypes
+
                 manager_id = lfFunction(lfEval(f"g:Lf_PythonExtensions['{category}'].manager_id"))()
                 manager = ctypes.cast(manager_id, ctypes.py_object).value
 
@@ -735,7 +767,7 @@ class AnyHub:
                 break
 
         if win_pos == "--popup":
-            if lfEval("has('nvim')") == '1':
+            if lfEval("has('nvim')") == "1":
                 arguments["win_pos"] = "floatwin"
                 arguments["popup_winid"] = 0
             else:
@@ -745,41 +777,46 @@ class AnyHub:
             arguments["win_pos"] = win_pos[2:]
 
         if "--cword" in arguments:
-            arguments["--input"]= [lfEval("expand('<cword>')")]
+            arguments["--input"] = [lfEval("expand('<cword>')")]
 
         kwargs["arguments"] = arguments
         kwargs["positional_args"] = positional_args
 
-        if lfEval("has('patch-8.1.1615') || has('nvim-0.5.0')") == '0':
+        if lfEval("has('patch-8.1.1615') || has('nvim-0.5.0')") == "0":
             win_pos = "--bottom"
 
         manager.startExplorer(win_pos[2:], *args, **kwargs)
 
     def start(self, arg_line, *args, **kwargs):
         if self._parser is None:
-            self._parser = argparse.ArgumentParser(prog="Leaderf[!]", formatter_class=LfHelpFormatter, epilog="If [!] is given, enter normal mode directly.")
+            self._parser = argparse.ArgumentParser(
+                prog="Leaderf[!]", formatter_class=LfHelpFormatter, epilog="If [!] is given, enter normal mode directly."
+            )
             self._add_argument(self._parser, lfEval("g:Lf_CommonArguments"), [])
             subparsers = self._parser.add_subparsers(title="subcommands", description="", help="")
             extensions = itertools.chain(lfEval("keys(g:Lf_Extensions)"), lfEval("keys(g:Lf_PythonExtensions)"))
-            for category in itertools.chain(extensions,
-                    (i for i in lfEval("keys(g:Lf_Arguments)") if i not in extensions)):
+            for category in itertools.chain(extensions, (i for i in lfEval("keys(g:Lf_Arguments)") if i not in extensions)):
                 positional_args = []
-                if lfEval(f"has_key(g:Lf_Extensions, '{category}')") == '1':
+                if lfEval(f"has_key(g:Lf_Extensions, '{category}')") == "1":
                     help = lfEval(f"get(g:Lf_Extensions['{category}'], 'help', '')")
                     arg_def = lfEval(f"get(g:Lf_Extensions['{category}'], 'arguments', [])")
-                elif lfEval(f"has_key(g:Lf_PythonExtensions, '{category}')") == '1':
+                elif lfEval(f"has_key(g:Lf_PythonExtensions, '{category}')") == "1":
                     help = lfEval(f"get(g:Lf_PythonExtensions['{category}'], 'help', '')")
                     arg_def = lfEval(f"get(g:Lf_PythonExtensions['{category}'], 'arguments', [])")
                 else:
                     help = lfEval(f"g:Lf_Helps['{category}']")
                     arg_def = lfEval(f"g:Lf_Arguments['{category}']")
 
-                if category == 'gtags':
-                    parser = subparsers.add_parser(category, usage=gtags_usage, formatter_class=LfHelpFormatter, help=help, epilog="If [!] is given, enter normal mode directly.")
+                if category == "gtags":
+                    parser = subparsers.add_parser(
+                        category, usage=gtags_usage, formatter_class=LfHelpFormatter, help=help, epilog="If [!] is given, enter normal mode directly."
+                    )
                 else:
-                    parser = subparsers.add_parser(category, help=help, formatter_class=LfHelpFormatter, epilog="If [!] is given, enter normal mode directly.")
+                    parser = subparsers.add_parser(
+                        category, help=help, formatter_class=LfHelpFormatter, epilog="If [!] is given, enter normal mode directly."
+                    )
 
-                if category == 'git':
+                if category == "git":
                     alias_dict = lfEval("g:Lf_GitAlias")
                 else:
                     alias_dict = {}
@@ -791,22 +828,22 @@ class AnyHub:
                     for command, args in arg_def.items():
                         help = lfEval("g:Lf_Helps").get(category + "-" + command, "")
                         subparser = subsubparsers.add_parser(command, help=help, formatter_class=LfHelpFormatter)
-                        group = subparser.add_argument_group('specific arguments')
+                        group = subparser.add_argument_group("specific arguments")
                         self._add_argument(group, args, positional_args)
 
                         group = subparser.add_argument_group("common arguments")
                         self._add_argument(group, lfEval("g:Lf_CommonArguments"), positional_args)
 
-                        alias = alias_dict.get(command, None)
+                        alias = alias_dict.get(command)
                         if alias is not None:
                             subparser = subsubparsers.add_parser(alias, help=help, formatter_class=LfHelpFormatter)
-                            group = subparser.add_argument_group('specific arguments')
+                            group = subparser.add_argument_group("specific arguments")
                             self._add_argument(group, args, positional_args)
 
                             group = subparser.add_argument_group("common arguments")
                             self._add_argument(group, lfEval("g:Lf_CommonArguments"), positional_args)
                 else:
-                    group = parser.add_argument_group('specific arguments')
+                    group = parser.add_argument_group("specific arguments")
                     self._add_argument(group, arg_def, positional_args)
 
                     group = parser.add_argument_group("common arguments")
@@ -832,17 +869,7 @@ class AnyHub:
                 arguments["arg_line"] = arg_line
                 the_args.start(arguments, *args, **kwargs)
                 self._last_cmd = the_args.start
-            elif "--recall" in arguments:
-                if self._last_cmd:
-                    self._last_cmd(arguments, *args, **kwargs)
-                else:
-                    lfPrintError("LeaderF has not been used yet!")
-            elif "--next" in arguments:
-                if self._last_cmd:
-                    self._last_cmd(arguments, *args, **kwargs)
-                else:
-                    lfPrintError("LeaderF has not been used yet!")
-            elif "--previous" in arguments:
+            elif "--recall" in arguments or "--next" in arguments or "--previous" in arguments:
                 if self._last_cmd:
                     self._last_cmd(arguments, *args, **kwargs)
                 else:
@@ -854,9 +881,9 @@ class AnyHub:
             return
 
 
-#*****************************************************
+# *****************************************************
 # anyHub is a singleton
-#*****************************************************
+# *****************************************************
 anyHub = AnyHub()
 
-__all__ = ['anyHub']
+__all__ = ["anyHub"]

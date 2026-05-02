@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "cli"))
 
 try:
     import fitz  # PyMuPDF
+
     PYMUPDF_AVAILABLE = True
 except ImportError:
     PYMUPDF_AVAILABLE = False
@@ -33,6 +34,7 @@ class TestLanguageDetection(unittest.TestCase):
         if not PYMUPDF_AVAILABLE:
             self.skipTest("PyMuPDF not installed")
         from pdf_extractor_poc import PDFExtractor
+
         self.PDFExtractor = PDFExtractor
 
     def test_detect_python_with_confidence(self):
@@ -59,7 +61,7 @@ class TestLanguageDetection(unittest.TestCase):
     def test_detect_cpp_with_confidence(self):
         """Test C++ detection"""
         extractor = self.PDFExtractor.__new__(self.PDFExtractor)
-        code = "#include <iostream>\nint main() {\n  std::cout << \"Hello\";\n}"
+        code = '#include <iostream>\nint main() {\n  std::cout << "Hello";\n}'
 
         language, confidence = extractor.detect_language_from_code(code)
 
@@ -79,13 +81,7 @@ class TestLanguageDetection(unittest.TestCase):
     def test_confidence_range(self):
         """Test confidence is always between 0 and 1"""
         extractor = self.PDFExtractor.__new__(self.PDFExtractor)
-        test_codes = [
-            "def foo(): pass",
-            "const x = 10;",
-            "#include <stdio.h>",
-            "random text here",
-            ""
-        ]
+        test_codes = ["def foo(): pass", "const x = 10;", "#include <stdio.h>", "random text here", ""]
 
         for code in test_codes:
             _, confidence = extractor.detect_language_from_code(code)
@@ -100,6 +96,7 @@ class TestSyntaxValidation(unittest.TestCase):
         if not PYMUPDF_AVAILABLE:
             self.skipTest("PyMuPDF not installed")
         from pdf_extractor_poc import PDFExtractor
+
         self.PDFExtractor = PDFExtractor
 
     def test_validate_python_valid(self):
@@ -150,7 +147,7 @@ class TestSyntaxValidation(unittest.TestCase):
         is_valid, issues = extractor.validate_code_syntax(code, "python")
 
         self.assertFalse(is_valid)
-        self.assertIn('May be natural language', ' '.join(issues))
+        self.assertIn("May be natural language", " ".join(issues))
 
 
 class TestQualityScoring(unittest.TestCase):
@@ -160,6 +157,7 @@ class TestQualityScoring(unittest.TestCase):
         if not PYMUPDF_AVAILABLE:
             self.skipTest("PyMuPDF not installed")
         from pdf_extractor_poc import PDFExtractor
+
         self.PDFExtractor = PDFExtractor
 
     def test_quality_score_range(self):
@@ -217,15 +215,13 @@ class TestChapterDetection(unittest.TestCase):
         if not PYMUPDF_AVAILABLE:
             self.skipTest("PyMuPDF not installed")
         from pdf_extractor_poc import PDFExtractor
+
         self.PDFExtractor = PDFExtractor
 
     def test_detect_chapter_with_number(self):
         """Test chapter detection with number"""
         extractor = self.PDFExtractor.__new__(self.PDFExtractor)
-        page_data = {
-            'text': 'Chapter 1: Introduction to Python\nThis is the first chapter.',
-            'headings': []
-        }
+        page_data = {"text": "Chapter 1: Introduction to Python\nThis is the first chapter.", "headings": []}
 
         is_chapter, title = extractor.detect_chapter_start(page_data)
 
@@ -236,8 +232,8 @@ class TestChapterDetection(unittest.TestCase):
         """Test chapter detection with uppercase"""
         extractor = self.PDFExtractor.__new__(self.PDFExtractor)
         page_data = {
-            'text': 'Chapter 1\nThis is the introduction',  # Pattern requires Chapter + digit
-            'headings': []
+            "text": "Chapter 1\nThis is the introduction",  # Pattern requires Chapter + digit
+            "headings": [],
         }
 
         is_chapter, title = extractor.detect_chapter_start(page_data)
@@ -247,10 +243,7 @@ class TestChapterDetection(unittest.TestCase):
     def test_detect_section_heading(self):
         """Test section heading detection"""
         extractor = self.PDFExtractor.__new__(self.PDFExtractor)
-        page_data = {
-            'text': '2. Getting Started\nThis is a section.',
-            'headings': []
-        }
+        page_data = {"text": "2. Getting Started\nThis is a section.", "headings": []}
 
         is_chapter, title = extractor.detect_chapter_start(page_data)
 
@@ -259,10 +252,7 @@ class TestChapterDetection(unittest.TestCase):
     def test_not_chapter(self):
         """Test normal text is not detected as chapter"""
         extractor = self.PDFExtractor.__new__(self.PDFExtractor)
-        page_data = {
-            'text': 'This is just normal paragraph text without any chapter markers.',
-            'headings': []
-        }
+        page_data = {"text": "This is just normal paragraph text without any chapter markers.", "headings": []}
 
         is_chapter, title = extractor.detect_chapter_start(page_data)
 
@@ -276,6 +266,7 @@ class TestCodeBlockMerging(unittest.TestCase):
         if not PYMUPDF_AVAILABLE:
             self.skipTest("PyMuPDF not installed")
         from pdf_extractor_poc import PDFExtractor
+
         self.PDFExtractor = PDFExtractor
 
     def test_merge_continued_blocks(self):
@@ -285,53 +276,41 @@ class TestCodeBlockMerging(unittest.TestCase):
 
         pages = [
             {
-                'page_number': 1,
-                'code_samples': [
-                    {'code': 'def hello():', 'language': 'python', 'detection_method': 'pattern'}
-                ],
-                'code_blocks_count': 1
+                "page_number": 1,
+                "code_samples": [{"code": "def hello():", "language": "python", "detection_method": "pattern"}],
+                "code_blocks_count": 1,
             },
             {
-                'page_number': 2,
-                'code_samples': [
-                    {'code': '    print("world")', 'language': 'python', 'detection_method': 'pattern'}
-                ],
-                'code_blocks_count': 1
-            }
+                "page_number": 2,
+                "code_samples": [{"code": '    print("world")', "language": "python", "detection_method": "pattern"}],
+                "code_blocks_count": 1,
+            },
         ]
 
         merged = extractor.merge_continued_code_blocks(pages)
 
         # Should have merged the two blocks
-        self.assertIn('def hello():', merged[0]['code_samples'][0]['code'])
-        self.assertIn('print("world")', merged[0]['code_samples'][0]['code'])
+        self.assertIn("def hello():", merged[0]["code_samples"][0]["code"])
+        self.assertIn('print("world")', merged[0]["code_samples"][0]["code"])
 
     def test_no_merge_different_languages(self):
         """Test blocks with different languages are not merged"""
         extractor = self.PDFExtractor.__new__(self.PDFExtractor)
 
         pages = [
+            {"page_number": 1, "code_samples": [{"code": "def foo():", "language": "python", "detection_method": "pattern"}], "code_blocks_count": 1},
             {
-                'page_number': 1,
-                'code_samples': [
-                    {'code': 'def foo():', 'language': 'python', 'detection_method': 'pattern'}
-                ],
-                'code_blocks_count': 1
+                "page_number": 2,
+                "code_samples": [{"code": "const x = 10;", "language": "javascript", "detection_method": "pattern"}],
+                "code_blocks_count": 1,
             },
-            {
-                'page_number': 2,
-                'code_samples': [
-                    {'code': 'const x = 10;', 'language': 'javascript', 'detection_method': 'pattern'}
-                ],
-                'code_blocks_count': 1
-            }
         ]
 
         merged = extractor.merge_continued_code_blocks(pages)
 
         # Should NOT merge different languages
-        self.assertEqual(len(merged[0]['code_samples']), 1)
-        self.assertEqual(len(merged[1]['code_samples']), 1)
+        self.assertEqual(len(merged[0]["code_samples"]), 1)
+        self.assertEqual(len(merged[1]["code_samples"]), 1)
 
 
 class TestCodeDetectionMethods(unittest.TestCase):
@@ -341,6 +320,7 @@ class TestCodeDetectionMethods(unittest.TestCase):
         if not PYMUPDF_AVAILABLE:
             self.skipTest("PyMuPDF not installed")
         from pdf_extractor_poc import PDFExtractor
+
         self.PDFExtractor = PDFExtractor
 
     def test_pattern_based_detection(self):
@@ -374,6 +354,7 @@ class TestQualityFiltering(unittest.TestCase):
         if not PYMUPDF_AVAILABLE:
             self.skipTest("PyMuPDF not installed")
         from pdf_extractor_poc import PDFExtractor
+
         self.PDFExtractor = PDFExtractor
 
     def test_filter_by_min_quality(self):
@@ -382,23 +363,15 @@ class TestQualityFiltering(unittest.TestCase):
         extractor.min_quality = 5.0
 
         # High quality block
-        high_quality = {
-            'code': 'def calculate():\n    return 42',
-            'language': 'python',
-            'quality': 8.0
-        }
+        high_quality = {"code": "def calculate():\n    return 42", "language": "python", "quality": 8.0}
 
         # Low quality block
-        low_quality = {
-            'code': 'x',
-            'language': 'unknown',
-            'quality': 2.0
-        }
+        low_quality = {"code": "x", "language": "unknown", "quality": 2.0}
 
         # Only high quality should pass
-        self.assertGreaterEqual(high_quality['quality'], extractor.min_quality)
-        self.assertLess(low_quality['quality'], extractor.min_quality)
+        self.assertGreaterEqual(high_quality["quality"], extractor.min_quality)
+        self.assertLess(low_quality["quality"], extractor.min_quality)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

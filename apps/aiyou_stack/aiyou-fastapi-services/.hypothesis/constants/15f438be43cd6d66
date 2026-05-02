@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/monitoring/health.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.01, 0.1, 200, 1000, ' | ', '/', '__name__', 'available', 'checks', 'connection_pool', 'cpu_percent', 'database', 'degraded', 'details', 'disk_percent', 'disk_used_bytes', 'duration_seconds', 'environment', 'healthy', 'memory_percent', 'memory_used_bytes', 'message', 'name', 'response_time_ms', 'service', 'status', 'status_code', 'system_resources', 'timestamp', 'unhealthy', 'unknown', 'uptime_seconds', 'url', 'version']

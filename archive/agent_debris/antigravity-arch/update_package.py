@@ -5,6 +5,7 @@ Runs in GitHub Actions daily.
 
 Standard library only - no external dependencies.
 """
+
 import os
 import re
 import ssl

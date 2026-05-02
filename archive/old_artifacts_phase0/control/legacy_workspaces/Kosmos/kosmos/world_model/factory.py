@@ -122,11 +122,9 @@ def get_world_model(
 
             wm = Neo4jWorldModel()
             if not wm.graph.connected:
-                logger.warning(
-                    "Neo4j unavailable, falling back to InMemoryWorldModel. "
-                    "Graph data will not persist across restarts."
-                )
+                logger.warning("Neo4j unavailable, falling back to InMemoryWorldModel. Graph data will not persist across restarts.")
                 from kosmos.world_model.in_memory import InMemoryWorldModel
+
                 _world_model = InMemoryWorldModel()
                 logger.info("InMemoryWorldModel initialized (fallback)")
             else:
@@ -147,10 +145,7 @@ def get_world_model(
             )
 
         else:
-            raise ValueError(
-                f"Unknown world model mode: '{mode}'. "
-                f"Valid options: 'simple', 'production'"
-            )
+            raise ValueError(f"Unknown world model mode: '{mode}'. Valid options: 'simple', 'production'")
 
     return _world_model
 

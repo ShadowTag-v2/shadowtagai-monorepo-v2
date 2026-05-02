@@ -25,169 +25,143 @@ from ... import testing_utils
 
 
 class MockBeforeModelCallback(BaseModel):
-  mock_response: str
+    mock_response: str
 
-  def __call__(
-      self,
-      callback_context: CallbackContext,
-      llm_request: LlmRequest,
-  ) -> LlmResponse:
-    return LlmResponse(
-        content=testing_utils.ModelContent(
-            [types.Part.from_text(text=self.mock_response)]
-        )
-    )
+    def __call__(
+        self,
+        callback_context: CallbackContext,
+        llm_request: LlmRequest,
+    ) -> LlmResponse:
+        return LlmResponse(content=testing_utils.ModelContent([types.Part.from_text(text=self.mock_response)]))
 
 
 class MockAfterModelCallback(BaseModel):
-  mock_response: str
+    mock_response: str
 
-  def __call__(
-      self,
-      callback_context: CallbackContext,
-      llm_response: LlmResponse,
-  ) -> LlmResponse:
-    return LlmResponse(
-        content=testing_utils.ModelContent(
-            [types.Part.from_text(text=self.mock_response)]
-        )
-    )
+    def __call__(
+        self,
+        callback_context: CallbackContext,
+        llm_response: LlmResponse,
+    ) -> LlmResponse:
+        return LlmResponse(content=testing_utils.ModelContent([types.Part.from_text(text=self.mock_response)]))
 
 
 class MockOnModelCallback(BaseModel):
-  mock_response: str
+    mock_response: str
 
-  def __call__(
-      self,
-      callback_context: CallbackContext,
-      llm_request: LlmRequest,
-      error: Exception,
-  ) -> LlmResponse:
-    return LlmResponse(
-        content=testing_utils.ModelContent(
-            [types.Part.from_text(text=self.mock_response)]
-        )
-    )
+    def __call__(
+        self,
+        callback_context: CallbackContext,
+        llm_request: LlmRequest,
+        error: Exception,
+    ) -> LlmResponse:
+        return LlmResponse(content=testing_utils.ModelContent([types.Part.from_text(text=self.mock_response)]))
 
 
 def noop_callback(**kwargs) -> LlmResponse | None:
-  pass
+    pass
 
 
 def test_before_model_callback():
-  responses = ['model_response']
-  mock_model = testing_utils.MockModel.create(responses=responses)
-  agent = Agent(
-      name='root_agent',
-      model=mock_model,
-      before_model_callback=MockBeforeModelCallback(
-          mock_response='before_model_callback'
-      ),
-  )
+    responses = ["model_response"]
+    mock_model = testing_utils.MockModel.create(responses=responses)
+    agent = Agent(
+        name="root_agent",
+        model=mock_model,
+        before_model_callback=MockBeforeModelCallback(mock_response="before_model_callback"),
+    )
 
-  runner = testing_utils.InMemoryRunner(agent)
-  assert testing_utils.simplify_events(runner.run('test')) == [
-      ('root_agent', 'before_model_callback'),
-  ]
+    runner = testing_utils.InMemoryRunner(agent)
+    assert testing_utils.simplify_events(runner.run("test")) == [
+        ("root_agent", "before_model_callback"),
+    ]
 
 
 def test_before_model_callback_noop():
-  responses = ['model_response']
-  mock_model = testing_utils.MockModel.create(responses=responses)
-  agent = Agent(
-      name='root_agent',
-      model=mock_model,
-      before_model_callback=noop_callback,
-  )
+    responses = ["model_response"]
+    mock_model = testing_utils.MockModel.create(responses=responses)
+    agent = Agent(
+        name="root_agent",
+        model=mock_model,
+        before_model_callback=noop_callback,
+    )
 
-  runner = testing_utils.InMemoryRunner(agent)
-  assert testing_utils.simplify_events(runner.run('test')) == [
-      ('root_agent', 'model_response'),
-  ]
+    runner = testing_utils.InMemoryRunner(agent)
+    assert testing_utils.simplify_events(runner.run("test")) == [
+        ("root_agent", "model_response"),
+    ]
 
 
 def test_before_model_callback_end():
-  responses = ['model_response']
-  mock_model = testing_utils.MockModel.create(responses=responses)
-  agent = Agent(
-      name='root_agent',
-      model=mock_model,
-      before_model_callback=MockBeforeModelCallback(
-          mock_response='before_model_callback',
-      ),
-  )
+    responses = ["model_response"]
+    mock_model = testing_utils.MockModel.create(responses=responses)
+    agent = Agent(
+        name="root_agent",
+        model=mock_model,
+        before_model_callback=MockBeforeModelCallback(
+            mock_response="before_model_callback",
+        ),
+    )
 
-  runner = testing_utils.InMemoryRunner(agent)
-  assert testing_utils.simplify_events(runner.run('test')) == [
-      ('root_agent', 'before_model_callback'),
-  ]
+    runner = testing_utils.InMemoryRunner(agent)
+    assert testing_utils.simplify_events(runner.run("test")) == [
+        ("root_agent", "before_model_callback"),
+    ]
 
 
 def test_after_model_callback():
-  responses = ['model_response']
-  mock_model = testing_utils.MockModel.create(responses=responses)
-  agent = Agent(
-      name='root_agent',
-      model=mock_model,
-      after_model_callback=MockAfterModelCallback(
-          mock_response='after_model_callback'
-      ),
-  )
+    responses = ["model_response"]
+    mock_model = testing_utils.MockModel.create(responses=responses)
+    agent = Agent(
+        name="root_agent",
+        model=mock_model,
+        after_model_callback=MockAfterModelCallback(mock_response="after_model_callback"),
+    )
 
-  runner = testing_utils.InMemoryRunner(agent)
-  assert testing_utils.simplify_events(runner.run('test')) == [
-      ('root_agent', 'after_model_callback'),
-  ]
+    runner = testing_utils.InMemoryRunner(agent)
+    assert testing_utils.simplify_events(runner.run("test")) == [
+        ("root_agent", "after_model_callback"),
+    ]
 
 
 @pytest.mark.asyncio
 async def test_after_model_callback_noop():
-  responses = ['model_response']
-  mock_model = testing_utils.MockModel.create(responses=responses)
-  agent = Agent(
-      name='root_agent',
-      model=mock_model,
-      after_model_callback=noop_callback,
-  )
+    responses = ["model_response"]
+    mock_model = testing_utils.MockModel.create(responses=responses)
+    agent = Agent(
+        name="root_agent",
+        model=mock_model,
+        after_model_callback=noop_callback,
+    )
 
-  runner = testing_utils.TestInMemoryRunner(agent)
-  assert testing_utils.simplify_events(
-      await runner.run_async_with_new_session('test')
-  ) == [('root_agent', 'model_response')]
+    runner = testing_utils.TestInMemoryRunner(agent)
+    assert testing_utils.simplify_events(await runner.run_async_with_new_session("test")) == [("root_agent", "model_response")]
 
 
 @pytest.mark.asyncio
 async def test_on_model_callback_model_error_noop():
-  """Test that the on_model_error_callback is a no-op when the model returns an error."""
-  mock_model = testing_utils.MockModel.create(
-      responses=[], error=SystemError('error')
-  )
-  agent = Agent(
-      name='root_agent',
-      model=mock_model,
-      on_model_error_callback=noop_callback,
-  )
+    """Test that the on_model_error_callback is a no-op when the model returns an error."""
+    mock_model = testing_utils.MockModel.create(responses=[], error=SystemError("error"))
+    agent = Agent(
+        name="root_agent",
+        model=mock_model,
+        on_model_error_callback=noop_callback,
+    )
 
-  runner = testing_utils.TestInMemoryRunner(agent)
-  with pytest.raises(SystemError):
-    await runner.run_async_with_new_session('test')
+    runner = testing_utils.TestInMemoryRunner(agent)
+    with pytest.raises(SystemError):
+        await runner.run_async_with_new_session("test")
 
 
 @pytest.mark.asyncio
 async def test_on_model_callback_model_error_modify_model_response():
-  """Test that the on_model_error_callback can modify the model response."""
-  mock_model = testing_utils.MockModel.create(
-      responses=[], error=SystemError('error')
-  )
-  agent = Agent(
-      name='root_agent',
-      model=mock_model,
-      on_model_error_callback=MockOnModelCallback(
-          mock_response='on_model_error_callback_response'
-      ),
-  )
+    """Test that the on_model_error_callback can modify the model response."""
+    mock_model = testing_utils.MockModel.create(responses=[], error=SystemError("error"))
+    agent = Agent(
+        name="root_agent",
+        model=mock_model,
+        on_model_error_callback=MockOnModelCallback(mock_response="on_model_error_callback_response"),
+    )
 
-  runner = testing_utils.TestInMemoryRunner(agent)
-  assert testing_utils.simplify_events(
-      await runner.run_async_with_new_session('test')
-  ) == [('root_agent', 'on_model_error_callback_response')]
+    runner = testing_utils.TestInMemoryRunner(agent)
+    assert testing_utils.simplify_events(await runner.run_async_with_new_session("test")) == [("root_agent", "on_model_error_callback_response")]

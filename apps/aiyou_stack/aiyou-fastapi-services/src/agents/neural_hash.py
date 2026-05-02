@@ -18,7 +18,7 @@ from datetime import datetime
 from typing import Any
 
 import numpy as np
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.protocols.agent_protocol import (
     AgentMessage,
@@ -65,18 +65,21 @@ class NeuralFingerprint(BaseModel):
         description="Metadata size reduction vs. raw (60%)",
     )
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "semantic_embedding": [0.123, -0.456, 0.789],  # truncated
-                "latent_density": {"mean": 0.67, "variance": 0.15, "entropy": 2.34},
-                "perceptual_hash": "a4b3c2d1e0f9a4b3c2d1e0f9a4b3c2d1e0f9a4b3c2d1e0f9a4b3c2d1e0f9a4b3",
-                "fingerprint_id": "fp_abc123xyz789",
-                "asset_id": "asset_123",
-                "collision_probability": 1e-9,
-                "metadata_reduction": 0.60,
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "semantic_embedding": [0.123, -0.456, 0.789],
+                    "latent_density": {"mean": 0.67, "variance": 0.15, "entropy": 2.34},
+                    "perceptual_hash": "a4b3c2d1e0f9a4b3c2d1e0f9a4b3c2d1e0f9a4b3c2d1e0f9a4b3c2d1e0f9a4b3",
+                    "fingerprint_id": "fp_abc123xyz789",
+                    "asset_id": "asset_123",
+                    "collision_probability": 1e-9,
+                    "metadata_reduction": 0.60,
+                },
+            ],
+        },
+    )
 
 
 class NeuralHashAgent:

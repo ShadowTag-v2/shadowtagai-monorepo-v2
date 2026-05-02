@@ -428,10 +428,9 @@ def test_mamba_chunk_scan_cont_batch_prefill_chunking(chunk_size, seqlens):
     B_chunked = torch.zeros_like(B)[:chunked_input_seq_len, ...]
     C_chunked = torch.zeros_like(C)[:chunked_input_seq_len, ...]
     for i in range(num_sequences):
+
         def chunk_f(x, i):
-            return x[
-                    cu_seqlens[i] : cu_seqlens[i] + chunked_seqlens[i], ...
-                ]
+            return x[cu_seqlens[i] : cu_seqlens[i] + chunked_seqlens[i], ...]
 
         X_chunked[chunked_cu_seqlens[i] : chunked_cu_seqlens[i + 1], ...] = chunk_f(
             X, i
@@ -481,10 +480,9 @@ def test_mamba_chunk_scan_cont_batch_prefill_chunking(chunk_size, seqlens):
     remaining_B_chunked = torch.zeros_like(B)[:remaining_chunked_input_seq_len, ...]
     remaining_C_chunked = torch.zeros_like(C)[:remaining_chunked_input_seq_len, ...]
     for i in range(num_sequences):
+
         def remaining_chunk_f(x, i):
-            return x[
-                    cu_seqlens[i] + chunked_seqlens[i] : cu_seqlens[i + 1], ...
-                ]
+            return x[cu_seqlens[i] + chunked_seqlens[i] : cu_seqlens[i + 1], ...]
 
         remaining_X_chunked[
             remaining_chunked_cu_seqlens[i] : remaining_chunked_cu_seqlens[i + 1], ...
@@ -505,12 +503,15 @@ def test_mamba_chunk_scan_cont_batch_prefill_chunking(chunk_size, seqlens):
             [
                 pt1[chunked_cu_seqlens[i] : chunked_cu_seqlens[i + 1], ...],
                 pt2[
-                    remaining_chunked_cu_seqlens[i] : remaining_chunked_cu_seqlens[i + 1],
+                    remaining_chunked_cu_seqlens[i] : remaining_chunked_cu_seqlens[
+                        i + 1
+                    ],
                     ...,
                 ],
             ],
             dim=0,
         )
+
     def concat_batch_f(pt1, pt2):
         return torch.cat(
             [concat_chunk_f(pt1, pt2, i) for i in range(num_sequences)], dim=0

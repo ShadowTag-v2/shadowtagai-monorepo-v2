@@ -1,14 +1,15 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import Optional
 from agents.legal_whiteboard import whiteboard
 
 router = APIRouter(prefix="/whiteboard", tags=["whiteboard"])
+
 
 class RevenueEvent(BaseModel):
     amount_usd: float
     source: str
     agent_id: str | None = None
+
 
 @router.post("/revenue")
 async def record_revenue(event: RevenueEvent):
@@ -18,6 +19,7 @@ async def record_revenue(event: RevenueEvent):
         return {"status": "success", "new_total": whiteboard.state["total_revenue_usd"], "level": whiteboard.state["current_level"]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.get("/status")
 async def get_status():

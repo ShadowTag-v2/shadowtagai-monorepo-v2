@@ -112,12 +112,7 @@ def test_run_with_usr_env_shebang(pipenv_instance_pypi):
         p.pipenv("install")
         script_path = os.path.join(p.path, "test_script")
         with open(script_path, "w") as f:
-            f.write(
-                "#!/usr/bin/env python\n"
-                "import sys, os\n\n"
-                "print(sys.prefix)\n"
-                "print(os.getenv('VIRTUAL_ENV'))\n"
-            )
+            f.write("#!/usr/bin/env python\nimport sys, os\n\nprint(sys.prefix)\nprint(os.getenv('VIRTUAL_ENV'))\n")
         os.chmod(script_path, 0o700)
 
         # Get the virtualenv location before running the script
@@ -194,18 +189,12 @@ def test_run_inline_env_vars(pipenv_instance_pypi):
 
         # ── command-line form ─────────────────────────────────────────────
         # Single env var, simple value
-        c = p.pipenv(
-            "run MY_INLINE_VAR=hello python -c"
-            " \"import os; print(os.environ['MY_INLINE_VAR'])\""
-        )
+        c = p.pipenv("run MY_INLINE_VAR=hello python -c \"import os; print(os.environ['MY_INLINE_VAR'])\"")
         assert c.returncode == 0, c.stderr
         assert "hello" in c.stdout
 
         # Multiple env vars
-        c = p.pipenv(
-            "run A=foo B=bar python -c"
-            " \"import os; print(os.environ['A'], os.environ['B'])\""
-        )
+        c = p.pipenv("run A=foo B=bar python -c \"import os; print(os.environ['A'], os.environ['B'])\"")
         assert c.returncode == 0, c.stderr
         assert "foo bar" in c.stdout
 
@@ -214,7 +203,7 @@ def test_run_inline_env_vars(pipenv_instance_pypi):
             f.write(
                 "[scripts]\n"
                 'simple_env = "GREET=hi python -c \\"import os; print(os.environ[\'GREET\'])\\""\n'
-                'spaces_env = "GREET=\'hello world\' python -c \\"import os; print(os.environ[\'GREET\'])\\""\n'
+                "spaces_env = \"GREET='hello world' python -c \\\"import os; print(os.environ['GREET'])\\\"\"\n"
             )
 
         c = p.pipenv("run simple_env")

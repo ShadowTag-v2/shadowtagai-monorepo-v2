@@ -25,10 +25,12 @@ def _resolve_codex_cmd() -> list[str]:
     ]
     if cargo_target:
         cargo_base = Path(cargo_target)
-        candidates.extend([
-            cargo_base / "debug" / "codex.exe",
-            cargo_base / "release" / "codex.exe",
-        ])
+        candidates.extend(
+            [
+                cargo_base / "debug" / "codex.exe",
+                cargo_base / "release" / "codex.exe",
+            ]
+        )
 
     for candidate in candidates:
         if candidate.exists():
@@ -38,11 +40,9 @@ def _resolve_codex_cmd() -> list[str]:
         return ["codex"]
 
     raise FileNotFoundError(
-        "Codex CLI not found. Build it first, e.g.\n"
-        "  cargo build -p codex-cli --release\n"
-        "or for debug:\n"
-        "  cargo build -p codex-cli\n"
+        "Codex CLI not found. Build it first, e.g.\n  cargo build -p codex-cli --release\nor for debug:\n  cargo build -p codex-cli\n"
     )
+
 
 CODEX_CMD = _resolve_codex_cmd()
 print(CODEX_CMD)
@@ -54,9 +54,11 @@ EXTRA_ROOT = Path(os.environ["USERPROFILE"]) / "WorkspaceRoot"  # additional wri
 
 ENV_BASE = {}  # extend if needed
 
+
 class CaseResult:
     def __init__(self, name: str, ok: bool, detail: str = ""):
         self.name, self.ok, self.detail = name, ok, detail
+
 
 def run_sbx(
     policy: str,
@@ -85,34 +87,42 @@ def run_sbx(
 
     argv = [*CODEX_CMD, "sandbox", "windows", *policy_flags, *overrides, "--", *cmd_argv]
     print(cmd_argv)
-    cp = subprocess.run(argv, cwd=str(cwd), env=env,
-                        capture_output=True, timeout=TIMEOUT_SEC, text=True)
+    cp = subprocess.run(argv, cwd=str(cwd), env=env, capture_output=True, timeout=TIMEOUT_SEC, text=True)
     return cp.returncode, cp.stdout, cp.stderr
+
 
 def have(cmd: str) -> bool:
     return shutil.which(cmd) is not None
+
 
 def make_dir_clean(p: Path) -> None:
     if p.exists():
         shutil.rmtree(p, ignore_errors=True)
     p.mkdir(parents=True, exist_ok=True)
 
+
 def write_file(p: Path, content: str = "x") -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(content, encoding="utf-8")
 
+
 def remove_if_exists(p: Path) -> None:
     try:
-        if p.is_dir(): shutil.rmtree(p, ignore_errors=True)
-        elif p.exists(): p.unlink(missing_ok=True)
+        if p.is_dir():
+            shutil.rmtree(p, ignore_errors=True)
+        elif p.exists():
+            p.unlink(missing_ok=True)
     except Exception:
         pass
+
 
 def assert_exists(p: Path) -> bool:
     return p.exists()
 
+
 def assert_not_exists(p: Path) -> bool:
     return not p.exists()
+
 
 def make_junction(link: Path, target: Path) -> bool:
     """Create a directory junction; return True if it exists afterward."""
@@ -121,6 +131,7 @@ def make_junction(link: Path, target: Path) -> bool:
     cmd = ["cmd", "/c", f'mklink /J "{link}" "{target}"']
     cp = subprocess.run(cmd, capture_output=True, text=True)
     return cp.returncode == 0 and link.exists()
+
 
 def make_symlink(link: Path, target: Path) -> bool:
     """Create a directory symlink; return True if it exists afterward."""
@@ -134,6 +145,7 @@ def make_symlink(link: Path, target: Path) -> bool:
     cp = subprocess.run(cmd, capture_output=True, text=True)
     return cp.returncode == 0 and link.exists()
 
+
 def summarize(results: list[CaseResult]) -> int:
     ok = sum(1 for r in results if r.ok)
     total = len(results)
@@ -143,6 +155,7 @@ def summarize(results: list[CaseResult]) -> int:
         print(f"[{'PASS' if r.ok else 'FAIL'}] {r.name}" + (f" :: {r.detail.strip()}" if r.detail and not r.ok else ""))
     print("=" * 72)
     return 0 if ok == total else 1
+
 
 def main() -> int:
     results: list[CaseResult] = []
@@ -159,7 +172,7 @@ def main() -> int:
     ro_temp_denied = probe_rc != 0
 
     def add(name: str, ok: bool, detail: str = ""):
-        print('running', name)
+        print("running", name)
         results.append(CaseResult(name, ok, detail))
 
     # 1. RO: deny write in CWD
@@ -219,7 +232,8 @@ def main() -> int:
 
     # 6. WS: append OK in CWD
     target = WS_ROOT / "append.txt"
-    remove_if_exists(target); write_file(target, "line1\n")
+    remove_if_exists(target)
+    write_file(target, "line1\n")
     rc, out, err = run_sbx("workspace-write", ["cmd", "/c", "echo line2 >> append.txt"], WS_ROOT)
     add("WS: append allowed", rc == 0 and target.read_text().strip().endswith("line2"), f"rc={rc}")
 
@@ -232,17 +246,19 @@ def main() -> int:
     # 8. WS: PowerShell Set-Content in CWD (OK)
     target = WS_ROOT / "ps_ok.txt"
     remove_if_exists(target)
-    rc, out, err = run_sbx("workspace-write",
-                           ["powershell", "-NoLogo", "-NoProfile", "-Command",
-                            "Set-Content -LiteralPath ps_ok.txt -Value 'hello' -Encoding ASCII"], WS_ROOT)
+    rc, out, err = run_sbx(
+        "workspace-write",
+        ["powershell", "-NoLogo", "-NoProfile", "-Command", "Set-Content -LiteralPath ps_ok.txt -Value 'hello' -Encoding ASCII"],
+        WS_ROOT,
+    )
     add("WS: PowerShell Set-Content allowed", rc == 0 and assert_exists(target), f"rc={rc}, err={err}")
 
     # 9. RO: PowerShell Set-Content denied
     target = WS_ROOT / "ps_ro_fail.txt"
     remove_if_exists(target)
-    rc, out, err = run_sbx("read-only",
-                           ["powershell", "-NoLogo", "-NoProfile", "-Command",
-                            "Set-Content -LiteralPath ps_ro_fail.txt -Value 'x'"], WS_ROOT)
+    rc, out, err = run_sbx(
+        "read-only", ["powershell", "-NoLogo", "-NoProfile", "-Command", "Set-Content -LiteralPath ps_ro_fail.txt -Value 'x'"], WS_ROOT
+    )
     add("RO: PowerShell Set-Content denied", rc != 0 and assert_not_exists(target), f"rc={rc}")
 
     # 10. WS: mkdir and write (OK)
@@ -254,17 +270,20 @@ def main() -> int:
     add("WS: rename succeeds (expected on this host)", rc == 0 and (WS_ROOT / "r2.txt").exists(), f"rc={rc}, err={err}")
 
     # 12. WS: delete (EXPECTED SUCCESS on this host)
-    target = WS_ROOT / "delme.txt"; write_file(target, "x")
+    target = WS_ROOT / "delme.txt"
+    write_file(target, "x")
     rc, out, err = run_sbx("workspace-write", ["cmd", "/c", "del /q delme.txt"], WS_ROOT)
     add("WS: delete succeeds (expected on this host)", rc == 0 and not target.exists(), f"rc={rc}, err={err}")
 
     # 13. RO: python tries to write (denied)
-    pyfile = WS_ROOT / "py_should_fail.txt"; remove_if_exists(pyfile)
+    pyfile = WS_ROOT / "py_should_fail.txt"
+    remove_if_exists(pyfile)
     rc, out, err = run_sbx("read-only", ["python", "-c", "open('py_should_fail.txt','w').write('x')"], WS_ROOT)
     add("RO: python file write denied", rc != 0 and assert_not_exists(pyfile), f"rc={rc}")
 
     # 14. WS: python writes file (OK)
-    pyfile = WS_ROOT / "py_ok.txt"; remove_if_exists(pyfile)
+    pyfile = WS_ROOT / "py_ok.txt"
+    remove_if_exists(pyfile)
     rc, out, err = run_sbx("workspace-write", ["python", "-c", "open('py_ok.txt','w').write('x')"], WS_ROOT)
     add("WS: python file write allowed", rc == 0 and assert_exists(pyfile), f"rc={rc}, err={err}")
 
@@ -273,14 +292,17 @@ def main() -> int:
     add("WS: curl network blocked", rc != 0, f"rc={rc}")
 
     # 16. WS: iwr network blocked (HTTP)
-    rc, out, err = run_sbx("workspace-write", ["powershell", "-NoLogo", "-NoProfile", "-Command",
-                               "try { iwr http://neverssl.com -TimeoutSec 2 } catch { exit 1 }"], WS_ROOT)
+    rc, out, err = run_sbx(
+        "workspace-write",
+        ["powershell", "-NoLogo", "-NoProfile", "-Command", "try { iwr http://neverssl.com -TimeoutSec 2 } catch { exit 1 }"],
+        WS_ROOT,
+    )
     add("WS: iwr network blocked", rc != 0, f"rc={rc}")
 
     # 17. RO: deny TEMP writes via PowerShell
-    rc, out, err = run_sbx("read-only",
-                           ["powershell", "-NoLogo", "-NoProfile", "-Command",
-                            "Set-Content -LiteralPath $env:TEMP\\ro_tmpfail.txt -Value 'x'"], WS_ROOT)
+    rc, out, err = run_sbx(
+        "read-only", ["powershell", "-NoLogo", "-NoProfile", "-Command", "Set-Content -LiteralPath $env:TEMP\\ro_tmpfail.txt -Value 'x'"], WS_ROOT
+    )
     if ro_temp_denied:
         add("RO: TEMP write denied (PS)", rc != 0, f"rc={rc}")
     else:
@@ -308,29 +330,28 @@ def main() -> int:
         add("WS: git --version (optional, skipped)", True)
 
     # 24. WS: PS bytes write (OK)
-    rc, out, err = run_sbx("workspace-write",
-                           ["powershell", "-NoLogo", "-NoProfile", "-Command",
-                            "[IO.File]::WriteAllBytes('bytes_ok.bin',[byte[]](0..255))"], WS_ROOT)
+    rc, out, err = run_sbx(
+        "workspace-write", ["powershell", "-NoLogo", "-NoProfile", "-Command", "[IO.File]::WriteAllBytes('bytes_ok.bin',[byte[]](0..255))"], WS_ROOT
+    )
     add("WS: PS bytes write allowed", rc == 0 and (WS_ROOT / "bytes_ok.bin").exists(), f"rc={rc}")
 
     # 25. RO: PS bytes write denied
-    rc, out, err = run_sbx("read-only",
-                           ["powershell", "-NoLogo", "-NoProfile", "-Command",
-                            "[IO.File]::WriteAllBytes('bytes_fail.bin',[byte[]](0..10))"], WS_ROOT)
+    rc, out, err = run_sbx(
+        "read-only", ["powershell", "-NoLogo", "-NoProfile", "-Command", "[IO.File]::WriteAllBytes('bytes_fail.bin',[byte[]](0..10))"], WS_ROOT
+    )
     add("RO: PS bytes write denied", rc != 0 and not (WS_ROOT / "bytes_fail.bin").exists(), f"rc={rc}")
 
     # 26. WS: deep mkdir and write (OK)
-    rc, out, err = run_sbx("workspace-write",
-                           ["cmd", "/c", "mkdir deep\\nest && echo ok > deep\\nest\\f.txt"], WS_ROOT)
+    rc, out, err = run_sbx("workspace-write", ["cmd", "/c", "mkdir deep\\nest && echo ok > deep\\nest\\f.txt"], WS_ROOT)
     add("WS: deep mkdir+write allowed", rc == 0 and (WS_ROOT / "deep/nest/f.txt").exists(), f"rc={rc}")
 
     # 27. WS: move (EXPECTED SUCCESS on this host)
-    rc, out, err = run_sbx("workspace-write",
-                           ["cmd", "/c", "echo x > m1.txt & move /y m1.txt m2.txt"], WS_ROOT)
+    rc, out, err = run_sbx("workspace-write", ["cmd", "/c", "echo x > m1.txt & move /y m1.txt m2.txt"], WS_ROOT)
     add("WS: move succeeds (expected on this host)", rc == 0 and (WS_ROOT / "m2.txt").exists(), f"rc={rc}, err={err}")
 
     # 28. RO: cmd redirection denied
-    target = WS_ROOT / "cmd_ro.txt"; remove_if_exists(target)
+    target = WS_ROOT / "cmd_ro.txt"
+    remove_if_exists(target)
     rc, out, err = run_sbx("read-only", ["cmd", "/c", "echo nope > cmd_ro.txt"], WS_ROOT)
     add("RO: cmd redirection denied", rc != 0 and not target.exists(), f"rc={rc}")
 
@@ -385,7 +406,7 @@ def main() -> int:
     cap_sid_target = codex_home / "cap_sid"
     rc, out, err = run_sbx(
         "workspace-write",
-        ["cmd", "/c", f"echo tamper > \"{cap_sid_target}\""],
+        ["cmd", "/c", f'echo tamper > "{cap_sid_target}"'],
         WS_ROOT,
     )
     rc2, out2, err2 = run_sbx("workspace-write", ["cmd", "/c", "echo tamper > .codex\\policy.json"], WS_ROOT)
@@ -495,6 +516,7 @@ def main() -> int:
     )
 
     return summarize(results)
+
 
 if __name__ == "__main__":
     sys.exit(main())

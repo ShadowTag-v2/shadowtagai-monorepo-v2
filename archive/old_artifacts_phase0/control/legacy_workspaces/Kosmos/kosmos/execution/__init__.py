@@ -97,19 +97,16 @@ __all__ = [
     "ProductionExecutor",
     "ProductionConfig",
     "execute_code_safely",
-
     # Docker management
     "DockerManager",
     "ContainerConfig",
     "ContainerInstance",
     "ContainerStatus",
-
     # Jupyter client
     "JupyterClient",
     "ExecutionResult",
     "ExecutionStatus",
     "CellOutput",
-
     # Package resolution
     "PackageResolver",
     "PackageRequirement",
@@ -118,7 +115,6 @@ __all__ = [
     "is_stdlib_module",
     "IMPORT_TO_PIP",
     "STDLIB_MODULES",
-
     # Legacy (existing)
     "DockerSandbox",
     "SandboxExecutionResult",
@@ -127,7 +123,6 @@ __all__ = [
     "CodeValidator",
     "RetryStrategy",
     "execute_protocol_code",
-
     # Issue #62: Code line provenance
     "CodeProvenance",
     "CellLineMapping",

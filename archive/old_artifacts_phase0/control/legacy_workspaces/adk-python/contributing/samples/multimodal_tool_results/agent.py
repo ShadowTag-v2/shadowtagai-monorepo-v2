@@ -22,7 +22,7 @@ USER_ID = "test_user"
 
 
 def get_image():
-  return [types.Part.from_uri(file_uri="gs://replace_with_your_image_uri")]
+    return [types.Part.from_uri(file_uri="gs://replace_with_your_image_uri")]
 
 
 root_agent = LlmAgent(

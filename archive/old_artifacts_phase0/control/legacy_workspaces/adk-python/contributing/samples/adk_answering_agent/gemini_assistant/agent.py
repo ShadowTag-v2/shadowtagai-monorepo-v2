@@ -25,48 +25,46 @@ from adk_answering_agent.utils import error_response
 
 
 def search_gemini_api_docs(queries: list[str]) -> dict[str, Any]:
-  """Searches Gemini API docs using Vertex AI Search.
+    """Searches Gemini API docs using Vertex AI Search.
 
-  Args:
-    queries: The list of queries to search.
+    Args:
+      queries: The list of queries to search.
 
-  Returns:
-    A dictionary containing the status of the request and the list of search
-    results, which contains the title, url and snippets.
-  """
-  try:
-    adk_gcp_sa_key_info = json.loads(ADK_GCP_SA_KEY)
-    client = discoveryengine.SearchServiceClient(
-        credentials=service_account.Credentials.from_service_account_info(
-            adk_gcp_sa_key_info
-        )
-    )
-  except (TypeError, ValueError) as e:
-    return error_response(f"Error creating Vertex AI Search client: {e}")
+    Returns:
+      A dictionary containing the status of the request and the list of search
+      results, which contains the title, url and snippets.
+    """
+    try:
+        adk_gcp_sa_key_info = json.loads(ADK_GCP_SA_KEY)
+        client = discoveryengine.SearchServiceClient(credentials=service_account.Credentials.from_service_account_info(adk_gcp_sa_key_info))
+    except (TypeError, ValueError) as e:
+        return error_response(f"Error creating Vertex AI Search client: {e}")
 
-  serving_config = f"{GEMINI_API_DATASTORE_ID}/servingConfigs/default_config"
-  results = []
-  try:
-    for query in queries:
-      request = discoveryengine.SearchRequest(
-          serving_config=serving_config,
-          query=query,
-          page_size=20,
-      )
-      response = client.search(request=request)
-      for item in response.results:
-        snippets = []
-        for snippet in item.document.derived_struct_data.get("snippets", []):
-          snippets.append(snippet.get("snippet"))
+    serving_config = f"{GEMINI_API_DATASTORE_ID}/servingConfigs/default_config"
+    results = []
+    try:
+        for query in queries:
+            request = discoveryengine.SearchRequest(
+                serving_config=serving_config,
+                query=query,
+                page_size=20,
+            )
+            response = client.search(request=request)
+            for item in response.results:
+                snippets = []
+                for snippet in item.document.derived_struct_data.get("snippets", []):
+                    snippets.append(snippet.get("snippet"))
 
-        results.append({
-            "title": item.document.derived_struct_data.get("title"),
-            "url": item.document.derived_struct_data.get("link"),
-            "snippets": snippets,
-        })
-  except GoogleAPICallError as e:
-    return error_response(f"Error from Vertex AI Search: {e}")
-  return {"status": "success", "results": results}
+                results.append(
+                    {
+                        "title": item.document.derived_struct_data.get("title"),
+                        "url": item.document.derived_struct_data.get("link"),
+                        "snippets": snippets,
+                    }
+                )
+    except GoogleAPICallError as e:
+        return error_response(f"Error from Vertex AI Search: {e}")
+    return {"status": "success", "results": results}
 
 
 root_agent = Agent(

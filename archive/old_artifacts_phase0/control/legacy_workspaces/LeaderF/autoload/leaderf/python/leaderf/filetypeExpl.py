@@ -22,10 +22,7 @@ class FiletypeExplorer(Explorer):
             return self.getFreshContent()
 
     def getFreshContent(self, *args, **kwargs):
-        result = [
-            os.path.basename(f).replace(".vim", "")
-            for f in lfEval("globpath(&rtp, 'syntax/*.vim')").split("\n")
-        ]
+        result = [os.path.basename(f).replace(".vim", "") for f in lfEval("globpath(&rtp, 'syntax/*.vim')").split("\n")]
 
         # to unique
         self._content = sorted(set(x for x in result))

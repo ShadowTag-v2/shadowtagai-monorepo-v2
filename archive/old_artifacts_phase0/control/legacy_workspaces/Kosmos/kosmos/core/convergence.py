@@ -154,7 +154,7 @@ class ConvergenceReport(BaseModel):
 
 ## Recommended Next Steps
 
-{chr(10).join(f"{i+1}. {step}" for i, step in enumerate(self.recommended_next_steps))}
+{chr(10).join(f"{i + 1}. {step}" for i, step in enumerate(self.recommended_next_steps))}
 
 ---
 
@@ -176,12 +176,7 @@ class ConvergenceDetector:
     Monitors progress metrics and applies stopping criteria.
     """
 
-    def __init__(
-        self,
-        mandatory_criteria: list[str] | None = None,
-        optional_criteria: list[str] | None = None,
-        config: dict[str, Any] | None = None
-    ):
+    def __init__(self, mandatory_criteria: list[str] | None = None, optional_criteria: list[str] | None = None, config: dict[str, Any] | None = None):
         """
         Initialize convergence detector.
 
@@ -197,33 +192,21 @@ class ConvergenceDetector:
         self.config = config or {}
         self.novelty_decline_threshold = self.config.get("novelty_decline_threshold", 0.3)
         max_iters = self.config.get("max_iterations", 10)
-        self.novelty_decline_window = self.config.get(
-            "novelty_decline_window",
-            min(5, max(2, max_iters - 1))
-        )
+        self.novelty_decline_window = self.config.get("novelty_decline_window", min(5, max(2, max_iters - 1)))
         self.cost_per_discovery_threshold = self.config.get("cost_per_discovery_threshold", 1000.0)
-        self.min_experiments_before_convergence = self.config.get(
-            "min_experiments_before_convergence", 2
-        )
+        self.min_experiments_before_convergence = self.config.get("min_experiments_before_convergence", 2)
 
         # Metrics tracking
         self.metrics = ConvergenceMetrics()
 
-        logger.info(
-            f"ConvergenceDetector initialized (mandatory: {self.mandatory_criteria}, "
-            f"optional: {self.optional_criteria})"
-        )
+        logger.info(f"ConvergenceDetector initialized (mandatory: {self.mandatory_criteria}, optional: {self.optional_criteria})")
 
     # ========================================================================
     # MAIN CONVERGENCE CHECK
     # ========================================================================
 
     def check_convergence(
-        self,
-        research_plan: ResearchPlan,
-        hypotheses: list[Hypothesis],
-        results: list[ExperimentResult],
-        total_cost: float | None = None
+        self, research_plan: ResearchPlan, hypotheses: list[Hypothesis], results: list[ExperimentResult], total_cost: float | None = None
     ) -> StoppingDecision:
         """
         Check if research should stop.
@@ -272,16 +255,11 @@ class ConvergenceDetector:
             reason=StoppingReason.USER_REQUESTED,  # Placeholder
             is_mandatory=False,
             confidence=1.0,
-            details="No stopping criteria met, research continues"
+            details="No stopping criteria met, research continues",
         )
 
     def _check_criterion(
-        self,
-        criterion: str,
-        research_plan: ResearchPlan,
-        hypotheses: list[Hypothesis],
-        results: list[ExperimentResult],
-        mandatory: bool
+        self, criterion: str, research_plan: ResearchPlan, hypotheses: list[Hypothesis], results: list[ExperimentResult], mandatory: bool
     ) -> StoppingDecision:
         """Check a specific stopping criterion."""
 
@@ -304,7 +282,7 @@ class ConvergenceDetector:
                 reason=StoppingReason.USER_REQUESTED,
                 is_mandatory=mandatory,
                 confidence=0.0,
-                details=f"Unknown criterion: {criterion}"
+                details=f"Unknown criterion: {criterion}",
             )
 
     # ========================================================================
@@ -352,7 +330,7 @@ class ConvergenceDetector:
                         f"Iteration {research_plan.iteration_count}/{research_plan.max_iterations} "
                         f"but only {completed}/{self.min_experiments_before_convergence} experiments "
                         f"completed — deferring"
-                    )
+                    ),
                 )
 
         return StoppingDecision(
@@ -360,14 +338,10 @@ class ConvergenceDetector:
             reason=StoppingReason.ITERATION_LIMIT,
             is_mandatory=True,
             confidence=1.0,
-            details=f"Iteration {research_plan.iteration_count}/{research_plan.max_iterations}"
+            details=f"Iteration {research_plan.iteration_count}/{research_plan.max_iterations}",
         )
 
-    def check_hypothesis_exhaustion(
-        self,
-        research_plan: ResearchPlan,
-        hypotheses: list[Hypothesis]
-    ) -> StoppingDecision:
+    def check_hypothesis_exhaustion(self, research_plan: ResearchPlan, hypotheses: list[Hypothesis]) -> StoppingDecision:
         """
         Check if no testable hypotheses remain.
 
@@ -388,7 +362,7 @@ class ConvergenceDetector:
             reason=StoppingReason.NO_TESTABLE_HYPOTHESES,
             is_mandatory=True,
             confidence=1.0,
-            details=f"{len(untested)} untested hypotheses, {len(research_plan.experiment_queue)} queued experiments"
+            details=f"{len(untested)} untested hypotheses, {len(research_plan.experiment_queue)} queued experiments",
         )
 
     # ========================================================================
@@ -411,17 +385,17 @@ class ConvergenceDetector:
                 reason=StoppingReason.NOVELTY_DECLINE,
                 is_mandatory=False,
                 confidence=0.0,
-                details=f"Insufficient data ({len(trend)}/{self.novelty_decline_window} points)"
+                details=f"Insufficient data ({len(trend)}/{self.novelty_decline_window} points)",
             )
 
         # Check last N values
-        recent = trend[-self.novelty_decline_window:]
+        recent = trend[-self.novelty_decline_window :]
 
         # All below threshold?
         all_below = all(v < self.novelty_decline_threshold for v in recent)
 
         # Declining trend?
-        is_declining = all(recent[i] >= recent[i+1] for i in range(len(recent)-1))
+        is_declining = all(recent[i] >= recent[i + 1] for i in range(len(recent) - 1))
 
         should_stop = all_below or is_declining
 
@@ -430,7 +404,7 @@ class ConvergenceDetector:
             reason=StoppingReason.NOVELTY_DECLINE,
             is_mandatory=False,
             confidence=0.8 if should_stop else 0.2,
-            details=f"Recent novelty: {recent}, threshold: {self.novelty_decline_threshold}"
+            details=f"Recent novelty: {recent}, threshold: {self.novelty_decline_threshold}",
         )
 
     def check_diminishing_returns(self) -> StoppingDecision:
@@ -442,11 +416,7 @@ class ConvergenceDetector:
         """
         if self.metrics.cost_per_discovery is None:
             return StoppingDecision(
-                should_stop=False,
-                reason=StoppingReason.DIMINISHING_RETURNS,
-                is_mandatory=False,
-                confidence=0.0,
-                details="No cost data available"
+                should_stop=False, reason=StoppingReason.DIMINISHING_RETURNS, is_mandatory=False, confidence=0.0, details="No cost data available"
             )
 
         should_stop = self.metrics.cost_per_discovery > self.cost_per_discovery_threshold
@@ -456,7 +426,7 @@ class ConvergenceDetector:
             reason=StoppingReason.DIMINISHING_RETURNS,
             is_mandatory=False,
             confidence=0.7 if should_stop else 0.3,
-            details=f"Cost per discovery: ${self.metrics.cost_per_discovery:.2f} (threshold: ${self.cost_per_discovery_threshold:.2f})"
+            details=f"Cost per discovery: ${self.metrics.cost_per_discovery:.2f} (threshold: ${self.cost_per_discovery_threshold:.2f})",
         )
 
     # ========================================================================
@@ -505,7 +475,7 @@ class ConvergenceDetector:
         if len(novelty_scores) >= 3:
             # Simple trend: are recent scores declining?
             recent = novelty_scores[-3:]
-            is_declining = all(recent[i] >= recent[i+1] for i in range(len(recent)-1))
+            is_declining = all(recent[i] >= recent[i + 1] for i in range(len(recent) - 1))
         else:
             is_declining = False
 
@@ -543,11 +513,7 @@ class ConvergenceDetector:
         return supported / len(results)
 
     def _update_metrics(
-        self,
-        research_plan: ResearchPlan,
-        hypotheses: list[Hypothesis],
-        results: list[ExperimentResult],
-        total_cost: float | None = None
+        self, research_plan: ResearchPlan, hypotheses: list[Hypothesis], results: list[ExperimentResult], total_cost: float | None = None
     ):
         """Update all metrics."""
 
@@ -593,7 +559,7 @@ class ConvergenceDetector:
         research_plan: ResearchPlan,
         hypotheses: list[Hypothesis],
         results: list[ExperimentResult],
-        stopping_reason: StoppingReason | None = None
+        stopping_reason: StoppingReason | None = None,
     ) -> ConvergenceReport:
         """
         Generate comprehensive convergence report.
@@ -636,18 +602,13 @@ class ConvergenceDetector:
             final_metrics=self.metrics,
             research_complete=research_plan.has_converged,
             recommended_next_steps=next_steps,
-            summary=summary
+            summary=summary,
         )
 
         logger.info("Convergence report generated")
         return report
 
-    def _generate_summary(
-        self,
-        research_plan: ResearchPlan,
-        hypotheses: list[Hypothesis],
-        results: list[ExperimentResult]
-    ) -> str:
+    def _generate_summary(self, research_plan: ResearchPlan, hypotheses: list[Hypothesis], results: list[ExperimentResult]) -> str:
         """Generate summary text."""
 
         summary = f"""Research on "{research_plan.research_question}" completed after {research_plan.iteration_count} iterations.
@@ -666,12 +627,7 @@ Research saturation: {self.metrics.saturation_ratio:.1%}
 
         return summary
 
-    def _recommend_next_steps(
-        self,
-        research_plan: ResearchPlan,
-        hypotheses: list[Hypothesis],
-        results: list[ExperimentResult]
-    ) -> list[str]:
+    def _recommend_next_steps(self, research_plan: ResearchPlan, hypotheses: list[Hypothesis], results: list[ExperimentResult]) -> list[str]:
         """Recommend next steps based on results."""
 
         recommendations = []

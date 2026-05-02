@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/models/compliance.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.005, 1.0, 50.0, 1000, 50000, '1.0.0', 'Unique identifier', 'apac', 'ca_sb_243', 'compliant', 'coppa', 'dsa', 'enterprise', 'eu', 'eu_ai_act', 'free', 'gdpr', 'global', 'high', 'hipaa', 'iso_42001', 'limited', 'medium', 'minimal', 'nist_rmf', 'non_compliant', 'not_applicable', 'partial', 'pending_review', 'pro', 'uk', 'unacceptable', 'us']

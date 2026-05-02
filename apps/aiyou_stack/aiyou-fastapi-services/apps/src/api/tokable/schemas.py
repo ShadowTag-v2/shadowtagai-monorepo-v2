@@ -9,7 +9,7 @@ from datetime import datetime
 from decimal import Decimal
 from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # Initialize FastAPI app
 
@@ -104,8 +104,8 @@ class User(BaseModel):
     is_pro: bool = Field(default=False)
     pro_expires_at: datetime | None = None
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "id": "user_abc123",
                 "username": "silentdancer_pro",
@@ -122,6 +122,7 @@ class User(BaseModel):
                 "pro_expires_at": "2026-01-01T00:00:00Z",
             },
         }
+    )
 
 
 class GestureFrame(BaseModel):
@@ -138,8 +139,8 @@ class GestureFrame(BaseModel):
     interpreted_text: str | None = None
     generated_art_url: str | None = None
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "timestamp": 12450.5,
                 "gesture_type": "dance",
@@ -154,6 +155,7 @@ class GestureFrame(BaseModel):
                 "generated_art_url": "https://cdn.tokable.ai/frames/frame_12450.png",
             },
         }
+    )
 
 
 class Stream(BaseModel):
@@ -198,8 +200,8 @@ class Stream(BaseModel):
     tags: list[str] = Field(default_factory=list)
     thumbnail_url: str | None = None
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "id": "stream_xyz789",
                 "creator_id": "user_abc123",
@@ -227,6 +229,7 @@ class Stream(BaseModel):
                 "thumbnail_url": "https://cdn.tokable.ai/thumbs/stream_xyz789.jpg",
             },
         }
+    )
 
 
 class NFT(BaseModel):
@@ -263,8 +266,8 @@ class NFT(BaseModel):
     total_frames: int
     emotion_summary: dict[str, float] = Field(default_factory=dict)
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "id": "nft_def456",
                 "stream_id": "stream_xyz789",
@@ -295,6 +298,7 @@ class NFT(BaseModel):
                 },
             },
         }
+    )
 
 
 class Tournament(BaseModel):
@@ -334,8 +338,8 @@ class Tournament(BaseModel):
     completed: bool = Field(default=False)
     winners: list[str] = Field(default_factory=list)
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "id": "tourn_nov_week3",
                 "title": "Tokable Championship - Week 3",
@@ -363,6 +367,7 @@ class Tournament(BaseModel):
                 "winners": [],
             },
         }
+    )
 
 
 class RevenueEvent(BaseModel):
@@ -388,8 +393,8 @@ class RevenueEvent(BaseModel):
 
     timestamp: datetime
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "id": "rev_abc123",
                 "user_id": "user_abc123",
@@ -405,6 +410,7 @@ class RevenueEvent(BaseModel):
                 "timestamp": "2025-11-17T18:29:45Z",
             },
         }
+    )
 
 
 # ============================================================================

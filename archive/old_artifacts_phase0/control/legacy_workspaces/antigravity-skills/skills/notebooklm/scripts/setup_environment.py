@@ -21,7 +21,7 @@ class SkillEnvironment:
         self.requirements_file = self.skill_dir / "requirements.txt"
 
         # Python executable in venv
-        if os.name == 'nt':  # Windows
+        if os.name == "nt":  # Windows
             self.venv_python = self.venv_dir / "Scripts" / "python.exe"
             self.venv_pip = self.venv_dir / "Scripts" / "pip.exe"
         else:  # Unix/Linux/Mac
@@ -51,20 +51,10 @@ class SkillEnvironment:
             print("📦 Installing dependencies...")
             try:
                 # Upgrade pip first
-                subprocess.run(
-                    [str(self.venv_pip), "install", "--upgrade", "pip"],
-                    check=True,
-                    capture_output=True,
-                    text=True
-                )
+                subprocess.run([str(self.venv_pip), "install", "--upgrade", "pip"], check=True, capture_output=True, text=True)
 
                 # Install requirements
-                subprocess.run(
-                    [str(self.venv_pip), "install", "-r", str(self.requirements_file)],
-                    check=True,
-                    capture_output=True,
-                    text=True
-                )
+                subprocess.run([str(self.venv_pip), "install", "-r", str(self.requirements_file)], check=True, capture_output=True, text=True)
                 print("✅ Dependencies installed")
 
                 # Install Chrome for Patchright (not Chromium!)
@@ -72,12 +62,7 @@ class SkillEnvironment:
                 # See: https://github.com/Kaliiiiiiiiii-Vinyzu/patchright-python#anti-detection
                 print("🌐 Installing Google Chrome for Patchright...")
                 try:
-                    subprocess.run(
-                        [str(self.venv_python), "-m", "patchright", "install", "chrome"],
-                        check=True,
-                        capture_output=True,
-                        text=True
-                    )
+                    subprocess.run([str(self.venv_python), "-m", "patchright", "install", "chrome"], check=True, capture_output=True, text=True)
                     print("✅ Chrome installed")
                 except subprocess.CalledProcessError as e:
                     print(f"⚠️ Warning: Failed to install Chrome: {e}")
@@ -95,7 +80,7 @@ class SkillEnvironment:
 
     def is_in_skill_venv(self) -> bool:
         """Check if we're already running in the skill's venv"""
-        if hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
+        if hasattr(sys, "real_prefix") or (hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix):
             # We're in a venv, check if it's ours
             venv_path = Path(sys.prefix)
             return venv_path == self.venv_dir
@@ -137,7 +122,7 @@ class SkillEnvironment:
 
     def activate_instructions(self) -> str:
         """Get instructions for manual activation"""
-        if os.name == 'nt':
+        if os.name == "nt":
             activate = self.venv_dir / "Scripts" / "activate.bat"
             return f"Run: {activate}"
         else:
@@ -149,26 +134,13 @@ def main():
     """Main entry point for environment setup"""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description='Setup NotebookLM skill environment'
-    )
+    parser = argparse.ArgumentParser(description="Setup NotebookLM skill environment")
 
-    parser.add_argument(
-        '--check',
-        action='store_true',
-        help='Check if environment is set up'
-    )
+    parser.add_argument("--check", action="store_true", help="Check if environment is set up")
 
-    parser.add_argument(
-        '--run',
-        help='Run a script with the venv (e.g., --run ask_question.py)'
-    )
+    parser.add_argument("--run", help="Run a script with the venv (e.g., --run ask_question.py)")
 
-    parser.add_argument(
-        'args',
-        nargs='*',
-        help='Arguments to pass to the script'
-    )
+    parser.add_argument("args", nargs="*", help="Arguments to pass to the script")
 
     args = parser.parse_args()
 

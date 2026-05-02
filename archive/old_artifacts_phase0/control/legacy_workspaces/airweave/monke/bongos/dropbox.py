@@ -106,9 +106,7 @@ class DropboxBongo(BaseBongo):
                 token = file_info.get("token") or str(uuid.uuid4())[:8]
 
                 # Generate new content with same token
-                title, content = await generate_dropbox_artifact(
-                    file_type, self.openai_model, token, is_update=True
-                )
+                title, content = await generate_dropbox_artifact(file_type, self.openai_model, token, is_update=True)
 
                 # Update file content
                 updated_file = await self._update_test_file(file_info["path"], content)
@@ -157,9 +155,7 @@ class DropboxBongo(BaseBongo):
                     deleted_paths.append(test_file["path"])
                     self.logger.info(f"🗑️ Deleted test file: {test_file['path']}")
                 else:
-                    self.logger.warning(
-                        f"⚠️ Could not find test file for entity: {entity.get('id')}"
-                    )
+                    self.logger.warning(f"⚠️ Could not find test file for entity: {entity.get('id')}")
 
                 # Rate limiting
                 if len(entities) > 10:
@@ -212,9 +208,7 @@ class DropboxBongo(BaseBongo):
             )
 
             if response.status_code != 200:
-                raise Exception(
-                    f"Failed to create folder: {response.status_code} - {response.text}"
-                )
+                raise Exception(f"Failed to create folder: {response.status_code} - {response.text}")
 
             self.logger.info(f"📁 Created test folder: {self.test_folder_path}")
 
@@ -306,9 +300,7 @@ class DropboxBongo(BaseBongo):
                     return data.get("is_deleted", False)
                 else:
                     # Unexpected response
-                    self.logger.warning(
-                        f"⚠️ Unexpected response checking {file_path}: {response.status_code}"
-                    )
+                    self.logger.warning(f"⚠️ Unexpected response checking {file_path}: {response.status_code}")
                     return False
 
         except Exception as e:
@@ -331,9 +323,7 @@ class DropboxBongo(BaseBongo):
                 if response.status_code == 200:
                     self.logger.info(f"🧹 Force deleted folder: {folder_path}")
                 else:
-                    self.logger.warning(
-                        f"⚠️ Force delete failed for {folder_path}: {response.status_code}"
-                    )
+                    self.logger.warning(f"⚠️ Force delete failed for {folder_path}: {response.status_code}")
         except Exception as e:
             self.logger.warning(f"Could not force delete {folder_path}: {e}")
 

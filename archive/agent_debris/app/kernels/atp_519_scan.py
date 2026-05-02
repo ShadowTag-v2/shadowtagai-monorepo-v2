@@ -1,6 +1,5 @@
 """Kernel 1: ATP 5-19 Violation Scanner using Gemini Flash."""
 
-from typing import Optional
 import google.generativeai as genai
 from app.kernels.base import Kernel, KernelChainError
 from app.models.kernel import KernelInput, KernelOutput, KernelMetrics
@@ -60,10 +59,7 @@ STRICT RULES:
 Return violations in JSON format only."""
 
     def __init__(self, api_key: str | None = None):
-        super().__init__(
-            name="ATP519ScanKernel",
-            max_latency_ms=settings.kernel_1_max_latency_ms
-        )
+        super().__init__(name="ATP519ScanKernel", max_latency_ms=settings.kernel_1_max_latency_ms)
 
         # Configure Gemini API
         api_key = api_key or settings.gemini_api_key
@@ -80,7 +76,7 @@ Return violations in JSON format only."""
                 "top_p": 0.95,
                 "top_k": 40,
                 "max_output_tokens": settings.kernel_1_max_output_tokens,
-            }
+            },
         )
 
     async def execute(self, kernel_input: KernelInput) -> KernelOutput:
@@ -100,18 +96,13 @@ Return violations in JSON format only."""
             elif isinstance(kernel_input.data, str):
                 context = kernel_input.data
             else:
-                raise KernelChainError(
-                    f"Invalid input type: expected DecisionContext or str, "
-                    f"got {type(kernel_input.data)}"
-                )
+                raise KernelChainError(f"Invalid input type: expected DecisionContext or str, got {type(kernel_input.data)}")
 
             # Build prompt
             prompt = self.USER_PROMPT_TEMPLATE.format(context=context)
 
             # Call Gemini API
-            response = self.model.generate_content(
-                [self.SYSTEM_PROMPT, prompt]
-            )
+            response = self.model.generate_content([self.SYSTEM_PROMPT, prompt])
 
             # Parse JSON response
             response_text = response.text.strip()
@@ -125,9 +116,7 @@ Return violations in JSON format only."""
             violations_data = json.loads(response_text)
 
             # Validate and structure violations
-            violations = [
-                Violation(**v) for v in violations_data.get("violations", [])
-            ]
+            violations = [Violation(**v) for v in violations_data.get("violations", [])]
 
             # Create structured output
             scan_output = ViolationsScanOutput(
@@ -135,7 +124,7 @@ Return violations in JSON format only."""
                 scan_metadata={
                     "model": settings.gemini_model,
                     "context_size_bytes": len(context.encode()),
-                }
+                },
             )
 
             # Calculate token counts (approximate)
@@ -154,15 +143,10 @@ Return violations in JSON format only."""
                     token_count_input=input_tokens,
                     token_count_output=output_tokens,
                     cost_usd=cost,
-                )
+                ),
             )
 
         except json.JSONDecodeError as e:
-            raise KernelChainError(
-                f"Failed to parse Gemini response as JSON: {str(e)}\n"
-                f"Response: {response_text[:200]}"
-            ) from e
+            raise KernelChainError(f"Failed to parse Gemini response as JSON: {str(e)}\nResponse: {response_text[:200]}") from e
         except Exception as e:
-            raise KernelChainError(
-                f"ATP 5-19 scan failed: {str(e)}"
-            ) from e
+            raise KernelChainError(f"ATP 5-19 scan failed: {str(e)}") from e

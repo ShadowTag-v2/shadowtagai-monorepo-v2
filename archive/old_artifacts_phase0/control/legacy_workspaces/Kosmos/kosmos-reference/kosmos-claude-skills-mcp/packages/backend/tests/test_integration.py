@@ -168,14 +168,10 @@ import seaborn as sns
             results = search_engine.search(query, top_k=2)
 
             assert len(results) > 0
-            print(
-                f"   Top result: {results[0]['name']} (score: {results[0]['relevance_score']:.4f})"
-            )
+            print(f"   Top result: {results[0]['name']} (score: {results[0]['relevance_score']:.4f})")
 
             # Validate top result
-            assert results[0]["name"] == expected_top, (
-                f"Expected '{expected_top}' but got '{results[0]['name']}'"
-            )
+            assert results[0]["name"] == expected_top, f"Expected '{expected_top}' but got '{results[0]['name']}'"
 
             # Validate structure
             assert "description" in results[0]
@@ -334,9 +330,7 @@ def test_repo_demo():
     print(f"\n   Found {len(found_expected)}/{len(expected_skills)} expected skills")
 
     # At least some expected skills should be present
-    assert len(found_expected) >= 3, (
-        f"Expected to find at least 3 key skills, found {found_expected}"
-    )
+    assert len(found_expected) >= 3, f"Expected to find at least 3 key skills, found {found_expected}"
 
     # Step 3: Index skills with search engine
     print("\n[3] Indexing skills with vector embeddings...")
@@ -377,26 +371,18 @@ def test_repo_demo():
 
         # Display top results
         for j, result in enumerate(results, 1):
-            print(
-                f"      {j}. {result['name']} (score: {result['relevance_score']:.4f})"
-            )
+            print(f"      {j}. {result['name']} (score: {result['relevance_score']:.4f})")
             print(f"         {result['description'][:80]}...")
 
         # Validate result quality
         top_result = results[0]
-        assert top_result["relevance_score"] > 0.2, (
-            f"Top result relevance too low: {top_result['relevance_score']}"
-        )
+        assert top_result["relevance_score"] > 0.2, f"Top result relevance too low: {top_result['relevance_score']}"
 
         # Check that at least one expected domain keyword appears in top results
-        top_3_text = " ".join(
-            [r["name"].lower() + " " + r["description"].lower() for r in results[:3]]
-        )
+        top_3_text = " ".join([r["name"].lower() + " " + r["description"].lower() for r in results[:3]])
 
         domain_found = any(domain in top_3_text for domain in expected_domains)
-        assert domain_found, (
-            f"None of {expected_domains} found in top results for query: {query}"
-        )
+        assert domain_found, f"None of {expected_domains} found in top results for query: {query}"
 
         print("      ✓ Relevant results found for scientific domain")
 
@@ -518,16 +504,7 @@ def test_anthropic_skills_repo():
             doc_types[doc_type] = doc_types.get(doc_type, 0) + 1
 
             # Show first few documents
-            if (
-                len(
-                    [
-                        p
-                        for p in sample_skill.documents.keys()
-                        if sample_skill.documents[p].get("type") == doc_type
-                    ]
-                )
-                <= 3
-            ):
+            if len([p for p in sample_skill.documents.keys() if sample_skill.documents[p].get("type") == doc_type]) <= 3:
                 size_kb = doc_info.get("size", 0) / 1024
                 print(f"      - {doc_path} ({doc_type}, {size_kb:.1f} KB)")
 
@@ -536,14 +513,8 @@ def test_anthropic_skills_repo():
             print(f"      - {doc_type}: {count} file(s)")
 
         # Verify we have text files
-        text_docs = [
-            p
-            for p, info in sample_skill.documents.items()
-            if info.get("type") == "text"
-        ]
-        assert len(text_docs) > 0 or len(skills_with_docs) > 1, (
-            "Should have at least some text documents"
-        )
+        text_docs = [p for p, info in sample_skill.documents.items() if info.get("type") == "text"]
+        assert len(text_docs) > 0 or len(skills_with_docs) > 1, "Should have at least some text documents"
 
     # Step 4: Test search functionality
     print("\n[4] Testing semantic search...")
@@ -566,9 +537,7 @@ def test_anthropic_skills_repo():
 
         for i, result in enumerate(results, 1):
             doc_count = len(result.get("documents", {}))
-            print(
-                f"      {i}. {result['name']} (score: {result['relevance_score']:.4f})"
-            )
+            print(f"      {i}. {result['name']} (score: {result['relevance_score']:.4f})")
             if doc_count > 0:
                 print(f"         {doc_count} additional files")
 
@@ -645,10 +614,7 @@ def test_anthropic_specific_skills():
     print("\n[2] Testing slack-gif-creator skill (large skill)...")
     slack_gif_skill = None
     for skill in skills:
-        if (
-            "slack-gif-creator" in skill.name.lower()
-            or "slack gif" in skill.name.lower()
-        ):
+        if "slack-gif-creator" in skill.name.lower() or "slack gif" in skill.name.lower():
             slack_gif_skill = skill
             break
 
@@ -658,9 +624,7 @@ def test_anthropic_specific_skills():
         print(f"   Documents: {len(slack_gif_skill.documents)} files")
 
         # Verify it's a substantial skill
-        assert len(slack_gif_skill.content) > 500, (
-            "slack-gif-creator should have substantial content"
-        )
+        assert len(slack_gif_skill.content) > 500, "slack-gif-creator should have substantial content"
 
         # Show document types
         if slack_gif_skill.documents:
@@ -670,18 +634,13 @@ def test_anthropic_specific_skills():
                 doc_types[doc_type] = doc_types.get(doc_type, 0) + 1
             print(f"   Document types: {doc_types}")
     else:
-        print(
-            "   ⚠ slack-gif-creator skill not found (repository structure may have changed)"
-        )
+        print("   ⚠ slack-gif-creator skill not found (repository structure may have changed)")
 
     # Step 3: Find and validate artifacts-builder skill
     print("\n[3] Testing artifacts-builder skill (contains scripts)...")
     artifacts_builder_skill = None
     for skill in skills:
-        if (
-            "artifacts-builder" in skill.name.lower()
-            or "artifact" in skill.name.lower()
-        ):
+        if "artifacts-builder" in skill.name.lower() or "artifact" in skill.name.lower():
             artifacts_builder_skill = skill
             break
 
@@ -690,9 +649,7 @@ def test_anthropic_specific_skills():
         print(f"   Documents: {len(artifacts_builder_skill.documents)} files")
 
         # Check for Python scripts in documents
-        python_scripts = [
-            p for p in artifacts_builder_skill.documents.keys() if p.endswith(".py")
-        ]
+        python_scripts = [p for p in artifacts_builder_skill.documents.keys() if p.endswith(".py")]
         if python_scripts:
             print(f"   Python scripts found: {len(python_scripts)}")
             for script in python_scripts[:3]:  # Show first 3
@@ -700,19 +657,11 @@ def test_anthropic_specific_skills():
 
         # Note: tar.gz files are binary and should NOT be loaded
         # This is expected behavior - we only load text files and images
-        binary_refs = [
-            p
-            for p in artifacts_builder_skill.documents.keys()
-            if ".tar.gz" in p or ".gz" in p
-        ]
-        assert len(binary_refs) == 0, (
-            "Binary files (tar.gz) should not be loaded as documents"
-        )
+        binary_refs = [p for p in artifacts_builder_skill.documents.keys() if ".tar.gz" in p or ".gz" in p]
+        assert len(binary_refs) == 0, "Binary files (tar.gz) should not be loaded as documents"
         print("   ✓ Binary files correctly excluded from document loading")
     else:
-        print(
-            "   ⚠ artifacts-builder skill not found (repository structure may have changed)"
-        )
+        print("   ⚠ artifacts-builder skill not found (repository structure may have changed)")
 
     # Step 4: Test document retrieval patterns
     print("\n[4] Testing document retrieval patterns...")
@@ -741,12 +690,8 @@ def test_anthropic_specific_skills():
             doc_content = skill_with_py.get_document(py_file)
             assert doc_content is not None, "Should be able to fetch document"
             assert "content" in doc_content, "Fetched document should have content"
-            assert len(doc_content["content"]) > 0, (
-                "Python script content should not be empty"
-            )
-            print(
-                f"   ✓ Successfully fetched {py_file} ({len(doc_content['content'])} chars)"
-            )
+            assert len(doc_content["content"]) > 0, "Python script content should not be empty"
+            print(f"   ✓ Successfully fetched {py_file} ({len(doc_content['content'])} chars)")
 
     # Step 5: Verify search functionality with these skills
     print("\n[5] Testing semantic search with loaded skills...")
@@ -763,9 +708,7 @@ def test_anthropic_specific_skills():
         results = search_engine.search(query, top_k=3)
 
         assert len(results) > 0, f"Should find results for: {query}"
-        print(
-            f"   Top: {results[0]['name']} (score: {results[0]['relevance_score']:.4f})"
-        )
+        print(f"   Top: {results[0]['name']} (score: {results[0]['relevance_score']:.4f})")
 
         # Check if result is relevant (contains at least one keyword)
         top_text = results[0]["name"].lower() + " " + results[0]["description"].lower()
@@ -778,14 +721,10 @@ def test_anthropic_specific_skills():
     print("=" * 80)
     print("\nValidation summary:")
     if slack_gif_skill:
-        print(
-            f"  ✓ slack-gif-creator: {len(slack_gif_skill.content)} chars, {len(slack_gif_skill.documents)} docs"
-        )
+        print(f"  ✓ slack-gif-creator: {len(slack_gif_skill.content)} chars, {len(slack_gif_skill.documents)} docs")
     if artifacts_builder_skill:
         print(f"  ✓ artifacts-builder: {len(artifacts_builder_skill.documents)} docs")
-        py_count = len(
-            [p for p in artifacts_builder_skill.documents.keys() if p.endswith(".py")]
-        )
+        py_count = len([p for p in artifacts_builder_skill.documents.keys() if p.endswith(".py")])
         print(f"     - {py_count} Python scripts loaded")
     print("  ✓ Binary files (tar.gz) correctly excluded")
     print("  ✓ Semantic search working with real skills")
@@ -872,9 +811,7 @@ def test_update_detection():
 
     # First check should not trigger updates (establishes baseline)
     assert result.has_updates is False, "First check should not trigger updates"
-    assert len(result.changed_sources) == 0, (
-        "First check should have no changed sources"
-    )
+    assert len(result.changed_sources) == 0, "First check should have no changed sources"
 
     # Should have made API calls to check commits
     assert result.api_calls_made > 0, "Should have made GitHub API calls"

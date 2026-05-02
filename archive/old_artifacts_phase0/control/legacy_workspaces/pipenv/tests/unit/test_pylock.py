@@ -67,7 +67,7 @@ version = '2.28.1'
 
 @pytest.fixture
 def pylock_file(valid_pylock_content):
-    with tempfile.NamedTemporaryFile(mode='w+', suffix='.toml', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w+", suffix=".toml", delete=False) as f:
         f.write(valid_pylock_content)
         f.flush()
         path = f.name
@@ -95,7 +95,7 @@ def test_pylock_file_from_path(pylock_file):
 
 def test_pylock_file_invalid_version(invalid_version_pylock_content):
     """Test loading a pylock file with an invalid version."""
-    with tempfile.NamedTemporaryFile(mode='w+', suffix='.toml', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w+", suffix=".toml", delete=False) as f:
         f.write(invalid_version_pylock_content)
         f.flush()
         path = f.name
@@ -110,7 +110,7 @@ def test_pylock_file_invalid_version(invalid_version_pylock_content):
 
 def test_pylock_file_missing_version(missing_version_pylock_content):
     """Test loading a pylock file with a missing version."""
-    with tempfile.NamedTemporaryFile(mode='w+', suffix='.toml', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w+", suffix=".toml", delete=False) as f:
         f.write(missing_version_pylock_content)
         f.flush()
         path = f.name
@@ -308,19 +308,10 @@ def test_write_method(tmp_path):
             {
                 "name": "requests",
                 "version": "2.28.1",
-                "wheels": [
-                    {
-                        "name": "requests-2.28.1-py3-none-any.whl",
-                        "hashes": {"sha256": "test-hash"}
-                    }
-                ]
+                "wheels": [{"name": "requests-2.28.1-py3-none-any.whl", "hashes": {"sha256": "test-hash"}}],
             }
         ],
-        "tool": {
-            "pipenv": {
-                "generated_from": "test"
-            }
-        }
+        "tool": {"pipenv": {"generated_from": "test"}},
     }
 
     pylock_path = tmp_path / "pylock.toml"
@@ -438,10 +429,7 @@ marker = "'dev' in dependency_groups"
     assert "pytest" not in package_names
 
     # Test 5: With multiple dependency_groups and extras
-    packages = pylock.get_packages_for_environment(
-        extras={"crypto", "validation"},
-        dependency_groups={"dev", "docs"}
-    )
+    packages = pylock.get_packages_for_environment(extras={"crypto", "validation"}, dependency_groups={"dev", "docs"})
     package_names = [p["name"] for p in packages]
     assert "requests" in package_names
     assert "pytest" in package_names
@@ -455,9 +443,7 @@ def test_from_lockfile_with_custom_dev_groups(tmp_path):
     """Test from_lockfile with custom dev_groups parameter."""
     lockfile_content = {
         "_meta": {
-            "sources": [
-                {"name": "pypi", "url": "https://pypi.org/simple/", "verify_ssl": True}
-            ],
+            "sources": [{"name": "pypi", "url": "https://pypi.org/simple/", "verify_ssl": True}],
             "requires": {"python_version": "3.10"},
         },
         "default": {
@@ -470,13 +456,12 @@ def test_from_lockfile_with_custom_dev_groups(tmp_path):
 
     lockfile_path = tmp_path / "Pipfile.lock"
     import json
+
     with open(lockfile_path, "w") as f:
         json.dump(lockfile_content, f)
 
     # Test with custom dev groups
-    pylock = PylockFile.from_lockfile(
-        lockfile_path, dev_groups=["testing", "development"]
-    )
+    pylock = PylockFile.from_lockfile(lockfile_path, dev_groups=["testing", "development"])
 
     # Check that the dependency-groups includes our custom groups
     assert "testing" in pylock.dependency_groups
@@ -492,9 +477,7 @@ def test_from_lockfile_adds_package_index(tmp_path):
     """Test that from_lockfile adds packages.index field (PEP 751)."""
     lockfile_content = {
         "_meta": {
-            "sources": [
-                {"name": "pypi", "url": "https://pypi.org/simple/", "verify_ssl": True}
-            ],
+            "sources": [{"name": "pypi", "url": "https://pypi.org/simple/", "verify_ssl": True}],
             "requires": {"python_version": "3.10"},
         },
         "default": {
@@ -505,6 +488,7 @@ def test_from_lockfile_adds_package_index(tmp_path):
 
     lockfile_path = tmp_path / "Pipfile.lock"
     import json
+
     with open(lockfile_path, "w") as f:
         json.dump(lockfile_content, f)
 
@@ -518,7 +502,7 @@ def test_from_lockfile_adds_package_index(tmp_path):
 
 def test_from_pyproject(tmp_path):
     """Test creating a PylockFile from pyproject.toml."""
-    pyproject_content = '''
+    pyproject_content = """
 [project]
 name = "my-project"
 version = "1.0.0"
@@ -538,7 +522,7 @@ dev = [
     "pytest>=7.0.0",
     "black>=23.0.0",
 ]
-'''
+"""
     pyproject_path = tmp_path / "pyproject.toml"
     with open(pyproject_path, "w") as f:
         f.write(pyproject_content)
@@ -579,7 +563,6 @@ def test_from_pyproject_missing_file(tmp_path):
 
     with pytest.raises(FileNotFoundError):
         PylockFile.from_pyproject(pyproject_path)
-
 
 
 # --- Tests for pylock.toml as primary lockfile (no Pipfile.lock) ---

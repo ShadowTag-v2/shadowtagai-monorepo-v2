@@ -57,7 +57,9 @@ async def main():
     # Add conversation continuity instruction
     # Note: The Python CLI handles session tracking via current_paper_path
     # These instructions only apply WITHIN a single CLI session, not across different chat sessions
-    system_instructions += "\n\n" + f"""
+    system_instructions += (
+        "\n\n"
+        + f"""
 IMPORTANT - WORKING DIRECTORY:
 - Your working directory is: {cwd}
 - ALWAYS create paper_outputs folder in this directory: {cwd}/paper_outputs/
@@ -71,6 +73,7 @@ IMPORTANT - CONVERSATION CONTINUITY:
 - Do NOT assume there's an existing paper unless explicitly told in the prompt context
 - Each new chat session should start with a new paper unless context says otherwise
 """
+    )
 
     # Configure the Claude agent options
     options = ClaudeAgentOptions(
@@ -145,8 +148,16 @@ IMPORTANT - CONVERSATION CONTINUITY:
 
             # Check if user wants to start a new paper
             new_paper_keywords = [
-                "new paper", "start fresh", "start afresh", "create new", "different paper", "another paper",
-                "new presentation", "new poster", "different presentation", "another presentation"
+                "new paper",
+                "start fresh",
+                "start afresh",
+                "create new",
+                "different paper",
+                "another paper",
+                "new presentation",
+                "new poster",
+                "different presentation",
+                "another presentation",
             ]
             is_new_paper_request = any(keyword in user_input.lower() for keyword in new_paper_keywords)
 
@@ -163,18 +174,20 @@ IMPORTANT - CONVERSATION CONTINUITY:
 
                     # Show what files exist in this paper
                     paper_info = scan_paper_directory(detected_paper_path)
-                    file_count = sum([
-                        1 if paper_info['tex_final'] else 0,
-                        1 if paper_info['pdf_final'] else 0,
-                        len(paper_info['tex_drafts']),
-                        len(paper_info['pdf_drafts']),
-                        len(paper_info['figures']),
-                        len(paper_info['data']),
-                        len(paper_info['sources']),
-                        1 if paper_info['bibliography'] else 0,
-                        1 if paper_info['progress_log'] else 0,
-                        1 if paper_info['summary'] else 0,
-                    ])
+                    file_count = sum(
+                        [
+                            1 if paper_info["tex_final"] else 0,
+                            1 if paper_info["pdf_final"] else 0,
+                            len(paper_info["tex_drafts"]),
+                            len(paper_info["pdf_drafts"]),
+                            len(paper_info["figures"]),
+                            len(paper_info["data"]),
+                            len(paper_info["sources"]),
+                            1 if paper_info["bibliography"] else 0,
+                            1 if paper_info["progress_log"] else 0,
+                            1 if paper_info["summary"] else 0,
+                        ]
+                    )
                     print(f"📄 Found {file_count} file(s) in this directory\n")
 
                 elif detected_paper_path and str(detected_paper_path) == current_paper_path:
@@ -240,10 +253,10 @@ Based on the user request: {user_input}"""
                     processed_info = process_data_files(cwd, data_files, current_paper_path)
                     if processed_info:
                         data_context = create_data_context_message(processed_info)
-                        manuscript_count = len(processed_info.get('manuscript_files', []))
-                        source_count = len(processed_info.get('source_files', []))
-                        data_count = len(processed_info.get('data_files', []))
-                        image_count = len(processed_info.get('image_files', []))
+                        manuscript_count = len(processed_info.get("manuscript_files", []))
+                        source_count = len(processed_info.get("source_files", []))
+                        data_count = len(processed_info.get("data_files", []))
+                        image_count = len(processed_info.get("image_files", []))
                         if manuscript_count > 0:
                             print(f"   ✓ Copied {manuscript_count} .tex manuscript(s) to drafts/ [EDITING MODE]")
                         if source_count > 0:
@@ -269,10 +282,10 @@ Now continue with the actual paper generation for the user's request:
                 processed_info = process_data_files(cwd, data_files, current_paper_path)
                 if processed_info:
                     data_context = create_data_context_message(processed_info)
-                    manuscript_count = len(processed_info.get('manuscript_files', []))
-                    source_count = len(processed_info.get('source_files', []))
-                    data_count = len(processed_info.get('data_files', []))
-                    image_count = len(processed_info.get('image_files', []))
+                    manuscript_count = len(processed_info.get("manuscript_files", []))
+                    source_count = len(processed_info.get("source_files", []))
+                    data_count = len(processed_info.get("data_files", []))
+                    image_count = len(processed_info.get("image_files", []))
                     if manuscript_count > 0:
                         print(f"   ✓ Copied {manuscript_count} .tex manuscript(s) to drafts/ [EDITING MODE]")
                     if source_count > 0:
@@ -303,31 +316,31 @@ User request: {user_input}"""
                 context_parts = [
                     f"[CONTEXT: You are currently working on a paper in: {current_paper_path}]",
                     "[INSTRUCTION: Continue working on this existing paper. Do NOT create a new paper directory.]",
-                    "\n📁 Current paper contents:"
+                    "\n📁 Current paper contents:",
                 ]
 
                 # Add information about what files exist
-                if paper_info['tex_final']:
+                if paper_info["tex_final"]:
                     context_parts.append(f"  • Final LaTeX: {Path(paper_info['tex_final']).name}")
-                if paper_info['pdf_final']:
+                if paper_info["pdf_final"]:
                     context_parts.append(f"  • Final PDF: {Path(paper_info['pdf_final']).name}")
-                if paper_info['tex_drafts']:
+                if paper_info["tex_drafts"]:
                     context_parts.append(f"  • Draft LaTeX files: {len(paper_info['tex_drafts'])} file(s)")
-                    for draft in paper_info['tex_drafts']:
+                    for draft in paper_info["tex_drafts"]:
                         context_parts.append(f"    - {Path(draft).name}")
-                if paper_info['pdf_drafts']:
+                if paper_info["pdf_drafts"]:
                     context_parts.append(f"  • Draft PDF files: {len(paper_info['pdf_drafts'])} file(s)")
-                if paper_info['figures']:
+                if paper_info["figures"]:
                     context_parts.append(f"  • Figures: {len(paper_info['figures'])} file(s)")
-                if paper_info['data']:
+                if paper_info["data"]:
                     context_parts.append(f"  • Data files: {len(paper_info['data'])} file(s)")
-                if paper_info['sources']:
+                if paper_info["sources"]:
                     context_parts.append(f"  • Source/context files: {len(paper_info['sources'])} file(s)")
-                if paper_info['bibliography']:
+                if paper_info["bibliography"]:
                     context_parts.append(f"  • Bibliography: {Path(paper_info['bibliography']).name}")
-                if paper_info['progress_log']:
+                if paper_info["progress_log"]:
                     context_parts.append("  • Progress log: progress.md")
-                if paper_info['summary']:
+                if paper_info["summary"]:
                     context_parts.append("  • Summary: SUMMARY.md")
 
                 context_parts.append(f"\nUser request: {user_input}")

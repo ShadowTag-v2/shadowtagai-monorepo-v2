@@ -23,48 +23,47 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class UserMessage(BaseModel):
+    # oneof fields - start
+    text: str | None = None
+    """The user message in text."""
 
-  # oneof fields - start
-  text: str | None = None
-  """The user message in text."""
+    content: types.UserContent | None = None
+    """The user message in types.Content."""
+    # oneof fields - end
 
-  content: types.UserContent | None = None
-  """The user message in types.Content."""
-  # oneof fields - end
-
-  state_delta: dict[str, Any] | None = None
-  """The state changes when running this user message."""
+    state_delta: dict[str, Any] | None = None
+    """The state changes when running this user message."""
 
 
 class TestSpec(BaseModel):
-  """Test specification for conformance test cases.
+    """Test specification for conformance test cases.
 
-  This is the human-authored specification that defines what should be tested.
-  Category and name are inferred from folder structure.
-  """
+    This is the human-authored specification that defines what should be tested.
+    Category and name are inferred from folder structure.
+    """
 
-  model_config = ConfigDict(
-      extra="forbid",
-  )
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
-  description: str
-  """Human-readable description of what this test validates."""
+    description: str
+    """Human-readable description of what this test validates."""
 
-  agent: str
-  """Name of the ADK agent to test against."""
+    agent: str
+    """Name of the ADK agent to test against."""
 
-  initial_state: dict[str, Any] = Field(default_factory=dict)
-  """The initial state key-value pairs in the creation_session request."""
+    initial_state: dict[str, Any] = Field(default_factory=dict)
+    """The initial state key-value pairs in the creation_session request."""
 
-  user_messages: list[UserMessage] = Field(default_factory=list)
-  """Sequence of user messages to send to the agent during test execution."""
+    user_messages: list[UserMessage] = Field(default_factory=list)
+    """Sequence of user messages to send to the agent during test execution."""
 
 
 @dataclass
 class TestCase:
-  """Represents a single conformance test case."""
+    """Represents a single conformance test case."""
 
-  category: str
-  name: str
-  dir: Path
-  test_spec: TestSpec
+    category: str
+    name: str
+    dir: Path
+    test_spec: TestSpec

@@ -12,11 +12,14 @@ Token cached to /tmp/gh_token_shadowtag.txt for reuse within the 1hr window.
 
 import argparse
 import json
+import logging
 import os
 import sys
 import time
 import urllib.request
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 APP_ID = "3018200"
@@ -25,6 +28,27 @@ INSTALLATION_ID = "114307210"  # ShadowTag-v2
 PEM_PATH = REPO_ROOT / "keys" / "shadowtag-manager.pem"
 TOKEN_CACHE = Path("/tmp/gh_token_shadowtag.txt")
 TOKEN_EXPIRY_CACHE = Path("/tmp/gh_token_shadowtag_exp.txt")
+
+# --- Circuit Breaker: github_api ---
+_github_breaker = None
+
+
+def _get_github_breaker():
+    """Lazily initialize the github_api circuit breaker."""
+    global _github_breaker  # noqa: PLW0603
+    if _github_breaker is not None:
+        return _github_breaker
+    try:
+        from circuit_breaker.telemetry_bridge import default_registry
+        _github_breaker = default_registry.get_or_create(
+            "github_api",
+            failure_threshold=5,
+            reset_timeout_s=120.0,
+        )
+    except Exception:
+        logger.debug("Circuit breaker unavailable — github_api calls ungated")
+        _github_breaker = None
+    return _github_breaker
 
 
 def _load_pem() -> str:
@@ -89,7 +113,14 @@ def _generate_jwt(pem: str) -> str:
 
 
 def _get_installation_token(jwt_token: str) -> tuple[str, str]:
-    """Returns (token, expires_at)."""
+    """Returns (token, expires_at). Gated by github_api circuit breaker."""
+    breaker = _get_github_breaker()
+    if breaker is not None and not breaker.allow_request():
+        raise RuntimeError(
+            f"Circuit breaker OPEN for github_api "
+            f"(probe in {breaker.seconds_until_probe:.1f}s)"
+        )
+
     url = f"https://api.github.com/app/installations/{INSTALLATION_ID}/access_tokens"
     req = urllib.request.Request(
         url,
@@ -100,9 +131,16 @@ def _get_installation_token(jwt_token: str) -> tuple[str, str]:
             "X-GitHub-Api-Version": "2022-11-28",
         },
     )
-    with urllib.request.urlopen(req) as resp:
-        data = json.loads(resp.read())
-    return data["token"], data.get("expires_at", "")
+    try:
+        with urllib.request.urlopen(req) as resp:
+            data = json.loads(resp.read())
+        if breaker is not None:
+            breaker.record_success()
+        return data["token"], data.get("expires_at", "")
+    except Exception:
+        if breaker is not None:
+            breaker.record_failure()
+        raise
 
 
 def get_token(force_refresh: bool = False) -> str:

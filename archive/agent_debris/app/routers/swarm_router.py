@@ -12,11 +12,12 @@ Endpoints:
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import Optional, Dict, Any, List
+from typing import Any
 
 # Import swarm
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from shadowtagai.agents.live_swarm import get_swarm
@@ -70,33 +71,17 @@ async def get_agent(agent_id: str) -> dict[str, Any]:
 async def spawn_agent(request: SpawnRequest) -> dict[str, Any]:
     """Spawn a new agent from a parent."""
     swarm = get_swarm()
-    agent = swarm.spawn_agent(
-        parent_id=request.parent_id,
-        name=request.name,
-        specialization=request.specialization
-    )
+    agent = swarm.spawn_agent(parent_id=request.parent_id, name=request.name, specialization=request.specialization)
     if not agent:
-        raise HTTPException(
-            status_code=400,
-            detail="Failed to spawn agent. Parent may not have SPAWNER level."
-        )
-    return {
-        "status": "spawned",
-        "agent": agent.to_dict()
-    }
+        raise HTTPException(status_code=400, detail="Failed to spawn agent. Parent may not have SPAWNER level.")
+    return {"status": "spawned", "agent": agent.to_dict()}
 
 
 @router.post("/task")
 async def execute_task(request: TaskRequest) -> dict[str, Any]:
     """Execute a task in the swarm."""
     swarm = get_swarm()
-    result = await swarm.execute_task(
-        task={
-            "type": request.type,
-            "complexity": request.complexity
-        },
-        agent_id=request.agent_id
-    )
+    result = await swarm.execute_task(task={"type": request.type, "complexity": request.complexity}, agent_id=request.agent_id)
     return result
 
 
@@ -104,18 +89,10 @@ async def execute_task(request: TaskRequest) -> dict[str, Any]:
 async def record_revenue(request: RevenueRequest) -> dict[str, Any]:
     """Record revenue for an agent with DNA share distribution."""
     swarm = get_swarm()
-    distribution = swarm.record_revenue(
-        agent_id=request.agent_id,
-        amount_usd=request.amount_usd,
-        simulated=request.simulated
-    )
+    distribution = swarm.record_revenue(agent_id=request.agent_id, amount_usd=request.amount_usd, simulated=request.simulated)
     if "error" in distribution:
         raise HTTPException(status_code=404, detail=distribution["error"])
-    return {
-        "status": "recorded",
-        "amount_usd": request.amount_usd,
-        "distribution": distribution
-    }
+    return {"status": "recorded", "amount_usd": request.amount_usd, "distribution": distribution}
 
 
 @router.get("/tree")
@@ -148,20 +125,11 @@ async def activate_swarm() -> dict[str, Any]:
         # Check if already exists
         exists = any(a.name == name for a in swarm.agents.values())
         if not exists:
-            agent = swarm.spawn_agent(
-                parent_id="OVERLORD_PRIME",
-                name=name,
-                specialization=spec
-            )
+            agent = swarm.spawn_agent(parent_id="OVERLORD_PRIME", name=name, specialization=spec)
             if agent:
                 spawned.append(agent.to_dict())
 
-    return {
-        "status": "activated",
-        "spawned_count": len(spawned),
-        "agents": spawned,
-        "total_agents": len(swarm.agents)
-    }
+    return {"status": "activated", "spawned_count": len(spawned), "agents": spawned, "total_agents": len(swarm.agents)}
 
 
 @router.get("/health")

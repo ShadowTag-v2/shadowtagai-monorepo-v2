@@ -1,6 +1,5 @@
 """Trello-specific Pydantic schemas used for LLM structured generation."""
 
-
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -21,16 +20,10 @@ class TrelloCardSpec(BaseModel):
 class TrelloCardContent(BaseModel):
     """Content for generated card."""
 
-    description: str = Field(
-        description="Main card description in markdown format with verification token"
-    )
-    objectives: list[str] = Field(
-        description="List of objectives/requirements for this card"
-    )
+    description: str = Field(description="Main card description in markdown format with verification token")
+    objectives: list[str] = Field(description="List of objectives/requirements for this card")
     technical_details: str = Field(description="Technical implementation details")
-    acceptance_criteria: list[str] = Field(
-        description="Definition of done checklist items"
-    )
+    acceptance_criteria: list[str] = Field(description="Definition of done checklist items")
 
 
 class TrelloCard(BaseModel):

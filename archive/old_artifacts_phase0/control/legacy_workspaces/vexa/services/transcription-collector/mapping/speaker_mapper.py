@@ -16,13 +16,14 @@ STATUS_ERROR = "ERROR_IN_MAPPING"
 
 # NEW: Define buffer constants for fetching speaker events
 PRE_SEGMENT_SPEAKER_EVENT_FETCH_MS = 500  # Fetch events starting 2s before segment
-POST_SEGMENT_SPEAKER_EVENT_FETCH_MS = 500 # Fetch events up to 2s after segment
+POST_SEGMENT_SPEAKER_EVENT_FETCH_MS = 500  # Fetch events up to 2s after segment
+
 
 def map_speaker_to_segment(
     segment_start_ms: float,
     segment_end_ms: float,
-    speaker_events_for_session: list[tuple[str, float]], # List of (event_json_str, timestamp_ms)
-    session_end_time_ms: float | None = None
+    speaker_events_for_session: list[tuple[str, float]],  # List of (event_json_str, timestamp_ms)
+    session_end_time_ms: float | None = None,
 ) -> dict[str, Any]:
     """Maps a speaker to a transcription segment based on speaker events.
 
@@ -44,25 +45,21 @@ def map_speaker_to_segment(
     mapping_status = STATUS_UNKNOWN
 
     if not speaker_events_for_session:
-        return {
-            "speaker_name": None,
-            "participant_id_meet": None,
-            "status": STATUS_NO_SPEAKER_EVENTS
-        }
+        return {"speaker_name": None, "participant_id_meet": None, "status": STATUS_NO_SPEAKER_EVENTS}
 
     # Parse speaker events from JSON string to dict
     parsed_events: list[dict[str, Any]] = []
     for event_json, timestamp in speaker_events_for_session:
         try:
             event = json.loads(event_json)
-            event['relative_client_timestamp_ms'] = timestamp # Ensure timestamp is part of the event dict
+            event["relative_client_timestamp_ms"] = timestamp  # Ensure timestamp is part of the event dict
             parsed_events.append(event)
         except json.JSONDecodeError:
             logger.warning(f"Failed to parse speaker event JSON: {event_json}")
             continue
 
     if not parsed_events:
-        return {"speaker_name": None, "participant_id_meet": None, "status": STATUS_ERROR} # Error parsing all events
+        return {"speaker_name": None, "participant_id_meet": None, "status": STATUS_ERROR}  # Error parsing all events
 
     # Find speaker(s) active during the segment interval
     # This is a simplified approach: considers the speaker whose START event is closest before or at segment_start_ms
@@ -73,11 +70,11 @@ def map_speaker_to_segment(
     #   - They have a START event at T_start <= S_end
     #   - And no corresponding END event T_end such that T_start <= T_end < S_start
 
-    candidate_speakers = {} # participant_id_meet -> last_start_event
+    candidate_speakers = {}  # participant_id_meet -> last_start_event
 
     for event in parsed_events:
-        event_ts = event['relative_client_timestamp_ms']
-        participant_id = event.get("participant_id_meet") or event.get("participant_name") # Fallback to name if id_meet missing
+        event_ts = event["relative_client_timestamp_ms"]
+        participant_id = event.get("participant_id_meet") or event.get("participant_name")  # Fallback to name if id_meet missing
 
         if not participant_id:
             continue
@@ -100,33 +97,36 @@ def map_speaker_to_segment(
     # This logic can be complex for overlaps. Simplified: take the one whose START was latest but before/at segment start.
     # More robust: find speaker whose active interval [speaker_start, speaker_end_or_session_end] maximally overlaps segment.
 
-
     active_speakers_in_segment = []
 
     for p_id, start_event in candidate_speakers.items():
-        start_ts = start_event['relative_client_timestamp_ms']
+        start_ts = start_event["relative_client_timestamp_ms"]
         # Find corresponding END event for this p_id that is after start_ts
-        end_ts = session_end_time_ms or segment_end_ms # Default to session_end or segment_end if no specific end event
+        end_ts = session_end_time_ms or segment_end_ms  # Default to session_end or segment_end if no specific end event
         # look for an explicit end event
-        for end_search_event in parsed_events: # Search all parsed events again for the corresponding end
-            if (end_search_event.get("participant_id_meet") == p_id or end_search_event.get("participant_name") == p_id) and \
-               end_search_event["event_type"] == "SPEAKER_END" and \
-               end_search_event['relative_client_timestamp_ms'] >= start_ts:
-                end_ts = end_search_event['relative_client_timestamp_ms']
-                break # Found the earliest relevant END event
+        for end_search_event in parsed_events:  # Search all parsed events again for the corresponding end
+            if (
+                (end_search_event.get("participant_id_meet") == p_id or end_search_event.get("participant_name") == p_id)
+                and end_search_event["event_type"] == "SPEAKER_END"
+                and end_search_event["relative_client_timestamp_ms"] >= start_ts
+            ):
+                end_ts = end_search_event["relative_client_timestamp_ms"]
+                break  # Found the earliest relevant END event
 
         # Speaker is active during the segment if: [start_ts, end_ts] overlaps with [segment_start_ms, segment_end_ms]
         # Overlap condition: max(start1, start2) < min(end1, end2)
         overlap_start = max(start_ts, segment_start_ms)
         overlap_end = min(end_ts, segment_end_ms)
 
-        if overlap_start < overlap_end: # If there is an overlap
-            active_speakers_in_segment.append({
-                "name": start_event["participant_name"],
-                "id": start_event.get("participant_id_meet"),
-                "overlap_duration": overlap_end - overlap_start,
-                "start_event_ts": start_ts
-            })
+        if overlap_start < overlap_end:  # If there is an overlap
+            active_speakers_in_segment.append(
+                {
+                    "name": start_event["participant_name"],
+                    "id": start_event.get("participant_id_meet"),
+                    "overlap_duration": overlap_end - overlap_start,
+                    "start_event_ts": start_ts,
+                }
+            )
 
     if not active_speakers_in_segment:
         mapping_status = STATUS_UNKNOWN
@@ -141,22 +141,21 @@ def map_speaker_to_segment(
         active_speaker_name = active_speakers_in_segment[0]["name"]
         active_participant_id = active_speakers_in_segment[0]["id"]
         mapping_status = STATUS_MULTIPLE
-        logger.info(f"Multiple speakers found for segment {segment_start_ms}-{segment_end_ms}. Selected {active_speaker_name} due to longest overlap.")
+        logger.info(
+            f"Multiple speakers found for segment {segment_start_ms}-{segment_end_ms}. Selected {active_speaker_name} due to longest overlap."
+        )
 
-    return {
-        "speaker_name": active_speaker_name,
-        "participant_id_meet": active_participant_id,
-        "status": mapping_status
-    }
+    return {"speaker_name": active_speaker_name, "participant_id_meet": active_participant_id, "status": mapping_status}
+
 
 # NEW Utility function to centralize fetching and mapping logic
 async def get_speaker_mapping_for_segment(
-    redis_c: 'aioredis.Redis', # Forward reference for type hint
+    redis_c: aioredis.Redis,  # Forward reference for type hint
     session_uid: str,
     segment_start_ms: float,
     segment_end_ms: float,
-    config_speaker_event_key_prefix: str, # Pass REDIS_SPEAKER_EVENT_KEY_PREFIX
-    context_log_msg: str = "" # For more specific logging, e.g., "[LiveMap]" or "[FinalMap]"
+    config_speaker_event_key_prefix: str,  # Pass REDIS_SPEAKER_EVENT_KEY_PREFIX
+    context_log_msg: str = "",  # For more specific logging, e.g., "[LiveMap]" or "[FinalMap]"
 ) -> dict[str, Any]:
     """
     Fetches speaker events from Redis for a given segment and session,
@@ -176,20 +175,22 @@ async def get_speaker_mapping_for_segment(
         # Fetch speaker events from Redis
         speaker_events_raw = await redis_c.zrangebyscore(
             speaker_event_key,
-            min=segment_start_ms - PRE_SEGMENT_SPEAKER_EVENT_FETCH_MS, # MODIFIED
-            max=segment_end_ms + POST_SEGMENT_SPEAKER_EVENT_FETCH_MS, # MODIFIED
-            withscores=True
+            min=segment_start_ms - PRE_SEGMENT_SPEAKER_EVENT_FETCH_MS,  # MODIFIED
+            max=segment_end_ms + POST_SEGMENT_SPEAKER_EVENT_FETCH_MS,  # MODIFIED
+            withscores=True,
         )
 
         speaker_events_for_mapper: list[tuple[str, float]] = []
         for event_data, score_ms in speaker_events_raw:
             event_json_str: str | None = None
             if isinstance(event_data, bytes):
-                event_json_str = event_data.decode('utf-8')
+                event_json_str = event_data.decode("utf-8")
             elif isinstance(event_data, str):
                 event_json_str = event_data
             else:
-                logger.warning(f"{context_log_msg} UID:{session_uid} Seg:{segment_start_ms}-{segment_end_ms} Unexpected speaker event data type from Redis: {type(event_data)}. Skipping this event.")
+                logger.warning(
+                    f"{context_log_msg} UID:{session_uid} Seg:{segment_start_ms}-{segment_end_ms} Unexpected speaker event data type from Redis: {type(event_data)}. Skipping this event."
+                )
                 continue
             speaker_events_for_mapper.append((event_json_str, float(score_ms)))
 
@@ -205,26 +206,25 @@ async def get_speaker_mapping_for_segment(
         mapping_result = map_speaker_to_segment(
             segment_start_ms=segment_start_ms,
             segment_end_ms=segment_end_ms,
-            speaker_events_for_session=speaker_events_for_mapper, # Now contains all events for the session
-            session_end_time_ms=None # session_end_time not critical for per-segment mapping here
+            speaker_events_for_session=speaker_events_for_mapper,  # Now contains all events for the session
+            session_end_time_ms=None,  # session_end_time not critical for per-segment mapping here
         )
 
         mapped_speaker_name = mapping_result.get("speaker_name")
         active_participant_id = mapping_result.get("participant_id_meet")
         mapping_status = mapping_result.get("status", STATUS_ERROR)
 
-        if mapping_status != STATUS_NO_SPEAKER_EVENTS: # Avoid double logging if no events
-             logger.info(f"{log_prefix_detail} Result: Name='{mapped_speaker_name}', Status='{mapping_status}'")
+        if mapping_status != STATUS_NO_SPEAKER_EVENTS:  # Avoid double logging if no events
+            logger.info(f"{log_prefix_detail} Result: Name='{mapped_speaker_name}', Status='{mapping_status}'")
 
     except redis.exceptions.RedisError as re:
-        logger.error(f"{context_log_msg} UID:{session_uid} Seg:{segment_start_ms}-{segment_end_ms} Redis error fetching/processing speaker events: {re}", exc_info=True)
+        logger.error(
+            f"{context_log_msg} UID:{session_uid} Seg:{segment_start_ms}-{segment_end_ms} Redis error fetching/processing speaker events: {re}",
+            exc_info=True,
+        )
         mapping_status = STATUS_ERROR
     except Exception as map_err:
         logger.error(f"{context_log_msg} UID:{session_uid} Seg:{segment_start_ms}-{segment_end_ms} Speaker mapping error: {map_err}", exc_info=True)
         mapping_status = STATUS_ERROR
 
-    return {
-        "speaker_name": mapped_speaker_name,
-        "participant_id_meet": active_participant_id,
-        "status": mapping_status
-    }
+    return {"speaker_name": mapped_speaker_name, "participant_id_meet": active_participant_id, "status": mapping_status}

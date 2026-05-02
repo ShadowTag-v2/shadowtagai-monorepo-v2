@@ -60,7 +60,7 @@ def mock_skills() -> list[Skill]:
 
 
 @pytest.fixture
-def temp_skill_dir() -> Generator[Path, None, None]:
+def temp_skill_dir() -> Generator[Path]:
     """Create a temporary directory with test skills."""
     with tempfile.TemporaryDirectory() as tmpdir:
         temp_path = Path(tmpdir)

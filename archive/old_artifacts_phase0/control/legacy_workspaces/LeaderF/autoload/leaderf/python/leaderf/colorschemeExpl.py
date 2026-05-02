@@ -9,9 +9,9 @@ from leaderf.manager import *
 from leaderf.utils import *
 
 
-#*****************************************************
+# *****************************************************
 # ColorschemeExplorer
-#*****************************************************
+# *****************************************************
 class ColorschemeExplorer(Explorer):
     def __init__(self):
         self._content = []
@@ -25,7 +25,7 @@ class ColorschemeExplorer(Explorer):
     def getFreshContent(self, *args, **kwargs):
         user_home = os.path.expanduser("~")
         content, content_prefer = [], []
-        for dir in lfEval("&rtp").split(','):
+        for dir in lfEval("&rtp").split(","):
             try:
                 colors = os.listdir(os.path.join(dir, "colors"))
                 colors_name = [c[:-4] for c in colors if c.endswith(".vim")]
@@ -43,10 +43,7 @@ class ColorschemeExplorer(Explorer):
                     "{}/pack/*/start/*/colors/*.vim",
                     "{}/pack/*/opt/*/colors/*.vim",
                 ]:
-                    colors_name = [
-                        os.path.basename(f)[:-4]
-                        for f in glob.glob(pack_path.format(dir))
-                    ]
+                    colors_name = [os.path.basename(f)[:-4] for f in glob.glob(pack_path.format(dir))]
                     if user_home in dir:
                         content_prefer.extend(colors_name)
                     else:
@@ -64,9 +61,9 @@ class ColorschemeExplorer(Explorer):
         return escQuote(lfEncode(lfGetCwd()))
 
 
-#*****************************************************
+# *****************************************************
 # ColorschemeExplManager
-#*****************************************************
+# *****************************************************
 class ColorschemeExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -82,7 +79,7 @@ class ColorschemeExplManager(Manager):
             return
         line = args[0]
         lfCmd("silent! colorscheme " + line)
-        if self._getInstance().getWinPos() == 'popup':
+        if self._getInstance().getWinPos() == "popup":
             pass
         elif lfEval("&filetype") == "leaderf":
             lfCmd("doautocmd FileType leaderf")
@@ -94,7 +91,7 @@ class ColorschemeExplManager(Manager):
             mode: 0, 1, 2, return the whole line
         """
         if not line:
-            return ''
+            return ""
 
         return line
 
@@ -128,9 +125,9 @@ class ColorschemeExplManager(Manager):
         self._acceptSelection(self._getInstance().currentLine)
 
 
-#*****************************************************
+# *****************************************************
 # colorschemeExplManager is a singleton
-#*****************************************************
+# *****************************************************
 colorschemeExplManager = ColorschemeExplManager()
 
-__all__ = ['colorschemeExplManager']
+__all__ = ["colorschemeExplManager"]

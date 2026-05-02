@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class KEGGPathway:
     """KEGG pathway information."""
+
     pathway_id: str
     name: str
     category: str
@@ -37,6 +38,7 @@ class KEGGPathway:
 @dataclass
 class GWASVariant:
     """GWAS variant information."""
+
     snp_id: str
     chr: str
     position: int
@@ -49,6 +51,7 @@ class GWASVariant:
 @dataclass
 class eQTLData:
     """eQTL data from GTEx."""
+
     snp_id: str
     gene_id: str
     tissue: str
@@ -115,10 +118,10 @@ class KEGGClient:
 
             return KEGGPathway(
                 pathway_id=pathway_id,
-                name=data.get('NAME', ['Unknown'])[0],
-                category=data.get('CLASS', ['Unknown'])[0],
-                compounds=data.get('COMPOUND', []),
-                genes=data.get('GENE', []),
+                name=data.get("NAME", ["Unknown"])[0],
+                category=data.get("CLASS", ["Unknown"])[0],
+                compounds=data.get("COMPOUND", []),
+                genes=data.get("GENE", []),
             )
 
         except Exception as e:
@@ -141,67 +144,67 @@ class KEGGClient:
             response = self.client.get(url)
 
             if response.status_code != 200:
-                return {'category': 'unknown', 'pathways': []}
+                return {"category": "unknown", "pathways": []}
 
             # Parse search results
-            lines = response.text.strip().split('\n')
+            lines = response.text.strip().split("\n")
             if not lines:
-                return {'category': 'unknown', 'pathways': []}
+                return {"category": "unknown", "pathways": []}
 
             # Get first match
-            first_match = lines[0].split('\t')[0]
-            compound_id = first_match.split(':')[1] if ':' in first_match else first_match
+            first_match = lines[0].split("\t")[0]
+            compound_id = first_match.split(":")[1] if ":" in first_match else first_match
 
             # Get compound details
             compound_data = self.get_compound(compound_id)
 
             if not compound_data:
-                return {'category': 'unknown', 'pathways': []}
+                return {"category": "unknown", "pathways": []}
 
             # Extract pathways
-            pathways = compound_data.get('PATHWAY', [])
+            pathways = compound_data.get("PATHWAY", [])
 
             # Classify as purine/pyrimidine/other based on pathways
-            category = 'other'
-            metabolite_type = 'unknown'
+            category = "other"
+            metabolite_type = "unknown"
 
-            pathway_str = ' '.join(pathways).lower()
+            pathway_str = " ".join(pathways).lower()
 
-            if 'purine' in pathway_str:
-                category = 'purine'
-            elif 'pyrimidine' in pathway_str:
-                category = 'pyrimidine'
+            if "purine" in pathway_str:
+                category = "purine"
+            elif "pyrimidine" in pathway_str:
+                category = "pyrimidine"
 
             # Determine salvage vs synthesis based on compound name
             name_lower = compound_name.lower()
-            if name_lower.endswith('osine') or name_lower in ['adenine', 'guanine', 'cytosine', 'uracil']:
-                metabolite_type = 'salvage_precursor'
-            elif 'monophosphate' in name_lower or 'diphosphate' in name_lower or 'triphosphate' in name_lower:
-                metabolite_type = 'synthesis_product'
+            if name_lower.endswith("osine") or name_lower in ["adenine", "guanine", "cytosine", "uracil"]:
+                metabolite_type = "salvage_precursor"
+            elif "monophosphate" in name_lower or "diphosphate" in name_lower or "triphosphate" in name_lower:
+                metabolite_type = "synthesis_product"
             else:
-                metabolite_type = 'intermediate'
+                metabolite_type = "intermediate"
 
             return {
-                'category': category,
-                'metabolite_type': metabolite_type,
-                'pathways': pathways,
-                'compound_id': compound_id,
+                "category": category,
+                "metabolite_type": metabolite_type,
+                "pathways": pathways,
+                "compound_id": compound_id,
             }
 
         except Exception as e:
             logger.error(f"Metabolite categorization error: {e}")
-            return {'category': 'unknown', 'pathways': [], 'error': str(e)}
+            return {"category": "unknown", "pathways": [], "error": str(e)}
 
     def _parse_kegg_entry(self, text: str) -> dict[str, list[str]]:
         """Parse KEGG text format into structured dict."""
         data = {}
         current_key = None
 
-        for line in text.split('\n'):
+        for line in text.split("\n"):
             if not line.strip():
                 continue
 
-            if line[0] != ' ':  # New section
+            if line[0] != " ":  # New section
                 parts = line.split(maxsplit=1)
                 current_key = parts[0]
                 if len(parts) > 1:
@@ -241,42 +244,36 @@ class GWASCatalogClient:
         """
         try:
             url = f"{self.BASE_URL}/singleNucleotidePolymorphisms/{snp_id}"
-            response = self.client.get(
-                url,
-                headers={'Accept': 'application/json'}
-            )
+            response = self.client.get(url, headers={"Accept": "application/json"})
             response.raise_for_status()
 
             data = response.json()
 
             # Extract relevant fields
-            if not data or '_embedded' not in data:
+            if not data or "_embedded" not in data:
                 return None
 
-            snp_data = data['_embedded']['singleNucleotidePolymorphisms'][0]
+            snp_data = data["_embedded"]["singleNucleotidePolymorphisms"][0]
 
             # Get associated studies
             associations_url = f"{url}/associations"
-            assoc_response = self.client.get(
-                associations_url,
-                headers={'Accept': 'application/json'}
-            )
+            assoc_response = self.client.get(associations_url, headers={"Accept": "application/json"})
 
             if assoc_response.status_code == 200:
                 assoc_data = assoc_response.json()
-                if '_embedded' in assoc_data and 'associations' in assoc_data['_embedded']:
-                    associations = assoc_data['_embedded']['associations']
+                if "_embedded" in assoc_data and "associations" in assoc_data["_embedded"]:
+                    associations = assoc_data["_embedded"]["associations"]
                     if associations:
                         first_assoc = associations[0]
 
                         return GWASVariant(
                             snp_id=snp_id,
-                            chr=snp_data.get('chromosomeName', ''),
-                            position=int(snp_data.get('chromosomePosition', 0)),
-                            p_value=float(first_assoc.get('pvalue', 1.0)),
-                            beta=float(first_assoc.get('betaNum', 0.0)),
-                            trait=first_assoc.get('traitName', ''),
-                            sample_size=int(first_assoc.get('sampleSize', 0)),
+                            chr=snp_data.get("chromosomeName", ""),
+                            position=int(snp_data.get("chromosomePosition", 0)),
+                            p_value=float(first_assoc.get("pvalue", 1.0)),
+                            beta=float(first_assoc.get("betaNum", 0.0)),
+                            trait=first_assoc.get("traitName", ""),
+                            sample_size=int(first_assoc.get("sampleSize", 0)),
                         )
 
             return None
@@ -300,13 +297,9 @@ class GWASCatalogClient:
             url = f"{self.BASE_URL}/efoTraits/search/findByEfoTrait"
             # Alternative: search by gene name in associations
             url = f"{self.BASE_URL}/singleNucleotidePolymorphisms/search/findByGene"
-            params = {'geneName': gene_name}
+            params = {"geneName": gene_name}
 
-            response = self.client.get(
-                url,
-                params=params,
-                headers={'Accept': 'application/json'}
-            )
+            response = self.client.get(url, params=params, headers={"Accept": "application/json"})
 
             if response.status_code == 200:
                 return response.json()
@@ -348,9 +341,9 @@ class GTExClient:
         try:
             url = f"{self.BASE_URL}/association/dyneqtl"
             params = {
-                'variantId': snp_id,
-                'gencodeId': gene_id,
-                'tissueSiteDetailId': tissue,
+                "variantId": snp_id,
+                "gencodeId": gene_id,
+                "tissueSiteDetailId": tissue,
             }
 
             response = self.client.get(url, params=params)
@@ -358,16 +351,16 @@ class GTExClient:
             if response.status_code == 200:
                 data = response.json()
 
-                if data and 'data' in data and len(data['data']) > 0:
-                    eqtl = data['data'][0]
+                if data and "data" in data and len(data["data"]) > 0:
+                    eqtl = data["data"][0]
 
                     return eQTLData(
                         snp_id=snp_id,
                         gene_id=gene_id,
                         tissue=tissue,
-                        beta=float(eqtl.get('slope', 0.0)),
-                        p_value=float(eqtl.get('pValue', 1.0)),
-                        effect_size=float(eqtl.get('effectSize', 0.0)),
+                        beta=float(eqtl.get("slope", 0.0)),
+                        p_value=float(eqtl.get("pValue", 1.0)),
+                        effect_size=float(eqtl.get("effectSize", 0.0)),
                     )
 
             return None
@@ -393,17 +386,17 @@ class GTExClient:
             # GTEx pQTL API endpoint (similar to eQTL)
             url = f"{self.BASE_URL}/association/pqtl"
             params = {
-                'variantId': snp_id,
-                'gencodeId': gene_id,
-                'tissueSiteDetailId': tissue,
+                "variantId": snp_id,
+                "gencodeId": gene_id,
+                "tissueSiteDetailId": tissue,
             }
 
             response = self.client.get(url, params=params)
 
             if response.status_code == 200:
                 data = response.json()
-                if data and 'data' in data and len(data['data']) > 0:
-                    return data['data'][0]
+                if data and "data" in data and len(data["data"]) > 0:
+                    return data["data"][0]
 
             return None
 
@@ -425,9 +418,9 @@ class GTExClient:
         """
         try:
             url = f"{self.BASE_URL}/expression/geneExpression"
-            params = {'gencodeId': gene_id}
+            params = {"gencodeId": gene_id}
             if tissue:
-                params['tissueSiteDetailId'] = tissue
+                params["tissueSiteDetailId"] = tissue
 
             response = self.client.get(url, params=params)
 
@@ -456,12 +449,7 @@ class ENCODEClient:
         self.client = httpx.Client(timeout=timeout)
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=10))
-    def search_experiments(
-        self,
-        assay_type: str,
-        biosample: str,
-        limit: int = 10
-    ) -> dict[str, Any] | None:
+    def search_experiments(self, assay_type: str, biosample: str, limit: int = 10) -> dict[str, Any] | None:
         """
         Search for experiments in ENCODE.
 
@@ -476,11 +464,11 @@ class ENCODEClient:
         try:
             url = f"{self.BASE_URL}/search/"
             params = {
-                'type': 'Experiment',
-                'assay_title': assay_type,
-                'biosample_ontology.term_name': biosample,
-                'limit': limit,
-                'format': 'json',
+                "type": "Experiment",
+                "assay_title": assay_type,
+                "biosample_ontology.term_name": biosample,
+                "limit": limit,
+                "format": "json",
             }
 
             response = self.client.get(url, params=params)
@@ -511,20 +499,20 @@ class ENCODEClient:
             # For now, return a placeholder structure
             url = f"{self.BASE_URL}/search/"
             params = {
-                'type': 'Annotation',
-                'annotation_type': 'peaks',
-                'assay_title': 'ATAC-seq',
-                'assembly': genome,
-                'format': 'json',
-                'limit': 10,
+                "type": "Annotation",
+                "annotation_type": "peaks",
+                "assay_title": "ATAC-seq",
+                "assembly": genome,
+                "format": "json",
+                "limit": 10,
             }
 
             response = self.client.get(url, params=params)
 
             if response.status_code == 200:
                 data = response.json()
-                if data and '@graph' in data and len(data['@graph']) > 0:
-                    return data['@graph'][0]
+                if data and "@graph" in data and len(data["@graph"]) > 0:
+                    return data["@graph"][0]
 
             return None
 
@@ -567,12 +555,12 @@ class dbSNPClient:
         """
         try:
             # Remove 'rs' prefix if present
-            rs_number = snp_id.replace('rs', '')
+            rs_number = snp_id.replace("rs", "")
 
             url = f"{self.BASE_URL}/beta/refsnp/{rs_number}"
             headers = {}
             if self.api_key:
-                headers['api_key'] = self.api_key
+                headers["api_key"] = self.api_key
 
             response = self.client.get(url, headers=headers)
 
@@ -601,11 +589,7 @@ class EnsemblClient:
         self.client = httpx.Client(timeout=timeout)
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=10))
-    def get_variant_consequences(
-        self,
-        variant_id: str,
-        species: str = "human"
-    ) -> dict[str, Any] | None:
+    def get_variant_consequences(self, variant_id: str, species: str = "human") -> dict[str, Any] | None:
         """
         Get variant effect predictions.
 
@@ -618,7 +602,7 @@ class EnsemblClient:
         """
         try:
             url = f"{self.BASE_URL}/vep/{species}/id/{variant_id}"
-            headers = {'Content-Type': 'application/json'}
+            headers = {"Content-Type": "application/json"}
 
             response = self.client.get(url, headers=headers)
 
@@ -646,7 +630,7 @@ class EnsemblClient:
         try:
             # VEP region endpoint: /vep/{species}/region/{region}
             url = f"{self.BASE_URL}/vep/{species}/region/{variant}"
-            headers = {'Content-Type': 'application/json'}
+            headers = {"Content-Type": "application/json"}
 
             response = self.client.get(url, headers=headers)
 
@@ -673,7 +657,7 @@ class EnsemblClient:
         """
         try:
             url = f"{self.BASE_URL}/lookup/symbol/{species}/{gene_symbol}"
-            headers = {'Content-Type': 'application/json'}
+            headers = {"Content-Type": "application/json"}
 
             response = self.client.get(url, headers=headers)
 
@@ -823,11 +807,7 @@ class UniProtClient:
         """
         try:
             url = f"{self.BASE_URL}/uniprotkb/search"
-            params = {
-                'query': f'gene:{gene_name}',
-                'format': 'json',
-                'size': 10
-            }
+            params = {"query": f"gene:{gene_name}", "format": "json", "size": 10}
             response = self.client.get(url, params=params)
 
             if response.status_code == 200:
@@ -893,26 +873,12 @@ class PDBClient:
             # Use RCSB search API
             search_url = "https://search.rcsb.org/rcsbsearch/v2/query"
             search_query = {
-                "query": {
-                    "type": "terminal",
-                    "service": "text",
-                    "parameters": {
-                        "value": query
-                    }
-                },
+                "query": {"type": "terminal", "service": "text", "parameters": {"value": query}},
                 "return_type": "entry",
-                "request_options": {
-                    "results_verbosity": "minimal",
-                    "return_all_hits": False,
-                    "results_content_type": ["experimental"]
-                }
+                "request_options": {"results_verbosity": "minimal", "return_all_hits": False, "results_content_type": ["experimental"]},
             }
 
-            response = self.client.post(
-                search_url,
-                json=search_query,
-                headers={'Content-Type': 'application/json'}
-            )
+            response = self.client.post(search_url, json=search_query, headers={"Content-Type": "application/json"})
 
             if response.status_code == 200:
                 return response.json()

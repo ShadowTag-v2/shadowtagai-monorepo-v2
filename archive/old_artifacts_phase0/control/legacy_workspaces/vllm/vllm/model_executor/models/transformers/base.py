@@ -315,10 +315,13 @@ class Base(nn.Module, VllmModel, SupportsQuant, SupportsLoRA, SupportsPP):
         # In encoder models, the attention layers will have `is_causal=False`
         def is_encoder(module):
             return not getattr(module, "is_causal", True)
+
         def has_encoder(model):
             return any(is_encoder(m) for m in model.modules())
+
         def is_multimodal(config):
             return config != config.get_text_config()
+
         # vLLM does not support encoder-decoder models, so if any encoder layer is
         # found in a text only model, we assume the whole model is an encoder model
         if has_encoder(self.model) and not is_multimodal(self.config):

@@ -98,7 +98,5 @@ async def generate_trello_checklist(model: str, token: str) -> dict[str, Any]:
 
     return {
         "name": checklist_name,
-        "items": [
-            {"name": item.name, "checked": item.checked} for item in checklist.items
-        ],
+        "items": [{"name": item.name, "checked": item.checked} for item in checklist.items],
     }

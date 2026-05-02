@@ -174,40 +174,32 @@ class ResearchWorkflow:
 
     # Define allowed transitions
     ALLOWED_TRANSITIONS = {
-        WorkflowState.INITIALIZING: [
-            WorkflowState.GENERATING_HYPOTHESES,
-            WorkflowState.PAUSED,
-            WorkflowState.ERROR
-        ],
+        WorkflowState.INITIALIZING: [WorkflowState.GENERATING_HYPOTHESES, WorkflowState.PAUSED, WorkflowState.ERROR],
         WorkflowState.GENERATING_HYPOTHESES: [
             WorkflowState.DESIGNING_EXPERIMENTS,
             WorkflowState.CONVERGED,
             WorkflowState.PAUSED,
-            WorkflowState.ERROR
+            WorkflowState.ERROR,
         ],
         WorkflowState.DESIGNING_EXPERIMENTS: [
             WorkflowState.EXECUTING,
             WorkflowState.GENERATING_HYPOTHESES,  # If need more hypotheses
             WorkflowState.PAUSED,
-            WorkflowState.ERROR
-        ],
-        WorkflowState.EXECUTING: [
-            WorkflowState.ANALYZING,
             WorkflowState.ERROR,
-            WorkflowState.PAUSED
         ],
+        WorkflowState.EXECUTING: [WorkflowState.ANALYZING, WorkflowState.ERROR, WorkflowState.PAUSED],
         WorkflowState.ANALYZING: [
             WorkflowState.REFINING,
             WorkflowState.DESIGNING_EXPERIMENTS,  # If need immediate retest
             WorkflowState.PAUSED,
-            WorkflowState.ERROR
+            WorkflowState.ERROR,
         ],
         WorkflowState.REFINING: [
             WorkflowState.GENERATING_HYPOTHESES,  # Generate new/refined hypotheses
             WorkflowState.DESIGNING_EXPERIMENTS,  # Design follow-up experiments
             WorkflowState.CONVERGED,  # Research complete
             WorkflowState.PAUSED,
-            WorkflowState.ERROR
+            WorkflowState.ERROR,
         ],
         WorkflowState.CONVERGED: [
             WorkflowState.GENERATING_HYPOTHESES,  # Restart if new question
@@ -218,20 +210,16 @@ class ResearchWorkflow:
             WorkflowState.EXECUTING,
             WorkflowState.ANALYZING,
             WorkflowState.REFINING,
-            WorkflowState.ERROR
+            WorkflowState.ERROR,
         ],
         WorkflowState.ERROR: [
             WorkflowState.INITIALIZING,  # Restart
             WorkflowState.GENERATING_HYPOTHESES,  # Resume from hypothesis gen
-            WorkflowState.PAUSED
-        ]
+            WorkflowState.PAUSED,
+        ],
     }
 
-    def __init__(
-        self,
-        initial_state: WorkflowState = WorkflowState.INITIALIZING,
-        research_plan: ResearchPlan | None = None
-    ):
+    def __init__(self, initial_state: WorkflowState = WorkflowState.INITIALIZING, research_plan: ResearchPlan | None = None):
         """
         Initialize workflow state machine.
 
@@ -258,12 +246,7 @@ class ResearchWorkflow:
         allowed = self.ALLOWED_TRANSITIONS.get(self.current_state, [])
         return target_state in allowed
 
-    def transition_to(
-        self,
-        target_state: WorkflowState,
-        action: str = "",
-        metadata: dict[str, Any] | None = None
-    ) -> bool:
+    def transition_to(self, target_state: WorkflowState, action: str = "", metadata: dict[str, Any] | None = None) -> bool:
         """
         Transition to a new state.
 
@@ -280,8 +263,7 @@ class ResearchWorkflow:
         """
         if not self.can_transition_to(target_state):
             raise ValueError(
-                f"Invalid transition from {self.current_state} to {target_state}. "
-                f"Allowed transitions: {self.ALLOWED_TRANSITIONS[self.current_state]}"
+                f"Invalid transition from {self.current_state} to {target_state}. Allowed transitions: {self.ALLOWED_TRANSITIONS[self.current_state]}"
             )
 
         # Calculate time in previous state
@@ -294,6 +276,7 @@ class ResearchWorkflow:
         log_transitions = False
         try:
             from kosmos.config import get_config
+
             log_transitions = get_config().logging.log_workflow_transitions
         except Exception:
             pass
@@ -305,15 +288,12 @@ class ResearchWorkflow:
                 target_state.value,
                 self.current_state.value,
                 time_in_state,
-                action
+                action,
             )
 
         # Create transition record
         transition = WorkflowTransition(
-            from_state=self.current_state,
-            to_state=target_state,
-            action=action or f"Transition to {target_state}",
-            metadata=metadata or {}
+            from_state=self.current_state, to_state=target_state, action=action or f"Transition to {target_state}", metadata=metadata or {}
         )
 
         # Update state
@@ -355,14 +335,9 @@ class ResearchWorkflow:
             "current_state": self.current_state.value,
             "transition_count": len(self.transition_history),
             "recent_transitions": [
-                {
-                    "from": t.from_state.value,
-                    "to": t.to_state.value,
-                    "action": t.action,
-                    "timestamp": t.timestamp.isoformat()
-                }
+                {"from": t.from_state.value, "to": t.to_state.value, "action": t.action, "timestamp": t.timestamp.isoformat()}
                 for t in self.get_recent_transitions(5)
-            ]
+            ],
         }
 
     def get_state_duration(self, state: WorkflowState) -> float:
@@ -413,5 +388,5 @@ class ResearchWorkflow:
             "state_visit_counts": state_counts,
             "state_durations_seconds": state_durations,
             "total_transitions": len(self.transition_history),
-            "current_state": self.current_state.value
+            "current_state": self.current_state.value,
         }

@@ -20,9 +20,7 @@ def ensure_venv_and_run():
     venv_dir = skill_dir / ".venv"
 
     # Check if we're in a venv
-    in_venv = hasattr(sys, 'real_prefix') or (
-        hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix
-    )
+    in_venv = hasattr(sys, "real_prefix") or (hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix)
 
     # Check if it's OUR venv
     if in_venv:
@@ -39,34 +37,28 @@ def ensure_venv_and_run():
 
         # Create venv
         import venv
+
         venv.create(venv_dir, with_pip=True)
 
         # Install requirements
         requirements_file = skill_dir / "requirements.txt"
         if requirements_file.exists():
-            if os.name == 'nt':  # Windows
+            if os.name == "nt":  # Windows
                 pip_exe = venv_dir / "Scripts" / "pip.exe"
             else:
                 pip_exe = venv_dir / "bin" / "pip"
 
             print("   Installing dependencies in isolated environment...")
-            subprocess.run(
-                [str(pip_exe), "install", "-q", "-r", str(requirements_file)],
-                check=True
-            )
+            subprocess.run([str(pip_exe), "install", "-q", "-r", str(requirements_file)], check=True)
 
             # Also install patchright's chromium
             print("   Setting up browser automation...")
-            if os.name == 'nt':
+            if os.name == "nt":
                 python_exe = venv_dir / "Scripts" / "python.exe"
             else:
                 python_exe = venv_dir / "bin" / "python"
 
-            subprocess.run(
-                [str(python_exe), "-m", "patchright", "install", "chromium"],
-                check=True,
-                capture_output=True
-            )
+            subprocess.run([str(python_exe), "-m", "patchright", "install", "chromium"], check=True, capture_output=True)
 
         print("✅ Environment ready! All dependencies isolated in .venv/")
 

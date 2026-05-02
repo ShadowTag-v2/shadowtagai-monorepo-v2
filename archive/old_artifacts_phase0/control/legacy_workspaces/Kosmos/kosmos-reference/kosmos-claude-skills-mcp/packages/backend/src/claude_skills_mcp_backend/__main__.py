@@ -64,9 +64,7 @@ Examples:
         help="Print example configuration and exit",
     )
 
-    parser.add_argument(
-        "--verbose", "-v", action="store_true", help="Enable verbose logging"
-    )
+    parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose logging")
 
     return parser.parse_args()
 
@@ -81,9 +79,7 @@ async def main_async() -> None:
         return
 
     # Run the HTTP server
-    await run_server(
-        host=args.host, port=args.port, config_path=args.config, verbose=args.verbose
-    )
+    await run_server(host=args.host, port=args.port, config_path=args.config, verbose=args.verbose)
 
 
 def main() -> None:

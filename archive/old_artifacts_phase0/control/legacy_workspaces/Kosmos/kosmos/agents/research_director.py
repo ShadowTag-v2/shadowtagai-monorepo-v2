@@ -57,13 +57,7 @@ class ResearchDirectorAgent(BaseAgent):
     Uses message-based coordination for async agent communication.
     """
 
-    def __init__(
-        self,
-        research_question: str,
-        domain: str | None = None,
-        agent_id: str | None = None,
-        config: dict[str, Any] | None = None
-    ):
+    def __init__(self, research_question: str, domain: str | None = None, agent_id: str | None = None, config: dict[str, Any] | None = None):
         """
         Initialize Research Director.
 
@@ -73,11 +67,7 @@ class ResearchDirectorAgent(BaseAgent):
             agent_id: Optional agent ID
             config: Optional configuration (max_iterations, stopping_criteria, etc.)
         """
-        super().__init__(
-            agent_id=agent_id,
-            agent_type="ResearchDirector",
-            config=config or {}
-        )
+        super().__init__(agent_id=agent_id, agent_type="ResearchDirector", config=config or {})
 
         self.research_question = research_question
         self.domain = domain
@@ -95,32 +85,20 @@ class ResearchDirectorAgent(BaseAgent):
         # Configuration
         self.max_iterations = self.config.get("max_iterations", 10)
         self.max_runtime_hours = self.config.get("max_runtime_hours", 12.0)  # Issue #56
-        self.mandatory_stopping_criteria = self.config.get(
-            "mandatory_stopping_criteria",
-            ["iteration_limit", "no_testable_hypotheses"]
-        )
-        self.optional_stopping_criteria = self.config.get(
-            "optional_stopping_criteria",
-            ["novelty_decline", "diminishing_returns"]
-        )
+        self.mandatory_stopping_criteria = self.config.get("mandatory_stopping_criteria", ["iteration_limit", "no_testable_hypotheses"])
+        self.optional_stopping_criteria = self.config.get("optional_stopping_criteria", ["novelty_decline", "diminishing_returns"])
 
         # Initialize research plan and workflow
-        self.research_plan = ResearchPlan(
-            research_question=research_question,
-            domain=domain,
-            max_iterations=self.max_iterations
-        )
+        self.research_plan = ResearchPlan(research_question=research_question, domain=domain, max_iterations=self.max_iterations)
 
-        self.workflow = ResearchWorkflow(
-            initial_state=WorkflowState.INITIALIZING,
-            research_plan=self.research_plan
-        )
+        self.workflow = ResearchWorkflow(initial_state=WorkflowState.INITIALIZING, research_plan=self.research_plan)
 
         # Claude client for research planning and decision-making
         self.llm_client = get_client()
 
         # Initialize database if not already initialized
         from kosmos.db import init_from_config
+
         try:
             init_from_config()
         except RuntimeError as e:
@@ -150,7 +128,7 @@ class ResearchDirectorAgent(BaseAgent):
             "hypothesis_generation": {"attempts": 0, "successes": 0, "cost": 0.0},
             "experiment_design": {"attempts": 0, "successes": 0, "cost": 0.0},
             "hypothesis_refinement": {"attempts": 0, "successes": 0, "cost": 0.0},
-            "literature_review": {"attempts": 0, "successes": 0, "cost": 0.0}
+            "literature_review": {"attempts": 0, "successes": 0, "cost": 0.0},
         }
 
         # Agent rollout tracking (Issue #58)
@@ -166,7 +144,7 @@ class ResearchDirectorAgent(BaseAgent):
                 "cost_per_discovery_threshold": self.config.get("cost_per_discovery_threshold", 1000.0),
                 "min_experiments_before_convergence": self.config.get("min_experiments_before_convergence", 2),
                 "max_iterations": self.max_iterations,
-            }
+            },
         )
 
         # Research history
@@ -201,12 +179,9 @@ class ResearchDirectorAgent(BaseAgent):
         if self.enable_concurrent:
             try:
                 from kosmos.execution.parallel import ParallelExperimentExecutor
-                self.parallel_executor = ParallelExperimentExecutor(
-                    max_workers=self.max_concurrent_experiments
-                )
-                logger.info(
-                    f"Parallel execution enabled with {self.max_concurrent_experiments} workers"
-                )
+
+                self.parallel_executor = ParallelExperimentExecutor(max_workers=self.max_concurrent_experiments)
+                logger.info(f"Parallel execution enabled with {self.max_concurrent_experiments} workers")
             except ImportError:
                 logger.warning("ParallelExperimentExecutor not available, using sequential execution")
                 self.enable_concurrent = False
@@ -218,12 +193,13 @@ class ResearchDirectorAgent(BaseAgent):
                 import os
 
                 from kosmos.core.async_llm import AsyncClaudeClient
+
                 api_key = os.getenv("ANTHROPIC_API_KEY")
                 if api_key:
                     self.async_llm_client = AsyncClaudeClient(
                         api_key=api_key,
                         max_concurrent=self.config.get("max_concurrent_llm_calls", 5),
-                        max_requests_per_minute=self.config.get("llm_rate_limit_per_minute", 50)
+                        max_requests_per_minute=self.config.get("llm_rate_limit_per_minute", 50),
                     )
                     logger.info("Async LLM client initialized for concurrent operations")
                 else:
@@ -236,9 +212,7 @@ class ResearchDirectorAgent(BaseAgent):
             self.wm = get_world_model()
             # Create ResearchQuestion entity
             question_entity = Entity.from_research_question(
-                question_text=research_question,
-                domain=domain,
-                created_by=f"ResearchDirectorAgent:{self.agent_id}"
+                question_text=research_question, domain=domain, created_by=f"ResearchDirectorAgent:{self.agent_id}"
             )
             self.question_entity_id = self.wm.add_entity(question_entity)
             logger.info(f"Research question persisted to knowledge graph: {self.question_entity_id}")
@@ -276,23 +250,14 @@ class ResearchDirectorAgent(BaseAgent):
 
             # Load skills based on domain or default research skills
             if self.domain:
-                self.skills = skill_loader.load_skills_for_task(
-                    task_type="research",
-                    domain=self.domain,
-                    include_examples=False,
-                    include_common=True
-                )
+                self.skills = skill_loader.load_skills_for_task(task_type="research", domain=self.domain, include_examples=False, include_common=True)
                 if self.skills:
                     logger.info(f"Loaded skills for domain '{self.domain}'")
                 else:
                     logger.debug(f"No specific skills found for domain '{self.domain}'")
             else:
                 # Load common research skills
-                self.skills = skill_loader.load_skills_for_task(
-                    task_type="research",
-                    include_examples=False,
-                    include_common=True
-                )
+                self.skills = skill_loader.load_skills_for_task(task_type="research", include_examples=False, include_common=True)
                 if self.skills:
                     logger.info("Loaded common research skills")
         except Exception as e:
@@ -319,10 +284,7 @@ class ResearchDirectorAgent(BaseAgent):
             logger.info(f"Research started at {datetime.now().isoformat()}, max runtime: {self.max_runtime_hours}h")
 
         with self._workflow_lock_sync:
-            self.workflow.transition_to(
-                WorkflowState.GENERATING_HYPOTHESES,
-                action="Start research cycle"
-            )
+            self.workflow.transition_to(WorkflowState.GENERATING_HYPOTHESES, action="Start research cycle")
 
     def _check_runtime_exceeded(self) -> bool:
         """Check if research has exceeded maximum runtime (Issue #56)."""
@@ -408,7 +370,7 @@ class ResearchDirectorAgent(BaseAgent):
                     rel_type="SPAWNED_BY",
                     agent=agent_name,
                     generation=hypothesis.generation,
-                    iteration=self.research_plan.iteration_count
+                    iteration=self.research_plan.iteration_count,
                 )
                 self.wm.add_relationship(rel)
 
@@ -419,7 +381,7 @@ class ResearchDirectorAgent(BaseAgent):
                         target_id=hypothesis.parent_hypothesis_id,
                         rel_type="REFINED_FROM",
                         agent=agent_name,
-                        refinement_count=hypothesis.refinement_count
+                        refinement_count=hypothesis.refinement_count,
                     )
                     self.wm.add_relationship(parent_rel)
 
@@ -454,11 +416,7 @@ class ResearchDirectorAgent(BaseAgent):
 
                 # Create TESTS relationship to hypothesis
                 rel = Relationship.with_provenance(
-                    source_id=entity_id,
-                    target_id=hypothesis_id,
-                    rel_type="TESTS",
-                    agent=agent_name,
-                    iteration=self.research_plan.iteration_count
+                    source_id=entity_id, target_id=hypothesis_id, rel_type="TESTS", agent=agent_name, iteration=self.research_plan.iteration_count
                 )
                 self.wm.add_relationship(rel)
 
@@ -494,21 +452,12 @@ class ResearchDirectorAgent(BaseAgent):
 
                 # Create PRODUCED_BY relationship to protocol
                 rel = Relationship.with_provenance(
-                    source_id=entity_id,
-                    target_id=protocol_id,
-                    rel_type="PRODUCED_BY",
-                    agent=agent_name,
-                    iteration=self.research_plan.iteration_count
+                    source_id=entity_id, target_id=protocol_id, rel_type="PRODUCED_BY", agent=agent_name, iteration=self.research_plan.iteration_count
                 )
                 self.wm.add_relationship(rel)
 
                 # Create TESTS relationship to hypothesis
-                tests_rel = Relationship.with_provenance(
-                    source_id=entity_id,
-                    target_id=hypothesis_id,
-                    rel_type="TESTS",
-                    agent=agent_name
-                )
+                tests_rel = Relationship.with_provenance(source_id=entity_id, target_id=hypothesis_id, rel_type="TESTS", agent=agent_name)
                 self.wm.add_relationship(tests_rel)
 
                 logger.debug(f"Persisted result {result_id} to graph")
@@ -516,7 +465,9 @@ class ResearchDirectorAgent(BaseAgent):
         except Exception as e:
             logger.warning(f"Failed to persist result {result_id} to graph: {e}")
 
-    def _add_support_relationship(self, result_id: str, hypothesis_id: str, supports: bool, confidence: float, p_value: float = None, effect_size: float = None):
+    def _add_support_relationship(
+        self, result_id: str, hypothesis_id: str, supports: bool, confidence: float, p_value: float = None, effect_size: float = None
+    ):
         """
         Add SUPPORTS or REFUTES relationship based on result analysis.
 
@@ -540,12 +491,7 @@ class ResearchDirectorAgent(BaseAgent):
                 metadata["effect_size"] = effect_size
 
             rel = Relationship.with_provenance(
-                source_id=result_id,
-                target_id=hypothesis_id,
-                rel_type=rel_type,
-                agent="DataAnalystAgent",
-                confidence=confidence,
-                **metadata
+                source_id=result_id, target_id=hypothesis_id, rel_type=rel_type, agent="DataAnalystAgent", confidence=confidence, **metadata
             )
             self.wm.add_relationship(rel)
 
@@ -590,11 +536,7 @@ class ResearchDirectorAgent(BaseAgent):
     # ========================================================================
 
     def _handle_error_with_recovery(
-        self,
-        error_source: str,
-        error_message: str,
-        recoverable: bool = True,
-        error_details: dict[str, Any] | None = None
+        self, error_source: str, error_message: str, recoverable: bool = True, error_details: dict[str, Any] | None = None
     ) -> NextAction | None:
         """
         Handle an error with recovery strategy.
@@ -623,33 +565,27 @@ class ResearchDirectorAgent(BaseAgent):
 
         # Record in error history
         error_record = {
-            'source': error_source,
-            'message': error_message,
-            'timestamp': self._last_error_time.isoformat(),
-            'consecutive_count': self._consecutive_errors,
-            'recoverable': recoverable,
-            'details': error_details or {}
+            "source": error_source,
+            "message": error_message,
+            "timestamp": self._last_error_time.isoformat(),
+            "consecutive_count": self._consecutive_errors,
+            "recoverable": recoverable,
+            "details": error_details or {},
         }
         self._error_history.append(error_record)
 
         # Log the error
-        logger.error(
-            f"{ERROR_RECOVERY_LOG_PREFIX} {error_source}: {error_message} "
-            f"(attempt {self._consecutive_errors}/{MAX_CONSECUTIVE_ERRORS})"
-        )
+        logger.error(f"{ERROR_RECOVERY_LOG_PREFIX} {error_source}: {error_message} (attempt {self._consecutive_errors}/{MAX_CONSECUTIVE_ERRORS})")
 
         # Check if we've hit the circuit breaker threshold
         if self._consecutive_errors >= MAX_CONSECUTIVE_ERRORS:
-            logger.error(
-                f"{ERROR_RECOVERY_LOG_PREFIX} Max consecutive errors reached. "
-                f"Transitioning to ERROR state."
-            )
+            logger.error(f"{ERROR_RECOVERY_LOG_PREFIX} Max consecutive errors reached. Transitioning to ERROR state.")
 
             with self._workflow_context():
                 self.workflow.transition_to(
                     WorkflowState.ERROR,
                     action=f"Max errors exceeded: {error_message}",
-                    metadata={'error_history': self._error_history[-MAX_CONSECUTIVE_ERRORS:]}
+                    metadata={"error_history": self._error_history[-MAX_CONSECUTIVE_ERRORS:]},
                 )
 
             return NextAction.ERROR_RECOVERY
@@ -659,10 +595,7 @@ class ResearchDirectorAgent(BaseAgent):
             backoff_index = min(self._consecutive_errors - 1, len(ERROR_BACKOFF_SECONDS) - 1)
             backoff_seconds = ERROR_BACKOFF_SECONDS[backoff_index]
 
-            logger.info(
-                f"{ERROR_RECOVERY_LOG_PREFIX} Waiting {backoff_seconds}s before retry "
-                f"(attempt {self._consecutive_errors + 1})"
-            )
+            logger.info(f"{ERROR_RECOVERY_LOG_PREFIX} Waiting {backoff_seconds}s before retry (attempt {self._consecutive_errors + 1})")
 
             time.sleep(backoff_seconds)
 
@@ -670,10 +603,7 @@ class ResearchDirectorAgent(BaseAgent):
             return self.decide_next_action()
 
         # Non-recoverable error - just return None to exit handler
-        logger.warning(
-            f"{ERROR_RECOVERY_LOG_PREFIX} Non-recoverable error from {error_source}. "
-            f"Skipping to next action."
-        )
+        logger.warning(f"{ERROR_RECOVERY_LOG_PREFIX} Non-recoverable error from {error_source}. Skipping to next action.")
         return None
 
     def _reset_error_streak(self) -> None:
@@ -684,10 +614,7 @@ class ResearchDirectorAgent(BaseAgent):
         circuit breaker counter.
         """
         if self._consecutive_errors > 0:
-            logger.debug(
-                f"{ERROR_RECOVERY_LOG_PREFIX} Error streak reset "
-                f"(was {self._consecutive_errors} consecutive errors)"
-            )
+            logger.debug(f"{ERROR_RECOVERY_LOG_PREFIX} Error streak reset (was {self._consecutive_errors} consecutive errors)")
         self._consecutive_errors = 0
 
     # ========================================================================
@@ -707,9 +634,9 @@ class ResearchDirectorAgent(BaseAgent):
         if message.type == MessageType.ERROR:
             recovery_action = self._handle_error_with_recovery(
                 error_source="HypothesisGeneratorAgent",
-                error_message=content.get('error', 'Unknown error'),
+                error_message=content.get("error", "Unknown error"),
                 recoverable=True,
-                error_details={'hypothesis_count_before': len(self.research_plan.hypothesis_pool)}
+                error_details={"hypothesis_count_before": len(self.research_plan.hypothesis_pool)},
             )
             if recovery_action:
                 self._execute_next_action(recovery_action)
@@ -756,9 +683,9 @@ class ResearchDirectorAgent(BaseAgent):
         if message.type == MessageType.ERROR:
             recovery_action = self._handle_error_with_recovery(
                 error_source="ExperimentDesignerAgent",
-                error_message=content.get('error', 'Unknown error'),
+                error_message=content.get("error", "Unknown error"),
                 recoverable=True,
-                error_details={'untested_hypotheses': len(self.research_plan.get_untested_hypotheses())}
+                error_details={"untested_hypotheses": len(self.research_plan.get_untested_hypotheses())},
             )
             if recovery_action:
                 self._execute_next_action(recovery_action)
@@ -804,9 +731,9 @@ class ResearchDirectorAgent(BaseAgent):
         if message.type == MessageType.ERROR:
             recovery_action = self._handle_error_with_recovery(
                 error_source="Executor",
-                error_message=content.get('error', 'Unknown error'),
+                error_message=content.get("error", "Unknown error"),
                 recoverable=True,
-                error_details={'experiments_queued': len(self.research_plan.experiment_queue)}
+                error_details={"experiments_queued": len(self.research_plan.experiment_queue)},
             )
             if recovery_action:
                 self._execute_next_action(recovery_action)
@@ -844,10 +771,7 @@ class ResearchDirectorAgent(BaseAgent):
 
         # Transition to analyzing state (thread-safe)
         with self._workflow_context():
-            self.workflow.transition_to(
-                WorkflowState.ANALYZING,
-                action=f"Analyze result {result_id}"
-            )
+            self.workflow.transition_to(WorkflowState.ANALYZING, action=f"Analyze result {result_id}")
 
         # Send to DataAnalystAgent for interpretation
         next_action = NextAction.ANALYZE_RESULT
@@ -867,9 +791,9 @@ class ResearchDirectorAgent(BaseAgent):
         if message.type == MessageType.ERROR:
             recovery_action = self._handle_error_with_recovery(
                 error_source="DataAnalystAgent",
-                error_message=content.get('error', 'Unknown error'),
+                error_message=content.get("error", "Unknown error"),
                 recoverable=True,
-                error_details={'results_pending': len(self.research_plan.results)}
+                error_details={"results_pending": len(self.research_plan.results)},
             )
             if recovery_action:
                 self._execute_next_action(recovery_action)
@@ -885,10 +809,7 @@ class ResearchDirectorAgent(BaseAgent):
         p_value = content.get("p_value")
         effect_size = content.get("effect_size")
 
-        logger.info(
-            f"Received result interpretation for {result_id}: "
-            f"hypothesis {hypothesis_id} supported={hypothesis_supported}"
-        )
+        logger.info(f"Received result interpretation for {result_id}: hypothesis {hypothesis_id} supported={hypothesis_supported}")
 
         # Update hypothesis status in research plan (thread-safe)
         with self._research_plan_context():
@@ -903,20 +824,12 @@ class ResearchDirectorAgent(BaseAgent):
         # Add SUPPORTS/REFUTES relationship to knowledge graph
         if result_id and hypothesis_id and hypothesis_supported is not None:
             self._add_support_relationship(
-                result_id,
-                hypothesis_id,
-                supports=hypothesis_supported,
-                confidence=confidence,
-                p_value=p_value,
-                effect_size=effect_size
+                result_id, hypothesis_id, supports=hypothesis_supported, confidence=confidence, p_value=p_value, effect_size=effect_size
             )
 
         # Transition to refining state (thread-safe)
         with self._workflow_context():
-            self.workflow.transition_to(
-                WorkflowState.REFINING,
-                action=f"Refine based on result {result_id}"
-            )
+            self.workflow.transition_to(WorkflowState.REFINING, action=f"Refine based on result {result_id}")
 
         # Decide next action (may refine hypothesis, generate new ones, or converge)
         next_action = self.decide_next_action()
@@ -936,12 +849,12 @@ class ResearchDirectorAgent(BaseAgent):
         if message.type == MessageType.ERROR:
             recovery_action = self._handle_error_with_recovery(
                 error_source="HypothesisRefiner",
-                error_message=content.get('error', 'Unknown error'),
+                error_message=content.get("error", "Unknown error"),
                 recoverable=True,
                 error_details={
-                    'tested_hypotheses': len(self.research_plan.tested_hypotheses),
-                    'supported_hypotheses': len(self.research_plan.supported_hypotheses)
-                }
+                    "tested_hypotheses": len(self.research_plan.tested_hypotheses),
+                    "supported_hypotheses": len(self.research_plan.supported_hypotheses),
+                },
             )
             if recovery_action:
                 self._execute_next_action(recovery_action)
@@ -1004,10 +917,8 @@ class ResearchDirectorAgent(BaseAgent):
             if self.wm and self.question_entity_id:
                 try:
                     from kosmos.world_model.models import Annotation
-                    convergence_annotation = Annotation(
-                        text=f"Research converged: {reason}",
-                        created_by="ConvergenceDetector"
-                    )
+
+                    convergence_annotation = Annotation(text=f"Research converged: {reason}", created_by="ConvergenceDetector")
                     self.wm.add_annotation(self.question_entity_id, convergence_annotation)
                     logger.debug("Added convergence annotation to research question")
                 except Exception as e:
@@ -1015,10 +926,7 @@ class ResearchDirectorAgent(BaseAgent):
 
             # Transition to converged state (thread-safe)
             with self._workflow_context():
-                self.workflow.transition_to(
-                    WorkflowState.CONVERGED,
-                    action=f"Research converged: {reason}"
-                )
+                self.workflow.transition_to(WorkflowState.CONVERGED, action=f"Research converged: {reason}")
 
             # Stop the director
             self.stop()
@@ -1029,11 +937,7 @@ class ResearchDirectorAgent(BaseAgent):
     # MESSAGE SENDING (to other agents)
     # ========================================================================
 
-    async def _send_to_hypothesis_generator(
-        self,
-        action: str,
-        context: dict[str, Any] | None = None
-    ) -> AgentMessage:
+    async def _send_to_hypothesis_generator(self, action: str, context: dict[str, Any] | None = None) -> AgentMessage:
         """
         Send request to HypothesisGeneratorAgent asynchronously.
 
@@ -1049,22 +953,14 @@ class ResearchDirectorAgent(BaseAgent):
             "research_question": self.research_question,
             "domain": self.domain,
             "skills": self.get_skills_context(),  # Issue #51 - inject skills
-            "context": context or {}
+            "context": context or {},
         }
 
         target_agent = self.agent_registry.get("HypothesisGeneratorAgent", "hypothesis_generator")
 
-        message = await self.send_message(
-            to_agent=target_agent,
-            content=content,
-            message_type=MessageType.REQUEST
-        )
+        message = await self.send_message(to_agent=target_agent, content=content, message_type=MessageType.REQUEST)
 
-        self.pending_requests[message.id] = {
-            "agent": "HypothesisGeneratorAgent",
-            "action": action,
-            "timestamp": datetime.utcnow()
-        }
+        self.pending_requests[message.id] = {"agent": "HypothesisGeneratorAgent", "action": action, "timestamp": datetime.utcnow()}
 
         # Track rollout (Issue #58)
         self.rollout_tracker.increment("hypothesis_generation")
@@ -1072,33 +968,21 @@ class ResearchDirectorAgent(BaseAgent):
         logger.debug(f"Sent {action} request to HypothesisGeneratorAgent")
         return message
 
-    async def _send_to_experiment_designer(
-        self,
-        hypothesis_id: str,
-        context: dict[str, Any] | None = None
-    ) -> AgentMessage:
+    async def _send_to_experiment_designer(self, hypothesis_id: str, context: dict[str, Any] | None = None) -> AgentMessage:
         """Send request to ExperimentDesignerAgent to design protocol asynchronously."""
         content = {
             "action": "design_experiment",
             "hypothesis_id": hypothesis_id,
             "domain": self.domain,
             "skills": self.get_skills_context(),  # Issue #51 - inject skills
-            "context": context or {}
+            "context": context or {},
         }
 
         target_agent = self.agent_registry.get("ExperimentDesignerAgent", "experiment_designer")
 
-        message = await self.send_message(
-            to_agent=target_agent,
-            content=content,
-            message_type=MessageType.REQUEST
-        )
+        message = await self.send_message(to_agent=target_agent, content=content, message_type=MessageType.REQUEST)
 
-        self.pending_requests[message.id] = {
-            "agent": "ExperimentDesignerAgent",
-            "hypothesis_id": hypothesis_id,
-            "timestamp": datetime.utcnow()
-        }
+        self.pending_requests[message.id] = {"agent": "ExperimentDesignerAgent", "hypothesis_id": hypothesis_id, "timestamp": datetime.utcnow()}
 
         # Track rollout (Issue #58)
         self.rollout_tracker.increment("experiment_design")
@@ -1106,35 +990,19 @@ class ResearchDirectorAgent(BaseAgent):
         logger.debug(f"Sent design request to ExperimentDesignerAgent for hypothesis {hypothesis_id}")
         return message
 
-    async def _send_to_executor(
-        self,
-        protocol_id: str,
-        context: dict[str, Any] | None = None
-    ) -> AgentMessage:
+    async def _send_to_executor(self, protocol_id: str, context: dict[str, Any] | None = None) -> AgentMessage:
         """Send request to Executor to run experiment asynchronously."""
         exec_context = context or {}
         if self.data_path:
             exec_context["data_path"] = self.data_path
 
-        content = {
-            "action": "execute_experiment",
-            "protocol_id": protocol_id,
-            "context": exec_context
-        }
+        content = {"action": "execute_experiment", "protocol_id": protocol_id, "context": exec_context}
 
         target_agent = self.agent_registry.get("Executor", "executor")
 
-        message = await self.send_message(
-            to_agent=target_agent,
-            content=content,
-            message_type=MessageType.REQUEST
-        )
+        message = await self.send_message(to_agent=target_agent, content=content, message_type=MessageType.REQUEST)
 
-        self.pending_requests[message.id] = {
-            "agent": "Executor",
-            "protocol_id": protocol_id,
-            "timestamp": datetime.utcnow()
-        }
+        self.pending_requests[message.id] = {"agent": "Executor", "protocol_id": protocol_id, "timestamp": datetime.utcnow()}
 
         # Track rollout (Issue #58)
         self.rollout_tracker.increment("code_execution")
@@ -1142,33 +1010,15 @@ class ResearchDirectorAgent(BaseAgent):
         logger.debug(f"Sent execution request to Executor for protocol {protocol_id}")
         return message
 
-    async def _send_to_data_analyst(
-        self,
-        result_id: str,
-        hypothesis_id: str | None = None,
-        context: dict[str, Any] | None = None
-    ) -> AgentMessage:
+    async def _send_to_data_analyst(self, result_id: str, hypothesis_id: str | None = None, context: dict[str, Any] | None = None) -> AgentMessage:
         """Send request to DataAnalystAgent to interpret results asynchronously."""
-        content = {
-            "action": "interpret_results",
-            "result_id": result_id,
-            "hypothesis_id": hypothesis_id,
-            "context": context or {}
-        }
+        content = {"action": "interpret_results", "result_id": result_id, "hypothesis_id": hypothesis_id, "context": context or {}}
 
         target_agent = self.agent_registry.get("DataAnalystAgent", "data_analyst")
 
-        message = await self.send_message(
-            to_agent=target_agent,
-            content=content,
-            message_type=MessageType.REQUEST
-        )
+        message = await self.send_message(to_agent=target_agent, content=content, message_type=MessageType.REQUEST)
 
-        self.pending_requests[message.id] = {
-            "agent": "DataAnalystAgent",
-            "result_id": result_id,
-            "timestamp": datetime.utcnow()
-        }
+        self.pending_requests[message.id] = {"agent": "DataAnalystAgent", "result_id": result_id, "timestamp": datetime.utcnow()}
 
         # Track rollout (Issue #58)
         self.rollout_tracker.increment("data_analysis")
@@ -1177,33 +1027,16 @@ class ResearchDirectorAgent(BaseAgent):
         return message
 
     async def _send_to_hypothesis_refiner(
-        self,
-        hypothesis_id: str,
-        result_id: str | None = None,
-        action: str = "evaluate",
-        context: dict[str, Any] | None = None
+        self, hypothesis_id: str, result_id: str | None = None, action: str = "evaluate", context: dict[str, Any] | None = None
     ) -> AgentMessage:
         """Send request to HypothesisRefiner asynchronously."""
-        content = {
-            "action": action,
-            "hypothesis_id": hypothesis_id,
-            "result_id": result_id,
-            "context": context or {}
-        }
+        content = {"action": action, "hypothesis_id": hypothesis_id, "result_id": result_id, "context": context or {}}
 
         target_agent = self.agent_registry.get("HypothesisRefiner", "hypothesis_refiner")
 
-        message = await self.send_message(
-            to_agent=target_agent,
-            content=content,
-            message_type=MessageType.REQUEST
-        )
+        message = await self.send_message(to_agent=target_agent, content=content, message_type=MessageType.REQUEST)
 
-        self.pending_requests[message.id] = {
-            "agent": "HypothesisRefiner",
-            "hypothesis_id": hypothesis_id,
-            "timestamp": datetime.utcnow()
-        }
+        self.pending_requests[message.id] = {"agent": "HypothesisRefiner", "hypothesis_id": hypothesis_id, "timestamp": datetime.utcnow()}
 
         # Track rollout - refinement is part of hypothesis lifecycle (Issue #58)
         self.rollout_tracker.increment("hypothesis_generation")
@@ -1239,16 +1072,14 @@ class ResearchDirectorAgent(BaseAgent):
                 # Get hypotheses for this research (limited to avoid memory issues)
                 hyp_ids = list(self.research_plan.hypothesis_pool)[:100]
                 if hyp_ids:
-                    db_hyps = session.query(HypothesisModel).filter(
-                        HypothesisModel.id.in_(hyp_ids)
-                    ).all()
+                    db_hyps = session.query(HypothesisModel).filter(HypothesisModel.id.in_(hyp_ids)).all()
                     hypotheses = [
                         Hypothesis(
                             id=h.id,
                             research_question=h.research_question or self.research_question,
                             statement=h.statement,
                             rationale=h.rationale or "",
-                            domain=h.domain or self.domain or "general"
+                            domain=h.domain or self.domain or "general",
                         )
                         for h in db_hyps
                     ]
@@ -1256,12 +1087,9 @@ class ResearchDirectorAgent(BaseAgent):
             logger.debug(f"Could not load hypotheses for convergence check: {e}")
 
         # Perform convergence check (pass accumulated LLM cost if available)
-        provider_cost = getattr(self.llm_client, 'total_cost_usd', None)
+        provider_cost = getattr(self.llm_client, "total_cost_usd", None)
         decision = self.convergence_detector.check_convergence(
-            research_plan=self.research_plan,
-            hypotheses=hypotheses,
-            results=results,
-            total_cost=provider_cost
+            research_plan=self.research_plan, hypotheses=hypotheses, results=results, total_cost=provider_cost
         )
 
         logger.info(f"[CONVERGENCE] Decision: should_stop={decision.should_stop}, reason={decision.reason.value}")
@@ -1278,7 +1106,6 @@ class ResearchDirectorAgent(BaseAgent):
         from kosmos.db.operations import get_results_for_experiment
         from kosmos.execution.statistics import StatisticalValidator
 
-
         # Collect p-values from recent results in DB
         results_with_pvalues = []
         try:
@@ -1288,11 +1115,13 @@ class ResearchDirectorAgent(BaseAgent):
                         db_results = get_results_for_experiment(session, exp_id)
                         for db_r in db_results:
                             if db_r.p_value is not None:
-                                results_with_pvalues.append({
-                                    'result_id': db_r.id,
-                                    'p_value': db_r.p_value,
-                                    'supports_hypothesis': db_r.supports_hypothesis,
-                                })
+                                results_with_pvalues.append(
+                                    {
+                                        "result_id": db_r.id,
+                                        "p_value": db_r.p_value,
+                                        "supports_hypothesis": db_r.supports_hypothesis,
+                                    }
+                                )
                     except Exception:
                         continue
         except Exception as e:
@@ -1302,13 +1131,13 @@ class ResearchDirectorAgent(BaseAgent):
         if len(results_with_pvalues) < 2:
             return  # No correction needed for single test
 
-        p_values = [r['p_value'] for r in results_with_pvalues]
+        p_values = [r["p_value"] for r in results_with_pvalues]
         correction = StatisticalValidator.benjamini_hochberg_fdr(p_values)
 
         corrections_applied = 0
         for i, result_info in enumerate(results_with_pvalues):
-            was_sig = result_info['p_value'] < 0.05
-            now_sig = correction['significant'][i]
+            was_sig = result_info["p_value"] < 0.05
+            now_sig = correction["significant"][i]
             if was_sig and not now_sig:
                 corrections_applied += 1
                 logger.info(
@@ -1318,10 +1147,7 @@ class ResearchDirectorAgent(BaseAgent):
                 )
 
         if corrections_applied > 0:
-            logger.info(
-                f"[FDR] BH-FDR correction: {corrections_applied}/{len(p_values)} "
-                f"results lost significance"
-            )
+            logger.info(f"[FDR] BH-FDR correction: {corrections_applied}/{len(p_values)} results lost significance")
 
     async def _handle_convergence_action(self):
         """
@@ -1353,10 +1179,8 @@ class ResearchDirectorAgent(BaseAgent):
             if self.wm and self.question_entity_id:
                 try:
                     from kosmos.world_model.models import Annotation
-                    convergence_annotation = Annotation(
-                        text=f"Research converged: {decision.reason.value}",
-                        created_by="ConvergenceDetector"
-                    )
+
+                    convergence_annotation = Annotation(text=f"Research converged: {decision.reason.value}", created_by="ConvergenceDetector")
                     self.wm.add_annotation(self.question_entity_id, convergence_annotation)
                     logger.debug("Added convergence annotation to research question")
                 except Exception as e:
@@ -1364,10 +1188,7 @@ class ResearchDirectorAgent(BaseAgent):
 
             # Transition to converged state (thread-safe)
             with self._workflow_context():
-                self.workflow.transition_to(
-                    WorkflowState.CONVERGED,
-                    action=f"Research converged: {decision.reason.value}"
-                )
+                self.workflow.transition_to(WorkflowState.CONVERGED, action=f"Research converged: {decision.reason.value}")
 
             # Stop the director
             self.stop()
@@ -1398,10 +1219,7 @@ class ResearchDirectorAgent(BaseAgent):
             logger.info("Generating hypotheses via direct call (bypassing message router)")
 
             response = self._hypothesis_agent.generate_hypotheses(
-                research_question=self.research_question,
-                num_hypotheses=self.config.get("num_hypotheses", 3),
-                domain=self.domain,
-                store_in_db=True
+                research_question=self.research_question, num_hypotheses=self.config.get("num_hypotheses", 3), domain=self.domain, store_in_db=True
             )
 
             # Track rollout (Issue #58)
@@ -1433,10 +1251,7 @@ class ResearchDirectorAgent(BaseAgent):
             # Transition workflow to DESIGNING_EXPERIMENTS on success
             if count > 0:
                 with self._workflow_context():
-                    self.workflow.transition_to(
-                        WorkflowState.DESIGNING_EXPERIMENTS,
-                        action=f"Generated {count} hypotheses"
-                    )
+                    self.workflow.transition_to(WorkflowState.DESIGNING_EXPERIMENTS, action=f"Generated {count} hypotheses")
 
         except Exception as e:
             logger.error(f"Direct hypothesis generation failed: {e}", exc_info=True)
@@ -1444,7 +1259,7 @@ class ResearchDirectorAgent(BaseAgent):
                 error_source="HypothesisGeneratorAgent",
                 error_message=str(e),
                 recoverable=True,
-                error_details={"hypothesis_count_before": len(self.research_plan.hypothesis_pool)}
+                error_details={"hypothesis_count_before": len(self.research_plan.hypothesis_pool)},
             )
 
     async def _handle_design_experiment_action(self, hypothesis_id: str):
@@ -1463,10 +1278,7 @@ class ResearchDirectorAgent(BaseAgent):
 
             logger.info(f"Designing experiment for hypothesis {hypothesis_id} via direct call")
 
-            response = self._experiment_designer.design_experiment(
-                hypothesis_id=hypothesis_id,
-                store_in_db=True
-            )
+            response = self._experiment_designer.design_experiment(hypothesis_id=hypothesis_id, store_in_db=True)
 
             # Track rollout (Issue #58)
             self.rollout_tracker.increment("experiment_design")
@@ -1496,10 +1308,7 @@ class ResearchDirectorAgent(BaseAgent):
             # Transition workflow to EXECUTING on success
             if protocol_id:
                 with self._workflow_context():
-                    self.workflow.transition_to(
-                        WorkflowState.EXECUTING,
-                        action=f"Designed experiment {protocol_id} for hypothesis {hypothesis_id}"
-                    )
+                    self.workflow.transition_to(WorkflowState.EXECUTING, action=f"Designed experiment {protocol_id} for hypothesis {hypothesis_id}")
 
         except Exception as e:
             logger.error(f"Direct experiment design failed: {e}", exc_info=True)
@@ -1507,7 +1316,7 @@ class ResearchDirectorAgent(BaseAgent):
                 error_source="ExperimentDesignerAgent",
                 error_message=str(e),
                 recoverable=True,
-                error_details={"untested_hypotheses": len(self.research_plan.get_untested_hypotheses())}
+                error_details={"untested_hypotheses": len(self.research_plan.get_untested_hypotheses())},
             )
 
     async def _handle_execute_experiment_action(self, protocol_id: str):
@@ -1532,9 +1341,7 @@ class ResearchDirectorAgent(BaseAgent):
             if self._code_executor is None:
                 self._code_executor = CodeExecutor(max_retries=3)
             if self._data_provider is None:
-                self._data_provider = DataProvider(
-                    default_data_dir=self.data_path
-                )
+                self._data_provider = DataProvider(default_data_dir=self.data_path)
 
             logger.info(f"Executing experiment {protocol_id} via direct call")
 
@@ -1558,9 +1365,7 @@ class ResearchDirectorAgent(BaseAgent):
 
             # Execute code
             if self.data_path:
-                exec_result = self._code_executor.execute_with_data(
-                    code, self.data_path, retry_on_error=True
-                )
+                exec_result = self._code_executor.execute_with_data(code, self.data_path, retry_on_error=True)
             else:
                 exec_result = self._code_executor.execute(code, retry_on_error=True)
 
@@ -1573,10 +1378,9 @@ class ResearchDirectorAgent(BaseAgent):
                 p_value = return_value.get("p_value")
                 effect_size = return_value.get("effect_size")
                 statistical_tests = {
-                    k: v for k, v in return_value.items()
-                    if k in ("t_statistic", "p_value", "effect_size",
-                             "mean_difference", "significance_label",
-                             "correlation", "r_squared")
+                    k: v
+                    for k, v in return_value.items()
+                    if k in ("t_statistic", "p_value", "effect_size", "mean_difference", "significance_label", "correlation", "r_squared")
                 }
             else:
                 p_value = None
@@ -1594,6 +1398,7 @@ class ResearchDirectorAgent(BaseAgent):
                     return {k: _json_safe(v) for k, v in obj.items()}
                 try:
                     import numpy as np
+
                     if isinstance(obj, (np.integer,)):
                         return int(obj)
                     if isinstance(obj, (np.floating,)):
@@ -1636,24 +1441,16 @@ class ResearchDirectorAgent(BaseAgent):
 
             # Persist result to knowledge graph
             if hypothesis_id:
-                self._persist_result_to_graph(
-                    result_id, protocol_id, hypothesis_id, agent_name="CodeExecutor"
-                )
+                self._persist_result_to_graph(result_id, protocol_id, hypothesis_id, agent_name="CodeExecutor")
 
             # Transition to analyzing state (thread-safe)
             with self._workflow_context():
-                self.workflow.transition_to(
-                    WorkflowState.ANALYZING,
-                    action=f"Analyze result {result_id}"
-                )
+                self.workflow.transition_to(WorkflowState.ANALYZING, action=f"Analyze result {result_id}")
 
         except Exception as e:
             logger.error(f"Direct experiment execution failed: {e}", exc_info=True)
             self._handle_error_with_recovery(
-                error_source="CodeExecutor",
-                error_message=str(e),
-                recoverable=True,
-                error_details={"protocol_id": protocol_id}
+                error_source="CodeExecutor", error_message=str(e), recoverable=True, error_details={"protocol_id": protocol_id}
             )
 
     async def _handle_analyze_result_action(self, result_id: str):
@@ -1693,6 +1490,7 @@ class ResearchDirectorAgent(BaseAgent):
                 # Build minimal ExperimentResult from DB fields
                 import platform as _platform
                 import sys as _sys
+
                 _now = datetime.utcnow()
                 pydantic_result = ExperimentResult(
                     id=db_result.id,
@@ -1741,10 +1539,7 @@ class ResearchDirectorAgent(BaseAgent):
             p_value = pydantic_result.primary_p_value
             effect_size = pydantic_result.primary_effect_size
 
-            logger.info(
-                f"Result {result_id} interpretation: "
-                f"hypothesis {hypothesis_id} supported={hypothesis_supported}"
-            )
+            logger.info(f"Result {result_id} interpretation: hypothesis {hypothesis_id} supported={hypothesis_supported}")
 
             # Reset error streak on success
             self._reset_error_streak()
@@ -1772,18 +1567,12 @@ class ResearchDirectorAgent(BaseAgent):
 
             # Transition to refining state (thread-safe)
             with self._workflow_context():
-                self.workflow.transition_to(
-                    WorkflowState.REFINING,
-                    action=f"Refine based on result {result_id}"
-                )
+                self.workflow.transition_to(WorkflowState.REFINING, action=f"Refine based on result {result_id}")
 
         except Exception as e:
             logger.error(f"Direct result analysis failed: {e}", exc_info=True)
             self._handle_error_with_recovery(
-                error_source="DataAnalystAgent",
-                error_message=str(e),
-                recoverable=True,
-                error_details={"result_id": result_id}
+                error_source="DataAnalystAgent", error_message=str(e), recoverable=True, error_details={"result_id": result_id}
             )
 
     async def _handle_refine_hypothesis_action(self, hypothesis_id: str):
@@ -1837,13 +1626,14 @@ class ResearchDirectorAgent(BaseAgent):
                 )
 
                 # Get results for this hypothesis's experiments
-                if hasattr(db_hyp, 'experiments') and db_hyp.experiments:
+                if hasattr(db_hyp, "experiments") and db_hyp.experiments:
                     for exp in db_hyp.experiments:
                         db_results = get_results_for_experiment(session, exp.id)
                         for db_r in db_results:
                             try:
                                 import platform as _platform
                                 import sys as _sys
+
                                 _now = datetime.utcnow()
                                 pydantic_r = ExperimentResult(
                                     id=db_r.id,
@@ -1880,17 +1670,13 @@ class ResearchDirectorAgent(BaseAgent):
                 return
 
             # Evaluate hypothesis status
-            decision = self._hypothesis_refiner.evaluate_hypothesis_status(
-                pydantic_hyp, latest_result, results_history
-            )
+            decision = self._hypothesis_refiner.evaluate_hypothesis_status(pydantic_hyp, latest_result, results_history)
 
             refined_ids = []
             retired_ids = []
 
             if decision == RetirementDecision.RETIRE:
-                self._hypothesis_refiner.retire_hypothesis(
-                    pydantic_hyp, rationale="Retirement based on result evaluation"
-                )
+                self._hypothesis_refiner.retire_hypothesis(pydantic_hyp, rationale="Retirement based on result evaluation")
                 retired_ids.append(hypothesis_id)
                 logger.info(f"Retired hypothesis {hypothesis_id}")
 
@@ -1916,9 +1702,7 @@ class ResearchDirectorAgent(BaseAgent):
                     logger.info(f"Refined hypothesis {hypothesis_id} -> {refined.id}")
 
             elif decision == RetirementDecision.SPAWN_VARIANT:
-                variants = self._hypothesis_refiner.spawn_variant(
-                    pydantic_hyp, latest_result, num_variants=2
-                )
+                variants = self._hypothesis_refiner.spawn_variant(pydantic_hyp, latest_result, num_variants=2)
                 for variant in variants:
                     if variant and variant.id:
                         try:
@@ -1972,23 +1756,17 @@ class ResearchDirectorAgent(BaseAgent):
                 error_details={
                     "hypothesis_id": hypothesis_id,
                     "tested_hypotheses": len(self.research_plan.tested_hypotheses),
-                }
+                },
             )
 
-    async def _send_to_convergence_detector(
-        self,
-        context: dict[str, Any] | None = None
-    ) -> AgentMessage:
+    async def _send_to_convergence_detector(self, context: dict[str, Any] | None = None) -> AgentMessage:
         """
         DEPRECATED (Issue #76): Use _handle_convergence_action() instead.
 
         This method sent messages to a non-existent agent, causing infinite loops.
         Kept for backwards compatibility but now calls the direct method.
         """
-        logger.warning(
-            "[DEPRECATED] _send_to_convergence_detector is deprecated. "
-            "Using direct convergence check instead (Issue #76)."
-        )
+        logger.warning("[DEPRECATED] _send_to_convergence_detector is deprecated. Using direct convergence check instead (Issue #76).")
         await self._handle_convergence_action()
 
         # Return a dummy message for compatibility
@@ -1996,7 +1774,7 @@ class ResearchDirectorAgent(BaseAgent):
             type=MessageType.RESPONSE,
             from_agent="convergence_detector",
             to_agent=self.agent_id,
-            content={"deprecated": True, "handled_directly": True}
+            content={"deprecated": True, "handled_directly": True},
         )
 
     # ========================================================================
@@ -2020,7 +1798,7 @@ class ResearchDirectorAgent(BaseAgent):
                 if hypothesis:
                     # Build rich prompt with actual data
                     related_papers = hypothesis.related_papers or []
-                    related_str = ', '.join(related_papers[:5]) if related_papers else 'None identified'
+                    related_str = ", ".join(related_papers[:5]) if related_papers else "None identified"
 
                     testability = hypothesis.testability_score or 0.0
                     novelty = hypothesis.novelty_score or 0.0
@@ -2030,12 +1808,12 @@ class ResearchDirectorAgent(BaseAgent):
 ## Hypothesis Details
 - **ID**: {hyp_id}
 - **Statement**: {hypothesis.statement}
-- **Rationale**: {hypothesis.rationale or 'Not provided'}
+- **Rationale**: {hypothesis.rationale or "Not provided"}
 - **Current Scores**: Testability={testability:.2f}, Novelty={novelty:.2f}
 
 ## Research Context
 - **Research Question**: {self.research_question}
-- **Domain**: {self.domain or 'General'}
+- **Domain**: {self.domain or "General"}
 - **Related Papers**: {related_str}
 
 ## Evaluation Criteria
@@ -2095,12 +1873,12 @@ Provide brief JSON response:
 
 ## Result Details
 - **Result ID**: {result_id}
-- **Experiment**: {experiment.description if experiment else 'Unknown'}
-- **Hypothesis Tested**: {hypothesis.statement if hypothesis else 'Unknown'}
+- **Experiment**: {experiment.description if experiment else "Unknown"}
+- **Hypothesis Tested**: {hypothesis.statement if hypothesis else "Unknown"}
 
 ## Research Context
 - **Research Question**: {self.research_question}
-- **Domain**: {self.domain or 'General'}
+- **Domain**: {self.domain or "General"}
 
 ## Result Data
 ```json
@@ -2108,10 +1886,10 @@ Provide brief JSON response:
 ```
 
 ## Statistical Tests
-{json_module.dumps(stats, indent=2) if stats else 'No statistical tests performed'}
+{json_module.dumps(stats, indent=2) if stats else "No statistical tests performed"}
 
 ## Previous Interpretation
-{result.interpretation or 'None available'}
+{result.interpretation or "None available"}
 
 ## Analysis Required
 Provide analysis including:
@@ -2165,9 +1943,8 @@ Provide brief JSON response:
             for protocol_id in protocol_ids:
                 # Sequential fallback - use direct call (Issue #76)
                 import asyncio
-                asyncio.get_event_loop().run_until_complete(
-                    self._handle_execute_experiment_action(protocol_id=protocol_id)
-                )
+
+                asyncio.get_event_loop().run_until_complete(self._handle_execute_experiment_action(protocol_id=protocol_id))
                 results.append({"protocol_id": protocol_id, "status": "executed"})
             return results
 
@@ -2230,12 +2007,14 @@ Provide brief JSON response:
                 # Build prompt with actual hypothesis data from database
                 prompt = self._build_hypothesis_evaluation_prompt(hyp_id)
 
-                requests.append(BatchRequest(
-                    id=hyp_id,
-                    prompt=prompt,
-                    system="You are a research evaluator. Provide concise, objective assessments.",
-                    temperature=0.3  # Lower temperature for more consistent evaluations
-                ))
+                requests.append(
+                    BatchRequest(
+                        id=hyp_id,
+                        prompt=prompt,
+                        system="You are a research evaluator. Provide concise, objective assessments.",
+                        temperature=0.3,  # Lower temperature for more consistent evaluations
+                    )
+                )
 
             # Execute concurrent evaluations
             responses = await self.async_llm_client.batch_generate(requests)
@@ -2246,23 +2025,16 @@ Provide brief JSON response:
                 if resp.success:
                     try:
                         import json
+
                         # Parse JSON response
                         eval_data = json.loads(resp.response)
                         eval_data["hypothesis_id"] = resp.id
                         evaluations.append(eval_data)
                     except json.JSONDecodeError:
                         logger.warning(f"Failed to parse evaluation for {resp.id}")
-                        evaluations.append({
-                            "hypothesis_id": resp.id,
-                            "error": "Parse error",
-                            "recommendation": "refine"
-                        })
+                        evaluations.append({"hypothesis_id": resp.id, "error": "Parse error", "recommendation": "refine"})
                 else:
-                    evaluations.append({
-                        "hypothesis_id": resp.id,
-                        "error": resp.error,
-                        "recommendation": "retry"
-                    })
+                    evaluations.append({"hypothesis_id": resp.id, "error": resp.error, "recommendation": "retry"})
 
             logger.info(f"Completed {len(evaluations)} hypothesis evaluations")
             return evaluations
@@ -2301,12 +2073,14 @@ Provide brief JSON response:
                 # Build prompt with actual result data from database
                 prompt = self._build_result_analysis_prompt(result_id)
 
-                requests.append(BatchRequest(
-                    id=result_id,
-                    prompt=prompt,
-                    system="You are a data analyst. Provide objective, evidence-based interpretations.",
-                    temperature=0.3
-                ))
+                requests.append(
+                    BatchRequest(
+                        id=result_id,
+                        prompt=prompt,
+                        system="You are a data analyst. Provide objective, evidence-based interpretations.",
+                        temperature=0.3,
+                    )
+                )
 
             # Execute concurrent analyses
             responses = await self.async_llm_client.batch_generate(requests)
@@ -2317,20 +2091,15 @@ Provide brief JSON response:
                 if resp.success:
                     try:
                         import json
+
                         analysis_data = json.loads(resp.response)
                         analysis_data["result_id"] = resp.id
                         analyses.append(analysis_data)
                     except json.JSONDecodeError:
                         logger.warning(f"Failed to parse analysis for {resp.id}")
-                        analyses.append({
-                            "result_id": resp.id,
-                            "error": "Parse error"
-                        })
+                        analyses.append({"result_id": resp.id, "error": "Parse error"})
                 else:
-                    analyses.append({
-                        "result_id": resp.id,
-                        "error": resp.error
-                    })
+                    analyses.append({"result_id": resp.id, "error": resp.error})
 
             logger.info(f"Completed {len(analyses)} result analyses")
             return analyses
@@ -2401,6 +2170,7 @@ Provide a structured, actionable plan in 2-3 paragraphs.
         # Budget enforcement check - halt if budget exceeded
         try:
             from kosmos.core.metrics import BudgetExceededError, get_metrics
+
             metrics = get_metrics()
             if metrics.budget_enabled:
                 metrics.enforce_budget()
@@ -2412,7 +2182,7 @@ Provide a structured, actionable plan in 2-3 paragraphs.
                 self.workflow.transition_to(
                     WorkflowState.CONVERGED,
                     action="Budget limit reached - research halted",
-                    metadata={"reason": "budget_exceeded", "cost": e.current_cost, "limit": e.limit}
+                    metadata={"reason": "budget_exceeded", "cost": e.current_cost, "limit": e.limit},
                 )
 
             # Return CONVERGE to signal workflow completion
@@ -2424,20 +2194,14 @@ Provide a structured, actionable plan in 2-3 paragraphs.
         # Runtime limit check (Issue #56)
         if self._check_runtime_exceeded():
             elapsed = self.get_elapsed_time_hours()
-            logger.warning(
-                f"[RUNTIME] Research halted: {elapsed:.2f}h elapsed, limit {self.max_runtime_hours}h"
-            )
+            logger.warning(f"[RUNTIME] Research halted: {elapsed:.2f}h elapsed, limit {self.max_runtime_hours}h")
 
             # Transition to CONVERGED state gracefully
             with self._workflow_context():
                 self.workflow.transition_to(
                     WorkflowState.CONVERGED,
                     action="Runtime limit reached - research halted",
-                    metadata={
-                        "reason": "runtime_exceeded",
-                        "elapsed_hours": elapsed,
-                        "limit_hours": self.max_runtime_hours
-                    }
+                    metadata={"reason": "runtime_exceeded", "elapsed_hours": elapsed, "limit_hours": self.max_runtime_hours},
                 )
 
             return NextAction.CONVERGE
@@ -2445,7 +2209,7 @@ Provide a structured, actionable plan in 2-3 paragraphs.
         current_state = self.workflow.current_state
 
         # Action counter for infinite loop prevention (Issue #51)
-        if not hasattr(self, '_actions_this_iteration'):
+        if not hasattr(self, "_actions_this_iteration"):
             self._actions_this_iteration = 0
         self._actions_this_iteration += 1
 
@@ -2453,14 +2217,13 @@ Provide a structured, actionable plan in 2-3 paragraphs.
             logger.error(
                 "[LOOP-GUARD] Exceeded %d actions in iteration %d - forcing convergence",
                 MAX_ACTIONS_PER_ITERATION,
-                self.research_plan.iteration_count
+                self.research_plan.iteration_count,
             )
             return NextAction.CONVERGE
 
         # Enhanced debug logging with comprehensive state info
         logger.debug(
-            "[STATE] Iteration=%d/%d, State=%s, Hypotheses=%d (untested=%d), "
-            "Queue=%d, Results=%d, Actions=%d/%d",
+            "[STATE] Iteration=%d/%d, State=%s, Hypotheses=%d (untested=%d), Queue=%d, Results=%d, Actions=%d/%d",
             self.research_plan.iteration_count,
             self.research_plan.max_iterations,
             current_state.value,
@@ -2469,7 +2232,7 @@ Provide a structured, actionable plan in 2-3 paragraphs.
             len(self.research_plan.experiment_queue),
             len(self.research_plan.results),
             self._actions_this_iteration,
-            MAX_ACTIONS_PER_ITERATION
+            MAX_ACTIONS_PER_ITERATION,
         )
 
         # Check convergence first
@@ -2488,13 +2251,13 @@ Provide a structured, actionable plan in 2-3 paragraphs.
                 return NextAction.DESIGN_EXPERIMENT
             elif self.research_plan.experiment_queue:
                 # Bug A fix (Issue #51): Experiments designed, move to execution
-                logger.debug("[DECISION] DESIGNING: No untested hypotheses but queue has %d experiments - executing",
-                            len(self.research_plan.experiment_queue))
+                logger.debug(
+                    "[DECISION] DESIGNING: No untested hypotheses but queue has %d experiments - executing", len(self.research_plan.experiment_queue)
+                )
                 return NextAction.EXECUTE_EXPERIMENT
             elif self.research_plan.results:
                 # Have results to analyze
-                logger.debug("[DECISION] DESIGNING: No untested, no queue, but have %d results - analyzing",
-                            len(self.research_plan.results))
+                logger.debug("[DECISION] DESIGNING: No untested, no queue, but have %d results - analyzing", len(self.research_plan.results))
                 return NextAction.ANALYZE_RESULT
             else:
                 # No hypotheses AND no experiments AND no results - converge
@@ -2507,8 +2270,7 @@ Provide a structured, actionable plan in 2-3 paragraphs.
                 return NextAction.EXECUTE_EXPERIMENT
             elif self.research_plan.results:
                 # Bug D fix (Issue #51): Have results to analyze
-                logger.debug("[DECISION] EXECUTING: Queue empty but have %d results - analyzing",
-                            len(self.research_plan.results))
+                logger.debug("[DECISION] EXECUTING: Queue empty but have %d results - analyzing", len(self.research_plan.results))
                 return NextAction.ANALYZE_RESULT
             else:
                 # Bug D fix (Issue #51): No queue AND no results - something went wrong
@@ -2554,13 +2316,13 @@ Provide a structured, actionable plan in 2-3 paragraphs.
             action: Action to execute
         """
         # Enhanced execution logging (Issue #51)
-        action_count = getattr(self, '_actions_this_iteration', 0)
+        action_count = getattr(self, "_actions_this_iteration", 0)
         logger.info(
             "[EXECUTE] Action=%s, Iteration=%d, ActionCount=%d/%d",
             action.value,
             self.research_plan.iteration_count,
             action_count,
-            MAX_ACTIONS_PER_ITERATION
+            MAX_ACTIONS_PER_ITERATION,
         )
 
         tracker = get_stage_tracker()
@@ -2587,19 +2349,14 @@ Provide a structured, actionable plan in 2-3 paragraphs.
                     try:
                         # Run async evaluation - now we can await directly!
                         logger.info(f"Starting concurrent evaluation of {len(hypothesis_batch)} hypotheses")
-                        evaluations = await asyncio.wait_for(
-                            self.evaluate_hypotheses_concurrently(hypothesis_batch),
-                            timeout=300
-                        )
+                        evaluations = await asyncio.wait_for(self.evaluate_hypotheses_concurrently(hypothesis_batch), timeout=300)
                         logger.info("Concurrent hypothesis evaluation completed")
 
                         if evaluations:
                             # Process best candidate(s)
                             for eval_result in evaluations:
                                 if eval_result.get("recommendation") == "proceed":
-                                    await self._handle_design_experiment_action(
-                                        hypothesis_id=eval_result["hypothesis_id"]
-                                    )
+                                    await self._handle_design_experiment_action(hypothesis_id=eval_result["hypothesis_id"])
                                     break  # Design experiment for first promising hypothesis
                             else:
                                 # No promising hypotheses, design for first untested
@@ -2652,10 +2409,7 @@ Provide a structured, actionable plan in 2-3 paragraphs.
                     try:
                         # Run async analysis - now we can await directly!
                         logger.info(f"Starting concurrent analysis of {len(result_batch)} results")
-                        analyses = await asyncio.wait_for(
-                            self.analyze_results_concurrently(result_batch),
-                            timeout=300
-                        )
+                        analyses = await asyncio.wait_for(self.analyze_results_concurrently(result_batch), timeout=300)
                         logger.info("Concurrent result analysis completed")
 
                         if analyses:
@@ -2691,9 +2445,7 @@ Provide a structured, actionable plan in 2-3 paragraphs.
 
             if tested:
                 hypothesis_id = tested[-1]
-                await self._handle_refine_hypothesis_action(
-                    hypothesis_id=hypothesis_id
-                )
+                await self._handle_refine_hypothesis_action(hypothesis_id=hypothesis_id)
 
             # Increment iteration after completing refinement phase
             # This marks the completion of one full research cycle
@@ -2718,10 +2470,7 @@ Provide a structured, actionable plan in 2-3 paragraphs.
             # So we always recover via GENERATING_HYPOTHESES — from there the normal
             # decide_next_action() logic will route to the correct phase.
             with self._workflow_context():
-                self.workflow.transition_to(
-                    WorkflowState.GENERATING_HYPOTHESES,
-                    action="Error recovery: resume research from hypothesis generation"
-                )
+                self.workflow.transition_to(WorkflowState.GENERATING_HYPOTHESES, action="Error recovery: resume research from hypothesis generation")
                 logger.info("[ERROR-RECOVERY] Transitioning to GENERATING_HYPOTHESES")
 
         elif action == NextAction.PAUSE:
@@ -2753,10 +2502,7 @@ Provide a structured, actionable plan in 2-3 paragraphs.
             untested = self.research_plan.get_untested_hypotheses()
             has_testable_work = len(untested) > 0 or len(self.research_plan.experiment_queue) > 0
             if completed < min_exp and has_testable_work:
-                logger.info(
-                    f"Iteration limit reached but deferring: "
-                    f"{completed}/{min_exp} experiments, testable work remains"
-                )
+                logger.info(f"Iteration limit reached but deferring: {completed}/{min_exp} experiments, testable work remains")
                 return False
             logger.info("Iteration limit reached")
             return True
@@ -2885,22 +2631,14 @@ Provide a structured, actionable plan in 2-3 paragraphs.
             next_action = self.decide_next_action()
             await self._execute_next_action(next_action)
 
-            return {
-                "status": "research_started",
-                "research_plan": plan,
-                "next_action": next_action.value
-            }
+            return {"status": "research_started", "research_plan": plan, "next_action": next_action.value}
 
         elif action == "step":
             # Execute one step of research
             next_action = self.decide_next_action()
             await self._execute_next_action(next_action)
 
-            return {
-                "status": "step_executed",
-                "next_action": next_action.value,
-                "workflow_state": self.workflow.current_state.value
-            }
+            return {"status": "step_executed", "next_action": next_action.value, "workflow_state": self.workflow.current_state.value}
 
         else:
             raise ValueError(f"Unknown action: {action}")
@@ -2945,5 +2683,5 @@ Provide a structured, actionable plan in 2-3 paragraphs.
             "results_count": len(self.research_plan.results),
             "strategy_stats": self.strategy_stats,
             "rollouts": self.rollout_tracker.to_dict(),  # Issue #58
-            "agent_status": self.get_status()
+            "agent_status": self.get_status(),
         }

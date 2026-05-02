@@ -143,6 +143,7 @@ if current_platform.is_rocm():
 
         def grid(meta):
             return (total_tokens,)
+
         cp_mha_gather_cache_kernel[grid](
             key_cache,
             value_cache,

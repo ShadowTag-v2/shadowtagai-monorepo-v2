@@ -53,9 +53,7 @@ async def delegate_task(
                 for block in message.content:
                     if isinstance(block, ToolUseBlock):
                         if block.name == "Skill":
-                            print(
-                                f"Using the skill: {block.input.get('skill', 'unknown')}"
-                            )
+                            print(f"Using the skill: {block.input.get('skill', 'unknown')}")
                         else:
                             print(f"Using the tool: {block.name}")
 

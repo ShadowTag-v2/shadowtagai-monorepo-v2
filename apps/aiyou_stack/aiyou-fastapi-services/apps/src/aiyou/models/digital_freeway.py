@@ -6,7 +6,7 @@ Request/Response schemas for Digital Freeway ROI Calculator API.
 
 from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class CustomerType(StrEnum):
@@ -60,8 +60,8 @@ class ROICalculationRequest(BaseModel):
         description="Geographic location for congestion data",
     )
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "customer_type": "tesla",
                 "fleet_size": 1000000,
@@ -70,6 +70,7 @@ class ROICalculationRequest(BaseModel):
                 "location": "us_avg",
             },
         }
+    )
 
 
 class ScenarioComparisonRequest(BaseModel):

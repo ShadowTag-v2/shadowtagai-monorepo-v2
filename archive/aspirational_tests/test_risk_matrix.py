@@ -8,7 +8,6 @@ from src.risk_matrix import (
     Probability,
     Severity,
     RiskLevel,
-    RiskAssessment,
     calculate_risk_level,
     determine_approval_authority,
     assess_risk,
@@ -135,7 +134,7 @@ class TestRiskAssessment:
             severity=Severity.II,
             rationale="Test transaction with moderate risk",
             mitigations=["Verify vendor", "Require dual approval"],
-            amount_usd=75_000
+            amount_usd=75_000,
         )
 
         assert assessment.probability == Probability.B
@@ -148,11 +147,7 @@ class TestRiskAssessment:
     def test_mitigation_reduces_severity(self):
         """Test that mitigations reduce residual risk"""
         assessment = assess_risk(
-            probability=Probability.C,
-            severity=Severity.II,
-            rationale="Test with mitigations",
-            mitigations=["Control A", "Control B"],
-            amount_usd=0
+            probability=Probability.C, severity=Severity.II, rationale="Test with mitigations", mitigations=["Control A", "Control B"], amount_usd=0
         )
 
         # Original: C×II = H
@@ -162,12 +157,7 @@ class TestRiskAssessment:
 
     def test_no_mitigations(self):
         """Test assessment without mitigations"""
-        assessment = assess_risk(
-            probability=Probability.D,
-            severity=Severity.IV,
-            rationale="Low risk, no mitigations needed",
-            amount_usd=0
-        )
+        assessment = assess_risk(probability=Probability.D, severity=Severity.IV, rationale="Low risk, no mitigations needed", amount_usd=0)
 
         assert assessment.risk_level == RiskLevel.L
         assert assessment.residual_risk == RiskLevel.L
@@ -176,11 +166,7 @@ class TestRiskAssessment:
     def test_catastrophic_severity_no_reduction(self):
         """Test that Severity I cannot be reduced below I"""
         assessment = assess_risk(
-            probability=Probability.A,
-            severity=Severity.I,
-            rationale="Catastrophic risk",
-            mitigations=["All possible controls"],
-            amount_usd=0
+            probability=Probability.A, severity=Severity.I, rationale="Catastrophic risk", mitigations=["All possible controls"], amount_usd=0
         )
 
         assert assessment.severity == Severity.I
@@ -217,11 +203,7 @@ class TestEdgeCases:
     def test_risk_assessment_fields_populated(self):
         """Test that all required fields are populated"""
         assessment = assess_risk(
-            probability=Probability.C,
-            severity=Severity.III,
-            rationale="Complete field test",
-            mitigations=["Control 1"],
-            amount_usd=15_000
+            probability=Probability.C, severity=Severity.III, rationale="Complete field test", mitigations=["Control 1"], amount_usd=15_000
         )
 
         assert assessment.probability is not None

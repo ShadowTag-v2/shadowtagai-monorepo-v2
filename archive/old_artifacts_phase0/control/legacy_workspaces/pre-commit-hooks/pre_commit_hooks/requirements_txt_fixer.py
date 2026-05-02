@@ -10,8 +10,8 @@ FAIL = 1
 
 
 class Requirement:
-    UNTIL_COMPARISON = re.compile(b'={2,3}|!=|~=|>=?|<=?')
-    UNTIL_SEP = re.compile(rb'[^;\s]+')
+    UNTIL_COMPARISON = re.compile(b"={2,3}|!=|~=|>=?|<=?")
+    UNTIL_SEP = re.compile(rb"[^;\s]+")
 
     def __init__(self) -> None:
         self.value: bytes | None = None
@@ -21,7 +21,7 @@ class Requirement:
     def name(self) -> bytes:
         assert self.value is not None, self.value
         name = self.value.lower()
-        for egg in (b'#egg=', b'&egg='):
+        for egg in (b"#egg=", b"&egg="):
             if egg in self.value:
                 return name.partition(egg)[-1]
 
@@ -33,15 +33,15 @@ class Requirement:
         if not m:
             return name
 
-        return name[:m.start()]
+        return name[: m.start()]
 
     def __lt__(self, requirement: Requirement) -> bool:
         # \n means top of file comment, so always return True,
         # otherwise just do a string comparison with value.
         assert self.value is not None, self.value
-        if self.value == b'\n':
+        if self.value == b"\n":
             return True
-        elif requirement.value == b'\n':
+        elif requirement.value == b"\n":
             return False
         else:
             # if 2 requirements have the same name, the one with comments
@@ -52,10 +52,7 @@ class Requirement:
             return self.name < requirement.name
 
     def is_complete(self) -> bool:
-        return (
-            self.value is not None and
-            not self.value.rstrip(b'\r\n').endswith(b'\\')
-        )
+        return self.value is not None and not self.value.rstrip(b"\r\n").endswith(b"\\")
 
     def append_value(self, value: bytes) -> None:
         if self.value is not None:
@@ -69,15 +66,15 @@ def fix_requirements(f: IO[bytes]) -> int:
     before = list(f)
     after: list[bytes] = []
 
-    before_string = b''.join(before)
+    before_string = b"".join(before)
 
     # adds new line in case one is missing
     # AND a change to the requirements file is needed regardless:
-    if before and not before[-1].endswith(b'\n'):
-        before[-1] += b'\n'
+    if before and not before[-1].endswith(b"\n"):
+        before[-1] += b"\n"
 
     # If the file is empty (i.e. only whitespace/newlines) exit early
-    if before_string.strip() == b'':
+    if before_string.strip() == b"":
         return PASS
 
     for line in before:
@@ -91,15 +88,12 @@ def fix_requirements(f: IO[bytes]) -> int:
 
         # If we see a newline before any requirements, then this is a
         # top of file comment.
-        if len(requirements) == 1 and line.strip() == b'':
-            if (
-                    len(requirement.comments) and
-                    requirement.comments[0].startswith(b'#')
-            ):
-                requirement.value = b'\n'
+        if len(requirements) == 1 and line.strip() == b"":
+            if len(requirement.comments) and requirement.comments[0].startswith(b"#"):
+                requirement.value = b"\n"
             else:
                 requirement.comments.append(line)
-        elif line.lstrip().startswith(b'#') or line.strip() == b'':
+        elif line.lstrip().startswith(b"#") or line.strip() == b"":
             requirement.comments.append(line)
         else:
             requirement.append_value(line)
@@ -113,10 +107,12 @@ def fix_requirements(f: IO[bytes]) -> int:
     # find and remove pkg-resources==0.0.0
     # which is automatically added by broken pip package under Debian
     requirements = [
-        req for req in requirements
-        if req.value not in [
-            b'pkg-resources==0.0.0\n',
-            b'pkg_resources==0.0.0\n',
+        req
+        for req in requirements
+        if req.value
+        not in [
+            b"pkg-resources==0.0.0\n",
+            b"pkg_resources==0.0.0\n",
         ]
     ]
 
@@ -130,7 +126,7 @@ def fix_requirements(f: IO[bytes]) -> int:
             prev = requirement
     after.extend(rest)
 
-    after_string = b''.join(after)
+    after_string = b"".join(after)
 
     if before_string == after_string:
         return PASS
@@ -143,22 +139,22 @@ def fix_requirements(f: IO[bytes]) -> int:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument('filenames', nargs='*', help='Filenames to fix')
+    parser.add_argument("filenames", nargs="*", help="Filenames to fix")
     args = parser.parse_args(argv)
 
     retv = PASS
 
     for arg in args.filenames:
-        with open(arg, 'rb+') as file_obj:
+        with open(arg, "rb+") as file_obj:
             ret_for_file = fix_requirements(file_obj)
 
             if ret_for_file:
-                print(f'Sorting {arg}')
+                print(f"Sorting {arg}")
 
             retv |= ret_for_file
 
     return retv
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

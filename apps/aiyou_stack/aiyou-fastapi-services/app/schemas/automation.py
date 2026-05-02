@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.models.automation import JobStatus, TriggerType, WorkflowStatus
 
@@ -43,8 +43,7 @@ class WorkflowResponse(WorkflowBase):
     updated_at: datetime
     created_by: str | None = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Scheduled Job Schemas
@@ -88,8 +87,7 @@ class ScheduledJobResponse(ScheduledJobBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Trigger Schemas
@@ -126,8 +124,7 @@ class TriggerResponse(TriggerBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Job Execution Schemas
@@ -160,8 +157,7 @@ class JobExecutionResponse(JobExecutionBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Execution Request Schema

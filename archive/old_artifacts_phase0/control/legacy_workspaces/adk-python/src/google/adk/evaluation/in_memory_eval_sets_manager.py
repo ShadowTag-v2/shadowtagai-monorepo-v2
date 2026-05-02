@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import time
 
-from typing_extensions import override
+from typing import override
 
 from ..errors.not_found_error import NotFoundError
 from .eval_case import EvalCase
@@ -25,127 +25,100 @@ from .eval_sets_manager import EvalSetsManager
 
 
 class InMemoryEvalSetsManager(EvalSetsManager):
-  """An in-memory implementation of EvalSetsManager using dictionaries.
+    """An in-memory implementation of EvalSetsManager using dictionaries.
 
-  You can use this class:
-  1) As a part of your testcase.
-  2) For cases where other implementations of EvalSetsManager are too expensive
-  to use.
-  """
+    You can use this class:
+    1) As a part of your testcase.
+    2) For cases where other implementations of EvalSetsManager are too expensive
+    to use.
+    """
 
-  def __init__(self):
-    # {app_name: {eval_set_id: EvalSet}}
-    self._eval_sets: dict[str, dict[str, EvalSet]] = {}
-    # {app_name: {eval_set_id: {eval_case_id: EvalCase}}}
-    self._eval_cases: dict[str, dict[str, dict[str, EvalCase]]] = {}
+    def __init__(self):
+        # {app_name: {eval_set_id: EvalSet}}
+        self._eval_sets: dict[str, dict[str, EvalSet]] = {}
+        # {app_name: {eval_set_id: {eval_case_id: EvalCase}}}
+        self._eval_cases: dict[str, dict[str, dict[str, EvalCase]]] = {}
 
-  def _ensure_app_exists(self, app_name: str):
-    if app_name not in self._eval_sets:
-      self._eval_sets[app_name] = {}
-      self._eval_cases[app_name] = {}
+    def _ensure_app_exists(self, app_name: str):
+        if app_name not in self._eval_sets:
+            self._eval_sets[app_name] = {}
+            self._eval_cases[app_name] = {}
 
-  @override
-  def get_eval_set(self, app_name: str, eval_set_id: str) -> EvalSet | None:
-    self._ensure_app_exists(app_name)
-    return self._eval_sets[app_name].get(eval_set_id, None)
+    @override
+    def get_eval_set(self, app_name: str, eval_set_id: str) -> EvalSet | None:
+        self._ensure_app_exists(app_name)
+        return self._eval_sets[app_name].get(eval_set_id, None)
 
-  @override
-  def create_eval_set(self, app_name: str, eval_set_id: str):
-    self._ensure_app_exists(app_name)
-    if eval_set_id in self._eval_sets[app_name]:
-      raise ValueError(
-          f"EvalSet {eval_set_id} already exists for app {app_name}."
-      )
+    @override
+    def create_eval_set(self, app_name: str, eval_set_id: str):
+        self._ensure_app_exists(app_name)
+        if eval_set_id in self._eval_sets[app_name]:
+            raise ValueError(f"EvalSet {eval_set_id} already exists for app {app_name}.")
 
-    new_eval_set = EvalSet(
-        eval_set_id=eval_set_id,
-        eval_cases=[],
-        creation_timestamp=time.time(),
-    )
-    self._eval_sets[app_name][eval_set_id] = new_eval_set
-    self._eval_cases[app_name][eval_set_id] = {}
-    return new_eval_set
+        new_eval_set = EvalSet(
+            eval_set_id=eval_set_id,
+            eval_cases=[],
+            creation_timestamp=time.time(),
+        )
+        self._eval_sets[app_name][eval_set_id] = new_eval_set
+        self._eval_cases[app_name][eval_set_id] = {}
+        return new_eval_set
 
-  @override
-  def list_eval_sets(self, app_name: str) -> list[str]:
-    if app_name not in self._eval_sets:
-      return []
+    @override
+    def list_eval_sets(self, app_name: str) -> list[str]:
+        if app_name not in self._eval_sets:
+            return []
 
-    return list(self._eval_sets[app_name].keys())
+        return list(self._eval_sets[app_name].keys())
 
-  @override
-  def get_eval_case(
-      self, app_name: str, eval_set_id: str, eval_case_id: str
-  ) -> EvalCase | None:
-    if app_name not in self._eval_cases:
-      return None
-    if eval_set_id not in self._eval_cases[app_name]:
-      return None
-    return self._eval_cases[app_name][eval_set_id].get(eval_case_id)
+    @override
+    def get_eval_case(self, app_name: str, eval_set_id: str, eval_case_id: str) -> EvalCase | None:
+        if app_name not in self._eval_cases:
+            return None
+        if eval_set_id not in self._eval_cases[app_name]:
+            return None
+        return self._eval_cases[app_name][eval_set_id].get(eval_case_id)
 
-  @override
-  def add_eval_case(self, app_name: str, eval_set_id: str, eval_case: EvalCase):
-    self._ensure_app_exists(app_name)
-    if eval_set_id not in self._eval_sets[app_name]:
-      raise NotFoundError(
-          f"EvalSet {eval_set_id} not found for app {app_name}."
-      )
-    if eval_case.eval_id in self._eval_cases[app_name][eval_set_id]:
-      raise ValueError(
-          f"EvalCase {eval_case.eval_id} already exists in EvalSet"
-          f" {eval_set_id} for app {app_name}."
-      )
+    @override
+    def add_eval_case(self, app_name: str, eval_set_id: str, eval_case: EvalCase):
+        self._ensure_app_exists(app_name)
+        if eval_set_id not in self._eval_sets[app_name]:
+            raise NotFoundError(f"EvalSet {eval_set_id} not found for app {app_name}.")
+        if eval_case.eval_id in self._eval_cases[app_name][eval_set_id]:
+            raise ValueError(f"EvalCase {eval_case.eval_id} already exists in EvalSet {eval_set_id} for app {app_name}.")
 
-    self._eval_cases[app_name][eval_set_id][eval_case.eval_id] = eval_case
-    # Also update the list in the EvalSet object
-    self._eval_sets[app_name][eval_set_id].eval_cases.append(eval_case)
+        self._eval_cases[app_name][eval_set_id][eval_case.eval_id] = eval_case
+        # Also update the list in the EvalSet object
+        self._eval_sets[app_name][eval_set_id].eval_cases.append(eval_case)
 
-  @override
-  def update_eval_case(
-      self, app_name: str, eval_set_id: str, updated_eval_case: EvalCase
-  ):
-    self._ensure_app_exists(app_name)
-    if eval_set_id not in self._eval_sets[app_name]:
-      raise NotFoundError(
-          f"EvalSet {eval_set_id} not found for app {app_name}."
-      )
-    if updated_eval_case.eval_id not in self._eval_cases[app_name][eval_set_id]:
-      raise NotFoundError(
-          f"EvalCase {updated_eval_case.eval_id} not found in EvalSet"
-          f" {eval_set_id} for app {app_name}."
-      )
+    @override
+    def update_eval_case(self, app_name: str, eval_set_id: str, updated_eval_case: EvalCase):
+        self._ensure_app_exists(app_name)
+        if eval_set_id not in self._eval_sets[app_name]:
+            raise NotFoundError(f"EvalSet {eval_set_id} not found for app {app_name}.")
+        if updated_eval_case.eval_id not in self._eval_cases[app_name][eval_set_id]:
+            raise NotFoundError(f"EvalCase {updated_eval_case.eval_id} not found in EvalSet {eval_set_id} for app {app_name}.")
 
-    # Full replace
-    self._eval_cases[app_name][eval_set_id][
-        updated_eval_case.eval_id
-    ] = updated_eval_case
+        # Full replace
+        self._eval_cases[app_name][eval_set_id][updated_eval_case.eval_id] = updated_eval_case
 
-    # Update the list in the EvalSet object
-    eval_set = self._eval_sets[app_name][eval_set_id]
-    for i, case in enumerate(eval_set.eval_cases):
-      if case.eval_id == updated_eval_case.eval_id:
-        eval_set.eval_cases[i] = updated_eval_case
-        break
+        # Update the list in the EvalSet object
+        eval_set = self._eval_sets[app_name][eval_set_id]
+        for i, case in enumerate(eval_set.eval_cases):
+            if case.eval_id == updated_eval_case.eval_id:
+                eval_set.eval_cases[i] = updated_eval_case
+                break
 
-  @override
-  def delete_eval_case(
-      self, app_name: str, eval_set_id: str, eval_case_id: str
-  ):
-    self._ensure_app_exists(app_name)
-    if eval_set_id not in self._eval_sets[app_name]:
-      raise NotFoundError(
-          f"EvalSet {eval_set_id} not found for app {app_name}."
-      )
-    if eval_case_id not in self._eval_cases[app_name][eval_set_id]:
-      raise NotFoundError(
-          f"EvalCase {eval_case_id} not found in EvalSet {eval_set_id}"
-          f" for app {app_name}."
-      )
+    @override
+    def delete_eval_case(self, app_name: str, eval_set_id: str, eval_case_id: str):
+        self._ensure_app_exists(app_name)
+        if eval_set_id not in self._eval_sets[app_name]:
+            raise NotFoundError(f"EvalSet {eval_set_id} not found for app {app_name}.")
+        if eval_case_id not in self._eval_cases[app_name][eval_set_id]:
+            raise NotFoundError(f"EvalCase {eval_case_id} not found in EvalSet {eval_set_id} for app {app_name}.")
 
-    del self._eval_cases[app_name][eval_set_id][eval_case_id]
+        del self._eval_cases[app_name][eval_set_id][eval_case_id]
 
-    # Remove from the list in the EvalSet object
-    eval_set = self._eval_sets[app_name][eval_set_id]
-    eval_set.eval_cases = [
-        case for case in eval_set.eval_cases if case.eval_id != eval_case_id
-    ]
+        # Remove from the list in the EvalSet object
+        eval_set = self._eval_sets[app_name][eval_set_id]
+        eval_set.eval_cases = [case for case in eval_set.eval_cases if case.eval_id != eval_case_id]

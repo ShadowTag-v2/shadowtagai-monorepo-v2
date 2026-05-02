@@ -36,35 +36,31 @@ from kosmos.domains.neuroscience.ontology import (
 
 __all__ = [
     # API Clients
-    'FlyWireClient',
-    'AllenBrainClient',
-    'MICrONSClient',
-    'GEOClient',
-    'AMPADClient',
-    'OpenConnectomeClient',
-    'WormBaseClient',
-
+    "FlyWireClient",
+    "AllenBrainClient",
+    "MICrONSClient",
+    "GEOClient",
+    "AMPADClient",
+    "OpenConnectomeClient",
+    "WormBaseClient",
     # API Data Models
-    'NeuronData',
-    'GeneExpressionData',
-    'ConnectomeDataset',
-    'APIDifferentialExpressionResult',
-
+    "NeuronData",
+    "GeneExpressionData",
+    "ConnectomeDataset",
+    "APIDifferentialExpressionResult",
     # Connectomics
-    'ConnectomicsAnalyzer',
-    'ConnectomicsResult',
-    'ScalingRelationship',
-    'PowerLawFit',
-    'CrossSpeciesComparison',
-
+    "ConnectomicsAnalyzer",
+    "ConnectomicsResult",
+    "ScalingRelationship",
+    "PowerLawFit",
+    "CrossSpeciesComparison",
     # Neurodegeneration
-    'NeurodegenerationAnalyzer',
-    'NeurodegenerationResult',
-    'DifferentialExpressionResult',
-    'PathwayEnrichmentResult',
-    'CrossSpeciesValidation',
-    'TemporalStage',
-
+    "NeurodegenerationAnalyzer",
+    "NeurodegenerationResult",
+    "DifferentialExpressionResult",
+    "PathwayEnrichmentResult",
+    "CrossSpeciesValidation",
+    "TemporalStage",
     # Ontology
-    'NeuroscienceOntology',
+    "NeuroscienceOntology",
 ]

@@ -9,7 +9,7 @@ import logging
 import threading
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from kosmos.config import get_config
 from kosmos.core.cache import BaseCache, DiskCache, HybridCache, InMemoryCache
@@ -35,7 +35,7 @@ class CacheManager:
     access to caching across the entire system.
     """
 
-    _instance: Optional['CacheManager'] = None
+    _instance: CacheManager | None = None
     _lock: threading.Lock = threading.Lock()
 
     def __new__(cls):
@@ -49,7 +49,7 @@ class CacheManager:
     def __init__(self):
         """Initialize the cache manager."""
         # Skip if already initialized (singleton)
-        if hasattr(self, '_initialized'):
+        if hasattr(self, "_initialized"):
             return
 
         self._initialized = True
@@ -69,8 +69,8 @@ class CacheManager:
         # Get cache configuration (48 hours default for new caches)
         ttl_seconds = getattr(
             self._config.performance,
-            'cache_ttl',
-            172800  # 48 hours
+            "cache_ttl",
+            172800,  # 48 hours
         )
 
         # Claude API Cache - Hybrid (memory + disk)
@@ -79,7 +79,7 @@ class CacheManager:
             memory_size=1000,  # 1000 most recent responses in memory
             cache_dir=str(cache_dir / "claude"),
             ttl_seconds=ttl_seconds,
-            max_size_mb=2000  # 2GB for Claude responses
+            max_size_mb=2000,  # 2GB for Claude responses
         )
         logger.info("Initialized Claude API cache (hybrid)")
 
@@ -87,14 +87,14 @@ class CacheManager:
         self._caches[CacheType.EXPERIMENT] = DiskCache(
             cache_dir=str(cache_dir / "experiments"),
             ttl_seconds=ttl_seconds * 2,  # Longer TTL for experiments (96h)
-            max_size_mb=3000  # 3GB for experiment results
+            max_size_mb=3000,  # 3GB for experiment results
         )
         logger.info("Initialized experiment results cache (disk)")
 
         # Embedding Cache - In-memory (small, frequently accessed)
         self._caches[CacheType.EMBEDDING] = InMemoryCache(
             max_size=5000,  # 5000 embeddings
-            ttl_seconds=ttl_seconds * 7  # Week-long TTL (embeddings don't change)
+            ttl_seconds=ttl_seconds * 7,  # Week-long TTL (embeddings don't change)
         )
         logger.info("Initialized embedding cache (memory)")
 
@@ -103,7 +103,7 @@ class CacheManager:
             memory_size=500,
             cache_dir=str(cache_dir / "general"),
             ttl_seconds=ttl_seconds,
-            max_size_mb=500  # 500MB
+            max_size_mb=500,  # 500MB
         )
         logger.info("Initialized general cache (hybrid)")
 
@@ -121,11 +121,7 @@ class CacheManager:
         """
         return self._caches.get(cache_type)
 
-    def get(
-        self,
-        cache_type: CacheType,
-        key: str
-    ) -> Any | None:
+    def get(self, cache_type: CacheType, key: str) -> Any | None:
         """
         Retrieve a value from a cache.
 
@@ -143,12 +139,7 @@ class CacheManager:
 
         return cache.get(key)
 
-    def set(
-        self,
-        cache_type: CacheType,
-        key: str,
-        value: Any
-    ) -> bool:
+    def set(self, cache_type: CacheType, key: str, value: Any) -> bool:
         """
         Store a value in a cache.
 
@@ -167,11 +158,7 @@ class CacheManager:
 
         return cache.set(key, value)
 
-    def delete(
-        self,
-        cache_type: CacheType,
-        key: str
-    ) -> bool:
+    def delete(self, cache_type: CacheType, key: str) -> bool:
         """
         Delete a value from a cache.
 
@@ -217,10 +204,7 @@ class CacheManager:
 
         return results
 
-    def cleanup_expired(
-        self,
-        cache_type: CacheType | None = None
-    ) -> dict[CacheType, int]:
+    def cleanup_expired(self, cache_type: CacheType | None = None) -> dict[CacheType, int]:
         """
         Remove expired entries from cache(s).
 
@@ -250,10 +234,7 @@ class CacheManager:
 
         return results
 
-    def get_stats(
-        self,
-        cache_type: CacheType | None = None
-    ) -> dict[str, Any]:
+    def get_stats(self, cache_type: CacheType | None = None) -> dict[str, Any]:
         """
         Get cache statistics.
 
@@ -268,42 +249,39 @@ class CacheManager:
             cache = self.get_cache(cache_type)
             if cache:
                 stats = cache.get_stats()
-                stats['cache_type'] = cache_type.value
+                stats["cache_type"] = cache_type.value
                 return stats
             return {}
 
         # Stats for all caches
         all_stats = {
-            'caches': {},
-            'total_size': 0,
-            'total_hits': 0,
-            'total_misses': 0,
-            'total_sets': 0,
-            'total_evictions': 0,
-            'total_errors': 0,
+            "caches": {},
+            "total_size": 0,
+            "total_hits": 0,
+            "total_misses": 0,
+            "total_sets": 0,
+            "total_evictions": 0,
+            "total_errors": 0,
         }
 
         for ctype, cache in self._caches.items():
             cache_stats = cache.get_stats()
-            all_stats['caches'][ctype.value] = cache_stats
+            all_stats["caches"][ctype.value] = cache_stats
 
             # Aggregate totals
-            all_stats['total_size'] += cache_stats.get('size', 0)
-            all_stats['total_hits'] += cache_stats.get('hits', 0)
-            all_stats['total_misses'] += cache_stats.get('misses', 0)
-            all_stats['total_sets'] += cache_stats.get('sets', 0)
-            all_stats['total_evictions'] += cache_stats.get('evictions', 0)
-            all_stats['total_errors'] += cache_stats.get('errors', 0)
+            all_stats["total_size"] += cache_stats.get("size", 0)
+            all_stats["total_hits"] += cache_stats.get("hits", 0)
+            all_stats["total_misses"] += cache_stats.get("misses", 0)
+            all_stats["total_sets"] += cache_stats.get("sets", 0)
+            all_stats["total_evictions"] += cache_stats.get("evictions", 0)
+            all_stats["total_errors"] += cache_stats.get("errors", 0)
 
         # Calculate overall hit rate
-        total_requests = all_stats['total_hits'] + all_stats['total_misses']
+        total_requests = all_stats["total_hits"] + all_stats["total_misses"]
         if total_requests > 0:
-            all_stats['overall_hit_rate_percent'] = round(
-                all_stats['total_hits'] / total_requests * 100,
-                2
-            )
+            all_stats["overall_hit_rate_percent"] = round(all_stats["total_hits"] / total_requests * 100, 2)
         else:
-            all_stats['overall_hit_rate_percent'] = 0.0
+            all_stats["overall_hit_rate_percent"] = 0.0
 
         return all_stats
 
@@ -329,11 +307,7 @@ class CacheManager:
         """
         return BaseCache.generate_key(*args, **kwargs)
 
-    def warm_up(
-        self,
-        cache_type: CacheType,
-        data: dict[str, Any]
-    ) -> int:
+    def warm_up(self, cache_type: CacheType, data: dict[str, Any]) -> int:
         """
         Pre-populate a cache with data (cache warming).
 
@@ -369,29 +343,23 @@ class CacheManager:
         for ctype, cache in self._caches.items():
             stats = cache.get_stats()
             breakdown[ctype.value] = {
-                'entries': stats.get('size', 0),
-                'type': cache.__class__.__name__,
+                "entries": stats.get("size", 0),
+                "type": cache.__class__.__name__,
             }
 
             # Add disk size for disk-based caches
-            if hasattr(cache, 'cache_dir'):
+            if hasattr(cache, "cache_dir"):
                 cache_dir = Path(cache.cache_dir)
                 if cache_dir.exists():
-                    total_bytes = sum(
-                        f.stat().st_size
-                        for f in cache_dir.rglob("*.pkl")
-                    )
-                    breakdown[ctype.value]['disk_mb'] = round(
-                        total_bytes / (1024 * 1024),
-                        2
-                    )
+                    total_bytes = sum(f.stat().st_size for f in cache_dir.rglob("*.pkl"))
+                    breakdown[ctype.value]["disk_mb"] = round(total_bytes / (1024 * 1024), 2)
 
             # Add hybrid cache breakdown
-            if hasattr(cache, 'memory_cache') and hasattr(cache, 'disk_cache'):
+            if hasattr(cache, "memory_cache") and hasattr(cache, "disk_cache"):
                 mem_stats = cache.memory_cache.get_stats()
                 disk_stats = cache.disk_cache.get_stats()
-                breakdown[ctype.value]['memory_entries'] = mem_stats.get('size', 0)
-                breakdown[ctype.value]['disk_entries'] = disk_stats.get('size', 0)
+                breakdown[ctype.value]["memory_entries"] = mem_stats.get("size", 0)
+                breakdown[ctype.value]["disk_entries"] = disk_stats.get("size", 0)
 
         return breakdown
 
@@ -406,7 +374,7 @@ class CacheManager:
 
         for ctype, cache in self._caches.items():
             stats = cache.get_stats()
-            hit_rates[ctype.value] = stats.get('hit_rate_percent', 0.0)
+            hit_rates[ctype.value] = stats.get("hit_rate_percent", 0.0)
 
         return hit_rates
 
@@ -431,11 +399,7 @@ class CacheManager:
         Returns:
             Dictionary with health status for each cache
         """
-        health = {
-            'healthy': True,
-            'caches': {},
-            'warnings': []
-        }
+        health = {"healthy": True, "caches": {}, "warnings": []}
 
         for ctype, cache in self._caches.items():
             try:
@@ -448,44 +412,35 @@ class CacheManager:
                 cache.delete(test_key)
 
                 cache_health = {
-                    'status': 'healthy',
-                    'size': cache.size(),
+                    "status": "healthy",
+                    "size": cache.size(),
                 }
 
                 # Check for issues
                 stats = cache.get_stats()
-                error_rate = stats.get('errors', 0) / max(stats.get('total_requests', 1), 1)
+                error_rate = stats.get("errors", 0) / max(stats.get("total_requests", 1), 1)
 
                 if error_rate > 0.1:  # >10% error rate
-                    cache_health['status'] = 'degraded'
-                    health['warnings'].append(
-                        f"{ctype.value} cache has high error rate: {error_rate:.1%}"
-                    )
+                    cache_health["status"] = "degraded"
+                    health["warnings"].append(f"{ctype.value} cache has high error rate: {error_rate:.1%}")
 
                 # Check disk usage for disk caches
-                if hasattr(cache, 'max_size_mb') and hasattr(cache, 'cache_dir'):
+                if hasattr(cache, "max_size_mb") and hasattr(cache, "cache_dir"):
                     cache_dir = Path(cache.cache_dir)
                     if cache_dir.exists():
-                        total_mb = sum(
-                            f.stat().st_size for f in cache_dir.rglob("*.pkl")
-                        ) / (1024 * 1024)
+                        total_mb = sum(f.stat().st_size for f in cache_dir.rglob("*.pkl")) / (1024 * 1024)
                         usage_percent = (total_mb / cache.max_size_mb) * 100
 
                         if usage_percent > 90:
-                            cache_health['status'] = 'warning'
-                            health['warnings'].append(
-                                f"{ctype.value} cache is {usage_percent:.1f}% full"
-                            )
+                            cache_health["status"] = "warning"
+                            health["warnings"].append(f"{ctype.value} cache is {usage_percent:.1f}% full")
 
-                health['caches'][ctype.value] = cache_health
+                health["caches"][ctype.value] = cache_health
 
             except Exception as e:
                 logger.error(f"Health check failed for {ctype.value} cache: {e}")
-                health['healthy'] = False
-                health['caches'][ctype.value] = {
-                    'status': 'unhealthy',
-                    'error': str(e)
-                }
+                health["healthy"] = False
+                health["caches"][ctype.value] = {"status": "unhealthy", "error": str(e)}
 
         return health
 

@@ -156,7 +156,7 @@ class ToolboxTool:
         auth_service_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]] | None = None,
         bound_params: Mapping[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any] | None = None,
         client_headers: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]] | str] | None = None,
-    ) -> "ToolboxTool":
+    ) -> ToolboxTool:
         """
         Creates a copy of the ToolboxTool, overriding specific fields.
 
@@ -258,7 +258,7 @@ class ToolboxTool:
     def add_auth_token_getters(
         self,
         auth_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]],
-    ) -> "ToolboxTool":
+    ) -> ToolboxTool:
         """
         Registers auth token getter functions that are used for AuthServices
         when tools are invoked.
@@ -320,7 +320,7 @@ class ToolboxTool:
         self,
         auth_source: str,
         get_id_token: Callable[[], str] | Callable[[], Awaitable[str]],
-    ) -> "ToolboxTool":
+    ) -> ToolboxTool:
         """
         Registers an auth token getter function that is used for AuthService
         when tools are invoked.
@@ -343,7 +343,7 @@ class ToolboxTool:
     def bind_params(
         self,
         bound_params: Mapping[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any],
-    ) -> "ToolboxTool":
+    ) -> ToolboxTool:
         """
         Binds parameters to values or callables that produce values.
 
@@ -383,7 +383,7 @@ class ToolboxTool:
         self,
         param_name: str,
         param_value: Callable[[], Any] | Callable[[], Awaitable[Any]] | Any,
-    ) -> "ToolboxTool":
+    ) -> ToolboxTool:
         """
         Binds a parameter to the value or callable that produce the value.
 

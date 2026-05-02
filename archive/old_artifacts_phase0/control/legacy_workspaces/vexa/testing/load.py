@@ -18,7 +18,7 @@ from typing import Any
 import pandas as pd
 
 # Use the fixed PyPI client
-sys.path.insert(0, '/Users/dmitriygrankin/dev/vexa-pypi-client')
+sys.path.insert(0, "/Users/dmitriygrankin/dev/vexa-pypi-client")
 from bot import Bot
 from vexa_client import VexaClient
 
@@ -44,21 +44,19 @@ def create_thread_safe_session():
     )
 
     # Create adapter with retry strategy
-    adapter = HTTPAdapter(
-        max_retries=retry_strategy,
-        pool_connections=10,
-        pool_maxsize=20
-    )
+    adapter = HTTPAdapter(max_retries=retry_strategy, pool_connections=10, pool_maxsize=20)
 
     # Mount adapter for both HTTP and HTTPS
     session.mount("http://", adapter)
     session.mount("https://", adapter)
 
     # Set headers
-    session.headers.update({
-        'User-Agent': 'Vexa-TestSuite/1.0',
-        'Connection': 'close'  # Prevent connection reuse issues
-    })
+    session.headers.update(
+        {
+            "User-Agent": "Vexa-TestSuite/1.0",
+            "Connection": "close",  # Prevent connection reuse issues
+        }
+    )
 
     return session
 
@@ -75,10 +73,7 @@ class TestSuite:
     - Snapshot functionality for pandas integration
     """
 
-    def __init__(self,
-                 base_url: str = "http://localhost:18056",
-                 admin_api_key: str | None = None,
-                 use_thread_safe_sessions: bool = True):
+    def __init__(self, base_url: str = "http://localhost:18056", admin_api_key: str | None = None, use_thread_safe_sessions: bool = True):
         """
         Initialize the TestSuite.
 
@@ -94,18 +89,14 @@ class TestSuite:
         # Initialize admin client if API key provided
         self.admin_client = None
         if admin_api_key:
-            self.admin_client = self._create_vexa_client(
-                base_url=base_url,
-                admin_key=admin_api_key
-            )
+            self.admin_client = self._create_vexa_client(base_url=base_url, admin_key=admin_api_key)
 
         # Test suite state
         self.users: list[VexaClient] = []
         self.bots: list[Bot] = []
         self.user_meeting_mapping: dict[int, str] = {}  # user_index -> meeting_url
 
-    def _create_vexa_client(self, base_url: str, api_key: str | None = None,
-                           admin_key: str | None = None, user_id: str | None = None) -> VexaClient:
+    def _create_vexa_client(self, base_url: str, api_key: str | None = None, admin_key: str | None = None, user_id: str | None = None) -> VexaClient:
         """
         Create a VexaClient instance.
 
@@ -118,11 +109,7 @@ class TestSuite:
         Returns:
             VexaClient instance
         """
-        return VexaClient(
-            base_url=base_url,
-            api_key=api_key,
-            admin_key=admin_key
-        )
+        return VexaClient(base_url=base_url, api_key=api_key, admin_key=admin_key)
 
     def create_users(self, num_users: int) -> list[VexaClient]:
         """
@@ -146,25 +133,21 @@ class TestSuite:
                 user_data = self.admin_client.create_user_and_set_id(
                     email=f"test_user_{i}_{random.randint(1000, 9999)}@example.com",
                     name=f"Test User {i}",
-                    max_concurrent_bots=2  # Allow multiple bots per user
+                    max_concurrent_bots=2,  # Allow multiple bots per user
                 )
 
                 # Create API token for the user
                 token_info = self.admin_client.create_token()
-                user_api_key = token_info['token']
+                user_api_key = token_info["token"]
 
                 # Create user client
-                user_client = self._create_vexa_client(
-                    base_url=self.base_url,
-                    api_key=user_api_key,
-                    user_id=user_data['id']
-                )
+                user_client = self._create_vexa_client(base_url=self.base_url, api_key=user_api_key, user_id=user_data["id"])
 
                 self.users.append(user_client)
-                print(f"Created user {i+1}/{num_users}: {user_data['email']}")
+                print(f"Created user {i + 1}/{num_users}: {user_data['email']}")
 
             except Exception as e:
-                print(f"Failed to create user {i+1}: {e}")
+                print(f"Failed to create user {i + 1}: {e}")
                 raise
 
         print(f"Successfully created {len(self.users)} users")
@@ -196,19 +179,15 @@ class TestSuite:
                 user_data = self.admin_client.create_user_and_set_id(
                     email=f"test_user_{start_index + i}_{random.randint(1000, 9999)}@example.com",
                     name=f"Test User {start_index + i}",
-                    max_concurrent_bots=2  # Allow multiple bots per user
+                    max_concurrent_bots=2,  # Allow multiple bots per user
                 )
 
                 # Create API token for the user
                 token_info = self.admin_client.create_token()
-                user_api_key = token_info['token']
+                user_api_key = token_info["token"]
 
                 # Create user client
-                user_client = self._create_vexa_client(
-                    base_url=self.base_url,
-                    api_key=user_api_key,
-                    user_id=user_data['id']
-                )
+                user_client = self._create_vexa_client(base_url=self.base_url, api_key=user_api_key, user_id=user_data["id"])
 
                 self.users.append(user_client)
                 new_users.append(user_client)
@@ -322,11 +301,7 @@ class TestSuite:
 
         for user_index, meeting_url in self.user_meeting_mapping.items():
             user_client = self.users[user_index]
-            bot = Bot(
-                user_client=user_client,
-                meeting_url=meeting_url,
-                bot_id=f"{bot_name_prefix}_{user_index}"
-            )
+            bot = Bot(user_client=user_client, meeting_url=meeting_url, bot_id=f"{bot_name_prefix}_{user_index}")
             self.bots.append(bot)
             print(f"Created bot {bot.bot_id} for user {user_index} -> {meeting_url}")
 
@@ -355,9 +330,9 @@ class TestSuite:
         for bot in self.bots:
             # Extract user index from bot_id (assuming format "prefix_index")
             try:
-                user_index = int(bot.bot_id.split('_')[-1])
+                user_index = int(bot.bot_id.split("_")[-1])
                 existing_bot_users.add(user_index)
-            except (ValueError, IndexError):
+            except ValueError, IndexError:
                 continue
 
         # Find unmapped users that need bots
@@ -377,11 +352,7 @@ class TestSuite:
             if user_index in self.user_meeting_mapping:
                 user_client = self.users[user_index]
                 meeting_url = self.user_meeting_mapping[user_index]
-                bot = Bot(
-                    user_client=user_client,
-                    meeting_url=meeting_url,
-                    bot_id=f"{bot_name_prefix}_{user_index}"
-                )
+                bot = Bot(user_client=user_client, meeting_url=meeting_url, bot_id=f"{bot_name_prefix}_{user_index}")
                 self.bots.append(bot)
                 new_bots.append(bot)
                 print(f"Created additional bot {bot.bot_id} for user {user_index} -> {meeting_url}")
@@ -389,8 +360,9 @@ class TestSuite:
         print(f"Successfully created {len(new_bots)} additional bots. Total bots: {len(self.bots)}")
         return new_bots
 
-    def start_all_bots(self, language: str = 'en', task: str = 'transcribe', max_workers: int = 5,
-                      distribution_seconds: float = 0.0) -> list[dict[str, Any]]:
+    def start_all_bots(
+        self, language: str = "en", task: str = "transcribe", max_workers: int = 5, distribution_seconds: float = 0.0
+    ) -> list[dict[str, Any]]:
         """
         Start all bots by calling create() on each one using threading with random time distribution.
 
@@ -424,10 +396,10 @@ class TestSuite:
                     print(f"Started bot {bot.bot_id}")
 
                 meeting_info = bot.create(language=language, task=task)
-                return {'bot_id': bot.bot_id, 'result': meeting_info}
+                return {"bot_id": bot.bot_id, "result": meeting_info}
             except Exception as e:
                 print(f"Failed to start bot {bot.bot_id}: {e}")
-                return {'bot_id': bot.bot_id, 'error': str(e)}
+                return {"bot_id": bot.bot_id, "error": str(e)}
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             # Submit all bot start tasks
@@ -436,13 +408,14 @@ class TestSuite:
             # Collect results as they complete
             for future in as_completed(future_to_bot):
                 result = future.result()
-                results.append(result.get('result', result.get('error')))
+                results.append(result.get("result", result.get("error")))
 
         print(f"Successfully started {len([r for r in results if 'error' not in r])} bots")
         return results
 
-    def start_new_bots(self, new_bots: list[Bot], language: str = 'en', task: str = 'transcribe', max_workers: int = 5,
-                      distribution_seconds: float = 0.0) -> list[dict[str, Any]]:
+    def start_new_bots(
+        self, new_bots: list[Bot], language: str = "en", task: str = "transcribe", max_workers: int = 5, distribution_seconds: float = 0.0
+    ) -> list[dict[str, Any]]:
         """
         Start only the newly created bots using threading with random time distribution.
 
@@ -478,10 +451,10 @@ class TestSuite:
                     print(f"Started new bot {bot.bot_id}")
 
                 meeting_info = bot.create(language=language, task=task)
-                return {'bot_id': bot.bot_id, 'result': meeting_info}
+                return {"bot_id": bot.bot_id, "result": meeting_info}
             except Exception as e:
                 print(f"Failed to start new bot {bot.bot_id}: {e}")
-                return {'bot_id': bot.bot_id, 'error': str(e)}
+                return {"bot_id": bot.bot_id, "error": str(e)}
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             # Submit all bot start tasks
@@ -490,7 +463,7 @@ class TestSuite:
             # Collect results as they complete
             for future in as_completed(future_to_bot):
                 result = future.result()
-                results.append(result.get('result', result.get('error')))
+                results.append(result.get("result", result.get("error")))
 
         print(f"Successfully started {len([r for r in results if 'error' not in r])} new bots")
         return results
@@ -516,12 +489,12 @@ class TestSuite:
             print(f"Warning: Target users ({target_users}) is less than current users ({current_users})")
             print("This method only adds users/bots, it doesn't remove them")
             return {
-                'users_added': 0,
-                'bots_added': 0,
-                'total_users': current_users,
-                'total_bots': len(self.bots),
-                'action': 'no_change',
-                'warning': f'Target ({target_users}) < current ({current_users})'
+                "users_added": 0,
+                "bots_added": 0,
+                "total_users": current_users,
+                "total_bots": len(self.bots),
+                "action": "no_change",
+                "warning": f"Target ({target_users}) < current ({current_users})",
             }
 
         # Check if we need to add users
@@ -533,13 +506,7 @@ class TestSuite:
 
         if users_to_add == 0 and current_bots >= bots_needed:
             print(f"Already at target of {target_users} users with {current_bots} bots")
-            return {
-                'users_added': 0,
-                'bots_added': 0,
-                'total_users': current_users,
-                'total_bots': current_bots,
-                'action': 'no_change'
-            }
+            return {"users_added": 0, "bots_added": 0, "total_users": current_users, "total_bots": current_bots, "action": "no_change"}
 
         print(f"Scaling from {current_users} users to {target_users} users (+{users_to_add})")
         print(f"Current bots: {current_bots}, Target bots: {bots_needed}")
@@ -553,13 +520,13 @@ class TestSuite:
         new_bots = self.add_bots(meeting_urls, bot_name_prefix)
 
         return {
-            'users_added': len(new_users),
-            'bots_added': len(new_bots),
-            'total_users': len(self.users),
-            'total_bots': len(self.bots),
-            'action': 'scaled_up' if (len(new_users) > 0 or len(new_bots) > 0) else 'no_change',
-            'new_users': new_users,
-            'new_bots': new_bots
+            "users_added": len(new_users),
+            "bots_added": len(new_bots),
+            "total_users": len(self.users),
+            "total_bots": len(self.bots),
+            "action": "scaled_up" if (len(new_users) > 0 or len(new_bots) > 0) else "no_change",
+            "new_users": new_users,
+            "new_bots": new_bots,
         }
 
     def stop_all_bots(self, max_workers: int = 5) -> list[dict[str, str]]:
@@ -583,13 +550,13 @@ class TestSuite:
                 if bot.created:
                     result = bot.stop()
                     print(f"Stopped bot {bot.bot_id}")
-                    return {'bot_id': bot.bot_id, 'result': result}
+                    return {"bot_id": bot.bot_id, "result": result}
                 else:
                     print(f"Bot {bot.bot_id} was not running")
-                    return {'bot_id': bot.bot_id, 'result': {'message': 'Bot was not running'}}
+                    return {"bot_id": bot.bot_id, "result": {"message": "Bot was not running"}}
             except Exception as e:
                 print(f"Failed to stop bot {bot.bot_id}: {e}")
-                return {'bot_id': bot.bot_id, 'error': str(e)}
+                return {"bot_id": bot.bot_id, "error": str(e)}
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             # Submit all bot stop tasks
@@ -598,7 +565,7 @@ class TestSuite:
             # Collect results as they complete
             for future in as_completed(future_to_bot):
                 result = future.result()
-                results.append(result.get('result', result.get('error')))
+                results.append(result.get("result", result.get("error")))
 
         return results
 
@@ -614,11 +581,7 @@ class TestSuite:
         Returns:
             Dictionary with current bot states and metadata
         """
-        snapshot_data = {
-            'timestamp': time.time(),
-            'datetime': datetime.now().isoformat(),
-            'bots': []
-        }
+        snapshot_data = {"timestamp": time.time(), "datetime": datetime.now().isoformat(), "bots": []}
 
         def get_bot_snapshot(bot):
             """Get snapshot data for a single bot."""
@@ -632,45 +595,38 @@ class TestSuite:
                 if bot.created:
                     try:
                         transcript = bot.get_transcript()
-                        segments = transcript.get('segments', [])
+                        segments = transcript.get("segments", [])
                         # Compute first/last segment absolute times using provided absolute timestamps only
                         first_segment_time = None
                         last_segment_start_time = None
                         last_segment_end_time = None
                         if segments:
-                            first_segment_time = segments[0].get('absolute_start_time')
-                            last_segment_start_time = segments[-1].get('absolute_start_time')
-                            last_segment_end_time = segments[-1].get('absolute_end_time')
+                            first_segment_time = segments[0].get("absolute_start_time")
+                            last_segment_start_time = segments[-1].get("absolute_start_time")
+                            last_segment_end_time = segments[-1].get("absolute_end_time")
                         transcript_data = {
-                            'segments': segments,
-                            'segments_count': len(segments),
-                            'has_transcript': len(segments) > 0,
-                            'first_segment_time': first_segment_time,
-                            'last_segment_time': last_segment_start_time,
-                            'last_segment_end_time': last_segment_end_time
+                            "segments": segments,
+                            "segments_count": len(segments),
+                            "has_transcript": len(segments) > 0,
+                            "first_segment_time": first_segment_time,
+                            "last_segment_time": last_segment_start_time,
+                            "last_segment_end_time": last_segment_end_time,
                         }
                     except Exception as e:
-                        transcript_data = {'error': str(e)}
+                        transcript_data = {"error": str(e)}
 
                     # Get status transitions from meeting data
                     try:
                         meeting_status = bot.get_meeting_status()
-                        if meeting_status and 'data' in meeting_status:
-                            status_transitions = meeting_status['data'].get('status_transition', [])
+                        if meeting_status and "data" in meeting_status:
+                            status_transitions = meeting_status["data"].get("status_transition", [])
                     except Exception as e:
-                        status_transitions = {'error': str(e)}
+                        status_transitions = {"error": str(e)}
 
-                return {
-                    **bot_stats,
-                    'transcript': transcript_data,
-                    'status_transitions': status_transitions
-                }
+                return {**bot_stats, "transcript": transcript_data, "status_transitions": status_transitions}
 
             except Exception as e:
-                return {
-                    'bot_id': bot.bot_id,
-                    'error': str(e)
-                }
+                return {"bot_id": bot.bot_id, "error": str(e)}
 
         # Use threading to get bot snapshots concurrently
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -680,7 +636,7 @@ class TestSuite:
             # Collect results as they complete
             for future in as_completed(future_to_bot):
                 bot_snapshot = future.result()
-                snapshot_data['bots'].append(bot_snapshot)
+                snapshot_data["bots"].append(bot_snapshot)
 
         return snapshot_data
 
@@ -699,61 +655,64 @@ class TestSuite:
             snapshot_data = self.snapshot()
 
         rows = []
-        for bot_data in snapshot_data['bots']:
-            if 'error' in bot_data:
+        for bot_data in snapshot_data["bots"]:
+            if "error" in bot_data:
                 continue
 
             row = {
-                'timestamp': snapshot_data['timestamp'],
-                'datetime': snapshot_data['datetime'],
-                'bot_id': bot_data['bot_id'],
-                'meeting_url': bot_data['meeting_url'],
-                'platform': bot_data['platform'],
-                'native_meeting_id': bot_data['native_meeting_id'],
-                'created': bot_data['created'],
-                'meeting_status': bot_data.get('meeting_status'),
-                'created_at': bot_data.get('created_at'),
-                'end_time': bot_data.get('end_time'),
-                'first_transcript_time': bot_data.get('first_transcript_time'),
-                'last_transcript_time': bot_data.get('last_transcript_time'),
+                "timestamp": snapshot_data["timestamp"],
+                "datetime": snapshot_data["datetime"],
+                "bot_id": bot_data["bot_id"],
+                "meeting_url": bot_data["meeting_url"],
+                "platform": bot_data["platform"],
+                "native_meeting_id": bot_data["native_meeting_id"],
+                "created": bot_data["created"],
+                "meeting_status": bot_data.get("meeting_status"),
+                "created_at": bot_data.get("created_at"),
+                "end_time": bot_data.get("end_time"),
+                "first_transcript_time": bot_data.get("first_transcript_time"),
+                "last_transcript_time": bot_data.get("last_transcript_time"),
             }
 
             # Add transcript data if available
-            if bot_data.get('transcript'):
-                transcript = bot_data['transcript']
+            if bot_data.get("transcript"):
+                transcript = bot_data["transcript"]
 
                 # Extract languages from segments
                 languages = set()
-                segments = transcript.get('segments', [])
+                segments = transcript.get("segments", [])
                 for segment in segments:
-                    if 'language' in segment:
-                        languages.add(segment['language'])
+                    if "language" in segment:
+                        languages.add(segment["language"])
 
-                row.update({
-                    'segments_count': len(segments),
-                    'has_transcript': len(segments) > 0,
-                    'first_segment_time': transcript.get('first_segment_time'),
-                    'last_segment_time': transcript.get('last_segment_time'),
-                    'last_segment_end_time': transcript.get('last_segment_end_time'),
-                    'transcript_error': transcript.get('error'),
-                    'detected_languages': list(languages) if languages else [],
-                    'languages_count': len(languages)
-                })
+                row.update(
+                    {
+                        "segments_count": len(segments),
+                        "has_transcript": len(segments) > 0,
+                        "first_segment_time": transcript.get("first_segment_time"),
+                        "last_segment_time": transcript.get("last_segment_time"),
+                        "last_segment_end_time": transcript.get("last_segment_end_time"),
+                        "transcript_error": transcript.get("error"),
+                        "detected_languages": list(languages) if languages else [],
+                        "languages_count": len(languages),
+                    }
+                )
 
             # Compute baseline t0 and status transition durations
             # t0 preference: created_at if present else first transition timestamp
-            transitions = bot_data.get('status_transitions') or []
+            transitions = bot_data.get("status_transitions") or []
             t0 = None
             try:
                 import pandas as pd
-                if bot_data.get('created_at'):
-                    t0 = pd.to_datetime(bot_data['created_at'])
+
+                if bot_data.get("created_at"):
+                    t0 = pd.to_datetime(bot_data["created_at"])
                 elif transitions:
-                    first_ts = transitions[0].get('timestamp')
+                    first_ts = transitions[0].get("timestamp")
                     t0 = pd.to_datetime(first_ts) if first_ts else None
             except Exception:
                 t0 = None
-            row['t0'] = t0.isoformat() if t0 is not None else None
+            row["t0"] = t0.isoformat() if t0 is not None else None
 
             # Determine milestone timestamps
             joining_ts = None
@@ -762,17 +721,17 @@ class TestSuite:
             requested_ts = None
             try:
                 for tr in transitions:
-                    to_state = tr.get('to')
-                    ts = tr.get('timestamp')
+                    to_state = tr.get("to")
+                    ts = tr.get("timestamp")
                     ts_dt = pd.to_datetime(ts) if ts else None
-                    if to_state == 'joining' and joining_ts is None:
+                    if to_state == "joining" and joining_ts is None:
                         joining_ts = ts_dt
                         # If the first transition is from requested, infer requested at created_at
-                        if tr.get('from') == 'requested' and bot_data.get('created_at'):
-                            requested_ts = pd.to_datetime(bot_data['created_at'])
-                    elif to_state == 'awaiting_admission' and awaiting_admission_ts is None:
+                        if tr.get("from") == "requested" and bot_data.get("created_at"):
+                            requested_ts = pd.to_datetime(bot_data["created_at"])
+                    elif to_state == "awaiting_admission" and awaiting_admission_ts is None:
                         awaiting_admission_ts = ts_dt
-                    elif to_state == 'active' and active_ts is None:
+                    elif to_state == "active" and active_ts is None:
                         active_ts = ts_dt
             except Exception:
                 pass
@@ -786,58 +745,62 @@ class TestSuite:
                 except Exception:
                     return None
 
-            row['time_0_to_requested'] = diff_seconds(t0, requested_ts) if requested_ts is not None else (0.0 if t0 is not None and requested_ts is None and transitions and transitions[0].get('from') == 'requested' else None)
-            row['time_requested_to_joining'] = diff_seconds(requested_ts, joining_ts)
-            row['time_joining_to_awaiting_admission'] = diff_seconds(joining_ts, awaiting_admission_ts)
-            row['time_awaiting_admission_to_active'] = diff_seconds(awaiting_admission_ts, active_ts)
+            row["time_0_to_requested"] = (
+                diff_seconds(t0, requested_ts)
+                if requested_ts is not None
+                else (0.0 if t0 is not None and requested_ts is None and transitions and transitions[0].get("from") == "requested" else None)
+            )
+            row["time_requested_to_joining"] = diff_seconds(requested_ts, joining_ts)
+            row["time_joining_to_awaiting_admission"] = diff_seconds(joining_ts, awaiting_admission_ts)
+            row["time_awaiting_admission_to_active"] = diff_seconds(awaiting_admission_ts, active_ts)
 
             # Current/last status
             if transitions:
-                row['current_status'] = transitions[-1].get('to')
-                row['initial_status'] = transitions[0].get('from')
-                row['last_transition_time'] = transitions[-1].get('timestamp')
+                row["current_status"] = transitions[-1].get("to")
+                row["initial_status"] = transitions[0].get("from")
+                row["last_transition_time"] = transitions[-1].get("timestamp")
             else:
-                row['current_status'] = bot_data.get('meeting_status')
-                row['initial_status'] = None
-                row['last_transition_time'] = None
-            row['status_transitions'] = transitions if transitions else None
-            row['status_transitions_count'] = len(transitions) if transitions else 0
-            row['completion_reason'] = transitions[-1].get('completion_reason') if transitions else None
+                row["current_status"] = bot_data.get("meeting_status")
+                row["initial_status"] = None
+                row["last_transition_time"] = None
+            row["status_transitions"] = transitions if transitions else None
+            row["status_transitions_count"] = len(transitions) if transitions else 0
+            row["completion_reason"] = transitions[-1].get("completion_reason") if transitions else None
 
             # Active to first transcript latency
-            first_segment_time = row.get('first_segment_time')
+            first_segment_time = row.get("first_segment_time")
             if active_ts is not None and first_segment_time:
                 try:
                     first_dt = pd.to_datetime(first_segment_time)
                     # Make active_ts timezone-aware to match first_dt
                     if active_ts.tz is None and first_dt.tz is not None:
-                        active_ts = active_ts.tz_localize('UTC')
+                        active_ts = active_ts.tz_localize("UTC")
                     elif active_ts.tz is not None and first_dt.tz is None:
-                        first_dt = first_dt.tz_localize('UTC')
-                    row['active_to_first_transcript'] = (first_dt - active_ts).total_seconds()
+                        first_dt = first_dt.tz_localize("UTC")
+                    row["active_to_first_transcript"] = (first_dt - active_ts).total_seconds()
                 except Exception:
-                    row['active_to_first_transcript'] = None
+                    row["active_to_first_transcript"] = None
             else:
-                row['active_to_first_transcript'] = None
+                row["active_to_first_transcript"] = None
 
             # Transcription latency: last segment end minus time when transcript was requested
             # Use created_at as the time when transcript was requested
-            last_segment_end_time = row.get('last_segment_end_time')
-            created_at = bot_data.get('created_at')
+            last_segment_end_time = row.get("last_segment_end_time")
+            created_at = bot_data.get("created_at")
             if created_at and last_segment_end_time:
                 try:
                     created_dt = pd.to_datetime(created_at)
                     last_end_dt = pd.to_datetime(last_segment_end_time)
                     # Make timezones consistent
                     if created_dt.tz is None and last_end_dt.tz is not None:
-                        created_dt = created_dt.tz_localize('UTC')
+                        created_dt = created_dt.tz_localize("UTC")
                     elif created_dt.tz is not None and last_end_dt.tz is None:
-                        last_end_dt = last_end_dt.tz_localize('UTC')
-                    row['transcription_latency'] = (pd.Timestamp.now(tz='UTC') - last_end_dt).total_seconds()
+                        last_end_dt = last_end_dt.tz_localize("UTC")
+                    row["transcription_latency"] = (pd.Timestamp.now(tz="UTC") - last_end_dt).total_seconds()
                 except Exception:
-                    row['transcription_latency'] = None
+                    row["transcription_latency"] = None
             else:
-                row['transcription_latency'] = None
+                row["transcription_latency"] = None
 
             rows.append(row)
 
@@ -876,19 +839,16 @@ class TestSuite:
             Dictionary with summary statistics
         """
         summary = {
-            'total_users': len(self.users),
-            'total_bots': len(self.bots),
-            'created_bots': len([b for b in self.bots if b.created]),
-            'user_meeting_mapping': self.user_meeting_mapping
+            "total_users": len(self.users),
+            "total_bots": len(self.bots),
+            "created_bots": len([b for b in self.bots if b.created]),
+            "user_meeting_mapping": self.user_meeting_mapping,
         }
         # Calculate a quick snapshot-based metric
         try:
             snap = self.snapshot()
-            summary['latest_snapshot_time'] = snap.get('datetime')
-            summary['bots_with_transcripts'] = len([
-                b for b in snap.get('bots', [])
-                if b.get('transcript', {}).get('has_transcript', False)
-            ])
+            summary["latest_snapshot_time"] = snap.get("datetime")
+            summary["bots_with_transcripts"] = len([b for b in snap.get("bots", []) if b.get("transcript", {}).get("has_transcript", False)])
         except Exception:
             pass
         return summary
@@ -906,27 +866,28 @@ class TestSuite:
         if not transitions:
             return "No transitions"
 
-        if isinstance(transitions, dict) and 'error' in transitions:
+        if isinstance(transitions, dict) and "error" in transitions:
             return f"Error: {transitions['error']}"
 
         # Create a flow representation
         flow_parts = []
         for i, transition in enumerate(transitions):
-            from_status = transition.get('from', 'unknown')
-            to_status = transition.get('to', 'unknown')
-            timestamp = transition.get('timestamp', '')
-            source = transition.get('source', '')
+            from_status = transition.get("from", "unknown")
+            to_status = transition.get("to", "unknown")
+            timestamp = transition.get("timestamp", "")
+            source = transition.get("source", "")
 
             # Format timestamp (show only time part)
             if timestamp:
                 try:
                     from datetime import datetime
-                    dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
-                    time_str = dt.strftime('%H:%M:%S')
+
+                    dt = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+                    time_str = dt.strftime("%H:%M:%S")
                 except:
                     time_str = timestamp[-8:] if len(timestamp) > 8 else timestamp
             else:
-                time_str = ''
+                time_str = ""
 
             # Create transition arrow
             arrow = f"{from_status} → {to_status}"
@@ -954,18 +915,18 @@ class TestSuite:
 
         # Convert language codes to readable names if needed
         lang_names = {
-            'en': 'English',
-            'es': 'Spanish',
-            'fr': 'French',
-            'de': 'German',
-            'it': 'Italian',
-            'pt': 'Portuguese',
-            'ru': 'Russian',
-            'zh': 'Chinese',
-            'ja': 'Japanese',
-            'ko': 'Korean',
-            'ar': 'Arabic',
-            'hi': 'Hindi'
+            "en": "English",
+            "es": "Spanish",
+            "fr": "French",
+            "de": "German",
+            "it": "Italian",
+            "pt": "Portuguese",
+            "ru": "Russian",
+            "zh": "Chinese",
+            "ja": "Japanese",
+            "ko": "Korean",
+            "ar": "Arabic",
+            "hi": "Hindi",
         }
 
         formatted_langs = []
@@ -991,34 +952,56 @@ class TestSuite:
             return df
 
         # Add formatted status transitions
-        df['status_flow'] = df['status_transitions'].apply(
-            lambda x: self.format_status_transitions(x) if pd.notna(x) else "No data"
-        )
+        df["status_flow"] = df["status_transitions"].apply(lambda x: self.format_status_transitions(x) if pd.notna(x) else "No data")
 
         # Add formatted languages
-        df['languages_formatted'] = df['detected_languages'].apply(
+        df["languages_formatted"] = df["detected_languages"].apply(
             lambda x: self.format_languages(x) if pd.notna(x) and (isinstance(x, list) and len(x) > 0) else "No languages detected"
         )
 
         # Add latency column: last_transition_time - t0
-        df['latency'] = pd.to_datetime(df['last_transition_time']) - pd.to_datetime(df['t0'])
+        df["latency"] = pd.to_datetime(df["last_transition_time"]) - pd.to_datetime(df["t0"])
 
         # Convert all timestamp columns to datetime
-        timestamp_cols = ['t0', 'created_at', 'end_time', 'first_transcript_time', 'last_transcript_time',
-                         'first_segment_time', 'last_segment_time', 'last_segment_end_time', 'last_transition_time']
+        timestamp_cols = [
+            "t0",
+            "created_at",
+            "end_time",
+            "first_transcript_time",
+            "last_transcript_time",
+            "first_segment_time",
+            "last_segment_time",
+            "last_segment_end_time",
+            "last_transition_time",
+        ]
         for col in timestamp_cols:
             if col in df.columns:
                 df[col] = pd.to_datetime(df[col])
 
         # Select relevant columns for status monitoring
         status_cols = [
-            'bot_id', 'platform', 'meeting_status', 'current_status', 'created',
-            'segments_count', 'detected_languages', 'languages_count', 'languages_formatted',
-            'transcription_latency', 'active_to_first_transcript', 'latency',
-            'time_0_to_requested', 'time_requested_to_joining',
-            'time_joining_to_awaiting_admission', 'time_awaiting_admission_to_active',
-            'last_segment_time', 'last_segment_end_time', 'last_transition_time',
-            'status_transitions_count', 'completion_reason', 'status_flow'
+            "bot_id",
+            "platform",
+            "meeting_status",
+            "current_status",
+            "created",
+            "segments_count",
+            "detected_languages",
+            "languages_count",
+            "languages_formatted",
+            "transcription_latency",
+            "active_to_first_transcript",
+            "latency",
+            "time_0_to_requested",
+            "time_requested_to_joining",
+            "time_joining_to_awaiting_admission",
+            "time_awaiting_admission_to_active",
+            "last_segment_time",
+            "last_segment_end_time",
+            "last_transition_time",
+            "status_transitions_count",
+            "completion_reason",
+            "status_flow",
         ]
 
         # Only include columns that exist

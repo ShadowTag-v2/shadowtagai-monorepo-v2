@@ -12,11 +12,13 @@ lfDEVNULL = subprocess.DEVNULL
 
 max_count = int(lfEval("g:Lf_MaxCount"))
 
+
 class AsyncExecutor:
     """
     A class to implement executing a command in subprocess, then
     read the output asynchronously.
     """
+
     def __init__(self, no_limit=False):
         self._errQueue = None
         self._process = None
@@ -35,33 +37,37 @@ class AsyncExecutor:
         finally:
             queue.put(None)
 
-    def execute(self, cmd, encoding=None, cleanup=None, env=None,
-                raise_except=True, format_line=None, cwd=None):
-        if os.name == 'nt':
-            self._process = subprocess.Popen(cmd, bufsize=-1,
-                                             stdin=lfDEVNULL,
-                                             stdout=subprocess.PIPE,
-                                             stderr=subprocess.PIPE,
-                                             shell=True,
-                                             cwd=cwd,
-                                             env=env,
-                                             universal_newlines=False)
+    def execute(self, cmd, encoding=None, cleanup=None, env=None, raise_except=True, format_line=None, cwd=None):
+        if os.name == "nt":
+            self._process = subprocess.Popen(
+                cmd,
+                bufsize=-1,
+                stdin=lfDEVNULL,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                shell=True,
+                cwd=cwd,
+                env=env,
+                universal_newlines=False,
+            )
         else:
-            self._process = subprocess.Popen(cmd, bufsize=-1,
-                                             stdin=lfDEVNULL,
-                                             stdout=subprocess.PIPE,
-                                             stderr=subprocess.PIPE,
-                                             preexec_fn=os.setsid,
-                                             shell=True,
-                                             cwd=cwd,
-                                             env=env,
-                                             universal_newlines=False)
+            self._process = subprocess.Popen(
+                cmd,
+                bufsize=-1,
+                stdin=lfDEVNULL,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                preexec_fn=os.setsid,
+                shell=True,
+                cwd=cwd,
+                env=env,
+                universal_newlines=False,
+            )
 
         self._errQueue = Queue.Queue()
         self._finished = False
 
-        stderr_thread = threading.Thread(target=self._readerThread,
-                                         args=(self._process.stderr, self._errQueue))
+        stderr_thread = threading.Thread(target=self._readerThread, args=(self._process.stderr, self._errQueue))
         stderr_thread.daemon = True
         stderr_thread.start()
 
@@ -72,14 +78,12 @@ class AsyncExecutor:
                     for line in source:
                         try:
                             line.decode("ascii")
-                            yield (
-                                format_line(line.rstrip(b"\r\n").decode())
-                            ) if format_line else line.rstrip(b"\r\n").decode()
+                            yield (format_line(line.rstrip(b"\r\n").decode())) if format_line else line.rstrip(b"\r\n").decode()
                         except UnicodeDecodeError:
                             yield (
-                                format_line(lfBytes2Str(line.rstrip(b"\r\n"), encoding))
-                            ) if format_line else (
-                                lfBytes2Str(line.rstrip(b"\r\n"), encoding)
+                                (format_line(lfBytes2Str(line.rstrip(b"\r\n"), encoding)))
+                                if format_line
+                                else (lfBytes2Str(line.rstrip(b"\r\n"), encoding))
                             )
                         if self._max_count > 0:
                             count += 1
@@ -90,13 +94,9 @@ class AsyncExecutor:
                     for line in source:
                         try:
                             line.decode("ascii")
-                            yield (
-                                format_line(line.rstrip(b"\r\n").decode())
-                            ) if format_line else line.rstrip(b"\r\n").decode()
+                            yield (format_line(line.rstrip(b"\r\n").decode())) if format_line else line.rstrip(b"\r\n").decode()
                         except UnicodeDecodeError:
-                            yield (
-                                format_line(lfBytes2Str(line.rstrip(b"\r\n")))
-                            ) if format_line else lfBytes2Str(line.rstrip(b"\r\n"))
+                            yield (format_line(lfBytes2Str(line.rstrip(b"\r\n")))) if format_line else lfBytes2Str(line.rstrip(b"\r\n"))
                         if self._max_count > 0:
                             count += 1
                             if count >= self._max_count:
@@ -131,7 +131,7 @@ class AsyncExecutor:
         # Popen.poll always returns None, bug?
         # if self._process and not self._process.poll():
         if self._process and not self._finished:
-            if os.name == 'nt':
+            if os.name == "nt":
                 subprocess.Popen(f"TASKKILL /F /PID {self._process.pid} /T", shell=True)
             else:
                 try:
@@ -167,6 +167,7 @@ class AsyncExecutor:
         # for python2
         def next(self):
             return next(self._g)
+
 
 if __name__ == "__main__":
     executor = AsyncExecutor()

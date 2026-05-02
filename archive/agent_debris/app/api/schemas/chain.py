@@ -1,11 +1,12 @@
 """Receipt Chain API Schemas"""
 
 from pydantic import BaseModel
-from typing import List, Dict, Any
+from typing import Any
 
 
 class ChainSummary(BaseModel):
     """Summary of a receipt chain"""
+
     chain_id: str
     created_at: str
     updated_at: str
@@ -15,6 +16,7 @@ class ChainSummary(BaseModel):
 
 class ReceiptDetail(BaseModel):
     """Detailed receipt information"""
+
     chain_id: str
     operation_id: str
     operation_type: str
@@ -27,6 +29,7 @@ class ReceiptDetail(BaseModel):
 
 class VerificationResult(BaseModel):
     """Chain verification result"""
+
     is_valid: bool
     errors: list[str]
     warnings: list[str]

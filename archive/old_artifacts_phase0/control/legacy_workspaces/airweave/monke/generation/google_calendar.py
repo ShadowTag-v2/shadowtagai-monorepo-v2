@@ -1,13 +1,10 @@
 """Google Calendar-specific generation adapter: event generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.google_calendar import GoogleCalendarArtifact
 
 
-async def generate_google_calendar_artifact(
-    model: str, token: str, is_update: bool = False
-) -> tuple[str, str, float]:
+async def generate_google_calendar_artifact(model: str, token: str, is_update: bool = False) -> tuple[str, str, float]:
     """Generate a Google Calendar event via LLM.
 
     Returns (title, description, duration_hours). The token must be embedded in the output by instruction.

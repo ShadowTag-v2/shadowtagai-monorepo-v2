@@ -18,35 +18,31 @@ from google.genai import types
 
 
 async def update_state(tool_context: ToolContext, key: str, value: str) -> dict:
-  """Updates a state value."""
-  tool_context.state[key] = value
-  return {"status": f"Updated state '{key}' to '{value}'"}
+    """Updates a state value."""
+    tool_context.state[key] = value
+    return {"status": f"Updated state '{key}' to '{value}'"}
 
 
 async def load_state(tool_context: ToolContext, key: str) -> dict:
-  """Loads a state value."""
-  return {key: tool_context.state.get(key)}
+    """Loads a state value."""
+    return {key: tool_context.state.get(key)}
 
 
-async def save_artifact(
-    tool_context: ToolContext, filename: str, content: str
-) -> dict:
-  """Saves an artifact with the given filename and content."""
-  artifact_bytes = content.encode("utf-8")
-  artifact_part = types.Part(
-      inline_data=types.Blob(mime_type="text/plain", data=artifact_bytes)
-  )
-  version = await tool_context.save_artifact(filename, artifact_part)
-  return {"status": "success", "filename": filename, "version": version}
+async def save_artifact(tool_context: ToolContext, filename: str, content: str) -> dict:
+    """Saves an artifact with the given filename and content."""
+    artifact_bytes = content.encode("utf-8")
+    artifact_part = types.Part(inline_data=types.Blob(mime_type="text/plain", data=artifact_bytes))
+    version = await tool_context.save_artifact(filename, artifact_part)
+    return {"status": "success", "filename": filename, "version": version}
 
 
 async def load_artifact(tool_context: ToolContext, filename: str) -> dict:
-  """Loads an artifact with the given filename."""
-  artifact = await tool_context.load_artifact(filename)
-  if not artifact:
-    return {"error": f"Artifact '{filename}' not found"}
-  content = artifact.inline_data.data.decode("utf-8")
-  return {"filename": filename, "content": content}
+    """Loads an artifact with the given filename."""
+    artifact = await tool_context.load_artifact(filename)
+    if not artifact:
+        return {"error": f"Artifact '{filename}' not found"}
+    content = artifact.inline_data.data.decode("utf-8")
+    return {"filename": filename, "content": content}
 
 
 # Create the agent
