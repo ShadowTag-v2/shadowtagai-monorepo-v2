@@ -43,7 +43,16 @@ import time
 from pathlib import Path
 from typing import Any
 
+from circuit_breaker.telemetry_bridge import default_registry as _cb_registry
+
 logger = logging.getLogger(__name__)
+
+# Register the Firestore circuit breaker with production-tuned thresholds:
+#   - 3 consecutive failures → OPEN (Firestore is usually fast, 3 failures = real outage)
+#   - 120s reset timeout (GCP control plane recovery window)
+_firestore_breaker = _cb_registry.get_or_create(
+    "firestore", failure_threshold=3, reset_timeout_s=120.0
+)
 
 # Rate limiting constants
 RATELIMIT_FILE = Path(os.environ.get("BEADS_DIR", ".beads")) / "sweep_ratelimit.json"
@@ -123,6 +132,11 @@ def persist_sweep_result(
     Returns:
         The Firestore document ID, or None if persistence failed/disabled.
     """
+    # Circuit breaker gate — fail fast if Firestore is known-down
+    if not _firestore_breaker.allow_request():
+        logger.warning("Circuit breaker OPEN for firestore — SweepResult not persisted")
+        return None
+
     client = _get_firestore_client()
     if client is None:
         logger.info("Firestore persistence disabled — SweepResult not persisted")
@@ -143,9 +157,11 @@ def persist_sweep_result(
 
         _, doc_ref = client.collection(COLLECTION).add(doc_data)
         doc_id = doc_ref.id
+        _firestore_breaker.record_success()
         logger.info("SweepResult persisted to Firestore: %s/%s", COLLECTION, doc_id)
         return doc_id
     except Exception as exc:
+        _firestore_breaker.record_failure()
         logger.error("Firestore persist failed: %s", exc)
         return None
 
@@ -166,6 +182,10 @@ def query_recent_sweeps(
     Returns:
         List of sweep result dicts, most recent first.
     """
+    if not _firestore_breaker.allow_request():
+        logger.warning("Circuit breaker OPEN for firestore — query_recent_sweeps skipped")
+        return []
+
     client = _get_firestore_client()
     if client is None:
         return []
@@ -185,14 +205,20 @@ def query_recent_sweeps(
             data = doc.to_dict()
             data["doc_id"] = doc.id
             results.append(data)
+        _firestore_breaker.record_success()
         return results
     except Exception as exc:
+        _firestore_breaker.record_failure()
         logger.error("Firestore query failed: %s", exc)
         return []
 
 
 def get_sweep_by_id(doc_id: str) -> dict[str, Any] | None:
     """Retrieve a single sweep result by its document ID."""
+    if not _firestore_breaker.allow_request():
+        logger.warning("Circuit breaker OPEN for firestore — get_sweep_by_id skipped")
+        return None
+
     client = _get_firestore_client()
     if client is None:
         return None
@@ -202,9 +228,12 @@ def get_sweep_by_id(doc_id: str) -> dict[str, Any] | None:
         if doc.exists:
             data = doc.to_dict()
             data["doc_id"] = doc.id
+            _firestore_breaker.record_success()
             return data
+        _firestore_breaker.record_success()
         return None
     except Exception as exc:
+        _firestore_breaker.record_failure()
         logger.error("Firestore get failed: %s", exc)
         return None
 
@@ -285,6 +314,10 @@ def enforce_ttl(*, ttl_days: int | None = None) -> int:
     Returns:
         Number of documents deleted.
     """
+    if not _firestore_breaker.allow_request():
+        logger.warning("Circuit breaker OPEN for firestore — TTL enforcement skipped")
+        return 0
+
     client = _get_firestore_client()
     if client is None:
         return 0
@@ -337,6 +370,10 @@ def persist_pair_session(
     Returns:
         The Firestore document ID, or None if persistence failed/disabled.
     """
+    if not _firestore_breaker.allow_request():
+        logger.warning("Circuit breaker OPEN for firestore — PairSession not persisted")
+        return None
+
     client = _get_firestore_client()
     if client is None:
         logger.info("Firestore persistence disabled — PairSession not persisted")
@@ -365,9 +402,11 @@ def persist_pair_session(
         doc_data["created_at"] = fs.SERVER_TIMESTAMP
         _, doc_ref = client.collection(PAIR_SESSION_COLLECTION).add(doc_data)
         doc_id = doc_ref.id
+        _firestore_breaker.record_success()
         logger.info("PairSession persisted to Firestore: %s/%s", PAIR_SESSION_COLLECTION, doc_id)
         return doc_id
     except Exception as exc:
+        _firestore_breaker.record_failure()
         logger.error("PairSession persist failed: %s", exc)
         return None
 
@@ -386,6 +425,10 @@ def query_recent_sessions(
     Returns:
         List of session dicts, most recent first.
     """
+    if not _firestore_breaker.allow_request():
+        logger.warning("Circuit breaker OPEN for firestore — query_recent_sessions skipped")
+        return []
+
     client = _get_firestore_client()
     if client is None:
         return []
@@ -401,7 +444,9 @@ def query_recent_sessions(
             data = doc.to_dict()
             data["doc_id"] = doc.id
             results.append(data)
+        _firestore_breaker.record_success()
         return results
     except Exception as exc:
+        _firestore_breaker.record_failure()
         logger.error("Firestore session query failed: %s", exc)
         return []

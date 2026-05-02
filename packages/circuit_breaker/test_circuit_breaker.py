@@ -30,6 +30,7 @@ from circuit_breaker.breaker import (
     CircuitBreaker,
     CircuitBreakerOpenError,
     CircuitBreakerState,
+    FailureMode,
 )
 from circuit_breaker.registry import CircuitBreakerRegistry
 
@@ -509,3 +510,276 @@ class TestEdgeCases:
             assert b.state == CircuitBreakerState.HALF_OPEN
             b.record_success()
             assert b.state == CircuitBreakerState.CLOSED
+
+
+# ───────────────────────────────────────────────────────────────────
+# Sliding Window Mode
+# ───────────────────────────────────────────────────────────────────
+
+
+class TestSlidingWindow:
+    """Validate SLIDING_WINDOW failure counting mode."""
+
+    def test_trips_on_window_threshold(self) -> None:
+        b = CircuitBreaker(
+            "sliding_svc",
+            failure_threshold=3,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=10.0,
+        )
+        b.record_failure()
+        b.record_failure()
+        assert b.state == CircuitBreakerState.CLOSED
+        b.record_failure()
+        assert b.state == CircuitBreakerState.OPEN
+
+    def test_does_not_trip_below_threshold(self) -> None:
+        b = CircuitBreaker(
+            "sliding_safe",
+            failure_threshold=5,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=10.0,
+        )
+        for _ in range(4):
+            b.record_failure()
+        assert b.state == CircuitBreakerState.CLOSED
+
+    def test_window_pruning_prevents_trip(self) -> None:
+        """Failures outside the window should NOT count toward threshold."""
+        b = CircuitBreaker(
+            "sliding_prune",
+            failure_threshold=3,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=0.05,  # 50ms window
+        )
+        b.record_failure()
+        b.record_failure()
+        time.sleep(0.07)  # Wait for events to expire
+        b.record_failure()
+        # Only 1 failure in window — should stay closed
+        assert b.state == CircuitBreakerState.CLOSED
+
+    def test_window_failures_property(self) -> None:
+        b = CircuitBreaker(
+            "sliding_count",
+            failure_threshold=100,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=10.0,
+        )
+        b.record_failure()
+        b.record_success()
+        b.record_failure()
+        assert b.window_failures == 2
+
+    def test_window_failures_returns_zero_in_consecutive_mode(self) -> None:
+        b = CircuitBreaker("consec_svc", failure_threshold=3)
+        b.record_failure()
+        assert b.window_failures == 0
+
+    def test_success_interspersed_still_trips(self) -> None:
+        """In SLIDING_WINDOW, successes don't reset the failure count."""
+        b = CircuitBreaker(
+            "sliding_mixed",
+            failure_threshold=3,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=10.0,
+        )
+        b.record_failure()
+        b.record_success()
+        b.record_failure()
+        b.record_success()
+        b.record_failure()
+        # 3 failures in window — should trip even with successes between
+        assert b.state == CircuitBreakerState.OPEN
+
+    def test_snapshot_includes_window_fields(self) -> None:
+        b = CircuitBreaker(
+            "sliding_snap",
+            failure_threshold=5,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=30.0,
+        )
+        b.record_failure()
+        snap = b.snapshot()
+        assert snap["failure_mode"] == "sliding_window"
+        assert snap["window_s"] == 30.0
+        assert snap["window_failures"] == 1
+
+    def test_repr_includes_mode_tag(self) -> None:
+        b = CircuitBreaker(
+            "sliding_repr",
+            failure_threshold=5,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+        )
+        r = repr(b)
+        assert "sliding_window" in r
+
+    def test_reset_clears_window_events(self) -> None:
+        b = CircuitBreaker(
+            "sliding_reset",
+            failure_threshold=100,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=10.0,
+        )
+        b.record_failure()
+        b.record_failure()
+        assert b.window_failures == 2
+        b.reset()
+        assert b.window_failures == 0
+
+    def test_recovery_after_trip(self) -> None:
+        b = CircuitBreaker(
+            "sliding_recover",
+            failure_threshold=2,
+            reset_timeout_s=0.05,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=10.0,
+        )
+        b.record_failure()
+        b.record_failure()
+        assert b.state == CircuitBreakerState.OPEN
+
+        time.sleep(0.06)
+        assert b.state == CircuitBreakerState.HALF_OPEN
+
+        b.record_success()
+        assert b.state == CircuitBreakerState.CLOSED
+
+
+# ───────────────────────────────────────────────────────────────────
+# Dashboard
+# ───────────────────────────────────────────────────────────────────
+
+
+class TestDashboard:
+    """Validate dashboard health reporting."""
+
+    def test_empty_report(self) -> None:
+        from circuit_breaker.dashboard import format_health_table
+
+        report = {"services": {}, "summary": {}, "timestamp": 0}
+        result = format_health_table(report)
+        assert "No circuit breakers registered" in result
+
+    def test_format_table_contains_service_names(self) -> None:
+        from circuit_breaker.dashboard import format_health_table
+
+        report = {
+            "services": {
+                "firestore": {
+                    "state": "closed",
+                    "consecutive_failures": 0,
+                    "failure_threshold": 3,
+                },
+                "gemini": {
+                    "state": "open",
+                    "consecutive_failures": 5,
+                    "failure_threshold": 5,
+                    "seconds_until_probe": 42.0,
+                },
+            },
+            "summary": {
+                "total_breakers": 2,
+                "closed": 1,
+                "open": 1,
+                "half_open": 0,
+                "open_services": ["gemini"],
+                "health_status": "degraded",
+            },
+            "timestamp": time.time(),
+        }
+        table = format_health_table(report)
+        assert "firestore" in table
+        assert "gemini" in table
+        assert "⚠️" in table
+
+    def test_healthy_status_icon(self) -> None:
+        from circuit_breaker.dashboard import format_health_table
+
+        report = {
+            "services": {
+                "svc": {
+                    "state": "closed",
+                    "consecutive_failures": 0,
+                    "failure_threshold": 3,
+                },
+            },
+            "summary": {
+                "total_breakers": 1,
+                "closed": 1,
+                "open": 0,
+                "half_open": 0,
+                "open_services": [],
+                "health_status": "healthy",
+            },
+            "timestamp": time.time(),
+        }
+        table = format_health_table(report)
+        assert "✅" in table
+
+
+# ───────────────────────────────────────────────────────────────────
+# Config Loader
+# ───────────────────────────────────────────────────────────────────
+
+
+class TestConfigLoader:
+    """Validate YAML config loading."""
+
+    def test_load_default_profiles(self) -> None:
+        from circuit_breaker.config_loader import load_profiles
+
+        from circuit_breaker.registry import CircuitBreakerRegistry
+
+        registry = CircuitBreakerRegistry()
+        load_profiles(registry=registry)
+
+        # service_profiles.yaml has at least firestore and gemini_interactions
+        assert "firestore" in registry.service_names
+        assert len(registry) > 0
+
+    def test_loaded_breaker_has_correct_threshold(self) -> None:
+        from circuit_breaker.config_loader import load_profiles
+
+        from circuit_breaker.registry import CircuitBreakerRegistry
+
+        registry = CircuitBreakerRegistry()
+        load_profiles(registry=registry)
+
+        breaker = registry.get("firestore")
+        # Firestore profile uses threshold=3 per service_profiles.yaml
+        assert breaker.failure_threshold == 3
+
+
+# ───────────────────────────────────────────────────────────────────
+# Telemetry Bridge
+# ───────────────────────────────────────────────────────────────────
+
+
+class TestTelemetryBridge:
+    """Validate telemetry bridge wiring."""
+
+    def test_default_registry_exists(self) -> None:
+        from circuit_breaker.telemetry_bridge import default_registry
+
+        assert default_registry is not None
+        assert isinstance(default_registry, CircuitBreakerRegistry)
+
+    def test_create_telemetry_registry(self) -> None:
+        from circuit_breaker.telemetry_bridge import create_telemetry_registry
+
+        registry = create_telemetry_registry()
+        assert isinstance(registry, CircuitBreakerRegistry)
+
+    def test_state_change_logs(self, caplog: pytest.LogCaptureFixture) -> None:
+        from circuit_breaker.telemetry_bridge import _telemetry_state_change_handler
+
+        with caplog.at_level("INFO"):
+            _telemetry_state_change_handler(
+                CircuitBreakerState.CLOSED,
+                CircuitBreakerState.OPEN,
+                "test_svc",
+            )
+        assert "test_svc" in caplog.text
+        assert "closed" in caplog.text
+        assert "open" in caplog.text

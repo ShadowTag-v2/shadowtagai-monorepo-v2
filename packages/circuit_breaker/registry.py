@@ -30,6 +30,7 @@ from typing import Any
 from circuit_breaker.breaker import (
     CircuitBreaker,
     CircuitBreakerState,
+    FailureMode,
     StateChangeCallback,
 )
 
@@ -67,6 +68,8 @@ class CircuitBreakerRegistry:
         reset_timeout_s: float = 60.0,
         on_state_change: StateChangeCallback | None = None,
         half_open_max_probes: int = 1,
+        failure_mode: FailureMode = FailureMode.CONSECUTIVE,
+        window_s: float = 60.0,
     ) -> CircuitBreaker:
         """Register a new circuit breaker for a service.
 
@@ -78,6 +81,8 @@ class CircuitBreakerRegistry:
             reset_timeout_s: Seconds in OPEN before probing.
             on_state_change: Per-service callback (in addition to global).
             half_open_max_probes: Max concurrent HALF_OPEN probes.
+            failure_mode: CONSECUTIVE or SLIDING_WINDOW.
+            window_s: Sliding window duration in seconds.
 
         Returns:
             The CircuitBreaker instance for this service.
@@ -107,15 +112,18 @@ class CircuitBreakerRegistry:
                 reset_timeout_s=reset_timeout_s,
                 on_state_change=_combined_callback,
                 half_open_max_probes=half_open_max_probes,
+                failure_mode=failure_mode,
+                window_s=window_s,
             )
             self._breakers[service_name] = breaker
 
             logger.info(
-                "Circuit breaker registered: '%s' (threshold=%d, timeout=%.1fs, probes=%d)",
+                "Circuit breaker registered: '%s' (threshold=%d, timeout=%.1fs, probes=%d, mode=%s)",
                 service_name,
                 failure_threshold,
                 reset_timeout_s,
                 half_open_max_probes,
+                failure_mode.value,
             )
 
             return breaker
