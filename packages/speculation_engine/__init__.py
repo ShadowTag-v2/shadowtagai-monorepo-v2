@@ -81,6 +81,10 @@ from speculation_engine.gemini_bridge import (
     PipelineMode,
     SweepResult,
 )
+from speculation_engine.consumer import (
+    SuggestionConsumer,
+    SuggestionEntry,
+)
 
 __all__ = [
     # Engine
@@ -137,4 +141,7 @@ __all__ = [
     "PairSession",
     "PipelineMode",
     "SweepResult",
+    # Consumer
+    "SuggestionConsumer",
+    "SuggestionEntry",
 ]
