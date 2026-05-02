@@ -7,6 +7,7 @@ circuit breaker fallback, observability, and shadow mode support.
 import time
 import uuid
 from contextlib import asynccontextmanager
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, status
@@ -134,7 +135,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure for production
+    allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -180,7 +181,7 @@ os.makedirs(public_path, exist_ok=True)
 app.mount("/playground", StaticFiles(directory=public_path, html=True), name="playground")
 
 
-# Health endpoints
+# Health endpoints (legacy paths — backward compat)
 @app.get("/health")
 async def health_check():
     """Basic health check."""
@@ -205,6 +206,41 @@ async def readiness_check():
     return JSONResponse(
         status_code=status_code,
         content={"ready": all_ready, "checks": checks},
+    )
+
+
+# API-prefixed health endpoints (canonical for test suite + Cloud Run probes)
+@app.get("/api/health")
+async def api_health_check():
+    """API health check with rich metadata."""
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now(UTC).isoformat(),
+        "environment": settings.environment,
+        "version": "0.1.0",
+    }
+
+
+@app.get("/api/ready")
+async def api_readiness_check():
+    """API readiness check with boolean checks map."""
+    checks = {
+        "api": True,
+        "policy_agent": policy_agent is not None,
+        "policy_retriever": policy_retriever is not None,
+        "trust_manager": trust_manager is not None,
+        "circuit_breaker": circuit_breaker is not None,
+    }
+
+    all_ready = all(checks.values())
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK if all_ready else status.HTTP_503_SERVICE_UNAVAILABLE,
+        content={
+            "ready": all_ready,
+            "checks": checks,
+            "timestamp": datetime.now(UTC).isoformat(),
+        },
     )
 
 

@@ -1,5 +1,6 @@
 """Platform Monitoring API
 
+import os
 Unified monitoring and cost tracking API for PNKLN Core Stack™
 
 Endpoints:
@@ -41,7 +42,7 @@ app = FastAPI(
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
