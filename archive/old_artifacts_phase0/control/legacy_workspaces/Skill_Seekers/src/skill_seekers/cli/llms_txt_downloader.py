@@ -1,4 +1,5 @@
 """ABOUTME: Downloads llms.txt files from documentation URLs with retry logic"""
+
 """ABOUTME: Validates markdown content and handles timeouts with exponential backoff"""
 
 import time
@@ -28,12 +29,13 @@ class LlmsTxtDownloader:
         """
         # Extract filename from URL
         from urllib.parse import urlparse
+
         parsed = urlparse(self.url)
-        filename = parsed.path.split('/')[-1]
+        filename = parsed.path.split("/")[-1]
 
         # Replace .txt with .md
-        if filename.endswith('.txt'):
-            filename = filename[:-4] + '.md'
+        if filename.endswith(".txt"):
+            filename = filename[:-4] + ".md"
 
         return filename
 
@@ -44,7 +46,7 @@ class LlmsTxtDownloader:
         Returns:
             True if content contains markdown patterns
         """
-        markdown_patterns = ['# ', '## ', '```', '- ', '* ', '`']
+        markdown_patterns = ["# ", "## ", "```", "- ", "* ", "`"]
         return any(pattern in content for pattern in markdown_patterns)
 
     def download(self) -> str | None:
@@ -54,17 +56,11 @@ class LlmsTxtDownloader:
         Returns:
             String content or None if download fails
         """
-        headers = {
-            'User-Agent': 'Skill-Seekers-llms.txt-Reader/1.0'
-        }
+        headers = {"User-Agent": "Skill-Seekers-llms.txt-Reader/1.0"}
 
         for attempt in range(self.max_retries):
             try:
-                response = requests.get(
-                    self.url,
-                    headers=headers,
-                    timeout=self.timeout
-                )
+                response = requests.get(self.url, headers=headers, timeout=self.timeout)
                 response.raise_for_status()
 
                 content = response.text
@@ -84,7 +80,7 @@ class LlmsTxtDownloader:
             except requests.RequestException as e:
                 if attempt < self.max_retries - 1:
                     # Calculate exponential backoff delay: 1s, 2s, 4s, etc.
-                    delay = 2 ** attempt
+                    delay = 2**attempt
                     print(f"⚠️  Attempt {attempt + 1}/{self.max_retries} failed: {e}")
                     print(f"   Retrying in {delay}s...")
                     time.sleep(delay)

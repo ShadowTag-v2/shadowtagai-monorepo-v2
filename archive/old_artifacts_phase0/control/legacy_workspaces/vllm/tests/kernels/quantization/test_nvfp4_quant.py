@@ -114,6 +114,7 @@ def ref_nvfp4_quant(x, global_scale):
 def recover_swizzled_scales(scale, m, n):
     def round_up(x, y):
         return (x + y - 1) // y * y
+
     rounded_m = round_up(m, 128)
     scale_n = n // BLOCK_SIZE
     rounded_n = round_up(scale_n, 4)

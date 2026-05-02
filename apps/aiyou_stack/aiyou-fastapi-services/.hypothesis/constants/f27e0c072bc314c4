@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/security/middleware.py
+# hypothesis_version: 6.151.5
+
+[413, 415, 429, 1024, '1; mode=block', 'DENY', 'Invalid content type', 'PATCH', 'POST', 'PUT', 'Rate limit exceeded', 'X-Frame-Options', 'X-XSS-Protection', 'application/json', 'content-length', 'content-type', 'invalid_content_type', 'multipart/form-data', 'nosniff', 'rate_limit_exceeded', 'request_completed', 'request_failed', 'request_started', 'request_too_large', 'unknown']

@@ -60,7 +60,7 @@ class ResultsViewer:
             f"**Run ID:** {run_id}",
             f"**Domain:** {domain.title()}",
             f"**State:** {state}",
-            f"**Progress:** Iteration {iteration}/{max_iterations} ({iteration/max_iterations*100:.1f}%)",
+            f"**Progress:** Iteration {iteration}/{max_iterations} ({iteration / max_iterations * 100:.1f}%)",
             "",
             f"**Question:** {question}",
         ]
@@ -122,10 +122,7 @@ class ResultsViewer:
             return
 
         # Build tree structure
-        tree = Tree(
-            f"[h2]{get_icon('brain')} Hypothesis Evolution[/h2]",
-            guide_style="bright_black"
-        )
+        tree = Tree(f"[h2]{get_icon('brain')} Hypothesis Evolution[/h2]", guide_style="bright_black")
 
         # Group by parent
         root_hypotheses = [h for h in hypotheses if not h.get("parent_id")]
@@ -144,10 +141,7 @@ class ResultsViewer:
             novelty = hypothesis.get("novelty_score", 0.0)
             status = hypothesis.get("status", "pending")
 
-            node_label = (
-                f"{claim}\n"
-                f"[muted]Novelty: {novelty:.2f} | Status: {status}[/muted]"
-            )
+            node_label = f"{claim}\n[muted]Novelty: {novelty:.2f} | Status: {status}[/muted]"
 
             node = parent_node.add(node_label)
 
@@ -191,7 +185,7 @@ class ResultsViewer:
             if isinstance(timestamp, str):
                 try:
                     timestamp = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
-                except (ValueError, TypeError):
+                except ValueError, TypeError:
                     timestamp = None
 
             table.add_row(
@@ -341,28 +335,34 @@ class ResultsViewer:
             ]
 
             for i, hyp in enumerate(data.get("hypotheses", []), 1):
-                lines.extend([
-                    f"### {i}. {hyp.get('claim', 'Unknown')}",
-                    "",
-                    f"- **Novelty:** {hyp.get('novelty_score', 0):.2f}",
-                    f"- **Priority:** {hyp.get('priority_score', 0):.2f}",
-                    f"- **Status:** {hyp.get('status', 'Unknown')}",
-                    "",
-                ])
+                lines.extend(
+                    [
+                        f"### {i}. {hyp.get('claim', 'Unknown')}",
+                        "",
+                        f"- **Novelty:** {hyp.get('novelty_score', 0):.2f}",
+                        f"- **Priority:** {hyp.get('priority_score', 0):.2f}",
+                        f"- **Status:** {hyp.get('status', 'Unknown')}",
+                        "",
+                    ]
+                )
 
-            lines.extend([
-                "## Experiments",
-                "",
-            ])
+            lines.extend(
+                [
+                    "## Experiments",
+                    "",
+                ]
+            )
 
             for i, exp in enumerate(data.get("experiments", []), 1):
-                lines.extend([
-                    f"### {i}. {exp.get('type', 'Unknown')}",
-                    "",
-                    f"- **Status:** {exp.get('status', 'Unknown')}",
-                    f"- **Duration:** {format_duration(exp.get('duration_seconds', 0))}",
-                    "",
-                ])
+                lines.extend(
+                    [
+                        f"### {i}. {exp.get('type', 'Unknown')}",
+                        "",
+                        f"- **Status:** {exp.get('status', 'Unknown')}",
+                        f"- **Duration:** {format_duration(exp.get('duration_seconds', 0))}",
+                        "",
+                    ]
+                )
 
             with open(output_path, "w") as f:
                 f.write("\n".join(lines))

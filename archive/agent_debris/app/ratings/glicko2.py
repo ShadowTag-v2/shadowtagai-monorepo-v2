@@ -6,7 +6,6 @@ Used to rank performance of kernels/agents across benchmarks.
 """
 
 import math
-from typing import List, Tuple, Optional
 from pydantic import BaseModel
 
 
@@ -97,7 +96,7 @@ class Glicko2System:
             v_inv += g_phi**2 * e_val * (1 - e_val)
             delta_sum += g_phi * (score - e_val)
 
-        v = 1.0 / v_inv if v_inv > 0 else float('inf')
+        v = 1.0 / v_inv if v_inv > 0 else float("inf")
         delta = v * delta_sum
 
         # Step 3: Compute new volatility using Illinois algorithm
@@ -151,7 +150,7 @@ class Glicko2System:
             v_inv = 1.0 / v if v > 0 else 0
 
             num1 = ex * (delta**2 - phi2 - v - ex)
-            den1 = 2 * (phi2 + v + ex)**2
+            den1 = 2 * (phi2 + v + ex) ** 2
 
             num2 = x - a
             den2 = tau**2

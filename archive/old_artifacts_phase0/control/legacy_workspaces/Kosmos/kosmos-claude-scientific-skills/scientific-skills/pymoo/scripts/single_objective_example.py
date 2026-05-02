@@ -21,35 +21,23 @@ def run_single_objective_optimization():
     problem = get_problem("sphere", n_var=10)
 
     # Configure the algorithm
-    algorithm = GA(
-        pop_size=100,
-        sampling=FloatRandomSampling(),
-        crossover=SBX(prob=0.9, eta=15),
-        mutation=PM(eta=20),
-        eliminate_duplicates=True
-    )
+    algorithm = GA(pop_size=100, sampling=FloatRandomSampling(), crossover=SBX(prob=0.9, eta=15), mutation=PM(eta=20), eliminate_duplicates=True)
 
     # Define termination criteria
     termination = get_termination("n_gen", 100)
 
     # Run optimization
-    result = minimize(
-        problem,
-        algorithm,
-        termination,
-        seed=1,
-        verbose=True
-    )
+    result = minimize(problem, algorithm, termination, seed=1, verbose=True)
 
     # Print results
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("OPTIMIZATION RESULTS")
-    print("="*60)
+    print("=" * 60)
     print(f"Best solution: {result.X}")
     print(f"Best objective value: {result.F[0]:.6f}")
     print(f"Number of generations: {result.algorithm.n_gen}")
     print(f"Number of function evaluations: {result.algorithm.evaluator.n_eval}")
-    print("="*60)
+    print("=" * 60)
 
     return result
 

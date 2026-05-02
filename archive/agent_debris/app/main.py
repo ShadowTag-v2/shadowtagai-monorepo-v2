@@ -1,6 +1,7 @@
 """
 Main FastAPI application for ShadowTagAI Governance Service
 """
+
 import time
 from contextlib import asynccontextmanager
 from typing import Any
@@ -18,29 +19,35 @@ logger = get_logger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan management."""
-    logger.info("Starting SHADOWTAGAI Kernel Chain service", extra={
-        "service_name": settings.service_name,
-        "gemini_model": settings.gemini_model,
-    })
+    logger.info(
+        "Starting SHADOWTAGAI Kernel Chain service",
+        extra={
+            "service_name": settings.service_name,
+            "gemini_model": settings.gemini_model,
+        },
+    )
 
     # Validate kernel chain with JR Engine
     jr_engine = JREngine()
-    validation = jr_engine.validate_kernel_chain([
-        "ATP519ScanKernel",
-        "JudgeSixClassifyKernel",
-        "AuditCompressKernel",
-    ])
+    validation = jr_engine.validate_kernel_chain(
+        [
+            "ATP519ScanKernel",
+            "JudgeSixClassifyKernel",
+            "AuditCompressKernel",
+        ]
+    )
 
     if not validation.passed:
-        logger.error("Kernel chain failed JR Engine validation", extra={
-            "validation": validation.dict()
-        })
+        logger.error("Kernel chain failed JR Engine validation", extra={"validation": validation.dict()})
         raise RuntimeError("Kernel chain validation failed")
 
-    logger.info("Kernel chain validated by JR Engine", extra={
-        "approved_kernels": validation.approved_kernels,
-        "total_kernels": validation.total_kernels,
-    })
+    logger.info(
+        "Kernel chain validated by JR Engine",
+        extra={
+            "approved_kernels": validation.approved_kernels,
+            "total_kernels": validation.total_kernels,
+        },
+    )
 
     yield
 
@@ -141,18 +148,19 @@ async def execute_decision(context: DecisionContext):
                 )
 
             # Record compression ratio
-            metrics_collector.record_compression(
-                result.audit_trail.compression_ratio
-            )
+            metrics_collector.record_compression(result.audit_trail.compression_ratio)
 
-        logger.info("Decision executed successfully", extra={
-            "trace_id": result.trace_id,
-            "decision": result.decision,
-            "confidence": result.confidence,
-            "risk_tier": result.risk_tier.name,
-            "total_latency_ms": result.total_latency_ms,
-            "total_cost_usd": result.total_cost_usd,
-        })
+        logger.info(
+            "Decision executed successfully",
+            extra={
+                "trace_id": result.trace_id,
+                "decision": result.decision,
+                "confidence": result.confidence,
+                "risk_tier": result.risk_tier.name,
+                "total_latency_ms": result.total_latency_ms,
+                "total_cost_usd": result.total_cost_usd,
+            },
+        )
 
         return result
 
@@ -163,11 +171,14 @@ async def execute_decision(context: DecisionContext):
         if metrics_collector:
             metrics_collector.decisions_total.labels(status="failure").inc()
 
-        logger.error("Decision execution failed", extra={
-            "trace_id": context.trace_id,
-            "error": str(e),
-            "latency_ms": latency_ms,
-        })
+        logger.error(
+            "Decision execution failed",
+            extra={
+                "trace_id": context.trace_id,
+                "error": str(e),
+                "latency_ms": latency_ms,
+            },
+        )
 
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -176,25 +187,28 @@ async def execute_decision(context: DecisionContext):
                 "message": str(e),
                 "trace_id": context.trace_id,
                 "latency_ms": latency_ms,
-            }
+            },
         )
 
     except Exception as e:
         latency_ms = (time.perf_counter() - start_time) * 1000
 
-        logger.error("Unexpected error", extra={
-            "trace_id": context.trace_id,
-            "error": str(e),
-            "error_type": type(e).__name__,
-            "latency_ms": latency_ms,
-        })
+        logger.error(
+            "Unexpected error",
+            extra={
+                "trace_id": context.trace_id,
+                "error": str(e),
+                "error_type": type(e).__name__,
+                "latency_ms": latency_ms,
+            },
+        )
 
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
                 "error": "Internal server error",
                 "trace_id": context.trace_id,
-            }
+            },
         )
 
 
@@ -209,11 +223,13 @@ async def get_validation_report():
     - Brakes: What's p99 failure mode? Cost blowup scenario?
     """
     jr_engine = JREngine()
-    validation = jr_engine.validate_kernel_chain([
-        "ATP519ScanKernel",
-        "JudgeSixClassifyKernel",
-        "AuditCompressKernel",
-    ])
+    validation = jr_engine.validate_kernel_chain(
+        [
+            "ATP519ScanKernel",
+            "JudgeSixClassifyKernel",
+            "AuditCompressKernel",
+        ]
+    )
 
     return validation.dict()
 
@@ -226,10 +242,7 @@ PAID_TIER_KEYS = {"founder_key_001", "pro_tier_001"}
 
 
 @app.get("/api/v1/audit/{decision_id}")
-async def get_audit_trail(
-    decision_id: str,
-    x_api_key: str = Header(...)
-):
+async def get_audit_trail(decision_id: str, x_api_key: str = Header(...)):
     """
     Get signed URL for decision audit trail.
 
@@ -242,38 +255,18 @@ async def get_audit_trail(
     if x_api_key not in PAID_TIER_KEYS:
         raise HTTPException(
             status_code=402,
-            detail={
-                "error": "Payment Required",
-                "message": "Audit trail access requires Pro tier",
-                "upgrade_url": "https://shadowtag.ai/pricing"
-            }
+            detail={"error": "Payment Required", "message": "Audit trail access requires Pro tier", "upgrade_url": "https://shadowtag.ai/pricing"},
         )
 
     # Get or generate signed URL
     url = governance_tracer.get_or_generate_trace(decision_id)
 
     if not url:
-        raise HTTPException(
-            status_code=404,
-            detail={
-                "error": "Not Found",
-                "message": f"No audit trail found for decision: {decision_id}"
-            }
-        )
+        raise HTTPException(status_code=404, detail={"error": "Not Found", "message": f"No audit trail found for decision: {decision_id}"})
 
-    logger.info("Audit trail accessed", extra={
-        "decision_id": decision_id,
-        "api_key": x_api_key[:8] + "..."
-    })
+    logger.info("Audit trail accessed", extra={"decision_id": decision_id, "api_key": x_api_key[:8] + "..."})
 
-    return {
-        "decision_id": decision_id,
-        "audit_trail": {
-            "access_type": "temporary_signed_url",
-            "expires_in": "15 minutes",
-            "url": url
-        }
-    }
+    return {"decision_id": decision_id, "audit_trail": {"access_type": "temporary_signed_url", "expires_in": "15 minutes", "url": url}}
 
 
 @app.get("/", tags=["Root"])
@@ -288,10 +281,10 @@ async def root() -> dict[str, Any]:
             "eu_ai_act": settings.eu_ai_act_enabled,
             "dsa_vlop": settings.dsa_vlop_mode,
             "nist_rmf": settings.nist_rmf_enabled,
-            "iso_42001": settings.iso_42001_enabled
+            "iso_42001": settings.iso_42001_enabled,
         },
         "docs": "/docs",
-        "health": "/health"
+        "health": "/health",
     }
 
 

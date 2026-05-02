@@ -1,7 +1,6 @@
 """Memory schemas."""
 
 from datetime import datetime
-from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -10,10 +9,7 @@ class MemoryBase(BaseModel):
 
     title: str | None = None
     content: str = Field(..., description="Memory content")
-    memory_type: str = Field(
-        default="fact",
-        description="Memory type: fact, preference, context, or insight"
-    )
+    memory_type: str = Field(default="fact", description="Memory type: fact, preference, context, or insight")
 
 
 class MemoryCreate(MemoryBase):

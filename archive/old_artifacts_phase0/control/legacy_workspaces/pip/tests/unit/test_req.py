@@ -13,6 +13,7 @@ from typing import cast
 from unittest import mock
 
 import pytest
+from pip._internal.operations.build.build_tracker import get_build_tracker
 
 from pip._vendor.packaging.markers import Marker
 from pip._vendor.packaging.requirements import Requirement
@@ -31,7 +32,6 @@ from pip._internal.index.package_finder import PackageFinder
 from pip._internal.models.direct_url import ArchiveInfo, DirectUrl, DirInfo, VcsInfo
 from pip._internal.models.link import Link
 from pip._internal.network.session import PipSession
-from pip._internal.operations.build.build_tracker import get_build_tracker
 from pip._internal.operations.prepare import RequirementPreparer
 from pip._internal.req import InstallRequirement, RequirementSet
 from pip._internal.req.constructors import (

@@ -84,34 +84,38 @@ def run_benchmark(
     v_scale = (value.amax() / 64.0).to(torch.float32)
 
     if implementation == "cuda":
+
         def function_under_test():
             return ops.reshape_and_cache_flash(
-                    key,  # noqa: F821
-                    value,  # noqa: F821
-                    key_cache,  # noqa: F821
-                    value_cache,  # noqa: F821
-                    slot_mapping,  # noqa: F821
-                    kv_cache_dtype,
-                    k_scale,
-                    v_scale,
-                )
+                key,  # noqa: F821
+                value,  # noqa: F821
+                key_cache,  # noqa: F821
+                value_cache,  # noqa: F821
+                slot_mapping,  # noqa: F821
+                kv_cache_dtype,
+                k_scale,
+                v_scale,
+            )
     else:
+
         def function_under_test():
             return triton_reshape_and_cache_flash(
-                    key,  # noqa: F821
-                    value,  # noqa: F821
-                    key_cache,  # noqa: F821
-                    value_cache,  # noqa: F821
-                    slot_mapping,  # noqa: F821
-                    kv_cache_dtype,
-                    k_scale,
-                    v_scale,
-                )
+                key,  # noqa: F821
+                value,  # noqa: F821
+                key_cache,  # noqa: F821
+                value_cache,  # noqa: F821
+                slot_mapping,  # noqa: F821
+                kv_cache_dtype,
+                k_scale,
+                v_scale,
+            )
+
     if benchmark_mode == "cudagraph":
         g = torch.cuda.CUDAGraph()
         with torch.cuda.graph(g):
             function_under_test()
         torch.cuda.synchronize()
+
         def function_under_test():
             return g.replay()
 

@@ -29,35 +29,35 @@ from ...events.event import Event
 
 
 class ParametersConfig(BaseModel):
-  """Configuration for the parameters passed to the A2A send_message request."""
+    """Configuration for the parameters passed to the A2A send_message request."""
 
-  request_metadata: dict[str, Any] | None = None
-  client_call_context: ClientCallContext | None = None
-  # TODO: Add support for requested_extension and
-  # message_send_configuration once they are supported by the A2A client.
-  #
-  # requested_extension: Optional[list[str]] = None
-  # message_send_configuration: Optional[MessageSendConfiguration] = None
+    request_metadata: dict[str, Any] | None = None
+    client_call_context: ClientCallContext | None = None
+    # TODO: Add support for requested_extension and
+    # message_send_configuration once they are supported by the A2A client.
+    #
+    # requested_extension: Optional[list[str]] = None
+    # message_send_configuration: Optional[MessageSendConfiguration] = None
 
 
 class RequestInterceptor(BaseModel):
-  """Interceptor for A2A requests."""
+    """Interceptor for A2A requests."""
 
-  before_request: Callable[[InvocationContext, A2AMessage, ParametersConfig], Awaitable[tuple[A2AMessage | Event, ParametersConfig]]] | None = None
-  """Hook executed before the agent starts processing the request.
+    before_request: Callable[[InvocationContext, A2AMessage, ParametersConfig], Awaitable[tuple[A2AMessage | Event, ParametersConfig]]] | None = None
+    """Hook executed before the agent starts processing the request.
 
     Returns an Event if the request should be aborted and the Event
     returned to the caller.
   """
 
-  after_request: Callable[[InvocationContext, A2AEvent, Event], Awaitable[Event | None]] | None = None
-  """Hook executed after the agent has processed the request.
+    after_request: Callable[[InvocationContext, A2AEvent, Event], Awaitable[Event | None]] | None = None
+    """Hook executed after the agent has processed the request.
 
     Returns None if the event should not be sent to the caller.
   """
 
 
 class A2aRemoteAgentConfig(BaseModel):
-  """Configuration for the RemoteA2aAgent."""
+    """Configuration for the RemoteA2aAgent."""
 
-  request_interceptors: list[RequestInterceptor] | None = None
+    request_interceptors: list[RequestInterceptor] | None = None

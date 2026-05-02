@@ -28,68 +28,66 @@ load_dotenv(override=True)
 
 
 async def main():
-  """Main function demonstrating PostgreSQL session persistence."""
-  postgres_url = os.environ.get("POSTGRES_URL")
-  if not postgres_url:
-    raise ValueError(
-        "POSTGRES_URL environment variable not set. "
-        "Please create a .env file with"
-        " POSTGRES_URL=postgresql+asyncpg://user:password@localhost:5432/adk_sessions"
+    """Main function demonstrating PostgreSQL session persistence."""
+    postgres_url = os.environ.get("POSTGRES_URL")
+    if not postgres_url:
+        raise ValueError(
+            "POSTGRES_URL environment variable not set. "
+            "Please create a .env file with"
+            " POSTGRES_URL=postgresql+asyncpg://user:password@localhost:5432/adk_sessions"
+        )
+
+    app_name = "postgres_session_demo"
+    user_id = "demo_user"
+    session_id = "persistent-session"
+
+    # Initialize PostgreSQL-backed session service
+    session_service = DatabaseSessionService(postgres_url)
+
+    runner = Runner(
+        app_name=app_name,
+        agent=agent.root_agent,
+        session_service=session_service,
     )
 
-  app_name = "postgres_session_demo"
-  user_id = "demo_user"
-  session_id = "persistent-session"
-
-  # Initialize PostgreSQL-backed session service
-  session_service = DatabaseSessionService(postgres_url)
-
-  runner = Runner(
-      app_name=app_name,
-      agent=agent.root_agent,
-      session_service=session_service,
-  )
-
-  # Try to get existing session or create new one
-  session = await session_service.get_session(
-      app_name=app_name,
-      user_id=user_id,
-      session_id=session_id,
-  )
-
-  if session:
-    print(f"Resuming existing session: {session.id}")
-    print(f"Previous events count: {len(session.events)}")
-  else:
-    session = await session_service.create_session(
+    # Try to get existing session or create new one
+    session = await session_service.get_session(
         app_name=app_name,
         user_id=user_id,
         session_id=session_id,
     )
-    print(f"Created new session: {session.id}")
 
-  async def run_prompt(session: Session, new_message: str):
-    """Send a prompt to the agent and print the response."""
-    content = types.Content(
-        role="user", parts=[types.Part.from_text(text=new_message)]
-    )
-    print(f"User: {new_message}")
-    async for event in runner.run_async(
-        user_id=user_id,
-        session_id=session.id,
-        new_message=content,
-    ):
-      if event.content and event.content.parts and event.content.parts[0].text:
-        print(f"{event.author}: {event.content.parts[0].text}")
+    if session:
+        print(f"Resuming existing session: {session.id}")
+        print(f"Previous events count: {len(session.events)}")
+    else:
+        session = await session_service.create_session(
+            app_name=app_name,
+            user_id=user_id,
+            session_id=session_id,
+        )
+        print(f"Created new session: {session.id}")
 
-  print("------------------------------------")
-  await run_prompt(session, "What time is it? Please remember this.")
-  print("------------------------------------")
-  await run_prompt(session, "What did I just ask you?")
-  print("------------------------------------")
+    async def run_prompt(session: Session, new_message: str):
+        """Send a prompt to the agent and print the response."""
+        content = types.Content(role="user", parts=[types.Part.from_text(text=new_message)])
+        print(f"User: {new_message}")
+        async for event in runner.run_async(
+            user_id=user_id,
+            session_id=session.id,
+            new_message=content,
+        ):
+            if event.content and event.content.parts and event.content.parts[0].text:
+                print(f"{event.author}: {event.content.parts[0].text}")
 
-  print("\nSession persisted to PostgreSQL. Run again to see event history.")
+    print("------------------------------------")
+    await run_prompt(session, "What time is it? Please remember this.")
+    print("------------------------------------")
+    await run_prompt(session, "What did I just ask you?")
+    print("------------------------------------")
+
+    print("\nSession persisted to PostgreSQL. Run again to see event history.")
 
 
 if __name__ == "__main__":
-  asyncio.run(main())
+    asyncio.run(main())

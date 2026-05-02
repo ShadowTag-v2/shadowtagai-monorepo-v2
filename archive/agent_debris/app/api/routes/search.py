@@ -17,11 +17,7 @@ async def get_current_user_id() -> int:
 
 
 @router.post("/", response_model=SearchResponse)
-async def search_conversations_and_memories(
-    query: SearchQuery,
-    db: AsyncSession = Depends(get_db),
-    user_id: int = Depends(get_current_user_id)
-):
+async def search_conversations_and_memories(query: SearchQuery, db: AsyncSession = Depends(get_db), user_id: int = Depends(get_current_user_id)):
     """
     Search through conversations and memories using semantic search.
 
@@ -38,7 +34,7 @@ async def search_conversations_only(
     top_k: int = 10,
     min_relevance: float = 0.5,
     db: AsyncSession = Depends(get_db),
-    user_id: int = Depends(get_current_user_id)
+    user_id: int = Depends(get_current_user_id),
 ):
     """
     Search through conversations only.
@@ -46,12 +42,7 @@ async def search_conversations_only(
     Simplified endpoint for conversation-only search.
     """
     search_query = SearchQuery(
-        query=query,
-        project_id=project_id,
-        top_k=top_k,
-        min_relevance=min_relevance,
-        search_conversations=True,
-        search_memories=False
+        query=query, project_id=project_id, top_k=top_k, min_relevance=min_relevance, search_conversations=True, search_memories=False
     )
 
     results = await search_service.search(db, user_id, search_query)
@@ -65,7 +56,7 @@ async def search_memories_only(
     top_k: int = 10,
     min_relevance: float = 0.5,
     db: AsyncSession = Depends(get_db),
-    user_id: int = Depends(get_current_user_id)
+    user_id: int = Depends(get_current_user_id),
 ):
     """
     Search through memories only.
@@ -73,12 +64,7 @@ async def search_memories_only(
     Simplified endpoint for memory-only search.
     """
     search_query = SearchQuery(
-        query=query,
-        project_id=project_id,
-        top_k=top_k,
-        min_relevance=min_relevance,
-        search_conversations=False,
-        search_memories=True
+        query=query, project_id=project_id, top_k=top_k, min_relevance=min_relevance, search_conversations=False, search_memories=True
     )
 
     results = await search_service.search(db, user_id, search_query)

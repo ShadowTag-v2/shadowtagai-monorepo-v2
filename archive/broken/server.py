@@ -164,9 +164,7 @@ async def serve(local_timezone: str | None = None) -> None:
         ]
 
     @server.call_tool()
-    async def call_tool(
-        name: str, arguments: dict
-    ) -> Sequence[TextContent | ImageContent | EmbeddedResource]:
+    async def call_tool(name: str, arguments: dict) -> Sequence[TextContent | ImageContent | EmbeddedResource]:
         """Handle tool calls for time queries."""
         try:
             match name:
@@ -178,9 +176,7 @@ async def serve(local_timezone: str | None = None) -> None:
                     result = time_server.get_current_time(timezone)
 
                 case TimeTools.CONVERT_TIME.value:
-                    if not all(
-                        k in arguments for k in ["source_timezone", "time", "target_timezone"]
-                    ):
+                    if not all(k in arguments for k in ["source_timezone", "time", "target_timezone"]):
                         raise ValueError("Missing required arguments")
 
                     result = time_server.convert_time(

@@ -14,11 +14,12 @@ BASE_NON_INFORMATIVE_PATTERNS = [
     r"^<3\s*$",
     r"^\s*<3\s*$",
     r"^\s*$",  # Empty or whitespace-only segments
-    r"^>+$",   # Just '>' characters
-    r"^<+$",   # Just '<' characters
-    r"^>>$",   # Just '>>' characters
-    r"^<<$",   # Just '<<' characters
+    r"^>+$",  # Just '>' characters
+    r"^<+$",  # Just '<' characters
+    r"^>>$",  # Just '>>' characters
+    r"^<<$",  # Just '<<' characters
 ]
+
 
 class TranscriptionFilter:
     """Manages transcription filtering logic"""
@@ -38,30 +39,30 @@ class TranscriptionFilter:
         """Load filter configuration from filter_config.py"""
         try:
             # Try importing the configuration file
-            config = importlib.import_module('filter_config')
+            config = importlib.import_module("filter_config")
 
             # Add additional patterns from config
-            if hasattr(config, 'ADDITIONAL_FILTER_PATTERNS'):
+            if hasattr(config, "ADDITIONAL_FILTER_PATTERNS"):
                 self.patterns.extend(config.ADDITIONAL_FILTER_PATTERNS)
                 logger.info(f"Added {len(config.ADDITIONAL_FILTER_PATTERNS)} patterns from config")
 
             # Set minimum character length
-            if hasattr(config, 'MIN_CHARACTER_LENGTH'):
+            if hasattr(config, "MIN_CHARACTER_LENGTH"):
                 self.min_character_length = config.MIN_CHARACTER_LENGTH
                 logger.info(f"Set minimum character length to {self.min_character_length}")
 
             # Set minimum real words
-            if hasattr(config, 'MIN_REAL_WORDS'):
+            if hasattr(config, "MIN_REAL_WORDS"):
                 self.min_real_words = config.MIN_REAL_WORDS
                 logger.info(f"Set minimum real words to {self.min_real_words}")
 
             # Add custom filter functions
-            if hasattr(config, 'CUSTOM_FILTERS'):
+            if hasattr(config, "CUSTOM_FILTERS"):
                 self.custom_filters.extend(config.CUSTOM_FILTERS)
                 logger.info(f"Added {len(config.CUSTOM_FILTERS)} custom filter functions")
 
             # Add stopwords
-            if hasattr(config, 'STOPWORDS'):
+            if hasattr(config, "STOPWORDS"):
                 self.stopwords = config.STOPWORDS
                 logger.info(f"Loaded stopwords for {len(config.STOPWORDS)} languages")
 
@@ -80,7 +81,7 @@ class TranscriptionFilter:
         """
         self.custom_filters.append(filter_function)
 
-    def is_stop_word(self, word, language='en'):
+    def is_stop_word(self, word, language="en"):
         """Check if a word is a stopword in the given language"""
         return language in self.stopwords and word.lower() in self.stopwords[language]
 
@@ -92,7 +93,7 @@ class TranscriptionFilter:
         else:
             logger.debug(f"No cache to clear for meeting_id {meeting_id}.")
 
-    def filter_segment(self, text: str, start_time: float, end_time: float, meeting_id: int, language: str ='en'):
+    def filter_segment(self, text: str, start_time: float, end_time: float, meeting_id: int, language: str = "en"):
         """
         Apply all filters to determine if segment should be kept
 
@@ -123,11 +124,7 @@ class TranscriptionFilter:
 
         # Count actual words (at least 3 characters) - exclude stopwords
         real_words = [
-            w for w in text.split()
-            if len(w) >= 3 and
-            not w.startswith('<') and
-            not w.startswith('[') and
-            not self.is_stop_word(w, language)
+            w for w in text.split() if len(w) >= 3 and not w.startswith("<") and not w.startswith("[") and not self.is_stop_word(w, language)
         ]
 
         if len(real_words) < self.min_real_words:
@@ -141,42 +138,56 @@ class TranscriptionFilter:
         should_filter_current = False
 
         for i, cached_segment in enumerate(current_meeting_cache):
-            cached_text = cached_segment['text'] # Ensure we are using stripped text from cache
-            cached_start = cached_segment['start']
-            cached_end = cached_segment['end']
+            cached_text = cached_segment["text"]  # Ensure we are using stripped text from cache
+            cached_start = cached_segment["start"]
+            cached_end = cached_segment["end"]
 
             # Condition 1: Current segment's text is identical to a cached segment's text
             if text == cached_text:
                 # Case 1a: Current is sub-segment of (or identical to) cached -> filter current
                 if start_time >= cached_start and end_time <= cached_end:
-                    logger.debug(f"Filtering segment (identical text, sub-segment/duplicate): MeetingID {meeting_id}, '{text}' ({start_time}-{end_time}) due to cached: '{cached_text}' ({cached_start}-{cached_end})")
+                    logger.debug(
+                        f"Filtering segment (identical text, sub-segment/duplicate): MeetingID {meeting_id}, '{text}' ({start_time}-{end_time}) due to cached: '{cached_text}' ({cached_start}-{cached_end})"
+                    )
                     should_filter_current = True
                     break
                 # Case 1b: Cached is sub-segment of current (current is expansion) -> mark cached for removal
                 elif cached_start >= start_time and cached_end <= end_time:
-                    logger.debug(f"Current segment (identical text, expansion): MeetingID {meeting_id}, '{text}' ({start_time}-{end_time}). Marking cached sub-segment for removal: '{cached_text}' ({cached_start}-{cached_end})")
+                    logger.debug(
+                        f"Current segment (identical text, expansion): MeetingID {meeting_id}, '{text}' ({start_time}-{end_time}). Marking cached sub-segment for removal: '{cached_text}' ({cached_start}-{cached_end})"
+                    )
                     indices_to_remove_from_cache.append(i)
                     # Continue checking other cached segments in case current is also a sub-segment of another identical text segment
 
             # Condition 2: Text is different, but significant temporal overlap.
-            else: # text != cached_text
+            else:  # text != cached_text
                 current_duration = end_time - start_time
                 cached_duration = cached_end - cached_start
-                min_duration_for_diff_text_overlap_check = 0.1 # Avoid issues with zero-duration segments if any
+                min_duration_for_diff_text_overlap_check = 0.1  # Avoid issues with zero-duration segments if any
 
                 # Check for any overlap first
-                if max(start_time, cached_start) < min(end_time, cached_end) and current_duration > min_duration_for_diff_text_overlap_check and cached_duration > min_duration_for_diff_text_overlap_check:
+                if (
+                    max(start_time, cached_start) < min(end_time, cached_end)
+                    and current_duration > min_duration_for_diff_text_overlap_check
+                    and cached_duration > min_duration_for_diff_text_overlap_check
+                ):
                     # Case 2a: Current segment is fully temporally contained within a longer cached segment.
                     # Filter current if its text is shorter (heuristic for less complete transcription).
                     if start_time >= cached_start and end_time <= cached_end and cached_duration > current_duration and len(text) < len(cached_text):
-                        logger.debug(f"Filtering segment (different text, shorter, and sub-segment of longer cached): MeetingID {meeting_id}, '{text}' ({start_time}-{end_time}) due to overlapping longer cached: '{cached_text}' ({cached_start}-{cached_end})")
+                        logger.debug(
+                            f"Filtering segment (different text, shorter, and sub-segment of longer cached): MeetingID {meeting_id}, '{text}' ({start_time}-{end_time}) due to overlapping longer cached: '{cached_text}' ({cached_start}-{cached_end})"
+                        )
                         should_filter_current = True
                         break
 
                     # Case 2b: Cached segment is fully temporally contained within a longer current segment.
                     # Mark cached for removal if its text is shorter.
-                    elif cached_start >= start_time and cached_end <= end_time and current_duration > cached_duration and len(cached_text) < len(text):
-                        logger.debug(f"Current segment (different text, longer, and expansion over cached): MeetingID {meeting_id}, '{text}' ({start_time}-{end_time}). Marking shorter cached sub-segment for removal: '{cached_text}' ({cached_start}-{cached_end})")
+                    elif (
+                        cached_start >= start_time and cached_end <= end_time and current_duration > cached_duration and len(cached_text) < len(text)
+                    ):
+                        logger.debug(
+                            f"Current segment (different text, longer, and expansion over cached): MeetingID {meeting_id}, '{text}' ({start_time}-{end_time}). Marking shorter cached sub-segment for removal: '{cached_text}' ({cached_start}-{cached_end})"
+                        )
                         indices_to_remove_from_cache.append(i)
 
         if should_filter_current:
@@ -186,7 +197,9 @@ class TranscriptionFilter:
         if indices_to_remove_from_cache:
             for i_val in sorted(indices_to_remove_from_cache, reverse=True):
                 del current_meeting_cache[i_val]
-            logger.debug(f"Removed {len(indices_to_remove_from_cache)} sub-segments from cache for MeetingID {meeting_id} after processing current segment '{text}'.")
+            logger.debug(
+                f"Removed {len(indices_to_remove_from_cache)} sub-segments from cache for MeetingID {meeting_id} after processing current segment '{text}'."
+            )
 
         # Apply any custom filters
         for custom_filter in self.custom_filters:
@@ -198,5 +211,5 @@ class TranscriptionFilter:
                 logger.error(f"Error in custom filter {custom_filter.__name__} for MeetingID {meeting_id}: {e}")
 
         # If all filters pass, add to cache for this meeting and return True
-        current_meeting_cache.append({'text': text, 'start': start_time, 'end': end_time}) # Add stripped text to cache
+        current_meeting_cache.append({"text": text, "start": start_time, "end": end_time})  # Add stripped text to cache
         return True

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/tdd_red_phase.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.95, 1000, '# Act', '# Arrange', '# Setup', '%Y%m%d_%H%M%S', 'User Authentication', '\\W+', '__main__', 'aaa_pattern', 'assert', 'assertEqual', 'assertRaises', 'assertTrue', 'compliance', 'critical', 'docstring', 'duration_ms', 'escalated', 'fail_fast', 'iteration', 'line', 'logs', 'major', 'max_iterations', 'message', 'minor', 'naming', 'no_assertion', 'no_tests', 'passed', 'raises', 'rule', 'score', 'severity', 'syntax', 'test_', 'test_\\w+_\\w+', 'test_code_hash', 'test_name', 'tests_analyzed', 'thresholds', 'timeout', 'timeout_seconds', 'timestamp', 'violations']

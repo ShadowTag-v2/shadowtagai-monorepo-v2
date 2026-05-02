@@ -35,7 +35,7 @@ class UnifiedLiteratureSearch:
         pubmed_enabled: bool = True,
         semantic_scholar_api_key: str | None = None,
         pubmed_api_key: str | None = None,
-        pubmed_email: str | None = None
+        pubmed_email: str | None = None,
     ):
         """
         Initialize unified search.
@@ -54,15 +54,10 @@ class UnifiedLiteratureSearch:
             self.clients[PaperSource.ARXIV] = ArxivClient()
 
         if semantic_scholar_enabled:
-            self.clients[PaperSource.SEMANTIC_SCHOLAR] = SemanticScholarClient(
-                api_key=semantic_scholar_api_key
-            )
+            self.clients[PaperSource.SEMANTIC_SCHOLAR] = SemanticScholarClient(api_key=semantic_scholar_api_key)
 
         if pubmed_enabled:
-            self.clients[PaperSource.PUBMED] = PubMedClient(
-                api_key=pubmed_api_key,
-                email=pubmed_email
-            )
+            self.clients[PaperSource.PUBMED] = PubMedClient(api_key=pubmed_api_key, email=pubmed_email)
 
         self.pdf_extractor = get_pdf_extractor()
 
@@ -84,7 +79,7 @@ class UnifiedLiteratureSearch:
         deduplicate: bool = True,
         extract_full_text: bool = False,
         sources: list[PaperSource] | None = None,
-        **kwargs
+        **kwargs,
     ) -> list[PaperMetadata]:
         """
         Search across all enabled literature sources.
@@ -142,20 +137,12 @@ class UnifiedLiteratureSearch:
 
         # Remove max_results from kwargs if present to avoid duplicate argument
         # (max_results_per_source is passed explicitly to _search_source)
-        kwargs_filtered = {k: v for k, v in kwargs.items() if k != 'max_results'}
+        kwargs_filtered = {k: v for k, v in kwargs.items() if k != "max_results"}
 
         with ThreadPoolExecutor(max_workers=len(search_clients)) as executor:
             future_to_source = {
                 executor.submit(
-                    self._search_source,
-                    client,
-                    source,
-                    query,
-                    max_results_per_source,
-                    fields,
-                    year_from,
-                    year_to,
-                    **kwargs_filtered
+                    self._search_source, client, source, query, max_results_per_source, fields, year_from, year_to, **kwargs_filtered
                 ): source
                 for source, client in search_clients.items()
             }
@@ -170,8 +157,9 @@ class UnifiedLiteratureSearch:
                     except Exception as e:
                         logger.error(f"Error searching {source.value}: {e}")
             except FuturesTimeoutError:
-                completed_sources = [s.value for s, c in search_clients.items()
-                                     if any(f.done() for f in future_to_source if future_to_source[f] == s)]
+                completed_sources = [
+                    s.value for s, c in search_clients.items() if any(f.done() for f in future_to_source if future_to_source[f] == s)
+                ]
                 logger.warning(f"Literature search timed out after {self.search_timeout}s. Completed sources: {completed_sources}")
                 # Collect any late-arriving results that completed between timeout and catch
                 for future in future_to_source:
@@ -250,11 +238,7 @@ class UnifiedLiteratureSearch:
 
         return None
 
-    def get_citations(
-        self,
-        paper: PaperMetadata,
-        max_citations: int = 50
-    ) -> list[PaperMetadata]:
+    def get_citations(self, paper: PaperMetadata, max_citations: int = 50) -> list[PaperMetadata]:
         """
         Get papers that cite the given paper.
 
@@ -271,9 +255,7 @@ class UnifiedLiteratureSearch:
             for paper_id in [paper.doi, paper.arxiv_id, paper.pubmed_id, paper.id]:
                 if paper_id:
                     try:
-                        citations = self.clients[PaperSource.SEMANTIC_SCHOLAR].get_paper_citations(
-                            paper_id, max_citations
-                        )
+                        citations = self.clients[PaperSource.SEMANTIC_SCHOLAR].get_paper_citations(paper_id, max_citations)
                         if citations:
                             return citations
                     except Exception:
@@ -281,18 +263,12 @@ class UnifiedLiteratureSearch:
 
         # Fallback to PubMed
         if PaperSource.PUBMED in self.clients and paper.pubmed_id:
-            return self.clients[PaperSource.PUBMED].get_paper_citations(
-                paper.pubmed_id, max_citations
-            )
+            return self.clients[PaperSource.PUBMED].get_paper_citations(paper.pubmed_id, max_citations)
 
         logger.warning(f"Could not retrieve citations for paper {paper.id}")
         return []
 
-    def get_references(
-        self,
-        paper: PaperMetadata,
-        max_references: int = 50
-    ) -> list[PaperMetadata]:
+    def get_references(self, paper: PaperMetadata, max_references: int = 50) -> list[PaperMetadata]:
         """
         Get papers referenced by the given paper.
 
@@ -309,9 +285,7 @@ class UnifiedLiteratureSearch:
             for paper_id in [paper.doi, paper.arxiv_id, paper.pubmed_id, paper.id]:
                 if paper_id:
                     try:
-                        references = self.clients[PaperSource.SEMANTIC_SCHOLAR].get_paper_references(
-                            paper_id, max_references
-                        )
+                        references = self.clients[PaperSource.SEMANTIC_SCHOLAR].get_paper_references(paper_id, max_references)
                         if references:
                             return references
                     except Exception:
@@ -319,9 +293,7 @@ class UnifiedLiteratureSearch:
 
         # Fallback to PubMed
         if PaperSource.PUBMED in self.clients and paper.pubmed_id:
-            return self.clients[PaperSource.PUBMED].get_paper_references(
-                paper.pubmed_id, max_references
-            )
+            return self.clients[PaperSource.PUBMED].get_paper_references(paper.pubmed_id, max_references)
 
         logger.warning(f"Could not retrieve references for paper {paper.id}")
         return []
@@ -335,7 +307,7 @@ class UnifiedLiteratureSearch:
         fields: list[str] | None,
         year_from: int | None,
         year_to: int | None,
-        **kwargs
+        **kwargs,
     ) -> list[PaperMetadata]:
         """
         Search a single source.
@@ -355,15 +327,8 @@ class UnifiedLiteratureSearch:
         """
         try:
             # Remove max_results from kwargs if present to avoid duplicate argument
-            kwargs_filtered = {k: v for k, v in kwargs.items() if k != 'max_results'}
-            return client.search(
-                query=query,
-                max_results=max_results,
-                fields=fields,
-                year_from=year_from,
-                year_to=year_to,
-                **kwargs_filtered
-            )
+            kwargs_filtered = {k: v for k, v in kwargs.items() if k != "max_results"}
+            return client.search(query=query, max_results=max_results, fields=fields, year_from=year_from, year_to=year_to, **kwargs_filtered)
         except Exception as e:
             logger.error(f"Error searching {source.value}: {e}")
             return []
@@ -440,10 +405,11 @@ class UnifiedLiteratureSearch:
         if not title:
             return ""
         import re
+
         # Lowercase, remove punctuation, extra spaces
         title = title.lower()
-        title = re.sub(r'[^\w\s]', '', title)
-        title = re.sub(r'\s+', ' ', title)
+        title = re.sub(r"[^\w\s]", "", title)
+        title = re.sub(r"\s+", " ", title)
         return title.strip()
 
     def _rank_papers(self, papers: list[PaperMetadata], query: str) -> list[PaperMetadata]:
@@ -490,6 +456,7 @@ class UnifiedLiteratureSearch:
             # Recency score (max 20 points, last 5 years)
             if paper.year:
                 from datetime import datetime
+
                 current_year = datetime.now().year
                 years_ago = current_year - paper.year
                 if years_ago <= 5:

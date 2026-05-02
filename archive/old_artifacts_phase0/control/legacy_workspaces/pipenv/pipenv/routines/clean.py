@@ -32,9 +32,7 @@ def do_clean(
                 err.print(f"Ignoring {bad_package}.")
             installed_package_names.remove(canonicalize_name(bad_package))
     # Intelligently detect if --dev should be used or not.
-    locked_packages = {
-        canonicalize_name(pkg) for pkg in project.lockfile_package_names["combined"]
-    }
+    locked_packages = {canonicalize_name(pkg) for pkg in project.lockfile_package_names["combined"]}
     for used_package in locked_packages:
         if used_package in installed_package_names:
             installed_package_names.remove(used_package)
@@ -44,9 +42,7 @@ def do_clean(
             console.print(apparent_bad_package)
         else:
             if not bare:
-                console.print(
-                    f"Uninstalling {apparent_bad_package}...", style="white bold"
-                )
+                console.print(f"Uninstalling {apparent_bad_package}...", style="white bold")
             # Uninstall the package.
             cmd = [
                 project_python(project, system=system),
@@ -70,8 +66,7 @@ def ensure_lockfile(project, pypi_mirror=None):
         new_hash = project.calculate_pipfile_hash()
         if new_hash != old_hash:
             err.print(
-                f"Pipfile.lock ({old_hash[-6:]}) out of date. "
-                "Run `pipenv lock` to update.",
+                f"Pipfile.lock ({old_hash[-6:]}) out of date. Run `pipenv lock` to update.",
                 style="bold yellow",
             )
     else:

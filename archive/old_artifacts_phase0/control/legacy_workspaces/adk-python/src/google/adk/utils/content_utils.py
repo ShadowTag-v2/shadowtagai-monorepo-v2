@@ -18,21 +18,15 @@ from google.genai import types
 
 
 def is_audio_part(part: types.Part) -> bool:
-  return (
-      part.inline_data is not None
-      and part.inline_data.mime_type is not None
-      and part.inline_data.mime_type.startswith('audio/')
-  ) or (
-      part.file_data is not None
-      and part.file_data.mime_type is not None
-      and part.file_data.mime_type.startswith('audio/')
-  )
+    return (part.inline_data is not None and part.inline_data.mime_type is not None and part.inline_data.mime_type.startswith("audio/")) or (
+        part.file_data is not None and part.file_data.mime_type is not None and part.file_data.mime_type.startswith("audio/")
+    )
 
 
 def filter_audio_parts(content: types.Content) -> types.Content | None:
-  if not content.parts:
-    return None
-  filtered_parts = [part for part in content.parts if not is_audio_part(part)]
-  if not filtered_parts:
-    return None
-  return types.Content(role=content.role, parts=filtered_parts)
+    if not content.parts:
+        return None
+    filtered_parts = [part for part in content.parts if not is_audio_part(part)]
+    if not filtered_parts:
+        return None
+    return types.Content(role=content.role, parts=filtered_parts)

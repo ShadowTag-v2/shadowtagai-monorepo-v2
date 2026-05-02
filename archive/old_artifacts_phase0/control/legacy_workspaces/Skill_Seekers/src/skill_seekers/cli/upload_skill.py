@@ -60,30 +60,19 @@ def upload_skill_api(zip_path):
 
     # Prepare API request
     api_url = "https://api.anthropic.com/v1/skills"
-    headers = {
-        "x-api-key": api_key,
-        "anthropic-version": "2023-06-01",
-        "anthropic-beta": "skills-2025-10-02"
-    }
+    headers = {"x-api-key": api_key, "anthropic-version": "2023-06-01", "anthropic-beta": "skills-2025-10-02"}
 
     try:
         # Read zip file
-        with open(zip_path, 'rb') as f:
+        with open(zip_path, "rb") as f:
             zip_data = f.read()
 
         # Upload skill
         print("⏳ Uploading to Anthropic API...")
 
-        files = {
-            'files[]': (zip_path.name, zip_data, 'application/zip')
-        }
+        files = {"files[]": (zip_path.name, zip_data, "application/zip")}
 
-        response = requests.post(
-            api_url,
-            headers=headers,
-            files=files,
-            timeout=60
-        )
+        response = requests.post(api_url, headers=headers, files=files, timeout=60)
 
         # Check response
         if response.status_code == 200:
@@ -99,11 +88,11 @@ def upload_skill_api(zip_path):
             return False, "Authentication failed. Check your ANTHROPIC_API_KEY"
 
         elif response.status_code == 400:
-            error_msg = response.json().get('error', {}).get('message', 'Unknown error')
+            error_msg = response.json().get("error", {}).get("message", "Unknown error")
             return False, f"Invalid skill format: {error_msg}"
 
         else:
-            error_msg = response.json().get('error', {}).get('message', 'Unknown error')
+            error_msg = response.json().get("error", {}).get("message", "Unknown error")
             return False, f"Upload failed ({response.status_code}): {error_msg}"
 
     except requests.exceptions.Timeout:
@@ -136,13 +125,10 @@ Examples:
 Requirements:
   - ANTHROPIC_API_KEY environment variable must be set
   - requests library (pip install requests)
-        """
+        """,
     )
 
-    parser.add_argument(
-        'zip_file',
-        help='Path to skill .zip file (e.g., output/react.zip)'
-    )
+    parser.add_argument("zip_file", help="Path to skill .zip file (e.g., output/react.zip)")
 
     args = parser.parse_args()
 

@@ -26,57 +26,48 @@ from pydantic import BaseModel, Field
 
 
 class PersonInfo(BaseModel):
-  """Structured information about a person."""
+    """Structured information about a person."""
 
-  name: str = Field(description="The person's full name")
-  age: int = Field(description="The person's age in years")
-  occupation: str = Field(description="The person's job or profession")
-  location: str = Field(description="The city and country where they live")
-  biography: str = Field(description="A brief biography of the person")
+    name: str = Field(description="The person's full name")
+    age: int = Field(description="The person's age in years")
+    occupation: str = Field(description="The person's job or profession")
+    location: str = Field(description="The city and country where they live")
+    biography: str = Field(description="A brief biography of the person")
 
 
 def search_wikipedia(query: str) -> str:
-  """Search Wikipedia for information about a topic.
+    """Search Wikipedia for information about a topic.
 
-  Args:
-    query: The search query to look up on Wikipedia
+    Args:
+      query: The search query to look up on Wikipedia
 
-  Returns:
-    Summary of the Wikipedia article if found, or error message if not found
-  """
-  try:
-    # Use Wikipedia API to search for the article
-    search_url = (
-        "https://en.wikipedia.org/api/rest_v1/page/summary/"
-        + query.replace(" ", "_")
-    )
-    response = requests.get(search_url, timeout=10)
+    Returns:
+      Summary of the Wikipedia article if found, or error message if not found
+    """
+    try:
+        # Use Wikipedia API to search for the article
+        search_url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + query.replace(" ", "_")
+        response = requests.get(search_url, timeout=10)
 
-    if response.status_code == 200:
-      data = response.json()
-      return (
-          f"Title: {data.get('title', 'N/A')}\n\nSummary:"
-          f" {data.get('extract', 'No summary available')}"
-      )
-    else:
-      return (
-          f"Wikipedia article not found for '{query}'. Status code:"
-          f" {response.status_code}"
-      )
+        if response.status_code == 200:
+            data = response.json()
+            return f"Title: {data.get('title', 'N/A')}\n\nSummary: {data.get('extract', 'No summary available')}"
+        else:
+            return f"Wikipedia article not found for '{query}'. Status code: {response.status_code}"
 
-  except Exception as e:
-    return f"Error searching Wikipedia: {str(e)}"
+    except Exception as e:
+        return f"Error searching Wikipedia: {str(e)}"
 
 
 def get_current_year() -> str:
-  """Get the current year.
+    """Get the current year.
 
-  Returns:
-    The current year as a string
-  """
-  from datetime import datetime
+    Returns:
+      The current year as a string
+    """
+    from datetime import datetime
 
-  return str(datetime.now().year)
+    return str(datetime.now().year)
 
 
 # Create the knowledge agent that uses google_search tool.

@@ -55,18 +55,12 @@ def generate_requirements(
 
     if categories_list:
         for category in categories_list:
-            lockfile_category = get_lockfile_section_using_pipfile_category(
-                category.strip()
-            )
+            lockfile_category = get_lockfile_section_using_pipfile_category(category.strip())
             category_deps = lockfile.get(lockfile_category, {})
             if from_pipfile:
                 # Use the specific category's package names, not combined
-                category_package_names = pipfile_package_names.get(
-                    category.strip(), set()
-                )
-                category_deps = {
-                    k: v for k, v in category_deps.items() if k in category_package_names
-                }
+                category_package_names = pipfile_package_names.get(category.strip(), set())
+                category_deps = {k: v for k, v in category_deps.items() if k in category_package_names}
             deps.update(category_deps)
     else:
         if dev or dev_only:
@@ -81,14 +75,10 @@ def generate_requirements(
             if from_pipfile:
                 # Only use packages names when filtering default dependencies
                 default_package_names = pipfile_package_names.get("packages", set())
-                default_deps = {
-                    k: v for k, v in default_deps.items() if k in default_package_names
-                }
+                default_deps = {k: v for k, v in default_deps.items() if k in default_package_names}
             deps.update(default_deps)
 
-    pip_installable_lines = requirements_from_lockfile(
-        deps, include_hashes=include_hashes, include_markers=include_markers
-    )
+    pip_installable_lines = requirements_from_lockfile(deps, include_hashes=include_hashes, include_markers=include_markers)
 
     # Print each requirement on its own line
     for line in pip_installable_lines:
@@ -136,9 +126,7 @@ def _generate_requirements_from_pipfile(
             default_deps = project.get_pipfile_section("packages")
             deps.update(default_deps)
 
-    pip_installable_lines = requirements_from_pipfile(
-        deps, include_markers=include_markers
-    )
+    pip_installable_lines = requirements_from_pipfile(deps, include_markers=include_markers)
 
     # Print each requirement on its own line
     for line in pip_installable_lines:

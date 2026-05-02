@@ -37,70 +37,66 @@ def execute_sql(
     params: dict | None = None,
     params_types: dict | None = None,
 ) -> dict:
-  """Utility function to run a Spanner Read-Only query in the spanner database and return the result.
+    """Utility function to run a Spanner Read-Only query in the spanner database and return the result.
 
-  Args:
-      project_id (str): The GCP project id in which the spanner database
-        resides.
-      instance_id (str): The instance id of the spanner database.
-      database_id (str): The database id of the spanner database.
-      query (str): The Spanner SQL query to be executed.
-      credentials (Credentials): The credentials to use for the request.
-      settings (SpannerToolSettings): The settings for the tool.
-      tool_context (ToolContext): The context for the tool.
-      params (dict): values for parameter replacement.  Keys must match the
-        names used in ``query``.
-      params_types (dict): maps explicit types for one or more param values.
+    Args:
+        project_id (str): The GCP project id in which the spanner database
+          resides.
+        instance_id (str): The instance id of the spanner database.
+        database_id (str): The database id of the spanner database.
+        query (str): The Spanner SQL query to be executed.
+        credentials (Credentials): The credentials to use for the request.
+        settings (SpannerToolSettings): The settings for the tool.
+        tool_context (ToolContext): The context for the tool.
+        params (dict): values for parameter replacement.  Keys must match the
+          names used in ``query``.
+        params_types (dict): maps explicit types for one or more param values.
 
-  Returns:
-      dict: Dictionary with the result of the query.
-            If the result contains the key "result_is_likely_truncated" with
-            value True, it means that there may be additional rows matching the
-            query not returned in the result.
-  """
+    Returns:
+        dict: Dictionary with the result of the query.
+              If the result contains the key "result_is_likely_truncated" with
+              value True, it means that there may be additional rows matching the
+              query not returned in the result.
+    """
 
-  try:
-    # Get Spanner client
-    spanner_client = client.get_spanner_client(
-        project=project_id, credentials=credentials
-    )
-    instance = spanner_client.instance(instance_id)
-    database = instance.database(database_id)
+    try:
+        # Get Spanner client
+        spanner_client = client.get_spanner_client(project=project_id, credentials=credentials)
+        instance = spanner_client.instance(instance_id)
+        database = instance.database(database_id)
 
-    if database.database_dialect == DatabaseDialect.POSTGRESQL:
-      return {
-          "status": "ERROR",
-          "error_details": "PostgreSQL dialect is not supported.",
-      }
+        if database.database_dialect == DatabaseDialect.POSTGRESQL:
+            return {
+                "status": "ERROR",
+                "error_details": "PostgreSQL dialect is not supported.",
+            }
 
-    with database.snapshot() as snapshot:
-      result_set = snapshot.execute_sql(
-          sql=query, params=params, param_types=params_types
-      )
-      rows = []
-      counter = (
-          settings.max_executed_query_result_rows
-          if settings and settings.max_executed_query_result_rows > 0
-          else DEFAULT_MAX_EXECUTED_QUERY_RESULT_ROWS
-      )
-      for row in result_set:
-        try:
-          # if the json serialization of the row succeeds, use it as is
-          json.dumps(row)
-        except:
-          row = str(row)
+        with database.snapshot() as snapshot:
+            result_set = snapshot.execute_sql(sql=query, params=params, param_types=params_types)
+            rows = []
+            counter = (
+                settings.max_executed_query_result_rows
+                if settings and settings.max_executed_query_result_rows > 0
+                else DEFAULT_MAX_EXECUTED_QUERY_RESULT_ROWS
+            )
+            for row in result_set:
+                try:
+                    # if the json serialization of the row succeeds, use it as is
+                    json.dumps(row)
+                except:
+                    row = str(row)
 
-        rows.append(row)
-        counter -= 1
-        if counter <= 0:
-          break
+                rows.append(row)
+                counter -= 1
+                if counter <= 0:
+                    break
 
-      result = {"status": "SUCCESS", "rows": rows}
-      if counter <= 0:
-        result["result_is_likely_truncated"] = True
-      return result
-  except Exception as ex:
-    return {
-        "status": "ERROR",
-        "error_details": str(ex),
-    }
+            result = {"status": "SUCCESS", "rows": rows}
+            if counter <= 0:
+                result["result_is_likely_truncated"] = True
+            return result
+    except Exception as ex:
+        return {
+            "status": "ERROR",
+            "error_details": str(ex),
+        }

@@ -16,11 +16,7 @@ def render_content_blocks(page: NotionPage) -> list[dict[str, Any]]:
             {
                 "object": "block",
                 "type": "paragraph",
-                "paragraph": {
-                    "rich_text": [
-                        {"type": "text", "text": {"content": page.content.introduction}}
-                    ]
-                },
+                "paragraph": {"rich_text": [{"type": "text", "text": {"content": page.content.introduction}}]},
             }
         )
 
@@ -30,9 +26,7 @@ def render_content_blocks(page: NotionPage) -> list[dict[str, Any]]:
             "object": "block",
             "type": "callout",
             "callout": {
-                "rich_text": [
-                    {"type": "text", "text": {"content": f"Token: {page.spec.token}"}}
-                ],
+                "rich_text": [{"type": "text", "text": {"content": f"Token: {page.spec.token}"}}],
                 "icon": {"emoji": "🔑"},
             },
         }
@@ -44,9 +38,7 @@ def render_content_blocks(page: NotionPage) -> list[dict[str, Any]]:
             {
                 "object": "block",
                 "type": "heading_2",
-                "heading_2": {
-                    "rich_text": [{"type": "text", "text": {"content": section.title}}]
-                },
+                "heading_2": {"rich_text": [{"type": "text", "text": {"content": section.title}}]},
             }
         )
 
@@ -54,11 +46,7 @@ def render_content_blocks(page: NotionPage) -> list[dict[str, Any]]:
             {
                 "object": "block",
                 "type": "paragraph",
-                "paragraph": {
-                    "rich_text": [
-                        {"type": "text", "text": {"content": section.content}}
-                    ]
-                },
+                "paragraph": {"rich_text": [{"type": "text", "text": {"content": section.content}}]},
             }
         )
 
@@ -68,9 +56,7 @@ def render_content_blocks(page: NotionPage) -> list[dict[str, Any]]:
             {
                 "object": "block",
                 "type": "heading_3",
-                "heading_3": {
-                    "rich_text": [{"type": "text", "text": {"content": "Checklist"}}]
-                },
+                "heading_3": {"rich_text": [{"type": "text", "text": {"content": "Checklist"}}]},
             }
         )
 
@@ -89,9 +75,7 @@ def render_content_blocks(page: NotionPage) -> list[dict[str, Any]]:
     return blocks
 
 
-async def generate_notion_page(
-    model: str, token: str, update: bool = False
-) -> tuple[str, list[dict[str, Any]]]:
+async def generate_notion_page(model: str, token: str, update: bool = False) -> tuple[str, list[dict[str, Any]]]:
     """Generate page content for Notion testing using LLM."""
     llm = LLMClient(model_override=model)
 
@@ -109,9 +93,7 @@ async def generate_notion_page(
     page.spec.token = token
 
     if token not in page.content.introduction:
-        page.content.introduction = (
-            f"{page.content.introduction}\n\nReference Token: {token}"
-        )
+        page.content.introduction = f"{page.content.introduction}\n\nReference Token: {token}"
 
     # Safety: Limit sections and checklist items to avoid Notion's block depth/count limits
     # Notion allows max ~100 blocks per request, but nested structures have tighter limits

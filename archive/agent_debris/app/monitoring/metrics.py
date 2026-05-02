@@ -1,7 +1,6 @@
 """Prometheus metrics collection for kernel chain."""
 
 from prometheus_client import Counter, Histogram, Info
-from typing import Optional
 from app.config import settings
 
 
@@ -98,12 +97,14 @@ class MetricsCollector:
             "shadowtagai_system",
             "System information",
         )
-        self.system_info.info({
-            "service_name": settings.service_name,
-            "gemini_model": settings.gemini_model,
-            "max_latency_p99_ms": str(settings.max_latency_p99_ms),
-            "confidence_threshold": str(settings.confidence_threshold),
-        })
+        self.system_info.info(
+            {
+                "service_name": settings.service_name,
+                "gemini_model": settings.gemini_model,
+                "max_latency_p99_ms": str(settings.max_latency_p99_ms),
+                "confidence_threshold": str(settings.confidence_threshold),
+            }
+        )
 
     def record_decision(
         self,
@@ -143,20 +144,14 @@ class MetricsCollector:
         """Record metrics for a kernel execution."""
         status = "success" if success else "failure"
 
-        self.kernel_executions.labels(
-            kernel_name=kernel_name, status=status
-        ).inc()
+        self.kernel_executions.labels(kernel_name=kernel_name, status=status).inc()
         self.kernel_latency.labels(kernel_name=kernel_name).observe(latency_ms)
 
         if tokens_input is not None:
-            self.kernel_tokens.labels(
-                kernel_name=kernel_name, direction="input"
-            ).inc(tokens_input)
+            self.kernel_tokens.labels(kernel_name=kernel_name, direction="input").inc(tokens_input)
 
         if tokens_output is not None:
-            self.kernel_tokens.labels(
-                kernel_name=kernel_name, direction="output"
-            ).inc(tokens_output)
+            self.kernel_tokens.labels(kernel_name=kernel_name, direction="output").inc(tokens_output)
 
     def record_compression(self, compression_ratio: float):
         """Record audit trail compression ratio."""

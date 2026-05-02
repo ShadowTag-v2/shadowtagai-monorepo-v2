@@ -11,7 +11,7 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class DecisionStatus(StrEnum):
@@ -94,8 +94,7 @@ class GovernanceDecision(BaseModel):
     trust_score: float | None = Field(default=None, ge=0.0, le=1.0)
     enforcement_mode: str | None = None  # "coercive", "normative", "adaptive"
 
-    class Config:
-        json_encoders = {datetime: lambda v: v.isoformat()}
+    model_config = ConfigDict(ser_json_timedelta="iso8601")
 
 
 class BaseGovernanceAgent(ABC):
@@ -277,3 +276,16 @@ class BaseGovernanceAgent(ABC):
             "cached_savings_usd": self.metrics.cached_savings_usd,
             "cache_hit": self.metrics.cache_hit,
         }
+
+
+class AgentPerformance(BaseModel):
+    """Performance tracking for individual agents.
+
+    Used by deep-agent enhancement tests to record per-agent metrics.
+    """
+
+    agent_name: str
+    total_calls: int = 0
+    total_tokens: int = 0
+    avg_latency_ms: float = 0.0
+    error_count: int = 0

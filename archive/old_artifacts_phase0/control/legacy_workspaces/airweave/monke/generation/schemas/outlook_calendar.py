@@ -12,7 +12,7 @@ class OutlookEvent(BaseModel):
     timezone: str = "UTC"
 
     @staticmethod
-    def near_future(token: str, minutes_from_now: int = 30) -> "OutlookEvent":
+    def near_future(token: str, minutes_from_now: int = 30) -> OutlookEvent:
         now = datetime.now(UTC)
         start = now + timedelta(minutes=minutes_from_now)
         end = start + timedelta(minutes=45)

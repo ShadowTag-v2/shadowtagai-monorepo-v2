@@ -25,71 +25,65 @@ from google.genai import types
 
 
 class TestRunner:
-  """Agents runner for testing."""
+    """Agents runner for testing."""
 
-  app_name = "test_app"
-  user_id = "test_user"
+    app_name = "test_app"
+    user_id = "test_user"
 
-  def __init__(
-      self,
-      agent: Agent,
-      artifact_service: BaseArtifactService = InMemoryArtifactService(),
-      session_service: BaseSessionService = InMemorySessionService(),
-  ) -> None:
-    self.agent = agent
-    self.agent_client = Runner(
-        app_name=self.app_name,
-        agent=agent,
-        artifact_service=artifact_service,
-        session_service=session_service,
-    )
-    self.session_service = session_service
-    self.current_session_id = session_service.create_session(
-        app_name=self.app_name, user_id=self.user_id
-    ).id
-
-  def new_session(self, session_id: str | None = None) -> None:
-    self.current_session_id = self.session_service.create_session(
-        app_name=self.app_name, user_id=self.user_id, session_id=session_id
-    ).id
-
-  def run(self, prompt: str) -> list[Event]:
-    current_session = self.session_service.get_session(
-        app_name=self.app_name,
-        user_id=self.user_id,
-        session_id=self.current_session_id,
-    )
-    assert current_session is not None
-
-    return list(
-        self.agent_client.run(
-            user_id=current_session.user_id,
-            session_id=current_session.id,
-            new_message=types.Content(
-                role="user",
-                parts=[types.Part.from_text(text=prompt)],
-            ),
+    def __init__(
+        self,
+        agent: Agent,
+        artifact_service: BaseArtifactService = InMemoryArtifactService(),
+        session_service: BaseSessionService = InMemorySessionService(),
+    ) -> None:
+        self.agent = agent
+        self.agent_client = Runner(
+            app_name=self.app_name,
+            agent=agent,
+            artifact_service=artifact_service,
+            session_service=session_service,
         )
-    )
+        self.session_service = session_service
+        self.current_session_id = session_service.create_session(app_name=self.app_name, user_id=self.user_id).id
 
-  def get_current_session(self) -> Session | None:
-    return self.session_service.get_session(
-        app_name=self.app_name,
-        user_id=self.user_id,
-        session_id=self.current_session_id,
-    )
+    def new_session(self, session_id: str | None = None) -> None:
+        self.current_session_id = self.session_service.create_session(app_name=self.app_name, user_id=self.user_id, session_id=session_id).id
 
-  def get_events(self) -> list[Event]:
-    return self.get_current_session().events
+    def run(self, prompt: str) -> list[Event]:
+        current_session = self.session_service.get_session(
+            app_name=self.app_name,
+            user_id=self.user_id,
+            session_id=self.current_session_id,
+        )
+        assert current_session is not None
 
-  @classmethod
-  def from_agent_name(cls, agent_name: str):
-    agent_module_path = f"tests.integration.fixture.{agent_name}"
-    agent_module = importlib.import_module(agent_module_path)
-    agent: Agent = agent_module.agent.root_agent
-    return cls(agent)
+        return list(
+            self.agent_client.run(
+                user_id=current_session.user_id,
+                session_id=current_session.id,
+                new_message=types.Content(
+                    role="user",
+                    parts=[types.Part.from_text(text=prompt)],
+                ),
+            )
+        )
 
-  def get_current_agent_name(self) -> str:
-    return self.agent_client._find_agent_to_run(
-        self.get_current_session(), self.agent
-    ).name
+    def get_current_session(self) -> Session | None:
+        return self.session_service.get_session(
+            app_name=self.app_name,
+            user_id=self.user_id,
+            session_id=self.current_session_id,
+        )
+
+    def get_events(self) -> list[Event]:
+        return self.get_current_session().events
+
+    @classmethod
+    def from_agent_name(cls, agent_name: str):
+        agent_module_path = f"tests.integration.fixture.{agent_name}"
+        agent_module = importlib.import_module(agent_module_path)
+        agent: Agent = agent_module.agent.root_agent
+        return cls(agent)
+
+    def get_current_agent_name(self) -> str:
+        return self.agent_client._find_agent_to_run(self.get_current_session(), self.agent).name

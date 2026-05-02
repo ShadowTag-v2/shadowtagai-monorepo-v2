@@ -29,9 +29,7 @@ def get_logger(name: str, level: str | None = None) -> logging.Logger:
     # Create rich handler with full terminal width
     # Use explicit large width for CI environments (GitHub Actions defaults to 80 otherwise)
     console = Console(width=200, force_terminal=True)
-    rich_handler = RichHandler(
-        console=console, show_time=True, show_path=False, markup=True, rich_tracebacks=True
-    )
+    rich_handler = RichHandler(console=console, show_time=True, show_path=False, markup=True, rich_tracebacks=True)
 
     # Set formatter
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")

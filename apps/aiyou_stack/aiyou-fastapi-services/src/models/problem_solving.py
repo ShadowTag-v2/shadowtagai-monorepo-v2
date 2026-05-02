@@ -5,7 +5,7 @@ Based on Is/Is Not Diagram methodology
 from datetime import datetime
 from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class DimensionType(StrEnum):
@@ -34,8 +34,8 @@ class IsIsNotDiagram(BaseModel):
     timeline_notes: str | None = Field(None, description="Timeline or chronological context")
     change_points: list[str] | None = Field(None, description="Identified change points")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "problem_description": "Product quality defects in manufacturing line",
                 "dimensions": [
@@ -58,7 +58,8 @@ class IsIsNotDiagram(BaseModel):
                     "Equipment maintenance delayed",
                 ],
             },
-        }
+        },
+    )
 
 
 class ProblemSolvingTechnique(StrEnum):
@@ -149,8 +150,8 @@ class StructuredProblemSolvingProcess(BaseModel):
     owner: str | None = None
     status: str = "in_progress"
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "problem_title": "High defect rate in Product X-500",
                 "is_is_not_diagram": {
@@ -178,4 +179,5 @@ class StructuredProblemSolvingProcess(BaseModel):
                     },
                 ],
             },
-        }
+        },
+    )

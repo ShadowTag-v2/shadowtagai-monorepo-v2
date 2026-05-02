@@ -20,18 +20,18 @@ from .common import EvalBaseModel
 
 
 class ConversationScenario(EvalBaseModel):
-  """Scenario for a conversation between a simulated user and the Agent under test."""
+    """Scenario for a conversation between a simulated user and the Agent under test."""
 
-  starting_prompt: str
-  """Starting prompt for the conversation.
+    starting_prompt: str
+    """Starting prompt for the conversation.
 
   This prompt acts as the fixed first user message that is given to the Agent.
   Any subsequent user messages are obtained by the system that is simulating the
   user.
   """
 
-  conversation_plan: str
-  """A plan that user simulation system needs to follow as it plays out the conversation.
+    conversation_plan: str
+    """A plan that user simulation system needs to follow as it plays out the conversation.
 
   Example:
   For a Travel Agent that has tools that let it book a flight and car, a sample
@@ -50,11 +50,9 @@ class ConversationScenario(EvalBaseModel):
 
 
 class ConversationScenarios(EvalBaseModel):
-  """A simple container for the list of ConversationScenario.
+    """A simple container for the list of ConversationScenario.
 
-  Mainly serves the purpose of helping with serialization and deserialization.
-  """
+    Mainly serves the purpose of helping with serialization and deserialization.
+    """
 
-  scenarios: list[ConversationScenario] = Field(
-      default_factory=list, description="""A list of ConversationScenario."""
-  )
+    scenarios: list[ConversationScenario] = Field(default_factory=list, description="""A list of ConversationScenario.""")

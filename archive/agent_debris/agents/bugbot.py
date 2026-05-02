@@ -13,23 +13,14 @@ class BugBot:
 
     def __init__(self, repo_path: str = "./"):
         self.repo_path = Path(repo_path)
-        self.results = {
-            "pylint": [],
-            "mypy": [],
-            "security": [],
-            "complexity": []
-        }
+        self.results = {"pylint": [], "mypy": [], "security": [], "complexity": []}
 
     def run_pylint(self, target: str = "src/") -> dict:
         """Run pylint for code quality."""
         print("///▞ BUGBOT :: Running pylint analysis")
         try:
             result = subprocess.run(
-                ["python3", "-m", "pylint", target, "--output-format=json"],
-                capture_output=True,
-                text=True,
-                cwd=self.repo_path,
-                timeout=120
+                ["python3", "-m", "pylint", target, "--output-format=json"], capture_output=True, text=True, cwd=self.repo_path, timeout=120
             )
             if result.stdout:
                 issues = json.loads(result.stdout)
@@ -44,13 +35,9 @@ class BugBot:
         print("///▞ BUGBOT :: Running mypy type check")
         try:
             result = subprocess.run(
-                ["python3", "-m", "mypy", target, "--ignore-missing-imports"],
-                capture_output=True,
-                text=True,
-                cwd=self.repo_path,
-                timeout=120
+                ["python3", "-m", "mypy", target, "--ignore-missing-imports"], capture_output=True, text=True, cwd=self.repo_path, timeout=120
             )
-            issues = result.stdout.strip().split('\n') if result.stdout else []
+            issues = result.stdout.strip().split("\n") if result.stdout else []
             self.results["mypy"] = [i for i in issues if i]
             return {"status": "complete", "issues": len(self.results["mypy"])}
         except Exception as e:
@@ -61,11 +48,7 @@ class BugBot:
         print("///▞ BUGBOT :: Running security scan")
         try:
             result = subprocess.run(
-                ["python3", "-m", "bandit", "-r", target, "-f", "json"],
-                capture_output=True,
-                text=True,
-                cwd=self.repo_path,
-                timeout=120
+                ["python3", "-m", "bandit", "-r", target, "-f", "json"], capture_output=True, text=True, cwd=self.repo_path, timeout=120
             )
             if result.stdout:
                 data = json.loads(result.stdout)
@@ -76,8 +59,8 @@ class BugBot:
                     "severity": {
                         "high": sum(1 for r in self.results["security"] if r.get("issue_severity") == "HIGH"),
                         "medium": sum(1 for r in self.results["security"] if r.get("issue_severity") == "MEDIUM"),
-                        "low": sum(1 for r in self.results["security"] if r.get("issue_severity") == "LOW")
-                    }
+                        "low": sum(1 for r in self.results["security"] if r.get("issue_severity") == "LOW"),
+                    },
                 }
         except FileNotFoundError:
             return {"status": "skipped", "message": "bandit not installed"}
@@ -88,24 +71,14 @@ class BugBot:
         """Check cyclomatic complexity with radon."""
         print("///▞ BUGBOT :: Checking code complexity")
         try:
-            result = subprocess.run(
-                ["python3", "-m", "radon", "cc", target, "-j"],
-                capture_output=True,
-                text=True,
-                cwd=self.repo_path,
-                timeout=120
-            )
+            result = subprocess.run(["python3", "-m", "radon", "cc", target, "-j"], capture_output=True, text=True, cwd=self.repo_path, timeout=120)
             if result.stdout:
                 data = json.loads(result.stdout)
                 high_complexity = []
                 for file, functions in data.items():
                     for func in functions:
                         if func.get("complexity", 0) > 10:
-                            high_complexity.append({
-                                "file": file,
-                                "function": func.get("name"),
-                                "complexity": func.get("complexity")
-                            })
+                            high_complexity.append({"file": file, "function": func.get("name"), "complexity": func.get("complexity")})
                 self.results["complexity"] = high_complexity
                 return {"status": "complete", "high_complexity_functions": len(high_complexity)}
         except FileNotFoundError:
@@ -121,15 +94,15 @@ class BugBot:
             "pylint": self.run_pylint(target),
             "mypy": self.run_mypy(target),
             "security": self.run_security_scan(target),
-            "complexity": self.check_complexity(target)
+            "complexity": self.check_complexity(target),
         }
 
         # Calculate overall health score
         total_issues = (
-            results["pylint"].get("issues", 0) +
-            results["mypy"].get("issues", 0) +
-            results["security"].get("issues", 0) * 2 +  # Security weighted 2x
-            results["complexity"].get("high_complexity_functions", 0)
+            results["pylint"].get("issues", 0)
+            + results["mypy"].get("issues", 0)
+            + results["security"].get("issues", 0) * 2  # Security weighted 2x
+            + results["complexity"].get("high_complexity_functions", 0)
         )
 
         health_score = max(0, 100 - total_issues)
@@ -140,7 +113,7 @@ class BugBot:
             "health_score": health_score,
             "total_issues": total_issues,
             "details": results,
-            "recommendation": "PASS" if health_score >= 70 else "NEEDS_WORK"
+            "recommendation": "PASS" if health_score >= 70 else "NEEDS_WORK",
         }
 
     def get_report(self) -> str:

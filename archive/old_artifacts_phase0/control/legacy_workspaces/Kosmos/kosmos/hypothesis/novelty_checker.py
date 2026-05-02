@@ -43,12 +43,7 @@ class NoveltyChecker:
         ```
     """
 
-    def __init__(
-        self,
-        similarity_threshold: float = 0.75,
-        max_similar_papers: int = 10,
-        use_vector_db: bool = True
-    ):
+    def __init__(self, similarity_threshold: float = 0.75, max_similar_papers: int = 10, use_vector_db: bool = True):
         """
         Initialize novelty checker.
 
@@ -96,17 +91,11 @@ class NoveltyChecker:
         # Step 3: Compute semantic similarity scores
         max_paper_similarity = 0.0
         if similar_papers:
-            max_paper_similarity = max(
-                self._compute_similarity(hypothesis, paper)
-                for paper in similar_papers
-            )
+            max_paper_similarity = max(self._compute_similarity(hypothesis, paper) for paper in similar_papers)
 
         max_hypothesis_similarity = 0.0
         if similar_hypotheses:
-            max_hypothesis_similarity = max(
-                self._compute_hypothesis_similarity(hypothesis, existing)
-                for existing in similar_hypotheses
-            )
+            max_hypothesis_similarity = max(self._compute_hypothesis_similarity(hypothesis, existing) for existing in similar_hypotheses)
 
         max_similarity = max(max_paper_similarity, max_hypothesis_similarity)
 
@@ -134,7 +123,7 @@ class NoveltyChecker:
             prior_art_detected=prior_art_detected,
             max_similarity=max_similarity,
             similar_papers=similar_papers,
-            similar_hypotheses=similar_hypotheses
+            similar_hypotheses=similar_hypotheses,
         )
 
         # Step 7: Prepare similar work details (filter out None papers)
@@ -146,9 +135,9 @@ class NoveltyChecker:
                 "source": paper.source,
                 "similarity": self._compute_similarity(hypothesis, paper),
                 "doi": paper.doi,
-                "arxiv_id": paper.arxiv_id
+                "arxiv_id": paper.arxiv_id,
             }
-            for paper in similar_papers[:self.max_similar_papers]
+            for paper in similar_papers[: self.max_similar_papers]
             if paper is not None and paper.title
         ]
 
@@ -158,7 +147,7 @@ class NoveltyChecker:
                 "domain": hyp.domain,
                 "created_at": hyp.created_at.isoformat() if hyp.created_at else None,
                 "similarity": self._compute_hypothesis_similarity(hypothesis, hyp),
-                "id": hyp.id
+                "id": hyp.id,
             }
             for hyp in similar_hypotheses[:5]  # Limit to 5
         ]
@@ -175,7 +164,7 @@ class NoveltyChecker:
             prior_art_detected=prior_art_detected,
             is_novel=novelty_score >= (1.0 - self.similarity_threshold),  # Inverse of threshold
             novelty_threshold_used=self.similarity_threshold,
-            summary=summary
+            summary=summary,
         )
 
     def _search_similar_literature(self, hypothesis: Hypothesis) -> list[PaperMetadata]:
@@ -195,10 +184,7 @@ class NoveltyChecker:
 
             # Fallback: keyword search
             query = f"{hypothesis.statement} {hypothesis.rationale[:100]}"
-            papers = self.literature_search.search(
-                query=query,
-                max_results=20
-            )
+            papers = self.literature_search.search(query=query, max_results=20)
 
             logger.info(f"Found {len(papers)} similar papers via keyword search")
 
@@ -245,7 +231,7 @@ class NoveltyChecker:
                     year=metadata.get("year"),
                     doi=metadata.get("doi"),
                     arxiv_id=metadata.get("arxiv_id"),
-                    source=metadata.get("source", "unknown")
+                    source=metadata.get("source", "unknown"),
                 )
                 papers.append(paper)
 
@@ -269,9 +255,7 @@ class NoveltyChecker:
         try:
             with get_session() as session:
                 # Query hypotheses in same domain
-                db_hypotheses = session.query(DBHypothesis).filter(
-                    DBHypothesis.domain == hypothesis.domain
-                ).all()
+                db_hypotheses = session.query(DBHypothesis).filter(DBHypothesis.domain == hypothesis.domain).all()
 
                 # Convert to Pydantic models
                 existing_hypotheses = []
@@ -287,7 +271,7 @@ class NoveltyChecker:
                         rationale=db_hyp.rationale,
                         domain=db_hyp.domain,
                         created_at=db_hyp.created_at,
-                        updated_at=db_hyp.updated_at
+                        updated_at=db_hyp.updated_at,
                     )
                     existing_hypotheses.append(hyp)
 
@@ -299,10 +283,7 @@ class NoveltyChecker:
                         similar.append(existing)
 
                 # Sort by similarity (highest first)
-                similar.sort(
-                    key=lambda h: self._compute_hypothesis_similarity(hypothesis, h),
-                    reverse=True
-                )
+                similar.sort(key=lambda h: self._compute_hypothesis_similarity(hypothesis, h), reverse=True)
 
                 logger.info(f"Found {len(similar)} similar existing hypotheses")
                 return similar
@@ -311,11 +292,7 @@ class NoveltyChecker:
             logger.error(f"Error checking existing hypotheses: {e}", exc_info=True)
             return []
 
-    def _compute_similarity(
-        self,
-        hypothesis: Hypothesis,
-        paper: PaperMetadata
-    ) -> float:
+    def _compute_similarity(self, hypothesis: Hypothesis, paper: PaperMetadata) -> float:
         """
         Compute semantic similarity between hypothesis and paper.
 
@@ -346,9 +323,7 @@ class NoveltyChecker:
             paper_embedding = self.embedder.embed_query(paper_text)
 
             # Cosine similarity
-            similarity = np.dot(hyp_embedding, paper_embedding) / (
-                np.linalg.norm(hyp_embedding) * np.linalg.norm(paper_embedding)
-            )
+            similarity = np.dot(hyp_embedding, paper_embedding) / (np.linalg.norm(hyp_embedding) * np.linalg.norm(paper_embedding))
 
             return float(max(0.0, min(1.0, similarity)))
 
@@ -356,11 +331,7 @@ class NoveltyChecker:
             logger.error(f"Error computing similarity: {e}")
             return 0.0
 
-    def _compute_hypothesis_similarity(
-        self,
-        hyp1: Hypothesis,
-        hyp2: Hypothesis
-    ) -> float:
+    def _compute_hypothesis_similarity(self, hyp1: Hypothesis, hyp2: Hypothesis) -> float:
         """
         Compute similarity between two hypotheses.
 
@@ -383,9 +354,7 @@ class NoveltyChecker:
             emb1 = self.embedder.embed_query(text1)
             emb2 = self.embedder.embed_query(text2)
 
-            similarity = np.dot(emb1, emb2) / (
-                np.linalg.norm(emb1) * np.linalg.norm(emb2)
-            )
+            similarity = np.dot(emb1, emb2) / (np.linalg.norm(emb1) * np.linalg.norm(emb2))
 
             return float(max(0.0, min(1.0, similarity)))
 
@@ -428,7 +397,7 @@ class NoveltyChecker:
         prior_art_detected: bool,
         max_similarity: float,
         similar_papers: list[PaperMetadata],
-        similar_hypotheses: list[Hypothesis]
+        similar_hypotheses: list[Hypothesis],
     ) -> str:
         """
         Generate human-readable novelty summary.
@@ -461,10 +430,7 @@ class NoveltyChecker:
                     f"This hypothesis may already be addressed in the literature."
                 )
             else:
-                return (
-                    f"LOW NOVELTY (score: {novelty_score:.2f}). "
-                    f"High similarity detected (max: {max_similarity:.2f}) but source unclear."
-                )
+                return f"LOW NOVELTY (score: {novelty_score:.2f}). High similarity detected (max: {max_similarity:.2f}) but source unclear."
 
         elif novelty_score >= 0.8:
             return (
@@ -497,10 +463,7 @@ class NoveltyChecker:
             )
 
 
-def check_hypothesis_novelty(
-    hypothesis: Hypothesis,
-    similarity_threshold: float = 0.75
-) -> NoveltyReport:
+def check_hypothesis_novelty(hypothesis: Hypothesis, similarity_threshold: float = 0.75) -> NoveltyReport:
     """
     Convenience function to check hypothesis novelty.
 

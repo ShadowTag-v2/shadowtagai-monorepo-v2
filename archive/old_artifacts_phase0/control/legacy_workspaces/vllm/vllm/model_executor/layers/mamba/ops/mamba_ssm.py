@@ -32,8 +32,9 @@ else:
 @triton.heuristics({"HAS_Z": lambda args: args["z_ptr"] is not None})
 @triton.heuristics(
     {
-        "HAS_STATE_BATCH_INDICES": lambda args: args["state_batch_indices_ptr"]
-        is not None
+        "HAS_STATE_BATCH_INDICES": lambda args: (
+            args["state_batch_indices_ptr"] is not None
+        )
     }
 )
 @triton.heuristics(
@@ -289,6 +290,7 @@ def selective_state_update(
 
     def grid(META):
         return (triton.cdiv(dim, META["BLOCK_SIZE_M"]), batch, nheads)
+
     z_strides = (z.stride(0), z.stride(1), z.stride(2)) if z is not None else (0, 0, 0)
     # We don't want autotune since it will overwrite the state
     # We instead tune by hand.

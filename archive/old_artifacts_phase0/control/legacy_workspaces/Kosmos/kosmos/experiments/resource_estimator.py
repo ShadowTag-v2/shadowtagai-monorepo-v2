@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 class ComplexityLevel(StrEnum):
     """Complexity level for resource estimation."""
+
     SIMPLE = "simple"
     MODERATE = "moderate"
     COMPLEX = "complex"
@@ -82,7 +83,7 @@ class ResourceEstimator:
         protocol: ExperimentProtocol | None = None,
         num_steps: int = 5,
         sample_size: int | None = None,
-        complexity: ComplexityLevel = ComplexityLevel.MODERATE
+        complexity: ComplexityLevel = ComplexityLevel.MODERATE,
     ) -> ResourceRequirements:
         """
         Estimate resource requirements.
@@ -172,11 +173,7 @@ class ResourceEstimator:
 
         return resources
 
-    def _estimate_memory(
-        self,
-        experiment_type: ExperimentType,
-        sample_size: int | None
-    ) -> float:
+    def _estimate_memory(self, experiment_type: ExperimentType, sample_size: int | None) -> float:
         """Estimate memory requirements (GB)."""
         base_memory = {
             ExperimentType.DATA_ANALYSIS: 4.0,
@@ -195,11 +192,7 @@ class ResourceEstimator:
 
         return round(memory, 1)
 
-    def _requires_gpu(
-        self,
-        experiment_type: ExperimentType,
-        hypothesis: Hypothesis | None
-    ) -> bool:
+    def _requires_gpu(self, experiment_type: ExperimentType, hypothesis: Hypothesis | None) -> bool:
         """Determine if GPU is required."""
         if experiment_type != ExperimentType.COMPUTATIONAL:
             return False
@@ -209,11 +202,7 @@ class ResourceEstimator:
 
         # Check for deep learning keywords
         statement = hypothesis.statement.lower()
-        ml_keywords = [
-            "neural network", "deep learning", "transformer",
-            "cnn", "rnn", "lstm", "bert", "gpt",
-            "training", "fine-tuning"
-        ]
+        ml_keywords = ["neural network", "deep learning", "transformer", "cnn", "rnn", "lstm", "bert", "gpt", "training", "fine-tuning"]
 
         return any(kw in statement for kw in ml_keywords)
 
@@ -229,11 +218,7 @@ class ResourceEstimator:
 
         return common + type_specific.get(experiment_type, [])
 
-    def _estimate_api_calls(
-        self,
-        num_steps: int,
-        sample_size: int | None
-    ) -> int:
+    def _estimate_api_calls(self, num_steps: int, sample_size: int | None) -> int:
         """Estimate number of API calls for literature synthesis."""
         # Base calls for analysis
         base_calls = num_steps * 10
@@ -246,10 +231,7 @@ class ResourceEstimator:
         return base_calls
 
     def check_availability(
-        self,
-        requirements: ResourceRequirements,
-        available_budget: float | None = None,
-        available_time: float | None = None
+        self, requirements: ResourceRequirements, available_budget: float | None = None, available_time: float | None = None
     ) -> dict[str, Any]:
         """
         Check if resources are available within constraints.
@@ -262,68 +244,44 @@ class ResourceEstimator:
         Returns:
             Dict with availability status and recommendations
         """
-        result = {
-            "available": True,
-            "warnings": [],
-            "blockers": [],
-            "recommendations": []
-        }
+        result = {"available": True, "warnings": [], "blockers": [], "recommendations": []}
 
         # Check budget
         if available_budget and requirements.estimated_cost_usd:
             if requirements.estimated_cost_usd > available_budget:
                 result["available"] = False
-                result["blockers"].append(
-                    f"Cost ${requirements.estimated_cost_usd:.2f} exceeds "
-                    f"budget ${available_budget:.2f}"
-                )
+                result["blockers"].append(f"Cost ${requirements.estimated_cost_usd:.2f} exceeds budget ${available_budget:.2f}")
             elif requirements.estimated_cost_usd > available_budget * 0.8:
-                result["warnings"].append(
-                    f"Cost ${requirements.estimated_cost_usd:.2f} is "
-                    f"80%+ of budget ${available_budget:.2f}"
-                )
+                result["warnings"].append(f"Cost ${requirements.estimated_cost_usd:.2f} is 80%+ of budget ${available_budget:.2f}")
 
         # Check time
         if available_time and requirements.estimated_duration_days:
             if requirements.estimated_duration_days > available_time:
                 result["available"] = False
                 result["blockers"].append(
-                    f"Duration {requirements.estimated_duration_days:.1f} days exceeds "
-                    f"available time {available_time:.1f} days"
+                    f"Duration {requirements.estimated_duration_days:.1f} days exceeds available time {available_time:.1f} days"
                 )
             elif requirements.estimated_duration_days > available_time * 0.8:
                 result["warnings"].append(
-                    f"Duration {requirements.estimated_duration_days:.1f} days is "
-                    f"80%+ of available time {available_time:.1f} days"
+                    f"Duration {requirements.estimated_duration_days:.1f} days is 80%+ of available time {available_time:.1f} days"
                 )
 
         # Recommendations
         if requirements.can_parallelize and requirements.compute_hours > 24:
-            result["recommendations"].append(
-                f"Consider parallelizing across {requirements.parallelization_factor} cores "
-                f"to reduce duration"
-            )
+            result["recommendations"].append(f"Consider parallelizing across {requirements.parallelization_factor} cores to reduce duration")
 
         if requirements.gpu_required:
-            result["recommendations"].append(
-                "GPU required - ensure GPU resources are available"
-            )
+            result["recommendations"].append("GPU required - ensure GPU resources are available")
 
         if requirements.api_calls_estimated and requirements.api_calls_estimated > 100:
             cost_per_call = 0.01  # Rough estimate
             api_cost = requirements.api_calls_estimated * cost_per_call
-            result["recommendations"].append(
-                f"~{requirements.api_calls_estimated} API calls estimated "
-                f"(~${api_cost:.2f} in API costs)"
-            )
+            result["recommendations"].append(f"~{requirements.api_calls_estimated} API calls estimated (~${api_cost:.2f} in API costs)")
 
         return result
 
     def optimize_resources(
-        self,
-        requirements: ResourceRequirements,
-        max_cost: float | None = None,
-        max_duration: float | None = None
+        self, requirements: ResourceRequirements, max_cost: float | None = None, max_duration: float | None = None
     ) -> dict[str, Any]:
         """
         Suggest optimizations to meet constraints.
@@ -342,16 +300,18 @@ class ResourceEstimator:
         if max_cost and requirements.estimated_cost_usd and requirements.estimated_cost_usd > max_cost:
             reduction_needed = requirements.estimated_cost_usd - max_cost
 
-            suggestions.append({
-                "type": "cost_reduction",
-                "issue": f"Need to reduce cost by ${reduction_needed:.2f}",
-                "options": [
-                    "Reduce sample size to lower computational cost",
-                    "Use simpler statistical methods",
-                    "Reduce number of experimental conditions",
-                    "Cache and reuse intermediate results"
-                ]
-            })
+            suggestions.append(
+                {
+                    "type": "cost_reduction",
+                    "issue": f"Need to reduce cost by ${reduction_needed:.2f}",
+                    "options": [
+                        "Reduce sample size to lower computational cost",
+                        "Use simpler statistical methods",
+                        "Reduce number of experimental conditions",
+                        "Cache and reuse intermediate results",
+                    ],
+                }
+            )
 
         # Duration optimizations
         if max_duration and requirements.estimated_duration_days and requirements.estimated_duration_days > max_duration:
@@ -360,24 +320,18 @@ class ResourceEstimator:
             options = []
             if requirements.can_parallelize:
                 options.append(
-                    f"Parallelize across {requirements.parallelization_factor} cores "
-                    f"to reduce duration by ~{requirements.parallelization_factor}x"
+                    f"Parallelize across {requirements.parallelization_factor} cores to reduce duration by ~{requirements.parallelization_factor}x"
                 )
             else:
                 options.append("Simplify protocol to fewer steps")
 
-            options.extend([
-                "Use pre-computed datasets instead of generating new data",
-                "Reduce number of replications",
-            ])
+            options.extend(
+                [
+                    "Use pre-computed datasets instead of generating new data",
+                    "Reduce number of replications",
+                ]
+            )
 
-            suggestions.append({
-                "type": "duration_reduction",
-                "issue": f"Need to reduce duration by {reduction_needed:.1f} days",
-                "options": options
-            })
+            suggestions.append({"type": "duration_reduction", "issue": f"Need to reduce duration by {reduction_needed:.1f} days", "options": options})
 
-        return {
-            "optimizations_needed": len(suggestions) > 0,
-            "suggestions": suggestions
-        }
+        return {"optimizations_needed": len(suggestions) > 0, "suggestions": suggestions}

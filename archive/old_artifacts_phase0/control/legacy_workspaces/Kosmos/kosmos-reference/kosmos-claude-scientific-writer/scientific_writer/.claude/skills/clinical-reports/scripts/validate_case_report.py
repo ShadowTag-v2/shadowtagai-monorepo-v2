@@ -14,7 +14,6 @@ import argparse
 import json
 import re
 from pathlib import Path
-from typing import Dict, List
 
 
 class CareValidator:
@@ -22,77 +21,52 @@ class CareValidator:
 
     # CARE checklist items with regex patterns
     CARE_REQUIREMENTS = {
-        "title": {
-            "name": "Title contains 'case report'",
-            "pattern": r"(?i)(case\s+report|case\s+study)",
-            "section": "Title",
-            "required": True
-        },
-        "keywords": {
-            "name": "Keywords provided (2-5)",
-            "pattern": r"(?i)keywords?[:]\s*(.+)",
-            "section": "Keywords",
-            "required": True
-        },
-        "abstract": {
-            "name": "Abstract present",
-            "pattern": r"(?i)##?\s*abstract",
-            "section": "Abstract",
-            "required": True
-        },
+        "title": {"name": "Title contains 'case report'", "pattern": r"(?i)(case\s+report|case\s+study)", "section": "Title", "required": True},
+        "keywords": {"name": "Keywords provided (2-5)", "pattern": r"(?i)keywords?[:]\s*(.+)", "section": "Keywords", "required": True},
+        "abstract": {"name": "Abstract present", "pattern": r"(?i)##?\s*abstract", "section": "Abstract", "required": True},
         "introduction": {
             "name": "Introduction explaining novelty",
             "pattern": r"(?i)##?\s*introduction",
             "section": "Introduction",
-            "required": True
+            "required": True,
         },
         "patient_info": {
             "name": "Patient demographics present",
             "pattern": r"(?i)(patient\s+information|demographics?)",
             "section": "Patient Information",
-            "required": True
+            "required": True,
         },
         "clinical_findings": {
             "name": "Clinical findings documented",
             "pattern": r"(?i)(clinical\s+findings?|physical\s+exam)",
             "section": "Clinical Findings",
-            "required": True
+            "required": True,
         },
-        "timeline": {
-            "name": "Timeline of events",
-            "pattern": r"(?i)(timeline|chronology)",
-            "section": "Timeline",
-            "required": True
-        },
+        "timeline": {"name": "Timeline of events", "pattern": r"(?i)(timeline|chronology)", "section": "Timeline", "required": True},
         "diagnostic": {
             "name": "Diagnostic assessment",
             "pattern": r"(?i)diagnostic\s+(assessment|evaluation|workup)",
             "section": "Diagnostic Assessment",
-            "required": True
+            "required": True,
         },
         "therapeutic": {
             "name": "Therapeutic interventions",
             "pattern": r"(?i)(therapeutic\s+intervention|treatment)",
             "section": "Therapeutic Interventions",
-            "required": True
+            "required": True,
         },
         "followup": {
             "name": "Follow-up and outcomes",
             "pattern": r"(?i)(follow[\-\s]?up|outcomes?)",
             "section": "Follow-up and Outcomes",
-            "required": True
+            "required": True,
         },
-        "discussion": {
-            "name": "Discussion with literature review",
-            "pattern": r"(?i)##?\s*discussion",
-            "section": "Discussion",
-            "required": True
-        },
+        "discussion": {"name": "Discussion with literature review", "pattern": r"(?i)##?\s*discussion", "section": "Discussion", "required": True},
         "consent": {
             "name": "Informed consent statement",
             "pattern": r"(?i)(informed\s+consent|written\s+consent|consent.*obtained)",
             "section": "Informed Consent",
-            "required": True
+            "required": True,
         },
     }
 
@@ -115,14 +89,14 @@ class CareValidator:
     def _read_file(self) -> str:
         """Read input file content."""
         try:
-            with open(self.filename, 'r', encoding='utf-8') as f:
+            with open(self.filename, encoding="utf-8") as f:
                 return f.read()
         except FileNotFoundError:
             raise FileNotFoundError(f"File not found: {self.filename}")
         except Exception as e:
             raise Exception(f"Error reading file: {e}")
 
-    def validate_care_compliance(self) -> Dict[str, Dict]:
+    def validate_care_compliance(self) -> dict[str, dict]:
         """Validate compliance with CARE guidelines."""
         results = {}
 
@@ -135,13 +109,13 @@ class CareValidator:
                 "section": item["section"],
                 "required": item["required"],
                 "found": found,
-                "status": "PASS" if found else "FAIL" if item["required"] else "WARNING"
+                "status": "PASS" if found else "FAIL" if item["required"] else "WARNING",
             }
 
         self.results["care_compliance"] = results
         return results
 
-    def check_deidentification(self) -> Dict[str, List[str]]:
+    def check_deidentification(self) -> dict[str, list[str]]:
         """Check for potential HIPAA identifier violations."""
         violations = {}
 
@@ -153,21 +127,16 @@ class CareValidator:
         self.results["hipaa_violations"] = violations
         return violations
 
-    def check_word_count(self) -> Dict[str, int]:
+    def check_word_count(self) -> dict[str, int]:
         """Check word count and provide limits guidance."""
-        words = len(re.findall(r'\b\w+\b', self.content))
+        words = len(re.findall(r"\b\w+\b", self.content))
 
-        word_count = {
-            "total_words": words,
-            "typical_min": 1500,
-            "typical_max": 3000,
-            "status": "ACCEPTABLE" if 1500 <= words <= 3500 else "CHECK"
-        }
+        word_count = {"total_words": words, "typical_min": 1500, "typical_max": 3000, "status": "ACCEPTABLE" if 1500 <= words <= 3500 else "CHECK"}
 
         self.results["word_count"] = word_count
         return word_count
 
-    def check_references(self) -> Dict[str, any]:
+    def check_references(self) -> dict[str, any]:
         """Check for presence of references."""
         ref_patterns = [
             r"##?\s*references",
@@ -182,13 +151,13 @@ class CareValidator:
             "has_references": has_refs,
             "estimated_count": ref_count,
             "recommended_min": 10,
-            "status": "ACCEPTABLE" if ref_count >= 10 else "LOW"
+            "status": "ACCEPTABLE" if ref_count >= 10 else "LOW",
         }
 
         self.results["references"] = references
         return references
 
-    def generate_report(self) -> Dict:
+    def generate_report(self) -> dict:
         """Generate comprehensive validation report."""
         if not self.results:
             self.validate_care_compliance()
@@ -209,7 +178,7 @@ class CareValidator:
             "hipaa_violations": self.results["hipaa_violations"],
             "word_count": self.results["word_count"],
             "references": self.results["references"],
-            "overall_status": "PASS" if compliance_rate >= 90 and not self.results["hipaa_violations"] else "NEEDS_REVISION"
+            "overall_status": "PASS" if compliance_rate >= 90 and not self.results["hipaa_violations"] else "NEEDS_REVISION",
         }
 
         return report
@@ -263,7 +232,7 @@ class CareValidator:
 
         # Recommendations
         issues = []
-        if report['compliance_rate'] < 100:
+        if report["compliance_rate"] < 100:
             missing = [v["name"] for v in report["care_compliance"].values() if v["required"] and not v["found"]]
             issues.append(f"Missing required sections: {', '.join(missing)}")
 
@@ -285,23 +254,10 @@ class CareValidator:
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Validate clinical case reports against CARE guidelines"
-    )
-    parser.add_argument(
-        "input_file",
-        help="Path to case report file (Markdown or text)"
-    )
-    parser.add_argument(
-        "--output",
-        "-o",
-        help="Output JSON report to file"
-    )
-    parser.add_argument(
-        "--json",
-        action="store_true",
-        help="Output JSON to stdout instead of human-readable report"
-    )
+    parser = argparse.ArgumentParser(description="Validate clinical case reports against CARE guidelines")
+    parser.add_argument("input_file", help="Path to case report file (Markdown or text)")
+    parser.add_argument("--output", "-o", help="Output JSON report to file")
+    parser.add_argument("--json", action="store_true", help="Output JSON to stdout instead of human-readable report")
 
     args = parser.parse_args()
 
@@ -315,7 +271,7 @@ def main():
             validator.print_report()
 
         if args.output:
-            with open(args.output, 'w') as f:
+            with open(args.output, "w") as f:
                 json.dumps(report, f, indent=2)
             print(f"\nJSON report saved to: {args.output}")
 
@@ -330,4 +286,5 @@ def main():
 
 if __name__ == "__main__":
     import sys
+
     sys.exit(main())

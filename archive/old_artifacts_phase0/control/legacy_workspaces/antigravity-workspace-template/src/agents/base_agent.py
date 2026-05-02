@@ -41,24 +41,31 @@ class BaseAgent:
                     def generate_content(self, model, contents):
                         class _R:
                             text = f"[{role}] Task completed"
+
                         return _R()
+
                 def __init__(self):
                     self.models = self._Models()
+
             self.client = _DummyClient()
         else:
             try:
                 self.client = genai.Client(api_key=settings.GOOGLE_API_KEY)
             except Exception as e:
                 print(f"⚠️ {role} agent: genai client not initialized: {e}")
+
                 # Fallback to dummy client
                 class _DummyClient:
                     class _Models:
                         def generate_content(self, model, contents):
                             class _R:
                                 text = f"[{role}] Task completed"
+
                             return _R()
+
                     def __init__(self):
                         self.models = self._Models()
+
                 self.client = _DummyClient()
 
     def execute(self, task: str, context: list[dict[str, str]] | None = None) -> str:
@@ -86,21 +93,12 @@ class BaseAgent:
 
         # Call Gemini API
         try:
-            response = self.client.models.generate_content(
-                model=settings.GEMINI_MODEL_NAME,
-                contents=full_prompt
-            )
+            response = self.client.models.generate_content(model=settings.GEMINI_MODEL_NAME, contents=full_prompt)
             result = getattr(response, "text", str(response)).strip()
 
             # Store in conversation history
-            self.conversation_history.append({
-                "role": "user",
-                "content": task
-            })
-            self.conversation_history.append({
-                "role": "assistant",
-                "content": result
-            })
+            self.conversation_history.append({"role": "user", "content": task})
+            self.conversation_history.append({"role": "assistant", "content": result})
 
             return result
         except Exception as e:

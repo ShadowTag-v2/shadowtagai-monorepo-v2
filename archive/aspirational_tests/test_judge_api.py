@@ -6,7 +6,6 @@ Tests FastAPI endpoints end-to-end
 import pytest
 from fastapi.testclient import TestClient
 from src.api.judges import app
-from src.judges import JudgeType
 
 
 @pytest.fixture
@@ -47,13 +46,8 @@ class TestEvaluateEndpoint:
             "request_id": "test_api_fin_001",
             "judge_type": "FinJudge",
             "action_type": "wire_transfer",
-            "context": {
-                "amount_usd": 75000,
-                "vendor_status": "new",
-                "purchase_order": None,
-                "destination_country": "Unknown"
-            },
-            "requested_by": "test@example.com"
+            "context": {"amount_usd": 75000, "vendor_status": "new", "purchase_order": None, "destination_country": "Unknown"},
+            "requested_by": "test@example.com",
         }
 
         response = client.post("/judges/evaluate", json=request_data)
@@ -76,13 +70,8 @@ class TestEvaluateEndpoint:
             "request_id": "test_api_case_001",
             "judge_type": "CaseJudge",
             "action_type": "case_acceptance",
-            "context": {
-                "case_value_usd": 500000,
-                "case_type": "contract_dispute",
-                "conflict_check_passed": False,
-                "probability_of_success": 0.6
-            },
-            "requested_by": "test@example.com"
+            "context": {"case_value_usd": 500000, "case_type": "contract_dispute", "conflict_check_passed": False, "probability_of_success": 0.6},
+            "requested_by": "test@example.com",
         }
 
         response = client.post("/judges/evaluate", json=request_data)
@@ -99,12 +88,8 @@ class TestEvaluateEndpoint:
             "request_id": "test_api_law_001",
             "judge_type": "LawJudge",
             "action_type": "compliance_check",
-            "context": {
-                "compliance_area": "eu_ai_act",
-                "ai_system_type": "biometric_identification",
-                "legal_review_completed": False
-            },
-            "requested_by": "test@example.com"
+            "context": {"compliance_area": "eu_ai_act", "ai_system_type": "biometric_identification", "legal_review_completed": False},
+            "requested_by": "test@example.com",
         }
 
         response = client.post("/judges/evaluate", json=request_data)
@@ -121,12 +106,8 @@ class TestEvaluateEndpoint:
             "request_id": "test_api_fraud_001",
             "judge_type": "FraudJudge",
             "action_type": "payment_authorization",
-            "context": {
-                "fraud_score": 0.85,
-                "identity_verified": False,
-                "amount_usd": 5000
-            },
-            "requested_by": "test@example.com"
+            "context": {"fraud_score": 0.85, "identity_verified": False, "amount_usd": 5000},
+            "requested_by": "test@example.com",
         }
 
         response = client.post("/judges/evaluate", json=request_data)
@@ -144,7 +125,7 @@ class TestEvaluateEndpoint:
             "judge_type": "InvalidJudge",
             "action_type": "test",
             "context": {},
-            "requested_by": "test@example.com"
+            "requested_by": "test@example.com",
         }
 
         response = client.post("/judges/evaluate", json=request_data)
@@ -175,7 +156,7 @@ class TestAuditEndpoints:
             "judge_type": "FinJudge",
             "action_type": "wire_transfer",
             "context": {"amount_usd": 50000, "vendor_status": "new", "purchase_order": None},
-            "requested_by": "test@example.com"
+            "requested_by": "test@example.com",
         }
 
         eval_response = client.post("/judges/evaluate", json=request_data)
@@ -211,7 +192,7 @@ class TestMetricsEndpoints:
                 "judge_type": "FinJudge",
                 "action_type": "wire_transfer",
                 "context": {"amount_usd": 50000 + i * 1000, "vendor_status": "approved", "purchase_order": "PO-123"},
-                "requested_by": "test@example.com"
+                "requested_by": "test@example.com",
             }
             client.post("/judges/evaluate", json=request_data)
 
@@ -238,7 +219,7 @@ class TestMetricsEndpoints:
                 "judge_type": judge_type,
                 "action_type": "test",
                 "context": {"amount_usd": 1000},
-                "requested_by": "test@example.com"
+                "requested_by": "test@example.com",
             }
             client.post("/judges/evaluate", json=request_data)
 
@@ -270,7 +251,7 @@ class TestRecentDecisionsEndpoint:
                 "judge_type": "FinJudge",
                 "action_type": "test",
                 "context": {"amount_usd": 1000},
-                "requested_by": "test@example.com"
+                "requested_by": "test@example.com",
             }
             client.post("/judges/evaluate", json=request_data)
 
@@ -292,7 +273,7 @@ class TestRecentDecisionsEndpoint:
                     "judge_type": judge_type,
                     "action_type": "test",
                     "context": {"amount_usd": 1000},
-                    "requested_by": "test@example.com"
+                    "requested_by": "test@example.com",
                 }
                 client.post("/judges/evaluate", json=request_data)
 
@@ -346,7 +327,7 @@ class TestEndToEndFlow:
             "judge_type": "FinJudge",
             "action_type": "wire_transfer",
             "context": {"amount_usd": 75000, "vendor_status": "new", "purchase_order": None},
-            "requested_by": "test@example.com"
+            "requested_by": "test@example.com",
         }
 
         eval_response = client.post("/judges/evaluate", json=request_data)

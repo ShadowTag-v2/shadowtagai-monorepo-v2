@@ -3,10 +3,10 @@
 from abc import ABCMeta, abstractmethod
 
 
-#*****************************************************
+# *****************************************************
 # Explorer
-#*****************************************************
-class Explorer(metaclass = ABCMeta):
+# *****************************************************
+class Explorer(metaclass=ABCMeta):
     @abstractmethod
     def getContent(self, *args, **kwargs):
         pass
@@ -19,7 +19,7 @@ class Explorer(metaclass = ABCMeta):
         pass
 
     def getStlCurDir(self):
-        return ''
+        return ""
 
     def supportsMulti(self):
         return False

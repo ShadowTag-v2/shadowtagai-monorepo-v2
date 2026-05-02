@@ -22,17 +22,17 @@ from google.adk.agents.llm_agent import Agent
 from requests.exceptions import RequestException
 
 from adk_stale_agent.settings import (
-  CLOSE_HOURS_AFTER_STALE_THRESHOLD,
-  GITHUB_BASE_URL,
-  GRAPHQL_COMMENT_LIMIT,
-  GRAPHQL_EDIT_LIMIT,
-  GRAPHQL_TIMELINE_LIMIT,
-  LLM_MODEL_NAME,
-  OWNER,
-  REPO,
-  REQUEST_CLARIFICATION_LABEL,
-  STALE_HOURS_THRESHOLD,
-  STALE_LABEL_NAME,
+    CLOSE_HOURS_AFTER_STALE_THRESHOLD,
+    GITHUB_BASE_URL,
+    GRAPHQL_COMMENT_LIMIT,
+    GRAPHQL_EDIT_LIMIT,
+    GRAPHQL_TIMELINE_LIMIT,
+    LLM_MODEL_NAME,
+    OWNER,
+    REPO,
+    REQUEST_CLARIFICATION_LABEL,
+    STALE_HOURS_THRESHOLD,
+    STALE_LABEL_NAME,
 )
 from adk_stale_agent.utils import delete_request, error_response, get_request, patch_request, post_request
 
@@ -40,95 +40,87 @@ logger = logging.getLogger("google_adk." + __name__)
 
 # --- Constants ---
 # Used to detect if the bot has already posted an alert to avoid spamming.
-BOT_ALERT_SIGNATURE = (
-    "**Notification:** The author has updated the issue description"
-)
+BOT_ALERT_SIGNATURE = "**Notification:** The author has updated the issue description"
 
 # --- Global Cache ---
 _MAINTAINERS_CACHE: list[str] | None = None
 
 
 def _get_cached_maintainers() -> list[str]:
-  """
-  Fetches the list of repository maintainers.
+    """
+    Fetches the list of repository maintainers.
 
-  This function relies on `utils.get_request` for network resilience.
-  `get_request` is configured with an HTTPAdapter that automatically performs
-  exponential backoff retries (up to 6 times) for 5xx errors and rate limits.
+    This function relies on `utils.get_request` for network resilience.
+    `get_request` is configured with an HTTPAdapter that automatically performs
+    exponential backoff retries (up to 6 times) for 5xx errors and rate limits.
 
-  If the retries are exhausted or the data format is invalid, this function
-  raises a RuntimeError to prevent the bot from running with incorrect permissions.
+    If the retries are exhausted or the data format is invalid, this function
+    raises a RuntimeError to prevent the bot from running with incorrect permissions.
 
-  Returns:
-      List[str]: A list of GitHub usernames with push access.
+    Returns:
+        List[str]: A list of GitHub usernames with push access.
 
-  Raises:
-      RuntimeError: If the API fails after all retries or returns invalid data.
-  """
-  global _MAINTAINERS_CACHE
-  if _MAINTAINERS_CACHE is not None:
-    return _MAINTAINERS_CACHE
+    Raises:
+        RuntimeError: If the API fails after all retries or returns invalid data.
+    """
+    global _MAINTAINERS_CACHE
+    if _MAINTAINERS_CACHE is not None:
+        return _MAINTAINERS_CACHE
 
-  logger.info("Initializing Maintainers Cache...")
+    logger.info("Initializing Maintainers Cache...")
 
-  try:
-    url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/collaborators"
-    params = {"permission": "push"}
+    try:
+        url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/collaborators"
+        params = {"permission": "push"}
 
-    data = get_request(url, params)
+        data = get_request(url, params)
 
-    if isinstance(data, list):
-      _MAINTAINERS_CACHE = [u["login"] for u in data if "login" in u]
-      logger.info(f"Cached {len(_MAINTAINERS_CACHE)} maintainers.")
-      return _MAINTAINERS_CACHE
-    else:
-      logger.error(
-          f"Invalid API response format: Expected list, got {type(data)}"
-      )
-      raise ValueError(f"GitHub API returned non-list data: {data}")
+        if isinstance(data, list):
+            _MAINTAINERS_CACHE = [u["login"] for u in data if "login" in u]
+            logger.info(f"Cached {len(_MAINTAINERS_CACHE)} maintainers.")
+            return _MAINTAINERS_CACHE
+        else:
+            logger.error(f"Invalid API response format: Expected list, got {type(data)}")
+            raise ValueError(f"GitHub API returned non-list data: {data}")
 
-  except Exception as e:
-    logger.critical(
-        f"FATAL: Failed to verify repository maintainers. Error: {e}"
-    )
-    raise RuntimeError(
-        "Maintainer verification failed. processing aborted."
-    ) from e
+    except Exception as e:
+        logger.critical(f"FATAL: Failed to verify repository maintainers. Error: {e}")
+        raise RuntimeError("Maintainer verification failed. processing aborted.") from e
 
 
 def load_prompt_template(filename: str) -> str:
-  """
-  Loads the raw text content of a prompt file.
+    """
+    Loads the raw text content of a prompt file.
 
-  Args:
-      filename (str): The name of the file (e.g., 'PROMPT_INSTRUCTION.txt').
+    Args:
+        filename (str): The name of the file (e.g., 'PROMPT_INSTRUCTION.txt').
 
-  Returns:
-      str: The file content.
-  """
-  file_path = os.path.join(os.path.dirname(__file__), filename)
-  with open(file_path) as f:
-    return f.read()
+    Returns:
+        str: The file content.
+    """
+    file_path = os.path.join(os.path.dirname(__file__), filename)
+    with open(file_path) as f:
+        return f.read()
 
 
 PROMPT_TEMPLATE = load_prompt_template("PROMPT_INSTRUCTION.txt")
 
 
 def _fetch_graphql_data(item_number: int) -> dict[str, Any]:
-  """
-  Executes the GraphQL query to fetch raw issue data, including comments,
-  edits, and timeline events.
+    """
+    Executes the GraphQL query to fetch raw issue data, including comments,
+    edits, and timeline events.
 
-  Args:
-      item_number (int): The GitHub issue number.
+    Args:
+        item_number (int): The GitHub issue number.
 
-  Returns:
-      Dict[str, Any]: The raw 'issue' object from the GraphQL response.
+    Returns:
+        Dict[str, Any]: The raw 'issue' object from the GraphQL response.
 
-  Raises:
-      RequestException: If the GraphQL query returns errors or the issue is not found.
-  """
-  query = """
+    Raises:
+        RequestException: If the GraphQL query returns errors or the issue is not found.
+    """
+    query = """
     query($owner: String!, $name: String!, $number: Int!, $commentLimit: Int!, $timelineLimit: Int!) {
       repository(owner: $owner, name: $name) {
         issue(number: $number) {
@@ -175,397 +167,372 @@ def _fetch_graphql_data(item_number: int) -> dict[str, Any]:
     }
     """
 
-  variables = {
-      "owner": OWNER,
-      "name": REPO,
-      "number": item_number,
-      "commentLimit": GRAPHQL_COMMENT_LIMIT,
-      "editLimit": GRAPHQL_EDIT_LIMIT,
-      "timelineLimit": GRAPHQL_TIMELINE_LIMIT,
-  }
+    variables = {
+        "owner": OWNER,
+        "name": REPO,
+        "number": item_number,
+        "commentLimit": GRAPHQL_COMMENT_LIMIT,
+        "editLimit": GRAPHQL_EDIT_LIMIT,
+        "timelineLimit": GRAPHQL_TIMELINE_LIMIT,
+    }
 
-  response = post_request(
-      f"{GITHUB_BASE_URL}/graphql", {"query": query, "variables": variables}
-  )
+    response = post_request(f"{GITHUB_BASE_URL}/graphql", {"query": query, "variables": variables})
 
-  if "errors" in response:
-    raise RequestException(f"GraphQL Error: {response['errors'][0]['message']}")
+    if "errors" in response:
+        raise RequestException(f"GraphQL Error: {response['errors'][0]['message']}")
 
-  data = response.get("data", {}).get("repository", {}).get("issue", {})
-  if not data:
-    raise RequestException(f"Issue #{item_number} not found.")
+    data = response.get("data", {}).get("repository", {}).get("issue", {})
+    if not data:
+        raise RequestException(f"Issue #{item_number} not found.")
 
-  return data
+    return data
 
 
 def _build_history_timeline(
     data: dict[str, Any],
 ) -> tuple[list[dict[str, Any]], list[datetime], datetime | None]:
-  """
-  Parses raw GraphQL data into a unified, chronologically sorted history list.
-  Also extracts specific event times needed for logic checks.
+    """
+    Parses raw GraphQL data into a unified, chronologically sorted history list.
+    Also extracts specific event times needed for logic checks.
 
-  Args:
-      data (Dict[str, Any]): The raw issue data from `_fetch_graphql_data`.
+    Args:
+        data (Dict[str, Any]): The raw issue data from `_fetch_graphql_data`.
 
-  Returns:
-      Tuple[List[Dict], List[datetime], Optional[datetime]]:
-          - history: A list of normalized event dictionaries sorted by time.
-          - label_events: A list of timestamps when the stale label was applied.
-          - last_bot_alert_time: Timestamp of the last bot silent-edit alert (if any).
-  """
-  issue_author = data.get("author", {}).get("login")
-  history = []
-  label_events = []
-  last_bot_alert_time = None
+    Returns:
+        Tuple[List[Dict], List[datetime], Optional[datetime]]:
+            - history: A list of normalized event dictionaries sorted by time.
+            - label_events: A list of timestamps when the stale label was applied.
+            - last_bot_alert_time: Timestamp of the last bot silent-edit alert (if any).
+    """
+    issue_author = data.get("author", {}).get("login")
+    history = []
+    label_events = []
+    last_bot_alert_time = None
 
-  # 1. Baseline: Issue Creation
-  history.append({
-      "type": "created",
-      "actor": issue_author,
-      "time": dateutil.parser.isoparse(data["createdAt"]),
-      "data": None,
-  })
+    # 1. Baseline: Issue Creation
+    history.append(
+        {
+            "type": "created",
+            "actor": issue_author,
+            "time": dateutil.parser.isoparse(data["createdAt"]),
+            "data": None,
+        }
+    )
 
-  # 2. Process Comments
-  for c in data.get("comments", {}).get("nodes", []):
-    if not c:
-      continue
+    # 2. Process Comments
+    for c in data.get("comments", {}).get("nodes", []):
+        if not c:
+            continue
 
-    actor = c.get("author", {}).get("login")
-    c_body = c.get("body", "")
-    c_time = dateutil.parser.isoparse(c.get("createdAt"))
+        actor = c.get("author", {}).get("login")
+        c_body = c.get("body", "")
+        c_time = dateutil.parser.isoparse(c.get("createdAt"))
 
-    # Track bot alerts for spam prevention
-    if BOT_ALERT_SIGNATURE in c_body:
-      if last_bot_alert_time is None or c_time > last_bot_alert_time:
-        last_bot_alert_time = c_time
+        # Track bot alerts for spam prevention
+        if BOT_ALERT_SIGNATURE in c_body:
+            if last_bot_alert_time is None or c_time > last_bot_alert_time:
+                last_bot_alert_time = c_time
 
-    if actor and not actor.endswith("[bot]"):
-      # Use edit time if available, otherwise creation time
-      e_time = c.get("lastEditedAt")
-      actual_time = dateutil.parser.isoparse(e_time) if e_time else c_time
-      history.append({
-          "type": "commented",
-          "actor": actor,
-          "time": actual_time,
-          "data": c_body,
-      })
+        if actor and not actor.endswith("[bot]"):
+            # Use edit time if available, otherwise creation time
+            e_time = c.get("lastEditedAt")
+            actual_time = dateutil.parser.isoparse(e_time) if e_time else c_time
+            history.append(
+                {
+                    "type": "commented",
+                    "actor": actor,
+                    "time": actual_time,
+                    "data": c_body,
+                }
+            )
 
-  # 3. Process Body Edits ("Ghost Edits")
-  for e in data.get("userContentEdits", {}).get("nodes", []):
-    if not e:
-      continue
-    actor = e.get("editor", {}).get("login")
-    if actor and not actor.endswith("[bot]"):
-      history.append({
-          "type": "edited_description",
-          "actor": actor,
-          "time": dateutil.parser.isoparse(e.get("editedAt")),
-          "data": None,
-      })
+    # 3. Process Body Edits ("Ghost Edits")
+    for e in data.get("userContentEdits", {}).get("nodes", []):
+        if not e:
+            continue
+        actor = e.get("editor", {}).get("login")
+        if actor and not actor.endswith("[bot]"):
+            history.append(
+                {
+                    "type": "edited_description",
+                    "actor": actor,
+                    "time": dateutil.parser.isoparse(e.get("editedAt")),
+                    "data": None,
+                }
+            )
 
-  # 4. Process Timeline Events
-  for t in data.get("timelineItems", {}).get("nodes", []):
-    if not t:
-      continue
+    # 4. Process Timeline Events
+    for t in data.get("timelineItems", {}).get("nodes", []):
+        if not t:
+            continue
 
-    etype = t.get("__typename")
-    actor = t.get("actor", {}).get("login")
-    time_val = dateutil.parser.isoparse(t.get("createdAt"))
+        etype = t.get("__typename")
+        actor = t.get("actor", {}).get("login")
+        time_val = dateutil.parser.isoparse(t.get("createdAt"))
 
-    if etype == "LabeledEvent":
-      if t.get("label", {}).get("name") == STALE_LABEL_NAME:
-        label_events.append(time_val)
-      continue
+        if etype == "LabeledEvent":
+            if t.get("label", {}).get("name") == STALE_LABEL_NAME:
+                label_events.append(time_val)
+            continue
 
-    if actor and not actor.endswith("[bot]"):
-      pretty_type = (
-          "renamed_title" if etype == "RenamedTitleEvent" else "reopened"
-      )
-      history.append({
-          "type": pretty_type,
-          "actor": actor,
-          "time": time_val,
-          "data": None,
-      })
+        if actor and not actor.endswith("[bot]"):
+            pretty_type = "renamed_title" if etype == "RenamedTitleEvent" else "reopened"
+            history.append(
+                {
+                    "type": pretty_type,
+                    "actor": actor,
+                    "time": time_val,
+                    "data": None,
+                }
+            )
 
-  # Sort chronologically
-  history.sort(key=lambda x: x["time"])
-  return history, label_events, last_bot_alert_time
+    # Sort chronologically
+    history.sort(key=lambda x: x["time"])
+    return history, label_events, last_bot_alert_time
 
 
-def _replay_history_to_find_state(
-    history: list[dict[str, Any]], maintainers: list[str], issue_author: str
-) -> dict[str, Any]:
-  """
-  Replays the unified event history to determine the absolute last actor and their role.
+def _replay_history_to_find_state(history: list[dict[str, Any]], maintainers: list[str], issue_author: str) -> dict[str, Any]:
+    """
+    Replays the unified event history to determine the absolute last actor and their role.
 
-  Args:
-      history (List[Dict]): Chronologically sorted list of events.
-      maintainers (List[str]): List of maintainer usernames.
-      issue_author (str): Username of the issue author.
+    Args:
+        history (List[Dict]): Chronologically sorted list of events.
+        maintainers (List[str]): List of maintainer usernames.
+        issue_author (str): Username of the issue author.
 
-  Returns:
-      Dict[str, Any]: A dictionary containing the last state of the issue:
-          - last_action_role (str): 'author', 'maintainer', or 'other_user'.
-          - last_activity_time (datetime): Timestamp of the last human action.
-          - last_action_type (str): The type of the last action (e.g., 'commented').
-          - last_comment_text (Optional[str]): The text of the last comment.
-  """
-  last_action_role = "author"
-  last_activity_time = history[0]["time"]
-  last_action_type = "created"
-  last_comment_text = None
+    Returns:
+        Dict[str, Any]: A dictionary containing the last state of the issue:
+            - last_action_role (str): 'author', 'maintainer', or 'other_user'.
+            - last_activity_time (datetime): Timestamp of the last human action.
+            - last_action_type (str): The type of the last action (e.g., 'commented').
+            - last_comment_text (Optional[str]): The text of the last comment.
+    """
+    last_action_role = "author"
+    last_activity_time = history[0]["time"]
+    last_action_type = "created"
+    last_comment_text = None
 
-  for event in history:
-    actor = event["actor"]
-    etype = event["type"]
+    for event in history:
+        actor = event["actor"]
+        etype = event["type"]
 
-    role = "other_user"
-    if actor == issue_author:
-      role = "author"
-    elif actor in maintainers:
-      role = "maintainer"
+        role = "other_user"
+        if actor == issue_author:
+            role = "author"
+        elif actor in maintainers:
+            role = "maintainer"
 
-    last_action_role = role
-    last_activity_time = event["time"]
-    last_action_type = etype
+        last_action_role = role
+        last_activity_time = event["time"]
+        last_action_type = etype
 
-    # Only store text if it was a comment (resets on other events like labels/edits)
-    if etype == "commented":
-      last_comment_text = event["data"]
-    else:
-      last_comment_text = None
+        # Only store text if it was a comment (resets on other events like labels/edits)
+        if etype == "commented":
+            last_comment_text = event["data"]
+        else:
+            last_comment_text = None
 
-  return {
-      "last_action_role": last_action_role,
-      "last_activity_time": last_activity_time,
-      "last_action_type": last_action_type,
-      "last_comment_text": last_comment_text,
-  }
+    return {
+        "last_action_role": last_action_role,
+        "last_activity_time": last_activity_time,
+        "last_action_type": last_action_type,
+        "last_comment_text": last_comment_text,
+    }
 
 
 def get_issue_state(item_number: int) -> dict[str, Any]:
-  """
-  Retrieves the comprehensive state of a GitHub issue using GraphQL.
+    """
+    Retrieves the comprehensive state of a GitHub issue using GraphQL.
 
-  This function orchestrates the fetching, parsing, and analysis of the issue's
-  history to determine if it is stale, active, or pending maintainer review.
+    This function orchestrates the fetching, parsing, and analysis of the issue's
+    history to determine if it is stale, active, or pending maintainer review.
 
-  Args:
-      item_number (int): The GitHub issue number.
+    Args:
+        item_number (int): The GitHub issue number.
 
-  Returns:
-      Dict[str, Any]: A comprehensive state dictionary for the LLM agent.
-          Contains keys such as 'last_action_role', 'is_stale', 'days_since_activity',
-          and 'maintainer_alert_needed'.
-  """
-  try:
-    maintainers = _get_cached_maintainers()
+    Returns:
+        Dict[str, Any]: A comprehensive state dictionary for the LLM agent.
+            Contains keys such as 'last_action_role', 'is_stale', 'days_since_activity',
+            and 'maintainer_alert_needed'.
+    """
+    try:
+        maintainers = _get_cached_maintainers()
 
-    # 1. Fetch
-    raw_data = _fetch_graphql_data(item_number)
+        # 1. Fetch
+        raw_data = _fetch_graphql_data(item_number)
 
-    issue_author = raw_data.get("author", {}).get("login")
-    labels_list = [
-        l["name"] for l in raw_data.get("labels", {}).get("nodes", [])
-    ]
+        issue_author = raw_data.get("author", {}).get("login")
+        labels_list = [l["name"] for l in raw_data.get("labels", {}).get("nodes", [])]
 
-    # 2. Parse & Sort
-    history, label_events, last_bot_alert_time = _build_history_timeline(
-        raw_data
-    )
+        # 2. Parse & Sort
+        history, label_events, last_bot_alert_time = _build_history_timeline(raw_data)
 
-    # 3. Analyze (Replay)
-    state = _replay_history_to_find_state(history, maintainers, issue_author)
+        # 3. Analyze (Replay)
+        state = _replay_history_to_find_state(history, maintainers, issue_author)
 
-    # 4. Final Calculations & Alert Logic
-    current_time = datetime.now(UTC)
-    days_since_activity = (
-        current_time - state["last_activity_time"]
-    ).total_seconds() / 86400
+        # 4. Final Calculations & Alert Logic
+        current_time = datetime.now(UTC)
+        days_since_activity = (current_time - state["last_activity_time"]).total_seconds() / 86400
 
-    # Stale Checks
-    is_stale = STALE_LABEL_NAME in labels_list
-    days_since_stale_label = 0.0
-    if is_stale and label_events:
-      latest_label_time = max(label_events)
-      days_since_stale_label = (
-          current_time - latest_label_time
-      ).total_seconds() / 86400
+        # Stale Checks
+        is_stale = STALE_LABEL_NAME in labels_list
+        days_since_stale_label = 0.0
+        if is_stale and label_events:
+            latest_label_time = max(label_events)
+            days_since_stale_label = (current_time - latest_label_time).total_seconds() / 86400
 
-    # Silent Edit Alert Logic
-    maintainer_alert_needed = False
-    if (
-        state["last_action_role"] in ["author", "other_user"]
-        and state["last_action_type"] == "edited_description"
-    ):
-      if (
-          last_bot_alert_time
-          and last_bot_alert_time > state["last_activity_time"]
-      ):
-        logger.info(
-            f"#{item_number}: Silent edit detected, but Bot already alerted. No"
-            " spam."
-        )
-      else:
-        maintainer_alert_needed = True
-        logger.info(f"#{item_number}: Silent edit detected. Alert needed.")
+        # Silent Edit Alert Logic
+        maintainer_alert_needed = False
+        if state["last_action_role"] in ["author", "other_user"] and state["last_action_type"] == "edited_description":
+            if last_bot_alert_time and last_bot_alert_time > state["last_activity_time"]:
+                logger.info(f"#{item_number}: Silent edit detected, but Bot already alerted. No spam.")
+            else:
+                maintainer_alert_needed = True
+                logger.info(f"#{item_number}: Silent edit detected. Alert needed.")
 
-    logger.debug(
-        f"#{item_number} VERDICT: Role={state['last_action_role']}, "
-        f"Idle={days_since_activity:.2f}d"
-    )
+        logger.debug(f"#{item_number} VERDICT: Role={state['last_action_role']}, Idle={days_since_activity:.2f}d")
 
-    return {
-        "status": "success",
-        "last_action_role": state["last_action_role"],
-        "last_action_type": state["last_action_type"],
-        "maintainer_alert_needed": maintainer_alert_needed,
-        "is_stale": is_stale,
-        "days_since_activity": days_since_activity,
-        "days_since_stale_label": days_since_stale_label,
-        "last_comment_text": state["last_comment_text"],
-        "current_labels": labels_list,
-        "stale_threshold_days": STALE_HOURS_THRESHOLD / 24,
-        "close_threshold_days": CLOSE_HOURS_AFTER_STALE_THRESHOLD / 24,
-    }
+        return {
+            "status": "success",
+            "last_action_role": state["last_action_role"],
+            "last_action_type": state["last_action_type"],
+            "maintainer_alert_needed": maintainer_alert_needed,
+            "is_stale": is_stale,
+            "days_since_activity": days_since_activity,
+            "days_since_stale_label": days_since_stale_label,
+            "last_comment_text": state["last_comment_text"],
+            "current_labels": labels_list,
+            "stale_threshold_days": STALE_HOURS_THRESHOLD / 24,
+            "close_threshold_days": CLOSE_HOURS_AFTER_STALE_THRESHOLD / 24,
+        }
 
-  except RequestException as e:
-    return error_response(f"Network Error: {e}")
-  except Exception as e:
-    logger.error(
-        f"Unexpected error analyzing #{item_number}: {e}", exc_info=True
-    )
-    return error_response(f"Analysis Error: {e}")
+    except RequestException as e:
+        return error_response(f"Network Error: {e}")
+    except Exception as e:
+        logger.error(f"Unexpected error analyzing #{item_number}: {e}", exc_info=True)
+        return error_response(f"Analysis Error: {e}")
 
 
 # --- Tool Definitions ---
 
 
 def _format_days(hours: float) -> str:
-  """
-  Formats a duration in hours into a clean day string.
+    """
+    Formats a duration in hours into a clean day string.
 
-  Example:
-      168.0 -> "7"
-      12.0  -> "0.5"
-  """
-  days = hours / 24
-  return f"{days:.1f}" if days % 1 != 0 else f"{int(days)}"
+    Example:
+        168.0 -> "7"
+        12.0  -> "0.5"
+    """
+    days = hours / 24
+    return f"{days:.1f}" if days % 1 != 0 else f"{int(days)}"
 
 
 def add_label_to_issue(item_number: int, label_name: str) -> dict[str, Any]:
-  """
-  Adds a label to the issue.
+    """
+    Adds a label to the issue.
 
-  Args:
-      item_number (int): The GitHub issue number.
-      label_name (str): The name of the label to add.
-  """
-  logger.debug(f"Adding label '{label_name}' to issue #{item_number}.")
-  url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/labels"
-  try:
-    post_request(url, [label_name])
-    return {"status": "success"}
-  except RequestException as e:
-    return error_response(f"Error adding label: {e}")
+    Args:
+        item_number (int): The GitHub issue number.
+        label_name (str): The name of the label to add.
+    """
+    logger.debug(f"Adding label '{label_name}' to issue #{item_number}.")
+    url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/labels"
+    try:
+        post_request(url, [label_name])
+        return {"status": "success"}
+    except RequestException as e:
+        return error_response(f"Error adding label: {e}")
 
 
-def remove_label_from_issue(
-    item_number: int, label_name: str
-) -> dict[str, Any]:
-  """
-  Removes a label from the issue.
+def remove_label_from_issue(item_number: int, label_name: str) -> dict[str, Any]:
+    """
+    Removes a label from the issue.
 
-  Args:
-      item_number (int): The GitHub issue number.
-      label_name (str): The name of the label to remove.
-  """
-  logger.debug(f"Removing label '{label_name}' from issue #{item_number}.")
-  url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/labels/{label_name}"
-  try:
-    delete_request(url)
-    return {"status": "success"}
-  except RequestException as e:
-    return error_response(f"Error removing label: {e}")
+    Args:
+        item_number (int): The GitHub issue number.
+        label_name (str): The name of the label to remove.
+    """
+    logger.debug(f"Removing label '{label_name}' from issue #{item_number}.")
+    url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/labels/{label_name}"
+    try:
+        delete_request(url)
+        return {"status": "success"}
+    except RequestException as e:
+        return error_response(f"Error removing label: {e}")
 
 
 def add_stale_label_and_comment(item_number: int) -> dict[str, Any]:
-  """
-  Marks the issue as stale with a comment and label.
+    """
+    Marks the issue as stale with a comment and label.
 
-  Args:
-      item_number (int): The GitHub issue number.
-  """
-  stale_days_str = _format_days(STALE_HOURS_THRESHOLD)
-  close_days_str = _format_days(CLOSE_HOURS_AFTER_STALE_THRESHOLD)
+    Args:
+        item_number (int): The GitHub issue number.
+    """
+    stale_days_str = _format_days(STALE_HOURS_THRESHOLD)
+    close_days_str = _format_days(CLOSE_HOURS_AFTER_STALE_THRESHOLD)
 
-  comment = (
-      "This issue has been automatically marked as stale because it has not"
-      f" had recent activity for {stale_days_str} days after a maintainer"
-      " requested clarification. It will be closed if no further activity"
-      f" occurs within {close_days_str} days."
-  )
-  try:
-    post_request(
-        f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/comments",
-        {"body": comment},
+    comment = (
+        "This issue has been automatically marked as stale because it has not"
+        f" had recent activity for {stale_days_str} days after a maintainer"
+        " requested clarification. It will be closed if no further activity"
+        f" occurs within {close_days_str} days."
     )
-    post_request(
-        f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/labels",
-        [STALE_LABEL_NAME],
-    )
-    return {"status": "success"}
-  except RequestException as e:
-    return error_response(f"Error marking issue as stale: {e}")
+    try:
+        post_request(
+            f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/comments",
+            {"body": comment},
+        )
+        post_request(
+            f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/labels",
+            [STALE_LABEL_NAME],
+        )
+        return {"status": "success"}
+    except RequestException as e:
+        return error_response(f"Error marking issue as stale: {e}")
 
 
 def alert_maintainer_of_edit(item_number: int) -> dict[str, Any]:
-  """
-  Posts a comment alerting maintainers of a silent description update.
+    """
+    Posts a comment alerting maintainers of a silent description update.
 
-  Args:
-      item_number (int): The GitHub issue number.
-  """
-  # Uses the constant signature to ensure detection logic in get_issue_state works.
-  comment = f"{BOT_ALERT_SIGNATURE}. Maintainers, please review."
-  try:
-    post_request(
-        f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/comments",
-        {"body": comment},
-    )
-    return {"status": "success"}
-  except RequestException as e:
-    return error_response(f"Error posting alert: {e}")
+    Args:
+        item_number (int): The GitHub issue number.
+    """
+    # Uses the constant signature to ensure detection logic in get_issue_state works.
+    comment = f"{BOT_ALERT_SIGNATURE}. Maintainers, please review."
+    try:
+        post_request(
+            f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/comments",
+            {"body": comment},
+        )
+        return {"status": "success"}
+    except RequestException as e:
+        return error_response(f"Error posting alert: {e}")
 
 
 def close_as_stale(item_number: int) -> dict[str, Any]:
-  """
-  Closes the issue as not planned/stale.
+    """
+    Closes the issue as not planned/stale.
 
-  Args:
-      item_number (int): The GitHub issue number.
-  """
-  days_str = _format_days(CLOSE_HOURS_AFTER_STALE_THRESHOLD)
+    Args:
+        item_number (int): The GitHub issue number.
+    """
+    days_str = _format_days(CLOSE_HOURS_AFTER_STALE_THRESHOLD)
 
-  comment = (
-      "This has been automatically closed because it has been marked as stale"
-      f" for over {days_str} days."
-  )
-  try:
-    post_request(
-        f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/comments",
-        {"body": comment},
-    )
-    patch_request(
-        f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}",
-        {"state": "closed"},
-    )
-    return {"status": "success"}
-  except RequestException as e:
-    return error_response(f"Error closing issue: {e}")
+    comment = f"This has been automatically closed because it has been marked as stale for over {days_str} days."
+    try:
+        post_request(
+            f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}/comments",
+            {"body": comment},
+        )
+        patch_request(
+            f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{item_number}",
+            {"state": "closed"},
+        )
+        return {"status": "success"}
+    except RequestException as e:
+        return error_response(f"Error closing issue: {e}")
 
 
 root_agent = Agent(

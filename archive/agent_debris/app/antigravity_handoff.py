@@ -16,8 +16,8 @@ import asyncio
 import os
 import time
 from dataclasses import dataclass
-from enum import Enum, StrEnum
-from typing import Any, Dict, Optional
+from enum import StrEnum
+from typing import Any
 
 import google.generativeai as genai
 
@@ -27,6 +27,7 @@ from app.mcp_bridge import MCPBridge
 
 class ModelChoice(StrEnum):
     """Available LLM models"""
+
     GEMINI = "gemini-2.0-flash-exp"
     CLAUDE = "claude-sonnet-4.5"
     GPT5 = "gpt-5"
@@ -35,6 +36,7 @@ class ModelChoice(StrEnum):
 
 class TaskType(StrEnum):
     """Task classification for routing"""
+
     PRODUCTION_INFERENCE = "production_inference"  # Fast, cost-efficient
     DEEP_ANALYSIS = "deep_analysis"  # Superior reasoning
     CODE_REFACTORING = "code_refactoring"  # Large-scale edits
@@ -46,6 +48,7 @@ class TaskType(StrEnum):
 @dataclass
 class RoutingDecision:
     """Result of routing logic"""
+
     model: ModelChoice
     reasoning: str
     estimated_cost_usd: float
@@ -56,6 +59,7 @@ class RoutingDecision:
 @dataclass
 class HandoffResult:
     """Result from model execution"""
+
     model_used: ModelChoice
     response: str
     latency_ms: float
@@ -83,12 +87,7 @@ class AntigravityRouter:
     - All unavailable → Return error with circuit breaker
     """
 
-    def __init__(
-        self,
-        gemini_api_key: str | None = None,
-        claude_api_key: str | None = None,
-        openai_api_key: str | None = None
-    ):
+    def __init__(self, gemini_api_key: str | None = None, claude_api_key: str | None = None, openai_api_key: str | None = None):
         # API keys
         self.gemini_key = gemini_api_key or os.getenv("GEMINI_API_KEY")
         self.claude_key = claude_api_key or os.getenv("ANTHROPIC_API_KEY")
@@ -119,11 +118,7 @@ class AntigravityRouter:
         print(f"   MCP: enabled ({self.mcp.compression_target:.0%} target)")
 
     def decide_routing(
-        self,
-        task_type: TaskType,
-        context_size_bytes: int,
-        sla_ms: int | None = None,
-        cost_limit_usd: float | None = None
+        self, task_type: TaskType, context_size_bytes: int, sla_ms: int | None = None, cost_limit_usd: float | None = None
     ) -> RoutingDecision:
         """
         Decide which model to route to based on task characteristics.
@@ -149,7 +144,7 @@ class AntigravityRouter:
 
         model, est_latency, est_cost = routing_map.get(
             task_type,
-            (ModelChoice.GEMINI, 100, 0.002)  # Default to Gemini
+            (ModelChoice.GEMINI, 100, 0.002),  # Default to Gemini
         )
 
         # Adjust for SLA constraints
@@ -179,11 +174,7 @@ class AntigravityRouter:
         use_mcp = context_size_bytes > 10_000 or task_type == TaskType.JUDGE6_BINARY
 
         decision = RoutingDecision(
-            model=model,
-            reasoning=reasoning,
-            estimated_cost_usd=est_cost,
-            estimated_latency_ms=est_latency,
-            use_mcp_compression=use_mcp
+            model=model, reasoning=reasoning, estimated_cost_usd=est_cost, estimated_latency_ms=est_latency, use_mcp_compression=use_mcp
         )
 
         self.routing_decisions.append(decision)
@@ -194,12 +185,7 @@ class AntigravityRouter:
 
         return decision
 
-    async def execute_handoff(
-        self,
-        prompt: str,
-        context: dict[str, Any],
-        routing: RoutingDecision
-    ) -> HandoffResult:
+    async def execute_handoff(self, prompt: str, context: dict[str, Any], routing: RoutingDecision) -> HandoffResult:
         """
         Execute model handoff based on routing decision.
 
@@ -217,10 +203,7 @@ class AntigravityRouter:
         if routing.use_mcp_compression:
             kernel = await self.mcp.atp_519_scan(context)
             # Use compressed kernel instead of full context
-            compressed_context = {
-                "kernel": kernel.__dict__,
-                "original_hash": kernel.compressed_context_hash
-            }
+            compressed_context = {"kernel": kernel.__dict__, "original_hash": kernel.compressed_context_hash}
             context_to_use = compressed_context
             compressed = True
             compression_ratio = self.mcp.get_avg_compression()
@@ -249,7 +232,7 @@ class AntigravityRouter:
             latency_ms=latency_ms,
             cost_usd=cost_usd,
             compressed=compressed,
-            compression_ratio=compression_ratio
+            compression_ratio=compression_ratio,
         )
 
         self.handoff_results.append(result)
@@ -269,10 +252,7 @@ class AntigravityRouter:
             enhanced_prompt = f"{prompt}\n\nContext: {context}"
 
             # Call Gemini
-            response = await asyncio.to_thread(
-                self.gemini_model.generate_content,
-                enhanced_prompt
-            )
+            response = await asyncio.to_thread(self.gemini_model.generate_content, enhanced_prompt)
 
             # Reset failures on success
             self.gemini_failures = 0
@@ -334,11 +314,8 @@ class AntigravityRouter:
             "avg_latency_ms": f"{avg_latency:.1f}",
             "avg_cost_usd": f"${avg_cost:.4f}",
             "compression_rate": f"{compression_rate:.0%}",
-            "circuit_breakers": {
-                "gemini_failures": self.gemini_failures,
-                "claude_failures": self.claude_failures
-            },
-            "mcp_stats": self.mcp.get_stats()
+            "circuit_breakers": {"gemini_failures": self.gemini_failures, "claude_failures": self.claude_failures},
+            "mcp_stats": self.mcp.get_stats(),
         }
 
 
@@ -350,39 +327,24 @@ async def test_antigravity_router():
 
     # Test 1: Production inference (should route to Gemini)
     print("Test 1: Production Inference")
-    routing = router.decide_routing(
-        task_type=TaskType.PRODUCTION_INFERENCE,
-        context_size_bytes=5000,
-        sla_ms=100
-    )
+    routing = router.decide_routing(task_type=TaskType.PRODUCTION_INFERENCE, context_size_bytes=5000, sla_ms=100)
 
-    result = await router.execute_handoff(
-        prompt="Summarize this context",
-        context={"data": "sample context"},
-        routing=routing
-    )
+    result = await router.execute_handoff(prompt="Summarize this context", context={"data": "sample context"}, routing=routing)
     print(f"   Response: {result.response[:100]}...")
 
     # Test 2: Deep analysis with MCP compression (should route to Claude)
     print("\nTest 2: Deep Analysis with MCP")
     large_context = {"data": "x" * 50000}  # 50KB context
-    routing = router.decide_routing(
-        task_type=TaskType.DEEP_ANALYSIS,
-        context_size_bytes=len(str(large_context)),
-        sla_ms=2000
-    )
+    routing = router.decide_routing(task_type=TaskType.DEEP_ANALYSIS, context_size_bytes=len(str(large_context)), sla_ms=2000)
 
-    result = await router.execute_handoff(
-        prompt="Analyze this large dataset",
-        context=large_context,
-        routing=routing
-    )
+    result = await router.execute_handoff(prompt="Analyze this large dataset", context=large_context, routing=routing)
     print(f"   Compressed: {result.compressed}, Ratio: {result.compression_ratio}")
 
     # Test 3: Stats
     print("\nTest 3: Router Stats")
     stats = router.get_stats()
     import json
+
     print(json.dumps(stats, indent=2))
 
 

@@ -91,7 +91,7 @@ def monkeypatch_pydpf_method():
 
     original_get_inherited = DictionaryObject.get_inherited
 
-    def patched_get_inherited(self, key: str, default = None):
+    def patched_get_inherited(self, key: str, default=None):
         result = original_get_inherited(self, key, default)
         if key == FieldDictionaryAttributes.Opt:
             if isinstance(result, list) and all(isinstance(v, list) and len(v) == 2 for v in result):

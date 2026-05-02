@@ -20,7 +20,6 @@ Usage:
 """
 
 import argparse
-from typing import Optional
 
 try:
     import schemdraw
@@ -33,7 +32,7 @@ except ImportError:
 class CircuitBuilder:
     """High-level interface for building circuits with Schemdraw."""
 
-    def __init__(self, fontsize: int = 10, font: str = 'Arial'):
+    def __init__(self, fontsize: int = 10, font: str = "Arial"):
         """
         Initialize circuit builder.
 
@@ -45,8 +44,7 @@ class CircuitBuilder:
         self.elements = {}
         self.last_element = None
 
-    def add_voltage_source(self, label: str, value: str,
-                          direction: str = 'down') -> 'CircuitBuilder':
+    def add_voltage_source(self, label: str, value: str, direction: str = "down") -> CircuitBuilder:
         """
         Add a voltage source.
 
@@ -58,21 +56,19 @@ class CircuitBuilder:
         Returns:
             self for chaining
         """
-        element = self.drawing.add(elm.SourceV().label(f'{label}\\n{value}'))
+        element = self.drawing.add(elm.SourceV().label(f"{label}\\n{value}"))
         self.elements[label] = element
         self.last_element = element
         return self
 
-    def add_current_source(self, label: str, value: str,
-                          direction: str = 'down') -> 'CircuitBuilder':
+    def add_current_source(self, label: str, value: str, direction: str = "down") -> CircuitBuilder:
         """Add a current source."""
-        element = self.drawing.add(elm.SourceI().label(f'{label}\\n{value}'))
+        element = self.drawing.add(elm.SourceI().label(f"{label}\\n{value}"))
         self.elements[label] = element
         self.last_element = element
         return self
 
-    def add_resistor(self, label: str, value: str,
-                    direction: str = 'right') -> 'CircuitBuilder':
+    def add_resistor(self, label: str, value: str, direction: str = "right") -> CircuitBuilder:
         """
         Add a resistor.
 
@@ -82,30 +78,28 @@ class CircuitBuilder:
             direction: up, down, left, right
         """
         cmd = getattr(self.drawing.add(elm.Resistor()), direction)
-        element = cmd().label(f'{label}\\n{value}')
+        element = cmd().label(f"{label}\\n{value}")
         self.elements[label] = element
         self.last_element = element
         return self
 
-    def add_capacitor(self, label: str, value: str,
-                     direction: str = 'down') -> 'CircuitBuilder':
+    def add_capacitor(self, label: str, value: str, direction: str = "down") -> CircuitBuilder:
         """Add a capacitor."""
         cmd = getattr(self.drawing.add(elm.Capacitor()), direction)
-        element = cmd().label(f'{label}\\n{value}')
+        element = cmd().label(f"{label}\\n{value}")
         self.elements[label] = element
         self.last_element = element
         return self
 
-    def add_inductor(self, label: str, value: str,
-                    direction: str = 'right') -> 'CircuitBuilder':
+    def add_inductor(self, label: str, value: str, direction: str = "right") -> CircuitBuilder:
         """Add an inductor."""
         cmd = getattr(self.drawing.add(elm.Inductor()), direction)
-        element = cmd().label(f'{label}\\n{value}')
+        element = cmd().label(f"{label}\\n{value}")
         self.elements[label] = element
         self.last_element = element
         return self
 
-    def add_diode(self, label: str, direction: str = 'right') -> 'CircuitBuilder':
+    def add_diode(self, label: str, direction: str = "right") -> CircuitBuilder:
         """Add a diode."""
         cmd = getattr(self.drawing.add(elm.Diode()), direction)
         element = cmd().label(label)
@@ -113,7 +107,7 @@ class CircuitBuilder:
         self.last_element = element
         return self
 
-    def add_led(self, label: str, direction: str = 'right') -> 'CircuitBuilder':
+    def add_led(self, label: str, direction: str = "right") -> CircuitBuilder:
         """Add an LED."""
         cmd = getattr(self.drawing.add(elm.LED()), direction)
         element = cmd().label(label)
@@ -121,21 +115,20 @@ class CircuitBuilder:
         self.last_element = element
         return self
 
-    def add_opamp(self, label: str) -> 'CircuitBuilder':
+    def add_opamp(self, label: str) -> CircuitBuilder:
         """Add an operational amplifier."""
         element = self.drawing.add(elm.Opamp().label(label))
         self.elements[label] = element
         self.last_element = element
         return self
 
-    def add_ground(self) -> 'CircuitBuilder':
+    def add_ground(self) -> CircuitBuilder:
         """Add a ground symbol."""
         element = self.drawing.add(elm.Ground())
         self.last_element = element
         return self
 
-    def add_line(self, direction: str = 'right',
-                length: Optional[float] = None) -> 'CircuitBuilder':
+    def add_line(self, direction: str = "right", length: float | None = None) -> CircuitBuilder:
         """
         Add a connecting wire.
 
@@ -152,7 +145,7 @@ class CircuitBuilder:
         self.last_element = element
         return self
 
-    def add_dot(self, label: Optional[str] = None) -> 'CircuitBuilder':
+    def add_dot(self, label: str | None = None) -> CircuitBuilder:
         """Add a connection dot (for junctions)."""
         element = self.drawing.add(elm.Dot())
         if label:
@@ -160,12 +153,12 @@ class CircuitBuilder:
         self.last_element = element
         return self
 
-    def push(self) -> 'CircuitBuilder':
+    def push(self) -> CircuitBuilder:
         """Save current position (push to stack)."""
         self.drawing.push()
         return self
 
-    def pop(self) -> 'CircuitBuilder':
+    def pop(self) -> CircuitBuilder:
         """Return to saved position (pop from stack)."""
         self.drawing.pop()
         return self
@@ -178,7 +171,7 @@ class CircuitBuilder:
             filename: Output filename (.pdf, .svg, .png)
             dpi: Resolution for raster outputs
         """
-        if filename.endswith('.png'):
+        if filename.endswith(".png"):
             self.drawing.save(filename, dpi=dpi)
         else:
             self.drawing.save(filename)
@@ -189,64 +182,64 @@ class CircuitBuilder:
         self.drawing.draw()
 
 
-def create_rc_filter(output: str = 'rc_filter.pdf'):
+def create_rc_filter(output: str = "rc_filter.pdf"):
     """Create an RC low-pass filter circuit."""
     builder = CircuitBuilder()
 
     # Input
-    builder.add_dot('$V_{in}$')
-    builder.add_resistor('R', '1kΩ', 'right')
+    builder.add_dot("$V_{in}$")
+    builder.add_resistor("R", "1kΩ", "right")
 
     # Junction
     builder.add_dot()
     builder.push()
 
     # Capacitor to ground
-    builder.add_capacitor('C', '10µF', 'down')
+    builder.add_capacitor("C", "10µF", "down")
     builder.add_ground()
 
     # Output
     builder.pop()
-    builder.add_line('right')
-    builder.add_dot('$V_{out}$')
+    builder.add_line("right")
+    builder.add_dot("$V_{out}$")
 
     builder.save(output)
     return builder
 
 
-def create_voltage_divider(output: str = 'voltage_divider.pdf'):
+def create_voltage_divider(output: str = "voltage_divider.pdf"):
     """Create a voltage divider circuit."""
     builder = CircuitBuilder()
 
     # Voltage source
-    builder.add_voltage_source('$V_s$', '5V', 'down')
+    builder.add_voltage_source("$V_s$", "5V", "down")
 
     # First resistor
-    builder.add_resistor('$R_1$', '1kΩ', 'right')
+    builder.add_resistor("$R_1$", "1kΩ", "right")
 
     # Junction and output
-    builder.add_dot('$V_{out}$')
+    builder.add_dot("$V_{out}$")
     builder.push()
 
     # Second resistor to ground
-    builder.add_resistor('$R_2$', '2kΩ', 'down')
-    builder.add_line('left')
+    builder.add_resistor("$R_2$", "2kΩ", "down")
+    builder.add_line("left")
     builder.add_ground()
 
     builder.save(output)
     return builder
 
 
-def create_opamp_amplifier(output: str = 'opamp_circuit.pdf'):
+def create_opamp_amplifier(output: str = "opamp_circuit.pdf"):
     """Create a non-inverting amplifier circuit."""
     builder = CircuitBuilder()
 
     # Input
-    builder.add_dot('$V_{in}$')
-    builder.add_line('right', 1)
-    builder.add_opamp('OA1')
-    builder.add_line('right', 1)
-    builder.add_dot('$V_{out}$')
+    builder.add_dot("$V_{in}$")
+    builder.add_line("right", 1)
+    builder.add_opamp("OA1")
+    builder.add_line("right", 1)
+    builder.add_dot("$V_{out}$")
 
     builder.save(output)
     return builder
@@ -255,7 +248,7 @@ def create_opamp_amplifier(output: str = 'opamp_circuit.pdf'):
 def main():
     """Command-line interface."""
     parser = argparse.ArgumentParser(
-        description='Generate circuit diagrams using Schemdraw',
+        description="Generate circuit diagrams using Schemdraw",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -266,16 +259,12 @@ Examples:
 
   # Custom output
   python circuit_generator.py --example rc_filter -o my_filter.pdf
-        """
+        """,
     )
 
-    parser.add_argument('--example',
-                       choices=['rc_filter', 'voltage_divider', 'opamp'],
-                       help='Generate example circuit')
-    parser.add_argument('-o', '--output',
-                       help='Output filename (default: based on example name)')
-    parser.add_argument('--dpi', type=int, default=300,
-                       help='DPI for PNG output (default: 300)')
+    parser.add_argument("--example", choices=["rc_filter", "voltage_divider", "opamp"], help="Generate example circuit")
+    parser.add_argument("-o", "--output", help="Output filename (default: based on example name)")
+    parser.add_argument("--dpi", type=int, default=300, help="DPI for PNG output (default: 300)")
 
     args = parser.parse_args()
 
@@ -290,11 +279,11 @@ Examples:
         output = f"{args.example}.pdf"
 
     # Generate circuit
-    if args.example == 'rc_filter':
+    if args.example == "rc_filter":
         create_rc_filter(output)
-    elif args.example == 'voltage_divider':
+    elif args.example == "voltage_divider":
         create_voltage_divider(output)
-    elif args.example == 'opamp':
+    elif args.example == "opamp":
         create_opamp_amplifier(output)
 
     print(f"\nCircuit diagram saved to: {output}")
@@ -302,5 +291,5 @@ Examples:
     print(f"  \\includegraphics{{{output}}}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

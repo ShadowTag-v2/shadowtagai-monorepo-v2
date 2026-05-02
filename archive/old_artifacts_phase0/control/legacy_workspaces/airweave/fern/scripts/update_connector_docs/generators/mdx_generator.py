@@ -24,9 +24,7 @@ def escape_mdx_special_chars(text):
     return escaped_text
 
 
-def generate_mdx_content(
-    connector_name, entity_info, source_info, auth_configs, config_configs=None
-):
+def generate_mdx_content(connector_name, entity_info, source_info, auth_configs, config_configs=None):
     """Generate MDX content for a connector."""
     # Normalize connector name for display
     display_name = connector_name.replace("_", " ").title()
@@ -89,7 +87,9 @@ def generate_mdx_content(
 """
                 else:
                     # Regular OAuth (Airweave-managed credentials)
-                    content += "This connector uses **OAuth 2.0 authentication**. You can connect through the Airweave UI or API using the OAuth flow.\n\n"
+                    content += (
+                        "This connector uses **OAuth 2.0 authentication**. You can connect through the Airweave UI or API using the OAuth flow.\n\n"
+                    )
 
                     # Show available authentication methods
                     if auth_methods:
@@ -129,10 +129,7 @@ def generate_mdx_content(
                             if parent_class in auth_configs:
                                 parent_fields = auth_configs[parent_class]["fields"]
                                 for parent_field in parent_fields:
-                                    if (
-                                        parent_field["name"] == field["name"]
-                                        and parent_field["description"] != "No description"
-                                    ):
+                                    if parent_field["name"] == field["name"] and parent_field["description"] != "No description":
                                         field_description = parent_field["description"]
                                         break
 
@@ -201,9 +198,7 @@ def generate_mdx_content(
 
                 # Check if there are actually fields to display
                 if config_info["fields"] and len(config_info["fields"]) > 0:
-                    content += (
-                        "The following configuration options are available for this connector:\n\n"
-                    )
+                    content += "The following configuration options are available for this connector:\n\n"
 
                     # Wrap the configuration options in a Card
                     content += """<Card
@@ -256,9 +251,7 @@ def generate_mdx_content(
                     content += "</Card>\n\n"
                 else:
                     # No configuration fields available
-                    content += (
-                        "This connector does not have any additional configuration options.\n\n"
-                    )
+                    content += "This connector does not have any additional configuration options.\n\n"
             else:
                 # No config class found
                 content += "### Configuration Options\n\n"

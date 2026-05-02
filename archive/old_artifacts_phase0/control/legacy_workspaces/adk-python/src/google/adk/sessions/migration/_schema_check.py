@@ -30,84 +30,83 @@ CURRENT_SCHEMA_VERSION = "1.0"
 
 
 def _to_sync_url(db_url: str) -> str:
-  """Removes +driver from SQLAlchemy URL."""
-  if "://" in db_url:
-    scheme, _, rest = db_url.partition("://")
-    if "+" in scheme:
-      dialect = scheme.split("+", 1)[0]
-      return f"{dialect}://{rest}"
-  return db_url
+    """Removes +driver from SQLAlchemy URL."""
+    if "://" in db_url:
+        scheme, _, rest = db_url.partition("://")
+        if "+" in scheme:
+            dialect = scheme.split("+", 1)[0]
+            return f"{dialect}://{rest}"
+    return db_url
 
 
 def get_version_and_v01_status_sync(
     sess: sqlalchemy.orm.Session,
 ) -> tuple[str | None, bool]:
-  """Returns (version, is_v01) inspecting the database."""
-  inspector = sqlalchemy.inspect(sess.get_bind())
-  if inspector.has_table("adk_internal_metadata"):
-    try:
-      result = sess.execute(
-          text("SELECT value FROM adk_internal_metadata WHERE key = :key"),
-          {"key": SCHEMA_VERSION_KEY},
-      ).fetchone()
-      # If table exists, with or without key, it's 1.0 or newer.
-      return (result[0] if result else SCHEMA_VERSION_1_0_JSON), False
-    except Exception as e:
-      logger.warning(
-          "Could not read from adk_internal_metadata: %s. Assuming v1.0.",
-          e,
-      )
-      return SCHEMA_VERSION_1_0_JSON, False
+    """Returns (version, is_v01) inspecting the database."""
+    inspector = sqlalchemy.inspect(sess.get_bind())
+    if inspector.has_table("adk_internal_metadata"):
+        try:
+            result = sess.execute(
+                text("SELECT value FROM adk_internal_metadata WHERE key = :key"),
+                {"key": SCHEMA_VERSION_KEY},
+            ).fetchone()
+            # If table exists, with or without key, it's 1.0 or newer.
+            return (result[0] if result else SCHEMA_VERSION_1_0_JSON), False
+        except Exception as e:
+            logger.warning(
+                "Could not read from adk_internal_metadata: %s. Assuming v1.0.",
+                e,
+            )
+            return SCHEMA_VERSION_1_0_JSON, False
 
-  if inspector.has_table("events"):
-    try:
-      cols = {c["name"] for c in inspector.get_columns("events")}
-      if "actions" in cols and "event_data" not in cols:
-        return None, True  # 0.1 schema
-    except Exception as e:
-      logger.warning("Could not inspect 'events' table columns: %s", e)
-  return None, False  # New DB
+    if inspector.has_table("events"):
+        try:
+            cols = {c["name"] for c in inspector.get_columns("events")}
+            if "actions" in cols and "event_data" not in cols:
+                return None, True  # 0.1 schema
+        except Exception as e:
+            logger.warning("Could not inspect 'events' table columns: %s", e)
+    return None, False  # New DB
 
 
 def get_db_schema_version(db_url: str) -> str | None:
-  """Reads schema version from DB.
+    """Reads schema version from DB.
 
-  Checks metadata table first, falls back to table structure for 0.1 vs 1.0.
-  """
-  engine = None
-  try:
-    engine = create_sync_engine(_to_sync_url(db_url))
-    inspector = inspect(engine)
+    Checks metadata table first, falls back to table structure for 0.1 vs 1.0.
+    """
+    engine = None
+    try:
+        engine = create_sync_engine(_to_sync_url(db_url))
+        inspector = inspect(engine)
 
-    if inspector.has_table("adk_internal_metadata"):
-      with engine.connect() as connection:
-        result = connection.execute(
-            text("SELECT value FROM adk_internal_metadata WHERE key = :key"),
-            parameters={"key": SCHEMA_VERSION_KEY},
-        ).fetchone()
-        # If table exists, with or without key, it's 1.0 or newer.
-        return result[0] if result else SCHEMA_VERSION_1_0_JSON
+        if inspector.has_table("adk_internal_metadata"):
+            with engine.connect() as connection:
+                result = connection.execute(
+                    text("SELECT value FROM adk_internal_metadata WHERE key = :key"),
+                    parameters={"key": SCHEMA_VERSION_KEY},
+                ).fetchone()
+                # If table exists, with or without key, it's 1.0 or newer.
+                return result[0] if result else SCHEMA_VERSION_1_0_JSON
 
-    # Metadata table doesn't exist, check for 0.1 schema.
-    # 0.1 schema has an 'events' table with an 'actions' column.
-    if inspector.has_table("events"):
-      try:
-        cols = {c["name"] for c in inspector.get_columns("events")}
-        if "actions" in cols and "event_data" not in cols:
-          return SCHEMA_VERSION_0_1_PICKLE
-      except Exception as e:
-        logger.warning("Could not inspect 'events' table columns: %s", e)
+        # Metadata table doesn't exist, check for 0.1 schema.
+        # 0.1 schema has an 'events' table with an 'actions' column.
+        if inspector.has_table("events"):
+            try:
+                cols = {c["name"] for c in inspector.get_columns("events")}
+                if "actions" in cols and "event_data" not in cols:
+                    return SCHEMA_VERSION_0_1_PICKLE
+            except Exception as e:
+                logger.warning("Could not inspect 'events' table columns: %s", e)
 
-    # If no metadata table and not identifiable as 0.1,
-    # assume it is a new/empty DB requiring schema 1.0.
-    return SCHEMA_VERSION_1_0_JSON
-  except Exception as e:
-    logger.info(
-        "Could not determine schema version by inspecting database: %s."
-        " Assuming v1.0.",
-        e,
-    )
-    return SCHEMA_VERSION_1_0_JSON
-  finally:
-    if engine:
-      engine.dispose()
+        # If no metadata table and not identifiable as 0.1,
+        # assume it is a new/empty DB requiring schema 1.0.
+        return SCHEMA_VERSION_1_0_JSON
+    except Exception as e:
+        logger.info(
+            "Could not determine schema version by inspecting database: %s. Assuming v1.0.",
+            e,
+        )
+        return SCHEMA_VERSION_1_0_JSON
+    finally:
+        if engine:
+            engine.dispose()

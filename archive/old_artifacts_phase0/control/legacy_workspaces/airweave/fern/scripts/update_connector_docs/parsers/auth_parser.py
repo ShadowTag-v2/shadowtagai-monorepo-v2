@@ -12,7 +12,7 @@ def parse_auth_config():
     Returns:
         dict: Dictionary of auth config classes and their information
     """
-    with open(AUTH_CONFIG_PATH, "r") as f:
+    with open(AUTH_CONFIG_PATH) as f:
         content = f.read()
 
     # Parse the Python file
@@ -37,10 +37,7 @@ def parse_auth_config():
                     parent_classes.append(base.id)
 
             # Skip if not auth-related
-            if not (
-                any("AuthConfig" in parent for parent in parent_classes)
-                or "AuthConfig" in class_name
-            ):
+            if not (any("AuthConfig" in parent for parent in parent_classes) or "AuthConfig" in class_name):
                 continue
 
             # Get docstring
@@ -80,20 +77,14 @@ def parse_auth_config():
                                     if isinstance(keyword.value, ast.Str):
                                         description = keyword.value.s
                                     # String in Python 3.8+ (ast.Constant)
-                                    elif isinstance(keyword.value, ast.Constant) and isinstance(
-                                        keyword.value.value, str
-                                    ):
+                                    elif isinstance(keyword.value, ast.Constant) and isinstance(keyword.value.value, str):
                                         description = keyword.value.value
                                     # Concatenated strings or multiline description
-                                    elif isinstance(keyword.value, ast.BinOp) or isinstance(
-                                        keyword.value, ast.Tuple
-                                    ):
+                                    elif isinstance(keyword.value, ast.BinOp) or isinstance(keyword.value, ast.Tuple):
                                         # We need the original source for this part
                                         try:
                                             lines = content.split("\n")
-                                            lineno = (
-                                                keyword.value.lineno - 1
-                                            )  # Convert to 0-indexed
+                                            lineno = keyword.value.lineno - 1  # Convert to 0-indexed
 
                                             # Heuristic: take the current line and the next 3 lines
                                             # to capture multiline descriptions
@@ -106,9 +97,7 @@ def parse_auth_config():
                                                 desc_text,
                                             )
                                             if desc_match:
-                                                description = desc_match.group(
-                                                    1
-                                                ) or desc_match.group(2)
+                                                description = desc_match.group(1) or desc_match.group(2)
                                         except Exception as e:
                                             print(f"  Warning: Error extracting description: {e}")
 
@@ -119,9 +108,7 @@ def parse_auth_config():
                                         default_value = keyword.value.s
                                     elif isinstance(keyword.value, ast.Constant):
                                         default_value = keyword.value.value
-                                    elif isinstance(
-                                        keyword.value, (ast.Num, ast.Bytes, ast.NameConstant)
-                                    ):
+                                    elif isinstance(keyword.value, (ast.Num, ast.Bytes, ast.NameConstant)):
                                         # For Python 3.7 and earlier
                                         if isinstance(keyword.value, ast.Num):
                                             default_value = keyword.value.n
@@ -137,9 +124,7 @@ def parse_auth_config():
                                     elif isinstance(keyword.value, ast.Dict):
                                         default_value = "{}"  # Simplified for dicts
                                     elif isinstance(keyword.value, ast.Call):
-                                        if hasattr(keyword.value, "func") and hasattr(
-                                            keyword.value.func, "id"
-                                        ):
+                                        if hasattr(keyword.value, "func") and hasattr(keyword.value.func, "id"):
                                             # For function calls like list(), dict(), etc.
                                             default_value = f"{keyword.value.func.id}()"
                                         else:
@@ -165,11 +150,7 @@ def parse_auth_config():
     # Second pass: handle inheritance
     for class_name, config in auth_configs.items():
         parent_class = config.get("parent_class")
-        if (
-            parent_class in auth_configs
-            and parent_class != "AuthConfig"
-            and parent_class != "BaseConfig"
-        ):
+        if parent_class in auth_configs and parent_class != "AuthConfig" and parent_class != "BaseConfig":
             parent_fields = auth_configs[parent_class]["fields"]
             existing_field_names = [field["name"] for field in config["fields"]]
 
@@ -184,9 +165,7 @@ def parse_auth_config():
 
                     # Replace database type in description if needed
                     if db_type and "PostgreSQL" in field_copy["description"]:
-                        field_copy["description"] = field_copy["description"].replace(
-                            "PostgreSQL", db_type
-                        )
+                        field_copy["description"] = field_copy["description"].replace("PostgreSQL", db_type)
 
                     config["fields"].append(field_copy)
 
@@ -234,9 +213,7 @@ def parse_auth_config():
 
                     if not tables_found:
                         db_type = class_name.replace("AuthConfig", "")
-                        tables_desc = (
-                            description.replace("PostgreSQL", db_type) if db_type else description
-                        )
+                        tables_desc = description.replace("PostgreSQL", db_type) if db_type else description
 
                         # Use the same default value from BaseDatabaseAuthConfig
                         table_default = None

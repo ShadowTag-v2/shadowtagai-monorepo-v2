@@ -20,9 +20,9 @@ from .mru import *
 from .utils import *
 
 
-#*****************************************************
+# *****************************************************
 # BufferExplorer
-#*****************************************************
+# *****************************************************
 class BufferExplorer(Explorer):
     def __init__(self):
         self._prefix_length = 0
@@ -39,33 +39,31 @@ class BufferExplorer(Explorer):
 
         if "--all" not in kwargs.get("arguments", {}):
             if "--tabpage" not in kwargs.get("arguments", {}):
-                buffers = {b.number: b for b in vim.buffers
-                           if lfEval("buflisted(%d)" % b.number) == '1'}
+                buffers = {b.number: b for b in vim.buffers if lfEval("buflisted(%d)" % b.number) == "1"}
             else:
-                buffers = {w.buffer.number: w.buffer for w in vim.current.tabpage.windows
-                           if lfEval("buflisted(%d)" % w.buffer.number) == '1'}
+                buffers = {w.buffer.number: w.buffer for w in vim.current.tabpage.windows if lfEval("buflisted(%d)" % w.buffer.number) == "1"}
         else:
             if "--tabpage" not in kwargs.get("arguments", {}):
-                buffers = {b.number: b for b in vim.buffers
-                           if os.path.basename(b.name) != "LeaderF"}
+                buffers = {b.number: b for b in vim.buffers if os.path.basename(b.name) != "LeaderF"}
             else:
-                buffers = {w.buffer.number: w.buffer for w in vim.current.tabpage.windows
-                           if os.path.basename(w.buffer.name) != "LeaderF"}
+                buffers = {w.buffer.number: w.buffer for w in vim.current.tabpage.windows if os.path.basename(w.buffer.name) != "LeaderF"}
 
-        if lfEval("has('nvim')") == '0':
-            buffers = {number : buffer for number, buffer in buffers.items()
-                       if buffer.options["buftype"] != b"terminal"}
+        if lfEval("has('nvim')") == "0":
+            buffers = {number: buffer for number, buffer in buffers.items() if buffer.options["buftype"] != b"terminal"}
 
         # e.g., 12 u %a+-  aaa.txt
         bufnr_len = len(lfEval("bufnr('$')"))
         self._prefix_length = bufnr_len + 8
         self.show_icon = False
-        if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == '1':
+        if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == "1":
             self.show_icon = True
             self._prefix_length += webDevIconsStrLen()
 
-        self._max_bufname_len = max([int(lfEval(f"strdisplaywidth('{escQuote(getBasename(buffers[nr].name))}')"))
-                                    for nr in mru.getMruBufnrs() if nr in buffers] + [len('[No Name]')] or [0])
+        self._max_bufname_len = max(
+            [int(lfEval(f"strdisplaywidth('{escQuote(getBasename(buffers[nr].name))}')")) for nr in mru.getMruBufnrs() if nr in buffers]
+            + [len("[No Name]")]
+            or [0]
+        )
 
         bufnames = []
         for nr in mru.getMruBufnrs():
@@ -73,36 +71,38 @@ class BufferExplorer(Explorer):
                 buf_name = buffers[nr].name
                 if not buf_name:
                     buf_name = "[No Name]"
-                if lfEval("g:Lf_ShowRelativePath") == '1':
+                if lfEval("g:Lf_ShowRelativePath") == "1":
                     buf_name = lfRelpath(buf_name)
                 basename = getBasename(buf_name)
                 dirname = getDirname(buf_name)
-                space_num = self._max_bufname_len \
-                            - int(lfEval(f"strdisplaywidth('{escQuote(basename)}')"))
-                if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == '1':
+                space_num = self._max_bufname_len - int(lfEval(f"strdisplaywidth('{escQuote(basename)}')"))
+                if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == "1":
                     icon = webDevIconsGetFileTypeSymbol(basename)
                 else:
-                    icon = ''
+                    icon = ""
                 # e.g., 12 u %a+-  aaa.txt
-                buf_name = '{:{width}d} {:1s} {:1s}{:1s}{:1s}{:1s} {}{}{} "{}"'.format(nr,
-                            '' if buffers[nr].options["buflisted"] else 'u',
-                            '%' if int(lfEval("bufnr('%')")) == nr
-                                else '#' if int(lfEval("bufnr('#')")) == nr else '',
-                            'a' if lfEval("bufwinnr(%d)" % nr) != '-1' else 'h',
-                            '+' if buffers[nr].options["modified"] else '',
-                            '-' if not buffers[nr].options["modifiable"] else '',
-                            icon, basename, ' ' * space_num,
-                            dirname if dirname else '.' + os.sep,
-                            width=bufnr_len)
+                buf_name = '{:{width}d} {:1s} {:1s}{:1s}{:1s}{:1s} {}{}{} "{}"'.format(
+                    nr,
+                    "" if buffers[nr].options["buflisted"] else "u",
+                    "%" if int(lfEval("bufnr('%')")) == nr else "#" if int(lfEval("bufnr('#')")) == nr else "",
+                    "a" if lfEval("bufwinnr(%d)" % nr) != "-1" else "h",
+                    "+" if buffers[nr].options["modified"] else "",
+                    "-" if not buffers[nr].options["modifiable"] else "",
+                    icon,
+                    basename,
+                    " " * space_num,
+                    dirname if dirname else "." + os.sep,
+                    width=bufnr_len,
+                )
                 bufnames.append(buf_name)
                 del buffers[nr]
-            elif lfEval("bufnr(%d)" % nr) == '-1':
+            elif lfEval("bufnr(%d)" % nr) == "-1":
                 mru.delMruBufnr(nr)
 
         return bufnames
 
     def getStlCategory(self):
-        return 'Buffer'
+        return "Buffer"
 
     def getStlCurDir(self):
         return escQuote(lfEncode(lfGetCwd()))
@@ -117,9 +117,9 @@ class BufferExplorer(Explorer):
         return self._max_bufname_len
 
 
-#*****************************************************
+# *****************************************************
 # BufExplManager
-#*****************************************************
+# *****************************************************
 class BufExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -135,7 +135,7 @@ class BufExplManager(Manager):
             return
         line = args[0]
         buf_number = int(re.sub(r"^.*?(\d+).*$", r"\1", line))
-        if kwargs.get("mode", '') == 't':
+        if kwargs.get("mode", "") == "t":
             for tp, w in ((tp, window) for tp in vim.tabpages for window in tp.windows):
                 if w.buffer.number == buf_number:
                     vim.current.tabpage = tp
@@ -145,7 +145,7 @@ class BufExplManager(Manager):
                 buf_name = vim.buffers[buf_number].name
                 lfCmd(f"tabe {escSpecial(buf_name)}")
         else:
-            if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == '1':
+            if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == "1":
                 for w in vim.windows:
                     if w.buffer.number == buf_number:
                         vim.current.window = w
@@ -164,7 +164,7 @@ class BufExplManager(Manager):
                   2, return the directory name
         """
         if not line:
-            return ''
+            return ""
         prefix_len = self._getExplorer().getPrefixLength()
         if mode == 0:
             return line[prefix_len:]
@@ -174,7 +174,7 @@ class BufExplManager(Manager):
             return basename if basename else "[No Name]"
         else:
             start_pos = line.find(' "')
-            return line[start_pos+2 : -1]
+            return line[start_pos + 2 : -1]
 
     def _getDigestStartPos(self, line, mode):
         """
@@ -192,15 +192,12 @@ class BufExplManager(Manager):
         else:
             prefix_len = self._getExplorer().getPrefixLength()
 
-        if mode == 0:
-            return prefix_len
-        elif mode == 1:
+        if mode == 0 or mode == 1:
             return prefix_len
         else:
             buf_number = int(re.sub(r"^.*?(\d+).*$", r"\1", line))
             basename = getBasename(vim.buffers[buf_number].name)
-            space_num = self._getExplorer().getMaxBufnameLen() \
-                        - int(lfEval(f"strdisplaywidth('{escQuote(basename)}')"))
+            space_num = self._getExplorer().getMaxBufnameLen() - int(lfEval(f"strdisplaywidth('{escQuote(basename)}')"))
             return prefix_len + lfBytesLen(basename) + space_num + 2
 
     def _createHelp(self):
@@ -221,25 +218,29 @@ class BufExplManager(Manager):
         super()._afterEnter()
 
         winid = None
-        if self._getInstance().getWinPos() == 'popup':
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufNumber'', ''^\s*\zs\d\+'')')"""
-                    % self._getInstance().getPopupWinId())
+        if self._getInstance().getWinPos() == "popup":
+            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufNumber'', ''^\s*\zs\d\+'')')""" % self._getInstance().getPopupWinId())
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufIndicators'', ''^\s*\d\+\s*\zsu\=\s*[#%%]\=...'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufIndicators'', ''^\s*\d\+\s*\zsu\=\s*[#%%]\=...'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufModified'', ''^\s*\d\+\s*u\=\s*[#%%]\=.+\s*\zs.*$'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufModified'', ''^\s*\d\+\s*u\=\s*[#%%]\=.+\s*\zs.*$'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufNomodifiable'', ''^\s*\d\+\s*u\=\s*[#%%]\=..-\s*\zs.*$'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufNomodifiable'', ''^\s*\d\+\s*u\=\s*[#%%]\=..-\s*\zs.*$'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufDirname'', '' \zs".*"$'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufDirname'', '' \zs".*"$'')')""" % self._getInstance().getPopupWinId())
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
             winid = self._getInstance().getPopupWinId()
@@ -252,14 +253,14 @@ class BufExplManager(Manager):
             self._match_ids.append(id)
             id = int(lfEval(r"matchadd('Lf_hl_bufNomodifiable', '^\s*\d\+\s*u\=\s*[#%]\=..-\s*\zs.*$')"))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_bufDirname', ' \zs".*"$')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_bufDirname', ' \zs".*"$')"""))
             self._match_ids.append(id)
 
         # devicons
-        if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == '1':
-            self._match_ids.extend(matchaddDevIconsExtension(r'__icon__\ze\s\+.\{-}\.__name__\($\|\s\)', winid))
-            self._match_ids.extend(matchaddDevIconsExact(r'__icon__\ze\s\+__name__\($\|\s\)', winid))
-            self._match_ids.extend(matchaddDevIconsDefault(r'__icon__\ze\s\+\S\+\($\|\s\)', winid))
+        if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == "1":
+            self._match_ids.extend(matchaddDevIconsExtension(r"__icon__\ze\s\+.\{-}\.__name__\($\|\s\)", winid))
+            self._match_ids.extend(matchaddDevIconsExact(r"__icon__\ze\s\+__name__\($\|\s\)", winid))
+            self._match_ids.extend(matchaddDevIconsDefault(r"__icon__\ze\s\+\S\+\($\|\s\)", winid))
 
     def _beforeExit(self):
         super()._beforeExit()
@@ -270,42 +271,42 @@ class BufExplManager(Manager):
             return
 
         line = instance._buffer_object[instance.window.cursor[0] - 1]
-        if line == '':
+        if line == "":
             return
 
-        if instance.getWinPos() == 'popup':
+        if instance.getWinPos() == "popup":
             lfCmd("call win_execute(%d, 'setlocal modifiable')" % instance.getPopupWinId())
         else:
             lfCmd("setlocal modifiable")
         if len(self._content) > 0:
             self._content.remove(line)
-            self._getInstance().setStlTotal(len(self._content)//self._getUnit())
-            self._getInstance().setStlResultsCount(len(self._content)//self._getUnit())
+            self._getInstance().setStlTotal(len(self._content) // self._getUnit())
+            self._getInstance().setStlResultsCount(len(self._content) // self._getUnit())
         buf_number = int(re.sub(r"^.*?(\d+).*$", r"\1", line))
-        lfCmd("confirm %s %d" % ('bw' if wipe else 'bd', buf_number))
+        lfCmd("confirm %s %d" % ("bw" if wipe else "bd", buf_number))
         del instance._buffer_object[instance.window.cursor[0] - 1]
-        if instance.getWinPos() == 'popup':
+        if instance.getWinPos() == "popup":
             instance.refreshPopupStatusline()
             lfCmd("call win_execute(%d, 'setlocal nomodifiable')" % instance.getPopupWinId())
         else:
             lfCmd("setlocal nomodifiable")
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         line = args[0]
         buf_number = int(re.sub(r"^.*?(\d+).*$", r"\1", line))
-        if lfEval("bufloaded(%d)" % buf_number) == '0':
+        if lfEval("bufloaded(%d)" % buf_number) == "0":
             lfCmd("silent call bufload(%d)" % buf_number)
 
         jump_cmd = 'silent! normal! g`"'
         self._createPopupPreview(vim.buffers[buf_number].name, buf_number, 0, jump_cmd)
 
 
-#*****************************************************
+# *****************************************************
 # bufExplManager is a singleton
-#*****************************************************
+# *****************************************************
 bufExplManager = BufExplManager()
 
-__all__ = ['bufExplManager']
+__all__ = ["bufExplManager"]

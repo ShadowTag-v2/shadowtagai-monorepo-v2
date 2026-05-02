@@ -70,11 +70,7 @@ class InMemoryWorldModel(WorldModelStorage, EntityManager):
         del self._entities[entity_id]
 
         # Remove related relationships
-        to_remove = [
-            r_id
-            for r_id, r in self._relationships.items()
-            if r.source_id == entity_id or r.target_id == entity_id
-        ]
+        to_remove = [r_id for r_id, r in self._relationships.items() if r.source_id == entity_id or r.target_id == entity_id]
         for r_id in to_remove:
             del self._relationships[r_id]
 
@@ -114,9 +110,7 @@ class InMemoryWorldModel(WorldModelStorage, EntityManager):
             elif direction == "both":
                 if rel.source_id == entity_id or rel.target_id == entity_id:
                     if relationship_type is None or rel.type == relationship_type:
-                        other_id = (
-                            rel.target_id if rel.source_id == entity_id else rel.source_id
-                        )
+                        other_id = rel.target_id if rel.source_id == entity_id else rel.source_id
                         if other_id in self._entities:
                             related.append(self._entities[other_id])
         return related
@@ -129,11 +123,7 @@ class InMemoryWorldModel(WorldModelStorage, EntityManager):
         if project:
             entities = [e for e in entities if e.project == project]
             entity_ids = {e.id for e in entities}
-            relationships = [
-                r
-                for r in relationships
-                if r.source_id in entity_ids and r.target_id in entity_ids
-            ]
+            relationships = [r for r in relationships if r.source_id in entity_ids and r.target_id in entity_ids]
 
         export_data = {
             "version": "1.0",
@@ -151,9 +141,7 @@ class InMemoryWorldModel(WorldModelStorage, EntityManager):
         with open(path, "w") as f:
             json.dump(export_data, f, indent=2, default=str)
 
-    def import_graph(
-        self, filepath: str, clear: bool = False, project: str | None = None
-    ) -> None:
+    def import_graph(self, filepath: str, clear: bool = False, project: str | None = None) -> None:
         """Import knowledge graph from file."""
         if clear:
             self.reset(project)
@@ -198,9 +186,7 @@ class InMemoryWorldModel(WorldModelStorage, EntityManager):
     def reset(self, project: str | None = None) -> None:
         """Clear all knowledge graph data."""
         if project:
-            to_remove = [
-                e_id for e_id, e in self._entities.items() if e.project == project
-            ]
+            to_remove = [e_id for e_id, e in self._entities.items() if e.project == project]
             for e_id in to_remove:
                 self.delete_entity(e_id)
         else:

@@ -2,7 +2,6 @@
 
 import time
 import uuid
-from typing import Optional
 from fastapi import APIRouter, HTTPException
 import structlog
 
@@ -229,7 +228,9 @@ async def detect_obstacles(request: ObstacleDetectionRequest):
                     x=obs["velocity"]["x"],
                     y=obs["velocity"]["y"],
                     z=obs["velocity"]["z"],
-                ) if "velocity" in obs else None,
+                )
+                if "velocity" in obs
+                else None,
                 classification=obs.get("classification"),
             )
             for obs in obstacles_data
@@ -514,6 +515,7 @@ async def get_flight_logs(mission_id: str):
 
 # Helper functions
 
+
 async def _generate_mission_waypoints(
     mission_type: str,
     area_bounds: dict | None,
@@ -536,11 +538,7 @@ async def _generate_mission_waypoints(
         ]
     elif mission_type == "inspection":
         # Grid pattern
-        return [
-            Waypoint(x=x, y=y, z=2)
-            for x in range(0, 100, 20)
-            for y in range(0, 100, 20)
-        ]
+        return [Waypoint(x=x, y=y, z=2) for x in range(0, 100, 20) for y in range(0, 100, 20)]
     else:
         return [Waypoint(x=0, y=0, z=2)]
 
@@ -551,9 +549,9 @@ def _calculate_path_distance(waypoints: list) -> float:
 
     total = 0.0
     for i in range(len(waypoints) - 1):
-        dx = waypoints[i+1].x - waypoints[i].x
-        dy = waypoints[i+1].y - waypoints[i].y
-        dz = waypoints[i+1].z - waypoints[i].z
+        dx = waypoints[i + 1].x - waypoints[i].x
+        dy = waypoints[i + 1].y - waypoints[i].y
+        dz = waypoints[i + 1].z - waypoints[i].z
         total += math.sqrt(dx**2 + dy**2 + dz**2)
 
     return total
@@ -562,7 +560,7 @@ def _calculate_path_distance(waypoints: list) -> float:
 async def _validate_mission_safety(waypoints: list) -> list:
     """Validate mission safety with Judge #6."""
     # Simplified - in production, validate each segment
-    return [{"segment": f"{i}-{i+1}", "safety_score": 0.95} for i in range(len(waypoints) - 1)]
+    return [{"segment": f"{i}-{i + 1}", "safety_score": 0.95} for i in range(len(waypoints) - 1)]
 
 
 async def _generate_mission_reasoning(
@@ -574,10 +572,12 @@ async def _generate_mission_reasoning(
     """Generate mission reasoning with Cor.17."""
     avg_safety = sum(v["safety_score"] for v in safety_validations) / len(safety_validations) if safety_validations else 1.0
 
-    return f"{mission_type.capitalize()} mission with {waypoint_count} waypoints. " \
-           f"Estimated duration: {estimated_duration:.1f}s. " \
-           f"Average safety score: {avg_safety:.2f}. " \
-           f"Mission is {'approved' if avg_safety >= 0.8 else 'requires review'}."
+    return (
+        f"{mission_type.capitalize()} mission with {waypoint_count} waypoints. "
+        f"Estimated duration: {estimated_duration:.1f}s. "
+        f"Average safety score: {avg_safety:.2f}. "
+        f"Mission is {'approved' if avg_safety >= 0.8 else 'requires review'}."
+    )
 
 
 async def _store_hd_map(map_id: str, map_data: str) -> str:

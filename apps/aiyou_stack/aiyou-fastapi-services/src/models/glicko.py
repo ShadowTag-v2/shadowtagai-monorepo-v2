@@ -5,7 +5,7 @@ Tracks uncertainty and volatility in addition to skill rating
 import math
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class Glicko2Player(BaseModel):
@@ -28,8 +28,8 @@ class Glicko2Player(BaseModel):
     games_played: int = Field(default=0)
     last_updated: datetime | None = None
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "player_id": "strategy_001",
                 "mu": 1650.0,
@@ -38,7 +38,8 @@ class Glicko2Player(BaseModel):
                 "name": "Activation Funnel Strategy A",
                 "games_played": 47,
             },
-        }
+        },
+    )
 
 
 class Glicko2Match(BaseModel):
@@ -67,8 +68,9 @@ class Glicko2System(BaseModel):
     tol: float = Field(default=1e-6, description="Convergence tolerance")
     epsilon: float = Field(default=0.000001, description="Numerical stability constant")
 
-    class Config:
-        json_schema_extra = {"example": {"tau": 0.5, "tol": 1e-6}}
+    model_config = ConfigDict(
+        json_schema_extra={"example": {"tau": 0.5, "tol": 1e-6}},
+    )
 
     def rating_to_glicko2_scale(self, mu: float, phi: float) -> tuple[float, float]:
         """Convert from Glicko-1 scale to Glicko-2 scale"""

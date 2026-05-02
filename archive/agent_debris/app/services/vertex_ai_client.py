@@ -11,11 +11,11 @@ Based on claude/mcp-filesystem-tool-discovery patterns:
 - Traditional: TOOL_CALL with 50K prompt → 50K tokens in context
 - This: executeModel({prompt: '...'}) → 0 tokens in context
 """
+
 import asyncio
 import logging
 import os
 from dataclasses import dataclass
-from typing import Optional
 
 import google.generativeai as genai
 from google.cloud import aiplatform
@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ModelConfig:
     """Gemini model configuration"""
+
     project_id: str
     location: str = "us-central1"
     model: str = "gemini-2.0-flash-exp"  # Gemini 2.0 Flash for 15-20% cost reduction
@@ -38,6 +39,7 @@ class ModelConfig:
 @dataclass
 class ExecuteModelResponse:
     """Model execution response"""
+
     text: str
     tokens_used: dict[str, int]
     finish_reason: str
@@ -59,14 +61,11 @@ class VertexAIClient:
         self.config = config or ModelConfig(
             project_id=os.getenv("GCP_PROJECT_ID", ""),
             location=os.getenv("GCP_LOCATION", "us-central1"),
-            model=os.getenv("DEFAULT_MODEL", "gemini-1.5-flash")
+            model=os.getenv("DEFAULT_MODEL", "gemini-1.5-flash"),
         )
 
         # Initialize Vertex AI
-        aiplatform.init(
-            project=self.config.project_id,
-            location=self.config.location
-        )
+        aiplatform.init(project=self.config.project_id, location=self.config.location)
 
         # Configure Gemini
         genai.configure(api_key=os.getenv("GEMINI_API_KEY", ""))
@@ -74,11 +73,7 @@ class VertexAIClient:
         logger.info(f"VertexAIClient initialized: {self.config.model} at {self.config.location}")
 
     async def execute_model(
-        self,
-        prompt: str,
-        system_instruction: str | None = None,
-        temperature: float | None = None,
-        max_tokens: int | None = None
+        self, prompt: str, system_instruction: str | None = None, temperature: float | None = None, max_tokens: int | None = None
     ) -> ExecuteModelResponse:
         """
         Execute a single Gemini model request
@@ -107,7 +102,7 @@ class VertexAIClient:
                     "max_output_tokens": max_tokens or self.config.max_tokens,
                     "top_p": self.config.top_p,
                     "top_k": self.config.top_k,
-                }
+                },
             )
 
             # Add system instruction if provided
@@ -117,10 +112,7 @@ class VertexAIClient:
 
             # Execute (run in thread pool for async)
             loop = asyncio.get_event_loop()
-            response = await loop.run_in_executor(
-                None,
-                lambda: model.generate_content(full_prompt)
-            )
+            response = await loop.run_in_executor(None, lambda: model.generate_content(full_prompt))
 
             # Calculate tokens (rough estimate: 4 chars = 1 token)
             input_tokens = len(full_prompt) // 4
@@ -130,12 +122,8 @@ class VertexAIClient:
 
             return ExecuteModelResponse(
                 text=response.text,
-                tokens_used={
-                    "input": input_tokens,
-                    "output": output_tokens,
-                    "total": input_tokens + output_tokens
-                },
-                finish_reason=response.candidates[0].finish_reason.name if response.candidates else "UNKNOWN"
+                tokens_used={"input": input_tokens, "output": output_tokens, "total": input_tokens + output_tokens},
+                finish_reason=response.candidates[0].finish_reason.name if response.candidates else "UNKNOWN",
             )
 
         except Exception as e:
@@ -143,10 +131,7 @@ class VertexAIClient:
             raise
 
     async def execute_batch(
-        self,
-        prompts: list[str],
-        system_instruction: str | None = None,
-        max_parallel: int = 10
+        self, prompts: list[str], system_instruction: str | None = None, max_parallel: int = 10
     ) -> tuple[list[ExecuteModelResponse], int]:
         """
         Execute multiple prompts in parallel
@@ -179,11 +164,8 @@ class VertexAIClient:
         total_tokens = 0
 
         for i in range(0, len(prompts), max_parallel):
-            batch = prompts[i:i + max_parallel]
-            batch_results = await asyncio.gather(*[
-                self.execute_model(prompt, system_instruction)
-                for prompt in batch
-            ])
+            batch = prompts[i : i + max_parallel]
+            batch_results = await asyncio.gather(*[self.execute_model(prompt, system_instruction) for prompt in batch])
             results.extend(batch_results)
             total_tokens += sum(r.tokens_used["total"] for r in batch_results)
 
@@ -194,11 +176,7 @@ class VertexAIClient:
 
         return results, total_tokens
 
-    async def generate_embeddings(
-        self,
-        texts: list[str],
-        model: str = "textembedding-gecko@003"
-    ) -> tuple[list[list[float]], int]:
+    async def generate_embeddings(self, texts: list[str], model: str = "textembedding-gecko@003") -> tuple[list[list[float]], int]:
         """
         Generate embeddings for semantic search
 
@@ -233,11 +211,8 @@ class VertexAIClient:
             all_embeddings = []
 
             for i in range(0, len(texts), batch_size):
-                batch = texts[i:i + batch_size]
-                embeddings = await asyncio.get_event_loop().run_in_executor(
-                    None,
-                    lambda: model_instance.get_embeddings(batch)
-                )
+                batch = texts[i : i + batch_size]
+                embeddings = await asyncio.get_event_loop().run_in_executor(None, lambda: model_instance.get_embeddings(batch))
                 all_embeddings.extend([emb.values for emb in embeddings])
 
             dimensions = len(all_embeddings[0]) if all_embeddings else 768
@@ -261,12 +236,7 @@ class VertexAIClient:
 
         return dot_product / (norm_a * norm_b) if norm_a > 0 and norm_b > 0 else 0.0
 
-    async def find_most_similar(
-        self,
-        query: str,
-        candidates: list[str],
-        top_k: int = 10
-    ) -> list[tuple[str, float, int]]:
+    async def find_most_similar(self, query: str, candidates: list[str], top_k: int = 10) -> list[tuple[str, float, int]]:
         """
         Find top-K most similar texts
 
@@ -291,10 +261,7 @@ class VertexAIClient:
         candidate_embs = embeddings[1:]
 
         # Calculate similarities
-        similarities = [
-            (candidates[i], self.cosine_similarity(query_emb, candidate_embs[i]), i)
-            for i in range(len(candidates))
-        ]
+        similarities = [(candidates[i], self.cosine_similarity(query_emb, candidate_embs[i]), i) for i in range(len(candidates))]
 
         # Return top-K
         top_k_results = sorted(similarities, key=lambda x: x[1], reverse=True)[:top_k]

@@ -17,7 +17,7 @@ import json
 import time
 from dataclasses import asdict, dataclass
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any
 
 
 @dataclass
@@ -28,6 +28,7 @@ class ATP519Kernel:
     Military risk framework adapted for AI governance:
     SEVERITY × PROBABILITY = RISK SCORE
     """
+
     threat_level: int  # 0-10 (10 = critical)
     compliance_vector: list[int]  # [GDPR, CCPA, HIPAA, SOC2, ISO27001, PCI-DSS]
     risk_score: int  # 0-100
@@ -44,6 +45,7 @@ class Judge6Decision:
 
     Target: <35ms latency, $0.0003 cost
     """
+
     decision: int  # 0 = DENY, 1 = APPROVE
     latency_ms: float
     cost_usd: float
@@ -72,7 +74,7 @@ class MCPBridge:
         self,
         compression_target: float = 0.60,  # 60% reduction
         cache_ttl_seconds: int = 300,
-        max_kernel_bytes: int = 500
+        max_kernel_bytes: int = 500,
     ):
         self.compression_target = compression_target
         self.cache_ttl = cache_ttl_seconds
@@ -90,11 +92,7 @@ class MCPBridge:
         print(f"   Compression target: {compression_target:.0%}")
         print(f"   Max kernel bytes: {max_kernel_bytes}")
 
-    async def atp_519_scan(
-        self,
-        input_context: dict[str, Any],
-        target_bytes: int = 487
-    ) -> ATP519Kernel:
+    async def atp_519_scan(self, input_context: dict[str, Any], target_bytes: int = 487) -> ATP519Kernel:
         """
         ATP 5-19 Risk Assessment Scan.
 
@@ -119,16 +117,12 @@ class MCPBridge:
         start_time = time.time()
 
         # Hash for cache lookup
-        context_hash = hashlib.sha256(
-            json.dumps(input_context, sort_keys=True).encode()
-        ).hexdigest()
+        context_hash = hashlib.sha256(json.dumps(input_context, sort_keys=True).encode()).hexdigest()
 
         # Check cache
         if context_hash in self.kernel_cache:
             cached = self.kernel_cache[context_hash]
-            age_seconds = (
-                datetime.now() - datetime.fromisoformat(cached.extraction_timestamp)
-            ).total_seconds()
+            age_seconds = (datetime.now() - datetime.fromisoformat(cached.extraction_timestamp)).total_seconds()
 
             if age_seconds < self.cache_ttl:
                 print(f"   ✓ Cache hit: {context_hash[:8]}... (age: {age_seconds:.1f}s)")
@@ -154,7 +148,7 @@ class MCPBridge:
             decision_confidence=self._calculate_confidence(input_context),
             compressed_context_hash=context_hash,
             extraction_timestamp=datetime.now().isoformat(),
-            semantic_features=semantic_features
+            semantic_features=semantic_features,
         )
 
         # Cache
@@ -171,11 +165,7 @@ class MCPBridge:
 
         return kernel
 
-    async def judge_six_binary(
-        self,
-        kernel: ATP519Kernel,
-        max_latency_ms: int = 35
-    ) -> Judge6Decision:
+    async def judge_six_binary(self, kernel: ATP519Kernel, max_latency_ms: int = 35) -> Judge6Decision:
         """
         Judge#6 binary decision from compressed kernel.
 
@@ -230,7 +220,7 @@ class MCPBridge:
             cost_usd=cost_usd,
             confidence=kernel.decision_confidence,
             threat_level=kernel.threat_level,
-            reasoning=reasoning
+            reasoning=reasoning,
         )
 
         # Cache
@@ -271,12 +261,7 @@ class MCPBridge:
             1 if "pci" in str(context).lower() else 0,
         ]
 
-    def _calculate_risk_score(
-        self,
-        threat_level: int,
-        compliance: list[int],
-        context: dict[str, Any]
-    ) -> int:
+    def _calculate_risk_score(self, threat_level: int, compliance: list[int], context: dict[str, Any]) -> int:
         """Calculate risk score (0-100)"""
         # Base risk from threat level
         base_risk = threat_level * 10  # 0-100
@@ -397,7 +382,7 @@ class MCPBridge:
             "avg_compression": f"{self.get_avg_compression():.0%}",
             "p99_latency_ms": f"{self.get_p99_latency():.1f}",
             "cache_hits_kernel": len(self.kernel_cache),
-            "cache_hits_decision": len(self.decision_cache)
+            "cache_hits_decision": len(self.decision_cache),
         }
 
 
@@ -417,7 +402,7 @@ async def test_mcp_bridge():
         "hipaa_validation": {"compliant": False, "data": "..." * 1200},
         "audit_trail": ["event_1", "event_2"] * 500,
         "pii_present": True,
-        "sudo_access": False
+        "sudo_access": False,
     }
 
     kernel = await bridge.atp_519_scan(large_context)

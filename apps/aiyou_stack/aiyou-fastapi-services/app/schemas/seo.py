@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 # Enums
@@ -68,8 +68,7 @@ class SEOAnalysisResponse(SEOAnalysisBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Meta Tags Schemas
@@ -127,8 +126,7 @@ class MetaTagResponse(MetaTagBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class MetaTagHTMLResponse(BaseModel):
@@ -156,8 +154,7 @@ class SchemaMarkupResponse(SchemaMarkupBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class SchemaMarkupJSONLDResponse(BaseModel):
@@ -177,8 +174,7 @@ class SitemapURLResponse(SitemapURLCreate):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class SitemapCreate(BaseModel):
@@ -198,8 +194,7 @@ class SitemapResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class SitemapXMLResponse(BaseModel):
@@ -239,8 +234,7 @@ class CoreWebVitalResponse(CoreWebVitalBase):
     measured_at: datetime
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Search Ranking Schemas
@@ -264,8 +258,7 @@ class SearchRankingResponse(SearchRankingBase):
     checked_at: datetime
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Utility Schemas

@@ -8,41 +8,40 @@ import argparse
 import re
 import sys
 from pathlib import Path
-from typing import List, Tuple
 
 # Required sections for all treatment plans
 REQUIRED_SECTIONS = [
-    r'\\section\*\{.*Patient Information',
-    r'\\section\*\{.*Diagnosis.*Assessment',
-    r'\\section\*\{.*Goals',
-    r'\\section\*\{.*Interventions',
-    r'\\section\*\{.*Timeline.*Schedule',
-    r'\\section\*\{.*Monitoring',
-    r'\\section\*\{.*Outcomes',
-    r'\\section\*\{.*Follow[- ]?up',
-    r'\\section\*\{.*Education',
-    r'\\section\*\{.*Risk.*Safety',
+    r"\\section\*\{.*Patient Information",
+    r"\\section\*\{.*Diagnosis.*Assessment",
+    r"\\section\*\{.*Goals",
+    r"\\section\*\{.*Interventions",
+    r"\\section\*\{.*Timeline.*Schedule",
+    r"\\section\*\{.*Monitoring",
+    r"\\section\*\{.*Outcomes",
+    r"\\section\*\{.*Follow[- ]?up",
+    r"\\section\*\{.*Education",
+    r"\\section\*\{.*Risk.*Safety",
 ]
 
 # Section descriptions for user-friendly output
 SECTION_DESCRIPTIONS = {
-    0: 'Patient Information (de-identified)',
-    1: 'Diagnosis and Assessment',
-    2: 'Treatment Goals (SMART format)',
-    3: 'Interventions (pharmacological, non-pharmacological, procedural)',
-    4: 'Timeline and Schedule',
-    5: 'Monitoring Parameters',
-    6: 'Expected Outcomes',
-    7: 'Follow-up Plan',
-    8: 'Patient Education',
-    9: 'Risk Mitigation and Safety'
+    0: "Patient Information (de-identified)",
+    1: "Diagnosis and Assessment",
+    2: "Treatment Goals (SMART format)",
+    3: "Interventions (pharmacological, non-pharmacological, procedural)",
+    4: "Timeline and Schedule",
+    5: "Monitoring Parameters",
+    6: "Expected Outcomes",
+    7: "Follow-up Plan",
+    8: "Patient Education",
+    9: "Risk Mitigation and Safety",
 }
 
 
 def read_file(filepath: Path) -> str:
     """Read and return file contents."""
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
         print(f"Error: File not found: {filepath}", file=sys.stderr)
@@ -52,7 +51,7 @@ def read_file(filepath: Path) -> str:
         sys.exit(1)
 
 
-def check_sections(content: str) -> Tuple[List[bool], List[str]]:
+def check_sections(content: str) -> tuple[list[bool], list[str]]:
     """
     Check which required sections are present.
     Returns tuple of (checklist, missing_sections).
@@ -70,17 +69,17 @@ def check_sections(content: str) -> Tuple[List[bool], List[str]]:
     return checklist, missing
 
 
-def check_smart_goals(content: str) -> Tuple[bool, List[str]]:
+def check_smart_goals(content: str) -> tuple[bool, list[str]]:
     """
     Check if SMART goal criteria are mentioned.
     Returns (has_smart, missing_criteria).
     """
     smart_criteria = {
-        'Specific': r'\bspecific\b',
-        'Measurable': r'\bmeasurable\b',
-        'Achievable': r'\bachievable\b',
-        'Relevant': r'\brelevant\b',
-        'Time-bound': r'\btime[- ]?bound\b'
+        "Specific": r"\bspecific\b",
+        "Measurable": r"\bmeasurable\b",
+        "Achievable": r"\bachievable\b",
+        "Relevant": r"\brelevant\b",
+        "Time-bound": r"\btime[- ]?bound\b",
     }
 
     missing = []
@@ -94,28 +93,28 @@ def check_smart_goals(content: str) -> Tuple[bool, List[str]]:
 
 def check_hipaa_notice(content: str) -> bool:
     """Check if HIPAA de-identification notice is present."""
-    pattern = r'HIPAA|de-identif|protected health information|PHI'
+    pattern = r"HIPAA|de-identif|protected health information|PHI"
     return bool(re.search(pattern, content, re.IGNORECASE))
 
 
 def check_provider_signature(content: str) -> bool:
     """Check if provider signature section is present."""
-    pattern = r'\\section\*\{.*Signature|Provider Signature|Signature'
+    pattern = r"\\section\*\{.*Signature|Provider Signature|Signature"
     return bool(re.search(pattern, content, re.IGNORECASE))
 
 
-def check_placeholders_remaining(content: str) -> Tuple[int, List[str]]:
+def check_placeholders_remaining(content: str) -> tuple[int, list[str]]:
     """
     Check for uncustomized placeholders [like this].
     Returns (count, sample_placeholders).
     """
-    placeholders = re.findall(r'\[([^\]]+)\]', content)
+    placeholders = re.findall(r"\[([^\]]+)\]", content)
 
     # Filter out LaTeX commands and references
     filtered = []
     for p in placeholders:
         # Skip if it's a LaTeX command, number, or citation
-        if not (p.startswith('\\') or p.isdigit() or 'cite' in p.lower() or 'ref' in p.lower()):
+        if not (p.startswith("\\") or p.isdigit() or "cite" in p.lower() or "ref" in p.lower()):
             filtered.append(p)
 
     count = len(filtered)
@@ -124,26 +123,33 @@ def check_placeholders_remaining(content: str) -> Tuple[int, List[str]]:
     return count, samples
 
 
-def display_results(filepath: Path, checklist: List[bool], missing: List[str],
-                   smart_complete: bool, smart_missing: List[str],
-                   has_hipaa: bool, has_signature: bool,
-                   placeholder_count: int, placeholder_samples: List[str]):
+def display_results(
+    filepath: Path,
+    checklist: list[bool],
+    missing: list[str],
+    smart_complete: bool,
+    smart_missing: list[str],
+    has_hipaa: bool,
+    has_signature: bool,
+    placeholder_count: int,
+    placeholder_samples: list[str],
+):
     """Display completeness check results."""
 
     total_sections = len(REQUIRED_SECTIONS)
     present_count = sum(checklist)
     completeness_pct = (present_count / total_sections) * 100
 
-    print("\n" + "="*70)
+    print("\n" + "=" * 70)
     print("TREATMENT PLAN COMPLETENESS CHECK")
-    print("="*70)
+    print("=" * 70)
     print(f"\nFile: {filepath}")
     print(f"File size: {filepath.stat().st_size:,} bytes")
 
     # Overall completeness
-    print("\n" + "-"*70)
+    print("\n" + "-" * 70)
     print("OVERALL COMPLETENESS")
-    print("-"*70)
+    print("-" * 70)
     print(f"Required sections present: {present_count}/{total_sections} ({completeness_pct:.0f}%)")
 
     if completeness_pct == 100:
@@ -152,9 +158,9 @@ def display_results(filepath: Path, checklist: List[bool], missing: List[str],
         print(f"✗ {len(missing)} section(s) missing")
 
     # Section details
-    print("\n" + "-"*70)
+    print("\n" + "-" * 70)
     print("SECTION CHECKLIST")
-    print("-"*70)
+    print("-" * 70)
 
     for i, (present, desc) in enumerate(zip(checklist, SECTION_DESCRIPTIONS.values())):
         status = "✓" if present else "✗"
@@ -162,16 +168,16 @@ def display_results(filepath: Path, checklist: List[bool], missing: List[str],
 
     # Missing sections
     if missing:
-        print("\n" + "-"*70)
+        print("\n" + "-" * 70)
         print("MISSING SECTIONS")
-        print("-"*70)
+        print("-" * 70)
         for section in missing:
             print(f"  • {section}")
 
     # SMART goals
-    print("\n" + "-"*70)
+    print("\n" + "-" * 70)
     print("SMART GOALS CHECK")
-    print("-"*70)
+    print("-" * 70)
 
     if smart_complete:
         print("✓ All SMART criteria mentioned in document")
@@ -182,9 +188,9 @@ def display_results(filepath: Path, checklist: List[bool], missing: List[str],
         print("\nNote: Goals should be Specific, Measurable, Achievable, Relevant, Time-bound")
 
     # HIPAA notice
-    print("\n" + "-"*70)
+    print("\n" + "-" * 70)
     print("PRIVACY AND COMPLIANCE")
-    print("-"*70)
+    print("-" * 70)
 
     if has_hipaa:
         print("✓ HIPAA/de-identification notice present")
@@ -198,9 +204,9 @@ def display_results(filepath: Path, checklist: List[bool], missing: List[str],
         print("✗ Provider signature section not found")
 
     # Placeholders
-    print("\n" + "-"*70)
+    print("\n" + "-" * 70)
     print("CUSTOMIZATION STATUS")
-    print("-"*70)
+    print("-" * 70)
 
     if placeholder_count == 0:
         print("✓ No uncustomized placeholders detected")
@@ -212,9 +218,9 @@ def display_results(filepath: Path, checklist: List[bool], missing: List[str],
         print("\nRecommendation: Replace all [bracketed placeholders] with patient-specific information")
 
     # Summary
-    print("\n" + "="*70)
+    print("\n" + "=" * 70)
     print("SUMMARY")
-    print("="*70)
+    print("=" * 70)
 
     # Calculate overall score
     score_components = [
@@ -222,7 +228,7 @@ def display_results(filepath: Path, checklist: List[bool], missing: List[str],
         1.0 if smart_complete else 0.6,  # SMART goals (full or partial credit)
         1.0 if has_hipaa else 0.0,  # HIPAA notice (binary)
         1.0 if has_signature else 0.0,  # Signature (binary)
-        1.0 if placeholder_count == 0 else 0.5  # Customization (full or partial)
+        1.0 if placeholder_count == 0 else 0.5,  # Customization (full or partial)
     ]
 
     overall_score = (sum(score_components) / len(score_components)) * 100
@@ -238,7 +244,7 @@ def display_results(filepath: Path, checklist: List[bool], missing: List[str],
     else:
         print("Status: ✗ INCOMPLETE - Significant work needed")
 
-    print("\n" + "="*70)
+    print("\n" + "=" * 70)
 
     # Return exit code based on completeness
     return 0 if completeness_pct >= 80 else 1
@@ -246,7 +252,7 @@ def display_results(filepath: Path, checklist: List[bool], missing: List[str],
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Check treatment plan completeness',
+        description="Check treatment plan completeness",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -267,20 +273,12 @@ Exit codes:
   0 - All required sections present (≥80% complete)
   1 - Missing required sections (<80% complete)
   2 - File error or invalid arguments
-        """
+        """,
     )
 
-    parser.add_argument(
-        'file',
-        type=Path,
-        help='Treatment plan file to check (.tex format)'
-    )
+    parser.add_argument("file", type=Path, help="Treatment plan file to check (.tex format)")
 
-    parser.add_argument(
-        '-v', '--verbose',
-        action='store_true',
-        help='Show detailed output'
-    )
+    parser.add_argument("-v", "--verbose", action="store_true", help="Show detailed output")
 
     args = parser.parse_args()
 
@@ -289,7 +287,7 @@ Exit codes:
         print(f"Error: File not found: {args.file}", file=sys.stderr)
         sys.exit(2)
 
-    if args.file.suffix.lower() not in ['.tex', '.txt']:
+    if args.file.suffix.lower() not in [".tex", ".txt"]:
         print(f"Warning: Expected .tex file, got {args.file.suffix}", file=sys.stderr)
 
     # Read file
@@ -304,14 +302,11 @@ Exit codes:
 
     # Display results
     exit_code = display_results(
-        args.file, checklist, missing,
-        smart_complete, smart_missing,
-        has_hipaa, has_signature,
-        placeholder_count, placeholder_samples
+        args.file, checklist, missing, smart_complete, smart_missing, has_hipaa, has_signature, placeholder_count, placeholder_samples
     )
 
     sys.exit(exit_code)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

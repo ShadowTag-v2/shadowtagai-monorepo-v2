@@ -9,7 +9,7 @@ from typing import Any
 
 from fastapi import FastAPI, Query, status
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -70,8 +70,8 @@ class IngestedItem(BaseModel):
     ingested_at: datetime = Field(..., description="Ingestion timestamp")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "id": "ing_20251107_abc123",
                 "source_type": "news",
@@ -89,6 +89,7 @@ class IngestedItem(BaseModel):
                 },
             },
         }
+    )
 
 
 class JobStatusResponse(BaseModel):
@@ -104,8 +105,8 @@ class JobStatusResponse(BaseModel):
     sources_active: int = Field(default=0, description="Active sources")
     errors: list[str] = Field(default_factory=list, description="Error messages")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "job_id": "cronjob-20251107-020000",
                 "status": "completed",
@@ -118,6 +119,7 @@ class JobStatusResponse(BaseModel):
                 "errors": [],
             },
         }
+    )
 
 
 class MetricsResponse(BaseModel):
@@ -132,8 +134,8 @@ class MetricsResponse(BaseModel):
     uptime_percentage: float = Field(..., description="Successful runs %")
     avg_runtime_minutes: float = Field(..., description="Average runtime (minutes)")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "daily_items_avg": 3180,
                 "daily_items_trend": "stable",
@@ -145,6 +147,7 @@ class MetricsResponse(BaseModel):
                 "avg_runtime_minutes": 43.2,
             },
         }
+    )
 
 
 class TriggerRequest(BaseModel):
@@ -164,7 +167,8 @@ class SourceConfig(BaseModel):
     rate_limit_delay: float = Field(default=2.0, ge=1.0, description="Rate limit delay (seconds)")
     config: dict[str, Any] = Field(default_factory=dict, description="Source-specific config")
 
-    @validator("config")
+    @field_validator("config")
+    @classmethod
     def validate_config(cls, v, values):
         """Validate source-specific configuration"""
         source_type = values.get("source_type")

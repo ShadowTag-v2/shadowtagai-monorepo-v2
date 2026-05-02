@@ -42,29 +42,18 @@ class SharePointBongo(BaseBongo):
         self.logger = get_logger(f"{self.connector_type}_bongo")
 
         # Debug: Log available credential fields
-        self.logger.info(
-            f"Received credentials with fields: {list(credentials.keys())}"
-        )
+        self.logger.info(f"Received credentials with fields: {list(credentials.keys())}")
 
         # Try to get access_token
         if "access_token" not in credentials:
-            self.logger.error(
-                f"No 'access_token' in credentials. Available: {list(credentials.keys())}"
-            )
-            raise ValueError(
-                f"Missing 'access_token' in credentials. "
-                f"Available fields: {list(credentials.keys())}"
-            )
+            self.logger.error(f"No 'access_token' in credentials. Available: {list(credentials.keys())}")
+            raise ValueError(f"Missing 'access_token' in credentials. Available fields: {list(credentials.keys())}")
 
         self.access_token: str = credentials["access_token"]
 
         # Log token preview for debugging (first/last few chars)
         if self.access_token:
-            token_preview = (
-                f"{self.access_token[:10]}...{self.access_token[-10:]}"
-                if len(self.access_token) > 20
-                else "SHORT_TOKEN"
-            )
+            token_preview = f"{self.access_token[:10]}...{self.access_token[-10:]}" if len(self.access_token) > 20 else "SHORT_TOKEN"
             self.logger.info(f"Access token preview: {token_preview}")
 
         # Test configuration
@@ -312,9 +301,7 @@ class SharePointBongo(BaseBongo):
 
         self.logger.debug(f"File updated: {file_id}")
 
-    async def _create_list(
-        self, client: httpx.AsyncClient, display_name: str, description: str
-    ) -> dict[str, Any]:
+    async def _create_list(self, client: httpx.AsyncClient, display_name: str, description: str) -> dict[str, Any]:
         """Create a SharePoint list.
 
         Args:
@@ -345,9 +332,7 @@ class SharePointBongo(BaseBongo):
         self.logger.debug(f"List created: {display_name} (ID: {list_data['id']})")
         return list_data
 
-    async def _create_list_item(
-        self, client: httpx.AsyncClient, list_id: str, fields: dict
-    ) -> dict[str, Any]:
+    async def _create_list_item(self, client: httpx.AsyncClient, list_id: str, fields: dict) -> dict[str, Any]:
         """Create a list item in a SharePoint list.
 
         Args:
@@ -374,9 +359,7 @@ class SharePointBongo(BaseBongo):
         self.logger.debug(f"List item created: {item_data['id']}")
         return item_data
 
-    async def _create_page(
-        self, client: httpx.AsyncClient, title: str, content: str
-    ) -> dict[str, Any]:
+    async def _create_page(self, client: httpx.AsyncClient, title: str, content: str) -> dict[str, Any]:
         """Create a SharePoint site page.
 
         Args:
@@ -479,10 +462,7 @@ class SharePointBongo(BaseBongo):
             # Verify token before proceeding
             is_valid = await self._verify_token(client)
             if not is_valid:
-                raise RuntimeError(
-                    "SharePoint access token is invalid or expired. "
-                    "Please reconnect your SharePoint account in Composio."
-                )
+                raise RuntimeError("SharePoint access token is invalid or expired. Please reconnect your SharePoint account in Composio.")
 
             # Create 2 lists with items
             for i in range(2):
@@ -490,9 +470,7 @@ class SharePointBongo(BaseBongo):
                 self.logger.info(f"Creating list {i + 1}/2 with token {list_token}")
 
                 # Generate list
-                list_name, list_desc = await generate_sharepoint_list(
-                    self.openai_model, list_token
-                )
+                list_name, list_desc = await generate_sharepoint_list(self.openai_model, list_token)
 
                 # Create the list
                 list_data = await self._create_list(client, list_name, list_desc)
@@ -513,19 +491,13 @@ class SharePointBongo(BaseBongo):
                 # Create 2 list items per list
                 for j in range(2):
                     item_token = str(uuid.uuid4())[:8]
-                    self.logger.info(
-                        f"  Creating list item {j + 1}/2 with token {item_token}"
-                    )
+                    self.logger.info(f"  Creating list item {j + 1}/2 with token {item_token}")
 
                     # Generate list item
-                    item_fields = await generate_list_item(
-                        self.openai_model, item_token
-                    )
+                    item_fields = await generate_list_item(self.openai_model, item_token)
 
                     # Create the list item
-                    item_data = await self._create_list_item(
-                        client, list_data["id"], item_fields
-                    )
+                    item_data = await self._create_list_item(client, list_data["id"], item_fields)
 
                     item_descriptor = {
                         "type": "list_item",
@@ -546,9 +518,7 @@ class SharePointBongo(BaseBongo):
                 self.logger.info(f"Creating page {i + 1}/2 with token {page_token}")
 
                 # Generate page
-                page_title, page_content, page_desc = await generate_page_content(
-                    self.openai_model, page_token
-                )
+                page_title, page_content, page_desc = await generate_page_content(self.openai_model, page_token)
 
                 # Create the page
                 page_data = await self._create_page(client, page_title, page_content)
@@ -574,19 +544,13 @@ class SharePointBongo(BaseBongo):
                 # Generate unique token for this file
                 file_token = str(uuid.uuid4())[:8]
 
-                self.logger.info(
-                    f"Creating file {i + 1}/{self.entity_count} with token {file_token}"
-                )
+                self.logger.info(f"Creating file {i + 1}/{self.entity_count} with token {file_token}")
 
                 # Generate content
-                filename, content, mime_type = await generate_sharepoint_file(
-                    self.openai_model, file_token
-                )
+                filename, content, mime_type = await generate_sharepoint_file(self.openai_model, file_token)
 
                 # Upload the file
-                file_data = await self._upload_file(
-                    client, filename, content, folder_id
-                )
+                file_data = await self._upload_file(client, filename, content, folder_id)
 
                 # Track the file
                 file_descriptor = {
@@ -634,9 +598,7 @@ class SharePointBongo(BaseBongo):
                 file = self._files[i]
 
                 # Generate new content with SAME token
-                filename, new_content, mime_type = await generate_sharepoint_file(
-                    self.openai_model, file["token"]
-                )
+                filename, new_content, mime_type = await generate_sharepoint_file(self.openai_model, file["token"])
 
                 # Update the file
                 await self._update_file_content(client, file["id"], new_content)
@@ -645,16 +607,12 @@ class SharePointBongo(BaseBongo):
                 file["content"] = new_content
                 updated_entities.append(file)
 
-                self.logger.info(
-                    f"✅ Updated file: {file['name']} (token: {file['token']})"
-                )
+                self.logger.info(f"✅ Updated file: {file['name']} (token: {file['token']})")
 
         self.logger.info(f"✅ Updated {len(updated_entities)} files")
         return updated_entities
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         """Delete specific files by ID.
 
         Args:
@@ -726,17 +684,13 @@ class SharePointBongo(BaseBongo):
                             await self._delete_file(client, file["id"])
                             cleanup_stats["files_deleted"] += 1
                         except Exception as e:
-                            self.logger.warning(
-                                f"Failed to delete file {file['id']}: {e}"
-                            )
+                            self.logger.warning(f"Failed to delete file {file['id']}: {e}")
                             cleanup_stats["errors"] += 1
 
                 # 2. Delete the test folder
                 if self._test_folder_id and self._drive_id:
                     try:
-                        self.logger.info(
-                            f"Deleting test folder: {self._test_folder_name}"
-                        )
+                        self.logger.info(f"Deleting test folder: {self._test_folder_name}")
                         await self._rate_limit()
 
                         resp = await client.delete(
@@ -757,9 +711,7 @@ class SharePointBongo(BaseBongo):
                             await self._delete_page(client, page["id"])
                             cleanup_stats["pages_deleted"] += 1
                         except Exception as e:
-                            self.logger.warning(
-                                f"Failed to delete page {page['id']}: {e}"
-                            )
+                            self.logger.warning(f"Failed to delete page {page['id']}: {e}")
                             cleanup_stats["errors"] += 1
 
                 # 4. Delete any remaining lists (items deleted automatically)
@@ -769,9 +721,7 @@ class SharePointBongo(BaseBongo):
                             await self._delete_list(client, list_entity["id"])
                             cleanup_stats["lists_deleted"] += 1
                         except Exception as e:
-                            self.logger.warning(
-                                f"Failed to delete list {list_entity['id']}: {e}"
-                            )
+                            self.logger.warning(f"Failed to delete list {list_entity['id']}: {e}")
                             cleanup_stats["errors"] += 1
 
                 # 5. Find and clean up any orphaned test folders
@@ -796,18 +746,12 @@ class SharePointBongo(BaseBongo):
                                     )
                                     if del_resp.status_code in (204, 404):
                                         cleanup_stats["folders_deleted"] += 1
-                                        self.logger.info(
-                                            f"Deleted orphaned folder: {folder['name']}"
-                                        )
+                                        self.logger.info(f"Deleted orphaned folder: {folder['name']}")
                                 except Exception as e:
                                     cleanup_stats["errors"] += 1
-                                    self.logger.warning(
-                                        f"Failed to delete orphaned folder: {e}"
-                                    )
+                                    self.logger.warning(f"Failed to delete orphaned folder: {e}")
                     except Exception as e:
-                        self.logger.warning(
-                            f"Failed to search for orphaned folders: {e}"
-                        )
+                        self.logger.warning(f"Failed to search for orphaned folders: {e}")
 
             self.logger.info(
                 f"🧹 Cleanup completed: {cleanup_stats['files_deleted']} files, "

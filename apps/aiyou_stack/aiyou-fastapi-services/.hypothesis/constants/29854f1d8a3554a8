@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/finjudge/rules/policy.py
+# hypothesis_version: 6.151.5
+
+[3.0, 10.0, 15.0, 5000000.0, 10000000.0, 'A', 'A+', 'A-', 'AA', 'AA+', 'AA-', 'AAA', 'B', 'B+', 'B-', 'BB', 'BB+', 'BB-', 'BBB', 'BBB+', 'BBB-', 'C', 'CC', 'CCC', 'CREDIT-001', 'Concentration Limit', 'D', 'Leverage Limit', 'Position Size Limit', 'Pre-Trade Approval', 'RISK-001', 'RISK-002', 'RISK-003', 'RISK-004', 'TRADE-001', 'VaR Limit', 'concentration_pct', 'credit_rating', 'description', 'leverage', 'name', 'position_size_pct', 'senior_approval', 'threshold', 'trade_size_usd', 'var_95']

@@ -23,13 +23,7 @@ def main():
     print("Example 1: Keyword Search for Disease-Target Tools")
     print("=" * 60)
 
-    tools = tu.run({
-        "name": "Tool_Finder_Keyword",
-        "arguments": {
-            "description": "disease target associations",
-            "limit": 5
-        }
-    })
+    tools = tu.run({"name": "Tool_Finder_Keyword", "arguments": {"description": "disease target associations", "limit": 5}})
 
     print(f"Found {len(tools)} tools:")
     for idx, tool in enumerate(tools, 1):
@@ -41,13 +35,9 @@ def main():
     print("Example 2: LLM Search for Protein Structure Tools")
     print("=" * 60)
 
-    tools = tu.run({
-        "name": "Tool_Finder_LLM",
-        "arguments": {
-            "description": "Find tools for predicting protein structures from sequences",
-            "limit": 5
-        }
-    })
+    tools = tu.run(
+        {"name": "Tool_Finder_LLM", "arguments": {"description": "Find tools for predicting protein structures from sequences", "limit": 5}}
+    )
 
     print(f"Found {len(tools)} tools:")
     for idx, tool in enumerate(tools, 1):
@@ -59,13 +49,7 @@ def main():
     print("Example 3: Search for Cheminformatics Tools")
     print("=" * 60)
 
-    tools = tu.run({
-        "name": "Tool_Finder_Keyword",
-        "arguments": {
-            "description": "molecular docking SMILES compound",
-            "limit": 5
-        }
-    })
+    tools = tu.run({"name": "Tool_Finder_Keyword", "arguments": {"description": "molecular docking SMILES compound", "limit": 5}})
 
     print(f"Found {len(tools)} tools:")
     for idx, tool in enumerate(tools, 1):
@@ -78,7 +62,7 @@ def main():
     print("=" * 60)
 
     if tools:
-        tool_name = tools[0]['name']
+        tool_name = tools[0]["name"]
         print(f"Getting details for: {tool_name}")
 
         tool_info = tu.get_tool_info(tool_name)

@@ -134,9 +134,7 @@ def build_dists(ctx):
     py_version = ".".join(str(v) for v in sys.version_info[:2])
     env = {"PIPENV_PYTHON": py_version}
     with ctx.cd(ROOT.as_posix()), temp_environ():
-        executable = ctx.run(
-            "python -c 'import sys; print(sys.executable)'", hide=True
-        ).stdout.strip()
+        executable = ctx.run("python -c 'import sys; print(sys.executable)'", hide=True).stdout.strip()
         log(f"Building sdist using {executable} ....")
         os.environ["PIPENV_PYTHON"] = py_version
         ctx.run("pipenv install --dev", env=env)
@@ -147,7 +145,7 @@ def build_dists(ctx):
 
 @invoke.task(build_dists)
 def upload_dists(ctx, repo="pypi"):
-    dist_pattern = f'{PACKAGE_NAME.replace("-", "[-_]")}-*'
+    dist_pattern = f"{PACKAGE_NAME.replace('-', '[-_]')}-*"
     artifacts = list(ROOT.joinpath("dist").glob(dist_pattern))
     filename_display = "\n".join(f"  {a}" for a in artifacts)
     print(f"[release] Will upload:\n{filename_display}")
@@ -168,9 +166,7 @@ def generate_markdown(ctx, source_rstfile=None):
         source_rstfile = "CHANGELOG.md"
     source_file = pathlib.Path(source_rstfile)
     dest_file = source_file.with_suffix(".md")
-    ctx.run(
-        f"pandoc {source_file.as_posix()} -f rst -t markdown -o {dest_file.as_posix()}"
-    )
+    ctx.run(f"pandoc {source_file.as_posix()} -f rst -t markdown -o {dest_file.as_posix()}")
 
 
 @invoke.task
@@ -256,11 +252,7 @@ def date_offset(dt, month_offset=0, day_offset=0, truncate=False):
         "month": dt.month + month_offset,
         "year": dt.year + year_offset,
     }
-    log(
-        "Getting updated date from date: {} using month offset: {} and year offset {}".format(
-            dt, new_month, replace_args["year"]
-        )
-    )
+    log("Getting updated date from date: {} using month offset: {} and year offset {}".format(dt, new_month, replace_args["year"]))
     if day_offset:
         dt = dt + datetime.timedelta(days=day_offset)
         log(f"updated date using day offset: {day_offset} => {dt}")
@@ -271,18 +263,14 @@ def date_offset(dt, month_offset=0, day_offset=0, truncate=False):
 
 
 @invoke.task
-def bump_version(
-    ctx, dry_run=False, pre=False, dev=False, minor=False, major=False, patch=False
-):
+def bump_version(ctx, dry_run=False, pre=False, dev=False, minor=False, major=False, patch=False):
     version = find_version(ctx)
     current_version = semver.VersionInfo.parse(version)
 
     # Prompt the user for version change type
     if not minor and not major and not patch:
         while True:
-            change_type = input(
-                "Enter the version change type (major/minor/patch): "
-            ).lower()
+            change_type = input("Enter the version change type (major/minor/patch): ").lower()
             if change_type in ["major", "minor", "patch"]:
                 break
             print("Invalid input. Please enter 'major', 'minor', or 'patch'.")

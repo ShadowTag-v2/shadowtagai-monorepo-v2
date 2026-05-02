@@ -70,6 +70,7 @@ AUTOLINT_INTERVAL = 86400  # 24 hours
 OOB_REPORT_CHECK_INTERVAL = 600  # 10 minutes
 PROMPT_VALIDATION_INTERVAL = 3600  # 1 hour — periodic prompt assembly check
 PROACTIVE_SUGGESTION_INTERVAL = 900  # 15 min — speculation prefetch cycle
+GCA_BLOAT_CHECK_INTERVAL = 600  # 10 min — IDE database bloat watchdog
 
 # Disk-Skill Dream resource limits
 DISK_SKILL_AST_TIMEOUT = 900  # 15-minute cap for deep AST scans
@@ -1179,6 +1180,153 @@ def _gather_recent_messages() -> list[dict]:
     return messages
 
 
+# ---------------------------------------------------------------------------
+# GCA database bloat watchdog
+# ---------------------------------------------------------------------------
+
+# Threshold (MB) above which KAIROS auto-prunes the GCA state database.
+# Matches the existing monitor_mode() threshold in prune_gca_chat_threads.py.
+GCA_AUTO_PRUNE_THRESHOLD_MB = 20.0
+
+
+def _is_ide_running() -> bool:
+    """Check if the Antigravity or VS Code IDE process is currently running.
+
+    SQLite database is locked while the IDE holds the connection.
+    We can only safely prune+vacuum when the IDE is NOT running.
+    """
+    try:
+        result = subprocess.run(
+            ["pgrep", "-f", "Antigravity|Code Helper|code-server"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        return result.returncode == 0
+    except subprocess.TimeoutExpired, FileNotFoundError:
+        return True  # Assume running if we can't check (safe fallback)
+
+
+def check_gca_bloat() -> dict[str, Any]:
+    """Monitor GCA state.vscdb for bloat and auto-prune if safe.
+
+    Returns a status dict with the action taken:
+      - "healthy": DB is under threshold
+      - "auto_pruned": DB was bloated, IDE closed, prune+vacuum executed
+      - "notified": DB was bloated, IDE running, macOS notification sent
+      - "error": Something went wrong
+    """
+    # Import the prune API (co-located script)
+    try:
+        sys.path.insert(0, str(SCRIPTS_DIR))
+        import prune_gca_chat_threads as pruner
+    except ImportError:
+        logger.warning("prune_gca_chat_threads not importable, skipping bloat check")
+        return {"action": "error", "reason": "import_failed"}
+    finally:
+        # Don't pollute sys.path permanently
+        with contextlib.suppress(ValueError):
+            sys.path.remove(str(SCRIPTS_DIR))
+
+    db_path = pruner.locate_db()
+    if not db_path:
+        logger.debug("GCA state.vscdb not found — no IDE installed?")
+        return {"action": "skipped", "reason": "db_not_found"}
+
+    try:
+        size_mb = db_path.stat().st_size / (1024 * 1024)
+    except OSError as e:
+        logger.warning("Cannot stat %s: %s", db_path, e)
+        return {"action": "error", "reason": str(e)}
+
+    if size_mb <= GCA_AUTO_PRUNE_THRESHOLD_MB:
+        logger.debug("GCA DB healthy: %.1f MB (threshold: %.0f MB)", size_mb, GCA_AUTO_PRUNE_THRESHOLD_MB)
+        return {"action": "healthy", "size_mb": round(size_mb, 1)}
+
+    # DB is bloated — check if we can safely write
+    logger.warning(
+        "GCA DB BLOATED: %.1f MB > %.0f MB threshold",
+        size_mb,
+        GCA_AUTO_PRUNE_THRESHOLD_MB,
+    )
+
+    if _is_ide_running():
+        # Can't prune while IDE holds the SQLite lock
+        logger.info("IDE is running — sending notification instead of auto-pruning")
+        try:
+            pruner.trigger_mac_notification(size_mb)
+        except Exception as e:
+            logger.warning("Notification failed: %s", e)
+        return {"action": "notified", "size_mb": round(size_mb, 1)}
+
+    # IDE is closed — safe to auto-prune
+    logger.info("IDE not running — executing auto-prune + vacuum")
+
+    # Backup first (same pattern as cli_write)
+    backup_path = f"{db_path}.backup.{datetime.datetime.now().strftime('%Y%m%dT%H%M%S')}"
+    try:
+        import shutil
+
+        shutil.copy2(str(db_path), backup_path)
+        logger.info("Backup saved: %s", backup_path)
+    except OSError as e:
+        logger.error("Backup failed, aborting auto-prune: %s", e)
+        return {"action": "error", "reason": f"backup_failed: {e}"}
+
+    # Prune (keep 0 threads — full purge)
+    prune_result = pruner.prune(db_path, keep=0)
+    if not prune_result.get("success"):
+        reason = prune_result.get("reason", "unknown")
+        logger.error("Auto-prune failed: %s", reason)
+        return {"action": "error", "reason": f"prune_failed: {reason}"}
+
+    freed_kb = prune_result["freed_bytes"] / 1024
+    logger.info(
+        "Auto-prune: %d→%d threads (freed %.1f KB)",
+        prune_result["threads_before"],
+        prune_result["threads_after"],
+        freed_kb,
+    )
+
+    # Vacuum to reclaim dead pages
+    vac_result = pruner.vacuum_db(db_path)
+    if vac_result.get("success"):
+        recovered_kb = vac_result["recovered"] / 1024
+        logger.info(
+            "Auto-vacuum: %.0f KB → %.0f KB (recovered %.0f KB)",
+            vac_result["before_size"] / 1024,
+            vac_result["after_size"] / 1024,
+            recovered_kb,
+        )
+    else:
+        logger.warning("Vacuum failed: %s", vac_result.get("reason", "unknown"))
+
+    # Log to beads evidence trail
+    try:
+        BEADS_DIR.mkdir(parents=True, exist_ok=True)
+        log_entry = {
+            "timestamp": datetime.datetime.now(datetime.UTC).isoformat(),
+            "action": "auto_prune",
+            "before_mb": round(size_mb, 1),
+            "freed_kb": round(freed_kb, 1),
+            "threads_before": prune_result["threads_before"],
+            "threads_after": prune_result["threads_after"],
+            "vacuum_recovered_kb": round(vac_result.get("recovered", 0) / 1024, 1),
+        }
+        log_path = BEADS_DIR / "gca_bloat_events.jsonl"
+        with open(log_path, "a") as f:
+            f.write(json.dumps(log_entry) + "\n")
+    except OSError:
+        pass  # Non-critical logging
+
+    return {
+        "action": "auto_pruned",
+        "before_mb": round(size_mb, 1),
+        "freed_kb": round(freed_kb, 1),
+        "threads_purged": prune_result["threads_before"],
+    }
+
+
 def write_heartbeat(status: dict) -> None:
     """Write heartbeat file for monitoring.
 
@@ -1186,6 +1334,23 @@ def write_heartbeat(status: dict) -> None:
     health at a glance from ``tail -f .beads/kairos_heartbeat.json``.
     """
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
+
+    # --- Circuit breaker health snapshot (independent of treeify) ---
+    cb_health: dict[str, Any] = {"state": "unavailable"}
+    try:
+        from circuit_breaker.dashboard import get_health_report
+
+        cb_health = get_health_report()
+        # Alert if >2 breakers are simultaneously OPEN
+        open_count = cb_health.get("summary", {}).get("open", 0)
+        if open_count > 2:
+            logger.warning(
+                "ALERT: %d circuit breakers simultaneously OPEN: %s",
+                open_count,
+                cb_health.get("summary", {}).get("open_services", []),
+            )
+    except Exception:
+        pass  # cb_health remains {"state": "unavailable"}
 
     # Build tree diagnostic from status dict
     tree_text = ""
@@ -1210,6 +1375,7 @@ def write_heartbeat(status: dict) -> None:
                 "Cycle": status.get("cycle", "?"),
                 **{k: v for k, v in status.items() if k != "cycle"},
                 "suggestion_pipeline": suggestion_status,
+                "circuit_breakers": cb_health.get("summary", cb_health),
             }
         }
         tree_text = treeify_mod.treeify(tree_data, show_values=True, max_depth=5)
@@ -1220,9 +1386,10 @@ def write_heartbeat(status: dict) -> None:
         "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),  # noqa: UP017
         "pid": os.getpid(),
         "status": status,
+        "circuit_breakers": cb_health,
         "tree_diagnostic": tree_text,
     }
-    HEARTBEAT_FILE.write_text(json.dumps(heartbeat, indent=2))
+    HEARTBEAT_FILE.write_text(json.dumps(heartbeat, indent=2, default=str))
     logger.debug("Heartbeat tree:\n%s", tree_text)
 
 
@@ -1261,6 +1428,7 @@ def main_loop(once: bool = False, timeout: int | None = None) -> None:
     last_token_budget = 0.0
     last_proactive_suggestion = 0.0
     last_research_sweep = 0.0
+    last_gca_bloat_check = 0.0
 
     deadline = (time.time() + timeout) if timeout else None
     cycle = 0
@@ -1367,6 +1535,14 @@ def main_loop(once: bool = False, timeout: int | None = None) -> None:
             else:
                 status["research_sweep"] = "skipped_or_failed"
             last_research_sweep = now
+
+        # GCA database bloat watchdog (every 10 min)
+        if now - last_gca_bloat_check >= _jittered(GCA_BLOAT_CHECK_INTERVAL):
+            bloat_result = check_gca_bloat()
+            status["gca_bloat"] = bloat_result.get("action", "unknown")
+            if bloat_result.get("action") == "auto_pruned":
+                status["gca_bloat_detail"] = f"pruned {bloat_result.get('before_mb', '?')}MB, freed {bloat_result.get('freed_kb', '?')}KB"
+            last_gca_bloat_check = now
 
         write_heartbeat(status)
 

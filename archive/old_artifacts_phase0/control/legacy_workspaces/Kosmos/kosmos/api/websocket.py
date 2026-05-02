@@ -12,6 +12,7 @@ from dataclasses import asdict
 
 try:
     from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect
+
     HAS_FASTAPI = True
 except ImportError:
     HAS_FASTAPI = False
@@ -64,11 +65,7 @@ class ConnectionManager:
         self.active_connections.discard(websocket)
         logger.debug(f"WebSocket disconnected. Total: {len(self.active_connections)}")
 
-    async def send_event(
-        self,
-        websocket: WebSocket,
-        event: StreamingEvent
-    ) -> bool:
+    async def send_event(self, websocket: WebSocket, event: StreamingEvent) -> bool:
         """
         Send an event to a specific connection.
 
@@ -119,17 +116,12 @@ manager = ConnectionManager()
 
 
 if HAS_FASTAPI:
+
     @router.websocket("/events")
     async def websocket_events(
         websocket: WebSocket,
-        process_id: str | None = Query(
-            None,
-            description="Filter events by process ID"
-        ),
-        types: str | None = Query(
-            None,
-            description="Comma-separated list of event types"
-        )
+        process_id: str | None = Query(None, description="Filter events by process ID"),
+        types: str | None = Query(None, description="Comma-separated list of event types"),
     ):
         """
         WebSocket endpoint for bidirectional event streaming.
@@ -194,11 +186,9 @@ if HAS_FASTAPI:
         event_bus.subscribe(queue_callback, event_types, filter_pids)
 
         # Send subscription confirmation
-        await websocket.send_json({
-            "action": "subscribed",
-            "event_types": [t.value for t in event_types] if event_types else None,
-            "process_id": process_id
-        })
+        await websocket.send_json(
+            {"action": "subscribed", "event_types": [t.value for t in event_types] if event_types else None, "process_id": process_id}
+        )
 
         async def send_events():
             """Task to send queued events to WebSocket."""
@@ -226,10 +216,8 @@ if HAS_FASTAPI:
                     if action == "ping":
                         # Respond to ping
                         from datetime import datetime
-                        await websocket.send_json({
-                            "action": "pong",
-                            "timestamp": datetime.utcnow().isoformat() + "Z"
-                        })
+
+                        await websocket.send_json({"action": "pong", "timestamp": datetime.utcnow().isoformat() + "Z"})
 
                     elif action == "subscribe":
                         # Update subscription filters
@@ -241,10 +229,7 @@ if HAS_FASTAPI:
                             try:
                                 event_types = [EventType(t) for t in new_types]
                             except ValueError as e:
-                                await websocket.send_json({
-                                    "action": "error",
-                                    "message": f"Invalid event type: {e}"
-                                })
+                                await websocket.send_json({"action": "error", "message": f"Invalid event type: {e}"})
                                 continue
                         else:
                             event_types = None
@@ -257,21 +242,20 @@ if HAS_FASTAPI:
                         event_bus.subscribe(queue_callback, event_types, filter_pids)
 
                         # Confirm subscription update
-                        await websocket.send_json({
-                            "action": "subscribed",
-                            "event_types": [t.value for t in event_types] if event_types else None,
-                            "process_id": filter_pids[0] if filter_pids else None
-                        })
+                        await websocket.send_json(
+                            {
+                                "action": "subscribed",
+                                "event_types": [t.value for t in event_types] if event_types else None,
+                                "process_id": filter_pids[0] if filter_pids else None,
+                            }
+                        )
 
                 except asyncio.CancelledError:
                     break
                 except WebSocketDisconnect:
                     break
                 except json.JSONDecodeError:
-                    await websocket.send_json({
-                        "action": "error",
-                        "message": "Invalid JSON"
-                    })
+                    await websocket.send_json({"action": "error", "message": "Invalid JSON"})
                 except Exception as e:
                     logger.debug(f"Error receiving message: {e}")
                     break
@@ -282,10 +266,7 @@ if HAS_FASTAPI:
 
         try:
             # Wait for either task to complete (usually receive on disconnect)
-            done, pending = await asyncio.wait(
-                [send_task, receive_task],
-                return_when=asyncio.FIRST_COMPLETED
-            )
+            done, pending = await asyncio.wait([send_task, receive_task], return_when=asyncio.FIRST_COMPLETED)
 
             # Cancel remaining tasks
             for task in pending:
@@ -309,7 +290,4 @@ if HAS_FASTAPI:
 
         Returns the number of active WebSocket connections.
         """
-        return {
-            "active_connections": manager.connection_count,
-            "event_bus_subscribers": get_event_bus().subscriber_count()
-        }
+        return {"active_connections": manager.connection_count, "event_bus_subscribers": get_event_bus().subscriber_count()}

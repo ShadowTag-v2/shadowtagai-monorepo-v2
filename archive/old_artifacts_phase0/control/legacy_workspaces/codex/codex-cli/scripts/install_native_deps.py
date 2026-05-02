@@ -12,7 +12,7 @@ import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Sequence
+from collections.abc import Iterable, Sequence
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
@@ -67,29 +67,20 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Install native Codex binaries.")
     parser.add_argument(
         "--workflow-url",
-        help=(
-            "GitHub Actions workflow URL that produced the artifacts. Defaults to a "
-            "known good run when omitted."
-        ),
+        help=("GitHub Actions workflow URL that produced the artifacts. Defaults to a known good run when omitted."),
     )
     parser.add_argument(
         "--component",
         dest="components",
         action="append",
         choices=tuple(list(BINARY_COMPONENTS) + ["rg"]),
-        help=(
-            "Limit installation to the specified components."
-            " May be repeated. Defaults to 'codex' and 'rg'."
-        ),
+        help=("Limit installation to the specified components. May be repeated. Defaults to 'codex' and 'rg'."),
     )
     parser.add_argument(
         "root",
         nargs="?",
         type=Path,
-        help=(
-            "Directory containing package.json for the staged package. If omitted, the "
-            "repository checkout is used."
-        ),
+        help=("Directory containing package.json for the staged package. If omitted, the repository checkout is used."),
     )
     return parser.parse_args()
 
@@ -218,10 +209,7 @@ def install_binary_components(
         return
 
     for component in selected_components:
-        print(
-            f"Installing {component.binary_basename} binaries for targets: "
-            + ", ".join(targets)
-        )
+        print(f"Installing {component.binary_basename} binaries for targets: " + ", ".join(targets))
         max_workers = min(len(targets), max(1, (os.cpu_count() or 1)))
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = {
@@ -254,9 +242,7 @@ def _install_single_binary(
     dest_dir = vendor_dir / target / component.dest_dir
     dest_dir.mkdir(parents=True, exist_ok=True)
 
-    binary_name = (
-        f"{component.binary_basename}.exe" if "windows" in target else component.binary_basename
-    )
+    binary_name = f"{component.binary_basename}.exe" if "windows" in target else component.binary_basename
     dest = dest_dir / binary_name
     dest.unlink(missing_ok=True)
     extract_archive(archive_path, "zst", None, dest)
@@ -324,9 +310,7 @@ def extract_archive(
 
     if archive_format == "zst":
         output_path = archive_path.parent / dest.name
-        subprocess.check_call(
-            ["zstd", "-f", "-d", str(archive_path), "-o", str(output_path)]
-        )
+        subprocess.check_call(["zstd", "-f", "-d", str(archive_path), "-o", str(output_path)])
         shutil.move(str(output_path), dest)
         return
 
@@ -337,9 +321,7 @@ def extract_archive(
             try:
                 member = tar.getmember(archive_member)
             except KeyError as exc:
-                raise RuntimeError(
-                    f"Entry '{archive_member}' not found in archive {archive_path}."
-                ) from exc
+                raise RuntimeError(f"Entry '{archive_member}' not found in archive {archive_path}.") from exc
             tar.extract(member, path=archive_path.parent, filter="data")
         extracted = archive_path.parent / archive_member
         shutil.move(str(extracted), dest)
@@ -353,9 +335,7 @@ def extract_archive(
                 with archive.open(archive_member) as src, open(dest, "wb") as out:
                     shutil.copyfileobj(src, out)
             except KeyError as exc:
-                raise RuntimeError(
-                    f"Entry '{archive_member}' not found in archive {archive_path}."
-                ) from exc
+                raise RuntimeError(f"Entry '{archive_member}' not found in archive {archive_path}.") from exc
         return
 
     raise RuntimeError(f"Unsupported archive format '{archive_format}'.")
@@ -370,9 +350,7 @@ def _load_manifest(manifest_path: Path) -> dict:
         raise RuntimeError(f"Invalid DotSlash manifest output from {manifest_path}.") from exc
 
     if not isinstance(manifest, dict):
-        raise RuntimeError(
-            f"Unexpected DotSlash manifest structure for {manifest_path}: {type(manifest)!r}"
-        )
+        raise RuntimeError(f"Unexpected DotSlash manifest structure for {manifest_path}: {type(manifest)!r}")
 
     return manifest
 

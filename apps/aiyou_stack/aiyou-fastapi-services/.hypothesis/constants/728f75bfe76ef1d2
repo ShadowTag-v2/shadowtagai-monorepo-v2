@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/config/pricing.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.0003, 0.005, 0.05, 0.1, 0.99, 0.995, 0.999, 0.9999, 29.0, 99.0, 700.0, 779.0, 100, 1000, 10000, 100000, 1000000, '24/7_dedicated', '4_llm_orchestration', 'all', 'basic_deadlines', 'community', 'decision_complex', 'decision_simple', 'developer', 'email', 'enterprise', 'free', 'gemini_functions', 'judge_6_validation', 'kernel_chain_access', 'memory_persistence', 'memory_storage_GB', 'platform_api', 'priority', 'real_time_latency', 'solo', 'team', 'white_label', 'workflow_enterprise']

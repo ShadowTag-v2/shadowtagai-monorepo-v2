@@ -228,16 +228,16 @@ class PplxPrepareAndFinalize(mk.FusedMoEPrepareAndFinalize):
 
         def hook():
             return self.a2a.dispatch(
-                    out_expert_num_tokens=expert_num_tokens,
-                    out_expert_x=expert_x,
-                    out_expert_x_scale=expert_x_scale,
-                    dp_x=a1q,
-                    dp_x_scale=a1q_scale,
-                    indices=topk_ids,
-                    bound_m=bound_m,
-                    do_send=False,
-                    do_recv=True,
-                )
+                out_expert_num_tokens=expert_num_tokens,
+                out_expert_x=expert_x,
+                out_expert_x_scale=expert_x_scale,
+                dp_x=a1q,
+                dp_x_scale=a1q_scale,
+                indices=topk_ids,
+                bound_m=bound_m,
+                do_send=False,
+                do_recv=True,
+            )
 
         return (
             hook,

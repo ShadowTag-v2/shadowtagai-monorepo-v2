@@ -17,6 +17,7 @@ We assume a strict subset of YAML that looks like:
 In other words, we don't sort deeper than the top layer, and might corrupt
 complicated YAML files.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -37,7 +38,7 @@ def sort(lines: list[str]) -> list[str]:
 
     for block in sorted(parse_blocks(lines), key=first_key):
         if new_lines:
-            new_lines.append('')
+            new_lines.append("")
         new_lines.extend(block)
 
     return new_lines
@@ -54,7 +55,7 @@ def parse_block(lines: list[str], header: bool = False) -> list[str]:
     :return: list of lines that form the single block
     """
     block_lines = []
-    while lines and lines[0] and (not header or lines[0].startswith('#')):
+    while lines and lines[0] and (not header or lines[0].startswith("#")):
         block_lines.append(lines.pop(0))
     return block_lines
 
@@ -68,7 +69,7 @@ def parse_blocks(lines: list[str]) -> list[list[str]]:
     blocks = []
 
     while lines:
-        if lines[0] == '':
+        if lines[0] == "":
             lines.pop(0)
         else:
             blocks.append(parse_block(lines))
@@ -89,36 +90,36 @@ def first_key(lines: list[str]) -> str:
     'foo'
     """
     for line in lines:
-        if line.startswith('#'):
+        if line.startswith("#"):
             continue
         if any(line.startswith(quote) for quote in QUOTES):
             return line[1:]
         return line
     else:
-        return ''  # not actually reached in reality
+        return ""  # not actually reached in reality
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument('filenames', nargs='*', help='Filenames to fix')
+    parser.add_argument("filenames", nargs="*", help="Filenames to fix")
     args = parser.parse_args(argv)
 
     retval = 0
 
     for filename in args.filenames:
-        with open(filename, 'r+') as f:
+        with open(filename, "r+") as f:
             lines = [line.rstrip() for line in f.readlines()]
             new_lines = sort(lines)
 
             if lines != new_lines:
-                print(f'Fixing file `{filename}`')
+                print(f"Fixing file `{filename}`")
                 f.seek(0)
-                f.write('\n'.join(new_lines) + '\n')
+                f.write("\n".join(new_lines) + "\n")
                 f.truncate()
                 retval = 1
 
     return retval
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

@@ -44,9 +44,7 @@ def list_mcp_servers() -> str:
         status = manager.get_status()
 
         if not status.get("enabled"):
-            return (
-                "MCP integration is disabled. Set MCP_ENABLED=true in your .env file."
-            )
+            return "MCP integration is disabled. Set MCP_ENABLED=true in your .env file."
 
         if not status.get("servers"):
             return "No MCP servers configured. Add servers to mcp_servers.json"
@@ -126,11 +124,7 @@ def list_mcp_tools(server_name: str | None = None) -> str:
 
             for tool in srv_tools:
                 prefixed_name = tool.get_prefixed_name(settings.MCP_TOOL_PREFIX)
-                desc = (
-                    tool.description[:60] + "..."
-                    if len(tool.description) > 60
-                    else tool.description
-                )
+                desc = tool.description[:60] + "..." if len(tool.description) > 60 else tool.description
                 lines.append(f"  • {prefixed_name}")
                 lines.append(f"    {desc}")
 
@@ -198,9 +192,7 @@ def get_mcp_tool_help(tool_name: str) -> str:
 
                 return "\n".join(lines)
 
-        return (
-            f"Tool not found: {tool_name}\nUse list_mcp_tools() to see available tools."
-        )
+        return f"Tool not found: {tool_name}\nUse list_mcp_tools() to see available tools."
 
     except Exception as e:
         return f"Error getting tool help: {e}"

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Unit tests for McpInstructionProvider."""
+
 import sys
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -27,174 +28,144 @@ pytestmark = pytest.mark.skipif(
 
 # Import dependencies with version checking
 try:
-  from google.adk.agents.mcp_instruction_provider import McpInstructionProvider
+    from google.adk.agents.mcp_instruction_provider import McpInstructionProvider
 except ImportError as e:
-  raise e
+    raise e
 
 
 class TestMcpInstructionProvider:
-  """Unit tests for McpInstructionProvider."""
+    """Unit tests for McpInstructionProvider."""
 
-  def setup_method(self):
-    """Sets up the test environment."""
-    self.connection_params = {"host": "localhost", "port": 8000}
-    self.prompt_name = "test_prompt"
-    self.mock_mcp_session_manager_cls = patch(
-        "google.adk.agents.mcp_instruction_provider.MCPSessionManager"
-    ).start()
-    self.mock_mcp_session_manager = (
-        self.mock_mcp_session_manager_cls.return_value
-    )
-    self.mock_session = MagicMock()
-    self.mock_session.list_prompts = AsyncMock()
-    self.mock_session.get_prompt = AsyncMock()
-    self.mock_mcp_session_manager.create_session = AsyncMock(
-        return_value=self.mock_session
-    )
-    self.provider = McpInstructionProvider(
-        self.connection_params, self.prompt_name
-    )
+    def setup_method(self):
+        """Sets up the test environment."""
+        self.connection_params = {"host": "localhost", "port": 8000}
+        self.prompt_name = "test_prompt"
+        self.mock_mcp_session_manager_cls = patch("google.adk.agents.mcp_instruction_provider.MCPSessionManager").start()
+        self.mock_mcp_session_manager = self.mock_mcp_session_manager_cls.return_value
+        self.mock_session = MagicMock()
+        self.mock_session.list_prompts = AsyncMock()
+        self.mock_session.get_prompt = AsyncMock()
+        self.mock_mcp_session_manager.create_session = AsyncMock(return_value=self.mock_session)
+        self.provider = McpInstructionProvider(self.connection_params, self.prompt_name)
 
-  @pytest.mark.asyncio
-  async def test_call_success_no_args(self):
-    """Tests __call__ with a prompt that has no arguments."""
-    mock_prompt = MagicMock()
-    mock_prompt.name = self.prompt_name
-    mock_prompt.arguments = None
-    self.mock_session.list_prompts.return_value = MagicMock(
-        prompts=[mock_prompt]
-    )
+    @pytest.mark.asyncio
+    async def test_call_success_no_args(self):
+        """Tests __call__ with a prompt that has no arguments."""
+        mock_prompt = MagicMock()
+        mock_prompt.name = self.prompt_name
+        mock_prompt.arguments = None
+        self.mock_session.list_prompts.return_value = MagicMock(prompts=[mock_prompt])
 
-    mock_msg1 = MagicMock()
-    mock_msg1.content.type = "text"
-    mock_msg1.content.text = "instruction part 1. "
-    mock_msg2 = MagicMock()
-    mock_msg2.content.type = "text"
-    mock_msg2.content.text = "instruction part 2"
-    self.mock_session.get_prompt.return_value = MagicMock(
-        messages=[mock_msg1, mock_msg2]
-    )
+        mock_msg1 = MagicMock()
+        mock_msg1.content.type = "text"
+        mock_msg1.content.text = "instruction part 1. "
+        mock_msg2 = MagicMock()
+        mock_msg2.content.type = "text"
+        mock_msg2.content.text = "instruction part 2"
+        self.mock_session.get_prompt.return_value = MagicMock(messages=[mock_msg1, mock_msg2])
 
-    mock_invocation_context = MagicMock()
-    mock_invocation_context.session.state = {}
-    context = ReadonlyContext(mock_invocation_context)
+        mock_invocation_context = MagicMock()
+        mock_invocation_context.session.state = {}
+        context = ReadonlyContext(mock_invocation_context)
 
-    # Call
-    instruction = await self.provider(context)
+        # Call
+        instruction = await self.provider(context)
 
-    # Assert
-    assert instruction == "instruction part 1. instruction part 2"
-    self.mock_session.get_prompt.assert_called_once_with(
-        self.prompt_name, arguments={}
-    )
+        # Assert
+        assert instruction == "instruction part 1. instruction part 2"
+        self.mock_session.get_prompt.assert_called_once_with(self.prompt_name, arguments={})
 
-  @pytest.mark.asyncio
-  async def test_call_success_with_args(self):
-    """Tests __call__ with a prompt that has arguments."""
-    mock_arg1 = MagicMock()
-    mock_arg1.name = "arg1"
-    mock_prompt = MagicMock()
-    mock_prompt.name = self.prompt_name
-    mock_prompt.arguments = [mock_arg1]
-    self.mock_session.list_prompts.return_value = MagicMock(
-        prompts=[mock_prompt]
-    )
+    @pytest.mark.asyncio
+    async def test_call_success_with_args(self):
+        """Tests __call__ with a prompt that has arguments."""
+        mock_arg1 = MagicMock()
+        mock_arg1.name = "arg1"
+        mock_prompt = MagicMock()
+        mock_prompt.name = self.prompt_name
+        mock_prompt.arguments = [mock_arg1]
+        self.mock_session.list_prompts.return_value = MagicMock(prompts=[mock_prompt])
 
-    mock_msg = MagicMock()
-    mock_msg.content.type = "text"
-    mock_msg.content.text = "instruction with arg1"
-    self.mock_session.get_prompt.return_value = MagicMock(messages=[mock_msg])
+        mock_msg = MagicMock()
+        mock_msg.content.type = "text"
+        mock_msg.content.text = "instruction with arg1"
+        self.mock_session.get_prompt.return_value = MagicMock(messages=[mock_msg])
 
-    mock_invocation_context = MagicMock()
-    mock_invocation_context.session.state = {"arg1": "value1", "arg2": "value2"}
-    context = ReadonlyContext(mock_invocation_context)
+        mock_invocation_context = MagicMock()
+        mock_invocation_context.session.state = {"arg1": "value1", "arg2": "value2"}
+        context = ReadonlyContext(mock_invocation_context)
 
-    instruction = await self.provider(context)
+        instruction = await self.provider(context)
 
-    assert instruction == "instruction with arg1"
-    self.mock_session.get_prompt.assert_called_once_with(
-        self.prompt_name, arguments={"arg1": "value1"}
-    )
+        assert instruction == "instruction with arg1"
+        self.mock_session.get_prompt.assert_called_once_with(self.prompt_name, arguments={"arg1": "value1"})
 
-  @pytest.mark.asyncio
-  async def test_call_prompt_not_found_in_list_prompts(self):
-    """Tests __call__ when list_prompts doesn't return the prompt."""
-    self.mock_session.list_prompts.return_value = MagicMock(prompts=[])
+    @pytest.mark.asyncio
+    async def test_call_prompt_not_found_in_list_prompts(self):
+        """Tests __call__ when list_prompts doesn't return the prompt."""
+        self.mock_session.list_prompts.return_value = MagicMock(prompts=[])
 
-    mock_msg = MagicMock()
-    mock_msg.content.type = "text"
-    mock_msg.content.text = "instruction"
-    self.mock_session.get_prompt.return_value = MagicMock(messages=[mock_msg])
+        mock_msg = MagicMock()
+        mock_msg.content.type = "text"
+        mock_msg.content.text = "instruction"
+        self.mock_session.get_prompt.return_value = MagicMock(messages=[mock_msg])
 
-    mock_invocation_context = MagicMock()
-    mock_invocation_context.session.state = {"arg1": "value1"}
-    context = ReadonlyContext(mock_invocation_context)
+        mock_invocation_context = MagicMock()
+        mock_invocation_context.session.state = {"arg1": "value1"}
+        context = ReadonlyContext(mock_invocation_context)
 
-    instruction = await self.provider(context)
+        instruction = await self.provider(context)
 
-    assert instruction == "instruction"
-    self.mock_session.get_prompt.assert_called_once_with(
-        self.prompt_name, arguments={}
-    )
+        assert instruction == "instruction"
+        self.mock_session.get_prompt.assert_called_once_with(self.prompt_name, arguments={})
 
-  @pytest.mark.asyncio
-  async def test_call_get_prompt_returns_no_messages(self):
-    """Tests __call__ when get_prompt returns no messages."""
-    # Setup mocks
-    self.mock_session.list_prompts.return_value = MagicMock(prompts=[])
-    self.mock_session.get_prompt.return_value = MagicMock(messages=[])
+    @pytest.mark.asyncio
+    async def test_call_get_prompt_returns_no_messages(self):
+        """Tests __call__ when get_prompt returns no messages."""
+        # Setup mocks
+        self.mock_session.list_prompts.return_value = MagicMock(prompts=[])
+        self.mock_session.get_prompt.return_value = MagicMock(messages=[])
 
-    mock_invocation_context = MagicMock()
-    mock_invocation_context.session.state = {}
-    context = ReadonlyContext(mock_invocation_context)
+        mock_invocation_context = MagicMock()
+        mock_invocation_context.session.state = {}
+        context = ReadonlyContext(mock_invocation_context)
 
-    # Call and assert
-    with pytest.raises(
-        ValueError, match="Failed to load MCP prompt 'test_prompt'."
-    ):
-      await self.provider(context)
+        # Call and assert
+        with pytest.raises(ValueError, match="Failed to load MCP prompt 'test_prompt'."):
+            await self.provider(context)
 
-    # Assert
-    self.mock_session.get_prompt.assert_called_once_with(
-        self.prompt_name, arguments={}
-    )
+        # Assert
+        self.mock_session.get_prompt.assert_called_once_with(self.prompt_name, arguments={})
 
-  @pytest.mark.asyncio
-  async def test_call_ignore_non_text_messages(self):
-    """Tests __call__ ignores non-text messages."""
-    # Setup mocks
-    mock_prompt = MagicMock()
-    mock_prompt.name = self.prompt_name
-    mock_prompt.arguments = None
-    self.mock_session.list_prompts.return_value = MagicMock(
-        prompts=[mock_prompt]
-    )
+    @pytest.mark.asyncio
+    async def test_call_ignore_non_text_messages(self):
+        """Tests __call__ ignores non-text messages."""
+        # Setup mocks
+        mock_prompt = MagicMock()
+        mock_prompt.name = self.prompt_name
+        mock_prompt.arguments = None
+        self.mock_session.list_prompts.return_value = MagicMock(prompts=[mock_prompt])
 
-    mock_msg1 = MagicMock()
-    mock_msg1.content.type = "text"
-    mock_msg1.content.text = "instruction part 1. "
+        mock_msg1 = MagicMock()
+        mock_msg1.content.type = "text"
+        mock_msg1.content.text = "instruction part 1. "
 
-    mock_msg2 = MagicMock()
-    mock_msg2.content.type = "image"
-    mock_msg2.content.text = "ignored"
+        mock_msg2 = MagicMock()
+        mock_msg2.content.type = "image"
+        mock_msg2.content.text = "ignored"
 
-    mock_msg3 = MagicMock()
-    mock_msg3.content.type = "text"
-    mock_msg3.content.text = "instruction part 2"
+        mock_msg3 = MagicMock()
+        mock_msg3.content.type = "text"
+        mock_msg3.content.text = "instruction part 2"
 
-    self.mock_session.get_prompt.return_value = MagicMock(
-        messages=[mock_msg1, mock_msg2, mock_msg3]
-    )
+        self.mock_session.get_prompt.return_value = MagicMock(messages=[mock_msg1, mock_msg2, mock_msg3])
 
-    mock_invocation_context = MagicMock()
-    mock_invocation_context.session.state = {}
-    context = ReadonlyContext(mock_invocation_context)
+        mock_invocation_context = MagicMock()
+        mock_invocation_context.session.state = {}
+        context = ReadonlyContext(mock_invocation_context)
 
-    # Call
-    instruction = await self.provider(context)
+        # Call
+        instruction = await self.provider(context)
 
-    # Assert
-    assert instruction == "instruction part 1. instruction part 2"
-    self.mock_session.get_prompt.assert_called_once_with(
-        self.prompt_name, arguments={}
-    )
+        # Assert
+        assert instruction == "instruction part 1. instruction part 2"
+        self.mock_session.get_prompt.assert_called_once_with(self.prompt_name, arguments={})

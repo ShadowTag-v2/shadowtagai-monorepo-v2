@@ -23,27 +23,27 @@ from pydantic import BaseModel
 
 @tool
 async def async_add_with_annotation(x, y) -> int:
-  """Adds two numbers"""
-  return x + y
+    """Adds two numbers"""
+    return x + y
 
 
 @tool
 def sync_add_with_annotation(x, y) -> int:
-  """Adds two numbers"""
-  return x + y
+    """Adds two numbers"""
+    return x + y
 
 
 async def async_add(x, y) -> int:
-  return x + y
+    return x + y
 
 
 def sync_add(x, y) -> int:
-  return x + y
+    return x + y
 
 
 class AddSchema(BaseModel):
-  x: int
-  y: int
+    x: int
+    y: int
 
 
 test_langchain_async_add_tool = StructuredTool.from_function(
@@ -63,39 +63,31 @@ test_langchain_sync_add_tool = StructuredTool.from_function(
 
 @pytest.mark.asyncio
 async def test_raw_async_function_works():
-  """Test that passing a raw async function to LangchainTool works correctly."""
-  langchain_tool = LangchainTool(tool=test_langchain_async_add_tool)
-  result = await langchain_tool.run_async(
-      args={"x": 1, "y": 3}, tool_context=MagicMock()
-  )
-  assert result == 4
+    """Test that passing a raw async function to LangchainTool works correctly."""
+    langchain_tool = LangchainTool(tool=test_langchain_async_add_tool)
+    result = await langchain_tool.run_async(args={"x": 1, "y": 3}, tool_context=MagicMock())
+    assert result == 4
 
 
 @pytest.mark.asyncio
 async def test_raw_sync_function_works():
-  """Test that passing a raw sync function to LangchainTool works correctly."""
-  langchain_tool = LangchainTool(tool=test_langchain_sync_add_tool)
-  result = await langchain_tool.run_async(
-      args={"x": 1, "y": 3}, tool_context=MagicMock()
-  )
-  assert result == 4
+    """Test that passing a raw sync function to LangchainTool works correctly."""
+    langchain_tool = LangchainTool(tool=test_langchain_sync_add_tool)
+    result = await langchain_tool.run_async(args={"x": 1, "y": 3}, tool_context=MagicMock())
+    assert result == 4
 
 
 @pytest.mark.asyncio
 async def test_raw_async_function_with_annotation_works():
-  """Test that passing a raw async function to LangchainTool works correctly."""
-  langchain_tool = LangchainTool(tool=async_add_with_annotation)
-  result = await langchain_tool.run_async(
-      args={"x": 1, "y": 3}, tool_context=MagicMock()
-  )
-  assert result == 4
+    """Test that passing a raw async function to LangchainTool works correctly."""
+    langchain_tool = LangchainTool(tool=async_add_with_annotation)
+    result = await langchain_tool.run_async(args={"x": 1, "y": 3}, tool_context=MagicMock())
+    assert result == 4
 
 
 @pytest.mark.asyncio
 async def test_raw_sync_function_with_annotation_works():
-  """Test that passing a raw sync function to LangchainTool works correctly."""
-  langchain_tool = LangchainTool(tool=sync_add_with_annotation)
-  result = await langchain_tool.run_async(
-      args={"x": 1, "y": 3}, tool_context=MagicMock()
-  )
-  assert result == 4
+    """Test that passing a raw sync function to LangchainTool works correctly."""
+    langchain_tool = LangchainTool(tool=sync_add_with_annotation)
+    result = await langchain_tool.run_async(args={"x": 1, "y": 3}, tool_context=MagicMock())
+    assert result == 4

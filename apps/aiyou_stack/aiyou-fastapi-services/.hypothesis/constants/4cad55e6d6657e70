@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/models/prompt_templates.py
+# hypothesis_version: 6.151.5
+
+['B-A-B', 'C-A-R-E', 'Facebook Ad Marketer', 'R-I-S-E', 'R-T-F', 'Specify the role', 'T-A-G', 'action', 'after', 'before', 'bridge', 'context', 'example', 'expectation', 'format', 'goal', 'input_data', 'result', 'role', 'steps', 'task']

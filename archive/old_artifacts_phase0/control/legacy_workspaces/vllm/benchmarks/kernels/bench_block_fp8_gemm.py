@@ -139,6 +139,7 @@ def benchmark_tflops(batch_size, provider, N, K, block_size=(128, 128)):
 
     def to_tflops(t_ms):
         return (2 * M * N * K) * 1e-12 / (t_ms * 1e-3)
+
     return to_tflops(ms), to_tflops(max_ms), to_tflops(min_ms)
 
 

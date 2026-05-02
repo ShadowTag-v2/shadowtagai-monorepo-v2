@@ -92,19 +92,11 @@ def show_config_path():
 
     # .env file
     env_path = Path(".env")
-    table.add_row(
-        ".env",
-        str(env_path.absolute()),
-        "[success]✓[/success]" if env_path.exists() else "[error]✗[/error]"
-    )
+    table.add_row(".env", str(env_path.absolute()), "[success]✓[/success]" if env_path.exists() else "[error]✗[/error]")
 
     # Example .env
     env_example = Path(".env.example")
-    table.add_row(
-        ".env.example",
-        str(env_example.absolute()),
-        "[success]✓[/success]" if env_example.exists() else "[error]✗[/error]"
-    )
+    table.add_row(".env.example", str(env_example.absolute()), "[success]✓[/success]" if env_example.exists() else "[error]✗[/error]")
 
     console.print(table)
     console.print()
@@ -159,18 +151,9 @@ def display_config():
         )
 
         research_table.add_row("Max Iterations", str(config.research.max_iterations))
-        research_table.add_row(
-            "Enabled Domains",
-            ", ".join(config.research.enabled_domains) if config.research.enabled_domains else "All"
-        )
-        research_table.add_row(
-            "Experiment Types",
-            ", ".join(config.research.enabled_experiment_types)
-        )
-        research_table.add_row(
-            "Budget (USD)",
-            f"${config.research.budget_usd}" if config.research.budget_usd else "No limit"
-        )
+        research_table.add_row("Enabled Domains", ", ".join(config.research.enabled_domains) if config.research.enabled_domains else "All")
+        research_table.add_row("Experiment Types", ", ".join(config.research.enabled_experiment_types))
+        research_table.add_row("Budget (USD)", f"${config.research.budget_usd}" if config.research.budget_usd else "No limit")
 
         console.print(research_table)
         console.print()
@@ -212,41 +195,27 @@ def validate_config():
         llm_provider = os.getenv("LLM_PROVIDER", "anthropic")
         if llm_provider == "openai":
             api_key = os.getenv("OPENAI_API_KEY")
-            checks.append((
-                "OpenAI API Key",
-                "Configured" if api_key else "Missing",
-                bool(api_key)
-            ))
+            checks.append(("OpenAI API Key", "Configured" if api_key else "Missing", bool(api_key)))
         else:
             api_key = os.getenv("ANTHROPIC_API_KEY")
-            checks.append((
-                "Anthropic API Key",
-                "Configured" if api_key else "Missing",
-                bool(api_key)
-            ))
+            checks.append(("Anthropic API Key", "Configured" if api_key else "Missing", bool(api_key)))
 
         # Check model
         if config.claude:
-            checks.append((
-                "Claude Model",
-                config.claude.model,
-                config.claude.model in [_DEFAULT_CLAUDE_SONNET_MODEL, _DEFAULT_CLAUDE_HAIKU_MODEL]
-            ))
+            checks.append(("Claude Model", config.claude.model, config.claude.model in [_DEFAULT_CLAUDE_SONNET_MODEL, _DEFAULT_CLAUDE_HAIKU_MODEL]))
         elif config.openai:
-            checks.append((
-                "OpenAI Model",
-                config.openai.model,
-                True  # Any valid model is acceptable
-            ))
+            checks.append(
+                (
+                    "OpenAI Model",
+                    config.openai.model,
+                    True,  # Any valid model is acceptable
+                )
+            )
 
         # Check domains
         valid_domains = {"biology", "neuroscience", "materials", "physics", "chemistry", "general"}
         domains_valid = all(d in valid_domains for d in config.research.enabled_domains) if config.research.enabled_domains else True
-        checks.append((
-            "Enabled Domains",
-            ", ".join(config.research.enabled_domains) if config.research.enabled_domains else "All",
-            domains_valid
-        ))
+        checks.append(("Enabled Domains", ", ".join(config.research.enabled_domains) if config.research.enabled_domains else "All", domains_valid))
 
         # Check database
         if config.database.url.startswith("sqlite:///"):
@@ -255,11 +224,7 @@ def validate_config():
         else:
             # For non-SQLite databases, URL presence indicates configuration exists
             db_exists = bool(config.database.url)
-        checks.append((
-            "Database",
-            config.database.url,
-            db_exists
-        ))
+        checks.append(("Database", config.database.url, db_exists))
 
         # Display results
         table = create_table(
@@ -301,6 +266,7 @@ def edit_config():
         env_example = Path(".env.example")
         if env_example.exists():
             import shutil
+
             shutil.copy(env_example, env_path)
         else:
             # Create minimal .env
@@ -331,6 +297,7 @@ def reset_config():
 
     if env_example.exists():
         import shutil
+
         shutil.copy(env_example, env_path)
         print_success("Configuration reset to defaults", title="Reset Complete")
     else:

@@ -42,9 +42,7 @@ def install_pip_audit(project, system=False):
 
     python = project_python(project, system=system)
 
-    console.print(
-        "[yellow bold]pip-audit is required for vulnerability scanning but not installed.[/yellow bold]"
-    )
+    console.print("[yellow bold]pip-audit is required for vulnerability scanning but not installed.[/yellow bold]")
 
     install = Confirm.ask(
         "Would you like to install pip-audit? This will not modify your Pipfile/lockfile.",
@@ -52,9 +50,7 @@ def install_pip_audit(project, system=False):
     )
 
     if not install:
-        console.print(
-            "[yellow]Vulnerability scanning skipped. Install pip-audit with 'pip install pip-audit'[/yellow]"
-        )
+        console.print("[yellow]Vulnerability scanning skipped. Install pip-audit with 'pip install pip-audit'[/yellow]")
         return False
 
     console.print("[green]Installing pip-audit...[/green]")
@@ -62,9 +58,7 @@ def install_pip_audit(project, system=False):
     c = run_command(cmd)
 
     if c.returncode != 0:
-        err.print(
-            "[red]Failed to install pip-audit. Please install it manually with 'pip install pip-audit'[/red]"
-        )
+        err.print("[red]Failed to install pip-audit. Please install it manually with 'pip install pip-audit'[/red]")
         return False
 
     console.print("[green]pip-audit installed successfully![/green]")
@@ -182,9 +176,7 @@ def do_audit(  # noqa: PLR0913
 
     if not quiet and not project.s.is_quiet():
         if use_lockfile:
-            console.print(
-                "[bold]Auditing lockfile packages for vulnerabilities...[/bold]"
-            )
+            console.print("[bold]Auditing lockfile packages for vulnerabilities...[/bold]")
         else:
             console.print("[bold]Auditing packages for vulnerabilities...[/bold]")
 
@@ -229,9 +221,7 @@ def do_audit(  # noqa: PLR0913
     tmp_requirements = None
     if use_lockfile:
         if not project.lockfile_exists:
-            err.print(
-                "[red]Pipfile.lock not found. Run 'pipenv lock' first.[/red]"
-            )
+            err.print("[red]Pipfile.lock not found. Run 'pipenv lock' first.[/red]")
             sys.exit(1)
 
         from pipenv.utils.requirements import requirements_from_lockfile
@@ -241,13 +231,9 @@ def do_audit(  # noqa: PLR0913
         deps.update(lockfile.get("default", {}))
         deps.update(lockfile.get("develop", {}))
 
-        lines = requirements_from_lockfile(
-            deps, include_hashes=False, include_markers=True
-        )
+        lines = requirements_from_lockfile(deps, include_hashes=False, include_markers=True)
 
-        tmp_requirements = tempfile.NamedTemporaryFile(
-            mode="w", suffix=".txt", prefix="pipenv-audit-", delete=False
-        )
+        tmp_requirements = tempfile.NamedTemporaryFile(mode="w", suffix=".txt", prefix="pipenv-audit-", delete=False)
         tmp_requirements.write("\n".join(lines))
         tmp_requirements.flush()
         tmp_requirements.close()

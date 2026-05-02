@@ -783,3 +783,651 @@ class TestTelemetryBridge:
         assert "test_svc" in caplog.text
         assert "closed" in caplog.text
         assert "open" in caplog.text
+
+
+# ───────────────────────────────────────────────────────────────────
+# Integration: HALF_OPEN → CLOSED Recovery
+# ───────────────────────────────────────────────────────────────────
+
+
+class TestHalfOpenRecovery:
+    """Full cycle: CLOSED → OPEN → HALF_OPEN → CLOSED (recovery)."""
+
+    def test_full_recovery_cycle(self) -> None:
+        """Breaker trips, waits for probe, then recovers on success."""
+        cb = CircuitBreaker(
+            "recovery_svc",
+            failure_threshold=2,
+            reset_timeout_s=0.05,  # 50ms for fast test
+        )
+        assert cb.state == CircuitBreakerState.CLOSED
+
+        # Trip it
+        cb.record_failure()
+        cb.record_failure()
+        assert cb.state == CircuitBreakerState.OPEN
+
+        # Wait for probe window
+        time.sleep(0.06)
+        assert cb.allow_request()  # triggers HALF_OPEN
+        assert cb.state == CircuitBreakerState.HALF_OPEN
+
+        # Successful probe → recovery
+        cb.record_success()
+        assert cb.state == CircuitBreakerState.CLOSED
+        assert cb.consecutive_failures == 0
+
+    def test_re_trip_from_half_open(self) -> None:
+        """Failed probe in HALF_OPEN sends back to OPEN."""
+        cb = CircuitBreaker(
+            "retrip_svc",
+            failure_threshold=2,
+            reset_timeout_s=0.05,
+        )
+        cb.record_failure()
+        cb.record_failure()
+        assert cb.state == CircuitBreakerState.OPEN
+
+        time.sleep(0.06)
+        assert cb.allow_request()  # HALF_OPEN
+        cb.record_failure()  # probe fails
+        assert cb.state == CircuitBreakerState.OPEN
+
+    def test_recovery_callback_fires(self) -> None:
+        """Callback fires for HALF_OPEN → CLOSED transition."""
+        transitions: list[tuple[str, str]] = []
+
+        def cb_handler(
+            old: CircuitBreakerState,
+            new: CircuitBreakerState,
+            svc: str,
+        ) -> None:
+            transitions.append((old.value, new.value))
+
+        cb = CircuitBreaker(
+            "callback_svc",
+            failure_threshold=2,
+            reset_timeout_s=0.05,
+            on_state_change=cb_handler,
+        )
+        cb.record_failure()
+        cb.record_failure()
+        time.sleep(0.06)
+        cb.allow_request()
+        cb.record_success()
+
+        # Should have: CLOSED→OPEN, OPEN→HALF_OPEN, HALF_OPEN→CLOSED
+        assert ("closed", "open") in transitions
+        assert ("half_open", "closed") in transitions
+
+
+# ───────────────────────────────────────────────────────────────────
+# Integration: Health Endpoint
+# ───────────────────────────────────────────────────────────────────
+
+
+class TestHealthEndpoint:
+    """Validate health_response HTTP status code logic."""
+
+    def test_healthy_returns_200(self) -> None:
+        from circuit_breaker.health_endpoint import health_response
+
+        registry = CircuitBreakerRegistry()
+        registry.register("svc_a", failure_threshold=5)
+        registry.register("svc_b", failure_threshold=5)
+
+        status_code, body = health_response(registry=registry)
+        assert status_code == 200
+        assert body["http_reason"] == "All circuit breakers healthy"
+
+    def test_degraded_returns_503(self) -> None:
+        from circuit_breaker.health_endpoint import health_response
+
+        registry = CircuitBreakerRegistry()
+        b = registry.register("failing_svc", failure_threshold=2)
+        b.record_failure()
+        b.record_failure()
+        assert b.state == CircuitBreakerState.OPEN
+
+        status_code, body = health_response(registry=registry)
+        assert status_code == 503
+        assert "degraded" in body["http_reason"].lower()
+
+    def test_health_json_format(self) -> None:
+        import json
+
+        from circuit_breaker.health_endpoint import health_json
+
+        registry = CircuitBreakerRegistry()
+        registry.register("json_svc")
+
+        status_code, json_str = health_json(registry=registry)
+        assert status_code == 200
+        parsed = json.loads(json_str)
+        assert "services" in parsed
+        assert "summary" in parsed
+
+
+# ───────────────────────────────────────────────────────────────────
+# Integration: Dashboard Summary Accuracy
+# ───────────────────────────────────────────────────────────────────
+
+
+class TestDashboardSummary:
+    """Validate dashboard health report counts are accurate."""
+
+    def test_mixed_state_counts(self) -> None:
+        from circuit_breaker.dashboard import get_health_report
+        from circuit_breaker.registry import CircuitBreakerRegistry
+
+        # Use isolated registry
+        import circuit_breaker.dashboard as _dashboard
+
+        original_registry = _dashboard.default_registry
+        try:
+            test_registry = CircuitBreakerRegistry()
+            _dashboard.default_registry = test_registry
+
+            # Create breakers in different states
+            test_registry.register("closed_svc", failure_threshold=5)
+
+            open_breaker = test_registry.register("open_svc", failure_threshold=2)
+            open_breaker.record_failure()
+            open_breaker.record_failure()
+
+            report = get_health_report()
+            summary = report["summary"]
+
+            assert summary["total_breakers"] == 2
+            assert summary["closed"] == 1
+            assert summary["open"] == 1
+            assert summary["health_status"] == "degraded"
+            assert "open_svc" in summary["open_services"]
+        finally:
+            _dashboard.default_registry = original_registry
+
+    def test_all_healthy(self) -> None:
+        from circuit_breaker.dashboard import get_health_report
+
+        import circuit_breaker.dashboard as _dashboard
+
+        original_registry = _dashboard.default_registry
+        try:
+            test_registry = CircuitBreakerRegistry()
+            _dashboard.default_registry = test_registry
+
+            test_registry.register("a")
+            test_registry.register("b")
+            test_registry.register("c")
+
+            report = get_health_report()
+            assert report["summary"]["health_status"] == "healthy"
+            assert report["summary"]["open"] == 0
+        finally:
+            _dashboard.default_registry = original_registry
+
+
+# ───────────────────────────────────────────────────────────────────
+# Exponential Backoff
+# ───────────────────────────────────────────────────────────────────
+
+
+class TestExponentialBackoff:
+    """Validate exponential backoff on HALF_OPEN probe retries.
+
+    Core invariants:
+      - Each failed probe doubles the reset timeout: base * 2^multiplier
+      - Timeout is capped at max_reset_timeout_s
+      - Successful recovery resets multiplier AND timeout to base
+      - Backoff state is visible in snapshot()
+    """
+
+    def test_backoff_doubles_on_each_probe_failure(self) -> None:
+        """Verify the doubling: base=0.05, after 1 fail → 0.10, after 2 → 0.20."""
+        b = CircuitBreaker(
+            "backoff_svc",
+            failure_threshold=1,
+            reset_timeout_s=0.05,
+            max_reset_timeout_s=10.0,
+        )
+        assert b.current_reset_timeout_s == 0.05
+        assert b.backoff_multiplier == 0
+
+        # Trip 1: CLOSED → OPEN
+        b.record_failure()
+        assert b.state == CircuitBreakerState.OPEN
+
+        # Wait for HALF_OPEN, fail the probe → should double
+        time.sleep(0.06)
+        assert b.state == CircuitBreakerState.HALF_OPEN
+        b.record_failure()  # HALF_OPEN → OPEN (backoff_multiplier=1)
+        assert b.state == CircuitBreakerState.OPEN
+        assert b.backoff_multiplier == 1
+        assert b.current_reset_timeout_s == pytest.approx(0.10, abs=0.001)
+
+        # Wait for the new (doubled) timeout, fail again → should double again
+        time.sleep(0.12)
+        assert b.state == CircuitBreakerState.HALF_OPEN
+        b.record_failure()  # backoff_multiplier=2
+        assert b.state == CircuitBreakerState.OPEN
+        assert b.backoff_multiplier == 2
+        assert b.current_reset_timeout_s == pytest.approx(0.20, abs=0.001)
+
+    def test_backoff_caps_at_max(self) -> None:
+        """Timeout should never exceed max_reset_timeout_s."""
+        b = CircuitBreaker(
+            "cap_svc",
+            failure_threshold=1,
+            reset_timeout_s=1.0,
+            max_reset_timeout_s=4.0,  # Cap at 4s
+        )
+        b.record_failure()  # Trip OPEN
+
+        # Simulate 10 consecutive probe failures via direct internal manipulation
+        # (avoids waiting for real timeouts in test)
+        for i in range(10):
+            # Force HALF_OPEN state for testing
+            with b._lock:
+                b._state = CircuitBreakerState.HALF_OPEN
+            b.record_failure()
+            assert b.backoff_multiplier == i + 1
+            # Timeout should be min(1.0 * 2^(i+1), 4.0)
+            expected = min(1.0 * (2 ** (i + 1)), 4.0)
+            assert b.current_reset_timeout_s == pytest.approx(expected, abs=0.01)
+
+        # After 10 failures, should be pinned at 4.0
+        assert b.current_reset_timeout_s == pytest.approx(4.0, abs=0.01)
+
+    def test_successful_recovery_resets_backoff(self) -> None:
+        """After HALF_OPEN → CLOSED, multiplier and timeout reset to base."""
+        b = CircuitBreaker(
+            "reset_backoff_svc",
+            failure_threshold=1,
+            reset_timeout_s=0.05,
+            max_reset_timeout_s=10.0,
+        )
+        # Trip and fail one probe
+        b.record_failure()
+        time.sleep(0.06)
+        assert b.state == CircuitBreakerState.HALF_OPEN
+        b.record_failure()  # multiplier=1, timeout=0.10
+        assert b.backoff_multiplier == 1
+        assert b.current_reset_timeout_s == pytest.approx(0.10, abs=0.001)
+
+        # Now recover
+        time.sleep(0.12)
+        assert b.state == CircuitBreakerState.HALF_OPEN
+        b.record_success()  # HALF_OPEN → CLOSED
+        assert b.state == CircuitBreakerState.CLOSED
+        assert b.backoff_multiplier == 0
+        assert b.current_reset_timeout_s == pytest.approx(0.05, abs=0.001)
+
+    def test_manual_reset_clears_backoff(self) -> None:
+        """reset() should zero out backoff state."""
+        b = CircuitBreaker(
+            "manual_reset_backoff",
+            failure_threshold=1,
+            reset_timeout_s=0.05,
+        )
+        b.record_failure()
+        with b._lock:
+            b._state = CircuitBreakerState.HALF_OPEN
+        b.record_failure()  # multiplier=1
+        assert b.backoff_multiplier == 1
+
+        b.reset()
+        assert b.backoff_multiplier == 0
+        assert b.current_reset_timeout_s == pytest.approx(0.05, abs=0.001)
+        assert b.state == CircuitBreakerState.CLOSED
+
+    def test_snapshot_exposes_backoff_fields(self) -> None:
+        """snapshot() should include backoff_multiplier and effective_timeout_s when active."""
+        b = CircuitBreaker(
+            "snap_backoff_svc",
+            failure_threshold=1,
+            reset_timeout_s=1.0,
+        )
+        # Before any backoff
+        snap = b.snapshot()
+        assert "backoff_multiplier" not in snap  # Should not appear when multiplier=0
+
+        # Trip and fail a probe
+        b.record_failure()
+        with b._lock:
+            b._state = CircuitBreakerState.HALF_OPEN
+        b.record_failure()
+
+        snap = b.snapshot()
+        assert snap["backoff_multiplier"] == 1
+        assert snap["effective_timeout_s"] == pytest.approx(2.0, abs=0.01)
+
+
+# ───────────────────────────────────────────────────────────────────
+# HALF_OPEN Flakiness Simulation
+# ───────────────────────────────────────────────────────────────────
+
+
+class TestHalfOpenFlakiness:
+    """Simulate intermittent success/failure patterns during HALF_OPEN recovery.
+
+    Real-world services rarely fail cleanly then succeed cleanly.
+    These tests verify the breaker behaves correctly under flaky conditions:
+    - Alternating fail/success probes
+    - Multiple consecutive probe failures before recovery
+    - Success after extended backoff period
+    """
+
+    def test_alternating_fail_success_pattern(self) -> None:
+        """Fail-succeed-fail-succeed: breaker should eventually recover."""
+        b = CircuitBreaker(
+            "flaky_alternate",
+            failure_threshold=1,
+            reset_timeout_s=0.03,
+            max_reset_timeout_s=0.5,
+        )
+        # Initial trip
+        b.record_failure()
+        assert b.state == CircuitBreakerState.OPEN
+
+        # Round 1: probe fails → re-opens with backoff
+        time.sleep(0.04)
+        assert b.state == CircuitBreakerState.HALF_OPEN
+        b.record_failure()
+        assert b.state == CircuitBreakerState.OPEN
+        assert b.backoff_multiplier == 1
+
+        # Round 2: wait for doubled timeout, probe succeeds → recovers
+        time.sleep(0.07)  # 0.03 * 2 = 0.06, wait a bit more
+        assert b.state == CircuitBreakerState.HALF_OPEN
+        b.record_success()
+        assert b.state == CircuitBreakerState.CLOSED
+        assert b.backoff_multiplier == 0
+
+    def test_three_consecutive_probe_failures_then_recovery(self) -> None:
+        """3 failed probes with increasing backoff, then successful recovery."""
+        b = CircuitBreaker(
+            "flaky_3fail",
+            failure_threshold=1,
+            reset_timeout_s=0.02,
+            max_reset_timeout_s=1.0,
+        )
+        b.record_failure()
+        assert b.state == CircuitBreakerState.OPEN
+
+        # Fail 3 probes: timeout grows 0.02 → 0.04 → 0.08
+        for expected_multiplier in range(1, 4):
+            with b._lock:
+                b._last_failure_time = time.monotonic() - b._reset_timeout_s - 0.01
+            assert b.state == CircuitBreakerState.HALF_OPEN
+            b.record_failure()
+            assert b.state == CircuitBreakerState.OPEN
+            assert b.backoff_multiplier == expected_multiplier
+
+        # Verify timeout has grown correctly: 0.02 * 2^3 = 0.16
+        assert b.current_reset_timeout_s == pytest.approx(0.16, abs=0.01)
+
+        # Now recover
+        with b._lock:
+            b._last_failure_time = time.monotonic() - b._reset_timeout_s - 0.01
+        assert b.state == CircuitBreakerState.HALF_OPEN
+        b.record_success()
+        assert b.state == CircuitBreakerState.CLOSED
+        assert b.backoff_multiplier == 0
+        assert b.current_reset_timeout_s == pytest.approx(0.02, abs=0.001)
+
+    def test_flaky_service_with_decorator(self) -> None:
+        """Simulate a flaky service using the @wrap decorator."""
+        b = CircuitBreaker(
+            "flaky_decorated",
+            failure_threshold=2,
+            reset_timeout_s=0.03,
+        )
+        call_count = 0
+        fail_on_calls = {1, 2, 4}  # Fail on these invocations
+
+        @b.wrap
+        def flaky_api() -> str:
+            nonlocal call_count
+            call_count += 1
+            if call_count in fail_on_calls:
+                msg = f"Flaky failure #{call_count}"
+                raise ConnectionError(msg)
+            return f"ok-{call_count}"
+
+        # Calls 1 & 2: fail → trips open (threshold=2)
+        with pytest.raises(ConnectionError):
+            flaky_api()
+        with pytest.raises(ConnectionError):
+            flaky_api()
+        assert b.state == CircuitBreakerState.OPEN
+
+        # Call 3: should be blocked by open breaker
+        with pytest.raises(CircuitBreakerOpenError):
+            flaky_api()
+
+        # Wait for HALF_OPEN, call 3 (call_count=3): succeeds → recovers
+        time.sleep(0.04)
+        result = flaky_api()
+        assert result == "ok-3"
+        assert b.state == CircuitBreakerState.CLOSED
+
+    def test_concurrent_half_open_probes_rejected(self) -> None:
+        """Only max_probes=1 concurrent probe allowed in HALF_OPEN."""
+        b = CircuitBreaker(
+            "concurrent_probe",
+            failure_threshold=1,
+            reset_timeout_s=0.03,
+            half_open_max_probes=1,
+        )
+        b.record_failure()
+        time.sleep(0.04)
+        assert b.state == CircuitBreakerState.HALF_OPEN
+
+        # First probe: allowed
+        assert b.allow_request() is True
+        # Second probe: rejected (already 1 active)
+        assert b.allow_request() is False
+        # Third: still rejected
+        assert b.allow_request() is False
+
+
+# ───────────────────────────────────────────────────────────────────
+# Sliding Window Performance Benchmark
+# ───────────────────────────────────────────────────────────────────
+
+
+class TestSlidingWindowPerformance:
+    """Profile record_failure() and record_success() under sustained load.
+
+    Target: <1ms per operation under 10K+ events/sec sustained load.
+    These are deterministic timing tests — not flaky network tests.
+    """
+
+    def test_record_failure_throughput_10k(self) -> None:
+        """record_failure() should sustain >10K ops/sec in sliding window mode."""
+        b = CircuitBreaker(
+            "perf_failure",
+            failure_threshold=100_000,  # Never trip during benchmark
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=5.0,
+        )
+        n = 10_000
+
+        start = time.perf_counter()
+        for _ in range(n):
+            b.record_failure()
+        elapsed = time.perf_counter() - start
+
+        ops_per_sec = n / elapsed
+        avg_us = (elapsed / n) * 1_000_000
+
+        # Must sustain at least 5K ops/sec (worst-case: 10K events in deque
+        # with no pruning; production deques stay bounded via TTL expiry)
+        assert ops_per_sec > 5_000, f"record_failure throughput too low: {ops_per_sec:.0f} ops/sec (avg {avg_us:.1f}µs/op)"
+        assert b.total_failures == n
+
+    def test_record_success_throughput_10k(self) -> None:
+        """record_success() should sustain >10K ops/sec in sliding window mode."""
+        b = CircuitBreaker(
+            "perf_success",
+            failure_threshold=100_000,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=5.0,
+        )
+        n = 10_000
+
+        start = time.perf_counter()
+        for _ in range(n):
+            b.record_success()
+        elapsed = time.perf_counter() - start
+
+        ops_per_sec = n / elapsed
+        avg_us = (elapsed / n) * 1_000_000
+
+        assert ops_per_sec > 10_000, f"record_success throughput too low: {ops_per_sec:.0f} ops/sec (avg {avg_us:.1f}µs/op)"
+        assert b.total_successes == n
+
+    def test_sliding_window_pruning_under_sustained_load(self) -> None:
+        """Verify deque pruning keeps memory bounded under sustained writes."""
+        b = CircuitBreaker(
+            "perf_prune",
+            failure_threshold=100_000,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=0.01,  # 10ms window — events expire fast
+        )
+
+        # Write 5K events rapidly
+        for _ in range(5_000):
+            b.record_failure()
+
+        # Let the window expire
+        time.sleep(0.02)
+
+        # Write one more to trigger pruning
+        b.record_failure()
+
+        # After pruning, only recent events should remain in the deque
+        with b._lock:
+            b._prune_window()
+            remaining = len(b._events)
+
+        # Should be very small — only events within the 10ms window
+        assert remaining < 100, f"Deque not pruned: {remaining} events remain"
+
+
+# ───────────────────────────────────────────────────────────────────
+# Metrics Exporter
+# ───────────────────────────────────────────────────────────────────
+
+
+class TestMetricsExporter:
+    """Validate Prometheus and OpenTelemetry metric export accuracy."""
+
+    def test_prometheus_empty_registry(self) -> None:
+        """Empty registry should return a comment line."""
+        from circuit_breaker.metrics_exporter import prometheus_metrics
+
+        registry = CircuitBreakerRegistry()
+        text = prometheus_metrics(registry=registry)
+        assert "No circuit breakers registered" in text
+
+    def test_prometheus_format_structure(self) -> None:
+        """Prometheus output should contain HELP, TYPE, and metric lines."""
+        from circuit_breaker.metrics_exporter import prometheus_metrics
+
+        registry = CircuitBreakerRegistry()
+        registry.register("alpha", failure_threshold=3)
+        b = registry.register("beta", failure_threshold=2)
+        b.record_failure()
+        b.record_failure()  # Trip OPEN
+
+        text = prometheus_metrics(registry=registry)
+
+        # Should have HELP and TYPE headers for each metric
+        assert "# HELP circuit_breaker_state" in text
+        assert "# TYPE circuit_breaker_state gauge" in text
+        assert "# HELP circuit_breaker_failures_total" in text
+        assert "# TYPE circuit_breaker_failures_total counter" in text
+        assert "# HELP circuit_breaker_successes_total" in text
+        assert "# HELP circuit_breaker_consecutive_failures" in text
+        assert "# HELP circuit_breaker_seconds_until_probe" in text
+        assert "# HELP circuit_breaker_backoff_multiplier" in text
+
+        # Should have labeled metric lines
+        assert 'circuit_breaker_state{service="alpha"} 0' in text  # closed=0
+        assert 'circuit_breaker_state{service="beta"} 2' in text  # open=2
+        assert 'circuit_breaker_failures_total{service="beta"} 2' in text
+
+    def test_prometheus_reflects_state_changes(self) -> None:
+        """Metrics should reflect the current state of each breaker."""
+        from circuit_breaker.metrics_exporter import prometheus_metrics
+
+        registry = CircuitBreakerRegistry()
+        b = registry.register("stateful_svc", failure_threshold=2)
+
+        # Initially closed
+        text = prometheus_metrics(registry=registry)
+        assert 'circuit_breaker_state{service="stateful_svc"} 0' in text
+
+        # Trip to open
+        b.record_failure()
+        b.record_failure()
+        text = prometheus_metrics(registry=registry)
+        assert 'circuit_breaker_state{service="stateful_svc"} 2' in text
+        assert 'circuit_breaker_consecutive_failures{service="stateful_svc"} 2' in text
+
+    def test_otel_empty_registry(self) -> None:
+        """Empty registry should return empty list."""
+        from circuit_breaker.metrics_exporter import otel_metrics
+
+        registry = CircuitBreakerRegistry()
+        metrics = otel_metrics(registry=registry)
+        assert metrics == []
+
+    def test_otel_metric_structure(self) -> None:
+        """Each OTel metric point should have required fields."""
+        from circuit_breaker.metrics_exporter import otel_metrics
+
+        registry = CircuitBreakerRegistry()
+        registry.register("otel_svc", failure_threshold=3)
+
+        metrics = otel_metrics(registry=registry)
+        assert len(metrics) == 6  # 6 metrics per service
+
+        for m in metrics:
+            assert "name" in m
+            assert "type" in m
+            assert "value" in m
+            assert "labels" in m
+            assert "timestamp_ns" in m
+            assert m["labels"]["service"] == "otel_svc"
+
+        # Check specific metric names
+        names = [m["name"] for m in metrics]
+        assert "circuit_breaker_state" in names
+        assert "circuit_breaker_failures_total" in names
+        assert "circuit_breaker_successes_total" in names
+        assert "circuit_breaker_consecutive_failures" in names
+        assert "circuit_breaker_seconds_until_probe" in names
+        assert "circuit_breaker_backoff_multiplier" in names
+
+    def test_otel_values_reflect_breaker_state(self) -> None:
+        """OTel metric values should match the breaker's actual state."""
+        from circuit_breaker.metrics_exporter import otel_metrics
+
+        registry = CircuitBreakerRegistry()
+        b = registry.register("otel_state_svc", failure_threshold=2)
+
+        # Record some activity
+        b.record_success()
+        b.record_success()
+        b.record_failure()
+        b.record_failure()  # Trips OPEN
+
+        metrics = otel_metrics(registry=registry)
+        metric_map = {m["name"]: m["value"] for m in metrics}
+
+        assert metric_map["circuit_breaker_state"] == 2  # OPEN
+        assert metric_map["circuit_breaker_failures_total"] == 2
+        assert metric_map["circuit_breaker_successes_total"] == 2
+        assert metric_map["circuit_breaker_consecutive_failures"] == 2

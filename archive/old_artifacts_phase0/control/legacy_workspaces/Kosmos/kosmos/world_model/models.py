@@ -158,8 +158,7 @@ class Entity:
         # Warn if non-standard type (but allow it for extensibility)
         if self.type not in self.VALID_TYPES:
             warnings.warn(
-                f"Entity type '{self.type}' is not a standard type. "
-                f"Standard types: {', '.join(sorted(self.VALID_TYPES))}",
+                f"Entity type '{self.type}' is not a standard type. Standard types: {', '.join(sorted(self.VALID_TYPES))}",
                 UserWarning,
                 stacklevel=2,
             )
@@ -179,7 +178,7 @@ class Entity:
             raise ValueError("Properties must be a dictionary")
 
     @classmethod
-    def from_hypothesis(cls, hypothesis: Any, created_by: str = "hypothesis_generator") -> "Entity":
+    def from_hypothesis(cls, hypothesis: Any, created_by: str = "hypothesis_generator") -> Entity:
         """
         Create Entity from Hypothesis Pydantic model.
 
@@ -200,28 +199,28 @@ class Entity:
             "statement": hypothesis.statement,
             "rationale": hypothesis.rationale,
             "domain": hypothesis.domain,
-            "status": hypothesis.status.value if hasattr(hypothesis.status, 'value') else str(hypothesis.status),
+            "status": hypothesis.status.value if hasattr(hypothesis.status, "value") else str(hypothesis.status),
         }
 
         # Add scores if present
-        if hasattr(hypothesis, 'testability_score') and hypothesis.testability_score is not None:
+        if hasattr(hypothesis, "testability_score") and hypothesis.testability_score is not None:
             properties["testability_score"] = hypothesis.testability_score
-        if hasattr(hypothesis, 'novelty_score') and hypothesis.novelty_score is not None:
+        if hasattr(hypothesis, "novelty_score") and hypothesis.novelty_score is not None:
             properties["novelty_score"] = hypothesis.novelty_score
-        if hasattr(hypothesis, 'confidence_score') and hypothesis.confidence_score is not None:
+        if hasattr(hypothesis, "confidence_score") and hypothesis.confidence_score is not None:
             properties["confidence_score"] = hypothesis.confidence_score
-        if hasattr(hypothesis, 'priority_score') and hypothesis.priority_score is not None:
+        if hasattr(hypothesis, "priority_score") and hypothesis.priority_score is not None:
             properties["priority_score"] = hypothesis.priority_score
 
         # Add evolution tracking (use getattr for SQLAlchemy compatibility)
-        parent_id = getattr(hypothesis, 'parent_hypothesis_id', None)
+        parent_id = getattr(hypothesis, "parent_hypothesis_id", None)
         if parent_id:
             properties["parent_hypothesis_id"] = parent_id
-        properties["generation"] = getattr(hypothesis, 'generation', 0)
-        properties["refinement_count"] = getattr(hypothesis, 'refinement_count', 0)
+        properties["generation"] = getattr(hypothesis, "generation", 0)
+        properties["refinement_count"] = getattr(hypothesis, "refinement_count", 0)
 
         # Add related papers
-        related = getattr(hypothesis, 'related_papers', None)
+        related = getattr(hypothesis, "related_papers", None)
         if related:
             properties["related_papers"] = related
 
@@ -236,7 +235,7 @@ class Entity:
         )
 
     @classmethod
-    def from_protocol(cls, protocol: Any, created_by: str = "experiment_designer") -> "Entity":
+    def from_protocol(cls, protocol: Any, created_by: str = "experiment_designer") -> Entity:
         """
         Create Entity from ExperimentProtocol Pydantic model.
 
@@ -253,20 +252,22 @@ class Entity:
             entity = Entity.from_protocol(protocol, created_by="ExperimentDesignerAgent")
         """
         properties = {
-            "name": getattr(protocol, 'name', 'unnamed'),
-            "hypothesis_id": getattr(protocol, 'hypothesis_id', ''),
-            "experiment_type": protocol.experiment_type.value if hasattr(protocol.experiment_type, 'value') else str(getattr(protocol, 'experiment_type', 'unknown')),
-            "domain": getattr(protocol, 'domain', ''),
-            "description": getattr(protocol, 'description', ''),
-            "objective": getattr(protocol, 'objective', ''),
+            "name": getattr(protocol, "name", "unnamed"),
+            "hypothesis_id": getattr(protocol, "hypothesis_id", ""),
+            "experiment_type": protocol.experiment_type.value
+            if hasattr(protocol.experiment_type, "value")
+            else str(getattr(protocol, "experiment_type", "unknown")),
+            "domain": getattr(protocol, "domain", ""),
+            "description": getattr(protocol, "description", ""),
+            "objective": getattr(protocol, "objective", ""),
         }
 
         # Add rigor score if present
-        if hasattr(protocol, 'rigor_score') and protocol.rigor_score is not None:
+        if hasattr(protocol, "rigor_score") and protocol.rigor_score is not None:
             properties["rigor_score"] = protocol.rigor_score
 
         # Add template info if present
-        if hasattr(protocol, 'template_name') and protocol.template_name:
+        if hasattr(protocol, "template_name") and protocol.template_name:
             properties["template_name"] = protocol.template_name
 
         # Note: Not storing full steps/variables to keep entity lightweight
@@ -277,13 +278,13 @@ class Entity:
             type="ExperimentProtocol",
             properties=properties,
             confidence=properties.get("rigor_score", 1.0),
-            created_at=protocol.created_at if hasattr(protocol, 'created_at') else None,
-            updated_at=protocol.updated_at if hasattr(protocol, 'updated_at') else None,
+            created_at=protocol.created_at if hasattr(protocol, "created_at") else None,
+            updated_at=protocol.updated_at if hasattr(protocol, "updated_at") else None,
             created_by=created_by,
         )
 
     @classmethod
-    def from_result(cls, result: Any, created_by: str = "executor") -> "Entity":
+    def from_result(cls, result: Any, created_by: str = "executor") -> Entity:
         """
         Create Entity from ExperimentResult Pydantic model.
 
@@ -299,31 +300,31 @@ class Entity:
             result = ExperimentResult(experiment_id="...", protocol_id="...", ...)
             entity = Entity.from_result(result, created_by="Executor")
         """
-        status = getattr(result, 'status', 'unknown')
-        if hasattr(status, 'value'):
+        status = getattr(result, "status", "unknown")
+        if hasattr(status, "value"):
             status = status.value
         else:
             status = str(status)
         properties = {
-            "experiment_id": getattr(result, 'experiment_id', ''),
-            "protocol_id": getattr(result, 'protocol_id', getattr(result, 'experiment_id', '')),
+            "experiment_id": getattr(result, "experiment_id", ""),
+            "protocol_id": getattr(result, "protocol_id", getattr(result, "experiment_id", "")),
             "status": status,
         }
 
         # Add hypothesis link if present
-        if hasattr(result, 'hypothesis_id') and result.hypothesis_id:
+        if hasattr(result, "hypothesis_id") and result.hypothesis_id:
             properties["hypothesis_id"] = result.hypothesis_id
 
         # Add support/refute information
-        if hasattr(result, 'supports_hypothesis') and result.supports_hypothesis is not None:
+        if hasattr(result, "supports_hypothesis") and result.supports_hypothesis is not None:
             properties["supports_hypothesis"] = result.supports_hypothesis
 
         # Add interpretation if present
-        if hasattr(result, 'interpretation') and result.interpretation:
+        if hasattr(result, "interpretation") and result.interpretation:
             properties["interpretation"] = result.interpretation
 
         # Add summary if present
-        if hasattr(result, 'summary') and result.summary:
+        if hasattr(result, "summary") and result.summary:
             properties["summary"] = result.summary
 
         return cls(
@@ -331,18 +332,13 @@ class Entity:
             type="ExperimentResult",
             properties=properties,
             confidence=1.0,
-            created_at=result.created_at if hasattr(result, 'created_at') else None,
-            updated_at=result.updated_at if hasattr(result, 'updated_at') else None,
+            created_at=result.created_at if hasattr(result, "created_at") else None,
+            updated_at=result.updated_at if hasattr(result, "updated_at") else None,
             created_by=created_by,
         )
 
     @classmethod
-    def from_research_question(
-        cls,
-        question_text: str,
-        domain: str | None = None,
-        created_by: str = "research_director"
-    ) -> "Entity":
+    def from_research_question(cls, question_text: str, domain: str | None = None, created_by: str = "research_director") -> Entity:
         """
         Create Entity for a research question.
 
@@ -404,7 +400,7 @@ class Entity:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "Entity":
+    def from_dict(cls, data: dict[str, Any]) -> Entity:
         """
         Create entity from dictionary (for import).
 
@@ -543,8 +539,7 @@ class Relationship:
         # Warn if non-standard type
         if self.type not in self.VALID_TYPES:
             warnings.warn(
-                f"Relationship type '{self.type}' is not standard. "
-                f"Standard types: {', '.join(sorted(self.VALID_TYPES))}",
+                f"Relationship type '{self.type}' is not standard. Standard types: {', '.join(sorted(self.VALID_TYPES))}",
                 UserWarning,
                 stacklevel=2,
             )
@@ -558,15 +553,7 @@ class Relationship:
             self.created_at = datetime.now()
 
     @classmethod
-    def with_provenance(
-        cls,
-        source_id: str,
-        target_id: str,
-        rel_type: str,
-        agent: str,
-        confidence: float = 1.0,
-        **metadata: Any
-    ) -> "Relationship":
+    def with_provenance(cls, source_id: str, target_id: str, rel_type: str, agent: str, confidence: float = 1.0, **metadata: Any) -> Relationship:
         """
         Create relationship with rich provenance metadata.
 
@@ -640,7 +627,7 @@ class Relationship:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "Relationship":
+    def from_dict(cls, data: dict[str, Any]) -> Relationship:
         """
         Create relationship from dictionary.
 

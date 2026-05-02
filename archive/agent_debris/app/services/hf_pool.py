@@ -2,8 +2,8 @@
 Hugging Face Client Pool
 Rotates politely; does NOT evade rate limits.
 """
+
 from pydantic import BaseModel
-from typing import List, Optional
 import time
 import random
 import httpx
@@ -11,6 +11,7 @@ from fastapi import HTTPException
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 class HFEndpoint(BaseModel):
     name: str
@@ -20,6 +21,7 @@ class HFEndpoint(BaseModel):
     rpm_budget: int = 30  # per-endpoint soft budget
     last_minute_count: int = 0
     window_epoch: float = time.time()
+
 
 class HFClientPool:
     def __init__(self, endpoints: list[HFEndpoint]):
@@ -47,7 +49,7 @@ class HFClientPool:
     async def text_generate(self, prompt: str, **gen_kwargs) -> str:
         ep = self._pick()
         if not ep:
-             raise HTTPException(503, "No available HF endpoints")
+            raise HTTPException(503, "No available HF endpoints")
 
         headers = {"Authorization": f"Bearer {ep.api_key}"}
         url = f"https://api-inference.huggingface.co/models/{ep.model_id}"

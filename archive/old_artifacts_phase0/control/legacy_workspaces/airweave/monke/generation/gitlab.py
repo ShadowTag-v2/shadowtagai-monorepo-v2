@@ -3,7 +3,6 @@
 Generates realistic issue, merge request, and file content for testing GitLab integration using LLM.
 """
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.gitlab import (
     GitLabFileContent,
@@ -61,9 +60,7 @@ async def generate_gitlab_issue(model: str, token: str) -> tuple[str, str, list[
     return issue.spec.title, description, issue.content.comments
 
 
-async def generate_gitlab_merge_request(
-    model: str, token: str, source_branch: str
-) -> tuple[str, str, list[str]]:
+async def generate_gitlab_merge_request(model: str, token: str, source_branch: str) -> tuple[str, str, list[str]]:
     """Generate merge request content for GitLab testing using LLM.
 
     Args:

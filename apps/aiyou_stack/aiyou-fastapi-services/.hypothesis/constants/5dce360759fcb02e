@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/core/settings.py
+# hypothesis_version: 6.151.5
+
+[0.7, 100, 4096, 8000, '*', '.env', '/api/v1', '0.0.0.0', '1.0.0', 'INFO', 'development', 'json', 'utf-8']

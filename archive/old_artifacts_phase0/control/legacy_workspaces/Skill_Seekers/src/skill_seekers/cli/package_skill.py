@@ -62,7 +62,7 @@ def package_skill(skill_dir, open_folder_after=True, skip_quality_check=False):
         if report.has_errors or report.has_warnings:
             print("=" * 60)
             response = input("\nContinue with packaging? (y/n): ").strip().lower()
-            if response != 'y':
+            if response != "y":
                 print("\n❌ Packaging cancelled by user")
                 return False, None
             print()
@@ -79,10 +79,10 @@ def package_skill(skill_dir, open_folder_after=True, skip_quality_check=False):
     print(f"   Output: {zip_path}")
 
     # Create zip file
-    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
         for root, dirs, files in os.walk(skill_path):
             # Skip backup files
-            files = [f for f in files if not f.endswith('.backup')]
+            files = [f for f in files if not f.endswith(".backup")]
 
             for file in files:
                 file_path = Path(root) / file
@@ -126,39 +126,20 @@ Examples:
 
   # Get help
   skill-seekers package --help
-        """
+        """,
     )
 
-    parser.add_argument(
-        'skill_dir',
-        help='Path to skill directory (e.g., output/react/)'
-    )
+    parser.add_argument("skill_dir", help="Path to skill directory (e.g., output/react/)")
 
-    parser.add_argument(
-        '--no-open',
-        action='store_true',
-        help='Do not open the output folder after packaging'
-    )
+    parser.add_argument("--no-open", action="store_true", help="Do not open the output folder after packaging")
 
-    parser.add_argument(
-        '--skip-quality-check',
-        action='store_true',
-        help='Skip quality checks before packaging'
-    )
+    parser.add_argument("--skip-quality-check", action="store_true", help="Skip quality checks before packaging")
 
-    parser.add_argument(
-        '--upload',
-        action='store_true',
-        help='Automatically upload to Claude after packaging (requires ANTHROPIC_API_KEY)'
-    )
+    parser.add_argument("--upload", action="store_true", help="Automatically upload to Claude after packaging (requires ANTHROPIC_API_KEY)")
 
     args = parser.parse_args()
 
-    success, zip_path = package_skill(
-        args.skill_dir,
-        open_folder_after=not args.no_open,
-        skip_quality_check=args.skip_quality_check
-    )
+    success, zip_path = package_skill(args.skill_dir, open_folder_after=not args.no_open, skip_quality_check=args.skip_quality_check)
 
     if not success:
         sys.exit(1)
@@ -166,13 +147,13 @@ Examples:
     # Auto-upload if requested
     if args.upload:
         # Check if API key is set BEFORE attempting upload
-        api_key = os.environ.get('ANTHROPIC_API_KEY', '').strip()
+        api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
 
         if not api_key:
             # No API key - show helpful message but DON'T fail
-            print("\n" + "="*60)
+            print("\n" + "=" * 60)
             print("💡 Automatic Upload")
-            print("="*60)
+            print("=" * 60)
             print()
             print("To enable automatic upload:")
             print("  1. Get API key from https://console.anthropic.com/")
@@ -180,24 +161,25 @@ Examples:
             print("  3. Run package_skill.py with --upload flag")
             print()
             print("For now, use manual upload (instructions above) ☝️")
-            print("="*60)
+            print("=" * 60)
             # Exit successfully - packaging worked!
             sys.exit(0)
 
         # API key exists - try upload
         try:
             from upload_skill import upload_skill_api
-            print("\n" + "="*60)
+
+            print("\n" + "=" * 60)
             upload_success, message = upload_skill_api(zip_path)
             if not upload_success:
                 print(f"❌ Upload failed: {message}")
                 print()
                 print("💡 Try manual upload instead (instructions above) ☝️")
-                print("="*60)
+                print("=" * 60)
                 # Exit successfully - packaging worked even if upload failed
                 sys.exit(0)
             else:
-                print("="*60)
+                print("=" * 60)
                 sys.exit(0)
         except ImportError:
             print("\n❌ Error: upload_skill.py not found")

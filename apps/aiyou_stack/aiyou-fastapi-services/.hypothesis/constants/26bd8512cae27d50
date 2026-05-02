@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/utils/files.py
+# hypothesis_version: 6.151.5
+
+['. ', 'AUX', 'COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'CON', 'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9', 'NFKD', 'NUL', 'PRN', '[^a-zA-Z0-9._-]', '_', 'ascii', 'ignore', 'unnamed_file']

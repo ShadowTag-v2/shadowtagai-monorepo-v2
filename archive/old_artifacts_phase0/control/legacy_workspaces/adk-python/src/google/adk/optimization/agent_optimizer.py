@@ -23,24 +23,24 @@ from .sampler import Sampler
 
 
 class AgentOptimizer(ABC, Generic[SamplingResult, AgentWithScores]):
-  """Base class for agent optimizers."""
+    """Base class for agent optimizers."""
 
-  @abstractmethod
-  async def optimize(
-      self,
-      initial_agent: Agent,
-      sampler: Sampler[SamplingResult],
-  ) -> OptimizerResult[AgentWithScores]:
-    """Runs the optimizer.
+    @abstractmethod
+    async def optimize(
+        self,
+        initial_agent: Agent,
+        sampler: Sampler[SamplingResult],
+    ) -> OptimizerResult[AgentWithScores]:
+        """Runs the optimizer.
 
-    Args:
-      initial_agent: The initial agent to be optimized.
-      sampler: The interface used to get training and validation example UIDs,
-        request agent evaluations, and get useful data for optimizing the agent.
+        Args:
+          initial_agent: The initial agent to be optimized.
+          sampler: The interface used to get training and validation example UIDs,
+            request agent evaluations, and get useful data for optimizing the agent.
 
-    Returns:
-      The final result of the optimization process, containing the optimized
-      agent instances along with their corresponding scores on the validation
-      examples and any optimization metadata.
-    """
-    ...
+        Returns:
+          The final result of the optimization process, containing the optimized
+          agent instances along with their corresponding scores on the validation
+          examples and any optimization metadata.
+        """
+        ...

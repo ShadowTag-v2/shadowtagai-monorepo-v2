@@ -142,8 +142,10 @@ def cmd_hydrate(_args: argparse.Namespace) -> int:
 def cmd_compact(_args: argparse.Namespace) -> int:
     import sys
     import os
-    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
     from src.services.context import FourTierContext
+
     print(f"{YELLOW}═══ MICROCOMPACTING HOT STORE ═══{NC}")
     ctx = FourTierContext()
     # Dummy operation for now as Hot Store reading depends on .mcp-memory format

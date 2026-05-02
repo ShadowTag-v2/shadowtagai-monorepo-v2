@@ -9,15 +9,12 @@ from pathlib import Path
 
 
 class RedliningValidator:
-
     def __init__(self, unpacked_dir, original_docx, verbose=False, author="Claude"):
         self.unpacked_dir = Path(unpacked_dir)
         self.original_docx = Path(original_docx)
         self.verbose = verbose
         self.author = author
-        self.namespaces = {
-            "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-        }
+        self.namespaces = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
 
     def repair(self) -> int:
         return 0
@@ -37,16 +34,8 @@ class RedliningValidator:
             del_elements = root.findall(".//w:del", self.namespaces)
             ins_elements = root.findall(".//w:ins", self.namespaces)
 
-            author_del_elements = [
-                elem
-                for elem in del_elements
-                if elem.get(f"{{{self.namespaces['w']}}}author") == self.author
-            ]
-            author_ins_elements = [
-                elem
-                for elem in ins_elements
-                if elem.get(f"{{{self.namespaces['w']}}}author") == self.author
-            ]
+            author_del_elements = [elem for elem in del_elements if elem.get(f"{{{self.namespaces['w']}}}author") == self.author]
+            author_ins_elements = [elem for elem in ins_elements if elem.get(f"{{{self.namespaces['w']}}}author") == self.author]
 
             if not author_del_elements and not author_ins_elements:
                 if self.verbose:
@@ -68,9 +57,7 @@ class RedliningValidator:
 
             original_file = temp_path / "word" / "document.xml"
             if not original_file.exists():
-                print(
-                    f"FAILED - Original document.xml not found in {self.original_docx}"
-                )
+                print(f"FAILED - Original document.xml not found in {self.original_docx}")
                 return False
 
             try:
@@ -91,9 +78,7 @@ class RedliningValidator:
             original_text = self._extract_text_content(original_root)
 
             if modified_text != original_text:
-                error_message = self._generate_detailed_diff(
-                    original_text, modified_text
-                )
+                error_message = self._generate_detailed_diff(original_text, modified_text)
                 print(error_message)
                 return False
 
@@ -190,7 +175,7 @@ class RedliningValidator:
                             content_lines.append(line)
                     return "\n".join(content_lines)
 
-        except (subprocess.CalledProcessError, FileNotFoundError, Exception):
+        except subprocess.CalledProcessError, FileNotFoundError, Exception:
             pass
 
         return None

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/gemini_ingestion_layer/quality/gates.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.001, 0.002, 0.6, 0.75, 0.85, 0.9, 8000, 10000, '-', '=', '>= 75% within 24h', '>= 90% within 24h', 'Completeness', 'Cost Efficiency', 'Items Volume', 'N/A', 'Relevance Score', 'Runtime Efficiency', 'Source Diversity', 'Timeliness', 'error', 'fail', 'info', 'items_by_age', 'items_ingested', 'pass', 'runtime_minutes', 'skip', 'total_cost_usd', 'unique_sources', 'warn', 'warning', '○', '⚠', '✓', '✗']

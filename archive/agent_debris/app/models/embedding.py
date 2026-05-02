@@ -33,8 +33,8 @@ class VectorEmbedding(Base):
     memory = relationship("Memory", back_populates="embeddings")
 
     __table_args__ = (
-        Index('ix_embeddings_message', 'message_id'),
-        Index('ix_embeddings_memory', 'memory_id'),
+        Index("ix_embeddings_message", "message_id"),
+        Index("ix_embeddings_memory", "memory_id"),
     )
 
     def __repr__(self) -> str:

@@ -34,14 +34,14 @@ class RouterGenerator:
     def infer_router_name(self) -> str:
         """Infer router name from sub-skill names"""
         # Find common prefix
-        names = [cfg['name'] for cfg in self.configs]
+        names = [cfg["name"] for cfg in self.configs]
         if not names:
             return "router"
 
         # Get common prefix before first dash
         first_name = names[0]
-        if '-' in first_name:
-            return first_name.split('-')[0]
+        if "-" in first_name:
+            return first_name.split("-")[0]
         return first_name
 
     def extract_routing_keywords(self) -> dict[str, list[str]]:
@@ -49,16 +49,16 @@ class RouterGenerator:
         routing = {}
 
         for config in self.configs:
-            name = config['name']
+            name = config["name"]
             keywords = []
 
             # Extract from categories
-            if 'categories' in config:
-                keywords.extend(config['categories'].keys())
+            if "categories" in config:
+                keywords.extend(config["categories"].keys())
 
             # Extract from name (part after dash)
-            if '-' in name:
-                skill_topic = name.split('-', 1)[1]
+            if "-" in name:
+                skill_topic = name.split("-", 1)[1]
                 keywords.append(skill_topic)
 
             routing[name] = keywords
@@ -69,11 +69,11 @@ class RouterGenerator:
         """Generate router SKILL.md content"""
         routing_keywords = self.extract_routing_keywords()
 
-        skill_md = f"""# {self.router_name.replace('-', ' ').title()} Documentation (Router)
+        skill_md = f"""# {self.router_name.replace("-", " ").title()} Documentation (Router)
 
 ## When to Use This Skill
 
-{self.base_config.get('description', f'Use for {self.router_name} development and programming.')}
+{self.base_config.get("description", f"Use for {self.router_name} development and programming.")}
 
 This is a router skill that directs your questions to specialized sub-skills for efficient, focused assistance.
 
@@ -85,11 +85,11 @@ This skill analyzes your question and activates the appropriate specialized skil
 
         # List sub-skills
         for config in self.configs:
-            name = config['name']
-            desc = config.get('description', '')
+            name = config["name"]
+            desc = config.get("description", "")
             # Remove router name prefix from description if present
             if desc.startswith(f"{self.router_name.title()} -"):
-                desc = desc.split(' - ', 1)[1]
+                desc = desc.split(" - ", 1)[1]
 
             skill_md += f"### {name}\n{desc}\n\n"
 
@@ -156,15 +156,15 @@ Simply ask your question and mention the topic. The router will find the right s
 
         router_config = {
             "name": self.router_name,
-            "description": self.base_config.get('description', f'{self.router_name.title()} documentation router'),
-            "base_url": self.base_config['base_url'],
-            "selectors": self.base_config.get('selectors', {}),
-            "url_patterns": self.base_config.get('url_patterns', {}),
-            "rate_limit": self.base_config.get('rate_limit', 0.5),
+            "description": self.base_config.get("description", f"{self.router_name.title()} documentation router"),
+            "base_url": self.base_config["base_url"],
+            "selectors": self.base_config.get("selectors", {}),
+            "url_patterns": self.base_config.get("url_patterns", {}),
+            "rate_limit": self.base_config.get("rate_limit", 0.5),
             "max_pages": 500,  # Router only scrapes overview pages
             "_router": True,
-            "_sub_skills": [cfg['name'] for cfg in self.configs],
-            "_routing_keywords": routing_keywords
+            "_sub_skills": [cfg["name"] for cfg in self.configs],
+            "_routing_keywords": routing_keywords,
         }
 
         return router_config
@@ -181,14 +181,14 @@ Simply ask your question and mention the topic. The router will find the right s
         skill_path = output_dir.parent / f"output/{self.router_name}/SKILL.md"
         skill_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(skill_path, 'w') as f:
+        with open(skill_path, "w") as f:
             f.write(skill_md)
 
         # Generate config
         router_config = self.create_router_config()
         config_path = output_dir / f"{self.router_name}.json"
 
-        with open(config_path, 'w') as f:
+        with open(config_path, "w") as f:
             json.dump(router_config, f, indent=2)
 
         return config_path, skill_path
@@ -211,24 +211,14 @@ Examples:
 
   # Custom output directory
   python3 generate_router.py configs/godot-*.json --output-dir configs/routers/
-        """
+        """,
     )
 
-    parser.add_argument(
-        'configs',
-        nargs='+',
-        help='Sub-skill config files'
-    )
+    parser.add_argument("configs", nargs="+", help="Sub-skill config files")
 
-    parser.add_argument(
-        '--name',
-        help='Router skill name (default: inferred from sub-skills)'
-    )
+    parser.add_argument("--name", help="Router skill name (default: inferred from sub-skills)")
 
-    parser.add_argument(
-        '--output-dir',
-        help='Output directory (default: same as input configs)'
-    )
+    parser.add_argument("--output-dir", help="Output directory (default: same as input configs)")
 
     args = parser.parse_args()
 
@@ -236,16 +226,16 @@ Examples:
     config_files = []
     for path_str in args.configs:
         path = Path(path_str)
-        if path.exists() and not path.stem.endswith('-router'):
+        if path.exists() and not path.stem.endswith("-router"):
             config_files.append(path_str)
 
     if not config_files:
         print("❌ Error: No valid config files provided")
         sys.exit(1)
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("ROUTER SKILL GENERATOR")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print(f"Sub-skills: {len(config_files)}")
     for cfg in config_files:
         print(f"  - {Path(cfg).stem}")
@@ -258,9 +248,9 @@ Examples:
     print(f"✅ Router config created: {config_path}")
     print(f"✅ Router SKILL.md created: {skill_path}")
     print("")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print("NEXT STEPS")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print(f"1. Review router SKILL.md: {skill_path}")
     print("2. Optionally scrape router (for overview pages):")
     print(f"     skill-seekers scrape --config {config_path}")

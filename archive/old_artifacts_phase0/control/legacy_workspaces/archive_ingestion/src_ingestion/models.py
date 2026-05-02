@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field, validator
 
 class ScenarioTier(StrEnum):
     """Tier classification for scenarios"""
+
     TIER_1 = "tier_1"  # Critical safety scenarios
     TIER_2 = "tier_2"  # High-value edge cases
     TIER_3 = "tier_3"  # Baseline training data
@@ -16,6 +17,7 @@ class ScenarioTier(StrEnum):
 
 class DataSource(StrEnum):
     """Available data sources"""
+
     FLEET_TELEMETRY = "fleet_telemetry"
     SIMULATION = "simulation"
     PUBLIC_DATASET = "public_dataset"
@@ -24,6 +26,7 @@ class DataSource(StrEnum):
 
 class WeatherCondition(StrEnum):
     """Weather classifications"""
+
     CLEAR = "clear"
     RAIN = "rain"
     SNOW = "snow"
@@ -34,6 +37,7 @@ class WeatherCondition(StrEnum):
 
 class TimeOfDay(StrEnum):
     """Time of day classifications"""
+
     DAY = "day"
     NIGHT = "night"
     DAWN = "dawn"
@@ -42,6 +46,7 @@ class TimeOfDay(StrEnum):
 
 class SensorData(BaseModel):
     """Sensor frame data"""
+
     timestamp: datetime
     camera_frames: list[str] | None = None  # Cloud Storage paths
     lidar_pointclouds: list[str] | None = None
@@ -52,6 +57,7 @@ class SensorData(BaseModel):
 
 class Scenario(BaseModel):
     """Core scenario data structure"""
+
     scenario_id: str = Field(..., description="Unique identifier")
     source: DataSource
     tier: ScenarioTier | None = None
@@ -79,18 +85,18 @@ class Scenario(BaseModel):
     storage_path: str | None = None
     cost_usd: float | None = Field(None, ge=0)
 
-    @validator('final_score', always=True)
+    @validator("final_score", always=True)
     def calculate_final_score(cls, v, values):
         """Auto-calculate final score if not provided"""
-        if v is None and values.get('safety_score') and values.get('complexity_score'):
-            return 0.6 * values['safety_score'] + 0.4 * values['complexity_score']
+        if v is None and values.get("safety_score") and values.get("complexity_score"):
+            return 0.6 * values["safety_score"] + 0.4 * values["complexity_score"]
         return v
 
-    @validator('tier', always=True)
+    @validator("tier", always=True)
     def classify_tier(cls, v, values):
         """Auto-classify tier based on final score"""
-        if v is None and values.get('final_score'):
-            score = values['final_score']
+        if v is None and values.get("final_score"):
+            score = values["final_score"]
             if score >= 80:
                 return ScenarioTier.TIER_1
             elif score >= 50:
@@ -102,6 +108,7 @@ class Scenario(BaseModel):
 
 class DailyMetadata(BaseModel):
     """Daily ingestion summary"""
+
     date: datetime
     total_scenarios: int
     tier_1_count: int
@@ -148,6 +155,7 @@ class DailyMetadata(BaseModel):
 
 class QualityGateResult(BaseModel):
     """Result of a quality gate check"""
+
     gate_name: str
     passed: bool
     measured_value: Any
@@ -158,6 +166,7 @@ class QualityGateResult(BaseModel):
 
 class AMBriefing(BaseModel):
     """Morning briefing report"""
+
     date: datetime
     executive_summary: str
     quality_gates: list[QualityGateResult]

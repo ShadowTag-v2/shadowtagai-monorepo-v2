@@ -5,10 +5,9 @@ Integrates Tegu's ML toolbox with GPU acceleration and model caching.
 """
 
 import os
-from typing import List, Dict, Any, Optional, Tuple
+from typing import Any
 from pathlib import Path
 import numpy as np
-from PIL import Image
 import structlog
 
 logger = structlog.get_logger()
@@ -78,7 +77,7 @@ class TeguClient:
 
         # Configure GPU
         if self.gpu:
-            gpus = tf.config.list_physical_devices('GPU')
+            gpus = tf.config.list_physical_devices("GPU")
             if gpus:
                 try:
                     for gpu in gpus:
@@ -87,7 +86,7 @@ class TeguClient:
                 except RuntimeError as e:
                     logger.error("gpu_config_failed", error=str(e))
         else:
-            tf.config.set_visible_devices([], 'GPU')
+            tf.config.set_visible_devices([], "GPU")
 
         # Load model weights
         model_file = Path(self.model_path) / f"{self.model_name}.h5"
@@ -132,7 +131,6 @@ class TeguClient:
 
         # Import TensorFlow for preprocessing
         from tensorflow import keras
-        import tensorflow as tf
 
         # Load and preprocess image
         img = keras.preprocessing.image.load_img(image_path, target_size=(224, 224))
@@ -199,18 +197,12 @@ class TeguClient:
 
         # Load YOLO/SSD model
         if self.model_name == "yolo_v3":
-            net = cv2.dnn.readNetFromDarknet(
-                f"{self.model_path}/yolov3.cfg",
-                f"{self.model_path}/yolov3.weights"
-            )
-            blob = cv2.dnn.blobFromImage(image, 1/255.0, (416, 416), swapRB=True, crop=False)
+            net = cv2.dnn.readNetFromDarknet(f"{self.model_path}/yolov3.cfg", f"{self.model_path}/yolov3.weights")
+            blob = cv2.dnn.blobFromImage(image, 1 / 255.0, (416, 416), swapRB=True, crop=False)
             layer_names = net.getLayerNames()
             output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
         elif self.model_name == "ssd_mobilenet":
-            net = cv2.dnn.readNetFromTensorflow(
-                f"{self.model_path}/ssd_mobilenet.pb",
-                f"{self.model_path}/ssd_mobilenet.pbtxt"
-            )
+            net = cv2.dnn.readNetFromTensorflow(f"{self.model_path}/ssd_mobilenet.pb", f"{self.model_path}/ssd_mobilenet.pbtxt")
             blob = cv2.dnn.blobFromImage(image, size=(300, 300), swapRB=True)
             output_layers = ["detection_out"]
 
@@ -234,12 +226,14 @@ class TeguClient:
                         x = int(center_x - w / 2)
                         y = int(center_y - h / 2)
 
-                        detections.append({
-                            "class_id": int(class_id),
-                            "class": self._get_coco_class_name(class_id),
-                            "confidence": float(confidence),
-                            "bbox": [x, y, w, h],
-                        })
+                        detections.append(
+                            {
+                                "class_id": int(class_id),
+                                "class": self._get_coco_class_name(class_id),
+                                "confidence": float(confidence),
+                                "bbox": [x, y, w, h],
+                            }
+                        )
 
         logger.info("objects_detected", image=image_path, count=len(detections))
 
@@ -272,14 +266,14 @@ class TeguClient:
             raise ImportError("OpenCV not installed. Install with: pip install opencv-python>=4.5.0")
 
         # Detect faces with Haar cascade
-        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
         image = cv2.imread(image_path)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 
         results = []
-        for (x, y, w, h) in faces:
-            face_img = image[y:y+h, x:x+w]
+        for x, y, w, h in faces:
+            face_img = image[y : y + h, x : x + w]
 
             # Extract face embedding (simplified - in production use FaceNet/VGGFace)
             face_resized = cv2.resize(face_img, (160, 160))
@@ -288,7 +282,7 @@ class TeguClient:
             # Match against feature library
             if feature_library:
                 best_match = None
-                best_distance = float('inf')
+                best_distance = float("inf")
 
                 for name, lib_embedding in feature_library.items():
                     distance = np.linalg.norm(embedding - lib_embedding)
@@ -297,18 +291,22 @@ class TeguClient:
                         best_match = name
 
                 if best_distance < (1 - threshold):
-                    results.append({
-                        "name": best_match,
-                        "confidence": float(1 - best_distance),
-                        "bbox": [int(x), int(y), int(w), int(h)],
-                    })
+                    results.append(
+                        {
+                            "name": best_match,
+                            "confidence": float(1 - best_distance),
+                            "bbox": [int(x), int(y), int(w), int(h)],
+                        }
+                    )
             else:
-                results.append({
-                    "name": "unknown",
-                    "confidence": 1.0,
-                    "bbox": [int(x), int(y), int(w), int(h)],
-                    "embedding": embedding.tolist(),
-                })
+                results.append(
+                    {
+                        "name": "unknown",
+                        "confidence": 1.0,
+                        "bbox": [int(x), int(y), int(w), int(h)],
+                        "embedding": embedding.tolist(),
+                    }
+                )
 
         logger.info("faces_recognized", image=image_path, count=len(results))
 
@@ -324,9 +322,30 @@ class TeguClient:
         """Get COCO dataset class name from class ID."""
         # Simplified COCO classes (full list has 80 classes)
         coco_classes = [
-            "person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck",
-            "boat", "traffic light", "fire hydrant", "stop sign", "parking meter", "bench",
-            "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe",
+            "person",
+            "bicycle",
+            "car",
+            "motorcycle",
+            "airplane",
+            "bus",
+            "train",
+            "truck",
+            "boat",
+            "traffic light",
+            "fire hydrant",
+            "stop sign",
+            "parking meter",
+            "bench",
+            "bird",
+            "cat",
+            "dog",
+            "horse",
+            "sheep",
+            "cow",
+            "elephant",
+            "bear",
+            "zebra",
+            "giraffe",
         ]
         return coco_classes[class_id] if class_id < len(coco_classes) else f"class_{class_id}"
 

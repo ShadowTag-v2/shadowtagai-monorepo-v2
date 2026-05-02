@@ -40,9 +40,7 @@ youtube_search_agent = Agent(
 bigquery_agent = RemoteA2aAgent(
     name="bigquery_agent",
     description="Help customer to manage notion workspace.",
-    agent_card=(
-        f"http://localhost:8001/a2a/bigquery_agent{AGENT_CARD_WELL_KNOWN_PATH}"
-    ),
+    agent_card=(f"http://localhost:8001/a2a/bigquery_agent{AGENT_CARD_WELL_KNOWN_PATH}"),
 )
 
 root_agent = Agent(
@@ -54,9 +52,6 @@ root_agent = Agent(
       You delegate BigQuery tasks to the bigquery_agent.
       Always clarify the results before proceeding.
     """,
-    global_instruction=(
-        "You are a helpful assistant that can help search youtube videos, look"
-        " up BigQuery datasets and tables."
-    ),
+    global_instruction=("You are a helpful assistant that can help search youtube videos, look up BigQuery datasets and tables."),
     sub_agents=[youtube_search_agent, bigquery_agent],
 )

@@ -21,9 +21,9 @@ from google.adk.telemetry.setup import maybe_set_otel_providers
 
 @pytest.fixture
 def mock_os_environ():
-  initial_env = os.environ.copy()
-  with mock.patch.dict(os.environ, initial_env, clear=False) as m:
-    yield m
+    initial_env = os.environ.copy()
+    with mock.patch.dict(os.environ, initial_env, clear=False) as m:
+        yield m
 
 
 @pytest.mark.parametrize(
@@ -73,35 +73,35 @@ def test_maybe_set_otel_providers(
     monkeypatch: pytest.MonkeyPatch,
     mock_os_environ,  # pylint: disable=unused-argument,redefined-outer-name
 ):
-  """
-  Test initializing correct providers in setup_otel
-  when providing OTel env variables.
-  """
-  # Arrange.
-  for k, v in env_vars.items():
-    os.environ[k] = v
-  trace_provider_mock = mock.MagicMock()
-  monkeypatch.setattr(
-      "opentelemetry.trace.set_tracer_provider",
-      trace_provider_mock,
-  )
-  meter_provider_mock = mock.MagicMock()
-  monkeypatch.setattr(
-      "opentelemetry.metrics.set_meter_provider",
-      meter_provider_mock,
-  )
-  logs_provider_mock = mock.MagicMock()
-  monkeypatch.setattr(
-      "opentelemetry._logs.set_logger_provider",
-      logs_provider_mock,
-  )
+    """
+    Test initializing correct providers in setup_otel
+    when providing OTel env variables.
+    """
+    # Arrange.
+    for k, v in env_vars.items():
+        os.environ[k] = v
+    trace_provider_mock = mock.MagicMock()
+    monkeypatch.setattr(
+        "opentelemetry.trace.set_tracer_provider",
+        trace_provider_mock,
+    )
+    meter_provider_mock = mock.MagicMock()
+    monkeypatch.setattr(
+        "opentelemetry.metrics.set_meter_provider",
+        meter_provider_mock,
+    )
+    logs_provider_mock = mock.MagicMock()
+    monkeypatch.setattr(
+        "opentelemetry._logs.set_logger_provider",
+        logs_provider_mock,
+    )
 
-  # Act.
-  maybe_set_otel_providers()
+    # Act.
+    maybe_set_otel_providers()
 
-  # Assert.
-  # If given telemetry type was enabled,
-  # the corresponding provider should be set.
-  assert trace_provider_mock.call_count == (1 if should_setup_trace else 0)
-  assert meter_provider_mock.call_count == (1 if should_setup_metrics else 0)
-  assert logs_provider_mock.call_count == (1 if should_setup_logs else 0)
+    # Assert.
+    # If given telemetry type was enabled,
+    # the corresponding provider should be set.
+    assert trace_provider_mock.call_count == (1 if should_setup_trace else 0)
+    assert meter_provider_mock.call_count == (1 if should_setup_metrics else 0)
+    assert logs_provider_mock.call_count == (1 if should_setup_logs else 0)

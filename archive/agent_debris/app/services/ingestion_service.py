@@ -1,10 +1,10 @@
 """
 Ingestion Service - Wraps Gemini Ingestion Layer for FastAPI
 """
+
 import asyncio
 import logging
 from datetime import datetime
-from typing import Dict, Optional
 from uuid import uuid4
 
 from pnkln.core.gemini_ingestion_layer import (
@@ -89,18 +89,11 @@ class IngestionService:
             source_metrics=source_metrics,
         )
 
-    async def _run_job_async(
-        self,
-        job_id: str,
-        max_items_per_source: int
-    ) -> CoreIngestionResult:
+    async def _run_job_async(self, job_id: str, max_items_per_source: int) -> CoreIngestionResult:
         """Run ingestion job asynchronously"""
         try:
             logger.info(f"Starting job {job_id}")
-            result = await self.ingestion_layer.run_nightly_job(
-                job_id=job_id,
-                max_items_per_source=max_items_per_source
-            )
+            result = await self.ingestion_layer.run_nightly_job(job_id=job_id, max_items_per_source=max_items_per_source)
             self.jobs[job_id] = result
             logger.info(f"Job {job_id} completed with status: {result.status}")
             return result
@@ -125,9 +118,7 @@ class IngestionService:
         job_id = f"job_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}_{uuid4().hex[:8]}"
 
         # Create async task
-        task = asyncio.create_task(
-            self._run_job_async(job_id, max_items_per_source)
-        )
+        task = asyncio.create_task(self._run_job_async(job_id, max_items_per_source))
         self.running_jobs[job_id] = task
 
         logger.info(f"Started job {job_id} with max_items={max_items_per_source}")
@@ -155,22 +146,13 @@ class IngestionService:
                         started_at=result.timestamp,
                         runtime_minutes=result.runtime_minutes,
                         progress_pct=100.0,
-                        message=f"Completed: {result.total_items} items collected"
+                        message=f"Completed: {result.total_items} items collected",
                     )
                 except Exception as e:
-                    return JobStatusResponse(
-                        job_id=job_id,
-                        status=IngestionStatus.FAILED,
-                        started_at=datetime.utcnow(),
-                        message=f"Failed: {str(e)}"
-                    )
+                    return JobStatusResponse(job_id=job_id, status=IngestionStatus.FAILED, started_at=datetime.utcnow(), message=f"Failed: {str(e)}")
             else:
                 return JobStatusResponse(
-                    job_id=job_id,
-                    status=IngestionStatus.RUNNING,
-                    started_at=datetime.utcnow(),
-                    progress_pct=None,
-                    message="Job is running..."
+                    job_id=job_id, status=IngestionStatus.RUNNING, started_at=datetime.utcnow(), progress_pct=None, message="Job is running..."
                 )
 
         # Check completed jobs
@@ -182,7 +164,7 @@ class IngestionService:
                 started_at=result.timestamp,
                 runtime_minutes=result.runtime_minutes,
                 progress_pct=100.0,
-                message=f"Completed: {result.total_items} items collected"
+                message=f"Completed: {result.total_items} items collected",
             )
 
         return None
@@ -212,11 +194,7 @@ class IngestionService:
 
         return None
 
-    def list_jobs(
-        self,
-        page: int = 1,
-        page_size: int = 10
-    ) -> JobListResponse:
+    def list_jobs(self, page: int = 1, page_size: int = 10) -> JobListResponse:
         """
         List recent jobs with pagination.
 
@@ -243,12 +221,7 @@ class IngestionService:
             if status:
                 jobs_status.append(status)
 
-        return JobListResponse(
-            jobs=jobs_status,
-            total=len(all_job_ids),
-            page=page,
-            page_size=page_size
-        )
+        return JobListResponse(jobs=jobs_status, total=len(all_job_ids), page=page, page_size=page_size)
 
     def get_metrics_summary(self) -> MetricsSummary:
         """
@@ -268,7 +241,7 @@ class IngestionService:
                 avg_items_per_job=0,
                 avg_tier_1_ratio=0.0,
                 avg_cost_per_job=0.0,
-                last_job_timestamp=None
+                last_job_timestamp=None,
             )
 
         successful = [j for j in completed_jobs if j.status == CoreIngestionStatus.COMPLETED]
@@ -282,7 +255,7 @@ class IngestionService:
             avg_items_per_job=int(sum(j.total_items for j in completed_jobs) / len(completed_jobs)),
             avg_tier_1_ratio=sum(j.tier_1_ratio for j in completed_jobs) / len(completed_jobs),
             avg_cost_per_job=sum(j.total_cost_usd for j in completed_jobs) / len(completed_jobs),
-            last_job_timestamp=max(j.timestamp for j in completed_jobs) if completed_jobs else None
+            last_job_timestamp=max(j.timestamp for j in completed_jobs) if completed_jobs else None,
         )
 
 

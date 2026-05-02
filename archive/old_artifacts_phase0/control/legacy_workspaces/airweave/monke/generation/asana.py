@@ -3,7 +3,6 @@
 Generates realistic task content for testing Asana integration using LLM.
 """
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.asana import AsanaTask
 
@@ -24,20 +23,24 @@ def render_notes(task: AsanaTask) -> str:
     for obj in content.objectives:
         parts.append(f"- {obj}")
 
-    parts.extend([
-        f"\n### Technical Details\n\n{content.technical_details}",
-        "\n### Acceptance Criteria:",
-    ])
+    parts.extend(
+        [
+            f"\n### Technical Details\n\n{content.technical_details}",
+            "\n### Acceptance Criteria:",
+        ]
+    )
 
     # Add acceptance criteria as checklist
     for criteria in content.acceptance_criteria:
         parts.append(f"- [ ] {criteria}")
 
     # Add priority and tags
-    parts.extend([
-        f"\n### Priority: {spec.priority.title()}",
-        f"### Tags: {', '.join(spec.tags) if spec.tags else 'None'}",
-    ])
+    parts.extend(
+        [
+            f"\n### Priority: {spec.priority.title()}",
+            f"### Tags: {', '.join(spec.tags) if spec.tags else 'None'}",
+        ]
+    )
 
     return "\n".join(parts)
 

@@ -1,7 +1,8 @@
 """Search API endpoints"""
+
 from fastapi import APIRouter, Request, HTTPException
 from pydantic import BaseModel
-from typing import Dict, List, Any, Optional
+from typing import Any
 
 router = APIRouter()
 
@@ -34,11 +35,7 @@ async def create_index(request: CreateIndexRequest, req: Request):
     if not search:
         raise HTTPException(status_code=503, detail="Search service not initialized")
 
-    result = await search.create_index(
-        index_name=request.index_name,
-        documents=request.documents,
-        content_field=request.content_field
-    )
+    result = await search.create_index(index_name=request.index_name, documents=request.documents, content_field=request.content_field)
 
     return result
 
@@ -51,12 +48,7 @@ async def search_index(request: SearchRequest, req: Request):
     if not search:
         raise HTTPException(status_code=503, detail="Search service not initialized")
 
-    result = await search.search(
-        index_name=request.index_name,
-        query=request.query,
-        top_k=request.top_k,
-        filter_criteria=request.filter_criteria
-    )
+    result = await search.search(index_name=request.index_name, query=request.query, top_k=request.top_k, filter_criteria=request.filter_criteria)
 
     return result
 
@@ -69,11 +61,6 @@ async def multimodal_search(request: MultimodalSearchRequest, req: Request):
     if not search:
         raise HTTPException(status_code=503, detail="Search service not initialized")
 
-    result = await search.multimodal_search(
-        index_name=request.index_name,
-        query=request.query,
-        modalities=request.modalities,
-        top_k=request.top_k
-    )
+    result = await search.multimodal_search(index_name=request.index_name, query=request.query, modalities=request.modalities, top_k=request.top_k)
 
     return result

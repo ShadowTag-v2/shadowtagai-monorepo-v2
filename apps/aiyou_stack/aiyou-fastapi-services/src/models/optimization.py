@@ -4,7 +4,7 @@
 
 from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class AreaType(StrEnum):
@@ -28,8 +28,8 @@ class LifeArea(BaseModel):
     priority_level: int | None = Field(None, ge=1, le=10, description="Priority from 1-10")
     notes: str | None = None
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "area": "HEALTH_FITNESS",
                 "current_state": "Inconsistent exercise routine, 1-2 times per month",
@@ -45,7 +45,8 @@ class LifeArea(BaseModel):
                 ],
                 "priority_level": 8,
             },
-        }
+        },
+    )
 
 
 class OptimizationStrategy(BaseModel):
@@ -135,8 +136,8 @@ class DoingLessBetterResults(BaseModel):
         },
     )
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "strategy": {
                     "name": "Q1 2024 Focus Plan",
@@ -158,4 +159,5 @@ class DoingLessBetterResults(BaseModel):
                     },
                 },
             },
-        }
+        },
+    )

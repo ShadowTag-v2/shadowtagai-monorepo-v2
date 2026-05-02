@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/monitoring/logger.py
+# hypothesis_version: 6.151.5
+
+['%Y-%m-%d %H:%M:%S', 'Logging configured', 'correlation_id', 'environment', 'exception', 'extra_fields', 'iso', 'json', 'level', 'log_file', 'log_format', 'log_level', 'logger', 'service', 'timestamp', 'utf-8']

@@ -1,13 +1,10 @@
 """Excel-specific generation adapter: worksheet generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.excel import ExcelWorksheetData
 
 
-async def generate_excel_worksheet(
-    model: str, token: str, worksheet_name: str
-) -> ExcelWorksheetData:
+async def generate_excel_worksheet(model: str, token: str, worksheet_name: str) -> ExcelWorksheetData:
     """Generate realistic Excel worksheet content with embedded verification token.
 
     Args:
@@ -51,9 +48,7 @@ async def generate_excel_worksheet(
     return worksheet
 
 
-async def generate_workbook_content(
-    model: str, tokens: list[str], base_name: str = "Test Data"
-) -> tuple[str, list[ExcelWorksheetData]]:
+async def generate_workbook_content(model: str, tokens: list[str], base_name: str = "Test Data") -> tuple[str, list[ExcelWorksheetData]]:
     """Generate content for a complete Excel workbook.
 
     Args:

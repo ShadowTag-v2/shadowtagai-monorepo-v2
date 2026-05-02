@@ -38,13 +38,9 @@ class GitLabMergeRequestSpec(BaseModel):
 class GitLabMergeRequestContent(BaseModel):
     """Content structure for a generated GitLab merge request."""
 
-    description: str = Field(
-        description="Main merge request description in markdown format"
-    )
+    description: str = Field(description="Main merge request description in markdown format")
     changes: list[str] = Field(description="List of changes made")
-    comments: list[str] = Field(
-        description="Initial comments to add to the merge request"
-    )
+    comments: list[str] = Field(description="Initial comments to add to the merge request")
 
 
 class GitLabMergeRequest(BaseModel):

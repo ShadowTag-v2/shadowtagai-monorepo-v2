@@ -26,116 +26,90 @@ from google.adk.tools.openapi_tool.auth.credential_exchangers.service_account_ex
 
 
 class MockCredentialExchanger(BaseAuthCredentialExchanger):
-  """Mock credential exchanger for testing."""
+    """Mock credential exchanger for testing."""
 
-  def exchange_credential(
-      self,
-      auth_scheme: AuthScheme,
-      auth_credential: AuthCredential | None = None,
-  ) -> AuthCredential:
-    """Mock exchange credential method."""
-    return auth_credential
+    def exchange_credential(
+        self,
+        auth_scheme: AuthScheme,
+        auth_credential: AuthCredential | None = None,
+    ) -> AuthCredential:
+        """Mock exchange credential method."""
+        return auth_credential
 
 
 @pytest.fixture
 def auto_exchanger():
-  """Fixture for creating an AutoAuthCredentialExchanger instance."""
-  return AutoAuthCredentialExchanger()
+    """Fixture for creating an AutoAuthCredentialExchanger instance."""
+    return AutoAuthCredentialExchanger()
 
 
 @pytest.fixture
 def auth_scheme():
-  """Fixture for creating a mock AuthScheme instance."""
-  scheme = MagicMock(spec=AuthScheme)
-  return scheme
+    """Fixture for creating a mock AuthScheme instance."""
+    scheme = MagicMock(spec=AuthScheme)
+    return scheme
 
 
 def test_init_with_custom_exchangers():
-  """Test initialization with custom exchangers."""
-  custom_exchangers: dict[str, type[BaseAuthCredentialExchanger]] = {
-      AuthCredentialTypes.API_KEY: MockCredentialExchanger
-  }
+    """Test initialization with custom exchangers."""
+    custom_exchangers: dict[str, type[BaseAuthCredentialExchanger]] = {AuthCredentialTypes.API_KEY: MockCredentialExchanger}
 
-  auto_exchanger = AutoAuthCredentialExchanger(
-      custom_exchangers=custom_exchangers
-  )
+    auto_exchanger = AutoAuthCredentialExchanger(custom_exchangers=custom_exchangers)
 
-  assert (
-      auto_exchanger.exchangers[AuthCredentialTypes.API_KEY]
-      == MockCredentialExchanger
-  )
-  assert (
-      auto_exchanger.exchangers[AuthCredentialTypes.OPEN_ID_CONNECT]
-      == OAuth2CredentialExchanger
-  )
+    assert auto_exchanger.exchangers[AuthCredentialTypes.API_KEY] == MockCredentialExchanger
+    assert auto_exchanger.exchangers[AuthCredentialTypes.OPEN_ID_CONNECT] == OAuth2CredentialExchanger
 
 
 def test_exchange_credential_no_auth_credential(auto_exchanger, auth_scheme):
-  """Test exchange_credential with no auth_credential."""
+    """Test exchange_credential with no auth_credential."""
 
-  assert auto_exchanger.exchange_credential(auth_scheme, None) is None
+    assert auto_exchanger.exchange_credential(auth_scheme, None) is None
 
 
 def test_exchange_credential_no_exchange(auto_exchanger, auth_scheme):
-  """Test exchange_credential with NoExchangeCredentialExchanger."""
-  auth_credential = AuthCredential(auth_type=AuthCredentialTypes.API_KEY)
+    """Test exchange_credential with NoExchangeCredentialExchanger."""
+    auth_credential = AuthCredential(auth_type=AuthCredentialTypes.API_KEY)
 
-  result = auto_exchanger.exchange_credential(auth_scheme, auth_credential)
+    result = auto_exchanger.exchange_credential(auth_scheme, auth_credential)
 
-  assert result == auth_credential
+    assert result == auth_credential
 
 
 def test_exchange_credential_open_id_connect(auto_exchanger, auth_scheme):
-  """Test exchange_credential with OpenID Connect scheme."""
-  auth_credential = AuthCredential(
-      auth_type=AuthCredentialTypes.OPEN_ID_CONNECT
-  )
-  mock_exchanger = MagicMock(spec=OAuth2CredentialExchanger)
-  mock_exchanger.exchange_credential.return_value = "exchanged_credential"
-  auto_exchanger.exchangers[AuthCredentialTypes.OPEN_ID_CONNECT] = (
-      lambda: mock_exchanger
-  )
+    """Test exchange_credential with OpenID Connect scheme."""
+    auth_credential = AuthCredential(auth_type=AuthCredentialTypes.OPEN_ID_CONNECT)
+    mock_exchanger = MagicMock(spec=OAuth2CredentialExchanger)
+    mock_exchanger.exchange_credential.return_value = "exchanged_credential"
+    auto_exchanger.exchangers[AuthCredentialTypes.OPEN_ID_CONNECT] = lambda: mock_exchanger
 
-  result = auto_exchanger.exchange_credential(auth_scheme, auth_credential)
+    result = auto_exchanger.exchange_credential(auth_scheme, auth_credential)
 
-  assert result == "exchanged_credential"
-  mock_exchanger.exchange_credential.assert_called_once_with(
-      auth_scheme, auth_credential
-  )
+    assert result == "exchanged_credential"
+    mock_exchanger.exchange_credential.assert_called_once_with(auth_scheme, auth_credential)
 
 
 def test_exchange_credential_service_account(auto_exchanger, auth_scheme):
-  """Test exchange_credential with Service Account scheme."""
-  auth_credential = AuthCredential(
-      auth_type=AuthCredentialTypes.SERVICE_ACCOUNT
-  )
-  mock_exchanger = MagicMock(spec=ServiceAccountCredentialExchanger)
-  mock_exchanger.exchange_credential.return_value = "exchanged_credential_sa"
-  auto_exchanger.exchangers[AuthCredentialTypes.SERVICE_ACCOUNT] = (
-      lambda: mock_exchanger
-  )
+    """Test exchange_credential with Service Account scheme."""
+    auth_credential = AuthCredential(auth_type=AuthCredentialTypes.SERVICE_ACCOUNT)
+    mock_exchanger = MagicMock(spec=ServiceAccountCredentialExchanger)
+    mock_exchanger.exchange_credential.return_value = "exchanged_credential_sa"
+    auto_exchanger.exchangers[AuthCredentialTypes.SERVICE_ACCOUNT] = lambda: mock_exchanger
 
-  result = auto_exchanger.exchange_credential(auth_scheme, auth_credential)
+    result = auto_exchanger.exchange_credential(auth_scheme, auth_credential)
 
-  assert result == "exchanged_credential_sa"
-  mock_exchanger.exchange_credential.assert_called_once_with(
-      auth_scheme, auth_credential
-  )
+    assert result == "exchanged_credential_sa"
+    mock_exchanger.exchange_credential.assert_called_once_with(auth_scheme, auth_credential)
 
 
 def test_exchange_credential_custom_exchanger(auto_exchanger, auth_scheme):
-  """Test that exchange_credential calls the correct (custom) exchanger."""
-  # Use a custom exchanger via the initialization
-  mock_exchanger = MagicMock(spec=MockCredentialExchanger)
-  mock_exchanger.exchange_credential.return_value = "custom_credential"
-  auto_exchanger.exchangers[AuthCredentialTypes.API_KEY] = (
-      lambda: mock_exchanger
-  )
-  auth_credential = AuthCredential(auth_type=AuthCredentialTypes.API_KEY)
+    """Test that exchange_credential calls the correct (custom) exchanger."""
+    # Use a custom exchanger via the initialization
+    mock_exchanger = MagicMock(spec=MockCredentialExchanger)
+    mock_exchanger.exchange_credential.return_value = "custom_credential"
+    auto_exchanger.exchangers[AuthCredentialTypes.API_KEY] = lambda: mock_exchanger
+    auth_credential = AuthCredential(auth_type=AuthCredentialTypes.API_KEY)
 
-  result = auto_exchanger.exchange_credential(auth_scheme, auth_credential)
+    result = auto_exchanger.exchange_credential(auth_scheme, auth_credential)
 
-  assert result == "custom_credential"
-  mock_exchanger.exchange_credential.assert_called_once_with(
-      auth_scheme, auth_credential
-  )
+    assert result == "custom_credential"
+    mock_exchanger.exchange_credential.assert_called_once_with(auth_scheme, auth_credential)

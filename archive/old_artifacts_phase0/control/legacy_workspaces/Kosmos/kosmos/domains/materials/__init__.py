@@ -28,29 +28,26 @@ from kosmos.domains.materials.optimization import (
 
 __all__ = [
     # API Clients
-    'MaterialsProjectClient',
-    'NOMADClient',
-    'AflowClient',
-    'CitrinationClient',
-    'PerovskiteDBClient',
-
+    "MaterialsProjectClient",
+    "NOMADClient",
+    "AflowClient",
+    "CitrinationClient",
+    "PerovskiteDBClient",
     # API Data Models
-    'MaterialProperties',
-    'NomadEntry',
-    'AflowMaterial',
-    'CitrinationData',
-    'PerovskiteExperiment',
-
+    "MaterialProperties",
+    "NomadEntry",
+    "AflowMaterial",
+    "CitrinationData",
+    "PerovskiteExperiment",
     # Optimization
-    'MaterialsOptimizer',
-    'CorrelationResult',
-    'SHAPResult',
-    'OptimizationResult',
-    'DOEResult',
-
+    "MaterialsOptimizer",
+    "CorrelationResult",
+    "SHAPResult",
+    "OptimizationResult",
+    "DOEResult",
     # Ontology
-    'MaterialsOntology',
-    'MaterialsConcept',
-    'MaterialsRelation',
-    'MaterialsRelationType',
+    "MaterialsOntology",
+    "MaterialsConcept",
+    "MaterialsRelation",
+    "MaterialsRelationType",
 ]

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/core/business/plan.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.1, 0.35, 0.75, 4.0, 150, 200, 800, 1200, 1500, 2000, 2500, 3000, 5000, 8000, 9000, 10000, 12000, 14400, 16000, 22500, 35000, 54984, 100000, 120000, 'Content Repurposing', 'CrewAI', 'GCP Secret Manager', 'LangGraph', 'Market Research', 'Meeting Intelligence', 'OpenAI GPT-4 Turbo', 'Output validation', 'Pinecone', 'Python 3.11+', 'ReAct (Reason + Act)', 'Reassess pricing/ICP', 'Redis', 'Sales Automation', 'Scale or sell', 'Task manager loops', 'Vertex AI Workbench', 'content_repurposing', 'customer_support', 'dev', 'episodic', 'long_term', 'market_research', 'meeting_intelligence', 'prod', 'sales_automation', 'short_term']

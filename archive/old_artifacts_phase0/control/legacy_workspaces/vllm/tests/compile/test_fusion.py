@@ -201,8 +201,10 @@ def test_fusion_rmsnorm_quant(
         # replacement and only the rms part gets fused with quant.
         # Hence, we check only 2 add nodes are left (final fused rmsnorm add).
         if not enable_rms_norm_custom_op:
+
             def n_add_nodes(g):
                 return sum(1 for _ in find_op_nodes(torch.ops.aten.add, g))
+
             # 7 = 1 (RMS) + 3x2 (3xRMS_ADD, 2 each)
             assert n_add_nodes(backend.graph_pre_pass) == 7
             assert n_add_nodes(backend.graph_post_pass) == 2

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/policies/rag_retriever.py
+# hypothesis_version: 6.151.5
+
+['\n## ', '\n### ', ' AND ', ' WHERE ', '# ', '## ', '### ', '.', '. ', 'General', 'content', 'effective_date', 'jurisdiction', 'jurisdiction = %s', 'policy_id', 'policy_id = %s', 'policy_name', 'regulation_name', 'vertex-ai']

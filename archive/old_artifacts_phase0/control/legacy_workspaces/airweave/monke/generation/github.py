@@ -41,9 +41,7 @@ def render_body(artifact: GitHubArtifact) -> str:
     return json.dumps(body, indent=2)
 
 
-async def generate_github_artifact(
-    file_type: str, model: str, token: str
-) -> tuple[str, str]:
+async def generate_github_artifact(file_type: str, model: str, token: str) -> tuple[str, str]:
     """Generate a GitHub artifact via LLM and render to text.
 
     Returns (title, body). The token must be embedded in the output by instruction.

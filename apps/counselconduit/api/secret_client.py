@@ -57,7 +57,7 @@ def get_secret(
 
     Resolution order:
     1. Environment variable (works for both local .env and Cloud Run --set-secrets)
-    2. Secret Manager API lookup (fallback)
+    2. Secret Manager API lookup (fallback, protected by circuit breaker)
     3. None (secret not found)
 
     Args:
@@ -80,6 +80,26 @@ def get_secret(
             logger.warning("No Secret Manager mapping for %s", env_var)
             return None
 
+    # Circuit breaker gate for Secret Manager API calls
+    breaker = None
+    try:
+        from circuit_breaker.telemetry_bridge import default_registry
+
+        breaker = default_registry.get_or_create(
+            "secret_manager",
+            failure_threshold=3,
+            reset_timeout_s=60.0,
+        )
+        if not breaker.allow_request():
+            logger.warning(
+                "Circuit breaker OPEN for secret_manager — skipping API call for %s (probe in %.0fs)",
+                env_var,
+                breaker.seconds_until_probe,
+            )
+            return None
+    except Exception:
+        pass  # Circuit breaker not available — proceed without protection
+
     # Fallback: query Secret Manager API directly
     try:
         from google.cloud import secretmanager
@@ -89,9 +109,13 @@ def get_secret(
         response = client.access_secret_version(request={"name": name})
         value = response.payload.data.decode("UTF-8")
         logger.info("Loaded %s from Secret Manager", env_var)
+        if breaker:
+            breaker.record_success()
         return value
     except Exception as e:
         logger.warning("Failed to load %s from Secret Manager: %s", env_var, e)
+        if breaker:
+            breaker.record_failure()
         return None
 
 

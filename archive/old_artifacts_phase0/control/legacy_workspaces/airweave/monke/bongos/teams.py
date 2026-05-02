@@ -127,14 +127,9 @@ class TeamsBongo(BaseBongo):
                     async with semaphore:
                         message_token = str(uuid.uuid4())[:8]
 
-                        self.logger.info(
-                            f"Creating channel message {idx + 1}/{self.entity_count} "
-                            f"with token {message_token}"
-                        )
+                        self.logger.info(f"Creating channel message {idx + 1}/{self.entity_count} with token {message_token}")
 
-                        message_data = await generate_teams_message(
-                            self.openai_model, message_token
-                        )
+                        message_data = await generate_teams_message(self.openai_model, message_token)
 
                         await self._rate_limit()
                         resp = await client.post(
@@ -163,12 +158,8 @@ class TeamsBongo(BaseBongo):
                         return message_descriptor
 
                 # Create channel messages in parallel
-                message_tasks = [
-                    create_channel_message(i) for i in range(self.entity_count)
-                ]
-                message_results = await asyncio.gather(
-                    *message_tasks, return_exceptions=True
-                )
+                message_tasks = [create_channel_message(i) for i in range(self.entity_count)]
+                message_results = await asyncio.gather(*message_tasks, return_exceptions=True)
 
                 for result in message_results:
                     if isinstance(result, Exception):
@@ -176,9 +167,7 @@ class TeamsBongo(BaseBongo):
                     elif result:
                         self._messages.append(result)
                         all_entities.append(result)
-                        self.logger.info(
-                            f"✅ Created channel message with token {result['token']}"
-                        )
+                        self.logger.info(f"✅ Created channel message with token {result['token']}")
 
             except Exception as e:
                 self.logger.error(f"Error creating test channel: {e}")
@@ -230,13 +219,9 @@ class TeamsBongo(BaseBongo):
                     for i in range(min(2, self.entity_count)):
                         message_token = str(uuid.uuid4())[:8]
 
-                        self.logger.info(
-                            f"Creating chat message {i + 1} with token {message_token}"
-                        )
+                        self.logger.info(f"Creating chat message {i + 1} with token {message_token}")
 
-                        message_data = await generate_teams_message(
-                            self.openai_model, message_token
-                        )
+                        message_data = await generate_teams_message(self.openai_model, message_token)
 
                         await self._rate_limit()
                         resp = await client.post(
@@ -262,23 +247,17 @@ class TeamsBongo(BaseBongo):
                         }
                         self._chat_messages.append(message_descriptor)
                         all_entities.append(message_descriptor)
-                        self.logger.info(
-                            f"✅ Created chat message with token {message_token}"
-                        )
+                        self.logger.info(f"✅ Created chat message with token {message_token}")
 
                 else:
-                    self.logger.warning(
-                        f"Could not create group chat: {chat_resp.status_code} - {chat_resp.text}"
-                    )
+                    self.logger.warning(f"Could not create group chat: {chat_resp.status_code} - {chat_resp.text}")
 
             except Exception as e:
                 self.logger.warning(f"Error creating test chat: {e}")
                 # Chat creation might fail due to permissions - that's ok
 
         self.logger.info(
-            f"✅ Created {len(self._channels)} channels, "
-            f"{len(self._messages)} channel messages, "
-            f"{len(self._chat_messages)} chat messages"
+            f"✅ Created {len(self._channels)} channels, {len(self._messages)} channel messages, {len(self._chat_messages)} chat messages"
         )
 
         self.created_entities = all_entities
@@ -308,13 +287,9 @@ class TeamsBongo(BaseBongo):
             for i in range(min(2, self.entity_count)):
                 message_token = str(uuid.uuid4())[:8]
 
-                self.logger.info(
-                    f"Creating new message {i + 1} with token {message_token}"
-                )
+                self.logger.info(f"Creating new message {i + 1} with token {message_token}")
 
-                message_data = await generate_teams_message(
-                    self.openai_model, message_token
-                )
+                message_data = await generate_teams_message(self.openai_model, message_token)
 
                 await self._rate_limit()
                 resp = await client.post(
@@ -362,10 +337,7 @@ class TeamsBongo(BaseBongo):
                     # Note: Message deletion in Graph API requires specific permissions
                     # and might not work in all scenarios
                     if message.get("channel_id"):
-                        url = (
-                            f"{self.GRAPH_BASE_URL}/teams/{message['team_id']}/channels/"
-                            f"{message['channel_id']}/messages/{message['id']}/softDelete"
-                        )
+                        url = f"{self.GRAPH_BASE_URL}/teams/{message['team_id']}/channels/{message['channel_id']}/messages/{message['id']}/softDelete"
                     else:
                         url = f"{self.GRAPH_BASE_URL}/chats/{message['chat_id']}/messages/{message['id']}/softDelete"
 
@@ -374,13 +346,9 @@ class TeamsBongo(BaseBongo):
                     if resp.status_code in (200, 204):
                         deleted_ids.append(message["id"])
                     else:
-                        self.logger.debug(
-                            f"Could not delete message {message['id']}: {resp.status_code}"
-                        )
+                        self.logger.debug(f"Could not delete message {message['id']}: {resp.status_code}")
                 except Exception as e:
-                    self.logger.debug(
-                        f"Error deleting message {message.get('id')}: {e}"
-                    )
+                    self.logger.debug(f"Error deleting message {message.get('id')}: {e}")
 
             # Delete channels
             for channel in self._channels:
@@ -394,19 +362,13 @@ class TeamsBongo(BaseBongo):
                         deleted_ids.append(channel["id"])
                         self.logger.info(f"Deleted channel: {channel['name']}")
                     else:
-                        self.logger.warning(
-                            f"Could not delete channel {channel['id']}: {resp.status_code}"
-                        )
+                        self.logger.warning(f"Could not delete channel {channel['id']}: {resp.status_code}")
                 except Exception as e:
-                    self.logger.warning(
-                        f"Error deleting channel {channel.get('id')}: {e}"
-                    )
+                    self.logger.warning(f"Error deleting channel {channel.get('id')}: {e}")
 
         return deleted_ids
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         """Delete specific entities by ID.
 
         Args:
@@ -427,10 +389,7 @@ class TeamsBongo(BaseBongo):
                     await self._rate_limit()
 
                     if entity_type == "channel_message":
-                        url = (
-                            f"{self.GRAPH_BASE_URL}/teams/{entity['team_id']}/channels/"
-                            f"{entity['channel_id']}/messages/{entity_id}/softDelete"
-                        )
+                        url = f"{self.GRAPH_BASE_URL}/teams/{entity['team_id']}/channels/{entity['channel_id']}/messages/{entity_id}/softDelete"
                         resp = await client.post(url, headers=self._headers())
                     elif entity_type == "chat_message":
                         url = f"{self.GRAPH_BASE_URL}/chats/{entity['chat_id']}/messages/{entity_id}/softDelete"
@@ -444,14 +403,10 @@ class TeamsBongo(BaseBongo):
                     if resp.status_code in (200, 204):
                         deleted_ids.append(entity_id)
                     else:
-                        self.logger.debug(
-                            f"Could not delete {entity_type} {entity_id}: {resp.status_code}"
-                        )
+                        self.logger.debug(f"Could not delete {entity_type} {entity_id}: {resp.status_code}")
 
                 except Exception as e:
-                    self.logger.warning(
-                        f"Error deleting {entity.get('type')} {entity.get('id')}: {e}"
-                    )
+                    self.logger.warning(f"Error deleting {entity.get('type')} {entity.get('id')}: {e}")
 
         return deleted_ids
 
@@ -549,18 +504,14 @@ class TeamsBongo(BaseBongo):
             teams = resp.json().get("value", [])
 
             if not teams:
-                raise RuntimeError(
-                    "No Teams accessible. Please ensure the user is a member of at least one team."
-                )
+                raise RuntimeError("No Teams accessible. Please ensure the user is a member of at least one team.")
 
             # Use the first team
             self._team_id = teams[0]["id"]
             self._team_name = teams[0].get("displayName", "Unknown Team")
             self.logger.info(f"Using team: {self._team_name} ({self._team_id})")
 
-    async def _find_test_channels(
-        self, client: httpx.AsyncClient
-    ) -> list[dict[str, Any]]:
+    async def _find_test_channels(self, client: httpx.AsyncClient) -> list[dict[str, Any]]:
         """Find orphaned monke test channels in the team."""
         test_channels = []
 

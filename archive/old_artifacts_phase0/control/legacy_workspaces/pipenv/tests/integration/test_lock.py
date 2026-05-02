@@ -47,9 +47,7 @@ pipenvtest = { editable = true, path = "." }
             f.write(contents)
 
         # Write the pyproject.toml
-        pyproject_toml_path = os.path.join(
-            os.path.dirname(p.pipfile_path), "pyproject.toml"
-        )
+        pyproject_toml_path = os.path.join(os.path.dirname(p.pipfile_path), "pyproject.toml")
         with open(pyproject_toml_path, "w") as f:
             contents = """
 [build-system]
@@ -157,10 +155,7 @@ def test_resolve_skip_unmatched_requirements(pipenv_instance_pypi):
         p._pipfile.add("missing-package", {"markers": "os_name=='FakeOS'"})
         c = p.pipenv("lock")
         assert c.returncode == 0
-        assert (
-            'Could not find a matching version of missing-package; os_name == "FakeOS"'
-            in c.stderr
-        )
+        assert 'Could not find a matching version of missing-package; os_name == "FakeOS"' in c.stderr
 
 
 @pytest.mark.lock
@@ -332,9 +327,7 @@ verify_ssl = false
 
 [packages]
 requests = "==2.14.0"
-            """.strip().format(
-                url=p.pypi
-            )
+            """.strip().format(url=p.pypi)
             f.write(contents)
 
         with temp_environ():
@@ -352,9 +345,7 @@ verify_ssl = false
 
 [packages]
 requests = "==2.14.0"
-            """.strip().format(
-                url=p.pypi
-            )
+            """.strip().format(url=p.pypi)
             f.write(contents)
 
         c = p.pipenv("lock")
@@ -398,10 +389,7 @@ requests = {git = "%s@883caaf", editable = true}
         c = p.pipenv("lock")
         assert c.returncode == 0
         assert requests_uri in p.lockfile["default"]["requests"]["git"]
-        assert (
-            p.lockfile["default"]["requests"]["ref"]
-            == "883caaf145fbe93bd0d208a6b864de9146087312"
-        )
+        assert p.lockfile["default"]["requests"]["ref"] == "883caaf145fbe93bd0d208a6b864de9146087312"
 
 
 @pytest.mark.vcs
@@ -478,9 +466,7 @@ def test_vcs_lock_respects_top_level_pins(pipenv_instance_private_pypi):
 
     with pipenv_instance_private_pypi() as p:
         requests_uri = p._pipfile.get_fixture_path("git/requests").as_uri()
-        p._pipfile.add(
-            "requests", {"editable": True, "git": f"{requests_uri}", "ref": "v2.18.4"}
-        )
+        p._pipfile.add("requests", {"editable": True, "git": f"{requests_uri}", "ref": "v2.18.4"})
         p._pipfile.add("urllib3", "==1.21.1")
         c = p.pipenv("lock")
         assert c.returncode == 0
@@ -512,9 +498,7 @@ six = "*"
         c = p.pipenv("lock --clear")
         assert c.returncode == 0
         assert "index" in p.lockfile["default"]["six"]
-        assert p.lockfile["default"]["six"]["index"] == "custom", Path(
-            p.lockfile_path
-        ).read_text()
+        assert p.lockfile["default"]["six"]["index"] == "custom", Path(p.lockfile_path).read_text()
 
 
 @pytest.mark.lock
@@ -562,10 +546,7 @@ def test_lock_nested_vcs_direct_url(pipenv_instance_pypi):
         assert "sibling-package" in p.lockfile["default"]
         assert "git" in p.lockfile["default"]["sibling-package"]
         assert "subdirectory" in p.lockfile["default"]["sibling-package"]
-        assert (
-            p.lockfile["default"]["sibling-package"]["subdirectory"]
-            == "parent_folder/sibling_package"
-        )
+        assert p.lockfile["default"]["sibling-package"]["subdirectory"] == "parent_folder/sibling_package"
         assert "version" not in p.lockfile["default"]["sibling-package"]
 
 
@@ -614,9 +595,7 @@ name = "local"
 
 [packages]
 requests = {requirement}
-                """.strip().format(
-                url=p.index_url, requirement='{version="*", index="local"}'
-            )
+                """.strip().format(url=p.index_url, requirement='{version="*", index="local"}')
             f.write(contents)
 
         c = p.pipenv("lock")

@@ -8,6 +8,7 @@ from .send_status_webhook import run as send_status_webhook
 
 logger = logging.getLogger(__name__)
 
+
 async def run_status_webhook_task(meeting_id: int, status_change_info: dict = None):
     """
     Run webhook task with proper database session management.

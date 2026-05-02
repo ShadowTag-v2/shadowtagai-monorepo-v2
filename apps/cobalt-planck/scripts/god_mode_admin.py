@@ -89,7 +89,7 @@ class GodModeEngine:
                     print("Commands: /omega-loop, /status, /help, /exit")
                 elif line == "/exit":
                     self.stop_event.set()
-            except (KeyboardInterrupt, EOFError):
+            except KeyboardInterrupt, EOFError:
                 self.stop_event.set()
                 break
 

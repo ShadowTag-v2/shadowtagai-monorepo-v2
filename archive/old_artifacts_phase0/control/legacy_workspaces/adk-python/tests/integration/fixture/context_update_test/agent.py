@@ -24,11 +24,11 @@ def update_fc(
     data_four: list[int | float | str],
     tool_context: ToolContext,
 ):
-  """Simply ask to update these variables in the context"""
-  tool_context.actions.update_state("data_one", data_one)
-  tool_context.actions.update_state("data_two", data_two)
-  tool_context.actions.update_state("data_three", data_three)
-  tool_context.actions.update_state("data_four", data_four)
+    """Simply ask to update these variables in the context"""
+    tool_context.actions.update_state("data_one", data_one)
+    tool_context.actions.update_state("data_two", data_two)
+    tool_context.actions.update_state("data_three", data_three)
+    tool_context.actions.update_state("data_four", data_four)
 
 
 root_agent = Agent(

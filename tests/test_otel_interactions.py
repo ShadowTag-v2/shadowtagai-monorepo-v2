@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -188,10 +189,12 @@ class TestInteractionsWrapper:
 
     def test_no_api_key_warning(self, caplog):
         import logging
+        from unittest.mock import patch as mock_patch
 
         from mcp_tools.interactions_wrapper import InteractionsTool
 
-        with caplog.at_level(logging.WARNING):
+        # Must remove GEMINI_API_KEY from env so the `or` fallback also yields ""
+        with mock_patch.dict(os.environ, {}, clear=True), caplog.at_level(logging.WARNING):
             _tool = InteractionsTool(api_key="", session_dir=Path("/tmp/test_sessions"))  # noqa: F841
         assert "GEMINI_API_KEY" in caplog.text
 

@@ -24,6 +24,7 @@ from kosmos.models.hypothesis import Hypothesis
 
 class TemplateMetadata(BaseModel):
     """Metadata about an experiment template."""
+
     name: str = Field(..., description="Unique template name")
     version: str = Field(default="1.0.0", description="Template version")
     experiment_type: ExperimentType
@@ -52,6 +53,7 @@ class TemplateMetadata(BaseModel):
 
 class TemplateCustomizationParams(BaseModel):
     """Parameters for customizing a template to a specific hypothesis."""
+
     hypothesis: Hypothesis
 
     # Override defaults
@@ -72,6 +74,7 @@ class TemplateCustomizationParams(BaseModel):
 
 class TemplateValidationResult(BaseModel):
     """Result of template validation."""
+
     is_valid: bool
     errors: list[str] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
@@ -129,7 +132,7 @@ class TemplateBase(ABC):
         description: str = "",
         domain: str | None = None,
         version: str = "1.0.0",
-        **kwargs
+        **kwargs,
     ):
         """Initialize template with metadata."""
         self.metadata = TemplateMetadata(
@@ -139,14 +142,11 @@ class TemplateBase(ABC):
             domain=domain,
             title=title,
             description=description or f"Template for {title}",
-            **kwargs
+            **kwargs,
         )
 
     @abstractmethod
-    def generate_protocol(
-        self,
-        params: TemplateCustomizationParams
-    ) -> ExperimentProtocol:
+    def generate_protocol(self, params: TemplateCustomizationParams) -> ExperimentProtocol:
         """
         Generate an experiment protocol from this template.
 
@@ -199,10 +199,7 @@ class TemplateBase(ABC):
 
         return result
 
-    def estimate_resources(
-        self,
-        params: TemplateCustomizationParams
-    ) -> ResourceRequirements:
+    def estimate_resources(self, params: TemplateCustomizationParams) -> ResourceRequirements:
         """
         Estimate resource requirements for this template.
 
@@ -270,10 +267,7 @@ class TemplateBase(ABC):
 
         return common + type_specific.get(self.metadata.experiment_type, [])
 
-    def get_default_control_groups(
-        self,
-        hypothesis: Hypothesis
-    ) -> list[ControlGroup]:
+    def get_default_control_groups(self, hypothesis: Hypothesis) -> list[ControlGroup]:
         """
         Get default control groups for this template.
 
@@ -324,11 +318,7 @@ class TemplateBase(ABC):
 
     def __repr__(self) -> str:
         """Detailed representation."""
-        return (
-            f"{self.__class__.__name__}(name='{self.metadata.name}', "
-            f"type={self.metadata.experiment_type.value}, "
-            f"version={self.metadata.version})"
-        )
+        return f"{self.__class__.__name__}(name='{self.metadata.name}', type={self.metadata.experiment_type.value}, version={self.metadata.version})"
 
 
 class TemplateRegistry:
@@ -386,9 +376,9 @@ class TemplateRegistry:
         """
         # Domain template packages to discover
         template_packages = [
-            'kosmos.experiments.templates.biology',
-            'kosmos.experiments.templates.neuroscience',
-            'kosmos.experiments.templates.materials',
+            "kosmos.experiments.templates.biology",
+            "kosmos.experiments.templates.neuroscience",
+            "kosmos.experiments.templates.materials",
         ]
 
         discovered_count = 0
@@ -399,9 +389,9 @@ class TemplateRegistry:
                 package = importlib.import_module(package_name)
 
                 # Get all modules in this package
-                if hasattr(package, '__path__'):
+                if hasattr(package, "__path__"):
                     for importer, modname, ispkg in pkgutil.iter_modules(package.__path__):
-                        if modname == '__init__':
+                        if modname == "__init__":
                             continue
 
                         # Import the module
@@ -411,10 +401,7 @@ class TemplateRegistry:
 
                             # Find all TemplateBase subclasses in the module
                             for name, obj in inspect.getmembers(module, inspect.isclass):
-                                if (issubclass(obj, TemplateBase) and
-                                    obj != TemplateBase and
-                                    obj.__module__ == full_module_name):
-
+                                if issubclass(obj, TemplateBase) and obj != TemplateBase and obj.__module__ == full_module_name:
                                     # Instantiate and register
                                     try:
                                         template_instance = obj()
@@ -505,10 +492,7 @@ class TemplateRegistry:
         """
         return self._templates.get(name)
 
-    def get_templates_by_type(
-        self,
-        experiment_type: ExperimentType
-    ) -> list[TemplateBase]:
+    def get_templates_by_type(self, experiment_type: ExperimentType) -> list[TemplateBase]:
         """
         Get all templates for an experiment type.
 
@@ -534,11 +518,7 @@ class TemplateRegistry:
         names = self._templates_by_domain.get(domain.lower(), [])
         return [self._templates[name] for name in names]
 
-    def find_applicable_templates(
-        self,
-        hypothesis: Hypothesis,
-        experiment_type: ExperimentType | None = None
-    ) -> list[TemplateBase]:
+    def find_applicable_templates(self, hypothesis: Hypothesis, experiment_type: ExperimentType | None = None) -> list[TemplateBase]:
         """
         Find all templates applicable to a hypothesis.
 
@@ -567,11 +547,7 @@ class TemplateRegistry:
 
         return [template for score, template in applicable]
 
-    def find_best_template(
-        self,
-        hypothesis: Hypothesis,
-        experiment_type: ExperimentType | None = None
-    ) -> TemplateBase | None:
+    def find_best_template(self, hypothesis: Hypothesis, experiment_type: ExperimentType | None = None) -> TemplateBase | None:
         """
         Find the best template for a hypothesis.
 
@@ -603,14 +579,8 @@ class TemplateRegistry:
         """
         return {
             "total_templates": len(self._templates),
-            "by_type": {
-                exp_type.value: len(names)
-                for exp_type, names in self._templates_by_type.items()
-            },
-            "by_domain": {
-                domain: len(names)
-                for domain, names in self._templates_by_domain.items()
-            },
+            "by_type": {exp_type.value: len(names) for exp_type, names in self._templates_by_type.items()},
+            "by_domain": {domain: len(names) for domain, names in self._templates_by_domain.items()},
             "domains_covered": list(self._templates_by_domain.keys()),
         }
 

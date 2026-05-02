@@ -48,7 +48,7 @@ def example_manual_override():
     print()
 
     # Force Sonar Pro for budget-constrained rapid lookup
-    research_pro = ResearchLookup(force_model='pro')
+    research_pro = ResearchLookup(force_model="pro")
     query = "Explain the mechanism of CRISPR-Cas9"
     print(f"Query: {query}")
     print("Forced model: Sonar Pro")
@@ -57,7 +57,7 @@ def example_manual_override():
     print()
 
     # Force Sonar Reasoning Pro for critical analysis
-    research_reasoning = ResearchLookup(force_model='reasoning')
+    research_reasoning = ResearchLookup(force_model="reasoning")
     print(f"Query: {query}")
     print("Forced model: Sonar Reasoning Pro")
     result = research_reasoning.lookup(query)
@@ -88,7 +88,7 @@ def example_batch_queries():
     results = research.batch_lookup(queries, delay=1.0)
 
     for i, result in enumerate(results):
-        print(f"Query {i+1}: {result['query'][:50]}...")
+        print(f"Query {i + 1}: {result['query'][:50]}...")
         print(f"  Model: {result.get('model')}")
         print(f"  Type: {result.get('model_type')}")
         print()
@@ -108,7 +108,7 @@ def example_scientific_writing_workflow():
     lit_queries = [
         "Recent papers on machine learning in genomics 2024",
         "Clinical applications of AI in radiology",
-        "RNA sequencing analysis methods"
+        "RNA sequencing analysis methods",
     ]
 
     for query in lit_queries:
@@ -121,7 +121,7 @@ def example_scientific_writing_workflow():
     discussion_queries = [
         "Compare the advantages and limitations of different ML approaches in genomics",
         "Explain the relationship between model interpretability and clinical adoption",
-        "Analyze the ethical implications of AI in medical diagnosis"
+        "Analyze the ethical implications of AI in medical diagnosis",
     ]
 
     for query in discussion_queries:

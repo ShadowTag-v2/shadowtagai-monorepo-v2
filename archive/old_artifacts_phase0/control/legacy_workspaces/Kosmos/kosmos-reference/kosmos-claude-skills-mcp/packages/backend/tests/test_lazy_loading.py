@@ -213,12 +213,8 @@ def test_metadata_only_at_startup():
         assert "url" in doc_info, f"{doc_path} missing URL"
 
         # Should NOT have content
-        assert "content" not in doc_info, (
-            f"{doc_path} should not have content at startup"
-        )
-        assert not doc_info.get("fetched"), (
-            f"{doc_path} should not be marked as fetched"
-        )
+        assert "content" not in doc_info, f"{doc_path} should not have content at startup"
+        assert not doc_info.get("fetched"), f"{doc_path} should not be marked as fetched"
 
     print(f"  ✓ All {len(biopython.documents)} documents have metadata only")
     print("  ✓ No content loaded at startup (lazy loading working)")

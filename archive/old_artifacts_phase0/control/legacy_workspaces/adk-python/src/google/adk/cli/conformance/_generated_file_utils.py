@@ -27,28 +27,26 @@ from .test_case import TestSpec
 
 
 def load_test_case(test_case_dir: Path) -> TestSpec:
-  """Load TestSpec from spec.yaml file."""
-  spec_file = test_case_dir / "spec.yaml"
-  with open(spec_file, encoding="utf-8") as f:
-    data: dict[str, Any] = yaml.safe_load(f)
-  return TestSpec.model_validate(data)
+    """Load TestSpec from spec.yaml file."""
+    spec_file = test_case_dir / "spec.yaml"
+    with open(spec_file, encoding="utf-8") as f:
+        data: dict[str, Any] = yaml.safe_load(f)
+    return TestSpec.model_validate(data)
 
 
 def load_recorded_session(test_case_dir: Path) -> Session | None:
-  """Load recorded session data from generated-session.yaml file."""
-  session_file = test_case_dir / "generated-session.yaml"
-  if not session_file.exists():
-    return None
+    """Load recorded session data from generated-session.yaml file."""
+    session_file = test_case_dir / "generated-session.yaml"
+    if not session_file.exists():
+        return None
 
-  with open(session_file, encoding="utf-8") as f:
-    session_data = yaml.safe_load(f)
-    if not session_data:
-      return None
+    with open(session_file, encoding="utf-8") as f:
+        session_data = yaml.safe_load(f)
+        if not session_data:
+            return None
 
-  try:
-    return Session.model_validate(session_data)
-  except Exception as e:
-    click.secho(
-        f"Warning: Failed to parse session data: {e}", fg="yellow", err=True
-    )
-    return None
+    try:
+        return Session.model_validate(session_data)
+    except Exception as e:
+        click.secho(f"Warning: Failed to parse session data: {e}", fg="yellow", err=True)
+        return None

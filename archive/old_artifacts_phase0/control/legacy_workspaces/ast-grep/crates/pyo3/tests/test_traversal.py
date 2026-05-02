@@ -12,6 +12,7 @@ function test() {
 sg = SgRoot(source, "javascript")
 root = sg.root()
 
+
 def test_get_root():
     node = root.find(pattern="let a = $A")
     assert node is not None
@@ -33,6 +34,7 @@ def test_find_all():
     assert_name(nodes[1], "b")
     assert_name(nodes[2], "c")
 
+
 def test_field():
     node = root.find(kind="variable_declarator")
     assert node
@@ -45,6 +47,7 @@ def test_field():
     non = node.field("notexist")
     assert non is None
 
+
 def test_field_children():
     source = 'const el = <div id="foo" className="bar" />'
     sg = SgRoot(source, "tsx")
@@ -56,6 +59,7 @@ def test_field_children():
     assert attributes[0].text() == 'id="foo"'
     assert attributes[1].text() == 'className="bar"'
 
+
 def test_parent():
     node = root.find(kind="variable_declarator")
     assert node
@@ -64,10 +68,14 @@ def test_parent():
     assert parent.kind() == "lexical_declaration"
     assert root.parent() is None
 
-T = TypeVar('T')
+
+T = TypeVar("T")
+
+
 def unwrap(n: T | None) -> T:
     assert n is not None
     return n
+
 
 def test_child():
     node = root.find(kind="variable_declarator")
@@ -75,6 +83,7 @@ def test_child():
     assert unwrap(node.child(0)).text() == "a"
     assert unwrap(node.child(2)).text() == "123"
     assert node.child(3) is None
+
 
 def test_children():
     node = root.find(kind="variable_declarator")
@@ -85,12 +94,14 @@ def test_children():
     assert children[2].text() == "123"
     assert not children[0].children()
 
+
 def test_ancestors():
     node = root.find(kind="variable_declarator")
     assert node
     ancestors = node.ancestors()
     assert len(ancestors) == 4
     assert not root.ancestors()
+
 
 def test_next():
     node = root.find(pattern="let a = $A\n")
@@ -101,8 +112,9 @@ def test_next():
     node = root.find(pattern="let c = $A\n")
     assert node
     node = node.next()
-    assert node # `}` is the last node
+    assert node  # `}` is the last node
     assert not node.next()
+
 
 def test_next_all():
     node = root.find(pattern="let a = $A\n")
@@ -112,6 +124,7 @@ def test_next_all():
     assert len(next_all[0].next_all()) == 2
     assert not next_all[2].next_all()
 
+
 def test_prev():
     node = root.find(pattern="let c = $A\n")
     assert node is not None
@@ -119,8 +132,9 @@ def test_prev():
     assert neighbor is not None
     assert neighbor.text() == "let b = 456"
     node = unwrap(root.find(pattern="let a = $A\n")).prev()
-    assert node # `{` is the first node
+    assert node  # `{` is the first node
     assert not node.prev()
+
 
 def test_prev_all():
     node = root.find(pattern="let c = $A\n")

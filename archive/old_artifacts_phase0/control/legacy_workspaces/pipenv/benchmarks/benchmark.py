@@ -2,6 +2,7 @@
 """
 Pipenv benchmark runner based on python-package-manager-shootout.
 """
+
 import csv
 import os
 import shutil
@@ -31,12 +32,12 @@ class PipenvBenchmark:
         self.benchmark_dir = benchmark_dir
         self.timings_dir = benchmark_dir / "timings"
         self.timings_dir.mkdir(exist_ok=True)
-        self.requirements_url = "https://raw.githubusercontent.com/getsentry/sentry/51281a6abd8ff4a93d2cebc04e1d5fc7aa9c4c11/requirements-base.txt"
+        self.requirements_url = (
+            "https://raw.githubusercontent.com/getsentry/sentry/51281a6abd8ff4a93d2cebc04e1d5fc7aa9c4c11/requirements-base.txt"
+        )
         self.test_package = "goodconf"
 
-    def run_timed_command(
-        self, command: List[str], timing_file: str, cwd: Path = None, timeout: int = 600
-    ) -> Tuple[float, int]:
+    def run_timed_command(self, command: List[str], timing_file: str, cwd: Path = None, timeout: int = 600) -> Tuple[float, int]:
         """Run a command and measure execution time."""
         if cwd is None:
             cwd = self.benchmark_dir
@@ -79,9 +80,7 @@ class PipenvBenchmark:
             # Write timing info (simplified format for cross-platform compatibility)
             timing_path = self.timings_dir / timing_file
             with open(timing_path, "w") as f:
-                f.write(
-                    f"{elapsed:.3f},0,0,0,0,0,0\n"
-                )  # elapsed,system,user,cpu%,maxrss,inputs,outputs
+                f.write(f"{elapsed:.3f},0,0,0,0,0,0\n")  # elapsed,system,user,cpu%,maxrss,inputs,outputs
 
             print(f"  ✓ Completed in {elapsed:.3f}s")
             if stdout and stdout.strip():
@@ -120,11 +119,7 @@ class PipenvBenchmark:
                 content = response.read().decode("utf-8")
 
             # Filter out --index-url lines like the original
-            filtered_lines = [
-                line
-                for line in content.splitlines()
-                if not line.strip().startswith("--index-url")
-            ]
+            filtered_lines = [line for line in content.splitlines() if not line.strip().startswith("--index-url")]
 
             with open(requirements_path, "w") as f:
                 f.write("\n".join(filtered_lines))
@@ -183,17 +178,13 @@ class PipenvBenchmark:
         print("Benchmarking tooling...")
         # Install current development version
         parent_dir = self.benchmark_dir.parent
-        elapsed, _ = self.run_timed_command(
-            [sys.executable, "-m", "pip", "install", "-e", str(parent_dir)], "tooling.txt"
-        )
+        elapsed, _ = self.run_timed_command([sys.executable, "-m", "pip", "install", "-e", str(parent_dir)], "tooling.txt")
         print(f"Tooling completed in {elapsed:.3f}s")
 
     def benchmark_import(self):
         """Benchmark importing requirements.txt to Pipfile."""
         print("Benchmarking import...")
-        elapsed, _ = self.run_timed_command(
-            ["pipenv", "install", "-r", "requirements.txt"], "import.txt"
-        )
+        elapsed, _ = self.run_timed_command(["pipenv", "install", "-r", "requirements.txt"], "import.txt")
         print(f"Import completed in {elapsed:.3f}s")
 
     def benchmark_lock(self, timing_file: str):
@@ -217,9 +208,7 @@ class PipenvBenchmark:
     def benchmark_add_package(self):
         """Benchmark adding a new package."""
         print("Benchmarking add package...")
-        elapsed, _ = self.run_timed_command(
-            ["pipenv", "install", self.test_package], "add-package.txt"
-        )
+        elapsed, _ = self.run_timed_command(["pipenv", "install", self.test_package], "add-package.txt")
         print(f"Add package completed in {elapsed:.3f}s")
 
     def get_pipenv_version(self) -> str:

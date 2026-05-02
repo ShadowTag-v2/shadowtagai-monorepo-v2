@@ -2,10 +2,11 @@
 Intelligent caching system with Redis support
 Automatically caches responses and provides cache statistics
 """
+
 import redis.asyncio as redis
 import json
 import hashlib
-from typing import Optional, Any, Dict
+from typing import Any
 from datetime import timedelta
 from app.core.config import settings
 import pickle
@@ -23,9 +24,9 @@ class IntelligentCache:
     def __init__(self):
         self.redis_client: redis.Redis | None = None
         self.stats = {
-            'hits': 0,
-            'misses': 0,
-            'sets': 0,
+            "hits": 0,
+            "misses": 0,
+            "sets": 0,
         }
         self.access_patterns: dict[str, int] = {}
 
@@ -57,8 +58,8 @@ class IntelligentCache:
     def _generate_key(self, prefix: str, *args, **kwargs) -> str:
         """Generate a cache key from arguments"""
         key_data = {
-            'args': args,
-            'kwargs': kwargs,
+            "args": args,
+            "kwargs": kwargs,
         }
         key_string = json.dumps(key_data, sort_keys=True, default=str)
         key_hash = hashlib.md5(key_string.encode()).hexdigest()
@@ -67,30 +68,25 @@ class IntelligentCache:
     async def get(self, key: str) -> Any | None:
         """Get value from cache"""
         if not self.redis_client:
-            self.stats['misses'] += 1
+            self.stats["misses"] += 1
             return None
 
         try:
             value = await self.redis_client.get(key)
             if value:
-                self.stats['hits'] += 1
+                self.stats["hits"] += 1
                 # Track access pattern
                 self.access_patterns[key] = self.access_patterns.get(key, 0) + 1
                 return pickle.loads(value)
             else:
-                self.stats['misses'] += 1
+                self.stats["misses"] += 1
                 return None
         except Exception as e:
             print(f"Cache get error: {e}")
-            self.stats['misses'] += 1
+            self.stats["misses"] += 1
             return None
 
-    async def set(
-        self,
-        key: str,
-        value: Any,
-        ttl: int | None = None
-    ) -> bool:
+    async def set(self, key: str, value: Any, ttl: int | None = None) -> bool:
         """Set value in cache"""
         if not self.redis_client:
             return False
@@ -98,12 +94,8 @@ class IntelligentCache:
         try:
             ttl = ttl or settings.CACHE_TTL
             serialized = pickle.dumps(value)
-            await self.redis_client.setex(
-                key,
-                timedelta(seconds=ttl),
-                serialized
-            )
-            self.stats['sets'] += 1
+            await self.redis_client.setex(key, timedelta(seconds=ttl), serialized)
+            self.stats["sets"] += 1
             return True
         except Exception as e:
             print(f"Cache set error: {e}")
@@ -135,15 +127,15 @@ class IntelligentCache:
 
     async def get_stats(self) -> dict[str, Any]:
         """Get cache statistics"""
-        total = self.stats['hits'] + self.stats['misses']
-        hit_rate = (self.stats['hits'] / total * 100) if total > 0 else 0
+        total = self.stats["hits"] + self.stats["misses"]
+        hit_rate = (self.stats["hits"] / total * 100) if total > 0 else 0
 
         return {
-            'hits': self.stats['hits'],
-            'misses': self.stats['misses'],
-            'sets': self.stats['sets'],
-            'hit_rate': hit_rate,
-            'total_requests': total,
+            "hits": self.stats["hits"],
+            "misses": self.stats["misses"],
+            "sets": self.stats["sets"],
+            "hit_rate": hit_rate,
+            "total_requests": total,
         }
 
     def get_cache_suggestions(self) -> list:
@@ -154,29 +146,23 @@ class IntelligentCache:
         suggestions = []
 
         # Find frequently accessed keys
-        sorted_patterns = sorted(
-            self.access_patterns.items(),
-            key=lambda x: x[1],
-            reverse=True
-        )
+        sorted_patterns = sorted(self.access_patterns.items(), key=lambda x: x[1], reverse=True)
 
         for key, count in sorted_patterns[:10]:
             if count >= settings.CACHE_SUGGESTION_THRESHOLD:
-                suggestions.append({
-                    'key': key,
-                    'access_count': count,
-                    'suggestion': f'Cache this key - accessed {count} times',
-                })
+                suggestions.append(
+                    {
+                        "key": key,
+                        "access_count": count,
+                        "suggestion": f"Cache this key - accessed {count} times",
+                    }
+                )
 
         return suggestions
 
 
 # Decorator for automatic caching
-def cache_response(
-    prefix: str,
-    ttl: int | None = None,
-    key_builder=None
-):
+def cache_response(prefix: str, ttl: int | None = None, key_builder=None):
     """
     Decorator to automatically cache function responses
 
@@ -185,6 +171,7 @@ def cache_response(
         async def get_user(user_id: int):
             ...
     """
+
     def decorator(func):
         async def wrapper(*args, **kwargs):
             # Get cache instance
@@ -210,6 +197,7 @@ def cache_response(
             return result
 
         return wrapper
+
     return decorator
 
 

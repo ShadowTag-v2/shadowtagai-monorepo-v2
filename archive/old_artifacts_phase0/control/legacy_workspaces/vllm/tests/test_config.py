@@ -974,6 +974,7 @@ def test_vllm_config_callable_defaults():
     # Callable that checks if model exists
     def has_model(cfg):
         return cfg.model_config is not None
+
     assert has_model(config_no_model) is False
 
     # Test with quantized model
@@ -981,10 +982,10 @@ def test_vllm_config_callable_defaults():
     config_quantized = VllmConfig(
         model_config=quantized_model, optimization_level=OptimizationLevel.O2
     )
+
     def enable_if_quantized(cfg):
-        return (
-            cfg.model_config is not None and cfg.model_config.is_quantized()
-        )
+        return cfg.model_config is not None and cfg.model_config.is_quantized()
+
     assert enable_if_quantized(config_quantized) is True
     assert enable_if_quantized(config_no_model) is False
 
@@ -993,10 +994,10 @@ def test_vllm_config_callable_defaults():
     config_moe = VllmConfig(
         model_config=moe_model, optimization_level=OptimizationLevel.O2
     )
+
     def enable_if_sequential(cfg):
-        return (
-            cfg.model_config is not None and not cfg.model_config.is_model_moe()
-        )
+        return cfg.model_config is not None and not cfg.model_config.is_model_moe()
+
     assert enable_if_sequential(config_moe) is False
     assert enable_if_sequential(config_quantized) is True
 

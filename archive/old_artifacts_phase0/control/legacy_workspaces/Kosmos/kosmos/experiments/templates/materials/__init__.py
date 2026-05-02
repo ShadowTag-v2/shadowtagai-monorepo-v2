@@ -5,7 +5,7 @@ from kosmos.experiments.templates.materials.parameter_correlation import Paramet
 from kosmos.experiments.templates.materials.shap_analysis import SHAPAnalysisTemplate
 
 __all__ = [
-    'ParameterCorrelationTemplate',
-    'MultiParameterOptimizationTemplate',
-    'SHAPAnalysisTemplate',
+    "ParameterCorrelationTemplate",
+    "MultiParameterOptimizationTemplate",
+    "SHAPAnalysisTemplate",
 ]

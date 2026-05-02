@@ -3,14 +3,11 @@
 Generates realistic record content for testing Airtable integration using LLM.
 """
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.airtable import AirtableRecord
 
 
-async def generate_airtable_record(
-    model: str, token: str
-) -> tuple[dict[str, any], str, list[str]]:
+async def generate_airtable_record(model: str, token: str) -> tuple[dict[str, any], str, list[str]]:
     """Generate record content for Airtable testing using LLM.
 
     Args:

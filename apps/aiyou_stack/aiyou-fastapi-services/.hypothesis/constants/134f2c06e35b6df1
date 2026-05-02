@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/schemas/dashboard.py
+# hypothesis_version: 6.151.5
+
+[300, '30d', '7d', 'Chart configuration', 'Daily Active Users', 'Dashboard name', 'Dashboard widgets', 'Event filters', 'Fields to group by', 'Is dashboard public', 'Layout configuration', 'Tags', 'Widget description', 'Widget position', 'Widget title', 'chart', 'description', 'examples', 'is_public', 'line', 'metric_type', 'name', 'time_range', 'title', 'user_count', 'visualization_type', 'widget_type', 'widgets']

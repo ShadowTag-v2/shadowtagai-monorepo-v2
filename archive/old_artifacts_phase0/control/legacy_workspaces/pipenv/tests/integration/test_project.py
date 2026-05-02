@@ -104,9 +104,7 @@ def test_maintain_file_line_endings(pipenv_instance_pypi, newlines):
             with open(fn) as f:
                 f.read()  # Consumes the content to detect newlines.
                 actual_newlines = f.newlines
-            assert (
-                actual_newlines == newlines
-            ), f"{actual_newlines!r} != {newlines!r} for {fn}"
+            assert actual_newlines == newlines, f"{actual_newlines!r} != {newlines!r} for {fn}"
 
 
 @pytest.mark.project
@@ -160,9 +158,7 @@ def test_run_in_virtualenv(pipenv_instance_pypi):
         assert c.returncode == 0
         c = p.pipenv('run python -c "import click;print(click.__file__)"')
         assert c.returncode == 0
-        assert normalize_path(c.stdout.strip()).startswith(
-            normalize_path(str(project.virtualenv_location))
-        )
+        assert normalize_path(c.stdout.strip()).startswith(normalize_path(str(project.virtualenv_location)))
         c = p.pipenv("clean --dry-run")
         assert c.returncode == 0
         assert "click" in c.stdout

@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = logging.getLogger(__name__)
 
+
 async def run(meeting: Meeting, db: AsyncSession):
     """
     Fetches transcription data from the transcription-collector service,
@@ -20,7 +21,7 @@ async def run(meeting: Meeting, db: AsyncSession):
 
         async with httpx.AsyncClient() as client:
             logger.info(f"Calling transcription-collector for meeting {meeting_id} at {collector_url}")
-            response = await client.get(collector_url, timeout=30.0) # Increased timeout
+            response = await client.get(collector_url, timeout=30.0)  # Increased timeout
 
         if response.status_code == 200:
             transcription_segments = response.json()
@@ -34,8 +35,8 @@ async def run(meeting: Meeting, db: AsyncSession):
             unique_languages = set()
 
             for segment in transcription_segments:
-                speaker = segment.get('speaker')
-                language = segment.get('language')
+                speaker = segment.get("speaker")
+                language = segment.get("language")
                 if speaker and speaker.strip():
                     unique_speakers.add(speaker.strip())
                 if language and language.strip():
@@ -43,9 +44,9 @@ async def run(meeting: Meeting, db: AsyncSession):
 
             aggregated_data = {}
             if unique_speakers:
-                aggregated_data['participants'] = sorted(list(unique_speakers))
+                aggregated_data["participants"] = sorted(list(unique_speakers))
             if unique_languages:
-                aggregated_data['languages'] = sorted(list(unique_languages))
+                aggregated_data["languages"] = sorted(list(unique_languages))
 
             if aggregated_data:
                 # Use a flag to track if the data object was changed
@@ -54,13 +55,13 @@ async def run(meeting: Meeting, db: AsyncSession):
                 existing_data = meeting.data or {}
 
                 # Update participants if not present
-                if 'participants' not in existing_data and 'participants' in aggregated_data:
-                    existing_data['participants'] = aggregated_data['participants']
+                if "participants" not in existing_data and "participants" in aggregated_data:
+                    existing_data["participants"] = aggregated_data["participants"]
                     data_changed = True
 
                 # Update languages if not present
-                if 'languages' not in existing_data and 'languages' in aggregated_data:
-                    existing_data['languages'] = aggregated_data['languages']
+                if "languages" not in existing_data and "languages" in aggregated_data:
+                    existing_data["languages"] = aggregated_data["languages"]
                     data_changed = True
 
                 if data_changed:

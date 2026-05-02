@@ -25,10 +25,7 @@ load_dotenv()
 
 POSTGRES_CONNECTION_STRING = os.getenv("POSTGRES_CONNECTION_STRING")
 if not POSTGRES_CONNECTION_STRING:
-  raise ValueError(
-      "POSTGRES_CONNECTION_STRING environment variable not set. "
-      "Please create a .env file with this variable."
-  )
+    raise ValueError("POSTGRES_CONNECTION_STRING environment variable not set. Please create a .env file with this variable.")
 
 root_agent = LlmAgent(
     model="gemini-2.0-flash",

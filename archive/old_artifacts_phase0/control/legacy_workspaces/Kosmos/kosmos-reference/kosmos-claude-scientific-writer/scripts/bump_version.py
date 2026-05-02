@@ -9,7 +9,6 @@ version consistency across pyproject.toml and __init__.py.
 import re
 import sys
 from pathlib import Path
-from typing import Tuple
 
 
 def get_project_root() -> Path:
@@ -52,7 +51,7 @@ def read_current_version(pyproject_path: Path) -> str:
     return f"{match.group(1)}.{match.group(2)}.{match.group(3)}"
 
 
-def parse_version(version: str) -> Tuple[int, int, int]:
+def parse_version(version: str) -> tuple[int, int, int]:
     """
     Parse version string into major, minor, patch components.
 
@@ -71,7 +70,7 @@ def parse_version(version: str) -> Tuple[int, int, int]:
     ValueError
         If version format is invalid.
     """
-    match = re.match(r'^(\d+)\.(\d+)\.(\d+)$', version)
+    match = re.match(r"^(\d+)\.(\d+)\.(\d+)$", version)
     if not match:
         raise ValueError(f"Invalid version format: {version}")
 
@@ -125,13 +124,7 @@ def update_pyproject_version(pyproject_path: Path, new_version: str) -> None:
     content = pyproject_path.read_text()
 
     # Replace version line
-    new_content = re.sub(
-        r'^version\s*=\s*"(\d+)\.(\d+)\.(\d+)"',
-        f'version = "{new_version}"',
-        content,
-        count=1,
-        flags=re.MULTILINE
-    )
+    new_content = re.sub(r'^version\s*=\s*"(\d+)\.(\d+)\.(\d+)"', f'version = "{new_version}"', content, count=1, flags=re.MULTILINE)
 
     if content == new_content:
         raise ValueError("Failed to update version in pyproject.toml")
@@ -153,13 +146,7 @@ def update_init_version(init_path: Path, new_version: str) -> None:
     content = init_path.read_text()
 
     # Replace __version__ line
-    new_content = re.sub(
-        r'^__version__\s*=\s*"(\d+)\.(\d+)\.(\d+)"',
-        f'__version__ = "{new_version}"',
-        content,
-        count=1,
-        flags=re.MULTILINE
-    )
+    new_content = re.sub(r'^__version__\s*=\s*"(\d+)\.(\d+)\.(\d+)"', f'__version__ = "{new_version}"', content, count=1, flags=re.MULTILINE)
 
     if content == new_content:
         raise ValueError("Failed to update version in __init__.py")

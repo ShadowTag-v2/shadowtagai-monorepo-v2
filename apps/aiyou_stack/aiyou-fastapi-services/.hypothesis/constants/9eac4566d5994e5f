@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/agents/base.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.7, 1000, 2048, 'agent_rating', 'agent_success_rate', 'average_cost_usd', 'average_latency_ms', 'name', 'rating', 'rating_deviation', 'success_rate', 'total_executions', 'volatility']

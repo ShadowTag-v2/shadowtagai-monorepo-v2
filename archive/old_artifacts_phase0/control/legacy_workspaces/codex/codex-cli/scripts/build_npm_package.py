@@ -41,16 +41,13 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--release-version",
-        help=(
-            "Version to stage for npm release."
-        ),
+        help=("Version to stage for npm release."),
     )
     parser.add_argument(
         "--staging-dir",
         type=Path,
         help=(
-            "Directory to stage the package contents. Defaults to a new temporary directory "
-            "if omitted. The directory must be empty when provided."
+            "Directory to stage the package contents. Defaults to a new temporary directory if omitted. The directory must be empty when provided."
         ),
     )
     parser.add_argument(
@@ -185,7 +182,7 @@ def stage_sources(staging_dir: Path, version: str, package: str) -> None:
     else:
         raise RuntimeError(f"Unknown package '{package}'.")
 
-    with open(package_json_path, "r", encoding="utf-8") as fh:
+    with open(package_json_path, encoding="utf-8") as fh:
         package_json = json.load(fh)
     package_json["version"] = version
 
@@ -260,9 +257,7 @@ def copy_native_binaries(vendor_src: Path, staging_dir: Path, components: list[s
 
             src_component_dir = target_dir / dest_dir_name
             if not src_component_dir.exists():
-                raise RuntimeError(
-                    f"Missing native component '{component}' in vendor source: {src_component_dir}"
-                )
+                raise RuntimeError(f"Missing native component '{component}' in vendor source: {src_component_dir}")
 
             dest_component_dir = dest_target_dir / dest_dir_name
             if dest_component_dir.exists():

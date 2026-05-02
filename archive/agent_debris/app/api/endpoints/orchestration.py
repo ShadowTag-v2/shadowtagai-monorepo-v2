@@ -1,7 +1,8 @@
 """Orchestration API endpoints"""
+
 from fastapi import APIRouter, Request, HTTPException
 from pydantic import BaseModel
-from typing import Dict, List, Any, Optional
+from typing import Any
 
 router = APIRouter()
 
@@ -26,11 +27,7 @@ async def orchestrate_chain(request: ReasoningChainRequest, req: Request):
     if not orchestrator:
         raise HTTPException(status_code=503, detail="Orchestrator not initialized")
 
-    result = await orchestrator.orchestrate_reasoning_chain(
-        session_id=request.session_id,
-        query=request.query,
-        context=request.context
-    )
+    result = await orchestrator.orchestrate_reasoning_chain(session_id=request.session_id, query=request.query, context=request.context)
 
     return result
 
@@ -44,11 +41,7 @@ async def orchestrate_multi_agent(request: MultiAgentRequest, req: Request):
         raise HTTPException(status_code=503, detail="Orchestrator not initialized")
 
     # For simplicity, using empty tools list
-    result = await orchestrator.orchestrate_multi_agent(
-        session_id=request.session_id,
-        task=request.task,
-        tools=[]
-    )
+    result = await orchestrator.orchestrate_multi_agent(session_id=request.session_id, task=request.task, tools=[])
 
     return result
 

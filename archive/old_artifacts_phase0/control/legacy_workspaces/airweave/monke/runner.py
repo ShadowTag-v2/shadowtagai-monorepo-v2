@@ -162,9 +162,7 @@ async def run_parallel_with_ui(runs: dict[str, RunState], max_concurrency: int) 
     # Partition runs if concurrency is limited
     run_list = list(runs.values())
     if max_concurrency > 0:
-        chunks = [
-            run_list[i : i + max_concurrency] for i in range(0, len(run_list), max_concurrency)
-        ]
+        chunks = [run_list[i : i + max_concurrency] for i in range(0, len(run_list), max_concurrency)]
     else:
         chunks = [run_list]
 
@@ -235,9 +233,7 @@ async def run_parallel_simple(runs: dict[str, RunState], max_concurrency: int) -
 
     run_list = list(runs.values())
     if max_concurrency > 0:
-        chunks = [
-            run_list[i : i + max_concurrency] for i in range(0, len(run_list), max_concurrency)
-        ]
+        chunks = [run_list[i : i + max_concurrency] for i in range(0, len(run_list), max_concurrency)]
     else:
         chunks = [run_list]
 
@@ -310,9 +306,7 @@ Examples:
         help="Maximum parallel tests (default: 5)",
     )
     parser.add_argument("--env", default=".env", help="Environment file (default: .env)")
-    parser.add_argument(
-        "--run-id-prefix", default="test-", help="Prefix for run IDs (default: test-)"
-    )
+    parser.add_argument("--run-id-prefix", default="test-", help="Prefix for run IDs (default: test-)")
     parser.add_argument("--no-ui", action="store_true", help="Disable Rich UI even if available")
 
     args = parser.parse_args()

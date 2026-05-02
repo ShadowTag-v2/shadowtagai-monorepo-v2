@@ -20,7 +20,7 @@ from google.adk.tools.base_tool import BaseTool
 from google.adk.tools.base_toolset import BaseToolset
 from google.adk.tools.tool_context import ToolContext
 from toolbox_core.utils import validate_unused_requirements
-from typing_extensions import override
+from typing import override
 
 from .client import ToolboxClient
 from .credentials import CredentialConfig

@@ -25,9 +25,7 @@ def release_monkeys(target_url: str, instances: int = 10) -> None:
         logger.info(f"🐵 [n-autoresearch/Kosmos/BioAgents] No instances requested for {target_url}.")
         return
 
-    logger.info(
-        f"🐵 [n-autoresearch/Kosmos/BioAgents] Spawning {instances} Antigravity instances targeting {target_url}..."
-    )
+    logger.info(f"🐵 [n-autoresearch/Kosmos/BioAgents] Spawning {instances} Antigravity instances targeting {target_url}...")
     results = []
     for i in range(instances):
         latency = random.uniform(0.05, 0.12)  # Simulating ~90ms latency

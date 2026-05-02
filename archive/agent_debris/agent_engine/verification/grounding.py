@@ -26,7 +26,7 @@ class VertexGroundingEngine:
             f"https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-3.1-flash-lite-preview:streamGenerateContent?key={self.api_key}"
         )
 
-    def stream_query(self, prompt: str) -> Generator[str, None, None]:
+    def stream_query(self, prompt: str) -> Generator[str]:
         """
         Streams a grounded response from Vertex AI using Gemini 2.5 Flash Lite.
         """

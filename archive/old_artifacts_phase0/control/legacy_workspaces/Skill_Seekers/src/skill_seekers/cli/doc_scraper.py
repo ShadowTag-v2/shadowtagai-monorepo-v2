@@ -20,7 +20,7 @@ import sys
 import time
 from collections import defaultdict, deque
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 from urllib.parse import urljoin, urlparse
 
 import httpx
@@ -61,18 +61,14 @@ def setup_logging(verbose: bool = False, quiet: bool = False) -> None:
     else:
         level = logging.INFO
 
-    logging.basicConfig(
-        level=level,
-        format='%(message)s',
-        force=True
-    )
+    logging.basicConfig(level=level, format="%(message)s", force=True)
 
 
 class DocToSkillConverter:
     def __init__(self, config: dict[str, Any], dry_run: bool = False, resume: bool = False) -> None:
         self.config = config
-        self.name = config['name']
-        self.base_url = config['base_url']
+        self.name = config["name"]
+        self.base_url = config["base_url"]
         self.dry_run = dry_run
         self.resume = resume
 
@@ -82,17 +78,14 @@ class DocToSkillConverter:
         self.checkpoint_file = f"{self.data_dir}/checkpoint.json"
 
         # Checkpoint config
-        checkpoint_config = config.get('checkpoint', {})
-        self.checkpoint_enabled = checkpoint_config.get('enabled', False)
-        self.checkpoint_interval = checkpoint_config.get('interval', DEFAULT_CHECKPOINT_INTERVAL)
+        checkpoint_config = config.get("checkpoint", {})
+        self.checkpoint_enabled = checkpoint_config.get("enabled", False)
+        self.checkpoint_interval = checkpoint_config.get("interval", DEFAULT_CHECKPOINT_INTERVAL)
 
         # llms.txt detection state
-        skip_llms_txt_value = config.get('skip_llms_txt', False)
+        skip_llms_txt_value = config.get("skip_llms_txt", False)
         if not isinstance(skip_llms_txt_value, bool):
-            logger.warning(
-                "Invalid value for 'skip_llms_txt': %r (expected bool). Defaulting to False.",
-                skip_llms_txt_value
-            )
+            logger.warning("Invalid value for 'skip_llms_txt': %r (expected bool). Defaulting to False.", skip_llms_txt_value)
             self.skip_llms_txt = False
         else:
             self.skip_llms_txt = skip_llms_txt_value
@@ -101,13 +94,13 @@ class DocToSkillConverter:
         self.llms_txt_variants: list[str] = []  # Track all downloaded variants
 
         # Parallel scraping config
-        self.workers = config.get('workers', 1)
-        self.async_mode = config.get('async_mode', DEFAULT_ASYNC_MODE)
+        self.workers = config.get("workers", 1)
+        self.async_mode = config.get("async_mode", DEFAULT_ASYNC_MODE)
 
         # State
         self.visited_urls: set[str] = set()
         # Support multiple starting URLs
-        start_urls = config.get('start_urls', [self.base_url])
+        start_urls = config.get("start_urls", [self.base_url])
         self.pending_urls = deque(start_urls)
         self.pages: list[dict[str, Any]] = []
         self.pages_scraped = 0
@@ -115,6 +108,7 @@ class DocToSkillConverter:
         # Thread-safe lock for parallel scraping
         if self.workers > 1:
             import threading
+
             self.lock = threading.Lock()
 
         # Create directories (unless dry-run)
@@ -141,12 +135,12 @@ class DocToSkillConverter:
             return False
 
         # Include patterns
-        includes = self.config.get('url_patterns', {}).get('include', [])
+        includes = self.config.get("url_patterns", {}).get("include", [])
         if includes and not any(pattern in url for pattern in includes):
             return False
 
         # Exclude patterns
-        excludes = self.config.get('url_patterns', {}).get('exclude', [])
+        excludes = self.config.get("url_patterns", {}).get("exclude", [])
         if any(pattern in url for pattern in excludes):
             return False
 
@@ -163,11 +157,11 @@ class DocToSkillConverter:
             "pending_urls": list(self.pending_urls),
             "pages_scraped": self.pages_scraped,
             "last_updated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "checkpoint_interval": self.checkpoint_interval
+            "checkpoint_interval": self.checkpoint_interval,
         }
 
         try:
-            with open(self.checkpoint_file, 'w') as f:
+            with open(self.checkpoint_file, "w") as f:
                 json.dump(checkpoint_data, f, indent=2)
             logger.info("  💾 Checkpoint saved (%d pages)", self.pages_scraped)
         except Exception as e:
@@ -191,7 +185,7 @@ class DocToSkillConverter:
             logger.info("   Pages already scraped: %d", self.pages_scraped)
             logger.info("   URLs visited: %d", len(self.visited_urls))
             logger.info("   URLs pending: %d", len(self.pending_urls))
-            logger.info("   Last updated: %s", checkpoint_data['last_updated'])
+            logger.info("   Last updated: %s", checkpoint_data["last_updated"])
             logger.info("")
 
         except Exception as e:
@@ -210,24 +204,24 @@ class DocToSkillConverter:
     def extract_content(self, soup: Any, url: str) -> dict[str, Any]:
         """Extract content with improved code and pattern detection"""
         page = {
-            'url': url,
-            'title': '',
-            'content': '',
-            'headings': [],
-            'code_samples': [],
-            'patterns': [],  # NEW: Extract common patterns
-            'links': []
+            "url": url,
+            "title": "",
+            "content": "",
+            "headings": [],
+            "code_samples": [],
+            "patterns": [],  # NEW: Extract common patterns
+            "links": [],
         }
 
-        selectors = self.config.get('selectors', {})
+        selectors = self.config.get("selectors", {})
 
         # Extract title
-        title_elem = soup.select_one(selectors.get('title', 'title'))
+        title_elem = soup.select_one(selectors.get("title", "title"))
         if title_elem:
-            page['title'] = self.clean_text(title_elem.get_text())
+            page["title"] = self.clean_text(title_elem.get_text())
 
         # Find main content
-        main_selector = selectors.get('main_content', 'div[role="main"]')
+        main_selector = selectors.get("main_content", 'div[role="main"]')
         main = soup.select_one(main_selector)
 
         if not main:
@@ -235,47 +229,40 @@ class DocToSkillConverter:
             return page
 
         # Extract headings with better structure
-        for h in main.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+        for h in main.find_all(["h1", "h2", "h3", "h4", "h5", "h6"]):
             text = self.clean_text(h.get_text())
             if text:
-                page['headings'].append({
-                    'level': h.name,
-                    'text': text,
-                    'id': h.get('id', '')
-                })
+                page["headings"].append({"level": h.name, "text": text, "id": h.get("id", "")})
 
         # Extract code with language detection
-        code_selector = selectors.get('code_blocks', 'pre code')
+        code_selector = selectors.get("code_blocks", "pre code")
         for code_elem in main.select(code_selector):
             code = code_elem.get_text()
             if len(code.strip()) > 10:
                 # Try to detect language
                 lang = self.detect_language(code_elem, code)
-                page['code_samples'].append({
-                    'code': code.strip(),
-                    'language': lang
-                })
+                page["code_samples"].append({"code": code.strip(), "language": lang})
 
         # Extract patterns (NEW: common code patterns)
-        page['patterns'] = self.extract_patterns(main, page['code_samples'])
+        page["patterns"] = self.extract_patterns(main, page["code_samples"])
 
         # Extract paragraphs
         paragraphs = []
-        for p in main.find_all('p'):
+        for p in main.find_all("p"):
             text = self.clean_text(p.get_text())
             if text and len(text) > 20:  # Skip very short paragraphs
                 paragraphs.append(text)
 
-        page['content'] = '\n\n'.join(paragraphs)
+        page["content"] = "\n\n".join(paragraphs)
 
         # Extract links from entire page (not just main content)
         # This allows discovery of navigation links outside the main content area
-        for link in soup.find_all('a', href=True):
-            href = urljoin(url, link['href'])
+        for link in soup.find_all("a", href=True):
+            href = urljoin(url, link["href"])
             # Strip anchor fragments to avoid treating #anchors as separate pages
-            href = href.split('#')[0]
-            if self.is_valid_url(href) and href not in page['links']:
-                page['links'].append(href)
+            href = href.split("#")[0]
+            if self.is_valid_url(href) and href not in page["links"]:
+                page["links"].append(href)
 
         return page
 
@@ -291,25 +278,55 @@ class DocToSkillConverter:
         """
         # Define common programming languages
         known_languages = [
-            "javascript", "java", "xml", "html", "python", "bash", "cpp", "typescript",
-            "go", "rust", "php", "ruby", "swift", "kotlin", "csharp", "c", "sql",
-            "yaml", "json", "markdown", "css", "scss", "sass", "jsx", "tsx", "vue",
-            "shell", "powershell", "r", "scala", "dart", "perl", "lua", "elixir"
+            "javascript",
+            "java",
+            "xml",
+            "html",
+            "python",
+            "bash",
+            "cpp",
+            "typescript",
+            "go",
+            "rust",
+            "php",
+            "ruby",
+            "swift",
+            "kotlin",
+            "csharp",
+            "c",
+            "sql",
+            "yaml",
+            "json",
+            "markdown",
+            "css",
+            "scss",
+            "sass",
+            "jsx",
+            "tsx",
+            "vue",
+            "shell",
+            "powershell",
+            "r",
+            "scala",
+            "dart",
+            "perl",
+            "lua",
+            "elixir",
         ]
 
         for cls in classes:
             # Clean special characters (except word chars and hyphens)
-            cls = re.sub(r'[^\w-]', '', cls)
+            cls = re.sub(r"[^\w-]", "", cls)
 
-            if 'language-' in cls:
-                return cls.replace('language-', '')
+            if "language-" in cls:
+                return cls.replace("language-", "")
 
-            if 'lang-' in cls:
-                return cls.replace('lang-', '')
+            if "lang-" in cls:
+                return cls.replace("lang-", "")
 
             # Check for brush: pattern (e.g., "brush: java")
-            if 'brush' in cls.lower():
-                lang = cls.lower().replace('brush', '').strip()
+            if "brush" in cls.lower():
+                lang = cls.lower().replace("brush", "").strip()
                 if lang in known_languages:
                     return lang
 
@@ -323,71 +340,68 @@ class DocToSkillConverter:
         """Detect programming language from code block"""
 
         # Check element classes
-        lang = self._extract_language_from_classes(elem.get('class', []))
+        lang = self._extract_language_from_classes(elem.get("class", []))
         if lang:
             return lang
 
         # Check parent pre element
         parent = elem.parent
-        if parent and parent.name == 'pre':
-            lang = self._extract_language_from_classes(parent.get('class', []))
+        if parent and parent.name == "pre":
+            lang = self._extract_language_from_classes(parent.get("class", []))
             if lang:
                 return lang
 
         # Heuristic detection
-        if 'import ' in code and 'from ' in code:
-            return 'python'
-        if 'const ' in code or 'let ' in code or '=>' in code:
-            return 'javascript'
-        if 'func ' in code and 'var ' in code:
-            return 'gdscript'
-        if 'def ' in code and ':' in code:
-            return 'python'
-        if '#include' in code or 'int main' in code:
-            return 'cpp'
+        if "import " in code and "from " in code:
+            return "python"
+        if "const " in code or "let " in code or "=>" in code:
+            return "javascript"
+        if "func " in code and "var " in code:
+            return "gdscript"
+        if "def " in code and ":" in code:
+            return "python"
+        if "#include" in code or "int main" in code:
+            return "cpp"
         # C# detection
-        if 'using System' in code or 'namespace ' in code:
-            return 'csharp'
-        if '{ get; set; }' in code:
-            return 'csharp'
-        if any(keyword in code for keyword in ['public class ', 'private class ', 'internal class ', 'public static void ']):
-            return 'csharp'
+        if "using System" in code or "namespace " in code:
+            return "csharp"
+        if "{ get; set; }" in code:
+            return "csharp"
+        if any(keyword in code for keyword in ["public class ", "private class ", "internal class ", "public static void "]):
+            return "csharp"
 
-        return 'unknown'
+        return "unknown"
 
     def extract_patterns(self, main: Any, code_samples: list[dict[str, Any]]) -> list[dict[str, str]]:
         """Extract common coding patterns (NEW FEATURE)"""
         patterns = []
 
         # Look for "Example:" or "Pattern:" sections
-        for elem in main.find_all(['p', 'div']):
+        for elem in main.find_all(["p", "div"]):
             text = elem.get_text().lower()
-            if any(word in text for word in ['example:', 'pattern:', 'usage:', 'typical use']):
+            if any(word in text for word in ["example:", "pattern:", "usage:", "typical use"]):
                 # Get the code that follows
-                next_code = elem.find_next(['pre', 'code'])
+                next_code = elem.find_next(["pre", "code"])
                 if next_code:
-                    patterns.append({
-                        'description': self.clean_text(elem.get_text()),
-                        'code': next_code.get_text().strip()
-                    })
+                    patterns.append({"description": self.clean_text(elem.get_text()), "code": next_code.get_text().strip()})
 
         return patterns[:5]  # Limit to 5 most relevant patterns
 
     def clean_text(self, text: str) -> str:
         """Clean text content"""
-        text = re.sub(r'\s+', ' ', text)
+        text = re.sub(r"\s+", " ", text)
         return text.strip()
 
     def save_page(self, page: dict[str, Any]) -> None:
         """Save page data"""
-        url_hash = hashlib.md5(page['url'].encode()).hexdigest()[:10]
-        safe_title = re.sub(r'[^\w\s-]', '', page['title'])[:50]
-        safe_title = re.sub(r'[-\s]+', '_', safe_title)
+        url_hash = hashlib.md5(page["url"].encode()).hexdigest()[:10]
+        safe_title = re.sub(r"[^\w\s-]", "", page["title"])[:50]
+        safe_title = re.sub(r"[-\s]+", "_", safe_title)
 
         filename = f"{safe_title}_{url_hash}.json"
         filepath = os.path.join(self.data_dir, "pages", filename)
 
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             json.dump(page, f, indent=2, ensure_ascii=False)
 
     def scrape_page(self, url: str) -> None:
@@ -404,11 +418,11 @@ class DocToSkillConverter:
         """
         try:
             # Scraping part (no lock needed - independent)
-            headers = {'User-Agent': 'Mozilla/5.0 (Documentation Scraper)'}
+            headers = {"User-Agent": "Mozilla/5.0 (Documentation Scraper)"}
             response = requests.get(url, headers=headers, timeout=30)
             response.raise_for_status()
 
-            soup = BeautifulSoup(response.content, 'html.parser')
+            soup = BeautifulSoup(response.content, "html.parser")
             page = self.extract_content(soup, url)
 
             # Thread-safe operations (lock required)
@@ -419,7 +433,7 @@ class DocToSkillConverter:
                     self.pages.append(page)
 
                     # Add new URLs
-                    for link in page['links']:
+                    for link in page["links"]:
                         if link not in self.visited_urls and link not in self.pending_urls:
                             self.pending_urls.append(link)
             else:
@@ -429,12 +443,12 @@ class DocToSkillConverter:
                 self.pages.append(page)
 
                 # Add new URLs
-                for link in page['links']:
+                for link in page["links"]:
                     if link not in self.visited_urls and link not in self.pending_urls:
                         self.pending_urls.append(link)
 
             # Rate limiting
-            rate_limit = self.config.get('rate_limit', DEFAULT_RATE_LIMIT)
+            rate_limit = self.config.get("rate_limit", DEFAULT_RATE_LIMIT)
             if rate_limit > 0:
                 time.sleep(rate_limit)
 
@@ -460,12 +474,12 @@ class DocToSkillConverter:
         async with semaphore:  # Limit concurrent requests
             try:
                 # Async HTTP request
-                headers = {'User-Agent': 'Mozilla/5.0 (Documentation Scraper)'}
+                headers = {"User-Agent": "Mozilla/5.0 (Documentation Scraper)"}
                 response = await client.get(url, headers=headers, timeout=30.0)
                 response.raise_for_status()
 
                 # BeautifulSoup parsing (still synchronous, but fast)
-                soup = BeautifulSoup(response.content, 'html.parser')
+                soup = BeautifulSoup(response.content, "html.parser")
                 page = self.extract_content(soup, url)
 
                 # Async-safe operations (no lock needed - single event loop)
@@ -474,12 +488,12 @@ class DocToSkillConverter:
                 self.pages.append(page)
 
                 # Add new URLs
-                for link in page['links']:
+                for link in page["links"]:
                     if link not in self.visited_urls and link not in self.pending_urls:
                         self.pending_urls.append(link)
 
                 # Rate limiting
-                rate_limit = self.config.get('rate_limit', DEFAULT_RATE_LIMIT)
+                rate_limit = self.config.get("rate_limit", DEFAULT_RATE_LIMIT)
                 if rate_limit > 0:
                     await asyncio.sleep(rate_limit)
 
@@ -497,7 +511,7 @@ class DocToSkillConverter:
         logger.info("\n🔍 Checking for llms.txt at %s...", self.base_url)
 
         # Check for explicit config URL first
-        explicit_url = self.config.get('llms_txt_url')
+        explicit_url = self.config.get("llms_txt_url")
         if explicit_url:
             logger.info("\n📌 Using explicit llms_txt_url from config: %s", explicit_url)
 
@@ -511,7 +525,7 @@ class DocToSkillConverter:
                 filepath = os.path.join(self.skill_dir, "references", filename)
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
 
-                with open(filepath, 'w', encoding='utf-8') as f:
+                with open(filepath, "w", encoding="utf-8") as f:
                     f.write(content)
                 logger.info("  💾 Saved %s (%d chars)", filename, len(content))
 
@@ -522,8 +536,8 @@ class DocToSkillConverter:
                 if variants:
                     logger.info("\n🔍 Found %d total variant(s), downloading remaining...", len(variants))
                     for variant_info in variants:
-                        url = variant_info['url']
-                        variant = variant_info['variant']
+                        url = variant_info["url"]
+                        variant = variant_info["variant"]
 
                         # Skip the explicit one we already downloaded
                         if url == explicit_url:
@@ -536,7 +550,7 @@ class DocToSkillConverter:
                         if extra_content:
                             extra_filename = extra_downloader.get_proper_filename()
                             extra_filepath = os.path.join(self.skill_dir, "references", extra_filename)
-                            with open(extra_filepath, 'w', encoding='utf-8') as f:
+                            with open(extra_filepath, "w", encoding="utf-8") as f:
                                 f.write(extra_content)
                             logger.info("     ✓ %s (%d chars)", extra_filename, len(extra_content))
 
@@ -550,7 +564,7 @@ class DocToSkillConverter:
                         self.pages.append(page)
 
                     self.llms_txt_detected = True
-                    self.llms_txt_variant = 'explicit'
+                    self.llms_txt_variant = "explicit"
                     return True
 
         # Auto-detection: Find ALL variants
@@ -566,8 +580,8 @@ class DocToSkillConverter:
         # Download ALL variants
         downloaded = {}
         for variant_info in variants:
-            url = variant_info['url']
-            variant = variant_info['variant']
+            url = variant_info["url"]
+            variant = variant_info["variant"]
 
             logger.info("  📥 Downloading %s...", variant)
             downloader = LlmsTxtDownloader(url)
@@ -575,11 +589,7 @@ class DocToSkillConverter:
 
             if content:
                 filename = downloader.get_proper_filename()
-                downloaded[variant] = {
-                    'content': content,
-                    'filename': filename,
-                    'size': len(content)
-                }
+                downloaded[variant] = {"content": content, "filename": filename, "size": len(content)}
                 logger.info("     ✓ %s (%d chars)", filename, len(content))
 
         if not downloaded:
@@ -590,16 +600,16 @@ class DocToSkillConverter:
         os.makedirs(os.path.join(self.skill_dir, "references"), exist_ok=True)
 
         for variant, data in downloaded.items():
-            filepath = os.path.join(self.skill_dir, "references", data['filename'])
-            with open(filepath, 'w', encoding='utf-8') as f:
-                f.write(data['content'])
-            logger.info("  💾 Saved %s", data['filename'])
+            filepath = os.path.join(self.skill_dir, "references", data["filename"])
+            with open(filepath, "w", encoding="utf-8") as f:
+                f.write(data["content"])
+            logger.info("  💾 Saved %s", data["filename"])
 
         # Parse LARGEST variant for skill building
-        largest = max(downloaded.items(), key=lambda x: x[1]['size'])
-        logger.info("\n📄 Parsing %s for skill building...", largest[1]['filename'])
+        largest = max(downloaded.items(), key=lambda x: x[1]["size"])
+        logger.info("\n📄 Parsing %s for skill building...", largest[1]["filename"])
 
-        parser = LlmsTxtParser(largest[1]['content'])
+        parser = LlmsTxtParser(largest[1]["content"])
         pages = parser.parse()
 
         if not pages:
@@ -653,7 +663,7 @@ class DocToSkillConverter:
                 logger.info("Workers: %d parallel threads", self.workers)
             logger.info("")
 
-        max_pages = self.config.get('max_pages', DEFAULT_MAX_PAGES)
+        max_pages = self.config.get("max_pages", DEFAULT_MAX_PAGES)
 
         # Handle unlimited mode
         if max_pages is None or max_pages == -1:
@@ -679,16 +689,16 @@ class DocToSkillConverter:
                     # Just show what would be scraped
                     logger.info("  [Preview] %s", url)
                     try:
-                        headers = {'User-Agent': 'Mozilla/5.0 (Documentation Scraper - Dry Run)'}
+                        headers = {"User-Agent": "Mozilla/5.0 (Documentation Scraper - Dry Run)"}
                         response = requests.get(url, headers=headers, timeout=10)
-                        soup = BeautifulSoup(response.content, 'html.parser')
+                        soup = BeautifulSoup(response.content, "html.parser")
 
-                        main_selector = self.config.get('selectors', {}).get('main_content', 'div[role="main"]')
+                        main_selector = self.config.get("selectors", {}).get("main_content", 'div[role="main"]')
                         main = soup.select_one(main_selector)
 
                         if main:
-                            for link in main.find_all('a', href=True):
-                                href = urljoin(url, link['href'])
+                            for link in main.find_all("a", href=True):
+                                href = urljoin(url, link["href"])
                                 if self.is_valid_url(href) and href not in self.visited_urls:
                                     self.pending_urls.append(href)
                     except Exception as e:
@@ -812,13 +822,13 @@ class DocToSkillConverter:
             logger.info("Workers: %d concurrent tasks (async)", self.workers)
             logger.info("")
 
-        max_pages = self.config.get('max_pages', DEFAULT_MAX_PAGES)
+        max_pages = self.config.get("max_pages", DEFAULT_MAX_PAGES)
 
         # Handle unlimited mode
         if max_pages is None or max_pages == -1:
             logger.warning("⚠️  UNLIMITED MODE: No page limit (will scrape all pages)\n")
             unlimited = True
-            preview_limit = float('inf')
+            preview_limit = float("inf")
         else:
             unlimited = False
             preview_limit = 20 if self.dry_run else max_pages
@@ -827,10 +837,7 @@ class DocToSkillConverter:
         semaphore = asyncio.Semaphore(self.workers)
 
         # Create shared HTTP client with connection pooling
-        async with httpx.AsyncClient(
-            timeout=30.0,
-            limits=httpx.Limits(max_connections=self.workers * 2)
-        ) as client:
+        async with httpx.AsyncClient(timeout=30.0, limits=httpx.Limits(max_connections=self.workers * 2)) as client:
             tasks = []
 
             while self.pending_urls and (unlimited or len(self.visited_urls) < preview_limit):
@@ -853,9 +860,7 @@ class DocToSkillConverter:
                         if self.dry_run:
                             logger.info("  [Preview] %s", url)
                         else:
-                            task = asyncio.create_task(
-                                self.scrape_page_async(url, semaphore, client)
-                            )
+                            task = asyncio.create_task(self.scrape_page_async(url, semaphore, client))
                             tasks.append(task)
 
                 # Wait for batch to complete before continuing
@@ -889,15 +894,15 @@ class DocToSkillConverter:
     def save_summary(self) -> None:
         """Save scraping summary"""
         summary = {
-            'name': self.name,
-            'total_pages': len(self.pages),
-            'base_url': self.base_url,
-            'llms_txt_detected': self.llms_txt_detected,
-            'llms_txt_variant': self.llms_txt_variant,
-            'pages': [{'title': p['title'], 'url': p['url']} for p in self.pages]
+            "name": self.name,
+            "total_pages": len(self.pages),
+            "base_url": self.base_url,
+            "llms_txt_detected": self.llms_txt_detected,
+            "llms_txt_variant": self.llms_txt_variant,
+            "pages": [{"title": p["title"], "url": p["url"]} for p in self.pages],
         }
 
-        with open(f"{self.data_dir}/summary.json", 'w', encoding='utf-8') as f:
+        with open(f"{self.data_dir}/summary.json", "w", encoding="utf-8") as f:
             json.dump(summary, f, indent=2, ensure_ascii=False)
 
     def load_scraped_data(self) -> list[dict[str, Any]]:
@@ -910,7 +915,7 @@ class DocToSkillConverter:
 
         for json_file in pages_dir.glob("*.json"):
             try:
-                with open(json_file, encoding='utf-8') as f:
+                with open(json_file, encoding="utf-8") as f:
                     pages.append(json.load(f))
             except Exception as e:
                 logger.error("⚠️  Error loading scraped data file %s: %s: %s", json_file, type(e).__name__, e)
@@ -920,19 +925,19 @@ class DocToSkillConverter:
 
     def smart_categorize(self, pages: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
         """Improved categorization with better pattern matching"""
-        category_defs = self.config.get('categories', {})
+        category_defs = self.config.get("categories", {})
 
         # Default smart categories if none provided
         if not category_defs:
             category_defs = self.infer_categories(pages)
 
         categories: dict[str, list[dict[str, Any]]] = {cat: [] for cat in category_defs.keys()}
-        categories['other'] = []
+        categories["other"] = []
 
         for page in pages:
-            url = page['url'].lower()
-            title = page['title'].lower()
-            content = page.get('content', '').lower()[:CONTENT_PREVIEW_LENGTH]  # Check first N chars for categorization
+            url = page["url"].lower()
+            title = page["title"].lower()
+            content = page.get("content", "").lower()[:CONTENT_PREVIEW_LENGTH]  # Check first N chars for categorization
 
             categorized = False
 
@@ -954,7 +959,7 @@ class DocToSkillConverter:
                     break
 
             if not categorized:
-                categories['other'].append(page)
+                categories["other"].append(page)
 
         # Remove empty categories
         categories = {k: v for k, v in categories.items() if v}
@@ -966,8 +971,8 @@ class DocToSkillConverter:
         url_segments: defaultdict[str, int] = defaultdict(int)
 
         for page in pages:
-            path = urlparse(page['url']).path
-            segments = [s for s in path.split('/') if s and s not in ['en', 'stable', 'latest', 'docs']]
+            path = urlparse(page["url"]).path
+            segments = [s for s in path.split("/") if s and s not in ["en", "stable", "latest", "docs"]]
 
             for seg in segments:
                 url_segments[seg] += 1
@@ -981,11 +986,11 @@ class DocToSkillConverter:
                 categories[seg] = [seg]
 
         # Add common defaults
-        if 'tutorial' not in categories and any('tutorial' in url for url in [p['url'] for p in pages]):
-            categories['tutorials'] = ['tutorial', 'guide', 'getting-started']
+        if "tutorial" not in categories and any("tutorial" in url for url in [p["url"] for p in pages]):
+            categories["tutorials"] = ["tutorial", "guide", "getting-started"]
 
-        if 'api' not in categories and any('api' in url or 'reference' in url for url in [p['url'] for p in pages]):
-            categories['api'] = ['api', 'reference', 'class']
+        if "api" not in categories and any("api" in url or "reference" in url for url in [p["url"] for p in pages]):
+            categories["api"] = ["api", "reference", "class"]
 
         return categories
 
@@ -996,12 +1001,12 @@ class DocToSkillConverter:
         # Collect all patterns
         all_patterns = []
         for page in pages:
-            all_patterns.extend(page.get('patterns', []))
+            all_patterns.extend(page.get("patterns", []))
 
         # Get most common code patterns
         seen_codes = set()
         for pattern in all_patterns:
-            code = pattern['code']
+            code = pattern["code"]
             if code not in seen_codes and len(code) < 300:
                 quick_ref.append(pattern)
                 seen_codes.add(code)
@@ -1025,25 +1030,25 @@ class DocToSkillConverter:
             lines.append(f"**URL:** {page['url']}\n")
 
             # Table of contents from headings
-            if page.get('headings'):
+            if page.get("headings"):
                 lines.append("**Contents:**")
-                for h in page['headings'][:10]:
-                    level = int(h['level'][1]) if len(h['level']) > 1 else 1
+                for h in page["headings"][:10]:
+                    level = int(h["level"][1]) if len(h["level"]) > 1 else 1
                     indent = "  " * max(0, level - 2)
                     lines.append(f"{indent}- {h['text']}")
                 lines.append("")
 
             # Content (NO TRUNCATION)
-            if page.get('content'):
-                lines.append(page['content'])
+            if page.get("content"):
+                lines.append(page["content"])
                 lines.append("")
 
             # Code examples with language (NO TRUNCATION)
-            if page.get('code_samples'):
+            if page.get("code_samples"):
                 lines.append("**Examples:**\n")
-                for i, sample in enumerate(page['code_samples'][:4], 1):
-                    lang = sample.get('language', 'unknown')
-                    code = sample.get('code', sample if isinstance(sample, str) else '')
+                for i, sample in enumerate(page["code_samples"][:4], 1):
+                    lang = sample.get("language", "unknown")
+                    code = sample.get("code", sample if isinstance(sample, str) else "")
                     lines.append(f"Example {i} ({lang}):")
                     lines.append(f"```{lang}")
                     lines.append(code)  # Full code, no truncation
@@ -1052,23 +1057,23 @@ class DocToSkillConverter:
             lines.append("---\n")
 
         filepath = os.path.join(self.skill_dir, "references", f"{category}.md")
-        with open(filepath, 'w', encoding='utf-8') as f:
-            f.write('\n'.join(lines))
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
 
         logger.info("  ✓ %s.md (%d pages)", category, len(pages))
 
     def create_enhanced_skill_md(self, categories: dict[str, list[dict[str, Any]]], quick_ref: list[dict[str, str]]) -> None:
         """Create SKILL.md with actual examples (IMPROVED)"""
-        description = self.config.get('description', f'Comprehensive assistance with {self.name}')
+        description = self.config.get("description", f"Comprehensive assistance with {self.name}")
 
         # Extract actual code examples from docs
         example_codes = []
         for pages in categories.values():
             for page in pages[:3]:  # First 3 pages per category
-                for sample in page.get('code_samples', [])[:2]:  # First 2 samples per page
-                    code = sample.get('code', sample if isinstance(sample, str) else '')
-                    lang = sample.get('language', 'unknown')
-                    if len(code) < 200 and lang != 'unknown':
+                for sample in page.get("code_samples", [])[:2]:  # First 2 samples per page
+                    code = sample.get("code", sample if isinstance(sample, str) else "")
+                    lang = sample.get("language", "unknown")
+                    if len(code) < 200 and lang != "unknown":
                         example_codes.append((lang, code))
                     if len(example_codes) >= 10:
                         break
@@ -1106,7 +1111,7 @@ This skill should be triggered when:
             for i, pattern in enumerate(quick_ref[:8], 1):
                 content += f"**Pattern {i}:** {pattern.get('description', 'Example pattern')}\n\n"
                 content += "```\n"
-                content += pattern.get('code', '')[:300]
+                content += pattern.get("code", "")[:300]
                 content += "\n```\n\n"
         else:
             content += "*Quick reference patterns will be added as you use the skill.*\n\n"
@@ -1170,7 +1175,7 @@ To refresh this skill with updated documentation:
 """
 
         filepath = os.path.join(self.skill_dir, "SKILL.md")
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             f.write(content)
 
         logger.info("  ✓ SKILL.md (enhanced with %d examples)", len(example_codes))
@@ -1187,8 +1192,8 @@ To refresh this skill with updated documentation:
             lines.append(f"**Pages:** {len(pages)}\n")
 
         filepath = os.path.join(self.skill_dir, "references", "index.md")
-        with open(filepath, 'w', encoding='utf-8') as f:
-            f.write('\n'.join(lines))
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
 
         logger.info("  ✓ index.md")
 
@@ -1260,66 +1265,66 @@ def validate_config(config: dict[str, Any]) -> tuple[list[str], list[str]]:
     warnings = []
 
     # Required fields
-    required_fields = ['name', 'base_url']
+    required_fields = ["name", "base_url"]
     for field in required_fields:
         if field not in config:
             errors.append(f"Missing required field: '{field}'")
 
     # Validate name (alphanumeric, hyphens, underscores only)
-    if 'name' in config:
-        if not re.match(r'^[a-zA-Z0-9_-]+$', config['name']):
+    if "name" in config:
+        if not re.match(r"^[a-zA-Z0-9_-]+$", config["name"]):
             errors.append(f"Invalid name: '{config['name']}' (use only letters, numbers, hyphens, underscores)")
 
     # Validate base_url
-    if 'base_url' in config:
-        if not config['base_url'].startswith(('http://', 'https://')):
+    if "base_url" in config:
+        if not config["base_url"].startswith(("http://", "https://")):
             errors.append(f"Invalid base_url: '{config['base_url']}' (must start with http:// or https://)")
 
     # Validate selectors structure
-    if 'selectors' in config:
-        if not isinstance(config['selectors'], dict):
+    if "selectors" in config:
+        if not isinstance(config["selectors"], dict):
             errors.append("'selectors' must be a dictionary")
         else:
-            recommended_selectors = ['main_content', 'title', 'code_blocks']
+            recommended_selectors = ["main_content", "title", "code_blocks"]
             for selector in recommended_selectors:
-                if selector not in config['selectors']:
+                if selector not in config["selectors"]:
                     warnings.append(f"Missing recommended selector: '{selector}'")
     else:
         warnings.append("Missing 'selectors' section (recommended)")
 
     # Validate url_patterns
-    if 'url_patterns' in config:
-        if not isinstance(config['url_patterns'], dict):
+    if "url_patterns" in config:
+        if not isinstance(config["url_patterns"], dict):
             errors.append("'url_patterns' must be a dictionary")
         else:
-            for key in ['include', 'exclude']:
-                if key in config['url_patterns']:
-                    if not isinstance(config['url_patterns'][key], list):
+            for key in ["include", "exclude"]:
+                if key in config["url_patterns"]:
+                    if not isinstance(config["url_patterns"][key], list):
                         errors.append(f"'url_patterns.{key}' must be a list")
 
     # Validate categories
-    if 'categories' in config:
-        if not isinstance(config['categories'], dict):
+    if "categories" in config:
+        if not isinstance(config["categories"], dict):
             errors.append("'categories' must be a dictionary")
         else:
-            for cat_name, keywords in config['categories'].items():
+            for cat_name, keywords in config["categories"].items():
                 if not isinstance(keywords, list):
                     errors.append(f"'categories.{cat_name}' must be a list of keywords")
 
     # Validate rate_limit
-    if 'rate_limit' in config:
+    if "rate_limit" in config:
         try:
-            rate = float(config['rate_limit'])
+            rate = float(config["rate_limit"])
             if rate < 0:
                 errors.append(f"'rate_limit' must be non-negative (got {rate})")
             elif rate > 10:
                 warnings.append(f"'rate_limit' is very high ({rate}s) - this may slow down scraping significantly")
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             errors.append(f"'rate_limit' must be a number (got {config['rate_limit']})")
 
     # Validate max_pages
-    if 'max_pages' in config:
-        max_p_value = config['max_pages']
+    if "max_pages" in config:
+        max_p_value = config["max_pages"]
 
         # Allow None for unlimited
         if max_p_value is None:
@@ -1334,16 +1339,16 @@ def validate_config(config: dict[str, Any]) -> tuple[list[str], list[str]]:
                     errors.append(f"'max_pages' must be at least 1 or -1 for unlimited (got {max_p})")
                 elif max_p > MAX_PAGES_WARNING_THRESHOLD:
                     warnings.append(f"'max_pages' is very high ({max_p}) - scraping may take a very long time")
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 errors.append(f"'max_pages' must be an integer, -1, or null (got {config['max_pages']})")
 
     # Validate start_urls if present
-    if 'start_urls' in config:
-        if not isinstance(config['start_urls'], list):
+    if "start_urls" in config:
+        if not isinstance(config["start_urls"], list):
             errors.append("'start_urls' must be a list")
         else:
-            for url in config['start_urls']:
-                if not url.startswith(('http://', 'https://')):
+            for url in config["start_urls"]:
+                if not url.startswith(("http://", "https://")):
                     errors.append(f"Invalid start_url: '{url}' (must start with http:// or https://)")
 
     return errors, warnings
@@ -1416,43 +1421,43 @@ def interactive_config() -> dict[str, Any]:
         >>> config['name']
         'react'
     """
-    logger.info("\n" + "="*60)
+    logger.info("\n" + "=" * 60)
     logger.info("Documentation to Skill Converter")
-    logger.info("="*60 + "\n")
+    logger.info("=" * 60 + "\n")
 
     config: dict[str, Any] = {}
 
     # Basic info
-    config['name'] = input("Skill name (e.g., 'react', 'godot'): ").strip()
-    config['description'] = input("Skill description: ").strip()
-    config['base_url'] = input("Base URL (e.g., https://docs.example.com/): ").strip()
+    config["name"] = input("Skill name (e.g., 'react', 'godot'): ").strip()
+    config["description"] = input("Skill description: ").strip()
+    config["base_url"] = input("Base URL (e.g., https://docs.example.com/): ").strip()
 
-    if not config['base_url'].endswith('/'):
-        config['base_url'] += '/'
+    if not config["base_url"].endswith("/"):
+        config["base_url"] += "/"
 
     # Selectors
     logger.info("\nCSS Selectors (press Enter for defaults):")
     selectors = {}
-    selectors['main_content'] = input("  Main content [div[role='main']]: ").strip() or "div[role='main']"
-    selectors['title'] = input("  Title [title]: ").strip() or "title"
-    selectors['code_blocks'] = input("  Code blocks [pre code]: ").strip() or "pre code"
-    config['selectors'] = selectors
+    selectors["main_content"] = input("  Main content [div[role='main']]: ").strip() or "div[role='main']"
+    selectors["title"] = input("  Title [title]: ").strip() or "title"
+    selectors["code_blocks"] = input("  Code blocks [pre code]: ").strip() or "pre code"
+    config["selectors"] = selectors
 
     # URL patterns
     logger.info("\nURL Patterns (comma-separated, optional):")
     include = input("  Include: ").strip()
     exclude = input("  Exclude: ").strip()
-    config['url_patterns'] = {
-        'include': [p.strip() for p in include.split(',') if p.strip()],
-        'exclude': [p.strip() for p in exclude.split(',') if p.strip()]
+    config["url_patterns"] = {
+        "include": [p.strip() for p in include.split(",") if p.strip()],
+        "exclude": [p.strip() for p in exclude.split(",") if p.strip()],
     }
 
     # Settings
     rate = input(f"\nRate limit (seconds) [{DEFAULT_RATE_LIMIT}]: ").strip()
-    config['rate_limit'] = float(rate) if rate else DEFAULT_RATE_LIMIT
+    config["rate_limit"] = float(rate) if rate else DEFAULT_RATE_LIMIT
 
     max_p = input(f"Max pages [{DEFAULT_MAX_PAGES}]: ").strip()
-    config['max_pages'] = int(max_p) if max_p else DEFAULT_MAX_PAGES
+    config["max_pages"] = int(max_p) if max_p else DEFAULT_MAX_PAGES
 
     return config
 
@@ -1475,7 +1480,7 @@ def check_existing_data(name: str) -> tuple[bool, int]:
     if os.path.exists(data_dir) and os.path.exists(f"{data_dir}/summary.json"):
         with open(f"{data_dir}/summary.json") as f:
             summary = json.load(f)
-        return True, summary.get('total_pages', 0)
+        return True, summary.get("total_pages", 0)
     return False, 0
 
 
@@ -1495,48 +1500,36 @@ def setup_argument_parser() -> argparse.ArgumentParser:
         configs/react.json
     """
     parser = argparse.ArgumentParser(
-        description='Convert documentation websites to Claude skills',
-        formatter_class=argparse.RawDescriptionHelpFormatter
+        description="Convert documentation websites to Claude skills", formatter_class=argparse.RawDescriptionHelpFormatter
     )
 
-    parser.add_argument('--interactive', '-i', action='store_true',
-                       help='Interactive configuration mode')
-    parser.add_argument('--config', '-c', type=str,
-                       help='Load configuration from file (e.g., configs/godot.json)')
-    parser.add_argument('--name', type=str,
-                       help='Skill name')
-    parser.add_argument('--url', type=str,
-                       help='Base documentation URL')
-    parser.add_argument('--description', '-d', type=str,
-                       help='Skill description')
-    parser.add_argument('--skip-scrape', action='store_true',
-                       help='Skip scraping, use existing data')
-    parser.add_argument('--dry-run', action='store_true',
-                       help='Preview what will be scraped without actually scraping')
-    parser.add_argument('--enhance', action='store_true',
-                       help='Enhance SKILL.md using Claude API after building (requires API key)')
-    parser.add_argument('--enhance-local', action='store_true',
-                       help='Enhance SKILL.md using Claude Code (no API key needed, runs in background)')
-    parser.add_argument('--interactive-enhancement', action='store_true',
-                       help='Open terminal window for enhancement (use with --enhance-local)')
-    parser.add_argument('--api-key', type=str,
-                       help='Anthropic API key for --enhance (or set ANTHROPIC_API_KEY)')
-    parser.add_argument('--resume', action='store_true',
-                       help='Resume from last checkpoint (for interrupted scrapes)')
-    parser.add_argument('--fresh', action='store_true',
-                       help='Clear checkpoint and start fresh')
-    parser.add_argument('--rate-limit', '-r', type=float, metavar='SECONDS',
-                       help=f'Override rate limit in seconds (default: from config or {DEFAULT_RATE_LIMIT}). Use 0 for no delay.')
-    parser.add_argument('--workers', '-w', type=int, metavar='N',
-                       help='Number of parallel workers for faster scraping (default: 1, max: 10)')
-    parser.add_argument('--async', dest='async_mode', action='store_true',
-                       help='Enable async mode for better parallel performance (2-3x faster than threads)')
-    parser.add_argument('--no-rate-limit', action='store_true',
-                       help='Disable rate limiting completely (same as --rate-limit 0)')
-    parser.add_argument('--verbose', '-v', action='store_true',
-                       help='Enable verbose output (DEBUG level logging)')
-    parser.add_argument('--quiet', '-q', action='store_true',
-                       help='Minimize output (WARNING level logging only)')
+    parser.add_argument("--interactive", "-i", action="store_true", help="Interactive configuration mode")
+    parser.add_argument("--config", "-c", type=str, help="Load configuration from file (e.g., configs/godot.json)")
+    parser.add_argument("--name", type=str, help="Skill name")
+    parser.add_argument("--url", type=str, help="Base documentation URL")
+    parser.add_argument("--description", "-d", type=str, help="Skill description")
+    parser.add_argument("--skip-scrape", action="store_true", help="Skip scraping, use existing data")
+    parser.add_argument("--dry-run", action="store_true", help="Preview what will be scraped without actually scraping")
+    parser.add_argument("--enhance", action="store_true", help="Enhance SKILL.md using Claude API after building (requires API key)")
+    parser.add_argument("--enhance-local", action="store_true", help="Enhance SKILL.md using Claude Code (no API key needed, runs in background)")
+    parser.add_argument("--interactive-enhancement", action="store_true", help="Open terminal window for enhancement (use with --enhance-local)")
+    parser.add_argument("--api-key", type=str, help="Anthropic API key for --enhance (or set ANTHROPIC_API_KEY)")
+    parser.add_argument("--resume", action="store_true", help="Resume from last checkpoint (for interrupted scrapes)")
+    parser.add_argument("--fresh", action="store_true", help="Clear checkpoint and start fresh")
+    parser.add_argument(
+        "--rate-limit",
+        "-r",
+        type=float,
+        metavar="SECONDS",
+        help=f"Override rate limit in seconds (default: from config or {DEFAULT_RATE_LIMIT}). Use 0 for no delay.",
+    )
+    parser.add_argument("--workers", "-w", type=int, metavar="N", help="Number of parallel workers for faster scraping (default: 1, max: 10)")
+    parser.add_argument(
+        "--async", dest="async_mode", action="store_true", help="Enable async mode for better parallel performance (2-3x faster than threads)"
+    )
+    parser.add_argument("--no-rate-limit", action="store_true", help="Disable rate limiting completely (same as --rate-limit 0)")
+    parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose output (DEBUG level logging)")
+    parser.add_argument("--quiet", "-q", action="store_true", help="Minimize output (WARNING level logging only)")
 
     return parser
 
@@ -1570,25 +1563,21 @@ def get_configuration(args: argparse.Namespace) -> dict[str, Any]:
         config = interactive_config()
     else:
         config = {
-            'name': args.name,
-            'description': args.description or f'Comprehensive assistance with {args.name}',
-            'base_url': args.url,
-            'selectors': {
-                'main_content': "div[role='main']",
-                'title': 'title',
-                'code_blocks': 'pre code'
-            },
-            'url_patterns': {'include': [], 'exclude': []},
-            'rate_limit': DEFAULT_RATE_LIMIT,
-            'max_pages': DEFAULT_MAX_PAGES
+            "name": args.name,
+            "description": args.description or f"Comprehensive assistance with {args.name}",
+            "base_url": args.url,
+            "selectors": {"main_content": "div[role='main']", "title": "title", "code_blocks": "pre code"},
+            "url_patterns": {"include": [], "exclude": []},
+            "rate_limit": DEFAULT_RATE_LIMIT,
+            "max_pages": DEFAULT_MAX_PAGES,
         }
 
     # Apply CLI overrides for rate limiting
     if args.no_rate_limit:
-        config['rate_limit'] = 0
+        config["rate_limit"] = 0
         logger.info("⚡ Rate limiting disabled")
     elif args.rate_limit is not None:
-        config['rate_limit'] = args.rate_limit
+        config["rate_limit"] = args.rate_limit
         if args.rate_limit == 0:
             logger.info("⚡ Rate limiting disabled")
         else:
@@ -1604,14 +1593,14 @@ def get_configuration(args: argparse.Namespace) -> dict[str, Any]:
         if args.workers > 10:
             logger.warning("⚠️  Warning: --workers capped at 10 (requested %d)", args.workers)
             args.workers = 10
-        config['workers'] = args.workers
+        config["workers"] = args.workers
         if args.workers > 1:
             logger.info("🚀 Parallel scraping enabled: %d workers", args.workers)
 
     # Apply CLI override for async mode
     if args.async_mode:
-        config['async_mode'] = True
-        if config.get('workers', 1) > 1:
+        config["async_mode"] = True
+        if config.get("workers", 1) > 1:
             logger.info("⚡ Async mode enabled (2-3x faster than threads)")
         else:
             logger.warning("⚠️  Async mode enabled but workers=1. Consider using --workers 4 for better performance")
@@ -1619,7 +1608,7 @@ def get_configuration(args: argparse.Namespace) -> dict[str, Any]:
     return config
 
 
-def execute_scraping_and_building(config: dict[str, Any], args: argparse.Namespace) -> Optional['DocToSkillConverter']:
+def execute_scraping_and_building(config: dict[str, Any], args: argparse.Namespace) -> DocToSkillConverter | None:
     """Execute the scraping and skill building process.
 
     Handles dry run mode, existing data checks, scraping with checkpoints,
@@ -1651,23 +1640,24 @@ def execute_scraping_and_building(config: dict[str, Any], args: argparse.Namespa
         converter.scrape_all()
 
         logger.info("\n📋 Configuration Summary:")
-        logger.info("   Name: %s", config['name'])
-        logger.info("   Base URL: %s", config['base_url'])
-        logger.info("   Max pages: %d", config.get('max_pages', DEFAULT_MAX_PAGES))
-        logger.info("   Rate limit: %ss", config.get('rate_limit', DEFAULT_RATE_LIMIT))
-        logger.info("   Categories: %d", len(config.get('categories', {})))
+        logger.info("   Name: %s", config["name"])
+        logger.info("   Base URL: %s", config["base_url"])
+        logger.info("   Max pages: %d", config.get("max_pages", DEFAULT_MAX_PAGES))
+        logger.info("   Rate limit: %ss", config.get("rate_limit", DEFAULT_RATE_LIMIT))
+        logger.info("   Categories: %d", len(config.get("categories", {})))
         return None
 
     # Check for existing data
-    exists, page_count = check_existing_data(config['name'])
+    exists, page_count = check_existing_data(config["name"])
 
     if exists and not args.skip_scrape and not args.fresh:
         # Check force_rescrape flag from config
-        if config.get('force_rescrape', False):
+        if config.get("force_rescrape", False):
             # Auto-delete cached data and rescrape
             logger.info("\n✓ Found existing data: %d pages", page_count)
             logger.info("  force_rescrape enabled - deleting cached data and rescaping")
             import shutil
+
             data_dir = f"output/{config['name']}_data"
             if os.path.exists(data_dir):
                 shutil.rmtree(data_dir)
@@ -1676,7 +1666,7 @@ def execute_scraping_and_building(config: dict[str, Any], args: argparse.Namespa
             # Only prompt if force_rescrape is False
             logger.info("\n✓ Found existing data: %d pages", page_count)
             response = input("Use existing data? (y/n): ").strip().lower()
-            if response == 'y':
+            if response == "y":
                 args.skip_scrape = True
     elif exists and args.fresh:
         logger.info("\n✓ Found existing data: %d pages", page_count)
@@ -1705,9 +1695,9 @@ def execute_scraping_and_building(config: dict[str, Any], args: argparse.Namespa
             if converter.checkpoint_enabled:
                 converter.save_checkpoint()
                 logger.info("💾 Progress saved to checkpoint")
-                logger.info("   Resume with: --config %s --resume", args.config if args.config else 'config.json')
+                logger.info("   Resume with: --config %s --resume", args.config if args.config else "config.json")
             response = input("Continue with skill building? (y/n): ").strip().lower()
-            if response != 'y':
+            if response != "y":
                 return None
     else:
         logger.info("\n⏭️  Skipping scrape, using existing data")
@@ -1748,9 +1738,9 @@ def execute_enhancement(config: dict[str, Any], args: argparse.Namespace) -> Non
         logger.info("=" * 60 + "\n")
 
         try:
-            enhance_cmd = ['python3', 'cli/enhance_skill.py', f'output/{config["name"]}/']
+            enhance_cmd = ["python3", "cli/enhance_skill.py", f"output/{config['name']}/"]
             if args.api_key:
-                enhance_cmd.extend(['--api-key', args.api_key])
+                enhance_cmd.extend(["--api-key", args.api_key])
 
             result = subprocess.run(enhance_cmd, check=True)
             if result.returncode == 0:
@@ -1759,7 +1749,7 @@ def execute_enhancement(config: dict[str, Any], args: argparse.Namespace) -> Non
             logger.warning("\n⚠ Enhancement failed, but skill was still built")
         except FileNotFoundError:
             logger.warning("\n⚠ enhance_skill.py not found. Run manually:")
-            logger.info("  skill-seekers-enhance output/%s/", config['name'])
+            logger.info("  skill-seekers-enhance output/%s/", config["name"])
 
     # Optional enhancement with Claude Code (local, no API key)
     if args.enhance_local:
@@ -1771,9 +1761,9 @@ def execute_enhancement(config: dict[str, Any], args: argparse.Namespace) -> Non
         logger.info("=" * 60 + "\n")
 
         try:
-            enhance_cmd = ['skill-seekers-enhance', f'output/{config["name"]}/']
+            enhance_cmd = ["skill-seekers-enhance", f"output/{config['name']}/"]
             if args.interactive_enhancement:
-                enhance_cmd.append('--interactive-enhancement')
+                enhance_cmd.append("--interactive-enhancement")
 
             result = subprocess.run(enhance_cmd, check=True)
 
@@ -1783,18 +1773,18 @@ def execute_enhancement(config: dict[str, Any], args: argparse.Namespace) -> Non
             logger.warning("\n⚠ Enhancement failed, but skill was still built")
         except FileNotFoundError:
             logger.warning("\n⚠ skill-seekers-enhance command not found. Run manually:")
-            logger.info("  skill-seekers-enhance output/%s/", config['name'])
+            logger.info("  skill-seekers-enhance output/%s/", config["name"])
 
     # Print packaging instructions
     logger.info("\n📦 Package your skill:")
-    logger.info("  skill-seekers-package output/%s/", config['name'])
+    logger.info("  skill-seekers-package output/%s/", config["name"])
 
     # Suggest enhancement if not done
     if not args.enhance and not args.enhance_local:
         logger.info("\n💡 Optional: Enhance SKILL.md with Claude:")
-        logger.info("  Local (recommended):  skill-seekers-enhance output/%s/", config['name'])
+        logger.info("  Local (recommended):  skill-seekers-enhance output/%s/", config["name"])
         logger.info("                        or re-run with: --enhance-local")
-        logger.info("  API-based:            skill-seekers-enhance-api output/%s/", config['name'])
+        logger.info("  API-based:            skill-seekers-enhance-api output/%s/", config["name"])
         logger.info("                        or re-run with: --enhance")
         logger.info("\n💡 Tip: Use --interactive-enhancement with --enhance-local to open terminal window")
 

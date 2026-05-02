@@ -5,7 +5,6 @@ Multiple agents debate a problem, refining solutions through iteration.
 Inspired by "Improving Factuality and Reasoning in LLMs with Multi-Agent Debate".
 """
 
-from typing import List, Dict, Optional
 from pydantic import BaseModel, Field
 
 from app.agents.base import Agent, AgentConfig
@@ -118,10 +117,7 @@ class DebateOrchestrator:
 
             for agent in self.agents:
                 own_answer = current_answers[agent.config.name]
-                others = [
-                    ans for name, ans in current_answers.items()
-                    if name != agent.config.name
-                ]
+                others = [ans for name, ans in current_answers.items() if name != agent.config.name]
 
                 revised = await agent.revise_answer(question, own_answer, others)
                 new_answers[agent.config.name] = revised
@@ -171,7 +167,7 @@ class DebateOrchestrator:
         variance = sum((l - avg_len) ** 2 for l in lengths) / len(lengths)
 
         # Normalize variance to [0, 1] score
-        consensus = max(0.0, min(1.0, 1.0 - variance / (avg_len ** 2 + 1)))
+        consensus = max(0.0, min(1.0, 1.0 - variance / (avg_len**2 + 1)))
         return consensus
 
     def _aggregate_answers(self, answers: dict[str, str]) -> str:

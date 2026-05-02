@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/config/app_settings.py
+# hypothesis_version: 6.151.5
+
+[0.7, 1.0, 80.0, 3000.0, 5000.0, 100, 512, 4096, 8000, 10485760, '*', '.env', '/api/v1', '/tmp/sandbox-temp', '0.0.0.0', '0.1.0', 'INFO', 'SANDBOX_', '__', '__import__', 'allow_credentials', 'allow_headers', 'allow_methods', 'allow_origins', 'api.anthropic.com', 'api.openai.com', 'collections', 'compile', 'datetime', 'development', 'environment', 'eval', 'exec', 'exit', 'functools', 'gemini-2.5-flash', 'input', 'itertools', 'json', 'math', 'max_cpu_percent', 'open', 'production', 'quit', 're', 'staging', 'utf-8']

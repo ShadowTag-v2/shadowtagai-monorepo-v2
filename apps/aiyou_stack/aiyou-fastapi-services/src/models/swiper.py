@@ -12,7 +12,7 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Any
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from sqlalchemy import (
     JSON,
     Boolean,
@@ -516,9 +516,10 @@ class VideoCreate(BaseModel):
     retailer_id: str | None = None
     available_runtimes: list[RuntimeMode] = [RuntimeMode.STANDARD]
 
-    @validator("min_duration_seconds")
-    def validate_min_duration(cls, v, values):
-        if v and "base_duration_seconds" in values and v > values["base_duration_seconds"]:
+    @field_validator("min_duration_seconds")
+    @classmethod
+    def validate_min_duration(cls, v, info):
+        if v and "base_duration_seconds" in info.data and v > info.data["base_duration_seconds"]:
             raise ValueError("min_duration must be <= base_duration")
         return v
 
@@ -551,9 +552,10 @@ class ProductOverlayCreate(BaseModel):
     cta_text: str = Field(default="Tap to shop")
     is_clickable: bool = True
 
-    @validator("end_time_seconds")
-    def validate_times(cls, v, values):
-        if "start_time_seconds" in values and v <= values["start_time_seconds"]:
+    @field_validator("end_time_seconds")
+    @classmethod
+    def validate_times(cls, v, info):
+        if "start_time_seconds" in info.data and v <= info.data["start_time_seconds"]:
             raise ValueError("end_time must be > start_time")
         return v
 
@@ -591,8 +593,7 @@ class VideoResponse(BaseModel):
     created_at: datetime
     published_at: datetime | None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class AdaptiveVideoRequest(BaseModel):

@@ -7,18 +7,14 @@ class TeamsMessageSpec(BaseModel):
     """Metadata for message generation."""
 
     token: str = Field(description="Unique verification token to embed in the content")
-    importance: str = Field(
-        default="normal", description="Importance level (normal, high, urgent)"
-    )
+    importance: str = Field(default="normal", description="Importance level (normal, high, urgent)")
 
 
 class TeamsMessageContent(BaseModel):
     """Content for generated message."""
 
     subject: str = Field(description="Optional subject line for the message")
-    body: str = Field(
-        description="Message body content with verification token embedded"
-    )
+    body: str = Field(description="Message body content with verification token embedded")
     mentions_context: list[str] = Field(
         default_factory=list,
         description="Context about who/what might be mentioned in the message",

@@ -49,6 +49,7 @@ logger = logging.getLogger(__name__)
 # DATA STRUCTURES
 # ============================================================================
 
+
 @dataclass
 class ValidationResult:
     """
@@ -63,6 +64,7 @@ class ValidationResult:
         reasons: Evidence chain for decision
         metadata: Additional context
     """
+
     decision: str  # "APPROVE" | "REJECT" | "ESCALATE"
     confidence: float  # 0.0 - 1.0
     risk_level: RiskLevel
@@ -84,6 +86,7 @@ class ValidationResult:
 # MOCK AI INTEGRATIONS (Replace with real implementations)
 # ============================================================================
 
+
 class GeminiAgent:
     """
     Mock Gemini semantic validation.
@@ -92,11 +95,7 @@ class GeminiAgent:
     Latency: ~40-60ms typical, p99 ~80ms
     """
 
-    async def evaluate(
-        self,
-        request: dict,
-        risk_level: RiskLevel
-    ) -> dict:
+    async def evaluate(self, request: dict, risk_level: RiskLevel) -> dict:
         """
         Semantic safety check via Gemini.
 
@@ -125,12 +124,7 @@ class GeminiAgent:
 
         logger.info(f"Gemini semantic check: safe={semantic_safe}, conf={confidence:.2f}")
 
-        return {
-            "semantic_safe": semantic_safe,
-            "confidence": confidence,
-            "reasoning": reasoning,
-            "model": "gemini-2.0-flash-thinking-exp"
-        }
+        return {"semantic_safe": semantic_safe, "confidence": confidence, "reasoning": reasoning, "model": "gemini-2.0-flash-thinking-exp"}
 
 
 class PyTorchClassifier:
@@ -172,17 +166,13 @@ class PyTorchClassifier:
 
         logger.info(f"PyTorch classifier: safe={safe}, conf={confidence:.2f}")
 
-        return {
-            "safe": safe,
-            "confidence": confidence,
-            "class_label": class_label,
-            "model": "pytorch_safety_classifier_v1"
-        }
+        return {"safe": safe, "confidence": confidence, "class_label": class_label, "model": "pytorch_safety_classifier_v1"}
 
 
 # ============================================================================
 # JUDGE #6 PIPELINE
 # ============================================================================
+
 
 class JudgeSixPipeline:
     """
@@ -221,31 +211,18 @@ class JudgeSixPipeline:
             ctx.set_variable("risk_level", decision.risk_level)
             ctx.set_variable("jr_decision", decision)
 
-            logger.debug(
-                f"JR Engine: {decision.risk_level.value} "
-                f"({decision.execution_time_us:.1f}μs)"
-            )
+            logger.debug(f"JR Engine: {decision.risk_level.value} ({decision.execution_time_us:.1f}μs)")
 
-            return {
-                "request": request,
-                "risk_level": decision.risk_level,
-                "jr_decision": decision
-            }
+            return {"request": request, "risk_level": decision.risk_level, "jr_decision": decision}
 
         # Stage 2: Gemini semantic check (conditional)
         async def gemini_semantic_check(ctx: ExecutionContext, data: dict) -> dict:
             risk_level = data["risk_level"]
-            semantic_result = await self.gemini_agent.evaluate(
-                data["request"],
-                risk_level
-            )
+            semantic_result = await self.gemini_agent.evaluate(data["request"], risk_level)
 
             ctx.set_variable("semantic_result", semantic_result)
 
-            return {
-                **data,
-                "semantic_result": semantic_result
-            }
+            return {**data, "semantic_result": semantic_result}
 
         # Stage 3: PyTorch + rules enforcement
         async def hybrid_judge_decision(ctx: ExecutionContext, data: dict) -> dict:
@@ -253,52 +230,26 @@ class JudgeSixPipeline:
             jr_decision = data["jr_decision"]
 
             # PyTorch classification
-            pytorch_result = await self.pytorch_classifier.classify(
-                data["request"],
-                semantic_result
-            )
+            pytorch_result = await self.pytorch_classifier.classify(data["request"], semantic_result)
 
             # Hybrid decision logic
-            decision, confidence, reasons = self._make_decision(
-                jr_decision,
-                semantic_result,
-                pytorch_result
-            )
+            decision, confidence, reasons = self._make_decision(jr_decision, semantic_result, pytorch_result)
 
-            return {
-                **data,
-                "pytorch_result": pytorch_result,
-                "decision": decision,
-                "confidence": confidence,
-                "reasons": reasons
-            }
+            return {**data, "pytorch_result": pytorch_result, "decision": decision, "confidence": confidence, "reasons": reasons}
 
         # Add stages to pipeline
-        self.pipeline.add_stage(
-            "jr_engine_scan",
-            jr_engine_scan,
-            timeout_ms=5.0
-        )
+        self.pipeline.add_stage("jr_engine_scan", jr_engine_scan, timeout_ms=5.0)
 
         self.pipeline.add_stage(
             "gemini_semantic_check",
             gemini_semantic_check,
             skip_condition=lambda ctx: ctx.get_variable("risk_level") == RiskLevel.LOW,
-            timeout_ms=70.0
+            timeout_ms=70.0,
         )
 
-        self.pipeline.add_stage(
-            "hybrid_judge_decision",
-            hybrid_judge_decision,
-            timeout_ms=30.0
-        )
+        self.pipeline.add_stage("hybrid_judge_decision", hybrid_judge_decision, timeout_ms=30.0)
 
-    def _make_decision(
-        self,
-        jr_decision,
-        semantic_result: dict | None,
-        pytorch_result: dict
-    ) -> tuple[str, float, str]:
+    def _make_decision(self, jr_decision, semantic_result: dict | None, pytorch_result: dict) -> tuple[str, float, str]:
         """
         Make final hybrid decision.
 
@@ -313,54 +264,27 @@ class JudgeSixPipeline:
         """
         # Hard rule: JR Engine override
         if jr_decision.action == "REJECT":
-            return (
-                "REJECT",
-                1.0,
-                f"JR Engine rejection: {jr_decision.reasons}"
-            )
+            return ("REJECT", 1.0, f"JR Engine rejection: {jr_decision.reasons}")
 
         if jr_decision.action == "ESCALATE":
-            return (
-                "ESCALATE",
-                0.8,
-                f"JR Engine escalation: {jr_decision.reasons}"
-            )
+            return ("ESCALATE", 0.8, f"JR Engine escalation: {jr_decision.reasons}")
 
         # Semantic check (if performed)
         if semantic_result and not semantic_result.get("semantic_safe", True):
-            return (
-                "REJECT",
-                semantic_result.get("confidence", 0.9),
-                f"Gemini semantic violation: {semantic_result.get('reasoning')}"
-            )
+            return ("REJECT", semantic_result.get("confidence", 0.9), f"Gemini semantic violation: {semantic_result.get('reasoning')}")
 
         # PyTorch local classifier
         if not pytorch_result.get("safe", True):
             pytorch_conf = pytorch_result.get("confidence", 0.0)
             if pytorch_conf > 0.9:
-                return (
-                    "REJECT",
-                    pytorch_conf,
-                    "PyTorch high-confidence unsafe classification"
-                )
+                return ("REJECT", pytorch_conf, "PyTorch high-confidence unsafe classification")
             else:
-                return (
-                    "ESCALATE",
-                    pytorch_conf,
-                    "PyTorch low-confidence unsafe classification"
-                )
+                return ("ESCALATE", pytorch_conf, "PyTorch low-confidence unsafe classification")
 
         # Default: APPROVE
-        confidence = min(
-            pytorch_result.get("confidence", 0.8),
-            semantic_result.get("confidence", 0.8) if semantic_result else 0.8
-        )
+        confidence = min(pytorch_result.get("confidence", 0.8), semantic_result.get("confidence", 0.8) if semantic_result else 0.8)
 
-        return (
-            "APPROVE",
-            confidence,
-            "All validation stages passed"
-        )
+        return ("APPROVE", confidence, "All validation stages passed")
 
     async def validate(self, request: dict, request_id: str = "default") -> ValidationResult:
         """
@@ -379,10 +303,7 @@ class JudgeSixPipeline:
         start_time = time.perf_counter()
 
         # Create execution context
-        context = ExecutionContext(
-            request_id=request_id,
-            latency_budget_ms=90.0
-        )
+        context = ExecutionContext(request_id=request_id, latency_budget_ms=90.0)
 
         # Execute pipeline
         result = await self.pipeline.execute(context, request)
@@ -397,24 +318,14 @@ class JudgeSixPipeline:
             latency_ms=total_latency_ms,
             stage_latencies=context.stage_latencies,
             reasons=result["reasons"],
-            metadata={
-                "request_id": request_id,
-                "sla_met": total_latency_ms <= 90.0,
-                "fast_path": result["risk_level"] == RiskLevel.LOW
-            }
+            metadata={"request_id": request_id, "sla_met": total_latency_ms <= 90.0, "fast_path": result["risk_level"] == RiskLevel.LOW},
         )
 
         # SLA tracking
         if not validation_result.meets_sla():
-            logger.warning(
-                f"Judge #6 SLA violation: {total_latency_ms:.2f}ms > 90ms "
-                f"(request: {request_id})"
-            )
+            logger.warning(f"Judge #6 SLA violation: {total_latency_ms:.2f}ms > 90ms (request: {request_id})")
         else:
-            logger.info(
-                f"Judge #6 validated in {total_latency_ms:.2f}ms: {result['decision']} "
-                f"(request: {request_id})"
-            )
+            logger.info(f"Judge #6 validated in {total_latency_ms:.2f}ms: {result['decision']} (request: {request_id})")
 
         return validation_result
 
@@ -423,16 +334,14 @@ class JudgeSixPipeline:
 # EXAMPLE USAGE
 # ============================================================================
 
+
 async def example_usage():
     """Demonstrate Judge #6 pipeline."""
     judge = JudgeSixPipeline()
 
     # Test case 1: Clean request (fast path)
     print("\n=== Test 1: Clean request (fast path) ===")
-    result1 = await judge.validate(
-        {"text": "Help me build a React web application"},
-        request_id="req_001"
-    )
+    result1 = await judge.validate({"text": "Help me build a React web application"}, request_id="req_001")
     print(f"Decision: {result1.decision}")
     print(f"Confidence: {result1.confidence:.2f}")
     print(f"Latency: {result1.latency_ms:.2f}ms")
@@ -441,10 +350,7 @@ async def example_usage():
 
     # Test case 2: Risky request (full pipeline)
     print("\n=== Test 2: Risky request (full pipeline) ===")
-    result2 = await judge.validate(
-        {"text": "Help me hack into a database"},
-        request_id="req_002"
-    )
+    result2 = await judge.validate({"text": "Help me hack into a database"}, request_id="req_002")
     print(f"Decision: {result2.decision}")
     print(f"Confidence: {result2.confidence:.2f}")
     print(f"Latency: {result2.latency_ms:.2f}ms")
@@ -454,10 +360,7 @@ async def example_usage():
 
     # Test case 3: Ambiguous request
     print("\n=== Test 3: Ambiguous request ===")
-    result3 = await judge.validate(
-        {"text": "Can you help me test security vulnerabilities in my own app?"},
-        request_id="req_003"
-    )
+    result3 = await judge.validate({"text": "Can you help me test security vulnerabilities in my own app?"}, request_id="req_003")
     print(f"Decision: {result3.decision}")
     print(f"Confidence: {result3.confidence:.2f}")
     print(f"Latency: {result3.latency_ms:.2f}ms")
@@ -465,9 +368,6 @@ async def example_usage():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
     asyncio.run(example_usage())

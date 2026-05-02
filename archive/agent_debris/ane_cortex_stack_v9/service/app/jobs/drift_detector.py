@@ -5,6 +5,7 @@ from ..adapters.authority_state import AuthorityState, record_authority_event
 from ..utils.db import pg_conn
 import json
 
+
 def detect_drift():
     s = load_settings()
     authority = AuthorityState(s.authority_state_path).read()
@@ -17,28 +18,32 @@ def detect_drift():
     if settings_path.exists():
         raw = settings_path.read_text(encoding="utf-8", errors="ignore")
         if formatter_expected and formatter_expected not in raw:
-            findings.append({
-                "rel_path": ".vscode/settings.json",
-                "drift_kind": "settings_mismatch",
-                "expected": formatter_expected,
-                "observed": raw[:500],
-                "severity": "high",
-                "suggested_fix": "Update editor.defaultFormatter to canonical formatter"
-            })
+            findings.append(
+                {
+                    "rel_path": ".vscode/settings.json",
+                    "drift_kind": "settings_mismatch",
+                    "expected": formatter_expected,
+                    "observed": raw[:500],
+                    "severity": "high",
+                    "suggested_fix": "Update editor.defaultFormatter to canonical formatter",
+                }
+            )
 
     # Config drift
     config_path = Path("./config/app.yaml")
     if config_path.exists():
         raw = config_path.read_text(encoding="utf-8", errors="ignore")
         if default_backend and f"default_inference_backend: {default_backend}" not in raw:
-            findings.append({
-                "rel_path": "config/app.yaml",
-                "drift_kind": "settings_mismatch",
-                "expected": f"default_inference_backend: {default_backend}",
-                "observed": raw[:500],
-                "severity": "high",
-                "suggested_fix": "Update config/app.yaml to match authority memory"
-            })
+            findings.append(
+                {
+                    "rel_path": "config/app.yaml",
+                    "drift_kind": "settings_mismatch",
+                    "expected": f"default_inference_backend: {default_backend}",
+                    "observed": raw[:500],
+                    "severity": "high",
+                    "suggested_fix": "Update config/app.yaml to match authority memory",
+                }
+            )
 
     with pg_conn(s.postgres_dsn) as conn:
         cur = conn.cursor()
@@ -53,6 +58,7 @@ def detect_drift():
     if findings:
         record_authority_event(s.postgres_dsn, s.repo_id, "drift_detected", "repo drift", json.dumps(findings))
     return {"drifts": findings, "count": len(findings)}
+
 
 if __name__ == "__main__":
     print(detect_drift())

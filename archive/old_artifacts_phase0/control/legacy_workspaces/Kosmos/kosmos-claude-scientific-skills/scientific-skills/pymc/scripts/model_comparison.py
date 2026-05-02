@@ -17,17 +17,12 @@ Usage:
     plot_model_comparison(comparison, output_path='model_comparison.png')
 """
 
-from typing import Dict
-
 import arviz as az
 import matplotlib.pyplot as plt
 import numpy as np
 
 
-def compare_models(models_dict: Dict[str, az.InferenceData],
-                   ic='loo',
-                   scale='deviance',
-                   verbose=True):
+def compare_models(models_dict: dict[str, az.InferenceData], ic="loo", scale="deviance", verbose=True):
     """
     Compare multiple models using information criteria.
 
@@ -54,21 +49,21 @@ def compare_models(models_dict: Dict[str, az.InferenceData],
     log-likelihood computed afterwards with pm.compute_log_likelihood().
     """
     if verbose:
-        print("="*70)
+        print("=" * 70)
         print(" " * 25 + f"MODEL COMPARISON ({ic.upper()})")
-        print("="*70)
+        print("=" * 70)
 
     # Perform comparison
     comparison = az.compare(models_dict, ic=ic, scale=scale)
 
     if verbose:
         print("\nModel Rankings:")
-        print("-"*70)
+        print("-" * 70)
         print(comparison.to_string())
 
-        print("\n" + "="*70)
+        print("\n" + "=" * 70)
         print("INTERPRETATION GUIDE")
-        print("="*70)
+        print("=" * 70)
         print("• rank:     Model ranking (0 = best)")
         print(f"• {ic}:       {ic.upper()} estimate (lower is better)")
         print(f"• p_{ic}:     Effective number of parameters")
@@ -79,17 +74,17 @@ def compare_models(models_dict: Dict[str, az.InferenceData],
         print("• warning:  True if model has reliability issues")
         print(f"• scale:    {scale}")
 
-        print("\n" + "="*70)
+        print("\n" + "=" * 70)
         print("MODEL SELECTION GUIDELINES")
-        print("="*70)
+        print("=" * 70)
 
         best_model = comparison.index[0]
         print(f"\n✓ Best model: {best_model}")
 
         # Check for clear winner
         if len(comparison) > 1:
-            delta = comparison.iloc[1][f'd{ic}']
-            delta_se = comparison.iloc[1]['dse']
+            delta = comparison.iloc[1][f"d{ic}"]
+            delta_se = comparison.iloc[1]["dse"]
 
             if delta > 10:
                 print(f"  → STRONG evidence for {best_model} (Δ{ic} > 10)")
@@ -108,18 +103,16 @@ def compare_models(models_dict: Dict[str, az.InferenceData],
                 print("  → Difference is < 2 SE, uncertain distinction")
 
         # Check for warnings
-        if comparison['warning'].any():
+        if comparison["warning"].any():
             print("\n⚠️  WARNING: Some models have reliability issues")
-            warned_models = comparison[comparison['warning']].index.tolist()
+            warned_models = comparison[comparison["warning"]].index.tolist()
             print(f"   Models with warnings: {', '.join(warned_models)}")
             print("   → Check Pareto-k diagnostics with check_loo_reliability()")
 
     return comparison
 
 
-def check_loo_reliability(models_dict: Dict[str, az.InferenceData],
-                          threshold=0.7,
-                          verbose=True):
+def check_loo_reliability(models_dict: dict[str, az.InferenceData], threshold=0.7, verbose=True):
     """
     Check LOO-CV reliability using Pareto-k diagnostics.
 
@@ -138,16 +131,16 @@ def check_loo_reliability(models_dict: Dict[str, az.InferenceData],
         Dictionary with Pareto-k diagnostics for each model
     """
     if verbose:
-        print("="*70)
+        print("=" * 70)
         print(" " * 20 + "LOO RELIABILITY CHECK")
-        print("="*70)
+        print("=" * 70)
 
     results = {}
 
     for name, idata in models_dict.items():
         if verbose:
             print(f"\n{name}:")
-            print("-"*70)
+            print("-" * 70)
 
         # Compute LOO with pointwise results
         loo_result = az.loo(idata, pointwise=True)
@@ -157,13 +150,7 @@ def check_loo_reliability(models_dict: Dict[str, az.InferenceData],
         n_high = (pareto_k > threshold).sum()
         n_very_high = (pareto_k > 1.0).sum()
 
-        results[name] = {
-            'pareto_k': pareto_k,
-            'n_high': n_high,
-            'n_very_high': n_very_high,
-            'max_k': pareto_k.max(),
-            'loo': loo_result
-        }
+        results[name] = {"pareto_k": pareto_k, "n_high": n_high, "n_very_high": n_very_high, "max_k": pareto_k.max(), "loo": loo_result}
 
         if verbose:
             print("Pareto-k diagnostics:")
@@ -212,11 +199,11 @@ def plot_model_comparison(comparison, output_path=None, show=True):
     """
     fig = plt.figure(figsize=(10, 6))
     az.plot_compare(comparison)
-    plt.title('Model Comparison', fontsize=14, fontweight='bold')
+    plt.title("Model Comparison", fontsize=14, fontweight="bold")
     plt.tight_layout()
 
     if output_path:
-        plt.savefig(output_path, dpi=300, bbox_inches='tight')
+        plt.savefig(output_path, dpi=300, bbox_inches="tight")
         print(f"Comparison plot saved to {output_path}")
 
     if show:
@@ -227,10 +214,7 @@ def plot_model_comparison(comparison, output_path=None, show=True):
     return fig
 
 
-def model_averaging(models_dict: Dict[str, az.InferenceData],
-                    weights=None,
-                    var_name='y_obs',
-                    ic='loo'):
+def model_averaging(models_dict: dict[str, az.InferenceData], weights=None, var_name="y_obs", ic="loo"):
     """
     Perform Bayesian model averaging using model weights.
 
@@ -254,25 +238,25 @@ def model_averaging(models_dict: Dict[str, az.InferenceData],
     """
     if weights is None:
         comparison = az.compare(models_dict, ic=ic)
-        weights = comparison['weight'].values
+        weights = comparison["weight"].values
         model_names = comparison.index.tolist()
     else:
         model_names = list(models_dict.keys())
         weights = np.array(weights)
         weights = weights / weights.sum()  # Normalize
 
-    print("="*70)
+    print("=" * 70)
     print(" " * 22 + "BAYESIAN MODEL AVERAGING")
-    print("="*70)
+    print("=" * 70)
     print("\nModel weights:")
     for name, weight in zip(model_names, weights):
-        print(f"  {name}: {weight:.4f} ({weight*100:.2f}%)")
+        print(f"  {name}: {weight:.4f} ({weight * 100:.2f}%)")
 
     # Extract predictions and average
     predictions = []
     for name in model_names:
         idata = models_dict[name]
-        if 'posterior_predictive' in idata:
+        if "posterior_predictive" in idata:
             pred = idata.posterior_predictive[var_name].values
         else:
             print(f"Warning: {name} missing posterior_predictive, skipping")
@@ -288,9 +272,7 @@ def model_averaging(models_dict: Dict[str, az.InferenceData],
     return averaged, weights
 
 
-def cross_validation_comparison(models_dict: Dict[str, az.InferenceData],
-                                k=10,
-                                verbose=True):
+def cross_validation_comparison(models_dict: dict[str, az.InferenceData], k=10, verbose=True):
     """
     Perform k-fold cross-validation comparison (conceptual guide).
 
@@ -311,9 +293,9 @@ def cross_validation_comparison(models_dict: Dict[str, az.InferenceData],
     None
     """
     if verbose:
-        print("="*70)
+        print("=" * 70)
         print(" " * 20 + "K-FOLD CROSS-VALIDATION GUIDE")
-        print("="*70)
+        print("=" * 70)
         print(f"\nTo perform {k}-fold CV:")
         print("""
 1. Split data into k folds
@@ -356,7 +338,7 @@ for name, scores in cv_scores.items():
 
 
 # Example usage
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("This script provides model comparison utilities for PyMC.")
     print("\nExample usage:")
     print("""

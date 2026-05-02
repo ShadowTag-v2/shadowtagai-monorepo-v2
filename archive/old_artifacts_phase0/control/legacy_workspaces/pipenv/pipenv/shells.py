@@ -99,22 +99,13 @@ def _get_deactivate_wrapper_script(cmd):
 
     if shell_name == "fish":
         # Fish shell uses 'functions' and 'set -e' to unset variables
-        return (
-            "functions -c deactivate _pipenv_old_deactivate; "
-            "function deactivate; _pipenv_old_deactivate; set -e PIPENV_ACTIVE; end"
-        )
+        return "functions -c deactivate _pipenv_old_deactivate; function deactivate; _pipenv_old_deactivate; set -e PIPENV_ACTIVE; end"
     elif shell_name in ("csh", "tcsh"):
         # C shell uses 'unsetenv'
-        return (
-            "alias _pipenv_old_deactivate deactivate; "
-            "alias deactivate '_pipenv_old_deactivate; unsetenv PIPENV_ACTIVE'"
-        )
+        return "alias _pipenv_old_deactivate deactivate; alias deactivate '_pipenv_old_deactivate; unsetenv PIPENV_ACTIVE'"
     elif shell_name == "xonsh":
         # Xonsh uses Python-like syntax
-        return (
-            "_pipenv_old_deactivate = deactivate; "
-            "def deactivate(): _pipenv_old_deactivate(); del $PIPENV_ACTIVE"
-        )
+        return "_pipenv_old_deactivate = deactivate; def deactivate(): _pipenv_old_deactivate(); del $PIPENV_ACTIVE"
     elif shell_name == "nu":
         # Nushell - deactivate is typically handled differently
         # For now, return empty as nu has different paradigm
@@ -128,10 +119,7 @@ def _get_deactivate_wrapper_script(cmd):
         )
     elif shell_name == "zsh":
         # Zsh uses 'functions -c' to copy function definitions
-        return (
-            "functions -c deactivate _pipenv_old_deactivate; "
-            "deactivate() { _pipenv_old_deactivate; unset PIPENV_ACTIVE; }"
-        )
+        return "functions -c deactivate _pipenv_old_deactivate; deactivate() { _pipenv_old_deactivate; unset PIPENV_ACTIVE; }"
     elif shell_name == "bash":
         # Bash uses 'declare -f' to copy function definitions
         return (
@@ -167,9 +155,7 @@ class Shell:
     def inject_path(self, venv):
         venv_path = Path(venv)
         with temp_environ():
-            os.environ["PATH"] = (
-                f"{os.pathsep.join(str(p.parent) for p in _iter_python(venv_path))}{os.pathsep}{os.environ['PATH']}"
-            )
+            os.environ["PATH"] = f"{os.pathsep.join(str(p.parent) for p in _iter_python(venv_path))}{os.pathsep}{os.environ['PATH']}"
             yield
 
     def fork(self, venv, cwd, args):
@@ -338,9 +324,7 @@ class Bash(Shell):
                 base_rc_src = f'source "{bashrc_path.as_posix()}"\n'
                 rcfile.write(base_rc_src)
 
-            export_path = 'export PATH="{}:$PATH"\n'.format(
-                ":".join(self._format_path(python) for python in _iter_python(venv))
-            )
+            export_path = 'export PATH="{}:$PATH"\n'.format(":".join(self._format_path(python) for python in _iter_python(venv)))
             rcfile.write(export_path)
             rcfile.flush()
             self.args.extend(["--rcfile", rcfile.name])

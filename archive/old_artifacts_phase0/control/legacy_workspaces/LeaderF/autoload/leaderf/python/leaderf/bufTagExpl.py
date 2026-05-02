@@ -15,23 +15,23 @@ from .manager import *
 from .utils import *
 
 
-#*****************************************************
+# *****************************************************
 # BufTagExplorer
-#*****************************************************
+# *****************************************************
 class BufTagExplorer(Explorer):
     def __init__(self):
         self._ctags = lfEval("g:Lf_Ctags")
         self._supports_preview = int(lfEval("g:Lf_PreviewCode"))
-        self._tag_list = {}        # a dict with (key, value) = (buffer number, taglist)
-        self._buf_changedtick = {} # a dict with (key, value) = (buffer number, changedtick)
+        self._tag_list = {}  # a dict with (key, value) = (buffer number, taglist)
+        self._buf_changedtick = {}  # a dict with (key, value) = (buffer number, changedtick)
         self._executor = []
 
     def getContent(self, *args, **kwargs):
-        if "--all" in kwargs.get("arguments", {}): # all buffers
+        if "--all" in kwargs.get("arguments", {}):  # all buffers
             cur_buffer = vim.current.buffer
             for b in vim.buffers:
                 if b.options["buflisted"]:
-                    if lfEval("bufloaded(%d)" % b.number) == '0':
+                    if lfEval("bufloaded(%d)" % b.number) == "0":
                         vim.current.buffer = b
             if vim.current.buffer != cur_buffer:
                 vim.current.buffer = cur_buffer
@@ -64,7 +64,7 @@ class BufTagExplorer(Explorer):
         for i in range(0, len(vim.buffers), n):
             tag_list = []
             exe_result = []
-            for b in buffers[i:i+n]:
+            for b in buffers[i : i + n]:
                 if b.options["buflisted"] and b.name:
                     result = self._getTagResult(b)
                     if isinstance(result, list):
@@ -78,8 +78,7 @@ class BufTagExplorer(Explorer):
                 yield itertools.chain(tag_list, itertools.chain.from_iterable(exe_taglist))
 
     def _getTagResult(self, buffer):
-        if (not buffer.name or lfEval("bufloaded(%d)" % buffer.number) == '0'
-            or lfEval("&bt") != ''):
+        if not buffer.name or lfEval("bufloaded(%d)" % buffer.number) == "0" or lfEval("&bt") != "":
             return []
         changedtick = int(lfEval("getbufvar(%d, 'changedtick')" % buffer.number))
         # there is no change since last call
@@ -105,9 +104,9 @@ class BufTagExplorer(Explorer):
         if buffer.options["modified"]:
             tmp_file = partial(tempfile.NamedTemporaryFile, encoding=lfEval("&encoding"))
 
-            with tmp_file(mode='w+', suffix='_'+os.path.basename(buffer.name), delete=False) as f:
+            with tmp_file(mode="w+", suffix="_" + os.path.basename(buffer.name), delete=False) as f:
                 for line in buffer:
-                    f.write(line + '\n')
+                    f.write(line + "\n")
                 file_name = f.name
             # {tagname}<Tab>{tagfile}<Tab>{tagaddress}[;"<Tab>{tagfield}..]
             # {tagname}<Tab>{tagfile}<Tab>{tagaddress};"<Tab>{kind}<Tab>{scope}
@@ -120,11 +119,11 @@ class BufTagExplorer(Explorer):
         return (buffer, result)
 
     def _formatResult(self, buffer, result):
-        if not buffer.name or lfEval("bufloaded(%d)" % buffer.number) == '0':
+        if not buffer.name or lfEval("bufloaded(%d)" % buffer.number) == "0":
             return []
 
         # a list of [tag, file, line, kind, scope]
-        output = [line.split('\t') for line in result]
+        output = [line.split("\t") for line in result]
         if not output:
             return []
 
@@ -135,7 +134,7 @@ class BufTagExplorer(Explorer):
         tag_total_len = 0
         max_kind_len = 0
         max_tag_len = 0
-        for _, item  in enumerate(output):
+        for _, item in enumerate(output):
             tag_len = len(item[0])
             tag_total_len += tag_len
             if tag_len > max_tag_len:
@@ -152,24 +151,26 @@ class BufTagExplorer(Explorer):
         std_tag_kind_len = tag_len // tab_len * tab_len + tab_len + max_kind_len
 
         tag_list = []
-        for _, item  in enumerate(output):
+        for _, item in enumerate(output):
             scope = item[4] if len(item) > 4 else "Global"
-            tag_kind = "{:{taglen}s}\t{}".format(item[0],   # tag
-                                                 item[3],   # kind
-                                                 taglen=tag_len
-                                                 )
+            tag_kind = "{:{taglen}s}\t{}".format(
+                item[0],  # tag
+                item[3],  # kind
+                taglen=tag_len,
+            )
             tag_kind_len = int(lfEval(f"strdisplaywidth('{escQuote(tag_kind)}')"))
             num = std_tag_kind_len - tag_kind_len
             space_num = num if num > 0 else 0
             bufname = buffer.name if vim.options["autochdir"] else lfRelpath(buffer.name)
-            line = "{}{}\t{}\t{:2s}{}:{}\t{}".format(tag_kind,
-                                                     ' ' * space_num,
-                                                     scope,          # scope
-                                                     ' ',
-                                                     bufname,        # file
-                                                     item[2][:-2],   # line
-                                                     buffer.number
-                                                     )
+            line = "{}{}\t{}\t{:2s}{}:{}\t{}".format(
+                tag_kind,
+                " " * space_num,
+                scope,  # scope
+                " ",
+                bufname,  # file
+                item[2][:-2],  # line
+                buffer.number,
+            )
             tag_list.append(line)
             if self._supports_preview:
                 # code = "{:{taglen}s}\t{}".format(' ' * len(item[0]),
@@ -184,7 +185,7 @@ class BufTagExplorer(Explorer):
         return tag_list
 
     def getStlCategory(self):
-        return 'BufTag'
+        return "BufTag"
 
     def getStlCurDir(self):
         return escQuote(lfEncode(lfGetCwd()))
@@ -202,9 +203,9 @@ class BufTagExplorer(Explorer):
         self._executor = []
 
 
-#*****************************************************
+# *****************************************************
 # BufTagExplManager
-#*****************************************************
+# *****************************************************
 class BufTagExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -220,7 +221,7 @@ class BufTagExplManager(Manager):
         if len(args) == 0:
             return
         line = args[0]
-        if line[0].isspace(): # if g:Lf_PreviewCode == 1
+        if line[0].isspace():  # if g:Lf_PreviewCode == 1
             buffer = args[1]
             line_num = args[2]
             if self._getInstance().isReverseOrder():
@@ -232,9 +233,9 @@ class BufTagExplManager(Manager):
         tagname = items[0]
         line_num = items[3].rsplit(":", 1)[1]
         buf_number = items[4]
-        if kwargs.get("mode", '') == 't':
+        if kwargs.get("mode", "") == "t":
             buf_name = lfEval(f"bufname({buf_number})")
-            lfDrop('tab', buf_name, line_num)
+            lfDrop("tab", buf_name, line_num)
         else:
             lfCmd(f"hide buffer +{line_num} {buf_number}")
         if "preview" not in kwargs:
@@ -274,9 +275,7 @@ class BufTagExplManager(Manager):
                   1, return the start position of tagname
                   2, return the start position remaining part
         """
-        if mode == 0:
-            return 0
-        elif mode == 1:
+        if mode == 0 or mode == 1:
             return 0
         else:
             return len(line) - len(re.split(" *\t *", line, 1)[1])
@@ -301,43 +300,52 @@ class BufTagExplManager(Manager):
         lfCmd("autocmd BufWipeout * call leaderf#BufTag#removeCache(expand('<abuf>'))")
         lfCmd("autocmd VimLeavePre * call leaderf#BufTag#cleanup()")
         lfCmd("augroup END")
-        if self._getInstance().getWinPos() == 'popup':
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagKind'', ''^[^\t]*\t\zs\S\+'')')"""
-                    % self._getInstance().getPopupWinId())
+        if self._getInstance().getWinPos() == "popup":
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagKind'', ''^[^\t]*\t\zs\S\+'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagScopeType'', ''[^\t]*\t\S\+\s*\zs\w\+:'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagScopeType'', ''[^\t]*\t\S\+\s*\zs\w\+:'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagScope'', ''^[^\t]*\t\S\+\s*\(\w\+:\)\=\zs\S\+'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagScope'', ''^[^\t]*\t\S\+\s*\(\w\+:\)\=\zs\S\+'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagDirname'', ''[^\t]*\t\S\+\s*\S\+\s*\zs[^\t]\+'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagDirname'', ''[^\t]*\t\S\+\s*\S\+\s*\zs[^\t]\+'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagLineNum'', ''\d\+\t\ze\d\+$'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagLineNum'', ''\d\+\t\ze\d\+$'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagCode'', ''^\s\+.*'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_buftagCode'', ''^\s\+.*'')')""" % self._getInstance().getPopupWinId())
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
         else:
-            id = int(lfEval(r'''matchadd('Lf_hl_buftagKind', '^[^\t]*\t\zs\S\+')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_buftagKind', '^[^\t]*\t\zs\S\+')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_buftagScopeType', '[^\t]*\t\S\+\s*\zs\w\+:')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_buftagScopeType', '[^\t]*\t\S\+\s*\zs\w\+:')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_buftagScope', '^[^\t]*\t\S\+\s*\(\w\+:\)\=\zs\S\+')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_buftagScope', '^[^\t]*\t\S\+\s*\(\w\+:\)\=\zs\S\+')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_buftagDirname', '[^\t]*\t\S\+\s*\S\+\s*\zs[^\t]\+')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_buftagDirname', '[^\t]*\t\S\+\s*\S\+\s*\zs[^\t]\+')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_buftagLineNum', '\d\+\t\ze\d\+$')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_buftagLineNum', '\d\+\t\ze\d\+$')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_buftagCode', '^\s\+.*')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_buftagCode', '^\s\+.*')"""))
             self._match_ids.append(id)
 
     def _beforeExit(self):
@@ -370,40 +378,37 @@ class BufTagExplManager(Manager):
             if len(iterable) < 2:
                 return []
             getDigest = partial(self._getDigest, mode=0 if is_full_path else 1)
-            pairs = ((get_weight(getDigest(line)), (line, iterable[2*i+1]))
-                       for i, line in enumerate(iterable[::2]))
+            pairs = ((get_weight(getDigest(line)), (line, iterable[2 * i + 1])) for i, line in enumerate(iterable[::2]))
             MIN_WEIGHT = fuzzyMatchC.MIN_WEIGHT if is_fuzzyMatch_C else FuzzyMatch.MIN_WEIGHT
             return (t for t in pairs if t[0] > MIN_WEIGHT)
         else:
-            return super()._fuzzyFilter(is_full_path,
-                                                               get_weight,
-                                                               iterable)
+            return super()._fuzzyFilter(is_full_path, get_weight, iterable)
 
     def _refineFilter(self, first_get_weight, get_weight, iterable):
         if self._supports_preview:
             if len(iterable) < 2:
                 return []
             getDigest = self._getDigest
-            tuples = ((first_get_weight(getDigest(line, 1)), get_weight(getDigest(line, 2)),
-                       line, iterable[2*i+1]) for i, line in enumerate(iterable[::2]))
+            tuples = (
+                (first_get_weight(getDigest(line, 1)), get_weight(getDigest(line, 2)), line, iterable[2 * i + 1])
+                for i, line in enumerate(iterable[::2])
+            )
             MIN_WEIGHT = fuzzyMatchC.MIN_WEIGHT if is_fuzzyMatch_C else FuzzyMatch.MIN_WEIGHT
             return ((i[0] + i[1], (i[2], i[3])) for i in tuples if i[0] > MIN_WEIGHT and i[1] > MIN_WEIGHT)
         else:
-            return super()._refineFilter(first_get_weight,
-                                                                get_weight,
-                                                                iterable)
+            return super()._refineFilter(first_get_weight, get_weight, iterable)
 
     def _regexFilter(self, iterable):
         if self._supports_preview:
             try:
-                if ('-2' == lfEval(f"g:LfNoErrMsgMatch('', '{escQuote(self._cli.pattern)}')")):
+                if lfEval(f"g:LfNoErrMsgMatch('', '{escQuote(self._cli.pattern)}')") == "-2":
                     return iter([])
                 else:
                     result = []
                     for i, line in enumerate(iterable[::2]):
-                        if ('-1' != lfEval(f"g:LfNoErrMsgMatch('{escQuote(self._getDigest(line, 1).strip())}', '{escQuote(self._cli.pattern)}')")):
+                        if lfEval(f"g:LfNoErrMsgMatch('{escQuote(self._getDigest(line, 1).strip())}', '{escQuote(self._cli.pattern)}')") != "-1":
                             result.append(line)
-                            result.append(iterable[2*i+1])
+                            result.append(iterable[2 * i + 1])
                     return result
             except vim.error:
                 return iter([])
@@ -428,23 +433,26 @@ class BufTagExplManager(Manager):
         if self._supports_preview:
             if self._getInstance().isReverseOrder() and self._getInstance().getCurrentPos()[0] <= 3:
                 self._setResultContent()
-                if self._cli.pattern and len(self._highlight_pos) < len(self._getInstance().buffer) // 2 \
-                        and len(self._highlight_pos) < int(lfEval("g:Lf_NumberOfHighlight")):
+                if (
+                    self._cli.pattern
+                    and len(self._highlight_pos) < len(self._getInstance().buffer) // 2
+                    and len(self._highlight_pos) < int(lfEval("g:Lf_NumberOfHighlight"))
+                ):
                     self._highlight_method()
 
             if self._getInstance().isReverseOrder():
                 lfCmd("norm! 3kj")
                 self._getInstance().setLineNumber()
             else:
-                if self._getInstance().getWinPos() == 'popup':
+                if self._getInstance().getWinPos() == "popup":
                     lfCmd("call win_execute(%d, 'norm! 2k')" % (self._getInstance().getPopupWinId()))
                 else:
                     lfCmd("norm! 2k")
         else:
             super()._toUp()
 
-        lfCmd("setlocal cursorline!")   # these two help to redraw the statusline,
-        lfCmd("setlocal cursorline!")   # also fix a weird bug of vim
+        lfCmd("setlocal cursorline!")  # these two help to redraw the statusline,
+        lfCmd("setlocal cursorline!")  # also fix a weird bug of vim
 
     def _toDown(self):
         if self._supports_preview:
@@ -452,15 +460,15 @@ class BufTagExplManager(Manager):
                 lfCmd("norm! 2j")
                 self._getInstance().setLineNumber()
             else:
-                if self._getInstance().getWinPos() == 'popup':
+                if self._getInstance().getWinPos() == "popup":
                     lfCmd("call win_execute(%d, 'norm! 3jk')" % (self._getInstance().getPopupWinId()))
                 else:
                     lfCmd("norm! 3jk")
         else:
             super()._toDown()
 
-        lfCmd("setlocal cursorline!")   # these two help to redraw the statusline,
-        lfCmd("setlocal cursorline!")   # also fix a weird bug of vim
+        lfCmd("setlocal cursorline!")  # these two help to redraw the statusline,
+        lfCmd("setlocal cursorline!")  # also fix a weird bug of vim
 
     def removeCache(self, buf_number):
         self._getExplorer().removeCache(buf_number)
@@ -468,7 +476,7 @@ class BufTagExplManager(Manager):
     def _bangEnter(self):
         super()._bangEnter()
         if "--all" in self._arguments and not self._is_content_list:
-            if lfEval("exists('*timer_start')") == '0':
+            if lfEval("exists('*timer_start')") == "0":
                 lfCmd("echohl Error | redraw | echo ' E117: Unknown function: timer_start' | echohl NONE")
                 return
             self._callback(bang=True)
@@ -482,8 +490,7 @@ class BufTagExplManager(Manager):
         self._relocateCursor()
 
     def _relocateCursor(self):
-        remember_last_status = "--recall" in self._arguments \
-                or lfEval("g:Lf_RememberLastSearch") == '1' and self._cli.pattern
+        remember_last_status = "--recall" in self._arguments or lfEval("g:Lf_RememberLastSearch") == "1" and self._cli.pattern
         if remember_last_status:
             return
 
@@ -516,17 +523,20 @@ class BufTagExplManager(Manager):
             last -= 1
         if last >= 0:
             index = tags[last][0]
-            if self._getInstance().getWinPos() == 'popup':
-                lfCmd("call leaderf#ResetPopupOptions(%d, 'filter', '%s')"
-                        % (self._getInstance().getPopupWinId(), 'leaderf#PopupFilter'))
+            if self._getInstance().getWinPos() == "popup":
+                lfCmd("call leaderf#ResetPopupOptions(%d, 'filter', '%s')" % (self._getInstance().getPopupWinId(), "leaderf#PopupFilter"))
                 lfCmd("""call win_execute(%d, "exec 'norm! %dG'")""" % (self._getInstance().getPopupWinId(), int(index)))
 
-                if lfEval(f"exists('*leaderf#{self._getExplorer().getStlCategory()}#NormalModeFilter')") == '1':
-                    lfCmd("call leaderf#ResetPopupOptions(%d, 'filter', '%s')" % (self._getInstance().getPopupWinId(),
-                            f'leaderf#{self._getExplorer().getStlCategory()}#NormalModeFilter'))
+                if lfEval(f"exists('*leaderf#{self._getExplorer().getStlCategory()}#NormalModeFilter')") == "1":
+                    lfCmd(
+                        "call leaderf#ResetPopupOptions(%d, 'filter', '%s')"
+                        % (self._getInstance().getPopupWinId(), f"leaderf#{self._getExplorer().getStlCategory()}#NormalModeFilter")
+                    )
                 else:
-                    lfCmd("call leaderf#ResetPopupOptions(%d, 'filter', function('leaderf#NormalModeFilter', [%d]))"
-                            % (self._getInstance().getPopupWinId(), id(self)))
+                    lfCmd(
+                        "call leaderf#ResetPopupOptions(%d, 'filter', function('leaderf#NormalModeFilter', [%d]))"
+                        % (self._getInstance().getPopupWinId(), id(self))
+                    )
             else:
                 lfCmd(str(index))
                 lfCmd("norm! zz")
@@ -534,11 +544,11 @@ class BufTagExplManager(Manager):
             self._previewResult(False)
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         line = args[0]
-        if line[0].isspace(): # if g:Lf_PreviewCode == 1
+        if line[0].isspace():  # if g:Lf_PreviewCode == 1
             buffer = args[1]
             line_num = args[2]
             if self._getInstance().isReverseOrder():
@@ -554,9 +564,9 @@ class BufTagExplManager(Manager):
         self._createPopupPreview(tagname, buf_number, line_num)
 
 
-#*****************************************************
+# *****************************************************
 # bufTagExplManager is a singleton
-#*****************************************************
+# *****************************************************
 bufTagExplManager = BufTagExplManager()
 
-__all__ = ['bufTagExplManager']
+__all__ = ["bufTagExplManager"]

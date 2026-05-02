@@ -24,9 +24,7 @@ def _make_broker() -> BaseAuthBroker | None:
     return ComposioBroker()
 
 
-async def resolve_credentials(
-    connector_short_name: str, provided_auth_fields: dict[str, Any] | None
-) -> dict[str, Any]:
+async def resolve_credentials(connector_short_name: str, provided_auth_fields: dict[str, Any] | None) -> dict[str, Any]:
     """Resolve credentials for a connector.
 
     Args:
@@ -44,6 +42,4 @@ async def resolve_credentials(
     if broker:
         return await broker.get_credentials(connector_short_name)
 
-    raise ValueError(
-        f"No credentials provided and no Composio API key configured for {connector_short_name}"
-    )
+    raise ValueError(f"No credentials provided and no Composio API key configured for {connector_short_name}")

@@ -5,7 +5,6 @@ Tests for main application endpoints and routes
 """
 
 
-
 class TestSystemEndpoints:
     """Test system/health endpoints"""
 
@@ -104,10 +103,7 @@ class TestCORS:
 
     def test_cors_preflight(self, client):
         """Test CORS preflight request"""
-        headers = {
-            "Origin": "http://testserver",
-            "Access-Control-Request-Method": "POST"
-        }
+        headers = {"Origin": "http://testserver", "Access-Control-Request-Method": "POST"}
         response = client.options("/", headers=headers)
 
         # Preflight should be handled

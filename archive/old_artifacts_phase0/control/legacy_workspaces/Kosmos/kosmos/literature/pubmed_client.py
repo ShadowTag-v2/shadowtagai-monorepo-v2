@@ -56,10 +56,7 @@ class PubMedClient(BaseLiteratureClient):
         # Initialize cache if enabled
         self.cache = get_cache() if cache_enabled else None
 
-        self.logger.info(
-            f"Initialized PubMed client (email={Entrez.email}, "
-            f"rate_limit={self.rate_limit} req/s)"
-        )
+        self.logger.info(f"Initialized PubMed client (email={Entrez.email}, rate_limit={self.rate_limit} req/s)")
 
         # Timeout for Entrez API calls (seconds) - loaded from config
         config = get_config()
@@ -103,12 +100,7 @@ class PubMedClient(BaseLiteratureClient):
         Returns:
             List of PMIDs
         """
-        handle = Entrez.esearch(
-            db="pubmed",
-            term=search_query,
-            retmax=min(max_results, self.max_results),
-            sort=sort
-        )
+        handle = Entrez.esearch(db="pubmed", term=search_query, retmax=min(max_results, self.max_results), sort=sort)
         record = Entrez.read(handle)
         handle.close()
         return record.get("IdList", [])
@@ -123,12 +115,7 @@ class PubMedClient(BaseLiteratureClient):
         Returns:
             List of Medline record dictionaries
         """
-        handle = Entrez.efetch(
-            db="pubmed",
-            id=",".join(pmids),
-            rettype="medline",
-            retmode="text"
-        )
+        handle = Entrez.efetch(db="pubmed", id=",".join(pmids), rettype="medline", retmode="text")
         records = list(Medline.parse(handle))
         handle.close()
         return records
@@ -144,12 +131,7 @@ class PubMedClient(BaseLiteratureClient):
         Returns:
             List of linked PMIDs
         """
-        handle = Entrez.elink(
-            dbfrom="pubmed",
-            db="pubmed",
-            id=pmid,
-            linkname=linkname
-        )
+        handle = Entrez.elink(dbfrom="pubmed", db="pubmed", id=pmid, linkname=linkname)
         record = Entrez.read(handle)
         handle.close()
 
@@ -164,13 +146,7 @@ class PubMedClient(BaseLiteratureClient):
         return [link["Id"] for link in links]
 
     def search(
-        self,
-        query: str,
-        max_results: int = 10,
-        fields: list[str] | None = None,
-        year_from: int | None = None,
-        year_to: int | None = None,
-        **kwargs
+        self, query: str, max_results: int = 10, fields: list[str] | None = None, year_from: int | None = None, year_to: int | None = None, **kwargs
     ) -> list[PaperMetadata]:
         """
         Search for papers on PubMed.
@@ -208,12 +184,7 @@ class PubMedClient(BaseLiteratureClient):
             return []
 
         # Check cache
-        cache_params = {
-            "query": query,
-            "max_results": max_results,
-            "year_from": year_from,
-            "year_to": year_to
-        }
+        cache_params = {"query": query, "max_results": max_results, "year_from": year_from, "year_to": year_to}
 
         if self.cache:
             cached_result = self.cache.get("pubmed", "search", cache_params)
@@ -227,12 +198,7 @@ class PubMedClient(BaseLiteratureClient):
             # Search for PMIDs with timeout
             self._rate_limit_delay()
             try:
-                pmids = self._run_with_timeout(
-                    self._do_esearch,
-                    search_query,
-                    max_results,
-                    kwargs.get("sort", "relevance")
-                )
+                pmids = self._run_with_timeout(self._do_esearch, search_query, max_results, kwargs.get("sort", "relevance"))
             except FuturesTimeoutError:
                 self.logger.warning(f"PubMed esearch timed out after {self.api_timeout}s for query: {query}")
                 return []
@@ -439,13 +405,13 @@ class PubMedClient(BaseLiteratureClient):
             batch_size = 100
 
             for i in range(0, len(pmids), batch_size):
-                batch_pmids = pmids[i:i + batch_size]
+                batch_pmids = pmids[i : i + batch_size]
 
                 self._rate_limit_delay()
                 try:
                     records = self._run_with_timeout(self._do_efetch, batch_pmids)
                 except FuturesTimeoutError:
-                    self.logger.warning(f"PubMed efetch timed out after {self.api_timeout}s for batch {i//batch_size + 1}")
+                    self.logger.warning(f"PubMed efetch timed out after {self.api_timeout}s for batch {i // batch_size + 1}")
                     continue
 
                 for record in records:
@@ -486,7 +452,7 @@ class PubMedClient(BaseLiteratureClient):
             try:
                 # Try to parse "2023 Jan 15" format
                 pub_date = datetime.strptime(date_str.split()[0], "%Y")
-            except (ValueError, IndexError):
+            except ValueError, IndexError:
                 pass
 
             # Extract year
@@ -512,7 +478,7 @@ class PubMedClient(BaseLiteratureClient):
                 year=year,
                 url=f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/",
                 keywords=record.get("MH", []),  # MeSH terms as keywords
-                raw_data=record
+                raw_data=record,
             )
 
         except Exception as e:

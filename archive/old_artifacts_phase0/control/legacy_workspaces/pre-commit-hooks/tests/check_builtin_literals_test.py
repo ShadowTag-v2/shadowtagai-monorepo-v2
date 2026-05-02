@@ -5,7 +5,7 @@ import ast
 import pytest
 from pre_commit_hooks.check_builtin_literals import Call, Visitor, main
 
-BUILTIN_CONSTRUCTORS = '''\
+BUILTIN_CONSTRUCTORS = """\
 import builtins
 
 c1 = complex()
@@ -23,8 +23,8 @@ i2 = builtins.int()
 l2 = builtins.list()
 s2 = builtins.str()
 t2 = builtins.tuple()
-'''
-BUILTIN_LITERALS = '''\
+"""
+BUILTIN_LITERALS = """\
 c1 = 0j
 d1 = {}
 f1 = 0.0
@@ -32,49 +32,49 @@ i1 = 0
 l1 = []
 s1 = ''
 t1 = ()
-'''
+"""
 
 
 @pytest.mark.parametrize(
-    ('expression', 'calls'),
+    ("expression", "calls"),
     [
         # see #285
-        ('x[0]()', []),
+        ("x[0]()", []),
         # complex
-        ('0j', []),
-        ('complex()', [Call('complex', 1, 0)]),
-        ('complex(0, 0)', []),
+        ("0j", []),
+        ("complex()", [Call("complex", 1, 0)]),
+        ("complex(0, 0)", []),
         ("complex('0+0j')", []),
-        ('builtins.complex()', []),
+        ("builtins.complex()", []),
         # float
-        ('0.0', []),
-        ('float()', [Call('float', 1, 0)]),
+        ("0.0", []),
+        ("float()", [Call("float", 1, 0)]),
         ("float('0.0')", []),
-        ('builtins.float()', []),
+        ("builtins.float()", []),
         # int
-        ('0', []),
-        ('int()', [Call('int', 1, 0)]),
+        ("0", []),
+        ("int()", [Call("int", 1, 0)]),
         ("int('0')", []),
-        ('builtins.int()', []),
+        ("builtins.int()", []),
         # list
-        ('[]', []),
-        ('list()', [Call('list', 1, 0)]),
+        ("[]", []),
+        ("list()", [Call("list", 1, 0)]),
         ("list('abc')", []),
         ("list([c for c in 'abc'])", []),
         ("list(c for c in 'abc')", []),
-        ('builtins.list()', []),
+        ("builtins.list()", []),
         # str
         ("''", []),
-        ('str()', [Call('str', 1, 0)]),
+        ("str()", [Call("str", 1, 0)]),
         ("str('0')", []),
-        ('builtins.str()', []),
+        ("builtins.str()", []),
         # tuple
-        ('()', []),
-        ('tuple()', [Call('tuple', 1, 0)]),
+        ("()", []),
+        ("tuple()", [Call("tuple", 1, 0)]),
         ("tuple('abc')", []),
         ("tuple([c for c in 'abc'])", []),
         ("tuple(c for c in 'abc')", []),
-        ('builtins.tuple()', []),
+        ("builtins.tuple()", []),
     ],
 )
 def test_non_dict_exprs(expression, calls):
@@ -84,15 +84,15 @@ def test_non_dict_exprs(expression, calls):
 
 
 @pytest.mark.parametrize(
-    ('expression', 'calls'),
+    ("expression", "calls"),
     [
-        ('{}', []),
-        ('dict()', [Call('dict', 1, 0)]),
-        ('dict(a=1, b=2, c=3)', []),
+        ("{}", []),
+        ("dict()", [Call("dict", 1, 0)]),
+        ("dict(a=1, b=2, c=3)", []),
         ("dict(**{'a': 1, 'b': 2, 'c': 3})", []),
         ("dict([(k, v) for k, v in [('a', 1), ('b', 2), ('c', 3)]])", []),
         ("dict((k, v) for k, v in [('a', 1), ('b', 2), ('c', 3)])", []),
-        ('builtins.dict()', []),
+        ("builtins.dict()", []),
     ],
 )
 def test_dict_allow_kwargs_exprs(expression, calls):
@@ -102,13 +102,13 @@ def test_dict_allow_kwargs_exprs(expression, calls):
 
 
 @pytest.mark.parametrize(
-    ('expression', 'calls'),
+    ("expression", "calls"),
     [
-        ('dict()', [Call('dict', 1, 0)]),
-        ('dict(a=1, b=2, c=3)', [Call('dict', 1, 0)]),
-        ("dict(**{'a': 1, 'b': 2, 'c': 3})", [Call('dict', 1, 0)]),
-        ('builtins.dict()', []),
-        pytest.param('f(dict())', [Call('dict', 1, 2)], id='nested'),
+        ("dict()", [Call("dict", 1, 0)]),
+        ("dict(a=1, b=2, c=3)", [Call("dict", 1, 0)]),
+        ("dict(**{'a': 1, 'b': 2, 'c': 3})", [Call("dict", 1, 0)]),
+        ("builtins.dict()", []),
+        pytest.param("f(dict())", [Call("dict", 1, 2)], id="nested"),
     ],
 )
 def test_dict_no_allow_kwargs_exprs(expression, calls):
@@ -119,28 +119,28 @@ def test_dict_no_allow_kwargs_exprs(expression, calls):
 
 def test_ignore_constructors():
     visitor = Visitor(
-        ignore={'complex', 'dict', 'float', 'int', 'list', 'str', 'tuple'},
+        ignore={"complex", "dict", "float", "int", "list", "str", "tuple"},
     )
     visitor.visit(ast.parse(BUILTIN_CONSTRUCTORS))
     assert visitor.builtin_type_calls == []
 
 
 def test_failing_file(tmpdir):
-    f = tmpdir.join('f.py')
+    f = tmpdir.join("f.py")
     f.write(BUILTIN_CONSTRUCTORS)
     rc = main([str(f)])
     assert rc == 1
 
 
 def test_passing_file(tmpdir):
-    f = tmpdir.join('f.py')
+    f = tmpdir.join("f.py")
     f.write(BUILTIN_LITERALS)
     rc = main([str(f)])
     assert rc == 0
 
 
 def test_failing_file_ignore_all(tmpdir):
-    f = tmpdir.join('f.py')
+    f = tmpdir.join("f.py")
     f.write(BUILTIN_CONSTRUCTORS)
-    rc = main(['--ignore=complex,dict,float,int,list,str,tuple', str(f)])
+    rc = main(["--ignore=complex,dict,float,int,list,str,tuple", str(f)])
     assert rc == 0

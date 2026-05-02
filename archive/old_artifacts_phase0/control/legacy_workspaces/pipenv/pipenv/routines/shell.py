@@ -9,9 +9,7 @@ from pipenv.utils.shell import cmd_list_to_shell, system_which
 from pipenv.utils.virtualenv import virtualenv_scripts_dir
 
 
-def do_shell(
-    project, python=False, fancy=False, shell_args=None, pypi_mirror=None, quiet=False
-):
+def do_shell(project, python=False, fancy=False, shell_args=None, pypi_mirror=None, quiet=False):
     # Ensure that virtualenv is available.
     ensure_project(
         project,
@@ -56,10 +54,7 @@ def do_shell(
     try:
         shell.fork_compat(*fork_args, quiet=quiet)
     except (AttributeError, ImportError):
-        err.print(
-            "Compatibility mode not supported. "
-            "Trying to continue as well-configured shell..."
-        )
+        err.print("Compatibility mode not supported. Trying to continue as well-configured shell...")
         shell.fork(*fork_args)
 
 
@@ -183,19 +178,13 @@ def _run_script_sequence(script, env, verbose=False):
             sub.cmd_args[1:] = [expandvars(arg) for arg in sub.args]
             if command_path:
                 try:
-                    result = subprocess.run(
-                        [command_path] + sub.args, env=sub_string_env, check=False
-                    )
+                    result = subprocess.run([command_path] + sub.args, env=sub_string_env, check=False)
                 except OSError as exc:
                     if exc.winerror != 193:
                         raise
-                    result = subprocess.run(
-                        sub.cmdify(), shell=True, env=sub_string_env, check=False
-                    )
+                    result = subprocess.run(sub.cmdify(), shell=True, env=sub_string_env, check=False)
             else:
-                result = subprocess.run(
-                    sub.cmdify(), shell=True, env=sub_string_env, check=False
-                )
+                result = subprocess.run(sub.cmdify(), shell=True, env=sub_string_env, check=False)
         else:
             command_path = system_which(sub.command, path=path)
             if command_path:

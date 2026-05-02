@@ -1,11 +1,10 @@
 """Summarization service using Claude API."""
 
 import logging
-from typing import List, Optional
 from anthropic import AsyncAnthropic
 
 from app.core.config import settings
-from app.models import Message, Conversation
+from app.models import Message
 
 logger = logging.getLogger(__name__)
 
@@ -19,10 +18,7 @@ class SummarizationService:
         if settings.anthropic_api_key:
             self.client = AsyncAnthropic(api_key=settings.anthropic_api_key)
 
-    async def summarize_conversation(
-        self,
-        messages: list[Message]
-    ) -> str:
+    async def summarize_conversation(self, messages: list[Message]) -> str:
         """
         Summarize a conversation.
 
@@ -53,7 +49,7 @@ Summary:"""
             response = await self.client.messages.create(
                 model="claude-3-haiku-20240307",  # Use Haiku for faster, cheaper summaries
                 max_tokens=500,
-                messages=[{"role": "user", "content": prompt}]
+                messages=[{"role": "user", "content": prompt}],
             )
 
             summary = response.content[0].text
@@ -63,11 +59,7 @@ Summary:"""
             logger.error(f"Error summarizing conversation: {e}")
             return self._fallback_summary(messages)
 
-    async def extract_memories(
-        self,
-        messages: list[Message],
-        existing_summary: str | None = None
-    ) -> list[dict]:
+    async def extract_memories(self, messages: list[Message], existing_summary: str | None = None) -> list[dict]:
         """
         Extract key insights and facts to store as memories.
 
@@ -100,13 +92,12 @@ Conversation:
 Extracted memories (JSON):"""
 
             response = await self.client.messages.create(
-                model="claude-3-haiku-20240307",
-                max_tokens=1000,
-                messages=[{"role": "user", "content": prompt}]
+                model="claude-3-haiku-20240307", max_tokens=1000, messages=[{"role": "user", "content": prompt}]
             )
 
             # Parse JSON response
             import json
+
             memories_text = response.content[0].text
             # Extract JSON from markdown code blocks if present
             if "```json" in memories_text:
@@ -121,10 +112,7 @@ Extracted memories (JSON):"""
             logger.error(f"Error extracting memories: {e}")
             return []
 
-    async def synthesize_memories(
-        self,
-        memories: list[dict]
-    ) -> str:
+    async def synthesize_memories(self, memories: list[dict]) -> str:
         """
         Create a synthesis/summary from multiple memories.
 
@@ -139,10 +127,7 @@ Extracted memories (JSON):"""
 
         try:
             # Format memories
-            memories_text = "\n\n".join([
-                f"[{m.get('memory_type', 'fact')}] {m.get('title', '')}: {m.get('content', '')}"
-                for m in memories
-            ])
+            memories_text = "\n\n".join([f"[{m.get('memory_type', 'fact')}] {m.get('title', '')}: {m.get('content', '')}" for m in memories])
 
             prompt = f"""Based on the following memories and facts, create a coherent synthesis
 that captures the key context and information about the user.
@@ -153,9 +138,7 @@ Memories:
 Synthesis:"""
 
             response = await self.client.messages.create(
-                model="claude-3-haiku-20240307",
-                max_tokens=1000,
-                messages=[{"role": "user", "content": prompt}]
+                model="claude-3-haiku-20240307", max_tokens=1000, messages=[{"role": "user", "content": prompt}]
             )
 
             return response.content[0].text
@@ -182,10 +165,7 @@ Synthesis:"""
         user_messages = sum(1 for m in messages if m.role == "user")
         assistant_messages = sum(1 for m in messages if m.role == "assistant")
 
-        return (
-            f"Conversation with {message_count} messages "
-            f"({user_messages} from user, {assistant_messages} from assistant)"
-        )
+        return f"Conversation with {message_count} messages ({user_messages} from user, {assistant_messages} from assistant)"
 
 
 # Global singleton instance

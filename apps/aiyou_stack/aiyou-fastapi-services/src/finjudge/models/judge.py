@@ -7,7 +7,7 @@ from enum import StrEnum
 from typing import Any
 from uuid import uuid4
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # ============================================================================
 # Enums
@@ -268,8 +268,8 @@ class JudgeRequest(BaseModel):
     )
     user_notes: str | None = Field(None, description="Additional user notes")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "module": "financial_runway_monitor",
                 "actor": {"role": "cfo", "org_unit": "Finance", "jurisdiction": "US"},
@@ -290,7 +290,8 @@ class JudgeRequest(BaseModel):
                 },
                 "flags": {"policy_flags": ["approaching_12mo_runway_threshold"]},
             },
-        }
+        },
+    )
 
 
 class JudgeRuling(BaseModel):
@@ -309,8 +310,8 @@ class JudgeRuling(BaseModel):
     explanation_nl: ExplanationNL = Field(..., description="Natural language explanation")
     audit_trail: AuditTrail = Field(..., description="Audit trail")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "decision_id": "burn_rate_increase_2025_11",
                 "timestamp": "2025-11-17T14:35:00Z",
@@ -350,4 +351,5 @@ class JudgeRuling(BaseModel):
                 },
                 "audit_trail": {"input_hash": "sha256_placeholder", "overrides": []},
             },
-        }
+        },
+    )

@@ -26,20 +26,19 @@ logger = logging.getLogger("google_adk." + __name__)
 
 
 class AgentChangeEventHandler(FileSystemEventHandler):
+    def __init__(
+        self,
+        agent_loader: AgentLoader,
+        runners_to_clean: set[str],
+        current_app_name_ref: SharedValue[str],
+    ):
+        self.agent_loader = agent_loader
+        self.runners_to_clean = runners_to_clean
+        self.current_app_name_ref = current_app_name_ref
 
-  def __init__(
-      self,
-      agent_loader: AgentLoader,
-      runners_to_clean: set[str],
-      current_app_name_ref: SharedValue[str],
-  ):
-    self.agent_loader = agent_loader
-    self.runners_to_clean = runners_to_clean
-    self.current_app_name_ref = current_app_name_ref
-
-  def on_modified(self, event):
-    if not (event.src_path.endswith(".py") or event.src_path.endswith(".yaml")):
-      return
-    logger.info("Change detected in agents directory: %s", event.src_path)
-    self.agent_loader.remove_agent_from_cache(self.current_app_name_ref.value)
-    self.runners_to_clean.add(self.current_app_name_ref.value)
+    def on_modified(self, event):
+        if not (event.src_path.endswith(".py") or event.src_path.endswith(".yaml")):
+            return
+        logger.info("Change detected in agents directory: %s", event.src_path)
+        self.agent_loader.remove_agent_from_cache(self.current_app_name_ref.value)
+        self.runners_to_clean.add(self.current_app_name_ref.value)

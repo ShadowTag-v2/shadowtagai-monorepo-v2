@@ -20,8 +20,8 @@ from .eval_result import EvalCaseResult, EvalSetResult
 
 
 def _sanitize_eval_set_result_name(eval_set_result_name: str) -> str:
-  """Sanitizes the eval set result name."""
-  return eval_set_result_name.replace("/", "_")
+    """Sanitizes the eval set result name."""
+    return eval_set_result_name.replace("/", "_")
 
 
 def create_eval_set_result(
@@ -29,15 +29,15 @@ def create_eval_set_result(
     eval_set_id: str,
     eval_case_results: list[EvalCaseResult],
 ) -> EvalSetResult:
-  """Creates a new EvalSetResult given eval_case_results."""
-  timestamp = time.time()
-  eval_set_result_id = f"{app_name}_{eval_set_id}_{timestamp}"
-  eval_set_result_name = _sanitize_eval_set_result_name(eval_set_result_id)
-  eval_set_result = EvalSetResult(
-      eval_set_result_id=eval_set_result_id,
-      eval_set_result_name=eval_set_result_name,
-      eval_set_id=eval_set_id,
-      eval_case_results=eval_case_results,
-      creation_timestamp=timestamp,
-  )
-  return eval_set_result
+    """Creates a new EvalSetResult given eval_case_results."""
+    timestamp = time.time()
+    eval_set_result_id = f"{app_name}_{eval_set_id}_{timestamp}"
+    eval_set_result_name = _sanitize_eval_set_result_name(eval_set_result_id)
+    eval_set_result = EvalSetResult(
+        eval_set_result_id=eval_set_result_id,
+        eval_set_result_name=eval_set_result_name,
+        eval_set_id=eval_set_id,
+        eval_case_results=eval_case_results,
+        creation_timestamp=timestamp,
+    )
+    return eval_set_result

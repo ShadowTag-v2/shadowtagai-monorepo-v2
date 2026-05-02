@@ -95,9 +95,7 @@ def format_requirement_for_lockfile(
                 # e.g. a win32-only package locked on Linux), req.link is a
                 # file:// URL pointing at the cache – storing that path would
                 # break installs on any machine without that exact cache layout.
-                if isinstance(pipfile_entry, dict) and (
-                    pipfile_entry.get("file") or pipfile_entry.get("path")
-                ):
+                if isinstance(pipfile_entry, dict) and (pipfile_entry.get("file") or pipfile_entry.get("path")):
                     entry["file"] = req.link.url
                 elif req.req and req.req.url and req.req.url.startswith("file:"):
                     # PEP 508 direct URL file:// dependency (e.g. a transitive dep
@@ -308,9 +306,7 @@ def atomic_open_for_write(target, binary=False, newline=None, encoding=None) -> 
 @dataclass
 class Lockfile:
     lockfile: lockfiles.Lockfile
-    path: Path = field(
-        default_factory=lambda: Path(os.curdir).joinpath("Pipfile.lock").absolute()
-    )
+    path: Path = field(default_factory=lambda: Path(os.curdir).joinpath("Pipfile.lock").absolute())
     _requirements: Optional[List[Any]] = field(default_factory=list)
     _dev_requirements: Optional[List[Any]] = field(default_factory=list)
     projectfile: ProjectFile = None
@@ -407,9 +403,7 @@ class Lockfile:
         raise PipfileNotFound(pipfile_path)
 
     @classmethod
-    def load_projectfile(
-        cls, path: Optional[str] = None, create: bool = True, data: Optional[Dict] = None
-    ) -> "ProjectFile":
+    def load_projectfile(cls, path: Optional[str] = None, create: bool = True, data: Optional[Dict] = None) -> "ProjectFile":
         if not path:
             path = os.curdir
         path = Path(path).absolute()
@@ -418,9 +412,7 @@ class Lockfile:
         if not project_path.exists():
             raise OSError(f"Project does not exist: {project_path.as_posix()}")
         elif not lockfile_path.exists() and not create:
-            raise FileNotFoundError(
-                f"Lockfile does not exist: {lockfile_path.as_posix()}"
-            )
+            raise FileNotFoundError(f"Lockfile does not exist: {lockfile_path.as_posix()}")
         projectfile = cls.read_projectfile(lockfile_path.as_posix())
         if not lockfile_path.exists():
             if not data:
@@ -437,9 +429,7 @@ class Lockfile:
         return projectfile
 
     @classmethod
-    def from_data(
-        cls, path: Optional[str], data: Optional[Dict], meta_from_project: bool = True
-    ) -> "Lockfile":
+    def from_data(cls, path: Optional[str], data: Optional[Dict], meta_from_project: bool = True) -> "Lockfile":
         if path is None:
             raise MissingParameter("path")
         if data is None:
@@ -468,9 +458,7 @@ class Lockfile:
 
         projectfile = ProjectFile(
             line_ending=DEFAULT_NEWLINES,
-            location=str(
-                lockfile_path
-            ),  # Convert to string if ProjectFile expects a string
+            location=str(lockfile_path),  # Convert to string if ProjectFile expects a string
             model=lockfile,
         )
 
@@ -577,14 +565,10 @@ class Lockfile:
         else:
             deps = self.get_deps(dev=dev, only=only)
         for package_name, package_info in deps.items():
-            pip_line = requirement_from_lockfile(
-                package_name, package_info, include_hashes=False, include_markers=False
-            )
+            pip_line = requirement_from_lockfile(package_name, package_info, include_hashes=False, include_markers=False)
             # Strip pylock.toml-specific dependency_groups conditions before
             # passing to pip — pip only understands standard PEP 508 markers.
-            raw_marker = (
-                package_info.get("markers") if isinstance(package_info, dict) else None
-            )
+            raw_marker = package_info.get("markers") if isinstance(package_info, dict) else None
             pip_marker = self._pip_marker(raw_marker) if raw_marker else raw_marker
             if pip_marker != raw_marker:
                 pip_info = dict(package_info)
@@ -592,13 +576,9 @@ class Lockfile:
                     pip_info["markers"] = pip_marker
                 else:
                     pip_info.pop("markers", None)
-                pip_line_specified = requirement_from_lockfile(
-                    package_name, pip_info, include_hashes=True, include_markers=True
-                )
+                pip_line_specified = requirement_from_lockfile(package_name, pip_info, include_hashes=True, include_markers=True)
             else:
-                pip_line_specified = requirement_from_lockfile(
-                    package_name, package_info, include_hashes=True, include_markers=True
-                )
+                pip_line_specified = requirement_from_lockfile(package_name, package_info, include_hashes=True, include_markers=True)
             install_req, _ = expansive_install_req_from_line(pip_line)
             # Set markers from the lockfile entry onto install_req so that
             # environment marker evaluation (e.g. python_version < '3.11') can
@@ -616,9 +596,7 @@ class Lockfile:
 
     def requirements_list(self, category: str) -> List[Dict]:
         if self.lockfile.get(category):
-            return [
-                {name: entry._data} for name, entry in self.lockfile[category].items()
-            ]
+            return [{name: entry._data} for name, entry in self.lockfile[category].items()]
         return []
 
     def write(self) -> None:

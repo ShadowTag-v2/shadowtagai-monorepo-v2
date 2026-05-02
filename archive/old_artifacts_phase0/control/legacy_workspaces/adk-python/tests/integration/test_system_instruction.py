@@ -85,93 +85,70 @@ print('hello')
     indirect=True,
 )
 def test_context_variable(agent_runner: TestRunner):
-  session = Session(
-      context={
-          "customerId": "1234567890",
-          "customerInt": 30,
-          "customerFloat": 12.34,
-          "customerJson": {"name": "John Doe", "age": 30, "count": 11.1},
-      }
-  )
-  si = UnitFlow()._build_system_instruction(
-      InvocationContext(
-          invocation_id="1234567890", agent=agent_runner.agent, session=session
-      )
-  )
+    session = Session(
+        context={
+            "customerId": "1234567890",
+            "customerInt": 30,
+            "customerFloat": 12.34,
+            "customerJson": {"name": "John Doe", "age": 30, "count": 11.1},
+        }
+    )
+    si = UnitFlow()._build_system_instruction(InvocationContext(invocation_id="1234567890", agent=agent_runner.agent, session=session))
 
-  assert (
-      "Use the echo_info tool to echo 1234567890, 30, 12.34, and {'name': 'John"
-      " Doe', 'age': 30, 'count': 11.1}. Ask for it if you need to."
-      in si
-  )
+    assert (
+        "Use the echo_info tool to echo 1234567890, 30, 12.34, and {'name': 'John Doe', 'age': 30, 'count': 11.1}. Ask for it if you need to." in si
+    )
 
 
 @pytest.mark.parametrize(
     "agent_runner",
-    [{
-        "agent": (
-            context_variable_agent.agent.state_variable_with_complicated_format_agent
-        )
-    }],
+    [{"agent": (context_variable_agent.agent.state_variable_with_complicated_format_agent)}],
     indirect=True,
 )
 def test_context_variable_with_complicated_format(agent_runner: TestRunner):
-  session = Session(
-      context={"customerId": "1234567890", "customer_int": 30},
-      artifacts={"fileName": [types.Part(text="test artifact")]},
-  )
-  si = _context_formatter.populate_context_and_artifact_variable_values(
-      agent_runner.agent.instruction,
-      session.get_state(),
-      session.get_artifact_dict(),
-  )
+    session = Session(
+        context={"customerId": "1234567890", "customer_int": 30},
+        artifacts={"fileName": [types.Part(text="test artifact")]},
+    )
+    si = _context_formatter.populate_context_and_artifact_variable_values(
+        agent_runner.agent.instruction,
+        session.get_state(),
+        session.get_artifact_dict(),
+    )
 
-  assert (
-      si
-      == "Use the echo_info tool to echo 1234567890, 30, { "
-      " non-identifier-float}}, test artifact, {'key1': 'value1'} and"
-      " {{'key2': 'value2'}}. Ask for it if you need to."
-  )
+    assert (
+        si == "Use the echo_info tool to echo 1234567890, 30, { "
+        " non-identifier-float}}, test artifact, {'key1': 'value1'} and"
+        " {{'key2': 'value2'}}. Ask for it if you need to."
+    )
 
 
 @pytest.mark.parametrize(
     "agent_runner",
-    [{
-        "agent": (
-            context_variable_agent.agent.state_variable_with_nl_planner_agent
-        )
-    }],
+    [{"agent": (context_variable_agent.agent.state_variable_with_nl_planner_agent)}],
     indirect=True,
 )
 def test_nl_planner(agent_runner: TestRunner):
-  session = Session(context={"customerId": "1234567890"})
-  si = UnitFlow()._build_system_instruction(
-      InvocationContext(
-          invocation_id="1234567890",
-          agent=agent_runner.agent,
-          session=session,
-      )
-  )
+    session = Session(context={"customerId": "1234567890"})
+    si = UnitFlow()._build_system_instruction(
+        InvocationContext(
+            invocation_id="1234567890",
+            agent=agent_runner.agent,
+            session=session,
+        )
+    )
 
-  for line in nl_planner_si.splitlines():
-    assert line in si
+    for line in nl_planner_si.splitlines():
+        assert line in si
 
 
 @pytest.mark.parametrize(
     "agent_runner",
-    [{
-        "agent": (
-            context_variable_agent.agent.state_variable_with_function_instruction_agent
-        )
-    }],
+    [{"agent": (context_variable_agent.agent.state_variable_with_function_instruction_agent)}],
     indirect=True,
 )
 def test_function_instruction(agent_runner: TestRunner):
-  session = Session(context={"customerId": "1234567890"})
-  si = UnitFlow()._build_system_instruction(
-      InvocationContext(
-          invocation_id="1234567890", agent=agent_runner.agent, session=session
-      )
-  )
+    session = Session(context={"customerId": "1234567890"})
+    si = UnitFlow()._build_system_instruction(InvocationContext(invocation_id="1234567890", agent=agent_runner.agent, session=session))
 
-  assert "This is the plain text sub agent instruction." in si
+    assert "This is the plain text sub agent instruction." in si

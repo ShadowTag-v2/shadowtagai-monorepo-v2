@@ -20,59 +20,52 @@ from google.genai import types
 
 
 def roll_die(sides: int, tool_context: ToolContext) -> int:
-  """Roll a die and return the rolled result.
+    """Roll a die and return the rolled result.
 
-  Args:
-    sides: The integer number of sides the die has.
+    Args:
+      sides: The integer number of sides the die has.
 
-  Returns:
-    An integer of the result of rolling the die.
-  """
-  result = random.randint(1, sides)
-  if 'rolls' not in tool_context.state:
-    tool_context.state['rolls'] = []
+    Returns:
+      An integer of the result of rolling the die.
+    """
+    result = random.randint(1, sides)
+    if "rolls" not in tool_context.state:
+        tool_context.state["rolls"] = []
 
-  tool_context.state['rolls'] = tool_context.state['rolls'] + [result]
-  return result
+    tool_context.state["rolls"] = tool_context.state["rolls"] + [result]
+    return result
 
 
 async def check_prime(nums: list[int]) -> str:
-  """Check if a given list of numbers are prime.
+    """Check if a given list of numbers are prime.
 
-  Args:
-    nums: The list of numbers to check.
+    Args:
+      nums: The list of numbers to check.
 
-  Returns:
-    A str indicating which number is prime.
-  """
-  primes = set()
-  for number in nums:
-    number = int(number)
-    if number <= 1:
-      continue
-    is_prime = True
-    for i in range(2, int(number**0.5) + 1):
-      if number % i == 0:
-        is_prime = False
-        break
-    if is_prime:
-      primes.add(number)
-  return (
-      'No prime numbers found.'
-      if not primes
-      else f"{', '.join(str(num) for num in primes)} are prime numbers."
-  )
+    Returns:
+      A str indicating which number is prime.
+    """
+    primes = set()
+    for number in nums:
+        number = int(number)
+        if number <= 1:
+            continue
+        is_prime = True
+        for i in range(2, int(number**0.5) + 1):
+            if number % i == 0:
+                is_prime = False
+                break
+        if is_prime:
+            primes.add(number)
+    return "No prime numbers found." if not primes else f"{', '.join(str(num) for num in primes)} are prime numbers."
 
 
 root_agent = Agent(
-    model='gemini-live-2.5-flash-preview-native-audio-09-2025',  # vertex
+    model="gemini-live-2.5-flash-preview-native-audio-09-2025",  # vertex
     # model='gemini-2.5-flash-native-audio-preview-09-2025',  # for AI studio
     # key
-    name='roll_dice_agent',
-    description=(
-        'hello world agent that can roll a dice of 6 sides and check prime'
-        ' numbers.'
-    ),
+    name="roll_dice_agent",
+    description=("hello world agent that can roll a dice of 6 sides and check prime numbers."),
     instruction="""
       You roll dice and answer questions about the outcome of the dice rolls.
       You can roll dice of different sizes. When the user doesn't specify the number of sides, you should assume 6 sides.

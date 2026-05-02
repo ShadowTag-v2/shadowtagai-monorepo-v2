@@ -59,14 +59,10 @@ class TodoistBongo(BaseBongo):
             # Short unique token used in content for verification
             token = str(uuid.uuid4())[:8]
 
-            content, description, priority = await generate_todoist_artifact(
-                self.openai_model, token
-            )
+            content, description, priority = await generate_todoist_artifact(self.openai_model, token)
 
             # Create task
-            task_data = await self._create_test_task(
-                self.test_project_id, content, description, priority
-            )
+            task_data = await self._create_test_task(self.test_project_id, content, description, priority)
 
             entities.append(
                 {
@@ -104,9 +100,7 @@ class TodoistBongo(BaseBongo):
                 token = task_info.get("token") or str(uuid.uuid4())[:8]
 
                 # Generate new content with same token
-                content, description, priority = await generate_todoist_artifact(
-                    self.openai_model, token, is_update=True
-                )
+                content, description, priority = await generate_todoist_artifact(self.openai_model, token, is_update=True)
 
                 # Update task
                 await self._update_test_task(task_info["id"], content, description)
@@ -154,9 +148,7 @@ class TodoistBongo(BaseBongo):
                     deleted_ids.append(test_task["id"])
                     self.logger.info(f"🗑️ Deleted test task: {test_task['content']}")
                 else:
-                    self.logger.warning(
-                        f"⚠️ Could not find test task for entity: {entity.get('id')}"
-                    )
+                    self.logger.warning(f"⚠️ Could not find test task for entity: {entity.get('id')}")
 
                 # Rate limiting
                 if len(entities) > 10:
@@ -208,17 +200,13 @@ class TodoistBongo(BaseBongo):
             )
 
             if response.status_code != 200:
-                raise Exception(
-                    f"Failed to create project: {response.status_code} - {response.text}"
-                )
+                raise Exception(f"Failed to create project: {response.status_code} - {response.text}")
 
             result = response.json()
             self.test_project_id = result["id"]
             self.logger.info(f"📁 Created test project: {project_name}")
 
-    async def _create_test_task(
-        self, project_id: str, content: str, description: str, priority: int = 1
-    ) -> dict[str, Any]:
+    async def _create_test_task(self, project_id: str, content: str, description: str, priority: int = 1) -> dict[str, Any]:
         """Create a test task via Todoist API."""
         await self._rate_limit()
 
@@ -298,9 +286,7 @@ class TodoistBongo(BaseBongo):
                     return False
                 else:
                     # Unexpected response
-                    self.logger.warning(
-                        f"⚠️ Unexpected response checking {task_id}: {response.status_code}"
-                    )
+                    self.logger.warning(f"⚠️ Unexpected response checking {task_id}: {response.status_code}")
                     return False
 
         except Exception as e:
@@ -318,9 +304,7 @@ class TodoistBongo(BaseBongo):
             )
 
             if response.status_code != 204:
-                raise Exception(
-                    f"Failed to delete project: {response.status_code} - {response.text}"
-                )
+                raise Exception(f"Failed to delete project: {response.status_code} - {response.text}")
 
     async def _rate_limit(self):
         """Implement rate limiting for Todoist API."""

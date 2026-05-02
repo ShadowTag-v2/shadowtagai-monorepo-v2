@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": true,
   "python.languageServer": "Pylance",
-  "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python3",
   "git.decorations.enabled": false,
   "cSpell.ignorePaths": [
     "**/dist-runtime/**",
@@ -9,11 +9,7 @@
     "**/vendor/a2ui/**",
     "**/payload-starter/**"
   ],
-  "dart.analysisExcludedFolders": [
-    "tools/dio",
-    "tools/google-cloud-dart",
-    "external_repos"
-  ],
+  "dart.analysisExcludedFolders": ["tools/dio", "tools/google-cloud-dart", "external_repos"],
   "files.watcherExclude": {
     "**/external_repos/**": true,
     "**/tools/dio/**": true,

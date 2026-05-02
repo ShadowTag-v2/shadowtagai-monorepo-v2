@@ -27,24 +27,20 @@ from google.adk.tools.tool_context import ToolContext
 from google.auth.credentials import Credentials
 
 
-async def get_tool(
-    name: str, tool_settings: SpannerToolSettings | None = None
-) -> BaseTool:
-  """Get a tool from Spanner toolset."""
-  credentials_config = SpannerCredentialsConfig(
-      client_id="abc", client_secret="def"
-  )
+async def get_tool(name: str, tool_settings: SpannerToolSettings | None = None) -> BaseTool:
+    """Get a tool from Spanner toolset."""
+    credentials_config = SpannerCredentialsConfig(client_id="abc", client_secret="def")
 
-  toolset = SpannerToolset(
-      credentials_config=credentials_config,
-      tool_filter=[name],
-      spanner_tool_settings=tool_settings,
-  )
+    toolset = SpannerToolset(
+        credentials_config=credentials_config,
+        tool_filter=[name],
+        spanner_tool_settings=tool_settings,
+    )
 
-  tools = await toolset.get_tools()
-  assert tools is not None
-  assert len(tools) == 1
-  return tools[0]
+    tools = await toolset.get_tools()
+    assert tools is not None
+    assert len(tools) == 1
+    return tools[0]
 
 
 @pytest.mark.asyncio
@@ -178,46 +174,40 @@ async def get_tool(
         ),
     ],
 )
-async def test_execute_sql_query_result(
-    query_result_mode, expected_description
-):
-  """Test Spanner execute_sql tool query result in different modes."""
-  tool_name = "execute_sql"
-  tool_settings = SpannerToolSettings(query_result_mode=query_result_mode)
-  tool = await get_tool(tool_name, tool_settings)
-  assert tool.name == tool_name
-  assert tool.description == expected_description
+async def test_execute_sql_query_result(query_result_mode, expected_description):
+    """Test Spanner execute_sql tool query result in different modes."""
+    tool_name = "execute_sql"
+    tool_settings = SpannerToolSettings(query_result_mode=query_result_mode)
+    tool = await get_tool(tool_name, tool_settings)
+    assert tool.name == tool_name
+    assert tool.description == expected_description
 
 
 @pytest.mark.asyncio
 @mock.patch.object(query_tool.utils, "execute_sql", spec_set=True)
 async def test_execute_sql(mock_utils_execute_sql):
-  """Test execute_sql function in query result default mode."""
-  mock_credentials = mock.create_autospec(
-      Credentials, instance=True, spec_set=True
-  )
-  mock_tool_context = mock.create_autospec(
-      ToolContext, instance=True, spec_set=True
-  )
-  mock_utils_execute_sql.return_value = {"status": "SUCCESS", "rows": [[1]]}
+    """Test execute_sql function in query result default mode."""
+    mock_credentials = mock.create_autospec(Credentials, instance=True, spec_set=True)
+    mock_tool_context = mock.create_autospec(ToolContext, instance=True, spec_set=True)
+    mock_utils_execute_sql.return_value = {"status": "SUCCESS", "rows": [[1]]}
 
-  result = await query_tool.execute_sql(
-      project_id="test-project",
-      instance_id="test-instance",
-      database_id="test-database",
-      query="SELECT 1",
-      credentials=mock_credentials,
-      settings=settings.SpannerToolSettings(),
-      tool_context=mock_tool_context,
-  )
+    result = await query_tool.execute_sql(
+        project_id="test-project",
+        instance_id="test-instance",
+        database_id="test-database",
+        query="SELECT 1",
+        credentials=mock_credentials,
+        settings=settings.SpannerToolSettings(),
+        tool_context=mock_tool_context,
+    )
 
-  mock_utils_execute_sql.assert_called_once_with(
-      "test-project",
-      "test-instance",
-      "test-database",
-      "SELECT 1",
-      mock_credentials,
-      settings.SpannerToolSettings(),
-      mock_tool_context,
-  )
-  assert result == {"status": "SUCCESS", "rows": [[1]]}
+    mock_utils_execute_sql.assert_called_once_with(
+        "test-project",
+        "test-instance",
+        "test-database",
+        "SELECT 1",
+        mock_credentials,
+        settings.SpannerToolSettings(),
+        mock_tool_context,
+    )
+    assert result == {"status": "SUCCESS", "rows": [[1]]}

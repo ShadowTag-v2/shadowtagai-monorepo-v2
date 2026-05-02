@@ -13,7 +13,8 @@ def test_editable_vcs_reinstall(pipenv_instance_private_pypi):
     with pipenv_instance_private_pypi() as p:
         # Create a Pipfile with an editable VCS dependency
         with open(p.pipfile_path, "w") as f:
-            f.write("""
+            f.write(
+                """
 [[source]]
 url = "https://pypi.org/simple"
 verify_ssl = true
@@ -21,7 +22,8 @@ name = "pypi"
 
 [packages]
 gunicorn = {git = "https://github.com/benoitc/gunicorn", ref = "23.0.0", editable = true}
-            """.strip())
+            """.strip()
+            )
 
         # Install the dependency
         c = p.pipenv("install")

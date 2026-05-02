@@ -28,40 +28,38 @@ hallucinated = False  # Whether the tool name is hallucinated
 
 
 def roll_die(sides: int, tool_context: ToolContext) -> int:
-  """Roll a die and return the rolled result.
+    """Roll a die and return the rolled result.
 
-  Args:
-    sides: The integer number of sides the die has.
+    Args:
+      sides: The integer number of sides the die has.
 
-  Returns:
-    An integer of the result of rolling the die.
-  """
-  result = random.randint(1, sides)
-  if "rolls" not in tool_context.state:
-    tool_context.state["rolls"] = []
+    Returns:
+      An integer of the result of rolling the die.
+    """
+    result = random.randint(1, sides)
+    if "rolls" not in tool_context.state:
+        tool_context.state["rolls"] = []
 
-  tool_context.state["rolls"] = tool_context.state["rolls"] + [result]
-  return result
+    tool_context.state["rolls"] = tool_context.state["rolls"] + [result]
+    return result
 
 
-def after_model_callback(
-    callback_context: CallbackContext, llm_response: LlmResponse
-):
-  """After model callback to produce one hallucinating tool call."""
-  global hallucinated
+def after_model_callback(callback_context: CallbackContext, llm_response: LlmResponse):
+    """After model callback to produce one hallucinating tool call."""
+    global hallucinated
 
-  if hallucinated:
+    if hallucinated:
+        return None
+
+    if (
+        llm_response.content
+        and llm_response.content.parts
+        and llm_response.content.parts[0].function_call
+        and llm_response.content.parts[0].function_call.name == "roll_die"
+    ):
+        llm_response.content.parts[0].function_call.name = "roll_die_wrong_name"
+        hallucinated = True
     return None
-
-  if (
-      llm_response.content
-      and llm_response.content.parts
-      and llm_response.content.parts[0].function_call
-      and llm_response.content.parts[0].function_call.name == "roll_die"
-  ):
-    llm_response.content.parts[0].function_call.name = "roll_die_wrong_name"
-    hallucinated = True
-  return None
 
 
 root_agent = LlmAgent(

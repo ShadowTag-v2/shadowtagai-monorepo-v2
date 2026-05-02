@@ -22,9 +22,7 @@ def test_uninstall_requests(pipenv_instance_pypi):
 
 
 @pytest.mark.uninstall
-@pytest.mark.skipif(
-    sys.version_info >= (3, 12), reason="Package does not work with Python 3.12"
-)
+@pytest.mark.skipif(sys.version_info >= (3, 12), reason="Package does not work with Python 3.12")
 def test_uninstall_django(pipenv_instance_private_pypi):
     with pipenv_instance_private_pypi() as p:
         c = p.pipenv("install Django")
@@ -48,9 +46,7 @@ def test_uninstall_django(pipenv_instance_private_pypi):
 
 @pytest.mark.install
 @pytest.mark.uninstall
-@pytest.mark.skipif(
-    sys.version_info >= (3, 12), reason="Package does not work with Python 3.12"
-)
+@pytest.mark.skipif(sys.version_info >= (3, 12), reason="Package does not work with Python 3.12")
 def test_mirror_uninstall(pipenv_instance_pypi):
     with temp_environ(), pipenv_instance_pypi() as p:
         mirror_url = DEFAULT_PRIVATE_PYPI_SERVER
@@ -90,9 +86,7 @@ def test_mirror_uninstall(pipenv_instance_pypi):
 @pytest.mark.uninstall
 def test_uninstall_all_local_files(pipenv_instance_private_pypi, testsroot):
     with pipenv_instance_private_pypi() as p:
-        file_uri = p._pipfile.get_fixture_path(
-            "tablib/tablib-0.12.1.tar.gz", fixtures="pypi"
-        ).as_uri()
+        file_uri = p._pipfile.get_fixture_path("tablib/tablib-0.12.1.tar.gz", fixtures="pypi").as_uri()
         c = p.pipenv(f"install {file_uri}")
         assert c.returncode == 0
         # Capture the lockfile content *before* the purge so we can compare after.
@@ -108,9 +102,7 @@ def test_uninstall_all_local_files(pipenv_instance_private_pypi, testsroot):
         # Pipfile.lock must be left completely intact so that a subsequent
         # `pipenv install` / `pipenv sync` can restore the same environment.
         # Regression test for https://github.com/pypa/pipenv/issues/6510
-        assert p.lockfile["default"] == lockfile_before["default"], (
-            "uninstall --all must not wipe Pipfile.lock"
-        )
+        assert p.lockfile["default"] == lockfile_before["default"], "uninstall --all must not wipe Pipfile.lock"
 
 
 @pytest.mark.install

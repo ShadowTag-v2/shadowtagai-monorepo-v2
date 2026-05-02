@@ -93,14 +93,7 @@ def run_deseq2(counts_df, metadata, design, n_cpus=1):
     """Run DESeq2 normalization and fitting."""
     print(f"\nInitializing DeseqDataSet with design: {design}")
 
-    dds = DeseqDataSet(
-        counts=counts_df,
-        metadata=metadata,
-        design=design,
-        refit_cooks=True,
-        n_cpus=n_cpus,
-        quiet=False
-    )
+    dds = DeseqDataSet(counts=counts_df, metadata=metadata, design=design, refit_cooks=True, n_cpus=n_cpus, quiet=False)
 
     print("\nRunning DESeq2 pipeline...")
     print("  Step 1/7: Computing size factors...")
@@ -124,14 +117,7 @@ def run_statistical_tests(dds, contrast, alpha=0.05, shrink_lfc=True):
     print(f"  Contrast: {contrast}")
     print(f"  Significance threshold: {alpha}")
 
-    ds = DeseqStats(
-        dds,
-        contrast=contrast,
-        alpha=alpha,
-        cooks_filter=True,
-        independent_filter=True,
-        quiet=False
-    )
+    ds = DeseqStats(dds, contrast=contrast, alpha=alpha, cooks_filter=True, independent_filter=True, quiet=False)
 
     print("\n  Running Wald tests...")
     print("  Filtering outliers based on Cook's distance...")
@@ -182,14 +168,14 @@ def save_results(ds, dds, output_dir, shrink_lfc=True):
     print(f"  Saved: {dds_path}")
 
     # Print summary
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("ANALYSIS SUMMARY")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print(f"Total genes tested: {len(ds.results_df)}")
     print(f"Significant genes (padj < 0.05): {len(significant)}")
     print(f"Upregulated: {len(significant[significant.log2FoldChange > 0])}")
     print(f"Downregulated: {len(significant[significant.log2FoldChange < 0])}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     # Show top genes
     print("\nTop 10 most significant genes:")
@@ -218,21 +204,22 @@ def create_plots(ds, output_dir):
     plt.figure(figsize=(10, 6))
     significant = results.padj < 0.05
     plt.scatter(
-        results.loc[~significant, "log2FoldChange"],
-        results.loc[~significant, "-log10(padj)"],
-        alpha=0.3, s=10, c='gray', label='Not significant'
+        results.loc[~significant, "log2FoldChange"], results.loc[~significant, "-log10(padj)"], alpha=0.3, s=10, c="gray", label="Not significant"
     )
     plt.scatter(
         results.loc[significant, "log2FoldChange"],
         results.loc[significant, "-log10(padj)"],
-        alpha=0.6, s=10, c='red', label='Significant (padj < 0.05)'
+        alpha=0.6,
+        s=10,
+        c="red",
+        label="Significant (padj < 0.05)",
     )
-    plt.axhline(-np.log10(0.05), color='blue', linestyle='--', linewidth=1, alpha=0.5)
-    plt.axvline(1, color='gray', linestyle='--', linewidth=1, alpha=0.5)
-    plt.axvline(-1, color='gray', linestyle='--', linewidth=1, alpha=0.5)
+    plt.axhline(-np.log10(0.05), color="blue", linestyle="--", linewidth=1, alpha=0.5)
+    plt.axvline(1, color="gray", linestyle="--", linewidth=1, alpha=0.5)
+    plt.axvline(-1, color="gray", linestyle="--", linewidth=1, alpha=0.5)
     plt.xlabel("Log2 Fold Change", fontsize=12)
     plt.ylabel("-Log10(Adjusted P-value)", fontsize=12)
-    plt.title("Volcano Plot", fontsize=14, fontweight='bold')
+    plt.title("Volcano Plot", fontsize=14, fontweight="bold")
     plt.legend()
     plt.tight_layout()
     volcano_path = output_dir / "volcano_plot.png"
@@ -245,17 +232,23 @@ def create_plots(ds, output_dir):
     plt.scatter(
         np.log10(results.loc[~significant, "baseMean"] + 1),
         results.loc[~significant, "log2FoldChange"],
-        alpha=0.3, s=10, c='gray', label='Not significant'
+        alpha=0.3,
+        s=10,
+        c="gray",
+        label="Not significant",
     )
     plt.scatter(
         np.log10(results.loc[significant, "baseMean"] + 1),
         results.loc[significant, "log2FoldChange"],
-        alpha=0.6, s=10, c='red', label='Significant (padj < 0.05)'
+        alpha=0.6,
+        s=10,
+        c="red",
+        label="Significant (padj < 0.05)",
     )
-    plt.axhline(0, color='blue', linestyle='--', linewidth=1, alpha=0.5)
+    plt.axhline(0, color="blue", linestyle="--", linewidth=1, alpha=0.5)
     plt.xlabel("Log10(Base Mean + 1)", fontsize=12)
     plt.ylabel("Log2 Fold Change", fontsize=12)
-    plt.title("MA Plot", fontsize=14, fontweight='bold')
+    plt.title("MA Plot", fontsize=14, fontweight="bold")
     plt.legend()
     plt.tight_layout()
     ma_path = output_dir / "ma_plot.png"
@@ -286,57 +279,41 @@ Examples:
     --contrast condition treated control \\
     --output results/ \\
     --n-cpus 4
-        """
+        """,
     )
 
     parser.add_argument("--counts", required=True, help="Path to count matrix CSV file")
     parser.add_argument("--metadata", required=True, help="Path to metadata CSV file")
     parser.add_argument("--design", required=True, help="Design formula (e.g., '~condition')")
-    parser.add_argument("--contrast", nargs=3, required=True,
-                       metavar=("VARIABLE", "TEST", "REFERENCE"),
-                       help="Contrast specification: variable test_level reference_level")
+    parser.add_argument(
+        "--contrast",
+        nargs=3,
+        required=True,
+        metavar=("VARIABLE", "TEST", "REFERENCE"),
+        help="Contrast specification: variable test_level reference_level",
+    )
     parser.add_argument("--output", default="results", help="Output directory (default: results)")
-    parser.add_argument("--min-counts", type=int, default=10,
-                       help="Minimum total counts for gene filtering (default: 10)")
-    parser.add_argument("--alpha", type=float, default=0.05,
-                       help="Significance threshold (default: 0.05)")
-    parser.add_argument("--no-transpose", action="store_true",
-                       help="Don't transpose count matrix (use if already samples × genes)")
-    parser.add_argument("--no-shrink", action="store_true",
-                       help="Skip LFC shrinkage")
-    parser.add_argument("--n-cpus", type=int, default=1,
-                       help="Number of CPUs for parallel processing (default: 1)")
-    parser.add_argument("--plots", action="store_true",
-                       help="Generate volcano and MA plots")
+    parser.add_argument("--min-counts", type=int, default=10, help="Minimum total counts for gene filtering (default: 10)")
+    parser.add_argument("--alpha", type=float, default=0.05, help="Significance threshold (default: 0.05)")
+    parser.add_argument("--no-transpose", action="store_true", help="Don't transpose count matrix (use if already samples × genes)")
+    parser.add_argument("--no-shrink", action="store_true", help="Skip LFC shrinkage")
+    parser.add_argument("--n-cpus", type=int, default=1, help="Number of CPUs for parallel processing (default: 1)")
+    parser.add_argument("--plots", action="store_true", help="Generate volcano and MA plots")
 
     args = parser.parse_args()
 
     # Load data
-    counts_df, metadata = load_and_validate_data(
-        args.counts,
-        args.metadata,
-        transpose_counts=not args.no_transpose
-    )
+    counts_df, metadata = load_and_validate_data(args.counts, args.metadata, transpose_counts=not args.no_transpose)
 
     # Filter data
     condition_col = args.contrast[0]
-    counts_df, metadata = filter_data(
-        counts_df,
-        metadata,
-        min_counts=args.min_counts,
-        condition_col=condition_col
-    )
+    counts_df, metadata = filter_data(counts_df, metadata, min_counts=args.min_counts, condition_col=condition_col)
 
     # Run DESeq2
     dds = run_deseq2(counts_df, metadata, args.design, n_cpus=args.n_cpus)
 
     # Statistical testing
-    ds = run_statistical_tests(
-        dds,
-        contrast=args.contrast,
-        alpha=args.alpha,
-        shrink_lfc=not args.no_shrink
-    )
+    ds = run_statistical_tests(dds, contrast=args.contrast, alpha=args.alpha, shrink_lfc=not args.no_shrink)
 
     # Save results
     save_results(ds, dds, args.output, shrink_lfc=not args.no_shrink)

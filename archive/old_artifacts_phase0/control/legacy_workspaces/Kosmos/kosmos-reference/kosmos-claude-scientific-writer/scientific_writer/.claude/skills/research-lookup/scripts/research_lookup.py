@@ -7,7 +7,7 @@ Uses Perplexity's Sonar Pro model through OpenRouter for academic research queri
 import os
 import time
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any
 
 import requests
 
@@ -27,26 +27,21 @@ class ResearchLookup:
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
             "HTTP-Referer": "https://scientific-writer.local",  # Replace with your domain
-            "X-Title": "Scientific Writer Research Tool"
+            "X-Title": "Scientific Writer Research Tool",
         }
 
-    def _make_request(self, messages: List[Dict[str, str]], **kwargs) -> Dict[str, Any]:
+    def _make_request(self, messages: list[dict[str, str]], **kwargs) -> dict[str, Any]:
         """Make a request to the OpenRouter API."""
         data = {
             "model": self.model,
             "messages": messages,
             "max_tokens": 8000,
             "temperature": 0.1,  # Low temperature for factual research
-            **kwargs
+            **kwargs,
         }
 
         try:
-            response = requests.post(
-                f"{self.base_url}/chat/completions",
-                headers=self.headers,
-                json=data,
-                timeout=60
-            )
+            response = requests.post(f"{self.base_url}/chat/completions", headers=self.headers, json=data, timeout=60)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
@@ -73,7 +68,7 @@ RESPONSE FORMAT:
 
 Remember: This is for academic research purposes. Prioritize accuracy, completeness, and proper attribution."""
 
-    def lookup(self, query: str) -> Dict[str, Any]:
+    def lookup(self, query: str) -> dict[str, Any]:
         """Perform a research lookup for the given query."""
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -84,9 +79,9 @@ Remember: This is for academic research purposes. Prioritize accuracy, completen
         messages = [
             {
                 "role": "system",
-                "content": "You are an academic research assistant. Focus exclusively on scholarly sources: peer-reviewed journals, academic papers, research institutions, and reputable scientific publications. Prioritize recent academic literature (2020-2024) and provide complete citations with DOIs. Use academic/scholarly search mode."
+                "content": "You are an academic research assistant. Focus exclusively on scholarly sources: peer-reviewed journals, academic papers, research institutions, and reputable scientific publications. Prioritize recent academic literature (2020-2024) and provide complete citations with DOIs. Use academic/scholarly search mode.",
             },
-            {"role": "user", "content": research_prompt}
+            {"role": "user", "content": research_prompt},
         ]
 
         try:
@@ -109,7 +104,7 @@ Remember: This is for academic research purposes. Prioritize accuracy, completen
                         "citations": citations,
                         "timestamp": timestamp,
                         "model": self.model,
-                        "usage": response.get("usage", {})
+                        "usage": response.get("usage", {}),
                     }
                 else:
                     raise Exception("Invalid response format from API")
@@ -117,15 +112,9 @@ Remember: This is for academic research purposes. Prioritize accuracy, completen
                 raise Exception("No response choices received from API")
 
         except Exception as e:
-            return {
-                "success": False,
-                "query": query,
-                "error": str(e),
-                "timestamp": timestamp,
-                "model": self.model
-            }
+            return {"success": False, "query": query, "error": str(e), "timestamp": timestamp, "model": self.model}
 
-    def _extract_citations(self, text: str) -> List[Dict[str, str]]:
+    def _extract_citations(self, text: str) -> list[dict[str, str]]:
         """Extract potential citations from the response text."""
         # This is a simple citation extractor - in practice, you might want
         # to use a more sophisticated approach or rely on the model's structured output
@@ -136,29 +125,22 @@ Remember: This is for academic research purposes. Prioritize accuracy, completen
         import re
 
         # Pattern for author et al. year
-        author_pattern = r'([A-Z][a-z]+(?:\s+[A-Z]\.)*(?:\s+et\s+al\.)?)\s*\((\d{4})\)'
+        author_pattern = r"([A-Z][a-z]+(?:\s+[A-Z]\.)*(?:\s+et\s+al\.)?)\s*\((\d{4})\)"
         matches = re.findall(author_pattern, text)
 
         for author, year in matches:
-            citations.append({
-                "authors": author,
-                "year": year,
-                "type": "extracted"
-            })
+            citations.append({"authors": author, "year": year, "type": "extracted"})
 
         # Look for DOI patterns
-        doi_pattern = r'doi:\s*([^\s\)\]]+)'
+        doi_pattern = r"doi:\s*([^\s\)\]]+)"
         doi_matches = re.findall(doi_pattern, text, re.IGNORECASE)
 
         for doi in doi_matches:
-            citations.append({
-                "doi": doi.strip(),
-                "type": "doi"
-            })
+            citations.append({"doi": doi.strip(), "type": "doi"})
 
         return citations
 
-    def batch_lookup(self, queries: List[str], delay: float = 1.0) -> List[Dict[str, Any]]:
+    def batch_lookup(self, queries: list[str], delay: float = 1.0) -> list[dict[str, Any]]:
         """Perform multiple research lookups with optional delay between requests."""
         results = []
 
@@ -170,18 +152,14 @@ Remember: This is for academic research purposes. Prioritize accuracy, completen
             results.append(result)
 
             # Print progress
-            print(f"[Research] Completed query {i+1}/{len(queries)}: {query[:50]}...")
+            print(f"[Research] Completed query {i + 1}/{len(queries)}: {query[:50]}...")
 
         return results
 
-    def get_model_info(self) -> Dict[str, Any]:
+    def get_model_info(self) -> dict[str, Any]:
         """Get information about available models from OpenRouter."""
         try:
-            response = requests.get(
-                f"{self.base_url}/models",
-                headers=self.headers,
-                timeout=30
-            )
+            response = requests.get(f"{self.base_url}/models", headers=self.headers, timeout=30)
             response.raise_for_status()
             return response.json()
         except Exception as e:
@@ -232,22 +210,22 @@ def main():
         # Display results
         for i, result in enumerate(results):
             if result["success"]:
-                print(f"\n{'='*80}")
-                print(f"Query {i+1}: {result['query']}")
+                print(f"\n{'=' * 80}")
+                print(f"Query {i + 1}: {result['query']}")
                 print(f"Timestamp: {result['timestamp']}")
                 print(f"Model: {result['model']}")
-                print(f"{'='*80}")
+                print(f"{'=' * 80}")
                 print(result["response"])
 
                 if result["citations"]:
                     print(f"\nExtracted Citations ({len(result['citations'])}):")
                     for j, citation in enumerate(result["citations"]):
-                        print(f"  {j+1}. {citation}")
+                        print(f"  {j + 1}. {citation}")
 
                 if result["usage"]:
                     print(f"\nUsage: {result['usage']}")
             else:
-                print(f"\nError in query {i+1}: {result['error']}")
+                print(f"\nError in query {i + 1}: {result['error']}")
 
         return 0
 

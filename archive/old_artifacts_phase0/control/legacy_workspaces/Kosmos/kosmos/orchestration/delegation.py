@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class TaskResult:
     """Container for task execution results."""
+
     task_id: int
     task_type: str
     status: str  # "completed", "failed", "skipped"
@@ -36,19 +37,20 @@ class TaskResult:
     def to_dict(self) -> dict:
         """Convert to dictionary."""
         return {
-            'task_id': self.task_id,
-            'task_type': self.task_type,
-            'status': self.status,
-            'finding': self.finding,
-            'error': self.error,
-            'execution_time': self.execution_time,
-            'retry_count': self.retry_count
+            "task_id": self.task_id,
+            "task_type": self.task_type,
+            "status": self.status,
+            "finding": self.finding,
+            "error": self.error,
+            "execution_time": self.execution_time,
+            "retry_count": self.retry_count,
         }
 
 
 @dataclass
 class ExecutionSummary:
     """Summary of plan execution."""
+
     total_tasks: int
     completed_tasks: int
     failed_tasks: int
@@ -59,12 +61,12 @@ class ExecutionSummary:
     def to_dict(self) -> dict:
         """Convert to dictionary."""
         return {
-            'total_tasks': self.total_tasks,
-            'completed_tasks': self.completed_tasks,
-            'failed_tasks': self.failed_tasks,
-            'skipped_tasks': self.skipped_tasks,
-            'total_execution_time': self.total_execution_time,
-            'success_rate': self.success_rate
+            "total_tasks": self.total_tasks,
+            "completed_tasks": self.completed_tasks,
+            "failed_tasks": self.failed_tasks,
+            "skipped_tasks": self.skipped_tasks,
+            "total_execution_time": self.total_execution_time,
+            "success_rate": self.success_rate,
         }
 
 
@@ -87,10 +89,10 @@ class DelegationManager:
 
     # Task type → Agent mapping
     AGENT_ROUTING = {
-        'data_analysis': 'DataAnalystAgent',
-        'literature_review': 'LiteratureAnalyzerAgent',
-        'hypothesis_generation': 'HypothesisGeneratorAgent',
-        'experiment_design': 'ExperimentDesignerAgent'
+        "data_analysis": "DataAnalystAgent",
+        "literature_review": "LiteratureAnalyzerAgent",
+        "hypothesis_generation": "HypothesisGeneratorAgent",
+        "experiment_design": "ExperimentDesignerAgent",
     }
 
     def __init__(
@@ -98,7 +100,7 @@ class DelegationManager:
         max_parallel_tasks: int = 3,
         max_retries: int = 2,
         task_timeout: int = 300,  # 5 minutes
-        agents: dict | None = None
+        agents: dict | None = None,
     ):
         """
         Initialize Delegation Manager.
@@ -117,17 +119,9 @@ class DelegationManager:
         # Execution tracking
         self.task_retries: dict[int, int] = {}
 
-        logger.info(
-            f"DelegationManager initialized "
-            f"(max_parallel={max_parallel_tasks}, max_retries={max_retries})"
-        )
+        logger.info(f"DelegationManager initialized (max_parallel={max_parallel_tasks}, max_retries={max_retries})")
 
-    async def execute_plan(
-        self,
-        plan: dict,
-        cycle: int,
-        context: dict
-    ) -> dict:
+    async def execute_plan(self, plan: dict, cycle: int, context: dict) -> dict:
         """
         Execute research plan.
 
@@ -142,12 +136,12 @@ class DelegationManager:
             - failed_tasks: List of TaskResult objects
             - execution_summary: ExecutionSummary object
         """
-        tasks = plan.get('tasks', [])
+        tasks = plan.get("tasks", [])
 
         logger.info(f"Executing plan with {len(tasks)} tasks for cycle {cycle}")
 
         # Reset retry counters
-        self.task_retries = {task.get('id', i): 0 for i, task in enumerate(tasks, 1)}
+        self.task_retries = {task.get("id", i): 0 for i, task in enumerate(tasks, 1)}
 
         # Create batches for parallel execution
         batches = self._create_task_batches(tasks)
@@ -165,7 +159,7 @@ class DelegationManager:
 
             # Classify results
             for result in batch_results:
-                if result.status == 'completed':
+                if result.status == "completed":
                     completed_tasks.append(result)
                 else:
                     failed_tasks.append(result)
@@ -178,18 +172,15 @@ class DelegationManager:
             failed_tasks=len(failed_tasks),
             skipped_tasks=0,
             total_execution_time=total_time,
-            success_rate=len(completed_tasks) / len(tasks) if tasks else 0
+            success_rate=len(completed_tasks) / len(tasks) if tasks else 0,
         )
 
-        logger.info(
-            f"Plan execution complete: {summary.completed_tasks}/{summary.total_tasks} "
-            f"tasks completed ({summary.success_rate*100:.1f}%)"
-        )
+        logger.info(f"Plan execution complete: {summary.completed_tasks}/{summary.total_tasks} tasks completed ({summary.success_rate * 100:.1f}%)")
 
         return {
-            'completed_tasks': [t.to_dict() for t in completed_tasks],
-            'failed_tasks': [t.to_dict() for t in failed_tasks],
-            'execution_summary': summary.to_dict()
+            "completed_tasks": [t.to_dict() for t in completed_tasks],
+            "failed_tasks": [t.to_dict() for t in failed_tasks],
+            "execution_summary": summary.to_dict(),
         }
 
     def _create_task_batches(self, tasks: list[dict]) -> list[list[dict]]:
@@ -218,12 +209,7 @@ class DelegationManager:
 
         return batches
 
-    async def _execute_batch(
-        self,
-        batch: list[dict],
-        cycle: int,
-        context: dict
-    ) -> list[TaskResult]:
+    async def _execute_batch(self, batch: list[dict], cycle: int, context: dict) -> list[TaskResult]:
         """
         Execute batch of tasks in parallel.
 
@@ -236,10 +222,7 @@ class DelegationManager:
             List of TaskResult objects
         """
         # Create coroutines for each task
-        coroutines = [
-            self._execute_task_with_retry(task, cycle, context)
-            for task in batch
-        ]
+        coroutines = [self._execute_task_with_retry(task, cycle, context) for task in batch]
 
         # Execute in parallel with timeout
         try:
@@ -251,12 +234,7 @@ class DelegationManager:
                 if isinstance(result, Exception):
                     task = batch[i]
                     processed_results.append(
-                        TaskResult(
-                            task_id=task.get('id', 0),
-                            task_type=task.get('type', 'unknown'),
-                            status='failed',
-                            error=str(result)
-                        )
+                        TaskResult(task_id=task.get("id", 0), task_type=task.get("type", "unknown"), status="failed", error=str(result))
                     )
                 else:
                     processed_results.append(result)
@@ -268,20 +246,12 @@ class DelegationManager:
             # Return failed results for all tasks
             return [
                 TaskResult(
-                    task_id=task.get('id', 0),
-                    task_type=task.get('type', 'unknown'),
-                    status='failed',
-                    error=f"Batch execution error: {str(e)}"
+                    task_id=task.get("id", 0), task_type=task.get("type", "unknown"), status="failed", error=f"Batch execution error: {str(e)}"
                 )
                 for task in batch
             ]
 
-    async def _execute_task_with_retry(
-        self,
-        task: dict,
-        cycle: int,
-        context: dict
-    ) -> TaskResult:
+    async def _execute_task_with_retry(self, task: dict, cycle: int, context: dict) -> TaskResult:
         """
         Execute task with retry logic.
 
@@ -293,8 +263,8 @@ class DelegationManager:
         Returns:
             TaskResult object
         """
-        task_id = task.get('id', 0)
-        task_type = task.get('type', 'unknown')
+        task_id = task.get("id", 0)
+        task_type = task.get("type", "unknown")
 
         # Try execution with retries
         last_error = None
@@ -303,29 +273,21 @@ class DelegationManager:
         for attempt in range(self.max_retries + 1):
             try:
                 # Execute task
-                result = await asyncio.wait_for(
-                    self._execute_task(task, cycle, context),
-                    timeout=self.task_timeout
-                )
+                result = await asyncio.wait_for(self._execute_task(task, cycle, context), timeout=self.task_timeout)
 
                 # Success!
                 execution_time = (datetime.now() - start_time).total_seconds()
                 return TaskResult(
-                    task_id=task_id,
-                    task_type=task_type,
-                    status='completed',
-                    finding=result,
-                    execution_time=execution_time,
-                    retry_count=attempt
+                    task_id=task_id, task_type=task_type, status="completed", finding=result, execution_time=execution_time, retry_count=attempt
                 )
 
             except TimeoutError:
                 last_error = f"Task timeout after {self.task_timeout}s"
-                logger.warning(f"Task {task_id} timeout (attempt {attempt+1})")
+                logger.warning(f"Task {task_id} timeout (attempt {attempt + 1})")
 
             except Exception as e:
                 last_error = str(e)
-                logger.warning(f"Task {task_id} failed (attempt {attempt+1}): {e}")
+                logger.warning(f"Task {task_id} failed (attempt {attempt + 1}): {e}")
 
                 # Check if error is non-recoverable (don't retry)
                 if isinstance(e, ProviderAPIError) and not e.is_recoverable():
@@ -337,27 +299,17 @@ class DelegationManager:
 
             # Small delay before retry (exponential backoff: 1s, 2s, 4s...)
             if attempt < self.max_retries:
-                delay = min(2 ** attempt, 8)  # Cap at 8 seconds
+                delay = min(2**attempt, 8)  # Cap at 8 seconds
                 logger.debug(f"Waiting {delay}s before retry")
                 await asyncio.sleep(delay)
 
         # All retries exhausted
         execution_time = (datetime.now() - start_time).total_seconds()
         return TaskResult(
-            task_id=task_id,
-            task_type=task_type,
-            status='failed',
-            error=last_error,
-            execution_time=execution_time,
-            retry_count=self.max_retries
+            task_id=task_id, task_type=task_type, status="failed", error=last_error, execution_time=execution_time, retry_count=self.max_retries
         )
 
-    async def _execute_task(
-        self,
-        task: dict,
-        cycle: int,
-        context: dict
-    ) -> dict:
+    async def _execute_task(self, task: dict, cycle: int, context: dict) -> dict:
         """
         Execute individual task by routing to appropriate agent.
 
@@ -369,116 +321,86 @@ class DelegationManager:
         Returns:
             Finding dictionary
         """
-        task_type = task.get('type', 'unknown')
+        task_type = task.get("type", "unknown")
 
         # Route to appropriate agent
-        if task_type == 'data_analysis':
+        if task_type == "data_analysis":
             return await self._execute_data_analysis(task, cycle, context)
-        elif task_type == 'literature_review':
+        elif task_type == "literature_review":
             return await self._execute_literature_review(task, cycle, context)
-        elif task_type == 'hypothesis_generation':
+        elif task_type == "hypothesis_generation":
             return await self._execute_hypothesis_generation(task, cycle, context)
         else:
             return await self._execute_generic_task(task, cycle, context)
 
-    async def _execute_data_analysis(
-        self,
-        task: dict,
-        cycle: int,
-        context: dict
-    ) -> dict:
+    async def _execute_data_analysis(self, task: dict, cycle: int, context: dict) -> dict:
         """Execute data analysis task."""
         # Mock implementation (replace with actual DataAnalystAgent call)
         logger.info(f"Executing data analysis task: {task.get('description', '')[:50]}...")
 
         return {
-            'finding_id': f"cycle{cycle}_task{task.get('id', 0)}",
-            'cycle': cycle,
-            'task_id': task.get('id', 0),
-            'summary': f"Data analysis completed: {task.get('description', '')[:100]}",
-            'statistics': {
-                'p_value': 0.01,
-                'sample_size': 100,
-                'confidence': 0.95
-            },
-            'methods': 'Statistical analysis using appropriate tests',
-            'interpretation': 'Results support the hypothesis',
-            'evidence_type': 'data_analysis',
-            'metadata': {'libraries_used': task.get('required_skills', [])}
+            "finding_id": f"cycle{cycle}_task{task.get('id', 0)}",
+            "cycle": cycle,
+            "task_id": task.get("id", 0),
+            "summary": f"Data analysis completed: {task.get('description', '')[:100]}",
+            "statistics": {"p_value": 0.01, "sample_size": 100, "confidence": 0.95},
+            "methods": "Statistical analysis using appropriate tests",
+            "interpretation": "Results support the hypothesis",
+            "evidence_type": "data_analysis",
+            "metadata": {"libraries_used": task.get("required_skills", [])},
         }
 
-    async def _execute_literature_review(
-        self,
-        task: dict,
-        cycle: int,
-        context: dict
-    ) -> dict:
+    async def _execute_literature_review(self, task: dict, cycle: int, context: dict) -> dict:
         """Execute literature review task."""
         logger.info(f"Executing literature review: {task.get('description', '')[:50]}...")
 
         return {
-            'finding_id': f"cycle{cycle}_task{task.get('id', 0)}",
-            'cycle': cycle,
-            'task_id': task.get('id', 0),
-            'summary': f"Literature review completed: {task.get('description', '')[:100]}",
-            'statistics': {
-                'papers_reviewed': 10,
-                'relevant_papers': 5
-            },
-            'methods': 'Literature search using academic databases',
-            'interpretation': 'Existing literature supports our hypothesis',
-            'evidence_type': 'literature_review'
+            "finding_id": f"cycle{cycle}_task{task.get('id', 0)}",
+            "cycle": cycle,
+            "task_id": task.get("id", 0),
+            "summary": f"Literature review completed: {task.get('description', '')[:100]}",
+            "statistics": {"papers_reviewed": 10, "relevant_papers": 5},
+            "methods": "Literature search using academic databases",
+            "interpretation": "Existing literature supports our hypothesis",
+            "evidence_type": "literature_review",
         }
 
-    async def _execute_hypothesis_generation(
-        self,
-        task: dict,
-        cycle: int,
-        context: dict
-    ) -> dict:
+    async def _execute_hypothesis_generation(self, task: dict, cycle: int, context: dict) -> dict:
         """Execute hypothesis generation task."""
         logger.info(f"Executing hypothesis generation: {task.get('description', '')[:50]}...")
 
         return {
-            'finding_id': f"cycle{cycle}_task{task.get('id', 0)}",
-            'cycle': cycle,
-            'task_id': task.get('id', 0),
-            'summary': f"Generated new hypotheses: {task.get('description', '')[:100]}",
-            'statistics': {
-                'hypotheses_generated': 3,
-                'testable_hypotheses': 2
-            },
-            'methods': 'Hypothesis generation from current findings',
-            'interpretation': 'New testable hypotheses identified',
-            'evidence_type': 'hypothesis_generation'
+            "finding_id": f"cycle{cycle}_task{task.get('id', 0)}",
+            "cycle": cycle,
+            "task_id": task.get("id", 0),
+            "summary": f"Generated new hypotheses: {task.get('description', '')[:100]}",
+            "statistics": {"hypotheses_generated": 3, "testable_hypotheses": 2},
+            "methods": "Hypothesis generation from current findings",
+            "interpretation": "New testable hypotheses identified",
+            "evidence_type": "hypothesis_generation",
         }
 
-    async def _execute_generic_task(
-        self,
-        task: dict,
-        cycle: int,
-        context: dict
-    ) -> dict:
+    async def _execute_generic_task(self, task: dict, cycle: int, context: dict) -> dict:
         """Execute generic task (fallback)."""
         logger.warning(f"Unknown task type: {task.get('type')}, using generic executor")
 
         return {
-            'finding_id': f"cycle{cycle}_task{task.get('id', 0)}",
-            'cycle': cycle,
-            'task_id': task.get('id', 0),
-            'summary': f"Task completed: {task.get('description', '')[:100]}",
-            'statistics': {},
-            'methods': 'Generic task execution',
-            'interpretation': 'Task completed successfully',
-            'evidence_type': task.get('type', 'generic')
+            "finding_id": f"cycle{cycle}_task{task.get('id', 0)}",
+            "cycle": cycle,
+            "task_id": task.get("id", 0),
+            "summary": f"Task completed: {task.get('description', '')[:100]}",
+            "statistics": {},
+            "methods": "Generic task execution",
+            "interpretation": "Task completed successfully",
+            "evidence_type": task.get("type", "generic"),
         }
 
     def get_execution_statistics(self) -> dict:
         """Get statistics about task execution."""
         return {
-            'max_parallel_tasks': self.max_parallel_tasks,
-            'max_retries': self.max_retries,
-            'task_timeout': self.task_timeout,
-            'available_agents': list(self.agents.keys()),
-            'agent_routing': self.AGENT_ROUTING
+            "max_parallel_tasks": self.max_parallel_tasks,
+            "max_retries": self.max_retries,
+            "task_timeout": self.task_timeout,
+            "available_agents": list(self.agents.keys()),
+            "agent_routing": self.AGENT_ROUTING,
         }

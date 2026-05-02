@@ -65,22 +65,16 @@ class GoogleDriveBongo(BaseBongo):
             gen_params.append((file_type, token))
 
         async def generate_file_content(file_type: str, token: str):
-            title, content, mime_type = await generate_google_drive_artifact(
-                file_type, self.openai_model, token
-            )
+            title, content, mime_type = await generate_google_drive_artifact(file_type, self.openai_model, token)
             filename = self._filename_with_extension(f"{title}-{token}", file_type)
             return file_type, token, filename, content, mime_type
 
         # Generate all content in parallel
-        gen_results = await asyncio.gather(
-            *[generate_file_content(ft, tok) for ft, tok in gen_params]
-        )
+        gen_results = await asyncio.gather(*[generate_file_content(ft, tok) for ft, tok in gen_params])
 
         # Create files sequentially to respect API rate limits
         for file_type, token, filename, content, mime_type in gen_results:
-            file_data = await self._create_test_file(
-                self.test_folder_id, filename, content, mime_type
-            )
+            file_data = await self._create_test_file(self.test_folder_id, filename, content, mime_type)
 
             entities.append(
                 {
@@ -121,9 +115,7 @@ class GoogleDriveBongo(BaseBongo):
                 token = file_info.get("token") or str(uuid.uuid4())[:8]
 
                 # Generate new content with same token
-                title, content, mime_type = await generate_google_drive_artifact(
-                    file_type, self.openai_model, token, is_update=True
-                )
+                title, content, mime_type = await generate_google_drive_artifact(file_type, self.openai_model, token, is_update=True)
 
                 # Update file content
                 updated_file = await self._update_test_file(file_info["id"], content, mime_type)
@@ -173,9 +165,7 @@ class GoogleDriveBongo(BaseBongo):
                     deleted_ids.append(test_file["id"])
                     self.logger.info(f"🗑️ Deleted test file: {test_file['name']}")
                 else:
-                    self.logger.warning(
-                        f"⚠️ Could not find test file for entity: {entity.get('id')}"
-                    )
+                    self.logger.warning(f"⚠️ Could not find test file for entity: {entity.get('id')}")
 
                 # Rate limiting
                 if len(entities) > 10:
@@ -239,17 +229,13 @@ class GoogleDriveBongo(BaseBongo):
             )
 
             if response.status_code != 200:
-                raise Exception(
-                    f"Failed to create folder: {response.status_code} - {response.text}"
-                )
+                raise Exception(f"Failed to create folder: {response.status_code} - {response.text}")
 
             result = response.json()
             self.test_folder_id = result["id"]
             self.logger.info(f"📁 Created test folder: {self.test_folder_id}")
 
-    async def _create_test_file(
-        self, folder_id: str, filename: str, content: str, mime_type: str
-    ) -> dict[str, Any]:
+    async def _create_test_file(self, folder_id: str, filename: str, content: str, mime_type: str) -> dict[str, Any]:
         """Create a test file via Google Drive API (resumable)."""
         await self._rate_limit()
 
@@ -271,11 +257,7 @@ class GoogleDriveBongo(BaseBongo):
                 else (
                     "spreadsheet"
                     if mime_type == "application/vnd.google-apps.spreadsheet"
-                    else (
-                        "pdf"
-                        if mime_type == "application/pdf"
-                        else "markdown" if mime_type == "text/markdown" else "text"
-                    )
+                    else ("pdf" if mime_type == "application/pdf" else "markdown" if mime_type == "text/markdown" else "text")
                 )
             ),
             target_mime=mime_type,
@@ -298,9 +280,7 @@ class GoogleDriveBongo(BaseBongo):
                 json=metadata,
             )
             if init_response.status_code != 200:
-                raise Exception(
-                    f"Failed to initialize upload: {init_response.status_code} - {init_response.text}"
-                )
+                raise Exception(f"Failed to initialize upload: {init_response.status_code} - {init_response.text}")
 
             upload_url = init_response.headers.get("Location")
             if not upload_url:
@@ -317,9 +297,7 @@ class GoogleDriveBongo(BaseBongo):
             )
 
             if upload_response.status_code not in (200, 201):
-                raise Exception(
-                    f"Failed to upload content: {upload_response.status_code} - {upload_response.text}"
-                )
+                raise Exception(f"Failed to upload content: {upload_response.status_code} - {upload_response.text}")
 
             result = upload_response.json()
 
@@ -392,11 +370,7 @@ class GoogleDriveBongo(BaseBongo):
                 else (
                     "spreadsheet"
                     if mime_type == "application/vnd.google-apps.spreadsheet"
-                    else (
-                        "pdf"
-                        if mime_type == "application/pdf"
-                        else "markdown" if mime_type == "text/markdown" else "text"
-                    )
+                    else ("pdf" if mime_type == "application/pdf" else "markdown" if mime_type == "text/markdown" else "text")
                 )
             ),
             target_mime=mime_type,
@@ -415,9 +389,7 @@ class GoogleDriveBongo(BaseBongo):
                 json={},  # content-only update
             )
             if init_response.status_code != 200:
-                raise Exception(
-                    f"Failed to initialize update: {init_response.status_code} - {init_response.text}"
-                )
+                raise Exception(f"Failed to initialize update: {init_response.status_code} - {init_response.text}")
 
             upload_url = init_response.headers.get("Location")
             if not upload_url:
@@ -434,9 +406,7 @@ class GoogleDriveBongo(BaseBongo):
             )
 
             if upload_response.status_code not in (200, 201):
-                raise Exception(
-                    f"Failed to update content: {upload_response.status_code} - {upload_response.text}"
-                )
+                raise Exception(f"Failed to update content: {upload_response.status_code} - {upload_response.text}")
 
             return upload_response.json()
 
@@ -471,9 +441,7 @@ class GoogleDriveBongo(BaseBongo):
                     return data.get("trashed", False)
                 else:
                     # Unexpected response
-                    self.logger.warning(
-                        f"⚠️ Unexpected response checking {file_id}: {response.status_code}"
-                    )
+                    self.logger.warning(f"⚠️ Unexpected response checking {file_id}: {response.status_code}")
                     return False
 
         except Exception as e:
@@ -496,9 +464,7 @@ class GoogleDriveBongo(BaseBongo):
                 if response.status_code == 204:
                     self.logger.info(f"🧹 Force deleted file: {file_id}")
                 else:
-                    self.logger.warning(
-                        f"⚠️ Force delete failed for {file_id}: {response.status_code}"
-                    )
+                    self.logger.warning(f"⚠️ Force delete failed for {file_id}: {response.status_code}")
         except Exception as e:
             self.logger.warning(f"Could not force delete {file_id}: {e}")
 
@@ -513,9 +479,7 @@ class GoogleDriveBongo(BaseBongo):
             )
 
             if response.status_code != 204:
-                raise Exception(
-                    f"Failed to delete folder: {response.status_code} - {response.text}"
-                )
+                raise Exception(f"Failed to delete folder: {response.status_code} - {response.text}")
 
     async def _rate_limit(self):
         """Implement rate limiting for Google Drive API."""

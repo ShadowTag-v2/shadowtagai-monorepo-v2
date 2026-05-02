@@ -10,6 +10,7 @@ app = FastAPI()
 
 BASE_URL = os.getenv("API_GATEWAY_URL", "http://api-gateway:8000")
 
+
 # ---------------------------
 # Dependencies & Utilities
 # ---------------------------
@@ -23,10 +24,7 @@ async def get_api_key(authorization: str | None = Header(None)) -> str:
 
 def get_headers(api_key: str) -> dict[str, str]:
     """Create headers with the provided API key"""
-    return {
-        "X-API-Key": api_key,
-        "Content-Type": "application/json"
-    }
+    return {"X-API-Key": api_key, "Content-Type": "application/json"}
 
 
 # ---------------------------
@@ -56,20 +54,11 @@ class UpdateMeetingData(BaseModel):
 async def make_request(method: str, url: str, api_key: str, payload: dict | None = None):
     try:
         async with httpx.AsyncClient(timeout=10) as client:
-            response = await client.request(
-                method,
-                url,
-                headers=get_headers(api_key),
-                json=payload
-            )
+            response = await client.request(method, url, headers=get_headers(api_key), json=payload)
             response.raise_for_status()
             return response.json()
     except httpx.HTTPStatusError as http_err:
-        return {
-            "error": "HTTP error occurred",
-            "status_code": http_err.response.status_code,
-            "details": http_err.response.text
-        }
+        return {"error": "HTTP error occurred", "status_code": http_err.response.status_code, "details": http_err.response.text}
     except httpx.TimeoutException:
         return {"error": "Request timed out"}
     except httpx.RequestError as req_err:
@@ -82,10 +71,7 @@ async def make_request(method: str, url: str, api_key: str, payload: dict | None
 # Endpoints (docstrings preserved)
 # ---------------------------
 @app.post("/request-meeting-bot", operation_id="request_meeting_bot")
-async def request_meeting_bot(
-    data: RequestMeetingBot,
-    api_key: str = Depends(get_api_key)
-) -> dict[str, Any]:
+async def request_meeting_bot(data: RequestMeetingBot, api_key: str = Depends(get_api_key)) -> dict[str, Any]:
     """
     Request a Vexa bot to join a meeting for transcription.
 
@@ -106,11 +92,7 @@ async def request_meeting_bot(
 
 
 @app.get("/meeting-transcript/{meeting_platform}/{meeting_id}", operation_id="get_meeting_transcript")
-async def get_meeting_transcript(
-    meeting_id: str,
-    meeting_platform: str = "google_meet",
-    api_key: str = Depends(get_api_key)
-) -> dict[str, Any]:
+async def get_meeting_transcript(meeting_id: str, meeting_platform: str = "google_meet", api_key: str = Depends(get_api_key)) -> dict[str, Any]:
     """
     Get the real-time transcript for a meeting.
 
@@ -141,10 +123,7 @@ async def get_bot_status(api_key: str = Depends(get_api_key)) -> dict[str, Any]:
 
 @app.put("/bot-config/{meeting_platform}/{meeting_id}", operation_id="update_bot_config")
 async def update_bot_config(
-    meeting_id: str,
-    data: UpdateBotConfig,
-    meeting_platform: str = "google_meet",
-    api_key: str = Depends(get_api_key)
+    meeting_id: str, data: UpdateBotConfig, meeting_platform: str = "google_meet", api_key: str = Depends(get_api_key)
 ) -> dict[str, Any]:
     """
     Update the configuration of an active bot (e.g., changing the language).
@@ -162,11 +141,7 @@ async def update_bot_config(
 
 
 @app.delete("/bot/{meeting_platform}/{meeting_id}", operation_id="stop_bot")
-async def stop_bot(
-    meeting_id: str,
-    meeting_platform: str = "google_meet",
-    api_key: str = Depends(get_api_key)
-) -> dict[str, Any]:
+async def stop_bot(meeting_id: str, meeting_platform: str = "google_meet", api_key: str = Depends(get_api_key)) -> dict[str, Any]:
     """
     Remove an active bot from a meeting.
 
@@ -195,10 +170,7 @@ async def list_meetings(api_key: str = Depends(get_api_key)) -> dict[str, Any]:
 
 @app.patch("/meeting/{meeting_platform}/{meeting_id}", operation_id="update_meeting_data")
 async def update_meeting_data(
-    meeting_id: str,
-    data: UpdateMeetingData,
-    meeting_platform: str = "google_meet",
-    api_key: str = Depends(get_api_key)
+    meeting_id: str, data: UpdateMeetingData, meeting_platform: str = "google_meet", api_key: str = Depends(get_api_key)
 ) -> dict[str, Any]:
     """
     Update meeting metadata such as name, participants, languages, and notes.
@@ -220,11 +192,7 @@ async def update_meeting_data(
 
 
 @app.delete("/meeting/{meeting_platform}/{meeting_id}", operation_id="delete_meeting")
-async def delete_meeting(
-    meeting_id: str,
-    meeting_platform: str = "google_meet",
-    api_key: str = Depends(get_api_key)
-) -> dict[str, Any]:
+async def delete_meeting(meeting_id: str, meeting_platform: str = "google_meet", api_key: str = Depends(get_api_key)) -> dict[str, Any]:
     """
     Purge transcripts and anonymize meeting data for finalized meetings.
 
@@ -253,4 +221,5 @@ mcp.mount_http()
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=18888)

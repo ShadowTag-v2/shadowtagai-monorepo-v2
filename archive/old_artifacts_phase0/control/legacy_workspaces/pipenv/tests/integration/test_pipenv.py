@@ -71,6 +71,7 @@ def test_proper_names_unmanaged_virtualenv(pipenv_instance_pypi):
         except Exception:
             # Skip test if virtualenv module is not available
             import pytest
+
             pytest.skip("virtualenv module not available")
         project = Project()
         assert project.proper_names == []

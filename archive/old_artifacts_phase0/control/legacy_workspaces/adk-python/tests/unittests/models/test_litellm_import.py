@@ -21,88 +21,81 @@ import pytest
 
 
 def _subprocess_env() -> dict[str, str]:
-  env = dict(os.environ)
-  src_path = os.path.join(os.getcwd(), "src")
-  pythonpath = env.get("PYTHONPATH", "")
-  env["PYTHONPATH"] = (
-      f"{src_path}{os.pathsep}{pythonpath}" if pythonpath else src_path
-  )
-  return env
+    env = dict(os.environ)
+    src_path = os.path.join(os.getcwd(), "src")
+    pythonpath = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = f"{src_path}{os.pathsep}{pythonpath}" if pythonpath else src_path
+    return env
 
 
 def test_importing_models_does_not_import_litellm_or_set_mode():
-  env = _subprocess_env()
-  env.pop("LITELLM_MODE", None)
+    env = _subprocess_env()
+    env.pop("LITELLM_MODE", None)
 
-  result = subprocess.run(
-      [
-          sys.executable,
-          "-c",
-          (
-              "import os, sys\n"
-              "import google.adk.models\n"
-              "print('litellm' in sys.modules)\n"
-              "print(os.environ.get('LITELLM_MODE'))\n"
-          ),
-      ],
-      check=True,
-      capture_output=True,
-      text=True,
-      env=env,
-  )
-  stdout_lines = result.stdout.strip().splitlines()
-  assert stdout_lines == ["False", "None"]
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            ("import os, sys\nimport google.adk.models\nprint('litellm' in sys.modules)\nprint(os.environ.get('LITELLM_MODE'))\n"),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    stdout_lines = result.stdout.strip().splitlines()
+    assert stdout_lines == ["False", "None"]
 
 
 def test_ensure_litellm_imported_defaults_to_production():
-  if importlib.util.find_spec("litellm") is None:
-    pytest.skip("litellm is not installed")
+    if importlib.util.find_spec("litellm") is None:
+        pytest.skip("litellm is not installed")
 
-  env = _subprocess_env()
-  env.pop("LITELLM_MODE", None)
+    env = _subprocess_env()
+    env.pop("LITELLM_MODE", None)
 
-  result = subprocess.run(
-      [
-          sys.executable,
-          "-c",
-          (
-              "import os\n"
-              "from google.adk.models.lite_llm import"
-              " _ensure_litellm_imported\n"
-              "_ensure_litellm_imported()\n"
-              "print(os.environ.get('LITELLM_MODE'))\n"
-          ),
-      ],
-      check=True,
-      capture_output=True,
-      text=True,
-      env=env,
-  )
-  assert result.stdout.strip() == "PRODUCTION"
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import os\n"
+                "from google.adk.models.lite_llm import"
+                " _ensure_litellm_imported\n"
+                "_ensure_litellm_imported()\n"
+                "print(os.environ.get('LITELLM_MODE'))\n"
+            ),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert result.stdout.strip() == "PRODUCTION"
 
 
 def test_ensure_litellm_imported_does_not_override():
-  if importlib.util.find_spec("litellm") is None:
-    pytest.skip("litellm is not installed")
+    if importlib.util.find_spec("litellm") is None:
+        pytest.skip("litellm is not installed")
 
-  env = _subprocess_env()
-  env["LITELLM_MODE"] = "DEV"
+    env = _subprocess_env()
+    env["LITELLM_MODE"] = "DEV"
 
-  result = subprocess.run(
-      [
-          sys.executable,
-          "-c",
-          (
-              "import os\n"
-              "from google.adk.models.lite_llm import"
-              " _ensure_litellm_imported\n"
-              "_ensure_litellm_imported()\n"
-              "print(os.environ.get('LITELLM_MODE'))\n"
-          ),
-      ],
-      check=True,
-      capture_output=True,
-      text=True,
-      env=env,
-  )
-  assert result.stdout.strip() == "DEV"
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import os\n"
+                "from google.adk.models.lite_llm import"
+                " _ensure_litellm_imported\n"
+                "_ensure_litellm_imported()\n"
+                "print(os.environ.get('LITELLM_MODE'))\n"
+            ),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert result.stdout.strip() == "DEV"

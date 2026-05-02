@@ -7,9 +7,7 @@ def test_get_lockfile_entry_version_uses_version_key():
 
 
 def test_get_lockfile_entry_version_parses_wheel_file_path():
-    lockfile_entry = {
-        "file": "/tmp/wheels/ibm_db_sa_py3-0.3.1.post1-py3-none-any.whl"
-    }
+    lockfile_entry = {"file": "/tmp/wheels/ibm_db_sa_py3-0.3.1.post1-py3-none-any.whl"}
     assert _get_lockfile_entry_version(lockfile_entry) == Version("0.3.1.post1")
 
 

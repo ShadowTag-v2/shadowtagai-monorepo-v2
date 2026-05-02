@@ -21,6 +21,7 @@ from typing import Any
 
 class LogFormat(StrEnum):
     """Log format options."""
+
     JSON = "json"
     TEXT = "text"
 
@@ -80,12 +81,12 @@ class TextFormatter(logging.Formatter):
 
     # ANSI color codes
     COLORS = {
-        "DEBUG": "\033[36m",     # Cyan
-        "INFO": "\033[32m",      # Green
-        "WARNING": "\033[33m",   # Yellow
-        "ERROR": "\033[31m",     # Red
+        "DEBUG": "\033[36m",  # Cyan
+        "INFO": "\033[32m",  # Green
+        "WARNING": "\033[33m",  # Yellow
+        "ERROR": "\033[31m",  # Red
         "CRITICAL": "\033[35m",  # Magenta
-        "RESET": "\033[0m",      # Reset
+        "RESET": "\033[0m",  # Reset
     }
 
     def __init__(self, use_colors: bool = True):
@@ -95,10 +96,7 @@ class TextFormatter(logging.Formatter):
         Args:
             use_colors: Whether to use ANSI colors
         """
-        super().__init__(
-            fmt="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S"
-        )
+        super().__init__(fmt="%(asctime)s [%(levelname)s] %(name)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
         self.use_colors = use_colors
 
     def format(self, record: logging.LogRecord) -> str:
@@ -120,10 +118,7 @@ class TextFormatter(logging.Formatter):
 
 
 def setup_logging(
-    level: str = "INFO",
-    log_format: LogFormat = LogFormat.JSON,
-    log_file: str | None = None,
-    debug_mode: bool = False
+    level: str = "INFO", log_format: LogFormat = LogFormat.JSON, log_file: str | None = None, debug_mode: bool = False
 ) -> logging.Logger:
     """
     Set up logging configuration.
@@ -188,20 +183,15 @@ def setup_logging(
         # Rotating file handler (10MB max, keep 5 backups)
         file_handler = logging.handlers.RotatingFileHandler(
             log_file,
-            maxBytes=10*1024*1024,  # 10MB
-            backupCount=5
+            maxBytes=10 * 1024 * 1024,  # 10MB
+            backupCount=5,
         )
         file_handler.setLevel(logging.DEBUG)
         file_handler.setFormatter(formatter)
         root_logger.addHandler(file_handler)
 
     # Log startup
-    root_logger.info("Logging initialized", extra={
-        "level": level,
-        "format": log_format,
-        "file": log_file,
-        "debug_mode": debug_mode
-    })
+    root_logger.info("Logging initialized", extra={"level": level, "format": log_format, "file": log_file, "debug_mode": debug_mode})
 
     return root_logger
 
@@ -261,75 +251,40 @@ class ExperimentLogger:
     def start(self):
         """Log experiment start."""
         self.start_time = datetime.utcnow()
-        self.logger.info(f"Experiment {self.experiment_id} started", extra={
-            "experiment_id": self.experiment_id,
-            "event": "start",
-            "timestamp": self.start_time.isoformat()
-        })
+        self.logger.info(
+            f"Experiment {self.experiment_id} started",
+            extra={"experiment_id": self.experiment_id, "event": "start", "timestamp": self.start_time.isoformat()},
+        )
 
     def log_hypothesis(self, hypothesis: str):
         """Log hypothesis."""
-        event = {
-            "event": "hypothesis",
-            "hypothesis": hypothesis,
-            "timestamp": datetime.utcnow().isoformat()
-        }
+        event = {"event": "hypothesis", "hypothesis": hypothesis, "timestamp": datetime.utcnow().isoformat()}
         self.events.append(event)
-        self.logger.info(f"Hypothesis: {hypothesis}", extra={
-            "experiment_id": self.experiment_id,
-            **event
-        })
+        self.logger.info(f"Hypothesis: {hypothesis}", extra={"experiment_id": self.experiment_id, **event})
 
     def log_experiment_design(self, design: dict[str, Any]):
         """Log experiment design."""
-        event = {
-            "event": "experiment_design",
-            "design": design,
-            "timestamp": datetime.utcnow().isoformat()
-        }
+        event = {"event": "experiment_design", "design": design, "timestamp": datetime.utcnow().isoformat()}
         self.events.append(event)
-        self.logger.info("Experiment design created", extra={
-            "experiment_id": self.experiment_id,
-            **event
-        })
+        self.logger.info("Experiment design created", extra={"experiment_id": self.experiment_id, **event})
 
     def log_execution_start(self):
         """Log execution start."""
-        event = {
-            "event": "execution_start",
-            "timestamp": datetime.utcnow().isoformat()
-        }
+        event = {"event": "execution_start", "timestamp": datetime.utcnow().isoformat()}
         self.events.append(event)
-        self.logger.info("Execution started", extra={
-            "experiment_id": self.experiment_id,
-            **event
-        })
+        self.logger.info("Execution started", extra={"experiment_id": self.experiment_id, **event})
 
     def log_result(self, result: dict[str, Any]):
         """Log experiment result."""
-        event = {
-            "event": "result",
-            "result": result,
-            "timestamp": datetime.utcnow().isoformat()
-        }
+        event = {"event": "result", "result": result, "timestamp": datetime.utcnow().isoformat()}
         self.events.append(event)
-        self.logger.info("Result obtained", extra={
-            "experiment_id": self.experiment_id,
-            **event
-        })
+        self.logger.info("Result obtained", extra={"experiment_id": self.experiment_id, **event})
 
     def log_error(self, error: str):
         """Log error."""
-        event = {
-            "event": "error",
-            "error": error,
-            "timestamp": datetime.utcnow().isoformat()
-        }
+        event = {"event": "error", "error": error, "timestamp": datetime.utcnow().isoformat()}
         self.events.append(event)
-        self.logger.error(f"Error: {error}", extra={
-            "experiment_id": self.experiment_id,
-            **event
-        })
+        self.logger.error(f"Error: {error}", extra={"experiment_id": self.experiment_id, **event})
 
     def end(self, status: str = "success"):
         """
@@ -341,14 +296,17 @@ class ExperimentLogger:
         self.end_time = datetime.utcnow()
         duration = (self.end_time - self.start_time).total_seconds() if self.start_time else 0
 
-        self.logger.info(f"Experiment {self.experiment_id} ended: {status}", extra={
-            "experiment_id": self.experiment_id,
-            "event": "end",
-            "status": status,
-            "duration_seconds": duration,
-            "timestamp": self.end_time.isoformat(),
-            "total_events": len(self.events)
-        })
+        self.logger.info(
+            f"Experiment {self.experiment_id} ended: {status}",
+            extra={
+                "experiment_id": self.experiment_id,
+                "event": "end",
+                "status": status,
+                "duration_seconds": duration,
+                "timestamp": self.end_time.isoformat(),
+                "total_events": len(self.events),
+            },
+        )
 
     def get_summary(self) -> dict[str, Any]:
         """
@@ -365,7 +323,7 @@ class ExperimentLogger:
             "end_time": self.end_time.isoformat() if self.end_time else None,
             "duration_seconds": duration,
             "total_events": len(self.events),
-            "events": self.events
+            "events": self.events,
         }
 
 
@@ -385,8 +343,5 @@ def configure_from_config():
 
     config = get_config()
     setup_logging(
-        level=config.logging.level,
-        log_format=LogFormat(config.logging.format),
-        log_file=config.logging.file,
-        debug_mode=config.logging.debug_mode
+        level=config.logging.level, log_format=LogFormat(config.logging.format), log_file=config.logging.file, debug_mode=config.logging.debug_mode
     )

@@ -20,11 +20,14 @@ from google.adk.tools.api_registry import ApiRegistry
 PROJECT_ID = "your-google-cloud-project-id"
 MCP_SERVER_NAME = "your-mcp-server-name"
 
+
 # Header required for BigQuery MCP server
 def header_provider(context):
     return {
-    "x-goog-user-project": PROJECT_ID,
-}
+        "x-goog-user-project": PROJECT_ID,
+    }
+
+
 api_registry = ApiRegistry(PROJECT_ID, header_provider=header_provider)
 registry_tools = api_registry.get_toolset(
     mcp_server_name=MCP_SERVER_NAME,

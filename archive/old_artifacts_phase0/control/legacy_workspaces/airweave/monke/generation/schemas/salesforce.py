@@ -4,9 +4,7 @@ from pydantic import BaseModel, EmailStr, Field
 class SalesforceContact(BaseModel):
     """Structured contact content for Salesforce."""
 
-    token: str = Field(
-        description="Verification token that MUST appear in at least one property (e.g., email)."
-    )
+    token: str = Field(description="Verification token that MUST appear in at least one property (e.g., email).")
     email: EmailStr
     first_name: str
     last_name: str

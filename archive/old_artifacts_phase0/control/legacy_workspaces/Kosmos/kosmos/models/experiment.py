@@ -17,6 +17,7 @@ from kosmos.models.hypothesis import ExperimentType
 
 class VariableType(StrEnum):
     """Types of variables in an experiment."""
+
     INDEPENDENT = "independent"  # Manipulated variable
     DEPENDENT = "dependent"  # Measured outcome
     CONTROL = "control"  # Held constant
@@ -25,6 +26,7 @@ class VariableType(StrEnum):
 
 class StatisticalTest(StrEnum):
     """Common statistical tests."""
+
     T_TEST = "t_test"
     ANOVA = "anova"
     CHI_SQUARE = "chi_square"
@@ -51,6 +53,7 @@ class Variable(BaseModel):
         )
         ```
     """
+
     name: str = Field(..., description="Variable name")
     type: VariableType
     description: str = Field(..., min_length=10, description="Clear description of the variable")
@@ -64,7 +67,7 @@ class Variable(BaseModel):
     unit: str | None = None  # e.g., "seconds", "percentage", "count"
     measurement_method: str | None = None  # How to measure/compute this variable
 
-    @field_validator('description')
+    @field_validator("description")
     @classmethod
     def validate_description(cls, v: str) -> str:
         """Ensure description is clear."""
@@ -89,6 +92,7 @@ class ControlGroup(BaseModel):
         )
         ```
     """
+
     name: str = Field(..., description="Control group name")
     description: str = Field(..., min_length=5, description="What this control group represents")
 
@@ -100,7 +104,7 @@ class ControlGroup(BaseModel):
 
     sample_size: int | None = Field(None, ge=1, description="Required sample size")
 
-    @field_validator('sample_size', mode='before')
+    @field_validator("sample_size", mode="before")
     @classmethod
     def coerce_sample_size(cls, v):
         """Coerce string sample_size from LLM output to int."""
@@ -109,11 +113,11 @@ class ControlGroup(BaseModel):
         if isinstance(v, str):
             try:
                 return int(v)
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 return None
         return v
 
-    @field_validator('description', 'rationale')
+    @field_validator("description", "rationale")
     @classmethod
     def validate_text_fields(cls, v: str) -> str:
         """Ensure text fields are substantive."""
@@ -140,6 +144,7 @@ class ProtocolStep(BaseModel):
         )
         ```
     """
+
     step_number: int = Field(..., ge=1, description="Step order in protocol")
     title: str = Field(..., min_length=3, description="Step title")
     description: str = Field(..., min_length=10, description="Detailed step description")
@@ -162,7 +167,7 @@ class ProtocolStep(BaseModel):
     code_template: str | None = None
     library_imports: list[str] = Field(default_factory=list)
 
-    @field_validator('title', mode='before')
+    @field_validator("title", mode="before")
     @classmethod
     def ensure_title(cls, v):
         """Provide default title when LLM returns empty string."""
@@ -170,7 +175,7 @@ class ProtocolStep(BaseModel):
             return "Untitled Step"
         return v
 
-    @field_validator('title', 'description', 'action')
+    @field_validator("title", "description", "action")
     @classmethod
     def validate_text_fields(cls, v: str) -> str:
         """Ensure text fields are clear."""
@@ -194,6 +199,7 @@ class ResourceRequirements(BaseModel):
         )
         ```
     """
+
     # Compute resources
     compute_hours: float | None = Field(None, ge=0, description="Estimated CPU/GPU hours")
     memory_gb: float | None = Field(None, ge=0, description="Peak memory requirement")
@@ -237,6 +243,7 @@ class StatisticalTestSpec(BaseModel):
         )
         ```
     """
+
     test_type: StatisticalTest
     description: str = Field(..., min_length=10)
 
@@ -251,14 +258,14 @@ class StatisticalTestSpec(BaseModel):
     # Groups/conditions
     groups: list[str] | None = None
 
-    @field_validator('groups', mode='before')
+    @field_validator("groups", mode="before")
     @classmethod
     def coerce_groups(cls, v):
         """Coerce comma-separated string groups from LLM output to list."""
         if v is None:
             return v
         if isinstance(v, str):
-            return [g.strip() for g in v.split(',') if g.strip()]
+            return [g.strip() for g in v.split(",") if g.strip()]
         return v
 
     # Multiple testing correction
@@ -268,7 +275,7 @@ class StatisticalTestSpec(BaseModel):
     required_power: float = Field(default=0.8, ge=0.0, le=1.0)
     expected_effect_size: float | None = None
 
-    @field_validator('expected_effect_size', mode='before')
+    @field_validator("expected_effect_size", mode="before")
     @classmethod
     def parse_effect_size(cls, v):
         """Parse effect size from string if needed (LLM may return text like 'Medium (Cohen's d = 0.5)')."""
@@ -279,8 +286,9 @@ class StatisticalTestSpec(BaseModel):
         if isinstance(v, str):
             # Try to extract a number from the string
             import re
+
             # Look for patterns like "0.5", "= 0.5", "d = 0.5"
-            match = re.search(r'[-+]?\d*\.?\d+', v)
+            match = re.search(r"[-+]?\d*\.?\d+", v)
             if match:
                 return float(match.group())
             # Return None if no number found
@@ -303,6 +311,7 @@ class ValidationCheck(BaseModel):
         )
         ```
     """
+
     check_type: str = Field(..., description="Type of validation (control_group, sample_size, bias, etc.)")
     description: str = Field(..., min_length=10)
 
@@ -337,6 +346,7 @@ class ExperimentProtocol(BaseModel):
         )
         ```
     """
+
     id: str | None = None
     name: str = Field(..., min_length=5, description="Experiment name")
     hypothesis_id: str = Field(..., description="ID of hypothesis being tested")
@@ -379,7 +389,7 @@ class ExperimentProtocol(BaseModel):
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     generated_by: str = Field(default="experiment_designer")
 
-    @field_validator('description')
+    @field_validator("description")
     @classmethod
     def validate_description(cls, v: str) -> str:
         """Ensure description is comprehensive."""
@@ -389,7 +399,7 @@ class ExperimentProtocol(BaseModel):
             raise ValueError("Description must be at least 20 characters for clarity")
         return v.strip()
 
-    @field_validator('steps')
+    @field_validator("steps")
     @classmethod
     def validate_steps(cls, v: list[ProtocolStep]) -> list[ProtocolStep]:
         """Ensure steps are properly ordered."""
@@ -430,10 +440,7 @@ class ExperimentProtocol(BaseModel):
             return self.resource_requirements.estimated_duration_days
 
         # Fallback: sum step durations
-        total_minutes = sum(
-            step.expected_duration_minutes or 0
-            for step in self.steps
-        )
+        total_minutes = sum(step.expected_duration_minutes or 0 for step in self.steps)
         return total_minutes / (24 * 60)  # Convert to days
 
     def to_dict(self) -> dict[str, Any]:
@@ -557,6 +564,7 @@ class ExperimentDesignRequest(BaseModel):
         )
         ```
     """
+
     hypothesis_id: str = Field(..., description="Hypothesis to design experiment for")
 
     # Optional preferences
@@ -587,6 +595,7 @@ class ExperimentDesignResponse(BaseModel):
 
     Contains the generated experiment protocol and metadata.
     """
+
     protocol: ExperimentProtocol
     hypothesis_id: str
 
@@ -628,6 +637,7 @@ class ValidationReport(BaseModel):
 
     Provides comprehensive assessment of experimental design quality.
     """
+
     protocol_id: str
     rigor_score: float = Field(..., ge=0.0, le=1.0, description="Overall scientific rigor score")
 

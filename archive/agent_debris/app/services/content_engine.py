@@ -2,10 +2,11 @@
 Content Provenance Engine
 Implements C2PA content credentials and provenance tracking
 """
+
 import logging
 import uuid
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from app.config import get_settings
 from app.models.content import (
@@ -36,9 +37,15 @@ except ImportError:
         )
     except ImportError:
         # Fallback for when tools are not available
-        def shadowtag_embed_video(*args, **kwargs): raise NotImplementedError("ShadowTagAI tools not found")
-        def shadowtag_embed_audio(*args, **kwargs): raise NotImplementedError("ShadowTagAI tools not found")
-        def shadowtag_verify(*args, **kwargs): raise NotImplementedError("ShadowTagAI tools not found")
+        def shadowtag_embed_video(*args, **kwargs):
+            raise NotImplementedError("ShadowTagAI tools not found")
+
+        def shadowtag_embed_audio(*args, **kwargs):
+            raise NotImplementedError("ShadowTagAI tools not found")
+
+        def shadowtag_verify(*args, **kwargs):
+            raise NotImplementedError("ShadowTagAI tools not found")
+
 
 # Import ShadowTagAI tools
 try:
@@ -56,9 +63,15 @@ except ImportError:
         )
     except ImportError:
         # Fallback for when tools are not available
-        def shadowtag_embed_video(*args, **kwargs): raise NotImplementedError("ShadowTagAI tools not found")
-        def shadowtag_embed_audio(*args, **kwargs): raise NotImplementedError("ShadowTagAI tools not found")
-        def shadowtag_verify(*args, **kwargs): raise NotImplementedError("ShadowTagAI tools not found")
+        def shadowtag_embed_video(*args, **kwargs):
+            raise NotImplementedError("ShadowTagAI tools not found")
+
+        def shadowtag_embed_audio(*args, **kwargs):
+            raise NotImplementedError("ShadowTagAI tools not found")
+
+        def shadowtag_verify(*args, **kwargs):
+            raise NotImplementedError("ShadowTagAI tools not found")
+
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -93,25 +106,14 @@ class ContentEngine:
                 format=request.content_type.value,
                 instance_id=str(uuid.uuid4()),
                 assertions=[
-                    C2PAAssertion(
-                        label="c2pa.actions",
-                        data={"actions": [{"action": "c2pa.created"}]},
-                        timestamp=datetime.utcnow()
-                    ),
-                    C2PAAssertion(
-                        label="c2pa.claim_creation",
-                        data={"claim_generator": "ShadowTagAI"},
-                        timestamp=datetime.utcnow()
-                    )
+                    C2PAAssertion(label="c2pa.actions", data={"actions": [{"action": "c2pa.created"}]}, timestamp=datetime.utcnow()),
+                    C2PAAssertion(label="c2pa.claim_creation", data={"claim_generator": "ShadowTagAI"}, timestamp=datetime.utcnow()),
                 ],
-                signature="simulated_signature_hash"
+                signature="simulated_signature_hash",
             )
 
             # Check for AI generation
-            ai_generated = any(
-                "ai_generated" in str(assertion.data).lower()
-                for assertion in manifest.assertions
-            )
+            ai_generated = any("ai_generated" in str(assertion.data).lower() for assertion in manifest.assertions)
 
             # Check training permissions
             ai_training_allowed = True  # Default unless explicitly denied
@@ -123,13 +125,7 @@ class ContentEngine:
             tampered = False
 
             # Build chain of custody
-            chain_of_custody = [
-                {
-                    "timestamp": datetime.utcnow().isoformat(),
-                    "actor": "creator_001",
-                    "action": "created"
-                }
-            ]
+            chain_of_custody = [{"timestamp": datetime.utcnow().isoformat(), "actor": "creator_001", "action": "created"}]
 
             verified = signature_valid and not tampered
 
@@ -157,7 +153,7 @@ class ContentEngine:
             ai_training_allowed=ai_training_allowed,
             errors=errors,
             tampered=tampered,
-            signature_valid=signature_valid
+            signature_valid=signature_valid,
         )
 
     async def create_provenance(self, request: ContentProvenanceRequest) -> ContentProvenanceResponse:
@@ -176,7 +172,7 @@ class ContentEngine:
             "action": request.action,
             "metadata": request.metadata,
             "parent_content_id": request.parent_content_id,
-            "timestamp": timestamp
+            "timestamp": timestamp,
         }
 
         self.provenance_store[request.content_id] = provenance_record
@@ -198,7 +194,7 @@ class ContentEngine:
             timestamp=timestamp,
             manifest_url=manifest_url,
             credential_status=credential_status,
-            blockchain_tx=blockchain_tx
+            blockchain_tx=blockchain_tx,
         )
 
     async def get_provenance(self, content_id: str) -> ContentProvenanceResponse | None:
@@ -214,7 +210,7 @@ class ContentEngine:
             timestamp=record["timestamp"],
             manifest_url=f"https://ShadowTag.example/provenance/{record['provenance_id']}/manifest.json",
             credential_status="active",
-            blockchain_tx=record.get("blockchain_tx")
+            blockchain_tx=record.get("blockchain_tx"),
         )
 
     async def attach_credentials(self, content_id: str, creator_id: str) -> dict[str, Any]:
@@ -228,7 +224,7 @@ class ContentEngine:
             "manifest_id": manifest_id,
             "credentials_attached": True,
             "signature": f"sig_{uuid.uuid4().hex[:16]}",
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.utcnow().isoformat(),
         }
 
     async def get_credential_status(self, content_id: str) -> dict[str, Any]:
@@ -241,16 +237,10 @@ class ContentEngine:
                 "has_credentials": True,
                 "status": provenance.credential_status,
                 "manifest_url": provenance.manifest_url,
-                "verified": True
+                "verified": True,
             }
         else:
-            return {
-                "content_id": content_id,
-                "has_credentials": False,
-                "status": "none",
-                "manifest_url": None,
-                "verified": False
-            }
+            return {"content_id": content_id, "has_credentials": False, "status": "none", "manifest_url": None, "verified": False}
 
     async def watermark_content(self, request: WatermarkRequest) -> WatermarkResponse:
         """Watermark content using ShadowTagAI"""
@@ -259,29 +249,22 @@ class ContentEngine:
         # Determine media type and apply watermark
         if request.content_type == ContentType.VIDEO:
             result_path = shadowtag_embed_video(
-                video_path=request.content_path,
-                watermark_data=request.metadata.get("payload", "default_payload"),
-                output_path=request.output_path
+                video_path=request.content_path, watermark_data=request.metadata.get("payload", "default_payload"), output_path=request.output_path
             )
         elif request.content_type == ContentType.AUDIO:
             result_path = shadowtag_embed_audio(
-                audio_path=request.content_path,
-                watermark_data=request.metadata.get("payload", "default_payload"),
-                output_path=request.output_path
+                audio_path=request.content_path, watermark_data=request.metadata.get("payload", "default_payload"), output_path=request.output_path
             )
         else:
             raise ValueError(f"Unsupported content type for watermarking: {request.content_type}")
 
         # Verify immediately to ensure integrity
-        verify_result = shadowtag_verify(
-            media_path=result_path,
-            media_type=request.content_type.value
-        )
+        verify_result = shadowtag_verify(media_path=result_path, media_type=request.content_type.value)
 
         return WatermarkResponse(
             content_path=result_path,
             watermarked=verify_result["watermark_detected"],
             watermark_payload=verify_result["payload"],
             audit_trail=verify_result["audit_trail"],
-            timestamp=datetime.utcnow()
+            timestamp=datetime.utcnow(),
         )

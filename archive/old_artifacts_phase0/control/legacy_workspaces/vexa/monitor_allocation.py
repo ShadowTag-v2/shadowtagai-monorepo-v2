@@ -20,7 +20,7 @@ import requests
 
 class WhisperLiveMonitor:
     def __init__(self, consul_url: str = "http://localhost:8502"):
-        self.consul_url = consul_url.rstrip('/')
+        self.consul_url = consul_url.rstrip("/")
 
     def discover_servers(self) -> list[dict]:
         """Discover WhisperLive servers from Consul (only passing health) and dedupe by address:port"""
@@ -33,23 +33,18 @@ class WhisperLiveMonitor:
             seen = set()
             servers: list[dict] = []
             for entry in entries:
-                service = entry.get('Service', {})
-                address = service.get('Address')
-                port = service.get('Port')
-                service_id = service.get('ID')
+                service = entry.get("Service", {})
+                address = service.get("Address")
+                port = service.get("Port")
+                service_id = service.get("ID")
                 if not address or not port:
                     continue
                 key = f"{address}:{port}"
                 if key in seen:
                     continue
                 seen.add(key)
-                servers.append({
-                    'id': service_id,
-                    'address': address,
-                    'port': port,
-                    'metrics_url': f"http://{address}:9091/metrics"
-                })
-            return sorted(servers, key=lambda x: x['id'])
+                servers.append({"id": service_id, "address": address, "port": port, "metrics_url": f"http://{address}:9091/metrics"})
+            return sorted(servers, key=lambda x: x["id"])
         except Exception as e:
             print(f"❌ Error discovering servers from Consul: {e}")
             return []
@@ -57,11 +52,11 @@ class WhisperLiveMonitor:
     def get_server_load(self, server: dict) -> tuple[int, int, str]:
         """Get current load from a WhisperLive server (no simulation)"""
         try:
-            metrics_response = requests.get(server['metrics_url'], timeout=5)
+            metrics_response = requests.get(server["metrics_url"], timeout=5)
             if metrics_response.status_code == 200:
                 metrics_data = metrics_response.json()
-                current_sessions = int(metrics_data.get('current_sessions', 0))
-                max_clients = int(metrics_data.get('max_clients', 10))
+                current_sessions = int(metrics_data.get("current_sessions", 0))
+                max_clients = int(metrics_data.get("max_clients", 10))
                 return current_sessions, max_clients, "healthy"
             return 0, 10, f"http_{metrics_response.status_code}"
         except Exception as e:
@@ -69,9 +64,9 @@ class WhisperLiveMonitor:
 
     def display_allocation_matrix(self, servers: list[dict], loads: list[tuple]):
         """Display server allocation in matrix format"""
-        print("\n" + "="*80)
+        print("\n" + "=" * 80)
         print(f"📊 WhisperLive Server Load Monitor - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print("="*80)
+        print("=" * 80)
 
         if not servers:
             print("❌ No WhisperLive servers discovered")
@@ -98,13 +93,18 @@ class WhisperLiveMonitor:
             # Color coding for status
             status_color = "🟢" if status == "healthy" else "🔴"
 
-            print(f"{server['id']:<25} {server['address']}:{server['port']:<12} "
-                  f"{current_sessions}/{max_clients:<6} {status_color}{status:<11} "
-                  f"{load_bar} {load_pct:.1%}")
+            print(
+                f"{server['id']:<25} {server['address']}:{server['port']:<12} "
+                f"{current_sessions}/{max_clients:<6} {status_color}{status:<11} "
+                f"{load_bar} {load_pct:.1%}"
+            )
 
         print("-" * 80)
-        print(f"📈 Total: {total_sessions}/{total_capacity} sessions "
-              f"({(total_sessions/total_capacity)*100:.1f}% capacity)" if total_capacity > 0 else "")
+        print(
+            f"📈 Total: {total_sessions}/{total_capacity} sessions ({(total_sessions / total_capacity) * 100:.1f}% capacity)"
+            if total_capacity > 0
+            else ""
+        )
 
         # Load balancing algorithm explanation
         print("\n💡 Load Balancing Algorithm:")
@@ -133,14 +133,12 @@ class WhisperLiveMonitor:
         except Exception as e:
             print(f"\n❌ Monitor error: {e}")
 
+
 def main():
     parser = argparse.ArgumentParser(description="Monitor WhisperLive server allocation")
-    parser.add_argument("--interval", "-i", type=int, default=1,
-                       help="Update interval in seconds (default: 1)")
-    parser.add_argument("--consul-url", "-c", default="http://localhost:8502",
-                       help="Consul HTTP URL (default: http://localhost:8502)")
-    parser.add_argument("--once", action="store_true",
-                       help="Run once and exit (no continuous monitoring)")
+    parser.add_argument("--interval", "-i", type=int, default=1, help="Update interval in seconds (default: 1)")
+    parser.add_argument("--consul-url", "-c", default="http://localhost:8502", help="Consul HTTP URL (default: http://localhost:8502)")
+    parser.add_argument("--once", action="store_true", help="Run once and exit (no continuous monitoring)")
 
     args = parser.parse_args()
 
@@ -152,6 +150,7 @@ def main():
         monitor.display_allocation_matrix(servers, loads)
     else:
         monitor.run_monitor(interval=args.interval)
+
 
 if __name__ == "__main__":
     main()

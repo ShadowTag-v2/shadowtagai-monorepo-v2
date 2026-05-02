@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Utility functions for session service."""
+
 from __future__ import annotations
 
 from typing import Any, TypeVar
@@ -21,26 +22,24 @@ from .state import State
 M = TypeVar("M")
 
 
-def decode_model(
-    data: dict[str, Any] | None, model_cls: type[M]
-) -> M | None:
-  """Decodes a pydantic model object from a JSON dictionary."""
-  if data is None:
-    return None
-  return model_cls.model_validate(data)
+def decode_model(data: dict[str, Any] | None, model_cls: type[M]) -> M | None:
+    """Decodes a pydantic model object from a JSON dictionary."""
+    if data is None:
+        return None
+    return model_cls.model_validate(data)
 
 
 def extract_state_delta(
     state: dict[str, Any],
 ) -> dict[str, dict[str, Any]]:
-  """Extracts app, user, and session state deltas from a state dictionary."""
-  deltas = {"app": {}, "user": {}, "session": {}}
-  if state:
-    for key in state.keys():
-      if key.startswith(State.APP_PREFIX):
-        deltas["app"][key.removeprefix(State.APP_PREFIX)] = state[key]
-      elif key.startswith(State.USER_PREFIX):
-        deltas["user"][key.removeprefix(State.USER_PREFIX)] = state[key]
-      elif not key.startswith(State.TEMP_PREFIX):
-        deltas["session"][key] = state[key]
-  return deltas
+    """Extracts app, user, and session state deltas from a state dictionary."""
+    deltas = {"app": {}, "user": {}, "session": {}}
+    if state:
+        for key in state:
+            if key.startswith(State.APP_PREFIX):
+                deltas["app"][key.removeprefix(State.APP_PREFIX)] = state[key]
+            elif key.startswith(State.USER_PREFIX):
+                deltas["user"][key.removeprefix(State.USER_PREFIX)] = state[key]
+            elif not key.startswith(State.TEMP_PREFIX):
+                deltas["session"][key] = state[key]
+    return deltas

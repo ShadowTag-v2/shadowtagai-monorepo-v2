@@ -19,8 +19,8 @@ from google.adk.code_executors import GkeCodeExecutor
 
 
 def gke_agent_system_instruction():
-  """Returns: The system instruction for the GKE-based coding agent."""
-  return """You are a helpful and capable AI agent that can write and execute Python code to answer questions and perform tasks.
+    """Returns: The system instruction for the GKE-based coding agent."""
+    return """You are a helpful and capable AI agent that can write and execute Python code to answer questions and perform tasks.
 
 When a user asks a question, follow these steps:
 1.  Analyze the request.
@@ -40,10 +40,7 @@ gke_executor = GkeCodeExecutor(
 root_agent = LlmAgent(
     name="gke_coding_agent",
     model="gemini-2.0-flash",
-    description=(
-        "A general-purpose agent that executes Python code in a secure GKE"
-        " Sandbox."
-    ),
+    description=("A general-purpose agent that executes Python code in a secure GKE Sandbox."),
     instruction=gke_agent_system_instruction(),
     code_executor=gke_executor,
 )

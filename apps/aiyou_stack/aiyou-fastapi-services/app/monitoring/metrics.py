@@ -130,14 +130,30 @@ business_operations_total = Counter(
 
 business_operation_duration_seconds = Histogram(
     "business_operation_duration_seconds",
-    "Business operation duration in seconds",
+    "Duration of business operations",
     ["operation_type"],
+    registry=metrics_registry,
+)
+
+# Decision tracking
+decisions_total = Counter(
+    "decisions_total",
+    "Total governance decisions",
+    ["status"],
     registry=metrics_registry,
 )
 
 
 class MetricsCollector:
     """Utility class for collecting and recording metrics."""
+
+    # Expose the counter as a class attribute for legacy access
+    decisions_total = decisions_total
+
+    @staticmethod
+    def record_decision(decision_type: str, status: str = "success", **kwargs):
+        """Record a governance decision event."""
+        decisions_total.labels(status=status).inc()
 
     @staticmethod
     def record_request(method: str, endpoint: str, status_code: int, duration: float):
@@ -218,3 +234,7 @@ def get_metrics() -> bytes:
 def get_metrics_content_type() -> str:
     """Get the content type for Prometheus metrics."""
     return CONTENT_TYPE_LATEST
+
+
+# Singleton instance for import convenience
+metrics_collector = MetricsCollector()

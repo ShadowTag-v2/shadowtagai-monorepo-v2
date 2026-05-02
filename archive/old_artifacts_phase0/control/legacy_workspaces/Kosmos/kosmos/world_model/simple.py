@@ -159,12 +159,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         domain = entity.properties.get("domain")
 
         # Use existing create_concept method (no metadata parameter)
-        self.graph.create_concept(
-            name=name,
-            description=description,
-            domain=domain,
-            merge=merge
-        )
+        self.graph.create_concept(name=name, description=description, domain=domain, merge=merge)
 
         return entity.id
 
@@ -181,13 +176,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
             "entity_id": entity.id,
         }
 
-        self.graph.create_author(
-            name=name,
-            affiliation=affiliation,
-            email=email,
-            metadata=metadata,
-            merge=merge
-        )
+        self.graph.create_author(name=name, affiliation=affiliation, email=email, metadata=metadata, merge=merge)
 
         return entity.id
 
@@ -204,13 +193,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
             "entity_id": entity.id,
         }
 
-        self.graph.create_method(
-            name=name,
-            description=description,
-            category=category,
-            metadata=metadata,
-            merge=merge
-        )
+        self.graph.create_method(name=name, description=description, category=category, metadata=metadata, merge=merge)
 
         return entity.id
 
@@ -263,7 +246,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
             created_by=entity.created_by,
             verified=entity.verified,
             created_at=entity.created_at.isoformat() if entity.created_at else None,
-            updated_at=entity.updated_at.isoformat() if entity.updated_at else None
+            updated_at=entity.updated_at.isoformat() if entity.updated_at else None,
         ).data()
 
         if result:
@@ -343,19 +326,19 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         if node.get("created_at"):
             try:
                 created_at = datetime.fromisoformat(node["created_at"])
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
         updated_at = None
         if node.get("updated_at"):
             try:
                 updated_at = datetime.fromisoformat(node["updated_at"])
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
         # Load annotations from node property
         annotations = []
-        annotations_raw = node.get('annotations', [])
+        annotations_raw = node.get("annotations", [])
         if annotations_raw:
             for ann_json in annotations_raw:
                 try:
@@ -365,17 +348,13 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
                         ann_dict = ann_json
 
                     ann_created_at = None
-                    if ann_dict.get('created_at'):
+                    if ann_dict.get("created_at"):
                         try:
-                            ann_created_at = datetime.fromisoformat(ann_dict['created_at'])
+                            ann_created_at = datetime.fromisoformat(ann_dict["created_at"])
                         except ValueError:
                             pass
 
-                    annotations.append(Annotation(
-                        text=ann_dict['text'],
-                        created_by=ann_dict['created_by'],
-                        created_at=ann_created_at
-                    ))
+                    annotations.append(Annotation(text=ann_dict["text"], created_by=ann_dict["created_by"], created_at=ann_created_at))
                 except Exception as e:
                     logger.debug(f"Failed to parse annotation in node: {e}")
 
@@ -416,12 +395,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         RETURN count(n) as count
         """
 
-        result = self.graph.graph.run(
-            cypher,
-            entity_id=entity_id,
-            updates=updates,
-            updated_at=datetime.now().isoformat()
-        ).data()
+        result = self.graph.graph.run(cypher, entity_id=entity_id, updates=updates, updated_at=datetime.now().isoformat()).data()
 
         if not result or result[0]["count"] == 0:
             raise ValueError(f"Entity not found: {entity_id}")
@@ -484,15 +458,12 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
                 paper_id=relationship.source_id,
                 cited_paper_id=relationship.target_id,
                 context=relationship.properties.get("context"),
-                section=relationship.properties.get("section")
+                section=relationship.properties.get("section"),
             )
             return relationship.id
 
         elif relationship.type == "AUTHOR_OF":
-            self.graph.create_authored(
-                author_name=relationship.source_id,
-                paper_id=relationship.target_id
-            )
+            self.graph.create_authored(author_name=relationship.source_id, paper_id=relationship.target_id)
             return relationship.id
 
         else:
@@ -526,14 +497,11 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
             properties=json.dumps(relationship.properties),
             confidence=relationship.confidence,
             created_at=relationship.created_at.isoformat() if relationship.created_at else None,
-            created_by=relationship.created_by
+            created_by=relationship.created_by,
         ).data()
 
         if not result:
-            raise ValueError(
-                f"Could not create relationship: source={relationship.source_id}, "
-                f"target={relationship.target_id}"
-            )
+            raise ValueError(f"Could not create relationship: source={relationship.source_id}, target={relationship.target_id}")
 
         return result[0]["relationship_id"]
 
@@ -579,7 +547,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         if rel.get("created_at"):
             try:
                 created_at = datetime.fromisoformat(rel["created_at"])
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
         return Relationship(
@@ -590,7 +558,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
             properties=properties,
             confidence=rel.get("confidence", 1.0),
             created_at=created_at,
-            created_by=rel.get("created_by")
+            created_by=rel.get("created_by"),
         )
 
     def query_related_entities(
@@ -721,16 +689,18 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
             else:
                 properties = properties_str
 
-            relationships.append({
-                "id": rel.get("relationship_id", str(id(rel))),
-                "source_id": row.get("source_id") or row.get("source_paper_id"),
-                "target_id": row.get("target_id") or row.get("target_paper_id"),
-                "type": row["rel_type"],
-                "properties": properties,
-                "confidence": rel.get("confidence", 1.0),
-                "created_at": rel.get("created_at"),
-                "created_by": rel.get("created_by")
-            })
+            relationships.append(
+                {
+                    "id": rel.get("relationship_id", str(id(rel))),
+                    "source_id": row.get("source_id") or row.get("source_paper_id"),
+                    "target_id": row.get("target_id") or row.get("target_paper_id"),
+                    "type": row["rel_type"],
+                    "properties": properties,
+                    "confidence": rel.get("confidence", 1.0),
+                    "created_at": rel.get("created_at"),
+                    "created_by": rel.get("created_by"),
+                }
+            )
 
         # Create export data
         export_data = {
@@ -741,7 +711,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
             "project": project,
             "statistics": stats,
             "entities": entities,
-            "relationships": relationships
+            "relationships": relationships,
         }
 
         # Write to file
@@ -751,9 +721,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         with open(filepath, "w") as f:
             json.dump(export_data, f, indent=2)
 
-        logger.info(
-            f"Exported {len(entities)} entities and {len(relationships)} relationships"
-        )
+        logger.info(f"Exported {len(entities)} entities and {len(relationships)} relationships")
 
     def import_graph(self, filepath: str, clear: bool = False, project: str | None = None) -> None:
         """
@@ -783,10 +751,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
 
         # Validate format version
         if data.get("version") != EXPORT_FORMAT_VERSION:
-            logger.warning(
-                f"Import file version {data.get('version')} may not be compatible "
-                f"with current version {EXPORT_FORMAT_VERSION}"
-            )
+            logger.warning(f"Import file version {data.get('version')} may not be compatible with current version {EXPORT_FORMAT_VERSION}")
 
         # Clear if requested
         if clear:
@@ -1011,12 +976,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         RETURN count(n) as count
         """
 
-        result = self.graph.graph.run(
-            cypher,
-            entity_id=entity_id,
-            verified_by=verified_by,
-            verified_at=datetime.now().isoformat()
-        ).data()
+        result = self.graph.graph.run(cypher, entity_id=entity_id, verified_by=verified_by, verified_at=datetime.now().isoformat()).data()
 
         if not result or result[0]["count"] == 0:
             raise ValueError(f"Entity not found: {entity_id}")
@@ -1040,17 +1000,15 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
             - Timestamps are ISO 8601 formatted
         """
         if not self.graph.connected:
-            logger.warning(
-                f"Not connected to Neo4j, annotation not persisted for {entity_id}"
-            )
+            logger.warning(f"Not connected to Neo4j, annotation not persisted for {entity_id}")
             return
 
         # Serialize annotation to JSON-compatible dict
         ann_dict = {
-            'text': annotation.text,
-            'created_by': annotation.created_by,
-            'created_at': (annotation.created_at or datetime.utcnow()).isoformat(),
-            'annotation_id': str(uuid.uuid4())  # Unique ID for each annotation
+            "text": annotation.text,
+            "created_by": annotation.created_by,
+            "created_at": (annotation.created_at or datetime.utcnow()).isoformat(),
+            "annotation_id": str(uuid.uuid4()),  # Unique ID for each annotation
         }
 
         # Cypher query: append to annotations array, create if null
@@ -1067,16 +1025,12 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
 
         try:
             result = self.graph.graph.run(
-                query,
-                entity_id=entity_id,
-                annotation=json.dumps(ann_dict),
-                updated_at=datetime.utcnow().isoformat()
+                query, entity_id=entity_id, annotation=json.dumps(ann_dict), updated_at=datetime.utcnow().isoformat()
             ).data()
 
-            if result and result[0]['updated'] > 0:
+            if result and result[0]["updated"] > 0:
                 logger.info(
-                    f"Annotation added to {entity_id} by {annotation.created_by}: "
-                    f"{annotation.text[:50]}{'...' if len(annotation.text) > 50 else ''}"
+                    f"Annotation added to {entity_id} by {annotation.created_by}: {annotation.text[:50]}{'...' if len(annotation.text) > 50 else ''}"
                 )
             else:
                 logger.warning(f"Entity not found for annotation: {entity_id}")
@@ -1119,7 +1073,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
                 logger.debug(f"Entity not found: {entity_id}")
                 return []
 
-            annotations_raw = result[0].get('annotations')
+            annotations_raw = result[0].get("annotations")
             if not annotations_raw:
                 return []
 
@@ -1134,22 +1088,16 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
 
                     # Reconstruct Annotation object
                     created_at = None
-                    if ann_dict.get('created_at'):
+                    if ann_dict.get("created_at"):
                         try:
-                            created_at = datetime.fromisoformat(ann_dict['created_at'])
+                            created_at = datetime.fromisoformat(ann_dict["created_at"])
                         except ValueError:
                             logger.debug(f"Invalid created_at format: {ann_dict['created_at']}")
 
-                    annotations.append(Annotation(
-                        text=ann_dict['text'],
-                        created_by=ann_dict['created_by'],
-                        created_at=created_at
-                    ))
+                    annotations.append(Annotation(text=ann_dict["text"], created_by=ann_dict["created_by"], created_at=created_at))
 
                 except (json.JSONDecodeError, KeyError, TypeError) as e:
-                    logger.warning(
-                        f"Failed to parse annotation {i} for {entity_id}: {e}"
-                    )
+                    logger.warning(f"Failed to parse annotation {i} for {entity_id}: {e}")
                     continue
 
             return annotations

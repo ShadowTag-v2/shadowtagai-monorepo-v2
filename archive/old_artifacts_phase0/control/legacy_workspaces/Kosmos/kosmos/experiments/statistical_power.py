@@ -45,13 +45,7 @@ class PowerAnalyzer:
         self.default_power = 0.8
         self.default_alpha = 0.05
 
-    def ttest_sample_size(
-        self,
-        effect_size: float,
-        power: float = 0.8,
-        alpha: float = 0.05,
-        alternative: str = "two-sided"
-    ) -> int:
+    def ttest_sample_size(self, effect_size: float, power: float = 0.8, alpha: float = 0.05, alternative: str = "two-sided") -> int:
         """
         Calculate sample size for independent samples t-test.
 
@@ -75,16 +69,13 @@ class PowerAnalyzer:
                 power=power,
                 alpha=alpha,
                 ratio=1.0,  # Equal group sizes
-                alternative=alternative
+                alternative=alternative,
             )
 
             # Round up to nearest integer
             n_required = math.ceil(n)
 
-            logger.info(
-                f"T-test power analysis: d={effect_size}, power={power}, "
-                f"alpha={alpha} → n={n_required} per group"
-            )
+            logger.info(f"T-test power analysis: d={effect_size}, power={power}, alpha={alpha} → n={n_required} per group")
 
             return n_required
 
@@ -92,12 +83,7 @@ class PowerAnalyzer:
             logger.warning("statsmodels not available, using approximation")
             return self._ttest_sample_size_approx(effect_size, power, alpha)
 
-    def _ttest_sample_size_approx(
-        self,
-        effect_size: float,
-        power: float = 0.8,
-        alpha: float = 0.05
-    ) -> int:
+    def _ttest_sample_size_approx(self, effect_size: float, power: float = 0.8, alpha: float = 0.05) -> int:
         """Approximate t-test sample size without statsmodels."""
         # Simplified formula (assumes two-sided, equal variance)
         # n ≈ 2 * [(z_alpha/2 + z_beta) / d]^2
@@ -111,13 +97,7 @@ class PowerAnalyzer:
 
         return math.ceil(n)
 
-    def ttest_power(
-        self,
-        effect_size: float,
-        n_per_group: int,
-        alpha: float = 0.05,
-        alternative: str = "two-sided"
-    ) -> float:
+    def ttest_power(self, effect_size: float, n_per_group: int, alpha: float = 0.05, alternative: str = "two-sided") -> float:
         """
         Calculate statistical power for t-test given sample size.
 
@@ -135,18 +115,9 @@ class PowerAnalyzer:
 
             power_analysis = TTestIndPower()
 
-            power = power_analysis.solve_power(
-                effect_size=effect_size,
-                nobs1=n_per_group,
-                alpha=alpha,
-                ratio=1.0,
-                alternative=alternative
-            )
+            power = power_analysis.solve_power(effect_size=effect_size, nobs1=n_per_group, alpha=alpha, ratio=1.0, alternative=alternative)
 
-            logger.info(
-                f"T-test power: d={effect_size}, n={n_per_group}, "
-                f"alpha={alpha} → power={power:.3f}"
-            )
+            logger.info(f"T-test power: d={effect_size}, n={n_per_group}, alpha={alpha} → power={power:.3f}")
 
             return float(power)
 
@@ -154,13 +125,7 @@ class PowerAnalyzer:
             logger.warning("statsmodels not available for power calculation")
             return 0.8  # Fallback assumption
 
-    def anova_sample_size(
-        self,
-        effect_size: float,
-        num_groups: int,
-        power: float = 0.8,
-        alpha: float = 0.05
-    ) -> int:
+    def anova_sample_size(self, effect_size: float, num_groups: int, power: float = 0.8, alpha: float = 0.05) -> int:
         """
         Calculate sample size for one-way ANOVA.
 
@@ -184,16 +149,13 @@ class PowerAnalyzer:
                 nobs=None,  # Solve for this
                 alpha=alpha,
                 power=power,
-                k_groups=num_groups
+                k_groups=num_groups,
             )
 
             # n is total sample size, divide by number of groups
             n_per_group = math.ceil(n / num_groups)
 
-            logger.info(
-                f"ANOVA power analysis: f={effect_size}, k={num_groups}, "
-                f"power={power}, alpha={alpha} → n={n_per_group} per group"
-            )
+            logger.info(f"ANOVA power analysis: f={effect_size}, k={num_groups}, power={power}, alpha={alpha} → n={n_per_group} per group")
 
             return n_per_group
 
@@ -201,18 +163,12 @@ class PowerAnalyzer:
             logger.warning("statsmodels not available, using approximation")
             return self._anova_sample_size_approx(effect_size, num_groups, power, alpha)
 
-    def _anova_sample_size_approx(
-        self,
-        effect_size: float,
-        num_groups: int,
-        power: float = 0.8,
-        alpha: float = 0.05
-    ) -> int:
+    def _anova_sample_size_approx(self, effect_size: float, num_groups: int, power: float = 0.8, alpha: float = 0.05) -> int:
         """Approximate ANOVA sample size without statsmodels."""
         from scipy import stats
 
         # Convert f to f²
-        effect_size ** 2
+        effect_size**2
 
         # Degrees of freedom
         df1 = num_groups - 1
@@ -227,12 +183,7 @@ class PowerAnalyzer:
 
         return n_approx
 
-    def correlation_sample_size(
-        self,
-        effect_size: float,
-        power: float = 0.8,
-        alpha: float = 0.05
-    ) -> int:
+    def correlation_sample_size(self, effect_size: float, power: float = 0.8, alpha: float = 0.05) -> int:
         """
         Calculate sample size for correlation test.
 
@@ -260,20 +211,11 @@ class PowerAnalyzer:
 
         n_required = math.ceil(n)
 
-        logger.info(
-            f"Correlation power analysis: r={effect_size}, power={power}, "
-            f"alpha={alpha} → n={n_required}"
-        )
+        logger.info(f"Correlation power analysis: r={effect_size}, power={power}, alpha={alpha} → n={n_required}")
 
         return n_required
 
-    def regression_sample_size(
-        self,
-        effect_size: float,
-        num_predictors: int,
-        power: float = 0.8,
-        alpha: float = 0.05
-    ) -> int:
+    def regression_sample_size(self, effect_size: float, num_predictors: int, power: float = 0.8, alpha: float = 0.05) -> int:
         """
         Calculate sample size for multiple regression.
 
@@ -309,14 +251,11 @@ class PowerAnalyzer:
                     df_num=num_predictors,
                     df_denom=df2,
                     alpha=alpha,
-                    ncc=1  # non-centrality parameter calculation
+                    ncc=1,  # non-centrality parameter calculation
                 )
 
                 if test_power >= power:
-                    logger.info(
-                        f"Regression power analysis: f²={effect_size}, p={num_predictors}, "
-                        f"power={power}, alpha={alpha} → n={n}"
-                    )
+                    logger.info(f"Regression power analysis: f²={effect_size}, p={num_predictors}, power={power}, alpha={alpha} → n={n}")
                     return n
 
             return n_max
@@ -325,13 +264,7 @@ class PowerAnalyzer:
             logger.warning("statsmodels not available, using approximation")
             return self._regression_sample_size_approx(effect_size, num_predictors, power, alpha)
 
-    def _regression_sample_size_approx(
-        self,
-        effect_size: float,
-        num_predictors: int,
-        power: float = 0.8,
-        alpha: float = 0.05
-    ) -> int:
+    def _regression_sample_size_approx(self, effect_size: float, num_predictors: int, power: float = 0.8, alpha: float = 0.05) -> int:
         """Approximate regression sample size using rule of thumb."""
         # Common rule: N >= 50 + 8*p (for R² testing)
         # Or N >= 104 + p (for individual predictors)
@@ -340,18 +273,12 @@ class PowerAnalyzer:
         n_approx = max(
             50 + 8 * num_predictors,
             104 + num_predictors,
-            int(num_predictors / effect_size + 10)  # Very rough
+            int(num_predictors / effect_size + 10),  # Very rough
         )
 
         return n_approx
 
-    def chi_square_sample_size(
-        self,
-        effect_size: float,
-        df: int,
-        power: float = 0.8,
-        alpha: float = 0.05
-    ) -> int:
+    def chi_square_sample_size(self, effect_size: float, df: int, power: float = 0.8, alpha: float = 0.05) -> int:
         """
         Calculate sample size for chi-square test.
 
@@ -374,29 +301,22 @@ class PowerAnalyzer:
                 nobs=None,  # Solve for this
                 alpha=alpha,
                 power=power,
-                n_bins=df + 1
+                n_bins=df + 1,
             )
 
             n_required = math.ceil(n)
 
-            logger.info(
-                f"Chi-square power analysis: w={effect_size}, df={df}, "
-                f"power={power}, alpha={alpha} → n={n_required}"
-            )
+            logger.info(f"Chi-square power analysis: w={effect_size}, df={df}, power={power}, alpha={alpha} → n={n_required}")
 
             return n_required
 
         except ImportError:
             logger.warning("statsmodels not available for chi-square power analysis")
             # Rough approximation
-            n_approx = int((df + 1) / (effect_size ** 2) * 10)
+            n_approx = int((df + 1) / (effect_size**2) * 10)
             return max(n_approx, 30)
 
-    def interpret_effect_size(
-        self,
-        effect_size: float,
-        test_type: str
-    ) -> str:
+    def interpret_effect_size(self, effect_size: float, test_type: str) -> str:
         """
         Interpret effect size magnitude.
 
@@ -453,7 +373,7 @@ class PowerAnalyzer:
         num_groups: int = 2,
         num_predictors: int = 1,
         power: float = 0.8,
-        alpha: float = 0.05
+        alpha: float = 0.05,
     ) -> dict[str, Any]:
         """
         Generate comprehensive power analysis report.

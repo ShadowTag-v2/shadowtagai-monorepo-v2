@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/antigravity/validate.py
+# hypothesis_version: 6.151.5
+
+[0.02, 0.1, 0.3, 1.0, 60.0, 120, 200, '#', '=', 'FIXME', 'TODO', 'code', 'debug', 'fixed_code', 'fixes', 'fixes_applied', 'high', 'issues', 'language', 'line', 'low', 'medium', 'message', 'new_tech', 'passed', 'password', 'print(', 'python', 'remaining_issues', 'score', 'security', 'severity', 'style', 'todo', 'type', 'updates', 'updates_available']

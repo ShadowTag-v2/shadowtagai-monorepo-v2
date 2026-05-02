@@ -20,7 +20,7 @@ def workingDirectory(func):
             return func(self, *args, **kwargs)
 
         # https://github.com/neovim/neovim/issues/8336
-        if lfEval("has('nvim')") == '1':
+        if lfEval("has('nvim')") == "1":
             chdir = vim.chdir
         else:
             chdir = os.chdir
@@ -33,9 +33,10 @@ def workingDirectory(func):
 
     return deco
 
-#*****************************************************
+
+# *****************************************************
 # CocExplorer
-#*****************************************************
+# *****************************************************
 class CocExplorer(Explorer):
     def __init__(self):
         self._pattern_regex = []
@@ -47,7 +48,7 @@ class CocExplorer(Explorer):
         return [list(item)[0] for item in commands]
 
     def getStlCategory(self):
-        return 'Coc'
+        return "Coc"
 
     def getStlCurDir(self):
         return escQuote(lfEncode(self._cmd_work_dir))
@@ -59,14 +60,14 @@ class CocExplorer(Explorer):
         return self._pattern_regex
 
     def getFileLine(self, file_name, line_num, file_contents):
-        if lfEval(f"bufloaded('{escQuote(file_name)}')") == '1':
+        if lfEval(f"bufloaded('{escQuote(file_name)}')") == "1":
             return lfEval(f"getbufline('{file_name}', {line_num}, {line_num})[0]")
         else:
             if file_name not in file_contents:
-                with lfOpen(file_name, 'r', errors='ignore') as f:
+                with lfOpen(file_name, "r", errors="ignore") as f:
                     file_contents[file_name] = f.readlines()
 
-            return file_contents[file_name][line_num-1].rstrip("\r\n")
+            return file_contents[file_name][line_num - 1].rstrip("\r\n")
 
     def generateContent(self, items):
         self._pattern_regex = []
@@ -82,9 +83,9 @@ class CocExplorer(Explorer):
                     end_line_num = int(item["range"]["end"]["line"])
                     end_col_num = int(item["range"]["end"]["character"])
                     if end_line_num == line_num:
-                        self._pattern_regex.append(line[col_num: end_col_num])
+                        self._pattern_regex.append(line[col_num:end_col_num])
 
-                content.append(f"{file_path}:{line_num+1}:{col_num+1}:{line}")
+                content.append(f"{file_path}:{line_num + 1}:{col_num + 1}:{line}")
             except:
                 pass
 
@@ -98,14 +99,14 @@ class DefinitionsExplorer(CocExplorer):
             definitions = lfEval("CocAction('definitions')")
             return self.generateContent(definitions)
         except vim.error as e:
-            lfPrintError(str(e).split('\n')[-1])
+            lfPrintError(str(e).split("\n")[-1])
             return None
 
     def supportsNameOnly(self):
         return True
 
     def getStlCategory(self):
-        return 'definitions'
+        return "definitions"
 
 
 class DeclarationsExplorer(CocExplorer):
@@ -115,14 +116,14 @@ class DeclarationsExplorer(CocExplorer):
             declarations = lfEval("CocAction('declarations')")
             return self.generateContent(declarations)
         except vim.error as e:
-            lfPrintError(str(e).split('\n')[-1])
+            lfPrintError(str(e).split("\n")[-1])
             return None
 
     def supportsNameOnly(self):
         return True
 
     def getStlCategory(self):
-        return 'declarations'
+        return "declarations"
 
 
 class ImplementationsExplorer(CocExplorer):
@@ -132,14 +133,14 @@ class ImplementationsExplorer(CocExplorer):
             implementations = lfEval("CocAction('implementations')")
             return self.generateContent(implementations)
         except vim.error as e:
-            lfPrintError(str(e).split('\n')[-1])
+            lfPrintError(str(e).split("\n")[-1])
             return None
 
     def supportsNameOnly(self):
         return True
 
     def getStlCategory(self):
-        return 'implementations'
+        return "implementations"
 
 
 class TypeDefinitionsExplorer(CocExplorer):
@@ -149,14 +150,14 @@ class TypeDefinitionsExplorer(CocExplorer):
             typeDefinitions = lfEval("CocAction('typeDefinitions')")
             return self.generateContent(typeDefinitions)
         except vim.error as e:
-            lfPrintError(str(e).split('\n')[-1])
+            lfPrintError(str(e).split("\n")[-1])
             return None
 
     def supportsNameOnly(self):
         return True
 
     def getStlCategory(self):
-        return 'typeDefinitions'
+        return "typeDefinitions"
 
 
 class ReferencesExplorer(CocExplorer):
@@ -172,19 +173,19 @@ class ReferencesExplorer(CocExplorer):
 
             return self.generateContent(references)
         except vim.error as e:
-            lfPrintError(str(e).split('\n')[-1])
+            lfPrintError(str(e).split("\n")[-1])
             return None
 
     def supportsNameOnly(self):
         return True
 
     def getStlCategory(self):
-        return 'references'
+        return "references"
 
 
-#*****************************************************
+# *****************************************************
 # CocExplManager
-#*****************************************************
+# *****************************************************
 class CocExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -256,8 +257,8 @@ class CocExplManager(Manager):
         else:
             self.setArguments(arguments_dict)
 
-        arg_list = self._arguments.get("arg_line", 'coc').split()
-        arg_list = [item for item in arg_list if not item.startswith('-')]
+        arg_list = self._arguments.get("arg_line", "coc").split()
+        arg_list = [item for item in arg_list if not item.startswith("-")]
         if len(arg_list) == 1:
             subcommand = ""
         else:
@@ -284,7 +285,7 @@ class CocExplManager(Manager):
         return None
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         line = args[0]
@@ -293,17 +294,15 @@ class CocExplManager(Manager):
         self._createPopupPreview("", source, 0)
 
     def _createPreviewWindow(self, config, source, line_num, jump_cmd):
-        if lfEval("has('nvim')") == '1':
+        if lfEval("has('nvim')") == "1":
             lfCmd("noautocmd let scratch_buffer = nvim_create_buf(0, 1)")
             lfCmd(f"noautocmd call setbufline(scratch_buffer, 1, '{escQuote(source)}')")
             lfCmd("noautocmd call nvim_buf_set_option(scratch_buffer, 'bufhidden', 'wipe')")
             lfCmd("noautocmd call nvim_buf_set_option(scratch_buffer, 'undolevels', -1)")
 
-            self._preview_winid = int(lfEval(f"nvim_open_win(scratch_buffer, 0, {json.dumps(config)})"
-                                             ))
+            self._preview_winid = int(lfEval(f"nvim_open_win(scratch_buffer, 0, {json.dumps(config)})"))
         else:
-            lfCmd(f"noautocmd let winid = popup_create('{escQuote(source)}', {json.dumps(config)})"
-                  )
+            lfCmd(f"noautocmd let winid = popup_create('{escQuote(source)}', {json.dumps(config)})")
             self._preview_winid = int(lfEval("winid"))
 
         self._setWinOptions(self._preview_winid)
@@ -311,12 +310,10 @@ class CocExplManager(Manager):
     def _useExistingWindow(self, title, source, line_num, jump_cmd):
         self.setOptionsForCursor()
 
-        if lfEval("has('nvim')") == '1':
-            lfCmd(f"""call win_execute({self._preview_winid}, "call nvim_buf_set_lines(0, 0, -1, v:false, ['{escQuote(source)}'])")"""
-                  )
+        if lfEval("has('nvim')") == "1":
+            lfCmd(f"""call win_execute({self._preview_winid}, "call nvim_buf_set_lines(0, 0, -1, v:false, ['{escQuote(source)}'])")""")
         else:
-            lfCmd(f"noautocmd call popup_settext({self._preview_winid}, '{escQuote(source)}')"
-                  )
+            lfCmd(f"noautocmd call popup_settext({self._preview_winid}, '{escQuote(source)}')")
 
     def _beforeExit(self):
         super()._beforeExit()
@@ -329,24 +326,32 @@ class CocExplManager(Manager):
 class CommonExplManager(CocExplManager):
     def _afterEnter(self):
         super(CocExplManager, self)._afterEnter()
-        if self._getInstance().getWinPos() == 'popup':
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_rgFileName'', ''^.\{-}\ze\:\d\+:'', 10)')"""
-                    % self._getInstance().getPopupWinId())
+        if self._getInstance().getWinPos() == "popup":
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_rgFileName'', ''^.\{-}\ze\:\d\+:'', 10)')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_rgLineNumber'', ''^.\{-}\zs:\d\+:'', 10)')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_rgLineNumber'', ''^.\{-}\zs:\d\+:'', 10)')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_rgColumnNumber'', ''^.\{-}:\d\+:\zs\d\+:'', 10)')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_rgColumnNumber'', ''^.\{-}:\d\+:\zs\d\+:'', 10)')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
             try:
                 for i in self._getExplorer().getPatternRegex():
-                    i = rf'\<{i}\>'
-                    lfCmd("""call win_execute(%d, "let matchid = matchadd('Lf_hl_rgHighlight', '%s', 9)")"""
-                            % (self._getInstance().getPopupWinId(), re.sub(r'\\(?!")', r'\\\\', escQuote(i))))
+                    i = rf"\<{i}\>"
+                    lfCmd(
+                        """call win_execute(%d, "let matchid = matchadd('Lf_hl_rgHighlight', '%s', 9)")"""
+                        % (self._getInstance().getPopupWinId(), re.sub(r'\\(?!")', r"\\\\", escQuote(i)))
+                    )
                     id = int(lfEval("matchid"))
                     self._match_ids.append(id)
             except vim.error:
@@ -361,7 +366,7 @@ class CommonExplManager(CocExplManager):
 
             try:
                 for i in self._getExplorer().getPatternRegex():
-                    i = rf'\<{i}\>'
+                    i = rf"\<{i}\>"
                     id = int(lfEval(f"matchadd('Lf_hl_rgHighlight', '{escQuote(i)}', 9)"))
                     self._match_ids.append(id)
             except vim.error:
@@ -377,7 +382,7 @@ class CommonExplManager(CocExplManager):
     def _getFileInfo(self, args):
         line = args[0]
 
-        m = re.match(r'^(.+?):(\d+):(\d+):', line)
+        m = re.match(r"^(.+?):(\d+):(\d+):", line)
         if m is None:
             return (None, None, None)
 
@@ -386,7 +391,7 @@ class CommonExplManager(CocExplManager):
             file = os.path.join(self._getInstance().getCwd(), lfDecode(file))
         i = 1
         while not os.path.exists(lfDecode(file)):
-            m = re.match(r'^(.+?(?::\d+.*?){%d}):(\d+):(\d+):' % i, line)
+            m = re.match(r"^(.+?(?::\d+.*?){%d}):(\d+):(\d+):" % i, line)
             if m is None:
                 return (None, None, None)
             i += 1
@@ -409,24 +414,22 @@ class CommonExplManager(CocExplManager):
 
         try:
             is_shown = False
-            if kwargs.get("mode", '') == 't':
-                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == '1' \
-                        and lfEval(f"bufloaded('{escQuote(file)}')") == '1':
+            if kwargs.get("mode", "") == "t":
+                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == "1" and lfEval(f"bufloaded('{escQuote(file)}')") == "1":
                     winid = int(lfEval(f"bufwinid('{escQuote(file)}')"))
                     start_line = int(lfEval("line('w0', %d)" % winid))
                     end_line = int(lfEval("line('w$', %d)" % winid))
-                    lfDrop('tab', file, line_num)
+                    lfDrop("tab", file, line_num)
                     if start_line <= int(line_num) <= end_line:
                         is_shown = True
                 else:
                     lfCmd(f"tabe {escSpecial(file)} | {line_num}")
             else:
-                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == '1' \
-                        and lfEval(f"bufloaded('{escQuote(file)}')") == '1':
+                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == "1" and lfEval(f"bufloaded('{escQuote(file)}')") == "1":
                     winid = int(lfEval(f"bufwinid('{escQuote(file)}')"))
                     start_line = int(lfEval("line('w0', %d)" % winid))
                     end_line = int(lfEval("line('w$', %d)" % winid))
-                    lfDrop('', file, line_num)
+                    lfDrop("", file, line_num)
                     if start_line <= int(line_num) <= end_line:
                         is_shown = True
                 else:
@@ -445,17 +448,19 @@ class CommonExplManager(CocExplManager):
                 self._cursorline_dict[vim.current.window] = vim.current.window.options["cursorline"]
 
             lfCmd("setlocal cursorline")
-        except vim.error as e: # E37
-            if 'E325' not in str(e).split(':'):
+        except vim.error as e:  # E37
+            if "E325" not in str(e).split(":"):
                 lfPrintTraceback()
 
     def _highlightInPreview(self):
-        if lfEval("has('nvim')") != '1':
+        if lfEval("has('nvim')") != "1":
             try:
                 for i in self._getExplorer().getPatternRegex():
-                    i = rf'\<{i}\>'
-                    lfCmd("""call win_execute(%d, "let matchid = matchadd('Lf_hl_rgHighlight', '%s', 9)")"""
-                            % (self._preview_winid, re.sub(r'\\(?!")', r'\\\\', escQuote(i))))
+                    i = rf"\<{i}\>"
+                    lfCmd(
+                        """call win_execute(%d, "let matchid = matchadd('Lf_hl_rgHighlight', '%s', 9)")"""
+                        % (self._preview_winid, re.sub(r'\\(?!")', r"\\\\", escQuote(i)))
+                    )
                     id = int(lfEval("matchid"))
                     self._match_ids.append(id)
             except vim.error:
@@ -466,7 +471,7 @@ class CommonExplManager(CocExplManager):
             if lfEval("win_getid()") != cur_winid:
                 try:
                     for i in self._getExplorer().getPatternRegex():
-                        i = rf'\<{i}\>'
+                        i = rf"\<{i}\>"
                         id = int(lfEval(f"matchadd('Lf_hl_rgHighlight', '{escQuote(i)}', 9)"))
                         self._match_ids.append(id)
                 except vim.error:
@@ -474,14 +479,14 @@ class CommonExplManager(CocExplManager):
                 lfCmd(f"noautocmd call win_gotoid({cur_winid})")
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         file, line_num, col_num = self._getFileInfo(args)
         if file is None:
             return
 
-        if lfEval(f"bufloaded('{escQuote(file)}')") == '1':
+        if lfEval(f"bufloaded('{escQuote(file)}')") == "1":
             source = int(lfEval(f"bufadd('{escQuote(file)}')"))
         else:
             source = file
@@ -571,9 +576,9 @@ class ReferencesExplManager(CommonExplManager):
         return self._explorer
 
 
-#*****************************************************
+# *****************************************************
 # cocExplManager is a singleton
-#*****************************************************
+# *****************************************************
 cocExplManager = CocExplManager()
 
-__all__ = ['cocExplManager']
+__all__ = ["cocExplManager"]

@@ -6,6 +6,7 @@ from ..retrieval.context_builder import collect_context
 
 router = APIRouter(prefix="/api")
 
+
 @router.post("/context", response_model=ContextResponse)
 def api_context(req: ContextRequest):
     s = load_settings()

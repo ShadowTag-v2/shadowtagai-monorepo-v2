@@ -1,6 +1,5 @@
 """Tier classification engine for scenario prioritization"""
 
-
 from ..models import Scenario, ScenarioTier
 
 
@@ -51,10 +50,7 @@ class TierClassifier:
         for scenario in scenarios:
             # Calculate final score if not already set
             if scenario.final_score is None:
-                scenario.final_score = (
-                    0.6 * (scenario.safety_score or 50) +
-                    0.4 * (scenario.complexity_score or 50)
-                )
+                scenario.final_score = 0.6 * (scenario.safety_score or 50) + 0.4 * (scenario.complexity_score or 50)
 
             # Classify based on thresholds
             if scenario.final_score >= self.tier_1_threshold:
@@ -71,9 +67,9 @@ class TierClassifier:
 
         # Print distribution
         total = len(scenarios)
-        print(f"[Tier Classifier] Tier 1: {tier_1_count} ({tier_1_count/total*100:.1f}%)")
-        print(f"[Tier Classifier] Tier 2: {tier_2_count} ({tier_2_count/total*100:.1f}%)")
-        print(f"[Tier Classifier] Tier 3: {tier_3_count} ({tier_3_count/total*100:.1f}%)")
+        print(f"[Tier Classifier] Tier 1: {tier_1_count} ({tier_1_count / total * 100:.1f}%)")
+        print(f"[Tier Classifier] Tier 2: {tier_2_count} ({tier_2_count / total * 100:.1f}%)")
+        print(f"[Tier Classifier] Tier 3: {tier_3_count} ({tier_3_count / total * 100:.1f}%)")
 
         return classified
 
@@ -96,7 +92,7 @@ if __name__ == "__main__":
             time_of_day=TimeOfDay.NIGHT,
             sensor_data=SensorData(timestamp=datetime.utcnow()),
             consent_verified=True,
-            privacy_scrubbed=True
+            privacy_scrubbed=True,
         ),
         Scenario(
             scenario_id="medium_case",
@@ -109,7 +105,7 @@ if __name__ == "__main__":
             time_of_day=TimeOfDay.DAY,
             sensor_data=SensorData(timestamp=datetime.utcnow()),
             consent_verified=True,
-            privacy_scrubbed=True
+            privacy_scrubbed=True,
         ),
         Scenario(
             scenario_id="baseline",
@@ -122,7 +118,7 @@ if __name__ == "__main__":
             time_of_day=TimeOfDay.DAY,
             sensor_data=SensorData(timestamp=datetime.utcnow()),
             consent_verified=True,
-            privacy_scrubbed=True
+            privacy_scrubbed=True,
         ),
     ]
 

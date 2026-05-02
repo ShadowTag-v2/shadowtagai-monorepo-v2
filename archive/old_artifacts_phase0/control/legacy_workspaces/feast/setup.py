@@ -148,10 +148,7 @@ ELASTICSEARCH_REQUIRED = ["elasticsearch>=8.13.0"]
 
 SINGLESTORE_REQUIRED = ["singlestoredb<1.8.0"]
 
-COUCHBASE_REQUIRED = [
-    "couchbase==4.3.2",
-    "couchbase-columnar==1.0.0"
-]
+COUCHBASE_REQUIRED = ["couchbase==4.3.2", "couchbase-columnar==1.0.0"]
 
 MSSQL_REQUIRED = ["ibis-framework[mssql]>=9.0.0,<10"]
 
@@ -185,7 +182,7 @@ IMAGE_REQUIRED = [
 RAY_REQUIRED = [
     "ray>=2.47.0; python_version == '3.10'",
     'codeflare-sdk>=0.31.1; python_version != "3.10"',
-    ]
+]
 
 CI_REQUIRED = (
     [
@@ -281,11 +278,7 @@ MINIMAL_REQUIRED = (
     + MILVUS_REQUIRED
 )
 NLP_REQUIRED = (
-    DOCLING_REQUIRED
-    + MILVUS_REQUIRED
-    + TORCH_REQUIRED
-    + RAG_REQUIRED
-    + IMAGE_REQUIRED
+    DOCLING_REQUIRED + MILVUS_REQUIRED + TORCH_REQUIRED + RAG_REQUIRED + IMAGE_REQUIRED
 )
 DOCS_REQUIRED = CI_REQUIRED
 DEV_REQUIRED = CI_REQUIRED

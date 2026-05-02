@@ -30,38 +30,30 @@ logs.setup_adk_logger(level=logging.DEBUG)
 
 
 async def main():
-  runner = InMemoryRunner(
-      agent=agent.root_agent,
-      app_name=APP_NAME,
-  )
-  session = await runner.session_service.create_session(
-      app_name=APP_NAME, user_id=USER_ID
-  )
-
-  pr_number = parse_number_string(PULL_REQUEST_NUMBER)
-  if not pr_number:
-    print(
-        f"Error: Invalid pull request number received: {PULL_REQUEST_NUMBER}."
+    runner = InMemoryRunner(
+        agent=agent.root_agent,
+        app_name=APP_NAME,
     )
-    return
+    session = await runner.session_service.create_session(app_name=APP_NAME, user_id=USER_ID)
 
-  prompt = f"Please triage pull request #{pr_number}!"
-  response = await call_agent_async(runner, USER_ID, session.id, prompt)
-  print(f"<<<< Agent Final Output: {response}\n")
+    pr_number = parse_number_string(PULL_REQUEST_NUMBER)
+    if not pr_number:
+        print(f"Error: Invalid pull request number received: {PULL_REQUEST_NUMBER}.")
+        return
+
+    prompt = f"Please triage pull request #{pr_number}!"
+    response = await call_agent_async(runner, USER_ID, session.id, prompt)
+    print(f"<<<< Agent Final Output: {response}\n")
 
 
 if __name__ == "__main__":
-  start_time = time.time()
-  print(
-      f"Start triaging {OWNER}/{REPO} pull request #{PULL_REQUEST_NUMBER} at"
-      f" {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(start_time))}"
-  )
-  print("-" * 80)
-  asyncio.run(main())
-  print("-" * 80)
-  end_time = time.time()
-  print(
-      "Triaging finished at"
-      f" {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(end_time))}",
-  )
-  print("Total script execution time:", f"{end_time - start_time:.2f} seconds")
+    start_time = time.time()
+    print(f"Start triaging {OWNER}/{REPO} pull request #{PULL_REQUEST_NUMBER} at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(start_time))}")
+    print("-" * 80)
+    asyncio.run(main())
+    print("-" * 80)
+    end_time = time.time()
+    print(
+        f"Triaging finished at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(end_time))}",
+    )
+    print("Total script execution time:", f"{end_time - start_time:.2f} seconds")

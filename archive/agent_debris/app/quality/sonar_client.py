@@ -1,5 +1,6 @@
 import argparse
 
+
 def main():
     parser = argparse.ArgumentParser(description="Sonar API Client")
     parser.add_argument("command", choices=["check-gate", "fetch-issues"])
@@ -15,6 +16,7 @@ def main():
         print(f"Fetching issues with severity {args.severity}...")
         # Mock response
         print("No issues found (mock).")
+
 
 if __name__ == "__main__":
     main()

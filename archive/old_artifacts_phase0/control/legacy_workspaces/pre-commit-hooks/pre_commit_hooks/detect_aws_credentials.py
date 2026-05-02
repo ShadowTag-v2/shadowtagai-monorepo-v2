@@ -17,8 +17,10 @@ def get_aws_cred_files_from_env() -> set[str]:
     return {
         os.environ[env_var]
         for env_var in (
-            'AWS_CONFIG_FILE', 'AWS_CREDENTIAL_FILE',
-            'AWS_SHARED_CREDENTIALS_FILE', 'BOTO_CONFIG',
+            "AWS_CONFIG_FILE",
+            "AWS_CREDENTIAL_FILE",
+            "AWS_SHARED_CREDENTIALS_FILE",
+            "BOTO_CONFIG",
         )
         if env_var in os.environ
     }
@@ -28,7 +30,9 @@ def get_aws_secrets_from_env() -> set[str]:
     """Extract AWS secrets from environment variables."""
     keys = set()
     for env_var in (
-        'AWS_SECRET_ACCESS_KEY', 'AWS_SECURITY_TOKEN', 'AWS_SESSION_TOKEN',
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SECURITY_TOKEN",
+        "AWS_SESSION_TOKEN",
     ):
         if os.environ.get(env_var):
             keys.add(os.environ[env_var])
@@ -54,8 +58,9 @@ def get_aws_secrets_from_file(credentials_file: str) -> set[str]:
     keys = set()
     for section in parser.sections():
         for var in (
-            'aws_secret_access_key', 'aws_security_token',
-            'aws_session_token',
+            "aws_secret_access_key",
+            "aws_security_token",
+            "aws_session_token",
         ):
             try:
                 key = parser.get(section, var).strip()
@@ -67,8 +72,8 @@ def get_aws_secrets_from_file(credentials_file: str) -> set[str]:
 
 
 def check_file_for_aws_keys(
-        filenames: Sequence[str],
-        keys: set[bytes],
+    filenames: Sequence[str],
+    keys: set[bytes],
 ) -> list[BadFile]:
     """Check if files contain AWS secrets.
 
@@ -78,37 +83,37 @@ def check_file_for_aws_keys(
     bad_files = []
 
     for filename in filenames:
-        with open(filename, 'rb') as content:
+        with open(filename, "rb") as content:
             text_body = content.read()
             for key in keys:
                 # naively match the entire file, low chance of incorrect
                 # collision
                 if key in text_body:
-                    key_hidden = key.decode()[:4].ljust(28, '*')
+                    key_hidden = key.decode()[:4].ljust(28, "*")
                     bad_files.append(BadFile(filename, key_hidden))
     return bad_files
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument('filenames', nargs='+', help='Filenames to run')
+    parser.add_argument("filenames", nargs="+", help="Filenames to run")
     parser.add_argument(
-        '--credentials-file',
-        dest='credentials_file',
-        action='append',
+        "--credentials-file",
+        dest="credentials_file",
+        action="append",
         default=[
-            '~/.aws/config', '~/.aws/credentials', '/etc/boto.cfg', '~/.boto',
+            "~/.aws/config",
+            "~/.aws/credentials",
+            "/etc/boto.cfg",
+            "~/.boto",
         ],
-        help=(
-            'Location of additional AWS credential file from which to get '
-            'secret keys. Can be passed multiple times.'
-        ),
+        help=("Location of additional AWS credential file from which to get secret keys. Can be passed multiple times."),
     )
     parser.add_argument(
-        '--allow-missing-credentials',
-        dest='allow_missing_credentials',
-        action='store_true',
-        help='Allow hook to pass when no credentials are detected.',
+        "--allow-missing-credentials",
+        dest="allow_missing_credentials",
+        action="store_true",
+        help="Allow hook to pass when no credentials are detected.",
     )
     args = parser.parse_args(argv)
 
@@ -131,9 +136,9 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if not keys:
         print(
-            'No AWS keys were found in the configured credential files and '
-            'environment variables.\nPlease ensure you have the correct '
-            'setting for --credentials-file',
+            "No AWS keys were found in the configured credential files and "
+            "environment variables.\nPlease ensure you have the correct "
+            "setting for --credentials-file",
         )
         return 2
 
@@ -141,11 +146,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     bad_filenames = check_file_for_aws_keys(args.filenames, keys_b)
     if bad_filenames:
         for bad_file in bad_filenames:
-            print(f'AWS secret found in {bad_file.filename}: {bad_file.key}')
+            print(f"AWS secret found in {bad_file.filename}: {bad_file.key}")
         return 1
     else:
         return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

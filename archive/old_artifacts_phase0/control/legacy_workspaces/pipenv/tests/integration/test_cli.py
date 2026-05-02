@@ -48,14 +48,10 @@ def test_pipenv_site_packages(pipenv_instance_pypi):
         assert "Making site-packages available" in c.stderr
 
         # no-global-site-packages.txt under stdlib dir should not exist.
-        c = p.pipenv(
-            "run python -c \"import sysconfig; print(sysconfig.get_path('stdlib'))\""
-        )
+        c = p.pipenv("run python -c \"import sysconfig; print(sysconfig.get_path('stdlib'))\"")
         assert c.returncode == 0
         stdlib_path = c.stdout.strip()
-        assert not os.path.isfile(
-            os.path.join(stdlib_path, "no-global-site-packages.txt")
-        )
+        assert not os.path.isfile(os.path.join(stdlib_path, "no-global-site-packages.txt"))
 
 
 @pytest.mark.cli
@@ -163,9 +159,7 @@ def test_pipenv_graph_reverse(pipenv_instance_private_pypi):
                 assert sub_dep_found is not None, f"{sub_dep} not found under {dep_name} in JSON output:\n{json_output}"
 
 
-@pytest.mark.skip(
-    reason="There is a disputed vulnerability about pip 24.0 messing up this test."
-)
+@pytest.mark.skip(reason="There is a disputed vulnerability about pip 24.0 messing up this test.")
 @pytest.mark.cli
 @pytest.mark.needs_internet(reason="required by check")
 @pytest.mark.skip("This test will be revisited with the safety changes")
@@ -344,7 +338,6 @@ def test_pipenv_verify_locked_outdated_failing(pipenv_instance_private_pypi):
         c = p.pipenv("verify")
         assert c.returncode == 1
         assert "Pipfile.lock is out-of-date." in c.stderr
-
 
 
 @pytest.mark.cli

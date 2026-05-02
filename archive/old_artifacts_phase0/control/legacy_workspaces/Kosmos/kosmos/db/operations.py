@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 # QUERY PERFORMANCE MONITORING
 # ============================================================================
 
+
 def log_slow_queries(session_factory, threshold_ms: float = 100.0):
     """
     Log slow database queries for performance monitoring.
@@ -38,6 +39,7 @@ def log_slow_queries(session_factory, threshold_ms: float = 100.0):
         >>> from kosmos.db import _engine
         >>> log_slow_queries(_engine, threshold_ms=50.0)
     """
+
     @event.listens_for(session_factory, "after_cursor_execute")
     def receive_after_cursor_execute(conn, cursor, statement, parameters, context, executemany):
         """Log queries that exceed threshold."""
@@ -47,10 +49,7 @@ def log_slow_queries(session_factory, threshold_ms: float = 100.0):
         duration_ms = (time.time() - context._query_start_time) * 1000
 
         if duration_ms > threshold_ms:
-            logger.warning(
-                f"Slow query ({duration_ms:.2f}ms): {statement[:200]}"
-                + ("..." if len(statement) > 200 else "")
-            )
+            logger.warning(f"Slow query ({duration_ms:.2f}ms): {statement[:200]}" + ("..." if len(statement) > 200 else ""))
 
     @event.listens_for(session_factory, "before_cursor_execute")
     def receive_before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
@@ -61,6 +60,7 @@ def log_slow_queries(session_factory, threshold_ms: float = 100.0):
 # ============================================================================
 # HYPOTHESIS CRUD
 # ============================================================================
+
 
 def create_hypothesis(
     session: Session,
@@ -115,11 +115,7 @@ def get_hypothesis(session: Session, hypothesis_id: str, with_experiments: bool 
 
 
 def list_hypotheses(
-    session: Session,
-    domain: str | None = None,
-    status: HypothesisStatus | None = None,
-    limit: int = 100,
-    with_experiments: bool = False
+    session: Session, domain: str | None = None, status: HypothesisStatus | None = None, limit: int = 100, with_experiments: bool = False
 ) -> list[Hypothesis]:
     """
     List hypotheses with optional filtering.
@@ -149,11 +145,7 @@ def list_hypotheses(
     return query.order_by(Hypothesis.created_at.desc()).limit(limit).all()
 
 
-def update_hypothesis_status(
-    session: Session,
-    hypothesis_id: str,
-    status: HypothesisStatus
-) -> Hypothesis:
+def update_hypothesis_status(session: Session, hypothesis_id: str, status: HypothesisStatus) -> Hypothesis:
     """Update hypothesis status."""
     hypothesis = get_hypothesis(session, hypothesis_id)
     if not hypothesis:
@@ -171,6 +163,7 @@ def update_hypothesis_status(
 # ============================================================================
 # EXPERIMENT CRUD
 # ============================================================================
+
 
 def create_experiment(
     session: Session,
@@ -200,12 +193,7 @@ def create_experiment(
     return experiment
 
 
-def get_experiment(
-    session: Session,
-    experiment_id: str,
-    with_hypothesis: bool = True,
-    with_results: bool = False
-) -> Experiment | None:
+def get_experiment(session: Session, experiment_id: str, with_hypothesis: bool = True, with_results: bool = False) -> Experiment | None:
     """
     Get experiment by ID with optional eager loading.
 
@@ -239,7 +227,7 @@ def list_experiments(
     domain: str | None = None,
     limit: int = 100,
     with_hypothesis: bool = False,
-    with_results: bool = False
+    with_results: bool = False,
 ) -> list[Experiment]:
     """
     List experiments with optional filtering and eager loading.
@@ -312,6 +300,7 @@ def update_experiment_status(
 # RESULT CRUD
 # ============================================================================
 
+
 def create_result(
     session: Session,
     id: str,
@@ -364,11 +353,7 @@ def get_result(session: Session, result_id: str, with_experiment: bool = False) 
     return query.first()
 
 
-def get_results_for_experiment(
-    session: Session,
-    experiment_id: str,
-    with_experiment: bool = False
-) -> list[Result]:
+def get_results_for_experiment(session: Session, experiment_id: str, with_experiment: bool = False) -> list[Result]:
     """
     Get all results for an experiment.
 
@@ -393,6 +378,7 @@ def get_results_for_experiment(
 # ============================================================================
 # PAPER CRUD
 # ============================================================================
+
 
 def create_paper(
     session: Session,
@@ -433,12 +419,7 @@ def get_paper(session: Session, paper_id: str) -> Paper | None:
     return session.query(Paper).filter(Paper.id == paper_id).first()
 
 
-def search_papers(
-    session: Session,
-    domain: str | None = None,
-    min_relevance: float | None = None,
-    limit: int = 100
-) -> list[Paper]:
+def search_papers(session: Session, domain: str | None = None, min_relevance: float | None = None, limit: int = 100) -> list[Paper]:
     """Search papers with filtering."""
     query = session.query(Paper)
 
@@ -453,6 +434,7 @@ def search_papers(
 # ============================================================================
 # AGENT CRUD
 # ============================================================================
+
 
 def create_agent_record(
     session: Session,
@@ -506,6 +488,7 @@ def update_agent_record(
 # RESEARCH SESSION CRUD
 # ============================================================================
 
+
 def create_research_session(
     session: Session,
     id: str,
@@ -530,10 +513,7 @@ def create_research_session(
     return research_session
 
 
-def get_research_session(
-    session: Session,
-    session_id: str
-) -> ResearchSession | None:
+def get_research_session(session: Session, session_id: str) -> ResearchSession | None:
     """Get research session by ID."""
     return session.query(ResearchSession).filter(ResearchSession.id == session_id).first()
 

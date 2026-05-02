@@ -53,27 +53,16 @@ Examples:
   skill-seekers upload output/react.zip
 
 For more information: https://github.com/yusufkaraaslan/Skill_Seekers
-        """
+        """,
     )
 
-    parser.add_argument(
-        "--version",
-        action="version",
-        version="%(prog)s 2.1.1"
-    )
+    parser.add_argument("--version", action="version", version="%(prog)s 2.1.1")
 
-    subparsers = parser.add_subparsers(
-        dest="command",
-        title="commands",
-        description="Available Skill Seekers commands",
-        help="Command to run"
-    )
+    subparsers = parser.add_subparsers(dest="command", title="commands", description="Available Skill Seekers commands", help="Command to run")
 
     # === scrape subcommand ===
     scrape_parser = subparsers.add_parser(
-        "scrape",
-        help="Scrape documentation website",
-        description="Scrape documentation website and generate skill"
+        "scrape", help="Scrape documentation website", description="Scrape documentation website and generate skill"
     )
     scrape_parser.add_argument("--config", help="Config JSON file")
     scrape_parser.add_argument("--name", help="Skill name")
@@ -87,22 +76,14 @@ For more information: https://github.com/yusufkaraaslan/Skill_Seekers
     scrape_parser.add_argument("--workers", type=int, help="Number of async workers")
 
     # === github subcommand ===
-    github_parser = subparsers.add_parser(
-        "github",
-        help="Scrape GitHub repository",
-        description="Scrape GitHub repository and generate skill"
-    )
+    github_parser = subparsers.add_parser("github", help="Scrape GitHub repository", description="Scrape GitHub repository and generate skill")
     github_parser.add_argument("--config", help="Config JSON file")
     github_parser.add_argument("--repo", help="GitHub repo (owner/repo)")
     github_parser.add_argument("--name", help="Skill name")
     github_parser.add_argument("--description", help="Skill description")
 
     # === pdf subcommand ===
-    pdf_parser = subparsers.add_parser(
-        "pdf",
-        help="Extract from PDF file",
-        description="Extract content from PDF and generate skill"
-    )
+    pdf_parser = subparsers.add_parser("pdf", help="Extract from PDF file", description="Extract content from PDF and generate skill")
     pdf_parser.add_argument("--config", help="Config JSON file")
     pdf_parser.add_argument("--pdf", help="PDF file path")
     pdf_parser.add_argument("--name", help="Skill name")
@@ -111,9 +92,7 @@ For more information: https://github.com/yusufkaraaslan/Skill_Seekers
 
     # === unified subcommand ===
     unified_parser = subparsers.add_parser(
-        "unified",
-        help="Multi-source scraping (docs + GitHub + PDF)",
-        description="Combine multiple sources into one skill"
+        "unified", help="Multi-source scraping (docs + GitHub + PDF)", description="Combine multiple sources into one skill"
     )
     unified_parser.add_argument("--config", required=True, help="Unified config JSON file")
     unified_parser.add_argument("--merge-mode", help="Merge mode (rule-based, claude-enhanced)")
@@ -121,36 +100,24 @@ For more information: https://github.com/yusufkaraaslan/Skill_Seekers
 
     # === enhance subcommand ===
     enhance_parser = subparsers.add_parser(
-        "enhance",
-        help="AI-powered enhancement (local, no API key)",
-        description="Enhance SKILL.md using Claude Code (local)"
+        "enhance", help="AI-powered enhancement (local, no API key)", description="Enhance SKILL.md using Claude Code (local)"
     )
     enhance_parser.add_argument("skill_directory", help="Skill directory path")
 
     # === package subcommand ===
-    package_parser = subparsers.add_parser(
-        "package",
-        help="Package skill into .zip file",
-        description="Package skill directory into uploadable .zip"
-    )
+    package_parser = subparsers.add_parser("package", help="Package skill into .zip file", description="Package skill directory into uploadable .zip")
     package_parser.add_argument("skill_directory", help="Skill directory path")
     package_parser.add_argument("--no-open", action="store_true", help="Don't open output folder")
     package_parser.add_argument("--upload", action="store_true", help="Auto-upload after packaging")
 
     # === upload subcommand ===
-    upload_parser = subparsers.add_parser(
-        "upload",
-        help="Upload skill to Claude",
-        description="Upload .zip file to Claude via Anthropic API"
-    )
+    upload_parser = subparsers.add_parser("upload", help="Upload skill to Claude", description="Upload .zip file to Claude via Anthropic API")
     upload_parser.add_argument("zip_file", help=".zip file to upload")
     upload_parser.add_argument("--api-key", help="Anthropic API key")
 
     # === estimate subcommand ===
     estimate_parser = subparsers.add_parser(
-        "estimate",
-        help="Estimate page count before scraping",
-        description="Estimate total pages for documentation scraping"
+        "estimate", help="Estimate page count before scraping", description="Estimate total pages for documentation scraping"
     )
     estimate_parser.add_argument("config", help="Config JSON file")
     estimate_parser.add_argument("--max-discovery", type=int, help="Max pages to discover")
@@ -178,6 +145,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "scrape":
             from skill_seekers.cli.doc_scraper import main as scrape_main
+
             # Convert args namespace to sys.argv format for doc_scraper
             sys.argv = ["doc_scraper.py"]
             if args.config:
@@ -204,6 +172,7 @@ def main(argv: list[str] | None = None) -> int:
 
         elif args.command == "github":
             from skill_seekers.cli.github_scraper import main as github_main
+
             sys.argv = ["github_scraper.py"]
             if args.config:
                 sys.argv.extend(["--config", args.config])
@@ -217,6 +186,7 @@ def main(argv: list[str] | None = None) -> int:
 
         elif args.command == "pdf":
             from skill_seekers.cli.pdf_scraper import main as pdf_main
+
             sys.argv = ["pdf_scraper.py"]
             if args.config:
                 sys.argv.extend(["--config", args.config])
@@ -232,6 +202,7 @@ def main(argv: list[str] | None = None) -> int:
 
         elif args.command == "unified":
             from skill_seekers.cli.unified_scraper import main as unified_main
+
             sys.argv = ["unified_scraper.py", "--config", args.config]
             if args.merge_mode:
                 sys.argv.extend(["--merge-mode", args.merge_mode])
@@ -241,11 +212,13 @@ def main(argv: list[str] | None = None) -> int:
 
         elif args.command == "enhance":
             from skill_seekers.cli.enhance_skill_local import main as enhance_main
+
             sys.argv = ["enhance_skill_local.py", args.skill_directory]
             return enhance_main() or 0
 
         elif args.command == "package":
             from skill_seekers.cli.package_skill import main as package_main
+
             sys.argv = ["package_skill.py", args.skill_directory]
             if args.no_open:
                 sys.argv.append("--no-open")
@@ -255,6 +228,7 @@ def main(argv: list[str] | None = None) -> int:
 
         elif args.command == "upload":
             from skill_seekers.cli.upload_skill import main as upload_main
+
             sys.argv = ["upload_skill.py", args.zip_file]
             if args.api_key:
                 sys.argv.extend(["--api-key", args.api_key])
@@ -262,6 +236,7 @@ def main(argv: list[str] | None = None) -> int:
 
         elif args.command == "estimate":
             from skill_seekers.cli.estimate_pages import main as estimate_main
+
             sys.argv = ["estimate_pages.py", args.config]
             if args.max_discovery:
                 sys.argv.extend(["--max-discovery", str(args.max_discovery)])

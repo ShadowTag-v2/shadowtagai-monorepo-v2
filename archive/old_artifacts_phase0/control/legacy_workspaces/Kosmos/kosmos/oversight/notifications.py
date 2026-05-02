@@ -19,6 +19,7 @@ try:
     from rich.console import Console
     from rich.panel import Panel
     from rich.text import Text
+
     HAS_RICH = True
     _console = Console()
 except ImportError:
@@ -53,7 +54,7 @@ class Notification:
         level: NotificationLevel = NotificationLevel.INFO,
         title: str | None = None,
         details: str | None = None,
-        timestamp: datetime | None = None
+        timestamp: datetime | None = None,
     ):
         self.message = message
         self.level = level
@@ -68,7 +69,7 @@ class Notification:
             NotificationLevel.INFO: "Information",
             NotificationLevel.WARNING: "Warning",
             NotificationLevel.ERROR: "Error",
-            NotificationLevel.CRITICAL: "Critical Alert"
+            NotificationLevel.CRITICAL: "Critical Alert",
         }
         return titles.get(self.level, "Notification")
 
@@ -79,7 +80,7 @@ class Notification:
             "level": self.level.value,
             "title": self.title,
             "details": self.details,
-            "timestamp": self.timestamp.isoformat()
+            "timestamp": self.timestamp.isoformat(),
         }
 
 
@@ -94,7 +95,7 @@ class NotificationManager:
         self,
         default_channel: NotificationChannel = NotificationChannel.BOTH,
         min_level: NotificationLevel = NotificationLevel.INFO,
-        use_rich_formatting: bool = True
+        use_rich_formatting: bool = True,
     ):
         """
         Initialize notification manager.
@@ -117,13 +118,10 @@ class NotificationManager:
             NotificationLevel.INFO: 1,
             NotificationLevel.WARNING: 2,
             NotificationLevel.ERROR: 3,
-            NotificationLevel.CRITICAL: 4
+            NotificationLevel.CRITICAL: 4,
         }
 
-        logger.info(
-            f"NotificationManager initialized (channel={default_channel.value}, "
-            f"min_level={min_level.value}, rich={self.use_rich})"
-        )
+        logger.info(f"NotificationManager initialized (channel={default_channel.value}, min_level={min_level.value}, rich={self.use_rich})")
 
     def notify(
         self,
@@ -131,7 +129,7 @@ class NotificationManager:
         level: NotificationLevel = NotificationLevel.INFO,
         title: str | None = None,
         details: str | None = None,
-        channel: NotificationChannel | None = None
+        channel: NotificationChannel | None = None,
     ):
         """
         Send a notification.
@@ -148,12 +146,7 @@ class NotificationManager:
             return
 
         # Create notification
-        notification = Notification(
-            message=message,
-            level=level,
-            title=title,
-            details=details
-        )
+        notification = Notification(message=message, level=level, title=title, details=details)
 
         # Add to history
         self.history.append(notification)
@@ -183,7 +176,7 @@ class NotificationManager:
             NotificationLevel.INFO: "cyan",
             NotificationLevel.WARNING: "yellow",
             NotificationLevel.ERROR: "red",
-            NotificationLevel.CRITICAL: "bold red on white"
+            NotificationLevel.CRITICAL: "bold red on white",
         }
         style = styles.get(notification.level, "white")
 
@@ -193,11 +186,7 @@ class NotificationManager:
             content.append("\n\n" + notification.details)
 
         # Create and print panel
-        panel = Panel(
-            content,
-            title=notification.title,
-            border_style=style
-        )
+        panel = Panel(content, title=notification.title, border_style=style)
 
         _console.print(panel)
 
@@ -209,7 +198,7 @@ class NotificationManager:
             NotificationLevel.INFO: "[INFO]",
             NotificationLevel.WARNING: "[WARNING]",
             NotificationLevel.ERROR: "[ERROR]",
-            NotificationLevel.CRITICAL: "[CRITICAL]"
+            NotificationLevel.CRITICAL: "[CRITICAL]",
         }
         prefix = prefixes.get(notification.level, "[NOTICE]")
 
@@ -229,7 +218,7 @@ class NotificationManager:
             NotificationLevel.INFO: logger.info,
             NotificationLevel.WARNING: logger.warning,
             NotificationLevel.ERROR: logger.error,
-            NotificationLevel.CRITICAL: logger.critical
+            NotificationLevel.CRITICAL: logger.critical,
         }
 
         log_method = log_methods.get(notification.level, logger.info)
@@ -261,11 +250,7 @@ class NotificationManager:
         """Send critical notification."""
         self.notify(message, level=NotificationLevel.CRITICAL, **kwargs)
 
-    def get_history(
-        self,
-        level: NotificationLevel | None = None,
-        limit: int = 100
-    ) -> list[Notification]:
+    def get_history(self, level: NotificationLevel | None = None, limit: int = 100) -> list[Notification]:
         """
         Get notification history.
 
@@ -302,11 +287,7 @@ class NotificationManager:
             count = sum(1 for n in self.history if n.level == level)
             by_level[level.value] = count
 
-        return {
-            "total_notifications": total,
-            "by_level": by_level,
-            "use_rich_formatting": self.use_rich
-        }
+        return {"total_notifications": total, "by_level": by_level, "use_rich_formatting": self.use_rich}
 
     def set_min_level(self, level: NotificationLevel):
         """

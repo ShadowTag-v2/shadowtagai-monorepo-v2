@@ -6,7 +6,7 @@ This module provides utilities for implementing memory systems.
 
 import hashlib
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import numpy as np
 
@@ -16,12 +16,12 @@ class VectorStore:
 
     def __init__(self, dimension: int = 768):
         self.dimension = dimension
-        self.vectors: List[np.ndarray] = []
-        self.metadata: List[Dict] = []
-        self.entity_index: Dict[str, List[int]] = {}
-        self.time_index: Dict[str, List[int]] = {}
+        self.vectors: list[np.ndarray] = []
+        self.metadata: list[dict] = []
+        self.entity_index: dict[str, list[int]] = {}
+        self.time_index: dict[str, list[int]] = {}
 
-    def add(self, text: str, metadata: Dict[str, Any] = None) -> int:
+    def add(self, text: str, metadata: dict[str, Any] = None) -> int:
         """Add document to store."""
         metadata = metadata or {}
         embedding = self._embed(text)
@@ -46,16 +46,13 @@ class VectorStore:
 
         return index
 
-    def search(self, query: str, limit: int = 5,
-               filters: Dict[str, Any] = None) -> List[Dict]:
+    def search(self, query: str, limit: int = 5, filters: dict[str, Any] = None) -> list[dict]:
         """Search for similar documents."""
         query_embedding = self._embed(query)
 
         scores = []
         for i, vec in enumerate(self.vectors):
-            score = np.dot(query_embedding, vec) / (
-                np.linalg.norm(query_embedding) * np.linalg.norm(vec) + 1e-8
-            )
+            score = np.dot(query_embedding, vec) / (np.linalg.norm(query_embedding) * np.linalg.norm(vec) + 1e-8)
 
             # Apply filters
             if filters and not self._matches_filters(self.metadata[i], filters):
@@ -68,17 +65,11 @@ class VectorStore:
         results = []
         for idx, score in scores[:limit]:
             if score > 0:
-                results.append({
-                    "index": idx,
-                    "score": score,
-                    "text": self.metadata[idx].get("text", ""),
-                    "metadata": self.metadata[idx]
-                })
+                results.append({"index": idx, "score": score, "text": self.metadata[idx].get("text", ""), "metadata": self.metadata[idx]})
 
         return results
 
-    def search_by_entity(self, entity: str, query: str = "",
-                         limit: int = 5) -> List[Dict]:
+    def search_by_entity(self, entity: str, query: str = "", limit: int = 5) -> list[dict]:
         """Search within specific entity."""
         indices = self.entity_index.get(entity, [])
 
@@ -90,17 +81,13 @@ class VectorStore:
             scored = []
             for i in indices:
                 vec = self.vectors[i]
-                score = np.dot(query_embedding, vec) / (
-                    np.linalg.norm(query_embedding) * np.linalg.norm(vec) + 1e-8
-                )
+                score = np.dot(query_embedding, vec) / (np.linalg.norm(query_embedding) * np.linalg.norm(vec) + 1e-8)
                 scored.append((i, score, self.metadata[i]))
 
             scored.sort(key=lambda x: x[1], reverse=True)
-            return [{"index": i, "score": s, "metadata": m}
-                    for i, s, m in scored[:limit]]
+            return [{"index": i, "score": s, "metadata": m} for i, s, m in scored[:limit]]
         else:
-            return [{"index": i, "score": 1.0, "metadata": self.metadata[i]}
-                    for i in indices[:limit]]
+            return [{"index": i, "score": 1.0, "metadata": self.metadata[i]} for i in indices[:limit]]
 
     def _embed(self, text: str) -> np.ndarray:
         """Generate embedding for text."""
@@ -114,7 +101,7 @@ class VectorStore:
             return timestamp.strftime("%Y-%m")
         return str(timestamp)
 
-    def _matches_filters(self, metadata: Dict, filters: Dict) -> bool:
+    def _matches_filters(self, metadata: dict, filters: dict) -> bool:
         """Check if metadata matches filters."""
         for key, value in filters.items():
             if key not in metadata:
@@ -131,14 +118,13 @@ class PropertyGraph:
     """Simple property graph storage."""
 
     def __init__(self):
-        self.nodes: Dict[str, Dict] = {}
-        self.edges: Dict[str, Dict] = {}
-        self.entity_registry: Dict[str, str] = {}  # name -> node_id
-        self.node_index: Dict[str, List[str]] = {}  # label -> node_ids
-        self.edge_index: Dict[str, List[str]] = {}  # type -> edge_ids
+        self.nodes: dict[str, dict] = {}
+        self.edges: dict[str, dict] = {}
+        self.entity_registry: dict[str, str] = {}  # name -> node_id
+        self.node_index: dict[str, list[str]] = {}  # label -> node_ids
+        self.edge_index: dict[str, list[str]] = {}  # type -> edge_ids
 
-    def get_or_create_node(self, name: str, label: str = "Entity",
-                           properties: Dict = None) -> str:
+    def get_or_create_node(self, name: str, label: str = "Entity", properties: dict = None) -> str:
         """Get existing node by name, or create a new one.
         Uses entity_registry to maintain identity across interactions."""
         if name in self.entity_registry:
@@ -150,17 +136,13 @@ class PropertyGraph:
         self.entity_registry[name] = node_id
         return node_id
 
-    def create_node(self, label: str, properties: Dict = None) -> str:
+    def create_node(self, label: str, properties: dict = None) -> str:
         """Create node with label and properties."""
         import time
+
         node_id = hashlib.md5(f"{label}{time.time()}".encode()).hexdigest()[:16]
 
-        self.nodes[node_id] = {
-            "id": node_id,
-            "label": label,
-            "properties": properties or {},
-            "created_at": time.time()
-        }
+        self.nodes[node_id] = {"id": node_id, "label": label, "properties": properties or {}, "created_at": time.time()}
 
         if label not in self.node_index:
             self.node_index[label] = []
@@ -168,10 +150,10 @@ class PropertyGraph:
 
         return node_id
 
-    def create_relationship(self, source_id: str, rel_type: str,
-                           target_id: str, properties: Dict = None) -> str:
+    def create_relationship(self, source_id: str, rel_type: str, target_id: str, properties: dict = None) -> str:
         """Create directed relationship between nodes."""
         import time
+
         if source_id not in self.nodes:
             raise ValueError(f"Unknown source node: {source_id}")
         if target_id not in self.nodes:
@@ -185,7 +167,7 @@ class PropertyGraph:
             "target": target_id,
             "type": rel_type,
             "properties": properties or {},
-            "created_at": time.time()
+            "created_at": time.time(),
         }
 
         if rel_type not in self.edge_index:
@@ -194,7 +176,7 @@ class PropertyGraph:
 
         return edge_id
 
-    def query(self, pattern: Dict) -> List[Dict]:
+    def query(self, pattern: dict) -> list[dict]:
         """Query graph with simple pattern matching."""
         results = []
 
@@ -216,36 +198,23 @@ class PropertyGraph:
                     if target.get("label") != pattern["target_label"]:
                         continue
 
-                results.append({
-                    "source": source,
-                    "edge": edge,
-                    "target": target
-                })
+                results.append({"source": source, "edge": edge, "target": target})
 
         return results
 
-    def get_node(self, node_id: str) -> Optional[Dict]:
+    def get_node(self, node_id: str) -> dict | None:
         """Get node by ID."""
         return self.nodes.get(node_id)
 
-    def get_relationships(self, node_id: str,
-                          direction: str = "both") -> List[Dict]:
+    def get_relationships(self, node_id: str, direction: str = "both") -> list[dict]:
         """Get relationships for a node."""
         relationships = []
 
         for edge in self.edges.values():
             if direction in ["outgoing", "both"] and edge["source"] == node_id:
-                relationships.append({
-                    "edge": edge,
-                    "target": self.nodes.get(edge["target"]),
-                    "direction": "outgoing"
-                })
+                relationships.append({"edge": edge, "target": self.nodes.get(edge["target"]), "direction": "outgoing"})
             if direction in ["incoming", "both"] and edge["target"] == node_id:
-                relationships.append({
-                    "edge": edge,
-                    "source": self.nodes.get(edge["source"]),
-                    "direction": "incoming"
-                })
+                relationships.append({"edge": edge, "source": self.nodes.get(edge["source"]), "direction": "incoming"})
 
         return relationships
 
@@ -254,28 +223,18 @@ class TemporalKnowledgeGraph(PropertyGraph):
     """Property graph with temporal validity for facts."""
 
     def create_temporal_relationship(
-        self,
-        source_id: str,
-        rel_type: str,
-        target_id: str,
-        valid_from: datetime,
-        valid_until: Optional[datetime] = None,
-        properties: Dict = None
+        self, source_id: str, rel_type: str, target_id: str, valid_from: datetime, valid_until: datetime | None = None, properties: dict = None
     ) -> str:
         """Create relationship with temporal validity."""
-        edge_id = super().create_relationship(
-            source_id, rel_type, target_id, properties
-        )
+        edge_id = super().create_relationship(source_id, rel_type, target_id, properties)
 
         # Add temporal properties
         self.edges[edge_id]["valid_from"] = valid_from.isoformat()
-        self.edges[edge_id]["valid_until"] = (
-            valid_until.isoformat() if valid_until else None
-        )
+        self.edges[edge_id]["valid_until"] = valid_until.isoformat() if valid_until else None
 
         return edge_id
 
-    def query_at_time(self, query: Dict, query_time: datetime) -> List[Dict]:
+    def query_at_time(self, query: dict, query_time: datetime) -> list[dict]:
         """Query graph state at specific time."""
         results = []
 
@@ -290,17 +249,11 @@ class TemporalKnowledgeGraph(PropertyGraph):
             # Check temporal validity
             if valid_from <= query_time:
                 if valid_until is None or datetime.fromisoformat(valid_until) > query_time:
-                    results.append({
-                        **result,
-                        "valid_from": valid_from,
-                        "valid_until": valid_until
-                    })
+                    results.append({**result, "valid_from": valid_from, "valid_until": valid_until})
 
         return results
 
-    def query_time_range(self, query: Dict,
-                         start_time: datetime,
-                         end_time: datetime) -> List[Dict]:
+    def query_time_range(self, query: dict, start_time: datetime, end_time: datetime) -> list[dict]:
         """Query facts valid during time range."""
         results = []
 
@@ -315,16 +268,13 @@ class TemporalKnowledgeGraph(PropertyGraph):
             until_dt = datetime.fromisoformat(valid_until) if valid_until else datetime.max
 
             if until_dt >= start_time and valid_from <= end_time:
-                results.append({
-                    **result,
-                    "valid_from": valid_from,
-                    "valid_until": valid_until
-                })
+                results.append({**result, "valid_from": valid_from, "valid_until": valid_until})
 
         return results
 
 
 # Memory System Integration
+
 
 class IntegratedMemorySystem:
     """Integrated memory system combining vector store and graph."""
@@ -338,17 +288,12 @@ class IntegratedMemorySystem:
         """Start a new memory session."""
         self.session_id = session_id
 
-    def store_fact(self, fact: str, entity: str,
-                   timestamp: datetime = None,
-                   relationships: List[Dict] = None):
+    def store_fact(self, fact: str, entity: str, timestamp: datetime = None, relationships: list[dict] = None):
         """Store a fact with entity and relationships."""
         # Store in vector store
-        self.vector_store.add(fact, {
-            "text": fact,
-            "entity": entity,
-            "valid_from": (timestamp or datetime.now()).isoformat(),
-            "session_id": self.session_id
-        })
+        self.vector_store.add(
+            fact, {"text": fact, "entity": entity, "valid_from": (timestamp or datetime.now()).isoformat(), "session_id": self.session_id}
+        )
 
         # Get or create entity node (uses registry for identity)
         entity_node_id = self.graph.get_or_create_node(entity)
@@ -357,17 +302,9 @@ class IntegratedMemorySystem:
         if relationships:
             for rel in relationships:
                 target_node_id = self.graph.get_or_create_node(rel["target"])
-                self.graph.create_relationship(
-                    entity_node_id,
-                    rel["type"],
-                    target_node_id,
-                    properties=rel.get("properties", {})
-                )
+                self.graph.create_relationship(entity_node_id, rel["type"], target_node_id, properties=rel.get("properties", {}))
 
-    def retrieve_memories(self, query: str,
-                          entity_filter: str = None,
-                          time_filter: Dict = None,
-                          limit: int = 5) -> List[Dict]:
+    def retrieve_memories(self, query: str, entity_filter: str = None, time_filter: dict = None, limit: int = 5) -> list[dict]:
         """Retrieve memories matching query."""
         # Vector search
         filters = {"session_id": self.session_id}
@@ -386,7 +323,7 @@ class IntegratedMemorySystem:
 
         return results
 
-    def retrieve_entity_context(self, entity: str) -> Dict:
+    def retrieve_entity_context(self, entity: str) -> dict:
         """Retrieve complete context for an entity."""
         node_id = self.graph.entity_registry.get(entity)
 
@@ -399,11 +336,7 @@ class IntegratedMemorySystem:
         # Get vector memories
         memories = self.vector_store.search_by_entity(entity, limit=10)
 
-        return {
-            "entity": entity_node,
-            "relationships": relationships,
-            "memories": memories
-        }
+        return {"entity": entity_node, "relationships": relationships, "memories": memories}
 
     def consolidate(self):
         """Consolidate memories and remove outdated information."""

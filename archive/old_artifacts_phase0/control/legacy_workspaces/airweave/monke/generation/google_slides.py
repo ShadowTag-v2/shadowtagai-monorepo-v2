@@ -1,13 +1,10 @@
 """Google Slides-specific generation adapter: presentation generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.google_slides import GoogleSlidesPresentation
 
 
-async def generate_google_slides_presentation(
-    model: str, token: str, presentation_title: str
-) -> GoogleSlidesPresentation:
+async def generate_google_slides_presentation(model: str, token: str, presentation_title: str) -> GoogleSlidesPresentation:
     """Generate realistic Google Slides presentation content with embedded verification token.
 
     Args:
@@ -40,9 +37,7 @@ async def generate_google_slides_presentation(
     return presentation
 
 
-async def generate_presentations(
-    model: str, tokens: list[str], base_name: str = "Test Presentation"
-) -> list[GoogleSlidesPresentation]:
+async def generate_presentations(model: str, tokens: list[str], base_name: str = "Test Presentation") -> list[GoogleSlidesPresentation]:
     """Generate multiple Google Slides presentations.
 
     Args:
@@ -64,15 +59,9 @@ async def generate_presentations(
     ]
 
     for i, token in enumerate(tokens):
-        pres_type = (
-            presentation_types[i]
-            if i < len(presentation_types)
-            else f"Presentation {i + 1}"
-        )
+        pres_type = presentation_types[i] if i < len(presentation_types) else f"Presentation {i + 1}"
         pres_title = f"{base_name} - {pres_type}"
-        presentation = await generate_google_slides_presentation(
-            model, token, pres_title
-        )
+        presentation = await generate_google_slides_presentation(model, token, pres_title)
         presentations.append(presentation)
 
     return presentations

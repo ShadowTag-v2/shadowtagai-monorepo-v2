@@ -24,117 +24,102 @@ from google.genai import types
 
 
 class _TestingTool(BaseTool):
+    def __init__(
+        self,
+        declaration: types.FunctionDeclaration | None = None,
+    ):
+        super().__init__(name="test_tool", description="test_description")
+        self.declaration = declaration
 
-  def __init__(
-      self,
-      declaration: types.FunctionDeclaration | None = None,
-  ):
-    super().__init__(name='test_tool', description='test_description')
-    self.declaration = declaration
-
-  def _get_declaration(self) -> types.FunctionDeclaration | None:
-    return self.declaration
+    def _get_declaration(self) -> types.FunctionDeclaration | None:
+        return self.declaration
 
 
 async def _create_tool_context() -> ToolContext:
-  session_service = InMemorySessionService()
-  session = await session_service.create_session(
-      app_name='test_app', user_id='test_user'
-  )
-  agent = SequentialAgent(name='test_agent')
-  invocation_context = InvocationContext(
-      invocation_id='invocation_id',
-      agent=agent,
-      session=session,
-      session_service=session_service,
-  )
-  return ToolContext(invocation_context)
+    session_service = InMemorySessionService()
+    session = await session_service.create_session(app_name="test_app", user_id="test_user")
+    agent = SequentialAgent(name="test_agent")
+    invocation_context = InvocationContext(
+        invocation_id="invocation_id",
+        agent=agent,
+        session=session,
+        session_service=session_service,
+    )
+    return ToolContext(invocation_context)
 
 
 @pytest.mark.asyncio
 async def test_process_llm_request_no_declaration():
-  tool = _TestingTool()
-  tool_context = await _create_tool_context()
-  llm_request = LlmRequest()
+    tool = _TestingTool()
+    tool_context = await _create_tool_context()
+    llm_request = LlmRequest()
 
-  await tool.process_llm_request(
-      tool_context=tool_context, llm_request=llm_request
-  )
+    await tool.process_llm_request(tool_context=tool_context, llm_request=llm_request)
 
-  assert llm_request.config == types.GenerateContentConfig()
+    assert llm_request.config == types.GenerateContentConfig()
 
 
 @pytest.mark.asyncio
 async def test_process_llm_request_with_declaration():
-  declaration = types.FunctionDeclaration(
-      name='test_tool',
-      description='test_description',
-      parameters=types.Schema(
-          type=types.Type.STRING,
-          title='param_1',
-      ),
-  )
-  tool = _TestingTool(declaration)
-  llm_request = LlmRequest()
-  tool_context = await _create_tool_context()
+    declaration = types.FunctionDeclaration(
+        name="test_tool",
+        description="test_description",
+        parameters=types.Schema(
+            type=types.Type.STRING,
+            title="param_1",
+        ),
+    )
+    tool = _TestingTool(declaration)
+    llm_request = LlmRequest()
+    tool_context = await _create_tool_context()
 
-  await tool.process_llm_request(
-      tool_context=tool_context, llm_request=llm_request
-  )
+    await tool.process_llm_request(tool_context=tool_context, llm_request=llm_request)
 
-  assert llm_request.config.tools[0].function_declarations == [declaration]
+    assert llm_request.config.tools[0].function_declarations == [declaration]
 
 
 @pytest.mark.asyncio
 async def test_process_llm_request_with_builtin_tool():
-  declaration = types.FunctionDeclaration(
-      name='test_tool',
-      description='test_description',
-      parameters=types.Schema(
-          type=types.Type.STRING,
-          title='param_1',
-      ),
-  )
-  tool = _TestingTool(declaration)
-  llm_request = LlmRequest(
-      config=types.GenerateContentConfig(
-          tools=[types.Tool(google_search=types.GoogleSearch())]
-      )
-  )
-  tool_context = await _create_tool_context()
+    declaration = types.FunctionDeclaration(
+        name="test_tool",
+        description="test_description",
+        parameters=types.Schema(
+            type=types.Type.STRING,
+            title="param_1",
+        ),
+    )
+    tool = _TestingTool(declaration)
+    llm_request = LlmRequest(config=types.GenerateContentConfig(tools=[types.Tool(google_search=types.GoogleSearch())]))
+    tool_context = await _create_tool_context()
 
-  await tool.process_llm_request(
-      tool_context=tool_context, llm_request=llm_request
-  )
+    await tool.process_llm_request(tool_context=tool_context, llm_request=llm_request)
 
-  # function_declaration is added to another types.Tool without builtin tool.
-  assert llm_request.config.tools[1].function_declarations == [declaration]
+    # function_declaration is added to another types.Tool without builtin tool.
+    assert llm_request.config.tools[1].function_declarations == [declaration]
 
 
 @pytest.mark.asyncio
 async def test_process_llm_request_with_builtin_tool_and_another_declaration():
-  declaration = types.FunctionDeclaration(
-      name='test_tool',
-      description='test_description',
-      parameters=types.Schema(
-          type=types.Type.STRING,
-          title='param_1',
-      ),
-  )
-  tool = _TestingTool(declaration)
-  llm_request = LlmRequest(
-      config=types.GenerateContentConfig(
-          tools=[
-              types.Tool(google_search=types.GoogleSearch()),
-              types.Tool(function_declarations=[types.FunctionDeclaration()]),
-          ]
-      )
-  )
-  tool_context = await _create_tool_context()
+    declaration = types.FunctionDeclaration(
+        name="test_tool",
+        description="test_description",
+        parameters=types.Schema(
+            type=types.Type.STRING,
+            title="param_1",
+        ),
+    )
+    tool = _TestingTool(declaration)
+    llm_request = LlmRequest(
+        config=types.GenerateContentConfig(
+            tools=[
+                types.Tool(google_search=types.GoogleSearch()),
+                types.Tool(function_declarations=[types.FunctionDeclaration()]),
+            ]
+        )
+    )
+    tool_context = await _create_tool_context()
 
-  await tool.process_llm_request(
-      tool_context=tool_context, llm_request=llm_request
-  )
+    await tool.process_llm_request(tool_context=tool_context, llm_request=llm_request)
 
-  # function_declaration is added to existing types.Tool with function_declaration.
-  assert llm_request.config.tools[1].function_declarations[1] == declaration
+    # function_declaration is added to existing types.Tool with function_declaration.
+    assert llm_request.config.tools[1].function_declarations[1] == declaration

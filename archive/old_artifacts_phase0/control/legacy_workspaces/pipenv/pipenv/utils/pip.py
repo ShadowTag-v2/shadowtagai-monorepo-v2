@@ -23,28 +23,20 @@ def pip_install_deps(
     extra_pip_args: Optional[List] = None,
 ):
     if not allow_global:
-        src_dir = os.getenv(
-            "PIP_SRC", os.getenv("PIP_SRC_DIR", project.virtualenv_src_location)
-        )
+        src_dir = os.getenv("PIP_SRC", os.getenv("PIP_SRC_DIR", project.virtualenv_src_location))
     else:
         src_dir = os.getenv("PIP_SRC", os.getenv("PIP_SRC_DIR"))
     if not requirements_dir:
         requirements_dir = create_tracked_tempdir(prefix="pipenv", suffix="requirements")
 
-    standard_requirements = tempfile.NamedTemporaryFile(
-        prefix="pipenv-", suffix="-hashed-reqs.txt", dir=requirements_dir, delete=False
-    )
-    editable_requirements = tempfile.NamedTemporaryFile(
-        prefix="pipenv-", suffix="-reqs.txt", dir=requirements_dir, delete=False
-    )
+    standard_requirements = tempfile.NamedTemporaryFile(prefix="pipenv-", suffix="-hashed-reqs.txt", dir=requirements_dir, delete=False)
+    editable_requirements = tempfile.NamedTemporaryFile(prefix="pipenv-", suffix="-reqs.txt", dir=requirements_dir, delete=False)
 
     for pip_line in deps:
         ignore_hash = ignore_hashes or "--hash" not in pip_line
 
         if project.s.is_verbose():
-            err.print(
-                f"Writing supplied requirement line to temporary file: {pip_line!r}"
-            )
+            err.print(f"Writing supplied requirement line to temporary file: {pip_line!r}")
         target = editable_requirements if ignore_hash else standard_requirements
         target.write(pip_line.encode())
         target.write(b"\n")
@@ -115,18 +107,14 @@ def pip_install_deps(
         # Pass through keyring provider so that credential managers
         # (e.g. Windows Credential Manager) work during install.
         # See https://github.com/pypa/pipenv/issues/5715
-        keyring_provider = project.s.PIPENV_KEYRING_PROVIDER or os.environ.get(
-            "PIP_KEYRING_PROVIDER"
-        )
+        keyring_provider = project.s.PIPENV_KEYRING_PROVIDER or os.environ.get("PIP_KEYRING_PROVIDER")
         if keyring_provider:
             pip_config["PIP_KEYRING_PROVIDER"] = keyring_provider
         # When installing to the system (--system), pass through PIP_BREAK_SYSTEM_PACKAGES
         # to support PEP 668 externally-managed environments (e.g. Ubuntu 23.04+, Debian 12+).
         # This can be enabled via PIPENV_BREAK_SYSTEM_PACKAGES=1 or PIP_BREAK_SYSTEM_PACKAGES=1.
         if allow_global:
-            break_system = project.s.PIPENV_BREAK_SYSTEM_PACKAGES or os.environ.get(
-                "PIP_BREAK_SYSTEM_PACKAGES"
-            )
+            break_system = project.s.PIPENV_BREAK_SYSTEM_PACKAGES or os.environ.get("PIP_BREAK_SYSTEM_PACKAGES")
             if break_system:
                 pip_config["PIP_BREAK_SYSTEM_PACKAGES"] = "1"
             # Pass through PIP_IGNORE_INSTALLED and PIP_USER if set in the environment
@@ -137,9 +125,7 @@ def pip_install_deps(
         if sources:
             pip_config["PIP_INDEX_URL"] = sources[0].get("url", "")
             if len(sources) > 1:
-                pip_config["PIP_EXTRA_INDEX_URL"] = " ".join(
-                    s.get("url", "") for s in sources[1:]
-                )
+                pip_config["PIP_EXTRA_INDEX_URL"] = " ".join(s.get("url", "") for s in sources[1:])
         if src_dir:
             if project.s.is_verbose():
                 err.print(f"Using source directory: {src_dir!r}")

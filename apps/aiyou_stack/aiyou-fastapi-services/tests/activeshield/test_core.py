@@ -34,8 +34,8 @@ from activeshield_medical.core.medical_dlp import (
 from activeshield_medical.core.sb243_compliance import (
     CrisisLevel,
     SB243ComplianceEngine,
-    SeverityLevel,
-    ViolationType,
+    SB243Severity,
+    SB243ViolationType,
 )
 
 # =============================================================================
@@ -61,7 +61,7 @@ class TestSB243ComplianceEngine:
         )
 
         assert result.has_violations
-        assert CrisisLevel.IMMEDIATE in [
+        assert CrisisLevel.CRITICAL in [
             v.crisis_level for v in result.violations if hasattr(v, "crisis_level")
         ]
 
@@ -90,7 +90,8 @@ class TestSB243ComplianceEngine:
 
         # Should flag potential minor
         assert result.minor_detected or any(
-            v.violation_type == ViolationType.MINOR_PROTECTION for v in result.violations
+            v.violation_type == SB243ViolationType.INADEQUATE_MINOR_PROTECTION
+            for v in result.violations
         )
 
     @pytest.mark.asyncio
@@ -105,7 +106,7 @@ class TestSB243ComplianceEngine:
 
         # Should flag missing AI disclosure
         has_disclosure_violation = any(
-            v.violation_type == ViolationType.AI_DISCLOSURE for v in result.violations
+            v.violation_type == SB243ViolationType.MISSING_AI_DISCLOSURE for v in result.violations
         )
         assert has_disclosure_violation or result.ai_disclosure_required
 
@@ -121,7 +122,7 @@ class TestSB243ComplianceEngine:
 
         # Should flag deception
         has_deception = any(
-            v.violation_type == ViolationType.AI_DECEPTION for v in result.violations
+            v.violation_type == SB243ViolationType.DECEPTIVE_PERSONA for v in result.violations
         )
         assert has_deception
 
@@ -135,7 +136,7 @@ class TestSB243ComplianceEngine:
             is_ai_response=False,
         )
 
-        assert not result.has_violations or result.severity == SeverityLevel.INFO
+        assert not result.has_violations or result.severity == SB243Severity.LOW
 
 
 # =============================================================================

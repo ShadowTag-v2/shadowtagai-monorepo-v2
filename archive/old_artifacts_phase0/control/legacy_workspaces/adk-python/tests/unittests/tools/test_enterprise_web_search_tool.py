@@ -23,74 +23,61 @@ from google.genai import types
 
 
 async def _create_tool_context() -> ToolContext:
-  """Creates a ToolContext for testing."""
-  session_service = InMemorySessionService()
-  session = await session_service.create_session(
-      app_name='test_app', user_id='test_user'
-  )
-  agent = SequentialAgent(name='test_agent')
-  invocation_context = InvocationContext(
-      invocation_id='invocation_id',
-      agent=agent,
-      session=session,
-      session_service=session_service,
-  )
-  return ToolContext(invocation_context)
+    """Creates a ToolContext for testing."""
+    session_service = InMemorySessionService()
+    session = await session_service.create_session(app_name="test_app", user_id="test_user")
+    agent = SequentialAgent(name="test_agent")
+    invocation_context = InvocationContext(
+        invocation_id="invocation_id",
+        agent=agent,
+        session=session,
+        session_service=session_service,
+    )
+    return ToolContext(invocation_context)
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    'model_name',
+    "model_name",
     [
-        'gemini-2.5-flash',
-        'projects/test-project/locations/global/publishers/google/models/gemini-2.5-flash',
+        "gemini-2.5-flash",
+        "projects/test-project/locations/global/publishers/google/models/gemini-2.5-flash",
     ],
 )
 async def test_process_llm_request_success_with_gemini_models(model_name):
-  tool = EnterpriseWebSearchTool()
-  llm_request = LlmRequest(
-      model=model_name, config=types.GenerateContentConfig()
-  )
-  tool_context = await _create_tool_context()
+    tool = EnterpriseWebSearchTool()
+    llm_request = LlmRequest(model=model_name, config=types.GenerateContentConfig())
+    tool_context = await _create_tool_context()
 
-  await tool.process_llm_request(
-      tool_context=tool_context, llm_request=llm_request
-  )
+    await tool.process_llm_request(tool_context=tool_context, llm_request=llm_request)
 
-  assert (
-      llm_request.config.tools[0].enterprise_web_search
-      == types.EnterpriseWebSearch()
-  )
+    assert llm_request.config.tools[0].enterprise_web_search == types.EnterpriseWebSearch()
 
 
 @pytest.mark.asyncio
 async def test_process_llm_request_failure_with_non_gemini_models():
-  tool = EnterpriseWebSearchTool()
-  llm_request = LlmRequest(model='gpt-4o', config=types.GenerateContentConfig())
-  tool_context = await _create_tool_context()
+    tool = EnterpriseWebSearchTool()
+    llm_request = LlmRequest(model="gpt-4o", config=types.GenerateContentConfig())
+    tool_context = await _create_tool_context()
 
-  with pytest.raises(ValueError) as exc_info:
-    await tool.process_llm_request(
-        tool_context=tool_context, llm_request=llm_request
-    )
-  assert 'is not supported for model' in str(exc_info.value)
+    with pytest.raises(ValueError) as exc_info:
+        await tool.process_llm_request(tool_context=tool_context, llm_request=llm_request)
+    assert "is not supported for model" in str(exc_info.value)
 
 
 @pytest.mark.asyncio
 async def test_process_llm_request_failure_with_multiple_tools_gemini_1_models():
-  tool = EnterpriseWebSearchTool()
-  llm_request = LlmRequest(
-      model='gemini-1.5-flash',
-      config=types.GenerateContentConfig(
-          tools=[
-              types.Tool(google_search=types.GoogleSearch()),
-          ]
-      ),
-  )
-  tool_context = await _create_tool_context()
-
-  with pytest.raises(ValueError) as exc_info:
-    await tool.process_llm_request(
-        tool_context=tool_context, llm_request=llm_request
+    tool = EnterpriseWebSearchTool()
+    llm_request = LlmRequest(
+        model="gemini-1.5-flash",
+        config=types.GenerateContentConfig(
+            tools=[
+                types.Tool(google_search=types.GoogleSearch()),
+            ]
+        ),
     )
-  assert 'cannot be used with other tools in Gemini 1.x.' in str(exc_info.value)
+    tool_context = await _create_tool_context()
+
+    with pytest.raises(ValueError) as exc_info:
+        await tool.process_llm_request(tool_context=tool_context, llm_request=llm_request)
+    assert "cannot be used with other tools in Gemini 1.x." in str(exc_info.value)

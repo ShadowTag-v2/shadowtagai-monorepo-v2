@@ -17,6 +17,7 @@ from enum import Enum
 
 class ModelTier(Enum):
     """Model tier priority (lower = higher priority)"""
+
     GEMINI_HIGH = 1
     GEMINI_LOW = 2
     FALLBACK = 3
@@ -25,6 +26,7 @@ class ModelTier(Enum):
 @dataclass
 class ModelEndpoint:
     """Represents a single model endpoint"""
+
     id: str
     tier: ModelTier
     model_name: str
@@ -71,23 +73,27 @@ class RotationOrchestrator:
 
         # Tier 1: Gemini 3 Pro High (3 instances)
         for i in range(3):
-            self.endpoints.append(ModelEndpoint(
-                id=f"antigravity-gemini-high-{i+1:02d}",
-                tier=ModelTier.GEMINI_HIGH,
-                model_name="gemini-3-pro-high",
-                api_key=os.getenv(f"GEMINI_API_KEY_{i+1}", os.getenv("GEMINI_API_KEY", "")),
-                provider="gemini"
-            ))
+            self.endpoints.append(
+                ModelEndpoint(
+                    id=f"antigravity-gemini-high-{i + 1:02d}",
+                    tier=ModelTier.GEMINI_HIGH,
+                    model_name="gemini-3-pro-high",
+                    api_key=os.getenv(f"GEMINI_API_KEY_{i + 1}", os.getenv("GEMINI_API_KEY", "")),
+                    provider="gemini",
+                )
+            )
 
         # Tier 2: Gemini 3 Pro Low (2 instances)
         for i in range(2):
-            self.endpoints.append(ModelEndpoint(
-                id=f"antigravity-gemini-low-{i+1:02d}",
-                tier=ModelTier.GEMINI_LOW,
-                model_name="gemini-3-pro-low",
-                api_key=os.getenv(f"GEMINI_API_KEY_{i+3+1}", os.getenv("GEMINI_API_KEY", "")),
-                provider="gemini"
-            ))
+            self.endpoints.append(
+                ModelEndpoint(
+                    id=f"antigravity-gemini-low-{i + 1:02d}",
+                    tier=ModelTier.GEMINI_LOW,
+                    model_name="gemini-3-pro-low",
+                    api_key=os.getenv(f"GEMINI_API_KEY_{i + 3 + 1}", os.getenv("GEMINI_API_KEY", "")),
+                    provider="gemini",
+                )
+            )
 
         print(f"///▞ ROTATION ORCHESTRATOR :: Initialized {len(self.endpoints)} Antigravity Gemini endpoints")
 
@@ -205,7 +211,7 @@ class RotationOrchestrator:
                 tier_stats[tier.name] = {
                     "total": len(tier_endpoints),
                     "available": sum(1 for e in tier_endpoints if e.is_available()),
-                    "requests": sum(e.total_requests for e in tier_endpoints)
+                    "requests": sum(e.total_requests for e in tier_endpoints),
                 }
 
             return {
@@ -215,5 +221,5 @@ class RotationOrchestrator:
                 "total_requests": total_requests,
                 "successful_requests": successful,
                 "failed_requests": failed,
-                "tier_breakdown": tier_stats
+                "tier_breakdown": tier_stats,
             }

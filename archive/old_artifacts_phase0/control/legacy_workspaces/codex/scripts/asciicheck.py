@@ -47,9 +47,7 @@ allowed_unicode_codepoints = {
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Check for non-ASCII characters in files."
-    )
+    parser = argparse.ArgumentParser(description="Check for non-ASCII characters in files.")
     parser.add_argument(
         "--fix",
         action="store_true",
@@ -92,18 +90,13 @@ def lint_utf8_ascii(filename: Path, fix: bool) -> bool:
             codepoint = ord(char)
             if char == "\n":
                 continue
-            if (
-                not (0x20 <= codepoint <= 0x7E)
-                and codepoint not in allowed_unicode_codepoints
-            ):
+            if not (0x20 <= codepoint <= 0x7E) and codepoint not in allowed_unicode_codepoints:
                 errors.append((lineno, colno, char, codepoint))
 
     if errors:
         for lineno, colno, char, codepoint in errors:
             safe_char = repr(char)[1:-1]  # nicely escape things like \u202f
-            print(
-                f"Invalid character at line {lineno}, column {colno}: U+{codepoint:04X} ({safe_char})"
-            )
+            print(f"Invalid character at line {lineno}, column {colno}: U+{codepoint:04X} ({safe_char})")
 
     if errors and fix:
         print(f"Attempting to fix {filename}...")

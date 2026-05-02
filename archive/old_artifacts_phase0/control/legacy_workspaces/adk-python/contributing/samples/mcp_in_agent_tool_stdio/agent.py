@@ -40,9 +40,7 @@ mcp_toolset = McpToolset(
 sub_agent = Agent(
     name="mcp_helper",
     model="gemini-2.5-flash",
-    description=(
-        "A helpful assistant with access to MCP tools for fetching websites."
-    ),
+    description=("A helpful assistant with access to MCP tools for fetching websites."),
     instruction="""You are a helpful assistant with access to MCP tools.
 
 When the user asks for help:

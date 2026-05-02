@@ -55,9 +55,7 @@ class OutlookMailBongo(BaseBongo):
                     "saveToSentItems": "true",
                 }
 
-                r = await client.post(
-                    "/me/sendMail", headers=self._hdrs(), json=payload
-                )
+                r = await client.post("/me/sendMail", headers=self._hdrs(), json=payload)
 
                 if r.status_code not in (200, 202):
                     self.logger.error(f"Send mail failed {r.status_code}: {r.text}")
@@ -101,9 +99,7 @@ class OutlookMailBongo(BaseBongo):
                 await self._pace()
 
                 # Generate updated content with same token
-                subject, body = await generate_outlook_message(
-                    self.openai_model, ent["token"], is_update=True
-                )
+                subject, body = await generate_outlook_message(self.openai_model, ent["token"], is_update=True)
                 subject = f"{subject} [Updated]"
 
                 # Send updated email
@@ -116,26 +112,20 @@ class OutlookMailBongo(BaseBongo):
                     "saveToSentItems": "true",
                 }
 
-                r = await client.post(
-                    "/me/sendMail", headers=self._hdrs(), json=payload
-                )
+                r = await client.post("/me/sendMail", headers=self._hdrs(), json=payload)
 
                 if r.status_code in (200, 202):
                     updated.append({**ent, "updated": True, "updated_subject": subject})
                     self.logger.info(f"📧 Sent updated email for token: {ent['token']}")
                 else:
-                    self.logger.warning(
-                        f"Failed to send updated email: {r.status_code}"
-                    )
+                    self.logger.warning(f"Failed to send updated email: {r.status_code}")
 
         return updated
 
     async def delete_entities(self) -> list[str]:
         return await self.delete_specific_entities(self._messages)
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         """Delete specific entities by searching for them by token."""
         self.logger.info(f"🥁 Deleting {len(entities)} Outlook emails")
         deleted: list[str] = []
@@ -161,9 +151,7 @@ class OutlookMailBongo(BaseBongo):
 
                     if r.status_code == 200:
                         messages = r.json().get("value", [])
-                        self.logger.info(
-                            f"🔍 Found {len(messages)} messages matching token '{token}'"
-                        )
+                        self.logger.info(f"🔍 Found {len(messages)} messages matching token '{token}'")
 
                         # Filter messages that actually contain the token
                         # (search can be imprecise, so verify by fetching full body)
@@ -190,51 +178,31 @@ class OutlookMailBongo(BaseBongo):
                                     params={"$select": "body"},
                                 )
                                 if full_msg_r.status_code == 200:
-                                    full_body = (
-                                        full_msg_r.json()
-                                        .get("body", {})
-                                        .get("content", "")
-                                    )
+                                    full_body = full_msg_r.json().get("body", {}).get("content", "")
                                     if token in full_body:
                                         matching_messages.append(msg)
                             except Exception as e:
-                                self.logger.warning(
-                                    f"⚠️ Failed to fetch full body for {msg['id']}: {e}"
-                                )
+                                self.logger.warning(f"⚠️ Failed to fetch full body for {msg['id']}: {e}")
 
-                        self.logger.info(
-                            f"🎯 {len(matching_messages)} messages verified to contain token '{token}'"
-                        )
+                        self.logger.info(f"🎯 {len(matching_messages)} messages verified to contain token '{token}'")
 
                         # Delete all matching messages
                         for msg in matching_messages:
                             try:
                                 await self._pace()
-                                del_r = await client.delete(
-                                    f"/me/messages/{msg['id']}", headers=self._hdrs()
-                                )
+                                del_r = await client.delete(f"/me/messages/{msg['id']}", headers=self._hdrs())
                                 if del_r.status_code == 204:
                                     deleted.append(token)
-                                    self.logger.info(
-                                        f"✅ Deleted email: {msg.get('subject', 'Unknown')[:50]}"
-                                    )
+                                    self.logger.info(f"✅ Deleted email: {msg.get('subject', 'Unknown')[:50]}")
                                 else:
-                                    self.logger.warning(
-                                        f"Delete failed for {msg['id']}: {del_r.status_code}"
-                                    )
+                                    self.logger.warning(f"Delete failed for {msg['id']}: {del_r.status_code}")
                             except Exception as e:
-                                self.logger.warning(
-                                    f"Error deleting message {msg['id']}: {e}"
-                                )
+                                self.logger.warning(f"Error deleting message {msg['id']}: {e}")
                     else:
-                        self.logger.warning(
-                            f"Search failed for token {token}: {r.status_code} - {r.text[:200]}"
-                        )
+                        self.logger.warning(f"Search failed for token {token}: {r.status_code} - {r.text[:200]}")
 
                 except Exception as e:
-                    self.logger.warning(
-                        f"Delete error for entity {ent.get('token', 'unknown')}: {e}"
-                    )
+                    self.logger.warning(f"Delete error for entity {ent.get('token', 'unknown')}: {e}")
 
         return deleted
 
@@ -247,9 +215,7 @@ class OutlookMailBongo(BaseBongo):
         try:
             # First, delete current session messages
             if self._messages:
-                self.logger.info(
-                    f"🗑️ Cleaning up {len(self._messages)} current session messages"
-                )
+                self.logger.info(f"🗑️ Cleaning up {len(self._messages)} current session messages")
                 deleted = await self.delete_specific_entities(self._messages)
                 cleanup_stats["messages_deleted"] += len(deleted)
                 self._messages.clear()
@@ -257,10 +223,7 @@ class OutlookMailBongo(BaseBongo):
             # Search for any remaining monke test emails
             await self._cleanup_orphaned_test_messages(cleanup_stats)
 
-            self.logger.info(
-                f"🧹 Cleanup completed: {cleanup_stats['messages_deleted']} messages deleted, "
-                f"{cleanup_stats['errors']} errors"
-            )
+            self.logger.info(f"🧹 Cleanup completed: {cleanup_stats['messages_deleted']} messages deleted, {cleanup_stats['errors']} errors")
         except Exception as e:
             self.logger.error(f"❌ Error during comprehensive cleanup: {e}")
 
@@ -294,20 +257,13 @@ class OutlookMailBongo(BaseBongo):
                                 m
                                 for m in messages
                                 if any(
-                                    pattern in m.get("subject", "").lower()
-                                    or (
-                                        m.get("bodyPreview")
-                                        and pattern in m.get("bodyPreview", "").lower()
-                                    )
+                                    pattern in m.get("subject", "").lower() or (m.get("bodyPreview") and pattern in m.get("bodyPreview", "").lower())
                                     for pattern in test_patterns
                                 )
                             ]
 
                             if test_messages:
-                                self.logger.info(
-                                    f"🔍 Found {len(test_messages)} potential test messages "
-                                    f"(search term: {term})"
-                                )
+                                self.logger.info(f"🔍 Found {len(test_messages)} potential test messages (search term: {term})")
                                 for msg in test_messages:
                                     try:
                                         await self._pace()
@@ -317,17 +273,12 @@ class OutlookMailBongo(BaseBongo):
                                         )
                                         if del_r.status_code == 204:
                                             stats["messages_deleted"] += 1
-                                            self.logger.info(
-                                                f"✅ Deleted orphaned message: "
-                                                f"{msg.get('subject', 'Unknown')[:50]}"
-                                            )
+                                            self.logger.info(f"✅ Deleted orphaned message: {msg.get('subject', 'Unknown')[:50]}")
                                         else:
                                             stats["errors"] += 1
                                     except Exception as e:
                                         stats["errors"] += 1
-                                        self.logger.warning(
-                                            f"⚠️ Failed to delete message {msg['id']}: {e}"
-                                        )
+                                        self.logger.warning(f"⚠️ Failed to delete message {msg['id']}: {e}")
                     except Exception as e:
                         self.logger.warning(f"⚠️ Search failed for term '{term}': {e}")
         except Exception as e:

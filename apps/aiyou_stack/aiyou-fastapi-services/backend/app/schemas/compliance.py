@@ -3,7 +3,7 @@
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from app.models.audit_log import ActionType
 from app.models.consent import ConsentMethod, ConsentType
@@ -28,8 +28,7 @@ class AuditLogResponse(BaseModel):
     success: str
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class AuditLogListResponse(BaseModel):
@@ -78,8 +77,7 @@ class ConsentResponse(BaseModel):
     purpose: str | None
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Data Retention Schemas
@@ -99,8 +97,7 @@ class DataRetentionPolicyResponse(BaseModel):
     ccpa_compliant: bool
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Compliance Check Schemas

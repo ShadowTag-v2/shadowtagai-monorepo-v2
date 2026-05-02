@@ -29,31 +29,29 @@ from google.adk.tools.data_agent.data_agent_toolset import DataAgentToolset
 CREDENTIALS_TYPE = None
 
 if CREDENTIALS_TYPE == AuthCredentialTypes.OAUTH2:
-  # Initiaze the tools to do interactive OAuth
-  # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
-  # must be set
-  credentials_config = DataAgentCredentialsConfig(
-      client_id=os.getenv("OAUTH_CLIENT_ID"),
-      client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
-  )
+    # Initiaze the tools to do interactive OAuth
+    # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
+    # must be set
+    credentials_config = DataAgentCredentialsConfig(
+        client_id=os.getenv("OAUTH_CLIENT_ID"),
+        client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
+    )
 elif CREDENTIALS_TYPE == AuthCredentialTypes.SERVICE_ACCOUNT:
-  # Initialize the tools to use the credentials in the service account key.
-  # If this flow is enabled, make sure to replace the file path with your own
-  # service account key file
-  # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
-  creds, _ = google.auth.load_credentials_from_file(
-      "service_account_key.json",
-      scopes=["https://www.googleapis.com/auth/cloud-platform"],
-  )
-  creds.refresh(google.auth.transport.requests.Request())
-  credentials_config = DataAgentCredentialsConfig(credentials=creds)
+    # Initialize the tools to use the credentials in the service account key.
+    # If this flow is enabled, make sure to replace the file path with your own
+    # service account key file
+    # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
+    creds, _ = google.auth.load_credentials_from_file(
+        "service_account_key.json",
+        scopes=["https://www.googleapis.com/auth/cloud-platform"],
+    )
+    creds.refresh(google.auth.transport.requests.Request())
+    credentials_config = DataAgentCredentialsConfig(credentials=creds)
 else:
-  # Initialize the tools to use the application default credentials.
-  # https://cloud.google.com/docs/authentication/provide-credentials-adc
-  application_default_credentials, _ = google.auth.default()
-  credentials_config = DataAgentCredentialsConfig(
-      credentials=application_default_credentials
-  )
+    # Initialize the tools to use the application default credentials.
+    # https://cloud.google.com/docs/authentication/provide-credentials-adc
+    application_default_credentials, _ = google.auth.default()
+    credentials_config = DataAgentCredentialsConfig(credentials=application_default_credentials)
 
 tool_config = DataAgentToolConfig(
     max_query_result_rows=100,

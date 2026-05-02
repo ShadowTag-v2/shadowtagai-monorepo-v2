@@ -23,10 +23,9 @@ from google.adk.tools.bigquery.config import BigQueryToolConfig, WriteMode
 
 # Check necessary environment variables
 if not (google_cloud_project_id := os.getenv("GOOGLE_CLOUD_PROJECT")):
-  raise ValueError(
-      "GOOGLE_CLOUD_PROJECT environment variable is not set. Please set it"
-      " to the GCP project ID where your BigQuery jobs would be run."
-  )
+    raise ValueError(
+        "GOOGLE_CLOUD_PROJECT environment variable is not set. Please set it to the GCP project ID where your BigQuery jobs would be run."
+    )
 
 # Define an appropriate application name
 BIGQUERY_AGENT_NAME = "adk_eval_bigquery_agent"
@@ -46,23 +45,16 @@ tool_config = BigQueryToolConfig(
 # Initialize the tools to use the application default credentials.
 # https://cloud.google.com/docs/authentication/provide-credentials-adc
 application_default_credentials, _ = google.auth.default()
-credentials_config = BigQueryCredentialsConfig(
-    credentials=application_default_credentials
-)
+credentials_config = BigQueryCredentialsConfig(credentials=application_default_credentials)
 
-bigquery_toolset = BigQueryToolset(
-    credentials_config=credentials_config, bigquery_tool_config=tool_config
-)
+bigquery_toolset = BigQueryToolset(credentials_config=credentials_config, bigquery_tool_config=tool_config)
 
 # The variable name `root_agent` determines what your root agent is for the
 # debug CLI
 root_agent = LlmAgent(
     model="gemini-2.5-flash",
     name=BIGQUERY_AGENT_NAME,
-    description=(
-        "Agent to answer questions about BigQuery data and models and execute"
-        " SQL queries."
-    ),
+    description=("Agent to answer questions about BigQuery data and models and execute SQL queries."),
     instruction=f"""\
         You are a data science agent with access to several BigQuery tools.
         Make use of those tools to answer the user's questions.

@@ -22,7 +22,7 @@ class RecursiveCharacterTextSplitter:
         return [text]
 
 
-from pydantic import BaseModel  # noqa: E402
+from pydantic import BaseModel, ConfigDict  # noqa: E402
 
 from src.gov_config import settings  # noqa: E402
 
@@ -40,8 +40,7 @@ class PolicyChunk(BaseModel):
     regulation_name: str | None = None
     embedding: list[float] | None = None
 
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 @dataclass

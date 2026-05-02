@@ -12,7 +12,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 import contextlib
 
 from src.core import FunctionTool, GeminiFunctionCaller
-from src.pnkln import JudgeSix, ValidationResult
+from src.judge_six.judge_core import JudgeSix
+from src.pnkln.shield.aco import ValidationResult
 
 
 # Test functions

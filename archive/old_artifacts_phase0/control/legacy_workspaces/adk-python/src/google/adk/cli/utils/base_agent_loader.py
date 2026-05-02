@@ -24,24 +24,24 @@ from ...apps.app import App
 
 
 class BaseAgentLoader(ABC):
-  """Abstract base class for agent loaders."""
+    """Abstract base class for agent loaders."""
 
-  @abstractmethod
-  def load_agent(self, agent_name: str) -> BaseAgent | App:
-    """Loads an instance of an agent with the given name."""
+    @abstractmethod
+    def load_agent(self, agent_name: str) -> BaseAgent | App:
+        """Loads an instance of an agent with the given name."""
 
-  @abstractmethod
-  def list_agents(self) -> list[str]:
-    """Lists all agents available in the agent loader in alphabetical order."""
+    @abstractmethod
+    def list_agents(self) -> list[str]:
+        """Lists all agents available in the agent loader in alphabetical order."""
 
-  def list_agents_detailed(self) -> list[dict[str, Any]]:
-    agent_names = self.list_agents()
-    return [
-        {
-            'name': name,
-            'display_name': None,
-            'description': None,
-            'type': None,
-        }
-        for name in agent_names
-    ]
+    def list_agents_detailed(self) -> list[dict[str, Any]]:
+        agent_names = self.list_agents()
+        return [
+            {
+                "name": name,
+                "display_name": None,
+                "description": None,
+                "type": None,
+            }
+            for name in agent_names
+        ]

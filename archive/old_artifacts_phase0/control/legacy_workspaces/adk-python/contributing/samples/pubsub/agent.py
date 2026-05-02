@@ -37,41 +37,34 @@ PUBSUB_AGENT_NAME = "adk_sample_pubsub_agent"
 tool_config = PubSubToolConfig(project_id=os.getenv("GOOGLE_CLOUD_PROJECT"))
 
 if CREDENTIALS_TYPE == AuthCredentialTypes.OAUTH2:
-  # Initialize the tools to do interactive OAuth
-  # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
-  # must be set
-  credentials_config = PubSubCredentialsConfig(
-      client_id=os.getenv("OAUTH_CLIENT_ID"),
-      client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
-  )
+    # Initialize the tools to do interactive OAuth
+    # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
+    # must be set
+    credentials_config = PubSubCredentialsConfig(
+        client_id=os.getenv("OAUTH_CLIENT_ID"),
+        client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
+    )
 elif CREDENTIALS_TYPE == AuthCredentialTypes.SERVICE_ACCOUNT:
-  # Initialize the tools to use the credentials in the service account key.
-  # If this flow is enabled, make sure to replace the file path with your own
-  # service account key file
-  # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
-  creds, _ = google.auth.load_credentials_from_file("service_account_key.json")
-  credentials_config = PubSubCredentialsConfig(credentials=creds)
+    # Initialize the tools to use the credentials in the service account key.
+    # If this flow is enabled, make sure to replace the file path with your own
+    # service account key file
+    # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
+    creds, _ = google.auth.load_credentials_from_file("service_account_key.json")
+    credentials_config = PubSubCredentialsConfig(credentials=creds)
 else:
-  # Initialize the tools to use the application default credentials.
-  # https://cloud.google.com/docs/authentication/provide-credentials-adc
-  application_default_credentials, _ = google.auth.default()
-  credentials_config = PubSubCredentialsConfig(
-      credentials=application_default_credentials
-  )
+    # Initialize the tools to use the application default credentials.
+    # https://cloud.google.com/docs/authentication/provide-credentials-adc
+    application_default_credentials, _ = google.auth.default()
+    credentials_config = PubSubCredentialsConfig(credentials=application_default_credentials)
 
-pubsub_toolset = PubSubToolset(
-    credentials_config=credentials_config, pubsub_tool_config=tool_config
-)
+pubsub_toolset = PubSubToolset(credentials_config=credentials_config, pubsub_tool_config=tool_config)
 
 # The variable name `root_agent` determines what your root agent is for the
 # debug CLI
 root_agent = LlmAgent(
     model="gemini-2.5-flash",
     name=PUBSUB_AGENT_NAME,
-    description=(
-        "Agent to publish, pull, and acknowledge messages from Google Cloud"
-        " Pub/Sub."
-    ),
+    description=("Agent to publish, pull, and acknowledge messages from Google Cloud Pub/Sub."),
     instruction=textwrap.dedent("""\
         You are a cloud engineer agent with access to Google Cloud Pub/Sub tools.
         You can publish messages to topics, pull messages from subscriptions, and acknowledge messages.

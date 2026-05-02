@@ -37,15 +37,15 @@ async def simple_example():
             print(f"✓ Directory: {update['paper_directory']}")
             print(f"✓ Paper name: {update['paper_name']}")
 
-            if update['files']['pdf_final']:
+            if update["files"]["pdf_final"]:
                 print(f"\n📄 Final PDF: {update['files']['pdf_final']}")
-            if update['files']['tex_final']:
+            if update["files"]["tex_final"]:
                 print(f"📝 Final TeX: {update['files']['tex_final']}")
 
             print(f"\n📚 Citations: {update['citations']['count']}")
             print(f"🖼️  Figures: {update['figures_count']}")
 
-            if update['metadata']['word_count']:
+            if update["metadata"]["word_count"]:
                 print(f"📊 Word count: {update['metadata']['word_count']}")
 
 
@@ -67,7 +67,7 @@ async def advanced_example():
         query=query,
         output_dir="./my_custom_papers",  # Custom output directory
         data_files=data_files,
-        model="claude-sonnet-4-20250514"
+        model="claude-sonnet-4-20250514",
     ):
         if update["type"] == "progress":
             print(f"[{update['stage']:15s}] {update['message']}")
@@ -99,11 +99,11 @@ async def error_handling_example():
                 print(f"[{update['percentage']:3d}%] {update['message']}")
             else:
                 # Check for errors
-                if update['status'] == 'failed':
+                if update["status"] == "failed":
                     print("\n❌ Paper generation failed!")
-                    if update['errors']:
+                    if update["errors"]:
                         print(f"Errors: {update['errors']}")
-                elif update['status'] == 'partial':
+                elif update["status"] == "partial":
                     print("\n⚠️  Partial success - TeX created but PDF compilation failed")
                     print(f"TeX file: {update['files']['tex_final']}")
                 else:

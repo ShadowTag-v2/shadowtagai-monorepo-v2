@@ -1,13 +1,22 @@
-"""Environment configuration management"""
+"""Environment configuration management."""
+
+import logging
+import os
+import secrets
 
 # NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`
 # or GCP Secret Manager in production. python-dotenv is banned (GEMINI.md §secrets).
-from pydantic import field_validator
-from pydantic_settings import BaseSettings
+from pydantic import field_validator, model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+_logger = logging.getLogger(__name__)
+
+# --- Security: Generate a random fallback for dev so tests never share a key ---
+_DEV_FALLBACK_SECRET = secrets.token_urlsafe(32)
 
 
 class Settings(BaseSettings):
-    """Application settings loaded from environment"""
+    """Application settings loaded from environment."""
 
     # Google Cloud Configuration
     gcp_project_id: str | None = None
@@ -27,8 +36,9 @@ class Settings(BaseSettings):
     )
     debug: bool = False
 
-    # JWT Security
-    secret_key: str = "dev-secret-key-change-in-production"
+    # JWT Security — MUST be set via SECRET_KEY env var in production.
+    # In dev, a random per-process key is generated so tokens are never reusable.
+    secret_key: str = ""
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 10080
 
@@ -50,9 +60,22 @@ class Settings(BaseSettings):
                 return False
         return value
 
-    class Config:
-        case_sensitive = False
-        extra = "ignore"
+    @model_validator(mode="after")
+    def _enforce_secret_key(self) -> "Settings":
+        """Ensure secret_key is never empty; warn if using dev fallback."""
+        if not self.secret_key:
+            env_key = os.environ.get("SECRET_KEY", "")
+            if env_key:
+                self.secret_key = env_key
+            else:
+                self.secret_key = _DEV_FALLBACK_SECRET
+                _logger.warning(
+                    "SECRET_KEY not set — using random per-process fallback. "
+                    "Set SECRET_KEY env var via GCP Secret Manager for production."
+                )
+        return self
+
+    model_config = SettingsConfigDict(case_sensitive=False, extra="ignore")
 
 
 # Global settings instance

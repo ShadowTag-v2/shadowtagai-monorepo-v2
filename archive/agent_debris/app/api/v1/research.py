@@ -11,17 +11,11 @@ Endpoints:
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-from typing import List, Optional
 from datetime import datetime
 import logging
 
-from shadowtagai.agents.research_agent import (
-    get_research_agent
-)
-from src.core.research_router import (
-    detect_research_intent,
-    is_research_query
-)
+from shadowtagai.agents.research_agent import get_research_agent
+from src.core.research_router import detect_research_intent, is_research_query
 from src.core.research_tools import check_tool_availability
 
 logger = logging.getLogger(__name__)
@@ -33,27 +27,19 @@ router = APIRouter(prefix="/research", tags=["research"])
 # REQUEST/RESPONSE MODELS
 # ============================================================================
 
+
 class ResearchRequest(BaseModel):
     """Request model for research endpoint."""
+
     query: str = Field(..., description="Research query", min_length=3, max_length=1000)
-    sources: list[str] | None = Field(
-        None,
-        description="Override source selection (drive, gmail, web)"
-    )
-    max_results_per_source: int = Field(
-        10,
-        description="Maximum results per source",
-        ge=1,
-        le=50
-    )
-    enable_synthesis: bool = Field(
-        True,
-        description="Use Gemini to synthesize results into report"
-    )
+    sources: list[str] | None = Field(None, description="Override source selection (drive, gmail, web)")
+    max_results_per_source: int = Field(10, description="Maximum results per source", ge=1, le=50)
+    enable_synthesis: bool = Field(True, description="Use Gemini to synthesize results into report")
 
 
 class ResearchResponse(BaseModel):
     """Response model for research endpoint."""
+
     success: bool
     query: str
     research_output: str
@@ -70,6 +56,7 @@ class ResearchResponse(BaseModel):
 
 class ToolAvailabilityResponse(BaseModel):
     """Response model for tool availability check."""
+
     drive_search: bool
     gmail_search: bool
     web_search: bool
@@ -79,6 +66,7 @@ class ToolAvailabilityResponse(BaseModel):
 
 class ResearchIntentResponse(BaseModel):
     """Response model for intent detection."""
+
     is_research: bool
     confidence: float
     intent_type: str
@@ -89,6 +77,7 @@ class ResearchIntentResponse(BaseModel):
 # ============================================================================
 # ENDPOINTS
 # ============================================================================
+
 
 @router.post("/", response_model=ResearchResponse)
 async def execute_research(request: ResearchRequest):
@@ -131,21 +120,15 @@ async def execute_research(request: ResearchRequest):
             risk_score=result.get("risk_score", 0),
             risk_flags=result.get("risk_flags", []),
             sla_met=result.get("sla_met", False),
-            timestamp=datetime.utcnow().isoformat()
+            timestamp=datetime.utcnow().isoformat(),
         )
 
     except TimeoutError as e:
         logger.error(f"Research timeout: {e}")
-        raise HTTPException(
-            status_code=504,
-            detail=f"Research query timed out: {str(e)}"
-        )
+        raise HTTPException(status_code=504, detail=f"Research query timed out: {str(e)}")
     except Exception as e:
         logger.error(f"Research failed: {e}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Research execution failed: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Research execution failed: {str(e)}")
 
 
 @router.get("/tools", response_model=ToolAvailabilityResponse)
@@ -165,7 +148,7 @@ async def get_tool_availability():
         gmail_search=availability.get("gmail_search", False),
         web_search=availability.get("web_search", True),
         google_apis_installed=availability.get("google_apis_installed", False),
-        timestamp=datetime.utcnow().isoformat()
+        timestamp=datetime.utcnow().isoformat(),
     )
 
 
@@ -189,7 +172,7 @@ async def detect_intent(query: str):
         confidence=intent.confidence,
         intent_type=intent.intent_type,
         recommended_sources=[s.value for s in intent.recommended_sources],
-        extracted_topic=intent.extracted_topic
+        extracted_topic=intent.extracted_topic,
     )
 
 
@@ -198,9 +181,4 @@ async def health_check():
     """Health check for research service."""
     availability = check_tool_availability()
 
-    return {
-        "status": "healthy",
-        "service": "research",
-        "tools": availability,
-        "timestamp": datetime.utcnow().isoformat()
-    }
+    return {"status": "healthy", "service": "research", "tools": availability, "timestamp": datetime.utcnow().isoformat()}

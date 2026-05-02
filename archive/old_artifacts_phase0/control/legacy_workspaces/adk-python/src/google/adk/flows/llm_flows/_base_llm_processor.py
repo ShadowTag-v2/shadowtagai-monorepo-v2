@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Defines the processor interface used for BaseLlmFlow."""
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -23,29 +24,25 @@ from ...agents.invocation_context import InvocationContext
 from ...events.event import Event
 
 if TYPE_CHECKING:
-  from ...models.llm_request import LlmRequest
-  from ...models.llm_response import LlmResponse
+    from ...models.llm_request import LlmRequest
+    from ...models.llm_response import LlmResponse
 
 
 class BaseLlmRequestProcessor(ABC):
-  """Base class for LLM request processor."""
+    """Base class for LLM request processor."""
 
-  @abstractmethod
-  async def run_async(
-      self, invocation_context: InvocationContext, llm_request: LlmRequest
-  ) -> AsyncGenerator[Event, None]:
-    """Runs the processor."""
-    raise NotImplementedError("Not implemented.")
-    yield  # AsyncGenerator requires a yield in function body.
+    @abstractmethod
+    async def run_async(self, invocation_context: InvocationContext, llm_request: LlmRequest) -> AsyncGenerator[Event]:
+        """Runs the processor."""
+        raise NotImplementedError("Not implemented.")
+        yield  # AsyncGenerator requires a yield in function body.
 
 
 class BaseLlmResponseProcessor(ABC):
-  """Base class for LLM response processor."""
+    """Base class for LLM response processor."""
 
-  @abstractmethod
-  async def run_async(
-      self, invocation_context: InvocationContext, llm_response: LlmResponse
-  ) -> AsyncGenerator[Event, None]:
-    """Processes the LLM response."""
-    raise NotImplementedError("Not implemented.")
-    yield  # AsyncGenerator requires a yield in function body.
+    @abstractmethod
+    async def run_async(self, invocation_context: InvocationContext, llm_response: LlmResponse) -> AsyncGenerator[Event]:
+        """Processes the LLM response."""
+        raise NotImplementedError("Not implemented.")
+        yield  # AsyncGenerator requires a yield in function body.

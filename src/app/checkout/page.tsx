@@ -1,4 +1,4 @@
-import { CheckoutForm } from "./CheckoutForm";
+import { CheckoutForm } from './CheckoutForm';
 
 export default function CheckoutPage() {
   // Generate the unique transaction ID securely on the server

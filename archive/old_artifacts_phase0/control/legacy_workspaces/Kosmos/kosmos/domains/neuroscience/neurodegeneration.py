@@ -36,8 +36,10 @@ from scipy.stats import fisher_exact
 
 # Data models for neurodegeneration analysis
 
+
 class TemporalStage(StrEnum):
     """Temporal stages of disease progression"""
+
     EARLY_DOWN = "early_downregulated"
     MILD_DOWN = "mildly_downregulated"
     STABLE = "stable"
@@ -48,6 +50,7 @@ class TemporalStage(StrEnum):
 @dataclass
 class DifferentialExpressionResult:
     """Single gene differential expression result"""
+
     gene_id: str
     gene_name: str | None = None
     log2_fold_change: float = 0.0
@@ -83,6 +86,7 @@ class DifferentialExpressionResult:
 @dataclass
 class NeurodegenerationResult:
     """Complete differential expression analysis results"""
+
     analysis_name: str
     case_label: str  # e.g., "AD"
     control_label: str  # e.g., "Control"
@@ -104,30 +108,25 @@ class NeurodegenerationResult:
         """Convert results to DataFrame"""
         rows = []
         for result in self.gene_results:
-            rows.append({
-                'gene_id': result.gene_id,
-                'gene_name': result.gene_name,
-                'log2FoldChange': result.log2_fold_change,
-                'pvalue': result.p_value,
-                'padj': result.adjusted_p_value,
-                'baseMean': result.base_mean,
-                'significant_0.05': result.significant_005,
-                'significant_0.01': result.significant_001,
-                'direction': result.direction,
-                'temporal_stage': result.temporal_stage.value if result.temporal_stage else None
-            })
+            rows.append(
+                {
+                    "gene_id": result.gene_id,
+                    "gene_name": result.gene_name,
+                    "log2FoldChange": result.log2_fold_change,
+                    "pvalue": result.p_value,
+                    "padj": result.adjusted_p_value,
+                    "baseMean": result.base_mean,
+                    "significant_0.05": result.significant_005,
+                    "significant_0.01": result.significant_001,
+                    "direction": result.direction,
+                    "temporal_stage": result.temporal_stage.value if result.temporal_stage else None,
+                }
+            )
         return pd.DataFrame(rows)
 
-    def get_significant_genes(
-        self,
-        p_threshold: float = 0.05,
-        direction: str | None = None
-    ) -> list[DifferentialExpressionResult]:
+    def get_significant_genes(self, p_threshold: float = 0.05, direction: str | None = None) -> list[DifferentialExpressionResult]:
         """Get significant genes, optionally filtered by direction"""
-        significant = [
-            r for r in self.gene_results
-            if r.adjusted_p_value < p_threshold
-        ]
+        significant = [r for r in self.gene_results if r.adjusted_p_value < p_threshold]
 
         if direction:
             significant = [r for r in significant if r.direction == direction]
@@ -137,20 +136,21 @@ class NeurodegenerationResult:
     def get_summary(self) -> dict[str, Any]:
         """Get summary statistics"""
         return {
-            'analysis': self.analysis_name,
-            'comparison': f"{self.case_label} vs {self.control_label}",
-            'n_genes_tested': self.n_genes_tested,
-            'n_significant': self.n_significant,
-            'n_upregulated': self.n_upregulated,
-            'n_downregulated': self.n_downregulated,
-            'percent_significant': f"{self.n_significant/self.n_genes_tested*100:.2f}%" if self.n_genes_tested > 0 else "N/A",
-            'sample_sizes': self.sample_sizes
+            "analysis": self.analysis_name,
+            "comparison": f"{self.case_label} vs {self.control_label}",
+            "n_genes_tested": self.n_genes_tested,
+            "n_significant": self.n_significant,
+            "n_upregulated": self.n_upregulated,
+            "n_downregulated": self.n_downregulated,
+            "percent_significant": f"{self.n_significant / self.n_genes_tested * 100:.2f}%" if self.n_genes_tested > 0 else "N/A",
+            "sample_sizes": self.sample_sizes,
         }
 
 
 @dataclass
 class PathwayEnrichmentResult:
     """Pathway enrichment analysis result"""
+
     pathway_id: str
     pathway_name: str
     n_genes_in_pathway: int
@@ -168,6 +168,7 @@ class PathwayEnrichmentResult:
 @dataclass
 class CrossSpeciesValidation:
     """Cross-species concordance result"""
+
     gene_id: str
     gene_name: str | None = None
 
@@ -187,14 +188,9 @@ class CrossSpeciesValidation:
 
     def __post_init__(self):
         """Calculate concordance"""
-        if (self.mouse_log2fc is not None and self.human_log2fc is not None and
-            self.mouse_significant and self.human_significant):
-
+        if self.mouse_log2fc is not None and self.human_log2fc is not None and self.mouse_significant and self.human_significant:
             # Check if same direction
-            same_direction = (
-                (self.mouse_log2fc > 0 and self.human_log2fc > 0) or
-                (self.mouse_log2fc < 0 and self.human_log2fc < 0)
-            )
+            same_direction = (self.mouse_log2fc > 0 and self.human_log2fc > 0) or (self.mouse_log2fc < 0 and self.human_log2fc < 0)
 
             if same_direction:
                 self.is_concordant = True
@@ -209,6 +205,7 @@ class CrossSpeciesValidation:
 
 
 # Analyzer class
+
 
 class NeurodegenerationAnalyzer:
     """
@@ -257,7 +254,7 @@ class NeurodegenerationAnalyzer:
         case_label: str,
         control_label: str,
         min_count: int = 10,
-        use_pydeseq2: bool = True
+        use_pydeseq2: bool = True,
     ) -> NeurodegenerationResult:
         """
         Perform differential expression analysis.
@@ -299,8 +296,8 @@ class NeurodegenerationAnalyzer:
             raise ValueError(f"Condition column '{condition_column}' not in metadata")
 
         # Filter samples
-        case_samples = sample_metadata[sample_metadata[condition_column] == case_label]['sample_id'].tolist()
-        control_samples = sample_metadata[sample_metadata[condition_column] == control_label]['sample_id'].tolist()
+        case_samples = sample_metadata[sample_metadata[condition_column] == case_label]["sample_id"].tolist()
+        control_samples = sample_metadata[sample_metadata[condition_column] == control_label]["sample_id"].tolist()
 
         if not case_samples or not control_samples:
             raise ValueError(f"No samples found for {case_label} or {control_label}")
@@ -315,19 +312,12 @@ class NeurodegenerationAnalyzer:
         # Attempt pydeseq2 analysis
         if use_pydeseq2:
             try:
-                results_df = self._run_pydeseq2(
-                    counts_filtered, sample_metadata, condition_column,
-                    case_label, control_label
-                )
+                results_df = self._run_pydeseq2(counts_filtered, sample_metadata, condition_column, case_label, control_label)
             except Exception as e:
                 print(f"Warning: pydeseq2 failed ({e}), falling back to simple analysis")
-                results_df = self._run_simple_differential_expression(
-                    counts_filtered, case_samples, control_samples
-                )
+                results_df = self._run_simple_differential_expression(counts_filtered, case_samples, control_samples)
         else:
-            results_df = self._run_simple_differential_expression(
-                counts_filtered, case_samples, control_samples
-            )
+            results_df = self._run_simple_differential_expression(counts_filtered, case_samples, control_samples)
 
         # Convert to result objects
         gene_results = []
@@ -338,10 +328,10 @@ class NeurodegenerationAnalyzer:
         for gene_id, row in results_df.iterrows():
             result = DifferentialExpressionResult(
                 gene_id=gene_id,
-                log2_fold_change=row['log2FoldChange'],
-                p_value=row['pvalue'],
-                adjusted_p_value=row['padj'],
-                base_mean=row['baseMean']
+                log2_fold_change=row["log2FoldChange"],
+                p_value=row["pvalue"],
+                adjusted_p_value=row["padj"],
+                base_mean=row["baseMean"],
             )
 
             if result.significant_005:
@@ -363,26 +353,14 @@ class NeurodegenerationAnalyzer:
             n_upregulated=n_up,
             n_downregulated=n_down,
             n_significant=n_sig,
-            sample_sizes={
-                case_label: len(case_samples),
-                control_label: len(control_samples)
-            }
+            sample_sizes={case_label: len(case_samples), control_label: len(control_samples)},
         )
 
-        neuro_result.analysis_notes.append(
-            f"Tested {n_genes} genes (filtered from {len(counts_matrix)} total)"
-        )
+        neuro_result.analysis_notes.append(f"Tested {n_genes} genes (filtered from {len(counts_matrix)} total)")
 
         return neuro_result
 
-    def _run_pydeseq2(
-        self,
-        counts: pd.DataFrame,
-        metadata: pd.DataFrame,
-        condition_col: str,
-        case_label: str,
-        control_label: str
-    ) -> pd.DataFrame:
+    def _run_pydeseq2(self, counts: pd.DataFrame, metadata: pd.DataFrame, condition_col: str, case_label: str, control_label: str) -> pd.DataFrame:
         """
         Run pydeseq2 differential expression analysis.
 
@@ -400,15 +378,10 @@ class NeurodegenerationAnalyzer:
         from pydeseq2.ds import DeseqStats
 
         # Prepare metadata (ensure sample order matches counts)
-        metadata_ordered = metadata.set_index('sample_id').loc[counts.columns]
+        metadata_ordered = metadata.set_index("sample_id").loc[counts.columns]
 
         # Create DESeq2 dataset
-        dds = DeseqDataSet(
-            counts=counts,
-            metadata=metadata_ordered,
-            design_factors=condition_col,
-            refit_cooks=True
-        )
+        dds = DeseqDataSet(counts=counts, metadata=metadata_ordered, design_factors=condition_col, refit_cooks=True)
 
         # Run DESeq2
         dds.deseq2()
@@ -421,21 +394,11 @@ class NeurodegenerationAnalyzer:
         results_df = stat_res.results_df
 
         # Rename columns to match standard format
-        results_df = results_df.rename(columns={
-            'log2FoldChange': 'log2FoldChange',
-            'pvalue': 'pvalue',
-            'padj': 'padj',
-            'baseMean': 'baseMean'
-        })
+        results_df = results_df.rename(columns={"log2FoldChange": "log2FoldChange", "pvalue": "pvalue", "padj": "padj", "baseMean": "baseMean"})
 
         return results_df
 
-    def _run_simple_differential_expression(
-        self,
-        counts: pd.DataFrame,
-        case_samples: list[str],
-        control_samples: list[str]
-    ) -> pd.DataFrame:
+    def _run_simple_differential_expression(self, counts: pd.DataFrame, case_samples: list[str], control_samples: list[str]) -> pd.DataFrame:
         """
         Simple differential expression using log2 fold change and t-test.
 
@@ -472,31 +435,19 @@ class NeurodegenerationAnalyzer:
             # Base mean (untransformed)
             base_mean = np.mean(np.concatenate([case_counts, control_counts]))
 
-            results.append({
-                'gene_id': gene_id,
-                'log2FoldChange': log2fc,
-                'pvalue': p_val,
-                'baseMean': base_mean
-            })
+            results.append({"gene_id": gene_id, "log2FoldChange": log2fc, "pvalue": p_val, "baseMean": base_mean})
 
-        results_df = pd.DataFrame(results).set_index('gene_id')
+        results_df = pd.DataFrame(results).set_index("gene_id")
 
         # Benjamini-Hochberg FDR correction
         from statsmodels.stats.multitest import multipletests
-        reject, pvals_corrected, _, _ = multipletests(
-            results_df['pvalue'].values,
-            alpha=0.05,
-            method='fdr_bh'
-        )
-        results_df['padj'] = pvals_corrected
+
+        reject, pvals_corrected, _, _ = multipletests(results_df["pvalue"].values, alpha=0.05, method="fdr_bh")
+        results_df["padj"] = pvals_corrected
 
         return results_df
 
-    def temporal_ordering(
-        self,
-        deg_results: NeurodegenerationResult,
-        n_stages: int = 5
-    ) -> NeurodegenerationResult:
+    def temporal_ordering(self, deg_results: NeurodegenerationResult, n_stages: int = 5) -> NeurodegenerationResult:
         """
         Order genes by temporal trajectory in disease progression.
 
@@ -522,13 +473,7 @@ class NeurodegenerationAnalyzer:
         # Create bins for temporal stages
         if n_stages == 5:
             # Default: early down, mild down, stable, mild up, late up
-            stages = [
-                TemporalStage.EARLY_DOWN,
-                TemporalStage.MILD_DOWN,
-                TemporalStage.STABLE,
-                TemporalStage.MILD_UP,
-                TemporalStage.LATE_UP
-            ]
+            stages = [TemporalStage.EARLY_DOWN, TemporalStage.MILD_DOWN, TemporalStage.STABLE, TemporalStage.MILD_UP, TemporalStage.LATE_UP]
         else:
             raise NotImplementedError(f"Only 5 stages supported, got {n_stages}")
 
@@ -547,9 +492,7 @@ class NeurodegenerationAnalyzer:
                     elif i == len(bins) - 2:  # Last bin
                         result.temporal_stage = stages[i]
 
-        deg_results.analysis_notes.append(
-            f"Assigned temporal stages to {len(significant)} significant genes"
-        )
+        deg_results.analysis_notes.append(f"Assigned temporal stages to {len(significant)} significant genes")
 
         return deg_results
 
@@ -559,7 +502,7 @@ class NeurodegenerationAnalyzer:
         pathway_genes: list[str],
         pathway_name: str = "Pathway",
         pathway_id: str = "custom",
-        universe_size: int | None = None
+        universe_size: int | None = None,
     ) -> PathwayEnrichmentResult:
         """
         Test pathway enrichment in differentially expressed genes.
@@ -611,7 +554,7 @@ class NeurodegenerationAnalyzer:
         d = universe_size - a - b - c  # Not sig & not in pathway
 
         # Fisher's exact test
-        odds_ratio, p_value = fisher_exact([[a, b], [c, d]], alternative='greater')
+        odds_ratio, p_value = fisher_exact([[a, b], [c, d]], alternative="greater")
 
         result = PathwayEnrichmentResult(
             pathway_id=pathway_id,
@@ -620,16 +563,13 @@ class NeurodegenerationAnalyzer:
             n_genes_significant=a,
             enrichment_pvalue=p_value,
             odds_ratio=odds_ratio,
-            significant_genes=list(overlap)
+            significant_genes=list(overlap),
         )
 
         return result
 
     def cross_species_validation(
-        self,
-        mouse_results: NeurodegenerationResult,
-        human_results: NeurodegenerationResult,
-        gene_mapping: dict[str, str] | None = None
+        self, mouse_results: NeurodegenerationResult, human_results: NeurodegenerationResult, gene_mapping: dict[str, str] | None = None
     ) -> list[CrossSpeciesValidation]:
         """
         Validate findings across species (Figure 8 pattern).
@@ -678,19 +618,14 @@ class NeurodegenerationAnalyzer:
                     mouse_significant=mouse_res.significant_005,
                     human_log2fc=human_res.log2_fold_change,
                     human_padj=human_res.adjusted_p_value,
-                    human_significant=human_res.significant_005
+                    human_significant=human_res.significant_005,
                 )
 
                 validation_results.append(validation)
 
         return validation_results
 
-    def generate_volcano_plot_data(
-        self,
-        deg_results: NeurodegenerationResult,
-        p_threshold: float = 0.05,
-        fc_threshold: float = 1.0
-    ) -> pd.DataFrame:
+    def generate_volcano_plot_data(self, deg_results: NeurodegenerationResult, p_threshold: float = 0.05, fc_threshold: float = 1.0) -> pd.DataFrame:
         """
         Generate data for volcano plot visualization.
 
@@ -716,10 +651,7 @@ class NeurodegenerationAnalyzer:
             neg_log10_p = -np.log10(result.adjusted_p_value) if result.adjusted_p_value > 0 else 100
 
             # Determine significance
-            is_sig = (
-                result.adjusted_p_value < p_threshold and
-                abs(result.log2_fold_change) > fc_threshold
-            )
+            is_sig = result.adjusted_p_value < p_threshold and abs(result.log2_fold_change) > fc_threshold
 
             if is_sig:
                 if result.log2_fold_change > 0:
@@ -729,13 +661,15 @@ class NeurodegenerationAnalyzer:
             else:
                 color = "not_significant"
 
-            rows.append({
-                'gene_id': result.gene_id,
-                'log2FoldChange': result.log2_fold_change,
-                '-log10_padj': neg_log10_p,
-                'padj': result.adjusted_p_value,
-                'significance': color,
-                'is_significant': is_sig
-            })
+            rows.append(
+                {
+                    "gene_id": result.gene_id,
+                    "log2FoldChange": result.log2_fold_change,
+                    "-log10_padj": neg_log10_p,
+                    "padj": result.adjusted_p_value,
+                    "significance": color,
+                    "is_significant": is_sig,
+                }
+            )
 
         return pd.DataFrame(rows)

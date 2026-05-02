@@ -112,7 +112,9 @@ def run_research(
             f"**Question:** {question}\n"
             f"**Domain:** {domain or 'auto-detect'}\n"
             f"**Max Iterations:** {max_iterations}\n"
-            f"**Budget:** ${budget} USD" if budget else "**Budget:** No limit",
+            f"**Budget:** ${budget} USD"
+            if budget
+            else "**Budget:** No limit",
             title=f"[bright_blue]{get_icon('rocket')} Kosmos Research[/bright_blue]",
             border_style="bright_blue",
         )
@@ -149,43 +151,31 @@ def run_research(
             "min_novelty_score": config_obj.research.min_novelty_score,
             "enable_autonomous_iteration": config_obj.research.enable_autonomous_iteration,
             "budget_usd": config_obj.research.budget_usd,
-
             # Performance/concurrent operations settings
             "enable_concurrent_operations": config_obj.performance.enable_concurrent_operations,
             "max_parallel_hypotheses": config_obj.performance.max_parallel_hypotheses,
             "max_concurrent_experiments": config_obj.performance.max_concurrent_experiments,
             "max_concurrent_llm_calls": config_obj.performance.max_concurrent_llm_calls,
             "llm_rate_limit_per_minute": config_obj.performance.llm_rate_limit_per_minute,
-
             # LLM provider settings
             "llm_provider": config_obj.llm_provider,
             "enable_cache": cache_enabled,
-
             # Dataset path
             "data_path": str(data_path.resolve()) if data_path else None,
         }
 
         # Create research director
-        director = ResearchDirectorAgent(
-            research_question=question,
-            domain=domain,
-            config=flat_config
-        )
+        director = ResearchDirectorAgent(research_question=question, domain=domain, config=flat_config)
 
         # Register director with AgentRegistry for message routing (Issue #66 fix)
         from kosmos.agents.registry import get_registry
+
         registry = get_registry()
         registry.register(director)
         logger.info("Registered ResearchDirector with AgentRegistry")
 
         # Run research with live progress (async)
-        results = asyncio.run(run_with_progress_async(
-            director,
-            question,
-            max_iterations,
-            enable_streaming=stream,
-            show_tokens=stream_tokens
-        ))
+        results = asyncio.run(run_with_progress_async(director, question, max_iterations, enable_streaming=stream, show_tokens=stream_tokens))
 
         # Display results
         viewer = ResultsViewer()
@@ -218,13 +208,7 @@ def run_research(
         raise typer.Exit(1)
 
 
-async def run_with_progress_async(
-    director,
-    question: str,
-    max_iterations: int,
-    enable_streaming: bool = False,
-    show_tokens: bool = True
-) -> dict:
+async def run_with_progress_async(director, question: str, max_iterations: int, enable_streaming: bool = False, show_tokens: bool = True) -> dict:
     """
     Run research with live progress display asynchronously.
 
@@ -243,10 +227,11 @@ async def run_with_progress_async(
     if enable_streaming:
         try:
             from kosmos.cli.streaming import create_streaming_display
+
             streaming_display = create_streaming_display(
                 console=console,
                 process_id=None,  # Will receive all events
-                show_tokens=show_tokens
+                show_tokens=show_tokens,
             )
             streaming_display.start()
             logger.info("Streaming display enabled")
@@ -309,9 +294,8 @@ async def run_with_progress_async(
                 if elapsed_time > max_loop_duration:
                     logger.error(f"Research loop timed out after {elapsed_time:.0f}s")
                     print_error(
-                        f"Research loop exceeded maximum runtime of {max_loop_duration}s. "
-                        "This may indicate an infinite loop or hanging operation.",
-                        title="Timeout"
+                        f"Research loop exceeded maximum runtime of {max_loop_duration}s. This may indicate an infinite loop or hanging operation.",
+                        title="Timeout",
                     )
                     break
 
@@ -333,6 +317,7 @@ async def run_with_progress_async(
 
                 # Update phase-specific progress based on workflow state
                 from kosmos.core.workflow import WorkflowState
+
                 workflow_state = status.get("workflow_state", WorkflowState.INITIALIZING.value)
 
                 if workflow_state == WorkflowState.GENERATING_HYPOTHESES.value:
@@ -374,11 +359,12 @@ async def run_with_progress_async(
                 loop_duration = time.time() - loop_iteration_start
                 logger.info(
                     "[ITER %d/%d] state=%s, hyps=%d, exps=%d, duration=%.2fs",
-                    iteration, max_iterations,
-                    status.get('workflow_state'),
-                    status.get('hypothesis_pool_size', 0),
-                    status.get('experiments_completed', 0),
-                    loop_duration
+                    iteration,
+                    max_iterations,
+                    status.get("workflow_state"),
+                    status.get("hypothesis_pool_size", 0),
+                    status.get("experiments_completed", 0),
+                    loop_duration,
                 )
 
                 # Small delay to allow UI updates (async)
@@ -412,18 +398,18 @@ async def run_with_progress_async(
                 else:
                     with get_session() as session:
                         # Fetch hypotheses from database using IDs
-                        if hasattr(director.research_plan, 'hypothesis_pool') and director.research_plan.hypothesis_pool:
+                        if hasattr(director.research_plan, "hypothesis_pool") and director.research_plan.hypothesis_pool:
                             for h_id in director.research_plan.hypothesis_pool:
                                 hypothesis = get_hypothesis(session, h_id)
                                 if hypothesis:
-                                    hypotheses_data.append(hypothesis.to_dict() if hasattr(hypothesis, 'to_dict') else str(hypothesis))
+                                    hypotheses_data.append(hypothesis.to_dict() if hasattr(hypothesis, "to_dict") else str(hypothesis))
 
                         # Fetch experiments from database using IDs
-                        if hasattr(director.research_plan, 'completed_experiments') and director.research_plan.completed_experiments:
+                        if hasattr(director.research_plan, "completed_experiments") and director.research_plan.completed_experiments:
                             for e_id in director.research_plan.completed_experiments:
                                 experiment = get_experiment(session, e_id)
                                 if experiment:
-                                    experiments_data.append(experiment.to_dict() if hasattr(experiment, 'to_dict') else str(experiment))
+                                    experiments_data.append(experiment.to_dict() if hasattr(experiment, "to_dict") else str(experiment))
             except Exception as e:
                 logger.warning(f"Could not fetch all objects from database: {e}")
                 # Fallback: use IDs as strings
@@ -442,9 +428,9 @@ async def run_with_progress_async(
                 "hypotheses": hypotheses_data,
                 "experiments": experiments_data,
                 "metrics": {
-                    "api_calls": getattr(director.llm_client, 'total_requests', 0),
-                    "cache_hits": getattr(director.llm_client, 'cache_hits', 0),
-                    "cache_misses": getattr(director.llm_client, 'cache_misses', 0),
+                    "api_calls": getattr(director.llm_client, "total_requests", 0),
+                    "cache_hits": getattr(director.llm_client, "cache_hits", 0),
+                    "cache_misses": getattr(director.llm_client, "cache_misses", 0),
                     "hypotheses_generated": final_status.get("hypothesis_pool_size", 0),
                     "hypotheses_tested": final_status.get("hypotheses_tested", 0),
                     "hypotheses_supported": final_status.get("hypotheses_supported", 0),
