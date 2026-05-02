@@ -18,7 +18,6 @@ Reference: Claude Code utils/sandbox/sandbox-adapter.ts
 from __future__ import annotations
 
 import logging
-import os
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -137,7 +136,7 @@ class SandboxPathResolver:
         # Resolve symlinks and normalize
         try:
             resolved = raw.resolve()
-        except (OSError, RuntimeError):
+        except OSError, RuntimeError:
             return ResolvedPath(
                 resolved=raw,
                 original=path_str,
@@ -161,9 +160,7 @@ class SandboxPathResolver:
                 )
 
         # Check path traversal (must stay within allowed roots)
-        in_allowed = any(
-            self._is_subpath(resolved, root) for root in self._allowed_roots
-        )
+        in_allowed = any(self._is_subpath(resolved, root) for root in self._allowed_roots)
 
         # Absolute paths get an exception if they exist and are in safe locations
         if resolution_type == "absolute" and not in_allowed:
@@ -181,9 +178,7 @@ class SandboxPathResolver:
             )
 
         # Check sensitive directories
-        is_sensitive = any(
-            sensitive in resolved.parts for sensitive in SENSITIVE_DIRS
-        )
+        is_sensitive = any(sensitive in resolved.parts for sensitive in SENSITIVE_DIRS)
 
         return ResolvedPath(
             resolved=resolved,

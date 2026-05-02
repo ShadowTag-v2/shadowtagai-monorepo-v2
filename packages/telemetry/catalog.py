@@ -668,3 +668,136 @@ class EventCatalog:
                 "time_until_next_ms": time_until_next_ms,
             },
         )
+
+    # --- Speculation Lifecycle Events ---
+
+    @staticmethod
+    def speculation_started(
+        session_id: str = "",
+        step_count: int = 0,
+        trigger: str = "",
+    ) -> TelemetryEvent:
+        """agnt_speculation_started — Speculative execution initiated.
+
+        CC equivalent: tengu_speculation_started
+        """
+        return TelemetryEvent(
+            event="agnt_speculation_started",
+            category=EventCategory.SESSION,
+            properties={
+                "session_id": session_id,
+                "step_count": step_count,
+                "trigger": trigger,
+            },
+        )
+
+    @staticmethod
+    def speculation_accepted(
+        session_id: str = "",
+        steps_executed: int = 0,
+        overlay_files_merged: int = 0,
+        time_saved_ms: float = 0.0,
+    ) -> TelemetryEvent:
+        """agnt_speculation_accepted — User accepted speculative results.
+
+        CC equivalent: tengu_speculation_accepted
+        """
+        return TelemetryEvent(
+            event="agnt_speculation_accepted",
+            category=EventCategory.SESSION,
+            duration_ms=time_saved_ms,
+            properties={
+                "session_id": session_id,
+                "steps_executed": steps_executed,
+                "overlay_files_merged": overlay_files_merged,
+            },
+        )
+
+    @staticmethod
+    def speculation_rejected(
+        session_id: str = "",
+        reason: str = "",
+        steps_discarded: int = 0,
+    ) -> TelemetryEvent:
+        """agnt_speculation_rejected — User rejected speculative results.
+
+        CC equivalent: tengu_speculation_rejected
+        """
+        return TelemetryEvent(
+            event="agnt_speculation_rejected",
+            category=EventCategory.SESSION,
+            success=False,
+            properties={
+                "session_id": session_id,
+                "reason": reason,
+                "steps_discarded": steps_discarded,
+            },
+        )
+
+    # --- Plan Mode Events ---
+
+    @staticmethod
+    def plan_mode_entered(
+        session_id: str = "",
+        trigger: str = "",
+        step_count: int = 0,
+    ) -> TelemetryEvent:
+        """agnt_plan_mode_entered — Planning mode activated.
+
+        CC equivalent: tengu_plan_mode_entered
+        """
+        return TelemetryEvent(
+            event="agnt_plan_mode_entered",
+            category=EventCategory.SESSION,
+            properties={
+                "session_id": session_id,
+                "trigger": trigger,
+                "step_count": step_count,
+            },
+        )
+
+    @staticmethod
+    def plan_mode_exited(
+        session_id: str = "",
+        exit_reason: str = "",
+        duration_ms: float = 0.0,
+        steps_completed: int = 0,
+    ) -> TelemetryEvent:
+        """agnt_plan_mode_exited — Planning mode deactivated.
+
+        CC equivalent: tengu_plan_mode_exited
+        """
+        return TelemetryEvent(
+            event="agnt_plan_mode_exited",
+            category=EventCategory.SESSION,
+            duration_ms=duration_ms,
+            properties={
+                "session_id": session_id,
+                "exit_reason": exit_reason,
+                "steps_completed": steps_completed,
+            },
+        )
+
+    # --- Feature Flag Events ---
+
+    @staticmethod
+    def feature_flag_evaluated(
+        flag_key: str = "",
+        value: bool = False,
+        source: str = "default",
+        user_id: str = "",
+    ) -> TelemetryEvent:
+        """agnt_feature_flag_evaluated — Feature flag evaluation recorded.
+
+        CC equivalent: tengu_feature_flag_evaluated (GrowthBook)
+        """
+        return TelemetryEvent(
+            event="agnt_feature_flag_evaluated",
+            category=EventCategory.SESSION,
+            properties={
+                "flag_key": flag_key,
+                "value": value,
+                "source": source,
+                "user_id": user_id,
+            },
+        )

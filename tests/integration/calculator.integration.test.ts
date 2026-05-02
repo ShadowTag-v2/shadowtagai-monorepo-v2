@@ -4,7 +4,7 @@
  * Demonstrates integration testing patterns across multiple components
  */
 
-import { beforeEach, describe, expect, it } from '@jest/globals';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { add, Calculator, multiply } from '../../src/example';
 
 describe('Calculator Integration Tests', () => {

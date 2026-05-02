@@ -99,6 +99,42 @@ _ENCODING_COMMANDS = {"base64", "xxd", "od", "openssl enc"}
 # C5: Network fetch commands
 _NETWORK_COMMANDS = {"curl", "wget", "http", "httpie"}
 
+# B17: Code execution interpreters (mirrors Claude's CROSS_PLATFORM_CODE_EXEC)
+_CODE_EXEC_INTERPRETERS = frozenset(
+    {
+        # Language interpreters
+        "python",
+        "python3",
+        "python2",
+        "node",
+        "deno",
+        "tsx",
+        "ruby",
+        "perl",
+        "php",
+        "lua",
+        # Package runners (can execute arbitrary code)
+        "npx",
+        "bunx",
+    }
+)
+
+# B17 compound patterns: multi-word commands like "npm run"
+_CODE_EXEC_COMPOUND = frozenset(
+    {
+        "npm run",
+        "yarn run",
+        "pnpm run",
+        "bun run",
+    }
+)
+
+# B18: Execution primitives (can run arbitrary code via indirection)
+_EXEC_PRIMITIVES = frozenset({"eval", "exec", "env", "xargs"})
+
+# B19: Cloud resource mutation commands
+_CLOUD_RESOURCE_COMMANDS = frozenset({"kubectl", "aws", "gcloud", "gsutil"})
+
 # B1: Privilege escalation commands
 _PRIVILEGE_ESCALATION = {"sudo", "su", "doas", "pkexec", "runas"}
 
@@ -224,7 +260,7 @@ class BlockAllowRuleEngine:
             reasoning=f"BLOCKED by rules: {[b.rule_id for b in blocks]}",
         )
 
-    # --- BLOCK: Privilege Violations (B1-B4) ---
+    # --- BLOCK: Privilege Violations (B1-B4, B17-B18) ---
 
     def _check_privilege_violations(
         self,
@@ -239,43 +275,93 @@ class BlockAllowRuleEngine:
         if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
             first_token = cmd.split()[0] if cmd.split() else ""
             if first_token in _PRIVILEGE_ESCALATION:
-                matches.append(RuleMatch(
-                    rule_id="B1",
-                    verdict=Verdict.BLOCK,
-                    description=f"Privilege escalation via '{first_token}'",
-                    category="privilege",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="B1",
+                        verdict=Verdict.BLOCK,
+                        description=f"Privilege escalation via '{first_token}'",
+                        category="privilege",
+                    )
+                )
 
         # B2: Shell Escape
         if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
             first_token = cmd.split()[0] if cmd.split() else ""
             if first_token in _SHELL_ESCAPE:
-                matches.append(RuleMatch(
-                    rule_id="B2",
-                    verdict=Verdict.BLOCK,
-                    description=f"Shell inception/escape via '{first_token}'",
-                    category="privilege",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="B2",
+                        verdict=Verdict.BLOCK,
+                        description=f"Shell inception/escape via '{first_token}'",
+                        category="privilege",
+                    )
+                )
 
         # B3: Cross-Tenant Access
         target_tenant = tool_input.get("tenant_id") or context.get("target_tenant")
         if target_tenant and target_tenant not in self._session_boundary:
-            matches.append(RuleMatch(
-                rule_id="B3",
-                verdict=Verdict.BLOCK,
-                description=f"Cross-tenant access: '{target_tenant}' not in session boundary {self._session_boundary}",
-                category="privilege",
-            ))
+            matches.append(
+                RuleMatch(
+                    rule_id="B3",
+                    verdict=Verdict.BLOCK,
+                    description=f"Cross-tenant access: '{target_tenant}' not in session boundary {self._session_boundary}",
+                    category="privilege",
+                )
+            )
 
         # B4: Attestation Forgery
         if tool_id in ("kovel.create_attestation", "kovel.modify_attestation"):
             if not context.get("active_kovel_session"):
-                matches.append(RuleMatch(
-                    rule_id="B4",
-                    verdict=Verdict.BLOCK,
-                    description="Attestation operation without active Kovel session",
-                    category="privilege",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="B4",
+                        verdict=Verdict.BLOCK,
+                        description="Attestation operation without active Kovel session",
+                        category="privilege",
+                    )
+                )
+
+        # B17: Code Execution Interpreter (mirrors Claude dangerousPatterns.ts)
+        # ESCALATE to classifier — these bypass auto-mode if allow-listed too broadly
+        if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
+            first_token = cmd.split()[0] if cmd.split() else ""
+            if first_token in _CODE_EXEC_INTERPRETERS:
+                if not context.get("interpreter_authorized"):
+                    matches.append(
+                        RuleMatch(
+                            rule_id="B17",
+                            verdict=Verdict.ESCALATE,
+                            description=f"Code interpreter '{first_token}' invoked without interpreter_authorized",
+                            category="privilege",
+                        )
+                    )
+            # Check compound patterns (e.g., "npm run")
+            for compound in _CODE_EXEC_COMPOUND:
+                if cmd.startswith(compound):
+                    if not context.get("interpreter_authorized"):
+                        matches.append(
+                            RuleMatch(
+                                rule_id="B17",
+                                verdict=Verdict.ESCALATE,
+                                description=f"Compound code exec '{compound}' invoked without interpreter_authorized",
+                                category="privilege",
+                            )
+                        )
+                    break
+
+        # B18: Execution Primitive (eval, exec, env, xargs)
+        if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
+            first_token = cmd.split()[0] if cmd.split() else ""
+            if first_token in _EXEC_PRIMITIVES:
+                if not context.get("exec_primitive_authorized"):
+                    matches.append(
+                        RuleMatch(
+                            rule_id="B18",
+                            verdict=Verdict.ESCALATE,
+                            description=f"Execution primitive '{first_token}' can run arbitrary code",
+                            category="privilege",
+                        )
+                    )
 
         return matches
 
@@ -295,12 +381,14 @@ class BlockAllowRuleEngine:
         if tool_id in ("logging.write", "telemetry.emit", "console.log"):
             for pattern in _PII_PATTERNS:
                 if pattern.search(output_content):
-                    matches.append(RuleMatch(
-                        rule_id="B5",
-                        verdict=Verdict.BLOCK,
-                        description="PII detected in log/telemetry output",
-                        category="data_safety",
-                    ))
+                    matches.append(
+                        RuleMatch(
+                            rule_id="B5",
+                            verdict=Verdict.BLOCK,
+                            description="PII detected in log/telemetry output",
+                            category="data_safety",
+                        )
+                    )
                     break
 
         # B6: PII in File Writes
@@ -308,39 +396,45 @@ class BlockAllowRuleEngine:
             write_content = str(tool_input.get("content", "")) + str(tool_input.get("CodeContent", ""))
             for pattern in _PII_PATTERNS:
                 if pattern.search(write_content):
-                    matches.append(RuleMatch(
-                        rule_id="B6",
-                        verdict=Verdict.BLOCK,
-                        description="PII detected in file write content",
-                        category="data_safety",
-                    ))
+                    matches.append(
+                        RuleMatch(
+                            rule_id="B6",
+                            verdict=Verdict.BLOCK,
+                            description="PII detected in file write content",
+                            category="data_safety",
+                        )
+                    )
                     break
 
         # B7: Credential Leakage
         for pattern in _CREDENTIAL_PATTERNS:
             if pattern.search(output_content):
-                matches.append(RuleMatch(
-                    rule_id="B7",
-                    verdict=Verdict.BLOCK,
-                    description="Credential pattern detected in output content",
-                    category="data_safety",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="B7",
+                        verdict=Verdict.BLOCK,
+                        description="Credential pattern detected in output content",
+                        category="data_safety",
+                    )
+                )
                 break
 
         # B8: Model Context Leak
         leak_markers = ["system_prompt", "tool_schemas", "governance_rules", "<system>"]
         if any(marker in output_content.lower() for marker in leak_markers):
             if context.get("output_target") == "user":
-                matches.append(RuleMatch(
-                    rule_id="B8",
-                    verdict=Verdict.BLOCK,
-                    description="System prompt or internal schema detected in user-facing output",
-                    category="data_safety",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="B8",
+                        verdict=Verdict.BLOCK,
+                        description="System prompt or internal schema detected in user-facing output",
+                        category="data_safety",
+                    )
+                )
 
         return matches
 
-    # --- BLOCK: Infrastructure Safety (B9-B12) ---
+    # --- BLOCK: Infrastructure Safety (B9-B12, B19) ---
 
     def _check_infra_safety(
         self,
@@ -354,23 +448,27 @@ class BlockAllowRuleEngine:
         # B9: Production Deploy Without Gate
         if tool_id in ("deploy.cloud_run", "deploy.firebase", "deploy.production"):
             if not context.get("ci_pipeline_passed"):
-                matches.append(RuleMatch(
-                    rule_id="B9",
-                    verdict=Verdict.BLOCK,
-                    description="Production deploy without CI/CD pipeline gate",
-                    category="infra",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="B9",
+                        verdict=Verdict.BLOCK,
+                        description="Production deploy without CI/CD pipeline gate",
+                        category="infra",
+                    )
+                )
 
         # B10: Resource Exhaustion
         if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
             for pattern in _RESOURCE_EXHAUSTION_PATTERNS:
                 if pattern.search(cmd):
-                    matches.append(RuleMatch(
-                        rule_id="B10",
-                        verdict=Verdict.BLOCK,
-                        description="Resource exhaustion pattern detected",
-                        category="infra",
-                    ))
+                    matches.append(
+                        RuleMatch(
+                            rule_id="B10",
+                            verdict=Verdict.BLOCK,
+                            description="Resource exhaustion pattern detected",
+                            category="infra",
+                        )
+                    )
                     break
 
         # B11: Network Exfiltration
@@ -378,22 +476,40 @@ class BlockAllowRuleEngine:
             first_token = cmd.split()[0] if cmd.split() else ""
             if first_token in _EXFIL_COMMANDS:
                 if not context.get("network_allowed"):
-                    matches.append(RuleMatch(
-                        rule_id="B11",
-                        verdict=Verdict.BLOCK,
-                        description=f"Outbound network via '{first_token}' without network_allowed context",
-                        category="infra",
-                    ))
+                    matches.append(
+                        RuleMatch(
+                            rule_id="B11",
+                            verdict=Verdict.BLOCK,
+                            description=f"Outbound network via '{first_token}' without network_allowed context",
+                            category="infra",
+                        )
+                    )
 
         # B12: Force Push
         if "git push" in cmd and ("--force" in cmd or "-f " in cmd):
             if context.get("branch", "") in ("main", "master", "production"):
-                matches.append(RuleMatch(
-                    rule_id="B12",
-                    verdict=Verdict.BLOCK,
-                    description="Force push to protected branch",
-                    category="infra",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="B12",
+                        verdict=Verdict.BLOCK,
+                        description="Force push to protected branch",
+                        category="infra",
+                    )
+                )
+
+        # B19: Cloud Resource Mutation (kubectl, aws, gcloud, gsutil)
+        if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
+            first_token = cmd.split()[0] if cmd.split() else ""
+            if first_token in _CLOUD_RESOURCE_COMMANDS:
+                if not context.get("cloud_mutation_authorized"):
+                    matches.append(
+                        RuleMatch(
+                            rule_id="B19",
+                            verdict=Verdict.ESCALATE,
+                            description=f"Cloud resource command '{first_token}' without cloud_mutation_authorized",
+                            category="infra",
+                        )
+                    )
 
         return matches
 
@@ -411,12 +527,14 @@ class BlockAllowRuleEngine:
         all_input_text = " ".join(str(v) for v in tool_input.values()).lower()
         for marker in _PROMPT_INJECTION_MARKERS:
             if marker in all_input_text:
-                matches.append(RuleMatch(
-                    rule_id="B13",
-                    verdict=Verdict.BLOCK,
-                    description=f"Prompt injection pattern detected: '{marker}'",
-                    category="agent",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="B13",
+                        verdict=Verdict.BLOCK,
+                        description=f"Prompt injection pattern detected: '{marker}'",
+                        category="agent",
+                    )
+                )
                 break
 
         # B14: Self-Modification
@@ -435,32 +553,38 @@ class BlockAllowRuleEngine:
         for path in target_paths:
             if any(pattern in path for pattern in self_mod_patterns):
                 if not context.get("authorized_self_modification"):
-                    matches.append(RuleMatch(
-                        rule_id="B14",
-                        verdict=Verdict.ESCALATE,
-                        description=f"Agent self-modification detected: {path}",
-                        category="agent",
-                    ))
+                    matches.append(
+                        RuleMatch(
+                            rule_id="B14",
+                            verdict=Verdict.ESCALATE,
+                            description=f"Agent self-modification detected: {path}",
+                            category="agent",
+                        )
+                    )
                     break
 
         # B15: Tool Output Trust — blind execution of prior tool output
         if context.get("source") == "tool_output" and not context.get("output_verified"):
-            matches.append(RuleMatch(
-                rule_id="B15",
-                verdict=Verdict.ESCALATE,
-                description="Action sourced from unverified tool output",
-                category="agent",
-            ))
+            matches.append(
+                RuleMatch(
+                    rule_id="B15",
+                    verdict=Verdict.ESCALATE,
+                    description="Action sourced from unverified tool output",
+                    category="agent",
+                )
+            )
 
         # B16: Scope Escalation — mass operations
         if tool_input.get("batch_size", 0) > 50 or tool_input.get("file_count", 0) > 20:
             if not context.get("authorized_mass_operation"):
-                matches.append(RuleMatch(
-                    rule_id="B16",
-                    verdict=Verdict.ESCALATE,
-                    description="Mass operation exceeds scope threshold",
-                    category="agent",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="B16",
+                        verdict=Verdict.ESCALATE,
+                        description="Mass operation exceeds scope threshold",
+                        category="agent",
+                    )
+                )
 
         return matches
 
@@ -477,53 +601,59 @@ class BlockAllowRuleEngine:
         cmd = str(tool_input.get("command", ""))
 
         # Prune stale entries from rolling window
-        self._bash_call_timestamps = [
-            t for t in self._bash_call_timestamps if now - t < self._window_seconds
-        ]
+        self._bash_call_timestamps = [t for t in self._bash_call_timestamps if now - t < self._window_seconds]
 
         if tool_id in ("bash", "shell", "terminal", "run_command"):
             self._bash_call_timestamps.append(now)
 
             # C1: Chain Depth Escalation (>10 bash calls in 5 min)
             if len(self._bash_call_timestamps) > 10:
-                matches.append(RuleMatch(
-                    rule_id="C1",
-                    verdict=Verdict.ESCALATE,
-                    description=f"Chain depth: {len(self._bash_call_timestamps)} bash calls in {self._window_seconds}s window",
-                    category="chain",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="C1",
+                        verdict=Verdict.ESCALATE,
+                        description=f"Chain depth: {len(self._bash_call_timestamps)} bash calls in {self._window_seconds}s window",
+                        category="chain",
+                    )
+                )
 
             # C3: Encoding Detection
             for enc_cmd in _ENCODING_COMMANDS:
                 if enc_cmd in cmd:
-                    matches.append(RuleMatch(
-                        rule_id="C3",
-                        verdict=Verdict.BLOCK,
-                        description=f"Encoding command detected in chain: '{enc_cmd}'",
-                        category="chain",
-                    ))
+                    matches.append(
+                        RuleMatch(
+                            rule_id="C3",
+                            verdict=Verdict.BLOCK,
+                            description=f"Encoding command detected in chain: '{enc_cmd}'",
+                            category="chain",
+                        )
+                    )
                     break
 
             # C4: Temp File Reconstruction
             if "/tmp/" in cmd and (">" in cmd or "tee " in cmd):
-                matches.append(RuleMatch(
-                    rule_id="C4",
-                    verdict=Verdict.BLOCK,
-                    description="Temp file write detected (potential reconstruction attack)",
-                    category="chain",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="C4",
+                        verdict=Verdict.BLOCK,
+                        description="Temp file write detected (potential reconstruction attack)",
+                        category="chain",
+                    )
+                )
 
         # C2: File Assembly Detection
         target_file = str(tool_input.get("path", ""))
         if target_file and tool_id in ("write", "edit", "append"):
             self._recent_file_writes[target_file] = self._recent_file_writes.get(target_file, 0) + 1
             if self._recent_file_writes[target_file] >= 3:
-                matches.append(RuleMatch(
-                    rule_id="C2",
-                    verdict=Verdict.ESCALATE,
-                    description=f"File assembly: {self._recent_file_writes[target_file]} sequential writes to '{target_file}'",
-                    category="chain",
-                ))
+                matches.append(
+                    RuleMatch(
+                        rule_id="C2",
+                        verdict=Verdict.ESCALATE,
+                        description=f"File assembly: {self._recent_file_writes[target_file]} sequential writes to '{target_file}'",
+                        category="chain",
+                    )
+                )
 
         return matches
 
@@ -539,75 +669,91 @@ class BlockAllowRuleEngine:
 
         # A1: Test Artifacts
         if context.get("is_test_environment") or context.get("test_mode"):
-            allows.append(RuleMatch(
-                rule_id="A1",
-                verdict=Verdict.ALLOW,
-                description="Test environment — test artifact exception",
-                category="exception",
-            ))
+            allows.append(
+                RuleMatch(
+                    rule_id="A1",
+                    verdict=Verdict.ALLOW,
+                    description="Test environment — test artifact exception",
+                    category="exception",
+                )
+            )
 
         # A2: Local Development
         if context.get("environment") in ("local", "development"):
-            allows.append(RuleMatch(
-                rule_id="A2",
-                verdict=Verdict.ALLOW,
-                description="Local development environment",
-                category="exception",
-            ))
+            allows.append(
+                RuleMatch(
+                    rule_id="A2",
+                    verdict=Verdict.ALLOW,
+                    description="Local development environment",
+                    category="exception",
+                )
+            )
 
         # A3: Read-Only Queries
         if tool_id.startswith("read.") or tool_id.startswith("get.") or tool_input.get("method") == "GET":
-            allows.append(RuleMatch(
-                rule_id="A3",
-                verdict=Verdict.ALLOW,
-                description="Read-only operation",
-                category="exception",
-            ))
+            allows.append(
+                RuleMatch(
+                    rule_id="A3",
+                    verdict=Verdict.ALLOW,
+                    description="Read-only operation",
+                    category="exception",
+                )
+            )
 
         # A4: Explicit User Confirmation
         if context.get("user_confirmed"):
-            allows.append(RuleMatch(
-                rule_id="A4",
-                verdict=Verdict.ALLOW,
-                description="Explicit user confirmation provided",
-                category="exception",
-            ))
+            allows.append(
+                RuleMatch(
+                    rule_id="A4",
+                    verdict=Verdict.ALLOW,
+                    description="Explicit user confirmation provided",
+                    category="exception",
+                )
+            )
 
         # A5: CI Pipeline Context
         if context.get("ci_pipeline_passed"):
-            allows.append(RuleMatch(
-                rule_id="A5",
-                verdict=Verdict.ALLOW,
-                description="CI pipeline gate passed",
-                category="exception",
-            ))
+            allows.append(
+                RuleMatch(
+                    rule_id="A5",
+                    verdict=Verdict.ALLOW,
+                    description="CI pipeline gate passed",
+                    category="exception",
+                )
+            )
 
         # A6: Sandbox Environment
         if context.get("environment") == "sandbox":
-            allows.append(RuleMatch(
-                rule_id="A6",
-                verdict=Verdict.ALLOW,
-                description="Sandbox environment — relaxed constraints",
-                category="exception",
-            ))
+            allows.append(
+                RuleMatch(
+                    rule_id="A6",
+                    verdict=Verdict.ALLOW,
+                    description="Sandbox environment — relaxed constraints",
+                    category="exception",
+                )
+            )
 
         # A7: Kovel Session Operations (within authenticated boundary)
         if context.get("active_kovel_session") and context.get("tenant_id") in self._session_boundary:
-            allows.append(RuleMatch(
-                rule_id="A7",
-                verdict=Verdict.ALLOW,
-                description="Within authenticated Kovel session boundary",
-                category="exception",
-            ))
+            allows.append(
+                RuleMatch(
+                    rule_id="A7",
+                    verdict=Verdict.ALLOW,
+                    description="Within authenticated Kovel session boundary",
+                    category="exception",
+                )
+            )
 
         # A8: Authorized Network Operations
         if context.get("network_allowed"):
-            allows.append(RuleMatch(
-                rule_id="A8",
-                verdict=Verdict.ALLOW,
-                description="Network operations explicitly authorized",
-                category="exception",
-            ))
+            allows.append(
+                RuleMatch(
+                    rule_id="A8",
+                    verdict=Verdict.ALLOW,
+                    description="Network operations explicitly authorized",
+                    category="exception",
+                )
+            )
 
         return allows
 
@@ -681,8 +827,7 @@ class AntiRationalizationGate:
         for marker in cls.RATIONALIZATION_MARKERS:
             if marker in reasoning_lower:
                 logger.warning(
-                    "Anti-Rationalization: detected marker '%s' in agent reasoning "
-                    "while action was %s (rules: %s)",
+                    "Anti-Rationalization: detected marker '%s' in agent reasoning while action was %s (rules: %s)",
                     marker,
                     evaluation.final_verdict,
                     [r.rule_id for r in evaluation.matched_rules],
