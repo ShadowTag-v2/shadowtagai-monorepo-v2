@@ -13,7 +13,6 @@ from __future__ import annotations
 import logging
 import pathlib
 import time
-from typing import Optional
 
 from packages.magic_docs.detector import (
     detect_magic_doc_header,
@@ -30,7 +29,7 @@ _MIN_UPDATE_INTERVAL = 60.0
 _last_update_times: dict[str, float] = {}
 
 
-def _read_magic_doc(path: str) -> Optional[str]:
+def _read_magic_doc(path: str) -> str | None:
     """Read a Magic Doc file, returning content or None if inaccessible."""
     try:
         return pathlib.Path(path).read_text(encoding="utf-8")
@@ -49,7 +48,7 @@ def update_single_magic_doc(
     path: str,
     *,
     dry_run: bool = False,
-) -> Optional[str]:
+) -> str | None:
     """Update a single Magic Doc.
 
     Reads the file, detects the header, and generates an update prompt.
@@ -97,7 +96,7 @@ def update_single_magic_doc(
 def update_magic_docs(
     *,
     dry_run: bool = False,
-) -> dict[str, Optional[str]]:
+) -> dict[str, str | None]:
     """Update all tracked Magic Docs.
 
     Returns:
@@ -107,7 +106,7 @@ def update_magic_docs(
     if not docs:
         return {}
 
-    results: dict[str, Optional[str]] = {}
+    results: dict[str, str | None] = {}
     for doc in docs:
         if not _should_update(doc.path):
             logger.debug("Skipping %s — rate limited", doc.path)

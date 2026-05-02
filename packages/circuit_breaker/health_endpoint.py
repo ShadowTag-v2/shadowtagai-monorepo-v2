@@ -58,7 +58,6 @@ def health_response(
 
     if registry is not None:
         # Use the provided registry instead of the default
-        from circuit_breaker.dashboard import default_registry as _default
 
         # Temporarily swap — dashboard uses module-level default_registry
         import circuit_breaker.dashboard as _dashboard

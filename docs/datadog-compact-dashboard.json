@@ -1,0 +1,174 @@
+{
+  "title": "AGNT Compact Pipeline — tengu_compact_* Metrics",
+  "description": "4-Layer Context Compaction Pipeline monitoring. Tracks invocations, layer latency, circuit breaker activations, and threshold gate outcomes.",
+  "widgets": [
+    {
+      "id": 1,
+      "definition": {
+        "title": "Compact Invocations (hourly)",
+        "type": "timeseries",
+        "requests": [
+          {
+            "q": "sum:tengu_compact_invoked.count{*}.as_count()",
+            "display_type": "bars",
+            "style": {
+              "palette": "dog_classic"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "definition": {
+        "title": "Pipeline Completion Rate",
+        "type": "query_value",
+        "requests": [
+          {
+            "q": "sum:tengu_compact_complete.count{*}.as_count() / sum:tengu_compact_invoked.count{*}.as_count() * 100",
+            "aggregator": "last"
+          }
+        ],
+        "precision": 1,
+        "custom_unit": "%"
+      }
+    },
+    {
+      "id": 3,
+      "definition": {
+        "title": "Layer Latency (p95, ms)",
+        "type": "timeseries",
+        "requests": [
+          {
+            "q": "p95:tengu_compact_complete.l1_ms{*}",
+            "display_type": "line",
+            "style": { "line_type": "solid", "line_width": "normal" },
+            "metadata": [{ "expression": "p95:tengu_compact_complete.l1_ms{*}", "alias_name": "L1 Microcompact" }]
+          },
+          {
+            "q": "p95:tengu_compact_complete.l2_ms{*}",
+            "display_type": "line",
+            "metadata": [{ "expression": "p95:tengu_compact_complete.l2_ms{*}", "alias_name": "L2 History Snip" }]
+          },
+          {
+            "q": "p95:tengu_compact_complete.l3_ms{*}",
+            "display_type": "line",
+            "metadata": [{ "expression": "p95:tengu_compact_complete.l3_ms{*}", "alias_name": "L3 Context Collapse" }]
+          },
+          {
+            "q": "p95:tengu_compact_complete.l4_ms{*}",
+            "display_type": "line",
+            "metadata": [{ "expression": "p95:tengu_compact_complete.l4_ms{*}", "alias_name": "L4 Token Budget" }]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "definition": {
+        "title": "Reduction % Distribution",
+        "type": "distribution",
+        "requests": [
+          {
+            "q": "avg:tengu_compact_complete.reductionPct{*}",
+            "style": { "palette": "purple" }
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "definition": {
+        "title": "Circuit Breaker Activations",
+        "type": "query_value",
+        "requests": [
+          {
+            "q": "sum:tengu_compact_complete{circuitBroken:true}.as_count()",
+            "aggregator": "sum"
+          }
+        ],
+        "precision": 0,
+        "custom_unit": " trips"
+      }
+    },
+    {
+      "id": 6,
+      "definition": {
+        "title": "Threshold Gate Failures",
+        "type": "timeseries",
+        "requests": [
+          {
+            "q": "sum:tengu_compact_threshold_fail.count{*}.as_count()",
+            "display_type": "bars",
+            "style": { "palette": "warm" }
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "definition": {
+        "title": "Error Rate",
+        "type": "timeseries",
+        "requests": [
+          {
+            "q": "sum:tengu_compact_error.count{*}.as_count()",
+            "display_type": "bars",
+            "style": { "palette": "red" }
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "definition": {
+        "title": "Total Pipeline Duration (p95, ms)",
+        "type": "timeseries",
+        "requests": [
+          {
+            "q": "p95:tengu_compact_complete.durationMs{*}",
+            "display_type": "line",
+            "style": { "palette": "cool" }
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "definition": {
+        "title": "Dry Run Invocations",
+        "type": "query_value",
+        "requests": [
+          {
+            "q": "sum:tengu_compact_dry_run.count{*}.as_count()",
+            "aggregator": "sum"
+          }
+        ],
+        "precision": 0
+      }
+    },
+    {
+      "id": 10,
+      "definition": {
+        "title": "Message Count In vs Out (avg)",
+        "type": "timeseries",
+        "requests": [
+          {
+            "q": "avg:tengu_compact_complete.inputMessages{*}",
+            "display_type": "line",
+            "metadata": [{ "expression": "avg:tengu_compact_complete.inputMessages{*}", "alias_name": "Input Msgs" }]
+          },
+          {
+            "q": "avg:tengu_compact_complete.outputMessages{*}",
+            "display_type": "line",
+            "metadata": [{ "expression": "avg:tengu_compact_complete.outputMessages{*}", "alias_name": "Output Msgs" }]
+          }
+        ]
+      }
+    }
+  ],
+  "template_variables": [],
+  "layout_type": "ordered",
+  "notify_list": [],
+  "reflow_type": "auto"
+}

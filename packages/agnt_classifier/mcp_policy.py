@@ -129,9 +129,7 @@ class PolicyResult:
 # ── Policy Evaluation Functions ──
 
 
-def _command_arrays_match(
-    pattern: tuple[str, ...], actual: list[str] | tuple[str, ...]
-) -> bool:
+def _command_arrays_match(pattern: tuple[str, ...], actual: list[str] | tuple[str, ...]) -> bool:
     """Check if command arrays match.
 
     Claude Code uses exact match on the command array.
@@ -202,15 +200,11 @@ def is_mcp_server_denied(
                 return True, entry
 
         elif entry.entry_type == PolicyEntryType.COMMAND and server_info:
-            if server_info.command and _command_arrays_match(
-                entry.server_command, server_info.command
-            ):
+            if server_info.command and _command_arrays_match(entry.server_command, server_info.command):
                 return True, entry
 
         elif entry.entry_type == PolicyEntryType.URL and server_info:
-            if server_info.url and _url_matches_pattern(
-                server_info.url, entry.server_url
-            ):
+            if server_info.url and _url_matches_pattern(server_info.url, entry.server_url):
                 return True, entry
 
     return False, None
@@ -258,12 +252,8 @@ def is_mcp_server_allowed_by_policy(
         )
 
     # Step 4: Check allowlist entries
-    has_command_entries = any(
-        e.entry_type == PolicyEntryType.COMMAND for e in policy.allowed_servers
-    )
-    has_url_entries = any(
-        e.entry_type == PolicyEntryType.URL for e in policy.allowed_servers
-    )
+    has_command_entries = any(e.entry_type == PolicyEntryType.COMMAND for e in policy.allowed_servers)
+    has_url_entries = any(e.entry_type == PolicyEntryType.URL for e in policy.allowed_servers)
 
     if server_info:
         # stdio server with command
@@ -271,12 +261,10 @@ def is_mcp_server_allowed_by_policy(
             if has_command_entries:
                 for entry in policy.allowed_servers:
                     if entry.entry_type == PolicyEntryType.COMMAND:
-                        if _command_arrays_match(
-                            entry.server_command, server_info.command
-                        ):
+                        if _command_arrays_match(entry.server_command, server_info.command):
                             return PolicyResult(
                                 allowed=True,
-                                reason=f"Server command matches allowlist entry.",
+                                reason="Server command matches allowlist entry.",
                                 matched_entry=entry,
                             )
                 return PolicyResult(
@@ -293,7 +281,7 @@ def is_mcp_server_allowed_by_policy(
                         if _url_matches_pattern(server_info.url, entry.server_url):
                             return PolicyResult(
                                 allowed=True,
-                                reason=f"Server URL matches allowlist pattern.",
+                                reason="Server URL matches allowlist pattern.",
                                 matched_entry=entry,
                             )
                 return PolicyResult(

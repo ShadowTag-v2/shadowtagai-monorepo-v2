@@ -228,3 +228,60 @@ describe('Circuit Breaker Boundary Tests', () => {
     }
   });
 });
+
+// ─────────────────────────────────────────────────
+// Layer Timing Instrumentation Tests
+// ─────────────────────────────────────────────────
+
+describe('Layer Timing Instrumentation', () => {
+  beforeEach(() => resetCompactionCircuitBreaker());
+
+  it('pipeline result includes layerTimings with all 4 layers', async () => {
+    const msgs = [
+      { role: 'user', content: 'Hello' },
+      { role: 'assistant', content: 'Hi there', message: { id: 'r1' } },
+    ];
+    const r = await runCompactionPipeline(msgs, 200_000);
+
+    expect(r.layerTimings).toBeDefined();
+    expect(r.layerTimings).toHaveProperty('tokenBudget');
+    expect(r.layerTimings).toHaveProperty('apiMicrocompact');
+    expect(r.layerTimings).toHaveProperty('historySnip');
+    expect(r.layerTimings).toHaveProperty('contextCollapse');
+  });
+
+  it('all timing values are non-negative numbers', async () => {
+    const msgs = Array.from({ length: 100 }, (_, i) => ({
+      role: i % 2 === 0 ? 'user' : 'assistant',
+      content: `msg-${i}`,
+      ...(i % 2 === 1 ? { message: { id: `t-${i}` } } : {}),
+    }));
+    const r = await runCompactionPipeline(msgs, 200_000);
+
+    for (const [, ms] of Object.entries(r.layerTimings!)) {
+      expect(typeof ms).toBe('number');
+      expect(ms).toBeGreaterThanOrEqual(0);
+    }
+  });
+
+  it('timing reflects workload — larger conversations take more time per layer', async () => {
+    const small = [{ role: 'user', content: 'x' }];
+    const large = Array.from({ length: 500 }, (_, i) => ({
+      role: i % 2 === 0 ? 'user' : 'assistant',
+      content: `msg-${i} ${'data '.repeat(20)}`,
+      ...(i % 2 === 1 ? { message: { id: `r-${i}` } } : {}),
+    }));
+
+    const rSmall = await runCompactionPipeline(small, 200_000);
+    const rLarge = await runCompactionPipeline(large, 200_000);
+
+    // Both should have timing data
+    expect(rSmall.layerTimings).toBeDefined();
+    expect(rLarge.layerTimings).toBeDefined();
+
+    // Total timing for large should generally be >= small
+    const totalSmall = Object.values(rSmall.layerTimings!).reduce((a, b) => a + b, 0);
+    const totalLarge = Object.values(rLarge.layerTimings!).reduce((a, b) => a + b, 0);
+    expect(totalLarge).toBeGreaterThanOrEqual(totalSmall);
+  });
+});

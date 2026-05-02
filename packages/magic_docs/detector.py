@@ -10,7 +10,6 @@ import pathlib
 import re
 import threading
 from dataclasses import dataclass
-from typing import Optional
 
 # Magic Doc header pattern: # MAGIC DOC: [title]
 # Matches at the start of the file (first line)
@@ -30,7 +29,7 @@ class MagicDocHeader:
     """
 
     title: str
-    instructions: Optional[str] = None
+    instructions: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -49,7 +48,7 @@ _tracked_lock = threading.Lock()
 _tracked_magic_docs: dict[str, MagicDocInfo] = {}
 
 
-def detect_magic_doc_header(content: str) -> Optional[MagicDocHeader]:
+def detect_magic_doc_header(content: str) -> MagicDocHeader | None:
     """Detect if file content contains a Magic Doc header.
 
     Returns:
