@@ -35,6 +35,7 @@ class PipelineMode(StrEnum):
     PAIR_PROGRAMMING = "pair_programming"
     RESEARCH_SWEEP = "research_sweep"
     HYBRID = "hybrid"  # Both running concurrently
+    SUGGESTION = "suggestion"  # Lightweight single-turn for proactive prefetch
 
 
 # ---------------------------------------------------------------------------
