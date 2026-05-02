@@ -55,6 +55,13 @@ title = "Monorepo-Uphillsnowball Betterleaks Config"
     '''\.agent/incoming_repos/''',
     '''\.env\.backup''',
     '''\.next/''',
+    # ── Transient runtime artifacts (not source code) ──
+    # .tmp.driveupload/: Google Drive sync cache (4,142 false positives)
+    # .beads/: KAIROS audit trail + heartbeat (490 false positives — contain references to findings)
+    # .reports/: betterleaks reports that contain finding matches by design
+    '''\.tmp\.driveupload/''',
+    '''\.beads/''',
+    '''\.reports/''',
     # ── HIGH-risk third-party allowlist (audited 2026-04-19) ──
     # Stripe sk_test_ key: Odoo payment_stripe test fixture (NOT our account)
     # Vault s.Fg8w token: OpenTofu website example doc (NOT live)
