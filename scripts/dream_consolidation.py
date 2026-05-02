@@ -219,7 +219,7 @@ class DreamLockFile:
                 except OSError:
                     # Process is dead — break the stale lock
                     logger.warning("Breaking orphaned lock (dead PID %d)", held_pid)
-            except (json.JSONDecodeError, KeyError, ValueError):
+            except json.JSONDecodeError, KeyError, ValueError:
                 logger.warning("Corrupt lock file, replacing")
 
         # Write our lock
@@ -246,7 +246,7 @@ class DreamLockFile:
                         lock_data.get("pid", -1),
                         os.getpid(),
                     )
-            except (json.JSONDecodeError, OSError):
+            except json.JSONDecodeError, OSError:
                 pass
 
 
@@ -265,6 +265,7 @@ class KIEntry:
     path: str = ""
     size_kb: float = 0.0
     artifact_count: int = 0
+    artifact_sizes: dict = field(default_factory=dict)  # {filename: size_kb}
 
 
 @dataclass
@@ -308,12 +309,15 @@ def orient(ki_dir: Path) -> list[KIEntry]:
             artifacts_dir = ki_path / "artifacts"
             artifact_count = 0
             total_size = 0
+            artifact_sizes = {}  # Track individual file sizes
 
             if artifacts_dir.exists():
                 for artifact in artifacts_dir.iterdir():
                     if artifact.is_file():
                         artifact_count += 1
-                        total_size += artifact.stat().st_size
+                        file_size = artifact.stat().st_size
+                        total_size += file_size
+                        artifact_sizes[artifact.name] = round(file_size / 1024, 2)
 
             entry = KIEntry(
                 name=meta.get("name", ki_path.name),
@@ -324,10 +328,11 @@ def orient(ki_dir: Path) -> list[KIEntry]:
                 path=str(ki_path),
                 size_kb=round(total_size / 1024, 2),
                 artifact_count=artifact_count,
+                artifact_sizes=artifact_sizes,
             )
             entries.append(entry)
 
-        except (json.JSONDecodeError, KeyError):
+        except json.JSONDecodeError, KeyError:
             pass
 
     return entries
@@ -375,16 +380,19 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
                 )
                 report.dates_normalized += 1
 
-        # Check size limits
-        if entry.size_kb > ARTIFACT_MAX_KB:
-            issues["size_violations"].append(
-                {
-                    "ki": entry.name,
-                    "size_kb": entry.size_kb,
-                    "limit_kb": ARTIFACT_MAX_KB,
-                },
-            )
-            report.size_violations.append(entry.name)
+        # Check size limits — evaluate individual artifact files, not directory total
+        for artifact_name, artifact_kb in entry.artifact_sizes.items():
+            if artifact_kb > ARTIFACT_MAX_KB:
+                issues["size_violations"].append(
+                    {
+                        "ki": entry.name,
+                        "artifact": artifact_name,
+                        "size_kb": artifact_kb,
+                        "limit_kb": ARTIFACT_MAX_KB,
+                    },
+                )
+                if entry.name not in report.size_violations:
+                    report.size_violations.append(entry.name)
 
         # Check for stale entries (>30 days since last update)
         if entry.updated_at:
@@ -399,7 +407,7 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
                             "updated_at": entry.updated_at,
                         },
                     )
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
     report.ki_scanned = len(entries)
@@ -436,7 +444,8 @@ def prune(entries: list[KIEntry], issues: dict, report: DreamReport) -> None:
     """Enforce size limits, remove orphans, trim index."""
     # Report size violations
     for sv in issues["size_violations"]:
-        report.actions.append(f"SIZE VIOLATION: '{sv['ki']}' is {sv['size_kb']}KB (limit: {sv['limit_kb']}KB) — consider splitting")
+        artifact_name = sv.get("artifact", "unknown")
+        report.actions.append(f"SIZE VIOLATION: '{sv['ki']}/{artifact_name}' is {sv['size_kb']}KB (limit: {sv['limit_kb']}KB) — consider splitting")
 
     # Check for orphaned artifacts (artifacts dir but no metadata reference)
     for entry in entries:
@@ -444,17 +453,31 @@ def prune(entries: list[KIEntry], issues: dict, report: DreamReport) -> None:
         if not artifacts_dir.exists():
             continue
 
-        # Get referenced artifact paths
-        referenced_paths = set()
+        # Build set of known artifact filenames from BOTH metadata sources:
+        # 1. metadata.artifacts[] = [{filename: 'x.md', ...}, ...]
+        # 2. metadata.references[] = [{type: 'file', path: '...'}]
+        known_filenames = set()
+
+        # Source 1: metadata.json "artifacts" key (primary registration)
+        metadata_file = Path(entry.path) / "metadata.json"
+        if metadata_file.exists():
+            with contextlib.suppress(json.JSONDecodeError, OSError):
+                meta = json.loads(metadata_file.read_text())
+                for art in meta.get("artifacts", []):
+                    if isinstance(art, dict) and art.get("filename"):
+                        known_filenames.add(art["filename"])
+
+        # Source 2: metadata.json "references" key (legacy path-based refs)
         for ref in entry.references:
             if isinstance(ref, dict) and ref.get("type") == "file":
-                referenced_paths.add(ref.get("path", ""))
+                ref_path = ref.get("path", "")
+                if ref_path:
+                    known_filenames.add(Path(ref_path).name)
 
         # Check for unreferenced artifacts
         for artifact in artifacts_dir.iterdir():
             if artifact.is_file():
-                rel_path = str(artifact.relative_to(Path(entry.path).parent))
-                if rel_path not in referenced_paths and artifact.name != ".gitkeep":
+                if artifact.name not in known_filenames and artifact.name != ".gitkeep":
                     report.orphaned_artifacts.append(str(artifact))
                     report.artifacts_pruned += 1
 
