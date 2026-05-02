@@ -801,3 +801,341 @@ class EventCatalog:
                 "user_id": user_id,
             },
         )
+
+    # --- Tool Lifecycle Events (Extended) ---
+
+    @staticmethod
+    def tool_use_blocked(
+        tool_id: str = "",
+        reason: str = "",
+        tier: str = "",
+        matched_rules: list[str] | None = None,
+    ) -> TelemetryEvent:
+        """agnt_tool_use_blocked — Tool execution blocked by gateway.
+
+        CC equivalent: tengu_tool_use_blocked
+        """
+        return TelemetryEvent(
+            event="agnt_tool_use_blocked",
+            category=EventCategory.TOOL,
+            success=False,
+            properties={
+                "tool_id": tool_id,
+                "reason": reason,
+                "tier": tier,
+                "matched_rules": matched_rules or [],
+            },
+        )
+
+    @staticmethod
+    def tool_use_timeout(
+        tool_id: str = "",
+        timeout_ms: float = 0.0,
+    ) -> TelemetryEvent:
+        """agnt_tool_use_timeout — Tool execution timed out.
+
+        CC equivalent: tengu_tool_use_timeout
+        """
+        return TelemetryEvent(
+            event="agnt_tool_use_timeout",
+            category=EventCategory.TOOL,
+            success=False,
+            duration_ms=timeout_ms,
+            error_message=f"Tool '{tool_id}' exceeded timeout ({timeout_ms}ms)",
+            properties={"tool_id": tool_id},
+        )
+
+    # --- Auto-Dream Events ---
+
+    @staticmethod
+    def auto_dream_started(
+        session_id: str = "",
+        memory_count: int = 0,
+        trigger: str = "",
+    ) -> TelemetryEvent:
+        """agnt_auto_dream_started — AutoDream memory consolidation initiated.
+
+        CC equivalent: tengu_auto_dream_started
+        """
+        return TelemetryEvent(
+            event="agnt_auto_dream_started",
+            category=EventCategory.MEMORY,
+            properties={
+                "session_id": session_id,
+                "memory_count": memory_count,
+                "trigger": trigger,
+            },
+        )
+
+    @staticmethod
+    def auto_dream_completed(
+        session_id: str = "",
+        memories_consolidated: int = 0,
+        memories_pruned: int = 0,
+        duration_ms: float = 0.0,
+    ) -> TelemetryEvent:
+        """agnt_auto_dream_completed — AutoDream consolidation finished.
+
+        CC equivalent: tengu_auto_dream_completed
+        """
+        return TelemetryEvent(
+            event="agnt_auto_dream_completed",
+            category=EventCategory.MEMORY,
+            duration_ms=duration_ms,
+            properties={
+                "session_id": session_id,
+                "memories_consolidated": memories_consolidated,
+                "memories_pruned": memories_pruned,
+            },
+        )
+
+    # --- Shell Security Events (Extended) ---
+
+    @staticmethod
+    def bash_rate_limit_hit(
+        command_hash: str = "",
+        call_count: int = 0,
+        limit: int = 10,
+        window_seconds: float = 60.0,
+    ) -> TelemetryEvent:
+        """agnt_bash_rate_limit_hit — Bash tool hit rate limit cap.
+
+        CC equivalent: tengu_bash_rate_limit (50-subcommand cap per Adversa §3.4)
+        """
+        return TelemetryEvent(
+            event="agnt_bash_rate_limit_hit",
+            category=EventCategory.SHELL,
+            success=False,
+            error_message=f"Rate limit hit: {call_count}/{limit} in {window_seconds}s",
+            properties={
+                "command_hash": command_hash,
+                "call_count": call_count,
+                "limit": limit,
+                "window_seconds": window_seconds,
+            },
+        )
+
+    # --- Undercover Mode Events ---
+
+    @staticmethod
+    def undercover_activated(
+        repo_class: str = "",
+        forced: bool = False,
+    ) -> TelemetryEvent:
+        """agnt_undercover_activated — Undercover mode turned on.
+
+        CC equivalent: tengu_undercover_activated
+        """
+        return TelemetryEvent(
+            event="agnt_undercover_activated",
+            category=EventCategory.SESSION,
+            properties={
+                "repo_class": repo_class,
+                "forced": forced,
+            },
+        )
+
+    @staticmethod
+    def undercover_deactivated(
+        repo_class: str = "",
+        reason: str = "",
+    ) -> TelemetryEvent:
+        """agnt_undercover_deactivated — Undercover mode turned off.
+
+        CC equivalent: tengu_undercover_deactivated
+        """
+        return TelemetryEvent(
+            event="agnt_undercover_deactivated",
+            category=EventCategory.SESSION,
+            properties={
+                "repo_class": repo_class,
+                "reason": reason,
+            },
+        )
+
+    # --- Sandbox Violation Events ---
+
+    @staticmethod
+    def sandbox_violation(
+        tool_id: str = "",
+        path: str = "",
+        resolution_type: str = "",
+        deny_reason: str = "",
+    ) -> TelemetryEvent:
+        """agnt_sandbox_violation — Filesystem path violated sandbox boundary.
+
+        CC equivalent: tengu_sandbox_violation
+        """
+        return TelemetryEvent(
+            event="agnt_sandbox_violation",
+            category=EventCategory.CLASSIFIER,
+            success=False,
+            properties={
+                "tool_id": tool_id,
+                "path": path,
+                "resolution_type": resolution_type,
+                "deny_reason": deny_reason,
+            },
+        )
+
+    # --- Compaction Events (Extended) ---
+
+    @staticmethod
+    def compact_skipped(
+        reason: str = "",
+        token_count: int = 0,
+        threshold: int = 0,
+    ) -> TelemetryEvent:
+        """agnt_compact_skipped — Compaction skipped (below threshold / rate limited).
+
+        CC equivalent: tengu_compact_skipped
+        """
+        return TelemetryEvent(
+            event="agnt_compact_skipped",
+            category=EventCategory.COMPACTION,
+            properties={
+                "reason": reason,
+                "token_count": token_count,
+                "threshold": threshold,
+            },
+        )
+
+    # --- Context Window Events ---
+
+    @staticmethod
+    def context_checkpoint(
+        conversation_id: str = "",
+        tokens_used: int = 0,
+        tokens_remaining: int = 0,
+        pct_used: float = 0.0,
+        turn_index: int = 0,
+    ) -> TelemetryEvent:
+        """agnt_context_checkpoint — Periodic context window health snapshot.
+
+        CC equivalent: tengu_context_checkpoint
+        """
+        return TelemetryEvent(
+            event="agnt_context_checkpoint",
+            category=EventCategory.SESSION,
+            properties={
+                "conversation_id": conversation_id,
+                "tokens_used": tokens_used,
+                "tokens_remaining": tokens_remaining,
+                "pct_used": round(pct_used, 2),
+                "turn_index": turn_index,
+            },
+        )
+
+    @staticmethod
+    def context_window_exceeded(
+        conversation_id: str = "",
+        tokens_used: int = 0,
+        budget: int = 0,
+    ) -> TelemetryEvent:
+        """agnt_context_window_exceeded — Context window exhausted.
+
+        CC equivalent: tengu_context_exceeded
+        """
+        return TelemetryEvent(
+            event="agnt_context_window_exceeded",
+            category=EventCategory.ERROR,
+            success=False,
+            error_message=f"Context window exceeded: {tokens_used}/{budget} tokens",
+            properties={
+                "conversation_id": conversation_id,
+                "tokens_used": tokens_used,
+                "budget": budget,
+            },
+        )
+
+    # --- File Edit Events ---
+
+    @staticmethod
+    def file_edit_success(
+        file_path: str = "",
+        edit_type: str = "",
+        lines_changed: int = 0,
+    ) -> TelemetryEvent:
+        """agnt_file_edit_success — File edit completed successfully.
+
+        CC equivalent: tengu_file_edit_success
+        """
+        return TelemetryEvent(
+            event="agnt_file_edit_success",
+            category=EventCategory.TOOL,
+            properties={
+                "file_path": file_path,
+                "edit_type": edit_type,
+                "lines_changed": lines_changed,
+            },
+        )
+
+    @staticmethod
+    def file_edit_error(
+        file_path: str = "",
+        error_type: str = "",
+        error_message: str = "",
+    ) -> TelemetryEvent:
+        """agnt_file_edit_error — File edit failed.
+
+        CC equivalent: tengu_file_edit_error
+        """
+        return TelemetryEvent(
+            event="agnt_file_edit_error",
+            category=EventCategory.TOOL,
+            success=False,
+            error_message=error_message,
+            properties={
+                "file_path": file_path,
+                "error_type": error_type,
+            },
+        )
+
+    # --- Search Events ---
+
+    @staticmethod
+    def search_executed(
+        query_length: int = 0,
+        results_count: int = 0,
+        search_type: str = "",
+        duration_ms: float = 0.0,
+    ) -> TelemetryEvent:
+        """agnt_search_executed — Code/doc search completed.
+
+        CC equivalent: tengu_search_executed
+        """
+        return TelemetryEvent(
+            event="agnt_search_executed",
+            category=EventCategory.TOOL,
+            duration_ms=duration_ms,
+            properties={
+                "query_length": query_length,
+                "results_count": results_count,
+                "search_type": search_type,
+            },
+        )
+
+    # --- Anti-Distillation Events ---
+
+    @staticmethod
+    def anti_distillation_alert(
+        token_entropy: float = 0.0,
+        bigram_repetition: float = 0.0,
+        vocab_diversity: float = 0.0,
+        consecutive_suspicious: int = 0,
+    ) -> TelemetryEvent:
+        """agnt_anti_distillation_alert — Entropy monitor flagged distillation risk.
+
+        CC equivalent: tengu_anti_distillation_alert
+        """
+        return TelemetryEvent(
+            event="agnt_anti_distillation_alert",
+            category=EventCategory.SESSION,
+            success=False,
+            properties={
+                "token_entropy": round(token_entropy, 4),
+                "bigram_repetition": round(bigram_repetition, 4),
+                "vocab_diversity": round(vocab_diversity, 4),
+                "consecutive_suspicious": consecutive_suspicious,
+            },
+        )
