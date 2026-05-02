@@ -70,6 +70,70 @@ class SuggestionEntry:
         """Whether this suggestion is within TTL."""
         return self.age_seconds < SUGGESTION_TTL_SECONDS
 
+    @property
+    def quality_score(self) -> float:
+        """Tier 2 quality score — 0.0 to 1.0.
+
+        Scoring factors:
+          - Word count sweet spot (3-8 words → 1.0, outside → scaled down)
+          - Freshness weight (newer → higher)
+          - Slash-command bonus (+0.1 for /prefixed suggestions)
+          - Actionable verb boost (+0.1 if starts with imperative verb)
+        """
+        words = self.text.split()
+        word_count = len(words)
+
+        # Word count score: sweet spot is 3-8 words
+        if 3 <= word_count <= 8:
+            wc_score = 1.0
+        elif word_count < 3:
+            wc_score = max(0.3, word_count / 3.0)
+        else:
+            wc_score = max(0.4, 1.0 - (word_count - 8) * 0.15)
+
+        # Freshness weight: linearly decay from 1.0 to 0.0 over TTL
+        freshness = max(0.0, 1.0 - (self.age_seconds / SUGGESTION_TTL_SECONDS))
+
+        # Slash commands are inherently terse — don't penalize short word counts
+        if self.text.startswith("/"):
+            wc_score = max(wc_score, 1.0)
+
+        # Base score
+        score = wc_score * 0.6 + freshness * 0.4
+
+        # Slash-command bonus
+        if self.text.startswith("/"):
+            score = min(1.0, score + 0.1)
+
+        # Imperative verb boost
+        _IMPERATIVE_VERBS = frozenset(
+            {
+                "run",
+                "fix",
+                "add",
+                "deploy",
+                "test",
+                "build",
+                "commit",
+                "push",
+                "check",
+                "update",
+                "refactor",
+                "lint",
+                "install",
+                "create",
+                "delete",
+                "remove",
+                "move",
+                "rename",
+                "merge",
+            }
+        )
+        if words and words[0].lower() in _IMPERATIVE_VERBS:
+            score = min(1.0, score + 0.1)
+
+        return round(score, 3)
+
 
 class SuggestionConsumer:
     """Reader for KAIROS-generated proactive suggestions.
@@ -183,13 +247,47 @@ class SuggestionConsumer:
         except Exception:
             return None
 
+    def cache_status(self) -> dict:
+        """Return cache status summary for heartbeat integration.
+
+        Used by KAIROS daemon's write_heartbeat() to include
+        suggestion pipeline health in the heartbeat file.
+        """
+        if not self._cache_file.exists():
+            return {"state": "empty", "suggestion": None, "age_s": None, "quality": None}
+
+        try:
+            data = json.loads(self._cache_file.read_text())
+        except json.JSONDecodeError, OSError:
+            return {"state": "corrupt", "suggestion": None, "age_s": None, "quality": None}
+
+        suggestion_text = data.get("suggestion")
+        if not suggestion_text:
+            return {"state": "consumed", "suggestion": None, "age_s": None, "quality": None}
+
+        ts = data.get("timestamp", 0)
+        age = time.time() - ts
+        is_stale = age > self._ttl
+
+        entry = SuggestionEntry(
+            text=suggestion_text,
+            timestamp=ts,
+            iso=data.get("iso", ""),
+            generation_time_ms=data.get("generation_time_ms", 0.0),
+        )
+
+        return {
+            "state": "stale" if is_stale else "fresh",
+            "suggestion": suggestion_text[:40],
+            "age_s": round(age, 1),
+            "quality": entry.quality_score,
+        }
+
     def _clear_cache(self) -> None:
         """Clear the suggestion cache after consumption."""
         try:
             if self._cache_file.exists():
                 # Write an empty entry rather than deleting (immutable infra)
-                self._cache_file.write_text(
-                    json.dumps({"consumed_at": time.time(), "suggestion": None})
-                )
+                self._cache_file.write_text(json.dumps({"consumed_at": time.time(), "suggestion": None}))
         except OSError as e:
             logger.debug("Failed to clear suggestion cache: %s", e)
