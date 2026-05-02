@@ -1,5 +1,6 @@
 """V2X Mesh API Service
 
+import os
 FastAPI application for V2X mesh network management.
 
 Endpoints:
@@ -146,7 +147,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
+    allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
