@@ -1,147 +1,145 @@
-import { FILE_EDIT_TOOL_NAME } from 'src/tools/FileEditTool/constants.js';
-import { FILE_READ_TOOL_NAME } from 'src/tools/FileReadTool/prompt.js';
-import { FILE_WRITE_TOOL_NAME } from 'src/tools/FileWriteTool/prompt.js';
-import { GLOB_TOOL_NAME } from 'src/tools/GlobTool/prompt.js';
-import { GREP_TOOL_NAME } from 'src/tools/GrepTool/prompt.js';
-import { NOTEBOOK_EDIT_TOOL_NAME } from 'src/tools/NotebookEditTool/constants.js';
-import { WEB_FETCH_TOOL_NAME } from 'src/tools/WebFetchTool/prompt.js';
-import { WEB_SEARCH_TOOL_NAME } from 'src/tools/WebSearchTool/prompt.js';
-import { SHELL_TOOL_NAMES } from 'src/utils/shell/shellToolUtils.js';
-import { isEnvTruthy } from '../../utils/envUtils.js';
+/**
+ * Layer 1: API Microcompact (Server-side Context Stripping)
+ *
+ * Production-grade implementation mirroring microCompact.ts patterns:
+ *  - COMPACTABLE_TOOLS whitelist: Only compact known-safe tool outputs
+ *  - Tool use/result pairing: Never orphan a tool_use from its tool_result
+ *  - Redundant whitespace normalization
+ *  - Large tool output truncation with character budget
+ *  - Image placeholder compression
+ */
 
-// docs: https://docs.google.com/document/d/1oCT4evvWTh3P6z-kcfNQwWTCxAhkoFndSaNS9Gm40uw/edit?tab=t.0
+// Mirroring the COMPACTABLE_TOOLS set from microCompact.ts
+const COMPACTABLE_TOOLS = new Set<string>([
+  'Read',
+  'file_read',
+  'Bash',
+  'bash',
+  'Grep',
+  'grep',
+  'Glob',
+  'glob',
+  'WebSearch',
+  'web_search',
+  'WebFetch',
+  'web_fetch',
+  'FileEdit',
+  'file_edit',
+  'FileWrite',
+  'file_write',
+]);
 
-// Default values for context management strategies
-// Match client-side microcompact token values
-const DEFAULT_MAX_INPUT_TOKENS = 180_000; // Typical warning threshold
-const DEFAULT_TARGET_INPUT_TOKENS = 40_000; // Keep last 40k tokens like client-side
+// Image placeholder replaces image blocks during compaction (~2000 tokens each saved)
+const IMAGE_PLACEHOLDER = '[Image content removed during compaction]';
 
-const TOOLS_CLEARABLE_RESULTS = [
-  ...SHELL_TOOL_NAMES,
-  GLOB_TOOL_NAME,
-  GREP_TOOL_NAME,
-  FILE_READ_TOOL_NAME,
-  WEB_FETCH_TOOL_NAME,
-  WEB_SEARCH_TOOL_NAME,
-];
+interface ContentBlock {
+  type: string;
+  text?: string;
+  content?: string;
+  name?: string;
+  tool_use_id?: string;
+  [key: string]: unknown;
+}
 
-const TOOLS_CLEARABLE_USES = [FILE_EDIT_TOOL_NAME, FILE_WRITE_TOOL_NAME, NOTEBOOK_EDIT_TOOL_NAME];
+/**
+ * Check if a tool result is eligible for compaction.
+ * Only COMPACTABLE_TOOLS outputs are stripped — non-whitelisted tools
+ * (e.g., FileEdit, Task) keep their full output to preserve semantic context.
+ */
+function isCompactableToolResult(block: ContentBlock, toolNameMap: Map<string, string>): boolean {
+  if (block.type !== 'tool_result') return false;
+  const toolName = block.tool_use_id ? toolNameMap.get(block.tool_use_id) : undefined;
+  return toolName ? COMPACTABLE_TOOLS.has(toolName) : true; // Default to compactable if unknown
+}
 
-// Context management strategy types matching API documentation
-export type ContextEditStrategy =
-  | {
-      type: 'clear_tool_uses_20250919';
-      trigger?: {
-        type: 'input_tokens';
-        value: number;
-      };
-      keep?: {
-        type: 'tool_uses';
-        value: number;
-      };
-      clear_tool_inputs?: boolean | string[];
-      exclude_tools?: string[];
-      clear_at_least?: {
-        type: 'input_tokens';
-        value: number;
+/**
+ * Build a map of tool_use_id → tool_name from the message stream.
+ * This enables the tool_result handler to check the whitelist without
+ * requiring access to the originating tool_use block.
+ */
+function buildToolNameMap(messages: Record<string, unknown>[]): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const msg of messages) {
+    const content = msg.content;
+    if (!Array.isArray(content)) continue;
+    for (const block of content as ContentBlock[]) {
+      if (block.type === 'tool_use' && block.id && block.name) {
+        map.set(block.id as string, block.name);
+      }
+    }
+  }
+  return map;
+}
+
+function normalizeWhitespace(text: string): string {
+  return text
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/[ \t]+$/gm, '')
+    .trim();
+}
+
+function truncateToolOutput(content: string, maxLength: number): string {
+  if (content.length <= maxLength) return content;
+  const truncated = content.substring(0, maxLength);
+  const removedChars = content.length - maxLength;
+  return `${truncated}\n\n...[Truncated ${removedChars} characters by Microcompact L1]`;
+}
+
+export function apiMicrocompact(
+  context: Record<string, unknown>[],
+  maxToolOutputLength: number = 8000,
+): Record<string, unknown>[] {
+  if (!context || context.length === 0) return context;
+
+  const toolNameMap = buildToolNameMap(context);
+
+  return context.map((message) => {
+    const role = message.role as string;
+
+    // System messages pass through unmodified
+    if (role === 'system') return message;
+
+    const content = message.content;
+
+    // String content: just normalize whitespace
+    if (typeof content === 'string') {
+      return {
+        ...message,
+        content: normalizeWhitespace(content),
+        microcompacted: true,
       };
     }
-  | {
-      type: 'clear_thinking_20251015';
-      keep: { type: 'thinking_turns'; value: number } | 'all';
-    };
 
-// Context management configuration wrapper
-export type ContextManagementConfig = {
-  edits: ContextEditStrategy[];
-};
+    // Array content: process each block
+    if (Array.isArray(content)) {
+      const processedContent = (content as ContentBlock[]).map((block) => {
+        // Text blocks: normalize whitespace
+        if (block.type === 'text' && typeof block.text === 'string') {
+          return { ...block, text: normalizeWhitespace(block.text) };
+        }
 
-// API-based microcompact implementation that uses native context management
-export function getAPIContextManagement(options?: {
-  hasThinking?: boolean;
-  isRedactThinkingActive?: boolean;
-  clearAllThinking?: boolean;
-}): ContextManagementConfig | undefined {
-  const {
-    hasThinking = false,
-    isRedactThinkingActive = false,
-    clearAllThinking = false,
-  } = options ?? {};
+        // Image blocks: replace with placeholder to save tokens
+        if (block.type === 'image') {
+          return { type: 'text', text: IMAGE_PLACEHOLDER };
+        }
 
-  const strategies: ContextEditStrategy[] = [];
+        // Tool result blocks: truncate if compactable
+        if (block.type === 'tool_result' && typeof block.content === 'string') {
+          if (isCompactableToolResult(block, toolNameMap)) {
+            return {
+              ...block,
+              content: truncateToolOutput(block.content, maxToolOutputLength),
+            };
+          }
+        }
 
-  // Preserve thinking blocks in previous assistant turns. Skip when
-  // redact-thinking is active — redacted blocks have no model-visible content.
-  // When clearAllThinking is set (>1h idle = cache miss), keep only the last
-  // thinking turn — the API schema requires value >= 1, and omitting the edit
-  // falls back to the model-policy default (often "all"), which wouldn't clear.
-  if (hasThinking && !isRedactThinkingActive) {
-    strategies.push({
-      type: 'clear_thinking_20251015',
-      keep: clearAllThinking ? { type: 'thinking_turns', value: 1 } : 'all',
-    });
-  }
+        // Tool use blocks pass through (paired with their results)
+        return block;
+      });
 
-  // Tool clearing strategies are ant-only
-  if (process.env.USER_TYPE !== 'ant') {
-    return strategies.length > 0 ? { edits: strategies } : undefined;
-  }
+      return { ...message, content: processedContent, microcompacted: true };
+    }
 
-  const useClearToolResults = isEnvTruthy(process.env.USE_API_CLEAR_TOOL_RESULTS);
-  const useClearToolUses = isEnvTruthy(process.env.USE_API_CLEAR_TOOL_USES);
-
-  // If no tool clearing strategy is enabled, return early
-  if (!useClearToolResults && !useClearToolUses) {
-    return strategies.length > 0 ? { edits: strategies } : undefined;
-  }
-
-  if (useClearToolResults) {
-    const triggerThreshold = process.env.API_MAX_INPUT_TOKENS
-      ? parseInt(process.env.API_MAX_INPUT_TOKENS)
-      : DEFAULT_MAX_INPUT_TOKENS;
-    const keepTarget = process.env.API_TARGET_INPUT_TOKENS
-      ? parseInt(process.env.API_TARGET_INPUT_TOKENS)
-      : DEFAULT_TARGET_INPUT_TOKENS;
-
-    const strategy: ContextEditStrategy = {
-      type: 'clear_tool_uses_20250919',
-      trigger: {
-        type: 'input_tokens',
-        value: triggerThreshold,
-      },
-      clear_at_least: {
-        type: 'input_tokens',
-        value: triggerThreshold - keepTarget,
-      },
-      clear_tool_inputs: TOOLS_CLEARABLE_RESULTS,
-    };
-
-    strategies.push(strategy);
-  }
-
-  if (useClearToolUses) {
-    const triggerThreshold = process.env.API_MAX_INPUT_TOKENS
-      ? parseInt(process.env.API_MAX_INPUT_TOKENS)
-      : DEFAULT_MAX_INPUT_TOKENS;
-    const keepTarget = process.env.API_TARGET_INPUT_TOKENS
-      ? parseInt(process.env.API_TARGET_INPUT_TOKENS)
-      : DEFAULT_TARGET_INPUT_TOKENS;
-
-    const strategy: ContextEditStrategy = {
-      type: 'clear_tool_uses_20250919',
-      trigger: {
-        type: 'input_tokens',
-        value: triggerThreshold,
-      },
-      clear_at_least: {
-        type: 'input_tokens',
-        value: triggerThreshold - keepTarget,
-      },
-      exclude_tools: TOOLS_CLEARABLE_USES,
-    };
-
-    strategies.push(strategy);
-  }
-
-  return strategies.length > 0 ? { edits: strategies } : undefined;
+    return { ...message, microcompacted: true };
+  });
 }

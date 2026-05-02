@@ -24,7 +24,7 @@
       "NODE_OPTIONS": "--require /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/patches/suppress-punycode-dep0040.js",
       "PATH": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/Users/pikeymickey/google-cloud-sdk/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
     },
-    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python3",
+    "python.defaultInterpreterPath": "",
 
     "python.languageServer": "None",
     "cmake.python.executable": "${workspaceFolder}/.venv/bin/python",

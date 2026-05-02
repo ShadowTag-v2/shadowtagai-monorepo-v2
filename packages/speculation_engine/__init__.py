@@ -52,6 +52,13 @@ from speculation_engine.orchestrator import (
     SpeculativeResearchConfig,
     SpeculativeResearchOrchestrator,
 )
+from speculation_engine.exit_plan_mode import (
+    ExitPlanModeController,
+    PlanSession,
+    PlanState,
+    PlanStep,
+    TransitionError,
+)
 from speculation_engine.telemetry import (
     log_speculation_event,
     log_suggestion_event,
@@ -116,6 +123,12 @@ __all__ = [
     "SpeculativeResearchOrchestrator",
     "SpeculativeResearchConfig",
     "SpeculativePhaseResult",
+    # ExitPlanMode
+    "ExitPlanModeController",
+    "PlanSession",
+    "PlanState",
+    "PlanStep",
+    "TransitionError",
     # Streaming Executor
     "StreamingToolExecutor",
     "ToolResult",
