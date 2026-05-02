@@ -114,6 +114,72 @@ ALWAYS_BLOCKED = frozenset(
     }
 )
 
+# Ported from Claude Code's dangerousPatterns.ts — CROSS_PLATFORM_CODE_EXEC
+# These are arbitrary-code-execution entry points that bypass the auto-mode
+# classifier. Used by dangerous_permission_filter() and _classify_risk().
+CROSS_PLATFORM_CODE_EXEC = frozenset(
+    {
+        # Interpreters
+        "python",
+        "python3",
+        "python2",
+        "node",
+        "deno",
+        "tsx",
+        "ruby",
+        "perl",
+        "php",
+        "lua",
+        # Package runners (can execute arbitrary code)
+        "npx",
+        "bunx",
+        "npm run",
+        "yarn run",
+        "pnpm run",
+        "bun run",
+        # Shells (inception risk)
+        "bash",
+        "sh",
+        # Remote arbitrary-command wrapper
+        "ssh",
+    }
+)
+
+# Extended dangerous patterns beyond CROSS_PLATFORM_CODE_EXEC
+DANGEROUS_BASH_PATTERNS = frozenset(
+    CROSS_PLATFORM_CODE_EXEC
+    | {
+        "zsh",
+        "fish",
+        "eval",
+        "exec",
+        "env",   # env can launch arbitrary executables
+        "xargs", # xargs can execute arbitrary commands
+        "sudo",
+        "su",
+        "doas",
+        "pkexec",
+        # Network/exfil
+        "gh",
+        "gh api",
+        "curl",
+        "wget",
+        # Git hooks can execute arbitrary code
+        "git config",
+        # Cloud resource mutations
+        "kubectl",
+        "aws",
+        "gcloud",
+        "gsutil",
+    }
+)
+
+# Shell inception commands — launching a sub-shell is always HIGH risk
+SHELL_INCEPTION = frozenset({"bash", "sh", "zsh", "fish", "dash", "ksh", "csh", "tcsh"})
+
+# Exec wrappers that can run arbitrary code
+EXEC_WRAPPERS = frozenset({"eval", "exec", "env", "xargs", "nohup", "setsid"})
+
 COMPOUND_OPS = re.compile(r"[;\n]|\|\||\&\&|\|")
 CMD_SUBST = re.compile(r"\$\(|`")
 ENV_ASSIGN = re.compile(r"(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)=")
@@ -304,15 +370,41 @@ class BashASTAnalyzer:
             "whoami",
             "date",
             "uname",
-            "env",
             "printenv",
         }
         if exe in safe_cmds:
             return CommandRisk.SAFE
         if any(a in cmd.args for a in ("--version", "--help", "-h")):
             return CommandRisk.SAFE
-        if exe in {"npm", "npx", "pip", "pip3", "uv", "cargo", "go"}:
+
+        # CRITICAL — destructive / privilege escalation
+        if exe in {"rm", "unlink", "shred"}:
+            return CommandRisk.CRITICAL
+        if exe in {"sudo", "su", "doas", "pkexec", "chmod", "chown", "mount"}:
+            return CommandRisk.CRITICAL
+
+        # HIGH — shell inception (launching a sub-shell)
+        if exe in SHELL_INCEPTION:
+            return CommandRisk.HIGH
+        # HIGH — exec wrappers (arbitrary code execution)
+        if exe in EXEC_WRAPPERS:
+            return CommandRisk.HIGH
+        # HIGH — network tools (exfiltration risk)
+        if exe in {"curl", "wget", "ssh", "scp", "rsync", "nc", "ncat", "socat"}:
+            return CommandRisk.HIGH
+        # HIGH — cloud CLI (resource mutation)
+        if exe in {"kubectl", "aws", "gcloud", "gsutil", "az", "terraform"}:
+            return CommandRisk.HIGH
+
+        # MEDIUM — interpreters (arbitrary code execution)
+        if exe in {"python", "python3", "python2", "node", "deno", "bun", "tsx"}:
             return CommandRisk.MEDIUM
+        if exe in {"ruby", "perl", "php", "lua"}:
+            return CommandRisk.MEDIUM
+        # MEDIUM — package runners/managers
+        if exe in {"npm", "npx", "pip", "pip3", "uv", "cargo", "go", "bunx", "pnpm", "yarn"}:
+            return CommandRisk.MEDIUM
+        # MEDIUM — git (nuanced)
         if exe == "git":
             sub = cmd.args[0] if cmd.args else ""
             if sub in {"status", "log", "diff", "show", "branch"}:
@@ -323,17 +415,22 @@ class BashASTAnalyzer:
                 return CommandRisk.MEDIUM
             if sub in {"reset", "force-push"}:
                 return CommandRisk.HIGH
+            if sub == "config":
+                # git config core.sshCommand = arbitrary code execution
+                if any("sshCommand" in a or "hooks" in a for a in cmd.args):
+                    return CommandRisk.HIGH
             return CommandRisk.MEDIUM
+        # MEDIUM — GitHub CLI (can create public gists, arbitrary API calls)
+        if exe == "gh":
+            sub = cmd.args[0] if cmd.args else ""
+            if sub in {"api", "gist"}:
+                return CommandRisk.HIGH
+            return CommandRisk.MEDIUM
+
+        # LOW — file operations, linters
         if exe in {"cp", "mv", "mkdir", "touch"}:
             return CommandRisk.LOW
-        if exe in {"rm", "unlink", "shred"}:
-            return CommandRisk.CRITICAL
-        if exe in {"sudo", "su", "chmod", "chown", "mount"}:
-            return CommandRisk.CRITICAL
-        if exe in {"curl", "wget", "ssh", "scp", "rsync"}:
-            return CommandRisk.HIGH
-        if exe in {"ruff", "biome", "prettier", "black", "isort"}:
+        if exe in {"ruff", "biome", "prettier", "black", "isort", "mypy", "pyright"}:
             return CommandRisk.LOW
-        if exe in {"python", "python3", "node", "deno", "bun"}:
-            return CommandRisk.MEDIUM
+
         return CommandRisk.MEDIUM
