@@ -1,4 +1,4 @@
-import { c as _c } from "react/compiler-runtime";
+import { c as _c } from 'react/compiler-runtime';
 import React, { type ReactNode } from 'react';
 import { ListItem } from '../design-system/ListItem.js';
 export type SelectOptionProps = {
@@ -47,11 +47,31 @@ export function SelectOption(t0) {
     description,
     shouldShowDownArrow,
     shouldShowUpArrow,
-    declareCursor
+    declareCursor,
   } = t0;
   let t1;
-  if ($[0] !== children || $[1] !== declareCursor || $[2] !== description || $[3] !== isFocused || $[4] !== isSelected || $[5] !== shouldShowDownArrow || $[6] !== shouldShowUpArrow) {
-    t1 = <ListItem isFocused={isFocused} isSelected={isSelected} description={description} showScrollDown={shouldShowDownArrow} showScrollUp={shouldShowUpArrow} styled={false} declareCursor={declareCursor}>{children}</ListItem>;
+  if (
+    $[0] !== children ||
+    $[1] !== declareCursor ||
+    $[2] !== description ||
+    $[3] !== isFocused ||
+    $[4] !== isSelected ||
+    $[5] !== shouldShowDownArrow ||
+    $[6] !== shouldShowUpArrow
+  ) {
+    t1 = (
+      <ListItem
+        isFocused={isFocused}
+        isSelected={isSelected}
+        description={description}
+        showScrollDown={shouldShowDownArrow}
+        showScrollUp={shouldShowUpArrow}
+        styled={false}
+        declareCursor={declareCursor}
+      >
+        {children}
+      </ListItem>
+    );
     $[0] = children;
     $[1] = declareCursor;
     $[2] = description;
