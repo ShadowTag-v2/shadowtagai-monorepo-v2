@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": true,
   "python.languageServer": "Pylance",
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python3",
+  "python.defaultInterpreterPath": "",
   "git.decorations.enabled": false,
   "cSpell.ignorePaths": [
     "**/dist-runtime/**",
@@ -53,5 +53,10 @@
       "source.organizeImports": "explicit"
     }
   },
-  "eslint.workingDirectories": [{ "mode": "auto" }]
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "omnisharp.dotnetPath": "/usr/local/share/dotnet"
 }

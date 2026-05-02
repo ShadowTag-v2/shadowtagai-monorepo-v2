@@ -1,0 +1,10 @@
+{
+  "msbuild": {
+    "UseBundledOnly": true
+  },
+  "fileOptions": {
+    "excludeSearchPatterns": [
+      "**/*.wapproj"
+    ]
+  }
+}
