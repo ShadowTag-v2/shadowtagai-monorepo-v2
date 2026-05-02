@@ -73,12 +73,7 @@ class HypothesisRefiner:
     - Detect contradictions between hypotheses
     """
 
-    def __init__(
-        self,
-        llm_client=None,
-        vector_db: VectorDB | None = None,
-        config: dict[str, Any] | None = None
-    ):
+    def __init__(self, llm_client=None, vector_db: VectorDB | None = None, config: dict[str, Any] | None = None):
         """
         Initialize hypothesis refiner.
 
@@ -106,10 +101,7 @@ class HypothesisRefiner:
     # ========================================================================
 
     def evaluate_hypothesis_status(
-        self,
-        hypothesis: Hypothesis,
-        result: ExperimentResult,
-        results_history: list[ExperimentResult] | None = None
+        self, hypothesis: Hypothesis, result: ExperimentResult, results_history: list[ExperimentResult] | None = None
     ) -> RetirementDecision:
         """
         Evaluate hypothesis status and decide on next action.
@@ -136,10 +128,7 @@ class HypothesisRefiner:
         consecutive_failures = self._count_consecutive_failures(all_results)
 
         if consecutive_failures >= self.failure_threshold:
-            logger.info(
-                f"Hypothesis {hypothesis.id} has {consecutive_failures} consecutive failures "
-                f"(threshold: {self.failure_threshold})"
-            )
+            logger.info(f"Hypothesis {hypothesis.id} has {consecutive_failures} consecutive failures (threshold: {self.failure_threshold})")
             return RetirementDecision.RETIRE
 
         # 2. Confidence-based check: Bayesian updating
@@ -147,8 +136,7 @@ class HypothesisRefiner:
 
         if posterior_confidence < self.confidence_retirement_threshold:
             logger.info(
-                f"Hypothesis {hypothesis.id} has low confidence {posterior_confidence:.3f} "
-                f"(threshold: {self.confidence_retirement_threshold})"
+                f"Hypothesis {hypothesis.id} has low confidence {posterior_confidence:.3f} (threshold: {self.confidence_retirement_threshold})"
             )
             return RetirementDecision.RETIRE
 
@@ -167,11 +155,7 @@ class HypothesisRefiner:
             else:
                 return RetirementDecision.CONTINUE_TESTING
 
-    def should_retire_hypothesis_claude(
-        self,
-        hypothesis: Hypothesis,
-        results: list[ExperimentResult]
-    ) -> tuple[bool, str]:
+    def should_retire_hypothesis_claude(self, hypothesis: Hypothesis, results: list[ExperimentResult]) -> tuple[bool, str]:
         """
         Use Claude to decide if hypothesis should be retired (for ambiguous cases).
 
@@ -215,8 +199,8 @@ Respond with JSON:
             response = self.llm_client.generate(prompt, max_tokens=500)
 
             # Parse JSON
-            json_start = response.find('{')
-            json_end = response.rfind('}') + 1
+            json_start = response.find("{")
+            json_end = response.rfind("}") + 1
             if json_start >= 0 and json_end > json_start:
                 json_str = response[json_start:json_end]
                 result = json.loads(json_str)
@@ -245,11 +229,7 @@ Respond with JSON:
                 break
         return count
 
-    def _bayesian_confidence_update(
-        self,
-        hypothesis: Hypothesis,
-        results: list[ExperimentResult]
-    ) -> float:
+    def _bayesian_confidence_update(self, hypothesis: Hypothesis, results: list[ExperimentResult]) -> float:
         """
         Update hypothesis confidence using Bayesian inference.
 
@@ -304,11 +284,7 @@ Respond with JSON:
     # HYPOTHESIS REFINEMENT
     # ========================================================================
 
-    def refine_hypothesis(
-        self,
-        hypothesis: Hypothesis,
-        result: ExperimentResult
-    ) -> Hypothesis:
+    def refine_hypothesis(self, hypothesis: Hypothesis, result: ExperimentResult) -> Hypothesis:
         """
         Refine hypothesis based on experimental result.
 
@@ -355,8 +331,8 @@ Respond with JSON:
             response = self.llm_client.generate(prompt, max_tokens=800)
 
             # Parse JSON
-            json_start = response.find('{')
-            json_end = response.rfind('}') + 1
+            json_start = response.find("{")
+            json_end = response.rfind("}") + 1
             if json_start >= 0 and json_end > json_start:
                 json_str = response[json_start:json_end]
                 refinement = json.loads(json_str)
@@ -376,12 +352,14 @@ Respond with JSON:
                     parent_hypothesis_id=hypothesis.id,
                     generation=hypothesis.generation + 1,
                     refinement_count=0,
-                    evolution_history=[{
-                        "action": "refined",
-                        "based_on_result": result.id,
-                        "changes": refinement.get("changes_made", ""),
-                        "timestamp": datetime.utcnow().isoformat()
-                    }]
+                    evolution_history=[
+                        {
+                            "action": "refined",
+                            "based_on_result": result.id,
+                            "changes": refinement.get("changes_made", ""),
+                            "timestamp": datetime.utcnow().isoformat(),
+                        }
+                    ],
                 )
 
                 # Track lineage
@@ -402,12 +380,7 @@ Respond with JSON:
     # HYPOTHESIS SPAWNING
     # ========================================================================
 
-    def spawn_variant(
-        self,
-        hypothesis: Hypothesis,
-        result: ExperimentResult,
-        num_variants: int = 2
-    ) -> list[Hypothesis]:
+    def spawn_variant(self, hypothesis: Hypothesis, result: ExperimentResult, num_variants: int = 2) -> list[Hypothesis]:
         """
         Spawn variant hypotheses based on findings.
 
@@ -455,8 +428,8 @@ Respond with JSON array:
             response = self.llm_client.generate(prompt, max_tokens=1000)
 
             # Parse JSON
-            json_start = response.find('[')
-            json_end = response.rfind(']') + 1
+            json_start = response.find("[")
+            json_end = response.rfind("]") + 1
             if json_start >= 0 and json_end > json_start:
                 json_str = response[json_start:json_end]
                 variants_data = json.loads(json_str)
@@ -471,12 +444,14 @@ Respond with JSON array:
                         status=HypothesisStatus.GENERATED,
                         parent_hypothesis_id=hypothesis.id,
                         generation=hypothesis.generation + 1,
-                        evolution_history=[{
-                            "action": "spawned",
-                            "based_on_result": result.id,
-                            "relationship": variant_data.get("relationship", ""),
-                            "timestamp": datetime.utcnow().isoformat()
-                        }]
+                        evolution_history=[
+                            {
+                                "action": "spawned",
+                                "based_on_result": result.id,
+                                "relationship": variant_data.get("relationship", ""),
+                                "timestamp": datetime.utcnow().isoformat(),
+                            }
+                        ],
                     )
 
                     if not variant.id:
@@ -499,11 +474,7 @@ Respond with JSON array:
     # HYPOTHESIS RETIREMENT
     # ========================================================================
 
-    def retire_hypothesis(
-        self,
-        hypothesis: Hypothesis,
-        rationale: str
-    ) -> Hypothesis:
+    def retire_hypothesis(self, hypothesis: Hypothesis, rationale: str) -> Hypothesis:
         """
         Retire a hypothesis.
 
@@ -516,11 +487,7 @@ Respond with JSON array:
         """
         hypothesis.status = HypothesisStatus.REJECTED
         hypothesis.updated_at = datetime.utcnow()
-        hypothesis.evolution_history.append({
-            "action": "retired",
-            "rationale": rationale,
-            "timestamp": datetime.utcnow().isoformat()
-        })
+        hypothesis.evolution_history.append({"action": "retired", "rationale": rationale, "timestamp": datetime.utcnow().isoformat()})
 
         logger.info(f"Retired hypothesis {hypothesis.id}: {rationale}")
         return hypothesis
@@ -532,7 +499,7 @@ Respond with JSON array:
     def detect_contradictions(
         self,
         hypotheses: list[Hypothesis],
-        results: dict[str, list[ExperimentResult]]  # hypothesis_id -> results
+        results: dict[str, list[ExperimentResult]],  # hypothesis_id -> results
     ) -> list[dict[str, Any]]:
         """
         Detect contradictions between hypotheses.
@@ -554,7 +521,7 @@ Respond with JSON array:
 
         # Compare all pairs
         for i, hyp1 in enumerate(hypotheses):
-            for hyp2 in hypotheses[i+1:]:
+            for hyp2 in hypotheses[i + 1 :]:
                 # Check semantic similarity
                 similarity = self._compute_semantic_similarity(hyp1.statement, hyp2.statement)
 
@@ -576,14 +543,11 @@ Respond with JSON array:
                             "hypothesis2_statement": hyp2.statement,
                             "hypothesis1_supported": support1,
                             "hypothesis2_supported": support2,
-                            "detected_at": datetime.utcnow().isoformat()
+                            "detected_at": datetime.utcnow().isoformat(),
                         }
 
                         contradictions.append(contradiction)
-                        logger.warning(
-                            f"Contradiction detected between {hyp1.id} and {hyp2.id} "
-                            f"(similarity: {similarity:.2f})"
-                        )
+                        logger.warning(f"Contradiction detected between {hyp1.id} and {hyp2.id} (similarity: {similarity:.2f})")
 
         return contradictions
 
@@ -657,11 +621,7 @@ Respond with JSON array:
     # HYPOTHESIS MERGING
     # ========================================================================
 
-    def merge_hypotheses(
-        self,
-        hypotheses: list[Hypothesis],
-        rationale: str = "Merging similar supported hypotheses"
-    ) -> Hypothesis:
+    def merge_hypotheses(self, hypotheses: list[Hypothesis], rationale: str = "Merging similar supported hypotheses") -> Hypothesis:
         """
         Merge similar hypotheses that are both supported.
 
@@ -702,8 +662,8 @@ Respond with JSON:
         try:
             response = self.llm_client.generate(prompt, max_tokens=800)
 
-            json_start = response.find('{')
-            json_end = response.rfind('}') + 1
+            json_start = response.find("{")
+            json_end = response.rfind("}") + 1
             if json_start >= 0 and json_end > json_start:
                 json_str = response[json_start:json_end]
                 merge_data = json.loads(json_str)
@@ -718,12 +678,14 @@ Respond with JSON:
                     status=HypothesisStatus.GENERATED,
                     parent_hypothesis_id=hypotheses[0].id,  # First as parent
                     generation=max(h.generation for h in hypotheses) + 1,
-                    evolution_history=[{
-                        "action": "merged",
-                        "merged_from": [h.id for h in hypotheses],
-                        "synthesis": merge_data.get("synthesis_explanation", ""),
-                        "timestamp": datetime.utcnow().isoformat()
-                    }]
+                    evolution_history=[
+                        {
+                            "action": "merged",
+                            "merged_from": [h.id for h in hypotheses],
+                            "synthesis": merge_data.get("synthesis_explanation", ""),
+                            "timestamp": datetime.utcnow().isoformat(),
+                        }
+                    ],
                 )
 
                 logger.info("Created merged hypothesis")
@@ -741,20 +703,10 @@ Respond with JSON:
     # LINEAGE TRACKING
     # ========================================================================
 
-    def _track_lineage(
-        self,
-        hypothesis: Hypothesis,
-        parent: Hypothesis,
-        action: str,
-        evidence: list[str]
-    ):
+    def _track_lineage(self, hypothesis: Hypothesis, parent: Hypothesis, action: str, evidence: list[str]):
         """Track hypothesis lineage."""
         lineage = HypothesisLineage(
-            hypothesis_id=hypothesis.id,
-            parent_id=parent.id,
-            generation=hypothesis.generation,
-            refinement_reason=action,
-            evidence_basis=evidence
+            hypothesis_id=hypothesis.id, parent_id=parent.id, generation=hypothesis.generation, refinement_reason=action, evidence_basis=evidence
         )
 
         if hypothesis.id:
@@ -811,7 +763,7 @@ Respond with JSON:
             "generation": lineage.generation,
             "ancestors": ancestors,
             "descendants": descendants,
-            "total_family_size": 1 + len(ancestors) + len(descendants)
+            "total_family_size": 1 + len(ancestors) + len(descendants),
         }
 
     # ========================================================================

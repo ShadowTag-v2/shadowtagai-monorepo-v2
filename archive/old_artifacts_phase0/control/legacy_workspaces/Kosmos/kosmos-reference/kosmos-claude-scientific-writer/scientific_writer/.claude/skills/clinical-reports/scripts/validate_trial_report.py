@@ -33,7 +33,7 @@ ICH_E3_SECTIONS = {
 
 def validate_ich_e3(filename: str) -> dict:
     """Validate CSR structure against ICH-E3."""
-    with open(filename, 'r', encoding='utf-8') as f:
+    with open(filename, encoding="utf-8") as f:
         content = f.read()
 
     results = {}
@@ -49,7 +49,7 @@ def validate_ich_e3(filename: str) -> dict:
         "filename": filename,
         "compliance_rate": round(compliance_rate, 1),
         "sections": results,
-        "status": "PASS" if compliance_rate >= 90 else "NEEDS_REVISION"
+        "status": "PASS" if compliance_rate >= 90 else "NEEDS_REVISION",
     }
 
 
@@ -83,4 +83,5 @@ def main():
 
 if __name__ == "__main__":
     import sys
+
     sys.exit(main())

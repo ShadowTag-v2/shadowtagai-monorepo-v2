@@ -3,9 +3,10 @@ Nowgrep - Ultra-fast Neural Grep
 Semantic search for text, code, and multimodal content
 Quantitative Effect: ↑ Query speed +60%, ↓ Index size –40%
 """
+
 import logging
 import numpy as np
-from typing import List, Dict, Any, Optional
+from typing import Any
 from pathlib import Path
 import json
 from datetime import datetime
@@ -34,10 +35,7 @@ class NowgrepService:
             self.index_path.mkdir(parents=True, exist_ok=True)
 
             # Initialize Vertex AI for embeddings
-            aiplatform.init(
-                project=settings.GCP_PROJECT_ID,
-                location=settings.GCP_LOCATION
-            )
+            aiplatform.init(project=settings.GCP_PROJECT_ID, location=settings.GCP_LOCATION)
 
             # Load existing indices
             await self._load_indices()
@@ -55,12 +53,7 @@ class NowgrepService:
         except Exception as e:
             logger.error(f"Error during Nowgrep shutdown: {e}")
 
-    async def create_index(
-        self,
-        index_name: str,
-        documents: list[dict[str, Any]],
-        content_field: str = "content"
-    ) -> dict[str, Any]:
+    async def create_index(self, index_name: str, documents: list[dict[str, Any]], content_field: str = "content") -> dict[str, Any]:
         """
         Create a new search index
 
@@ -87,7 +80,7 @@ class NowgrepService:
                 "content_field": content_field,
                 "created_at": start_time.isoformat(),
                 "num_documents": len(documents),
-                "vector_dim": self.vector_dim
+                "vector_dim": self.vector_dim,
             }
 
             self.indices[index_name] = index
@@ -102,25 +95,13 @@ class NowgrepService:
                 "index_name": index_name,
                 "num_documents": len(documents),
                 "elapsed_seconds": elapsed,
-                "metrics": {
-                    "query_speed_improvement": "+60%",
-                    "index_size_reduction": "-40%"
-                }
+                "metrics": {"query_speed_improvement": "+60%", "index_size_reduction": "-40%"},
             }
         except Exception as e:
             logger.error(f"Failed to create index: {e}")
-            return {
-                "status": "error",
-                "error": str(e)
-            }
+            return {"status": "error", "error": str(e)}
 
-    async def search(
-        self,
-        index_name: str,
-        query: str,
-        top_k: int = 10,
-        filter_criteria: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    async def search(self, index_name: str, query: str, top_k: int = 10, filter_criteria: dict[str, Any] | None = None) -> dict[str, Any]:
         """
         Perform semantic search on an index
 
@@ -135,10 +116,7 @@ class NowgrepService:
         """
         try:
             if index_name not in self.indices:
-                return {
-                    "status": "error",
-                    "error": f"Index '{index_name}' not found"
-                }
+                return {"status": "error", "error": f"Index '{index_name}' not found"}
 
             start_time = datetime.utcnow()
             index = self.indices[index_name]
@@ -162,11 +140,7 @@ class NowgrepService:
                 if filter_criteria and not self._matches_filters(doc, filter_criteria):
                     continue
 
-                results.append({
-                    "document": doc,
-                    "score": float(scores[idx]),
-                    "rank": len(results) + 1
-                })
+                results.append({"document": doc, "score": float(scores[idx]), "rank": len(results) + 1})
 
             elapsed = (datetime.utcnow() - start_time).total_seconds()
 
@@ -176,24 +150,13 @@ class NowgrepService:
                 "results": results[:top_k],
                 "num_results": len(results),
                 "elapsed_seconds": elapsed,
-                "metrics": {
-                    "query_speed": f"+60% faster ({elapsed:.3f}s)"
-                }
+                "metrics": {"query_speed": f"+60% faster ({elapsed:.3f}s)"},
             }
         except Exception as e:
             logger.error(f"Search failed: {e}")
-            return {
-                "status": "error",
-                "error": str(e)
-            }
+            return {"status": "error", "error": str(e)}
 
-    async def multimodal_search(
-        self,
-        index_name: str,
-        query: str,
-        modalities: list[str] = ["text", "code"],
-        top_k: int = 10
-    ) -> dict[str, Any]:
+    async def multimodal_search(self, index_name: str, query: str, modalities: list[str] = ["text", "code"], top_k: int = 10) -> dict[str, Any]:
         """
         Perform multimodal semantic search
 
@@ -217,10 +180,7 @@ class NowgrepService:
             return results
         except Exception as e:
             logger.error(f"Multimodal search failed: {e}")
-            return {
-                "status": "error",
-                "error": str(e)
-            }
+            return {"status": "error", "error": str(e)}
 
     async def _generate_embeddings(self, texts: list[str]) -> list[np.ndarray]:
         """Generate embeddings using Vertex AI"""
@@ -238,10 +198,7 @@ class NowgrepService:
             if uncached_texts:
                 # Simulated embeddings (in production, use Vertex AI API)
                 # For demonstration, using random vectors
-                new_embeddings = [
-                    np.random.randn(self.vector_dim).astype(np.float32)
-                    for _ in uncached_texts
-                ]
+                new_embeddings = [np.random.randn(self.vector_dim).astype(np.float32) for _ in uncached_texts]
 
                 # Cache new embeddings
                 for text, emb in zip(uncached_texts, new_embeddings):
@@ -257,11 +214,7 @@ class NowgrepService:
             logger.error(f"Failed to generate embeddings: {e}")
             raise
 
-    def _compute_similarity(
-        self,
-        query_vector: np.ndarray,
-        document_vectors: list[np.ndarray]
-    ) -> np.ndarray:
+    def _compute_similarity(self, query_vector: np.ndarray, document_vectors: list[np.ndarray]) -> np.ndarray:
         """Compute cosine similarity between query and documents"""
         # Stack document vectors
         doc_matrix = np.vstack(document_vectors)
@@ -313,7 +266,7 @@ class NowgrepService:
 
             # Save metadata
             metadata = {k: v for k, v in index.items() if k != "vectors"}
-            with open(self.index_path / f"{index_name}.json", 'w') as f:
+            with open(self.index_path / f"{index_name}.json", "w") as f:
                 json.dump(metadata, f, indent=2)
 
             # Save vectors

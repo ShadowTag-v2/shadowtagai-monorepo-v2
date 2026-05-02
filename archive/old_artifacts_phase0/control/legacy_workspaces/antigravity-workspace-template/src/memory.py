@@ -20,7 +20,7 @@ class MemoryManager:
         self.summary = ""
         if os.path.exists(self.memory_file):
             try:
-                with open(self.memory_file, encoding='utf-8') as f:
+                with open(self.memory_file, encoding="utf-8") as f:
                     data = json.load(f)
                 if isinstance(data, dict):
                     self.summary = data.get("summary", "") or ""
@@ -44,16 +44,12 @@ class MemoryManager:
             "summary": self.summary,
             "history": self._memory,
         }
-        with open(self.memory_file, 'w', encoding='utf-8') as f:
+        with open(self.memory_file, "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2, ensure_ascii=False)
 
     def add_entry(self, role: str, content: str, metadata: dict[str, Any] | None = None):
         """Adds a new interaction to memory."""
-        entry = {
-            "role": role,
-            "content": content,
-            "metadata": metadata or {}
-        }
+        entry = {"role": role, "content": content, "metadata": metadata or {}}
         self._memory.append(entry)
         self.save_memory()
 
@@ -76,10 +72,7 @@ class MemoryManager:
         return "\n".join(lines).strip()
 
     def get_context_window(
-        self,
-        system_prompt: str,
-        max_messages: int,
-        summarizer: Callable[[list[dict[str, Any]], str], str] | None = None
+        self, system_prompt: str, max_messages: int, summarizer: Callable[[list[dict[str, Any]], str], str] | None = None
     ) -> list[dict[str, str]]:
         """
         Returns the context window, applying a summary buffer when history exceeds max_messages.
@@ -121,10 +114,7 @@ class MemoryManager:
         if self.summary != previous_summary:
             self.save_memory()
 
-        summary_message = {
-            "role": "system",
-            "content": f"Previous Summary: {self.summary}"
-        }
+        summary_message = {"role": "system", "content": f"Previous Summary: {self.summary}"}
 
         return [system_message, summary_message, *recent_history]
 

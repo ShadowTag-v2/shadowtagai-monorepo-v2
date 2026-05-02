@@ -21,109 +21,99 @@ from google.adk import Agent
 from adk_issue_formatting_agent.settings import GITHUB_BASE_URL, IS_INTERACTIVE, OWNER, REPO
 from adk_issue_formatting_agent.utils import error_response, get_request, post_request, read_file
 
-BUG_REPORT_TEMPLATE = read_file(
-    Path(__file__).parent / "../../../../.github/ISSUE_TEMPLATE/bug_report.md"
-)
-FEATURE_REQUEST_TEMPLATE = read_file(
-    Path(__file__).parent
-    / "../../../../.github/ISSUE_TEMPLATE/feature_request.md"
-)
+BUG_REPORT_TEMPLATE = read_file(Path(__file__).parent / "../../../../.github/ISSUE_TEMPLATE/bug_report.md")
+FEATURE_REQUEST_TEMPLATE = read_file(Path(__file__).parent / "../../../../.github/ISSUE_TEMPLATE/feature_request.md")
 
-APPROVAL_INSTRUCTION = (
-    "**Do not** wait or ask for user approval or confirmation for adding the"
-    " comment."
-)
+APPROVAL_INSTRUCTION = "**Do not** wait or ask for user approval or confirmation for adding the comment."
 if IS_INTERACTIVE:
-  APPROVAL_INSTRUCTION = (
-      "Ask for user approval or confirmation for adding the comment."
-  )
+    APPROVAL_INSTRUCTION = "Ask for user approval or confirmation for adding the comment."
 
 
 def list_open_issues(issue_count: int) -> dict[str, Any]:
-  """List most recent `issue_count` number of open issues in the repo.
+    """List most recent `issue_count` number of open issues in the repo.
 
-  Args:
-    issue_count: number of issues to return
+    Args:
+      issue_count: number of issues to return
 
-  Returns:
-    The status of this request, with a list of issues when successful.
-  """
-  url = f"{GITHUB_BASE_URL}/search/issues"
-  query = f"repo:{OWNER}/{REPO} is:open is:issue"
-  params = {
-      "q": query,
-      "sort": "created",
-      "order": "desc",
-      "per_page": issue_count,
-      "page": 1,
-  }
+    Returns:
+      The status of this request, with a list of issues when successful.
+    """
+    url = f"{GITHUB_BASE_URL}/search/issues"
+    query = f"repo:{OWNER}/{REPO} is:open is:issue"
+    params = {
+        "q": query,
+        "sort": "created",
+        "order": "desc",
+        "per_page": issue_count,
+        "page": 1,
+    }
 
-  try:
-    response = get_request(url, params)
-  except requests.exceptions.RequestException as e:
-    return error_response(f"Error: {e}")
-  issues = response.get("items", None)
-  return {"status": "success", "issues": issues}
+    try:
+        response = get_request(url, params)
+    except requests.exceptions.RequestException as e:
+        return error_response(f"Error: {e}")
+    issues = response.get("items", None)
+    return {"status": "success", "issues": issues}
 
 
 def get_issue(issue_number: int) -> dict[str, Any]:
-  """Get the details of the specified issue number.
+    """Get the details of the specified issue number.
 
-  Args:
-    issue_number: issue number of the GitHub issue.
+    Args:
+      issue_number: issue number of the GitHub issue.
 
-  Returns:
-    The status of this request, with the issue details when successful.
-  """
-  url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}"
-  try:
-    response = get_request(url)
-  except requests.exceptions.RequestException as e:
-    return error_response(f"Error: {e}")
-  return {"status": "success", "issue": response}
+    Returns:
+      The status of this request, with the issue details when successful.
+    """
+    url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}"
+    try:
+        response = get_request(url)
+    except requests.exceptions.RequestException as e:
+        return error_response(f"Error: {e}")
+    return {"status": "success", "issue": response}
 
 
 def add_comment_to_issue(issue_number: int, comment: str) -> dict[str, any]:
-  """Add the specified comment to the given issue number.
+    """Add the specified comment to the given issue number.
 
-  Args:
-    issue_number: issue number of the GitHub issue
-    comment: comment to add
+    Args:
+      issue_number: issue number of the GitHub issue
+      comment: comment to add
 
-  Returns:
-    The the status of this request, with the applied comment when successful.
-  """
-  print(f"Attempting to add comment '{comment}' to issue #{issue_number}")
-  url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}/comments"
-  payload = {"body": comment}
+    Returns:
+      The the status of this request, with the applied comment when successful.
+    """
+    print(f"Attempting to add comment '{comment}' to issue #{issue_number}")
+    url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}/comments"
+    payload = {"body": comment}
 
-  try:
-    response = post_request(url, payload)
-  except requests.exceptions.RequestException as e:
-    return error_response(f"Error: {e}")
-  return {
-      "status": "success",
-      "added_comment": response,
-  }
+    try:
+        response = post_request(url, payload)
+    except requests.exceptions.RequestException as e:
+        return error_response(f"Error: {e}")
+    return {
+        "status": "success",
+        "added_comment": response,
+    }
 
 
 def list_comments_on_issue(issue_number: int) -> dict[str, any]:
-  """List all comments on the given issue number.
+    """List all comments on the given issue number.
 
-  Args:
-    issue_number: issue number of the GitHub issue
+    Args:
+      issue_number: issue number of the GitHub issue
 
-  Returns:
-    The the status of this request, with the list of comments when successful.
-  """
-  print(f"Attempting to list comments on issue #{issue_number}")
-  url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}/comments"
+    Returns:
+      The the status of this request, with the list of comments when successful.
+    """
+    print(f"Attempting to list comments on issue #{issue_number}")
+    url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}/comments"
 
-  try:
-    response = get_request(url)
-  except requests.exceptions.RequestException as e:
-    return error_response(f"Error: {e}")
-  return {"status": "success", "comments": response}
+    try:
+        response = get_request(url)
+    except requests.exceptions.RequestException as e:
+        return error_response(f"Error: {e}")
+    return {"status": "success", "comments": response}
 
 
 root_agent = Agent(

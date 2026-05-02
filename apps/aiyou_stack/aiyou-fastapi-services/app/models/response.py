@@ -2,7 +2,7 @@
 
 from typing import Any, Generic, TypeVar
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 T = TypeVar("T")
 
@@ -16,14 +16,15 @@ class APIResponse(BaseModel, Generic[T]):
     message: str | None = Field(default=None, description="Optional message about the response")
     data: T | None = Field(default=None, description="Response data")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "success": True,
                 "message": "Operation completed successfully",
                 "data": {"id": 1, "name": "Example"},
             },
-        }
+        },
+    )
 
 
 class ErrorResponse(BaseModel):
@@ -37,8 +38,8 @@ class ErrorResponse(BaseModel):
     details: Any | None = Field(default=None, description="Additional error details")
     path: str | None = Field(default=None, description="Request path where error occurred")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "success": False,
                 "error": "ValidationError",
@@ -46,7 +47,8 @@ class ErrorResponse(BaseModel):
                 "details": {"field": "email", "issue": "Invalid email format"},
                 "path": "/api/v1/users",
             },
-        }
+        },
+    )
 
 
 class PaginationMeta(BaseModel):
@@ -70,8 +72,8 @@ class PaginatedResponse(BaseModel, Generic[T]):
     data: list[T] = Field(..., description="List of items")
     pagination: PaginationMeta = Field(..., description="Pagination metadata")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "success": True,
                 "message": "Users retrieved successfully",
@@ -85,4 +87,5 @@ class PaginatedResponse(BaseModel, Generic[T]):
                     "has_previous": False,
                 },
             },
-        }
+        },
+    )

@@ -100,9 +100,7 @@ def import_requirements(project, r=None, dev=False, categories=None):
                 if package.editable:
                     package_string = f"-e {package.link}"
                 else:
-                    package_string = unquote(
-                        redact_auth_from_url(package.original_link.url)
-                    )
+                    package_string = unquote(redact_auth_from_url(package.original_link.url))
             else:
                 package_string = str(package.req)
                 if package.markers:
@@ -112,9 +110,7 @@ def import_requirements(project, r=None, dev=False, categories=None):
 
     # Batch add all packages to Pipfile
     if packages_to_add:
-        project.add_packages_to_pipfile_batch(
-            packages_to_add, dev=dev, categories=categories
-        )
+        project.add_packages_to_pipfile_batch(packages_to_add, dev=dev, categories=categories)
 
     # Add indexes after packages
     indexes = sorted(set(indexes))
@@ -136,9 +132,7 @@ def add_index_to_pipfile(project, index, trusted_hosts=None):
         v in trusted_hosts
         for v in (
             host_and_port,
-            host_and_port.partition(":")[
-                0
-            ],  # also check if hostname without port is in trusted_hosts
+            host_and_port.partition(":")[0],  # also check if hostname without port is in trusted_hosts
         )
     )
     index_name = project.add_index_to_pipfile(index, verify_ssl=require_valid_https)
@@ -154,9 +148,7 @@ BAD_PACKAGES = (
 )
 
 
-def requirement_from_lockfile(
-    package_name, package_info, include_hashes=True, include_markers=True
-):
+def requirement_from_lockfile(package_name, package_info, include_hashes=True, include_markers=True):
     from pipenv.utils.dependencies import is_editable_path, is_star, normalize_vcs_url
 
     # Handle string requirements
@@ -166,11 +158,7 @@ def requirement_from_lockfile(
         else:
             return package_name
 
-    markers = (
-        "; {}".format(package_info["markers"])
-        if include_markers and "markers" in package_info and package_info["markers"]
-        else ""
-    )
+    markers = "; {}".format(package_info["markers"]) if include_markers and "markers" in package_info and package_info["markers"] else ""
     os_markers = (
         "; {}".format(package_info["os_markers"])
         if include_markers and "os_markers" in package_info and package_info["os_markers"]
@@ -187,20 +175,12 @@ def requirement_from_lockfile(
             vcs_url, fallback_ref = normalize_vcs_url(vcs_url)
             if not ref:
                 ref = fallback_ref
-            extras = (
-                "[{}]".format(",".join(package_info.get("extras", [])))
-                if "extras" in package_info
-                else ""
-            )
+            extras = "[{}]".format(",".join(package_info.get("extras", []))) if "extras" in package_info else ""
             subdirectory = package_info.get("subdirectory", "")
             include_vcs = "" if f"{vcs}+" in vcs_url else f"{vcs}+"
             egg_fragment = "" if "#egg=" in vcs_url else f"#egg={package_name}"
             ref_str = "" if not ref or f"@{ref}" in vcs_url else f"@{ref}"
-            if (
-                is_editable_path(vcs_url)
-                or "file://" in vcs_url
-                or package_info.get("editable", False)
-            ):
+            if is_editable_path(vcs_url) or "file://" in vcs_url or package_info.get("editable", False):
                 # Extras must not be in the #egg= fragment (pip validates it as
                 # a PEP 508 project name). Append extras after the egg fragment.
                 pip_line = f"-e {include_vcs}{vcs_url}{ref_str}{egg_fragment}"
@@ -230,16 +210,8 @@ def requirement_from_lockfile(
     # Skip wildcard versions - they mean "any version" and should not be included
     if is_star(version):
         version = ""
-    hashes = (
-        f" --hash={' --hash='.join(package_info['hashes'])}"
-        if include_hashes and "hashes" in package_info
-        else ""
-    )
-    extras = (
-        "[{}]".format(",".join(package_info.get("extras", [])))
-        if "extras" in package_info
-        else ""
-    )
+    hashes = f" --hash={' --hash='.join(package_info['hashes'])}" if include_hashes and "hashes" in package_info else ""
+    extras = "[{}]".format(",".join(package_info.get("extras", []))) if "extras" in package_info else ""
     pip_line = f"{package_name}{extras}{version}{os_markers}{markers}{hashes}"
     return pip_line
 
@@ -248,9 +220,7 @@ def requirements_from_lockfile(deps, include_hashes=True, include_markers=True):
     pip_packages = []
 
     for package_name, package_info in deps.items():
-        pip_package = requirement_from_lockfile(
-            package_name, package_info, include_hashes, include_markers
-        )
+        pip_package = requirement_from_lockfile(package_name, package_info, include_hashes, include_markers)
 
         # Append to the list
         pip_packages.append(pip_package)
@@ -296,21 +266,13 @@ def requirement_from_pipfile(package_name, package_spec, include_markers=True):
             vcs_url = package_spec[vcs_type]
             ref = package_spec.get("ref", "")
             subdirectory = package_spec.get("subdirectory", "")
-            extras = (
-                "[{}]".format(",".join(package_spec.get("extras", [])))
-                if "extras" in package_spec
-                else ""
-            )
+            extras = "[{}]".format(",".join(package_spec.get("extras", []))) if "extras" in package_spec else ""
 
             # Build the VCS URL
             ref_str = f"@{ref}" if ref and f"@{ref}" not in vcs_url else ""
             egg_fragment = f"#egg={package_name}" if "#egg=" not in vcs_url else ""
 
-            if (
-                is_editable_path(vcs_url)
-                or "file://" in vcs_url
-                or package_spec.get("editable", False)
-            ):
+            if is_editable_path(vcs_url) or "file://" in vcs_url or package_spec.get("editable", False):
                 # Extras must not be in the #egg= fragment (pip validates it as
                 # a PEP 508 project name). Append extras after the egg fragment.
                 line = f"-e {vcs_type}+{vcs_url}{ref_str}{egg_fragment}"
@@ -339,11 +301,7 @@ def requirement_from_pipfile(package_name, package_spec, include_markers=True):
 
     # Handle standard version specifications
     version = package_spec.get("version", "")
-    extras = (
-        "[{}]".format(",".join(package_spec.get("extras", [])))
-        if "extras" in package_spec
-        else ""
-    )
+    extras = "[{}]".format(",".join(package_spec.get("extras", []))) if "extras" in package_spec else ""
 
     # Process version
     if is_star(version):
@@ -386,9 +344,7 @@ def requirements_from_pipfile(deps, include_markers=True):
     pip_packages = []
 
     for package_name, package_spec in deps.items():
-        pip_package = requirement_from_pipfile(
-            package_name, package_spec, include_markers
-        )
+        pip_package = requirement_from_pipfile(package_name, package_spec, include_markers)
         if pip_package:
             pip_packages.append(pip_package)
 

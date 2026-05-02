@@ -67,12 +67,7 @@ def test_urls_work(pipenv_instance_pypi):
 @pytest.mark.files
 def test_file_urls_work(pipenv_instance_pypi):
     with pipenv_instance_pypi() as p:
-        whl = Path(
-            Path(__file__).resolve().parent.parent
-            / "pypi"
-            / "six"
-            / "six-1.11.0-py2.py3-none-any.whl"
-        )
+        whl = Path(Path(__file__).resolve().parent.parent / "pypi" / "six" / "six-1.11.0-py2.py3-none-any.whl")
 
         try:
             whl = whl.resolve()
@@ -95,9 +90,7 @@ def test_file_urls_work(pipenv_instance_pypi):
 @pytest.mark.needs_internet
 def test_vcs_install(pipenv_instance_pypi):
     with pipenv_instance_pypi() as p:
-        c = p.pipenv(
-            "install git+https://github.com/lidatong/dataclasses-json.git@v0.5.7"
-        )
+        c = p.pipenv("install git+https://github.com/lidatong/dataclasses-json.git@v0.5.7")
         assert c.returncode == 0
         assert "dataclasses-json" in p.pipfile["packages"]
 
@@ -113,10 +106,7 @@ def test_install_git_tag(pipenv_instance_private_pypi):
         assert "six" in p.pipfile["packages"]
         assert "six" in p.lockfile["default"]
         assert "git" in p.lockfile["default"]["six"]
-        assert (
-            p.lockfile["default"]["six"]["git"]
-            == "https://github.com/benjaminp/six.git"
-        )
+        assert p.lockfile["default"]["six"]["git"] == "https://github.com/benjaminp/six.git"
         assert "ref" in p.lockfile["default"]["six"]
 
 
@@ -217,9 +207,7 @@ six = "*"
 install_search_all_sources = true
             """.strip()
             f.write(contents)
-        c = p.pipenv(
-            "install pipenv-test-private-package --index https://test.pypi.org/simple"
-        )
+        c = p.pipenv("install pipenv-test-private-package --index https://test.pypi.org/simple")
         assert c.returncode == 0
         pipfile = p.pipfile
         assert pipfile["source"][1]["url"] == "https://test.pypi.org/simple"
@@ -254,19 +242,13 @@ def test_get_vcs_refs(pipenv_instance_private_pypi):
         assert c.returncode == 0
         assert "six" in p.pipfile["packages"]
         assert "six" in p.lockfile["default"]
-        assert (
-            p.lockfile["default"]["six"]["ref"]
-            == "5efb522b0647f7467248273ec1b893d06b984a59"
-        )
+        assert p.lockfile["default"]["six"]["ref"] == "5efb522b0647f7467248273ec1b893d06b984a59"
         pipfile = Path(p.pipfile_path)
         new_content = pipfile.read_text().replace("1.9.0", "1.11.0")
         pipfile.write_text(new_content)
         c = p.pipenv("lock")
         assert c.returncode == 0
-        assert (
-            p.lockfile["default"]["six"]["ref"]
-            == "15e31431af97e5e64b80af0a3f598d382bcdd49a"
-        )
+        assert p.lockfile["default"]["six"]["ref"] == "15e31431af97e5e64b80af0a3f598d382bcdd49a"
         assert "six" in p.pipfile["packages"]
         assert "six" in p.lockfile["default"]
 
@@ -300,13 +282,8 @@ Jinja2 = {{ref = "2.11.0", git = "{jinja2_uri}"}}
         installed_packages = ["Flask", "Jinja2"]
         assert all(k in p.pipfile["packages"] for k in installed_packages)
         assert all(k.lower() in p.lockfile["default"] for k in installed_packages)
-        assert all(k in p.lockfile["default"]["jinja2"] for k in ["ref", "git"]), str(
-            p.lockfile["default"]
-        )
-        assert (
-            p.lockfile["default"]["jinja2"].get("ref")
-            == "bbdafe33ce9f47e3cbfb9415619e354349f11243"
-        )
+        assert all(k in p.lockfile["default"]["jinja2"] for k in ["ref", "git"]), str(p.lockfile["default"])
+        assert p.lockfile["default"]["jinja2"].get("ref") == "bbdafe33ce9f47e3cbfb9415619e354349f11243"
         assert p.lockfile["default"]["jinja2"]["git"] == f"{jinja2_uri}"
 
 

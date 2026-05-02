@@ -104,9 +104,7 @@ class ConfluenceBongo(BaseBongo):
             # Generate new content with same token
             # Keep the original title to avoid conflicts in Confluence
             original_title = page_info.get("title")
-            _, content = await generate_confluence_artifact(
-                self.openai_model, token, is_update=True
-            )
+            _, content = await generate_confluence_artifact(self.openai_model, token, is_update=True)
 
             # Update page with original title (Confluence doesn't allow duplicate titles in a space)
             await self._update_test_page(page_info["id"], original_title, content)
@@ -153,9 +151,7 @@ class ConfluenceBongo(BaseBongo):
                     deleted_ids.append(test_page["id"])
                     self.logger.info(f"🗑️ Deleted test page: {test_page['title']}")
                 else:
-                    self.logger.warning(
-                        f"⚠️ Could not find test page for entity: {entity.get('id')}"
-                    )
+                    self.logger.warning(f"⚠️ Could not find test page for entity: {entity.get('id')}")
 
                 # Rate limiting
                 if len(entities) > 10:
@@ -346,9 +342,7 @@ class ConfluenceBongo(BaseBongo):
                     return page.get("status") == "trashed"
                 else:
                     # Unexpected response
-                    self.logger.warning(
-                        f"⚠️ Unexpected response checking {page_id}: {response.status_code}"
-                    )
+                    self.logger.warning(f"⚠️ Unexpected response checking {page_id}: {response.status_code}")
                     return False
 
         except Exception as e:

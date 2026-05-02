@@ -37,7 +37,7 @@ class KnowledgeGraph:
         password: str | None = None,
         database: str | None = None,
         auto_start_container: bool = True,
-        create_indexes: bool = True
+        create_indexes: bool = True,
     ):
         """
         Initialize knowledge graph connection.
@@ -76,20 +76,13 @@ class KnowledgeGraph:
         # Connect to Neo4j
         self._connected = False
         try:
-            self.graph = Graph(
-                self.uri,
-                auth=(self.user, self.password),
-                name=self.database
-            )
+            self.graph = Graph(self.uri, auth=(self.user, self.password), name=self.database)
 
             # Test connection
             self.graph.run("RETURN 1").data()
             self._connected = True
 
-            logger.info(
-                f"Connected to Neo4j at {self.uri} "
-                f"(database={self.database})"
-            )
+            logger.info(f"Connected to Neo4j at {self.uri} (database={self.database})")
 
         except Exception as e:
             logger.error(f"Failed to connect to Neo4j: {e}")
@@ -122,10 +115,7 @@ class KnowledgeGraph:
         try:
             # Check if container is running
             result = subprocess.run(
-                ["docker", "ps", "--filter", "name=kosmos-neo4j", "--format", "{{.Names}}"],
-                capture_output=True,
-                text=True,
-                timeout=10
+                ["docker", "ps", "--filter", "name=kosmos-neo4j", "--format", "{{.Names}}"], capture_output=True, text=True, timeout=10
             )
 
             if "kosmos-neo4j" in result.stdout:
@@ -134,12 +124,7 @@ class KnowledgeGraph:
 
             # Start container
             logger.info("Starting Neo4j container...")
-            subprocess.run(
-                ["docker-compose", "up", "-d", "neo4j"],
-                check=True,
-                capture_output=True,
-                timeout=60
-            )
+            subprocess.run(["docker-compose", "up", "-d", "neo4j"], check=True, capture_output=True, timeout=60)
 
             # Wait for container to be ready
             logger.info("Waiting for Neo4j to be ready...")
@@ -147,10 +132,9 @@ class KnowledgeGraph:
             for i in range(max_retries):
                 try:
                     result = subprocess.run(
-                        ["docker", "exec", "kosmos-neo4j", "cypher-shell",
-                         "-u", "neo4j", "-p", "kosmos-password", "RETURN 1"],
+                        ["docker", "exec", "kosmos-neo4j", "cypher-shell", "-u", "neo4j", "-p", "kosmos-password", "RETURN 1"],
                         capture_output=True,
-                        timeout=5
+                        timeout=5,
                     )
                     if result.returncode == 0:
                         logger.info("Neo4j container ready")
@@ -176,14 +160,11 @@ class KnowledgeGraph:
             "CREATE INDEX paper_doi IF NOT EXISTS FOR (p:Paper) ON (p.doi)",
             "CREATE INDEX paper_arxiv IF NOT EXISTS FOR (p:Paper) ON (p.arxiv_id)",
             "CREATE INDEX paper_pubmed IF NOT EXISTS FOR (p:Paper) ON (p.pubmed_id)",
-
             # Author indexes
             "CREATE INDEX author_name IF NOT EXISTS FOR (a:Author) ON (a.name)",
-
             # Concept indexes
             "CREATE INDEX concept_name IF NOT EXISTS FOR (c:Concept) ON (c.name)",
             "CREATE INDEX concept_domain IF NOT EXISTS FOR (c:Concept) ON (c.domain)",
-
             # Method indexes
             "CREATE INDEX method_name IF NOT EXISTS FOR (m:Method) ON (m.name)",
             "CREATE INDEX method_category IF NOT EXISTS FOR (m:Method) ON (m.category)",
@@ -199,11 +180,7 @@ class KnowledgeGraph:
 
     # ==================== Paper CRUD ====================
 
-    def create_paper(
-        self,
-        paper: PaperMetadata,
-        merge: bool = True
-    ) -> Node:
+    def create_paper(self, paper: PaperMetadata, merge: bool = True) -> Node:
         """
         Create or update a Paper node.
 
@@ -227,7 +204,7 @@ class KnowledgeGraph:
             "year": paper.year or 0,
             "citation_count": paper.citation_count,
             "domain": paper.fields[0] if paper.fields else "unknown",
-            "created_at": datetime.now().isoformat()
+            "created_at": datetime.now().isoformat(),
         }
 
         # Add identifiers
@@ -328,13 +305,7 @@ class KnowledgeGraph:
 
     # ==================== Author CRUD ====================
 
-    def create_author(
-        self,
-        name: str,
-        affiliation: str | None = None,
-        h_index: int | None = None,
-        merge: bool = True
-    ) -> Node:
+    def create_author(self, name: str, affiliation: str | None = None, h_index: int | None = None, merge: bool = True) -> Node:
         """
         Create or update an Author node.
 
@@ -347,11 +318,7 @@ class KnowledgeGraph:
         Returns:
             Created/merged Author node
         """
-        properties = {
-            "name": name,
-            "created_at": datetime.now().isoformat(),
-            "paper_count": 0
-        }
+        properties = {"name": name, "created_at": datetime.now().isoformat(), "paper_count": 0}
 
         if affiliation:
             properties["affiliation"] = affiliation
@@ -400,13 +367,7 @@ class KnowledgeGraph:
 
     # ==================== Concept CRUD ====================
 
-    def create_concept(
-        self,
-        name: str,
-        description: str | None = None,
-        domain: str | None = None,
-        merge: bool = True
-    ) -> Node:
+    def create_concept(self, name: str, description: str | None = None, domain: str | None = None, merge: bool = True) -> Node:
         """
         Create or update a Concept node.
 
@@ -419,11 +380,7 @@ class KnowledgeGraph:
         Returns:
             Created/merged Concept node
         """
-        properties = {
-            "name": name,
-            "created_at": datetime.now().isoformat(),
-            "frequency": 0
-        }
+        properties = {"name": name, "created_at": datetime.now().isoformat(), "frequency": 0}
 
         if description:
             properties["description"] = description
@@ -468,13 +425,7 @@ class KnowledgeGraph:
 
     # ==================== Method CRUD ====================
 
-    def create_method(
-        self,
-        name: str,
-        description: str | None = None,
-        category: str | None = None,
-        merge: bool = True
-    ) -> Node:
+    def create_method(self, name: str, description: str | None = None, category: str | None = None, merge: bool = True) -> Node:
         """
         Create or update a Method node.
 
@@ -487,11 +438,7 @@ class KnowledgeGraph:
         Returns:
             Created/merged Method node
         """
-        properties = {
-            "name": name,
-            "created_at": datetime.now().isoformat(),
-            "usage_count": 0
-        }
+        properties = {"name": name, "created_at": datetime.now().isoformat(), "usage_count": 0}
 
         if description:
             properties["description"] = description
@@ -536,12 +483,7 @@ class KnowledgeGraph:
 
     # ==================== Relationship CRUD ====================
 
-    def create_citation(
-        self,
-        citing_paper_id: str,
-        cited_paper_id: str,
-        merge: bool = True
-    ) -> Relationship | None:
+    def create_citation(self, citing_paper_id: str, cited_paper_id: str, merge: bool = True) -> Relationship | None:
         """
         Create a CITES relationship between papers.
 
@@ -573,12 +515,7 @@ class KnowledgeGraph:
         return rel
 
     def create_authored(
-        self,
-        author_name: str,
-        paper_id: str,
-        order: int | None = None,
-        role: str | None = None,
-        merge: bool = True
+        self, author_name: str, paper_id: str, order: int | None = None, role: str | None = None, merge: bool = True
     ) -> Relationship | None:
         """
         Create an AUTHORED relationship.
@@ -616,12 +553,7 @@ class KnowledgeGraph:
         return rel
 
     def create_discusses(
-        self,
-        paper_id: str,
-        concept_name: str,
-        relevance_score: float = 1.0,
-        section: str | None = None,
-        merge: bool = True
+        self, paper_id: str, concept_name: str, relevance_score: float = 1.0, section: str | None = None, merge: bool = True
     ) -> Relationship | None:
         """
         Create a DISCUSSES relationship between paper and concept.
@@ -643,10 +575,7 @@ class KnowledgeGraph:
             logger.warning("Cannot create DISCUSSES: nodes not found")
             return None
 
-        properties = {
-            "relevance_score": relevance_score,
-            "created_at": datetime.now().isoformat()
-        }
+        properties = {"relevance_score": relevance_score, "created_at": datetime.now().isoformat()}
         if section:
             properties["section"] = section
 
@@ -660,12 +589,7 @@ class KnowledgeGraph:
         return rel
 
     def create_uses_method(
-        self,
-        paper_id: str,
-        method_name: str,
-        confidence: float = 1.0,
-        context: str | None = None,
-        merge: bool = True
+        self, paper_id: str, method_name: str, confidence: float = 1.0, context: str | None = None, merge: bool = True
     ) -> Relationship | None:
         """
         Create a USES_METHOD relationship.
@@ -687,10 +611,7 @@ class KnowledgeGraph:
             logger.warning("Cannot create USES_METHOD: nodes not found")
             return None
 
-        properties = {
-            "confidence": confidence,
-            "created_at": datetime.now().isoformat()
-        }
+        properties = {"confidence": confidence, "created_at": datetime.now().isoformat()}
         if context:
             properties["context"] = context
 
@@ -704,12 +625,7 @@ class KnowledgeGraph:
         return rel
 
     def create_related_to(
-        self,
-        concept1_name: str,
-        concept2_name: str,
-        similarity: float = 0.5,
-        source: str = "manual",
-        merge: bool = True
+        self, concept1_name: str, concept2_name: str, similarity: float = 0.5, source: str = "manual", merge: bool = True
     ) -> Relationship | None:
         """
         Create a RELATED_TO relationship between concepts.
@@ -731,11 +647,7 @@ class KnowledgeGraph:
             logger.warning("Cannot create RELATED_TO: concepts not found")
             return None
 
-        properties = {
-            "similarity": similarity,
-            "source": source,
-            "created_at": datetime.now().isoformat()
-        }
+        properties = {"similarity": similarity, "source": source, "created_at": datetime.now().isoformat()}
 
         rel = Relationship(concept1, "RELATED_TO", concept2, **properties)
         self.graph.merge(rel) if merge else self.graph.create(rel)
@@ -804,12 +716,7 @@ class KnowledgeGraph:
         results = self.graph.run(query, author_name=author_name).data()
         return [{"paper": dict(r["p"]), "order": r["author_order"]} for r in results]
 
-    def get_concept_papers(
-        self,
-        concept_name: str,
-        min_relevance: float = 0.5,
-        limit: int = 50
-    ) -> list[dict[str, Any]]:
+    def get_concept_papers(self, concept_name: str, min_relevance: float = 0.5, limit: int = 50) -> list[dict[str, Any]]:
         """
         Get papers discussing a concept.
 
@@ -829,12 +736,7 @@ class KnowledgeGraph:
         LIMIT $limit
         """
 
-        results = self.graph.run(
-            query,
-            concept_name=concept_name,
-            min_relevance=min_relevance,
-            limit=limit
-        ).data()
+        results = self.graph.run(query, concept_name=concept_name, min_relevance=min_relevance, limit=limit).data()
 
         return [{"paper": dict(r["p"]), "relevance": r["relevance"]} for r in results]
 
@@ -859,12 +761,7 @@ class KnowledgeGraph:
         results = self.graph.run(query, method_name=method_name, limit=limit).data()
         return [{"paper": dict(r["p"]), "confidence": r["confidence"]} for r in results]
 
-    def get_related_concepts(
-        self,
-        concept_name: str,
-        min_similarity: float = 0.5,
-        limit: int = 20
-    ) -> list[dict[str, Any]]:
+    def get_related_concepts(self, concept_name: str, min_similarity: float = 0.5, limit: int = 20) -> list[dict[str, Any]]:
         """
         Get concepts related to a given concept.
 
@@ -884,21 +781,11 @@ class KnowledgeGraph:
         LIMIT $limit
         """
 
-        results = self.graph.run(
-            query,
-            concept_name=concept_name,
-            min_similarity=min_similarity,
-            limit=limit
-        ).data()
+        results = self.graph.run(query, concept_name=concept_name, min_similarity=min_similarity, limit=limit).data()
 
         return [{"concept": dict(r["c2"]), "similarity": r["similarity"]} for r in results]
 
-    def find_related_papers(
-        self,
-        paper_id: str,
-        max_hops: int = 2,
-        limit: int = 20
-    ) -> list[dict[str, Any]]:
+    def find_related_papers(self, paper_id: str, max_hops: int = 2, limit: int = 20) -> list[dict[str, Any]]:
         """
         Find papers related to a given paper through the knowledge graph.
 
@@ -922,20 +809,9 @@ class KnowledgeGraph:
         """
 
         results = self.graph.run(query, paper_id=paper_id, limit=limit).data()
-        return [
-            {
-                "paper": dict(r["p2"]),
-                "distance": r["distance"],
-                "relationship_types": r["rel_types"]
-            }
-            for r in results
-        ]
+        return [{"paper": dict(r["p2"]), "distance": r["distance"], "relationship_types": r["rel_types"]} for r in results]
 
-    def get_concept_cooccurrence(
-        self,
-        concept_name: str,
-        min_papers: int = 2
-    ) -> list[dict[str, Any]]:
+    def get_concept_cooccurrence(self, concept_name: str, min_papers: int = 2) -> list[dict[str, Any]]:
         """
         Find concepts that co-occur with a given concept in papers.
 
@@ -955,11 +831,7 @@ class KnowledgeGraph:
         ORDER BY cooccurrence_count DESC
         """
 
-        results = self.graph.run(
-            query,
-            concept_name=concept_name,
-            min_papers=min_papers
-        ).data()
+        results = self.graph.run(query, concept_name=concept_name, min_papers=min_papers).data()
 
         return [{"concept": dict(r["c2"]), "count": r["cooccurrence_count"]} for r in results]
 
@@ -981,9 +853,7 @@ class KnowledgeGraph:
 
         # Relationship counts
         for rel_type in ["CITES", "AUTHORED", "DISCUSSES", "USES_METHOD", "RELATED_TO"]:
-            count = self.graph.run(
-                f"MATCH ()-[r:{rel_type}]->() RETURN count(r) as count"
-            ).data()[0]["count"]
+            count = self.graph.run(f"MATCH ()-[r:{rel_type}]->() RETURN count(r) as count").data()[0]["count"]
             stats[f"{rel_type.lower()}_count"] = count
 
         return stats
@@ -999,11 +869,7 @@ _knowledge_graph: KnowledgeGraph | None = None
 
 
 def get_knowledge_graph(
-    uri: str | None = None,
-    user: str | None = None,
-    password: str | None = None,
-    database: str | None = None,
-    reset: bool = False
+    uri: str | None = None, user: str | None = None, password: str | None = None, database: str | None = None, reset: bool = False
 ) -> KnowledgeGraph:
     """
     Get or create the singleton knowledge graph instance.
@@ -1020,12 +886,7 @@ def get_knowledge_graph(
     """
     global _knowledge_graph
     if _knowledge_graph is None or reset:
-        _knowledge_graph = KnowledgeGraph(
-            uri=uri,
-            user=user,
-            password=password,
-            database=database
-        )
+        _knowledge_graph = KnowledgeGraph(uri=uri, user=user, password=password, database=database)
     return _knowledge_graph
 
 

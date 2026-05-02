@@ -73,10 +73,7 @@ class SafetyReport(BaseModel):
 
     def has_critical_violations(self) -> bool:
         """Check if report has any critical or high-risk violations."""
-        return any(
-            v.severity in [RiskLevel.CRITICAL, RiskLevel.HIGH]
-            for v in self.violations
-        )
+        return any(v.severity in [RiskLevel.CRITICAL, RiskLevel.HIGH] for v in self.violations)
 
     def get_violations_by_type(self, violation_type: ViolationType) -> list[SafetyViolation]:
         """Get violations of a specific type."""
@@ -89,10 +86,7 @@ class SafetyReport(BaseModel):
         else:
             violation_count = len(self.violations)
             warning_count = len(self.warnings)
-            return (
-                f"✗ Safety checks failed (Risk: {self.risk_level.value}): "
-                f"{violation_count} violations, {warning_count} warnings"
-            )
+            return f"✗ Safety checks failed (Risk: {self.risk_level.value}): {violation_count} violations, {warning_count} warnings"
 
 
 class SafetyIncident(BaseModel):

@@ -151,9 +151,7 @@ def run_pep508_check(project, system, python):
         try:
             return json.loads(c.stdout.strip())
         except json.JSONDecodeError:
-            err.print(
-                f"Failed parsing pep508 results:\n{c.stdout.strip()}\n{c.stderr.strip()}"
-            )
+            err.print(f"Failed parsing pep508 results:\n{c.stdout.strip()}\n{c.stderr.strip()}")
             sys.exit(1)
     return {}
 
@@ -169,8 +167,7 @@ def check_pep508_requirements(project, results, quiet):
             if results[marker] != specifier:
                 failed = True
                 err.print(
-                    f"Specifier [green]{marker}[/green] does not match [cyan]{specifier}[/cyan] "
-                    f"([yellow]{results[marker]}[/yellow])."
+                    f"Specifier [green]{marker}[/green] does not match [cyan]{specifier}[/cyan] ([yellow]{results[marker]}[/yellow])."
                 )
 
     if failed:
@@ -246,9 +243,7 @@ def install_safety(project, system=False, auto_install=False):
     """Install safety and its dependencies."""
     python = project_python(project, system=system)
 
-    console.print(
-        "[yellow bold]Safety package is required for vulnerability scanning but not installed.[/yellow bold]"
-    )
+    console.print("[yellow bold]Safety package is required for vulnerability scanning but not installed.[/yellow bold]")
 
     install = auto_install
     if not auto_install:
@@ -258,9 +253,7 @@ def install_safety(project, system=False, auto_install=False):
         )
 
     if not install:
-        console.print(
-            "[yellow]Vulnerability scanning skipped. Install safety with 'pip install pipenv[safety]'[/yellow]"
-        )
+        console.print("[yellow]Vulnerability scanning skipped. Install safety with 'pip install pipenv[safety]'[/yellow]")
         return False
 
     console.print("[green]Installing safety...[/green]")
@@ -269,9 +262,7 @@ def install_safety(project, system=False, auto_install=False):
     c = run_command(cmd)
 
     if c.returncode != 0:
-        err.print(
-            "[red]Failed to install safety. Please install it manually with 'pip install pipenv[safety]'[/red]"
-        )
+        err.print("[red]Failed to install safety. Please install it manually with 'pip install pipenv[safety]'[/red]")
         return False
 
     console.print("[green]Safety installed successfully![/green]")
@@ -307,16 +298,12 @@ def parse_safety_output(output, quiet):
 
         if quiet:
             color = "red" if vulnerabilities_found else "green"
-            console.print(
-                f"[{color}]{vulnerabilities_found} vulnerabilities found.[/{color}]"
-            )
+            console.print(f"[{color}]{vulnerabilities_found} vulnerabilities found.[/{color}]")
         else:
             color = "red" if vulnerabilities_found else "green"
             message = f"Scan complete using Safety's {db_type} vulnerability database."
             console.print()
-            console.print(
-                f"[{color}]{vulnerabilities_found} vulnerabilities found.[/{color}]"
-            )
+            console.print(f"[{color}]{vulnerabilities_found} vulnerabilities found.[/{color}]")
             console.print()
 
             for vuln in json_report.get("vulnerabilities", []):
@@ -385,13 +372,9 @@ def do_scan(  # noqa: PLR0913
 
     if not quiet and not project.s.is_quiet():
         if use_installed:
-            console.print(
-                "[bold]Scanning installed packages for vulnerabilities...[/bold]"
-            )
+            console.print("[bold]Scanning installed packages for vulnerabilities...[/bold]")
         else:
-            console.print(
-                "[bold]Scanning Pipfile.lock packages for vulnerabilities...[/bold]"
-            )
+            console.print("[bold]Scanning Pipfile.lock packages for vulnerabilities...[/bold]")
 
     if ignore:
         ignore = [ignore] if not isinstance(ignore, (tuple, list)) else ignore
@@ -475,18 +458,11 @@ def do_scan(  # noqa: PLR0913
             )
 
             # For scan command, global options come before the command
-            cmd = (
-                [project_python(project, system=system), "-m", "safety"]
-                + global_options
-                + ["scan"]
-                + scan_options
-            )
+            cmd = [project_python(project, system=system), "-m", "safety"] + global_options + ["scan"] + scan_options
 
             # Note: scan command doesn't support ignore directly, but we can use a policy file
             if ignore and not policy_file:
-                console.print(
-                    "[yellow]Note: Ignoring vulnerabilities with the scan command requires a policy file.[/yellow]"
-                )
+                console.print("[yellow]Note: Ignoring vulnerabilities with the scan command requires a policy file.[/yellow]")
 
         # Run the safety scan
         output, error, exit_code = run_safety_scan(cmd, quiet)
@@ -503,6 +479,4 @@ def do_scan(  # noqa: PLR0913
         try:
             os.unlink(temp_requirements_path)
         except Exception as e:
-            err.print(
-                f"[yellow]Warning: Failed to delete temporary file {temp_requirements_path}: {e}[/yellow]"
-            )
+            err.print(f"[yellow]Warning: Failed to delete temporary file {temp_requirements_path}: {e}[/yellow]")

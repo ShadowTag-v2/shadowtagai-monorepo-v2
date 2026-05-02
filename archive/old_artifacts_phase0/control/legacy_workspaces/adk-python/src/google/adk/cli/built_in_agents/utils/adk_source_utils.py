@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Utilities for finding ADK source folder dynamically and loading schema."""
+
 from __future__ import annotations
 
 import json
@@ -29,167 +30,160 @@ _schema_cache: dict[str, Any] | None = None
 
 
 def find_adk_source_folder(start_path: str | None = None) -> str | None:
-  """Find the ADK source folder by searching up the directory tree.
+    """Find the ADK source folder by searching up the directory tree.
 
-  Searches for either 'src/google/adk' or 'google/adk' directories starting
-  from the given path and moving up the directory tree until the root.
+    Searches for either 'src/google/adk' or 'google/adk' directories starting
+    from the given path and moving up the directory tree until the root.
 
-  Args:
-    start_path: Directory to start search from. If None, uses current directory.
+    Args:
+      start_path: Directory to start search from. If None, uses current directory.
 
-  Returns:
-    Absolute path to the ADK source folder if found, None otherwise.
+    Returns:
+      Absolute path to the ADK source folder if found, None otherwise.
 
-  Examples:
-    Find ADK source from current directory:
-      adk_path = find_adk_source_folder()
+    Examples:
+      Find ADK source from current directory:
+        adk_path = find_adk_source_folder()
 
-    Find ADK source from specific directory:
-      adk_path = find_adk_source_folder("/path/to/project")
-  """
-  if start_path is None:
-    start_path = os.path.dirname(__file__)
+      Find ADK source from specific directory:
+        adk_path = find_adk_source_folder("/path/to/project")
+    """
+    if start_path is None:
+        start_path = os.path.dirname(__file__)
 
-  current_path = Path(start_path).resolve()
+    current_path = Path(start_path).resolve()
 
-  # Search patterns to look for
-  search_patterns = ["src/google/adk", "google/adk"]
+    # Search patterns to look for
+    search_patterns = ["src/google/adk", "google/adk"]
 
-  logger.debug("Searching for ADK source from directory: %s", current_path)
-  # Search up the directory tree until root
-  while current_path != current_path.parent:  # Not at filesystem root
+    logger.debug("Searching for ADK source from directory: %s", current_path)
+    # Search up the directory tree until root
+    while current_path != current_path.parent:  # Not at filesystem root
+        for pattern in search_patterns:
+            candidate_path = current_path / pattern
+            if candidate_path.exists() and candidate_path.is_dir():
+                # Verify it's actually an ADK source by checking for key files
+                if _verify_adk_source_folder(candidate_path):
+                    return str(candidate_path)
+        # Move to parent directory
+        current_path = current_path.parent
+
+    # Check root directory as well
     for pattern in search_patterns:
-      candidate_path = current_path / pattern
-      if candidate_path.exists() and candidate_path.is_dir():
-        # Verify it's actually an ADK source by checking for key files
-        if _verify_adk_source_folder(candidate_path):
-          return str(candidate_path)
-    # Move to parent directory
-    current_path = current_path.parent
-
-  # Check root directory as well
-  for pattern in search_patterns:
-    candidate_path = current_path / pattern
-    if candidate_path.exists() and candidate_path.is_dir():
-      if _verify_adk_source_folder(candidate_path):
-        logger.info("Found ADK source folder : %s", candidate_path)
-        return str(candidate_path)
-  return None
+        candidate_path = current_path / pattern
+        if candidate_path.exists() and candidate_path.is_dir():
+            if _verify_adk_source_folder(candidate_path):
+                logger.info("Found ADK source folder : %s", candidate_path)
+                return str(candidate_path)
+    return None
 
 
 def _verify_adk_source_folder(path: Path) -> bool:
-  """Verify that a path contains ADK source code.
+    """Verify that a path contains ADK source code.
 
-  Args:
-    path: Path to check
+    Args:
+      path: Path to check
 
-  Returns:
-    True if path appears to contain ADK source code
-  """
-  # Check for key ADK source files/directories
-  expected_items = ["agents/config_schemas/AgentConfig.json"]
+    Returns:
+      True if path appears to contain ADK source code
+    """
+    # Check for key ADK source files/directories
+    expected_items = ["agents/config_schemas/AgentConfig.json"]
 
-  found_items = 0
-  for item in expected_items:
-    if (path / item).exists():
-      found_items += 1
+    found_items = 0
+    for item in expected_items:
+        if (path / item).exists():
+            found_items += 1
 
-  return found_items == len(expected_items)
+    return found_items == len(expected_items)
 
 
 def get_adk_schema_path(start_path: str | None = None) -> str | None:
-  """Find the path to the ADK AgentConfig schema file.
+    """Find the path to the ADK AgentConfig schema file.
 
-  Args:
-    start_path: Directory to start search from. If None, uses current directory.
+    Args:
+      start_path: Directory to start search from. If None, uses current directory.
 
-  Returns:
-    Absolute path to AgentConfig.json schema file if found, None otherwise.
-  """
-  adk_source_path = find_adk_source_folder(start_path)
-  if not adk_source_path:
+    Returns:
+      Absolute path to AgentConfig.json schema file if found, None otherwise.
+    """
+    adk_source_path = find_adk_source_folder(start_path)
+    if not adk_source_path:
+        return None
+
+    schema_path = Path(adk_source_path) / "agents/config_schemas/AgentConfig.json"
+    if schema_path.exists() and schema_path.is_file():
+        return str(schema_path)
+
     return None
 
-  schema_path = Path(adk_source_path) / "agents/config_schemas/AgentConfig.json"
-  if schema_path.exists() and schema_path.is_file():
-    return str(schema_path)
 
-  return None
+def load_agent_config_schema(raw_format: bool = False, escape_braces: bool = False) -> str | dict[str, Any]:
+    """Load the ADK AgentConfig.json schema with various formatting options.
 
+    This function provides a centralized way to load the ADK AgentConfig schema
+    and format it for different use cases across the Agent Builder Assistant.
 
-def load_agent_config_schema(
-    raw_format: bool = False, escape_braces: bool = False
-) -> str | dict[str, Any]:
-  """Load the ADK AgentConfig.json schema with various formatting options.
+    Args:
+      raw_format: If True, return as JSON string. If False, return as parsed dict.
+      escape_braces: If True, replace { and } with {{ and }} for template
+        embedding. Only applies when raw_format=True.
 
-  This function provides a centralized way to load the ADK AgentConfig schema
-  and format it for different use cases across the Agent Builder Assistant.
+    Returns:
+      Either the ADK AgentConfig schema as a Dict (raw_format=False) or as a
+      formatted string (raw_format=True), optionally with escaped braces for
+      template use.
 
-  Args:
-    raw_format: If True, return as JSON string. If False, return as parsed dict.
-    escape_braces: If True, replace { and } with {{ and }} for template
-      embedding. Only applies when raw_format=True.
+    Raises:
+      FileNotFoundError: If ADK AgentConfig.json schema file is not found.
 
-  Returns:
-    Either the ADK AgentConfig schema as a Dict (raw_format=False) or as a
-    formatted string (raw_format=True), optionally with escaped braces for
-    template use.
+    Examples:
+      # Get parsed ADK AgentConfig schema dict for validation
+      schema_dict = load_agent_config_schema()
 
-  Raises:
-    FileNotFoundError: If ADK AgentConfig.json schema file is not found.
+      # Get raw ADK AgentConfig schema JSON string for display
+      schema_str = load_agent_config_schema(raw_format=True)
 
-  Examples:
-    # Get parsed ADK AgentConfig schema dict for validation
-    schema_dict = load_agent_config_schema()
-
-    # Get raw ADK AgentConfig schema JSON string for display
-    schema_str = load_agent_config_schema(raw_format=True)
-
-    # Get template-safe ADK AgentConfig schema JSON string for instruction
-    # embedding
-    schema_template = load_agent_config_schema(
-        raw_format=True, escape_braces=True
-    )
-  """
-  global _schema_cache
-
-  # Load and cache schema if not already loaded
-  if _schema_cache is None:
-    schema_path_str = get_adk_schema_path()
-    if not schema_path_str:
-      raise FileNotFoundError(
-          "AgentConfig.json schema not found. Make sure you're running from"
-          " within the ADK project."
+      # Get template-safe ADK AgentConfig schema JSON string for instruction
+      # embedding
+      schema_template = load_agent_config_schema(
+          raw_format=True, escape_braces=True
       )
+    """
+    global _schema_cache
 
-    schema_path = Path(schema_path_str)
-    if not schema_path.exists():
-      raise FileNotFoundError(
-          f"AgentConfig.json schema not found at {schema_path}"
-      )
+    # Load and cache schema if not already loaded
+    if _schema_cache is None:
+        schema_path_str = get_adk_schema_path()
+        if not schema_path_str:
+            raise FileNotFoundError("AgentConfig.json schema not found. Make sure you're running from within the ADK project.")
 
-    with open(schema_path, encoding="utf-8") as f:
-      _schema_cache = json.load(f)
+        schema_path = Path(schema_path_str)
+        if not schema_path.exists():
+            raise FileNotFoundError(f"AgentConfig.json schema not found at {schema_path}")
 
-  # Return parsed dict format
-  if not raw_format:
-    return _schema_cache
+        with open(schema_path, encoding="utf-8") as f:
+            _schema_cache = json.load(f)
 
-  # Return as JSON string with optional brace escaping
-  schema_str = json.dumps(_schema_cache, indent=2)
+    # Return parsed dict format
+    if not raw_format:
+        return _schema_cache
 
-  if escape_braces:
-    # Replace braces for template embedding (prevent variable interpolation)
-    schema_str = schema_str.replace("{", "{{").replace("}", "}}")
+    # Return as JSON string with optional brace escaping
+    schema_str = json.dumps(_schema_cache, indent=2)
 
-  return schema_str
+    if escape_braces:
+        # Replace braces for template embedding (prevent variable interpolation)
+        schema_str = schema_str.replace("{", "{{").replace("}", "}}")
+
+    return schema_str
 
 
 def clear_schema_cache() -> None:
-  """Clear the cached schema data.
+    """Clear the cached schema data.
 
-  This can be useful for testing or if the schema file has been updated
-  and you need to reload it.
-  """
-  global _schema_cache
-  _schema_cache = None
+    This can be useful for testing or if the schema file has been updated
+    and you need to reload it.
+    """
+    global _schema_cache
+    _schema_cache = None

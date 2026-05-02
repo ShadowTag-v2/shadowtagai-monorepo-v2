@@ -21,52 +21,45 @@ from google.genai.types import GenerateContentConfig
 
 
 def roll_die(sides: int) -> int:
-  """Roll a die and return the rolled result.
+    """Roll a die and return the rolled result.
 
-  Args:
-    sides: The integer number of sides the die has.
+    Args:
+      sides: The integer number of sides the die has.
 
-  Returns:
-    An integer of the result of rolling the die.
-  """
-  return random.randint(1, sides)
+    Returns:
+      An integer of the result of rolling the die.
+    """
+    return random.randint(1, sides)
 
 
 async def check_prime(nums: list[int]) -> str:
-  """Check if a given list of numbers are prime.
+    """Check if a given list of numbers are prime.
 
-  Args:
-    nums: The list of numbers to check.
+    Args:
+      nums: The list of numbers to check.
 
-  Returns:
-    A str indicating which number is prime.
-  """
-  primes = set()
-  for number in nums:
-    number = number
-    if number <= 1:
-      continue
-    is_prime = True
-    for i in range(2, int(number**0.5) + 1):
-      if number % i == 0:
-        is_prime = False
-        break
-    if is_prime:
-      primes.add(number)
-  return (
-      "No prime numbers found."
-      if not primes
-      else f"{', '.join(str(num) for num in primes)} are prime numbers."
-  )
+    Returns:
+      A str indicating which number is prime.
+    """
+    primes = set()
+    for number in nums:
+        number = number
+        if number <= 1:
+            continue
+        is_prime = True
+        for i in range(2, int(number**0.5) + 1):
+            if number % i == 0:
+                is_prime = False
+                break
+        if is_prime:
+            primes.add(number)
+    return "No prime numbers found." if not primes else f"{', '.join(str(num) for num in primes)} are prime numbers."
 
 
 root_agent = Agent(
     model=Gemma(model="gemma-3-27b-it"),
     name="data_processing_agent",
-    description=(
-        "hello world agent that can roll many-sided dice and check if numbers"
-        " are prime."
-    ),
+    description=("hello world agent that can roll many-sided dice and check if numbers are prime."),
     instruction="""
       You roll dice and answer questions about the outcome of the dice rolls.
       You can roll dice of different sizes.

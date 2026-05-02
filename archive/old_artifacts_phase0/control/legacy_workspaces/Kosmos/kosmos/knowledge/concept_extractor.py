@@ -28,6 +28,7 @@ from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL
 @dataclass
 class ExtractedConcept:
     """Represents an extracted scientific concept."""
+
     name: str
     description: str
     domain: str
@@ -40,6 +41,7 @@ class ExtractedConcept:
 @dataclass
 class ExtractedMethod:
     """Represents an extracted method or technique."""
+
     name: str
     description: str
     category: str  # experimental, computational, analytical, theoretical
@@ -52,6 +54,7 @@ class ExtractedMethod:
 @dataclass
 class ConceptRelationship:
     """Represents a relationship between concepts."""
+
     concept1: str
     concept2: str
     relationship_type: str  # SUBTOPIC_OF, RELATED_TO, PREREQUISITE_FOR, etc.
@@ -64,6 +67,7 @@ class ConceptRelationship:
 @dataclass
 class ExtractionResult:
     """Complete extraction result for a paper."""
+
     paper_id: str
     concepts: list[ExtractedConcept]
     methods: list[ExtractedMethod]
@@ -78,7 +82,7 @@ class ExtractionResult:
             "methods": [m.to_dict() for m in self.methods],
             "relationships": [r.to_dict() for r in self.relationships],
             "extraction_time": self.extraction_time,
-            "model_used": self.model_used
+            "model_used": self.model_used,
         }
 
 
@@ -97,7 +101,7 @@ class ConceptExtractor:
         cache_dir: str | None = None,
         use_cache: bool = True,
         max_tokens: int = 4096,
-        temperature: float = 0.0
+        temperature: float = 0.0,
     ):
         """
         Initialize concept extractor.
@@ -128,8 +132,7 @@ class ConceptExtractor:
         self.api_key = api_key or (config.claude.api_key if config.claude else None)
         if not self.api_key:
             raise ValueError(
-                "Anthropic API key is required for ConceptExtractor. "
-                "Either pass api_key parameter or set ANTHROPIC_API_KEY environment variable."
+                "Anthropic API key is required for ConceptExtractor. Either pass api_key parameter or set ANTHROPIC_API_KEY environment variable."
             )
         self.client = anthropic.Anthropic(api_key=self.api_key)
         self.model = model
@@ -151,11 +154,7 @@ class ConceptExtractor:
         logger.info(f"Initialized ConceptExtractor (model={model})")
 
     def extract_from_paper(
-        self,
-        paper: PaperMetadata,
-        include_relationships: bool = True,
-        max_concepts: int = 10,
-        max_methods: int = 5
+        self, paper: PaperMetadata, include_relationships: bool = True, max_concepts: int = 10, max_methods: int = 5
     ) -> ExtractionResult:
         """
         Extract concepts and methods from a paper.
@@ -192,11 +191,7 @@ class ConceptExtractor:
         # Extract concepts and methods
         logger.info(f"Extracting concepts from: {paper.title}")
 
-        concepts_and_methods = self._extract_concepts_and_methods(
-            paper,
-            max_concepts=max_concepts,
-            max_methods=max_methods
-        )
+        concepts_and_methods = self._extract_concepts_and_methods(paper, max_concepts=max_concepts, max_methods=max_methods)
 
         concepts = concepts_and_methods["concepts"]
         methods = concepts_and_methods["methods"]
@@ -214,25 +209,18 @@ class ConceptExtractor:
             methods=methods,
             relationships=relationships,
             extraction_time=extraction_time,
-            model_used=self.model
+            model_used=self.model,
         )
 
         # Cache result
         if self.use_cache:
             self._save_to_cache(paper.primary_identifier, result)
 
-        logger.info(
-            f"Extracted {len(concepts)} concepts, {len(methods)} methods "
-            f"in {extraction_time:.2f}s"
-        )
+        logger.info(f"Extracted {len(concepts)} concepts, {len(methods)} methods in {extraction_time:.2f}s")
 
         return result
 
-    def extract_from_papers(
-        self,
-        papers: list[PaperMetadata],
-        show_progress: bool = True
-    ) -> list[ExtractionResult]:
+    def extract_from_papers(self, papers: list[PaperMetadata], show_progress: bool = True) -> list[ExtractionResult]:
         """
         Extract from multiple papers (batch processing).
 
@@ -255,23 +243,15 @@ class ConceptExtractor:
             except Exception as e:
                 logger.error(f"Error extracting from paper {paper.primary_identifier}: {e}")
                 # Create empty result on error
-                results.append(ExtractionResult(
-                    paper_id=paper.primary_identifier,
-                    concepts=[],
-                    methods=[],
-                    relationships=[],
-                    extraction_time=0.0,
-                    model_used=self.model
-                ))
+                results.append(
+                    ExtractionResult(
+                        paper_id=paper.primary_identifier, concepts=[], methods=[], relationships=[], extraction_time=0.0, model_used=self.model
+                    )
+                )
 
         return results
 
-    def _extract_concepts_and_methods(
-        self,
-        paper: PaperMetadata,
-        max_concepts: int,
-        max_methods: int
-    ) -> dict[str, Any]:
+    def _extract_concepts_and_methods(self, paper: PaperMetadata, max_concepts: int, max_methods: int) -> dict[str, Any]:
         """
         Extract concepts and methods using Claude.
 
@@ -284,24 +264,12 @@ class ConceptExtractor:
             Dictionary with concepts and methods lists
         """
         # Build prompt
-        prompt = self._build_concept_extraction_prompt(
-            paper,
-            max_concepts=max_concepts,
-            max_methods=max_methods
-        )
+        prompt = self._build_concept_extraction_prompt(paper, max_concepts=max_concepts, max_methods=max_methods)
 
         # Call Claude API
         try:
             message = self.client.messages.create(
-                model=self.model,
-                max_tokens=self.max_tokens,
-                temperature=self.temperature,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ]
+                model=self.model, max_tokens=self.max_tokens, temperature=self.temperature, messages=[{"role": "user", "content": prompt}]
             )
 
             response_text = message.content[0].text
@@ -311,21 +279,13 @@ class ConceptExtractor:
 
             # Convert to dataclasses
             concepts = [
-                ExtractedConcept(
-                    name=c["name"],
-                    description=c["description"],
-                    domain=c.get("domain", "unknown"),
-                    relevance=c.get("relevance", 0.5)
-                )
+                ExtractedConcept(name=c["name"], description=c["description"], domain=c.get("domain", "unknown"), relevance=c.get("relevance", 0.5))
                 for c in parsed.get("concepts", [])
             ]
 
             methods = [
                 ExtractedMethod(
-                    name=m["name"],
-                    description=m["description"],
-                    category=m.get("category", "unknown"),
-                    confidence=m.get("confidence", 0.5)
+                    name=m["name"], description=m["description"], category=m.get("category", "unknown"), confidence=m.get("confidence", 0.5)
                 )
                 for m in parsed.get("methods", [])
             ]
@@ -336,11 +296,7 @@ class ConceptExtractor:
             logger.error(f"Error in Claude API call: {e}")
             return {"concepts": [], "methods": []}
 
-    def _extract_relationships(
-        self,
-        paper: PaperMetadata,
-        concepts: list[ExtractedConcept]
-    ) -> list[ConceptRelationship]:
+    def _extract_relationships(self, paper: PaperMetadata, concepts: list[ExtractedConcept]) -> list[ConceptRelationship]:
         """
         Extract relationships between concepts.
 
@@ -360,15 +316,7 @@ class ConceptExtractor:
         # Call Claude API
         try:
             message = self.client.messages.create(
-                model=self.model,
-                max_tokens=self.max_tokens,
-                temperature=self.temperature,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ]
+                model=self.model, max_tokens=self.max_tokens, temperature=self.temperature, messages=[{"role": "user", "content": prompt}]
             )
 
             response_text = message.content[0].text
@@ -377,10 +325,7 @@ class ConceptExtractor:
             # Convert to dataclasses
             relationships = [
                 ConceptRelationship(
-                    concept1=r["concept1"],
-                    concept2=r["concept2"],
-                    relationship_type=r.get("type", "RELATED_TO"),
-                    strength=r.get("strength", 0.5)
+                    concept1=r["concept1"], concept2=r["concept2"], relationship_type=r.get("type", "RELATED_TO"), strength=r.get("strength", 0.5)
                 )
                 for r in parsed.get("relationships", [])
             ]
@@ -391,12 +336,7 @@ class ConceptExtractor:
             logger.error(f"Error extracting relationships: {e}")
             return []
 
-    def _build_concept_extraction_prompt(
-        self,
-        paper: PaperMetadata,
-        max_concepts: int,
-        max_methods: int
-    ) -> str:
+    def _build_concept_extraction_prompt(self, paper: PaperMetadata, max_concepts: int, max_methods: int) -> str:
         """
         Build prompt for concept and method extraction.
 
@@ -453,11 +393,7 @@ Be specific and focus on the most important concepts and methods. Prioritize cla
 
         return prompt
 
-    def _build_relationship_prompt(
-        self,
-        paper: PaperMetadata,
-        concepts: list[ExtractedConcept]
-    ) -> str:
+    def _build_relationship_prompt(self, paper: PaperMetadata, concepts: list[ExtractedConcept]) -> str:
         """
         Build prompt for relationship extraction.
 
@@ -537,9 +473,7 @@ If no clear relationships exist, return {{"relationships": []}}"""
 
     def _get_cache_key(self, paper_id: str) -> str:
         """Generate cache key for a paper."""
-        return hashlib.sha256(
-            f"{paper_id}:{self.model}".encode()
-        ).hexdigest()
+        return hashlib.sha256(f"{paper_id}:{self.model}".encode()).hexdigest()
 
     def _get_from_cache(self, paper_id: str) -> ExtractionResult | None:
         """
@@ -567,17 +501,11 @@ If no clear relationships exist, return {{"relationships": []}}"""
             # Reconstruct result
             result = ExtractionResult(
                 paper_id=data["paper_id"],
-                concepts=[
-                    ExtractedConcept(**c) for c in data["concepts"]
-                ],
-                methods=[
-                    ExtractedMethod(**m) for m in data["methods"]
-                ],
-                relationships=[
-                    ConceptRelationship(**r) for r in data["relationships"]
-                ],
+                concepts=[ExtractedConcept(**c) for c in data["concepts"]],
+                methods=[ExtractedMethod(**m) for m in data["methods"]],
+                relationships=[ConceptRelationship(**r) for r in data["relationships"]],
                 extraction_time=data["extraction_time"],
-                model_used=data["model_used"]
+                model_used=data["model_used"],
             )
 
             return result
@@ -621,11 +549,7 @@ If no clear relationships exist, return {{"relationships": []}}"""
 _concept_extractor: ConceptExtractor | None = None
 
 
-def get_concept_extractor(
-    api_key: str | None = None,
-    model: str = _DEFAULT_CLAUDE_SONNET_MODEL,
-    reset: bool = False
-) -> ConceptExtractor:
+def get_concept_extractor(api_key: str | None = None, model: str = _DEFAULT_CLAUDE_SONNET_MODEL, reset: bool = False) -> ConceptExtractor:
     """
     Get or create the singleton concept extractor instance.
 
@@ -639,10 +563,7 @@ def get_concept_extractor(
     """
     global _concept_extractor
     if _concept_extractor is None or reset:
-        _concept_extractor = ConceptExtractor(
-            api_key=api_key,
-            model=model
-        )
+        _concept_extractor = ConceptExtractor(api_key=api_key, model=model)
     return _concept_extractor
 
 

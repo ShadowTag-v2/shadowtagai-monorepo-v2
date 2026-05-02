@@ -8,9 +8,10 @@ Implements efficient batch processing for 100s-1000s of governance assessments:
 
 Cost savings: 90-95% reduction vs sequential assessments
 """
+
 import logging
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any
 
 from app.models.governance import ComplianceFramework, RiskLevel
 from app.services.vertex_ai_client import VertexAIClient, get_vertex_client
@@ -21,6 +22,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class BatchAssessmentResult:
     """Result of a single batch assessment"""
+
     item_id: str
     risk_score: float  # 0-100
     compliance_score: float  # 0-1
@@ -32,6 +34,7 @@ class BatchAssessmentResult:
 @dataclass
 class BatchAnalytics:
     """Analytics across batch assessments"""
+
     total_items: int
     high_risk_count: int
     avg_compliance_score: float
@@ -68,7 +71,7 @@ class BatchGovernanceEngine:
         items: list[dict[str, Any]],
         frameworks: list[ComplianceFramework],
         top_k_violations: int | None = None,
-        similarity_threshold: float = 0.8
+        similarity_threshold: float = 0.8,
     ) -> tuple[list[BatchAssessmentResult], BatchAnalytics]:
         """
         Assess multiple items efficiently using MCP patterns
@@ -94,11 +97,7 @@ class BatchGovernanceEngine:
         # Phase 2: Filter to top-K if requested (MASSIVE token savings here)
         if top_k_violations and len(items) > top_k_violations:
             logger.info(f"Filtering to top-{top_k_violations} highest risk items (token optimization)")
-            top_indices = sorted(
-                range(len(risk_scores)),
-                key=lambda i: risk_scores[i],
-                reverse=True
-            )[:top_k_violations]
+            top_indices = sorted(range(len(risk_scores)), key=lambda i: risk_scores[i], reverse=True)[:top_k_violations]
             items_to_assess = [items[i] for i in top_indices]
             risk_scores_filtered = [risk_scores[i] for i in top_indices]
         else:
@@ -106,11 +105,7 @@ class BatchGovernanceEngine:
             risk_scores_filtered = risk_scores
 
         # Phase 3: Detailed assessment only for filtered items
-        results = await self._batch_detailed_assessment(
-            items_to_assess,
-            risk_scores_filtered,
-            frameworks
-        )
+        results = await self._batch_detailed_assessment(items_to_assess, risk_scores_filtered, frameworks)
 
         # Phase 4: Find similar violations using embeddings
         if len(results) > 1:
@@ -124,11 +119,7 @@ class BatchGovernanceEngine:
 
         return results, analytics
 
-    async def _batch_risk_scoring(
-        self,
-        items: list[dict[str, Any]],
-        frameworks: list[ComplianceFramework]
-    ) -> list[float]:
+    async def _batch_risk_scoring(self, items: list[dict[str, Any]], frameworks: list[ComplianceFramework]) -> list[float]:
         """
         Phase 1: Quick risk scoring using batch execution
 
@@ -149,7 +140,7 @@ Return ONLY the numeric score, nothing else."""
         responses, total_tokens = await self.vertex_client.execute_batch(
             prompts=prompts,
             system_instruction=system_instruction,
-            max_parallel=20  # High parallelism for speed
+            max_parallel=20,  # High parallelism for speed
         )
 
         # Extract scores (data manipulation in code, not in LLM)
@@ -167,10 +158,7 @@ Return ONLY the numeric score, nothing else."""
         return scores
 
     async def _batch_detailed_assessment(
-        self,
-        items: list[dict[str, Any]],
-        risk_scores: list[float],
-        frameworks: list[ComplianceFramework]
+        self, items: list[dict[str, Any]], risk_scores: list[float], frameworks: list[ComplianceFramework]
     ) -> list[BatchAssessmentResult]:
         """
         Phase 3: Detailed assessment for filtered items
@@ -197,7 +185,7 @@ Format as JSON:
         responses, total_tokens = await self.vertex_client.execute_batch(
             prompts=prompts,
             system_instruction=system_instruction,
-            max_parallel=10  # Lower parallelism for detailed analysis
+            max_parallel=10,  # Lower parallelism for detailed analysis
         )
 
         # Parse results
@@ -212,35 +200,35 @@ Format as JSON:
                 risk_level = self._score_to_risk_level(risk_scores[i])
                 compliance_score = self._extract_compliance_score(text, risk_scores[i])
 
-                results.append(BatchAssessmentResult(
-                    item_id=items[i].get('id', f'item_{i}'),
-                    risk_score=risk_scores[i],
-                    compliance_score=compliance_score,
-                    risk_level=risk_level,
-                    violations=violations,
-                    assessment_summary=text[:500]  # Truncate for efficiency
-                ))
+                results.append(
+                    BatchAssessmentResult(
+                        item_id=items[i].get("id", f"item_{i}"),
+                        risk_score=risk_scores[i],
+                        compliance_score=compliance_score,
+                        risk_level=risk_level,
+                        violations=violations,
+                        assessment_summary=text[:500],  # Truncate for efficiency
+                    )
+                )
 
             except Exception as e:
                 logger.error(f"Failed to parse assessment for item {items[i].get('id')}: {e}")
-                results.append(BatchAssessmentResult(
-                    item_id=items[i].get('id', f'item_{i}'),
-                    risk_score=risk_scores[i],
-                    compliance_score=0.5,
-                    risk_level=RiskLevel.LIMITED,
-                    violations=["Parse error"],
-                    assessment_summary="Assessment parsing failed"
-                ))
+                results.append(
+                    BatchAssessmentResult(
+                        item_id=items[i].get("id", f"item_{i}"),
+                        risk_score=risk_scores[i],
+                        compliance_score=0.5,
+                        risk_level=RiskLevel.LIMITED,
+                        violations=["Parse error"],
+                        assessment_summary="Assessment parsing failed",
+                    )
+                )
 
         logger.info(f"Detailed assessment complete: {total_tokens} tokens for {len(items)} items")
 
         return results
 
-    async def _group_similar_violations(
-        self,
-        results: list[BatchAssessmentResult],
-        similarity_threshold: float
-    ) -> list[BatchAssessmentResult]:
+    async def _group_similar_violations(self, results: list[BatchAssessmentResult], similarity_threshold: float) -> list[BatchAssessmentResult]:
         """
         Phase 4: Group similar violations using embeddings
 
@@ -252,10 +240,7 @@ Format as JSON:
         logger.info(f"Grouping similar violations (threshold={similarity_threshold})")
 
         # Get all violation descriptions
-        violation_texts = [
-            f"{r.item_id}: {', '.join(r.violations)}"
-            for r in results
-        ]
+        violation_texts = [f"{r.item_id}: {', '.join(r.violations)}" for r in results]
 
         # Generate embeddings
         embeddings, _ = await self.vertex_client.generate_embeddings(violation_texts)
@@ -308,16 +293,9 @@ Format as JSON:
         else:
             return RiskLevel.MINIMAL
 
-    def _calculate_analytics(
-        self,
-        results: list[BatchAssessmentResult],
-        total_items: int
-    ) -> BatchAnalytics:
+    def _calculate_analytics(self, results: list[BatchAssessmentResult], total_items: int) -> BatchAnalytics:
         """Calculate analytics across all assessments"""
-        high_risk_count = sum(
-            1 for r in results
-            if r.risk_level in [RiskLevel.HIGH, RiskLevel.UNACCEPTABLE]
-        )
+        high_risk_count = sum(1 for r in results if r.risk_level in [RiskLevel.HIGH, RiskLevel.UNACCEPTABLE])
 
         avg_compliance = sum(r.compliance_score for r in results) / len(results) if results else 0.0
 
@@ -327,11 +305,7 @@ Format as JSON:
             for violation in result.violations:
                 violation_counts[violation] = violation_counts.get(violation, 0) + 1
 
-        top_violations = sorted(
-            violation_counts.items(),
-            key=lambda x: x[1],
-            reverse=True
-        )[:5]
+        top_violations = sorted(violation_counts.items(), key=lambda x: x[1], reverse=True)[:5]
 
         # Estimate tokens and cost
         # Phase 1: ~100 tokens per item (quick scoring)
@@ -351,7 +325,7 @@ Format as JSON:
             total_violations=sum(violation_counts.values()),
             top_violation_types=top_violations,
             tokens_used=total_tokens,
-            cost_usd=cost_usd
+            cost_usd=cost_usd,
         )
 
 

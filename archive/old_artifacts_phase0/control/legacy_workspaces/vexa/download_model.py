@@ -7,15 +7,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Ensure a local cache dir exists and point HF_HOME to ./hub so it aligns with docker-compose bind mounts
-hub_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'hub'))
+hub_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "hub"))
 os.makedirs(hub_dir, exist_ok=True)
-os.environ['HF_HOME'] = hub_dir
+os.environ["HF_HOME"] = hub_dir
 
 from faster_whisper import WhisperModel
 
 # Get model configuration from environment variables with fallbacks
-model_size: Literal["tiny", "base", "small", "medium", "large-v1", "large-v2", "large-v3", "large", "distil-small", "distil-medium", "distil-large"] = os.getenv('WHISPER_MODEL_SIZE', 'tiny')
-device: Literal["cpu", "cuda", "auto"] = os.getenv('DEVICE_TYPE', 'cuda')
+model_size: Literal[
+    "tiny", "base", "small", "medium", "large-v1", "large-v2", "large-v3", "large", "distil-small", "distil-medium", "distil-large"
+] = os.getenv("WHISPER_MODEL_SIZE", "tiny")
+device: Literal["cpu", "cuda", "auto"] = os.getenv("DEVICE_TYPE", "cuda")
 compute_type: Literal["int8", "float16", "default"] = "default"  # Keep default for stability
 
 print("Downloading Whisper model with configuration:")

@@ -37,10 +37,12 @@ google_agent_2 = Agent(
     instruction="Just say 2",
     generate_content_config=types.GenerateContentConfig(
         temperature=0.2,
-        safety_settings=[{
-            "category": "HARM_CATEGORY_HATE_SPEECH",
-            "threshold": "BLOCK_ONLY_HIGH",
-        }],
+        safety_settings=[
+            {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "threshold": "BLOCK_ONLY_HIGH",
+            }
+        ],
     ),
 )
 
@@ -51,38 +53,34 @@ google_agent_3 = Agent(
     instruction="Just say 3",
     generate_content_config=types.GenerateContentConfig(
         temperature=0.5,
-        safety_settings=[{
-            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-            "threshold": "BLOCK_NONE",
-        }],
+        safety_settings=[
+            {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "threshold": "BLOCK_NONE",
+            }
+        ],
     ),
 )
 
 google_agent_with_instruction_in_config = Agent(
     model="gemini-1.5-flash",
     name="agent",
-    generate_content_config=types.GenerateContentConfig(
-        temperature=0.5, system_instruction="Count 1"
-    ),
+    generate_content_config=types.GenerateContentConfig(temperature=0.5, system_instruction="Count 1"),
 )
 
 
 def function():
-  pass
+    pass
 
 
 google_agent_with_tools_in_config = Agent(
     model="gemini-1.5-flash",
     name="agent",
-    generate_content_config=types.GenerateContentConfig(
-        temperature=0.5, tools=[function]
-    ),
+    generate_content_config=types.GenerateContentConfig(temperature=0.5, tools=[function]),
 )
 
 google_agent_with_response_schema_in_config = Agent(
     model="gemini-1.5-flash",
     name="agent",
-    generate_content_config=types.GenerateContentConfig(
-        temperature=0.5, response_schema={"key": "value"}
-    ),
+    generate_content_config=types.GenerateContentConfig(temperature=0.5, response_schema={"key": "value"}),
 )

@@ -75,11 +75,7 @@ class MemoryStore:
     - Insights (key discoveries)
     """
 
-    def __init__(
-        self,
-        config: dict[str, Any] | None = None,
-        max_memories: int = 1000
-    ):
+    def __init__(self, config: dict[str, Any] | None = None, max_memories: int = 1000):
         """
         Initialize memory store.
 
@@ -91,9 +87,7 @@ class MemoryStore:
         self.max_memories = max_memories
 
         # Memory storage by category
-        self.memories: dict[MemoryCategory, list[Memory]] = {
-            category: [] for category in MemoryCategory
-        }
+        self.memories: dict[MemoryCategory, list[Memory]] = {category: [] for category in MemoryCategory}
 
         # Experiment signatures for deduplication
         self.experiment_signatures: dict[str, ExperimentSignature] = {}
@@ -109,12 +103,7 @@ class MemoryStore:
     # ========================================================================
 
     def add_memory(
-        self,
-        category: MemoryCategory,
-        content: str,
-        data: dict[str, Any] | None = None,
-        importance: float = 0.5,
-        tags: list[str] | None = None
+        self, category: MemoryCategory, content: str, data: dict[str, Any] | None = None, importance: float = 0.5, tags: list[str] | None = None
     ) -> str:
         """
         Add a memory to the store.
@@ -130,18 +119,9 @@ class MemoryStore:
             str: Memory ID
         """
         # Generate memory ID
-        memory_id = hashlib.md5(
-            f"{category}:{content}:{datetime.utcnow().isoformat()}".encode()
-        ).hexdigest()[:16]
+        memory_id = hashlib.md5(f"{category}:{content}:{datetime.utcnow().isoformat()}".encode()).hexdigest()[:16]
 
-        memory = Memory(
-            id=memory_id,
-            category=category,
-            content=content,
-            data=data or {},
-            importance=importance,
-            tags=tags or []
-        )
+        memory = Memory(id=memory_id, category=category, content=content, data=data or {}, importance=importance, tags=tags or [])
 
         self.memories[category].append(memory)
 
@@ -152,12 +132,7 @@ class MemoryStore:
         logger.debug(f"Added memory to {category}: {content[:50]}...")
         return memory_id
 
-    def add_success_memory(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis,
-        insights: str | None = None
-    ) -> str:
+    def add_success_memory(self, result: ExperimentResult, hypothesis: Hypothesis, insights: str | None = None) -> str:
         """
         Add success pattern memory.
 
@@ -177,7 +152,7 @@ class MemoryStore:
             "p_value": result.primary_p_value,
             "effect_size": result.primary_effect_size,
             "test_type": result.primary_test,
-            "insights": insights
+            "insights": insights,
         }
 
         tags = ["success", hypothesis.domain, result.primary_test]
@@ -187,15 +162,10 @@ class MemoryStore:
             content=content,
             data=data,
             importance=0.8,  # Successes are important
-            tags=tags
+            tags=tags,
         )
 
-    def add_failure_memory(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis,
-        failure_reason: str
-    ) -> str:
+    def add_failure_memory(self, result: ExperimentResult, hypothesis: Hypothesis, failure_reason: str) -> str:
         """
         Add failure pattern memory.
 
@@ -209,12 +179,7 @@ class MemoryStore:
         """
         content = f"Failure: {hypothesis.statement[:100]} - {failure_reason}"
 
-        data = {
-            "result_id": result.id,
-            "hypothesis_id": hypothesis.id,
-            "failure_reason": failure_reason,
-            "test_type": result.primary_test
-        }
+        data = {"result_id": result.id, "hypothesis_id": hypothesis.id, "failure_reason": failure_reason, "test_type": result.primary_test}
 
         tags = ["failure", hypothesis.domain, failure_reason]
 
@@ -223,14 +188,10 @@ class MemoryStore:
             content=content,
             data=data,
             importance=0.7,  # Failures are also important to learn from
-            tags=tags
+            tags=tags,
         )
 
-    def add_dead_end_memory(
-        self,
-        hypothesis: Hypothesis,
-        reason: str
-    ) -> str:
+    def add_dead_end_memory(self, hypothesis: Hypothesis, reason: str) -> str:
         """
         Add dead-end memory to avoid repeating.
 
@@ -243,10 +204,7 @@ class MemoryStore:
         """
         content = f"Dead end: {hypothesis.statement[:100]} - {reason}"
 
-        data = {
-            "hypothesis_id": hypothesis.id,
-            "reason": reason
-        }
+        data = {"hypothesis_id": hypothesis.id, "reason": reason}
 
         tags = ["dead_end", hypothesis.domain]
 
@@ -255,15 +213,10 @@ class MemoryStore:
             content=content,
             data=data,
             importance=0.9,  # Very important to avoid repeating
-            tags=tags
+            tags=tags,
         )
 
-    def add_insight_memory(
-        self,
-        insight: str,
-        source: str,
-        related_hypotheses: list[str] | None = None
-    ) -> str:
+    def add_insight_memory(self, insight: str, source: str, related_hypotheses: list[str] | None = None) -> str:
         """
         Add key insight memory.
 
@@ -277,10 +230,7 @@ class MemoryStore:
         """
         content = insight
 
-        data = {
-            "source": source,
-            "related_hypotheses": related_hypotheses or []
-        }
+        data = {"source": source, "related_hypotheses": related_hypotheses or []}
 
         tags = ["insight"]
 
@@ -289,7 +239,7 @@ class MemoryStore:
             content=content,
             data=data,
             importance=0.95,  # Insights are very important
-            tags=tags
+            tags=tags,
         )
 
     # ========================================================================
@@ -297,11 +247,7 @@ class MemoryStore:
     # ========================================================================
 
     def query_memory(
-        self,
-        category: MemoryCategory | None = None,
-        tags: list[str] | None = None,
-        min_importance: float = 0.0,
-        limit: int = 10
+        self, category: MemoryCategory | None = None, tags: list[str] | None = None, min_importance: float = 0.0, limit: int = 10
     ) -> list[Memory]:
         """
         Query memories.
@@ -337,10 +283,7 @@ class MemoryStore:
                 results.append(memory)
 
         # Sort by importance * recency
-        results.sort(
-            key=lambda m: m.importance * (1.0 / max(1, (datetime.utcnow() - m.created_at).days + 1)),
-            reverse=True
-        )
+        results.sort(key=lambda m: m.importance * (1.0 / max(1, (datetime.utcnow() - m.created_at).days + 1)), reverse=True)
 
         # Record access
         for memory in results[:limit]:
@@ -386,11 +329,7 @@ class MemoryStore:
     # EXPERIMENT DEDUPLICATION
     # ========================================================================
 
-    def record_experiment(
-        self,
-        hypothesis: Hypothesis,
-        protocol: ExperimentProtocol | None = None
-    ) -> str:
+    def record_experiment(self, hypothesis: Hypothesis, protocol: ExperimentProtocol | None = None) -> str:
         """
         Record experiment signature for deduplication.
 
@@ -402,9 +341,7 @@ class MemoryStore:
             str: Signature hash
         """
         # Create hypothesis hash
-        hypothesis_hash = hashlib.md5(
-            hypothesis.statement.encode()
-        ).hexdigest()[:16]
+        hypothesis_hash = hashlib.md5(hypothesis.statement.encode()).hexdigest()[:16]
 
         # Create protocol hash (if available)
         if protocol:
@@ -414,9 +351,7 @@ class MemoryStore:
             protocol_hash = "none"
 
         # Combined hash
-        combined_hash = hashlib.md5(
-            f"{hypothesis_hash}:{protocol_hash}".encode()
-        ).hexdigest()
+        combined_hash = hashlib.md5(f"{hypothesis_hash}:{protocol_hash}".encode()).hexdigest()
 
         # Store signature
         signature = ExperimentSignature(
@@ -424,7 +359,7 @@ class MemoryStore:
             protocol_hash=protocol_hash,
             combined_hash=combined_hash,
             hypothesis_id=hypothesis.id,
-            protocol_id=protocol.id if protocol and hasattr(protocol, 'id') else None
+            protocol_id=protocol.id if protocol and hasattr(protocol, "id") else None,
         )
 
         self.experiment_signatures[combined_hash] = signature
@@ -433,10 +368,7 @@ class MemoryStore:
         return combined_hash
 
     def is_duplicate_experiment(
-        self,
-        hypothesis: Hypothesis,
-        protocol: ExperimentProtocol | None = None,
-        similarity_threshold: float = 0.9
+        self, hypothesis: Hypothesis, protocol: ExperimentProtocol | None = None, similarity_threshold: float = 0.9
     ) -> tuple[bool, str | None]:
         """
         Check if experiment is a duplicate.
@@ -450,9 +382,7 @@ class MemoryStore:
             Tuple of (is_duplicate: bool, reason: Optional[str])
         """
         # Create hash for this experiment
-        hypothesis_hash = hashlib.md5(
-            hypothesis.statement.encode()
-        ).hexdigest()[:16]
+        hypothesis_hash = hashlib.md5(hypothesis.statement.encode()).hexdigest()[:16]
 
         if protocol:
             protocol_str = f"{protocol.experiment_type}:{protocol.methodology if hasattr(protocol, 'methodology') else ''}"
@@ -460,19 +390,14 @@ class MemoryStore:
         else:
             protocol_hash = "none"
 
-        combined_hash = hashlib.md5(
-            f"{hypothesis_hash}:{protocol_hash}".encode()
-        ).hexdigest()
+        combined_hash = hashlib.md5(f"{hypothesis_hash}:{protocol_hash}".encode()).hexdigest()
 
         # Check for exact match
         if combined_hash in self.experiment_signatures:
             return True, "Exact duplicate (same hypothesis + same protocol)"
 
         # Check for similar hypothesis
-        similar_hyp = sum(
-            1 for sig in self.experiment_signatures.values()
-            if sig.hypothesis_hash == hypothesis_hash
-        )
+        similar_hyp = sum(1 for sig in self.experiment_signatures.values() if sig.hypothesis_hash == hypothesis_hash)
 
         if similar_hyp > 0:
             return True, f"Similar hypothesis tested {similar_hyp} time(s)"
@@ -501,11 +426,7 @@ class MemoryStore:
         pruned_count = 0
 
         for memory in memories:
-            should_keep = (
-                memory.importance >= self.min_importance_to_keep or
-                memory.created_at > cutoff_date or
-                memory.access_count > 0
-            )
+            should_keep = memory.importance >= self.min_importance_to_keep or memory.created_at > cutoff_date or memory.access_count > 0
 
             if should_keep:
                 kept.append(memory)
@@ -530,24 +451,17 @@ class MemoryStore:
         """Get memory store statistics."""
         stats = {
             "total_memories": sum(len(memories) for memories in self.memories.values()),
-            "by_category": {
-                category.value: len(self.memories[category])
-                for category in MemoryCategory
-            },
+            "by_category": {category.value: len(self.memories[category]) for category in MemoryCategory},
             "experiment_signatures": len(self.experiment_signatures),
             "most_accessed": self._get_most_accessed_memory(),
-            "highest_importance": self._get_highest_importance_memory()
+            "highest_importance": self._get_highest_importance_memory(),
         }
 
         return stats
 
     def _get_most_accessed_memory(self) -> str | None:
         """Get most accessed memory."""
-        all_memories = [
-            memory
-            for memories in self.memories.values()
-            for memory in memories
-        ]
+        all_memories = [memory for memories in self.memories.values() for memory in memories]
 
         if not all_memories:
             return None
@@ -557,11 +471,7 @@ class MemoryStore:
 
     def _get_highest_importance_memory(self) -> str | None:
         """Get highest importance memory."""
-        all_memories = [
-            memory
-            for memories in self.memories.values()
-            for memory in memories
-        ]
+        all_memories = [memory for memories in self.memories.values() for memory in memories]
 
         if not all_memories:
             return None
@@ -582,10 +492,6 @@ class MemoryStore:
         if category:
             memories = self.memories[category]
         else:
-            memories = [
-                memory
-                for memories in self.memories.values()
-                for memory in memories
-            ]
+            memories = [memory for memories in self.memories.values() for memory in memories]
 
         return [model_to_dict(memory) for memory in memories]

@@ -15,43 +15,32 @@
 import os
 import sys
 
-SAMPLES_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..")
-)
+SAMPLES_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 if SAMPLES_DIR not in sys.path:
-  sys.path.append(SAMPLES_DIR)
+    sys.path.append(SAMPLES_DIR)
 
 from google.adk import Agent
 
 from adk_documentation.settings import CODE_OWNER, CODE_REPO, DOC_OWNER, DOC_REPO, IS_INTERACTIVE, LOCAL_REPOS_DIR_PATH
 from adk_documentation.tools import (
-  clone_or_pull_repo,
-  create_issue,
-  get_changed_files_between_releases,
-  list_directory_contents,
-  list_releases,
-  read_local_git_repo_file_content,
-  search_local_git_repo,
+    clone_or_pull_repo,
+    create_issue,
+    get_changed_files_between_releases,
+    list_directory_contents,
+    list_releases,
+    read_local_git_repo_file_content,
+    search_local_git_repo,
 )
 
 if IS_INTERACTIVE:
-  APPROVAL_INSTRUCTION = (
-      "Ask for user approval or confirmation for creating or updating the"
-      " issue."
-  )
+    APPROVAL_INSTRUCTION = "Ask for user approval or confirmation for creating or updating the issue."
 else:
-  APPROVAL_INSTRUCTION = (
-      "**Do not** wait or ask for user approval or confirmation for creating or"
-      " updating the issue."
-  )
+    APPROVAL_INSTRUCTION = "**Do not** wait or ask for user approval or confirmation for creating or updating the issue."
 
 root_agent = Agent(
     model="gemini-2.5-pro",
     name="adk_release_analyzer",
-    description=(
-        "Analyze the changes between two ADK releases and generate instructions"
-        " about how to update the ADK docs."
-    ),
+    description=("Analyze the changes between two ADK releases and generate instructions about how to update the ADK docs."),
     instruction=f"""
       # 1. Identity
       You are a helper bot that checks if ADK docs in GitHub Repository {DOC_REPO} owned by {DOC_OWNER}

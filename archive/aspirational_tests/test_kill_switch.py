@@ -3,7 +3,6 @@ Tests for KillSwitch
 """
 
 import pytest
-from unittest.mock import Mock
 
 from pnkln_file_search.monitoring.kill_switch import KillSwitch, KillSwitchState
 from pnkln_file_search.monitoring.metrics import MetricsCollector

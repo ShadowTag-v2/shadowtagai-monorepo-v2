@@ -244,9 +244,7 @@ class SkillsMCPServer:
             else:
                 raise ValueError(f"Unknown tool: {name}")
 
-    async def _handle_search_skills(
-        self, arguments: dict[str, Any]
-    ) -> list[TextContent]:
+    async def _handle_search_skills(self, arguments: dict[str, Any]) -> list[TextContent]:
         """Handle find_helpful_skills tool calls.
 
         Parameters
@@ -280,16 +278,11 @@ class SkillsMCPServer:
         # Format results as text
         if not results:
             # Check if we have no results because skills are still loading
-            if (
-                not self.loading_state.is_complete
-                and self.loading_state.loaded_skills == 0
-            ):
+            if not self.loading_state.is_complete and self.loading_state.loaded_skills == 0:
                 return [
                     TextContent(
                         type="text",
-                        text=status_msg
-                        or ""
-                        + "No skills loaded yet. Please wait for skills to load and try again.",
+                        text=status_msg or "" + "No skills loaded yet. Please wait for skills to load and try again.",
                     )
                 ]
             return [
@@ -299,9 +292,7 @@ class SkillsMCPServer:
                 )
             ]
 
-        response_parts.append(
-            f"Found {len(results)} relevant skill(s) for: '{task_description}'\n"
-        )
+        response_parts.append(f"Found {len(results)} relevant skill(s) for: '{task_description}'\n")
 
         for i, result in enumerate(results, 1):
             response_parts.append(f"\n{'=' * 80}")
@@ -313,9 +304,7 @@ class SkillsMCPServer:
             # Include document count if available
             documents = result.get("documents", {})
             if documents:
-                response_parts.append(
-                    f"\nAdditional Documents: {len(documents)} file(s)"
-                )
+                response_parts.append(f"\nAdditional Documents: {len(documents)} file(s)")
 
                 # List documents if requested
                 if list_documents:
@@ -325,25 +314,17 @@ class SkillsMCPServer:
                         doc_type = doc_info.get("type", "unknown")
                         doc_size = doc_info.get("size", 0)
                         size_kb = doc_size / 1024
-                        response_parts.append(
-                            f"  - {doc_path} ({doc_type}, {size_kb:.1f} KB)"
-                        )
+                        response_parts.append(f"  - {doc_path} ({doc_type}, {size_kb:.1f} KB)")
 
             response_parts.append(f"\n{'-' * 80}")
             response_parts.append("\nFull Content:\n")
 
             # Apply character limit truncation if configured
             content = result["content"]
-            if (
-                self.max_content_chars is not None
-                and len(content) > self.max_content_chars
-            ):
+            if self.max_content_chars is not None and len(content) > self.max_content_chars:
                 truncated_content = content[: self.max_content_chars] + "..."
                 response_parts.append(truncated_content)
-                response_parts.append(
-                    f"\n\n[Content truncated at {self.max_content_chars} characters. "
-                    f"View full skill at: {result['source']}]"
-                )
+                response_parts.append(f"\n\n[Content truncated at {self.max_content_chars} characters. View full skill at: {result['source']}]")
             else:
                 response_parts.append(content)
 
@@ -351,9 +332,7 @@ class SkillsMCPServer:
 
         return [TextContent(type="text", text="\n".join(response_parts))]
 
-    async def _handle_read_skill_document(
-        self, arguments: dict[str, Any]
-    ) -> list[TextContent]:
+    async def _handle_read_skill_document(self, arguments: dict[str, Any]) -> list[TextContent]:
         """Handle read_skill_document tool calls.
 
         Parameters
@@ -448,39 +427,27 @@ class SkillsMCPServer:
             elif doc_type == "image":
                 response_parts.append(f"Image: {doc_path}\n")
                 if doc_info.get("size_exceeded"):
-                    response_parts.append(
-                        f"Size: {doc_info.get('size', 0) / 1024:.1f} KB (exceeds limit)"
-                    )
+                    response_parts.append(f"Size: {doc_info.get('size', 0) / 1024:.1f} KB (exceeds limit)")
                     response_parts.append(f"\nURL: {doc_info.get('url', 'N/A')}")
                 elif include_base64:
-                    response_parts.append(
-                        f"Base64 Content:\n{doc_info.get('content', '')}"
-                    )
+                    response_parts.append(f"Base64 Content:\n{doc_info.get('content', '')}")
                     if "url" in doc_info:
-                        response_parts.append(
-                            f"\n\nAlternatively, access via URL: {doc_info['url']}"
-                        )
+                        response_parts.append(f"\n\nAlternatively, access via URL: {doc_info['url']}")
                 else:
                     response_parts.append(f"URL: {doc_info.get('url', 'N/A')}")
                     if "content" in doc_info:
-                        response_parts.append(
-                            "\n(Set include_base64=true to get base64-encoded content)"
-                        )
+                        response_parts.append("\n(Set include_base64=true to get base64-encoded content)")
 
         else:
             # Multiple documents - list them with content
-            response_parts.append(
-                f"Found {len(matching_docs)} documents matching '{document_path}':\n"
-            )
+            response_parts.append(f"Found {len(matching_docs)} documents matching '{document_path}':\n")
 
             for doc_path, doc_info in sorted(matching_docs.items()):
                 doc_type = doc_info.get("type")
                 response_parts.append(f"\n{'=' * 80}")
                 response_parts.append(f"\nDocument: {doc_path}")
                 response_parts.append(f"\nType: {doc_type}")
-                response_parts.append(
-                    f"\nSize: {doc_info.get('size', 0) / 1024:.1f} KB"
-                )
+                response_parts.append(f"\nSize: {doc_info.get('size', 0) / 1024:.1f} KB")
 
                 if doc_type == "text":
                     response_parts.append("\nContent:")
@@ -492,9 +459,7 @@ class SkillsMCPServer:
                         response_parts.append("\n(Size exceeds limit)")
                         response_parts.append(f"\nURL: {doc_info.get('url', 'N/A')}")
                     elif include_base64:
-                        response_parts.append(
-                            f"\nBase64 Content: {doc_info.get('content', '')}"
-                        )
+                        response_parts.append(f"\nBase64 Content: {doc_info.get('content', '')}")
                         if "url" in doc_info:
                             response_parts.append(f"\nURL: {doc_info['url']}")
                     else:
@@ -529,8 +494,7 @@ class SkillsMCPServer:
                 return [
                     TextContent(
                         type="text",
-                        text=status_msg
-                        or "" + "No skills loaded yet. Please wait for skills to load.",
+                        text=status_msg or "" + "No skills loaded yet. Please wait for skills to load.",
                     )
                 ]
             return [TextContent(type="text", text="No skills currently loaded.")]
@@ -569,9 +533,7 @@ class SkillsMCPServer:
         logger.info("Starting MCP server with stdio transport")
 
         async with stdio_server() as (read_stream, write_stream):
-            await self.server.run(
-                read_stream, write_stream, self.server.create_initialization_options()
-            )
+            await self.server.run(read_stream, write_stream, self.server.create_initialization_options())
 
 
 # Standalone handler functions for HTTP server
@@ -602,16 +564,11 @@ async def handle_search_skills(
     results = search_engine.search(task_description, top_k)
 
     if not results:
-        if (
-            loading_state
-            and not loading_state.is_complete
-            and loading_state.loaded_skills == 0
-        ):
+        if loading_state and not loading_state.is_complete and loading_state.loaded_skills == 0:
             return [
                 TextContent(
                     type="text",
-                    text=(status_msg or "")
-                    + "No skills loaded yet. Please wait for skills to load and try again.",
+                    text=(status_msg or "") + "No skills loaded yet. Please wait for skills to load and try again.",
                 )
             ]
         return [
@@ -621,9 +578,7 @@ async def handle_search_skills(
             )
         ]
 
-    response_parts.append(
-        f"Found {len(results)} relevant skill(s) for: '{task_description}'\n"
-    )
+    response_parts.append(f"Found {len(results)} relevant skill(s) for: '{task_description}'\n")
 
     for i, result in enumerate(results, 1):
         response_parts.append(f"\n{'=' * 80}")
@@ -643,9 +598,7 @@ async def handle_search_skills(
                     doc_type = doc_info.get("type", "unknown")
                     doc_size = doc_info.get("size", 0)
                     size_kb = doc_size / 1024
-                    response_parts.append(
-                        f"  - {doc_path} ({doc_type}, {size_kb:.1f} KB)"
-                    )
+                    response_parts.append(f"  - {doc_path} ({doc_type}, {size_kb:.1f} KB)")
 
         response_parts.append(f"\n{'-' * 80}")
         response_parts.append("\nFull Content:\n")
@@ -654,10 +607,7 @@ async def handle_search_skills(
         if max_content_chars is not None and len(content) > max_content_chars:
             truncated_content = content[:max_content_chars] + "..."
             response_parts.append(truncated_content)
-            response_parts.append(
-                f"\n\n[Content truncated at {max_content_chars} characters. "
-                f"View full skill at: {result['source']}]"
-            )
+            response_parts.append(f"\n\n[Content truncated at {max_content_chars} characters. View full skill at: {result['source']}]")
         else:
             response_parts.append(content)
 
@@ -666,9 +616,7 @@ async def handle_search_skills(
     return [TextContent(type="text", text="\n".join(response_parts))]
 
 
-async def handle_read_skill_document(
-    arguments: dict[str, Any], search_engine
-) -> list[TextContent]:
+async def handle_read_skill_document(arguments: dict[str, Any], search_engine) -> list[TextContent]:
     """Handle read_skill_document tool calls (standalone version for HTTP server)."""
     import fnmatch
 
@@ -750,27 +698,19 @@ async def handle_read_skill_document(
         elif doc_type == "image":
             response_parts.append(f"Image: {doc_path}\n")
             if doc_info.get("size_exceeded"):
-                response_parts.append(
-                    f"Size: {doc_info.get('size', 0) / 1024:.1f} KB (exceeds limit)"
-                )
+                response_parts.append(f"Size: {doc_info.get('size', 0) / 1024:.1f} KB (exceeds limit)")
                 response_parts.append(f"\nURL: {doc_info.get('url', 'N/A')}")
             elif include_base64:
                 response_parts.append(f"Base64 Content:\n{doc_info.get('content', '')}")
                 if "url" in doc_info:
-                    response_parts.append(
-                        f"\n\nAlternatively, access via URL: {doc_info['url']}"
-                    )
+                    response_parts.append(f"\n\nAlternatively, access via URL: {doc_info['url']}")
             else:
                 response_parts.append(f"URL: {doc_info.get('url', 'N/A')}")
                 if "content" in doc_info:
-                    response_parts.append(
-                        "\n(Set include_base64=true to get base64-encoded content)"
-                    )
+                    response_parts.append("\n(Set include_base64=true to get base64-encoded content)")
 
     else:
-        response_parts.append(
-            f"Found {len(matching_docs)} documents matching '{document_path}':\n"
-        )
+        response_parts.append(f"Found {len(matching_docs)} documents matching '{document_path}':\n")
 
         for doc_path, doc_info in sorted(matching_docs.items()):
             doc_type = doc_info.get("type")
@@ -789,9 +729,7 @@ async def handle_read_skill_document(
                     response_parts.append("\n(Size exceeds limit)")
                     response_parts.append(f"\nURL: {doc_info.get('url', 'N/A')}")
                 elif include_base64:
-                    response_parts.append(
-                        f"\nBase64 Content: {doc_info.get('content', '')}"
-                    )
+                    response_parts.append(f"\nBase64 Content: {doc_info.get('content', '')}")
                     if "url" in doc_info:
                         response_parts.append(f"\nURL: {doc_info['url']}")
                 else:
@@ -802,9 +740,7 @@ async def handle_read_skill_document(
     return [TextContent(type="text", text="\n".join(response_parts))]
 
 
-async def handle_list_skills(
-    arguments: dict[str, Any], search_engine, loading_state
-) -> list[TextContent]:
+async def handle_list_skills(arguments: dict[str, Any], search_engine, loading_state) -> list[TextContent]:
     """Handle list_skills tool calls (standalone version for HTTP server)."""
     import re
 
@@ -820,8 +756,7 @@ async def handle_list_skills(
             return [
                 TextContent(
                     type="text",
-                    text=(status_msg or "")
-                    + "No skills loaded yet. Please wait for skills to load.",
+                    text=(status_msg or "") + "No skills loaded yet. Please wait for skills to load.",
                 )
             ]
         return [TextContent(type="text", text="No skills currently loaded.")]

@@ -88,9 +88,7 @@ def main():
     print("TEST 1: Valid Request (Should PASS)")
     print("=" * 60)
     try:
-        result = judge.enforce(
-            "Research quantum computing and analyze the sentiment of the findings"
-        )
+        result = judge.enforce("Research quantum computing and analyze the sentiment of the findings")
         print(f"✅ SUCCESS: {result[:100]}...")
         print(f"\n📊 Audit Log: {len(judge.audit_log)} validations")
         for v in judge.audit_log:
@@ -119,12 +117,8 @@ def main():
     for i, validation in enumerate(judge.audit_log, 1):
         print(f"\n{i}. Function: {validation.function_name}")
         print(f"   Args: {validation.args}")
-        print(
-            f"   Purpose Valid: {validation.purpose_valid} (score: {validation.purpose_score:.2f})"
-        )
-        print(
-            f"   Reasons Valid: {validation.reasons_valid} (score: {validation.reasons_score:.2f})"
-        )
+        print(f"   Purpose Valid: {validation.purpose_valid} (score: {validation.purpose_score:.2f})")
+        print(f"   Reasons Valid: {validation.reasons_valid} (score: {validation.reasons_score:.2f})")
         print(f"   Brakes Clear: {validation.brakes_clear} (score: {validation.brakes_score:.2f})")
         print(f"   Result: {validation.result.value}")
         print(f"   Explanation: {validation.explanation}")

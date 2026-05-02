@@ -77,6 +77,7 @@ def models_list(*, all: bool = True, keywords: list[str] | None = None):
     # filter by keywords
     def pred(model):
         return any(keyword in model[0] for keyword in keywords)
+
     return list(filter(pred, TEST_MODELS))
 
 

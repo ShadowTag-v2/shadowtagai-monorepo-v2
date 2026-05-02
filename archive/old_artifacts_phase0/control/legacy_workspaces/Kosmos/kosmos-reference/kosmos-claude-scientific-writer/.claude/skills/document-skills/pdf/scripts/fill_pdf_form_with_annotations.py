@@ -28,7 +28,7 @@ def fill_pdf_form(input_pdf_path, fields_json_path, output_pdf_path):
     """Fill the PDF form with data from fields.json"""
 
     # `fields.json` format described in forms.md.
-    with open(fields_json_path, "r") as f:
+    with open(fields_json_path) as f:
         fields_data = json.load(f)
 
     # Open the PDF
@@ -55,11 +55,7 @@ def fill_pdf_form(input_pdf_path, fields_json_path, output_pdf_path):
         image_height = page_info["image_height"]
         pdf_width, pdf_height = pdf_dimensions[page_num]
 
-        transformed_entry_box = transform_coordinates(
-            field["entry_bounding_box"],
-            image_width, image_height,
-            pdf_width, pdf_height
-        )
+        transformed_entry_box = transform_coordinates(field["entry_bounding_box"], image_width, image_height, pdf_width, pdf_height)
 
         # Skip empty fields
         if "entry_text" not in field or "text" not in field["entry_text"]:

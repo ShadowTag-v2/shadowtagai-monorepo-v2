@@ -3,7 +3,6 @@
 Generates realistic ticket content for testing Zendesk integration using LLM.
 """
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.zendesk import ZendeskTicket
 
@@ -25,11 +24,13 @@ def render_description(ticket: ZendeskTicket) -> str:
     for i, step in enumerate(content.steps_to_reproduce, 1):
         parts.append(f"{i}. {step}")
 
-    parts.extend([
-        f"\n## Expected Behavior\n\n{content.expected_behavior}",
-        f"\n## Actual Behavior\n\n{content.actual_behavior}",
-        f"\n## Additional Information\n\n{content.additional_info}",
-    ])
+    parts.extend(
+        [
+            f"\n## Expected Behavior\n\n{content.expected_behavior}",
+            f"\n## Actual Behavior\n\n{content.actual_behavior}",
+            f"\n## Additional Information\n\n{content.additional_info}",
+        ]
+    )
 
     return "\n".join(parts)
 

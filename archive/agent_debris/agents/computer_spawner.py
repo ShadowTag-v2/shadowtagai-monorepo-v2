@@ -8,6 +8,7 @@ class ComputerUseSpawner:
     Manages Docker containers for Flying n-autoresearch/Kosmos/BioAgents agents.
     Enables VNC and Browser access for each agent.
     """
+
     def __init__(self, base_image: str = "anthropics/anthropic-quickstarts:computer-use-demo"):
         self.base_image = base_image
 
@@ -18,16 +19,23 @@ class ComputerUseSpawner:
         """
         container_name = f"flying_monkey_{agent.name}"
         vnc_port = agent.vnc_port
-        http_port = 8000 + (vnc_port - 5900) # Map HTTP port based on agent index
+        http_port = 8000 + (vnc_port - 5900)  # Map HTTP port based on agent index
 
         cmd = [
-            "docker", "run", "-d",
-            "--name", container_name,
-            "-p", f"{vnc_port}:5900",
-            "-p", f"{http_port}:8501",
-            "-e", f"WIDTH={agent.display_num * 1024}",
-            "-e", "HEIGHT=768",
-            self.base_image
+            "docker",
+            "run",
+            "-d",
+            "--name",
+            container_name,
+            "-p",
+            f"{vnc_port}:5900",
+            "-p",
+            f"{http_port}:8501",
+            "-e",
+            f"WIDTH={agent.display_num * 1024}",
+            "-e",
+            "HEIGHT=768",
+            self.base_image,
         ]
 
         print(f"Spawning container for {agent.name} on port {vnc_port}...")

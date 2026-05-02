@@ -7,7 +7,6 @@ import pytest
 from src.judges import (
     JudgeFactory,
     JudgeRequest,
-    JudgeResponse,
     JudgeType,
     JudgeDecision,
     FinJudge,
@@ -28,13 +27,8 @@ class TestFinJudge:
             request_id="test_fin_001",
             judge_type=JudgeType.FIN,
             action_type="wire_transfer",
-            context={
-                "amount_usd": 75000,
-                "vendor_status": "new",
-                "purchase_order": None,
-                "destination_country": "Unknown"
-            },
-            requested_by="test@example.com"
+            context={"amount_usd": 75000, "vendor_status": "new", "purchase_order": None, "destination_country": "Unknown"},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -51,13 +45,8 @@ class TestFinJudge:
             request_id="test_fin_002",
             judge_type=JudgeType.FIN,
             action_type="wire_transfer",
-            context={
-                "amount_usd": 25000,
-                "vendor_status": "approved",
-                "purchase_order": "PO-123456",
-                "destination_country": "US"
-            },
-            requested_by="test@example.com"
+            context={"amount_usd": 25000, "vendor_status": "approved", "purchase_order": "PO-123456", "destination_country": "US"},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -72,13 +61,8 @@ class TestFinJudge:
             request_id="test_fin_003",
             judge_type=JudgeType.FIN,
             action_type="wire_transfer",
-            context={
-                "amount_usd": 15000,
-                "vendor_status": "approved",
-                "purchase_order": "PO-123",
-                "destination_country": "Unknown"
-            },
-            requested_by="test@example.com"
+            context={"amount_usd": 15000, "vendor_status": "approved", "purchase_order": "PO-123", "destination_country": "Unknown"},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -94,7 +78,7 @@ class TestFinJudge:
             judge_type=JudgeType.FIN,
             action_type="wire_transfer",
             context={"amount_usd": 50000, "vendor_status": "new", "purchase_order": None},
-            requested_by="test@example.com"
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -116,13 +100,8 @@ class TestCaseJudge:
             request_id="test_case_001",
             judge_type=JudgeType.CASE,
             action_type="case_acceptance",
-            context={
-                "case_value_usd": 500000,
-                "case_type": "contract_dispute",
-                "conflict_check_passed": False,
-                "probability_of_success": 0.6
-            },
-            requested_by="test@example.com"
+            context={"case_value_usd": 500000, "case_type": "contract_dispute", "conflict_check_passed": False, "probability_of_success": 0.6},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -137,13 +116,8 @@ class TestCaseJudge:
             request_id="test_case_002",
             judge_type=JudgeType.CASE,
             action_type="case_acceptance",
-            context={
-                "case_value_usd": 500000,
-                "case_type": "contract_dispute",
-                "conflict_check_passed": True,
-                "probability_of_success": 0.6
-            },
-            requested_by="test@example.com"
+            context={"case_value_usd": 500000, "case_type": "contract_dispute", "conflict_check_passed": True, "probability_of_success": 0.6},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -157,13 +131,8 @@ class TestCaseJudge:
             request_id="test_case_003",
             judge_type=JudgeType.CASE,
             action_type="case_acceptance",
-            context={
-                "case_value_usd": 5000,
-                "case_type": "small_claims",
-                "conflict_check_passed": True,
-                "probability_of_success": 0.8
-            },
-            requested_by="test@example.com"
+            context={"case_value_usd": 5000, "case_type": "small_claims", "conflict_check_passed": True, "probability_of_success": 0.8},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -178,12 +147,8 @@ class TestCaseJudge:
             request_id="test_case_004",
             judge_type=JudgeType.CASE,
             action_type="litigation_strategy",
-            context={
-                "case_value_usd": 500000,
-                "case_type": "litigation",
-                "probability_of_success": 0.25
-            },
-            requested_by="test@example.com"
+            context={"case_value_usd": 500000, "case_type": "litigation", "probability_of_success": 0.25},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -202,12 +167,8 @@ class TestLawJudge:
             request_id="test_law_001",
             judge_type=JudgeType.LAW,
             action_type="compliance_check",
-            context={
-                "compliance_area": "eu_ai_act",
-                "ai_system_type": "biometric_identification",
-                "legal_review_completed": False
-            },
-            requested_by="test@example.com"
+            context={"compliance_area": "eu_ai_act", "ai_system_type": "biometric_identification", "legal_review_completed": False},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -223,12 +184,8 @@ class TestLawJudge:
             request_id="test_law_002",
             judge_type=JudgeType.LAW,
             action_type="compliance_check",
-            context={
-                "compliance_area": "eu_ai_act",
-                "ai_system_type": "biometric_identification",
-                "legal_review_completed": True
-            },
-            requested_by="test@example.com"
+            context={"compliance_area": "eu_ai_act", "ai_system_type": "biometric_identification", "legal_review_completed": True},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -242,12 +199,8 @@ class TestLawJudge:
             request_id="test_law_003",
             judge_type=JudgeType.LAW,
             action_type="data_processing",
-            context={
-                "compliance_area": "gdpr",
-                "processes_personal_data": True,
-                "dpia_completed": False
-            },
-            requested_by="test@example.com"
+            context={"compliance_area": "gdpr", "processes_personal_data": True, "dpia_completed": False},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -262,12 +215,8 @@ class TestLawJudge:
             request_id="test_law_004",
             judge_type=JudgeType.LAW,
             action_type="export_approval",
-            context={
-                "compliance_area": "export_control",
-                "destination_country": "CN",
-                "export_license": False
-            },
-            requested_by="test@example.com"
+            context={"compliance_area": "export_control", "destination_country": "CN", "export_license": False},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -286,12 +235,8 @@ class TestFraudJudge:
             request_id="test_fraud_001",
             judge_type=JudgeType.FRAUD,
             action_type="payment_authorization",
-            context={
-                "fraud_score": 0.85,
-                "identity_verified": False,
-                "amount_usd": 5000
-            },
-            requested_by="test@example.com"
+            context={"fraud_score": 0.85, "identity_verified": False, "amount_usd": 5000},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -306,12 +251,8 @@ class TestFraudJudge:
             request_id="test_fraud_002",
             judge_type=JudgeType.FRAUD,
             action_type="payment_authorization",
-            context={
-                "fraud_score": 0.3,
-                "identity_verified": False,
-                "amount_usd": 2000
-            },
-            requested_by="test@example.com"
+            context={"fraud_score": 0.3, "identity_verified": False, "amount_usd": 2000},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -332,9 +273,9 @@ class TestFraudJudge:
                 "geo_location_mismatch": True,
                 "velocity_check_failed": True,
                 "device_fingerprint_match": False,
-                "amount_usd": 3000
+                "amount_usd": 3000,
             },
-            requested_by="test@example.com"
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -349,13 +290,8 @@ class TestFraudJudge:
             request_id="test_fraud_004",
             judge_type=JudgeType.FRAUD,
             action_type="payment_authorization",
-            context={
-                "fraud_score": 0.2,
-                "identity_verified": True,
-                "geo_location_mismatch": False,
-                "amount_usd": 500
-            },
-            requested_by="test@example.com"
+            context={"fraud_score": 0.2, "identity_verified": True, "geo_location_mismatch": False, "amount_usd": 500},
+            requested_by="test@example.com",
         )
 
         response = judge.judge(request)
@@ -417,7 +353,7 @@ class TestCrossJudgeConsistency:
                 judge_type=judge_type,
                 action_type="test_action",
                 context=context,
-                requested_by="test@example.com"
+                requested_by="test@example.com",
             )
 
             response = judge.judge(request)
@@ -435,7 +371,7 @@ class TestCrossJudgeConsistency:
                 judge_type=judge_type,
                 action_type="test_action",
                 context={"amount_usd": 1000},
-                requested_by="test@example.com"
+                requested_by="test@example.com",
             )
 
             response = judge.judge(request)
@@ -452,7 +388,7 @@ class TestCrossJudgeConsistency:
                 judge_type=judge_type,
                 action_type="test_action",
                 context={"amount_usd": 1000},
-                requested_by="test@example.com"
+                requested_by="test@example.com",
             )
 
             response = judge.judge(request)

@@ -5,7 +5,7 @@ from testing.util import get_resource_path
 
 
 def test_failing_file():
-    ret = main([get_resource_path('cannot_parse_ast.notpy')])
+    ret = main([get_resource_path("cannot_parse_ast.notpy")])
     assert ret == 1
 
 

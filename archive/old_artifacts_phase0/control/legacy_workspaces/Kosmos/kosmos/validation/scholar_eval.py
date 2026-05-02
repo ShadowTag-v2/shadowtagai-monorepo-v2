@@ -38,6 +38,7 @@ class ScholarEvalScore:
     - limitations: Are limitations acknowledged?
     - ethics: Are ethical concerns addressed?
     """
+
     novelty: float
     rigor: float
     clarity: float
@@ -59,7 +60,7 @@ class ScholarEvalScore:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'ScholarEvalScore':
+    def from_dict(cls, data: dict) -> ScholarEvalScore:
         """Create ScholarEvalScore from dictionary."""
         return cls(**data)
 
@@ -89,23 +90,17 @@ class ScholarEvalValidator:
 
     # Dimension weights (must sum to 1.0)
     DIMENSION_WEIGHTS = {
-        'rigor': 0.25,
-        'impact': 0.20,
-        'novelty': 0.15,
-        'reproducibility': 0.15,
-        'clarity': 0.10,
-        'coherence': 0.10,
-        'limitations': 0.03,
-        'ethics': 0.02
+        "rigor": 0.25,
+        "impact": 0.20,
+        "novelty": 0.15,
+        "reproducibility": 0.15,
+        "clarity": 0.10,
+        "coherence": 0.10,
+        "limitations": 0.03,
+        "ethics": 0.02,
     }
 
-    def __init__(
-        self,
-        anthropic_client=None,
-        threshold: float = 0.75,
-        min_rigor_score: float = 0.70,
-        model: str = _DEFAULT_CLAUDE_SONNET_MODEL
-    ):
+    def __init__(self, anthropic_client=None, threshold: float = 0.75, min_rigor_score: float = 0.70, model: str = _DEFAULT_CLAUDE_SONNET_MODEL):
         """
         Initialize ScholarEval validator.
 
@@ -143,7 +138,7 @@ class ScholarEvalValidator:
                 model=self.model,
                 max_tokens=1500,
                 messages=[{"role": "user", "content": prompt}],
-                temperature=0.3  # Consistent evaluation
+                temperature=0.3,  # Consistent evaluation
             )
 
             # Parse LLM response
@@ -153,10 +148,7 @@ class ScholarEvalValidator:
             overall = self._calculate_overall_score(scores)
 
             # Check approval thresholds
-            passes = (
-                overall >= self.threshold
-                and scores.get('rigor', 0) >= self.min_rigor_score
-            )
+            passes = overall >= self.threshold and scores.get("rigor", 0) >= self.min_rigor_score
 
             # Generate feedback
             feedback = self._generate_feedback(scores, passes, finding)
@@ -164,7 +156,7 @@ class ScholarEvalValidator:
             # Issue #70: Run null model validation for statistical grounding
             null_result = None
             statistical_validity = None
-            if finding.get('statistics'):
+            if finding.get("statistics"):
                 try:
                     null_validator = NullModelValidator()
                     null_result_obj = null_validator.validate_finding(finding)
@@ -181,20 +173,20 @@ class ScholarEvalValidator:
                     # Continue with LLM-only validation
 
             return ScholarEvalScore(
-                novelty=scores.get('novelty', 0.5),
-                rigor=scores.get('rigor', 0.5),
-                clarity=scores.get('clarity', 0.5),
-                reproducibility=scores.get('reproducibility', 0.5),
-                impact=scores.get('impact', 0.5),
-                coherence=scores.get('coherence', 0.5),
-                limitations=scores.get('limitations', 0.5),
-                ethics=scores.get('ethics', 0.5),
+                novelty=scores.get("novelty", 0.5),
+                rigor=scores.get("rigor", 0.5),
+                clarity=scores.get("clarity", 0.5),
+                reproducibility=scores.get("reproducibility", 0.5),
+                impact=scores.get("impact", 0.5),
+                coherence=scores.get("coherence", 0.5),
+                limitations=scores.get("limitations", 0.5),
+                ethics=scores.get("ethics", 0.5),
                 overall_score=overall,
                 passes_threshold=passes,
                 feedback=feedback,
-                reasoning=scores.get('reasoning', ''),
+                reasoning=scores.get("reasoning", ""),
                 null_model_result=null_result,
-                statistical_validity=statistical_validity
+                statistical_validity=statistical_validity,
             )
 
         except Exception as e:
@@ -212,10 +204,10 @@ class ScholarEvalValidator:
         Returns:
             Formatted prompt string
         """
-        summary = finding.get('summary', 'No summary provided')
-        statistics = finding.get('statistics', {})
-        methods = finding.get('methods', 'Not specified')
-        interpretation = finding.get('interpretation', 'Not provided')
+        summary = finding.get("summary", "No summary provided")
+        statistics = finding.get("statistics", {})
+        methods = finding.get("methods", "Not specified")
+        interpretation = finding.get("interpretation", "Not provided")
 
         # Format statistics nicely
         stats_str = json.dumps(statistics, indent=2) if statistics else "No statistics"
@@ -304,18 +296,15 @@ Provide scores as JSON object only, no additional text."""
         # Try to extract JSON from response
         try:
             # Look for JSON block
-            start_idx = response_text.find('{')
-            end_idx = response_text.rfind('}') + 1
+            start_idx = response_text.find("{")
+            end_idx = response_text.rfind("}") + 1
 
             if start_idx != -1 and end_idx > start_idx:
                 json_str = response_text[start_idx:end_idx]
                 scores = json.loads(json_str)
 
                 # Validate all required dimensions present
-                required_dims = [
-                    'novelty', 'rigor', 'clarity', 'reproducibility',
-                    'impact', 'coherence', 'limitations', 'ethics'
-                ]
+                required_dims = ["novelty", "rigor", "clarity", "reproducibility", "impact", "coherence", "limitations", "ethics"]
 
                 for dim in required_dims:
                     if dim not in scores:
@@ -331,9 +320,7 @@ Provide scores as JSON object only, no additional text."""
             logger.error(f"Failed to parse LLM JSON response: {e}")
 
         # Fallback: return neutral scores
-        return {dim: 0.5 for dim in ['novelty', 'rigor', 'clarity',
-                                      'reproducibility', 'impact', 'coherence',
-                                      'limitations', 'ethics']}
+        return {dim: 0.5 for dim in ["novelty", "rigor", "clarity", "reproducibility", "impact", "coherence", "limitations", "ethics"]}
 
     def _calculate_overall_score(self, scores: dict) -> float:
         """
@@ -351,12 +338,7 @@ Provide scores as JSON object only, no additional text."""
 
         return overall
 
-    def _generate_feedback(
-        self,
-        scores: dict,
-        passes: bool,
-        finding: dict
-    ) -> str:
+    def _generate_feedback(self, scores: dict, passes: bool, finding: dict) -> str:
         """
         Generate actionable feedback based on scores.
 
@@ -374,7 +356,7 @@ Provide scores as JSON object only, no additional text."""
             # Highlight strengths
             strengths = []
             for dim, score in scores.items():
-                if dim == 'reasoning':
+                if dim == "reasoning":
                     continue
                 if score >= 0.8:
                     strengths.append(f"{dim} ({score:.2f})")
@@ -389,7 +371,7 @@ Provide scores as JSON object only, no additional text."""
             # Identify weaknesses
             weaknesses = []
             for dim, score in scores.items():
-                if dim == 'reasoning':
+                if dim == "reasoning":
                     continue
                 if score < 0.6:
                     weaknesses.append(f"{dim} ({score:.2f})")
@@ -398,18 +380,18 @@ Provide scores as JSON object only, no additional text."""
                 feedback += f"\nWeaknesses: {', '.join(weaknesses)}"
 
             # Specific concerns
-            if scores.get('rigor', 0) < self.min_rigor_score:
+            if scores.get("rigor", 0) < self.min_rigor_score:
                 feedback += f"\nCRITICAL: Rigor score ({scores['rigor']:.2f}) below minimum ({self.min_rigor_score:.2f})"
                 feedback += "\nSuggestion: Review statistical methods and ensure they are appropriate for the data."
 
-            if scores.get('reproducibility', 0) < 0.6:
+            if scores.get("reproducibility", 0) < 0.6:
                 feedback += "\nConcern: Low reproducibility. Provide more methodological detail."
 
-            if scores.get('clarity', 0) < 0.6:
+            if scores.get("clarity", 0) < 0.6:
                 feedback += "\nConcern: Unclear findings. Restate conclusion more precisely."
 
         # Add reasoning if available
-        if 'reasoning' in scores:
+        if "reasoning" in scores:
             feedback += f"\n\nReasoning: {scores['reasoning']}"
 
         return feedback
@@ -430,32 +412,32 @@ Provide scores as JSON object only, no additional text."""
         base_score = 0.78
 
         # Check for statistical evidence
-        has_stats = bool(finding.get('statistics'))
-        has_methods = bool(finding.get('methods'))
+        has_stats = bool(finding.get("statistics"))
+        has_methods = bool(finding.get("methods"))
 
         # Adjust scores based on content
         rigor_score = base_score + (0.05 if has_stats else -0.05)
         reproducibility_score = base_score + (0.05 if has_methods else -0.05)
 
         scores = {
-            'novelty': base_score,
-            'rigor': rigor_score,
-            'clarity': base_score,
-            'reproducibility': reproducibility_score,
-            'impact': base_score - 0.03,
-            'coherence': base_score,
-            'limitations': base_score - 0.05,
-            'ethics': 0.7  # Neutral for most findings
+            "novelty": base_score,
+            "rigor": rigor_score,
+            "clarity": base_score,
+            "reproducibility": reproducibility_score,
+            "impact": base_score - 0.03,
+            "coherence": base_score,
+            "limitations": base_score - 0.05,
+            "ethics": 0.7,  # Neutral for most findings
         }
 
         overall = self._calculate_overall_score(scores)
-        passes = overall >= self.threshold and scores['rigor'] >= self.min_rigor_score
+        passes = overall >= self.threshold and scores["rigor"] >= self.min_rigor_score
 
         # Issue #70: Run null model validation even in mock mode
         null_result = None
         statistical_validity = None
         feedback_extra = ""
-        if finding.get('statistics'):
+        if finding.get("statistics"):
             try:
                 null_validator = NullModelValidator()
                 null_result_obj = null_validator.validate_finding(finding)
@@ -471,20 +453,20 @@ Provide scores as JSON object only, no additional text."""
                 logger.debug(f"Mock null model validation failed: {e}")
 
         return ScholarEvalScore(
-            novelty=scores['novelty'],
-            rigor=scores['rigor'],
-            clarity=scores['clarity'],
-            reproducibility=scores['reproducibility'],
-            impact=scores['impact'],
-            coherence=scores['coherence'],
-            limitations=scores['limitations'],
-            ethics=scores['ethics'],
+            novelty=scores["novelty"],
+            rigor=scores["rigor"],
+            clarity=scores["clarity"],
+            reproducibility=scores["reproducibility"],
+            impact=scores["impact"],
+            coherence=scores["coherence"],
+            limitations=scores["limitations"],
+            ethics=scores["ethics"],
             overall_score=overall,
             passes_threshold=passes,
             feedback=f"Mock evaluation: {'APPROVED' if passes else 'REJECTED'} (overall: {overall:.2f}){feedback_extra}",
             reasoning="Mock evaluation (no LLM client provided)",
             null_model_result=null_result,
-            statistical_validity=statistical_validity
+            statistical_validity=statistical_validity,
         )
 
     def batch_evaluate(self, findings: list[dict]) -> list[ScholarEvalScore]:
@@ -517,15 +499,14 @@ Provide scores as JSON object only, no additional text."""
 
         # Average scores per dimension
         avg_scores = {}
-        for dim in ['novelty', 'rigor', 'clarity', 'reproducibility',
-                    'impact', 'coherence', 'limitations', 'ethics']:
-            avg_scores[f'avg_{dim}'] = sum(getattr(s, dim) for s in scores) / total
+        for dim in ["novelty", "rigor", "clarity", "reproducibility", "impact", "coherence", "limitations", "ethics"]:
+            avg_scores[f"avg_{dim}"] = sum(getattr(s, dim) for s in scores) / total
 
         return {
-            'total_evaluated': total,
-            'passed': passed,
-            'rejected': total - passed,
-            'validation_rate': passed / total,
-            'avg_overall_score': sum(s.overall_score for s in scores) / total,
-            **avg_scores
+            "total_evaluated": total,
+            "passed": passed,
+            "rejected": total - passed,
+            "validation_rate": passed / total,
+            "avg_overall_score": sum(s.overall_score for s in scores) / total,
+            **avg_scores,
         }

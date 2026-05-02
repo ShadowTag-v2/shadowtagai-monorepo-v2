@@ -153,9 +153,7 @@ def get_reverse_dependencies(project) -> Dict[str, Set[Tuple[str, str]]]:
         try:
             process_tree_node(node)
         except Exception as e:  # noqa: PERF203
-            err.print(
-                f"[red bold]Warning[/red bold]: Unable to analyze dependencies: {str(e)}"
-            )
+            err.print(f"[red bold]Warning[/red bold]: Unable to analyze dependencies: {str(e)}")
 
     return reverse_deps
 
@@ -181,7 +179,7 @@ def check_version_conflicts(
         # Major version wildcard like '2.*'
         try:
             major = int(new_version[:-2])
-            new_version_obj = SpecifierSet(f">={major},<{major+1}")
+            new_version_obj = SpecifierSet(f">={major},<{major + 1}")
         except (ValueError, TypeError):
             # If we can't parse the major version, use a permissive specifier
             new_version_obj = SpecifierSet(">=0.0.0")
@@ -275,35 +273,25 @@ def get_modified_pipfile_entries(project, pipfile_categories):
             # For string entries (version specifier only)
             if isinstance(pipfile_entry, str):
                 # Check if locked version still satisfies the Pipfile specifier
-                if not _locked_version_satisfies_pipfile_specifier(
-                    pipfile_entry, locked_version
-                ):
+                if not _locked_version_satisfies_pipfile_specifier(pipfile_entry, locked_version):
                     is_modified = True
 
             # For dict entries, need to compare relevant fields
             elif isinstance(pipfile_entry, dict):
                 if "version" in pipfile_entry:
                     # Check if locked version still satisfies the Pipfile specifier
-                    if not _locked_version_satisfies_pipfile_specifier(
-                        pipfile_entry["version"], locked_version
-                    ):
+                    if not _locked_version_satisfies_pipfile_specifier(pipfile_entry["version"], locked_version):
                         is_modified = True
 
                 # Compare VCS fields
                 for key in VCS_LIST:
                     if key in pipfile_entry:
-                        if (
-                            key not in locked_entry
-                            or pipfile_entry[key] != locked_entry[key]
-                        ):
+                        if key not in locked_entry or pipfile_entry[key] != locked_entry[key]:
                             is_modified = True
 
                 # Compare ref for VCS packages
                 if "ref" in pipfile_entry:
-                    if (
-                        "ref" not in locked_entry
-                        or pipfile_entry["ref"] != locked_entry["ref"]
-                    ):
+                    if "ref" not in locked_entry or pipfile_entry["ref"] != locked_entry["ref"]:
                         is_modified = True
 
                 # Compare extras
@@ -360,9 +348,7 @@ def _find_additional_categories(packages, lockfile, current_categories):
             if package_name in category_section:
                 # If the package is also in this category, add it to categories
                 additional_categories.append(category)
-                err.print(
-                    f"[bold][green]Package {package_name} found in {category} section, will update there too.[/bold][/green]"
-                )
+                err.print(f"[bold][green]Package {package_name} found in {category} section, will update there too.[/bold][/green]")
                 break
 
     return additional_categories
@@ -416,23 +402,16 @@ def _process_package_args(
         if (
             not lock_only
             and has_package_args
-            and (
-                normalized_name not in explicitly_requested
-                or category in explicitly_requested.get(normalized_name, [])
-            )
+            and (normalized_name not in explicitly_requested or category in explicitly_requested.get(normalized_name, []))
         ):
             # Guard against cross-category contamination: if the package already
             # exists in a *different* Pipfile section (e.g. [dev-packages]) but
             # NOT in the current section (e.g. [packages]), skip the Pipfile write.
             # Example: `pipenv upgrade mypy==1.5.1` without --dev must not silently
             # add mypy to [packages] when it already lives in [dev-packages].
-            package_in_current_category = bool(
-                project.get_pipfile_entry(normalized_name, pipfile_category)
-            )
+            package_in_current_category = bool(project.get_pipfile_entry(normalized_name, pipfile_category))
             package_in_other_category = any(
-                project.get_pipfile_entry(normalized_name, cat)
-                for cat in project.get_package_categories()
-                if cat != pipfile_category
+                project.get_pipfile_entry(normalized_name, cat) for cat in project.get_package_categories() if cat != pipfile_category
             )
             if not package_in_current_category and package_in_other_category:
                 # The package lives in a different section; only update the
@@ -444,22 +423,16 @@ def _process_package_args(
                     f"Use --dev or --categories to target the correct section.[/bold][/yellow]"
                 )
             else:
-                project.add_pipfile_entry_to_pipfile(
-                    name, normalized_name, pipfile_entry, category=pipfile_category
-                )
+                project.add_pipfile_entry_to_pipfile(name, normalized_name, pipfile_entry, category=pipfile_category)
 
         requested_packages[pipfile_category][normalized_name] = pipfile_entry
 
         # Handle reverse dependencies
         if normalized_name in reverse_deps:
             for dependency, _ in reverse_deps[normalized_name]:
-                pipfile_entry = project.get_pipfile_entry(
-                    dependency, category=pipfile_category
-                )
+                pipfile_entry = project.get_pipfile_entry(dependency, category=pipfile_category)
                 if not pipfile_entry:
-                    requested_packages[pipfile_category][dependency] = {
-                        normalized_name: "*"
-                    }
+                    requested_packages[pipfile_category][dependency] = {normalized_name: "*"}
                     continue
                 requested_packages[pipfile_category][dependency] = pipfile_entry
 
@@ -481,14 +454,8 @@ def _resolve_and_update_lockfile(
         return None
 
     # Use package_args if provided, otherwise use the keys from requested_packages
-    package_names = (
-        package_args
-        if package_args
-        else list(requested_packages[pipfile_category].keys())
-    )
-    err.print(
-        f"[bold][green]Upgrading[/bold][/green] {', '.join(package_names)} in [{category}] dependencies."
-    )
+    package_names = package_args if package_args else list(requested_packages[pipfile_category].keys())
+    err.print(f"[bold][green]Upgrading[/bold][/green] {', '.join(package_names)} in [{category}] dependencies.")
 
     # Resolve package to generate constraints of new package data
     upgrade_lock_data = venv_resolve_deps(
@@ -591,22 +558,15 @@ def _clean_unused_dependencies(
                     if requiring_pkg not in lockfile[category]:
                         continue
                     current_version = lockfile[category][requiring_pkg].get("version")
-                    original_version = (
-                        original_lockfile[category].get(requiring_pkg, {}).get("version")
-                    )
+                    original_version = original_lockfile[category].get(requiring_pkg, {}).get("version")
                     # If the requiring package's version is unchanged, its
                     # transitive dependencies haven't changed either – keep P.
-                    if (
-                        current_version is not None
-                        and current_version == original_version
-                    ):
+                    if current_version is not None and current_version == original_version:
                         still_needed = True
                         break
                 if still_needed:
                     if project.s.is_verbose():
-                        err.print(
-                            f"Keeping {package_name} (still needed by a package at its pinned version)"
-                        )
+                        err.print(f"Keeping {package_name} (still needed by a package at its pinned version)")
                     continue
 
             if project.s.is_verbose():
@@ -630,9 +590,7 @@ def upgrade(
     """Enhanced upgrade command with dependency conflict detection."""
     lockfile = project.lockfile()
     # Store the original lockfile for comparison later
-    original_lockfile = {
-        k: v.copy() if isinstance(v, dict) else v for k, v in lockfile.items()
-    }
+    original_lockfile = {k: v.copy() if isinstance(v, dict) else v for k, v in lockfile.items()}
 
     if not pre:
         pre = project.settings.get("allow_prereleases")
@@ -652,9 +610,7 @@ def upgrade(
         os.environ["PIPENV_EXTRA_PIP_ARGS"] = json.dumps(extra_pip_args)
 
     # Prepare package arguments
-    package_args = list(packages or []) + [
-        f"-e {pkg}" for pkg in (editable_packages or [])
-    ]
+    package_args = list(packages or []) + [f"-e {pkg}" for pkg in (editable_packages or [])]
 
     # Track which packages were explicitly requested for which categories
     explicitly_requested = {}
@@ -775,11 +731,7 @@ def upgrade(
             if category == "default":
                 continue
             if lockfile.get(category):
-                lockfile[category].update(
-                    overwrite_with_default(
-                        lockfile.get("default", {}), lockfile[category]
-                    )
-                )
+                lockfile[category].update(overwrite_with_default(lockfile.get("default", {}), lockfile[category]))
 
     # Update and write lockfile
     lockfile.update({"_meta": project.get_lockfile_meta()})

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/models/lawtrack.py
+# hypothesis_version: 6.151.5
+
+[1.0, 'AGGRESSIVE', 'CA', 'COMPLETED', 'FAILED', 'FEDERAL', 'FL', 'GENTLE', 'GREEN', 'NO_SLACK', 'NY', 'OVERDUE', 'PENDING', 'PROCESSED', 'PROCESSING', 'RED', 'REQUIRES_REVIEW', 'STANDARD', 'TX', 'URGENT', 'WAIVED', 'YELLOW', 'answer_due', 'complaint_filed', 'discovery_cutoff', 'motion_to_dismiss', 'summons_service', 'trial_date']

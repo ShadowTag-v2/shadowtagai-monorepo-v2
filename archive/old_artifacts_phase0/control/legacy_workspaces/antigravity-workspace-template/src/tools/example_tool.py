@@ -30,6 +30,7 @@ def web_search(query: str) -> str:
     results = f"Search results for: {query}\n1. Result A for {query}...\n2. Result B for {query}..."
     return results
 
+
 def get_stock_price(ticker: str) -> float:
     """Retrieves the current stock price for a given ticker.
 
@@ -45,7 +46,7 @@ def get_stock_price(ticker: str) -> float:
     # </thought>
 
     print(f"DEBUG: Getting stock price for '{ticker}'")
-    return 150.00 # Mock price
+    return 150.00  # Mock price
 
 
 def calculate_math(expression: str) -> float:

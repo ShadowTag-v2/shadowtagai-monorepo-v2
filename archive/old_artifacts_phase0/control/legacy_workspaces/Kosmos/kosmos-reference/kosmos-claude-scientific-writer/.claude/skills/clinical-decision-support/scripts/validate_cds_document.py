@@ -23,7 +23,7 @@ class CDSValidator:
 
     def __init__(self, filepath):
         self.filepath = filepath
-        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+        with open(filepath, encoding="utf-8", errors="ignore") as f:
             self.content = f.read()
 
         self.errors = []
@@ -34,7 +34,7 @@ class CDSValidator:
         """Run all validation checks."""
 
         print(f"Validating: {self.filepath}")
-        print("="*70)
+        print("=" * 70)
 
         self.check_required_sections()
         self.check_evidence_citations()
@@ -49,28 +49,16 @@ class CDSValidator:
         """Check if required sections are present."""
 
         # Cohort analysis required sections
-        cohort_sections = [
-            'cohort characteristics',
-            'biomarker',
-            'outcomes',
-            'statistical analysis',
-            'clinical implications',
-            'references'
-        ]
+        cohort_sections = ["cohort characteristics", "biomarker", "outcomes", "statistical analysis", "clinical implications", "references"]
 
         # Treatment recommendation required sections
-        rec_sections = [
-            'evidence',
-            'recommendation',
-            'monitoring',
-            'references'
-        ]
+        rec_sections = ["evidence", "recommendation", "monitoring", "references"]
 
         content_lower = self.content.lower()
 
         # Check which document type
-        is_cohort = 'cohort' in content_lower
-        is_recommendation = 'recommendation' in content_lower
+        is_cohort = "cohort" in content_lower
+        is_recommendation = "recommendation" in content_lower
 
         if is_cohort:
             missing = [sec for sec in cohort_sections if sec not in content_lower]
@@ -90,15 +78,15 @@ class CDSValidator:
         """Check that recommendations have citations."""
 
         # Find recommendation statements
-        rec_pattern = r'(recommend|should|prefer|suggest|consider)(.*?)(?:\n\n|\Z)'
+        rec_pattern = r"(recommend|should|prefer|suggest|consider)(.*?)(?:\n\n|\Z)"
         recommendations = re.findall(rec_pattern, self.content, re.IGNORECASE | re.DOTALL)
 
         # Find citations
         citation_patterns = [
-            r'\[\d+\]',  # Numbered citations [1]
-            r'\(.*?\d{4}\)',  # Author year (Smith 2020)
-            r'et al\.',  # Et al citations
-            r'NCCN|ASCO|ESMO',  # Guideline references
+            r"\[\d+\]",  # Numbered citations [1]
+            r"\(.*?\d{4}\)",  # Author year (Smith 2020)
+            r"et al\.",  # Et al citations
+            r"NCCN|ASCO|ESMO",  # Guideline references
         ]
 
         uncited_recommendations = []
@@ -107,7 +95,7 @@ class CDSValidator:
             has_citation = any(re.search(pattern, rec_text) for pattern in citation_patterns)
 
             if not has_citation:
-                snippet = rec_text[:60].strip() + '...'
+                snippet = rec_text[:60].strip() + "..."
                 uncited_recommendations.append(snippet)
 
         if uncited_recommendations:
@@ -121,12 +109,12 @@ class CDSValidator:
         """Check for GRADE-style recommendation strength."""
 
         # Look for GRADE notation (1A, 1B, 2A, 2B, 2C)
-        grade_pattern = r'GRADE\s*[12][A-C]|Grade\s*[12][A-C]|\(?\s*[12][A-C]\s*\)?'
+        grade_pattern = r"GRADE\s*[12][A-C]|Grade\s*[12][A-C]|\(?\s*[12][A-C]\s*\)?"
         grades = re.findall(grade_pattern, self.content, re.IGNORECASE)
 
         # Look for strong/conditional language
-        strong_pattern = r'(strong|we recommend|should)'
-        conditional_pattern = r'(conditional|weak|we suggest|may consider|could consider)'
+        strong_pattern = r"(strong|we recommend|should)"
+        conditional_pattern = r"(conditional|weak|we suggest|may consider|could consider)"
 
         strong_count = len(re.findall(strong_pattern, self.content, re.IGNORECASE))
         conditional_count = len(re.findall(conditional_pattern, self.content, re.IGNORECASE))
@@ -145,18 +133,18 @@ class CDSValidator:
         """Check for proper statistical reporting."""
 
         # Check for p-values
-        p_values = re.findall(r'p\s*[=<>]\s*[\d.]+', self.content, re.IGNORECASE)
+        p_values = re.findall(r"p\s*[=<>]\s*[\d.]+", self.content, re.IGNORECASE)
 
         # Check for confidence intervals
-        ci_pattern = r'95%\s*CI|confidence interval'
+        ci_pattern = r"95%\s*CI|confidence interval"
         cis = re.findall(ci_pattern, self.content, re.IGNORECASE)
 
         # Check for hazard ratios
-        hr_pattern = r'HR\s*[=:]\s*[\d.]+'
+        hr_pattern = r"HR\s*[=:]\s*[\d.]+"
         hrs = re.findall(hr_pattern, self.content)
 
         # Check for sample sizes
-        n_pattern = r'n\s*=\s*\d+'
+        n_pattern = r"n\s*=\s*\d+"
         sample_sizes = re.findall(n_pattern, self.content, re.IGNORECASE)
 
         if not p_values:
@@ -171,7 +159,7 @@ class CDSValidator:
             self.warnings.append("Sample sizes (n=X) not clearly reported")
 
         # Check for common statistical errors
-        if 'p=0.00' in self.content or 'p = 0.00' in self.content:
+        if "p=0.00" in self.content or "p = 0.00" in self.content:
             self.warnings.append("Found p=0.00 (should report as p<0.001 instead)")
 
     def check_hipaa_identifiers(self):
@@ -179,12 +167,12 @@ class CDSValidator:
 
         # 18 HIPAA identifiers (simplified check for common ones)
         identifiers = {
-            'Names': r'Dr\.\s+[A-Z][a-z]+|Patient:\s*[A-Z][a-z]+',
-            'Specific dates': r'\d{1,2}/\d{1,2}/\d{4}',  # MM/DD/YYYY
-            'Phone numbers': r'\d{3}[-.]?\d{3}[-.]?\d{4}',
-            'Email addresses': r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}',
-            'SSN': r'\d{3}-\d{2}-\d{4}',
-            'MRN': r'MRN\s*:?\s*\d+',
+            "Names": r"Dr\.\s+[A-Z][a-z]+|Patient:\s*[A-Z][a-z]+",
+            "Specific dates": r"\d{1,2}/\d{1,2}/\d{4}",  # MM/DD/YYYY
+            "Phone numbers": r"\d{3}[-.]?\d{3}[-.]?\d{4}",
+            "Email addresses": r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
+            "SSN": r"\d{3}-\d{2}-\d{4}",
+            "MRN": r"MRN\s*:?\s*\d+",
         }
 
         found_identifiers = []
@@ -209,25 +197,25 @@ class CDSValidator:
         issues = []
 
         # Check for gene names (should be italicized in LaTeX)
-        gene_names = ['EGFR', 'ALK', 'ROS1', 'BRAF', 'KRAS', 'HER2', 'TP53', 'BRCA1', 'BRCA2']
+        gene_names = ["EGFR", "ALK", "ROS1", "BRAF", "KRAS", "HER2", "TP53", "BRCA1", "BRCA2"]
         for gene in gene_names:
             # Check if gene appears but not in italics (\textit{} or \emph{})
             if gene in self.content:
-                if f'\\textit{{{gene}}}' not in self.content and f'\\emph{{{gene}}}' not in self.content:
-                    if '.tex' in self.filepath.suffix:
+                if f"\\textit{{{gene}}}" not in self.content and f"\\emph{{{gene}}}" not in self.content:
+                    if ".tex" in self.filepath.suffix:
                         issues.append(f"{gene} should be italicized in LaTeX (\\textit{{{gene}}})")
 
         # Check for protein vs gene naming
         # HER2 (protein) vs ERBB2 (gene) - both valid
         # Check for mutation nomenclature (HGVS format)
-        hgvs_pattern = r'p\.[A-Z]\d+[A-Z]'  # e.g., p.L858R
+        hgvs_pattern = r"p\.[A-Z]\d+[A-Z]"  # e.g., p.L858R
         hgvs_mutations = re.findall(hgvs_pattern, self.content)
 
         if hgvs_mutations:
             self.info.append(f"Found {len(hgvs_mutations)} HGVS protein nomenclature (e.g., p.L858R)")
 
         # Warn about non-standard mutation format
-        if 'EGFR mutation' in self.content and 'exon' not in self.content.lower():
+        if "EGFR mutation" in self.content and "exon" not in self.content.lower():
             self.warnings.append("EGFR mutation mentioned - specify exon/variant (e.g., exon 19 deletion)")
 
         if issues:
@@ -236,9 +224,9 @@ class CDSValidator:
     def generate_report(self):
         """Generate validation report."""
 
-        print("\n" + "="*70)
+        print("\n" + "=" * 70)
         print("VALIDATION REPORT")
-        print("="*70)
+        print("=" * 70)
 
         if self.errors:
             print(f"\n❌ ERRORS ({len(self.errors)}):")
@@ -256,7 +244,7 @@ class CDSValidator:
                 print(f"  {info}")
 
         # Overall status
-        print("\n" + "="*70)
+        print("\n" + "=" * 70)
         if self.errors:
             print("STATUS: ❌ VALIDATION FAILED - Address errors before distribution")
             return False
@@ -270,9 +258,9 @@ class CDSValidator:
     def save_report(self, output_file):
         """Save validation report to file."""
 
-        with open(output_file, 'w') as f:
+        with open(output_file, "w") as f:
             f.write("CLINICAL DECISION SUPPORT DOCUMENT VALIDATION REPORT\n")
-            f.write("="*70 + "\n")
+            f.write("=" * 70 + "\n")
             f.write(f"Document: {self.filepath}\n")
             f.write(f"Validated: {Path.cwd()}\n\n")
 
@@ -297,12 +285,10 @@ class CDSValidator:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Validate clinical decision support documents')
-    parser.add_argument('input_file', type=str, help='Document to validate (.tex, .md, .txt)')
-    parser.add_argument('-o', '--output', type=str, default=None,
-                       help='Save validation report to file')
-    parser.add_argument('--strict', action='store_true',
-                       help='Treat warnings as errors')
+    parser = argparse.ArgumentParser(description="Validate clinical decision support documents")
+    parser.add_argument("input_file", type=str, help="Document to validate (.tex, .md, .txt)")
+    parser.add_argument("-o", "--output", type=str, default=None, help="Save validation report to file")
+    parser.add_argument("--strict", action="store_true", help="Treat warnings as errors")
 
     args = parser.parse_args()
 
@@ -315,15 +301,13 @@ def main():
         validator.save_report(args.output)
 
     # Exit code
-    if args.strict and (validator.errors or validator.warnings):
-        exit(1)
-    elif validator.errors:
+    if args.strict and (validator.errors or validator.warnings) or validator.errors:
         exit(1)
     else:
         exit(0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 
 

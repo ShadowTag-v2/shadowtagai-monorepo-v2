@@ -35,9 +35,7 @@ def test_github_url_with_subpath():
     }
 
     # All expected skills should be present
-    assert expected_skills.issubset(skill_names), (
-        f"Missing skills: {expected_skills - skill_names}"
-    )
+    assert expected_skills.issubset(skill_names), f"Missing skills: {expected_skills - skill_names}"
 
     # Should NOT have skills from other directories (like databases or packages)
     assert "biopython" not in skill_names

@@ -4,7 +4,9 @@ try:
     from playwright.sync_api import sync_playwright
 except ImportError:
     # Handle environment where playwright isn't installed yet
-    def sync_playwright(): raise ImportError("Playwright is required to use Jetski")
+    def sync_playwright():
+        raise ImportError("Playwright is required to use Jetski")
+
 
 from libs.steel.swarm import Agent
 
@@ -16,7 +18,7 @@ class JetskiBrowserAgent(Agent):
             # Headless=True for Cloud Run, False for Debugging
             self.browser = self.p.chromium.launch(headless=True)
             self.page = self.browser.new_page()
-            self.dom_cache = {} # Map[Index, ElementHandle]
+            self.dom_cache = {}  # Map[Index, ElementHandle]
         except Exception as e:
             print(f"Jetski Boot Warning: {e}. Running in Mock Mode.")
             self.browser = None
@@ -25,7 +27,8 @@ class JetskiBrowserAgent(Agent):
         """
         The Magic: Maps raw DOM to clean Indices [1], [2], [3]
         """
-        if not self.browser: return "[0] MOCK: Search Button"
+        if not self.browser:
+            return "[0] MOCK: Search Button"
 
         # Find all inputs, buttons, and links
         elements = self.page.query_selector_all("button, input, a, select, [role='button']")
@@ -60,7 +63,8 @@ class JetskiBrowserAgent(Agent):
 
     def browser_navigate(self, url: str):
         print(f"🏄 Navigating to {url}")
-        if self.browser: self.page.goto(url)
+        if self.browser:
+            self.page.goto(url)
 
     def read_browser_page(self):
         return self._get_interactive_elements()

@@ -141,12 +141,8 @@ async def main_async() -> None:
         try:
             # Kill any process on the backend port
             import subprocess
-            subprocess.run(
-                f"lsof -ti :{backend_port} | xargs kill -9 2>/dev/null || true",
-                shell=True,
-                timeout=2,
-                capture_output=True
-            )
+
+            subprocess.run(f"lsof -ti :{backend_port} | xargs kill -9 2>/dev/null || true", shell=True, timeout=2, capture_output=True)
         except:
             pass  # Silent failure - this is last-ditch cleanup
 

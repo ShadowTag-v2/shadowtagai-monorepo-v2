@@ -14,52 +14,52 @@ from .manager import *
 from .utils import *
 
 
-#*****************************************************
+# *****************************************************
 # FunctionExplorer
-#*****************************************************
+# *****************************************************
 class FunctionExplorer(Explorer):
     def __init__(self):
         self._ctags = lfEval("g:Lf_Ctags")
-        self._func_list = {}       # a dict with (key, value) = (buffer number, taglist)
-        self._buf_changedtick = {} # a dict with (key, value) = (buffer number, changedtick)
+        self._func_list = {}  # a dict with (key, value) = (buffer number, taglist)
+        self._buf_changedtick = {}  # a dict with (key, value) = (buffer number, changedtick)
         self._executor = []
         self._ctags_options = {
-                "aspvbs": "--asp-kinds=f",
-                "awk": "--awk-kinds=f",
-                "c": "--c-kinds=fp",
-                "cpp": "--c++-kinds=fp --language-force=C++",
-                "cs": "--c#-kinds=m",
-                "erlang": "--erlang-kinds=f",
-                "fortran": "--fortran-kinds=f",
-                "java": "--java-kinds=m",
-                "javascript": "--javascript-kinds=f",
-                "lisp": "--lisp-kinds=f",
-                "lua": "--lua-kinds=f",
-                "matla": "--matlab-kinds=f",
-                "pascal": "--pascal-kinds=f",
-                "php": "--php-kinds=f",
-                "python": "--python-kinds=fm --language-force=Python",
-                "ruby": "--ruby-kinds=fF",
-                "scheme": "--scheme-kinds=f",
-                "sh": "--sh-kinds=f",
-                "sql": "--sql-kinds=f",
-                "tcl": "--tcl-kinds=m",
-                "verilog": "--verilog-kinds=f",
-                "vim": "--vim-kinds=f",
-                "go": "--go-kinds=f",  # universal ctags
-                "rust": "--rust-kinds=fPM",  # universal ctags
-                "ocaml": "--ocaml-kinds=mf",   # universal ctags
-                }
-        ctags_opts = lfEval('g:Lf_CtagsFuncOpts')
+            "aspvbs": "--asp-kinds=f",
+            "awk": "--awk-kinds=f",
+            "c": "--c-kinds=fp",
+            "cpp": "--c++-kinds=fp --language-force=C++",
+            "cs": "--c#-kinds=m",
+            "erlang": "--erlang-kinds=f",
+            "fortran": "--fortran-kinds=f",
+            "java": "--java-kinds=m",
+            "javascript": "--javascript-kinds=f",
+            "lisp": "--lisp-kinds=f",
+            "lua": "--lua-kinds=f",
+            "matla": "--matlab-kinds=f",
+            "pascal": "--pascal-kinds=f",
+            "php": "--php-kinds=f",
+            "python": "--python-kinds=fm --language-force=Python",
+            "ruby": "--ruby-kinds=fF",
+            "scheme": "--scheme-kinds=f",
+            "sh": "--sh-kinds=f",
+            "sql": "--sql-kinds=f",
+            "tcl": "--tcl-kinds=m",
+            "verilog": "--verilog-kinds=f",
+            "vim": "--vim-kinds=f",
+            "go": "--go-kinds=f",  # universal ctags
+            "rust": "--rust-kinds=fPM",  # universal ctags
+            "ocaml": "--ocaml-kinds=mf",  # universal ctags
+        }
+        ctags_opts = lfEval("g:Lf_CtagsFuncOpts")
         for k, v in ctags_opts.items():
             self._ctags_options[k] = v
 
     def getContent(self, *args, **kwargs):
-        if "--all" in kwargs.get("arguments", {}): # all buffers
+        if "--all" in kwargs.get("arguments", {}):  # all buffers
             cur_buffer = vim.current.buffer
             for b in vim.buffers:
                 if b.options["buflisted"]:
-                    if lfEval("bufloaded(%d)" % b.number) == '0':
+                    if lfEval("bufloaded(%d)" % b.number) == "0":
                         vim.current.buffer = b
             if vim.current.buffer != cur_buffer:
                 vim.current.buffer = cur_buffer
@@ -89,7 +89,7 @@ class FunctionExplorer(Explorer):
         for i in range(0, len(vim.buffers), n):
             func_list = []
             exe_result = []
-            for b in buffers[i:i+n]:
+            for b in buffers[i : i + n]:
                 if b.options["buflisted"] and b.name:
                     result = self._getFunctionResult(b)
                     if isinstance(result, list):
@@ -103,8 +103,7 @@ class FunctionExplorer(Explorer):
                 yield itertools.chain(func_list, itertools.chain.from_iterable(exe_taglist))
 
     def _getFunctionResult(self, buffer):
-        if (not buffer.name or lfEval("bufloaded(%d)" % buffer.number) == '0'
-            or lfEval("&bt") != ''):
+        if not buffer.name or lfEval("bufloaded(%d)" % buffer.number) == "0" or lfEval("&bt") != "":
             return []
         changedtick = int(lfEval("getbufvar(%d, 'changedtick')" % buffer.number))
         # there is no change since last call
@@ -123,9 +122,9 @@ class FunctionExplorer(Explorer):
         if buffer.options["modified"]:
             tmp_file = partial(tempfile.NamedTemporaryFile, encoding=lfEval("&encoding"))
 
-            with tmp_file(mode='w+', suffix='_'+os.path.basename(buffer.name), delete=False) as f:
+            with tmp_file(mode="w+", suffix="_" + os.path.basename(buffer.name), delete=False) as f:
                 for line in buffer:
-                    f.write(line + '\n')
+                    f.write(line + "\n")
                 file_name = f.name
             # {tagname}<Tab>{tagfile}<Tab>{tagaddress};"<Tab>{kind}
             cmd = f'{self._ctags} -n -u --fields=k {extra_options} -f- "{lfDecode(file_name)}"'
@@ -137,11 +136,11 @@ class FunctionExplorer(Explorer):
         return (buffer, result)
 
     def _formatResult(self, buffer, result):
-        if not buffer.name or lfEval("bufloaded(%d)" % buffer.number) == '0':
+        if not buffer.name or lfEval("bufloaded(%d)" % buffer.number) == "0":
             return []
 
         # a list of [tag, file, line, kind]
-        output = [line.split('\t') for line in result]
+        output = [line.split("\t") for line in result]
         if not output:
             return []
         if len(output[0]) < 4:
@@ -152,7 +151,7 @@ class FunctionExplorer(Explorer):
         sorted = True
         lastln = -1
 
-        for _, item  in enumerate(output):
+        for _, item in enumerate(output):
             bufname = buffer.name if vim.options["autochdir"] else lfRelpath(buffer.name)
             try:
                 ln = int(item[2][:-2], 0)
@@ -162,25 +161,26 @@ class FunctionExplorer(Explorer):
                 sorted = False
             else:
                 lastln = ln
-            line = "{}\t{}\t[{}:{} {}]".format(item[3],
-                                               buffer[int(item[2][:-2]) - 1].strip(),
-                                               bufname,        # file
-                                               item[2][:-2],   # line
-                                               buffer.number
-                                               )
+            line = "{}\t{}\t[{}:{} {}]".format(
+                item[3],
+                buffer[int(item[2][:-2]) - 1].strip(),
+                bufname,  # file
+                item[2][:-2],  # line
+                buffer.number,
+            )
 
             func_list.append((ln, line))
 
         if not sorted:
             func_list.sort()
 
-        func_list = [ line for ln, line in func_list ]
+        func_list = [line for ln, line in func_list]
         self._func_list[buffer.number] = func_list
 
         return func_list
 
     def getStlCategory(self):
-        return 'Function'
+        return "Function"
 
     def getStlCurDir(self):
         return escQuote(lfEncode(lfGetCwd()))
@@ -198,9 +198,9 @@ class FunctionExplorer(Explorer):
         self._executor = []
 
 
-#*****************************************************
+# *****************************************************
 # FunctionExplManager
-#*****************************************************
+# *****************************************************
 class FunctionExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -216,11 +216,11 @@ class FunctionExplManager(Manager):
             return
         line = args[0]
         # {kind} {code} {file} {line}
-        line = line.rsplit("\t", 1)[1][1:-1]    # file:line buf_number
+        line = line.rsplit("\t", 1)[1][1:-1]  # file:line buf_number
         line_num, buf_number = line.rsplit(":", 1)[1].split()
-        if kwargs.get("mode", '') == 't':
+        if kwargs.get("mode", "") == "t":
             buf_name = lfEval(f"bufname({buf_number})")
-            lfDrop('tab', buf_name, line_num)
+            lfDrop("tab", buf_name, line_num)
         else:
             lfCmd(f"hide buffer +{line_num} {buf_number}")
         lfCmd("norm! ^zv")
@@ -257,9 +257,7 @@ class FunctionExplManager(Manager):
                   1, return the start position of code
                   2, return the start position remaining part
         """
-        if mode == 0:
-            return 2
-        elif mode == 1:
+        if mode == 0 or mode == 1:
             return 2
         else:
             return len(line.rsplit("\t", 1)[0]) + 2
@@ -284,43 +282,52 @@ class FunctionExplManager(Manager):
         lfCmd("autocmd BufWipeout * call leaderf#Function#removeCache(expand('<abuf>'))")
         lfCmd("autocmd VimLeavePre * call leaderf#Function#cleanup()")
         lfCmd("augroup END")
-        if self._getInstance().getWinPos() == 'popup':
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcKind'', ''^\w'')')"""
-                    % self._getInstance().getPopupWinId())
+        if self._getInstance().getWinPos() == "popup":
+            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcKind'', ''^\w'')')""" % self._getInstance().getPopupWinId())
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcReturnType'', ''^\w\t\zs.\{-}\ze\s*[~]\=\(\w\|[#:]\)\+\W\{-}[(\[]'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcReturnType'', ''^\w\t\zs.\{-}\ze\s*[~]\=\(\w\|[#:]\)\+\W\{-}[(\[]'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcScope'', ''\w*\(<[^>]*>\)\=::'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcScope'', ''\w*\(<[^>]*>\)\=::'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcName'', ''^\w\t.\{-}\s*\zs[~]\=\(\w\|[#:]\)\+\W\{-}\ze[(\[]'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcName'', ''^\w\t.\{-}\s*\zs[~]\=\(\w\|[#:]\)\+\W\{-}\ze[(\[]'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcDirname'', ''\t\zs\[.*:\d\+ \d\+]$'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcDirname'', ''\t\zs\[.*:\d\+ \d\+]$'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcLineNum'', '':\zs\d\+\ze \d\+]$'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_funcLineNum'', '':\zs\d\+\ze \d\+]$'')')"""
+                % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
         else:
-            id = int(lfEval(r'''matchadd('Lf_hl_funcKind', '^\w')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_funcKind', '^\w')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_funcReturnType', '^\w\t\zs.\{-}\ze\s*[~]\=\(\w\|[#:]\)\+\W\{-}[(\[]')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_funcReturnType', '^\w\t\zs.\{-}\ze\s*[~]\=\(\w\|[#:]\)\+\W\{-}[(\[]')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_funcScope', '\w*\(<[^>]*>\)\=::')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_funcScope', '\w*\(<[^>]*>\)\=::')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_funcName', '^\w\t.\{-}\s*\zs[~]\=\(\w\|[#:]\)\+\W\{-}\ze[(\[]')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_funcName', '^\w\t.\{-}\s*\zs[~]\=\(\w\|[#:]\)\+\W\{-}\ze[(\[]')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_funcDirname', '\t\zs\[.*:\d\+ \d\+]$')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_funcDirname', '\t\zs\[.*:\d\+ \d\+]$')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_funcLineNum', ':\zs\d\+\ze \d\+]$')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_funcLineNum', ':\zs\d\+\ze \d\+]$')"""))
             self._match_ids.append(id)
 
     def _beforeExit(self):
@@ -342,7 +349,7 @@ class FunctionExplManager(Manager):
     def _bangEnter(self):
         super()._bangEnter()
         if "--all" in self._arguments and not self._is_content_list:
-            if lfEval("exists('*timer_start')") == '0':
+            if lfEval("exists('*timer_start')") == "0":
                 lfCmd("echohl Error | redraw | echo ' E117: Unknown function: timer_start' | echohl NONE")
                 return
             self._callback(bang=True)
@@ -356,8 +363,7 @@ class FunctionExplManager(Manager):
         self._relocateCursor()
 
     def _relocateCursor(self):
-        remember_last_status = "--recall" in self._arguments \
-                or lfEval("g:Lf_RememberLastSearch") == '1' and self._cli.pattern
+        remember_last_status = "--recall" in self._arguments or lfEval("g:Lf_RememberLastSearch") == "1" and self._cli.pattern
         if remember_last_status:
             return
 
@@ -384,44 +390,47 @@ class FunctionExplManager(Manager):
             last -= 1
         if last >= 0:
             index = tags[last][0]
-            if self._getInstance().getWinPos() == 'popup':
-                lfCmd("call leaderf#ResetPopupOptions(%d, 'filter', '%s')"
-                        % (self._getInstance().getPopupWinId(), 'leaderf#PopupFilter'))
+            if self._getInstance().getWinPos() == "popup":
+                lfCmd("call leaderf#ResetPopupOptions(%d, 'filter', '%s')" % (self._getInstance().getPopupWinId(), "leaderf#PopupFilter"))
                 lfCmd("""call win_execute(%d, "exec 'norm! %dG'")""" % (self._getInstance().getPopupWinId(), int(index)))
 
-                if lfEval(f"exists('*leaderf#{self._getExplorer().getStlCategory()}#NormalModeFilter')") == '1':
-                    lfCmd("call leaderf#ResetPopupOptions(%d, 'filter', '%s')" % (self._getInstance().getPopupWinId(),
-                            f'leaderf#{self._getExplorer().getStlCategory()}#NormalModeFilter'))
+                if lfEval(f"exists('*leaderf#{self._getExplorer().getStlCategory()}#NormalModeFilter')") == "1":
+                    lfCmd(
+                        "call leaderf#ResetPopupOptions(%d, 'filter', '%s')"
+                        % (self._getInstance().getPopupWinId(), f"leaderf#{self._getExplorer().getStlCategory()}#NormalModeFilter")
+                    )
                 else:
-                    lfCmd("call leaderf#ResetPopupOptions(%d, 'filter', function('leaderf#NormalModeFilter', [%d]))"
-                            % (self._getInstance().getPopupWinId(), id(self)))
+                    lfCmd(
+                        "call leaderf#ResetPopupOptions(%d, 'filter', function('leaderf#NormalModeFilter', [%d]))"
+                        % (self._getInstance().getPopupWinId(), id(self))
+                    )
                 self._cli._buildPopupPrompt()
             else:
                 lfCmd(str(index))
-                if self._getInstance().getWinPos() == 'floatwin':
+                if self._getInstance().getWinPos() == "floatwin":
                     self._cli._buildPopupPrompt()
                 lfCmd("norm! zz")
 
             self._previewResult(False)
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         line = args[0]
         # {kind} {code} {file} {line}
-        line = line.rsplit("\t", 1)[1][1:-1]    # file:line buf_number
+        line = line.rsplit("\t", 1)[1][1:-1]  # file:line buf_number
         line_num, buf_number = line.rsplit(":", 1)[1].split()
         buf_number = int(buf_number)
 
         self._createPopupPreview("", buf_number, line_num)
 
 
-#*****************************************************
+# *****************************************************
 # functionExplManager is a singleton
-#*****************************************************
+# *****************************************************
 functionExplManager = FunctionExplManager()
 
-__all__ = ['functionExplManager']
+__all__ = ["functionExplManager"]
 
 #  vim: set ts=4 sw=4 tw=0 et :

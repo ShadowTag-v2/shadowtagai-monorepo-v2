@@ -2,7 +2,7 @@
 Security utilities for secret management and encryption.
 """
 
-from typing import Optional, Dict, Any
+from typing import Any
 from pathlib import Path
 import os
 import yaml
@@ -23,11 +23,7 @@ class SecretManager:
     - Encrypted storage
     """
 
-    def __init__(
-        self,
-        secrets_file: Path | None = None,
-        encryption_key: bytes | None = None
-    ):
+    def __init__(self, secrets_file: Path | None = None, encryption_key: bytes | None = None):
         """
         Initialize secret manager.
 
@@ -54,8 +50,8 @@ class SecretManager:
 
         # Override with environment variables
         for key, value in os.environ.items():
-            if key.startswith('SHADOWTAG_'):
-                clean_key = key.replace('SHADOWTAG_', '').lower()
+            if key.startswith("SHADOWTAG_"):
+                clean_key = key.replace("SHADOWTAG_", "").lower()
                 self._secrets[clean_key] = value
 
     def get(self, key: str, default: Any = None, decrypt: bool = False) -> Any:
@@ -71,7 +67,7 @@ class SecretManager:
             Secret value
         """
         # Navigate nested dict using dot notation
-        parts = key.split('.')
+        parts = key.split(".")
         value = self._secrets
 
         for part in parts:
@@ -106,7 +102,7 @@ class SecretManager:
             value = self._cipher.encrypt(str(value).encode()).decode()
 
         # Handle nested keys
-        parts = key.split('.')
+        parts = key.split(".")
         target = self._secrets
 
         for part in parts[:-1]:
@@ -128,7 +124,7 @@ class SecretManager:
         path = filepath or self.secrets_file
         path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             yaml.dump(self._secrets, f, default_flow_style=False)
 
     @staticmethod
@@ -146,13 +142,7 @@ class SecretManager:
         if salt is None:
             salt = os.urandom(16)
 
-        kdf = PBKDF2(
-            algorithm=hashes.SHA256(),
-            length=32,
-            salt=salt,
-            iterations=100000,
-            backend=default_backend()
-        )
+        kdf = PBKDF2(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=100000, backend=default_backend())
 
         key = base64.urlsafe_b64encode(kdf.derive(password.encode()))
         return key
@@ -178,8 +168,8 @@ class EnvironmentLoader:
             with open(env_file) as f:
                 for line in f:
                     line = line.strip()
-                    if line and not line.startswith('#'):
-                        key, _, value = line.partition('=')
+                    if line and not line.startswith("#"):
+                        key, _, value = line.partition("=")
                         key = key.strip()
                         value = value.strip().strip('"').strip("'")
                         env_vars[key] = value
@@ -204,9 +194,7 @@ class EnvironmentLoader:
         missing = [var for var in required_vars if var not in os.environ]
 
         if missing:
-            raise ValueError(
-                f"Missing required environment variables: {', '.join(missing)}"
-            )
+            raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
 
         return True
 

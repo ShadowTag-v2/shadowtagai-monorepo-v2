@@ -27,9 +27,7 @@ DEP_PIP_PAIRS = [
                 "editable": True,
             }
         },
-        {
-            "dataclasses-json": "dataclasses-json @ git+https://github.com/lidatong/dataclasses-json.git@v0.5.7"
-        },
+        {"dataclasses-json": "dataclasses-json @ git+https://github.com/lidatong/dataclasses-json.git@v0.5.7"},
     ),
     (
         {
@@ -38,9 +36,7 @@ DEP_PIP_PAIRS = [
                 "ref": "v0.5.7",
             }
         },
-        {
-            "dataclasses-json": "dataclasses-json @ git+https://github.com/lidatong/dataclasses-json.git@v0.5.7"
-        },
+        {"dataclasses-json": "dataclasses-json @ git+https://github.com/lidatong/dataclasses-json.git@v0.5.7"},
     ),
     (
         # Extras in url
@@ -50,9 +46,7 @@ DEP_PIP_PAIRS = [
                 "extras": ["pipenv"],
             }
         },
-        {
-            "dparse": "dparse[pipenv] @ https://github.com/oz123/dparse/archive/refs/heads/master.zip"
-        },
+        {"dparse": "dparse[pipenv] @ https://github.com/oz123/dparse/archive/refs/heads/master.zip"},
     ),
     (
         {
@@ -63,9 +57,7 @@ DEP_PIP_PAIRS = [
                 "editable": False,
             }
         },
-        {
-            "requests": "requests[security] @ git+https://github.com/requests/requests.git@main"
-        },
+        {"requests": "requests[security] @ git+https://github.com/requests/requests.git@main"},
     ),
 ]
 
@@ -117,9 +109,7 @@ def test_convert_deps_to_pip_extras_no_version():
                     "hashes": ["sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"],
                 }
             },
-            {
-                "FooProject": "FooProject==1.2  --hash=sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
-            },
+            {"FooProject": "FooProject==1.2  --hash=sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"},
         ),
         (
             {
@@ -129,9 +119,7 @@ def test_convert_deps_to_pip_extras_no_version():
                     "hashes": ["sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"],
                 }
             },
-            {
-                "FooProject": "FooProject[stuff]==1.2  --hash=sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
-            },
+            {"FooProject": "FooProject[stuff]==1.2  --hash=sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"},
         ),
         (
             {
@@ -141,9 +129,7 @@ def test_convert_deps_to_pip_extras_no_version():
                     "extras": ["standard"],
                 }
             },
-            {
-                "uvicorn": "uvicorn[standard] @ git+https://github.com/encode/uvicorn.git@master"
-            },
+            {"uvicorn": "uvicorn[standard] @ git+https://github.com/encode/uvicorn.git@master"},
         ),
     ],
 )
@@ -312,9 +298,7 @@ class TestUtils:
         def mock_version(path):
             return version_output.split()[1]
 
-        monkeypatch.setattr(
-            "pipenv.vendor.pythonfinder.utils.get_python_version", mock_version
-        )
+        monkeypatch.setattr("pipenv.vendor.pythonfinder.utils.get_python_version", mock_version)
         assert dependencies.python_version("some/path") == version
 
     @pytest.mark.utils
@@ -392,15 +376,7 @@ twine = "*"
     @pytest.mark.utils
     def test_cleanup_toml_preserves_single_blank_lines_within_sections(this):
         """Blank lines placed by the user within a section survive cleanup. (#5914)"""
-        toml_data = (
-            "[packages]\n"
-            "requests = \"==2.31.0\"\n"
-            "\n"
-            "flask = \"==2.0.0\"\n"
-            "\n"
-            "[dev-packages]\n"
-            "pytest = \"*\"\n"
-        )
+        toml_data = '[packages]\nrequests = "==2.31.0"\n\nflask = "==2.0.0"\n\n[dev-packages]\npytest = "*"\n'
         result = toml.cleanup_toml(toml_data)
         lines = result.split("\n")
         # The blank line between requests and flask must be preserved.
@@ -409,37 +385,26 @@ twine = "*"
     @pytest.mark.utils
     def test_cleanup_toml_collapses_multiple_blank_lines(this):
         """Multiple consecutive blank lines are collapsed to a single one. (#5914)"""
-        toml_data = (
-            "[packages]\n"
-            "requests = \"==2.31.0\"\n"
-            "\n"
-            "\n"
-            "\n"
-            "flask = \"==2.0.0\"\n"
-        )
+        toml_data = '[packages]\nrequests = "==2.31.0"\n\n\n\nflask = "==2.0.0"\n'
         result = toml.cleanup_toml(toml_data)
         lines = result.split("\n")
         # No two consecutive blank lines should remain.
         for i in range(len(lines) - 1):
-            assert not (lines[i] == "" and lines[i + 1] == ""), (
-                f"Found consecutive blank lines at indices {i} and {i+1}"
-            )
+            assert not (lines[i] == "" and lines[i + 1] == ""), f"Found consecutive blank lines at indices {i} and {i + 1}"
 
     @pytest.mark.utils
     def test_cleanup_toml_adds_blank_line_before_section_header(this):
         """A blank line is inserted before a section header if one is missing. (#5914)"""
         toml_data = (
             "[packages]\n"
-            "requests = \"==2.31.0\"\n"
+            'requests = "==2.31.0"\n'
             "[dev-packages]\n"  # no blank line before this
-            "pytest = \"*\"\n"
+            'pytest = "*"\n'
         )
         result = toml.cleanup_toml(toml_data)
         lines = result.split("\n")
         dev_idx = lines.index("[dev-packages]")
-        assert lines[dev_idx - 1] == "", (
-            "Expected a blank line before [dev-packages]"
-        )
+        assert lines[dev_idx - 1] == "", "Expected a blank line before [dev-packages]"
 
     @pytest.mark.utils
     @pytest.mark.parametrize(
@@ -653,14 +618,13 @@ twine = "*"
     # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-python/0017-sysconfig-treat-MINGW-builds-as-POSIX-builds.patch#L24
     @pytest.mark.skipif(os.name != "nt" or "GCC" in sys.version, reason="Windows test only")
     def test_virtualenv_scripts_dir_nt(self):
-        """
-        """
-        assert str(virtualenv.virtualenv_scripts_dir('foobar')) == 'foobar\\Scripts'
+        """ """
+        assert str(virtualenv.virtualenv_scripts_dir("foobar")) == "foobar\\Scripts"
 
     @pytest.mark.utils
     @pytest.mark.skipif(os.name == "nt" and "GCC" not in sys.version, reason="POSIX test only")
     def test_virtualenv_scripts_dir_posix(self):
-        assert str(virtualenv.virtualenv_scripts_dir('foobar')) == 'foobar/bin'
+        assert str(virtualenv.virtualenv_scripts_dir("foobar")) == "foobar/bin"
 
     @pytest.mark.utils
     def test_find_package_name_from_directory_ignores_subdirectory_setup(self, tmp_path):
@@ -676,9 +640,7 @@ twine = "*"
 
         # Create a proper setup.py in the root with a parseable name
         setup_py = package_dir / "setup.py"
-        setup_py.write_text(
-            "from setuptools import setup\nsetup(name='mypackage', version='1.0')\n"
-        )
+        setup_py.write_text("from setuptools import setup\nsetup(name='mypackage', version='1.0')\n")
 
         # Create a tests subdirectory with a file that has a setup() call
         tests_dir = package_dir / "mypackage" / "tests"
@@ -833,7 +795,6 @@ class TestPipConfigurationParsing:
             os.chdir(original_dir)
 
 
-
 class TestEnsureProjectPythonVersionMismatch:
     """Tests for ensure_project detecting Python version mismatch (GitHub issue #6141).
 
@@ -884,9 +845,7 @@ class TestEnsureProjectPythonVersionMismatch:
 
         ensure_project(project, python="3.12", system=False)
 
-        assert len(ensure_virtualenv_calls) == 1, (
-            "ensure_virtualenv should be called when Python version mismatches"
-        )
+        assert len(ensure_virtualenv_calls) == 1, "ensure_virtualenv should be called when Python version mismatches"
 
     @pytest.mark.utils
     def test_python_version_match_skips_ensure_virtualenv(self, monkeypatch):
@@ -917,9 +876,7 @@ class TestEnsureProjectPythonVersionMismatch:
 
         ensure_project(project, python="3.10", system=False)
 
-        assert len(ensure_virtualenv_calls) == 0, (
-            "ensure_virtualenv should NOT be called when Python version already matches"
-        )
+        assert len(ensure_virtualenv_calls) == 0, "ensure_virtualenv should NOT be called when Python version already matches"
 
     @pytest.mark.utils
     def test_no_python_arg_skips_version_check(self, monkeypatch):
@@ -940,9 +897,7 @@ class TestEnsureProjectPythonVersionMismatch:
 
         ensure_project(project, python=None, system=False)
 
-        assert len(ensure_virtualenv_calls) == 0, (
-            "ensure_virtualenv should not be called when no --python is given and venv exists"
-        )
+        assert len(ensure_virtualenv_calls) == 0, "ensure_virtualenv should not be called when no --python is given and venv exists"
 
 
 class TestPythonVersionMatchesRequired:
@@ -966,7 +921,7 @@ class TestPythonVersionMatchesRequired:
             # Additional substring traps
             ("3.9.1", "3.9", True),
             ("3.9.10", "3.9", True),
-            ("3.10.0", "3.1", False),   # "3.1" would match "3.1x.y" as substring
+            ("3.10.0", "3.1", False),  # "3.1" would match "3.1x.y" as substring
             ("3.13.1", "3.1", False),
             ("3.11.0", "3.1", False),
             # Major version mismatch
@@ -990,7 +945,6 @@ class TestPythonVersionMatchesRequired:
         from pipenv.utils.project import _python_version_matches_required
 
         assert _python_version_matches_required(actual, required) is expected
-
 
 
 class TestPipfileVenvInProject:
@@ -1026,7 +980,7 @@ class TestPipfileVenvInProject:
     @pytest.mark.utils
     def test_pipfile_venv_in_project_true(self, tmp_path, monkeypatch):
         """When [pipenv] venv_in_project = true in Pipfile, is_venv_in_project returns True."""
-        pipfile = '[pipenv]\nvenv_in_project = true\n\n[packages]\n\n[dev-packages]\n'
+        pipfile = "[pipenv]\nvenv_in_project = true\n\n[packages]\n\n[dev-packages]\n"
         project = self._make_project_with_pipfile(tmp_path, monkeypatch, pipfile)
         assert project._pipfile_venv_in_project() is True
         assert project.is_venv_in_project() is True
@@ -1034,7 +988,7 @@ class TestPipfileVenvInProject:
     @pytest.mark.utils
     def test_pipfile_venv_in_project_false(self, tmp_path, monkeypatch):
         """When [pipenv] venv_in_project = false in Pipfile, is_venv_in_project returns False."""
-        pipfile = '[pipenv]\nvenv_in_project = false\n\n[packages]\n\n[dev-packages]\n'
+        pipfile = "[pipenv]\nvenv_in_project = false\n\n[packages]\n\n[dev-packages]\n"
         project = self._make_project_with_pipfile(tmp_path, monkeypatch, pipfile)
         assert project._pipfile_venv_in_project() is False
         assert project.is_venv_in_project() is False
@@ -1042,24 +996,23 @@ class TestPipfileVenvInProject:
     @pytest.mark.utils
     def test_pipfile_venv_in_project_not_set(self, tmp_path, monkeypatch):
         """When [pipenv] section has no venv_in_project, _pipfile_venv_in_project returns None."""
-        pipfile = '[packages]\n\n[dev-packages]\n'
+        pipfile = "[packages]\n\n[dev-packages]\n"
         project = self._make_project_with_pipfile(tmp_path, monkeypatch, pipfile)
         assert project._pipfile_venv_in_project() is None
 
     @pytest.mark.utils
     def test_env_var_true_overrides_pipfile_false(self, tmp_path, monkeypatch):
         """Environment variable PIPENV_VENV_IN_PROJECT=1 overrides Pipfile venv_in_project=false."""
-        pipfile = '[pipenv]\nvenv_in_project = false\n\n[packages]\n\n[dev-packages]\n'
+        pipfile = "[pipenv]\nvenv_in_project = false\n\n[packages]\n\n[dev-packages]\n"
         project = self._make_project_with_pipfile(tmp_path, monkeypatch, pipfile, env_var=True)
         assert project.is_venv_in_project() is True
 
     @pytest.mark.utils
     def test_env_var_false_overrides_pipfile_true(self, tmp_path, monkeypatch):
         """Environment variable PIPENV_VENV_IN_PROJECT=0 overrides Pipfile venv_in_project=true."""
-        pipfile = '[pipenv]\nvenv_in_project = true\n\n[packages]\n\n[dev-packages]\n'
+        pipfile = "[pipenv]\nvenv_in_project = true\n\n[packages]\n\n[dev-packages]\n"
         project = self._make_project_with_pipfile(tmp_path, monkeypatch, pipfile, env_var=False)
         assert project.is_venv_in_project() is False
-
 
 
 class TestPipfilePythonOverride:
@@ -1088,9 +1041,7 @@ class TestPipfilePythonOverride:
         assert override["python_full_version"] == "3.11.15"
 
     @pytest.mark.utils
-    def test_override_python_version_only_falls_back_to_dot_zero_for_other_minor(
-        self, monkeypatch
-    ):
+    def test_override_python_version_only_falls_back_to_dot_zero_for_other_minor(self, monkeypatch):
         """A different running minor version should fall back to major.minor.0."""
         from pipenv.utils.resolver import _get_pipfile_python_override
 
@@ -1346,13 +1297,8 @@ class TestFormatRequirementForLockfile:
         """
         from pipenv.utils.locking import format_requirement_for_lockfile
 
-        cache_path = (
-            "file:///home/user/.cache/pip/wheels/ab/cd/ef/"
-            "atomicwrites-1.4.1-py3-none-any.whl"
-        )
-        req = self._make_install_req(
-            "atomicwrites", link_url=cache_path, specifier="==1.4.1"
-        )
+        cache_path = "file:///home/user/.cache/pip/wheels/ab/cd/ef/atomicwrites-1.4.1-py3-none-any.whl"
+        req = self._make_install_req("atomicwrites", link_url=cache_path, specifier="==1.4.1")
         # Index-resolved packages have no req.req.url (no PEP 508 @ URL);
         # explicitly set to None so the PEP 508 file:// branch is not triggered.
         req.req.url = None
@@ -1367,9 +1313,7 @@ class TestFormatRequirementForLockfile:
         )
 
         assert name == "atomicwrites"
-        assert "file" not in entry, (
-            "Local pip cache paths must not bleed into the lockfile"
-        )
+        assert "file" not in entry, "Local pip cache paths must not bleed into the lockfile"
         assert entry.get("version") == "==1.4.1"
 
     @pytest.mark.utils
@@ -1405,9 +1349,7 @@ class TestFormatRequirementForLockfile:
         )
 
         assert name == "local-child-pkg"
-        assert entry.get("file") == file_url, (
-            "PEP 508 file:// transitive deps must have their URL recorded in the lockfile"
-        )
+        assert entry.get("file") == file_url, "PEP 508 file:// transitive deps must have their URL recorded in the lockfile"
         # version and index should be removed (same as https:// direct URL deps)
         assert "version" not in entry
         assert "index" not in entry
@@ -1604,8 +1546,7 @@ class TestCreatePipfileVersionConsistency:
 
         project.write_toml.side_effect = capture_write_toml
 
-        with patch("pipenv.project.python_version", side_effect=fake_pv), \
-             patch("pipenv.project.InstallCommand", return_value=fake_cmd):
+        with patch("pipenv.project.python_version", side_effect=fake_pv), patch("pipenv.project.InstallCommand", return_value=fake_cmd):
             Project.create_pipfile(project, python=python)
 
         return written_data
@@ -1633,9 +1574,7 @@ class TestCreatePipfileVersionConsistency:
 
         requires = written_data.get("requires", {})
         # Falls back to which() → global/PATH Python.
-        assert requires.get("python_version") == "3.13", (
-            f"Expected '3.13' (PATH fallback) but got {requires.get('python_version')!r}"
-        )
+        assert requires.get("python_version") == "3.13", f"Expected '3.13' (PATH fallback) but got {requires.get('python_version')!r}"
 
     def test_explicit_python_argument_always_wins(self, tmp_path):
         """An explicit python= path overrides both venv and PATH discovery."""
@@ -1699,9 +1638,7 @@ class TestAddPipfileEntryPreservesVersionSpecifiers:
 
         pydantic_entry = result.get("packages", {}).get("pydantic")
         assert pydantic_entry is not None, "pydantic entry was removed entirely"
-        assert "version" in pydantic_entry, (
-            "version key was stripped from pydantic entry after convert_toml_outline_tables"
-        )
+        assert "version" in pydantic_entry, "version key was stripped from pydantic entry after convert_toml_outline_tables"
         assert str(pydantic_entry["version"]) == "<2.0", (
             f"version specifier corrupted: expected '<2.0', got {pydantic_entry['version']!r}"
         )
@@ -1788,9 +1725,7 @@ class TestCreateBuiltinVenvCmd:
         project, _ = self._make_project(tmp_path)
         python = "/home/user/rustpython/target/release/rustpython"
         cmd = _create_builtin_venv_cmd(project, python)
-        assert cmd[0] == python, (
-            f"Expected target interpreter {python!r} as first arg, got {cmd[0]!r}"
-        )
+        assert cmd[0] == python, f"Expected target interpreter {python!r} as first arg, got {cmd[0]!r}"
 
     @pytest.mark.utils
     def test_invokes_venv_module(self, tmp_path):
@@ -2028,9 +1963,7 @@ class TestResolverCreateCrossGroupIndexLookup:
             # Provide a minimal dep string for the dev category
             deps = {"dev-tool": "dev-tool -i https://private.example.com/simple"}
 
-            with patch(
-                "pipenv.utils.resolver.expansive_install_req_from_line"
-            ) as mock_eirl, patch(
+            with patch("pipenv.utils.resolver.expansive_install_req_from_line") as mock_eirl, patch(
                 "pipenv.utils.resolver.parse_indexes",
                 return_value=(None, None, None, []),
             ):
@@ -2091,9 +2024,7 @@ class TestResolverCreateCrossGroupIndexLookup:
 
             deps = {"shared-lib": "shared-lib -i https://test.pypi.org/simple"}
 
-            with patch(
-                "pipenv.utils.resolver.expansive_install_req_from_line"
-            ) as mock_eirl, patch(
+            with patch("pipenv.utils.resolver.expansive_install_req_from_line") as mock_eirl, patch(
                 "pipenv.utils.resolver.parse_indexes",
                 return_value=(None, None, None, []),
             ):
@@ -2119,7 +2050,6 @@ class TestResolverCreateCrossGroupIndexLookup:
         )
 
 
-
 # --- Regression tests for env-var expansion in source URLs (GH-6625) ---
 
 
@@ -2131,9 +2061,7 @@ def test_expand_url_credentials_single_token_with_colon(monkeypatch):
     """
     monkeypatch.setenv("MY_TOKEN", "__token__:glpat-secret123")
 
-    result = shell.expand_url_credentials(
-        "https://${MY_TOKEN}@gitlab.example.com/api/v4/projects/123/packages/pypi/simple"
-    )
+    result = shell.expand_url_credentials("https://${MY_TOKEN}@gitlab.example.com/api/v4/projects/123/packages/pypi/simple")
     assert "__token__:glpat-secret123@" in result
     assert "%3A" not in result  # colon must NOT be encoded
 
@@ -2146,9 +2074,7 @@ def test_expand_url_credentials_separate_user_and_password(monkeypatch):
     monkeypatch.setenv("MY_USER", "myuser")
     monkeypatch.setenv("MY_PASS", "p@ssw0rd!")
 
-    result = shell.expand_url_credentials(
-        "https://${MY_USER}:${MY_PASS}@pypi.example.com/simple"
-    )
+    result = shell.expand_url_credentials("https://${MY_USER}:${MY_PASS}@pypi.example.com/simple")
     assert "myuser:" in result
     assert "p%40ssw0rd%21" in result  # @ → %40, ! → %21
 
@@ -2173,8 +2099,6 @@ def test_expand_url_credentials_unset_var_left_unchanged():
     """An unset env var must be left as its raw ``${VAR}`` token — not
     percent-encoded — so it can still be expanded later.
     """
-    result = shell.expand_url_credentials(
-        "https://${NONEXISTENT_VAR_12345}@pypi.example.com/simple"
-    )
+    result = shell.expand_url_credentials("https://${NONEXISTENT_VAR_12345}@pypi.example.com/simple")
     # The raw placeholder must survive intact (no %24, %7B, %7D encoding).
     assert "${NONEXISTENT_VAR_12345}@" in result

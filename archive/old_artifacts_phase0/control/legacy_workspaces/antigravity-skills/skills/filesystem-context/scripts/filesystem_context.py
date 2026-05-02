@@ -16,11 +16,12 @@ import json
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 # =============================================================================
 # Pattern 1: Scratch Pad Manager
 # =============================================================================
+
 
 class ScratchPadManager:
     """
@@ -44,7 +45,7 @@ class ScratchPadManager:
         """Determine if content exceeds threshold for offloading."""
         return self.estimate_tokens(content) > self.token_threshold
 
-    def offload(self, content: str, source: str) -> Dict[str, Any]:
+    def offload(self, content: str, source: str) -> dict[str, Any]:
         """
         Write content to file, return compact reference.
 
@@ -60,38 +61,31 @@ class ScratchPadManager:
         file_path.write_text(content)
 
         # Extract summary from first meaningful lines
-        lines = content.strip().split('\n')[:5]
-        summary = '\n'.join(lines)
+        lines = content.strip().split("\n")[:5]
+        summary = "\n".join(lines)
         if len(summary) > 300:
             summary = summary[:300] + "..."
 
-        return {
-            "path": str(file_path),
-            "source": source,
-            "tokens_saved": self.estimate_tokens(content),
-            "summary": summary
-        }
+        return {"path": str(file_path), "source": source, "tokens_saved": self.estimate_tokens(content), "summary": summary}
 
-    def format_reference(self, ref: Dict[str, Any]) -> str:
+    def format_reference(self, ref: dict[str, Any]) -> str:
         """Format reference for inclusion in context."""
-        return (
-            f"[Output from {ref['source']} saved to {ref['path']}. "
-            f"~{ref['tokens_saved']} tokens. "
-            f"Summary: {ref['summary'][:200]}]"
-        )
+        return f"[Output from {ref['source']} saved to {ref['path']}. ~{ref['tokens_saved']} tokens. Summary: {ref['summary'][:200]}]"
 
 
 # =============================================================================
 # Pattern 2: Plan Persistence
 # =============================================================================
 
+
 @dataclass
 class PlanStep:
     """Individual step in an agent plan."""
+
     id: int
     description: str
     status: str = "pending"  # pending, in_progress, completed, blocked
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 @dataclass
@@ -102,51 +96,41 @@ class AgentPlan:
     Write the plan to disk so the agent can re-read it at any point,
     even after summarization or context window refresh.
     """
+
     objective: str
-    steps: List[PlanStep] = field(default_factory=list)
+    steps: list[PlanStep] = field(default_factory=list)
     created_at: str = field(default_factory=lambda: datetime.now().isoformat())
 
     def to_dict(self) -> dict:
         return {
             "objective": self.objective,
             "created_at": self.created_at,
-            "steps": [
-                {
-                    "id": s.id,
-                    "description": s.description,
-                    "status": s.status,
-                    "notes": s.notes
-                }
-                for s in self.steps
-            ]
+            "steps": [{"id": s.id, "description": s.description, "status": s.status, "notes": s.notes} for s in self.steps],
         }
 
     def save(self, path: str = "scratch/current_plan.json"):
         """Persist plan to filesystem."""
         Path(path).parent.mkdir(parents=True, exist_ok=True)
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             json.dump(self.to_dict(), f, indent=2)
         print(f"Plan saved to {path}")
 
     @classmethod
-    def load(cls, path: str = "scratch/current_plan.json") -> "AgentPlan":
+    def load(cls, path: str = "scratch/current_plan.json") -> AgentPlan:
         """Load plan from filesystem."""
-        with open(path, 'r') as f:
+        with open(path) as f:
             data = json.load(f)
 
         plan = cls(objective=data["objective"])
         plan.created_at = data.get("created_at", "")
 
         for step_data in data.get("steps", []):
-            plan.steps.append(PlanStep(
-                id=step_data["id"],
-                description=step_data["description"],
-                status=step_data["status"],
-                notes=step_data.get("notes")
-            ))
+            plan.steps.append(
+                PlanStep(id=step_data["id"], description=step_data["description"], status=step_data["status"], notes=step_data.get("notes"))
+            )
         return plan
 
-    def current_step(self) -> Optional[PlanStep]:
+    def current_step(self) -> PlanStep | None:
         """Get the current (first non-completed) step."""
         for step in self.steps:
             if step.status not in ["completed", "cancelled"]:
@@ -183,6 +167,7 @@ class AgentPlan:
 # Pattern 3: Tool Output Handler
 # =============================================================================
 
+
 class ToolOutputHandler:
     """
     Handles tool outputs with automatic offloading decision.
@@ -211,6 +196,7 @@ class ToolOutputHandler:
 # =============================================================================
 # Demonstration
 # =============================================================================
+
 
 def demo_scratch_pad():
     """Demonstrate scratch pad pattern."""
@@ -306,21 +292,22 @@ def demo_tool_handler():
     print("DEMO: Integrated Tool Output Handler")
     print("=" * 60)
 
-    handler = ToolOutputHandler(
-        scratch_pad=ScratchPadManager(base_path="demo_scratch", token_threshold=50)
-    )
+    handler = ToolOutputHandler(scratch_pad=ScratchPadManager(base_path="demo_scratch", token_threshold=50))
 
     outputs = [
         ("calculator", "42"),
         ("file_read", "Error: File not found"),
-        ("database_query", """
+        (
+            "database_query",
+            """
             Results (250 rows):
             | id | name | email | created_at | status |
             |----|------|-------|------------|--------|
             | 1  | John | j@e.c | 2024-01-01 | active |
             | 2  | Jane | j@e.c | 2024-01-02 | active |
             ... (248 more rows) ...
-        """),
+        """,
+        ),
     ]
 
     for tool_name, output in outputs:
@@ -333,6 +320,7 @@ def demo_tool_handler():
 def cleanup_demo():
     """Clean up demo files."""
     import shutil
+
     demo_path = Path("demo_scratch")
     if demo_path.exists():
         shutil.rmtree(demo_path)

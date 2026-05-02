@@ -3,8 +3,12 @@ from pydantic import BaseModel, ConfigDict, EmailStr
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from database import get_db
-from models import User
+try:
+    from src.database import get_db
+    from src.models import User
+except ImportError:
+    from database import get_db
+    from models import User
 
 # ==============================================================================
 # 1. Pydantic Schemas (For Request/Response Validation)

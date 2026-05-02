@@ -457,9 +457,11 @@ def group_mm_kwargs_by_modality(
             if device is not None:
                 mm_kwargs_group = {
                     k: json_map_leaves(
-                        lambda x: x.to(device=device, non_blocking=True)
-                        if isinstance(x, torch.Tensor)
-                        else x,
+                        lambda x: (
+                            x.to(device=device, non_blocking=True)
+                            if isinstance(x, torch.Tensor)
+                            else x
+                        ),
                         v,
                     )
                     if k not in multimodal_cpu_fields

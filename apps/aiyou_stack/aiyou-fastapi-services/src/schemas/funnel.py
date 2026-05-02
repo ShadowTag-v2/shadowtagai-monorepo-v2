@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class FunnelStepCreate(BaseModel):
@@ -30,8 +30,7 @@ class FunnelStepResponse(BaseModel):
     name: str | None
     description: str | None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class FunnelCreate(BaseModel):
@@ -46,20 +45,31 @@ class FunnelCreate(BaseModel):
     steps: list[FunnelStepCreate] = Field(..., description="Funnel steps")
     tags: list[str] | None = Field(default_factory=list, description="Tags for categorization")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "name": "Sign-up Funnel",
-                "description": "Track user sign-up process",
-                "time_window_hours": 24,
-                "steps": [
-                    {"step_order": 1, "event_name": "landing_page_view", "name": "Landing Page"},
-                    {"step_order": 2, "event_name": "signup_form_view", "name": "Sign-up Form"},
-                    {"step_order": 3, "event_name": "signup_completed", "name": "Sign-up Complete"},
-                ],
-                "tags": ["acquisition", "signup"],
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "name": "Sign-up Funnel",
+                    "description": "Track user sign-up process",
+                    "time_window_hours": 24,
+                    "steps": [
+                        {
+                            "step_order": 1,
+                            "event_name": "landing_page_view",
+                            "name": "Landing Page",
+                        },
+                        {"step_order": 2, "event_name": "signup_form_view", "name": "Sign-up Form"},
+                        {
+                            "step_order": 3,
+                            "event_name": "signup_completed",
+                            "name": "Sign-up Complete",
+                        },
+                    ],
+                    "tags": ["acquisition", "signup"],
+                },
+            ],
+        },
+    )
 
 
 class FunnelUpdate(BaseModel):
@@ -85,8 +95,7 @@ class FunnelResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class FunnelStepAnalytics(BaseModel):
@@ -115,26 +124,29 @@ class FunnelAnalyticsResponse(BaseModel):
     start_date: datetime
     end_date: datetime
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "funnel_id": "123e4567-e89b-12d3-a456-426614174000",
-                "funnel_name": "Sign-up Funnel",
-                "total_users_entered": 1000,
-                "total_users_completed": 250,
-                "overall_conversion_rate": 0.25,
-                "avg_completion_time": 180.5,
-                "steps": [
-                    {
-                        "step_order": 1,
-                        "event_name": "landing_page_view",
-                        "name": "Landing Page",
-                        "users_entered": 1000,
-                        "users_completed": 500,
-                        "conversion_rate": 0.50,
-                        "drop_off_rate": 0.50,
-                        "avg_time_to_next_step": 45.2,
-                    },
-                ],
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "funnel_id": "123e4567-e89b-12d3-a456-426614174000",
+                    "funnel_name": "Sign-up Funnel",
+                    "total_users_entered": 1000,
+                    "total_users_completed": 250,
+                    "overall_conversion_rate": 0.25,
+                    "avg_completion_time": 180.5,
+                    "steps": [
+                        {
+                            "step_order": 1,
+                            "event_name": "landing_page_view",
+                            "name": "Landing Page",
+                            "users_entered": 1000,
+                            "users_completed": 500,
+                            "conversion_rate": 0.50,
+                            "drop_off_rate": 0.50,
+                            "avg_time_to_next_step": 45.2,
+                        },
+                    ],
+                },
+            ],
+        },
+    )

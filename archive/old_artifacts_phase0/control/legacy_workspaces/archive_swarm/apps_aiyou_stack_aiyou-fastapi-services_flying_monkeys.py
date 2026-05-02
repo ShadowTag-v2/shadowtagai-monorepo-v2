@@ -48,9 +48,7 @@ async def release_monkeys(
         logger.info(f"🐵 [n-autoresearch/Kosmos/BioAgents] No instances requested for {target_url}.")
         return
 
-    logger.info(
-        f"🐵 [n-autoresearch/Kosmos/BioAgents] Spawning {instances} Antigravity instances targeting {target_url}..."
-    )
+    logger.info(f"🐵 [n-autoresearch/Kosmos/BioAgents] Spawning {instances} Antigravity instances targeting {target_url}...")
     results = []
     async with httpx.AsyncClient() as client:
 
@@ -80,16 +78,10 @@ async def release_monkeys(
                         sep = "&" if "?" in request_url else "?"
                         request_url = f"{request_url}{sep}chaos_fuzz=🐵&<script>alert(1)</script>"
 
-                response = await client.request(
-                    method, request_url, headers=headers, content=content
-                )
+                response = await client.request(method, request_url, headers=headers, content=content)
                 latency = response.elapsed.total_seconds()
                 status_code = response.status_code
-                status = (
-                    f"Hit ({int(latency * 1000)}ms)"
-                    if response.status_code == 200
-                    else f"Miss ({response.status_code})"
-                )
+                status = f"Hit ({int(latency * 1000)}ms)" if response.status_code == 200 else f"Miss ({response.status_code})"
             except Exception as e:
                 latency = 0.0
                 status_code = -1
@@ -103,9 +95,7 @@ async def release_monkeys(
             }
 
         if burst_mode:
-            logger.info(
-                "🔥 [n-autoresearch/Kosmos/BioAgents] Burst mode engaged! Releasing all n-autoresearch/Kosmos/BioAgents simultaneously."
-            )
+            logger.info("🔥 [n-autoresearch/Kosmos/BioAgents] Burst mode engaged! Releasing all n-autoresearch/Kosmos/BioAgents simultaneously.")
             results = await asyncio.gather(*[_attack(i) for i in range(instances)])
         else:
             for i in range(instances):
@@ -141,22 +131,16 @@ async def release_monkeys(
                 # Fallback to local file
                 with open(report_filename, "w") as f:
                     json.dump(report_data, f, indent=2)
-                logger.info(
-                    f"📊 [n-autoresearch/Kosmos/BioAgents] Report saved locally as fallback: {report_filename}"
-                )
+                logger.info(f"📊 [n-autoresearch/Kosmos/BioAgents] Report saved locally as fallback: {report_filename}")
         elif gcs_bucket_name and not storage:
-            logger.warning(
-                "⚠️ [n-autoresearch/Kosmos/BioAgents] GCS_BUCKET_NAME set but google-cloud-storage not installed."
-            )
+            logger.warning("⚠️ [n-autoresearch/Kosmos/BioAgents] GCS_BUCKET_NAME set but google-cloud-storage not installed.")
             with open(report_filename, "w") as f:
                 json.dump(report_data, f, indent=2)
             logger.info(f"📊 [n-autoresearch/Kosmos/BioAgents] Report saved locally: {report_filename}")
         else:
             with open(report_filename, "w") as f:
                 json.dump(report_data, f, indent=2)
-            logger.info(
-                f"📊 [n-autoresearch/Kosmos/BioAgents] Report saved to {report_filename} (GCS_BUCKET_NAME not set)"
-            )
+            logger.info(f"📊 [n-autoresearch/Kosmos/BioAgents] Report saved to {report_filename} (GCS_BUCKET_NAME not set)")
 
 
 async def capture_visual_evidence(target_url: str) -> str:
@@ -206,9 +190,7 @@ async def auto_mode(
         burst_mode: Enable burst mode (simultaneous requests).
         reporting: Enable saving run results to a JSON file.
     """
-    await release_monkeys(
-        target_url, instances, chaos_mode=chaos_mode, burst_mode=burst_mode, reporting=reporting
-    )
+    await release_monkeys(target_url, instances, chaos_mode=chaos_mode, burst_mode=burst_mode, reporting=reporting)
     return {
         "status": "Auto mode engaged",
         "chaos_mode": chaos_mode,

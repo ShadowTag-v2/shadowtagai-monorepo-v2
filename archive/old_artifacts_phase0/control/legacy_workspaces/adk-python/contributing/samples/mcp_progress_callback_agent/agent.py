@@ -63,18 +63,18 @@ async def simple_progress_callback(
     total: float | None,
     message: str | None,
 ) -> None:
-  """Handle progress notifications from MCP server.
+    """Handle progress notifications from MCP server.
 
-  This callback is shared by all tools in the toolset.
-  """
-  if total is not None:
-    percentage = (progress / total) * 100
-    bar_length = 20
-    filled = int(bar_length * progress / total)
-    bar = "=" * filled + "-" * (bar_length - filled)
-    print(f"[{bar}] {percentage:.0f}% ({progress}/{total}) {message or ''}")
-  else:
-    print(f"Progress: {progress} {f'- {message}' if message else ''}")
+    This callback is shared by all tools in the toolset.
+    """
+    if total is not None:
+        percentage = (progress / total) * 100
+        bar_length = 20
+        filled = int(bar_length * progress / total)
+        bar = "=" * filled + "-" * (bar_length - filled)
+        print(f"[{bar}] {percentage:.0f}% ({progress}/{total}) {message or ''}")
+    else:
+        print(f"Progress: {progress} {f'- {message}' if message else ''}")
 
 
 # Option 2: Factory function for per-tool callbacks with runtime context
@@ -84,50 +84,48 @@ def progress_callback_factory(
     callback_context: CallbackContext | None = None,
     **kwargs: Any,
 ) -> ProgressFnT | None:
-  """Create a progress callback for a specific tool.
+    """Create a progress callback for a specific tool.
 
-  This factory allows different tools to have different progress handling.
-  It receives a CallbackContext for accessing and modifying runtime information
-  like session state. The **kwargs parameter ensures forward compatibility.
+    This factory allows different tools to have different progress handling.
+    It receives a CallbackContext for accessing and modifying runtime information
+    like session state. The **kwargs parameter ensures forward compatibility.
 
-  Args:
-    tool_name: The name of the MCP tool.
-    callback_context: The callback context providing access to session,
-      state, artifacts, and other runtime information. Allows modifying
-      state via ctx.state['key'] = value. May be None if not available.
-    **kwargs: Additional keyword arguments for future extensibility.
+    Args:
+      tool_name: The name of the MCP tool.
+      callback_context: The callback context providing access to session,
+        state, artifacts, and other runtime information. Allows modifying
+        state via ctx.state['key'] = value. May be None if not available.
+      **kwargs: Additional keyword arguments for future extensibility.
 
-  Returns:
-    A progress callback function, or None if no callback is needed.
-  """
-  # Example: Access session info from context (if available)
-  session_id = "unknown"
-  if callback_context and callback_context.session:
-    session_id = callback_context.session.id
+    Returns:
+      A progress callback function, or None if no callback is needed.
+    """
+    # Example: Access session info from context (if available)
+    session_id = "unknown"
+    if callback_context and callback_context.session:
+        session_id = callback_context.session.id
 
-  async def callback(
-      progress: float,
-      total: float | None,
-      message: str | None,
-  ) -> None:
-    # Include tool name and session info in the progress output
-    prefix = f"[{tool_name}][session:{session_id}]"
-    if total is not None:
-      percentage = (progress / total) * 100
-      bar_length = 20
-      filled = int(bar_length * progress / total)
-      bar = "=" * filled + "-" * (bar_length - filled)
-      print(f"{prefix} [{bar}] {percentage:.0f}% {message or ''}")
-      # Example: Store progress in state (callback_context allows modification)
-      if callback_context:
-        callback_context.state["last_progress"] = progress
-        callback_context.state["last_total"] = total
-    else:
-      print(
-          f"{prefix} Progress: {progress} {f'- {message}' if message else ''}"
-      )
+    async def callback(
+        progress: float,
+        total: float | None,
+        message: str | None,
+    ) -> None:
+        # Include tool name and session info in the progress output
+        prefix = f"[{tool_name}][session:{session_id}]"
+        if total is not None:
+            percentage = (progress / total) * 100
+            bar_length = 20
+            filled = int(bar_length * progress / total)
+            bar = "=" * filled + "-" * (bar_length - filled)
+            print(f"{prefix} [{bar}] {percentage:.0f}% {message or ''}")
+            # Example: Store progress in state (callback_context allows modification)
+            if callback_context:
+                callback_context.state["last_progress"] = progress
+                callback_context.state["last_total"] = total
+        else:
+            print(f"{prefix} Progress: {progress} {f'- {message}' if message else ''}")
 
-  return callback
+    return callback
 
 
 root_agent = LlmAgent(

@@ -101,8 +101,10 @@ class Example:
         """  # noqa: E501
         if self.path.is_file():
             return []
+
         def is_other_file(file):
             return file.is_file() and file != self.main_file
+
         return [file for file in self.path.rglob("*") if is_other_file(file)]
 
     def determine_title(self) -> str:

@@ -108,10 +108,7 @@ class MyEnvironment(PufferEnv):
         info = {}
         if done:
             # Include episode statistics when episode ends
-            info['episode'] = {
-                'r': reward,
-                'l': self.step_count
-            }
+            info["episode"] = {"r": reward, "l": self.step_count}
 
         return observation, reward, done, info
 
@@ -153,10 +150,7 @@ class MyEnvironment(PufferEnv):
     def _get_observation(self):
         """Generate observation from current state."""
         # Return flat vector observation
-        observation = np.concatenate([
-            self.agent_pos,
-            self.goal_pos
-        ]).astype(np.float32)
+        observation = np.concatenate([self.agent_pos, self.goal_pos]).astype(np.float32)
 
         return observation
 
@@ -176,11 +170,13 @@ class MultiAgentEnvironment(PufferEnv):
         self.max_steps = max_steps
 
         # Per-agent observation space
-        self.single_observation_space = self.make_space({
-            'position': (2,),
-            'goal': (2,),
-            'others': (2 * (num_agents - 1),)  # Positions of other agents
-        })
+        self.single_observation_space = self.make_space(
+            {
+                "position": (2,),
+                "goal": (2,),
+                "others": (2 * (num_agents - 1),),  # Positions of other agents
+            }
+        )
 
         # Per-agent action space
         self.single_action_space = self.make_discrete(5)  # 4 directions + stay
@@ -203,10 +199,7 @@ class MultiAgentEnvironment(PufferEnv):
         self.step_count = 0
 
         # Return observations for all agents
-        return {
-            f'agent_{i}': self._get_obs(i)
-            for i in range(self.num_agents)
-        }
+        return {f"agent_{i}": self._get_obs(i) for i in range(self.num_agents)}
 
     def step(self, actions):
         """
@@ -230,7 +223,7 @@ class MultiAgentEnvironment(PufferEnv):
 
         # Update all agents
         for agent_id, action in actions.items():
-            agent_idx = int(agent_id.split('_')[1])
+            agent_idx = int(agent_id.split("_")[1])
 
             # Apply action
             self._apply_action(agent_idx, action)
@@ -242,7 +235,7 @@ class MultiAgentEnvironment(PufferEnv):
             infos[agent_id] = {}
 
         # Global done condition
-        dones['__all__'] = all(dones.values()) or self.step_count >= self.max_steps
+        dones["__all__"] = all(dones.values()) or self.step_count >= self.max_steps
 
         return observations, rewards, dones, infos
 
@@ -259,39 +252,27 @@ class MultiAgentEnvironment(PufferEnv):
         # action == 4: Stay
 
         # Clip to grid bounds
-        self.agent_positions[agent_idx] = np.clip(
-            self.agent_positions[agent_idx],
-            0,
-            self.grid_size - 1
-        )
+        self.agent_positions[agent_idx] = np.clip(self.agent_positions[agent_idx], 0, self.grid_size - 1)
 
     def _compute_reward(self, agent_idx):
         """Compute reward for specific agent."""
-        distance = np.linalg.norm(
-            self.agent_positions[agent_idx] - self.goal_positions[agent_idx]
-        )
+        distance = np.linalg.norm(self.agent_positions[agent_idx] - self.goal_positions[agent_idx])
         return -distance / self.grid_size
 
     def _is_done(self, agent_idx):
         """Check if specific agent is done."""
-        distance = np.linalg.norm(
-            self.agent_positions[agent_idx] - self.goal_positions[agent_idx]
-        )
+        distance = np.linalg.norm(self.agent_positions[agent_idx] - self.goal_positions[agent_idx])
         return distance < 0.5
 
     def _get_obs(self, agent_idx):
         """Get observation for specific agent."""
         # Get positions of other agents
-        other_positions = np.concatenate([
-            self.agent_positions[i]
-            for i in range(self.num_agents)
-            if i != agent_idx
-        ])
+        other_positions = np.concatenate([self.agent_positions[i] for i in range(self.num_agents) if i != agent_idx])
 
         return {
-            'position': self.agent_positions[agent_idx].astype(np.float32),
-            'goal': self.goal_positions[agent_idx].astype(np.float32),
-            'others': other_positions.astype(np.float32)
+            "position": self.agent_positions[agent_idx].astype(np.float32),
+            "goal": self.goal_positions[agent_idx].astype(np.float32),
+            "others": other_positions.astype(np.float32),
         }
 
 
@@ -320,20 +301,17 @@ def test_environment():
     print(f"Number of agents: {len(obs)}")
 
     for step in range(10):
-        actions = {
-            agent_id: multi_env.single_action_space.sample()
-            for agent_id in obs.keys()
-        }
+        actions = {agent_id: multi_env.single_action_space.sample() for agent_id in obs.keys()}
         obs, rewards, dones, infos = multi_env.step(actions)
 
         print(f"Step {step}: mean_reward={np.mean(list(rewards.values())):.3f}")
 
-        if dones.get('__all__', False):
+        if dones.get("__all__", False):
             obs = multi_env.reset()
             print("Episode finished, resetting...")
 
     print("\n✓ Environment tests passed!")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_environment()

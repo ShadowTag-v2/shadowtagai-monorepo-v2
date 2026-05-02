@@ -46,7 +46,7 @@ class TestPreHocScanEndpoint:
                 "/api/v1/activeshield/scan",
                 json={
                     "session_id": "api-test-001",
-                    "content": "What are the symptoms of the flu?",
+                    "user_input": "What are the symptoms of the flu?",
                     "context": {"ai_disclosed": True},
                 },
             )

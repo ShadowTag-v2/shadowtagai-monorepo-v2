@@ -159,7 +159,7 @@ class AtomicChatManager:
         execution: dict[str, Any] | None = None,
         service_support: dict[str, Any] | None = None,
         command_signal: dict[str, Any] | None = None,
-        tags: list[str] | None = None
+        tags: list[str] | None = None,
     ) -> int:
         """
         Create new OPORD-formatted atomic chat context.
@@ -193,7 +193,8 @@ class AtomicChatManager:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT INTO opord_contexts (
                 opord_number, task_title,
                 enemy_forces, friendly_forces, attachments, civil_considerations,
@@ -205,31 +206,38 @@ class AtomicChatManager:
                 agent_id, shift_number, created_at, updated_at, status,
                 acknowledgments, tags
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            opord_num, task_title,
-            situation.get("enemy_forces", ""),
-            situation.get("friendly_forces", ""),
-            situation.get("attachments", ""),
-            situation.get("civil_considerations", ""),
-            mission.get("who", ""),
-            mission.get("what", ""),
-            mission.get("when", ""),
-            mission.get("where", ""),
-            mission.get("why", ""),
-            execution.get("commanders_intent", ""),
-            execution.get("concept_of_operations", ""),
-            json.dumps(execution.get("tasks_to_subordinates", {})),
-            json.dumps(execution.get("coordinating_instructions", {})),
-            json.dumps(service_support.get("logistics", [])),
-            json.dumps(service_support.get("personnel", [])),
-            service_support.get("medical", ""),
-            command_signal.get("command", "SwarmOrchestrator"),
-            command_signal.get("signal", "Context Index"),
-            json.dumps(command_signal.get("succession", [])),
-            agent_id, shift_number, now, now, "active",
-            json.dumps([]),  # acknowledgments
-            json.dumps(tags)
-        ))
+        """,
+            (
+                opord_num,
+                task_title,
+                situation.get("enemy_forces", ""),
+                situation.get("friendly_forces", ""),
+                situation.get("attachments", ""),
+                situation.get("civil_considerations", ""),
+                mission.get("who", ""),
+                mission.get("what", ""),
+                mission.get("when", ""),
+                mission.get("where", ""),
+                mission.get("why", ""),
+                execution.get("commanders_intent", ""),
+                execution.get("concept_of_operations", ""),
+                json.dumps(execution.get("tasks_to_subordinates", {})),
+                json.dumps(execution.get("coordinating_instructions", {})),
+                json.dumps(service_support.get("logistics", [])),
+                json.dumps(service_support.get("personnel", [])),
+                service_support.get("medical", ""),
+                command_signal.get("command", "SwarmOrchestrator"),
+                command_signal.get("signal", "Context Index"),
+                json.dumps(command_signal.get("succession", [])),
+                agent_id,
+                shift_number,
+                now,
+                now,
+                "active",
+                json.dumps([]),  # acknowledgments
+                json.dumps(tags),
+            ),
+        )
 
         conn.commit()
         conn.close()
@@ -254,7 +262,7 @@ class AtomicChatManager:
             acks.append(agent_id)
             cursor.execute(
                 "UPDATE opord_contexts SET acknowledgments = ?, updated_at = ? WHERE opord_number = ?",
-                (json.dumps(acks), datetime.now(UTC).isoformat(), opord_number)
+                (json.dumps(acks), datetime.now(UTC).isoformat(), opord_number),
             )
             conn.commit()
             logger.info(f"Agent {agent_id} acknowledged OPORD {opord_number:05d}")
@@ -268,8 +276,7 @@ class AtomicChatManager:
         cursor = conn.cursor()
 
         cursor.execute(
-            "UPDATE opord_contexts SET status = ?, updated_at = ? WHERE opord_number = ?",
-            ("completed", datetime.now(UTC).isoformat(), opord_number)
+            "UPDATE opord_contexts SET status = ?, updated_at = ? WHERE opord_number = ?", ("completed", datetime.now(UTC).isoformat(), opord_number)
         )
 
         # TODO: Store summary and decisions in separate table
@@ -285,10 +292,7 @@ class AtomicChatManager:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
-        cursor.execute(
-            "SELECT * FROM opord_contexts WHERE shift_number = ? AND status = ? ORDER BY opord_number DESC",
-            (shift_number, status)
-        )
+        cursor.execute("SELECT * FROM opord_contexts WHERE shift_number = ? AND status = ? ORDER BY opord_number DESC", (shift_number, status))
 
         results = [dict(row) for row in cursor.fetchall()]
         conn.close()
@@ -299,10 +303,7 @@ class AtomicChatManager:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
-        cursor.execute(
-            "UPDATE opord_contexts SET status = ? WHERE shift_number = ? AND status = ?",
-            ("archived", shift_number, "completed")
-        )
+        cursor.execute("UPDATE opord_contexts SET status = ? WHERE shift_number = ? AND status = ?", ("archived", shift_number, "completed"))
 
         archived_count = cursor.rowcount
         conn.commit()
@@ -312,11 +313,7 @@ class AtomicChatManager:
         return archived_count
 
     def search_opords(
-        self,
-        query: str | None = None,
-        tags: list[str] | None = None,
-        agent_id: str | None = None,
-        date_range: tuple | None = None
+        self, query: str | None = None, tags: list[str] | None = None, agent_id: str | None = None, date_range: tuple | None = None
     ) -> list[dict]:
         """Search OPORDs by various criteria."""
         conn = sqlite3.connect(self.db_path)
@@ -346,9 +343,6 @@ class AtomicChatManager:
 
         # Filter by tags if provided
         if tags:
-            results = [
-                r for r in results
-                if any(tag in json.loads(r.get("tags", "[]")) for tag in tags)
-            ]
+            results = [r for r in results if any(tag in json.loads(r.get("tags", "[]")) for tag in tags)]
 
         return results

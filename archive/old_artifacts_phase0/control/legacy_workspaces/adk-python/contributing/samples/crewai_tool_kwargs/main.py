@@ -31,75 +31,69 @@ logs.log_to_tmp_folder()
 
 
 async def main():
-  """Run happy path test demonstrating **kwargs parameter passing."""
-  app_name = "crewai_kwargs_test"
-  user_id = "test_user"
+    """Run happy path test demonstrating **kwargs parameter passing."""
+    app_name = "crewai_kwargs_test"
+    user_id = "test_user"
 
-  runner = InMemoryRunner(
-      agent=agent.root_agent,
-      app_name=app_name,
-  )
+    runner = InMemoryRunner(
+        agent=agent.root_agent,
+        app_name=app_name,
+    )
 
-  session = await runner.session_service.create_session(
-      app_name=app_name, user_id=user_id
-  )
+    session = await runner.session_service.create_session(app_name=app_name, user_id=user_id)
 
-  print("=" * 60)
-  print("CrewAI Tool **kwargs Parameter Test")
-  print("=" * 60)
+    print("=" * 60)
+    print("CrewAI Tool **kwargs Parameter Test")
+    print("=" * 60)
 
-  # Test 1: Simple search without extra parameters
-  print("\n🧪 Test 1: Basic search (no extra parameters)")
-  print("-" * 60)
-  content1 = types.Content(
-      role="user",
-      parts=[types.Part.from_text(text="Search for Python tutorials")],
-  )
-  print(f"User: {content1.parts[0].text}")
+    # Test 1: Simple search without extra parameters
+    print("\n🧪 Test 1: Basic search (no extra parameters)")
+    print("-" * 60)
+    content1 = types.Content(
+        role="user",
+        parts=[types.Part.from_text(text="Search for Python tutorials")],
+    )
+    print(f"User: {content1.parts[0].text}")
 
-  async for event in runner.run_async(
-      user_id=user_id,
-      session_id=session.id,
-      new_message=content1,
-  ):
-    if event.content.parts and event.content.parts[0].text:
-      print(f"Agent: {event.content.parts[0].text}")
+    async for event in runner.run_async(
+        user_id=user_id,
+        session_id=session.id,
+        new_message=content1,
+    ):
+        if event.content.parts and event.content.parts[0].text:
+            print(f"Agent: {event.content.parts[0].text}")
 
-  # Test 2: Search with extra parameters (testing **kwargs)
-  print("\n🧪 Test 2: Search with filters (**kwargs test)")
-  print("-" * 60)
-  content2 = types.Content(
-      role="user",
-      parts=[
-          types.Part.from_text(
-              text=(
-                  "Search for machine learning articles, filtered by category"
-                  " 'technology', date_range 'last_month', and limit to 10"
-                  " results"
-              )
-          )
-      ],
-  )
-  print(f"User: {content2.parts[0].text}")
+    # Test 2: Search with extra parameters (testing **kwargs)
+    print("\n🧪 Test 2: Search with filters (**kwargs test)")
+    print("-" * 60)
+    content2 = types.Content(
+        role="user",
+        parts=[
+            types.Part.from_text(
+                text=("Search for machine learning articles, filtered by category 'technology', date_range 'last_month', and limit to 10 results")
+            )
+        ],
+    )
+    print(f"User: {content2.parts[0].text}")
 
-  async for event in runner.run_async(
-      user_id=user_id,
-      session_id=session.id,
-      new_message=content2,
-  ):
-    if event.content.parts and event.content.parts[0].text:
-      print(f"Agent: {event.content.parts[0].text}")
+    async for event in runner.run_async(
+        user_id=user_id,
+        session_id=session.id,
+        new_message=content2,
+    ):
+        if event.content.parts and event.content.parts[0].text:
+            print(f"Agent: {event.content.parts[0].text}")
 
-  # Verify success
-  print("\n" + "=" * 60)
-  print("✅ Happy path test completed successfully!")
-  print("=" * 60)
-  print("\nVerified behaviors:")
-  print("  ✅ CrewAI tool integrated with ADK agent")
-  print("  ✅ Basic parameters passed correctly")
-  print("  ✅ Extra parameters passed through **kwargs")
-  print("  ✅ Tool executed and returned results")
+    # Verify success
+    print("\n" + "=" * 60)
+    print("✅ Happy path test completed successfully!")
+    print("=" * 60)
+    print("\nVerified behaviors:")
+    print("  ✅ CrewAI tool integrated with ADK agent")
+    print("  ✅ Basic parameters passed correctly")
+    print("  ✅ Extra parameters passed through **kwargs")
+    print("  ✅ Tool executed and returned results")
 
 
 if __name__ == "__main__":
-  asyncio.run(main())
+    asyncio.run(main())

@@ -94,7 +94,7 @@ async def list_vast_versions():
         {"version": VASTVersion.VAST_4_0, "supported": True, "recommended": False},
         {"version": VASTVersion.VAST_4_1, "supported": True, "recommended": False},
         {"version": VASTVersion.VAST_4_2, "supported": True, "recommended": True},
-        {"version": VASTVersion.VAST_4_3, "supported": True, "recommended": True}
+        {"version": VASTVersion.VAST_4_3, "supported": True, "recommended": True},
     ]
 
 
@@ -102,39 +102,21 @@ async def list_vast_versions():
 async def list_adtech_standards():
     """List all adtech standards and compliance requirements"""
     return [
-        {
-            "standard": "VAST",
-            "version": "4.3",
-            "organization": "IAB",
-            "description": "Video Ad Serving Template",
-            "required": True
-        },
-        {
-            "standard": "OM SDK",
-            "version": "1.4",
-            "organization": "IAB Tech Lab",
-            "description": "Open Measurement SDK",
-            "required": True
-        },
+        {"standard": "VAST", "version": "4.3", "organization": "IAB", "description": "Video Ad Serving Template", "required": True},
+        {"standard": "OM SDK", "version": "1.4", "organization": "IAB Tech Lab", "description": "Open Measurement SDK", "required": True},
         {
             "standard": "SIMID",
             "version": "1.1",
             "organization": "IAB",
             "description": "Secure Interactive Media Interface Definition",
-            "required": False
+            "required": False,
         },
         {
             "standard": "Privacy Sandbox",
             "version": "2024",
             "organization": "Google/Apple",
             "description": "Privacy-preserving advertising APIs",
-            "required": True
+            "required": True,
         },
-        {
-            "standard": "SKAdNetwork",
-            "version": "4.0",
-            "organization": "Apple",
-            "description": "iOS attribution framework",
-            "required": True
-        }
+        {"standard": "SKAdNetwork", "version": "4.0", "organization": "Apple", "description": "iOS attribution framework", "required": True},
     ]

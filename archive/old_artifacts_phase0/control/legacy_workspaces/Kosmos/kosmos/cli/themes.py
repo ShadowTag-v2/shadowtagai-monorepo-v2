@@ -15,12 +15,10 @@ COLORS = {
     "warning": "yellow",
     "info": "cyan",
     "muted": "bright_black",
-
     # Semantic colors
     "primary": "bright_blue",
     "secondary": "magenta",
     "accent": "bright_cyan",
-
     # Domain colors
     "biology": "green",
     "neuroscience": "magenta",
@@ -28,14 +26,12 @@ COLORS = {
     "physics": "blue",
     "chemistry": "yellow",
     "general": "white",
-
     # State colors
     "running": "yellow",
     "completed": "green",
     "failed": "red",
     "pending": "bright_black",
     "paused": "yellow",
-
     # Metric colors
     "high": "green",
     "medium": "yellow",
@@ -44,55 +40,50 @@ COLORS = {
 
 
 # Rich theme with custom styles
-KOSMOS_THEME = Theme({
-    # Status styles
-    "success": "bold green",
-    "error": "bold red",
-    "warning": "bold yellow",
-    "info": "cyan",
-    "muted": "dim",
-
-    # Header styles
-    "h1": "bold bright_blue underline",
-    "h2": "bold bright_cyan",
-    "h3": "bold white",
-
-    # Content styles
-    "emphasis": "bold",
-    "code": "bold magenta",
-    "path": "underline cyan",
-    "number": "bold cyan",
-
-    # State styles
-    "running": "yellow",
-    "completed": "green",
-    "failed": "red",
-    "pending": "bright_black",
-
-    # Domain styles
-    "domain.biology": "green",
-    "domain.neuroscience": "magenta",
-    "domain.materials": "cyan",
-    "domain.physics": "blue",
-    "domain.chemistry": "yellow",
-    "domain.general": "white",
-
-    # Table styles
-    "table.header": "bold bright_white on blue",
-    "table.caption": "italic bright_black",
-    "table.row_even": "",
-    "table.row_odd": "on grey11",
-
-    # Progress styles
-    "bar.complete": "green",
-    "bar.finished": "bright_green",
-    "bar.pulse": "bright_cyan",
-
-    # Metric styles
-    "metric.high": "bold green",
-    "metric.medium": "bold yellow",
-    "metric.low": "bold red",
-})
+KOSMOS_THEME = Theme(
+    {
+        # Status styles
+        "success": "bold green",
+        "error": "bold red",
+        "warning": "bold yellow",
+        "info": "cyan",
+        "muted": "dim",
+        # Header styles
+        "h1": "bold bright_blue underline",
+        "h2": "bold bright_cyan",
+        "h3": "bold white",
+        # Content styles
+        "emphasis": "bold",
+        "code": "bold magenta",
+        "path": "underline cyan",
+        "number": "bold cyan",
+        # State styles
+        "running": "yellow",
+        "completed": "green",
+        "failed": "red",
+        "pending": "bright_black",
+        # Domain styles
+        "domain.biology": "green",
+        "domain.neuroscience": "magenta",
+        "domain.materials": "cyan",
+        "domain.physics": "blue",
+        "domain.chemistry": "yellow",
+        "domain.general": "white",
+        # Table styles
+        "table.header": "bold bright_white on blue",
+        "table.caption": "italic bright_black",
+        "table.row_even": "",
+        "table.row_odd": "on grey11",
+        # Progress styles
+        "bar.complete": "green",
+        "bar.finished": "bright_green",
+        "bar.pulse": "bright_cyan",
+        # Metric styles
+        "metric.high": "bold green",
+        "metric.medium": "bold yellow",
+        "metric.low": "bold red",
+    }
+)
 
 
 # Box styles for panels

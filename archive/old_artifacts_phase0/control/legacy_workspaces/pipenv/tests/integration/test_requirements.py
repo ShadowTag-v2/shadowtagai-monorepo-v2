@@ -265,9 +265,7 @@ def test_requirements_markers_get_excluded(pipenv_instance_pypi):
 def test_requirements_hashes_get_included(pipenv_instance_pypi):
     package, version, markers = "werkzeug", "==2.1.2", "python_version >= '3.7'"
     first_hash = "sha256:1ce08e8093ed67d638d63879fd1ba3735817f7a80de3674d293f5984f25fb6e6"
-    second_hash = (
-        "sha256:72a4b735692dd3135217911cbeaa1be5fa3f62bffb8745c5215420a03dc55255"
-    )
+    second_hash = "sha256:72a4b735692dd3135217911cbeaa1be5fa3f62bffb8745c5215420a03dc55255"
     lockfile = {
         "_meta": {"sources": []},
         "default": {
@@ -321,10 +319,7 @@ def test_requirements_generates_requirements_from_lockfile_without_env_var_expan
             c = p.pipenv("requirements")
             assert c.returncode == 0
 
-            assert (
-                "-i https://${redacted_user}:${redacted_pwd}@private_source.org"
-                in c.stdout
-            )
+            assert "-i https://${redacted_user}:${redacted_pwd}@private_source.org" in c.stdout
 
 
 @pytest.mark.requirements
@@ -338,16 +333,10 @@ def test_requirements_generates_requirements_from_lockfile_without_env_var_expan
             ["django-storages[azure]==1.12.3"],
         ),
         (
-            {
-                "evotum-cripto": {
-                    "file": "https://gitlab.com/eVotUM/Cripto-py/-/archive/develop/Cripto-py-develop.zip"
-                }
-            },
+            {"evotum-cripto": {"file": "https://gitlab.com/eVotUM/Cripto-py/-/archive/develop/Cripto-py-develop.zip"}},
             True,
             True,
-            [
-                "https://gitlab.com/eVotUM/Cripto-py/-/archive/develop/Cripto-py-develop.zip"
-            ],
+            ["https://gitlab.com/eVotUM/Cripto-py/-/archive/develop/Cripto-py-develop.zip"],
         ),
         (
             {
@@ -359,9 +348,7 @@ def test_requirements_generates_requirements_from_lockfile_without_env_var_expan
             },
             True,
             True,
-            [
-                "pyjwt[crypto] @ git+https://github.com/jpadilla/pyjwt.git@7665aa625506a11bae50b56d3e04413a3dc6fdf8"
-            ],
+            ["pyjwt[crypto] @ git+https://github.com/jpadilla/pyjwt.git@7665aa625506a11bae50b56d3e04413a3dc6fdf8"],
         ),
     ],
 )

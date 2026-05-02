@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/monitoring/metrics.py
+# hypothesis_version: 6.151.5
+
+[0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 2.5, 5.0, 7.5, 10.0, 400, '/', 'active_connections', 'app', 'app_uptime_seconds', 'check_name', 'endpoint', 'environment', 'exception_type', 'health_check_status', 'http_requests_total', 'method', 'mount_point', 'name', 'operation_type', 'status', 'status_code', 'version']

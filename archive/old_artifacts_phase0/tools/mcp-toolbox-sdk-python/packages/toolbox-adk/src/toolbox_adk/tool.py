@@ -32,7 +32,7 @@ from google.adk.tools.base_tool import BaseTool
 from google.adk.tools.tool_context import ToolContext
 from google.genai.types import FunctionDeclaration, Schema, Type
 from toolbox_core.tool import ToolboxTool as CoreToolboxTool
-from typing_extensions import override
+from typing import override
 
 from .client import USER_TOKEN_CONTEXT_VAR
 from .credentials import CredentialConfig, CredentialType
@@ -279,7 +279,7 @@ class ToolboxTool(BaseTool):
             if reset_token:
                 USER_TOKEN_CONTEXT_VAR.reset(reset_token)
 
-    def bind_params(self, bounded_params: dict[str, Any]) -> "ToolboxTool":
+    def bind_params(self, bounded_params: dict[str, Any]) -> ToolboxTool:
         """Allows runtime binding of parameters, delegating to core tool."""
         new_core_tool = self._core_tool.bind_params(bounded_params)
         # Return a new wrapper

@@ -19,14 +19,9 @@ from .config_validator import validate_config
 
 def test_validate_existing_unified_configs():
     """Test that all existing unified configs are valid"""
-    configs_dir = Path(__file__).parent.parent / 'configs'
+    configs_dir = Path(__file__).parent.parent / "configs"
 
-    unified_configs = [
-        'godot_unified.json',
-        'react_unified.json',
-        'django_unified.json',
-        'fastapi_unified.json'
-    ]
+    unified_configs = ["godot_unified.json", "react_unified.json", "django_unified.json", "fastapi_unified.json"]
 
     for config_name in unified_configs:
         config_path = configs_dir / config_name
@@ -41,13 +36,9 @@ def test_validate_existing_unified_configs():
 
 def test_backward_compatibility():
     """Test that legacy configs still work"""
-    configs_dir = Path(__file__).parent.parent / 'configs'
+    configs_dir = Path(__file__).parent.parent / "configs"
 
-    legacy_configs = [
-        'react.json',
-        'godot.json',
-        'django.json'
-    ]
+    legacy_configs = ["react.json", "godot.json", "django.json"]
 
     for config_name in legacy_configs:
         config_path = configs_dir / config_name
@@ -65,22 +56,12 @@ def test_create_temp_unified_config():
         "description": "Test unified config",
         "merge_mode": "rule-based",
         "sources": [
-            {
-                "type": "documentation",
-                "base_url": "https://example.com/docs",
-                "extract_api": True,
-                "max_pages": 50
-            },
-            {
-                "type": "github",
-                "repo": "test/repo",
-                "include_code": True,
-                "code_analysis_depth": "surface"
-            }
-        ]
+            {"type": "documentation", "base_url": "https://example.com/docs", "extract_api": True, "max_pages": 50},
+            {"type": "github", "repo": "test/repo", "include_code": True, "code_analysis_depth": "surface"},
+        ],
     }
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         json.dump(config, f)
         config_path = f.name
 
@@ -89,7 +70,7 @@ def test_create_temp_unified_config():
         validator = validate_config(config_path)
         assert validator.is_unified
         assert validator.needs_api_merge()
-        assert len(validator.config['sources']) == 2
+        assert len(validator.config["sources"]) == 2
         print("  ✓ Config is valid unified format")
         print(f"  Sources: {len(validator.config['sources'])}")
     finally:
@@ -103,22 +84,13 @@ def test_mixed_source_types():
         "description": "Test mixed sources",
         "merge_mode": "rule-based",
         "sources": [
-            {
-                "type": "documentation",
-                "base_url": "https://example.com"
-            },
-            {
-                "type": "github",
-                "repo": "test/repo"
-            },
-            {
-                "type": "pdf",
-                "path": "/path/to/manual.pdf"
-            }
-        ]
+            {"type": "documentation", "base_url": "https://example.com"},
+            {"type": "github", "repo": "test/repo"},
+            {"type": "pdf", "path": "/path/to/manual.pdf"},
+        ],
     }
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         json.dump(config, f)
         config_path = f.name
 
@@ -126,13 +98,13 @@ def test_mixed_source_types():
         print("\n✓ Validating mixed source types...")
         validator = validate_config(config_path)
         assert validator.is_unified
-        assert len(validator.config['sources']) == 3
+        assert len(validator.config["sources"]) == 3
 
         # Check each source type
-        source_types = [s['type'] for s in validator.config['sources']]
-        assert 'documentation' in source_types
-        assert 'github' in source_types
-        assert 'pdf' in source_types
+        source_types = [s["type"] for s in validator.config["sources"]]
+        assert "documentation" in source_types
+        assert "github" in source_types
+        assert "pdf" in source_types
         print("  ✓ All 3 source types validated")
     finally:
         os.unlink(config_path)
@@ -141,15 +113,9 @@ def test_mixed_source_types():
 def test_config_validation_errors():
     """Test that invalid configs are rejected"""
     # Invalid source type
-    config = {
-        "name": "test",
-        "description": "Test",
-        "sources": [
-            {"type": "invalid_type", "url": "https://example.com"}
-        ]
-    }
+    config = {"name": "test", "description": "Test", "sources": [{"type": "invalid_type", "url": "https://example.com"}]}
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         json.dump(config, f)
         config_path = f.name
 
@@ -167,7 +133,7 @@ def test_config_validation_errors():
 
 
 # Run tests
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("=" * 60)
     print("Running Unified Scraper Integration Tests")
     print("=" * 60)
@@ -189,5 +155,6 @@ if __name__ == '__main__':
     except Exception as e:
         print(f"\n❌ Unexpected error: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)

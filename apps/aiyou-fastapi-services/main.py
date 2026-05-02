@@ -14,7 +14,10 @@ app = FastAPI(title="ShadowTag AI Arbiter", version="4.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "*"],  # Restrict to Next.js in prod
+    allow_origins=os.environ.get(
+        "CORS_ORIGINS",
+        "http://localhost:3000,https://counselconduit-767252945109.us-central1.run.app,https://shadowtagai.com",
+    ).split(","),
     allow_credentials=True,
     allow_methods=os.environ.get("CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH").split(","),
     allow_headers=os.environ.get("CORS_HEADERS", "Content-Type,Authorization,X-Requested-With").split(","),

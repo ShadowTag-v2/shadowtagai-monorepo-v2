@@ -19,7 +19,7 @@ import pandas as pd
 from scipy import stats
 
 
-def calculate_p_value(data, variable, group_col='group', var_type='categorical'):
+def calculate_p_value(data, variable, group_col="group", var_type="categorical"):
     """
     Calculate appropriate p-value for group comparison.
 
@@ -41,7 +41,7 @@ def calculate_p_value(data, variable, group_col='group', var_type='categorical')
     group1_data = data[data[group_col] == groups[0]][variable].dropna()
     group2_data = data[data[group_col] == groups[1]][variable].dropna()
 
-    if var_type == 'categorical':
+    if var_type == "categorical":
         # Chi-square or Fisher's exact test
         contingency = pd.crosstab(data[variable], data[group_col])
 
@@ -56,13 +56,13 @@ def calculate_p_value(data, variable, group_col='group', var_type='categorical')
         else:
             _, p_value, _, _ = stats.chi2_contingency(contingency)
 
-    elif var_type == 'continuous_normal':
+    elif var_type == "continuous_normal":
         # Independent t-test
         _, p_value = stats.ttest_ind(group1_data, group2_data, equal_var=False)
 
-    elif var_type == 'continuous_nonnormal':
+    elif var_type == "continuous_nonnormal":
         # Mann-Whitney U test
-        _, p_value = stats.mannwhitneyu(group1_data, group2_data, alternative='two-sided')
+        _, p_value = stats.mannwhitneyu(group1_data, group2_data, alternative="two-sided")
 
     else:
         raise ValueError("var_type must be 'categorical', 'continuous_normal', or 'continuous_nonnormal'")
@@ -70,7 +70,7 @@ def calculate_p_value(data, variable, group_col='group', var_type='categorical')
     return p_value
 
 
-def format_continuous_variable(data, variable, group_col, distribution='normal'):
+def format_continuous_variable(data, variable, group_col, distribution="normal"):
     """
     Format continuous variable for table display.
 
@@ -84,7 +84,7 @@ def format_continuous_variable(data, variable, group_col, distribution='normal')
     for group in groups:
         group_data = data[data[group_col] == group][variable].dropna()
 
-        if distribution == 'normal':
+        if distribution == "normal":
             # Mean ± SD
             mean = group_data.mean()
             std = group_data.std()
@@ -97,9 +97,9 @@ def format_continuous_variable(data, variable, group_col, distribution='normal')
             results[group] = f"{median:.1f} [{q1:.1f}-{q3:.1f}]"
 
     # Calculate p-value
-    var_type = 'continuous_normal' if distribution == 'normal' else 'continuous_nonnormal'
+    var_type = "continuous_normal" if distribution == "normal" else "continuous_nonnormal"
     p_value = calculate_p_value(data, variable, group_col, var_type)
-    results['p_value'] = f"{p_value:.3f}" if p_value < 0.001 else f"{p_value:.2f}" if p_value < 1.0 else "—"
+    results["p_value"] = f"{p_value:.3f}" if p_value < 0.001 else f"{p_value:.2f}" if p_value < 1.0 else "—"
 
     return results
 
@@ -118,7 +118,7 @@ def format_categorical_variable(data, variable, group_col):
     results = []
 
     for category in categories:
-        row = {'category': category}
+        row = {"category": category}
 
         for group in groups:
             group_data = data[data[group_col] == group]
@@ -130,13 +130,13 @@ def format_categorical_variable(data, variable, group_col):
         results.append(row)
 
     # Calculate p-value for overall categorical variable
-    p_value = calculate_p_value(data, variable, group_col, 'categorical')
-    results[0]['p_value'] = f"{p_value:.3f}" if p_value < 0.001 else f"{p_value:.2f}" if p_value < 1.0 else "—"
+    p_value = calculate_p_value(data, variable, group_col, "categorical")
+    results[0]["p_value"] = f"{p_value:.3f}" if p_value < 0.001 else f"{p_value:.2f}" if p_value < 1.0 else "—"
 
     return results
 
 
-def generate_baseline_table(data, group_col='group', output_file='table1_baseline.csv'):
+def generate_baseline_table(data, group_col="group", output_file="table1_baseline.csv"):
     """
     Generate Table 1: Baseline characteristics.
 
@@ -150,41 +150,41 @@ def generate_baseline_table(data, group_col='group', output_file='table1_baselin
 
     # Header row
     header = {
-        'Characteristic': 'Characteristic',
-        **{group: f"{group} (n={len(data[data[group_col]==group])})" for group in groups},
-        'p_value': 'p-value'
+        "Characteristic": "Characteristic",
+        **{group: f"{group} (n={len(data[data[group_col] == group])})" for group in groups},
+        "p_value": "p-value",
     }
     table_rows.append(header)
 
     # Age (continuous)
-    if 'age' in data.columns:
-        age_results = format_continuous_variable(data, 'age', group_col, distribution='nonnormal')
-        row = {'Characteristic': 'Age, years (median [IQR])'}
+    if "age" in data.columns:
+        age_results = format_continuous_variable(data, "age", group_col, distribution="nonnormal")
+        row = {"Characteristic": "Age, years (median [IQR])"}
         for group in groups:
             row[group] = age_results[group]
-        row['p_value'] = age_results['p_value']
+        row["p_value"] = age_results["p_value"]
         table_rows.append(row)
 
     # Sex (categorical)
-    if 'sex' in data.columns:
-        table_rows.append({'Characteristic': 'Sex, n (%)', **{g: '' for g in groups}, 'p_value': ''})
-        sex_results = format_categorical_variable(data, 'sex', group_col)
+    if "sex" in data.columns:
+        table_rows.append({"Characteristic": "Sex, n (%)", **{g: "" for g in groups}, "p_value": ""})
+        sex_results = format_categorical_variable(data, "sex", group_col)
         for sex_row in sex_results:
-            row = {'Characteristic': f"  {sex_row['category']}"}
+            row = {"Characteristic": f"  {sex_row['category']}"}
             for group in groups:
                 row[group] = sex_row[group]
-            row['p_value'] = sex_row.get('p_value', '')
+            row["p_value"] = sex_row.get("p_value", "")
             table_rows.append(row)
 
     # ECOG Performance Status (categorical)
-    if 'ecog_ps' in data.columns:
-        table_rows.append({'Characteristic': 'ECOG PS, n (%)', **{g: '' for g in groups}, 'p_value': ''})
-        ecog_results = format_categorical_variable(data, 'ecog_ps', group_col)
+    if "ecog_ps" in data.columns:
+        table_rows.append({"Characteristic": "ECOG PS, n (%)", **{g: "" for g in groups}, "p_value": ""})
+        ecog_results = format_categorical_variable(data, "ecog_ps", group_col)
         for ecog_row in ecog_results:
-            row = {'Characteristic': f"  {ecog_row['category']}"}
+            row = {"Characteristic": f"  {ecog_row['category']}"}
             for group in groups:
                 row[group] = ecog_row[group]
-            row['p_value'] = ecog_row.get('p_value', '')
+            row["p_value"] = ecog_row.get("p_value", "")
             table_rows.append(row)
 
     # Convert to DataFrame and save
@@ -195,7 +195,7 @@ def generate_baseline_table(data, group_col='group', output_file='table1_baselin
     return df_table
 
 
-def generate_efficacy_table(data, group_col='group', output_file='table2_efficacy.csv'):
+def generate_efficacy_table(data, group_col="group", output_file="table2_efficacy.csv"):
     """
     Generate efficacy outcomes table.
 
@@ -208,18 +208,14 @@ def generate_efficacy_table(data, group_col='group', output_file='table2_efficac
     table_rows = []
 
     # Header
-    header = {
-        'Outcome': 'Outcome',
-        **{group: f"{group} (n={len(data[data[group_col]==group])})" for group in groups},
-        'p_value': 'p-value'
-    }
+    header = {"Outcome": "Outcome", **{group: f"{group} (n={len(data[data[group_col] == group])})" for group in groups}, "p_value": "p-value"}
     table_rows.append(header)
 
     # Objective Response Rate (ORR = CR + PR)
-    if 'best_response' in data.columns:
+    if "best_response" in data.columns:
         for group in groups:
             group_data = data[data[group_col] == group]
-            cr_pr = ((group_data['best_response'] == 'CR') | (group_data['best_response'] == 'PR')).sum()
+            cr_pr = ((group_data["best_response"] == "CR") | (group_data["best_response"] == "PR")).sum()
             total = len(group_data)
             orr = cr_pr / total * 100
 
@@ -227,49 +223,43 @@ def generate_efficacy_table(data, group_col='group', output_file='table2_efficac
             ci_lower, ci_upper = _binomial_ci(cr_pr, total)
 
             if group == groups[0]:
-                orr_row = {'Outcome': 'ORR, n (%) [95% CI]'}
+                orr_row = {"Outcome": "ORR, n (%) [95% CI]"}
 
             orr_row[group] = f"{cr_pr} ({orr:.0f}%) [{ci_lower:.0f}-{ci_upper:.0f}]"
 
         # P-value for ORR difference
-        contingency = pd.crosstab(
-            data['best_response'].isin(['CR', 'PR']),
-            data[group_col]
-        )
+        contingency = pd.crosstab(data["best_response"].isin(["CR", "PR"]), data[group_col])
         _, p_value, _, _ = stats.chi2_contingency(contingency)
-        orr_row['p_value'] = f"{p_value:.3f}" if p_value >= 0.001 else "<0.001"
+        orr_row["p_value"] = f"{p_value:.3f}" if p_value >= 0.001 else "<0.001"
         table_rows.append(orr_row)
 
         # Individual response categories
-        for response in ['CR', 'PR', 'SD', 'PD']:
-            row = {'Outcome': f"  {response}"}
+        for response in ["CR", "PR", "SD", "PD"]:
+            row = {"Outcome": f"  {response}"}
             for group in groups:
                 group_data = data[data[group_col] == group]
-                count = (group_data['best_response'] == response).sum()
+                count = (group_data["best_response"] == response).sum()
                 total = len(group_data)
                 pct = count / total * 100
                 row[group] = f"{count} ({pct:.0f}%)"
-            row['p_value'] = ''
+            row["p_value"] = ""
             table_rows.append(row)
 
     # Disease Control Rate (DCR = CR + PR + SD)
-    if 'best_response' in data.columns:
-        dcr_row = {'Outcome': 'DCR, n (%) [95% CI]'}
+    if "best_response" in data.columns:
+        dcr_row = {"Outcome": "DCR, n (%) [95% CI]"}
         for group in groups:
             group_data = data[data[group_col] == group]
-            dcr_count = group_data['best_response'].isin(['CR', 'PR', 'SD']).sum()
+            dcr_count = group_data["best_response"].isin(["CR", "PR", "SD"]).sum()
             total = len(group_data)
             dcr = dcr_count / total * 100
             ci_lower, ci_upper = _binomial_ci(dcr_count, total)
             dcr_row[group] = f"{dcr_count} ({dcr:.0f}%) [{ci_lower:.0f}-{ci_upper:.0f}]"
 
         # P-value
-        contingency = pd.crosstab(
-            data['best_response'].isin(['CR', 'PR', 'SD']),
-            data[group_col]
-        )
+        contingency = pd.crosstab(data["best_response"].isin(["CR", "PR", "SD"]), data[group_col])
         _, p_value, _, _ = stats.chi2_contingency(contingency)
-        dcr_row['p_value'] = f"{p_value:.3f}" if p_value >= 0.001 else "<0.001"
+        dcr_row["p_value"] = f"{p_value:.3f}" if p_value >= 0.001 else "<0.001"
         table_rows.append(dcr_row)
 
     # Save table
@@ -280,7 +270,7 @@ def generate_efficacy_table(data, group_col='group', output_file='table2_efficac
     return df_table
 
 
-def generate_safety_table(data, ae_columns, group_col='group', output_file='table3_safety.csv'):
+def generate_safety_table(data, ae_columns, group_col="group", output_file="table3_safety.csv"):
     """
     Generate adverse events table.
 
@@ -295,17 +285,13 @@ def generate_safety_table(data, ae_columns, group_col='group', output_file='tabl
     table_rows = []
 
     # Header
-    {
-        'Adverse Event': 'Adverse Event',
-        **{f'{group}_any': 'Any Grade' for group in groups},
-        **{f'{group}_g34': 'Grade 3-4' for group in groups}
-    }
+    {"Adverse Event": "Adverse Event", **{f"{group}_any": "Any Grade" for group in groups}, **{f"{group}_g34": "Grade 3-4" for group in groups}}
 
     for ae in ae_columns:
         if ae not in data.columns:
             continue
 
-        row = {'Adverse Event': ae.replace('_', ' ').title()}
+        row = {"Adverse Event": ae.replace("_", " ").title()}
 
         for group in groups:
             group_data = data[data[group_col] == group][ae].dropna()
@@ -314,12 +300,12 @@ def generate_safety_table(data, ae_columns, group_col='group', output_file='tabl
             # Any grade (Grade 1-5)
             any_grade = (group_data > 0).sum()
             any_pct = any_grade / total * 100 if total > 0 else 0
-            row[f'{group}_any'] = f"{any_grade} ({any_pct:.0f}%)"
+            row[f"{group}_any"] = f"{any_grade} ({any_pct:.0f}%)"
 
             # Grade 3-4
             grade_34 = (group_data >= 3).sum()
             g34_pct = grade_34 / total * 100 if total > 0 else 0
-            row[f'{group}_g34'] = f"{grade_34} ({g34_pct:.0f}%)"
+            row[f"{group}_g34"] = f"{grade_34} ({g34_pct:.0f}%)"
 
         table_rows.append(row)
 
@@ -331,7 +317,7 @@ def generate_safety_table(data, ae_columns, group_col='group', output_file='tabl
     return df_table
 
 
-def generate_latex_table(df, caption, label='table'):
+def generate_latex_table(df, caption, label="table"):
     """
     Convert DataFrame to LaTeX table code.
 
@@ -354,10 +340,10 @@ def generate_latex_table(df, caption, label='table'):
     for _, row in df.iterrows():
         # Handle indentation for subcategories (lines starting with spaces)
         first_col = str(row.iloc[0])
-        if first_col.startswith('  '):
-            first_col = '\\quad ' + first_col.strip()
+        if first_col.startswith("  "):
+            first_col = "\\quad " + first_col.strip()
 
-        data_row = [first_col] + [str(val) if pd.notna(val) else '—' for val in row.iloc[1:]]
+        data_row = [first_col] + [str(val) if pd.notna(val) else "—" for val in row.iloc[1:]]
         latex_code += " & ".join(data_row) + " \\\\\n"
 
     latex_code += "\\bottomrule\n"
@@ -388,12 +374,12 @@ def _binomial_ci(successes, trials, confidence=0.95):
     if successes == 0:
         lower = 0.0
     else:
-        lower = beta.ppf(alpha/2, successes, trials - successes + 1)
+        lower = beta.ppf(alpha / 2, successes, trials - successes + 1)
 
     if successes == trials:
         upper = 1.0
     else:
-        upper = beta.ppf(1 - alpha/2, successes + 1, trials - successes)
+        upper = beta.ppf(1 - alpha / 2, successes + 1, trials - successes)
 
     return lower * 100, upper * 100
 
@@ -404,32 +390,30 @@ def create_example_data():
     np.random.seed(42)
     n = 100
 
-    data = pd.DataFrame({
-        'patient_id': [f'PT{i:03d}' for i in range(1, n+1)],
-        'group': np.random.choice(['Biomarker+', 'Biomarker-'], n),
-        'age': np.random.normal(62, 10, n),
-        'sex': np.random.choice(['Male', 'Female'], n),
-        'ecog_ps': np.random.choice(['0-1', '2'], n, p=[0.8, 0.2]),
-        'stage': np.random.choice(['III', 'IV'], n, p=[0.3, 0.7]),
-        'best_response': np.random.choice(['CR', 'PR', 'SD', 'PD'], n, p=[0.05, 0.35, 0.40, 0.20]),
-        'fatigue_grade': np.random.choice([0, 1, 2, 3], n, p=[0.3, 0.4, 0.2, 0.1]),
-        'nausea_grade': np.random.choice([0, 1, 2, 3], n, p=[0.4, 0.35, 0.20, 0.05]),
-        'neutropenia_grade': np.random.choice([0, 1, 2, 3, 4], n, p=[0.5, 0.2, 0.15, 0.10, 0.05]),
-    })
+    data = pd.DataFrame(
+        {
+            "patient_id": [f"PT{i:03d}" for i in range(1, n + 1)],
+            "group": np.random.choice(["Biomarker+", "Biomarker-"], n),
+            "age": np.random.normal(62, 10, n),
+            "sex": np.random.choice(["Male", "Female"], n),
+            "ecog_ps": np.random.choice(["0-1", "2"], n, p=[0.8, 0.2]),
+            "stage": np.random.choice(["III", "IV"], n, p=[0.3, 0.7]),
+            "best_response": np.random.choice(["CR", "PR", "SD", "PD"], n, p=[0.05, 0.35, 0.40, 0.20]),
+            "fatigue_grade": np.random.choice([0, 1, 2, 3], n, p=[0.3, 0.4, 0.2, 0.1]),
+            "nausea_grade": np.random.choice([0, 1, 2, 3], n, p=[0.4, 0.35, 0.20, 0.05]),
+            "neutropenia_grade": np.random.choice([0, 1, 2, 3, 4], n, p=[0.5, 0.2, 0.15, 0.10, 0.05]),
+        }
+    )
 
     return data
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Generate clinical cohort tables')
-    parser.add_argument('input_file', type=str, nargs='?', default=None,
-                       help='CSV file with cohort data (if not provided, uses example data)')
-    parser.add_argument('-o', '--output-dir', type=str, default='tables',
-                       help='Output directory (default: tables)')
-    parser.add_argument('--group-col', type=str, default='group',
-                       help='Column name for grouping variable')
-    parser.add_argument('--example', action='store_true',
-                       help='Generate tables using example data')
+    parser = argparse.ArgumentParser(description="Generate clinical cohort tables")
+    parser.add_argument("input_file", type=str, nargs="?", default=None, help="CSV file with cohort data (if not provided, uses example data)")
+    parser.add_argument("-o", "--output-dir", type=str, default="tables", help="Output directory (default: tables)")
+    parser.add_argument("--group-col", type=str, default="group", help="Column name for grouping variable")
+    parser.add_argument("--example", action="store_true", help="Generate tables using example data")
 
     args = parser.parse_args()
 
@@ -450,56 +434,31 @@ def main():
 
     # Generate Table 1: Baseline characteristics
     print("\nGenerating baseline characteristics table...")
-    baseline_table = generate_baseline_table(
-        data,
-        group_col=args.group_col,
-        output_file=output_dir / 'table1_baseline.csv'
-    )
+    baseline_table = generate_baseline_table(data, group_col=args.group_col, output_file=output_dir / "table1_baseline.csv")
 
     # Generate LaTeX code for baseline table
-    latex_code = generate_latex_table(
-        baseline_table,
-        caption="Baseline patient demographics and clinical characteristics",
-        label="baseline"
-    )
-    with open(output_dir / 'table1_baseline.tex', 'w') as f:
+    latex_code = generate_latex_table(baseline_table, caption="Baseline patient demographics and clinical characteristics", label="baseline")
+    with open(output_dir / "table1_baseline.tex", "w") as f:
         f.write(latex_code)
     print(f"LaTeX code saved to: {output_dir}/table1_baseline.tex")
 
     # Generate Table 2: Efficacy outcomes
-    if 'best_response' in data.columns:
+    if "best_response" in data.columns:
         print("\nGenerating efficacy outcomes table...")
-        efficacy_table = generate_efficacy_table(
-            data,
-            group_col=args.group_col,
-            output_file=output_dir / 'table2_efficacy.csv'
-        )
+        efficacy_table = generate_efficacy_table(data, group_col=args.group_col, output_file=output_dir / "table2_efficacy.csv")
 
-        latex_code = generate_latex_table(
-            efficacy_table,
-            caption="Treatment efficacy outcomes by group",
-            label="efficacy"
-        )
-        with open(output_dir / 'table2_efficacy.tex', 'w') as f:
+        latex_code = generate_latex_table(efficacy_table, caption="Treatment efficacy outcomes by group", label="efficacy")
+        with open(output_dir / "table2_efficacy.tex", "w") as f:
             f.write(latex_code)
 
     # Generate Table 3: Safety (identify AE columns)
-    ae_columns = [col for col in data.columns if col.endswith('_grade')]
+    ae_columns = [col for col in data.columns if col.endswith("_grade")]
     if ae_columns:
         print("\nGenerating safety table...")
-        safety_table = generate_safety_table(
-            data,
-            ae_columns=ae_columns,
-            group_col=args.group_col,
-            output_file=output_dir / 'table3_safety.csv'
-        )
+        safety_table = generate_safety_table(data, ae_columns=ae_columns, group_col=args.group_col, output_file=output_dir / "table3_safety.csv")
 
-        latex_code = generate_latex_table(
-            safety_table,
-            caption="Treatment-emergent adverse events by group (CTCAE v5.0)",
-            label="safety"
-        )
-        with open(output_dir / 'table3_safety.tex', 'w') as f:
+        latex_code = generate_latex_table(safety_table, caption="Treatment-emergent adverse events by group (CTCAE v5.0)", label="safety")
+        with open(output_dir / "table3_safety.tex", "w") as f:
             f.write(latex_code)
 
     print(f"\nAll tables generated successfully in {output_dir}/")
@@ -509,7 +468,7 @@ def main():
     print("  - table3_safety.csv / .tex (if AE data available)")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 
 

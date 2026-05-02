@@ -26,12 +26,7 @@ class YouTubeIntegration:
         self.api_key = api_key
         self.base_url = "https://www.googleapis.com/youtube/v3"
 
-    async def search_videos(
-        self,
-        query: str,
-        max_results: int = 20,
-        published_after: datetime | None = None
-    ) -> list[dict]:
+    async def search_videos(self, query: str, max_results: int = 20, published_after: datetime | None = None) -> list[dict]:
         """Search YouTube videos"""
         logger.info(f"Searching YouTube: {query}")
 
@@ -45,12 +40,7 @@ class YouTubeIntegration:
                 "content": "Video transcript: Major traffic incident on highway...",
                 "url": "https://youtube.com/watch?v=mock123",
                 "published_at": datetime.now() - timedelta(hours=3),
-                "metadata": {
-                    "channel": "Traffic News Network",
-                    "views": 15000,
-                    "likes": 450,
-                    "duration_seconds": 180
-                }
+                "metadata": {"channel": "Traffic News Network", "views": 15000, "likes": 450, "duration_seconds": 180},
             }
         ]
 
@@ -68,12 +58,7 @@ class TwitterIntegration:
         self.bearer_token = bearer_token
         self.base_url = "https://api.twitter.com/2"
 
-    async def search_tweets(
-        self,
-        query: str,
-        max_results: int = 100,
-        since_hours: int = 24
-    ) -> list[dict]:
+    async def search_tweets(self, query: str, max_results: int = 100, since_hours: int = 24) -> list[dict]:
         """Search recent tweets"""
         logger.info(f"Searching Twitter: {query}")
 
@@ -87,12 +72,7 @@ class TwitterIntegration:
                 "content": "Major accident on I-280 northbound near exit 5. Avoid area, expect delays #traffic",
                 "url": "https://twitter.com/trafficupdates/status/mock456",
                 "published_at": datetime.now() - timedelta(minutes=15),
-                "metadata": {
-                    "author": "@TrafficUpdates",
-                    "retweets": 42,
-                    "likes": 18,
-                    "verified": True
-                }
+                "metadata": {"author": "@TrafficUpdates", "retweets": 42, "likes": 18, "verified": True},
             }
         ]
 
@@ -109,12 +89,7 @@ class NewsAPIIntegration:
         self.api_key = api_key
         self.base_url = "https://newsapi.org/v2"
 
-    async def search_news(
-        self,
-        query: str,
-        sources: list[str] | None = None,
-        from_date: datetime | None = None
-    ) -> list[dict]:
+    async def search_news(self, query: str, sources: list[str] | None = None, from_date: datetime | None = None) -> list[dict]:
         """Search news articles"""
         logger.info(f"Searching NewsAPI: {query}")
 
@@ -128,11 +103,7 @@ class NewsAPIIntegration:
                 "content": "The city announced plans to deploy AI-powered traffic management...",
                 "url": "https://news.example.com/article/traffic-ai",
                 "published_at": datetime.now() - timedelta(hours=6),
-                "metadata": {
-                    "source": "City News",
-                    "author": "Jane Reporter",
-                    "category": "Transportation"
-                }
+                "metadata": {"source": "City News", "author": "Jane Reporter", "category": "Transportation"},
             }
         ]
 
@@ -161,10 +132,7 @@ class RSSFeedIntegration:
                 "content": "This week in transportation news...",
                 "url": "https://transport.blog/weekly-roundup",
                 "published_at": datetime.now() - timedelta(days=1),
-                "metadata": {
-                    "feed_title": "Transportation Weekly",
-                    "categories": ["transit", "policy"]
-                }
+                "metadata": {"feed_title": "Transportation Weekly", "categories": ["transit", "policy"]},
             }
         ]
 
@@ -179,11 +147,7 @@ class V2XMeshIntegration:
     def __init__(self, mesh_gateway_url: str):
         self.gateway_url = mesh_gateway_url
 
-    async def fetch_recent_events(
-        self,
-        since_minutes: int = 30,
-        min_severity: int = 5
-    ) -> list[dict]:
+    async def fetch_recent_events(self, since_minutes: int = 30, min_severity: int = 5) -> list[dict]:
         """Fetch recent V2X events"""
         logger.info(f"Fetching V2X mesh events (last {since_minutes}min)")
 
@@ -203,8 +167,8 @@ class V2XMeshIntegration:
                     "position": [37.7749, -122.4194, 10.0],
                     "affected_radius_m": 500,
                     "peer_count": 15,
-                    "tier": "tier_1"  # V2X events are high-value
-                }
+                    "tier": "tier_1",  # V2X events are high-value
+                },
             },
             {
                 "title": "V2X Event: Collision Risk Alert",
@@ -217,14 +181,14 @@ class V2XMeshIntegration:
                     "position": [37.7755, -122.4200, 10.0],
                     "affected_radius_m": 300,
                     "peer_count": 8,
-                    "tier": "tier_1"
-                }
-            }
+                    "tier": "tier_1",
+                },
+            },
         ]
 
     async def fetch_map_features(
         self,
-        bbox: tuple[float, float, float, float]  # min_lat, max_lat, min_lon, max_lon
+        bbox: tuple[float, float, float, float],  # min_lat, max_lat, min_lon, max_lon
     ) -> list[dict]:
         """Fetch collaborative map features from V2X mesh"""
         logger.info("Fetching V2X map features in bbox")
@@ -242,13 +206,9 @@ class V2XMeshIntegration:
                 "metadata": {
                     "feature_type": "work_zone",
                     "geometry": {"type": "Polygon", "coordinates": [...]},
-                    "properties": {
-                        "name": "Road Construction",
-                        "lanes_closed": 2,
-                        "severity": "high"
-                    },
-                    "tier": "tier_1"
-                }
+                    "properties": {"name": "Road Construction", "lanes_closed": 2, "severity": "high"},
+                    "tier": "tier_1",
+                },
             }
         ]
 
@@ -259,11 +219,7 @@ class WebScraperIntegration:
     def __init__(self, crawler: EthicalCrawler):
         self.crawler = crawler
 
-    async def scrape_url(
-        self,
-        url: str,
-        selectors: dict[str, str] | None = None
-    ) -> dict | None:
+    async def scrape_url(self, url: str, selectors: dict[str, str] | None = None) -> dict | None:
         """Scrape webpage with CSS selectors"""
         content = await self.crawler.fetch(url)
 
@@ -277,10 +233,7 @@ class WebScraperIntegration:
             "content": content[:500],
             "url": url,
             "published_at": datetime.now(),
-            "metadata": {
-                "scrape_method": "css_selectors",
-                "selectors_used": list(selectors.keys()) if selectors else []
-            }
+            "metadata": {"scrape_method": "css_selectors", "selectors_used": list(selectors.keys()) if selectors else []},
         }
 
 
@@ -324,11 +277,7 @@ class SourceOrchestrator:
         self.integrations["web_scraper"] = WebScraperIntegration(crawler)
         logger.info("Registered Web Scraper")
 
-    async def fetch_all_sources(
-        self,
-        sources: list[SourceConfig],
-        query: str = "traffic transportation"
-    ) -> dict[str, list[dict]]:
+    async def fetch_all_sources(self, sources: list[SourceConfig], query: str = "traffic transportation") -> dict[str, list[dict]]:
         """Fetch from all configured sources concurrently"""
         logger.info(f"Fetching from {len(sources)} sources...")
 
@@ -360,11 +309,7 @@ class SourceOrchestrator:
 
         return source_results
 
-    async def _fetch_source(
-        self,
-        source: SourceConfig,
-        query: str
-    ) -> list[dict]:
+    async def _fetch_source(self, source: SourceConfig, query: str) -> list[dict]:
         """Fetch from individual source"""
         try:
             if source.source_type == SourceType.YOUTUBE:
@@ -409,6 +354,7 @@ class SourceOrchestrator:
 
 # Example usage
 if __name__ == "__main__":
+
     async def main():
         from ingestion_core import EthicalCrawler, EthicalCrawlingConfig
 
@@ -434,22 +380,22 @@ if __name__ == "__main__":
                 source_type=SourceType.V2X_MESH,
                 url="http://v2x-mesh-gateway",
                 tier=DataTier.TIER_1,
-                relevance_categories=[RelevanceCategory.TRAFFIC, RelevanceCategory.SAFETY]
+                relevance_categories=[RelevanceCategory.TRAFFIC, RelevanceCategory.SAFETY],
             ),
             SourceConfig(
                 source_id="youtube-traffic",
                 source_type=SourceType.YOUTUBE,
                 url="youtube.com",
                 tier=DataTier.TIER_2,
-                relevance_categories=[RelevanceCategory.TRAFFIC]
+                relevance_categories=[RelevanceCategory.TRAFFIC],
             ),
             SourceConfig(
                 source_id="twitter-traffic",
                 source_type=SourceType.TWITTER,
                 url="twitter.com",
                 tier=DataTier.TIER_2,
-                relevance_categories=[RelevanceCategory.TRAFFIC]
-            )
+                relevance_categories=[RelevanceCategory.TRAFFIC],
+            ),
         ]
 
         # Fetch from all sources

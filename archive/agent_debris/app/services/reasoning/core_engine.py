@@ -3,8 +3,9 @@ Core Reasoning Engine
 Hybrid RNN × Transformer × Diffusion core with BDH, RoT, and MoE-CL
 Quantitative Effect: ↑ Throughput +82%, ↓ Cost –59%
 """
+
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Any
 from datetime import datetime
 import asyncio
 from app.config.settings import settings
@@ -55,13 +56,7 @@ class CoreReasoningEngine:
         """Cleanup reasoning engine"""
         logger.info("Core Reasoning Engine shutdown")
 
-    async def reason(
-        self,
-        session_id: str,
-        query: str,
-        context: dict[str, Any] | None = None,
-        mode: str = "hybrid"
-    ) -> dict[str, Any]:
+    async def reason(self, session_id: str, query: str, context: dict[str, Any] | None = None, mode: str = "hybrid") -> dict[str, Any]:
         """
         Execute core reasoning with hybrid architecture
 
@@ -85,9 +80,7 @@ class CoreReasoningEngine:
 
             # Step 3: Execute reasoning based on mode
             if mode == "hybrid":
-                result = await self._hybrid_reasoning(
-                    session_id, query, context, reasoning_graph, expert
-                )
+                result = await self._hybrid_reasoning(session_id, query, context, reasoning_graph, expert)
             elif mode == "bdh":
                 result = await self._bdh_reasoning(query, context)
             elif mode == "rot":
@@ -111,17 +104,11 @@ class CoreReasoningEngine:
                 "mode": mode,
                 "expert_used": expert,
                 "elapsed_seconds": elapsed,
-                "metrics": {
-                    "throughput_improvement": "+82%",
-                    "cost_reduction": "-59%"
-                }
+                "metrics": {"throughput_improvement": "+82%", "cost_reduction": "-59%"},
             }
         except Exception as e:
             logger.error(f"Reasoning failed: {e}")
-            return {
-                "status": "error",
-                "error": str(e)
-            }
+            return {"status": "error", "error": str(e)}
 
     async def _init_bdh_core(self):
         """Initialize BDH (Sparse Linear Attention) core"""
@@ -129,17 +116,13 @@ class CoreReasoningEngine:
             "attention_type": settings.BDH_ATTENTION_TYPE,
             "gpu_enabled": settings.BDH_GPU_ENABLED,
             "sparse_ratio": 0.1,  # 10% sparsity
-            "linear_complexity": True
+            "linear_complexity": True,
         }
         logger.debug("BDH core initialized with sparse linear attention")
 
     async def _init_rot_system(self):
         """Initialize RoT (Retrieval-of-Thought) system"""
-        self.rot_config = {
-            "max_graph_depth": 5,
-            "max_nodes": 100,
-            "retrieval_k": 5
-        }
+        self.rot_config = {"max_graph_depth": 5, "max_nodes": 100, "retrieval_k": 5}
         logger.debug("RoT system initialized")
 
     async def _load_moe_adapters(self):
@@ -150,24 +133,16 @@ class CoreReasoningEngine:
                 "id": i,
                 "specialization": f"domain_{i}",
                 "adapter_dim": settings.MOE_ADAPTER_DIM,
-                "performance_score": 0.85 + (i * 0.01)
+                "performance_score": 0.85 + (i * 0.01),
             }
         logger.debug(f"Loaded {len(self.experts)} MoE-CL adapters")
 
     async def _init_diffusion_decoder(self):
         """Initialize Diffusion LM (CoDA) for parallel generation"""
-        self.diffusion_config = {
-            "num_steps": 50,
-            "parallel_paths": 4,
-            "temperature": 0.7
-        }
+        self.diffusion_config = {"num_steps": 50, "parallel_paths": 4, "temperature": 0.7}
         logger.debug("Diffusion decoder initialized")
 
-    async def _select_expert(
-        self,
-        query: str,
-        context: dict[str, Any] | None
-    ) -> str:
+    async def _select_expert(self, query: str, context: dict[str, Any] | None) -> str:
         """Select best expert using MoE routing"""
         # Simple routing logic (in production, use learned router)
         query_hash = hash(query) % len(self.experts)
@@ -175,12 +150,7 @@ class CoreReasoningEngine:
         return expert_id
 
     async def _hybrid_reasoning(
-        self,
-        session_id: str,
-        query: str,
-        context: dict[str, Any] | None,
-        reasoning_graph: dict[str, Any] | None,
-        expert: str
+        self, session_id: str, query: str, context: dict[str, Any] | None, reasoning_graph: dict[str, Any] | None, expert: str
     ) -> dict[str, Any]:
         """Execute hybrid reasoning combining all components"""
         # Combine BDH attention, RoT retrieval, and MoE expertise
@@ -190,40 +160,20 @@ class CoreReasoningEngine:
             "rot_context": f"Retrieved {len(reasoning_graph.get('nodes', [])) if reasoning_graph else 0} reasoning nodes",
             "moe_expert": expert,
             "conclusion": f"Processed query using hybrid architecture: {query[:100]}",
-            "confidence": 0.92
+            "confidence": 0.92,
         }
         return reasoning
 
     async def _bdh_reasoning(self, query: str, context: dict[str, Any] | None) -> dict[str, Any]:
         """BDH-only reasoning with sparse linear attention"""
-        return {
-            "approach": "bdh",
-            "attention_pattern": "sparse_linear",
-            "reasoning": f"BDH analysis of: {query[:100]}",
-            "confidence": 0.88
-        }
+        return {"approach": "bdh", "attention_pattern": "sparse_linear", "reasoning": f"BDH analysis of: {query[:100]}", "confidence": 0.88}
 
-    async def _rot_reasoning(
-        self,
-        session_id: str,
-        query: str,
-        reasoning_graph: dict[str, Any] | None
-    ) -> dict[str, Any]:
+    async def _rot_reasoning(self, session_id: str, query: str, reasoning_graph: dict[str, Any] | None) -> dict[str, Any]:
         """RoT reasoning using prior reasoning graphs"""
         graph_size = len(reasoning_graph.get("nodes", [])) if reasoning_graph else 0
-        return {
-            "approach": "rot",
-            "retrieved_nodes": graph_size,
-            "reasoning": f"Retrieved prior reasoning for: {query[:100]}",
-            "confidence": 0.85
-        }
+        return {"approach": "rot", "retrieved_nodes": graph_size, "reasoning": f"Retrieved prior reasoning for: {query[:100]}", "confidence": 0.85}
 
-    async def _moe_reasoning(
-        self,
-        query: str,
-        context: dict[str, Any] | None,
-        expert: str
-    ) -> dict[str, Any]:
+    async def _moe_reasoning(self, query: str, context: dict[str, Any] | None, expert: str) -> dict[str, Any]:
         """MoE reasoning with expert selection"""
         expert_info = self.experts.get(expert, {})
         return {
@@ -231,43 +181,26 @@ class CoreReasoningEngine:
             "expert_id": expert,
             "expert_specialization": expert_info.get("specialization"),
             "reasoning": f"Expert {expert} analyzed: {query[:100]}",
-            "confidence": expert_info.get("performance_score", 0.85)
+            "confidence": expert_info.get("performance_score", 0.85),
         }
 
-    async def _diffusion_reasoning(
-        self,
-        query: str,
-        context: dict[str, Any] | None
-    ) -> dict[str, Any]:
+    async def _diffusion_reasoning(self, query: str, context: dict[str, Any] | None) -> dict[str, Any]:
         """Diffusion-based parallel reasoning"""
         return {
             "approach": "diffusion",
             "parallel_paths": self.diffusion_config["parallel_paths"],
             "reasoning": f"Diffusion analysis of: {query[:100]}",
-            "confidence": 0.90
+            "confidence": 0.90,
         }
 
-    async def _update_reasoning_graph(
-        self,
-        session_id: str,
-        query: str,
-        result: dict[str, Any]
-    ):
+    async def _update_reasoning_graph(self, session_id: str, query: str, result: dict[str, Any]):
         """Update reasoning graph in GPTRAM"""
         try:
             # Retrieve existing graph
-            graph = await self.memory.retrieve_reasoning_graph(session_id) or {
-                "nodes": [],
-                "edges": []
-            }
+            graph = await self.memory.retrieve_reasoning_graph(session_id) or {"nodes": [], "edges": []}
 
             # Add new node
-            node = {
-                "id": len(graph["nodes"]),
-                "query": query,
-                "result": result,
-                "timestamp": datetime.utcnow().isoformat()
-            }
+            node = {"id": len(graph["nodes"]), "query": query, "result": result, "timestamp": datetime.utcnow().isoformat()}
             graph["nodes"].append(node)
 
             # Store updated graph
@@ -275,11 +208,7 @@ class CoreReasoningEngine:
         except Exception as e:
             logger.error(f"Failed to update reasoning graph: {e}")
 
-    async def train_adapter(
-        self,
-        expert_id: str,
-        training_data: list[dict[str, Any]]
-    ) -> dict[str, Any]:
+    async def train_adapter(self, expert_id: str, training_data: list[dict[str, Any]]) -> dict[str, Any]:
         """
         Train a MoE-CL adapter (scheduled nightly)
 
@@ -304,11 +233,8 @@ class CoreReasoningEngine:
                 "status": "success",
                 "expert_id": expert_id,
                 "training_samples": len(training_data),
-                "new_performance": self.experts[expert_id]["performance_score"]
+                "new_performance": self.experts[expert_id]["performance_score"],
             }
         except Exception as e:
             logger.error(f"Adapter training failed: {e}")
-            return {
-                "status": "error",
-                "error": str(e)
-            }
+            return {"status": "error", "error": str(e)}

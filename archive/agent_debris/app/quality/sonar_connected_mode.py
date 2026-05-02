@@ -2,6 +2,7 @@ import argparse
 import os
 import sys
 
+
 def main():
     parser = argparse.ArgumentParser(description="Sonar Connected Mode Setup")
     parser.add_argument("--verify", action="store_true", help="Verify connection")
@@ -24,6 +25,7 @@ def main():
         print("Configuring VS Code settings for SonarLint...")
         # Logic to update .vscode/settings.json would go here
         print("VS Code configured.")
+
 
 if __name__ == "__main__":
     main()

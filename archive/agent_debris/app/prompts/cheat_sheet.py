@@ -16,9 +16,8 @@ Original 21 elements → Fused 10 essentials:
 10. Call (call-to-action or next step)
 """
 
-from typing import Optional, List
 from pydantic import BaseModel, Field
-from enum import Enum, StrEnum
+from enum import StrEnum
 
 
 class ToneType(StrEnum):
@@ -196,9 +195,7 @@ class CheatSheetEvolution(BaseModel):
 
     version: str
     elements_count: int
-    accuracy_improvement: float = Field(
-        description="Improvement over baseline (%)"
-    )
+    accuracy_improvement: float = Field(description="Improvement over baseline (%)")
     notes: str
 
 

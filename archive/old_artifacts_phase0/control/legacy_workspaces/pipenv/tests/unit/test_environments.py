@@ -35,37 +35,17 @@ def test_get_from_env(arg, prefix, use_negation):
             # for the negated version
             negative_expected_value = True if is_negative else None
             if is_positive:
-                assert (
-                    environments.get_from_env(
-                        var_to_set, prefix=prefix, check_for_negation=use_negation
-                    )
-                    is main_expected_value
-                )
-                assert (
-                    environments.get_from_env(
-                        opposite_var, prefix=prefix, check_for_negation=use_negation
-                    )
-                    is negative_expected_value
-                )
+                assert environments.get_from_env(var_to_set, prefix=prefix, check_for_negation=use_negation) is main_expected_value
+                assert environments.get_from_env(opposite_var, prefix=prefix, check_for_negation=use_negation) is negative_expected_value
             else:
                 # var_to_set = negative version i.e. NO_xxxx
                 # opposite_var = positive_version i.e. XXXX
 
                 # get NO_BLAH -- expecting this to be True
-                assert (
-                    environments.get_from_env(
-                        var_to_set, prefix=prefix, check_for_negation=use_negation
-                    )
-                    is negative_expected_value
-                )
+                assert environments.get_from_env(var_to_set, prefix=prefix, check_for_negation=use_negation) is negative_expected_value
                 # get BLAH -- expecting False if checking for negation
                 # but otherwise should be None
-                assert (
-                    environments.get_from_env(
-                        opposite_var, prefix=prefix, check_for_negation=use_negation
-                    )
-                    is main_expected_value
-                )
+                assert environments.get_from_env(opposite_var, prefix=prefix, check_for_negation=use_negation) is main_expected_value
 
 
 @pytest.mark.environments
@@ -82,12 +62,7 @@ def test_get_from_env_default(check_for_negation, default):
     with temp_environ():
         os.environ.pop(envvar, None)
         os.environ.pop(negated_envvar, None)
-        assert (
-            environments.get_from_env(
-                arg, prefix=prefix, check_for_negation=check_for_negation, default=default
-            )
-            == default
-        )
+        assert environments.get_from_env(arg, prefix=prefix, check_for_negation=check_for_negation, default=default) == default
 
 
 def test_pipenv_venv_in_project_set_true(monkeypatch):

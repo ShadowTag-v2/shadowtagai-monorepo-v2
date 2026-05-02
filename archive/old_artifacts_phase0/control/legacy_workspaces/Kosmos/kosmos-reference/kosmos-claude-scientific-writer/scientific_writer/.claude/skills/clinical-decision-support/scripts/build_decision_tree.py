@@ -23,19 +23,19 @@ class DecisionNode:
 
     def _generate_id(self, text):
         """Generate clean node ID from text."""
-        return ''.join(c for c in text if c.isalnum())[:15].lower()
+        return "".join(c for c in text if c.isalnum())[:15].lower()
 
 
 class ActionNode:
     """Represents an action/outcome in the clinical algorithm."""
 
-    def __init__(self, action, urgency='routine', node_id=None):
+    def __init__(self, action, urgency="routine", node_id=None):
         self.action = action
         self.urgency = urgency  # 'urgent', 'semiurgent', 'routine'
         self.node_id = node_id or self._generate_id(action)
 
     def _generate_id(self, text):
-        return ''.join(c for c in text if c.isalnum())[:15].lower()
+        return "".join(c for c in text if c.isalnum())[:15].lower()
 
 
 def generate_tikz_header():
@@ -98,7 +98,7 @@ def generate_tikz_footer():
     return tikz
 
 
-def simple_algorithm_to_tikz(algorithm_text, output_file='algorithm.tex'):
+def simple_algorithm_to_tikz(algorithm_text, output_file="algorithm.tex"):
     """
     Convert simple text-based algorithm to TikZ flowchart.
 
@@ -116,7 +116,7 @@ def simple_algorithm_to_tikz(algorithm_text, output_file='algorithm.tex'):
     tikz_code = generate_tikz_header()
 
     # Parse algorithm text
-    lines = [line.strip() for line in algorithm_text.strip().split('\n') if line.strip()]
+    lines = [line.strip() for line in algorithm_text.strip().split("\n") if line.strip()]
 
     node_defs = []
     arrow_defs = []
@@ -125,32 +125,32 @@ def simple_algorithm_to_tikz(algorithm_text, output_file='algorithm.tex'):
     node_counter = 0
 
     for line in lines:
-        if line.startswith('START:'):
+        if line.startswith("START:"):
             # Start node
-            text = line.replace('START:', '').strip()
-            node_id = 'start'
+            text = line.replace("START:", "").strip()
+            node_id = "start"
             node_defs.append(f"\\node [startstop] ({node_id}) {{{text}}};")
             previous_node = node_id
             node_counter += 1
 
-        elif line.startswith('END:'):
+        elif line.startswith("END:"):
             # End node
-            text = line.replace('END:', '').strip()
-            node_id = 'end'
+            text = line.replace("END:", "").strip()
+            node_id = "end"
 
             # Position relative to previous
             if previous_node:
                 node_defs.append(f"\\node [startstop, below=of {previous_node}] ({node_id}) {{{text}}};")
                 arrow_defs.append(f"\\draw [arrow] ({previous_node}) -- ({node_id});")
 
-        elif line.startswith('Q'):
+        elif line.startswith("Q"):
             # Decision node
-            parts = line.split(':', 1)
+            parts = line.split(":", 1)
             if len(parts) < 2:
                 continue
 
-            question_part = parts[1].split('->')[0].strip()
-            node_id = f'q{node_counter}'
+            question_part = parts[1].split("->")[0].strip()
+            node_id = f"q{node_counter}"
 
             # Add decision node
             if previous_node:
@@ -160,48 +160,48 @@ def simple_algorithm_to_tikz(algorithm_text, output_file='algorithm.tex'):
                 node_defs.append(f"\\node [decision] ({node_id}) {{{question_part}}};")
 
             # Parse YES and NO branches
-            if '->' in line:
-                branches = line.split('->')[1].split('|')
+            if "->" in line:
+                branches = line.split("->")[1].split("|")
 
                 for branch in branches:
                     branch = branch.strip()
 
-                    if branch.startswith('YES:'):
-                        yes_action = branch.replace('YES:', '').strip()
-                        yes_id = f'yes{node_counter}'
+                    if branch.startswith("YES:"):
+                        yes_action = branch.replace("YES:", "").strip()
+                        yes_id = f"yes{node_counter}"
 
                         # Check urgency
-                        if '(URGENT)' in yes_action:
-                            style = 'urgent'
-                            yes_action = yes_action.replace('(URGENT)', '').strip()
-                            arrow_style = 'urgentarrow'
-                        elif '(ROUTINE)' in yes_action:
-                            style = 'routine'
-                            yes_action = yes_action.replace('(ROUTINE)', '').strip()
-                            arrow_style = 'arrow'
+                        if "(URGENT)" in yes_action:
+                            style = "urgent"
+                            yes_action = yes_action.replace("(URGENT)", "").strip()
+                            arrow_style = "urgentarrow"
+                        elif "(ROUTINE)" in yes_action:
+                            style = "routine"
+                            yes_action = yes_action.replace("(ROUTINE)", "").strip()
+                            arrow_style = "arrow"
                         else:
-                            style = 'process'
-                            arrow_style = 'arrow'
+                            style = "process"
+                            arrow_style = "arrow"
 
                         node_defs.append(f"\\node [{style}, left=of {node_id}] ({yes_id}) {{{yes_action}}};")
                         arrow_defs.append(f"\\draw [{arrow_style}] ({node_id}) -- node[above] {{Yes}} ({yes_id});")
 
-                    elif branch.startswith('NO:'):
-                        no_action = branch.replace('NO:', '').strip()
-                        no_id = f'no{node_counter}'
+                    elif branch.startswith("NO:"):
+                        no_action = branch.replace("NO:", "").strip()
+                        no_id = f"no{node_counter}"
 
                         # Check urgency
-                        if '(URGENT)' in no_action:
-                            style = 'urgent'
-                            no_action = no_action.replace('(URGENT)', '').strip()
-                            arrow_style = 'urgentarrow'
-                        elif '(ROUTINE)' in no_action:
-                            style = 'routine'
-                            no_action = no_action.replace('(ROUTINE)', '').strip()
-                            arrow_style = 'arrow'
+                        if "(URGENT)" in no_action:
+                            style = "urgent"
+                            no_action = no_action.replace("(URGENT)", "").strip()
+                            arrow_style = "urgentarrow"
+                        elif "(ROUTINE)" in no_action:
+                            style = "routine"
+                            no_action = no_action.replace("(ROUTINE)", "").strip()
+                            arrow_style = "arrow"
                         else:
-                            style = 'process'
-                            arrow_style = 'arrow'
+                            style = "process"
+                            arrow_style = "arrow"
 
                         node_defs.append(f"\\node [{style}, right=of {node_id}] ({no_id}) {{{no_action}}};")
                         arrow_defs.append(f"\\draw [{arrow_style}] ({node_id}) -- node[above] {{No}} ({no_id});")
@@ -210,14 +210,14 @@ def simple_algorithm_to_tikz(algorithm_text, output_file='algorithm.tex'):
             node_counter += 1
 
     # Add all nodes and arrows to TikZ
-    tikz_code += '\n'.join(node_defs) + '\n\n'
-    tikz_code += '% Arrows\n'
-    tikz_code += '\n'.join(arrow_defs) + '\n'
+    tikz_code += "\n".join(node_defs) + "\n\n"
+    tikz_code += "% Arrows\n"
+    tikz_code += "\n".join(arrow_defs) + "\n"
 
     tikz_code += generate_tikz_footer()
 
     # Save to file
-    with open(output_file, 'w') as f:
+    with open(output_file, "w") as f:
         f.write(tikz_code)
 
     print(f"TikZ flowchart saved to: {output_file}")
@@ -226,7 +226,7 @@ def simple_algorithm_to_tikz(algorithm_text, output_file='algorithm.tex'):
     return tikz_code
 
 
-def json_to_tikz(json_file, output_file='algorithm.tex'):
+def json_to_tikz(json_file, output_file="algorithm.tex"):
     """
     Convert JSON decision tree specification to TikZ flowchart.
 
@@ -245,17 +245,17 @@ def json_to_tikz(json_file, output_file='algorithm.tex'):
     }
     """
 
-    with open(json_file, 'r') as f:
+    with open(json_file) as f:
         spec = json.load(f)
 
     tikz_code = generate_tikz_header()
 
     # Replace title
-    title = spec.get('title', 'Clinical Decision Algorithm')
-    tikz_code = tikz_code.replace('[TITLE TO BE SPECIFIED]', title)
+    title = spec.get("title", "Clinical Decision Algorithm")
+    tikz_code = tikz_code.replace("[TITLE TO BE SPECIFIED]", title)
 
-    nodes = spec['nodes']
-    spec.get('start_node', 'start')
+    nodes = spec["nodes"]
+    spec.get("start_node", "start")
 
     # Generate nodes (simplified layout - vertical)
     node_defs = []
@@ -270,24 +270,24 @@ def json_to_tikz(json_file, output_file='algorithm.tex'):
             return
 
         node = nodes[node_id]
-        node_type = node['type']
-        text = node['text']
+        node_type = node["type"]
+        text = node["text"]
 
         # Determine TikZ style
-        if node_type == 'start' or node_type == 'end':
-            style = 'startstop'
-        elif node_type == 'decision':
-            style = 'decision'
-        elif node_type == 'action':
-            urgency = node.get('urgency', 'normal')
-            if urgency == 'urgent':
-                style = 'urgent'
-            elif urgency == 'routine':
-                style = 'routine'
+        if node_type == "start" or node_type == "end":
+            style = "startstop"
+        elif node_type == "decision":
+            style = "decision"
+        elif node_type == "action":
+            urgency = node.get("urgency", "normal")
+            if urgency == "urgent":
+                style = "urgent"
+            elif urgency == "routine":
+                style = "routine"
             else:
-                style = 'process'
+                style = "process"
         else:
-            style = 'process'
+            style = "process"
 
         # Position node
         if position_rel:
@@ -298,33 +298,33 @@ def json_to_tikz(json_file, output_file='algorithm.tex'):
         node_defs.append(node_def)
 
         # Add arrows for decision nodes
-        if node_type == 'decision':
-            yes_target = node.get('yes')
-            no_target = node.get('no')
+        if node_type == "decision":
+            yes_target = node.get("yes")
+            no_target = node.get("no")
 
             if yes_target:
                 # Determine arrow style based on target urgency
                 target_node = nodes.get(yes_target, {})
-                arrow_style = 'urgentarrow' if target_node.get('urgency') == 'urgent' else 'arrow'
+                arrow_style = "urgentarrow" if target_node.get("urgency") == "urgent" else "arrow"
                 arrow_defs.append(f"\\draw [{arrow_style}] ({node_id}) -| node[near start, above] {{Yes}} ({yes_target});")
 
             if no_target:
                 target_node = nodes.get(no_target, {})
-                arrow_style = 'urgentarrow' if target_node.get('urgency') == 'urgent' else 'arrow'
+                arrow_style = "urgentarrow" if target_node.get("urgency") == "urgent" else "arrow"
                 arrow_defs.append(f"\\draw [{arrow_style}] ({node_id}) -| node[near start, above] {{No}} ({no_target});")
 
     # Simple layout - just list nodes (manual positioning in JSON works better for complex trees)
     for node_id in nodes.keys():
         add_node(node_id)
 
-    tikz_code += '\n'.join(node_defs) + '\n\n'
-    tikz_code += '% Arrows\n'
-    tikz_code += '\n'.join(arrow_defs) + '\n'
+    tikz_code += "\n".join(node_defs) + "\n\n"
+    tikz_code += "% Arrows\n"
+    tikz_code += "\n".join(arrow_defs) + "\n"
 
     tikz_code += generate_tikz_footer()
 
     # Save
-    with open(output_file, 'w') as f:
+    with open(output_file, "w") as f:
         f.write(tikz_code)
 
     print(f"TikZ flowchart saved to: {output_file}")
@@ -337,63 +337,27 @@ def create_example_json():
     example = {
         "title": "Acute Chest Pain Management Algorithm",
         "nodes": {
-            "start": {
-                "type": "start",
-                "text": "Patient with\\nchest pain"
-            },
-            "q1": {
-                "type": "decision",
-                "text": "STEMI\\ncriteria?",
-                "yes": "stemi_action",
-                "no": "q2"
-            },
-            "stemi_action": {
-                "type": "action",
-                "text": "Activate cath lab\\nAspirin, heparin\\nPrimary PCI",
-                "urgency": "urgent"
-            },
-            "q2": {
-                "type": "decision",
-                "text": "High-risk\\nfeatures?",
-                "yes": "admit",
-                "no": "q3"
-            },
-            "admit": {
-                "type": "action",
-                "text": "Admit CCU\\nSerial troponins\\nEarly angiography"
-            },
-            "q3": {
-                "type": "decision",
-                "text": "TIMI\\nscore 0-1?",
-                "yes": "lowrisk",
-                "no": "moderate"
-            },
-            "lowrisk": {
-                "type": "action",
-                "text": "Observe 6-12h\\nStress test\\nOutpatient f/u",
-                "urgency": "routine"
-            },
-            "moderate": {
-                "type": "action",
-                "text": "Admit telemetry\\nMedical management\\nRisk stratification"
-            }
+            "start": {"type": "start", "text": "Patient with\\nchest pain"},
+            "q1": {"type": "decision", "text": "STEMI\\ncriteria?", "yes": "stemi_action", "no": "q2"},
+            "stemi_action": {"type": "action", "text": "Activate cath lab\\nAspirin, heparin\\nPrimary PCI", "urgency": "urgent"},
+            "q2": {"type": "decision", "text": "High-risk\\nfeatures?", "yes": "admit", "no": "q3"},
+            "admit": {"type": "action", "text": "Admit CCU\\nSerial troponins\\nEarly angiography"},
+            "q3": {"type": "decision", "text": "TIMI\\nscore 0-1?", "yes": "lowrisk", "no": "moderate"},
+            "lowrisk": {"type": "action", "text": "Observe 6-12h\\nStress test\\nOutpatient f/u", "urgency": "routine"},
+            "moderate": {"type": "action", "text": "Admit telemetry\\nMedical management\\nRisk stratification"},
         },
-        "start_node": "start"
+        "start_node": "start",
     }
 
     return example
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Build clinical decision tree flowcharts')
-    parser.add_argument('-i', '--input', type=str, default=None,
-                       help='Input file (JSON format)')
-    parser.add_argument('-o', '--output', type=str, default='clinical_algorithm.tex',
-                       help='Output .tex file')
-    parser.add_argument('--example', action='store_true',
-                       help='Generate example algorithm')
-    parser.add_argument('--text', type=str, default=None,
-                       help='Simple text algorithm (see format in docstring)')
+    parser = argparse.ArgumentParser(description="Build clinical decision tree flowcharts")
+    parser.add_argument("-i", "--input", type=str, default=None, help="Input file (JSON format)")
+    parser.add_argument("-o", "--output", type=str, default="clinical_algorithm.tex", help="Output .tex file")
+    parser.add_argument("--example", action="store_true", help="Generate example algorithm")
+    parser.add_argument("--text", type=str, default=None, help="Simple text algorithm (see format in docstring)")
 
     args = parser.parse_args()
 
@@ -402,12 +366,12 @@ def main():
         example_spec = create_example_json()
 
         # Save example JSON
-        with open('example_algorithm.json', 'w') as f:
+        with open("example_algorithm.json", "w") as f:
             json.dump(example_spec, f, indent=2)
         print("Example JSON saved to: example_algorithm.json")
 
         # Generate TikZ from example
-        json_to_tikz('example_algorithm.json', args.output)
+        json_to_tikz("example_algorithm.json", args.output)
 
     elif args.text:
         print("Generating algorithm from text...")
@@ -415,10 +379,10 @@ def main():
 
     elif args.input:
         print(f"Generating algorithm from {args.input}...")
-        if args.input.endswith('.json'):
+        if args.input.endswith(".json"):
             json_to_tikz(args.input, args.output)
         else:
-            with open(args.input, 'r') as f:
+            with open(args.input) as f:
                 text = f.read()
             simple_algorithm_to_tikz(text, args.output)
 
@@ -431,7 +395,7 @@ def main():
         print("END: Follow-up")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 
 

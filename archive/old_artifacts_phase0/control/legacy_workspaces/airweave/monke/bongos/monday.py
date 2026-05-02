@@ -32,14 +32,10 @@ class MondayBongo(BaseBongo):
         self.logger.info(f"🥁 Creating monday.com board + {self.entity_count} items")
         async with httpx.AsyncClient(timeout=30) as client:
             # 1) Create a temporary board
-            self._board_id = await self._create_board(
-                client, name=f"monke-monday-test-{uuid.uuid4().hex[:6]}"
-            )
+            self._board_id = await self._create_board(client, name=f"monke-monday-test-{uuid.uuid4().hex[:6]}")
 
             # 2) Create a text column to stash token/note
-            self._text_column_id = await self._create_text_column(
-                client, self._board_id, title="Note"
-            )
+            self._text_column_id = await self._create_text_column(client, self._board_id, title="Note")
 
             # 3) Create items
             out: list[dict[str, Any]] = []
@@ -162,12 +158,7 @@ class MondayBongo(BaseBongo):
 
                 # Filter for test boards
                 test_boards = [
-                    board
-                    for board in boards
-                    if any(
-                        pattern in board.get("name", "").lower()
-                        for pattern in ["test", "monke", "demo", "sample"]
-                    )
+                    board for board in boards if any(pattern in board.get("name", "").lower() for pattern in ["test", "monke", "demo", "sample"])
                 ]
 
                 if test_boards:
@@ -218,9 +209,7 @@ class MondayBongo(BaseBongo):
             except Exception as e:
                 self.logger.warning(f"Board delete failed: {e}")
 
-    async def _gql(
-        self, client: httpx.AsyncClient, query: str, variables: dict[str, Any]
-    ) -> dict[str, Any]:
+    async def _gql(self, client: httpx.AsyncClient, query: str, variables: dict[str, Any]) -> dict[str, Any]:
         r = await client.post(
             MNDY,
             headers={"Authorization": self.access_token, "Content-Type": "application/json"},

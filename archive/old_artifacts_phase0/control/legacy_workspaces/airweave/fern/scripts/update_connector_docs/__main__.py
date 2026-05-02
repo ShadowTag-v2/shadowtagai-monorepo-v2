@@ -40,17 +40,13 @@ def main():
 
         # Skip if no entity or source info is available
         if not entity_info and not source_info:
-            print(
-                f"  Skipping {connector_name} - no entity or source information found"
-            )
+            print(f"  Skipping {connector_name} - no entity or source information found")
             continue
 
         valid_connectors.append(connector_name)
 
         # Generate MDX content with both auth and config information
-        mdx_content = generate_mdx_content(
-            connector_name, entity_info, source_info, auth_configs, config_configs
-        )
+        mdx_content = generate_mdx_content(connector_name, entity_info, source_info, auth_configs, config_configs)
 
         # Create connector docs directory and files
         connector_docs_dir = DOCS_CONNECTORS_DIR / connector_name

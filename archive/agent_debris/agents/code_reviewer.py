@@ -29,11 +29,7 @@ class CodeReviewer:
         # Get Jura risk assessment
         jura_result = self.jura.quick_assess(code)
 
-        return {
-            "file": file_path,
-            "jura_assessment": jura_result,
-            "recommendation": jura_result.get("recommendation", "UNKNOWN")
-        }
+        return {"file": file_path, "jura_assessment": jura_result, "recommendation": jura_result.get("recommendation", "UNKNOWN")}
 
     def review_pr(self, changed_files: list[str]) -> dict:
         """Review a pull request's changed files."""
@@ -43,16 +39,18 @@ class CodeReviewer:
         issues = []
 
         for file_path in changed_files:
-            if file_path.endswith('.py'):
+            if file_path.endswith(".py"):
                 review = self.review_file(file_path)
                 results.append(review)
 
                 if review.get("jura_assessment", {}).get("risk_tier", 0) >= 4:
-                    issues.append({
-                        "file": file_path,
-                        "risk_tier": review["jura_assessment"]["risk_tier"],
-                        "issues": review["jura_assessment"].get("issues", [])
-                    })
+                    issues.append(
+                        {
+                            "file": file_path,
+                            "risk_tier": review["jura_assessment"]["risk_tier"],
+                            "issues": review["jura_assessment"].get("issues", []),
+                        }
+                    )
 
         # Run BugBot on the whole project
         bugbot_results = self.bugbot.full_scan("src/")
@@ -66,11 +64,7 @@ class CodeReviewer:
             "high_risk_files": len(issues),
             "bugbot_health_score": bugbot_results.get("health_score", 0),
             "recommendation": overall_recommendation,
-            "details": {
-                "file_reviews": results,
-                "issues": issues,
-                "bugbot": bugbot_results
-            }
+            "details": {"file_reviews": results, "issues": issues, "bugbot": bugbot_results},
         }
 
     def generate_review_comment(self, review_results: dict) -> str:

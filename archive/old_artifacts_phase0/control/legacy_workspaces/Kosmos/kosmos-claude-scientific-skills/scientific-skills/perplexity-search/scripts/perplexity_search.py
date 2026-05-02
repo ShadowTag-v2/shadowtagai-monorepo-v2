@@ -20,13 +20,14 @@ import argparse
 import json
 import os
 import sys
-from typing import Any, Dict, Optional
+from typing import Any
 
 
 def check_dependencies():
     """Check if required packages are installed."""
     try:
         import litellm
+
         return True
     except ImportError:
         print("Error: LiteLLM is not installed.", file=sys.stderr)
@@ -34,7 +35,7 @@ def check_dependencies():
         return False
 
 
-def check_api_key() -> Optional[str]:
+def check_api_key() -> str | None:
     """Check if OpenRouter API key is configured."""
     api_key = os.environ.get("OPENROUTER_API_KEY")
     if not api_key:
@@ -50,12 +51,8 @@ def check_api_key() -> Optional[str]:
 
 
 def search_with_perplexity(
-    query: str,
-    model: str = "openrouter/perplexity/sonar-pro",
-    max_tokens: int = 4000,
-    temperature: float = 0.2,
-    verbose: bool = False
-) -> Dict[str, Any]:
+    query: str, model: str = "openrouter/perplexity/sonar-pro", max_tokens: int = 4000, temperature: float = 0.2, verbose: bool = False
+) -> dict[str, Any]:
     """
     Perform a search using Perplexity models via LiteLLM and OpenRouter.
 
@@ -72,18 +69,12 @@ def search_with_perplexity(
     try:
         from litellm import completion
     except ImportError:
-        return {
-            "success": False,
-            "error": "LiteLLM not installed. Run: uv pip install litellm"
-        }
+        return {"success": False, "error": "LiteLLM not installed. Run: uv pip install litellm"}
 
     # Check API key
     api_key = check_api_key()
     if not api_key:
-        return {
-            "success": False,
-            "error": "OpenRouter API key not configured"
-        }
+        return {"success": False, "error": "OpenRouter API key not configured"}
 
     if verbose:
         print(f"Model: {model}", file=sys.stderr)
@@ -94,15 +85,7 @@ def search_with_perplexity(
 
     try:
         # Perform the search using LiteLLM
-        response = completion(
-            model=model,
-            messages=[{
-                "role": "user",
-                "content": query
-            }],
-            max_tokens=max_tokens,
-            temperature=temperature
-        )
+        response = completion(model=model, messages=[{"role": "user", "content": query}], max_tokens=max_tokens, temperature=temperature)
 
         # Extract the response
         result = {
@@ -113,23 +96,18 @@ def search_with_perplexity(
             "usage": {
                 "prompt_tokens": response.usage.prompt_tokens,
                 "completion_tokens": response.usage.completion_tokens,
-                "total_tokens": response.usage.total_tokens
-            }
+                "total_tokens": response.usage.total_tokens,
+            },
         }
 
         # Check if citations are available in the response
-        if hasattr(response.choices[0].message, 'citations'):
+        if hasattr(response.choices[0].message, "citations"):
             result["citations"] = response.choices[0].message.citations
 
         return result
 
     except Exception as e:
-        return {
-            "success": False,
-            "error": str(e),
-            "query": query,
-            "model": model
-        }
+        return {"success": False, "error": str(e), "query": query, "model": model}
 
 
 def main():
@@ -160,57 +138,27 @@ Available Models:
   - sonar: Standard model for basic searches
   - sonar-reasoning-pro: Advanced reasoning capabilities
   - sonar-reasoning: Basic reasoning model
-        """
+        """,
     )
 
-    parser.add_argument(
-        "query",
-        help="The search query"
-    )
+    parser.add_argument("query", help="The search query")
 
     parser.add_argument(
         "--model",
         default="sonar-pro",
-        choices=[
-            "sonar-pro",
-            "sonar-pro-search",
-            "sonar",
-            "sonar-reasoning-pro",
-            "sonar-reasoning"
-        ],
-        help="Perplexity model to use (default: sonar-pro)"
+        choices=["sonar-pro", "sonar-pro-search", "sonar", "sonar-reasoning-pro", "sonar-reasoning"],
+        help="Perplexity model to use (default: sonar-pro)",
     )
 
-    parser.add_argument(
-        "--max-tokens",
-        type=int,
-        default=4000,
-        help="Maximum tokens in response (default: 4000)"
-    )
+    parser.add_argument("--max-tokens", type=int, default=4000, help="Maximum tokens in response (default: 4000)")
 
-    parser.add_argument(
-        "--temperature",
-        type=float,
-        default=0.2,
-        help="Response temperature 0.0-1.0 (default: 0.2)"
-    )
+    parser.add_argument("--temperature", type=float, default=0.2, help="Response temperature 0.0-1.0 (default: 0.2)")
 
-    parser.add_argument(
-        "--output",
-        help="Save results to JSON file"
-    )
+    parser.add_argument("--output", help="Save results to JSON file")
 
-    parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Print detailed information"
-    )
+    parser.add_argument("--verbose", action="store_true", help="Print detailed information")
 
-    parser.add_argument(
-        "--check-setup",
-        action="store_true",
-        help="Check if dependencies and API key are configured"
-    )
+    parser.add_argument("--check-setup", action="store_true", help="Check if dependencies and API key are configured")
 
     args = parser.parse_args()
 
@@ -237,13 +185,7 @@ Available Models:
         model = f"openrouter/perplexity/{model}"
 
     # Perform the search
-    result = search_with_perplexity(
-        query=args.query,
-        model=model,
-        max_tokens=args.max_tokens,
-        temperature=args.temperature,
-        verbose=args.verbose
-    )
+    result = search_with_perplexity(query=args.query, model=model, max_tokens=args.max_tokens, temperature=args.temperature, verbose=args.verbose)
 
     # Handle results
     if not result["success"]:
@@ -251,11 +193,11 @@ Available Models:
         return 1
 
     # Print answer
-    print("\n" + "="*80)
+    print("\n" + "=" * 80)
     print("ANSWER")
-    print("="*80)
+    print("=" * 80)
     print(result["answer"])
-    print("="*80)
+    print("=" * 80)
 
     # Print usage stats if verbose
     if args.verbose:
@@ -266,7 +208,7 @@ Available Models:
 
     # Save to file if requested
     if args.output:
-        with open(args.output, 'w') as f:
+        with open(args.output, "w") as f:
             json.dump(result, f, indent=2)
         print(f"\n✓ Results saved to {args.output}", file=sys.stderr)
 

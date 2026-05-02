@@ -46,7 +46,7 @@ class TestPackageSkill(unittest.TestCase):
             self.assertTrue(success)
             self.assertIsNotNone(zip_path)
             self.assertTrue(zip_path.exists())
-            self.assertEqual(zip_path.suffix, '.zip')
+            self.assertEqual(zip_path.suffix, ".zip")
             self.assertTrue(zipfile.is_zipfile(zip_path))
 
     def test_package_creates_correct_zip_structure(self):
@@ -59,15 +59,15 @@ class TestPackageSkill(unittest.TestCase):
             self.assertTrue(success)
 
             # Check zip contents
-            with zipfile.ZipFile(zip_path, 'r') as zf:
+            with zipfile.ZipFile(zip_path, "r") as zf:
                 names = zf.namelist()
 
                 # Should contain SKILL.md
-                self.assertTrue(any('SKILL.md' in name for name in names))
+                self.assertTrue(any("SKILL.md" in name for name in names))
 
                 # Should contain references
-                self.assertTrue(any('references/index.md' in name for name in names))
-                self.assertTrue(any('references/getting_started.md' in name for name in names))
+                self.assertTrue(any("references/index.md" in name for name in names))
+                self.assertTrue(any("references/getting_started.md" in name for name in names))
 
     def test_package_excludes_backup_files(self):
         """Test that .backup files are excluded from zip"""
@@ -82,9 +82,9 @@ class TestPackageSkill(unittest.TestCase):
             self.assertTrue(success)
 
             # Check that backup is NOT in zip
-            with zipfile.ZipFile(zip_path, 'r') as zf:
+            with zipfile.ZipFile(zip_path, "r") as zf:
                 names = zf.namelist()
-                self.assertFalse(any('.backup' in name for name in names))
+                self.assertFalse(any(".backup" in name for name in names))
 
     def test_package_nonexistent_directory(self):
         """Test packaging a nonexistent directory"""
@@ -149,17 +149,12 @@ class TestPackageSkillCLI(unittest.TestCase):
         import subprocess
 
         try:
-            result = subprocess.run(
-                ['skill-seekers', 'package', '--help'],
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
+            result = subprocess.run(["skill-seekers", "package", "--help"], capture_output=True, text=True, timeout=5)
 
             # argparse may return 0 or 2 for --help
             self.assertIn(result.returncode, [0, 2])
             output = result.stdout + result.stderr
-            self.assertTrue('usage:' in output.lower() or 'package' in output.lower())
+            self.assertTrue("usage:" in output.lower() or "package" in output.lower())
         except FileNotFoundError:
             self.skipTest("skill-seekers command not installed")
 
@@ -168,12 +163,7 @@ class TestPackageSkillCLI(unittest.TestCase):
         import subprocess
 
         try:
-            result = subprocess.run(
-                ['skill-seekers-package', '--help'],
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
+            result = subprocess.run(["skill-seekers-package", "--help"], capture_output=True, text=True, timeout=5)
 
             # argparse may return 0 or 2 for --help
             self.assertIn(result.returncode, [0, 2])
@@ -181,5 +171,5 @@ class TestPackageSkillCLI(unittest.TestCase):
             self.skipTest("skill-seekers-package command not installed")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

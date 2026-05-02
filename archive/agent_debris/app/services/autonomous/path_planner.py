@@ -4,7 +4,7 @@ Path planning service using GAAS A* algorithm.
 Integrates with Judge #6 for safety validation and Cor.17 for reasoning.
 """
 
-from typing import List, Tuple, Optional, Dict, Any
+from typing import Any
 from dataclasses import dataclass
 import structlog
 
@@ -16,6 +16,7 @@ logger = structlog.get_logger()
 @dataclass
 class Waypoint:
     """3D waypoint for path planning."""
+
     x: float
     y: float
     z: float
@@ -25,6 +26,7 @@ class Waypoint:
 @dataclass
 class PathPlanningResult:
     """Result of path planning."""
+
     waypoints: list[Waypoint]
     total_distance: float
     estimated_time: float  # seconds
@@ -175,10 +177,12 @@ class PathPlannerService:
 
         # Call Judge #6
         judge = JudgeSixKernel()
-        judge_result = await judge.execute({
-            "purpose": purpose,
-            "reasons": reasons,
-        })
+        judge_result = await judge.execute(
+            {
+                "purpose": purpose,
+                "reasons": reasons,
+            }
+        )
 
         # Extract safety score from Judge #6 decision
         decision = judge_result.get("decision", {})

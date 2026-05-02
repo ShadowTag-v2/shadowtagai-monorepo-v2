@@ -1,10 +1,12 @@
 import json
-from typing import Any, Dict
+from typing import Any
+
 
 class ExecutorAgent:
     """
     Generates ATP_519_scan detection patterns (Rules) to catch violations.
     """
+
     def __init__(self, model_client=None):
         self.model_client = model_client
 
@@ -30,7 +32,7 @@ class ExecutorAgent:
         rule = {
             "rule_id": f"rule_{len(keywords)}",
             "keywords": keywords,
-            "logic": "OR" # Simple logic
+            "logic": "OR",  # Simple logic
         }
 
         return json.dumps(rule)

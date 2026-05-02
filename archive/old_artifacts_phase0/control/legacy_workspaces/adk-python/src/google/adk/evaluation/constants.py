@@ -14,7 +14,4 @@
 
 from __future__ import annotations
 
-MISSING_EVAL_DEPENDENCIES_MESSAGE = (
-    'Eval module is not installed, please install via `pip install'
-    ' "google-adk[eval]"`.'
-)
+MISSING_EVAL_DEPENDENCIES_MESSAGE = 'Eval module is not installed, please install via `pip install "google-adk[eval]"`.'

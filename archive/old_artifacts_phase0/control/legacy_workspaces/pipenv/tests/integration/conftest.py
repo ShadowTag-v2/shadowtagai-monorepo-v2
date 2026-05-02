@@ -24,9 +24,7 @@ log = logging.getLogger(__name__)
 warnings.simplefilter("default", category=ResourceWarning)
 
 
-DEFAULT_PRIVATE_PYPI_SERVER = os.environ.get(
-    "PIPENV_PYPI_SERVER", "http://localhost:8080/simple"
-)
+DEFAULT_PRIVATE_PYPI_SERVER = os.environ.get("PIPENV_PYPI_SERVER", "http://localhost:8080/simple")
 
 
 def try_internet(url="http://httpbin.org/ip", timeout=1.5):
@@ -40,13 +38,9 @@ def check_internet():
         try:
             try_internet(url)
         except KeyboardInterrupt:  # noqa: PERF203
-            warnings.warn(
-                f"Skipped connecting to internet: {url}", RuntimeWarning, stacklevel=1
-            )
+            warnings.warn(f"Skipped connecting to internet: {url}", RuntimeWarning, stacklevel=1)
         except Exception:
-            warnings.warn(
-                f"Failed connecting to internet: {url}", RuntimeWarning, stacklevel=1
-            )
+            warnings.warn(f"Failed connecting to internet: {url}", RuntimeWarning, stacklevel=1)
         else:
             has_internet = True
             break
@@ -89,16 +83,11 @@ WE_HAVE_HG = check_for_mercurial()
 def pytest_runtest_setup(item):
     if item.get_closest_marker("needs_internet") is not None and not WE_HAVE_INTERNET:
         pytest.skip("requires internet")
-    if (
-        item.get_closest_marker("needs_github_ssh") is not None
-        and not WE_HAVE_GITHUB_SSH_KEYS
-    ):
+    if item.get_closest_marker("needs_github_ssh") is not None and not WE_HAVE_GITHUB_SSH_KEYS:
         pytest.skip("requires github ssh")
     if item.get_closest_marker("needs_hg") is not None and not WE_HAVE_HG:
         pytest.skip("requires mercurial")
-    if item.get_closest_marker("skip_py38") is not None and (
-        sys.version_info[:2] == (3, 8)
-    ):
+    if item.get_closest_marker("skip_py38") is not None and (sys.version_info[:2] == (3, 8)):
         pytest.skip("test not applicable on python 3.8")
     if item.get_closest_marker("skip_osx") is not None and sys.platform == "darwin":
         pytest.skip("test does not apply on OSX")
@@ -136,11 +125,7 @@ class _Pipfile:
 
     def remove(self, package, dev=False):
         section = "packages" if not dev else "dev-packages"
-        if (
-            not dev
-            and package not in self.document[section]
-            and package in self.document["dev-packages"]
-        ):
+        if not dev and package not in self.document[section] and package in self.document["dev-packages"]:
             section = "dev-packages"
         del self.document[section][package]
         self.write()
@@ -336,13 +321,9 @@ def pipenv_instance_pypi(capfdbinary, monkeypatch):
         os.environ["CI"] = "1"
         os.environ["PIPENV_DONT_USE_PYENV"] = "1"
         warnings.simplefilter("ignore", category=ResourceWarning)
-        warnings.filterwarnings(
-            "ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>"
-        )
+        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
         try:
-            yield functools.partial(
-                _PipenvInstance, capfd=capfdbinary, index_url="https://pypi.org/simple"
-            )
+            yield functools.partial(_PipenvInstance, capfd=capfdbinary, index_url="https://pypi.org/simple")
         finally:
             os.umask(original_umask)
 
@@ -356,13 +337,9 @@ def pipenv_instance_private_pypi(capfdbinary, monkeypatch):
         os.environ["CI"] = "1"
         os.environ["PIPENV_DONT_USE_PYENV"] = "1"
         warnings.simplefilter("ignore", category=ResourceWarning)
-        warnings.filterwarnings(
-            "ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>"
-        )
+        warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>")
         try:
-            yield functools.partial(
-                _PipenvInstance, capfd=capfdbinary, index_url=DEFAULT_PRIVATE_PYPI_SERVER
-            )
+            yield functools.partial(_PipenvInstance, capfd=capfdbinary, index_url=DEFAULT_PRIVATE_PYPI_SERVER)
         finally:
             os.umask(original_umask)
 

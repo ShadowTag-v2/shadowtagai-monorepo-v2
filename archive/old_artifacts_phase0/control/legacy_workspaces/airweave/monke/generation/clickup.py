@@ -3,7 +3,6 @@
 Generates realistic task, subtask, comment, and file content for testing ClickUp integration using LLM.
 """
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.clickup import (
     ClickUpCommentContent,
@@ -105,9 +104,7 @@ async def generate_clickup_task(model: str, token: str) -> tuple[str, str]:
     return task.spec.name, description
 
 
-async def generate_clickup_subtask(
-    model: str, token: str, parent_task_name: str
-) -> tuple[str, str]:
+async def generate_clickup_subtask(model: str, token: str, parent_task_name: str) -> tuple[str, str]:
     """Generate subtask content for ClickUp testing using LLM.
 
     Args:
@@ -197,9 +194,7 @@ async def generate_clickup_file(model: str, token: str) -> tuple[str, str]:
     # Ensure token is in the content - embed it in the title/header for better chunking
     if token not in file_data.content:
         # Put token in the main content, not on a separate line to avoid chunking issues
-        file_data.content = (
-            f"# API Specification - Token: {token}\n\n{file_data.content}"
-        )
+        file_data.content = f"# API Specification - Token: {token}\n\n{file_data.content}"
 
     # Also ensure the token appears in the body for redundancy
     if file_data.content.count(token) < 2:

@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 class PaperSource(StrEnum):
     """Source of the paper."""
+
     ARXIV = "arxiv"
     SEMANTIC_SCHOLAR = "semantic_scholar"
     PUBMED = "pubmed"
@@ -26,6 +27,7 @@ class PaperSource(StrEnum):
 @dataclass
 class Author:
     """Author information."""
+
     name: str
     affiliation: str | None = None
     email: str | None = None
@@ -40,6 +42,7 @@ class PaperMetadata:
     This standardized format ensures consistent handling of papers
     regardless of source API.
     """
+
     # Identifiers
     id: str  # Unique ID from source
     source: PaperSource
@@ -118,7 +121,7 @@ class PaperMetadata:
             "influential_citation_count": self.influential_citation_count,
             "fields": self.fields,
             "keywords": self.keywords,
-            "full_text": self.full_text
+            "full_text": self.full_text,
         }
 
 
@@ -144,13 +147,7 @@ class BaseLiteratureClient(ABC):
 
     @abstractmethod
     def search(
-        self,
-        query: str,
-        max_results: int = 10,
-        fields: list[str] | None = None,
-        year_from: int | None = None,
-        year_to: int | None = None,
-        **kwargs
+        self, query: str, max_results: int = 10, fields: list[str] | None = None, year_from: int | None = None, year_to: int | None = None, **kwargs
     ) -> list[PaperMetadata]:
         """
         Search for papers matching the query.
@@ -226,10 +223,7 @@ class BaseLiteratureClient(ABC):
             error: The exception that occurred
             operation: Description of the operation being performed
         """
-        self.logger.error(
-            f"Error in {self.get_source_name()} API during {operation}: {str(error)}",
-            exc_info=True
-        )
+        self.logger.error(f"Error in {self.get_source_name()} API during {operation}: {str(error)}", exc_info=True)
         # Could add retry logic, circuit breaker, etc. here
 
     def _validate_query(self, query: str) -> bool:

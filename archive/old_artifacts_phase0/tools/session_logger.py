@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from enum import StrEnum
 from pathlib import Path
 from typing import Any
@@ -53,7 +53,7 @@ class SessionLogger:
         self.sessions_dir = self.beads_dir / "sessions"
         self.sessions_dir.mkdir(parents=True, exist_ok=True)
 
-        date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        date_str = datetime.now(UTC).strftime("%Y-%m-%d")
         self.log_file = self.sessions_dir / f"{date_str}_{session_id[:8]}.jsonl"
         self._entry_count = 0
 
@@ -68,7 +68,7 @@ class SessionLogger:
 
     def _write_entry(self, entry: dict[str, Any]) -> None:
         """Write a single JSON line to the log file (append-only)."""
-        entry["timestamp"] = datetime.now(timezone.utc).isoformat()
+        entry["timestamp"] = datetime.now(UTC).isoformat()
         entry["seq"] = self._entry_count
         self._entry_count += 1
 

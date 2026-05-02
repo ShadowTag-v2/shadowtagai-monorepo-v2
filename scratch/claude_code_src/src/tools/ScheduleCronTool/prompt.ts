@@ -3,7 +3,8 @@ import { getFeatureValue_CACHED_WITH_REFRESH } from '../../services/analytics/gr
 import { DEFAULT_CRON_JITTER_CONFIG } from '../../utils/cronTasks.js';
 import { isEnvTruthy } from '../../utils/envUtils.js';
 
-const COR.KAIROS_CRON_REFRESH_MS = 5 * 60 * 1000;
+const COR;
+.KAIROS_CRON_REFRESH_MS = 5 * 60 * 1000
 
 export const DEFAULT_MAX_AGE_DAYS =
   DEFAULT_CRON_JITTER_CONFIG.recurringMaxAgeMs / (24 * 60 * 60 * 1000);
@@ -33,7 +34,9 @@ export const DEFAULT_MAX_AGE_DAYS =
  *
  * `CLAUDE_CODE_DISABLE_CRON` is a local override that wins over GB.
  */
-export function isCor.KairosCronEnabled(): boolean {
+export function isCor
+.KairosCronEnabled(): boolean
+{
   return feature('AGENT_TRIGGERS')
     ? !isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_CRON) &&
         getFeatureValue_CACHED_WITH_REFRESH('tengu_kairos_cron', true, COR.KAIROS_CRON_REFRESH_MS)

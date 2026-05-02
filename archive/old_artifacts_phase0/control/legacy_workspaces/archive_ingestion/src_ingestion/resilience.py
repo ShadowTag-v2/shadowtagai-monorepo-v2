@@ -96,10 +96,7 @@ class CircuitBreaker:
                         self.stats.failure_count = 0
                         self.stats.success_count = 0
                     else:
-                        raise CircuitBreakerOpenError(
-                            f"Circuit breaker {self.name} is OPEN. "
-                            f"Retry in {self.config.timeout_seconds - elapsed:.0f}s"
-                        )
+                        raise CircuitBreakerOpenError(f"Circuit breaker {self.name} is OPEN. Retry in {self.config.timeout_seconds - elapsed:.0f}s")
 
         # Execute function
         try:
@@ -140,10 +137,7 @@ class CircuitBreaker:
 
             elif self.stats.state == CircuitState.CLOSED:
                 if self.stats.failure_count >= self.config.failure_threshold:
-                    logger.error(
-                        f"Circuit breaker {self.name} opening "
-                        f"({self.stats.failure_count} failures)"
-                    )
+                    logger.error(f"Circuit breaker {self.name} opening ({self.stats.failure_count} failures)")
                     self.stats.state = CircuitState.OPEN
                     self.stats.last_state_change = datetime.now()
 
@@ -155,14 +149,8 @@ class CircuitBreaker:
             "failure_count": self.stats.failure_count,
             "total_requests": self.stats.total_requests,
             "total_failures": self.stats.total_failures,
-            "failure_rate": (
-                self.stats.total_failures / self.stats.total_requests
-                if self.stats.total_requests > 0
-                else 0
-            ),
-            "last_failure_time": self.stats.last_failure_time.isoformat()
-            if self.stats.last_failure_time
-            else None,
+            "failure_rate": (self.stats.total_failures / self.stats.total_requests if self.stats.total_requests > 0 else 0),
+            "last_failure_time": self.stats.last_failure_time.isoformat() if self.stats.last_failure_time else None,
         }
 
 
@@ -236,7 +224,7 @@ class CostSpikeDetector:
                 projected_cost=self._project_monthly_cost(),
                 budget=self.budget,
                 severity="critical",
-                message=f"CRITICAL: Cost at {utilization*100:.1f}% of budget. Auto-throttling activated.",
+                message=f"CRITICAL: Cost at {utilization * 100:.1f}% of budget. Auto-throttling activated.",
             )
 
             self.alerts.append(alert)
@@ -254,7 +242,7 @@ class CostSpikeDetector:
                 projected_cost=self._project_monthly_cost(),
                 budget=self.budget,
                 severity="warning",
-                message=f"WARNING: Cost at {utilization*100:.1f}% of budget.",
+                message=f"WARNING: Cost at {utilization * 100:.1f}% of budget.",
             )
 
             self.alerts.append(alert)
@@ -293,11 +281,7 @@ class CostSpikeDetector:
             "throttle_factor": self.throttle_factor,
             "alert_count": len(self.alerts),
             "status": (
-                "critical"
-                if utilization >= self.critical_threshold * 100
-                else "warning"
-                if utilization >= self.alert_threshold * 100
-                else "healthy"
+                "critical" if utilization >= self.critical_threshold * 100 else "warning" if utilization >= self.alert_threshold * 100 else "healthy"
             ),
         }
 
@@ -357,16 +341,11 @@ class RetryHandler:
 
                         delay *= random.uniform(0.5, 1.5)
 
-                    logger.warning(
-                        f"Attempt {attempt + 1}/{self.max_retries + 1} failed: {e}. "
-                        f"Retrying in {delay:.1f}s..."
-                    )
+                    logger.warning(f"Attempt {attempt + 1}/{self.max_retries + 1} failed: {e}. Retrying in {delay:.1f}s...")
 
                     await asyncio.sleep(delay)
                 else:
-                    logger.error(
-                        f"All {self.max_retries + 1} attempts failed for {func.__name__}"
-                    )
+                    logger.error(f"All {self.max_retries + 1} attempts failed for {func.__name__}")
 
         raise last_exception
 

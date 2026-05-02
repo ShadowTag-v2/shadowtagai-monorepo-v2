@@ -188,5 +188,7 @@ class WrappedPerReqLogitsProcessor(AdapterLogitsProcessor):
 
 
 """Fake version of importlib.metadata.entry_points"""
+
+
 def entry_points(group):
     return EntryPoints(group)

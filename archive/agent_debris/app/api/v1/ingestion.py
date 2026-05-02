@@ -1,6 +1,7 @@
 """
 Gemini Ingestion Layer API Endpoints
 """
+
 from fastapi import APIRouter, HTTPException, Path, Query
 import logging
 
@@ -44,9 +45,7 @@ async def start_ingestion_job(request: JobStartRequest):
     service = get_ingestion_service()
 
     try:
-        job_id = service.start_job(
-            max_items_per_source=request.max_items_per_source
-        )
+        job_id = service.start_job(max_items_per_source=request.max_items_per_source)
 
         logger.info(f"Ingestion job started: {job_id}")
 
@@ -54,7 +53,7 @@ async def start_ingestion_job(request: JobStartRequest):
             "job_id": job_id,
             "status": "accepted",
             "message": "Ingestion job started (runtime ~45 min)",
-            "check_status_at": f"/api/v1/ingestion/jobs/{job_id}"
+            "check_status_at": f"/api/v1/ingestion/jobs/{job_id}",
         }
 
     except Exception as e:
@@ -63,9 +62,7 @@ async def start_ingestion_job(request: JobStartRequest):
 
 
 @router.get("/jobs/{job_id}/status", response_model=JobStatusResponse)
-async def get_job_status(
-    job_id: str = Path(..., description="Job identifier")
-):
+async def get_job_status(job_id: str = Path(..., description="Job identifier")):
     """
     Get status of a specific ingestion job.
 
@@ -89,9 +86,7 @@ async def get_job_status(
 
 
 @router.get("/jobs/{job_id}", response_model=JobResult)
-async def get_job_result(
-    job_id: str = Path(..., description="Job identifier")
-):
+async def get_job_result(job_id: str = Path(..., description="Job identifier")):
     """
     Get full result of a completed ingestion job.
 
@@ -111,18 +106,14 @@ async def get_job_result(
     result = service.get_job_result(job_id)
 
     if not result:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Job {job_id} not found or not yet completed"
-        )
+        raise HTTPException(status_code=404, detail=f"Job {job_id} not found or not yet completed")
 
     return result
 
 
 @router.get("/jobs", response_model=JobListResponse)
 async def list_jobs(
-    page: int = Query(1, ge=1, description="Page number (1-indexed)"),
-    page_size: int = Query(10, ge=1, le=100, description="Items per page")
+    page: int = Query(1, ge=1, description="Page number (1-indexed)"), page_size: int = Query(10, ge=1, le=100, description="Items per page")
 ):
     """
     List recent ingestion jobs with pagination.
@@ -189,5 +180,5 @@ async def ingestion_health_check():
         "service": "gemini_ingestion_layer",
         "active_jobs": len(service.running_jobs),
         "completed_jobs": len(service.jobs),
-        "total_jobs": len(service.running_jobs) + len(service.jobs)
+        "total_jobs": len(service.running_jobs) + len(service.jobs),
     }

@@ -1,6 +1,5 @@
 """Word-specific generation adapter: document content generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.word import WordDocumentContent
 
@@ -38,9 +37,7 @@ async def generate_word_document(model: str, token: str, doc_type: str) -> WordD
     return doc_content
 
 
-async def generate_documents_content(
-    model: str, tokens: list[str], base_name: str = "Test Document"
-) -> tuple[list[str], list[WordDocumentContent]]:
+async def generate_documents_content(model: str, tokens: list[str], base_name: str = "Test Document") -> tuple[list[str], list[WordDocumentContent]]:
     """Generate content for multiple Word documents.
 
     Args:

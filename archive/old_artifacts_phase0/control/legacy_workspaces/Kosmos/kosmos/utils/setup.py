@@ -129,14 +129,7 @@ def validate_database_schema(database_url: str) -> dict:
     from alembic.runtime.migration import MigrationContext
     from sqlalchemy import create_engine, inspect
 
-    results = {
-        "complete": True,
-        "missing_tables": [],
-        "missing_indexes": [],
-        "current_revision": None,
-        "head_revision": None,
-        "errors": []
-    }
+    results = {"complete": True, "missing_tables": [], "missing_indexes": [], "current_revision": None, "head_revision": None, "errors": []}
 
     try:
         engine = create_engine(database_url)
@@ -150,9 +143,9 @@ def validate_database_schema(database_url: str) -> dict:
             "papers",
             "agents",
             "research_sessions",
-            "execution_profiles",       # From migration dc24ead48293 (profiling tables)
-            "profiling_bottlenecks",   # From migration dc24ead48293 (profiling tables)
-            "alembic_version"
+            "execution_profiles",  # From migration dc24ead48293 (profiling tables)
+            "profiling_bottlenecks",  # From migration dc24ead48293 (profiling tables)
+            "alembic_version",
         }
 
         # Check existing tables
@@ -168,7 +161,7 @@ def validate_database_schema(database_url: str) -> dict:
             "hypotheses": ["idx_hypotheses_domain_status"],
             "experiments": ["idx_experiments_created_at", "idx_experiments_domain_status"],
             "results": ["idx_results_experiment_id"],
-            "papers": ["idx_papers_domain_relevance"]
+            "papers": ["idx_papers_domain_relevance"],
         }
 
         # Check indexes for each table
@@ -190,6 +183,7 @@ def validate_database_schema(database_url: str) -> dict:
         try:
             from alembic.config import Config
             from alembic.script import ScriptDirectory
+
             project_root = Path(__file__).parent.parent.parent
             alembic_ini = project_root / "alembic.ini"
 
@@ -201,9 +195,7 @@ def validate_database_schema(database_url: str) -> dict:
 
                 if current_rev != head_rev:
                     results["complete"] = False
-                    results["errors"].append(
-                        f"Database migration outdated (current: {current_rev}, latest: {head_rev})"
-                    )
+                    results["errors"].append(f"Database migration outdated (current: {current_rev}, latest: {head_rev})")
         except Exception as e:
             results["errors"].append(f"Could not check migration version: {e}")
 
@@ -234,12 +226,7 @@ def first_time_setup(database_url: str) -> dict:
             - schema_valid: bool
             - errors: list[str]
     """
-    results = {
-        "env_created": False,
-        "migrations_run": False,
-        "schema_valid": False,
-        "errors": []
-    }
+    results = {"env_created": False, "migrations_run": False, "schema_valid": False, "errors": []}
 
     # Step 1: Ensure .env file exists
     try:

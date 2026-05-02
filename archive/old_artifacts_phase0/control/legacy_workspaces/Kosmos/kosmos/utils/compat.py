@@ -31,18 +31,18 @@ def model_to_dict(model: Any, **kwargs) -> dict[str, Any]:
         {'name': 'Alice', 'age': 30}
     """
     # Try Pydantic v2 method first
-    if hasattr(model, 'model_dump'):
+    if hasattr(model, "model_dump"):
         return model.model_dump(**kwargs)
     # Fall back to Pydantic v1 method
-    elif hasattr(model, 'dict'):
+    elif hasattr(model, "dict"):
         return model.dict(**kwargs)
     # Handle plain objects or dataclasses
-    elif hasattr(model, '__dict__'):
+    elif hasattr(model, "__dict__"):
         return dict(model.__dict__)
     # Last resort - try to convert directly
     else:
         try:
             return dict(model)
-        except (TypeError, ValueError):
+        except TypeError, ValueError:
             # If all else fails, return empty dict
             return {}

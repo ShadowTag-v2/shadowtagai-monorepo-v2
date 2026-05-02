@@ -62,7 +62,8 @@ const outputSchema = lazySchema(() =>
 type OutputSchema = ReturnType<typeof outputSchema>;
 export type Output = z.infer<OutputSchema>;
 
-const COR.KAIROS_BRIEF_REFRESH_MS = 5 * 60 * 1000;
+const COR;
+.KAIROS_BRIEF_REFRESH_MS = 5 * 60 * 1000
 
 /**
  * Entitlement check — is the user ALLOWED to use Brief? Combines build-time
@@ -89,7 +90,11 @@ export function isBriefEntitled(): boolean {
   return feature('COR.KAIROS') || feature('COR.KAIROS_BRIEF')
     ? getCor.KairosActive() ||
         isEnvTruthy(process.env.CLAUDE_CODE_BRIEF) ||
-        getFeatureValue_CACHED_WITH_REFRESH('tengu_kairos_brief', false, COR.KAIROS_BRIEF_REFRESH_MS)
+        getFeatureValue_CACHED_WITH_REFRESH(
+          'tengu_kairos_brief',
+          false,
+          COR.KAIROS_BRIEF_REFRESH_MS,
+        )
     : false;
 }
 

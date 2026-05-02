@@ -31,18 +31,17 @@ __all__ = [
 
 
 def __getattr__(name: str) -> Any:
-  if name == "DEFAULT_SKILL_SYSTEM_INSTRUCTION":
+    if name == "DEFAULT_SKILL_SYSTEM_INSTRUCTION":
+        from ..tools import skill_toolset
 
-    from ..tools import skill_toolset
-
-    warnings.warn(
-        (
-            "Importing DEFAULT_SKILL_SYSTEM_INSTRUCTION from"
-            " google.adk.skills is deprecated."
-            " Please import it from google.adk.tools.skill_toolset instead."
-        ),
-        DeprecationWarning,
-        stacklevel=2,
-    )
-    return skill_toolset.DEFAULT_SKILL_SYSTEM_INSTRUCTION
-  raise AttributeError(f"module {__name__} has no attribute {name}")
+        warnings.warn(
+            (
+                "Importing DEFAULT_SKILL_SYSTEM_INSTRUCTION from"
+                " google.adk.skills is deprecated."
+                " Please import it from google.adk.tools.skill_toolset instead."
+            ),
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return skill_toolset.DEFAULT_SKILL_SYSTEM_INSTRUCTION
+    raise AttributeError(f"module {__name__} has no attribute {name}")

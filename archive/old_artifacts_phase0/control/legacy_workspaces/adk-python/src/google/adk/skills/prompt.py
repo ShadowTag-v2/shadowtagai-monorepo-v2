@@ -26,49 +26,48 @@ from . import models
 def format_skills_as_xml(
     skills: list[models.Frontmatter | models.Skill],
 ) -> str:
-  """Formats available skills into a standard XML string.
+    """Formats available skills into a standard XML string.
 
-  Args:
-    skills: A list of skill frontmatter or full skill objects.
+    Args:
+      skills: A list of skill frontmatter or full skill objects.
 
-  Returns:
-      XML string with <available_skills> block containing each skill's
-      name and description.
-  """
+    Returns:
+        XML string with <available_skills> block containing each skill's
+        name and description.
+    """
 
-  if not skills:
-    return "<available_skills>\n</available_skills>"
+    if not skills:
+        return "<available_skills>\n</available_skills>"
 
-  lines = ["<available_skills>"]
+    lines = ["<available_skills>"]
 
-  for item in skills:
-    lines.append("<skill>")
-    lines.append("<name>")
-    lines.append(html.escape(item.name))
-    lines.append("</name>")
-    lines.append("<description>")
-    lines.append(html.escape(item.description))
-    lines.append("</description>")
-    lines.append("</skill>")
+    for item in skills:
+        lines.append("<skill>")
+        lines.append("<name>")
+        lines.append(html.escape(item.name))
+        lines.append("</name>")
+        lines.append("<description>")
+        lines.append(html.escape(item.description))
+        lines.append("</description>")
+        lines.append("</skill>")
 
-  lines.append("</available_skills>")
+    lines.append("</available_skills>")
 
-  return "\n".join(lines)
+    return "\n".join(lines)
 
 
 def __getattr__(name: str) -> Any:
-  if name == "DEFAULT_SKILL_SYSTEM_INSTRUCTION":
+    if name == "DEFAULT_SKILL_SYSTEM_INSTRUCTION":
+        from ..tools import skill_toolset
 
-    from ..tools import skill_toolset
-
-    warnings.warn(
-        (
-            "Importing DEFAULT_SKILL_SYSTEM_INSTRUCTION from"
-            " google.adk.skills.prompt is deprecated."
-            " Please import it from google.adk.tools.skill_toolset instead."
-        ),
-        DeprecationWarning,
-        stacklevel=2,
-    )
-    return skill_toolset.DEFAULT_SKILL_SYSTEM_INSTRUCTION
-  raise AttributeError(f"module {__name__} has no attribute {name}")
+        warnings.warn(
+            (
+                "Importing DEFAULT_SKILL_SYSTEM_INSTRUCTION from"
+                " google.adk.skills.prompt is deprecated."
+                " Please import it from google.adk.tools.skill_toolset instead."
+            ),
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return skill_toolset.DEFAULT_SKILL_SYSTEM_INSTRUCTION
+    raise AttributeError(f"module {__name__} has no attribute {name}")

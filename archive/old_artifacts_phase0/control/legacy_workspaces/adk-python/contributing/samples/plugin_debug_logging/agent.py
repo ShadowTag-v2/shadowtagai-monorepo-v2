@@ -32,57 +32,57 @@ from google.adk.plugins import DebugLoggingPlugin
 
 
 def get_weather(city: str) -> dict[str, Any]:
-  """Get the current weather for a city.
+    """Get the current weather for a city.
 
-  Args:
-    city: The name of the city to get weather for.
+    Args:
+      city: The name of the city to get weather for.
 
-  Returns:
-    A dictionary containing weather information.
-  """
-  # Simulated weather data
-  weather_data = {
-      "new york": {"temperature": 22, "condition": "sunny", "humidity": 45},
-      "london": {"temperature": 15, "condition": "cloudy", "humidity": 70},
-      "tokyo": {"temperature": 28, "condition": "humid", "humidity": 85},
-      "paris": {"temperature": 18, "condition": "rainy", "humidity": 80},
-  }
-
-  city_lower = city.lower()
-  if city_lower in weather_data:
-    data = weather_data[city_lower]
-    return {
-        "city": city,
-        "temperature_celsius": data["temperature"],
-        "condition": data["condition"],
-        "humidity_percent": data["humidity"],
+    Returns:
+      A dictionary containing weather information.
+    """
+    # Simulated weather data
+    weather_data = {
+        "new york": {"temperature": 22, "condition": "sunny", "humidity": 45},
+        "london": {"temperature": 15, "condition": "cloudy", "humidity": 70},
+        "tokyo": {"temperature": 28, "condition": "humid", "humidity": 85},
+        "paris": {"temperature": 18, "condition": "rainy", "humidity": 80},
     }
-  else:
-    return {
-        "city": city,
-        "error": f"Weather data not available for {city}",
-    }
+
+    city_lower = city.lower()
+    if city_lower in weather_data:
+        data = weather_data[city_lower]
+        return {
+            "city": city,
+            "temperature_celsius": data["temperature"],
+            "condition": data["condition"],
+            "humidity_percent": data["humidity"],
+        }
+    else:
+        return {
+            "city": city,
+            "error": f"Weather data not available for {city}",
+        }
 
 
 def calculate(expression: str) -> dict[str, Any]:
-  """Evaluate a simple mathematical expression.
+    """Evaluate a simple mathematical expression.
 
-  Args:
-    expression: A mathematical expression to evaluate (e.g., "2 + 2").
+    Args:
+      expression: A mathematical expression to evaluate (e.g., "2 + 2").
 
-  Returns:
-    A dictionary containing the result or error.
-  """
-  try:
-    # Only allow safe mathematical operations
-    allowed_chars = set("0123456789+-*/.() ")
-    if not all(c in allowed_chars for c in expression):
-      return {"error": "Invalid characters in expression"}
+    Returns:
+      A dictionary containing the result or error.
+    """
+    try:
+        # Only allow safe mathematical operations
+        allowed_chars = set("0123456789+-*/.() ")
+        if not all(c in allowed_chars for c in expression):
+            return {"error": "Invalid characters in expression"}
 
-    result = eval(expression)  # Safe due to character restriction
-    return {"expression": expression, "result": result}
-  except Exception as e:
-    return {"expression": expression, "error": str(e)}
+        result = eval(expression)  # Safe due to character restriction
+        return {"expression": expression, "result": result}
+    except Exception as e:
+        return {"expression": expression, "error": str(e)}
 
 
 # Sample queries to try:

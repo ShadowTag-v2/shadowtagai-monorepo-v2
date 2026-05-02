@@ -2,8 +2,9 @@
 
 from collections.abc import AsyncGenerator
 
+from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 from src.config.settings import settings
 
@@ -25,6 +26,15 @@ AsyncSessionLocal = async_sessionmaker(
 
 # Create declarative base for models
 Base = declarative_base()
+
+# Sync engine and session factory (for tests and non-async contexts)
+_sync_url = (
+    (settings.database_url or "sqlite:///./test.db")
+    .replace("sqlite+aiosqlite", "sqlite")
+    .replace("postgresql+asyncpg", "postgresql")
+)
+sync_engine = create_engine(_sync_url, echo=settings.debug, future=True)
+SessionLocal = sessionmaker(bind=sync_engine, autocommit=False, autoflush=False)
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:

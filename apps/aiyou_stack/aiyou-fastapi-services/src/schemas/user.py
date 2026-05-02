@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class UserCreate(BaseModel):
@@ -18,16 +18,19 @@ class UserCreate(BaseModel):
     segment: str | None = Field(None, description="User segment")
     cohort: str | None = Field(None, description="User cohort")
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "user_id": "user_123",
-                "email": "user@example.com",
-                "name": "John Doe",
-                "properties": {"plan": "premium", "signup_source": "landing_page"},
-                "segment": "power_users",
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "user_id": "user_123",
+                    "email": "user@example.com",
+                    "name": "John Doe",
+                    "properties": {"plan": "premium", "signup_source": "landing_page"},
+                    "segment": "power_users",
+                },
+            ],
+        },
+    )
 
 
 class UserUpdate(BaseModel):
@@ -61,5 +64,4 @@ class UserResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

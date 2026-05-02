@@ -1,7 +1,8 @@
 """Reasoning API endpoints"""
+
 from fastapi import APIRouter, Request, HTTPException
 from pydantic import BaseModel
-from typing import Dict, List, Any, Optional
+from typing import Any
 
 router = APIRouter()
 
@@ -26,12 +27,7 @@ async def execute_reasoning(request: ReasoningRequest, req: Request):
     if not reasoning:
         raise HTTPException(status_code=503, detail="Reasoning engine not initialized")
 
-    result = await reasoning.reason(
-        session_id=request.session_id,
-        query=request.query,
-        context=request.context,
-        mode=request.mode
-    )
+    result = await reasoning.reason(session_id=request.session_id, query=request.query, context=request.context, mode=request.mode)
 
     return result
 
@@ -44,9 +40,6 @@ async def train_adapter(request: TrainAdapterRequest, req: Request):
     if not reasoning:
         raise HTTPException(status_code=503, detail="Reasoning engine not initialized")
 
-    result = await reasoning.train_adapter(
-        expert_id=request.expert_id,
-        training_data=request.training_data
-    )
+    result = await reasoning.train_adapter(expert_id=request.expert_id, training_data=request.training_data)
 
     return result

@@ -71,17 +71,11 @@ def find_pipfile(max_depth=3):
     raise RuntimeError("No Pipfile found!")
 
 
-def ensure_pipfile(
-    project, validate=True, skip_requirements=False, system=False, pipfile_categories=None
-):
+def ensure_pipfile(project, validate=True, skip_requirements=False, system=False, pipfile_categories=None):
     """Creates a Pipfile for the project, if it doesn't exist."""
 
     # Assert Pipfile exists.
-    python = (
-        project._which("python")
-        if not (project.s.USING_DEFAULT_PYTHON or system)
-        else None
-    )
+    python = project._which("python") if not (project.s.USING_DEFAULT_PYTHON or system) else None
     if project.pipfile_is_empty:
         # If there's a requirements file, but no Pipfile...
         if project.requirements_exists and not skip_requirements:
@@ -95,18 +89,14 @@ def ensure_pipfile(
             )
             # Create a Pipfile...
             project.create_pipfile(python=python)
-            with console.status(
-                "Importing requirements...", spinner=project.s.PIPENV_SPINNER
-            ) as st:
+            with console.status("Importing requirements...", spinner=project.s.PIPENV_SPINNER) as st:
                 # Import requirements.txt.
                 try:
                     import_requirements(project, categories=pipfile_categories)
                 except Exception:
                     err.print(environments.PIPENV_SPINNER_FAIL_TEXT.format("Failed..."))
                 else:
-                    st.console.print(
-                        environments.PIPENV_SPINNER_OK_TEXT.format("Success!")
-                    )
+                    st.console.print(environments.PIPENV_SPINNER_OK_TEXT.format("Success!"))
             # Warn the user of side-effects.
             console.print(
                 "[bold red]Warning[/bold red]: Your [bold]Pipfile[/bold] now contains pinned versions, "
@@ -304,9 +294,7 @@ class Pipfile:
 
     @property
     def extended_keys(self):
-        return list(
-            itertools.product(("packages", "dev-packages"), ("", "vcs", "editable"))
-        )
+        return list(itertools.product(("packages", "dev-packages"), ("", "vcs", "editable")))
 
     def get_deps(self, dev=False, only=True):
         deps = {}  # type: Dict[Text, Dict[Text, Union[List[Text], Text]]]
@@ -314,9 +302,7 @@ class Pipfile:
             deps.update(dict(self.pipfile._data.get("dev-packages", {})))
             if only:
                 return deps
-        return tomlkit_value_to_python(
-            merge_items([deps, dict(self.pipfile._data.get("packages", {}))])
-        )
+        return tomlkit_value_to_python(merge_items([deps, dict(self.pipfile._data.get("packages", {}))]))
 
     def get(self, k):
         return self.__getitem__(k)

@@ -72,9 +72,7 @@ class RecursiveJudge:
         self.base_judge = base_judge or JudgeSix()
         self.audit_path = os.getenv("RLM_AUDIT_PATH", "/var/log/pnkln/rlm-judge-audit.jsonl")
 
-    async def validate_large_context(
-        self, payload: dict[str, Any], context_tokens: int
-    ) -> RLMDecision:
+    async def validate_large_context(self, payload: dict[str, Any], context_tokens: int) -> RLMDecision:
         """
         Main entry point for large context validation
 
@@ -228,9 +226,7 @@ class RecursiveJudge:
             "confidence": 0.89,
             "explanation": f"Specialist validation for {focus_area}",
             "tokens_used": min(tokens_used, self.SPECIALIST_CONTEXT_LIMIT),
-            "compressed_context": self._compress_context(
-                {"focus": focus_area, "context": relevant_context}, self.COMPRESSION_TARGET
-            ),
+            "compressed_context": self._compress_context({"focus": focus_area, "context": relevant_context}, self.COMPRESSION_TARGET),
         }
 
         return specialist_result
@@ -250,9 +246,7 @@ class RecursiveJudge:
 
         focus_keywords = keywords.get(focus_area, [])
         lines = full_context.split("\n")
-        relevant_lines = [
-            line for line in lines if any(kw in line.lower() for kw in focus_keywords)
-        ]
+        relevant_lines = [line for line in lines if any(kw in line.lower() for kw in focus_keywords)]
 
         return "\n".join(relevant_lines[:100])  # Cap at 100 lines
 
@@ -277,9 +271,7 @@ class RecursiveJudge:
 
         if blocked:
             result = ValidationResult.BLOCKED
-            blocking_areas = [
-                s["focus_area"] for s in specialists if s["result"] == ValidationResult.BLOCKED
-            ]
+            blocking_areas = [s["focus_area"] for s in specialists if s["result"] == ValidationResult.BLOCKED]
             explanation = f"Blocked by specialists: {', '.join(blocking_areas)}"
         else:
             result = ValidationResult.APPROVED
@@ -327,9 +319,7 @@ class RecursiveJudge:
 
 
 # Convenience wrapper
-async def validate_with_rlm(
-    payload: dict, context_tokens: int, base_judge: JudgeSix | None = None
-) -> RLMDecision:
+async def validate_with_rlm(payload: dict, context_tokens: int, base_judge: JudgeSix | None = None) -> RLMDecision:
     """
     Convenience function for RLM-augmented validation
 

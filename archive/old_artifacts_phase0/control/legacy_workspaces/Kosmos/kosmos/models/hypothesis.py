@@ -16,6 +16,7 @@ from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL
 
 class ExperimentType(StrEnum):
     """Types of experiments that can test a hypothesis."""
+
     COMPUTATIONAL = "computational"  # Simulations, algorithms, mathematical proofs
     DATA_ANALYSIS = "data_analysis"  # Statistical analysis of existing datasets
     LITERATURE_SYNTHESIS = "literature_synthesis"  # Systematic review, meta-analysis
@@ -23,6 +24,7 @@ class ExperimentType(StrEnum):
 
 class HypothesisStatus(StrEnum):
     """Hypothesis lifecycle status."""
+
     GENERATED = "generated"
     UNDER_REVIEW = "under_review"
     TESTING = "testing"
@@ -49,6 +51,7 @@ class Hypothesis(BaseModel):
         )
         ```
     """
+
     id: str | None = None
     research_question: str = Field(..., description="Original research question")
     statement: str = Field(..., min_length=10, max_length=500, description="Clear, testable hypothesis statement")
@@ -85,7 +88,7 @@ class Hypothesis(BaseModel):
     refinement_count: int = Field(default=0, ge=0, description="Number of times this hypothesis was refined")
     evolution_history: list[dict[str, Any]] = Field(default_factory=list, description="History of refinements and results")
 
-    @field_validator('statement')
+    @field_validator("statement")
     @classmethod
     def validate_statement(cls, v: str) -> str:
         """Ensure statement is a clear, testable hypothesis."""
@@ -93,18 +96,18 @@ class Hypothesis(BaseModel):
             raise ValueError("Statement cannot be empty")
 
         # Check for question marks (hypothesis should be a statement, not a question)
-        if v.strip().endswith('?'):
+        if v.strip().endswith("?"):
             raise ValueError("Hypothesis should be a statement, not a question")
 
         # Encourage predictive statements
-        predictive_words = ['will', 'would', 'should', 'increases', 'decreases', 'affects', 'causes', 'leads to']
+        predictive_words = ["will", "would", "should", "increases", "decreases", "affects", "causes", "leads to"]
         if not any(word in v.lower() for word in predictive_words):
             # Warning but don't fail - some valid hypotheses might not use these words
             pass
 
         return v.strip()
 
-    @field_validator('rationale')
+    @field_validator("rationale")
     @classmethod
     def validate_rationale(cls, v: str) -> str:
         """Ensure rationale provides sufficient scientific justification."""
@@ -172,6 +175,7 @@ class HypothesisGenerationRequest(BaseModel):
         )
         ```
     """
+
     research_question: str = Field(..., min_length=10, description="Research question to generate hypotheses for")
     domain: str | None = Field(None, description="Scientific domain (auto-detected if not provided)")
     num_hypotheses: int = Field(default=3, ge=1, le=10, description="Number of hypotheses to generate")
@@ -185,7 +189,7 @@ class HypothesisGenerationRequest(BaseModel):
     require_novelty_check: bool = Field(default=True, description="Run novelty check before returning")
     min_novelty_score: float = Field(default=0.5, ge=0.0, le=1.0, description="Minimum novelty score")
 
-    @field_validator('research_question')
+    @field_validator("research_question")
     @classmethod
     def validate_question(cls, v: str) -> str:
         """Validate research question format."""
@@ -204,6 +208,7 @@ class HypothesisGenerationResponse(BaseModel):
 
     Contains generated hypotheses with metadata.
     """
+
     hypotheses: list[Hypothesis]
     research_question: str
     domain: str
@@ -245,6 +250,7 @@ class NoveltyReport(BaseModel):
 
     Provides detailed analysis of how novel the hypothesis is.
     """
+
     hypothesis_id: str
     novelty_score: float = Field(..., ge=0.0, le=1.0, description="Overall novelty score")
 
@@ -270,6 +276,7 @@ class TestabilityReport(BaseModel):
 
     Assesses whether and how the hypothesis can be tested.
     """
+
     hypothesis_id: str
     testability_score: float = Field(..., ge=0.0, le=1.0, description="Overall testability score")
 
@@ -304,6 +311,7 @@ class PrioritizedHypothesis(BaseModel):
 
     Used for ranking and selecting which hypotheses to test first.
     """
+
     hypothesis: Hypothesis
     priority_score: float = Field(..., ge=0.0, le=1.0, description="Overall priority score")
 
@@ -314,12 +322,7 @@ class PrioritizedHypothesis(BaseModel):
     testability_score: float = Field(..., ge=0.0, le=1.0)
 
     # Scoring weights used
-    weights: dict[str, float] = Field(default_factory=lambda: {
-        "novelty": 0.30,
-        "feasibility": 0.25,
-        "impact": 0.25,
-        "testability": 0.20
-    })
+    weights: dict[str, float] = Field(default_factory=lambda: {"novelty": 0.30, "feasibility": 0.25, "impact": 0.25, "testability": 0.20})
 
     # Ranking
     rank: int | None = None

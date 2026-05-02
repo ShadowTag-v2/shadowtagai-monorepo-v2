@@ -8,6 +8,7 @@ from textwrap import dedent
 from typing import Literal
 
 import pytest
+from pip._internal.operations.build.build_tracker import get_build_tracker
 
 from pip._internal.build_env import (
     BuildEnvironment,
@@ -18,7 +19,6 @@ from pip._internal.build_env import (
 )
 from pip._internal.cache import WheelCache
 from pip._internal.index.package_finder import PackageFinder
-from pip._internal.operations.build.build_tracker import get_build_tracker
 
 from tests.lib import (
     PipTestEnvironment,

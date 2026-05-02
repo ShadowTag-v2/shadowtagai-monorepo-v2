@@ -786,9 +786,11 @@ class MistralConverter(BaseTextConverter):
 
             # Create batch job with retry + rate limiting
             job_id = await self._mistral_api_call_with_retry(
-                lambda: self._mistral_client.batch.jobs.create(
-                    input_files=[batch_file_id], model="mistral-ocr-latest", endpoint="/v1/ocr"
-                ).id
+                lambda: (
+                    self._mistral_client.batch.jobs.create(
+                        input_files=[batch_file_id], model="mistral-ocr-latest", endpoint="/v1/ocr"
+                    ).id
+                )
             )
 
             logger.debug(f"Submitted batch job {job_id} (batch file: {batch_file_id})")

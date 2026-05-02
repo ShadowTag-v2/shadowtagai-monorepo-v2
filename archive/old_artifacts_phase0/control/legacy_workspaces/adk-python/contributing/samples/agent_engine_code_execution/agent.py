@@ -19,9 +19,9 @@ from google.adk.code_executors.agent_engine_sandbox_code_executor import AgentEn
 
 
 def base_system_instruction():
-  """Returns: data science agent system instruction."""
+    """Returns: data science agent system instruction."""
 
-  return """
+    return """
   # Guidelines
 
   **Objective:** Assist the user in achieving their data analysis goals within the context of a Python Colab notebook, **with emphasis on avoiding assumptions and ensuring accuracy.** Reaching that goal can involve multiple steps. When you need to generate code, you **don't** need to solve the goal in one go. Only generate the next step at a time.
@@ -68,7 +68,8 @@ def base_system_instruction():
 root_agent = Agent(
     model="gemini-2.0-flash-001",
     name="agent_engine_code_execution_agent",
-    instruction=base_system_instruction() + """
+    instruction=base_system_instruction()
+    + """
 
 
 You need to assist the user with their queries by looking at the data and the context in the conversation.

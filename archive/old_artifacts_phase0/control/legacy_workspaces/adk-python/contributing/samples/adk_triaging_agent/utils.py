@@ -24,39 +24,34 @@ headers = {
 }
 
 
-def get_request(
-    url: str, params: dict[str, Any] | None = None
-) -> dict[str, Any]:
-  if params is None:
-    params = {}
-  response = requests.get(url, headers=headers, params=params, timeout=60)
-  response.raise_for_status()
-  return response.json()
+def get_request(url: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
+    if params is None:
+        params = {}
+    response = requests.get(url, headers=headers, params=params, timeout=60)
+    response.raise_for_status()
+    return response.json()
 
 
 def post_request(url: str, payload: Any) -> dict[str, Any]:
-  response = requests.post(url, headers=headers, json=payload, timeout=60)
-  response.raise_for_status()
-  return response.json()
+    response = requests.post(url, headers=headers, json=payload, timeout=60)
+    response.raise_for_status()
+    return response.json()
 
 
 def patch_request(url: str, payload: Any) -> dict[str, Any]:
-  response = requests.patch(url, headers=headers, json=payload, timeout=60)
-  response.raise_for_status()
-  return response.json()
+    response = requests.patch(url, headers=headers, json=payload, timeout=60)
+    response.raise_for_status()
+    return response.json()
 
 
 def error_response(error_message: str) -> dict[str, Any]:
-  return {"status": "error", "message": error_message}
+    return {"status": "error", "message": error_message}
 
 
 def parse_number_string(number_str: str, default_value: int = 0) -> int:
-  """Parse a number from the given string."""
-  try:
-    return int(number_str)
-  except ValueError:
-    print(
-        f"Warning: Invalid number string: {number_str}. Defaulting to"
-        f" {default_value}."
-    )
-    return default_value
+    """Parse a number from the given string."""
+    try:
+        return int(number_str)
+    except ValueError:
+        print(f"Warning: Invalid number string: {number_str}. Defaulting to {default_value}.")
+        return default_value

@@ -12,9 +12,7 @@ async def test_backend_http_server_health():
     from claude_skills_mcp_backend.http_server import run_server
 
     # Start server in background
-    server_task = asyncio.create_task(
-        run_server(host="127.0.0.1", port=9876, config_path=None, verbose=False)
-    )
+    server_task = asyncio.create_task(run_server(host="127.0.0.1", port=9876, config_path=None, verbose=False))
 
     # Give it time to start
     await asyncio.sleep(3)

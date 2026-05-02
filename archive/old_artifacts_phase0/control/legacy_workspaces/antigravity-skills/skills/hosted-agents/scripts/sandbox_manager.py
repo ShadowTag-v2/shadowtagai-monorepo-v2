@@ -12,11 +12,12 @@ import asyncio
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Callable, Optional
+from collections.abc import Callable
 
 
 class SandboxState(Enum):
     """Sandbox lifecycle states."""
+
     CREATING = "creating"
     SYNCING = "syncing"
     READY = "ready"
@@ -28,6 +29,7 @@ class SandboxState(Enum):
 @dataclass
 class UserIdentity:
     """User identity for commit attribution."""
+
     id: str
     name: str
     email: str
@@ -37,6 +39,7 @@ class UserIdentity:
 @dataclass
 class SandboxConfig:
     """Configuration for sandbox creation."""
+
     repo_url: str
     base_image: str
     memory_mb: int = 4096
@@ -48,15 +51,16 @@ class SandboxConfig:
 @dataclass
 class Sandbox:
     """Represents a sandboxed execution environment."""
+
     id: str
     config: SandboxConfig
     state: SandboxState
     created_at: datetime
-    snapshot_id: Optional[str] = None
-    current_user: Optional[UserIdentity] = None
+    snapshot_id: str | None = None
+    current_user: UserIdentity | None = None
 
     # Event handlers
-    on_state_change: Optional[Callable[[SandboxState], None]] = None
+    on_state_change: Callable[[SandboxState], None] | None = None
 
     async def execute_command(self, command: str) -> dict:
         """Execute a command in the sandbox."""
@@ -93,6 +97,7 @@ class Sandbox:
 @dataclass
 class RepositoryImage:
     """Pre-built image for a repository."""
+
     repo_url: str
     image_id: str
     commit_sha: str
@@ -121,13 +126,10 @@ class ImageBuilder:
         build_steps = [
             # Clone repository
             f"git clone https://x-access-token:{token}@github.com/{repo_url} /workspace",
-
             # Install dependencies
             "cd /workspace && npm install",
-
             # Run build
             "cd /workspace && npm run build",
-
             # Warm caches by running once
             "cd /workspace && npm run dev &",
             "sleep 5",  # Let dev server start
@@ -142,17 +144,12 @@ class ImageBuilder:
         commit_sha = await self._get_commit_sha()
 
         # Create and store image
-        image = RepositoryImage(
-            repo_url=repo_url,
-            image_id=await self._finalize_image(),
-            commit_sha=commit_sha,
-            built_at=datetime.utcnow()
-        )
+        image = RepositoryImage(repo_url=repo_url, image_id=await self._finalize_image(), commit_sha=commit_sha, built_at=datetime.utcnow())
 
         self.images[repo_url] = image
         return image
 
-    def get_latest_image(self, repo_url: str) -> Optional[RepositoryImage]:
+    def get_latest_image(self, repo_url: str) -> RepositoryImage | None:
         """Get the most recent image for a repository."""
         return self.images.get(repo_url)
 
@@ -172,6 +169,7 @@ class ImageBuilder:
 @dataclass
 class WarmSandbox:
     """A pre-warmed sandbox ready for use."""
+
     sandbox: Sandbox
     repo_url: str
     created_at: datetime
@@ -183,18 +181,13 @@ class WarmSandbox:
 class WarmPoolManager:
     """Manages pools of pre-warmed sandboxes."""
 
-    def __init__(
-        self,
-        image_builder: ImageBuilder,
-        target_pool_size: int = 3,
-        max_age: timedelta = timedelta(minutes=25)
-    ):
+    def __init__(self, image_builder: ImageBuilder, target_pool_size: int = 3, max_age: timedelta = timedelta(minutes=25)):
         self.image_builder = image_builder
         self.target_size = target_pool_size
         self.max_age = max_age
         self.pools: dict[str, list[WarmSandbox]] = {}
 
-    async def get_warm_sandbox(self, repo_url: str) -> Optional[WarmSandbox]:
+    async def get_warm_sandbox(self, repo_url: str) -> WarmSandbox | None:
         """Get a pre-warmed sandbox if available."""
         if repo_url not in self.pools:
             return None
@@ -246,13 +239,7 @@ class WarmPoolManager:
         # Create sandbox from image
         sandbox = await self._create_sandbox_from_image(image)
 
-        warm = WarmSandbox(
-            sandbox=sandbox,
-            repo_url=repo_url,
-            created_at=datetime.utcnow(),
-            image_version=image.image_id,
-            sync_complete=False
-        )
+        warm = WarmSandbox(sandbox=sandbox, repo_url=repo_url, created_at=datetime.utcnow(), image_version=image.image_id, sync_complete=False)
 
         # Start syncing to latest in background
         asyncio.create_task(self._sync_to_latest(warm))
@@ -277,12 +264,7 @@ class SandboxManager:
     Coordinates image building, warm pools, and session management.
     """
 
-    def __init__(
-        self,
-        repositories: list[str],
-        github_app_token_provider: Callable[[], str],
-        build_interval: timedelta = timedelta(minutes=30)
-    ):
+    def __init__(self, repositories: list[str], github_app_token_provider: Callable[[], str], build_interval: timedelta = timedelta(minutes=30)):
         self.repositories = repositories
         self.image_builder = ImageBuilder(github_app_token_provider)
         self.warm_pool = WarmPoolManager(self.image_builder)
@@ -301,12 +283,7 @@ class SandboxManager:
 
             await asyncio.sleep(self.build_interval.total_seconds())
 
-    async def start_session(
-        self,
-        repo_url: str,
-        user: UserIdentity,
-        snapshot_id: Optional[str] = None
-    ) -> Sandbox:
+    async def start_session(self, repo_url: str, user: UserIdentity, snapshot_id: str | None = None) -> Sandbox:
         """Start a new session for a user."""
 
         # Try to get from warm pool first
@@ -346,7 +323,7 @@ class SandboxManager:
             # Start warming one now
             asyncio.create_task(self.warm_pool.maintain_pool(repo_url))
 
-    async def end_session(self, session_id: str) -> Optional[str]:
+    async def end_session(self, session_id: str) -> str | None:
         """End a session and return snapshot ID for potential follow-up."""
         if session_id not in self.active_sessions:
             return None
@@ -363,21 +340,13 @@ class SandboxManager:
 
         return snapshot_id
 
-    async def _configure_for_user(
-        self,
-        sandbox: Sandbox,
-        user: UserIdentity
-    ) -> None:
+    async def _configure_for_user(self, sandbox: Sandbox, user: UserIdentity) -> None:
         """Configure sandbox for a specific user."""
         sandbox.current_user = user
 
         # Set git identity
-        await sandbox.execute_command(
-            f'git config user.name "{user.name}"'
-        )
-        await sandbox.execute_command(
-            f'git config user.email "{user.email}"'
-        )
+        await sandbox.execute_command(f'git config user.name "{user.name}"')
+        await sandbox.execute_command(f'git config user.email "{user.email}"')
 
     async def _wait_for_sync(self, warm: WarmSandbox) -> None:
         """Wait for sync to complete."""
@@ -452,25 +421,13 @@ async def main():
         # Implementation: call GitHub API to get installation token
         return "ghs_xxxx"
 
-    manager = SandboxManager(
-        repositories=[
-            "myorg/frontend",
-            "myorg/backend",
-            "myorg/shared-libs"
-        ],
-        github_app_token_provider=get_github_token
-    )
+    manager = SandboxManager(repositories=["myorg/frontend", "myorg/backend", "myorg/shared-libs"], github_app_token_provider=get_github_token)
 
     # Start background build loop
     asyncio.create_task(manager.start_build_loop())
 
     # Simulate user session
-    user = UserIdentity(
-        id="user123",
-        name="Alice Developer",
-        email="alice@example.com",
-        github_token="gho_user_token"
-    )
+    user = UserIdentity(id="user123", name="Alice Developer", email="alice@example.com", github_token="gho_user_token")
 
     # User starts typing - predictively warm
     await manager.on_user_typing(user, "myorg/frontend")

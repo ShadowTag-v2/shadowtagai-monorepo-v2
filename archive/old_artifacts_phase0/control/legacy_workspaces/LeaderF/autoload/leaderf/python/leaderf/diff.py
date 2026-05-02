@@ -27,7 +27,7 @@ class LfDiffer(Differ):
         # least cutoff; best_ratio tracks the best score seen so far
         best_ratio, cutoff = 0.54, 0.55
         cruncher = SequenceMatcher(self.charjunk)
-        eqi, eqj = None, None   # 1st indices of equal lines (if any)
+        eqi, eqj = None, None  # 1st indices of equal lines (if any)
 
         # search for the pair that matches best without being identical
         # (identical lines must be junk lines, & we don't want to synch up
@@ -48,9 +48,7 @@ class LfDiffer(Differ):
                 # note that ratio() is only expensive to compute the first
                 # time it's called on a sequence pair; the expensive part
                 # of the computation is cached by cruncher
-                if cruncher.real_quick_ratio() > best_ratio and \
-                      cruncher.quick_ratio() > best_ratio and \
-                      cruncher.ratio() > best_ratio:
+                if cruncher.real_quick_ratio() > best_ratio and cruncher.quick_ratio() > best_ratio and cruncher.ratio() > best_ratio:
                     best_ratio, best_i, best_j = cruncher.ratio(), i, j
         if best_ratio < cutoff:
             # no non-identical "pretty close" pair
@@ -78,22 +76,22 @@ class LfDiffer(Differ):
             cruncher.set_seqs(aelt, belt)
             for tag, ai1, ai2, bj1, bj2 in cruncher.get_opcodes():
                 la, lb = ai2 - ai1, bj2 - bj1
-                if tag == 'replace':
-                    atags += '^' * la
-                    btags += '^' * lb
-                elif tag == 'delete':
-                    atags += '-' * la
-                elif tag == 'insert':
-                    btags += '+' * lb
-                elif tag == 'equal':
-                    atags += ' ' * la
-                    btags += ' ' * lb
+                if tag == "replace":
+                    atags += "^" * la
+                    btags += "^" * lb
+                elif tag == "delete":
+                    atags += "-" * la
+                elif tag == "insert":
+                    btags += "+" * lb
+                elif tag == "equal":
+                    atags += " " * la
+                    btags += " " * lb
                 else:
-                    raise ValueError(f'unknown tag {tag!r}')
+                    raise ValueError(f"unknown tag {tag!r}")
             yield from self._qformat(aelt, belt, atags, btags)
         else:
             # the synch pair is identical
-            yield '  ' + aelt
+            yield "  " + aelt
 
         # pump out diffs from after the synch point
-        yield from self._fancy_helper(a, best_i+1, ahi, b, best_j+1, bhi)
+        yield from self._fancy_helper(a, best_i + 1, ahi, b, best_j + 1, bhi)

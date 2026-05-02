@@ -6,7 +6,7 @@ from typing import Any, NamedTuple
 
 import ruamel.yaml
 
-yaml = ruamel.yaml.YAML(typ='safe')
+yaml = ruamel.yaml.YAML(typ="safe")
 
 
 def _exhaust(gen: Generator[str]) -> None:
@@ -38,19 +38,23 @@ LOAD_FNS = {
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '-m', '--multi', '--allow-multiple-documents', action='store_true',
+        "-m",
+        "--multi",
+        "--allow-multiple-documents",
+        action="store_true",
     )
     parser.add_argument(
-        '--unsafe', action='store_true',
+        "--unsafe",
+        action="store_true",
         help=(
-            'Instead of loading the files, simply parse them for syntax.  '
-            'A syntax-only check enables extensions and unsafe constructs '
-            'which would otherwise be forbidden.  Using this option removes '
-            'all guarantees of portability to other yaml implementations.  '
-            'Implies --allow-multiple-documents'
+            "Instead of loading the files, simply parse them for syntax.  "
+            "A syntax-only check enables extensions and unsafe constructs "
+            "which would otherwise be forbidden.  Using this option removes "
+            "all guarantees of portability to other yaml implementations.  "
+            "Implies --allow-multiple-documents"
         ),
     )
-    parser.add_argument('filenames', nargs='*', help='Filenames to check.')
+    parser.add_argument("filenames", nargs="*", help="Filenames to check.")
     args = parser.parse_args(argv)
 
     load_fn = LOAD_FNS[Key(multi=args.multi, unsafe=args.unsafe)]
@@ -58,7 +62,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     retval = 0
     for filename in args.filenames:
         try:
-            with open(filename, encoding='UTF-8') as f:
+            with open(filename, encoding="UTF-8") as f:
                 load_fn(f)
         except ruamel.yaml.YAMLError as exc:
             print(exc)
@@ -66,5 +70,5 @@ def main(argv: Sequence[str] | None = None) -> int:
     return retval
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

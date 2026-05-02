@@ -68,15 +68,11 @@ class MetabolomicsComparisonTemplate(TemplateBase):
                 "Metabolite level comparisons",
                 "Pathway activation analysis",
                 "Nucleotide metabolism studies",
-                "Treatment effect on metabolomics"
+                "Treatment effect on metabolomics",
             ],
-            requirements=[
-                "Metabolomics data (CSV format, metabolites × samples)",
-                "Group assignments for samples",
-                "At least 3 samples per group"
-            ],
+            requirements=["Metabolomics data (CSV format, metabolites × samples)", "Group assignments for samples", "At least 3 samples per group"],
             complexity_score=0.6,
-            rigor_score=0.8
+            rigor_score=0.8,
         )
 
     def is_applicable(self, hypothesis: Hypothesis) -> bool:
@@ -93,26 +89,27 @@ class MetabolomicsComparisonTemplate(TemplateBase):
 
         # Check for metabolomics keywords
         metabolomics_keywords = [
-            'metabolite', 'metabolomic', 'nucleotide',
-            'purine', 'pyrimidine', 'salvage', 'synthesis',
-            'pathway', 'compound', 'small molecule'
+            "metabolite",
+            "metabolomic",
+            "nucleotide",
+            "purine",
+            "pyrimidine",
+            "salvage",
+            "synthesis",
+            "pathway",
+            "compound",
+            "small molecule",
         ]
 
         # Check for comparison keywords
-        comparison_keywords = [
-            'compare', 'difference', 'between', 'versus', 'vs',
-            'increase', 'decrease', 'change', 'affect', 'alter'
-        ]
+        comparison_keywords = ["compare", "difference", "between", "versus", "vs", "increase", "decrease", "change", "affect", "alter"]
 
         has_metabolomics = any(kw in statement_lower for kw in metabolomics_keywords)
         has_comparison = any(kw in statement_lower for kw in comparison_keywords)
 
         return has_metabolomics and has_comparison
 
-    def generate_protocol(
-        self,
-        params: TemplateCustomizationParams
-    ) -> ExperimentProtocol:
+    def generate_protocol(self, params: TemplateCustomizationParams) -> ExperimentProtocol:
         """
         Generate metabolomics comparison experiment protocol.
 
@@ -129,12 +126,12 @@ class MetabolomicsComparisonTemplate(TemplateBase):
         custom_vars = params.custom_variables or {}
 
         # Extract required parameters
-        data_path = custom_vars.get('data_path', 'metabolomics_data.csv')
-        group1_samples = custom_vars.get('group1_samples', [])
-        group2_samples = custom_vars.get('group2_samples', [])
-        metabolites = custom_vars.get('metabolites_of_interest', None)
-        p_threshold = custom_vars.get('p_threshold', 0.05)
-        log2_transform = custom_vars.get('log2_transform', True)
+        data_path = custom_vars.get("data_path", "metabolomics_data.csv")
+        group1_samples = custom_vars.get("group1_samples", [])
+        group2_samples = custom_vars.get("group2_samples", [])
+        metabolites = custom_vars.get("metabolites_of_interest", None)
+        p_threshold = custom_vars.get("p_threshold", 0.05)
+        log2_transform = custom_vars.get("log2_transform", True)
 
         # Validate
         if not group1_samples or not group2_samples:
@@ -142,36 +139,12 @@ class MetabolomicsComparisonTemplate(TemplateBase):
 
         # Define variables
         variables = [
-            Variable(
-                name="data_path",
-                description="Path to metabolomics CSV file",
-                value=data_path
-            ),
-            Variable(
-                name="group1_samples",
-                description="Sample names for group 1 (control)",
-                value=group1_samples
-            ),
-            Variable(
-                name="group2_samples",
-                description="Sample names for group 2 (treatment)",
-                value=group2_samples
-            ),
-            Variable(
-                name="metabolites_of_interest",
-                description="List of metabolites to analyze (None = all)",
-                value=metabolites
-            ),
-            Variable(
-                name="p_threshold",
-                description="P-value threshold for significance",
-                value=p_threshold
-            ),
-            Variable(
-                name="log2_transform",
-                description="Whether to apply log2 transformation",
-                value=log2_transform
-            ),
+            Variable(name="data_path", description="Path to metabolomics CSV file", value=data_path),
+            Variable(name="group1_samples", description="Sample names for group 1 (control)", value=group1_samples),
+            Variable(name="group2_samples", description="Sample names for group 2 (treatment)", value=group2_samples),
+            Variable(name="metabolites_of_interest", description="List of metabolites to analyze (None = all)", value=metabolites),
+            Variable(name="p_threshold", description="P-value threshold for significance", value=p_threshold),
+            Variable(name="log2_transform", description="Whether to apply log2 transformation", value=log2_transform),
         ]
 
         # Define protocol steps
@@ -181,43 +154,28 @@ class MetabolomicsComparisonTemplate(TemplateBase):
                 description="Load metabolomics data from CSV",
                 code_template=self._generate_load_data_code(),
                 expected_duration_minutes=2,
-                required_resources=ResourceRequirements(
-                    cpu_cores=1,
-                    memory_gb=2.0
-                )
+                required_resources=ResourceRequirements(cpu_cores=1, memory_gb=2.0),
             ),
             ProtocolStep(
                 name="analyze_comparison",
                 description="Statistical comparison between groups using MetabolomicsAnalyzer",
-                code_template=self._generate_analysis_code(
-                    group1_samples, group2_samples,
-                    metabolites, log2_transform, p_threshold
-                ),
+                code_template=self._generate_analysis_code(group1_samples, group2_samples, metabolites, log2_transform, p_threshold),
                 expected_duration_minutes=5,
-                required_resources=ResourceRequirements(
-                    cpu_cores=2,
-                    memory_gb=4.0
-                )
+                required_resources=ResourceRequirements(cpu_cores=2, memory_gb=4.0),
             ),
             ProtocolStep(
                 name="pathway_analysis",
                 description="Analyze pathway-level patterns",
                 code_template=self._generate_pathway_analysis_code(),
                 expected_duration_minutes=3,
-                required_resources=ResourceRequirements(
-                    cpu_cores=1,
-                    memory_gb=2.0
-                )
+                required_resources=ResourceRequirements(cpu_cores=1, memory_gb=2.0),
             ),
             ProtocolStep(
                 name="visualize_results",
                 description="Create volcano plot and heatmap",
                 code_template=self._generate_visualization_code(),
                 expected_duration_minutes=5,
-                required_resources=ResourceRequirements(
-                    cpu_cores=1,
-                    memory_gb=2.0
-                )
+                required_resources=ResourceRequirements(cpu_cores=1, memory_gb=2.0),
             ),
         ]
 
@@ -228,7 +186,7 @@ class MetabolomicsComparisonTemplate(TemplateBase):
                 test_type="parametric",
                 description="Compare metabolite levels between groups",
                 alpha=p_threshold,
-                two_tailed=True
+                two_tailed=True,
             )
         ]
 
@@ -240,7 +198,7 @@ class MetabolomicsComparisonTemplate(TemplateBase):
                 validation_code=f"""
 assert len({group1_samples}) >= 3, "Group 1 must have at least 3 samples"
 assert len({group2_samples}) >= 3, "Group 2 must have at least 3 samples"
-"""
+""",
             ),
             ValidationCheck(
                 check_name="data_quality",
@@ -248,7 +206,7 @@ assert len({group2_samples}) >= 3, "Group 2 must have at least 3 samples"
                 validation_code="""
 missing_rate = data_df.isnull().sum().sum() / (data_df.shape[0] * data_df.shape[1])
 assert missing_rate < 0.3, f"Too many missing values: {missing_rate:.1%}"
-"""
+""",
             ),
         ]
 
@@ -256,26 +214,15 @@ assert missing_rate < 0.3, f"Too many missing values: {missing_rate:.1%}"
         protocol = ExperimentProtocol(
             title=f"Metabolomics Comparison: {hypothesis.statement[:50]}...",
             description=f"Compare metabolite levels to test: {hypothesis.statement}",
-            hypothesis_id=str(hypothesis.id) if hasattr(hypothesis, 'id') else None,
+            hypothesis_id=str(hypothesis.id) if hasattr(hypothesis, "id") else None,
             experiment_type=ExperimentType.DATA_ANALYSIS,
             domain="biology",
             variables=variables,
             steps=steps,
-            control_groups=[
-                ControlGroup(
-                    name="Control",
-                    description="Group 1 (baseline)",
-                    sample_ids=group1_samples
-                )
-            ],
+            control_groups=[ControlGroup(name="Control", description="Group 1 (baseline)", sample_ids=group1_samples)],
             statistical_tests=statistical_tests,
             validation_checks=validation_checks,
-            required_resources=ResourceRequirements(
-                cpu_cores=2,
-                memory_gb=4.0,
-                storage_gb=1.0,
-                estimated_duration_minutes=15
-            )
+            required_resources=ResourceRequirements(cpu_cores=2, memory_gb=4.0, storage_gb=1.0, estimated_duration_minutes=15),
         )
 
         return protocol
@@ -295,12 +242,7 @@ print(f"Sample names: {list(data_df.columns)}")
 """
 
     def _generate_analysis_code(
-        self,
-        group1_samples: list[str],
-        group2_samples: list[str],
-        metabolites: list[str] | None,
-        log2_transform: bool,
-        p_threshold: float
+        self, group1_samples: list[str], group2_samples: list[str], metabolites: list[str] | None, log2_transform: bool, p_threshold: float
     ) -> str:
         """Generate code for statistical analysis"""
         return f"""

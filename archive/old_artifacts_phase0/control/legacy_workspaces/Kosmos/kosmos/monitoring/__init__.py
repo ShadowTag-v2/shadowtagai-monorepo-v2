@@ -32,5 +32,5 @@ __all__ = [
     "AlertRule",
     "AlertSeverity",
     "AlertStatus",
-    "AlertManager"
+    "AlertManager",
 ]

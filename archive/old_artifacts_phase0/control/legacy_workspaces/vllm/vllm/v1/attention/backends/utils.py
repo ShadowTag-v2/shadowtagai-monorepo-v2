@@ -106,6 +106,7 @@ class CommonAttentionMetadata:
     ) -> "CommonAttentionMetadata":
         def maybe_slice_reqs(x):
             return x[:num_actual_reqs] if x is not None else None
+
         return CommonAttentionMetadata(
             query_start_loc=self.query_start_loc[: num_actual_reqs + 1],
             query_start_loc_cpu=self.query_start_loc_cpu[: num_actual_reqs + 1],

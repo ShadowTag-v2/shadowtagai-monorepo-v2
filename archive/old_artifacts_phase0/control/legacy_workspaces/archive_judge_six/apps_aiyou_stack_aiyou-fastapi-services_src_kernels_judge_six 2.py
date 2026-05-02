@@ -62,9 +62,7 @@ class JudgeSixClassifyKernel(Kernel):
     ]
 
     def __init__(self):
-        super().__init__(
-            name="JudgeSixClassifyKernel", max_latency_ms=settings.kernel_2_max_latency_ms
-        )
+        super().__init__(name="JudgeSixClassifyKernel", max_latency_ms=settings.kernel_2_max_latency_ms)
 
         # Initialize PyTorch model
         self.device = torch.device("cpu")  # Local CPU inference
@@ -89,10 +87,7 @@ class JudgeSixClassifyKernel(Kernel):
             if isinstance(kernel_input.data, ViolationsScanOutput):
                 violations_output = kernel_input.data
             else:
-                raise KernelChainError(
-                    f"Invalid input type: expected ViolationsScanOutput, "
-                    f"got {type(kernel_input.data)}"
-                )
+                raise KernelChainError(f"Invalid input type: expected ViolationsScanOutput, got {type(kernel_input.data)}")
 
             # Extract features from violations
             features = self._extract_features(violations_output)
@@ -192,9 +187,7 @@ class JudgeSixClassifyKernel(Kernel):
 
     def _calculate_risk_tier(self, violations_output: ViolationsScanOutput) -> RiskTier:
         """Calculate risk tier based on weighted severity score."""
-        weighted_score = sum(
-            self.SEVERITY_WEIGHTS.get(v.severity, 0) for v in violations_output.violations
-        )
+        weighted_score = sum(self.SEVERITY_WEIGHTS.get(v.severity, 0) for v in violations_output.violations)
 
         # Find appropriate tier based on thresholds
         risk_tier = RiskTier.TIER_1_MINIMAL
@@ -221,12 +214,6 @@ class JudgeSixClassifyKernel(Kernel):
         for v in violations_output.violations:
             severity_summary[v.severity] = severity_summary.get(v.severity, 0) + 1
 
-        severity_str = ", ".join(
-            f"{count} {severity}" for severity, count in severity_summary.items()
-        )
+        severity_str = ", ".join(f"{count} {severity}" for severity, count in severity_summary.items())
 
-        return (
-            f"Detected {total} violation(s): {severity_str}. "
-            f"Risk tier: {risk_tier.name}. "
-            f"Confidence: {confidence:.2%}"
-        )
+        return f"Detected {total} violation(s): {severity_str}. Risk tier: {risk_tier.name}. Confidence: {confidence:.2%}"

@@ -58,8 +58,8 @@ class TTestComparisonCodeTemplate(CodeTemplate):
 
         # Check for t-test in statistical tests
         for test in protocol.statistical_tests:
-            test_type_str = test.test_type.value if hasattr(test.test_type, 'value') else str(test.test_type)
-            if 't_test' in test_type_str.lower() or 't-test' in test_type_str.lower():
+            test_type_str = test.test_type.value if hasattr(test.test_type, "value") else str(test.test_type)
+            if "t_test" in test_type_str.lower() or "t-test" in test_type_str.lower():
                 return True
 
         return False
@@ -67,28 +67,28 @@ class TTestComparisonCodeTemplate(CodeTemplate):
     def generate(self, protocol: ExperimentProtocol) -> str:
         """Generate t-test comparison code."""
         # Extract variable information
-        indep_vars = [v for v in protocol.variables.values() if v.type.value == 'independent']
-        dep_vars = [v for v in protocol.variables.values() if v.type.value == 'dependent']
+        indep_vars = [v for v in protocol.variables.values() if v.type.value == "independent"]
+        dep_vars = [v for v in protocol.variables.values() if v.type.value == "dependent"]
 
-        group_var = indep_vars[0].name if indep_vars else 'group'
-        measure_var = dep_vars[0].name if dep_vars else 'measurement'
+        group_var = indep_vars[0].name if indep_vars else "group"
+        measure_var = dep_vars[0].name if dep_vars else "measurement"
 
         # Get groups from control groups
         groups = []
         if protocol.control_groups:
             groups.append(protocol.control_groups[0].name)
         else:
-            groups.append('control')  # Default control group
-        groups.append('experimental')  # Default experimental group
+            groups.append("control")  # Default control group
+        groups.append("experimental")  # Default experimental group
 
         # Get random seed from protocol or use default
-        seed = getattr(protocol, 'random_seed', 42) or 42
+        seed = getattr(protocol, "random_seed", 42) or 42
         n_samples = 100  # Default sample size
 
         # Read effect size from protocol if available; default to 0.0 (null hypothesis)
         effect_size = 0.0
         if protocol.statistical_tests:
-            es = getattr(protocol.statistical_tests[0], 'expected_effect_size', None)
+            es = getattr(protocol.statistical_tests[0], "expected_effect_size", None)
             if es is not None:
                 effect_size = es
 
@@ -180,7 +180,7 @@ class TTestComparisonCodeTemplate(CodeTemplate):
             "}",
             "",
             "# Return results for collection",
-            "results = result"
+            "results = result",
         ]
 
         return "\n".join(code_lines)
@@ -203,28 +203,28 @@ class CorrelationAnalysisCodeTemplate(CodeTemplate):
 
         # Check for correlation in statistical tests or protocol name
         for test in protocol.statistical_tests:
-            test_type_str = test.test_type.value if hasattr(test.test_type, 'value') else str(test.test_type)
-            if 'correlation' in test_type_str.lower() or 'regression' in test_type_str.lower():
+            test_type_str = test.test_type.value if hasattr(test.test_type, "value") else str(test.test_type)
+            if "correlation" in test_type_str.lower() or "regression" in test_type_str.lower():
                 return True
 
-        return 'correlation' in protocol.name.lower()
+        return "correlation" in protocol.name.lower()
 
     def generate(self, protocol: ExperimentProtocol) -> str:
         """Generate correlation analysis code."""
         # Get variables
         vars_list = list(protocol.variables.keys())
-        x_var = vars_list[0] if len(vars_list) > 0 else 'x'
-        y_var = vars_list[1] if len(vars_list) > 1 else 'y'
+        x_var = vars_list[0] if len(vars_list) > 0 else "x"
+        y_var = vars_list[1] if len(vars_list) > 1 else "y"
 
         # Determine correlation method
-        method = 'pearson'
+        method = "pearson"
         for test in protocol.statistical_tests:
-            test_type_str = test.test_type.value if hasattr(test.test_type, 'value') else str(test.test_type)
-            if 'spearman' in test_type_str.lower():
-                method = 'spearman'
+            test_type_str = test.test_type.value if hasattr(test.test_type, "value") else str(test.test_type)
+            if "spearman" in test_type_str.lower():
+                method = "spearman"
                 break
 
-        seed = getattr(protocol, 'random_seed', 42) or 42
+        seed = getattr(protocol, "random_seed", 42) or 42
 
         code_lines = [
             "# Correlation Analysis",
@@ -296,8 +296,8 @@ class CorrelationAnalysisCodeTemplate(CodeTemplate):
             "result['supports_hypothesis'] = result['best_p_value'] < 0.05",
             "",
             "# Print results",
-            "print(f\"Pearson r: {{_pearson_r:.4f}}, p={{_pearson_p:.6f}}\")",
-            "print(f\"Spearman rho: {{_spearman_r:.4f}}, p={{_spearman_p:.6f}}\")",
+            'print(f"Pearson r: {{_pearson_r:.4f}}, p={{_pearson_p:.6f}}")',
+            'print(f"Spearman rho: {{_spearman_r:.4f}}, p={{_spearman_p:.6f}}")',
             "print(f\"Best method: {{result['best_method']}} (p={{result['best_p_value']:.6f}})\")",
             "print(f\"Correlation ({method}): {{result['correlation']:.4f}}\")",
             "print(f\"P-value: {{result['p_value']:.6f}}\")",
@@ -330,7 +330,7 @@ class CorrelationAnalysisCodeTemplate(CodeTemplate):
             "}",
             "",
             "# Return results",
-            "results = result"
+            "results = result",
         ]
 
         return "\n".join(code_lines)
@@ -349,7 +349,7 @@ class LogLogScalingCodeTemplate(CodeTemplate):
     def matches(self, protocol: ExperimentProtocol) -> bool:
         """Check if protocol needs log-log scaling analysis."""
         # Check for keywords in name or description
-        keywords = ['scaling', 'power law', 'log-log', 'power-law']
+        keywords = ["scaling", "power law", "log-log", "power-law"]
 
         text = f"{protocol.name} {protocol.description}".lower()
 
@@ -358,10 +358,10 @@ class LogLogScalingCodeTemplate(CodeTemplate):
     def generate(self, protocol: ExperimentProtocol) -> str:
         """Generate log-log scaling analysis code."""
         vars_list = list(protocol.variables.keys())
-        x_var = vars_list[0] if len(vars_list) > 0 else 'x'
-        y_var = vars_list[1] if len(vars_list) > 1 else 'y'
+        x_var = vars_list[0] if len(vars_list) > 0 else "x"
+        y_var = vars_list[1] if len(vars_list) > 1 else "y"
 
-        seed = getattr(protocol, 'random_seed', 42) or 42
+        seed = getattr(protocol, "random_seed", 42) or 42
 
         code_lines = [
             "# Log-Log Scaling Analysis",
@@ -431,7 +431,7 @@ class LogLogScalingCodeTemplate(CodeTemplate):
             "}",
             "",
             "# Return results",
-            "results = result"
+            "results = result",
         ]
 
         return "\n".join(code_lines)
@@ -445,9 +445,17 @@ class MLExperimentCodeTemplate(CodeTemplate):
 
     def matches(self, protocol: ExperimentProtocol) -> bool:
         """Check if protocol is ML experiment."""
-        keywords = ['machine learning', 'classification', 'cross-validation',
-                     'random forest', 'neural network', 'logistic regression',
-                     'decision tree', 'svm', 'support vector']
+        keywords = [
+            "machine learning",
+            "classification",
+            "cross-validation",
+            "random forest",
+            "neural network",
+            "logistic regression",
+            "decision tree",
+            "svm",
+            "support vector",
+        ]
 
         text = f"{protocol.name} {protocol.description}".lower()
 
@@ -534,7 +542,7 @@ class MLExperimentCodeTemplate(CodeTemplate):
             "}",
             "",
             "# Return results",
-            "results = results"
+            "results = results",
         ]
 
         return "\n".join(code_lines)
@@ -562,15 +570,15 @@ class GenericComputationalCodeTemplate(CodeTemplate):
     def generate(self, protocol: ExperimentProtocol) -> str:
         """Generate generic computational analysis code."""
         vars_list = list(protocol.variables.keys())
-        x_var = vars_list[0] if len(vars_list) > 0 else 'x'
-        y_var = vars_list[1] if len(vars_list) > 1 else 'y'
+        x_var = vars_list[0] if len(vars_list) > 0 else "x"
+        y_var = vars_list[1] if len(vars_list) > 1 else "y"
 
-        seed = getattr(protocol, 'random_seed', 42) or 42
+        seed = getattr(protocol, "random_seed", 42) or 42
 
         # Determine statistical tests from protocol
         stat_tests = []
         for test in protocol.statistical_tests:
-            test_type_str = test.test_type.value if hasattr(test.test_type, 'value') else str(test.test_type)
+            test_type_str = test.test_type.value if hasattr(test.test_type, "value") else str(test.test_type)
             stat_tests.append(test_type_str.lower())
 
         code_lines = [
@@ -734,13 +742,7 @@ class ExperimentCodeGenerator:
     3. Optional LLM enhancement of templates
     """
 
-    def __init__(
-        self,
-        use_templates: bool = True,
-        use_llm: bool = True,
-        llm_enhance_templates: bool = False,
-        llm_client: ClaudeClient | None = None
-    ):
+    def __init__(self, use_templates: bool = True, use_llm: bool = True, llm_enhance_templates: bool = False, llm_client: ClaudeClient | None = None):
         """
         Initialize code generator.
 
@@ -763,6 +765,7 @@ class ExperimentCodeGenerator:
                 try:
                     from kosmos.config import get_config
                     from kosmos.core.providers.litellm_provider import LiteLLMProvider
+
                     config = get_config()
                     self.llm_client = LiteLLMProvider(config.get_active_provider_config())
                     self.use_llm = True
@@ -853,20 +856,11 @@ class ExperimentCodeGenerator:
 
     def _create_code_generation_prompt(self, protocol: ExperimentProtocol) -> str:
         """Create prompt for LLM code generation."""
-        steps_text = "\n".join([
-            f"{i+1}. {step.title}: {step.action}"
-            for i, step in enumerate(protocol.steps)
-        ])
+        steps_text = "\n".join([f"{i + 1}. {step.title}: {step.action}" for i, step in enumerate(protocol.steps)])
 
-        variables_text = "\n".join([
-            f"- {name} ({var.type.value}): {var.description}"
-            for name, var in protocol.variables.items()
-        ])
+        variables_text = "\n".join([f"- {name} ({var.type.value}): {var.description}" for name, var in protocol.variables.items()])
 
-        tests_text = "\n".join([
-            f"- {test.test_type}: {test.description}"
-            for test in protocol.statistical_tests
-        ])
+        tests_text = "\n".join([f"- {test.test_type}: {test.description}" for test in protocol.statistical_tests])
 
         prompt = f"""Generate executable Python code for this experiment:
 
@@ -962,14 +956,14 @@ Return the enhanced Python code only."""
             "# Process data",
             "df = df.dropna()",
             "",
-            "print(f\"Loaded {len(df)} samples\")",
-            "print(f\"Columns: {list(df.columns)}\")",
+            'print(f"Loaded {len(df)} samples")',
+            'print(f"Columns: {list(df.columns)}")',
             "",
             "# Basic statistics",
             "print(df.describe())",
             "",
             "# Return data",
-            "results = {'data': df.to_dict(), 'shape': df.shape}"
+            "results = {'data': df.to_dict(), 'shape': df.shape}",
         ]
 
         return "\n".join(code_lines)
@@ -986,6 +980,6 @@ Return the enhanced Python code only."""
 
     def save_code(self, code: str, file_path: str) -> None:
         """Save generated code to file."""
-        with open(file_path, 'w') as f:
+        with open(file_path, "w") as f:
             f.write(code)
         logger.info(f"Saved generated code to {file_path}")

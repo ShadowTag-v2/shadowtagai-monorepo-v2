@@ -26,7 +26,7 @@ class ResultSummary:
         hypothesis_comparison: str,
         limitations: list[str],
         future_work: list[str],
-        created_at: datetime | None = None
+        created_at: datetime | None = None,
     ):
         """
         Initialize result summary.
@@ -57,7 +57,7 @@ class ResultSummary:
             "hypothesis_comparison": self.hypothesis_comparison,
             "limitations": self.limitations,
             "future_work": self.future_work,
-            "created_at": self.created_at.isoformat()
+            "created_at": self.created_at.isoformat(),
         }
 
     def to_markdown(self) -> str:
@@ -113,7 +113,7 @@ class ResultSummarizer:
         result: ExperimentResult,
         hypothesis: Hypothesis | None = None,
         interpretation: dict[str, Any] | None = None,
-        literature_context: str | None = None
+        literature_context: str | None = None,
     ) -> ResultSummary:
         """
         Generate comprehensive natural language summary.
@@ -137,9 +137,9 @@ class ResultSummarizer:
             response = self.llm_client.generate(
                 prompt=prompt,
                 system="You are a scientific writer creating clear, accurate summaries of "
-                       "experimental results for a scientific audience. Be precise but accessible.",
+                "experimental results for a scientific audience. Be precise but accessible.",
                 max_tokens=1500,
-                temperature=0.4
+                temperature=0.4,
             )
 
             # Parse response
@@ -152,11 +152,7 @@ class ResultSummarizer:
             logger.error(f"Error generating summary: {e}")
             return self._create_fallback_summary(result, hypothesis)
 
-    def extract_key_findings(
-        self,
-        result: ExperimentResult,
-        max_findings: int = 5
-    ) -> list[str]:
+    def extract_key_findings(self, result: ExperimentResult, max_findings: int = 5) -> list[str]:
         """
         Extract key findings from result.
 
@@ -185,7 +181,7 @@ class ResultSummarizer:
             findings.append(finding)
 
         # Additional statistical tests
-        for test in result.statistical_tests[:max_findings-1]:
+        for test in result.statistical_tests[: max_findings - 1]:
             if not test.is_primary:
                 test_finding = f"{test.test_name}: p={test.p_value:.4f}"
                 if test.effect_size is not None:
@@ -194,11 +190,7 @@ class ResultSummarizer:
 
         return findings[:max_findings]
 
-    def compare_to_hypothesis(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis
-    ) -> str:
+    def compare_to_hypothesis(self, result: ExperimentResult, hypothesis: Hypothesis) -> str:
         """
         Compare result to original hypothesis.
 
@@ -213,17 +205,11 @@ class ResultSummarizer:
 
         # Overall support
         if result.supports_hypothesis is True:
-            comparison_parts.append(
-                f"The experimental results SUPPORT the hypothesis: \"{hypothesis.statement}\""
-            )
+            comparison_parts.append(f'The experimental results SUPPORT the hypothesis: "{hypothesis.statement}"')
         elif result.supports_hypothesis is False:
-            comparison_parts.append(
-                f"The experimental results DO NOT SUPPORT the hypothesis: \"{hypothesis.statement}\""
-            )
+            comparison_parts.append(f'The experimental results DO NOT SUPPORT the hypothesis: "{hypothesis.statement}"')
         else:
-            comparison_parts.append(
-                f"The experimental results are INCONCLUSIVE regarding the hypothesis: \"{hypothesis.statement}\""
-            )
+            comparison_parts.append(f'The experimental results are INCONCLUSIVE regarding the hypothesis: "{hypothesis.statement}"')
 
         # Evidence strength
         if result.primary_p_value is not None:
@@ -247,11 +233,7 @@ class ResultSummarizer:
 
         return " ".join(comparison_parts)
 
-    def identify_limitations(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis | None = None
-    ) -> list[str]:
+    def identify_limitations(self, result: ExperimentResult, hypothesis: Hypothesis | None = None) -> list[str]:
         """
         Identify limitations of experiment.
 
@@ -271,9 +253,7 @@ class ResultSummarizer:
         # Check sample size (if available from metadata)
         for test in result.statistical_tests:
             if test.sample_size is not None and test.sample_size < 30:
-                limitations.append(
-                    f"Small sample size (n={test.sample_size}) may limit statistical power"
-                )
+                limitations.append(f"Small sample size (n={test.sample_size}) may limit statistical power")
                 break
 
         # Check for missing confidence intervals
@@ -286,12 +266,7 @@ class ResultSummarizer:
 
         return limitations
 
-    def suggest_future_work(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis | None = None,
-        max_suggestions: int = 5
-    ) -> list[str]:
+    def suggest_future_work(self, result: ExperimentResult, hypothesis: Hypothesis | None = None, max_suggestions: int = 5) -> list[str]:
         """
         Suggest follow-up experiments.
 
@@ -328,11 +303,7 @@ class ResultSummarizer:
     # ========================================================================
 
     def _build_summary_prompt(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis | None,
-        interpretation: dict[str, Any] | None,
-        literature_context: str | None
+        self, result: ExperimentResult, hypothesis: Hypothesis | None, interpretation: dict[str, Any] | None, literature_context: str | None
     ) -> str:
         """Build prompt for summary generation."""
         prompt_parts = []
@@ -383,7 +354,7 @@ FUTURE WORK:
     def _parse_summary_response(self, response: str, experiment_id: str) -> ResultSummary:
         """Parse Claude response into ResultSummary."""
         # Simple parsing (in production, would use more robust parsing)
-        lines = response.split('\n')
+        lines = response.split("\n")
 
         summary = ""
         key_findings = []
@@ -411,14 +382,14 @@ FUTURE WORK:
             elif line and current_section:
                 if current_section == "summary" and not line.startswith(("KEY", "HYPOTHESIS", "LIMITATIONS", "FUTURE")):
                     summary += " " + line
-                elif current_section == "findings" and (line[0].isdigit() or line.startswith('-')):
-                    key_findings.append(line.lstrip('0123456789.-) '))
+                elif current_section == "findings" and (line[0].isdigit() or line.startswith("-")):
+                    key_findings.append(line.lstrip("0123456789.-) "))
                 elif current_section == "hypothesis" and not line.startswith(("LIMITATIONS", "FUTURE")):
                     hypothesis_comparison += " " + line
-                elif current_section == "limitations" and line.startswith('-'):
-                    limitations.append(line.lstrip('- '))
-                elif current_section == "future_work" and (line[0].isdigit() or line.startswith('-')):
-                    future_work.append(line.lstrip('0123456789.-) '))
+                elif current_section == "limitations" and line.startswith("-"):
+                    limitations.append(line.lstrip("- "))
+                elif current_section == "future_work" and (line[0].isdigit() or line.startswith("-")):
+                    future_work.append(line.lstrip("0123456789.-) "))
 
         return ResultSummary(
             experiment_id=experiment_id,
@@ -426,14 +397,10 @@ FUTURE WORK:
             key_findings=key_findings,
             hypothesis_comparison=hypothesis_comparison.strip(),
             limitations=limitations,
-            future_work=future_work
+            future_work=future_work,
         )
 
-    def _create_fallback_summary(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis | None
-    ) -> ResultSummary:
+    def _create_fallback_summary(self, result: ExperimentResult, hypothesis: Hypothesis | None) -> ResultSummary:
         """Create fallback summary if Claude fails."""
         summary = f"Experiment {result.experiment_id} completed with status {result.status}. "
         summary += f"Primary test ({result.primary_test}) yielded p-value of {result.primary_p_value}. "
@@ -447,5 +414,5 @@ FUTURE WORK:
             key_findings=self.extract_key_findings(result),
             hypothesis_comparison=self.compare_to_hypothesis(result, hypothesis) if hypothesis else "No hypothesis provided for comparison.",
             limitations=self.identify_limitations(result, hypothesis),
-            future_work=self.suggest_future_work(result, hypothesis)
+            future_work=self.suggest_future_work(result, hypothesis),
         )

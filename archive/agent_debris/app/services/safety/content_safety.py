@@ -3,8 +3,9 @@ Content Safety & Compliance Service
 Google Content Safety API + Hive for semantic and media/PII moderation
 Quantitative Effect: ↑ Trust/Compliance +99%, ↓ Manual review –70%
 """
+
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Any
 from datetime import datetime
 from google.cloud import dlp_v2
 from app.config.settings import settings
@@ -21,12 +22,7 @@ class ContentSafetyService:
     def __init__(self):
         self.dlp_client: dlp_v2.DlpServiceClient | None = None
         self.safety_cache: dict[str, Any] = {}
-        self.moderation_stats = {
-            "total_checks": 0,
-            "violations_detected": 0,
-            "pii_detected": 0,
-            "auto_approved": 0
-        }
+        self.moderation_stats = {"total_checks": 0, "violations_detected": 0, "pii_detected": 0, "auto_approved": 0}
 
     async def initialize(self):
         """Initialize Google Cloud DLP client"""
@@ -45,13 +41,7 @@ class ContentSafetyService:
             self.dlp_client.close()
         logger.info("Content Safety service shutdown")
 
-    async def moderate_content(
-        self,
-        content: str,
-        content_type: str = "text",
-        check_pii: bool = True,
-        check_toxicity: bool = True
-    ) -> dict[str, Any]:
+    async def moderate_content(self, content: str, content_type: str = "text", check_pii: bool = True, check_toxicity: bool = True) -> dict[str, Any]:
         """
         Moderate content for safety and compliance
 
@@ -111,10 +101,7 @@ class ContentSafetyService:
                 "toxicity_score": toxicity_score,
                 "requires_manual_review": len(violations) > 0,
                 "elapsed_seconds": elapsed,
-                "metrics": {
-                    "trust_compliance": "+99%",
-                    "manual_review_reduction": "-70%"
-                }
+                "metrics": {"trust_compliance": "+99%", "manual_review_reduction": "-70%"},
             }
 
             # Cache result
@@ -123,17 +110,9 @@ class ContentSafetyService:
             return result
         except Exception as e:
             logger.error(f"Content moderation failed: {e}")
-            return {
-                "status": "error",
-                "error": str(e),
-                "approved": False
-            }
+            return {"status": "error", "error": str(e), "approved": False}
 
-    async def moderate_media(
-        self,
-        media_url: str,
-        media_type: str = "image"
-    ) -> dict[str, Any]:
+    async def moderate_media(self, media_url: str, media_type: str = "image") -> dict[str, Any]:
         """
         Moderate media content (images, video, audio)
 
@@ -160,15 +139,11 @@ class ContentSafetyService:
                 "approved": len(violations) == 0,
                 "violations": violations,
                 "safety_labels": safety_labels,
-                "media_type": media_type
+                "media_type": media_type,
             }
         except Exception as e:
             logger.error(f"Media moderation failed: {e}")
-            return {
-                "status": "error",
-                "error": str(e),
-                "approved": False
-            }
+            return {"status": "error", "error": str(e), "approved": False}
 
     async def _detect_pii(self, content: str) -> list[dict[str, Any]]:
         """Detect PII using Google Cloud DLP"""
@@ -202,11 +177,13 @@ class ContentSafetyService:
                 findings = []
                 if response.result.findings:
                     for finding in response.result.findings:
-                        findings.append({
-                            "type": finding.info_type.name,
-                            "likelihood": finding.likelihood.name,
-                            "quote": finding.quote[:50] if hasattr(finding, 'quote') else ""
-                        })
+                        findings.append(
+                            {
+                                "type": finding.info_type.name,
+                                "likelihood": finding.likelihood.name,
+                                "quote": finding.quote[:50] if hasattr(finding, "quote") else "",
+                            }
+                        )
 
                 return findings
             except Exception as api_error:
@@ -221,14 +198,15 @@ class ContentSafetyService:
     def _simple_pii_detection(self, content: str) -> list[dict[str, Any]]:
         """Simple PII detection fallback"""
         import re
+
         findings = []
 
         # Email pattern
-        if re.search(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', content):
+        if re.search(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}", content):
             findings.append({"type": "EMAIL_ADDRESS", "likelihood": "POSSIBLE"})
 
         # Phone pattern
-        if re.search(r'\b\d{3}[-.]?\d{3}[-.]?\d{4}\b', content):
+        if re.search(r"\b\d{3}[-.]?\d{3}[-.]?\d{4}\b", content):
             findings.append({"type": "PHONE_NUMBER", "likelihood": "POSSIBLE"})
 
         return findings
@@ -246,12 +224,7 @@ class ContentSafetyService:
         violations = []
 
         # Check for prohibited patterns
-        prohibited_patterns = [
-            "malware",
-            "ransomware",
-            "phishing",
-            "illegal"
-        ]
+        prohibited_patterns = ["malware", "ransomware", "phishing", "illegal"]
 
         for pattern in prohibited_patterns:
             if pattern in content.lower():
@@ -259,11 +232,7 @@ class ContentSafetyService:
 
         return violations
 
-    async def _analyze_media_safety(
-        self,
-        media_url: str,
-        media_type: str
-    ) -> list[str]:
+    async def _analyze_media_safety(self, media_url: str, media_type: str) -> list[str]:
         """Analyze media safety (simulated)"""
         # In production, use Google Cloud Vision API
         # For now, return safe result
@@ -271,25 +240,16 @@ class ContentSafetyService:
 
     async def get_moderation_stats(self) -> dict[str, Any]:
         """Get moderation statistics"""
-        return {
-            "stats": self.moderation_stats,
-            "cache_size": len(self.safety_cache),
-            "timestamp": datetime.utcnow().isoformat()
-        }
+        return {"stats": self.moderation_stats, "cache_size": len(self.safety_cache), "timestamp": datetime.utcnow().isoformat()}
 
-    async def log_violation(
-        self,
-        violation_type: str,
-        content_snippet: str,
-        metadata: dict[str, Any] | None = None
-    ) -> bool:
+    async def log_violation(self, violation_type: str, content_snippet: str, metadata: dict[str, Any] | None = None) -> bool:
         """Log a safety violation for audit trail"""
         try:
             log_entry = {
                 "violation_type": violation_type,
                 "content_snippet": content_snippet[:100],
                 "metadata": metadata or {},
-                "timestamp": datetime.utcnow().isoformat()
+                "timestamp": datetime.utcnow().isoformat(),
             }
 
             logger.warning(f"Safety violation logged: {violation_type}")

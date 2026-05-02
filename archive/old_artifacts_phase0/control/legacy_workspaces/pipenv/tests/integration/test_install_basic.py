@@ -114,9 +114,7 @@ tablib = "*"
 @pytest.mark.dev
 @pytest.mark.basic
 @pytest.mark.install
-def test_install_explicit_dev_overrides_default_categories_envvar(
-    pipenv_instance_private_pypi, monkeypatch
-):
+def test_install_explicit_dev_overrides_default_categories_envvar(pipenv_instance_private_pypi, monkeypatch):
     monkeypatch.setenv("PIPENV_DEFAULT_CATEGORIES", "packages")
     with pipenv_instance_private_pypi() as p:
         with open(p.pipfile_path, "w") as f:
@@ -208,9 +206,7 @@ dataclasses-json = "==0.5.7"
 @pytest.mark.install
 @pytest.mark.resolver
 @pytest.mark.backup_resolver
-@pytest.mark.skipif(
-    sys.version_info >= (3, 12), reason="Package does not work with Python 3.12"
-)
+@pytest.mark.skipif(sys.version_info >= (3, 12), reason="Package does not work with Python 3.12")
 def test_backup_resolver(pipenv_instance_private_pypi):
     with pipenv_instance_private_pypi() as p:
         with open(p.pipfile_path, "w") as f:
@@ -292,10 +288,7 @@ def test_requirements_to_pipfile(pipenv_instance_private_pypi):
         # assert stuff in pipfile
         assert "requests" in p.pipfile["packages"]
         assert "extras" in p.pipfile["packages"]["requests"]
-        assert not any(
-            source["url"] == "https://private.pypi.org/simple"
-            for source in p.pipfile["source"]
-        )
+        assert not any(source["url"] == "https://private.pypi.org/simple" for source in p.pipfile["source"])
         # assert stuff in lockfile
         assert "requests" in p.lockfile["default"]
         assert "chardet" in p.lockfile["default"]
@@ -385,9 +378,7 @@ def test_editable_no_args(pipenv_instance_pypi):
 @pytest.mark.virtualenv
 def test_install_venv_project_directory(pipenv_instance_pypi):
     """Test the project functionality during virtualenv creation."""
-    with pipenv_instance_pypi() as p, temp_environ(), TemporaryDirectory(
-        prefix="pipenv-", suffix="temp_workon_home"
-    ) as workon_home:
+    with pipenv_instance_pypi() as p, temp_environ(), TemporaryDirectory(prefix="pipenv-", suffix="temp_workon_home") as workon_home:
         os.environ["WORKON_HOME"] = workon_home
 
         c = p.pipenv("install six")
@@ -418,7 +409,6 @@ def test_system_and_deploy_work(pipenv_instance_private_pypi):
         assert c.returncode == 0
         c = p.pipenv("install --system --deploy")
         assert c.returncode == 0
-
 
 
 @pytest.mark.cli
@@ -561,9 +551,7 @@ six = {}
 [packages.requests]
 version = "*"
 extras = ["socks"]
-            """.format(
-                p.index_url, '{version = "*"}'
-            ).strip()
+            """.format(p.index_url, '{version = "*"}').strip()
             f.write(contents)
         c = p.pipenv("install colorama")
         assert c.returncode == 0
@@ -596,9 +584,7 @@ allow_prereleases = false
 [packages.requests]
 version = "*"
 extras = ["socks"]
-            """.format(
-                p.index_url, '{version = "*"}'
-            ).strip()
+            """.format(p.index_url, '{version = "*"}').strip()
             f.write(contents)
         c = p.pipenv("install colorama")
         assert c.returncode == 0
@@ -644,23 +630,17 @@ def test_install_does_not_exclude_packaging(pipenv_instance_pypi):
     with pipenv_instance_pypi() as p:
         c = p.pipenv("install dataclasses-json")
         assert c.returncode == 0
-        c = p.pipenv(
-            """run python -c "from dataclasses_json import DataClassJsonMixin" """
-        )
+        c = p.pipenv("""run python -c "from dataclasses_json import DataClassJsonMixin" """)
         assert c.returncode == 0
 
 
 @pytest.mark.basic
 @pytest.mark.install
 @pytest.mark.needs_internet
-@pytest.mark.skip(
-    reason="pip 23.3 now vendors in truststore and so test assumptions invalid "
-)
+@pytest.mark.skip(reason="pip 23.3 now vendors in truststore and so test assumptions invalid ")
 def test_install_will_supply_extra_pip_args(pipenv_instance_pypi):
     with pipenv_instance_pypi() as p:
-        c = p.pipenv(
-            """install -v dataclasses-json --extra-pip-args="--use-feature=truststore --proxy=test" """
-        )
+        c = p.pipenv("""install -v dataclasses-json --extra-pip-args="--use-feature=truststore --proxy=test" """)
         assert c.returncode == 1
         assert "truststore feature" in c.stdout
 

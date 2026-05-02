@@ -54,9 +54,7 @@ def setup_logging(verbose: bool = False, debug: bool = False, trace: bool = Fals
     log_file = log_dir / "kosmos.log"
 
     # Determine log level
-    if trace or debug_level >= 2:
-        level = logging.DEBUG
-    elif debug or debug_level >= 1:
+    if trace or debug_level >= 2 or debug or debug_level >= 1:
         level = logging.DEBUG
     elif verbose:
         level = logging.INFO
@@ -67,6 +65,7 @@ def setup_logging(verbose: bool = False, debug: bool = False, trace: bool = Fals
     if trace:
         try:
             from kosmos.config import get_config
+
             config = get_config()
             config.logging.log_llm_calls = True
             config.logging.log_agent_messages = True
@@ -82,7 +81,7 @@ def setup_logging(verbose: bool = False, debug: bool = False, trace: bool = Fals
         handlers=[
             logging.FileHandler(log_file),
             logging.StreamHandler() if (debug or trace or debug_level > 0) else logging.NullHandler(),
-        ]
+        ],
     )
 
 
@@ -128,6 +127,7 @@ def main(
     if debug_modules:
         try:
             from kosmos.config import get_config
+
             config = get_config()
             config.logging.debug_modules = [m.strip() for m in debug_modules.split(",")]
         except Exception as e:
@@ -136,6 +136,7 @@ def main(
     # Initialize database
     try:
         from kosmos.db import init_from_config
+
         init_from_config()
     except Exception as e:
         # Always show database initialization errors to the user
@@ -151,7 +152,7 @@ def main(
                 "  • Database connection issues\n\n"
                 f"Error: {str(e)}\n\n"
                 "Run with --debug for full error details.",
-                title="Database Initialization Error"
+                title="Database Initialization Error",
             )
 
         # Don't exit here - let commands handle the error if they need database
@@ -221,10 +222,7 @@ def info():
         config_table.add_row("Max Iterations", str(config.research.max_iterations))
         if config.claude:
             config_table.add_row("API Mode", "CLI" if config.claude.is_cli_mode else "API")
-        config_table.add_row(
-            "Domains",
-            ", ".join(config.research.enabled_domains) if config.research.enabled_domains else "All"
-        )
+        config_table.add_row("Domains", ", ".join(config.research.enabled_domains) if config.research.enabled_domains else "All")
 
         console.print(config_table)
         console.print()
@@ -274,6 +272,7 @@ def doctor():
 
     # Check Python version
     import sys
+
     python_ok = sys.version_info >= (3, 9)
     checks.append(("Python Version", f"{sys.version_info.major}.{sys.version_info.minor}", python_ok))
 
@@ -307,6 +306,7 @@ def doctor():
 
     # Check cache directory
     from kosmos.cli.utils import get_cache_dir
+
     cache_dir = get_cache_dir()
     cache_ok = cache_dir.exists() and os.access(cache_dir, os.W_OK)
     checks.append(("Cache Directory", str(cache_dir), cache_ok))
@@ -381,10 +381,7 @@ def doctor():
     if all_ok:
         print_success("All checks passed! Kosmos is ready to use.", title="Diagnostics Complete")
     else:
-        print_error(
-            "Some checks failed. Please resolve the issues above before using Kosmos.",
-            title="Diagnostics Failed"
-        )
+        print_error("Some checks failed. Please resolve the issues above before using Kosmos.", title="Diagnostics Failed")
         raise typer.Exit(1)
 
 

@@ -20,6 +20,7 @@ celery_app.conf.timezone = "UTC"
 # Configure the Kubernetes client
 k8s_client = KubernetesClient()
 
+
 @celery_app.task
 def monitor_bot_containers():
     """
@@ -28,10 +29,7 @@ def monitor_bot_containers():
     """
     try:
         # Get all bot pods
-        pod_list = k8s_client.core_v1.list_namespaced_pod(
-            namespace=k8s_client.namespace,
-            label_selector="app=bot"
-        )
+        pod_list = k8s_client.core_v1.list_namespaced_pod(namespace=k8s_client.namespace, label_selector="app=bot")
 
         logger.info(f"Monitoring {len(pod_list.items)} bot containers")
 
@@ -64,6 +62,7 @@ def monitor_bot_containers():
         logger.error(f"Error during bot monitoring: {e}")
         return {"status": "error", "message": str(e)}
 
+
 @celery_app.task
 def clean_idle_bots(idle_threshold_minutes=30):
     """
@@ -71,10 +70,7 @@ def clean_idle_bots(idle_threshold_minutes=30):
     """
     try:
         # Get all running bot pods
-        pod_list = k8s_client.core_v1.list_namespaced_pod(
-            namespace=k8s_client.namespace,
-            label_selector="app=bot"
-        )
+        pod_list = k8s_client.core_v1.list_namespaced_pod(namespace=k8s_client.namespace, label_selector="app=bot")
 
         cleaned_count = 0
 

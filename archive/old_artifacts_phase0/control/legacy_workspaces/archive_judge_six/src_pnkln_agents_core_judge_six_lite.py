@@ -16,6 +16,7 @@ from typing import Any
 
 class ViolationType(Enum):
     """Types of compliance violations"""
+
     CAN_SPAM = "can_spam"
     GDPR = "gdpr"
     HIPAA = "hipaa"
@@ -27,15 +28,17 @@ class ViolationType(Enum):
 
 class ViolationSeverity(Enum):
     """Severity levels for violations"""
+
     CRITICAL = "critical"  # Blocks execution, legal risk
-    HIGH = "high"         # Blocks execution, compliance risk
-    MEDIUM = "medium"     # Warns, logs, may execute
-    LOW = "low"          # Logs only
+    HIGH = "high"  # Blocks execution, compliance risk
+    MEDIUM = "medium"  # Warns, logs, may execute
+    LOW = "low"  # Logs only
 
 
 @dataclass
 class Violation:
     """Represents a compliance violation"""
+
     violation_type: ViolationType
     severity: ViolationSeverity
     description: str
@@ -48,6 +51,7 @@ class Violation:
 @dataclass
 class VerificationResult:
     """Result of Judge #6 Lite verification"""
+
     passed: bool
     violations: list[Violation]
     warnings: list[str]
@@ -84,7 +88,7 @@ class JudgeSixLite:
     def __init__(self, config: dict[str, Any] | None = None):
         self.config = config or {}
         self.rules = []
-        self.sla_target_ms = self.config.get('sla_p99_ms', 90)
+        self.sla_target_ms = self.config.get("sla_p99_ms", 90)
 
         # Initialize default rules
         self._register_default_rules()
@@ -108,12 +112,7 @@ class JudgeSixLite:
         """Register a new compliance rule"""
         self.rules.append(rule)
 
-    def verify(
-        self,
-        result: Any,
-        context: dict[str, Any] | None = None,
-        sla_p99: int | None = None
-    ) -> VerificationResult:
+    def verify(self, result: Any, context: dict[str, Any] | None = None, sla_p99: int | None = None) -> VerificationResult:
         """
         Verify result against all registered compliance rules
 
@@ -132,17 +131,17 @@ class JudgeSixLite:
         violations = []
         warnings = []
         metadata = {
-            'rules_checked': len(self.rules),
-            'sla_target_ms': sla_target,
+            "rules_checked": len(self.rules),
+            "sla_target_ms": sla_target,
         }
 
         # Convert result to dict if needed
         if isinstance(result, str):
-            data = {'content': result}
+            data = {"content": result}
         elif isinstance(result, dict):
             data = result
         else:
-            data = {'raw_result': str(result)}
+            data = {"raw_result": str(result)}
 
         # Check all rules
         for rule in self.rules:
@@ -156,11 +155,9 @@ class JudgeSixLite:
         # Check SLA
         verification_time_ms = (time.perf_counter() - start_time) * 1000
         if verification_time_ms > sla_target:
-            warnings.append(
-                f"Verification exceeded SLA target: {verification_time_ms:.2f}ms > {sla_target}ms"
-            )
+            warnings.append(f"Verification exceeded SLA target: {verification_time_ms:.2f}ms > {sla_target}ms")
 
-        metadata['verification_time_ms'] = verification_time_ms
+        metadata["verification_time_ms"] = verification_time_ms
 
         # Determine if verification passed
         critical_violations = [v for v in violations if v.severity in [ViolationSeverity.CRITICAL, ViolationSeverity.HIGH]]
@@ -175,71 +172,57 @@ class JudgeSixLite:
             warnings=warnings,
             metadata=metadata,
             verification_time_ms=verification_time_ms,
-            audit_report=audit_report
+            audit_report=audit_report,
         )
 
     def _build_audit_report(
-        self,
-        data: dict[str, Any],
-        violations: list[Violation],
-        warnings: list[str],
-        metadata: dict[str, Any],
-        context: dict[str, Any]
+        self, data: dict[str, Any], violations: list[Violation], warnings: list[str], metadata: dict[str, Any], context: dict[str, Any]
     ) -> dict[str, Any]:
         """Build comprehensive audit report"""
         return {
-            'timestamp': datetime.utcnow().isoformat(),
-            'metadata': metadata,
-            'context': context,
-            'violations': [
+            "timestamp": datetime.utcnow().isoformat(),
+            "metadata": metadata,
+            "context": context,
+            "violations": [
                 {
-                    'type': v.violation_type.value,
-                    'severity': v.severity.value,
-                    'description': v.description,
-                    'field': v.field,
-                    'value': v.value,
-                    'rule_id': v.rule_id,
-                    'remediation': v.remediation,
+                    "type": v.violation_type.value,
+                    "severity": v.severity.value,
+                    "description": v.description,
+                    "field": v.field,
+                    "value": v.value,
+                    "rule_id": v.rule_id,
+                    "remediation": v.remediation,
                 }
                 for v in violations
             ],
-            'warnings': warnings,
-            'passed': len([v for v in violations if v.severity in [ViolationSeverity.CRITICAL, ViolationSeverity.HIGH]]) == 0,
-            'data_summary': {
-                'keys': list(data.keys()),
-                'size_bytes': len(json.dumps(data)),
-            }
+            "warnings": warnings,
+            "passed": len([v for v in violations if v.severity in [ViolationSeverity.CRITICAL, ViolationSeverity.HIGH]]) == 0,
+            "data_summary": {
+                "keys": list(data.keys()),
+                "size_bytes": len(json.dumps(data)),
+            },
         }
 
     def export_audit_report_pdf(self, audit_report: dict[str, Any]) -> bytes:
         """Export audit report as PDF (placeholder - requires PDF library)"""
         # TODO: Implement PDF export using reportlab or similar
         # For now, return JSON representation
-        return json.dumps(audit_report, indent=2).encode('utf-8')
+        return json.dumps(audit_report, indent=2).encode("utf-8")
 
 
 # CAN-SPAM Compliance Rules
+
 
 class CANSPAMUnsubscribeRule(ComplianceRule):
     """CAN-SPAM requires unsubscribe link in all marketing emails"""
 
     def __init__(self):
-        super().__init__(
-            rule_id="can-spam-001",
-            description="Marketing emails must include unsubscribe link",
-            severity=ViolationSeverity.CRITICAL
-        )
-        self.unsubscribe_patterns = [
-            r'unsubscribe',
-            r'opt[\s-]?out',
-            r'remove[\s]?me',
-            r'manage[\s]?preferences',
-            r'email[\s]?preferences'
-        ]
+        super().__init__(rule_id="can-spam-001", description="Marketing emails must include unsubscribe link", severity=ViolationSeverity.CRITICAL)
+        self.unsubscribe_patterns = [r"unsubscribe", r"opt[\s-]?out", r"remove[\s]?me", r"manage[\s]?preferences", r"email[\s]?preferences"]
 
     def check(self, data: dict[str, Any], context: dict[str, Any]) -> Violation | None:
-        content = data.get('content', '') or data.get('email_body', '')
-        is_marketing = context.get('is_marketing_email', True)
+        content = data.get("content", "") or data.get("email_body", "")
+        is_marketing = context.get("is_marketing_email", True)
 
         if not is_marketing:
             return None
@@ -249,10 +232,7 @@ class CANSPAMUnsubscribeRule(ComplianceRule):
 
         # Check for unsubscribe link
         content_lower = content.lower()
-        has_unsubscribe = any(
-            re.search(pattern, content_lower)
-            for pattern in self.unsubscribe_patterns
-        )
+        has_unsubscribe = any(re.search(pattern, content_lower) for pattern in self.unsubscribe_patterns)
 
         if not has_unsubscribe:
             return Violation(
@@ -261,7 +241,7 @@ class CANSPAMUnsubscribeRule(ComplianceRule):
                 description="Marketing email missing unsubscribe link (CAN-SPAM violation)",
                 field="content",
                 rule_id=self.rule_id,
-                remediation="Add unsubscribe link or 'manage preferences' option"
+                remediation="Add unsubscribe link or 'manage preferences' option",
             )
 
         return None
@@ -272,14 +252,12 @@ class CANSPAMPhysicalAddressRule(ComplianceRule):
 
     def __init__(self):
         super().__init__(
-            rule_id="can-spam-002",
-            description="Marketing emails must include physical mailing address",
-            severity=ViolationSeverity.HIGH
+            rule_id="can-spam-002", description="Marketing emails must include physical mailing address", severity=ViolationSeverity.HIGH
         )
 
     def check(self, data: dict[str, Any], context: dict[str, Any]) -> Violation | None:
-        content = data.get('content', '') or data.get('email_body', '')
-        is_marketing = context.get('is_marketing_email', True)
+        content = data.get("content", "") or data.get("email_body", "")
+        is_marketing = context.get("is_marketing_email", True)
 
         if not is_marketing:
             return None
@@ -288,7 +266,7 @@ class CANSPAMPhysicalAddressRule(ComplianceRule):
             return None
 
         # Simple check for address patterns (street number + street name)
-        address_pattern = r'\d+\s+[A-Za-z]+\s+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln)'
+        address_pattern = r"\d+\s+[A-Za-z]+\s+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln)"
         has_address = re.search(address_pattern, content, re.IGNORECASE)
 
         if not has_address:
@@ -298,7 +276,7 @@ class CANSPAMPhysicalAddressRule(ComplianceRule):
                 description="Marketing email missing physical mailing address (CAN-SPAM violation)",
                 field="content",
                 rule_id=self.rule_id,
-                remediation="Add company's physical mailing address"
+                remediation="Add company's physical mailing address",
             )
 
         return None
@@ -308,21 +286,17 @@ class CANSPAMDeceptiveHeaderRule(ComplianceRule):
     """CAN-SPAM prohibits deceptive subject lines"""
 
     def __init__(self):
-        super().__init__(
-            rule_id="can-spam-003",
-            description="Email subject line must not be deceptive",
-            severity=ViolationSeverity.CRITICAL
-        )
+        super().__init__(rule_id="can-spam-003", description="Email subject line must not be deceptive", severity=ViolationSeverity.CRITICAL)
         self.deceptive_patterns = [
-            r're:.*',  # Fake reply
-            r'fwd:.*',  # Fake forward
-            r'urgent.*password',  # Fake security alert
-            r'your.*account.*suspended',  # Fake suspension
-            r'claim.*prize',  # Fake prize
+            r"re:.*",  # Fake reply
+            r"fwd:.*",  # Fake forward
+            r"urgent.*password",  # Fake security alert
+            r"your.*account.*suspended",  # Fake suspension
+            r"claim.*prize",  # Fake prize
         ]
 
     def check(self, data: dict[str, Any], context: dict[str, Any]) -> Violation | None:
-        subject = data.get('subject', '') or data.get('email_subject', '')
+        subject = data.get("subject", "") or data.get("email_subject", "")
 
         if not subject:
             return None
@@ -339,7 +313,7 @@ class CANSPAMDeceptiveHeaderRule(ComplianceRule):
                     field="subject",
                     value=subject,
                     rule_id=self.rule_id,
-                    remediation="Use honest, non-deceptive subject line"
+                    remediation="Use honest, non-deceptive subject line",
                 )
 
         return None
@@ -347,20 +321,17 @@ class CANSPAMDeceptiveHeaderRule(ComplianceRule):
 
 # GDPR Compliance Rules
 
+
 class GDPRConsentRule(ComplianceRule):
     """GDPR requires consent for EU personal data processing"""
 
     def __init__(self):
-        super().__init__(
-            rule_id="gdpr-001",
-            description="EU personal data processing requires explicit consent",
-            severity=ViolationSeverity.CRITICAL
-        )
+        super().__init__(rule_id="gdpr-001", description="EU personal data processing requires explicit consent", severity=ViolationSeverity.CRITICAL)
 
     def check(self, data: dict[str, Any], context: dict[str, Any]) -> Violation | None:
-        eu_customer = context.get('eu_customer', False)
-        has_consent = context.get('gdpr_consent', False)
-        involves_pii = context.get('involves_pii', False)
+        eu_customer = context.get("eu_customer", False)
+        has_consent = context.get("gdpr_consent", False)
+        involves_pii = context.get("involves_pii", False)
 
         if eu_customer and involves_pii and not has_consent:
             return Violation(
@@ -368,7 +339,7 @@ class GDPRConsentRule(ComplianceRule):
                 severity=self.severity,
                 description="Processing EU customer PII without explicit GDPR consent",
                 rule_id=self.rule_id,
-                remediation="Obtain explicit GDPR consent before processing EU customer data"
+                remediation="Obtain explicit GDPR consent before processing EU customer data",
             )
 
         return None
@@ -379,20 +350,18 @@ class GDPRDataMinimizationRule(ComplianceRule):
 
     def __init__(self):
         super().__init__(
-            rule_id="gdpr-002",
-            description="Only collect necessary personal data (GDPR data minimization)",
-            severity=ViolationSeverity.MEDIUM
+            rule_id="gdpr-002", description="Only collect necessary personal data (GDPR data minimization)", severity=ViolationSeverity.MEDIUM
         )
 
     def check(self, data: dict[str, Any], context: dict[str, Any]) -> Violation | None:
-        eu_customer = context.get('eu_customer', False)
+        eu_customer = context.get("eu_customer", False)
 
         if not eu_customer:
             return None
 
         # Check for excessive data collection
-        sensitive_fields = ['ssn', 'social_security', 'passport', 'drivers_license', 'biometric']
-        purpose = context.get('purpose', '')
+        sensitive_fields = ["ssn", "social_security", "passport", "drivers_license", "biometric"]
+        purpose = context.get("purpose", "")
 
         for field in sensitive_fields:
             if field in data and field not in purpose.lower():
@@ -402,7 +371,7 @@ class GDPRDataMinimizationRule(ComplianceRule):
                     description=f"Collecting sensitive data '{field}' not necessary for stated purpose",
                     field=field,
                     rule_id=self.rule_id,
-                    remediation="Remove unnecessary personal data fields"
+                    remediation="Remove unnecessary personal data fields",
                 )
 
         return None
@@ -412,25 +381,21 @@ class GDPRPersonalEmailRule(ComplianceRule):
     """GDPR restrictions on personal email addresses"""
 
     def __init__(self):
-        super().__init__(
-            rule_id="gdpr-003",
-            description="Personal email addresses from EU require consent",
-            severity=ViolationSeverity.HIGH
-        )
+        super().__init__(rule_id="gdpr-003", description="Personal email addresses from EU require consent", severity=ViolationSeverity.HIGH)
 
     def check(self, data: dict[str, Any], context: dict[str, Any]) -> Violation | None:
-        eu_customer = context.get('eu_customer', False)
-        email = data.get('email', '')
+        eu_customer = context.get("eu_customer", False)
+        email = data.get("email", "")
 
         if not eu_customer or not email:
             return None
 
         # Check if email is personal (not corporate)
-        personal_domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com']
-        domain = email.split('@')[-1].lower() if '@' in email else ''
+        personal_domains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "aol.com"]
+        domain = email.split("@")[-1].lower() if "@" in email else ""
 
         if domain in personal_domains:
-            has_consent = context.get('gdpr_consent', False)
+            has_consent = context.get("gdpr_consent", False)
             if not has_consent:
                 return Violation(
                     violation_type=ViolationType.GDPR,
@@ -439,7 +404,7 @@ class GDPRPersonalEmailRule(ComplianceRule):
                     field="email",
                     value=email,
                     rule_id=self.rule_id,
-                    remediation="Obtain consent or use corporate email only"
+                    remediation="Obtain consent or use corporate email only",
                 )
 
         return None
@@ -447,19 +412,16 @@ class GDPRPersonalEmailRule(ComplianceRule):
 
 # Budget Rules
 
+
 class BudgetLimitRule(ComplianceRule):
     """Enforce budget limits on actions"""
 
     def __init__(self):
-        super().__init__(
-            rule_id="budget-001",
-            description="Action cost must not exceed budget limit",
-            severity=ViolationSeverity.HIGH
-        )
+        super().__init__(rule_id="budget-001", description="Action cost must not exceed budget limit", severity=ViolationSeverity.HIGH)
 
     def check(self, data: dict[str, Any], context: dict[str, Any]) -> Violation | None:
-        cost = data.get('cost_usd', 0.0) or context.get('cost_usd', 0.0)
-        budget_limit = context.get('budget_limit_usd', 100.0)
+        cost = data.get("cost_usd", 0.0) or context.get("cost_usd", 0.0)
+        budget_limit = context.get("budget_limit_usd", 100.0)
 
         if cost > budget_limit:
             return Violation(
@@ -469,7 +431,7 @@ class BudgetLimitRule(ComplianceRule):
                 field="cost_usd",
                 value=str(cost),
                 rule_id=self.rule_id,
-                remediation="Reduce cost or request budget increase"
+                remediation="Reduce cost or request budget increase",
             )
 
         return None

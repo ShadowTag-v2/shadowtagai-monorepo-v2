@@ -17,33 +17,21 @@ class TestJREngine:
     def test_risk_matrix_extremely_high(self):
         """Test EXTREMELY_HIGH risk scenarios."""
         # A × I = EH
-        risk = self.engine.assess_risk(
-            ProbabilityLevel.A_FREQUENT,
-            SeverityLevel.I_CATASTROPHIC
-        )
+        risk = self.engine.assess_risk(ProbabilityLevel.A_FREQUENT, SeverityLevel.I_CATASTROPHIC)
         assert risk == RiskLevel.EXTREMELY_HIGH
 
         # B × I = EH
-        risk = self.engine.assess_risk(
-            ProbabilityLevel.B_LIKELY,
-            SeverityLevel.I_CATASTROPHIC
-        )
+        risk = self.engine.assess_risk(ProbabilityLevel.B_LIKELY, SeverityLevel.I_CATASTROPHIC)
         assert risk == RiskLevel.EXTREMELY_HIGH
 
     def test_risk_matrix_low(self):
         """Test LOW risk scenarios."""
         # E × IV = L
-        risk = self.engine.assess_risk(
-            ProbabilityLevel.E_UNLIKELY,
-            SeverityLevel.IV_NEGLIGIBLE
-        )
+        risk = self.engine.assess_risk(ProbabilityLevel.E_UNLIKELY, SeverityLevel.IV_NEGLIGIBLE)
         assert risk == RiskLevel.LOW
 
         # D × IV = L
-        risk = self.engine.assess_risk(
-            ProbabilityLevel.D_SELDOM,
-            SeverityLevel.IV_NEGLIGIBLE
-        )
+        risk = self.engine.assess_risk(ProbabilityLevel.D_SELDOM, SeverityLevel.IV_NEGLIGIBLE)
         assert risk == RiskLevel.LOW
 
     def test_determine_action_reject(self):
@@ -71,7 +59,7 @@ class TestJREngine:
             reasons="Valid business request",
             probability=ProbabilityLevel.C_OCCASIONAL,
             severity=SeverityLevel.III_MODERATE,
-            metadata={"user_id": "test_123"}
+            metadata={"user_id": "test_123"},
         )
 
         assert isinstance(decision, PRBDecision)
@@ -87,7 +75,7 @@ class TestJREngine:
             reasons="Does not advance ShadowTagAi mission",
             probability=ProbabilityLevel.E_UNLIKELY,
             severity=SeverityLevel.IV_NEGLIGIBLE,  # Would be LOW risk
-            metadata={}
+            metadata={},
         )
 
         assert decision.action == "REJECT"  # Overridden despite LOW risk

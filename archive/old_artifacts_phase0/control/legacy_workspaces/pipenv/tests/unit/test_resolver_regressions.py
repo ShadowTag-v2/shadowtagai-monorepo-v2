@@ -58,12 +58,8 @@ def test_pip_provider_prefers_promoted_conflict_identifier():
         )
 
     information = {"protobuf": (), "sentry-protos": ()}
-    protobuf_preference = provider.get_preference(
-        "protobuf", {}, {}, information, []
-    )
-    sentry_preference = provider.get_preference(
-        "sentry-protos", {}, {}, information, []
-    )
+    protobuf_preference = provider.get_preference("protobuf", {}, {}, information, [])
+    sentry_preference = provider.get_preference("sentry-protos", {}, {}, information, [])
 
     assert protobuf_preference < sentry_preference
 
@@ -86,9 +82,7 @@ def test_collect_hashes_does_not_warn_when_fallback_succeeds(monkeypatch):
 
     candidate = SimpleNamespace(link=mock.sentinel.link)
     best_candidate_result = SimpleNamespace(applicable_candidates=[candidate])
-    resolver.finder = mock.Mock(
-        return_value=SimpleNamespace(find_best_candidate=mock.Mock(return_value=best_candidate_result))
-    )
+    resolver.finder = mock.Mock(return_value=SimpleNamespace(find_best_candidate=mock.Mock(return_value=best_candidate_result)))
 
     ireq = mock.MagicMock()
     ireq.link = None
@@ -109,9 +103,7 @@ def test_collect_hashes_warns_once_when_all_strategies_fail(monkeypatch):
     resolver = _make_hash_resolver()
     resolver.project.get_hashes_from_pypi.return_value = None
     best_candidate_result = SimpleNamespace(applicable_candidates=[])
-    resolver.finder = mock.Mock(
-        return_value=SimpleNamespace(find_best_candidate=mock.Mock(return_value=best_candidate_result))
-    )
+    resolver.finder = mock.Mock(return_value=SimpleNamespace(find_best_candidate=mock.Mock(return_value=best_candidate_result)))
 
     ireq = mock.MagicMock()
     ireq.link = None
@@ -124,6 +116,4 @@ def test_collect_hashes_warns_once_when_all_strategies_fail(monkeypatch):
         hashes = resolver.collect_hashes(ireq)
 
     assert hashes == set()
-    err_print.assert_called_once_with(
-        "[bold][red]Warning[/red][/bold]: Error generating hash for regex."
-    )
+    err_print.assert_called_once_with("[bold][red]Warning[/red][/bold]: Error generating hash for regex.")

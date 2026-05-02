@@ -67,8 +67,7 @@ def get_next_version(persona_name: str) -> str:
     if not run_dir.exists():
         return "v001"
 
-    existing = sorted(d.name for d in run_dir.iterdir()
-                      if d.is_dir() and d.name.startswith("v"))
+    existing = sorted(d.name for d in run_dir.iterdir() if d.is_dir() and d.name.startswith("v"))
     if not existing:
         return "v001"
 
@@ -78,7 +77,7 @@ def get_next_version(persona_name: str) -> str:
         try:
             ver_num = int(dirname.split("_")[0][1:])  # "v001_20260207" -> 1
             max_ver = max(max_ver, ver_num)
-        except (ValueError, IndexError):
+        except ValueError, IndexError:
             continue
 
     return f"v{max_ver + 1:03d}"
@@ -89,7 +88,9 @@ def get_git_sha() -> str:
     try:
         result = subprocess.run(
             ["git", "rev-parse", "HEAD"],
-            capture_output=True, text=True, cwd=str(PROJECT_ROOT),
+            capture_output=True,
+            text=True,
+            cwd=str(PROJECT_ROOT),
         )
         return result.stdout.strip()[:12] if result.returncode == 0 else "unknown"
     except Exception:
@@ -116,10 +117,15 @@ def create_run_directory(persona_name: str, version: str) -> Path:
     return run_dir
 
 
-def write_meta_json(run_dir: Path, persona: dict, version: str,
-                    tier1_completed: bool = False,
-                    checks_passed: int = 0, checks_total: int = 0,
-                    duration_seconds: float = 0.0):
+def write_meta_json(
+    run_dir: Path,
+    persona: dict,
+    version: str,
+    tier1_completed: bool = False,
+    checks_passed: int = 0,
+    checks_total: int = 0,
+    duration_seconds: float = 0.0,
+):
     """Write run metadata to meta.json."""
     meta = {
         "persona_id": persona["persona"]["id"],
@@ -154,8 +160,10 @@ def run_tier1(persona_name: str, persona: dict, run_dir: Path, dry_run: bool = F
 
     # Build command
     cmd = [
-        sys.executable, str(eval_script),
-        "--output-dir", str(run_dir / "tier1"),
+        sys.executable,
+        str(eval_script),
+        "--output-dir",
+        str(run_dir / "tier1"),
     ]
 
     research = persona.get("research", {})
@@ -203,8 +211,10 @@ def run_tier1(persona_name: str, persona: dict, run_dir: Path, dry_run: bool = F
     research = persona.get("research", {})
     component_output = str(run_dir / "tier1" / "artifacts" / "phase2_components")
     component_cmd = [
-        sys.executable, str(EVAL_DIR / "run_phase2_tests.py"),
-        "--output-dir", component_output,
+        sys.executable,
+        str(EVAL_DIR / "run_phase2_tests.py"),
+        "--output-dir",
+        component_output,
     ]
     if research.get("question"):
         component_cmd.extend(["--research-question", research["question"]])
@@ -241,6 +251,7 @@ def parse_tier1_results(run_dir: Path) -> tuple:
         content = report_path.read_text()
         # Parse "Checks passed: 36/37" or "36/37 checks passed" pattern
         import re
+
         match = re.search(r"Checks passed.*?(\d+)/(\d+)", content)
         if not match:
             match = re.search(r"(\d+)/(\d+)\s+checks?\s+passed", content)
@@ -260,19 +271,26 @@ def main():
         description="Run persona-based scientific evaluation for Kosmos",
     )
     parser.add_argument(
-        "--persona", required=True,
+        "--persona",
+        required=True,
         help="Persona name (e.g., 001_enzyme_kinetics_biologist)",
     )
     parser.add_argument(
-        "--tier", type=int, choices=[1], default=1,
+        "--tier",
+        type=int,
+        choices=[1],
+        default=1,
         help="Tier to run (currently only Tier 1 is automated)",
     )
     parser.add_argument(
-        "--dry-run", action="store_true",
+        "--dry-run",
+        action="store_true",
         help="Show what would execute without running",
     )
     parser.add_argument(
-        "--version", type=str, default=None,
+        "--version",
+        type=str,
+        default=None,
         help="Override version string (default: auto-increment)",
     )
     args = parser.parse_args()
@@ -316,7 +334,9 @@ def main():
             # Parse results and update meta.json
             checks_passed, checks_total, duration = parse_tier1_results(run_dir)
             write_meta_json(
-                run_dir, persona, version,
+                run_dir,
+                persona,
+                version,
                 tier1_completed=success,
                 checks_passed=checks_passed,
                 checks_total=checks_total,
@@ -342,10 +362,7 @@ def main():
 
     # Check for regression comparison
     persona_runs = RUNS_DIR / args.persona
-    existing_versions = sorted(
-        d.name for d in persona_runs.iterdir()
-        if d.is_dir() and d.name.startswith("v") and d != run_dir
-    )
+    existing_versions = sorted(d.name for d in persona_runs.iterdir() if d.is_dir() and d.name.startswith("v") and d != run_dir)
     if existing_versions:
         prev = existing_versions[-1]
         current = run_dir.name

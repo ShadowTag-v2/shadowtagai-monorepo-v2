@@ -122,9 +122,7 @@ class BriefingGenerator:
         sections = []
 
         # 1. Executive Summary
-        sections.append(self._generate_executive_summary(
-            tier1_items, tier2_items, tier3_items, source_stats
-        ))
+        sections.append(self._generate_executive_summary(tier1_items, tier2_items, tier3_items, source_stats))
 
         # 2. Top Tier 1 Items
         if tier1_items:
@@ -157,10 +155,7 @@ class BriefingGenerator:
 
             # Source coverage chart
             coverage_by_type = source_stats.get("coverage_by_type", {})
-            source_chart_data = {
-                k: v.get("items_collected", 0)
-                for k, v in coverage_by_type.items()
-            }
+            source_chart_data = {k: v.get("items_collected", 0) for k, v in coverage_by_type.items()}
             if source_chart_data:
                 source_chart = self.visualizer.generate_source_coverage_chart(source_chart_data)
                 visualizations.append(source_chart)
@@ -225,7 +220,7 @@ class BriefingGenerator:
             tier1_items,
             key=lambda i: i.scores.relevance,
             reverse=True,
-        )[:self.max_tier1_items]
+        )[: self.max_tier1_items]
 
         content = "### Highest-Priority Intelligence\n\n"
 
@@ -312,7 +307,7 @@ class BriefingGenerator:
         rate_blocked = compliance_stats.get("blocked_by_rate_limit", 0)
 
         if total > 0:
-            content += f"- **Compliance Rate**: {allowed/total*100:.1f}%\n"
+            content += f"- **Compliance Rate**: {allowed / total * 100:.1f}%\n"
             content += f"- **Blocked by robots.txt**: {robots_blocked}\n"
             content += f"- **Blocked by rate limits**: {rate_blocked}\n"
             content += f"- **Total checks**: {total}\n"

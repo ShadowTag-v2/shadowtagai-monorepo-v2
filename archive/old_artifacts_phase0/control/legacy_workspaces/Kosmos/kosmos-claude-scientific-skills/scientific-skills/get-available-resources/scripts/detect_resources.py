@@ -14,12 +14,12 @@ import json
 import os
 import platform
 import subprocess
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import psutil
 
 
-def get_cpu_info() -> Dict[str, Any]:
+def get_cpu_info() -> dict[str, Any]:
     """Detect CPU information."""
     cpu_info = {
         "physical_cores": psutil.cpu_count(logical=False),
@@ -41,7 +41,7 @@ def get_cpu_info() -> Dict[str, Any]:
     return cpu_info
 
 
-def get_memory_info() -> Dict[str, Any]:
+def get_memory_info() -> dict[str, Any]:
     """Detect memory information."""
     mem = psutil.virtual_memory()
     swap = psutil.swap_memory()
@@ -56,7 +56,7 @@ def get_memory_info() -> Dict[str, Any]:
     }
 
 
-def get_disk_info(path: str = None) -> Dict[str, Any]:
+def get_disk_info(path: str = None) -> dict[str, Any]:
     """Detect disk space information for working directory or specified path."""
     if path is None:
         path = os.getcwd()
@@ -77,87 +77,72 @@ def get_disk_info(path: str = None) -> Dict[str, Any]:
         }
 
 
-def detect_nvidia_gpus() -> List[Dict[str, Any]]:
+def detect_nvidia_gpus() -> list[dict[str, Any]]:
     """Detect NVIDIA GPUs using nvidia-smi."""
     gpus = []
 
     try:
         # Try to run nvidia-smi
         result = subprocess.run(
-            ["nvidia-smi", "--query-gpu=index,name,memory.total,memory.free,driver_version,compute_cap",
-             "--format=csv,noheader,nounits"],
+            ["nvidia-smi", "--query-gpu=index,name,memory.total,memory.free,driver_version,compute_cap", "--format=csv,noheader,nounits"],
             capture_output=True,
             text=True,
-            timeout=5
+            timeout=5,
         )
 
         if result.returncode == 0:
-            for line in result.stdout.strip().split('\n'):
+            for line in result.stdout.strip().split("\n"):
                 if line:
-                    parts = [p.strip() for p in line.split(',')]
+                    parts = [p.strip() for p in line.split(",")]
                     if len(parts) >= 6:
-                        gpus.append({
-                            "index": int(parts[0]),
-                            "name": parts[1],
-                            "memory_total_mb": float(parts[2]),
-                            "memory_free_mb": float(parts[3]),
-                            "driver_version": parts[4],
-                            "compute_capability": parts[5],
-                            "type": "NVIDIA",
-                            "backend": "CUDA"
-                        })
-    except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
+                        gpus.append(
+                            {
+                                "index": int(parts[0]),
+                                "name": parts[1],
+                                "memory_total_mb": float(parts[2]),
+                                "memory_free_mb": float(parts[3]),
+                                "driver_version": parts[4],
+                                "compute_capability": parts[5],
+                                "type": "NVIDIA",
+                                "backend": "CUDA",
+                            }
+                        )
+    except subprocess.TimeoutExpired, FileNotFoundError, Exception:
         pass
 
     return gpus
 
 
-def detect_amd_gpus() -> List[Dict[str, Any]]:
+def detect_amd_gpus() -> list[dict[str, Any]]:
     """Detect AMD GPUs using rocm-smi."""
     gpus = []
 
     try:
         # Try to run rocm-smi
-        result = subprocess.run(
-            ["rocm-smi", "--showid", "--showmeminfo", "vram"],
-            capture_output=True,
-            text=True,
-            timeout=5
-        )
+        result = subprocess.run(["rocm-smi", "--showid", "--showmeminfo", "vram"], capture_output=True, text=True, timeout=5)
 
         if result.returncode == 0:
             # Parse rocm-smi output (basic parsing, may need refinement)
-            lines = result.stdout.strip().split('\n')
+            lines = result.stdout.strip().split("\n")
             gpu_index = 0
             for line in lines:
-                if 'GPU' in line and 'DID' in line:
-                    gpus.append({
-                        "index": gpu_index,
-                        "name": "AMD GPU",
-                        "type": "AMD",
-                        "backend": "ROCm",
-                        "info": line.strip()
-                    })
+                if "GPU" in line and "DID" in line:
+                    gpus.append({"index": gpu_index, "name": "AMD GPU", "type": "AMD", "backend": "ROCm", "info": line.strip()})
                     gpu_index += 1
-    except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
+    except subprocess.TimeoutExpired, FileNotFoundError, Exception:
         pass
 
     return gpus
 
 
-def detect_apple_silicon_gpu() -> Optional[Dict[str, Any]]:
+def detect_apple_silicon_gpu() -> dict[str, Any] | None:
     """Detect Apple Silicon GPU (M1/M2/M3/etc.)."""
     if platform.system() != "Darwin":
         return None
 
     try:
         # Check if running on Apple Silicon
-        result = subprocess.run(
-            ["sysctl", "-n", "machdep.cpu.brand_string"],
-            capture_output=True,
-            text=True,
-            timeout=5
-        )
+        result = subprocess.run(["sysctl", "-n", "machdep.cpu.brand_string"], capture_output=True, text=True, timeout=5)
 
         cpu_brand = result.stdout.strip()
 
@@ -173,20 +158,15 @@ def detect_apple_silicon_gpu() -> Optional[Dict[str, Any]]:
 
             # Try to get GPU core information
             try:
-                result = subprocess.run(
-                    ["system_profiler", "SPDisplaysDataType"],
-                    capture_output=True,
-                    text=True,
-                    timeout=10
-                )
+                result = subprocess.run(["system_profiler", "SPDisplaysDataType"], capture_output=True, text=True, timeout=10)
 
                 # Parse GPU core info from system_profiler
-                for line in result.stdout.split('\n'):
-                    if 'Chipset Model' in line:
-                        gpu_info["chipset"] = line.split(':')[1].strip()
-                    elif 'Total Number of Cores' in line:
+                for line in result.stdout.split("\n"):
+                    if "Chipset Model" in line:
+                        gpu_info["chipset"] = line.split(":")[1].strip()
+                    elif "Total Number of Cores" in line:
                         try:
-                            cores = line.split(':')[1].strip()
+                            cores = line.split(":")[1].strip()
                             gpu_info["gpu_cores"] = cores
                         except:
                             pass
@@ -200,14 +180,14 @@ def detect_apple_silicon_gpu() -> Optional[Dict[str, Any]]:
     return None
 
 
-def get_gpu_info() -> Dict[str, Any]:
+def get_gpu_info() -> dict[str, Any]:
     """Detect all available GPUs."""
     gpu_info = {
         "nvidia_gpus": detect_nvidia_gpus(),
         "amd_gpus": detect_amd_gpus(),
         "apple_silicon": detect_apple_silicon_gpu(),
         "total_gpus": 0,
-        "available_backends": []
+        "available_backends": [],
     }
 
     # Count total GPUs and available backends
@@ -226,7 +206,7 @@ def get_gpu_info() -> Dict[str, Any]:
     return gpu_info
 
 
-def get_os_info() -> Dict[str, Any]:
+def get_os_info() -> dict[str, Any]:
     """Get operating system information."""
     return {
         "system": platform.system(),
@@ -237,7 +217,7 @@ def get_os_info() -> Dict[str, Any]:
     }
 
 
-def detect_all_resources(output_path: str = None) -> Dict[str, Any]:
+def detect_all_resources(output_path: str = None) -> dict[str, Any]:
     """
     Detect all system resources and save to JSON.
 
@@ -263,22 +243,17 @@ def detect_all_resources(output_path: str = None) -> Dict[str, Any]:
     resources["recommendations"] = generate_recommendations(resources)
 
     # Save to JSON file
-    with open(output_path, 'w') as f:
+    with open(output_path, "w") as f:
         json.dump(resources, f, indent=2)
 
     return resources
 
 
-def generate_recommendations(resources: Dict[str, Any]) -> Dict[str, Any]:
+def generate_recommendations(resources: dict[str, Any]) -> dict[str, Any]:
     """
     Generate computational approach recommendations based on available resources.
     """
-    recommendations = {
-        "parallel_processing": {},
-        "memory_strategy": {},
-        "gpu_acceleration": {},
-        "large_data_handling": {}
-    }
+    recommendations = {"parallel_processing": {}, "memory_strategy": {}, "gpu_acceleration": {}, "large_data_handling": {}}
 
     # CPU recommendations
     cpu_cores = resources["cpu"]["logical_cores"]
@@ -317,17 +292,11 @@ def generate_recommendations(resources: Dict[str, Any]) -> Dict[str, Any]:
         recommendations["gpu_acceleration"]["backends"] = gpu_info["available_backends"]
 
         if "CUDA" in gpu_info["available_backends"]:
-            recommendations["gpu_acceleration"]["suggested_libraries"] = [
-                "pytorch", "tensorflow", "jax", "cupy", "rapids"
-            ]
+            recommendations["gpu_acceleration"]["suggested_libraries"] = ["pytorch", "tensorflow", "jax", "cupy", "rapids"]
         elif "Metal" in gpu_info["available_backends"]:
-            recommendations["gpu_acceleration"]["suggested_libraries"] = [
-                "pytorch-mps", "tensorflow-metal", "jax-metal"
-            ]
+            recommendations["gpu_acceleration"]["suggested_libraries"] = ["pytorch-mps", "tensorflow-metal", "jax-metal"]
         elif "ROCm" in gpu_info["available_backends"]:
-            recommendations["gpu_acceleration"]["suggested_libraries"] = [
-                "pytorch-rocm", "tensorflow-rocm"
-            ]
+            recommendations["gpu_acceleration"]["suggested_libraries"] = ["pytorch-rocm", "tensorflow-rocm"]
     else:
         recommendations["gpu_acceleration"]["available"] = False
         recommendations["gpu_acceleration"]["note"] = "No GPU detected, use CPU-based libraries"
@@ -351,19 +320,9 @@ def main():
     """Main entry point for CLI usage."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Detect system resources for scientific computing"
-    )
-    parser.add_argument(
-        "-o", "--output",
-        default=".claude_resources.json",
-        help="Output JSON file path (default: .claude_resources.json)"
-    )
-    parser.add_argument(
-        "-v", "--verbose",
-        action="store_true",
-        help="Print resources to stdout"
-    )
+    parser = argparse.ArgumentParser(description="Detect system resources for scientific computing")
+    parser.add_argument("-o", "--output", default=".claude_resources.json", help="Output JSON file path (default: .claude_resources.json)")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Print resources to stdout")
 
     args = parser.parse_args()
 
@@ -373,9 +332,9 @@ def main():
     print(f"✅ Resources detected and saved to: {args.output}")
 
     if args.verbose:
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print(json.dumps(resources, indent=2))
-        print("="*60)
+        print("=" * 60)
 
     # Print summary
     print("\n📊 Resource Summary:")
@@ -384,13 +343,13 @@ def main():
     print(f"  Memory: {resources['memory']['total_gb']} GB total, {resources['memory']['available_gb']} GB available")
     print(f"  Disk: {resources['disk']['total_gb']} GB total, {resources['disk']['available_gb']} GB available")
 
-    if resources['gpu']['total_gpus'] > 0:
+    if resources["gpu"]["total_gpus"] > 0:
         print(f"  GPU: {resources['gpu']['total_gpus']} detected ({', '.join(resources['gpu']['available_backends'])})")
     else:
         print("  GPU: None detected")
 
     print("\n💡 Recommendations:")
-    recs = resources['recommendations']
+    recs = resources["recommendations"]
     print(f"  Parallel Processing: {recs['parallel_processing'].get('strategy', 'N/A')}")
     print(f"  Memory Strategy: {recs['memory_strategy'].get('strategy', 'N/A')}")
     print(f"  GPU Acceleration: {'Available' if recs['gpu_acceleration'].get('available') else 'Not Available'}")

@@ -26,14 +26,11 @@ class TestGetWaitTime(unittest.TestCase):
     def setUp(self):
         self.server = TranscriptionServer()
         self.server.client_manager = ClientManager(max_clients=4, max_connection_time=600)
-        self.server.client_manager.start_times = {
-            'client1': time.time() - 120,
-            'client2': time.time() - 300
-        }
+        self.server.client_manager.start_times = {"client1": time.time() - 120, "client2": time.time() - 300}
         self.server.client_manager.max_connection_time = 600
 
     def test_get_wait_time(self):
-        expected_wait_time = (600 - (time.time() - self.server.client_manager.start_times['client2'])) / 60
+        expected_wait_time = (600 - (time.time() - self.server.client_manager.start_times["client2"])) / 60
         print(self.server.client_manager.get_wait_time(), expected_wait_time)
         self.assertAlmostEqual(self.server.client_manager.get_wait_time(), expected_wait_time, places=2)
 
@@ -42,24 +39,17 @@ class TestServerConnection(unittest.TestCase):
     def setUp(self):
         self.server = TranscriptionServer()
 
-    @mock.patch('websockets.WebSocketCommonProtocol')
+    @mock.patch("websockets.WebSocketCommonProtocol")
     def test_connection(self, mock_websocket):
-        mock_websocket.recv.return_value = json.dumps({
-            'uid': 'test_client',
-            'language': 'en',
-            'task': 'transcribe',
-            'model': 'tiny.en'
-        })
+        mock_websocket.recv.return_value = json.dumps({"uid": "test_client", "language": "en", "task": "transcribe", "model": "tiny.en"})
         self.server.recv_audio(mock_websocket, BackendType("faster_whisper"))
 
-    @mock.patch('websockets.WebSocketCommonProtocol')
+    @mock.patch("websockets.WebSocketCommonProtocol")
     def test_recv_audio_exception_handling(self, mock_websocket):
-        mock_websocket.recv.side_effect = [json.dumps({
-            'uid': 'test_client',
-            'language': 'en',
-            'task': 'transcribe',
-            'model': 'tiny.en'
-        }),  np.array([1, 2, 3]).tobytes()]
+        mock_websocket.recv.side_effect = [
+            json.dumps({"uid": "test_client", "language": "en", "task": "transcribe", "model": "tiny.en"}),
+            np.array([1, 2, 3]).tobytes(),
+        ]
 
         with self.assertLogs(level="ERROR"):
             self.server.recv_audio(mock_websocket, BackendType("faster_whisper"))
@@ -70,7 +60,7 @@ class TestServerConnection(unittest.TestCase):
 class TestServerInferenceAccuracy(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.mock_pyaudio_patch = mock.patch('pyaudio.PyAudio')
+        cls.mock_pyaudio_patch = mock.patch("pyaudio.PyAudio")
         cls.mock_pyaudio = cls.mock_pyaudio_patch.start()
         cls.mock_pyaudio.return_value.open.return_value = mock.MagicMock()
 
@@ -99,16 +89,17 @@ class TestServerInferenceAccuracy(unittest.TestCase):
 
     def test_inference(self):
         client = TranscriptionClient(
-            "localhost", "9090", model="base.en", lang="en",
+            "localhost",
+            "9090",
+            model="base.en",
+            lang="en",
         )
         client("assets/jfk.flac")
         self.check_prediction("output.srt")
 
     def test_simultaneous_inference(self):
-        client1 = Client(
-            "localhost", "9090", model="base.en", lang="en", srt_file_path="transcript1.srt")
-        client2 = Client(
-            "localhost", "9090", model="base.en", lang="en", srt_file_path="transcript2.srt")
+        client1 = Client("localhost", "9090", model="base.en", lang="en", srt_file_path="transcript1.srt")
+        client2 = Client("localhost", "9090", model="base.en", lang="en", srt_file_path="transcript2.srt")
         tee = TranscriptionTeeClient([client1, client2])
         tee("assets/jfk.flac")
         self.check_prediction("transcript1.srt")
@@ -119,7 +110,7 @@ class TestExceptionHandling(unittest.TestCase):
     def setUp(self):
         self.server = TranscriptionServer()
 
-    @mock.patch('websockets.WebSocketCommonProtocol')
+    @mock.patch("websockets.WebSocketCommonProtocol")
     def test_connection_closed_exception(self, mock_websocket):
         mock_websocket.recv.side_effect = ConnectionClosed(1001, "testing connection closed", rcvd_then_sent=mock.Mock())
 
@@ -127,7 +118,7 @@ class TestExceptionHandling(unittest.TestCase):
             self.server.recv_audio(mock_websocket, BackendType("faster_whisper"))
             self.assertTrue(any("Connection closed by client" in message for message in log.output))
 
-    @mock.patch('websockets.WebSocketCommonProtocol')
+    @mock.patch("websockets.WebSocketCommonProtocol")
     def test_json_decode_exception(self, mock_websocket):
         mock_websocket.recv.return_value = "invalid json"
 
@@ -135,7 +126,7 @@ class TestExceptionHandling(unittest.TestCase):
             self.server.recv_audio(mock_websocket, BackendType("faster_whisper"))
             self.assertTrue(any("Failed to decode JSON from client" in message for message in log.output))
 
-    @mock.patch('websockets.WebSocketCommonProtocol')
+    @mock.patch("websockets.WebSocketCommonProtocol")
     def test_unexpected_exception_handling(self, mock_websocket):
         mock_websocket.recv.side_effect = RuntimeError("Unexpected error")
 

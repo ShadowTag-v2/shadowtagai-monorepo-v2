@@ -23,16 +23,16 @@ from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
 _allowed_path = os.path.dirname(os.path.abspath(__file__))
 
 connection_params = SseConnectionParams(
-    url='http://localhost:3000/sse',
-    headers={'Accept': 'text/event-stream'},
+    url="http://localhost:3000/sse",
+    headers={"Accept": "text/event-stream"},
 )
 
 root_agent = LlmAgent(
-    model='gemini-2.0-flash',
-    name='enterprise_assistant',
+    model="gemini-2.0-flash",
+    name="enterprise_assistant",
     instruction=McpInstructionProvider(
         connection_params=connection_params,
-        prompt_name='file_system_prompt',
+        prompt_name="file_system_prompt",
     ),
     tools=[
         MCPToolset(
@@ -47,13 +47,13 @@ root_agent = LlmAgent(
             #     'move_file',
             # ],
             tool_filter=[
-                'read_file',
-                'read_multiple_files',
-                'list_directory',
-                'directory_tree',
-                'search_files',
-                'get_file_info',
-                'list_allowed_directories',
+                "read_file",
+                "read_multiple_files",
+                "list_directory",
+                "directory_tree",
+                "search_files",
+                "get_file_info",
+                "list_allowed_directories",
             ],
             require_confirmation=True,
         )

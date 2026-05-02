@@ -31,11 +31,12 @@ class CellLineMapping:
     Used for tracking cumulative line counts in notebooks to enable
     precise code citations.
     """
-    cell_index: int      # 0-based cell index in notebook
-    start_line: int      # 1-based start line (cumulative in notebook)
-    end_line: int        # 1-based end line (cumulative in notebook)
-    cell_type: str       # 'code' or 'markdown'
-    line_count: int      # Number of lines in this cell
+
+    cell_index: int  # 0-based cell index in notebook
+    start_line: int  # 1-based start line (cumulative in notebook)
+    end_line: int  # 1-based end line (cumulative in notebook)
+    cell_type: str  # 'code' or 'markdown'
+    line_count: int  # Number of lines in this cell
     code_hash: str | None = None  # SHA256 hash of code content for validation
 
     def to_dict(self) -> dict[str, Any]:
@@ -43,14 +44,14 @@ class CellLineMapping:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'CellLineMapping':
+    def from_dict(cls, data: dict[str, Any]) -> CellLineMapping:
         """Create CellLineMapping from dictionary."""
         return cls(**data)
 
     @staticmethod
     def compute_hash(code: str) -> str:
         """Compute SHA256 hash of code content."""
-        return hashlib.sha256(code.encode('utf-8')).hexdigest()[:16]
+        return hashlib.sha256(code.encode("utf-8")).hexdigest()[:16]
 
 
 @dataclass
@@ -86,23 +87,24 @@ class CodeProvenance:
         restored = CodeProvenance.from_dict(data)
         ```
     """
+
     # Required fields
-    notebook_path: str           # Path to Jupyter notebook
-    cell_index: int              # 0-based cell index in notebook
-    start_line: int              # 1-based start line in cell
-    end_line: int | None      # 1-based end line (None = single line)
-    code_snippet: str            # Relevant code (max ~500 chars)
+    notebook_path: str  # Path to Jupyter notebook
+    cell_index: int  # 0-based cell index in notebook
+    start_line: int  # 1-based start line in cell
+    end_line: int | None  # 1-based end line (None = single line)
+    code_snippet: str  # Relevant code (max ~500 chars)
 
     # Optional tracking fields
-    hypothesis_id: str | None = None   # Link to hypothesis being tested
-    execution_id: str | None = None    # Link to execution run
-    timestamp: str | None = None       # When code was executed
-    code_hash: str | None = None       # Hash of code for validation
+    hypothesis_id: str | None = None  # Link to hypothesis being tested
+    execution_id: str | None = None  # Link to execution run
+    timestamp: str | None = None  # When code was executed
+    code_hash: str | None = None  # Hash of code for validation
 
     # Additional metadata
-    cycle: int | None = None           # Research cycle number
-    task_id: int | None = None         # Task ID within cycle
-    analysis_type: str | None = None   # Type of analysis (correlation, t-test, etc.)
+    cycle: int | None = None  # Research cycle number
+    task_id: int | None = None  # Task ID within cycle
+    analysis_type: str | None = None  # Type of analysis (correlation, t-test, etc.)
 
     def __post_init__(self):
         """Validate and set defaults after initialization."""
@@ -117,9 +119,7 @@ class CodeProvenance:
 
         # Compute code hash if not provided
         if self.code_hash is None and self.code_snippet:
-            self.code_hash = hashlib.sha256(
-                self.code_snippet.encode('utf-8')
-            ).hexdigest()[:16]
+            self.code_hash = hashlib.sha256(self.code_snippet.encode("utf-8")).hexdigest()[:16]
 
     def to_hyperlink(self, include_line: bool = True) -> str:
         """
@@ -154,7 +154,7 @@ class CodeProvenance:
         """
         if text is None:
             # Extract filename from path
-            text = self.notebook_path.split('/')[-1]
+            text = self.notebook_path.split("/")[-1]
         return f"[{text}]({self.to_hyperlink()})"
 
     def get_line_range_str(self) -> str:
@@ -175,7 +175,7 @@ class CodeProvenance:
         Returns:
             String like "task_5_correlation.ipynb, cell 3, lines 1-15"
         """
-        filename = self.notebook_path.split('/')[-1]
+        filename = self.notebook_path.split("/")[-1]
         line_info = self.get_line_range_str()
         return f"{filename}, cell {self.cell_index}, {line_info}"
 
@@ -189,7 +189,7 @@ class CodeProvenance:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'CodeProvenance':
+    def from_dict(cls, data: dict[str, Any]) -> CodeProvenance:
         """
         Deserialize from dictionary.
 
@@ -201,18 +201,18 @@ class CodeProvenance:
         """
         # Handle missing optional fields
         return cls(
-            notebook_path=data['notebook_path'],
-            cell_index=data['cell_index'],
-            start_line=data['start_line'],
-            end_line=data.get('end_line'),
-            code_snippet=data['code_snippet'],
-            hypothesis_id=data.get('hypothesis_id'),
-            execution_id=data.get('execution_id'),
-            timestamp=data.get('timestamp'),
-            code_hash=data.get('code_hash'),
-            cycle=data.get('cycle'),
-            task_id=data.get('task_id'),
-            analysis_type=data.get('analysis_type'),
+            notebook_path=data["notebook_path"],
+            cell_index=data["cell_index"],
+            start_line=data["start_line"],
+            end_line=data.get("end_line"),
+            code_snippet=data["code_snippet"],
+            hypothesis_id=data.get("hypothesis_id"),
+            execution_id=data.get("execution_id"),
+            timestamp=data.get("timestamp"),
+            code_hash=data.get("code_hash"),
+            cycle=data.get("cycle"),
+            task_id=data.get("task_id"),
+            analysis_type=data.get("analysis_type"),
         )
 
     @classmethod
@@ -225,7 +225,7 @@ class CodeProvenance:
         cycle: int | None = None,
         task_id: int | None = None,
         analysis_type: str | None = None,
-    ) -> 'CodeProvenance':
+    ) -> CodeProvenance:
         """
         Create provenance from execution context.
 
@@ -244,7 +244,7 @@ class CodeProvenance:
         Returns:
             CodeProvenance instance
         """
-        lines = code.split('\n')
+        lines = code.split("\n")
         line_count = len(lines)
 
         return cls(
@@ -296,10 +296,7 @@ def create_provenance_from_notebook(
     )
 
 
-def build_cell_line_mappings(
-    code_cells: list[str],
-    start_offset: int = 1
-) -> list[CellLineMapping]:
+def build_cell_line_mappings(code_cells: list[str], start_offset: int = 1) -> list[CellLineMapping]:
     """
     Build cell-to-line mappings from a list of code cells.
 
@@ -316,7 +313,7 @@ def build_cell_line_mappings(
     current_line = start_offset
 
     for idx, code in enumerate(code_cells):
-        lines = code.split('\n')
+        lines = code.split("\n")
         line_count = len(lines)
         end_line = current_line + line_count - 1
 
@@ -324,7 +321,7 @@ def build_cell_line_mappings(
             cell_index=idx,
             start_line=current_line,
             end_line=end_line,
-            cell_type='code',
+            cell_type="code",
             line_count=line_count,
             code_hash=CellLineMapping.compute_hash(code),
         )
@@ -336,10 +333,7 @@ def build_cell_line_mappings(
     return mappings
 
 
-def get_cell_for_line(
-    mappings: list[CellLineMapping],
-    line_number: int
-) -> CellLineMapping | None:
+def get_cell_for_line(mappings: list[CellLineMapping], line_number: int) -> CellLineMapping | None:
     """
     Find the cell containing a specific line number.
 

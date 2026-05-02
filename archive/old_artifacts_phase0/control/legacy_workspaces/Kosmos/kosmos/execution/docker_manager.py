@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 class ContainerStatus(Enum):
     """Status of a container in the pool."""
+
     READY = "ready"
     IN_USE = "in_use"
     UNHEALTHY = "unhealthy"
@@ -35,6 +36,7 @@ class ContainerStatus(Enum):
 @dataclass
 class ContainerConfig:
     """Configuration for execution containers."""
+
     image: str = "kosmos-sandbox:latest"
     memory_limit: str = "4g"
     cpu_limit: float = 2.0
@@ -46,15 +48,13 @@ class ContainerConfig:
     security_opt: list[str] = field(default_factory=lambda: ["no-new-privileges:true"])
     cap_drop: list[str] = field(default_factory=lambda: ["ALL"])
     # Temporary writable directories
-    tmpfs: dict[str, str] = field(default_factory=lambda: {
-        "/tmp": "size=512m,mode=1777",
-        "/home/sandbox/.local": "size=1g,mode=755"
-    })
+    tmpfs: dict[str, str] = field(default_factory=lambda: {"/tmp": "size=512m,mode=1777", "/home/sandbox/.local": "size=1g,mode=755"})
 
 
 @dataclass
 class ContainerInstance:
     """Represents a container in the pool."""
+
     container_id: str
     container: Any  # docker.models.containers.Container
     status: ContainerStatus
@@ -101,11 +101,7 @@ class DockerManager:
     MAX_CONTAINER_USES = 100
     HEALTH_CHECK_INTERVAL = 60  # seconds
 
-    def __init__(
-        self,
-        config: ContainerConfig | None = None,
-        pool_size: int = DEFAULT_POOL_SIZE
-    ):
+    def __init__(self, config: ContainerConfig | None = None, pool_size: int = DEFAULT_POOL_SIZE):
         """
         Initialize Docker manager.
 
@@ -139,10 +135,7 @@ class DockerManager:
         await self._verify_image()
 
         # Create initial containers
-        creation_tasks = [
-            self._create_container()
-            for _ in range(self._pool_size)
-        ]
+        creation_tasks = [self._create_container() for _ in range(self._pool_size)]
 
         results = await asyncio.gather(*creation_tasks, return_exceptions=True)
 
@@ -162,8 +155,7 @@ class DockerManager:
         except docker.errors.ImageNotFound:
             logger.warning(f"Docker image '{self.config.image}' not found")
             raise RuntimeError(
-                f"Docker image '{self.config.image}' not found. "
-                f"Build it with: cd docker/sandbox && docker build -t {self.config.image} ."
+                f"Docker image '{self.config.image}' not found. Build it with: cd docker/sandbox && docker build -t {self.config.image} ."
             )
 
     async def _create_container(self) -> ContainerInstance:
@@ -180,25 +172,16 @@ class DockerManager:
                 security_opt=self.config.security_opt,
                 cap_drop=self.config.cap_drop,
                 tmpfs=self.config.tmpfs,
-                environment={
-                    "PYTHONDONTWRITEBYTECODE": "1",
-                    "PYTHONUNBUFFERED": "1",
-                    "MPLBACKEND": "Agg"
-                },
+                environment={"PYTHONDONTWRITEBYTECODE": "1", "PYTHONUNBUFFERED": "1", "MPLBACKEND": "Agg"},
                 # Keep alive for reuse
                 command=["tail", "-f", "/dev/null"],
                 # Remove on exit if not managed
-                auto_remove=False
+                auto_remove=False,
             )
 
             now = time.time()
             instance = ContainerInstance(
-                container_id=container.id,
-                container=container,
-                status=ContainerStatus.READY,
-                created_at=now,
-                last_used_at=now,
-                config=self.config
+                container_id=container.id, container=container, status=ContainerStatus.READY, created_at=now, last_used_at=now, config=self.config
             )
 
             async with self._lock:
@@ -289,8 +272,7 @@ class DockerManager:
                 await self._remove_container(instance)
 
                 # Replenish pool
-                if len([i for i in self._container_pool.values()
-                       if i.status == ContainerStatus.READY]) < self._pool_size:
+                if len([i for i in self._container_pool.values() if i.status == ContainerStatus.READY]) < self._pool_size:
                     asyncio.create_task(self._create_container())
 
     async def _remove_container(self, instance: ContainerInstance):
@@ -332,10 +314,7 @@ class DockerManager:
             await self._remove_container(instance)
 
         # Replenish pool
-        current_ready = len([
-            i for i in self._container_pool.values()
-            if i.status == ContainerStatus.READY
-        ])
+        current_ready = len([i for i in self._container_pool.values() if i.status == ContainerStatus.READY])
 
         if current_ready < self._pool_size:
             to_create = self._pool_size - current_ready
@@ -400,13 +379,7 @@ class DockerManager:
             elif instance.status == ContainerStatus.UNHEALTHY:
                 unhealthy += 1
 
-        return {
-            "total": len(self._container_pool),
-            "ready": ready,
-            "in_use": in_use,
-            "unhealthy": unhealthy,
-            "target_size": self._pool_size
-        }
+        return {"total": len(self._container_pool), "ready": ready, "in_use": in_use, "unhealthy": unhealthy, "target_size": self._pool_size}
 
     def __del__(self):
         """Cleanup on deletion."""

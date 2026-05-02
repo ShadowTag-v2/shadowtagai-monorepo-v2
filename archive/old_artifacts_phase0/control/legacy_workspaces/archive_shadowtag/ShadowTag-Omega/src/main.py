@@ -6,6 +6,7 @@ from src.governance.api import judge
 app = FastAPI()
 app.mount("/", StaticFiles(directory="apps/web/public", html=True), name="ui")
 
+
 @app.get("/api/agent")
 def interact(q: str):
     # 1. Governance Check
@@ -16,6 +17,8 @@ def interact(q: str):
     # 2. Agent Execution
     return agent.generate(q)
 
+
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8080)

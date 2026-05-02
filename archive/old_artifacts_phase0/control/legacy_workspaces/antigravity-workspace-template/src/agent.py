@@ -39,9 +39,7 @@ class GeminiAgent:
         if self.settings.MCP_ENABLED:
             self._initialize_mcp()
 
-        print(
-            f"🤖 Initializing {self.settings.AGENT_NAME} with model {self.settings.GEMINI_MODEL_NAME}..."
-        )
+        print(f"🤖 Initializing {self.settings.AGENT_NAME} with model {self.settings.GEMINI_MODEL_NAME}...")
         print(
             f"   📦 Discovered {len(self.available_tools)} tools: {', '.join(list(self.available_tools.keys())[:10])}{'...' if len(self.available_tools) > 10 else ''}"
         )
@@ -52,9 +50,7 @@ class GeminiAgent:
         # the agent usable in tests without external network access.
         # When running under pytest, prefer a dummy client to keep tests
         # deterministic even if an API key is present in the environment.
-        running_under_pytest = (
-            "PYTEST_CURRENT_TEST" in os.environ or "pytest" in sys.modules
-        )
+        running_under_pytest = "PYTEST_CURRENT_TEST" in os.environ or "pytest" in sys.modules
 
         if running_under_pytest:
 
@@ -156,9 +152,7 @@ class GeminiAgent:
 
             try:
                 # Dynamically import the module
-                spec = importlib.util.spec_from_file_location(
-                    f"src.tools.{module_name}", tool_file
-                )
+                spec = importlib.util.spec_from_file_location(f"src.tools.{module_name}", tool_file)
                 if spec and spec.loader:
                     module = importlib.util.module_from_spec(spec)
                     spec.loader.exec_module(module)
@@ -166,10 +160,7 @@ class GeminiAgent:
                     # Find all public functions in the module
                     for name, obj in inspect.getmembers(module, inspect.isfunction):
                         # Only register public functions defined in this module
-                        if (
-                            not name.startswith("_")
-                            and obj.__module__ == f"src.tools.{module_name}"
-                        ):
+                        if not name.startswith("_") and obj.__module__ == f"src.tools.{module_name}":
                             tools[name] = obj
                             print(f"   ✓ Loaded tool: {name} from {module_name}.py")
 
@@ -225,10 +216,7 @@ class GeminiAgent:
         """
         Flattens structured context into a plain-text prompt block.
         """
-        lines = [
-            f"{msg.get('role', '').upper()}: {msg.get('content', '')}"
-            for msg in context_messages
-        ]
+        lines = [f"{msg.get('role', '').upper()}: {msg.get('content', '')}" for msg in context_messages]
         return "\n".join(lines)
 
     def _call_gemini(self, prompt: str) -> str:
@@ -256,9 +244,7 @@ class GeminiAgent:
                 text = str(text)
         return text.strip()
 
-    def _extract_tool_call(
-        self, response_text: str
-    ) -> tuple[str | None, dict[str, Any]]:
+    def _extract_tool_call(self, response_text: str) -> tuple[str | None, dict[str, Any]]:
         """
         Parses a model response to detect a tool invocation request.
 
@@ -286,18 +272,11 @@ class GeminiAgent:
 
         return None, {}
 
-    def summarize_memory(
-        self, old_messages: list[dict[str, Any]], previous_summary: str
-    ) -> str:
+    def summarize_memory(self, old_messages: list[dict[str, Any]], previous_summary: str) -> str:
         """
         Summarize older history into a concise buffer using Gemini.
         """
-        history_block = "\n".join(
-            [
-                f"- {m.get('role', 'unknown')}: {m.get('content', '')}"
-                for m in old_messages
-            ]
-        )
+        history_block = "\n".join([f"- {m.get('role', 'unknown')}: {m.get('content', '')}" for m in old_messages])
         prompt = (
             "You are an expert conversation summarizer for an autonomous agent.\n"
             "Goals:\n"
@@ -322,10 +301,7 @@ class GeminiAgent:
         context_knowledge = self._load_context()
 
         # Inject context into system prompt
-        system_prompt = (
-            f"{context_knowledge}\n\n"
-            "You are a focused agent following the Artifact-First protocol. Stay concise and tactical."
-        )
+        system_prompt = f"{context_knowledge}\n\nYou are a focused agent following the Artifact-First protocol. Stay concise and tactical."
 
         context_window = self.memory.get_context_window(
             system_prompt=system_prompt,

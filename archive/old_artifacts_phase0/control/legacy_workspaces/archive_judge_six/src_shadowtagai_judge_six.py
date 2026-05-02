@@ -24,6 +24,7 @@ from ..core.gemini_function_calling import GeminiFunctionCaller
 
 class ValidationResult(Enum):
     """Result of JR validation."""
+
     APPROVED = "approved"
     BLOCKED_PURPOSE = "blocked_purpose"
     BLOCKED_REASONS = "blocked_reasons"
@@ -33,6 +34,7 @@ class ValidationResult(Enum):
 @dataclass
 class JRValidation:
     """Result of Purpose/Reasons/Brakes validation."""
+
     function_name: str
     args: dict[str, Any]
     purpose_valid: bool
@@ -109,9 +111,7 @@ class JudgeSix:
         """
         self.caller = caller
         self.mission_statement = mission_statement
-        self.audit_log_path = audit_log_path or os.environ.get(
-            'JR_AUDIT_LOG_PATH', './logs/jr_audit.log'
-        )
+        self.audit_log_path = audit_log_path or os.environ.get("JR_AUDIT_LOG_PATH", "./logs/jr_audit.log")
         self.purpose_threshold = purpose_threshold
         self.reasons_threshold = reasons_threshold
         self.brakes_threshold = brakes_threshold
@@ -135,6 +135,7 @@ class JudgeSix:
         Raises:
             ValueError: If any function call fails validation
         """
+
         # Create validation callback
         def validate_function_call(fn_name: str, fn_args: dict[str, Any]) -> bool:
             """Validate function call against JR criteria."""
@@ -147,26 +148,15 @@ class JudgeSix:
             # Block if validation failed
             if validation.result != ValidationResult.APPROVED:
                 raise ValueError(
-                    f"JR VALIDATION FAILED: {validation.result.value}\n"
-                    f"Function: {fn_name}\n"
-                    f"Args: {fn_args}\n"
-                    f"Explanation: {validation.explanation}"
+                    f"JR VALIDATION FAILED: {validation.result.value}\nFunction: {fn_name}\nArgs: {fn_args}\nExplanation: {validation.explanation}"
                 )
 
             return True
 
         # Execute with validation callback
-        return self.caller.execute(
-            prompt=user_request,
-            validation_callback=validate_function_call
-        )
+        return self.caller.execute(prompt=user_request, validation_callback=validate_function_call)
 
-    def _validate(
-        self,
-        fn_name: str,
-        fn_args: dict[str, Any],
-        context: str
-    ) -> JRValidation:
+    def _validate(self, fn_name: str, fn_args: dict[str, Any], context: str) -> JRValidation:
         """
         Validate function call against Purpose/Reasons/Brakes.
 
@@ -179,19 +169,13 @@ class JudgeSix:
             JRValidation result
         """
         # 1. PURPOSE: Does this advance the mission?
-        purpose_valid, purpose_score = self._validate_purpose(
-            fn_name, fn_args, context
-        )
+        purpose_valid, purpose_score = self._validate_purpose(fn_name, fn_args, context)
 
         # 2. REASONS: Is this defensible?
-        reasons_valid, reasons_score = self._validate_reasons(
-            fn_name, fn_args, context
-        )
+        reasons_valid, reasons_score = self._validate_reasons(fn_name, fn_args, context)
 
         # 3. BRAKES: Will this cause catastrophe?
-        brakes_clear, brakes_score = self._check_brakes(
-            fn_name, fn_args, context
-        )
+        brakes_clear, brakes_score = self._check_brakes(fn_name, fn_args, context)
 
         # Determine result
         if not purpose_valid:
@@ -220,12 +204,7 @@ class JudgeSix:
             explanation=explanation,
         )
 
-    def _validate_purpose(
-        self,
-        fn_name: str,
-        fn_args: dict[str, Any],
-        context: str
-    ) -> tuple[bool, float]:
+    def _validate_purpose(self, fn_name: str, fn_args: dict[str, Any], context: str) -> tuple[bool, float]:
         """
         Validate PURPOSE: Does this function call advance the mission?
 
@@ -240,7 +219,7 @@ class JudgeSix:
         # Simple keyword matching for demo (replace with LLM eval for production)
         mission_keywords = set(self.mission_statement.lower().split())
         context_keywords = set(context.lower().split())
-        fn_keywords = set(fn_name.lower().split('_'))
+        fn_keywords = set(fn_name.lower().split("_"))
 
         # Calculate overlap
         overlap = len(mission_keywords & (context_keywords | fn_keywords))
@@ -249,12 +228,7 @@ class JudgeSix:
 
         return score >= self.purpose_threshold, score
 
-    def _validate_reasons(
-        self,
-        fn_name: str,
-        fn_args: dict[str, Any],
-        context: str
-    ) -> tuple[bool, float]:
+    def _validate_reasons(self, fn_name: str, fn_args: dict[str, Any], context: str) -> tuple[bool, float]:
         """
         Validate REASONS: Is this function call defensible and logical?
 
@@ -278,12 +252,7 @@ class JudgeSix:
         # Arguments seem reasonable
         return True, 0.85
 
-    def _check_brakes(
-        self,
-        fn_name: str,
-        fn_args: dict[str, Any],
-        context: str
-    ) -> tuple[bool, float]:
+    def _check_brakes(self, fn_name: str, fn_args: dict[str, Any], context: str) -> tuple[bool, float]:
         """
         Check BRAKES: Will this function call cause catastrophic failure?
 
@@ -291,10 +260,7 @@ class JudgeSix:
             (is_safe, confidence_score)
         """
         # Define dangerous patterns
-        dangerous_keywords = {
-            'delete', 'remove', 'drop', 'destroy', 'kill', 'terminate',
-            'admin', 'root', 'sudo', 'exec', 'eval', 'system'
-        }
+        dangerous_keywords = {"delete", "remove", "drop", "destroy", "kill", "terminate", "admin", "root", "sudo", "exec", "eval", "system"}
 
         # Check function name
         fn_lower = fn_name.lower()
@@ -307,7 +273,7 @@ class JudgeSix:
             return False, 0.3
 
         # Check for SQL injection patterns
-        sql_patterns = ['drop table', 'delete from', '1=1', 'or 1=1']
+        sql_patterns = ["drop table", "delete from", "1=1", "or 1=1"]
         if any(pattern in args_str for pattern in sql_patterns):
             return False, 0.1
 
@@ -317,8 +283,8 @@ class JudgeSix:
     def _write_audit_log(self, validation: JRValidation):
         """Write validation result to audit log."""
         try:
-            with open(self.audit_log_path, 'a') as f:
-                f.write(json.dumps(validation.to_dict()) + '\n')
+            with open(self.audit_log_path, "a") as f:
+                f.write(json.dumps(validation.to_dict()) + "\n")
         except Exception as e:
             print(f"Warning: Failed to write audit log: {e}")
 
@@ -328,7 +294,4 @@ class JudgeSix:
 
     def get_blocked_calls(self) -> list[JRValidation]:
         """Get all blocked function calls."""
-        return [
-            v for v in self.audit_log
-            if v.result != ValidationResult.APPROVED
-        ]
+        return [v for v in self.audit_log if v.result != ValidationResult.APPROVED]

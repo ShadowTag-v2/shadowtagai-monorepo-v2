@@ -8,9 +8,9 @@ Structured approach to wealth optimization:
 4. Structured response (hard truth → plan → challenge)
 """
 
-from typing import List, Dict, Any, Optional
+from typing import Any
 from pydantic import BaseModel, Field
-from enum import Enum, StrEnum
+from enum import StrEnum
 
 
 class LeakType(StrEnum):
@@ -62,22 +62,16 @@ class WealthPlan(BaseModel):
     """
 
     # Hard Truth
-    hard_truth: str = Field(
-        description="Brutal honesty about current state and leaks"
-    )
+    hard_truth: str = Field(description="Brutal honesty about current state and leaks")
     leaks: list[RevenueLeak]
 
     # Plan
-    plan: str = Field(
-        description="Actionable plan to address leaks and optimize"
-    )
+    plan: str = Field(description="Actionable plan to address leaks and optimize")
     funnel_redesigns: list[FunnelRedesign]
     leverage_strategies: list[LeverageStrategy]
 
     # Challenge
-    challenge: str = Field(
-        description="Specific challenge with timeline and accountability"
-    )
+    challenge: str = Field(description="Specific challenge with timeline and accountability")
     implementation_timeline_days: int
 
     # Projections
@@ -156,7 +150,7 @@ class WealthAccelerator:
             leaks.append(
                 RevenueLeak(
                     leak_type=LeakType.CAC_TOO_HIGH,
-                    description=f"CAC/LTV ratio {cac/ltv:.2f} is unsustainable (target <0.33)",
+                    description=f"CAC/LTV ratio {cac / ltv:.2f} is unsustainable (target <0.33)",
                     estimated_impact_usd_monthly=revenue_monthly * 0.2,  # Estimated impact
                     confidence=0.85,
                 )
@@ -182,7 +176,7 @@ class WealthAccelerator:
         hard_truth = (
             f"You're leaving ${total_leak_impact:,.0f}/month on the table. "
             f"Current churn rate of {churn_rate}% is killing growth. "
-            f"CAC/LTV ratio of {cac/ltv:.2f} means you're paying too much for customers."
+            f"CAC/LTV ratio of {cac / ltv:.2f} means you're paying too much for customers."
         )
 
         plan = (

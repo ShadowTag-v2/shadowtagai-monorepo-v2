@@ -1,4 +1,5 @@
 """Check that text files with a shebang are executable."""
+
 from __future__ import annotations
 
 import argparse
@@ -29,24 +30,24 @@ def _check_git_filemode(paths: Sequence[str]) -> int:
 
 def _message(path: str) -> None:
     print(
-        f'{path}: has a shebang but is not marked executable!\n'
-        f'  If it is supposed to be executable, try: '
-        f'`chmod +x {shlex.quote(path)}`\n'
-        f'  If on Windows, you may also need to: '
-        f'`git add --chmod=+x {shlex.quote(path)}`\n'
-        f'  If it is not supposed to be executable, double-check its shebang '
-        f'is wanted.\n',
+        f"{path}: has a shebang but is not marked executable!\n"
+        f"  If it is supposed to be executable, try: "
+        f"`chmod +x {shlex.quote(path)}`\n"
+        f"  If on Windows, you may also need to: "
+        f"`git add --chmod=+x {shlex.quote(path)}`\n"
+        f"  If it is not supposed to be executable, double-check its shebang "
+        f"is wanted.\n",
         file=sys.stderr,
     )
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('filenames', nargs='*')
+    parser.add_argument("filenames", nargs="*")
     args = parser.parse_args(argv)
 
     return check_shebangs(args.filenames)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

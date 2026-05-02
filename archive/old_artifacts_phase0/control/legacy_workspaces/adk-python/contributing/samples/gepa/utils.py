@@ -23,33 +23,29 @@ from retry import retry
 
 
 class FilterInferenceWarnings(logging.Filter):
-  """Filters out Vertex inference warning about non-text parts in response."""
-
-  def filter(self, record: logging.LogRecord) -> bool:
     """Filters out Vertex inference warning about non-text parts in response."""
-    if record.levelname != 'WARNING':
-      return True
-    message_identifier = record.getMessage()
-    return not message_identifier.startswith(
-        'Warning: there are non-text parts in the response:'
-    )
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        """Filters out Vertex inference warning about non-text parts in response."""
+        if record.levelname != "WARNING":
+            return True
+        message_identifier = record.getMessage()
+        return not message_identifier.startswith("Warning: there are non-text parts in the response:")
 
 
 def reflection_inference_fn(model: str) -> Callable[[str], str]:
-  """Returns an inference function on VertexAI based on provided model."""
-  client = genai.Client()
+    """Returns an inference function on VertexAI based on provided model."""
+    client = genai.Client()
 
-  @retry(tries=3, delay=10, backoff=2)
-  def _fn(prompt):
-    return client.models.generate_content(
-        model=model,
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            candidate_count=1,
-            thinking_config=types.ThinkingConfig(
-                include_thoughts=True, thinking_budget=-1
+    @retry(tries=3, delay=10, backoff=2)
+    def _fn(prompt):
+        return client.models.generate_content(
+            model=model,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                candidate_count=1,
+                thinking_config=types.ThinkingConfig(include_thoughts=True, thinking_budget=-1),
             ),
-        ),
-    ).text
+        ).text
 
-  return _fn
+    return _fn

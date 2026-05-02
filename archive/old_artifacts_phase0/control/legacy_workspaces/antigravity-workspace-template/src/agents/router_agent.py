@@ -54,19 +54,19 @@ You may delegate to multiple agents in sequence or parallel."""
 
         # Parse the delegation plan from the response
         delegations = []
-        lines = analysis.split('\n')
+        lines = analysis.split("\n")
         current_delegation = {}
 
         for line in lines:
             line = line.strip()
-            if line.startswith('- agent:'):
+            if line.startswith("- agent:"):
                 if current_delegation:
                     delegations.append(current_delegation)
-                current_delegation = {'agent': line.split(':', 1)[1].strip()}
-            elif line.startswith('- task:') and current_delegation:
-                current_delegation['task'] = line.split(':', 1)[1].strip()
+                current_delegation = {"agent": line.split(":", 1)[1].strip()}
+            elif line.startswith("- task:") and current_delegation:
+                current_delegation["task"] = line.split(":", 1)[1].strip()
 
-        if current_delegation and 'task' in current_delegation:
+        if current_delegation and "task" in current_delegation:
             delegations.append(current_delegation)
 
         # Fallback: if no delegations parsed, use simple keyword matching
@@ -89,20 +89,20 @@ You may delegate to multiple agents in sequence or parallel."""
         delegations = []
 
         # Check for code-related keywords
-        if any(word in task_lower for word in ['code', 'implement', 'build', 'create', 'write', 'function']):
-            delegations.append({'agent': 'coder', 'task': task})
+        if any(word in task_lower for word in ["code", "implement", "build", "create", "write", "function"]):
+            delegations.append({"agent": "coder", "task": task})
 
         # Check for review-related keywords
-        if any(word in task_lower for word in ['review', 'check', 'security', 'quality', 'analyze']):
-            delegations.append({'agent': 'reviewer', 'task': task})
+        if any(word in task_lower for word in ["review", "check", "security", "quality", "analyze"]):
+            delegations.append({"agent": "reviewer", "task": task})
 
         # Check for research-related keywords
-        if any(word in task_lower for word in ['research', 'search', 'find', 'information', 'learn']):
-            delegations.append({'agent': 'researcher', 'task': task})
+        if any(word in task_lower for word in ["research", "search", "find", "information", "learn"]):
+            delegations.append({"agent": "researcher", "task": task})
 
         # Default to coder if no matches
         if not delegations:
-            delegations.append({'agent': 'coder', 'task': task})
+            delegations.append({"agent": "coder", "task": task})
 
         return delegations
 

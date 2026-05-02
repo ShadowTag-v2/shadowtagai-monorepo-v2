@@ -7,10 +7,10 @@ Automatically evolves prompts, kernels, and agents through:
 3. Benchmark validation: HumanEval, BigCodeBench, SWE-bench
 """
 
-from typing import List, Dict, Any
+from typing import Any
 from pydantic import BaseModel, Field
 from datetime import datetime
-from enum import Enum, StrEnum
+from enum import StrEnum
 
 from app.training import GRPOSimulator, GRPOConfig
 
@@ -84,8 +84,7 @@ class DTESystem:
         evolved_score = await self._evaluate_prompt(evolved_prompt, test_cases)
 
         # Calculate improvement
-        improvement = ((evolved_score - baseline_score) / baseline_score * 100
-                      if baseline_score > 0 else 0.0)
+        improvement = (evolved_score - baseline_score) / baseline_score * 100 if baseline_score > 0 else 0.0
 
         result = EvolutionResult(
             strategy=strategy,
@@ -230,7 +229,7 @@ class DTESystem:
 
         # Clarify output format
         if "output" not in evolved.lower():
-            evolved += "\n\nOutput format: {\"result\": ..., \"confidence\": ...}"
+            evolved += '\n\nOutput format: {"result": ..., "confidence": ...}'
 
         return evolved
 
@@ -249,9 +248,7 @@ class DTESystem:
                 (r.improvement_metric for r in self.evolution_history),
                 default=0.0,
             ),
-            "strategies_used": list(
-                set(r.strategy for r in self.evolution_history)
-            ),
+            "strategies_used": list(set(r.strategy for r in self.evolution_history)),
             "latest_evolution": self.evolution_history[-1].dict() if self.evolution_history else None,
         }
 

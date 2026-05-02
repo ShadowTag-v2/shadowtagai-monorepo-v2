@@ -221,9 +221,7 @@ class JudgeSixPipeline:
             ctx.set_variable("risk_level", decision.risk_level)
             ctx.set_variable("jr_decision", decision)
 
-            logger.debug(
-                f"JR Engine: {decision.risk_level.value} ({decision.execution_time_us:.1f}μs)"
-            )
+            logger.debug(f"JR Engine: {decision.risk_level.value} ({decision.execution_time_us:.1f}μs)")
 
             return {"request": request, "risk_level": decision.risk_level, "jr_decision": decision}
 
@@ -242,14 +240,10 @@ class JudgeSixPipeline:
             jr_decision = data["jr_decision"]
 
             # PyTorch classification
-            pytorch_result = await self.pytorch_classifier.classify(
-                data["request"], semantic_result
-            )
+            pytorch_result = await self.pytorch_classifier.classify(data["request"], semantic_result)
 
             # Hybrid decision logic
-            decision, confidence, reasons = self._make_decision(
-                jr_decision, semantic_result, pytorch_result
-            )
+            decision, confidence, reasons = self._make_decision(jr_decision, semantic_result, pytorch_result)
 
             return {
                 **data,
@@ -271,9 +265,7 @@ class JudgeSixPipeline:
 
         self.pipeline.add_stage("hybrid_judge_decision", hybrid_judge_decision, timeout_ms=30.0)
 
-    def _make_decision(
-        self, jr_decision, semantic_result: dict | None, pytorch_result: dict
-    ) -> tuple[str, float, str]:
+    def _make_decision(self, jr_decision, semantic_result: dict | None, pytorch_result: dict) -> tuple[str, float, str]:
         """
         Make final hybrid decision.
 
@@ -358,14 +350,9 @@ class JudgeSixPipeline:
 
         # SLA tracking
         if not validation_result.meets_sla():
-            logger.warning(
-                f"Judge #6 SLA violation: {total_latency_ms:.2f}ms > 90ms (request: {request_id})"
-            )
+            logger.warning(f"Judge #6 SLA violation: {total_latency_ms:.2f}ms > 90ms (request: {request_id})")
         else:
-            logger.info(
-                f"Judge #6 validated in {total_latency_ms:.2f}ms: {result['decision']} "
-                f"(request: {request_id})"
-            )
+            logger.info(f"Judge #6 validated in {total_latency_ms:.2f}ms: {result['decision']} (request: {request_id})")
 
         return validation_result
 
@@ -381,9 +368,7 @@ async def example_usage():
 
     # Test case 1: Clean request (fast path)
     print("\n=== Test 1: Clean request (fast path) ===")
-    result1 = await judge.validate(
-        {"text": "Help me build a React web application"}, request_id="req_001"
-    )
+    result1 = await judge.validate({"text": "Help me build a React web application"}, request_id="req_001")
     print(f"Decision: {result1.decision}")
     print(f"Confidence: {result1.confidence:.2f}")
     print(f"Latency: {result1.latency_ms:.2f}ms")
@@ -413,8 +398,6 @@ async def example_usage():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
     asyncio.run(example_usage())

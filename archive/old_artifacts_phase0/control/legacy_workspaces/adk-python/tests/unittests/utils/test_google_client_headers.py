@@ -18,18 +18,16 @@ import pytest
 from google.adk import version
 from google.adk.utils import _google_client_headers
 
-_EXPECTED_BASE_HEADER = (
-    f"google-adk/{version.__version__} gl-python/{sys.version.split()[0]}"
-)
+_EXPECTED_BASE_HEADER = f"google-adk/{version.__version__} gl-python/{sys.version.split()[0]}"
 
 
 def test_get_tracking_headers():
-  """Test get_tracking_headers returns correct headers."""
-  headers = _google_client_headers.get_tracking_headers()
-  assert headers == {
-      "x-goog-api-client": _EXPECTED_BASE_HEADER,
-      "user-agent": _EXPECTED_BASE_HEADER,
-  }
+    """Test get_tracking_headers returns correct headers."""
+    headers = _google_client_headers.get_tracking_headers()
+    assert headers == {
+        "x-goog-api-client": _EXPECTED_BASE_HEADER,
+        "user-agent": _EXPECTED_BASE_HEADER,
+    }
 
 
 @pytest.mark.parametrize(
@@ -74,6 +72,6 @@ def test_get_tracking_headers():
     ],
 )
 def test_merge_tracking_headers(input_headers, expected_headers):
-  """Test merge_tracking_headers with various inputs."""
-  headers = _google_client_headers.merge_tracking_headers(input_headers)
-  assert headers == expected_headers
+    """Test merge_tracking_headers with various inputs."""
+    headers = _google_client_headers.merge_tracking_headers(input_headers)
+    assert headers == expected_headers

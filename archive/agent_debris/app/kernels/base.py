@@ -1,7 +1,7 @@
 """Base kernel interface for the chain."""
 
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any
 import time
 import hashlib
 import json
@@ -70,10 +70,7 @@ class Kernel(ABC):
 
             # Check latency SLA
             if self.max_latency_ms and latency_ms > self.max_latency_ms:
-                raise KernelChainError(
-                    f"{self.name} exceeded max latency: "
-                    f"{latency_ms:.2f}ms > {self.max_latency_ms}ms"
-                )
+                raise KernelChainError(f"{self.name} exceeded max latency: {latency_ms:.2f}ms > {self.max_latency_ms}ms")
 
             # Attach metrics
             if not output.metrics:
@@ -96,9 +93,7 @@ class Kernel(ABC):
             raise
         except Exception as e:
             latency_ms = (time.perf_counter() - start_time) * 1000
-            raise KernelChainError(
-                f"{self.name} failed after {latency_ms:.2f}ms: {str(e)}"
-            ) from e
+            raise KernelChainError(f"{self.name} failed after {latency_ms:.2f}ms: {str(e)}") from e
 
     @staticmethod
     def _hash_data(data: Any) -> str:

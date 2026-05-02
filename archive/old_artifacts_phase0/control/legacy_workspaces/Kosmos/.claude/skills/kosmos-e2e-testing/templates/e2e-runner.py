@@ -38,15 +38,11 @@ async def test_full_research_cycle():
         artifacts_dir.mkdir(parents=True, exist_ok=True)
 
         workflow = ResearchWorkflow(
-            research_objective="What are recent advances in large language model efficiency?",
-            artifacts_dir=str(artifacts_dir)
+            research_objective="What are recent advances in large language model efficiency?", artifacts_dir=str(artifacts_dir)
         )
 
         start = time.time()
-        result = await workflow.run(
-            num_cycles=1,
-            tasks_per_cycle=2
-        )
+        result = await workflow.run(num_cycles=1, tasks_per_cycle=2)
         elapsed = time.time() - start
 
         print(f"  Cycles completed: {result.get('cycles_completed', 0)}")
@@ -54,7 +50,7 @@ async def test_full_research_cycle():
         print(f"  Findings: {len(result.get('findings', []))}")
         print(f"  Duration: {elapsed:.1f}s")
 
-        if result.get('cycles_completed', 0) >= 1:
+        if result.get("cycles_completed", 0) >= 1:
             print("  [OK] Research cycle completed")
             return True
         else:
@@ -64,6 +60,7 @@ async def test_full_research_cycle():
     except Exception as e:
         print(f"  [FAIL] Error: {e}")
         import traceback
+
         traceback.print_exc()
         return False
 
@@ -79,24 +76,13 @@ async def test_context_compression():
 
         # Test cycle result compression
         test_task_results = [
-            {
-                'type': 'data_analysis',
-                'summary': 'Analysis of gene expression patterns',
-                'statistics': {'correlation': 0.85, 'p_value': 0.001}
-            },
-            {
-                'type': 'literature_review',
-                'summary': 'Review of relevant papers',
-                'papers': []
-            }
+            {"type": "data_analysis", "summary": "Analysis of gene expression patterns", "statistics": {"correlation": 0.85, "p_value": 0.001}},
+            {"type": "literature_review", "summary": "Review of relevant papers", "papers": []},
         ]
 
-        result = compressor.compress_cycle_results(
-            cycle=1,
-            task_results=test_task_results
-        )
+        result = compressor.compress_cycle_results(cycle=1, task_results=test_task_results)
 
-        if result and hasattr(result, 'summary'):
+        if result and hasattr(result, "summary"):
             print("  [OK] Compression completed")
             print(f"       Summary length: {len(result.summary)} chars")
             return True
@@ -127,17 +113,13 @@ async def test_state_management():
 
             # Test saving a finding artifact
             test_finding = {
-                'summary': 'Test finding about gene expression',
-                'statistics': {'mean': 0.5, 'std': 0.1},
-                'methods': 'Statistical analysis',
-                'interpretation': 'Significant correlation found'
+                "summary": "Test finding about gene expression",
+                "statistics": {"mean": 0.5, "std": 0.1},
+                "methods": "Statistical analysis",
+                "interpretation": "Significant correlation found",
             }
 
-            path = await manager.save_finding_artifact(
-                cycle=1,
-                task_id=1,
-                finding=test_finding
-            )
+            path = await manager.save_finding_artifact(cycle=1, task_id=1, finding=test_finding)
 
             if path and path.exists():
                 print(f"  [OK] Finding artifact saved to: {path.name}")
@@ -161,10 +143,7 @@ async def test_code_execution():
     try:
         from kosmos.execution.production_executor import ProductionConfig, ProductionExecutor
 
-        config = ProductionConfig(
-            timeout_seconds=60,
-            memory_limit="2g"
-        )
+        config = ProductionConfig(timeout_seconds=60, memory_limit="2g")
         executor = ProductionExecutor(config)
 
         try:
@@ -184,11 +163,11 @@ print(df.sum().to_dict())
 
             if result.success:
                 print("  [OK] Code executed successfully")
-                if hasattr(result, 'stdout') and result.stdout:
+                if hasattr(result, "stdout") and result.stdout:
                     print(f"       Output: {result.stdout[:100]}...")
                 return True
             else:
-                error_msg = getattr(result, 'error_message', str(result))
+                error_msg = getattr(result, "error_message", str(result))
                 print(f"  [FAIL] Execution failed: {error_msg}")
                 return False
 
@@ -218,15 +197,15 @@ async def test_scholar_evaluation():
         validator = ScholarEvalValidator(anthropic_client=None)
 
         test_finding = {
-            'summary': 'Large language models can be made more efficient through quantization.',
-            'statistics': {'reduction': 0.75, 'accuracy_loss': 0.02},
-            'methods': 'Quantization analysis with 4-bit precision',
-            'interpretation': 'Multiple studies show 4-bit quantization reduces memory by 75%.'
+            "summary": "Large language models can be made more efficient through quantization.",
+            "statistics": {"reduction": 0.75, "accuracy_loss": 0.02},
+            "methods": "Quantization analysis with 4-bit precision",
+            "interpretation": "Multiple studies show 4-bit quantization reduces memory by 75%.",
         }
 
         result = await validator.evaluate_finding(test_finding)
 
-        if result and hasattr(result, 'overall_score'):
+        if result and hasattr(result, "overall_score"):
             print("  [OK] Evaluation completed")
             print(f"       Overall score: {result.overall_score:.2f}")
             print(f"       Approved: {result.approved}")
@@ -254,15 +233,11 @@ async def test_plan_creator():
         creator = PlanCreatorAgent(anthropic_client=None)
 
         # Test plan creation
-        context = {
-            'research_objective': 'Investigate KRAS mutations in cancer',
-            'prior_findings': [],
-            'cycle': 1
-        }
+        context = {"research_objective": "Investigate KRAS mutations in cancer", "prior_findings": [], "cycle": 1}
 
         plan = await creator.create_plan(context)
 
-        if plan and hasattr(plan, 'tasks'):
+        if plan and hasattr(plan, "tasks"):
             print("  [OK] Plan created")
             print(f"       Tasks: {len(plan.tasks)}")
             return True
@@ -291,10 +266,7 @@ async def test_skill_loader():
         loader = SkillLoader()
 
         # Test loading skills for a biology domain task
-        skills = loader.load_skills_for_task(
-            task_type='hypothesis_generation',
-            domain='biology'
-        )
+        skills = loader.load_skills_for_task(task_type="hypothesis_generation", domain="biology")
 
         if skills:
             print("  [OK] Skills loaded")

@@ -22,7 +22,7 @@ def handle_match(token_text: str) -> str:
 
     match = START_QUOTE_RE.match(token_text)
     if match is not None:
-        meat = token_text[match.end():-1]
+        meat = token_text[match.end() : -1]
         if '"' in meat or "'" in meat:
             return token_text
         else:
@@ -40,7 +40,7 @@ def get_line_offsets_by_line_no(src: str) -> list[int]:
 
 
 def fix_strings(filename: str) -> int:
-    with open(filename, encoding='UTF-8', newline='') as f:
+    with open(filename, encoding="UTF-8", newline="") as f:
         contents = f.read()
     line_offsets = get_line_offsets_by_line_no(contents)
 
@@ -59,14 +59,11 @@ def fix_strings(filename: str) -> int:
             fstring_depth -= 1
         elif fstring_depth == 0 and token_type == tokenize.STRING:
             new_text = handle_match(token_text)
-            splitcontents[
-                line_offsets[srow] + scol:
-                line_offsets[erow] + ecol
-            ] = new_text
+            splitcontents[line_offsets[srow] + scol : line_offsets[erow] + ecol] = new_text
 
-    new_contents = ''.join(splitcontents)
+    new_contents = "".join(splitcontents)
     if contents != new_contents:
-        with open(filename, 'w', encoding='UTF-8', newline='') as f:
+        with open(filename, "w", encoding="UTF-8", newline="") as f:
             f.write(new_contents)
         return 1
     else:
@@ -75,7 +72,7 @@ def fix_strings(filename: str) -> int:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument('filenames', nargs='*', help='Filenames to fix')
+    parser.add_argument("filenames", nargs="*", help="Filenames to fix")
     args = parser.parse_args(argv)
 
     retv = 0
@@ -83,11 +80,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     for filename in args.filenames:
         return_value = fix_strings(filename)
         if return_value != 0:
-            print(f'Fixing strings in {filename}')
+            print(f"Fixing strings in {filename}")
         retv |= return_value
 
     return retv
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

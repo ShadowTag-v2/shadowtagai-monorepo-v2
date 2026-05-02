@@ -41,9 +41,7 @@ class LLMClient:
 
     def _resolve_model(self, model_override: ModelName | str | None) -> str:
         """Normalize provided model or fall back to environment default (no hard validation)."""
-        override_str = (
-            model_override.value if isinstance(model_override, ModelName) else model_override
-        )
+        override_str = model_override.value if isinstance(model_override, ModelName) else model_override
         candidate = override_str or os.getenv("OPENAI_MODEL") or "gpt-4.1-mini"
         return candidate
 
@@ -85,9 +83,7 @@ class LLMClient:
             if parsed is not None:
                 return parsed  # already a Pydantic instance
             # If for some reason parsed is None, fall through to the defensive fallback below.
-            self.logger.warning(
-                "Structured parse returned no parsed object; attempting JSON Schema fallback."
-            )
+            self.logger.warning("Structured parse returned no parsed object; attempting JSON Schema fallback.")
         except Exception as e:
             # Common causes: older SDK version, transient parsing issues, or unsupported model.
             self.logger.exception("Structured parse failed; attempting JSON Schema fallback: %s", e)

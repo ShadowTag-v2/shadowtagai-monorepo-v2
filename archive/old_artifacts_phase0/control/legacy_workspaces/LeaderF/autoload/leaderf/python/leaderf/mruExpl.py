@@ -23,9 +23,9 @@ from .mru import *
 from .utils import *
 
 
-#*****************************************************
+# *****************************************************
 # MruExplorer
-#*****************************************************
+# *****************************************************
 class MruExplorer(Explorer):
     def __init__(self):
         self._prefix_length = 0
@@ -54,7 +54,7 @@ class MruExplorer(Explorer):
         mru.saveToCache(lfEval("readfile(lfMru#CacheFileName())"))
         lfCmd("call writefile([], lfMru#CacheFileName())")
 
-        with lfOpen(mru.getCacheFileName(), 'r+', errors='ignore', encoding='utf8') as f:
+        with lfOpen(mru.getCacheFileName(), "r+", errors="ignore", encoding="utf8") as f:
             data_list = []
             for line in f.readlines():
                 data = line.split(None, 2)
@@ -65,16 +65,16 @@ class MruExplorer(Explorer):
             if len(data_list) == 0:
                 # import old data
                 try:
-                    with lfOpen(mru.getOldCacheFileName(), 'r+', errors='ignore', encoding='utf8') as old_f:
+                    with lfOpen(mru.getOldCacheFileName(), "r+", errors="ignore", encoding="utf8") as old_f:
                         current_time = time.time()
-                        data_list = [[int(current_time), 1, filename] for filename in old_f.readlines()
-                                     if os.path.exists(lfDecode(filename.rstrip()))
-                                     ]
+                        data_list = [
+                            [int(current_time), 1, filename] for filename in old_f.readlines() if os.path.exists(lfDecode(filename.rstrip()))
+                        ]
                 except FileNotFoundError:
                     pass
 
             arguments_dict = kwargs.get("arguments", {})
-            if "--frecency" in arguments_dict or lfEval("get(g:, 'Lf_MruEnableFrecency', 0)") == '1':
+            if "--frecency" in arguments_dict or lfEval("get(g:, 'Lf_MruEnableFrecency', 0)") == "1":
                 data_list.sort(key=partial(self.getFrecency, time.time()), reverse=True)
             else:
                 data_list.sort(key=operator.itemgetter(0), reverse=True)
@@ -96,11 +96,15 @@ class MruExplorer(Explorer):
             ancestor = nearestAncestor(self._root_markers, project_root)
             if ancestor != "":
                 project_root = ancestor
-            lines = [name for name in lines if lfDecode(name).startswith(os.path.join(project_root, ''))]
+            lines = [name for name in lines if lfDecode(name).startswith(os.path.join(project_root, ""))]
 
         wildignore = lfEval("g:Lf_MruWildIgnore")
-        lines = [name for name in lines if True not in (fnmatch(name, j) for j in wildignore.get('file', []))
-                    and True not in (fnmatch(name, "*/" + j + "/*") for j in wildignore.get('dir', []))]
+        lines = [
+            name
+            for name in lines
+            if True not in (fnmatch(name, j) for j in wildignore.get("file", []))
+            and True not in (fnmatch(name, "*/" + j + "/*") for j in wildignore.get("dir", []))
+        ]
 
         if len(lines) == 0:
             return lines
@@ -110,43 +114,37 @@ class MruExplorer(Explorer):
 
         self._prefix_length = 0
         self.show_icon = False
-        if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == '1':
+        if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == "1":
             self.show_icon = True
             self._prefix_length = webDevIconsStrLen()
 
         show_absolute = "--absolute-path" in arguments_dict
         if "--no-split-path" in arguments_dict:
-            if lfEval("g:Lf_ShowRelativePath") == '1' and not show_absolute:
+            if lfEval("g:Lf_ShowRelativePath") == "1" and not show_absolute:
                 lines = [lfRelpath(line) for line in lines]
             if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == "1":
-                lines = [
-                    webDevIconsGetFileTypeSymbol(getBasename(line)) + line
-                    for line in lines
-                ]
+                lines = [webDevIconsGetFileTypeSymbol(getBasename(line)) + line for line in lines]
             return lines
 
-        self._max_bufname_len = max(int(lfEval(f"strdisplaywidth('{escQuote(getBasename(line))}')"))
-                                    for line in lines)
+        self._max_bufname_len = max(int(lfEval(f"strdisplaywidth('{escQuote(getBasename(line))}')")) for line in lines)
         self._max_bufname_len = min(25, self._max_bufname_len)
         for i, line in enumerate(lines):
-            if lfEval("g:Lf_ShowRelativePath") == '1' and not show_absolute:
+            if lfEval("g:Lf_ShowRelativePath") == "1" and not show_absolute:
                 line = lfRelpath(line)
             basename = getBasename(line)
             dirname = getDirname(line)
-            space_num = self._max_bufname_len \
-                        - int(lfEval(f"strdisplaywidth('{escQuote(basename)}')"))
+            space_num = self._max_bufname_len - int(lfEval(f"strdisplaywidth('{escQuote(basename)}')"))
 
-            if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == '1':
+            if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == "1":
                 icon = webDevIconsGetFileTypeSymbol(basename)
             else:
                 icon = ""
 
-            lines[i] = '{}{}{} "{}"'.format(icon, getBasename(line), ' ' * space_num,
-                                          dirname if dirname else '.' + os.sep)
+            lines[i] = '{}{}{} "{}"'.format(icon, getBasename(line), " " * space_num, dirname if dirname else "." + os.sep)
         return lines
 
     def getStlCategory(self):
-        return 'Mru'
+        return "Mru"
 
     def getStlCurDir(self):
         return escQuote(lfEncode(lfGetCwd()))
@@ -158,9 +156,9 @@ class MruExplorer(Explorer):
         return True
 
     def delFromCache(self, name):
-        with lfOpen(mru.getCacheFileName(), 'r+', errors='ignore', encoding='utf8') as f:
+        with lfOpen(mru.getCacheFileName(), "r+", errors="ignore", encoding="utf8") as f:
             lines = f.readlines()
-            lines.remove(lfEncode(os.path.abspath(lfDecode(name))) + '\n')
+            lines.remove(lfEncode(os.path.abspath(lfDecode(name))) + "\n")
             f.seek(0)
             f.truncate(0)
             f.writelines(lines)
@@ -172,9 +170,9 @@ class MruExplorer(Explorer):
         return self._max_bufname_len
 
 
-#*****************************************************
+# *****************************************************
 # MruExplManager
-#*****************************************************
+# *****************************************************
 class MruExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -205,42 +203,57 @@ class MruExplManager(Manager):
                 file = os.path.join(self._getInstance().getCwd(), lfDecode(file))
                 file = os.path.normpath(lfEncode(file))
 
-            if kwargs.get("mode", '') == 't':
-                if (lfEval("get(g:, 'Lf_DiscardEmptyBuffer', 1)") == '1' and vim.current.buffer.name == ''
-                        and vim.current.buffer.number == 1
-                        and len(vim.current.tabpage.windows) == 1 and len(vim.current.buffer) == 1
-                        and vim.current.buffer[0] == '' and not vim.current.buffer.options["modified"]
-                        and not (lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == '1'
-                            and lfEval(f"bufloaded('{escQuote(file)}')") == '1'
-                            and len([w for tp in vim.tabpages for w in tp.windows if w.buffer.name == file]) > 0)):
+            if kwargs.get("mode", "") == "t":
+                if (
+                    lfEval("get(g:, 'Lf_DiscardEmptyBuffer', 1)") == "1"
+                    and vim.current.buffer.name == ""
+                    and vim.current.buffer.number == 1
+                    and len(vim.current.tabpage.windows) == 1
+                    and len(vim.current.buffer) == 1
+                    and vim.current.buffer[0] == ""
+                    and not vim.current.buffer.options["modified"]
+                    and not (
+                        lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == "1"
+                        and lfEval(f"bufloaded('{escQuote(file)}')") == "1"
+                        and len([w for tp in vim.tabpages for w in tp.windows if w.buffer.name == file]) > 0
+                    )
+                ):
                     lfCmd("setlocal bufhidden=wipe")
                     lfCmd(f"hide edit {escSpecial(file)}")
-                elif lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == '1' and lfEval(f"bufloaded('{escQuote(file)}')") == '1':
-                    lfDrop('tab', file)
+                elif lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == "1" and lfEval(f"bufloaded('{escQuote(file)}')") == "1":
+                    lfDrop("tab", file)
                 else:
                     lfCmd(f"tabe {escSpecial(file)}")
             else:
-                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == '1' and lfEval(f"bufloaded('{escQuote(file)}')") == '1':
-                    if (kwargs.get("mode", '') == '' and lfEval("get(g:, 'Lf_DiscardEmptyBuffer', 1)") == '1'
-                            and vim.current.buffer.name == ''
-                            and vim.current.buffer.number == 1
-                            and len(vim.current.buffer) == 1 and vim.current.buffer[0] == ''
-                            and not vim.current.buffer.options["modified"]
-                            and len([w for w in vim.windows if w.buffer.name == file]) == 0):
+                if lfEval("get(g:, 'Lf_JumpToExistingWindow', 1)") == "1" and lfEval(f"bufloaded('{escQuote(file)}')") == "1":
+                    if (
+                        kwargs.get("mode", "") == ""
+                        and lfEval("get(g:, 'Lf_DiscardEmptyBuffer', 1)") == "1"
+                        and vim.current.buffer.name == ""
+                        and vim.current.buffer.number == 1
+                        and len(vim.current.buffer) == 1
+                        and vim.current.buffer[0] == ""
+                        and not vim.current.buffer.options["modified"]
+                        and len([w for w in vim.windows if w.buffer.name == file]) == 0
+                    ):
                         lfCmd("setlocal bufhidden=wipe")
 
-                    lfDrop('', file)
+                    lfDrop("", file)
                 else:
-                    if (kwargs.get("mode", '') == '' and lfEval("get(g:, 'Lf_DiscardEmptyBuffer', 1)") == '1'
-                            and vim.current.buffer.name == ''
-                            and vim.current.buffer.number == 1
-                            and len(vim.current.buffer) == 1 and vim.current.buffer[0] == ''
-                            and not vim.current.buffer.options["modified"]):
+                    if (
+                        kwargs.get("mode", "") == ""
+                        and lfEval("get(g:, 'Lf_DiscardEmptyBuffer', 1)") == "1"
+                        and vim.current.buffer.name == ""
+                        and vim.current.buffer.number == 1
+                        and len(vim.current.buffer) == 1
+                        and vim.current.buffer[0] == ""
+                        and not vim.current.buffer.options["modified"]
+                    ):
                         lfCmd("setlocal bufhidden=wipe")
 
                     lfCmd(f"hide edit {escSpecial(file)}")
-        except vim.error as e: # E37
-            if 'E325' not in str(e).split(':'):
+        except vim.error as e:  # E37
+            if "E325" not in str(e).split(":"):
                 lfPrintTraceback()
 
     def _getDigest(self, line, mode):
@@ -252,7 +265,7 @@ class MruExplManager(Manager):
                   2, return the directory name
         """
         if not line:
-            return ''
+            return ""
 
         prefix_len = self._getExplorer().getPrefixLength()
         if "--no-split-path" in self._arguments:
@@ -267,11 +280,11 @@ class MruExplManager(Manager):
             if mode == 0:
                 return line[prefix_len:]
             elif mode == 1:
-                start_pos = line.find(' "') # what if there is " in file name?
+                start_pos = line.find(' "')  # what if there is " in file name?
                 return line[prefix_len:start_pos].rstrip()
             else:
-                start_pos = line.find(' "') # what if there is " in file name?
-                return line[start_pos+2 : -1]
+                start_pos = line.find(' "')  # what if there is " in file name?
+                return line[start_pos + 2 : -1]
 
     def _getDigestStartPos(self, line, mode):
         """
@@ -294,13 +307,11 @@ class MruExplManager(Manager):
             else:
                 prefix_len = self._getExplorer().getPrefixLength()
 
-            if mode == 0:
-                return prefix_len
-            elif mode == 1:
+            if mode == 0 or mode == 1:
                 return prefix_len
             else:
-                start_pos = line.find(' "') # what if there is " in file name?
-                return lfBytesLen(line[:start_pos+2])
+                start_pos = line.find(' "')  # what if there is " in file name?
+                return lfBytesLen(line[: start_pos + 2])
 
     def _createHelp(self):
         help = []
@@ -323,18 +334,19 @@ class MruExplManager(Manager):
         super()._afterEnter()
 
         if "--no-split-path" not in self._arguments:
-            if self._getInstance().getWinPos() == 'popup':
-                lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufDirname'', '' \zs".*"$'')')"""
-                        % self._getInstance().getPopupWinId())
+            if self._getInstance().getWinPos() == "popup":
+                lfCmd(
+                    r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_bufDirname'', '' \zs".*"$'')')""" % self._getInstance().getPopupWinId()
+                )
                 id = int(lfEval("matchid"))
                 self._match_ids.append(id)
             else:
-                id = int(lfEval(r'''matchadd('Lf_hl_bufDirname', ' \zs".*"$')'''))
+                id = int(lfEval(r"""matchadd('Lf_hl_bufDirname', ' \zs".*"$')"""))
                 self._match_ids.append(id)
 
-        if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == '1':
-            winid = self._getInstance().getPopupWinId() if self._getInstance().getWinPos() == 'popup' else None
-            icon_pattern = r'^__icon__'
+        if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == "1":
+            winid = self._getInstance().getPopupWinId() if self._getInstance().getWinPos() == "popup" else None
+            icon_pattern = r"^__icon__"
             self._match_ids.extend(matchaddDevIconsExtension(icon_pattern, winid))
             self._match_ids.extend(matchaddDevIconsExact(icon_pattern, winid))
             self._match_ids.extend(matchaddDevIconsDefault(icon_pattern, winid))
@@ -346,13 +358,13 @@ class MruExplManager(Manager):
         instance = self._getInstance()
         if self._inHelpLines():
             return
-        if instance.getWinPos() == 'popup':
+        if instance.getWinPos() == "popup":
             lfCmd("call win_execute(%d, 'setlocal modifiable')" % instance.getPopupWinId())
         else:
             lfCmd("setlocal modifiable")
         line = instance._buffer_object[instance.window.cursor[0] - 1]
 
-        if line == '':
+        if line == "":
             return
 
         dirname = self._getDigest(line, 2)
@@ -360,19 +372,19 @@ class MruExplManager(Manager):
         self._explorer.delFromCache(dirname + basename)
         if len(self._content) > 0:
             self._content.remove(line)
-            self._getInstance().setStlTotal(len(self._content)//self._getUnit())
-            self._getInstance().setStlResultsCount(len(self._content)//self._getUnit())
+            self._getInstance().setStlTotal(len(self._content) // self._getUnit())
+            self._getInstance().setStlResultsCount(len(self._content) // self._getUnit())
         # `del vim.current.line` does not work in neovim
         # https://github.com/neovim/neovim/issues/9361
         del instance._buffer_object[instance.window.cursor[0] - 1]
-        if instance.getWinPos() == 'popup':
+        if instance.getWinPos() == "popup":
             instance.refreshPopupStatusline()
             lfCmd("call win_execute(%d, 'setlocal nomodifiable')" % instance.getPopupWinId())
         else:
             lfCmd("setlocal nomodifiable")
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         line = args[0]
@@ -384,7 +396,7 @@ class MruExplManager(Manager):
             file = os.path.join(self._getInstance().getCwd(), lfDecode(file))
             file = os.path.normpath(lfEncode(file))
 
-        if lfEval(f"bufloaded('{escQuote(file)}')") == '1':
+        if lfEval(f"bufloaded('{escQuote(file)}')") == "1":
             source = int(lfEval(f"bufadd('{escQuote(file)}')"))
         else:
             source = file
@@ -393,9 +405,9 @@ class MruExplManager(Manager):
         self._createPopupPreview(file, source, 0, jump_cmd)
 
 
-#*****************************************************
+# *****************************************************
 # mruExplManager is a singleton
-#*****************************************************
+# *****************************************************
 mruExplManager = MruExplManager()
 
-__all__ = ['mruExplManager']
+__all__ = ["mruExplManager"]

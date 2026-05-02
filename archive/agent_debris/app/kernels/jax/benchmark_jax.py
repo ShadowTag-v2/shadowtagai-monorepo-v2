@@ -1,6 +1,7 @@
 import time
 from judge_six_jax import judge_six_enforce, init_mock_data
 
+
 def benchmark(batch_size=1024, seq_len=256, iters=1000):
     print(f"Benchmarking JAX Judge #6 (Batch: {batch_size}, Seq: {seq_len})")
 
@@ -29,6 +30,7 @@ def benchmark(batch_size=1024, seq_len=256, iters=1000):
         print("✅ PASS: Latency <= 12ms")
     else:
         print("❌ FAIL: Latency > 12ms")
+
 
 if __name__ == "__main__":
     benchmark()

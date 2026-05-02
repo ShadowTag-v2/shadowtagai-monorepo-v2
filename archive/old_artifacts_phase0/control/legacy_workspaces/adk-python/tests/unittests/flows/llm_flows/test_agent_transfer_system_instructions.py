@@ -35,73 +35,65 @@ from ... import testing_utils
 
 
 async def create_test_invocation_context(agent: Agent) -> InvocationContext:
-  """Helper to create constructed InvocationContext."""
-  session_service = InMemorySessionService()
-  memory_service = InMemoryMemoryService()
-  session = await session_service.create_session(
-      app_name='test_app', user_id='test_user'
-  )
+    """Helper to create constructed InvocationContext."""
+    session_service = InMemorySessionService()
+    memory_service = InMemoryMemoryService()
+    session = await session_service.create_session(app_name="test_app", user_id="test_user")
 
-  return InvocationContext(
-      artifact_service=InMemoryArtifactService(),
-      session_service=session_service,
-      memory_service=memory_service,
-      plugin_manager=PluginManager(plugins=[]),
-      invocation_id='test_invocation_id',
-      agent=agent,
-      session=session,
-      user_content=types.Content(
-          role='user', parts=[types.Part.from_text(text='test')]
-      ),
-      run_config=RunConfig(),
-  )
+    return InvocationContext(
+        artifact_service=InMemoryArtifactService(),
+        session_service=session_service,
+        memory_service=memory_service,
+        plugin_manager=PluginManager(plugins=[]),
+        invocation_id="test_invocation_id",
+        agent=agent,
+        session=session,
+        user_content=types.Content(role="user", parts=[types.Part.from_text(text="test")]),
+        run_config=RunConfig(),
+    )
 
 
 @pytest.mark.asyncio
 async def test_agent_transfer_includes_sorted_agent_names_in_system_instructions():
-  """Test that agent transfer adds NOTE with sorted agent names to system instructions."""
-  mockModel = testing_utils.MockModel.create(responses=[])
+    """Test that agent transfer adds NOTE with sorted agent names to system instructions."""
+    mockModel = testing_utils.MockModel.create(responses=[])
 
-  # Create agents with names that will test alphabetical sorting
-  z_agent = Agent(name='z_agent', model=mockModel, description='Last agent')
-  a_agent = Agent(name='a_agent', model=mockModel, description='First agent')
-  m_agent = Agent(name='m_agent', model=mockModel, description='Middle agent')
-  peer_agent = Agent(
-      name='peer_agent', model=mockModel, description='Peer agent'
-  )
+    # Create agents with names that will test alphabetical sorting
+    z_agent = Agent(name="z_agent", model=mockModel, description="Last agent")
+    a_agent = Agent(name="a_agent", model=mockModel, description="First agent")
+    m_agent = Agent(name="m_agent", model=mockModel, description="Middle agent")
+    peer_agent = Agent(name="peer_agent", model=mockModel, description="Peer agent")
 
-  # Create parent agent with a peer agent
-  parent_agent = Agent(
-      name='parent_agent',
-      model=mockModel,
-      sub_agents=[peer_agent],
-      description='Parent agent',
-  )
+    # Create parent agent with a peer agent
+    parent_agent = Agent(
+        name="parent_agent",
+        model=mockModel,
+        sub_agents=[peer_agent],
+        description="Parent agent",
+    )
 
-  # Create main agent with sub-agents and parent (intentionally unsorted order)
-  main_agent = Agent(
-      name='main_agent',
-      model=mockModel,
-      sub_agents=[z_agent, a_agent, m_agent],  # Unsorted input
-      parent_agent=parent_agent,
-      description='Main coordinating agent',
-  )
+    # Create main agent with sub-agents and parent (intentionally unsorted order)
+    main_agent = Agent(
+        name="main_agent",
+        model=mockModel,
+        sub_agents=[z_agent, a_agent, m_agent],  # Unsorted input
+        parent_agent=parent_agent,
+        description="Main coordinating agent",
+    )
 
-  # Create test context and LLM request
-  invocation_context = await create_test_invocation_context(main_agent)
-  llm_request = LlmRequest()
+    # Create test context and LLM request
+    invocation_context = await create_test_invocation_context(main_agent)
+    llm_request = LlmRequest()
 
-  # Call the actual agent transfer request processor (this behavior we're testing)
-  async for _ in agent_transfer.request_processor.run_async(
-      invocation_context, llm_request
-  ):
-    pass
+    # Call the actual agent transfer request processor (this behavior we're testing)
+    async for _ in agent_transfer.request_processor.run_async(invocation_context, llm_request):
+        pass
 
-  # Check on the behavior: verify system instructions contain sorted agent names
-  instructions = llm_request.config.system_instruction
+    # Check on the behavior: verify system instructions contain sorted agent names
+    instructions = llm_request.config.system_instruction
 
-  # The NOTE should contain agents in alphabetical order: sub-agents + parent + peers
-  expected_content = """\
+    # The NOTE should contain agents in alphabetical order: sub-agents + parent + peers
+    expected_content = """\
 
 You have a list of other agents to transfer to:
 
@@ -139,45 +131,39 @@ call.
 
 If neither you nor the other agents are best for the question, transfer to your parent agent parent_agent."""
 
-  assert expected_content in instructions
+    assert expected_content in instructions
 
 
 @pytest.mark.asyncio
 async def test_agent_transfer_system_instructions_without_parent():
-  """Test system instructions when agent has no parent."""
-  mockModel = testing_utils.MockModel.create(responses=[])
+    """Test system instructions when agent has no parent."""
+    mockModel = testing_utils.MockModel.create(responses=[])
 
-  # Create agents without parent
-  sub_agent_1 = Agent(
-      name='agent1', model=mockModel, description='First sub-agent'
-  )
-  sub_agent_2 = Agent(
-      name='agent2', model=mockModel, description='Second sub-agent'
-  )
+    # Create agents without parent
+    sub_agent_1 = Agent(name="agent1", model=mockModel, description="First sub-agent")
+    sub_agent_2 = Agent(name="agent2", model=mockModel, description="Second sub-agent")
 
-  main_agent = Agent(
-      name='main_agent',
-      model=mockModel,
-      sub_agents=[sub_agent_1, sub_agent_2],
-      # No parent_agent
-      description='Main agent without parent',
-  )
+    main_agent = Agent(
+        name="main_agent",
+        model=mockModel,
+        sub_agents=[sub_agent_1, sub_agent_2],
+        # No parent_agent
+        description="Main agent without parent",
+    )
 
-  # Create test context and LLM request
-  invocation_context = await create_test_invocation_context(main_agent)
-  llm_request = LlmRequest()
+    # Create test context and LLM request
+    invocation_context = await create_test_invocation_context(main_agent)
+    llm_request = LlmRequest()
 
-  # Call the agent transfer request processor
-  async for _ in agent_transfer.request_processor.run_async(
-      invocation_context, llm_request
-  ):
-    pass
+    # Call the agent transfer request processor
+    async for _ in agent_transfer.request_processor.run_async(invocation_context, llm_request):
+        pass
 
-  # Assert behavior: should only include sub-agents in NOTE, no parent
-  instructions = llm_request.config.system_instruction
+    # Assert behavior: should only include sub-agents in NOTE, no parent
+    instructions = llm_request.config.system_instruction
 
-  # Direct multiline string assertion showing the exact expected content
-  expected_content = """\
+    # Direct multiline string assertion showing the exact expected content
+    expected_content = """\
 
 You have a list of other agents to transfer to:
 
@@ -201,43 +187,39 @@ call.
 **NOTE**: the only available agents for `transfer_to_agent` function are
 `agent1`, `agent2`."""
 
-  assert expected_content in instructions
+    assert expected_content in instructions
 
 
 @pytest.mark.asyncio
 async def test_agent_transfer_simplified_parent_instructions():
-  """Test that parent agent instructions are simplified and not verbose."""
-  mockModel = testing_utils.MockModel.create(responses=[])
+    """Test that parent agent instructions are simplified and not verbose."""
+    mockModel = testing_utils.MockModel.create(responses=[])
 
-  # Create agent with parent
-  sub_agent = Agent(name='sub_agent', model=mockModel, description='Sub agent')
-  parent_agent = Agent(
-      name='parent_agent', model=mockModel, description='Parent agent'
-  )
+    # Create agent with parent
+    sub_agent = Agent(name="sub_agent", model=mockModel, description="Sub agent")
+    parent_agent = Agent(name="parent_agent", model=mockModel, description="Parent agent")
 
-  main_agent = Agent(
-      name='main_agent',
-      model=mockModel,
-      sub_agents=[sub_agent],
-      parent_agent=parent_agent,
-      description='Main agent with parent',
-  )
+    main_agent = Agent(
+        name="main_agent",
+        model=mockModel,
+        sub_agents=[sub_agent],
+        parent_agent=parent_agent,
+        description="Main agent with parent",
+    )
 
-  # Create test context and LLM request
-  invocation_context = await create_test_invocation_context(main_agent)
-  llm_request = LlmRequest()
+    # Create test context and LLM request
+    invocation_context = await create_test_invocation_context(main_agent)
+    llm_request = LlmRequest()
 
-  # Call the agent transfer request processor
-  async for _ in agent_transfer.request_processor.run_async(
-      invocation_context, llm_request
-  ):
-    pass
+    # Call the agent transfer request processor
+    async for _ in agent_transfer.request_processor.run_async(invocation_context, llm_request):
+        pass
 
-  # Assert behavior: parent instructions should be simplified
-  instructions = llm_request.config.system_instruction
+    # Assert behavior: parent instructions should be simplified
+    instructions = llm_request.config.system_instruction
 
-  # Direct multiline string assertion showing the exact expected content
-  expected_content = """\
+    # Direct multiline string assertion showing the exact expected content
+    expected_content = """\
 
 You have a list of other agents to transfer to:
 
@@ -263,36 +245,34 @@ call.
 
 If neither you nor the other agents are best for the question, transfer to your parent agent parent_agent."""
 
-  assert expected_content in instructions
+    assert expected_content in instructions
 
 
 @pytest.mark.asyncio
 async def test_agent_transfer_no_instructions_when_no_transfer_targets():
-  """Test that no instructions are added when there are no transfer targets."""
-  mockModel = testing_utils.MockModel.create(responses=[])
+    """Test that no instructions are added when there are no transfer targets."""
+    mockModel = testing_utils.MockModel.create(responses=[])
 
-  # Create agent with no sub-agents and no parent
-  main_agent = Agent(
-      name='main_agent',
-      model=mockModel,
-      # No sub_agents, no parent_agent
-      description='Isolated agent',
-  )
+    # Create agent with no sub-agents and no parent
+    main_agent = Agent(
+        name="main_agent",
+        model=mockModel,
+        # No sub_agents, no parent_agent
+        description="Isolated agent",
+    )
 
-  # Create test context and LLM request
-  invocation_context = await create_test_invocation_context(main_agent)
-  llm_request = LlmRequest()
-  original_system_instruction = llm_request.config.system_instruction
+    # Create test context and LLM request
+    invocation_context = await create_test_invocation_context(main_agent)
+    llm_request = LlmRequest()
+    original_system_instruction = llm_request.config.system_instruction
 
-  # Call the agent transfer request processor
-  async for _ in agent_transfer.request_processor.run_async(
-      invocation_context, llm_request
-  ):
-    pass
+    # Call the agent transfer request processor
+    async for _ in agent_transfer.request_processor.run_async(invocation_context, llm_request):
+        pass
 
-  # Assert behavior: no instructions should be added
-  assert llm_request.config.system_instruction == original_system_instruction
+    # Assert behavior: no instructions should be added
+    assert llm_request.config.system_instruction == original_system_instruction
 
-  instructions = llm_request.config.system_instruction or ''
-  assert '**NOTE**:' not in instructions
-  assert 'transfer_to_agent' not in instructions
+    instructions = llm_request.config.system_instruction or ""
+    assert "**NOTE**:" not in instructions
+    assert "transfer_to_agent" not in instructions

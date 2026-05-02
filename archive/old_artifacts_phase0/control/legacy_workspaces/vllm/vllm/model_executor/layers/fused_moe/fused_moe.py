@@ -594,11 +594,13 @@ def invoke_fused_moe_kernel(
         # so num_valid_experts <= batch_size <= BLOCK_SIZE_M,
         # and we can skip some invalid blocks.
         EM = min(sorted_token_ids.size(0), A.size(0) * top_k * config["BLOCK_SIZE_M"])
+
     def grid(META):
         return (
             triton.cdiv(EM, META["BLOCK_SIZE_M"])
             * triton.cdiv(B.size(1), META["BLOCK_SIZE_N"]),
         )
+
     HAS_BIAS = B_bias is not None
     if (
         (use_int8_w8a16 or use_int4_w4a16)
@@ -783,6 +785,7 @@ def zero_experts_compute_triton(
 ) -> torch.Tensor:
     N = expert_indices.numel()
     top_k = expert_indices.size(-1)
+
     def grid(meta):
         return (triton.cdiv(N, meta["BLOCK_SIZE"]),)
 
@@ -801,6 +804,7 @@ def zero_experts_compute_triton(
 
     def grid(meta):
         return (num_tokens * (hidden_dim // meta["BLOCK_SIZE"]),)
+
     compute_identity_kernel[grid](
         top_k,
         hidden_states,

@@ -96,6 +96,7 @@ if torchao_version_at_least("0.15.0"):
         convert_to_packed_tensor_based_on_current_hardware,
     )
 else:
+
     def convert_to_packed_tensor_based_on_current_hardware(t):
         return t
 

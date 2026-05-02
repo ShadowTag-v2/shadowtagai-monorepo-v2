@@ -26,11 +26,11 @@ async def execute_before_agent_interceptors(
     context: RequestContext,
     execute_interceptors: list[ExecuteInterceptor] | None,
 ) -> RequestContext:
-  if execute_interceptors:
-    for interceptor in execute_interceptors:
-      if interceptor.before_agent:
-        context = await interceptor.before_agent(context)
-  return context
+    if execute_interceptors:
+        for interceptor in execute_interceptors:
+            if interceptor.before_agent:
+                context = await interceptor.before_agent(context)
+    return context
 
 
 async def execute_after_event_interceptors(
@@ -39,15 +39,13 @@ async def execute_after_event_interceptors(
     adk_event: Event,
     execute_interceptors: list[ExecuteInterceptor] | None,
 ) -> A2AEvent | None:
-  if execute_interceptors:
-    for interceptor in execute_interceptors:
-      if interceptor.after_event:
-        a2a_event = await interceptor.after_event(
-            executor_context, a2a_event, adk_event
-        )
-        if a2a_event is None:
-          return None
-  return a2a_event
+    if execute_interceptors:
+        for interceptor in execute_interceptors:
+            if interceptor.after_event:
+                a2a_event = await interceptor.after_event(executor_context, a2a_event, adk_event)
+                if a2a_event is None:
+                    return None
+    return a2a_event
 
 
 async def execute_after_agent_interceptors(
@@ -55,10 +53,8 @@ async def execute_after_agent_interceptors(
     final_event: TaskStatusUpdateEvent,
     execute_interceptors: list[ExecuteInterceptor] | None,
 ) -> TaskStatusUpdateEvent:
-  if execute_interceptors:
-    for interceptor in reversed(execute_interceptors):
-      if interceptor.after_agent:
-        final_event = await interceptor.after_agent(
-            executor_context, final_event
-        )
-  return final_event
+    if execute_interceptors:
+        for interceptor in reversed(execute_interceptors):
+            if interceptor.after_agent:
+                final_event = await interceptor.after_agent(executor_context, final_event)
+    return final_event

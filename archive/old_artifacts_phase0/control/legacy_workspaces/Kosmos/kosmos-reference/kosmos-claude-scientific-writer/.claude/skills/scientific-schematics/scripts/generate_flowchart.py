@@ -12,14 +12,12 @@ Usage:
 
 import argparse
 import re
-from typing import List, Optional
 
 
 class FlowchartNode:
     """Represents a node in the flowchart."""
 
-    def __init__(self, index: int, text: str, node_type: str = 'process',
-                 children: Optional[List[int]] = None, metadata: Optional[str] = None):
+    def __init__(self, index: int, text: str, node_type: str = "process", children: list[int] | None = None, metadata: str | None = None):
         self.index = index
         self.text = text
         self.node_type = node_type  # 'process', 'decision', 'data', 'terminal'
@@ -37,9 +35,9 @@ class FlowchartGenerator:
         self.nodes = []
         self.vertical_spacing = 1.5  # cm between nodes
 
-    def parse_text(self, text: str) -> List[FlowchartNode]:
+    def parse_text(self, text: str) -> list[FlowchartNode]:
         """Parse numbered list into flowchart nodes."""
-        lines = text.strip().split('\n')
+        lines = text.strip().split("\n")
         nodes = []
 
         for i, line in enumerate(lines):
@@ -48,7 +46,7 @@ class FlowchartGenerator:
                 continue
 
             # Try to extract number and content
-            match = re.match(r'^(\d+)\.?\s+(.+)$', line)
+            match = re.match(r"^(\d+)\.?\s+(.+)$", line)
             if match:
                 num_str, content = match.groups()
                 num = int(num_str)
@@ -79,25 +77,23 @@ class FlowchartGenerator:
         """Detect node type from content."""
         text_lower = text.lower()
 
-        if any(word in text_lower for word in ['start', 'begin', 'initialize']):
-            return 'terminal'
-        elif any(word in text_lower for word in ['end', 'finish', 'complete']):
-            return 'terminal'
-        elif '?' in text or any(word in text_lower for word in ['decide', 'check', 'if']):
-            return 'decision'
-        elif any(word in text_lower for word in ['screen', 'assess', 'recruit']):
-            return 'process'
-        elif any(word in text_lower for word in ['exclude', 'randomize', 'allocate']):
-            return 'process'
-        elif any(word in text_lower for word in ['data', 'input', 'output', 'results']):
-            return 'data'
+        if any(word in text_lower for word in ["start", "begin", "initialize"]) or any(word in text_lower for word in ["end", "finish", "complete"]):
+            return "terminal"
+        elif "?" in text or any(word in text_lower for word in ["decide", "check", "if"]):
+            return "decision"
+        elif any(word in text_lower for word in ["screen", "assess", "recruit"]) or any(
+            word in text_lower for word in ["exclude", "randomize", "allocate"]
+        ):
+            return "process"
+        elif any(word in text_lower for word in ["data", "input", "output", "results"]):
+            return "data"
         else:
-            return 'process'
+            return "process"
 
     def _extract_metadata(self, text: str) -> str:
         """Extract metadata like (n=500) from text."""
         # Pattern for (n=XXX) or n=XXX
-        match = re.search(r'\(?(n\s*=\s*\d+)\)?', text, re.IGNORECASE)
+        match = re.search(r"\(?(n\s*=\s*\d+)\)?", text, re.IGNORECASE)
         if match:
             return f"({match.group(1)})"
         return ""
@@ -105,12 +101,12 @@ class FlowchartGenerator:
     def _clean_content(self, text: str) -> str:
         """Clean content by removing metadata."""
         # Remove (n=XXX)
-        text = re.sub(r'\(n\s*=\s*\d+\)', '', text, flags=re.IGNORECASE)
+        text = re.sub(r"\(n\s*=\s*\d+\)", "", text, flags=re.IGNORECASE)
         # Remove standalone n=XXX
-        text = re.sub(r'\bn\s*=\s*\d+\b', '', text, flags=re.IGNORECASE)
+        text = re.sub(r"\bn\s*=\s*\d+\b", "", text, flags=re.IGNORECASE)
         return text.strip()
 
-    def generate_tikz(self, style: str = 'consort') -> str:
+    def generate_tikz(self, style: str = "consort") -> str:
         """Generate TikZ code for flowchart."""
         if not self.nodes:
             raise ValueError("No nodes to generate. Call parse_text() first.")
@@ -172,7 +168,7 @@ class FlowchartGenerator:
             if i == 0:
                 position = ""
             else:
-                prev_node = f"node{self.nodes[i-1].index}"
+                prev_node = f"node{self.nodes[i - 1].index}"
                 position = f"[{style}, below of={prev_node}]"
 
             code += f"\\node[{style}] ({node_name}) {position} {{{full_text}}};\n"
@@ -186,7 +182,7 @@ class FlowchartGenerator:
 
         for i, node in enumerate(self.nodes[:-1]):
             current = f"node{node.index}"
-            next_node = f"node{self.nodes[i+1].index}"
+            next_node = f"node{self.nodes[i + 1].index}"
             code += f"\\draw[arrow] ({current}) -- ({next_node});\n"
 
         code += "\n"
@@ -202,12 +198,12 @@ class FlowchartGenerator:
     def save(self, filename: str):
         """Generate and save TikZ code to file."""
         code = self.generate_tikz()
-        with open(filename, 'w', encoding='utf-8') as f:
+        with open(filename, "w", encoding="utf-8") as f:
             f.write(code)
         print(f"Flowchart saved to {filename}")
 
 
-def text_to_flowchart(text: str, output_file: Optional[str] = None) -> str:
+def text_to_flowchart(text: str, output_file: str | None = None) -> str:
     """
     Convert text description to TikZ flowchart code.
 
@@ -223,7 +219,7 @@ def text_to_flowchart(text: str, output_file: Optional[str] = None) -> str:
     code = generator.generate_tikz()
 
     if output_file:
-        with open(output_file, 'w', encoding='utf-8') as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             f.write(code)
         print(f"Flowchart saved to {output_file}")
 
@@ -233,7 +229,7 @@ def text_to_flowchart(text: str, output_file: Optional[str] = None) -> str:
 def main():
     """Command-line interface."""
     parser = argparse.ArgumentParser(
-        description='Generate TikZ flowcharts from text descriptions',
+        description="Generate TikZ flowcharts from text descriptions",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -247,23 +243,21 @@ Examples:
 
   # Print to stdout
   python generate_flowchart.py -i steps.txt
-        """
+        """,
     )
 
     input_group = parser.add_mutually_exclusive_group(required=True)
-    input_group.add_argument('-i', '--input', help='Input text file')
-    input_group.add_argument('-t', '--text', help='Direct text input')
+    input_group.add_argument("-i", "--input", help="Input text file")
+    input_group.add_argument("-t", "--text", help="Direct text input")
 
-    parser.add_argument('-o', '--output', help='Output TikZ file')
-    parser.add_argument('--style', default='consort',
-                       choices=['consort', 'simple'],
-                       help='Flowchart style (default: consort)')
+    parser.add_argument("-o", "--output", help="Output TikZ file")
+    parser.add_argument("--style", default="consort", choices=["consort", "simple"], help="Flowchart style (default: consort)")
 
     args = parser.parse_args()
 
     # Get input text
     if args.input:
-        with open(args.input, 'r', encoding='utf-8') as f:
+        with open(args.input, encoding="utf-8") as f:
             text = f.read()
     else:
         text = args.text
@@ -276,5 +270,5 @@ Examples:
         print(code)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

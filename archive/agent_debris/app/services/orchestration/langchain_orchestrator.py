@@ -3,12 +3,12 @@ LangChain Orchestrator
 Chain orchestration with temporal agent memory integration
 Quantitative Effect: ↑ Reasoning depth +45%, ↓ Token waste –35%
 """
+
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Any
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_google_vertexai import VertexAI, VertexAIEmbeddings
-from langchain.memory import ConversationBufferMemory
 from langchain.agents import AgentExecutor, create_react_agent
 from langchain.tools import Tool
 from app.config.settings import settings
@@ -57,12 +57,7 @@ class LangChainOrchestrator:
         """Cleanup resources"""
         logger.info("LangChain orchestrator shutdown")
 
-    async def orchestrate_reasoning_chain(
-        self,
-        session_id: str,
-        query: str,
-        context: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    async def orchestrate_reasoning_chain(self, session_id: str, query: str, context: dict[str, Any] | None = None) -> dict[str, Any]:
         """
         Orchestrate a reasoning chain with memory integration
 
@@ -100,22 +95,14 @@ Provide a detailed reasoning chain that:
 4. Minimizes token waste by being concise yet complete
 
 Response:
-"""
+""",
             )
 
             # Create reasoning chain
-            chain = LLMChain(
-                llm=self.llm,
-                prompt=prompt_template,
-                verbose=False
-            )
+            chain = LLMChain(llm=self.llm, prompt=prompt_template, verbose=False)
 
             # Execute chain
-            result = await chain.arun(
-                query=query,
-                history=self._format_history(history),
-                context=str(context or {})
-            )
+            result = await chain.arun(query=query, history=self._format_history(history), context=str(context or {}))
 
             # Store interaction in GPTRAM
             await self.memory.store_interaction(
@@ -125,33 +112,21 @@ Response:
                     "query": query,
                     "result": result,
                     "context": context,
-                    "timestamp": None  # Will be set by store_interaction
-                }
+                    "timestamp": None,  # Will be set by store_interaction
+                },
             )
 
             return {
                 "status": "success",
                 "result": result,
                 "session_id": session_id,
-                "metrics": {
-                    "reasoning_depth_improvement": "+45%",
-                    "token_waste_reduction": "-35%"
-                }
+                "metrics": {"reasoning_depth_improvement": "+45%", "token_waste_reduction": "-35%"},
             }
         except Exception as e:
             logger.error(f"Reasoning chain orchestration failed: {e}")
-            return {
-                "status": "error",
-                "error": str(e),
-                "session_id": session_id
-            }
+            return {"status": "error", "error": str(e), "session_id": session_id}
 
-    async def orchestrate_multi_agent(
-        self,
-        session_id: str,
-        task: str,
-        tools: list[Tool]
-    ) -> dict[str, Any]:
+    async def orchestrate_multi_agent(self, session_id: str, task: str, tools: list[Tool]) -> dict[str, Any]:
         """
         Orchestrate multiple agents for complex tasks
 
@@ -168,45 +143,24 @@ Response:
             agent = create_react_agent(
                 llm=self.llm,
                 tools=tools,
-                prompt=PromptTemplate(
-                    input_variables=["input", "agent_scratchpad"],
-                    template="Task: {input}\n\nThinking: {agent_scratchpad}"
-                )
+                prompt=PromptTemplate(input_variables=["input", "agent_scratchpad"], template="Task: {input}\n\nThinking: {agent_scratchpad}"),
             )
 
             # Create executor
-            agent_executor = AgentExecutor(
-                agent=agent,
-                tools=tools,
-                verbose=True,
-                max_iterations=5
-            )
+            agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True, max_iterations=5)
 
             # Execute task
             result = await agent_executor.arun(task)
 
             # Store in memory
             await self.memory.store_interaction(
-                session_id=session_id,
-                interaction={
-                    "type": "multi_agent",
-                    "task": task,
-                    "result": result,
-                    "timestamp": None
-                }
+                session_id=session_id, interaction={"type": "multi_agent", "task": task, "result": result, "timestamp": None}
             )
 
-            return {
-                "status": "success",
-                "result": result,
-                "session_id": session_id
-            }
+            return {"status": "success", "result": result, "session_id": session_id}
         except Exception as e:
             logger.error(f"Multi-agent orchestration failed: {e}")
-            return {
-                "status": "error",
-                "error": str(e)
-            }
+            return {"status": "error", "error": str(e)}
 
     def _format_history(self, history: list[dict[str, Any]]) -> str:
         """Format history for prompt inclusion"""

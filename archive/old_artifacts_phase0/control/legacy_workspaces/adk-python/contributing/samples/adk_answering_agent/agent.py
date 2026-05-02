@@ -21,14 +21,9 @@ from adk_answering_agent.settings import BOT_RESPONSE_LABEL, IS_INTERACTIVE, OWN
 from adk_answering_agent.tools import add_comment_to_discussion, add_label_to_discussion, convert_gcs_links_to_https, get_discussion_and_comments
 
 if IS_INTERACTIVE:
-  APPROVAL_INSTRUCTION = (
-      "Ask for user approval or confirmation for adding the comment."
-  )
+    APPROVAL_INSTRUCTION = "Ask for user approval or confirmation for adding the comment."
 else:
-  APPROVAL_INSTRUCTION = (
-      "**Do not** wait or ask for user approval or confirmation for adding the"
-      " comment."
-  )
+    APPROVAL_INSTRUCTION = "**Do not** wait or ask for user approval or confirmation for adding the comment."
 
 
 root_agent = Agent(

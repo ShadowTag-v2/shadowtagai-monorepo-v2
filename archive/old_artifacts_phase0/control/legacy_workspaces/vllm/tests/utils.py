@@ -835,12 +835,16 @@ def wait_for_gpu_memory_to_clear(
         print("")
 
         if threshold_bytes is not None:
+
             def is_free(used, total):
                 return used <= threshold_bytes / 2**30
+
             threshold = f"{threshold_bytes / 2**30} GiB"
         else:
+
             def is_free(used, total):
                 return used / total <= threshold_ratio
+
             threshold = f"{threshold_ratio:.2f}"
 
         dur_s = time.time() - start_time

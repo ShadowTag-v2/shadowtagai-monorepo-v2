@@ -1,4 +1,5 @@
 """Unit tests for pipenv.routines.update helpers."""
+
 from unittest.mock import MagicMock, patch
 
 from pipenv.routines.update import _clean_unused_dependencies, _process_package_args
@@ -39,9 +40,7 @@ def test_clean_unused_deps_removes_unused_package():
         # pytz is NOT here – it's no longer a transitive dep
     }
 
-    _clean_unused_dependencies(
-        project, lockfile, "default", full_lock_resolution, original_lockfile
-    )
+    _clean_unused_dependencies(project, lockfile, "default", full_lock_resolution, original_lockfile)
 
     assert "pytz" not in lockfile["default"]
     assert "django" in lockfile["default"]
@@ -68,9 +67,7 @@ def test_clean_unused_deps_keeps_packages_still_needed():
         "urllib3": {"version": "==2.0.0"},
     }
 
-    _clean_unused_dependencies(
-        project, lockfile, "default", full_lock_resolution, original_lockfile
-    )
+    _clean_unused_dependencies(project, lockfile, "default", full_lock_resolution, original_lockfile)
 
     assert "requests" in lockfile["default"]
     assert "urllib3" in lockfile["default"]
@@ -84,9 +81,7 @@ def test_clean_unused_deps_noop_when_category_missing_from_lockfile():
     full_lock_resolution = {}
 
     # Should not raise; lockfile is unchanged
-    _clean_unused_dependencies(
-        project, lockfile, "default", full_lock_resolution, original_lockfile
-    )
+    _clean_unused_dependencies(project, lockfile, "default", full_lock_resolution, original_lockfile)
 
     assert lockfile == {}
 
@@ -98,9 +93,7 @@ def test_clean_unused_deps_noop_when_category_missing_from_original():
     original_lockfile = {}  # no "default" key
     full_lock_resolution = {"django": {"version": "==4.2.7"}}
 
-    _clean_unused_dependencies(
-        project, lockfile, "default", full_lock_resolution, original_lockfile
-    )
+    _clean_unused_dependencies(project, lockfile, "default", full_lock_resolution, original_lockfile)
 
     # lockfile is unchanged
     assert "django" in lockfile["default"]
@@ -127,14 +120,11 @@ def test_clean_unused_deps_noop_when_full_resolution_is_empty():
     }
     full_lock_resolution = {}  # empty – simulates a failed resolution
 
-    _clean_unused_dependencies(
-        project, lockfile, "default", full_lock_resolution, original_lockfile
-    )
+    _clean_unused_dependencies(project, lockfile, "default", full_lock_resolution, original_lockfile)
 
     # Nothing should have been removed
     assert "django" in lockfile["default"]
     assert "sqlparse" in lockfile["default"]
-
 
 
 # ---------------------------------------------------------------------------
@@ -411,6 +401,4 @@ def test_process_package_args_writes_to_pipfile_when_package_in_correct_category
         )
 
     assert "requests" in requested_packages["packages"]
-    project.add_pipfile_entry_to_pipfile.assert_called_once_with(
-        "requests", "requests", "==2.31.0", category="packages"
-    )
+    project.add_pipfile_entry_to_pipfile.assert_called_once_with("requests", "requests", "==2.31.0", category="packages")

@@ -29,8 +29,8 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "../public/types/**/*.ts",
-    "../public/dev/types/**/*.ts"
+    ".next-export/types/**/*.ts",
+    ".next-export/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -6,6 +6,7 @@ Note: The arxiv package may have compatibility issues with Python 3.11+
 due to sgmllib3k dependency. This module automatically falls back to
 ArxivHTTPClient which uses direct HTTP API calls without the problematic dependency.
 """
+
 from __future__ import annotations
 
 import logging
@@ -13,14 +14,12 @@ import logging
 # Handle arxiv import with fallback for Python 3.11+ compatibility
 try:
     import arxiv
+
     HAS_ARXIV = True
 except ImportError as e:
     HAS_ARXIV = False
     arxiv = None
-    logging.info(
-        f"arxiv package not available: {e}. "
-        "Using ArxivHTTPClient as fallback (Python 3.11+ compatible)."
-    )
+    logging.info(f"arxiv package not available: {e}. Using ArxivHTTPClient as fallback (Python 3.11+ compatible).")
 
 from kosmos.config import get_config
 from kosmos.literature.base_client import Author, BaseLiteratureClient, PaperMetadata, PaperSource
@@ -54,16 +53,12 @@ class ArxivClient(BaseLiteratureClient):
 
         # Check if arxiv is available, use HTTP fallback if not
         if not HAS_ARXIV:
-            self.logger.info(
-                "arxiv package not available, using ArxivHTTPClient fallback"
-            )
+            self.logger.info("arxiv package not available, using ArxivHTTPClient fallback")
             self._using_fallback = True
             try:
                 from kosmos.literature.arxiv_http_client import ArxivHTTPClient
-                self._fallback_client = ArxivHTTPClient(
-                    api_key=api_key,
-                    cache_enabled=cache_enabled
-                )
+
+                self._fallback_client = ArxivHTTPClient(api_key=api_key, cache_enabled=cache_enabled)
                 self.client = None
                 self.max_results = 100
                 self.cache = None
@@ -87,19 +82,13 @@ class ArxivClient(BaseLiteratureClient):
         self.client = arxiv.Client(
             page_size=100,  # Max results per page
             delay_seconds=3.0,  # Rate limiting: 3 seconds between requests
-            num_retries=3
+            num_retries=3,
         )
 
         self.logger.info("Initialized arXiv client (using official arxiv package)")
 
     def search(
-        self,
-        query: str,
-        max_results: int = 10,
-        fields: list[str] | None = None,
-        year_from: int | None = None,
-        year_to: int | None = None,
-        **kwargs
+        self, query: str, max_results: int = 10, fields: list[str] | None = None, year_from: int | None = None, year_to: int | None = None, **kwargs
     ) -> list[PaperMetadata]:
         """
         Search for papers on arXiv.
@@ -136,14 +125,7 @@ class ArxivClient(BaseLiteratureClient):
 
         # Use fallback client if available
         if self._using_fallback and self._fallback_client:
-            return self._fallback_client.search(
-                query=query,
-                max_results=max_results,
-                fields=fields,
-                year_from=year_from,
-                year_to=year_to,
-                **kwargs
-            )
+            return self._fallback_client.search(query=query, max_results=max_results, fields=fields, year_from=year_from, year_to=year_to, **kwargs)
 
         # Return empty if arxiv not available and no fallback
         if not HAS_ARXIV or self.client is None:
@@ -151,13 +133,7 @@ class ArxivClient(BaseLiteratureClient):
             return []
 
         # Check cache
-        cache_params = {
-            "query": query,
-            "max_results": max_results,
-            "fields": fields,
-            "year_from": year_from,
-            "year_to": year_to
-        }
+        cache_params = {"query": query, "max_results": max_results, "fields": fields, "year_from": year_from, "year_to": year_to}
 
         if self.cache:
             cached_result = self.cache.get("arxiv", "search", cache_params)
@@ -173,12 +149,7 @@ class ArxivClient(BaseLiteratureClient):
             sort_order = kwargs.get("sort_order", arxiv.SortOrder.Descending)
 
             # Create search
-            search = arxiv.Search(
-                query=search_query,
-                max_results=min(max_results, self.max_results),
-                sort_by=sort_by,
-                sort_order=sort_order
-            )
+            search = arxiv.Search(query=search_query, max_results=min(max_results, self.max_results), sort_by=sort_by, sort_order=sort_order)
 
             # Execute search
             results = self.client.results(search)
@@ -291,13 +262,7 @@ class ArxivClient(BaseLiteratureClient):
         self.logger.warning("arXiv API does not provide citation data. Use Semantic Scholar instead.")
         return []
 
-    def _build_query(
-        self,
-        query: str,
-        fields: list[str] | None = None,
-        year_from: int | None = None,
-        year_to: int | None = None
-    ) -> str:
+    def _build_query(self, query: str, fields: list[str] | None = None, year_from: int | None = None, year_to: int | None = None) -> str:
         """
         Build arXiv query with filters.
 
@@ -337,10 +302,7 @@ class ArxivClient(BaseLiteratureClient):
         arxiv_id = result.entry_id.split("/")[-1].split("v")[0]
 
         # Convert authors
-        authors = [
-            Author(name=author.name)
-            for author in result.authors
-        ]
+        authors = [Author(name=author.name) for author in result.authors]
 
         # Extract publication year
         year = result.published.year if result.published else None
@@ -366,8 +328,8 @@ class ArxivClient(BaseLiteratureClient):
                 "entry_id": result.entry_id,
                 "updated": result.updated.isoformat() if result.updated else None,
                 "comment": result.comment,
-                "primary_category": result.primary_category
-            }
+                "primary_category": result.primary_category,
+            },
         )
 
     def get_categories(self) -> list[str]:
@@ -388,8 +350,21 @@ class ArxivClient(BaseLiteratureClient):
         """
         # https://arxiv.org/category_taxonomy
         return [
-            "cs.AI", "cs.CL", "cs.CV", "cs.LG", "cs.NE", "cs.RO",
-            "physics.gen-ph", "physics.comp-ph", "quant-ph",
-            "q-bio.BM", "q-bio.GN", "q-bio.NC", "q-bio.QM",
-            "astro-ph", "cond-mat", "math.ST", "stat.ML"
+            "cs.AI",
+            "cs.CL",
+            "cs.CV",
+            "cs.LG",
+            "cs.NE",
+            "cs.RO",
+            "physics.gen-ph",
+            "physics.comp-ph",
+            "quant-ph",
+            "q-bio.BM",
+            "q-bio.GN",
+            "q-bio.NC",
+            "q-bio.QM",
+            "astro-ph",
+            "cond-mat",
+            "math.ST",
+            "stat.ML",
         ]

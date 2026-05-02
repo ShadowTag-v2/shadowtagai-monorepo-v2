@@ -65,7 +65,7 @@ def _create_test_index_with_invalid_wheels(
         <!DOCTYPE html>
         <html>
           <body>
-            {''.join(links)}
+            {"".join(links)}
           </body>
         </html>
         """

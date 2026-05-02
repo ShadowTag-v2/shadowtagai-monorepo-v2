@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/finjudge/api/auth.py
+# hypothesis_version: 6.151.5
+
+[1000, 2499, 10000, 'API key is disabled', 'API key not found', 'APIKeyManager', 'Invalid key format', 'TierLevel', 'analytics_dashboard', 'anonymous', 'basic_judge', 'check_same_thread', 'current_month_usage', 'custom_models', 'enterprise', 'features', 'finjudge_api_keys', 'fj_', 'free', 'get_current_user', 'monthly_limit', 'price', 'priority_support', 'pro', 'remaining', 'sla', 'sqlite:///:memory:', 'sub', 'tier', 'total_usage', 'verify_api_key']

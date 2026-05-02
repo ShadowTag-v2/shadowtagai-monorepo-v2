@@ -1,7 +1,7 @@
 import numpy as np
 
 # Patch for scikit-opt compatibility with newer NumPy
-if not hasattr(np, 'int'):
+if not hasattr(np, "int"):
     np.int = int
 
 from typing import Any
@@ -51,13 +51,12 @@ class HybridSwarmOptimizer:
             max_iter=max_iter,
             lb=[0] * self.num_tasks,
             ub=[self.num_agents - 1] * self.num_tasks,
-            w=0.8, c1=0.5, c2=0.5
+            w=0.8,
+            c1=0.5,
+            c2=0.5,
         )
         pso.run()
-        return {
-            'allocation': pso.gbest_x.astype(int),
-            'cost': pso.gbest_y
-        }
+        return {"allocation": pso.gbest_x.astype(int), "cost": pso.gbest_y}
 
     # --- Phase 2: ACO Routing Optimization ---
     def _aco_distance_callback(self, route: np.ndarray, required_squads: list[int]) -> float:
@@ -65,13 +64,13 @@ class HybridSwarmOptimizer:
         # Map route indices back to actual squad IDs
         actual_route = [required_squads[i] for i in route]
         for i in range(len(actual_route) - 1):
-            total += self.handoff_latency[actual_route[i], actual_route[i+1]]
+            total += self.handoff_latency[actual_route[i], actual_route[i + 1]]
         return total
 
     def run_aco_routing(self, required_squads: list[int], max_iter: int = 50) -> dict[str, Any]:
         n = len(required_squads)
         if n < 2:
-            return {'route': required_squads, 'latency': 0.0}
+            return {"route": required_squads, "latency": 0.0}
 
         # Build sub-matrix for ACO
         distance_matrix = np.zeros((n, n))
@@ -83,24 +82,15 @@ class HybridSwarmOptimizer:
             # ACO passes a permutation of 0..n-1
             total = 0
             for i in range(len(route) - 1):
-                total += distance_matrix[route[i], route[i+1]]
+                total += distance_matrix[route[i], route[i + 1]]
             return total
 
-        aca = ACA_TSP(
-            func=aco_func,
-            n_dim=n,
-            size_pop=20,
-            max_iter=max_iter,
-            distance_matrix=distance_matrix
-        )
+        aca = ACA_TSP(func=aco_func, n_dim=n, size_pop=20, max_iter=max_iter, distance_matrix=distance_matrix)
         best_route_indices, best_latency = aca.run()
 
         # Map back to squad IDs
         best_route = [required_squads[i] for i in best_route_indices]
-        return {
-            'route': best_route,
-            'latency': best_latency
-        }
+        return {"route": best_route, "latency": best_latency}
 
     # --- Main Optimization Pipeline ---
     def optimize_mission(self) -> dict[str, Any]:
@@ -109,7 +99,7 @@ class HybridSwarmOptimizer:
         # Phase 1: PSO
         print("Phase 1: PSO Task Allocation...")
         pso_result = self.run_pso_allocation()
-        allocation = pso_result['allocation']
+        allocation = pso_result["allocation"]
 
         # Derive required squads from allocation (Mock mapping: Agent ID % Num Squads)
         required_squads = list(set([agent_id % self.num_squads for agent_id in allocation]))
@@ -120,11 +110,12 @@ class HybridSwarmOptimizer:
         aco_result = self.run_aco_routing(required_squads)
 
         return {
-            'task_allocation': allocation.tolist(),
-            'optimal_route': aco_result['route'],
-            'estimated_cost': pso_result['cost'],
-            'handoff_latency': aco_result['latency']
+            "task_allocation": allocation.tolist(),
+            "optimal_route": aco_result["route"],
+            "estimated_cost": pso_result["cost"],
+            "handoff_latency": aco_result["latency"],
         }
+
 
 if __name__ == "__main__":
     # Test Run

@@ -232,8 +232,13 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 
 /* ── Phase 4: Hydration Loading Card ── */
@@ -268,7 +273,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ── Phase 4: Session Metadata Badge ── */
@@ -310,4 +317,3 @@
   color: var(--color-text-secondary);
   font-weight: 500;
 }
-

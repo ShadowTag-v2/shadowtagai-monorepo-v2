@@ -85,12 +85,14 @@ class AsyncToolboxClient:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_tokens` are provided. `auth_tokens` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning, stacklevel=2,
+                    DeprecationWarning,
+                    stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_tokens` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning, stacklevel=2,
+                    DeprecationWarning,
+                    stacklevel=2,
                 )
                 auth_token_getters = auth_tokens
 
@@ -98,12 +100,14 @@ class AsyncToolboxClient:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_headers` are provided. `auth_headers` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning, stacklevel=2,
+                    DeprecationWarning,
+                    stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_headers` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning, stacklevel=2,
+                    DeprecationWarning,
+                    stacklevel=2,
                 )
                 auth_token_getters = auth_headers
 
@@ -153,12 +157,14 @@ class AsyncToolboxClient:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_tokens` are provided. `auth_tokens` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning, stacklevel=2,
+                    DeprecationWarning,
+                    stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_tokens` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning, stacklevel=2,
+                    DeprecationWarning,
+                    stacklevel=2,
                 )
                 auth_token_getters = auth_tokens
 
@@ -166,12 +172,14 @@ class AsyncToolboxClient:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_headers` are provided. `auth_headers` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning, stacklevel=2,
+                    DeprecationWarning,
+                    stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_headers` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning, stacklevel=2,
+                    DeprecationWarning,
+                    stacklevel=2,
                 )
                 auth_token_getters = auth_headers
 

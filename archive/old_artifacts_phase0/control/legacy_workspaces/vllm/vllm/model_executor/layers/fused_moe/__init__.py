@@ -108,5 +108,6 @@ else:
 
     def fused_topk(*args, **kwargs):
         return _raise_exception("fused_topk")
+
     def fused_experts(*args, **kwargs):
         return _raise_exception("fused_experts")

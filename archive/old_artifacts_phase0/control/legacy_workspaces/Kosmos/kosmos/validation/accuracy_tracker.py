@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class AccuracyTarget:
     """Paper-defined accuracy targets by statement type."""
+
     statement_type: str
     paper_accuracy: float  # Paper claimed value (e.g., 0.794 for 79.4%)
     target_threshold: float  # Implementation target (usually paper - buffer)
@@ -34,6 +35,7 @@ class AccuracyTarget:
 @dataclass
 class TypeAccuracyResult:
     """Accuracy result for a single statement type."""
+
     statement_type: str
     total_count: int
     accurate_count: int
@@ -71,6 +73,7 @@ class TypeAccuracyResult:
 @dataclass
 class ValidationRecord:
     """Record of a single validation decision."""
+
     finding_id: str
     is_accurate: bool
     expert_notes: str | None = None
@@ -80,6 +83,7 @@ class ValidationRecord:
 @dataclass
 class AccuracyReport:
     """Complete accuracy validation report."""
+
     overall_accuracy: float
     overall_target: float
     overall_meets_target: bool
@@ -145,29 +149,15 @@ class AccuracyTracker:
     # Paper-defined accuracy targets (Section 8)
     PAPER_TARGETS = {
         "data_analysis": AccuracyTarget(
-            statement_type="data_analysis",
-            paper_accuracy=0.855,
-            target_threshold=0.80,
-            description="Data analysis-based statements"
+            statement_type="data_analysis", paper_accuracy=0.855, target_threshold=0.80, description="Data analysis-based statements"
         ),
         "literature": AccuracyTarget(
-            statement_type="literature",
-            paper_accuracy=0.821,
-            target_threshold=0.75,
-            description="Literature review-based statements"
+            statement_type="literature", paper_accuracy=0.821, target_threshold=0.75, description="Literature review-based statements"
         ),
         "interpretation": AccuracyTarget(
-            statement_type="interpretation",
-            paper_accuracy=0.579,
-            target_threshold=0.50,
-            description="Interpretation/synthesis statements"
+            statement_type="interpretation", paper_accuracy=0.579, target_threshold=0.50, description="Interpretation/synthesis statements"
         ),
-        "overall": AccuracyTarget(
-            statement_type="overall",
-            paper_accuracy=0.794,
-            target_threshold=0.75,
-            description="All statement types combined"
-        ),
+        "overall": AccuracyTarget(statement_type="overall", paper_accuracy=0.794, target_threshold=0.75, description="All statement types combined"),
     }
 
     # Valid evidence types
@@ -186,7 +176,7 @@ class AccuracyTracker:
         Args:
             finding: Finding object with finding_id and evidence_type attributes
         """
-        finding_id = getattr(finding, 'finding_id', None)
+        finding_id = getattr(finding, "finding_id", None)
         if finding_id is None:
             raise ValueError("Finding must have a finding_id attribute")
 
@@ -194,24 +184,16 @@ class AccuracyTracker:
             logger.warning(f"Finding {finding_id} already added, skipping duplicate")
             return
 
-        evidence_type = getattr(finding, 'evidence_type', 'data_analysis')
+        evidence_type = getattr(finding, "evidence_type", "data_analysis")
         if evidence_type not in self.VALID_EVIDENCE_TYPES:
-            logger.warning(
-                f"Unknown evidence_type '{evidence_type}' for finding {finding_id}, "
-                f"using 'data_analysis'"
-            )
-            evidence_type = 'data_analysis'
+            logger.warning(f"Unknown evidence_type '{evidence_type}' for finding {finding_id}, using 'data_analysis'")
+            evidence_type = "data_analysis"
 
         self.findings_by_type[evidence_type].append(finding)
         self._finding_ids.add(finding_id)
         logger.debug(f"Added finding {finding_id} with type {evidence_type}")
 
-    def validate_finding(
-        self,
-        finding_id: str,
-        is_accurate: bool,
-        expert_notes: str | None = None
-    ) -> None:
+    def validate_finding(self, finding_id: str, is_accurate: bool, expert_notes: str | None = None) -> None:
         """
         Record expert validation for a finding.
 
@@ -224,10 +206,7 @@ class AccuracyTracker:
             raise ValueError(f"Finding {finding_id} not found in tracker")
 
         self.validations[finding_id] = ValidationRecord(
-            finding_id=finding_id,
-            is_accurate=is_accurate,
-            expert_notes=expert_notes,
-            timestamp=datetime.now().isoformat()
+            finding_id=finding_id, is_accurate=is_accurate, expert_notes=expert_notes, timestamp=datetime.now().isoformat()
         )
         logger.debug(f"Validated finding {finding_id}: accurate={is_accurate}")
 
@@ -256,10 +235,7 @@ class AccuracyTracker:
             findings_list = self.findings_by_type.get(evidence_type, [])
 
         # Filter to validated findings
-        validated = [
-            f for f in findings_list
-            if getattr(f, 'finding_id', None) in self.validations
-        ]
+        validated = [f for f in findings_list if getattr(f, "finding_id", None) in self.validations]
 
         if not validated:
             return TypeAccuracyResult(
@@ -270,13 +246,10 @@ class AccuracyTracker:
                 target=target.target_threshold,
                 meets_target=False,
                 paper_claim=target.paper_accuracy,
-                delta_from_paper=0.0
+                delta_from_paper=0.0,
             )
 
-        accurate = sum(
-            1 for f in validated
-            if self.validations[getattr(f, 'finding_id')].is_accurate
-        )
+        accurate = sum(1 for f in validated if self.validations[f.finding_id].is_accurate)
         accuracy = accurate / len(validated)
 
         return TypeAccuracyResult(
@@ -287,7 +260,7 @@ class AccuracyTracker:
             target=target.target_threshold,
             meets_target=accuracy >= target.target_threshold,
             paper_claim=target.paper_accuracy,
-            delta_from_paper=accuracy - target.paper_accuracy
+            delta_from_paper=accuracy - target.paper_accuracy,
         )
 
     def compute_accuracy_by_type(self) -> dict[str, TypeAccuracyResult]:
@@ -315,11 +288,7 @@ class AccuracyTracker:
             deltas[evidence_type] = result.delta_from_paper
         return deltas
 
-    def _generate_recommendations(
-        self,
-        by_type: dict[str, TypeAccuracyResult],
-        overall_result: TypeAccuracyResult
-    ) -> list[str]:
+    def _generate_recommendations(self, by_type: dict[str, TypeAccuracyResult], overall_result: TypeAccuracyResult) -> list[str]:
         """Generate recommendations based on accuracy results."""
         recommendations = []
 
@@ -349,9 +318,7 @@ class AccuracyTracker:
                 )
 
         if not recommendations:
-            recommendations.append(
-                "All accuracy targets met. System performs within expected parameters."
-            )
+            recommendations.append("All accuracy targets met. System performs within expected parameters.")
 
         return recommendations
 
@@ -381,7 +348,7 @@ class AccuracyTracker:
             validated_findings=validated_findings,
             paper_comparison=paper_comparison,
             timestamp=datetime.now().isoformat(),
-            recommendations=recommendations
+            recommendations=recommendations,
         )
 
     def get_statistics(self) -> dict[str, Any]:
@@ -401,9 +368,7 @@ class AccuracyTracker:
             "accurate_findings": accurate,
             "validation_rate": validated / total if total > 0 else 0.0,
             "accuracy_rate": accurate / validated if validated > 0 else 0.0,
-            "by_type": {
-                k: len(v) for k, v in self.findings_by_type.items()
-            }
+            "by_type": {k: len(v) for k, v in self.findings_by_type.items()},
         }
 
 
@@ -438,8 +403,7 @@ class AccuracyReporter:
             f"| Overall Accuracy | {report.overall_accuracy * 100:.1f}% | "
             f"{report.overall_target * 100:.1f}% | "
             f"{'PASS' if report.overall_meets_target else 'FAIL'} |",
-            f"| Paper Claim | 79.4% | - | "
-            f"{report.paper_comparison.get('overall', 0) * 100:+.1f}% |",
+            f"| Paper Claim | 79.4% | - | {report.paper_comparison.get('overall', 0) * 100:+.1f}% |",
             "",
             "## Accuracy by Statement Type",
             "",
@@ -461,11 +425,13 @@ class AccuracyReporter:
                     f"{result.delta_percentage:+.1f}% | {status} |"
                 )
 
-        lines.extend([
-            "",
-            "## Comparison to Paper Claims",
-            "",
-        ])
+        lines.extend(
+            [
+                "",
+                "## Comparison to Paper Claims",
+                "",
+            ]
+        )
 
         # Add comparison details
         overall_delta = report.paper_comparison.get("overall", 0)
@@ -487,11 +453,13 @@ class AccuracyReporter:
                     f"({result.delta_percentage:+.1f}%) - {delta_desc}"
                 )
 
-        lines.extend([
-            "",
-            "## Recommendations",
-            "",
-        ])
+        lines.extend(
+            [
+                "",
+                "## Recommendations",
+                "",
+            ]
+        )
 
         for i, rec in enumerate(report.recommendations, 1):
             lines.append(f"{i}. {rec}")
@@ -518,10 +486,7 @@ class AccuracyReporter:
         if all_types_pass:
             summary_parts.append("All statement types meet targets.")
         else:
-            failing = [
-                k for k, v in report.by_type.items()
-                if not v.meets_target
-            ]
+            failing = [k for k, v in report.by_type.items() if not v.meets_target]
             summary_parts.append(f"Types below target: {', '.join(failing)}")
 
         delta = report.paper_comparison.get("overall", 0)
@@ -543,4 +508,5 @@ class AccuracyReporter:
             JSON formatted report string
         """
         import json
+
         return json.dumps(report.to_dict(), indent=2)

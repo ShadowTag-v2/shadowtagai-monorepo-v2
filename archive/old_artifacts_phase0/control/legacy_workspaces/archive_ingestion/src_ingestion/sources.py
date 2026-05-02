@@ -200,18 +200,12 @@ class SourceManager:
         logger.info(f"Collecting from {len(sources)} source(s)...")
 
         # Collect concurrently
-        tasks = [
-            self.collect_from_source(source, max_items_per_source)
-            for source in sources
-        ]
+        tasks = [self.collect_from_source(source, max_items_per_source) for source in sources]
 
         results = await asyncio.gather(*tasks)
 
         # Map results to source names
-        collected = {
-            source.name: items
-            for source, items in zip(sources, results)
-        }
+        collected = {source.name: items for source, items in zip(sources, results)}
 
         self.total_sources_crawled = len([items for items in results if items])
 
@@ -256,7 +250,6 @@ DEFAULT_SOURCES = [
         rate_limit=30,
         priority=1,
     ),
-
     # Twitter/X sources
     DataSource(
         name="twitter-ai",
@@ -265,7 +258,6 @@ DEFAULT_SOURCES = [
         rate_limit=100,
         priority=1,
     ),
-
     # News sources
     DataSource(
         name="hackernews",
@@ -281,7 +273,6 @@ DEFAULT_SOURCES = [
         rate_limit=10,
         priority=2,
     ),
-
     # Reddit sources
     DataSource(
         name="reddit-machinelearning",
@@ -290,7 +281,6 @@ DEFAULT_SOURCES = [
         rate_limit=30,
         priority=2,
     ),
-
     # Academic sources
     DataSource(
         name="arxiv-cs-ai",

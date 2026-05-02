@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import JSON, Boolean, Column, DateTime, Integer, String, Text
 
 from src.models.database import Base
@@ -40,7 +40,7 @@ class Checkpoint(Base):
     expires_at = Column(DateTime, nullable=True)
     file_count = Column(Integer, default=0)
     total_size_bytes = Column(Integer, default=0)
-    metadata = Column(JSON, nullable=True)
+    extra_metadata = Column("metadata", JSON, nullable=True)
     is_deleted = Column(Boolean, default=False)
 
 
@@ -56,7 +56,7 @@ class FileSnapshot(Base):
     size_bytes = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)
     storage_path = Column(String, nullable=False)
-    metadata = Column(JSON, nullable=True)
+    extra_metadata = Column("metadata", JSON, nullable=True)
 
 
 # Pydantic schemas for API
@@ -97,8 +97,7 @@ class CheckpointResponse(BaseModel):
     total_size_bytes: int
     metadata: dict[str, Any] | None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class FileSnapshotResponse(BaseModel):
@@ -112,8 +111,7 @@ class FileSnapshotResponse(BaseModel):
     created_at: datetime
     metadata: dict[str, Any] | None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class CheckpointListResponse(BaseModel):

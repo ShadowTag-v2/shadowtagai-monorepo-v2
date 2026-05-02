@@ -109,11 +109,7 @@ class FeedbackLoop:
     # PROCESS RESULTS
     # ========================================================================
 
-    def process_result_feedback(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis
-    ) -> list[FeedbackSignal]:
+    def process_result_feedback(self, result: ExperimentResult, hypothesis: Hypothesis) -> list[FeedbackSignal]:
         """
         Process experimental result and generate feedback signals.
 
@@ -146,11 +142,7 @@ class FeedbackLoop:
         logger.info(f"Generated {len(signals)} feedback signals")
         return signals
 
-    def _analyze_success(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis
-    ) -> list[FeedbackSignal]:
+    def _analyze_success(self, result: ExperimentResult, hypothesis: Hypothesis) -> list[FeedbackSignal]:
         """Analyze successful experiment to extract patterns."""
         logger.debug(f"Analyzing success patterns from {result.id}")
 
@@ -168,9 +160,8 @@ class FeedbackLoop:
                 existing_pattern.occurrences += 1
                 existing_pattern.examples.append(result.id)
                 existing_pattern.success_rate = (
-                    (existing_pattern.success_rate * (existing_pattern.occurrences - 1) + 1.0) /
-                    existing_pattern.occurrences
-                )
+                    existing_pattern.success_rate * (existing_pattern.occurrences - 1) + 1.0
+                ) / existing_pattern.occurrences
                 existing_pattern.confidence = min(1.0, existing_pattern.confidence + 0.1)
                 existing_pattern.updated_at = datetime.utcnow()
 
@@ -182,25 +173,18 @@ class FeedbackLoop:
                 self.success_patterns[pattern_id] = pattern
 
             # Generate signal to increase priority of similar hypotheses
-            signals.append(FeedbackSignal(
-                signal_type=FeedbackSignalType.SUCCESS_PATTERN,
-                source=result.id,
-                data={
-                    "pattern_id": pattern_id,
-                    "pattern": model_to_dict(pattern),
-                    "action": "increase_priority",
-                    "target": "similar_hypotheses"
-                },
-                confidence=pattern.confidence
-            ))
+            signals.append(
+                FeedbackSignal(
+                    signal_type=FeedbackSignalType.SUCCESS_PATTERN,
+                    source=result.id,
+                    data={"pattern_id": pattern_id, "pattern": model_to_dict(pattern), "action": "increase_priority", "target": "similar_hypotheses"},
+                    confidence=pattern.confidence,
+                )
+            )
 
         return signals
 
-    def _analyze_failure(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis
-    ) -> list[FeedbackSignal]:
+    def _analyze_failure(self, result: ExperimentResult, hypothesis: Hypothesis) -> list[FeedbackSignal]:
         """Analyze failed experiment to identify issues."""
         logger.debug(f"Analyzing failure patterns from {result.id}")
 
@@ -230,17 +214,19 @@ class FeedbackLoop:
                 self.failure_patterns[pattern_id] = pattern
 
             # Generate signal to avoid similar approaches
-            signals.append(FeedbackSignal(
-                signal_type=FeedbackSignalType.FAILURE_PATTERN,
-                source=result.id,
-                data={
-                    "pattern_id": pattern_id,
-                    "pattern": model_to_dict(pattern),
-                    "action": "avoid_pattern",
-                    "recommended_fixes": pattern.recommended_fixes
-                },
-                confidence=0.8
-            ))
+            signals.append(
+                FeedbackSignal(
+                    signal_type=FeedbackSignalType.FAILURE_PATTERN,
+                    source=result.id,
+                    data={
+                        "pattern_id": pattern_id,
+                        "pattern": model_to_dict(pattern),
+                        "action": "avoid_pattern",
+                        "recommended_fixes": pattern.recommended_fixes,
+                    },
+                    confidence=0.8,
+                )
+            )
 
         return signals
 
@@ -267,11 +253,7 @@ class FeedbackLoop:
 
         return "conceptual"  # Hypothesis itself may be flawed
 
-    def _extract_success_pattern(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis
-    ) -> SuccessPattern | None:
+    def _extract_success_pattern(self, result: ExperimentResult, hypothesis: Hypothesis) -> SuccessPattern | None:
         """Extract success pattern from result."""
 
         description = f"Successful {result.primary_test} with effect size {result.primary_effect_size:.2f}"
@@ -282,50 +264,33 @@ class FeedbackLoop:
             hypothesis_characteristics={
                 "domain": hypothesis.domain,
                 "testability_score": hypothesis.testability_score,
-                "novelty_score": hypothesis.novelty_score
+                "novelty_score": hypothesis.novelty_score,
             },
             experiment_design={
                 "test_type": result.primary_test,
-                "sample_size": model_to_dict(result.metadata) if hasattr(result, 'metadata') else {}
+                "sample_size": model_to_dict(result.metadata) if hasattr(result, "metadata") else {},
             },
             statistical_approach={
                 "p_value": result.primary_p_value,
                 "effect_size": result.primary_effect_size,
-                "effect_size_type": "Cohen's d"  # Simplified
+                "effect_size_type": "Cohen's d",  # Simplified
             },
-            examples=[result.id]
+            examples=[result.id],
         )
 
         return pattern
 
-    def _extract_failure_pattern(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis,
-        failure_type: str
-    ) -> FailurePattern | None:
+    def _extract_failure_pattern(self, result: ExperimentResult, hypothesis: Hypothesis, failure_type: str) -> FailurePattern | None:
         """Extract failure pattern from result."""
 
         # Generate recommended fixes based on failure type
         fixes = []
         if failure_type == "underpowered":
-            fixes = [
-                "Increase sample size",
-                "Use more sensitive statistical test",
-                "Reduce measurement error"
-            ]
+            fixes = ["Increase sample size", "Use more sensitive statistical test", "Reduce measurement error"]
         elif failure_type == "statistical":
-            fixes = [
-                "Check for outliers",
-                "Verify assumptions",
-                "Consider non-parametric test"
-            ]
+            fixes = ["Check for outliers", "Verify assumptions", "Consider non-parametric test"]
         elif failure_type == "conceptual":
-            fixes = [
-                "Refine hypothesis",
-                "Add moderating variables",
-                "Explore boundary conditions"
-            ]
+            fixes = ["Refine hypothesis", "Add moderating variables", "Explore boundary conditions"]
         else:
             fixes = ["Review experimental design"]
 
@@ -335,12 +300,9 @@ class FeedbackLoop:
             pattern_id="",  # Will be assigned later
             description=description,
             failure_type=failure_type,
-            common_characteristics={
-                "domain": hypothesis.domain,
-                "test_type": result.primary_test
-            },
+            common_characteristics={"domain": hypothesis.domain, "test_type": result.primary_test},
             recommended_fixes=fixes,
-            examples=[result.id]
+            examples=[result.id],
         )
 
         return pattern
@@ -349,8 +311,7 @@ class FeedbackLoop:
         """Find similar existing success pattern."""
         # Simplified - check if same test type and similar characteristics
         for existing in self.success_patterns.values():
-            if (existing.experiment_design.get("test_type") ==
-                pattern.experiment_design.get("test_type")):
+            if existing.experiment_design.get("test_type") == pattern.experiment_design.get("test_type"):
                 return existing
 
         return None
@@ -364,11 +325,7 @@ class FeedbackLoop:
 
         return None
 
-    def _generate_hypothesis_update_signal(
-        self,
-        result: ExperimentResult,
-        hypothesis: Hypothesis
-    ) -> FeedbackSignal:
+    def _generate_hypothesis_update_signal(self, result: ExperimentResult, hypothesis: Hypothesis) -> FeedbackSignal:
         """Generate signal to update hypothesis based on result."""
 
         if result.supports_hypothesis is True:
@@ -391,10 +348,10 @@ class FeedbackLoop:
                 "result_summary": {
                     "supports": result.supports_hypothesis,
                     "p_value": result.primary_p_value,
-                    "effect_size": result.primary_effect_size
-                }
+                    "effect_size": result.primary_effect_size,
+                },
             },
-            confidence=1.0
+            confidence=1.0,
         )
 
     # ========================================================================
@@ -402,10 +359,7 @@ class FeedbackLoop:
     # ========================================================================
 
     def apply_feedback(
-        self,
-        signal: FeedbackSignal,
-        hypotheses: list[Hypothesis],
-        strategy_weights: dict[str, float] | None = None
+        self, signal: FeedbackSignal, hypotheses: list[Hypothesis], strategy_weights: dict[str, float] | None = None
     ) -> dict[str, Any]:
         """
         Apply feedback signal to update system state.
@@ -420,11 +374,7 @@ class FeedbackLoop:
         """
         logger.info(f"Applying feedback signal: {signal.signal_type}")
 
-        changes = {
-            "hypotheses_updated": [],
-            "strategies_adjusted": [],
-            "templates_modified": []
-        }
+        changes = {"hypotheses_updated": [], "strategies_adjusted": [], "templates_modified": []}
 
         if signal.signal_type == FeedbackSignalType.HYPOTHESIS_UPDATE:
             # Update specific hypothesis
@@ -489,7 +439,7 @@ class FeedbackLoop:
             "pending_signals": len(self.pending_signals),
             "applied_signals": len(self.applied_signals),
             "most_common_success": self._get_most_common_success_pattern(),
-            "most_common_failure": self._get_most_common_failure_pattern()
+            "most_common_failure": self._get_most_common_failure_pattern(),
         }
 
     def _get_most_common_success_pattern(self) -> str | None:

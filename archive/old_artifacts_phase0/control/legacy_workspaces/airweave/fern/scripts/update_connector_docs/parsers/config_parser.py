@@ -11,7 +11,7 @@ def parse_config_file():
     Returns:
         dict: Dictionary of config classes and their information
     """
-    with open(CONFIG_CONFIG_PATH, "r") as f:
+    with open(CONFIG_CONFIG_PATH) as f:
         content = f.read()
 
     # Parse the Python file
@@ -36,10 +36,7 @@ def parse_config_file():
                     parent_classes.append(base.id)
 
             # Skip if not config-related
-            if not (
-                any("Config" in parent for parent in parent_classes)
-                or "Config" in class_name
-            ):
+            if not (any("Config" in parent for parent in parent_classes) or "Config" in class_name):
                 continue
 
             # Get docstring
@@ -50,9 +47,7 @@ def parse_config_file():
             for item in node.body:
                 # Look for attribute assignments with Field() constructor
                 if isinstance(item, ast.AnnAssign) and hasattr(item, "target"):
-                    field_name = (
-                        item.target.id if isinstance(item.target, ast.Name) else None
-                    )
+                    field_name = item.target.id if isinstance(item.target, ast.Name) else None
 
                     if field_name:
                         # Get field type
@@ -81,9 +76,7 @@ def parse_config_file():
                                     if isinstance(keyword.value, ast.Str):
                                         description = keyword.value.s
                                     # String in Python 3.8+ (ast.Constant)
-                                    elif isinstance(
-                                        keyword.value, ast.Constant
-                                    ) and isinstance(keyword.value.value, str):
+                                    elif isinstance(keyword.value, ast.Constant) and isinstance(keyword.value.value, str):
                                         description = keyword.value.value
 
                                 elif keyword.arg == "default":

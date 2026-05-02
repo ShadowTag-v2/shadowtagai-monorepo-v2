@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/schemas/__init__.py
+# hypothesis_version: 6.151.5
+
+['AuthUserCreate', 'AuthUserResponse', 'DashboardCreate', 'DashboardResponse', 'DashboardUpdate', 'EventCreate', 'EventQuery', 'EventResponse', 'FunnelCreate', 'FunnelResponse', 'FunnelStepCreate', 'FunnelUpdate', 'InsightResponse', 'MetricResponse', 'TimeSeriesQuery', 'TimeSeriesResponse', 'Token', 'UserBehaviorResponse', 'UserCreate', 'UserResponse', 'UserUpdate', 'WidgetCreate', 'WidgetResponse']

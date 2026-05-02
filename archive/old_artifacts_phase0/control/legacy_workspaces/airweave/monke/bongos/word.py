@@ -53,9 +53,7 @@ class WordBongo(BaseBongo):
         self._last_req = 0.0
 
         if not HAS_PYTHON_DOCX:
-            raise ImportError(
-                "python-docx is required for Word bongo. Install with: pip install python-docx"
-            )
+            raise ImportError("python-docx is required for Word bongo. Install with: pip install python-docx")
 
     async def create_entities(self) -> list[dict[str, Any]]:
         """Create test Word documents in OneDrive."""
@@ -67,16 +65,12 @@ class WordBongo(BaseBongo):
 
         # Generate document content
         test_name = f"TestDoc_{uuid.uuid4().hex[:8]}"
-        filenames, document_content = await generate_documents_content(
-            self.openai_model, tokens, test_name
-        )
+        filenames, document_content = await generate_documents_content(self.openai_model, tokens, test_name)
 
         self.logger.info(f"📄 Generated {len(document_content)} documents")
 
         async with httpx.AsyncClient(base_url=GRAPH, timeout=60) as client:
-            for i, (filename, doc_content, token) in enumerate(
-                zip(filenames, document_content, tokens)
-            ):
+            for i, (filename, doc_content, token) in enumerate(zip(filenames, document_content, tokens)):
                 await self._pace()
 
                 # Sanitize filename for OneDrive (remove illegal characters)
@@ -93,10 +87,7 @@ class WordBongo(BaseBongo):
                     upload_url,
                     headers={
                         "Authorization": f"Bearer {self.access_token}",
-                        "Content-Type": (
-                            "application/vnd.openxmlformats-officedocument."
-                            "wordprocessingml.document"
-                        ),
+                        "Content-Type": ("application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
                     },
                     content=doc_bytes,
                 )
@@ -137,19 +128,19 @@ class WordBongo(BaseBongo):
             Sanitized filename safe for OneDrive
         """
         # Replace illegal characters: \ / : * ? " < > |
-        illegal_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
+        illegal_chars = ["\\", "/", ":", "*", "?", '"', "<", ">", "|"]
         safe_name = filename
         for char in illegal_chars:
-            safe_name = safe_name.replace(char, '_')
+            safe_name = safe_name.replace(char, "_")
 
         # Remove leading/trailing spaces and dots
-        safe_name = safe_name.strip('. ')
+        safe_name = safe_name.strip(". ")
 
         # Limit length to 200 characters (OneDrive has a 400 char limit for full path)
         if len(safe_name) > 200:
             # Keep the extension
-            name, ext = safe_name.rsplit('.', 1) if '.' in safe_name else (safe_name, '')
-            safe_name = name[:195] + '.' + ext if ext else name[:200]
+            name, ext = safe_name.rsplit(".", 1) if "." in safe_name else (safe_name, "")
+            safe_name = name[:195] + "." + ext if ext else name[:200]
 
         return safe_name
 
@@ -207,9 +198,7 @@ class WordBongo(BaseBongo):
                 r = await client.get(download_url, headers=self._hdrs())
 
                 if r.status_code != 200:
-                    self.logger.warning(
-                        f"Failed to download document: {r.status_code} - {r.text[:200]}"
-                    )
+                    self.logger.warning(f"Failed to download document: {r.status_code} - {r.text[:200]}")
                     continue
 
                 # Load existing document
@@ -218,8 +207,7 @@ class WordBongo(BaseBongo):
                 # Append update section with token
                 doc.add_heading("Update Section", level=1)
                 doc.add_paragraph(
-                    f"This document has been updated. Update token: {ent['token']}\n"
-                    f"Updated content to verify incremental sync functionality."
+                    f"This document has been updated. Update token: {ent['token']}\nUpdated content to verify incremental sync functionality."
                 )
 
                 # Save updated document
@@ -234,23 +222,16 @@ class WordBongo(BaseBongo):
                     upload_url,
                     headers={
                         "Authorization": f"Bearer {self.access_token}",
-                        "Content-Type": (
-                            "application/vnd.openxmlformats-officedocument."
-                            "wordprocessingml.document"
-                        ),
+                        "Content-Type": ("application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
                     },
                     content=updated_bytes,
                 )
 
                 if r.status_code in (200, 201):
                     updated.append({**ent, "updated": True})
-                    self.logger.info(
-                        f"📝 Updated document '{ent['filename']}' with token: {ent['token']}"
-                    )
+                    self.logger.info(f"📝 Updated document '{ent['filename']}' with token: {ent['token']}")
                 else:
-                    self.logger.warning(
-                        f"Failed to update document: {r.status_code} - {r.text[:200]}"
-                    )
+                    self.logger.warning(f"Failed to update document: {r.status_code} - {r.text[:200]}")
 
                 # Brief delay between updates
                 await asyncio.sleep(0.5)
@@ -283,9 +264,7 @@ class WordBongo(BaseBongo):
                     retry_delay = 2.0  # seconds
 
                     for attempt in range(max_retries):
-                        r = await client.delete(
-                            f"/me/drive/items/{ent['id']}", headers=self._hdrs()
-                        )
+                        r = await client.delete(f"/me/drive/items/{ent['id']}", headers=self._hdrs())
 
                         if r.status_code == 204:
                             deleted.append(ent["id"])
@@ -306,9 +285,7 @@ class WordBongo(BaseBongo):
                             retry_delay *= 2  # Exponential backoff
                         else:
                             # Other error or max retries reached
-                            self.logger.warning(
-                                f"Delete failed: {r.status_code} - {r.text[:200]}"
-                            )
+                            self.logger.warning(f"Delete failed: {r.status_code} - {r.text[:200]}")
                             break  # Exit retry loop on non-retryable error
 
                 except Exception as e:
@@ -336,16 +313,11 @@ class WordBongo(BaseBongo):
                 # Search for and cleanup any orphaned test documents
                 await self._cleanup_orphaned_documents(client, cleanup_stats)
 
-            self.logger.info(
-                f"🧹 Cleanup completed: {cleanup_stats['documents_deleted']} "
-                f"documents deleted, {cleanup_stats['errors']} errors"
-            )
+            self.logger.info(f"🧹 Cleanup completed: {cleanup_stats['documents_deleted']} documents deleted, {cleanup_stats['errors']} errors")
         except Exception as e:
             self.logger.error(f"❌ Error during comprehensive cleanup: {e}")
 
-    async def _cleanup_orphaned_documents(
-        self, client: httpx.AsyncClient, stats: dict[str, Any]
-    ):
+    async def _cleanup_orphaned_documents(self, client: httpx.AsyncClient, stats: dict[str, Any]):
         """Find and delete orphaned test documents from previous runs."""
         try:
             await self._pace()
@@ -355,17 +327,10 @@ class WordBongo(BaseBongo):
                 files = r.json().get("value", [])
 
                 # Find test Word documents
-                test_documents = [
-                    f
-                    for f in files
-                    if f.get("name", "").startswith("Monke_")
-                    and f.get("name", "").endswith(".docx")
-                ]
+                test_documents = [f for f in files if f.get("name", "").startswith("Monke_") and f.get("name", "").endswith(".docx")]
 
                 if test_documents:
-                    self.logger.info(
-                        f"🔍 Found {len(test_documents)} orphaned test documents"
-                    )
+                    self.logger.info(f"🔍 Found {len(test_documents)} orphaned test documents")
                     for doc in test_documents:
                         try:
                             await self._pace()
@@ -375,16 +340,12 @@ class WordBongo(BaseBongo):
                             )
                             if del_r.status_code == 204:
                                 stats["documents_deleted"] += 1
-                                self.logger.info(
-                                    f"✅ Deleted orphaned document: {doc.get('name', 'Unknown')}"
-                                )
+                                self.logger.info(f"✅ Deleted orphaned document: {doc.get('name', 'Unknown')}")
                             else:
                                 stats["errors"] += 1
                         except Exception as e:
                             stats["errors"] += 1
-                            self.logger.warning(
-                                f"⚠️  Failed to delete document {doc['id']}: {e}"
-                            )
+                            self.logger.warning(f"⚠️  Failed to delete document {doc['id']}: {e}")
         except Exception as e:
             self.logger.warning(f"⚠️  Could not search for orphaned documents: {e}")
 

@@ -18,17 +18,17 @@ from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPConnecti
 from google.adk.tools.mcp_tool.mcp_toolset import McpToolset
 
 root_agent = LlmAgent(
-    model='gemini-2.0-flash',
-    name='tenant_agent',
+    model="gemini-2.0-flash",
+    name="tenant_agent",
     instruction="""You are a helpful assistant that helps users get tenant
  information. Call the get_tenant_data tool when the user asks for tenant data.""",
     tools=[
         McpToolset(
             connection_params=StreamableHTTPConnectionParams(
-                url='http://localhost:3000/mcp',
+                url="http://localhost:3000/mcp",
             ),
-            tool_filter=['get_tenant_data'],
-            header_provider=lambda ctx: {'X-Tenant-ID': 'tenant1'},
+            tool_filter=["get_tenant_data"],
+            header_provider=lambda ctx: {"X-Tenant-ID": "tenant1"},
         )
     ],
 )

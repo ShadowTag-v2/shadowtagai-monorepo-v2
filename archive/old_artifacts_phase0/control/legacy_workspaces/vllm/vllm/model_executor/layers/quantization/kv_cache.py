@@ -115,10 +115,13 @@ class BaseKVCacheMethod(QuantizeMethodBase):
             prob_scale = 1.0
 
         def is_singleton_float(x):
-            return (isinstance(x, float)
-                    or isinstance(x, torch.Tensor)
-                    and x.numel() == 1
-                    and x.is_floating_point())
+            return (
+                isinstance(x, float)
+                or isinstance(x, torch.Tensor)
+                and x.numel() == 1
+                and x.is_floating_point()
+            )
+
         if not is_singleton_float(q_scale) or not is_singleton_float(prob_scale):
             raise ValueError(
                 "Only support per-tensor scaling factorfor fp8-quantized Q/prob"

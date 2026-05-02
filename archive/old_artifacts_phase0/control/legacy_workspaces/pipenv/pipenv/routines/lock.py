@@ -73,9 +73,7 @@ def do_lock(
 
         if write:
             if not quiet:  # Alert the user of progress.
-                err.print(
-                    f"Locking [yellow][{pipfile_category}][/yellow] dependencies..."
-                )
+                err.print(f"Locking [yellow][{pipfile_category}][/yellow] dependencies...")
 
         # Prune old lockfile category as new one will be created.
         with contextlib.suppress(KeyError):
@@ -124,11 +122,7 @@ def do_lock(
             if category == "default":
                 continue
             if lockfile.get(category):
-                lockfile[category].update(
-                    overwrite_with_default(
-                        lockfile.get("default", {}), lockfile[category]
-                    )
-                )
+                lockfile[category].update(overwrite_with_default(lockfile.get("default", {}), lockfile[category]))
     if write:
         lockfile.update({"_meta": project.get_lockfile_meta()})
         project.write_lockfile(lockfile)

@@ -42,6 +42,7 @@ from kosmos.config import get_config
 # Configuration
 # ==============================================================================
 
+
 def setup_configuration() -> dict[str, Any]:
     """
     Configure research parameters.
@@ -53,13 +54,13 @@ def setup_configuration() -> dict[str, Any]:
         "question": "What are the key metabolic pathway differences between glucose and fructose metabolism?",
         "domain": "biology",
         "max_iterations": 5,  # Start with fewer iterations for this example
-        "budget_usd": 10.0,   # Set budget limit
+        "budget_usd": 10.0,  # Set budget limit
         "enable_cache": True,  # Enable caching to reduce costs
         "context": {
             "metabolites": ["glucose", "fructose"],
             "focus": "metabolic pathways",
             "databases": ["KEGG"],
-        }
+        },
     }
     return config
 
@@ -67,6 +68,7 @@ def setup_configuration() -> dict[str, Any]:
 # ==============================================================================
 # Research Execution
 # ==============================================================================
+
 
 def run_research(config: dict[str, Any]) -> dict[str, Any]:
     """
@@ -98,11 +100,7 @@ def run_research(config: dict[str, Any]) -> dict[str, Any]:
     print_info("You can monitor progress with: kosmos status <run_id> --watch")
 
     try:
-        results = director.conduct_research(
-            question=config["question"],
-            domain=config["domain"],
-            max_iterations=config["max_iterations"]
-        )
+        results = director.conduct_research(question=config["question"], domain=config["domain"], max_iterations=config["max_iterations"])
 
         return results
 
@@ -117,6 +115,7 @@ def run_research(config: dict[str, Any]) -> dict[str, Any]:
 # ==============================================================================
 # Results Analysis
 # ==============================================================================
+
 
 def analyze_results(results: dict[str, Any]) -> None:
     """
@@ -136,7 +135,7 @@ def analyze_results(results: dict[str, Any]) -> None:
     console.print(f"Cost: ${results.get('cost_usd', 0):.2f}\n")
 
     # Hypotheses
-    hypotheses = results.get('hypotheses', [])
+    hypotheses = results.get("hypotheses", [])
     if hypotheses:
         console.print(f"[h2]Hypotheses Generated ({len(hypotheses)})[/h2]")
         for i, hyp in enumerate(hypotheses[:5], 1):  # Show top 5
@@ -147,7 +146,7 @@ def analyze_results(results: dict[str, Any]) -> None:
             console.print(f"   Rationale: {hyp.get('rationale', 'N/A')[:100]}...")
 
     # Experiments
-    experiments = results.get('experiments', [])
+    experiments = results.get("experiments", [])
     if experiments:
         console.print(f"\n[h2]Experiments Executed ({len(experiments)})[/h2]")
         for i, exp in enumerate(experiments[:5], 1):  # Show top 5
@@ -157,14 +156,14 @@ def analyze_results(results: dict[str, Any]) -> None:
             console.print(f"   Description: {exp.get('description', 'N/A')[:100]}...")
 
     # Key findings
-    findings = results.get('findings', {})
+    findings = results.get("findings", {})
     if findings:
         console.print("\n[h2]Key Findings[/h2]")
-        key_insights = findings.get('key_insights', [])
+        key_insights = findings.get("key_insights", [])
         for i, insight in enumerate(key_insights[:3], 1):
             console.print(f"{i}. {insight}")
 
-        recommendations = findings.get('recommendations', [])
+        recommendations = findings.get("recommendations", [])
         if recommendations:
             console.print("\n[h2]Recommendations[/h2]")
             for i, rec in enumerate(recommendations[:3], 1):
@@ -174,6 +173,7 @@ def analyze_results(results: dict[str, Any]) -> None:
 # ==============================================================================
 # Results Export
 # ==============================================================================
+
 
 def export_results(results: dict[str, Any], output_dir: Path) -> None:
     """
@@ -205,6 +205,7 @@ def export_results(results: dict[str, Any], output_dir: Path) -> None:
 # Additional Analysis Functions
 # ==============================================================================
 
+
 def analyze_pathway_differences(results: dict[str, Any]) -> dict[str, Any]:
     """
     Perform additional analysis on pathway differences.
@@ -215,39 +216,26 @@ def analyze_pathway_differences(results: dict[str, Any]) -> dict[str, Any]:
     Returns:
         Analysis summary dictionary
     """
-    analysis = {
-        "pathway_comparison": {},
-        "enzyme_differences": [],
-        "metabolite_interactions": [],
-        "regulatory_differences": []
-    }
+    analysis = {"pathway_comparison": {}, "enzyme_differences": [], "metabolite_interactions": [], "regulatory_differences": []}
 
     # Extract pathway information from hypotheses and experiments
-    hypotheses = results.get('hypotheses', [])
+    hypotheses = results.get("hypotheses", [])
 
     for hyp in hypotheses:
-        claim = hyp.get('claim', '')
+        claim = hyp.get("claim", "")
 
         # Look for pathway-related claims
-        if 'pathway' in claim.lower():
-            if 'glucose' in claim.lower():
-                analysis["pathway_comparison"]["glucose"] = {
-                    "claim": claim,
-                    "score": hyp.get('priority_score', 0)
-                }
-            elif 'fructose' in claim.lower():
-                analysis["pathway_comparison"]["fructose"] = {
-                    "claim": claim,
-                    "score": hyp.get('priority_score', 0)
-                }
+        if "pathway" in claim.lower():
+            if "glucose" in claim.lower():
+                analysis["pathway_comparison"]["glucose"] = {"claim": claim, "score": hyp.get("priority_score", 0)}
+            elif "fructose" in claim.lower():
+                analysis["pathway_comparison"]["fructose"] = {"claim": claim, "score": hyp.get("priority_score", 0)}
 
         # Look for enzyme differences
-        if 'enzyme' in claim.lower():
-            analysis["enzyme_differences"].append({
-                "enzyme": extract_enzyme_name(claim),
-                "function": claim,
-                "confidence": hyp.get('novelty_score', 0)
-            })
+        if "enzyme" in claim.lower():
+            analysis["enzyme_differences"].append(
+                {"enzyme": extract_enzyme_name(claim), "function": claim, "confidence": hyp.get("novelty_score", 0)}
+            )
 
     return analysis
 
@@ -263,14 +251,14 @@ def extract_enzyme_name(text: str) -> str:
         Extracted enzyme name or 'Unknown'
     """
     # This is a simplified version - in practice, use NLP or regex
-    keywords = ['kinase', 'synthase', 'dehydrogenase', 'isomerase', 'aldolase']
+    keywords = ["kinase", "synthase", "dehydrogenase", "isomerase", "aldolase"]
     for keyword in keywords:
         if keyword in text.lower():
             # Extract surrounding words
             words = text.split()
             for i, word in enumerate(words):
                 if keyword in word.lower() and i > 0:
-                    return f"{words[i-1]} {word}"
+                    return f"{words[i - 1]} {word}"
     return "Unknown"
 
 
@@ -294,6 +282,7 @@ def visualize_pathways(results: dict[str, Any], output_dir: Path) -> None:
 # ==============================================================================
 # Main Execution
 # ==============================================================================
+
 
 def main():
     """Main execution function."""

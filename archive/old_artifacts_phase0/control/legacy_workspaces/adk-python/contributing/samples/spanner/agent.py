@@ -35,31 +35,29 @@ CREDENTIALS_TYPE = None
 tool_settings = SpannerToolSettings(capabilities=[Capabilities.DATA_READ])
 
 if CREDENTIALS_TYPE == AuthCredentialTypes.OAUTH2:
-  # Initialize the tools to do interactive OAuth
-  # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
-  # must be set
-  credentials_config = SpannerCredentialsConfig(
-      client_id=os.getenv("OAUTH_CLIENT_ID"),
-      client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
-      scopes=[
-          "https://www.googleapis.com/auth/spanner.admin",
-          "https://www.googleapis.com/auth/spanner.data",
-      ],
-  )
+    # Initialize the tools to do interactive OAuth
+    # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
+    # must be set
+    credentials_config = SpannerCredentialsConfig(
+        client_id=os.getenv("OAUTH_CLIENT_ID"),
+        client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
+        scopes=[
+            "https://www.googleapis.com/auth/spanner.admin",
+            "https://www.googleapis.com/auth/spanner.data",
+        ],
+    )
 elif CREDENTIALS_TYPE == AuthCredentialTypes.SERVICE_ACCOUNT:
-  # Initialize the tools to use the credentials in the service account key.
-  # If this flow is enabled, make sure to replace the file path with your own
-  # service account key file
-  # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
-  creds, _ = google.auth.load_credentials_from_file("service_account_key.json")
-  credentials_config = SpannerCredentialsConfig(credentials=creds)
+    # Initialize the tools to use the credentials in the service account key.
+    # If this flow is enabled, make sure to replace the file path with your own
+    # service account key file
+    # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
+    creds, _ = google.auth.load_credentials_from_file("service_account_key.json")
+    credentials_config = SpannerCredentialsConfig(credentials=creds)
 else:
-  # Initialize the tools to use the application default credentials.
-  # https://cloud.google.com/docs/authentication/provide-credentials-adc
-  application_default_credentials, _ = google.auth.default()
-  credentials_config = SpannerCredentialsConfig(
-      credentials=application_default_credentials
-  )
+    # Initialize the tools to use the application default credentials.
+    # https://cloud.google.com/docs/authentication/provide-credentials-adc
+    application_default_credentials, _ = google.auth.default()
+    credentials_config = SpannerCredentialsConfig(credentials=application_default_credentials)
 
 # Example 1: Use tools from the Spanner toolset.
 # For example, data exploration agents help the Spanner database developer or
@@ -91,30 +89,30 @@ def count_rows_in_table(
     settings: SpannerToolSettings,
     tool_context: ToolContext,
 ):
-  """Counts the total number of rows for a specified table.
+    """Counts the total number of rows for a specified table.
 
-  Args:
-    table_name: The name of the table for which to count rows.
+    Args:
+      table_name: The name of the table for which to count rows.
 
-  Returns:
-      The total number of rows in the table.
-  """
+    Returns:
+        The total number of rows in the table.
+    """
 
-  # Example of adding additional checks:
-  # if table_name not in ["table1", "table2"]:
-  #   raise ValueError("Table name is not allowed.")
+    # Example of adding additional checks:
+    # if table_name not in ["table1", "table2"]:
+    #   raise ValueError("Table name is not allowed.")
 
-  sql_template = f"SELECT COUNT(*) FROM {table_name}"
+    sql_template = f"SELECT COUNT(*) FROM {table_name}"
 
-  return spanner_tool_utils.execute_sql(
-      project_id=_SPANNER_PROJECT_ID,
-      instance_id=_SPANNER_INSTANCE_ID,
-      database_id=_SPANNER_DATABASE_ID,
-      query=sql_template,
-      credentials=credentials,
-      settings=settings,
-      tool_context=tool_context,
-  )
+    return spanner_tool_utils.execute_sql(
+        project_id=_SPANNER_PROJECT_ID,
+        instance_id=_SPANNER_INSTANCE_ID,
+        database_id=_SPANNER_DATABASE_ID,
+        query=sql_template,
+        credentials=credentials,
+        settings=settings,
+        tool_context=tool_context,
+    )
 
 
 # Example 3: Create a customized Spanner query tool with a template
@@ -128,46 +126,46 @@ def search_hotels(
     settings: SpannerToolSettings,
     tool_context: ToolContext,
 ):
-  """Search hotels for a specific location.
+    """Search hotels for a specific location.
 
-  This function takes a geographical location name and returns a list of hotels
-  in that area, including key details for each.
+    This function takes a geographical location name and returns a list of hotels
+    in that area, including key details for each.
 
-  Args:
-    location_name (str): The geographical location (e.g., city or town) for the
-                         hotel search.
-    Example:
-    {
-        "location_name": "Seattle"
-    }
-    Example:
-    {
-        "location_name": "New York"
-    }
-    Example:
-    {
-        "location_name": "Los Angeles"
-    }
+    Args:
+      location_name (str): The geographical location (e.g., city or town) for the
+                           hotel search.
+      Example:
+      {
+          "location_name": "Seattle"
+      }
+      Example:
+      {
+          "location_name": "New York"
+      }
+      Example:
+      {
+          "location_name": "Los Angeles"
+      }
 
-  Returns:
-      The hotels name, rating and description.
-  """
+    Returns:
+        The hotels name, rating and description.
+    """
 
-  sql_template = """
+    sql_template = """
       SELECT name, rating, description FROM hotels
       WHERE location_name = @location_name
       """
-  return spanner_tool_utils.execute_sql(
-      project_id=_SPANNER_PROJECT_ID,
-      instance_id=_SPANNER_INSTANCE_ID,
-      database_id=_SPANNER_DATABASE_ID,
-      query=sql_template,
-      credentials=credentials,
-      settings=settings,
-      tool_context=tool_context,
-      params={"location_name": location_name},
-      params_types={"location_name": spanner_param_types.STRING},
-  )
+    return spanner_tool_utils.execute_sql(
+        project_id=_SPANNER_PROJECT_ID,
+        instance_id=_SPANNER_INSTANCE_ID,
+        database_id=_SPANNER_DATABASE_ID,
+        query=sql_template,
+        credentials=credentials,
+        settings=settings,
+        tool_context=tool_context,
+        params={"location_name": location_name},
+        params_types={"location_name": spanner_param_types.STRING},
+    )
 
 
 # The variable name `root_agent` determines what your root agent is for the
@@ -175,10 +173,7 @@ def search_hotels(
 root_agent = LlmAgent(
     model="gemini-2.5-flash",
     name="spanner_agent",
-    description=(
-        "Agent to answer questions about Spanner database tables and"
-        " execute SQL queries."
-    ),
+    description=("Agent to answer questions about Spanner database tables and execute SQL queries."),
     instruction="""\
         You are a data agent with access to several Spanner tools.
         Make use of those tools to answer the user's questions.

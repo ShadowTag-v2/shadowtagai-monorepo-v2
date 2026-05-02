@@ -1,13 +1,10 @@
 """Jira-specific generation adapter: issue generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.jira import JiraArtifact
 
 
-async def generate_jira_artifact(
-    model: str, token: str, is_update: bool = False
-) -> tuple[str, str, str]:
+async def generate_jira_artifact(model: str, token: str, is_update: bool = False) -> tuple[str, str, str]:
     """Generate a Jira issue via LLM.
 
     Returns (summary, description, issue_type). The token must be embedded in the output by instruction.

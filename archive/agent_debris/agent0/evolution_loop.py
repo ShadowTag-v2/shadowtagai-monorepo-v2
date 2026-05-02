@@ -4,10 +4,12 @@ from .curriculum import CurriculumAgent
 from .executor import ExecutorAgent
 from .tools import atp_519_scan
 
+
 class EvolutionLoop:
     """
     Orchestrates the co-evolution of Curriculum and Executor agents.
     """
+
     def __init__(self, iterations: int = 10):
         self.iterations = iterations
         self.curriculum = CurriculumAgent()
@@ -20,7 +22,7 @@ class EvolutionLoop:
         difficulty = 0.1
 
         for i in range(self.iterations):
-            print(f"\n--- Iteration {i+1}/{self.iterations} (Difficulty: {difficulty:.2f}) ---")
+            print(f"\n--- Iteration {i + 1}/{self.iterations} (Difficulty: {difficulty:.2f}) ---")
 
             # 1. Curriculum generates task
             task = self.curriculum.generate_task(i, difficulty)
@@ -49,17 +51,15 @@ class EvolutionLoop:
                 print(">> Executor FAIL (Missed the violation)")
                 difficulty = max(0.1, difficulty - 0.05)
 
-            self.results.append({
-                "iteration": i,
-                "difficulty": difficulty,
-                "executor_success": executor_success,
-                "compression": scan_result["compression_ratio"]
-            })
+            self.results.append(
+                {"iteration": i, "difficulty": difficulty, "executor_success": executor_success, "compression": scan_result["compression_ratio"]}
+            )
 
-            time.sleep(0.1) # Simulate processing
+            time.sleep(0.1)  # Simulate processing
 
         print("\nEvolution Loop Complete.")
         return self.results
+
 
 if __name__ == "__main__":
     loop = EvolutionLoop(iterations=5)

@@ -11,9 +11,11 @@ function test() {
 sg = SgRoot(source, "javascript")
 root = sg.root()
 
+
 def test_wrong_use_pattern_as_dict():
     with pytest.raises(TypeError):
-        root.find("let $A = 123") # type: ignore
+        root.find("let $A = 123")  # type: ignore
+
 
 def test_get_unfound_match():
     node = root.find(pattern="let $A = 123")
@@ -21,10 +23,12 @@ def test_get_unfound_match():
     with pytest.raises(KeyError):
         node["B"]
 
+
 # TODO: remove BaseException
 def test_wrong_rule_key():
     with pytest.raises(Exception):
-        root.find(pat="not") # type: ignore
+        root.find(pat="not")  # type: ignore
+
 
 def test_no_rule_key():
     with pytest.raises(ValueError):
@@ -38,9 +42,11 @@ def test_no_rule_key():
     with pytest.raises(ValueError):
         root.follows()
 
+
 def test_error_for_invalid_kind():
     with pytest.raises(RuntimeError):
         root.find(kind="nonsense")
+
 
 def test_no_error_for_invalid_pattern():
     with pytest.raises(RuntimeError):

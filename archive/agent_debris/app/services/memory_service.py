@@ -2,16 +2,14 @@
 
 import json
 import logging
-from datetime import datetime, timedelta
-from typing import List, Optional
-from sqlalchemy import select, and_, func
+from datetime import datetime
+from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Memory, VectorEmbedding, Project, Conversation, Message
 from app.schemas.memory import (
     MemoryCreate,
     MemoryUpdate,
-    MemoryResponse,
     MemorySynthesisResponse,
 )
 from app.services.embedding_service import embedding_service
@@ -24,12 +22,7 @@ logger = logging.getLogger(__name__)
 class MemoryService:
     """Service for managing memories and synthesis."""
 
-    async def create_memory(
-        self,
-        db: AsyncSession,
-        user_id: int,
-        memory_data: MemoryCreate
-    ) -> Memory:
+    async def create_memory(self, db: AsyncSession, user_id: int, memory_data: MemoryCreate) -> Memory:
         """
         Create a new memory.
 
@@ -49,7 +42,7 @@ class MemoryService:
             content=memory_data.content,
             memory_type=memory_data.memory_type,
             confidence_score=memory_data.confidence_score,
-            source_conversation_ids=json.dumps(memory_data.source_conversation_ids or [])
+            source_conversation_ids=json.dumps(memory_data.source_conversation_ids or []),
         )
 
         db.add(memory)
@@ -60,10 +53,7 @@ class MemoryService:
         embedding_bytes = embedding_service.embedding_to_bytes(embedding_vector)
 
         vector_embedding = VectorEmbedding(
-            memory_id=memory.id,
-            embedding=embedding_bytes,
-            model_name=settings.embedding_model,
-            dimension=settings.vector_dimension
+            memory_id=memory.id, embedding=embedding_bytes, model_name=settings.embedding_model, dimension=settings.vector_dimension
         )
 
         db.add(vector_embedding)
@@ -74,21 +64,10 @@ class MemoryService:
         return memory
 
     async def get_memories(
-        self,
-        db: AsyncSession,
-        user_id: int,
-        project_id: int | None = None,
-        memory_type: str | None = None,
-        limit: int = 100,
-        offset: int = 0
+        self, db: AsyncSession, user_id: int, project_id: int | None = None, memory_type: str | None = None, limit: int = 100, offset: int = 0
     ) -> list[Memory]:
         """Get user memories with optional filtering."""
-        stmt = select(Memory).where(
-            and_(
-                Memory.user_id == user_id,
-                Memory.is_active
-            )
-        )
+        stmt = select(Memory).where(and_(Memory.user_id == user_id, Memory.is_active))
 
         if project_id is not None:
             stmt = stmt.where(Memory.project_id == project_id)
@@ -101,20 +80,9 @@ class MemoryService:
         result = await db.execute(stmt)
         return list(result.scalars().all())
 
-    async def update_memory(
-        self,
-        db: AsyncSession,
-        memory_id: int,
-        user_id: int,
-        memory_data: MemoryUpdate
-    ) -> Memory | None:
+    async def update_memory(self, db: AsyncSession, memory_id: int, user_id: int, memory_data: MemoryUpdate) -> Memory | None:
         """Update a memory."""
-        stmt = select(Memory).where(
-            and_(
-                Memory.id == memory_id,
-                Memory.user_id == user_id
-            )
-        )
+        stmt = select(Memory).where(and_(Memory.id == memory_id, Memory.user_id == user_id))
         result = await db.execute(stmt)
         memory = result.scalar_one_or_none()
 
@@ -143,10 +111,7 @@ class MemoryService:
                 vector_embedding.embedding = embedding_bytes
             else:
                 vector_embedding = VectorEmbedding(
-                    memory_id=memory.id,
-                    embedding=embedding_bytes,
-                    model_name=settings.embedding_model,
-                    dimension=settings.vector_dimension
+                    memory_id=memory.id, embedding=embedding_bytes, model_name=settings.embedding_model, dimension=settings.vector_dimension
                 )
                 db.add(vector_embedding)
 
@@ -156,19 +121,9 @@ class MemoryService:
         logger.info(f"Updated memory {memory_id}")
         return memory
 
-    async def delete_memory(
-        self,
-        db: AsyncSession,
-        memory_id: int,
-        user_id: int
-    ) -> bool:
+    async def delete_memory(self, db: AsyncSession, memory_id: int, user_id: int) -> bool:
         """Soft delete a memory."""
-        stmt = select(Memory).where(
-            and_(
-                Memory.id == memory_id,
-                Memory.user_id == user_id
-            )
-        )
+        stmt = select(Memory).where(and_(Memory.id == memory_id, Memory.user_id == user_id))
         result = await db.execute(stmt)
         memory = result.scalar_one_or_none()
 
@@ -181,12 +136,7 @@ class MemoryService:
         logger.info(f"Deleted memory {memory_id}")
         return True
 
-    async def synthesize_user_memories(
-        self,
-        db: AsyncSession,
-        user_id: int,
-        project_id: int | None = None
-    ) -> MemorySynthesisResponse:
+    async def synthesize_user_memories(self, db: AsyncSession, user_id: int, project_id: int | None = None) -> MemorySynthesisResponse:
         """
         Create a synthesis of all user memories.
 
@@ -199,30 +149,14 @@ class MemoryService:
             Memory synthesis response
         """
         # Get all active memories
-        memories = await self.get_memories(
-            db,
-            user_id,
-            project_id=project_id,
-            limit=settings.max_memory_items_per_project
-        )
+        memories = await self.get_memories(db, user_id, project_id=project_id, limit=settings.max_memory_items_per_project)
 
         if not memories:
-            return MemorySynthesisResponse(
-                total_memories=0,
-                synthesis="No memories available",
-                updated_at=datetime.utcnow(),
-                project_id=project_id
-            )
+            return MemorySynthesisResponse(total_memories=0, synthesis="No memories available", updated_at=datetime.utcnow(), project_id=project_id)
 
         # Format memories for synthesis
         memory_dicts = [
-            {
-                "memory_type": m.memory_type,
-                "title": m.title,
-                "content": m.content,
-                "confidence_score": m.confidence_score
-            }
-            for m in memories
+            {"memory_type": m.memory_type, "title": m.title, "content": m.content, "confidence_score": m.confidence_score} for m in memories
         ]
 
         # Generate synthesis using Claude
@@ -230,12 +164,7 @@ class MemoryService:
 
         # Update project summary if applicable
         if project_id:
-            stmt = select(Project).where(
-                and_(
-                    Project.id == project_id,
-                    Project.user_id == user_id
-                )
-            )
+            stmt = select(Project).where(and_(Project.id == project_id, Project.user_id == user_id))
             result = await db.execute(stmt)
             project = result.scalar_one_or_none()
 
@@ -244,19 +173,9 @@ class MemoryService:
                 project.last_synthesis_at = datetime.utcnow()
                 await db.commit()
 
-        return MemorySynthesisResponse(
-            total_memories=len(memories),
-            synthesis=synthesis,
-            updated_at=datetime.utcnow(),
-            project_id=project_id
-        )
+        return MemorySynthesisResponse(total_memories=len(memories), synthesis=synthesis, updated_at=datetime.utcnow(), project_id=project_id)
 
-    async def auto_extract_memories_from_conversation(
-        self,
-        db: AsyncSession,
-        conversation_id: int,
-        user_id: int
-    ) -> list[Memory]:
+    async def auto_extract_memories_from_conversation(self, db: AsyncSession, conversation_id: int, user_id: int) -> list[Memory]:
         """
         Automatically extract and create memories from a conversation.
 
@@ -273,7 +192,7 @@ class MemoryService:
             and_(
                 Conversation.id == conversation_id,
                 Conversation.user_id == user_id,
-                not Conversation.is_incognito  # Skip incognito conversations
+                not Conversation.is_incognito,  # Skip incognito conversations
             )
         )
         result = await db.execute(stmt)
@@ -283,9 +202,7 @@ class MemoryService:
             return []
 
         # Get messages
-        stmt = select(Message).where(
-            Message.conversation_id == conversation_id
-        ).order_by(Message.created_at)
+        stmt = select(Message).where(Message.conversation_id == conversation_id).order_by(Message.created_at)
         result = await db.execute(stmt)
         messages = list(result.scalars().all())
 
@@ -304,7 +221,7 @@ class MemoryService:
                 memory_type=mem_data.get("type", "fact"),
                 project_id=conversation.project_id,
                 source_conversation_ids=[conversation_id],
-                confidence_score=0.8  # Auto-extracted memories have lower confidence
+                confidence_score=0.8,  # Auto-extracted memories have lower confidence
             )
 
             memory = await self.create_memory(db, user_id, memory_create)

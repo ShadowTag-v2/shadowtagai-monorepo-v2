@@ -46,9 +46,7 @@ class OneNoteBongo(BaseBongo):
 
     async def create_entities(self) -> list[dict[str, Any]]:
         """Create test notebook, section, and pages in OneNote."""
-        self.logger.info(
-            f"🥁 Creating OneNote test structure with {self.entity_count} pages"
-        )
+        self.logger.info(f"🥁 Creating OneNote test structure with {self.entity_count} pages")
         out: list[dict[str, Any]] = []
 
         async with httpx.AsyncClient(base_url=GRAPH, timeout=30) as client:
@@ -58,9 +56,7 @@ class OneNoteBongo(BaseBongo):
             self.logger.info(f"📓 Creating test notebook: {test_notebook_name}")
 
             nb_payload = {"displayName": test_notebook_name}
-            r = await client.post(
-                "/me/onenote/notebooks", headers=self._hdrs(), json=nb_payload
-            )
+            r = await client.post("/me/onenote/notebooks", headers=self._hdrs(), json=nb_payload)
 
             if r.status_code not in (200, 201):
                 self.logger.error(f"Create notebook failed {r.status_code}: {r.text}")
@@ -97,9 +93,7 @@ class OneNoteBongo(BaseBongo):
                 await self._pace()
 
                 # Generate page content
-                title, html_content = await generate_onenote_page(
-                    self.openai_model, token
-                )
+                title, html_content = await generate_onenote_page(self.openai_model, token)
 
                 # Create page in section
                 # OneNote API requires multipart/form-data with HTML
@@ -162,9 +156,7 @@ class OneNoteBongo(BaseBongo):
                 await self._pace()
 
                 # Generate updated content with same token
-                title, html_content = await generate_onenote_page(
-                    self.openai_model, ent["token"], is_update=True
-                )
+                title, html_content = await generate_onenote_page(self.openai_model, ent["token"], is_update=True)
 
                 # Append content to existing page
                 # OneNote PATCH API uses a special format
@@ -186,9 +178,7 @@ class OneNoteBongo(BaseBongo):
                     updated.append({**ent, "updated": True})
                     self.logger.info(f"📝 Updated page for token: {ent['token']}")
                 else:
-                    self.logger.warning(
-                        f"Failed to update page: {r.status_code} - {r.text[:200]}"
-                    )
+                    self.logger.warning(f"Failed to update page: {r.status_code} - {r.text[:200]}")
 
         return updated
 
@@ -196,9 +186,7 @@ class OneNoteBongo(BaseBongo):
         """Delete all test pages."""
         return await self.delete_specific_entities(self._pages)
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         """Delete specific pages by ID."""
         self.logger.info(f"🥁 Deleting {len(entities)} OneNote pages")
         deleted: list[str] = []
@@ -214,25 +202,17 @@ class OneNoteBongo(BaseBongo):
                         continue
 
                     # Delete page
-                    r = await client.delete(
-                        f"/me/onenote/pages/{page_id}", headers=self._hdrs()
-                    )
+                    r = await client.delete(f"/me/onenote/pages/{page_id}", headers=self._hdrs())
 
                     if r.status_code == 204:
                         # Return the page ID (not token) for proper entity tracking
                         deleted.append(page_id)
-                        self.logger.info(
-                            f"✅ Deleted page: {ent.get('title', 'Unknown')[:50]}"
-                        )
+                        self.logger.info(f"✅ Deleted page: {ent.get('title', 'Unknown')[:50]}")
                     else:
-                        self.logger.warning(
-                            f"Delete failed for {page_id}: {r.status_code} - {r.text[:200]}"
-                        )
+                        self.logger.warning(f"Delete failed for {page_id}: {r.status_code} - {r.text[:200]}")
 
                 except Exception as e:
-                    self.logger.warning(
-                        f"Delete error for page {ent.get('id', 'unknown')}: {e}"
-                    )
+                    self.logger.warning(f"Delete error for page {ent.get('id', 'unknown')}: {e}")
 
         return deleted
 
@@ -259,9 +239,7 @@ class OneNoteBongo(BaseBongo):
                 # Delete test section
                 if self._test_section_id:
                     await self._pace()
-                    self.logger.info(
-                        f"🗑️ Deleting test section: {self._test_section_id}"
-                    )
+                    self.logger.info(f"🗑️ Deleting test section: {self._test_section_id}")
                     r = await client.delete(
                         f"/me/onenote/sections/{self._test_section_id}",
                         headers=self._hdrs(),
@@ -277,9 +255,7 @@ class OneNoteBongo(BaseBongo):
                 # Delete test notebook
                 if self._test_notebook_id:
                     await self._pace()
-                    self.logger.info(
-                        f"🗑️ Deleting test notebook: {self._test_notebook_id}"
-                    )
+                    self.logger.info(f"🗑️ Deleting test notebook: {self._test_notebook_id}")
                     r = await client.delete(
                         f"/me/onenote/notebooks/{self._test_notebook_id}",
                         headers=self._hdrs(),
@@ -304,9 +280,7 @@ class OneNoteBongo(BaseBongo):
         except Exception as e:
             self.logger.error(f"❌ Error during comprehensive cleanup: {e}")
 
-    async def _cleanup_orphaned_notebooks(
-        self, client: httpx.AsyncClient, stats: dict[str, Any]
-    ):
+    async def _cleanup_orphaned_notebooks(self, client: httpx.AsyncClient, stats: dict[str, Any]):
         """Find and delete orphaned test notebooks from previous runs."""
         try:
             await self._pace()
@@ -316,14 +290,10 @@ class OneNoteBongo(BaseBongo):
                 notebooks = r.json().get("value", [])
 
                 # Find test notebooks
-                test_notebooks = [
-                    nb for nb in notebooks if "Monke Test" in nb.get("displayName", "")
-                ]
+                test_notebooks = [nb for nb in notebooks if "Monke Test" in nb.get("displayName", "")]
 
                 if test_notebooks:
-                    self.logger.info(
-                        f"🔍 Found {len(test_notebooks)} orphaned test notebooks"
-                    )
+                    self.logger.info(f"🔍 Found {len(test_notebooks)} orphaned test notebooks")
                     for nb in test_notebooks:
                         try:
                             await self._pace()
@@ -333,16 +303,12 @@ class OneNoteBongo(BaseBongo):
                             )
                             if del_r.status_code == 204:
                                 stats["notebooks_deleted"] += 1
-                                self.logger.info(
-                                    f"✅ Deleted orphaned notebook: {nb.get('displayName', 'Unknown')}"
-                                )
+                                self.logger.info(f"✅ Deleted orphaned notebook: {nb.get('displayName', 'Unknown')}")
                             else:
                                 stats["errors"] += 1
                         except Exception as e:
                             stats["errors"] += 1
-                            self.logger.warning(
-                                f"⚠️ Failed to delete notebook {nb['id']}: {e}"
-                            )
+                            self.logger.warning(f"⚠️ Failed to delete notebook {nb['id']}: {e}")
         except Exception as e:
             self.logger.warning(f"⚠️ Could not search for orphaned notebooks: {e}")
 

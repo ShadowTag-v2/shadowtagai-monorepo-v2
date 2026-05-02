@@ -755,7 +755,10 @@ video {
   border: 1px solid var(--outline-variant);
   border-radius: var(--radius-xl);
   padding: var(--space-xl);
-  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .arch-card:hover {

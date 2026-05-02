@@ -50,9 +50,7 @@ class LatencyValidator:
             },
             JudgeType.LAW: {
                 "compliance_area": ["eu_ai_act", "gdpr", "ca_sb53", "export_control"][idx % 4],
-                "ai_system_type": ["biometric_identification", "credit_scoring"][idx % 2]
-                if idx % 2 == 0
-                else None,
+                "ai_system_type": ["biometric_identification", "credit_scoring"][idx % 2] if idx % 2 == 0 else None,
                 "legal_review_completed": idx % 3 != 0,
                 "dpia_completed": idx % 2 == 0,
             },
@@ -189,9 +187,7 @@ class LatencyValidator:
         print(f"  p50 (median): {overall['p50_ms']:.2f}ms")
         print(f"  p90:          {overall['p90_ms']:.2f}ms")
         print(f"  p95:          {overall['p95_ms']:.2f}ms")
-        print(
-            f"  p99:          {overall['p99_ms']:.2f}ms  {'✓ PASS' if results['passed'] else '✗ FAIL'}"
-        )
+        print(f"  p99:          {overall['p99_ms']:.2f}ms  {'✓ PASS' if results['passed'] else '✗ FAIL'}")
         print(f"  p100 (max):   {overall['p100_ms']:.2f}ms")
         print()
 
@@ -201,25 +197,17 @@ class LatencyValidator:
 
         for judge_type, stats in results["by_vertical"].items():
             status = "✓" if stats["p99_ms"] <= results["target_p99_ms"] else "✗"
-            print(
-                f"{judge_type:12} {status}  p50: {stats['p50_ms']:5.2f}ms  p99: {stats['p99_ms']:5.2f}ms  max: {stats['max_ms']:5.2f}ms"
-            )
+            print(f"{judge_type:12} {status}  p50: {stats['p50_ms']:5.2f}ms  p99: {stats['p99_ms']:5.2f}ms  max: {stats['max_ms']:5.2f}ms")
 
         print()
         print(f"{'=' * 60}")
         if results["passed"]:
-            print(
-                f"✓ VALIDATION PASSED: p99 = {overall['p99_ms']:.2f}ms ≤ {results['target_p99_ms']}ms"
-            )
+            print(f"✓ VALIDATION PASSED: p99 = {overall['p99_ms']:.2f}ms ≤ {results['target_p99_ms']}ms")
         else:
-            print(
-                f"✗ VALIDATION FAILED: p99 = {overall['p99_ms']:.2f}ms > {results['target_p99_ms']}ms"
-            )
+            print(f"✗ VALIDATION FAILED: p99 = {overall['p99_ms']:.2f}ms > {results['target_p99_ms']}ms")
         print(f"{'=' * 60}")
 
-    def export_results(
-        self, results: dict[str, Any], filename: str = "latency_validation_results.json"
-    ):
+    def export_results(self, results: dict[str, Any], filename: str = "latency_validation_results.json"):
         """Export results to JSON file"""
         with open(filename, "w") as f:
             json.dump(results, f, indent=2)
@@ -245,14 +233,10 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Validate Judge #6 latency performance")
-    parser.add_argument(
-        "--samples", type=int, default=1000, help="Number of samples to test (default: 1000)"
-    )
+    parser.add_argument("--samples", type=int, default=1000, help="Number of samples to test (default: 1000)")
     parser.add_argument("--export-json", action="store_true", help="Export results to JSON")
     parser.add_argument("--export-csv", action="store_true", help="Export raw data to CSV")
-    parser.add_argument(
-        "--quiet", action="store_true", help="Suppress output (just return exit code)"
-    )
+    parser.add_argument("--quiet", action="store_true", help="Suppress output (just return exit code)")
 
     args = parser.parse_args()
 

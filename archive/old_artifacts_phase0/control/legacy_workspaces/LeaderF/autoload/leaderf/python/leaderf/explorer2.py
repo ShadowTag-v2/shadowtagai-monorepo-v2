@@ -3,9 +3,9 @@
 from abc import ABCMeta, abstractmethod
 
 
-#*****************************************************
+# *****************************************************
 # Explorer
-#*****************************************************
+# *****************************************************
 class Explorer:
     __metaclass__ = ABCMeta
 
@@ -21,7 +21,7 @@ class Explorer:
         pass
 
     def getStlCurDir(self):
-        return ''
+        return ""
 
     def supportsMulti(self):
         return False

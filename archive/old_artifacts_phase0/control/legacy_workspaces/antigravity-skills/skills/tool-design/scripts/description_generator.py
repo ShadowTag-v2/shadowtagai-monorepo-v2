@@ -5,7 +5,6 @@ This module provides utilities for generating and evaluating tool descriptions.
 """
 
 import re
-from typing import Dict
 
 # Description Templates
 
@@ -37,6 +36,7 @@ PARAM_TEMPLATE = """
 
 # Example Generation
 
+
 def generate_tool_description(tool_spec):
     """Generate complete tool description from specification."""
     description = TOOL_DESCRIPTION_TEMPLATE.format(
@@ -45,7 +45,7 @@ def generate_tool_description(tool_spec):
         usage_context=generate_usage_context(tool_spec),
         parameters_description=generate_parameters(tool_spec.parameters),
         returns_description=generate_returns(tool_spec.returns),
-        errors_description=generate_errors(tool_spec.errors)
+        errors_description=generate_errors(tool_spec.errors),
     )
     return description
 
@@ -68,17 +68,12 @@ def generate_usage_context(tool_spec):
 
 # Description Evaluation
 
+
 class ToolDescriptionEvaluator:
     def __init__(self):
-        self.criteria = [
-            "clarity",
-            "completeness",
-            "accuracy",
-            "actionability",
-            "consistency"
-        ]
+        self.criteria = ["clarity", "completeness", "accuracy", "actionability", "consistency"]
 
-    def evaluate(self, description: str, tool_spec) -> Dict:
+    def evaluate(self, description: str, tool_spec) -> dict:
         """Evaluate description against criteria."""
         results = {}
 
@@ -119,16 +114,16 @@ class ToolDescriptionEvaluator:
             ("description", r"## " + tool_spec.name),
             ("parameters", r"### Parameters"),
             ("returns", r"### Returns"),
-            ("errors", r"### Errors")
+            ("errors", r"### Errors"),
         ]
 
-        present = sum(1 for _, pattern in required_sections
-                      if re.search(pattern, description))
+        present = sum(1 for _, pattern in required_sections if re.search(pattern, description))
 
         return present / len(required_sections)
 
 
 # Error Message Templates
+
 
 class ErrorMessageGenerator:
     TEMPLATES = {
@@ -140,7 +135,6 @@ class ErrorMessageGenerator:
             "example": "{correct_format}"
         }}
         """,
-
         "INVALID_INPUT": """
         {{
             "error": "{error_code}",
@@ -149,7 +143,6 @@ class ErrorMessageGenerator:
             "resolution": "Provide value matching {expected_format}"
         }}
         """,
-
         "RATE_LIMITED": """
         {{
             "error": "{error_code}",
@@ -157,16 +150,17 @@ class ErrorMessageGenerator:
             "retry_after": {seconds},
             "resolution": "Wait {seconds} seconds before retrying"
         }}
-        """
+        """,
     }
 
-    def generate(self, error_type: str, context: Dict) -> str:
+    def generate(self, error_type: str, context: dict) -> str:
         """Generate error message from template."""
         template = self.TEMPLATES.get(error_type, self.TEMPLATES["INVALID_INPUT"])
         return template.format(**context)
 
 
 # Tool Schema Generator
+
 
 class ToolSchemaBuilder:
     def __init__(self, name: str):
@@ -183,38 +177,22 @@ class ToolSchemaBuilder:
         self.detailed_description = detailed
         return self
 
-    def add_parameter(self, name: str, param_type: str, description: str,
-                      required: bool = False, default=None, enum=None):
+    def add_parameter(self, name: str, param_type: str, description: str, required: bool = False, default=None, enum=None):
         """Add parameter definition."""
-        self.parameters.append({
-            "name": name,
-            "type": param_type,
-            "description": description,
-            "required": required,
-            "default": default,
-            "enum": enum
-        })
+        self.parameters.append({"name": name, "type": param_type, "description": description, "required": required, "default": default, "enum": enum})
         return self
 
-    def set_returns(self, return_type: str, description: str, properties: Dict):
+    def set_returns(self, return_type: str, description: str, properties: dict):
         """Set return value definition."""
-        self.returns = {
-            "type": return_type,
-            "description": description,
-            "properties": properties
-        }
+        self.returns = {"type": return_type, "description": description, "properties": properties}
         return self
 
     def add_error(self, code: str, description: str, resolution: str):
         """Add error definition."""
-        self.errors.append({
-            "code": code,
-            "description": description,
-            "resolution": resolution
-        })
+        self.errors.append({"code": code, "description": description, "resolution": resolution})
         return self
 
-    def build(self) -> Dict:
+    def build(self) -> dict:
         """Build complete schema."""
         return {
             "name": self.name,
@@ -222,15 +200,9 @@ class ToolSchemaBuilder:
             "detailed_description": self.detailed_description,
             "parameters": {
                 "type": "object",
-                "properties": {
-                    p["name"]: {
-                        "type": p["type"],
-                        "description": p["description"]
-                    }
-                    for p in self.parameters
-                },
-                "required": [p["name"] for p in self.parameters if p["required"]]
+                "properties": {p["name"]: {"type": p["type"], "description": p["description"]} for p in self.parameters},
+                "required": [p["name"] for p in self.parameters if p["required"]],
             },
             "returns": self.returns,
-            "errors": self.errors
+            "errors": self.errors,
         }

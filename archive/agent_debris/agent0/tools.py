@@ -1,6 +1,7 @@
 import zlib
 import json
 
+
 def atp_519_scan(rule_json: str, scenario_json: str) -> dict:
     """
     Simulates the ATP 5-19 scan which checks if a rule detects a scenario.
@@ -26,15 +27,12 @@ def atp_519_scan(rule_json: str, scenario_json: str) -> dict:
 
     # Semantic compression metric (simulated)
     # Higher is better (smaller rule for same detection)
-    rule_bytes = len(rule_json.encode('utf-8'))
-    compressed_bytes = len(zlib.compress(rule_json.encode('utf-8')))
+    rule_bytes = len(rule_json.encode("utf-8"))
+    compressed_bytes = len(zlib.compress(rule_json.encode("utf-8")))
     compression_ratio = rule_bytes / compressed_bytes if compressed_bytes > 0 else 0
 
-    return {
-        "detected": detected,
-        "compression_ratio": compression_ratio,
-        "rule_size_bytes": rule_bytes
-    }
+    return {"detected": detected, "compression_ratio": compression_ratio, "rule_size_bytes": rule_bytes}
+
 
 def judge6_simulator(rule_json: str, scenario_json: str) -> dict:
     """

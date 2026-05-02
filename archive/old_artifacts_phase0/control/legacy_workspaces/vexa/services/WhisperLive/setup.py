@@ -32,15 +32,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
-    packages=find_packages(
-        exclude=(
-            "examples",
-            "Audio-Transcription-Chrome",
-            "Audio-Transcription-Firefox",
-            "requirements",
-            "whisper-finetuning"
-        )
-    ),
+    packages=find_packages(exclude=("examples", "Audio-Transcription-Chrome", "Audio-Transcription-Firefox", "requirements", "whisper-finetuning")),
     install_requires=[
         "PyAudio",
         "faster-whisper==1.1.0",
@@ -54,7 +46,7 @@ setup(
         "openai-whisper==20240930",
         "kaldialign",
         "soundfile",
-        "tokenizers==0.20.3"
+        "tokenizers==0.20.3",
     ],
-    python_requires=">=3.8"
+    python_requires=">=3.8",
 )

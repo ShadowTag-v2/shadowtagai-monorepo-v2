@@ -131,9 +131,7 @@ def analyze_gene(gene_name, species="homo_sapiens", output_prefix=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Perform comprehensive analysis of a gene using gget"
-    )
+    parser = argparse.ArgumentParser(description="Perform comprehensive analysis of a gene using gget")
     parser.add_argument("gene", help="Gene symbol to analyze")
     parser.add_argument(
         "-s",
@@ -141,9 +139,7 @@ def main():
         default="homo_sapiens",
         help="Species (default: homo_sapiens)",
     )
-    parser.add_argument(
-        "-o", "--output", help="Output prefix for files (default: gene name)"
-    )
+    parser.add_argument("-o", "--output", help="Output prefix for files (default: gene name)")
 
     args = parser.parse_args()
 

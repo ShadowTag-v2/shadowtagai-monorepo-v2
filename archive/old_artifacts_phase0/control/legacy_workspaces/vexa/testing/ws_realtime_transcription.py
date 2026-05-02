@@ -44,27 +44,28 @@ except ImportError:
 
 class Colors:
     """ANSI color codes for terminal output"""
-    HEADER = '\033[95m'
-    BLUE = '\033[94m'
-    CYAN = '\033[96m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    BOLD = '\033[1m'
-    END = '\033[0m'
+
+    HEADER = "\033[95m"
+    BLUE = "\033[94m"
+    CYAN = "\033[96m"
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    RED = "\033[91m"
+    BOLD = "\033[1m"
+    END = "\033[0m"
 
 
 def clean_text(text: str) -> str:
     """Clean and format text for display"""
     if not text:
         return ""
-    return re.sub(r'\s+', ' ', text.strip())
+    return re.sub(r"\s+", " ", text.strip())
 
 
 def format_utc_time(utc_string: str) -> str:
     """Format UTC timestamp string for display"""
     try:
-        dt = datetime.fromisoformat(utc_string.replace('Z', '+00:00'))
+        dt = datetime.fromisoformat(utc_string.replace("Z", "+00:00"))
         return dt.strftime("%H:%M:%S")
     except:
         return utc_string
@@ -73,7 +74,8 @@ def format_utc_time(utc_string: str) -> str:
 def clear_screen():
     """Clear the terminal screen"""
     import os
-    os.system('clear' if os.name == 'posix' else 'cls')
+
+    os.system("clear" if os.name == "posix" else "cls")
 
 
 class TranscriptRenderer:
@@ -93,8 +95,8 @@ class TranscriptRenderer:
 
         # Seed in-memory map keyed by absolute_start_time (algorithm step 1)
         for segment in segments:
-            abs_start = segment.get('absolute_start_time')
-            if abs_start and segment.get('text', '').strip():
+            abs_start = segment.get("absolute_start_time")
+            if abs_start and segment.get("text", "").strip():
                 self.transcript_by_abs_start[abs_start] = segment
 
         print(f"{Colors.GREEN}✓ Seeded {len(self.transcript_by_abs_start)} segments with absolute timestamps{Colors.END}")
@@ -107,14 +109,14 @@ class TranscriptRenderer:
 
         updated_count = 0
         for segment in segments:
-            abs_start = segment.get('absolute_start_time')
-            if not abs_start or not segment.get('text', '').strip():
+            abs_start = segment.get("absolute_start_time")
+            if not abs_start or not segment.get("text", "").strip():
                 continue
 
             # Deduplication logic: keep newer updated_at timestamp (algorithm step 2)
             existing = self.transcript_by_abs_start.get(abs_start)
-            if existing and existing.get('updated_at') and segment.get('updated_at'):
-                if segment['updated_at'] < existing['updated_at']:
+            if existing and existing.get("updated_at") and segment.get("updated_at"):
+                if segment["updated_at"] < existing["updated_at"]:
                     continue  # Keep existing (newer)
 
             self.transcript_by_abs_start[abs_start] = segment
@@ -126,8 +128,12 @@ class TranscriptRenderer:
 
     def set_status(self, status: str, meeting_label: str):
         """Update meeting status"""
-        self.latest_status = f"{Colors.BOLD}{Colors.YELLOW}Status:{Colors.END} {Colors.CYAN}{meeting_label}{Colors.END} → {Colors.GREEN}{status}{Colors.END}"
-        print(f"{Colors.BOLD}[{datetime.utcnow().strftime('%H:%M:%S')}] Meeting {Colors.CYAN}{meeting_label}{Colors.END} Status:{Colors.END} {Colors.GREEN}{status}{Colors.END}")
+        self.latest_status = (
+            f"{Colors.BOLD}{Colors.YELLOW}Status:{Colors.END} {Colors.CYAN}{meeting_label}{Colors.END} → {Colors.GREEN}{status}{Colors.END}"
+        )
+        print(
+            f"{Colors.BOLD}[{datetime.utcnow().strftime('%H:%M:%S')}] Meeting {Colors.CYAN}{meeting_label}{Colors.END} Status:{Colors.END} {Colors.GREEN}{status}{Colors.END}"
+        )
         self._render()
 
     def _render(self):
@@ -140,19 +146,18 @@ class TranscriptRenderer:
     def _render_full(self):
         """Full re-render: clear screen and show complete transcript"""
         # Clear screen and move cursor to top
-        print('\033[H\033[J', end='')
+        print("\033[H\033[J", end="")
 
         # Render header
-        print(f"{Colors.HEADER}{'='*60}{Colors.END}")
+        print(f"{Colors.HEADER}{'=' * 60}{Colors.END}")
         print(f"{Colors.BOLD}📝 LIVE TRANSCRIPT (Real-time WebSocket Transcription){Colors.END}")
         if self.latest_status:
             print(self.latest_status)
-        print(f"{Colors.HEADER}{'='*60}{Colors.END}")
+        print(f"{Colors.HEADER}{'=' * 60}{Colors.END}")
 
         # Sort segments by absolute start time
         sorted_segments = sorted(
-            (s for s in self.transcript_by_abs_start.values() if s.get('absolute_start_time')),
-            key=lambda s: s['absolute_start_time']
+            (s for s in self.transcript_by_abs_start.values() if s.get("absolute_start_time")), key=lambda s: s["absolute_start_time"]
         )
 
         # Group consecutive segments by speaker
@@ -160,10 +165,10 @@ class TranscriptRenderer:
 
         # Render all groups
         for group in groups:
-            start_time = format_utc_time(group['start_time'])
-            end_time = format_utc_time(group['end_time'])
-            speaker = group['speaker']
-            text = clean_text(group['text'])
+            start_time = format_utc_time(group["start_time"])
+            end_time = format_utc_time(group["end_time"])
+            speaker = group["speaker"]
+            text = clean_text(group["text"])
 
             print(f"{Colors.CYAN}{speaker}{Colors.END} [{Colors.BLUE}{start_time} - {end_time}{Colors.END}]: {Colors.BOLD}{text}{Colors.END}")
             print()  # Add blank line after each speaker group
@@ -172,17 +177,16 @@ class TranscriptRenderer:
         """Append-only rendering: only print new segments (legacy mode)"""
         if not self.initialized:
             clear_screen()
-            print(f"{Colors.HEADER}{'='*60}{Colors.END}")
+            print(f"{Colors.HEADER}{'=' * 60}{Colors.END}")
             print(f"{Colors.BOLD}📝 LIVE TRANSCRIPT (Real-time WebSocket Transcription){Colors.END}")
             if self.latest_status:
                 print(self.latest_status)
-            print(f"{Colors.HEADER}{'='*60}{Colors.END}")
+            print(f"{Colors.HEADER}{'=' * 60}{Colors.END}")
             self.initialized = True
 
         # Sort segments by absolute start time
         sorted_segments = sorted(
-            (s for s in self.transcript_by_abs_start.values() if s.get('absolute_start_time')),
-            key=lambda s: s['absolute_start_time']
+            (s for s in self.transcript_by_abs_start.values() if s.get("absolute_start_time")), key=lambda s: s["absolute_start_time"]
         )
 
         # Group consecutive segments by speaker
@@ -192,10 +196,10 @@ class TranscriptRenderer:
         for group in groups:
             key = f"{group['start_time']}|{clean_text(group['text'])}"
             if key not in self.printed_ids:
-                start_time = format_utc_time(group['start_time'])
-                end_time = format_utc_time(group['end_time'])
-                speaker = group['speaker']
-                text = clean_text(group['text'])
+                start_time = format_utc_time(group["start_time"])
+                end_time = format_utc_time(group["end_time"])
+                speaker = group["speaker"]
+                text = clean_text(group["text"])
 
                 print(f"{Colors.CYAN}{speaker}{Colors.END} [{Colors.BLUE}{start_time} - {end_time}{Colors.END}]: {Colors.BOLD}{text}{Colors.END}")
                 print()  # Add blank line after each speaker group
@@ -207,28 +211,23 @@ class TranscriptRenderer:
         current_group = None
 
         for segment in segments:
-            speaker = segment.get('speaker', 'Unknown')
-            text = clean_text(segment.get('text', ''))
-            start_time = segment['absolute_start_time']
-            end_time = segment.get('absolute_end_time', start_time)
+            speaker = segment.get("speaker", "Unknown")
+            text = clean_text(segment.get("text", ""))
+            start_time = segment["absolute_start_time"]
+            end_time = segment.get("absolute_end_time", start_time)
 
             if not text:
                 continue
 
-            if current_group and current_group['speaker'] == speaker:
+            if current_group and current_group["speaker"] == speaker:
                 # Merge with current group
-                current_group['text'] += ' ' + text
-                current_group['end_time'] = end_time
+                current_group["text"] += " " + text
+                current_group["end_time"] = end_time
             else:
                 # Start new group
                 if current_group:
                     groups.append(current_group)
-                current_group = {
-                    'speaker': speaker,
-                    'text': text,
-                    'start_time': start_time,
-                    'end_time': end_time
-                }
+                current_group = {"speaker": speaker, "text": text, "start_time": start_time, "end_time": end_time}
 
         if current_group:
             groups.append(current_group)
@@ -252,13 +251,15 @@ async def fetch_rest_transcript(api_base: str, api_key: str, platform: str, nati
         data = response.json()
 
         # Handle response format (top-level segments only)
-        segments = data.get('segments', [])
+        segments = data.get("segments", [])
 
         print(f"{Colors.GREEN}✓ REST API response: {len(segments)} segments{Colors.END}")
         return segments
 
 
-async def run_websocket_validator(api_base: str, ws_url: str, api_key: str, platform: str, native_id: str, raw_mode: bool = False, append_only: bool = False):
+async def run_websocket_validator(
+    api_base: str, ws_url: str, api_key: str, platform: str, native_id: str, raw_mode: bool = False, append_only: bool = False
+):
     """Main WebSocket validator implementation"""
 
     print(f"{Colors.BOLD}{Colors.HEADER}Real-time WebSocket Transcription Client{Colors.END}")
@@ -291,10 +292,7 @@ async def run_websocket_validator(api_base: str, ws_url: str, api_key: str, plat
             print(f"{Colors.GREEN}✓ WebSocket connected{Colors.END}")
 
             # Step 3: Subscribe to meeting for live transcript updates
-            subscribe_msg = {
-                "action": "subscribe",
-                "meetings": [{"platform": platform, "native_id": native_id}]
-            }
+            subscribe_msg = {"action": "subscribe", "meetings": [{"platform": platform, "native_id": native_id}]}
 
             await ws.send(json.dumps(subscribe_msg))
             print(f"{Colors.GREEN}✓ Subscribed to meeting{Colors.END}")
@@ -320,6 +318,7 @@ async def run_websocket_validator(api_base: str, ws_url: str, api_key: str, plat
                             # Write to single persistent log file
                             import os
                             from datetime import datetime
+
                             # Create logs directory relative to script location
                             script_dir = os.path.dirname(os.path.abspath(__file__))
                             log_dir = os.path.join(script_dir, "logs")
@@ -327,34 +326,34 @@ async def run_websocket_validator(api_base: str, ws_url: str, api_key: str, plat
                             # Use single persistent log file
                             log_file = f"{log_dir}/ws_raw.log"
 
-                            with open(log_file, 'a') as f:
+                            with open(log_file, "a") as f:
                                 f.write(f"{datetime.now().isoformat()} - {frame}\n")
 
                         msg = json.loads(frame)
-                        event_type = msg.get('type', 'unknown')
-                        payload = msg.get('payload', {})
-                        meeting = msg.get('meeting', {})
+                        event_type = msg.get("type", "unknown")
+                        payload = msg.get("payload", {})
+                        meeting = msg.get("meeting", {})
 
                         meeting_label = f"{meeting.get('platform')}:{meeting.get('native_id') or meeting.get('native_meeting_id')}"
 
                         # Process transcript events: mutable (live updates) and finalized (completed segments)
                         if event_type in ("transcript.mutable", "transcript.finalized"):
-                            segments = payload.get('segments', [])
+                            segments = payload.get("segments", [])
                             renderer.upsert_segments(segments, event_type)
 
                         elif event_type == "meeting.status":
-                            status = payload.get('status', 'unknown')
+                            status = payload.get("status", "unknown")
                             renderer.set_status(status, meeting_label)
 
                         elif event_type == "subscribed":
-                            meetings = msg.get('meetings', [])
+                            meetings = msg.get("meetings", [])
                             print(f"{Colors.GREEN}✓ Subscribed to meetings: {meetings}{Colors.END}")
 
                         elif event_type == "pong":
                             pass  # Silent
 
                         elif event_type == "error":
-                            error = msg.get('error', 'unknown error')
+                            error = msg.get("error", "unknown error")
                             print(f"{Colors.RED}✗ Error: {error}{Colors.END}")
 
                         else:
@@ -432,7 +431,7 @@ Examples:
     --platform google_meet \\
     --native-id kzj-grsa-cqf \\
     --append-only
-        """
+        """,
     )
 
     parser.add_argument("--api-base", required=True, help="API base URL (e.g., http://localhost:18056)")
@@ -446,15 +445,17 @@ Examples:
     args = parser.parse_args()
 
     try:
-        asyncio.run(run_websocket_validator(
-            api_base=args.api_base,
-            ws_url=args.ws_url,
-            api_key=args.api_key,
-            platform=args.platform,
-            native_id=args.native_id,
-            raw_mode=args.raw,
-            append_only=args.append_only
-        ))
+        asyncio.run(
+            run_websocket_validator(
+                api_base=args.api_base,
+                ws_url=args.ws_url,
+                api_key=args.api_key,
+                platform=args.platform,
+                native_id=args.native_id,
+                raw_mode=args.raw,
+                append_only=args.append_only,
+            )
+        )
     except KeyboardInterrupt:
         print(f"\n{Colors.YELLOW}Interrupted by user{Colors.END}")
         sys.exit(130)

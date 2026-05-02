@@ -86,6 +86,95 @@ done
 
 _log "Loaded ${loaded}/${total} secrets from Secret Manager (${failed} failed)"
 
+# --- Python fallback with circuit breaker (for failed secrets) ---
+if [ "$failed" -gt 0 ]; then
+  _log "Attempting Python fallback with circuit breaker for ${failed} failed secret(s)..."
+
+  # Collect failed secret IDs
+  _failed_secrets=""
+  for entry in $SECRETS; do
+    [ -z "$entry" ] && continue
+    var_name="${entry%%:*}"
+    secret_id="${entry#*:}"
+    val=$(eval "echo \"\${${var_name}:-}\"")
+    if [ -z "$val" ]; then
+      _failed_secrets="${_failed_secrets} ${var_name}:${secret_id}"
+    fi
+  done
+
+  # Python helper: gates Secret Manager calls through the circuit breaker
+  _py_fallback_result=$(python3 -c "
+import sys, os, json
+sys.path.insert(0, '$(cd "$(dirname "$0")/.." && pwd)')
+
+failed_pairs = '${_failed_secrets}'.strip().split()
+if not failed_pairs:
+    sys.exit(0)
+
+# Lazy circuit breaker init
+breaker = None
+try:
+    from packages.circuit_breaker.telemetry_bridge import default_registry
+    breaker = default_registry.get_or_create(
+        'secret_manager',
+        failure_threshold=3,
+        reset_timeout_s=60.0,
+    )
+except Exception:
+    pass  # breaker unavailable — proceed ungated
+
+try:
+    from google.cloud import secretmanager
+    client = secretmanager.SecretManagerServiceClient()
+except Exception:
+    sys.exit(0)  # SDK unavailable
+
+results = {}
+for pair in failed_pairs:
+    var_name, secret_id = pair.split(':', 1)
+    if breaker is not None and not breaker.allow_request():
+        print(f'BREAKER_OPEN:{var_name}', file=sys.stderr)
+        continue
+    try:
+        name = f'projects/${PROJECT_ID}/secrets/{secret_id}/versions/latest'
+        response = client.access_secret_version(request={'name': name})
+        results[var_name] = response.payload.data.decode('UTF-8')
+        if breaker is not None:
+            breaker.record_success()
+    except Exception as e:
+        if breaker is not None:
+            breaker.record_failure()
+        print(f'FALLBACK_FAIL:{var_name}:{e}', file=sys.stderr)
+
+for k, v in results.items():
+    print(f'{k}={v}')
+" 2>&1)
+
+  # Parse Python output and export recovered secrets
+  _recovered=0
+  while IFS= read -r line; do
+    case "$line" in
+      BREAKER_OPEN:*|FALLBACK_FAIL:*)
+        _log "$line"
+        ;;
+      *=*)
+        _key="${line%%=*}"
+        _val="${line#*=}"
+        export "${_key}=${_val}"
+        _recovered=$((_recovered + 1))
+        ;;
+    esac
+  done <<< "$_py_fallback_result"
+
+  if [ "$_recovered" -gt 0 ]; then
+    _log "Python fallback recovered ${_recovered} secret(s) via circuit breaker"
+    loaded=$((loaded + _recovered))
+    failed=$((failed - _recovered))
+  fi
+fi
+
+_log "Final: ${loaded}/${total} secrets loaded (${failed} failed)"
+
 # --- --export flag: print for eval usage ---
 if [ "${1:-}" = "--export" ]; then
   echo "export GOOGLE_CLOUD_PROJECT=\"shadowtag-omega-v4\""

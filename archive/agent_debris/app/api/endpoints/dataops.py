@@ -1,7 +1,8 @@
 """Data Operations API endpoints"""
+
 from fastapi import APIRouter, Request, HTTPException
 from pydantic import BaseModel
-from typing import Dict, List, Any, Optional
+from typing import Any
 
 router = APIRouter()
 
@@ -26,11 +27,7 @@ async def store_embeddings(request: StoreEmbeddingsRequest, req: Request):
     if not dataops:
         raise HTTPException(status_code=503, detail="DataOps service not initialized")
 
-    result = await dataops.store_embeddings(
-        embedding_id=request.embedding_id,
-        embeddings=request.embeddings,
-        metadata=request.metadata
-    )
+    result = await dataops.store_embeddings(embedding_id=request.embedding_id, embeddings=request.embeddings, metadata=request.metadata)
 
     return result
 
@@ -59,11 +56,7 @@ async def save_adapter(request: SaveAdapterRequest, req: Request):
     if not dataops:
         raise HTTPException(status_code=503, detail="DataOps service not initialized")
 
-    result = await dataops.save_adapter(
-        adapter_id=request.adapter_id,
-        adapter_weights=request.adapter_weights,
-        metadata=request.metadata
-    )
+    result = await dataops.save_adapter(adapter_id=request.adapter_id, adapter_weights=request.adapter_weights, metadata=request.metadata)
 
     return result
 

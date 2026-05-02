@@ -80,40 +80,19 @@ async def list_wcag_principles():
         {
             "principle": WCAGPrinciple.PERCEIVABLE,
             "description": "Information and UI components must be presentable",
-            "guidelines": [
-                "Text Alternatives",
-                "Time-based Media",
-                "Adaptable",
-                "Distinguishable"
-            ]
+            "guidelines": ["Text Alternatives", "Time-based Media", "Adaptable", "Distinguishable"],
         },
         {
             "principle": WCAGPrinciple.OPERABLE,
             "description": "UI components and navigation must be operable",
-            "guidelines": [
-                "Keyboard Accessible",
-                "Enough Time",
-                "Seizures and Physical Reactions",
-                "Navigable",
-                "Input Modalities"
-            ]
+            "guidelines": ["Keyboard Accessible", "Enough Time", "Seizures and Physical Reactions", "Navigable", "Input Modalities"],
         },
         {
             "principle": WCAGPrinciple.UNDERSTANDABLE,
             "description": "Information and operation must be understandable",
-            "guidelines": [
-                "Readable",
-                "Predictable",
-                "Input Assistance"
-            ]
+            "guidelines": ["Readable", "Predictable", "Input Assistance"],
         },
-        {
-            "principle": WCAGPrinciple.ROBUST,
-            "description": "Content must be robust enough for various user agents",
-            "guidelines": [
-                "Compatible"
-            ]
-        }
+        {"principle": WCAGPrinciple.ROBUST, "description": "Content must be robust enough for various user agents", "guidelines": ["Compatible"]},
     ]
 
 
@@ -121,19 +100,7 @@ async def list_wcag_principles():
 async def list_wcag_levels():
     """List WCAG conformance levels"""
     return [
-        {
-            "level": WCAGLevel.A,
-            "description": "Minimum level of conformance",
-            "required_for": "Basic accessibility"
-        },
-        {
-            "level": WCAGLevel.AA,
-            "description": "Mid-range conformance (recommended)",
-            "required_for": "Government sites, most commercial sites"
-        },
-        {
-            "level": WCAGLevel.AAA,
-            "description": "Highest level of conformance",
-            "required_for": "Specialized accessibility needs"
-        }
+        {"level": WCAGLevel.A, "description": "Minimum level of conformance", "required_for": "Basic accessibility"},
+        {"level": WCAGLevel.AA, "description": "Mid-range conformance (recommended)", "required_for": "Government sites, most commercial sites"},
+        {"level": WCAGLevel.AAA, "description": "Highest level of conformance", "required_for": "Specialized accessibility needs"},
     ]

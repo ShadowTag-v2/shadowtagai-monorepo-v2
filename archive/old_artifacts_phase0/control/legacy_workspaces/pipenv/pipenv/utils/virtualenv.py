@@ -43,9 +43,7 @@ def warn_in_virtualenv(project):
             "to force pipenv to ignore that environment and create ",
             "its own instead.",
         )
-        err.print(
-            "You can set [bold]PIPENV_VERBOSITY=-1[/bold] to suppress this warning."
-        )
+        err.print("You can set [bold]PIPENV_VERBOSITY=-1[/bold] to suppress this warning.")
 
 
 def do_create_virtualenv(project, python=None, site_packages=None, pypi_mirror=None):
@@ -74,9 +72,7 @@ def do_create_virtualenv(project, python=None, site_packages=None, pypi_mirror=N
         pip_config = {}
 
     error = None
-    with console.status(
-        "Creating virtual environment...", spinner=project.s.PIPENV_SPINNER
-    ):
+    with console.status("Creating virtual environment...", spinner=project.s.PIPENV_SPINNER):
         cmd = _create_virtualenv_cmd(project, python, site_packages=site_packages)
 
         # Issue: https://github.com/pypa/pipenv/issues/6568
@@ -87,9 +83,7 @@ def do_create_virtualenv(project, python=None, site_packages=None, pypi_mirror=N
 
         err.print(f"[cyan]{c.stdout}[/cyan]")
         if c.returncode != 0:
-            virtualenv_error = (
-                c.stderr if project.s.is_verbose() else exceptions.prettify_exc(c.stderr)
-            )
+            virtualenv_error = c.stderr if project.s.is_verbose() else exceptions.prettify_exc(c.stderr)
             # Issue: https://github.com/pypa/pipenv/issues/5601
             # virtualenv may not support alternative Python implementations (e.g.
             # RustPython, GraalPy). Fall back to the target interpreter's own
@@ -97,21 +91,12 @@ def do_create_virtualenv(project, python=None, site_packages=None, pypi_mirror=N
             # to ship. Only attempt the fallback when the user has not explicitly
             # chosen a virtualenv creator via PIPENV_VIRTUALENV_CREATOR.
             if not project.s.PIPENV_VIRTUALENV_CREATOR:
-                err.print(
-                    "[yellow]virtualenv failed; retrying with the interpreter's "
-                    "built-in venv module...[/yellow]"
-                )
-                fallback_cmd = _create_builtin_venv_cmd(
-                    project, python, site_packages=site_packages
-                )
+                err.print("[yellow]virtualenv failed; retrying with the interpreter's built-in venv module...[/yellow]")
+                fallback_cmd = _create_builtin_venv_cmd(project, python, site_packages=site_packages)
                 c2 = subprocess_run(fallback_cmd, env=pip_config, cwd=temp_dir)
                 err.print(f"[cyan]{c2.stdout}[/cyan]")
                 if c2.returncode == 0:
-                    err.print(
-                        environments.PIPENV_SPINNER_OK_TEXT.format(
-                            "Successfully created virtual environment!"
-                        )
-                    )
+                    err.print(environments.PIPENV_SPINNER_OK_TEXT.format("Successfully created virtual environment!"))
                     err.print(
                         "[bold yellow]Note:[/bold yellow] Created using the interpreter's "
                         "built-in [bold]venv[/bold] module because [bold]virtualenv[/bold] "
@@ -121,30 +106,14 @@ def do_create_virtualenv(project, python=None, site_packages=None, pypi_mirror=N
                 else:
                     # Both strategies failed — surface the original virtualenv error
                     # plus the venv error so the user has full context.
-                    venv_error = (
-                        c2.stderr
-                        if project.s.is_verbose()
-                        else exceptions.prettify_exc(c2.stderr)
-                    )
+                    venv_error = c2.stderr if project.s.is_verbose() else exceptions.prettify_exc(c2.stderr)
                     error = f"{virtualenv_error}\n\nvenv fallback error:\n{venv_error}"
-                    err.print(
-                        environments.PIPENV_SPINNER_FAIL_TEXT.format(
-                            "Failed creating virtual environment"
-                        )
-                    )
+                    err.print(environments.PIPENV_SPINNER_FAIL_TEXT.format("Failed creating virtual environment"))
             else:
                 error = virtualenv_error
-                err.print(
-                    environments.PIPENV_SPINNER_FAIL_TEXT.format(
-                        "Failed creating virtual environment"
-                    )
-                )
+                err.print(environments.PIPENV_SPINNER_FAIL_TEXT.format("Failed creating virtual environment"))
         else:
-            err.print(
-                environments.PIPENV_SPINNER_OK_TEXT.format(
-                    "Successfully created virtual environment!"
-                )
-            )
+            err.print(environments.PIPENV_SPINNER_OK_TEXT.format("Successfully created virtual environment!"))
     if error is not None:
         raise exceptions.VirtualenvCreationException(extra=f"[red]{error}[/red]")
 
@@ -251,17 +220,11 @@ def ensure_virtualenv(project, python=None, site_packages=None, pypi_mirror=None
             else:  # It's a Path object
                 python = python.as_posix()
 
-        err.print(
-            "[bold yellow]Virtualenv already exists but Python version differs. "
-            "Recreating virtualenv...[/bold yellow]"
-        )
+        err.print("[bold yellow]Virtualenv already exists but Python version differs. Recreating virtualenv...[/bold yellow]")
         # If VIRTUAL_ENV is set, there is a possibility that we are
         # going to remove the active virtualenv that the user cares
         # about, so confirm first.
-        if "VIRTUAL_ENV" in os.environ and not (
-            project.s.PIPENV_YES
-            or Confirm.ask("Recreate existing virtualenv?", default=True)
-        ):
+        if "VIRTUAL_ENV" in os.environ and not (project.s.PIPENV_YES or Confirm.ask("Recreate existing virtualenv?", default=True)):
             sys.exit(1)
         # Remove the virtualenv.
         cleanup_virtualenv(project, bare=True)
@@ -282,9 +245,7 @@ def cleanup_virtualenv(project, bare=True):
         # Delete the virtualenv.
         shutil.rmtree(project.virtualenv_location)
     except OSError as e:
-        err.print(
-            f"[bold][red]Error:[/red][/bold] An error occurred while removing [green]{project.virtualenv_location}[/green]!"
-        )
+        err.print(f"[bold][red]Error:[/red][/bold] An error occurred while removing [green]{project.virtualenv_location}[/green]!")
         err.print(f"[cyan]{e}[/cyan]")
 
 
@@ -296,9 +257,7 @@ def ensure_python(project, python=None):
     def abort(msg=""):
         err.print(f"[red]{msg}[/red]")
         err.print("You can specify specific versions of Python with:")
-        err.print(
-            f"[yellow]$ pipenv --python {os.sep.join(['path', 'to', 'python'])}[/yellow]"
-        )
+        err.print(f"[yellow]$ pipenv --python {os.sep.join(['path', 'to', 'python'])}[/yellow]")
         sys.exit(1)
 
     project.s.USING_DEFAULT_PYTHON = not python
@@ -309,13 +268,9 @@ def ensure_python(project, python=None):
             range_pattern = r"^[<>]=?|!="
             if re.search(range_pattern, python):
                 # PEP 440 specifier like ">=3.8" — find the best installed match.
-                path_to_python = _find_python_for_specifier(
-                    python, pyenv_only=project.s.PIPENV_PYENV_ONLY
-                )
+                path_to_python = _find_python_for_specifier(python, pyenv_only=project.s.PIPENV_PYENV_ONLY)
                 if path_to_python:
-                    err.print(
-                        f"Found Python satisfying [cyan]{python}[/cyan]: [green]{path_to_python}[/green]"
-                    )
+                    err.print(f"Found Python satisfying [cyan]{python}[/cyan]: [green]{path_to_python}[/green]")
                     return path_to_python
                 else:
                     err.print(
@@ -341,12 +296,7 @@ def ensure_python(project, python=None):
         err.print(f"Path to python: {path_to_python}")
 
     # If not found and we're on Windows, try using the py launcher
-    if (
-        not path_to_python
-        and os.name == "nt"
-        and python is not None
-        and (python[0].isdigit() or python.startswith("python"))
-    ):
+    if not path_to_python and os.name == "nt" and python is not None and (python[0].isdigit() or python.startswith("python")):
         # Extract version number if it's in format like "python3.11" or "python_version = 3.11"
         if python.startswith("python"):
             version_match = re.search(r"(\d+\.\d+)", python)
@@ -365,11 +315,7 @@ def ensure_python(project, python=None):
 
     if not path_to_python and python is not None:
         # We need to install Python.
-        err.print(
-            "[bold][red]Warning:[/red][/bold] "
-            f"Python [cyan]{python}[/cyan] "
-            "was not found on your system..."
-        )
+        err.print(f"[bold][red]Warning:[/red][/bold] Python [cyan]{python}[/cyan] was not found on your system...")
         # check for python installers
         from pipenv.installers import (
             Asdf,
@@ -395,11 +341,7 @@ def ensure_python(project, python=None):
         # neither pyenv nor asdf are available. pymanager is the tool recommended
         # by the Python documentation for installing Python on Windows.
         # See: https://docs.python.org/3/using/windows.html#python-install-manager
-        if (
-            installer is None
-            and os.name == "nt"
-            and not project.s.PIPENV_DONT_USE_PYMANAGER
-        ):
+        if installer is None and os.name == "nt" and not project.s.PIPENV_DONT_USE_PYMANAGER:
             with contextlib.suppress(InstallerNotFound):
                 installer = PyManager(project)
 
@@ -437,9 +379,7 @@ def ensure_python(project, python=None):
                 abort()
 
             # Tell the user we're installing Python.
-            console.print(
-                f"[bold]Installing [green]CPython[/green] {version} with {installer.cmd}[/bold]"
-            )
+            console.print(f"[bold]Installing [green]CPython[/green] {version} with {installer.cmd}[/bold]")
             console.print("(this may take a few minutes)[bold]...[/bold]")
             with console.status("Installing python...", spinner=project.s.PIPENV_SPINNER):
                 try:
@@ -454,9 +394,7 @@ def ensure_python(project, python=None):
                     err.print(f"[cyan]{c.stdout}[/cyan]")
             # Find the newly installed Python, hopefully.
             version = str(version)
-            path_to_python = find_a_system_python(
-                version, pyenv_only=project.s.PIPENV_PYENV_ONLY
-            )
+            path_to_python = find_a_system_python(version, pyenv_only=project.s.PIPENV_PYENV_ONLY)
             try:
                 assert python_version(path_to_python) == version
             except AssertionError:
@@ -502,9 +440,7 @@ def _find_python_for_specifier(specifier_str, pyenv_only=False):
 
     # find_all_python_versions already sorts descending; pick first.
     best = sorted(candidates, key=lambda x: x.version_sort, reverse=True)[0]
-    path = (
-        best.path if best.path else (Path(best.executable) if best.executable else None)
-    )
+    path = best.path if best.path else (Path(best.executable) if best.executable else None)
     return str(path) if path else None
 
 
@@ -624,9 +560,7 @@ def do_where(project, virtualenv=False, bare=True):
         # Shorten the virtual display of the path to the virtualenv.
         if not bare:
             location = shorten_path(location)
-            err.print(
-                f"Pipfile found at [green]{location}[/green].\nConsidering this to be the project home."
-            )
+            err.print(f"Pipfile found at [green]{location}[/green].\nConsidering this to be the project home.")
         else:
             console.print(project.project_directory)
     else:
@@ -689,7 +623,5 @@ def _inline_activate_virtualenv(project):
     # Catch all errors, just in case.
     except Exception:
         err.print(
-            "[bold][red]Warning: [/red][/bold]"
-            "There was an unexpected error while activating your "
-            "virtualenv. Continuing anyway..."
+            "[bold][red]Warning: [/red][/bold]There was an unexpected error while activating your virtualenv. Continuing anyway..."
         )

@@ -14,7 +14,6 @@ from fastapi import FastAPI, HTTPException, status
 from prometheus_client import make_asgi_app
 from contextlib import asynccontextmanager
 import time
-from typing import Dict
 
 from app.config import settings
 from app.models.decision import DecisionContext, DecisionResult
@@ -45,36 +44,42 @@ logger = get_logger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan management."""
-    logger.info("Starting SHADOWTAGAI Ultrathink Ecosystem", extra={
-        "service_name": settings.service_name,
-        "version": "2.0.0-ecosystem",
-    })
+    logger.info(
+        "Starting SHADOWTAGAI Ultrathink Ecosystem",
+        extra={
+            "service_name": settings.service_name,
+            "version": "2.0.0-ecosystem",
+        },
+    )
 
     # Validate kernel chain with JR Engine
     jr_engine = JREngine()
-    validation = jr_engine.validate_kernel_chain([
-        "ATP519ScanKernel",
-        "JudgeSixClassifyKernel",
-        "AuditCompressKernel",
-    ])
+    validation = jr_engine.validate_kernel_chain(
+        [
+            "ATP519ScanKernel",
+            "JudgeSixClassifyKernel",
+            "AuditCompressKernel",
+        ]
+    )
 
     if not validation.passed:
-        logger.error("Kernel chain failed JR Engine validation", extra={
-            "validation": validation.dict()
-        })
+        logger.error("Kernel chain failed JR Engine validation", extra={"validation": validation.dict()})
         raise RuntimeError("Kernel chain validation failed")
 
-    logger.info("Pinkln ecosystem initialized", extra={
-        "approved_kernels": validation.approved_kernels,
-        "ecosystem_features": [
-            "glicko2_ratings",
-            "multi_agent_debates",
-            "dte_evolution",
-            "cheat_sheet_fusion",
-            "grpo_training",
-            "wealth_planning",
-        ],
-    })
+    logger.info(
+        "Pinkln ecosystem initialized",
+        extra={
+            "approved_kernels": validation.approved_kernels,
+            "ecosystem_features": [
+                "glicko2_ratings",
+                "multi_agent_debates",
+                "dte_evolution",
+                "cheat_sheet_fusion",
+                "grpo_training",
+                "wealth_planning",
+            ],
+        },
+    )
 
     yield
 
@@ -118,6 +123,7 @@ wealth_accelerator = WealthAccelerator()
 # =============================================================================
 # CORE KERNEL CHAIN ENDPOINTS (original functionality)
 # =============================================================================
+
 
 @app.get("/")
 async def root():
@@ -178,11 +184,14 @@ async def execute_decision(context: DecisionContext):
                 success=True,
             )
 
-        logger.info("Decision executed successfully", extra={
-            "trace_id": result.trace_id,
-            "decision": result.decision,
-            "confidence": result.confidence,
-        })
+        logger.info(
+            "Decision executed successfully",
+            extra={
+                "trace_id": result.trace_id,
+                "decision": result.decision,
+                "confidence": result.confidence,
+            },
+        )
 
         return result
 
@@ -192,26 +201,28 @@ async def execute_decision(context: DecisionContext):
         if metrics_collector:
             metrics_collector.decisions_total.labels(status="failure").inc()
 
-        logger.error("Decision execution failed", extra={
-            "trace_id": context.trace_id,
-            "error": str(e),
-        })
-
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"error": str(e), "trace_id": context.trace_id}
+        logger.error(
+            "Decision execution failed",
+            extra={
+                "trace_id": context.trace_id,
+                "error": str(e),
+            },
         )
+
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail={"error": str(e), "trace_id": context.trace_id})
 
 
 @app.get("/validation")
 async def get_validation_report():
     """Get JR Engine validation report for the kernel chain."""
     jr_engine = JREngine()
-    validation = jr_engine.validate_kernel_chain([
-        "ATP519ScanKernel",
-        "JudgeSixClassifyKernel",
-        "AuditCompressKernel",
-    ])
+    validation = jr_engine.validate_kernel_chain(
+        [
+            "ATP519ScanKernel",
+            "JudgeSixClassifyKernel",
+            "AuditCompressKernel",
+        ]
+    )
 
     return validation.dict()
 
@@ -219,6 +230,7 @@ async def get_validation_report():
 # =============================================================================
 # ECOSYSTEM ENDPOINTS (new functionality)
 # =============================================================================
+
 
 @app.post("/debate")
 async def run_debate(question: str, num_agents: int = 3, max_rounds: int = 3):
@@ -237,10 +249,10 @@ async def run_debate(question: str, num_agents: int = 3, max_rounds: int = 3):
     agents = [
         DebateAgent(
             config=AgentConfig(
-                name=f"DebateAgent_{i+1}",
-                description=f"Agent {i+1} for multi-agent debate",
+                name=f"DebateAgent_{i + 1}",
+                description=f"Agent {i + 1} for multi-agent debate",
             ),
-            persona=f"Critical thinker #{i+1}",
+            persona=f"Critical thinker #{i + 1}",
         )
         for i in range(num_agents)
     ]
@@ -339,10 +351,7 @@ async def get_cheat_sheet(sheet_type: str = "kernel"):
     elif sheet_type == "wealth":
         sheet = create_wealth_planning_cheat_sheet()
     else:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Unknown sheet_type: {sheet_type}. Use 'kernel' or 'wealth'"
-        )
+        raise HTTPException(status_code=400, detail=f"Unknown sheet_type: {sheet_type}. Use 'kernel' or 'wealth'")
 
     return {
         "cheat_sheet": sheet.dict(),

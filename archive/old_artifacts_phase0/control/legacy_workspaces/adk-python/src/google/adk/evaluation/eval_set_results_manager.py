@@ -20,30 +20,28 @@ from .eval_result import EvalCaseResult, EvalSetResult
 
 
 class EvalSetResultsManager(ABC):
-  """An interface to manage Eval Set Results."""
+    """An interface to manage Eval Set Results."""
 
-  @abstractmethod
-  def save_eval_set_result(
-      self,
-      app_name: str,
-      eval_set_id: str,
-      eval_case_results: list[EvalCaseResult],
-  ) -> None:
-    """Creates and saves a new EvalSetResult given eval_case_results."""
-    raise NotImplementedError()
+    @abstractmethod
+    def save_eval_set_result(
+        self,
+        app_name: str,
+        eval_set_id: str,
+        eval_case_results: list[EvalCaseResult],
+    ) -> None:
+        """Creates and saves a new EvalSetResult given eval_case_results."""
+        raise NotImplementedError()
 
-  @abstractmethod
-  def get_eval_set_result(
-      self, app_name: str, eval_set_result_id: str
-  ) -> EvalSetResult:
-    """Returns the EvalSetResult from app_name and eval_set_result_id.
+    @abstractmethod
+    def get_eval_set_result(self, app_name: str, eval_set_result_id: str) -> EvalSetResult:
+        """Returns the EvalSetResult from app_name and eval_set_result_id.
 
-    Raises:
-      NotFoundError: If the EvalSetResult is not found.
-    """
-    raise NotImplementedError()
+        Raises:
+          NotFoundError: If the EvalSetResult is not found.
+        """
+        raise NotImplementedError()
 
-  @abstractmethod
-  def list_eval_set_results(self, app_name: str) -> list[str]:
-    """Returns the eval result ids that belong to the given app_name."""
-    raise NotImplementedError()
+    @abstractmethod
+    def list_eval_set_results(self, app_name: str) -> list[str]:
+        """Returns the eval result ids that belong to the given app_name."""
+        raise NotImplementedError()

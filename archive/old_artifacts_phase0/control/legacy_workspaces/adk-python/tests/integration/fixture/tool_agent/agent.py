@@ -27,75 +27,62 @@ from pydantic import BaseModel
 
 
 class TestCase(BaseModel):
-  case: str
+    case: str
 
 
 class Test(BaseModel):
-  test_title: list[str]
+    test_title: list[str]
 
 
 def simple_function(param: str) -> str:
-  if isinstance(param, str):
-    return "Called simple function successfully"
-  return "Called simple function with wrong param type"
+    if isinstance(param, str):
+        return "Called simple function successfully"
+    return "Called simple function with wrong param type"
 
 
 def no_param_function() -> str:
-  return "Called no param function successfully"
+    return "Called no param function successfully"
 
 
 def no_output_function(param: str):
-  return
+    return
 
 
-def multiple_param_types_function(
-    param1: str, param2: int, param3: float, param4: bool
-) -> str:
-  if (
-      isinstance(param1, str)
-      and isinstance(param2, int)
-      and isinstance(param3, float)
-      and isinstance(param4, bool)
-  ):
-    return "Called multiple param types function successfully"
-  return "Called multiple param types function with wrong param types"
+def multiple_param_types_function(param1: str, param2: int, param3: float, param4: bool) -> str:
+    if isinstance(param1, str) and isinstance(param2, int) and isinstance(param3, float) and isinstance(param4, bool):
+        return "Called multiple param types function successfully"
+    return "Called multiple param types function with wrong param types"
 
 
 def throw_error_function(param: str) -> str:
-  raise ValueError("Error thrown by throw_error_function")
+    raise ValueError("Error thrown by throw_error_function")
 
 
 def list_str_param_function(param: list[str]) -> str:
-  if isinstance(param, list) and all(isinstance(item, str) for item in param):
-    return "Called list str param function successfully"
-  return "Called list str param function with wrong param type"
+    if isinstance(param, list) and all(isinstance(item, str) for item in param):
+        return "Called list str param function successfully"
+    return "Called list str param function with wrong param type"
 
 
 def return_list_str_function(param: str) -> list[str]:
-  return ["Called return list str function successfully"]
+    return ["Called return list str function successfully"]
 
 
-def complex_function_list_dict(
-    param1: dict[str, Any], param2: list[dict[str, Any]]
-) -> list[Test]:
-  if (
-      isinstance(param1, dict)
-      and isinstance(param2, list)
-      and all(isinstance(item, dict) for item in param2)
-  ):
-    return [
-        Test(test_title=["function test 1", "function test 2"]),
-        Test(test_title=["retrieval test"]),
-    ]
-  raise ValueError("Wrong param")
+def complex_function_list_dict(param1: dict[str, Any], param2: list[dict[str, Any]]) -> list[Test]:
+    if isinstance(param1, dict) and isinstance(param2, list) and all(isinstance(item, dict) for item in param2):
+        return [
+            Test(test_title=["function test 1", "function test 2"]),
+            Test(test_title=["retrieval test"]),
+        ]
+    raise ValueError("Wrong param")
 
 
 def repetitive_call_1(param: str):
-  return f"Call repetitive_call_2 tool with param {param + '_repetitive'}"
+    return f"Call repetitive_call_2 tool with param {param + '_repetitive'}"
 
 
 def repetitive_call_2(param: str):
-  return param
+    return param
 
 
 test_case_retrieval = FilesRetrieval(
@@ -106,25 +93,19 @@ test_case_retrieval = FilesRetrieval(
 
 valid_rag_retrieval = VertexAiRagRetrieval(
     name="valid_rag_retrieval",
-    rag_corpora=[
-        "projects/1096655024998/locations/us-central1/ragCorpora/4985766262475849728"
-    ],
+    rag_corpora=["projects/1096655024998/locations/us-central1/ragCorpora/4985766262475849728"],
     description="General guidance for agent test cases",
 )
 
 invalid_rag_retrieval = VertexAiRagRetrieval(
     name="invalid_rag_retrieval",
-    rag_corpora=[
-        "projects/1096655024998/locations/us-central1/InValidRagCorporas/4985766262475849728"
-    ],
+    rag_corpora=["projects/1096655024998/locations/us-central1/InValidRagCorporas/4985766262475849728"],
     description="Invalid rag retrieval resource name",
 )
 
 non_exist_rag_retrieval = VertexAiRagRetrieval(
     name="non_exist_rag_retrieval",
-    rag_corpora=[
-        "projects/1096655024998/locations/us-central1/RagCorpora/1234567"
-    ],
+    rag_corpora=["projects/1096655024998/locations/us-central1/RagCorpora/1234567"],
     description="Non exist rag retrieval resource name",
 )
 

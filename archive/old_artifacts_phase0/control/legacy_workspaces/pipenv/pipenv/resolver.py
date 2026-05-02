@@ -13,9 +13,7 @@ def _ensure_modules():
     # pip 25.3+ no longer vendors typing_extensions, so we need to handle multiple cases
     if "typing_extensions" not in sys.modules:
         # First, try to load from patched pip vendor (for pip < 25.3)
-        typing_ext_path = os.path.join(
-            os.path.dirname(__file__), "patched", "pip", "_vendor", "typing_extensions.py"
-        )
+        typing_ext_path = os.path.join(os.path.dirname(__file__), "patched", "pip", "_vendor", "typing_extensions.py")
         if os.path.exists(typing_ext_path):
             spec = importlib.util.spec_from_file_location(
                 "typing_extensions",
@@ -205,9 +203,7 @@ class Entry:
         """Construct a PackageRequirement from entry data."""
         # Extract VCS information
         vcs_info = self._extract_vcs_info()
-        source = PackageSource(
-            index=self.resolver.index_lookup.get(self.name), **vcs_info
-        )
+        source = PackageSource(index=self.resolver.index_lookup.get(self.name), **vcs_info)
 
         # Clean and normalize version
         version = self._clean_version(self.entry_dict.get("version"))
@@ -245,9 +241,7 @@ class Entry:
             return None
         if version.strip().lower() in {"any", "<any>", "*"}:
             return "*"
-        if not any(
-            version.startswith(op) for op in ("==", ">=", "<=", "~=", "!=", ">", "<")
-        ):
+        if not any(version.startswith(op) for op in ("==", ">=", "<=", "~=", "!=", ">", "<")):
             version = f"=={version}"
         return version
 
@@ -290,13 +284,9 @@ class Entry:
         cleaned = {
             "name": self.name,
             "version": self.requirement.version,
-            "extras": (
-                sorted(self.requirement.extras) if self.requirement.extras else None
-            ),
+            "extras": (sorted(self.requirement.extras) if self.requirement.extras else None),
             "markers": self.requirement.markers,
-            "hashes": (
-                sorted(self.requirement.hashes) if self.requirement.hashes else None
-            ),
+            "hashes": (sorted(self.requirement.hashes) if self.requirement.hashes else None),
             "subdirectory": self.requirement.source.subdirectory,
             "editable": self.entry_dict.get("editable", None),
             "path": self.entry_dict.get("path"),
@@ -342,8 +332,7 @@ class Entry:
 
             if not constraint.specifier.contains(clean_version, prereleases=True):
                 msg = (
-                    f"Cannot resolve conflicting version {self.name}{constraint.specifier} "
-                    f"while {self.name}=={clean_version} is locked."
+                    f"Cannot resolve conflicting version {self.name}{constraint.specifier} while {self.name}=={clean_version} is locked."
                 )
                 raise DependencyConflict(msg)
         return True
@@ -439,9 +428,7 @@ def resolve_packages(
 
     # Handle mirror configuration
     pypi_mirror_source = (
-        create_mirror_source(os.environ["PIPENV_PYPI_MIRROR"], "pypi_mirror")
-        if "PIPENV_PYPI_MIRROR" in os.environ
-        else None
+        create_mirror_source(os.environ["PIPENV_PYPI_MIRROR"], "pypi_mirror") if "PIPENV_PYPI_MIRROR" in os.environ else None
     )
 
     # Update packages with constraints if provided
@@ -450,11 +437,7 @@ def resolve_packages(
 
     # Initialize project and configure sources
     project = Project()
-    sources = (
-        replace_pypi_sources(project.pipfile_sources(), pypi_mirror_source)
-        if pypi_mirror_source
-        else project.pipfile_sources()
-    )
+    sources = replace_pypi_sources(project.pipfile_sources(), pypi_mirror_source) if pypi_mirror_source else project.pipfile_sources()
 
     # Resolve dependencies
     results, resolver = resolve_deps(
@@ -471,9 +454,7 @@ def resolve_packages(
     )
 
     # Process results
-    processed_results = process_resolver_results(
-        results, resolver, project, pipfile_category
-    )
+    processed_results = process_resolver_results(results, resolver, project, pipfile_category)
 
     # Write results if requested
     if write:

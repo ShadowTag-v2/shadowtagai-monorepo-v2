@@ -1,5 +1,6 @@
-from typing import Any, List
+from typing import Any
 from dataclasses import dataclass
+
 
 @dataclass
 class CurriculumTask:
@@ -8,10 +9,12 @@ class CurriculumTask:
     scenario: dict[str, Any]
     expected_violation: bool
 
+
 class CurriculumAgent:
     """
     Generates violation scenarios to test the governance rules.
     """
+
     def __init__(self, model_client=None):
         self.model_client = model_client
         self.history: list[CurriculumTask] = []
@@ -26,24 +29,16 @@ class CurriculumAgent:
         scenario = {
             "action": "database_write",
             "resource": "users_table",
-            "data": {
-                "pii": True,
-                "encryption": False if difficulty < 0.5 else True
-            },
-            "user_role": "admin" if difficulty > 0.7 else "user"
+            "data": {"pii": True, "encryption": False if difficulty < 0.5 else True},
+            "user_role": "admin" if difficulty > 0.7 else "user",
         }
 
         # If difficulty is low, we make obvious violations (no encryption)
         # If difficulty is high, we make subtle ones (admin user but wrong scope)
 
-        expected_violation = True # Simplified for POC
+        expected_violation = True  # Simplified for POC
 
-        task = CurriculumTask(
-            iteration=iteration,
-            difficulty=difficulty,
-            scenario=scenario,
-            expected_violation=expected_violation
-        )
+        task = CurriculumTask(iteration=iteration, difficulty=difficulty, scenario=scenario, expected_violation=expected_violation)
         self.history.append(task)
         return task
 

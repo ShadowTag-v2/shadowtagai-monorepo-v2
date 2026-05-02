@@ -8,9 +8,9 @@ from leaderf.manager import *
 from leaderf.utils import *
 
 
-#*****************************************************
+# *****************************************************
 # HelpExplorer
-#*****************************************************
+# *****************************************************
 class HelpExplorer(Explorer):
     def __init__(self):
         self._content = []
@@ -26,10 +26,10 @@ class HelpExplorer(Explorer):
         self._content = []
         lfCmd("silent! helptags ALL")
         file_id = 0
-        for dir in lfEval("&rtp").split(','):
+        for dir in lfEval("&rtp").split(","):
             tags_file = os.path.join(dir, "doc", "tags")
             try:
-                with lfOpen(tags_file, 'r', errors='ignore') as f:
+                with lfOpen(tags_file, "r", errors="ignore") as f:
                     lines = f.readlines()
                     for line in lines:
                         tag, file = line.split()[:2]
@@ -49,9 +49,9 @@ class HelpExplorer(Explorer):
         return escQuote(lfEncode(lfGetCwd()))
 
 
-#*****************************************************
+# *****************************************************
 # HelpExplManager
-#*****************************************************
+# *****************************************************
 class HelpExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -67,11 +67,11 @@ class HelpExplManager(Manager):
             return
         line = args[0]
         cmd = line.split(None, 1)[0]
-        if kwargs.get("mode", '') == 't':
+        if kwargs.get("mode", "") == "t":
             lfCmd("tab help " + cmd)
-        elif kwargs.get("mode", '') == 'v':
+        elif kwargs.get("mode", "") == "v":
             lfCmd("vertical help " + cmd)
-        elif kwargs.get("mode", '') == 'h':
+        elif kwargs.get("mode", "") == "h":
             lfCmd("help " + cmd)
         else:
             lfCmd("help " + cmd)
@@ -85,7 +85,7 @@ class HelpExplManager(Manager):
                   2, return the tagfile
         """
         if not line:
-            return ''
+            return ""
         if mode == 0:
             return line
         elif mode == 1:
@@ -101,12 +101,10 @@ class HelpExplManager(Manager):
                   1, return the start position of the tagname
                   2, return the start position of the tagfile
         """
-        if mode == 0:
-            return 0
-        elif mode == 1:
+        if mode == 0 or mode == 1:
             return 0
         else:
-            return line.rfind(' ') + 1
+            return line.rfind(" ") + 1
 
     def _createHelp(self):
         help = []
@@ -122,13 +120,12 @@ class HelpExplManager(Manager):
 
     def _afterEnter(self):
         super()._afterEnter()
-        if self._getInstance().getWinPos() == 'popup':
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_helpTagfile'', '' \zs.*$'')')"""
-                    % self._getInstance().getPopupWinId())
+        if self._getInstance().getWinPos() == "popup":
+            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_helpTagfile'', '' \zs.*$'')')""" % self._getInstance().getPopupWinId())
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
         else:
-            id = int(lfEval(r'''matchadd('Lf_hl_helpTagfile', ' \zs.*$')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_helpTagfile', ' \zs.*$')"""))
             self._match_ids.append(id)
 
     def _beforeExit(self):
@@ -138,7 +135,7 @@ class HelpExplManager(Manager):
         return True
 
     def _previewInPopup(self, *args, **kwargs):
-        if len(args) == 0 or args[0] == '':
+        if len(args) == 0 or args[0] == "":
             return
 
         line = args[0]
@@ -148,9 +145,9 @@ class HelpExplManager(Manager):
         self._createPopupPreview("", tagfile, 0, jump_cmd)
 
 
-#*****************************************************
+# *****************************************************
 # helpExplManager is a singleton
-#*****************************************************
+# *****************************************************
 helpExplManager = HelpExplManager()
 
-__all__ = ['helpExplManager']
+__all__ = ["helpExplManager"]

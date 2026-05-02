@@ -82,9 +82,7 @@ class GoogleDocsBongo(BaseBongo):
                 )
 
                 if create_response.status_code not in (200, 201):
-                    self.logger.error(
-                        f"Create failed {create_response.status_code}: {create_response.text}"
-                    )
+                    self.logger.error(f"Create failed {create_response.status_code}: {create_response.text}")
                     create_response.raise_for_status()
 
                 doc_file = create_response.json()
@@ -114,14 +112,10 @@ class GoogleDocsBongo(BaseBongo):
                 )
 
                 if content_response.status_code not in (200, 201):
-                    self.logger.error(
-                        f"Content insert failed {content_response.status_code}: {content_response.text[:200]}"
-                    )
+                    self.logger.error(f"Content insert failed {content_response.status_code}: {content_response.text[:200]}")
                     # Continue anyway - document exists even if content failed
                 else:
-                    self.logger.info(
-                        f"📄 Inserted {len(doc_data.content)} chars into document: {doc_data.title}"
-                    )
+                    self.logger.info(f"📄 Inserted {len(doc_data.content)} chars into document: {doc_data.title}")
 
                 # Store entity info
                 ent = {
@@ -146,9 +140,7 @@ class GoogleDocsBongo(BaseBongo):
         if not self._test_docs:
             return []
 
-        self.logger.info(
-            f"🥁 Updating {min(2, len(self._test_docs))} Google Docs documents"
-        )
+        self.logger.info(f"🥁 Updating {min(2, len(self._test_docs))} Google Docs documents")
         updated = []
 
         async with httpx.AsyncClient(timeout=60) as client:
@@ -164,9 +156,7 @@ class GoogleDocsBongo(BaseBongo):
                 )
 
                 if doc_response.status_code != 200:
-                    self.logger.warning(
-                        f"Could not get document for update: {doc_response.status_code}"
-                    )
+                    self.logger.warning(f"Could not get document for update: {doc_response.status_code}")
                     continue
 
                 doc_info = doc_response.json()
@@ -178,9 +168,7 @@ class GoogleDocsBongo(BaseBongo):
                     insert_index = 1
 
                 # Append update text with token to the document
-                update_text = (
-                    f"\n\nUpdate: This document was updated. Token: {ent['token']}"
-                )
+                update_text = f"\n\nUpdate: This document was updated. Token: {ent['token']}"
 
                 await self._pace()
 
@@ -204,13 +192,9 @@ class GoogleDocsBongo(BaseBongo):
 
                 if r.status_code in (200, 201):
                     updated.append({**ent, "updated": True})
-                    self.logger.info(
-                        f"📝 Updated document '{ent['name']}' with token: {ent['token']}"
-                    )
+                    self.logger.info(f"📝 Updated document '{ent['name']}' with token: {ent['token']}")
                 else:
-                    self.logger.warning(
-                        f"Failed to update document: {r.status_code} - {r.text[:200]}"
-                    )
+                    self.logger.warning(f"Failed to update document: {r.status_code} - {r.text[:200]}")
 
                 # Brief delay between updates
                 await asyncio.sleep(0.5)
@@ -221,9 +205,7 @@ class GoogleDocsBongo(BaseBongo):
         """Delete all test documents."""
         return await self.delete_specific_entities(self._test_docs)
 
-    async def delete_specific_entities(
-        self, entities: list[dict[str, Any]]
-    ) -> list[str]:
+    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
         """Delete specific test documents."""
         if not entities:
             # Delete all if no specific entities provided
@@ -253,9 +235,7 @@ class GoogleDocsBongo(BaseBongo):
                         if ent in self._test_docs:
                             self._test_docs.remove(ent)
                     else:
-                        self.logger.warning(
-                            f"Delete failed: {r.status_code} - {r.text[:200]}"
-                        )
+                        self.logger.warning(f"Delete failed: {r.status_code} - {r.text[:200]}")
 
                 except Exception as e:
                     self.logger.warning(f"Delete error for {ent['id']}: {e}")
@@ -275,25 +255,18 @@ class GoogleDocsBongo(BaseBongo):
             async with httpx.AsyncClient(timeout=30) as client:
                 # Delete current test documents
                 if self._test_docs:
-                    self.logger.info(
-                        f"🗑️ Deleting {len(self._test_docs)} test documents"
-                    )
+                    self.logger.info(f"🗑️ Deleting {len(self._test_docs)} test documents")
                     deleted = await self.delete_specific_entities(self._test_docs[:])
                     cleanup_stats["documents_deleted"] += len(deleted)
 
                 # Search for and cleanup any orphaned test documents
                 await self._cleanup_orphaned_documents(client, cleanup_stats)
 
-            self.logger.info(
-                f"🧹 Cleanup completed: {cleanup_stats['documents_deleted']} "
-                f"documents deleted, {cleanup_stats['errors']} errors"
-            )
+            self.logger.info(f"🧹 Cleanup completed: {cleanup_stats['documents_deleted']} documents deleted, {cleanup_stats['errors']} errors")
         except Exception as e:
             self.logger.error(f"❌ Error during comprehensive cleanup: {e}")
 
-    async def _cleanup_orphaned_documents(
-        self, client: httpx.AsyncClient, stats: dict[str, Any]
-    ):
+    async def _cleanup_orphaned_documents(self, client: httpx.AsyncClient, stats: dict[str, Any]):
         """Find and delete orphaned test documents from previous runs."""
         try:
             await self._pace()
@@ -318,22 +291,16 @@ class GoogleDocsBongo(BaseBongo):
                             await self._pace()
                             del_r = await client.delete(
                                 f"{DRIVE_API}/files/{doc['id']}",
-                                headers={
-                                    "Authorization": f"Bearer {self.access_token}"
-                                },
+                                headers={"Authorization": f"Bearer {self.access_token}"},
                             )
                             if del_r.status_code == 204:
                                 stats["documents_deleted"] += 1
-                                self.logger.info(
-                                    f"✅ Deleted orphaned document: {doc.get('name', 'Unknown')}"
-                                )
+                                self.logger.info(f"✅ Deleted orphaned document: {doc.get('name', 'Unknown')}")
                             else:
                                 stats["errors"] += 1
                         except Exception as e:
                             stats["errors"] += 1
-                            self.logger.warning(
-                                f"⚠️ Failed to delete document {doc['id']}: {e}"
-                            )
+                            self.logger.warning(f"⚠️ Failed to delete document {doc['id']}: {e}")
         except Exception as e:
             self.logger.warning(f"⚠️ Could not search for orphaned documents: {e}")
 

@@ -6,7 +6,6 @@ Shows LLM token streaming, progress updates, and stage tracking.
 """
 
 import logging
-from typing import Optional
 
 try:
     from rich.console import Console
@@ -15,6 +14,7 @@ try:
     from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn
     from rich.table import Table
     from rich.text import Text
+
     HAS_RICH = True
 except ImportError:
     HAS_RICH = False
@@ -60,11 +60,11 @@ class StreamingDisplay:
 
     def __init__(
         self,
-        console: Optional["Console"] = None,
+        console: Console | None = None,
         process_id: str | None = None,
         show_tokens: bool = True,
         show_stages: bool = True,
-        max_token_display: int = 500
+        max_token_display: int = 500,
     ):
         """
         Initialize streaming display.
@@ -77,10 +77,7 @@ class StreamingDisplay:
             max_token_display: Maximum tokens to keep in display buffer
         """
         if not HAS_RICH:
-            raise ImportError(
-                "Rich library required for StreamingDisplay. "
-                "Install with: pip install rich"
-            )
+            raise ImportError("Rich library required for StreamingDisplay. Install with: pip install rich")
 
         self.console = console or Console()
         self.process_id = process_id
@@ -157,7 +154,7 @@ class StreamingDisplay:
         Args:
             event: The streaming event to handle
         """
-        if not hasattr(event, 'type'):
+        if not hasattr(event, "type"):
             return
 
         handlers = {
@@ -190,9 +187,7 @@ class StreamingDisplay:
         self.console.print()
         self.console.rule("[bold blue]Research Workflow Started")
         if event.research_question:
-            self.console.print(
-                f"[dim]Objective:[/dim] {event.research_question[:100]}"
-            )
+            self.console.print(f"[dim]Objective:[/dim] {event.research_question[:100]}")
         self.console.print(f"[dim]Cycles:[/dim] {event.max_cycles}")
         self.console.print()
 
@@ -205,26 +200,19 @@ class StreamingDisplay:
         """Handle workflow completed event."""
         self.console.print()
         self.console.rule("[bold green]Research Workflow Completed")
-        self.console.print(
-            f"[dim]Findings:[/dim] {event.findings_count} "
-            f"([green]{event.validated_count}[/green] validated)"
-        )
+        self.console.print(f"[dim]Findings:[/dim] {event.findings_count} ([green]{event.validated_count}[/green] validated)")
         self.console.print()
 
     def _on_cycle_started(self, event: CycleEvent) -> None:
         """Handle cycle started event."""
         self._current_cycle = event.cycle
-        self.console.print(
-            f"\n[bold cyan]Cycle {event.cycle}/{event.max_cycles}[/bold cyan]"
-        )
+        self.console.print(f"\n[bold cyan]Cycle {event.cycle}/{event.max_cycles}[/bold cyan]")
 
     def _on_cycle_completed(self, event: CycleEvent) -> None:
         """Handle cycle completed event."""
         duration_str = f" ({event.duration_ms}ms)" if event.duration_ms else ""
         self.console.print(
-            f"  [green]Completed:[/green] "
-            f"{event.completed_tasks}/{event.tasks_count} tasks, "
-            f"{event.findings_count} findings{duration_str}"
+            f"  [green]Completed:[/green] {event.completed_tasks}/{event.tasks_count} tasks, {event.findings_count} findings{duration_str}"
         )
 
     def _on_stage_started(self, event: StageEvent) -> None:
@@ -256,7 +244,7 @@ class StreamingDisplay:
 
         # Trim buffer if too long
         if len(self._current_tokens) > self.max_token_display:
-            self._current_tokens = self._current_tokens[-self.max_token_display:]
+            self._current_tokens = self._current_tokens[-self.max_token_display :]
 
         # Print token without newline for streaming effect
         self.console.print(event.token, end="", highlight=False)
@@ -338,26 +326,22 @@ class SimpleStreamingDisplay:
 
     def _handle_event(self, event: StreamingEvent) -> None:
         """Handle events with simple print."""
-        if hasattr(event, 'type'):
-            if event.type == EventType.LLM_TOKEN and hasattr(event, 'token'):
+        if hasattr(event, "type"):
+            if event.type == EventType.LLM_TOKEN and hasattr(event, "token"):
                 print(event.token, end="", flush=True)
             elif event.type == EventType.WORKFLOW_STARTED:
                 print("\n=== Workflow Started ===")
             elif event.type == EventType.WORKFLOW_COMPLETED:
                 print("\n=== Workflow Completed ===")
             elif event.type == EventType.CYCLE_STARTED:
-                if hasattr(event, 'cycle'):
+                if hasattr(event, "cycle"):
                     print(f"\n--- Cycle {event.cycle} ---")
             elif event.type == EventType.CYCLE_COMPLETED:
-                if hasattr(event, 'cycle'):
+                if hasattr(event, "cycle"):
                     print(f"--- Cycle {event.cycle} Complete ---")
 
 
-def create_streaming_display(
-    console: Optional["Console"] = None,
-    process_id: str | None = None,
-    **kwargs
-) -> StreamingDisplay:
+def create_streaming_display(console: Console | None = None, process_id: str | None = None, **kwargs) -> StreamingDisplay:
     """
     Factory function to create appropriate streaming display.
 

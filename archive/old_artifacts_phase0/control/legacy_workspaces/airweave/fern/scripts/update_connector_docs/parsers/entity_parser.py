@@ -20,7 +20,7 @@ def parse_entity_file(connector_name):
     if not entity_file.exists():
         return None
 
-    with open(entity_file, "r") as f:
+    with open(entity_file) as f:
         content = f.read()
 
     # Parse the Python file
@@ -51,9 +51,7 @@ def parse_entity_file(connector_name):
                         is_entity = True
                         break
                 # Handle complex inheritance (like with subscripts)
-                elif isinstance(base, ast.Subscript) and isinstance(
-                    base.value, ast.Name
-                ):
+                elif isinstance(base, ast.Subscript) and isinstance(base.value, ast.Name):
                     if base.value.id in [
                         "BaseEntity",
                         "FileEntity",
@@ -106,20 +104,14 @@ def parse_entity_file(connector_name):
                                     if isinstance(keyword.value, ast.Str):
                                         description = keyword.value.s
                                     # String in Python 3.8+ (ast.Constant)
-                                    elif isinstance(
-                                        keyword.value, ast.Constant
-                                    ) and isinstance(keyword.value.value, str):
+                                    elif isinstance(keyword.value, ast.Constant) and isinstance(keyword.value.value, str):
                                         description = keyword.value.value
                                     # Concatenated strings or multiline description
-                                    elif isinstance(
-                                        keyword.value, ast.BinOp
-                                    ) or isinstance(keyword.value, ast.Tuple):
+                                    elif isinstance(keyword.value, ast.BinOp) or isinstance(keyword.value, ast.Tuple):
                                         # We need the original source for this part
                                         try:
                                             lines = content.split("\n")
-                                            lineno = (
-                                                keyword.value.lineno - 1
-                                            )  # Convert to 0-indexed
+                                            lineno = keyword.value.lineno - 1  # Convert to 0-indexed
 
                                             # Heuristic: take the current line and the next 3 lines
                                             # to capture multiline descriptions
@@ -132,9 +124,7 @@ def parse_entity_file(connector_name):
                                                 desc_text,
                                             )
                                             if desc_match:
-                                                description = desc_match.group(
-                                                    1
-                                                ) or desc_match.group(2)
+                                                description = desc_match.group(1) or desc_match.group(2)
                                         except:
                                             pass
 
@@ -152,9 +142,7 @@ def parse_entity_file(connector_name):
             entity_classes.append(
                 {
                     "name": class_name,
-                    "docstring": docstring.strip()
-                    if docstring
-                    else "No description available.",
+                    "docstring": docstring.strip() if docstring else "No description available.",
                     "fields": fields,
                 }
             )

@@ -2,9 +2,7 @@ import random
 
 
 def release_monkeys(target_url, instances=10):
-    print(
-        f"🐵 [n-autoresearch/Kosmos/BioAgents] Spawning {instances} Antigravity instances targeting {target_url}..."
-    )
+    print(f"🐵 [n-autoresearch/Kosmos/BioAgents] Spawning {instances} Antigravity instances targeting {target_url}...")
     results = []
     for i in range(instances):
         latency = random.uniform(0.05, 0.12)  # Simulating ~90ms latency

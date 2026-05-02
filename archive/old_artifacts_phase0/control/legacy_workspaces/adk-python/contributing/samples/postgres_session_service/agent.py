@@ -20,12 +20,12 @@ from google.adk.agents.llm_agent import Agent
 
 
 def get_current_time() -> str:
-  """Get the current time.
+    """Get the current time.
 
-  Returns:
-    A string with the current time in ISO 8601 format.
-  """
-  return datetime.now(UTC).isoformat()
+    Returns:
+      A string with the current time in ISO 8601 format.
+    """
+    return datetime.now(UTC).isoformat()
 
 
 root_agent = Agent(

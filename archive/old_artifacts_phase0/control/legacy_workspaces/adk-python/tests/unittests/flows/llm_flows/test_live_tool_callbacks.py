@@ -29,145 +29,131 @@ from ... import testing_utils
 
 
 class CallbackType(Enum):
-  SYNC = 1
-  ASYNC = 2
+    SYNC = 1
+    ASYNC = 2
 
 
 class AsyncBeforeToolCallback:
+    def __init__(self, mock_response: dict[str, Any]):
+        self.mock_response = mock_response
 
-  def __init__(self, mock_response: dict[str, Any]):
-    self.mock_response = mock_response
-
-  async def __call__(
-      self,
-      tool: FunctionTool,
-      args: dict[str, Any],
-      tool_context: ToolContext,
-  ) -> dict[str, Any] | None:
-    return self.mock_response
+    async def __call__(
+        self,
+        tool: FunctionTool,
+        args: dict[str, Any],
+        tool_context: ToolContext,
+    ) -> dict[str, Any] | None:
+        return self.mock_response
 
 
 class AsyncAfterToolCallback:
+    def __init__(self, mock_response: dict[str, Any]):
+        self.mock_response = mock_response
 
-  def __init__(self, mock_response: dict[str, Any]):
-    self.mock_response = mock_response
-
-  async def __call__(
-      self,
-      tool: FunctionTool,
-      args: dict[str, Any],
-      tool_context: ToolContext,
-      tool_response: dict[str, Any],
-  ) -> dict[str, Any] | None:
-    return self.mock_response
-
-
-async def invoke_tool_with_callbacks_live(
-    before_cb=None, after_cb=None
-) -> Event | None:
-  """Test helper to invoke a tool with callbacks using handle_function_calls_live."""
-
-  def simple_fn(**kwargs) -> dict[str, Any]:
-    return {"initial": "response"}
-
-  tool = FunctionTool(simple_fn)
-  model = testing_utils.MockModel.create(responses=[])
-  agent = Agent(
-      name="agent",
-      model=model,
-      tools=[tool],
-      before_tool_callback=before_cb,
-      after_tool_callback=after_cb,
-  )
-  invocation_context = await testing_utils.create_invocation_context(
-      agent=agent, user_content=""
-  )
-  # Build function call event
-  function_call = types.FunctionCall(name=tool.name, args={})
-  content = types.Content(parts=[types.Part(function_call=function_call)])
-  event = Event(
-      invocation_id=invocation_context.invocation_id,
-      author=agent.name,
-      content=content,
-  )
-  tools_dict = {tool.name: tool}
-  return await handle_function_calls_live(
-      invocation_context,
-      event,
-      tools_dict,
-  )
+    async def __call__(
+        self,
+        tool: FunctionTool,
+        args: dict[str, Any],
+        tool_context: ToolContext,
+        tool_response: dict[str, Any],
+    ) -> dict[str, Any] | None:
+        return self.mock_response
 
 
-def mock_sync_before_cb_side_effect(
-    tool, args, tool_context, ret_value=None
-) -> dict[str, Any] | None:
-  return ret_value
+async def invoke_tool_with_callbacks_live(before_cb=None, after_cb=None) -> Event | None:
+    """Test helper to invoke a tool with callbacks using handle_function_calls_live."""
+
+    def simple_fn(**kwargs) -> dict[str, Any]:
+        return {"initial": "response"}
+
+    tool = FunctionTool(simple_fn)
+    model = testing_utils.MockModel.create(responses=[])
+    agent = Agent(
+        name="agent",
+        model=model,
+        tools=[tool],
+        before_tool_callback=before_cb,
+        after_tool_callback=after_cb,
+    )
+    invocation_context = await testing_utils.create_invocation_context(agent=agent, user_content="")
+    # Build function call event
+    function_call = types.FunctionCall(name=tool.name, args={})
+    content = types.Content(parts=[types.Part(function_call=function_call)])
+    event = Event(
+        invocation_id=invocation_context.invocation_id,
+        author=agent.name,
+        content=content,
+    )
+    tools_dict = {tool.name: tool}
+    return await handle_function_calls_live(
+        invocation_context,
+        event,
+        tools_dict,
+    )
 
 
-async def mock_async_before_cb_side_effect(
-    tool, args, tool_context, ret_value=None
-) -> dict[str, Any] | None:
-  return ret_value
+def mock_sync_before_cb_side_effect(tool, args, tool_context, ret_value=None) -> dict[str, Any] | None:
+    return ret_value
 
 
-def mock_sync_after_cb_side_effect(
-    tool, args, tool_context, tool_response, ret_value=None
-) -> dict[str, Any] | None:
-  return ret_value
+async def mock_async_before_cb_side_effect(tool, args, tool_context, ret_value=None) -> dict[str, Any] | None:
+    return ret_value
 
 
-async def mock_async_after_cb_side_effect(
-    tool, args, tool_context, tool_response, ret_value=None
-) -> dict[str, Any] | None:
-  return ret_value
+def mock_sync_after_cb_side_effect(tool, args, tool_context, tool_response, ret_value=None) -> dict[str, Any] | None:
+    return ret_value
+
+
+async def mock_async_after_cb_side_effect(tool, args, tool_context, tool_response, ret_value=None) -> dict[str, Any] | None:
+    return ret_value
 
 
 @pytest.mark.asyncio
 async def test_live_async_before_tool_callback():
-  """Test that async before tool callbacks work in live mode."""
-  mock_resp = {"test": "before_tool_callback"}
-  before_cb = AsyncBeforeToolCallback(mock_resp)
-  result_event = await invoke_tool_with_callbacks_live(before_cb=before_cb)
-  assert result_event is not None
-  part = result_event.content.parts[0]
-  assert part.function_response.response == mock_resp
+    """Test that async before tool callbacks work in live mode."""
+    mock_resp = {"test": "before_tool_callback"}
+    before_cb = AsyncBeforeToolCallback(mock_resp)
+    result_event = await invoke_tool_with_callbacks_live(before_cb=before_cb)
+    assert result_event is not None
+    part = result_event.content.parts[0]
+    assert part.function_response.response == mock_resp
 
 
 @pytest.mark.asyncio
 async def test_live_async_after_tool_callback():
-  """Test that async after tool callbacks work in live mode."""
-  mock_resp = {"test": "after_tool_callback"}
-  after_cb = AsyncAfterToolCallback(mock_resp)
-  result_event = await invoke_tool_with_callbacks_live(after_cb=after_cb)
-  assert result_event is not None
-  part = result_event.content.parts[0]
-  assert part.function_response.response == mock_resp
+    """Test that async after tool callbacks work in live mode."""
+    mock_resp = {"test": "after_tool_callback"}
+    after_cb = AsyncAfterToolCallback(mock_resp)
+    result_event = await invoke_tool_with_callbacks_live(after_cb=after_cb)
+    assert result_event is not None
+    part = result_event.content.parts[0]
+    assert part.function_response.response == mock_resp
 
 
 @pytest.mark.asyncio
 async def test_live_sync_before_tool_callback():
-  """Test that sync before tool callbacks work in live mode."""
+    """Test that sync before tool callbacks work in live mode."""
 
-  def sync_before_cb(tool, args, tool_context):
-    return {"test": "sync_before_callback"}
+    def sync_before_cb(tool, args, tool_context):
+        return {"test": "sync_before_callback"}
 
-  result_event = await invoke_tool_with_callbacks_live(before_cb=sync_before_cb)
-  assert result_event is not None
-  part = result_event.content.parts[0]
-  assert part.function_response.response == {"test": "sync_before_callback"}
+    result_event = await invoke_tool_with_callbacks_live(before_cb=sync_before_cb)
+    assert result_event is not None
+    part = result_event.content.parts[0]
+    assert part.function_response.response == {"test": "sync_before_callback"}
 
 
 @pytest.mark.asyncio
 async def test_live_sync_after_tool_callback():
-  """Test that sync after tool callbacks work in live mode."""
+    """Test that sync after tool callbacks work in live mode."""
 
-  def sync_after_cb(tool, args, tool_context, tool_response):
-    return {"test": "sync_after_callback"}
+    def sync_after_cb(tool, args, tool_context, tool_response):
+        return {"test": "sync_after_callback"}
 
-  result_event = await invoke_tool_with_callbacks_live(after_cb=sync_after_cb)
-  assert result_event is not None
-  part = result_event.content.parts[0]
-  assert part.function_response.response == {"test": "sync_after_callback"}
+    result_event = await invoke_tool_with_callbacks_live(after_cb=sync_after_cb)
+    assert result_event is not None
+    part = result_event.content.parts[0]
+    assert part.function_response.response == {"test": "sync_after_callback"}
 
 
 # Test parameters for callback chains
@@ -212,48 +198,38 @@ async def test_live_before_tool_callbacks_chain(
     expected_response: dict[str, Any],
     expected_calls: list[int],
 ):
-  """Test that before tool callback chains work correctly in live mode."""
-  mock_before_cbs = []
-  for response, callback_type in callbacks:
-    if callback_type == CallbackType.ASYNC:
-      mock_cb = mock.AsyncMock(
-          side_effect=partial(
-              mock_async_before_cb_side_effect, ret_value=response
-          )
-      )
-    else:
-      mock_cb = mock.Mock(
-          side_effect=partial(
-              mock_sync_before_cb_side_effect, ret_value=response
-          )
-      )
-    mock_before_cbs.append(mock_cb)
+    """Test that before tool callback chains work correctly in live mode."""
+    mock_before_cbs = []
+    for response, callback_type in callbacks:
+        if callback_type == CallbackType.ASYNC:
+            mock_cb = mock.AsyncMock(side_effect=partial(mock_async_before_cb_side_effect, ret_value=response))
+        else:
+            mock_cb = mock.Mock(side_effect=partial(mock_sync_before_cb_side_effect, ret_value=response))
+        mock_before_cbs.append(mock_cb)
 
-  result_event = await invoke_tool_with_callbacks_live(
-      before_cb=mock_before_cbs
-  )
-  assert result_event is not None
-  part = result_event.content.parts[0]
-  assert part.function_response.response == expected_response
+    result_event = await invoke_tool_with_callbacks_live(before_cb=mock_before_cbs)
+    assert result_event is not None
+    part = result_event.content.parts[0]
+    assert part.function_response.response == expected_response
 
-  # Assert that the callbacks were called the expected number of times
-  for i, mock_cb in enumerate(mock_before_cbs):
-    expected_calls_count = expected_calls[i]
-    if expected_calls_count == 1:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_awaited_once()
-      else:
-        mock_cb.assert_called_once()
-    elif expected_calls_count == 0:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_not_awaited()
-      else:
-        mock_cb.assert_not_called()
-    else:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_awaited(expected_calls_count)
-      else:
-        mock_cb.assert_called(expected_calls_count)
+    # Assert that the callbacks were called the expected number of times
+    for i, mock_cb in enumerate(mock_before_cbs):
+        expected_calls_count = expected_calls[i]
+        if expected_calls_count == 1:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_awaited_once()
+            else:
+                mock_cb.assert_called_once()
+        elif expected_calls_count == 0:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_not_awaited()
+            else:
+                mock_cb.assert_not_called()
+        else:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_awaited(expected_calls_count)
+            else:
+                mock_cb.assert_called(expected_calls_count)
 
 
 @pytest.mark.parametrize(
@@ -266,120 +242,104 @@ async def test_live_after_tool_callbacks_chain(
     expected_response: dict[str, Any],
     expected_calls: list[int],
 ):
-  """Test that after tool callback chains work correctly in live mode."""
-  mock_after_cbs = []
-  for response, callback_type in callbacks:
-    if callback_type == CallbackType.ASYNC:
-      mock_cb = mock.AsyncMock(
-          side_effect=partial(
-              mock_async_after_cb_side_effect, ret_value=response
-          )
-      )
-    else:
-      mock_cb = mock.Mock(
-          side_effect=partial(
-              mock_sync_after_cb_side_effect, ret_value=response
-          )
-      )
-    mock_after_cbs.append(mock_cb)
+    """Test that after tool callback chains work correctly in live mode."""
+    mock_after_cbs = []
+    for response, callback_type in callbacks:
+        if callback_type == CallbackType.ASYNC:
+            mock_cb = mock.AsyncMock(side_effect=partial(mock_async_after_cb_side_effect, ret_value=response))
+        else:
+            mock_cb = mock.Mock(side_effect=partial(mock_sync_after_cb_side_effect, ret_value=response))
+        mock_after_cbs.append(mock_cb)
 
-  result_event = await invoke_tool_with_callbacks_live(after_cb=mock_after_cbs)
-  assert result_event is not None
-  part = result_event.content.parts[0]
-  assert part.function_response.response == expected_response
+    result_event = await invoke_tool_with_callbacks_live(after_cb=mock_after_cbs)
+    assert result_event is not None
+    part = result_event.content.parts[0]
+    assert part.function_response.response == expected_response
 
-  # Assert that the callbacks were called the expected number of times
-  for i, mock_cb in enumerate(mock_after_cbs):
-    expected_calls_count = expected_calls[i]
-    if expected_calls_count == 1:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_awaited_once()
-      else:
-        mock_cb.assert_called_once()
-    elif expected_calls_count == 0:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_not_awaited()
-      else:
-        mock_cb.assert_not_called()
-    else:
-      if isinstance(mock_cb, mock.AsyncMock):
-        mock_cb.assert_awaited(expected_calls_count)
-      else:
-        mock_cb.assert_called(expected_calls_count)
+    # Assert that the callbacks were called the expected number of times
+    for i, mock_cb in enumerate(mock_after_cbs):
+        expected_calls_count = expected_calls[i]
+        if expected_calls_count == 1:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_awaited_once()
+            else:
+                mock_cb.assert_called_once()
+        elif expected_calls_count == 0:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_not_awaited()
+            else:
+                mock_cb.assert_not_called()
+        else:
+            if isinstance(mock_cb, mock.AsyncMock):
+                mock_cb.assert_awaited(expected_calls_count)
+            else:
+                mock_cb.assert_called(expected_calls_count)
 
 
 @pytest.mark.asyncio
 async def test_live_mixed_callbacks():
-  """Test that both before and after callbacks work together in live mode."""
+    """Test that both before and after callbacks work together in live mode."""
 
-  def before_cb(tool, args, tool_context):
-    # Modify args and let tool run
-    args["modified_by_before"] = True
-    return None
+    def before_cb(tool, args, tool_context):
+        # Modify args and let tool run
+        args["modified_by_before"] = True
+        return None
 
-  def after_cb(tool, args, tool_context, tool_response):
-    # Modify response
-    tool_response["modified_by_after"] = True
-    return tool_response
+    def after_cb(tool, args, tool_context, tool_response):
+        # Modify response
+        tool_response["modified_by_after"] = True
+        return tool_response
 
-  result_event = await invoke_tool_with_callbacks_live(
-      before_cb=before_cb, after_cb=after_cb
-  )
-  assert result_event is not None
-  part = result_event.content.parts[0]
-  response = part.function_response.response
-  assert response["modified_by_after"] is True
-  assert "initial" in response  # Original response should still be there
+    result_event = await invoke_tool_with_callbacks_live(before_cb=before_cb, after_cb=after_cb)
+    assert result_event is not None
+    part = result_event.content.parts[0]
+    response = part.function_response.response
+    assert response["modified_by_after"] is True
+    assert "initial" in response  # Original response should still be there
 
 
 @pytest.mark.asyncio
 async def test_live_callback_compatibility_with_async():
-  """Test that live callbacks have the same behavior as async callbacks."""
-  # This test ensures that the behavior between handle_function_calls_async
-  # and handle_function_calls_live is consistent for callbacks
+    """Test that live callbacks have the same behavior as async callbacks."""
+    # This test ensures that the behavior between handle_function_calls_async
+    # and handle_function_calls_live is consistent for callbacks
 
-  def before_cb(tool, args, tool_context):
-    return {"bypassed": "by_before_callback"}
+    def before_cb(tool, args, tool_context):
+        return {"bypassed": "by_before_callback"}
 
-  # Test with async version
-  from google.adk.flows.llm_flows.functions import handle_function_calls_async
+    # Test with async version
+    from google.adk.flows.llm_flows.functions import handle_function_calls_async
 
-  def simple_fn(**kwargs) -> dict[str, Any]:
-    return {"initial": "response"}
+    def simple_fn(**kwargs) -> dict[str, Any]:
+        return {"initial": "response"}
 
-  tool = FunctionTool(simple_fn)
-  model = testing_utils.MockModel.create(responses=[])
-  agent = Agent(
-      name="agent",
-      model=model,
-      tools=[tool],
-      before_tool_callback=before_cb,
-  )
-  invocation_context = await testing_utils.create_invocation_context(
-      agent=agent, user_content=""
-  )
-  function_call = types.FunctionCall(name=tool.name, args={})
-  content = types.Content(parts=[types.Part(function_call=function_call)])
-  event = Event(
-      invocation_id=invocation_context.invocation_id,
-      author=agent.name,
-      content=content,
-  )
-  tools_dict = {tool.name: tool}
+    tool = FunctionTool(simple_fn)
+    model = testing_utils.MockModel.create(responses=[])
+    agent = Agent(
+        name="agent",
+        model=model,
+        tools=[tool],
+        before_tool_callback=before_cb,
+    )
+    invocation_context = await testing_utils.create_invocation_context(agent=agent, user_content="")
+    function_call = types.FunctionCall(name=tool.name, args={})
+    content = types.Content(parts=[types.Part(function_call=function_call)])
+    event = Event(
+        invocation_id=invocation_context.invocation_id,
+        author=agent.name,
+        content=content,
+    )
+    tools_dict = {tool.name: tool}
 
-  # Get result from async version
-  async_result = await handle_function_calls_async(
-      invocation_context, event, tools_dict
-  )
+    # Get result from async version
+    async_result = await handle_function_calls_async(invocation_context, event, tools_dict)
 
-  # Get result from live version
-  live_result = await handle_function_calls_live(
-      invocation_context, event, tools_dict
-  )
+    # Get result from live version
+    live_result = await handle_function_calls_live(invocation_context, event, tools_dict)
 
-  # Both should have the same response
-  assert async_result is not None
-  assert live_result is not None
-  async_response = async_result.content.parts[0].function_response.response
-  live_response = live_result.content.parts[0].function_response.response
-  assert async_response == live_response == {"bypassed": "by_before_callback"}
+    # Both should have the same response
+    assert async_result is not None
+    assert live_result is not None
+    async_response = async_result.content.parts[0].function_response.response
+    live_response = live_result.content.parts[0].function_response.response
+    assert async_response == live_response == {"bypassed": "by_before_callback"}

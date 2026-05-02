@@ -104,15 +104,10 @@ def _build_connection_payload(config: TestConfig, context: TestContext) -> dict[
 
         composio_provider_id = os.getenv("MONKE_COMPOSIO_PROVIDER_ID")
         if not composio_provider_id:
-            raise RuntimeError(
-                "Composio auth mode configured but MONKE_COMPOSIO_PROVIDER_ID not set"
-            )
+            raise RuntimeError("Composio auth mode configured but MONKE_COMPOSIO_PROVIDER_ID not set")
 
         if not config.connector.composio_config:
-            raise RuntimeError(
-                f"Composio auth mode configured for {config.connector.type} "
-                "but composio_config not provided"
-            )
+            raise RuntimeError(f"Composio auth mode configured for {config.connector.type} but composio_config not provided")
 
         base_payload["authentication"] = {
             "provider_readable_id": composio_provider_id,

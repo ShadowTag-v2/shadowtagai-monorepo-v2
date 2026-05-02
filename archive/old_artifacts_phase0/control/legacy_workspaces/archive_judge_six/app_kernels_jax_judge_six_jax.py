@@ -26,12 +26,14 @@ def judge_six_enforce(input_ids, policy_matrix):
 
     return any_violation
 
+
 @partial(jit, static_argnums=(2,))
 def batched_enforce(input_ids, policy_matrix, batch_size):
     """
     Batched enforcement wrapper.
     """
     return judge_six_enforce(input_ids, policy_matrix)
+
 
 def init_mock_data(batch_size=1024, seq_len=256):
     """Initialize random data for testing."""

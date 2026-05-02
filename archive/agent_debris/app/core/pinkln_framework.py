@@ -6,9 +6,10 @@ Persona: Ultrathink Jobs—breathe/urgency/beauty/details/simplify/Boy Scout
 Frameworks: CoT/ToT/RCR/RTF-TAG-BAB-CARE-RISE fused
 Evolution: DTE (Dynamic Test Evolution) with GRPO/PPO comparison
 """
+
 import logging
-from enum import Enum, StrEnum
-from typing import Dict, List, Optional, Any
+from enum import StrEnum
+from typing import Any
 from dataclasses import dataclass, field
 from datetime import datetime
 
@@ -17,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 class UltrathinkPersona(StrEnum):
     """Ultrathink Jobs persona modes"""
+
     PAUSE_BREATHE = "pause_breathe"  # Take a moment to think
     URGENCY = "urgency"  # Ship it, make it happen
     BEAUTY = "beauty"  # Insanely great design
@@ -27,6 +29,7 @@ class UltrathinkPersona(StrEnum):
 
 class ReasoningFramework(StrEnum):
     """Reasoning frameworks for ultrathink"""
+
     COT = "chain_of_thought"  # Step-by-step reasoning
     TOT = "tree_of_thoughts"  # Explore multiple paths
     RCR = "reason_critique_refine"  # Self-improvement loop
@@ -43,6 +46,7 @@ class CheatSheetEssentials:
     10 Essential Elements (evolved from 21)
     For maximum prompt effectiveness
     """
+
     tone: str = "professional"  # Voice and style
     format: str = "structured"  # Output structure
     act: str = "expert"  # Role to assume
@@ -62,7 +66,7 @@ class CheatSheetEssentials:
             f"Context: {self.context}",
             f"Tone: {self.tone}",
             f"Format: {self.format}",
-            f"Audience: {self.audience}"
+            f"Audience: {self.audience}",
         ]
 
         if self.keywords:
@@ -88,6 +92,7 @@ class WealthLeakDetection:
     Wealth-Planning Model: Spot leaks, redesign funnels
     Structure: Hard truth / Plan / Challenge
     """
+
     leak_type: str  # "conversion", "retention", "upsell", "viral"
     severity: float  # 0.0 to 1.0
     current_rate: float
@@ -108,6 +113,7 @@ class TrustValidation:
     Trust Structure: Security, memory compounding, validations
     Boy Scout improvements, Reality Distortion for impossibles
     """
+
     security_score: float  # 0.0 to 1.0
     memory_compounds: bool
     critique: str  # Self-critique
@@ -117,12 +123,7 @@ class TrustValidation:
 
     def validate(self) -> bool:
         """Validate trust structure"""
-        return (
-            self.security_score >= 0.8 and
-            self.memory_compounds and
-            len(self.critique) > 0 and
-            len(self.assumptions) > 0
-        )
+        return self.security_score >= 0.8 and self.memory_compounds and len(self.critique) > 0 and len(self.assumptions) > 0
 
 
 class PinklnFramework:
@@ -152,12 +153,7 @@ class PinklnFramework:
         """Apply reasoning framework"""
         self.reasoning_stack.append(framework)
 
-        return {
-            "framework": framework.value,
-            "persona": self.active_persona.value,
-            "iq": self.persona_iq,
-            "timestamp": datetime.utcnow().isoformat()
-        }
+        return {"framework": framework.value, "persona": self.active_persona.value, "iq": self.persona_iq, "timestamp": datetime.utcnow().isoformat()}
 
     def fuse_cheat_sheet(self, essentials: CheatSheetEssentials) -> str:
         """
@@ -176,12 +172,7 @@ class PinklnFramework:
 
         return base_prompt + enhancement
 
-    def detect_wealth_leak(
-        self,
-        leak_type: str,
-        current_rate: float,
-        target_rate: float
-    ) -> WealthLeakDetection:
+    def detect_wealth_leak(self, leak_type: str, current_rate: float, target_rate: float) -> WealthLeakDetection:
         """
         Detect and diagnose wealth leaks
         Running at IQ {self.persona_iq} for maximum foresight
@@ -204,7 +195,7 @@ class PinklnFramework:
             target_rate=target_rate,
             hard_truth=hard_truth,
             plan=plan,
-            challenge=challenge
+            challenge=challenge,
         )
 
     def _generate_hard_truth(self, leak_type: str, current: float, target: float) -> str:
@@ -216,7 +207,7 @@ class PinklnFramework:
             "conversion": f"Your conversion rate is {gap_pct:.1f}% below target. You're leaving money on the table every day.",
             "retention": f"Retention is bleeding {gap_pct:.1f}%. Fix this or growth becomes a leaky bucket.",
             "upsell": f"You're missing {gap_pct:.1f}% of upsell opportunities. Your customers want to pay more—let them.",
-            "viral": f"Viral coefficient is {gap_pct:.1f}% short. Without organic growth, CAC will kill you."
+            "viral": f"Viral coefficient is {gap_pct:.1f}% short. Without organic growth, CAC will kill you.",
         }
 
         return truths.get(leak_type, f"{gap_pct:.1f}% gap between current and target")
@@ -227,7 +218,7 @@ class PinklnFramework:
             "conversion": "1. A/B test CTA placement, 2. Reduce form friction, 3. Add social proof above fold, 4. Implement exit-intent offers",
             "retention": "1. Build onboarding sequence, 2. Identify churn signals, 3. Create re-engagement campaigns, 4. Add usage analytics",
             "upsell": "1. Segment by usage, 2. Create tiered pricing, 3. Build upgrade prompts at friction points, 4. Add premium features",
-            "viral": "1. Built-in sharing incentives, 2. Referral program, 3. Social proof mechanics, 4. Content worth sharing"
+            "viral": "1. Built-in sharing incentives, 2. Referral program, 3. Social proof mechanics, 4. Content worth sharing",
         }
 
         base_plan = plans.get(leak_type, "1. Diagnose root cause, 2. Test solutions, 3. Scale what works")
@@ -243,18 +234,12 @@ class PinklnFramework:
             "conversion": "Need to test without breaking current funnel. Data takes time. Engineers are busy.",
             "retention": "Requires product changes, not just marketing. Long feedback loops. Hard to isolate causes.",
             "upsell": "Risk alienating existing customers. Pricing psychology is hard. Needs new features to justify tiers.",
-            "viral": "Can't force virality. Requires product excellence. May need fundamental redesign."
+            "viral": "Can't force virality. Requires product excellence. May need fundamental redesign.",
         }
 
         return challenges.get(leak_type, "Execution is hard. Resources are constrained. Must prove ROI first.")
 
-    def validate_trust(
-        self,
-        security_score: float,
-        memory_compounds: bool,
-        critique: str,
-        assumptions: list[str]
-    ) -> TrustValidation:
+    def validate_trust(self, security_score: float, memory_compounds: bool, critique: str, assumptions: list[str]) -> TrustValidation:
         """Validate trust structure with Boy Scout improvements"""
 
         # Generate Boy Scout improvements
@@ -262,7 +247,7 @@ class PinklnFramework:
             "Added explicit security validation",
             "Documented all assumptions",
             "Self-critique integrated into process",
-            "Memory compounding enabled for learning"
+            "Memory compounding enabled for learning",
         ]
 
         # Add reality distortion for high-IQ impossible challenges
@@ -276,7 +261,7 @@ class PinklnFramework:
             critique=critique,
             assumptions=assumptions,
             boy_scout_improvements=improvements,
-            reality_distortion=reality_distortion
+            reality_distortion=reality_distortion,
         )
 
         if not validation.validate():

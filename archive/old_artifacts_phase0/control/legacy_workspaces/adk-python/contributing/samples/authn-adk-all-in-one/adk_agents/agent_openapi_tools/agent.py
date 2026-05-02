@@ -33,11 +33,11 @@ file_path = "./agent_openapi_tools/openapi.yaml"
 file_content = None
 
 try:
-  with open(file_path) as file:
-    file_content = file.read()
+    with open(file_path) as file:
+        file_content = file.read()
 except FileNotFoundError:
-  # so that the execution does not continue when the file is not found.
-  raise FileNotFoundError(f"Error: The API Spec '{file_path}' was not found.")
+    # so that the execution does not continue when the file is not found.
+    raise FileNotFoundError(f"Error: The API Spec '{file_path}' was not found.")
 
 
 # Example with a JSON string
@@ -53,10 +53,7 @@ from google.adk.agents import LlmAgent
 
 root_agent = LlmAgent(
     name="hotel_agent",
-    instruction=(
-        "Help user find and book hotels, fetch their bookings using the tools"
-        " provided."
-    ),
+    instruction=("Help user find and book hotels, fetch their bookings using the tools provided."),
     description="Hotel Booking Agent",
     model=os.environ.get("GOOGLE_MODEL"),
     tools=[openapi_toolset],  # Pass the toolset

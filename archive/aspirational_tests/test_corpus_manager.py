@@ -3,7 +3,7 @@ Tests for CorpusManager
 """
 
 import pytest
-from unittest.mock import Mock, AsyncMock, patch
+from unittest.mock import Mock, patch
 
 from pnkln_file_search.corpus.manager import CorpusManager
 from pnkln_file_search.config.verticals import get_vertical_config

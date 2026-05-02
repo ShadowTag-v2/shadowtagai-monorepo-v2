@@ -65,14 +65,10 @@ class PIIScrubber:
 
         # 3. Obfuscate GPS coordinates (±100m)
         if scenario.sensor_data.gps_data:
-            scenario.sensor_data.gps_data = self._obfuscate_location(
-                scenario.sensor_data.gps_data
-            )
+            scenario.sensor_data.gps_data = self._obfuscate_location(scenario.sensor_data.gps_data)
 
         # 4. Generalize timestamp to hour-level
-        scenario.sensor_data.timestamp = scenario.sensor_data.timestamp.replace(
-            minute=0, second=0, microsecond=0
-        )
+        scenario.sensor_data.timestamp = scenario.sensor_data.timestamp.replace(minute=0, second=0, microsecond=0)
 
         # Mark as scrubbed
         scenario.privacy_scrubbed = True
@@ -96,14 +92,11 @@ class PIIScrubber:
         noise_lat = ((hash_val % 200) - 100) * 0.00001
         noise_lon = (((hash_val // 200) % 200) - 100) * 0.00001
 
-        return {
-            "lat": round(lat + noise_lat, 5),
-            "lon": round(lon + noise_lon, 5),
-            "obfuscated": True
-        }
+        return {"lat": round(lat + noise_lat, 5), "lon": round(lon + noise_lon, 5), "obfuscated": True}
 
 
 if __name__ == "__main__":
+
     async def main():
         from datetime import datetime
 
@@ -117,11 +110,8 @@ if __name__ == "__main__":
             num_agents=3,
             weather_condition=WeatherCondition.CLEAR,
             time_of_day=TimeOfDay.DAY,
-            sensor_data=SensorData(
-                timestamp=datetime.utcnow(),
-                gps_data={"lat": 37.7749, "lon": -122.4194}
-            ),
-            consent_verified=True
+            sensor_data=SensorData(timestamp=datetime.utcnow(), gps_data={"lat": 37.7749, "lon": -122.4194}),
+            consent_verified=True,
         )
 
         scrubber = PIIScrubber()

@@ -23,7 +23,7 @@ Usage examples:
 
 import json
 import time
-from typing import Dict, Generator, List, Optional
+from collections.abc import Generator
 
 import requests
 
@@ -31,9 +31,7 @@ BASE_URL = "https://rest.uniprot.org"
 POLLING_INTERVAL = 3  # seconds
 
 
-def search_proteins(query: str, format: str = "json",
-                   fields: Optional[List[str]] = None,
-                   size: int = 25) -> Dict:
+def search_proteins(query: str, format: str = "json", fields: list[str] | None = None, size: int = 25) -> dict:
     """
     Search UniProt database with a query.
 
@@ -48,11 +46,7 @@ def search_proteins(query: str, format: str = "json",
     """
     endpoint = f"{BASE_URL}/uniprotkb/search"
 
-    params = {
-        "query": query,
-        "format": format,
-        "size": size
-    }
+    params = {"query": query, "format": format, "size": size}
 
     if fields:
         params["fields"] = ",".join(fields)
@@ -88,8 +82,7 @@ def get_protein(accession: str, format: str = "json") -> str:
         return response.text
 
 
-def batch_retrieve(accessions: List[str], format: str = "json",
-                  fields: Optional[List[str]] = None) -> str:
+def batch_retrieve(accessions: list[str], format: str = "json", fields: list[str] | None = None) -> str:
     """
     Retrieve multiple protein entries efficiently.
 
@@ -105,9 +98,7 @@ def batch_retrieve(accessions: List[str], format: str = "json",
     return search_proteins(query, format=format, fields=fields, size=len(accessions))
 
 
-def stream_results(query: str, format: str = "fasta",
-                  fields: Optional[List[str]] = None,
-                  chunk_size: int = 8192) -> Generator[str, None, None]:
+def stream_results(query: str, format: str = "fasta", fields: list[str] | None = None, chunk_size: int = 8192) -> Generator[str]:
     """
     Stream large result sets without pagination.
 
@@ -122,10 +113,7 @@ def stream_results(query: str, format: str = "fasta",
     """
     endpoint = f"{BASE_URL}/uniprotkb/stream"
 
-    params = {
-        "query": query,
-        "format": format
-    }
+    params = {"query": query, "format": format}
 
     if fields:
         params["fields"] = ",".join(fields)
@@ -138,8 +126,7 @@ def stream_results(query: str, format: str = "fasta",
             yield chunk
 
 
-def map_ids(ids: List[str], from_db: str, to_db: str,
-           format: str = "json") -> Dict:
+def map_ids(ids: list[str], from_db: str, to_db: str, format: str = "json") -> dict:
     """
     Map protein identifiers between different database systems.
 
@@ -163,11 +150,7 @@ def map_ids(ids: List[str], from_db: str, to_db: str,
     # Step 1: Submit job
     submit_endpoint = f"{BASE_URL}/idmapping/run"
 
-    data = {
-        "from": from_db,
-        "to": to_db,
-        "ids": ",".join(ids)
-    }
+    data = {"from": from_db, "to": to_db, "ids": ",".join(ids)}
 
     response = requests.post(submit_endpoint, data=data)
     response.raise_for_status()
@@ -199,7 +182,7 @@ def map_ids(ids: List[str], from_db: str, to_db: str,
         return response.text
 
 
-def get_available_fields() -> List[Dict]:
+def get_available_fields() -> list[dict]:
     """
     Get list of all available fields for queries.
 
@@ -214,7 +197,7 @@ def get_available_fields() -> List[Dict]:
     return response.json()
 
 
-def get_id_mapping_databases() -> Dict:
+def get_id_mapping_databases() -> dict:
     """
     Get list of all supported databases for ID mapping.
 
@@ -234,10 +217,7 @@ if __name__ == "__main__":
     # Example 1: Search for human insulin proteins
     print("Searching for human insulin proteins...")
     results = search_proteins(
-        "insulin AND organism_name:human AND reviewed:true",
-        format="json",
-        fields=["accession", "id", "gene_names", "protein_name"],
-        size=5
+        "insulin AND organism_name:human AND reviewed:true", format="json", fields=["accession", "id", "gene_names", "protein_name"], size=5
     )
     print(json.dumps(results, indent=2))
 
@@ -248,9 +228,5 @@ if __name__ == "__main__":
 
     # Example 3: Map UniProt IDs to PDB IDs
     print("\nMapping UniProt IDs to PDB...")
-    mapping = map_ids(
-        ["P01308", "P04637"],
-        from_db="UniProtKB_AC-ID",
-        to_db="PDB"
-    )
+    mapping = map_ids(["P01308", "P04637"], from_db="UniProtKB_AC-ID", to_db="PDB")
     print(json.dumps(mapping, indent=2))

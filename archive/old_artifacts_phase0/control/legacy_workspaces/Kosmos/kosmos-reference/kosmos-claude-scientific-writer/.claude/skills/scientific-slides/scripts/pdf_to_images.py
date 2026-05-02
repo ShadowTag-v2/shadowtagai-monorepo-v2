@@ -10,11 +10,11 @@ import argparse
 import subprocess
 import sys
 from pathlib import Path
-from typing import List, Optional
 
 # Try to import pdf2image
 try:
     from pdf2image import convert_from_path
+
     HAS_PDF2IMAGE = True
 except ImportError:
     HAS_PDF2IMAGE = False
@@ -24,13 +24,7 @@ class PDFToImagesConverter:
     """Converts PDF presentations to images."""
 
     def __init__(
-        self,
-        pdf_path: str,
-        output_prefix: str,
-        dpi: int = 150,
-        format: str = 'jpg',
-        first_page: Optional[int] = None,
-        last_page: Optional[int] = None
+        self, pdf_path: str, output_prefix: str, dpi: int = 150, format: str = "jpg", first_page: int | None = None, last_page: int | None = None
     ):
         self.pdf_path = Path(pdf_path)
         self.output_prefix = output_prefix
@@ -40,10 +34,10 @@ class PDFToImagesConverter:
         self.last_page = last_page
 
         # Validate format
-        if self.format not in ['jpg', 'jpeg', 'png']:
+        if self.format not in ["jpg", "jpeg", "png"]:
             raise ValueError(f"Unsupported format: {format}. Use jpg or png.")
 
-    def convert(self) -> List[Path]:
+    def convert(self) -> list[Path]:
         """Convert PDF to images using available method."""
         if not self.pdf_path.exists():
             raise FileNotFoundError(f"PDF not found: {self.pdf_path}")
@@ -68,17 +62,11 @@ class PDFToImagesConverter:
                 "  - ImageMagick: apt/brew install imagemagick"
             )
 
-    def _convert_with_pdf2image(self) -> List[Path]:
+    def _convert_with_pdf2image(self) -> list[Path]:
         """Convert using pdf2image library."""
         print("Using pdf2image library...")
 
-        images = convert_from_path(
-            self.pdf_path,
-            dpi=self.dpi,
-            fmt=self.format,
-            first_page=self.first_page,
-            last_page=self.last_page
-        )
+        images = convert_from_path(self.pdf_path, dpi=self.dpi, fmt=self.format, first_page=self.first_page, last_page=self.last_page)
 
         output_files = []
         output_dir = Path(self.output_prefix).parent
@@ -92,39 +80,31 @@ class PDFToImagesConverter:
 
         return output_files
 
-    def _convert_with_pdftoppm(self) -> List[Path]:
+    def _convert_with_pdftoppm(self) -> list[Path]:
         """Convert using pdftoppm command-line tool."""
         print("Using pdftoppm...")
 
         # Build command
-        cmd = [
-            'pdftoppm',
-            '-r', str(self.dpi)
-        ]
+        cmd = ["pdftoppm", "-r", str(self.dpi)]
 
         # Add format flag
-        if self.format in ['jpg', 'jpeg']:
-            cmd.append('-jpeg')
+        if self.format in ["jpg", "jpeg"]:
+            cmd.append("-jpeg")
         else:
-            cmd.append('-png')
+            cmd.append("-png")
 
         # Add page range if specified
         if self.first_page:
-            cmd.extend(['-f', str(self.first_page)])
+            cmd.extend(["-f", str(self.first_page)])
         if self.last_page:
-            cmd.extend(['-l', str(self.last_page)])
+            cmd.extend(["-l", str(self.last_page)])
 
         # Add input and output
         cmd.extend([str(self.pdf_path), self.output_prefix])
 
         # Run command
         try:
-            subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                check=True
-            )
+            subprocess.run(cmd, capture_output=True, text=True, check=True)
 
             # Find generated files
             output_dir = Path(self.output_prefix).parent
@@ -139,24 +119,21 @@ class PDFToImagesConverter:
         except subprocess.CalledProcessError as e:
             raise RuntimeError(f"pdftoppm failed: {e.stderr}")
 
-    def _convert_with_imagemagick(self) -> List[Path]:
+    def _convert_with_imagemagick(self) -> list[Path]:
         """Convert using ImageMagick convert command."""
         print("Using ImageMagick...")
 
         # Build command
-        cmd = [
-            'convert',
-            '-density', str(self.dpi)
-        ]
+        cmd = ["convert", "-density", str(self.dpi)]
 
         # Add page range if specified
         if self.first_page and self.last_page:
-            page_range = f"[{self.first_page-1}-{self.last_page-1}]"
+            page_range = f"[{self.first_page - 1}-{self.last_page - 1}]"
             cmd.append(str(self.pdf_path) + page_range)
         elif self.first_page:
-            cmd.append(str(self.pdf_path) + f"[{self.first_page-1}-]")
+            cmd.append(str(self.pdf_path) + f"[{self.first_page - 1}-]")
         elif self.last_page:
-            cmd.append(str(self.pdf_path) + f"[0-{self.last_page-1}]")
+            cmd.append(str(self.pdf_path) + f"[0-{self.last_page - 1}]")
         else:
             cmd.append(str(self.pdf_path))
 
@@ -166,12 +143,7 @@ class PDFToImagesConverter:
 
         # Run command
         try:
-            subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                check=True
-            )
+            subprocess.run(cmd, capture_output=True, text=True, check=True)
 
             # Find generated files
             output_dir = Path(self.output_prefix).parent
@@ -189,31 +161,23 @@ class PDFToImagesConverter:
     def _has_pdftoppm(self) -> bool:
         """Check if pdftoppm is available."""
         try:
-            subprocess.run(
-                ['pdftoppm', '-v'],
-                capture_output=True,
-                check=True
-            )
+            subprocess.run(["pdftoppm", "-v"], capture_output=True, check=True)
             return True
-        except (subprocess.CalledProcessError, FileNotFoundError):
+        except subprocess.CalledProcessError, FileNotFoundError:
             return False
 
     def _has_imagemagick(self) -> bool:
         """Check if ImageMagick is available."""
         try:
-            subprocess.run(
-                ['convert', '-version'],
-                capture_output=True,
-                check=True
-            )
+            subprocess.run(["convert", "-version"], capture_output=True, check=True)
             return True
-        except (subprocess.CalledProcessError, FileNotFoundError):
+        except subprocess.CalledProcessError, FileNotFoundError:
             return False
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Convert presentation PDFs to images',
+        description="Convert presentation PDFs to images",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -239,61 +203,32 @@ Requirements:
   - pdf2image: pip install pdf2image (recommended)
   - poppler-utils: apt/brew install poppler-utils
   - ImageMagick: apt/brew install imagemagick
-        """
+        """,
     )
 
-    parser.add_argument(
-        'pdf_path',
-        help='Path to PDF presentation'
-    )
+    parser.add_argument("pdf_path", help="Path to PDF presentation")
 
-    parser.add_argument(
-        'output_prefix',
-        help='Output filename prefix (e.g., "slides" or "output/slide")'
-    )
+    parser.add_argument("output_prefix", help='Output filename prefix (e.g., "slides" or "output/slide")')
 
-    parser.add_argument(
-        '--dpi', '-r',
-        type=int,
-        default=150,
-        help='Resolution in DPI (default: 150)'
-    )
+    parser.add_argument("--dpi", "-r", type=int, default=150, help="Resolution in DPI (default: 150)")
 
-    parser.add_argument(
-        '--format', '-f',
-        choices=['jpg', 'jpeg', 'png'],
-        default='jpg',
-        help='Output format (default: jpg)'
-    )
+    parser.add_argument("--format", "-f", choices=["jpg", "jpeg", "png"], default="jpg", help="Output format (default: jpg)")
 
-    parser.add_argument(
-        '--first',
-        type=int,
-        help='First page to convert (1-indexed)'
-    )
+    parser.add_argument("--first", type=int, help="First page to convert (1-indexed)")
 
-    parser.add_argument(
-        '--last',
-        type=int,
-        help='Last page to convert (1-indexed)'
-    )
+    parser.add_argument("--last", type=int, help="Last page to convert (1-indexed)")
 
     args = parser.parse_args()
 
     # Create output directory if needed
     output_dir = Path(args.output_prefix).parent
-    if output_dir != Path('.'):
+    if output_dir != Path("."):
         output_dir.mkdir(parents=True, exist_ok=True)
 
     # Convert
     try:
         converter = PDFToImagesConverter(
-            pdf_path=args.pdf_path,
-            output_prefix=args.output_prefix,
-            dpi=args.dpi,
-            format=args.format,
-            first_page=args.first,
-            last_page=args.last
+            pdf_path=args.pdf_path, output_prefix=args.output_prefix, dpi=args.dpi, format=args.format, first_page=args.first, last_page=args.last
         )
 
         output_files = converter.convert()
@@ -325,5 +260,5 @@ Requirements:
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

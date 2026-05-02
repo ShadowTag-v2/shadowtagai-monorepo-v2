@@ -20,62 +20,60 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 
 # Skip all tests in this module if Python version is less than 3.10
-pytestmark = pytest.mark.skipif(
-    sys.version_info < (3, 10), reason="MCP tool requires Python 3.10+"
-)
+pytestmark = pytest.mark.skipif(sys.version_info < (3, 10), reason="MCP tool requires Python 3.10+")
 
 # Import dependencies with version checking
 try:
-  from google.adk.tools.mcp_tool.mcp_toolset import McpToolset
+    from google.adk.tools.mcp_tool.mcp_toolset import McpToolset
 except ImportError as e:
-  raise e
+    raise e
 
 
 @pytest.mark.asyncio
 async def test_mcp_toolset_with_prefix():
-  """Test that McpToolset correctly applies the tool_name_prefix."""
-  # Mock the connection parameters
-  mock_connection_params = MagicMock()
-  mock_connection_params.timeout = None
+    """Test that McpToolset correctly applies the tool_name_prefix."""
+    # Mock the connection parameters
+    mock_connection_params = MagicMock()
+    mock_connection_params.timeout = None
 
-  # Mock the MCPSessionManager and its create_session method
-  mock_session_manager = MagicMock()
-  mock_session = MagicMock()
+    # Mock the MCPSessionManager and its create_session method
+    mock_session_manager = MagicMock()
+    mock_session = MagicMock()
 
-  # Mock the list_tools response from the MCP server
-  mock_tool1 = MagicMock()
-  mock_tool1.name = "tool1"
-  mock_tool1.description = "tool 1 desc"
-  mock_tool2 = MagicMock()
-  mock_tool2.name = "tool2"
-  mock_tool2.description = "tool 2 desc"
-  list_tools_result = MagicMock()
-  list_tools_result.tools = [mock_tool1, mock_tool2]
-  mock_session.list_tools = AsyncMock(return_value=list_tools_result)
-  mock_session_manager.create_session = AsyncMock(return_value=mock_session)
+    # Mock the list_tools response from the MCP server
+    mock_tool1 = MagicMock()
+    mock_tool1.name = "tool1"
+    mock_tool1.description = "tool 1 desc"
+    mock_tool2 = MagicMock()
+    mock_tool2.name = "tool2"
+    mock_tool2.description = "tool 2 desc"
+    list_tools_result = MagicMock()
+    list_tools_result.tools = [mock_tool1, mock_tool2]
+    mock_session.list_tools = AsyncMock(return_value=list_tools_result)
+    mock_session_manager.create_session = AsyncMock(return_value=mock_session)
 
-  # Create an instance of McpToolset with a prefix
-  toolset = McpToolset(
-      connection_params=mock_connection_params,
-      tool_name_prefix="my_prefix",
-  )
+    # Create an instance of McpToolset with a prefix
+    toolset = McpToolset(
+        connection_params=mock_connection_params,
+        tool_name_prefix="my_prefix",
+    )
 
-  # Replace the internal session manager with our mock
-  toolset._mcp_session_manager = mock_session_manager
+    # Replace the internal session manager with our mock
+    toolset._mcp_session_manager = mock_session_manager
 
-  # Get the tools from the toolset
-  tools = await toolset.get_tools()
+    # Get the tools from the toolset
+    tools = await toolset.get_tools()
 
-  # The get_tools method in McpToolset returns MCPTool objects, which are
-  # instances of BaseTool. The prefixing is handled by the BaseToolset,
-  # so we need to call get_tools_with_prefix to get the prefixed tools.
-  prefixed_tools = await toolset.get_tools_with_prefix()
+    # The get_tools method in McpToolset returns MCPTool objects, which are
+    # instances of BaseTool. The prefixing is handled by the BaseToolset,
+    # so we need to call get_tools_with_prefix to get the prefixed tools.
+    prefixed_tools = await toolset.get_tools_with_prefix()
 
-  # Assert that the tools are prefixed correctly
-  assert len(prefixed_tools) == 2
-  assert prefixed_tools[0].name == "my_prefix_tool1"
-  assert prefixed_tools[1].name == "my_prefix_tool2"
+    # Assert that the tools are prefixed correctly
+    assert len(prefixed_tools) == 2
+    assert prefixed_tools[0].name == "my_prefix_tool1"
+    assert prefixed_tools[1].name == "my_prefix_tool2"
 
-  # Assert that the original tools are not modified
-  assert tools[0].name == "tool1"
-  assert tools[1].name == "tool2"
+    # Assert that the original tools are not modified
+    assert tools[0].name == "tool1"
+    assert tools[1].name == "tool2"

@@ -7,6 +7,8 @@ Implements the dual-billing engine:
 2. Lawyer -> Us: Auto-scaling tiered subscription
 
 Uses Stripe Connect Standard accounts for law firm onboarding.
+All outbound Stripe API calls are protected by a circuit breaker
+(profile: stripe, threshold=3, timeout=60s).
 """
 
 from __future__ import annotations
@@ -15,6 +17,24 @@ import logging
 from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
+
+
+def _get_stripe_breaker():
+    """Lazy-load the circuit breaker for Stripe API calls.
+
+    Returns the 'stripe' breaker from the default telemetry-wired registry.
+    Returns None if the circuit_breaker package is not available.
+    """
+    try:
+        from circuit_breaker.telemetry_bridge import default_registry
+
+        return default_registry.get_or_create(
+            "stripe",
+            failure_threshold=3,
+            reset_timeout_s=60.0,
+        )
+    except Exception:
+        return None
 
 
 @dataclass
@@ -38,6 +58,10 @@ class StripeConnectService:
     - Enterprise: $999/mo (10+ attorneys)
 
     All tiers include ALL LLM API costs + 85%+ margin.
+
+    All outbound Stripe API calls are gated by the 'stripe' circuit
+    breaker. When the breaker is OPEN, calls raise RuntimeError
+    immediately to prevent cascading resource exhaustion.
     """
 
     TIER_PRICES = {
@@ -71,7 +95,20 @@ class StripeConnectService:
 
         Returns:
             FirmOnboardingState with the new Connect account ID.
+
+        Raises:
+            RuntimeError: If the stripe circuit breaker is OPEN.
         """
+        breaker = _get_stripe_breaker()
+        if breaker and not breaker.allow_request():
+            msg = (
+                f"Circuit breaker OPEN for stripe — "
+                f"cannot create Connect account for tenant '{tenant_id}'. "
+                f"Probe in {breaker.seconds_until_probe:.0f}s."
+            )
+            logger.warning(msg)
+            raise RuntimeError(msg)
+
         try:
             import stripe
 
@@ -94,6 +131,9 @@ class StripeConnectService:
                 stripe_account_id=account.id,
             )
 
+            if breaker:
+                breaker.record_success()
+
             logger.info(
                 "Stripe Connect account created: tenant=%s acct=%s",
                 tenant_id,
@@ -105,6 +145,8 @@ class StripeConnectService:
             logger.error("stripe package not installed")
             raise
         except Exception as e:
+            if breaker:
+                breaker.record_failure()
             logger.error("Stripe Connect error: %s", e)
             raise
 
@@ -123,7 +165,20 @@ class StripeConnectService:
 
         Returns:
             The onboarding link URL.
+
+        Raises:
+            RuntimeError: If the stripe circuit breaker is OPEN.
         """
+        breaker = _get_stripe_breaker()
+        if breaker and not breaker.allow_request():
+            msg = (
+                f"Circuit breaker OPEN for stripe — "
+                f"cannot create onboarding link for '{stripe_account_id}'. "
+                f"Probe in {breaker.seconds_until_probe:.0f}s."
+            )
+            logger.warning(msg)
+            raise RuntimeError(msg)
+
         try:
             import stripe
 
@@ -135,10 +190,18 @@ class StripeConnectService:
                 return_url=return_url,
                 refresh_url=refresh_url,
             )
+
+            if breaker:
+                breaker.record_success()
             return link.url
 
         except ImportError:
             logger.error("stripe package not installed")
+            raise
+        except Exception as e:
+            if breaker:
+                breaker.record_failure()
+            logger.error("Stripe onboarding link error: %s", e)
             raise
 
     async def create_subscription(
@@ -155,7 +218,20 @@ class StripeConnectService:
 
         Returns:
             The Stripe subscription ID.
+
+        Raises:
+            RuntimeError: If the stripe circuit breaker is OPEN.
         """
+        breaker = _get_stripe_breaker()
+        if breaker and not breaker.allow_request():
+            msg = (
+                f"Circuit breaker OPEN for stripe — "
+                f"cannot create subscription for '{stripe_account_id}'. "
+                f"Probe in {breaker.seconds_until_probe:.0f}s."
+            )
+            logger.warning(msg)
+            raise RuntimeError(msg)
+
         price_cents = self.TIER_PRICES.get(tier, self.TIER_PRICES["solo"])
 
         try:
@@ -185,6 +261,9 @@ class StripeConnectService:
                 },
             )
 
+            if breaker:
+                breaker.record_success()
+
             logger.info(
                 "Subscription created: acct=%s tier=%s sub=%s",
                 stripe_account_id,
@@ -195,4 +274,9 @@ class StripeConnectService:
 
         except ImportError:
             logger.error("stripe package not installed")
+            raise
+        except Exception as e:
+            if breaker:
+                breaker.record_failure()
+            logger.error("Stripe subscription error: %s", e)
             raise

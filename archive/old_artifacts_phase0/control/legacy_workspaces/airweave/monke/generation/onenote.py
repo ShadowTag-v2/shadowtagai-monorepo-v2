@@ -1,13 +1,10 @@
 """OneNote-specific generation adapter: page generator."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.onenote import OneNotePage
 
 
-async def generate_onenote_page(
-    model: str, token: str, is_update: bool = False
-) -> tuple[str, str]:
+async def generate_onenote_page(model: str, token: str, is_update: bool = False) -> tuple[str, str]:
     """
     Returns (title, html_content). The literal token must appear in the content.
     Uses structured generation with JSON mode under the hood.

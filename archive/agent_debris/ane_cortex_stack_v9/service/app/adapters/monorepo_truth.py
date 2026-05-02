@@ -1,14 +1,16 @@
 from __future__ import annotations
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 import re
 import yaml
+
 
 def _safe_read(path: str) -> str:
     p = Path(path)
     if not p.exists():
         return ""
     return p.read_text(encoding="utf-8", errors="ignore")
+
 
 def read_manifest(path: str) -> dict[str, Any]:
     raw = _safe_read(path)
@@ -29,6 +31,7 @@ def read_manifest(path: str) -> dict[str, Any]:
         canonical_roots = re.findall(r"apps/ShadowTag-v2_stack/[A-Za-z0-9_\-]+", raw)
     return {"canonical_roots": canonical_roots, "raw": data or raw}
 
+
 def summarize_merge_status(path: str) -> dict[str, Any]:
     raw = _safe_read(path)
     summary = {
@@ -48,6 +51,7 @@ def summarize_merge_status(path: str) -> dict[str, Any]:
         summary["status_line"] = lines[0]
     return summary
 
+
 def summarize_control_plane(path: str) -> dict[str, Any]:
     raw = _safe_read(path)
     roots = re.findall(r"apps/ShadowTag-v2_stack/[A-Za-z0-9_\-]+", raw)
@@ -55,6 +59,7 @@ def summarize_control_plane(path: str) -> dict[str, Any]:
         "canonical_roots": sorted(list(dict.fromkeys(roots))),
         "raw_excerpt": raw[:4000],
     }
+
 
 def load_monorepo_truth(manifest_path: str, merge_status_path: str, control_plane_path: str) -> dict[str, Any]:
     manifest = read_manifest(manifest_path)

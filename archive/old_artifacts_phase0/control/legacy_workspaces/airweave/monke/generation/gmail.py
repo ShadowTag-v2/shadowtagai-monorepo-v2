@@ -1,13 +1,10 @@
 """Gmail-specific generation adapter: email generator using JSON mode."""
 
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.gmail import GmailArtifact
 
 
-async def generate_gmail_artifact(
-    model: str, token: str, is_update: bool = False
-) -> tuple[str, str]:
+async def generate_gmail_artifact(model: str, token: str, is_update: bool = False) -> tuple[str, str]:
     """
     Returns (subject, body). The literal token must appear in the body.
     Uses JSON mode (response_format: json_object) under the hood.

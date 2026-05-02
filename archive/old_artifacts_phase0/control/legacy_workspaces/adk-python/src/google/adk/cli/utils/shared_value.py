@@ -21,9 +21,9 @@ T = TypeVar("T")
 
 
 class SharedValue(pydantic.BaseModel, Generic[T]):
-  """Simple wrapper around a value to allow modifying it from callbacks."""
+    """Simple wrapper around a value to allow modifying it from callbacks."""
 
-  model_config = pydantic.ConfigDict(
-      arbitrary_types_allowed=True,
-  )
-  value: T
+    model_config = pydantic.ConfigDict(
+        arbitrary_types_allowed=True,
+    )
+    value: T

@@ -19,6 +19,7 @@ default_instruction = """You are a helpful AI Agent.
 
 The current date is {{currentDate}}."""
 
+
 @fast.agent(name="jobs", instruction=default_instruction, servers=["live_hf"])
 async def main():
     # Setup CSV file with comprehensive metrics
@@ -33,7 +34,7 @@ async def main():
         "tokens",
         "status",
         "job_id",
-        "conversation_span_ms",     # First LLM call → Last LLM call
+        "conversation_span_ms",  # First LLM call → Last LLM call
     ]
 
     timestamp = datetime.now().strftime("%y_%m_%d_%H_%M")
@@ -46,27 +47,18 @@ async def main():
             async with fast.run() as agent:
                 jobs = agent.jobs
 
-                await jobs.send(
-                    "run a job to print 'hello world' and a 2 digit random number to the console"
-                )
+                await jobs.send("run a job to print 'hello world' and a 2 digit random number to the console")
                 model_name = jobs.llm.model_name
                 assert model_name is not None
                 model_short = model_name.split("/")[-1]
                 summary = ConversationSummary(messages=jobs.message_history)
 
-                job_id = extract_last(
-                    jobs.message_history,
-                    r"Job started: ([a-f0-9]+)",
-                    scope="tool_results",
-                    group=1
-                )
+                job_id = extract_last(jobs.message_history, r"Job started: ([a-f0-9]+)", scope="tool_results", group=1)
 
                 # Check job status
                 status = "UNDETERMINED"
                 if job_id:
-                    status = huggingface_hub.HfApi(
-                        token=os.environ.get("HF_TEST_TOKEN")
-                    ).inspect_job(job_id=job_id).status.stage
+                    status = huggingface_hub.HfApi(token=os.environ.get("HF_TEST_TOKEN")).inspect_job(job_id=job_id).status.stage
                     print(f"Run {i}: {status}")
 
                 tool_map = summary.tool_call_map
@@ -81,11 +73,7 @@ async def main():
                     "tool_errors": summary.tool_errors,
                     "hf_jobs_calls": hf_jobs_calls,
                     "other_calls": other_calls,
-                    "tokens": (
-                        jobs.llm.usage_accumulator.cumulative_billing_tokens
-                        if jobs.llm.usage_accumulator
-                        else 0
-                    ),
+                    "tokens": (jobs.llm.usage_accumulator.cumulative_billing_tokens if jobs.llm.usage_accumulator else 0),
                     "status": status,
                     "job_id": job_id,
                     "conversation_span_ms": summary.conversation_span_ms,
@@ -97,6 +85,7 @@ async def main():
                 save_messages(jobs.message_history, history_filename)
 
     print(f"\nResults written to {csv_filename}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

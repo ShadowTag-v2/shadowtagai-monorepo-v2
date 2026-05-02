@@ -4,6 +4,7 @@ This module provides minimal stubs that allow the bot-manager to run with
 ORCHESTRATOR=nomad.  Only start_bot_container is implemented; the other
 functions currently raise NotImplementedError and can be completed later.
 """
+
 from __future__ import annotations
 
 import logging
@@ -18,10 +19,7 @@ logger = logging.getLogger("bot_manager.nomad_utils")
 # Nomad connection parameters - MODIFIED to use injected Nomad agent IP and fail if not present
 NOMAD_AGENT_IP = os.getenv("NOMAD_IP_http")
 if not NOMAD_AGENT_IP:
-    raise RuntimeError(
-        "NOMAD_IP_http environment variable not set. "
-        "This is required for the bot-manager to connect to the Nomad API."
-    )
+    raise RuntimeError("NOMAD_IP_http environment variable not set. This is required for the bot-manager to connect to the Nomad API.")
 NOMAD_ADDR = os.getenv("NOMAD_ADDR", f"http://{NOMAD_AGENT_IP}:4646").rstrip("/")
 
 # Name of the *parameterised* job that represents a vexa-bot instance
@@ -30,18 +28,22 @@ BOT_JOB_NAME = os.getenv("VEXA_BOT_JOB_NAME", "vexa-bot")
 # ---------------------------------------------------------------------------
 # Helper / compatibility no-ops ------------------------------------------------
 
+
 def get_socket_session(*_args, **_kwargs):  # type: ignore
     """Return None – kept for API compatibility (Docker-specific concept)."""
     return None
+
 
 def close_client():  # type: ignore
     """No persistent Nomad client yet – nothing to close."""
     return None
 
+
 close_docker_client = close_client  # compatibility alias
 
 # ---------------------------------------------------------------------------
 # Core public API -------------------------------------------------------------
+
 
 async def start_bot_container(
     user_id: int,
@@ -52,7 +54,7 @@ async def start_bot_container(
     user_token: str,
     native_meeting_id: str,
     language: str | None,
-    task: str | None
+    task: str | None,
 ) -> tuple[str, str] | None:
     """Dispatch a parameterised *vexa-bot* Nomad job.
 
@@ -64,13 +66,14 @@ async def start_bot_container(
 
     # Mint MeetingToken (HS256)
     from app.main import mint_meeting_token
+
     try:
         meeting_token = mint_meeting_token(
             meeting_id=meeting_id,
             user_id=user_id,
             platform=platform,
             native_meeting_id=native_meeting_id,
-            ttl_seconds=7200  # 2 hours
+            ttl_seconds=7200,  # 2 hours
         )
     except Exception as token_err:
         logger.error(f"Failed to mint MeetingToken for meeting {meeting_id}: {token_err}", exc_info=True)
@@ -93,13 +96,9 @@ async def start_bot_container(
     url = f"{NOMAD_ADDR}/v1/job/{BOT_JOB_NAME}/dispatch"
 
     # According to Nomad docs, metadata can be supplied in JSON body.
-    payload = {
-        "Meta": meta
-    }
+    payload = {"Meta": meta}
 
-    logger.info(
-        f"Dispatching Nomad job '{BOT_JOB_NAME}' for meeting {meeting_id} with meta {meta} -> {url}"
-    )
+    logger.info(f"Dispatching Nomad job '{BOT_JOB_NAME}' for meeting {meeting_id} with meta {meta} -> {url}")
 
     try:
         async with httpx.AsyncClient() as client:
@@ -108,9 +107,7 @@ async def start_bot_container(
             data = resp.json()
             dispatched_id = data.get("DispatchedJobID") or data.get("EvaluationID")
             if not dispatched_id:
-                logger.warning(
-                    "Nomad dispatch response missing DispatchedJobID; full response: %s", data
-                )
+                logger.warning("Nomad dispatch response missing DispatchedJobID; full response: %s", data)
                 dispatched_id = f"unknown-{uuid.uuid4()}"
             logger.info(
                 "Successfully dispatched Nomad job. Dispatch ID=%s, connection_id=%s",
@@ -126,10 +123,7 @@ async def start_bot_container(
                 error_details = error_body
         except Exception:
             pass
-        logger.error(
-            "HTTP %s error dispatching Nomad job to %s: %s. Response body: %s",
-            e.response.status_code, NOMAD_ADDR, e, error_details
-        )
+        logger.error("HTTP %s error dispatching Nomad job to %s: %s. Response body: %s", e.response.status_code, NOMAD_ADDR, e, error_details)
     except httpx.HTTPError as e:
         logger.error("HTTP error talking to Nomad at %s: %s", NOMAD_ADDR, e)
     except Exception as e:  # noqa: BLE001
@@ -252,7 +246,7 @@ async def get_running_bots_status(user_id: int) -> list[dict[str, Any]]:
                             "normalized_status": normalized,
                             "created_at": job.get("SubmitTime"),
                             "labels": job_meta,
-                            "meeting_id_from_name": job_meta.get("meeting_id")
+                            "meeting_id_from_name": job_meta.get("meeting_id"),
                         }
 
                         running_bots.append(bot_status)
@@ -311,5 +305,6 @@ async def verify_container_running(container_id: str) -> bool:
     except Exception as e:
         logger.warning(f"Unexpected error checking allocation {container_id}: {e}")
         return False
+
 
 # Alias for shared function – import lazily to avoid circulars

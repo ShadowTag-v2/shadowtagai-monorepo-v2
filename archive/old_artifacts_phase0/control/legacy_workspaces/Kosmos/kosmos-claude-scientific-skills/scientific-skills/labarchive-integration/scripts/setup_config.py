@@ -21,26 +21,22 @@ def get_regional_endpoint():
 
     choice = input("\nEnter choice (1-4): ").strip()
 
-    endpoints = {
-        '1': 'https://api.labarchives.com/api',
-        '2': 'https://auapi.labarchives.com/api',
-        '3': 'https://ukapi.labarchives.com/api'
-    }
+    endpoints = {"1": "https://api.labarchives.com/api", "2": "https://auapi.labarchives.com/api", "3": "https://ukapi.labarchives.com/api"}
 
     if choice in endpoints:
         return endpoints[choice]
-    elif choice == '4':
+    elif choice == "4":
         return input("Enter custom API endpoint URL: ").strip()
     else:
         print("Invalid choice, defaulting to US/International")
-        return endpoints['1']
+        return endpoints["1"]
 
 
 def get_credentials():
     """Prompt user for API credentials"""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("LabArchives API Credentials")
-    print("="*60)
+    print("=" * 60)
     print("\nYou need two sets of credentials:")
     print("1. Institutional API credentials (from LabArchives administrator)")
     print("2. User authentication credentials (from your account settings)")
@@ -59,17 +55,12 @@ def get_credentials():
     print("(Set this in your LabArchives Account Settings → Security & Privacy)")
     user_password = input("  External Applications Password: ").strip()
 
-    return {
-        'access_key_id': access_key_id,
-        'access_password': access_password,
-        'user_email': user_email,
-        'user_external_password': user_password
-    }
+    return {"access_key_id": access_key_id, "access_password": access_password, "user_email": user_email, "user_external_password": user_password}
 
 
-def create_config_file(config_data, output_path='config.yaml'):
+def create_config_file(config_data, output_path="config.yaml"):
     """Create YAML configuration file"""
-    with open(output_path, 'w') as f:
+    with open(output_path, "w") as f:
         yaml.dump(config_data, f, default_flow_style=False, sort_keys=False)
 
     # Set file permissions to user read/write only for security
@@ -79,14 +70,13 @@ def create_config_file(config_data, output_path='config.yaml'):
     print("   File permissions set to 600 (user read/write only)")
 
 
-def verify_config(config_path='config.yaml'):
+def verify_config(config_path="config.yaml"):
     """Verify configuration file can be loaded"""
     try:
-        with open(config_path, 'r') as f:
+        with open(config_path) as f:
             config = yaml.safe_load(f)
 
-        required_keys = ['api_url', 'access_key_id', 'access_password',
-                        'user_email', 'user_external_password']
+        required_keys = ["api_url", "access_key_id", "access_password", "user_email", "user_external_password"]
 
         missing = [key for key in required_keys if key not in config or not config[key]]
 
@@ -102,12 +92,12 @@ def verify_config(config_path='config.yaml'):
         return False
 
 
-def test_authentication(config_path='config.yaml'):
+def test_authentication(config_path="config.yaml"):
     """Test authentication with LabArchives API"""
     print("\nWould you like to test the connection? (requires labarchives-py package)")
     test = input("Test connection? (y/n): ").strip().lower()
 
-    if test != 'y':
+    if test != "y":
         return
 
     try:
@@ -117,24 +107,17 @@ def test_authentication(config_path='config.yaml'):
         from labarchivespy.client import Client
 
         # Load config
-        with open(config_path, 'r') as f:
+        with open(config_path) as f:
             config = yaml.safe_load(f)
 
         # Initialize client
         print("\nInitializing client...")
-        client = Client(
-            config['api_url'],
-            config['access_key_id'],
-            config['access_password']
-        )
+        client = Client(config["api_url"], config["access_key_id"], config["access_password"])
 
         # Test authentication
         print("Testing authentication...")
-        login_params = {
-            'login_or_email': config['user_email'],
-            'password': config['user_external_password']
-        }
-        response = client.make_call('users', 'user_access_info', params=login_params)
+        login_params = {"login_or_email": config["user_email"], "password": config["user_external_password"]}
+        response = client.make_call("users", "user_access_info", params=login_params)
 
         if response.status_code == 200:
             # Extract UID
@@ -144,7 +127,7 @@ def test_authentication(config_path='config.yaml'):
 
             # Get notebook count
             root = ET.fromstring(response.content)
-            notebooks = root.findall('.//notebook')
+            notebooks = root.findall(".//notebook")
             print(f"   Accessible notebooks: {len(notebooks)}")
 
         else:
@@ -161,15 +144,15 @@ def test_authentication(config_path='config.yaml'):
 
 def main():
     """Main setup workflow"""
-    print("="*60)
+    print("=" * 60)
     print("LabArchives API Configuration Setup")
-    print("="*60)
+    print("=" * 60)
 
     # Check if config already exists
-    if os.path.exists('config.yaml'):
+    if os.path.exists("config.yaml"):
         print("\n⚠️  config.yaml already exists")
         overwrite = input("Overwrite existing configuration? (y/n): ").strip().lower()
-        if overwrite != 'y':
+        if overwrite != "y":
             print("Setup cancelled")
             return
 
@@ -178,10 +161,7 @@ def main():
     credentials = get_credentials()
 
     # Combine configuration
-    config_data = {
-        'api_url': api_url,
-        **credentials
-    }
+    config_data = {"api_url": api_url, **credentials}
 
     # Create config file
     create_config_file(config_data)
@@ -192,9 +172,9 @@ def main():
     # Test connection
     test_authentication()
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Setup complete!")
-    print("="*60)
+    print("=" * 60)
     print("\nNext steps:")
     print("1. Add config.yaml to .gitignore if using version control")
     print("2. Use notebook_operations.py to list and backup notebooks")
@@ -202,5 +182,5 @@ def main():
     print("\nFor more information, see references/authentication_guide.md")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

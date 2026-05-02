@@ -1,14 +1,15 @@
 """
 Accessibility and safety compliance models
 """
-from enum import Enum, StrEnum
-from typing import Optional
+
+from enum import StrEnum
 
 from pydantic import BaseModel, Field, HttpUrl
 
 
 class WCAGLevel(StrEnum):
     """WCAG conformance levels"""
+
     A = "A"
     AA = "AA"
     AAA = "AAA"
@@ -16,6 +17,7 @@ class WCAGLevel(StrEnum):
 
 class WCAGPrinciple(StrEnum):
     """WCAG principles"""
+
     PERCEIVABLE = "perceivable"
     OPERABLE = "operable"
     UNDERSTANDABLE = "understandable"
@@ -24,6 +26,7 @@ class WCAGPrinciple(StrEnum):
 
 class AgeGroup(StrEnum):
     """Age groups for safety compliance"""
+
     UNDER_13 = "under_13"
     TEEN_13_17 = "teen_13_17"
     ADULT_18_PLUS = "adult_18_plus"
@@ -31,6 +34,7 @@ class AgeGroup(StrEnum):
 
 class WCAGAuditRequest(BaseModel):
     """WCAG accessibility audit request"""
+
     url: HttpUrl | None = None
     html_content: str | None = None
     target_level: WCAGLevel = Field(default=WCAGLevel.AA)
@@ -39,6 +43,7 @@ class WCAGAuditRequest(BaseModel):
 
 class WCAGViolation(BaseModel):
     """WCAG violation"""
+
     principle: WCAGPrinciple
     guideline: str
     success_criterion: str
@@ -51,6 +56,7 @@ class WCAGViolation(BaseModel):
 
 class WCAGAuditResponse(BaseModel):
     """WCAG audit response"""
+
     compliant: bool
     level_achieved: WCAGLevel | None = None
     violations: list[WCAGViolation]
@@ -61,6 +67,7 @@ class WCAGAuditResponse(BaseModel):
 
 class COPPAComplianceRequest(BaseModel):
     """COPPA compliance check request"""
+
     user_age: int
     collects_personal_info: bool
     parental_consent_obtained: bool
@@ -71,6 +78,7 @@ class COPPAComplianceRequest(BaseModel):
 
 class COPPAComplianceResponse(BaseModel):
     """COPPA compliance response"""
+
     compliant: bool
     age_group: AgeGroup
     requires_parental_consent: bool
@@ -80,6 +88,7 @@ class COPPAComplianceResponse(BaseModel):
 
 class AADCComplianceRequest(BaseModel):
     """Age Appropriate Design Code compliance check"""
+
     user_age: int
     geolocation_enabled: bool
     profiling_enabled: bool
@@ -90,6 +99,7 @@ class AADCComplianceRequest(BaseModel):
 
 class AADCComplianceResponse(BaseModel):
     """AADC compliance response"""
+
     compliant: bool
     age_group: AgeGroup
     violations: list[str] = Field(default_factory=list)

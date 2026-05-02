@@ -30,24 +30,20 @@ async def execute_before_request_interceptors(
     ctx: InvocationContext,
     a2a_request: A2AMessage,
 ) -> tuple[A2AMessage | Event, ParametersConfig]:
-  """Executes registered before_request interceptors."""
+    """Executes registered before_request interceptors."""
 
-  params = ParametersConfig(
-      client_call_context=ClientCallContext(state=ctx.session.state)
-  )
-  if request_interceptors:
-    for interceptor in request_interceptors:
-      if not interceptor.before_request:
-        continue
+    params = ParametersConfig(client_call_context=ClientCallContext(state=ctx.session.state))
+    if request_interceptors:
+        for interceptor in request_interceptors:
+            if not interceptor.before_request:
+                continue
 
-      result, params = await interceptor.before_request(
-          ctx, a2a_request, params
-      )
-      if isinstance(result, Event):
-        return result, params
-      a2a_request = result
+            result, params = await interceptor.before_request(ctx, a2a_request, params)
+            if isinstance(result, Event):
+                return result, params
+            a2a_request = result
 
-  return a2a_request, params
+    return a2a_request, params
 
 
 async def execute_after_request_interceptors(
@@ -56,11 +52,11 @@ async def execute_after_request_interceptors(
     a2a_response: A2AMessage | A2AClientEvent,
     event: Event,
 ) -> Event | None:
-  """Executes registered after_request interceptors."""
-  if request_interceptors:
-    for interceptor in reversed(request_interceptors):
-      if interceptor.after_request:
-        event = await interceptor.after_request(ctx, a2a_response, event)
-        if not event:
-          return None
-  return event
+    """Executes registered after_request interceptors."""
+    if request_interceptors:
+        for interceptor in reversed(request_interceptors):
+            if interceptor.after_request:
+                event = await interceptor.after_request(ctx, a2a_response, event)
+                if not event:
+                    return None
+    return event

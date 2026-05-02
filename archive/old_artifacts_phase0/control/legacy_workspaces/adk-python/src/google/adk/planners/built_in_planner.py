@@ -14,7 +14,7 @@
 
 
 from google.genai import types
-from typing_extensions import override
+from typing import override
 
 from ..agents.callback_context import CallbackContext
 from ..agents.readonly_context import ReadonlyContext
@@ -23,52 +23,52 @@ from .base_planner import BasePlanner
 
 
 class BuiltInPlanner(BasePlanner):
-  """The built-in planner that uses model's built-in thinking features.
+    """The built-in planner that uses model's built-in thinking features.
 
-  Attributes:
-      thinking_config: Config for model built-in thinking features. An error
-        will be returned if this field is set for models that don't support
-        thinking.
-  """
+    Attributes:
+        thinking_config: Config for model built-in thinking features. An error
+          will be returned if this field is set for models that don't support
+          thinking.
+    """
 
-  thinking_config: types.ThinkingConfig
-  """
+    thinking_config: types.ThinkingConfig
+    """
   Config for model built-in thinking features. An error will be returned if this
   field is set for models that don't support thinking.
   """
 
-  def __init__(self, *, thinking_config: types.ThinkingConfig):
-    """Initializes the built-in planner.
+    def __init__(self, *, thinking_config: types.ThinkingConfig):
+        """Initializes the built-in planner.
 
-    Args:
-      thinking_config: Config for model built-in thinking features. An error
-        will be returned if this field is set for models that don't support
-        thinking.
-    """
-    self.thinking_config = thinking_config
+        Args:
+          thinking_config: Config for model built-in thinking features. An error
+            will be returned if this field is set for models that don't support
+            thinking.
+        """
+        self.thinking_config = thinking_config
 
-  def apply_thinking_config(self, llm_request: LlmRequest) -> None:
-    """Applies the thinking config to the LLM request.
+    def apply_thinking_config(self, llm_request: LlmRequest) -> None:
+        """Applies the thinking config to the LLM request.
 
-    Args:
-      llm_request: The LLM request to apply the thinking config to.
-    """
-    if self.thinking_config:
-      llm_request.config = llm_request.config or types.GenerateContentConfig()
-      llm_request.config.thinking_config = self.thinking_config
+        Args:
+          llm_request: The LLM request to apply the thinking config to.
+        """
+        if self.thinking_config:
+            llm_request.config = llm_request.config or types.GenerateContentConfig()
+            llm_request.config.thinking_config = self.thinking_config
 
-  @override
-  def build_planning_instruction(
-      self,
-      readonly_context: ReadonlyContext,
-      llm_request: LlmRequest,
-  ) -> str | None:
-    return
+    @override
+    def build_planning_instruction(
+        self,
+        readonly_context: ReadonlyContext,
+        llm_request: LlmRequest,
+    ) -> str | None:
+        return
 
-  @override
-  def process_planning_response(
-      self,
-      callback_context: CallbackContext,
-      response_parts: list[types.Part],
-  ) -> list[types.Part] | None:
-    return
+    @override
+    def process_planning_response(
+        self,
+        callback_context: CallbackContext,
+        response_parts: list[types.Part],
+    ) -> list[types.Part] | None:
+        return

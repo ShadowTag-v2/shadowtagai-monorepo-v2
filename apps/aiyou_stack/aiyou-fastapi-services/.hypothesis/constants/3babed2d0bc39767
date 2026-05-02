@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/services/cost_optimizer.py
+# hypothesis_version: 6.151.5
+
+[0.8, 100.0, 100, 500, 1000, '%Y-%m-%d', 'Amount', 'CurrentInstance', 'DAILY', 'DIMENSION', 'Dimensions', 'EC2 Instance', 'Groups', 'HIGH', 'Key', 'Keys', 'MEDIUM', 'Metrics', 'MonthlyCost', 'Recommendations', 'Reserved Instance', 'ResourceId', 'ResultsByTime', 'SERVICE', 'Savings Plan', 'Start', 'TargetInstances', 'TimePeriod', 'Total', 'Type', 'USD', 'UnblendedCost', 'Unknown', 'Values', 'cost', 'forecasted_cost', 'idle_resources', 'monthly_cost', 'oversized_resources', 'period_end', 'period_start', 'service', 'unattached_volumes', 'unit', 'unused_resources']

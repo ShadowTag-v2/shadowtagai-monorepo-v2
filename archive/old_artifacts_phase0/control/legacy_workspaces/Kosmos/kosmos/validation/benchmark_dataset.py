@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class BenchmarkFinding:
     """A finding with known ground truth for validation."""
+
     finding_id: str
     summary: str
     evidence_type: str  # "data_analysis", "literature", "interpretation"
@@ -35,17 +36,14 @@ class BenchmarkFinding:
         """Validate evidence type."""
         valid_types = {"data_analysis", "literature", "interpretation"}
         if self.evidence_type not in valid_types:
-            raise ValueError(
-                f"Invalid evidence_type '{self.evidence_type}'. "
-                f"Must be one of: {valid_types}"
-            )
+            raise ValueError(f"Invalid evidence_type '{self.evidence_type}'. Must be one of: {valid_types}")
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'BenchmarkFinding':
+    def from_dict(cls, data: dict[str, Any]) -> BenchmarkFinding:
         """Create BenchmarkFinding from dictionary."""
         return cls(**data)
 
@@ -53,6 +51,7 @@ class BenchmarkFinding:
 @dataclass
 class BenchmarkDataset:
     """Collection of benchmark findings for validation."""
+
     name: str
     version: str
     findings: list[BenchmarkFinding]
@@ -144,12 +143,12 @@ class BenchmarkDataset:
         Args:
             path: File path to save to
         """
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             f.write(self.to_json())
         logger.info(f"Saved benchmark dataset to {path}")
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'BenchmarkDataset':
+    def from_dict(cls, data: dict[str, Any]) -> BenchmarkDataset:
         """
         Create BenchmarkDataset from dictionary.
 
@@ -170,7 +169,7 @@ class BenchmarkDataset:
         )
 
     @classmethod
-    def from_json(cls, json_str: str) -> 'BenchmarkDataset':
+    def from_json(cls, json_str: str) -> BenchmarkDataset:
         """
         Load dataset from JSON string.
 
@@ -184,7 +183,7 @@ class BenchmarkDataset:
         return cls.from_dict(data)
 
     @classmethod
-    def load(cls, path: str) -> 'BenchmarkDataset':
+    def load(cls, path: str) -> BenchmarkDataset:
         """
         Load dataset from JSON file.
 
@@ -203,16 +202,14 @@ class BenchmarkGenerator:
 
     # Sample findings for different types and domains
     DATA_ANALYSIS_TEMPLATES = [
-        ("Treatment group shows significant improvement (p={p_value:.3f}, d={effect_size:.2f})",
-         {"p_value": (0.001, 0.05), "effect_size": (0.3, 0.9)}),
-        ("Strong positive correlation between X and Y (r={correlation:.2f}, p<0.01)",
-         {"correlation": (0.5, 0.9)}),
-        ("Regression analysis reveals significant predictor (beta={beta:.2f}, p={p_value:.3f})",
-         {"beta": (-0.8, 0.8), "p_value": (0.001, 0.05)}),
-        ("ANOVA shows significant group differences (F={f_stat:.2f}, p={p_value:.3f})",
-         {"f_stat": (3.0, 15.0), "p_value": (0.001, 0.05)}),
-        ("Chi-square test indicates association (chi2={chi2:.2f}, p={p_value:.3f})",
-         {"chi2": (5.0, 30.0), "p_value": (0.001, 0.05)}),
+        (
+            "Treatment group shows significant improvement (p={p_value:.3f}, d={effect_size:.2f})",
+            {"p_value": (0.001, 0.05), "effect_size": (0.3, 0.9)},
+        ),
+        ("Strong positive correlation between X and Y (r={correlation:.2f}, p<0.01)", {"correlation": (0.5, 0.9)}),
+        ("Regression analysis reveals significant predictor (beta={beta:.2f}, p={p_value:.3f})", {"beta": (-0.8, 0.8), "p_value": (0.001, 0.05)}),
+        ("ANOVA shows significant group differences (F={f_stat:.2f}, p={p_value:.3f})", {"f_stat": (3.0, 15.0), "p_value": (0.001, 0.05)}),
+        ("Chi-square test indicates association (chi2={chi2:.2f}, p={p_value:.3f})", {"chi2": (5.0, 30.0), "p_value": (0.001, 0.05)}),
     ]
 
     LITERATURE_TEMPLATES = [
@@ -232,8 +229,7 @@ class BenchmarkGenerator:
     ]
 
     DOMAINS = ["biology", "clinical", "chemistry", "physics", "social_science"]
-    TOPICS = ["gene expression", "metabolic pathways", "protein interactions",
-              "cellular mechanisms", "treatment efficacy"]
+    TOPICS = ["gene expression", "metabolic pathways", "protein interactions", "cellular mechanisms", "treatment efficacy"]
 
     def __init__(self, seed: int | None = None):
         """
@@ -244,12 +240,7 @@ class BenchmarkGenerator:
         """
         self.random = random.Random(seed)
 
-    def _generate_data_analysis_finding(
-        self,
-        finding_id: str,
-        domain: str,
-        is_accurate: bool
-    ) -> BenchmarkFinding:
+    def _generate_data_analysis_finding(self, finding_id: str, domain: str, is_accurate: bool) -> BenchmarkFinding:
         """Generate a data analysis finding."""
         template, params = self.random.choice(self.DATA_ANALYSIS_TEMPLATES)
 
@@ -279,12 +270,7 @@ class BenchmarkGenerator:
             statistics=statistics,
         )
 
-    def _generate_literature_finding(
-        self,
-        finding_id: str,
-        domain: str,
-        is_accurate: bool
-    ) -> BenchmarkFinding:
+    def _generate_literature_finding(self, finding_id: str, domain: str, is_accurate: bool) -> BenchmarkFinding:
         """Generate a literature finding."""
         template = self.random.choice(self.LITERATURE_TEMPLATES)
         topic = self.random.choice(self.TOPICS)
@@ -300,10 +286,7 @@ class BenchmarkGenerator:
             hypothesis="the primary hypothesis",
         )
 
-        citations = [
-            {"author": f"Author{i}", "year": str(self.random.randint(2018, 2024))}
-            for i in range(self.random.randint(1, 5))
-        ]
+        citations = [{"author": f"Author{i}", "year": str(self.random.randint(2018, 2024))} for i in range(self.random.randint(1, 5))]
 
         return BenchmarkFinding(
             finding_id=finding_id,
@@ -316,12 +299,7 @@ class BenchmarkGenerator:
             expert_notes="Synthetic literature finding" if not is_accurate else None,
         )
 
-    def _generate_interpretation_finding(
-        self,
-        finding_id: str,
-        domain: str,
-        is_accurate: bool
-    ) -> BenchmarkFinding:
+    def _generate_interpretation_finding(self, finding_id: str, domain: str, is_accurate: bool) -> BenchmarkFinding:
         """Generate an interpretation finding."""
         template = self.random.choice(self.INTERPRETATION_TEMPLATES)
 
@@ -345,11 +323,7 @@ class BenchmarkGenerator:
             expert_notes="Over-interpretation" if not is_accurate else None,
         )
 
-    def create_synthetic_benchmark(
-        self,
-        n_per_type: int = 30,
-        accuracy_rates: dict[str, float] | None = None
-    ) -> BenchmarkDataset:
+    def create_synthetic_benchmark(self, n_per_type: int = 30, accuracy_rates: dict[str, float] | None = None) -> BenchmarkDataset:
         """
         Create synthetic benchmark with known accuracy distribution.
 
@@ -386,17 +360,11 @@ class BenchmarkGenerator:
                 domain = self.random.choice(self.DOMAINS)
 
                 if evidence_type == "data_analysis":
-                    finding = self._generate_data_analysis_finding(
-                        f"bench_{finding_counter:03d}", domain, True
-                    )
+                    finding = self._generate_data_analysis_finding(f"bench_{finding_counter:03d}", domain, True)
                 elif evidence_type == "literature":
-                    finding = self._generate_literature_finding(
-                        f"bench_{finding_counter:03d}", domain, True
-                    )
+                    finding = self._generate_literature_finding(f"bench_{finding_counter:03d}", domain, True)
                 else:
-                    finding = self._generate_interpretation_finding(
-                        f"bench_{finding_counter:03d}", domain, True
-                    )
+                    finding = self._generate_interpretation_finding(f"bench_{finding_counter:03d}", domain, True)
                 findings.append(finding)
 
             # Generate inaccurate findings
@@ -405,17 +373,11 @@ class BenchmarkGenerator:
                 domain = self.random.choice(self.DOMAINS)
 
                 if evidence_type == "data_analysis":
-                    finding = self._generate_data_analysis_finding(
-                        f"bench_{finding_counter:03d}", domain, False
-                    )
+                    finding = self._generate_data_analysis_finding(f"bench_{finding_counter:03d}", domain, False)
                 elif evidence_type == "literature":
-                    finding = self._generate_literature_finding(
-                        f"bench_{finding_counter:03d}", domain, False
-                    )
+                    finding = self._generate_literature_finding(f"bench_{finding_counter:03d}", domain, False)
                 else:
-                    finding = self._generate_interpretation_finding(
-                        f"bench_{finding_counter:03d}", domain, False
-                    )
+                    finding = self._generate_interpretation_finding(f"bench_{finding_counter:03d}", domain, False)
                 findings.append(finding)
 
         # Shuffle findings
@@ -426,15 +388,12 @@ class BenchmarkGenerator:
             version="1.0.0",
             findings=findings,
             created_at=datetime.now().isoformat(),
-            description=(
-                f"Synthetic benchmark dataset with {len(findings)} findings "
-                f"({n_per_type} per type) matching paper accuracy rates"
-            ),
+            description=(f"Synthetic benchmark dataset with {len(findings)} findings ({n_per_type} per type) matching paper accuracy rates"),
             metadata={
                 "generator": "BenchmarkGenerator.create_synthetic_benchmark",
                 "n_per_type": n_per_type,
                 "target_accuracy_rates": accuracy_rates,
-            }
+            },
         )
 
     def create_from_findings(
@@ -442,7 +401,7 @@ class BenchmarkGenerator:
         findings: list[Any],
         ground_truth: dict[str, bool],
         name: str = "custom_benchmark",
-        description: str = "Custom benchmark from expert annotations"
+        description: str = "Custom benchmark from expert annotations",
     ) -> BenchmarkDataset:
         """
         Create benchmark from actual findings with expert annotations.
@@ -459,7 +418,7 @@ class BenchmarkGenerator:
         benchmark_findings = []
 
         for finding in findings:
-            finding_id = getattr(finding, 'finding_id', None)
+            finding_id = getattr(finding, "finding_id", None)
             if finding_id is None:
                 continue
 
@@ -469,13 +428,13 @@ class BenchmarkGenerator:
 
             benchmark_finding = BenchmarkFinding(
                 finding_id=finding_id,
-                summary=getattr(finding, 'summary', ''),
-                evidence_type=getattr(finding, 'evidence_type', 'data_analysis'),
+                summary=getattr(finding, "summary", ""),
+                evidence_type=getattr(finding, "evidence_type", "data_analysis"),
                 ground_truth_accurate=ground_truth[finding_id],
-                domain=getattr(finding, 'domain', 'unknown'),
+                domain=getattr(finding, "domain", "unknown"),
                 source="expert_annotation",
-                statistics=getattr(finding, 'statistics', None),
-                citations=getattr(finding, 'citations', None),
+                statistics=getattr(finding, "statistics", None),
+                citations=getattr(finding, "citations", None),
             )
             benchmark_findings.append(benchmark_finding)
 
@@ -489,7 +448,7 @@ class BenchmarkGenerator:
                 "generator": "BenchmarkGenerator.create_from_findings",
                 "total_findings": len(findings),
                 "annotated_findings": len(benchmark_findings),
-            }
+            },
         )
 
 

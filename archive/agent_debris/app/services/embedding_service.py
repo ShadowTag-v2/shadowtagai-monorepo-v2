@@ -3,7 +3,6 @@
 import asyncio
 import logging
 import numpy as np
-from typing import List, Optional, Tuple
 from sentence_transformers import SentenceTransformer
 import faiss
 
@@ -27,11 +26,7 @@ class EmbeddingService:
         if self._model is None:
             logger.info(f"Loading embedding model: {self.model_name}")
             loop = asyncio.get_event_loop()
-            self._model = await loop.run_in_executor(
-                None,
-                SentenceTransformer,
-                self.model_name
-            )
+            self._model = await loop.run_in_executor(None, SentenceTransformer, self.model_name)
             logger.info("Embedding model loaded successfully")
 
     def _ensure_model(self):
@@ -57,7 +52,7 @@ class EmbeddingService:
             None,
             self._model.encode,
             text,
-            True  # normalize_embeddings
+            True,  # normalize_embeddings
         )
         return embedding
 
@@ -78,7 +73,7 @@ class EmbeddingService:
             self._model.encode,
             texts,
             True,  # normalize_embeddings
-            True   # show_progress_bar
+            True,  # show_progress_bar
         )
         return embeddings
 
@@ -93,23 +88,15 @@ class EmbeddingService:
             FAISS index
         """
         if embeddings.shape[1] != self.dimension:
-            logger.warning(
-                f"Embedding dimension {embeddings.shape[1]} != {self.dimension}. "
-                "Updating dimension."
-            )
+            logger.warning(f"Embedding dimension {embeddings.shape[1]} != {self.dimension}. Updating dimension.")
             self.dimension = embeddings.shape[1]
 
         # Use Inner Product for cosine similarity (since embeddings are normalized)
         index = faiss.IndexFlatIP(self.dimension)
-        index.add(embeddings.astype('float32'))
+        index.add(embeddings.astype("float32"))
         return index
 
-    def search(
-        self,
-        index: faiss.IndexFlatIP,
-        query_embedding: np.ndarray,
-        top_k: int = 10
-    ) -> tuple[np.ndarray, np.ndarray]:
+    def search(self, index: faiss.IndexFlatIP, query_embedding: np.ndarray, top_k: int = 10) -> tuple[np.ndarray, np.ndarray]:
         """
         Search for similar embeddings.
 
@@ -121,15 +108,11 @@ class EmbeddingService:
         Returns:
             Tuple of (distances, indices)
         """
-        query_embedding = query_embedding.reshape(1, -1).astype('float32')
+        query_embedding = query_embedding.reshape(1, -1).astype("float32")
         distances, indices = index.search(query_embedding, top_k)
         return distances[0], indices[0]
 
-    async def compute_similarity(
-        self,
-        text1: str,
-        text2: str
-    ) -> float:
+    async def compute_similarity(self, text1: str, text2: str) -> float:
         """
         Compute cosine similarity between two texts.
 
@@ -146,11 +129,11 @@ class EmbeddingService:
 
     def embedding_to_bytes(self, embedding: np.ndarray) -> bytes:
         """Convert embedding to bytes for database storage."""
-        return embedding.astype('float32').tobytes()
+        return embedding.astype("float32").tobytes()
 
     def bytes_to_embedding(self, data: bytes) -> np.ndarray:
         """Convert bytes to embedding numpy array."""
-        return np.frombuffer(data, dtype='float32')
+        return np.frombuffer(data, dtype="float32")
 
 
 # Global singleton instance

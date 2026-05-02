@@ -213,3 +213,95 @@ class TestCustomTTL:
         entry = consumer.get_suggestion()
         assert entry is not None
         assert entry.text == "Still fresh"
+
+
+class TestQualityScore:
+    """Tests for the Tier 2 quality scoring property."""
+
+    def test_sweet_spot_word_count(self) -> None:
+        """3-8 words should score highest."""
+        entry = SuggestionEntry(text="Run the test suite now", timestamp=time.time())
+        assert entry.quality_score > 0.5
+
+    def test_single_word_lower_score(self) -> None:
+        """Single word suggestions score lower."""
+        entry = SuggestionEntry(text="deploy", timestamp=time.time())
+        score = entry.quality_score
+        # Should still be > 0 but lower than sweet spot
+        assert 0.0 < score < 1.0
+
+    def test_imperative_verb_boost(self) -> None:
+        """Starting with an imperative verb should boost score."""
+        with_verb = SuggestionEntry(text="Fix the failing test", timestamp=time.time())
+        without_verb = SuggestionEntry(text="the failing test needs fixing", timestamp=time.time())
+        assert with_verb.quality_score >= without_verb.quality_score
+
+    def test_slash_command_bonus(self) -> None:
+        """Slash commands should get a bonus."""
+        slash = SuggestionEntry(text="/deploy staging", timestamp=time.time())
+        normal = SuggestionEntry(text="deploy to staging", timestamp=time.time())
+        assert slash.quality_score >= normal.quality_score
+
+    def test_freshness_decay(self) -> None:
+        """Older suggestions should score lower."""
+        fresh = SuggestionEntry(text="Run tests", timestamp=time.time())
+        old = SuggestionEntry(text="Run tests", timestamp=time.time() - 500)
+        assert fresh.quality_score > old.quality_score
+
+    def test_stale_minimal_freshness(self) -> None:
+        """Stale suggestions should have near-zero freshness component."""
+        stale = SuggestionEntry(text="Run tests", timestamp=time.time() - 700)
+        assert stale.quality_score > 0  # Word count still contributes
+
+
+class TestCacheStatus:
+    """Tests for cache_status() heartbeat integration."""
+
+    def test_empty_when_no_cache(self, consumer: SuggestionConsumer) -> None:
+        status = consumer.cache_status()
+        assert status["state"] == "empty"
+        assert status["suggestion"] is None
+
+    def test_fresh_when_valid(self, consumer: SuggestionConsumer, cache_dir) -> None:
+        _write_cache(
+            cache_dir,
+            {
+                "timestamp": time.time(),
+                "suggestion": "Run the test suite",
+                "suppressed": False,
+                "filtered": False,
+            },
+        )
+        status = consumer.cache_status()
+        assert status["state"] == "fresh"
+        assert status["suggestion"] is not None
+        assert status["quality"] > 0
+        assert status["age_s"] >= 0
+
+    def test_stale_when_expired(self, consumer: SuggestionConsumer, cache_dir) -> None:
+        _write_cache(
+            cache_dir,
+            {
+                "timestamp": time.time() - 700,  # > 600s TTL
+                "suggestion": "Old suggestion",
+                "suppressed": False,
+                "filtered": False,
+            },
+        )
+        status = consumer.cache_status()
+        assert status["state"] == "stale"
+
+    def test_consumed_when_null(self, consumer: SuggestionConsumer, cache_dir) -> None:
+        _write_cache(
+            cache_dir,
+            {"consumed_at": time.time(), "suggestion": None},
+        )
+        status = consumer.cache_status()
+        assert status["state"] == "consumed"
+
+    def test_corrupt_on_bad_json(self, consumer: SuggestionConsumer, cache_dir) -> None:
+        cache_file = cache_dir / "suggestion_cache.json"
+        cache_file.write_text("{bad json")
+        status = consumer.cache_status()
+        assert status["state"] == "corrupt"
+

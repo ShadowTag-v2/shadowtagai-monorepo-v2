@@ -8,11 +8,11 @@ from difflib import unified_diff
 
 
 def _get_pretty_format(
-        contents: str,
-        indent: str,
-        ensure_ascii: bool = True,
-        sort_keys: bool = True,
-        top_keys: Sequence[str] = (),
+    contents: str,
+    indent: str,
+    ensure_ascii: bool = True,
+    sort_keys: bool = True,
+    top_keys: Sequence[str] = (),
 ) -> str:
     def pairs_first(pairs: Sequence[tuple[str, str]]) -> Mapping[str, str]:
         before = [pair for pair in pairs if pair[0] in top_keys]
@@ -21,17 +21,18 @@ def _get_pretty_format(
         if sort_keys:
             after.sort()
         return dict(before + after)
+
     json_pretty = json.dumps(
         json.loads(contents, object_pairs_hook=pairs_first),
         indent=indent,
         ensure_ascii=ensure_ascii,
     )
-    return f'{json_pretty}\n'
+    return f"{json_pretty}\n"
 
 
 def _autofix(filename: str, new_contents: str) -> None:
-    print(f'Fixing file {filename}')
-    with open(filename, 'w', encoding='UTF-8') as f:
+    print(f"Fixing file {filename}")
+    with open(filename, "w", encoding="UTF-8") as f:
         f.write(new_contents)
 
 
@@ -44,75 +45,71 @@ def parse_num_to_int(s: str) -> int | str:
 
 
 def parse_topkeys(s: str) -> list[str]:
-    return s.split(',')
+    return s.split(",")
 
 
 def get_diff(source: str, target: str, file: str) -> str:
     source_lines = source.splitlines(True)
     target_lines = target.splitlines(True)
     diff = unified_diff(source_lines, target_lines, fromfile=file, tofile=file)
-    return ''.join(diff)
+    return "".join(diff)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--autofix',
-        action='store_true',
-        dest='autofix',
-        help='Automatically fixes encountered not-pretty-formatted files',
+        "--autofix",
+        action="store_true",
+        dest="autofix",
+        help="Automatically fixes encountered not-pretty-formatted files",
     )
     parser.add_argument(
-        '--indent',
+        "--indent",
         type=parse_num_to_int,
-        default='2',
-        help=(
-            'The number of indent spaces or a string to be used as delimiter'
-            ' for indentation level e.g. 4 or "\t" (Default: 2)'
-        ),
+        default="2",
+        help=('The number of indent spaces or a string to be used as delimiter for indentation level e.g. 4 or "\t" (Default: 2)'),
     )
     parser.add_argument(
-        '--no-ensure-ascii',
-        action='store_true',
-        dest='no_ensure_ascii',
+        "--no-ensure-ascii",
+        action="store_true",
+        dest="no_ensure_ascii",
         default=False,
-        help=(
-            'Do NOT convert non-ASCII characters to Unicode escape sequences '
-            '(\\uXXXX)'
-        ),
+        help=("Do NOT convert non-ASCII characters to Unicode escape sequences (\\uXXXX)"),
     )
     parser.add_argument(
-        '--no-sort-keys',
-        action='store_true',
-        dest='no_sort_keys',
+        "--no-sort-keys",
+        action="store_true",
+        dest="no_sort_keys",
         default=False,
-        help='Keep JSON nodes in the same order',
+        help="Keep JSON nodes in the same order",
     )
     parser.add_argument(
-        '--top-keys',
+        "--top-keys",
         type=parse_topkeys,
-        dest='top_keys',
+        dest="top_keys",
         default=[],
-        help='Ordered list of keys to keep at the top of JSON hashes',
+        help="Ordered list of keys to keep at the top of JSON hashes",
     )
-    parser.add_argument('filenames', nargs='*', help='Filenames to fix')
+    parser.add_argument("filenames", nargs="*", help="Filenames to fix")
     args = parser.parse_args(argv)
 
     status = 0
 
     for json_file in args.filenames:
-        with open(json_file, encoding='UTF-8') as f:
+        with open(json_file, encoding="UTF-8") as f:
             contents = f.read()
 
         try:
             pretty_contents = _get_pretty_format(
-                contents, args.indent, ensure_ascii=not args.no_ensure_ascii,
-                sort_keys=not args.no_sort_keys, top_keys=args.top_keys,
+                contents,
+                args.indent,
+                ensure_ascii=not args.no_ensure_ascii,
+                sort_keys=not args.no_sort_keys,
+                top_keys=args.top_keys,
             )
         except ValueError:
             print(
-                f'Input File {json_file} is not a valid JSON, consider using '
-                f'check-json',
+                f"Input File {json_file} is not a valid JSON, consider using check-json",
             )
             status = 1
         else:
@@ -132,5 +129,5 @@ def main(argv: Sequence[str] | None = None) -> int:
     return status
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

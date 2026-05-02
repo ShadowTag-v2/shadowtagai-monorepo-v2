@@ -8,9 +8,9 @@ from .manager import *
 from .utils import *
 
 
-#*****************************************************
+# *****************************************************
 # SelfExplorer
-#*****************************************************
+# *****************************************************
 class SelfExplorer(Explorer):
     def __init__(self):
         self._self_type = "Self"
@@ -39,7 +39,7 @@ class SelfExplorer(Explorer):
             '21 LeaderfWindow           "search windows"',
             '22 LeaderfQuickFix         "navigate quickfix"',
             '23 LeaderfLocList          "navigate location list"',
-            ]
+        ]
 
     def getContent(self, *args, **kwargs):
         extra_content = lfEval("g:Lf_SelfContent")
@@ -56,9 +56,9 @@ class SelfExplorer(Explorer):
         return escQuote(lfEncode(lfGetCwd()))
 
 
-#*****************************************************
+# *****************************************************
 # SelfExplManager
-#*****************************************************
+# *****************************************************
 class SelfExplManager(Manager):
     def __init__(self):
         super().__init__()
@@ -88,15 +88,15 @@ class SelfExplManager(Manager):
                   2, return the description
         """
         if not line:
-            return ''
+            return ""
         if mode == 0:
             return line
         elif mode == 1:
-            start_pos = line.find(' "') # what if there is " in file name?
+            start_pos = line.find(' "')  # what if there is " in file name?
             return line[:start_pos].rstrip()
         else:
-            start_pos = line.find(' "') # what if there is " in file name?
-            return line[start_pos+2 : -1]
+            start_pos = line.find(' "')  # what if there is " in file name?
+            return line[start_pos + 2 : -1]
 
     def _getDigestStartPos(self, line, mode):
         """
@@ -108,13 +108,11 @@ class SelfExplManager(Manager):
         """
         if not line:
             return 0
-        if mode == 0:
-            return 0
-        elif mode == 1:
+        if mode == 0 or mode == 1:
             return 0
         else:
-            start_pos = line.find(' "') # what if there is " in file name?
-            return lfBytesLen(line[:start_pos+2])
+            start_pos = line.find(' "')  # what if there is " in file name?
+            return lfBytesLen(line[: start_pos + 2])
 
     def _createHelp(self):
         help = []
@@ -127,19 +125,19 @@ class SelfExplManager(Manager):
 
     def _afterEnter(self):
         super()._afterEnter()
-        if self._getInstance().getWinPos() == 'popup':
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_selfIndex'', ''^\d\+'')')"""
-                    % self._getInstance().getPopupWinId())
+        if self._getInstance().getWinPos() == "popup":
+            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_selfIndex'', ''^\d\+'')')""" % self._getInstance().getPopupWinId())
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
-            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_selfDescription'', '' \zs".*"$'')')"""
-                    % self._getInstance().getPopupWinId())
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_selfDescription'', '' \zs".*"$'')')""" % self._getInstance().getPopupWinId()
+            )
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
         else:
-            id = int(lfEval(r'''matchadd('Lf_hl_selfIndex', '^\d\+')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_selfIndex', '^\d\+')"""))
             self._match_ids.append(id)
-            id = int(lfEval(r'''matchadd('Lf_hl_selfDescription', ' \zs".*"$')'''))
+            id = int(lfEval(r"""matchadd('Lf_hl_selfDescription', ' \zs".*"$')"""))
             self._match_ids.append(id)
 
     def _beforeExit(self):
@@ -149,9 +147,9 @@ class SelfExplManager(Manager):
         return True
 
 
-#*****************************************************
+# *****************************************************
 # selfExplManager is a singleton
-#*****************************************************
+# *****************************************************
 selfExplManager = SelfExplManager()
 
-__all__ = ['selfExplManager']
+__all__ = ["selfExplManager"]

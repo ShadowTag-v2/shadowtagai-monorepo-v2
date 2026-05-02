@@ -14,6 +14,7 @@ from dataclasses import asdict
 try:
     from fastapi import APIRouter, Query
     from fastapi.responses import StreamingResponse
+
     HAS_FASTAPI = True
 except ImportError:
     HAS_FASTAPI = False
@@ -33,11 +34,7 @@ else:
     router = None
 
 
-async def event_generator(
-    process_id: str | None = None,
-    event_types: list[str] | None = None,
-    keepalive_interval: int = 30
-) -> AsyncGenerator[str, None]:
+async def event_generator(process_id: str | None = None, event_types: list[str] | None = None, keepalive_interval: int = 30) -> AsyncGenerator[str]:
     """
     Generate Server-Sent Events from the event bus.
 
@@ -70,23 +67,17 @@ async def event_generator(
     filter_pids = [process_id] if process_id else None
 
     event_bus.subscribe(queue_callback, filter_types, filter_pids)
-    logger.debug(
-        f"SSE client subscribed: process_id={process_id}, "
-        f"event_types={event_types}"
-    )
+    logger.debug(f"SSE client subscribed: process_id={process_id}, event_types={event_types}")
 
     try:
         while True:
             try:
                 # Wait for event with timeout for keepalive
-                event = await asyncio.wait_for(
-                    queue.get(),
-                    timeout=float(keepalive_interval)
-                )
+                event = await asyncio.wait_for(queue.get(), timeout=float(keepalive_interval))
 
                 # Format as SSE
                 data = json.dumps(asdict(event), default=str)
-                event_type = event.type.value if hasattr(event, 'type') else "message"
+                event_type = event.type.value if hasattr(event, "type") else "message"
                 yield f"event: {event_type}\ndata: {data}\n\n"
 
             except TimeoutError:
@@ -101,22 +92,12 @@ async def event_generator(
 
 
 if HAS_FASTAPI:
+
     @router.get("/events")
     async def stream_events(
-        process_id: str | None = Query(
-            None,
-            description="Filter events by process ID"
-        ),
-        types: str | None = Query(
-            None,
-            description="Comma-separated list of event types to filter"
-        ),
-        keepalive: int = Query(
-            30,
-            ge=5,
-            le=120,
-            description="Keepalive interval in seconds"
-        )
+        process_id: str | None = Query(None, description="Filter events by process ID"),
+        types: str | None = Query(None, description="Comma-separated list of event types to filter"),
+        keepalive: int = Query(30, ge=5, le=120, description="Keepalive interval in seconds"),
     ):
         """
         Stream events via Server-Sent Events (SSE).
@@ -163,7 +144,7 @@ if HAS_FASTAPI:
                 "Connection": "keep-alive",
                 "X-Accel-Buffering": "no",  # Disable nginx buffering
                 "Access-Control-Allow-Origin": "*",
-            }
+            },
         )
 
     @router.get("/health")
@@ -174,8 +155,4 @@ if HAS_FASTAPI:
         Returns event bus status and subscriber count.
         """
         event_bus = get_event_bus()
-        return {
-            "status": "healthy",
-            "enabled": event_bus.enabled,
-            "subscriber_count": event_bus.subscriber_count()
-        }
+        return {"status": "healthy", "enabled": event_bus.enabled, "subscriber_count": event_bus.subscriber_count()}

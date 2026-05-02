@@ -39,9 +39,7 @@ def test_case_changes_windows(pipenv_instance_pypi):
 @pytest.mark.files
 @pytest.mark.local
 def test_local_path_windows(pipenv_instance_pypi):
-    whl = Path(__file__).parent.parent.joinpath(
-        "pypi", "six", "six-1.11.0-py2.py3-none-any.whl"
-    )
+    whl = Path(__file__).parent.parent.joinpath("pypi", "six", "six-1.11.0-py2.py3-none-any.whl")
     try:
         whl = whl.resolve()
     except OSError:
@@ -54,9 +52,7 @@ def test_local_path_windows(pipenv_instance_pypi):
 @pytest.mark.local
 @pytest.mark.files
 def test_local_path_windows_forward_slash(pipenv_instance_pypi):
-    whl = Path(__file__).parent.parent.joinpath(
-        "pypi", "six", "six-1.11.0-py2.py3-none-any.whl"
-    )
+    whl = Path(__file__).parent.parent.joinpath("pypi", "six", "six-1.11.0-py2.py3-none-any.whl")
     try:
         whl = whl.resolve()
     except OSError:

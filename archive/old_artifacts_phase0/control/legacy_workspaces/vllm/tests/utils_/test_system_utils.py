@@ -9,8 +9,10 @@ from vllm.utils.system_utils import unique_filepath
 
 def test_unique_filepath():
     temp_dir = tempfile.mkdtemp()
+
     def path_fn(i):
         return Path(temp_dir) / f"file_{i}.txt"
+
     paths = set()
     for i in range(10):
         path = unique_filepath(path_fn)

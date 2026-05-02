@@ -31,9 +31,9 @@ from google.adk.tools.mcp_tool.mcp_toolset import McpToolset
 auth_scheme = OAuth2(
     flows=OAuthFlows(
         authorizationCode=OAuthFlowAuthorizationCode(
-            authorizationUrl='https://example.com/oauth/authorize',
-            tokenUrl='https://example.com/oauth/token',
-            scopes={'read': 'Read access', 'write': 'Write access'},
+            authorizationUrl="https://example.com/oauth/authorize",
+            tokenUrl="https://example.com/oauth/token",
+            scopes={"read": "Read access", "write": "Write access"},
         )
     )
 )
@@ -43,15 +43,15 @@ auth_scheme = OAuth2(
 auth_credential = AuthCredential(
     auth_type=AuthCredentialTypes.OAUTH2,
     oauth2=OAuth2Auth(
-        client_id='test_client_id',
-        client_secret='test_client_secret',
+        client_id="test_client_id",
+        client_secret="test_client_secret",
     ),
 )
 
 # Create the MCP toolset with OAuth authentication
 mcp_toolset = McpToolset(
     connection_params=StreamableHTTPConnectionParams(
-        url='http://localhost:3001/mcp',
+        url="http://localhost:3001/mcp",
     ),
     auth_scheme=auth_scheme,
     auth_credential=auth_credential,
@@ -59,8 +59,8 @@ mcp_toolset = McpToolset(
 
 # Define the agent that uses the OAuth-protected MCP toolset
 root_agent = LlmAgent(
-    model='gemini-2.0-flash',
-    name='oauth_mcp_agent',
+    model="gemini-2.0-flash",
+    name="oauth_mcp_agent",
     instruction="""You are a helpful assistant that can access user information.
 
 You have access to tools that require authentication:

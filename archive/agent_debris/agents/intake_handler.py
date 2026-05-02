@@ -16,6 +16,7 @@ from typing import Any
 
 class TaskPriority(Enum):
     """Task priority levels"""
+
     CRITICAL = 1
     HIGH = 2
     NORMAL = 3
@@ -26,6 +27,7 @@ class TaskPriority(Enum):
 @dataclass
 class IncomingTask:
     """Represents a task from Sonnet 4.5"""
+
     id: str
     content: str
     priority: TaskPriority
@@ -94,13 +96,13 @@ class IntakeHandler:
             with open(json_path) as f:
                 data = json.load(f)
 
-            tasks = data.get('tasks', [])
+            tasks = data.get("tasks", [])
             for task_data in tasks:
                 task = IncomingTask(
-                    id=task_data.get('id', f"task-{time.time()}"),
-                    content=task_data.get('content', ''),
-                    priority=TaskPriority[task_data.get('priority', 'NORMAL')],
-                    metadata=task_data.get('metadata', {})
+                    id=task_data.get("id", f"task-{time.time()}"),
+                    content=task_data.get("content", ""),
+                    priority=TaskPriority[task_data.get("priority", "NORMAL")],
+                    metadata=task_data.get("metadata", {}),
                 )
                 self.receive_task(task)
 
@@ -138,8 +140,8 @@ class IntakeHandler:
             Categorized task with metadata
         """
         # Add categorization metadata
-        task.metadata['category'] = self._categorize_content(task.content)
-        task.metadata['estimated_complexity'] = self._estimate_complexity(task.content)
+        task.metadata["category"] = self._categorize_content(task.content)
+        task.metadata["estimated_complexity"] = self._estimate_complexity(task.content)
 
         return task
 
@@ -147,27 +149,27 @@ class IntakeHandler:
         """Categorize task content"""
         content_lower = content.lower()
 
-        if any(kw in content_lower for kw in ['bug', 'fix', 'error', 'crash']):
-            return 'bug_fix'
-        elif any(kw in content_lower for kw in ['feature', 'implement', 'add']):
-            return 'feature'
-        elif any(kw in content_lower for kw in ['refactor', 'cleanup', 'optimize']):
-            return 'refactor'
-        elif any(kw in content_lower for kw in ['test', 'verify', 'validate']):
-            return 'testing'
+        if any(kw in content_lower for kw in ["bug", "fix", "error", "crash"]):
+            return "bug_fix"
+        elif any(kw in content_lower for kw in ["feature", "implement", "add"]):
+            return "feature"
+        elif any(kw in content_lower for kw in ["refactor", "cleanup", "optimize"]):
+            return "refactor"
+        elif any(kw in content_lower for kw in ["test", "verify", "validate"]):
+            return "testing"
         else:
-            return 'general'
+            return "general"
 
     def _estimate_complexity(self, content: str) -> str:
         """Estimate task complexity"""
         word_count = len(content.split())
 
         if word_count > 200:
-            return 'high'
+            return "high"
         elif word_count > 50:
-            return 'medium'
+            return "medium"
         else:
-            return 'low'
+            return "low"
 
     def _route_to_autoresearch(self, task: IncomingTask):
         """
@@ -183,9 +185,9 @@ class IntakeHandler:
     def get_stats(self) -> dict[str, Any]:
         """Get intake handler statistics"""
         return {
-            'total_received': self.total_received,
-            'total_processed': self.total_processed,
-            'total_rejected': self.total_rejected,
-            'queue_size': self.task_queue.qsize(),
-            'running': self.running
+            "total_received": self.total_received,
+            "total_processed": self.total_processed,
+            "total_rejected": self.total_rejected,
+            "queue_size": self.task_queue.qsize(),
+            "running": self.running,
         }

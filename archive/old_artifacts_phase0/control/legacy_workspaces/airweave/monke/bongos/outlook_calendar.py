@@ -88,9 +88,7 @@ class OutlookCalendarBongo(BaseBongo):
                     if r.status_code in (204, 202):
                         deleted.append(ent["id"])
                     else:
-                        self.logger.warning(
-                            f"Delete event {ent['id']} -> {r.status_code}: {r.text}"
-                        )
+                        self.logger.warning(f"Delete event {ent['id']} -> {r.status_code}: {r.text}")
                 except Exception as e:
                     self.logger.warning(f"Delete error for {ent['id']}: {e}")
         return deleted
@@ -113,10 +111,7 @@ class OutlookCalendarBongo(BaseBongo):
             # This catches any events that might have been created in previous failed runs
             await self._cleanup_orphaned_test_events(cleanup_stats)
 
-            self.logger.info(
-                f"🧹 Cleanup completed: {cleanup_stats['events_deleted']} events deleted, "
-                f"{cleanup_stats['errors']} errors"
-            )
+            self.logger.info(f"🧹 Cleanup completed: {cleanup_stats['events_deleted']} events deleted, {cleanup_stats['errors']} errors")
         except Exception as e:
             self.logger.error(f"❌ Error during comprehensive cleanup: {e}")
 
@@ -136,29 +131,18 @@ class OutlookCalendarBongo(BaseBongo):
                 if r.status_code == 200:
                     events = r.json().get("value", [])
                     test_events = [
-                        e
-                        for e in events
-                        if any(
-                            pattern in e.get("subject", "").lower()
-                            for pattern in ["test", "monke", "demo", "sample"]
-                        )
+                        e for e in events if any(pattern in e.get("subject", "").lower() for pattern in ["test", "monke", "demo", "sample"])
                     ]
 
                     if test_events:
-                        self.logger.info(
-                            f"🔍 Found {len(test_events)} potential test events to clean"
-                        )
+                        self.logger.info(f"🔍 Found {len(test_events)} potential test events to clean")
                         for event in test_events:
                             try:
                                 await self._pace()
-                                del_r = await client.delete(
-                                    f"/me/events/{event['id']}", headers=self._hdrs()
-                                )
+                                del_r = await client.delete(f"/me/events/{event['id']}", headers=self._hdrs())
                                 if del_r.status_code in (204, 202):
                                     stats["events_deleted"] += 1
-                                    self.logger.info(
-                                        f"✅ Deleted orphaned event: {event.get('subject')}"
-                                    )
+                                    self.logger.info(f"✅ Deleted orphaned event: {event.get('subject')}")
                                 else:
                                     stats["errors"] += 1
                             except Exception as e:

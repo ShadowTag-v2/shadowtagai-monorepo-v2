@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 class BudgetPeriod(Enum):
     """Budget tracking periods."""
+
     HOURLY = "hourly"
     DAILY = "daily"
     WEEKLY = "weekly"
@@ -32,12 +33,7 @@ class BudgetPeriod(Enum):
 class BudgetAlert:
     """Represents a budget alert."""
 
-    def __init__(
-        self,
-        threshold_percent: float,
-        message: str,
-        triggered_at: datetime | None = None
-    ):
+    def __init__(self, threshold_percent: float, message: str, triggered_at: datetime | None = None):
         """
         Initialize budget alert.
 
@@ -53,9 +49,9 @@ class BudgetAlert:
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
         return {
-            'threshold_percent': self.threshold_percent,
-            'message': self.message,
-            'triggered_at': self.triggered_at.isoformat(),
+            "threshold_percent": self.threshold_percent,
+            "message": self.message,
+            "triggered_at": self.triggered_at.isoformat(),
         }
 
 
@@ -69,19 +65,11 @@ class BudgetExceededError(Exception):
         usage_percent: Percentage of budget used
     """
 
-    def __init__(
-        self,
-        current_cost: float,
-        limit: float,
-        usage_percent: float = None,
-        message: str = None
-    ):
+    def __init__(self, current_cost: float, limit: float, usage_percent: float = None, message: str = None):
         self.current_cost = current_cost
         self.limit = limit
         self.usage_percent = usage_percent or (current_cost / limit * 100 if limit else 0)
-        super().__init__(
-            message or f"Budget exceeded: ${current_cost:.2f} spent (limit: ${limit:.2f}, {self.usage_percent:.1f}%)"
-        )
+        super().__init__(message or f"Budget exceeded: ${current_cost:.2f} spent (limit: ${limit:.2f}, {self.usage_percent:.1f}%)")
 
 
 class MetricsCollector:
@@ -172,14 +160,7 @@ class MetricsCollector:
     # API METRICS
     # ========================================================================
 
-    def record_api_call(
-        self,
-        model: str,
-        input_tokens: int,
-        output_tokens: int,
-        duration_seconds: float,
-        success: bool = True
-    ):
+    def record_api_call(self, model: str, input_tokens: int, output_tokens: int, duration_seconds: float, success: bool = True):
         """
         Record Claude API call.
 
@@ -200,14 +181,16 @@ class MetricsCollector:
             self.total_api_duration += duration_seconds
 
             # Store in history
-            self.api_call_history.append({
-                "timestamp": datetime.utcnow().isoformat(),
-                "model": model,
-                "input_tokens": input_tokens,
-                "output_tokens": output_tokens,
-                "duration_seconds": duration_seconds,
-                "success": success
-            })
+            self.api_call_history.append(
+                {
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "model": model,
+                    "input_tokens": input_tokens,
+                    "output_tokens": output_tokens,
+                    "duration_seconds": duration_seconds,
+                    "success": success,
+                }
+            )
 
             # Keep history limited to last 1000 calls
             if len(self.api_call_history) > 1000:
@@ -221,10 +204,8 @@ class MetricsCollector:
             dict: API statistics
         """
         with self._lock:
-            avg_duration = (self.total_api_duration / self.api_calls
-                          if self.api_calls > 0 else 0)
-            error_rate = (self.api_errors / self.api_calls
-                        if self.api_calls > 0 else 0)
+            avg_duration = self.total_api_duration / self.api_calls if self.api_calls > 0 else 0
+            error_rate = self.api_errors / self.api_calls if self.api_calls > 0 else 0
 
             # Estimate cost (Claude 3.5 Sonnet pricing)
             input_cost = (self.total_input_tokens / 1_000_000) * 3.0
@@ -260,21 +241,18 @@ class MetricsCollector:
             self.experiments_started += 1
             self.experiments_by_type[experiment_type] += 1
 
-            self.experiment_history.append({
-                "experiment_id": experiment_id,
-                "experiment_type": experiment_type,
-                "status": "running",
-                "start_time": datetime.utcnow().isoformat(),
-                "end_time": None,
-                "duration_seconds": None
-            })
+            self.experiment_history.append(
+                {
+                    "experiment_id": experiment_id,
+                    "experiment_type": experiment_type,
+                    "status": "running",
+                    "start_time": datetime.utcnow().isoformat(),
+                    "end_time": None,
+                    "duration_seconds": None,
+                }
+            )
 
-    def record_experiment_end(
-        self,
-        experiment_id: str,
-        duration_seconds: float,
-        status: str = "success"
-    ):
+    def record_experiment_end(self, experiment_id: str, duration_seconds: float, status: str = "success"):
         """
         Record experiment completion.
 
@@ -311,10 +289,8 @@ class MetricsCollector:
             dict: Experiment statistics
         """
         with self._lock:
-            avg_duration = (self.total_experiment_duration / self.experiments_completed
-                          if self.experiments_completed > 0 else 0)
-            success_rate = (self.experiments_completed / self.experiments_started
-                          if self.experiments_started > 0 else 0)
+            avg_duration = self.total_experiment_duration / self.experiments_completed if self.experiments_completed > 0 else 0
+            success_rate = self.experiments_completed / self.experiments_started if self.experiments_started > 0 else 0
 
             return {
                 "experiments_started": self.experiments_started,
@@ -381,11 +357,7 @@ class MetricsCollector:
             self.cache_hits += 1
 
             # Store in history
-            self.cache_hit_history.append({
-                "timestamp": datetime.utcnow().isoformat(),
-                "cache_type": cache_type,
-                "event_type": "hit"
-            })
+            self.cache_hit_history.append({"timestamp": datetime.utcnow().isoformat(), "cache_type": cache_type, "event_type": "hit"})
 
             # Keep history limited
             if len(self.cache_hit_history) > 1000:
@@ -402,11 +374,7 @@ class MetricsCollector:
             self.cache_misses += 1
 
             # Store in history
-            self.cache_hit_history.append({
-                "timestamp": datetime.utcnow().isoformat(),
-                "cache_type": cache_type,
-                "event_type": "miss"
-            })
+            self.cache_hit_history.append({"timestamp": datetime.utcnow().isoformat(), "cache_type": cache_type, "event_type": "miss"})
 
             # Keep history limited
             if len(self.cache_hit_history) > 1000:
@@ -452,11 +420,7 @@ class MetricsCollector:
         with self._lock:
             # Calculate hit rate
             total_cache_requests = self.cache_hits + self.cache_misses
-            cache_hit_rate = (
-                (self.cache_hits / total_cache_requests * 100)
-                if total_cache_requests > 0
-                else 0.0
-            )
+            cache_hit_rate = (self.cache_hits / total_cache_requests * 100) if total_cache_requests > 0 else 0.0
 
             base_stats = {
                 "cache_hits": self.cache_hits,
@@ -476,22 +440,24 @@ class MetricsCollector:
                 detailed_stats = cache_manager.get_stats()
 
                 # Merge detailed stats
-                base_stats.update({
-                    "cache_manager_stats": detailed_stats,
-                    "total_cache_size": detailed_stats.get('total_size', 0),
-                    "overall_hit_rate_percent": detailed_stats.get('overall_hit_rate_percent', 0.0),
-                })
+                base_stats.update(
+                    {
+                        "cache_manager_stats": detailed_stats,
+                        "total_cache_size": detailed_stats.get("total_size", 0),
+                        "overall_hit_rate_percent": detailed_stats.get("overall_hit_rate_percent", 0.0),
+                    }
+                )
 
                 # Calculate cost savings
-                if 'caches' in detailed_stats:
+                if "caches" in detailed_stats:
                     # Get Claude cache stats if available
-                    claude_cache_stats = detailed_stats['caches'].get('claude', {})
+                    claude_cache_stats = detailed_stats["caches"].get("claude", {})
                     if claude_cache_stats:
                         # Estimate cost savings from cache hits
                         # Assume average request: 1000 input tokens, 500 output tokens
                         avg_input_tokens = 1000
                         avg_output_tokens = 500
-                        hits = claude_cache_stats.get('hits', 0)
+                        hits = claude_cache_stats.get("hits", 0)
 
                         if hits > 0:
                             # Claude 3.5 Sonnet pricing: $3/M input, $15/M output
@@ -499,8 +465,8 @@ class MetricsCollector:
                             output_saved = (avg_output_tokens * hits / 1_000_000) * 15.0
                             total_saved = input_saved + output_saved
 
-                            base_stats['estimated_cost_saved_usd'] = round(total_saved, 2)
-                            base_stats['cache_efficiency'] = 'high' if cache_hit_rate > 30 else 'moderate' if cache_hit_rate > 10 else 'low'
+                            base_stats["estimated_cost_saved_usd"] = round(total_saved, 2)
+                            base_stats["cache_efficiency"] = "high" if cache_hit_rate > 30 else "moderate" if cache_hit_rate > 10 else "low"
 
             except ImportError:
                 # Cache manager not available
@@ -550,7 +516,7 @@ class MetricsCollector:
         limit_usd: float | None = None,
         limit_requests: int | None = None,
         period: BudgetPeriod = BudgetPeriod.DAILY,
-        alert_thresholds: list[float] | None = None
+        alert_thresholds: list[float] | None = None,
     ):
         """
         Configure budget limits and alerts.
@@ -592,12 +558,7 @@ class MetricsCollector:
             # Clear existing alerts
             self.budget_alerts = []
 
-            logger.info(
-                f"Budget configured: "
-                f"${limit_usd or 0}/period, "
-                f"{limit_requests or 0} requests/period, "
-                f"period={period.value}"
-            )
+            logger.info(f"Budget configured: ${limit_usd or 0}/period, {limit_requests or 0} requests/period, period={period.value}")
 
     def add_alert_callback(self, callback: Callable[[BudgetAlert], None]):
         """
@@ -629,10 +590,7 @@ class MetricsCollector:
         to check budget status and trigger alerts.
         """
         if not self.budget_enabled:
-            return {
-                'enabled': False,
-                'message': 'Budget tracking not enabled'
-            }
+            return {"enabled": False, "message": "Budget tracking not enabled"}
 
         with self._lock:
             # Check if we need to reset for new period
@@ -647,49 +605,34 @@ class MetricsCollector:
                 # API mode: check cost
                 limit = self.budget_limit_usd
                 usage = current_cost
-                usage_type = 'cost_usd'
+                usage_type = "cost_usd"
                 usage_percent = (usage / limit * 100) if limit > 0 else 0
             elif self.budget_limit_requests is not None:
                 # CLI mode: check requests
                 limit = self.budget_limit_requests
                 usage = current_requests
-                usage_type = 'requests'
+                usage_type = "requests"
                 usage_percent = (usage / limit * 100) if limit > 0 else 0
             else:
-                return {
-                    'enabled': True,
-                    'message': 'No budget limit configured'
-                }
+                return {"enabled": True, "message": "No budget limit configured"}
 
             # Check thresholds and trigger alerts
             triggered_alerts = []
             for threshold in self.budget_alert_thresholds:
                 if usage_percent >= threshold:
                     # Check if we already triggered this threshold
-                    already_triggered = any(
-                        alert.threshold_percent == threshold
-                        for alert in self.budget_alerts
-                    )
+                    already_triggered = any(alert.threshold_percent == threshold for alert in self.budget_alerts)
 
                     if not already_triggered:
                         # Trigger new alert
                         if usage_percent >= 100:
-                            message = (
-                                f"Budget limit exceeded! "
-                                f"Usage: {usage:.2f}/{limit:.2f} {usage_type} "
-                                f"({usage_percent:.1f}%)"
-                            )
+                            message = f"Budget limit exceeded! Usage: {usage:.2f}/{limit:.2f} {usage_type} ({usage_percent:.1f}%)"
                         else:
                             message = (
-                                f"Budget alert: {threshold}% threshold reached. "
-                                f"Usage: {usage:.2f}/{limit:.2f} {usage_type} "
-                                f"({usage_percent:.1f}%)"
+                                f"Budget alert: {threshold}% threshold reached. Usage: {usage:.2f}/{limit:.2f} {usage_type} ({usage_percent:.1f}%)"
                             )
 
-                        alert = BudgetAlert(
-                            threshold_percent=threshold,
-                            message=message
-                        )
+                        alert = BudgetAlert(threshold_percent=threshold, message=message)
 
                         self.budget_alerts.append(alert)
                         triggered_alerts.append(alert)
@@ -704,17 +647,17 @@ class MetricsCollector:
                         logger.warning(message)
 
             return {
-                'enabled': True,
-                'period': self.budget_period.value,
-                'period_start': self.budget_period_start.isoformat(),
-                'limit_usd': self.budget_limit_usd,
-                'limit_requests': self.budget_limit_requests,
-                'current_cost_usd': round(current_cost, 2),
-                'current_requests': current_requests,
-                'usage_percent': round(usage_percent, 2),
-                'alerts_triggered': [alert.to_dict() for alert in triggered_alerts],
-                'total_alerts': len(self.budget_alerts),
-                'budget_exceeded': usage_percent >= 100,
+                "enabled": True,
+                "period": self.budget_period.value,
+                "period_start": self.budget_period_start.isoformat(),
+                "limit_usd": self.budget_limit_usd,
+                "limit_requests": self.budget_limit_requests,
+                "current_cost_usd": round(current_cost, 2),
+                "current_requests": current_requests,
+                "usage_percent": round(usage_percent, 2),
+                "alerts_triggered": [alert.to_dict() for alert in triggered_alerts],
+                "total_alerts": len(self.budget_alerts),
+                "budget_exceeded": usage_percent >= 100,
             }
 
     def _check_period_reset(self):
@@ -744,10 +687,7 @@ class MetricsCollector:
         period_start = self.budget_period_start
 
         # Filter API calls within period
-        period_calls = [
-            call for call in self.api_call_history
-            if datetime.fromisoformat(call["timestamp"]) >= period_start
-        ]
+        period_calls = [call for call in self.api_call_history if datetime.fromisoformat(call["timestamp"]) >= period_start]
 
         # Sum tokens
         total_input = sum(call.get("input_tokens", 0) for call in period_calls)
@@ -764,10 +704,7 @@ class MetricsCollector:
         period_start = self.budget_period_start
 
         # Count API calls within period
-        period_calls = [
-            call for call in self.api_call_history
-            if datetime.fromisoformat(call["timestamp"]) >= period_start
-        ]
+        period_calls = [call for call in self.api_call_history if datetime.fromisoformat(call["timestamp"]) >= period_start]
 
         return len(period_calls)
 
@@ -795,11 +732,9 @@ class MetricsCollector:
 
         status = self.check_budget()
 
-        if status.get('budget_exceeded'):
+        if status.get("budget_exceeded"):
             raise BudgetExceededError(
-                current_cost=status.get('current_cost_usd', 0),
-                limit=self.budget_limit_usd,
-                usage_percent=status.get('usage_percent', 100)
+                current_cost=status.get("current_cost_usd", 0), limit=self.budget_limit_usd, usage_percent=status.get("usage_percent", 100)
             )
 
     def reset_budget_alerts(self):
@@ -847,46 +782,25 @@ class MetricsCollector:
 
         with self._lock:
             # Recent API calls
-            recent_api_calls = [
-                call for call in self.api_call_history
-                if datetime.fromisoformat(call["timestamp"]) > cutoff_time
-            ]
+            recent_api_calls = [call for call in self.api_call_history if datetime.fromisoformat(call["timestamp"]) > cutoff_time]
 
             # Recent experiments
-            recent_experiments = [
-                exp for exp in self.experiment_history
-                if datetime.fromisoformat(exp["start_time"]) > cutoff_time
-            ]
+            recent_experiments = [exp for exp in self.experiment_history if datetime.fromisoformat(exp["start_time"]) > cutoff_time]
 
             # Recent cache activity
-            recent_cache_events = [
-                event for event in self.cache_hit_history
-                if datetime.fromisoformat(event["timestamp"]) > cutoff_time
-            ]
+            recent_cache_events = [event for event in self.cache_hit_history if datetime.fromisoformat(event["timestamp"]) > cutoff_time]
 
-            recent_cache_hits = sum(
-                1 for event in recent_cache_events if event["event_type"] == "hit"
-            )
-            recent_cache_misses = sum(
-                1 for event in recent_cache_events if event["event_type"] == "miss"
-            )
+            recent_cache_hits = sum(1 for event in recent_cache_events if event["event_type"] == "hit")
+            recent_cache_misses = sum(1 for event in recent_cache_events if event["event_type"] == "miss")
             recent_cache_total = recent_cache_hits + recent_cache_misses
-            recent_cache_hit_rate = (
-                (recent_cache_hits / recent_cache_total * 100)
-                if recent_cache_total > 0
-                else 0.0
-            )
+            recent_cache_hit_rate = (recent_cache_hits / recent_cache_total * 100) if recent_cache_total > 0 else 0.0
 
             return {
                 "time_window_minutes": minutes,
                 "recent_api_calls": len(recent_api_calls),
                 "recent_experiments": len(recent_experiments),
-                "recent_experiments_completed": sum(
-                    1 for exp in recent_experiments if exp["status"] == "success"
-                ),
-                "recent_experiments_failed": sum(
-                    1 for exp in recent_experiments if exp["status"] == "failure"
-                ),
+                "recent_experiments_completed": sum(1 for exp in recent_experiments if exp["status"] == "success"),
+                "recent_experiments_failed": sum(1 for exp in recent_experiments if exp["status"] == "failure"),
                 "recent_cache_hits": recent_cache_hits,
                 "recent_cache_misses": recent_cache_misses,
                 "recent_cache_hit_rate_percent": round(recent_cache_hit_rate, 2),

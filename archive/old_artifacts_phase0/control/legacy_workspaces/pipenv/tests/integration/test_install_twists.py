@@ -126,12 +126,14 @@ dev = ["six"]
         for install_method in ["pipfile", "direct"]:
             if install_method == "pipfile":
                 with open(os.path.join(p.path, "Pipfile"), "w") as fh:
-                    fh.write("""
+                    fh.write(
+                        """
 [packages]
 testpipenv = {path = ".", editable = true, extras = ["dev"]}
 
 [dev-packages]
-                    """.strip())
+                    """.strip()
+                    )
                 c = p.pipenv("install")
             else:
                 p.lockfile_path.unlink()
@@ -147,6 +149,7 @@ testpipenv = {path = ".", editable = true, extras = ["dev"]}
 
             c = p.pipenv("uninstall --all")
             assert c.returncode == 0
+
 
 @pytest.mark.local
 @pytest.mark.install
@@ -177,23 +180,17 @@ setup(
 
     @staticmethod
     def helper_dependency_links_install_test(pipenv_instance, deplink):
-        TestDirectDependencies.helper_dependency_links_install_make_setup(
-            pipenv_instance, deplink
-        )
+        TestDirectDependencies.helper_dependency_links_install_make_setup(pipenv_instance, deplink)
         c = pipenv_instance.pipenv("install -v -e .")
         assert c.returncode == 0
         assert "six" in pipenv_instance.lockfile["default"]
 
-    @pytest.mark.skip(
-        reason="This test modifies os.environment which has side effects on other tests"
-    )
+    @pytest.mark.skip(reason="This test modifies os.environment which has side effects on other tests")
     def test_https_dependency_links_install(self, pipenv_instance_pypi):
         """Ensure dependency_links are parsed and installed (needed for private repo dependencies)."""
         with temp_environ(), pipenv_instance_pypi() as p:
             os.environ["PIP_NO_BUILD_ISOLATION"] = "1"
-            TestDirectDependencies.helper_dependency_links_install_test(
-                p, "six@ git+https://github.com/benjaminp/six@1.11.0"
-            )
+            TestDirectDependencies.helper_dependency_links_install_test(p, "six@ git+https://github.com/benjaminp/six@1.11.0")
 
 
 @pytest.mark.run
@@ -261,10 +258,7 @@ def test_local_package(pipenv_instance_private_pypi, testsroot):
             safe_extract(tgz, path=p.path)
         c = p.pipenv(f"install -e {package}")
         assert c.returncode == 0
-        assert all(
-            pkg in p.lockfile["default"]
-            for pkg in ["urllib3", "idna", "certifi", "chardet"]
-        )
+        assert all(pkg in p.lockfile["default"] for pkg in ["urllib3", "idna", "certifi", "chardet"])
 
 
 @pytest.mark.files
@@ -315,9 +309,7 @@ six = {{path = "./artifacts/{file_name}"}}
 @pytest.mark.run
 @pytest.mark.files
 @pytest.mark.install
-def test_multiple_editable_packages_should_not_race(
-    pipenv_instance_private_pypi, testsroot
-):
+def test_multiple_editable_packages_should_not_race(pipenv_instance_private_pypi, testsroot):
     """Test for a race condition that can occur when installing multiple 'editable' packages at
     once, and which causes some of them to not be importable.
 
@@ -344,9 +336,7 @@ name = "testindex"
             source_path = p._pipfile.get_fixture_path(f"git/{pkg_name}/")
             shutil.copytree(source_path, pkg_name)
 
-            pipfile_string += (
-                f'"{pkg_name}" = {{path = "./{pkg_name}", editable = true}}\n'
-            )
+            pipfile_string += f'"{pkg_name}" = {{path = "./{pkg_name}", editable = true}}\n'
 
         with open(p.pipfile_path, "w") as f:
             f.write(pipfile_string.strip())
@@ -404,9 +394,7 @@ verify_ssl = true
 name = "pypi"
 [packages]
 six = {}
-            """.format(
-                p.index_url, '{version = "*", index = "pypi"}'
-            ).strip()
+            """.format(p.index_url, '{version = "*", index = "pypi"}').strip()
             f.write(contents)
         c = p.pipenv("install --skip-lock")
         assert c.returncode == 0
@@ -563,11 +551,12 @@ pytest = "*"
         freeze_output = c.stdout.strip()
 
         # Find aws-cdk-lib in pip freeze output and verify version
-        for line in freeze_output.split('\n'):
-            if line.startswith('aws-cdk-lib=='):
-                installed_version = line.split('==')[1]
-                assert version.parse(installed_version) == version.parse("2.164.1"), \
+        for line in freeze_output.split("\n"):
+            if line.startswith("aws-cdk-lib=="):
+                installed_version = line.split("==")[1]
+                assert version.parse(installed_version) == version.parse("2.164.1"), (
                     f"aws-cdk-lib version {installed_version} is to be expected 2.164.1"
+                )
                 break
         else:
             # This will execute if we don't find aws-cdk-lib in the output

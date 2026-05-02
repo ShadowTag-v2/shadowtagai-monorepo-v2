@@ -21,12 +21,7 @@ class DLQInspector:
     - Generate failure reports
     """
 
-    def __init__(
-        self,
-        project_id: str | None = None,
-        dlq_subscription: str = "audit-trace-dlq-sub",
-        main_topic: str = "audit-trace-events"
-    ):
+    def __init__(self, project_id: str | None = None, dlq_subscription: str = "audit-trace-dlq-sub", main_topic: str = "audit-trace-events"):
         self.project_id = project_id or os.environ.get("GCP_PROJECT_ID", "acquired-jet-478701-b3")
         self.dlq_subscription = dlq_subscription
         self.main_topic = main_topic
@@ -34,9 +29,7 @@ class DLQInspector:
         self.subscriber = pubsub_v1.SubscriberClient()
         self.publisher = pubsub_v1.PublisherClient()
 
-        self.subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.dlq_subscription
-        )
+        self.subscription_path = self.subscriber.subscription_path(self.project_id, self.dlq_subscription)
         self.topic_path = self.publisher.topic_path(self.project_id, self.main_topic)
 
     def examine(self, max_messages: int = 10) -> list[dict[str, Any]]:
@@ -51,12 +44,7 @@ class DLQInspector:
         """
         print(f"Inspecting Dead Letter Queue: {self.dlq_subscription}...")
 
-        response = self.subscriber.pull(
-            request={
-                "subscription": self.subscription_path,
-                "max_messages": max_messages
-            }
-        )
+        response = self.subscriber.pull(request={"subscription": self.subscription_path, "max_messages": max_messages})
 
         if not response.received_messages:
             print("DLQ is empty. All audits processed successfully.")
@@ -74,7 +62,7 @@ class DLQInspector:
                 "attributes": dict(msg.attributes),
                 "data_raw": msg.data.decode("utf-8", errors="replace"),
                 "data_parsed": None,
-                "error_context": None
+                "error_context": None,
             }
 
             # Try to parse the payload
@@ -86,7 +74,7 @@ class DLQInspector:
             failures.append(failure_info)
 
             # Print summary
-            print(f"\n{'='*60}")
+            print(f"\n{'=' * 60}")
             print(f"Found Dead Message ID: {msg.message_id}")
             print(f"Original Publish Time: {failure_info['publish_time']}")
 
@@ -112,7 +100,7 @@ class DLQInspector:
         response = self.subscriber.pull(
             request={
                 "subscription": self.subscription_path,
-                "max_messages": 100  # Pull batch to find our message
+                "max_messages": 100,  # Pull batch to find our message
             }
         )
 
@@ -122,22 +110,13 @@ class DLQInspector:
 
                 # Republish to main topic
                 future = self.publisher.publish(
-                    self.topic_path,
-                    msg.data,
-                    **dict(msg.attributes),
-                    replayed="true",
-                    original_message_id=msg.message_id
+                    self.topic_path, msg.data, **dict(msg.attributes), replayed="true", original_message_id=msg.message_id
                 )
 
                 new_message_id = future.result()
 
                 # Acknowledge the DLQ message
-                self.subscriber.acknowledge(
-                    request={
-                        "subscription": self.subscription_path,
-                        "ack_ids": [ack_id]
-                    }
-                )
+                self.subscriber.acknowledge(request={"subscription": self.subscription_path, "ack_ids": [ack_id]})
 
                 print(f"Replayed message {msg.message_id} -> {new_message_id}")
                 return new_message_id
@@ -152,12 +131,7 @@ class DLQInspector:
         Returns:
             List of new message IDs
         """
-        response = self.subscriber.pull(
-            request={
-                "subscription": self.subscription_path,
-                "max_messages": 1000
-            }
-        )
+        response = self.subscriber.pull(request={"subscription": self.subscription_path, "max_messages": 1000})
 
         if not response.received_messages:
             print("DLQ is empty. Nothing to replay.")
@@ -170,25 +144,14 @@ class DLQInspector:
             msg = received_message.message
 
             # Republish
-            future = self.publisher.publish(
-                self.topic_path,
-                msg.data,
-                **dict(msg.attributes),
-                replayed="true",
-                original_message_id=msg.message_id
-            )
+            future = self.publisher.publish(self.topic_path, msg.data, **dict(msg.attributes), replayed="true", original_message_id=msg.message_id)
 
             new_message_ids.append(future.result())
             ack_ids.append(received_message.ack_id)
 
         # Acknowledge all DLQ messages
         if ack_ids:
-            self.subscriber.acknowledge(
-                request={
-                    "subscription": self.subscription_path,
-                    "ack_ids": ack_ids
-                }
-            )
+            self.subscriber.acknowledge(request={"subscription": self.subscription_path, "ack_ids": ack_ids})
 
         print(f"Replayed {len(new_message_ids)} messages")
         return new_message_ids
@@ -204,22 +167,12 @@ class DLQInspector:
             Number of messages purged
         """
         if ack_ids:
-            self.subscriber.acknowledge(
-                request={
-                    "subscription": self.subscription_path,
-                    "ack_ids": ack_ids
-                }
-            )
+            self.subscriber.acknowledge(request={"subscription": self.subscription_path, "ack_ids": ack_ids})
             print(f"Purged {len(ack_ids)} messages")
             return len(ack_ids)
 
         # Purge all
-        response = self.subscriber.pull(
-            request={
-                "subscription": self.subscription_path,
-                "max_messages": 1000
-            }
-        )
+        response = self.subscriber.pull(request={"subscription": self.subscription_path, "max_messages": 1000})
 
         if not response.received_messages:
             print("DLQ is empty")
@@ -227,12 +180,7 @@ class DLQInspector:
 
         all_ack_ids = [m.ack_id for m in response.received_messages]
 
-        self.subscriber.acknowledge(
-            request={
-                "subscription": self.subscription_path,
-                "ack_ids": all_ack_ids
-            }
-        )
+        self.subscriber.acknowledge(request={"subscription": self.subscription_path, "ack_ids": all_ack_ids})
 
         print(f"Purged {len(all_ack_ids)} messages")
         return len(all_ack_ids)
@@ -260,24 +208,24 @@ Generated: {datetime.utcnow().isoformat()}Z
         for i, failure in enumerate(failures, 1):
             report += f"""
 ### Message {i}
-- **Message ID**: {failure['message_id']}
-- **Publish Time**: {failure['publish_time']}
-- **Attributes**: {json.dumps(failure['attributes'], indent=2)}
+- **Message ID**: {failure["message_id"]}
+- **Publish Time**: {failure["publish_time"]}
+- **Attributes**: {json.dumps(failure["attributes"], indent=2)}
 
 """
-            if failure['data_parsed']:
+            if failure["data_parsed"]:
                 report += f"""**Parsed Data**:
 ```json
-{json.dumps(failure['data_parsed'], indent=2)}
+{json.dumps(failure["data_parsed"], indent=2)}
 ```
 """
             else:
                 report += f"""**Raw Data (Corrupted)**:
 ```
-{failure['data_raw'][:500]}
+{failure["data_raw"][:500]}
 ```
 
-**Error**: {failure['error_context']}
+**Error**: {failure["error_context"]}
 """
 
         report += """

@@ -36,16 +36,16 @@ class RExecutionResult:
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
         return {
-            'success': self.success,
-            'stdout': self.stdout,
-            'stderr': self.stderr,
-            'return_value': self.return_value,
-            'error': self.error,
-            'error_type': self.error_type,
-            'execution_time': self.execution_time,
-            'exit_code': self.exit_code,
-            'output_files': self.output_files,
-            'parsed_results': self.parsed_results
+            "success": self.success,
+            "stdout": self.stdout,
+            "stderr": self.stderr,
+            "return_value": self.return_value,
+            "error": self.error,
+            "error_type": self.error_type,
+            "execution_time": self.execution_time,
+            "exit_code": self.exit_code,
+            "output_files": self.output_files,
+            "parsed_results": self.parsed_results,
         }
 
 
@@ -62,7 +62,7 @@ class RExecutor:
     """
 
     # R script wrapper template for result capture
-    WRAPPER_TEMPLATE = '''
+    WRAPPER_TEMPLATE = """
 # Wrapper to capture results as JSON
 .kosmos_results <- list()
 
@@ -84,7 +84,7 @@ if (length(.kosmos_results) > 0) {{
     cat(jsonlite::toJSON(.kosmos_results, auto_unbox=TRUE, pretty=TRUE))
     cat("\\nKOSMOS_RESULTS_END\\n")
 }}
-'''
+"""
 
     def __init__(
         self,
@@ -92,7 +92,7 @@ if (length(.kosmos_results) > 0) {{
         timeout: int = 300,
         working_dir: str | None = None,
         use_docker: bool = False,
-        docker_image: str = "kosmos-sandbox-r:latest"
+        docker_image: str = "kosmos-sandbox-r:latest",
     ):
         """
         Initialize R executor.
@@ -113,30 +113,21 @@ if (length(.kosmos_results) > 0) {{
     def is_r_available(self) -> bool:
         """Check if R is available on the system."""
         try:
-            result = subprocess.run(
-                [self.r_path, "--version"],
-                capture_output=True,
-                timeout=10
-            )
+            result = subprocess.run([self.r_path, "--version"], capture_output=True, timeout=10)
             return result.returncode == 0
-        except (subprocess.SubprocessError, FileNotFoundError):
+        except subprocess.SubprocessError, FileNotFoundError:
             return False
 
     def get_r_version(self) -> str | None:
         """Get R version string."""
         try:
-            result = subprocess.run(
-                [self.r_path, "--version"],
-                capture_output=True,
-                text=True,
-                timeout=10
-            )
+            result = subprocess.run([self.r_path, "--version"], capture_output=True, text=True, timeout=10)
             if result.returncode == 0:
                 # Parse version from output
-                match = re.search(r'R version (\d+\.\d+\.\d+)', result.stdout)
+                match = re.search(r"R version (\d+\.\d+\.\d+)", result.stdout)
                 if match:
                     return match.group(1)
-        except (subprocess.SubprocessError, FileNotFoundError):
+        except subprocess.SubprocessError, FileNotFoundError:
             pass
         return None
 
@@ -151,53 +142,47 @@ if (length(.kosmos_results) > 0) {{
             'r' or 'python'
         """
         # Check for shebang
-        if code.strip().startswith('#!/usr/bin/env Rscript') or \
-           code.strip().startswith('#!/usr/bin/Rscript'):
-            return 'r'
+        if code.strip().startswith("#!/usr/bin/env Rscript") or code.strip().startswith("#!/usr/bin/Rscript"):
+            return "r"
 
         # R-specific patterns
         r_patterns = [
-            r'\b(library|require)\s*\(',  # library() or require()
-            r'<-\s*function',  # function assignment
-            r'\bc\s*\([^)]+\)',  # c() vector
-            r'\bdata\.frame\s*\(',  # data.frame()
-            r'\bggplot\s*\(',  # ggplot
-            r'\bdplyr::|tidyr::',  # tidyverse namespaces
-            r'\bTwoSampleMR::|MendelianRandomization::',  # MR packages
-            r'%>%|%\+%',  # pipe operators
-            r'\bNA\b(?!me)',  # NA literal (not NAme, etc.)
-            r'\bNULL\b',  # NULL literal
-            r'<-(?!=)',  # assignment operator (not <-=)
+            r"\b(library|require)\s*\(",  # library() or require()
+            r"<-\s*function",  # function assignment
+            r"\bc\s*\([^)]+\)",  # c() vector
+            r"\bdata\.frame\s*\(",  # data.frame()
+            r"\bggplot\s*\(",  # ggplot
+            r"\bdplyr::|tidyr::",  # tidyverse namespaces
+            r"\bTwoSampleMR::|MendelianRandomization::",  # MR packages
+            r"%>%|%\+%",  # pipe operators
+            r"\bNA\b(?!me)",  # NA literal (not NAme, etc.)
+            r"\bNULL\b",  # NULL literal
+            r"<-(?!=)",  # assignment operator (not <-=)
         ]
 
         # Python-specific patterns
         python_patterns = [
-            r'\bimport\s+\w+',  # import statement
-            r'\bfrom\s+\w+\s+import',  # from import
-            r'\bdef\s+\w+\s*\(',  # function definition
-            r'\bclass\s+\w+[:\(]',  # class definition
-            r'\bif\s+__name__\s*==',  # main guard
-            r'\bprint\s*\([^)]*\)',  # print function
-            r'^\s*#\s*-\*-.*python',  # python encoding declaration
+            r"\bimport\s+\w+",  # import statement
+            r"\bfrom\s+\w+\s+import",  # from import
+            r"\bdef\s+\w+\s*\(",  # function definition
+            r"\bclass\s+\w+[:\(]",  # class definition
+            r"\bif\s+__name__\s*==",  # main guard
+            r"\bprint\s*\([^)]*\)",  # print function
+            r"^\s*#\s*-\*-.*python",  # python encoding declaration
         ]
 
         r_score = sum(1 for p in r_patterns if re.search(p, code, re.MULTILINE))
         python_score = sum(1 for p in python_patterns if re.search(p, code, re.MULTILINE))
 
         if r_score > python_score:
-            return 'r'
+            return "r"
         elif python_score > r_score:
-            return 'python'
+            return "python"
         else:
             # Default to Python if unclear
-            return 'python'
+            return "python"
 
-    def execute(
-        self,
-        code: str,
-        capture_results: bool = True,
-        output_dir: str | None = None
-    ) -> RExecutionResult:
+    def execute(self, code: str, capture_results: bool = True, output_dir: str | None = None) -> RExecutionResult:
         """
         Execute R code and capture results.
 
@@ -218,10 +203,13 @@ if (length(.kosmos_results) > 0) {{
             # Prepare code with result capture wrapper if requested
             if capture_results:
                 # Indent user code for wrapper
-                indented_code = '\n'.join('    ' + line for line in code.split('\n'))
+                indented_code = "\n".join("    " + line for line in code.split("\n"))
                 wrapped_code = self.WRAPPER_TEMPLATE.format(user_code=indented_code)
                 # Add jsonlite dependency
-                wrapped_code = "if (!require('jsonlite', quietly=TRUE)) install.packages('jsonlite', repos='https://cloud.r-project.org', quiet=TRUE)\n" + wrapped_code
+                wrapped_code = (
+                    "if (!require('jsonlite', quietly=TRUE)) install.packages('jsonlite', repos='https://cloud.r-project.org', quiet=TRUE)\n"
+                    + wrapped_code
+                )
             else:
                 wrapped_code = code
 
@@ -250,36 +238,20 @@ if (length(.kosmos_results) > 0) {{
 
             except subprocess.TimeoutExpired:
                 execution_time = (datetime.now() - start_time).total_seconds()
-                return RExecutionResult(
-                    success=False,
-                    error="Execution timed out",
-                    error_type="TimeoutError",
-                    execution_time=execution_time
-                )
+                return RExecutionResult(success=False, error="Execution timed out", error_type="TimeoutError", execution_time=execution_time)
             except Exception as e:
                 execution_time = (datetime.now() - start_time).total_seconds()
-                return RExecutionResult(
-                    success=False,
-                    error=str(e),
-                    error_type=type(e).__name__,
-                    execution_time=execution_time
-                )
+                return RExecutionResult(success=False, error=str(e), error_type=type(e).__name__, execution_time=execution_time)
 
     def _execute_local(self, script_path: Path, work_dir: str) -> RExecutionResult:
         """Execute R script locally using Rscript."""
-        result = subprocess.run(
-            [self.r_path, str(script_path)],
-            capture_output=True,
-            text=True,
-            timeout=self.timeout,
-            cwd=work_dir
-        )
+        result = subprocess.run([self.r_path, str(script_path)], capture_output=True, text=True, timeout=self.timeout, cwd=work_dir)
 
         # Check for R_ERROR in stderr
         error = None
         error_type = None
         if "R_ERROR:" in result.stderr:
-            match = re.search(r'R_ERROR:\s*(.+)', result.stderr)
+            match = re.search(r"R_ERROR:\s*(.+)", result.stderr)
             if match:
                 error = match.group(1).strip()
                 error_type = "RError"
@@ -287,12 +259,7 @@ if (length(.kosmos_results) > 0) {{
         success = result.returncode == 0 and error is None
 
         return RExecutionResult(
-            success=success,
-            stdout=result.stdout,
-            stderr=result.stderr,
-            error=error,
-            error_type=error_type,
-            exit_code=result.returncode
+            success=success, stdout=result.stdout, stderr=result.stderr, error=error, error_type=error_type, exit_code=result.returncode
         )
 
     def _execute_docker(self, script_path: Path, work_dir: str) -> RExecutionResult:
@@ -311,44 +278,37 @@ if (length(.kosmos_results) > 0) {{
         container = client.containers.run(
             self.docker_image,
             command=["Rscript", "-e", script_content],
-            volumes={work_dir: {'bind': '/workspace', 'mode': 'rw'}},
-            working_dir='/workspace',
+            volumes={work_dir: {"bind": "/workspace", "mode": "rw"}},
+            working_dir="/workspace",
             network_disabled=True,
-            mem_limit='2g',
+            mem_limit="2g",
             cpu_period=100000,
             cpu_quota=200000,  # 2 CPUs
             detach=True,
-            remove=False
+            remove=False,
         )
 
         try:
             # Wait for completion
             result = container.wait(timeout=self.timeout)
-            exit_code = result.get('StatusCode', -1)
+            exit_code = result.get("StatusCode", -1)
 
             # Get logs
-            stdout = container.logs(stdout=True, stderr=False).decode('utf-8')
-            stderr = container.logs(stdout=False, stderr=True).decode('utf-8')
+            stdout = container.logs(stdout=True, stderr=False).decode("utf-8")
+            stderr = container.logs(stdout=False, stderr=True).decode("utf-8")
 
             # Check for errors
             error = None
             error_type = None
             if "R_ERROR:" in stderr:
-                match = re.search(r'R_ERROR:\s*(.+)', stderr)
+                match = re.search(r"R_ERROR:\s*(.+)", stderr)
                 if match:
                     error = match.group(1).strip()
                     error_type = "RError"
 
             success = exit_code == 0 and error is None
 
-            return RExecutionResult(
-                success=success,
-                stdout=stdout,
-                stderr=stderr,
-                error=error,
-                error_type=error_type,
-                exit_code=exit_code
-            )
+            return RExecutionResult(success=success, stdout=stdout, stderr=stderr, error=error, error_type=error_type, exit_code=exit_code)
 
         finally:
             # Clean up container
@@ -362,11 +322,7 @@ if (length(.kosmos_results) > 0) {{
         results = {}
 
         # Look for our result markers
-        match = re.search(
-            r'KOSMOS_RESULTS_START\s*\n(.+?)\nKOSMOS_RESULTS_END',
-            stdout,
-            re.DOTALL
-        )
+        match = re.search(r"KOSMOS_RESULTS_START\s*\n(.+?)\nKOSMOS_RESULTS_END", stdout, re.DOTALL)
 
         if match:
             try:
@@ -383,7 +339,7 @@ if (length(.kosmos_results) > 0) {{
         output_path = Path(output_dir)
 
         # Common output file extensions
-        output_extensions = {'.png', '.pdf', '.svg', '.csv', '.tsv', '.rds', '.rdata', '.json'}
+        output_extensions = {".png", ".pdf", ".svg", ".csv", ".tsv", ".rds", ".rdata", ".json"}
 
         for file_path in output_path.iterdir():
             if file_path.suffix.lower() in output_extensions:
@@ -392,10 +348,7 @@ if (length(.kosmos_results) > 0) {{
         return output_files
 
     def execute_mendelian_randomization(
-        self,
-        exposure_data: dict[str, Any],
-        outcome_data: dict[str, Any],
-        method: str = "mr_ivw"
+        self, exposure_data: dict[str, Any], outcome_data: dict[str, Any], method: str = "mr_ivw"
     ) -> RExecutionResult:
         """
         Execute Mendelian Randomization analysis using TwoSampleMR.
@@ -417,25 +370,25 @@ library(TwoSampleMR)
 
 # Load exposure data
 exposure_dat <- data.frame(
-    SNP = c({', '.join(f'"{s}"' for s in exposure_data.get('snp', []))}),
-    beta = c({', '.join(str(b) for b in exposure_data.get('beta', []))}),
-    se = c({', '.join(str(s) for s in exposure_data.get('se', []))}),
-    effect_allele = c({', '.join(f'"{a}"' for a in exposure_data.get('effect_allele', []))}),
-    other_allele = c({', '.join(f'"{a}"' for a in exposure_data.get('other_allele', []))}),
-    pval = c({', '.join(str(p) for p in exposure_data.get('pval', []))})
+    SNP = c({", ".join(f'"{s}"' for s in exposure_data.get("snp", []))}),
+    beta = c({", ".join(str(b) for b in exposure_data.get("beta", []))}),
+    se = c({", ".join(str(s) for s in exposure_data.get("se", []))}),
+    effect_allele = c({", ".join(f'"{a}"' for a in exposure_data.get("effect_allele", []))}),
+    other_allele = c({", ".join(f'"{a}"' for a in exposure_data.get("other_allele", []))}),
+    pval = c({", ".join(str(p) for p in exposure_data.get("pval", []))})
 )
-exposure_dat$exposure <- "{exposure_data.get('exposure_name', 'exposure')}"
+exposure_dat$exposure <- "{exposure_data.get("exposure_name", "exposure")}"
 
 # Load outcome data
 outcome_dat <- data.frame(
-    SNP = c({', '.join(f'"{s}"' for s in outcome_data.get('snp', []))}),
-    beta = c({', '.join(str(b) for b in outcome_data.get('beta', []))}),
-    se = c({', '.join(str(s) for s in outcome_data.get('se', []))}),
-    effect_allele = c({', '.join(f'"{a}"' for a in outcome_data.get('effect_allele', []))}),
-    other_allele = c({', '.join(f'"{a}"' for a in outcome_data.get('other_allele', []))}),
-    pval = c({', '.join(str(p) for p in outcome_data.get('pval', []))})
+    SNP = c({", ".join(f'"{s}"' for s in outcome_data.get("snp", []))}),
+    beta = c({", ".join(str(b) for b in outcome_data.get("beta", []))}),
+    se = c({", ".join(str(s) for s in outcome_data.get("se", []))}),
+    effect_allele = c({", ".join(f'"{a}"' for a in outcome_data.get("effect_allele", []))}),
+    other_allele = c({", ".join(f'"{a}"' for a in outcome_data.get("other_allele", []))}),
+    pval = c({", ".join(str(p) for p in outcome_data.get("pval", []))})
 )
-outcome_dat$outcome <- "{outcome_data.get('outcome_name', 'outcome')}"
+outcome_dat$outcome <- "{outcome_data.get("outcome_name", "outcome")}"
 
 # Harmonize data
 dat <- harmonise_data(
@@ -469,4 +422,4 @@ def is_r_code(code: str) -> bool:
         True if code appears to be R
     """
     executor = RExecutor()
-    return executor.detect_language(code) == 'r'
+    return executor.detect_language(code) == "r"

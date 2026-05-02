@@ -36,17 +36,19 @@ def create_feature_store_yaml(config_content: str, config_name: str) -> str:
         raise ValueError(f"Failed to parse YAML content for {config_name}: {e}")
 
     # Ensure required fields are present
-    required_fields = ['project', 'registry', 'provider']
+    required_fields = ["project", "registry", "provider"]
     for field in required_fields:
         if field not in config_dict:
-            raise ValueError(f"Failed to create config {config_name}: missing required field '{field}'")
+            raise ValueError(
+                f"Failed to create config {config_name}: missing required field '{field}'"
+            )
 
     # Create filename
     filename = f"feature_store_{config_name}.yaml"
     filepath = Path(filename)
 
     # Write the YAML file
-    with open(filepath, 'w') as f:
+    with open(filepath, "w") as f:
         yaml.dump(config_dict, f, default_flow_style=False, sort_keys=False)
 
     return str(filepath)
@@ -67,7 +69,9 @@ def create_feature_store_object(yaml_file_path: str) -> FeatureStore:
         fs = FeatureStore(fs_yaml_file=Path(yaml_file_path))
         return fs
     except Exception as e:
-        raise RuntimeError(f"Failed to create FeatureStore object from {yaml_file_path}: {e}")
+        raise RuntimeError(
+            f"Failed to create FeatureStore object from {yaml_file_path}: {e}"
+        )
 
 
 def process_client_configs(client_configs: Dict[str, str]) -> Dict[str, Dict[str, Any]]:
@@ -104,21 +108,21 @@ def process_client_configs(client_configs: Dict[str, str]) -> Dict[str, Dict[str
             print(f"✓ Created FeatureStore object: {fs_var_name}")
 
             results[config_name] = {
-                'yaml_path': yaml_path,
-                'feature_store': fs_var_name,
-                'project_name': fs.project,
-                'success': True,
-                'error': None
+                "yaml_path": yaml_path,
+                "feature_store": fs_var_name,
+                "project_name": fs.project,
+                "success": True,
+                "error": None,
             }
 
         except Exception as e:
             print(f"✗ Failed to process config {config_name}: {e}")
             results[config_name] = {
-                'yaml_path': None,
-                'feature_store': None,
-                'project_name': None,
-                'success': False,
-                'error': str(e)
+                "yaml_path": None,
+                "feature_store": None,
+                "project_name": None,
+                "success": False,
+                "error": str(e),
             }
 
     return results
@@ -135,13 +139,15 @@ def print_summary(results: Dict[str, Dict[str, Any]]) -> None:
     print("SUMMARY")
     print("=" * 50)
 
-    successful_configs = [name for name, result in results.items() if result['success']]
-    failed_configs = [name for name, result in results.items() if not result['success']]
+    successful_configs = [name for name, result in results.items() if result["success"]]
+    failed_configs = [name for name, result in results.items() if not result["success"]]
     print(f"\n\n✓✓Feature Store YAML files have been created in: {os.getcwd()}")
     print(f"\n✓ Successfully processed {len(successful_configs)} config(s):")
     for config_name in successful_configs:
         result = results[config_name]
-        print(f"  - {config_name}: {result['yaml_path']} (Project: {result['project_name']})")
+        print(
+            f"  - {config_name}: {result['yaml_path']} (Project: {result['project_name']})"
+        )
 
     if failed_configs:
         print(f"\n✗ Failed to process {len(failed_configs)} config(s):")
@@ -152,12 +158,18 @@ def print_summary(results: Dict[str, Dict[str, Any]]) -> None:
     print("\n\n✓✓ Feature Store Object(s) details:")
     for config_name in successful_configs:
         result = results[config_name]
-        print(f"> Object Name - {result['feature_store']} ; project name - {result['project_name']} ; yaml path - {result['yaml_path']}")
+        print(
+            f"> Object Name - {result['feature_store']} ; project name - {result['project_name']} ; yaml path - {result['yaml_path']}"
+        )
 
     print("\n")
     print("=" * 25, "Usage:", "=" * 25)
-    print("You can now use feature store object(s) to access the feature store resources and functions!")
-    print("\n// Note: Replace object_name with the actual object name from the list above.")
+    print(
+        "You can now use feature store object(s) to access the feature store resources and functions!"
+    )
+    print(
+        "\n// Note: Replace object_name with the actual object name from the list above."
+    )
     print("object_name.list_features()\nobject_name.get_historical_features()")
     print("=" * 58)
 
@@ -179,7 +191,6 @@ offline_store:
     type: file
 entity_key_serialization_version: 3
 """,
-
         "aws_redshift": """
 project: aws_feature_store
 registry: data/registry.db
@@ -197,7 +208,6 @@ offline_store:
     iam_role: arn:aws:iam::123456789012:role/RedshiftRole
 entity_key_serialization_version: 3
 """,
-
         "gcp_bigquery": """
 project: gcp_feature_store
 registry: data/registry.db
@@ -210,10 +220,12 @@ offline_store:
     project_id: my-gcp-project
     dataset_id: my_dataset
 entity_key_serialization_version: 3
-"""
+""",
     }
     print("=" * 50)
-    print("This script will create feature store YAMLs and objects from client configs.")
+    print(
+        "This script will create feature store YAMLs and objects from client configs."
+    )
     print(f"Processing {len(example_configs)} example configurations...")
 
     # Process the configs

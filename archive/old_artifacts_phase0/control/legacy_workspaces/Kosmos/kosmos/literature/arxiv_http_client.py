@@ -37,6 +37,7 @@ OPENSEARCH_NS = "{http://a9.com/-/spec/opensearch/1.1/}"
 @dataclass
 class ArxivSearchResult:
     """Intermediate representation of an arXiv search result."""
+
     arxiv_id: str
     title: str
     abstract: str
@@ -99,9 +100,7 @@ class ArxivHTTPClient(BaseLiteratureClient):
         self.http_client = httpx.Client(
             timeout=httpx.Timeout(30.0, connect=10.0),
             follow_redirects=True,
-            headers={
-                "User-Agent": "Kosmos-AI-Scientist/1.0 (https://github.com/jimmc414/Kosmos)"
-            }
+            headers={"User-Agent": "Kosmos-AI-Scientist/1.0 (https://github.com/jimmc414/Kosmos)"},
         )
 
         # Initialize cache if enabled
@@ -129,13 +128,7 @@ class ArxivHTTPClient(BaseLiteratureClient):
         self._last_request_time = time.time()
 
     def search(
-        self,
-        query: str,
-        max_results: int = 10,
-        fields: list[str] | None = None,
-        year_from: int | None = None,
-        year_to: int | None = None,
-        **kwargs
+        self, query: str, max_results: int = 10, fields: list[str] | None = None, year_from: int | None = None, year_to: int | None = None, **kwargs
     ) -> list[PaperMetadata]:
         """
         Search for papers on arXiv using direct HTTP API.
@@ -172,13 +165,7 @@ class ArxivHTTPClient(BaseLiteratureClient):
             return []
 
         # Check cache
-        cache_params = {
-            "query": query,
-            "max_results": max_results,
-            "fields": fields,
-            "year_from": year_from,
-            "year_to": year_to
-        }
+        cache_params = {"query": query, "max_results": max_results, "fields": fields, "year_from": year_from, "year_to": year_to}
 
         if self.cache:
             cached_result = self.cache.get("arxiv_http", "search", cache_params)
@@ -269,10 +256,7 @@ class ArxivHTTPClient(BaseLiteratureClient):
 
         try:
             # Build API URL with id_list parameter
-            params = {
-                "id_list": paper_id,
-                "max_results": 1
-            }
+            params = {"id_list": paper_id, "max_results": 1}
 
             # Rate limit before request
             self._rate_limit()
@@ -336,11 +320,7 @@ class ArxivHTTPClient(BaseLiteratureClient):
         self.logger.warning("arXiv API does not provide citation data. Use Semantic Scholar instead.")
         return []
 
-    def _build_search_query(
-        self,
-        query: str,
-        fields: list[str] | None = None
-    ) -> str:
+    def _build_search_query(self, query: str, fields: list[str] | None = None) -> str:
         """
         Build arXiv query string with category filters.
 
@@ -390,7 +370,7 @@ class ArxivHTTPClient(BaseLiteratureClient):
         paper_id = paper_id.replace("arXiv:", "").replace("arxiv:", "").strip()
 
         # Remove version suffix (e.g., "v2")
-        paper_id = re.sub(r'v\d+$', '', paper_id)
+        paper_id = re.sub(r"v\d+$", "", paper_id)
 
         return paper_id
 
@@ -436,7 +416,7 @@ class ArxivHTTPClient(BaseLiteratureClient):
             arxiv_id = entry_url.split("/abs/")[-1] if "/abs/" in entry_url else ""
 
             # Remove version from ID
-            arxiv_id = re.sub(r'v\d+$', '', arxiv_id)
+            arxiv_id = re.sub(r"v\d+$", "", arxiv_id)
 
             # Title (clean whitespace)
             title = entry.findtext(f"{ATOM_NS}title", "")
@@ -503,7 +483,7 @@ class ArxivHTTPClient(BaseLiteratureClient):
                 journal_ref=journal_ref,
                 comment=comment,
                 pdf_url=pdf_url,
-                entry_url=entry_url
+                entry_url=entry_url,
             )
 
         except Exception as e:
@@ -565,16 +545,11 @@ class ArxivHTTPClient(BaseLiteratureClient):
                 "entry_id": result.entry_url,
                 "updated": result.updated.isoformat() if result.updated else None,
                 "comment": result.comment,
-                "primary_category": result.primary_category
-            }
+                "primary_category": result.primary_category,
+            },
         )
 
-    def _filter_by_year(
-        self,
-        papers: list[PaperMetadata],
-        year_from: int | None,
-        year_to: int | None
-    ) -> list[PaperMetadata]:
+    def _filter_by_year(self, papers: list[PaperMetadata], year_from: int | None, year_to: int | None) -> list[PaperMetadata]:
         """
         Filter papers by publication year.
 
@@ -611,19 +586,40 @@ class ArxivHTTPClient(BaseLiteratureClient):
         """
         return [
             # Computer Science
-            "cs.AI", "cs.CL", "cs.CV", "cs.LG", "cs.NE", "cs.RO",
-            "cs.HC", "cs.SE", "cs.DB", "cs.IR",
+            "cs.AI",
+            "cs.CL",
+            "cs.CV",
+            "cs.LG",
+            "cs.NE",
+            "cs.RO",
+            "cs.HC",
+            "cs.SE",
+            "cs.DB",
+            "cs.IR",
             # Physics
-            "physics.gen-ph", "physics.comp-ph", "quant-ph",
-            "cond-mat", "hep-th", "hep-ph", "astro-ph",
+            "physics.gen-ph",
+            "physics.comp-ph",
+            "quant-ph",
+            "cond-mat",
+            "hep-th",
+            "hep-ph",
+            "astro-ph",
             # Biology
-            "q-bio.BM", "q-bio.GN", "q-bio.NC", "q-bio.QM",
+            "q-bio.BM",
+            "q-bio.GN",
+            "q-bio.NC",
+            "q-bio.QM",
             # Mathematics
-            "math.ST", "math.OC", "math.PR",
+            "math.ST",
+            "math.OC",
+            "math.PR",
             # Statistics
-            "stat.ML", "stat.TH", "stat.ME",
+            "stat.ML",
+            "stat.TH",
+            "stat.ME",
             # Economics/Finance
-            "econ.EM", "q-fin.ST"
+            "econ.EM",
+            "q-fin.ST",
         ]
 
     def close(self) -> None:

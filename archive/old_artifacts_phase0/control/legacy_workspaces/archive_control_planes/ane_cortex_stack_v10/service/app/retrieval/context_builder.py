@@ -46,11 +46,11 @@ def build_prompt_context(query: str, authority, atoms, exact, semantic, memory, 
     if semantic:
         parts.append("SEMANTIC HITS:")
         for r in semantic:
-            parts.append(f"- {r.get('rel_path','')}: {str(r.get('content',''))[:500]}")
+            parts.append(f"- {r.get('rel_path', '')}: {str(r.get('content', ''))[:500]}")
     if memory:
         parts.append("MEMORY:")
         for r in memory:
-            parts.append(f"- ({r.get('source','memory')}) {r['title']}: {r['content']}")
+            parts.append(f"- ({r.get('source', 'memory')}) {r['title']}: {r['content']}")
     if tasks:
         parts.append("TASKS:")
         for r in tasks:

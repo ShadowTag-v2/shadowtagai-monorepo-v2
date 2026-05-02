@@ -2,6 +2,7 @@
 Governance Engine
 Implements EU AI Act, DSA, NIST RMF, and ISO 42001 assessments
 """
+
 import logging
 from typing import Any
 
@@ -54,15 +55,11 @@ class GovernanceEngine:
         compliance_score = compliant_controls / len(controls) if controls else 0.0
 
         # Generate recommendations
-        recommendations = await self._generate_recommendations(
-            risk_level, controls, request
-        )
+        recommendations = await self._generate_recommendations(risk_level, controls, request)
 
         # Determine if human review is required
         requires_human_review = (
-            risk_level in [RiskLevel.HIGH, RiskLevel.UNACCEPTABLE] or
-            compliance_score < 0.8 or
-            (request.user_age and request.user_age < 13)
+            risk_level in [RiskLevel.HIGH, RiskLevel.UNACCEPTABLE] or compliance_score < 0.8 or (request.user_age and request.user_age < 13)
         )
 
         # Generate transparency notice
@@ -79,7 +76,7 @@ class GovernanceEngine:
             "recommendations": recommendations,
             "requires_human_review": requires_human_review,
             "transparency_notice": transparency_notice,
-            "residual_risks": residual_risks
+            "residual_risks": residual_risks,
         }
 
     async def assess_eu_ai_act(self, request: GovernanceAssessmentRequest) -> EUAIActAssessment:
@@ -112,7 +109,7 @@ class GovernanceEngine:
             human_oversight_required=human_oversight_required,
             data_governance_compliant=data_governance_compliant,
             technical_documentation_complete=technical_documentation_complete,
-            conformity_assessment_required=conformity_assessment_required
+            conformity_assessment_required=conformity_assessment_required,
         )
 
     async def assess_nist_rmf(self, request: GovernanceAssessmentRequest) -> NISTRMFAssessment:
@@ -149,7 +146,7 @@ class GovernanceEngine:
             measure_score=measure_score,
             manage_score=manage_score,
             overall_maturity=maturity,
-            gaps=gaps
+            gaps=gaps,
         )
 
     async def assess_iso_42001(self, request: GovernanceAssessmentRequest) -> ISO42001Assessment:
@@ -164,10 +161,7 @@ class GovernanceEngine:
         improvement = 0.85
 
         # Determine certification readiness
-        min_score = min([
-            context_of_organization, leadership, planning,
-            support, operation, performance_evaluation, improvement
-        ])
+        min_score = min([context_of_organization, leadership, planning, support, operation, performance_evaluation, improvement])
         certification_ready = min_score >= 0.85
 
         return ISO42001Assessment(
@@ -178,7 +172,7 @@ class GovernanceEngine:
             operation=operation,
             performance_evaluation=performance_evaluation,
             improvement=improvement,
-            certification_ready=certification_ready
+            certification_ready=certification_ready,
         )
 
     async def _determine_risk_level(self, request: GovernanceAssessmentRequest) -> RiskLevel:
@@ -196,40 +190,26 @@ class GovernanceEngine:
         """Assess EU AI Act controls"""
         return [
             ControlAssessment(
-                control_id="EU-AI-1",
-                control_name="Risk Management System",
-                status="compliant",
-                evidence="YRM system documented and operational"
+                control_id="EU-AI-1", control_name="Risk Management System", status="compliant", evidence="YRM system documented and operational"
             ),
             ControlAssessment(
-                control_id="EU-AI-2",
-                control_name="Data Governance",
-                status="compliant",
-                evidence="Data governance policies implemented"
+                control_id="EU-AI-2", control_name="Data Governance", status="compliant", evidence="Data governance policies implemented"
             ),
             ControlAssessment(
                 control_id="EU-AI-3",
                 control_name="Transparency to Users",
                 status="compliant" if request.is_ai_generated else "not_applicable",
-                evidence="AI disclosure implemented" if request.is_ai_generated else None
-            )
+                evidence="AI disclosure implemented" if request.is_ai_generated else None,
+            ),
         ]
 
     async def _assess_nist_rmf_controls(self, request: GovernanceAssessmentRequest) -> list[ControlAssessment]:
         """Assess NIST RMF controls"""
         return [
             ControlAssessment(
-                control_id="NIST-GOV-1",
-                control_name="AI Governance Structure",
-                status="compliant",
-                evidence="Governance structure documented"
+                control_id="NIST-GOV-1", control_name="AI Governance Structure", status="compliant", evidence="Governance structure documented"
             ),
-            ControlAssessment(
-                control_id="NIST-MAP-1",
-                control_name="Risk Context Mapping",
-                status="compliant",
-                evidence="Risk mapping completed"
-            )
+            ControlAssessment(control_id="NIST-MAP-1", control_name="Risk Context Mapping", status="compliant", evidence="Risk mapping completed"),
         ]
 
     async def _assess_iso_42001_controls(self, request: GovernanceAssessmentRequest) -> list[ControlAssessment]:
@@ -239,14 +219,11 @@ class GovernanceEngine:
                 control_id="ISO-42001-4.1",
                 control_name="Understanding Organization Context",
                 status="compliant",
-                evidence="Context analysis documented"
+                evidence="Context analysis documented",
             ),
             ControlAssessment(
-                control_id="ISO-42001-5.1",
-                control_name="Leadership and Commitment",
-                status="compliant",
-                evidence="Leadership commitment documented"
-            )
+                control_id="ISO-42001-5.1", control_name="Leadership and Commitment", status="compliant", evidence="Leadership commitment documented"
+            ),
         ]
 
     async def _generate_recommendations(
@@ -274,9 +251,7 @@ class GovernanceEngine:
             return "This content was generated or modified using artificial intelligence."
         return None
 
-    async def _identify_residual_risks(
-        self, controls: list[ControlAssessment], risk_level: RiskLevel
-    ) -> list[str]:
+    async def _identify_residual_risks(self, controls: list[ControlAssessment], risk_level: RiskLevel) -> list[str]:
         """Identify residual risks after controls"""
         residual = []
 

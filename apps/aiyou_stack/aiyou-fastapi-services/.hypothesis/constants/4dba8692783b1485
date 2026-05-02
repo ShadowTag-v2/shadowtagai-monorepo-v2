@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/verticals/tower_edge.py
+# hypothesis_version: 6.151.5
+
+[0.001, 2.0, 12.0, 20.0, 25.0, 45.0, 800.0, 100, 1000, 1024, '5g_slice', 'EDGE_INFERENCE', 'PREMIUM_INFERENCE', 'connection', 'connection_type', 'event_timestamp', 'event_type', 'fiber', 'gpu_temp_c', 'jitter_ms', 'latency', 'latency_ms', 'location_code', 'node', 'node_id', 'pnkln-edge', 'power_draw_w', 'raw_data', 'revenue_model', 'revenue_usd', 'starlink', 'tbd_client']

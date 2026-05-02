@@ -110,9 +110,7 @@ class ToolRegistry:
         self._embedding_matrix: np.ndarray | None = None
         self._tool_names: list[str] = []
 
-    def register_tool(
-        self, name: str, description: str, func: Callable, embedding: np.ndarray | None = None
-    ) -> None:
+    def register_tool(self, name: str, description: str, func: Callable, embedding: np.ndarray | None = None) -> None:
         """Register tool with optional embedding."""
         if embedding is None:
             # Simple hash-based embedding placeholder
@@ -133,17 +131,11 @@ class ToolRegistry:
         """Rebuild embedding index for fast retrieval."""
         self._tool_names = list(self.tools.keys())
         if self._tool_names:
-            embeddings = [
-                self.tools[name].embedding
-                for name in self._tool_names
-                if self.tools[name].embedding is not None
-            ]
+            embeddings = [self.tools[name].embedding for name in self._tool_names if self.tools[name].embedding is not None]
             if embeddings:
                 self._embedding_matrix = np.vstack(embeddings)
 
-    def retrieve_tools(
-        self, query: str, top_k: int = 5, min_similarity: float = 0.0
-    ) -> list[tuple[str, float]]:
+    def retrieve_tools(self, query: str, top_k: int = 5, min_similarity: float = 0.0) -> list[tuple[str, float]]:
         """
         Retrieve most relevant tools for query.
 
@@ -169,11 +161,7 @@ class ToolRegistry:
 
         # Performance-weighted ranking
         performance_weights = np.array(
-            [
-                self.tools[name].success_rate
-                * (1.0 / (1.0 + self.tools[name].avg_latency_ms / 100))
-                for name in self._tool_names
-            ]
+            [self.tools[name].success_rate * (1.0 / (1.0 + self.tools[name].avg_latency_ms / 100)) for name in self._tool_names]
         )
         weighted_scores = similarities * 0.7 + performance_weights * 0.3
 
@@ -260,10 +248,7 @@ class ExecutionContext:
         self.total_latency_ms += latency_ms
 
         if self.total_latency_ms > self.latency_budget_ms:
-            logger.warning(
-                f"Context {self.request_id} exceeded latency budget: "
-                f"{self.total_latency_ms:.2f}ms > {self.latency_budget_ms}ms"
-            )
+            logger.warning(f"Context {self.request_id} exceeded latency budget: {self.total_latency_ms:.2f}ms > {self.latency_budget_ms}ms")
 
     def is_over_budget(self) -> bool:
         """Check if execution has exceeded latency SLA."""
@@ -326,26 +311,20 @@ class PipelineStage(Generic[T, U]):
 
         try:
             # Execute with timeout
-            result = await asyncio.wait_for(
-                self.func(context, input_data), timeout=self.timeout_ms / 1000.0
-            )
+            result = await asyncio.wait_for(self.func(context, input_data), timeout=self.timeout_ms / 1000.0)
 
             # Record latency
             latency_ms = (time.perf_counter() - start_time) * 1000
             context.record_stage_latency(self.name, latency_ms)
 
-            logger.debug(
-                f"Stage {self.name} completed in {latency_ms:.2f}ms (context: {context.request_id})"
-            )
+            logger.debug(f"Stage {self.name} completed in {latency_ms:.2f}ms (context: {context.request_id})")
 
             return result
 
         except TimeoutError:
             latency_ms = (time.perf_counter() - start_time) * 1000
             context.record_stage_latency(self.name, latency_ms)
-            logger.error(
-                f"Stage {self.name} timeout after {latency_ms:.2f}ms (limit: {self.timeout_ms}ms)"
-            )
+            logger.error(f"Stage {self.name} timeout after {latency_ms:.2f}ms (limit: {self.timeout_ms}ms)")
             raise
 
 
@@ -379,7 +358,7 @@ class SequentialPipeline:
         func: Callable[[ExecutionContext, Any], asyncio.Future[Any]],
         skip_condition: Callable[[ExecutionContext], bool] | None = None,
         timeout_ms: float = 30.0,
-    ) -> "SequentialPipeline":
+    ) -> SequentialPipeline:
         """
         Add stage to pipeline (builder pattern).
 
@@ -411,10 +390,7 @@ class SequentialPipeline:
             asyncio.TimeoutError: If any stage times out
             Exception: If any stage raises
         """
-        logger.info(
-            f"Pipeline {self.name} starting with {len(self.stages)} stages "
-            f"(context: {context.request_id})"
-        )
+        logger.info(f"Pipeline {self.name} starting with {len(self.stages)} stages (context: {context.request_id})")
 
         current_output = initial_input
 
@@ -424,15 +400,11 @@ class SequentialPipeline:
             # Early termination if over budget
             if context.is_over_budget():
                 logger.error(
-                    f"Pipeline {self.name} terminated early - budget exceeded "
-                    f"({context.total_latency_ms:.2f}ms > {context.latency_budget_ms}ms)"
+                    f"Pipeline {self.name} terminated early - budget exceeded ({context.total_latency_ms:.2f}ms > {context.latency_budget_ms}ms)"
                 )
                 break
 
-        logger.info(
-            f"Pipeline {self.name} completed in {context.total_latency_ms:.2f}ms "
-            f"(context: {context.request_id})"
-        )
+        logger.info(f"Pipeline {self.name} completed in {context.total_latency_ms:.2f}ms (context: {context.request_id})")
 
         return current_output
 
@@ -497,10 +469,7 @@ class ConcurrentExecutor:
         """
         start_time = time.perf_counter()
 
-        logger.info(
-            f"ConcurrentExecutor {self.name} executing {len(functions)} functions "
-            f"(context: {context.request_id})"
-        )
+        logger.info(f"ConcurrentExecutor {self.name} executing {len(functions)} functions (context: {context.request_id})")
 
         try:
             # Create tasks
@@ -524,14 +493,9 @@ class ConcurrentExecutor:
 
             latency_ms = (time.perf_counter() - start_time) * 1000
 
-            logger.info(
-                f"ConcurrentExecutor {self.name} completed in {latency_ms:.2f}ms "
-                f"({len(successful_results)} success, {len(errors)} errors)"
-            )
+            logger.info(f"ConcurrentExecutor {self.name} completed in {latency_ms:.2f}ms ({len(successful_results)} success, {len(errors)} errors)")
 
-            return ConcurrentResult(
-                results=successful_results, latency_ms=latency_ms, errors=errors
-            )
+            return ConcurrentResult(results=successful_results, latency_ms=latency_ms, errors=errors)
 
         except TimeoutError:
             latency_ms = (time.perf_counter() - start_time) * 1000
@@ -682,9 +646,7 @@ class CorOrchestrator:
         self.executors[name] = executor
         logger.info(f"Registered executor: {name}")
 
-    async def execute_pipeline(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any
-    ) -> Any:
+    async def execute_pipeline(self, pipeline_name: str, context: ExecutionContext, input_data: Any) -> Any:
         """
         Execute registered pipeline by name.
 
@@ -749,9 +711,7 @@ class CorOrchestrator:
         Returns:
             ExecutionContext
         """
-        return ExecutionContext(
-            request_id=request_id, latency_budget_ms=latency_budget_ms, metadata=metadata or {}
-        )
+        return ExecutionContext(request_id=request_id, latency_budget_ms=latency_budget_ms, metadata=metadata or {})
 
     # ========================================================================
     # DEEPAGENT ENHANCEMENTS
@@ -761,9 +721,7 @@ class CorOrchestrator:
         """Register tool for dynamic retrieval."""
         self.tool_registry.register_tool(name, description, func)
 
-    async def execute_with_tool_selection(
-        self, context: ExecutionContext, query: str, input_data: Any, top_k: int = 3
-    ) -> Any:
+    async def execute_with_tool_selection(self, context: ExecutionContext, query: str, input_data: Any, top_k: int = 3) -> Any:
         """
         Execute using dynamically selected tools.
 
@@ -788,9 +746,7 @@ class CorOrchestrator:
 
         # Execute best tool
         best_tool_name, score = tools[0]
-        result, latency_ms = await self.tool_registry.execute_tool(
-            best_tool_name, context, input_data
-        )
+        result, latency_ms = await self.tool_registry.execute_tool(best_tool_name, context, input_data)
 
         # Store in memory
         importance = score  # Use similarity score as importance
@@ -798,9 +754,7 @@ class CorOrchestrator:
 
         return result
 
-    async def execute_pipeline_with_memory(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any
-    ) -> Any:
+    async def execute_pipeline_with_memory(self, pipeline_name: str, context: ExecutionContext, input_data: Any) -> Any:
         """
         Execute pipeline and store result in memory.
 
@@ -892,9 +846,7 @@ async def example_usage():
 
     # Execute
     context = orchestrator.create_context("req_001", latency_budget_ms=90.0)
-    result = await orchestrator.execute_pipeline(
-        "judge_six", context, {"user_query": "example request"}
-    )
+    result = await orchestrator.execute_pipeline("judge_six", context, {"user_query": "example request"})
 
     print(f"Result: {result}")
     print(f"Total latency: {context.total_latency_ms:.2f}ms")
@@ -903,9 +855,7 @@ async def example_usage():
 
 if __name__ == "__main__":
     # Configure logging
-    logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
     # Run example
     asyncio.run(example_usage())

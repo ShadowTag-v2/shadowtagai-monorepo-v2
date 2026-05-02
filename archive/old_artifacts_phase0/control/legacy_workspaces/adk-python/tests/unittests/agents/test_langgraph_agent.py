@@ -19,76 +19,71 @@ import pytest
 # Skip all tests in this module if LangGraph dependencies are not available
 LANGGRAPH_AVAILABLE = True
 try:
-  from google.adk.agents.invocation_context import InvocationContext
-  from google.adk.agents.langgraph_agent import LangGraphAgent
-  from google.adk.events.event import Event
-  from google.adk.plugins.plugin_manager import PluginManager
-  from google.genai import types
-  from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
-  from langgraph.graph.graph import CompiledGraph
+    from google.adk.agents.invocation_context import InvocationContext
+    from google.adk.agents.langgraph_agent import LangGraphAgent
+    from google.adk.events.event import Event
+    from google.adk.plugins.plugin_manager import PluginManager
+    from google.genai import types
+    from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+    from langgraph.graph.graph import CompiledGraph
 except ImportError:
-  LANGGRAPH_AVAILABLE = False
+    LANGGRAPH_AVAILABLE = False
 
-  # IMPORTANT: Dummy classes are REQUIRED in this file but NOT in A2A test files.
-  # Here's why this file is different from A2A test files:
-  #
-  # 1. MODULE-LEVEL USAGE IN DECORATORS:
-  #    This file uses @pytest.mark.parametrize decorator with complex nested structures
-  #    that directly reference imported types like Event(), types.Content(), types.Part.from_text().
-  #    These decorator expressions are evaluated during MODULE COMPILATION TIME,
-  #    not during test execution time.
-  #
-  # 2. A2A TEST FILES PATTERN:
-  #    Most A2A test files only use imported types within test method bodies:
-  #    - Inside test functions: def test_something(): Message(...)
-  #    - These are evaluated during TEST EXECUTION TIME when tests are skipped
-  #    - No NameError occurs because skipped tests don't execute their bodies
-  #
-  # 3. WHAT HAPPENS WITHOUT DUMMIES:
-  #    If we remove dummy classes from this file:
-  #    - Python tries to compile the @pytest.mark.parametrize decorator
-  #    - It encounters Event(...), types.Content(...), etc.
-  #    - These names are undefined → NameError during module compilation
-  #    - Test collection fails before pytest.mark.skipif can even run
-  #
-  # 4. WHY DUMMIES WORK:
-  #    - DummyTypes() can be called like Event() → returns DummyTypes instance
-  #    - DummyTypes.__getattr__ handles types.Content → returns DummyTypes instance
-  #    - DummyTypes.__call__ handles types.Part.from_text() → returns DummyTypes instance
-  #    - The parametrize decorator gets dummy objects instead of real ones
-  #    - Tests still get skipped due to pytestmark, so dummies never actually run
-  #
-  # 5. EXCEPTION CASES IN A2A FILES:
-  #    A few A2A files DID need dummies initially because they had:
-  #    - Type annotations: def create_helper(x: str) -> Message
-  #    - But we removed those type annotations to eliminate the need for dummies
-  #
-  # This file cannot avoid dummies because the parametrize decorator usage
-  # is fundamental to the test structure and cannot be easily refactored.
+    # IMPORTANT: Dummy classes are REQUIRED in this file but NOT in A2A test files.
+    # Here's why this file is different from A2A test files:
+    #
+    # 1. MODULE-LEVEL USAGE IN DECORATORS:
+    #    This file uses @pytest.mark.parametrize decorator with complex nested structures
+    #    that directly reference imported types like Event(), types.Content(), types.Part.from_text().
+    #    These decorator expressions are evaluated during MODULE COMPILATION TIME,
+    #    not during test execution time.
+    #
+    # 2. A2A TEST FILES PATTERN:
+    #    Most A2A test files only use imported types within test method bodies:
+    #    - Inside test functions: def test_something(): Message(...)
+    #    - These are evaluated during TEST EXECUTION TIME when tests are skipped
+    #    - No NameError occurs because skipped tests don't execute their bodies
+    #
+    # 3. WHAT HAPPENS WITHOUT DUMMIES:
+    #    If we remove dummy classes from this file:
+    #    - Python tries to compile the @pytest.mark.parametrize decorator
+    #    - It encounters Event(...), types.Content(...), etc.
+    #    - These names are undefined → NameError during module compilation
+    #    - Test collection fails before pytest.mark.skipif can even run
+    #
+    # 4. WHY DUMMIES WORK:
+    #    - DummyTypes() can be called like Event() → returns DummyTypes instance
+    #    - DummyTypes.__getattr__ handles types.Content → returns DummyTypes instance
+    #    - DummyTypes.__call__ handles types.Part.from_text() → returns DummyTypes instance
+    #    - The parametrize decorator gets dummy objects instead of real ones
+    #    - Tests still get skipped due to pytestmark, so dummies never actually run
+    #
+    # 5. EXCEPTION CASES IN A2A FILES:
+    #    A few A2A files DID need dummies initially because they had:
+    #    - Type annotations: def create_helper(x: str) -> Message
+    #    - But we removed those type annotations to eliminate the need for dummies
+    #
+    # This file cannot avoid dummies because the parametrize decorator usage
+    # is fundamental to the test structure and cannot be easily refactored.
 
-  class DummyTypes:
+    class DummyTypes:
+        def __getattr__(self, name):
+            return DummyTypes()
 
-    def __getattr__(self, name):
-      return DummyTypes()
+        def __call__(self, *args, **kwargs):
+            return DummyTypes()
 
-    def __call__(self, *args, **kwargs):
-      return DummyTypes()
+    InvocationContext = DummyTypes()
+    LangGraphAgent = DummyTypes()
+    Event = DummyTypes()
+    PluginManager = DummyTypes()
+    types = DummyTypes()  # Must support chained calls like types.Content(), types.Part.from_text()
+    AIMessage = DummyTypes()
+    HumanMessage = DummyTypes()
+    SystemMessage = DummyTypes()
+    CompiledGraph = DummyTypes()
 
-  InvocationContext = DummyTypes()
-  LangGraphAgent = DummyTypes()
-  Event = DummyTypes()
-  PluginManager = DummyTypes()
-  types = (
-      DummyTypes()
-  )  # Must support chained calls like types.Content(), types.Part.from_text()
-  AIMessage = DummyTypes()
-  HumanMessage = DummyTypes()
-  SystemMessage = DummyTypes()
-  CompiledGraph = DummyTypes()
-
-pytestmark = pytest.mark.skipif(
-    not LANGGRAPH_AVAILABLE, reason="LangGraph dependencies not available"
-)
+pytestmark = pytest.mark.skipif(not LANGGRAPH_AVAILABLE, reason="LangGraph dependencies not available")
 
 
 @pytest.mark.parametrize(
@@ -135,9 +130,7 @@ pytestmark = pytest.mark.skipif(
                     author="root_agent",
                     content=types.Content(
                         role="model",
-                        parts=[
-                            types.Part.from_text(text="root agent response")
-                        ],
+                        parts=[types.Part.from_text(text="root agent response")],
                     ),
                 ),
                 Event(
@@ -145,9 +138,7 @@ pytestmark = pytest.mark.skipif(
                     author="weather_agent",
                     content=types.Content(
                         role="model",
-                        parts=[
-                            types.Part.from_text(text="weather agent response")
-                        ],
+                        parts=[types.Part.from_text(text="weather agent response")],
                     ),
                 ),
                 Event(
@@ -182,9 +173,7 @@ pytestmark = pytest.mark.skipif(
                     author="root_agent",
                     content=types.Content(
                         role="model",
-                        parts=[
-                            types.Part.from_text(text="root agent response")
-                        ],
+                        parts=[types.Part.from_text(text="root agent response")],
                     ),
                 ),
                 Event(
@@ -192,9 +181,7 @@ pytestmark = pytest.mark.skipif(
                     author="weather_agent",
                     content=types.Content(
                         role="model",
-                        parts=[
-                            types.Part.from_text(text="weather agent response")
-                        ],
+                        parts=[types.Part.from_text(text="weather agent response")],
                     ),
                 ),
                 Event(
@@ -214,45 +201,41 @@ pytestmark = pytest.mark.skipif(
     ],
 )
 @pytest.mark.asyncio
-async def test_langgraph_agent(
-    checkpointer_value, events_list, expected_messages
-):
-  mock_graph = MagicMock(spec=CompiledGraph)
-  mock_graph_state = MagicMock()
-  mock_graph_state.values = {}
-  mock_graph.get_state.return_value = mock_graph_state
+async def test_langgraph_agent(checkpointer_value, events_list, expected_messages):
+    mock_graph = MagicMock(spec=CompiledGraph)
+    mock_graph_state = MagicMock()
+    mock_graph_state.values = {}
+    mock_graph.get_state.return_value = mock_graph_state
 
-  mock_graph.checkpointer = checkpointer_value
-  mock_graph.invoke.return_value = {
-      "messages": [AIMessage(content="test response")]
-  }
+    mock_graph.checkpointer = checkpointer_value
+    mock_graph.invoke.return_value = {"messages": [AIMessage(content="test response")]}
 
-  mock_parent_context = MagicMock(spec=InvocationContext)
-  mock_session = MagicMock()
-  mock_parent_context.session = mock_session
-  mock_parent_context.branch = "parent_agent"
-  mock_parent_context.end_invocation = False
-  mock_session.events = events_list
-  mock_parent_context.invocation_id = "test_invocation_id"
-  mock_parent_context.model_copy.return_value = mock_parent_context
-  mock_parent_context.plugin_manager = PluginManager(plugins=[])
+    mock_parent_context = MagicMock(spec=InvocationContext)
+    mock_session = MagicMock()
+    mock_parent_context.session = mock_session
+    mock_parent_context.branch = "parent_agent"
+    mock_parent_context.end_invocation = False
+    mock_session.events = events_list
+    mock_parent_context.invocation_id = "test_invocation_id"
+    mock_parent_context.model_copy.return_value = mock_parent_context
+    mock_parent_context.plugin_manager = PluginManager(plugins=[])
 
-  weather_agent = LangGraphAgent(
-      name="weather_agent",
-      description="A agent that answers weather questions",
-      instruction="test system prompt",
-      graph=mock_graph,
-  )
+    weather_agent = LangGraphAgent(
+        name="weather_agent",
+        description="A agent that answers weather questions",
+        instruction="test system prompt",
+        graph=mock_graph,
+    )
 
-  result_event = None
-  async for event in weather_agent.run_async(mock_parent_context):
-    result_event = event
+    result_event = None
+    async for event in weather_agent.run_async(mock_parent_context):
+        result_event = event
 
-  assert result_event.author == "weather_agent"
-  assert result_event.content.parts[0].text == "test response"
+    assert result_event.author == "weather_agent"
+    assert result_event.content.parts[0].text == "test response"
 
-  mock_graph.invoke.assert_called_once()
-  mock_graph.invoke.assert_called_with(
-      {"messages": expected_messages},
-      {"configurable": {"thread_id": mock_session.id}},
-  )
+    mock_graph.invoke.assert_called_once()
+    mock_graph.invoke.assert_called_with(
+        {"messages": expected_messages},
+        {"configurable": {"thread_id": mock_session.id}},
+    )

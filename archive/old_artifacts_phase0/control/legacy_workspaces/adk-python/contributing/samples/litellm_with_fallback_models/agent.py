@@ -21,50 +21,48 @@ from google.genai import types
 
 
 def roll_die(sides: int, tool_context: ToolContext) -> int:
-  """Roll a die and return the rolled result.
+    """Roll a die and return the rolled result.
 
-  Args:
-    sides: The integer number of sides the die has.
-    tool_context: The tool context to use for the die roll.
+    Args:
+      sides: The integer number of sides the die has.
+      tool_context: The tool context to use for the die roll.
 
-  Returns:
-    An integer of the result of rolling the die.
-    The result is also stored in the tool context for future use.
-  """
-  result = random.randint(1, sides)
-  if 'rolls' not in tool_context.state:
-    tool_context.state['rolls'] = []
+    Returns:
+      An integer of the result of rolling the die.
+      The result is also stored in the tool context for future use.
+    """
+    result = random.randint(1, sides)
+    if "rolls" not in tool_context.state:
+        tool_context.state["rolls"] = []
 
-  tool_context.state['rolls'] = tool_context.state['rolls'] + [result]
-  return result
+    tool_context.state["rolls"] = tool_context.state["rolls"] + [result]
+    return result
 
 
 async def before_model_callback(callback_context, llm_request):
-  print('@before_model_callback')
-  print(f'Beginning model choice: {llm_request.model}')
-  callback_context.state['beginning_model_choice'] = llm_request.model
-  return None
+    print("@before_model_callback")
+    print(f"Beginning model choice: {llm_request.model}")
+    callback_context.state["beginning_model_choice"] = llm_request.model
+    return None
 
 
 async def after_model_callback(callback_context, llm_response):
-  print('@after_model_callback')
-  print(f'Final model choice: {llm_response.model_version}')
-  callback_context.state['final_model_choice'] = llm_response.model_version
-  return None
+    print("@after_model_callback")
+    print(f"Final model choice: {llm_response.model_version}")
+    callback_context.state["final_model_choice"] = llm_response.model_version
+    return None
 
 
 root_agent = Agent(
     model=LiteLlm(
-        model='gemini/gemini-2.5-pro',
+        model="gemini/gemini-2.5-pro",
         fallbacks=[
-            'anthropic/claude-sonnet-4-5-20250929',
-            'openai/gpt-4o',
+            "anthropic/claude-sonnet-4-5-20250929",
+            "openai/gpt-4o",
         ],
     ),
-    name='resilient_agent',
-    description=(
-        'hello world agent that can roll a dice of given number of sides.'
-    ),
+    name="resilient_agent",
+    description=("hello world agent that can roll a dice of given number of sides."),
     instruction="""
       You roll dice and answer questions about the outcome of the dice rolls.
       You can roll dice of different sizes.

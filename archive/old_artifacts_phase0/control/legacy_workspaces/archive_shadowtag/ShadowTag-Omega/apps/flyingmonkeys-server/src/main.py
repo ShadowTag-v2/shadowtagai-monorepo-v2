@@ -17,6 +17,7 @@ app.include_router(manager_router, prefix="/manager")
 app.include_router(router_dispatcher, prefix="/api")
 app.include_router(ui_router, prefix="/ui")
 
+
 @app.get("/health")
 def health_check():
     return {"status": "active", "server": "n-autoresearch/Kosmos/BioAgentss"}

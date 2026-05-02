@@ -23,13 +23,13 @@ from .google_api_toolset import GoogleApiToolset
 from .google_api_toolsets import BigQueryToolset, CalendarToolset, DocsToolset, GmailToolset, SheetsToolset, SlidesToolset, YoutubeToolset
 
 __all__ = [
-    'BigQueryToolset',
-    'CalendarToolset',
-    'GmailToolset',
-    'YoutubeToolset',
-    'SlidesToolset',
-    'SheetsToolset',
-    'DocsToolset',
-    'GoogleApiToolset',
-    'GoogleApiTool',
+    "BigQueryToolset",
+    "CalendarToolset",
+    "GmailToolset",
+    "YoutubeToolset",
+    "SlidesToolset",
+    "SheetsToolset",
+    "DocsToolset",
+    "GoogleApiToolset",
+    "GoogleApiTool",
 ]

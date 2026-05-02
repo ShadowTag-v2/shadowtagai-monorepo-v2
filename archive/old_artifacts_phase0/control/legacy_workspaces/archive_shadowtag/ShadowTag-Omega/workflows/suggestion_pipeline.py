@@ -25,10 +25,10 @@ def run_suggestion_loop(user_prompt: str, project_id: str):
     suggestion_text = ""
     if isinstance(suggestion_data, dict):
         if suggestion_data.get("action_type") == "mock_error":
-             print(f"\n⚠️  {suggestion_data['explanation']}")
-             suggestion_text = suggestion_data['code']
+            print(f"\n⚠️  {suggestion_data['explanation']}")
+            suggestion_text = suggestion_data["code"]
         else:
-             suggestion_text = str(suggestion_data)
+            suggestion_text = str(suggestion_data)
     else:
         suggestion_text = str(suggestion_data)
 
@@ -53,6 +53,7 @@ def run_suggestion_loop(user_prompt: str, project_id: str):
     else:
         print("\n🚫 VERDICT: REJECTED")
         print("Reason: " + reason)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Antigravity Suggestion Loop")

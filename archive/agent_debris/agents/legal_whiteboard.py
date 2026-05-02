@@ -25,17 +25,11 @@ class LegalWhiteboard:
             self.state = {"evolution_level": 0, "learnings": []}
 
     def record_learning(self, agent_id: str, insight: str, context: dict):
-        entry = {
-            "timestamp": datetime.utcnow().isoformat(),
-            "agent": agent_id,
-            "insight": insight,
-            "context": context,
-            "hash": abs(hash(insight))
-        }
+        entry = {"timestamp": datetime.utcnow().isoformat(), "agent": agent_id, "insight": insight, "context": context, "hash": abs(hash(insight))}
         self.state["learnings"].append(entry)
         self._commit(f"Learned: {insight[:30]}...")
 
     def _commit(self, message: str):
-        with open(self.ledger_file, 'w') as f:
+        with open(self.ledger_file, "w") as f:
             json.dump(self.state, f, indent=2)
         print(f"///▞ WHITEBOARD :: LATCHED :: {message}")

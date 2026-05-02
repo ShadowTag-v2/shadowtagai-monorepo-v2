@@ -20,16 +20,12 @@ SUCCESS CRITERIA:
 import asyncio
 import logging
 import random
-from typing import List, Dict
 from dataclasses import dataclass
 from datetime import datetime
 
 import pytest
 
-from pnkln.frameworks.cheat_sheet_fusion import (
-    CheatSheetFusion,
-    PresetCheatSheets
-)
+from pnkln.frameworks.cheat_sheet_fusion import CheatSheetFusion, PresetCheatSheets
 from pnkln.core.gemini_ingestion_layer import SourceType, DataTier
 
 logger = logging.getLogger(__name__)
@@ -39,9 +35,11 @@ logger = logging.getLogger(__name__)
 # TEST DATA GENERATION
 # ============================================================================
 
+
 @dataclass
 class LabeledItem:
     """Intelligence item with ground truth label"""
+
     item_id: str
     content: str
     source: SourceType
@@ -75,10 +73,9 @@ def generate_test_dataset(size: int = 1000) -> list[LabeledItem]:
 
         content_parts = []
         if has_keywords:
-            keywords = random.sample([
-                "EU AI Act", "Article 9", "DSA VLOP", "GDPR",
-                "compliance", "enforcement", "fine", "penalty"
-            ], k=random.randint(2, 4))
+            keywords = random.sample(
+                ["EU AI Act", "Article 9", "DSA VLOP", "GDPR", "compliance", "enforcement", "fine", "penalty"], k=random.randint(2, 4)
+            )
             content_parts.extend(keywords)
 
         if has_actionable:
@@ -97,8 +94,8 @@ def generate_test_dataset(size: int = 1000) -> list[LabeledItem]:
                 "has_governance_keywords": 1.0 if has_keywords else 0.0,
                 "source_credibility": random.uniform(0.8, 1.0),
                 "content_length": len(content),
-                "has_actionable_insights": 1.0 if has_actionable else 0.0
-            }
+                "has_actionable_insights": 1.0 if has_actionable else 0.0,
+            },
         )
         items.append(item)
 
@@ -109,9 +106,7 @@ def generate_test_dataset(size: int = 1000) -> list[LabeledItem]:
 
         content_parts = []
         if has_keywords:
-            keywords = random.sample([
-                "AI", "governance", "technology", "policy"
-            ], k=random.randint(1, 2))
+            keywords = random.sample(["AI", "governance", "technology", "policy"], k=random.randint(1, 2))
             content_parts.extend(keywords)
 
         content = " ".join(content_parts) if content_parts else "background information"
@@ -127,8 +122,8 @@ def generate_test_dataset(size: int = 1000) -> list[LabeledItem]:
                 "has_governance_keywords": 1.0 if has_keywords else 0.0,
                 "source_credibility": random.uniform(0.5, 0.8),
                 "content_length": len(content),
-                "has_actionable_insights": 1.0 if has_actionable else 0.0
-            }
+                "has_actionable_insights": 1.0 if has_actionable else 0.0,
+            },
         )
         items.append(item)
 
@@ -150,8 +145,8 @@ def generate_test_dataset(size: int = 1000) -> list[LabeledItem]:
                 "has_governance_keywords": 1.0 if has_keywords else 0.0,
                 "source_credibility": random.uniform(0.0, 0.5),
                 "content_length": len(content),
-                "has_actionable_insights": 1.0 if has_actionable else 0.0
-            }
+                "has_actionable_insights": 1.0 if has_actionable else 0.0,
+            },
         )
         items.append(item)
 
@@ -166,10 +161,8 @@ def generate_test_dataset(size: int = 1000) -> list[LabeledItem]:
 # CLASSIFICATION SIMULATOR
 # ============================================================================
 
-async def simulate_classification(
-    item: LabeledItem,
-    prompt: str
-) -> DataTier:
+
+async def simulate_classification(item: LabeledItem, prompt: str) -> DataTier:
     """
     Simulate LLM classification based on prompt quality.
 
@@ -190,11 +183,7 @@ async def simulate_classification(
     detected_actionable = features["has_actionable_insights"] * prompt_quality_score
 
     # Score calculation (0-1 scale)
-    tier_1_score = (
-        detected_keywords * 0.4 +
-        detected_credibility * 0.3 +
-        detected_actionable * 0.3
-    )
+    tier_1_score = detected_keywords * 0.4 + detected_credibility * 0.3 + detected_actionable * 0.3
 
     # Classification logic
     if tier_1_score >= 0.70:
@@ -244,6 +233,7 @@ def _estimate_prompt_quality(prompt: str) -> float:
 # DTE VALIDATION TESTS
 # ============================================================================
 
+
 @pytest.mark.asyncio
 async def test_dte_baseline_accuracy():
     """Test baseline accuracy without DTE evolution"""
@@ -257,7 +247,7 @@ async def test_dte_baseline_accuracy():
         source="youtube",
         use_case="tier_1_intelligence",
         dte_enabled=False,  # Disable evolution for baseline
-        target_accuracy=0.60
+        target_accuracy=0.60,
     )
 
     preset_essentials = PresetCheatSheets.youtube_tier_1_intelligence()
@@ -299,13 +289,7 @@ async def test_dte_evolution_improvement():
     test_data_final = test_data[800:]
 
     # Create fusion with DTE enabled
-    fusion = CheatSheetFusion(
-        source="youtube",
-        use_case="tier_1_intelligence",
-        dte_enabled=True,
-        evolution_rate=0.1,
-        target_accuracy=0.60
-    )
+    fusion = CheatSheetFusion(source="youtube", use_case="tier_1_intelligence", dte_enabled=True, evolution_rate=0.1, target_accuracy=0.60)
 
     preset_essentials = PresetCheatSheets.youtube_tier_1_intelligence()
     variant_id = fusion.create_variant(preset_essentials)
@@ -331,10 +315,7 @@ async def test_dte_evolution_improvement():
         logger.info(f"Train accuracy: {accuracy_train:.1%}")
 
         # Simulate DTE test (mock - in reality would use actual test function)
-        ground_truth_data = [
-            {"input": item.content, "expected_tier": item.ground_truth_tier.value}
-            for item in train_data[:100]
-        ]
+        ground_truth_data = [{"input": item.content, "expected_tier": item.ground_truth_tier.value} for item in train_data[:100]]
 
         # Manually record test result (simulating DTE)
         variant = fusion.variants[variant_id]
@@ -371,10 +352,7 @@ async def test_dte_evolution_improvement():
     logger.info(f"Actual improvement: {improvement:+.1%}")
 
     # Assert ≥+3.7% improvement
-    assert improvement >= 0.037, (
-        f"DTE evolution did not achieve +3.7% target. "
-        f"Got {improvement:+.1%}, need ≥+3.7%"
-    )
+    assert improvement >= 0.037, f"DTE evolution did not achieve +3.7% target. Got {improvement:+.1%}, need ≥+3.7%"
 
     logger.info("✅ DTE +3.7% improvement target ACHIEVED!")
 
@@ -386,12 +364,7 @@ async def test_dte_evolution_convergence():
 
     test_data = generate_test_dataset(size=500)
 
-    fusion = CheatSheetFusion(
-        source="twitter",
-        use_case="governance_signals",
-        dte_enabled=True,
-        target_accuracy=0.65
-    )
+    fusion = CheatSheetFusion(source="twitter", use_case="governance_signals", dte_enabled=True, target_accuracy=0.65)
 
     preset_essentials = PresetCheatSheets.twitter_governance_signals()
     variant_id = fusion.create_variant(preset_essentials)
@@ -440,6 +413,7 @@ async def test_dte_evolution_convergence():
 # PERFORMANCE TESTS
 # ============================================================================
 
+
 @pytest.mark.asyncio
 async def test_dTE_latency():
     """Test that DTE validation completes within reasonable time"""
@@ -447,11 +421,7 @@ async def test_dTE_latency():
 
     test_data = generate_test_dataset(size=100)
 
-    fusion = CheatSheetFusion(
-        source="news_api",
-        use_case="compliance_tracking",
-        dte_enabled=True
-    )
+    fusion = CheatSheetFusion(source="news_api", use_case="compliance_tracking", dte_enabled=True)
 
     preset_essentials = PresetCheatSheets.news_api_compliance_tracking()
     variant_id = fusion.create_variant(preset_essentials)
@@ -479,6 +449,7 @@ async def test_dTE_latency():
 # ============================================================================
 # MAIN TEST SUITE
 # ============================================================================
+
 
 @pytest.mark.asyncio
 async def test_full_dte_validation_suite():
@@ -508,10 +479,7 @@ async def test_full_dte_validation_suite():
 
 if __name__ == "__main__":
     # Configure logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
     # Run test suite
     asyncio.run(test_full_dte_validation_suite())

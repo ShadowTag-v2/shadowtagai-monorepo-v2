@@ -86,10 +86,7 @@ def test_get_modified_pipfile_entries_new_package(pipenv_instance_pypi):
         # Add new package to Pipfile
         pipfile = p.pipfile_path
         content = pipfile.read_text()
-        content = content.replace(
-            '[packages]',
-            '[packages]\nurllib3 = "==2.0.0"'
-        )
+        content = content.replace("[packages]", '[packages]\nurllib3 = "==2.0.0"')
         pipfile.write_text(content)
         project = Project()
         modified = get_modified_pipfile_entries(project, ["packages"])
@@ -104,10 +101,7 @@ def test_get_modified_pipfile_entries_changed_version(pipenv_instance_pypi):
         # Update version in Pipfile
         pipfile = p.pipfile_path
         content = pipfile.read_text()
-        content = content.replace(
-            'requests = "==2.31.0"',
-            'requests = "==2.32.0"'
-        )
+        content = content.replace('requests = "==2.31.0"', 'requests = "==2.32.0"')
         pipfile.write_text(content)
         project = Project()
         modified = get_modified_pipfile_entries(project, ["packages"])
@@ -122,10 +116,7 @@ def test_get_modified_pipfile_entries_vcs_changes(pipenv_instance_pypi):
         # Change ref
         pipfile = p.pipfile_path
         content = pipfile.read_text()
-        content = content.replace(
-            'ref = "main"',
-            'ref = "master"'
-        )
+        content = content.replace('ref = "main"', 'ref = "master"')
         pipfile.write_text(content)
         project = Project()
         modified = get_modified_pipfile_entries(project, ["packages"])
@@ -146,42 +137,30 @@ def test_update_without_lockfile(pipenv_instance_pypi):
     "initial_content,modified_content,expected_updates",
     [
         # Test no changes case
-        (
-            '[packages]\nrequests = "==2.31.0"',
-            '[packages]\nrequests = "==2.31.0"',
-            set()
-        ),
+        ('[packages]\nrequests = "==2.31.0"', '[packages]\nrequests = "==2.31.0"', set()),
         # Test version change
-        (
-            '[packages]\nrequests = "==2.31.0"',
-            '[packages]\nrequests = "==2.32.0"',
-            {"requests"}
-        ),
+        ('[packages]\nrequests = "==2.31.0"', '[packages]\nrequests = "==2.32.0"', {"requests"}),
         # Test multiple package changes
-        (
-            '[packages]\nrequests = "==2.31.0"',
-            '[packages]\nrequests = "==2.32.0"\nurllib3 = "==2.0.0"',
-            {"requests", "urllib3"}
-        ),
+        ('[packages]\nrequests = "==2.31.0"', '[packages]\nrequests = "==2.32.0"\nurllib3 = "==2.0.0"', {"requests", "urllib3"}),
         # Test dev packages
         (
             '[packages]\nrequests = "==2.31.0"\n[dev-packages]',
             '[packages]\nrequests = "==2.31.0"\n[dev-packages]\npytest = "==7.4.0"',
-            {"pytest"}
+            {"pytest"},
         ),
         # Test VCS package
         (
             '[packages]\nrequests = {git = "https://github.com/requests/requests.git", ref = "main"}',
             '[packages]\nrequests = {git = "https://github.com/requests/requests.git", ref = "v2.31.0"}',
-            {"requests"}
+            {"requests"},
         ),
         # Test extras change
         (
             '[packages]\nrequests = {version = "==2.31.0", extras = ["security"]}',
             '[packages]\nrequests = {version = "==2.31.0", extras = ["security", "socks"]}',
-            {"requests"}
-        )
-    ]
+            {"requests"},
+        ),
+    ],
 )
 def test_update_modified_packages(pipenv_instance_pypi, initial_content, modified_content, expected_updates):
     with pipenv_instance_pypi() as p:

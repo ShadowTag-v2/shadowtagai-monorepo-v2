@@ -4,7 +4,7 @@ Supports: R-T-F, T-A-G, B-A-B, C-A-R-E, R-I-S-E frameworks
 
 from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class TemplateType(StrEnum):
@@ -24,14 +24,15 @@ class RTFTemplate(BaseModel):
     task: str = Field(..., description="The specific task to complete")
     format: str = Field(..., description="The desired output format")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "role": "Facebook Ad Marketer",
                 "task": "Design a compelling Facebook ad campaign to promote a new line of fitness apparel for a sports brand",
                 "format": "Create a storyboard outlining the sequence of ad creatives, including ad copy, visuals, and targeting strategy",
             },
-        }
+        },
+    )
 
 
 class TAGTemplate(BaseModel):
@@ -43,14 +44,15 @@ class TAGTemplate(BaseModel):
     action: str = Field(..., description="State the specific action to take")
     goal: str = Field(..., description="Clarify the desired goal or outcome")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "task": "Evaluate the performance of team members",
                 "action": "Act as a Direct manager and assess the strengths and weaknesses of team members",
                 "goal": "Improve team performance so that the average user satisfaction score moves from 6 to 7.5 in the next quarter",
             },
-        }
+        },
+    )
 
 
 class BABTemplate(BaseModel):
@@ -62,14 +64,15 @@ class BABTemplate(BaseModel):
     after: str = Field(..., description="State the desired outcome")
     bridge: str = Field(..., description="Ask for the solution/plan to bridge the gap")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "before": "We're nowhere to be seen on SEO rankings",
                 "after": "We want to be in top 10 SEO ranking in our niche in 90 days",
                 "bridge": "Develop a detailed plan mentioning all the measures we should take also include list of top 20 keywords",
             },
-        }
+        },
+    )
 
 
 class CARETemplate(BaseModel):
@@ -82,15 +85,16 @@ class CARETemplate(BaseModel):
     result: str = Field(..., description="Clarify the expected result")
     example: str = Field(..., description="Give an example of similar success")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "context": "We are launching a new line of sustainable clothing",
                 "action": "Can you assist us in creating a targeted advertising campaign that emphasizes our environmental commitment?",
                 "result": "Our desired outcome is to drive product awareness and sales",
                 "example": "A good example of a similar successful initiative is Patagonia's 'Don't Buy This Jacket' campaign, which highlighted their commitment to sustainability while enhancing their brand image",
             },
-        }
+        },
+    )
 
 
 class RISETemplate(BaseModel):
@@ -103,15 +107,16 @@ class RISETemplate(BaseModel):
     steps: str = Field(..., description="Ask for step-by-step process")
     expectation: str = Field(..., description="Describe the expected outcome")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "role": "Imagine you are a content strategist",
                 "input_data": "I've gathered detailed information about our target audience, including their interests & common questions related to our industry",
                 "steps": "Provide a Step by Step content strategy plan identifying key topics based on our audience insights, creating an editorial calendar, and drafting engaging content that aligns with our brand message",
                 "expectation": "Aim is to increase our blog's monthly visitors by 40% and enhance our brand's position as a thought leader in our industry",
             },
-        }
+        },
+    )
 
 
 class PromptTemplateResponse(BaseModel):

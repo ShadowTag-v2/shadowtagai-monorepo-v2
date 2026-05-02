@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 
 class AgentStatus(StrEnum):
     """Agent lifecycle status."""
+
     CREATED = "created"
     STARTING = "starting"
     RUNNING = "running"
@@ -37,6 +38,7 @@ class AgentStatus(StrEnum):
 
 class MessageType(StrEnum):
     """Types of inter-agent messages."""
+
     REQUEST = "request"
     RESPONSE = "response"
     NOTIFICATION = "notification"
@@ -58,6 +60,7 @@ class AgentMessage(BaseModel):
         )
         ```
     """
+
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     type: MessageType
     from_agent: str
@@ -77,7 +80,7 @@ class AgentMessage(BaseModel):
             "content": self.content,
             "correlation_id": self.correlation_id,
             "timestamp": self.timestamp.isoformat(),
-            "metadata": self.metadata
+            "metadata": self.metadata,
         }
 
     def to_json(self) -> str:
@@ -87,6 +90,7 @@ class AgentMessage(BaseModel):
 
 class AgentState(BaseModel):
     """Agent state for persistence."""
+
     agent_id: str
     agent_type: str
     status: AgentStatus
@@ -111,12 +115,7 @@ class BaseAgent:
     - execute(): Main agent logic
     """
 
-    def __init__(
-        self,
-        agent_id: str | None = None,
-        agent_type: str | None = None,
-        config: dict[str, Any] | None = None
-    ):
+    def __init__(self, agent_id: str | None = None, agent_type: str | None = None, config: dict[str, Any] | None = None):
         """
         Initialize agent.
 
@@ -243,11 +242,7 @@ class BaseAgent:
     # ========================================================================
 
     async def send_message(
-        self,
-        to_agent: str,
-        content: dict[str, Any],
-        message_type: MessageType = MessageType.REQUEST,
-        correlation_id: str | None = None
+        self, to_agent: str, content: dict[str, Any], message_type: MessageType = MessageType.REQUEST, correlation_id: str | None = None
     ) -> AgentMessage:
         """
         Send message to another agent asynchronously.
@@ -261,18 +256,13 @@ class BaseAgent:
         Returns:
             AgentMessage: The sent message
         """
-        message = AgentMessage(
-            type=message_type,
-            from_agent=self.agent_id,
-            to_agent=to_agent,
-            content=content,
-            correlation_id=correlation_id
-        )
+        message = AgentMessage(type=message_type, from_agent=self.agent_id, to_agent=to_agent, content=content, correlation_id=correlation_id)
 
         self.messages_sent += 1
         # Log agent message if enabled
         try:
             from kosmos.config import get_config
+
             if get_config().logging.log_agent_messages:
                 logger.debug(
                     "[MSG] %s -> %s: type=%s, correlation_id=%s, content_preview=%.100s",
@@ -280,7 +270,7 @@ class BaseAgent:
                     to_agent,
                     message_type.value,
                     correlation_id or message.id,
-                    str(content)[:100]
+                    str(content)[:100],
                 )
         except Exception:
             pass  # Config not available
@@ -299,11 +289,7 @@ class BaseAgent:
         return message
 
     def send_message_sync(
-        self,
-        to_agent: str,
-        content: dict[str, Any],
-        message_type: MessageType = MessageType.REQUEST,
-        correlation_id: str | None = None
+        self, to_agent: str, content: dict[str, Any], message_type: MessageType = MessageType.REQUEST, correlation_id: str | None = None
     ) -> AgentMessage:
         """
         Synchronous wrapper for send_message (backwards compatibility).
@@ -313,16 +299,11 @@ class BaseAgent:
         try:
             loop = asyncio.get_running_loop()
             # We're in an async context, use run_coroutine_threadsafe
-            future = asyncio.run_coroutine_threadsafe(
-                self.send_message(to_agent, content, message_type, correlation_id),
-                loop
-            )
+            future = asyncio.run_coroutine_threadsafe(self.send_message(to_agent, content, message_type, correlation_id), loop)
             return future.result(timeout=30)
         except RuntimeError:
             # No running loop, create one
-            return asyncio.run(
-                self.send_message(to_agent, content, message_type, correlation_id)
-            )
+            return asyncio.run(self.send_message(to_agent, content, message_type, correlation_id))
 
     async def receive_message(self, message: AgentMessage):
         """
@@ -338,14 +319,9 @@ class BaseAgent:
         # Log received message if enabled
         try:
             from kosmos.config import get_config
+
             if get_config().logging.log_agent_messages:
-                logger.debug(
-                    "[MSG] %s <- %s: type=%s, msg_id=%s",
-                    self.agent_id,
-                    message.from_agent,
-                    message.type.value,
-                    message.id
-                )
+                logger.debug("[MSG] %s <- %s: type=%s, msg_id=%s", self.agent_id, message.from_agent, message.type.value, message.id)
         except Exception:
             pass  # Config not available
 
@@ -358,10 +334,7 @@ class BaseAgent:
             # Send error response
             if message.type == MessageType.REQUEST:
                 await self.send_message(
-                    to_agent=message.from_agent,
-                    content={"error": str(e)},
-                    message_type=MessageType.ERROR,
-                    correlation_id=message.id
+                    to_agent=message.from_agent, content={"error": str(e)}, message_type=MessageType.ERROR, correlation_id=message.id
                 )
 
     def receive_message_sync(self, message: AgentMessage):
@@ -370,9 +343,7 @@ class BaseAgent:
         """
         try:
             loop = asyncio.get_running_loop()
-            future = asyncio.run_coroutine_threadsafe(
-                self.receive_message(message), loop
-            )
+            future = asyncio.run_coroutine_threadsafe(self.receive_message(message), loop)
             return future.result(timeout=30)
         except RuntimeError:
             return asyncio.run(self.receive_message(message))
@@ -394,9 +365,7 @@ class BaseAgent:
         """
         try:
             loop = asyncio.get_running_loop()
-            future = asyncio.run_coroutine_threadsafe(
-                self.process_message(message), loop
-            )
+            future = asyncio.run_coroutine_threadsafe(self.process_message(message), loop)
             return future.result(timeout=30)
         except RuntimeError:
             return asyncio.run(self.process_message(message))
@@ -412,10 +381,7 @@ class BaseAgent:
         self.message_handlers[message_type] = handler
         logger.debug(f"Registered handler for {message_type} in agent {self.agent_id}")
 
-    def set_message_router(
-        self,
-        router: Callable[[AgentMessage], None] | Callable[[AgentMessage], Awaitable[None]]
-    ):
+    def set_message_router(self, router: Callable[[AgentMessage], None] | Callable[[AgentMessage], Awaitable[None]]):
         """
         Set the message router callback for delivering messages.
 
@@ -448,7 +414,7 @@ class BaseAgent:
             status=self.status,
             data=self.state_data,
             created_at=self.created_at,
-            updated_at=self.updated_at
+            updated_at=self.updated_at,
         )
 
     def restore_state(self, state: AgentState):

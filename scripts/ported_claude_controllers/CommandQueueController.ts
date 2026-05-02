@@ -1,8 +1,8 @@
+import type { QueuedCommand } from '../../types/textInputTypes.js';
 import {
   getCommandQueueSnapshot,
   subscribeToCommandQueue,
 } from '../../utils/messageQueueManager.js';
-import type { QueuedCommand } from '../../types/textInputTypes.js';
 
 /**
  * Headless controller to subscribe to the unified command queue.

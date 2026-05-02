@@ -28,12 +28,8 @@ def test_frontend_cold_start_under_cursor_timeout():
     print(f"Margin: {60 - elapsed:.2f}s")
 
     assert result.returncode == 0, f"Frontend failed: {result.stderr}"
-    assert elapsed < 60, (
-        f"Frontend startup ({elapsed:.2f}s) exceeds Cursor timeout (60s)"
-    )
-    assert elapsed < 10, (
-        f"Frontend startup ({elapsed:.2f}s) should be < 10s for good UX"
-    )
+    assert elapsed < 60, f"Frontend startup ({elapsed:.2f}s) exceeds Cursor timeout (60s)"
+    assert elapsed < 10, f"Frontend startup ({elapsed:.2f}s) should be < 10s for good UX"
 
     print(f"✅ PASS: Frontend starts in {elapsed:.2f}s (well under 60s limit)")
 
@@ -41,9 +37,7 @@ def test_frontend_cold_start_under_cursor_timeout():
 def test_frontend_warm_start_very_fast():
     """Frontend warm start should be very fast (<5s)."""
     # Run once to ensure cached
-    subprocess.run(
-        ["uvx", "claude-skills-mcp", "--help"], capture_output=True, timeout=30
-    )
+    subprocess.run(["uvx", "claude-skills-mcp", "--help"], capture_output=True, timeout=30)
 
     # Now test warm start
     print("\nTesting frontend warm start (cached)...")
@@ -69,9 +63,7 @@ def test_frontend_warm_start_very_fast():
 def test_backend_cold_start_time():
     """Measure backend download time (happens in background, doesn't block Cursor)."""
     # Clear backend cache
-    subprocess.run(
-        ["uv", "cache", "clean", "claude-skills-mcp-backend"], capture_output=True
-    )
+    subprocess.run(["uv", "cache", "clean", "claude-skills-mcp-backend"], capture_output=True)
 
     print("\nTesting backend cold start (cache cleared)...")
     print("Note: This happens in BACKGROUND, doesn't block Cursor startup")
@@ -92,17 +84,13 @@ def test_backend_cold_start_time():
     assert result.returncode == 0, f"Backend failed: {result.stderr}"
 
     # Backend can be slow - it downloads in background
-    print(
-        f"✅ Backend downloads in {elapsed:.2f}s (in background, doesn't affect Cursor)"
-    )
+    print(f"✅ Backend downloads in {elapsed:.2f}s (in background, doesn't affect Cursor)")
 
 
 def test_backend_warm_start():
     """Backend warm start should be faster."""
     # Ensure cached
-    subprocess.run(
-        ["uvx", "claude-skills-mcp-backend", "--help"], capture_output=True, timeout=60
-    )
+    subprocess.run(["uvx", "claude-skills-mcp-backend", "--help"], capture_output=True, timeout=60)
 
     print("\nTesting backend warm start (cached)...")
     start_time = time.time()
@@ -144,9 +132,7 @@ def test_package_sizes():
     backend_wheel = project_root / "packages/backend/dist/claude_skills_mcp_backend-1.0.6-py3-none-any.whl"
     if backend_wheel.exists():
         size_kb = backend_wheel.stat().st_size / 1024
-        print(
-            f"Backend wheel size: {size_kb:.1f} KB (source only, dependencies separate)"
-        )
+        print(f"Backend wheel size: {size_kb:.1f} KB (source only, dependencies separate)")
         assert size_kb < 100, f"Backend wheel ({size_kb:.1f} KB) should be < 100 KB"
         print(f"✅ Backend source is {size_kb:.1f} KB")
 

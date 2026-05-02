@@ -16,9 +16,10 @@ RE_USER_DEFINED_COMMAND = re.compile(r"^.{4}(\w+)")
 #    ^^^^^^
 RE_BUILT_IN_COMMAND = re.compile(r"^\|:([^|]+)\|")
 
-#*****************************************************
+
+# *****************************************************
 # CommandExplorer
-#*****************************************************
+# *****************************************************
 class CommandExplorer(Explorer):
     def __init__(self):
         self._content = []
@@ -42,7 +43,7 @@ class CommandExplorer(Explorer):
 
         # built-in Ex commands
         index_file = lfEval("expand('$VIMRUNTIME/doc/index.txt')")
-        with lfOpen(index_file, 'r', errors="ignore") as f:
+        with lfOpen(index_file, "r", errors="ignore") as f:
             for line in f:
                 match = RE_BUILT_IN_COMMAND.search(line)
                 if match:
@@ -105,7 +106,7 @@ class CommandExplManager(Manager):
         return help
 
     def _cmdExtension(self, cmd):
-        if equal(cmd, '<C-o>'):
+        if equal(cmd, "<C-o>"):
             self.editCommand()
         return True
 

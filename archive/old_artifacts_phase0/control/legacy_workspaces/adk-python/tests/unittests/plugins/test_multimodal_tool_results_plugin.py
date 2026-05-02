@@ -30,24 +30,20 @@ from .. import testing_utils
 
 @pytest.fixture
 def plugin() -> MultimodalToolResultsPlugin:
-  """Create a default plugin instance for testing."""
-  return MultimodalToolResultsPlugin()
+    """Create a default plugin instance for testing."""
+    return MultimodalToolResultsPlugin()
 
 
 @pytest.fixture
 def mock_tool() -> MockTool:
-  """Create a mock tool for testing."""
-  return Mock(spec=BaseTool)
+    """Create a mock tool for testing."""
+    return Mock(spec=BaseTool)
 
 
 @pytest.fixture
 async def tool_context() -> ToolContext:
-  """Create a mock tool context."""
-  return ToolContext(
-      invocation_context=await testing_utils.create_invocation_context(
-          agent=Mock(spec=BaseAgent)
-      )
-  )
+    """Create a mock tool context."""
+    return ToolContext(invocation_context=await testing_utils.create_invocation_context(agent=Mock(spec=BaseAgent)))
 
 
 @pytest.mark.asyncio
@@ -56,29 +52,27 @@ async def test_tool_returning_parts_are_added_to_llm_request(
     mock_tool: MockTool,
     tool_context: ToolContext,
 ):
-  """Test that parts returned by a tool are present in the llm_request later."""
-  parts = [types.Part(text="part1"), types.Part(text="part2")]
+    """Test that parts returned by a tool are present in the llm_request later."""
+    parts = [types.Part(text="part1"), types.Part(text="part2")]
 
-  result = await plugin.after_tool_callback(
-      tool=mock_tool,
-      tool_args={},
-      tool_context=tool_context,
-      result=parts,
-  )
+    result = await plugin.after_tool_callback(
+        tool=mock_tool,
+        tool_args={},
+        tool_context=tool_context,
+        result=parts,
+    )
 
-  assert result is None
-  assert PARTS_RETURNED_BY_TOOLS_ID in tool_context.state
-  assert tool_context.state[PARTS_RETURNED_BY_TOOLS_ID] == parts
+    assert result is None
+    assert PARTS_RETURNED_BY_TOOLS_ID in tool_context.state
+    assert tool_context.state[PARTS_RETURNED_BY_TOOLS_ID] == parts
 
-  callback_context = Mock(spec=CallbackContext)
-  callback_context.state = tool_context.state
-  llm_request = LlmRequest(contents=[types.Content(parts=[])])
+    callback_context = Mock(spec=CallbackContext)
+    callback_context.state = tool_context.state
+    llm_request = LlmRequest(contents=[types.Content(parts=[])])
 
-  await plugin.before_model_callback(
-      callback_context=callback_context, llm_request=llm_request
-  )
+    await plugin.before_model_callback(callback_context=callback_context, llm_request=llm_request)
 
-  assert llm_request.contents[-1].parts == parts
+    assert llm_request.contents[-1].parts == parts
 
 
 @pytest.mark.asyncio
@@ -87,31 +81,27 @@ async def test_tool_returning_non_list_of_parts_is_unchanged(
     mock_tool: MockTool,
     tool_context: ToolContext,
 ):
-  """Test where tool returning non list of parts, has this result unchanged."""
-  original_result = {"some": "data"}
+    """Test where tool returning non list of parts, has this result unchanged."""
+    original_result = {"some": "data"}
 
-  result = await plugin.after_tool_callback(
-      tool=mock_tool,
-      tool_args={},
-      tool_context=tool_context,
-      result=original_result,
-  )
+    result = await plugin.after_tool_callback(
+        tool=mock_tool,
+        tool_args={},
+        tool_context=tool_context,
+        result=original_result,
+    )
 
-  assert result == original_result
-  assert PARTS_RETURNED_BY_TOOLS_ID not in tool_context.state
+    assert result == original_result
+    assert PARTS_RETURNED_BY_TOOLS_ID not in tool_context.state
 
-  callback_context = Mock(spec=CallbackContext)
-  callback_context.state = tool_context.state
-  llm_request = LlmRequest(
-      contents=[types.Content(parts=[types.Part(text="original")])]
-  )
-  original_parts = list(llm_request.contents[-1].parts)
+    callback_context = Mock(spec=CallbackContext)
+    callback_context.state = tool_context.state
+    llm_request = LlmRequest(contents=[types.Content(parts=[types.Part(text="original")])])
+    original_parts = list(llm_request.contents[-1].parts)
 
-  await plugin.before_model_callback(
-      callback_context=callback_context, llm_request=llm_request
-  )
+    await plugin.before_model_callback(callback_context=callback_context, llm_request=llm_request)
 
-  assert llm_request.contents[-1].parts == original_parts
+    assert llm_request.contents[-1].parts == original_parts
 
 
 @pytest.mark.asyncio
@@ -120,33 +110,31 @@ async def test_multiple_tools_returning_parts_are_accumulated(
     mock_tool: MockTool,
     tool_context: ToolContext,
 ):
-  """Test that parts from multiple tool calls are accumulated."""
-  parts1 = [types.Part(text="part1")]
-  parts2 = [types.Part(text="part2")]
+    """Test that parts from multiple tool calls are accumulated."""
+    parts1 = [types.Part(text="part1")]
+    parts2 = [types.Part(text="part2")]
 
-  await plugin.after_tool_callback(
-      tool=mock_tool,
-      tool_args={},
-      tool_context=tool_context,
-      result=parts1,
-  )
+    await plugin.after_tool_callback(
+        tool=mock_tool,
+        tool_args={},
+        tool_context=tool_context,
+        result=parts1,
+    )
 
-  await plugin.after_tool_callback(
-      tool=mock_tool,
-      tool_args={},
-      tool_context=tool_context,
-      result=parts2,
-  )
+    await plugin.after_tool_callback(
+        tool=mock_tool,
+        tool_args={},
+        tool_context=tool_context,
+        result=parts2,
+    )
 
-  assert PARTS_RETURNED_BY_TOOLS_ID in tool_context.state
-  assert tool_context.state[PARTS_RETURNED_BY_TOOLS_ID] == parts1 + parts2
+    assert PARTS_RETURNED_BY_TOOLS_ID in tool_context.state
+    assert tool_context.state[PARTS_RETURNED_BY_TOOLS_ID] == parts1 + parts2
 
-  callback_context = Mock(spec=CallbackContext)
-  callback_context.state = tool_context.state
-  llm_request = LlmRequest(contents=[types.Content(parts=[])])
+    callback_context = Mock(spec=CallbackContext)
+    callback_context.state = tool_context.state
+    llm_request = LlmRequest(contents=[types.Content(parts=[])])
 
-  await plugin.before_model_callback(
-      callback_context=callback_context, llm_request=llm_request
-  )
+    await plugin.before_model_callback(callback_context=callback_context, llm_request=llm_request)
 
-  assert llm_request.contents[-1].parts == parts1 + parts2
+    assert llm_request.contents[-1].parts == parts1 + parts2

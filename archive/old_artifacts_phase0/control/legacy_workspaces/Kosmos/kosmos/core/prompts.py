@@ -91,10 +91,7 @@ class PromptTemplate:
         Returns:
             dict: {"system": str, "prompt": str}
         """
-        return {
-            "system": self.system_prompt or "",
-            "prompt": self.render(**kwargs)
-        }
+        return {"system": self.system_prompt or "", "prompt": self.render(**kwargs)}
 
 
 # ============================================================================
@@ -191,7 +188,7 @@ Ensure hypotheses explore different aspects or mechanisms related to the researc
 
 Output the hypotheses as a JSON object with the exact structure specified in the system prompt.""",
     variables=["research_question", "domain", "num_hypotheses", "literature_context"],
-    description="Generate scientific hypotheses from research questions with structured output"
+    description="Generate scientific hypotheses from research questions with structured output",
 )
 
 # ============================================================================
@@ -491,7 +488,7 @@ Constraints:
 
 Output the experiment protocol as a JSON object with the exact structure specified in the system prompt.""",
     variables=["hypothesis_statement", "hypothesis_rationale", "domain", "experiment_type", "research_question", "max_cost_usd", "max_duration_days"],
-    description="Design detailed experimental protocols from hypotheses with full specifications"
+    description="Design detailed experimental protocols from hypotheses with full specifications",
 )
 
 # ============================================================================
@@ -527,7 +524,7 @@ Please analyze these results:
 
 ${analysis_constraints}""",
     variables=["hypothesis", "experiment_description", "results_data", "statistical_tests", "analysis_constraints"],
-    description="Analyze and interpret experimental results"
+    description="Analyze and interpret experimental results",
 )
 
 # ============================================================================
@@ -559,7 +556,7 @@ Please analyze this literature:
 
 ${specific_questions}""",
     variables=["research_question", "papers_list", "specific_questions"],
-    description="Analyze scientific literature"
+    description="Analyze scientific literature",
 )
 
 PAPER_SUMMARIZER = PromptTemplate(
@@ -587,7 +584,7 @@ Provide a structured summary:
 4. Limitations: What are the acknowledged limitations?
 5. Relevance: How relevant is this to ${domain} research (0-1 score)?""",
     variables=["title", "abstract", "domain", "full_text"],
-    description="Summarize scientific papers"
+    description="Summarize scientific papers",
 )
 
 # ============================================================================
@@ -631,7 +628,7 @@ Output Format (JSON):
   "should_continue": true/false
 }""",
     variables=["research_question", "progress_summary", "recent_results", "available_actions"],
-    description="Orchestrate research workflow and decide next steps"
+    description="Orchestrate research workflow and decide next steps",
 )
 
 # ============================================================================
@@ -671,7 +668,7 @@ Generate Python code that:
 Constraints:
 ${constraints}""",
     variables=["task_description", "analysis_type", "data_format", "expected_output", "libraries", "constraints"],
-    description="Generate scientific analysis code"
+    description="Generate scientific analysis code",
 )
 
 

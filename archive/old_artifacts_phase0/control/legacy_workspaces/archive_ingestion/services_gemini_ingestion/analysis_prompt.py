@@ -247,11 +247,7 @@ This analysis is successful if:
 """
 
 
-def generate_analysis_request(
-    architecture_docs: str,
-    code_samples: str,
-    metrics_spec: str
-) -> str:
+def generate_analysis_request(architecture_docs: str, code_samples: str, metrics_spec: str) -> str:
     """Generate complete analysis request for Gemini API"""
     return f"""{GEMINI_INGESTION_ANALYSIS_PROMPT}
 
@@ -303,10 +299,6 @@ if __name__ == "__main__":
     - ≥30% Tier 1
     """
 
-    request = generate_analysis_request(
-        architecture_docs,
-        code_samples,
-        metrics_spec
-    )
+    request = generate_analysis_request(architecture_docs, code_samples, metrics_spec)
 
     print(request[:500] + "...\n[Truncated for example]")

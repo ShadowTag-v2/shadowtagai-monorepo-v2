@@ -47,6 +47,20 @@ def _get_client():
         return None
 
 
+def _get_breaker():
+    """Lazy-load the circuit breaker for Secret Manager calls."""
+    try:
+        from circuit_breaker.telemetry_bridge import default_registry
+
+        return default_registry.get_or_create(
+            "secret_manager",
+            failure_threshold=3,
+            reset_timeout_s=60.0,
+        )
+    except Exception:
+        return None
+
+
 def get_secret(
     secret_id: str,
     *,
@@ -56,6 +70,10 @@ def get_secret(
     max_retries: int = 3,
 ) -> str:
     """Retrieve a secret value from GCP Secret Manager.
+
+    Protected by a circuit breaker: if the Secret Manager API is
+    experiencing sustained failures, the breaker will open and
+    short-circuit to the environment variable fallback.
 
     Args:
         secret_id: The secret ID (e.g., "gemini-api-key").
@@ -96,6 +114,16 @@ def get_secret(
             _cache[cache_key] = (env_value, time.time() + _CACHE_TTL)
         return env_value
 
+    # Circuit breaker gate — fail fast if Secret Manager is down
+    breaker = _get_breaker()
+    if breaker and not breaker.allow_request():
+        msg = (
+            f"Circuit breaker OPEN for secret_manager — "
+            f"cannot retrieve '{secret_id}'. "
+            f"Probe in {breaker.seconds_until_probe:.0f}s."
+        )
+        raise RuntimeError(msg)
+
     # Access Secret Manager
     client = _get_client()
     if client is None:
@@ -110,6 +138,10 @@ def get_secret(
             response = client.access_secret_version(request={"name": name})
             value = response.payload.data.decode("utf-8")
 
+            # Record success for circuit breaker
+            if breaker:
+                breaker.record_success()
+
             # Cache the result
             if use_cache:
                 _cache[cache_key] = (value, time.time() + _CACHE_TTL)
@@ -119,6 +151,9 @@ def get_secret(
 
         except Exception as e:
             last_error = e
+            # Record failure for circuit breaker on last attempt
+            if attempt == max_retries - 1 and breaker:
+                breaker.record_failure()
             if attempt < max_retries - 1:
                 # Exponential backoff: 0.5s, 1s, 2s
                 wait = 0.5 * (2**attempt)

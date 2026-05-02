@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/models/checkpoint.py
+# hypothesis_version: 6.151.5
+
+['Additional metadata', 'Restore code changes', 'Session identifier', 'Type of checkpoint', 'active', 'auto', 'checkpoints', 'expired', 'file_snapshots', 'manual', 'metadata', 'restored']

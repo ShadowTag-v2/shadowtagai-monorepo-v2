@@ -18,28 +18,26 @@ from google.adk.evaluation.agent_evaluator import AgentEvaluator
 
 @pytest.mark.asyncio
 async def test_eval_agent():
-  await AgentEvaluator.evaluate(
-      agent_module="tests.integration.fixture.home_automation_agent",
-      eval_dataset_file_path_or_dir="tests/integration/fixture/home_automation_agent/simple_test.test.json",
-      num_runs=4,
-  )
+    await AgentEvaluator.evaluate(
+        agent_module="tests.integration.fixture.home_automation_agent",
+        eval_dataset_file_path_or_dir="tests/integration/fixture/home_automation_agent/simple_test.test.json",
+        num_runs=4,
+    )
 
 
 @pytest.mark.asyncio
 async def test_eval_agent_with_agent_suffix_in_module_name():
-  await AgentEvaluator.evaluate(
-      agent_module="tests.integration.fixture.home_automation_agent.agent",
-      eval_dataset_file_path_or_dir="tests/integration/fixture/home_automation_agent/simple_test.test.json",
-      num_runs=4,
-  )
+    await AgentEvaluator.evaluate(
+        agent_module="tests.integration.fixture.home_automation_agent.agent",
+        eval_dataset_file_path_or_dir="tests/integration/fixture/home_automation_agent/simple_test.test.json",
+        num_runs=4,
+    )
 
 
 @pytest.mark.asyncio
 async def test_eval_agent_async():
-  await AgentEvaluator.evaluate(
-      agent_module="tests.integration.fixture.hello_world_agent_async",
-      eval_dataset_file_path_or_dir=(
-          "tests/integration/fixture/hello_world_agent_async/roll_die.test.json"
-      ),
-      num_runs=4,
-  )
+    await AgentEvaluator.evaluate(
+        agent_module="tests.integration.fixture.hello_world_agent_async",
+        eval_dataset_file_path_or_dir=("tests/integration/fixture/hello_world_agent_async/roll_die.test.json"),
+        num_runs=4,
+    )

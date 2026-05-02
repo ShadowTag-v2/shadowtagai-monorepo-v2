@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/compliance/modules/base.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.5, 'Attestation', 'Evidence Summary', 'Executive Summary', 'article_ref', 'artifacts', 'content', 'control_id', 'control_name', 'controls', 'date', 'description', 'evidence_provided', 'evidence_type', 'generated_at', 'jurisdiction', 'notes', 'pending', 'regulation', 'report_type', 'required_evidence', 'sections', 'signatory', 'signature_hash', 'status', 'title', 'version']

@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class WidgetCreate(BaseModel):
@@ -54,8 +54,7 @@ class WidgetResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class DashboardCreate(BaseModel):
@@ -71,23 +70,26 @@ class DashboardCreate(BaseModel):
         description="Dashboard widgets",
     )
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "name": "Main Analytics Dashboard",
-                "description": "Overview of key metrics",
-                "is_public": False,
-                "widgets": [
-                    {
-                        "title": "Daily Active Users",
-                        "widget_type": "chart",
-                        "visualization_type": "line",
-                        "metric_type": "user_count",
-                        "time_range": "30d",
-                    },
-                ],
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "name": "Main Analytics Dashboard",
+                    "description": "Overview of key metrics",
+                    "is_public": False,
+                    "widgets": [
+                        {
+                            "title": "Daily Active Users",
+                            "widget_type": "chart",
+                            "visualization_type": "line",
+                            "metric_type": "user_count",
+                            "time_range": "30d",
+                        },
+                    ],
+                },
+            ],
+        },
+    )
 
 
 class DashboardUpdate(BaseModel):
@@ -115,5 +117,4 @@ class DashboardResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

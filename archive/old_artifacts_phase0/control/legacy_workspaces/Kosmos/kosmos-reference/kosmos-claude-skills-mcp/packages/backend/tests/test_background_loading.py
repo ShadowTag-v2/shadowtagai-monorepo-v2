@@ -139,9 +139,7 @@ def test_batch_loading_function():
     # Verify batches were processed
     assert len(batches_received) > 0
     assert sum(batches_received) == total_counts[-1]
-    print(
-        f"\nReceived {len(batches_received)} batches, total {total_counts[-1]} skills"
-    )
+    print(f"\nReceived {len(batches_received)} batches, total {total_counts[-1]} skills")
 
 
 @pytest.mark.integration
@@ -162,10 +160,7 @@ def test_background_loading_with_server():
     # Simulate background loading
     def background_loader():
         time.sleep(0.5)  # Simulate loading delay
-        skills = [
-            Skill(f"Skill {i}", f"Description {i}", f"Content {i}", f"source{i}")
-            for i in range(20)
-        ]
+        skills = [Skill(f"Skill {i}", f"Description {i}", f"Content {i}", f"source{i}") for i in range(20)]
 
         # Load in batches of 5
         for i in range(0, 20, 5):
@@ -181,9 +176,7 @@ def test_background_loading_with_server():
     thread.start()
 
     # Server should respond immediately (even with no skills)
-    result = asyncio.run(
-        server._handle_search_skills({"task_description": "test", "top_k": 3})
-    )
+    result = asyncio.run(server._handle_search_skills({"task_description": "test", "top_k": 3}))
     assert len(result) == 1
     text = result[0].text
 
@@ -194,9 +187,7 @@ def test_background_loading_with_server():
     thread.join(timeout=5)
 
     # Now should have all skills and no loading message
-    result = asyncio.run(
-        server._handle_search_skills({"task_description": "Description 5", "top_k": 3})
-    )
+    result = asyncio.run(server._handle_search_skills({"task_description": "Description 5", "top_k": 3}))
     text = result[0].text
 
     # Should not show loading status anymore

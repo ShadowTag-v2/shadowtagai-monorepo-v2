@@ -27,52 +27,48 @@ from google.adk.sessions.base_session_service import BaseSessionService
 
 
 class MockAgentLoader:
-  """Mock agent loader for testing."""
+    """Mock agent loader for testing."""
 
-  def __init__(self):
-    pass
+    def __init__(self):
+        pass
 
-  def load_agent(self, app_name):
-    del self, app_name
-    return mock.MagicMock()
+    def load_agent(self, app_name):
+        del self, app_name
+        return mock.MagicMock()
 
-  def list_agents(self):
-    del self
-    return ["test_app"]
+    def list_agents(self):
+        del self
+        return ["test_app"]
 
-  def list_agents_detailed(self):
-    del self
-    return []
+    def list_agents_detailed(self):
+        del self
+        return []
 
 
 def create_adk_web_server():
-  """Create an AdkWebServer instance for testing."""
-  return AdkWebServer(
-      agent_loader=MockAgentLoader(),
-      session_service=mock.create_autospec(BaseSessionService, instance=True),
-      memory_service=mock.create_autospec(BaseMemoryService, instance=True),
-      artifact_service=mock.create_autospec(BaseArtifactService, instance=True),
-      credential_service=mock.create_autospec(
-          BaseCredentialService, instance=True
-      ),
-      eval_sets_manager=mock.create_autospec(EvalSetsManager, instance=True),
-      eval_set_results_manager=mock.create_autospec(
-          EvalSetResultsManager, instance=True
-      ),
-      agents_dir=".",
-  )
+    """Create an AdkWebServer instance for testing."""
+    return AdkWebServer(
+        agent_loader=MockAgentLoader(),
+        session_service=mock.create_autospec(BaseSessionService, instance=True),
+        memory_service=mock.create_autospec(BaseMemoryService, instance=True),
+        artifact_service=mock.create_autospec(BaseArtifactService, instance=True),
+        credential_service=mock.create_autospec(BaseCredentialService, instance=True),
+        eval_sets_manager=mock.create_autospec(EvalSetsManager, instance=True),
+        eval_set_results_manager=mock.create_autospec(EvalSetResultsManager, instance=True),
+        agents_dir=".",
+    )
 
 
 def _get_cors_middleware(app):
-  """Extract CORSMiddleware from app's middleware stack.
+    """Extract CORSMiddleware from app's middleware stack.
 
-  Returns:
-    The CORSMiddleware instance, or None if not found.
-  """
-  for middleware in app.user_middleware:
-    if middleware.cls.__name__ == "CORSMiddleware":
-      return middleware
-  return None
+    Returns:
+      The CORSMiddleware instance, or None if not found.
+    """
+    for middleware in app.user_middleware:
+        if middleware.cls.__name__ == "CORSMiddleware":
+            return middleware
+    return None
 
 
 CORS_ORIGINS_TEST_CASES = [
@@ -122,59 +118,55 @@ CORS_ORIGINS_TEST_IDS = [
 
 
 class TestParseCorsOrigins:
-  """Tests for the _parse_cors_origins helper function."""
+    """Tests for the _parse_cors_origins helper function."""
 
-  @pytest.mark.parametrize(
-      "allow_origins,expected_literal,expected_regex",
-      CORS_ORIGINS_TEST_CASES,
-      ids=CORS_ORIGINS_TEST_IDS,
-  )
-  def test_parse_cors_origins(
-      self, allow_origins, expected_literal, expected_regex
-  ):
-    """Test parsing of allow_origins into literal and regex components."""
-    literal_origins, combined_regex = _parse_cors_origins(allow_origins)
-    assert literal_origins == expected_literal
-    assert combined_regex == expected_regex
+    @pytest.mark.parametrize(
+        "allow_origins,expected_literal,expected_regex",
+        CORS_ORIGINS_TEST_CASES,
+        ids=CORS_ORIGINS_TEST_IDS,
+    )
+    def test_parse_cors_origins(self, allow_origins, expected_literal, expected_regex):
+        """Test parsing of allow_origins into literal and regex components."""
+        literal_origins, combined_regex = _parse_cors_origins(allow_origins)
+        assert literal_origins == expected_literal
+        assert combined_regex == expected_regex
 
 
 class TestCorsMiddlewareConfiguration:
-  """Tests for CORS middleware configuration in AdkWebServer."""
+    """Tests for CORS middleware configuration in AdkWebServer."""
 
-  @pytest.mark.parametrize(
-      "allow_origins,expected_literal,expected_regex",
-      CORS_ORIGINS_TEST_CASES,
-      ids=CORS_ORIGINS_TEST_IDS,
-  )
-  def test_cors_middleware_configuration(
-      self, allow_origins, expected_literal, expected_regex
-  ):
-    """Test CORS middleware is configured correctly with various origin types."""
-    server = create_adk_web_server()
-    app = server.get_fast_api_app(
-        allow_origins=allow_origins,
-        setup_observer=lambda _o, _s: None,
-        tear_down_observer=lambda _o, _s: None,
+    @pytest.mark.parametrize(
+        "allow_origins,expected_literal,expected_regex",
+        CORS_ORIGINS_TEST_CASES,
+        ids=CORS_ORIGINS_TEST_IDS,
     )
+    def test_cors_middleware_configuration(self, allow_origins, expected_literal, expected_regex):
+        """Test CORS middleware is configured correctly with various origin types."""
+        server = create_adk_web_server()
+        app = server.get_fast_api_app(
+            allow_origins=allow_origins,
+            setup_observer=lambda _o, _s: None,
+            tear_down_observer=lambda _o, _s: None,
+        )
 
-    cors_middleware = _get_cors_middleware(app)
-    assert cors_middleware is not None
-    assert cors_middleware.kwargs["allow_origins"] == expected_literal
-    assert cors_middleware.kwargs["allow_origin_regex"] == expected_regex
+        cors_middleware = _get_cors_middleware(app)
+        assert cors_middleware is not None
+        assert cors_middleware.kwargs["allow_origins"] == expected_literal
+        assert cors_middleware.kwargs["allow_origin_regex"] == expected_regex
 
-  @pytest.mark.parametrize(
-      "allow_origins",
-      [None, []],
-      ids=["none", "empty_list"],
-  )
-  def test_cors_middleware_not_added_when_no_origins(self, allow_origins):
-    """Test that no CORS middleware is added when allow_origins is None or empty."""
-    server = create_adk_web_server()
-    app = server.get_fast_api_app(
-        allow_origins=allow_origins,
-        setup_observer=lambda _o, _s: None,
-        tear_down_observer=lambda _o, _s: None,
+    @pytest.mark.parametrize(
+        "allow_origins",
+        [None, []],
+        ids=["none", "empty_list"],
     )
+    def test_cors_middleware_not_added_when_no_origins(self, allow_origins):
+        """Test that no CORS middleware is added when allow_origins is None or empty."""
+        server = create_adk_web_server()
+        app = server.get_fast_api_app(
+            allow_origins=allow_origins,
+            setup_observer=lambda _o, _s: None,
+            tear_down_observer=lambda _o, _s: None,
+        )
 
-    cors_middleware = _get_cors_middleware(app)
-    assert cors_middleware is None
+        cors_middleware = _get_cors_middleware(app)
+        assert cors_middleware is None

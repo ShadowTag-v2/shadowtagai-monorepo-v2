@@ -59,9 +59,7 @@ def main():
     if args.original:
         original_file = Path(args.original)
         assert original_file.is_file(), f"Error: {original_file} is not a file"
-        assert original_file.suffix.lower() in [".docx", ".pptx", ".xlsx"], (
-            f"Error: {original_file} must be a .docx, .pptx, or .xlsx file"
-        )
+        assert original_file.suffix.lower() in [".docx", ".pptx", ".xlsx"], f"Error: {original_file} must be a .docx, .pptx, or .xlsx file"
 
     file_extension = (original_file or path).suffix.lower()
     assert file_extension in [".docx", ".pptx", ".xlsx"], (
@@ -83,9 +81,7 @@ def main():
                 DOCXSchemaValidator(unpacked_dir, original_file, verbose=args.verbose),
             ]
             if original_file:
-                validators.append(
-                    RedliningValidator(unpacked_dir, original_file, verbose=args.verbose, author=args.author)
-                )
+                validators.append(RedliningValidator(unpacked_dir, original_file, verbose=args.verbose, author=args.author))
         case ".pptx":
             validators = [
                 PPTXSchemaValidator(unpacked_dir, original_file, verbose=args.verbose),
