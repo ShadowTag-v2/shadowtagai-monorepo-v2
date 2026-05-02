@@ -1,6 +1,7 @@
 # ruff: noqa: F403, F405
 """Adaptive Shoppable Video Platform (Amazon Challenger) - FastAPI Service
 
+import os
 This is brilliantly inventive ✅ — merging adtech + streaming + commerce into one seamless loop.
 
 Core Features:
@@ -90,7 +91,7 @@ app = FastAPI(
 # CORS middleware for web integration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure for production
+    allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

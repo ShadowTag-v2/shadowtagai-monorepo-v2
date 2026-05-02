@@ -1,5 +1,6 @@
 """PNKLN Core Stack - Judge 6 Validation API
 
+import os
 FastAPI service exposing validation endpoints across 4 namespaces:
 - ingestion (validates items from ingestion layer)
 - shadowtag (validates authentication requests)
@@ -103,7 +104,7 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
+    allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
