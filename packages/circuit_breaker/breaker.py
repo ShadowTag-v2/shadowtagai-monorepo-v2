@@ -21,6 +21,9 @@ Design decisions:
   - Configurable per-service failure_threshold and reset_timeout_s
   - Exponential backoff not embedded here — that belongs in the retry loop
     that WRAPS the breaker (separation of concerns)
+  - Two failure counting modes:
+    * CONSECUTIVE (default): Trip after N consecutive failures
+    * SLIDING_WINDOW: Trip after N failures within a time window
 
 Reference patterns:
   - autoCompact.ts L257-265: Circuit breaker check before operation
@@ -34,6 +37,7 @@ import inspect
 import logging
 import threading
 import time
+from collections import deque
 from collections.abc import Callable
 from enum import StrEnum
 from functools import wraps
@@ -53,6 +57,17 @@ class CircuitBreakerState(StrEnum):
     CLOSED = "closed"
     OPEN = "open"
     HALF_OPEN = "half_open"
+
+
+class FailureMode(StrEnum):
+    """Failure counting strategy for trip condition.
+
+    CONSECUTIVE: Trip after N consecutive failures (default, existing behavior).
+    SLIDING_WINDOW: Trip after N failures within a time window.
+    """
+
+    CONSECUTIVE = "consecutive"
+    SLIDING_WINDOW = "sliding_window"
 
 
 class CircuitBreakerOpenError(Exception):
@@ -82,9 +97,13 @@ class CircuitBreakerOpenError(Exception):
 class CircuitBreaker:
     """Stateful circuit breaker for protecting service calls.
 
-    Tracks consecutive failures per-service and transitions through
+    Tracks failures per-service and transitions through
     CLOSED → OPEN → HALF_OPEN → CLOSED states to prevent wasting
     resources on doomed API calls during capacity outages.
+
+    Supports two failure counting modes:
+      - CONSECUTIVE (default): Trip after N consecutive failures.
+      - SLIDING_WINDOW: Trip after N failures within window_s seconds.
 
     Derived from autoCompact.ts circuit breaker (Claude Code v2.1.91):
       - BQ 2026-03-10: 1,279 sessions had 50+ consecutive failures
@@ -95,13 +114,25 @@ class CircuitBreaker:
 
     Args:
         service_name: Identifier for the protected service.
-        failure_threshold: Consecutive failures before opening circuit.
+        failure_threshold: Failures before opening circuit.
         reset_timeout_s: Seconds to wait in OPEN before probing (HALF_OPEN).
         on_state_change: Optional callback(old_state, new_state, service_name).
         half_open_max_probes: Max concurrent probes in HALF_OPEN state.
+        failure_mode: CONSECUTIVE or SLIDING_WINDOW.
+        window_s: Sliding window duration (only used in SLIDING_WINDOW mode).
 
     Example:
+        # Consecutive mode (default)
         breaker = CircuitBreaker("firestore", failure_threshold=3, reset_timeout_s=60)
+
+        # Sliding window mode
+        breaker = CircuitBreaker(
+            "gemini_api",
+            failure_threshold=5,
+            reset_timeout_s=120,
+            failure_mode=FailureMode.SLIDING_WINDOW,
+            window_s=60.0,
+        )
 
         # Advisory mode
         if breaker.allow_request():
@@ -124,12 +155,16 @@ class CircuitBreaker:
         reset_timeout_s: float = 60.0,
         on_state_change: StateChangeCallback | None = None,
         half_open_max_probes: int = 1,
+        failure_mode: FailureMode = FailureMode.CONSECUTIVE,
+        window_s: float = 60.0,
     ) -> None:
         self._service_name = service_name
         self._failure_threshold = failure_threshold
         self._reset_timeout_s = reset_timeout_s
         self._on_state_change = on_state_change
         self._half_open_max_probes = half_open_max_probes
+        self._failure_mode = failure_mode
+        self._window_s = window_s
 
         self._state = CircuitBreakerState.CLOSED
         self._consecutive_failures: int = 0
@@ -138,6 +173,9 @@ class CircuitBreaker:
         self._last_failure_time: float = 0.0
         self._last_state_change_time: float = time.monotonic()
         self._active_half_open_probes: int = 0
+
+        # Sliding window event buffer: (monotonic_timestamp, is_failure)
+        self._events: deque[tuple[float, bool]] = deque()
 
         self._lock = threading.Lock()
 
@@ -174,6 +212,23 @@ class CircuitBreaker:
     def failure_threshold(self) -> int:
         """Failures before tripping open."""
         return self._failure_threshold
+
+    @property
+    def failure_mode(self) -> FailureMode:
+        """Current failure counting strategy."""
+        return self._failure_mode
+
+    @property
+    def window_failures(self) -> int:
+        """Failures within the current sliding window.
+
+        Returns 0 in CONSECUTIVE mode.
+        """
+        if self._failure_mode != FailureMode.SLIDING_WINDOW:
+            return 0
+        with self._lock:
+            self._prune_window()
+            return sum(1 for _, is_failure in self._events if is_failure)
 
     @property
     def seconds_until_probe(self) -> float:
@@ -233,6 +288,9 @@ class CircuitBreaker:
             self._consecutive_failures = 0
             self._total_successes += 1
 
+            # Record event for sliding window
+            self._events.append((time.monotonic(), False))  # False = success
+
             if old_state == CircuitBreakerState.HALF_OPEN:
                 self._active_half_open_probes = max(0, self._active_half_open_probes - 1)
                 self._transition_to(CircuitBreakerState.CLOSED)
@@ -258,9 +316,13 @@ class CircuitBreaker:
         """
         with self._lock:
             old_state = self._state
+            now = time.monotonic()
             self._consecutive_failures += 1
             self._total_failures += 1
-            self._last_failure_time = time.monotonic()
+            self._last_failure_time = now
+
+            # Record event for sliding window
+            self._events.append((now, True))  # True = failure
 
             if old_state == CircuitBreakerState.HALF_OPEN:
                 self._active_half_open_probes = max(0, self._active_half_open_probes - 1)
@@ -270,12 +332,17 @@ class CircuitBreaker:
                     self._service_name,
                     self._consecutive_failures,
                 )
-            elif old_state == CircuitBreakerState.CLOSED and self._consecutive_failures >= self._failure_threshold:
+            elif old_state == CircuitBreakerState.CLOSED and self._should_trip():
                 self._transition_to(CircuitBreakerState.OPEN)
+                mode_desc = (
+                    f"{self._consecutive_failures} consecutive failures"
+                    if self._failure_mode == FailureMode.CONSECUTIVE
+                    else f"{self._window_failure_count()} failures in {self._window_s:.0f}s window"
+                )
                 logger.warning(
-                    "Circuit breaker '%s' tripped after %d consecutive failures — skipping future attempts for %.1fs",
+                    "Circuit breaker '%s' tripped (%s) — skipping future attempts for %.1fs",
                     self._service_name,
-                    self._consecutive_failures,
+                    mode_desc,
                     self._reset_timeout_s,
                 )
 
@@ -287,6 +354,7 @@ class CircuitBreaker:
         with self._lock:
             self._consecutive_failures = 0
             self._active_half_open_probes = 0
+            self._events.clear()
             if self._state != CircuitBreakerState.CLOSED:
                 self._transition_to(CircuitBreakerState.CLOSED)
                 logger.info(
@@ -359,7 +427,8 @@ class CircuitBreaker:
         """
         with self._lock:
             self._maybe_transition_to_half_open()
-            return {
+            self._prune_window()
+            snap = {
                 "service_name": self._service_name,
                 "state": self._state.value,
                 "consecutive_failures": self._consecutive_failures,
@@ -367,6 +436,7 @@ class CircuitBreaker:
                 "total_successes": self._total_successes,
                 "failure_threshold": self._failure_threshold,
                 "reset_timeout_s": self._reset_timeout_s,
+                "failure_mode": self._failure_mode.value,
                 "seconds_until_probe": max(
                     0.0,
                     self._reset_timeout_s - (time.monotonic() - self._last_failure_time),
@@ -374,8 +444,33 @@ class CircuitBreaker:
                 if self._state == CircuitBreakerState.OPEN
                 else 0.0,
             }
+            if self._failure_mode == FailureMode.SLIDING_WINDOW:
+                snap["window_s"] = self._window_s
+                snap["window_failures"] = self._window_failure_count()
+            return snap
 
     # --- Internal state machine ---
+
+    def _should_trip(self) -> bool:
+        """Determine if the trip condition is met. Called under lock."""
+        if self._failure_mode == FailureMode.CONSECUTIVE:
+            return self._consecutive_failures >= self._failure_threshold
+
+        # SLIDING_WINDOW: count failures within the window
+        self._prune_window()
+        return self._window_failure_count() >= self._failure_threshold
+
+    def _prune_window(self) -> None:
+        """Remove events older than window_s. Called under lock."""
+        if self._failure_mode != FailureMode.SLIDING_WINDOW:
+            return
+        cutoff = time.monotonic() - self._window_s
+        while self._events and self._events[0][0] < cutoff:
+            self._events.popleft()
+
+    def _window_failure_count(self) -> int:
+        """Count failure events in the current window. Called under lock."""
+        return sum(1 for _, is_failure in self._events if is_failure)
 
     def _maybe_transition_to_half_open(self) -> None:
         """Check if OPEN → HALF_OPEN transition is due.
@@ -415,9 +510,11 @@ class CircuitBreaker:
                 )
 
     def __repr__(self) -> str:
+        mode_tag = f", mode={self._failure_mode.value}" if self._failure_mode != FailureMode.CONSECUTIVE else ""
         return (
             f"CircuitBreaker("
             f"service='{self._service_name}', "
             f"state={self._state.value}, "
-            f"failures={self._consecutive_failures}/{self._failure_threshold})"
+            f"failures={self._consecutive_failures}/{self._failure_threshold}"
+            f"{mode_tag})"
         )

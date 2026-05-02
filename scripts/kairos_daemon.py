@@ -1193,11 +1193,23 @@ def write_heartbeat(status: dict) -> None:
         import importlib
 
         treeify_mod = importlib.import_module("agnt_utils.treeify")
+
+        # Pull suggestion pipeline health into heartbeat tree
+        suggestion_status = {}
+        try:
+            from speculation_engine.consumer import SuggestionConsumer
+
+            consumer = SuggestionConsumer(cache_dir=BEADS_DIR)
+            suggestion_status = consumer.cache_status()
+        except Exception:
+            suggestion_status = {"state": "unavailable"}
+
         tree_data = {
             "KAIROS Heartbeat": {
                 "PID": str(os.getpid()),
                 "Cycle": status.get("cycle", "?"),
                 **{k: v for k, v in status.items() if k != "cycle"},
+                "suggestion_pipeline": suggestion_status,
             }
         }
         tree_text = treeify_mod.treeify(tree_data, show_values=True, max_depth=5)

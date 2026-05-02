@@ -21,7 +21,19 @@ from enum import StrEnum
 from typing import Any
 from collections.abc import Generator
 
+from circuit_breaker.telemetry_bridge import default_registry as _cb_registry
+
 logger = logging.getLogger(__name__)
+
+# Register Gemini API circuit breakers with higher tolerance:
+#   - 5 consecutive failures → OPEN (Gemini has longer tail latencies)
+#   - 180s reset timeout (model warm-up + quota recovery)
+_gemini_interactions_breaker = _cb_registry.get_or_create(
+    "gemini_interactions", failure_threshold=5, reset_timeout_s=180.0
+)
+_gemini_research_breaker = _cb_registry.get_or_create(
+    "gemini_deep_research", failure_threshold=3, reset_timeout_s=300.0
+)
 
 
 # ---------------------------------------------------------------------------
@@ -119,16 +131,31 @@ class GeminiPairProgrammer:
 
         session_id = f"pair-{uuid.uuid4().hex[:12]}"
 
-        # Bootstrap the session with a system-level greeting
-        result = self.interactions_client.create(
-            input="Session started. Ready to collaborate.",
-            model=model,
-            system_instruction=system_prompt,
-            tools=tools or [],
-            generation_config={
-                "thinking_level": "medium",
-            },
-        )
+        # Circuit breaker gate — fail fast if Gemini Interactions is known-down
+        if not _gemini_interactions_breaker.allow_request():
+            from circuit_breaker import CircuitBreakerOpenError
+
+            raise CircuitBreakerOpenError(
+                "gemini_interactions",
+                _gemini_interactions_breaker.consecutive_failures,
+                _gemini_interactions_breaker.seconds_until_probe,
+            )
+
+        try:
+            # Bootstrap the session with a system-level greeting
+            result = self.interactions_client.create(
+                input="Session started. Ready to collaborate.",
+                model=model,
+                system_instruction=system_prompt,
+                tools=tools or [],
+                generation_config={
+                    "thinking_level": "medium",
+                },
+            )
+            _gemini_interactions_breaker.record_success()
+        except Exception:
+            _gemini_interactions_breaker.record_failure()
+            raise
 
         session = PairSession(
             session_id=session_id,
@@ -157,12 +184,26 @@ class GeminiPairProgrammer:
         """
         last_id = session.interaction_chain[-1] if session.interaction_chain else None
 
-        result = self.interactions_client.create(
-            input=message,
-            model=session.model,
-            previous_interaction_id=last_id,
-            tools=tools,
-        )
+        if not _gemini_interactions_breaker.allow_request():
+            from circuit_breaker import CircuitBreakerOpenError
+
+            raise CircuitBreakerOpenError(
+                "gemini_interactions",
+                _gemini_interactions_breaker.consecutive_failures,
+                _gemini_interactions_breaker.seconds_until_probe,
+            )
+
+        try:
+            result = self.interactions_client.create(
+                input=message,
+                model=session.model,
+                previous_interaction_id=last_id,
+                tools=tools,
+            )
+            _gemini_interactions_breaker.record_success()
+        except Exception:
+            _gemini_interactions_breaker.record_failure()
+            raise
 
         session.interaction_chain.append(result.id)
         if result.usage:
@@ -183,18 +224,32 @@ class GeminiPairProgrammer:
         """
         last_id = session.interaction_chain[-1] if session.interaction_chain else None
 
-        for event in self.interactions_client.stream(
-            input=message,
-            model=session.model,
-            previous_interaction_id=last_id,
-            tools=tools,
-        ):
-            if event.interaction_id:
-                if event.interaction_id not in session.interaction_chain:
-                    session.interaction_chain.append(event.interaction_id)
+        if not _gemini_interactions_breaker.allow_request():
+            from circuit_breaker import CircuitBreakerOpenError
 
-            if event.text:
-                yield event.text
+            raise CircuitBreakerOpenError(
+                "gemini_interactions",
+                _gemini_interactions_breaker.consecutive_failures,
+                _gemini_interactions_breaker.seconds_until_probe,
+            )
+
+        try:
+            for event in self.interactions_client.stream(
+                input=message,
+                model=session.model,
+                previous_interaction_id=last_id,
+                tools=tools,
+            ):
+                if event.interaction_id:
+                    if event.interaction_id not in session.interaction_chain:
+                        session.interaction_chain.append(event.interaction_id)
+
+                if event.text:
+                    yield event.text
+            _gemini_interactions_breaker.record_success()
+        except Exception:
+            _gemini_interactions_breaker.record_failure()
+            raise
 
 
 # ---------------------------------------------------------------------------
@@ -288,12 +343,26 @@ class GeminiResearchSweep:
         Returns:
             SweepResult with the final report.
         """
+        if not _gemini_research_breaker.allow_request():
+            from circuit_breaker import CircuitBreakerOpenError
+
+            raise CircuitBreakerOpenError(
+                "gemini_deep_research",
+                _gemini_research_breaker.consecutive_failures,
+                _gemini_research_breaker.seconds_until_probe,
+            )
+
         start = time.monotonic()
-        report = self.dr_client.research(
-            query,
-            tools=tools,
-            timeout=timeout,
-        )
+        try:
+            report = self.dr_client.research(
+                query,
+                tools=tools,
+                timeout=timeout,
+            )
+            _gemini_research_breaker.record_success()
+        except Exception:
+            _gemini_research_breaker.record_failure()
+            raise
         duration = time.monotonic() - start
 
         return SweepResult(
@@ -311,8 +380,22 @@ class GeminiResearchSweep:
 
     def execute(self, plan: Any, *, timeout: float = 1800.0) -> SweepResult:
         """Execute a planned research sweep."""
+        if not _gemini_research_breaker.allow_request():
+            from circuit_breaker import CircuitBreakerOpenError
+
+            raise CircuitBreakerOpenError(
+                "gemini_deep_research",
+                _gemini_research_breaker.consecutive_failures,
+                _gemini_research_breaker.seconds_until_probe,
+            )
+
         start = time.monotonic()
-        report = self.dr_client.execute_plan(plan, timeout=timeout)
+        try:
+            report = self.dr_client.execute_plan(plan, timeout=timeout)
+            _gemini_research_breaker.record_success()
+        except Exception:
+            _gemini_research_breaker.record_failure()
+            raise
         duration = time.monotonic() - start
 
         return SweepResult(
