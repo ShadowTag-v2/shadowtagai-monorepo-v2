@@ -29,6 +29,8 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any
 
+from packages.tool_gateway.bash_ast import BashASTAnalyzer
+
 logger = logging.getLogger(__name__)
 
 
@@ -195,6 +197,9 @@ class BlockAllowRuleEngine:
         self._recent_file_writes: dict[str, int] = {}  # path → write count
         self._recent_network_hosts: list[str] = []
         self._window_seconds = 300  # 5-minute rolling window
+
+        # B20: Bash AST analyzer for compound command security
+        self._bash_ast = BashASTAnalyzer()
 
     def evaluate(
         self,
@@ -512,6 +517,25 @@ class BlockAllowRuleEngine:
                             category="infra",
                         )
                     )
+
+        # B20: Compound Command Cap (50-subcommand hard limit)
+        # Adversa AI Risk #34 — compound command injection bypass.
+        # Delegates to BashASTAnalyzer for shlex-based decomposition.
+        if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
+            ast_result = self._bash_ast.analyze(cmd)
+            if not ast_result.is_safe:
+                matches.append(
+                    RuleMatch(
+                        rule_id="B20",
+                        verdict=Verdict.BLOCK,
+                        description=f"Bash AST security: {ast_result.deny_reason}",
+                        category="infra",
+                    )
+                )
+            for warning in ast_result.warnings:
+                logger.warning("B20 advisory: %s", warning)
+            for violation in ast_result.env_violations:
+                logger.warning("B20 env violation: %s", violation)
 
         return matches
 
