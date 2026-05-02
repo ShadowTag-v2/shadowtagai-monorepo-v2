@@ -25,7 +25,9 @@ app.add_middleware(
         "http://localhost:3000",
     ],
     allow_methods=["POST", "GET"],
-    allow_headers=["*"],
+    allow_headers=os.environ.get(
+        "CORS_HEADERS", "Content-Type,Authorization,X-Requested-With"
+    ).split(","),
 )
 
 judge = JudgeSixSentinel()

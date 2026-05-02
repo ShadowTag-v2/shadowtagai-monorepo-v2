@@ -74,6 +74,7 @@ class JudgeVerdict:
 
 class JudgeArchitecture:
     """21-layer governance judge"""
+
     async def validate_decision(self, decision: Decision) -> JudgeVerdict:
         blockers = []
         warnings = []
@@ -84,40 +85,29 @@ class JudgeArchitecture:
             warnings.append("High risk - additional controls recommended")
 
         status = DecisionStatus.REJECTED if blockers else DecisionStatus.APPROVED
-        return JudgeVerdict(
-            decision_id=decision.id,
-            status=status,
-            blockers=blockers,
-            warnings=warnings,
-            processing_time_ms=35.0
-        )
+        return JudgeVerdict(decision_id=decision.id, status=status, blockers=blockers, warnings=warnings, processing_time_ms=35.0)
 
 
 class GovernanceEngine:
     """Multi-framework governance engine"""
+
     def __init__(self):
         pass
 
     async def assess(self, request: Any) -> dict[str, Any]:
-        return {
-            "risk_level": "medium",
-            "compliance_score": 0.88,
-            "requires_human_review": False
-        }
+        return {"risk_level": "medium", "compliance_score": 0.88, "requires_human_review": False}
 
 
 app = FastAPI(
-    title="shadowtag-omega-v4 Enterprise Compliance API",
-    description="21-layer governance with blockchain-verified audit trail",
-    version="1.0.0"
+    title="shadowtag-omega-v4 Enterprise Compliance API", description="21-layer governance with blockchain-verified audit trail", version="1.0.0"
 )
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=os.environ.get("CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH").split(","),
+    allow_headers=os.environ.get("CORS_HEADERS", "Content-Type,Authorization,X-Requested-With").split(","),
 )
 
 
@@ -125,18 +115,17 @@ app.add_middleware(
 # DATA MODELS
 # =============================================================================
 
+
 class ComplianceCertificateRequest(BaseModel):
     """Request for compliance certificate generation"""
+
     content_id: str = Field(..., description="Unique ID of content/decision to certify")
     content_type: str = Field(..., description="Type: 'ai_output', 'decision', 'model_inference'")
     content_hash: str | None = Field(None, description="SHA-256 hash of content")
     content_preview: str | None = Field(None, max_length=500)
 
     # Regulatory context
-    frameworks: list[str] = Field(
-        default=["EU_AI_ACT", "NIST_RMF", "ISO_42001"],
-        description="Frameworks to validate against"
-    )
+    frameworks: list[str] = Field(default=["EU_AI_ACT", "NIST_RMF", "ISO_42001"], description="Frameworks to validate against")
     jurisdiction: str = Field(default="global", description="Primary jurisdiction")
 
     # Risk metadata
@@ -153,6 +142,7 @@ class ComplianceCertificateRequest(BaseModel):
 
 class ComplianceCertificate(BaseModel):
     """Blockchain-verified compliance certificate"""
+
     certificate_id: str
     content_id: str
     issued_at: datetime
@@ -187,6 +177,7 @@ class ComplianceCertificate(BaseModel):
 
 class BatchGovernanceRequest(BaseModel):
     """Batch governance request for 90-95% token savings"""
+
     batch_id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
     items: list[dict[str, Any]]
     shared_context: dict[str, Any] | None = None
@@ -195,6 +186,7 @@ class BatchGovernanceRequest(BaseModel):
 
 class BatchGovernanceResult(BaseModel):
     """Batch governance result"""
+
     batch_id: str
     total_items: int
     approved: int
@@ -212,6 +204,7 @@ class BatchGovernanceResult(BaseModel):
 
 class RegulatoryDashboardData(BaseModel):
     """Regulatory dashboard data"""
+
     frameworks: dict[str, dict[str, Any]]
     overall_compliance: float
     deadlines: list[dict[str, Any]]
@@ -222,6 +215,7 @@ class RegulatoryDashboardData(BaseModel):
 # =============================================================================
 # BLOCKCHAIN RECEIPT (AUDIT CHAIN)
 # =============================================================================
+
 
 class BlockchainAuditChain:
     """Immutable audit chain with cryptographic verification"""
@@ -262,10 +256,7 @@ class BlockchainAuditChain:
         while len(hashes) > 1:
             if len(hashes) % 2 == 1:
                 hashes.append(hashes[-1])
-            hashes = [
-                hashlib.sha256((hashes[i] + hashes[i+1]).encode()).hexdigest()
-                for i in range(0, len(hashes), 2)
-            ]
+            hashes = [hashlib.sha256((hashes[i] + hashes[i + 1]).encode()).hexdigest() for i in range(0, len(hashes), 2)]
         return hashes[0]
 
     def verify_chain(self) -> bool:
@@ -275,7 +266,7 @@ class BlockchainAuditChain:
             if entry["entry_hash"] != self._hash_entry(entry):
                 return False
             # Verify chain link
-            if i > 0 and entry["previous_hash"] != self.chain[i-1]["entry_hash"]:
+            if i > 0 and entry["previous_hash"] != self.chain[i - 1]["entry_hash"]:
                 return False
         return True
 
@@ -287,6 +278,7 @@ class BlockchainAuditChain:
 # =============================================================================
 # COMPLIANCE ENGINE
 # =============================================================================
+
 
 class EnterpriseComplianceEngine:
     """
@@ -311,7 +303,7 @@ class EnterpriseComplianceEngine:
             "ISO_42001": ComplianceFramework.ISO_42001,
             "GDPR": ComplianceFramework.GDPR,
             "COPPA": ComplianceFramework.COPPA,
-            "DSA": ComplianceFramework.DSA
+            "DSA": ComplianceFramework.DSA,
         }
 
         # Token tracking
@@ -323,11 +315,7 @@ class EnterpriseComplianceEngine:
         start_time = time.time()
 
         # Add to audit chain
-        self.audit_chain.add_entry(
-            request.content_id,
-            "certificate_requested",
-            {"frameworks": request.frameworks, "risk_level": request.risk_level}
-        )
+        self.audit_chain.add_entry(request.content_id, "certificate_requested", {"frameworks": request.frameworks, "risk_level": request.risk_level})
 
         # Create Decision object for Judge Architecture
         decision = Decision(
@@ -338,7 +326,7 @@ class EnterpriseComplianceEngine:
             impacts_monetization=request.involves_financial,
             impacts_infrastructure=False,
             introduces_dependencies=False,
-            ships_feature=False
+            ships_feature=False,
         )
 
         # Run through Judge Architecture (21 layers)
@@ -348,11 +336,7 @@ class EnterpriseComplianceEngine:
         self.audit_chain.add_entry(
             request.content_id,
             "judge_verdict",
-            {
-                "status": verdict.status.value,
-                "blockers": len(verdict.blockers),
-                "warnings": len(verdict.warnings)
-            }
+            {"status": verdict.status.value, "blockers": len(verdict.blockers), "warnings": len(verdict.warnings)},
         )
 
         # Calculate framework-specific scores
@@ -366,43 +350,31 @@ class EnterpriseComplianceEngine:
             content_id=request.content_id,
             issued_at=datetime.utcnow(),
             expires_at=datetime.utcnow() + timedelta(days=90),
-
             status=self._map_verdict_status(verdict.status),
             confidence_score=self._calculate_confidence(verdict),
-
             frameworks_assessed=request.frameworks,
             compliance_scores=compliance_scores,
             overall_compliance=sum(compliance_scores.values()) / len(compliance_scores),
-
             risk_level=request.risk_level,
             blockers=verdict.blockers,
             warnings=verdict.warnings,
-
             certificate_hash="",  # Set below
             merkle_root=self.audit_chain.get_merkle_root(),
-
             audit_chain=self.audit_chain.get_audit_trail(request.content_id) if request.include_audit_chain else [],
-
             remediation_steps=self._generate_remediation(verdict) if request.include_remediation else [],
-            estimated_remediation_hours=self._estimate_remediation_hours(verdict)
+            estimated_remediation_hours=self._estimate_remediation_hours(verdict),
         )
 
         # Calculate certificate hash
         cert_data = certificate.model_dump()
         cert_data.pop("certificate_hash")
-        certificate.certificate_hash = hashlib.sha256(
-            json.dumps(cert_data, default=str, sort_keys=True).encode()
-        ).hexdigest()
+        certificate.certificate_hash = hashlib.sha256(json.dumps(cert_data, default=str, sort_keys=True).encode()).hexdigest()
 
         # Final audit entry
         self.audit_chain.add_entry(
             request.content_id,
             "certificate_issued",
-            {
-                "certificate_id": certificate_id,
-                "status": certificate.status,
-                "processing_time_ms": (time.time() - start_time) * 1000
-            }
+            {"certificate_id": certificate_id, "status": certificate.status, "processing_time_ms": (time.time() - start_time) * 1000},
         )
 
         return certificate
@@ -447,11 +419,7 @@ class EnterpriseComplianceEngine:
             else:
                 conditional += 1
 
-            results.append({
-                "item_id": item.get("id", str(uuid.uuid4())[:8]),
-                "status": status,
-                "score": score
-            })
+            results.append({"item_id": item.get("id", str(uuid.uuid4())[:8]), "status": status, "score": score})
 
         tokens_saved = estimated_single_tokens - actual_tokens
         savings_pct = (tokens_saved / estimated_single_tokens) * 100 if estimated_single_tokens > 0 else 0
@@ -469,7 +437,7 @@ class EnterpriseComplianceEngine:
             estimated_single_tokens=estimated_single_tokens,
             tokens_saved=tokens_saved,
             savings_percentage=savings_pct,
-            results=results
+            results=results,
         )
 
     async def get_dashboard_data(self) -> RegulatoryDashboardData:
@@ -481,60 +449,35 @@ class EnterpriseComplianceEngine:
                     "score": 0.92,
                     "last_assessment": datetime.utcnow().isoformat(),
                     "deadline": "2025-08-01",
-                    "articles": ["Art. 6 (Risk classification)", "Art. 13 (Transparency)", "Art. 52 (Disclosure)"]
+                    "articles": ["Art. 6 (Risk classification)", "Art. 13 (Transparency)", "Art. 52 (Disclosure)"],
                 },
                 "NIST_RMF": {
                     "status": "compliant",
                     "score": 0.88,
                     "maturity": "managed",
-                    "functions": {"govern": 0.92, "map": 0.88, "measure": 0.85, "manage": 0.90}
+                    "functions": {"govern": 0.92, "map": 0.88, "measure": 0.85, "manage": 0.90},
                 },
-                "ISO_42001": {
-                    "status": "certification_ready",
-                    "score": 0.89,
-                    "clauses_compliant": 7,
-                    "clauses_total": 7
-                },
-                "GDPR": {
-                    "status": "compliant",
-                    "score": 0.95,
-                    "dpia_complete": True,
-                    "dpo_assigned": True
-                },
-                "COPPA": {
-                    "status": "compliant",
-                    "score": 0.94,
-                    "verifiable_consent": True,
-                    "data_minimization": True
-                },
-                "DSA": {
-                    "status": "compliant",
-                    "score": 0.87,
-                    "systemic_risk_assessment": True,
-                    "transparency_reports": 4
-                }
+                "ISO_42001": {"status": "certification_ready", "score": 0.89, "clauses_compliant": 7, "clauses_total": 7},
+                "GDPR": {"status": "compliant", "score": 0.95, "dpia_complete": True, "dpo_assigned": True},
+                "COPPA": {"status": "compliant", "score": 0.94, "verifiable_consent": True, "data_minimization": True},
+                "DSA": {"status": "compliant", "score": 0.87, "systemic_risk_assessment": True, "transparency_reports": 4},
             },
             overall_compliance=0.91,
             deadlines=[
                 {"framework": "EU_AI_ACT", "deadline": "2025-08-01", "description": "Full compliance required"},
                 {"framework": "DSA", "deadline": "2025-02-17", "description": "Annual systemic risk assessment"},
-                {"framework": "ISO_42001", "deadline": "2025-06-01", "description": "Certification audit"}
+                {"framework": "ISO_42001", "deadline": "2025-06-01", "description": "Certification audit"},
             ],
             recent_assessments=[
                 {"id": "AST-001", "type": "EU_AI_ACT", "score": 0.92, "date": datetime.utcnow().isoformat()},
-                {"id": "AST-002", "type": "NIST_RMF", "score": 0.88, "date": datetime.utcnow().isoformat()}
+                {"id": "AST-002", "type": "NIST_RMF", "score": 0.88, "date": datetime.utcnow().isoformat()},
             ],
-            risk_distribution={"low": 45, "medium": 35, "high": 15, "critical": 5}
+            risk_distribution={"low": 45, "medium": 35, "high": 15, "critical": 5},
         )
 
     def _map_risk_level(self, level: str) -> RiskLevel:
         """Map string risk level to enum"""
-        mapping = {
-            "low": RiskLevel.LOW,
-            "medium": RiskLevel.MEDIUM,
-            "high": RiskLevel.HIGH,
-            "critical": RiskLevel.EXTREMELY_HIGH
-        }
+        mapping = {"low": RiskLevel.LOW, "medium": RiskLevel.MEDIUM, "high": RiskLevel.HIGH, "critical": RiskLevel.EXTREMELY_HIGH}
         return mapping.get(level, RiskLevel.MEDIUM)
 
     def _map_verdict_status(self, status: DecisionStatus) -> str:
@@ -636,20 +579,20 @@ def root():
             "governance_depth": "21 layers (vs basic safety)",
             "cost_per_execution": "$0.0003 (97% cheaper)",
             "frameworks": 6,
-            "audit_trail": "blockchain-verified"
+            "audit_trail": "blockchain-verified",
         },
         "endpoints": [
             "POST /certificate - Generate compliance certificate",
             "POST /batch - Batch governance (90-95% token savings)",
             "GET /dashboard - Regulatory dashboard",
             "POST /verify/{certificate_id} - Verify certificate",
-            "GET /audit/{content_id} - Get audit trail"
+            "GET /audit/{content_id} - Get audit trail",
         ],
         "pricing_tiers": {
             "starter": "$2,500/month - 1,000 certificates",
             "professional": "$10,000/month - 10,000 certificates",
-            "enterprise": "$25,000-50,000/month - Unlimited + SLA"
-        }
+            "enterprise": "$25,000-50,000/month - Unlimited + SLA",
+        },
     }
 
 
@@ -736,7 +679,7 @@ async def verify_certificate(certificate_id: str, certificate_hash: str):
         "certificate_id": certificate_id,
         "verified": True,
         "chain_integrity": engine.audit_chain.verify_chain(),
-        "merkle_root": engine.audit_chain.get_merkle_root()
+        "merkle_root": engine.audit_chain.get_merkle_root(),
     }
 
 
@@ -749,11 +692,7 @@ async def get_audit_trail(content_id: str):
     with cryptographic verification.
     """
     trail = engine.audit_chain.get_audit_trail(content_id)
-    return {
-        "content_id": content_id,
-        "trail": trail,
-        "chain_valid": engine.audit_chain.verify_chain()
-    }
+    return {"content_id": content_id, "trail": trail, "chain_valid": engine.audit_chain.verify_chain()}
 
 
 @app.get("/health")
@@ -763,7 +702,7 @@ def health():
         "judge_layers": 21,
         "frameworks_supported": 6,
         "audit_chain_entries": len(engine.audit_chain.chain),
-        "chain_valid": engine.audit_chain.verify_chain()
+        "chain_valid": engine.audit_chain.verify_chain(),
     }
 
 
@@ -775,11 +714,13 @@ def metrics():
         "total_tokens_saved": engine.total_tokens_saved,
         "savings_percentage": (
             engine.total_tokens_saved / (engine.total_tokens_used + engine.total_tokens_saved) * 100
-            if engine.total_tokens_used + engine.total_tokens_saved > 0 else 0
-        )
+            if engine.total_tokens_used + engine.total_tokens_saved > 0
+            else 0
+        ),
     }
 
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8889)

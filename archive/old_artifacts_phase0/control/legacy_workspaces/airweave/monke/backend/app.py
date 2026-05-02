@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import Any
 
@@ -10,8 +11,8 @@ app = FastAPI(title="Monke Backend", version="0.1.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=os.environ.get("CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH").split(","),
+    allow_headers=os.environ.get("CORS_HEADERS", "Content-Type,Authorization,X-Requested-With").split(","),
 )
 
 manager = RunManager()
@@ -128,9 +129,7 @@ async def ws_runs(ws: WebSocket):
                 "ended_at": r.ended_at,
             }
 
-        await ws.send_json(
-            {"bootstrap": True, "runs": [to_summary(r) for r in manager.list_runs()]}
-        )
+        await ws.send_json({"bootstrap": True, "runs": [to_summary(r) for r in manager.list_runs()]})
     except Exception:
         pass
     # Local run-state events only

@@ -35,10 +35,12 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure for production
+    allow_origins=["http://localhost:3000", "http://localhost:8000"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=os.environ.get("CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH").split(","),
+    allow_headers=os.environ.get(
+        "CORS_HEADERS", "Content-Type,Authorization,X-Requested-With"
+    ).split(","),
 )
 
 # Rate limiting (simple in-memory)
@@ -64,15 +66,18 @@ class QueryRequest(BaseModel):
     tags: list[str] | None = Field(None, description="Tags for archiving")
     auto_archive: bool = Field(True, description="Auto-archive the result")
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "message": "Design a scalable FastAPI microservice with authentication",
-                "max_threads": 6,
-                "tags": ["architecture", "fastapi"],
-                "auto_archive": True,
-            },
-        }
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "message": "Design a scalable FastAPI microservice with authentication",
+                    "max_threads": 6,
+                    "tags": ["architecture", "fastapi"],
+                    "auto_archive": True,
+                },
+            ],
+        },
+    }
 
 
 class QueryResponse(BaseModel):

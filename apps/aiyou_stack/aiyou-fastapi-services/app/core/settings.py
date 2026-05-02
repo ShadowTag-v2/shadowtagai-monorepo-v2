@@ -2,11 +2,17 @@
 
 from functools import lru_cache
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     """Application settings loaded from environment variables"""
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=True,
+    )
 
     # App settings
     APP_NAME: str = "AI You FastAPI Services"
@@ -20,7 +26,7 @@ class Settings(BaseSettings):
     PORT: int = 8000
 
     # CORS settings
-    CORS_ORIGINS: list[str] = ["*"]
+    CORS_ORIGINS: list[str] = []
     CORS_CREDENTIALS: bool = True
     CORS_METHODS: list[str] = ["*"]
     CORS_HEADERS: list[str] = ["*"]
@@ -31,23 +37,22 @@ class Settings(BaseSettings):
     MAX_TOKENS: int = 4096
     TEMPERATURE: float = 0.7
 
+    # Gemini settings
+    gemini_api_key: str | None = None
+
     # Rate limiting
     RATE_LIMIT_REQUESTS: int = 100
     RATE_LIMIT_PERIOD: int = 60  # seconds
 
     # Logging
     LOG_LEVEL: str = "INFO"
+    LOG_FORMAT: str = "json"
 
     # Database (optional, for future use)
     DATABASE_URL: str | None = None
 
     # Redis (optional, for caching/async tasks)
     REDIS_URL: str | None = None
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = True
 
 
 @lru_cache

@@ -49,6 +49,7 @@ from .config import REDIS_URL
 
 # --- Status Transition Helper ---
 
+
 async def update_meeting_status(
     meeting: Meeting,
     new_status: MeetingStatus,
@@ -57,7 +58,7 @@ async def update_meeting_status(
     failure_stage: MeetingFailureStage | None = None,
     error_details: str | None = None,
     transition_reason: str | None = None,
-    transition_metadata: dict[str, Any] | None = None
+    transition_metadata: dict[str, Any] | None = None,
 ) -> bool:
     """
     Update meeting status with proper validation and data enrichment.
@@ -95,31 +96,31 @@ async def update_meeting_status(
 
     if new_status == MeetingStatus.COMPLETED:
         if completion_reason:
-            current_data['completion_reason'] = completion_reason.value
+            current_data["completion_reason"] = completion_reason.value
         meeting.end_time = datetime.utcnow()
 
     elif new_status == MeetingStatus.FAILED:
         if failure_stage:
-            current_data['failure_stage'] = failure_stage.value
+            current_data["failure_stage"] = failure_stage.value
         if error_details:
-            current_data['error_details'] = error_details
+            current_data["error_details"] = error_details
         meeting.end_time = datetime.utcnow()
 
     # Add status transition metadata: single canonical list at data['status_transition']
     transition_entry = {
-        'from': old_status,
-        'to': new_status.value,
-        'timestamp': datetime.utcnow().isoformat(),
-        'source': get_status_source(current_status, new_status)
+        "from": old_status,
+        "to": new_status.value,
+        "timestamp": datetime.utcnow().isoformat(),
+        "source": get_status_source(current_status, new_status),
     }
     if transition_reason:
-        transition_entry['reason'] = transition_reason
+        transition_entry["reason"] = transition_reason
     if completion_reason:
-        transition_entry['completion_reason'] = completion_reason.value
+        transition_entry["completion_reason"] = completion_reason.value
     if failure_stage:
-        transition_entry['failure_stage'] = failure_stage.value
+        transition_entry["failure_stage"] = failure_stage.value
     if error_details:
-        transition_entry['error_details'] = error_details
+        transition_entry["error_details"] = error_details
     if isinstance(transition_metadata, dict) and transition_metadata:
         try:
             # Merge without overwriting existing keys
@@ -129,7 +130,7 @@ async def update_meeting_status(
         except Exception:
             pass
     try:
-        existing = current_data.get('status_transition')
+        existing = current_data.get("status_transition")
         if isinstance(existing, dict):
             transitions_list = [existing]
         elif isinstance(existing, list):
@@ -137,15 +138,15 @@ async def update_meeting_status(
         else:
             transitions_list = []
         transitions_list = list(transitions_list) + [transition_entry]
-        current_data['status_transition'] = transitions_list
+        current_data["status_transition"] = transitions_list
         # Remove deprecated key if present
-        if 'status_transitions' in current_data:
+        if "status_transitions" in current_data:
             try:
-                del current_data['status_transitions']
+                del current_data["status_transitions"]
             except Exception:
                 pass
     except Exception:
-        current_data['status_transition'] = [transition_entry]
+        current_data["status_transition"] = [transition_entry]
 
     # Assign back the rebuilt data object so SQLAlchemy marks JSONB as changed
     meeting.data = current_data
@@ -156,6 +157,7 @@ async def update_meeting_status(
     logger.info(f"Meeting {meeting.id} status updated from '{old_status}' to '{new_status.value}'")
     return True
 
+
 from app.tasks.bot_exit_tasks import run_all_tasks
 from app.tasks.webhook_runner import run_status_webhook_task
 
@@ -163,6 +165,7 @@ from app.tasks.webhook_runner import run_status_webhook_task
 def _b64url_encode(data: bytes) -> str:
     """URL-safe base64 encoding without padding."""
     return base64.urlsafe_b64encode(data).rstrip(b"=").decode("ascii")
+
 
 def mint_meeting_token(meeting_id: int, user_id: int, platform: str, native_meeting_id: str, ttl_seconds: int = 3600) -> str:
     """Mint a MeetingToken (HS256 JWT) using ADMIN_TOKEN."""
@@ -183,18 +186,21 @@ def mint_meeting_token(meeting_id: int, user_id: int, platform: str, native_meet
         "aud": "transcription-collector",
         "iat": now,
         "exp": now + ttl_seconds,
-        "jti": str(uuid_lib.uuid4())
+        "jti": str(uuid_lib.uuid4()),
     }
 
-    header_b64 = _b64url_encode(json.dumps(header, separators=(',', ':')).encode('utf-8'))
-    payload_b64 = _b64url_encode(json.dumps(payload, separators=(',', ':')).encode('utf-8'))
+    header_b64 = _b64url_encode(json.dumps(header, separators=(",", ":")).encode("utf-8"))
+    payload_b64 = _b64url_encode(json.dumps(payload, separators=(",", ":")).encode("utf-8"))
     signing_input = f"{header_b64}.{payload_b64}".encode("ascii")
-    signature = hmac.new(secret.encode("utf-8"), signing_input, digestmod='sha256').digest()
+    signature = hmac.new(secret.encode("utf-8"), signing_input, digestmod="sha256").digest()
     signature_b64 = _b64url_encode(signature)
 
     return f"{header_b64}.{payload_b64}.{signature_b64}"
 
-async def publish_meeting_status_change(meeting_id: int, new_status: str, redis_client: aioredis.Redis | None, platform: str, native_meeting_id: str, user_id: int):
+
+async def publish_meeting_status_change(
+    meeting_id: int, new_status: str, redis_client: aioredis.Redis | None, platform: str, native_meeting_id: str, user_id: int
+):
     """Publish meeting status changes via Redis Pub/Sub on meeting-ID channel."""
     if not redis_client:
         logger.warning("Redis client not available for publishing meeting status change")
@@ -204,7 +210,7 @@ async def publish_meeting_status_change(meeting_id: int, new_status: str, redis_
             "type": "meeting.status",
             "meeting": {"id": meeting_id, "platform": platform, "native_id": native_meeting_id},
             "payload": {"status": new_status},
-            "ts": datetime.utcnow().isoformat()
+            "ts": datetime.utcnow().isoformat(),
         }
         channel = f"bm:meeting:{meeting_id}:status"
         await redis_client.publish(channel, json.dumps(payload))
@@ -212,30 +218,28 @@ async def publish_meeting_status_change(meeting_id: int, new_status: str, redis_
     except Exception as e:
         logger.error(f"Failed to publish meeting status change for meeting {meeting_id}: {e}")
 
+
 async def schedule_status_webhook_task(
     meeting: Meeting,
     background_tasks: BackgroundTasks,
     old_status: str,
     new_status: str,
     reason: str | None = None,
-    transition_source: str | None = None
+    transition_source: str | None = None,
 ):
     """Schedule a webhook task for meeting status changes."""
     status_change_info = {
-        'old_status': old_status,
-        'new_status': new_status,
-        'reason': reason,
-        'timestamp': datetime.utcnow().isoformat(),
-        'transition_source': transition_source
+        "old_status": old_status,
+        "new_status": new_status,
+        "reason": reason,
+        "timestamp": datetime.utcnow().isoformat(),
+        "transition_source": transition_source,
     }
 
     # Schedule the webhook task with status change information
-    background_tasks.add_task(
-        run_status_webhook_task,
-        meeting.id,
-        status_change_info
-    )
+    background_tasks.add_task(run_status_webhook_task, meeting.id, status_change_info)
     logger.info(f"Scheduled status webhook task for meeting {meeting.id} status change: {old_status} -> {new_status}")
+
 
 # Configure logging
 logging.basicConfig(
@@ -252,13 +256,14 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=os.environ.get("CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH").split(","),
+    allow_headers=os.environ.get("CORS_HEADERS", "Content-Type,Authorization,X-Requested-With").split(","),
 )
 
 # --- ADD Redis Client Global ---
 redis_client: aioredis.Redis | None = None
 # --------------------------------
+
 
 class BotExitCallbackPayload(BaseModel):
     connection_id: str = Field(..., description="The connectionId (session_uid) of the exiting bot.")
@@ -269,12 +274,15 @@ class BotExitCallbackPayload(BaseModel):
     completion_reason: MeetingCompletionReason | None = Field(None, description="Reason for completion if applicable.")
     failure_stage: MeetingFailureStage | None = Field(None, description="Stage where failure occurred if applicable.")
 
+
 class BotStartupCallbackPayload(BaseModel):
     connection_id: str = Field(..., description="The connection ID of the bot session.")
     container_id: str = Field(..., description="The container ID of the started bot.")
 
+
 class BotStatusChangePayload(BaseModel):
     """Unified payload for all bot status change callbacks."""
+
     connection_id: str = Field(..., description="The connection ID of the bot session.")
     container_id: str | None = Field(None, description="The container ID of the bot.")
     status: MeetingStatus = Field(..., description="The new status of the meeting.")
@@ -286,11 +294,13 @@ class BotStatusChangePayload(BaseModel):
     failure_stage: MeetingFailureStage | None = Field(None, description="Stage where failure occurred if applicable.")
     timestamp: str | None = Field(None, description="Timestamp of the status change.")
 
+
 # --- --------------------------------------------- ---
+
 
 @app.on_event("startup")
 async def startup_event():
-    global redis_client # <-- Add global reference
+    global redis_client  # <-- Add global reference
     logger.info("Starting up Bot Manager...")
     # await init_db() # Removed - Admin API should handle this
     # await init_redis() # Removed redis init if not used elsewhere
@@ -303,18 +313,19 @@ async def startup_event():
     try:
         logger.info(f"Connecting to Redis at {REDIS_URL}...")
         redis_client = aioredis.from_url(REDIS_URL, decode_responses=True)
-        await redis_client.ping() # Verify connection
+        await redis_client.ping()  # Verify connection
         logger.info("Successfully connected to Redis.")
     except Exception as e:
         logger.error(f"Failed to connect to Redis on startup: {e}", exc_info=True)
-        redis_client = None # Ensure client is None if connection fails
+        redis_client = None  # Ensure client is None if connection fails
     # --------------------------------------
 
     logger.info("Database, Docker Client (attempted), and Redis Client (attempted) initialized.")
 
+
 @app.on_event("shutdown")
 async def shutdown_event():
-    global redis_client # <-- Add global reference
+    global redis_client  # <-- Add global reference
     logger.info("Shutting down Bot Manager...")
     # await close_redis() # Removed redis close if not used
 
@@ -330,6 +341,7 @@ async def shutdown_event():
 
     close_docker_client()
     logger.info("Docker Client closed.")
+
 
 # --- ADDED: Delayed Stop Task ---
 async def _delayed_container_stop(container_id: str, meeting_id: int, delay_seconds: int = 30):
@@ -368,26 +380,23 @@ async def _delayed_container_stop(container_id: str, meeting_id: int, delay_seco
             # This ensures we don't overwrite failed meetings with completed status
             terminal_states = [MeetingStatus.COMPLETED.value, MeetingStatus.FAILED.value]
             if meeting.status not in terminal_states:
-                logger.warning(f"[Delayed Stop] Meeting {meeting_id} still in non-terminal state '{meeting.status}' after container stop. Finalizing to COMPLETED (callback missed).")
+                logger.warning(
+                    f"[Delayed Stop] Meeting {meeting_id} still in non-terminal state '{meeting.status}' after container stop. Finalizing to COMPLETED (callback missed)."
+                )
                 success = await update_meeting_status(
                     meeting,
                     MeetingStatus.COMPLETED,
                     db,
                     completion_reason=MeetingCompletionReason.STOPPED,
                     transition_reason="delayed_stop_finalizer",
-                    transition_metadata={"container_id": container_id, "finalized_by": "delayed_stop"}
+                    transition_metadata={"container_id": container_id, "finalized_by": "delayed_stop"},
                 )
                 if success:
                     # Publish status change
                     global redis_client
                     if redis_client:
                         await publish_meeting_status_change(
-                            meeting.id,
-                            MeetingStatus.COMPLETED.value,
-                            redis_client,
-                            meeting.platform,
-                            meeting.platform_specific_id,
-                            meeting.user_id
+                            meeting.id, MeetingStatus.COMPLETED.value, redis_client, meeting.platform, meeting.platform_specific_id, meeting.user_id
                         )
 
                     # Schedule post-meeting tasks
@@ -401,21 +410,27 @@ async def _delayed_container_stop(container_id: str, meeting_id: int, delay_seco
                 logger.info(f"[Delayed Stop] Meeting {meeting_id} already in terminal state '{meeting.status}'. No finalization needed.")
     except Exception as e:
         logger.error(f"[Delayed Stop] Error during safety finalizer for meeting {meeting_id}: {e}", exc_info=True)
+
+
 # --- ------------------------ ---
+
 
 @app.get("/", include_in_schema=False)
 async def root():
     return {"message": "Vexa Bot Manager is running"}
 
-@app.post("/bots",
-          response_model=MeetingResponse,
-          status_code=status.HTTP_201_CREATED,
-          summary="Request a new bot instance to join a meeting",
-          dependencies=[Depends(get_user_and_token)]) # MODIFIED
+
+@app.post(
+    "/bots",
+    response_model=MeetingResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Request a new bot instance to join a meeting",
+    dependencies=[Depends(get_user_and_token)],
+)  # MODIFIED
 async def request_bot(
     req: MeetingCreate,
-    auth_data: tuple[str, User] = Depends(get_user_and_token), # MODIFIED
-    db: AsyncSession = Depends(get_db)
+    auth_data: tuple[str, User] = Depends(get_user_and_token),  # MODIFIED
+    db: AsyncSession = Depends(get_db),
 ):
     """Handles requests to launch a new bot container for a meeting.
     Requires a valid API token associated with a user.
@@ -434,58 +449,69 @@ async def request_bot(
     if not constructed_url:
         logger.error(f"Invalid meeting URL for platform {req.platform.value} and ID {native_meeting_id}. Rejecting request.")
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Invalid platform/native_meeting_id combination: cannot construct meeting URL"
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Invalid platform/native_meeting_id combination: cannot construct meeting URL"
         )
 
-    existing_meeting_stmt = select(Meeting).where(
-        Meeting.user_id == current_user.id,
-        Meeting.platform == req.platform.value,
-        Meeting.platform_specific_id == native_meeting_id,
-        Meeting.status.in_(['requested', 'active']) # Do NOT block on 'stopping' to allow immediate new bot
-    ).order_by(desc(Meeting.created_at)).limit(1) # Get the latest one if multiple somehow exist
+    existing_meeting_stmt = (
+        select(Meeting)
+        .where(
+            Meeting.user_id == current_user.id,
+            Meeting.platform == req.platform.value,
+            Meeting.platform_specific_id == native_meeting_id,
+            Meeting.status.in_(["requested", "active"]),  # Do NOT block on 'stopping' to allow immediate new bot
+        )
+        .order_by(desc(Meeting.created_at))
+        .limit(1)
+    )  # Get the latest one if multiple somehow exist
 
     result = await db.execute(existing_meeting_stmt)
     existing_meeting = result.scalars().first()
 
     if existing_meeting:
-        logger.info(f"Found existing meeting record {existing_meeting.id} with status '{existing_meeting.status}' for user {current_user.id}, platform '{req.platform.value}', native ID '{native_meeting_id}'.")
+        logger.info(
+            f"Found existing meeting record {existing_meeting.id} with status '{existing_meeting.status}' for user {current_user.id}, platform '{req.platform.value}', native ID '{native_meeting_id}'."
+        )
         # Enforce DB-only uniqueness: if there's any requested/active meeting, reject immediately.
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"An active or requested meeting already exists for this platform and meeting ID. Platform: {req.platform.value}, Native Meeting ID: {native_meeting_id}"
+            detail=f"An active or requested meeting already exists for this platform and meeting ID. Platform: {req.platform.value}, Native Meeting ID: {native_meeting_id}",
         )
 
     # --- Fast-fail concurrency limit check (DB-based) ---
     user_limit = int(getattr(current_user, "max_concurrent_bots", 0) or 0)
     if user_limit > 0:
-        count_stmt = select(func.count()).select_from(Meeting).where(
-            and_(
-                Meeting.user_id == current_user.id,
-                Meeting.status.in_([
-                    MeetingStatus.REQUESTED.value,
-                    MeetingStatus.JOINING.value,
-                    MeetingStatus.AWAITING_ADMISSION.value,
-                    MeetingStatus.ACTIVE.value
-                ])
+        count_stmt = (
+            select(func.count())
+            .select_from(Meeting)
+            .where(
+                and_(
+                    Meeting.user_id == current_user.id,
+                    Meeting.status.in_(
+                        [
+                            MeetingStatus.REQUESTED.value,
+                            MeetingStatus.JOINING.value,
+                            MeetingStatus.AWAITING_ADMISSION.value,
+                            MeetingStatus.ACTIVE.value,
+                        ]
+                    ),
+                )
             )
         )
         count_result = await db.execute(count_stmt)
         active_count = int(count_result.scalar() or 0)
         if active_count >= user_limit:
             logger.warning(f"User {current_user.id} reached concurrent bot limit {active_count}/{user_limit}. Rejecting new launch.")
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail=f"User has reached the maximum concurrent bot limit ({user_limit})."
-            )
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"User has reached the maximum concurrent bot limit ({user_limit}).")
 
     if existing_meeting is None:
-        logger.info(f"No active/valid existing meeting found for user {current_user.id}, platform '{req.platform.value}', native ID '{native_meeting_id}'. Proceeding to create a new meeting record.")
+        logger.info(
+            f"No active/valid existing meeting found for user {current_user.id}, platform '{req.platform.value}', native ID '{native_meeting_id}'. Proceeding to create a new meeting record."
+        )
         # Create Meeting record in DB
         # Prepare data field with passcode if provided
         meeting_data = {}
         if req.passcode:
-            meeting_data['passcode'] = req.passcode
+            meeting_data["passcode"] = req.passcode
 
         new_meeting = Meeting(
             user_id=current_user.id,
@@ -498,16 +524,16 @@ async def request_bot(
         db.add(new_meeting)
         await db.commit()
         await db.refresh(new_meeting)
-        meeting_id_for_bot = new_meeting.id # Use this for the bot
+        meeting_id_for_bot = new_meeting.id  # Use this for the bot
         logger.info(f"Created new meeting record with ID: {meeting_id_for_bot}")
         # Publish initial 'requested' status so clients receive it via WebSocket
         try:
-            await publish_meeting_status_change(meeting_id_for_bot, 'requested', redis_client, req.platform.value, native_meeting_id, current_user.id)
+            await publish_meeting_status_change(meeting_id_for_bot, "requested", redis_client, req.platform.value, native_meeting_id, current_user.id)
             logger.info(f"Published initial meeting.status 'requested' for meeting {meeting_id_for_bot}")
         except Exception as _pub_err:
             logger.warning(f"Failed to publish initial 'requested' status for meeting {meeting_id_for_bot}: {_pub_err}")
-    else: # This case should ideally not be reached if the 409 was raised correctly above.
-          # This implies existing_meeting was found and its container was running.
+    else:  # This case should ideally not be reached if the 409 was raised correctly above.
+        # This implies existing_meeting was found and its container was running.
         logger.error(f"Logic error: Should have raised 409 for existing meeting {existing_meeting.id}, but proceeding.")
         # To be safe, let's still use the existing meeting's ID if we reach here, though it implies a flaw.
         # However, the goal is to *prevent* duplicate bot launch if one is truly active.
@@ -515,9 +541,8 @@ async def request_bot(
         # For safety, re-raise, as this path indicates an issue if the container was deemed running.
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"An active or requested meeting already exists for this platform and meeting ID. Meeting ID: {existing_meeting.id}"
+            detail=f"An active or requested meeting already exists for this platform and meeting ID. Meeting ID: {existing_meeting.id}",
         )
-
 
     # The 'new_meeting' variable might not be defined if we used an existing one that was cleaned up.
     # We need a consistent variable for the meeting ID to pass to the bot.
@@ -530,17 +555,19 @@ async def request_bot(
     # Ensure we are using the correct meeting object for the rest of the process.
     # If existing_meeting was cleared, then new_meeting is the current one.
     current_meeting_for_bot_launch = None
-    if 'new_meeting' in locals() and new_meeting is not None:
+    if "new_meeting" in locals() and new_meeting is not None:
         current_meeting_for_bot_launch = new_meeting
     else:
         # This state should ideally be unreachable if logic is correct.
         # If existing_meeting was found, verified as running, it should have raised 409.
         # If existing_meeting was found, verified as NOT running, it was set to None, and new_meeting created.
         # If existing_meeting was found, no container_id, it was set to None, and new_meeting created.
-        logger.error(f"Critical logic error: Reached container start without a definitive meeting object for platform '{req.platform.value}', native ID '{native_meeting_id}'.")
+        logger.error(
+            f"Critical logic error: Reached container start without a definitive meeting object for platform '{req.platform.value}', native ID '{native_meeting_id}'."
+        )
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error preparing bot launch.")
 
-    meeting_id = current_meeting_for_bot_launch.id # Internal DB ID for the bot being launched.
+    meeting_id = current_meeting_for_bot_launch.id  # Internal DB ID for the bot being launched.
 
     # Preflight validation of required runtime inputs (guard against bad env rendering)
     invalid_fields: list[str] = []
@@ -568,15 +595,12 @@ async def request_bot(
     if invalid_fields:
         logger.error(f"Preflight validation failed. Invalid fields: {invalid_fields}")
         try:
-            current_meeting_for_bot_launch.status = 'error'
+            current_meeting_for_bot_launch.status = "error"
             await db.commit()
-            await publish_meeting_status_change(meeting_id, 'error', redis_client, req.platform.value, native_meeting_id, current_user.id)
+            await publish_meeting_status_change(meeting_id, "error", redis_client, req.platform.value, native_meeting_id, current_user.id)
         except Exception as _:
             pass
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Invalid inputs: {', '.join(invalid_fields)}"
-        )
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=f"Invalid inputs: {', '.join(invalid_fields)}")
 
     # 4. Start the bot container
     container_id = None
@@ -585,29 +609,30 @@ async def request_bot(
         logger.info(f"Attempting to start bot container for meeting {meeting_id} (native: {native_meeting_id})...")
         container_id, connection_id = await start_bot_container(
             user_id=current_user.id,
-            meeting_id=meeting_id, # Internal DB ID
+            meeting_id=meeting_id,  # Internal DB ID
             meeting_url=constructed_url,
             platform=req.platform.value,
             bot_name=req.bot_name,
             user_token=user_token,
             native_meeting_id=native_meeting_id,
             language=req.language,
-            task=req.task
+            task=req.task,
         )
         logger.info(f"Call to start_bot_container completed. Container ID: {container_id}, Connection ID: {connection_id}")
 
         if not container_id or not connection_id:
             error_msg = "Failed to start bot container."
-            if not container_id: error_msg += " Container ID not returned."
-            if not connection_id: error_msg += " Connection ID not generated/returned."
+            if not container_id:
+                error_msg += " Container ID not returned."
+            if not connection_id:
+                error_msg += " Connection ID not generated/returned."
             logger.error(f"{error_msg} for meeting {meeting_id}")
 
-            current_meeting_for_bot_launch.status = 'error'
+            current_meeting_for_bot_launch.status = "error"
             await db.commit()
-            await publish_meeting_status_change(meeting_id, 'error', redis_client, req.platform.value, native_meeting_id, current_user.id)
+            await publish_meeting_status_change(meeting_id, "error", redis_client, req.platform.value, native_meeting_id, current_user.id)
             raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail={"status": "error", "message": error_msg, "meeting_id": meeting_id}
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail={"status": "error", "message": error_msg, "meeting_id": meeting_id}
             )
 
         asyncio.create_task(_record_session_start(meeting_id, connection_id))
@@ -630,85 +655,93 @@ async def request_bot(
         logger.warning(f"HTTPException occurred during bot startup for meeting {meeting_id}: {http_exc.status_code} - {http_exc.detail}")
         try:
             # Fetch again or use current_meeting_for_bot_launch if it's the correct one to update
-            meeting_to_update = await db.get(Meeting, meeting_id) # Re-fetch to be safe with session state
-            if meeting_to_update and meeting_to_update.status not in ['error', 'failed', 'completed']:
-                 logger.warning(f"Updating meeting {meeting_id} status to 'error' due to HTTPException {http_exc.status_code}.")
-                 meeting_to_update.status = 'error'
-                 if container_id:
-                     meeting_to_update.bot_container_id = container_id
-                 await db.commit()
-                 await publish_meeting_status_change(meeting_id, 'error', redis_client, req.platform.value, native_meeting_id, current_user.id)
+            meeting_to_update = await db.get(Meeting, meeting_id)  # Re-fetch to be safe with session state
+            if meeting_to_update and meeting_to_update.status not in ["error", "failed", "completed"]:
+                logger.warning(f"Updating meeting {meeting_id} status to 'error' due to HTTPException {http_exc.status_code}.")
+                meeting_to_update.status = "error"
+                if container_id:
+                    meeting_to_update.bot_container_id = container_id
+                await db.commit()
+                await publish_meeting_status_change(meeting_id, "error", redis_client, req.platform.value, native_meeting_id, current_user.id)
             elif not meeting_to_update:
                 logger.error(f"Could not find meeting {meeting_id} to update status to error after HTTPException.")
         except Exception as db_err:
-             logger.error(f"Failed to update meeting {meeting_id} status to error after HTTPException: {db_err}")
+            logger.error(f"Failed to update meeting {meeting_id} status to error after HTTPException: {db_err}")
         raise http_exc
 
     except Exception as e:
         logger.error(f"Unexpected exception occurred during bot startup process for meeting {meeting_id} (after DB creation): {e}", exc_info=True)
         try:
-            meeting_to_update = await db.get(Meeting, meeting_id) # Re-fetch
-            if meeting_to_update and meeting_to_update.status not in ['error', 'failed', 'completed']:
-                 logger.warning(f"Updating meeting {meeting_id} status to 'error' due to unexpected exception.")
-                 meeting_to_update.status = 'error'
-                 if container_id:
-                     meeting_to_update.bot_container_id = container_id
-                 await db.commit()
-                 await publish_meeting_status_change(meeting_id, 'error', redis_client, req.platform.value, native_meeting_id, current_user.id)
+            meeting_to_update = await db.get(Meeting, meeting_id)  # Re-fetch
+            if meeting_to_update and meeting_to_update.status not in ["error", "failed", "completed"]:
+                logger.warning(f"Updating meeting {meeting_id} status to 'error' due to unexpected exception.")
+                meeting_to_update.status = "error"
+                if container_id:
+                    meeting_to_update.bot_container_id = container_id
+                await db.commit()
+                await publish_meeting_status_change(meeting_id, "error", redis_client, req.platform.value, native_meeting_id, current_user.id)
             elif not meeting_to_update:
                 logger.error(f"Could not find meeting {meeting_id} to update status to error after unexpected exception.")
         except Exception as db_err:
-             logger.error(f"Failed to update meeting {meeting_id} status to error after unexpected exception: {db_err}")
+            logger.error(f"Failed to update meeting {meeting_id} status to error after unexpected exception: {db_err}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"status": "error", "message": f"An unexpected error occurred during bot startup: {str(e)}", "meeting_id": meeting_id}
+            detail={"status": "error", "message": f"An unexpected error occurred during bot startup: {str(e)}", "meeting_id": meeting_id},
         )
 
+
 # --- ADD PUT Endpoint for Reconfiguration ---
-@app.put("/bots/{platform}/{native_meeting_id}/config",
-         status_code=status.HTTP_202_ACCEPTED,
-         summary="Update configuration for an active bot",
-         description="Updates the language and/or task for an active bot associated with the platform and native meeting ID. Sends a command via Redis Pub/Sub.",
-         dependencies=[Depends(get_user_and_token)])
+@app.put(
+    "/bots/{platform}/{native_meeting_id}/config",
+    status_code=status.HTTP_202_ACCEPTED,
+    summary="Update configuration for an active bot",
+    description="Updates the language and/or task for an active bot associated with the platform and native meeting ID. Sends a command via Redis Pub/Sub.",
+    dependencies=[Depends(get_user_and_token)],
+)
 async def update_bot_config(
     platform: Platform,
     native_meeting_id: str,
     req: MeetingConfigUpdate,
     auth_data: tuple[str, User] = Depends(get_user_and_token),
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
 ):
-    global redis_client # Access global redis client
+    global redis_client  # Access global redis client
     user_token, current_user = auth_data
 
     logger.info(f"User {current_user.id} requesting config update for {platform.value}/{native_meeting_id}: lang={req.language}, task={req.task}")
 
     # 1. Find the LATEST active meeting for this user/platform/native_id
-    active_meeting_stmt = select(Meeting).where(
-        Meeting.user_id == current_user.id,
-        Meeting.platform == platform.value,
-        Meeting.platform_specific_id == native_meeting_id,
-        Meeting.status == MeetingStatus.ACTIVE.value # Must be active to reconfigure
-    ).order_by(Meeting.created_at.desc()) # <-- ADDED: Order by created_at descending
+    active_meeting_stmt = (
+        select(Meeting)
+        .where(
+            Meeting.user_id == current_user.id,
+            Meeting.platform == platform.value,
+            Meeting.platform_specific_id == native_meeting_id,
+            Meeting.status == MeetingStatus.ACTIVE.value,  # Must be active to reconfigure
+        )
+        .order_by(Meeting.created_at.desc())
+    )  # <-- ADDED: Order by created_at descending
 
     result = await db.execute(active_meeting_stmt)
-    active_meeting = result.scalars().first() # Takes the most recent one
+    active_meeting = result.scalars().first()  # Takes the most recent one
 
     if not active_meeting:
         logger.warning(f"No active meeting found for user {current_user.id}, {platform.value}/{native_meeting_id} to reconfigure.")
         # Check if exists but wrong status
-        existing_stmt = select(Meeting.status).where(
-            Meeting.user_id == current_user.id,
-            Meeting.platform == platform.value,
-            Meeting.platform_specific_id == native_meeting_id
-        ).order_by(Meeting.created_at.desc()).limit(1)
+        existing_stmt = (
+            select(Meeting.status)
+            .where(Meeting.user_id == current_user.id, Meeting.platform == platform.value, Meeting.platform_specific_id == native_meeting_id)
+            .order_by(Meeting.created_at.desc())
+            .limit(1)
+        )
         existing_res = await db.execute(existing_stmt)
         existing_status = existing_res.scalars().first()
         if existing_status:
-             detail = f"Meeting found but is not active (status: '{existing_status}'). Cannot reconfigure."
-             status_code = status.HTTP_409_CONFLICT
+            detail = f"Meeting found but is not active (status: '{existing_status}'). Cannot reconfigure."
+            status_code = status.HTTP_409_CONFLICT
         else:
-             detail = f"No active meeting found for platform {platform.value} and meeting ID {native_meeting_id}."
-             status_code = status.HTTP_404_NOT_FOUND
+            detail = f"No active meeting found for platform {platform.value} and meeting ID {native_meeting_id}."
+            status_code = status.HTTP_404_NOT_FOUND
         raise HTTPException(status_code=status_code, detail=detail)
 
     internal_meeting_id = active_meeting.id
@@ -717,17 +750,9 @@ async def update_bot_config(
     # 2. Construct and Publish command (meeting-based addressing only)
     if not redis_client:
         logger.error("Redis client not available. Cannot publish reconfigure command.")
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Cannot connect to internal messaging service to send command."
-        )
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Cannot connect to internal messaging service to send command.")
 
-    command_payload = {
-        "action": "reconfigure",
-        "meeting_id": internal_meeting_id,
-        "language": req.language,
-        "task": req.task
-    }
+    command_payload = {"action": "reconfigure", "meeting_id": internal_meeting_id, "language": req.language, "task": req.task}
     # Publish to the meeting-specific channel the bot SUBSCRIBED to
     channel = f"bot_commands:meeting:{internal_meeting_id}"
 
@@ -738,26 +763,28 @@ async def update_bot_config(
         logger.info(f"Successfully published reconfigure command for meeting {internal_meeting_id}.")
     except Exception as e:
         logger.error(f"Failed to publish reconfigure command to Redis channel {channel}: {e}", exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to send reconfiguration command to the bot."
-        )
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to send reconfiguration command to the bot.")
 
     # 4. Return 202 Accepted
     return {"message": "Reconfiguration request accepted and sent to the bot."}
+
+
 # -------------------------------------------
 
-@app.delete("/bots/{platform}/{native_meeting_id}",
-             status_code=status.HTTP_202_ACCEPTED,
-             summary="Request stop for a bot",
-             description="Stops a bot from any status (requested, joining, awaiting_admission, active). Sends a 'leave' command to the bot via Redis and schedules a delayed container stop. Returns 202 Accepted immediately.",
-             dependencies=[Depends(get_user_and_token)])
+
+@app.delete(
+    "/bots/{platform}/{native_meeting_id}",
+    status_code=status.HTTP_202_ACCEPTED,
+    summary="Request stop for a bot",
+    description="Stops a bot from any status (requested, joining, awaiting_admission, active). Sends a 'leave' command to the bot via Redis and schedules a delayed container stop. Returns 202 Accepted immediately.",
+    dependencies=[Depends(get_user_and_token)],
+)
 async def stop_bot(
     platform: Platform,
     native_meeting_id: str,
-    background_tasks: BackgroundTasks, # Keep BackgroundTasks
+    background_tasks: BackgroundTasks,  # Keep BackgroundTasks
     auth_data: tuple[str, User] = Depends(get_user_and_token),
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
 ):
     """
     Handles requests to stop a bot for a specific meeting.
@@ -776,11 +803,11 @@ async def stop_bot(
     logger.info(f"Received stop request for {platform_value}/{native_meeting_id} from user {current_user.id}")
 
     # 1. Find all meetings matching the criteria
-    stmt = select(Meeting).where(
-        Meeting.user_id == current_user.id,
-        Meeting.platform == platform_value,
-        Meeting.platform_specific_id == native_meeting_id
-    ).order_by(desc(Meeting.created_at))
+    stmt = (
+        select(Meeting)
+        .where(Meeting.user_id == current_user.id, Meeting.platform == platform_value, Meeting.platform_specific_id == native_meeting_id)
+        .order_by(desc(Meeting.created_at))
+    )
 
     result = await db.execute(stmt)
     all_meetings = result.scalars().all()
@@ -790,10 +817,7 @@ async def stop_bot(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No meeting found to stop.")
 
     # Filter to non-terminal meetings
-    non_terminal_meetings = [
-        m for m in all_meetings
-        if m.status not in [MeetingStatus.COMPLETED.value, MeetingStatus.FAILED.value]
-    ]
+    non_terminal_meetings = [m for m in all_meetings if m.status not in [MeetingStatus.COMPLETED.value, MeetingStatus.FAILED.value]]
 
     # If all meetings are terminal, return idempotent response
     if not non_terminal_meetings:
@@ -806,14 +830,11 @@ async def stop_bot(
         # Handle meetings without container ID - can be in any non-terminal status
         if not meeting.bot_container_id:
             logger.info(f"Stop request: Meeting {meeting.id} has no container ID (status: {meeting.status}). Finalizing immediately.")
-            success = await update_meeting_status(
-                meeting,
-                MeetingStatus.COMPLETED,
-                db,
-                completion_reason=MeetingCompletionReason.STOPPED
-            )
+            success = await update_meeting_status(meeting, MeetingStatus.COMPLETED, db, completion_reason=MeetingCompletionReason.STOPPED)
             if success:
-                await publish_meeting_status_change(meeting.id, MeetingStatus.COMPLETED.value, redis_client, platform_value, native_meeting_id, meeting.user_id)
+                await publish_meeting_status_change(
+                    meeting.id, MeetingStatus.COMPLETED.value, redis_client, platform_value, native_meeting_id, meeting.user_id
+                )
             # Schedule post-meeting tasks even if it never became active
             logger.info(f"Scheduling post-meeting tasks for meeting {meeting.id} (no container case).")
             background_tasks.add_task(run_all_tasks, meeting.id)
@@ -826,8 +847,12 @@ async def stop_bot(
             seconds_since_created = (datetime.utcnow() - meeting.created_at).total_seconds() if meeting.created_at else None
         except Exception:
             seconds_since_created = None
-        if meeting.status in [MeetingStatus.REQUESTED.value, MeetingStatus.JOINING.value, MeetingStatus.AWAITING_ADMISSION.value] and (seconds_since_created is not None and seconds_since_created < 5):
-            logger.info(f"Stop request: Meeting {meeting.id} is pre-active and started {seconds_since_created:.2f}s ago. Finalizing immediately and stopping container.")
+        if meeting.status in [MeetingStatus.REQUESTED.value, MeetingStatus.JOINING.value, MeetingStatus.AWAITING_ADMISSION.value] and (
+            seconds_since_created is not None and seconds_since_created < 5
+        ):
+            logger.info(
+                f"Stop request: Meeting {meeting.id} is pre-active and started {seconds_since_created:.2f}s ago. Finalizing immediately and stopping container."
+            )
             # Mark stop intent to ignore late callbacks
             if meeting.data is None:
                 meeting.data = {}
@@ -836,14 +861,11 @@ async def stop_bot(
             # Stop container ASAP (no delay) in background
             background_tasks.add_task(_delayed_container_stop, meeting.bot_container_id, meeting.id, 0)
             # Finalize meeting now
-            success = await update_meeting_status(
-                meeting,
-                MeetingStatus.COMPLETED,
-                db,
-                completion_reason=MeetingCompletionReason.STOPPED
-            )
+            success = await update_meeting_status(meeting, MeetingStatus.COMPLETED, db, completion_reason=MeetingCompletionReason.STOPPED)
             if success:
-                await publish_meeting_status_change(meeting.id, MeetingStatus.COMPLETED.value, redis_client, platform_value, native_meeting_id, meeting.user_id)
+                await publish_meeting_status_change(
+                    meeting.id, MeetingStatus.COMPLETED.value, redis_client, platform_value, native_meeting_id, meeting.user_id
+                )
             # Schedule post-meeting tasks
             background_tasks.add_task(run_all_tasks, meeting.id)
             continue
@@ -882,20 +904,21 @@ async def stop_bot(
         logger.info(f"Meeting {meeting.id} status updated.")
 
         # 5.1. Publish meeting status change via Redis Pub/Sub
-        await publish_meeting_status_change(meeting.id, 'stopping', redis_client, platform_value, native_meeting_id, meeting.user_id)
+        await publish_meeting_status_change(meeting.id, "stopping", redis_client, platform_value, native_meeting_id, meeting.user_id)
         logger.info(f"Stop request for meeting {meeting.id} accepted. Leave command sent, delayed stop scheduled.")
 
     # 6. Return 202 Accepted
     return {"message": "Stop request accepted and is being processed."}
 
+
 # --- NEW Endpoint: Get Running Bot Status ---
-@app.get("/bots/status",
-         response_model=BotStatusResponse,
-         summary="Get status of running bot containers for the authenticated user",
-         dependencies=[Depends(get_user_and_token)])
-async def get_user_bots_status(
-    auth_data: tuple[str, User] = Depends(get_user_and_token)
-):
+@app.get(
+    "/bots/status",
+    response_model=BotStatusResponse,
+    summary="Get status of running bot containers for the authenticated user",
+    dependencies=[Depends(get_user_and_token)],
+)
+async def get_user_bots_status(auth_data: tuple[str, User] = Depends(get_user_and_token)):
     """Retrieves a list of currently running bot containers associated with the user's API key."""
     user_token, current_user = auth_data
     user_id = current_user.id
@@ -910,21 +933,23 @@ async def get_user_bots_status(
     except Exception as e:
         # Catch potential errors from get_running_bots_status or session issues
         logger.error(f"Error fetching bot status for user {user_id}: {e}", exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to retrieve bot status."
-        )
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to retrieve bot status.")
+
+
 # --- END Endpoint: Get Running Bot Status ---
 
+
 # --- ADDED: Endpoint for Vexa-Bot to report its exit status ---
-@app.post("/bots/internal/callback/exited",
-          status_code=status.HTTP_200_OK,
-          summary="Callback for vexa-bot to report its exit status",
-          include_in_schema=False) # Hidden from public API docs
+@app.post(
+    "/bots/internal/callback/exited",
+    status_code=status.HTTP_200_OK,
+    summary="Callback for vexa-bot to report its exit status",
+    include_in_schema=False,
+)  # Hidden from public API docs
 async def bot_exit_callback(
     payload: BotExitCallbackPayload,
-    background_tasks: BackgroundTasks, # Added BackgroundTasks dependency
-    db: AsyncSession = Depends(get_db)
+    background_tasks: BackgroundTasks,  # Added BackgroundTasks dependency
+    db: AsyncSession = Depends(get_db),
 ):
     """
     Handles the exit callback from a bot container.
@@ -964,9 +989,7 @@ async def bot_exit_callback(
         if exit_code == 0:
             # Prefer bot-provided completion_reason, fallback to STOPPED
             provided_reason = payload.completion_reason or MeetingCompletionReason.STOPPED
-            transition_meta = {
-                "exit_code": exit_code
-            }
+            transition_meta = {"exit_code": exit_code}
             if payload.platform_specific_error:
                 transition_meta["platform_specific_error"] = payload.platform_specific_error
             success = await update_meeting_status(
@@ -974,9 +997,11 @@ async def bot_exit_callback(
                 MeetingStatus.COMPLETED,
                 db,
                 completion_reason=provided_reason,
-                error_details=payload.error_details if isinstance(payload.error_details, str) else (json.dumps(payload.error_details) if payload.error_details else None),
+                error_details=payload.error_details
+                if isinstance(payload.error_details, str)
+                else (json.dumps(payload.error_details) if payload.error_details else None),
                 transition_reason=payload.reason,
-                transition_metadata=transition_meta
+                transition_metadata=transition_meta,
             )
             if success:
                 new_status = MeetingStatus.COMPLETED.value
@@ -990,9 +1015,7 @@ async def bot_exit_callback(
             error_msg = f"Bot exited with code {exit_code}"
             if payload.reason:
                 error_msg += f"; reason: {payload.reason}"
-            transition_meta = {
-                "exit_code": exit_code
-            }
+            transition_meta = {"exit_code": exit_code}
             if payload.platform_specific_error:
                 transition_meta["platform_specific_error"] = payload.platform_specific_error
             success = await update_meeting_status(
@@ -1002,7 +1025,7 @@ async def bot_exit_callback(
                 failure_stage=provided_stage,
                 error_details=error_msg,
                 transition_reason=payload.reason,
-                transition_metadata=transition_meta
+                transition_metadata=transition_meta,
             )
             if success:
                 new_status = MeetingStatus.FAILED.value
@@ -1021,7 +1044,7 @@ async def bot_exit_callback(
                     "reason": payload.reason,
                     "timestamp": datetime.utcnow().isoformat(),
                     "error_details": payload.error_details,
-                    "platform_specific_error": payload.platform_specific_error
+                    "platform_specific_error": payload.platform_specific_error,
                 }
 
                 # Store in data field for debugging and analysis
@@ -1054,19 +1077,18 @@ async def bot_exit_callback(
         # Attempt to rollback any partial changes
         await db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred while processing the bot exit callback."
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="An internal error occurred while processing the bot exit callback."
         )
 
+
 # --- ADDED: Endpoint for Vexa-Bot to report its startup status ---
-@app.post("/bots/internal/callback/started",
-          status_code=status.HTTP_200_OK,
-          summary="Callback for vexa-bot to report its startup status",
-          include_in_schema=False) # Hidden from public API docs
-async def bot_startup_callback(
-    payload: BotStartupCallbackPayload,
-    db: AsyncSession = Depends(get_db)
-):
+@app.post(
+    "/bots/internal/callback/started",
+    status_code=status.HTTP_200_OK,
+    summary="Callback for vexa-bot to report its startup status",
+    include_in_schema=False,
+)  # Hidden from public API docs
+async def bot_startup_callback(payload: BotStartupCallbackPayload, db: AsyncSession = Depends(get_db)):
     """
     Handles the startup callback from a bot container.
     - Finds the corresponding meeting record using connection_id.
@@ -1105,18 +1127,21 @@ async def bot_startup_callback(
 
         # Update meeting status to active and set start time
         old_status = meeting.status
-        if meeting.status in [MeetingStatus.REQUESTED.value, MeetingStatus.JOINING.value, MeetingStatus.AWAITING_ADMISSION.value, MeetingStatus.FAILED.value]:
-            success = await update_meeting_status(
-                meeting,
-                MeetingStatus.ACTIVE,
-                db
-            )
+        if meeting.status in [
+            MeetingStatus.REQUESTED.value,
+            MeetingStatus.JOINING.value,
+            MeetingStatus.AWAITING_ADMISSION.value,
+            MeetingStatus.FAILED.value,
+        ]:
+            success = await update_meeting_status(meeting, MeetingStatus.ACTIVE, db)
             if success:
                 meeting.bot_container_id = container_id
                 meeting.start_time = datetime.utcnow()
                 await db.commit()
                 await db.refresh(meeting)
-                logger.info(f"Bot startup callback: Meeting {meeting_id} status updated from '{old_status}' to 'active' with container {container_id}.")
+                logger.info(
+                    f"Bot startup callback: Meeting {meeting_id} status updated from '{old_status}' to 'active' with container {container_id}."
+                )
                 # No manual transition writes here; update_meeting_status already recorded the transition
             else:
                 logger.error(f"Bot startup callback: Failed to update meeting {meeting_id} status to 'active'")
@@ -1133,7 +1158,9 @@ async def bot_startup_callback(
 
         # Publish meeting status change via Redis Pub/Sub (only if status changed to 'active')
         if meeting.status == MeetingStatus.ACTIVE.value and old_status != MeetingStatus.ACTIVE.value:
-            await publish_meeting_status_change(meeting.id, MeetingStatus.ACTIVE.value, redis_client, meeting.platform, meeting.platform_specific_id, meeting.user_id)
+            await publish_meeting_status_change(
+                meeting.id, MeetingStatus.ACTIVE.value, redis_client, meeting.platform, meeting.platform_specific_id, meeting.user_id
+            )
 
         return {"status": "startup processed", "meeting_id": meeting.id, "status": meeting.status}
 
@@ -1141,18 +1168,20 @@ async def bot_startup_callback(
         logger.error(f"Bot startup callback: An unexpected error occurred: {e}", exc_info=True)
         await db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred while processing the bot startup callback."
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="An internal error occurred while processing the bot startup callback."
         )
 
+
 # --- ADDED: Endpoint for Vexa-Bot to report joining status ---
-@app.post("/bots/internal/callback/joining",
-          status_code=status.HTTP_200_OK,
-          summary="Callback for vexa-bot to report joining status",
-          include_in_schema=False) # Hidden from public API docs
+@app.post(
+    "/bots/internal/callback/joining",
+    status_code=status.HTTP_200_OK,
+    summary="Callback for vexa-bot to report joining status",
+    include_in_schema=False,
+)  # Hidden from public API docs
 async def bot_joining_callback(
     payload: BotStartupCallbackPayload,  # Reuse same payload structure
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
 ):
     """
     Handles the joining callback from a bot container.
@@ -1171,10 +1200,7 @@ async def bot_joining_callback(
 
         if not meeting_session:
             logger.error(f"Bot joining callback: Could not find meeting session for connection_id {session_uid}. Cannot update meeting status.")
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Meeting session not found for connection_id: {session_uid}"
-            )
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Meeting session not found for connection_id: {session_uid}")
 
         # Find the meeting record
         meeting_stmt = select(Meeting).where(Meeting.id == meeting_session.meeting_id)
@@ -1183,10 +1209,7 @@ async def bot_joining_callback(
 
         if not meeting:
             logger.error(f"Bot joining callback: Could not find meeting for session {meeting_session.meeting_id}. Cannot update meeting status.")
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Meeting not found for session: {meeting_session.meeting_id}"
-            )
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Meeting not found for session: {meeting_session.meeting_id}")
 
         # If user stopped early, ignore joining transition
         if meeting.data and isinstance(meeting.data, dict) and meeting.data.get("stop_requested"):
@@ -1194,16 +1217,14 @@ async def bot_joining_callback(
             return {"status": "ignored", "detail": "stop requested"}
 
         # Update meeting status to joining
-        success = await update_meeting_status(
-            meeting=meeting,
-            new_status=MeetingStatus.JOINING,
-            db=db
-        )
+        success = await update_meeting_status(meeting=meeting, new_status=MeetingStatus.JOINING, db=db)
 
         if success:
             logger.info(f"Bot joining callback: Successfully updated meeting {meeting.id} status to 'joining'")
             # Publish status change to Redis
-            await publish_meeting_status_change(meeting.id, MeetingStatus.JOINING.value, redis_client, meeting.platform, meeting.platform_specific_id, meeting.user_id)
+            await publish_meeting_status_change(
+                meeting.id, MeetingStatus.JOINING.value, redis_client, meeting.platform, meeting.platform_specific_id, meeting.user_id
+            )
             # No manual transition writes here; update_meeting_status already recorded the transition
 
         return {"status": "joining processed", "meeting_id": meeting.id, "status": meeting.status}
@@ -1212,18 +1233,20 @@ async def bot_joining_callback(
         logger.error(f"Bot joining callback: An unexpected error occurred: {e}", exc_info=True)
         await db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred while processing the bot joining callback."
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="An internal error occurred while processing the bot joining callback."
         )
 
+
 # --- ADDED: Endpoint for Vexa-Bot to report awaiting admission status ---
-@app.post("/bots/internal/callback/awaiting_admission",
-          status_code=status.HTTP_200_OK,
-          summary="Callback for vexa-bot to report awaiting admission status",
-          include_in_schema=False) # Hidden from public API docs
+@app.post(
+    "/bots/internal/callback/awaiting_admission",
+    status_code=status.HTTP_200_OK,
+    summary="Callback for vexa-bot to report awaiting admission status",
+    include_in_schema=False,
+)  # Hidden from public API docs
 async def bot_awaiting_admission_callback(
     payload: BotStartupCallbackPayload,  # Reuse same payload structure
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
 ):
     """
     Handles the awaiting admission callback from a bot container.
@@ -1241,11 +1264,10 @@ async def bot_awaiting_admission_callback(
         meeting_session = session_result.scalars().first()
 
         if not meeting_session:
-            logger.error(f"Bot awaiting admission callback: Could not find meeting session for connection_id {session_uid}. Cannot update meeting status.")
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Meeting session not found for connection_id: {session_uid}"
+            logger.error(
+                f"Bot awaiting admission callback: Could not find meeting session for connection_id {session_uid}. Cannot update meeting status."
             )
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Meeting session not found for connection_id: {session_uid}")
 
         # Find the meeting record
         meeting_stmt = select(Meeting).where(Meeting.id == meeting_session.meeting_id)
@@ -1253,11 +1275,10 @@ async def bot_awaiting_admission_callback(
         meeting = meeting_result.scalars().first()
 
         if not meeting:
-            logger.error(f"Bot awaiting admission callback: Could not find meeting for session {meeting_session.meeting_id}. Cannot update meeting status.")
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Meeting not found for session: {meeting_session.meeting_id}"
+            logger.error(
+                f"Bot awaiting admission callback: Could not find meeting for session {meeting_session.meeting_id}. Cannot update meeting status."
             )
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Meeting not found for session: {meeting_session.meeting_id}")
 
         # If user stopped early, ignore awaiting admission transition
         if meeting.data and isinstance(meeting.data, dict) and meeting.data.get("stop_requested"):
@@ -1265,16 +1286,14 @@ async def bot_awaiting_admission_callback(
             return {"status": "ignored", "detail": "stop requested"}
 
         # Update meeting status to awaiting_admission
-        success = await update_meeting_status(
-            meeting=meeting,
-            new_status=MeetingStatus.AWAITING_ADMISSION,
-            db=db
-        )
+        success = await update_meeting_status(meeting=meeting, new_status=MeetingStatus.AWAITING_ADMISSION, db=db)
 
         if success:
             logger.info(f"Bot awaiting admission callback: Successfully updated meeting {meeting.id} status to 'awaiting_admission'")
             # Publish status change to Redis
-            await publish_meeting_status_change(meeting.id, MeetingStatus.AWAITING_ADMISSION.value, redis_client, meeting.platform, meeting.platform_specific_id, meeting.user_id)
+            await publish_meeting_status_change(
+                meeting.id, MeetingStatus.AWAITING_ADMISSION.value, redis_client, meeting.platform, meeting.platform_specific_id, meeting.user_id
+            )
             # No manual transition writes here; update_meeting_status already recorded the transition
 
         return {"status": "awaiting_admission processed", "meeting_id": meeting.id, "status": meeting.status}
@@ -1284,20 +1303,19 @@ async def bot_awaiting_admission_callback(
         await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred while processing the bot awaiting admission callback."
+            detail="An internal error occurred while processing the bot awaiting admission callback.",
         )
 
+
 # --- UNIFIED CALLBACK ENDPOINT ---
-@app.post("/bots/internal/callback/status_change",
-          status_code=status.HTTP_200_OK,
-          summary="Unified callback for all bot status changes",
-          description="Handles all bot status changes (joining, awaiting_admission, active, completed, failed) with webhook notifications",
-          include_in_schema=False) # Hidden from public API docs
-async def bot_status_change_callback(
-    payload: BotStatusChangePayload,
-    background_tasks: BackgroundTasks,
-    db: AsyncSession = Depends(get_db)
-):
+@app.post(
+    "/bots/internal/callback/status_change",
+    status_code=status.HTTP_200_OK,
+    summary="Unified callback for all bot status changes",
+    description="Handles all bot status changes (joining, awaiting_admission, active, completed, failed) with webhook notifications",
+    include_in_schema=False,
+)  # Hidden from public API docs
+async def bot_status_change_callback(payload: BotStatusChangePayload, background_tasks: BackgroundTasks, db: AsyncSession = Depends(get_db)):
     """
     Unified callback endpoint for all bot status changes.
 
@@ -1310,7 +1328,9 @@ async def bot_status_change_callback(
 
     All status changes trigger webhook notifications if user has webhook URL configured.
     """
-    logger.info(f"Received unified bot status change callback: connection_id={payload.connection_id}, status={payload.status.value}, reason={payload.reason}")
+    logger.info(
+        f"Received unified bot status change callback: connection_id={payload.connection_id}, status={payload.status.value}, reason={payload.reason}"
+    )
 
     session_uid = payload.connection_id
     new_status = payload.status
@@ -1336,9 +1356,12 @@ async def bot_status_change_callback(
             return {"status": "error", "detail": f"Meeting {meeting_id} not found"}
 
         # Check if user stopped early (ignore transitions except for completed/failed)
-        if (meeting.data and isinstance(meeting.data, dict) and
-            meeting.data.get("stop_requested") and
-            new_status not in [MeetingStatus.COMPLETED, MeetingStatus.FAILED]):
+        if (
+            meeting.data
+            and isinstance(meeting.data, dict)
+            and meeting.data.get("stop_requested")
+            and new_status not in [MeetingStatus.COMPLETED, MeetingStatus.FAILED]
+        ):
             logger.info(f"Bot status change callback: stop_requested set for meeting {meeting.id}. Ignoring {new_status.value} transition.")
             return {"status": "ignored", "detail": "stop requested"}
 
@@ -1348,10 +1371,7 @@ async def bot_status_change_callback(
         if new_status == MeetingStatus.COMPLETED:
             # Handle completion
             success = await update_meeting_status(
-                meeting=meeting,
-                new_status=MeetingStatus.COMPLETED,
-                db=db,
-                completion_reason=payload.completion_reason
+                meeting=meeting, new_status=MeetingStatus.COMPLETED, db=db, completion_reason=payload.completion_reason
             )
 
             if success:
@@ -1369,7 +1389,7 @@ async def bot_status_change_callback(
                 new_status=MeetingStatus.FAILED,
                 db=db,
                 failure_stage=payload.failure_stage,
-                error_details=str(payload.error_details) if payload.error_details else None
+                error_details=str(payload.error_details) if payload.error_details else None,
             )
 
             if success:
@@ -1384,7 +1404,7 @@ async def bot_status_change_callback(
                         "reason": payload.reason,
                         "timestamp": datetime.utcnow().isoformat(),
                         "error_details": payload.error_details,
-                        "platform_specific_error": payload.platform_specific_error
+                        "platform_specific_error": payload.platform_specific_error,
                     }
 
                 await db.commit()
@@ -1395,7 +1415,12 @@ async def bot_status_change_callback(
 
         elif new_status == MeetingStatus.ACTIVE:
             # Handle activation
-            if meeting.status in [MeetingStatus.REQUESTED.value, MeetingStatus.JOINING.value, MeetingStatus.AWAITING_ADMISSION.value, MeetingStatus.FAILED.value]:
+            if meeting.status in [
+                MeetingStatus.REQUESTED.value,
+                MeetingStatus.JOINING.value,
+                MeetingStatus.AWAITING_ADMISSION.value,
+                MeetingStatus.FAILED.value,
+            ]:
                 success = await update_meeting_status(meeting, MeetingStatus.ACTIVE, db)
                 if success:
                     meeting.bot_container_id = payload.container_id
@@ -1422,7 +1447,9 @@ async def bot_status_change_callback(
 
         # Publish meeting status change via Redis Pub/Sub
         if success or (new_status == MeetingStatus.ACTIVE and meeting.status == MeetingStatus.ACTIVE.value):
-            await publish_meeting_status_change(meeting.id, new_status.value, redis_client, meeting.platform, meeting.platform_specific_id, meeting.user_id)
+            await publish_meeting_status_change(
+                meeting.id, new_status.value, redis_client, meeting.platform, meeting.platform_specific_id, meeting.user_id
+            )
 
         # Schedule webhook task for status change (for all status changes)
         await schedule_status_webhook_task(
@@ -1431,7 +1458,7 @@ async def bot_status_change_callback(
             old_status=old_status,
             new_status=new_status.value,
             reason=reason,
-            transition_source="bot_callback"
+            transition_source="bot_callback",
         )
 
         return {"status": "processed", "meeting_id": meeting.id, "status": meeting.status}
@@ -1440,9 +1467,9 @@ async def bot_status_change_callback(
         logger.error(f"Bot status change callback: An unexpected error occurred: {e}", exc_info=True)
         await db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred while processing the bot status change callback."
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="An internal error occurred while processing the bot status change callback."
         )
+
 
 # --- --------------------------------------------------------- ---
 
@@ -1450,6 +1477,6 @@ if __name__ == "__main__":
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
-        port=8080, # Default port for bot-manager
-        reload=True # Enable reload for development if needed
+        port=8080,  # Default port for bot-manager
+        reload=True,  # Enable reload for development if needed
     )
