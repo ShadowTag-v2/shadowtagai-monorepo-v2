@@ -120,6 +120,7 @@ class CircuitBreaker:
         half_open_max_probes: Max concurrent probes in HALF_OPEN state.
         failure_mode: CONSECUTIVE or SLIDING_WINDOW.
         window_s: Sliding window duration (only used in SLIDING_WINDOW mode).
+        max_reset_timeout_s: Upper bound for exponential backoff on reset timeout.
 
     Example:
         # Consecutive mode (default)
@@ -157,14 +158,18 @@ class CircuitBreaker:
         half_open_max_probes: int = 1,
         failure_mode: FailureMode = FailureMode.CONSECUTIVE,
         window_s: float = 60.0,
+        max_reset_timeout_s: float | None = None,
     ) -> None:
         self._service_name = service_name
         self._failure_threshold = failure_threshold
+        self._base_reset_timeout_s = reset_timeout_s
         self._reset_timeout_s = reset_timeout_s
+        self._max_reset_timeout_s = max_reset_timeout_s or (reset_timeout_s * 16)
         self._on_state_change = on_state_change
         self._half_open_max_probes = half_open_max_probes
         self._failure_mode = failure_mode
         self._window_s = window_s
+        self._backoff_multiplier: int = 0  # exponent: timeout = base * 2^multiplier
 
         self._state = CircuitBreakerState.CLOSED
         self._consecutive_failures: int = 0
@@ -176,6 +181,7 @@ class CircuitBreaker:
 
         # Sliding window event buffer: (monotonic_timestamp, is_failure)
         self._events: deque[tuple[float, bool]] = deque()
+        self._window_failure_counter: int = 0  # O(1) running count of failures in window
 
         self._lock = threading.Lock()
 
@@ -219,6 +225,16 @@ class CircuitBreaker:
         return self._failure_mode
 
     @property
+    def backoff_multiplier(self) -> int:
+        """Current exponential backoff multiplier (0 = no backoff)."""
+        return self._backoff_multiplier
+
+    @property
+    def current_reset_timeout_s(self) -> float:
+        """Effective reset timeout including exponential backoff."""
+        return self._reset_timeout_s
+
+    @property
     def window_failures(self) -> int:
         """Failures within the current sliding window.
 
@@ -228,7 +244,7 @@ class CircuitBreaker:
             return 0
         with self._lock:
             self._prune_window()
-            return sum(1 for _, is_failure in self._events if is_failure)
+            return self._window_failure_counter
 
     @property
     def seconds_until_probe(self) -> float:
@@ -289,13 +305,16 @@ class CircuitBreaker:
             self._total_successes += 1
 
             # Record event for sliding window
-            self._events.append((time.monotonic(), False))  # False = success
+            self._events.append((time.monotonic(), False))  # False = success (counter not incremented)
 
             if old_state == CircuitBreakerState.HALF_OPEN:
                 self._active_half_open_probes = max(0, self._active_half_open_probes - 1)
+                # Reset backoff on successful recovery
+                self._backoff_multiplier = 0
+                self._reset_timeout_s = self._base_reset_timeout_s
                 self._transition_to(CircuitBreakerState.CLOSED)
                 logger.info(
-                    "Circuit breaker '%s' recovered: HALF_OPEN → CLOSED (total_successes=%d)",
+                    "Circuit breaker '%s' recovered: HALF_OPEN → CLOSED (total_successes=%d, backoff_reset)",
                     self._service_name,
                     self._total_successes,
                 )
@@ -323,14 +342,21 @@ class CircuitBreaker:
 
             # Record event for sliding window
             self._events.append((now, True))  # True = failure
+            self._window_failure_counter += 1
 
             if old_state == CircuitBreakerState.HALF_OPEN:
                 self._active_half_open_probes = max(0, self._active_half_open_probes - 1)
+                # Exponential backoff: double the timeout on each probe failure
+                self._backoff_multiplier += 1
+                new_timeout = self._base_reset_timeout_s * (2**self._backoff_multiplier)
+                self._reset_timeout_s = min(new_timeout, self._max_reset_timeout_s)
                 self._transition_to(CircuitBreakerState.OPEN)
                 logger.warning(
-                    "Circuit breaker '%s' probe failed: HALF_OPEN → OPEN (consecutive_failures=%d)",
+                    "Circuit breaker '%s' probe failed: HALF_OPEN → OPEN (consecutive_failures=%d, backoff=%dx, next_timeout=%.1fs)",
                     self._service_name,
                     self._consecutive_failures,
+                    2**self._backoff_multiplier,
+                    self._reset_timeout_s,
                 )
             elif old_state == CircuitBreakerState.CLOSED and self._should_trip():
                 self._transition_to(CircuitBreakerState.OPEN)
@@ -354,7 +380,10 @@ class CircuitBreaker:
         with self._lock:
             self._consecutive_failures = 0
             self._active_half_open_probes = 0
+            self._backoff_multiplier = 0
+            self._reset_timeout_s = self._base_reset_timeout_s
             self._events.clear()
+            self._window_failure_counter = 0
             if self._state != CircuitBreakerState.CLOSED:
                 self._transition_to(CircuitBreakerState.CLOSED)
                 logger.info(
@@ -447,6 +476,9 @@ class CircuitBreaker:
             if self._failure_mode == FailureMode.SLIDING_WINDOW:
                 snap["window_s"] = self._window_s
                 snap["window_failures"] = self._window_failure_count()
+            if self._backoff_multiplier > 0:
+                snap["backoff_multiplier"] = self._backoff_multiplier
+                snap["effective_timeout_s"] = self._reset_timeout_s
             return snap
 
     # --- Internal state machine ---
@@ -461,16 +493,25 @@ class CircuitBreaker:
         return self._window_failure_count() >= self._failure_threshold
 
     def _prune_window(self) -> None:
-        """Remove events older than window_s. Called under lock."""
+        """Remove events older than window_s. Called under lock.
+
+        Maintains the running _window_failure_counter by decrementing
+        it when a pruned event was a failure, giving O(1) failure counting.
+        """
         if self._failure_mode != FailureMode.SLIDING_WINDOW:
             return
         cutoff = time.monotonic() - self._window_s
         while self._events and self._events[0][0] < cutoff:
-            self._events.popleft()
+            _, was_failure = self._events.popleft()
+            if was_failure:
+                self._window_failure_counter -= 1
 
     def _window_failure_count(self) -> int:
-        """Count failure events in the current window. Called under lock."""
-        return sum(1 for _, is_failure in self._events if is_failure)
+        """Count failure events in the current window. Called under lock.
+
+        Returns the O(1) running counter instead of scanning the deque.
+        """
+        return self._window_failure_counter
 
     def _maybe_transition_to_half_open(self) -> None:
         """Check if OPEN → HALF_OPEN transition is due.
