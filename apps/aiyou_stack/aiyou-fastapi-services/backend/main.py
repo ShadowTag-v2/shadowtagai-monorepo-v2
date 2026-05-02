@@ -3,6 +3,7 @@ Main application entry point
 """
 
 import logging
+import os
 import time
 from contextlib import asynccontextmanager
 
@@ -49,8 +50,10 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
     allow_credentials=settings.CORS_ALLOW_CREDENTIALS,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=os.environ.get("CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH").split(","),
+    allow_headers=os.environ.get(
+        "CORS_HEADERS", "Content-Type,Authorization,X-Requested-With"
+    ).split(","),
 )
 
 # Compliance Middleware

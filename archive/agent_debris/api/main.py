@@ -6,6 +6,7 @@ Philosophy: Steve Jobs mode - beautiful, intuitive, inevitable
 Design: RESTful, self-documenting, error-resistant
 """
 
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -24,22 +25,20 @@ from pnkln import PnklnOrchestrator, create_orchestrator
 # Pydantic models for API
 class ExecuteRequest(BaseModel):
     """Request to execute against pnkln orchestrator"""
+
     query: str = Field(..., description="User query to execute", min_length=1)
     agent_id: str | None = Field(None, description="Specific agent to use (auto-detect if None)")
     track_metrics: bool = Field(True, description="Track monetization metrics")
 
     class Config:
         json_schema_extra = {
-            "example": {
-                "query": "Research edge AI compute market and identify revenue opportunities",
-                "agent_id": None,
-                "track_metrics": True
-            }
+            "example": {"query": "Research edge AI compute market and identify revenue opportunities", "agent_id": None, "track_metrics": True}
         }
 
 
 class ExecuteResponse(BaseModel):
     """Response from pnkln execution"""
+
     status: str
     agent: str | None
     skills_activated: list[str]
@@ -50,6 +49,7 @@ class ExecuteResponse(BaseModel):
 
 class SkillInfo(BaseModel):
     """Skill metadata"""
+
     id: str
     name: str
     category: str
@@ -61,6 +61,7 @@ class SkillInfo(BaseModel):
 
 class AgentInfo(BaseModel):
     """Agent metadata"""
+
     id: str
     name: str
     persona: str
@@ -72,6 +73,7 @@ class AgentInfo(BaseModel):
 
 class AuditSummary(BaseModel):
     """Audit trail summary"""
+
     total_executions: int
     total_time_saved_hours: float
     total_revenue_identified_usd: float
@@ -82,6 +84,7 @@ class AuditSummary(BaseModel):
 
 class HealthResponse(BaseModel):
     """Health check response"""
+
     status: str
     version: str
     orchestrator: str
@@ -94,7 +97,7 @@ app = FastAPI(
     description="Production-grade AI orchestration with Steve Jobs design philosophy",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
 )
 
 # CORS middleware
@@ -102,8 +105,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Configure appropriately for production
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=os.environ.get("CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH").split(","),
+    allow_headers=os.environ.get("CORS_HEADERS", "Content-Type,Authorization,X-Requested-With").split(","),
 )
 
 # Initialize orchestrator
@@ -117,7 +120,7 @@ async def startup_event():
     try:
         orchestrator = create_orchestrator(
             skills_path="/home/user/shadowtag-omega-v4-fastapi-services/pnkln/skills/registry.yaml",
-            agents_path="/home/user/shadowtag-omega-v4-fastapi-services/pnkln/agents/registry.yaml"
+            agents_path="/home/user/shadowtag-omega-v4-fastapi-services/pnkln/agents/registry.yaml",
         )
         print(f"✓ Pnkln orchestrator initialized: {orchestrator}")
     except Exception as e:
@@ -131,12 +134,7 @@ async def root():
     if not orchestrator:
         raise HTTPException(status_code=503, detail="Orchestrator not initialized")
 
-    return HealthResponse(
-        status="operational",
-        version="1.0.0",
-        orchestrator=str(orchestrator),
-        timestamp=datetime.now().isoformat()
-    )
+    return HealthResponse(status="operational", version="1.0.0", orchestrator=str(orchestrator), timestamp=datetime.now().isoformat())
 
 
 @app.get("/health", response_model=HealthResponse)
@@ -157,11 +155,7 @@ async def execute(request: ExecuteRequest):
         raise HTTPException(status_code=503, detail="Orchestrator not initialized")
 
     try:
-        result = await orchestrator.execute(
-            user_input=request.query,
-            agent_id=request.agent_id,
-            track_metrics=request.track_metrics
-        )
+        result = await orchestrator.execute(user_input=request.query, agent_id=request.agent_id, track_metrics=request.track_metrics)
         return ExecuteResponse(**result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Execution failed: {str(e)}")
@@ -175,15 +169,17 @@ async def list_skills():
 
     skills = []
     for skill in orchestrator.skills.values():
-        skills.append(SkillInfo(
-            id=skill.id,
-            name=skill.name,
-            category=skill.category,
-            description=skill.description,
-            triggers=skill.triggers,
-            frameworks=skill.frameworks,
-            risk_level=skill.risk_level
-        ))
+        skills.append(
+            SkillInfo(
+                id=skill.id,
+                name=skill.name,
+                category=skill.category,
+                description=skill.description,
+                triggers=skill.triggers,
+                frameworks=skill.frameworks,
+                risk_level=skill.risk_level,
+            )
+        )
     return skills
 
 
@@ -195,15 +191,17 @@ async def list_agents():
 
     agents = []
     for agent in orchestrator.agents.values():
-        agents.append(AgentInfo(
-            id=agent.id,
-            name=agent.name,
-            persona=agent.persona,
-            iq_baseline=agent.iq_baseline,
-            description=agent.description,
-            skills=agent.skills,
-            activation_triggers=agent.activation_triggers
-        ))
+        agents.append(
+            AgentInfo(
+                id=agent.id,
+                name=agent.name,
+                persona=agent.persona,
+                iq_baseline=agent.iq_baseline,
+                description=agent.description,
+                skills=agent.skills,
+                activation_triggers=agent.activation_triggers,
+            )
+        )
     return agents
 
 
@@ -231,7 +229,7 @@ async def execute_skill(skill_id: str, request: ExecuteRequest):
         result = await orchestrator.execute(
             user_input=request.query,
             agent_id=None,  # Manual skill selection
-            track_metrics=request.track_metrics
+            track_metrics=request.track_metrics,
         )
         return ExecuteResponse(**result)
     except Exception as e:
@@ -248,11 +246,7 @@ async def execute_agent(agent_id: str, request: ExecuteRequest):
         raise HTTPException(status_code=404, detail=f"Agent {agent_id} not found")
 
     try:
-        result = await orchestrator.execute(
-            user_input=request.query,
-            agent_id=agent_id,
-            track_metrics=request.track_metrics
-        )
+        result = await orchestrator.execute(user_input=request.query, agent_id=agent_id, track_metrics=request.track_metrics)
         return ExecuteResponse(**result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Execution failed: {str(e)}")
@@ -260,4 +254,5 @@ async def execute_agent(agent_id: str, request: ExecuteRequest):
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -74,11 +74,11 @@ app = FastAPI(
 
     Include the appropriate header in your requests.
     """,
-    version="1.2.0", # Incremented version
+    version="1.2.0",  # Incremented version
     contact={
         "name": "Vexa Support",
-        "url": "https://vexa.io/support", # Placeholder URL
-        "email": "support@vexa.io", # Placeholder Email
+        "url": "https://vexa.io/support",  # Placeholder URL
+        "email": "support@vexa.io",  # Placeholder Email
     },
     license_info={
         "name": "Proprietary",
@@ -86,6 +86,7 @@ app = FastAPI(
     # Include security schemes in OpenAPI spec
     # Note: Applying them globally or per-route is done below
 )
+
 
 # Custom OpenAPI Schema
 def custom_openapi():
@@ -108,18 +109,8 @@ def custom_openapi():
 
     # Add securitySchemes component
     openapi_schema["components"]["securitySchemes"] = {
-        "ApiKeyAuth": {
-            "type": "apiKey",
-            "in": "header",
-            "name": "X-API-Key",
-            "description": "API Key for client operations"
-        },
-        "AdminApiKeyAuth": {
-            "type": "apiKey",
-            "in": "header",
-            "name": "X-Admin-API-Key",
-            "description": "API Key for admin operations"
-        }
+        "ApiKeyAuth": {"type": "apiKey", "in": "header", "name": "X-API-Key", "description": "API Key for client operations"},
+        "AdminApiKeyAuth": {"type": "apiKey", "in": "header", "name": "X-Admin-API-Key", "description": "API Key for admin operations"},
     }
 
     # Optional: Add global security requirement
@@ -128,6 +119,7 @@ def custom_openapi():
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 
+
 app.openapi = custom_openapi
 
 # Add CORS middleware
@@ -135,9 +127,10 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=os.environ.get("CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH").split(","),
+    allow_headers=os.environ.get("CORS_HEADERS", "Content-Type,Authorization,X-Requested-With").split(","),
 )
+
 
 # --- HTTP Client ---
 # Use a single client instance for connection pooling
@@ -148,6 +141,7 @@ async def startup_event():
     redis_url = os.getenv("REDIS_URL", "redis://redis:6379/0")
     app.state.redis = await aioredis.from_url(redis_url, encoding="utf-8", decode_responses=True)
 
+
 @app.on_event("shutdown")
 async def shutdown_event():
     await app.state.http_client.aclose()
@@ -155,6 +149,7 @@ async def shutdown_event():
         await app.state.redis.close()
     except Exception:
         pass
+
 
 # --- Helper for Forwarding ---
 async def forward_request(client: httpx.AsyncClient, method: str, url: str, request: Request) -> Response:
@@ -207,32 +202,32 @@ async def forward_request(client: httpx.AsyncClient, method: str, url: str, requ
         print(f"DEBUG: Request error: {exc}")
         raise HTTPException(status_code=503, detail=f"Service unavailable: {exc}")
 
+
 # --- Root Endpoint ---
 @app.get("/", tags=["General"], summary="API Gateway Root")
 async def root():
     """Provides a welcome message for the Vexa API Gateway."""
     return {"message": "Welcome to the Vexa API Gateway"}
 
+
 # --- Bot Manager Routes ---
-@app.post("/bots",
-         tags=["Bot Management"],
-         summary="Request a new bot to join a meeting",
-         description="Creates a new meeting record and launches a bot instance based on platform and native meeting ID.",
-         # response_model=MeetingResponse, # Response comes from downstream, keep commented
-         status_code=status.HTTP_201_CREATED,
-         dependencies=[Depends(api_key_scheme)],
-         # Explicitly define the request body schema for OpenAPI documentation
-         openapi_extra={
-             "requestBody": {
-                 "content": {
-                     "application/json": {
-                         "schema": MeetingCreate.schema()
-                     }
-                 },
-                 "required": True,
-                 "description": "Specify the meeting platform, native ID, and optional bot name."
-             },
-         })
+@app.post(
+    "/bots",
+    tags=["Bot Management"],
+    summary="Request a new bot to join a meeting",
+    description="Creates a new meeting record and launches a bot instance based on platform and native meeting ID.",
+    # response_model=MeetingResponse, # Response comes from downstream, keep commented
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(api_key_scheme)],
+    # Explicitly define the request body schema for OpenAPI documentation
+    openapi_extra={
+        "requestBody": {
+            "content": {"application/json": {"schema": MeetingCreate.schema()}},
+            "required": True,
+            "description": "Specify the meeting platform, native ID, and optional bot name.",
+        },
+    },
+)
 # Function signature remains generic for forwarding
 async def request_bot_proxy(request: Request):
     """Forward request to Bot Manager to start a bot."""
@@ -240,131 +235,155 @@ async def request_bot_proxy(request: Request):
     # forward_request handles reading and passing the body from the original request
     return await forward_request(app.state.http_client, "POST", url, request)
 
-@app.delete("/bots/{platform}/{native_meeting_id}",
-           tags=["Bot Management"],
-           summary="Stop a bot for a specific meeting",
-           description="Stops the bot container associated with the specified platform and native meeting ID. Requires ownership via API key.",
-           response_model=MeetingResponse,
-           dependencies=[Depends(api_key_scheme)])
+
+@app.delete(
+    "/bots/{platform}/{native_meeting_id}",
+    tags=["Bot Management"],
+    summary="Stop a bot for a specific meeting",
+    description="Stops the bot container associated with the specified platform and native meeting ID. Requires ownership via API key.",
+    response_model=MeetingResponse,
+    dependencies=[Depends(api_key_scheme)],
+)
 async def stop_bot_proxy(platform: Platform, native_meeting_id: str, request: Request):
     """Forward request to Bot Manager to stop a bot."""
     url = f"{BOT_MANAGER_URL}/bots/{platform.value}/{native_meeting_id}"
     return await forward_request(app.state.http_client, "DELETE", url, request)
 
+
 # --- ADD Route for PUT /bots/.../config ---
-@app.put("/bots/{platform}/{native_meeting_id}/config",
-          tags=["Bot Management"],
-          summary="Update configuration for an active bot",
-          description="Updates the language and/or task for an active bot. Sends command via Bot Manager.",
-          status_code=status.HTTP_202_ACCEPTED,
-          dependencies=[Depends(api_key_scheme)])
+@app.put(
+    "/bots/{platform}/{native_meeting_id}/config",
+    tags=["Bot Management"],
+    summary="Update configuration for an active bot",
+    description="Updates the language and/or task for an active bot. Sends command via Bot Manager.",
+    status_code=status.HTTP_202_ACCEPTED,
+    dependencies=[Depends(api_key_scheme)],
+)
 # Need to accept request body for PUT
 async def update_bot_config_proxy(platform: Platform, native_meeting_id: str, request: Request):
     """Forward request to Bot Manager to update bot config."""
     url = f"{BOT_MANAGER_URL}/bots/{platform.value}/{native_meeting_id}/config"
     # forward_request handles reading and passing the body from the original request
     return await forward_request(app.state.http_client, "PUT", url, request)
+
+
 # -------------------------------------------
 
+
 # --- ADD Route for GET /bots/status ---
-@app.get("/bots/status",
-         tags=["Bot Management"],
-         summary="Get status of running bots for the user",
-         description="Retrieves a list of currently running bot containers associated with the authenticated user.",
-         response_model=BotStatusResponse, # Document expected response
-         dependencies=[Depends(api_key_scheme)])
+@app.get(
+    "/bots/status",
+    tags=["Bot Management"],
+    summary="Get status of running bots for the user",
+    description="Retrieves a list of currently running bot containers associated with the authenticated user.",
+    response_model=BotStatusResponse,  # Document expected response
+    dependencies=[Depends(api_key_scheme)],
+)
 async def get_bots_status_proxy(request: Request):
     """Forward request to Bot Manager to get running bot status."""
     url = f"{BOT_MANAGER_URL}/bots/status"
     return await forward_request(app.state.http_client, "GET", url, request)
+
+
 # --- END Route for GET /bots/status ---
 
+
 # --- Transcription Collector Routes ---
-@app.get("/meetings",
-        tags=["Transcriptions"],
-        summary="Get list of user's meetings",
-        description="Returns a list of all meetings initiated by the user associated with the API key.",
-        response_model=MeetingListResponse,
-        dependencies=[Depends(api_key_scheme)])
+@app.get(
+    "/meetings",
+    tags=["Transcriptions"],
+    summary="Get list of user's meetings",
+    description="Returns a list of all meetings initiated by the user associated with the API key.",
+    response_model=MeetingListResponse,
+    dependencies=[Depends(api_key_scheme)],
+)
 async def get_meetings_proxy(request: Request):
     """Forward request to Transcription Collector to get meetings."""
     url = f"{TRANSCRIPTION_COLLECTOR_URL}/meetings"
     return await forward_request(app.state.http_client, "GET", url, request)
 
-@app.get("/transcripts/{platform}/{native_meeting_id}",
-        tags=["Transcriptions"],
-        summary="Get transcript for a specific meeting",
-        description="Retrieves the transcript segments for a meeting specified by its platform and native ID.",
-        response_model=TranscriptionResponse,
-        dependencies=[Depends(api_key_scheme)])
+
+@app.get(
+    "/transcripts/{platform}/{native_meeting_id}",
+    tags=["Transcriptions"],
+    summary="Get transcript for a specific meeting",
+    description="Retrieves the transcript segments for a meeting specified by its platform and native ID.",
+    response_model=TranscriptionResponse,
+    dependencies=[Depends(api_key_scheme)],
+)
 async def get_transcript_proxy(platform: Platform, native_meeting_id: str, request: Request):
     """Forward request to Transcription Collector to get a transcript."""
     url = f"{TRANSCRIPTION_COLLECTOR_URL}/transcripts/{platform.value}/{native_meeting_id}"
     return await forward_request(app.state.http_client, "GET", url, request)
 
-@app.patch("/meetings/{platform}/{native_meeting_id}",
-           tags=["Transcriptions"],
-           summary="Update meeting data",
-           description="Updates meeting metadata. Only name, participants, languages, and notes can be updated.",
-           response_model=MeetingResponse,
-           dependencies=[Depends(api_key_scheme)],
-           openapi_extra={
-               "requestBody": {
-                   "content": {
-                       "application/json": {
-                           "schema": {
-                               "type": "object",
-                               "properties": {
-                                   "data": MeetingDataUpdate.schema()
-                               },
-                               "required": ["data"]
-                           }
-                       }
-                   },
-                   "required": True,
-                   "description": "Meeting data to update (name, participants, languages, notes only)"
-               },
-           })
+
+@app.patch(
+    "/meetings/{platform}/{native_meeting_id}",
+    tags=["Transcriptions"],
+    summary="Update meeting data",
+    description="Updates meeting metadata. Only name, participants, languages, and notes can be updated.",
+    response_model=MeetingResponse,
+    dependencies=[Depends(api_key_scheme)],
+    openapi_extra={
+        "requestBody": {
+            "content": {"application/json": {"schema": {"type": "object", "properties": {"data": MeetingDataUpdate.schema()}, "required": ["data"]}}},
+            "required": True,
+            "description": "Meeting data to update (name, participants, languages, notes only)",
+        },
+    },
+)
 async def update_meeting_data_proxy(platform: Platform, native_meeting_id: str, request: Request):
     """Forward request to Transcription Collector to update meeting data."""
     url = f"{TRANSCRIPTION_COLLECTOR_URL}/meetings/{platform.value}/{native_meeting_id}"
     return await forward_request(app.state.http_client, "PATCH", url, request)
 
-@app.delete("/meetings/{platform}/{native_meeting_id}",
-            tags=["Transcriptions"],
-            summary="Delete meeting transcripts and anonymize data",
-            description="Purges transcripts and anonymizes meeting data for finalized meetings. Only works for completed or failed meetings. Preserves meeting records for telemetry.",
-            dependencies=[Depends(api_key_scheme)])
+
+@app.delete(
+    "/meetings/{platform}/{native_meeting_id}",
+    tags=["Transcriptions"],
+    summary="Delete meeting transcripts and anonymize data",
+    description="Purges transcripts and anonymizes meeting data for finalized meetings. Only works for completed or failed meetings. Preserves meeting records for telemetry.",
+    dependencies=[Depends(api_key_scheme)],
+)
 async def delete_meeting_proxy(platform: Platform, native_meeting_id: str, request: Request):
     """Forward request to Transcription Collector to purge transcripts and anonymize meeting data."""
     url = f"{TRANSCRIPTION_COLLECTOR_URL}/meetings/{platform.value}/{native_meeting_id}"
     return await forward_request(app.state.http_client, "DELETE", url, request)
 
+
 # --- User Profile Routes ---
-@app.put("/user/webhook",
-         tags=["User"],
-         summary="Set user webhook URL",
-         description="Sets a webhook URL for the authenticated user to receive notifications.",
-         status_code=status.HTTP_200_OK,
-         dependencies=[Depends(api_key_scheme)])
+@app.put(
+    "/user/webhook",
+    tags=["User"],
+    summary="Set user webhook URL",
+    description="Sets a webhook URL for the authenticated user to receive notifications.",
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(api_key_scheme)],
+)
 async def set_user_webhook_proxy(request: Request):
     """Forward request to Admin API to set user webhook."""
     url = f"{ADMIN_API_URL}/user/webhook"
     return await forward_request(app.state.http_client, "PUT", url, request)
 
+
 # --- Admin API Routes ---
-@app.api_route("/admin/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
-               tags=["Administration"],
-               summary="Forward admin requests",
-               description="Forwards requests prefixed with `/admin` to the Admin API service. Requires `X-Admin-API-Key`.",
-               dependencies=[Depends(admin_api_key_scheme)])
+@app.api_route(
+    "/admin/{path:path}",
+    methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
+    tags=["Administration"],
+    summary="Forward admin requests",
+    description="Forwards requests prefixed with `/admin` to the Admin API service. Requires `X-Admin-API-Key`.",
+    dependencies=[Depends(admin_api_key_scheme)],
+)
 async def forward_admin_request(request: Request, path: str):
     """Generic forwarder for all admin endpoints."""
     admin_path = f"/admin/{path}"
     url = f"{ADMIN_API_URL}{admin_path}"
     return await forward_request(app.state.http_client, request.method, url, request)
 
+
 # --- Removed internal ID resolution and full transcript fetching from Gateway ---
+
 
 # --- WebSocket Multiplex Endpoint ---
 @app.websocket("/ws")
@@ -438,10 +457,14 @@ async def websocket_multiplex(ws: WebSocket):
             if action == "subscribe":
                 meetings = msg.get("meetings", None)
                 if not isinstance(meetings, list):
-                    await ws.send_text(json.dumps({"type": "error", "error": "invalid_subscribe_payload", "details": "'meetings' must be a non-empty list"}))
+                    await ws.send_text(
+                        json.dumps({"type": "error", "error": "invalid_subscribe_payload", "details": "'meetings' must be a non-empty list"})
+                    )
                     continue
                 if len(meetings) == 0:
-                    await ws.send_text(json.dumps({"type": "error", "error": "invalid_subscribe_payload", "details": "'meetings' list cannot be empty"}))
+                    await ws.send_text(
+                        json.dumps({"type": "error", "error": "invalid_subscribe_payload", "details": "'meetings' list cannot be empty"})
+                    )
                     continue
 
                 # Call downstream authorization API in transcription-collector
@@ -462,7 +485,9 @@ async def websocket_multiplex(ws: WebSocket):
                     headers = {"X-API-Key": api_key}
                     resp = await app.state.http_client.post(url, headers=headers, json={"meetings": payload_meetings})
                     if resp.status_code != 200:
-                        await ws.send_text(json.dumps({"type": "error", "error": "authorization_service_error", "status": resp.status_code, "detail": resp.text}))
+                        await ws.send_text(
+                            json.dumps({"type": "error", "error": "authorization_service_error", "status": resp.status_code, "detail": resp.text})
+                        )
                         continue
                     data = resp.json()
                     authorized = data.get("authorized") or []
@@ -472,8 +497,10 @@ async def websocket_multiplex(ws: WebSocket):
                         # Continue to subscribe to any meetings that were authorized
                     subscribed: list[dict[str, str]] = []
                     for item in authorized:
-                        plat = item.get("platform"); nid = item.get("native_id")
-                        user_id = item.get("user_id"); meeting_id = item.get("meeting_id")
+                        plat = item.get("platform")
+                        nid = item.get("native_id")
+                        user_id = item.get("user_id")
+                        meeting_id = item.get("meeting_id")
                         if plat and nid and user_id and meeting_id:
                             await subscribe_meeting(plat, nid, user_id, meeting_id)
                             subscribed.append({"platform": plat, "native_id": nid})
@@ -517,10 +544,7 @@ async def websocket_multiplex(ws: WebSocket):
                     await ws.send_text(json.dumps({"type": "error", "error": "invalid_unsubscribe_payload", "details": errors}))
                     continue
 
-                await ws.send_text(json.dumps({
-                    "type": "unsubscribed",
-                    "meetings": unsubscribed
-                }))
+                await ws.send_text(json.dumps({"type": "unsubscribed", "meetings": unsubscribed}))
 
             elif action == "ping":
                 await ws.send_text(json.dumps({"type": "pong"}))
@@ -536,6 +560,7 @@ async def websocket_multiplex(ws: WebSocket):
     finally:
         for task in sub_tasks.values():
             task.cancel()
+
 
 # --- Main Execution ---
 if __name__ == "__main__":

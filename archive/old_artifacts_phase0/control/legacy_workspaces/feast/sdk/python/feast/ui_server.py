@@ -1,4 +1,5 @@
 import json
+import os
 import threading
 from importlib import resources as importlib_resources
 from typing import Callable, Optional
@@ -29,8 +30,12 @@ def get_app(
         CORSMiddleware,
         allow_origins=["*"],
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=os.environ.get(
+            "CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH"
+        ).split(","),
+        allow_headers=os.environ.get(
+            "CORS_HEADERS", "Content-Type,Authorization,X-Requested-With"
+        ).split(","),
     )
 
     # Asynchronously refresh registry, notifying shutdown and canceling the active timer if the app is shutting down

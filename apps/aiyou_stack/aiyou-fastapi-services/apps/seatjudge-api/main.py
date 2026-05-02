@@ -10,10 +10,14 @@ app = FastAPI(title="SeatJudge API", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(","),
+    allow_origins=os.environ.get(
+        "CORS_ORIGINS", "http://localhost:3000,http://localhost:8000"
+    ).split(","),
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=os.environ.get("CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH").split(","),
+    allow_headers=os.environ.get(
+        "CORS_HEADERS", "Content-Type,Authorization,X-Requested-With"
+    ).split(","),
 )
 
 # --- In-Memory DB (Pilot Only) ---
