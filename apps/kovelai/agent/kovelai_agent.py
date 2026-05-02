@@ -233,7 +233,7 @@ if FASTAPI_AVAILABLE:
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(","),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

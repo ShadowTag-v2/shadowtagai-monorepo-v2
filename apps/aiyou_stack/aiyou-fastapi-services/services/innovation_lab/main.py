@@ -1,5 +1,6 @@
 """Innovation Lab Service - Main Application
 
+import os
 FastAPI application for AI-powered innovation, experimentation, and tech exploration.
 """
 
@@ -39,7 +40,7 @@ def create_innovation_app() -> FastAPI:
     # Configure CORS
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],  # Configure appropriately for production
+        allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(","),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

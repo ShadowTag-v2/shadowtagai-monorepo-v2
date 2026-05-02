@@ -15,7 +15,7 @@ import traceback
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from ..config.verticals import (
     VerticalType,
@@ -25,7 +25,6 @@ from ..config.verticals import (
 )
 from ..core.router import SelfRouteController
 from ..prompts.templates import TaskType
-from ..routers.agents import agents_router
 from .eventarc import router as eventarc_router
 from .intercept import router as intercept_router
 from .zt_identity import verify_zero_trust_token
@@ -44,7 +43,7 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
+    allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -56,8 +55,8 @@ app.include_router(intercept_router)
 # Wire the Cor.Firebase Leviathan Wake (Eventarc)
 app.include_router(eventarc_router)
 
-# Wire the Zero-Trust Agents router (Temporal / Swarm execution)
-app.include_router(agents_router)
+# NOTE: agents_router is registered at startup to avoid circular import.
+# Cycle: agents.py → src.api.__init__ → main.py → agents.py
 
 # Global controller instance (initialized on startup)
 controller: SelfRouteController | None = None
@@ -119,15 +118,18 @@ class QueryRequest(BaseModel):
     task_type: str | None = Field(None, description="Task type (legal_compliance, multi_hop, etc.)")
     model_override: str | None = Field(None, description="Override Gemini model (pro or flash)")
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "query": "What are the HIPAA requirements for patient data storage?",
-                "context": "HIPAA regulations specify that... [full document text]",
-                "document_id": "hipaa_regulations_2024",
-                "vertical": "healthcare_compliance",
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "query": "What are the HIPAA requirements for patient data storage?",
+                    "context": "HIPAA regulations specify that... [full document text]",
+                    "document_id": "hipaa_regulations_2024",
+                    "vertical": "healthcare_compliance",
+                },
+            ],
+        },
+    )
 
 
 class QueryResponse(BaseModel):
@@ -141,18 +143,21 @@ class QueryResponse(BaseModel):
     vertical: str | None
     metadata: dict
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "answer": "According to chunk 3, HIPAA requires...",
-                "method": "RAG",
-                "tokens_used": 6500,
-                "confidence": "MEDIUM",
-                "task_type": "legal_compliance",
-                "vertical": "healthcare_compliance",
-                "metadata": {"k": 10, "latency": 2.3, "avg_chunk_score": 0.87},
-            },
-        }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "answer": "According to chunk 3, HIPAA requires...",
+                    "method": "RAG",
+                    "tokens_used": 6500,
+                    "confidence": "MEDIUM",
+                    "task_type": "legal_compliance",
+                    "vertical": "healthcare_compliance",
+                    "metadata": {"k": 10, "latency": 2.3, "avg_chunk_score": 0.87},
+                },
+            ],
+        },
+    )
 
 
 class StatsResponse(BaseModel):
@@ -190,6 +195,13 @@ class VerticalInfo(BaseModel):
 async def startup_event():
     """Initialize controller on startup"""
     global controller
+
+    # Deferred import to break circular dependency:
+    # agents.py → src.api.__init__ → main.py → agents.py
+    from ..routers.agents import agents_router
+
+    app.include_router(agents_router)
+    logger.info("Agents router registered (deferred import).")
 
     logger.info("Initializing SELF-ROUTE controller...")
 

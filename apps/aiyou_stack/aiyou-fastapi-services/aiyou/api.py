@@ -1,5 +1,6 @@
 """PNKLN Core Stack - ShadowTag-v4 Platform API
 
+import os
 AI-curated social video platform with:
 - AI-presumed feed ranking (not engagement-based)
 - ShadowTag integration for verified content
@@ -95,7 +96,7 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
