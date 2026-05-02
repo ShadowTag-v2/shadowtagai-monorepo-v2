@@ -1,0 +1,23 @@
+{
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword",
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.UNSCRUBBED_TOKEN_SHOULD_FAIL"
+        },
+        "body": "{\"email\":\"test@example.com\",\"password\":\"hunter2\"}"
+      },
+      "response": {
+        "status_code": 200,
+        "body": "{\"idToken\":\"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9\"}"
+      },
+      "recorded_at": "2026-05-02T12:00:00Z"
+    }
+  ],
+  "metadata": {
+    "purpose": "Verify bughunter detects unscrubbed Bearer tokens in cassettes",
+    "expected_behavior": "should_fail_validation"
+  }
+}

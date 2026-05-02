@@ -1,0 +1,33 @@
+{
+  "name": "firestore-read",
+  "interactions": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://firestore.googleapis.com/v1/projects/shadowtag-omega-v4/databases/(default)/documents/sessions/test-session-001",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": "{\"name\":\"projects/shadowtag-omega-v4/databases/(default)/documents/sessions/test-session-001\",\"fields\":{\"status\":{\"stringValue\":\"active\"},\"created\":{\"timestampValue\":\"2026-05-01T00:00:00Z\"}}}"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://firestore.googleapis.com/v1/projects/shadowtag-omega-v4/databases/(default)/documents:runQuery",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json"
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": "[{\"document\":{\"name\":\"projects/shadowtag-omega-v4/databases/(default)/documents/sessions/test-session-002\",\"fields\":{\"status\":{\"stringValue\":\"completed\"}}}}]"
+      }
+    }
+  ]
+}

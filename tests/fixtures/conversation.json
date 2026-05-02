@@ -1,0 +1,97 @@
+[
+  { "role": "system", "content": "You are a helpful assistant." },
+  { "role": "user", "content": "Read the file at /src/main.ts and tell me what it does." },
+  {
+    "role": "assistant",
+    "content": [
+      { "type": "tool_use", "id": "tu-001", "name": "Read", "input": { "path": "/src/main.ts" } }
+    ],
+    "message": { "id": "g1" }
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "tu-001",
+        "content": "import { Command } from 'commander';\nimport { registerBughunterCommand } from './commands/bughunter.js';\n\nconst program = new Command();\nprogram.name('agnt').description('ShadowTag Agent Runtime CLI').version('11.2.0');\nregisterBughunterCommand(program);\nprogram.parseAsync(process.argv).catch((err) => { console.error(err.message); process.exit(1); });\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": "This file is the CLI entrypoint for the ShadowTag Agent Runtime. It uses Commander to register subcommands and parse arguments.",
+    "message": { "id": "g1" }
+  },
+  { "role": "user", "content": "Now search for all TODO comments in the codebase." },
+  {
+    "role": "assistant",
+    "content": [
+      { "type": "tool_use", "id": "tu-002", "name": "Grep", "input": { "pattern": "TODO", "path": "/src" } }
+    ],
+    "message": { "id": "g2" }
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "tu-002",
+        "content": "/src/services/compact/index.ts:23: // TODO: Add PTL retry logic for LLM-based summarization\n/src/services/analytics/index.ts:101: // TODO: Add queue size metric emission\n/src/commands/bughunter.ts:45: // TODO: Support VCR playback mode\n/src/utils/tokenBudget.ts:88: // TODO: Dynamic model detection from API response headers"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": "Found 4 TODO comments across the codebase:\n1. Compact service: PTL retry logic\n2. Analytics: queue size metrics\n3. Bughunter: VCR playback mode\n4. Token budget: dynamic model detection",
+    "message": { "id": "g2" }
+  },
+  { "role": "user", "content": "Show me the project structure." },
+  {
+    "role": "assistant",
+    "content": [
+      { "type": "tool_use", "id": "tu-003", "name": "Bash", "input": { "command": "find /src -type f -name '*.ts' | head -20" } }
+    ],
+    "message": { "id": "g3" }
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "tu-003",
+        "content": "/src/cli.ts\n/src/commands/bughunter.ts\n/src/commands/compact-cmd.ts\n/src/commands/dream.ts\n/src/commands/ultraplan.ts\n/src/services/compact/index.ts\n/src/services/compact/apiMicrocompact.ts\n/src/services/compact/historySnip.ts\n/src/services/compact/contextCollapse.ts\n/src/services/compact/tokenBudget.ts\n/src/services/analytics/index.ts\n/src/tools/BashTool/BashTool.ts\n/src/tools/FileReadTool/FileReadTool.ts\n/src/tools/FileWriteTool/FileWriteTool.ts\n/src/tools/GrepTool/GrepTool.ts\n/src/tools/GlobTool/GlobTool.ts\n/src/tools/WebFetchTool/WebFetchTool.ts\n/src/tools/WebSearchTool/WebSearchTool.ts\n/src/tools/FileEditTool/FileEditTool.ts\n/src/tools/AgentTool/agentToolUtils.ts"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": "The project has a clean modular structure:\n- `/src/cli.ts` — CLI entrypoint\n- `/src/commands/` — Subcommands (bughunter, compact, dream, ultraplan)\n- `/src/services/compact/` — 4-layer compaction pipeline\n- `/src/services/analytics/` — Event logging\n- `/src/tools/` — Tool implementations",
+    "message": { "id": "g3" }
+  },
+  { "role": "user", "content": "Error: ENOENT: no such file or directory, open '/src/missing.ts'" },
+  { "role": "user", "content": "Error: ENOENT: no such file or directory, open '/src/missing.ts'" },
+  { "role": "user", "content": "Error: ENOENT: no such file or directory, open '/src/missing.ts'" },
+  { "role": "user", "content": "Error: ENOENT: no such file or directory, open '/src/missing.ts'" },
+  { "role": "user", "content": "Error: different error now" },
+  {
+    "role": "assistant",
+    "content": "I see repeated ENOENT errors. The file `/src/missing.ts` doesn't exist. Let me help you find the correct path.",
+    "message": { "id": "g4" }
+  },
+  { "role": "user", "content": "Can you show me an image of the architecture?" },
+  {
+    "role": "assistant",
+    "content": [
+      { "type": "image", "data": "base64-placeholder-architecture-diagram-very-long-data-string-representing-png-bytes" },
+      { "type": "text", "text": "Here is the architecture diagram showing the 4-layer compaction pipeline." }
+    ],
+    "message": { "id": "g5" }
+  },
+  { "role": "user", "content": "Thanks, that's all I needed." },
+  {
+    "role": "assistant",
+    "content": "You're welcome! Let me know if you need anything else.",
+    "message": { "id": "g5" }
+  }
+]

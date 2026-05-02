@@ -18,6 +18,7 @@ maintaining a unified session_id for telemetry correlation.
 """
 
 from __future__ import annotations
+import contextlib
 
 import asyncio
 import logging
@@ -29,6 +30,13 @@ from collections.abc import Callable
 from speculation_engine.engine import (
     SpeculationEngine,
     SpeculationState,
+)
+from speculation_engine.exit_plan_mode import (
+    ExitPlanModeController,
+    PlanSession,
+    PlanState,
+    PlanStep,
+    TransitionError,
 )
 from speculation_engine.suggestion import (
     SessionState,
@@ -102,12 +110,16 @@ class SpeculativeResearchOrchestrator:
         config: SpeculativeResearchConfig | None = None,
         *,
         gemini_api_key: str | None = None,
+        plan_timeout_seconds: float = 300.0,
     ) -> None:
         self._workspace = workspace
         self._config = config or SpeculativeResearchConfig()
         self._engine = SpeculationEngine(
             cwd=workspace,
             bypass_permissions=self._config.trust_level >= 2,
+        )
+        self._plan_controller = ExitPlanModeController(
+            timeout_seconds=plan_timeout_seconds,
         )
         self._session_id = ""
         self._speculation_results: list[SpeculativePhaseResult] = []
@@ -189,11 +201,21 @@ class SpeculativeResearchOrchestrator:
         """All speculative phase results from the current session."""
         return list(self._speculation_results)
 
+    @property
+    def plan_controller(self) -> ExitPlanModeController:
+        """Access the ExitPlanModeController for planning lifecycle management."""
+        return self._plan_controller
+
+    @property
+    def plan_state(self) -> PlanState:
+        """Current state of the planning state machine."""
+        return self._plan_controller.state
+
     def on_phase_change(self, transition: Any) -> None:
         """Callback for DeepResearchEngine phase transitions.
 
-        Automatically manages speculation engine state in response to
-        phase transitions.
+        Automatically manages speculation engine AND planning controller
+        state in response to phase transitions.
         """
         to_phase = getattr(transition, "to_phase", None)
         session_id = getattr(transition, "metadata", {}).get("session_id", "")
@@ -217,6 +239,10 @@ class SpeculativeResearchOrchestrator:
         if phase_value in ("complete", "failed", "idle"):
             if self._engine.state != SpeculationState.IDLE:
                 self._engine.abort(reason=f"phase_{phase_value}")
+            # Also clean up any active planning session.
+            if self._plan_controller.state not in (PlanState.IDLE, PlanState.ABANDONED):
+                with contextlib.suppress(TransitionError):
+                    self._plan_controller.cancel()
 
     def create_phase_handlers(
         self,
@@ -437,10 +463,162 @@ class SpeculativeResearchOrchestrator:
             "engine_state": self._engine.state.value,
         }
 
+    # --- ExitPlanMode Integration ---
+
+    def enter_plan_mode(self, metadata: dict[str, Any] | None = None) -> PlanSession:
+        """Enter planning mode via ExitPlanModeController.
+
+        Args:
+            metadata: Optional metadata for the planning session.
+
+        Returns:
+            The new PlanSession.
+
+        Raises:
+            TransitionError: If the controller is not in IDLE state.
+        """
+        session = self._plan_controller.begin_planning(
+            session_id=self._session_id or f"plan-{int(time.time())}",
+            metadata=metadata,
+        )
+        log_speculation_event(
+            event="plan_mode_entered",
+            session_id=self._session_id,
+        )
+        return session
+
+    def add_plan_step(
+        self,
+        step_id: str,
+        description: str,
+        tool_calls: list[dict[str, Any]] | None = None,
+    ) -> PlanStep:
+        """Add a step to the current plan.
+
+        Args:
+            step_id: Unique step identifier.
+            description: Human-readable description.
+            tool_calls: Tool calls this step would execute.
+
+        Returns:
+            The new PlanStep.
+
+        Raises:
+            TransitionError: If not in PLANNING state.
+        """
+        return self._plan_controller.add_step(
+            step_id=step_id,
+            description=description,
+            tool_calls=tool_calls,
+        )
+
+    def begin_plan_speculation(self) -> None:
+        """Begin speculative execution of the current plan.
+
+        Transitions plan controller PLANNING → SPECULATING and starts
+        the speculation engine if idle.
+
+        Raises:
+            TransitionError: If not in PLANNING state or no steps.
+        """
+        self._plan_controller.begin_speculation()
+        if self._engine.state == SpeculationState.IDLE:
+            self._engine.start()
+        log_speculation_event(
+            event="plan_speculation_started",
+            session_id=self._session_id,
+        )
+
+    def confirm_plan(self) -> None:
+        """User confirms the speculated plan.
+
+        Transitions: CONFIRMING → EXECUTING.
+
+        Raises:
+            TransitionError: If not in CONFIRMING state.
+        """
+        self._plan_controller.user_confirm()
+        log_speculation_event(
+            event="plan_confirmed",
+            session_id=self._session_id,
+        )
+
+    def revise_plan(self) -> None:
+        """User wants to revise the plan.
+
+        Transitions: CONFIRMING → PLANNING.
+
+        Raises:
+            TransitionError: If not in CONFIRMING state.
+        """
+        self._plan_controller.user_revise()
+        log_speculation_event(
+            event="plan_revised",
+            session_id=self._session_id,
+        )
+
+    def cancel_plan(self) -> None:
+        """Cancel the current plan.
+
+        Handles cancellation from either PLANNING or CONFIRMING state.
+        """
+        try:
+            self._plan_controller.user_cancel()
+        except TransitionError:
+            try:
+                self._plan_controller.cancel()
+            except TransitionError:
+                logger.warning("Cannot cancel plan in state %s", self._plan_controller.state)
+                return
+
+        log_speculation_event(
+            event="plan_cancelled",
+            session_id=self._session_id,
+        )
+
+    def complete_plan_execution(self) -> None:
+        """Mark plan execution as complete.
+
+        Transitions: EXECUTING → IDLE.
+
+        Raises:
+            TransitionError: If not in EXECUTING state.
+        """
+        self._plan_controller.execution_complete()
+        log_speculation_event(
+            event="plan_mode_exited",
+            session_id=self._session_id,
+            exit_reason="complete",
+        )
+
+    def check_plan_timeout(self) -> bool:
+        """Check if the planning session has timed out.
+
+        Returns:
+            True if the session timed out and was auto-abandoned.
+        """
+        timed_out = self._plan_controller.check_timeout()
+        if timed_out:
+            log_speculation_event(
+                event="plan_mode_exited",
+                session_id=self._session_id,
+                exit_reason="timeout",
+            )
+        return timed_out
+
     def reset(self) -> None:
         """Reset orchestrator for a new session."""
         if self._engine.state != SpeculationState.IDLE:
             self._engine.abort(reason="reset")
+        # Reset plan controller if not idle.
+        if self._plan_controller.state == PlanState.ABANDONED:
+            self._plan_controller.reset()
+        elif self._plan_controller.state != PlanState.IDLE:
+            try:
+                self._plan_controller.cancel()
+                self._plan_controller.reset()
+            except TransitionError:
+                pass  # Best effort
         self._session_id = ""
         self._speculation_results = []
         self._session_state = SessionState()
