@@ -439,3 +439,17 @@ scratch/repos/
 data/
 external_sdks/
 memory/
+
+# Betterleaks / Security Reports (runtime scan output — never commit)
+.reports/secrets/
+.reports/
+
+# Turbopack SST caches (binary, triggers false positives in secret scans)
+**/.next-export/
+**/cache/turbopack/
+
+# Pixi package manager (FSEvents storm prevention)
+.pixi/
+
+# Backup venvs (FSEvents storm prevention)
+venv/

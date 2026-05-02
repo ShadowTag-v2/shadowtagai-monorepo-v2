@@ -9,15 +9,20 @@ caching, suppression checks, and the 12-rule suggestion filter pipeline.
 from __future__ import annotations
 
 import time
+import warnings
 
 import pytest
 
-from packages.agnt_tools.speculation_engine import (
-    PromptSpeculationEngine,
-    SpeculationResult,
-    SpeculationStatus,
-    SuppressReason,
-)
+# Suppress the expected deprecation warning from the legacy shim.
+# This import path is intentionally tested for backwards compatibility.
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", DeprecationWarning)
+    from packages.agnt_tools.speculation_engine import (
+        PromptSpeculationEngine,
+        SpeculationResult,
+        SpeculationStatus,
+        SuppressReason,
+    )
 
 
 @pytest.fixture
