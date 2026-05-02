@@ -9,13 +9,12 @@ from __future__ import annotations
 
 import logging
 import pathlib
-import shutil
 import subprocess
-import sys
 import time
 from dataclasses import dataclass, field
 from enum import StrEnum
-from typing import Any, Callable, Optional
+from typing import Any
+from collections.abc import Callable
 
 logger = logging.getLogger("plugin_manager")
 
@@ -73,7 +72,7 @@ class ReconciliationResult:
 
 
 # Type for progress callbacks
-ProgressCallback = Callable[[str, str, Optional[str]], None]
+ProgressCallback = Callable[[str, str, str | None], None]
 
 
 class PluginInstallationManager:
@@ -95,7 +94,7 @@ class PluginInstallationManager:
         self.skills_dir = pathlib.Path(skills_dir)
         self.external_repos_dir = pathlib.Path(external_repos_dir)
         self._statuses: dict[str, MarketplaceStatus] = {}
-        self._on_progress: Optional[ProgressCallback] = None
+        self._on_progress: ProgressCallback | None = None
 
     def set_progress_callback(self, callback: ProgressCallback) -> None:
         """Set callback for installation progress updates.
@@ -125,20 +124,24 @@ class PluginInstallationManager:
         # Google skills
         google_skills = self.external_repos_dir / "google-skills"
         if google_skills.exists():
-            declared.append({
-                "name": "google-skills",
-                "source": "https://github.com/google/skills",
-                "path": str(google_skills),
-            })
+            declared.append(
+                {
+                    "name": "google-skills",
+                    "source": "https://github.com/google/skills",
+                    "path": str(google_skills),
+                }
+            )
 
         # Vercel skills
         vercel_skills = self.external_repos_dir / "vercel-skills"
         if vercel_skills.exists():
-            declared.append({
-                "name": "vercel-skills",
-                "source": "https://github.com/vercel-labs/skills",
-                "path": str(vercel_skills),
-            })
+            declared.append(
+                {
+                    "name": "vercel-skills",
+                    "source": "https://github.com/vercel-labs/skills",
+                    "path": str(vercel_skills),
+                }
+            )
 
         return declared
 
@@ -229,7 +232,7 @@ class PluginInstallationManager:
 
     def reconcile(
         self,
-        on_progress: Optional[ProgressCallback] = None,
+        on_progress: ProgressCallback | None = None,
     ) -> ReconciliationResult:
         """Reconcile all declared marketplaces.
 

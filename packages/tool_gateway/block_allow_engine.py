@@ -116,6 +116,8 @@ _CODE_EXEC_INTERPRETERS = frozenset(
         # Package runners (can execute arbitrary code)
         "npx",
         "bunx",
+        # Remote arbitrary-command wrapper (mirrors TS CROSS_PLATFORM_CODE_EXEC)
+        "ssh",
     }
 )
 

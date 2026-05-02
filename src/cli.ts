@@ -24,10 +24,7 @@ import { registerUltraplanCommand } from './commands/ultraplan.js';
 
 const program = new Command();
 
-program
-  .name('agnt')
-  .description('ShadowTag Agent Runtime CLI — AGNT v11.2')
-  .version('11.2.0');
+program.name('agnt').description('ShadowTag Agent Runtime CLI — AGNT v11.2').version('11.2.0');
 
 // Register all commands
 registerBughunterCommand(program);
