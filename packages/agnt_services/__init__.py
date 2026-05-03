@@ -34,10 +34,20 @@ from __future__ import annotations
 
 import importlib
 import logging
+import sys
 from dataclasses import dataclass, field
 from enum import StrEnum
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
+
+# ── sys.path fix ──────────────────────────────────────────────────
+# Packages under packages/ use bare internal imports (e.g. `from telemetry.catalog
+# import ...`).  Adding `packages/` to sys.path lets those bare names resolve
+# without converting every __init__.py to relative imports.
+_PACKAGES_DIR = str(Path(__file__).resolve().parent.parent)
+if _PACKAGES_DIR not in sys.path:
+    sys.path.insert(0, _PACKAGES_DIR)
 
 
 class ServiceState(StrEnum):
@@ -60,46 +70,33 @@ class ServiceStatus:
     module_path: str | None = None
 
 
-# Map of service_name → package import path for lazy loading
-# Modules in packages/agnt_services/ use dotted path; external packages use bare names
+# Map of service_name → package import path for lazy loading.
+# Bare names resolve via the packages/ sys.path entry above.
+# f"{_PKG}.*" entries are intra-package modules in packages/agnt_services/*.py.
 _PKG = "packages.agnt_services"
 
 _SERVICE_REGISTRY: dict[str, str] = {
-    # External packages (installed at top level or in dedicated packages/)
+    # ── External packages (packages/<name>/) ──────────────────────
     "speculation_engine": "speculation_engine",
     "auto_dream": "auto_dream",
-    "context_compactor": "context_compactor",
+    "context_compactor": "agnt_context_compactor",
     "telemetry": "telemetry",
     "token_estimation": "token_estimation",
-    "vcr": "vcr",
+    "vcr": "agnt_vcr",
     "terminal_notifier": "terminal_notifier",
     "magic_docs": "magic_docs",
     "plugin_manager": "plugin_manager",
     "session_recovery": "session_recovery",
-    "prevent_sleep": f"{_PKG}.prevent_sleep",
     "sanitization": "sanitization",
     "feature_flags": "feature_flags",
     "tool_gateway": "tool_gateway",
     "tool_discovery": "tool_discovery",
     "plan_mode": "plan_mode",
+    # ── Intra-package modules (packages/agnt_services/*.py) ───────
+    "prevent_sleep": f"{_PKG}.prevent_sleep",
     "resilient_retry": f"{_PKG}.resilient_retry",
     "circuit_breaker": f"{_PKG}.circuit_breaker",
-    # V14.1 additions — remaining ported services
-    "thinking_config": "thinking_config",
     "xml_tags": f"{_PKG}.xml_tags",
-    "code_reasoning": "code_reasoning",
-    "undercover": "undercover",
-    "prompt_assembler": "prompt_assembler",
-    "prompt_sections": "prompt_sections",
-    "token_budget": "token_budget",
-    "tool_limits": "tool_limits",
-    "vcr_fixtures": "vcr_fixtures",
-    # V15 expansion — unported src/services/ modules (stubs for tracking)
-    "policy_limits": "policy_limits",
-    "analytics": "analytics",
-    "oauth_flow": "oauth_flow",
-    "voice_modality": "voice_modality",
-    # Intra-package modules (packages/agnt_services/*.py)
     "agent_summary": f"{_PKG}.agent_summary",
     "session_memory": f"{_PKG}.session_memory",
     "extract_memories": f"{_PKG}.extract_memories",
@@ -109,11 +106,20 @@ _SERVICE_REGISTRY: dict[str, str] = {
     "conversation_recovery": f"{_PKG}.conversation_recovery",
     "git_ops": f"{_PKG}.git_ops",
     "telemetry_events": f"{_PKG}.telemetry_events",
-    # V16 Batch 3 — ported services
     "diagnostic_tracking": f"{_PKG}.diagnostic_tracking",
     "notifier": f"{_PKG}.notifier",
     "away_summary": f"{_PKG}.away_summary",
     "rate_limit_messages": f"{_PKG}.rate_limit_messages",
+    # ── Batch 4 ported services ───────────────────────────────────
+    "thinking_config": "thinking_config",
+    "code_reasoning": "code_reasoning",
+    "undercover": "undercover",
+    "prompt_assembler": "prompt_assembler",
+    "prompt_sections": "prompt_sections",
+    "token_budget": "token_budget",
+    "tool_limits": "tool_limits",
+    "vcr_fixtures": "vcr_fixtures",
+    "policy_limits": "tool_gateway.policy_limits",
 }
 
 

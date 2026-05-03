@@ -1,0 +1,13 @@
+{
+  "fileOptions": {
+    "excludeSearchPatterns": [
+      "**/node_modules/**/*",
+      "**/bin/**/*",
+      "**/obj/**/*",
+      "**/tools/GitNexus/gitnexus/test/fixtures/**/*"
+    ]
+  },
+  "RoslynExtensionsOptions": {
+    "EnableAnalyzersSupport": false
+  }
+}
