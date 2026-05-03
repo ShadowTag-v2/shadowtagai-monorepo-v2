@@ -992,6 +992,31 @@ def run_proactive_suggestion_probe() -> bool:
         log_suggestion_event(event="proactive_prefetch", status="no_messages")
         return False
 
+    # ThinkTool pre-reasoning: analyze recent context to sharpen suggestion prompt.
+    # This applies the +54% tau-bench accuracy pattern to daemon-mode inference.
+    think_context = ""
+    try:
+        from packages.agnt_tools.think_tool import create_think_tool
+        from packages.agnt_tools.tool import ToolUseContext, ToolResult
+
+        recent_content = " ".join(m.get("content", "")[:100] for m in messages[-3:])
+        thought_input = (
+            f"Analyze this developer's recent session context and identify "
+            f"the single most likely next action:\n{recent_content}\n\n"
+            f"Reasoning:"
+        )
+        think_tool = create_think_tool()
+        # Synchronous invocation via asyncio.run for daemon context
+        think_result: ToolResult = asyncio.run(
+            think_tool.call({"thought": thought_input}, ToolUseContext())
+        )
+        think_data = think_result.data
+        if isinstance(think_data, dict) and think_data.get("thought"):
+            think_context = think_data["thought"][:300]
+            logger.debug("ThinkTool pre-reasoning: %d chars", len(think_context))
+    except Exception as e:
+        logger.debug("ThinkTool pre-reasoning skipped: %s", e)
+
     # Two-tier generation callback:
     #   Tier 1: Direct generateContent (lightweight, always available)
     #   Tier 2: Interactions API (stateful, requires enablement)
