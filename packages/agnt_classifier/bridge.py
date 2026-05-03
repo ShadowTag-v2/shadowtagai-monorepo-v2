@@ -22,7 +22,8 @@ import logging
 import time
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import Any, Callable
+from typing import Any
+from collections.abc import Callable
 
 from agnt_classifier.agnt_api import AGNTClassifier, ClassifierResult, ClassifierVerdict
 from agnt_classifier.allowlist import is_allowlisted
@@ -172,9 +173,7 @@ class ClassifiedGateway:
         tool_input = tool_input or {}
 
         try:
-            result = self._evaluate_inner(
-                tool_id, tool_input, context, mcp_server_name, start_time
-            )
+            result = self._evaluate_inner(tool_id, tool_input, context, mcp_server_name, start_time)
         except Exception as e:
             # P5.1: Fail-closed — any exception = BLOCK
             logger.error("Gateway evaluation error (fail-closed): %s", e)
@@ -219,9 +218,7 @@ class ClassifiedGateway:
         # ── Step 2: MCP policy check (if tool is from an MCP server) ──
         if mcp_server_name:
             server_info = MCPServerInfo(name=mcp_server_name)
-            policy_result = is_mcp_server_allowed_by_policy(
-                mcp_server_name, server_info, self._policy
-            )
+            policy_result = is_mcp_server_allowed_by_policy(mcp_server_name, server_info, self._policy)
             if not policy_result.allowed:
                 duration = (time.perf_counter() - start_time) * 1000
                 return GatewayResult(
@@ -279,11 +276,7 @@ class ClassifiedGateway:
             "policy": {
                 "has_allowlist": self._policy.has_allowlist,
                 "has_denylist": self._policy.has_denylist,
-                "allowlist_count": (
-                    len(self._policy.allowed_servers)
-                    if self._policy.allowed_servers
-                    else 0
-                ),
+                "allowlist_count": (len(self._policy.allowed_servers) if self._policy.allowed_servers else 0),
                 "denylist_count": len(self._policy.denied_servers),
             },
             "telemetry": self._telemetry.to_dict(),

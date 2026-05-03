@@ -1,6 +1,10 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-"""AGNT VCR — Deterministic record/replay for tool interactions."""
+"""agnt_vcr — VCR Record/Replay Subsystem."""
 
-from packages.agnt_vcr.vcr import VCRReplay
+from .async_vcr import AsyncVCR
+from .vcr import VCRReplay
 
-__all__ = ["VCRReplay"]
+__all__ = [
+    "AsyncVCR",
+    "VCRReplay",
+]

@@ -8,7 +8,7 @@ imports from here; this module imports from none of them.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from typing import Any, Literal
 
 
@@ -25,7 +25,7 @@ Message = dict[str, Any]
 QuerySource = str  # e.g. "session_memory", "compact", "repl_main_thread", "sdk"
 
 
-class CompactDirection(str, Enum):
+class CompactDirection(StrEnum):
     """Partial-compact direction — which messages to summarize."""
 
     FROM = "from"  # summarize FROM a point forward (default)
@@ -134,7 +134,7 @@ CLEARED_CONTENT_SENTINEL: str = "[Old tool result content cleared]"
 # ── API microcompact types ────────────────────────────────────────────────────
 
 
-class ContextEditRuleType(str, Enum):
+class ContextEditRuleType(StrEnum):
     """Types of context-edit rules sent to the API."""
 
     TOOL_RESULT = "tool_result"

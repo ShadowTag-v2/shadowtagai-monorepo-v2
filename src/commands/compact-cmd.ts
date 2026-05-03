@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import type { Command } from 'commander';
 import { logEvent } from '../services/analytics/index.js';
 import {
@@ -15,10 +15,14 @@ import {
  *   - Display budget allocation breakdown
  *   - Report layer-by-layer compaction metrics
  *   - Dry-run mode for analysis without side effects
+ *   - Write compacted output to disk
+ *   - Threshold gate for CI pipeline enforcement
  *
  * Usage:
  *   agnt compact --file conversation.json --model gemini-2.5-pro
  *   agnt compact --file conv.json --window 200000 --json
+ *   agnt compact --file conv.json --output compacted.json
+ *   agnt compact --file conv.json --threshold 10
  *   agnt compact --budget-only --model claude-sonnet-4-20250514
  */
 
@@ -30,6 +34,9 @@ export interface CompactCommandOptions {
   budgetOnly?: boolean;
   dryRun?: boolean;
   verbose?: boolean;
+  output?: string;
+  threshold?: string;
+  force?: boolean;
 }
 
 function formatBudget(budget: Record<string, number>): string {
@@ -50,6 +57,17 @@ function formatBudget(budget: Record<string, number>): string {
   );
   lines.push('└──────────────────────────────────────────────────┘');
   return lines.join('\n');
+}
+
+/** Compute char-level reduction percentage */
+function computeReductionPct(
+  inputMessages: Record<string, unknown>[],
+  outputMessages: Record<string, unknown>[],
+): number {
+  const inputChars = JSON.stringify(inputMessages).length;
+  const outputChars = JSON.stringify(outputMessages).length;
+  if (inputChars === 0) return 0;
+  return ((inputChars - outputChars) / inputChars) * 100;
 }
 
 /** Handle --budget-only mode: show allocation and exit */
@@ -73,10 +91,7 @@ function handleDryRun(
   durationMs: number,
 ): void {
   const removed = messages.length - result.messages.length;
-  const inputChars = JSON.stringify(messages).length;
-  const outputChars = JSON.stringify(result.messages).length;
-  const charReduction = inputChars - outputChars;
-  const pct = inputChars > 0 ? ((charReduction / inputChars) * 100).toFixed(1) : '0.0';
+  const pct = computeReductionPct(messages, result.messages);
 
   console.log(formatBudget(result.budget as unknown as Record<string, number>));
   console.log();
@@ -84,7 +99,7 @@ function handleDryRun(
   console.log(`  Input messages:    ${messages.length}`);
   console.log(`  Output messages:   ${result.messages.length}`);
   console.log(`  Messages removed:  ${removed}`);
-  console.log(`  Char reduction:    ${charReduction} (${pct}%)`);
+  console.log(`  Char reduction:    ${pct.toFixed(1)}%`);
   if (result.circuitBroken) {
     console.log('  ⚠ Circuit breaker activated — compaction halted.');
   }
@@ -94,6 +109,7 @@ function handleDryRun(
     inputMessages: messages.length,
     outputMessages: result.messages.length,
     durationMs,
+    reductionPct: pct,
   });
 }
 
@@ -109,6 +125,7 @@ function outputJsonResult(
         inputMessages: messages.length,
         outputMessages: result.messages.length,
         reduction: messages.length - result.messages.length,
+        reductionPct: computeReductionPct(messages, result.messages),
         layersApplied: result.layersApplied,
         circuitBroken: result.circuitBroken,
         budget: result.budget,
@@ -158,6 +175,33 @@ function outputHumanResult(
   console.log(`\n✓ Compaction complete in ${durationMs}ms`);
 }
 
+/** Write compacted output to disk */
+function writeOutput(outputPath: string, result: CompactionPipelineResult): void {
+  writeFileSync(outputPath, JSON.stringify(result.messages, null, 2), 'utf-8');
+  console.log(`\n📁 Compacted output written to: ${outputPath}`);
+}
+
+/** Enforce --threshold gate: fail if reduction % is below target */
+function enforceThreshold(
+  messages: Record<string, unknown>[],
+  result: CompactionPipelineResult,
+  thresholdPct: number,
+): boolean {
+  const actualPct = computeReductionPct(messages, result.messages);
+  if (actualPct < thresholdPct) {
+    console.log(
+      `\n✗ THRESHOLD FAIL — reduction ${actualPct.toFixed(1)}% < required ${thresholdPct}%`,
+    );
+    logEvent('tengu_compact_threshold_fail', {
+      actualPct,
+      thresholdPct,
+    });
+    return false;
+  }
+  console.log(`\n✓ THRESHOLD PASS — reduction ${actualPct.toFixed(1)}% ≥ ${thresholdPct}%`);
+  return true;
+}
+
 /** Emit final telemetry event with layer timings */
 function emitCompletionTelemetry(
   messages: Record<string, unknown>[],
@@ -168,12 +212,78 @@ function emitCompletionTelemetry(
     inputMessages: messages.length,
     outputMessages: result.messages.length,
     durationMs,
+    reductionPct: computeReductionPct(messages, result.messages),
     circuitBroken: result.circuitBroken,
     l1_ms: result.layerTimings?.apiMicrocompact,
     l2_ms: result.layerTimings?.historySnip,
     l3_ms: result.layerTimings?.contextCollapse,
     l4_ms: result.layerTimings?.tokenBudget,
   });
+}
+
+/** Full compaction lifecycle: read → pipeline → output → threshold → telemetry */
+async function handleFullCompaction(
+  opts: CompactCommandOptions,
+  totalWindow?: number,
+): Promise<void> {
+  if (!opts.file) {
+    console.error('Error: --file is required (unless using --budget-only)');
+    process.exitCode = 1;
+    return;
+  }
+
+  const raw = readFileSync(opts.file, 'utf-8');
+  const messages: Record<string, unknown>[] = JSON.parse(raw);
+
+  if (!Array.isArray(messages)) {
+    console.error('Error: input file must contain a JSON array of messages');
+    process.exitCode = 1;
+    return;
+  }
+
+  const t0 = performance.now();
+  const result = await runCompactionPipeline(messages, totalWindow, opts.model);
+  const durationMs = Math.round(performance.now() - t0);
+
+  // Dry-run mode: analyze only, no output writing
+  if (opts.dryRun) {
+    handleDryRun(messages, result, durationMs);
+    return;
+  }
+
+  // Full output: JSON or human-readable
+  if (opts.json) {
+    outputJsonResult(messages, result, durationMs);
+  } else {
+    outputHumanResult(messages, result, opts, durationMs);
+  }
+
+  // Write compacted output to disk if --output specified
+  if (opts.output) {
+    writeOutput(opts.output, result);
+  }
+
+  // Threshold gate: fail if reduction is below target (bypassed by --force)
+  if (opts.threshold && !opts.force) {
+    const thresholdPct = parseFloat(opts.threshold);
+    if (!Number.isNaN(thresholdPct)) {
+      const passed = enforceThreshold(messages, result, thresholdPct);
+      if (!passed) {
+        process.exitCode = 1;
+      }
+    }
+  } else if (opts.threshold && opts.force) {
+    const thresholdPct = parseFloat(opts.threshold);
+    if (!Number.isNaN(thresholdPct)) {
+      const actualPct = computeReductionPct(messages, result.messages);
+      console.log(
+        `\n⚡ FORCE MODE — threshold check skipped (${actualPct.toFixed(1)}% vs ${thresholdPct}% target)`,
+      );
+    }
+  }
+
+  // Emit completion telemetry with per-layer timings
+  emitCompletionTelemetry(messages, result, durationMs);
 }
 
 export function registerCompactCommand(program: Command) {
@@ -183,12 +293,14 @@ export function registerCompactCommand(program: Command) {
     .option('-f, --file <path>', 'JSON conversation file to compact')
     .option('-m, --model <model>', 'Model identifier for context window sizing')
     .option('-w, --window <size>', 'Override total context window (tokens)')
+    .option('-o, --output <path>', 'Write compacted JSON to file')
+    .option('-t, --threshold <pct>', 'Fail if char reduction % is below this target')
     .option('--json', 'Output results as JSON')
     .option('--budget-only', 'Show budget allocation without processing messages')
     .option('--dry-run', 'Analyze compaction without writing output (diff summary)')
     .option('--verbose', 'Show per-layer timing breakdown')
+    .option('--force', 'Bypass circuit breaker and threshold gates')
     .action(async (opts: CompactCommandOptions) => {
-      const startTime = Date.now();
       console.log('╔══════════════════════════════════════════════════╗');
       console.log('║    COMPACTION — 4-Layer Context Pipeline         ║');
       console.log('╚══════════════════════════════════════════════════╝');
@@ -199,10 +311,16 @@ export function registerCompactCommand(program: Command) {
         budgetOnly: !!opts.budgetOnly,
         dryRun: !!opts.dryRun,
         verbose: !!opts.verbose,
+        hasOutput: !!opts.output,
+        threshold: opts.threshold ? parseFloat(opts.threshold) : undefined,
       });
 
       try {
-        resetCompactionCircuitBreaker();
+        if (opts.force) {
+          resetCompactionCircuitBreaker();
+        } else {
+          resetCompactionCircuitBreaker();
+        }
         const totalWindow = opts.window ? parseInt(opts.window, 10) : undefined;
 
         if (opts.budgetOnly) {
@@ -210,40 +328,7 @@ export function registerCompactCommand(program: Command) {
           return;
         }
 
-        if (!opts.file) {
-          process.exitCode = 1;
-          return;
-        }
-
-        const raw = readFileSync(opts.file, 'utf-8');
-        const messages: Record<string, unknown>[] = JSON.parse(raw);
-
-        if (!Array.isArray(messages)) {
-          process.exitCode = 1;
-          return;
-        }
-
-        console.log(`Input: ${opts.file} (${messages.length} messages)`);
-        console.log(`Model: ${opts.model ?? '(default 200K)'}`);
-        if (opts.dryRun) console.log('Mode:  DRY RUN (no output written)');
-        if (opts.verbose) console.log('Mode:  VERBOSE (per-layer timing enabled)');
-        console.log();
-
-        const result = await runCompactionPipeline(messages, totalWindow, opts.model);
-        const durationMs = Date.now() - startTime;
-
-        if (opts.dryRun) {
-          handleDryRun(messages, result, durationMs);
-          return;
-        }
-
-        if (opts.json) {
-          outputJsonResult(messages, result, durationMs);
-        } else {
-          outputHumanResult(messages, result, opts, durationMs);
-        }
-
-        emitCompletionTelemetry(messages, result, durationMs);
+        await handleFullCompaction(opts, totalWindow);
       } catch (e: unknown) {
         const errMsg = e instanceof Error ? e.message : String(e);
         logEvent('tengu_compact_error', { error: errMsg });

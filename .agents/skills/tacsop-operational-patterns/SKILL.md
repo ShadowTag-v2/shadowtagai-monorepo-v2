@@ -3,6 +3,10 @@ name: TACSOP Operational Patterns
 description: Six operational patterns extracted from Cor.Antigravity TACSOP 2 (V15-V21) after full doctrinal audit on 2026-04-24. Only genuinely new, safe patterns that passed the disposition filter are included here.
 ---
 
+<!-- GUARDRAIL: MODERATE-RISK skill. Contains Pattern 3 (Temporal-Reversal on Lint Failure)
+     which uses git checkout -- <file>. All 6 patterns are bounded and audited.
+     12 dangerous concepts were explicitly REFUSED during disposition. -->
+
 # TACSOP Operational Patterns
 
 **Source:** Cor.Antigravity TACSOP 2 (V15-V21), audited 2026-04-24
