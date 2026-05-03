@@ -57,7 +57,11 @@ class ServiceStatus:
 
 
 # Map of service_name → package import path for lazy loading
+# Modules in packages/agnt_services/ use dotted path; external packages use bare names
+_PKG = "packages.agnt_services"
+
 _SERVICE_REGISTRY: dict[str, str] = {
+    # External packages (installed at top level or in dedicated packages/)
     "speculation_engine": "speculation_engine",
     "auto_dream": "auto_dream",
     "context_compactor": "context_compactor",
@@ -87,18 +91,20 @@ _SERVICE_REGISTRY: dict[str, str] = {
     "tool_limits": "tool_limits",
     "vcr_fixtures": "vcr_fixtures",
     # V15 expansion — unported src/services/ modules (stubs for tracking)
-    "agent_summary": "agent_summary",
-    "session_memory": "session_memory",
-    "extract_memories": "extract_memories",
     "policy_limits": "policy_limits",
     "analytics": "analytics",
     "oauth_flow": "oauth_flow",
     "voice_modality": "voice_modality",
-    "watchdog": "watchdog",
-    # V2.2.0 foundation modules — ported from src/utils/
-    "forked_agent": "forked_agent",
-    "cron_scheduler": "cron_scheduler",
-    "conversation_recovery": "conversation_recovery",
+    # Intra-package modules (packages/agnt_services/*.py)
+    "agent_summary": f"{_PKG}.agent_summary",
+    "session_memory": f"{_PKG}.session_memory",
+    "extract_memories": f"{_PKG}.extract_memories",
+    "watchdog": f"{_PKG}.watchdog",
+    "forked_agent": f"{_PKG}.forked_agent",
+    "cron_scheduler": f"{_PKG}.cron_scheduler",
+    "conversation_recovery": f"{_PKG}.conversation_recovery",
+    "git_ops": f"{_PKG}.git_ops",
+    "telemetry_events": f"{_PKG}.telemetry_events",
 }
 
 
