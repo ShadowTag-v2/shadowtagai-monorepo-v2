@@ -77,17 +77,37 @@ class CassetteMode(StrEnum):
 # ── Sensitive Key Patterns (auto-scrub) ──
 
 _SCRUB_PATTERNS: list[tuple[re.Pattern[str], str]] = [
-    # Bearer tokens
+    # ── Bearer & Auth Tokens ──
     (re.compile(r"(Bearer\s+)[A-Za-z0-9\-._~+/]+=*", re.IGNORECASE), r"\1[SCRUBBED]"),
-    # API key query params
+    # ── API key query params ──
     (re.compile(r"(key=)[A-Za-z0-9\-._~+/]+=*"), r"\1[SCRUBBED]"),
-    # x-goog-api-key header
+    # ── x-goog-api-key header ──
     (re.compile(r"(x-goog-api-key:\s*)[^\s]+", re.IGNORECASE), r"\1[SCRUBBED]"),
-    # Generic API key JSON fields
-    (re.compile(r'("api_key"\s*:\s*")[^"]+(")', re.IGNORECASE), r"\1[SCRUBBED]\2"),
-    # OAuth tokens
-    (re.compile(r'("access_token"\s*:\s*")[^"]+(")', re.IGNORECASE), r"\1[SCRUBBED]\2"),
-    (re.compile(r'("refresh_token"\s*:\s*")[^"]+(")', re.IGNORECASE), r"\1[SCRUBBED]\2"),
+    # ── x-api-key header (generic) ──
+    (re.compile(r"(x-api-key:\s*)[^\s]+", re.IGNORECASE), r"\1[SCRUBBED]"),
+    # ── Generic API key JSON fields ──
+    (re.compile(r'("api_key"\s*:\s*")[^"]+(")'), r"\1[SCRUBBED]\2"),
+    # ── OAuth tokens ──
+    (re.compile(r'("access_token"\s*:\s*")[^"]+(")'), r"\1[SCRUBBED]\2"),
+    (re.compile(r'("refresh_token"\s*:\s*")[^"]+(")'), r"\1[SCRUBBED]\2"),
+    (re.compile(r'("id_token"\s*:\s*")[^"]+(")'), r"\1[SCRUBBED]\2"),
+    # ── Stripe API keys (sk_live_, sk_test_, pk_live_, pk_test_, rk_live_, rk_test_, whsec_) ──
+    (re.compile(r"(sk_(?:live|test)_)[A-Za-z0-9]+"), r"\1[SCRUBBED]"),
+    (re.compile(r"(pk_(?:live|test)_)[A-Za-z0-9]+"), r"\1[SCRUBBED]"),
+    (re.compile(r"(rk_(?:live|test)_)[A-Za-z0-9]+"), r"\1[SCRUBBED]"),
+    (re.compile(r"(whsec_)[A-Za-z0-9]+"), r"whsec_[SCRUBBED]"),
+    # ── GCP service account private key ──
+    (re.compile(r'("private_key"\s*:\s*")[^"]+(")'), r"\1[SCRUBBED]\2"),
+    (re.compile(r'("private_key_id"\s*:\s*")[^"]+(")'), r"\1[SCRUBBED]\2"),
+    # ── Firebase / OIDC ID tokens (JWT format: eyJhbGci...) ──
+    (re.compile(r'("idToken"\s*:\s*")[^"]+(")'), r"\1[SCRUBBED]\2"),
+    # ── Password fields ──
+    (re.compile(r'("password"\s*:\s*")[^"]+(")'), r"\1[SCRUBBED]\2"),
+    # ── Client secrets ──
+    (re.compile(r'("client_secret"\s*:\s*")[^"]+(")'), r"\1[SCRUBBED]\2"),
+    # ── Session / cookie tokens ──
+    (re.compile(r"(Cookie:\s*)[^\r\n]+", re.IGNORECASE), r"\1[SCRUBBED]"),
+    (re.compile(r"(Set-Cookie:\s*)[^\r\n]+", re.IGNORECASE), r"\1[SCRUBBED]"),
 ]
 
 

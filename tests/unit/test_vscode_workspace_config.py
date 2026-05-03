@@ -24,8 +24,9 @@ class WorkspaceConfigShapeTest(unittest.TestCase):
 
         self.assertNotIn("configurations", settings)
         self.assertNotIn("version", settings)
-        self.assertIn("editor.formatOnSave", settings)
-        self.assertIn("python.defaultInterpreterPath", settings)
+        # Telemetry must be disabled for security compliance
+        self.assertIn("telemetry.telemetryLevel", settings)
+        self.assertEqual(settings["telemetry.telemetryLevel"], "off")
 
     def test_workspace_launch_file_has_launch_shape_if_present(self) -> None:
         launch_path = REPO_ROOT / ".vscode" / "launch.json"
