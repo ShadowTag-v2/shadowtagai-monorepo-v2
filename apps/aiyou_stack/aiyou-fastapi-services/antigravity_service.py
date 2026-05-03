@@ -49,6 +49,20 @@ TOOL_DEFINITIONS = {
                 },
             },
         },
+        {
+            "name": "read_file_tool",
+            "description": "Read the contents of a file. Returns the first 200 lines.",
+            "parameters": {
+                "type": "OBJECT",
+                "properties": {
+                    "path": {
+                        "type": "STRING",
+                        "description": "Path to the file to read.",
+                    },
+                },
+                "required": ["path"],
+            },
+        },
     ],
 }
 
@@ -84,6 +98,23 @@ def list_files_tool(path: str = ".") -> dict:
         return {"error": str(e)}
 
 
+def read_file_tool(path: str) -> dict:
+    """Reads file contents (first 200 lines)."""
+    try:
+        with open(path, encoding="utf-8", errors="replace") as f:
+            lines = []
+            for i, line in enumerate(f):
+                if i >= 200:
+                    lines.append("... (truncated at 200 lines)")
+                    break
+                lines.append(line.rstrip())
+        return {"result": "\n".join(lines)}
+    except FileNotFoundError:
+        return {"error": f"File not found: {path}"}
+    except Exception as e:
+        return {"error": str(e)}
+
+
 # --- GEMINI CLIENT ---
 
 
@@ -115,6 +146,7 @@ def call_gemini_turn(model: str, conversation_history: list, tools=None) -> dict
 TOOL_DISPATCH = {
     "code_search_tool": code_search_tool,
     "list_files_tool": list_files_tool,
+    "read_file_tool": read_file_tool,
 }
 
 

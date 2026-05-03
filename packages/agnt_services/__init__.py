@@ -120,6 +120,17 @@ _SERVICE_REGISTRY: dict[str, str] = {
     "tool_limits": "tool_limits",
     "vcr_fixtures": "vcr_fixtures",
     "policy_limits": "tool_gateway.policy_limits",
+    # ── Batch 5 ported services ───────────────────────────────────
+    "agnt_classifier": "agnt_classifier",
+    "agnt_bash_classifier": "agnt_bash_classifier",
+    "agnt_tools": "agnt_tools",
+    "agnt_compact": "agnt_compact",
+    "agnt_context": "agnt_context",
+    "deep_research": "deep_research",
+    "mcp_tools": "mcp_tools",
+    "repo_oracle": "repo_oracle",
+    "collapse_read_search": "collapse_read_search",
+    "evaluation_bridge": "evaluation_bridge",
 }
 
 
