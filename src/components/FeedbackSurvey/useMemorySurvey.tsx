@@ -18,6 +18,7 @@ import { submitTranscriptShare } from './submitTranscriptShare.js';
 import type { TranscriptShareResponse } from './TranscriptSharePrompt.js';
 import { useSurveyState } from './useSurveyState.js';
 import type { FeedbackSurveyResponse } from './utils.js';
+
 const HIDE_THANKS_AFTER_MS = 3000;
 const MEMORY_SURVEY_GATE = 'tengu_dunwich_bell';
 const MEMORY_SURVEY_EVENT = 'tengu_memory_survey_event';

@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useExitOnCtrlCDWithKeybindings } from 'src/hooks/useExitOnCtrlCDWithKeybindings.js';
 import { useShortcutDisplay } from 'src/keybindings/useShortcutDisplay.js';
 import {
@@ -16,6 +16,7 @@ import { Pane } from '../design-system/Pane.js';
 import { Tab, Tabs } from '../design-system/Tabs.js';
 import { Commands } from './Commands.js';
 import { General } from './General.js';
+
 type Props = {
   onClose: (
     result?: string,

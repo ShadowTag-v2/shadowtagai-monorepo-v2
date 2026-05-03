@@ -35,6 +35,7 @@ import { registerEscHotkey } from './escHotkey.js';
 import { getChicagoCoordinateMode } from './gates.js';
 import { getComputerUseHostAdapter } from './hostAdapter.js';
 import { getComputerUseMCPRenderingOverrides } from './toolRendering.js';
+
 type CallOverride = Pick<Tool, 'call'>['call'];
 type Binding = {
   ctx: ComputerUseSessionContext;

@@ -1,9 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
 import type { ContentBlockParam, TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
 import { randomUUID, type UUID } from 'crypto';
 import figures from 'figures';
-import * as React from 'react';
+import type * as React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
@@ -30,9 +30,11 @@ import {
 } from '../utils/messages.js';
 import { type OptionWithDescription, Select } from './CustomSelect/select.js';
 import { Spinner } from './Spinner.js';
+
 function isTextBlock(block: ContentBlockParam): block is TextBlockParam {
   return block.type === 'text';
 }
+
 import * as path from 'path';
 import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
 import type { FileEditOutput } from 'src/tools/FileEditTool/types.js';
@@ -51,6 +53,7 @@ import { count } from '../utils/array.js';
 import { formatRelativeTimeAgo, truncate } from '../utils/format.js';
 import type { Theme } from '../utils/theme.js';
 import { Divider } from './design-system/Divider.js';
+
 type RestoreOption =
   | 'both'
   | 'conversation'
@@ -967,9 +970,7 @@ function computeDiffStatsBetweenMessages(
           deletions += removals;
         }
       }
-    } catch {
-      continue;
-    }
+    } catch {}
   }
   return {
     filesChanged,

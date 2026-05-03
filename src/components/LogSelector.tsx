@@ -1,8 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
 import chalk from 'chalk';
 import figures from 'figures';
 import Fuse from 'fuse.js';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { getOriginalCwd, getSessionId } from '../bootstrap/state.js';
 import { useExitOnCtrlCDWithKeybindings } from '../hooks/useExitOnCtrlCDWithKeybindings.js';
 import { useSearchInput } from '../hooks/useSearchInput.js';
@@ -35,6 +35,7 @@ import { Spinner } from './Spinner.js';
 import { TagTabs } from './TagTabs.js';
 import TextInput from './TextInput.js';
 import { type TreeNode, TreeSelect } from './ui/TreeSelect.js';
+
 type AgenticSearchState =
   | {
       status: 'idle';

@@ -1,4 +1,3 @@
-import { c as _c } from 'react/compiler-runtime';
 /**
  * Overlay tracking for Escape key coordination.
  *
@@ -14,6 +13,7 @@ import { c as _c } from 'react/compiler-runtime';
  * so no manual cleanup or state management is needed.
  */
 import { useContext, useEffect, useLayoutEffect } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import instances from '../ink/instances.js';
 import { AppStoreContext, useAppState } from '../state/AppState.js';
 

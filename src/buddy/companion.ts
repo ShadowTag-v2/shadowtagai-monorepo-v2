@@ -15,7 +15,7 @@ import {
 // Mulberry32 — tiny seeded PRNG, good enough for picking ducks
 function mulberry32(seed: number): () => number {
   let a = seed >>> 0;
-  return function () {
+  return () => {
     a |= 0;
     a = (a + 0x6d2b79f5) | 0;
     let t = Math.imul(a ^ (a >>> 15), 1 | a);

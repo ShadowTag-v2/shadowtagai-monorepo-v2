@@ -1,10 +1,11 @@
-import { c as _c } from 'react/compiler-runtime';
 import { relative } from 'path';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { getCwd } from 'src/utils/cwd.js';
 import { Box, Text } from '../ink.js';
 import { HighlightedCode } from './HighlightedCode.js';
 import { MessageResponse } from './MessageResponse.js';
+
 type Props = {
   notebook_path: string;
   cell_id: string | undefined;

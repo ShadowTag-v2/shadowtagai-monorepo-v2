@@ -1,4 +1,3 @@
-import { c as _c } from 'react/compiler-runtime';
 /**
  * Portal for content that floats above the prompt so it escapes
  * FullscreenLayout's bottom-slot `overflowY:hidden` clip.
@@ -20,6 +19,7 @@ import { c as _c } from 'react/compiler-runtime';
  * their own writes — the setter contexts are stable.
  */
 import React, { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { SuggestionItem } from '../components/PromptInput/PromptInputFooterSuggestions.js';
 export type PromptOverlayData = {
   suggestions: SuggestionItem[];

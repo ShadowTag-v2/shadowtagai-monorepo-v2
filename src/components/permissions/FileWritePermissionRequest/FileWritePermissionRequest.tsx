@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import { basename, relative } from 'path';
 import React, { useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { z } from 'zod/v4';
 import { Text } from '../../../ink.js';
 import { FileWriteTool } from '../../../tools/FileWriteTool/FileWriteTool.js';
@@ -15,6 +15,7 @@ import {
 } from '../FilePermissionDialog/ideDiffConfig.js';
 import type { PermissionRequestProps } from '../PermissionRequest.js';
 import { FileWriteToolDiff } from './FileWriteToolDiff.js';
+
 type FileWriteToolInput = z.infer<typeof FileWriteTool.inputSchema>;
 const ideDiffSupport: IDEDiffSupport<FileWriteToolInput> = {
   getConfig: (input: FileWriteToolInput) => {

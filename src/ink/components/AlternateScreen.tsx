@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { type PropsWithChildren, useContext, useInsertionEffect } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import instances from '../instances.js';
 import {
   DISABLE_MOUSE_TRACKING,
@@ -10,6 +10,7 @@ import {
 import { TerminalWriteContext } from '../useTerminalNotification.js';
 import Box from './Box.js';
 import { TerminalSizeContext } from './TerminalSizeContext.js';
+
 type Props = PropsWithChildren<{
   /** Enable SGR mouse tracking (wheel + click/drag). Default true. */
   mouseTracking?: boolean;

@@ -4,6 +4,7 @@ import { getOriginalCwd } from '../../bootstrap/state.js';
 import { Text } from '../../ink.js';
 import type { PermissionUpdate } from '../../utils/permissions/PermissionUpdateSchema.js';
 import { permissionRuleExtractPrefix } from '../../utils/permissions/shellRuleMatching.js';
+
 function commandListDisplay(commands: string[]): ReactNode {
   switch (commands.length) {
     case 0:

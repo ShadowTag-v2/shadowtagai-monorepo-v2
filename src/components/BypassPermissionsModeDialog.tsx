@@ -1,11 +1,12 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useCallback } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { logEvent } from 'src/services/analytics/index.js';
 import { Box, Link, Newline, Text } from '../ink.js';
 import { gracefulShutdownSync } from '../utils/gracefulShutdown.js';
 import { updateSettingsForSource } from '../utils/settings/settings.js';
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
+
 type Props = {
   onAccept(): void;
 };
@@ -23,14 +24,14 @@ export function BypassPermissionsModeDialog(t0) {
   let t2;
   if ($[1] !== onAccept) {
     t2 = function onChange(value) {
-      bb3: switch (value) {
+      switch (value) {
         case 'accept': {
           logEvent('tengu_bypass_permissions_mode_dialog_accept', {});
           updateSettingsForSource('userSettings', {
             skipDangerousModePermissionPrompt: true,
           });
           onAccept();
-          break bb3;
+          break;
         }
         case 'decline': {
           gracefulShutdownSync(1);

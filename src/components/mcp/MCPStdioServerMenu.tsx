@@ -17,6 +17,7 @@ import { Spinner } from '../Spinner.js';
 import { CapabilitiesSection } from './CapabilitiesSection.js';
 import type { StdioServerInfo } from './types.js';
 import { handleReconnectError, handleReconnectResult } from './utils/reconnectHelpers.js';
+
 type Props = {
   server: StdioServerInfo;
   serverToolsCount: number;

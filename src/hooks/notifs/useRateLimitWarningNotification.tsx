@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useNotifications } from 'src/context/notifications.js';
 import { Text } from 'src/ink.js';
 import { getRateLimitWarning, getUsingOverageText } from 'src/services/claudeAiLimits.js';

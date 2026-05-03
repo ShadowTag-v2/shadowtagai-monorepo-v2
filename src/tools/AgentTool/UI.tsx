@@ -1,9 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
 import type {
   ToolResultBlockParam,
   ToolUseBlockParam,
 } from '@anthropic-ai/sdk/resources/index.mjs';
-import * as React from 'react';
+import type * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { ConfigurableShortcutHint } from 'src/components/ConfigurableShortcutHint.js';
 import { CtrlOToExpand, SubAgentProvider } from 'src/components/CtrlOToExpand.js';
 import { Byline } from 'src/components/design-system/Byline.js';
@@ -44,6 +44,7 @@ import type { outputSchema, Progress, RemoteLaunchedOutput } from './AgentTool.j
 import { inputSchema } from './AgentTool.js';
 import { getAgentColor } from './agentColorManager.js';
 import { GENERAL_PURPOSE_AGENT } from './built-in/generalPurposeAgent.js';
+
 const MAX_PROGRESS_MESSAGES_TO_SHOW = 3;
 
 /**

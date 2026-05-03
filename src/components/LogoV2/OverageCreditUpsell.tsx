@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
 import { useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Text } from '../../ink.js';
 import { logEvent } from '../../services/analytics/index.js';
 import {
@@ -11,6 +11,7 @@ import {
 import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
 import { truncate } from '../../utils/format.js';
 import type { FeedConfig } from './Feed.js';
+
 const MAX_IMPRESSIONS = 3;
 
 /**

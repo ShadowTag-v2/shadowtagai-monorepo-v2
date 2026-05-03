@@ -4,7 +4,7 @@ import { getAWSRegion, isEnvTruthy } from '../envUtils.js';
 import { logError } from '../log.js';
 import { getAWSClientProxyConfig } from '../proxy.js';
 
-export const getBedrockInferenceProfiles = memoize(async function (): Promise<string[]> {
+export const getBedrockInferenceProfiles = memoize(async (): Promise<string[]> => {
   const [client, { ListInferenceProfilesCommand }] = await Promise.all([
     createBedrockClient(),
     import('@aws-sdk/client-bedrock'),
@@ -127,42 +127,42 @@ export async function createBedrockRuntimeClient() {
   return new BedrockRuntimeClient(clientConfig);
 }
 
-export const getInferenceProfileBackingModel = memoize(async function (
-  profileId: string,
-): Promise<string | null> {
-  try {
-    const [client, { GetInferenceProfileCommand }] = await Promise.all([
-      createBedrockClient(),
-      import('@aws-sdk/client-bedrock'),
-    ]);
-    const command = new GetInferenceProfileCommand({
-      inferenceProfileIdentifier: profileId,
-    });
-    const response = await client.send(command);
+export const getInferenceProfileBackingModel = memoize(
+  async (profileId: string): Promise<string | null> => {
+    try {
+      const [client, { GetInferenceProfileCommand }] = await Promise.all([
+        createBedrockClient(),
+        import('@aws-sdk/client-bedrock'),
+      ]);
+      const command = new GetInferenceProfileCommand({
+        inferenceProfileIdentifier: profileId,
+      });
+      const response = await client.send(command);
 
-    if (!response.models || response.models.length === 0) {
+      if (!response.models || response.models.length === 0) {
+        return null;
+      }
+
+      // Use the first model as the primary backing model for cost calculation
+      // In practice, application inference profiles typically load balance between
+      // similar models with the same cost structure
+      const primaryModel = response.models[0];
+      if (!primaryModel?.modelArn) {
+        return null;
+      }
+
+      // Extract model name from ARN
+      // ARN format: arn:aws:bedrock:region:account:foundation-model/model-name
+      const lastSlashIndex = primaryModel.modelArn.lastIndexOf('/');
+      return lastSlashIndex >= 0
+        ? primaryModel.modelArn.substring(lastSlashIndex + 1)
+        : primaryModel.modelArn;
+    } catch (error) {
+      logError(error as Error);
       return null;
     }
-
-    // Use the first model as the primary backing model for cost calculation
-    // In practice, application inference profiles typically load balance between
-    // similar models with the same cost structure
-    const primaryModel = response.models[0];
-    if (!primaryModel?.modelArn) {
-      return null;
-    }
-
-    // Extract model name from ARN
-    // ARN format: arn:aws:bedrock:region:account:foundation-model/model-name
-    const lastSlashIndex = primaryModel.modelArn.lastIndexOf('/');
-    return lastSlashIndex >= 0
-      ? primaryModel.modelArn.substring(lastSlashIndex + 1)
-      : primaryModel.modelArn;
-  } catch (error) {
-    logError(error as Error);
-    return null;
-  }
-});
+  },
+);
 
 /**
  * Check if a model ID is a foundation model (e.g., "anthropic.claude-sonnet-4-5-20250929-v1:0")

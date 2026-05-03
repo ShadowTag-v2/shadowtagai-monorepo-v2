@@ -1,10 +1,11 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useCallback } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { ChannelEntry } from '../bootstrap/state.js';
 import { Box, Text } from '../ink.js';
 import { gracefulShutdownSync } from '../utils/gracefulShutdown.js';
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
+
 type Props = {
   channels: ChannelEntry[];
   onAccept(): void;
@@ -15,10 +16,10 @@ export function DevChannelsDialog(t0) {
   let t1;
   if ($[0] !== onAccept) {
     t1 = function onChange(value) {
-      bb2: switch (value) {
+      switch (value) {
         case 'accept': {
           onAccept();
-          break bb2;
+          break;
         }
         case 'exit': {
           gracefulShutdownSync(1);

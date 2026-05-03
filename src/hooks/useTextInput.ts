@@ -27,9 +27,7 @@ type InputMapper = (input: string) => MaybeCursor;
 const NOOP_HANDLER: InputHandler = () => {};
 function mapInput(input_map: Array<[string, InputHandler]>): InputMapper {
   const map = new Map(input_map);
-  return function (input: string): MaybeCursor {
-    return (map.get(input) ?? NOOP_HANDLER)(input);
-  };
+  return (input: string): MaybeCursor => (map.get(input) ?? NOOP_HANDLER)(input);
 }
 
 export type UseTextInputProps = {
@@ -372,7 +370,7 @@ export function useTextInput({
       case key.rightArrow:
         return () => cursor.right();
       default: {
-        return function (input: string) {
+        return (input: string) => {
           switch (true) {
             // Home key
             case input === '\x1b[H' || input === '\x1b[1~':

@@ -1,53 +1,54 @@
-import { c as _c } from 'react/compiler-runtime';
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
 import { feature } from 'bun:bundle';
+import { c as _c } from 'react/compiler-runtime';
+
 // Dead code elimination: conditional import for COORDINATOR_MODE
 /* eslint-disable @typescript-eslint/no-require-imports */
 const coordinatorModule = feature('COORDINATOR_MODE')
   ? (require('../../coordinator/coordinatorMode.js') as typeof import('../../coordinator/coordinatorMode.js'))
   : undefined;
-/* eslint-enable @typescript-eslint/no-require-imports */
-import { Box, Text, Link } from '../../ink.js';
-import * as React from 'react';
 import figures from 'figures';
+import type * as React from 'react';
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import type { VimMode, PromptInputMode } from '../../types/textInputTypes.js';
-import type { ToolPermissionContext } from '../../Tool.js';
-import { isVimModeEnabled } from './utils.js';
+import { useAppState, useAppStateStore } from 'src/state/AppState.js';
+import { getIsRemoteMode } from '../../bootstrap/state.js';
+import { useVoiceState } from '../../context/voice.js';
+import { usePrStatus } from '../../hooks/usePrStatus.js';
+import { useTasksV2 } from '../../hooks/useTasksV2.js';
+import { useTerminalSize } from '../../hooks/useTerminalSize.js';
+import { useVoiceEnabled } from '../../hooks/useVoiceEnabled.js';
+import { useHasSelection, useSelection } from '../../ink/hooks/use-selection.js';
+import { isXtermJs } from '../../ink/terminal.js';
+/* eslint-enable @typescript-eslint/no-require-imports */
+import { Box, Link, Text } from '../../ink.js';
 import { useShortcutDisplay } from '../../keybindings/useShortcutDisplay.js';
+import type { ToolPermissionContext } from '../../Tool.js';
+import { isPanelAgentTask } from '../../tasks/LocalAgentTask/LocalAgentTask.js';
+import { isBackgroundTask } from '../../tasks/types.js';
+import type { PromptInputMode, VimMode } from '../../types/textInputTypes.js';
+import { isAgentSwarmsEnabled } from '../../utils/agentSwarmsEnabled.js';
+import { count } from '../../utils/array.js';
+import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
+import { formatDuration } from '../../utils/format.js';
+import { isFullscreenEnvEnabled } from '../../utils/fullscreen.js';
 import {
+  getModeColor,
   isDefaultMode,
   permissionModeSymbol,
   permissionModeTitle,
-  getModeColor,
 } from '../../utils/permissions/PermissionMode.js';
-import { BackgroundTaskStatus } from '../tasks/BackgroundTaskStatus.js';
-import { isBackgroundTask } from '../../tasks/types.js';
-import { isPanelAgentTask } from '../../tasks/LocalAgentTask/LocalAgentTask.js';
-import { getVisibleAgentTasks } from '../CoordinatorAgentStatus.js';
-import { count } from '../../utils/array.js';
-import { shouldHideTasksFooter } from '../tasks/taskStatusUtils.js';
-import { isAgentSwarmsEnabled } from '../../utils/agentSwarmsEnabled.js';
-import { TeamStatus } from '../teams/TeamStatus.js';
-import { isInProcessEnabled } from '../../utils/swarm/backends/registry.js';
-import { useAppState, useAppStateStore } from 'src/state/AppState.js';
-import { getIsRemoteMode } from '../../bootstrap/state.js';
-import HistorySearchInput from './HistorySearchInput.js';
-import { usePrStatus } from '../../hooks/usePrStatus.js';
-import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
-import { Byline } from '../design-system/Byline.js';
-import { useTerminalSize } from '../../hooks/useTerminalSize.js';
-import { useTasksV2 } from '../../hooks/useTasksV2.js';
-import { formatDuration } from '../../utils/format.js';
-import { VoiceWarmupHint } from './VoiceIndicator.js';
-import { useVoiceEnabled } from '../../hooks/useVoiceEnabled.js';
-import { useVoiceState } from '../../context/voice.js';
-import { isFullscreenEnvEnabled } from '../../utils/fullscreen.js';
-import { isXtermJs } from '../../ink/terminal.js';
-import { useHasSelection, useSelection } from '../../ink/hooks/use-selection.js';
-import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
 import { getPlatform } from '../../utils/platform.js';
+import { isInProcessEnabled } from '../../utils/swarm/backends/registry.js';
+import { getVisibleAgentTasks } from '../CoordinatorAgentStatus.js';
+import { Byline } from '../design-system/Byline.js';
+import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
 import { PrBadge } from '../PrBadge.js';
+import { BackgroundTaskStatus } from '../tasks/BackgroundTaskStatus.js';
+import { shouldHideTasksFooter } from '../tasks/taskStatusUtils.js';
+import { TeamStatus } from '../teams/TeamStatus.js';
+import HistorySearchInput from './HistorySearchInput.js';
+import { isVimModeEnabled } from './utils.js';
+import { VoiceWarmupHint } from './VoiceIndicator.js';
 
 // Dead code elimination: conditional import for proactive mode
 /* eslint-disable @typescript-eslint/no-require-imports */

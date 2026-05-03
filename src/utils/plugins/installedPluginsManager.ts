@@ -1131,7 +1131,7 @@ export async function migrateFromEnabledPlugins(): Promise<void> {
 
         let installPath: string;
         let version = 'unknown';
-        let gitCommitSha: string | undefined = undefined;
+        let gitCommitSha: string | undefined;
 
         if (typeof entry.source === 'string') {
           installPath = join(marketplaceInstallLocation, entry.source);

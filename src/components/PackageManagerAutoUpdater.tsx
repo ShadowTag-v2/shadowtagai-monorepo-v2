@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
 import { useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useInterval } from 'usehooks-ts';
 import { Text } from '../ink.js';
 import {
@@ -17,6 +17,7 @@ import {
 } from '../utils/nativeInstaller/packageManagers.js';
 import { gt, gte } from '../utils/semver.js';
 import { getInitialSettings } from '../utils/settings/settings.js';
+
 type Props = {
   isUpdating: boolean;
   onChangeIsUpdating: (isUpdating: boolean) => void;

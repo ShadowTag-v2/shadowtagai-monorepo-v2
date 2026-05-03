@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import { relative } from 'path';
 import * as React from 'react';
 import { Suspense, use, useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Box, NoSelect, Text } from '../../../ink.js';
 import type { NotebookCellType, NotebookContent } from '../../../types/notebook.js';
 import { intersperse } from '../../../utils/array.js';
@@ -12,6 +12,7 @@ import { safeParseJSON } from '../../../utils/json.js';
 import { parseCellId } from '../../../utils/notebook.js';
 import { HighlightedCode } from '../../HighlightedCode.js';
 import { StructuredDiff } from '../../StructuredDiff.js';
+
 type Props = {
   notebook_path: string;
   cell_id: string | undefined;
@@ -160,14 +161,14 @@ function NotebookEditToolDiffInner(t0) {
   }
   const hunks = t3;
   let editTypeDescription;
-  bb2: switch (edit_mode) {
+  switch (edit_mode) {
     case 'insert': {
       editTypeDescription = 'Insert new cell';
-      break bb2;
+      break;
     }
     case 'delete': {
       editTypeDescription = 'Delete cell';
-      break bb2;
+      break;
     }
     default: {
       editTypeDescription = 'Replace cell contents';

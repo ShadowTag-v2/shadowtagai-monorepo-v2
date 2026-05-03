@@ -46,6 +46,7 @@ import { gracefulShutdown } from '../../utils/gracefulShutdown.js';
 import { safeParseJSON } from '../../utils/json.js';
 import { getPlatform } from '../../utils/platform.js';
 import { cliError, cliOk } from '../exit.js';
+
 async function checkMcpServerHealth(name: string, server: ScopedMcpServerConfig): Promise<string> {
   try {
     const result = await connectToServer(name, server);

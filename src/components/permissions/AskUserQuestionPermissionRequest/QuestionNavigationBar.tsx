@@ -1,11 +1,12 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import React, { useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useTerminalSize } from '../../../hooks/useTerminalSize.js';
 import { stringWidth } from '../../../ink/stringWidth.js';
 import { Box, Text } from '../../../ink.js';
 import type { Question } from '../../../tools/AskUserQuestionTool/AskUserQuestionTool.js';
 import { truncateToWidth } from '../../../utils/format.js';
+
 type Props = {
   questions: Question[];
   currentQuestionIndex: number;

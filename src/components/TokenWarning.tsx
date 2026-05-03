@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import { feature } from 'bun:bundle';
 import * as React from 'react';
 import { useSyncExternalStore } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Box, Text } from '../ink.js';
 import { getFeatureValue_CACHED_MAY_BE_STALE } from '../services/analytics/growthbook.js';
 import {
@@ -11,6 +11,7 @@ import {
 } from '../services/compact/autoCompact.js';
 import { useCompactWarningSuppression } from '../services/compact/compactWarningHook.js';
 import { getUpgradeMessage } from '../utils/model/contextWindowUpgradeCheck.js';
+
 type Props = {
   tokenUsage: number;
   model: string;

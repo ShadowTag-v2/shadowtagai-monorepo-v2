@@ -1,7 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
 import { feature } from 'bun:bundle';
 import { basename } from 'path';
-import React, { useRef } from 'react';
+import type React from 'react';
+import { useRef } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useMinDisplayTime } from '../../hooks/useMinDisplayTime.js';
 import { Ansi, Box, Text, useTheme } from '../../ink.js';
 import { findToolByName, type Tools } from '../../Tool.js';

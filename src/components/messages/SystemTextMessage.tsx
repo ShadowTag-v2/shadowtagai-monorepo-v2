@@ -1,41 +1,44 @@
-import { c as _c } from 'react/compiler-runtime';
-// biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
-import { Box, Text, type TextProps } from '../../ink.js';
 import { feature } from 'bun:bundle';
+import figures from 'figures';
+import sample from 'lodash-es/sample.js';
+import { basename } from 'path';
 import * as React from 'react';
 import { useState } from 'react';
-import sample from 'lodash-es/sample.js';
+import { c as _c } from 'react/compiler-runtime';
 import { BLACK_CIRCLE, REFERENCE_MARK, TEARDROP_ASTERISK } from '../../constants/figures.js';
-import figures from 'figures';
-import { basename } from 'path';
-import { MessageResponse } from '../MessageResponse.js';
-import { FilePathLink } from '../FilePathLink.js';
+// biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
+import { Box, Text, type TextProps } from '../../ink.js';
 import { openPath } from '../../utils/browser.js';
+import { FilePathLink } from '../FilePathLink.js';
+import { MessageResponse } from '../MessageResponse.js';
+
 /* eslint-disable @typescript-eslint/no-require-imports */
 const teamMemSaved = feature('TEAMMEM')
   ? (require('./teamMemSaved.js') as typeof import('./teamMemSaved.js'))
   : null;
+
 /* eslint-enable @typescript-eslint/no-require-imports */
 import { TURN_COMPLETION_VERBS } from '../../constants/turnCompletionVerbs.js';
 import { useTerminalSize } from '../../hooks/useTerminalSize.js';
+import Link from '../../ink/components/Link.js';
+import { useAppStateStore } from '../../state/AppState.js';
+import { getPillLabel } from '../../tasks/pillLabel.js';
+import { isBackgroundTask, type TaskState } from '../../tasks/types.js';
 import type {
+  SystemBridgeStatusMessage,
+  SystemMemorySavedMessage,
   SystemMessage,
   SystemStopHookSummaryMessage,
-  SystemBridgeStatusMessage,
-  SystemTurnDurationMessage,
   SystemThinkingMessage,
-  SystemMemorySavedMessage,
+  SystemTurnDurationMessage,
 } from '../../types/message.js';
-import { SystemAPIErrorMessage } from './SystemAPIErrorMessage.js';
-import { formatDuration, formatNumber, formatSecondsShort } from '../../utils/format.js';
 import { getGlobalConfig } from '../../utils/config.js';
-import Link from '../../ink/components/Link.js';
-import ThemedText from '../design-system/ThemedText.js';
+import { formatDuration, formatNumber, formatSecondsShort } from '../../utils/format.js';
 import { CtrlOToExpand } from '../CtrlOToExpand.js';
-import { useAppStateStore } from '../../state/AppState.js';
-import { isBackgroundTask, type TaskState } from '../../tasks/types.js';
-import { getPillLabel } from '../../tasks/pillLabel.js';
+import ThemedText from '../design-system/ThemedText.js';
 import { useSelectedMessageBg } from '../messageActions.js';
+import { SystemAPIErrorMessage } from './SystemAPIErrorMessage.js';
+
 type Props = {
   message: SystemMessage;
   addMargin: boolean;

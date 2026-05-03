@@ -34,6 +34,7 @@ import {
   installPluginAndNotify,
   usePluginRecommendationBase,
 } from './usePluginRecommendationBase.js';
+
 type UseClaudeCodeHintRecommendationResult = {
   recommendation: PluginHintRecommendation | null;
   handleResponse: (response: 'yes' | 'no' | 'disable') => void;
@@ -88,7 +89,7 @@ export function useClaudeCodeHintRecommendation() {
           recommendation.marketplaceName as AnalyticsMetadata_I_VERIFIED_THIS_IS_PII_TAGGED,
         response: response as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
-      bb15: switch (response) {
+      switch (response) {
         case 'yes': {
           const { pluginId, pluginName, marketplaceName } = recommendation;
           installPluginAndNotify(
@@ -109,11 +110,11 @@ export function useClaudeCodeHintRecommendation() {
               }
             },
           );
-          break bb15;
+          break;
         }
         case 'disable': {
           disableHintRecommendations();
-          break bb15;
+          break;
         }
         case 'no':
       }

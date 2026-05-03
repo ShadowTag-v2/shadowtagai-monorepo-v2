@@ -1,49 +1,49 @@
-import { c as _c } from 'react/compiler-runtime';
+import { feature } from 'bun:bundle';
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
 import * as React from 'react';
-import { Box, Text, color } from '../../ink.js';
+import { useEffect, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
+import { getDumpPromptsPath } from 'src/services/api/dumpPrompts.js';
+import { getGlobalConfig, saveGlobalConfig } from 'src/utils/config.js';
+import { getDebugLogPath, isDebugMode, isDebugToStdErr } from 'src/utils/debug.js';
+import { isEnvTruthy } from 'src/utils/envUtils.js';
+import { getInitialSettings } from 'src/utils/settings/settings.js';
+import { getStartupPerfLogPath, isDetailedProfilingEnabled } from 'src/utils/startupProfiler.js';
+import { resolveThemeSetting } from 'src/utils/systemTheme.js';
 import { useTerminalSize } from '../../hooks/useTerminalSize.js';
 import { stringWidth } from '../../ink/stringWidth.js';
+import { Box, color, Text } from '../../ink.js';
 import {
-  getLayoutMode,
+  getSteps,
+  incrementProjectOnboardingSeenCount,
+  shouldShowProjectOnboarding,
+} from '../../projectOnboardingState.js';
+import { getDisplayPath } from '../../utils/file.js';
+import { truncate } from '../../utils/format.js';
+import {
   calculateLayoutDimensions,
   calculateOptimalLeftWidth,
   formatWelcomeMessage,
-  truncatePath,
+  getLayoutMode,
+  getLogoDisplayData,
   getRecentActivitySync,
   getRecentReleaseNotesSync,
-  getLogoDisplayData,
+  truncatePath,
 } from '../../utils/logoV2Utils.js';
-import { truncate } from '../../utils/format.js';
-import { getDisplayPath } from '../../utils/file.js';
+import { checkForReleaseNotesSync } from '../../utils/releaseNotes.js';
+import { OffscreenFreeze } from '../OffscreenFreeze.js';
 import { Clawd } from './Clawd.js';
+import { CondensedLogo } from './CondensedLogo.js';
+import { EmergencyTip } from './EmergencyTip.js';
 import { FeedColumn } from './FeedColumn.js';
 import {
+  createGuestPassesFeed,
+  createProjectOnboardingFeed,
   createRecentActivityFeed,
   createWhatsNewFeed,
-  createProjectOnboardingFeed,
-  createGuestPassesFeed,
 } from './feedConfigs.js';
-import { getGlobalConfig, saveGlobalConfig } from 'src/utils/config.js';
-import { resolveThemeSetting } from 'src/utils/systemTheme.js';
-import { getInitialSettings } from 'src/utils/settings/settings.js';
-import { isDebugMode, isDebugToStdErr, getDebugLogPath } from 'src/utils/debug.js';
-import { useEffect, useState } from 'react';
-import {
-  getSteps,
-  shouldShowProjectOnboarding,
-  incrementProjectOnboardingSeenCount,
-} from '../../projectOnboardingState.js';
-import { CondensedLogo } from './CondensedLogo.js';
-import { OffscreenFreeze } from '../OffscreenFreeze.js';
-import { checkForReleaseNotesSync } from '../../utils/releaseNotes.js';
-import { getDumpPromptsPath } from 'src/services/api/dumpPrompts.js';
-import { isEnvTruthy } from 'src/utils/envUtils.js';
-import { getStartupPerfLogPath, isDetailedProfilingEnabled } from 'src/utils/startupProfiler.js';
-import { EmergencyTip } from './EmergencyTip.js';
-import { VoiceModeNotice } from './VoiceModeNotice.js';
 import { Opus1mMergeNotice } from './Opus1mMergeNotice.js';
-import { feature } from 'bun:bundle';
+import { VoiceModeNotice } from './VoiceModeNotice.js';
 
 // Conditional require so ChannelsNotice.tsx tree-shakes when both flags are
 // false. A module-scope helper component inside a feature() ternary does NOT
@@ -55,19 +55,21 @@ const ChannelsNoticeModule =
   feature('KAIROS') || feature('KAIROS_CHANNELS')
     ? (require('./ChannelsNotice.js') as typeof import('./ChannelsNotice.js'))
     : null;
+
 /* eslint-enable @typescript-eslint/no-require-imports */
 import { SandboxManager } from 'src/utils/sandbox/sandbox-adapter.js';
-import { useShowGuestPassesUpsell, incrementGuestPassesSeenCount } from './GuestPassesUpsell.js';
-import {
-  useShowOverageCreditUpsell,
-  incrementOverageCreditUpsellSeenCount,
-  createOverageCreditFeed,
-} from './OverageCreditUpsell.js';
-import { plural } from '../../utils/stringUtils.js';
+import { useMainLoopModel } from '../../hooks/useMainLoopModel.js';
 import { useAppState } from '../../state/AppState.js';
 import { getEffortSuffix } from '../../utils/effort.js';
-import { useMainLoopModel } from '../../hooks/useMainLoopModel.js';
 import { renderModelSetting } from '../../utils/model/model.js';
+import { plural } from '../../utils/stringUtils.js';
+import { incrementGuestPassesSeenCount, useShowGuestPassesUpsell } from './GuestPassesUpsell.js';
+import {
+  createOverageCreditFeed,
+  incrementOverageCreditUpsellSeenCount,
+  useShowOverageCreditUpsell,
+} from './OverageCreditUpsell.js';
+
 const LEFT_PANEL_MAX_WIDTH = 50;
 export function LogoV2() {
   const $ = _c(94);

@@ -13,8 +13,8 @@ import { lazySchema } from '../lazySchema.js';
 // Re-export for backwards compatibility
 export {
   EXTERNAL_PERMISSION_MODES,
-  PERMISSION_MODES,
   type ExternalPermissionMode,
+  PERMISSION_MODES,
   type PermissionMode,
 };
 

@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import { homedir } from 'os';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { logEvent } from 'src/services/analytics/index.js';
 import { setSessionTrustAccepted } from '../../bootstrap/state.js';
 import type { Command } from '../../commands.js';
@@ -24,6 +24,7 @@ import {
   getHooksSources,
   getOtelHeadersHelperSources,
 } from './utils.js';
+
 type Props = {
   onDone(): void;
   commands?: Command[];

@@ -31,5 +31,5 @@ function isBridgePermissionResponse(value: unknown): value is BridgePermissionRe
   return 'behavior' in value && (value.behavior === 'allow' || value.behavior === 'deny');
 }
 
-export { isBridgePermissionResponse };
 export type { BridgePermissionCallbacks, BridgePermissionResponse };
+export { isBridgePermissionResponse };

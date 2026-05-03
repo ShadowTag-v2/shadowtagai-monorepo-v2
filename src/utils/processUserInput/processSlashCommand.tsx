@@ -77,6 +77,7 @@ import { getAssistantMessageContentLength } from '../tokens.js';
 import { createAgentId } from '../uuid.js';
 import { getWorkload } from '../workloadContext.js';
 import type { ProcessUserInputBaseResult, ProcessUserInputContext } from './processUserInput.js';
+
 type SlashCommandResult = ProcessUserInputBaseResult & {
   command: Command;
 };

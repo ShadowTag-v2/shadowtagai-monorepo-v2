@@ -1,9 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
 import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
 import type { StructuredPatchHunk } from 'diff';
 import { isAbsolute, relative, resolve } from 'path';
-import * as React from 'react';
+import type * as React from 'react';
 import { Suspense, use, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { MessageResponse } from 'src/components/MessageResponse.js';
 import { extractTag } from 'src/utils/messages.js';
 import { CtrlOToExpand } from '../../components/CtrlOToExpand.js';
@@ -23,6 +23,7 @@ import { logError } from '../../utils/log.js';
 import { getPlansDirectory } from '../../utils/plans.js';
 import { openForScan, readCapped } from '../../utils/readEditContext.js';
 import type { Output } from './FileWriteTool.js';
+
 const MAX_LINES_TO_RENDER = 10;
 // Model output uses \n regardless of platform, so always split on \n.
 // os.EOL is \r\n on Windows, which would give numLines=1 for all files.

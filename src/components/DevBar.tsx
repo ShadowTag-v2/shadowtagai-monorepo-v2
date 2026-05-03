@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
 import { useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { getSlowOperations } from '../bootstrap/state.js';
 import { Text, useInterval } from '../ink.js';
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useRegisterOverlay } from '../context/overlayContext.js';
 import { getTimestampedHistory, type TimestampedHistoryEntry } from '../history.js';
@@ -10,6 +10,7 @@ import { logEvent } from '../services/analytics/index.js';
 import type { HistoryEntry } from '../utils/config.js';
 import { formatRelativeTimeAgo, truncateToWidth } from '../utils/format.js';
 import { FuzzyPicker } from './design-system/FuzzyPicker.js';
+
 type Props = {
   initialQuery?: string;
   onSelect: (entry: HistoryEntry) => void;

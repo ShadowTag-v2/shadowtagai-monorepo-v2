@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Text } from 'src/ink.js';
 import type { BackgroundTaskState } from 'src/tasks/types.js';
 import type { DeepImmutable } from 'src/types/utils.js';
@@ -10,6 +10,7 @@ import { DIAMOND_FILLED, DIAMOND_OPEN } from '../../constants/figures.js';
 import { RemoteSessionProgress } from './RemoteSessionProgress.js';
 import { ShellProgress, TaskStatusText } from './ShellProgress.js';
 import { describeTeammateActivity } from './taskStatusUtils.js';
+
 type Props = {
   task: DeepImmutable<BackgroundTaskState>;
   maxActivityWidth?: number;

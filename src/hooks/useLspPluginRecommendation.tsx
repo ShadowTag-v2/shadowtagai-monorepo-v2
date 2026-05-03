@@ -119,7 +119,7 @@ export function useLspPluginRecommendation() {
       }
       const { pluginId, pluginName, shownAt } = recommendation;
       logForDebugging(`[useLspPluginRecommendation] User response: ${response} for ${pluginName}`);
-      bb60: switch (response) {
+      switch (response) {
         case 'yes': {
           installPluginAndNotify(
             pluginId,
@@ -149,7 +149,7 @@ export function useLspPluginRecommendation() {
               logForDebugging(`[useLspPluginRecommendation] Plugin installed: ${pluginId}`);
             },
           );
-          break bb60;
+          break;
         }
         case 'no': {
           const elapsed = Date.now() - shownAt;
@@ -159,11 +159,11 @@ export function useLspPluginRecommendation() {
             );
             incrementIgnoredCount();
           }
-          break bb60;
+          break;
         }
         case 'never': {
           addToNeverSuggest(pluginId);
-          break bb60;
+          break;
         }
         case 'disable': {
           saveGlobalConfig(_temp2);

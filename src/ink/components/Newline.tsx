@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 export type Props = {
   /**
    * Number of newlines to insert.

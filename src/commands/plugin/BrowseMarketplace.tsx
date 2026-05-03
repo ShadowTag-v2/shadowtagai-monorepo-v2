@@ -42,6 +42,7 @@ import {
 } from './pluginDetailsHelpers.js';
 import type { ViewState as ParentViewState } from './types.js';
 import { usePagination } from './usePagination.js';
+
 type Props = {
   error: string | null;
   setError: (error: string | null) => void;

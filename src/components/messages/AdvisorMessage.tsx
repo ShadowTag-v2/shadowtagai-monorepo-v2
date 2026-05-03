@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Box, Text } from '../../ink.js';
 import type { AdvisorBlock } from '../../utils/advisor.js';
 import { renderModelName } from '../../utils/model/model.js';
@@ -8,6 +8,7 @@ import { jsonStringify } from '../../utils/slowOperations.js';
 import { CtrlOToExpand } from '../CtrlOToExpand.js';
 import { MessageResponse } from '../MessageResponse.js';
 import { ToolUseLoader } from '../ToolUseLoader.js';
+
 type Props = {
   block: AdvisorBlock;
   addMargin: boolean;
@@ -114,7 +115,7 @@ export function AdvisorMessage(t0) {
     return t10;
   }
   let body;
-  bb0: switch (block.content.type) {
+  switch (block.content.type) {
     case 'advisor_tool_result_error': {
       let t1;
       if ($[22] !== block.content.error_code) {
@@ -125,7 +126,7 @@ export function AdvisorMessage(t0) {
         t1 = $[23];
       }
       body = t1;
-      break bb0;
+      break;
     }
     case 'advisor_result': {
       let t1;
@@ -145,7 +146,7 @@ export function AdvisorMessage(t0) {
         t1 = $[26];
       }
       body = t1;
-      break bb0;
+      break;
     }
     case 'advisor_redacted_result': {
       let t1;

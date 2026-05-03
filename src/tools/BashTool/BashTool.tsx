@@ -93,6 +93,7 @@ import {
   stdErrAppendShellResetMessage,
   stripEmptyLines,
 } from './utils.js';
+
 const EOL = '\n';
 
 // Progress display constants
@@ -464,6 +465,7 @@ export type Out = z.infer<OutputSchema>;
 
 // Re-export BashProgress from centralized types to break import cycles
 export type { BashProgress } from '../../types/tools.js';
+
 import type { BashProgress } from '../../types/tools.js';
 
 /**
@@ -1046,7 +1048,7 @@ async function* runShellCommand({
   let lastProgressOutput = '';
   let lastTotalLines = 0;
   let lastTotalBytes = 0;
-  let backgroundShellId: string | undefined = undefined;
+  let backgroundShellId: string | undefined;
   let assistantAutoBackgrounded = false;
 
   // Progress signal: resolved by onProgress callback from the shared poller,
@@ -1203,7 +1205,7 @@ async function* runShellCommand({
 
   // Wait for the initial threshold before showing progress
   const startTime = Date.now();
-  let foregroundTaskId: string | undefined = undefined;
+  let foregroundTaskId: string | undefined;
   {
     const initialResult = await Promise.race([
       resultPromise,

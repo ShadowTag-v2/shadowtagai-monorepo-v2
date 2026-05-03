@@ -1,7 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
 import { feature } from 'bun:bundle';
 import figures from 'figures';
-import React, { useEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useTerminalSize } from '../hooks/useTerminalSize.js';
 import { stringWidth } from '../ink/stringWidth.js';
 import { Box, Text } from '../ink.js';
@@ -13,6 +14,7 @@ import type { Theme } from '../utils/theme.js';
 import { getCompanion } from './companion.js';
 import { renderFace, renderSprite, spriteFrameCount } from './sprites.js';
 import { RARITY_COLORS } from './types.js';
+
 const TICK_MS = 500;
 const BUBBLE_SHOW = 20; // ticks → ~10s at 500ms
 const FADE_WINDOW = 6; // last ~3s the bubble dims so you know it's about to go

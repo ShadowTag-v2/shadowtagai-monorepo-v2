@@ -177,11 +177,11 @@ export function installAsciicastRecorder(): void {
 
   // Wrap process.stdout.write to capture output
   const originalWrite = process.stdout.write.bind(process.stdout) as typeof process.stdout.write;
-  process.stdout.write = function (
+  process.stdout.write = ((
     chunk: string | Uint8Array,
     encodingOrCb?: BufferEncoding | ((err?: Error) => void),
     cb?: (err?: Error) => void,
-  ): boolean {
+  ): boolean => {
     // Record the output event
     const elapsed = (performance.now() - startTime) / 1000;
     const text = typeof chunk === 'string' ? chunk : Buffer.from(chunk).toString('utf-8');
@@ -192,7 +192,7 @@ export function installAsciicastRecorder(): void {
       return originalWrite(chunk, encodingOrCb);
     }
     return originalWrite(chunk, encodingOrCb, cb);
-  } as typeof process.stdout.write;
+  }) as typeof process.stdout.write;
 
   // Handle terminal resize events
   function onResize(): void {

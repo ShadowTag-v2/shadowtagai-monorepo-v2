@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
 import { useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useTerminalSize } from '../../hooks/useTerminalSize.js';
 import { Ansi, Text } from '../../ink.js';
 import { createHyperlink } from '../../utils/hyperlink.js';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import type { CommandResultDisplay } from '../../commands.js';
 import { TEARDROP_ASTERISK } from '../../constants/figures.js';
@@ -20,6 +20,7 @@ import type {
 import { count } from '../../utils/array.js';
 import { logError } from '../../utils/log.js';
 import { Pane } from '../design-system/Pane.js';
+
 type PassStatus = {
   passNumber: number;
   isAvailable: boolean;

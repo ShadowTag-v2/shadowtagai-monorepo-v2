@@ -1,4 +1,3 @@
-import { c as _c } from 'react/compiler-runtime';
 /**
  * SelectMatcherMode shows the configured matchers for a selected hook event.
  *
@@ -6,6 +5,7 @@ import { c as _c } from 'react/compiler-runtime';
  * and simply lets the user drill into each matcher to see its hooks.
  */
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js';
 import { Box, Text } from '../../ink.js';
 import {
@@ -16,6 +16,7 @@ import {
 import { plural } from '../../utils/stringUtils.js';
 import { Select } from '../CustomSelect/select.js';
 import { Dialog } from '../design-system/Dialog.js';
+
 type MatcherWithSource = {
   matcher: string;
   sources: HookSource[];

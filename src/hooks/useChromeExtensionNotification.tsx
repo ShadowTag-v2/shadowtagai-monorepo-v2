@@ -7,6 +7,7 @@ import {
 } from '../utils/claudeInChrome/setup.js';
 import { isRunningOnHomespace } from '../utils/envUtils.js';
 import { useStartupNotification } from './notifs/useStartupNotification.js';
+
 function getChromeFlag(): boolean | undefined {
   if (process.argv.includes('--chrome')) {
     return true;
