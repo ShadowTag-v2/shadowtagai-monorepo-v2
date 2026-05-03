@@ -164,7 +164,10 @@ class AgentSummarizer:
                 return
 
             # Check minimum transcript length
-            messages = getattr(transcript, "messages", transcript)
+            if isinstance(transcript, dict):
+                messages = transcript.get("messages", transcript)
+            else:
+                messages = getattr(transcript, "messages", transcript)
             if isinstance(messages, (list, tuple)) and len(messages) < MIN_TRANSCRIPT_LENGTH:
                 logger.debug(
                     "Skipping summary for %s: not enough messages (%d)",
