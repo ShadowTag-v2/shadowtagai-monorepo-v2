@@ -1,4 +1,3 @@
-import { c as _c } from 'react/compiler-runtime';
 /**
  * HooksConfigMenu is a read-only browser for configured hooks.
  *
@@ -13,6 +12,7 @@ import { c as _c } from 'react/compiler-runtime';
  */
 import * as React from 'react';
 import { useCallback, useMemo, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { HookEvent } from 'src/entrypoints/agentSdkTypes.js';
 import { useAppState, useAppStateStore } from 'src/state/AppState.js';
 import type { CommandResultDisplay } from '../../commands.js';
@@ -34,6 +34,7 @@ import { SelectEventMode } from './SelectEventMode.js';
 import { SelectHookMode } from './SelectHookMode.js';
 import { SelectMatcherMode } from './SelectMatcherMode.js';
 import { ViewHookMode } from './ViewHookMode.js';
+
 type Props = {
   toolNames: string[];
   onExit: (

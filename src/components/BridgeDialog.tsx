@@ -1,8 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
 import { basename } from 'path';
 import { toString as qrToString } from 'qrcode';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { getOriginalCwd } from '../bootstrap/state.js';
 import {
   buildActiveFooterText,
@@ -19,6 +19,7 @@ import { useAppState, useSetAppState } from '../state/AppState.js';
 import { saveGlobalConfig } from '../utils/config.js';
 import { getBranch } from '../utils/git.js';
 import { Dialog } from './design-system/Dialog.js';
+
 type Props = {
   onDone: () => void;
 };

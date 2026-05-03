@@ -1,4 +1,3 @@
-import { c as _c } from 'react/compiler-runtime';
 /**
  * Setup utilities for integrating KeybindingProvider into the app.
  *
@@ -7,7 +6,9 @@ import { c as _c } from 'react/compiler-runtime';
  * user-defined bindings from ~/.claude/keybindings.json, with hot-reload
  * support when the file changes.
  */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useNotifications } from '../context/notifications.js';
 import type { InputEvent } from '../ink/events/input-event.js';
 // ChordInterceptor intentionally uses useInput to intercept all keystrokes before
@@ -292,11 +293,11 @@ function ChordInterceptor(t0) {
         bindings,
         pendingChordRef.current,
       );
-      bb23: switch (result.type) {
+      switch (result.type) {
         case 'chord_started': {
           setPendingChord(result.pending);
           event.stopImmediatePropagation();
-          break bb23;
+          break;
         }
         case 'match': {
           setPendingChord(null);
@@ -315,17 +316,17 @@ function ChordInterceptor(t0) {
               }
             }
           }
-          break bb23;
+          break;
         }
         case 'chord_cancelled': {
           setPendingChord(null);
           event.stopImmediatePropagation();
-          break bb23;
+          break;
         }
         case 'unbound': {
           setPendingChord(null);
           event.stopImmediatePropagation();
-          break bb23;
+          break;
         }
         case 'none':
       }

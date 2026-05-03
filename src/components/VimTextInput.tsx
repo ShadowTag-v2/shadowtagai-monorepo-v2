@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import chalk from 'chalk';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useClipboardImageHint } from '../hooks/useClipboardImageHint.js';
 import { useVimInput } from '../hooks/useVimInput.js';
 import { Box, color, useTerminalFocus, useTheme } from '../ink.js';

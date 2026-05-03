@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useCallback, useEffect, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { type OptionWithDescription, Select } from '../../components/CustomSelect/index.js';
 import { Pane } from '../../components/design-system/Pane.js';
 import { Spinner } from '../../components/Spinner.js';
@@ -16,6 +16,7 @@ import {
   setPreferTmuxOverIterm2,
   verifyIt2Setup,
 } from './backends/it2Setup.js';
+
 type SetupStep =
   | 'initial'
   | 'installing'
@@ -215,14 +216,14 @@ export function It2SetupPrompt(t0) {
             <Select
               options={options}
               onChange={(value) => {
-                bb61: switch (value) {
+                switch (value) {
                   case 'install': {
                     handleInstall();
-                    break bb61;
+                    break;
                   }
                   case 'tmux': {
                     handleUseTmux();
-                    break bb61;
+                    break;
                   }
                   case 'cancel': {
                     onDone('cancelled');
@@ -282,14 +283,14 @@ export function It2SetupPrompt(t0) {
             <Select
               options={options_0}
               onChange={(value_0) => {
-                bb89: switch (value_0) {
+                switch (value_0) {
                   case 'retry': {
                     handleInstall();
-                    break bb89;
+                    break;
                   }
                   case 'tmux': {
                     handleUseTmux();
-                    break bb89;
+                    break;
                   }
                   case 'cancel': {
                     onDone('cancelled');
@@ -365,7 +366,7 @@ export function It2SetupPrompt(t0) {
             <Select
               options={options_1}
               onChange={(value_1) => {
-                bb115: switch (value_1) {
+                switch (value_1) {
                   case 'retry': {
                     setStep('verifying');
                     verifyIt2Setup().then((result_1) => {
@@ -378,11 +379,11 @@ export function It2SetupPrompt(t0) {
                         setStep('failed');
                       }
                     });
-                    break bb115;
+                    break;
                   }
                   case 'tmux': {
                     handleUseTmux();
-                    break bb115;
+                    break;
                   }
                   case 'cancel': {
                     onDone('cancelled');

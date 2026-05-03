@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Box, Text, useTheme } from '../../../ink.js';
 import { WebFetchTool } from '../../../tools/WebFetchTool/WebFetchTool.js';
 import { shouldShowAlwaysAllowOptions } from '../../../utils/permissions/permissionsLoader.js';
@@ -9,6 +9,7 @@ import { PermissionDialog } from '../PermissionDialog.js';
 import type { PermissionRequestProps } from '../PermissionRequest.js';
 import { PermissionRuleExplanation } from '../PermissionRuleExplanation.js';
 import { logUnaryPermissionEvent } from '../utils.js';
+
 function inputToPermissionRuleContent(input: { [k: string]: unknown }): string {
   try {
     const parsedInput = WebFetchTool.inputSchema.safeParse(input);
@@ -110,12 +111,12 @@ export function WebFetchPermissionRequest(t0) {
   let t5;
   if ($[10] !== onDone || $[11] !== onReject || $[12] !== toolUseConfirm) {
     t5 = function onChange(newValue) {
-      bb8: switch (newValue) {
+      switch (newValue) {
         case 'yes': {
           logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'accept');
           toolUseConfirm.onAllow(toolUseConfirm.input, []);
           onDone();
-          break bb8;
+          break;
         }
         case 'yes-dont-ask-again-domain': {
           logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'accept');
@@ -133,7 +134,7 @@ export function WebFetchPermissionRequest(t0) {
             },
           ]);
           onDone();
-          break bb8;
+          break;
         }
         case 'no': {
           logUnaryPermissionEvent('tool_use_single', toolUseConfirm, 'reject');

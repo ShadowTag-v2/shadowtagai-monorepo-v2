@@ -59,12 +59,12 @@ import type {
 } from './sdk/runtimeTypes.js';
 
 export type {
-  ListSessionsOptions,
-  GetSessionInfoOptions,
-  SessionMutationOptions,
   ForkSessionOptions,
   ForkSessionResult,
+  GetSessionInfoOptions,
+  ListSessionsOptions,
   SDKSessionInfo,
+  SessionMutationOptions,
 };
 
 export function tool<Schema extends AnyZodRawShape>(

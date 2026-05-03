@@ -1,5 +1,5 @@
-import { Command } from 'commander';
-import { execSync, type ExecSyncOptionsWithStringEncoding } from 'child_process';
+import { type ExecSyncOptionsWithStringEncoding, execSync } from 'child_process';
+import type { Command } from 'commander';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { logEvent } from '../services/analytics/index.js';
@@ -113,10 +113,7 @@ export function registerDreamCommand(program: Command) {
         console.log('  [4/4] Prune   — removing superseded items');
         console.log();
 
-        const output = execSync(
-          `python3 "${scriptPath}" ${args.join(' ')}`,
-          execOpts,
-        );
+        const output = execSync(`python3 "${scriptPath}" ${args.join(' ')}`, execOpts);
 
         const metrics = parseDreamOutput(output);
         const durationMs = Date.now() - startTime;

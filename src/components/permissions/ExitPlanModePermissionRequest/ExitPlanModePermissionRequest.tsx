@@ -1,7 +1,8 @@
 import { feature } from 'bun:bundle';
 import type { UUID } from 'crypto';
 import figures from 'figures';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useNotifications } from 'src/context/notifications.js';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -72,12 +73,14 @@ import { PermissionRuleExplanation } from '../PermissionRuleExplanation.js';
 const autoModeStateModule = feature('TRANSCRIPT_CLASSIFIER')
   ? (require('../../../utils/permissions/autoModeState.js') as typeof import('../../../utils/permissions/autoModeState.js'))
   : null;
+
 import type { Base64ImageSource, ImageBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
 /* eslint-enable @typescript-eslint/no-require-imports */
 import type { PastedContent } from '../../../utils/config.js';
 import type { ImageDimensions } from '../../../utils/imageResizer.js';
 import { maybeResizeAndDownsampleImageBlock } from '../../../utils/imageResizer.js';
 import { cacheImagePath, storeImage } from '../../../utils/imageStore.js';
+
 type ResponseValue =
   | 'yes-bypass-permissions'
   | 'yes-accept-edits'

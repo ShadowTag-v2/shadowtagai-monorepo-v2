@@ -11,6 +11,7 @@ import { isQueuedCommandVisible } from '../../utils/messageQueueManager.js';
 import { createUserMessage, EMPTY_LOOKUPS, normalizeMessages } from '../../utils/messages.js';
 import { jsonParse } from '../../utils/slowOperations.js';
 import { Message } from '../Message.js';
+
 const EMPTY_SET = new Set<string>();
 
 /**

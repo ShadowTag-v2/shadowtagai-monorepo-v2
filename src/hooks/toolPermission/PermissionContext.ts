@@ -349,11 +349,11 @@ function createPermissionQueueOps(
   };
 }
 
-export { createPermissionContext, createPermissionQueueOps, createResolveOnce };
 export type {
-  PermissionContext,
   PermissionApprovalSource,
+  PermissionContext,
   PermissionQueueOps,
   PermissionRejectionSource,
   ResolveOnce,
 };
+export { createPermissionContext, createPermissionQueueOps, createResolveOnce };

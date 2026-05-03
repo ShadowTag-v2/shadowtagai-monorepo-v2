@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Text } from '../../ink.js';
 import { extractMcpToolDisplayName, getMcpDisplayName } from '../../services/mcp/mcpStringUtils.js';
 import { filterToolsByServer } from '../../services/mcp/utils.js';
@@ -12,6 +12,7 @@ import { Byline } from '../design-system/Byline.js';
 import { Dialog } from '../design-system/Dialog.js';
 import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
 import type { ServerInfo } from './types.js';
+
 type Props = {
   server: ServerInfo;
   onSelectTool: (tool: Tool, index: number) => void;

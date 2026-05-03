@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import {
   type GroveDecision,
   GroveDialog,
@@ -14,6 +14,7 @@ import {
   isQualifiedForGrove,
 } from '../../services/api/grove.js';
 import type { LocalJSXCommandOnDone } from '../../types/command.js';
+
 const FALLBACK_MESSAGE =
   'Review and manage your privacy settings at https://claude.ai/settings/data-privacy-controls';
 export async function call(onDone: LocalJSXCommandOnDone): Promise<React.ReactNode | null> {

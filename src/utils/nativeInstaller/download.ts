@@ -480,6 +480,6 @@ export async function downloadVersion(
 }
 
 // Exported for testing
-export { StallTimeoutError, MAX_DOWNLOAD_RETRIES };
+export { MAX_DOWNLOAD_RETRIES, StallTimeoutError };
 export const STALL_TIMEOUT_MS = DEFAULT_STALL_TIMEOUT_MS;
 export const _downloadAndVerifyBinaryForTesting = downloadAndVerifyBinary;

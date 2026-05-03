@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import React, { useCallback, useMemo, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { mcpInfoFromString } from 'src/services/mcp/mcpStringUtils.js';
 import { isMcpTool } from 'src/services/mcp/utils.js';
 import type { Tool, Tools } from 'src/Tool.js';
@@ -28,6 +28,7 @@ import { useKeybinding } from '../../keybindings/useKeybinding.js';
 import { count } from '../../utils/array.js';
 import { plural } from '../../utils/stringUtils.js';
 import { Divider } from '../design-system/Divider.js';
+
 type Props = {
   tools: Tools;
   initialTools: string[] | undefined;

@@ -1,7 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
 import chalk from 'chalk';
 import figures from 'figures';
-import React, { useEffect } from 'react';
+import type React from 'react';
+import { useEffect } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import {
   getAdditionalDirectoriesForClaudeMd,
   setAdditionalDirectoriesForClaudeMd,
@@ -18,6 +19,7 @@ import {
 import type { PermissionUpdateDestination } from '../../utils/permissions/PermissionUpdateSchema.js';
 import { SandboxManager } from '../../utils/sandbox/sandbox-adapter.js';
 import { addDirHelpMessage, validateDirectoryForWorkspace } from './validation.js';
+
 function AddDirError(t0) {
   const $ = _c(10);
   const { message, args, onDone } = t0;

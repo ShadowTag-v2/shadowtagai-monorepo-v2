@@ -1,7 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { GITHUB_ACTION_SETUP_DOCS_URL } from '../../constants/github-app.js';
 import { Box, Text } from '../../ink.js';
+
 interface ErrorStepProps {
   error: string | undefined;
   errorReason?: string;

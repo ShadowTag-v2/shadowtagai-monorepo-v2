@@ -722,9 +722,11 @@ export function clearSkillCaches() {
 }
 
 // Backwards-compatible aliases for tests
-export { getSkillDirCommands as getCommandDirCommands };
-export { clearSkillCaches as clearCommandCaches };
-export { transformSkillFiles };
+export {
+  clearSkillCaches as clearCommandCaches,
+  getSkillDirCommands as getCommandDirCommands,
+  transformSkillFiles,
+};
 
 // --- Dynamic skill discovery ---
 

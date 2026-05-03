@@ -1,8 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { stringWidth } from '../../ink/stringWidth.js';
 import { Box, Text } from '../../ink.js';
 import TextInput from '../TextInput.js';
+
 type Props = {
   value: string;
   onChange: (value: string) => void;

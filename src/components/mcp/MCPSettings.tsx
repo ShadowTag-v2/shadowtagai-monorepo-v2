@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useEffect, useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { CommandResultDisplay } from '../../commands.js';
 import { ClaudeAuthProvider } from '../../services/mcp/auth.js';
 import type {
@@ -18,6 +18,7 @@ import { MCPStdioServerMenu } from './MCPStdioServerMenu.js';
 import { MCPToolDetailView } from './MCPToolDetailView.js';
 import { MCPToolListView } from './MCPToolListView.js';
 import type { AgentMcpServerInfo, MCPViewState, ServerInfo } from './types.js';
+
 type Props = {
   onComplete: (
     result?: string,
@@ -80,7 +81,7 @@ export function MCPSettings(t0) {
             const isSSE = client_0.config.type === 'sse';
             const isHTTP = client_0.config.type === 'http';
             const isClaudeAIProxy = client_0.config.type === 'claudeai-proxy';
-            let isAuthenticated = undefined;
+            let isAuthenticated;
             if (isSSE || isHTTP) {
               const authProvider = new ClaudeAuthProvider(
                 client_0.name,

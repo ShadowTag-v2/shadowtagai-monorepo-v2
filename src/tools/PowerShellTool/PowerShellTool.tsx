@@ -341,8 +341,11 @@ const outputSchema = lazySchema(() =>
 );
 type OutputSchema = ReturnType<typeof outputSchema>;
 export type Out = z.infer<OutputSchema>;
+
 import type { PowerShellProgress } from '../../types/tools.js';
+
 export type { PowerShellProgress } from '../../types/tools.js';
+
 const COMMON_BACKGROUND_COMMANDS = [
   'npm',
   'yarn',
@@ -821,7 +824,7 @@ async function* runPowerShellCommand({
   let lastProgressOutput = '';
   let lastTotalLines = 0;
   let lastTotalBytes = 0;
-  let backgroundShellId: string | undefined = undefined;
+  let backgroundShellId: string | undefined;
   let interruptBackgroundingStarted = false;
   let assistantAutoBackgrounded = false;
 
@@ -1003,7 +1006,7 @@ async function* runPowerShellCommand({
   // Set up progress yielding with periodic checks
   const startTime = Date.now();
   let nextProgressTime = startTime + PROGRESS_THRESHOLD_MS;
-  let foregroundTaskId: string | undefined = undefined;
+  let foregroundTaskId: string | undefined;
 
   // Progress loop: wrap in try/finally so stopPolling is called on every exit
   // path — normal completion, timeout/interrupt backgrounding, and Ctrl+B

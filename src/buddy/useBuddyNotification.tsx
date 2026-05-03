@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import { feature } from 'bun:bundle';
 import React, { useEffect } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useNotifications } from '../context/notifications.js';
 import { Text } from '../ink.js';
 import { getGlobalConfig } from '../utils/config.js';

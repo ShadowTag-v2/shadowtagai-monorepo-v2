@@ -1,6 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
+import type * as React from 'react';
 import type { RefObject } from 'react';
-import * as React from 'react';
 import {
   useCallback,
   useContext,
@@ -10,6 +9,7 @@ import {
   useState,
   useSyncExternalStore,
 } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useVirtualScroll } from '../hooks/useVirtualScroll.js';
 import type { ScrollBoxHandle } from '../ink/components/ScrollBox.js';
 import type { DOMElement } from '../ink/dom.js';
@@ -21,6 +21,7 @@ import { ScrollChromeContext } from './FullscreenLayout.js';
 
 // Rows of breathing room above the target when we scrollTo.
 const HEADROOM = 3;
+
 import { logForDebugging } from '../utils/debug.js';
 import { sleep } from '../utils/sleep.js';
 import { renderableSearchText } from '../utils/transcriptSearch.js';

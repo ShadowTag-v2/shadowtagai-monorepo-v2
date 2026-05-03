@@ -153,5 +153,5 @@ async function handleSwarmWorkerPermission(
   }
 }
 
-export { handleSwarmWorkerPermission };
 export type { SwarmWorkerPermissionParams };
+export { handleSwarmWorkerPermission };

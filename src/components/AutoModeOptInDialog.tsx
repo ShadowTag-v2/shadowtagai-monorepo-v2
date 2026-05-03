@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { logEvent } from 'src/services/analytics/index.js';
 import { Box, Link, Text } from '../ink.js';
 import { updateSettingsForSource } from '../utils/settings/settings.js';
@@ -29,14 +29,14 @@ export function AutoModeOptInDialog(t0) {
   let t2;
   if ($[1] !== onAccept || $[2] !== onDecline) {
     t2 = function onChange(value) {
-      bb3: switch (value) {
+      switch (value) {
         case 'accept': {
           logEvent('tengu_auto_mode_opt_in_dialog_accept', {});
           updateSettingsForSource('userSettings', {
             skipAutoPermissionPrompt: true,
           });
           onAccept();
-          break bb3;
+          break;
         }
         case 'accept-default': {
           logEvent('tengu_auto_mode_opt_in_dialog_accept_default', {});
@@ -47,7 +47,7 @@ export function AutoModeOptInDialog(t0) {
             },
           });
           onAccept();
-          break bb3;
+          break;
         }
         case 'decline': {
           logEvent('tengu_auto_mode_opt_in_dialog_decline', {});

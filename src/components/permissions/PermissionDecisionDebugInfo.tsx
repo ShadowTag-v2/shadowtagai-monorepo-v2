@@ -1,8 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
 import { feature } from 'bun:bundle';
 import chalk from 'chalk';
 import figures from 'figures';
 import React, { useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Ansi, Box, color, Text, useTheme } from '../../ink.js';
 import { useAppState } from '../../state/AppState.js';
 import type { PermissionMode } from '../../utils/permissions/PermissionMode.js';
@@ -17,6 +17,7 @@ import { permissionRuleValueToString } from '../../utils/permissions/permissionR
 import { detectUnreachableRules } from '../../utils/permissions/shadowedRuleDetection.js';
 import { SandboxManager } from '../../utils/sandbox/sandbox-adapter.js';
 import { getSettingSourceDisplayNameLowercase } from '../../utils/settings/constants.js';
+
 type PermissionDecisionInfoItemProps = {
   title?: string;
   decisionReason: PermissionDecisionReason;

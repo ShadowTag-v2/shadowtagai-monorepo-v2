@@ -1,8 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
 import chalk from 'chalk';
 import figures from 'figures';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useAppState, useSetAppState } from 'src/state/AppState.js';
 import {
   applyPermissionUpdate,
@@ -43,6 +43,7 @@ import { PermissionRuleInput } from './PermissionRuleInput.js';
 import { RecentDenialsTab } from './RecentDenialsTab.js';
 import { RemoveWorkspaceDirectory } from './RemoveWorkspaceDirectory.js';
 import { WorkspaceTab } from './WorkspaceTab.js';
+
 type TabType = 'recent' | 'allow' | 'ask' | 'deny' | 'workspace';
 type RuleSourceTextProps = {
   rule: PermissionRule;

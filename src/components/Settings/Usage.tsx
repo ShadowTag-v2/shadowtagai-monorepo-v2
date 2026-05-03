@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { extraUsage as extraUsageCommand } from 'src/commands/extra-usage/index.js';
 import { formatCost } from 'src/cost-tracker.js';
 import { getSubscriptionType } from 'src/utils/auth.js';
@@ -23,6 +23,7 @@ import {
   isEligibleForOverageCreditGrant,
   OverageCreditUpsell,
 } from '../LogoV2/OverageCreditUpsell.js';
+
 type LimitBarProps = {
   title: string;
   limit: RateLimit;

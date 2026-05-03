@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useMainLoopModel } from '../../hooks/useMainLoopModel.js';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
@@ -16,6 +16,7 @@ import {
   toPersistableEffort,
 } from '../../utils/effort.js';
 import { updateSettingsForSource } from '../../utils/settings/settings.js';
+
 const COMMON_HELP_ARGS = ['help', '-h', '--help'];
 type EffortCommandResult = {
   message: string;

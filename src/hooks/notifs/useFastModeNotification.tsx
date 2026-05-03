@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import { useEffect } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useNotifications } from 'src/context/notifications.js';
 import { useAppState, useSetAppState } from 'src/state/AppState.js';
 import {
@@ -12,6 +12,7 @@ import {
 } from 'src/utils/fastMode.js';
 import { formatDuration } from 'src/utils/format.js';
 import { getIsRemoteMode } from '../../bootstrap/state.js';
+
 const COOLDOWN_STARTED_KEY = 'fast-mode-cooldown-started';
 const COOLDOWN_EXPIRED_KEY = 'fast-mode-cooldown-expired';
 const ORG_CHANGED_KEY = 'fast-mode-org-changed';

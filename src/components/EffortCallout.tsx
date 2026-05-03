@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useCallback, useEffect, useRef } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Box, Text } from '../ink.js';
 import { isMaxSubscriber, isProSubscriber, isTeamSubscriber } from '../utils/auth.js';
 import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js';
@@ -16,6 +16,7 @@ import type { OptionWithDescription } from './CustomSelect/select.js';
 import { Select } from './CustomSelect/select.js';
 import { effortLevelToSymbol } from './EffortIndicator.js';
 import { PermissionDialog } from './permissions/PermissionDialog.js';
+
 type EffortCalloutSelection = EffortLevel | undefined | 'dismiss';
 type Props = {
   model: string;

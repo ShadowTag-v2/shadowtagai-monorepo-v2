@@ -1,9 +1,9 @@
-import { c as _c } from 'react/compiler-runtime';
 import { execa } from 'execa';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import * as React from 'react';
+import type * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { CommandResultDisplay } from '../../commands.js';
 import { Select } from '../../components/CustomSelect/select.js';
 import { Dialog } from '../../components/design-system/Dialog.js';

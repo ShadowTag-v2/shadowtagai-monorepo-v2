@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import { join } from 'path';
 import React, { Suspense, use, useCallback, useEffect, useMemo, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { KeybindingWarnings } from 'src/components/KeybindingWarnings.js';
 import { McpParsingWarnings } from 'src/components/mcp/McpParsingWarnings.js';
 import { getModelMaxOutputTokens } from 'src/utils/context.js';
@@ -40,6 +40,7 @@ import {
   TASK_MAX_OUTPUT_UPPER_LIMIT,
 } from '../utils/task/outputFormatting.js';
 import { getXDGStateHome } from '../utils/xdg.js';
+
 type Props = {
   onDone: (
     result?: string,

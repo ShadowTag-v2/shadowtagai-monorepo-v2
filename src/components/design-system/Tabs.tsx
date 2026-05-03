@@ -1,5 +1,6 @@
+import type React from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useIsInsideModal, useModalScrollRef } from '../../context/modalContext.js';
 import { useTerminalSize } from '../../hooks/useTerminalSize.js';
 import ScrollBox from '../../ink/components/ScrollBox.js';
@@ -8,6 +9,7 @@ import { stringWidth } from '../../ink/stringWidth.js';
 import { Box, Text } from '../../ink.js';
 import { useKeybindings } from '../../keybindings/useKeybinding.js';
 import type { Theme } from '../../utils/theme.js';
+
 type TabsProps = {
   children: Array<React.ReactElement<TabProps>>;
   title?: string;

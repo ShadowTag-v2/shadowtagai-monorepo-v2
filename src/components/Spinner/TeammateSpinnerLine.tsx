@@ -1,6 +1,6 @@
 import figures from 'figures';
 import sample from 'lodash-es/sample.js';
-import * as React from 'react';
+import type * as React from 'react';
 import { useRef, useState } from 'react';
 import { getSpinnerVerbs } from '../../constants/spinnerVerbs.js';
 import { TURN_COMPLETION_VERBS } from '../../constants/turnCompletionVerbs.js';
@@ -13,6 +13,7 @@ import { summarizeRecentActivities } from '../../utils/collapseReadSearch.js';
 import { formatDuration, formatNumber, truncateToWidth } from '../../utils/format.js';
 import { toInkColor } from '../../utils/ink.js';
 import { TEAMMATE_SELECT_HINT } from './teammateSelectHint.js';
+
 type Props = {
   teammate: InProcessTeammateTaskState;
   isLast: boolean;

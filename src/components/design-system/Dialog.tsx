@@ -1,5 +1,5 @@
+import type React from 'react';
 import { c as _c } from 'react/compiler-runtime';
-import React from 'react';
 import {
   type ExitState,
   useExitOnCtrlCDWithKeybindings,
@@ -11,6 +11,7 @@ import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js';
 import { Byline } from './Byline.js';
 import { KeyboardShortcutHint } from './KeyboardShortcutHint.js';
 import { Pane } from './Pane.js';
+
 type DialogProps = {
   title: React.ReactNode;
   subtitle?: React.ReactNode;

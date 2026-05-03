@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { type ReactNode, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Box, Text } from '../../../../ink.js';
 import { useKeybinding } from '../../../../keybindings/useKeybinding.js';
 import type { AgentDefinition } from '../../../../tools/AgentTool/loadAgentsDir.js';
@@ -11,6 +11,7 @@ import { useWizard } from '../../../wizard/index.js';
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
 import { validateAgentType } from '../../validateAgent.js';
 import type { AgentWizardData } from '../types.js';
+
 type Props = {
   existingAgents: AgentDefinition[];
 };
