@@ -31,12 +31,12 @@ from __future__ import annotations
 import importlib
 import logging
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 
 logger = logging.getLogger(__name__)
 
 
-class ServiceState(str, Enum):
+class ServiceState(StrEnum):
     """Service lifecycle state."""
 
     UNLOADED = "unloaded"
@@ -95,6 +95,10 @@ _SERVICE_REGISTRY: dict[str, str] = {
     "oauth_flow": "oauth_flow",
     "voice_modality": "voice_modality",
     "watchdog": "watchdog",
+    # V2.2.0 foundation modules — ported from src/utils/
+    "forked_agent": "forked_agent",
+    "cron_scheduler": "cron_scheduler",
+    "conversation_recovery": "conversation_recovery",
 }
 
 
