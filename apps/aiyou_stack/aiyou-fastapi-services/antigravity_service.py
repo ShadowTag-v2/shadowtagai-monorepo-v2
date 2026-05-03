@@ -112,25 +112,52 @@ def call_gemini_turn(model: str, conversation_history: list, tools=None) -> dict
         return json.loads(resp.read().decode("utf-8"))
 
 
+TOOL_DISPATCH = {
+    "code_search_tool": code_search_tool,
+    "list_files_tool": list_files_tool,
+}
+
+
 def execute_function_calls(parts: list) -> list:
-    """Executes function calls in the response parts and returns FunctionResponse parts."""
+    """Execute function calls and return EXACTLY one FunctionResponse per FunctionCall.
+
+    The Gemini API enforces a strict 1:1 contract between FunctionCall parts
+    in the model turn and FunctionResponse parts in the function turn.
+    Violating this invariant causes a 400 Bad Request.
+
+    Every call is individually wrapped in try/except so a single tool failure
+    never drops a response from the batch.
+    """
     responses = []
     for part in parts:
         fc = part.get("functionCall")
-        if fc:
-            fn_name = fc["name"]
-            args = fc.get("args", {})
-            logging.info(f"🤖 Tool Call: {fn_name}({args})")
+        if not fc:
+            continue
 
-            result = {}
-            if fn_name == "code_search_tool":
-                result = code_search_tool(**args)
-            elif fn_name == "list_files_tool":
-                result = list_files_tool(**args)
-            else:
+        fn_name = fc.get("name", "__unknown__")
+        args = fc.get("args", {})
+        logging.info(f"🤖 Tool Call: {fn_name}({args})")
+
+        try:
+            tool_fn = TOOL_DISPATCH.get(fn_name)
+            if tool_fn is None:
                 result = {"error": f"Unknown tool: {fn_name}"}
+            else:
+                result = tool_fn(**args)
+        except Exception as exc:
+            logging.exception(f"Tool '{fn_name}' crashed")
+            result = {"error": f"Tool execution failed: {exc!s}"}
 
-            responses.append({"functionResponse": {"name": fn_name, "response": result}})
+        responses.append({"functionResponse": {"name": fn_name, "response": result}})
+
+    # Invariant: response count MUST equal function-call count
+    call_count = sum(1 for p in parts if "functionCall" in p)
+    if len(responses) != call_count:
+        logging.error(
+            "CRITICAL: Response/call count mismatch — %d responses for %d calls",
+            len(responses),
+            call_count,
+        )
     return responses
 
 
