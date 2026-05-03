@@ -120,7 +120,15 @@ export function PowerShellPermissionRequest(props: PermissionRequestProps): Reac
         editablePrefix,
         onEditablePrefixChange,
       }),
-    [toolUseConfirm, yesInputMode, noInputMode, editablePrefix, onEditablePrefixChange],
+    [
+      toolUseConfirm,
+      yesInputMode,
+      noInputMode,
+      editablePrefix,
+      onEditablePrefixChange,
+      setRejectFeedback,
+      setAcceptFeedback,
+    ],
   );
 
   // Toggle permission debug info with keybinding

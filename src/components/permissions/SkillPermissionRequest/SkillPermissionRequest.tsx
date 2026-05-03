@@ -1,4 +1,3 @@
-import React, { useCallback, useMemo } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { logError } from 'src/utils/log.js';
 import { getOriginalCwd } from '../../../bootstrap/state.js';
@@ -9,14 +8,9 @@ import { SkillTool } from '../../../tools/SkillTool/SkillTool.js';
 import { env } from '../../../utils/env.js';
 import { shouldShowAlwaysAllowOptions } from '../../../utils/permissions/permissionsLoader.js';
 import { logUnaryEvent } from '../../../utils/unaryLogging.js';
-import { type UnaryEvent, usePermissionRequestLogging } from '../hooks.js';
+import { usePermissionRequestLogging } from '../hooks.js';
 import { PermissionDialog } from '../PermissionDialog.js';
-import {
-  PermissionPrompt,
-  type PermissionPromptOption,
-  type ToolAnalyticsContext,
-} from '../PermissionPrompt.js';
-import type { PermissionRequestProps } from '../PermissionRequest.js';
+import { PermissionPrompt } from '../PermissionPrompt.js';
 import { PermissionRuleExplanation } from '../PermissionRuleExplanation.js';
 
 type SkillOptionValue = 'yes' | 'yes-exact' | 'yes-prefix' | 'no';
@@ -114,7 +108,7 @@ export function SkillPermissionRequest(props) {
       const spaceIndex = skill.indexOf(' ');
       if (spaceIndex > 0) {
         const commandPrefix = skill.substring(0, spaceIndex);
-        const t8 = commandPrefix + ':*';
+        const t8 = `${commandPrefix}:*`;
         let t9;
         if ($[11] !== t8) {
           t9 = <Text bold={true}>{t8}</Text>;

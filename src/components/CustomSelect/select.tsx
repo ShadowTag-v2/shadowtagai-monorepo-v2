@@ -628,25 +628,23 @@ export function Select(t0) {
                     shouldShowDownArrow={areMoreOptionsBelow_0 && isLastVisibleOption_0}
                     shouldShowUpArrow={areMoreOptionsAbove_0 && isFirstVisibleOption_0}
                   >
-                    <>
-                      {!hideIndexes && (
-                        <Text dimColor={true}>{`${i_0}.`.padEnd(maxIndexWidth_0 + 1)}</Text>
-                      )}
-                      <Text
-                        dimColor={isOptionDisabled_0}
-                        color={
-                          isOptionDisabled_0
-                            ? undefined
-                            : isSelected_0
-                              ? 'success'
-                              : isFocused_0
-                                ? 'suggestion'
-                                : undefined
-                        }
-                      >
-                        {label_0}
-                      </Text>
-                    </>
+                    {!hideIndexes && (
+                      <Text dimColor={true}>{`${i_0}.`.padEnd(maxIndexWidth_0 + 1)}</Text>
+                    )}
+                    <Text
+                      dimColor={isOptionDisabled_0}
+                      color={
+                        isOptionDisabled_0
+                          ? undefined
+                          : isSelected_0
+                            ? 'success'
+                            : isFocused_0
+                              ? 'suggestion'
+                              : undefined
+                      }
+                    >
+                      {label_0}
+                    </Text>
                   </SelectOption>
                   {option_2.description && (
                     <Box paddingLeft={hideIndexes ? 4 : maxIndexWidth_0 + 4}>

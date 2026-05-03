@@ -1,4 +1,3 @@
-import React from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { Box, Text } from '../../ink.js';
 import type { Workflow } from './types.js';
@@ -71,38 +70,36 @@ export function CreatingStep(t0) {
   let t4;
   if ($[7] !== currentWorkflowInstallStep || $[8] !== progressSteps) {
     t4 = (
-      <>
-        <Box flexDirection="column" borderStyle="round" paddingX={1}>
-          {t3}
-          {progressSteps.map((stepText, index) => {
-            let status = 'pending';
-            if (index < currentWorkflowInstallStep) {
-              status = 'completed';
-            } else {
-              if (index === currentWorkflowInstallStep) {
-                status = 'in-progress';
-              }
+      <Box flexDirection="column" borderStyle="round" paddingX={1}>
+        {t3}
+        {progressSteps.map((stepText, index) => {
+          let status = 'pending';
+          if (index < currentWorkflowInstallStep) {
+            status = 'completed';
+          } else {
+            if (index === currentWorkflowInstallStep) {
+              status = 'in-progress';
             }
-            return (
-              <Box key={index}>
-                <Text
-                  color={
-                    status === 'completed'
-                      ? 'success'
-                      : status === 'in-progress'
-                        ? 'warning'
-                        : undefined
-                  }
-                >
-                  {status === 'completed' ? '\u2713 ' : ''}
-                  {stepText}
-                  {status === 'in-progress' ? '\u2026' : ''}
-                </Text>
-              </Box>
-            );
-          })}
-        </Box>
-      </>
+          }
+          return (
+            <Box key={index}>
+              <Text
+                color={
+                  status === 'completed'
+                    ? 'success'
+                    : status === 'in-progress'
+                      ? 'warning'
+                      : undefined
+                }
+              >
+                {status === 'completed' ? '\u2713 ' : ''}
+                {stepText}
+                {status === 'in-progress' ? '\u2026' : ''}
+              </Text>
+            </Box>
+          );
+        })}
+      </Box>
     );
     $[7] = currentWorkflowInstallStep;
     $[8] = progressSteps;

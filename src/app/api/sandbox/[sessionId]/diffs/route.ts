@@ -55,7 +55,6 @@ export async function GET(request: NextRequest, { params }: { params: { sessionI
     return NextResponse.json(data);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Internal error';
-    console.error('[sandbox/diffs] Failed:', message);
     return NextResponse.json({ error: message }, { status: 502 });
   }
 }

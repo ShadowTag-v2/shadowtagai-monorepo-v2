@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { useCallback, useEffect, useRef } from 'react';
 import { useInterval } from 'usehooks-ts';
 import type { ToolUseConfirm } from '../components/permissions/PermissionRequest.js';
@@ -80,9 +80,9 @@ function getAgentNameToPoll(appState: AppState): string | undefined {
   }
   // Team lead polls using their agent name (not ID)
   if (isTeamLead(appState.teamContext)) {
-    const leadAgentId = appState.teamContext!.leadAgentId;
+    const leadAgentId = appState.teamContext?.leadAgentId;
     // Look up the lead's name from teammates map
-    const leadName = appState.teamContext!.teammates[leadAgentId]?.name;
+    const leadName = appState.teamContext?.teammates[leadAgentId]?.name;
     return leadName || 'team-lead';
   }
   return undefined;
@@ -117,7 +117,7 @@ export function useInboxPoller({
   const onSubmitTeammateMessage = onSubmitMessage;
   const store = useAppStateStore();
   const setAppState = useSetAppState();
-  const inboxMessageCount = useAppState((s) => s.inbox.messages.length);
+  const _inboxMessageCount = useAppState((s) => s.inbox.messages.length);
   const terminal = useTerminalNotification();
 
   const poll = useCallback(async () => {
@@ -856,15 +856,7 @@ export function useInboxPoller({
     } else {
       logForDebugging(`[InboxPoller] Submission rejected, keeping messages queued`);
     }
-  }, [
-    enabled,
-    isLoading,
-    focusedInputDialog,
-    onSubmitTeammateMessage,
-    setAppState,
-    inboxMessageCount,
-    store,
-  ]);
+  }, [enabled, isLoading, focusedInputDialog, onSubmitTeammateMessage, setAppState, store]);
 
   // Poll if running as a teammate or as a team lead
   const shouldPoll = enabled && !!getAgentNameToPoll(store.getState());

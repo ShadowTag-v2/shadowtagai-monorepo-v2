@@ -525,7 +525,7 @@ function stylesEqual(a: AnsiCode[], b: AnsiCode[]): boolean {
   if (len !== b.length) return false;
   if (len === 0) return true; // Both empty
   for (let i = 0; i < len; i++) {
-    if (a[i]!.code !== b[i]!.code) return false;
+    if (a[i]?.code !== b[i]?.code) return false;
   }
   return true;
 }
@@ -547,7 +547,7 @@ function styledCharsWithGraphemeClustering(
 
   const result: ClusteredChar[] = [];
   const bufferChars: string[] = [];
-  let bufferStyles: AnsiCode[] = chars[0]!.styles;
+  let bufferStyles: AnsiCode[] = chars[0]?.styles;
 
   for (let i = 0; i < charCount; i++) {
     const char = chars[i]!;

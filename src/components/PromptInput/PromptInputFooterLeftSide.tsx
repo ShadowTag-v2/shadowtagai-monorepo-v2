@@ -388,7 +388,7 @@ function ModeIndicator({
         };
       });
     }
-  }, [voiceEnabled, voiceHintUnderCap]);
+  }, [voiceEnabled, voiceHintUnderCap, voiceHintIncrementedRef?.current, voiceHintIncrementedRef]);
   const isKillAgentsConfirmShowing = useAppState(
     (s_7) => s_7.notifications.current?.key === 'kill-agents-confirm',
   );

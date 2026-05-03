@@ -1,7 +1,7 @@
-import { type ExecSyncOptionsWithStringEncoding, execSync } from 'child_process';
+import { type ExecSyncOptionsWithStringEncoding, execSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import type { Command } from 'commander';
-import { existsSync } from 'fs';
-import { join } from 'path';
 import { logEvent } from '../services/analytics/index.js';
 
 /**
@@ -84,9 +84,6 @@ export function registerDreamCommand(program: Command) {
       try {
         const scriptPath = findDreamScript(opts.baseDir);
         if (!scriptPath) {
-          console.error('✗ dream_consolidation.py not found.');
-          console.error('  Expected at: scripts/dream_consolidation.py');
-          console.error('  Ensure the script exists in the monorepo.');
           logEvent('tengu_dream_error', { error: 'script_not_found' });
           process.exitCode = 1;
           return;
@@ -133,9 +130,7 @@ export function registerDreamCommand(program: Command) {
       } catch (e: any) {
         const durationMs = Date.now() - startTime;
         logEvent('tengu_dream_error', { error: e.message, durationMs });
-        console.error('AutoDream consolidation failed:', e.message);
-        if (e.stderr) console.error(e.stderr);
-        process.exitCode = 1;
+        if (e.stderr) process.exitCode = 1;
       }
     });
 }

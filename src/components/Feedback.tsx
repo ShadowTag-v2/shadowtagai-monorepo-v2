@@ -1,5 +1,5 @@
+import { readFile, stat } from 'node:fs/promises';
 import axios from 'axios';
-import { readFile, stat } from 'fs/promises';
 import type * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { getLastAPIRequest } from 'src/bootstrap/state.js';
@@ -293,7 +293,7 @@ export function Feedback({
       // Stay on userInput step so user can retry with their content preserved
       setStep('userInput');
     }
-  }, [description, envInfo.isGit, messages]);
+  }, [description, envInfo.isGit, messages, backgroundTasks, abortSignal]);
 
   // Handle cancel - this will be called by Dialog's automatic Esc handling
   const handleCancel = useCallback(() => {
@@ -702,7 +702,7 @@ async function submitFeedback(
         success: false,
       };
     }
-    sanitizeAndLogError(new Error('Failed to submit feedback:' + response.status));
+    sanitizeAndLogError(new Error(`Failed to submit feedback:${response.status}`));
     return {
       success: false,
     };

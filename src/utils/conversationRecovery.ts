@@ -1,6 +1,6 @@
 import { feature } from 'bun:bundle';
-import type { UUID } from 'crypto';
-import { relative } from 'path';
+import type { UUID } from 'node:crypto';
+import { relative } from 'node:path';
 import { getCwd } from 'src/utils/cwd.js';
 import { addInvokedSkill } from '../bootstrap/state.js';
 import { asSessionId } from '../types/ids.js';
@@ -218,7 +218,7 @@ export function deserializeMessagesWithInterruptDetection(
     const lastRelevantIdx = filteredMessages.findLastIndex(
       (m) => m.type !== 'system' && m.type !== 'progress',
     );
-    if (lastRelevantIdx !== -1 && filteredMessages[lastRelevantIdx]!.type === 'user') {
+    if (lastRelevantIdx !== -1 && filteredMessages[lastRelevantIdx]?.type === 'user') {
       filteredMessages.splice(
         lastRelevantIdx + 1,
         0,

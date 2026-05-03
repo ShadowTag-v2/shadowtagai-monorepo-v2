@@ -1,5 +1,5 @@
+import { writeSync } from 'node:fs';
 import chalk from 'chalk';
-import { writeSync } from 'fs';
 import memoize from 'lodash-es/memoize.js';
 import { onExit } from 'signal-exit';
 import type { ExitReason } from 'src/entrypoints/agentSdkTypes.js';
@@ -484,7 +484,7 @@ export async function gracefulShutdown(
   if (options?.finalMessage) {
     try {
       // eslint-disable-next-line custom-rules/no-sync-fs -- must flush before forceExit
-      writeSync(2, options.finalMessage + '\n');
+      writeSync(2, `${options.finalMessage}\n`);
     } catch {
       // stderr may be closed (e.g., SSH disconnect). Ignore write errors.
     }

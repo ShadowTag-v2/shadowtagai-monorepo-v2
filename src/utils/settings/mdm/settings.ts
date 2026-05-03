@@ -18,7 +18,7 @@
  *   settings.ts  — parsing, caching, first-source-wins logic (this file)
  */
 
-import { join } from 'path';
+import { join } from 'node:path';
 import { logForDebugging } from '../../debug.js';
 import { logForDiagnosticsNoPII } from '../../diagLogs.js';
 import { readFileSync } from '../../fileRead.js';
@@ -202,7 +202,7 @@ export function parseRegQueryStdout(stdout: string, valueName = 'Settings'): str
   const re = new RegExp(`^\\s+${escaped}\\s+REG_(?:EXPAND_)?SZ\\s+(.*)$`, 'i');
   for (const line of lines) {
     const match = line.match(re);
-    if (match && match[1]) {
+    if (match?.[1]) {
       return match[1].trimEnd();
     }
   }

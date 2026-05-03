@@ -83,7 +83,6 @@ function createHttpSink(): TelemetrySink {
       });
 
       if (!response.ok) {
-        console.warn(`[Panopticon] Telemetry batch failed: ${response.status}`);
       }
     } catch {
       // Silent failure — telemetry must never break the app

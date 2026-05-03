@@ -98,7 +98,7 @@ export function parseSSEFrames(buffer: string): {
           break;
         case 'data':
           // Per SSE spec, multiple data: lines are concatenated with \n
-          frame.data = frame.data ? frame.data + '\n' + value : value;
+          frame.data = frame.data ? `${frame.data}\n${value}` : value;
           break;
         // Ignore other fields (retry:, etc.)
       }
@@ -250,8 +250,8 @@ export class SSETransport implements Transport {
       'anthropic-version': '2023-06-01',
       'User-Agent': getClaudeCodeUserAgent(),
     };
-    if (authHeaders['Cookie']) {
-      delete headers['Authorization'];
+    if (authHeaders.Cookie) {
+      delete headers.Authorization;
     }
     if (this.lastSequenceNum > 0) {
       headers['Last-Event-ID'] = String(this.lastSequenceNum);
@@ -345,7 +345,7 @@ export class SSETransport implements Transport {
 
           if (frame.id) {
             const seqNum = parseInt(frame.id, 10);
-            if (!isNaN(seqNum)) {
+            if (!Number.isNaN(seqNum)) {
               if (this.seenSequenceNums.has(seqNum)) {
                 logForDebugging(
                   `SSETransport: DUPLICATE frame seq=${seqNum} (lastSequenceNum=${this.lastSequenceNum}, seenCount=${this.seenSequenceNums.size})`,
@@ -439,7 +439,7 @@ export class SSETransport implements Transport {
       logForDiagnosticsNoPII('info', 'cli_sse_message_received');
       // Pass the unwrapped payload as newline-delimited JSON,
       // matching the format that StructuredIO/WebSocketTransport consumers expect
-      this.onData?.(jsonStringify(payload) + '\n');
+      this.onData?.(`${jsonStringify(payload)}\n`);
     } else {
       logForDebugging(
         `SSETransport: Ignoring client_event with no type in payload: event_id=${ev.event_id}`,

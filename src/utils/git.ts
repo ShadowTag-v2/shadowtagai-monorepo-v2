@@ -1,8 +1,8 @@
-import { createHash } from 'crypto';
-import { readFileSync, realpathSync, statSync } from 'fs';
-import { open, readFile, realpath, stat } from 'fs/promises';
+import { createHash } from 'node:crypto';
+import { readFileSync, realpathSync, statSync } from 'node:fs';
+import { open, readFile, realpath, stat } from 'node:fs/promises';
+import { basename, dirname, join, resolve, sep } from 'node:path';
 import memoize from 'lodash-es/memoize.js';
-import { basename, dirname, join, resolve, sep } from 'path';
 import { hasBinaryExtension, isBinaryContent } from '../constants/files.js';
 import { getCwd } from './cwd.js';
 import { logForDebugging } from './debug.js';
@@ -278,13 +278,13 @@ export function normalizeGitRemoteUrl(url: string): string | null {
 
   // Handle SSH format: git@host:owner/repo.git
   const sshMatch = trimmed.match(/^git@([^:]+):(.+?)(?:\.git)?$/);
-  if (sshMatch && sshMatch[1] && sshMatch[2]) {
+  if (sshMatch?.[1] && sshMatch[2]) {
     return `${sshMatch[1]}/${sshMatch[2]}`.toLowerCase();
   }
 
   // Handle HTTPS/SSH URL format: https://host/owner/repo.git or ssh://git@host/owner/repo
   const urlMatch = trimmed.match(/^(?:https?|ssh):\/\/(?:[^@]+@)?([^/]+)\/(.+?)(?:\.git)?$/);
-  if (urlMatch && urlMatch[1] && urlMatch[2]) {
+  if (urlMatch?.[1] && urlMatch[2]) {
     const host = urlMatch[1];
     const path = urlMatch[2];
 
@@ -297,7 +297,7 @@ export function normalizeGitRemoteUrl(url: string): string | null {
       const proxyPath = path.slice(4); // Remove "git/" prefix
       const segments = proxyPath.split('/');
       // 3+ segments where first contains a dot → host/owner/repo (GHE format)
-      if (segments.length >= 3 && segments[0]!.includes('.')) {
+      if (segments.length >= 3 && segments[0]?.includes('.')) {
         return proxyPath.toLowerCase();
       }
       // 2 segments → owner/repo (legacy format, assume github.com)
@@ -556,7 +556,7 @@ export async function findRemoteBase(): Promise<string | null> {
   if (remoteCode === 0) {
     // Parse the default branch from remote show output
     const match = remoteRefs.match(/HEAD branch: (\S+)/);
-    if (match && match[1]) {
+    if (match?.[1]) {
       return `origin/${match[1]}`;
     }
   }

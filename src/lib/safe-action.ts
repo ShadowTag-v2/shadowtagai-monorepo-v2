@@ -9,7 +9,6 @@ export async function safeAction<T>(
   try {
     return { data: await fn() };
   } catch (error: any) {
-    console.error(`[ACTION_ERROR: ${actionName}]`, error);
     if (process.env.NODE_ENV === 'production') {
       await resend.emails
         .send({

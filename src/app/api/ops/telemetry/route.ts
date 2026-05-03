@@ -157,7 +157,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     // Structured logging compatible with Cloud Logging
     if (event.severity === 'error' || event.severity === 'critical') {
-      console.error(JSON.stringify(logEntry));
     } else {
       console.log(JSON.stringify(logEntry));
     }

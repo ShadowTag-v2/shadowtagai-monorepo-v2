@@ -1,6 +1,6 @@
+import { access, readFile } from 'node:fs/promises';
+import { dirname, join, relative, sep } from 'node:path';
 import type { StructuredPatchHunk } from 'diff';
-import { access, readFile } from 'fs/promises';
-import { dirname, join, relative, sep } from 'path';
 import { getCwd } from './cwd.js';
 import { getCachedRepository } from './detectRepository.js';
 import { execFileNoThrow, execFileNoThrowWithCwd } from './execFileNoThrow.js';
@@ -264,7 +264,7 @@ export function parseGitDiff(stdout: string): Map<string, StructuredPatchHunk[]>
         // the parent. This keeps the entire parent string (~MBs) alive as long as
         // any line is retained. Using '' + line forces a new flat string allocation,
         // unlike slice(0) which V8 may optimize to return the same reference.
-        currentHunk.lines.push('' + line);
+        currentHunk.lines.push(`${line}`);
         lineCount++;
       }
     }

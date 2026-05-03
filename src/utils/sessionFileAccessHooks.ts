@@ -125,7 +125,7 @@ export function isMemoryFileAccess(toolName: string, toolInput: unknown): boolea
   const filePath = getFilePathFromInput(toolName, toolInput);
   if (
     filePath &&
-    (isAutoMemFile(filePath) || (feature('TEAMMEM') && teamMemPaths!.isTeamMemFile(filePath)))
+    (isAutoMemFile(filePath) || (feature('TEAMMEM') && teamMemPaths?.isTeamMemFile(filePath)))
   ) {
     return true;
   }
@@ -176,7 +176,7 @@ async function handleSessionFileAccess(
   }
 
   // Team memory access tracking
-  if (feature('TEAMMEM') && filePath && teamMemPaths!.isTeamMemFile(filePath)) {
+  if (feature('TEAMMEM') && filePath && teamMemPaths?.isTeamMemFile(filePath)) {
     logEvent('tengu_team_mem_accessed', {
       tool: input.tool_name as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       ...subagentProps,
@@ -203,7 +203,7 @@ async function handleSessionFileAccess(
       scope !== null &&
       (input.tool_name === FILE_EDIT_TOOL_NAME || input.tool_name === FILE_WRITE_TOOL_NAME)
     ) {
-      memoryShapeTelemetry!.logMemoryWriteShape(input.tool_name, input.tool_input, filePath, scope);
+      memoryShapeTelemetry?.logMemoryWriteShape(input.tool_name, input.tool_input, filePath, scope);
     }
   }
 

@@ -1,9 +1,9 @@
+import type { UUID } from 'node:crypto';
 import type {
   Base64ImageSource,
   ContentBlockParam,
   ImageBlockParam,
 } from '@anthropic-ai/sdk/resources/messages.mjs';
-import type { UUID } from 'crypto';
 import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
 import { detectImageFormatFromBase64 } from '../utils/imageResizer.js';
 

@@ -1,7 +1,7 @@
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
 import { feature } from 'bun:bundle';
-import { readFile, stat } from 'fs/promises';
-import { dirname } from 'path';
+import { readFile, stat } from 'node:fs/promises';
+import { dirname } from 'node:path';
 import { downloadUserSettings, redownloadUserSettings } from 'src/services/settingsSync/index.js';
 import { waitForRemoteManagedSettingsToLoad } from 'src/services/remoteManagedSettings/index.js';
 import { StructuredIO } from 'src/cli/structuredIO.js';
@@ -113,7 +113,7 @@ import type {
 } from 'src/entrypoints/sdk/controlTypes.js';
 import type { PermissionMode } from '@anthropic-ai/claude-agent-sdk';
 import type { PermissionMode as InternalPermissionMode } from 'src/types/permissions.js';
-import { cwd } from 'process';
+import { cwd } from 'node:process';
 import { getCwd } from 'src/utils/cwd.js';
 import omit from 'lodash-es/omit.js';
 import reject from 'lodash-es/reject.js';
@@ -258,8 +258,8 @@ import {
   type ChannelEntry,
 } from 'src/bootstrap/state.js';
 import { runWithWorkload, WORKLOAD_CRON } from 'src/utils/workloadContext.js';
-import type { UUID } from 'crypto';
-import { randomUUID } from 'crypto';
+import type { UUID } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
 import type { AppState } from 'src/state/AppStateStore.js';
 import {
@@ -864,10 +864,10 @@ export async function runHeadless(
         throw new Error('No messages returned');
       }
       if (options.verbose) {
-        writeToStdout(jsonStringify(messages) + '\n');
+        writeToStdout(`${jsonStringify(messages)}\n`);
         break;
       }
-      writeToStdout(jsonStringify(lastMessage) + '\n');
+      writeToStdout(`${jsonStringify(lastMessage)}\n`);
       break;
     case 'stream-json':
       // already logged above
@@ -879,7 +879,7 @@ export async function runHeadless(
       switch (lastMessage.subtype) {
         case 'success':
           writeToStdout(
-            lastMessage.result.endsWith('\n') ? lastMessage.result : lastMessage.result + '\n',
+            lastMessage.result.endsWith('\n') ? lastMessage.result : `${lastMessage.result}\n`,
           );
           break;
         case 'error_during_execution':
@@ -905,7 +905,7 @@ export async function runHeadless(
   // the forked agent mid-flight. Gated by isExtractModeActive so the
   // tengu_slate_thimble flag controls non-interactive extraction end-to-end.
   if (feature('EXTRACT_MEMORIES') && isExtractModeActive()) {
-    await extractMemoriesModule!.drainPendingExtraction();
+    await extractMemoriesModule?.drainPendingExtraction();
   }
 
   gracefulShutdownSync(lastMessage?.type === 'result' && lastMessage?.is_error ? 1 : 0);
@@ -2292,7 +2292,7 @@ function runHeadlessStreaming(
       !proactiveModule.isProactivePaused()
     ) {
       if (peek(isMainThread) === undefined && !inputClosed) {
-        scheduleProactiveTick!();
+        scheduleProactiveTick?.();
         return;
       }
     }
@@ -3083,7 +3083,7 @@ function runHeadlessStreaming(
               const oauthPromise = performMCPOAuthFlow(
                 serverName,
                 config,
-                (url) => resolveAuthUrl!(url),
+                (url) => resolveAuthUrl?.(url),
                 controller.signal,
                 {
                   skipBrowserOpen: true,
@@ -3588,12 +3588,12 @@ function runHeadlessStreaming(
             enabled: boolean;
           };
           if (req.enabled) {
-            if (!proactiveModule!.isProactiveActive()) {
-              proactiveModule!.activateProactive('command');
-              scheduleProactiveTick!();
+            if (!proactiveModule?.isProactiveActive()) {
+              proactiveModule?.activateProactive('command');
+              scheduleProactiveTick?.();
             }
           } else {
-            proactiveModule!.deactivateProactive();
+            proactiveModule?.deactivateProactive();
           }
           sendControlResponseSuccess(message);
         } else if (message.request.subtype === 'remote_control') {
@@ -4486,9 +4486,9 @@ function emitLoadError(message: string, outputFormat: string | undefined): void 
       uuid: randomUUID(),
       errors: [message],
     };
-    process.stdout.write(jsonStringify(errorResult) + '\n');
+    process.stdout.write(`${jsonStringify(errorResult)}\n`);
   } else {
-    process.stderr.write(message + '\n');
+    process.stderr.write(`${message}\n`);
   }
 }
 
@@ -4545,7 +4545,7 @@ async function loadInitialMessages(
         if (feature('COORDINATOR_MODE') && coordinatorModeModule) {
           const warning = coordinatorModeModule.matchSessionMode(result.mode);
           if (warning) {
-            process.stderr.write(warning + '\n');
+            process.stderr.write(`${warning}\n`);
             // Refresh agent definitions to reflect the mode switch
             const { getAgentDefinitionsWithOverrides, getActiveAgentsFromList } =
               // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -4724,7 +4724,7 @@ async function loadInitialMessages(
       if (feature('COORDINATOR_MODE') && coordinatorModeModule) {
         const warning = coordinatorModeModule.matchSessionMode(result.mode);
         if (warning) {
-          process.stderr.write(warning + '\n');
+          process.stderr.write(`${warning}\n`);
           // Refresh agent definitions to reflect the mode switch
           const { getAgentDefinitionsWithOverrides, getActiveAgentsFromList } =
             // eslint-disable-next-line @typescript-eslint/no-require-imports

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { Box, Text } from 'src/ink.js';
@@ -56,7 +55,7 @@ export function SystemAPIErrorMessage(t0) {
     t6 = 'column';
     T0 = Text;
     t4 = 'error';
-    t5 = truncated ? formatted.slice(0, MAX_API_ERROR_CHARS) + '\u2026' : formatted;
+    t5 = truncated ? `${formatted.slice(0, MAX_API_ERROR_CHARS)}\u2026` : formatted;
     $[4] = error;
     $[5] = verbose;
     $[6] = T0;

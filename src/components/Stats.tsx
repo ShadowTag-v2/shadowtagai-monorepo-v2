@@ -3,7 +3,7 @@ import { plot as asciichart } from 'asciichart';
 import chalk from 'chalk';
 import figures from 'figures';
 import type React from 'react';
-import { Suspense, use, useCallback, useEffect, useMemo, useState } from 'react';
+import { Suspense, use, useEffect, useMemo, useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import stripAnsi from 'strip-ansi';
 import type { CommandResultDisplay } from '../commands.js';
@@ -636,32 +636,32 @@ function OverviewTab({
           <Box flexDirection="row" gap={4}>
             <Box flexDirection="column" width={28}>
               <Text wrap="truncate">
-                {shotStatsData.buckets[0]!.label}:{' '}
-                <Text color="claude">{shotStatsData.buckets[0]!.count}</Text>
-                <Text color="subtle"> ({shotStatsData.buckets[0]!.pct}%)</Text>
+                {shotStatsData.buckets[0]?.label}:{' '}
+                <Text color="claude">{shotStatsData.buckets[0]?.count}</Text>
+                <Text color="subtle"> ({shotStatsData.buckets[0]?.pct}%)</Text>
               </Text>
             </Box>
             <Box flexDirection="column" width={28}>
               <Text wrap="truncate">
-                {shotStatsData.buckets[1]!.label}:{' '}
-                <Text color="claude">{shotStatsData.buckets[1]!.count}</Text>
-                <Text color="subtle"> ({shotStatsData.buckets[1]!.pct}%)</Text>
+                {shotStatsData.buckets[1]?.label}:{' '}
+                <Text color="claude">{shotStatsData.buckets[1]?.count}</Text>
+                <Text color="subtle"> ({shotStatsData.buckets[1]?.pct}%)</Text>
               </Text>
             </Box>
           </Box>
           <Box flexDirection="row" gap={4}>
             <Box flexDirection="column" width={28}>
               <Text wrap="truncate">
-                {shotStatsData.buckets[2]!.label}:{' '}
-                <Text color="claude">{shotStatsData.buckets[2]!.count}</Text>
-                <Text color="subtle"> ({shotStatsData.buckets[2]!.pct}%)</Text>
+                {shotStatsData.buckets[2]?.label}:{' '}
+                <Text color="claude">{shotStatsData.buckets[2]?.count}</Text>
+                <Text color="subtle"> ({shotStatsData.buckets[2]?.pct}%)</Text>
               </Text>
             </Box>
             <Box flexDirection="column" width={28}>
               <Text wrap="truncate">
-                {shotStatsData.buckets[3]!.label}:{' '}
-                <Text color="claude">{shotStatsData.buckets[3]!.count}</Text>
-                <Text color="subtle"> ({shotStatsData.buckets[3]!.pct}%)</Text>
+                {shotStatsData.buckets[3]?.label}:{' '}
+                <Text color="claude">{shotStatsData.buckets[3]?.count}</Text>
+                <Text color="subtle"> ({shotStatsData.buckets[3]?.pct}%)</Text>
               </Text>
             </Box>
           </Box>
@@ -1204,9 +1204,9 @@ function generateTokenChart(
     format: (x: number) => {
       let label: string;
       if (x >= 1_000_000) {
-        label = (x / 1_000_000).toFixed(1) + 'M';
+        label = `${(x / 1_000_000).toFixed(1)}M`;
       } else if (x >= 1_000) {
-        label = (x / 1_000).toFixed(0) + 'k';
+        label = `${(x / 1_000).toFixed(0)}k`;
       } else {
         label = x.toFixed(0);
       }
@@ -1240,7 +1240,7 @@ function generateXAxisLabels(
   }[] = [];
   for (let i = 0; i < numLabels; i++) {
     const idx = Math.min(i * step, data.length - 1);
-    const date = new Date(data[idx]!.date);
+    const date = new Date(data[idx]?.date);
     const label = date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -1316,14 +1316,14 @@ function renderOverviewToAnsi(stats: ClaudeCodeStats): string[] {
   const COL2_LABEL_WIDTH = 18;
   const row = (l1: string, v1: string, l2: string, v2: string): string => {
     // Build column 1: label + value
-    const label1 = (l1 + ':').padEnd(COL1_LABEL_WIDTH);
+    const label1 = `${l1}:`.padEnd(COL1_LABEL_WIDTH);
     const col1PlainLen = label1.length + v1.length;
 
     // Calculate spaces needed between col1 value and col2 label
     const spaceBetween = Math.max(2, COL2_START - col1PlainLen);
 
     // Build column 2: label + value
-    const label2 = (l2 + ':').padEnd(COL2_LABEL_WIDTH);
+    const label2 = `${l2}:`.padEnd(COL2_LABEL_WIDTH);
 
     // Assemble with colors applied to values only
     return label1 + h(v1) + ' '.repeat(spaceBetween) + label2 + h(v2);

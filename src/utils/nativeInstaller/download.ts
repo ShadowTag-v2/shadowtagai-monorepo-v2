@@ -7,10 +7,10 @@
  */
 
 import { feature } from 'bun:bundle';
+import { createHash } from 'node:crypto';
+import { chmod, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import axios from 'axios';
-import { createHash } from 'crypto';
-import { chmod, writeFile } from 'fs/promises';
-import { join } from 'path';
 import { logEvent } from 'src/services/analytics/index.js';
 import type { ReleaseChannel } from '../config.js';
 import { logForDebugging } from '../debug.js';

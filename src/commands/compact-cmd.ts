@@ -227,7 +227,6 @@ async function handleFullCompaction(
   totalWindow?: number,
 ): Promise<void> {
   if (!opts.file) {
-    console.error('Error: --file is required (unless using --budget-only)');
     process.exitCode = 1;
     return;
   }
@@ -236,7 +235,6 @@ async function handleFullCompaction(
   const messages: Record<string, unknown>[] = JSON.parse(raw);
 
   if (!Array.isArray(messages)) {
-    console.error('Error: input file must contain a JSON array of messages');
     process.exitCode = 1;
     return;
   }
@@ -332,7 +330,6 @@ export function registerCompactCommand(program: Command) {
       } catch (e: unknown) {
         const errMsg = e instanceof Error ? e.message : String(e);
         logEvent('tengu_compact_error', { error: errMsg });
-        console.error('Compaction failed:', errMsg);
         process.exitCode = 1;
       }
     });

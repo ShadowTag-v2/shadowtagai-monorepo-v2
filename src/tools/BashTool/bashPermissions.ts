@@ -165,7 +165,7 @@ export function getSimpleCommandPrefix(command: string): string | null {
   // at allow-rule check time, because stripSafeWrappers only strips safe vars.
   let i = 0;
   while (i < tokens.length && ENV_VAR_ASSIGN_RE.test(tokens[i]!)) {
-    const varName = tokens[i]!.split('=')[0]!;
+    const varName = tokens[i]?.split('=')[0]!;
     const isAntOnlySafe = process.env.USER_TYPE === 'ant' && ANT_ONLY_SAFE_ENV_VARS.has(varName);
     if (!SAFE_ENV_VARS.has(varName) && !isAntOnlySafe) {
       return null;
@@ -240,7 +240,7 @@ export function getFirstWordPrefix(command: string): string | null {
 
   let i = 0;
   while (i < tokens.length && ENV_VAR_ASSIGN_RE.test(tokens[i]!)) {
-    const varName = tokens[i]!.split('=')[0]!;
+    const varName = tokens[i]?.split('=')[0]!;
     const isAntOnlySafe = process.env.USER_TYPE === 'ant' && ANT_ONLY_SAFE_ENV_VARS.has(varName);
     if (!SAFE_ENV_VARS.has(varName) && !isAntOnlySafe) {
       return null;
@@ -271,7 +271,7 @@ function suggestionForExactCommand(command: string): PermissionUpdate[] {
   // the middle, which fails permission validation and corrupts the settings
   // file. Use the first line as a prefix rule instead.
   if (command.includes('\n')) {
-    const firstLine = command.split('\n')[0]!.trim();
+    const firstLine = command.split('\n')[0]?.trim();
     if (firstLine) {
       return sharedSuggestionForPrefix(BashTool.name, firstLine);
     }
@@ -318,7 +318,7 @@ function extractPrefixBeforeHeredoc(command: string): string | null {
   const tokens = before.split(/\s+/).filter(Boolean);
   let i = 0;
   while (i < tokens.length && ENV_VAR_ASSIGN_RE.test(tokens[i]!)) {
-    const varName = tokens[i]!.split('=')[0]!;
+    const varName = tokens[i]?.split('=')[0]!;
     const isAntOnlySafe = process.env.USER_TYPE === 'ant' && ANT_ONLY_SAFE_ENV_VARS.has(varName);
     if (!SAFE_ENV_VARS.has(varName) && !isAntOnlySafe) {
       return null;
@@ -863,7 +863,7 @@ function filterRulesByContentsMatchingInput(
                 if (cmdToMatch === bashRule.prefix) {
                   return true;
                 }
-                if (cmdToMatch.startsWith(bashRule.prefix + ' ')) {
+                if (cmdToMatch.startsWith(`${bashRule.prefix} `)) {
                   return true;
                 }
                 // Also match "xargs <prefix>" for bare xargs with no flags.
@@ -871,11 +871,11 @@ function filterRulesByContentsMatchingInput(
                 // and deny rules like Bash(rm:*) to block "xargs rm file".
                 // Natural word-boundary: "xargs -n1 grep" does NOT start with
                 // "xargs grep " so flagged xargs invocations are not matched.
-                const xargsPrefix = 'xargs ' + bashRule.prefix;
+                const xargsPrefix = `xargs ${bashRule.prefix}`;
                 if (cmdToMatch === xargsPrefix) {
                   return true;
                 }
-                return cmdToMatch.startsWith(xargsPrefix + ' ');
+                return cmdToMatch.startsWith(`${xargsPrefix} `);
               }
             }
             break;

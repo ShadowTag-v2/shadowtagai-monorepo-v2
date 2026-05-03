@@ -18,11 +18,11 @@
  *                   └── marketplace.json
  */
 
+import { writeFile } from 'node:fs/promises';
+import { basename, dirname, isAbsolute, join, resolve, sep } from 'node:path';
 import axios from 'axios';
-import { writeFile } from 'fs/promises';
 import isEqual from 'lodash-es/isEqual.js';
 import memoize from 'lodash-es/memoize.js';
-import { basename, dirname, isAbsolute, join, resolve, sep } from 'path';
 import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js';
 import { logForDebugging } from '../debug.js';
 import { isEnvTruthy } from '../envUtils.js';
@@ -490,7 +490,7 @@ function getPluginGitTimeoutMs(): number {
   const envValue = process.env.CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS;
   if (envValue) {
     const parsed = parseInt(envValue, 10);
-    if (!isNaN(parsed) && parsed > 0) {
+    if (!Number.isNaN(parsed) && parsed > 0) {
       return parsed;
     }
   }
@@ -1301,7 +1301,7 @@ function getCachePathForSource(source: MarketplaceSource): string {
           ? basename(source.path).replace('.json', '')
           : source.source === 'directory'
             ? basename(source.path)
-            : 'temp_' + Date.now();
+            : `temp_${Date.now()}`;
   return tempName;
 }
 

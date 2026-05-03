@@ -102,7 +102,7 @@ function partitionToolCalls(
         })()
       : false;
     if (isConcurrencySafe && acc[acc.length - 1]?.isConcurrencySafe) {
-      acc[acc.length - 1]!.blocks.push(toolUse);
+      acc[acc.length - 1]?.blocks.push(toolUse);
     } else {
       acc.push({ isConcurrencySafe, blocks: [toolUse] });
     }

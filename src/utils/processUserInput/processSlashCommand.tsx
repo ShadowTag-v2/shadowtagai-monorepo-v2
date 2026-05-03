@@ -1,6 +1,6 @@
 import { feature } from 'bun:bundle';
+import { randomUUID } from 'node:crypto';
 import type { ContentBlockParam, TextBlockParam } from '@anthropic-ai/sdk/resources';
-import { randomUUID } from 'crypto';
 import { setPromptId } from 'src/bootstrap/state.js';
 import {
   builtInCommandNames,
@@ -545,9 +545,9 @@ export async function processSlashCommand(
   // For invalid commands, preserve both the user message and error
   if (
     newMessages.length === 2 &&
-    newMessages[1]!.type === 'user' &&
-    typeof newMessages[1]!.message.content === 'string' &&
-    newMessages[1]!.message.content.startsWith('Unknown command:')
+    newMessages[1]?.type === 'user' &&
+    typeof newMessages[1]?.message.content === 'string' &&
+    newMessages[1]?.message.content.startsWith('Unknown command:')
   ) {
     // Don't log as invalid if it looks like a common file path
     const looksLikeFilePath =

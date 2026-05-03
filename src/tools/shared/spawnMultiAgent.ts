@@ -333,7 +333,7 @@ async function handleSpawnSplitPane(
 
     // Show the setup prompt and wait for user decision
     const setupResult = await new Promise<'installed' | 'use-tmux' | 'cancelled'>((resolve) => {
-      context.setToolJSX!({
+      context.setToolJSX?.({
         jsx: React.createElement(It2SetupPrompt, {
           onDone: resolve,
           tmuxAvailable,
@@ -912,7 +912,7 @@ async function handleSpawnInProcess(
     const needsLeaderSetup = !prev.teamContext?.leadAgentId;
     const leadAgentId = needsLeaderSetup
       ? formatAgentId(TEAM_LEAD_NAME, teamName)
-      : prev.teamContext!.leadAgentId;
+      : prev.teamContext?.leadAgentId;
 
     // Build teammates map, including leader if needed for inbox polling
     const existingTeammates = prev.teamContext?.teammates || {};

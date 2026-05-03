@@ -33,7 +33,6 @@ registerDreamCommand(program);
 registerUltraplanCommand(program);
 
 // Parse and execute
-program.parseAsync(process.argv).catch((err: Error) => {
-  console.error(`Fatal: ${err.message}`);
+program.parseAsync(process.argv).catch((_err: Error) => {
   process.exit(1);
 });

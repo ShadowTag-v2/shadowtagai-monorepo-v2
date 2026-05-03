@@ -1,5 +1,5 @@
 import { feature } from 'bun:bundle';
-import { dirname } from 'path';
+import { dirname } from 'node:path';
 import React from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
@@ -53,7 +53,7 @@ import { REPL } from './REPL.js';
 
 function parsePrIdentifier(value: string): number | null {
   const directNumber = parseInt(value, 10);
-  if (!isNaN(directNumber) && directNumber > 0) {
+  if (!Number.isNaN(directNumber) && directNumber > 0) {
     return directNumber;
   }
   const urlMatch = value.match(/github\.com\/[^/]+\/[^/]+\/pull\/(\d+)/);

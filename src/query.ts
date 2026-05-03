@@ -60,7 +60,7 @@ import {
 const skillPrefetch = feature('EXPERIMENTAL_SKILL_SEARCH')
   ? (require('./services/skillSearch/prefetch.js') as typeof import('./services/skillSearch/prefetch.js'))
   : null;
-const jobClassifier = feature('TEMPLATES')
+const _jobClassifier = feature('TEMPLATES')
   ? (require('./jobs/classifier.js') as typeof import('./jobs/classifier.js'))
   : null;
 /* eslint-enable @typescript-eslint/no-require-imports */
@@ -376,7 +376,7 @@ async function* queryLoop(
     let snipTokensFreed = 0;
     if (feature('HISTORY_SNIP')) {
       queryCheckpoint('query_snip_start');
-      const snipResult = snipModule!.snipCompactIfNeeded(messagesForQuery);
+      const snipResult = snipModule?.snipCompactIfNeeded(messagesForQuery);
       messagesForQuery = snipResult.messages;
       snipTokensFreed = snipResult.tokensFreed;
       if (snipResult.boundaryMessage) {
@@ -1579,8 +1579,8 @@ async function* queryLoop(
     // only on !agentId so every top-level conversation (REPL, SDK, HFI,
     // remote) generates summaries; subagents/forks don't.
     if (feature('BG_SESSIONS')) {
-      if (!toolUseContext.agentId && taskSummaryModule!.shouldGenerateTaskSummary()) {
-        taskSummaryModule!.maybeGenerateTaskSummary({
+      if (!toolUseContext.agentId && taskSummaryModule?.shouldGenerateTaskSummary()) {
+        taskSummaryModule?.maybeGenerateTaskSummary({
           systemPrompt,
           userContext,
           systemContext,

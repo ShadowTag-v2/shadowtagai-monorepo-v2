@@ -19,9 +19,9 @@
  * Design doc: api-go/ccr/docs/plans/CCR_AUTH_DESIGN.md § "Week-1 pilot scope".
  */
 
-import { mkdir, readFile, unlink, writeFile } from 'fs/promises';
-import { homedir } from 'os';
-import { join } from 'path';
+import { mkdir, readFile, unlink, writeFile } from 'node:fs/promises';
+import { homedir } from 'node:os';
+import { join } from 'node:path';
 import { registerCleanup } from '../utils/cleanupRegistry.js';
 import { logForDebugging } from '../utils/debug.js';
 import { isEnvTruthy } from '../utils/envUtils.js';
@@ -125,7 +125,7 @@ export async function initUpstreamProxy(opts?: {
   if (!caOk) return state;
 
   try {
-    const wsUrl = baseUrl.replace(/^http/, 'ws') + '/v1/code/upstreamproxy/ws';
+    const wsUrl = `${baseUrl.replace(/^http/, 'ws')}/v1/code/upstreamproxy/ws`;
     const relay = await startUpstreamProxyRelay({ wsUrl, sessionId, token });
     registerCleanup(async () => relay.stop());
     state = { enabled: true, port: relay.port, caBundlePath };
@@ -264,7 +264,7 @@ async function downloadCaBundle(
     const ccrCa = await resp.text();
     const systemCa = await readFile(systemCaPath, 'utf8').catch(() => '');
     await mkdir(join(outPath, '..'), { recursive: true });
-    await writeFile(outPath, systemCa + '\n' + ccrCa, 'utf8');
+    await writeFile(outPath, `${systemCa}\n${ccrCa}`, 'utf8');
     return true;
   } catch (err) {
     logForDebugging(

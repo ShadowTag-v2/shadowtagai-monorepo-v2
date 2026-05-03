@@ -35,7 +35,7 @@ import { count } from '../utils/array.js';
 import { getGlobalConfig } from '../utils/config.js';
 import { getEffortSuffix } from '../utils/effort.js';
 import { isEnvTruthy } from '../utils/envUtils.js';
-import { formatDuration, formatNumber, formatSecondsShort } from '../utils/format.js';
+import { formatDuration, formatNumber } from '../utils/format.js';
 import { getMainLoopModel } from '../utils/model/model.js';
 import type { Task } from '../utils/tasks.js';
 import { MessageResponse } from './MessageResponse.js';
@@ -192,11 +192,11 @@ function SpinnerWithVerbInner({
     foregroundedTeammate && !foregroundedTeammate.isIdle
       ? (foregroundedTeammate.spinnerVerb ?? randomVerb)
       : leaderVerb;
-  const message = effectiveVerb + '…';
+  const message = `${effectiveVerb}…`;
 
   // Track CLI activity when spinner is active
   useEffect(() => {
-    const operationId = 'spinner-' + mode;
+    const operationId = `spinner-${mode}`;
     activityManager.startCLIActivity(operationId);
     return () => {
       activityManager.endCLIActivity(operationId);
@@ -247,9 +247,9 @@ function SpinnerWithVerbInner({
   // line instead of taking a separate row. apiMetricsRef is a ref so this
   // doesn't trigger re-renders; we pick up updates on the parent's ~25x/turn
   // re-render cadence, same as the old ApiMetricsLine did.
-  let ttftText: string | null = null;
+  let _ttftText: string | null = null;
   if ('external' === 'ant' && apiMetricsRef?.current && apiMetricsRef.current.length > 0) {
-    ttftText = computeTtftText(apiMetricsRef.current);
+    _ttftText = computeTtftText(apiMetricsRef.current);
   }
 
   // When leader is idle but teammates are running (and we're viewing the leader),
@@ -425,7 +425,7 @@ function BriefSpinner(t0) {
   let t2;
   if ($[0] !== mode) {
     t1 = () => {
-      const operationId = 'spinner-' + mode;
+      const operationId = `spinner-${mode}`;
       activityManager.startCLIActivity(operationId);
       return () => {
         activityManager.endCLIActivity(operationId);

@@ -12,9 +12,9 @@
  * Reference: tests/test_vcr_fixtures.py, strategic-testing/SKILL.md
  */
 
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { basename, join } from 'node:path';
 import type { Command } from 'commander';
-import { existsSync, readdirSync, readFileSync } from 'fs';
-import { basename, join } from 'path';
 import { logEvent } from '../services/analytics/index.js';
 
 // Default VCR fixture directory

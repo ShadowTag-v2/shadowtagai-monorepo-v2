@@ -593,7 +593,7 @@ export class WebSocketTransport implements Transport {
     });
 
     for (const message of messagesToReplay) {
-      const line = jsonStringify(message) + '\n';
+      const line = `${jsonStringify(message)}\n`;
       const success = this.sendLine(line);
       if (!success) {
         this.handleConnectionError();
@@ -636,7 +636,7 @@ export class WebSocketTransport implements Transport {
       this.lastSentId = message.uuid;
     }
 
-    const line = jsonStringify(message) + '\n';
+    const line = `${jsonStringify(message)}\n`;
 
     if (this.state !== 'connected') {
       // Message buffered for replay when connected (if it has a UUID)

@@ -100,7 +100,7 @@ function parseExtendedColor(
   const next = params[idx + 1];
   if (!next) return null;
   if (next.value === 5 && params[idx + 2]?.value !== null && params[idx + 2]?.value !== undefined) {
-    return { index: params[idx + 2]!.value! };
+    return { index: params[idx + 2]?.value! };
   }
   if (next.value === 2) {
     const r = params[idx + 2]?.value;

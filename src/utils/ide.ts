@@ -1,11 +1,11 @@
+import { createConnection } from 'node:net';
+import * as os from 'node:os';
+import { basename, join, sep as pathSeparator, resolve } from 'node:path';
 import type { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import axios from 'axios';
 import { execa } from 'execa';
 import capitalize from 'lodash-es/capitalize.js';
 import memoize from 'lodash-es/memoize.js';
-import { createConnection } from 'net';
-import * as os from 'os';
-import { basename, join, sep as pathSeparator, resolve } from 'path';
 import { logEvent } from 'src/services/analytics/index.js';
 import { getIsScrollDraining, getOriginalCwd } from '../bootstrap/state.js';
 import { callIdeRpc } from '../services/mcp/client.js';
@@ -367,7 +367,7 @@ async function readIdeLockfile(path: string): Promise<IdeLockfileInfo | null> {
 
     return {
       workspaceFolders,
-      port: parseInt(port),
+      port: parseInt(port, 10),
       pid,
       ideName,
       useWebSocket,
@@ -645,7 +645,7 @@ export async function detectIDEs(includeInvalid: boolean): Promise<DetectedIDEIn
   try {
     // Get the CLAUDE_CODE_SSE_PORT if set
     const ssePort = process.env.CLAUDE_CODE_SSE_PORT;
-    const envPort = ssePort ? parseInt(ssePort) : null;
+    const envPort = ssePort ? parseInt(ssePort, 10) : null;
 
     // Get the current working directory, normalized to NFC for consistent
     // comparison. macOS returns NFD paths (decomposed Unicode), while IDEs
@@ -931,9 +931,7 @@ function getVSCodeIDECommandByParentProcess(): string | null {
             // Extract the path from the beginning to the end of the .app name
             const folderPathEnd = appIndex + appName.length;
             // These are all known VSCode variants with the same structure
-            return (
-              command.substring(0, folderPathEnd) + '/Contents/Resources/app/bin/' + executableName
-            );
+            return `${command.substring(0, folderPathEnd)}/Contents/Resources/app/bin/${executableName}`;
           }
         }
       }
@@ -947,7 +945,7 @@ function getVSCodeIDECommandByParentProcess(): string | null {
       if (!ppidStr) {
         break;
       }
-      pid = parseInt(ppidStr.trim());
+      pid = parseInt(ppidStr.trim(), 10);
     }
 
     return null;
@@ -978,11 +976,11 @@ async function getVSCodeIDECommand(ideType: IdeType): Promise<string | null> {
   const ext = getPlatform() === 'windows' ? '.cmd' : '';
   switch (ideType) {
     case 'vscode':
-      return 'code' + ext;
+      return `code${ext}`;
     case 'cursor':
-      return 'cursor' + ext;
+      return `cursor${ext}`;
     case 'windsurf':
-      return 'windsurf' + ext;
+      return `windsurf${ext}`;
     default:
       break;
   }
@@ -1328,7 +1326,7 @@ async function installFromArtifactory(command: string): Promise<string> {
       const match = line.match(
         /\/\/artifactory\.infra\.ant\.dev\/artifactory\/api\/npm\/npm-all\/:_authToken=(.+)/,
       );
-      if (match && match[1]) {
+      if (match?.[1]) {
         authToken = match[1].trim();
         break;
       }

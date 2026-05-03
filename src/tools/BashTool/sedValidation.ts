@@ -16,7 +16,7 @@ function validateFlagsAgainstAllowlist(flags: string[], allowedFlags: string[]):
     if (flag.startsWith('-') && !flag.startsWith('--') && flag.length > 2) {
       // Check each character in combined flag
       for (let i = 1; i < flag.length; i++) {
-        const singleFlag = '-' + flag[i];
+        const singleFlag = `-${flag[i]}`;
         if (!allowedFlags.includes(singleFlag)) {
           return false;
         }
@@ -180,7 +180,7 @@ function isSubstitutionCommand(
     return false;
   }
 
-  const expr = expressions[0]!.trim();
+  const expr = expressions[0]?.trim();
 
   // STRICT ALLOWLIST: Must be exactly a substitution command starting with 's'
   // This rejects standalone commands like 'e', 'w file', etc.

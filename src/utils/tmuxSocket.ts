@@ -23,7 +23,7 @@
  * user's TMUX in all child processes spawned by Shell.ts.
  */
 
-import { posix } from 'path';
+import { posix } from 'node:path';
 import { registerCleanup } from './cleanupRegistry.js';
 import { logForDebugging } from './debug.js';
 import { toError } from './errors.js';
@@ -338,7 +338,7 @@ async function doInitialize(): Promise<void> {
     const [path, pidStr] = infoResult.stdout.trim().split(',');
     if (path && pidStr) {
       const pid = parseInt(pidStr, 10);
-      if (!isNaN(pid)) {
+      if (!Number.isNaN(pid)) {
         setClaudeSocketInfo(path, pid);
         return;
       }
@@ -367,7 +367,7 @@ async function doInitialize(): Promise<void> {
 
   if (pidResult.code === 0) {
     const pid = parseInt(pidResult.stdout.trim(), 10);
-    if (!isNaN(pid)) {
+    if (!Number.isNaN(pid)) {
       logForDebugging(`[Socket] Using fallback socket path: ${fallbackPath} (server PID: ${pid})`);
       setClaudeSocketInfo(fallbackPath, pid);
       return;

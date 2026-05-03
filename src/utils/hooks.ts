@@ -3,13 +3,13 @@
  * Hooks are user-defined shell commands that can be executed at various points
  * in Claude Code's lifecycle.
  */
-import { basename } from 'path';
-import { spawn, type ChildProcessWithoutNullStreams } from 'child_process';
+import { basename } from 'node:path';
+import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { pathExists } from './file.js';
 import { wrapSpawn } from './ShellCommand.js';
 import { TaskOutput } from './task/TaskOutput.js';
 import { getCwd } from './cwd.js';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { formatShellPrefixCommand } from './bash/shellPrefix.js';
 import { getHookEnvFilePath, invalidateSessionEnvCache } from './sessionEnvironment.js';
 import { subprocessEnv } from './subprocessEnv.js';
@@ -446,7 +446,7 @@ function parseHttpHookOutput(body: string): {
   }
 
   if (!trimmed.startsWith('{')) {
-    const validationError = `HTTP hook must return JSON, but got non-JSON response body: ${trimmed.length > 200 ? trimmed.slice(0, 200) + '\u2026' : trimmed}`;
+    const validationError = `HTTP hook must return JSON, but got non-JSON response body: ${trimmed.length > 200 ? `${trimmed.slice(0, 200)}\u2026` : trimmed}`;
     logForDebugging(validationError);
     return { validationError };
   }
@@ -958,7 +958,7 @@ async function execCommandHook(
     // bash `read -r line` returns exit 1 (EOF before delimiter) — the
     // variable IS populated but `if read -r line; then ...` skips the
     // branch. See gh-30509 / CC-161.
-    child.stdin.write(jsonInput + '\n', 'utf8');
+    child.stdin.write(`${jsonInput}\n`, 'utf8');
     child.stdin.end();
     stdinWritten = true;
 
@@ -1041,7 +1041,7 @@ async function execCommandHook(
             promptChain = promptChain.then(async () => {
               try {
                 const response = await reqPrompt(promptReq);
-                child.stdin.write(jsonStringify(response) + '\n', 'utf8');
+                child.stdin.write(`${jsonStringify(response)}\n`, 'utf8');
               } catch (err) {
                 logForDebugging(`Hooks: Prompt request handling failed: ${err}`);
                 // User cancelled or prompt failed — close stdin so the hook
@@ -1148,7 +1148,7 @@ async function execCommandHook(
           }
         });
         // Explicitly specify UTF-8 encoding to ensure proper handling of Unicode characters
-        child.stdin.write(jsonInput + '\n', 'utf8');
+        child.stdin.write(`${jsonInput}\n`, 'utf8');
         // When requestPrompt is provided, keep stdin open for prompt responses
         if (!requestPrompt) {
           child.stdin.end();
@@ -1397,9 +1397,9 @@ function getPluginHookCounts(hooks: MatchedHook[]): Record<string, number> | und
   }
   const counts: Record<string, number> = {};
   for (const h of pluginHooks) {
-    const atIndex = h.pluginId!.lastIndexOf('@');
+    const atIndex = h.pluginId?.lastIndexOf('@');
     const isOfficial =
-      atIndex > 0 && ALLOWED_OFFICIAL_MARKETPLACE_NAMES.has(h.pluginId!.slice(atIndex + 1));
+      atIndex > 0 && ALLOWED_OFFICIAL_MARKETPLACE_NAMES.has(h.pluginId?.slice(atIndex + 1));
     const key = isOfficial ? h.pluginId! : 'third-party';
     counts[key] = (counts[key] || 0) + 1;
   }
@@ -4118,9 +4118,9 @@ export type InstructionsMemoryType = 'User' | 'Project' | 'Local' | 'Managed';
  * derived hooks (structured output enforcement etc.) are internal and not checked.
  */
 export function hasInstructionsLoadedHook(): boolean {
-  const snapshotHooks = getHooksConfigFromSnapshot()?.['InstructionsLoaded'];
+  const snapshotHooks = getHooksConfigFromSnapshot()?.InstructionsLoaded;
   if (snapshotHooks && snapshotHooks.length > 0) return true;
-  const registeredHooks = getRegisteredHooks()?.['InstructionsLoaded'];
+  const registeredHooks = getRegisteredHooks()?.InstructionsLoaded;
   if (registeredHooks && registeredHooks.length > 0) return true;
   return false;
 }
@@ -4699,9 +4699,9 @@ async function executeHookCallback({
  * blocking the git-worktree fallback.
  */
 export function hasWorktreeCreateHook(): boolean {
-  const snapshotHooks = getHooksConfigFromSnapshot()?.['WorktreeCreate'];
+  const snapshotHooks = getHooksConfigFromSnapshot()?.WorktreeCreate;
   if (snapshotHooks && snapshotHooks.length > 0) return true;
-  const registeredHooks = getRegisteredHooks()?.['WorktreeCreate'];
+  const registeredHooks = getRegisteredHooks()?.WorktreeCreate;
   if (!registeredHooks || registeredHooks.length === 0) return false;
   // Mirror getHooksConfig(): skip plugin hooks in managed-only mode
   const managedOnly = shouldAllowManagedHooksOnly();
@@ -4750,8 +4750,8 @@ export async function executeWorktreeCreateHook(name: string): Promise<{ worktre
  * hooks (plugin hooks + SDK callback hooks via registerHookCallbacks).
  */
 export async function executeWorktreeRemoveHook(worktreePath: string): Promise<boolean> {
-  const snapshotHooks = getHooksConfigFromSnapshot()?.['WorktreeRemove'];
-  const registeredHooks = getRegisteredHooks()?.['WorktreeRemove'];
+  const snapshotHooks = getHooksConfigFromSnapshot()?.WorktreeRemove;
+  const registeredHooks = getRegisteredHooks()?.WorktreeRemove;
   const hasSnapshotHooks = snapshotHooks && snapshotHooks.length > 0;
   const hasRegisteredHooks = registeredHooks && registeredHooks.length > 0;
   if (!hasSnapshotHooks && !hasRegisteredHooks) {

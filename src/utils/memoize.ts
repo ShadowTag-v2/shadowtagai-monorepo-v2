@@ -91,7 +91,7 @@ export function memoizeWithTTL<Args extends unknown[], Result>(
       return cached.value;
     }
 
-    return cache.get(key)!.value;
+    return cache.get(key)?.value;
   };
 
   // Add cache clear method
@@ -191,7 +191,7 @@ export function memoizeWithTTLAsync<Args extends unknown[], Result>(
       return cached.value;
     }
 
-    return cache.get(key)!.value;
+    return cache.get(key)?.value;
   };
 
   // Add cache clear method. Also clear inFlight: clear() during a cold-miss

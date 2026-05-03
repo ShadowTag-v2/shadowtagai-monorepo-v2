@@ -1,6 +1,6 @@
 import { feature } from 'bun:bundle';
-import { open } from 'fs/promises';
-import { basename, dirname, join, sep } from 'path';
+import { open } from 'node:fs/promises';
+import { basename, dirname, join, sep } from 'node:path';
 import type { ModelUsage } from 'src/entrypoints/agentSdkTypes.js';
 import type { Entry, TranscriptMessage } from '../types/logs.js';
 import { logForDebugging } from './debug.js';
@@ -236,7 +236,7 @@ async function processSessionFiles(
       // have entries missing the timestamp field (e.g. partial/remote writes).
       // new Date(undefined) produces an Invalid Date, and toDateString() would
       // throw RangeError: Invalid Date on .toISOString().
-      if (isNaN(firstTimestamp.getTime()) || isNaN(lastTimestamp.getTime())) {
+      if (Number.isNaN(firstTimestamp.getTime()) || Number.isNaN(lastTimestamp.getTime())) {
         logForDebugging(`Skipping session with invalid timestamp: ${sessionFile}`);
         continue;
       }
@@ -467,16 +467,16 @@ function cacheToStats(
     for (const [model, usage] of Object.entries(todayStats.modelUsage)) {
       if (modelUsage[model]) {
         modelUsage[model] = {
-          inputTokens: modelUsage[model]!.inputTokens + usage.inputTokens,
-          outputTokens: modelUsage[model]!.outputTokens + usage.outputTokens,
+          inputTokens: modelUsage[model]?.inputTokens + usage.inputTokens,
+          outputTokens: modelUsage[model]?.outputTokens + usage.outputTokens,
           cacheReadInputTokens:
-            modelUsage[model]!.cacheReadInputTokens + usage.cacheReadInputTokens,
+            modelUsage[model]?.cacheReadInputTokens + usage.cacheReadInputTokens,
           cacheCreationInputTokens:
-            modelUsage[model]!.cacheCreationInputTokens + usage.cacheCreationInputTokens,
-          webSearchRequests: modelUsage[model]!.webSearchRequests + usage.webSearchRequests,
-          costUSD: modelUsage[model]!.costUSD + usage.costUSD,
-          contextWindow: Math.max(modelUsage[model]!.contextWindow, usage.contextWindow),
-          maxOutputTokens: Math.max(modelUsage[model]!.maxOutputTokens, usage.maxOutputTokens),
+            modelUsage[model]?.cacheCreationInputTokens + usage.cacheCreationInputTokens,
+          webSearchRequests: modelUsage[model]?.webSearchRequests + usage.webSearchRequests,
+          costUSD: modelUsage[model]?.costUSD + usage.costUSD,
+          contextWindow: Math.max(modelUsage[model]?.contextWindow, usage.contextWindow),
+          maxOutputTokens: Math.max(modelUsage[model]?.maxOutputTokens, usage.maxOutputTokens),
         };
       } else {
         modelUsage[model] = { ...usage };
@@ -535,7 +535,7 @@ function cacheToStats(
   }
   // If no today sessions, derive lastSessionDate from dailyActivity
   if (!lastSessionDate && dailyActivityArray.length > 0) {
-    lastSessionDate = dailyActivityArray.at(-1)!.date;
+    lastSessionDate = dailyActivityArray.at(-1)?.date;
   }
 
   const peakActivityDay =
@@ -747,7 +747,7 @@ function processedStatsToClaudeCodeStats(stats: ProcessedStats): ClaudeCodeStats
     hourEntries.length > 0
       ? parseInt(
           hourEntries.reduce((max, [hour, count]) =>
-            count > parseInt(max[1].toString()) ? [hour, count] : max,
+            count > parseInt(max[1].toString(), 10) ? [hour, count] : max,
           )[0],
           10,
         )

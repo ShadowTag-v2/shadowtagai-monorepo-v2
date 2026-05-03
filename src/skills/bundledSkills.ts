@@ -1,7 +1,7 @@
+import { constants as fsConstants } from 'node:fs';
+import { mkdir, open } from 'node:fs/promises';
+import { dirname, isAbsolute, join, normalize, sep as pathSep } from 'node:path';
 import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import { constants as fsConstants } from 'fs';
-import { mkdir, open } from 'fs/promises';
-import { dirname, isAbsolute, join, normalize, sep as pathSep } from 'path';
 import type { ToolUseContext } from '../Tool.js';
 import type { Command } from '../types/command.js';
 import { logForDebugging } from '../utils/debug.js';
@@ -198,8 +198,8 @@ function resolveSkillFilePath(baseDir: string, relPath: string): string {
 
 function prependBaseDir(blocks: ContentBlockParam[], baseDir: string): ContentBlockParam[] {
   const prefix = `Base directory for this skill: ${baseDir}\n\n`;
-  if (blocks.length > 0 && blocks[0]!.type === 'text') {
-    return [{ type: 'text', text: prefix + blocks[0]!.text }, ...blocks.slice(1)];
+  if (blocks.length > 0 && blocks[0]?.type === 'text') {
+    return [{ type: 'text', text: prefix + blocks[0]?.text }, ...blocks.slice(1)];
   }
   return [{ type: 'text', text: prefix }, ...blocks];
 }

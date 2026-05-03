@@ -1365,10 +1365,7 @@ export function isCommandSafeViaFlagParsing(command: string): boolean {
   ) {
     return false;
   }
-  if (
-    commandConfig.additionalCommandIsDangerousCallback &&
-    commandConfig.additionalCommandIsDangerousCallback(command, tokens.slice(commandTokens))
-  ) {
+  if (commandConfig.additionalCommandIsDangerousCallback?.(command, tokens.slice(commandTokens))) {
     return false;
   }
 

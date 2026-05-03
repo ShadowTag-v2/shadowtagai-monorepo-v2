@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { useTerminalSize } from '../../../hooks/useTerminalSize.js';
 import { useTheme } from '../../../ink.js';
@@ -24,7 +23,7 @@ export function UserToolRejectMessage(t0) {
   const { input, progressMessagesForMessage, style, tool, tools, verbose, isTranscriptMode } = t0;
   const { columns } = useTerminalSize();
   const [theme] = useTheme();
-  if (!tool || !tool.renderToolUseRejectedMessage) {
+  if (!tool?.renderToolUseRejectedMessage) {
     let t1;
     if ($[0] === Symbol.for('react.memo_cache_sentinel')) {
       t1 = <FallbackToolUseRejectedMessage />;
