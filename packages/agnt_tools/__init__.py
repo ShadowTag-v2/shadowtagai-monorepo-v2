@@ -1,12 +1,14 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-"""AGNT Tools — Runtime configuration, reasoning, and planning instruments.
+"""AGNT Tools — Runtime configuration, reasoning, planning, and web instruments.
 
 Ported from Claude Code's hidden ant-gated tools:
 - ConfigTool → config_tool.py (runtime flag modification)
 - ThinkTool → think_tool.py (scratchpad reasoning, +54% tau-bench accuracy)
 - ArchitectTool → architect_tool.py (read-only architectural analysis)
 - PlanModeTools → plan_mode_tools.py (enter/exit plan mode transitions)
+- WebSearchTool → web_search_tool.py (epistemic airgap search routing)
+- WebFetchTool → web_fetch_tool.py (SSRF-protected URL content fetch)
 - Speculation Engine → MIGRATED to packages/speculation_engine/ (v14.0)
 
 Migration guide:
@@ -21,6 +23,8 @@ from packages.agnt_tools.plan_mode_tools import (
     create_exit_plan_mode_tool,
 )
 from packages.agnt_tools.think_tool import create_think_tool
+from packages.agnt_tools.web_fetch_tool import create_web_fetch_tool
+from packages.agnt_tools.web_search_tool import create_web_search_tool
 
 __all__ = [
     "ConfigTool",
@@ -28,4 +32,6 @@ __all__ = [
     "create_enter_plan_mode_tool",
     "create_exit_plan_mode_tool",
     "create_think_tool",
+    "create_web_fetch_tool",
+    "create_web_search_tool",
 ]
