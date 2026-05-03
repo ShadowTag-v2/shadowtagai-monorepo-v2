@@ -39,7 +39,7 @@ class _TTLEntry:
         self.refreshing = False
 
 
-def memoize_with_ttl(
+def memoize_with_ttl[R](
     fn: Callable[..., R],
     cache_lifetime_s: float = 300.0,
 ) -> Callable[..., R]:
@@ -110,7 +110,7 @@ def memoize_with_ttl(
 # ── LRU memoization ───────────────────────────────────────────────────────────
 
 
-def memoize_with_lru(
+def memoize_with_lru[R](
     fn: Callable[..., R],
     *,
     maxsize: int = 100,

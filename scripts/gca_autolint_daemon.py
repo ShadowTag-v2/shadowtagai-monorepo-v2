@@ -479,9 +479,23 @@ def main() -> None:
     run_command(["git", "config", "user.name", "Omni-Autolint Bot[bot]"])
     run_command(["git", "config", "user.email", GITHUB_APP_NOREPLY])
 
+    # Configure commit signing with the Agent's DID SSH key
+    did_key_path = Path("keys/agent_did_ed25519")
+    commit_cmd = ["git", "commit", "-m", "chore(ast): autonomous AST optimization via GCA"]
+    
+    if did_key_path.exists():
+        did_key_path.chmod(0o600)
+        run_command(["git", "config", "commit.gpgsign", "true"])
+        run_command(["git", "config", "gpg.format", "ssh"])
+        run_command(["git", "config", "user.signingkey", str(did_key_path.absolute())])
+        commit_cmd.insert(2, "-S")
+    else:
+        print("[!] DID SSH key not found. Commits will not be signed.")
+        run_command(["git", "config", "commit.gpgsign", "false"])
+
     # Stage and commit
     run_command(["git", "add", "."])
-    run_command(["git", "commit", "-m", "chore(ast): autonomous AST optimization via GCA"])
+    run_command(commit_cmd)
 
     # Secure push via GIT_ASKPASS (token never in URL args)
     print("[*] Pushing securely via GIT_ASKPASS...")

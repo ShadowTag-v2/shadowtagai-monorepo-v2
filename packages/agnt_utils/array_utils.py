@@ -13,7 +13,7 @@ T = TypeVar("T")
 K = TypeVar("K", bound=Hashable)
 
 
-def intersperse(items: list[T], separator_fn: Callable[[int], T]) -> list[T]:
+def intersperse[T](items: list[T], separator_fn: Callable[[int], T]) -> list[T]:
     """Insert separators between items using a factory function.
 
     >>> intersperse([1, 2, 3], lambda i: 0)
@@ -27,7 +27,7 @@ def intersperse(items: list[T], separator_fn: Callable[[int], T]) -> list[T]:
     return result
 
 
-def count(items: Iterable[T], predicate: Callable[[T], object]) -> int:
+def count[T](items: Iterable[T], predicate: Callable[[T], object]) -> int:
     """Count items matching a predicate.
 
     Optimized for speed — single pass with no intermediate list.
@@ -39,7 +39,7 @@ def count(items: Iterable[T], predicate: Callable[[T], object]) -> int:
     return n
 
 
-def uniq(items: Iterable[T]) -> list[T]:
+def uniq[T](items: Iterable[T]) -> list[T]:
     """Return unique items preserving first-seen order."""
     seen: set[int] = set()
     result: list[T] = []
@@ -51,7 +51,7 @@ def uniq(items: Iterable[T]) -> list[T]:
     return result
 
 
-def group_by(
+def group_by[T, K: Hashable](
     items: Iterable[T],
     key_selector: Callable[[T, int], K],
 ) -> dict[K, list[T]]:

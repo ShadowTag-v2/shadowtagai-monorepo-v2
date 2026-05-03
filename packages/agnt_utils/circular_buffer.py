@@ -8,12 +8,12 @@ Used for rolling windows of log entries, metrics samples, etc.
 
 from __future__ import annotations
 
-from typing import Generic, TypeVar
+from typing import TypeVar
 
 T = TypeVar("T")
 
 
-class CircularBuffer(Generic[T]):
+class CircularBuffer[T]:
     """A fixed-size circular buffer that evicts oldest items on overflow.
 
     >>> buf = CircularBuffer(3)
