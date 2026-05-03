@@ -71,6 +71,8 @@ OOB_REPORT_CHECK_INTERVAL = 600  # 10 minutes
 PROMPT_VALIDATION_INTERVAL = 3600  # 1 hour — periodic prompt assembly check
 PROACTIVE_SUGGESTION_INTERVAL = 900  # 15 min — speculation prefetch cycle
 GCA_BLOAT_CHECK_INTERVAL = 600  # 10 min — IDE database bloat watchdog
+EGRESS_HEALTH_INTERVAL = 600  # 10 min — EgressProxy circuit breaker audit
+VCR_CASSETTE_CHECK_INTERVAL = 1800  # 30 min — stale cassette rotation audit
 
 # Disk-Skill Dream resource limits
 DISK_SKILL_AST_TIMEOUT = 900  # 15-minute cap for deep AST scans
@@ -1327,7 +1329,7 @@ def check_gca_bloat() -> dict[str, Any]:
     }
 
 
-def write_heartbeat(status: dict) -> None:
+def write_heartbeat(status: dict, egress_proxy: object | None = None) -> None:
     """Write heartbeat file for monitoring.
 
     Includes a treeify diagnostic snapshot for human-readable
@@ -1369,6 +1371,16 @@ def write_heartbeat(status: dict) -> None:
         except Exception:
             suggestion_status = {"state": "unavailable"}
 
+        # Egress proxy health for heartbeat tree
+        egress_status: dict[str, Any] = {"state": "not_wired"}
+        if egress_proxy is not None:
+            try:
+                egress_status = egress_proxy.health_report()  # type: ignore[union-attr]
+                if not egress_status:
+                    egress_status = {"state": "healthy", "hosts": 0}
+            except Exception:
+                egress_status = {"state": "error"}
+
         tree_data = {
             "KAIROS Heartbeat": {
                 "PID": str(os.getpid()),
@@ -1376,17 +1388,39 @@ def write_heartbeat(status: dict) -> None:
                 **{k: v for k, v in status.items() if k != "cycle"},
                 "suggestion_pipeline": suggestion_status,
                 "circuit_breakers": cb_health.get("summary", cb_health),
+                "egress_proxy": egress_status,
             }
         }
         tree_text = treeify_mod.treeify(tree_data, show_values=True, max_depth=5)
     except Exception:
         tree_text = "(treeify unavailable)"
 
+    # Egress health for top-level heartbeat JSON
+    egress_json: dict[str, Any] = {"state": "not_wired"}
+    if egress_proxy is not None:
+        try:
+            egress_json = egress_proxy.health_report()  # type: ignore[union-attr]
+        except Exception:
+            egress_json = {"state": "error"}
+
+    # VCR cassette health for heartbeat
+    vcr_json: dict[str, Any] = {"state": "not_wired"}
+    try:
+        from agnt_vcr.async_vcr import AsyncVCR
+
+        vcr_cassette_dir = str(REPO_ROOT / "packages" / "vcr" / "cassettes")
+        _vcr_hb = AsyncVCR(cassette_dir=vcr_cassette_dir, max_age_s=86400 * 7)
+        vcr_json = _vcr_hb.cassette_stats()
+    except Exception:
+        pass  # vcr_json remains {"state": "not_wired"}
+
     heartbeat = {
         "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),  # noqa: UP017
         "pid": os.getpid(),
         "status": status,
         "circuit_breakers": cb_health,
+        "egress_proxy": egress_json,
+        "vcr_cassettes": vcr_json,
         "tree_diagnostic": tree_text,
     }
     HEARTBEAT_FILE.write_text(json.dumps(heartbeat, indent=2, default=str))
@@ -1413,6 +1447,16 @@ def main_loop(once: bool = False, timeout: int | None = None) -> None:
     _validate_prompt_assembly()
     _estimate_context_budget()
 
+    # EgressProxy singleton — fail-closed outbound HTTP gateway
+    egress_proxy = None
+    try:
+        from agnt_upstreamproxy.proxy import EgressProxy
+
+        egress_proxy = EgressProxy()
+        logger.info("EgressProxy: ACTIVE (allowlist=%d patterns)", len(egress_proxy._allowlist.patterns))
+    except ImportError:
+        logger.warning("EgressProxy: unavailable (agnt_upstreamproxy not importable)")
+
     last_health = 0.0
     last_dream = 0.0
     last_disk_skill_dream = 0.0
@@ -1429,6 +1473,19 @@ def main_loop(once: bool = False, timeout: int | None = None) -> None:
     last_proactive_suggestion = 0.0
     last_research_sweep = 0.0
     last_gca_bloat_check = 0.0
+    last_egress_health = 0.0
+    last_vcr_check = 0.0
+
+    # AsyncVCR cassette monitor — stale expiry rotation
+    vcr_monitor = None
+    try:
+        from agnt_vcr.async_vcr import AsyncVCR
+
+        vcr_cassette_dir = str(REPO_ROOT / "packages" / "vcr" / "cassettes")
+        vcr_monitor = AsyncVCR(cassette_dir=vcr_cassette_dir, max_age_s=86400 * 7)  # 7-day expiry
+        logger.info("VCR monitor: ACTIVE (cassette_dir=%s, max_age=7d)", vcr_cassette_dir)
+    except ImportError:
+        logger.warning("VCR monitor: unavailable (agnt_vcr not importable)")
 
     deadline = (time.time() + timeout) if timeout else None
     cycle = 0
@@ -1544,7 +1601,38 @@ def main_loop(once: bool = False, timeout: int | None = None) -> None:
                 status["gca_bloat_detail"] = f"pruned {bloat_result.get('before_mb', '?')}MB, freed {bloat_result.get('freed_kb', '?')}KB"
             last_gca_bloat_check = now
 
-        write_heartbeat(status)
+        # VCR cassette expiry audit (every 30 min)
+        if vcr_monitor and now - last_vcr_check >= _jittered(VCR_CASSETTE_CHECK_INTERVAL):
+            try:
+                vcr_stats = vcr_monitor.cassette_stats()
+                stale = vcr_stats.get("stale_cassettes", 0)
+                if stale > 0:
+                    rotated = vcr_monitor.rotate_stale()
+                    logger.info("VCR: rotated %d stale cassette(s) (total=%d)", rotated, vcr_stats["total_cassettes"])
+                    status["vcr_rotation"] = f"rotated_{rotated}"
+                else:
+                    status["vcr_cassettes"] = f"{vcr_stats['total_cassettes']}_fresh"
+            except Exception as vcr_err:
+                logger.debug("VCR cassette check failed: %s", vcr_err)
+                status["vcr_cassettes"] = "error"
+            last_vcr_check = now
+
+        # EgressProxy health audit (every 10 min)
+        if egress_proxy and now - last_egress_health >= _jittered(EGRESS_HEALTH_INTERVAL):
+            try:
+                egress_report = egress_proxy.health_report()
+                open_hosts = [h for h, s in egress_report.items() if s.get("state") == "OPEN"]
+                if open_hosts:
+                    logger.warning("EgressProxy: %d host(s) OPEN: %s", len(open_hosts), open_hosts)
+                    status["egress"] = f"{len(open_hosts)}_hosts_open"
+                else:
+                    status["egress"] = "all_closed"
+            except Exception as eg_err:
+                logger.debug("EgressProxy health check failed: %s", eg_err)
+                status["egress"] = "error"
+            last_egress_health = now
+
+        write_heartbeat(status, egress_proxy=egress_proxy)
 
         if once:
             logger.info("Single cycle complete, exiting")
