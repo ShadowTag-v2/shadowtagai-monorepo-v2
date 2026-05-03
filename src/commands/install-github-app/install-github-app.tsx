@@ -28,6 +28,7 @@ import { SuccessStep } from './SuccessStep.js';
 import { setupGitHubActions } from './setupGitHubActions.js';
 import type { State, Warning, Workflow } from './types.js';
 import { WarningsStep } from './WarningsStep.js';
+
 const INITIAL_STATE: State = {
   step: 'check-gh',
   selectedRepoName: '',

@@ -1,4 +1,3 @@
-import { c as _c } from 'react/compiler-runtime';
 /**
  * ViewHookMode shows read-only details for a single configured hook.
  *
@@ -6,12 +5,14 @@ import { c as _c } from 'react/compiler-runtime';
  * confirmation screen and directs users to settings.json or Claude for edits.
  */
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Box, Text } from '../../ink.js';
 import {
   hookSourceDescriptionDisplayString,
   type IndividualHookConfig,
 } from '../../utils/hooks/hooksSettings.js';
 import { Dialog } from '../design-system/Dialog.js';
+
 type Props = {
   selectedHook: IndividualHookConfig;
   eventSupportsMatcher: boolean;

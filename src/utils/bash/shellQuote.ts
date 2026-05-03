@@ -236,7 +236,6 @@ export function hasShellQuoteSingleQuoteBug(command: string): boolean {
           return true;
         }
       }
-      continue;
     }
   }
 

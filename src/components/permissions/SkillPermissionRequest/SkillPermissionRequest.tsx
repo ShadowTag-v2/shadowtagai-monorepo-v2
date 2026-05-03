@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useCallback, useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { logError } from 'src/utils/log.js';
 import { getOriginalCwd } from '../../../bootstrap/state.js';
 import { Box, Text } from '../../../ink.js';
@@ -18,6 +18,7 @@ import {
 } from '../PermissionPrompt.js';
 import type { PermissionRequestProps } from '../PermissionRequest.js';
 import { PermissionRuleExplanation } from '../PermissionRuleExplanation.js';
+
 type SkillOptionValue = 'yes' | 'yes-exact' | 'yes-prefix' | 'no';
 export function SkillPermissionRequest(props) {
   const $ = _c(51);
@@ -200,7 +201,7 @@ export function SkillPermissionRequest(props) {
   let t10;
   if ($[24] !== onDone || $[25] !== onReject || $[26] !== skill || $[27] !== toolUseConfirm) {
     t10 = (value, feedback) => {
-      bb33: switch (value) {
+      switch (value) {
         case 'yes': {
           logUnaryEvent({
             completion_type: 'tool_use_single',
@@ -213,7 +214,7 @@ export function SkillPermissionRequest(props) {
           });
           toolUseConfirm.onAllow(toolUseConfirm.input, [], feedback);
           onDone();
-          break bb33;
+          break;
         }
         case 'yes-exact': {
           logUnaryEvent({
@@ -239,7 +240,7 @@ export function SkillPermissionRequest(props) {
             },
           ]);
           onDone();
-          break bb33;
+          break;
         }
         case 'yes-prefix': {
           logUnaryEvent({
@@ -267,7 +268,7 @@ export function SkillPermissionRequest(props) {
             },
           ]);
           onDone();
-          break bb33;
+          break;
         }
         case 'no': {
           logUnaryEvent({

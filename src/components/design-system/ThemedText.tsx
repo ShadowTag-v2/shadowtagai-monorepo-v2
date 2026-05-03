@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import type { ReactNode } from 'react';
 import React, { useContext } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import Text from '../../ink/components/Text.js';
 import type { Color, Styles } from '../../ink/styles.js';
 import { getTheme, type Theme } from '../../utils/theme.js';

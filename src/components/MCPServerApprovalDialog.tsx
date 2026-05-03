@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
@@ -8,6 +8,7 @@ import { getSettings_DEPRECATED, updateSettingsForSource } from '../utils/settin
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
 import { MCPServerDialogCopy } from './MCPServerDialogCopy.js';
+
 type Props = {
   serverName: string;
   onDone(): void;
@@ -21,7 +22,7 @@ export function MCPServerApprovalDialog(t0) {
       logEvent('tengu_mcp_dialog_choice', {
         choice: value as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
-      bb2: switch (value) {
+      switch (value) {
         case 'yes':
         case 'yes_all': {
           const currentSettings_0 = getSettings_DEPRECATED() || {};
@@ -37,7 +38,7 @@ export function MCPServerApprovalDialog(t0) {
             });
           }
           onDone();
-          break bb2;
+          break;
         }
         case 'no': {
           const currentSettings = getSettings_DEPRECATED() || {};

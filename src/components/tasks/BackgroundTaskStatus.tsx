@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
 import { stringWidth } from 'src/ink/stringWidth.js';
 import { useAppState, useSetAppState } from 'src/state/AppState.js';
@@ -19,6 +19,7 @@ import {
 import type { Theme } from '../../utils/theme.js';
 import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
 import { shouldHideTasksFooter } from './taskStatusUtils.js';
+
 type Props = {
   tasksSelected: boolean;
   isViewingTeammate?: boolean;

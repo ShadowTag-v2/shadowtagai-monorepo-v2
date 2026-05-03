@@ -244,7 +244,7 @@ const initSessionMemoryConfigIfNeeded = memoize((): void => {
 // Track if we've logged the gate check failure this session (to avoid spam)
 let hasLoggedGateFailure = false;
 
-const extractSessionMemory = sequential(async function (context: REPLHookContext): Promise<void> {
+const extractSessionMemory = sequential(async (context: REPLHookContext): Promise<void> => {
   const { messages, toolUseContext, querySource } = context;
 
   // Only run session memory on main REPL thread

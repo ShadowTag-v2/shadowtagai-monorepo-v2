@@ -54,11 +54,11 @@ export function installStreamJsonStdoutGuard(): void {
 
   originalWrite = process.stdout.write.bind(process.stdout) as typeof process.stdout.write;
 
-  process.stdout.write = function (
+  process.stdout.write = ((
     chunk: string | Uint8Array,
     encodingOrCb?: BufferEncoding | ((err?: Error) => void),
     cb?: (err?: Error) => void,
-  ): boolean {
+  ): boolean => {
     const text = typeof chunk === 'string' ? chunk : Buffer.from(chunk).toString('utf-8');
 
     buffer += text;
@@ -85,7 +85,7 @@ export function installStreamJsonStdoutGuard(): void {
       queueMicrotask(() => callback());
     }
     return wrote;
-  } as typeof process.stdout.write;
+  }) as typeof process.stdout.write;
 
   registerCleanup(async () => {
     // Flush any partial line left in the buffer at shutdown. If it's a JSON

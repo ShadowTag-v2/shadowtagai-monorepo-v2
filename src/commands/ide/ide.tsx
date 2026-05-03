@@ -1,7 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
 import chalk from 'chalk';
 import * as path from 'path';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { logEvent } from 'src/services/analytics/index.js';
 import type { CommandResultDisplay, LocalJSXCommandContext } from '../../commands.js';
 import { Select } from '../../components/CustomSelect/index.js';
@@ -29,6 +30,7 @@ import {
   toIDEDisplayName,
 } from '../../utils/ide.js';
 import { getCurrentWorktreeSession } from '../../utils/worktree.js';
+
 type IDEScreenProps = {
   availableIDEs: DetectedIDEInfo[];
   unavailableIDEs: DetectedIDEInfo[];

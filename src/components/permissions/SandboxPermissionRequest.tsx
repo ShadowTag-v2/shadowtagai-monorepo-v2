@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Box, Text } from 'src/ink.js';
 import {
   type NetworkHostPattern,
@@ -22,20 +22,20 @@ export function SandboxPermissionRequest(t0) {
   let t2;
   if ($[0] !== onUserResponse) {
     t2 = function onSelect(value) {
-      bb4: switch (value) {
+      switch (value) {
         case 'yes': {
           onUserResponse({
             allow: true,
             persistToSettings: false,
           });
-          break bb4;
+          break;
         }
         case 'yes-dont-ask-again': {
           onUserResponse({
             allow: true,
             persistToSettings: true,
           });
-          break bb4;
+          break;
         }
         case 'no': {
           onUserResponse({

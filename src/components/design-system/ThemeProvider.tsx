@@ -1,10 +1,12 @@
-import { c as _c } from 'react/compiler-runtime';
 import { feature } from 'bun:bundle';
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import type React from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import useStdin from '../../ink/hooks/use-stdin.js';
 import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
 import { getSystemThemeName, type SystemTheme } from '../../utils/systemTheme.js';
 import type { ThemeName, ThemeSetting } from '../../utils/theme.js';
+
 type ThemeContextValue = {
   /** The saved user preference. May be 'auto'. */
   themeSetting: ThemeSetting;

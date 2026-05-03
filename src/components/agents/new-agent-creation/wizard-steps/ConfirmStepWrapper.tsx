@@ -13,6 +13,7 @@ import { useWizard } from '../../../wizard/index.js';
 import { getNewAgentFilePath, saveAgentToFile } from '../../agentFileUtils.js';
 import type { AgentWizardData } from '../types.js';
 import { ConfirmStep } from './ConfirmStep.js';
+
 type Props = {
   tools: Tools;
   existingAgents: AgentDefinition[];

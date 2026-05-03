@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { handlePlanModeTransition } from '../../../bootstrap/state.js';
 import { Box, Text } from '../../../ink.js';
 import {

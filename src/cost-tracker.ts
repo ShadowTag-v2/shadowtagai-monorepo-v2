@@ -40,26 +40,27 @@ import { formatDuration, formatNumber } from './utils/format.js';
 import type { FpsMetrics } from './utils/fpsTracker.js';
 import { getCanonicalName } from './utils/model/model.js';
 import { calculateUSDCost } from './utils/modelCost.js';
+
 export {
-  getTotalCostUSD as getTotalCost,
-  getTotalDuration,
+  addToTotalLinesChanged,
+  formatCost,
+  getModelUsage,
   getTotalAPIDuration,
   getTotalAPIDurationWithoutRetries,
-  addToTotalLinesChanged,
+  getTotalCacheCreationInputTokens,
+  getTotalCacheReadInputTokens,
+  getTotalCostUSD as getTotalCost,
+  getTotalDuration,
+  getTotalInputTokens,
   getTotalLinesAdded,
   getTotalLinesRemoved,
-  getTotalInputTokens,
   getTotalOutputTokens,
-  getTotalCacheReadInputTokens,
-  getTotalCacheCreationInputTokens,
   getTotalWebSearchRequests,
-  formatCost,
-  hasUnknownModelCost,
-  resetStateForTests,
-  resetCostState,
-  setHasUnknownModelCost,
-  getModelUsage,
   getUsageForModel,
+  hasUnknownModelCost,
+  resetCostState,
+  resetStateForTests,
+  setHasUnknownModelCost,
 };
 
 type StoredCostState = {

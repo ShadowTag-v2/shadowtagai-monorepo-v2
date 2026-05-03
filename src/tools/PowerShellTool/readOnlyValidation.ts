@@ -1247,47 +1247,45 @@ export function isAllowlistedCommand(cmd: ParsedCommandElement, originalCommand:
   if (!cmd.elementTypes) {
     return false;
   }
-  {
-    for (let i = 1; i < cmd.elementTypes.length; i++) {
-      const t = cmd.elementTypes[i];
-      if (t !== 'StringConstant' && t !== 'Parameter') {
-        // ArrayLiteralAst (`Get-Process Name, Id`) maps to 'Other'. The
-        // leak vectors enumerated above all have a metachar in their extent
-        // text: Hashtable `@{`, Convert `[`, BinaryExpr-with-var `$`,
-        // ParenExpr `(`. A bare comma-list of identifiers has none.
-        if (!/[$(@{[]/.test(cmd.args[i - 1] ?? '')) {
-          continue;
-        }
-        return false;
+  for (let i = 1; i < cmd.elementTypes.length; i++) {
+    const t = cmd.elementTypes[i];
+    if (t !== 'StringConstant' && t !== 'Parameter') {
+      // ArrayLiteralAst (`Get-Process Name, Id`) maps to 'Other'. The
+      // leak vectors enumerated above all have a metachar in their extent
+      // text: Hashtable `@{`, Convert `[`, BinaryExpr-with-var `$`,
+      // ParenExpr `(`. A bare comma-list of identifiers has none.
+      if (!/[$(@{[]/.test(cmd.args[i - 1] ?? '')) {
+        continue;
       }
-      // Colon-bound parameter (`-Flag:$env:SECRET`) is a SINGLE
-      // CommandParameterAst — the VariableExpressionAst is its .Argument
-      // child, not a separate CommandElement, so elementTypes says 'Parameter'
-      // and the whitelist above passes.
-      //
-      // Query the parser's children[] tree instead of doing
-      // string-archaeology on the arg text. children[i-1] holds the
-      // .Argument child's mapped type (aligned with args[i-1]).
-      // Tree query catches MORE than the string check — e.g.
-      // `-InputObject:@{k=v}` (HashtableAst → 'Other', no `$` in text),
-      // `-Name:('payload' > file)` (ParenExpressionAst with redirection).
-      // Fallback to the extended metachar check when children is undefined
-      // (backward compat / test helpers that don't set it).
-      if (t === 'Parameter') {
-        const paramChildren = cmd.children?.[i - 1];
-        if (paramChildren) {
-          if (paramChildren.some((c) => c.type !== 'StringConstant')) {
-            return false;
-          }
-        } else {
-          // Fallback: string-archaeology on arg text (pre-children parsers).
-          // Reject `$` (variable), `(` (ParenExpressionAst), `@` (hash/array
-          // sub), `{` (scriptblock), `[` (type literal/static method).
-          const arg = cmd.args[i - 1] ?? '';
-          const colonIdx = arg.indexOf(':');
-          if (colonIdx > 0 && /[$(@{[]/.test(arg.slice(colonIdx + 1))) {
-            return false;
-          }
+      return false;
+    }
+    // Colon-bound parameter (`-Flag:$env:SECRET`) is a SINGLE
+    // CommandParameterAst — the VariableExpressionAst is its .Argument
+    // child, not a separate CommandElement, so elementTypes says 'Parameter'
+    // and the whitelist above passes.
+    //
+    // Query the parser's children[] tree instead of doing
+    // string-archaeology on the arg text. children[i-1] holds the
+    // .Argument child's mapped type (aligned with args[i-1]).
+    // Tree query catches MORE than the string check — e.g.
+    // `-InputObject:@{k=v}` (HashtableAst → 'Other', no `$` in text),
+    // `-Name:('payload' > file)` (ParenExpressionAst with redirection).
+    // Fallback to the extended metachar check when children is undefined
+    // (backward compat / test helpers that don't set it).
+    if (t === 'Parameter') {
+      const paramChildren = cmd.children?.[i - 1];
+      if (paramChildren) {
+        if (paramChildren.some((c) => c.type !== 'StringConstant')) {
+          return false;
+        }
+      } else {
+        // Fallback: string-archaeology on arg text (pre-children parsers).
+        // Reject `$` (variable), `(` (ParenExpressionAst), `@` (hash/array
+        // sub), `{` (scriptblock), `[` (type literal/static method).
+        const arg = cmd.args[i - 1] ?? '';
+        const colonIdx = arg.indexOf(':');
+        if (colonIdx > 0 && /[$(@{[]/.test(arg.slice(colonIdx + 1))) {
+          return false;
         }
       }
     }

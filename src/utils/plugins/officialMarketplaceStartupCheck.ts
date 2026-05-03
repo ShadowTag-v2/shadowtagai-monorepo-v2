@@ -59,8 +59,7 @@ export const RETRY_CONFIG = {
  * Calculate next retry delay using exponential backoff
  */
 function calculateNextRetryDelay(retryCount: number): number {
-  const delay =
-    RETRY_CONFIG.INITIAL_DELAY_MS * Math.pow(RETRY_CONFIG.BACKOFF_MULTIPLIER, retryCount);
+  const delay = RETRY_CONFIG.INITIAL_DELAY_MS * RETRY_CONFIG.BACKOFF_MULTIPLIER ** retryCount;
   return Math.min(delay, RETRY_CONFIG.MAX_DELAY_MS);
 }
 

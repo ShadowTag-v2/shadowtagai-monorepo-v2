@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { ConfigurableShortcutHint } from '../../components/ConfigurableShortcutHint.js';
 import { Byline } from '../../components/design-system/Byline.js';
 import { Pane } from '../../components/design-system/Pane.js';
@@ -30,6 +30,7 @@ import { formatErrorMessage, getErrorGuidance } from './PluginErrors.js';
 import { type ParsedCommand, parsePluginArgs } from './parseArgs.js';
 import type { PluginSettingsProps, ViewState } from './types.js';
 import { ValidatePlugin } from './ValidatePlugin.js';
+
 type TabId = 'discover' | 'installed' | 'marketplaces' | 'errors';
 function MarketplaceList(t0) {
   const $ = _c(4);
@@ -467,11 +468,11 @@ function ErrorsTabContent(t0) {
       return;
     }
     const { action } = row;
-    bb77: switch (action.kind) {
+    switch (action.kind) {
       case 'navigate': {
         setActiveTab(action.tab);
         setViewState(action.viewState);
-        break bb77;
+        break;
       }
       case 'remove-extra-marketplace': {
         const scopes = action.sources.map(_temp8).join(', ');
@@ -494,7 +495,7 @@ function ErrorsTabContent(t0) {
         }));
         setActionMessage(`${figures.tick} Removed "${action.name}" from ${scopes} settings`);
         markPluginsChanged();
-        break bb77;
+        break;
       }
       case 'remove-installed-marketplace': {
         (async () => {
@@ -511,10 +512,10 @@ function ErrorsTabContent(t0) {
             );
           }
         })();
-        break bb77;
+        break;
       }
       case 'managed-only': {
-        break bb77;
+        break;
       }
       case 'none':
     }
@@ -908,24 +909,24 @@ export function PluginSettings(t0) {
       const tab = tabId as TabId;
       setActiveTab(tab);
       setError(null);
-      bb37: switch (tab) {
+      switch (tab) {
         case 'discover': {
           setViewState({
             type: 'discover-plugins',
           });
-          break bb37;
+          break;
         }
         case 'installed': {
           setViewState({
             type: 'manage-plugins',
           });
-          break bb37;
+          break;
         }
         case 'marketplaces': {
           setViewState({
             type: 'manage-marketplaces',
           });
-          break bb37;
+          break;
         }
         case 'errors':
       }

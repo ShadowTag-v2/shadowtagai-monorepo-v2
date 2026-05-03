@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { DeepImmutable } from 'src/types/utils.js';
 import { useElapsedTime } from '../../hooks/useElapsedTime.js';
 import type { KeyboardEvent } from '../../ink/events/keyboard-event.js';
@@ -15,6 +15,7 @@ import { Dialog } from '../design-system/Dialog.js';
 import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
 import { renderToolActivity } from './renderToolActivity.js';
 import { describeTeammateActivity } from './taskStatusUtils.js';
+
 type Props = {
   teammate: DeepImmutable<InProcessTeammateTaskState>;
   onDone: () => void;

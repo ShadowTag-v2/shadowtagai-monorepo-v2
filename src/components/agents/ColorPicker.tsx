@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import React, { useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { KeyboardEvent } from '../../ink/events/keyboard-event.js';
 import { Box, Text } from '../../ink.js';
 import {
@@ -9,6 +9,7 @@ import {
   type AgentColorName,
 } from '../../tools/AgentTool/agentColorManager.js';
 import { capitalize } from '../../utils/stringUtils.js';
+
 type ColorOption = AgentColorName | 'automatic';
 const COLOR_OPTIONS: ColorOption[] = ['automatic', ...AGENT_COLORS];
 type Props = {

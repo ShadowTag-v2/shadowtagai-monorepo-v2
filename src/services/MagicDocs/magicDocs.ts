@@ -204,7 +204,7 @@ async function updateMagicDoc(docInfo: MagicDocInfo, context: REPLHookContext): 
 /**
  * Magic Docs post-sampling hook that updates all tracked Magic Docs
  */
-const updateMagicDocs = sequential(async function (context: REPLHookContext): Promise<void> {
+const updateMagicDocs = sequential(async (context: REPLHookContext): Promise<void> => {
   const { messages, querySource } = context;
 
   if (querySource !== 'repl_main_thread') {

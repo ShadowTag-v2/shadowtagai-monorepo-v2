@@ -41,6 +41,7 @@ import TextInput from '../TextInput.js';
 import { CapabilitiesSection } from './CapabilitiesSection.js';
 import type { ClaudeAIServerInfo, HTTPServerInfo, SSEServerInfo } from './types.js';
 import { handleReconnectError, handleReconnectResult } from './utils/reconnectHelpers.js';
+
 type Props = {
   server: SSEServerInfo | HTTPServerInfo | ClaudeAIServerInfo;
   serverToolsCount: number;

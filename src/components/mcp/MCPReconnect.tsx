@@ -1,11 +1,12 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import React, { useEffect, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { CommandResultDisplay } from '../../commands.js';
 import { Box, color, Text, useTheme } from '../../ink.js';
 import { useMcpReconnect } from '../../services/mcp/MCPConnectionManager.js';
 import { useAppStateStore } from '../../state/AppState.js';
 import { Spinner } from '../Spinner.js';
+
 type Props = {
   serverName: string;
   onComplete: (
@@ -37,17 +38,17 @@ export function MCPReconnect(t0) {
             return;
           }
           const result = await reconnectMcpServer(serverName);
-          bb43: switch (result.client.type) {
+          switch (result.client.type) {
             case 'connected': {
               setIsReconnecting(false);
               onComplete(`Successfully reconnected to ${serverName}`);
-              break bb43;
+              break;
             }
             case 'needs-auth': {
               setError(`${serverName} requires authentication`);
               setIsReconnecting(false);
               onComplete(`${serverName} requires authentication. Use /mcp to authenticate.`);
-              break bb43;
+              break;
             }
             case 'pending':
             case 'failed':

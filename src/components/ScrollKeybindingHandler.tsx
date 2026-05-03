@@ -10,6 +10,7 @@ import { getClipboardPath } from '../ink/termio/osc.js';
 import { type Key, useInput } from '../ink.js';
 import { useKeybindings } from '../keybindings/useKeybinding.js';
 import { logForDebugging } from '../utils/debug.js';
+
 type Props = {
   scrollRef: RefObject<ScrollBoxHandle | null>;
   isActive: boolean;
@@ -253,7 +254,7 @@ export function computeWheelStep(state: WheelAccelState, dir: 1 | -1, now: numbe
       // the curve handles it (gap=1000ms → m≈0.01 → mult≈1). No frac —
       // rounding loss is minor at high mult, and frac persisting across idle
       // was causing off-by-one on the first click back.
-      const m = Math.pow(0.5, gap / WHEEL_DECAY_HALFLIFE_MS);
+      const m = 0.5 ** (gap / WHEEL_DECAY_HALFLIFE_MS);
       const cap = Math.max(WHEEL_MODE_CAP, state.base * 2);
       const next = 1 + (state.mult - 1) * m + WHEEL_MODE_STEP * m;
       state.mult = Math.min(cap, next, state.mult + WHEEL_MODE_RAMP);
@@ -294,7 +295,7 @@ export function computeWheelStep(state: WheelAccelState, dir: 1 | -1, now: numbe
     state.mult = 2;
     state.frac = 0;
   } else {
-    const m = Math.pow(0.5, gap / WHEEL_DECAY_HALFLIFE_MS);
+    const m = 0.5 ** (gap / WHEEL_DECAY_HALFLIFE_MS);
     const cap = gap >= WHEEL_DECAY_GAP_MS ? WHEEL_DECAY_CAP_SLOW : WHEEL_DECAY_CAP_FAST;
     state.mult = Math.min(cap, 1 + (state.mult - 1) * m + WHEEL_DECAY_STEP * m);
   }

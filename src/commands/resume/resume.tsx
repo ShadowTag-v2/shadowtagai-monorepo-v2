@@ -1,8 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
 import chalk from 'chalk';
 import type { UUID } from 'crypto';
 import figures from 'figures';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { getOriginalCwd, getSessionId } from '../../bootstrap/state.js';
 import type { CommandResultDisplay, ResumeEntrypoint } from '../../commands.js';
 import { LogSelector } from '../../components/LogSelector.js';
@@ -29,6 +29,7 @@ import {
   searchSessionsByCustomTitle,
 } from '../../utils/sessionStorage.js';
 import { validateUuid } from '../../utils/uuid.js';
+
 type ResumeResult =
   | {
       resultType: 'sessionNotFound';

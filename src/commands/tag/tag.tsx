@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import chalk from 'chalk';
 import type { UUID } from 'crypto';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { getSessionId } from '../../bootstrap/state.js';
 import type { CommandResultDisplay } from '../../commands.js';
 import { Select } from '../../components/CustomSelect/select.js';
@@ -12,6 +12,7 @@ import { logEvent } from '../../services/analytics/index.js';
 import type { LocalJSXCommandOnDone } from '../../types/command.js';
 import { recursivelySanitizeUnicode } from '../../utils/sanitization.js';
 import { getCurrentSessionTag, getTranscriptPath, saveTag } from '../../utils/sessionStorage.js';
+
 function ConfirmRemoveTag(t0) {
   const $ = _c(11);
   const { tagName, onConfirm, onCancel } = t0;

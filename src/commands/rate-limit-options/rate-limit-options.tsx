@@ -1,5 +1,6 @@
+import type React from 'react';
+import { useMemo, useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
-import React, { useMemo, useState } from 'react';
 import type { CommandResultDisplay, LocalJSXCommandContext } from '../../commands.js';
 import { type OptionWithDescription, Select } from '../../components/CustomSelect/select.js';
 import { Dialog } from '../../components/design-system/Dialog.js';
@@ -14,6 +15,7 @@ import { call as extraUsageCall } from '../extra-usage/extra-usage.js';
 import { extraUsage } from '../extra-usage/index.js';
 import upgrade from '../upgrade/index.js';
 import { call as upgradeCall } from '../upgrade/upgrade.js';
+
 type RateLimitOptionsMenuOptionType = 'upgrade' | 'extra-usage' | 'cancel';
 type RateLimitOptionsMenuProps = {
   onDone: (

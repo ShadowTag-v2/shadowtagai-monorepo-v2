@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { BLACK_CIRCLE } from '../../constants/figures.js';
 import { Box, Text } from '../../ink.js';
 import { useDebouncedDigitInput } from './useDebouncedDigitInput.js';

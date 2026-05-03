@@ -1231,6 +1231,7 @@ const parsePowerShellCommandCached = memoizeWithLRU(
   (command: string) => command,
   256,
 );
+
 export { parsePowerShellCommandCached as parsePowerShellCommand };
 
 // ---------------------------------------------------------------------------

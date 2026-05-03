@@ -16,6 +16,7 @@ import { Box, Link, Text } from '../../ink.js';
 import { plural } from '../../utils/stringUtils.js';
 import { Select } from '../CustomSelect/select.js';
 import { Dialog } from '../design-system/Dialog.js';
+
 type Props = {
   hookEventMetadata: Record<HookEvent, HookEventMetadata>;
   hooksByEvent: Partial<Record<HookEvent, number>>;

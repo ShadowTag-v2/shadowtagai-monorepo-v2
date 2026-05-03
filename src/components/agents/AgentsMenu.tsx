@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import chalk from 'chalk';
 import * as React from 'react';
 import { useCallback, useMemo, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { SettingSource } from 'src/utils/settings/constants.js';
 import type { CommandResultDisplay } from '../../commands.js';
 import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
@@ -25,6 +25,7 @@ import { AgentsList } from './AgentsList.js';
 import { deleteAgentFromFile } from './agentFileUtils.js';
 import { CreateAgentWizard } from './new-agent-creation/CreateAgentWizard.js';
 import type { ModeState } from './types.js';
+
 type Props = {
   tools: Tools;
   onExit: (
@@ -434,14 +435,14 @@ export function AgentsMenu(t0) {
       let t18;
       if ($[66] !== agentToUse || $[67] !== modeState) {
         t18 = (value_0) => {
-          bb129: switch (value_0) {
+          switch (value_0) {
             case 'view': {
               setModeState({
                 mode: 'view-agent',
                 agent: agentToUse,
                 previousMode: modeState.previousMode,
               });
-              break bb129;
+              break;
             }
             case 'edit': {
               setModeState({
@@ -449,7 +450,7 @@ export function AgentsMenu(t0) {
                 agent: agentToUse,
                 previousMode: modeState,
               });
-              break bb129;
+              break;
             }
             case 'delete': {
               setModeState({
@@ -457,7 +458,7 @@ export function AgentsMenu(t0) {
                 agent: agentToUse,
                 previousMode: modeState,
               });
-              break bb129;
+              break;
             }
             case 'back': {
               setModeState(modeState.previousMode);

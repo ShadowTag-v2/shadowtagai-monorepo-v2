@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useTerminalSize } from '../hooks/useTerminalSize.js';
 import { stringWidth } from '../ink/stringWidth.js';
 import { Box, Text } from '../ink.js';
@@ -17,6 +17,7 @@ import { truncateToWidth } from '../utils/format.js';
 import { isTodoV2Enabled, type Task } from '../utils/tasks.js';
 import type { Theme } from '../utils/theme.js';
 import ThemedText from './design-system/ThemedText.js';
+
 type Props = {
   tasks: Task[];
   isStandalone?: boolean;

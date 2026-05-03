@@ -57,5 +57,5 @@ async function handleCoordinatorPermission(
   return null;
 }
 
-export { handleCoordinatorPermission };
 export type { CoordinatorPermissionParams };
+export { handleCoordinatorPermission };

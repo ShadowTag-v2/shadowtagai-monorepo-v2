@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { ConfigurableShortcutHint } from '../../components/ConfigurableShortcutHint.js';
 import { Byline } from '../../components/design-system/Byline.js';
 import { SearchBox } from '../../components/SearchBox.js';
@@ -41,6 +41,7 @@ import {
 } from './pluginDetailsHelpers.js';
 import type { ViewState as ParentViewState } from './types.js';
 import { usePagination } from './usePagination.js';
+
 type Props = {
   error: string | null;
   setError: (error: string | null) => void;

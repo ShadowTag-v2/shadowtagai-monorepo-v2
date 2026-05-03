@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import * as React from 'react';
+import type * as React from 'react';
 import { useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { CommandResultDisplay, LocalJSXCommandContext } from '../../commands.js';
 import { Dialog } from '../../components/design-system/Dialog.js';
 import { FastIcon, getFastIconString } from '../../components/FastIcon.js';
@@ -25,6 +25,7 @@ import {
 import { formatDuration } from '../../utils/format.js';
 import { formatModelPricing, getOpus46CostTier } from '../../utils/modelCost.js';
 import { updateSettingsForSource } from '../../utils/settings/settings.js';
+
 function applyFastMode(
   enable: boolean,
   setAppState: (f: (prev: AppState) => AppState) => void,

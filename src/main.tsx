@@ -10,10 +10,12 @@ import { profileCheckpoint, profileReport } from './utils/startupProfiler.js';
 
 // eslint-disable-next-line custom-rules/no-top-level-side-effects
 profileCheckpoint('main_tsx_entry');
+
 import { startMdmRawRead } from './utils/settings/mdm/rawRead.js';
 
 // eslint-disable-next-line custom-rules/no-top-level-side-effects
 startMdmRawRead();
+
 import {
   ensureKeychainPrefetchCompleted,
   startKeychainPrefetch,
@@ -21,6 +23,7 @@ import {
 
 // eslint-disable-next-line custom-rules/no-top-level-side-effects
 startKeychainPrefetch();
+
 import { feature } from 'bun:bundle';
 import {
   Command as CommanderCommand,
@@ -142,6 +145,7 @@ const assistantModule = feature('KAIROS')
 const kairosGate = feature('KAIROS')
   ? (require('./assistant/gate.js') as typeof import('./assistant/gate.js'))
   : null;
+
 import { relative, resolve } from 'path';
 import { isAnalyticsDisabled } from 'src/services/analytics/config.js';
 import { getFeatureValue_CACHED_MAY_BE_STALE } from 'src/services/analytics/growthbook.js';
@@ -4351,13 +4355,13 @@ async function run(): Promise<CommanderCommand> {
         const { clearSessionCaches } = await import('./commands/clear/caches.js');
         clearSessionCaches();
         let messages: MessageType[] | null = null;
-        let processedResume: ProcessedResume | undefined = undefined;
+        let processedResume: ProcessedResume | undefined;
         let maybeSessionId = validateUuid(options.resume);
-        let searchTerm: string | undefined = undefined;
+        let searchTerm: string | undefined;
         // Store full LogOption when found by custom title (for cross-worktree resume)
         let matchedLog: LogOption | null = null;
         // PR filter for --from-pr flag
-        let filterByPr: boolean | number | string | undefined = undefined;
+        let filterByPr: boolean | number | string | undefined;
 
         // Handle --from-pr flag
         if (options.fromPr) {

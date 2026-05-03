@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import { basename, relative } from 'path';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Box, Text } from '../ink.js';
 import { getCwd } from '../utils/cwd.js';
 import { isSupportedVSCodeTerminal } from '../utils/ide.js';
@@ -10,6 +10,7 @@ import type {
   PermissionOption,
   PermissionOptionWithLabel,
 } from './permissions/FilePermissionDialog/permissionOptions.js';
+
 type Props<A> = {
   filePath: string;
   input: A;

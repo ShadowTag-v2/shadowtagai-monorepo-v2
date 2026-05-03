@@ -273,7 +273,7 @@ export function getProjectDirsUpToHome(subdir: ClaudeConfigDirectory, cwd: strin
  * @returns Array of parsed markdown files with metadata
  */
 export const loadMarkdownFilesForSubdir = memoize(
-  async function (subdir: ClaudeConfigDirectory, cwd: string): Promise<MarkdownFile[]> {
+  async (subdir: ClaudeConfigDirectory, cwd: string): Promise<MarkdownFile[]> => {
     const searchStartTime = Date.now();
     const userDir = join(getClaudeConfigHomeDir(), subdir);
     const managedDir = join(getManagedFilePath(), '.claude', subdir);

@@ -2517,10 +2517,10 @@ function runHeadlessStreaming(
     cronScheduler.start();
   }
 
-  const sendControlResponseSuccess = function (
+  const sendControlResponseSuccess = (
     message: SDKControlRequest,
     response?: Record<string, unknown>,
-  ) {
+  ) => {
     output.enqueue({
       type: 'control_response',
       response: {
@@ -2531,7 +2531,7 @@ function runHeadlessStreaming(
     });
   };
 
-  const sendControlResponseError = function (message: SDKControlRequest, errorMessage: string) {
+  const sendControlResponseError = (message: SDKControlRequest, errorMessage: string) => {
     output.enqueue({
       type: 'control_response',
       response: {

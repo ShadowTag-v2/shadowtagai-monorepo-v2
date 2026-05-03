@@ -1,4 +1,3 @@
-import { c as _c } from 'react/compiler-runtime';
 import type {
   ElicitRequestFormParams,
   ElicitRequestURLParams,
@@ -6,7 +5,9 @@ import type {
   PrimitiveSchemaDefinition,
 } from '@modelcontextprotocol/sdk/types.js';
 import figures from 'figures';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useRegisterOverlay } from '../../context/overlayContext.js';
 import { useNotifyAfterTimeout } from '../../hooks/useNotifyAfterTimeout.js';
 import { useTerminalSize } from '../../hooks/useTerminalSize.js';
@@ -32,6 +33,7 @@ import { Byline } from '../design-system/Byline.js';
 import { Dialog } from '../design-system/Dialog.js';
 import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
 import TextInput from '../TextInput.js';
+
 type Props = {
   event: ElicitationRequestEvent;
   onResponse: (action: ElicitResult['action'], content?: ElicitResult['content']) => void;

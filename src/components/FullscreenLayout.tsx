@@ -1,4 +1,3 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import React, {
   createContext,
@@ -12,6 +11,7 @@ import React, {
   useState,
   useSyncExternalStore,
 } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { fileURLToPath } from 'url';
 import { ModalContext } from '../context/modalContext.js';
 import {

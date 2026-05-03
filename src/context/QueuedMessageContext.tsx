@@ -1,6 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Box } from '../ink.js';
+
 type QueuedMessageContextValue = {
   isQueued: boolean;
   isFirst: boolean;

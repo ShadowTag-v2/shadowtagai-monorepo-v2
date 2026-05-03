@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Box, color, Link, Text, useTheme } from '../../ink.js';
 import { useKeybindings } from '../../keybindings/useKeybinding.js';
 import type { CommandResultDisplay } from '../../types/command.js';
@@ -12,6 +12,7 @@ import { Tab, Tabs, useTabHeaderFocus } from '../design-system/Tabs.js';
 import { SandboxConfigTab } from './SandboxConfigTab.js';
 import { SandboxDependenciesTab } from './SandboxDependenciesTab.js';
 import { SandboxOverridesTab } from './SandboxOverridesTab.js';
+
 type Props = {
   onComplete: (
     result?: string,
@@ -115,14 +116,14 @@ export function SandboxSettings(t0) {
   if ($[13] !== onComplete) {
     t10 = async function handleSelect(value) {
       const mode = value as SandboxMode;
-      bb33: switch (mode) {
+      switch (mode) {
         case 'auto-allow': {
           await SandboxManager.setSandboxSettings({
             enabled: true,
             autoAllowBashIfSandboxed: true,
           });
           onComplete('\u2713 Sandbox enabled with auto-allow for bash commands');
-          break bb33;
+          break;
         }
         case 'regular': {
           await SandboxManager.setSandboxSettings({
@@ -130,7 +131,7 @@ export function SandboxSettings(t0) {
             autoAllowBashIfSandboxed: false,
           });
           onComplete('\u2713 Sandbox enabled with regular bash permissions');
-          break bb33;
+          break;
         }
         case 'disabled': {
           await SandboxManager.setSandboxSettings({
