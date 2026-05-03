@@ -39,7 +39,7 @@ gates:
     contract: bazel.build.yaml
     trigger: on_build_change
   - name: push_gate
-    contract: github.push.yaml
+    contract: github_push.yaml
     trigger: pre_push
   - name: repo_mass_reduction_gate
     contract: skills.repo_mass_reduction.yaml
