@@ -15,23 +15,17 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any
 
 import pytest
 
 from agnt_tools.think_tool import THINK_TOOL_NAME, create_think_tool
 from agnt_tools.architect_tool import ARCHITECT_TOOL_NAME, create_architect_tool
 from agnt_tools.plan_mode_tools import (
-    ENTER_PLAN_MODE_TOOL_NAME,
-    EXIT_PLAN_MODE_TOOL_NAME,
     create_enter_plan_mode_tool,
     create_exit_plan_mode_tool,
 )
 from agnt_tools.tool import (
     PermissionMode,
-    PermissionResult,
-    ToolPermissionContext,
-    ToolResult,
     ToolUseContext,
     find_tool_by_name,
     get_empty_tool_permission_context,
@@ -326,7 +320,7 @@ class TestExitPlanMode:
     async def test_exit_defaults_to_default_if_no_pre_plan(self, exit_plan_tool, root_context) -> None:
         root_context.tool_permission_context.mode = PermissionMode.PLAN
         root_context.tool_permission_context.pre_plan_mode = None
-        result = await exit_plan_tool.call({}, root_context)
+        await exit_plan_tool.call({}, root_context)
         assert root_context.tool_permission_context.mode == PermissionMode.DEFAULT
 
     @pytest.mark.asyncio
@@ -378,7 +372,7 @@ class TestCombinedWorkflow:
         assert root_context.tool_permission_context.mode == PermissionMode.DEFAULT
 
         # Step 3: Enter plan mode
-        r3 = await enter_plan_tool.call({}, root_context)
+        await enter_plan_tool.call({}, root_context)
         assert root_context.tool_permission_context.mode == PermissionMode.PLAN
 
         # Step 4: Think tool still works in plan mode (read-only)
@@ -396,7 +390,7 @@ class TestCombinedWorkflow:
         assert r5.data["status"] == "analysis_recorded"
 
         # Step 6: Exit plan mode
-        r6 = await exit_plan_tool.call({}, root_context)
+        await exit_plan_tool.call({}, root_context)
         assert root_context.tool_permission_context.mode == PermissionMode.DEFAULT
 
     @pytest.mark.asyncio
