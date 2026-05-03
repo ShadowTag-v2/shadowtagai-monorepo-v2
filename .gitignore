@@ -453,3 +453,6 @@ memory/
 
 # Backup venvs (FSEvents storm prevention)
 venv/
+
+.venv
+.pixi
