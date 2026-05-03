@@ -1,1 +1,34 @@
-{"telemetry.telemetryLevel": "off"}
+{
+    "telemetry.telemetryLevel": "off",
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/build/**": true,
+        "**/.venv/**": true,
+        "**/bin/**": true,
+        "**/obj/**": true,
+        "**/.next/**": true,
+        "**/target/**": true,
+        "**/__pycache__/**": true,
+        "**/dist/**": true,
+        "**/external_repos/**": true,
+        "**/archive/**": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/build": true,
+        "**/.venv": true,
+        "**/.next": true,
+        "**/target": true,
+        "**/__pycache__": true,
+        "**/dist": true,
+        "**/external_repos": true,
+        "**/archive": true
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/node_modules": true
+    }
+}
