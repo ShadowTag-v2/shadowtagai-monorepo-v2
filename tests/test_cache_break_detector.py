@@ -337,7 +337,7 @@ class TestCompactorCacheIntegration:
         compactor = ContextCompactor(feature_flags={"context_compaction": True})
         msgs = _make_conversation(6)
 
-        result = compactor.run(msgs, target_tokens=1000, current_tokens=2000, max_layer=1)
+        compactor.run(msgs, target_tokens=1000, current_tokens=2000, max_layer=1)
 
         assert compactor.last_cache_report is not None
         assert isinstance(compactor.last_cache_report, CacheBreakReport)
