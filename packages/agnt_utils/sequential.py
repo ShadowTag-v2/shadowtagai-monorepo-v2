@@ -29,7 +29,7 @@ from collections.abc import Awaitable, Callable
 R = TypeVar("R")
 
 
-def sequential(
+def sequential[R](
     fn: Callable[..., Awaitable[R]],
 ) -> Callable[..., Awaitable[R]]:
     """Wrap an async function so concurrent invocations execute sequentially.

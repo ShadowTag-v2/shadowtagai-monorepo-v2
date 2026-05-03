@@ -260,6 +260,107 @@ describe('ExitPlanModeScanner', () => {
     expect(r.kind).toBe('approved');
     expect(scanner.rejectCount).toBe(2);
   });
+
+  // ── Critical edge-case tests (Sprint 3-4 hardening) ───────────────
+
+  it('rejected + terminated in same batch: rejectCount still increments', () => {
+    // A batch can contain BOTH a rejected tool_result AND a {type:'result'}.
+    // rejectCount must reflect the rejection even though terminated takes
+    // return precedence (ccrSession.ts lines 156-168).
+    scanner.ingest([toolUseMsg('tu-1', EXIT_PLAN_MODE_V2_TOOL_NAME)]);
+    const result = scanner.ingest([
+      toolResultMsg('tu-1', 'denied', true),
+      terminalResult('error_during_execution'),
+    ]);
+    // Terminated takes precedence over rejected for the return value...
+    expect(result.kind).toBe('terminated');
+    // ...but rejectCount must still reflect the bookkeeping.
+    expect(scanner.rejectCount).toBe(1);
+  });
+
+  it('rescan-after-rejection finds next non-rejected pending call', () => {
+    // When a rejection occurs, rescanAfterRejection=true.
+    // Next ingest([]) should still scan and report the prior pending call.
+    scanner.ingest([
+      toolUseMsg('tu-1', EXIT_PLAN_MODE_V2_TOOL_NAME),
+      toolUseMsg('tu-2', EXIT_PLAN_MODE_V2_TOOL_NAME),
+    ]);
+    // tu-2 is the newest — result for tu-2 is error (rejected)
+    scanner.ingest([toolResultMsg('tu-2', 'nope', true)]);
+    // rescanAfterRejection is now true. Empty ingest should rescan
+    // and find tu-1 is still pending.
+    const result = scanner.ingest([]);
+    expect(result.kind).toBe('pending');
+    expect(scanner.hasPendingPlan).toBe(true);
+  });
+
+  it('teleport takes precedence over terminated in same batch', () => {
+    // Mirrors the approved>terminated test: teleport should also win.
+    const result = scanner.ingest([
+      toolUseMsg('tu-1', EXIT_PLAN_MODE_V2_TOOL_NAME),
+      toolResultMsg('tu-1', `${ULTRAPLAN_TELEPORT_SENTINEL}\nLocal exec plan`, true),
+      terminalResult('error_max_turns'),
+    ]);
+    expect(result.kind).toBe('teleport');
+    if (result.kind === 'teleport') {
+      expect(result.plan).toBe('Local exec plan');
+    }
+  });
+
+  it('hasPendingPlan becomes false after approved result arrives', () => {
+    scanner.ingest([toolUseMsg('tu-1', EXIT_PLAN_MODE_V2_TOOL_NAME)]);
+    expect(scanner.hasPendingPlan).toBe(true);
+
+    scanner.ingest([toolResultMsg('tu-1', '## Approved Plan:\nDone')]);
+    expect(scanner.hasPendingPlan).toBe(false);
+  });
+
+  it('tracks multiple tool_use blocks in a single assistant message', () => {
+    // A single assistant message can contain multiple tool_use blocks
+    // (e.g., the model emitted ExitPlanMode along with another tool).
+    const multiBlockMsg: SDKMessage = {
+      type: 'assistant',
+      message: {
+        content: [
+          { type: 'tool_use', id: 'tu-bash', name: 'Bash', input: {} },
+          { type: 'tool_use', id: 'tu-plan', name: EXIT_PLAN_MODE_V2_TOOL_NAME, input: {} },
+          { type: 'text' },
+        ],
+      },
+    };
+    const result = scanner.ingest([multiBlockMsg]);
+    expect(result.kind).toBe('pending');
+    expect(scanner.hasPendingPlan).toBe(true);
+  });
+
+  it('batch rejection followed by new pending: first ingest returns pending', () => {
+    // Scenario: tu-1 is rejected in this batch, tu-2 is pending (no result yet).
+    // The scanner traverses newest-first: tu-2 has no result → pending.
+    // tu-1's rejection is tracked in results but since tu-2 (newer) is the
+    // scan target, the rejection bookkeeping for tu-1 never fires as the
+    // "found" result — it stays as a result in the map.
+    const result = scanner.ingest([
+      toolUseMsg('tu-1', EXIT_PLAN_MODE_V2_TOOL_NAME),
+      toolResultMsg('tu-1', 'no', true),
+      toolUseMsg('tu-2', EXIT_PLAN_MODE_V2_TOOL_NAME),
+    ]);
+    // tu-2 is newest, has no result → pending (tu-1's rejection is in results
+    // but tu-1 is not the scan target since tu-2 is newer)
+    expect(result.kind).toBe('pending');
+    expect(scanner.hasPendingPlan).toBe(true);
+  });
+
+  it('everSeenPending remains true after rejection clears the pending call', () => {
+    scanner.ingest([toolUseMsg('tu-1', EXIT_PLAN_MODE_V2_TOOL_NAME)]);
+    scanner.ingest([]); // triggers pending, sets everSeenPending
+    expect(scanner.everSeenPending).toBe(true);
+
+    // Now reject it
+    scanner.ingest([toolResultMsg('tu-1', 'rejected', true)]);
+    // everSeenPending should STAY true (it's a latch, not a live flag)
+    expect(scanner.everSeenPending).toBe(true);
+    expect(scanner.hasPendingPlan).toBe(false);
+  });
 });
 
 describe('extractApprovedPlan', () => {

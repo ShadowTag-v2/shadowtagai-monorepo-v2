@@ -13,13 +13,13 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass, field
-from typing import Awaitable, Callable, Optional, Union
+from collections.abc import Awaitable, Callable
 
 # Type alias for compute functions — can be sync or async.
-ComputeFn = Callable[[], Union[Optional[str], Awaitable[Optional[str]]]]
+ComputeFn = Callable[[], str | None | Awaitable[str | None]]
 
 # Module-level cache (replaces bootstrap/state.js in the TS version).
-_section_cache: dict[str, Optional[str]] = {}
+_section_cache: dict[str, str | None] = {}
 _beta_header_latches_cleared: bool = False
 
 
@@ -64,7 +64,7 @@ def dangerous_uncached_section(
     return SystemPromptSection(name=name, compute=compute, cache_break=True)
 
 
-async def _resolve_compute(compute: ComputeFn) -> Optional[str]:
+async def _resolve_compute(compute: ComputeFn) -> str | None:
     """Resolve a compute function, handling both sync and async callables."""
     result = compute()
     if asyncio.iscoroutine(result) or asyncio.isfuture(result):
@@ -74,7 +74,7 @@ async def _resolve_compute(compute: ComputeFn) -> Optional[str]:
 
 async def resolve_system_prompt_sections(
     sections: list[SystemPromptSection],
-) -> list[Optional[str]]:
+) -> list[str | None]:
     """Resolve all system prompt sections, returning prompt strings.
 
     For memoized sections, returns the cached value if available.
@@ -85,7 +85,7 @@ async def resolve_system_prompt_sections(
         returned None from their compute function).
     """
 
-    async def _resolve_one(section: SystemPromptSection) -> Optional[str]:
+    async def _resolve_one(section: SystemPromptSection) -> str | None:
         # Return cached value for memoized sections.
         if not section.cache_break and section.name in _section_cache:
             return _section_cache[section.name]
@@ -111,6 +111,6 @@ def clear_system_prompt_sections() -> None:
     _beta_header_latches_cleared = True
 
 
-def get_section_cache() -> dict[str, Optional[str]]:
+def get_section_cache() -> dict[str, str | None]:
     """Read-only access to the section cache for diagnostics."""
     return dict(_section_cache)

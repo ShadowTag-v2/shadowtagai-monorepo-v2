@@ -55,11 +55,55 @@ title = "Monorepo-Uphillsnowball Betterleaks Config"
     '''\.agent/incoming_repos/''',
     '''\.env\.backup''',
     '''\.next/''',
+    # ── Transient runtime artifacts (not source code) ──
+    # .tmp.driveupload/: Google Drive sync cache (4,142 false positives)
+    # .beads/: KAIROS audit trail + heartbeat (490 false positives — contain references to findings)
+    # .reports/: betterleaks reports that contain finding matches by design
+    '''\.tmp\.driveupload/''',
+    '''\.beads/''',
+    '''\.reports/''',
     # ── HIGH-risk third-party allowlist (audited 2026-04-19) ──
     # Stripe sk_test_ key: Odoo payment_stripe test fixture (NOT our account)
     # Vault s.Fg8w token: OpenTofu website example doc (NOT live)
     # OpenClaw Discord: bundled SDK dist (NOT our Discord app)
     '''libs/cyberpunk_stack/openclaw/dist/''',
+
+    # Migrated from .betterleaksignore (False Positives)
+    '''\.semgrep/rules/llm-owasp\.yaml''',
+    '''libs/steel/sentinel\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/apps/src/aiyou/services/payment_gateway\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/apps/src/api/unified\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/apps/src/finjudge/core/billing\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/apps/src/pnkln/api/monetization\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/apps/src/pnkln/services/billing_service\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/infra/k8s/tokable-deployment\.yaml''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/infrastructure/k8s/tokable-deployment\.yaml''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/k8s/tokable-deployment\.yaml''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/libs_deprecated/monetization/stripe_client\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/services/platform-monitoring/stripe_billing\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/src/aiyou/services/payment_gateway\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/src/api/unified\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/src/automations/central_hive_mind\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/src/finjudge/core/billing\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/api/monetization\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/intelligence_api\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/services/billing_service\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/\.gemini/hooks/block-secrets\.sh''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/apps/src/aiyou/services/safety_scanner\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/codepmcsbak\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/scripts/sanitize_and_sync\.py''',
+    '''apps/aiyou_stack/aiyou-fastapi-services/src/aiyou/services/safety_scanner\.py''',
+    '''apps/thumbly/src/app/api/webhooks/stripe/route\.ts''',
+    '''scripts/security_audit_phase25\.py''',
+    '''control/pnkln/governance/silent_detector\.py''',
+    '''docs/legacy_shadowtag_v2/Strategic_Intelligence/sovereign_memory_core\.json''',
+    '''labs/uphillsnowball/agent/gauntlet\.py''',
+    '''scripts/audit_mcp_surfaces\.sh''',
+    '''scripts/fix_canonicalization_surfaces\.sh''',
+    '''scripts/run_codepmcs_scan\.sh''',
+    '''scripts/source_pre_commit\.sh''',
+    '''scripts/vault/zero_trust_pipeline\.py''',
+    '''apps/kovelai/agent/iam_mappings\.sh''',
   ]
 
   # Specific third-party test secrets (confirmed false positives)

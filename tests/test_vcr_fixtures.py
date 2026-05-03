@@ -98,6 +98,126 @@ class TestScrubSensitive:
         result = scrub_sensitive(text)
         assert result == text
 
+    def test_scrub_stripe_secret_key_live(self):
+        text = "sk_live_51Hj7abcdefghijklmnopqrstuvwxyz"
+        result = scrub_sensitive(text)
+        assert "51Hj7abcdefghijklmnopqrstuvwxyz" not in result
+        assert "sk_live_[SCRUBBED]" in result
+
+    def test_scrub_stripe_secret_key_test(self):
+        text = "sk_test_51Hj7TestKey123456789"
+        result = scrub_sensitive(text)
+        assert "51Hj7TestKey123456789" not in result
+        assert "sk_test_[SCRUBBED]" in result
+
+    def test_scrub_stripe_publishable_key(self):
+        text = "pk_live_51Hj7PublishableKeyValue"
+        result = scrub_sensitive(text)
+        assert "51Hj7PublishableKeyValue" not in result
+        assert "pk_live_[SCRUBBED]" in result
+
+    def test_scrub_stripe_webhook_secret(self):
+        text = "whsec_AbcDefGhi123456789"
+        result = scrub_sensitive(text)
+        assert "AbcDefGhi123456789" not in result
+        assert "whsec_[SCRUBBED]" in result
+
+    def test_scrub_gcp_private_key(self):
+        text = '{"private_key": "-----BEGIN RSA PRIVATE KEY-----\\nMIIE..."}'
+        result = scrub_sensitive(text)
+        assert "BEGIN RSA PRIVATE KEY" not in result
+        assert "[SCRUBBED]" in result
+
+    def test_scrub_gcp_private_key_id(self):
+        text = '{"private_key_id": "abc123def456ghi789"}'
+        result = scrub_sensitive(text)
+        assert "abc123def456ghi789" not in result
+
+    def test_scrub_firebase_id_token(self):
+        text = '{"idToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.payload.signature"}'
+        result = scrub_sensitive(text)
+        assert "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9" not in result
+
+    def test_scrub_oidc_id_token(self):
+        text = '{"id_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.claims.sig"}'
+        result = scrub_sensitive(text)
+        assert "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9" not in result
+
+    def test_scrub_password_field(self):
+        text = '{"password": "hunter2"}'
+        result = scrub_sensitive(text)
+        assert "hunter2" not in result
+        assert "[SCRUBBED]" in result
+
+    def test_scrub_client_secret(self):
+        text = '{"client_secret": "GOCSPX-abc123xyz456"}'
+        result = scrub_sensitive(text)
+        assert "GOCSPX-abc123xyz456" not in result
+
+    def test_scrub_cookie_header(self):
+        text = "Cookie: session=abc123; token=xyz789"
+        result = scrub_sensitive(text)
+        assert "abc123" not in result
+        assert "xyz789" not in result
+
+    def test_scrub_set_cookie_header(self):
+        text = "Set-Cookie: auth_token=secretValue; Path=/; HttpOnly"
+        result = scrub_sensitive(text)
+        assert "secretValue" not in result
+
+    def test_scrub_x_api_key_header(self):
+        text = "x-api-key: my-secret-api-key-value"
+        result = scrub_sensitive(text)
+        assert "my-secret-api-key-value" not in result
+
+
+# ── Rate-Limit Cassette Fixture Validation Tests ──
+
+
+class TestRateLimitCassetteValidation:
+    """Tests validating the 10-call BashTool rate-limit cassette structure."""
+
+    @pytest.fixture()
+    def rate_limit_cassette(self) -> dict:
+        """Load the rate-limit cassette fixture."""
+        fixture_path = Path(__file__).parent / "fixtures" / "vcr" / "bash-rate-limit-10calls.json"
+        return json.loads(fixture_path.read_text())
+
+    def test_cassette_has_10_interactions(self, rate_limit_cassette: dict):
+        """Cassette contains exactly 10 interactions."""
+        assert len(rate_limit_cassette["interactions"]) == 10
+
+    def test_interaction_7_is_429(self, rate_limit_cassette: dict):
+        """Interaction #7 (0-indexed: 6) returns 429 rate-limit error."""
+        interaction = rate_limit_cassette["interactions"][6]
+        assert interaction["response"]["status_code"] == 429
+
+    def test_interaction_7_has_retry_after(self, rate_limit_cassette: dict):
+        """429 response includes Retry-After header."""
+        interaction = rate_limit_cassette["interactions"][6]
+        assert "Retry-After" in interaction["response"]["headers"]
+        assert interaction["response"]["headers"]["Retry-After"] == "60"
+
+    def test_recovery_after_429(self, rate_limit_cassette: dict):
+        """Interaction #8 (0-indexed: 7) returns 200 after rate-limit recovery."""
+        interaction = rate_limit_cassette["interactions"][7]
+        assert interaction["response"]["status_code"] == 200
+
+    def test_all_interactions_have_scrubbed_auth(self, rate_limit_cassette: dict):
+        """All interactions must have scrubbed Authorization headers."""
+        for interaction in rate_limit_cassette["interactions"]:
+            auth = interaction["request"]["headers"].get("Authorization", "")
+            assert "Bearer [SCRUBBED]" in auth, f"Unscrubbed auth in interaction: {interaction['request'].get('url')}"
+
+    def test_rate_limit_headers_progressive_decrease(self, rate_limit_cassette: dict):
+        """X-RateLimit-Remaining decreases progressively through calls 1-6."""
+        for i in range(6):
+            headers = rate_limit_cassette["interactions"][i]["response"]["headers"]
+            remaining = int(headers["X-RateLimit-Remaining"])
+            if i > 0:
+                prev_remaining = int(rate_limit_cassette["interactions"][i - 1]["response"]["headers"]["X-RateLimit-Remaining"])
+                assert remaining < prev_remaining, f"Rate limit not decreasing at interaction {i + 1}"
+
 
 # ── Request Fingerprinting Tests ──
 

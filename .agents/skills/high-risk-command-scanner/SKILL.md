@@ -3,6 +3,10 @@ name: High-Risk Command Scanner
 description: Heuristic scanner that detects and blocks dangerous command patterns before execution. Enforces the approval_envelope by catching patterns excluded from YOLO mode.
 ---
 
+<!-- GUARDRAIL: DEFENSIVE-SECURITY skill. Heuristic scanner that detects dangerous command
+     patterns (rm, sudo, force-push) before execution. Read-only detection — does NOT
+     execute or modify commands. Triggers STATE B (Clutch) on match. -->
+
 # High-Risk Command Scanner
 
 ## Purpose

@@ -23,6 +23,12 @@ Public API:
   - format_compact_summary: Strip <analysis> from raw summaries
 """
 
+from context_compactor.cache_break_detector import (
+    CacheAnchor,
+    CacheBreakDetector,
+    CacheBreakReport,
+    CacheBreakVector,
+)
 from context_compactor.api_context_management import (
     TOOLS_CLEARABLE_RESULTS,
     TOOLS_CLEARABLE_USES,
@@ -87,6 +93,11 @@ from context_compactor.session_memory_compact import (
 __all__ = [
     # Core orchestrator
     "ContextCompactor",
+    # Cache break detection (P1.2)
+    "CacheAnchor",
+    "CacheBreakDetector",
+    "CacheBreakReport",
+    "CacheBreakVector",
     # Session loop middleware
     "AutoCompactMiddleware",
     "AutoCompactTracker",

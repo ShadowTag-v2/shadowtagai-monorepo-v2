@@ -1,0 +1,242 @@
+{
+  "cassette_name": "bash-rate-limit-10calls",
+  "cassette_version": 1,
+  "metadata": {
+    "purpose": "10-call BashTool VCR cassette for rate-limit resilience testing",
+    "expected_behavior": "should_handle_rate_limits_gracefully",
+    "scenario": "Progressive rate-limit exhaustion with 429 at call #7, recovery at #8"
+  },
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json",
+          "X-Request-Sequence": "1"
+        },
+        "body": "{\"contents\":[{\"parts\":[{\"text\":\"ls -la /tmp\"}]}],\"tools\":[{\"functionDeclarations\":[{\"name\":\"bash\",\"parameters\":{\"command\":\"ls -la /tmp\"}}]}]}"
+      },
+      "response": {
+        "status_code": 200,
+        "headers": {
+          "X-RateLimit-Limit": "100",
+          "X-RateLimit-Remaining": "95",
+          "X-RateLimit-Reset": "1714694400"
+        },
+        "body": "{\"candidates\":[{\"content\":{\"parts\":[{\"functionCall\":{\"name\":\"bash\",\"args\":{\"command\":\"ls -la /tmp\"}}}]}}]}",
+        "elapsed_ms": 120.5
+      },
+      "recorded_at": "2026-05-02T15:00:00Z"
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json",
+          "X-Request-Sequence": "2"
+        },
+        "body": "{\"contents\":[{\"parts\":[{\"text\":\"cat /etc/hostname\"}]}]}"
+      },
+      "response": {
+        "status_code": 200,
+        "headers": {
+          "X-RateLimit-Limit": "100",
+          "X-RateLimit-Remaining": "80",
+          "X-RateLimit-Reset": "1714694400"
+        },
+        "body": "{\"candidates\":[{\"content\":{\"parts\":[{\"functionCall\":{\"name\":\"bash\",\"args\":{\"command\":\"cat /etc/hostname\"}}}]}}]}",
+        "elapsed_ms": 95.2
+      },
+      "recorded_at": "2026-05-02T15:00:01Z"
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json",
+          "X-Request-Sequence": "3"
+        },
+        "body": "{\"contents\":[{\"parts\":[{\"text\":\"echo $PATH\"}]}]}"
+      },
+      "response": {
+        "status_code": 200,
+        "headers": {
+          "X-RateLimit-Limit": "100",
+          "X-RateLimit-Remaining": "60",
+          "X-RateLimit-Reset": "1714694400"
+        },
+        "body": "{\"candidates\":[{\"content\":{\"parts\":[{\"functionCall\":{\"name\":\"bash\",\"args\":{\"command\":\"echo $PATH\"}}}]}}]}",
+        "elapsed_ms": 88.7
+      },
+      "recorded_at": "2026-05-02T15:00:02Z"
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json",
+          "X-Request-Sequence": "4"
+        },
+        "body": "{\"contents\":[{\"parts\":[{\"text\":\"pwd\"}]}]}"
+      },
+      "response": {
+        "status_code": 200,
+        "headers": {
+          "X-RateLimit-Limit": "100",
+          "X-RateLimit-Remaining": "40",
+          "X-RateLimit-Reset": "1714694400"
+        },
+        "body": "{\"candidates\":[{\"content\":{\"parts\":[{\"functionCall\":{\"name\":\"bash\",\"args\":{\"command\":\"pwd\"}}}]}}]}",
+        "elapsed_ms": 76.1
+      },
+      "recorded_at": "2026-05-02T15:00:03Z"
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json",
+          "X-Request-Sequence": "5"
+        },
+        "body": "{\"contents\":[{\"parts\":[{\"text\":\"whoami\"}]}]}"
+      },
+      "response": {
+        "status_code": 200,
+        "headers": {
+          "X-RateLimit-Limit": "100",
+          "X-RateLimit-Remaining": "20",
+          "X-RateLimit-Reset": "1714694400"
+        },
+        "body": "{\"candidates\":[{\"content\":{\"parts\":[{\"functionCall\":{\"name\":\"bash\",\"args\":{\"command\":\"whoami\"}}}]}}]}",
+        "elapsed_ms": 92.3
+      },
+      "recorded_at": "2026-05-02T15:00:04Z"
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json",
+          "X-Request-Sequence": "6"
+        },
+        "body": "{\"contents\":[{\"parts\":[{\"text\":\"date\"}]}]}"
+      },
+      "response": {
+        "status_code": 200,
+        "headers": {
+          "X-RateLimit-Limit": "100",
+          "X-RateLimit-Remaining": "5",
+          "X-RateLimit-Reset": "1714694400"
+        },
+        "body": "{\"candidates\":[{\"content\":{\"parts\":[{\"functionCall\":{\"name\":\"bash\",\"args\":{\"command\":\"date\"}}}]}}]}",
+        "elapsed_ms": 105.8
+      },
+      "recorded_at": "2026-05-02T15:00:05Z"
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json",
+          "X-Request-Sequence": "7"
+        },
+        "body": "{\"contents\":[{\"parts\":[{\"text\":\"uname -a\"}]}]}"
+      },
+      "response": {
+        "status_code": 429,
+        "headers": {
+          "X-RateLimit-Limit": "100",
+          "X-RateLimit-Remaining": "0",
+          "X-RateLimit-Reset": "1714694460",
+          "Retry-After": "60"
+        },
+        "body": "{\"error\":{\"code\":429,\"message\":\"Resource has been exhausted (e.g. check quota).\",\"status\":\"RESOURCE_EXHAUSTED\"}}",
+        "elapsed_ms": 45.2
+      },
+      "recorded_at": "2026-05-02T15:00:06Z"
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json",
+          "X-Request-Sequence": "8"
+        },
+        "body": "{\"contents\":[{\"parts\":[{\"text\":\"uname -a\"}]}]}"
+      },
+      "response": {
+        "status_code": 200,
+        "headers": {
+          "X-RateLimit-Limit": "100",
+          "X-RateLimit-Remaining": "99",
+          "X-RateLimit-Reset": "1714694520"
+        },
+        "body": "{\"candidates\":[{\"content\":{\"parts\":[{\"functionCall\":{\"name\":\"bash\",\"args\":{\"command\":\"uname -a\"}}}]}}]}",
+        "elapsed_ms": 130.4
+      },
+      "recorded_at": "2026-05-02T15:01:06Z"
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json",
+          "X-Request-Sequence": "9"
+        },
+        "body": "{\"contents\":[{\"parts\":[{\"text\":\"df -h\"}]}]}"
+      },
+      "response": {
+        "status_code": 200,
+        "headers": {
+          "X-RateLimit-Limit": "100",
+          "X-RateLimit-Remaining": "98",
+          "X-RateLimit-Reset": "1714694520"
+        },
+        "body": "{\"candidates\":[{\"content\":{\"parts\":[{\"functionCall\":{\"name\":\"bash\",\"args\":{\"command\":\"df -h\"}}}]}}]}",
+        "elapsed_ms": 88.9
+      },
+      "recorded_at": "2026-05-02T15:01:07Z"
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json",
+          "X-Request-Sequence": "10"
+        },
+        "body": "{\"contents\":[{\"parts\":[{\"text\":\"free -m\"}]}]}"
+      },
+      "response": {
+        "status_code": 200,
+        "headers": {
+          "X-RateLimit-Limit": "100",
+          "X-RateLimit-Remaining": "97",
+          "X-RateLimit-Reset": "1714694520"
+        },
+        "body": "{\"candidates\":[{\"content\":{\"parts\":[{\"functionCall\":{\"name\":\"bash\",\"args\":{\"command\":\"free -m\"}}}]}}]}",
+        "elapsed_ms": 91.6
+      },
+      "recorded_at": "2026-05-02T15:01:08Z"
+    }
+  ]
+}

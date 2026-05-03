@@ -35,6 +35,8 @@ export interface CompactionPipelineResult {
   budget: CompactionBudget;
   layersApplied: string[];
   circuitBroken: boolean;
+  /** Per-layer wall-clock timing in ms (populated when pipeline completes) */
+  layerTimings?: Record<string, number>;
 }
 
 /**
@@ -43,7 +45,7 @@ export interface CompactionPipelineResult {
  * @param messages - Raw conversation messages
  * @param totalWindow - Total context window size (default: 200K)
  * @param model - Model identifier for context window lookup
- * @returns Compacted messages with budget metadata
+ * @returns Compacted messages with budget metadata and per-layer timings
  */
 export async function runCompactionPipeline(
   messages: Record<string, unknown>[],
@@ -51,6 +53,7 @@ export async function runCompactionPipeline(
   model?: string,
 ): Promise<CompactionPipelineResult> {
   const layersApplied: string[] = [];
+  const layerTimings: Record<string, number> = {};
 
   // Circuit breaker check
   if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
@@ -64,25 +67,33 @@ export async function runCompactionPipeline(
 
   try {
     // Layer 4: Compute budget first (drives all other layers)
+    let t0 = performance.now();
     const budget = allocateTokenBudget(messages, totalWindow, model);
+    layerTimings.tokenBudget = performance.now() - t0;
     layersApplied.push('tokenBudget');
 
     // Layer 1: Strip and truncate tool outputs
+    t0 = performance.now();
     let compacted = apiMicrocompact(messages, budget.maxToolOutputLength);
+    layerTimings.apiMicrocompact = performance.now() - t0;
     layersApplied.push('apiMicrocompact');
 
     // Layer 2: Snip old conversation history by API-round groups
+    t0 = performance.now();
     compacted = historySnip(compacted, budget.historyLimit);
+    layerTimings.historySnip = performance.now() - t0;
     layersApplied.push('historySnip');
 
     // Layer 3: Collapse adjacent duplicates and error sequences
+    t0 = performance.now();
     compacted = contextCollapse(compacted, budget.totalLimit);
+    layerTimings.contextCollapse = performance.now() - t0;
     layersApplied.push('contextCollapse');
 
     // Success — reset circuit breaker
     consecutiveFailures = 0;
 
-    return { messages: compacted, budget, layersApplied, circuitBroken: false };
+    return { messages: compacted, budget, layersApplied, circuitBroken: false, layerTimings };
   } catch {
     consecutiveFailures++;
     return {
@@ -90,6 +101,7 @@ export async function runCompactionPipeline(
       budget: allocateTokenBudget(messages, totalWindow, model),
       layersApplied,
       circuitBroken: consecutiveFailures >= MAX_CONSECUTIVE_FAILURES,
+      layerTimings,
     };
   }
 }
