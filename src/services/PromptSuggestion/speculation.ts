@@ -1,7 +1,7 @@
-import { randomUUID } from 'crypto';
-import { rm } from 'fs';
-import { appendFile, copyFile, mkdir } from 'fs/promises';
-import { dirname, isAbsolute, join, relative } from 'path';
+import { randomUUID } from 'node:crypto';
+import { rm } from 'node:fs';
+import { appendFile, copyFile, mkdir } from 'node:fs/promises';
+import { dirname, isAbsolute, join, relative } from 'node:path';
 import { getCwdState } from '../../bootstrap/state.js';
 import type { CompletionBoundary } from '../../state/AppStateStore.js';
 import {
@@ -350,7 +350,7 @@ async function generatePipelinedSuggestion(
     if (pipelineAbortController.signal.aborted) return;
     if (shouldFilterSuggestion(suggestion, promptId)) return;
 
-    logForDebugging(`[Speculation] Pipelined suggestion: "${suggestion!.slice(0, 50)}..."`);
+    logForDebugging(`[Speculation] Pipelined suggestion: "${suggestion?.slice(0, 50)}..."`);
     updateActiveSpeculationState(setAppState, () => ({
       pipelinedSuggestion: {
         text: suggestion!,
@@ -712,7 +712,7 @@ export async function acceptSpeculation(
       timestamp: new Date().toISOString(),
       timeSavedMs,
     };
-    void appendFile(getTranscriptPath(), jsonStringify(entry) + '\n', {
+    void appendFile(getTranscriptPath(), `${jsonStringify(entry)}\n`, {
       mode: 0o600,
     }).catch(() => {
       logForDebugging('[Speculation] Failed to write speculation-accept to transcript');

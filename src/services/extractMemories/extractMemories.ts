@@ -14,7 +14,7 @@
  */
 
 import { feature } from 'bun:bundle';
-import { basename } from 'path';
+import { basename } from 'node:path';
 import { getIsRemoteMode } from '../../bootstrap/state.js';
 import type { CanUseToolFn } from '../../hooks/useCanUseTool.js';
 import { ENTRYPOINT_NAME } from '../../memdir/memdir.js';
@@ -329,7 +329,7 @@ export function initExtractMemories(): void {
       return;
     }
 
-    const teamMemoryEnabled = feature('TEAMMEM') ? teamMemPaths!.isTeamMemoryEnabled() : false;
+    const teamMemoryEnabled = feature('TEAMMEM') ? teamMemPaths?.isTeamMemoryEnabled() : false;
 
     const skipIndex = getFeatureValue_CACHED_MAY_BE_STALE('tengu_moth_copse', false);
 
@@ -415,7 +415,7 @@ export function initExtractMemories(): void {
       // Index file updates are mechanical — the agent touches MEMORY.md to add
       // a topic link, but the user-visible "memory" is the topic file itself.
       const memoryPaths = writtenPaths.filter((p) => basename(p) !== ENTRYPOINT_NAME);
-      const teamCount = feature('TEAMMEM') ? count(memoryPaths, teamMemPaths!.isTeamMemPath) : 0;
+      const teamCount = feature('TEAMMEM') ? count(memoryPaths, teamMemPaths?.isTeamMemPath) : 0;
 
       // Log extraction event with usage from the forked agent
       logEvent('tengu_extract_memories_extraction', {

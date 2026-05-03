@@ -929,7 +929,7 @@ function parsePipeline(P: ParseState): TsNode | null {
         const redirs = next.children.slice(1);
         // Wrap existing parts + op + inner as a pipeline
         const pipeKids = [...parts, op, inner];
-        const pipeNode = mk(P, 'pipeline', pipeKids[0]!.startIndex, inner.endIndex, pipeKids);
+        const pipeNode = mk(P, 'pipeline', pipeKids[0]?.startIndex, inner.endIndex, pipeKids);
         const lastR = redirs[redirs.length - 1]!;
         const wrapped = mk(P, 'redirected_statement', pipeNode.startIndex, lastR.endIndex, [
           pipeNode,
@@ -948,7 +948,7 @@ function parsePipeline(P: ParseState): TsNode | null {
   }
   if (parts.length === 1) return parts[0]!;
   const last = parts[parts.length - 1]!;
-  return mk(P, 'pipeline', parts[0]!.startIndex, last.endIndex, parts);
+  return mk(P, 'pipeline', parts[0]?.startIndex, last.endIndex, parts);
 }
 
 /** Parse a single command: simple, compound, or control structure. */
@@ -1123,7 +1123,7 @@ function parseSimpleCommand(P: ParseState): TsNode | null {
       return mk(
         P,
         'redirected_statement',
-        preRedirects[0]!.startIndex,
+        preRedirects[0]?.startIndex,
         last.endIndex,
         preRedirects,
       );
@@ -1131,7 +1131,7 @@ function parseSimpleCommand(P: ParseState): TsNode | null {
     if (assignments.length > 1 && preRedirects.length === 0) {
       // `A=1 B=2` with no command → variable_assignments (plural)
       const last = assignments[assignments.length - 1]!;
-      return mk(P, 'variable_assignments', assignments[0]!.startIndex, last.endIndex, assignments);
+      return mk(P, 'variable_assignments', assignments[0]?.startIndex, last.endIndex, assignments);
     }
     if (assignments.length > 0 || preRedirects.length > 0) {
       const all = [...assignments, ...preRedirects];
@@ -1162,7 +1162,7 @@ function parseSimpleCommand(P: ParseState): TsNode | null {
         if (
           body.type === 'redirected_statement' &&
           body.children.length >= 2 &&
-          body.children[0]!.type === 'compound_statement'
+          body.children[0]?.type === 'compound_statement'
         ) {
           bodyKids = body.children;
         }
@@ -1279,8 +1279,8 @@ function parseSimpleCommand(P: ParseState): TsNode | null {
   // before command_name per tree-sitter grammar, not in redirected_statement
   const cmdChildren = [...assignments, ...preRedirects, cmdName, ...args];
   const cmdEnd =
-    cmdChildren.length > 0 ? cmdChildren[cmdChildren.length - 1]!.endIndex : cmdName.endIndex;
-  const cmdStart = cmdChildren[0]!.startIndex;
+    cmdChildren.length > 0 ? cmdChildren[cmdChildren.length - 1]?.endIndex : cmdName.endIndex;
+  const cmdStart = cmdChildren[0]?.startIndex;
   const cmd = mk(P, 'command', cmdStart, cmdEnd, cmdChildren);
 
   if (heredocRedirect) {
@@ -1303,7 +1303,7 @@ function parseSimpleCommand(P: ParseState): TsNode | null {
     const allR = [...preRedirects, heredocRedirect, ...redirects];
     const rStart =
       preRedirects.length > 0
-        ? Math.min(cmd.startIndex, preRedirects[0]!.startIndex)
+        ? Math.min(cmd.startIndex, preRedirects[0]?.startIndex)
         : cmd.startIndex;
     return mk(P, 'redirected_statement', rStart, heredocRedirect.endIndex, [cmd, ...allR]);
   }
@@ -1651,7 +1651,7 @@ function tryParseRedirect(P: ParseState, greedy = false): TsNode | null {
         if (pipeCmds.length > 0) {
           const pl = pipeCmds[pipeCmds.length - 1]!;
           // tree-sitter always wraps in pipeline after `|`, even single command
-          kids.push(mk(P, 'pipeline', pipeCmds[0]!.startIndex, pl.endIndex, pipeCmds));
+          kids.push(mk(P, 'pipeline', pipeCmds[0]?.startIndex, pl.endIndex, pipeCmds));
         }
         continue;
       }
@@ -1758,7 +1758,7 @@ function parseProcessSub(P: ParseState): TsNode | null {
   const start = P.L.b;
   advance(P.L);
   advance(P.L);
-  const open = mk(P, c + '(', start, P.L.b, []);
+  const open = mk(P, `${c}(`, start, P.L.b, []);
   const body = parseStatements(P, ')');
   skipBlanks(P.L);
   let close: TsNode;
@@ -2363,11 +2363,11 @@ function parseDollarLike(P: ParseState): TsNode | null {
     // tree-sitter emits (command_substitution (file_redirect (word))) directly
     if (
       body.length === 1 &&
-      body[0]!.type === 'redirected_statement' &&
-      body[0]!.children.length === 1 &&
-      body[0]!.children[0]!.type === 'file_redirect'
+      body[0]?.type === 'redirected_statement' &&
+      body[0]?.children.length === 1 &&
+      body[0]?.children[0]?.type === 'file_redirect'
     ) {
-      body = body[0]!.children;
+      body = body[0]?.children;
     }
     return mk(P, 'command_substitution', dStart, close.endIndex, [open, ...body, close]);
   }
@@ -2646,7 +2646,7 @@ function parseExpansionBody(P: ParseState): TsNode[] {
           if (
             repl.type === 'concatenation' &&
             repl.children.length === 2 &&
-            repl.children[0]!.type === 'command_substitution'
+            repl.children[0]?.type === 'command_substitution'
           ) {
             out.push(repl.children[0]!);
             out.push(repl.children[1]!);
@@ -2869,7 +2869,7 @@ function parseExpansionRest(P: ParseState, nodeType: string, stopAtSlash: boolea
   // there's content after: `${2+ ${2}}` → just (expansion). But `${v:- }`
   // (space-only RHS) keeps the space as (word). So drop leading whitespace-
   // only word segment if it's NOT the only part.
-  if (parts.length > 1 && parts[0]!.type === 'word' && /^[ \t]+$/.test(parts[0]!.text)) {
+  if (parts.length > 1 && parts[0]?.type === 'word' && /^[ \t]+$/.test(parts[0]?.text)) {
     parts.shift();
   }
   if (parts.length === 0) return null;
@@ -2877,7 +2877,7 @@ function parseExpansionRest(P: ParseState, nodeType: string, stopAtSlash: boolea
   // Multiple parts: wrap in concatenation (word mode keeps concat wrapping;
   // regex mode also concats per tree-sitter for mixed quote+glob patterns).
   const last = parts[parts.length - 1]!;
-  return mk(P, 'concatenation', parts[0]!.startIndex, last.endIndex, parts);
+  return mk(P, 'concatenation', parts[0]?.startIndex, last.endIndex, parts);
 }
 
 // Pattern for # ## % %% operators — per grammar _expansion_regex:
@@ -3417,7 +3417,7 @@ function parseFunction(P: ParseState, fnTok: Token): TsNode {
     if (
       body.type === 'redirected_statement' &&
       body.children.length >= 2 &&
-      body.children[0]!.type === 'compound_statement'
+      body.children[0]?.type === 'compound_statement'
     ) {
       kids.push(...body.children);
     } else {

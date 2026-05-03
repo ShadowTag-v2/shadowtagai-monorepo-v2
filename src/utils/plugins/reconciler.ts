@@ -7,8 +7,8 @@
  * - reconcileMarketplaces(): bundled diff + install (I/O, idempotent, additive)
  */
 
+import { isAbsolute, resolve } from 'node:path';
 import isEqual from 'lodash-es/isEqual.js';
-import { isAbsolute, resolve } from 'path';
 import { getOriginalCwd } from '../../bootstrap/state.js';
 import { logForDebugging } from '../debug.js';
 import { errorMessage } from '../errors.js';
@@ -138,7 +138,7 @@ export async function reconcileMarketplaces(opts?: ReconcileOptions): Promise<Re
     ...diff.missing.map(
       (name): WorkItem => ({
         name,
-        source: normalizeSource(declared[name]!.source),
+        source: normalizeSource(declared[name]?.source),
         action: 'install',
       }),
     ),

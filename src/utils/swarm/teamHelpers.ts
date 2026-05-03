@@ -1,6 +1,6 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { mkdir, readFile, rm, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { z } from 'zod/v4';
 import { getSessionCreatedTeams } from '../../bootstrap/state.js';
 import { logForDebugging } from '../debug.js';
@@ -454,7 +454,7 @@ async function destroyWorktree(worktreePath: string): Promise<void> {
     const gitFileContent = (await readFile(gitFilePath, 'utf-8')).trim();
     // The .git file contains something like: gitdir: /path/to/repo/.git/worktrees/worktree-name
     const match = gitFileContent.match(/^gitdir:\s*(.+)$/);
-    if (match && match[1]) {
+    if (match?.[1]) {
       // Extract the main repo .git directory (go up from .git/worktrees/name to .git)
       const worktreeGitDir = match[1];
       // Go up 2 levels from .git/worktrees/name to get to .git, then get parent for repo root

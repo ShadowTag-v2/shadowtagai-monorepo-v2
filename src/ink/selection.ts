@@ -288,7 +288,7 @@ export function findPlainTextUrlAt(screen: Screen, col: number, row: number): st
   }
 
   let token = '';
-  for (let i = lo; i <= hi; i++) token += cellAt(screen, i, row)!.char;
+  for (let i = lo; i <= hi; i++) token += cellAt(screen, i, row)?.char;
 
   // 1 cell = 1 char across [lo, hi] (ASCII-only run), so string index =
   // column offset. Find the last scheme anchor at or before the click —

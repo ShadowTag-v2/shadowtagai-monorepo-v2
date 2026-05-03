@@ -9,10 +9,10 @@
 // File format:
 //   { "tasks": [{ id, cron, prompt, createdAt, recurring?, permanent? }] }
 
-import { randomUUID } from 'crypto';
-import { readFileSync } from 'fs';
-import { mkdir, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { randomUUID } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import {
   addSessionCronTask,
   getProjectRoot,
@@ -165,7 +165,7 @@ export async function writeCronTasks(tasks: CronTask[], dir?: string): Promise<v
   const body: CronFile = {
     tasks: tasks.map(({ durable: _durable, ...rest }) => rest),
   };
-  await writeFile(getCronFilePath(root), jsonStringify(body, null, 2) + '\n', 'utf-8');
+  await writeFile(getCronFilePath(root), `${jsonStringify(body, null, 2)}\n`, 'utf-8');
 }
 
 /**

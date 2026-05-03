@@ -155,7 +155,7 @@ export async function execHttpHook(
       const hookVars = hook.allowedEnvVars ?? [];
       const effectiveVars =
         policy.allowedEnvVars !== undefined
-          ? hookVars.filter((v) => policy.allowedEnvVars!.includes(v))
+          ? hookVars.filter((v) => policy.allowedEnvVars?.includes(v))
           : hookVars;
       const allowedEnvVars = new Set(effectiveVars);
       for (const [name, value] of Object.entries(hook.headers)) {

@@ -1,7 +1,7 @@
 import { feature } from 'bun:bundle';
-import { randomBytes } from 'crypto';
-import { open } from 'fs/promises';
-import { join } from 'path';
+import { randomBytes } from 'node:crypto';
+import { open } from 'node:fs/promises';
+import { join } from 'node:path';
 import type { ModelUsage } from '../entrypoints/agentSdkTypes.js';
 import { logForDebugging } from './debug.js';
 import { getClaudeConfigHomeDir } from './envUtils.js';
@@ -295,15 +295,15 @@ export function mergeCacheWithNewStats(
   for (const [model, usage] of Object.entries(newStats.modelUsage)) {
     if (modelUsage[model]) {
       modelUsage[model] = {
-        inputTokens: modelUsage[model]!.inputTokens + usage.inputTokens,
-        outputTokens: modelUsage[model]!.outputTokens + usage.outputTokens,
-        cacheReadInputTokens: modelUsage[model]!.cacheReadInputTokens + usage.cacheReadInputTokens,
+        inputTokens: modelUsage[model]?.inputTokens + usage.inputTokens,
+        outputTokens: modelUsage[model]?.outputTokens + usage.outputTokens,
+        cacheReadInputTokens: modelUsage[model]?.cacheReadInputTokens + usage.cacheReadInputTokens,
         cacheCreationInputTokens:
-          modelUsage[model]!.cacheCreationInputTokens + usage.cacheCreationInputTokens,
-        webSearchRequests: modelUsage[model]!.webSearchRequests + usage.webSearchRequests,
-        costUSD: modelUsage[model]!.costUSD + usage.costUSD,
-        contextWindow: Math.max(modelUsage[model]!.contextWindow, usage.contextWindow),
-        maxOutputTokens: Math.max(modelUsage[model]!.maxOutputTokens, usage.maxOutputTokens),
+          modelUsage[model]?.cacheCreationInputTokens + usage.cacheCreationInputTokens,
+        webSearchRequests: modelUsage[model]?.webSearchRequests + usage.webSearchRequests,
+        costUSD: modelUsage[model]?.costUSD + usage.costUSD,
+        contextWindow: Math.max(modelUsage[model]?.contextWindow, usage.contextWindow),
+        maxOutputTokens: Math.max(modelUsage[model]?.maxOutputTokens, usage.maxOutputTokens),
       };
     } else {
       modelUsage[model] = { ...usage };

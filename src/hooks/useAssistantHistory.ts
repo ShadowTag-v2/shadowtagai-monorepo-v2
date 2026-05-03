@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { type RefObject, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import {
   createHistoryAuthCtx,
@@ -124,7 +124,7 @@ export function useAssistantHistory({ config, setMessages, scrollRef, onPrepend 
       );
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps -- scrollRef is a stable ref; mkSentinel reads refs only
-    [setMessages],
+    [setMessages, scrollRef.current, mkSentinel],
   );
 
   // Initial fetch on mount — best-effort.
@@ -145,7 +145,7 @@ export function useAssistantHistory({ config, setMessages, scrollRef, onPrepend 
     };
     // config identity is stable (created once in main.tsx, never recreated)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled]);
+  }, [enabled, config.sessionId, config, prepend]);
 
   const loadOlder = useCallback(async () => {
     if (!enabled || inflightRef.current) return;
@@ -174,7 +174,7 @@ export function useAssistantHistory({ config, setMessages, scrollRef, onPrepend 
       inflightRef.current = false;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- mkSentinel reads refs only
-  }, [enabled, prepend, setMessages]);
+  }, [enabled, prepend, setMessages, mkSentinel]);
 
   // Scroll-anchor compensation — after React commits the prepended items,
   // shift scrollTop by the height delta so the viewport stays put. Also

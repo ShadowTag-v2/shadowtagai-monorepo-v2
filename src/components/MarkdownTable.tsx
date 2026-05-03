@@ -163,7 +163,7 @@ export function MarkdownTable({ token, highlight, forceWidth }: Props): React.Re
     let maxLines = 1;
     // Check header
     for (let i_1 = 0; i_1 < token.header.length; i_1++) {
-      const content = formatCell(token.header[i_1]!.tokens);
+      const content = formatCell(token.header[i_1]?.tokens);
       const wrapped = wrapText(content, columnWidths[i_1]!, {
         hard: needsHardWrap,
       });
@@ -224,7 +224,7 @@ export function MarkdownTable({ token, highlight, forceWidth }: Props): React.Re
         const width_0 = columnWidths[colIndex_2]!;
         // Headers always centered; data uses table alignment
         const align = isHeader ? 'center' : (token.align?.[colIndex_2] ?? 'left');
-        line += ' ' + padAligned(lineText, stringWidth(lineText), width_0, align) + ' │';
+        line += ` ${padAligned(lineText, stringWidth(lineText), width_0, align)} │`;
       }
       result.push(line);
     }

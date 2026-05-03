@@ -177,9 +177,9 @@ export function attachTelemetrySink(newSink: TelemetrySink): void {
     queueMicrotask(() => {
       for (const { event, async: isAsync } of queuedEvents) {
         if (isAsync) {
-          void sink!.logEventAsync(event);
+          void sink?.logEventAsync(event);
         } else {
-          sink!.logEvent(event);
+          sink?.logEvent(event);
         }
       }
     });

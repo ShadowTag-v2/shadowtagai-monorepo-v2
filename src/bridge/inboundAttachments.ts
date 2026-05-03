@@ -10,11 +10,11 @@
  * skips that attachment. The message still reaches Claude, just without @path.
  */
 
+import { randomUUID } from 'node:crypto';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { basename, join } from 'node:path';
 import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
 import axios from 'axios';
-import { randomUUID } from 'crypto';
-import { mkdir, writeFile } from 'fs/promises';
-import { basename, join } from 'path';
 import { z } from 'zod/v4';
 import { getSessionId } from '../bootstrap/state.js';
 import { logForDebugging } from '../utils/debug.js';
@@ -129,7 +129,7 @@ export async function resolveInboundAttachments(attachments: InboundAttachment[]
   if (ok.length === 0) return '';
   // Quoted form — extractAtMentionedFiles truncates unquoted @refs at the
   // first space, which breaks any home dir with spaces (/Users/John Smith/).
-  return ok.map((p) => `@"${p}"`).join(' ') + ' ';
+  return `${ok.map((p) => `@"${p}"`).join(' ')} `;
 }
 
 /**

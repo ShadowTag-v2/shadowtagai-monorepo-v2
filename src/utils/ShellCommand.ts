@@ -1,6 +1,6 @@
-import type { ChildProcess } from 'child_process';
-import { stat } from 'fs/promises';
-import type { Readable } from 'stream';
+import type { ChildProcess } from 'node:child_process';
+import { stat } from 'node:fs/promises';
+import type { Readable } from 'node:stream';
 import treeKill from 'tree-kill';
 import { generateTaskId } from '../Task.js';
 import { formatDuration } from './format.js';
@@ -78,9 +78,9 @@ class StreamWrapper {
     const str = typeof data === 'string' ? data : data.toString();
 
     if (this.#isStderr) {
-      this.#taskOutput!.writeStderr(str);
+      this.#taskOutput?.writeStderr(str);
     } else {
-      this.#taskOutput!.writeStdout(str);
+      this.#taskOutput?.writeStdout(str);
     }
   }
 
@@ -89,7 +89,7 @@ class StreamWrapper {
       return;
     }
     this.#isCleanedUp = true;
-    this.#stream!.removeListener('data', this.#onData);
+    this.#stream?.removeListener('data', this.#onData);
     // Release references so the stream, its StringDecoder, and
     // the TaskOutput can be GC'd independently of this wrapper.
     this.#stream = null;

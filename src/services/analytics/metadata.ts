@@ -6,7 +6,7 @@
  * event metadata across all analytics systems (Datadog, 1P).
  */
 
-import { extname } from 'path';
+import { extname } from 'node:path';
 import memoize from 'lodash-es/memoize.js';
 import { env, getHostPlatformForAnalytics } from '../../utils/env.js';
 import { envDynamic } from '../../utils/envDynamic.js';
@@ -289,7 +289,7 @@ export function extractToolInputForTelemetry(input: unknown): string | undefined
   const truncated = truncateToolInputValue(input);
   let json = jsonStringify(truncated);
   if (json.length > TOOL_INPUT_MAX_JSON_CHARS) {
-    json = json.slice(0, TOOL_INPUT_MAX_JSON_CHARS) + '…[truncated]';
+    json = `${json.slice(0, TOOL_INPUT_MAX_JSON_CHARS)}…[truncated]`;
   }
   return json;
 }
@@ -394,7 +394,7 @@ export function getFileExtensionsFromBashCommand(
       const ext = getFileExtensionForAnalytics(arg);
       if (ext && !seen.has(ext)) {
         seen.add(ext);
-        result = result ? result + ',' + ext : ext;
+        result = result ? `${result},${ext}` : ext;
       }
     }
   }

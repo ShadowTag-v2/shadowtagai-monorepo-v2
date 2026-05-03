@@ -1,6 +1,5 @@
+import { homedir } from 'node:os';
 import figures from 'figures';
-import { homedir } from 'os';
-import * as React from 'react';
 import { Box, Text } from '../../ink.js';
 import type { Step } from '../../projectOnboardingState.js';
 import { formatCreditAmount, getCachedReferrerReward } from '../../services/api/referral.js';

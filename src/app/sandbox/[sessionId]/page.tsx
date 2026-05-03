@@ -205,7 +205,7 @@ export default function SandboxSessionPage() {
 
     void hydrateAndFetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionId, matterId, track]);
+  }, [sessionId, matterId, track, state.matterId]);
 
   // ── Handle attorney decision ──────────────────────────────
   const handleDecision = useCallback(

@@ -73,7 +73,7 @@ async function isMarketplacePluginRelevant(
   }
   if (signals.filePath && context?.readFileState) {
     const readFiles = cacheKeys(context.readFileState);
-    if (readFiles.some((fp) => signals.filePath!.test(fp))) {
+    if (readFiles.some((fp) => signals.filePath?.test(fp))) {
       return true;
     }
   }

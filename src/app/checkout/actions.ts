@@ -21,7 +21,7 @@ import { logEvent, TELEMETRY_EVENTS } from '@/lib/telemetry';
  *
  * "A UI spinner is useless if a page refresh bypasses it."
  */
-export async function processOrderAction(prevState: unknown, formData: FormData) {
+export async function processOrderAction(_prevState: unknown, formData: FormData) {
   const idempotencyKey = formData.get('idempotencyKey') as string;
   const orderData = formData.get('orderData') as string;
 
@@ -32,7 +32,6 @@ export async function processOrderAction(prevState: unknown, formData: FormData)
   // ──────────────────────────────────────────────────────
   const isNew = await checkIdempotency(idempotencyKey);
   if (!isNew) {
-    console.warn(`[AGNT_OS] Blocked duplicate order submission: ${idempotencyKey}`);
     logEvent(
       TELEMETRY_EVENTS.IDEMPOTENCY_LOCK_REJECTED,
       {

@@ -1,10 +1,10 @@
+import { randomUUID } from 'node:crypto';
+import { appendFile, mkdir, readdir, unlink, writeFile } from 'node:fs/promises';
+import * as path from 'node:path';
 import type { HrTime } from '@opentelemetry/api';
 import { type ExportResult, ExportResultCode } from '@opentelemetry/core';
 import type { LogRecordExporter, ReadableLogRecord } from '@opentelemetry/sdk-logs';
 import axios from 'axios';
-import { randomUUID } from 'crypto';
-import { appendFile, mkdir, readdir, unlink, writeFile } from 'fs/promises';
-import * as path from 'path';
 import type { CoreUserData } from 'src/utils/user.js';
 import { getIsNonInteractiveSession, getSessionId } from '../../bootstrap/state.js';
 import { ClaudeCodeInternalEvent } from '../../types/generated/events_mono/claude_code/v1/claude_code_internal_event.js';
@@ -163,7 +163,7 @@ export class FirstPartyEventLoggingExporter implements LogRecordExporter {
         // Ensure storage directory exists
         await mkdir(getStorageDir(), { recursive: true });
         // Write as JSON lines (one event per line)
-        const content = events.map((e) => jsonStringify(e)).join('\n') + '\n';
+        const content = `${events.map((e) => jsonStringify(e)).join('\n')}\n`;
         await writeFile(filePath, content, 'utf8');
       }
     } catch (error) {
@@ -180,7 +180,7 @@ export class FirstPartyEventLoggingExporter implements LogRecordExporter {
       // Ensure storage directory exists
       await mkdir(getStorageDir(), { recursive: true });
       // Append as JSON lines (one event per line) - atomic on most filesystems
-      const content = events.map((e) => jsonStringify(e)).join('\n') + '\n';
+      const content = `${events.map((e) => jsonStringify(e)).join('\n')}\n`;
       await appendFile(filePath, content, 'utf8');
     } catch (error) {
       logError(error);

@@ -1,5 +1,5 @@
 import figures from 'figures';
-import React, { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import type { CommandResultDisplay } from '../../commands.js';
 import { Box, color, Link, Text, useTheme } from '../../ink.js';
@@ -87,7 +87,7 @@ function groupServersByScope(serverList: ServerInfo[]): Map<ConfigScope, ServerI
     if (!groups.has(scope)) {
       groups.set(scope, []);
     }
-    groups.get(scope)!.push(server);
+    groups.get(scope)?.push(server);
   }
   // Sort servers within each group alphabetically
   for (const [, groupServers] of groups) {

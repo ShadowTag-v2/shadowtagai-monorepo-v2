@@ -1,5 +1,5 @@
 import { feature } from 'bun:bundle';
-import { join } from 'path';
+import { join } from 'node:path';
 import { getFsImplementation } from '../utils/fsOperations.js';
 import { getAutoMemPath, isAutoMemoryEnabled } from './paths.js';
 
@@ -435,9 +435,9 @@ export async function loadMemoryPrompt(): Promise<string | null> {
       : undefined;
 
   if (feature('TEAMMEM')) {
-    if (teamMemPaths!.isTeamMemoryEnabled()) {
+    if (teamMemPaths?.isTeamMemoryEnabled()) {
       const autoDir = getAutoMemPath();
-      const teamDir = teamMemPaths!.getTeamMemPath();
+      const teamDir = teamMemPaths?.getTeamMemPath();
       // Harness guarantees these directories exist so the model can write
       // without checking. The prompt text reflects this ("already exists").
       // Only creating teamDir is sufficient: getTeamMemPath() is defined as
@@ -452,7 +452,7 @@ export async function loadMemoryPrompt(): Promise<string | null> {
       logMemoryDirCounts(teamDir, {
         memory_type: 'team' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       });
-      return teamMemPrompts!.buildCombinedMemoryPrompt(extraGuidelines, skipIndex);
+      return teamMemPrompts?.buildCombinedMemoryPrompt(extraGuidelines, skipIndex);
     }
   }
 

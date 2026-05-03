@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { useExitOnCtrlCDWithKeybindings } from '../../hooks/useExitOnCtrlCDWithKeybindings.js';
 import { Box, Text } from '../../ink.js';

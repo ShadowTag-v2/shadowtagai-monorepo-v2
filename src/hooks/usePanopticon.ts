@@ -138,7 +138,7 @@ export function usePanopticon(): PanopticonActions {
       );
     };
 
-    const handleRejection = (event: PromiseRejectionEvent) => {
+    const handleRejection = (_event: PromiseRejectionEvent) => {
       logEvent(
         TELEMETRY_EVENTS.UNHANDLED_ERROR,
         {

@@ -18,9 +18,9 @@ import {
 import { FileTooLargeError, readFileInRange } from './readFileInRange.js';
 import { expandPath } from './path.js';
 import { countCharInString } from './stringUtils.js';
-import { count, uniq } from './array.js';
+import { uniq } from './array.js';
 import { getFsImplementation } from './fsOperations.js';
-import { readdir, stat } from 'fs/promises';
+import { readdir, stat } from 'node:fs/promises';
 import type { IDESelection } from '../hooks/useIdeSelection.js';
 import { TODO_WRITE_TOOL_NAME } from '../tools/TodoWriteTool/constants.js';
 import { TASK_CREATE_TOOL_NAME } from '../tools/TaskCreateTool/constants.js';
@@ -32,14 +32,12 @@ import { type Task, listTasks, getTaskListId, isTodoV2Enabled } from './tasks.js
 import { getPlanFilePath, getPlan } from './plans.js';
 import { getConnectedIdeName } from './ide.js';
 import {
-  filterInjectedMemoryFiles,
   getManagedAndUserConditionalRules,
-  getMemoryFiles,
   getMemoryFilesForNestedDirectory,
   getConditionalRulesForCwdLevelDirectory,
   type MemoryFileInfo,
 } from './claudemd.js';
-import { dirname, parse, relative, resolve } from 'path';
+import { dirname, parse, relative, resolve } from 'node:path';
 import { getCwd } from 'src/utils/cwd.js';
 import { getViewedTeammateTask } from '../state/selectors.js';
 import { logError } from './log.js';
@@ -53,7 +51,7 @@ import {
   getImagePasteIds,
   isValidImagePaste,
 } from 'src/types/textInputTypes.js';
-import { randomUUID, type UUID } from 'crypto';
+import { randomUUID, type UUID } from 'node:crypto';
 import { getSettings_DEPRECATED } from './settings/settings.js';
 import { getSnippetForTwoFileDiff } from 'src/tools/FileEditTool/utils.js';
 import type {
@@ -63,8 +61,6 @@ import type {
 } from '@anthropic-ai/sdk/resources/messages.mjs';
 import { maybeResizeAndDownsampleImageBlock } from './imageResizer.js';
 import type { PastedContent } from './config.js';
-import { getGlobalConfig } from './config.js';
-import { getDefaultSonnetModel, getDefaultHaikuModel, getDefaultOpusModel } from './model/model.js';
 import type { ReadResourceResult } from '@modelcontextprotocol/sdk/types.js';
 import { getSkillToolCommands, getMcpSkillCommands } from '../commands.js';
 import type { Command } from '../types/command.js';
@@ -3366,7 +3362,7 @@ async function getTeammateMailboxAttachments(
   const idleAgentByIndex = new Map<number, string>();
   const latestIdleByAgent = new Map<string, number>();
   for (let i = 0; i < allMessages.length; i++) {
-    const idle = isIdleNotification(allMessages[i]!.text);
+    const idle = isIdleNotification(allMessages[i]?.text);
     if (idle) {
       idleAgentByIndex.set(i, idle.from);
       latestIdleByAgent.set(idle.from, i);

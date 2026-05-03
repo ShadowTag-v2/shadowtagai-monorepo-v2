@@ -1,6 +1,6 @@
 import { feature } from 'bun:bundle';
+import { randomUUID } from 'node:crypto';
 import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
-import { randomUUID } from 'crypto';
 import last from 'lodash-es/last.js';
 import { getSessionId, isSessionPersistenceDisabled } from 'src/bootstrap/state.js';
 import type {
@@ -1175,8 +1175,8 @@ export async function* ask({
     ...(feature('HISTORY_SNIP')
       ? {
           snipReplay: (yielded: Message, store: Message[]) => {
-            if (!snipProjection!.isSnipBoundaryMessage(yielded)) return undefined;
-            return snipModule!.snipCompactIfNeeded(store, { force: true });
+            if (!snipProjection?.isSnipBoundaryMessage(yielded)) return undefined;
+            return snipModule?.snipCompactIfNeeded(store, { force: true });
           },
         }
       : {}),

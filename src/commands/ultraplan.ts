@@ -1,6 +1,6 @@
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 import type { Command } from 'commander';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { dirname, join } from 'path';
 import { logEvent } from '../services/analytics/index.js';
 
 /**
@@ -175,7 +175,6 @@ export function registerUltraplanCommand(program: Command) {
         console.log(`\nUltraplan complete in ${totalDuration}ms.`);
       } catch (e: any) {
         logEvent('tengu_ultraplan_error', { error: e.message });
-        console.error('Ultraplan execution failed:', e.message);
         process.exitCode = 1;
       }
     });

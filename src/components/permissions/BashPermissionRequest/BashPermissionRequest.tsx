@@ -284,7 +284,7 @@ function BashPermissionRequestInner({
           ? toolUseConfirm.permissionResult.suggestions
           : undefined,
       ).filter((r) => r.toolName === BashTool.name && r.ruleContent);
-      return backendBashRules.length === 1 ? backendBashRules[0]!.ruleContent : undefined;
+      return backendBashRules.length === 1 ? backendBashRules[0]?.ruleContent : undefined;
     }
     const two = getSimpleCommandPrefix(command);
     if (two) return `${two}:*`;
@@ -393,6 +393,8 @@ function BashPermissionRequestInner({
       noInputMode,
       editablePrefix,
       onEditablePrefixChange,
+      setRejectFeedback,
+      setAcceptFeedback,
     ],
   );
 

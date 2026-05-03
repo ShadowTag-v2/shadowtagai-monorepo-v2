@@ -1,6 +1,5 @@
 import figures from 'figures';
-import * as React from 'react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { useDebounceCallback } from 'usehooks-ts';
 import {
@@ -8,7 +7,6 @@ import {
   validateDirectoryForWorkspace,
 } from '../../../commands/add-dir/validation.js';
 import TextInput from '../../../components/TextInput.js';
-import type { KeyboardEvent } from '../../../ink/events/keyboard-event.js';
 import { Box, Text } from '../../../ink.js';
 import { useKeybinding } from '../../../keybindings/useKeybinding.js';
 import type { ToolPermissionContext } from '../../../Tool.js';
@@ -18,10 +16,7 @@ import { Select } from '../../CustomSelect/select.js';
 import { Byline } from '../../design-system/Byline.js';
 import { Dialog } from '../../design-system/Dialog.js';
 import { KeyboardShortcutHint } from '../../design-system/KeyboardShortcutHint.js';
-import {
-  PromptInputFooterSuggestions,
-  type SuggestionItem,
-} from '../../PromptInput/PromptInputFooterSuggestions.js';
+import { PromptInputFooterSuggestions } from '../../PromptInput/PromptInputFooterSuggestions.js';
 
 type Props = {
   onAddDirectory: (path: string, remember?: boolean) => void;
@@ -224,7 +219,7 @@ export function AddWorkspaceDirectory(t0) {
   let t5;
   if ($[6] === Symbol.for('react.memo_cache_sentinel')) {
     t5 = (suggestion) => {
-      const newPath = suggestion.id + '/';
+      const newPath = `${suggestion.id}/`;
       setDirectoryInput(newPath);
       setError(null);
     };
@@ -276,7 +271,7 @@ export function AddWorkspaceDirectory(t0) {
           e.preventDefault();
           const suggestion_1 = suggestions[selectedSuggestion];
           if (suggestion_1) {
-            handleSubmit(suggestion_1.id + '/');
+            handleSubmit(`${suggestion_1.id}/`);
           }
           return;
         }

@@ -1,5 +1,5 @@
 import { feature } from 'bun:bundle';
-import { basename } from 'path';
+import { basename } from 'node:path';
 import { useCallback, useEffect, useRef } from 'react';
 import { getSessionId } from '../../bootstrap/state.js';
 import type { Command } from '../../commands.js';
@@ -608,7 +608,7 @@ export function useManageMCPConnections(
                 fetchCommandsForClient.cache.delete(client.name);
                 const [mcpPrompts, mcpSkills] = await Promise.all([
                   fetchCommandsForClient(client),
-                  feature('MCP_SKILLS') ? fetchMcpSkillsForClient!(client) : Promise.resolve([]),
+                  feature('MCP_SKILLS') ? fetchMcpSkillsForClient?.(client) : Promise.resolve([]),
                 ]);
                 updateServer({
                   ...client,
@@ -644,12 +644,12 @@ export function useManageMCPConnections(
                     // Invalidate prompts cache as well: we write commands here,
                     // and a concurrent prompts/list_changed could otherwise have
                     // us stomp its fresh result with our cached stale one.
-                    fetchMcpSkillsForClient!.cache.delete(client.name);
+                    fetchMcpSkillsForClient?.cache.delete(client.name);
                     fetchCommandsForClient.cache.delete(client.name);
                     const [newResources, mcpPrompts, mcpSkills] = await Promise.all([
                       fetchResourcesForClient(client),
                       fetchCommandsForClient(client),
-                      fetchMcpSkillsForClient!(client),
+                      fetchMcpSkillsForClient?.(client),
                     ]);
                     updateServer({
                       ...client,
@@ -682,7 +682,7 @@ export function useManageMCPConnections(
           break;
       }
     },
-    [updateServer],
+    [updateServer, setAppState, addNotification],
   );
 
   // Initialize all servers to pending state if they don't exist in appState.
@@ -691,7 +691,7 @@ export function useManageMCPConnections(
   // that no longer appear in configs — prevents ghost tools from disabled plugins.
   // Skip claude.ai dedup here to avoid blocking on the network fetch; the connect
   // useEffect below runs immediately after and dedups before connecting.
-  const sessionId = getSessionId();
+  const _sessionId = getSessionId();
   useEffect(() => {
     async function initializeServersAsPending() {
       const { servers: existingConfigs, errors: mcpErrors } = isStrictMcpConfig
@@ -761,7 +761,7 @@ export function useManageMCPConnections(
         `Failed to initialize servers as pending: ${errorMessage(error)}`,
       );
     });
-  }, [isStrictMcpConfig, dynamicMcpConfig, setAppState, sessionId, _pluginReconnectKey]);
+  }, [isStrictMcpConfig, dynamicMcpConfig, setAppState]);
 
   // Load MCP configs and connect to servers
   // Two-phase loading: Claude Code configs first (fast), then claude.ai configs (may be slow)
@@ -905,15 +905,7 @@ export function useManageMCPConnections(
     return () => {
       cancelled = true;
     };
-  }, [
-    isStrictMcpConfig,
-    dynamicMcpConfig,
-    onConnectionAttempt,
-    setAppState,
-    _authVersion,
-    sessionId,
-    _pluginReconnectKey,
-  ]);
+  }, [isStrictMcpConfig, dynamicMcpConfig, onConnectionAttempt, setAppState]);
 
   // Cleanup all timers on unmount
   useEffect(() => {

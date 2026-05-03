@@ -1,6 +1,6 @@
 import { feature } from 'bun:bundle';
+import * as path from 'node:path';
 import chalk from 'chalk';
-import * as path from 'path';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { useNotifications } from 'src/context/notifications.js';
@@ -351,7 +351,7 @@ function PromptInput({
       cursorOffset,
       insert: (text: string) => {
         const needsSpace = cursorOffset === input.length && input.length > 0 && !/\s$/.test(input);
-        const insertText = needsSpace ? ' ' + text : text;
+        const insertText = needsSpace ? ` ${text}` : text;
         const newValue = input.slice(0, cursorOffset) + insertText + input.slice(cursorOffset);
         lastInternalInputRef.current = newValue;
         onInputChange(newValue);
@@ -380,7 +380,7 @@ function PromptInput({
   );
   const tmuxFooterVisible = 'external' === 'ant' && hasTungstenSession;
   // WebBrowser pill — visible when a browser is open
-  const bagelFooterVisible = useAppState((s) => false);
+  const bagelFooterVisible = useAppState((_s) => false);
   const teamContext = useAppState((s) => s.teamContext);
   const queuedCommands = useCommandQueue();
   const promptSuggestionState = useAppState((s) => s.promptSuggestion);
@@ -505,7 +505,7 @@ function PromptInput({
     } else if (coordinatorTaskIndex < minCoordinatorIndex) {
       setCoordinatorTaskIndex(minCoordinatorIndex);
     }
-  }, [coordinatorTaskCount, coordinatorTaskIndex, minCoordinatorIndex]);
+  }, [coordinatorTaskCount, coordinatorTaskIndex, minCoordinatorIndex, setCoordinatorTaskIndex]);
   const [isPasting, setIsPasting] = useState(false);
   const [isExternalEditorActive, setIsExternalEditorActive] = useState(false);
   const [showModelPicker, setShowModelPicker] = useState(false);
@@ -613,7 +613,7 @@ function PromptInput({
   }, [rawFooterSelection, footerItemSelected, setAppState]);
   const tasksSelected = footerItemSelected === 'tasks';
   const tmuxSelected = footerItemSelected === 'tmux';
-  const bagelSelected = footerItemSelected === 'bagel';
+  const _bagelSelected = footerItemSelected === 'bagel';
   const teamsSelected = footerItemSelected === 'teams';
   const bridgeSelected = footerItemSelected === 'bridge';
   function selectFooterItem(item: FooterItem | null): void {
@@ -695,7 +695,7 @@ function PromptInput({
     () => (feature('TOKEN_BUDGET') ? findTokenBudgetPositions(displayedValue) : []),
     [displayedValue],
   );
-  const knownChannelsVersion = useSyncExternalStore(
+  const _knownChannelsVersion = useSyncExternalStore(
     subscribeKnownChannels,
     getKnownChannelsVersion,
   );
@@ -705,7 +705,7 @@ function PromptInput({
         ? findSlackChannelPositions(displayedValue)
         : [],
     // eslint-disable-next-line react-hooks/exhaustive-deps -- store is a stable ref
-    [displayedValue, knownChannelsVersion],
+    [displayedValue, store.getState],
   );
 
   // Find @name mentions and highlight with team member's color
@@ -774,7 +774,7 @@ function PromptInput({
       const mid = (inside.start + inside.end) / 2;
       setCursorOffset(cursorOffset < mid ? inside.start : inside.end);
     }
-  }, [cursorOffset, imageRefPositions, setCursorOffset]);
+  }, [cursorOffset, imageRefPositions]);
   const combinedHighlights = useMemo((): TextHighlight[] => {
     const highlights: TextHighlight[] = [];
 
@@ -927,7 +927,6 @@ function PromptInput({
     slashCommandTriggers,
     tokenBudgetTriggers,
     slackChannelTriggers,
-    displayedValue,
     voiceInterimRange,
     thinkTriggers,
     ultraplanTriggers,
@@ -1107,6 +1106,7 @@ function PromptInput({
       pastedContents,
       dismissStashHint,
       setAppState,
+      setHelpOpen,
     ],
   );
   const { resetHistory, onHistoryUp, onHistoryDown, dismissSearchHint, historyIndex } =
@@ -1360,6 +1360,8 @@ function PromptInput({
       markAccepted,
       pastedContents,
       removeNotification,
+      trackAndSetInput,
+      addNotification,
     ],
   );
   const { suggestions, selectedSuggestion, commandArgumentHint, inlineGhostText, maxColumnWidth } =
@@ -1509,7 +1511,7 @@ function PromptInput({
   const lazySpaceInputFilter = useCallback((input: string, key: Key): string => {
     if (!pendingSpaceAfterPillRef.current) return input;
     pendingSpaceAfterPillRef.current = false;
-    if (isNonSpacePrintable(input, key)) return ' ' + input;
+    if (isNonSpacePrintable(input, key)) return ` ${input}`;
     return input;
   }, []);
   function insertTextAtCursor(text: string) {
@@ -1586,10 +1588,10 @@ function PromptInput({
   // Handler for chat:newline - insert a newline at the cursor position
   const handleNewline = useCallback(() => {
     pushToBuffer(input, cursorOffset, pastedContents);
-    const newInput = input.slice(0, cursorOffset) + '\n' + input.slice(cursorOffset);
+    const newInput = `${input.slice(0, cursorOffset)}\n${input.slice(cursorOffset)}`;
     trackAndSetInput(newInput);
     setCursorOffset(cursorOffset + 1);
-  }, [input, cursorOffset, trackAndSetInput, setCursorOffset, pushToBuffer, pastedContents]);
+  }, [input, cursorOffset, trackAndSetInput, pushToBuffer, pastedContents]);
 
   // Handler for chat:externalEditor - edit in $EDITOR
   const handleExternalEditor = useCallback(async () => {
@@ -1670,7 +1672,7 @@ function PromptInput({
     if (helpOpen) {
       setHelpOpen(false);
     }
-  }, [helpOpen]);
+  }, [helpOpen, setHelpOpen]);
 
   // Handler for chat:fastMode - toggle fast mode picker
   const handleFastModePicker = useCallback(() => {
@@ -1678,7 +1680,7 @@ function PromptInput({
     if (helpOpen) {
       setHelpOpen(false);
     }
-  }, [helpOpen]);
+  }, [helpOpen, setHelpOpen]);
 
   // Handler for chat:thinkingToggle - toggle thinking mode
   const handleThinkingToggle = useCallback(() => {
@@ -1686,7 +1688,7 @@ function PromptInput({
     if (helpOpen) {
       setHelpOpen(false);
     }
-  }, [helpOpen]);
+  }, [helpOpen, setHelpOpen]);
 
   // Handler for chat:cycleMode - cycle through permission modes
   const handleCycleMode = useCallback(() => {
@@ -1853,6 +1855,7 @@ function PromptInput({
     setToolPermissionContext,
     helpOpen,
     showAutoModeOptIn,
+    setHelpOpen,
   ]);
 
   // Handler for auto mode opt-in dialog acceptance
@@ -2202,7 +2205,7 @@ function PromptInput({
           // When the selected row IS the viewed agent, 'x' types into the
           // steering input. Any other row — dismiss it.
           if (viewSelectionMode === 'viewing-agent' && task.id === viewingAgentTaskId) {
-            onChange(input.slice(0, cursorOffset) + 'x' + input.slice(cursorOffset));
+            onChange(`${input.slice(0, cursorOffset)}x${input.slice(cursorOffset)}`);
             setCursorOffset(cursorOffset + 1);
             return;
           }
@@ -2464,6 +2467,7 @@ function PromptInput({
     mainLoopModelForSession,
     handleModelSelect,
     handleModelCancel,
+    isFastMode,
   ]);
   const handleFastModeSelect = useCallback(
     (result?: string) => {
@@ -2539,7 +2543,7 @@ function PromptInput({
     thinkingEnabled,
     handleThinkingSelect,
     handleThinkingCancel,
-    messages.length,
+    messages.some,
   ]);
 
   // Portal dialog to DialogOverlay in fullscreen so it escapes the bottom

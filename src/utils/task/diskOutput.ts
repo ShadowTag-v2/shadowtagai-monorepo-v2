@@ -1,6 +1,6 @@
-import { constants as fsConstants } from 'fs';
-import { type FileHandle, mkdir, open, stat, symlink, unlink } from 'fs/promises';
-import { join } from 'path';
+import { constants as fsConstants } from 'node:fs';
+import { type FileHandle, mkdir, open, stat, symlink, unlink } from 'node:fs/promises';
+import { join } from 'node:path';
 import { getSessionId } from '../../bootstrap/state.js';
 import { getErrnoCode } from '../errors.js';
 import { readFileRange, tailFile } from '../fsOperations.js';
@@ -169,7 +169,7 @@ export class DiskTaskOutput {
     // This code is extremely precise.
     // You **must not** add an await here!! That will cause memory to balloon as the queue grows.
     // It's okay to add an `await` to the caller of this method (e.g. #drainAllChunks) because that won't cause Buffer[] to be kept alive in memory.
-    return this.#fileHandle!.appendFile(
+    return this.#fileHandle?.appendFile(
       // This variable needs to get GC'd ASAP.
       this.#queueToBuffers(),
     );

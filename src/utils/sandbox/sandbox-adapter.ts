@@ -4,6 +4,9 @@
  * settings system, tool integration, and additional features.
  */
 
+import { rmSync, statSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
+import { join, resolve, sep } from 'node:path';
 import type {
   FsReadRestrictionConfig,
   FsWriteRestrictionConfig,
@@ -20,10 +23,7 @@ import {
   SandboxRuntimeConfigSchema,
   SandboxViolationStore,
 } from '@anthropic-ai/sandbox-runtime';
-import { rmSync, statSync } from 'fs';
-import { readFile } from 'fs/promises';
 import { memoize } from 'lodash-es';
-import { join, resolve, sep } from 'path';
 import {
   getAdditionalDirectoriesForClaudeMd,
   getCwdState,
@@ -804,8 +804,8 @@ export function addToExcludedCommands(
         update.type === 'addRules' && update.rules.some((rule) => rule.toolName === BASH_TOOL_NAME),
     );
 
-    if (bashSuggestions.length > 0 && bashSuggestions[0]!.type === 'addRules') {
-      const firstBashRule = bashSuggestions[0]!.rules.find(
+    if (bashSuggestions.length > 0 && bashSuggestions[0]?.type === 'addRules') {
+      const firstBashRule = bashSuggestions[0]?.rules.find(
         (rule) => rule.toolName === BASH_TOOL_NAME,
       );
       if (firstBashRule?.ruleContent) {

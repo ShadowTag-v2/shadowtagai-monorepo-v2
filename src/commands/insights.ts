@@ -1,9 +1,18 @@
-import { execFileSync } from 'child_process';
+import { execFileSync } from 'node:child_process';
+import { constants as fsConstants } from 'node:fs';
+import {
+  copyFile,
+  mkdir,
+  mkdtemp,
+  readdir,
+  readFile,
+  rm,
+  unlink,
+  writeFile,
+} from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { extname, join } from 'node:path';
 import { diffLines } from 'diff';
-import { constants as fsConstants } from 'fs';
-import { copyFile, mkdir, mkdtemp, readdir, readFile, rm, unlink, writeFile } from 'fs/promises';
-import { tmpdir } from 'os';
-import { extname, join } from 'path';
 import type { Command } from '../commands.js';
 import { queryWithModel } from '../services/api/claude.js';
 import { AGENT_TOOL_NAME, LEGACY_AGENT_TOOL_NAME } from '../tools/AgentTool/constants.js';
@@ -1059,7 +1068,7 @@ export function detectMultiClauding(
     const msg = allSessionMessages[i]!;
 
     // Shrink window from the left
-    while (windowStart < i && msg.ts - allSessionMessages[windowStart]!.ts > OVERLAP_WINDOW_MS) {
+    while (windowStart < i && msg.ts - allSessionMessages[windowStart]?.ts > OVERLAP_WINDOW_MS) {
       const expiring = allSessionMessages[windowStart]!;
       if (sessionLastIndex.get(expiring.sessionId) === windowStart) {
         sessionLastIndex.delete(expiring.sessionId);
@@ -1075,7 +1084,7 @@ export function detectMultiClauding(
         if (between.sessionId !== msg.sessionId) {
           const pair = [msg.sessionId, between.sessionId].sort().join(':');
           multiClaudeSessionPairs.add(pair);
-          messagesDuringMulticlaude.add(`${allSessionMessages[prevIndex]!.ts}:${msg.sessionId}`);
+          messagesDuringMulticlaude.add(`${allSessionMessages[prevIndex]?.ts}:${msg.sessionId}`);
           messagesDuringMulticlaude.add(`${between.ts}:${between.sessionId}`);
           messagesDuringMulticlaude.add(`${msg.ts}:${msg.sessionId}`);
           break;
@@ -1526,7 +1535,7 @@ async function generateSectionInsight(
   try {
     const result = await queryWithModel({
       systemPrompt: asSystemPrompt([]),
-      userPrompt: section.prompt + '\n\nDATA:\n' + dataContext,
+      userPrompt: `${section.prompt}\n\nDATA:\n${dataContext}`,
       signal: new AbortController().signal,
       options: {
         model: getInsightsModel(),

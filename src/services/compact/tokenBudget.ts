@@ -65,7 +65,7 @@ function getContextWindowForModel(model?: string): number {
 }
 
 export function allocateTokenBudget(
-  context: unknown,
+  _context: unknown,
   totalWindow?: number,
   model?: string,
 ): CompactionBudget {
@@ -76,7 +76,7 @@ export function allocateTokenBudget(
   const autoCompactWindow = process.env.CLAUDE_CODE_AUTO_COMPACT_WINDOW;
   if (autoCompactWindow) {
     const parsed = parseInt(autoCompactWindow, 10);
-    if (!isNaN(parsed) && parsed > 0) {
+    if (!Number.isNaN(parsed) && parsed > 0) {
       effectiveWindow = Math.min(effectiveWindow, parsed);
     }
   }

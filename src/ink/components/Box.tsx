@@ -1,6 +1,6 @@
 import { c as _c } from 'react/compiler-runtime';
 import '../global.d.ts';
-import React, { type PropsWithChildren, type Ref } from 'react';
+import type { Ref } from 'react';
 import type { Except } from 'type-fest';
 import type { DOMElement } from '../dom.js';
 import type { ClickEvent } from '../events/click-event.js';
@@ -216,7 +216,6 @@ function Box(t0) {
       <ink-box
         ref={ref}
         tabIndex={tabIndex}
-        autoFocus={autoFocus}
         onClick={onClick}
         onFocus={onFocus}
         onFocusCapture={onFocusCapture}

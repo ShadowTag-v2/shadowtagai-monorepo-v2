@@ -113,7 +113,7 @@ let currentFilter = 'all';
 let sweepData = [];
 let telemetryData = [];
 
-function setFilter(f) {
+function _setFilter(f) {
   currentFilter = f;
   document.querySelectorAll('.controls .btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
@@ -131,7 +131,6 @@ async function loadData() {
     sweepData = parseJSONL(sweepResp.status === 'fulfilled' ? sweepResp.value : '');
     telemetryData = parseJSONL(telResp.status === 'fulfilled' ? telResp.value : '');
   } catch(e) {
-    console.warn('Fetch failed, using demo data:', e);
     sweepData = generateDemoData();
     telemetryData = generateDemoTelemetry();
   }

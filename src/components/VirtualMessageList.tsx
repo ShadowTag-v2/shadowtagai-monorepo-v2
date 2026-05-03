@@ -412,7 +412,7 @@ export function VirtualMessageList({
       }
       return false;
     };
-    const isUser = (i: number) => isVisible(i) && messages[i]!.type === 'user';
+    const isUser = (i: number) => isVisible(i) && messages[i]?.type === 'user';
     return {
       // Entry via shift+↑ = same semantic as in-cursor shift+↑ (prevUser).
       enterCursor: () => scan(messages.length - 1, -1, isUser),
@@ -431,7 +431,14 @@ export function VirtualMessageList({
       navigateBottom: () => scan(messages.length - 1, -1),
       getSelected: () => (selIdx >= 0 ? (messages[selIdx] ?? null) : null),
     };
-  }, [messages, selectedIndex, setCursor, isVisible]);
+  }, [
+    messages,
+    selectedIndex,
+    setCursor,
+    isVisible, // Past last visible → exit + repin. Last message's TOP is at viewport
+    // top (selection-scroll effect); its BOTTOM may be below the fold.
+    scrollRef.current?.scrollToBottom,
+  ]);
   // Two-phase jump + search engine. Read-through-ref so the handle stays
   // stable across renders — offsets/messages identity changes every render,
   // can't go in useImperativeHandle deps without recreating the handle.
@@ -587,7 +594,7 @@ export function VirtualMessageList({
   //
   // Dep is ONLY seekGen — effect doesn't re-run on random renders
   // (onSearchMatchesChange churn during incsearch).
-  const [seekGen, setSeekGen] = useState(0);
+  const [_seekGen, setSeekGen] = useState(0);
   const bumpSeek = useCallback(() => setSeekGen((g) => g + 1), []);
   useEffect(() => {
     const req = scanRequestRef.current;
@@ -648,7 +655,7 @@ export function VirtualMessageList({
       stepRef.current(pending);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seekGen]);
+  }, [scanElement, bumpSeek, scrollRef.current]);
 
   // Scroll to message i's top, arm scanPending. scan-effect reads fresh
   // screen next tick. wantLast: N-into-message — screenOrd = length-1.
@@ -859,7 +866,21 @@ export function VirtualMessageList({
     // Closures over refs + callbacks. scrollRef stable; others are
     // useCallback([]) or prop-drilled from REPL (stable).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [scrollRef],
+    [
+      scrollRef,
+      step,
+      targetFor, // wantLast=true: preview the LAST occurrence in the nearest
+      // message. At sticky-bottom (common / entry), nearest is the
+      // last msg; its last occurrence is closest to where the user
+      // was — minimal view movement. n advances forward from there.
+      jump, // Global occurrence count + 1-based current. wantLast=true so the
+      // scan will land on the last occurrence in matches[ptr]. Placeholder
+      // = prefixSum[ptr+1] (count through this msg). highlight() updates
+      // to the exact value after scan completes.
+      onSearchMatchesChange, // Manual scroll invalidates screen-absolute positions.
+      setPositions,
+      extractSearchText,
+    ],
   );
 
   // StickyTracker goes AFTER the list content. It returns null (no DOM node)

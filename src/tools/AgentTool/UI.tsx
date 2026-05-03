@@ -363,7 +363,7 @@ function VerboseAgentTranscript(t0) {
   }
   let t3;
   if ($[13] !== t2) {
-    t3 = <>{t2}</>;
+    t3 = t2;
     $[13] = t2;
     $[14] = t3;
   } else {
@@ -459,7 +459,7 @@ export function renderToolResultMessage(
   const { agentId, totalDurationMs, totalToolUseCount, totalTokens, usage, content, prompt } = data;
   const result = [
     totalToolUseCount === 1 ? '1 tool use' : `${totalToolUseCount} tool uses`,
-    formatNumber(totalTokens) + ' tokens',
+    `${formatNumber(totalTokens)} tokens`,
     formatDuration(totalDurationMs),
   ];
   const completionMessage = `Done (${result.join(' · ')})`;

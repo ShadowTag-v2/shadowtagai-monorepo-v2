@@ -23,9 +23,9 @@
  */
 
 import { feature } from 'bun:bundle';
-import { mkdirSync, writeFileSync } from 'fs';
-import { mkdir, writeFile } from 'fs/promises';
-import { dirname, join } from 'path';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
 import { getSessionId } from '../../bootstrap/state.js';
 import { registerCleanup } from '../cleanupRegistry.js';
 import { logForDebugging } from '../debug.js';
@@ -432,10 +432,10 @@ export function startLLMRequestPerfettoSpan(args: {
     name: 'API Call',
     cat: 'api',
     ph: 'B',
-    ts: pendingSpans.get(spanId)!.startTime,
+    ts: pendingSpans.get(spanId)?.startTime,
     pid: agentInfo.processId,
     tid: agentInfo.threadId,
-    args: pendingSpans.get(spanId)!.args,
+    args: pendingSpans.get(spanId)?.args,
   });
 
   return spanId;
@@ -678,10 +678,10 @@ export function startToolPerfettoSpan(toolName: string, args?: Record<string, un
     name: `Tool: ${toolName}`,
     cat: 'tool',
     ph: 'B',
-    ts: pendingSpans.get(spanId)!.startTime,
+    ts: pendingSpans.get(spanId)?.startTime,
     pid: agentInfo.processId,
     tid: agentInfo.threadId,
-    args: pendingSpans.get(spanId)!.args,
+    args: pendingSpans.get(spanId)?.args,
   });
 
   return spanId;
@@ -752,10 +752,10 @@ export function startUserInputPerfettoSpan(context?: string): string {
     name: 'Waiting for User Input',
     cat: 'user_input',
     ph: 'B',
-    ts: pendingSpans.get(spanId)!.startTime,
+    ts: pendingSpans.get(spanId)?.startTime,
     pid: agentInfo.processId,
     tid: agentInfo.threadId,
-    args: pendingSpans.get(spanId)!.args,
+    args: pendingSpans.get(spanId)?.args,
   });
 
   return spanId;
@@ -866,10 +866,10 @@ export function startInteractionPerfettoSpan(userPrompt?: string): string {
     name: 'Interaction',
     cat: 'interaction',
     ph: 'B',
-    ts: pendingSpans.get(spanId)!.startTime,
+    ts: pendingSpans.get(spanId)?.startTime,
     pid: agentInfo.processId,
     tid: agentInfo.threadId,
-    args: pendingSpans.get(spanId)!.args,
+    args: pendingSpans.get(spanId)?.args,
   });
 
   return spanId;

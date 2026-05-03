@@ -10,7 +10,7 @@
  * - Support for both JS and native builds
  */
 
-import { constants as fsConstants, type Stats } from 'fs';
+import { constants as fsConstants, type Stats } from 'node:fs';
 import {
   access,
   chmod,
@@ -27,9 +27,9 @@ import {
   symlink,
   unlink,
   writeFile,
-} from 'fs/promises';
-import { homedir } from 'os';
-import { basename, delimiter, dirname, join, resolve } from 'path';
+} from 'node:fs/promises';
+import { homedir } from 'node:os';
+import { basename, delimiter, dirname, join, resolve } from 'node:path';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
@@ -1263,7 +1263,7 @@ export async function cleanupOldVersions(): Promise<void> {
     // Identify protected versions
     const currentBinaryPath = process.execPath;
     const protectedVersions = new Set<string>();
-    if (currentBinaryPath && currentBinaryPath.includes(dirs.versions)) {
+    if (currentBinaryPath?.includes(dirs.versions)) {
       protectedVersions.add(resolve(currentBinaryPath));
     }
 

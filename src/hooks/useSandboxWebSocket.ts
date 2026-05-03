@@ -202,7 +202,7 @@ export function useSandboxWebSocket({
       closeConnection();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionId, enabled]);
+  }, [sessionId, enabled, connect, closeConnection]);
 
   return {
     connectionState,

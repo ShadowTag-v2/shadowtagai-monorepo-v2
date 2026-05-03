@@ -1,5 +1,5 @@
 import type { TextBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { c as _c } from 'react/compiler-runtime';
 import { ERROR_MESSAGE_USER_ABORT } from 'src/services/compact/compact.js';
 import { isRateLimitErrorMessage } from 'src/services/rateLimitMessages.js';
@@ -252,7 +252,7 @@ export function AssistantTextMessage(t0) {
           text === API_ERROR_MESSAGE_PREFIX
             ? `${API_ERROR_MESSAGE_PREFIX}: Please wait a moment and try again.`
             : truncated
-              ? text.slice(0, MAX_API_ERROR_CHARS) + '\u2026'
+              ? `${text.slice(0, MAX_API_ERROR_CHARS)}\u2026`
               : text;
         let t3;
         if ($[15] !== t2) {

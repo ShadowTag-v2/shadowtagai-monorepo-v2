@@ -127,7 +127,7 @@ export function DiscoverPlugins({
   // Reset selection when search query changes
   useEffect(() => {
     setSelectedIndex(0);
-  }, [searchQuery]);
+  }, []);
 
   // Details view state
   const [detailsMenuIndex, setDetailsMenuIndex] = useState(0);
@@ -211,7 +211,7 @@ export function DiscoverPlugins({
         const errorResult = formatMarketplaceLoadingErrors(failures, successCount);
         if (errorResult) {
           if (errorResult.type === 'warning') {
-            setWarning(errorResult.message + '. Showing available plugins.');
+            setWarning(`${errorResult.message}. Showing available plugins.`);
           } else {
             throw new Error(errorResult.message);
           }
@@ -945,7 +945,6 @@ function EmptyStateMessage(t0) {
       }
       return t1;
     }
-    case 'no-marketplaces-configured':
     default: {
       let t1;
       if ($[5] === Symbol.for('react.memo_cache_sentinel')) {

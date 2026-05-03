@@ -89,7 +89,6 @@ export async function POST(request: NextRequest, { params }: { params: { session
     return NextResponse.json(result);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Internal error';
-    console.error('[sandbox/commit] Failed:', message);
     return NextResponse.json({ error: message }, { status: 502 });
   }
 }

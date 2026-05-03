@@ -477,7 +477,7 @@ export function getRetryDelay(
 ): number {
   if (retryAfterHeader) {
     const seconds = parseInt(retryAfterHeader, 10);
-    if (!isNaN(seconds)) {
+    if (!Number.isNaN(seconds)) {
       return seconds * 1000;
     }
   }
@@ -520,7 +520,7 @@ export function parseMaxTokensContextOverflowError(error: APIError):
   const maxTokens = parseInt(match[2], 10);
   const contextLimit = parseInt(match[3], 10);
 
-  if (isNaN(inputTokens) || isNaN(maxTokens) || isNaN(contextLimit)) {
+  if (Number.isNaN(inputTokens) || Number.isNaN(maxTokens) || Number.isNaN(contextLimit)) {
     return undefined;
   }
 
@@ -731,7 +731,7 @@ function getRetryAfterMs(error: APIError): number | null {
   const retryAfter = getRetryAfter(error);
   if (retryAfter) {
     const seconds = parseInt(retryAfter, 10);
-    if (!isNaN(seconds)) {
+    if (!Number.isNaN(seconds)) {
       return seconds * 1000;
     }
   }
