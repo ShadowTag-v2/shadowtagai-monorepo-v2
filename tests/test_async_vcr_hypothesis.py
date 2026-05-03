@@ -27,6 +27,12 @@ from packages.agnt_vcr.vcr import VCRReplay
 from packages.agnt_vcr.async_vcr import AsyncVCR
 
 
+# ─── Fuzz Multiplier (env-driven) ─────────────────────────────────────
+# Set HYPOTHESIS_FUZZ_MULTIPLIER=10 to run 10x more examples.
+# Default is 1 (standard CI). Use 5-10 for extended fuzzing sessions.
+_FUZZ_MULT = int(os.environ.get("HYPOTHESIS_FUZZ_MULTIPLIER", "1"))
+
+
 # ─── Strategies ────────────────────────────────────────────────────────
 
 # JSON-serializable values (no NaN/Inf which break JSON roundtrip)
@@ -84,7 +90,7 @@ class TestHashDeterminism:
     """_hash_request must be pure: same inputs → same hash."""
 
     @given(method=method_names, kwargs=kwargs_strategy)
-    @settings(max_examples=200, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=200 * _FUZZ_MULT, suppress_health_check=[HealthCheck.too_slow])
     def test_same_input_same_hash(self, method, kwargs):
         """Identical method+kwargs always produce the same hash."""
         vcr = VCRReplay.__new__(VCRReplay)
@@ -100,7 +106,7 @@ class TestHashDeterminism:
         kwargs_a=kwargs_strategy,
         kwargs_b=kwargs_strategy,
     )
-    @settings(max_examples=200, suppress_health_check=[HealthCheck.too_slow])
+    @settings(max_examples=200 * _FUZZ_MULT, suppress_health_check=[HealthCheck.too_slow])
     def test_different_kwargs_different_hash(self, method, kwargs_a, kwargs_b):
         """Different kwargs should (almost always) produce different hashes."""
         assume(kwargs_a != kwargs_b)
@@ -121,7 +127,7 @@ class TestCassetteRoundtrip:
     """Record → replay must return identical JSON-serializable data."""
 
     @given(method=method_names, kwargs=kwargs_strategy, response=json_values)
-    @settings(max_examples=100, suppress_health_check=_FIXTURE_HC)
+    @settings(max_examples=100 * _FUZZ_MULT, suppress_health_check=_FIXTURE_HC)
     def test_record_then_replay(self, method, kwargs, response, vcr_dir, monkeypatch):
         """Recording a response and replaying it yields the exact same value."""
         # Record phase
@@ -154,7 +160,7 @@ class TestSecretSanitization:
         secret_key=st.sampled_from(sorted(SECRET_KEYS)),
         secret_value=st.text(min_size=8, max_size=100),
     )
-    @settings(max_examples=50, suppress_health_check=_FIXTURE_HC)
+    @settings(max_examples=50 * _FUZZ_MULT, suppress_health_check=_FIXTURE_HC)
     def test_secrets_redacted_in_cassette(self, method, secret_key, secret_value, vcr_dir, monkeypatch):
         """Secret values must be [REDACTED] in cassette JSON on disk."""
         monkeypatch.setenv("AGNT_FC_OVERRIDES", json.dumps({"vcr_mode": "record"}))
@@ -177,7 +183,7 @@ class TestSecretSanitization:
         method=method_names,
         auth_header=st.text(min_size=1, max_size=100),
     )
-    @settings(max_examples=30, suppress_health_check=_FIXTURE_HC)
+    @settings(max_examples=30 * _FUZZ_MULT, suppress_health_check=_FIXTURE_HC)
     def test_authorization_header_redacted(self, method, auth_header, vcr_dir, monkeypatch):
         """Authorization header in nested headers dict must be redacted."""
         monkeypatch.setenv("AGNT_FC_OVERRIDES", json.dumps({"vcr_mode": "record"}))
@@ -205,7 +211,7 @@ class TestStaleRotation:
     @given(
         methods=st.lists(method_names, min_size=1, max_size=5),
     )
-    @settings(max_examples=30, suppress_health_check=_FIXTURE_HC)
+    @settings(max_examples=30 * _FUZZ_MULT, suppress_health_check=_FIXTURE_HC)
     def test_fresh_cassettes_not_rotated(self, methods, monkeypatch):
         """Cassettes recorded within max_age_s must NOT be purged."""
         # Each Hypothesis example gets its own isolated directory
@@ -254,7 +260,7 @@ class TestIndexPersistence:
     @given(
         methods=st.lists(method_names, min_size=1, max_size=8, unique=True),
     )
-    @settings(max_examples=30, suppress_health_check=_FIXTURE_HC)
+    @settings(max_examples=30 * _FUZZ_MULT, suppress_health_check=_FIXTURE_HC)
     def test_index_roundtrip(self, methods, monkeypatch):
         """Save → load → same index keys."""
         with tempfile.TemporaryDirectory() as td:
@@ -288,7 +294,7 @@ class TestCassetteStats:
     @given(
         n_fresh=st.integers(min_value=0, max_value=5),
     )
-    @settings(max_examples=20, suppress_health_check=_FIXTURE_HC)
+    @settings(max_examples=20 * _FUZZ_MULT, suppress_health_check=_FIXTURE_HC)
     def test_stats_arithmetic(self, n_fresh, monkeypatch):
         """total = fresh + stale must always hold."""
         with tempfile.TemporaryDirectory() as td:
