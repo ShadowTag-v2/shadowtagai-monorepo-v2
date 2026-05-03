@@ -92,7 +92,7 @@ async def _get_git_branch() -> str | None:
         if proc.returncode == 0 and stdout:
             branch = stdout.decode().strip()
             return branch if branch and branch != "HEAD" else None
-    except FileNotFoundError, OSError:
+    except (FileNotFoundError, OSError):
         pass
     return None
 
