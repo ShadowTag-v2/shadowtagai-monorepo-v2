@@ -209,13 +209,13 @@
     </p>
     <label class="stat-label" for="token-input">Bearer Token</label>
     <input type="password" id="token-input" placeholder="eyJhbGci...">
-    <button onclick="authenticate()">Authenticate</button>
+    <button type="button" onclick="authenticate()">Authenticate</button>
 </div>
 
 <div id="dashboard-view" class="dashboard" style="display:none;">
     <header>
         <h1>⚡ CounselConduit Operations</h1>
-        <button class="refresh-btn" id="refresh-btn" onclick="refreshAll()">↻ Refresh</button>
+        <button type="button" class="refresh-btn" id="refresh-btn" onclick="refreshAll()">↻ Refresh</button>
     </header>
 
     <div id="error-banner" class="error-banner"></div>
@@ -262,7 +262,8 @@
 const BASE = 'https://counselconduit-767252945109.us-central1.run.app';
 let TOKEN = '';
 
-function _authenticate() {
+// biome-ignore lint/correctness/noUnusedVariables: called via onclick="authenticate()" in HTML
+function authenticate() {
     TOKEN = document.getElementById('token-input').value.trim();
     if (!TOKEN) return;
     document.getElementById('auth-view').style.display = 'none';
