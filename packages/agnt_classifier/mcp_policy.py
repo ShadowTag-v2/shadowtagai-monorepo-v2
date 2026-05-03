@@ -145,11 +145,7 @@ def _command_arrays_match(pattern: tuple[str, ...], actual: list[str] | tuple[st
         return False
 
     # Remaining elements: exact match (order matters)
-    for i in range(1, len(pattern)):
-        if pattern[i] != actual[i]:
-            return False
-
-    return True
+    return all(pattern[i] == actual[i] for i in range(1, len(pattern)))
 
 
 def _url_matches_pattern(server_url: str, pattern_url: str) -> bool:
