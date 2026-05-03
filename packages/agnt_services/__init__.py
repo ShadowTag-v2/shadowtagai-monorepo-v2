@@ -19,6 +19,10 @@ dedicated packages:
   - session_recovery/     → Crash recovery + session state persistence
   - prevent_sleep/        → macOS caffeinate integration
   - sanitization/         → Content sanitization pipeline
+  - diagnostic_tracking/  → IDE diagnostic baseline/diff tracking
+  - notifier/             → Multi-terminal notification dispatch
+  - away_summary/         → Session recap generation
+  - rate_limit_messages/  → Rate limit message generation
 
 This module provides:
   - ServiceRegistry: Central registry for lazy service initialization
@@ -72,17 +76,17 @@ _SERVICE_REGISTRY: dict[str, str] = {
     "magic_docs": "magic_docs",
     "plugin_manager": "plugin_manager",
     "session_recovery": "session_recovery",
-    "prevent_sleep": "prevent_sleep",
+    "prevent_sleep": f"{_PKG}.prevent_sleep",
     "sanitization": "sanitization",
     "feature_flags": "feature_flags",
     "tool_gateway": "tool_gateway",
     "tool_discovery": "tool_discovery",
     "plan_mode": "plan_mode",
-    "resilient_retry": "resilient_retry",
-    "circuit_breaker": "circuit_breaker",
+    "resilient_retry": f"{_PKG}.resilient_retry",
+    "circuit_breaker": f"{_PKG}.circuit_breaker",
     # V14.1 additions — remaining ported services
     "thinking_config": "thinking_config",
-    "xml_tags": "xml_tags",
+    "xml_tags": f"{_PKG}.xml_tags",
     "code_reasoning": "code_reasoning",
     "undercover": "undercover",
     "prompt_assembler": "prompt_assembler",
@@ -105,6 +109,11 @@ _SERVICE_REGISTRY: dict[str, str] = {
     "conversation_recovery": f"{_PKG}.conversation_recovery",
     "git_ops": f"{_PKG}.git_ops",
     "telemetry_events": f"{_PKG}.telemetry_events",
+    # V16 Batch 3 — ported services
+    "diagnostic_tracking": f"{_PKG}.diagnostic_tracking",
+    "notifier": f"{_PKG}.notifier",
+    "away_summary": f"{_PKG}.away_summary",
+    "rate_limit_messages": f"{_PKG}.rate_limit_messages",
 }
 
 

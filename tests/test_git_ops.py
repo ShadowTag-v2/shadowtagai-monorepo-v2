@@ -1,13 +1,11 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Tests for packages.agnt_services.git_ops (port of src/utils/git.ts)."""
+
 from __future__ import annotations
 
 import asyncio
 import os
-import subprocess
-from unittest.mock import patch
 
-import pytest
 
 from packages.agnt_services.git_ops import (
     GitRepoState,
