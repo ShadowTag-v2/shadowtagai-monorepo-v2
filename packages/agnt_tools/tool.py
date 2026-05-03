@@ -165,9 +165,7 @@ class ToolUseContext:
 
     # --- State ---
     messages: list[dict[str, Any]] = field(default_factory=list)
-    tool_permission_context: ToolPermissionContext = field(
-        default_factory=get_empty_tool_permission_context
-    )
+    tool_permission_context: ToolPermissionContext = field(default_factory=get_empty_tool_permission_context)
 
     # --- File state (LRU cache of file contents) ---
     file_state_cache: dict[str, Any] = field(default_factory=dict)
@@ -216,6 +214,7 @@ class ToolUseContext:
         ctx.tool_permission_context.should_avoid_permission_prompts = True
         # New agent ID
         ctx.agent_id = str(uuid7())
+        ctx.agent_type = "forked"  # Cloned contexts are always forked subagents
         return ctx
 
 
@@ -438,7 +437,11 @@ class _BuiltTool:
         return await self._description_fn(input_args, is_non_interactive=is_non_interactive)
 
     async def prompt(self, *, tools: list[Any] | None = None) -> str:
-        return await self._prompt_fn(tools=tools)
+        result = self._prompt_fn(tools=tools)
+        # Handle both sync (returns str) and async (returns coroutine) prompt fns
+        if asyncio.iscoroutine(result):
+            return await result
+        return result
 
     def is_enabled(self) -> bool:
         return self._is_enabled_fn()

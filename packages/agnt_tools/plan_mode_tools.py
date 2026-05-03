@@ -151,6 +151,7 @@ def create_enter_plan_mode_tool():
         should_defer=True,
         is_concurrency_safe_fn=lambda _: True,
         is_read_only_fn=lambda _: True,
+        check_permissions_fn=_enter_plan_check_permissions,
     )
 
 
