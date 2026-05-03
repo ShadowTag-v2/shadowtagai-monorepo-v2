@@ -218,6 +218,11 @@ gemini.function_call
 artifact.upload
 visual.proof
 repowise.evaluate
+agent.progression
+code_reasoning.certificate
+context.google_drive_fetch
+gitnexus.impact
+pageindex.compile
 "
 
 ENFORCED=0

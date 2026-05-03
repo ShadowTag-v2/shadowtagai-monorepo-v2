@@ -66,6 +66,17 @@ title = "Monorepo-Uphillsnowball Gitleaks Config"
     '''sk_test_KJtHgNwt2KS3xM7QJPr4O5E8''',
     # OpenTofu doc example vault token
     '''s\.Fg8wA4nDrP08TirpjE''',
+    # ── VCR scrubbed token placeholders (migrated from .gitleaksignore 2026-05-03) ──
+    # Bearer [SCRUBBED] and key=[SCRUBBED] patterns in test cassettes
+    '''\[SCRUBBED\]''',
+    '''sk-abc123xyz456''',
+    '''AIzaSyAbc123''',
+    '''secret-key-value''',
+    '''ya29\.abc''',
+    '''hunter2''',
+    '''GOCSPX-abc123xyz456''',
+    '''my-secret-api-key-value''',
+    '''real-api-key-123''',
   ]
 
 # Allow Stripe publishable keys (public by design)

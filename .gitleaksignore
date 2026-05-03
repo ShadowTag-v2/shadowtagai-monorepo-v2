@@ -1155,28 +1155,28 @@ apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/k8s/05-secrets.yaml.temp
 # are intentionally documented in agent instruction files.
 # ════════════════════════════════════════════════════════
 
-# GitHub App metadata (public identifiers, not secrets)
-.ruler/AGENTS.md:generic-api-key
-AGENTS.md:generic-api-key
-CLAUDE.md:generic-api-key
-CRUSH.md:generic-api-key
-WARP.md:generic-api-key
-.trae/rules/project_rules.md:generic-api-key
-firebender.json:generic-api-key
-opencode.json:generic-api-key
+.ruler/AGENTS.md:generic-api-key:144
+AGENTS.md:generic-api-key:148
+CLAUDE.md:generic-api-key:147
+CRUSH.md:generic-api-key:147
+WARP.md:generic-api-key:147
+.trae/rules/project_rules.md:generic-api-key:147
+firebender.json:generic-api-key:1
+opencode.json:generic-api-key:1
+.roo/mcp.json:generic-api-key:1
 .roo/mcp.json:generic-api-key
 
-# Stripe test product/price IDs (public publishable identifiers)
-.ruler/AGENTS.md:stripe-api-key
-AGENTS.md:stripe-api-key
+.ruler/AGENTS.md:stripe-api-key:249
+AGENTS.md:stripe-api-key:253
+CLAUDE.md:stripe-api-key:252
 CLAUDE.md:stripe-api-key
 
-# App Client ID (public OAuth2 client, not a secret)
-.ruler/AGENTS.md:github-app-token
+.ruler/AGENTS.md:github-app-token:143
+AGENTS.md:github-app-token:147
 AGENTS.md:github-app-token
-
-# docs/BUSINESS_CONTEXT_LOCKED.md Stripe references
-docs/BUSINESS_CONTEXT_LOCKED.md:stripe-api-key
+# BUSINESS_CONTEXT_LOCKED.md Stripe references (root-level file)
+BUSINESS_CONTEXT_LOCKED.md:stripe-api-key:46
+BUSINESS_CONTEXT_LOCKED.md:generic-api-key:297
 docs/BUSINESS_CONTEXT_LOCKED.md:generic-api-key
 
 # ════════════════════════════════════════════════════════
@@ -1184,13 +1184,9 @@ docs/BUSINESS_CONTEXT_LOCKED.md:generic-api-key
 # Test cassettes contain intentionally scrubbed auth tokens
 # (Bearer [SCRUBBED]) and rate-limit simulation data.
 # These are NOT real credentials.
-# ════════════════════════════════════════════════════════
-tests/fixtures/vcr/bash-rate-limit-10calls.json:generic-api-key
+tests/fixtures/vcr/bash-rate-limit-10calls.json:generic-api-key:13
+tests/test_vcr_fixtures.py:generic-api-key:8
 tests/test_vcr_fixtures.py:generic-api-key
 
-# VCR manager scrubbing patterns (code references, not live secrets)
+packages/vcr_fixtures/manager.py:generic-api-key:11
 packages/vcr_fixtures/manager.py:generic-api-key
-
-[allowlist]
-description = "VCR scrubbed token placeholders — Bearer [SCRUBBED] and key=[SCRUBBED] patterns"
-regexes = ['\[SCRUBBED\]', 'sk-abc123xyz456', 'AIzaSyAbc123', 'secret-key-value', 'ya29\.abc', 'hunter2', 'GOCSPX-abc123xyz456', 'my-secret-api-key-value', 'real-api-key-123']
