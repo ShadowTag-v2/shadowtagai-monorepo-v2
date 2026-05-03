@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { Command } from '../commands.js';
 import { Box } from '../ink.js';
 import type { Screen } from '../screens/REPL.js';

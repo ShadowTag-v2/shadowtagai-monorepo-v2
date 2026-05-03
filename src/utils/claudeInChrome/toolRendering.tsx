@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { MessageResponse } from '../../components/MessageResponse.js';
 import { supportsHyperlinks } from '../../ink/supports-hyperlinks.js';
 import { Link, Text } from '../../ink.js';
@@ -6,6 +6,7 @@ import { renderToolResultMessage as renderDefaultMCPToolResultMessage } from '..
 import type { MCPToolResult } from '../../utils/mcpValidation.js';
 import { truncateToWidth } from '../format.js';
 import { trackClaudeInChromeTabId } from './common.js';
+
 export type { Tool } from '@modelcontextprotocol/sdk/types.js';
 
 /**

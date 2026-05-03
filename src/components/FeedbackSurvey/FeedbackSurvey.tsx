@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
@@ -10,6 +10,7 @@ import type { TranscriptShareResponse } from './TranscriptSharePrompt.js';
 import { TranscriptSharePrompt } from './TranscriptSharePrompt.js';
 import { useDebouncedDigitInput } from './useDebouncedDigitInput.js';
 import type { FeedbackSurveyResponse } from './utils.js';
+
 type Props = {
   state: 'closed' | 'open' | 'thanks' | 'transcript_prompt' | 'submitting' | 'submitted';
   lastResponse: FeedbackSurveyResponse | null;

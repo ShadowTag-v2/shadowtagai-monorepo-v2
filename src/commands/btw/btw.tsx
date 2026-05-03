@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
-import * as React from 'react';
+import type * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useInterval } from 'usehooks-ts';
 import type { CommandResultDisplay } from '../../commands.js';
 import { Markdown } from '../../components/Markdown.js';
@@ -23,6 +23,7 @@ import { getMessagesAfterCompactBoundary } from '../../utils/messages.js';
 import type { ProcessUserInputContext } from '../../utils/processUserInput/processUserInput.js';
 import { runSideQuestion } from '../../utils/sideQuestion.js';
 import { asSystemPrompt } from '../../utils/systemPromptType.js';
+
 type BtwComponentProps = {
   question: string;
   context: ProcessUserInputContext;

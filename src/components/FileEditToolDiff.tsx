@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import type { StructuredPatchHunk } from 'diff';
 import * as React from 'react';
 import { Suspense, use, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useTerminalSize } from '../hooks/useTerminalSize.js';
 import { Box, Text } from '../ink.js';
 import type { FileEdit } from '../tools/FileEditTool/types.js';
@@ -11,6 +11,7 @@ import { logError } from '../utils/log.js';
 import { CHUNK_SIZE, openForScan, readCapped, scanForContext } from '../utils/readEditContext.js';
 import { firstLineOf } from '../utils/stringUtils.js';
 import { StructuredDiffList } from './StructuredDiffList.js';
+
 type Props = {
   file_path: string;
   edits: FileEdit[];

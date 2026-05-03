@@ -1,9 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Text } from '../ink.js';
 import { saveGlobalConfig } from '../utils/config.js';
 import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
+
 type Props = {
   customApiKeyTruncated: string;
   onDone(approved: boolean): void;
@@ -14,7 +15,7 @@ export function ApproveApiKey(t0) {
   let t1;
   if ($[0] !== customApiKeyTruncated || $[1] !== onDone) {
     t1 = function onChange(value) {
-      bb2: switch (value) {
+      switch (value) {
         case 'yes': {
           saveGlobalConfig((current_0) => ({
             ...current_0,
@@ -27,7 +28,7 @@ export function ApproveApiKey(t0) {
             },
           }));
           onDone(true);
-          break bb2;
+          break;
         }
         case 'no': {
           saveGlobalConfig((current) => ({

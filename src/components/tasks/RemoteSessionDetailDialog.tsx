@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
 import React, { useMemo, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { SDKMessage } from 'src/entrypoints/agentSdkTypes.js';
 import type { ToolUseContext } from 'src/Tool.js';
 import type { DeepImmutable } from 'src/types/utils.js';
@@ -27,6 +27,7 @@ import { Dialog } from '../design-system/Dialog.js';
 import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
 import { Message } from '../Message.js';
 import { formatReviewStageCounts, RemoteSessionProgress } from './RemoteSessionProgress.js';
+
 type Props = {
   session: DeepImmutable<RemoteAgentTaskState>;
   toolUseContext: ToolUseContext;
@@ -718,19 +719,19 @@ function ReviewSessionDetail(t0) {
     $[18] !== sessionUrl
   ) {
     t4 = (action) => {
-      bb45: switch (action) {
+      switch (action) {
         case 'open': {
           openBrowser(sessionUrl);
           onDone();
-          break bb45;
+          break;
         }
         case 'stop': {
           setConfirmingStop(true);
-          break bb45;
+          break;
         }
         case 'back': {
           goBackOrClose();
-          break bb45;
+          break;
         }
         case 'dismiss': {
           handleClose();

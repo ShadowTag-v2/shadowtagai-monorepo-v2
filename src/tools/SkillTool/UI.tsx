@@ -1,5 +1,5 @@
 import type { ToolResultBlockParam } from '@anthropic-ai/sdk/resources/index.mjs';
-import * as React from 'react';
+import type * as React from 'react';
 import { SubAgentProvider } from 'src/components/CtrlOToExpand.js';
 import { FallbackToolUseErrorMessage } from 'src/components/FallbackToolUseErrorMessage.js';
 import { FallbackToolUseRejectedMessage } from 'src/components/FallbackToolUseRejectedMessage.js';
@@ -14,6 +14,7 @@ import type { ProgressMessage } from '../../types/message.js';
 import { buildSubagentLookups, EMPTY_LOOKUPS } from '../../utils/messages.js';
 import { plural } from '../../utils/stringUtils.js';
 import type { inputSchema, Output, Progress } from './SkillTool.js';
+
 type Input = z.infer<ReturnType<typeof inputSchema>>;
 const MAX_PROGRESS_MESSAGES_TO_SHOW = 3;
 const INITIALIZING_TEXT = 'Initializing…';

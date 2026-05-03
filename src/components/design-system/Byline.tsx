@@ -1,6 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { Children, isValidElement } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { Text } from '../../ink.js';
+
 type Props = {
   /** The items to join with a middot separator */
   children: React.ReactNode;

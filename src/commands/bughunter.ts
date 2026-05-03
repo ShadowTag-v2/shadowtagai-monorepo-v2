@@ -12,10 +12,10 @@
  * Reference: tests/test_vcr_fixtures.py, strategic-testing/SKILL.md
  */
 
-import { Command } from 'commander';
-import { logEvent } from '../services/analytics/index.js';
+import type { Command } from 'commander';
 import { existsSync, readdirSync, readFileSync } from 'fs';
-import { join, basename } from 'path';
+import { basename, join } from 'path';
+import { logEvent } from '../services/analytics/index.js';
 
 // Default VCR fixture directory
 const DEFAULT_FIXTURE_DIR = 'tests/fixtures/vcr';
@@ -202,5 +202,5 @@ export function registerBughunterCommand(program: Command) {
     });
 }
 
-export { loadCassette, validateCassette, discoverCassettes, runBughunterScan, formatResults };
 export type { CassetteFile, CassetteInteraction, ReplayResult };
+export { discoverCassettes, formatResults, loadCassette, runBughunterScan, validateCassette };

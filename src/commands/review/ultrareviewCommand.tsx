@@ -3,6 +3,7 @@ import React from 'react';
 import type { LocalJSXCommandCall, LocalJSXCommandOnDone } from '../../types/command.js';
 import { checkOverageGate, confirmOverage, launchRemoteReview } from './reviewRemote.js';
 import { UltrareviewOverageDialog } from './UltrareviewOverageDialog.js';
+
 function contentBlocksToString(blocks: ContentBlockParam[]): string {
   return blocks
     .map((b) => (b.type === 'text' ? b.text : ''))

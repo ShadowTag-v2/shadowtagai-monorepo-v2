@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import { feature } from 'bun:bundle';
 import { dirname } from 'path';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useTerminalSize } from 'src/hooks/useTerminalSize.js';
 import { getOriginalCwd, switchSession } from '../bootstrap/state.js';
 import type { Command } from '../commands.js';
@@ -50,6 +50,7 @@ import {
 import type { ThinkingConfig } from '../utils/thinking.js';
 import type { ContentReplacementRecord } from '../utils/toolResultStorage.js';
 import { REPL } from './REPL.js';
+
 function parsePrIdentifier(value: string): number | null {
   const directNumber = parseInt(value, 10);
   if (!isNaN(directNumber) && directNumber > 0) {

@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import type { Base64ImageSource, ImageBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
 import React, { Suspense, use, useCallback, useMemo, useRef, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useSettings } from '../../../hooks/useSettings.js';
 import { useTerminalSize } from '../../../hooks/useTerminalSize.js';
 import { stringWidth } from '../../../ink/stringWidth.js';
@@ -26,6 +26,7 @@ import type { PermissionRequestProps } from '../PermissionRequest.js';
 import { QuestionView } from './QuestionView.js';
 import { SubmitQuestionsView } from './SubmitQuestionsView.js';
 import { useMultipleChoiceState } from './use-multiple-choice-state.js';
+
 const MIN_CONTENT_HEIGHT = 12;
 const MIN_CONTENT_WIDTH = 40;
 // Lines used by chrome around the content area (nav bar, title, footer, help text, etc.)

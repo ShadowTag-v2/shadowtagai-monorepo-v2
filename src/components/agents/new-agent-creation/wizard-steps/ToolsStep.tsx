@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { type ReactNode } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { Tools } from '../../../../Tool.js';
 import { ConfigurableShortcutHint } from '../../../ConfigurableShortcutHint.js';
 import { Byline } from '../../../design-system/Byline.js';
@@ -8,6 +8,7 @@ import { useWizard } from '../../../wizard/index.js';
 import { WizardDialogLayout } from '../../../wizard/WizardDialogLayout.js';
 import { ToolSelector } from '../../ToolSelector.js';
 import type { AgentWizardData } from '../types.js';
+
 type Props = {
   tools: Tools;
 };

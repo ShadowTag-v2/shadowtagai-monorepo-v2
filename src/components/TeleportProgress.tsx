@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
-import * as React from 'react';
+import type * as React from 'react';
 import { useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { Root } from '../ink.js';
 import { Box, Text, useAnimationFrame } from '../ink.js';
 import { AppStateProvider } from '../state/AppState.js';
@@ -12,6 +12,7 @@ import {
   type TeleportResult,
   teleportResumeCodeSession,
 } from '../utils/teleport.js';
+
 type Props = {
   currentStep: TeleportProgressStep;
   sessionId?: string;

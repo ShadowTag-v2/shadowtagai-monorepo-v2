@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useEffect, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
@@ -284,7 +284,7 @@ export function GroveDialog(t0) {
   let t3;
   if ($[5] !== groveConfig?.notice_is_grace_period || $[6] !== onDone) {
     t3 = async function onChange(value) {
-      bb21: switch (value) {
+      switch (value) {
         case 'accept_opt_in': {
           await updateGroveSettings(true);
           logEvent('tengu_grove_policy_submitted', {
@@ -292,7 +292,7 @@ export function GroveDialog(t0) {
             dismissable:
               groveConfig?.notice_is_grace_period as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           });
-          break bb21;
+          break;
         }
         case 'accept_opt_out': {
           await updateGroveSettings(false);
@@ -301,13 +301,13 @@ export function GroveDialog(t0) {
             dismissable:
               groveConfig?.notice_is_grace_period as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
           });
-          break bb21;
+          break;
         }
         case 'defer': {
           logEvent('tengu_grove_policy_dismissed', {
             state: true,
           });
-          break bb21;
+          break;
         }
         case 'escape': {
           logEvent('tengu_grove_policy_escaped', {});

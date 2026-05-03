@@ -926,15 +926,15 @@ export const SandboxManager: ISandboxManager = {
 // ============================================================================
 
 export type {
-  SandboxAskCallback,
-  SandboxDependencyCheck,
   FsReadRestrictionConfig,
   FsWriteRestrictionConfig,
-  NetworkRestrictionConfig,
-  NetworkHostPattern,
-  SandboxViolationEvent,
-  SandboxRuntimeConfig,
   IgnoreViolationsConfig,
+  NetworkHostPattern,
+  NetworkRestrictionConfig,
+  SandboxAskCallback,
+  SandboxDependencyCheck,
+  SandboxRuntimeConfig,
+  SandboxViolationEvent,
 };
 
-export { SandboxViolationStore, SandboxRuntimeConfigSchema };
+export { SandboxRuntimeConfigSchema, SandboxViolationStore };

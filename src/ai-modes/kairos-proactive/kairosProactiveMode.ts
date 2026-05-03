@@ -1,6 +1,6 @@
 import { feature } from 'bun:bundle';
-import { isEnvTruthy } from '../../utils/envUtils.js';
 import { logEvent } from '../../services/analytics/index.js';
+import { isEnvTruthy } from '../../utils/envUtils.js';
 
 export function isKairosMode(): boolean {
   if (feature('KAIROS_MODE')) {
@@ -9,9 +9,7 @@ export function isKairosMode(): boolean {
   return false;
 }
 
-export function matchSessionMode(
-  sessionMode: 'kairos' | 'normal' | undefined,
-): string | undefined {
+export function matchSessionMode(sessionMode: 'kairos' | 'normal' | undefined): string | undefined {
   if (!sessionMode) return undefined;
 
   const currentIsKairos = isKairosMode();
@@ -27,9 +25,7 @@ export function matchSessionMode(
 
   logEvent('tengu_kairos_mode_switched', { to: sessionMode as any });
 
-  return sessionIsKairos
-    ? 'Entered KAIROS proactive mode.'
-    : 'Exited KAIROS proactive mode.';
+  return sessionIsKairos ? 'Entered KAIROS proactive mode.' : 'Exited KAIROS proactive mode.';
 }
 
 export function getKairosSystemPrompt(): string {

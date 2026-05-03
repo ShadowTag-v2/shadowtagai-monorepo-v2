@@ -1,9 +1,10 @@
-import { c as _c } from 'react/compiler-runtime';
 import { feature } from 'bun:bundle';
 import { plot as asciichart } from 'asciichart';
 import chalk from 'chalk';
 import figures from 'figures';
-import React, { Suspense, use, useCallback, useEffect, useMemo, useState } from 'react';
+import type React from 'react';
+import { Suspense, use, useCallback, useEffect, useMemo, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import stripAnsi from 'strip-ansi';
 import type { CommandResultDisplay } from '../commands.js';
 import { useTerminalSize } from '../hooks/useTerminalSize.js';
@@ -29,6 +30,7 @@ import { getTheme, themeColorToAnsi } from '../utils/theme.js';
 import { Pane } from './design-system/Pane.js';
 import { Tab, Tabs, useTabHeaderFocus } from './design-system/Tabs.js';
 import { Spinner } from './Spinner.js';
+
 function formatPeakDay(dateStr: string): string {
   const date = new Date(dateStr);
   return date.toLocaleDateString('en-US', {

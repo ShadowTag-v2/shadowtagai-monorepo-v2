@@ -1,5 +1,5 @@
 import { execa } from 'execa';
-import * as React from 'react';
+import type * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Select } from '../../components/CustomSelect/index.js';
 import { Dialog } from '../../components/design-system/Dialog.js';
@@ -20,6 +20,7 @@ import {
   isSignedIn,
   RedactedGithubToken,
 } from './api.js';
+
 type CheckResult =
   | {
       status: 'not_signed_in';

@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { DeepImmutable } from 'src/types/utils.js';
 import { useElapsedTime } from '../../hooks/useElapsedTime.js';
 import type { KeyboardEvent } from '../../ink/events/keyboard-event.js';
@@ -16,6 +16,7 @@ import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
 import { UserPlanMessage } from '../messages/UserPlanMessage.js';
 import { renderToolActivity } from './renderToolActivity.js';
 import { getTaskStatusColor, getTaskStatusIcon } from './taskStatusUtils.js';
+
 type Props = {
   agent: DeepImmutable<LocalAgentTaskState>;
   onDone: () => void;

@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useEffect } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
@@ -11,6 +11,7 @@ import { Box, Text } from '../ink.js';
 import { useKeybinding } from '../keybindings/useKeybinding.js';
 import { ResumeTask } from './ResumeTask.js';
 import { Spinner } from './Spinner.js';
+
 interface TeleportResumeWrapperProps {
   onComplete: (result: TeleportRemoteResponse) => void;
   onCancel: () => void;

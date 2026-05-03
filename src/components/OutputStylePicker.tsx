@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import {
   getAllOutputStyles,
   OUTPUT_STYLE_CONFIG,
@@ -12,6 +12,7 @@ import { getCwd } from '../utils/cwd.js';
 import type { OptionWithDescription } from './CustomSelect/select.js';
 import { Select } from './CustomSelect/select.js';
 import { Dialog } from './design-system/Dialog.js';
+
 const DEFAULT_OUTPUT_STYLE_LABEL = 'Default';
 const DEFAULT_OUTPUT_STYLE_DESCRIPTION =
   'Claude completes coding tasks efficiently and provides concise responses';

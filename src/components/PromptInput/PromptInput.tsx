@@ -178,6 +178,7 @@ import { usePromptInputPlaceholder } from './usePromptInputPlaceholder.js';
 import { useShowFastIconHint } from './useShowFastIconHint.js';
 import { useSwarmBanner } from './useSwarmBanner.js';
 import { isNonSpacePrintable, isVimModeEnabled } from './utils.js';
+
 type Props = {
   debug: boolean;
   ideSelection: IDESelection | undefined;
@@ -1550,7 +1551,7 @@ function PromptInput({
 
   // Insert the at-mentioned reference (the file and, optionally, a line range) when
   // we receive an at-mentioned notification the IDE.
-  const onIdeAtMentioned = function (atMentioned: IDEAtMentioned) {
+  const onIdeAtMentioned = (atMentioned: IDEAtMentioned) => {
     logEvent('tengu_ext_at_mentioned', {});
     let atMentionedText: string;
     const relativePath = path.relative(getCwd(), atMentioned.filePath);

@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { type ReactNode, useEffect, useRef, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 // eslint-disable-next-line custom-rules/prefer-use-keybindings -- UP arrow exit not in Attachments bindings
 import { Box, Text, useInput } from '../../ink.js';
 import { useKeybinding, useKeybindings } from '../../keybindings/useKeybinding.js';
@@ -12,6 +12,7 @@ import { Byline } from '../design-system/Byline.js';
 import TextInput from '../TextInput.js';
 import type { OptionWithDescription } from './select.js';
 import { SelectOption } from './select-option.js';
+
 type Props<T> = {
   option: Extract<
     OptionWithDescription<T>,

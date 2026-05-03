@@ -1,7 +1,8 @@
+import type React from 'react';
 import { c as _c } from 'react/compiler-runtime';
-import React from 'react';
 import { pathToFileURL } from 'url';
 import Link from '../ink/components/Link.js';
+
 type Props = {
   /** The absolute file path */
   filePath: string;

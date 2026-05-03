@@ -1380,6 +1380,6 @@ function dropSubtreeCache(node: DOMElement): void {
 }
 
 // Exported for testing
-export { buildCharToSegmentMap, applyStylesToWrappedText };
+export { applyStylesToWrappedText, buildCharToSegmentMap };
 
 export default renderNodeToOutput;

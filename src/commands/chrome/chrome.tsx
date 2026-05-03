@@ -1,5 +1,6 @@
+import type React from 'react';
+import { useState } from 'react';
 import { c as _c } from 'react/compiler-runtime';
-import React, { useState } from 'react';
 import { type OptionWithDescription, Select } from '../../components/CustomSelect/select.js';
 import { Dialog } from '../../components/design-system/Dialog.js';
 import { Box, Text } from '../../ink.js';
@@ -14,6 +15,7 @@ import { isChromeExtensionInstalled } from '../../utils/claudeInChrome/setup.js'
 import { getGlobalConfig, saveGlobalConfig } from '../../utils/config.js';
 import { env } from '../../utils/env.js';
 import { isRunningOnHomespace } from '../../utils/envUtils.js';
+
 const CHROME_EXTENSION_URL = 'https://claude.ai/chrome';
 const CHROME_PERMISSIONS_URL = 'https://clau.de/chrome/permissions';
 const CHROME_RECONNECT_URL = 'https://clau.de/chrome/reconnect';
@@ -74,12 +76,12 @@ function ClaudeInChromeMenu(t0) {
   let t4;
   if ($[4] !== enabledByDefault) {
     t4 = function handleAction(action) {
-      bb22: switch (action) {
+      switch (action) {
         case 'install-extension': {
           setSelectKey(_temp3);
           setShowInstallHint(true);
           openUrl(CHROME_EXTENSION_URL);
-          break bb22;
+          break;
         }
         case 'reconnect': {
           setSelectKey(_temp4);
@@ -90,12 +92,12 @@ function ClaudeInChromeMenu(t0) {
             }
           });
           openUrl(CHROME_RECONNECT_URL);
-          break bb22;
+          break;
         }
         case 'manage-permissions': {
           setSelectKey(_temp5);
           openUrl(CHROME_PERMISSIONS_URL);
-          break bb22;
+          break;
         }
         case 'toggle-default': {
           const newValue = !enabledByDefault;
@@ -349,7 +351,7 @@ function _temp2(c) {
 function _temp(s) {
   return s.mcp.clients;
 }
-export const call = async function (onDone: (result?: string) => void): Promise<React.ReactNode> {
+export const call = async (onDone: (result?: string) => void): Promise<React.ReactNode> => {
   const isExtensionInstalled = await isChromeExtensionInstalled();
   const config = getGlobalConfig();
   const isSubscriber = isClaudeAISubscriber();

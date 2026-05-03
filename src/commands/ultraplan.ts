@@ -1,6 +1,6 @@
-import { Command } from 'commander';
-import { writeFileSync, existsSync, mkdirSync } from 'fs';
-import { join, dirname } from 'path';
+import type { Command } from 'commander';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { dirname, join } from 'path';
 import { logEvent } from '../services/analytics/index.js';
 
 /**
@@ -33,11 +33,26 @@ export interface UltraplanResult {
 }
 
 const PHASE_DEFINITIONS: Array<{ name: string; description: string }> = [
-  { name: 'Problem Decomposition', description: 'Gather requirements, constraints, and scope boundaries.' },
-  { name: 'Solution Architecture', description: 'Propose approach, evaluate alternatives, select strategy.' },
-  { name: 'Risk Assessment', description: 'Identify blockers, dependencies, failure modes, and mitigations.' },
-  { name: 'Implementation Plan', description: 'Define step-by-step tasks with owners, estimates, and checkpoints.' },
-  { name: 'Validation Criteria', description: 'Specify acceptance tests, "definition of done", and verification steps.' },
+  {
+    name: 'Problem Decomposition',
+    description: 'Gather requirements, constraints, and scope boundaries.',
+  },
+  {
+    name: 'Solution Architecture',
+    description: 'Propose approach, evaluate alternatives, select strategy.',
+  },
+  {
+    name: 'Risk Assessment',
+    description: 'Identify blockers, dependencies, failure modes, and mitigations.',
+  },
+  {
+    name: 'Implementation Plan',
+    description: 'Define step-by-step tasks with owners, estimates, and checkpoints.',
+  },
+  {
+    name: 'Validation Criteria',
+    description: 'Specify acceptance tests, "definition of done", and verification steps.',
+  },
 ];
 
 /**
@@ -70,21 +85,34 @@ export function renderPlanMarkdown(phases: PlanPhase[], topic?: string): string 
     ``,
     `---`,
     ``,
-  ].filter(Boolean).join('\n');
+  ]
+    .filter(Boolean)
+    .join('\n');
 
-  const body = phases.map((p, i) => {
-    const statusIcon = p.status === 'complete' ? '✅' : p.status === 'active' ? '🔄' : p.status === 'skipped' ? '⏭️' : '⏳';
-    return [
-      `## Phase ${i + 1}: ${p.name} ${statusIcon}`,
-      ``,
-      `> ${p.description}`,
-      ``,
-      p.content || '<!-- No content yet -->',
-      ``,
-      p.durationMs != null ? `*Duration: ${p.durationMs}ms*` : '',
-      ``,
-    ].filter(Boolean).join('\n');
-  }).join('\n---\n\n');
+  const body = phases
+    .map((p, i) => {
+      const statusIcon =
+        p.status === 'complete'
+          ? '✅'
+          : p.status === 'active'
+            ? '🔄'
+            : p.status === 'skipped'
+              ? '⏭️'
+              : '⏳';
+      return [
+        `## Phase ${i + 1}: ${p.name} ${statusIcon}`,
+        ``,
+        `> ${p.description}`,
+        ``,
+        p.content || '<!-- No content yet -->',
+        ``,
+        p.durationMs != null ? `*Duration: ${p.durationMs}ms*` : '',
+        ``,
+      ]
+        .filter(Boolean)
+        .join('\n');
+    })
+    .join('\n---\n\n');
 
   return header + body;
 }

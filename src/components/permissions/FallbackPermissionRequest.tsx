@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useCallback, useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { getOriginalCwd } from '../../bootstrap/state.js';
 import { Box, Text, useTheme } from '../../ink.js';
 import { sanitizeToolNameForAnalytics } from '../../services/analytics/metadata.js';
@@ -16,6 +16,7 @@ import {
 } from './PermissionPrompt.js';
 import type { PermissionRequestProps } from './PermissionRequest.js';
 import { PermissionRuleExplanation } from './PermissionRuleExplanation.js';
+
 type FallbackOptionValue = 'yes' | 'yes-dont-ask-again' | 'no';
 export function FallbackPermissionRequest(t0) {
   const $ = _c(58);
@@ -52,7 +53,7 @@ export function FallbackPermissionRequest(t0) {
   let t3;
   if ($[5] !== onDone || $[6] !== onReject || $[7] !== toolUseConfirm) {
     t3 = (value, feedback) => {
-      bb8: switch (value) {
+      switch (value) {
         case 'yes': {
           logUnaryEvent({
             completion_type: 'tool_use_single',
@@ -65,7 +66,7 @@ export function FallbackPermissionRequest(t0) {
           });
           toolUseConfirm.onAllow(toolUseConfirm.input, [], feedback);
           onDone();
-          break bb8;
+          break;
         }
         case 'yes-dont-ask-again': {
           logUnaryEvent({
@@ -90,7 +91,7 @@ export function FallbackPermissionRequest(t0) {
             },
           ]);
           onDone();
-          break bb8;
+          break;
         }
         case 'no': {
           logUnaryEvent({

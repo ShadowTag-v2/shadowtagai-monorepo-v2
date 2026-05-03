@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import { basename, relative } from 'path';
 import React, { Suspense, use, useMemo } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { FileEditToolDiff } from 'src/components/FileEditToolDiff.js';
 import { getCwd } from 'src/utils/cwd.js';
 import { isENOENT } from 'src/utils/errors.js';
@@ -11,6 +11,7 @@ import { BashTool } from '../../../tools/BashTool/BashTool.js';
 import { applySedSubstitution, type SedEditInfo } from '../../../tools/BashTool/sedEditParser.js';
 import { FilePermissionDialog } from '../FilePermissionDialog/FilePermissionDialog.js';
 import type { PermissionRequestProps } from '../PermissionRequest.js';
+
 type SedEditPermissionRequestProps = PermissionRequestProps & {
   sedInfo: SedEditInfo;
 };

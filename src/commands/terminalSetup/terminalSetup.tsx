@@ -25,6 +25,7 @@ import { addItemToJSONCArray, safeParseJSONC } from '../../utils/json.js';
 import { logError } from '../../utils/log.js';
 import { getPlatform } from '../../utils/platform.js';
 import { jsonParse, jsonStringify } from '../../utils/slowOperations.js';
+
 const EOL = '\n';
 
 // Terminals that natively support CSI u / Kitty keyboard protocol

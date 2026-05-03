@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { removeSandboxViolationTags } from 'src/utils/sandbox/sandbox-ui-utils.js';
 import { KeyboardShortcutHint } from '../../components/design-system/KeyboardShortcutHint.js';
 import { MessageResponse } from '../../components/MessageResponse.js';
@@ -7,6 +7,7 @@ import { OutputLine } from '../../components/shell/OutputLine.js';
 import { ShellTimeDisplay } from '../../components/shell/ShellTimeDisplay.js';
 import { Box, Text } from '../../ink.js';
 import type { Out as BashOut } from './BashTool.js';
+
 type Props = {
   content: Omit<BashOut, 'interrupted'>;
   verbose: boolean;

@@ -1,7 +1,7 @@
-import { c as _c } from 'react/compiler-runtime';
 import figures from 'figures';
-import * as React from 'react';
+import type * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
@@ -35,6 +35,7 @@ import { isMarketplaceAutoUpdate } from '../../utils/plugins/schemas.js';
 import { getSettingsForSource, updateSettingsForSource } from '../../utils/settings/settings.js';
 import { plural } from '../../utils/stringUtils.js';
 import type { ViewState } from './types.js';
+
 type Props = {
   setViewState: (state: ViewState) => void;
   error?: string | null;

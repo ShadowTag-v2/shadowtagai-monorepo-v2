@@ -90,6 +90,7 @@ import type { ViewState as ParentViewState } from './types.js';
 import { UnifiedInstalledCell } from './UnifiedInstalledCell.js';
 import type { UnifiedInstalledItem } from './unifiedTypes.js';
 import { usePagination } from './usePagination.js';
+
 type Props = {
   setViewState: (state: ParentViewState) => void;
   setResult: (result: string | null) => void;

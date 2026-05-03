@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import figures from 'figures';
-import * as React from 'react';
+import type * as React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 import { useSetAppState } from 'src/state/AppState.js';
 import type { KeyboardEvent } from '../../ink/events/keyboard-event.js';
@@ -20,6 +20,7 @@ import { ColorPicker } from './ColorPicker.js';
 import { ModelSelector } from './ModelSelector.js';
 import { ToolSelector } from './ToolSelector.js';
 import { getAgentSourceDisplayName } from './utils.js';
+
 type Props = {
   agent: AgentDefinition;
   tools: Tools;

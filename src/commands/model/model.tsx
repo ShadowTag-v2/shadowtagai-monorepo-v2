@@ -1,6 +1,6 @@
-import { c as _c } from 'react/compiler-runtime';
 import chalk from 'chalk';
 import * as React from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import type { CommandResultDisplay } from '../../commands.js';
 import { ModelPicker } from '../../components/ModelPicker.js';
 import { COMMON_HELP_ARGS, COMMON_INFO_ARGS } from '../../constants/xml.js';
@@ -27,6 +27,7 @@ import {
 } from '../../utils/model/model.js';
 import { isModelAllowed } from '../../utils/model/modelAllowlist.js';
 import { validateModel } from '../../utils/model/validateModel.js';
+
 function ModelPickerWrapper(t0) {
   const $ = _c(17);
   const { onDone } = t0;
@@ -69,7 +70,7 @@ function ModelPickerWrapper(t0) {
       if (effort !== undefined) {
         message = message + ` with ${chalk.bold(effort)} effort`;
       }
-      let wasFastModeToggledOn = undefined;
+      let wasFastModeToggledOn;
       if (isFastModeEnabled()) {
         clearFastModeCooldown();
         if (!isFastModeSupportedByModel(model) && isFastMode) {
@@ -237,7 +238,7 @@ function SetModelAndClose({
         mainLoopModelForSession: null,
       }));
       let message = `Set model to ${chalk.bold(renderModelLabel(modelValue))}`;
-      let wasFastModeToggledOn = undefined;
+      let wasFastModeToggledOn;
       if (isFastModeEnabled()) {
         clearFastModeCooldown();
         if (!isFastModeSupportedByModel(modelValue) && isFastMode) {

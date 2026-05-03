@@ -1,8 +1,8 @@
-import { c as _c } from 'react/compiler-runtime';
 import { randomUUID } from 'crypto';
 import figures from 'figures';
-import * as React from 'react';
+import type * as React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useInterval } from 'usehooks-ts';
 import { useRegisterOverlay } from '../../context/overlayContext.js';
 import { stringWidth } from '../../ink/stringWidth.js';
@@ -52,6 +52,7 @@ import {
 } from '../../utils/teammateMailbox.js';
 import { Dialog } from '../design-system/Dialog.js';
 import ThemedText from '../design-system/ThemedText.js';
+
 type Props = {
   initialTeams?: TeamSummary[];
   onDone: () => void;

@@ -1,5 +1,5 @@
-import { c as _c } from 'react/compiler-runtime';
 import React, { useEffect, useRef } from 'react';
+import { c as _c } from 'react/compiler-runtime';
 import { useNotifications } from 'src/context/notifications.js';
 import { Text } from 'src/ink.js';
 import type { MCPServerConnection } from 'src/services/mcp/types.js';
@@ -13,6 +13,7 @@ import {
 import { getIsRemoteMode } from '../../bootstrap/state.js';
 import { useIdeConnectionStatus } from '../useIdeConnectionStatus.js';
 import type { IDESelection } from '../useIdeSelection.js';
+
 const MAX_IDE_HINT_SHOW_COUNT = 5;
 type Props = {
   ideInstallationStatus: IDEExtensionInstallationStatus | null;
