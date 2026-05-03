@@ -86,6 +86,15 @@ _SERVICE_REGISTRY: dict[str, str] = {
     "token_budget": "token_budget",
     "tool_limits": "tool_limits",
     "vcr_fixtures": "vcr_fixtures",
+    # V15 expansion — unported src/services/ modules (stubs for tracking)
+    "agent_summary": "agent_summary",
+    "session_memory": "session_memory",
+    "extract_memories": "extract_memories",
+    "policy_limits": "policy_limits",
+    "analytics": "analytics",
+    "oauth_flow": "oauth_flow",
+    "voice_modality": "voice_modality",
+    "watchdog": "watchdog",
 }
 
 
