@@ -8,6 +8,8 @@ mocking Temporal's infrastructure with direct function calls.
 from __future__ import annotations
 
 import asyncio
+import subprocess
+from unittest.mock import patch
 
 import pytest
 
@@ -24,6 +26,21 @@ from src.activities.j3_roc_drill import j3_roc_drill_sandbox
 
 class TestEndToEndCampaignFlow:
     """Integration test that exercises the full activity chain."""
+
+    @pytest.fixture(autouse=True)
+    def _mock_docker_runtime(self):
+        """Mock subprocess.run so ROC Drill doesn't need Docker/gVisor."""
+        fake_result = subprocess.CompletedProcess(
+            args="docker run ...",
+            returncode=0,
+            stdout="===== 42 passed in 3.14s =====\n",
+            stderr="",
+        )
+        with patch(
+            "src.activities.j3_roc_drill.subprocess.run",
+            return_value=fake_result,
+        ):
+            yield
 
     @pytest.fixture
     def mission(self) -> dict:
