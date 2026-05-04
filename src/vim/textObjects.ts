@@ -52,19 +52,18 @@ export function findTextObject(
   return null;
 }
 
-function findWordObject(
+/**
+ * Segment text into graphemes and find the grapheme index at a byte offset.
+ */
+function findGraphemeIndex(
   text: string,
   offset: number,
-  isInner: boolean,
-  isWordChar: (ch: string) => boolean,
-): TextObjectRange {
-  // Pre-segment into graphemes for grapheme-safe iteration
+): { graphemes: Array<{ segment: string; index: number }>; graphemeIdx: number } {
   const graphemes: Array<{ segment: string; index: number }> = [];
   for (const { segment, index } of getGraphemeSegmenter().segment(text)) {
     graphemes.push({ segment, index });
   }
 
-  // Find which grapheme index the offset falls in
   let graphemeIdx = graphemes.length - 1;
   for (let i = 0; i < graphemes.length; i++) {
     const g = graphemes[i]!;
@@ -75,6 +74,33 @@ function findWordObject(
     }
   }
 
+  return { graphemes, graphemeIdx };
+}
+
+/**
+ * Expand a run of graphemes matching a predicate in both directions.
+ */
+function expandRun(
+  startIdx: number,
+  endIdx: number,
+  len: number,
+  predicate: (idx: number) => boolean,
+): { start: number; end: number } {
+  let s = startIdx;
+  let e = endIdx;
+  while (s > 0 && predicate(s - 1)) s--;
+  while (e < len && predicate(e)) e++;
+  return { start: s, end: e };
+}
+
+function findWordObject(
+  text: string,
+  offset: number,
+  isInner: boolean,
+  isWordChar: (ch: string) => boolean,
+): TextObjectRange {
+  const { graphemes, graphemeIdx } = findGraphemeIndex(text, offset);
+
   const graphemeAt = (idx: number): string => graphemes[idx]?.segment ?? '';
   const offsetAt = (idx: number): number =>
     idx < graphemes.length ? graphemes[idx]?.index : text.length;
@@ -82,31 +108,32 @@ function findWordObject(
   const isWord = (idx: number): boolean => isWordChar(graphemeAt(idx));
   const isPunct = (idx: number): boolean => isVimPunctuation(graphemeAt(idx));
 
-  let startIdx = graphemeIdx;
-  let endIdx = graphemeIdx;
-
+  // Classify cursor position and expand the run
+  let run: { start: number; end: number };
   if (isWord(graphemeIdx)) {
-    while (startIdx > 0 && isWord(startIdx - 1)) startIdx--;
-    while (endIdx < graphemes.length && isWord(endIdx)) endIdx++;
+    run = expandRun(graphemeIdx, graphemeIdx, graphemes.length, isWord);
   } else if (isWs(graphemeIdx)) {
-    while (startIdx > 0 && isWs(startIdx - 1)) startIdx--;
-    while (endIdx < graphemes.length && isWs(endIdx)) endIdx++;
-    return { start: offsetAt(startIdx), end: offsetAt(endIdx) };
+    run = expandRun(graphemeIdx, graphemeIdx, graphemes.length, isWs);
+    return { start: offsetAt(run.start), end: offsetAt(run.end) };
   } else if (isPunct(graphemeIdx)) {
-    while (startIdx > 0 && isPunct(startIdx - 1)) startIdx--;
-    while (endIdx < graphemes.length && isPunct(endIdx)) endIdx++;
+    run = expandRun(graphemeIdx, graphemeIdx, graphemes.length, isPunct);
+  } else {
+    return { start: offsetAt(graphemeIdx), end: offsetAt(graphemeIdx + 1) };
   }
 
+  // For 'around' objects, include surrounding whitespace
   if (!isInner) {
-    // Include surrounding whitespace
-    if (endIdx < graphemes.length && isWs(endIdx)) {
-      while (endIdx < graphemes.length && isWs(endIdx)) endIdx++;
-    } else if (startIdx > 0 && isWs(startIdx - 1)) {
-      while (startIdx > 0 && isWs(startIdx - 1)) startIdx--;
+    if (run.end < graphemes.length && isWs(run.end)) {
+      run = { start: run.start, end: expandRun(run.end, run.end, graphemes.length, isWs).end };
+    } else if (run.start > 0 && isWs(run.start - 1)) {
+      run = {
+        start: expandRun(run.start, run.start, graphemes.length, (i) => i >= 0 && isWs(i)).start,
+        end: run.end,
+      };
     }
   }
 
-  return { start: offsetAt(startIdx), end: offsetAt(endIdx) };
+  return { start: offsetAt(run.start), end: offsetAt(run.end) };
 }
 
 function findQuoteObject(

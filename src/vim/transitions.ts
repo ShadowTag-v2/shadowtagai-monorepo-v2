@@ -92,14 +92,69 @@ export function transition(
 // ============================================================================
 
 /**
+ * Dispatch table for normal-mode single-key commands.
+ * Each handler takes (count, ctx) and returns a TransitionResult.
+ * This replaces a sequential if-chain, reducing cognitive complexity.
+ */
+type NormalHandler = (count: number, ctx: TransitionContext) => TransitionResult;
+
+const NORMAL_DISPATCH: Readonly<Record<string, NormalHandler>> = {
+  g: (count) => ({ next: { type: 'g', count } }),
+  r: (count) => ({ next: { type: 'replace', count } }),
+  '>': (count) => ({ next: { type: 'indent', dir: '>', count } }),
+  '<': (count) => ({ next: { type: 'indent', dir: '<', count } }),
+  '~': (count, ctx) => ({ execute: () => executeToggleCase(count, ctx) }),
+  x: (count, ctx) => ({ execute: () => executeX(count, ctx) }),
+  J: (count, ctx) => ({ execute: () => executeJoin(count, ctx) }),
+  p: (count, ctx) => ({ execute: () => executePaste(true, count, ctx) }),
+  P: (count, ctx) => ({ execute: () => executePaste(false, count, ctx) }),
+  D: (_count, ctx) => ({ execute: () => executeOperatorMotion('delete', '$', 1, ctx) }),
+  C: (_count, ctx) => ({ execute: () => executeOperatorMotion('change', '$', 1, ctx) }),
+  Y: (count, ctx) => ({ execute: () => executeLineOp('yank', count, ctx) }),
+  G: (count, ctx) => ({
+    execute: () => {
+      // count=1 means no count given, go to last line
+      // otherwise go to line N
+      if (count === 1) {
+        ctx.setOffset(ctx.cursor.startOfLastLine().offset);
+      } else {
+        ctx.setOffset(ctx.cursor.goToLine(count).offset);
+      }
+    },
+  }),
+  '.': (_count, ctx) => ({ execute: () => ctx.onDotRepeat?.() }),
+  ';': (count, ctx) => ({ execute: () => executeRepeatFind(false, count, ctx) }),
+  ',': (count, ctx) => ({ execute: () => executeRepeatFind(true, count, ctx) }),
+  u: (_count, ctx) => ({ execute: () => ctx.onUndo?.() }),
+  i: (_count, ctx) => ({ execute: () => ctx.enterInsert(ctx.cursor.offset) }),
+  I: (_count, ctx) => ({
+    execute: () => ctx.enterInsert(ctx.cursor.firstNonBlankInLogicalLine().offset),
+  }),
+  a: (_count, ctx) => ({
+    execute: () => {
+      const newOffset = ctx.cursor.isAtEnd() ? ctx.cursor.offset : ctx.cursor.right().offset;
+      ctx.enterInsert(newOffset);
+    },
+  }),
+  A: (_count, ctx) => ({
+    execute: () => ctx.enterInsert(ctx.cursor.endOfLogicalLine().offset),
+  }),
+  o: (_count, ctx) => ({ execute: () => executeOpenLine('below', ctx) }),
+  O: (_count, ctx) => ({ execute: () => executeOpenLine('above', ctx) }),
+};
+
+/**
  * Handle input that's valid in both idle and count states.
  * Returns null if input is not recognized.
+ *
+ * Priority: operator keys → simple motions → find keys → dispatch table.
  */
 function handleNormalInput(
   input: string,
   count: number,
   ctx: TransitionContext,
 ): TransitionResult | null {
+  // Dynamic set-based checks (can't be single-key dispatch entries)
   if (isOperatorKey(input)) {
     return { next: { type: 'operator', op: OPERATORS[input], count } };
   }
@@ -117,81 +172,9 @@ function handleNormalInput(
     return { next: { type: 'find', find: input as FindType, count } };
   }
 
-  if (input === 'g') return { next: { type: 'g', count } };
-  if (input === 'r') return { next: { type: 'replace', count } };
-  if (input === '>' || input === '<') {
-    return { next: { type: 'indent', dir: input, count } };
-  }
-  if (input === '~') {
-    return { execute: () => executeToggleCase(count, ctx) };
-  }
-  if (input === 'x') {
-    return { execute: () => executeX(count, ctx) };
-  }
-  if (input === 'J') {
-    return { execute: () => executeJoin(count, ctx) };
-  }
-  if (input === 'p' || input === 'P') {
-    return { execute: () => executePaste(input === 'p', count, ctx) };
-  }
-  if (input === 'D') {
-    return { execute: () => executeOperatorMotion('delete', '$', 1, ctx) };
-  }
-  if (input === 'C') {
-    return { execute: () => executeOperatorMotion('change', '$', 1, ctx) };
-  }
-  if (input === 'Y') {
-    return { execute: () => executeLineOp('yank', count, ctx) };
-  }
-  if (input === 'G') {
-    return {
-      execute: () => {
-        // count=1 means no count given, go to last line
-        // otherwise go to line N
-        if (count === 1) {
-          ctx.setOffset(ctx.cursor.startOfLastLine().offset);
-        } else {
-          ctx.setOffset(ctx.cursor.goToLine(count).offset);
-        }
-      },
-    };
-  }
-  if (input === '.') {
-    return { execute: () => ctx.onDotRepeat?.() };
-  }
-  if (input === ';' || input === ',') {
-    return { execute: () => executeRepeatFind(input === ',', count, ctx) };
-  }
-  if (input === 'u') {
-    return { execute: () => ctx.onUndo?.() };
-  }
-  if (input === 'i') {
-    return { execute: () => ctx.enterInsert(ctx.cursor.offset) };
-  }
-  if (input === 'I') {
-    return {
-      execute: () => ctx.enterInsert(ctx.cursor.firstNonBlankInLogicalLine().offset),
-    };
-  }
-  if (input === 'a') {
-    return {
-      execute: () => {
-        const newOffset = ctx.cursor.isAtEnd() ? ctx.cursor.offset : ctx.cursor.right().offset;
-        ctx.enterInsert(newOffset);
-      },
-    };
-  }
-  if (input === 'A') {
-    return {
-      execute: () => ctx.enterInsert(ctx.cursor.endOfLogicalLine().offset),
-    };
-  }
-  if (input === 'o') {
-    return { execute: () => executeOpenLine('below', ctx) };
-  }
-  if (input === 'O') {
-    return { execute: () => executeOpenLine('above', ctx) };
-  }
+  // Single-key dispatch table lookup
+  const handler = NORMAL_DISPATCH[input];
+  if (handler) return handler(count, ctx);
 
   return null;
 }
