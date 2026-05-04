@@ -50,9 +50,7 @@ logger = logging.getLogger(__name__)
 # Register the Firestore circuit breaker with production-tuned thresholds:
 #   - 3 consecutive failures → OPEN (Firestore is usually fast, 3 failures = real outage)
 #   - 120s reset timeout (GCP control plane recovery window)
-_firestore_breaker = _cb_registry.get_or_create(
-    "firestore", failure_threshold=3, reset_timeout_s=120.0
-)
+_firestore_breaker = _cb_registry.get_or_create("firestore", failure_threshold=3, reset_timeout_s=120.0)
 
 # Rate limiting constants
 RATELIMIT_FILE = Path(os.environ.get("BEADS_DIR", ".beads")) / "sweep_ratelimit.json"

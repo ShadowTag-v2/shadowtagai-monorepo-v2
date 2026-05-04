@@ -76,9 +76,7 @@ def _telemetry_state_change_handler(
                 service_name,
             )
         except ImportError:
-            logger.debug(
-                "Telemetry package not available — circuit breaker event not emitted"
-            )
+            logger.debug("Telemetry package not available — circuit breaker event not emitted")
         except Exception:
             logger.exception(
                 "Failed to emit circuit breaker telemetry for '%s'",

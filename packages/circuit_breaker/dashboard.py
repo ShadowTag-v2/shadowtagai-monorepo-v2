@@ -41,9 +41,7 @@ def get_health_report() -> dict[str, Any]:
 
     total = len(snapshots)
     open_count = len(open_breakers)
-    closed_count = sum(
-        1 for s in snapshots.values() if s.get("state") == "closed"
-    )
+    closed_count = sum(1 for s in snapshots.values() if s.get("state") == "closed")
     half_open_count = total - open_count - closed_count
 
     return {
@@ -94,11 +92,7 @@ def format_health_table(report: dict[str, Any]) -> str:
     for name, snap in sorted(services.items()):
         state = snap.get("state", "unknown").upper()
         failures = f"{snap.get('consecutive_failures', 0)}/{snap.get('failure_threshold', '?')}"
-        probe = (
-            f"{snap.get('seconds_until_probe', 0):.1f}s"
-            if snap.get("state") == "open"
-            else "—"
-        )
+        probe = f"{snap.get('seconds_until_probe', 0):.1f}s" if snap.get("state") == "open" else "—"
 
         # Color state for terminals that support ANSI
         if state == "OPEN":
@@ -116,10 +110,6 @@ def format_health_table(report: dict[str, Any]) -> str:
     summary = report.get("summary", {})
     status = summary.get("health_status", "unknown")
     status_icon = "✅" if status == "healthy" else "⚠️"
-    lines.append(
-        f"{status_icon} {summary.get('closed', 0)} healthy, "
-        f"{summary.get('open', 0)} open, "
-        f"{summary.get('half_open', 0)} probing"
-    )
+    lines.append(f"{status_icon} {summary.get('closed', 0)} healthy, {summary.get('open', 0)} open, {summary.get('half_open', 0)} probing")
 
     return "\n".join(lines)

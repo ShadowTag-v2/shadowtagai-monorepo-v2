@@ -30,9 +30,7 @@ def build_away_prompt(session_memory: str | None = None) -> str:
 class SummaryGenerator(Protocol):
     """Protocol for LLM-based summary generation."""
 
-    async def generate(
-        self, messages: list[dict[str, str]], system_prompt: str
-    ) -> str | None: ...
+    async def generate(self, messages: list[dict[str, str]], system_prompt: str) -> str | None: ...
 
 
 async def generate_away_summary(

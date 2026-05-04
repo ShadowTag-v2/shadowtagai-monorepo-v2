@@ -47,6 +47,7 @@ _args = st.fixed_dictionaries(
 
 # ── Property: Membership Invariant ──────────────────────────────
 
+
 @given(
     allowed_set=st.frozensets(_fn_name, min_size=1, max_size=20),
     query_name=_fn_name,
@@ -73,6 +74,7 @@ def test_membership_invariant(
 
 
 # ── Property: Risk Tier Independence ────────────────────────────
+
 
 @given(
     fn_name=_fn_name,
@@ -101,6 +103,7 @@ def test_risk_tier_independence(
 
 # ── Property: Action Tags Independence ──────────────────────────
 
+
 @given(
     fn_name=_fn_name,
     risk=_risk_tier,
@@ -128,6 +131,7 @@ def test_action_tags_independence(
 
 # ── Property: Empty Allowlist Denies Everything ─────────────────
 
+
 @given(
     fn_name=_fn_name,
     risk=_risk_tier,
@@ -149,6 +153,7 @@ def test_empty_allowlist_denies_all(
 
 # ── Property: Frozenset Coercion ────────────────────────────────
 
+
 @given(
     allowed_list=st.lists(_fn_name, min_size=1, max_size=10),
 )
@@ -165,19 +170,16 @@ def test_mutable_set_coercion(
     mutable.add("__injected_mutation__")
 
     for fn in original_copy:
-        result = provider.request_confirmation(
-            fn, {}, RiskTier.LOW, frozenset()
-        )
+        result = provider.request_confirmation(fn, {}, RiskTier.LOW, frozenset())
         assert result is True
 
     # The injected name should NOT be approved
-    result = provider.request_confirmation(
-        "__injected_mutation__", {}, RiskTier.LOW, frozenset()
-    )
+    result = provider.request_confirmation("__injected_mutation__", {}, RiskTier.LOW, frozenset())
     assert result is False, "Provider should be immune to post-construction mutation"
 
 
 # ── Property: Idempotency ───────────────────────────────────────
+
 
 @given(
     allowed_set=st.frozensets(_fn_name, min_size=1, max_size=10),

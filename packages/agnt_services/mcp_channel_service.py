@@ -128,7 +128,7 @@ def truncate_for_preview(input_data: object, max_len: int = 200) -> str:
     try:
         s = json.dumps(input_data, default=str)
         return s[:max_len] + "…" if len(s) > max_len else s
-    except TypeError, ValueError:
+    except (TypeError, ValueError):
         return "(unserializable)"
 
 

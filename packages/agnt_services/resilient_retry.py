@@ -43,6 +43,7 @@ HEARTBEAT_INTERVAL_MS: int = 30_000
 
 class RetryOutcome(StrEnum):
     """Outcome of a single retry attempt."""
+
     SUCCESS = "success"
     RETRIED = "retried"
     EXHAUSTED = "exhausted"
@@ -53,6 +54,7 @@ class RetryOutcome(StrEnum):
 @dataclass(frozen=True, slots=True)
 class RetryStats:
     """Statistics from a completed retry loop."""
+
     total_attempts: int
     total_delay_ms: float
     outcome: RetryOutcome
@@ -79,6 +81,7 @@ class FallbackTriggeredError(Exception):
 
 
 # ── Core retry functions ──
+
 
 def get_retry_delay(
     attempt: int,
@@ -144,6 +147,7 @@ def is_persistent_retry_enabled() -> bool:
 @dataclass
 class RetryConfig:
     """Configuration for a retry loop."""
+
     max_retries: int = field(default_factory=get_max_retries)
     base_delay_ms: float = BASE_DELAY_MS
     max_delay_ms: float = 32_000
@@ -183,9 +187,7 @@ async def with_retry(
 
     for attempt in range(1, max_attempts + 1):
         if abort_event and abort_event.is_set():
-            raise CannotRetryError(
-                last_error or Exception("Aborted"), attempts=attempt
-            )
+            raise CannotRetryError(last_error or Exception("Aborted"), attempts=attempt)
 
         try:
             result = await operation()
@@ -203,7 +205,10 @@ async def with_retry(
 
             logger.debug(
                 "Retry attempt %d/%d failed: %s (status=%s)",
-                attempt, max_attempts, message[:200], status,
+                attempt,
+                max_attempts,
+                message[:200],
+                status,
             )
 
             # Track 529s for fallback
@@ -224,9 +229,7 @@ async def with_retry(
             retry_after = None
             headers = getattr(e, "headers", None)
             if headers:
-                if hasattr(headers, "get"):
-                    retry_after = headers.get("retry-after")
-                elif isinstance(headers, dict):
+                if hasattr(headers, "get") or isinstance(headers, dict):
                     retry_after = headers.get("retry-after")
 
             delay_ms = get_retry_delay(attempt, retry_after, cfg.max_delay_ms)
@@ -239,11 +242,9 @@ async def with_retry(
             delay_seconds = delay_ms / 1000
             if abort_event:
                 try:
-                    await asyncio.wait_for(
-                        abort_event.wait(), timeout=delay_seconds
-                    )
+                    await asyncio.wait_for(abort_event.wait(), timeout=delay_seconds)
                     raise CannotRetryError(e, attempts=attempt) from e
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     pass  # Normal — event didn't fire during sleep
             else:
                 await asyncio.sleep(delay_seconds)
@@ -255,6 +256,7 @@ async def with_retry(
 
 
 # ── Synchronous variant ──
+
 
 def with_retry_sync(
     operation: Callable[..., T],

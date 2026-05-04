@@ -48,9 +48,7 @@ class TestAsyncEvidenceBenchmark:
         logger = _make_logger(tmp_path)
 
         def run():
-            asyncio.run(
-                logger.log_execution("bench-tool", success=True, detail="benchmark run")
-            )
+            asyncio.run(logger.log_execution("bench-tool", success=True, detail="benchmark run"))
 
         benchmark(run)
 
@@ -67,9 +65,7 @@ class TestAsyncEvidenceBenchmark:
         context = {"tool": "benchmark", "action": "test", "uid": "b001"}
 
         def run():
-            asyncio.run(
-                logger.log_check("bench-tool", context, decision)
-            )
+            asyncio.run(logger.log_check("bench-tool", context, decision))
 
         benchmark(run)
 
@@ -79,9 +75,7 @@ class TestAsyncEvidenceBenchmark:
 
         async def burst_100():
             for i in range(100):
-                await logger.log_execution(
-                    f"tool-{i}", success=True, detail=f"burst entry {i}"
-                )
+                await logger.log_execution(f"tool-{i}", success=True, detail=f"burst entry {i}")
 
         def run():
             asyncio.run(burst_100())
@@ -102,8 +96,6 @@ class TestAsyncEvidenceBenchmark:
         logger = _make_logger(tmp_path)
 
         def run():
-            asyncio.run(
-                logger.log_execution("sync-bench", success=True, detail="sync path")
-            )
+            asyncio.run(logger.log_execution("sync-bench", success=True, detail="sync path"))
 
         benchmark(run)

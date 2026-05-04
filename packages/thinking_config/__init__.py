@@ -123,10 +123,7 @@ def has_ultrathink_keyword(text: str) -> bool:
 
 def find_thinking_trigger_positions(text: str) -> list[ThinkingTriggerPosition]:
     """Locate all ``ultrathink`` keyword spans inside *text*."""
-    return [
-        ThinkingTriggerPosition(word=m.group(0), start=m.start(), end=m.end())
-        for m in _ULTRATHINK_RE.finditer(text)
-    ]
+    return [ThinkingTriggerPosition(word=m.group(0), start=m.start(), end=m.end()) for m in _ULTRATHINK_RE.finditer(text)]
 
 
 # ---------------------------------------------------------------------------

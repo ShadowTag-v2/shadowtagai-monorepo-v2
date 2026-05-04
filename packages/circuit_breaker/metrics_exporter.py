@@ -138,50 +138,52 @@ def otel_metrics(registry: Any | None = None) -> list[dict[str, Any]]:
         labels = {"service": name}
         state_val = _STATE_VALUES.get(snap.get("state", "closed"), 0)
 
-        metrics.extend([
-            {
-                "name": "circuit_breaker_state",
-                "type": "gauge",
-                "value": state_val,
-                "labels": labels,
-                "timestamp_ns": now_ns,
-                "description": "Circuit breaker state (0=closed, 1=half_open, 2=open)",
-            },
-            {
-                "name": "circuit_breaker_failures_total",
-                "type": "counter",
-                "value": snap.get("total_failures", 0),
-                "labels": labels,
-                "timestamp_ns": now_ns,
-            },
-            {
-                "name": "circuit_breaker_successes_total",
-                "type": "counter",
-                "value": snap.get("total_successes", 0),
-                "labels": labels,
-                "timestamp_ns": now_ns,
-            },
-            {
-                "name": "circuit_breaker_consecutive_failures",
-                "type": "gauge",
-                "value": snap.get("consecutive_failures", 0),
-                "labels": labels,
-                "timestamp_ns": now_ns,
-            },
-            {
-                "name": "circuit_breaker_seconds_until_probe",
-                "type": "gauge",
-                "value": snap.get("seconds_until_probe", 0),
-                "labels": labels,
-                "timestamp_ns": now_ns,
-            },
-            {
-                "name": "circuit_breaker_backoff_multiplier",
-                "type": "gauge",
-                "value": snap.get("backoff_multiplier", 0),
-                "labels": labels,
-                "timestamp_ns": now_ns,
-            },
-        ])
+        metrics.extend(
+            [
+                {
+                    "name": "circuit_breaker_state",
+                    "type": "gauge",
+                    "value": state_val,
+                    "labels": labels,
+                    "timestamp_ns": now_ns,
+                    "description": "Circuit breaker state (0=closed, 1=half_open, 2=open)",
+                },
+                {
+                    "name": "circuit_breaker_failures_total",
+                    "type": "counter",
+                    "value": snap.get("total_failures", 0),
+                    "labels": labels,
+                    "timestamp_ns": now_ns,
+                },
+                {
+                    "name": "circuit_breaker_successes_total",
+                    "type": "counter",
+                    "value": snap.get("total_successes", 0),
+                    "labels": labels,
+                    "timestamp_ns": now_ns,
+                },
+                {
+                    "name": "circuit_breaker_consecutive_failures",
+                    "type": "gauge",
+                    "value": snap.get("consecutive_failures", 0),
+                    "labels": labels,
+                    "timestamp_ns": now_ns,
+                },
+                {
+                    "name": "circuit_breaker_seconds_until_probe",
+                    "type": "gauge",
+                    "value": snap.get("seconds_until_probe", 0),
+                    "labels": labels,
+                    "timestamp_ns": now_ns,
+                },
+                {
+                    "name": "circuit_breaker_backoff_multiplier",
+                    "type": "gauge",
+                    "value": snap.get("backoff_multiplier", 0),
+                    "labels": labels,
+                    "timestamp_ns": now_ns,
+                },
+            ]
+        )
 
     return metrics

@@ -23,8 +23,12 @@ LOCAL_COMMAND_STDERR_TAG: Final[str] = "local-command-stderr"
 LOCAL_COMMAND_CAVEAT_TAG: Final[str] = "local-command-caveat"
 
 TERMINAL_OUTPUT_TAGS: Final[tuple[str, ...]] = (
-    BASH_INPUT_TAG, BASH_STDOUT_TAG, BASH_STDERR_TAG,
-    LOCAL_COMMAND_STDOUT_TAG, LOCAL_COMMAND_STDERR_TAG, LOCAL_COMMAND_CAVEAT_TAG,
+    BASH_INPUT_TAG,
+    BASH_STDOUT_TAG,
+    BASH_STDERR_TAG,
+    LOCAL_COMMAND_STDOUT_TAG,
+    LOCAL_COMMAND_STDERR_TAG,
+    LOCAL_COMMAND_CAVEAT_TAG,
 )
 
 TICK_TAG: Final[str] = "tick"
@@ -60,24 +64,54 @@ FORK_DIRECTIVE_PREFIX: Final[str] = "Your directive: "
 # ── Common argument patterns ──
 COMMON_HELP_ARGS: Final[tuple[str, ...]] = ("help", "-h", "--help")
 COMMON_INFO_ARGS: Final[tuple[str, ...]] = (
-    "list", "show", "display", "current", "view", "get",
-    "check", "describe", "print", "version", "about", "status", "?",
+    "list",
+    "show",
+    "display",
+    "current",
+    "view",
+    "get",
+    "check",
+    "describe",
+    "print",
+    "version",
+    "about",
+    "status",
+    "?",
 )
 
 # ── Aggregate set for O(1) membership checks ──
-ALL_TAGS: Final[frozenset[str]] = frozenset((
-    COMMAND_NAME_TAG, COMMAND_MESSAGE_TAG, COMMAND_ARGS_TAG,
-    *TERMINAL_OUTPUT_TAGS, TICK_TAG,
-    TASK_NOTIFICATION_TAG, TASK_ID_TAG, TOOL_USE_ID_TAG, TASK_TYPE_TAG,
-    OUTPUT_FILE_TAG, STATUS_TAG, SUMMARY_TAG, REASON_TAG,
-    WORKTREE_TAG, WORKTREE_PATH_TAG, WORKTREE_BRANCH_TAG,
-    ULTRAPLAN_TAG, REMOTE_REVIEW_TAG, REMOTE_REVIEW_PROGRESS_TAG,
-    TEAMMATE_MESSAGE_TAG, CHANNEL_MESSAGE_TAG, CHANNEL_TAG,
-    CROSS_SESSION_MESSAGE_TAG, FORK_BOILERPLATE_TAG,
-))
+ALL_TAGS: Final[frozenset[str]] = frozenset(
+    (
+        COMMAND_NAME_TAG,
+        COMMAND_MESSAGE_TAG,
+        COMMAND_ARGS_TAG,
+        *TERMINAL_OUTPUT_TAGS,
+        TICK_TAG,
+        TASK_NOTIFICATION_TAG,
+        TASK_ID_TAG,
+        TOOL_USE_ID_TAG,
+        TASK_TYPE_TAG,
+        OUTPUT_FILE_TAG,
+        STATUS_TAG,
+        SUMMARY_TAG,
+        REASON_TAG,
+        WORKTREE_TAG,
+        WORKTREE_PATH_TAG,
+        WORKTREE_BRANCH_TAG,
+        ULTRAPLAN_TAG,
+        REMOTE_REVIEW_TAG,
+        REMOTE_REVIEW_PROGRESS_TAG,
+        TEAMMATE_MESSAGE_TAG,
+        CHANNEL_MESSAGE_TAG,
+        CHANNEL_TAG,
+        CROSS_SESSION_MESSAGE_TAG,
+        FORK_BOILERPLATE_TAG,
+    )
+)
 
 
 # ── XML escape utilities (from src/utils/xml.ts) ──
+
 
 def escape_xml(s: str) -> str:
     """Escape XML special characters for text content."""

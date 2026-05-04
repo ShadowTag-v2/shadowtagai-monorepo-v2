@@ -26,14 +26,16 @@ T = TypeVar("T")
 
 class CircuitState(StrEnum):
     """Circuit breaker states."""
-    CLOSED = "closed"      # Normal — requests pass through
-    OPEN = "open"          # Tripped — requests fail fast
+
+    CLOSED = "closed"  # Normal — requests pass through
+    OPEN = "open"  # Tripped — requests fail fast
     HALF_OPEN = "half_open"  # Probing — single request allowed
 
 
 @dataclass(frozen=True, slots=True)
 class CircuitStats:
     """Snapshot of circuit breaker statistics."""
+
     state: CircuitState
     failure_count: int
     success_count: int
@@ -47,9 +49,7 @@ class CircuitOpenError(Exception):
     """Raised when a call is rejected because the circuit is open."""
 
     def __init__(self, name: str, retry_after_seconds: float) -> None:
-        super().__init__(
-            f"Circuit '{name}' is OPEN — retry after {retry_after_seconds:.1f}s"
-        )
+        super().__init__(f"Circuit '{name}' is OPEN — retry after {retry_after_seconds:.1f}s")
         self.circuit_name = name
         self.retry_after_seconds = retry_after_seconds
 
@@ -57,9 +57,10 @@ class CircuitOpenError(Exception):
 @dataclass
 class CircuitBreakerConfig:
     """Configuration for a circuit breaker instance."""
-    failure_threshold: int = 5       # Failures before tripping
-    success_threshold: int = 2       # Successes in HALF_OPEN to close
-    timeout_seconds: float = 60.0    # How long to stay OPEN before HALF_OPEN
+
+    failure_threshold: int = 5  # Failures before tripping
+    success_threshold: int = 2  # Successes in HALF_OPEN to close
+    timeout_seconds: float = 60.0  # How long to stay OPEN before HALF_OPEN
     # Optional: only count these exception types as failures
     failure_types: tuple[type[Exception], ...] = (Exception,)
 
@@ -81,9 +82,7 @@ class CircuitBreaker:
             ...
     """
 
-    def __init__(
-        self, name: str, config: CircuitBreakerConfig | None = None
-    ) -> None:
+    def __init__(self, name: str, config: CircuitBreakerConfig | None = None) -> None:
         self.name = name
         self.config = config or CircuitBreakerConfig()
         self._lock = threading.Lock()
@@ -179,10 +178,7 @@ class CircuitBreaker:
 
             if self._state == CircuitState.HALF_OPEN:
                 self._trip(reason="half_open_probe_failed")
-            elif (
-                self._state == CircuitState.CLOSED
-                and self._failure_count >= self.config.failure_threshold
-            ):
+            elif self._state == CircuitState.CLOSED and self._failure_count >= self.config.failure_threshold:
                 self._trip(reason="threshold_exceeded")
 
     def _record_success(self) -> None:
@@ -191,9 +187,7 @@ class CircuitBreaker:
             self._last_success_time = time.monotonic()
 
             if self._state == CircuitState.HALF_OPEN:
-                self._success_count_half_open = getattr(
-                    self, "_success_count_half_open", 0
-                ) + 1
+                self._success_count_half_open = getattr(self, "_success_count_half_open", 0) + 1
                 if self._success_count_half_open >= self.config.success_threshold:
                     self._state = CircuitState.CLOSED
                     self._failure_count = 0
@@ -201,7 +195,8 @@ class CircuitBreaker:
                     self._opened_at = None
                     logger.info(
                         "Circuit '%s' CLOSED after %d successful probes",
-                        self.name, self.config.success_threshold,
+                        self.name,
+                        self.config.success_threshold,
                     )
 
     def _trip(self, reason: str) -> None:
@@ -212,7 +207,10 @@ class CircuitBreaker:
         self._success_count_half_open = 0
         logger.warning(
             "Circuit '%s' OPENED (reason=%s, failures=%d, trips=%d)",
-            self.name, reason, self._failure_count, self._trip_count,
+            self.name,
+            reason,
+            self._failure_count,
+            self._trip_count,
         )
 
     def _maybe_transition(self) -> None:
@@ -224,7 +222,8 @@ class CircuitBreaker:
                 self._success_count_half_open = 0
                 logger.info(
                     "Circuit '%s' moved to HALF_OPEN after %.1fs",
-                    self.name, elapsed,
+                    self.name,
+                    elapsed,
                 )
 
     def _time_until_half_open(self) -> float:
@@ -240,9 +239,7 @@ _breakers: dict[str, CircuitBreaker] = {}
 _registry_lock = threading.Lock()
 
 
-def get_breaker(
-    name: str, config: CircuitBreakerConfig | None = None
-) -> CircuitBreaker:
+def get_breaker(name: str, config: CircuitBreakerConfig | None = None) -> CircuitBreaker:
     """Get or create a named circuit breaker (singleton per name)."""
     with _registry_lock:
         if name not in _breakers:

@@ -15,7 +15,6 @@ import tempfile
 from pathlib import Path
 
 
-
 # ── oauth_service ─────────────────────────────────────────────────────
 
 

@@ -89,7 +89,7 @@ class LSPClient:
                 proc.stdin.flush()
                 proc.stdin.write(_encode_jsonrpc("exit"))
                 proc.stdin.flush()
-        except BrokenPipeError, OSError:
+        except (BrokenPipeError, OSError):
             pass
         try:
             proc.terminate()

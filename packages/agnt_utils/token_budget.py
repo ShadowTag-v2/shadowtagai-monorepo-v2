@@ -68,6 +68,7 @@ def parse_token_budget(text: str) -> int | None:
 
 class BudgetPosition(NamedTuple):
     """Character span of a budget directive in the input text."""
+
     start: int
     end: int
 
@@ -88,9 +89,7 @@ def find_token_budget_positions(text: str) -> list[BudgetPosition]:
     m = _SHORTHAND_END_RE.search(text)
     if m:
         end_start = m.start() + 1  # +1: regex includes leading \s
-        already_covered = any(
-            end_start >= p.start and end_start < p.end for p in positions
-        )
+        already_covered = any(end_start >= p.start and end_start < p.end for p in positions)
         if not already_covered:
             positions.append(BudgetPosition(end_start, m.end()))
 
@@ -108,8 +107,4 @@ def get_budget_continuation_message(
     """Format the continuation message shown when a budget gate fires."""
     fmt_turn = f"{turn_tokens:,}"
     fmt_budget = f"{budget:,}"
-    return (
-        f"Stopped at {pct}% of token target "
-        f"({fmt_turn} / {fmt_budget}). "
-        f"Keep working \u2014 do not summarize."
-    )
+    return f"Stopped at {pct}% of token target ({fmt_turn} / {fmt_budget}). Keep working \u2014 do not summarize."

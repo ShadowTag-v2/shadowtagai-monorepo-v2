@@ -22,6 +22,7 @@ from firebase_tool_bridge.workspace_confirmation import (
 # Fixtures
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture()
 def workspace_provider() -> WorkspaceCLIConfirmationProvider:
     """Workspace CLI provider with fast polling for tests."""
@@ -65,7 +66,10 @@ class TestWorkspaceCLIConfirmationProvider:
         """FAIL-CLOSED: deny when gws binary is not installed."""
         with patch("shutil.which", return_value=None):
             result = workspace_provider.request_confirmation(
-                "delete_document", SAMPLE_ARGS, RiskTier.CRITICAL, SAMPLE_TAGS,
+                "delete_document",
+                SAMPLE_ARGS,
+                RiskTier.CRITICAL,
+                SAMPLE_TAGS,
             )
         assert result is False
 
@@ -76,10 +80,16 @@ class TestWorkspaceCLIConfirmationProvider:
             patch("subprocess.run") as mock_run,
         ):
             mock_run.return_value = subprocess.CompletedProcess(
-                args=[], returncode=1, stdout="", stderr="API error",
+                args=[],
+                returncode=1,
+                stdout="",
+                stderr="API error",
             )
             result = workspace_provider.request_confirmation(
-                "delete_document", SAMPLE_ARGS, RiskTier.HIGH, SAMPLE_TAGS,
+                "delete_document",
+                SAMPLE_ARGS,
+                RiskTier.HIGH,
+                SAMPLE_TAGS,
             )
         assert result is False
 
@@ -90,22 +100,32 @@ class TestWorkspaceCLIConfirmationProvider:
             patch("subprocess.run") as mock_run,
         ):
             mock_run.return_value = subprocess.CompletedProcess(
-                args=[], returncode=0, stdout=json.dumps({"name": "msg1"}), stderr="",
+                args=[],
+                returncode=0,
+                stdout=json.dumps({"name": "msg1"}),
+                stderr="",
             )
             result = workspace_provider.request_confirmation(
-                "delete_document", SAMPLE_ARGS, RiskTier.HIGH, SAMPLE_TAGS,
+                "delete_document",
+                SAMPLE_ARGS,
+                RiskTier.HIGH,
+                SAMPLE_TAGS,
             )
         assert result is False
 
     def test_approve_when_attorney_approves(self, workspace_provider: WorkspaceCLIConfirmationProvider) -> None:
         """APPROVE: attorney replies APPROVE in the thread."""
-        create_response = json.dumps({
-            "name": "spaces/test/messages/msg1",
-            "thread": {"name": "spaces/test/threads/thread1"},
-        })
-        list_response = json.dumps({
-            "messages": [{"text": "APPROVE"}],
-        })
+        create_response = json.dumps(
+            {
+                "name": "spaces/test/messages/msg1",
+                "thread": {"name": "spaces/test/threads/thread1"},
+            }
+        )
+        list_response = json.dumps(
+            {
+                "messages": [{"text": "APPROVE"}],
+            }
+        )
 
         with (
             patch("shutil.which", return_value="/usr/local/bin/gws"),
@@ -116,16 +136,21 @@ class TestWorkspaceCLIConfirmationProvider:
                 subprocess.CompletedProcess(args=[], returncode=0, stdout=list_response, stderr=""),
             ]
             result = workspace_provider.request_confirmation(
-                "delete_document", SAMPLE_ARGS, RiskTier.HIGH, SAMPLE_TAGS,
+                "delete_document",
+                SAMPLE_ARGS,
+                RiskTier.HIGH,
+                SAMPLE_TAGS,
             )
         assert result is True
 
     def test_deny_when_attorney_denies(self, workspace_provider: WorkspaceCLIConfirmationProvider) -> None:
         """DENY: attorney replies DENY in the thread."""
-        create_response = json.dumps({
-            "name": "spaces/test/messages/msg1",
-            "thread": {"name": "spaces/test/threads/thread1"},
-        })
+        create_response = json.dumps(
+            {
+                "name": "spaces/test/messages/msg1",
+                "thread": {"name": "spaces/test/threads/thread1"},
+            }
+        )
         list_response = json.dumps({"messages": [{"text": "DENY this action"}]})
 
         with (
@@ -137,16 +162,21 @@ class TestWorkspaceCLIConfirmationProvider:
                 subprocess.CompletedProcess(args=[], returncode=0, stdout=list_response, stderr=""),
             ]
             result = workspace_provider.request_confirmation(
-                "delete_document", SAMPLE_ARGS, RiskTier.CRITICAL, SAMPLE_TAGS,
+                "delete_document",
+                SAMPLE_ARGS,
+                RiskTier.CRITICAL,
+                SAMPLE_TAGS,
             )
         assert result is False
 
     def test_deny_on_poll_timeout(self, workspace_provider: WorkspaceCLIConfirmationProvider) -> None:
         """FAIL-CLOSED: deny when poll times out without response."""
-        create_response = json.dumps({
-            "name": "spaces/test/messages/msg1",
-            "thread": {"name": "spaces/test/threads/thread1"},
-        })
+        create_response = json.dumps(
+            {
+                "name": "spaces/test/messages/msg1",
+                "thread": {"name": "spaces/test/threads/thread1"},
+            }
+        )
         # No APPROVE/DENY in any response
         list_response = json.dumps({"messages": [{"text": "I'll review later"}]})
 
@@ -156,13 +186,13 @@ class TestWorkspaceCLIConfirmationProvider:
         ):
             mock_run.side_effect = [
                 subprocess.CompletedProcess(args=[], returncode=0, stdout=create_response, stderr=""),
-                *[
-                    subprocess.CompletedProcess(args=[], returncode=0, stdout=list_response, stderr="")
-                    for _ in range(50)
-                ],
+                *[subprocess.CompletedProcess(args=[], returncode=0, stdout=list_response, stderr="") for _ in range(50)],
             ]
             result = workspace_provider.request_confirmation(
-                "update_case", SAMPLE_ARGS, RiskTier.HIGH, SAMPLE_TAGS,
+                "update_case",
+                SAMPLE_ARGS,
+                RiskTier.HIGH,
+                SAMPLE_TAGS,
             )
         assert result is False
 
@@ -173,7 +203,10 @@ class TestWorkspaceCLIConfirmationProvider:
             patch("subprocess.run", side_effect=subprocess.TimeoutExpired("gws", 30)),
         ):
             result = workspace_provider.request_confirmation(
-                "delete_document", SAMPLE_ARGS, RiskTier.HIGH, SAMPLE_TAGS,
+                "delete_document",
+                SAMPLE_ARGS,
+                RiskTier.HIGH,
+                SAMPLE_TAGS,
             )
         assert result is False
 
@@ -184,7 +217,10 @@ class TestWorkspaceCLIConfirmationProvider:
             patch("subprocess.run", side_effect=OSError("Permission denied")),
         ):
             result = workspace_provider.request_confirmation(
-                "delete_document", SAMPLE_ARGS, RiskTier.HIGH, SAMPLE_TAGS,
+                "delete_document",
+                SAMPLE_ARGS,
+                RiskTier.HIGH,
+                SAMPLE_TAGS,
             )
         assert result is False
 
@@ -195,7 +231,8 @@ class TestWorkspaceCLIConfirmationProvider:
             patch("subprocess.run") as mock_run,
         ):
             mock_run.return_value = subprocess.CompletedProcess(
-                args=[], returncode=0,
+                args=[],
+                returncode=0,
                 stdout=json.dumps({"thread": {"name": "t1"}}),
                 stderr="",
             )
@@ -231,7 +268,10 @@ class TestOfflineConfirmationProvider:
     def test_deny_when_socket_not_found(self, offline_provider: OfflineConfirmationProvider) -> None:
         """FAIL-CLOSED: deny when Unix socket does not exist."""
         result = offline_provider.request_confirmation(
-            "delete_case", SAMPLE_ARGS, RiskTier.HIGH, SAMPLE_TAGS,
+            "delete_case",
+            SAMPLE_ARGS,
+            RiskTier.HIGH,
+            SAMPLE_TAGS,
         )
         assert result is False
 
@@ -245,7 +285,10 @@ class TestOfflineConfirmationProvider:
         mock_socket_cls.return_value = mock_sock
 
         result = offline_provider.request_confirmation(
-            "delete_case", SAMPLE_ARGS, RiskTier.HIGH, SAMPLE_TAGS,
+            "delete_case",
+            SAMPLE_ARGS,
+            RiskTier.HIGH,
+            SAMPLE_TAGS,
         )
         assert result is False
 
@@ -266,7 +309,9 @@ class TestSovereignConfirmationProvider:
         """Routes to GWS CLI when binary is available."""
         with (
             patch.object(
-                sovereign_provider._primary, "_gws_available", return_value=True,
+                sovereign_provider._primary,
+                "_gws_available",
+                return_value=True,
             ),
             patch.object(
                 sovereign_provider._primary,
@@ -275,7 +320,10 @@ class TestSovereignConfirmationProvider:
             ) as mock_gws,
         ):
             result = sovereign_provider.request_confirmation(
-                "approve_filing", SAMPLE_ARGS, RiskTier.HIGH, SAMPLE_TAGS,
+                "approve_filing",
+                SAMPLE_ARGS,
+                RiskTier.HIGH,
+                SAMPLE_TAGS,
             )
         assert result is True
         mock_gws.assert_called_once()
@@ -284,7 +332,9 @@ class TestSovereignConfirmationProvider:
         """Falls back to local IPC when gws is not installed."""
         with (
             patch.object(
-                sovereign_provider._primary, "_gws_available", return_value=False,
+                sovereign_provider._primary,
+                "_gws_available",
+                return_value=False,
             ),
             patch.object(
                 sovereign_provider._fallback,
@@ -293,7 +343,10 @@ class TestSovereignConfirmationProvider:
             ) as mock_ipc,
         ):
             result = sovereign_provider.request_confirmation(
-                "delete_case", SAMPLE_ARGS, RiskTier.CRITICAL, SAMPLE_TAGS,
+                "delete_case",
+                SAMPLE_ARGS,
+                RiskTier.CRITICAL,
+                SAMPLE_TAGS,
             )
         assert result is False
         mock_ipc.assert_called_once()

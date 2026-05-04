@@ -15,6 +15,7 @@ import logging
 from dataclasses import dataclass
 from enum import StrEnum
 from typing import Literal
+from datetime import UTC
 
 logger = logging.getLogger(__name__)
 
@@ -100,9 +101,7 @@ def get_rate_limit_message(
 
     # ERROR: limits rejected
     if ctx.status == LimitStatus.REJECTED:
-        return RateLimitMessage(
-            message=_limit_reached_text(ctx, model), severity="error"
-        )
+        return RateLimitMessage(message=_limit_reached_text(ctx, model), severity="error")
 
     # WARNING: approaching limits
     if ctx.status == LimitStatus.ALLOWED_WARNING:
@@ -121,9 +120,7 @@ def get_rate_limit_message(
     return None
 
 
-def get_rate_limit_error_message(
-    ctx: RateLimitContext, model: str = ""
-) -> str | None:
+def get_rate_limit_error_message(ctx: RateLimitContext, model: str = "") -> str | None:
     """Get error message only (not warnings)."""
     msg = get_rate_limit_message(ctx, model)
     if msg and msg.severity == "error":
@@ -131,9 +128,7 @@ def get_rate_limit_error_message(
     return None
 
 
-def get_rate_limit_warning(
-    ctx: RateLimitContext, model: str = ""
-) -> str | None:
+def get_rate_limit_warning(ctx: RateLimitContext, model: str = "") -> str | None:
     """Get warning message only (not errors)."""
     msg = get_rate_limit_message(ctx, model)
     if msg and msg.severity == "warning":
@@ -144,10 +139,10 @@ def get_rate_limit_warning(
 def format_reset_time(resets_at: int, relative: bool = True) -> str:
     """Format a reset timestamp for display."""
     import time
-    from datetime import datetime, timezone
+    from datetime import datetime
 
     now = time.time()
-    dt = datetime.fromtimestamp(resets_at, tz=timezone.utc)
+    dt = datetime.fromtimestamp(resets_at, tz=UTC)
 
     if not relative:
         return dt.strftime("%Y-%m-%d %H:%M UTC")
@@ -189,14 +184,11 @@ def get_using_overage_text(ctx: RateLimitContext) -> str:
 
 # -- internal helpers ---------------------------------------------------
 
+
 def _limit_reached_text(ctx: RateLimitContext, model: str) -> str:
     """Generate the 'limit reached' error text."""
     reset_time = format_reset_time(ctx.resets_at) if ctx.resets_at else None
-    overage_reset = (
-        format_reset_time(ctx.overage_resets_at)
-        if ctx.overage_resets_at
-        else None
-    )
+    overage_reset = format_reset_time(ctx.overage_resets_at) if ctx.overage_resets_at else None
     reset_msg = f" · resets {reset_time}" if reset_time else ""
 
     # Both subscription and overage exhausted
