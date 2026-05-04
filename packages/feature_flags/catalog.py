@@ -311,6 +311,12 @@ FLAG_CATEGORIES: dict[FlagCatalog, FlagCategory] = {
     FlagCatalog.AUTO_BACKGROUND_AGENTS: FlagCategory.SESSION,
     FlagCatalog.AUTO_MODE_CONFIG: FlagCategory.SESSION,
     FlagCatalog.PID_BASED_VERSION_LOCKING: FlagCategory.SECURITY,
+    # ── Batch 6 decoded flags (2026-05-04) ────────────────────────────
+    FlagCatalog.TIDE_ELM: FlagCategory.UI,  # Effort level upsell A/B test
+    FlagCatalog.TERN_ALLOY: FlagCategory.SESSION,  # Subagent fanout A/B test
+    FlagCatalog.TIMBER_LARK: FlagCategory.KAIROS,  # /loop command scheduling A/B test
+    FlagCatalog.ENABLE_SETTINGS_SYNC_PUSH: FlagCategory.BRIDGE,  # CLI sync gate
+    FlagCatalog.STRAP_FOYER: FlagCategory.COMPACTION,  # CCR download gate
 }
 
 
