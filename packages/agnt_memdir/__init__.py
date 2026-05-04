@@ -26,7 +26,7 @@ import logging
 import os
 import time
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -47,8 +47,8 @@ class MemoryEntry:
     value: str
     source_conversation_id: str = ""
     confidence_score: float = 1.0
-    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
-    last_accessed: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
+    last_accessed: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     expires_at: str | None = None
     superseded_by: str | None = None
     tags: tuple[str, ...] = ()
@@ -60,8 +60,8 @@ class MemoryEntry:
             return False
         try:
             expiry = datetime.fromisoformat(self.expires_at)
-            return datetime.now(timezone.utc) > expiry
-        except (ValueError, TypeError):
+            return datetime.now(UTC) > expiry
+        except ValueError, TypeError:
             return False
 
     @property
@@ -74,8 +74,8 @@ class MemoryEntry:
         """Seconds since creation."""
         try:
             created = datetime.fromisoformat(self.created_at)
-            return (datetime.now(timezone.utc) - created).total_seconds()
-        except (ValueError, TypeError):
+            return (datetime.now(UTC) - created).total_seconds()
+        except ValueError, TypeError:
             return 0.0
 
 
@@ -185,8 +185,8 @@ class WarmStore:
                     value=meta.get("summary", ""),
                     source_conversation_id=meta.get("source_conversation_id", ""),
                     confidence_score=float(meta.get("confidence_score", 1.0)),
-                    created_at=meta.get("created_at", datetime.now(timezone.utc).isoformat()),
-                    last_accessed=meta.get("last_accessed", datetime.now(timezone.utc).isoformat()),
+                    created_at=meta.get("created_at", datetime.now(UTC).isoformat()),
+                    last_accessed=meta.get("last_accessed", datetime.now(UTC).isoformat()),
                     expires_at=meta.get("expires_at"),
                     superseded_by=meta.get("superseded_by"),
                     tags=tuple(meta.get("tags", [])),
@@ -263,7 +263,7 @@ class ColdStore:
             entry_dir.mkdir(parents=True, exist_ok=True)
             metadata = {
                 **asdict(entry),
-                "archived_at": datetime.now(timezone.utc).isoformat(),
+                "archived_at": datetime.now(UTC).isoformat(),
                 "archive_reason": reason,
                 "tags": list(entry.tags),
             }
@@ -289,8 +289,8 @@ class ColdStore:
                 value=meta.get("value", ""),
                 source_conversation_id=meta.get("source_conversation_id", ""),
                 confidence_score=float(meta.get("confidence_score", 0.5)),
-                created_at=meta.get("created_at", datetime.now(timezone.utc).isoformat()),
-                last_accessed=datetime.now(timezone.utc).isoformat(),
+                created_at=meta.get("created_at", datetime.now(UTC).isoformat()),
+                last_accessed=datetime.now(UTC).isoformat(),
                 expires_at=None,  # Clear expiry on revival
                 superseded_by=None,
                 tags=tuple(meta.get("tags", [])),
@@ -320,7 +320,7 @@ class ColdStore:
                         # Archive-only: rename instead of delete (RULE 00)
                         purge_marker = entry_dir / ".purged"
                         purge_marker.write_text(
-                            datetime.now(timezone.utc).isoformat(),
+                            datetime.now(UTC).isoformat(),
                             encoding="utf-8",
                         )
                         purged += 1
@@ -341,13 +341,15 @@ class ColdStore:
             if meta_file.is_file():
                 try:
                     meta = json.loads(meta_file.read_text(encoding="utf-8"))
-                    entries.append({
-                        "key": meta.get("key", entry_dir.name),
-                        "archived_at": meta.get("archived_at", ""),
-                        "reason": meta.get("archive_reason", "unknown"),
-                        "confidence": meta.get("confidence_score", 0.0),
-                    })
-                except (json.JSONDecodeError, ValueError):
+                    entries.append(
+                        {
+                            "key": meta.get("key", entry_dir.name),
+                            "archived_at": meta.get("archived_at", ""),
+                            "reason": meta.get("archive_reason", "unknown"),
+                            "confidence": meta.get("confidence_score", 0.0),
+                        }
+                    )
+                except json.JSONDecodeError, ValueError:
                     entries.append({"key": entry_dir.name, "error": "malformed"})
         return entries
 
@@ -369,7 +371,7 @@ class ColdStore:
         try:
             data = json.loads(self._checkpoint_file.read_text(encoding="utf-8"))
             return float(data.get("last_expiry_check", 0.0))
-        except (json.JSONDecodeError, ValueError, OSError):
+        except json.JSONDecodeError, ValueError, OSError:
             return 0.0
 
     @property
