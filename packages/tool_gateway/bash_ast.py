@@ -153,8 +153,8 @@ DANGEROUS_BASH_PATTERNS = frozenset(
         "fish",
         "eval",
         "exec",
-        "env",   # env can launch arbitrary executables
-        "xargs", # xargs can execute arbitrary commands
+        "env",  # env can launch arbitrary executables
+        "xargs",  # xargs can execute arbitrary commands
         "sudo",
         "su",
         "doas",
@@ -303,7 +303,7 @@ class BashASTAnalyzer:
                     try:
                         float(tokens[idx])
                         idx += 1
-                    except (ValueError, IndexError):
+                    except ValueError, IndexError:
                         pass
                 stripped = " ".join(tokens[idx:])
                 changed = True
@@ -415,10 +415,8 @@ class BashASTAnalyzer:
                 return CommandRisk.MEDIUM
             if sub in {"reset", "force-push"}:
                 return CommandRisk.HIGH
-            if sub == "config":
-                # git config core.sshCommand = arbitrary code execution
-                if any("sshCommand" in a or "hooks" in a for a in cmd.args):
-                    return CommandRisk.HIGH
+            if sub == "config" and any("sshCommand" in a or "hooks" in a for a in cmd.args):
+                return CommandRisk.HIGH
             return CommandRisk.MEDIUM
         # MEDIUM — GitHub CLI (can create public gists, arbitrary API calls)
         if exe == "gh":

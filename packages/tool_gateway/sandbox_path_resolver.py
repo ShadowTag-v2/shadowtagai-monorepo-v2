@@ -136,7 +136,7 @@ class SandboxPathResolver:
         # Resolve symlinks and normalize
         try:
             resolved = raw.resolve()
-        except (OSError, RuntimeError):
+        except OSError, RuntimeError:
             return ResolvedPath(
                 resolved=raw,
                 original=path_str,
@@ -163,10 +163,8 @@ class SandboxPathResolver:
         in_allowed = any(self._is_subpath(resolved, root) for root in self._allowed_roots)
 
         # Absolute paths get an exception if they exist and are in safe locations
-        if resolution_type == "absolute" and not in_allowed:
-            # Allow /tmp and /var/folders for temp files
-            if resolved_str.startswith("/tmp") or resolved_str.startswith("/var/folders"):
-                in_allowed = True
+        if resolution_type == "absolute" and not in_allowed and (resolved_str.startswith("/tmp") or resolved_str.startswith("/var/folders")):
+            in_allowed = True
 
         if not in_allowed:
             return ResolvedPath(

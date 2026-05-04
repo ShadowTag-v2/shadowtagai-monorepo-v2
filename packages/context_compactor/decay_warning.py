@@ -152,19 +152,13 @@ class ContextDecayMonitor:
 
         # --- Vector 1: File read oversize ---
         if file_read_lines > FILE_READ_LINE_THRESHOLD:
-            severity = (
-                DecaySeverity.CRITICAL
-                if file_read_lines > FILE_READ_LINE_THRESHOLD * 3
-                else DecaySeverity.WARNING
-            )
+            severity = DecaySeverity.CRITICAL if file_read_lines > FILE_READ_LINE_THRESHOLD * 3 else DecaySeverity.WARNING
             result.warnings.append(
                 DecayWarning(
                     vector="file_read_oversize",
                     severity=severity,
                     message=(
-                        f"File read returned {file_read_lines} lines "
-                        f"(threshold: {FILE_READ_LINE_THRESHOLD}). "
-                        "Consider reading specific line ranges."
+                        f"File read returned {file_read_lines} lines (threshold: {FILE_READ_LINE_THRESHOLD}). Consider reading specific line ranges."
                     ),
                     value=file_read_lines,
                     threshold=FILE_READ_LINE_THRESHOLD,
@@ -174,11 +168,7 @@ class ContextDecayMonitor:
 
         # --- Vector 2: Tool result bloat ---
         if tool_result_chars > TOOL_RESULT_CHAR_THRESHOLD:
-            severity = (
-                DecaySeverity.CRITICAL
-                if tool_result_chars > TOOL_RESULT_CHAR_THRESHOLD * 3
-                else DecaySeverity.WARNING
-            )
+            severity = DecaySeverity.CRITICAL if tool_result_chars > TOOL_RESULT_CHAR_THRESHOLD * 3 else DecaySeverity.WARNING
             result.warnings.append(
                 DecayWarning(
                     vector="tool_result_bloat",
@@ -197,15 +187,9 @@ class ContextDecayMonitor:
 
         # --- Vector 3: Context window remaining ---
         if self.max_context_tokens > 0 and current_tokens > 0:
-            remaining_pct = (
-                (self.max_context_tokens - current_tokens) / self.max_context_tokens
-            ) * 100
+            remaining_pct = ((self.max_context_tokens - current_tokens) / self.max_context_tokens) * 100
             if remaining_pct < CONTEXT_REMAINING_PERCENT_THRESHOLD:
-                severity = (
-                    DecaySeverity.CRITICAL
-                    if remaining_pct < 10
-                    else DecaySeverity.WARNING
-                )
+                severity = DecaySeverity.CRITICAL if remaining_pct < 10 else DecaySeverity.WARNING
                 result.warnings.append(
                     DecayWarning(
                         vector="context_remaining_low",
@@ -222,21 +206,16 @@ class ContextDecayMonitor:
                 result.should_compact = True
 
         # --- Legacy: Token count absolute threshold ---
-        if current_tokens >= self.token_threshold and current_tokens > 0:
-            # Only add if we haven't already added context_remaining_low
-            if not any(w.vector == "context_remaining_low" for w in result.warnings):
-                result.warnings.append(
-                    DecayWarning(
-                        vector="token_count_high",
-                        severity=DecaySeverity.WARNING,
-                        message=(
-                            f"Tokens ({current_tokens:,}) exceed threshold "
-                            f"({self.token_threshold:,})."
-                        ),
-                        value=current_tokens,
-                        threshold=self.token_threshold,
-                    )
+        if current_tokens >= self.token_threshold and current_tokens > 0 and not any(w.vector == "context_remaining_low" for w in result.warnings):
+            result.warnings.append(
+                DecayWarning(
+                    vector="token_count_high",
+                    severity=DecaySeverity.WARNING,
+                    message=(f"Tokens ({current_tokens:,}) exceed threshold ({self.token_threshold:,})."),
+                    value=current_tokens,
+                    threshold=self.token_threshold,
                 )
+            )
 
         # --- Legacy: Turn count threshold ---
         if current_turns >= self.turn_threshold:
@@ -244,10 +223,7 @@ class ContextDecayMonitor:
                 DecayWarning(
                     vector="turn_count_high",
                     severity=DecaySeverity.WARNING,
-                    message=(
-                        f"Turns ({current_turns}) exceed threshold "
-                        f"({self.turn_threshold})."
-                    ),
+                    message=(f"Turns ({current_turns}) exceed threshold ({self.turn_threshold})."),
                     value=current_turns,
                     threshold=self.turn_threshold,
                 )
