@@ -51,6 +51,7 @@ class FlagCatalog(StrEnum):
     POST_COMPACT_SURVEY_GATE = "POST_COMPACT_SURVEY_GATE"
     TRUSTED_DEVICE_GATE = "TRUSTED_DEVICE_GATE"
     ENHANCED_TELEMETRY_BETA = "enhanced_telemetry_beta"
+    TEAMMEM = "TEAMMEM"  # Gates team memory sync + extractMemories modules
 
     # ── Amber series (prompt/JSON tooling) ────────────────────────────
     AGENT_LIST_ATTACH = "tengu_agent_list_attach"
@@ -317,6 +318,7 @@ FLAG_CATEGORIES: dict[FlagCatalog, FlagCategory] = {
     FlagCatalog.TIMBER_LARK: FlagCategory.KAIROS,  # /loop command scheduling A/B test
     FlagCatalog.ENABLE_SETTINGS_SYNC_PUSH: FlagCategory.BRIDGE,  # CLI sync gate
     FlagCatalog.STRAP_FOYER: FlagCategory.COMPACTION,  # CCR download gate
+    FlagCatalog.TEAMMEM: FlagCategory.SESSION,  # Gates team memory sync + extractMemories
 }
 
 
