@@ -64,6 +64,110 @@ interface SessionState {
   commitResult: CommitResponse | null;
 }
 
+/** Hydrating spinner shown during initial session load. */
+function HydratingView() {
+  return (
+    <div className={styles.container}>
+      <div className={styles.loadingCard}>
+        <div className={styles.spinner} />
+        <p className={styles.loadingText}>Restoring session…</p>
+      </div>
+    </div>
+  );
+}
+
+/** Error state with retry button. */
+function ErrorView({ error }: { error: string | null }) {
+  return (
+    <div className={styles.container}>
+      <div className={styles.errorCard}>
+        <div className={styles.errorIcon}>⚠</div>
+        <h2 className={styles.errorTitle}>Session Error</h2>
+        <p className={styles.errorMessage}>{error}</p>
+        <button type="button" className={styles.retryButton} onClick={() => window.location.reload()}>
+          Retry
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/** Rejected state with session info. */
+function RejectedView({ sessionId }: { sessionId: string }) {
+  return (
+    <div className={styles.container}>
+      <div className={styles.rejectedCard}>
+        <div className={styles.rejectedIcon}>✕</div>
+        <h2 className={styles.rejectedTitle}>Session Rejected</h2>
+        <p className={styles.rejectedMessage}>
+          This sandbox session has been rejected. Speculative changes were discarded and will not be
+          applied to the matter.
+        </p>
+        <p className={styles.auditNote}>
+          Session: <code>{sessionId.slice(0, 8)}…</code>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/** Success state after commit with summary. */
+function CommittedView({ result }: { result: CommitResponse }) {
+  return (
+    <div className={styles.container}>
+      <div className={styles.successCard}>
+        <div className={styles.successIcon}>✓</div>
+        <h2 className={styles.successTitle}>Decision Recorded</h2>
+        <div className={styles.commitSummary}>
+          {result.committed_files.length > 0 && (
+            <p>
+              <strong>{result.committed_files.length}</strong> file(s) committed
+            </p>
+          )}
+          {result.rejected_files.length > 0 && (
+            <p>
+              <strong>{result.rejected_files.length}</strong> file(s) rejected
+            </p>
+          )}
+          <p className={styles.auditNote}>
+            Audit ID: <code>{result.audit_id}</code>
+          </p>
+          <p className={styles.durationNote}>Completed in {result.duration_ms.toFixed(0)}ms</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** WebSocket connection status badge. */
+function WsStatusBadge({
+  connectionState,
+  reconnectCount,
+}: {
+  connectionState: string;
+  reconnectCount: number;
+}) {
+  const titleMap: Record<string, string> = {
+    connected: 'Real-time updates active',
+    connecting: `Connecting${reconnectCount > 0 ? ` (attempt ${reconnectCount})` : ''}…`,
+  };
+  const labelMap: Record<string, string> = {
+    connected: 'Live',
+    connecting: 'Connecting…',
+  };
+
+  return (
+    <div
+      className={styles.wsStatus}
+      data-state={connectionState}
+      title={titleMap[connectionState] ?? 'Real-time updates disconnected'}
+    >
+      <span className={styles.wsStatusDot} />
+      <span className={styles.wsStatusText}>{labelMap[connectionState] ?? 'Offline'}</span>
+    </div>
+  );
+}
+
 export default function SandboxSessionPage() {
   const params = useParams<{ sessionId: string }>();
   const searchParams = useSearchParams();
@@ -255,79 +359,12 @@ export default function SandboxSessionPage() {
     [sessionId, state.diffs.length, state.matterId, track, trackAsync],
   );
 
-  // ── Render: Hydrating spinner ─────────────────────────────
-  if (state.phase === 'hydrating') {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loadingCard}>
-          <div className={styles.spinner} />
-          <p className={styles.loadingText}>Restoring session…</p>
-        </div>
-      </div>
-    );
-  }
-
-  // ── Render: Error state ───────────────────────────────────
-  if (state.phase === 'error') {
-    return (
-      <div className={styles.container}>
-        <div className={styles.errorCard}>
-          <div className={styles.errorIcon}>⚠</div>
-          <h2 className={styles.errorTitle}>Session Error</h2>
-          <p className={styles.errorMessage}>{state.error}</p>
-          <button className={styles.retryButton} onClick={() => window.location.reload()}>
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (state.phase === 'rejected') {
-    return (
-      <div className={styles.container}>
-        <div className={styles.rejectedCard}>
-          <div className={styles.rejectedIcon}>✕</div>
-          <h2 className={styles.rejectedTitle}>Session Rejected</h2>
-          <p className={styles.rejectedMessage}>
-            This sandbox session has been rejected. Speculative changes were discarded and will not
-            be applied to the matter.
-          </p>
-          <p className={styles.auditNote}>
-            Session: <code>{sessionId.slice(0, 8)}…</code>
-          </p>
-        </div>
-      </div>
-    );
-  }
-
+  // ── Phase-based rendering via extracted components ────────
+  if (state.phase === 'hydrating') return <HydratingView />;
+  if (state.phase === 'error') return <ErrorView error={state.error} />;
+  if (state.phase === 'rejected') return <RejectedView sessionId={sessionId} />;
   if (state.phase === 'committed' && state.commitResult) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.successCard}>
-          <div className={styles.successIcon}>✓</div>
-          <h2 className={styles.successTitle}>Decision Recorded</h2>
-          <div className={styles.commitSummary}>
-            {state.commitResult.committed_files.length > 0 && (
-              <p>
-                <strong>{state.commitResult.committed_files.length}</strong> file(s) committed
-              </p>
-            )}
-            {state.commitResult.rejected_files.length > 0 && (
-              <p>
-                <strong>{state.commitResult.rejected_files.length}</strong> file(s) rejected
-              </p>
-            )}
-            <p className={styles.auditNote}>
-              Audit ID: <code>{state.commitResult.audit_id}</code>
-            </p>
-            <p className={styles.durationNote}>
-              Completed in {state.commitResult.duration_ms.toFixed(0)}ms
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+    return <CommittedView result={state.commitResult} />;
   }
 
   return (
@@ -342,27 +379,7 @@ export default function SandboxSessionPage() {
         </div>
       )}
 
-      {/* WebSocket connection status indicator */}
-      <div
-        className={styles.wsStatus}
-        data-state={connectionState}
-        title={
-          connectionState === 'connected'
-            ? 'Real-time updates active'
-            : connectionState === 'connecting'
-              ? `Connecting${reconnectCount > 0 ? ` (attempt ${reconnectCount})` : ''}…`
-              : 'Real-time updates disconnected'
-        }
-      >
-        <span className={styles.wsStatusDot} />
-        <span className={styles.wsStatusText}>
-          {connectionState === 'connected'
-            ? 'Live'
-            : connectionState === 'connecting'
-              ? 'Connecting…'
-              : 'Offline'}
-        </span>
-      </div>
+      <WsStatusBadge connectionState={connectionState} reconnectCount={reconnectCount} />
 
       <DiffView
         sessionId={sessionId}
