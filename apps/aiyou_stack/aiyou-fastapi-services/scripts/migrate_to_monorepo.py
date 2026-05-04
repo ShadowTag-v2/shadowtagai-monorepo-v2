@@ -1,6 +1,5 @@
 import contextlib
 import shutil
-import sys
 from pathlib import Path
 
 import requests
@@ -34,11 +33,11 @@ def check_governance(operation: str):
 
 def migrate_repos():
     if not check_governance("Migrate external repositories to Monorepo Vendor"):
-        sys.exit(1)
+        raise SystemExit(1)
 
     if not SOURCE_DIR.exists():
         print("❌ Source directory 'external_repos' not found.")
-        sys.exit(1)
+        raise SystemExit(1)
 
     TARGET_DIR.mkdir(parents=True, exist_ok=True)
 

@@ -12,7 +12,7 @@ def main():
         input_data = json.load(sys.stdin)
     except json.JSONDecodeError as e:
         print(f"Error: Invalid JSON input: {e}", file=sys.stderr)
-        sys.exit(1)
+        raise SystemExit(1)
 
     prompt = input_data.get("prompt", "")
 
@@ -32,7 +32,7 @@ def main():
                 "reason": f"🔒 Security policy violation: {message}. Please rephrase your request without including sensitive credentials.",
             }
             print(json.dumps(output))
-            sys.exit(0)
+            raise SystemExit(0)
 
     # Add contextual information
     context_parts = []
@@ -51,7 +51,7 @@ def main():
     print(context)
 
     # Allow the prompt to proceed
-    sys.exit(0)
+    raise SystemExit(0)
 
 
 if __name__ == "__main__":

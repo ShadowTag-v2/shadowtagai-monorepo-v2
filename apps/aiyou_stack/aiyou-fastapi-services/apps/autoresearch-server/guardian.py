@@ -6,7 +6,6 @@ If it crashes, it captures the stack trace, consults Gemini (Simulated), patches
 
 import os
 import subprocess
-import sys
 import time
 
 # CONFIGURATION
@@ -104,7 +103,7 @@ def monitor_loop():
 
         if crashes > max_retries:
             log("Maximum crash limit reached. Escalating to Human Operator.", "FATAL")
-            sys.exit(1)
+            raise SystemExit(1)
 
         # SELF-HEALING ROUTINE
         log("Initiating Self-Healing Protocol...", "RECOVERY")

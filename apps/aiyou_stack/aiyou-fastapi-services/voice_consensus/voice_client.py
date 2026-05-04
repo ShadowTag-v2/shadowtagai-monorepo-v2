@@ -3,7 +3,6 @@ Cross-platform voice capture using Whisper for transcription
 """
 
 import asyncio
-import sys
 import tempfile
 import threading
 from pathlib import Path
@@ -44,7 +43,7 @@ class VoiceCapture:
                 console.print(
                     "[red]ERROR: openai-whisper not installed. Run: pip install openai-whisper[/red]",
                 )
-                sys.exit(1)
+                raise SystemExit(1)
         else:
             self.whisper_model = None
 
@@ -59,7 +58,7 @@ class VoiceCapture:
             console.print(
                 "[yellow]Make sure your microphone is connected and permissions are granted[/yellow]",
             )
-            sys.exit(1)
+            raise SystemExit(1)
 
     def list_microphones(self):
         """Show available microphones"""

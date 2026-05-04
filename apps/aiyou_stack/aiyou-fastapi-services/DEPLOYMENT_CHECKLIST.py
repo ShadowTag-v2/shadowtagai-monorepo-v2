@@ -733,11 +733,11 @@ def main():
 
     # Exit with appropriate code
     if summary["critical_failures"] > 0:
-        sys.exit(1)
+        raise SystemExit(1)
     elif summary["failed"] > 0:
-        sys.exit(2)
+        raise SystemExit(2)
     else:
-        sys.exit(0)
+        raise SystemExit(0)
 
 
 if __name__ == "__main__":

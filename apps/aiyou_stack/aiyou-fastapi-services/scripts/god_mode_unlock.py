@@ -109,11 +109,11 @@ def enable_god_mode():
         signature = input(f"Type '{PASSPHRASE}' to authorize: ").strip()
     except KeyboardInterrupt:
         print("\n[!] Aborted.")
-        sys.exit(1)
+        raise SystemExit(1)
 
     if signature != PASSPHRASE:
         print("\n[!] ACCESS DENIED. Incorrect passphrase.")
-        sys.exit(1)
+        raise SystemExit(1)
 
     print("\n>>> SIGNATURE ACCEPTED. INITIATING UNLOCK SEQUENCE... <<<\n")
     time.sleep(1)

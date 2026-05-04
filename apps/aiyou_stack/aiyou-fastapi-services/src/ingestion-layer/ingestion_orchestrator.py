@@ -34,7 +34,6 @@ import asyncio
 import json
 import logging
 import os
-import sys
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -51,7 +50,7 @@ except ImportError as e:
     print(
         "Install with: pip install google-cloud-aiplatform google-cloud-storage google-cloud-bigquery httpx",
     )
-    sys.exit(1)
+    raise SystemExit(1)
 
 # Configure logging
 logging.basicConfig(
@@ -577,11 +576,11 @@ async def main():
             ],
         )
 
-        sys.exit(0 if all_gates_pass else 1)
+        raise SystemExit(0 if all_gates_pass else 1)
 
     except Exception as e:
         logger.error(f"Orchestrator failed: {e}", exc_info=True)
-        sys.exit(2)
+        raise SystemExit(2)
 
 
 if __name__ == "__main__":

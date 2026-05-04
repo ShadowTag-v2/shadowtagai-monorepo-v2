@@ -72,13 +72,13 @@ Environment Variables Required:
         print("ERROR: GITHUB_TOKEN environment variable not set.", file=sys.stderr)
         print("Create a GitHub personal access token and set it:", file=sys.stderr)
         print("  export GITHUB_TOKEN='your_token_here'", file=sys.stderr)
-        sys.exit(1)
+        raise SystemExit(1)
 
     if not os.getenv("ANTHROPIC_API_KEY"):
         print("ERROR: ANTHROPIC_API_KEY environment variable not set.", file=sys.stderr)
         print("Get your API key from https://console.anthropic.com/", file=sys.stderr)
         print("  export ANTHROPIC_API_KEY='your_key_here'", file=sys.stderr)
-        sys.exit(1)
+        raise SystemExit(1)
 
     # Run pipeline
     print("=" * 80)
@@ -120,7 +120,7 @@ Environment Variables Required:
         import traceback
 
         traceback.print_exc()
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

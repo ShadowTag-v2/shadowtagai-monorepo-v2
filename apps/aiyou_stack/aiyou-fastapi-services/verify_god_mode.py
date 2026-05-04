@@ -10,7 +10,7 @@ try:
     print("✅ Proxy Imported Successfully")
 except ImportError as e:
     print(f"❌ Proxy Import Failed: {e}")
-    sys.exit(1)
+    raise SystemExit(1)
 
 # Test File
 TEST_FILE = "god_mode_test.py"

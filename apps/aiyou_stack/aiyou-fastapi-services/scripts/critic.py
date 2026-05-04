@@ -14,7 +14,7 @@ try:
     import anthropic
 except ImportError:
     print("anthropic package not installed. Run: pip install anthropic", file=sys.stderr)
-    sys.exit(1)
+    raise SystemExit(1)
 
 CRITIC_PROMPT = """
 You are a senior code reviewer. Validate this test plan against the diff.
@@ -171,7 +171,7 @@ def main(diff_file: str, plan_file: str):
     # Exit with error if BLOCK
     if result.get("verdict") == "BLOCK":
         print(f"❌ BLOCKED: {result.get('summary', 'Critical issues found')}")
-        sys.exit(1)
+        raise SystemExit(1)
 
     print(f"✅ APPROVED: {result.get('summary', 'No critical issues')}")
 

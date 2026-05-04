@@ -26,4 +26,4 @@ try:
 
 except Exception as e:
     print(f"Error generating OpenAPI schema: {e}")
-    sys.exit(1)
+    raise SystemExit(1)

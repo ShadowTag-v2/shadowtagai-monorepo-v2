@@ -21,7 +21,7 @@ def run_cmd(args, fail_exit=True):
     except subprocess.CalledProcessError as e:
         print(f"[!] Command failed: {' '.join(args)}\n{e.stderr}")
         if fail_exit:
-            sys.exit(1)
+            raise SystemExit(1)
         return None
 
 
@@ -36,7 +36,7 @@ def main():
         # But wait, user might just want to use it. Let's warn but proceed with prompt.
         confirm = input("[?] God Mode flags missing. Force auto-finish anyway? (y/N): ")
         if confirm.lower() != "y":
-            sys.exit(1)
+            raise SystemExit(1)
 
     print(">>> GCA AUTOPILOT ENGAGED <<<")
 

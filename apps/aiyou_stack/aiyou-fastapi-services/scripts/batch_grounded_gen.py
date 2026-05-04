@@ -1,7 +1,6 @@
 import argparse
 import asyncio
 import json
-import sys
 import time
 
 import aiohttp
@@ -41,7 +40,7 @@ async def run_batch(
             data = json.load(f)
     except Exception as e:
         print(f"Error reading input file: {e}")
-        sys.exit(1)
+        raise SystemExit(1)
 
     # Generate prompts
     prompt_texts = []
@@ -50,7 +49,7 @@ async def run_batch(
         # Template mode: input file is a list of variable dictionaries
         if not isinstance(data, list):
             print("Error: When using --template, input file must be a JSON list of objects.")
-            sys.exit(1)
+            raise SystemExit(1)
 
         print(f"Using template: '{template}'")
         for item in data:
@@ -72,7 +71,7 @@ async def run_batch(
             print(
                 "Error: Input file must be a JSON list of strings/objects, or a dict with a 'prompts' key.",
             )
-            sys.exit(1)
+            raise SystemExit(1)
 
         for p in prompts:
             if isinstance(p, str):
@@ -86,7 +85,7 @@ async def run_batch(
 
     if not prompt_texts:
         print("No valid prompts found. Exiting.")
-        sys.exit(0)
+        raise SystemExit(0)
 
     print(
         f"Loaded {len(prompt_texts)} prompts. Starting batch processing with concurrency {concurrency}...",

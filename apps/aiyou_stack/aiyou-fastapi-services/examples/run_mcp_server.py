@@ -29,7 +29,7 @@ def main():
         print("❌ Error: GEMINI_API_KEY environment variable not set")
         print("\nSet it with:")
         print("  export GEMINI_API_KEY='your-api-key-here'")
-        sys.exit(1)
+        raise SystemExit(1)
 
     port = int(os.getenv("PORT", 8000))
 

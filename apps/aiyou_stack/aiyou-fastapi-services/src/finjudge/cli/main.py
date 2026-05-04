@@ -1,7 +1,6 @@
 """FinJudge CLI - Main Command Interface"""
 
 import json
-import sys
 from pathlib import Path
 
 import click
@@ -74,7 +73,7 @@ def eval(decision_file: Path, output: Path | None, format: str, pretty: bool):
         except Exception as e:
             console.print("[bold red]Error:[/bold red] Invalid decision file format")
             console.print(f"[red]{e!s}[/red]")
-            sys.exit(1)
+            raise SystemExit(1)
 
         # Initialize judge
         console.print("[bold blue]Initializing Pure Judge engine...[/bold blue]")
@@ -100,18 +99,18 @@ def eval(decision_file: Path, output: Path | None, format: str, pretty: bool):
 
         # Exit code based on disposition
         exit_code = _get_exit_code(ruling)
-        sys.exit(exit_code)
+        raise SystemExit(exit_code)
 
     except FileNotFoundError:
         console.print(f"[bold red]Error:[/bold red] File not found: {decision_file}")
-        sys.exit(1)
+        raise SystemExit(1)
     except json.JSONDecodeError as e:
         console.print("[bold red]Error:[/bold red] Invalid JSON in decision file")
         console.print(f"[red]{e!s}[/red]")
-        sys.exit(1)
+        raise SystemExit(1)
     except Exception as e:
         console.print(f"[bold red]Error:[/bold red] {e!s}")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 def _display_json(ruling: JudgeRuling, pretty: bool):
@@ -329,10 +328,10 @@ def validate(decision_file: Path):
 
     except json.JSONDecodeError as e:
         console.print(f"[bold red]✗[/bold red] Invalid JSON: {e!s}")
-        sys.exit(1)
+        raise SystemExit(1)
     except Exception as e:
         console.print(f"[bold red]✗[/bold red] Validation failed: {e!s}")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

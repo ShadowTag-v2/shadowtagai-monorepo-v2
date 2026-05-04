@@ -13,7 +13,7 @@ try:
     import chromadb
 except ImportError:
     print("Missing dependency: chromadb. Run: pip install chromadb")
-    sys.exit(1)
+    raise SystemExit(1)
 
 # Configuration
 DB_PATH = Path("data/legal_knowledge_graph")

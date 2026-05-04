@@ -17,7 +17,7 @@ def assess_risk(phase, margin=0.0):
         # In a real skill, this might grep for 'n1-standard' or check billing API
         # For this logic check, we assume compliance if explicitly stated.
         print("✅ PASS: Technical viability check initiated.")
-        sys.exit(0)
+        raise SystemExit(0)
 
     # Phase 2: Dry Ground (Unit Economics)
     elif phase == "2":
@@ -25,21 +25,21 @@ def assess_risk(phase, margin=0.0):
         if margin < 0.30:
             print(f"🛑 BLOCK: Margin {margin:.1%} is below 30% threshold.")
             print("   ACTION: optimize_model_latency or increase_pricing")
-            sys.exit(1)
+            raise SystemExit(1)
         else:
             print("✅ PASS: Unit Economics Validated.")
-            sys.exit(0)
+            raise SystemExit(0)
 
     # Phase 3: Battle (Scale)
     elif phase == "3":
         print("⚔️ CHECK: Golden Artifact Verification")
         # Logic to check if artifact exists
         print("✅ PASS: Proceed to Battle.")
-        sys.exit(0)
+        raise SystemExit(0)
 
     else:
         print(f"❌ ERROR: Unknown Phase '{phase}'")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

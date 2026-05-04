@@ -294,7 +294,7 @@ def main():
         print("\n❌ No API keys found. Please set at least one:")
         print("   export GOOGLE_API_KEY='your-key'")
         print("   export ANTHROPIC_API_KEY='your-key'")
-        sys.exit(1)
+        raise SystemExit(1)
 
     # Create orchestrator
     orchestrator = UnifiedOrchestrator(enable_auto_routing=True)

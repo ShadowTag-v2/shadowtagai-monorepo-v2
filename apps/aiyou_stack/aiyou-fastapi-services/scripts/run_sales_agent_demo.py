@@ -22,7 +22,7 @@ async def main():
         print("✅ SUCCESS: Agent generated outreach messages.")
     else:
         print("❌ FAILURE: Agent failed to generate messages.")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

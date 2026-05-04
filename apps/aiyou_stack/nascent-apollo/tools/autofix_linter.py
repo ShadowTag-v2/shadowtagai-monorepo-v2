@@ -22,7 +22,7 @@ def run_linter(path="."):
     else:
         print("⚠️  High error count. Manual review recommended.")
         # In a real agent loop, this would trigger Judge 6
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

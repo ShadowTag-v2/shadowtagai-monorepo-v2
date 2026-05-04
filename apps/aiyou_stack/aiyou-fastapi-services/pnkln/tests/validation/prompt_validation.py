@@ -2,7 +2,6 @@
 import json
 import pathlib
 import re
-import sys
 
 tpl_path = pathlib.Path("pnkln/prompts/pnkln_prompt_templates.md")
 text = tpl_path.read_text(encoding="utf-8")
@@ -19,4 +18,4 @@ report = {
 }
 
 print(json.dumps(report, indent=2))
-sys.exit(0 if not invalid else 0)
+raise SystemExit(0 if not invalid else 0)

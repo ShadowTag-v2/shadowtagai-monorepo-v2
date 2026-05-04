@@ -1,6 +1,5 @@
 import os
 import subprocess
-import sys
 import time
 
 import requests
@@ -60,7 +59,7 @@ def main():
     # 1. Wait for SonarQube
     if not wait_for_sonarqube():
         print("❌ SonarQube failed to start in time.")
-        sys.exit(1)
+        raise SystemExit(1)
 
     # 2. Generate Token
     token = generate_token()
@@ -68,7 +67,7 @@ def main():
         print(
             "⚠️  Could not auto-generate token. You may need to log in to http://localhost:9000 (admin/admin) manually.",
         )
-        sys.exit(1)
+        raise SystemExit(1)
 
     # 3. Run Setup Script with Token
     print("\n🚀 Running setup_sonar_integration.sh with generated token...")
@@ -80,7 +79,7 @@ def main():
     script_path = os.path.join(os.getcwd(), "scripts", "setup_sonar_integration.sh")
 
     result = subprocess.run(["bash", script_path], env=env)
-    sys.exit(result.returncode)
+    raise SystemExit(result.returncode)
 
 
 if __name__ == "__main__":

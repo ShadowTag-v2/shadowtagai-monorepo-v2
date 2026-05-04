@@ -171,7 +171,7 @@ class Judge6Engine:
         Triggered on: FATAL risks (Rogue Agent, CVSS 10 Exploit).
         """
         print(f"💀 SYSTEM SHUTDOWN TRIGGERED: {reason}")
-        # In real life: sys.exit(1) or kubernetes pod termination
+        # In real life: raise SystemExit(1) or kubernetes pod termination
 
 
 # Singleton Instance

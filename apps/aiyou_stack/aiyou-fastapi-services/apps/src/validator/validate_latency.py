@@ -22,7 +22,6 @@ IMPROVEMENTS:
 
 import asyncio
 import logging
-import sys
 import time
 from dataclasses import dataclass, field
 from enum import Enum
@@ -33,7 +32,7 @@ try:
 except ImportError:
     print("ERROR: Missing required packages. Install with:")
     print("pip install httpx numpy")
-    sys.exit(1)
+    raise SystemExit(1)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -370,7 +369,7 @@ async def main():
 
     # Exit with appropriate code
     overall_pass = report.p99_pass and report.error_rate_pass
-    sys.exit(0 if overall_pass else 1)
+    raise SystemExit(0 if overall_pass else 1)
 
 
 if __name__ == "__main__":

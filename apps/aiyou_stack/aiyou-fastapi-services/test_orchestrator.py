@@ -4,7 +4,6 @@ Tests the Superpowers Marketplace integration with PNKLN Core Stack
 """
 
 import asyncio
-import sys
 
 from app.services.llm_orchestrator import (
     GrokIntake,
@@ -270,7 +269,7 @@ async def main():
 
     if failed > 0:
         print("\n⚠️  Some tests failed. Review output above for details.")
-        sys.exit(1)
+        raise SystemExit(1)
     else:
         print("\n🎉 All tests passed! Superpowers Marketplace integration validated.")
         print("\nIntegration Summary:")
@@ -284,7 +283,7 @@ async def main():
         print("  2. Deploy to Cloud Run: gcloud run deploy pnkln-api")
         print("  3. Test with real Gemini API: export GEMINI_API_KEY=...")
         print("  4. Load test: wrk -t4 -c50 -d60s https://pnkln-api-xxx.run.app")
-        sys.exit(0)
+        raise SystemExit(0)
 
 
 if __name__ == "__main__":

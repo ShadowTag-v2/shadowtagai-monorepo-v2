@@ -102,4 +102,4 @@ except Exception as e:
     # If running in Docker build, exiting with non-zero will fail the build
     import sys
 
-    sys.exit(1)
+    raise SystemExit(1)

@@ -11,7 +11,7 @@ def main():
     """
     if len(sys.argv) < 2:
         print("Usage: python main.py <task_description>")
-        sys.exit(1)
+        raise SystemExit(1)
 
     task_description = sys.argv[1]
 

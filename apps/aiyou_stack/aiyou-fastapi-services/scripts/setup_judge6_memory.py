@@ -1,5 +1,4 @@
 import os
-import sys
 
 import vertexai
 from google.cloud import discoveryengine_v1 as discoveryengine
@@ -15,7 +14,7 @@ DOCS_DIR = "docs"
 def check_env():
     if not PROJECT_ID:
         print("❌ Error: GEMINI_PROJECT_ID or GOOGLE_CLOUD_PROJECT environment variable not set.")
-        sys.exit(1)
+        raise SystemExit(1)
     print(f"✅ Using Project: {PROJECT_ID}")
     print(f"✅ Using Location: {LOCATION}")
 

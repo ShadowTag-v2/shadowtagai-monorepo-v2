@@ -2,7 +2,6 @@
 import asyncio
 import logging
 import os
-import sys
 
 from app.services.ethical_compliance import EthicalComplianceMonitor
 from app.services.ingestion_analyzer import IngestionAnalyzer
@@ -27,7 +26,7 @@ async def run_god_mode_batch():
         logger.fatal(
             f"🛑 ABORT: Compliance Score {score.overall_score}% is below threshold {threshold}%.",
         )
-        sys.exit(1)  # Failing here prevents the Design Agent from running
+        raise SystemExit(1)  # Failing here prevents the Design Agent from running
 
     # 2. The Heavy Lift: Gemini 2.5 Analysis
     analyzer = IngestionAnalyzer()
@@ -49,7 +48,7 @@ async def run_god_mode_batch():
         logger.info(f"✅ SYNAPSE FIRED: Report written to {output_path}")
     except Exception as e:
         logger.error(f"❌ FAILED to write report to {output_path}: {e}")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

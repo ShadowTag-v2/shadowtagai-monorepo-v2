@@ -59,7 +59,7 @@ def run_calibration():
         print("\n✅ CALIBRATION PASSED: Failover to STARLINK successful.")
     else:
         print("\n❌ CALIBRATION FAILED: Node remained on FIBER.")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

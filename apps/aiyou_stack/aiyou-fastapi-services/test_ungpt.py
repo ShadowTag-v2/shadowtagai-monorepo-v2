@@ -23,7 +23,7 @@ try:
     print("✅ All imports successful")
 except Exception as e:
     print(f"❌ Import failed: {e}")
-    sys.exit(1)
+    raise SystemExit(1)
 
 # Test 2: Cost calculation
 print("\n[Test 2] Cost Calculation...")

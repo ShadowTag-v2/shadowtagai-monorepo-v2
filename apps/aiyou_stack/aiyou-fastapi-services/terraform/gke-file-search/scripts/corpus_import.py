@@ -27,7 +27,7 @@ def list_corpora(project_id: str, region: str) -> None:
             print(f"  Description: {corpus.description}")
     except Exception as e:
         print(f"Error listing corpora: {e}", file=sys.stderr)
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 def import_files(
@@ -60,7 +60,7 @@ def import_files(
         if not target_corpus:
             print(f"Error: Corpus '{corpus_name}' not found", file=sys.stderr)
             print("Run: python corpus_import.py --list-corpora", file=sys.stderr)
-            sys.exit(1)
+            raise SystemExit(1)
 
         # Import files
         print(f"\nImporting from: {gcs_path}")
@@ -86,7 +86,7 @@ def import_files(
 
     except Exception as e:
         print(f"\n✗ Import failed: {e}", file=sys.stderr)
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 def query_corpus(project_id: str, region: str, vertical: str, query: str, top_k: int = 5) -> None:
@@ -113,7 +113,7 @@ def query_corpus(project_id: str, region: str, vertical: str, query: str, top_k:
 
         if not target_corpus:
             print(f"Error: Corpus '{corpus_name}' not found", file=sys.stderr)
-            sys.exit(1)
+            raise SystemExit(1)
 
         # Create model with RAG retrieval
         model = GenerativeModel("gemini-3.1-flash-lite-preview")
@@ -145,7 +145,7 @@ def query_corpus(project_id: str, region: str, vertical: str, query: str, top_k:
 
     except Exception as e:
         print(f"\n✗ Query failed: {e}", file=sys.stderr)
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 def main():

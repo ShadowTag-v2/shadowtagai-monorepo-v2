@@ -75,20 +75,20 @@ def main():
         input_data = json.load(sys.stdin)
     except json.JSONDecodeError as e:
         print(f"Error: Invalid JSON input: {e}", file=sys.stderr)
-        sys.exit(1)
+        raise SystemExit(1)
 
     tool_name = input_data.get("tool_name", "")
     tool_input = input_data.get("tool_input", {})
 
     # Only process Write/Edit tool calls
     if tool_name not in ["Write", "Edit"]:
-        sys.exit(0)
+        raise SystemExit(0)
 
     file_path = tool_input.get("file_path", "")
     content = tool_input.get("content", "") or tool_input.get("new_string", "")
 
     if not file_path:
-        sys.exit(0)
+        raise SystemExit(0)
 
     # Check if file is protected
     is_protected, reason = is_protected_file(file_path)
@@ -96,7 +96,7 @@ def main():
         # Block the operation
         print(f"❌ File operation blocked: {reason}", file=sys.stderr)
         print(f"   File: {file_path}", file=sys.stderr)
-        sys.exit(2)
+        raise SystemExit(2)
 
     # Check content safety
     has_issue, warning = check_content_safety(content, file_path)
@@ -108,7 +108,7 @@ def main():
         print(json.dumps(output))
 
     # Allow the operation
-    sys.exit(0)
+    raise SystemExit(0)
 
 
 if __name__ == "__main__":

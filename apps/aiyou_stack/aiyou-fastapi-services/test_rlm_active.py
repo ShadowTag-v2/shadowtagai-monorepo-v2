@@ -10,7 +10,7 @@ try:
     print("Successfully imported RecursiveAgent")
 except ImportError as e:
     print(f"ImportError: {e}")
-    sys.exit(1)
+    raise SystemExit(1)
 
 
 def test_rlm():
