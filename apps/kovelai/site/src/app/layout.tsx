@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Geist_Mono, Inter } from 'next/font/google';
-import { headers } from 'next/headers';
 import Script from 'next/script';
 import './globals.css';
 
@@ -57,15 +56,16 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
 };
 
-export default async function RootLayout({
+/**
+ * Static export layout — CSP is enforced via firebase.json response headers.
+ * Nonce injection requires SSR (headers() is incompatible with output: 'export').
+ * When migrating to SSR in the future, restore middleware.ts + headers() nonce flow.
+ */
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Read the per-request cryptographic nonce injected by middleware.ts
-  const headersList = await headers();
-  const nonce = headersList.get('x-nonce') ?? '';
-
   return (
     <html lang="en" className={`${inter.variable} ${geistMono.variable} antialiased`}>
       <head>
@@ -75,13 +75,11 @@ export default async function RootLayout({
               id="ga4-gtag"
               strategy="afterInteractive"
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-              nonce={nonce}
             />
             <Script
               id="ga4-config"
               strategy="afterInteractive"
-              nonce={nonce}
-              // biome-ignore lint/security/noDangerouslySetInnerHtml: GA4 analytics config — controlled server-rendered snippet with CSP nonce
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: GA4 analytics config — controlled server-rendered snippet
               dangerouslySetInnerHTML={{
                 __html: `
                   window.dataLayer = window.dataLayer || [];
