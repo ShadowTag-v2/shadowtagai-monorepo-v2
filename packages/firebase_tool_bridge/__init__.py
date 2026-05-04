@@ -44,6 +44,11 @@ from firebase_tool_bridge.registry import (
     RiskTier,
 )
 from firebase_tool_bridge.remote_config import ModelConfig
+from firebase_tool_bridge.workspace_confirmation import (
+    OfflineConfirmationProvider,
+    SovereignConfirmationProvider,
+    WorkspaceCLIConfirmationProvider,
+)
 
 __all__ = [
     "BridgeResult",
@@ -56,9 +61,12 @@ __all__ = [
     "FunctionResponsePart",
     "ModelConfig",
     "ModelResponse",
+    "OfflineConfirmationProvider",
     "RegisteredFunction",
     "RiskTier",
+    "SovereignConfirmationProvider",
     "ToolBridge",
+    "WorkspaceCLIConfirmationProvider",
     "function_to_declaration",
     "registry_to_declarations",
 ]

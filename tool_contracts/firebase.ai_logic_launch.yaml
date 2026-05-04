@@ -1,0 +1,92 @@
+# tool_contracts/firebase.ai_logic_launch.yaml
+# Governs the initialization and lifecycle of Firebase AI Logic sessions.
+# Reference: Firebase AI Logic SDK + remote_config.py + firebase_chat_loop.py
+tool_id: "firebase.ai_logic_launch"
+description: >
+  Governs the launch, configuration, and lifecycle of Firebase AI Logic
+  generative model sessions with function-calling capabilities.
+  Covers model initialization, Remote Config parameter binding,
+  tool declaration injection, and multi-turn chat loop management.
+
+risk_level: "medium"
+
+preconditions:
+  - "Firebase project MUST be initialized with AI Logic enabled."
+  - "Firebase App Check SHOULD be configured for production."
+  - "FunctionRegistry MUST be populated before launching the chat loop."
+  - "Remote Config template MUST be fetched and activated."
+  - "Model ID MUST be a supported Gemini model (gemini-2.0-flash or later)."
+
+launch_sequence:
+  step_1:
+    action: "Initialize Firebase AI Logic backend"
+    details: >
+      Call FirebaseAI.firebaseAI(backend: .googleAI()) or equivalent.
+      Backend selection determines routing (Google AI vs Vertex AI).
+  step_2:
+    action: "Fetch Remote Config"
+    details: >
+      ModelConfig.from_remote_config(template) loads model_name, temperature,
+      top_p, top_k, max_output_tokens, and system_instruction from the
+      remote config template. Temperature MUST be 0.0 for tool selection.
+  step_3:
+    action: "Generate FunctionDeclarations"
+    details: >
+      registry_to_declarations(registry) auto-generates OpenAPI-compatible
+      schemas from Python function signatures and docstrings.
+  step_4:
+    action: "Create GenerativeModel with tools"
+    details: >
+      Bind model_config + function_declarations to create a GenerativeModel
+      instance with toolConfig.functionCallingConfig.mode = AUTO.
+  step_5:
+    action: "Start multi-turn chat loop"
+    details: >
+      FirebaseChatLoop.run(user_message) manages the send → extract →
+      dispatch → respond cycle until the model stops proposing function calls.
+
+model_parameters:
+  temperature:
+    default: 0.0
+    constraint: "MUST be 0.0 for deterministic tool selection in production."
+    remote_config_key: "model_temperature"
+  top_p:
+    default: 0.95
+    remote_config_key: "model_top_p"
+  top_k:
+    default: 40
+    remote_config_key: "model_top_k"
+  max_output_tokens:
+    default: 8192
+    remote_config_key: "model_max_output_tokens"
+  system_instruction:
+    default: "You are a helpful assistant."
+    remote_config_key: "model_system_instruction"
+  model_name:
+    default: "gemini-2.0-flash"
+    remote_config_key: "model_name"
+
+safety_invariants:
+  - "The model MUST NOT execute code directly — all tool execution is app-side."
+  - "Function call arguments from the model are UNTRUSTED input — validate/sanitize."
+  - "The chat loop MUST have a max_iterations guard to prevent infinite tool loops."
+  - "All function responses are returned to the model as FunctionResponsePart."
+  - "Errors in function execution are returned as error responses, NOT re-raised."
+
+evidence_requirements:
+  - type: "ndjson_append"
+    path: ".agent/evidence/ai_logic_sessions.ndjson"
+    fields:
+      - "timestamp"
+      - "session_id"
+      - "model_name"
+      - "turn_count"
+      - "function_calls_count"
+      - "final_status"        # completed | max_iterations | error
+      - "duration_ms"
+
+reuse_queries:
+  - tool_id: "firebase.function_bridge"
+    reason: "The chat loop delegates all function execution to the bridge."
+  - tool_id: "function_call.consequential_action"
+    reason: "Consequential actions within the chat loop require confirmation gating."
