@@ -131,6 +131,13 @@ _SERVICE_REGISTRY: dict[str, str] = {
     "repo_oracle": "repo_oracle",
     "collapse_read_search": "collapse_read_search",
     "evaluation_bridge": "evaluation_bridge",
+    # ── Batch 6 ported services ───────────────────────────────────
+    "tool_use_summary": f"{_PKG}.tool_use_summary",
+    "tip_registry": f"{_PKG}.tip_registry",
+    "settings_sync": f"{_PKG}.settings_sync",
+    "team_memory_sync": f"{_PKG}.team_memory_sync",
+    "mock_rate_limits": f"{_PKG}.mock_rate_limits",
+    "internal_logging": f"{_PKG}.internal_logging",
 }
 
 
