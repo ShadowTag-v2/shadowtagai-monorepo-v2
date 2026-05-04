@@ -1,5 +1,3 @@
-# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 # Copyright 2026 ShadowTag AI. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 """Firebase Tool Bridge — Client Action Truth for Monorepo OS.
@@ -12,27 +10,57 @@ Architecture:
 
 Usage:
     from firebase_tool_bridge import ToolBridge, FunctionRegistry, RiskTier
+    from firebase_tool_bridge.declarations import registry_to_declarations
+    from firebase_tool_bridge.firebase_chat_loop import FirebaseChatLoop
+    from firebase_tool_bridge.remote_config import ModelConfig
 
     registry = FunctionRegistry()
     registry.register("fetch_weather", fetch_weather, RiskTier.LOW)
     bridge = ToolBridge(registry)
-    result = bridge.handle(function_call)
+
+    # Generate Firebase-compatible tool declarations
+    declarations = registry_to_declarations(registry)
+
+    # Configure model parameters via Remote Config
+    config = ModelConfig.from_remote_config(template)
 """
 
+from firebase_tool_bridge.bridge import BridgeResult, CallStatus, ToolBridge
+from firebase_tool_bridge.declarations import (
+    function_to_declaration,
+    registry_to_declarations,
+)
+from firebase_tool_bridge.evidence import EvidenceLogger
+from firebase_tool_bridge.firebase_chat_loop import (
+    ChatLoopResult,
+    FirebaseChatLoop,
+    FunctionCallPart,
+    FunctionResponsePart,
+    ModelResponse,
+)
 from firebase_tool_bridge.registry import (
     FunctionRegistry,
     RegisteredFunction,
     RiskTier,
 )
-from firebase_tool_bridge.bridge import ToolBridge
-from firebase_tool_bridge.evidence import EvidenceLogger
+from firebase_tool_bridge.remote_config import ModelConfig
 
 __all__ = [
+    "BridgeResult",
+    "CallStatus",
+    "ChatLoopResult",
     "EvidenceLogger",
+    "FirebaseChatLoop",
+    "FunctionCallPart",
     "FunctionRegistry",
+    "FunctionResponsePart",
+    "ModelConfig",
+    "ModelResponse",
     "RegisteredFunction",
     "RiskTier",
     "ToolBridge",
+    "function_to_declaration",
+    "registry_to_declarations",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.3.0"
