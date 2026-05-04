@@ -199,6 +199,7 @@ TOTAL_CONTRACTS=$(ls tool_contracts/*.yaml 2>/dev/null | wc -l | tr -d ' ')
 # .reports/monorepo-os/orphan_contracts.md (v3.1).
 VERIFIED_CONTRACTS="
 beads.update
+firebase.ai_logic_launch
 firebase.function_bridge
 knowledge.compile
 knowledge.promote_to_memory
