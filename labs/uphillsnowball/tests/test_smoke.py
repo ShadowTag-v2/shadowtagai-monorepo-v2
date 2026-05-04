@@ -43,6 +43,7 @@ class TestModuleImports:
         assert mod is not None
 
     def test_delivery_module(self):
+        from src.delivery import splinter_engine
 
         assert splinter_engine is not None
 
