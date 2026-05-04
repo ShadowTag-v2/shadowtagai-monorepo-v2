@@ -176,33 +176,16 @@ export function createBridgeLogger(options: {
     }
   }
 
-  /** Render and write the current status lines based on state. */
-  function renderStatusLine(): void {
-    if (currentState === 'reconnecting' || currentState === 'failed') {
-      // These states are handled separately (updateReconnectingStatus /
-      // updateFailedStatus). Return before clearing so callers like toggleQr
-      // and setSpawnModeDisplay don't blank the display during these states.
-      return;
+  /** Render QR code lines above the status line. */
+  function renderQrBlock(): void {
+    if (!qrVisible) return;
+    for (const line of qrLines) {
+      writeStatus(`${chalk.dim(line)}\n`);
     }
+  }
 
-    clearStatusLines();
-
-    const isIdle = currentState === 'idle';
-
-    // QR code above the status line
-    if (qrVisible) {
-      for (const line of qrLines) {
-        writeStatus(`${chalk.dim(line)}\n`);
-      }
-    }
-
-    // Determine indicator and colors based on state
-    const indicator = BRIDGE_READY_INDICATOR;
-    const indicatorColor = isIdle ? chalk.green : chalk.cyan;
-    const baseColor = isIdle ? chalk.green : chalk.cyan;
-    const stateText = baseColor(currentStateText);
-
-    // Build the suffix with repo and branch
+  /** Build the repo · branch suffix for the status indicator. */
+  function buildRepoSuffix(): string {
     let suffix = '';
     if (repoName) {
       suffix += chalk.dim(' \u00b7 ') + chalk.dim(repoName);
@@ -212,13 +195,11 @@ export function createBridgeLogger(options: {
     if (branch && spawnMode !== 'worktree') {
       suffix += chalk.dim(' \u00b7 ') + chalk.dim(branch);
     }
+    return suffix;
+  }
 
-    if (process.env.USER_TYPE === 'ant' && debugLogPath) {
-      writeStatus(`${chalk.yellow('[ANT-ONLY] Logs:')} ${chalk.dim(debugLogPath)}\n`);
-    }
-    writeStatus(`${indicatorColor(indicator)} ${stateText}${suffix}\n`);
-
-    // Session count and per-session list (multi-session mode only)
+  /** Render the multi-session bullet list (sessionMax > 1 only). */
+  function renderSessionBlock(): void {
     if (sessionMax > 1) {
       const modeHint =
         spawnMode === 'worktree'
@@ -237,8 +218,10 @@ export function createBridgeLogger(options: {
 `);
       }
     }
+  }
 
-    // Mode line for spawn modes with a single slot (or true single-session mode)
+  /** Render the mode line + tool activity for single-slot / single-session. */
+  function renderModeBlock(isIdle: boolean): void {
     if (sessionMax === 1) {
       const modeText =
         spawnMode === 'single-session'
@@ -258,19 +241,52 @@ export function createBridgeLogger(options: {
     ) {
       writeStatus(`  ${chalk.dim(truncatePrompt(lastToolSummary, 60))}\n`);
     }
+  }
 
-    // Blank line separator before footer
+  /** Render the footer with URL, QR hint, and spawn-mode toggle hint. */
+  function renderFooterBlock(isIdle: boolean): void {
     const url = activeSessionUrl ?? connectUrl;
-    if (url) {
-      writeStatus('\n');
-      const footerText = isIdle ? buildIdleFooterText(url) : buildActiveFooterText(url);
-      const qrHint = qrVisible
-        ? chalk.dim.italic('space to hide QR code')
-        : chalk.dim.italic('space to show QR code');
-      const toggleHint = spawnModeDisplay ? chalk.dim.italic(' \u00b7 w to toggle spawn mode') : '';
-      writeStatus(`${chalk.dim(footerText)}\n`);
-      writeStatus(`${qrHint}${toggleHint}\n`);
+    if (!url) return;
+
+    writeStatus('\n');
+    const footerText = isIdle ? buildIdleFooterText(url) : buildActiveFooterText(url);
+    const qrHint = qrVisible
+      ? chalk.dim.italic('space to hide QR code')
+      : chalk.dim.italic('space to show QR code');
+    const toggleHint = spawnModeDisplay ? chalk.dim.italic(' \u00b7 w to toggle spawn mode') : '';
+    writeStatus(`${chalk.dim(footerText)}\n`);
+    writeStatus(`${qrHint}${toggleHint}\n`);
+  }
+
+  /** Render and write the current status lines based on state. */
+  function renderStatusLine(): void {
+    if (currentState === 'reconnecting' || currentState === 'failed') {
+      // These states are handled separately (updateReconnectingStatus /
+      // updateFailedStatus). Return before clearing so callers like toggleQr
+      // and setSpawnModeDisplay don't blank the display during these states.
+      return;
     }
+
+    clearStatusLines();
+
+    const isIdle = currentState === 'idle';
+
+    renderQrBlock();
+
+    // Status indicator line
+    const indicator = BRIDGE_READY_INDICATOR;
+    const indicatorColor = isIdle ? chalk.green : chalk.cyan;
+    const stateText = (isIdle ? chalk.green : chalk.cyan)(currentStateText);
+    const suffix = buildRepoSuffix();
+
+    if (process.env.USER_TYPE === 'ant' && debugLogPath) {
+      writeStatus(`${chalk.yellow('[ANT-ONLY] Logs:')} ${chalk.dim(debugLogPath)}\n`);
+    }
+    writeStatus(`${indicatorColor(indicator)} ${stateText}${suffix}\n`);
+
+    renderSessionBlock();
+    renderModeBlock(isIdle);
+    renderFooterBlock(isIdle);
   }
 
   return {
