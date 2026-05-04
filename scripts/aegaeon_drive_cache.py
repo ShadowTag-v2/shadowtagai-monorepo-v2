@@ -59,7 +59,7 @@ def mount_case_file_to_vram(file_path: str, display_name: str) -> str:
 
     # Create the cache slab (110GB grounding library capability)
     cache = genai.caching.CachedContent.create(
-        model="models/gemini-1.5-pro-002",
+        model="models/gemini-3.1-flash-lite-preview",
         display_name=display_name,
         system_instruction=(
             "You are a KovelAI Sovereign Agent. "

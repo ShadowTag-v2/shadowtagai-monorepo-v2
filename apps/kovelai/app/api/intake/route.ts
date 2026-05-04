@@ -103,10 +103,10 @@ export async function POST(req: Request) {
       // @ts-expect-error: waitUntil is available in Edge Runtime
       req.waitUntil(
         (async () => {
-          // Hit Gemini 1.5 Pro using Aegaeon Context Slab (84% cost drop)
-          // or fall back to Claude 3.5 Sonnet
+          // Hit Gemini 3.1 Flash Lite using Aegaeon Context Slab (84% cost drop)
+          // or fall back to Claude Sonnet 4
           const oracleModel = contextCacheId
-            ? google('gemini-1.5-pro-002', {
+            ? google('gemini-3.1-flash-lite-preview', {
                 // @ts-expect-error: cached content config
                 useCachedContent: contextCacheId,
               })

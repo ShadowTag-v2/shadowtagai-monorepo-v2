@@ -10,8 +10,8 @@ class GeminiClient:
         self.client = genai.Client(vertexai=True, project=self.project_id, location=self.location)
 
     async def generate_thought(self, prompt: str, system_instruction: str = None) -> str:
-        # Defaults to Gemini 1.5 Pro (The Brain) for complex thought
-        model = "gemini-1.5-pro-001"
+        # Defaults to Gemini 3.1 Flash Lite Preview for fast inference
+        model = "gemini-3.1-flash-lite-preview"
 
         config = types.GenerateContentConfig(
             temperature=0.0,
