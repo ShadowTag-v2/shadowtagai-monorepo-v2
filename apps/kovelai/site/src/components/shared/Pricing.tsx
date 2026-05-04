@@ -9,10 +9,15 @@
  * - Beta Coupon Code: 3wseBY7Z (50% off, 3 months, max 100 redemptions)
  * - Customer Portal: bpc_1TNKSjEHnWpykeMi0qQPoaHm
  *
- * TODO: Replace Pro CTA link with live Stripe Payment Link once created in Dashboard.
- * The current implementation routes Professional inquiries through the contact modal
- * to capture high-intent leads while the payment link is being provisioned.
+ * Payment Link Integration:
+ * - Trial and Pro CTAs read from NEXT_PUBLIC_STRIPE_TRIAL_LINK / NEXT_PUBLIC_STRIPE_PRO_LINK env vars.
+ * - Enterprise routes through the contact modal (onOpenModal).
+ * - To activate: Create Payment Links in Stripe Dashboard → set env vars → redeploy.
+ * - Checkout API alternative: /api/billing/checkout (server-side Stripe Checkout Session).
  */
+
+const TRIAL_LINK = process.env.NEXT_PUBLIC_STRIPE_TRIAL_LINK || '#';
+const PRO_LINK = process.env.NEXT_PUBLIC_STRIPE_PRO_LINK || '#';
 
 interface PricingProps {
   onOpenModal: () => void;
@@ -32,7 +37,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         'Email support',
       ],
       cta: 'Start Free Trial',
-      ctaLink: 'https://buy.stripe.com/test_aEU5nR1Jy9Mg8zS000',
+      ctaLink: TRIAL_LINK,
       ctaStyle: 'btn-ghost',
       featured: false,
     },
@@ -51,7 +56,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         'Priority support',
       ],
       cta: 'Start Pro — $74.50/mo',
-      ctaLink: 'https://buy.stripe.com/test_aEU5nR1Jy9Mg8zS000?prefilled_promo_code=3wseBY7Z',
+      ctaLink: PRO_LINK,
       ctaStyle: 'btn-gold',
       featured: true,
       annual: 'or $1,428/yr (save $360)',
