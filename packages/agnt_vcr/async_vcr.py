@@ -96,11 +96,7 @@ class AsyncVCR(VCRReplay):
 
         async with self._lock:
             # Replay path — check for valid, non-stale cassette
-            if (
-                self.replaying
-                and os.path.exists(cassette_path)
-                and not self._is_stale(req_hash)
-            ):
+            if self.replaying and os.path.exists(cassette_path) and not self._is_stale(req_hash):
                 with open(cassette_path, encoding="utf-8") as f:
                     data = json.load(f)
                 logger.debug("VCR replay hit: %s (%s)", method, req_hash[:12])

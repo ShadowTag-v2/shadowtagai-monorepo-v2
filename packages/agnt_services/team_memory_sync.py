@@ -147,11 +147,7 @@ class TeamMemorySyncService:
         Returns:
             Dict of entries whose local hash differs from remote.
         """
-        return {
-            k: v
-            for k, v in self._entries.items()
-            if remote_hashes.get(k) != v.content_hash
-        }
+        return {k: v for k, v in self._entries.items() if remote_hashes.get(k) != v.content_hash}
 
     def all_entries(self) -> dict[str, TeamMemoryEntry]:
         """Get all registered entries."""

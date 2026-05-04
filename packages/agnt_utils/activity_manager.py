@@ -16,6 +16,7 @@ from collections.abc import Callable
 @dataclass
 class ActivityStates:
     """Snapshot of the current activity state."""
+
     is_user_active: bool = False
     is_cli_active: bool = False
     active_operation_count: int = 0

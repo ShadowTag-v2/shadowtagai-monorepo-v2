@@ -266,8 +266,4 @@ class EntropyMonitor:
         }
 
     def __repr__(self) -> str:
-        return (
-            f"EntropyMonitor(analyzed={self._total_analyzed}, "
-            f"suspicious={self._total_suspicious}, "
-            f"alert={self.is_alert})"
-        )
+        return f"EntropyMonitor(analyzed={self._total_analyzed}, suspicious={self._total_suspicious}, alert={self.is_alert})"

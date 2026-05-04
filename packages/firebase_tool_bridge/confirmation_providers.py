@@ -267,10 +267,7 @@ class FirebaseAuthConfirmationProvider(ConfirmationProvider):
             return dict(decoded)  # type: ignore[arg-type]
 
         except ImportError:
-            logger.error(
-                "firebase-admin not installed — cannot verify tokens. "
-                "Install with: pip install firebase-admin"
-            )
+            logger.error("firebase-admin not installed — cannot verify tokens. Install with: pip install firebase-admin")
             return None
         except Exception:
             logger.exception("Firebase token verification failed")

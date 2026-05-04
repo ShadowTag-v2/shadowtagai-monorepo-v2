@@ -185,9 +185,7 @@ class AsyncBatchEvidenceWriter:
             with self._evidence_file.open("a", encoding="utf-8") as f:
                 f.writelines(lines)
         except OSError:
-            logger.exception(
-                "Evidence flush failed — %d records lost", len(lines)
-            )
+            logger.exception("Evidence flush failed — %d records lost", len(lines))
 
     def close(self) -> None:
         """Flush remaining records and stop the timer."""

@@ -36,6 +36,7 @@ logger = logging.getLogger(__name__)
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 
+
 @dataclass
 class SessionMemoryCompactConfig:
     """Configuration for session memory compaction thresholds."""
@@ -103,20 +104,14 @@ def has_text_blocks(message: dict[str, Any]) -> bool:
 
     if role == "assistant":
         if isinstance(content, list):
-            return any(
-                isinstance(block, dict) and block.get("type") == "text"
-                for block in content
-            )
+            return any(isinstance(block, dict) and block.get("type") == "text" for block in content)
         return bool(content)  # string content counts
 
     if role == "user":
         if isinstance(content, str):
             return len(content) > 0
         if isinstance(content, list):
-            return any(
-                isinstance(block, dict) and block.get("type") == "text"
-                for block in content
-            )
+            return any(isinstance(block, dict) and block.get("type") == "text" for block in content)
 
     return False
 
@@ -128,13 +123,7 @@ def _get_tool_result_ids(message: dict[str, Any]) -> list[str]:
     content = message.get("content", [])
     if not isinstance(content, list):
         return []
-    return [
-        block["tool_use_id"]
-        for block in content
-        if isinstance(block, dict)
-        and block.get("type") == "tool_result"
-        and "tool_use_id" in block
-    ]
+    return [block["tool_use_id"] for block in content if isinstance(block, dict) and block.get("type") == "tool_result" and "tool_use_id" in block]
 
 
 def _has_tool_use_with_ids(
@@ -147,19 +136,12 @@ def _has_tool_use_with_ids(
     content = message.get("content", [])
     if not isinstance(content, list):
         return False
-    return any(
-        isinstance(block, dict)
-        and block.get("type") == "tool_use"
-        and block.get("id") in tool_use_ids
-        for block in content
-    )
+    return any(isinstance(block, dict) and block.get("type") == "tool_use" and block.get("id") in tool_use_ids for block in content)
 
 
 def _is_compact_boundary(message: dict[str, Any]) -> bool:
     """Check if a message is a compact boundary marker."""
-    return bool(message.get("compact_boundary", False)) or bool(
-        message.get("compactMetadata")
-    )
+    return bool(message.get("compact_boundary", False)) or bool(message.get("compactMetadata"))
 
 
 def _estimate_single_message_tokens(message: dict[str, Any]) -> int:
@@ -241,10 +223,7 @@ def adjust_index_to_preserve_api_invariants(
                             tool_use_ids_in_kept.add(block["id"])
 
         # Only look for tool_uses NOT already in the kept range
-        needed_ids = {
-            tid for tid in all_tool_result_ids
-            if tid not in tool_use_ids_in_kept
-        }
+        needed_ids = {tid for tid in all_tool_result_ids if tid not in tool_use_ids_in_kept}
 
         # Walk backwards to find assistant messages with matching tool_use blocks
         i = adjusted - 1
@@ -257,11 +236,7 @@ def adjust_index_to_preserve_api_invariants(
                     content = msg.get("content", [])
                     if isinstance(content, list):
                         for block in content:
-                            if (
-                                isinstance(block, dict)
-                                and block.get("type") == "tool_use"
-                                and block.get("id") in needed_ids
-                            ):
+                            if isinstance(block, dict) and block.get("type") == "tool_use" and block.get("id") in needed_ids:
                                 needed_ids.discard(block["id"])
             i -= 1
 
@@ -316,11 +291,7 @@ def calculate_messages_to_keep_index(
     config = get_session_memory_compact_config()
 
     # Start from the message after last_summarized_index
-    start_index = (
-        last_summarized_index + 1
-        if last_summarized_index >= 0
-        else len(messages)
-    )
+    start_index = last_summarized_index + 1 if last_summarized_index >= 0 else len(messages)
 
     # Calculate current tokens and text-block count from start_index to end
     total_tokens = 0
@@ -335,10 +306,7 @@ def calculate_messages_to_keep_index(
         return adjust_index_to_preserve_api_invariants(messages, start_index)
 
     # Already meet both minimums
-    if (
-        total_tokens >= config.min_tokens
-        and text_block_count >= config.min_text_block_messages
-    ):
+    if total_tokens >= config.min_tokens and text_block_count >= config.min_text_block_messages:
         return adjust_index_to_preserve_api_invariants(messages, start_index)
 
     # Find the compact boundary floor (don't expand past the last boundary)
@@ -361,10 +329,7 @@ def calculate_messages_to_keep_index(
             break
 
         # Stop if both minimums met
-        if (
-            total_tokens >= config.min_tokens
-            and text_block_count >= config.min_text_block_messages
-        ):
+        if total_tokens >= config.min_tokens and text_block_count >= config.min_text_block_messages:
             break
 
     # Final adjustment to preserve tool pairs
@@ -448,17 +413,10 @@ def try_session_memory_compact(
     )
 
     # Filter out old compact boundaries from kept range
-    messages_to_keep = [
-        msg
-        for msg in messages[start_index:]
-        if not _is_compact_boundary(msg)
-    ]
+    messages_to_keep = [msg for msg in messages[start_index:] if not _is_compact_boundary(msg)]
 
     # Estimate post-compact tokens
-    post_tokens = sum(
-        _estimate_single_message_tokens(msg)
-        for msg in messages_to_keep
-    )
+    post_tokens = sum(_estimate_single_message_tokens(msg) for msg in messages_to_keep)
     # Add session memory summary tokens
     post_tokens += rough_token_estimate(session_memory_content)
 
@@ -471,9 +429,7 @@ def try_session_memory_compact(
         )
         return None
 
-    pre_tokens = sum(
-        _estimate_single_message_tokens(msg) for msg in messages
-    )
+    pre_tokens = sum(_estimate_single_message_tokens(msg) for msg in messages)
 
     return SessionMemoryCompactResult(
         success=True,

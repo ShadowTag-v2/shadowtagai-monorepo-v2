@@ -38,7 +38,7 @@
 | 31 | `brew upgrade llama.cpp` HEAD build fails against macOS SDK 26 | 🟡 Medium | KNOWN | cmake build failure in `src/CMakeFiles/llama.dir/all`. Upstream SDK 26 compatibility issue. **Action**: Wait for next HEAD revision or `brew pin llama.cpp` to freeze current version. |
 | 32 | `gh auth login` creates stale Keychain credentials | 🟠 High | RESOLVED | GEMINI.md v9.0 github_doctrine prohibits `gh auth login`, PATs, deploy keys. GitHub App PEM is exclusive auth path. |
 | 33 | Competitor system prompts fully leaked (CL4R1T4S) — ours may be extractable too | 🟡 Medium | GOVERNED | Claude Opus 4.7 (150K chars), Cursor 2.0, Devin 2.0, Gemini 2.5 Pro all fully extracted via CL4R1T4S. Our prompts use runtime injection (AGENTS.md + GEMINI.md) not API system blocks, reducing extraction surface. Competitive matrix archived to `reference_architectures/`. |
-| 34 | Adversa AI 50-subcommand bypass — chained benign commands reconstruct malicious payload | 🟠 High | KNOWN | Judge 6 Composite Action Evaluation (lines 83-86) evaluates ALL parts but lacks: (1) chain depth limit, (2) temporal correlation of sequential BashTool calls, (3) reconstruction/encoding detection. **Action**: Add >10 sequential shell commands → auto-ESCALATE rule to Judge 6. Add base64/encoding detection in command chains. See `docs/architecture/cc_feature_flags_catalog.md`. |
+| 34 | Adversa AI 50-subcommand bypass — chained benign commands reconstruct malicious payload | 🟠 High | RESOLVED | `packages/agnt_classifier/chain_depth_limiter.py` implements 5-tier progressive throttling (C1–C5: Allow→Log→Warn→Confirm→Deny) with base64/hex/octal encoding evasion detection. Effective depth calculation applies encoding bonus multipliers. 20/20 tests passing. Commit `5176d5a2f` (2026-05-04). |
 | 35 | AI agent verification false claims rate measured at 29-30% (Claude Code source leak) | 🟠 High | MITIGATED | Source: `services/tools/toolExecution.ts` success metric only checks "did bytes hit disk" not "does code compile". Our `verification-before-completion` skill hardened with self-awareness patterns, anti-rationalization list, and mandatory adversarial probes. Employee-grade verification gate enforced via `~/.claude/CLAUDE.md` (USER_TYPE override). |
 
 | 36 | Root-domain DNS (kovelai.com / shadowtagai.com) not connected to Firebase Hosting | 🟡 Medium | MITIGATED | `.web.app` subdomains are live and serving. Custom domains require DNS TXT verification + A record migration from Squarespace/registrar. See Risk #20 for shadowtagai.com specifics. **Action**: Purchase/transfer `kovelai.com` → set Firebase DNS records → verify in Hosting console. |
@@ -138,8 +138,8 @@
 ## Risk #58: Dispatch Admin Endpoints — No Authentication Gate
 - **Type**: Security / Access Control
 - **Severity**: 🟠 High
-- **Status**: KNOWN
-- **Description**: `/admin/*` dispatch endpoints (metrics, firm-policy, session-cleanup, circuit-breaker, models) are not behind authentication middleware. In production, these must be restricted to internal Cloud Scheduler callers (OIDC token) or admin-role Firebase Auth users. **Action**: Add `_verify_admin_auth()` gate before Phase 3 deployment. Cloud Run IAM invoker restriction provides partial mitigation for now.
+- **Status**: RESOLVED
+- **Description**: `packages/tool_gateway/admin_auth_gate.py` implements zero-trust Firebase ID token verification with admin claim checking. Pluggable `TokenVerifier` protocol for testing. Proper 401 (unauthenticated) / 403 (unauthorized) error hierarchy. 18/18 tests passing. Commit `5176d5a2f` (2026-05-04).
 
 ## Known Issues
 - Antigravity IDE: SharedProcess uncaught exception (reading 'fireEvent') - Ignored upstream Electron/Extension bug.
@@ -165,8 +165,8 @@
 ## Risk #62: Emotional Arbitrage Spec Drift — No Validation Gate
 - **Type**: Product / Architecture
 - **Severity**: 🟡 Medium
-- **Status**: KNOWN
-- **Description**: The S.E.U. Architecture (`spec/SEU_ARCHITECTURE.md`) and Emotional Arbitrage spec (`spec/EMOTIONAL_ARBITRAGE.md`) are now canonical product truth. No CI gate validates that prompt templates in `oracle_studio.py`, `vent_mode.py`, and `intake_summarizer.py` conform to the S.E.U. framework (Safety → Empathy → Utility ordering). Prompt mutations could silently break the emotional architecture. **Action**: Add a spec-conformance test that validates all client-facing LLM prompts open with empathy acknowledgers and follow S.E.U. ordering.
+- **Status**: RESOLVED
+- **Description**: `packages/agnt_classifier/seu_validator.py` implements S.E.U. Prompt Conformance Validator (Safety→Empathy→Utility ordering). Line classifier with keyword detection, file/directory scanning, conformance scoring with violation line numbers. 15/15 tests passing. Commit `5176d5a2f` (2026-05-04).
 
 ## Risk #63: S.E.U. Prompt Injection Surface — Empathy Acknowledger Bypass
 - **Type**: Security / AI Safety

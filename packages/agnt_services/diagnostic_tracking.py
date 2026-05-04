@@ -220,9 +220,7 @@ class DiagnosticTrackingService:
             return []
 
         # Split by protocol
-        file_proto = [
-            f for f in all_files if self._baseline.get(_normalize_uri(f.uri)) is not None and f.uri.startswith("file://")
-        ]
+        file_proto = [f for f in all_files if self._baseline.get(_normalize_uri(f.uri)) is not None and f.uri.startswith("file://")]
         right_map: dict[str, DiagnosticFile] = {}
         for f in all_files:
             norm = _normalize_uri(f.uri)
@@ -244,9 +242,7 @@ class DiagnosticTrackingService:
                 self._right_file_state[normalized] = list(right_file.diagnostics)
 
             # Diff
-            new_diags = [
-                d for d in file_to_use.diagnostics if not any(d.matches(b) for b in baseline)
-            ]
+            new_diags = [d for d in file_to_use.diagnostics if not any(d.matches(b) for b in baseline)]
             if new_diags:
                 new_files.append(DiagnosticFile(uri=f.uri, diagnostics=new_diags))
 
@@ -291,9 +287,7 @@ def _arrays_equal(a: list[Diagnostic], b: list[Diagnostic]) -> bool:
     """Check if two diagnostic lists contain the same diagnostics (set equality)."""
     if len(a) != len(b):
         return False
-    return all(any(da.matches(db) for db in b) for da in a) and all(
-        any(db.matches(da) for da in a) for db in b
-    )
+    return all(any(da.matches(db) for db in b) for da in a) and all(any(db.matches(da) for da in a) for db in b)
 
 
 # Module-level convenience

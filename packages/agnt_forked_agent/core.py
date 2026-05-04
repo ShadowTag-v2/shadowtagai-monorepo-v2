@@ -233,11 +233,7 @@ def extract_result_text(
             if isinstance(content, str) and content.strip():
                 return content.strip()
             if isinstance(content, list):
-                text_parts = [
-                    p.get("text", "")
-                    for p in content
-                    if isinstance(p, dict) and p.get("type") == "text"
-                ]
+                text_parts = [p.get("text", "") for p in content if isinstance(p, dict) and p.get("type") == "text"]
                 joined = "\n".join(text_parts).strip()
                 if joined:
                     return joined
@@ -356,10 +352,12 @@ class ForkedAgent:
 
         # Build initial messages from cache-safe params + prompt
         initial_messages = list(self._cache_safe_params.context_messages)
-        initial_messages.append({
-            "role": "user",
-            "content": prompt,
-        })
+        initial_messages.append(
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        )
 
         try:
             if query_fn is not None:

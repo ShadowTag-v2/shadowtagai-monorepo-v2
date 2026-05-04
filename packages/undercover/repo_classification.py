@@ -54,7 +54,7 @@ def _find_git_root(cwd: str | Path | None = None) -> Path | None:
         )
         if result.returncode == 0 and result.stdout.strip():
             return Path(result.stdout.strip())
-    except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
+    except FileNotFoundError, subprocess.TimeoutExpired, OSError:
         pass
     return None
 
@@ -71,7 +71,7 @@ def _get_remote_url(cwd: str | Path | None = None) -> str | None:
         )
         if result.returncode == 0 and result.stdout.strip():
             return result.stdout.strip()
-    except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
+    except FileNotFoundError, subprocess.TimeoutExpired, OSError:
         pass
     return None
 

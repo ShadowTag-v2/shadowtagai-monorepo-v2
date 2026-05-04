@@ -215,8 +215,7 @@ class ClassifierDiagnostics:
             return DiagnosticCheck(
                 name="allowlist_sanity",
                 status=DiagnosticStatus.PASS,
-                message=f"Allowlist has {len(SAFE_ALLOWLIST)} safe tools, "
-                f"{len(CLASSIFIER_REQUIRED)} require classification.",
+                message=f"Allowlist has {len(SAFE_ALLOWLIST)} safe tools, {len(CLASSIFIER_REQUIRED)} require classification.",
                 duration_ms=duration,
                 details={
                     "safe_count": len(SAFE_ALLOWLIST),
@@ -284,8 +283,7 @@ class ClassifierDiagnostics:
             return DiagnosticCheck(
                 name="policy_config",
                 status=DiagnosticStatus.PASS,
-                message=f"MCP policy configured: {len(fleet_servers)} fleet servers allowed, "
-                f"reserved names blocked.",
+                message=f"MCP policy configured: {len(fleet_servers)} fleet servers allowed, reserved names blocked.",
                 duration_ms=duration,
                 details={
                     "fleet_servers_count": len(fleet_servers),

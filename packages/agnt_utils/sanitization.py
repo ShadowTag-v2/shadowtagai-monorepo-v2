@@ -41,9 +41,7 @@ _DANGEROUS_CATEGORIES = frozenset({"Cf", "Co", "Cn"})
 
 def _strip_dangerous_categories(text: str) -> str:
     """Remove characters in Cf/Co/Cn Unicode categories."""
-    return "".join(
-        ch for ch in text if unicodedata.category(ch) not in _DANGEROUS_CATEGORIES
-    )
+    return "".join(ch for ch in text if unicodedata.category(ch) not in _DANGEROUS_CATEGORIES)
 
 
 def partially_sanitize_unicode(prompt: str) -> str:
@@ -79,10 +77,7 @@ def partially_sanitize_unicode(prompt: str) -> str:
         if current == previous:
             return current
 
-    raise ValueError(
-        f"Unicode sanitization did not converge after {_MAX_ITERATIONS} "
-        f"iterations for input: {prompt[:100]!r}"
-    )
+    raise ValueError(f"Unicode sanitization did not converge after {_MAX_ITERATIONS} iterations for input: {prompt[:100]!r}")
 
 
 # ── Recursive sanitizer ──────────────────────────────────────────────────────
@@ -117,10 +112,7 @@ def recursively_sanitize_unicode(value: Any) -> Any:
         return [recursively_sanitize_unicode(item) for item in value]
 
     if isinstance(value, dict):
-        return {
-            recursively_sanitize_unicode(k): recursively_sanitize_unicode(v)
-            for k, v in value.items()
-        }
+        return {recursively_sanitize_unicode(k): recursively_sanitize_unicode(v) for k, v in value.items()}
 
     # Primitives pass through unchanged.
     return value

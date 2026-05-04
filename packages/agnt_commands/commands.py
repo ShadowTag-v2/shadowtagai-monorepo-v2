@@ -278,7 +278,7 @@ async def cmd_config(args: str, ctx: CommandContext) -> CommandResult:
             config_items.append(f"  {k}: {v}")
         return CommandResult(value="Current configuration:\n" + "\n".join(config_items))
 
-    return CommandResult(value=f"Config update not supported via command. Use ConfigTool.")
+    return CommandResult(value="Config update not supported via command. Use ConfigTool.")
 
 
 async def cmd_context(args: str, ctx: CommandContext) -> CommandResult:
@@ -403,7 +403,7 @@ async def cmd_model(args: str, ctx: CommandContext) -> CommandResult:
             "Current Model Configuration:",
             f"  Active model: {runtime_model}",
             f"  Config model: {current_model}",
-            f"  Authorized:   gemini-3.1-flash-lite-preview-thinking",
+            "  Authorized:   gemini-3.1-flash-lite-preview-thinking",
             "",
             "Available models:",
             "  gemini-3.1-flash-lite-preview-thinking (default)",
@@ -444,10 +444,7 @@ async def cmd_session(args: str, ctx: CommandContext) -> CommandResult:
     brain_artifacts = 0
     brain_dir = data_dir / "brain"
     if brain_dir.is_dir():
-        brain_artifacts = sum(
-            1 for d in brain_dir.iterdir()
-            if d.is_dir() and not d.name.startswith(".")
-        )
+        brain_artifacts = sum(1 for d in brain_dir.iterdir() if d.is_dir() and not d.name.startswith("."))
 
     lines = [
         "╔══════════════════════════════════════╗",
@@ -643,7 +640,7 @@ async def cmd_permissions(args: str, ctx: CommandContext) -> CommandResult:
         "",
         f"  Execution mode:   {execution_state}",
         f"  YOLO enabled:     {yolo_enabled}",
-        f"  Rule 00:          ACTIVE (Immutable Infrastructure)",
+        "  Rule 00:          ACTIVE (Immutable Infrastructure)",
         "",
         "  Allowed tool classes:",
         *[f"    ✓ {tc}" for tc in allowed_tool_classes],
@@ -723,7 +720,7 @@ async def cmd_version(args: str, ctx: CommandContext) -> CommandResult:
         f"AGNT Runtime: {_AGNT_VERSION}",
         f"Python:       {sys.version.split()[0]}",
         f"Platform:     {platform.system()} {platform.machine()}",
-        f"Upstream:     Claude Code v2.1.91 (Tengu)",
+        "Upstream:     Claude Code v2.1.91 (Tengu)",
     ]
     return CommandResult(value="\n".join(lines))
 

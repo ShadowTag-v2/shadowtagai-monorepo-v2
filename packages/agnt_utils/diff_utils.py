@@ -57,7 +57,8 @@ def adjust_hunk_line_numbers(hunks: list[Hunk], offset: int) -> list[Hunk]:
 
 
 def count_lines_changed(
-    hunks: list[Hunk], new_file_content: str | None = None,
+    hunks: list[Hunk],
+    new_file_content: str | None = None,
 ) -> LinesChanged:
     if not hunks and new_file_content:
         return LinesChanged(additions=len(new_file_content.splitlines()), removals=0)
@@ -67,26 +68,42 @@ def count_lines_changed(
 
 
 def get_patch_from_contents(
-    old_content: str, new_content: str,
-    *, file_path: str = "", context_lines: int = CONTEXT_LINES,
+    old_content: str,
+    new_content: str,
+    *,
+    file_path: str = "",
+    context_lines: int = CONTEXT_LINES,
 ) -> list[Hunk]:
     old_lines = _escape_for_diff(old_content).splitlines(keepends=True)
     new_lines = _escape_for_diff(new_content).splitlines(keepends=True)
-    diff_lines = list(difflib.unified_diff(
-        old_lines, new_lines, fromfile=file_path, tofile=file_path, n=context_lines,
-    ))
+    diff_lines = list(
+        difflib.unified_diff(
+            old_lines,
+            new_lines,
+            fromfile=file_path,
+            tofile=file_path,
+            n=context_lines,
+        )
+    )
     return _parse_unified_hunks(diff_lines)
 
 
 def get_unified_diff(
-    old_content: str, new_content: str,
-    *, file_path: str = "", context_lines: int = CONTEXT_LINES,
+    old_content: str,
+    new_content: str,
+    *,
+    file_path: str = "",
+    context_lines: int = CONTEXT_LINES,
 ) -> str:
-    return "".join(difflib.unified_diff(
-        old_content.splitlines(keepends=True),
-        new_content.splitlines(keepends=True),
-        fromfile=file_path, tofile=file_path, n=context_lines,
-    ))
+    return "".join(
+        difflib.unified_diff(
+            old_content.splitlines(keepends=True),
+            new_content.splitlines(keepends=True),
+            fromfile=file_path,
+            tofile=file_path,
+            n=context_lines,
+        )
+    )
 
 
 def apply_edits(content: str, edits: list[dict[str, str]]) -> str:

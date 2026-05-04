@@ -115,9 +115,7 @@ def _send_to_channel(
             terminal.notify_bell()
             return "iterm2_with_bell"
         if channel == "kitty":
-            terminal.notify_kitty(
-                message=opts.message, title=title, notification_id=_generate_kitty_id()
-            )
+            terminal.notify_kitty(message=opts.message, title=title, notification_id=_generate_kitty_id())
             return "kitty"
         if channel == "ghostty":
             terminal.notify_ghostty(message=opts.message, title=title)
@@ -148,9 +146,7 @@ def _send_auto(
         terminal.notify_iterm2(opts)
         return "iterm2"
     if term == "kitty":
-        terminal.notify_kitty(
-            message=opts.message, title=title, notification_id=_generate_kitty_id()
-        )
+        terminal.notify_kitty(message=opts.message, title=title, notification_id=_generate_kitty_id())
         return "kitty"
     if term == "ghostty":
         terminal.notify_ghostty(message=opts.message, title=title)

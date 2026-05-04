@@ -108,12 +108,7 @@ def _calculate_cost(
         return 0.0  # Unknown model — flag via has_unknown_model_cost
 
     inp_rate, out_rate, cache_read_rate, cache_write_rate = pricing
-    return (
-        input_tokens * inp_rate
-        + output_tokens * out_rate
-        + cache_read_tokens * cache_read_rate
-        + cache_write_tokens * cache_write_rate
-    )
+    return input_tokens * inp_rate + output_tokens * out_rate + cache_read_tokens * cache_read_rate + cache_write_tokens * cache_write_rate
 
 
 # ---------------------------------------------------------------------------
@@ -243,16 +238,12 @@ class CostTracker:
         api_duration: float = 0.0,
     ) -> float:
         """Record a single API call's usage. Returns the incremental cost."""
-        cost = _calculate_cost(
-            model, input_tokens, output_tokens, cache_read_tokens, cache_write_tokens
-        )
+        cost = _calculate_cost(model, input_tokens, output_tokens, cache_read_tokens, cache_write_tokens)
 
         # Check for unknown model
         canonical = model.rsplit("/", 1)[-1].lower().strip()
         pricing = _MODEL_COST_TABLE.get(canonical)
-        if pricing is None and not any(
-            canonical.startswith(k) for k in _MODEL_COST_TABLE
-        ):
+        if pricing is None and not any(canonical.startswith(k) for k in _MODEL_COST_TABLE):
             self._has_unknown_model_cost = True
 
         # Accumulate totals
@@ -360,10 +351,7 @@ class CostTracker:
             total_lines_added=self._total_lines_added,
             total_lines_removed=self._total_lines_removed,
             last_duration=self.total_duration,
-            model_usage={
-                model: asdict(usage)
-                for model, usage in self._model_usage.items()
-            },
+            model_usage={model: asdict(usage) for model, usage in self._model_usage.items()},
         )
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(asdict(state), indent=2))
@@ -382,9 +370,7 @@ class CostTracker:
 
         self._total_cost_usd = data.get("total_cost_usd", 0.0)
         self._total_api_duration = data.get("total_api_duration", 0.0)
-        self._total_api_duration_without_retries = data.get(
-            "total_api_duration_without_retries", 0.0
-        )
+        self._total_api_duration_without_retries = data.get("total_api_duration_without_retries", 0.0)
         self._total_tool_duration = data.get("total_tool_duration", 0.0)
         self._total_lines_added = data.get("total_lines_added", 0)
         self._total_lines_removed = data.get("total_lines_removed", 0)

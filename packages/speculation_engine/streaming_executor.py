@@ -47,6 +47,7 @@ class AbortReason(StrEnum):
 @dataclass
 class ToolResult:
     """Result message from a tool execution."""
+
     tool_use_id: str
     content: str
     is_error: bool = False
@@ -56,6 +57,7 @@ class ToolResult:
 @dataclass
 class ProgressMessage:
     """Progress update from an executing tool."""
+
     tool_use_id: str
     content: str
     timestamp: float = field(default_factory=time.monotonic)
@@ -64,6 +66,7 @@ class ProgressMessage:
 @dataclass
 class MessageUpdate:
     """A message update yielded by the executor."""
+
     message: ToolResult | ProgressMessage | None = None
     context_modifier: Callable[..., Any] | None = None
 
@@ -71,6 +74,7 @@ class MessageUpdate:
 @dataclass
 class TrackedTool:
     """Internal tracking state for a queued/executing tool."""
+
     id: str
     name: str
     input_data: dict[str, Any]
@@ -83,12 +87,7 @@ class TrackedTool:
 
     @property
     def description(self) -> str:
-        summary = (
-            self.input_data.get("command")
-            or self.input_data.get("file_path")
-            or self.input_data.get("pattern")
-            or ""
-        )
+        summary = self.input_data.get("command") or self.input_data.get("file_path") or self.input_data.get("pattern") or ""
         if isinstance(summary, str) and len(summary) > 0:
             truncated = summary[:40] + "\u2026" if len(summary) > 40 else summary
             return f"{self.name}({truncated})"
@@ -135,7 +134,9 @@ class StreamingToolExecutor:
         """Add a tool to the execution queue."""
         is_safe = self._concurrency_check_fn(tool_name, input_data)
         tracked = TrackedTool(
-            id=tool_id, name=tool_name, input_data=input_data,
+            id=tool_id,
+            name=tool_name,
+            input_data=input_data,
             is_concurrency_safe=is_safe,
         )
         self._tools.append(tracked)
@@ -143,10 +144,7 @@ class StreamingToolExecutor:
 
     def _can_execute_tool(self, is_concurrency_safe: bool) -> bool:
         executing = [t for t in self._tools if t.status == ToolStatus.EXECUTING]
-        return (
-            len(executing) == 0
-            or (is_concurrency_safe and all(t.is_concurrency_safe for t in executing))
-        )
+        return len(executing) == 0 or (is_concurrency_safe and all(t.is_concurrency_safe for t in executing))
 
     async def _process_queue(self) -> None:
         for tool in self._tools:
@@ -287,10 +285,7 @@ class StreamingToolExecutor:
         status_counts: dict[str, int] = {}
         for tool in self._tools:
             status_counts[tool.status.value] = status_counts.get(tool.status.value, 0) + 1
-        error_count = sum(
-            1 for t in self._tools
-            if any(isinstance(r, ToolResult) and r.is_error for r in t.results)
-        )
+        error_count = sum(1 for t in self._tools if any(isinstance(r, ToolResult) and r.is_error for r in t.results))
         return {
             "total_tools": len(self._tools),
             "status_counts": status_counts,

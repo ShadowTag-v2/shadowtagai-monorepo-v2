@@ -71,17 +71,11 @@ def build_tool_summary_prompt(
     if not tools:
         return ""
 
-    tool_summaries = "\n\n".join(
-        f"Tool: {t.name}\nInput: {truncate_json(t.input)}\nOutput: {truncate_json(t.output)}"
-        for t in tools
-    )
+    tool_summaries = "\n\n".join(f"Tool: {t.name}\nInput: {truncate_json(t.input)}\nOutput: {truncate_json(t.output)}" for t in tools)
 
     context_prefix = ""
     if last_assistant_text:
-        context_prefix = (
-            f"User's intent (from assistant's last message): "
-            f"{last_assistant_text[:200]}\n\n"
-        )
+        context_prefix = f"User's intent (from assistant's last message): {last_assistant_text[:200]}\n\n"
 
     return f"{context_prefix}Tools completed:\n\n{tool_summaries}\n\nLabel:"
 

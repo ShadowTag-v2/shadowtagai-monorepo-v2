@@ -28,12 +28,8 @@ logger = logging.getLogger(__name__)
 # Register Gemini API circuit breakers with higher tolerance:
 #   - 5 consecutive failures → OPEN (Gemini has longer tail latencies)
 #   - 180s reset timeout (model warm-up + quota recovery)
-_gemini_interactions_breaker = _cb_registry.get_or_create(
-    "gemini_interactions", failure_threshold=5, reset_timeout_s=180.0
-)
-_gemini_research_breaker = _cb_registry.get_or_create(
-    "gemini_deep_research", failure_threshold=3, reset_timeout_s=300.0
-)
+_gemini_interactions_breaker = _cb_registry.get_or_create("gemini_interactions", failure_threshold=5, reset_timeout_s=180.0)
+_gemini_research_breaker = _cb_registry.get_or_create("gemini_deep_research", failure_threshold=3, reset_timeout_s=300.0)
 
 
 # ---------------------------------------------------------------------------

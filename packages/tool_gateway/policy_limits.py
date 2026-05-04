@@ -150,9 +150,7 @@ class PolicyLimitsService:
         """
         restrictions = self._get_restrictions_from_cache()
         if restrictions is None:
-            return not (
-                self._essential_traffic_only and policy in ESSENTIAL_TRAFFIC_DENY_ON_MISS
-            )
+            return not (self._essential_traffic_only and policy in ESSENTIAL_TRAFFIC_DENY_ON_MISS)
 
         restriction = restrictions.get(policy)
         if restriction is None:
@@ -371,7 +369,7 @@ class PolicyLimitsService:
                         metadata=value.get("metadata", {}),
                     )
             return restrictions
-        except (OSError, json.JSONDecodeError, KeyError):
+        except OSError, json.JSONDecodeError, KeyError:
             return None
 
     def _save_cached_restrictions(self, restrictions: dict[str, PolicyRestriction]) -> None:

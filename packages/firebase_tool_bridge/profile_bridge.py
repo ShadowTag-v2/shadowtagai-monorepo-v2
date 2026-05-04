@@ -35,11 +35,15 @@ def build_bridge(tmp_dir: Path) -> ToolBridge:
     reg.register("low_op", lambda **kw: {"echo": kw}, RiskTier.LOW)
     reg.register("med_op", lambda **kw: {"echo": kw}, RiskTier.MEDIUM)
     reg.register(
-        "high_op", lambda **kw: {"echo": kw}, RiskTier.HIGH,
+        "high_op",
+        lambda **kw: {"echo": kw},
+        RiskTier.HIGH,
         action_tags=frozenset({"deploy"}),
     )
     reg.register(
-        "crit_op", lambda **kw: {"echo": kw}, RiskTier.CRITICAL,
+        "crit_op",
+        lambda **kw: {"echo": kw},
+        RiskTier.CRITICAL,
         action_tags=frozenset({"data_delete"}),
     )
     return ToolBridge(reg, evidence=EvidenceLogger(repo_root=tmp_dir), confirmation=_AutoApprove())
@@ -51,11 +55,15 @@ def build_bridge_async(tmp_dir: Path) -> ToolBridge:
     reg.register("low_op", lambda **kw: {"echo": kw}, RiskTier.LOW)
     reg.register("med_op", lambda **kw: {"echo": kw}, RiskTier.MEDIUM)
     reg.register(
-        "high_op", lambda **kw: {"echo": kw}, RiskTier.HIGH,
+        "high_op",
+        lambda **kw: {"echo": kw},
+        RiskTier.HIGH,
         action_tags=frozenset({"deploy"}),
     )
     reg.register(
-        "crit_op", lambda **kw: {"echo": kw}, RiskTier.CRITICAL,
+        "crit_op",
+        lambda **kw: {"echo": kw},
+        RiskTier.CRITICAL,
         action_tags=frozenset({"data_delete"}),
     )
     return ToolBridge(
@@ -109,10 +117,10 @@ def run_profile(n_calls: int = 200) -> None:
     stats = pstats.Stats(profiler, stream=stream)
     stats.sort_stats("cumulative")
 
-    print(f"\n{'='*70}")
-    print(f"  cProfile: bridge.handle() × {n_calls} calls ({n_calls//4} per tier)")
+    print(f"\n{'=' * 70}")
+    print(f"  cProfile: bridge.handle() × {n_calls} calls ({n_calls // 4} per tier)")
     print("  Mode: SYNC evidence writer")
-    print(f"{'='*70}\n")
+    print(f"{'=' * 70}\n")
 
     stats.print_stats(30)
     print(stream.getvalue())
@@ -120,16 +128,16 @@ def run_profile(n_calls: int = 200) -> None:
     stream2 = StringIO()
     stats2 = pstats.Stats(profiler, stream=stream2)
     stats2.sort_stats("tottime")
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print("  Top 10 by total time (self-time hotspots)")
-    print(f"{'='*70}\n")
+    print(f"{'=' * 70}\n")
     stats2.print_stats(10)
     print(stream2.getvalue())
 
     # --- Comparison: Sync vs Async ---
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print(f"  COMPARISON: Sync vs Async Evidence Writer ({n_calls} calls)")
-    print(f"{'='*70}\n")
+    print(f"{'=' * 70}\n")
 
     sync_time = _run_calls(build_bridge(Path(tempfile.mkdtemp())), n_calls)
     async_time = _run_calls(build_bridge_async(Path(tempfile.mkdtemp())), n_calls)
@@ -139,9 +147,9 @@ def run_profile(n_calls: int = 200) -> None:
     delta_pct = ((sync_time - async_time) / sync_time) * 100 if sync_time > 0 else 0
 
     print(f"  {'Mode':<20} {'Total (ms)':>12} {'Per-call (µs)':>15} {'Delta':>10}")
-    print(f"  {'-'*60}")
-    print(f"  {'Sync':<20} {sync_time*1000:>12.2f} {sync_per_call_us:>15.1f} {'baseline':>10}")
-    print(f"  {'Async':<20} {async_time*1000:>12.2f} {async_per_call_us:>15.1f} {f'-{delta_pct:.1f}%':>10}")
+    print(f"  {'-' * 60}")
+    print(f"  {'Sync':<20} {sync_time * 1000:>12.2f} {sync_per_call_us:>15.1f} {'baseline':>10}")
+    print(f"  {'Async':<20} {async_time * 1000:>12.2f} {async_per_call_us:>15.1f} {f'-{delta_pct:.1f}%':>10}")
     print(f"\n  Async is {delta_pct:.1f}% faster ({sync_per_call_us - async_per_call_us:.1f}µs saved per call)\n")
 
     # Flush async writer

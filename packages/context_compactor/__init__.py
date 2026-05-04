@@ -89,6 +89,18 @@ from context_compactor.session_memory_compact import (
     has_text_blocks,
     try_session_memory_compact,
 )
+from context_compactor.types import (
+    AutoCompactTrackingState,
+    ContextEditRule,
+    ContextEditRuleType,
+    ContextEditStrategy,
+    RecompactionInfo,
+)
+from context_compactor.warning_state import (
+    clear_compact_warning_suppression,
+    get_compact_warning_suppressed,
+    suppress_compact_warning,
+)
 
 __all__ = [
     # Core orchestrator
@@ -153,4 +165,14 @@ __all__ = [
     "calculate_messages_to_keep_index",
     "has_text_blocks",
     "try_session_memory_compact",
+    # Types
+    "AutoCompactTrackingState",
+    "ContextEditRule",
+    "ContextEditRuleType",
+    "ContextEditStrategy",
+    "RecompactionInfo",
+    # Warning state
+    "clear_compact_warning_suppression",
+    "get_compact_warning_suppressed",
+    "suppress_compact_warning",
 ]

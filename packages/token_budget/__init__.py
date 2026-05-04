@@ -42,9 +42,7 @@ _SHORTHAND_START_RE = re.compile(r"^\s*\+(\d+(?:\.\d+)?)\s*(k|m|b)\b", re.IGNORE
 _SHORTHAND_END_RE = re.compile(r"\s\+(\d+(?:\.\d+)?)\s*(k|m|b)\s*[.!?]?\s*$", re.IGNORECASE)
 
 # Verbose form: "use 1.5m tokens" / "spend 2m tokens" anywhere.
-_VERBOSE_RE = re.compile(
-    r"\b(?:use|spend)\s+(\d+(?:\.\d+)?)\s*(k|m|b)\s*tokens?\b", re.IGNORECASE
-)
+_VERBOSE_RE = re.compile(r"\b(?:use|spend)\s+(\d+(?:\.\d+)?)\s*(k|m|b)\s*tokens?\b", re.IGNORECASE)
 
 _MULTIPLIERS: dict[str, int] = {
     "k": 1_000,
@@ -139,7 +137,4 @@ def get_budget_continuation_message(
     """
     fmt_turn = f"{turn_tokens:,}"
     fmt_budget = f"{budget:,}"
-    return (
-        f"Stopped at {pct}% of token target ({fmt_turn} / {fmt_budget}). "
-        "Keep working \u2014 do not summarize."
-    )
+    return f"Stopped at {pct}% of token target ({fmt_turn} / {fmt_budget}). Keep working \u2014 do not summarize."
