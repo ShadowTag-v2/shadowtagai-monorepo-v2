@@ -18,6 +18,11 @@ from agnt_classifier.mcp_policy import (
     is_mcp_server_allowed_by_policy,
     filter_servers_by_policy,
 )
+from agnt_classifier.chain_depth_limiter import (
+    ChainDepthLimiter,
+    ChainState,
+    EscalationLevel,
+)
 from agnt_classifier.diagnostics import (
     ClassifierDiagnostics,
     DiagnosticCheck,
@@ -46,6 +51,10 @@ __all__ = [
     "get_default_agnt_policy",
     "is_mcp_server_allowed_by_policy",
     "filter_servers_by_policy",
+    # Chain Depth Limiter (Judge 6)
+    "ChainDepthLimiter",
+    "ChainState",
+    "EscalationLevel",
     # Diagnostics
     "ClassifierDiagnostics",
     "DiagnosticCheck",
