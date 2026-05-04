@@ -29,7 +29,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build && cp -R .next-export/* ../public/",
+    "build": "next build && cp -R .next-export/ out/ && cp -R .next-export/* ../public/",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
