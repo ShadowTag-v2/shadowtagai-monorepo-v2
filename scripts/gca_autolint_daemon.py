@@ -104,7 +104,7 @@ def resolve_pem_path() -> Path:
             tmp = Path(tempfile.mktemp(suffix=".pem"))
             tmp.write_text(result.stdout)
             return tmp
-    except FileNotFoundError, subprocess.TimeoutExpired:
+    except (FileNotFoundError, subprocess.TimeoutExpired):
         pass
 
     print("[!] FATAL: No PEM file found in any of the 5 fallback tiers.")
@@ -211,7 +211,7 @@ def get_ruff_version() -> str:
             timeout=5,
         )
         return r.stdout.strip() if r.returncode == 0 else "unknown"
-    except FileNotFoundError, subprocess.TimeoutExpired:
+    except (FileNotFoundError, subprocess.TimeoutExpired):
         return "unknown"
 
 
@@ -324,7 +324,7 @@ def send_gws_notification(summary: str, branch: str = "") -> None:
             timeout=15,
         )
         print(f"[*] GWS notification sent: {msg[:80]}")
-    except FileNotFoundError, subprocess.TimeoutExpired:
+    except (FileNotFoundError, subprocess.TimeoutExpired):
         print("[*] GWS notification failed — continuing")
 
 
