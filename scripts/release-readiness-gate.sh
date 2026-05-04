@@ -224,6 +224,12 @@ code_reasoning.certificate
 context.google_drive_fetch
 gitnexus.impact
 pageindex.compile
+index.query
+repo.secret_scan
+skills.repo_mass_reduction
+skills.update
+skills.yolo_mode_operator
+tool.gateway
 "
 
 ENFORCED=0
