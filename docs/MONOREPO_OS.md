@@ -1,6 +1,6 @@
-# Monorepo OS — v3.5
+# Monorepo OS — v4.2
 
-> **Status:** Active | **Version:** 3.5 | **Updated:** 2026-04-30
+> **Status:** Active | **Version:** 4.2 | **Updated:** 2026-05-04
 
 ## Overview
 
@@ -170,10 +170,10 @@ scripts/clone-external-reference-repos.sh --dry-run
 | `enforced_by_ci` | 12 |
 | `enforced_by_script` | 5 |
 | `enforced_by_toolgateway` | 2 |
-| `enforced_by_verified_map` | 12 |
-| `advisory_only (P2)` | 8 |
+| `enforced_by_verified_map` | 15 |
+| `advisory_only` | 5 |
 | **Total** | **39** |
-| **Gate 9 enforced** | **31/39 (79%)** |
+| **Gate 9 enforced** | **34/39 (87%)** |
 
 Full audit: `.reports/monorepo-os/orphan_contracts.md`
 
@@ -185,8 +185,19 @@ Full audit: `.reports/monorepo-os/orphan_contracts.md`
 | **v3.0** | ✅ Complete | P1 operational (12/12): beads health, memory integrity (4), knowledge (2), oracle, design lint, bootstrap, firebase bridge |
 | **v3.1** | ✅ Complete | Proof-tightened — reports reconciled with Gate 9: 29/39 (74%) |
 | **v3.5** | ✅ Complete | Consequential action + typecheck elevated: 31/39 (79%) |
-| **Permanent** | Advisory | P2 (8): agent-internal, read-only, covered-by-other-gates |
+| **v4.0** | ✅ Complete | 4 advisory contracts elevated to verified_map (gemini.function_call, artifact.upload, visual.proof, repowise.evaluate). ruler.apply elevated to CI. 34/39 (87%) |
+| **v4.1** | ✅ Complete | OmegaDioClient retry/backoff. 95 clone-yard repos validated live. Release-readiness all 9 gates PASS. |
+| **v4.2** | ✅ Current | Truth reconciliation — docs match reports match gates match heartbeat. IDE stability patch (Dart phantom cascade, watcher relief). |
+| **Permanent** | Advisory | 5 contracts: `agent.progression`, `bazel.build`, `code_reasoning.certificate`, `context.google_drive_fetch`, `gitnexus.impact` |
 | **Deprecated** | Consolidated | `large_file_scan.yaml` + `repo.large_file_scan.yaml` → `git.lfs_check.yaml` |
+
+### CI/CD Gate Status
+
+| Gate Layer | Status | Notes |
+|-----------|--------|-------|
+| Local repo gates | ✅ PASS | All 9 gates passing |
+| Pre-push hooks | ✅ PASS | Bloat gate, force-push guard, secret scan |
+| Remote GitHub Actions | ⚠️ BLOCKED_BY_BILLING | `startup_failure` — Actions billing constraint. Local gates serve as fallback. |
 
 ## Proof Links
 
@@ -220,9 +231,12 @@ Full audit: `.reports/monorepo-os/orphan_contracts.md`
 | 2.0 | 2026-04-28 | DESIGN.md + `tokens.css` Stitch token export for KovelAI |
 | 2.1 | 2026-04-28 | Guardrail annotation audit (12/12), Lighthouse A100/BP100/SEO100, 39 ToolGateway contracts |
 | 2.2 | 2026-04-28 | Oracle Score engine, Daily Truth Report, Release Readiness Gate (8 gates), CI hardening (+3 steps) |
-| 2.3 | 2026-04-28 | Clone-yard manifest committed, orphan contract audit (9/39 enforced, 30 advisory), Proof Links section, reproducibility from clean checkout |
-| 2.4 | 2026-04-28 | Secret scan: 0 leaks, gitleaksignore deduplicated (213→135 lines, 0 stale warnings). Biome: 2 a11y errors fixed, 0 errors in production code. Orphan contracts triaged: P0 (5 security), P1 (12 operational), P2 (13 advisory-permanent). Release gate: 7/8 pass + 1 warning. Dashboard auth bug fixed (function name mismatch). |
-| 2.5 | 2026-04-28 | P0 security contracts ALL ENFORCED (5/5): firebase-deploy-gate.sh + github-token-scope-audit.sh wired to CI, force-push-guard.sh + prepush-bloat-gate.sh in pre-push hook, auth_github_app.py PEM chain. Brand Identity LOCKED (BRAND_IDENTITY_LOCKED.md). Pomelli dual-brand campaign complete. Enforcement density: 14/39 contracts enforced (36%). |
-| 3.0 | 2026-04-29 | P1 operational contracts ALL ENFORCED (12/12). Root MONOREPO_OS.md unified as pointer to docs/. 12 stub contracts enriched with preconditions, enforcement_script, ci_gate. 6 new CI steps in monorepo-os-gates.yml (beads health, memory integrity, knowledge compile, design lint, bootstrap alignment, firebase bridge). 2 duplicate contracts deprecated (large_file_scan → git.lfs_check). Enforcement density: 26/39 contracts enforced (67%). |
-| 3.1 | 2026-04-29 | Proof-tightened: Gate 9 verified map expanded to 16 contracts, contract coverage discovery logic fixed, orphan_contracts.md and contract_coverage_plan.md reconciled with gate. 25 reference repos cloned to external_repos/upstream/ for CI hardening evaluation. Enforcement density reconciled: 29/39 (74%). |
-| 3.5 | 2026-04-30 | v3.5 elevation: `function_call.consequential_action` wired to ClassifiedGateway Tier 0 (medium+ risk confirmation gate). `python.typecheck` wired to `ruff check --select E` in CI. Gate 9 self-referential keyword match bug fixed. Daily truth report enhanced with dirty file classification. Enforcement density: 31/39 (79%). |
+| 2.3 | 2026-04-28 | Clone-yard manifest committed, orphan contract audit, Proof Links, reproducibility from clean checkout |
+| 2.4 | 2026-04-28 | Secret scan: 0 leaks, gitleaksignore deduplicated. Biome a11y errors fixed. Orphan contracts triaged. |
+| 2.5 | 2026-04-28 | P0 security contracts ALL ENFORCED (5/5). Brand Identity LOCKED. Enforcement density: 14/39 (36%). |
+| 3.0 | 2026-04-29 | P1 operational contracts ALL ENFORCED (12/12). 6 new CI steps. 2 duplicate contracts deprecated. 26/39 (67%). |
+| 3.1 | 2026-04-29 | Proof-tightened: Gate 9 verified map expanded. 25 reference repos cloned. 29/39 (74%). |
+| 3.5 | 2026-04-30 | Consequential action + typecheck elevated. Gate 9 self-referential bug fixed. Daily truth enhanced. 31/39 (79%). |
+| 4.0 | 2026-04-30 | 4 advisory contracts elevated to verified_map. ruler.apply to CI. Gate 9 count reconciled. 34/39 (87%). |
+| 4.1 | 2026-04-30 | OmegaDioClient retry/backoff. 95 clone-yard repos validated live. All 9 gates PASS. GitHub Actions billing constraint documented. |
+| 4.2 | 2026-05-04 | Truth reconciliation: docs match reports match gates. IDE stability patch (Dart phantom cascade, watcher relief). Heartbeat dirty-state classification harmonized with daily truth. |

@@ -251,7 +251,7 @@ def health_check() -> dict:
             timeout=15,
         )
         checks["gcp_adc"] = "ok" if result.returncode == 0 else "expired"
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["gcp_adc"] = "missing"
 
     # 2. ANE dylib
@@ -266,7 +266,9 @@ def health_check() -> dict:
     vault_ingest = VAULT_DIR / "ingest"
     checks["vault"] = "ok" if vault_ingest.exists() else "missing"
 
-    # 5. Git status clean
+    # 5. Git status — 4-category classification matching daily-truth-report.sh
+    IDE_TRANSIENT_PAT = re.compile(r"\.dart_tool|__pycache__|\.next/|node_modules/|\.swp$|\.swo$")
+    SESSION_PAT = re.compile(r"kairos_heartbeat|pipeline_metrics|\.beads/|\.reports/|\.memory/")
     try:
         result = subprocess.run(
             ["git", "status", "--porcelain"],
@@ -275,10 +277,26 @@ def health_check() -> dict:
             timeout=10,
             cwd=str(REPO_ROOT),
         )
-        dirty_count = len(result.stdout.strip().splitlines()) if result.stdout.strip() else 0
-        checks["git_dirty"] = f"{dirty_count} files" if dirty_count > 0 else "clean"
-    except subprocess.TimeoutExpired, FileNotFoundError:
-        checks["git_dirty"] = "unknown"
+        lines = result.stdout.strip().splitlines() if result.stdout.strip() else []
+        tracked = [l for l in lines if not l.startswith("??")]
+        untracked = [l for l in lines if l.startswith("??")]
+
+        source_tracked = len([l for l in tracked if not IDE_TRANSIENT_PAT.search(l) and not SESSION_PAT.search(l)])
+        session_generated = len([l for l in lines if SESSION_PAT.search(l)])
+        ide_transient = len([l for l in lines if IDE_TRANSIENT_PAT.search(l)])
+        untracked_new = len([l for l in untracked if not IDE_TRANSIENT_PAT.search(l) and not SESSION_PAT.search(l)])
+
+        total = len(lines)
+        checks["git_dirty"] = {
+            "total": total,
+            "source_tracked": source_tracked,
+            "session_generated": session_generated,
+            "ide_transient": ide_transient,
+            "untracked_new": untracked_new,
+            "status": "clean" if source_tracked == 0 else f"{source_tracked} source-dirty",
+        }
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        checks["git_dirty"] = {"total": -1, "status": "unknown"}
 
     # 6. Git fetch --prune (GitHub-first context: keep remote refs fresh)
     try:
@@ -290,7 +308,7 @@ def health_check() -> dict:
             cwd=str(REPO_ROOT),
         )
         checks["git_fetch"] = "ok" if fetch_result.returncode == 0 else "failed"
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["git_fetch"] = "timeout"
 
     logger.info("Health: %s", json.dumps(checks))
@@ -381,7 +399,7 @@ def run_disk_skill_dream() -> bool:
         if check.returncode != 0:
             logger.warning("ast-grep not available, skipping disk-skill phase 1")
             return run_dream_consolidation(tier="disk-skill")
-    except FileNotFoundError, subprocess.TimeoutExpired:
+    except (FileNotFoundError, subprocess.TimeoutExpired):
         logger.warning("ast-grep binary not found")
         return run_dream_consolidation(tier="disk-skill")
 
@@ -692,7 +710,7 @@ def run_research_sweep() -> bool:
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
     try:
         idx = int(topic_index_file.read_text().strip()) if topic_index_file.exists() else 0
-    except ValueError, OSError:
+    except (ValueError, OSError):
         idx = 0
     topic = _RESEARCH_TOPICS[idx % len(_RESEARCH_TOPICS)]
     topic_index_file.write_text(str((idx + 1) % len(_RESEARCH_TOPICS)))
@@ -1001,15 +1019,11 @@ def run_proactive_suggestion_probe() -> bool:
 
         recent_content = " ".join(m.get("content", "")[:100] for m in messages[-3:])
         thought_input = (
-            f"Analyze this developer's recent session context and identify "
-            f"the single most likely next action:\n{recent_content}\n\n"
-            f"Reasoning:"
+            f"Analyze this developer's recent session context and identify the single most likely next action:\n{recent_content}\n\nReasoning:"
         )
         think_tool = create_think_tool()
         # Synchronous invocation via asyncio.run for daemon context
-        think_result: ToolResult = asyncio.run(
-            think_tool.call({"thought": thought_input}, ToolUseContext())
-        )
+        think_result: ToolResult = asyncio.run(think_tool.call({"thought": thought_input}, ToolUseContext()))
         think_data = think_result.data
         if isinstance(think_data, dict) and think_data.get("thought"):
             think_context = think_data["thought"][:300]
@@ -1230,7 +1244,7 @@ def _is_ide_running() -> bool:
             timeout=5,
         )
         return result.returncode == 0
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
         return True  # Assume running if we can't check (safe fallback)
 
 

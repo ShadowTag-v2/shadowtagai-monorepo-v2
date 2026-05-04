@@ -318,7 +318,7 @@ class MCPAutoSync:
             if lines:
                 last = json.loads(lines[-1])
                 return {s["name"]: s for s in last.get("servers", [])}
-        except json.JSONDecodeError, KeyError, IndexError:
+        except (json.JSONDecodeError, KeyError, IndexError):
             pass
         return {}
 
