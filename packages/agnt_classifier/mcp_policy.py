@@ -199,9 +199,8 @@ def is_mcp_server_denied(
             if server_info.command and _command_arrays_match(entry.server_command, server_info.command):
                 return True, entry
 
-        elif entry.entry_type == PolicyEntryType.URL and server_info:
-            if server_info.url and _url_matches_pattern(server_info.url, entry.server_url):
-                return True, entry
+        elif entry.entry_type == PolicyEntryType.URL and server_info and server_info.url and _url_matches_pattern(server_info.url, entry.server_url):
+            return True, entry
 
     return False, None
 
@@ -256,13 +255,12 @@ def is_mcp_server_allowed_by_policy(
         if server_info.command:
             if has_command_entries:
                 for entry in policy.allowed_servers:
-                    if entry.entry_type == PolicyEntryType.COMMAND:
-                        if _command_arrays_match(entry.server_command, server_info.command):
-                            return PolicyResult(
-                                allowed=True,
-                                reason="Server command matches allowlist entry.",
-                                matched_entry=entry,
-                            )
+                    if entry.entry_type == PolicyEntryType.COMMAND and _command_arrays_match(entry.server_command, server_info.command):
+                        return PolicyResult(
+                            allowed=True,
+                            reason="Server command matches allowlist entry.",
+                            matched_entry=entry,
+                        )
                 return PolicyResult(
                     allowed=False,
                     reason=f"Server '{server_name}' command does not match any allowlist entry.",
@@ -270,31 +268,28 @@ def is_mcp_server_allowed_by_policy(
             # No command entries → fall through to name check
 
         # Remote server with URL
-        elif server_info.url:
-            if has_url_entries:
-                for entry in policy.allowed_servers:
-                    if entry.entry_type == PolicyEntryType.URL:
-                        if _url_matches_pattern(server_info.url, entry.server_url):
-                            return PolicyResult(
-                                allowed=True,
-                                reason="Server URL matches allowlist pattern.",
-                                matched_entry=entry,
-                            )
-                return PolicyResult(
-                    allowed=False,
-                    reason=f"Server '{server_name}' URL does not match any allowlist entry.",
-                )
+        elif server_info.url and has_url_entries:
+            for entry in policy.allowed_servers:
+                if entry.entry_type == PolicyEntryType.URL and _url_matches_pattern(server_info.url, entry.server_url):
+                    return PolicyResult(
+                        allowed=True,
+                        reason="Server URL matches allowlist pattern.",
+                        matched_entry=entry,
+                    )
+            return PolicyResult(
+                allowed=False,
+                reason=f"Server '{server_name}' URL does not match any allowlist entry.",
+            )
             # No URL entries → fall through to name check
 
     # Name-based check (fallback for all server types)
     for entry in policy.allowed_servers:
-        if entry.entry_type == PolicyEntryType.NAME:
-            if entry.server_name == server_name:
-                return PolicyResult(
-                    allowed=True,
-                    reason=f"Server name '{server_name}' is on the allowlist.",
-                    matched_entry=entry,
-                )
+        if entry.entry_type == PolicyEntryType.NAME and entry.server_name == server_name:
+            return PolicyResult(
+                allowed=True,
+                reason=f"Server name '{server_name}' is on the allowlist.",
+                matched_entry=entry,
+            )
 
     return PolicyResult(
         allowed=False,

@@ -317,31 +317,29 @@ class BlockAllowRuleEngine:
             )
 
         # B4: Attestation Forgery
-        if tool_id in ("kovel.create_attestation", "kovel.modify_attestation"):
-            if not context.get("active_kovel_session"):
-                matches.append(
-                    RuleMatch(
-                        rule_id="B4",
-                        verdict=Verdict.BLOCK,
-                        description="Attestation operation without active Kovel session",
-                        category="privilege",
-                    )
+        if tool_id in ("kovel.create_attestation", "kovel.modify_attestation") and not context.get("active_kovel_session"):
+            matches.append(
+                RuleMatch(
+                    rule_id="B4",
+                    verdict=Verdict.BLOCK,
+                    description="Attestation operation without active Kovel session",
+                    category="privilege",
                 )
+            )
 
         # B17: Code Execution Interpreter (mirrors Claude dangerousPatterns.ts)
         # ESCALATE to classifier — these bypass auto-mode if allow-listed too broadly
         if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
             first_token = cmd.split()[0] if cmd.split() else ""
-            if first_token in _CODE_EXEC_INTERPRETERS:
-                if not context.get("interpreter_authorized"):
-                    matches.append(
-                        RuleMatch(
-                            rule_id="B17",
-                            verdict=Verdict.ESCALATE,
-                            description=f"Code interpreter '{first_token}' invoked without interpreter_authorized",
-                            category="privilege",
-                        )
+            if first_token in _CODE_EXEC_INTERPRETERS and not context.get("interpreter_authorized"):
+                matches.append(
+                    RuleMatch(
+                        rule_id="B17",
+                        verdict=Verdict.ESCALATE,
+                        description=f"Code interpreter '{first_token}' invoked without interpreter_authorized",
+                        category="privilege",
                     )
+                )
             # Check compound patterns (e.g., "npm run")
             for compound in _CODE_EXEC_COMPOUND:
                 if cmd.startswith(compound):
@@ -359,16 +357,15 @@ class BlockAllowRuleEngine:
         # B18: Execution Primitive (eval, exec, env, xargs)
         if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
             first_token = cmd.split()[0] if cmd.split() else ""
-            if first_token in _EXEC_PRIMITIVES:
-                if not context.get("exec_primitive_authorized"):
-                    matches.append(
-                        RuleMatch(
-                            rule_id="B18",
-                            verdict=Verdict.ESCALATE,
-                            description=f"Execution primitive '{first_token}' can run arbitrary code",
-                            category="privilege",
-                        )
+            if first_token in _EXEC_PRIMITIVES and not context.get("exec_primitive_authorized"):
+                matches.append(
+                    RuleMatch(
+                        rule_id="B18",
+                        verdict=Verdict.ESCALATE,
+                        description=f"Execution primitive '{first_token}' can run arbitrary code",
+                        category="privilege",
                     )
+                )
 
         return matches
 
@@ -428,16 +425,15 @@ class BlockAllowRuleEngine:
 
         # B8: Model Context Leak
         leak_markers = ["system_prompt", "tool_schemas", "governance_rules", "<system>"]
-        if any(marker in output_content.lower() for marker in leak_markers):
-            if context.get("output_target") == "user":
-                matches.append(
-                    RuleMatch(
-                        rule_id="B8",
-                        verdict=Verdict.BLOCK,
-                        description="System prompt or internal schema detected in user-facing output",
-                        category="data_safety",
-                    )
+        if any(marker in output_content.lower() for marker in leak_markers) and context.get("output_target") == "user":
+            matches.append(
+                RuleMatch(
+                    rule_id="B8",
+                    verdict=Verdict.BLOCK,
+                    description="System prompt or internal schema detected in user-facing output",
+                    category="data_safety",
                 )
+            )
 
         return matches
 
@@ -453,16 +449,15 @@ class BlockAllowRuleEngine:
         cmd = str(tool_input.get("command", ""))
 
         # B9: Production Deploy Without Gate
-        if tool_id in ("deploy.cloud_run", "deploy.firebase", "deploy.production"):
-            if not context.get("ci_pipeline_passed"):
-                matches.append(
-                    RuleMatch(
-                        rule_id="B9",
-                        verdict=Verdict.BLOCK,
-                        description="Production deploy without CI/CD pipeline gate",
-                        category="infra",
-                    )
+        if tool_id in ("deploy.cloud_run", "deploy.firebase", "deploy.production") and not context.get("ci_pipeline_passed"):
+            matches.append(
+                RuleMatch(
+                    rule_id="B9",
+                    verdict=Verdict.BLOCK,
+                    description="Production deploy without CI/CD pipeline gate",
+                    category="infra",
                 )
+            )
 
         # B10: Resource Exhaustion
         if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
@@ -481,42 +476,39 @@ class BlockAllowRuleEngine:
         # B11: Network Exfiltration
         if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
             first_token = cmd.split()[0] if cmd.split() else ""
-            if first_token in _EXFIL_COMMANDS:
-                if not context.get("network_allowed"):
-                    matches.append(
-                        RuleMatch(
-                            rule_id="B11",
-                            verdict=Verdict.BLOCK,
-                            description=f"Outbound network via '{first_token}' without network_allowed context",
-                            category="infra",
-                        )
-                    )
-
-        # B12: Force Push
-        if "git push" in cmd and ("--force" in cmd or "-f " in cmd):
-            if context.get("branch", "") in ("main", "master", "production"):
+            if first_token in _EXFIL_COMMANDS and not context.get("network_allowed"):
                 matches.append(
                     RuleMatch(
-                        rule_id="B12",
+                        rule_id="B11",
                         verdict=Verdict.BLOCK,
-                        description="Force push to protected branch",
+                        description=f"Outbound network via '{first_token}' without network_allowed context",
                         category="infra",
                     )
                 )
 
+        # B12: Force Push
+        if "git push" in cmd and ("--force" in cmd or "-f " in cmd) and context.get("branch", "") in ("main", "master", "production"):
+            matches.append(
+                RuleMatch(
+                    rule_id="B12",
+                    verdict=Verdict.BLOCK,
+                    description="Force push to protected branch",
+                    category="infra",
+                )
+            )
+
         # B19: Cloud Resource Mutation (kubectl, aws, gcloud, gsutil)
         if tool_id in ("bash", "shell", "terminal", "run_command") and cmd:
             first_token = cmd.split()[0] if cmd.split() else ""
-            if first_token in _CLOUD_RESOURCE_COMMANDS:
-                if not context.get("cloud_mutation_authorized"):
-                    matches.append(
-                        RuleMatch(
-                            rule_id="B19",
-                            verdict=Verdict.ESCALATE,
-                            description=f"Cloud resource command '{first_token}' without cloud_mutation_authorized",
-                            category="infra",
-                        )
+            if first_token in _CLOUD_RESOURCE_COMMANDS and not context.get("cloud_mutation_authorized"):
+                matches.append(
+                    RuleMatch(
+                        rule_id="B19",
+                        verdict=Verdict.ESCALATE,
+                        description=f"Cloud resource command '{first_token}' without cloud_mutation_authorized",
+                        category="infra",
                     )
+                )
 
         # B20: Compound Command Cap (50-subcommand hard limit)
         # Adversa AI Risk #34 — compound command injection bypass.
@@ -577,17 +569,16 @@ class BlockAllowRuleEngine:
             "config/tool_permissions.yaml",
         ]
         for path in target_paths:
-            if any(pattern in path for pattern in self_mod_patterns):
-                if not context.get("authorized_self_modification"):
-                    matches.append(
-                        RuleMatch(
-                            rule_id="B14",
-                            verdict=Verdict.ESCALATE,
-                            description=f"Agent self-modification detected: {path}",
-                            category="agent",
-                        )
+            if any(pattern in path for pattern in self_mod_patterns) and not context.get("authorized_self_modification"):
+                matches.append(
+                    RuleMatch(
+                        rule_id="B14",
+                        verdict=Verdict.ESCALATE,
+                        description=f"Agent self-modification detected: {path}",
+                        category="agent",
                     )
-                    break
+                )
+                break
 
         # B15: Tool Output Trust — blind execution of prior tool output
         if context.get("source") == "tool_output" and not context.get("output_verified"):
@@ -601,16 +592,15 @@ class BlockAllowRuleEngine:
             )
 
         # B16: Scope Escalation — mass operations
-        if tool_input.get("batch_size", 0) > 50 or tool_input.get("file_count", 0) > 20:
-            if not context.get("authorized_mass_operation"):
-                matches.append(
-                    RuleMatch(
-                        rule_id="B16",
-                        verdict=Verdict.ESCALATE,
-                        description="Mass operation exceeds scope threshold",
-                        category="agent",
-                    )
+        if (tool_input.get("batch_size", 0) > 50 or tool_input.get("file_count", 0) > 20) and not context.get("authorized_mass_operation"):
+            matches.append(
+                RuleMatch(
+                    rule_id="B16",
+                    verdict=Verdict.ESCALATE,
+                    description="Mass operation exceeds scope threshold",
+                    category="agent",
                 )
+            )
 
         return matches
 

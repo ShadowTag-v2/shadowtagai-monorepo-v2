@@ -293,10 +293,9 @@ class Cassette:
             raise FileNotFoundError(msg)
 
         # ── NEW_EPISODES: replay if cached, record if not ──
-        if self.mode == CassetteMode.NEW_EPISODES:
-            if fp in self._interactions:
-                logger.debug("VCR REPLAY (cached): %s %s", method, url)
-                return self._interactions[fp].response
+        if self.mode == CassetteMode.NEW_EPISODES and fp in self._interactions:
+            logger.debug("VCR REPLAY (cached): %s %s", method, url)
+            return self._interactions[fp].response
 
         # ── RECORD or NEW_EPISODES (miss): make real call ──
         if self.mode in (CassetteMode.RECORD, CassetteMode.NEW_EPISODES):

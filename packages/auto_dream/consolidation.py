@@ -109,14 +109,13 @@ class ConsolidationLock:
             pass  # No prior lock
 
         # Check if lock is held by a live process
-        if mtime_ms is not None and (time.time() * 1000 - mtime_ms) < HOLDER_STALE_MS:
-            if holder_pid is not None and _is_process_running(holder_pid):
-                logger.debug(
-                    "[autoDream] lock held by live PID %d (mtime %ds ago)",
-                    holder_pid,
-                    int((time.time() * 1000 - mtime_ms) / 1000),
-                )
-                return None
+        if mtime_ms is not None and (time.time() * 1000 - mtime_ms) < HOLDER_STALE_MS and holder_pid is not None and _is_process_running(holder_pid):
+            logger.debug(
+                "[autoDream] lock held by live PID %d (mtime %ds ago)",
+                holder_pid,
+                int((time.time() * 1000 - mtime_ms) / 1000),
+            )
+            return None
             # Dead PID or unparseable body — reclaim
 
         # Memory dir may not exist yet
@@ -374,7 +373,7 @@ def _is_process_running(pid: int) -> bool:
     try:
         os.kill(pid, 0)
         return True
-    except (ProcessLookupError, PermissionError):
+    except ProcessLookupError, PermissionError:
         return False
     except OSError:
         return False

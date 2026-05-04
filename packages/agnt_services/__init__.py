@@ -138,6 +138,12 @@ _SERVICE_REGISTRY: dict[str, str] = {
     "team_memory_sync": f"{_PKG}.team_memory_sync",
     "mock_rate_limits": f"{_PKG}.mock_rate_limits",
     "internal_logging": f"{_PKG}.internal_logging",
+    # ── Batch 7 ported services ───────────────────────────────────
+    "oauth_service": f"{_PKG}.oauth_service",
+    "remote_managed_settings": f"{_PKG}.remote_managed_settings",
+    "lsp_client": f"{_PKG}.lsp_client",
+    "voice_service": f"{_PKG}.voice_service",
+    "tool_orchestration": f"{_PKG}.tool_orchestration",
 }
 
 
