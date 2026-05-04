@@ -211,7 +211,7 @@ def _extract_float(
 
     try:
         return float(value_str)
-    except ValueError, TypeError:
+    except (ValueError, TypeError):
         logger.warning(
             "Invalid Remote Config value for '%s': %r, using default %.2f",
             key,

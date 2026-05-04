@@ -111,7 +111,7 @@ def run_profile(n_calls: int = 200) -> None:
 
     print(f"\n{'='*70}")
     print(f"  cProfile: bridge.handle() × {n_calls} calls ({n_calls//4} per tier)")
-    print(f"  Mode: SYNC evidence writer")
+    print("  Mode: SYNC evidence writer")
     print(f"{'='*70}\n")
 
     stats.print_stats(30)

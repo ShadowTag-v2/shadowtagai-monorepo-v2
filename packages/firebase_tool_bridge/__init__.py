@@ -49,12 +49,19 @@ from firebase_tool_bridge.workspace_confirmation import (
     SovereignConfirmationProvider,
     WorkspaceCLIConfirmationProvider,
 )
+from firebase_tool_bridge.confirmation_providers import (
+    AllowlistConfirmationProvider,
+    FirebaseAuthConfirmationProvider,
+    SlackConfirmationProvider,
+)
 
 __all__ = [
+    "AllowlistConfirmationProvider",
     "BridgeResult",
     "CallStatus",
     "ChatLoopResult",
     "EvidenceLogger",
+    "FirebaseAuthConfirmationProvider",
     "FirebaseChatLoop",
     "FunctionCallPart",
     "FunctionRegistry",
@@ -64,6 +71,7 @@ __all__ = [
     "OfflineConfirmationProvider",
     "RegisteredFunction",
     "RiskTier",
+    "SlackConfirmationProvider",
     "SovereignConfirmationProvider",
     "ToolBridge",
     "WorkspaceCLIConfirmationProvider",

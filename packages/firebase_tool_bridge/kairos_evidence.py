@@ -21,6 +21,7 @@ adapter for high-concurrency swarm scenarios where the synchronous
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import hashlib
 import json
 import logging
@@ -233,10 +234,8 @@ async def benchmark_kairos_adapter(
     total_ms = (time.perf_counter() - start) * 1000
 
     consumer_task.cancel()
-    try:
+    with contextlib.suppress(asyncio.CancelledError):
         await consumer_task
-    except asyncio.CancelledError:
-        pass
 
     ops_per_sec = num_records / (enqueue_ms / 1000)
     avg_us = (enqueue_ms / num_records) * 1000
