@@ -62,9 +62,9 @@ class EpistemologicalForensics:
 
         p_value = success_count / n_permutations
 
-        if p_value > alpha:
+        if p_value < alpha:
             logger.warning(
-                "🚨 HALLUCINATED ALPHA DETECTED. P-Value: %.4f > %.2f. Claimed effect size %.4f is not statistically significant.",
+                "🚨 HALLUCINATED ALPHA DETECTED. P-Value: %.4f < %.2f. Claimed effect size %.4f cannot arise from this data.",
                 p_value,
                 alpha,
                 claimed_effect_size,
@@ -77,7 +77,7 @@ class EpistemologicalForensics:
             }
 
         logger.info(
-            "✅ Statistical claim VERIFIED. P-Value: %.4f ≤ %.2f",
+            "✅ Statistical claim VERIFIED. P-Value: %.4f ≥ %.2f",
             p_value,
             alpha,
         )
