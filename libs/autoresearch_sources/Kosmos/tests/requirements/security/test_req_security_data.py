@@ -10,6 +10,7 @@ import logging
 import os
 import re
 import tempfile
+from datetime import datetime
 
 import pytest
 
@@ -594,7 +595,7 @@ def test_req_sec_data_004_audit_trail():
         def log_access(self, user_id: str, resource: str, action: str):
             """Log data access event."""
             entry = {
-                "timestamp": datetime.now().isoformat(),  # noqa: F821
+                "timestamp": datetime.now().isoformat(),
                 "user_id": user_id,
                 "resource": resource,
                 "action": action,
@@ -605,7 +606,7 @@ def test_req_sec_data_004_audit_trail():
         def log_modification(self, user_id: str, resource: str, changes: dict):
             """Log data modification event."""
             entry = {
-                "timestamp": datetime.now().isoformat(),  # noqa: F821
+                "timestamp": datetime.now().isoformat(),
                 "user_id": user_id,
                 "resource": resource,
                 "action": "modify",
