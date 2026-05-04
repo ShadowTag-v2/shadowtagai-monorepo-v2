@@ -6,6 +6,7 @@ effect size reporting, and analysis integrity as specified in
 REQUIREMENTS.md Section 10.2.
 """
 
+from datetime import datetime
 from typing import Any
 
 import numpy as np
@@ -928,7 +929,7 @@ def test_req_sci_ana_007_no_cherry_picking():
                 "id": analysis_id,
                 "type": analysis_type,
                 "description": data_description,
-                "timestamp": datetime.now(),  # noqa: F821
+                "timestamp": datetime.now(),
                 "status": "registered",
                 "result": None,
                 "metadata": kwargs,
