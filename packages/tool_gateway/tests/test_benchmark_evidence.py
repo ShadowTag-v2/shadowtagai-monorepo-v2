@@ -17,7 +17,6 @@ import asyncio
 from pathlib import Path
 from unittest.mock import MagicMock
 
-import pytest
 
 from tool_gateway.async_evidence import AsyncEvidenceLogger
 
@@ -87,7 +86,7 @@ class TestAsyncEvidenceBenchmark:
         def run():
             asyncio.run(burst_100())
 
-        result = benchmark(run)
+        benchmark(run)
 
         # Verify all 100 entries written per iteration
         issues_file = tmp_path / ".beads" / "issues.jsonl"
