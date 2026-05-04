@@ -167,16 +167,6 @@ _ALLOWED_ORIGINS = os.getenv(
     "https://kovelai.web.app,https://kovelai.com,https://shadowtagai.web.app,http://localhost:4000,http://localhost:5173",
 ).split(",")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=_ALLOWED_ORIGINS,
-    allow_credentials=True,
-    allow_methods=["GET", "POST"],
-    allow_headers=os.environ.get("CORS_HEADERS", "Content-Type,Authorization,X-Requested-With").split(","),
-    expose_headers=["X-Kovel-Signature", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-Token-Budget-Remaining", "X-Dispatch-Tier"],
-    max_age=3600,  # Cache preflight responses for 1 hour
-)
-
 # Cor.30 R31: Security headers on every response
 app.add_middleware(SecurityHeadersMiddleware)
 
@@ -194,6 +184,19 @@ app.add_middleware(SandboxMiddleware)
 
 # RFC 8594: Deprecation + Sunset headers on versioned routes
 app.add_middleware(DeprecationMiddleware)
+
+# CORS must be the LAST middleware added (= outermost wrapper) so it
+# intercepts OPTIONS preflight requests before RateLimitMiddleware,
+# SandboxMiddleware, etc. can reject them with 400/401.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=os.environ.get("CORS_HEADERS", "Content-Type,Authorization,X-Requested-With").split(","),
+    expose_headers=["X-Kovel-Signature", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-Token-Budget-Remaining", "X-Dispatch-Tier"],
+    max_age=3600,  # Cache preflight responses for 1 hour
+)
 
 # Cor.30: Opaque error handling — never expose stack traces
 app.add_exception_handler(AppError, app_error_handler)
