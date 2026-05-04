@@ -144,6 +144,12 @@ _SERVICE_REGISTRY: dict[str, str] = {
     "lsp_client": f"{_PKG}.lsp_client",
     "voice_service": f"{_PKG}.voice_service",
     "tool_orchestration": f"{_PKG}.tool_orchestration",
+    # ── Batch 8 ported services ───────────────────────────────────
+    "mcp_channel": f"{_PKG}.mcp_channel_service",
+    "session_memory_svc": f"{_PKG}.session_memory_service",
+    "extract_memories_svc": f"{_PKG}.extract_memories_service",
+    "token_estimation_svc": f"{_PKG}.token_estimation_service",
+    "team_memory_sync_svc": f"{_PKG}.team_memory_sync_service",
 }
 
 
