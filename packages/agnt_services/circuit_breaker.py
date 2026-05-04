@@ -16,7 +16,8 @@ import threading
 import time
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import Callable, TypeVar
+from typing import TypeVar
+from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 
