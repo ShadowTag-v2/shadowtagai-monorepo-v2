@@ -263,13 +263,7 @@
     }
   },
   "extensions": {
-    "recommendations": [
-      "biomejs.biome",
-      "charliermarsh.ruff"
-    ],
-    "unwantedRecommendations": [
-      "esbenp.prettier-vscode",
-      "dbaeumer.vscode-eslint"
-    ]
+    "recommendations": ["biomejs.biome", "charliermarsh.ruff"],
+    "unwantedRecommendations": ["esbenp.prettier-vscode", "dbaeumer.vscode-eslint"]
   }
 }

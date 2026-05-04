@@ -43,22 +43,42 @@
             "q": "p95:tengu_compact_complete.l1_ms{*}",
             "display_type": "line",
             "style": { "line_type": "solid", "line_width": "normal" },
-            "metadata": [{ "expression": "p95:tengu_compact_complete.l1_ms{*}", "alias_name": "L1 Microcompact" }]
+            "metadata": [
+              {
+                "expression": "p95:tengu_compact_complete.l1_ms{*}",
+                "alias_name": "L1 Microcompact"
+              }
+            ]
           },
           {
             "q": "p95:tengu_compact_complete.l2_ms{*}",
             "display_type": "line",
-            "metadata": [{ "expression": "p95:tengu_compact_complete.l2_ms{*}", "alias_name": "L2 History Snip" }]
+            "metadata": [
+              {
+                "expression": "p95:tengu_compact_complete.l2_ms{*}",
+                "alias_name": "L2 History Snip"
+              }
+            ]
           },
           {
             "q": "p95:tengu_compact_complete.l3_ms{*}",
             "display_type": "line",
-            "metadata": [{ "expression": "p95:tengu_compact_complete.l3_ms{*}", "alias_name": "L3 Context Collapse" }]
+            "metadata": [
+              {
+                "expression": "p95:tengu_compact_complete.l3_ms{*}",
+                "alias_name": "L3 Context Collapse"
+              }
+            ]
           },
           {
             "q": "p95:tengu_compact_complete.l4_ms{*}",
             "display_type": "line",
-            "metadata": [{ "expression": "p95:tengu_compact_complete.l4_ms{*}", "alias_name": "L4 Token Budget" }]
+            "metadata": [
+              {
+                "expression": "p95:tengu_compact_complete.l4_ms{*}",
+                "alias_name": "L4 Token Budget"
+              }
+            ]
           }
         ]
       }
@@ -156,12 +176,22 @@
           {
             "q": "avg:tengu_compact_complete.inputMessages{*}",
             "display_type": "line",
-            "metadata": [{ "expression": "avg:tengu_compact_complete.inputMessages{*}", "alias_name": "Input Msgs" }]
+            "metadata": [
+              {
+                "expression": "avg:tengu_compact_complete.inputMessages{*}",
+                "alias_name": "Input Msgs"
+              }
+            ]
           },
           {
             "q": "avg:tengu_compact_complete.outputMessages{*}",
             "display_type": "line",
-            "metadata": [{ "expression": "avg:tengu_compact_complete.outputMessages{*}", "alias_name": "Output Msgs" }]
+            "metadata": [
+              {
+                "expression": "avg:tengu_compact_complete.outputMessages{*}",
+                "alias_name": "Output Msgs"
+              }
+            ]
           }
         ]
       }

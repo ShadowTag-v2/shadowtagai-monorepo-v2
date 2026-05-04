@@ -6,11 +6,12 @@ import ComparisonTable from '@/components/shared/ComparisonTable';
 import ContactModal from '@/components/shared/ContactModal';
 import CTASection from '@/components/shared/CTASection';
 import DiscoveryRisk from '@/components/shared/DiscoveryRisk';
+import FallingGavel from '@/components/shared/FallingGavel';
 import FAQ from '@/components/shared/FAQ';
 import Features from '@/components/shared/Features';
 import Footer from '@/components/shared/Footer';
-import Hero from '@/components/shared/Hero';
 import HowItWorks from '@/components/shared/HowItWorks';
+import KineticHero from '@/components/shared/KineticHero';
 import Management from '@/components/shared/Management';
 import Nav from '@/components/shared/Nav';
 import Pricing from '@/components/shared/Pricing';
@@ -32,7 +33,7 @@ export default function Home() {
       <ScrollProgress />
       <Nav onOpenModal={openModal} />
       <main id="main-content">
-        <Hero />
+        <KineticHero onOpenModal={openModal} />
         <StatsBar />
         <DiscoveryRisk />
         <Features />
@@ -40,6 +41,7 @@ export default function Home() {
         <Testimonials />
         <ComparisonTable />
         <Pricing onOpenModal={openModal} />
+        <FallingGavel onOpenModal={openModal} />
         <FAQ />
         <Management />
         <BlogTeaser />
