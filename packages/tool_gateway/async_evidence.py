@@ -64,7 +64,7 @@ class AsyncEvidenceLogger:
             try:
                 json.dumps(v)
                 safe_context[k] = v
-            except TypeError, ValueError:
+            except (TypeError, ValueError):
                 safe_context[k] = str(v)
 
         entry = {
