@@ -49,9 +49,7 @@ class TestAsyncBatchEvidenceWriter:
 
     def test_write_buffers_records(self, tmp_path: Path) -> None:
         f = tmp_path / "test.ndjson"
-        writer = AsyncBatchEvidenceWriter(
-            f, flush_interval_secs=10.0, max_buffer_size=50
-        )
+        writer = AsyncBatchEvidenceWriter(f, flush_interval_secs=10.0, max_buffer_size=50)
         writer.write('{"a":1}')
         # Should NOT be on disk yet
         if f.exists():
@@ -61,9 +59,7 @@ class TestAsyncBatchEvidenceWriter:
 
     def test_flush_writes_all(self, tmp_path: Path) -> None:
         f = tmp_path / "test.ndjson"
-        writer = AsyncBatchEvidenceWriter(
-            f, flush_interval_secs=60.0, max_buffer_size=1000
-        )
+        writer = AsyncBatchEvidenceWriter(f, flush_interval_secs=60.0, max_buffer_size=1000)
         for i in range(5):
             writer.write(f'{{"n":{i}}}')
         assert writer.pending_count == 5
@@ -75,9 +71,7 @@ class TestAsyncBatchEvidenceWriter:
 
     def test_max_buffer_triggers_flush(self, tmp_path: Path) -> None:
         f = tmp_path / "test.ndjson"
-        writer = AsyncBatchEvidenceWriter(
-            f, flush_interval_secs=60.0, max_buffer_size=3
-        )
+        writer = AsyncBatchEvidenceWriter(f, flush_interval_secs=60.0, max_buffer_size=3)
         writer.write('{"a":1}')
         writer.write('{"b":2}')
         writer.write('{"c":3}')  # This should trigger auto-flush
@@ -89,20 +83,20 @@ class TestAsyncBatchEvidenceWriter:
 
     def test_periodic_flush(self, tmp_path: Path) -> None:
         f = tmp_path / "test.ndjson"
-        writer = AsyncBatchEvidenceWriter(
-            f, flush_interval_secs=0.1, max_buffer_size=1000
-        )
+        writer = AsyncBatchEvidenceWriter(f, flush_interval_secs=0.1, max_buffer_size=1000)
         writer.write('{"a":1}')
-        time.sleep(0.3)  # Wait for timer to fire
-        assert writer.pending_count == 0
+        # Poll instead of fixed sleep — converges immediately on fast
+        # systems, survives loaded CI environments (up to 2s budget).
+        deadline = time.monotonic() + 2.0
+        while writer.pending_count > 0 and time.monotonic() < deadline:
+            time.sleep(0.05)
+        assert writer.pending_count == 0, f"Periodic flush did not fire within 2s (pending={writer.pending_count})"
         assert f.exists()
         writer.close()
 
     def test_close_flushes_remaining(self, tmp_path: Path) -> None:
         f = tmp_path / "test.ndjson"
-        writer = AsyncBatchEvidenceWriter(
-            f, flush_interval_secs=60.0, max_buffer_size=1000
-        )
+        writer = AsyncBatchEvidenceWriter(f, flush_interval_secs=60.0, max_buffer_size=1000)
         writer.write('{"a":1}')
         writer.write('{"b":2}')
         writer.close()
@@ -111,9 +105,7 @@ class TestAsyncBatchEvidenceWriter:
 
     def test_write_after_close_is_warning(self, tmp_path: Path) -> None:
         f = tmp_path / "test.ndjson"
-        writer = AsyncBatchEvidenceWriter(
-            f, flush_interval_secs=60.0, max_buffer_size=1000
-        )
+        writer = AsyncBatchEvidenceWriter(f, flush_interval_secs=60.0, max_buffer_size=1000)
         writer.close()
         writer.write('{"late":true}')  # Should log warning, not crash
         assert writer.pending_count == 0
@@ -121,9 +113,7 @@ class TestAsyncBatchEvidenceWriter:
     def test_thread_safety(self, tmp_path: Path) -> None:
         """Multiple threads writing concurrently should not lose records."""
         f = tmp_path / "test.ndjson"
-        writer = AsyncBatchEvidenceWriter(
-            f, flush_interval_secs=60.0, max_buffer_size=1000
-        )
+        writer = AsyncBatchEvidenceWriter(f, flush_interval_secs=60.0, max_buffer_size=1000)
         n_threads = 8
         n_writes = 50
         barrier = threading.Barrier(n_threads)
@@ -133,10 +123,7 @@ class TestAsyncBatchEvidenceWriter:
             for i in range(n_writes):
                 writer.write(f'{{"tid":{tid},"i":{i}}}')
 
-        threads = [
-            threading.Thread(target=writer_thread, args=(t,))
-            for t in range(n_threads)
-        ]
+        threads = [threading.Thread(target=writer_thread, args=(t,)) for t in range(n_threads)]
         for t in threads:
             t.start()
         for t in threads:
@@ -197,9 +184,7 @@ class TestEvidenceLoggerAsyncMode:
         }
 
         # Sync timing
-        sync_logger = EvidenceLogger(
-            repo_root=tmp_path / "sync", async_writes=False
-        )
+        sync_logger = EvidenceLogger(repo_root=tmp_path / "sync", async_writes=False)
         start = time.perf_counter()
         for i in range(n_calls):
             sync_logger.log(function_name=f"fn_{i}", **base_args)
@@ -218,6 +203,4 @@ class TestEvidenceLoggerAsyncMode:
         async_logger.close()
 
         # Async should be meaningfully faster
-        assert async_ms < sync_ms, (
-            f"Async ({async_ms:.1f}ms) should be faster than sync ({sync_ms:.1f}ms)"
-        )
+        assert async_ms < sync_ms, f"Async ({async_ms:.1f}ms) should be faster than sync ({sync_ms:.1f}ms)"
