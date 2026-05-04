@@ -22,7 +22,6 @@ SECURITY NOTE:
 import json
 import logging
 import os
-import sys
 from dataclasses import dataclass
 from typing import Any
 
@@ -34,7 +33,7 @@ try:
 except ImportError:
     print("ERROR: Missing required packages. Install with:")
     print("pip install google-cloud-aiplatform")
-    sys.exit(1)
+    raise SystemExit(1)
 
 # Configure logging
 logging.basicConfig(
@@ -389,7 +388,7 @@ def main():
 
     except Exception as e:
         logger.error(f"Orchestration failed: {e}")
-        sys.exit(1)
+        raise SystemExit(1)
 
     # Example 2: Deploy to Vertex AI Training (commented out)
     # Uncomment to deploy as a training job

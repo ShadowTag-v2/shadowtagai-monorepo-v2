@@ -4,7 +4,6 @@ import contextlib
 import json
 import logging
 import os
-import sys
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
@@ -158,7 +157,7 @@ async def websocket_endpoint(websocket: WebSocket):
 @app.on_event("startup")
 async def startup_event():
     if not check_wet_fleece():
-        sys.exit(1)
+        raise SystemExit(1)
     asyncio.create_task(run_world_simulation())
 
 

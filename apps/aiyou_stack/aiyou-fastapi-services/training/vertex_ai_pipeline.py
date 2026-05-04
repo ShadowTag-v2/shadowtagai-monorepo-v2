@@ -65,7 +65,7 @@ except ImportError:
     logger.error(
         "Google Cloud libraries not installed. Run: pip install google-cloud-aiplatform google-cloud-storage google-generativeai",
     )
-    sys.exit(1)
+    raise SystemExit(1)
 
 console = Console()
 
@@ -1098,7 +1098,7 @@ def main(
 
     except Exception as e:
         console.print(f"[red]Configuration error: {e}[/red]")
-        sys.exit(1)
+        raise SystemExit(1)
 
     # Execute
     try:
@@ -1113,14 +1113,14 @@ def main(
             # Evaluation only
             if not checkpoint:
                 console.print("[red]Error: --checkpoint required for --evaluate_only[/red]")
-                sys.exit(1)
+                raise SystemExit(1)
 
             console.print(f"[bold cyan]Evaluating checkpoint: {checkpoint}[/bold cyan]")
 
             # Need validation data
             if not config.single_turn_data:
                 console.print("[red]Error: --single_turn_data required for evaluation[/red]")
-                sys.exit(1)
+                raise SystemExit(1)
 
             # Load validation data (use first 100 examples)
             val_examples = GCSDatasetManager._load_jsonl(config.single_turn_data)[:100]
@@ -1134,7 +1134,7 @@ def main(
             # Full pipeline
             if not config.single_turn_data:
                 console.print("[red]Error: --single_turn_data required for training[/red]")
-                sys.exit(1)
+                raise SystemExit(1)
 
             pipeline = TrainingPipeline(config)
             results = pipeline.run_full_pipeline()
@@ -1143,16 +1143,16 @@ def main(
                 console.print(
                     f"[red]Pipeline failed: {results.get('error', 'Unknown error')}[/red]",
                 )
-                sys.exit(1)
+                raise SystemExit(1)
 
     except KeyboardInterrupt:
         console.print("\n[yellow]Pipeline interrupted by user[/yellow]")
-        sys.exit(1)
+        raise SystemExit(1)
 
     except Exception as e:
         logger.exception(f"Pipeline error: {e}")
         console.print(f"\n[red]Pipeline error: {e}[/red]")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

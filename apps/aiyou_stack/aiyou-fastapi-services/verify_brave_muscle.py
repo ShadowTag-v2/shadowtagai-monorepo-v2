@@ -1,5 +1,4 @@
 import logging
-import sys
 
 from libs.arsenal.jetski.browser import JetskiAgent, find_brave_path
 
@@ -26,7 +25,7 @@ def test_muscle():
         print(f"   Browser Path: {agent.brave_path}")
     except Exception as e:
         print(f"❌ AGENT ERROR: {e}")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

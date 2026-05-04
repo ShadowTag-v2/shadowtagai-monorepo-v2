@@ -18,4 +18,4 @@ for p in root.rglob("*"):
             found.add(m.group(1))
 unknown = sorted(set(found) - ALLOW_DOMAINS)
 print(json.dumps({"found": sorted(found), "unknown": unknown}, indent=2))
-sys.exit(1 if unknown else 0)
+raise SystemExit(1 if unknown else 0)

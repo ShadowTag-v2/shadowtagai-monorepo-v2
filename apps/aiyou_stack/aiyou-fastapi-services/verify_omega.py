@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 
 import requests
@@ -41,10 +40,10 @@ def check_services():
 
     if all_green:
         print("\n🚀 All Systems Nominal. Engaging Omega Protocol.")
-        sys.exit(0)
+        raise SystemExit(0)
     else:
         print("\n⚠️  System Degraded.")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

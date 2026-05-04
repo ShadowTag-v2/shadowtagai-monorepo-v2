@@ -94,7 +94,7 @@ try:
     if response.status_code == 422:
         print("FAIL: Valid request rejected with 422")
         print(response.json())
-        sys.exit(1)
+        raise SystemExit(1)
     print("PASS: Valid request passed validation")
 except Exception as e:
     print(f"WARN: Execution error on valid request: {e}")
@@ -103,14 +103,14 @@ except Exception as e:
 response = client.post("/debate", params={"question": "test", "num_agents": 100, "max_rounds": 3})
 if response.status_code != 422:
     print(f"FAIL: Invalid agents accepted with code {response.status_code}")
-    sys.exit(1)
+    raise SystemExit(1)
 print("PASS: Invalid agents rejected")
 
 # 3. Invalid Rounds (>20)
 response = client.post("/debate", params={"question": "test", "num_agents": 3, "max_rounds": 100})
 if response.status_code != 422:
     print(f"FAIL: Invalid rounds accepted with code {response.status_code}")
-    sys.exit(1)
+    raise SystemExit(1)
 print("PASS: Invalid rounds rejected")
 
 print("ALL TESTS PASSED")

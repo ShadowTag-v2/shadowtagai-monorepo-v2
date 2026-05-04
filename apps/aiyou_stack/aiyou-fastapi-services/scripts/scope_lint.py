@@ -114,7 +114,7 @@ def main(diff_range: str = "origin/main...HEAD"):
         for domain in sorted(non_universal.keys()):
             print(f"  • PR for [{domain}]: {len(non_universal[domain])} files")
 
-        sys.exit(1)
+        raise SystemExit(1)
 
     # Passed
     primary_domain = list(non_universal.keys())[0] if non_universal else "none"

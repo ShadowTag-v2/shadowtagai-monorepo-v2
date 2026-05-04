@@ -9,7 +9,7 @@ try:
 except ImportError:
     print("Error: 'google-genai' package is required.")
     print("Run: pip install google-genai")
-    sys.exit(1)
+    raise SystemExit(1)
 
 # Configuration
 PROJECT_ID = os.getenv("PROJECT_ID", "acquired-jet-478701-b3")

@@ -16,7 +16,7 @@ try:
     from vertexai.generative_models import GenerativeModel, Tool, grounding
 except ImportError:
     print("⚠️  Vertex AI missing. Install requirements.txt")
-    sys.exit(1)
+    raise SystemExit(1)
 
 try:
     from colorama import Fore, Style, init

@@ -19,7 +19,6 @@ Requires:
 
 import argparse
 import os
-import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -28,7 +27,7 @@ try:
 except ImportError:
     print("ERROR: google-generativeai package not installed")
     print("Install with: pip install google-generativeai")
-    sys.exit(1)
+    raise SystemExit(1)
 
 
 INTEGRATION_ANALYSIS_PROMPT = """
@@ -447,7 +446,7 @@ def main():
         print(f"ERROR: {e}")
         print("\nSet your Google API key:")
         print("  export GOOGLE_API_KEY='your-key-here'")
-        sys.exit(1)
+        raise SystemExit(1)
 
     # Load component specifications
     print("\n📚 Loading component specifications...")
@@ -459,7 +458,7 @@ def main():
         report = analyzer.run_integration_analysis(specs)
     except Exception as e:
         print(f"ERROR during analysis: {e}")
-        sys.exit(1)
+        raise SystemExit(1)
 
     # Save report
     analyzer.save_report(report, args.output)

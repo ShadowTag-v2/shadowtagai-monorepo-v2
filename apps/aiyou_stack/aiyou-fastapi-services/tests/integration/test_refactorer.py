@@ -191,7 +191,7 @@ async def main():
     """Main test runner"""
     suite = TestRefactorer()
     success = await suite.run_all_tests()
-    sys.exit(0 if success else 1)
+    raise SystemExit(0 if success else 1)
 
 
 if __name__ == "__main__":

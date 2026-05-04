@@ -74,7 +74,7 @@ try:
     file_path = input_data.get("tool_input", {}).get("file_path", "")
 
     if not file_path.endswith((".md", ".mdx")):
-        sys.exit(0)  # Not a markdown file
+        raise SystemExit(0)  # Not a markdown file
 
     if os.path.exists(file_path):
         with open(file_path, encoding="utf-8") as f:
@@ -89,4 +89,4 @@ try:
 
 except Exception as e:
     print(f"Error formatting markdown: {e}", file=sys.stderr)
-    sys.exit(1)
+    raise SystemExit(1)

@@ -57,7 +57,7 @@ def main():
         input_data = json.load(sys.stdin)
     except json.JSONDecodeError as e:
         print(f"Error: Invalid JSON input: {e}", file=sys.stderr)
-        sys.exit(1)
+        raise SystemExit(1)
 
     tool_name = input_data.get("tool_name", "")
     tool_input = input_data.get("tool_input", {})
@@ -65,7 +65,7 @@ def main():
 
     # Only process Bash tool calls
     if tool_name != "Bash" or not command:
-        sys.exit(0)
+        raise SystemExit(0)
 
     # Validate the command
     errors, warnings = validate_command(command)
@@ -75,7 +75,7 @@ def main():
         for error in errors:
             print(f"❌ {error}", file=sys.stderr)
         # Exit code 2 blocks tool call and shows stderr to Claude
-        sys.exit(2)
+        raise SystemExit(2)
 
     if warnings:
         # Show warnings to user but allow command
@@ -86,7 +86,7 @@ def main():
         print(json.dumps(output))
 
     # Allow the command
-    sys.exit(0)
+    raise SystemExit(0)
 
 
 if __name__ == "__main__":

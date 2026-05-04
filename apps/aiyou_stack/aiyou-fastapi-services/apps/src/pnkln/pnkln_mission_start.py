@@ -6,7 +6,6 @@ Integrates with pnkln_tasks.sh and SOP Snippets
 import json
 import logging
 import os
-import sys
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -24,10 +23,10 @@ def load_doctrine():
             return json.load(f)
     except FileNotFoundError:
         logger.error(f"FATAL: Doctrine not found at {sop_path}")
-        sys.exit(1)
+        raise SystemExit(1)
     except json.JSONDecodeError:
         logger.error(f"FATAL: Doctrine corrupted in {sop_path}")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 def execute_tier_30():

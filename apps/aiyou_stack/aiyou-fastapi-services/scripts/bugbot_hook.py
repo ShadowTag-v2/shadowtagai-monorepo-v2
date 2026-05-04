@@ -164,11 +164,11 @@ def main(diff_range: str = "origin/main...HEAD", target: str = None):
     # Exit code based on recommendation
     if results.get("recommendation") == "PASS":
         print("✅ BugBot PASSED")
-        sys.exit(0)
+        raise SystemExit(0)
     else:
         print("⚠️  BugBot recommends review")
         # Don't fail CI, just warn
-        sys.exit(0)
+        raise SystemExit(0)
 
 
 if __name__ == "__main__":

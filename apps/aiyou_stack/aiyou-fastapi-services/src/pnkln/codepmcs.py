@@ -116,7 +116,7 @@ class RangerStandardInspector:
             for fault in self.result.faults:
                 logger.error(f"   [{fault.status}] {fault.component}: {fault.details}")
             if not self.result.mission_capable:
-                sys.exit(1)
+                raise SystemExit(1)
         else:
             logger.info("✅ FULLY MISSION CAPABLE (FMC)")
         logger.info("=" * 50)

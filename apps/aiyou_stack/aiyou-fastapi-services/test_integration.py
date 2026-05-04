@@ -4,7 +4,6 @@ Tests AutoGen → Gemini migration functionality
 """
 
 import asyncio
-import sys
 
 from app.services.gemini_agents import GeminiAgent, GeminiGroupChat
 
@@ -245,7 +244,7 @@ async def main():
 
     if failed > 0:
         print("\n⚠️  Some tests failed. Review output above for details.")
-        sys.exit(1)
+        raise SystemExit(1)
     else:
         print("\n🎉 All tests passed! AutoGen → Gemini migration validated.")
         print("\nNext Steps:")
@@ -253,7 +252,7 @@ async def main():
         print("  2. Deploy to Cloud Run: gcloud run deploy pnkln-api")
         print("  3. Run load tests to validate p99 latency targets")
         print("  4. Enable A/B testing (20% multi-agent, 80% single model)")
-        sys.exit(0)
+        raise SystemExit(0)
 
 
 if __name__ == "__main__":

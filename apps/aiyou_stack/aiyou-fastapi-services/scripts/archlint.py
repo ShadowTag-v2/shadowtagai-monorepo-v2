@@ -175,7 +175,7 @@ def main(diff_range: str = "origin/main...HEAD"):
     # Fail on critical issues
     if critical_count > 0:
         print(f"\n❌ FAILED: {critical_count} critical issue(s) found")
-        sys.exit(1)
+        raise SystemExit(1)
 
     if warning_count > 0:
         print(f"\n⚠️  PASSED with {warning_count} warning(s)")

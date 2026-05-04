@@ -31,7 +31,7 @@ try:
     import requests
 except ImportError:
     print("Please install requests: pip install requests")
-    sys.exit(1)
+    raise SystemExit(1)
 
 
 class NotionImporter:

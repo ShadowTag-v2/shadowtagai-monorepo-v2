@@ -45,7 +45,7 @@ spec.loader.exec_module(module)
 JudgeSixRuntime = getattr(module, "JudgeSixRuntime", None)
 if JudgeSixRuntime is None:
     sys.stderr.write("[ERROR] JudgeSixRuntime class not found in base.py\n")
-    sys.exit(1)
+    raise SystemExit(1)
 
 
 def run_batch(runtime, batch_size, seq_len):

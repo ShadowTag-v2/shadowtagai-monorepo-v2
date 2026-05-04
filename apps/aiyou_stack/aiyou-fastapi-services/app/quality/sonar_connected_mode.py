@@ -1,6 +1,5 @@
 import argparse
 import os
-import sys
 
 
 def main():
@@ -16,10 +15,10 @@ def main():
         print(f"Verifying connection to {url}...")
         if not token:
             print("Error: SONAR_TOKEN not set")
-            sys.exit(1)
+            raise SystemExit(1)
         # Mock connection check for now
         print("Connection verified (mock).")
-        sys.exit(0)
+        raise SystemExit(0)
 
     if args.ide == "vscode":
         print("Configuring VS Code settings for SonarLint...")
