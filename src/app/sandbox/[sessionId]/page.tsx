@@ -84,7 +84,11 @@ function ErrorView({ error }: { error: string | null }) {
         <div className={styles.errorIcon}>⚠</div>
         <h2 className={styles.errorTitle}>Session Error</h2>
         <p className={styles.errorMessage}>{error}</p>
-        <button type="button" className={styles.retryButton} onClick={() => window.location.reload()}>
+        <button
+          type="button"
+          className={styles.retryButton}
+          onClick={() => window.location.reload()}
+        >
           Retry
         </button>
       </div>
