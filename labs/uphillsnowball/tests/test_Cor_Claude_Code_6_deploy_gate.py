@@ -8,7 +8,7 @@ import pytest
 
 from src.governance.j6_csrmc_cato import (
     DeploymentPhase,
-    Cor_Claude_Code_6DeployGate,
+    Judge6DeployGate as Cor_Claude_Code_6DeployGate,
     PhaseResult,
 )
 
