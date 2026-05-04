@@ -2600,7 +2600,6 @@ a {
                           {
                             key: 'processChunk',
                             value: function (e, t, r) {
-                              
                               t = t || {};
                               var o = this.processChunkJson(e, t, r);
                               if (t.json) return o;

@@ -45,6 +45,14 @@ export default function Nav({ onOpenModal }: NavProps) {
               </a>
             </li>
           ))}
+          <li>
+            <a
+              href="/trust"
+              className="text-[#e6c487] hover:text-[#d7e3fc] transition-colors font-medium"
+            >
+              Trust
+            </a>
+          </li>
         </ul>
         <div className="flex items-center gap-3">
           <button
@@ -76,6 +84,13 @@ export default function Nav({ onOpenModal }: NavProps) {
               {t}
             </a>
           ))}
+          <a
+            href="/trust"
+            onClick={() => setMobileOpen(false)}
+            className="text-[#e6c487] hover:text-[#d7e3fc] py-1 font-medium"
+          >
+            Trust
+          </a>
         </div>
       )}
     </nav>
