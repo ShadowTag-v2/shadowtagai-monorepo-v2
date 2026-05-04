@@ -137,7 +137,7 @@ class ToolBridge:
             repo_root: Path to monorepo root for evidence logging.
         """
         self._registry = registry
-        self._evidence = evidence or EvidenceLogger(repo_root=repo_root)
+        self._evidence = evidence or EvidenceLogger(repo_root=repo_root, async_writes=True)
         self._confirmation = confirmation or ConfirmationProvider()
         self._pre_hooks: list[Callable[..., None]] = []
         self._post_hooks: list[Callable[..., None]] = []
