@@ -27,8 +27,8 @@ class AutoresearchSwarm:
 
         # Kosmos / Vertex Native Setup
         try:
-            self.model_flash = GenerativeModel("gemini-1.5-flash-preview-0514")
-            self.model_pro = GenerativeModel("gemini-1.5-pro-001")
+            self.model_flash = GenerativeModel("gemini-2.5-flash")
+            self.model_pro = GenerativeModel("gemini-3.1-flash-lite-preview")
         except NameError:
             self.model_flash = None
             self.model_pro = None
