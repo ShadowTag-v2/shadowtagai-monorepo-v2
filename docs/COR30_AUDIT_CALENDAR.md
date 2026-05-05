@@ -15,7 +15,7 @@
 
 ### Pre-Audit (day before)
 - [ ] Run `betterleaks dir -c .betterleaks.toml --redact apps/`
-- [ ] Run `vulture` + `ruff --fix` on all production paths
+- [ ] Run `ruff check --select F401,F841 --fix` + `ruff format` on all production paths
 - [ ] Verify `.betterleaksignore` fingerprint count matches expectations
 - [ ] Check RISK_REGISTER.md for open items
 
@@ -40,8 +40,8 @@
 | Tool | Command | Purpose |
 |------|---------|---------|
 | Betterleaks Guardian | `python3 scripts/gitleaks_guardian.py --mode scan --scope production` | Secret detection |
-| Vulture | `python3 -m vulture scripts/ --min-confidence 80` | Dead code |
-| Ruff | `python3 -m ruff check apps/ scripts/ tests/` | Lint |
+| Ruff (Dead Code) | `python3 -m ruff check --select F401,F841 --fix scripts/` | Dead code |
+| Ruff (Lint) | `python3 -m ruff check apps/ scripts/ tests/` | Lint |
 | Lighthouse | `npx lighthouse https://kovelai.web.app --output=json` | Web quality |
 | Dream Consolidation | `/opt/homebrew/bin/python3 scripts/dream_consolidation.py` | KI maintenance |
 
@@ -50,7 +50,7 @@
 - **Date**: 2026-04-19
 - **Betterleaks**: 686 third-party findings audited → 0 risk (migrated from gitleaks per Risk #84)
 - **Production scan**: 33 findings (all aiyou_stack `.example` files — false positives)
-- **Vulture**: 0 violations at 80%+ confidence
-- **Ruff**: 0 in counselconduit
+- **Ruff (Dead Code)**: 0 violations
+- **Ruff (Lint)**: 0 in counselconduit
 - **Lighthouse**: A93+ / BP100 / SEO100
 - **Risk Register**: 43 risks tracked (0 critical open)

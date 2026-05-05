@@ -8,6 +8,6 @@ From Rich Hickey's doctrine, "Simple Made Easy".
 
 ## Application to Sovereign Coding
 - Tech debt is fundamentally entanglement.
-- Step 0 of every single refactor is **Deletion** (`vulture` + `ruff`).
+- Step 0 of every single refactor is **Deletion** (`ruff check --select F401,F841 --fix`).
 - **AI as Junior Dev**: Never let an AI framework complexify architecture. Demand the raw, unentangled primitive (vanilla CSS over obscure CSS-in-JS unless absolutely necessary).
 - **The Hammock Protocol**: Think before you type. Think before you commit. Design an unentangled solution, and only when the decoupling is verified do you execute the implementation.

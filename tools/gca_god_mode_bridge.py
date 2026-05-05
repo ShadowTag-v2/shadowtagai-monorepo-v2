@@ -8,7 +8,7 @@ Orchestrates: save all → build C# → stage → commit → close.
 Workflow:
   1. Run step_zero_cleanup.sh (dead code pruning)
   2. Build C# projects (dotnet build)
-  3. Run ruff + vulture on Python
+  3. Run ruff on Python
   4. git add -A
   5. git commit (conventional commit message)
   6. Report status
@@ -87,21 +87,15 @@ def build_csharp() -> dict[str, Any]:
 
 
 def lint_python() -> dict[str, Any]:
-    """Phase 3: ruff + vulture on Python."""
+    """Phase 3: ruff on Python."""
     rc, out, err = run_cmd(
         ["ruff", "check", "--fix", "--unsafe-fixes", "."],
     )
     ruff_ok = rc == 0
 
-    rc2, out2, err2 = run_cmd(
-        ["vulture", ".", "--min-confidence", "90"],
-    )
-    vulture_findings = len(out2.strip().splitlines()) if out2.strip() else 0
-
     return {
         "phase": "lint_python",
         "ruff_clean": ruff_ok,
-        "vulture_findings": vulture_findings,
         "success": ruff_ok,
     }
 

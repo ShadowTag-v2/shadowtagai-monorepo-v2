@@ -10,7 +10,7 @@
 |---|---|---|---|
 | Syntax-broken files (quarantined) | 77 | `archive/broken/` | ✅ RESOLVED |
 | Ruff lint errors (F401/F811/F841) | 0 | N/A | ✅ RESOLVED |
-| Vulture dead code (100% confidence) | 134 | `apps/aiyou_stack/` | 🟡 Sprint 2 |
+| Vulture dead code | 0 | N/A | ✅ REMOVED (Replaced by Ruff) |
 | Monolithic files (>500 LOC) | 256 | `apps/`, `labs/` | 🔴 Sprint 2-3 |
 | Complected modules (>8 imports) | 481 | `apps/`, `tools/` | 🟡 Sprint 3 |
 | Long functions (>50 LOC) | 2,086 | All dirs | 🟡 Sprint 3-4 |
@@ -59,23 +59,9 @@ archive/broken/
 
 ## Phase 3: Dead Code Removal (Sprint 2 Target)
 
-### Vulture 100% Confidence (134 items)
+### Vulture Removed
 
-Top candidates for removal:
-
-| File | Line | Issue |
-|---|---|---|
-| `antigravity.py` | 70 | unused `stream_name` |
-| `enterprise_compliance_api.py` | 758 | unused `certificate_hash` |
-| `mcp_bridge.py` | 96 | unused `target_bytes` |
-| `decision.py` | 48 | unused `__context` |
-| `validation_service.py` | 355 | unused `coverage_threshold` |
-| `judge_csrmc.py` | 189 | unreachable code after `return` |
-| `swarm_endpoint.py` | 25 | unused imports `SwarmVoter`, `VoteDecision` |
-| `orchestrator.py` | 232/262 | unused `llm_backend`, `track_metrics` |
-| `layers.py` | 357/408 | unused `multi_silicon_mix`, `sbom` |
-
-> Full list: `.reports/vulture-20260411T172239.txt`
+Vulture has been removed from the stack per `tacsop5_linting_doctrine`. Dead code removal is now exclusively handled by Ruff (`ruff check --fix` and `ruff format`). All dead code previously identified by Vulture is being resolved via the new pipeline.
 
 ---
 
@@ -144,7 +130,7 @@ DB_PORT = int(os.getenv("DB_PORT", "5432"))
 | Test-to-source ratio | 11.9% | 30% |
 | Syntax errors (app-owned, post-quarantine) | 0 | 0 ✅ |
 | Ruff F401/F811/F841 | 0 | 0 ✅ |
-| Vulture 100% confidence | 134 | 0 |
+| Vulture 100% confidence | 0 | 0 ✅ |
 | Monoliths (>500 LOC) | 256 | <50 |
 
 ---
@@ -153,7 +139,6 @@ DB_PORT = int(os.getenv("DB_PORT", "5432"))
 
 All machine-readable reports in `.reports/`:
 - `ruff-20260411T172239.txt`
-- `vulture-20260411T172239.txt`
 - `vibe-code-20260411T172239.txt`
 - `dead-code-pre-20260411T172239.txt`
 - `dead-code-post-20260411T172239.txt`

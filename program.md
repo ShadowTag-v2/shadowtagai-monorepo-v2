@@ -8,7 +8,7 @@
 
 ### The Exact Build Sequence
 
-1. **The Step 0 Purge (Vulture)**: Before the loop begins, `vulture` sweeps the AST to physically delete dead code, mitigating the 167k context death spiral.
+1. **The Step 0 Purge**: Before the loop begins, `ruff check --select F401,F841 --fix` sweeps the AST to physically delete dead code, mitigating the 167k context death spiral.
 2. **The Brain (Kosmos)**: Acts as the Research Director. It reads the Rich Hickey `program.md` instructions and generates a strictly unentangled architectural hypothesis (e.g., "Extract stateful logic into a custom hook").
 3. **The Queue (Google Cloud Tasks / BioAgents)**: The hypothesis is routed via serverless Cloud Tasks (bypassing the legacy BullMQ broker for 35ms SLAs) to prevent context window overload.
 4. **The Muscle (`n-autoresearch` Rust Workers)**: A parallelized swarm of GPU/CPU workers executes the hypothesis. They modify *only* the targeted file, compile it, and run a strict 5-minute time-boxed evaluation (via test suites, `val_bpb`, or cyclomatic complexity metrics).
