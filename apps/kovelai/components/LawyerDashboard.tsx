@@ -108,17 +108,19 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
   return (
     <svg aria-hidden="true" width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
       {/* Grid rings */}
-      {Array.from({ length: levels }, (_, i) => {
-        const r = ((i + 1) / levels) * maxRadius;
+      {Array.from({ length: levels }, (_, i) => ({
+        level: i + 1,
+        radius: ((i + 1) / levels) * maxRadius,
+      })).map((ring) => {
         const ringPoints = data
-          .map((_, j) => {
-            const angle = j * angleStep - Math.PI / 2;
-            return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`;
+          .map((d) => {
+            const angle = data.indexOf(d) * angleStep - Math.PI / 2;
+            return `${center + ring.radius * Math.cos(angle)},${center + ring.radius * Math.sin(angle)}`;
           })
           .join(' ');
         return (
           <polygon
-            key={`ring-level-${i + 1}-of-${levels}`}
+            key={`ring-level-${ring.level}`}
             points={ringPoints}
             fill="none"
             stroke="#3c494e"

@@ -33,6 +33,9 @@ const T = {
   glassBorder: 'rgba(255, 255, 255, 0.08)',
 } as const;
 
+/** Total frames in scroll-driven sequence (8s @ 30fps). Update if Veo asset changes. */
+const FRAME_COUNT = 240;
+
 const styles = {
   wrapper: {
     position: 'relative' as const,
@@ -220,7 +223,7 @@ interface GavelHeroProps {
    * Generate with: ./scripts/extract_frames.sh <veo_video.mp4> <output_dir>
    */
   frameDir?: string;
-  /** Total number of frames in the sequence (default: 240 = 8s @ 30fps) */
+  /** Total number of frames in the sequence (default: FRAME_COUNT = 8s @ 30fps) */
   frameCount?: number;
 }
 
@@ -228,7 +231,7 @@ export function GavelHero({
   headline,
   subheadline = 'Multi-model AI routing with cryptographic privilege attestation. Protected under United States v. Heppner.',
   frameDir = '/frames/',
-  frameCount = 240,
+  frameCount = FRAME_COUNT,
 }: GavelHeroProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
