@@ -1,10 +1,6 @@
 {
   "version": "2.0",
   "mcpServers": {
-    "shadowtag-core": {
-      "path": "apps/counselconduit",
-      "tools": ["StitchMCP", "chrome-devtools-mcp"]
-    },
     "firebase-mcp-server": {
       "command": "npx",
       "args": [
