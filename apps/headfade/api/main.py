@@ -1,8 +1,9 @@
 import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import arbiter
+from routers import arbiter, hdi_telemetry
 
 app = FastAPI(
     title="HeadFade API",
@@ -12,16 +13,24 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(","),
+    allow_origins=os.environ.get(
+        "CORS_ORIGINS", "http://localhost:3000,https://headfade.web.app"
+    ).split(","),
     allow_credentials=True,
-    allow_methods=os.environ.get("CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH").split(","),
-    allow_headers=os.environ.get("CORS_HEADERS", "Content-Type,Authorization,X-Requested-With").split(","),
+    allow_methods=os.environ.get(
+        "CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH"
+    ).split(","),
+    allow_headers=os.environ.get(
+        "CORS_HEADERS", "Content-Type,Authorization,X-Requested-With"
+    ).split(","),
 )
 
 app.include_router(arbiter.router)
+app.include_router(hdi_telemetry.router, prefix="/api", tags=["telemetry"])
 
 
 @app.get("/health")
+@app.get("/api/health")
 def health_check():
     return {"status": "operational", "service": "headfade-api"}
 
