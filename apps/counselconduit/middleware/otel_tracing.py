@@ -151,32 +151,3 @@ def trace_dispatch_routing(
         "model": model,
         "latency_ms": round(latency_ms, 2),
     }
-
-
-def trace_judge6_evaluation(
-    risk_score: int,
-    risk_level: str,
-    approved: bool,
-    flags_count: int,
-    pipeline_ms: int,
-) -> dict[str, Any]:
-    """Trace a Judge 6 governance evaluation."""
-    tracer = get_tracer()
-    with tracer.start_as_current_span("judge6.evaluate") as span:
-        span.set_attribute("judge6.risk_score", risk_score)
-        span.set_attribute("judge6.risk_level", risk_level)
-        span.set_attribute("judge6.approved", approved)
-        span.set_attribute("judge6.flags_count", flags_count)
-        span.set_attribute("judge6.pipeline_ms", pipeline_ms)
-
-        if not approved:
-            span.add_event(
-                "judge6_blocked",
-                {"risk_score": risk_score, "risk_level": risk_level},
-            )
-
-    return {
-        "risk_score": risk_score,
-        "approved": approved,
-        "pipeline_ms": pipeline_ms,
-    }

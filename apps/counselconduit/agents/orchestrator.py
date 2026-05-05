@@ -2,11 +2,12 @@
 # SPDX-License-Identifier: Proprietary
 """ADK 2.0 Graph Workflow Orchestrator for CounselConduit.
 
-Routes multi-model legal AI queries through Judge 6 governance,
-Oracle Studio analysis, and Vent Mode ephemeral sessions.
+Routes multi-model legal AI queries as a dumb proxy through
+Oracle Studio analysis and Vent Mode ephemeral sessions.
+Zero data inspection — attorney-client privilege preserved.
 
 Architecture:
-    Client -> AG-UI SSE -> Orchestrator -> [Judge6 Gate] -> Model Router
+    Client -> AG-UI SSE -> Orchestrator -> Model Router
                                         -> [Oracle Studio] -> Memo Generator
                                         -> [Vent Mode] -> Ephemeral Session
 """
@@ -29,7 +30,7 @@ class AgentRole(StrEnum):
     ORCHESTRATOR = "orchestrator"
     ORACLE = "oracle"
     VENT = "vent"
-    JUDGE = "judge6"
+
     MODEL_ROUTER = "model_router"
 
 
@@ -59,62 +60,14 @@ class TaskContext:
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
-class Judge6Gate:
-    """Mandatory policy gate on all agent routing decisions.
-
-    Enforces ATP 5-19 risk management doctrine:
-    - Rate limiting per tenant
-    - PII stripping from prompts
-    - Regulated-domain answer blocking
-    - Model routing policy enforcement
-    """
-
-    BLOCKED_DOMAINS = frozenset(
-        {
-            "medical_advice",
-            "financial_advice_unlicensed",
-            "immigration_specific",
-        }
-    )
-
-    def evaluate(self, ctx: TaskContext, prompt: str) -> tuple[bool, str]:
-        """Evaluate whether a task should proceed through the gate.
-
-        Args:
-            ctx: The task context with tenant/user metadata.
-            prompt: The user's input prompt.
-
-        Returns:
-            Tuple of (allowed: bool, reason: str).
-        """
-        if not ctx.tenant_id:
-            return False, "DENY: No tenant_id in context"
-
-        if not ctx.user_id:
-            return False, "DENY: No user_id in context"
-
-        # Check for regulated domain markers
-        for domain in self.BLOCKED_DOMAINS:
-            if domain in ctx.metadata.get("classified_domain", ""):
-                return False, f"DENY: Regulated domain {domain}"
-
-        logger.info(
-            "Judge6 ALLOW: task=%s tenant=%s",
-            ctx.task_id,
-            ctx.tenant_id,
-        )
-        return True, "ALLOW"
-
-
 class Orchestrator:
     """ADK 2.0 Graph Workflow Orchestrator.
 
-    Routes incoming A2A tasks through the Judge 6 governance gate
-    and delegates to the appropriate sub-agent (Oracle or Vent).
+    Routes incoming A2A tasks to the appropriate sub-agent (Oracle or Vent).
+    Pure proxy — zero content inspection.
     """
 
     def __init__(self) -> None:
-        self.judge = Judge6Gate()
         self._active_tasks: dict[str, TaskContext] = {}
 
     async def submit_task(
@@ -141,8 +94,13 @@ class Orchestrator:
             TaskContext with initial state.
 
         Raises:
-            PermissionError: If Judge 6 blocks the task.
+            PermissionError: If required routing fields are missing.
         """
+        if not tenant_id:
+            raise PermissionError("DENY: No tenant_id provided")
+        if not user_id:
+            raise PermissionError("DENY: No user_id provided")
+
         ctx = TaskContext(
             tenant_id=tenant_id,
             user_id=user_id,
@@ -150,14 +108,6 @@ class Orchestrator:
             model_preference=model,
             metadata=metadata or {},
         )
-
-        # Judge 6 gate — mandatory pre-flight
-        allowed, reason = self.judge.evaluate(ctx, prompt)
-        if not allowed:
-            ctx.state = TaskState.FAILED
-            ctx.metadata["judge6_reason"] = reason
-            logger.warning("Task %s blocked: %s", ctx.task_id, reason)
-            raise PermissionError(reason)
 
         ctx.state = TaskState.WORKING
         self._active_tasks[ctx.task_id] = ctx

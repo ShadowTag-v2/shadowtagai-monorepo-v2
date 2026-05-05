@@ -6,7 +6,7 @@ to approve or reject a pending HumanGateStep in the SK Process pipeline.
 The endpoint fires an OnExternalEvent("UserApproved") signal to the
 running Semantic Kernel process.
 
-Security: Requires firm-scoped JWT + Judge6 authorization gate.
+Security: Requires firm-scoped JWT authentication.
 """
 
 from __future__ import annotations
