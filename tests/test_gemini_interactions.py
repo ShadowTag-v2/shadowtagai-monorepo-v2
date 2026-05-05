@@ -740,3 +740,302 @@ class TestListInteractions:
         results = client.list(page_size=5, filter="model=gemini-3-flash-preview")
         assert isinstance(results, list)
 
+
+# ---------------------------------------------------------------------------
+# ConversationSession — stream_send() tests
+# ---------------------------------------------------------------------------
+
+
+def _make_stream_mock_client():
+    """Create a client that mocks both create() and stream() at the InteractionsClient level."""
+    from unittest.mock import MagicMock
+
+    client = InteractionsClient.__new__(InteractionsClient)
+    client._api_key = "test-key"
+    client._default_model = "gemini-3-flash-preview"
+
+    # Mock the underlying SDK client
+    mock_api = _MockInteractionsAPI()
+    client._client = type("MockGenAI", (), {"interactions": mock_api})()
+
+    # Patch stream() to yield controlled StreamEvents
+    _stream_call_count = {"n": 0}
+    _stream_calls: list[dict] = []
+
+    def mock_stream(*, input, model=None, previous_interaction_id=None, **kwargs):
+        _stream_call_count["n"] += 1
+        n = _stream_call_count["n"]
+        _stream_calls.append({
+            "input": input,
+            "model": model,
+            "previous_interaction_id": previous_interaction_id,
+        })
+        yield StreamEvent(
+            event_type=EventType.INTERACTION_START,
+            interaction_id=f"stream-{n}",
+        )
+        yield StreamEvent(
+            event_type=EventType.CONTENT_START,
+            index=0,
+            content_type="text",
+        )
+        yield StreamEvent(
+            event_type=EventType.CONTENT_DELTA,
+            index=0,
+            delta_type="text",
+            text=f"Streamed response {n}",
+        )
+        yield StreamEvent(
+            event_type=EventType.CONTENT_STOP,
+            index=0,
+        )
+        yield StreamEvent(
+            event_type=EventType.INTERACTION_COMPLETE,
+            interaction_id=f"stream-{n}",
+            usage={"total_tokens": 42, "prompt_tokens": 10, "completion_tokens": 32},
+        )
+
+    client.stream = mock_stream
+    client._stream_calls = _stream_calls
+    return client
+
+
+class TestConversationSessionStreamSend:
+    def test_stream_send_captures_interaction_id(self):
+        """stream_send captures the interaction_id from the start event."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_stream_mock_client()
+        session = ConversationSession(client, model="gemini-3-flash-preview")
+        events = list(session.stream_send("Hello streaming"))
+
+        assert session.last_interaction_id == "stream-1"
+        assert session.turn_count == 1
+
+    def test_stream_send_chains_to_previous(self):
+        """Second stream_send passes previous_interaction_id from first turn."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_stream_mock_client()
+        session = ConversationSession(client, model="gemini-3-flash-preview")
+        list(session.stream_send("Turn 1"))
+        list(session.stream_send("Turn 2"))
+
+        assert client._stream_calls[0]["previous_interaction_id"] is None
+        assert client._stream_calls[1]["previous_interaction_id"] == "stream-1"
+        assert session.history_ids == ["stream-1", "stream-2"]
+
+    def test_stream_send_yields_all_events(self):
+        """All events from the stream are yielded to the caller."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_stream_mock_client()
+        session = ConversationSession(client)
+        events = list(session.stream_send("Test"))
+
+        event_types = [e.event_type for e in events]
+        assert EventType.INTERACTION_START in event_types
+        assert EventType.CONTENT_DELTA in event_types
+        assert EventType.INTERACTION_COMPLETE in event_types
+
+    def test_stream_send_mixed_with_send(self):
+        """stream_send and send can be interleaved in the same session."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_stream_mock_client()
+        session = ConversationSession(client, model="gemini-3-flash-preview")
+
+        # First turn: non-streaming
+        r1 = session.send("Non-streaming turn")
+        assert session.last_interaction_id == "int-1"
+
+        # Second turn: streaming — should chain from int-1
+        list(session.stream_send("Streaming turn"))
+        assert client._stream_calls[0]["previous_interaction_id"] == "int-1"
+        assert session.history_ids == ["int-1", "stream-1"]
+
+
+# ---------------------------------------------------------------------------
+# ConversationSession — function_call_loop() tests
+# ---------------------------------------------------------------------------
+
+
+def _make_fc_mock_client():
+    """Create a client that mocks function call loop scenarios."""
+    call_log: list[dict] = []
+    call_count = {"n": 0}
+
+    @dataclass
+    class _MockFCOutput:
+        type: str = "function_call"
+        name: str = "get_weather"
+        id: str = "fc-1"
+        arguments: dict = None
+
+        def __post_init__(self):
+            self.arguments = self.arguments or {"city": "NYC"}
+
+    @dataclass
+    class _MockTextOutput:
+        type: str = "text"
+        text: str = "The weather in NYC is sunny."
+
+    class _MockFCAPI:
+        def create(self, **kwargs):
+            call_count["n"] += 1
+            n = call_count["n"]
+            call_log.append(kwargs)
+
+            @dataclass
+            class _Result:
+                id: str = f"fc-int-{n}"
+                status: str = "completed"
+                outputs: list = None
+                usage: Any = None
+
+                def __post_init__(self):
+                    # First call returns function_call, subsequent return text
+                    if n == 1:
+                        self.outputs = [_MockFCOutput()]
+                    else:
+                        self.outputs = [_MockTextOutput()]
+
+            return _Result()
+
+    client = InteractionsClient.__new__(InteractionsClient)
+    client._api_key = "test-key"
+    client._default_model = "gemini-3-flash-preview"
+    client._client = type("MockGenAI", (), {"interactions": _MockFCAPI()})()
+    client._fc_call_log = call_log
+    return client
+
+
+class TestConversationSessionFunctionCallLoop:
+    def test_function_call_loop_auto_chains(self):
+        """Session function_call_loop injects previous_interaction_id."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_fc_mock_client()
+        session = ConversationSession(client, model="gemini-3-flash-preview")
+
+        # Seed with a regular turn first
+        session._interaction_ids.append("seed-id")
+
+        result = session.function_call_loop(
+            input="What's the weather?",
+            tools=[{"type": "function", "name": "get_weather"}],
+            tool_handlers={"get_weather": lambda city: f"Sunny in {city}"},
+        )
+
+        # First create call should chain from seed-id
+        assert client._fc_call_log[0]["previous_interaction_id"] == "seed-id"
+
+    def test_function_call_loop_executes_handler(self):
+        """Handlers are called with the function arguments."""
+        from gemini_interactions.session import ConversationSession
+
+        handler_calls = []
+
+        def weather_handler(city):
+            handler_calls.append(city)
+            return f"72°F in {city}"
+
+        client = _make_fc_mock_client()
+        session = ConversationSession(client)
+        session.function_call_loop(
+            input="Weather check",
+            tools=[{"type": "function", "name": "get_weather"}],
+            tool_handlers={"get_weather": weather_handler},
+        )
+
+        assert handler_calls == ["NYC"]
+
+    def test_function_call_loop_tracks_all_ids(self):
+        """All interaction IDs from the loop are tracked in session history."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_fc_mock_client()
+        session = ConversationSession(client)
+        session.function_call_loop(
+            input="Test",
+            tools=[{"type": "function", "name": "get_weather"}],
+            tool_handlers={"get_weather": lambda city: "warm"},
+        )
+
+        # Should have 2 IDs: initial call + function result submission
+        assert len(session.history_ids) == 2
+        assert session.history_ids == ["fc-int-1", "fc-int-2"]
+
+    def test_function_call_loop_no_function_calls(self):
+        """Early return when response has no function calls."""
+        from gemini_interactions.session import ConversationSession
+
+        @dataclass
+        class _MockTextOnly:
+            type: str = "text"
+            text: str = "Direct answer"
+
+        class _MockNoFCAPI:
+            def create(self, **kwargs):
+                @dataclass
+                class _R:
+                    id: str = "no-fc-1"
+                    status: str = "completed"
+                    outputs: list = None
+                    usage: Any = None
+
+                    def __post_init__(self):
+                        self.outputs = [_MockTextOnly()]
+
+                return _R()
+
+        client = InteractionsClient.__new__(InteractionsClient)
+        client._api_key = "test-key"
+        client._default_model = "gemini-3-flash-preview"
+        client._client = type("M", (), {"interactions": _MockNoFCAPI()})()
+
+        session = ConversationSession(client)
+        result = session.function_call_loop(
+            input="No tools needed",
+            tools=[],
+            tool_handlers={},
+        )
+
+        assert session.turn_count == 1
+        assert result.text == "Direct answer"
+
+    def test_function_call_loop_handler_error(self):
+        """Errored handlers produce error strings, don't crash the loop."""
+        from gemini_interactions.session import ConversationSession
+
+        def failing_handler(**kwargs):
+            msg = "API down"
+            raise ConnectionError(msg)
+
+        client = _make_fc_mock_client()
+        session = ConversationSession(client)
+        result = session.function_call_loop(
+            input="Test error handling",
+            tools=[{"type": "function", "name": "get_weather"}],
+            tool_handlers={"get_weather": failing_handler},
+        )
+
+        # Should complete without raising — error is serialized as result
+        assert session.turn_count == 2
+
+    def test_function_call_loop_missing_handler(self):
+        """Missing handler produces a descriptive error string."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_fc_mock_client()
+        session = ConversationSession(client)
+        result = session.function_call_loop(
+            input="Test missing handler",
+            tools=[{"type": "function", "name": "get_weather"}],
+            tool_handlers={},  # No handler registered
+        )
+
+        # Second call's input should contain the error message
+        second_call_input = client._fc_call_log[1]["input"]
+        assert any("No handler" in str(item.get("result", "")) for item in second_call_input)
+
