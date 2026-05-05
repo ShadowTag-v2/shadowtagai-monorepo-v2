@@ -483,3 +483,260 @@ class TestConstants:
         assert hasattr(gemini_interactions, "EventType")
         assert hasattr(gemini_interactions, "computer_use_tool")
         assert hasattr(gemini_interactions, "file_search_tool")
+        assert hasattr(gemini_interactions, "ConversationSession")
+
+
+# ---------------------------------------------------------------------------
+# ConversationSession — auto-chaining + mixed interactions
+# ---------------------------------------------------------------------------
+
+
+class _MockInteractionsAPI:
+    """Mock for client.interactions with create/get/list."""
+
+    def __init__(self):
+        self._call_count = 0
+        self._create_calls: list[dict] = []
+
+    def create(self, **kwargs):
+        self._call_count += 1
+        self._create_calls.append(kwargs)
+
+        @dataclass
+        class _MockOutput:
+            type: str = "text"
+            text: str = f"Response {self._call_count}"
+
+        @dataclass
+        class _MockResult:
+            id: str = f"int-{self._call_count}"
+            status: str = "completed"
+            outputs: list = None
+
+            def __post_init__(self):
+                self.outputs = self.outputs or [_MockOutput()]
+
+        return _MockResult()
+
+    def get(self, interaction_id, **kwargs):
+        @dataclass
+        class _MockResult:
+            id: str = interaction_id
+            status: str = "completed"
+            outputs: list = None
+
+            def __post_init__(self):
+                self.outputs = self.outputs or []
+
+        return _MockResult()
+
+    def list(self, **kwargs):
+        @dataclass
+        class _MockListResult:
+            interactions: list = None
+
+            def __post_init__(self):
+                self.interactions = self.interactions or []
+
+        return _MockListResult()
+
+
+def _make_mock_client():
+    """Create an InteractionsClient with mocked API."""
+    client = InteractionsClient.__new__(InteractionsClient)
+    client._api_key = "test-key"
+    client._default_model = "gemini-3-flash-preview"
+    client._client = type("MockGenAI", (), {"interactions": _MockInteractionsAPI()})()
+    return client
+
+
+class TestConversationSession:
+    def test_auto_chain_first_turn_no_previous_id(self):
+        """First turn should not have previous_interaction_id."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(client, model="gemini-3-flash-preview")
+        session.send("Hello")
+
+        api = client._client.interactions
+        assert api._create_calls[0].get("previous_interaction_id") is None
+
+    def test_auto_chain_second_turn_has_previous_id(self):
+        """Second turn should auto-chain to first interaction."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(client, model="gemini-3-flash-preview")
+        session.send("Hello")
+        session.send("Follow up")
+
+        api = client._client.interactions
+        assert api._create_calls[1]["previous_interaction_id"] == "int-1"
+
+    def test_three_turn_chain(self):
+        """Three turns should form a chain: None → int-1 → int-2."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(client)
+        session.send("Turn 1")
+        session.send("Turn 2")
+        session.send("Turn 3")
+
+        api = client._client.interactions
+        assert api._create_calls[0].get("previous_interaction_id") is None
+        assert api._create_calls[1]["previous_interaction_id"] == "int-1"
+        assert api._create_calls[2]["previous_interaction_id"] == "int-2"
+
+    def test_history_ids(self):
+        """Session tracks all interaction IDs."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(client)
+        session.send("A")
+        session.send("B")
+        assert session.history_ids == ["int-1", "int-2"]
+        assert session.turn_count == 2
+
+    def test_mixed_interactions_model_switch(self):
+        """Model can be switched mid-conversation for mixed interactions."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(client, model="gemini-3-flash-preview")
+        session.send("Research this topic")
+        session.send("Summarize in JSON", model="gemini-2.5-pro")
+
+        api = client._client.interactions
+        assert api._create_calls[0]["model"] == "gemini-3-flash-preview"
+        assert api._create_calls[1]["model"] == "gemini-2.5-pro"
+        # Chain is still maintained
+        assert api._create_calls[1]["previous_interaction_id"] == "int-1"
+
+    def test_fork_creates_independent_branch(self):
+        """Forked session starts from same position but diverges."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(client, model="gemini-3-flash-preview")
+        session.send("Setup context")
+
+        branch = session.fork(model="gemini-3-pro-preview")
+        branch.send("Explore alternative")
+
+        # Branch has parent history + its own turn
+        assert branch.history_ids == ["int-1", "int-2"]
+        # Parent is unaffected
+        assert session.history_ids == ["int-1"]
+
+    def test_fork_preserves_chain_point(self):
+        """Fork chains from the same previous_interaction_id as parent."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(client)
+        session.send("Base")
+
+        branch = session.fork()
+        branch.send("Branch turn")
+
+        api = client._client.interactions
+        # Branch's first call should chain from int-1 (same as parent's last)
+        assert api._create_calls[1]["previous_interaction_id"] == "int-1"
+
+    def test_reset_clears_history(self):
+        """Reset removes all interaction history."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(client)
+        session.send("A")
+        session.send("B")
+        assert session.turn_count == 2
+
+        session.reset()
+        assert session.turn_count == 0
+        assert session.last_interaction_id is None
+        assert session.history_ids == []
+
+    def test_reset_then_send_no_chain(self):
+        """After reset, next send should not have previous_interaction_id."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(client)
+        session.send("Old context")
+        session.reset()
+        session.send("Fresh start")
+
+        api = client._client.interactions
+        assert api._create_calls[1].get("previous_interaction_id") is None
+
+    def test_store_always_true_for_chaining(self):
+        """Session always sets store=True for cache + chaining support."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(client)
+        session.send("Cache me")
+
+        api = client._client.interactions
+        assert api._create_calls[0]["store"] is True
+
+    def test_system_instruction_propagation(self):
+        """Default system instruction is passed to all turns."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(
+            client, system_instruction="You are a helpful assistant."
+        )
+        session.send("Question")
+
+        api = client._client.interactions
+        assert api._create_calls[0]["system_instruction"] == "You are a helpful assistant."
+
+    def test_system_instruction_override(self):
+        """Per-turn system_instruction overrides session default."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(
+            client, system_instruction="Default instruction"
+        )
+        session.send("Q", system_instruction="Override instruction")
+
+        api = client._client.interactions
+        assert api._create_calls[0]["system_instruction"] == "Override instruction"
+
+    def test_empty_session_properties(self):
+        """Fresh session has no history."""
+        from gemini_interactions.session import ConversationSession
+
+        client = _make_mock_client()
+        session = ConversationSession(client)
+        assert session.last_interaction_id is None
+        assert session.history_ids == []
+        assert session.turn_count == 0
+
+
+# ---------------------------------------------------------------------------
+# Client — list() method
+# ---------------------------------------------------------------------------
+
+
+class TestListInteractions:
+    def test_list_empty(self):
+        client = _make_mock_client()
+        results = client.list()
+        assert results == []
+
+    def test_list_passes_kwargs(self):
+        """Verify page_size and filter are forwarded."""
+        client = _make_mock_client()
+        # The mock returns empty, but we verify it doesn't raise
+        results = client.list(page_size=5, filter="model=gemini-3-flash-preview")
+        assert isinstance(results, list)
+
