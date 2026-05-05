@@ -448,6 +448,35 @@ memory/
 **/.next-export/
 **/cache/turbopack/
 
+# KovelAI Turbopack dev server build artifacts (ephemeral, never commit)
+apps/kovelai/public/BUILD_ID
+apps/kovelai/public/app-path-routes-manifest.json
+apps/kovelai/public/build-manifest.json
+apps/kovelai/public/cache/
+apps/kovelai/public/dev/
+apps/kovelai/public/diagnostics/
+apps/kovelai/public/export-marker.json
+apps/kovelai/public/fallback-build-manifest.json
+apps/kovelai/public/images-manifest.json
+apps/kovelai/public/interception-route-rewrite-manifest.json
+apps/kovelai/public/next-font-manifest.json
+apps/kovelai/public/next-minimal-server.js.nft.json
+apps/kovelai/public/next-server.js.nft.json
+apps/kovelai/public/package.json
+apps/kovelai/public/pages-manifest.json
+apps/kovelai/public/prerender-manifest.json
+apps/kovelai/public/required-server-files.js
+apps/kovelai/public/required-server-files.json
+apps/kovelai/public/routes-manifest.json
+apps/kovelai/public/server/
+apps/kovelai/public/server-reference-manifest.json
+apps/kovelai/public/static/
+apps/kovelai/public/trace
+apps/kovelai/public/trace-build
+apps/kovelai/public/turbopack
+apps/kovelai/public/types/
+apps/kovelai/tsconfig.tsbuildinfo
+
 # Pixi package manager (FSEvents storm prevention)
 .pixi/
 

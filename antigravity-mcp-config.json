@@ -74,34 +74,14 @@
       "capability_owner": true,
       "owns": ["sequentialthinking"],
       "note": "Sequential Thinking MCP — MUST use for architecture decisions, multi-step reasoning, and complex problem decomposition. No ad-hoc reasoning lists."
-    },
-    "antigravity-notebooklm-mcp": {
-      "command": "npx",
-      "args": ["-y", "notebooklm-mcp@latest"],
-      "env": {
-        "HEADLESS": "true",
-        "NOTEBOOKLM_PROFILE": "full"
-      },
-      "capability_owner": true,
-      "owns": [
-        "ask_question",
-        "setup_auth",
-        "list_notebooks",
-        "select_notebook",
-        "get_notebook",
-        "add_notebook",
-        "search_notebooks"
-      ],
-      "note": "IPI quarantine zone. NotebookLM via Gemini 2.5 — zero-hallucination RAG. Requires one-time Google auth via setup_auth tool. Auth persists in ~/Library/Application Support/notebooklm-mcp/."
-    }
+}
   },
   "routing_rules": {
     "google_api_docs": "google-developer-knowledge",
     "firebase_operations": "firebase-mcp-server",
     "browser_interaction": "chrome-devtools-mcp",
     "ui_design": "StitchMCP",
-    "architecture_reasoning": "sequential-thinking",
-    "document_analysis": "antigravity-notebooklm-mcp"
+    "architecture_reasoning": "sequential-thinking"
   },
   "anti_patterns": [
     "NEVER use search_web for Google API documentation — use google-developer-knowledge MCP",

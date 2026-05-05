@@ -62,7 +62,7 @@ def rough_token_estimate_for_block(block: dict[str, Any] | str) -> int:
         input_data = block.get("input", {})
         try:
             serialized = name + json.dumps(input_data, separators=(",", ":"))
-        except (TypeError, ValueError):
+        except TypeError, ValueError:
             serialized = name + str(input_data)
         return rough_token_estimate(serialized)
 
@@ -74,7 +74,7 @@ def rough_token_estimate_for_block(block: dict[str, Any] | str) -> int:
 
     try:
         serialized = json.dumps(block, separators=(",", ":"))
-    except (TypeError, ValueError):
+    except TypeError, ValueError:
         serialized = str(block)
     return rough_token_estimate(serialized)
 
