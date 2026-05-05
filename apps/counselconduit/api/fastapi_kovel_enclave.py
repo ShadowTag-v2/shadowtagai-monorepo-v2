@@ -47,7 +47,7 @@ try:
         execute_privileged_query,
         stream_privileged_query,
     )
-    from apps.counselconduit.api.judge6 import evaluate as judge6_evaluate
+
     from apps.counselconduit.api.stripe_connect import router as billing_router
     from apps.counselconduit.api.stripe_handler import router as stripe_router
 except ImportError:
@@ -63,7 +63,7 @@ except ImportError:
         execute_privileged_query,
         stream_privileged_query,
     )
-    from api.judge6 import evaluate as judge6_evaluate  # type: ignore[no-redef]
+
     from api.stripe_connect import router as billing_router  # type: ignore[no-redef]
     from api.stripe_handler import router as stripe_router  # type: ignore[no-redef]
 
@@ -357,7 +357,7 @@ async def execute_query(
     """Execute a Kovel-privileged query against the Gemini RAG pipeline.
 
     Synchronous endpoint — returns full response after completion.
-    All responses pass through Judge 6 governance before returning.
+    All responses pass through to the client without content inspection.
     """
     attorney_id = _verify_kovel_auth(x_kovel_auth)
     request.attorney_id = attorney_id
@@ -365,13 +365,6 @@ async def execute_query(
     start = time.monotonic()
     result = await execute_privileged_query(request)
     elapsed_ms = int((time.monotonic() - start) * 1000)
-
-    # Judge 6 governance gate
-    governance = judge6_evaluate(result.response)
-    if not governance.assessment.approved:
-        result.response = governance.output_text  # Replace with blocked message
-    elif governance.output_text != governance.input_text:
-        result.response = governance.output_text  # Apply warnings
 
     # Audit log (async, non-blocking)
     try:
