@@ -1,68 +1,73 @@
-# Gemini Code Assist: Exclude heavy directories to prevent RAG cache death spiral
-# Root cause: GCA indexing package.json files across monorepo → 52% CPU → extension host freeze
+# Gemini Code Assist: Aggressive exclusions to prevent RAG indexing deadlock
+# Root cause: GCA Go language server indexes 465K+ files → 11-minute Mutex deadlock
+# → Extension host CPU starvation → MCP -32000 crash → UI "Signed Out" split-brain
+# Target: <2,000 indexable files → 3-second boot instead of 11 minutes
 
+# ============================================================
+# CRITICAL: Massive orphan directories (94K+ files each)
+# ============================================================
+.tmp.driveupload/
+**/.tmp.driveupload/**
+
+# ============================================================
+# Lint & tool caches (~50K+ files across versions)
+# ============================================================
+**/.ruff_cache/**
+**/.mypy_cache/**
+**/.pytest_cache/**
+**/.cache/**
+**/.gradle/**
+**/.turbo/**
+
+# ============================================================
 # Package managers & dependencies
+# ============================================================
 **/node_modules/**
 **/.pnpm-store/**
 **/bower_components/**
 
-# Python environments
+# ============================================================
+# Python environments & bytecode
+# ============================================================
 **/.venv/**
 **/venv/**
 **/__pycache__/**
 **/.tox/**
 **/*.egg-info/**
+**/*.pyc
+**/*.pyo
 
-# Build artifacts
+# ============================================================
+# Build artifacts & compiled output
+# ============================================================
 **/.next/**
 **/dist/**
 **/build/**
 **/out/**
-**/.turbo/**
+**/target/**
 
+# ============================================================
 # Version control internals
+# ============================================================
 **/.git/**
 
+# ============================================================
 # Large media & binaries
+# ============================================================
 **/*.mp4
 **/*.webm
 **/*.pdf
 **/*.zip
 **/*.tar.gz
 **/*.whl
-**/*.pyc
-**/*.pyo
 **/*.so
 **/*.dylib
+**/*.gguf
+**/*.heapsnapshot
 
-# Database & caches
-**/.firebase/**
-**/.lancedb/**
-**/*.sqlite3
-**/state.vscdb*
-**/.cache/**
-**/.gradle/**
-
-# Monorepo heavy zones
-**/external_repos/**
-**/legacy_workspaces/**
-**/external_payloads/**
-**/devrel-demos/**
-**/deep-archive/**
-
-# AiYou stack (many nested package.json files — RAG cache thrash source)
-**/aiyou_stack/aiyou-fastapi-services/apps/**/node_modules/**
-**/aiyou_stack/aiyou-fastapi-services/infrastructure/**
-**/aiyou_stack/cosmic-crab-payload/node_modules/**
-**/aiyou_stack/nascent-apollo/node_modules/**
-
-# Minified / bundled JS (charset detection thrash)
-**/*.min.js
-**/*.bundle.js
-**/*.min.css
-**/DarkReaderScript.js
-
-# Images and media
+# ============================================================
+# Images (indexed by vision, not text RAG)
+# ============================================================
 **/*.png
 **/*.jpg
 **/*.jpeg
@@ -70,21 +75,66 @@
 **/*.ico
 **/*.svg
 **/*.webp
-**/*.gguf
 
-# Clone artifacts
-**/clone-base/**
+# ============================================================
+# Database & caches
+# ============================================================
+**/.firebase/**
+**/.lancedb/**
+**/*.sqlite3
+**/state.vscdb*
+**/*.lance/**
 
-# Third party tools
-**/tools/mcp-toolbox/**
-**/third_party/security/**
+# ============================================================
+# Minified / bundled JS (charset detection thrash)
+# ============================================================
+**/*.min.js
+**/*.bundle.js
+**/*.min.css
+**/DarkReaderScript.js
 
-# Secrets
+# ============================================================
+# MONOREPO HEAVY ZONES — Entire directories excluded
+# These are massive backend microservices not needed for
+# frontline KovelAI/ShadowTagAI development work
+# ============================================================
+apps/aiyou_stack/**
+apps/thermal-ride/**
+apps/gitnexus/**
+apps/unusual-machines-clone/**
+apps/cobalt-planck/**
+apps/headfade/**
+apps/awesome-nano-banana-pro-prompts/
+apps/transcode-service/**
+
+# ============================================================
+# Infrastructure & control plane (not frontend code)
+# ============================================================
+control/**
+
+# ============================================================
+# External repos, archives, & data pipelines
+# ============================================================
+external_repos/
+legacy_workspaces/
+external_payloads/
+devrel-demos/
+deep-archive/
+archive/
+data/
+tools/
+clone-base/
+
+# ============================================================
+# Third party security tools
+# ============================================================
+third_party/security/
+
+# ============================================================
+# Secrets (NEVER index)
+# ============================================================
 .env
 **/.env.local
 **/.env.production
-
-# Added by user request for performance
-external_repos/
-tools/
-apps/awesome-nano-banana-pro-prompts/
+**/keys/**
+**/*.pem
