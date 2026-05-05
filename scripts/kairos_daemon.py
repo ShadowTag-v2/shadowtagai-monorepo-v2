@@ -710,7 +710,7 @@ def run_research_sweep() -> bool:
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
     try:
         idx = int(topic_index_file.read_text().strip()) if topic_index_file.exists() else 0
-    except ValueError, OSError:
+    except (ValueError, OSError):
         idx = 0
     topic = _RESEARCH_TOPICS[idx % len(_RESEARCH_TOPICS)]
     topic_index_file.write_text(str((idx + 1) % len(_RESEARCH_TOPICS)))
@@ -1031,10 +1031,8 @@ def run_proactive_suggestion_probe() -> bool:
     except Exception as e:
         logger.debug("ThinkTool pre-reasoning skipped: %s", e)
 
-    # Two-tier generation callback:
-    #   Tier 1: Direct generateContent (lightweight, always available)
-    #   Tier 2: Interactions API (stateful, requires enablement)
-    # Tier 1 is preferred for single-turn suggestion inference.
+    # Generation callback: Direct generateContent via Gemini 3.1 Flash-Lite
+    # with HIGH thinking for quality 2-12 word action-phrase suggestions.
     def _generate_fn(msgs: list[dict], prompt: str) -> tuple[str | None, str | None]:
         # Resolve API key from env or GCP Secret Manager
         api_key = _resolve_gemini_api_key()
@@ -1060,7 +1058,7 @@ def run_proactive_suggestion_probe() -> bool:
 
         gen_id = f"proactive-{int(time.time())}"
 
-        # Tier 1: Gemini 3.1 Flash-Lite — ultra-low-latency, MINIMAL thinking
+        # Tier 1: Gemini 3.1 Flash-Lite — HIGH thinking for quality suggestions
         try:
             from google import genai
             from google.genai import types
@@ -1074,7 +1072,7 @@ def run_proactive_suggestion_probe() -> bool:
                     temperature=0.3,
                     max_output_tokens=60,
                     thinking_config=types.ThinkingConfig(
-                        thinking_level="minimal",
+                        thinking_level="high",
                     ),
                 ),
             )
@@ -1090,36 +1088,12 @@ def run_proactive_suggestion_probe() -> bool:
                 if first_frag:
                     logger.info("Tier 1 (generateContent) suggestion: '%s'", first_frag[:60])
                     return (first_frag, gen_id)
-            logger.debug("Tier 1 returned empty text, trying Tier 2")
+            logger.debug("Tier 1 returned empty text")
         except ImportError:
             logger.warning("google-genai SDK not installed — cannot generate suggestions")
             return (None, None)
         except Exception as e:
             logger.warning("Tier 1 (generateContent) failed: %s: %s", type(e).__name__, e)
-
-        # Tier 2: Interactions API — DEPRECATED for suggestions (overkill for 2-12 word phrases)
-        # Kept as last-resort fallback; Flash-Lite with MINIMAL thinking should always suffice.
-        try:
-            logger.warning("Tier 2 (Interactions API) fallback fired — consider investigating Tier 1 failures")
-            from speculation_engine.gemini_bridge import GeminiPairProgrammer
-
-            pair = GeminiPairProgrammer(api_key=api_key)
-            session = pair.start_session(
-                system_prompt=system_instruction,
-                model="gemini-3-flash-preview",
-            )
-            result = pair.send(full_prompt, session=session)
-            result_text = getattr(result, "text", None)
-            if result_text and result_text.strip():
-                logger.info("Tier 2 (Interactions) suggestion: '%s'", result_text.strip()[:60])
-                return (result_text.strip(), gen_id)
-            logger.debug(
-                "Tier 2 returned empty text (result=%s, outputs=%s)",
-                type(result).__name__,
-                getattr(result, "outputs", "N/A"),
-            )
-        except Exception as e:
-            logger.warning("Tier 2 (Interactions API) failed: %s: %s", type(e).__name__, e)
 
         return (None, None)
 

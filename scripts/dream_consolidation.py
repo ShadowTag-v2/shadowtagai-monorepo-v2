@@ -407,7 +407,7 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
                             "updated_at": entry.updated_at,
                         },
                     )
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
     report.ki_scanned = len(entries)
