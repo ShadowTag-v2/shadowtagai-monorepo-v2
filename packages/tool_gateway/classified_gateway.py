@@ -338,7 +338,7 @@ class ClassifiedGateway:
                 latency_ms=ba_latency,
             )
 
-        # Tier 1.75: Bash Security Classifier (23-check pipeline)
+        # Tier 1.75: Bash Security Classifier (35-check pipeline)
         # Fires only for bash/shell tool invocations
         if tool_id in _SHELL_TOOL_IDS:
             command = tool_input.get("CommandLine", "")
