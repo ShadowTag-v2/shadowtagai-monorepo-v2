@@ -18,10 +18,8 @@ def get_current_state():
 
 def apply_mutations():
     """Phase 2: Execution (Builder)
-    Applies zero-shot structural fixes using vulture and ruff."""
+    Applies zero-shot structural fixes using ruff."""
     logging.info("Executing Phase 2: Execution (Builder)")
-    # Vulture step
-    subprocess.run(["vulture", "."], capture_output=True)
     # Ruff auto-fix
     subprocess.run(["ruff", "check", "--fix", "."], capture_output=True)
     return True

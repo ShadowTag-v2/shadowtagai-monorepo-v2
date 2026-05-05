@@ -17,7 +17,7 @@ Architecture:
         Agent 5 (KAIROS):          Nightly knowledge distillation.
         Agent 6 (Aegaeon Cache):   Token microcompaction & KV slab.
         Agent 7 (Omega Auth):      GCP Secret Manager fetch.
-        Agent 8 (Rich Hickey):     Dead code enforcement (vulture + ruff).
+        Agent 8 (Rich Hickey):     Dead code enforcement (ruff).
 
 Communication:
     Agents do NOT exchange XML files in a scratch directory.

@@ -267,7 +267,7 @@ class Judge6DeployGate:
 
     Phase 1 — Wet Fleece ($0):
         Static analysis: AST validation, type checking, dead code scan.
-        Tools: ruff, vulture, ast-grep.
+        Tools: ruff, ast-grep.
 
     Phase 2 — Dry Ground (moderate):
         Sandboxed test execution in gVisor container.

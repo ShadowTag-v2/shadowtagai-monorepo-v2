@@ -16,7 +16,6 @@ py_library(
     srcs = [
         "__init__.py",
         "Cor.Claude_Code_6_atp519_scoring.py",
-        "vulture_whitelist.py",
     ],
     visibility = [
         "//apps:__subpackages__",

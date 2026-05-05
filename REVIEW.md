@@ -85,7 +85,7 @@ Pass test matrices and edge ML changes through `apps/aiyou_stack/aiyou-fastapi-s
 - `from __future__ import annotations` at top of every file
 - Prefer `match` statements over chained `isinstance` checks
 - Use structured logging (`structlog`), not f-string interpolation in log calls
-- `ruff` for linting, `vulture` at 90% confidence for dead code
+- `ruff` for linting, `ruff check --select F401,F841 --fix` for dead code
 
 ### TypeScript (KovelAI Frontend)
 - Google TypeScript style guide
