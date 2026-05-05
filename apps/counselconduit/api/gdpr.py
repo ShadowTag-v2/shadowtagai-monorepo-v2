@@ -19,7 +19,7 @@ import os
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger("counselconduit.gdpr")
@@ -148,6 +148,81 @@ async def _schedule_hard_delete(receipt_id: str, firm_id: str, deletion_date: st
     except Exception as e:
         logger.warning("Cloud Tasks scheduling failed (non-fatal): %s", e)
         return False
+
+
+async def _cancel_cloud_task(receipt_id: str, firm_id: str) -> bool:
+    """Cancel the scheduled Cloud Tasks hard-delete job.
+
+    Searches the gdpr-deletions queue for tasks matching this receipt_id
+    and deletes them from the queue.
+    """
+    try:
+        from google.cloud import tasks_v2
+
+        client = tasks_v2.CloudTasksClient()
+        parent = client.queue_path(_GCP_PROJECT, _GCP_LOCATION, _GDPR_QUEUE)
+
+        # List tasks in the queue and find matching ones
+        for task in client.list_tasks(parent=parent):
+            if task.http_request and task.http_request.body:
+                try:
+                    body = json.loads(task.http_request.body.decode())
+                    if body.get("receipt_id") == receipt_id and body.get("firm_id") == firm_id:
+                        client.delete_task(name=task.name)
+                        logger.info("Cloud Task cancelled: %s for receipt=%s", task.name, receipt_id)
+                        return True
+                except json.JSONDecodeError, UnicodeDecodeError:
+                    continue
+        logger.warning("No Cloud Task found for receipt=%s", receipt_id)
+        return False
+    except Exception as e:
+        logger.warning("Cloud Task cancellation failed (non-fatal): %s", e)
+        return False
+
+
+def _verify_oidc_token(request: Request) -> None:
+    """Verify Cloud Tasks OIDC token on internal endpoints.
+
+    Mirrors the verification logic in cloud_tasks_gdpr_handler.py
+    for security parity across all task-invoked endpoints.
+    """
+    if os.getenv("APP_ENV") == "development":
+        return
+
+    auth_header = request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Cloud Tasks OIDC token required.",
+        )
+
+    token = auth_header.removeprefix("Bearer ")
+    try:
+        from google.auth.transport import requests as google_requests
+        from google.oauth2 import id_token
+
+        authorized_sa = os.getenv(
+            "CLOUD_TASKS_SA",
+            "counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com",
+        )
+        claims = id_token.verify_oauth2_token(
+            token,
+            google_requests.Request(),
+            audience=os.getenv("CLOUD_RUN_URL", _SERVICE_URL),
+        )
+        if claims.get("email") != authorized_sa:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Unauthorized service account.",
+            )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("OIDC verification failed on _execute-delete: %s", e)
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Invalid OIDC token.",
+        ) from e
 
 
 # ── Endpoints ──────────────────────────────────────────────────────────────
@@ -450,6 +525,16 @@ async def cancel_account_deletion(
             }
         )
 
+        # Cancel the scheduled Cloud Task (best-effort)
+        task_cancelled = await _cancel_cloud_task(request.receipt_id, request.firm_id)
+        if task_cancelled:
+            logger.info("Cloud Task also cancelled for receipt=%s", request.receipt_id)
+        else:
+            logger.warning(
+                "Cloud Task cancellation failed for receipt=%s — task may still fire but will be rejected by status check",
+                request.receipt_id,
+            )
+
         await write_audit_log(
             AuditEntry(
                 action="account_deletion_cancelled",
@@ -483,7 +568,10 @@ async def cancel_account_deletion(
 
 
 @router.post("/_execute-delete", include_in_schema=False)
-async def execute_hard_delete(payload: dict[str, Any]) -> dict[str, str]:
+async def execute_hard_delete(
+    payload: dict[str, Any],
+    request: Request,
+) -> dict[str, str]:
     """Internal endpoint called by Cloud Tasks after 30-day grace period.
 
     NOT exposed in OpenAPI schema. Performs the actual data wipe:
@@ -493,6 +581,9 @@ async def execute_hard_delete(payload: dict[str, Any]) -> dict[str, str]:
     4. Mark GDPR request as completed
     5. Log audit entry (audit log itself is NEVER deleted)
     """
+    # OIDC verification — security parity with cloud_tasks_gdpr_handler.py
+    _verify_oidc_token(request)
+
     receipt_id = payload.get("receipt_id")
     firm_id = payload.get("firm_id")
 
