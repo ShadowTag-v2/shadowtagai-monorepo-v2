@@ -40,7 +40,10 @@ export default function MarketplacePage() {
       const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/marketplace/checkout`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ videoId: wfId, buyerId: 'anon' }) });
       const d = await r.json();
       if (d.checkoutUrl) window.location.href = d.checkoutUrl;
-    } catch { alert('Stripe Connect checkout opens in production.'); }
+    } catch (_err: unknown) {
+      void _err;
+      alert('Stripe Connect checkout opens in production.');
+    }
   }, []);
 
   return (
