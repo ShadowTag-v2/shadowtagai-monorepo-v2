@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ DEFAULT_AUTO_TOOL_SEARCH_PERCENTAGE: int = 10
 CHARS_PER_TOKEN: float = 2.5
 
 
-class ToolSearchMode(str, Enum):
+class ToolSearchMode(StrEnum):
     """Tool search mode enum.
 
     - TST: Tool Search Technology — explicit tool reference mode

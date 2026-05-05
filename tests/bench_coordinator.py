@@ -44,10 +44,7 @@ async def run_benchmark(n_tasks: int = 100, max_concurrency: int = 8) -> dict:
         return {"task_id": task_id, "status": "complete"}
 
     # Build task batch
-    tasks = [
-        (f"bench_{i}", mock_sub_agent, {"task_id": i, "delay_ms": 5.0})
-        for i in range(n_tasks)
-    ]
+    tasks = [(f"bench_{i}", mock_sub_agent, {"task_id": i, "delay_ms": 5.0}) for i in range(n_tasks)]
 
     # Warm up the event loop
     await asyncio.sleep(0.01)
@@ -91,8 +88,8 @@ def main():
     print("SubAgentCoordinator Dispatch Benchmark")
     print("=" * 60)
 
-    # Test at multiple concurrency levels
-    for concurrency in [4, 8, 16]:
+    # Test at multiple concurrency levels (Playbook Phase C: C=32, C=64 required)
+    for concurrency in [4, 8, 16, 32, 64]:
         print(f"\n--- Concurrency: {concurrency} ---")
         metrics = asyncio.run(run_benchmark(n_tasks=100, max_concurrency=concurrency))
         for key, val in metrics.items():
@@ -101,9 +98,14 @@ def main():
             print(f"  {key}: {val}")
 
     # Large workload test
-    print("\n--- Stress Test: 500 tasks @ concurrency=16 ---")
-    stress_metrics = asyncio.run(run_benchmark(n_tasks=500, max_concurrency=16))
+    print("\n--- Stress Test: 500 tasks @ concurrency=32 ---")
+    stress_metrics = asyncio.run(run_benchmark(n_tasks=500, max_concurrency=32))
     print(json.dumps(stress_metrics, indent=2))
+
+    # High-ceiling stress test
+    print("\n--- Stress Test: 1000 tasks @ concurrency=64 ---")
+    stress_64 = asyncio.run(run_benchmark(n_tasks=1000, max_concurrency=64))
+    print(json.dumps(stress_64, indent=2))
 
 
 if __name__ == "__main__":

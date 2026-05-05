@@ -13,7 +13,10 @@ export default function Features() {
           strokeLinecap="round"
           strokeLinejoin="round"
           className="text-gold"
+          aria-labelledby="intake-icon"
+          role="img"
         >
+          <title id="intake-icon">Intake Icon</title>
           <path
             d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24Z"
             opacity=".2"
@@ -39,7 +42,10 @@ export default function Features() {
           strokeLinecap="round"
           strokeLinejoin="round"
           className="text-gold"
+          aria-labelledby="pipeline-icon"
+          role="img"
         >
+          <title id="pipeline-icon">Pipeline Icon</title>
           <rect x="48" y="48" width="160" height="160" rx="8" opacity=".2" fill="currentColor" />
           <rect x="48" y="48" width="160" height="160" rx="8" fill="none" />
           <path d="M48 128h160M128 48v160" />
@@ -61,7 +67,10 @@ export default function Features() {
           strokeLinecap="round"
           strokeLinejoin="round"
           className="text-gold"
+          aria-labelledby="search-icon"
+          role="img"
         >
+          <title id="search-icon">Search Icon</title>
           <path
             d="M40 114.79V208a8 8 0 0 0 8 8H208a8 8 0 0 0 8-8V114.79a8 8 0 0 0-3.56-6.66l-80-53.34a8 8 0 0 0-8.88 0l-80 53.34A8 8 0 0 0 40 114.79Z"
             opacity=".2"
@@ -89,7 +98,10 @@ export default function Features() {
           strokeLinecap="round"
           strokeLinejoin="round"
           className="text-gold"
+          aria-labelledby="capture-icon"
+          role="img"
         >
+          <title id="capture-icon">Capture Icon</title>
           <path
             d="M213.67 186.15A8 8 0 0 1 208 200H48a8 8 0 0 1-5.67-13.85l80-80a8 8 0 0 1 11.34 0Z"
             opacity=".2"
@@ -118,7 +130,10 @@ export default function Features() {
           strokeLinecap="round"
           strokeLinejoin="round"
           className="text-gold"
+          aria-labelledby="compliance-icon"
+          role="img"
         >
+          <title id="compliance-icon">Compliance Icon</title>
           <rect x="32" y="56" width="192" height="144" rx="8" opacity=".2" fill="currentColor" />
           <rect x="32" y="56" width="192" height="144" rx="8" fill="none" />
           <path d="M128 56V32M96 56V40M160 56V40" />
@@ -140,7 +155,10 @@ export default function Features() {
           strokeLinecap="round"
           strokeLinejoin="round"
           className="text-gold"
+          aria-labelledby="analytics-icon"
+          role="img"
         >
+          <title id="analytics-icon">Analytics Icon</title>
           <path d="M232 208H24V48" fill="none" />
           <path d="M232 168l-68-68-48 48L72 104" fill="none" />
         </svg>

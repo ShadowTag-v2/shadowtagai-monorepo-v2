@@ -26,10 +26,10 @@
   --color-blue: #aac7ff;
   --color-blue-container: #3e90ff;
   --color-lavender: #b8c8f2;
-  --color-primary-text: #d7e3fc;
-  --color-secondary-text: #d0c5b5;
-  --color-outline: #998f81;
-  --color-outline-variant: #4d463a;
+  --color-primary-text: #ffffff;
+  --color-secondary-text: #f0e6d6;
+  --color-outline: #c0b5a4;
+  --color-outline-variant: #6b6456;
   --color-error: #ffb4ab;
 
   /* shadcn compat vars */
@@ -61,22 +61,22 @@
 
 :root {
   --background: #071325;
-  --foreground: #d7e3fc;
+  --foreground: #ffffff;
   --card: #1f2a3d;
-  --card-foreground: #d7e3fc;
+  --card-foreground: #ffffff;
   --popover: #142032;
-  --popover-foreground: #d7e3fc;
+  --popover-foreground: #ffffff;
   --primary: #e6c487;
   --primary-foreground: #412d00;
-  --secondary: #d0c5b5;
+  --secondary: #e6dac8;
   --secondary-foreground: #071325;
   --muted: #2a3548;
-  --muted-foreground: #998f81;
+  --muted-foreground: #c2b7a6;
   --accent: #aac7ff;
   --accent-foreground: #071325;
   --destructive: #ffb4ab;
-  --border: rgba(77, 70, 58, 0.15);
-  --input: rgba(77, 70, 58, 0.25);
+  --border: rgba(230, 196, 135, 0.25);
+  --input: rgba(230, 196, 135, 0.25);
   --ring: #e6c487;
   --radius: 0.5rem;
 }
@@ -319,7 +319,7 @@
   font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #a89d8e;
+  color: #b3a897;
   border-bottom: 1px solid rgba(77, 70, 58, 0.25);
 }
 .comparison-table tbody tr {
@@ -666,7 +666,7 @@
   font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #998f81;
+  color: #b3a897;
   margin-bottom: 0.75rem;
 }
 .footer-links {

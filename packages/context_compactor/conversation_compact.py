@@ -470,9 +470,7 @@ def should_exclude_from_restore(
     """Return True if *filename* should not be restored post-compact."""
     if plan_file_path and filename == plan_file_path:
         return True
-    if memory_paths and filename in memory_paths:
-        return True
-    return False
+    return bool(memory_paths and filename in memory_paths)
 
 
 # ── Compact orchestrator ──────────────────────────────────────────────────────

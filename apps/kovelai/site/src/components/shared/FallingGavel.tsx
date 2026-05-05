@@ -35,14 +35,7 @@ function GavelSVG() {
       {/* Handle */}
       <line x1="18" y1="46" x2="38" y2="26" />
       {/* Head */}
-      <rect
-        x="34"
-        y="14"
-        width="18"
-        height="10"
-        rx="2"
-        transform="rotate(45 43 19)"
-      />
+      <rect x="34" y="14" width="18" height="10" rx="2" transform="rotate(45 43 19)" />
       {/* Strike plate */}
       <rect x="8" y="52" width="24" height="4" rx="1" />
       {/* Impact ring */}
@@ -243,8 +236,8 @@ export default function FallingGavel({ onOpenModal }: FallingGavelProps) {
               fontFamily: "'Inter', system-ui, sans-serif",
             }}
           >
-            Every day your clients search without KovelAI is another day opposing counsel
-            can subpoena their browser history. Deploy your firm&apos;s privileged portal today.
+            Every day your clients search without KovelAI is another day opposing counsel can
+            subpoena their browser history. Deploy your firm&apos;s privileged portal today.
           </motion.p>
 
           {/* CTA buttons */}
