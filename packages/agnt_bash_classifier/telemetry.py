@@ -40,3 +40,28 @@ class BashTelemetryTracker:
             event_name,
             {"command": command, "cwd": cwd, "duration_sec": duration, "exit_code": exit_code, "stdout_len": stdout_len, "stderr_len": stderr_len},
         )
+
+    def track_security_check_failed(self, check_id: Any, command: str, message: str = ""):
+        """
+        Logs `tengu_bash_security_check_failed` — emitted when the 23-check
+        pipeline blocks a command.
+        """
+        self.log_event(
+            "tengu_bash_security_check_failed",
+            {
+                "check_id": int(check_id),
+                "check_name": check_id.name if hasattr(check_id, "name") else str(check_id),
+                "command": command,
+                "message": message,
+            },
+        )
+
+    def track_security_validated(self, command: str, checks_passed: int, duration_ms: float):
+        """
+        Logs `tengu_bash_security_validated` — emitted when a command passes
+        all 23 security checks.
+        """
+        self.log_event(
+            "tengu_bash_security_validated",
+            {"command": command, "checks_passed": checks_passed, "duration_ms": duration_ms},
+        )

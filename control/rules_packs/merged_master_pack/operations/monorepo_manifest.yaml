@@ -47,3 +47,21 @@ products:
     model: primary-model
     project: primary-project
     business_role: internal-rd-lab
+
+security_modules:
+  agnt_bash_classifier:
+    status: production
+    root: packages/agnt_bash_classifier
+    pipeline_checks: 23
+    gateway_tier: 1.75
+    integration: packages/tool_gateway/classified_gateway.py
+    telemetry: packages/agnt_bash_classifier/telemetry.py
+    test_suite:
+      - tests/test_bash_classifier_hypothesis.py
+      - tests/test_bash_security_checks.py
+      - tests/test_bash_telemetry_roundtrip.py
+    notes: >-
+      Fail-fast 23-check regex pipeline for bash command validation.
+      Adversa AI Risk #34 50-subcommand cap enforced pre-pipeline.
+      Hypothesis stress-tested at 1000 examples, 0.40ms avg latency.
+      Wired into ClassifiedGateway at Tier 1.75.
