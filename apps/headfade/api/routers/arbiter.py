@@ -3,6 +3,8 @@ from datetime import UTC, datetime
 import firebase_admin
 from fastapi import APIRouter, HTTPException
 from firebase_admin import credentials, firestore
+import os
+
 from google import genai
 from google.genai import types
 from pydantic import BaseModel
@@ -20,27 +22,35 @@ from pydantic import BaseModel
 # Every vote must build the Human Deception Index.
 # -------------------------------------------------------------------------------------
 
+# Vertex AI project config — GCS URIs require Vertex AI, NOT AI Studio API keys
+_VERTEX_PROJECT = os.environ.get("GOOGLE_CLOUD_PROJECT", "shadowtag-omega-v4")
+_VERTEX_LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION", "global")
+
 router = APIRouter(prefix="/api", tags=["arbiter"])
 
 # Initialize Firebase for the HDI tally (if not already init globally)
 try:
     if not firebase_admin._apps:
         cred = credentials.ApplicationDefault()
-        firebase_admin.initialize_app(cred, {"projectId": "shadowtag-omega-v4"})
+        firebase_admin.initialize_app(cred, {"projectId": _VERTEX_PROJECT})
     db = firestore.client()
 except Exception as e:
     print(f"[ARBITER WARNING] Firebase init failed, continuing without HDI tracking. {e}")
     db = None
 
 # GenAI client: lazy-init to prevent module-level crash on Cloud Run startup
-# ADC or GEMINI_API_KEY must be available at request time, not import time
+# Uses Vertex AI (ADC) for GCS URI access — API keys cannot access gs:// URIs
 _client = None
 
 
 def _get_genai_client() -> genai.Client:
     global _client
     if _client is None:
-        _client = genai.Client()
+        _client = genai.Client(
+            vertexai=True,
+            project=_VERTEX_PROJECT,
+            location=_VERTEX_LOCATION,
+        )
     return _client
 
 
