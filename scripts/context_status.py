@@ -109,7 +109,7 @@ def render_dashboard(model: str = "gemini-3.1-flash-lite-preview-thinking") -> s
         prompt_sections = assembler.assemble_sync()
         prompt_text = "\n\n".join(prompt_sections)
         prompt_tokens = estimate_tokens(prompt_text)
-    except ImportError, Exception:
+    except (ImportError, Exception):
         prompt_tokens = 0
 
     # Build budget breakdown
@@ -178,7 +178,7 @@ def render_dashboard(model: str = "gemini-3.1-flash-lite-preview-thinking") -> s
         if cached_count > 0:
             for name in list(_SECTION_CACHE.keys())[:10]:
                 lines.append(f"      • {name}")
-    except ImportError, Exception:
+    except (ImportError, Exception):
         lines.append("    Cache inspection unavailable")
     lines.append("")
 
