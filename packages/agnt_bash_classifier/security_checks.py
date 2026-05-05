@@ -55,6 +55,11 @@ class BashSecurityCheckId(IntEnum):
     COPROC_SPAWNING = 28
     HEREDOC_TAG_INJECTION = 29
     ANSI_C_QUOTING = 30
+    SHELL_BUILTIN_ABUSE = 31
+    SIGNAL_TRAPPING = 32
+    ALIAS_INJECTION = 33
+    CROSS_SHELL_INJECTION = 34
+    FUNCTION_HIJACKING = 35
 
 
 # Zsh-specific dangerous commands that can bypass security checks.

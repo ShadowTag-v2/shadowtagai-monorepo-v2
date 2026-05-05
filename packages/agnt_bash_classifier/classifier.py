@@ -8,9 +8,9 @@
 # Test Coverage: Hypothesis 1000-example property-based + 47-test unit/integration suite
 # Adversa AI: Risk #34 — 50-subcommand cap enforced pre-pipeline
 
-"""Bash Security Classifier — 30-Check Validation Pipeline.
+"""Bash Security Classifier — 35-Check Validation Pipeline.
 
-Chains all 30 BASH_SECURITY_CHECK_IDS into a fail-fast pipeline.
+Chains all 35 BASH_SECURITY_CHECK_IDS into a fail-fast pipeline.
 Each check is a pure function that inspects the raw command string and returns
 a CheckResult. The pipeline short-circuits on the first BLOCK.
 
@@ -52,7 +52,7 @@ class CheckResult:
     """Result of a single security check.
 
     Attributes:
-        check_id: Which of the 23 checks produced this result.
+        check_id: Which of the 35 checks produced this result.
         verdict: PASS or BLOCK.
         message: Human-readable explanation (empty on PASS).
     """
@@ -64,13 +64,13 @@ class CheckResult:
 
 @dataclass(frozen=True)
 class PipelineResult:
-    """Aggregate result from the full 23-check pipeline.
+    """Aggregate result from the full 35-check pipeline.
 
     Attributes:
         allowed: True if all checks passed.
         blocked_by: The check that caused the block (None if allowed).
         checks_run: Number of checks executed before short-circuit.
-        total_checks: Total number of checks in the pipeline (23).
+        total_checks: Total number of checks in the pipeline (35).
         duration_ms: Wall-clock time for the entire pipeline.
         all_results: Every CheckResult produced (up to short-circuit point).
     """
@@ -78,7 +78,7 @@ class PipelineResult:
     allowed: bool
     blocked_by: CheckResult | None = None
     checks_run: int = 0
-    total_checks: int = 30
+    total_checks: int = 35
     duration_ms: float = 0.0
     all_results: tuple[CheckResult, ...] = field(default_factory=tuple)
 
@@ -149,26 +149,18 @@ _QUOTED_NEWLINE_RE = re.compile(r"""["'][^"']*\n[^"']*["']""")
 
 # Check 24: ANSI escape injection (terminal manipulation via ESC sequences)
 _ANSI_ESCAPE_RE = re.compile(r"\x1b\[|\\e\[|\\033\[")
+_ARITHMETIC_INJECTION_RE = re.compile(r"\$\(\(.*\)\)")
+_SOURCE_DOT_COMMAND_RE = re.compile(r"\b(source|\.)\s+")
+_BASE64_DECODE_PIPING_RE = re.compile(r"\|\s*base64\s+-d")
+_COPROC_SPAWNING_RE = re.compile(r"\bcoproc\s+")
+_HEREDOC_TAG_INJECTION_RE = re.compile(r"<<(EOF|EOF\\n|'EOF'|\"EOF\")")
+_ANSI_C_QUOTING_RE = re.compile(r"\$'(?:[^'\\]|\\.)*'")
 
-# Check 25: Arithmetic injection $((cmd)) — can execute via side effects
-_ARITHMETIC_INJECTION_RE = re.compile(r"\$\(\(")
-
-# Check 26: source/dot command — eval-equivalent file inclusion
-_SOURCE_DOT_RE = re.compile(r"(?:^|[;\|&])\s*(?:source|\.)\s+")
-
-# Check 27: Base64 decode piping — encoded payload execution
-_BASE64_DECODE_PIPE_RE = re.compile(
-    r"base64\s+(?:-d|--decode)|b64decode|openssl\s+(?:enc\s+)?(?:-d|base64)"
-)
-
-# Check 28: Coproc spawning — background process via coproc builtin
-_COPROC_RE = re.compile(r"(?:^|[;\|&])\s*coproc\s")
-
-# Check 29: Heredoc tag injection — arbitrary content injection via <<
-_HEREDOC_TAG_RE = re.compile(r"""<<-?\s*['"]?\w+['"]?""")
-
-# Check 30: ANSI-C quoting $'...' — escape sequence execution in quotes
-_ANSI_C_QUOTE_RE = re.compile(r"\$'[^']*(?:\\x[0-9a-fA-F]|\\[0-7]|\\n|\\r)[^']*'")
+_SHELL_BUILTIN_ABUSE_RE = re.compile(r"\b(exec|eval)\s+[^<>;|]+")
+_SIGNAL_TRAPPING_RE = re.compile(r"\btrap\s+['\"].*?['\"]\s+(EXIT|SIGINT|SIGTERM|DEBUG|ERR)\b")
+_ALIAS_INJECTION_RE = re.compile(r"\balias\s+[a-zA-Z0-9_-]+=")
+_CROSS_SHELL_INJECTION_RE = re.compile(r"(?i)\b(Invoke-Expression|iex|powershell(\.exe)?\s+-e(ncodedcommand)?|cmd(\.exe)?\s+/c)\b|%COMSPEC%")
+_FUNCTION_HIJACKING_RE = re.compile(r"\bexport\s+-f\b|^\s*(function\s+)?[a-zA-Z_][a-zA-Z0-9_]*\s*\(\s*\)\s*\{")
 
 # Adversa AI Risk #34: 50-subcommand cap
 MAX_SUBCOMMANDS = 50
@@ -455,89 +447,96 @@ def _check_quoted_newline(command: str) -> CheckResult:
     return CheckResult(BashSecurityCheckId.QUOTED_NEWLINE, CheckVerdict.PASS)
 
 
-# ─── Extended Check Functions 24–30 ─────────────────────────────────────────
+# ─── Extended Check Functions 24–35 ─────────────────────────────────────────
 
 
 def _check_ansi_escape(command: str) -> CheckResult:
     """Check 24: Block ANSI escape sequences (terminal manipulation)."""
     if _ANSI_ESCAPE_RE.search(command):
-        return CheckResult(
-            BashSecurityCheckId.ANSI_ESCAPE_INJECTION,
-            CheckVerdict.BLOCK,
-            "ANSI escape sequence detected (terminal manipulation vector)",
-        )
+        return CheckResult(BashSecurityCheckId.ANSI_ESCAPE_INJECTION, CheckVerdict.BLOCK, "ANSI escape sequence detected")
     return CheckResult(BashSecurityCheckId.ANSI_ESCAPE_INJECTION, CheckVerdict.PASS)
 
 
 def _check_arithmetic_injection(command: str) -> CheckResult:
     """Check 25: Block arithmetic injection $((cmd))."""
     if _ARITHMETIC_INJECTION_RE.search(command):
-        return CheckResult(
-            BashSecurityCheckId.ARITHMETIC_INJECTION,
-            CheckVerdict.BLOCK,
-            "Arithmetic injection $((…)) detected",
-        )
+        return CheckResult(BashSecurityCheckId.ARITHMETIC_INJECTION, CheckVerdict.BLOCK, "Arithmetic injection detected")
     return CheckResult(BashSecurityCheckId.ARITHMETIC_INJECTION, CheckVerdict.PASS)
 
 
 def _check_source_dot(command: str) -> CheckResult:
-    """Check 26: Block source/dot commands (eval-equivalent file inclusion)."""
-    if _SOURCE_DOT_RE.search(command):
-        return CheckResult(
-            BashSecurityCheckId.SOURCE_DOT_COMMAND,
-            CheckVerdict.BLOCK,
-            "source/dot command detected (eval-equivalent file inclusion)",
-        )
+    """Check 26: Block source/dot commands."""
+    if _SOURCE_DOT_COMMAND_RE.search(command):
+        return CheckResult(BashSecurityCheckId.SOURCE_DOT_COMMAND, CheckVerdict.BLOCK, "source/dot command detected")
     return CheckResult(BashSecurityCheckId.SOURCE_DOT_COMMAND, CheckVerdict.PASS)
 
 
 def _check_base64_decode(command: str) -> CheckResult:
-    """Check 27: Block base64 decode piping (encoded payload execution)."""
-    if _BASE64_DECODE_PIPE_RE.search(command):
-        return CheckResult(
-            BashSecurityCheckId.BASE64_DECODE_PIPING,
-            CheckVerdict.BLOCK,
-            "Base64 decode detected (encoded payload execution vector)",
-        )
+    """Check 27: Block base64 decode piping."""
+    if _BASE64_DECODE_PIPING_RE.search(command):
+        return CheckResult(BashSecurityCheckId.BASE64_DECODE_PIPING, CheckVerdict.BLOCK, "Base64 decode detected")
     return CheckResult(BashSecurityCheckId.BASE64_DECODE_PIPING, CheckVerdict.PASS)
 
 
-def _check_coproc(command: str) -> CheckResult:
-    """Check 28: Block coproc spawning (background process via builtin)."""
-    if _COPROC_RE.search(command):
-        return CheckResult(
-            BashSecurityCheckId.COPROC_SPAWNING,
-            CheckVerdict.BLOCK,
-            "coproc spawning detected (background process vector)",
-        )
+def _check_coproc_spawning(command: str) -> CheckResult:
+    """Check 28: Block coproc spawning."""
+    if _COPROC_SPAWNING_RE.search(command):
+        return CheckResult(BashSecurityCheckId.COPROC_SPAWNING, CheckVerdict.BLOCK, "coproc spawning detected")
     return CheckResult(BashSecurityCheckId.COPROC_SPAWNING, CheckVerdict.PASS)
 
 
-def _check_heredoc_tag(command: str) -> CheckResult:
+def _check_heredoc_tag_injection(command: str) -> CheckResult:
     """Check 29: Block heredoc tag injection."""
-    if _HEREDOC_TAG_RE.search(command):
-        return CheckResult(
-            BashSecurityCheckId.HEREDOC_TAG_INJECTION,
-            CheckVerdict.BLOCK,
-            "Heredoc tag injection detected",
-        )
+    if _HEREDOC_TAG_INJECTION_RE.search(command):
+        return CheckResult(BashSecurityCheckId.HEREDOC_TAG_INJECTION, CheckVerdict.BLOCK, "Heredoc tag injection detected")
     return CheckResult(BashSecurityCheckId.HEREDOC_TAG_INJECTION, CheckVerdict.PASS)
 
 
 def _check_ansi_c_quoting(command: str) -> CheckResult:
-    """Check 30: Block ANSI-C quoting $'...' with escape sequences."""
-    if _ANSI_C_QUOTE_RE.search(command):
-        return CheckResult(
-            BashSecurityCheckId.ANSI_C_QUOTING,
-            CheckVerdict.BLOCK,
-            "ANSI-C quoting with escape sequences detected",
-        )
+    """Check 30: Block ANSI-C quoting."""
+    if _ANSI_C_QUOTING_RE.search(command):
+        return CheckResult(BashSecurityCheckId.ANSI_C_QUOTING, CheckVerdict.BLOCK, "ANSI-C quoting detected")
     return CheckResult(BashSecurityCheckId.ANSI_C_QUOTING, CheckVerdict.PASS)
+
+
+def _check_shell_builtin_abuse(command: str) -> CheckResult:
+    """Check 31: Block exec/eval abuse."""
+    if _SHELL_BUILTIN_ABUSE_RE.search(command):
+        return CheckResult(BashSecurityCheckId.SHELL_BUILTIN_ABUSE, CheckVerdict.BLOCK, "Shell built-in abuse (exec/eval) detected")
+    return CheckResult(BashSecurityCheckId.SHELL_BUILTIN_ABUSE, CheckVerdict.PASS)
+
+
+def _check_signal_trapping(command: str) -> CheckResult:
+    """Check 32: Block trap commands."""
+    if _SIGNAL_TRAPPING_RE.search(command):
+        return CheckResult(BashSecurityCheckId.SIGNAL_TRAPPING, CheckVerdict.BLOCK, "Signal trapping detected")
+    return CheckResult(BashSecurityCheckId.SIGNAL_TRAPPING, CheckVerdict.PASS)
+
+
+def _check_alias_injection(command: str) -> CheckResult:
+    """Check 33: Block alias injection."""
+    if _ALIAS_INJECTION_RE.search(command):
+        return CheckResult(BashSecurityCheckId.ALIAS_INJECTION, CheckVerdict.BLOCK, "Alias injection detected")
+    return CheckResult(BashSecurityCheckId.ALIAS_INJECTION, CheckVerdict.PASS)
+
+
+def _check_cross_shell_injection(command: str) -> CheckResult:
+    """Check 34: Block cross-shell injection."""
+    if _CROSS_SHELL_INJECTION_RE.search(command):
+        return CheckResult(BashSecurityCheckId.CROSS_SHELL_INJECTION, CheckVerdict.BLOCK, "Cross-shell injection detected")
+    return CheckResult(BashSecurityCheckId.CROSS_SHELL_INJECTION, CheckVerdict.PASS)
+
+
+def _check_function_hijacking(command: str) -> CheckResult:
+    """Check 35: Block function hijacking."""
+    if _FUNCTION_HIJACKING_RE.search(command):
+        return CheckResult(BashSecurityCheckId.FUNCTION_HIJACKING, CheckVerdict.BLOCK, "Function hijacking detected")
+    return CheckResult(BashSecurityCheckId.FUNCTION_HIJACKING, CheckVerdict.PASS)
 
 
 # ─── Pipeline (ordered tuple of check functions) ────────────────────────────
 
-_PIPELINE: tuple[..., ...] = (
+_PIPELINE: tuple[Any, ...] = (
     _check_incomplete_commands,  # 1
     _check_jq_system_function,  # 2
     _check_jq_file_arguments,  # 3
@@ -566,14 +565,19 @@ _PIPELINE: tuple[..., ...] = (
     _check_arithmetic_injection,  # 25
     _check_source_dot,  # 26
     _check_base64_decode,  # 27
-    _check_coproc,  # 28
-    _check_heredoc_tag,  # 29
+    _check_coproc_spawning,  # 28
+    _check_heredoc_tag_injection,  # 29
     _check_ansi_c_quoting,  # 30
+    _check_shell_builtin_abuse,  # 31
+    _check_signal_trapping,  # 32
+    _check_alias_injection,  # 33
+    _check_cross_shell_injection,  # 34
+    _check_function_hijacking,  # 35
 )
 
 
 class BashSecurityClassifier:
-    """23-check bash security validation pipeline.
+    """35-check bash security validation pipeline.
 
     Runs all checks in sequence with fail-fast short-circuiting.
     Also enforces the 50-subcommand cap (Adversa AI Risk #34).

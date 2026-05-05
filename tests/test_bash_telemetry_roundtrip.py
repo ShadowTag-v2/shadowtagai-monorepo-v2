@@ -91,7 +91,7 @@ class TestTelemetryRoundtrip:
         assert tracker_event["event_type"] == "tengu_bash_security_validated"
 
         data = tracker_event["data"]
-        assert data["checks_passed"] == 23
+        assert data["checks_passed"] == 35
         assert data["duration_ms"] >= 0.0
 
         # Build equivalent EventCatalog event
@@ -103,7 +103,7 @@ class TestTelemetryRoundtrip:
         )
 
         assert catalog_event.event == "agnt_bash_security_validated"
-        assert catalog_event.properties["checks_passed"] == 23
+        assert catalog_event.properties["checks_passed"] == 35
         assert catalog_event.duration_ms == data["duration_ms"]
 
     def test_event_type_mapping(self) -> None:
