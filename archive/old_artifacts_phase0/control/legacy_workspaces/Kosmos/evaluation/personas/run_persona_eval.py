@@ -77,7 +77,7 @@ def get_next_version(persona_name: str) -> str:
         try:
             ver_num = int(dirname.split("_")[0][1:])  # "v001_20260207" -> 1
             max_ver = max(max_ver, ver_num)
-        except ValueError, IndexError:
+        except (ValueError, IndexError):
             continue
 
     return f"v{max_ver + 1:03d}"

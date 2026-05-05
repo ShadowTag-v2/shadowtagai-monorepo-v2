@@ -8,7 +8,7 @@ def replace_in_file(filepath):
     try:
         with open(filepath, encoding="utf-8") as f:
             content = f.read()
-    except UnicodeDecodeError, FileNotFoundError:
+    except (UnicodeDecodeError, FileNotFoundError):
         return False
 
     new_content = re.sub(r"judge6", "Claude_Code_6", content, flags=re.IGNORECASE)

@@ -452,7 +452,7 @@ class PubMedClient(BaseLiteratureClient):
             try:
                 # Try to parse "2023 Jan 15" format
                 pub_date = datetime.strptime(date_str.split()[0], "%Y")
-            except ValueError, IndexError:
+            except (ValueError, IndexError):
                 pass
 
             # Extract year

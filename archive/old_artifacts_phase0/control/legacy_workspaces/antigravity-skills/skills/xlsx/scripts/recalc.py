@@ -32,7 +32,7 @@ def has_gtimeout():
     try:
         subprocess.run(["gtimeout", "--version"], capture_output=True, timeout=1, check=False)
         return True
-    except FileNotFoundError, subprocess.TimeoutExpired:
+    except (FileNotFoundError, subprocess.TimeoutExpired):
         return False
 
 

@@ -88,7 +88,7 @@ def create_db(
     try:
         db = firestore.Client(project=project_id, credentials=credentials, database=database_id)
         list(db.collections())  # This will raise an exception if the database does not exist.
-    except exceptions.NotFound, Exception:
+    except (exceptions.NotFound, Exception):
         console.log(f"Firestore database '{database_id}' not found or accessible in project '{project_id}'. Creating one...")
         try:
             admin_client = firestore_admin_v1.FirestoreAdminClient(credentials=credentials)

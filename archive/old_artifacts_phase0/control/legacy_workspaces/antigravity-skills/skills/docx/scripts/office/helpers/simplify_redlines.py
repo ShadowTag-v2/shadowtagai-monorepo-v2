@@ -161,7 +161,7 @@ def _get_authors_from_docx(docx_path: Path) -> dict[str, int]:
                         if author:
                             authors[author] = authors.get(author, 0) + 1
                 return authors
-    except zipfile.BadZipFile, ET.ParseError:
+    except (zipfile.BadZipFile, ET.ParseError):
         return {}
 
 

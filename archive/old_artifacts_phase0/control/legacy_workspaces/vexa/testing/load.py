@@ -332,7 +332,7 @@ class TestSuite:
             try:
                 user_index = int(bot.bot_id.split("_")[-1])
                 existing_bot_users.add(user_index)
-            except ValueError, IndexError:
+            except (ValueError, IndexError):
                 continue
 
         # Find unmapped users that need bots

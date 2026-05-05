@@ -332,7 +332,7 @@ def _update_sub_agent_references(config_dict: dict[str, Any], reference_map: dic
             try:
                 normalized = str(Path(config_path))
                 new_path = reference_map.get(normalized)
-            except OSError, ValueError:
+            except (OSError, ValueError):
                 normalized = None
 
         if new_path is None and normalized is not None:
@@ -342,7 +342,7 @@ def _update_sub_agent_references(config_dict: dict[str, Any], reference_map: dic
             try:
                 base_name = Path(config_path).name
                 new_path = reference_map.get(base_name)
-            except OSError, ValueError:
+            except (OSError, ValueError):
                 new_path = None
 
         if new_path:
@@ -353,12 +353,12 @@ def _canonical_path_key(path: str, session_state: dict[str, Any] | None) -> str:
     """Create a canonical absolute path string for consistent lookups."""
     try:
         resolved_path = resolve_file_path(path, session_state)
-    except OSError, ValueError, RuntimeError:
+    except (OSError, ValueError, RuntimeError):
         resolved_path = Path(path)
 
     try:
         return str(resolved_path.resolve())
-    except OSError, RuntimeError:
+    except (OSError, RuntimeError):
         return str(resolved_path)
 
 

@@ -314,7 +314,7 @@ def generate_token():
             encoded_credentials = auth_header.split(" ")[1]
             decoded_credentials = base64.b64decode(encoded_credentials).decode("utf-8")
             client_id, client_secret = decoded_credentials.split(":", 1)
-        except IndexError, ValueError:
+        except (IndexError, ValueError):
             pass  # Fallback to form data
 
     if not client_id or not client_secret:

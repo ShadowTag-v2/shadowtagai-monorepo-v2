@@ -317,7 +317,7 @@ class SemanticScholarClient(BaseLiteratureClient):
                     pub_date = result.publicationDate
                 else:
                     pub_date = datetime.strptime(result.publicationDate, "%Y-%m-%d")
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
         # Get PDF URL from open access

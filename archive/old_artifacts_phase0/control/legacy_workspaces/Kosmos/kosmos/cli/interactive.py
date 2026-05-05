@@ -132,7 +132,7 @@ def select_domain() -> str:
             console.print(f"[success]Selected: {selected_domain.title()}[/success]")
             console.print()
             return selected_domain
-        except ValueError, IndexError:
+        except (ValueError, IndexError):
             print_error("Invalid selection. Please try again.")
 
 

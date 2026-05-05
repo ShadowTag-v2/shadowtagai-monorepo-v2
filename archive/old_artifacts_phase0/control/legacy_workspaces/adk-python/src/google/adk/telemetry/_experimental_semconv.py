@@ -130,7 +130,7 @@ def _safe_json_serialize_no_whitespaces(obj) -> str:
             ensure_ascii=False,
             default=lambda o: "<not serializable>",
         )
-    except TypeError, OverflowError:
+    except (TypeError, OverflowError):
         return "<not serializable>"
 
 
@@ -176,7 +176,7 @@ def _clean_parameters(params: Any) -> Any:
         json.dumps(params)
         return params
 
-    except TypeError, ValueError:
+    except (TypeError, ValueError):
         return {
             "type": "object",
             "properties": {

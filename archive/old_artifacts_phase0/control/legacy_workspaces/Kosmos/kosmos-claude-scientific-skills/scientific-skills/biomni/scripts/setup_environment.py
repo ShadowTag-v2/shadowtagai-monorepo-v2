@@ -22,7 +22,7 @@ def check_conda_installed() -> bool:
     try:
         subprocess.run(["conda", "--version"], capture_output=True, check=True)
         return True
-    except subprocess.CalledProcessError, FileNotFoundError:
+    except (subprocess.CalledProcessError, FileNotFoundError):
         return False
 
 

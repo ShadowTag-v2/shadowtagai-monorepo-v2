@@ -249,7 +249,7 @@ class CitationParser:
             if "PY" in data:
                 try:
                     year = int(data["PY"].split("/")[0])  # Handle PY  - 2024/01/15
-                except ValueError, IndexError:
+                except (ValueError, IndexError):
                     pass
 
             # Build PaperMetadata

@@ -326,14 +326,14 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         if node.get("created_at"):
             try:
                 created_at = datetime.fromisoformat(node["created_at"])
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
         updated_at = None
         if node.get("updated_at"):
             try:
                 updated_at = datetime.fromisoformat(node["updated_at"])
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
         # Load annotations from node property
@@ -547,7 +547,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         if rel.get("created_at"):
             try:
                 created_at = datetime.fromisoformat(rel["created_at"])
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
         return Relationship(

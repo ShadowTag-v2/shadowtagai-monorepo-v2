@@ -28,7 +28,7 @@ def apply_windowing(pixel_array, ds):
         from pydicom.pixel_data_handlers.util import apply_voi_lut
 
         return apply_voi_lut(pixel_array, ds)
-    except ImportError, AttributeError:
+    except (ImportError, AttributeError):
         return pixel_array
 
 

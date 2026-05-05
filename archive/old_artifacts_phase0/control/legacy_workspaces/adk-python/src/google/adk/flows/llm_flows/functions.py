@@ -545,7 +545,7 @@ async def _process_function_live_helper(
             try:
                 # Wait for the task to be cancelled
                 await asyncio.wait_for(task, timeout=1.0)
-            except TimeoutError, asyncio.CancelledError:
+            except (TimeoutError, asyncio.CancelledError):
                 # Log the specific condition
                 if task.cancelled():
                     logging.info("Task %s was cancelled successfully", function_name)

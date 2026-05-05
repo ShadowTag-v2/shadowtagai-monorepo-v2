@@ -84,7 +84,7 @@ def load_run_results(benchmark_dir: Path) -> dict:
             try:
                 with open(metadata_path) as mf:
                     eval_id = json.load(mf).get("eval_id", eval_idx)
-            except json.JSONDecodeError, OSError:
+            except (json.JSONDecodeError, OSError):
                 eval_id = eval_idx
         else:
             try:

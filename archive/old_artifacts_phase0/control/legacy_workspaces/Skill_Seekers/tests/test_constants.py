@@ -132,7 +132,7 @@ class TestConstantsUsage(unittest.TestCase):
 
             # Check module loads without errors
             self.assertIsNotNone(enhance_skill)
-        except ImportError, SystemExit:
+        except (ImportError, SystemExit):
             # anthropic package may not be installed or module exits on import
             # This is acceptable - we're just checking the constants import works
             pass

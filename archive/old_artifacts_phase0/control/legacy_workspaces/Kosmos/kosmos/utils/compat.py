@@ -43,6 +43,6 @@ def model_to_dict(model: Any, **kwargs) -> dict[str, Any]:
     else:
         try:
             return dict(model)
-        except TypeError, ValueError:
+        except (TypeError, ValueError):
             # If all else fails, return empty dict
             return {}

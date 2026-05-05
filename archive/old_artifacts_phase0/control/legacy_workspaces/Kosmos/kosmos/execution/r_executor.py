@@ -115,7 +115,7 @@ if (length(.kosmos_results) > 0) {{
         try:
             result = subprocess.run([self.r_path, "--version"], capture_output=True, timeout=10)
             return result.returncode == 0
-        except subprocess.SubprocessError, FileNotFoundError:
+        except (subprocess.SubprocessError, FileNotFoundError):
             return False
 
     def get_r_version(self) -> str | None:
@@ -127,7 +127,7 @@ if (length(.kosmos_results) > 0) {{
                 match = re.search(r"R version (\d+\.\d+\.\d+)", result.stdout)
                 if match:
                     return match.group(1)
-        except subprocess.SubprocessError, FileNotFoundError:
+        except (subprocess.SubprocessError, FileNotFoundError):
             pass
         return None
 
