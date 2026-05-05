@@ -26,6 +26,7 @@ from typing import Any
 import yaml
 
 from agnt_classifier import AGNTClassifier, ClassifierVerdict
+from packages.agnt_bash_classifier.classifier import BashSecurityClassifier
 from tool_gateway.block_allow_engine import (
     AntiRationalizationGate,
     BlockAllowRuleEngine,
@@ -43,6 +44,16 @@ logger = logging.getLogger(__name__)
 
 # Tool input keys that contain filesystem paths
 _PATH_KEYS = frozenset({"path", "file", "target", "TargetFile", "AbsolutePath", "filePath"})
+
+# Tool IDs that represent bash/shell/powershell/cmd command execution
+_SHELL_TOOL_IDS = frozenset({
+    # Unix shells
+    "run_command", "bash", "shell", "terminal", "execute_command",
+    # PowerShell (Windows + cross-platform)
+    "powershell", "pwsh", "run_powershell", "execute_powershell",
+    # CMD (Windows)
+    "cmd", "command_prompt", "run_cmd", "execute_cmd",
+})
 
 
 class ClassifiedGateway:
@@ -66,6 +77,7 @@ class ClassifiedGateway:
         rule_engine: BlockAllowRuleEngine | None = None,
         anti_rationalization: AntiRationalizationGate | None = None,
         sandbox_resolver: SandboxPathResolver | None = None,
+        bash_classifier: BashSecurityClassifier | None = None,
         telemetry: TelemetryEmitter | None = None,
     ) -> None:
         self._repo_root = repo_root.resolve()
@@ -74,6 +86,7 @@ class ClassifiedGateway:
         self._rule_engine = rule_engine or BlockAllowRuleEngine()
         self._anti_rationalization = anti_rationalization or AntiRationalizationGate()
         self._sandbox_resolver = sandbox_resolver
+        self._bash_classifier = bash_classifier or BashSecurityClassifier(telemetry=None)
         self._telemetry = telemetry or TelemetryEmitter()
 
         # Load permission tiers
@@ -324,6 +337,32 @@ class ClassifiedGateway:
                 reason=ba_result.reasoning,
                 latency_ms=ba_latency,
             )
+
+        # Tier 1.75: Bash Security Classifier (23-check pipeline)
+        # Fires only for bash/shell tool invocations
+        if tool_id in _BASH_TOOL_IDS:
+            command = tool_input.get("CommandLine", "")
+            if command:
+                bash_result = self._bash_classifier.classify_for_gateway(command)
+                if not bash_result["allowed"]:
+                    self._emit(
+                        GatewayEvent.CLASSIFIER_BLOCKED,
+                        tool_id,
+                        verdict="BLOCK",
+                        tier="1.75",
+                        reason=bash_result["reason"],
+                        latency_ms=bash_result.get("duration_ms", 0.0),
+                    )
+                    return Decision(
+                        allowed=False,
+                        reason=f"Bash Security Pipeline BLOCKED (Tier 1.75): {bash_result['reason']}",
+                        contract_id="bash_security_classifier",
+                    )
+                logger.debug(
+                    "Bash security checks PASSED for tool '%s' (%.1fms)",
+                    tool_id,
+                    bash_result.get("duration_ms", 0.0),
+                )
 
         # Tier 2: Auto-approved — skip classifier, contract check only
         if tool_id in self._auto_approved:
