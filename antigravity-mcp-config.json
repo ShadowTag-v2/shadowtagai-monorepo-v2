@@ -80,28 +80,15 @@
       "note": "Sequential Thinking MCP — MUST use for architecture decisions, multi-step reasoning, and complex problem decomposition. No ad-hoc reasoning lists."
     },
     "antigravity-notebooklm-mcp": {
-      "command": "node",
-      "args": ["external_repos/PleasePrompto_notebooklm-mcp/dist/index.js"],
-      "env": {},
-      "note": "IPI quarantine zone. Closed RAG sandbox — cannot execute local code. All untrusted external data MUST route through this MCP before entering the agent context."
-    },
-    "switchboard-mcp": {
-      "command": "node",
-      "args": ["external_repos/switchboard/src/mcp-server/mcp-server.js"],
+      "command": "npx",
+      "args": ["-y", "notebooklm-mcp@latest"],
       "env": {
-        "SWITCHBOARD_WORKSPACE_ROOT": "."
-      },
-      "note": "Routing firewall and task orchestrator. Queues external data retrieval without exposing raw API keys to the agent context."
-    },
-    "mnemos-memory": {
-      "command": "node",
-      "args": ["external_repos/mnemos/build/index.js"],
-      "env": {
-        "MNEMOS_DATA_DIR": ".beads/mnemos"
+        "HEADLESS": "true",
+        "NOTEBOOKLM_PROFILE": "full"
       },
       "capability_owner": true,
-      "owns": ["memory_store", "memory_recall", "memory_search", "memory_graph"],
-      "note": "Mnemos Living Memory Architecture — persistent identity, autonomous maintenance, memory graphs with decay and reconsolidation. Cross-session agent memory."
+      "owns": ["ask_question", "setup_auth", "list_notebooks", "select_notebook", "get_notebook", "add_notebook", "search_notebooks"],
+      "note": "IPI quarantine zone. NotebookLM via Gemini 2.5 — zero-hallucination RAG. Requires one-time Google auth via setup_auth tool. Auth persists in ~/Library/Application Support/notebooklm-mcp/."
     }
   },
   "routing_rules": {
@@ -110,9 +97,7 @@
     "browser_interaction": "chrome-devtools-mcp",
     "ui_design": "StitchMCP",
     "architecture_reasoning": "sequential-thinking",
-    "document_analysis": "antigravity-notebooklm-mcp",
-    "task_routing": "switchboard-mcp",
-    "persistent_memory": "mnemos-memory"
+    "document_analysis": "antigravity-notebooklm-mcp"
   },
   "anti_patterns": [
     "NEVER use search_web for Google API documentation — use google-developer-knowledge MCP",

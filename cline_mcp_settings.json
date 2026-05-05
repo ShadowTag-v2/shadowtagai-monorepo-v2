@@ -1,5 +1,13 @@
 {
   "mcpServers": {
-    // Explicitly delete developer-knowledge-mcp, stitch-mcp, and firebase-mcp-server so Antigravity retains native control
+    "antigravity-notebooklm-mcp": {
+      "command": "npx",
+      "args": ["-y", "notebooklm-mcp@latest"],
+      "env": {
+        "HEADLESS": "true"
+      },
+      "disabled": false,
+      "autoApprove": ["setup_auth", "list_notebooks", "search_notebooks", "get_notebook"]
+    }
   }
 }

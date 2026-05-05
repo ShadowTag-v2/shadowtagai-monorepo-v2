@@ -74,11 +74,7 @@ def compute_filter_distribution(events: list[dict]) -> dict:
 
 def compute_latency_percentiles(events: list[dict]) -> dict:
     """Compute generation latency percentiles."""
-    prefetch = [
-        e for e in events
-        if e.get("event_type") == "suggestion_proactive_prefetch"
-        and e.get("generation_time_ms")
-    ]
+    prefetch = [e for e in events if e.get("event_type") == "suggestion_proactive_prefetch" and e.get("generation_time_ms")]
     latencies = [e["generation_time_ms"] for e in prefetch if e["generation_time_ms"] > 0]
     if not latencies:
         return {"sample_count": 0}

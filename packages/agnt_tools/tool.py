@@ -32,7 +32,7 @@ import asyncio
 import copy
 import logging
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from typing import Any, Protocol, runtime_checkable
 
 try:
@@ -70,7 +70,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 
-class PermissionMode(str, Enum):
+class PermissionMode(StrEnum):
     """Permission enforcement mode."""
 
     DEFAULT = "default"

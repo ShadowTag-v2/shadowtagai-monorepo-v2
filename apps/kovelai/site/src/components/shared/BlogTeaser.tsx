@@ -16,7 +16,10 @@ export default function BlogTeaser() {
             discoverable. Here&apos;s what that means for your practice and why privilege-first
             infrastructure is no longer optional.
           </p>
-          <a href="#" className="text-sm text-blue hover:text-primary-text transition-colors">
+          <a
+            href="/blog/heppner-ai-slop"
+            className="text-sm text-blue hover:text-primary-text transition-colors"
+          >
             Read the full analysis →
           </a>
         </div>

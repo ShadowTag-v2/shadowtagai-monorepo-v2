@@ -1,8 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // Static export for Firebase Hosting deployment
-  output: 'export',
   // Turbopack (Next.js 16) forbids distDir outside project path.
   // Build output goes here, then post-build script copies to ../public.
   distDir: '.next-export',

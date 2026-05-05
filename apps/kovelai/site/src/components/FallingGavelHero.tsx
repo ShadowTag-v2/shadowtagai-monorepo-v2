@@ -224,7 +224,7 @@ export default function FallingGavelHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.8, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="text-[clamp(1.75rem,3.5vw+0.5rem,4.5rem)] font-[800] leading-[0.95] tracking-[-0.04em] uppercase mb-6"
-          style={{ color: '#d7e3fc' }}
+          style={{ color: '#ffffff' }}
         >
           The Law Demands <span style={{ color: '#e6c487' }}>Precision</span>
         </motion.h1>
@@ -237,7 +237,7 @@ export default function FallingGavelHero() {
           style={{ color: '#d0c5b5' }}
         >
           KovelAI routes attorney work through{' '}
-          <em className="font-semibold" style={{ color: '#d7e3fc', fontStyle: 'italic' }}>
+          <em className="font-semibold" style={{ color: '#ffffff', fontStyle: 'italic' }}>
             privilege-preserving channels
           </em>{' '}
           — so your AI never compromises the seal.

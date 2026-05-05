@@ -40,6 +40,7 @@ def _get_github_breaker():
         return _github_breaker
     try:
         from circuit_breaker.telemetry_bridge import default_registry
+
         _github_breaker = default_registry.get_or_create(
             "github_api",
             failure_threshold=5,
@@ -116,10 +117,7 @@ def _get_installation_token(jwt_token: str) -> tuple[str, str]:
     """Returns (token, expires_at). Gated by github_api circuit breaker."""
     breaker = _get_github_breaker()
     if breaker is not None and not breaker.allow_request():
-        raise RuntimeError(
-            f"Circuit breaker OPEN for github_api "
-            f"(probe in {breaker.seconds_until_probe:.1f}s)"
-        )
+        raise RuntimeError(f"Circuit breaker OPEN for github_api (probe in {breaker.seconds_until_probe:.1f}s)")
 
     url = f"https://api.github.com/app/installations/{INSTALLATION_ID}/access_tokens"
     req = urllib.request.Request(

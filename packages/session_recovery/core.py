@@ -18,12 +18,12 @@ import json
 import logging
 import time
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 
 logger = logging.getLogger(__name__)
 
 
-class InterruptionKind(str, Enum):
+class InterruptionKind(StrEnum):
     """Type of turn interruption detected."""
 
     NONE = "none"
@@ -45,7 +45,7 @@ class TurnInterruptionState:
         return self.kind != InterruptionKind.NONE
 
 
-class MessageRole(str, Enum):
+class MessageRole(StrEnum):
     """Message role enum."""
 
     USER = "user"

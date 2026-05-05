@@ -20,7 +20,7 @@ try:
 
     _st_mod = importlib.import_module("src.ShadowTag-v2.services.gemini_core")
     GeminiAntigravity = _st_mod.GeminiAntigravity
-except (ImportError, ModuleNotFoundError):
+except ImportError, ModuleNotFoundError:
     GeminiAntigravity = None
 
 try:
