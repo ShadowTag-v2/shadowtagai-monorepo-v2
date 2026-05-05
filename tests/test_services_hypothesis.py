@@ -186,7 +186,7 @@ class TestForkedAgentHypothesis(unittest.TestCase):
                 if isinstance(child_ctx, dict) and "env" in child_ctx:
                     child_ctx["env"]["INJECTED"] = "malicious"
                     self.assertNotIn("INJECTED", parent_vars)
-        except (AttributeError, TypeError):
+        except AttributeError, TypeError:
             self.skipTest("create_subagent_context API differs")
 
 
@@ -221,7 +221,7 @@ class TestConversationRecoveryHypothesis(unittest.TestCase):
 
             if first is not None and second is not None:
                 self.assertEqual(first, second)
-        except (AttributeError, TypeError):
+        except AttributeError, TypeError:
             self.skipTest("ConversationRecovery API differs")
 
     @given(
@@ -253,7 +253,7 @@ class TestConversationRecoveryHypothesis(unittest.TestCase):
                 loaded = recovery.load_checkpoint(sid)
                 if loaded is not None:
                     self.assertEqual(loaded["session_id"], sid)
-        except (AttributeError, TypeError):
+        except AttributeError, TypeError:
             self.skipTest("ConversationRecovery API differs")
 
 

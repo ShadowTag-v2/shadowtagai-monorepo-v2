@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import KineticReversalHero from '@/components/KineticReversalHero';
+import KovelSpinner from '@/components/KovelSpinner';
 import BlogTeaser from '@/components/shared/BlogTeaser';
 import ComparisonTable from '@/components/shared/ComparisonTable';
 import ContactModal from '@/components/shared/ContactModal';
@@ -12,7 +13,6 @@ import FallingGavel from '@/components/shared/FallingGavel';
 import Features from '@/components/shared/Features';
 import Footer from '@/components/shared/Footer';
 import HowItWorks from '@/components/shared/HowItWorks';
-import KovelSpinner from '@/components/KovelSpinner';
 import Management from '@/components/shared/Management';
 import Nav from '@/components/shared/Nav';
 import Pricing from '@/components/shared/Pricing';

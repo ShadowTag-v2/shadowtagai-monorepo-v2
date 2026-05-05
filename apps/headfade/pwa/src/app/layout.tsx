@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
-import React from 'react';
 import { Inter } from 'next/font/google';
+import type React from 'react';
 import './globals.css';
 import { ServiceWorkerRegistrar } from './sw-register';
 
@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'HeadFadeAi | Global Synthetic Media Infrastructure',
   description:
-    'The world\'s first forensic deepfake detection platform. Embed player, creator marketplace, and cognitive telemetry — powered by Gemini AI.',
+    "The world's first forensic deepfake detection platform. Embed player, creator marketplace, and cognitive telemetry — powered by Gemini AI.",
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -44,7 +44,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'HeadFadeAi — Synthetic Media Infrastructure',
-    description: 'Forensic detection. Creator marketplace. Embed distribution. Powered by Gemini AI.',
+    description:
+      'Forensic detection. Creator marketplace. Embed distribution. Powered by Gemini AI.',
     images: ['https://headfade.web.app/og-image.png'],
   },
   robots: {

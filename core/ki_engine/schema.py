@@ -150,7 +150,7 @@ class KIMetadata:
         try:
             updated = datetime.fromisoformat(self.updated.replace("Z", "+00:00"))
             return (datetime.now(UTC) - updated).total_seconds() / 86400
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             return 0.0
 
     @property

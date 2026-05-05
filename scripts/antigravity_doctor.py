@@ -400,7 +400,7 @@ class AntigravityDoctor:
                     severity="error" if pct_free <= 5 else ("warning" if pct_free <= 15 else "info"),
                 )
             )
-        except (OSError, PermissionError):
+        except OSError, PermissionError:
             pass
 
         # Check project size

@@ -1,11 +1,8 @@
 {
-  "timestamp": "2026-05-05T20:07:52.197207+00:00",
+  "timestamp": "2026-05-05T20:08:56.600783+00:00",
   "pid": 55555,
   "status": {
-    "cycle": "8038",
-    "steward": "ran",
-    "vault_ingest": "ran",
-    "proactive_suggestion": "cached"
+    "cycle": "8040"
   },
   "circuit_breakers": {
     "services": {
@@ -51,7 +48,7 @@
       "open_services": [],
       "health_status": "healthy"
     },
-    "timestamp": 1778011672.195942
+    "timestamp": 1778011736.5956
   },
-  "tree_diagnostic": "\u2514 KAIROS Heartbeat\n  \u251c PID: 55555\n  \u251c Cycle: 8038\n  \u251c steward: ran\n  \u251c vault_ingest: ran\n  \u251c proactive_suggestion: cached\n  \u251c suggestion_pipeline\n  \u2502 \u251c state: fresh\n  \u2502 \u251c suggestion: Execute the full validation cascade scri\n  \u2502 \u251c age_s: 0.0\n  \u2502 \u2514 quality: 1.0\n  \u2514 circuit_breakers\n    \u251c total_breakers: 3\n    \u251c closed: 3\n    \u251c open: 0\n    \u251c half_open: 0\n    \u251c open_services: [Array(0)]\n    \u2514 health_status: healthy"
+  "tree_diagnostic": "\u2514 KAIROS Heartbeat\n  \u251c PID: 55555\n  \u251c Cycle: 8040\n  \u251c suggestion_pipeline\n  \u2502 \u251c state: fresh\n  \u2502 \u251c suggestion: Execute the full validation cascade scri\n  \u2502 \u251c age_s: 64.4\n  \u2502 \u2514 quality: 0.957\n  \u2514 circuit_breakers\n    \u251c total_breakers: 3\n    \u251c closed: 3\n    \u251c open: 0\n    \u251c half_open: 0\n    \u251c open_services: [Array(0)]\n    \u2514 health_status: healthy"
 }

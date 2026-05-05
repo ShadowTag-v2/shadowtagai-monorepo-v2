@@ -13,16 +13,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get(
-        "CORS_ORIGINS", "http://localhost:3000,https://headfade.web.app"
-    ).split(","),
+    allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000,https://headfade.web.app").split(","),
     allow_credentials=True,
-    allow_methods=os.environ.get(
-        "CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH"
-    ).split(","),
-    allow_headers=os.environ.get(
-        "CORS_HEADERS", "Content-Type,Authorization,X-Requested-With"
-    ).split(","),
+    allow_methods=os.environ.get("CORS_METHODS", "GET,POST,PUT,DELETE,OPTIONS,PATCH").split(","),
+    allow_headers=os.environ.get("CORS_HEADERS", "Content-Type,Authorization,X-Requested-With").split(","),
 )
 
 app.include_router(arbiter.router)

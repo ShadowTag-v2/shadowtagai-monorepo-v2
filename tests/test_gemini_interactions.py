@@ -690,9 +690,7 @@ class TestConversationSession:
         from gemini_interactions.session import ConversationSession
 
         client = _make_mock_client()
-        session = ConversationSession(
-            client, system_instruction="You are a helpful assistant."
-        )
+        session = ConversationSession(client, system_instruction="You are a helpful assistant.")
         session.send("Question")
 
         api = client._client.interactions
@@ -703,9 +701,7 @@ class TestConversationSession:
         from gemini_interactions.session import ConversationSession
 
         client = _make_mock_client()
-        session = ConversationSession(
-            client, system_instruction="Default instruction"
-        )
+        session = ConversationSession(client, system_instruction="Default instruction")
         session.send("Q", system_instruction="Override instruction")
 
         api = client._client.interactions
@@ -748,7 +744,6 @@ class TestListInteractions:
 
 def _make_stream_mock_client():
     """Create a client that mocks both create() and stream() at the InteractionsClient level."""
-    from unittest.mock import MagicMock
 
     client = InteractionsClient.__new__(InteractionsClient)
     client._api_key = "test-key"
@@ -765,11 +760,13 @@ def _make_stream_mock_client():
     def mock_stream(*, input, model=None, previous_interaction_id=None, **kwargs):
         _stream_call_count["n"] += 1
         n = _stream_call_count["n"]
-        _stream_calls.append({
-            "input": input,
-            "model": model,
-            "previous_interaction_id": previous_interaction_id,
-        })
+        _stream_calls.append(
+            {
+                "input": input,
+                "model": model,
+                "previous_interaction_id": previous_interaction_id,
+            }
+        )
         yield StreamEvent(
             event_type=EventType.INTERACTION_START,
             interaction_id=f"stream-{n}",
@@ -1038,4 +1035,3 @@ class TestConversationSessionFunctionCallLoop:
         # Second call's input should contain the error message
         second_call_input = client._fc_call_log[1]["input"]
         assert any("No handler" in str(item.get("result", "")) for item in second_call_input)
-

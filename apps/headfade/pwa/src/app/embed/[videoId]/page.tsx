@@ -9,11 +9,7 @@ export function generateStaticParams() {
   return [{ videoId: 'demo' }];
 }
 
-export default async function EmbedPage({
-  params,
-}: {
-  params: Promise<{ videoId: string }>;
-}) {
+export default async function EmbedPage({ params }: { params: Promise<{ videoId: string }> }) {
   const { videoId } = await params;
   return <EmbedPlayerClient videoId={videoId} />;
 }
