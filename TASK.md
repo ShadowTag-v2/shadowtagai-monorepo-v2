@@ -1,7 +1,7 @@
 # TASK.md — Claude Code → Antigravity Porting (STATE B)
 
-> **Status**: ACTIVE | **Phase**: 2A — Services Business Logic
-> **Last Updated**: 2026-05-03
+> **Status**: ACTIVE | **Phase**: 3 — Tools Architecture
+> **Last Updated**: 2026-05-05
 > **Source**: `/Users/pikeymickey/Downloads/Claude_Source_Code`
 > **Target**: `.agents/skills/` + `packages/`
 
@@ -30,12 +30,12 @@ Extract service-layer orchestration patterns.
 
 | CP | Module | Source Size | Target | Status |
 |----|--------|-------------|--------|--------|
-| CP-09 | `services/MagicDocs/` | ~dir | `.agents/skills/magic-docs/` | ⬜ |
-| CP-10 | `services/vcr.ts` | 12KB | `packages/vcr_fixtures/` | ⬜ |
+| CP-09 | `services/MagicDocs/` | ~dir | `.agents/skills/magic-docs/` | ✅ |
+| CP-10 | `services/vcr.ts` | 12KB | `packages/vcr_fixtures/` | ✅ |
 | CP-11 | `services/SessionMemory/` | ~dir | `packages/agnt_services/session_memory.py` | ✅ |
 | CP-12 | `services/extractMemories/` | ~dir | `packages/agnt_services/extract_memories.py` | ✅ |
-| CP-13 | `services/tokenEstimation.ts` | 16KB | `packages/token_budget/` | ⬜ |
-| CP-14 | `services/autoDream/` | ~dir | verify vs `dream_consolidation.py` | ⬜ |
+| CP-13 | `services/tokenEstimation.ts` | 16KB | `packages/token_budget/estimation.py` | ✅ |
+| CP-14 | `services/autoDream/` | ~dir | `scripts/dream_consolidation.py` (parity verified) | ✅ |
 
 ### Phase 3 — Tools Architecture
 Map tool patterns to MCP fleet.
@@ -73,10 +73,13 @@ Strip React, extract lifecycle logic.
 ## Already Implemented (VERIFIED)
 - Context compaction → `packages/context_compactor/`
 - Speculation engine → `packages/speculation_engine/`
-- AutoDream → `scripts/dream_consolidation.py` (verify parity in CP-14)
+- AutoDream → `scripts/dream_consolidation.py` (parity verified) — CP-14
 - Ant gates analysis → KI `cor_ant_source_code_gates`
 - Feature flags → KI `ccleaks_deep_fold_in_part_3`
 - **StreamingWatchdog** → `packages/agnt_services/watchdog.py` (10 tests)
 - **AgentSummarizer** → `packages/agnt_services/agent_summary.py` (12 tests)
 - **SessionMemoryManager** → `packages/agnt_services/session_memory.py` (9 tests) — CP-11
 - **MemoryExtractor** → `packages/agnt_services/extract_memories.py` (17 tests) — CP-12
+- **MagicDocs** → `.agents/skills/magic-docs/SKILL.md` (instruction skill, no code port needed) — CP-09
+- **VCR Fixtures** → `packages/vcr_fixtures/` (fully implemented with secure scrubbing) — CP-10
+- **Token Estimation** → `packages/token_budget/estimation.py` (39 tests, vendor-agnostic) — CP-13

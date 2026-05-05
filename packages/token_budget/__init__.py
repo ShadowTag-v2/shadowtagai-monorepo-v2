@@ -24,11 +24,28 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
+from token_budget.estimation import (
+    IMAGE_MAX_TOKEN_SIZE,
+    bytes_per_token_for_file_type,
+    rough_token_count,
+    rough_token_count_for_block,
+    rough_token_count_for_content,
+    rough_token_count_for_file,
+    rough_token_count_for_messages,
+)
+
 __all__ = [
+    "IMAGE_MAX_TOKEN_SIZE",
     "TokenBudgetPosition",
-    "get_budget_continuation_message",
+    "bytes_per_token_for_file_type",
     "find_token_budget_positions",
+    "get_budget_continuation_message",
     "parse_token_budget",
+    "rough_token_count",
+    "rough_token_count_for_block",
+    "rough_token_count_for_content",
+    "rough_token_count_for_file",
+    "rough_token_count_for_messages",
 ]
 
 # ---------------------------------------------------------------------------
