@@ -97,3 +97,54 @@ def function_tool(
         "description": description,
         "parameters": parameters,
     }
+
+
+def computer_use_tool(
+    *,
+    environment: str = "browser",
+    display_width_px: int = 1024,
+    display_height_px: int = 768,
+) -> dict[str, Any]:
+    """Computer Use tool — for gemini-2.5-computer-use-preview models.
+
+    Enables the model to interact with a screen environment by
+    producing actions (click, type, scroll, screenshot, etc.).
+
+    Args:
+        environment: Execution environment — "browser" or "desktop".
+        display_width_px: Screen width in pixels.
+        display_height_px: Screen height in pixels.
+    """
+    return {
+        "type": "computer_use",
+        "computer_use": {
+            "environment": environment,
+            "display_width_px": display_width_px,
+            "display_height_px": display_height_px,
+        },
+    }
+
+
+def file_search_tool(
+    *,
+    file_ids: list[str] | None = None,
+    vector_store_ids: list[str] | None = None,
+) -> dict[str, Any]:
+    """File Search tool — ground responses in uploaded files.
+
+    Enables retrieval-augmented generation over files previously
+    uploaded via the Files API.
+
+    Args:
+        file_ids: List of file resource names (e.g., ["files/abc123"]).
+        vector_store_ids: List of vector store IDs for pre-indexed search.
+    """
+    tool: dict[str, Any] = {"type": "file_search"}
+    config: dict[str, Any] = {}
+    if file_ids:
+        config["file_ids"] = file_ids
+    if vector_store_ids:
+        config["vector_store_ids"] = vector_store_ids
+    if config:
+        tool["file_search"] = config
+    return tool

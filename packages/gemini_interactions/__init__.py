@@ -17,33 +17,43 @@ Public API:
   - InteractionsClient: Main client (create, get, stream, function call loop)
   - InteractionResult: Typed wrapper around raw interaction response
   - StreamEvent: Typed stream event (content.delta, interaction.complete, etc.)
+  - StreamAccumulator: Index-based output reconstruction from streaming
+  - EventType: Enumeration of SSE event types
   - ToolDefinition: Typed tool config (function, google_search, mcp_server, etc.)
 """
 
 from gemini_interactions.client import (
+    EventType,
     InteractionsClient,
     InteractionResult,
+    StreamAccumulator,
     StreamEvent,
 )
 from gemini_interactions.tools import (
     ToolDefinition,
-    google_search_tool,
-    url_context_tool,
+    computer_use_tool,
     code_execution_tool,
-    mcp_server_tool,
+    file_search_tool,
     function_tool,
+    google_search_tool,
+    mcp_server_tool,
+    url_context_tool,
 )
 
 __all__ = [
     # Client
+    "EventType",
     "InteractionsClient",
     "InteractionResult",
+    "StreamAccumulator",
     "StreamEvent",
     # Tool builders
     "ToolDefinition",
-    "google_search_tool",
-    "url_context_tool",
+    "computer_use_tool",
     "code_execution_tool",
-    "mcp_server_tool",
+    "file_search_tool",
     "function_tool",
+    "google_search_tool",
+    "mcp_server_tool",
+    "url_context_tool",
 ]
