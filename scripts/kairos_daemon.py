@@ -710,7 +710,7 @@ def run_research_sweep() -> bool:
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
     try:
         idx = int(topic_index_file.read_text().strip()) if topic_index_file.exists() else 0
-    except (ValueError, OSError):
+    except ValueError, OSError:
         idx = 0
     topic = _RESEARCH_TOPICS[idx % len(_RESEARCH_TOPICS)]
     topic_index_file.write_text(str((idx + 1) % len(_RESEARCH_TOPICS)))

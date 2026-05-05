@@ -1,1 +1,244 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[895],{2777:(e,t,a)=>{Promise.resolve().then(a.bind(a,8596))},8596:(e,t,a)=>{"use strict";a.d(t,{default:()=>i});var n=a(5155),s=a(2115),r=a(5704);async function c(e){try{let t=await fetch("".concat(r.env.NEXT_PUBLIC_API_URL||"","/api/embed/").concat(e));if(!t.ok)throw Error("API ".concat(t.status));return await t.json()}catch(t){return console.debug("[HeadFade Embed] API unreachable, using demo fallback",t),{id:e,cdnUrl:"/media/genesis_clip_01.mp4",models:["Sora 2.0","Runway Gen-3","ElevenLabs"],hdiScore:87,parentCreator:"genesis_artist",remixDepth:3,title:"Synthetic Media Specimen"}}}function i(e){let{videoId:t}=e,[a,i]=(0,s.useState)(null),[l,d]=(0,s.useState)(!1),[o,x]=(0,s.useState)(!1);return((0,s.useEffect)(()=>{c(t).then(i)},[t]),(0,s.useEffect)(()=>{a&&!o&&(fetch("".concat(r.env.NEXT_PUBLIC_API_URL||"","/api/telemetry/embed-view"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({videoId:a.id,referrer:"undefined"!=typeof document?document.referrer:"",timestamp:new Date().toISOString()})}).catch(()=>{}),x(!0))},[a,o]),a)?(0,n.jsxs)("div",{className:"relative w-full h-screen bg-black font-mono overflow-hidden",children:[(0,n.jsx)("video",{className:"w-full h-full object-contain",src:a.cdnUrl,controls:!0,controlsList:"nodownload",playsInline:!0,autoPlay:!0,muted:!0,loop:!0}),(0,n.jsxs)("div",{className:"absolute top-3 left-3 right-3 z-10 flex items-center justify-between",children:[(0,n.jsxs)("div",{className:"flex gap-2 items-center",children:[(0,n.jsx)("span",{className:"bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-[0.15em] uppercase",children:"AI-Presumed"}),(0,n.jsx)("span",{className:"text-zinc-500 text-[9px] tracking-wider",children:a.title})]}),(0,n.jsx)("button",{type:"button",onClick:()=>d(!l),className:"bg-black/80 text-[#00FF41] text-[9px] border border-[#00FF41]/40 px-2.5 py-1 rounded-sm hover:bg-[#00FF41] hover:text-black transition-all duration-200 tracking-wider",children:l?"[Hide Data]":"[View Forensics ▸]"})]}),(0,n.jsxs)("div",{className:"absolute right-0 top-0 bottom-0 w-[280px] bg-black/95 border-l border-[#00FF41]/20 p-4 text-white overflow-y-auto shadow-2xl backdrop-blur-sm transition-transform duration-300 ease-out ".concat(l?"translate-x-0":"translate-x-full"),children:[(0,n.jsxs)("div",{className:"mb-5",children:[(0,n.jsx)("h3",{className:"text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5",children:"Detected AI Stack"}),(0,n.jsx)("div",{className:"flex flex-wrap gap-1.5",children:a.models.map(e=>(0,n.jsx)("span",{className:"text-[10px] bg-cyan-400/10 text-cyan-400 border border-cyan-400/20 px-2 py-0.5 rounded-sm",children:e},e))})]}),(0,n.jsxs)("div",{className:"mb-5",children:[(0,n.jsx)("h3",{className:"text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5",children:"Human Deception Index"}),(0,n.jsxs)("div",{className:"flex items-end gap-2",children:[(0,n.jsxs)("span",{className:"text-3xl font-bold text-red-500 leading-none",children:[a.hdiScore,"%"]}),(0,n.jsx)("span",{className:"text-[10px] text-zinc-600 pb-0.5",children:"of humans fooled"})]}),(0,n.jsx)("div",{className:"mt-2 h-1.5 bg-zinc-900 rounded-full overflow-hidden",children:(0,n.jsx)("div",{className:"h-full rounded-full transition-all duration-1000",style:{width:"".concat(a.hdiScore,"%"),background:"linear-gradient(90deg, #00FF41 0%, #ff4444 ".concat(a.hdiScore,"%)")}})})]}),(0,n.jsxs)("div",{className:"mb-5",children:[(0,n.jsx)("h3",{className:"text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5",children:"Remix Lineage"}),(0,n.jsxs)("p",{className:"text-[11px] text-zinc-300",children:["↳ Forked from"," ",(0,n.jsxs)("span",{className:"text-cyan-400",children:["@",a.parentCreator]})]}),(0,n.jsxs)("p",{className:"text-[10px] text-zinc-600 mt-1",children:["Depth: ",a.remixDepth," generations"]})]}),(0,n.jsxs)("div",{className:"mb-5 p-3 border border-zinc-800 rounded-lg bg-zinc-900/50",children:[(0,n.jsx)("h3",{className:"text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5",children:"Cognitive Telemetry"}),(0,n.jsx)("p",{className:"text-[10px] text-zinc-400 leading-relaxed",children:"Clean RLHF behavioral data. Not algorithmically lobotomized. HeadFade demands active forensics — not passive consumption."})]}),(0,n.jsx)("a",{href:"https://headfade.com/v/".concat(a.id,"?ref=embed"),target:"_blank",rel:"noopener noreferrer",className:"block w-full text-center bg-[#00FF41] text-black py-2.5 text-[11px] font-bold rounded-sm hover:bg-white transition-colors tracking-wider",children:"Unlock Full Prompt & Lineage ↱"}),(0,n.jsx)("p",{className:"text-[9px] text-zinc-700 text-center mt-2",children:"Free sandbox \xb7 $19.99/mo Premium Forensics"})]}),(0,n.jsxs)("div",{className:"absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black/90 to-transparent flex items-end justify-between px-3 pb-1.5 z-10",children:[(0,n.jsx)("span",{className:"text-[10px] font-bold tracking-[0.2em] text-gradient",children:"HEADFADE"}),(0,n.jsx)("a",{href:"https://headfade.com/v/".concat(a.id,"?ref=embed"),target:"_blank",rel:"noopener noreferrer",className:"text-[9px] text-zinc-500 hover:text-white transition-colors",children:"headfade.com"})]})]}):(0,n.jsx)("div",{className:"flex items-center justify-center h-screen bg-black",children:(0,n.jsx)("div",{className:"w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"})})}}},e=>{e.O(0,[441,255,358],()=>e(e.s=2777)),_N_E=e.O()}]);
+(self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
+  [895],
+  {
+    2777: (e, t, a) => {
+      Promise.resolve().then(a.bind(a, 8596));
+    },
+    8596: (e, t, a) => {
+      a.d(t, { default: () => i });
+      var n = a(5155),
+        s = a(2115),
+        r = a(5704);
+      async function c(e) {
+        try {
+          const t = await fetch(
+            ''.concat(r.env.NEXT_PUBLIC_API_URL || '', '/api/embed/').concat(e),
+          );
+          if (!t.ok) throw Error('API '.concat(t.status));
+          return await t.json();
+        } catch (t) {
+          return (
+            console.debug('[HeadFade Embed] API unreachable, using demo fallback', t),
+            {
+              id: e,
+              cdnUrl: '/media/genesis_clip_01.mp4',
+              models: ['Sora 2.0', 'Runway Gen-3', 'ElevenLabs'],
+              hdiScore: 87,
+              parentCreator: 'genesis_artist',
+              remixDepth: 3,
+              title: 'Synthetic Media Specimen',
+            }
+          );
+        }
+      }
+      function i(e) {
+        const { videoId: t } = e,
+          [a, i] = (0, s.useState)(null),
+          [l, d] = (0, s.useState)(!1),
+          [o, x] = (0, s.useState)(!1);
+        return ((0, s.useEffect)(() => {
+          c(t).then(i);
+        }, [t]),
+        (0, s.useEffect)(() => {
+          a &&
+            !o &&
+            (fetch(''.concat(r.env.NEXT_PUBLIC_API_URL || '', '/api/telemetry/embed-view'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                videoId: a.id,
+                referrer: 'undefined' != typeof document ? document.referrer : '',
+                timestamp: new Date().toISOString(),
+              }),
+            }).catch(() => {}),
+            x(!0));
+        }, [a, o]),
+        a)
+          ? (0, n.jsxs)('div', {
+              className: 'relative w-full h-screen bg-black font-mono overflow-hidden',
+              children: [
+                (0, n.jsx)('video', {
+                  className: 'w-full h-full object-contain',
+                  src: a.cdnUrl,
+                  controls: !0,
+                  controlsList: 'nodownload',
+                  playsInline: !0,
+                  autoPlay: !0,
+                  muted: !0,
+                  loop: !0,
+                }),
+                (0, n.jsxs)('div', {
+                  className: 'absolute top-3 left-3 right-3 z-10 flex items-center justify-between',
+                  children: [
+                    (0, n.jsxs)('div', {
+                      className: 'flex gap-2 items-center',
+                      children: [
+                        (0, n.jsx)('span', {
+                          className:
+                            'bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-[0.15em] uppercase',
+                          children: 'AI-Presumed',
+                        }),
+                        (0, n.jsx)('span', {
+                          className: 'text-zinc-500 text-[9px] tracking-wider',
+                          children: a.title,
+                        }),
+                      ],
+                    }),
+                    (0, n.jsx)('button', {
+                      type: 'button',
+                      onClick: () => d(!l),
+                      className:
+                        'bg-black/80 text-[#00FF41] text-[9px] border border-[#00FF41]/40 px-2.5 py-1 rounded-sm hover:bg-[#00FF41] hover:text-black transition-all duration-200 tracking-wider',
+                      children: l ? '[Hide Data]' : '[View Forensics ▸]',
+                    }),
+                  ],
+                }),
+                (0, n.jsxs)('div', {
+                  className:
+                    'absolute right-0 top-0 bottom-0 w-[280px] bg-black/95 border-l border-[#00FF41]/20 p-4 text-white overflow-y-auto shadow-2xl backdrop-blur-sm transition-transform duration-300 ease-out '.concat(
+                      l ? 'translate-x-0' : 'translate-x-full',
+                    ),
+                  children: [
+                    (0, n.jsxs)('div', {
+                      className: 'mb-5',
+                      children: [
+                        (0, n.jsx)('h3', {
+                          className: 'text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5',
+                          children: 'Detected AI Stack',
+                        }),
+                        (0, n.jsx)('div', {
+                          className: 'flex flex-wrap gap-1.5',
+                          children: a.models.map((e) =>
+                            (0, n.jsx)(
+                              'span',
+                              {
+                                className:
+                                  'text-[10px] bg-cyan-400/10 text-cyan-400 border border-cyan-400/20 px-2 py-0.5 rounded-sm',
+                                children: e,
+                              },
+                              e,
+                            ),
+                          ),
+                        }),
+                      ],
+                    }),
+                    (0, n.jsxs)('div', {
+                      className: 'mb-5',
+                      children: [
+                        (0, n.jsx)('h3', {
+                          className: 'text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5',
+                          children: 'Human Deception Index',
+                        }),
+                        (0, n.jsxs)('div', {
+                          className: 'flex items-end gap-2',
+                          children: [
+                            (0, n.jsxs)('span', {
+                              className: 'text-3xl font-bold text-red-500 leading-none',
+                              children: [a.hdiScore, '%'],
+                            }),
+                            (0, n.jsx)('span', {
+                              className: 'text-[10px] text-zinc-600 pb-0.5',
+                              children: 'of humans fooled',
+                            }),
+                          ],
+                        }),
+                        (0, n.jsx)('div', {
+                          className: 'mt-2 h-1.5 bg-zinc-900 rounded-full overflow-hidden',
+                          children: (0, n.jsx)('div', {
+                            className: 'h-full rounded-full transition-all duration-1000',
+                            style: {
+                              width: ''.concat(a.hdiScore, '%'),
+                              background: 'linear-gradient(90deg, #00FF41 0%, #ff4444 '.concat(
+                                a.hdiScore,
+                                '%)',
+                              ),
+                            },
+                          }),
+                        }),
+                      ],
+                    }),
+                    (0, n.jsxs)('div', {
+                      className: 'mb-5',
+                      children: [
+                        (0, n.jsx)('h3', {
+                          className: 'text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5',
+                          children: 'Remix Lineage',
+                        }),
+                        (0, n.jsxs)('p', {
+                          className: 'text-[11px] text-zinc-300',
+                          children: [
+                            '↳ Forked from',
+                            ' ',
+                            (0, n.jsxs)('span', {
+                              className: 'text-cyan-400',
+                              children: ['@', a.parentCreator],
+                            }),
+                          ],
+                        }),
+                        (0, n.jsxs)('p', {
+                          className: 'text-[10px] text-zinc-600 mt-1',
+                          children: ['Depth: ', a.remixDepth, ' generations'],
+                        }),
+                      ],
+                    }),
+                    (0, n.jsxs)('div', {
+                      className: 'mb-5 p-3 border border-zinc-800 rounded-lg bg-zinc-900/50',
+                      children: [
+                        (0, n.jsx)('h3', {
+                          className: 'text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5',
+                          children: 'Cognitive Telemetry',
+                        }),
+                        (0, n.jsx)('p', {
+                          className: 'text-[10px] text-zinc-400 leading-relaxed',
+                          children:
+                            'Clean RLHF behavioral data. Not algorithmically lobotomized. HeadFade demands active forensics — not passive consumption.',
+                        }),
+                      ],
+                    }),
+                    (0, n.jsx)('a', {
+                      href: 'https://headfade.com/v/'.concat(a.id, '?ref=embed'),
+                      target: '_blank',
+                      rel: 'noopener noreferrer',
+                      className:
+                        'block w-full text-center bg-[#00FF41] text-black py-2.5 text-[11px] font-bold rounded-sm hover:bg-white transition-colors tracking-wider',
+                      children: 'Unlock Full Prompt & Lineage ↱',
+                    }),
+                    (0, n.jsx)('p', {
+                      className: 'text-[9px] text-zinc-700 text-center mt-2',
+                      children: 'Free sandbox \xb7 $19.99/mo Premium Forensics',
+                    }),
+                  ],
+                }),
+                (0, n.jsxs)('div', {
+                  className:
+                    'absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black/90 to-transparent flex items-end justify-between px-3 pb-1.5 z-10',
+                  children: [
+                    (0, n.jsx)('span', {
+                      className: 'text-[10px] font-bold tracking-[0.2em] text-gradient',
+                      children: 'HEADFADE',
+                    }),
+                    (0, n.jsx)('a', {
+                      href: 'https://headfade.com/v/'.concat(a.id, '?ref=embed'),
+                      target: '_blank',
+                      rel: 'noopener noreferrer',
+                      className: 'text-[9px] text-zinc-500 hover:text-white transition-colors',
+                      children: 'headfade.com',
+                    }),
+                  ],
+                }),
+              ],
+            })
+          : (0, n.jsx)('div', {
+              className: 'flex items-center justify-center h-screen bg-black',
+              children: (0, n.jsx)('div', {
+                className:
+                  'w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin',
+              }),
+            });
+      }
+    },
+  },
+  (e) => {
+    e.O(0, [441, 255, 358], () => e((e.s = 2777))), (_N_E = e.O());
+  },
+]);

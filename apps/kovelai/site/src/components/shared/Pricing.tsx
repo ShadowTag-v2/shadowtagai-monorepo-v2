@@ -21,9 +21,8 @@ import { useState } from 'react';
  */
 
 const TRIAL_LINK = process.env.NEXT_PUBLIC_STRIPE_TRIAL_LINK || '#';
-const PRO_MONTHLY_LINK = process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_LINK
-  || process.env.NEXT_PUBLIC_STRIPE_PRO_LINK
-  || '#';
+const PRO_MONTHLY_LINK =
+  process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_LINK || process.env.NEXT_PUBLIC_STRIPE_PRO_LINK || '#';
 const PRO_ANNUAL_LINK = process.env.NEXT_PUBLIC_STRIPE_PRO_ANNUAL_LINK || '#';
 
 interface PricingProps {
@@ -35,9 +34,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
 
   const proPrice = isAnnual ? '119' : '149';
   const proPeriod = '/mo';
-  const proCtaLabel = isAnnual
-    ? 'Start Pro — $59.50/mo'
-    : 'Start Pro — $74.50/mo';
+  const proCtaLabel = isAnnual ? 'Start Pro — $59.50/mo' : 'Start Pro — $74.50/mo';
   const proCtaLink = isAnnual ? PRO_ANNUAL_LINK : PRO_MONTHLY_LINK;
   const proSubtext = isAnnual
     ? 'Billed $1,428/yr — save $360 vs monthly'
@@ -189,9 +186,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
                   {p.cta}
                 </a>
               )}
-              {p.subtext && (
-                <p className="text-xs text-center text-[#a89d8e] mt-2">{p.subtext}</p>
-              )}
+              {p.subtext && <p className="text-xs text-center text-[#a89d8e] mt-2">{p.subtext}</p>}
             </div>
           ))}
         </div>

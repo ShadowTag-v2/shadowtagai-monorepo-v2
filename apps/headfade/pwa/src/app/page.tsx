@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import AgentSpinner from '../components/AgentSpinner';
 import '../app/agent-spinner.css';
 
@@ -26,7 +26,9 @@ export default function HeadFadeSwiper() {
 
   const castVote = useCallback(
     async (vote: 'REAL' | 'AI') => {
-      setReveal('> ■ INITIALIZING GEMINI 3.1 FLASH LITE FORENSICS...\n> ■ Loading multimodal video pipeline...\n');
+      setReveal(
+        '> ■ INITIALIZING GEMINI 3.1 FLASH LITE FORENSICS...\n> ■ Loading multimodal video pipeline...\n',
+      );
       setIsAnalyzing(true);
       setUserResult(null);
 
@@ -45,7 +47,11 @@ export default function HeadFadeSwiper() {
           }),
         });
 
-        setReveal((prev) => prev + '> ■ HDI telemetry logged.\n> ■ Requesting forensic teardown from Vertex AI...\n');
+        setReveal(
+          (prev) =>
+            prev +
+            '> ■ HDI telemetry logged.\n> ■ Requesting forensic teardown from Vertex AI...\n',
+        );
 
         // Phase 2: Forensic AI reveal via Gemini arbiter — FIXED GCS URI
         const res = await fetch('/api/analyze', {
@@ -108,21 +114,18 @@ export default function HeadFadeSwiper() {
 
         {/* Loading overlay — AgentSpinner (forensic theme) */}
         {isAnalyzing && (
-          <AgentSpinner
-            active={isAnalyzing}
-            theme="headfade"
-            overlay
-            label="FORENSIC ANALYSIS"
-          />
+          <AgentSpinner active={isAnalyzing} theme="headfade" overlay label="FORENSIC ANALYSIS" />
         )}
 
         {/* Result badge */}
         {userResult && !isAnalyzing && (
-          <div className={`absolute top-6 left-1/2 -translate-x-1/2 z-20 px-6 py-2 rounded-full font-bold text-sm tracking-widest animate-fade-in ${
-            userResult === 'correct'
-              ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-400/30'
-              : 'bg-red-500/20 text-red-400 border border-red-400/30'
-          }`}>
+          <div
+            className={`absolute top-6 left-1/2 -translate-x-1/2 z-20 px-6 py-2 rounded-full font-bold text-sm tracking-widest animate-fade-in ${
+              userResult === 'correct'
+                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-400/30'
+                : 'bg-red-500/20 text-red-400 border border-red-400/30'
+            }`}
+          >
             {userResult === 'correct' ? '✓ CORRECT' : '✗ FOOLED'}
           </div>
         )}

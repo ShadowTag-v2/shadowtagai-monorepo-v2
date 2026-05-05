@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 /* =======================================================================
  * HeadFade Embed Player — The Zero-CAC Distribution Engine
@@ -32,9 +32,7 @@ interface EmbedVideoData {
 /** Minimal API client for embed data — runs against Cloud Run */
 async function fetchEmbedData(videoId: string): Promise<EmbedVideoData> {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || ''}/api/embed/${videoId}`,
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/embed/${videoId}`);
     if (!res.ok) throw new Error(`API ${res.status}`);
     return await res.json();
   } catch (_err: unknown) {
@@ -106,9 +104,7 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
           <span className="bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-[0.15em] uppercase">
             AI-Presumed
           </span>
-          <span className="text-zinc-500 text-[9px] tracking-wider">
-            {videoData.title}
-          </span>
+          <span className="text-zinc-500 text-[9px] tracking-wider">{videoData.title}</span>
         </div>
         <button
           type="button"
@@ -151,9 +147,7 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
             <span className="text-3xl font-bold text-red-500 leading-none">
               {videoData.hdiScore}%
             </span>
-            <span className="text-[10px] text-zinc-600 pb-0.5">
-              of humans fooled
-            </span>
+            <span className="text-[10px] text-zinc-600 pb-0.5">of humans fooled</span>
           </div>
           {/* HDI bar */}
           <div className="mt-2 h-1.5 bg-zinc-900 rounded-full overflow-hidden">
@@ -173,8 +167,7 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
             Remix Lineage
           </h3>
           <p className="text-[11px] text-zinc-300">
-            ↳ Forked from{' '}
-            <span className="text-cyan-400">@{videoData.parentCreator}</span>
+            ↳ Forked from <span className="text-cyan-400">@{videoData.parentCreator}</span>
           </p>
           <p className="text-[10px] text-zinc-600 mt-1">
             Depth: {videoData.remixDepth} generations
@@ -187,8 +180,8 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
             Cognitive Telemetry
           </h3>
           <p className="text-[10px] text-zinc-400 leading-relaxed">
-            Clean RLHF behavioral data. Not algorithmically lobotomized.
-            HeadFade demands active forensics — not passive consumption.
+            Clean RLHF behavioral data. Not algorithmically lobotomized. HeadFade demands active
+            forensics — not passive consumption.
           </p>
         </div>
 
@@ -209,9 +202,7 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
 
       {/* Bottom HeadFade branding bar */}
       <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black/90 to-transparent flex items-end justify-between px-3 pb-1.5 z-10">
-        <span className="text-[10px] font-bold tracking-[0.2em] text-gradient">
-          HEADFADE
-        </span>
+        <span className="text-[10px] font-bold tracking-[0.2em] text-gradient">HEADFADE</span>
         <a
           href={`https://headfade.com/v/${videoData.id}?ref=embed`}
           target="_blank"

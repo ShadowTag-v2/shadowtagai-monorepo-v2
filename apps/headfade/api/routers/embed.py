@@ -92,7 +92,7 @@ async def log_embed_impression(event: EmbedViewEvent):
             {
                 "video_id": event.videoId,
                 "referrer": event.referrer,
-                "event_timestamp": event.timestamp or datetime.datetime.now(tz=datetime.timezone.utc).isoformat(),
+                "event_timestamp": event.timestamp or datetime.datetime.now(tz=datetime.UTC).isoformat(),
                 "event_type": "embed_impression",
             }
         ]
