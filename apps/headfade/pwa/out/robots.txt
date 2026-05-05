@@ -1,5 +1,9 @@
+# HeadFade PWA — robots.txt
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /_next/
+Disallow: /manifest.json
 
+# Sitemaps
 Sitemap: https://headfade.web.app/sitemap.xml
