@@ -666,7 +666,7 @@ video {
   background: linear-gradient(90deg, #4ae8ea, #0fccce);
 }
 
-.product-featured__card--counsel::before {
+.product-featured__card--uphillsnowball::before {
   background: var(--gradient-primary);
 }
 
