@@ -163,7 +163,7 @@ class PDFToImagesConverter:
         try:
             subprocess.run(["pdftoppm", "-v"], capture_output=True, check=True)
             return True
-        except subprocess.CalledProcessError, FileNotFoundError:
+        except (subprocess.CalledProcessError, FileNotFoundError):
             return False
 
     def _has_imagemagick(self) -> bool:
@@ -171,7 +171,7 @@ class PDFToImagesConverter:
         try:
             subprocess.run(["convert", "-version"], capture_output=True, check=True)
             return True
-        except subprocess.CalledProcessError, FileNotFoundError:
+        except (subprocess.CalledProcessError, FileNotFoundError):
             return False
 
 

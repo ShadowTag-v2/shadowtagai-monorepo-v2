@@ -274,7 +274,7 @@ class _SkillScriptCodeExecutor:
                         rc = parsed.get("returncode", 0)
                         if rc != 0 and not stderr:
                             stderr = f"Exit code {rc}"
-                except json.JSONDecodeError, ValueError:
+                except (json.JSONDecodeError, ValueError):
                     pass
 
             status = "success"

@@ -1319,7 +1319,7 @@ def validate_config(config: dict[str, Any]) -> tuple[list[str], list[str]]:
                 errors.append(f"'rate_limit' must be non-negative (got {rate})")
             elif rate > 10:
                 warnings.append(f"'rate_limit' is very high ({rate}s) - this may slow down scraping significantly")
-        except ValueError, TypeError:
+        except (ValueError, TypeError):
             errors.append(f"'rate_limit' must be a number (got {config['rate_limit']})")
 
     # Validate max_pages
@@ -1339,7 +1339,7 @@ def validate_config(config: dict[str, Any]) -> tuple[list[str], list[str]]:
                     errors.append(f"'max_pages' must be at least 1 or -1 for unlimited (got {max_p})")
                 elif max_p > MAX_PAGES_WARNING_THRESHOLD:
                     warnings.append(f"'max_pages' is very high ({max_p}) - scraping may take a very long time")
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 errors.append(f"'max_pages' must be an integer, -1, or null (got {config['max_pages']})")
 
     # Validate start_urls if present

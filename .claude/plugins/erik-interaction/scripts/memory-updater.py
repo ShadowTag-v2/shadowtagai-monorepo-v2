@@ -18,7 +18,7 @@ def load_memory() -> dict:
     try:
         with open(MEMORY_FILE) as f:
             return json.load(f)
-    except FileNotFoundError, json.JSONDecodeError:
+    except (FileNotFoundError, json.JSONDecodeError):
         return {
             "components": {},
             "costs": {},

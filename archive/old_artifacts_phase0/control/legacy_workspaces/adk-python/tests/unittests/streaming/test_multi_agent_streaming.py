@@ -92,7 +92,7 @@ def test_live_streaming_multi_agent_single_tool():
             try:
                 session = self.session
                 asyncio.run(asyncio.wait_for(consume_responses(session), timeout=5.0))
-            except TimeoutError, asyncio.CancelledError:
+            except (TimeoutError, asyncio.CancelledError):
                 pass
             return collected_responses
 

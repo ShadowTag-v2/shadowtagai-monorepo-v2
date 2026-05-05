@@ -327,7 +327,7 @@ class NullModelValidator:
             if key in stats and stats[key] is not None:
                 try:
                     return abs(float(stats[key]))
-                except ValueError, TypeError:
+                except (ValueError, TypeError):
                     continue
 
         # Fall back to p-value if available (convert to z-score)
@@ -346,7 +346,7 @@ class NullModelValidator:
             if key in stats and stats[key] is not None:
                 try:
                     return float(stats[key])
-                except ValueError, TypeError:
+                except (ValueError, TypeError):
                     continue
         return None
 

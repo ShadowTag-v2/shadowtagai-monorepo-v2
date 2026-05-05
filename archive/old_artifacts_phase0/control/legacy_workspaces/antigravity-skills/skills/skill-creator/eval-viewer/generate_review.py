@@ -117,7 +117,7 @@ def build_run(root: Path, run_dir: Path) -> dict | None:
                 metadata = json.loads(candidate.read_text())
                 prompt = metadata.get("prompt", "")
                 eval_id = metadata.get("eval_id")
-            except json.JSONDecodeError, OSError:
+            except (json.JSONDecodeError, OSError):
                 pass
             if prompt:
                 break
@@ -155,7 +155,7 @@ def build_run(root: Path, run_dir: Path) -> dict | None:
         if candidate.exists():
             try:
                 grading = json.loads(candidate.read_text())
-            except json.JSONDecodeError, OSError:
+            except (json.JSONDecodeError, OSError):
                 pass
             if grading:
                 break
@@ -247,7 +247,7 @@ def load_previous_iteration(workspace: Path) -> dict[str, dict]:
         try:
             data = json.loads(feedback_path.read_text())
             feedback_map = {r["run_id"]: r["feedback"] for r in data.get("reviews", []) if r.get("feedback", "").strip()}
-        except json.JSONDecodeError, OSError, KeyError:
+        except (json.JSONDecodeError, OSError, KeyError):
             pass
 
     # Load runs (to get outputs)
@@ -318,7 +318,7 @@ def _kill_port(port: int) -> None:
             if pid_str.strip():
                 try:
                     os.kill(int(pid_str.strip()), signal.SIGTERM)
-                except ProcessLookupError, ValueError:
+                except (ProcessLookupError, ValueError):
                     pass
         if result.stdout.strip():
             time.sleep(0.5)
@@ -360,7 +360,7 @@ class ReviewHandler(BaseHTTPRequestHandler):
             if self.benchmark_path and self.benchmark_path.exists():
                 try:
                     benchmark = json.loads(self.benchmark_path.read_text())
-                except json.JSONDecodeError, OSError:
+                except (json.JSONDecodeError, OSError):
                     pass
             html = generate_html(runs, self.skill_name, self.previous, benchmark)
             content = html.encode("utf-8")
@@ -455,7 +455,7 @@ def main() -> None:
     if benchmark_path and benchmark_path.exists():
         try:
             benchmark = json.loads(benchmark_path.read_text())
-        except json.JSONDecodeError, OSError:
+        except (json.JSONDecodeError, OSError):
             pass
 
     if args.static:

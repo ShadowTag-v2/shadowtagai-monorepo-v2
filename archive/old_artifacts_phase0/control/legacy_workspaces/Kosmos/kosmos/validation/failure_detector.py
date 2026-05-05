@@ -571,7 +571,7 @@ class FailureDetector:
                 else:
                     scores.append(0.2)
                 weights.append(0.4)
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
         # Effect size contribution
@@ -588,7 +588,7 @@ class FailureDetector:
                 else:
                     scores.append(0.25)
                 weights.append(0.35)
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
         # Sample size contribution
@@ -607,7 +607,7 @@ class FailureDetector:
                 else:
                     scores.append(0.3)
                 weights.append(0.25)
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
         # Calculate weighted average
@@ -644,7 +644,7 @@ class FailureDetector:
                 p = float(p_value)
                 if p >= 0.05:
                     evidence.append(f"p-value ({p:.4f}) not significant at 0.05 level")
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
         return evidence

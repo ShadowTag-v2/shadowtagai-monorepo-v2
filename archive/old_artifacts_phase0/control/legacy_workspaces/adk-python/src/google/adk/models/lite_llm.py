@@ -224,7 +224,7 @@ def _safe_json_serialize(obj) -> str:
     try:
         # Try direct JSON serialization first
         return json.dumps(obj, ensure_ascii=False)
-    except TypeError, OverflowError:
+    except (TypeError, OverflowError):
         return str(obj)
 
 
@@ -479,7 +479,7 @@ def _build_tool_call_from_json_dict(candidate: Any, *, index: int) -> ChatComple
     else:
         try:
             arguments_payload = json.dumps(args, ensure_ascii=False)
-        except TypeError, ValueError:
+        except (TypeError, ValueError):
             arguments_payload = _safe_json_serialize(args)
 
     call_id = candidate.get("id") or f"adk_tool_call_{uuid.uuid4().hex}"

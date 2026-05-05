@@ -167,7 +167,7 @@ class NotebookCompressor:
         try:
             p = float(p_str)
             return 0 < p <= 1.0
-        except ValueError, TypeError:
+        except (ValueError, TypeError):
             return False
 
     def _generate_summary(self, content: str, statistics: dict, max_lines: int = 2) -> str:
@@ -368,7 +368,7 @@ class LiteratureCompressor:
         if p_values:
             try:
                 stats["p_value"] = min(float(p) for p in p_values if float(p) <= 1.0)
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
         # Look for sample sizes

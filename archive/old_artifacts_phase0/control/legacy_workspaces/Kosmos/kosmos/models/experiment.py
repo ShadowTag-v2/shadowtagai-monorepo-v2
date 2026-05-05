@@ -113,7 +113,7 @@ class ControlGroup(BaseModel):
         if isinstance(v, str):
             try:
                 return int(v)
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 return None
         return v
 

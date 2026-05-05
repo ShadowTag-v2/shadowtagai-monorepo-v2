@@ -305,7 +305,7 @@ class BaseSchemaValidator:
                                 all_referenced_files.add(target_path)
                             else:
                                 broken_refs.append((target, rel.sourceline))
-                        except OSError, ValueError:
+                        except (OSError, ValueError):
                             broken_refs.append((target, rel.sourceline))
 
                 # Report broken references

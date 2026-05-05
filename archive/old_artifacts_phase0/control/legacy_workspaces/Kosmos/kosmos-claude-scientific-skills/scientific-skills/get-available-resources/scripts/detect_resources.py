@@ -107,7 +107,7 @@ def detect_nvidia_gpus() -> list[dict[str, Any]]:
                                 "backend": "CUDA",
                             }
                         )
-    except subprocess.TimeoutExpired, FileNotFoundError, Exception:
+    except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
         pass
 
     return gpus
@@ -129,7 +129,7 @@ def detect_amd_gpus() -> list[dict[str, Any]]:
                 if "GPU" in line and "DID" in line:
                     gpus.append({"index": gpu_index, "name": "AMD GPU", "type": "AMD", "backend": "ROCm", "info": line.strip()})
                     gpu_index += 1
-    except subprocess.TimeoutExpired, FileNotFoundError, Exception:
+    except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
         pass
 
     return gpus

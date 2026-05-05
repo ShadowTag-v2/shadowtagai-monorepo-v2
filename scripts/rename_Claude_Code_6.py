@@ -7,7 +7,7 @@ def replace_in_file(filepath):
     try:
         with open(filepath, encoding="utf-8") as f:
             content = f.read()
-    except UnicodeDecodeError, FileNotFoundError:
+    except (UnicodeDecodeError, FileNotFoundError):
         return False
 
     new_content = content.replace("Claude_Code_6", "Cor_Claude_Code_6")

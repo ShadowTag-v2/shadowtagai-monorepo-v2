@@ -841,7 +841,7 @@ class TranscriptionServer:
                 # Return None to indicate control message was processed (not audio)
                 return None
 
-        except json.JSONDecodeError, UnicodeDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError):
             # Not a JSON message, treat as binary audio data
             pass
 

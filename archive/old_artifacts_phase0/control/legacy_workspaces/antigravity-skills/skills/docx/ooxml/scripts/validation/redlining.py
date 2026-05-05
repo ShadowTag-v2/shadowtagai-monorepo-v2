@@ -194,7 +194,7 @@ class RedliningValidator:
                             content_lines.append(line)
                     return "\n".join(content_lines)
 
-        except subprocess.CalledProcessError, FileNotFoundError, Exception:
+        except (subprocess.CalledProcessError, FileNotFoundError, Exception):
             # Git not available or other error, return None to use fallback
             pass
 

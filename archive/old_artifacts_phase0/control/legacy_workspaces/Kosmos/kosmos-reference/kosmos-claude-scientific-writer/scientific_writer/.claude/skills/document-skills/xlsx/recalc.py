@@ -85,7 +85,7 @@ def recalc(filename, timeout=30):
             try:
                 subprocess.run(["gtimeout", "--version"], capture_output=True, timeout=1, check=False)
                 timeout_cmd = "gtimeout"
-            except FileNotFoundError, subprocess.TimeoutExpired:
+            except (FileNotFoundError, subprocess.TimeoutExpired):
                 pass
 
         if timeout_cmd:

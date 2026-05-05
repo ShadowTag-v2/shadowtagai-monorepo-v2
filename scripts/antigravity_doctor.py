@@ -286,7 +286,7 @@ class AntigravityDoctor:
                             fix="git remote set-url origin git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git",
                         )
                     )
-            except subprocess.TimeoutExpired, FileNotFoundError:
+            except (subprocess.TimeoutExpired, FileNotFoundError):
                 report.checks.append(
                     CheckResult(
                         name="repo/remote",
@@ -314,7 +314,7 @@ class AntigravityDoctor:
                         severity="info" if changes > 0 else "info",
                     )
                 )
-            except subprocess.TimeoutExpired, FileNotFoundError:
+            except (subprocess.TimeoutExpired, FileNotFoundError):
                 pass
         else:
             report.checks.append(
@@ -400,7 +400,7 @@ class AntigravityDoctor:
                     severity="error" if pct_free <= 5 else ("warning" if pct_free <= 15 else "info"),
                 )
             )
-        except OSError, PermissionError:
+        except (OSError, PermissionError):
             pass
 
         # Check project size
@@ -421,7 +421,7 @@ class AntigravityDoctor:
                         message=f"Project size: {size}",
                     )
                 )
-        except subprocess.TimeoutExpired, FileNotFoundError:
+        except (subprocess.TimeoutExpired, FileNotFoundError):
             pass
 
     def _check_mcp_fleet(self, report: DoctorReport) -> None:
@@ -456,7 +456,7 @@ class AntigravityDoctor:
                             severity="warning",
                         )
                     )
-            except subprocess.TimeoutExpired, json.JSONDecodeError, FileNotFoundError:
+            except (subprocess.TimeoutExpired, json.JSONDecodeError, FileNotFoundError):
                 report.checks.append(
                     CheckResult(
                         name="mcp/fleet",
@@ -515,7 +515,7 @@ class AntigravityDoctor:
                 timeout=5,
             )
             return result.stdout.strip().split("\n")[0] if result.returncode == 0 else None
-        except subprocess.TimeoutExpired, FileNotFoundError, PermissionError:
+        except (subprocess.TimeoutExpired, FileNotFoundError, PermissionError):
             return None
 
 

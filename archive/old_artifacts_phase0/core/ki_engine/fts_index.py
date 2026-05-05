@@ -185,7 +185,7 @@ def reindex_all(ki_dir: Path) -> int:
             index_ki(conn, ki, artifact_text)
             count += 1
 
-        except json.JSONDecodeError, OSError:
+        except (json.JSONDecodeError, OSError):
             continue
 
     conn.close()

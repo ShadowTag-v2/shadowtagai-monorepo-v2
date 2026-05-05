@@ -194,12 +194,12 @@ class ParagraphData:
                     # Try RGB color first
                     if font.color.rgb:
                         self.color = str(font.color.rgb)
-                except AttributeError, TypeError:
+                except (AttributeError, TypeError):
                     # Fall back to theme color
                     try:
                         if font.color.theme_color:
                             self.theme_color = font.color.theme_color.name
-                    except AttributeError, TypeError:
+                    except (AttributeError, TypeError):
                         pass
 
         # Add line spacing if set
@@ -318,7 +318,7 @@ class ShapeData:
                         font_name_lower = font_name.lower().replace(" ", "")
                         if font_name_lower in file_name_lower and any(file_name_lower.endswith(ext) for ext in extensions):
                             return str(file_path)
-            except OSError, PermissionError:
+            except (OSError, PermissionError):
                 continue
 
         return None
@@ -336,7 +336,7 @@ class ShapeData:
         try:
             prs = slide.part.package.presentation_part.presentation
             return prs.slide_width, prs.slide_height
-        except AttributeError, TypeError:
+        except (AttributeError, TypeError):
             return None, None
 
     @staticmethod

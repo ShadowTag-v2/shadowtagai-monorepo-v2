@@ -38,7 +38,7 @@ def find_ffmpeg() -> str:
         try:
             subprocess.run([path, "-version"], capture_output=True, check=True)
             return path
-        except FileNotFoundError, subprocess.CalledProcessError:
+        except (FileNotFoundError, subprocess.CalledProcessError):
             continue
     sys.exit(1)
 

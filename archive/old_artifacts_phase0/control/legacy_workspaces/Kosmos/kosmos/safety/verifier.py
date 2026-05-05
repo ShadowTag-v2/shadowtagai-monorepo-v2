@@ -250,7 +250,7 @@ class ResultVerifier:
                                         },
                                     )
                                 )
-                    except ValueError, TypeError:
+                    except (ValueError, TypeError):
                         # Not numeric data, skip
                         pass
 
@@ -271,7 +271,7 @@ class ResultVerifier:
                                     details={"variable": var_result.name, "outlier_count": len(outliers), "total_count": len(data)},
                                 )
                             )
-                except ValueError, TypeError:
+                except (ValueError, TypeError):
                     pass
 
         return issues

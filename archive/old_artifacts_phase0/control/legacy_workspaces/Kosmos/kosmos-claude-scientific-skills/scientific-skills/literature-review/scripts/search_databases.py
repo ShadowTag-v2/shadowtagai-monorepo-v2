@@ -161,7 +161,7 @@ def filter_by_year(results: list[dict], start_year: int = None, end_year: int = 
             if end_year and year > end_year:
                 continue
             filtered.append(result)
-        except ValueError, TypeError:
+        except (ValueError, TypeError):
             # Include if year parsing fails
             filtered.append(result)
 
@@ -195,7 +195,7 @@ def generate_search_summary(results: list[dict]) -> dict:
         if result.get("citations"):
             try:
                 citations.append(int(result["citations"]))
-            except ValueError, TypeError:
+            except (ValueError, TypeError):
                 pass
 
     if citations:

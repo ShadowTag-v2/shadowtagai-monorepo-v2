@@ -40,7 +40,7 @@ def generate_pdf(
     # Check if pandoc is installed
     try:
         subprocess.run(["pandoc", "--version"], capture_output=True, check=True)
-    except subprocess.CalledProcessError, FileNotFoundError:
+    except (subprocess.CalledProcessError, FileNotFoundError):
         print("Error: pandoc is not installed.")
         print("Install with: brew install pandoc (macOS) or apt-get install pandoc (Linux)")
         return False
@@ -114,7 +114,7 @@ def check_dependencies():
         try:
             subprocess.run(cmd.split(), capture_output=True, check=True)
             print(f"✓ {name} is installed")
-        except subprocess.CalledProcessError, FileNotFoundError:
+        except (subprocess.CalledProcessError, FileNotFoundError):
             print(f"✗ {name} is NOT installed")
             missing.append(name)
 

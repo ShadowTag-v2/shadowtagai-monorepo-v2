@@ -175,7 +175,7 @@ class RedliningValidator:
                             content_lines.append(line)
                     return "\n".join(content_lines)
 
-        except subprocess.CalledProcessError, FileNotFoundError, Exception:
+        except (subprocess.CalledProcessError, FileNotFoundError, Exception):
             pass
 
         return None

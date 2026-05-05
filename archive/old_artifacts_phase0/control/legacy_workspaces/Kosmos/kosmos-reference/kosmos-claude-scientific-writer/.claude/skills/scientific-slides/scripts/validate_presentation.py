@@ -221,7 +221,7 @@ class PresentationValidator:
                 ["pdflatex", "-interaction=nonstopmode", self.filepath.name], cwd=self.filepath.parent, capture_output=True, timeout=60
             )
             return result.returncode == 0
-        except subprocess.TimeoutExpired, FileNotFoundError:
+        except (subprocess.TimeoutExpired, FileNotFoundError):
             return False
 
     def _check_slide_count(self, num_slides: int):

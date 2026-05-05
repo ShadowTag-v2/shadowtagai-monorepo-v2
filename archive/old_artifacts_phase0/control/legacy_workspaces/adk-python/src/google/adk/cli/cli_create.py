@@ -82,7 +82,7 @@ def _get_gcp_project_from_gcloud() -> str:
             check=True,
         )
         return result.stdout.strip()
-    except subprocess.CalledProcessError, FileNotFoundError:
+    except (subprocess.CalledProcessError, FileNotFoundError):
         return ""
 
 
@@ -96,7 +96,7 @@ def _get_gcp_region_from_gcloud() -> str:
             check=True,
         )
         return result.stdout.strip()
-    except subprocess.CalledProcessError, FileNotFoundError:
+    except (subprocess.CalledProcessError, FileNotFoundError):
         return ""
 
 

@@ -113,7 +113,7 @@ def interactive_mode():
                     print()
             else:
                 print("Invalid selection. Please try again.")
-        except ValueError, IndexError:
+        except (ValueError, IndexError):
             print("Invalid input. Please enter a number or 'q' to quit.")
 
 

@@ -106,7 +106,7 @@ def update_heartbeat(total_active: int) -> None:
             data["skill_fleet_active"] = total_active
             data["last_skillops_refresh"] = datetime.datetime.now(datetime.UTC).isoformat()
             HEARTBEAT_FILE.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-        except json.JSONDecodeError, OSError:
+        except (json.JSONDecodeError, OSError):
             pass
 
 

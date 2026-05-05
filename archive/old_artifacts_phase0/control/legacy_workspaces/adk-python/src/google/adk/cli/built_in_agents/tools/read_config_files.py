@@ -239,5 +239,5 @@ def _check_file_exists(config_path: str) -> bool:
 
         return path.exists()
 
-    except OSError, ValueError:
+    except (OSError, ValueError):
         return False

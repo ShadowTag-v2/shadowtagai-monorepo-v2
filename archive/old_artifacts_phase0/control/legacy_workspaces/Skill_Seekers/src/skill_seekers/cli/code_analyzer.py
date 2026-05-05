@@ -128,7 +128,7 @@ class CodeAnalyzer:
                         for parent in ast.walk(tree)
                         if hasattr(parent, "body") and isinstance(parent.body, list) and node in parent.body
                     )
-                except TypeError, AttributeError:
+                except (TypeError, AttributeError):
                     # If body is not iterable or check fails, assume it's a top-level function
                     is_method = False
 
