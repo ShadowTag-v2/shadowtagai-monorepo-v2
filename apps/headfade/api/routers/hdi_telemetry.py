@@ -3,8 +3,15 @@ from google.cloud import firestore
 
 router = APIRouter()
 
-# The B2B Datastore: Locked to the exact Omega Project per user mandate
-db = firestore.Client(project="shadowtag-omega-v4")
+# Lazy-init Firestore client to prevent module-level crash on Cloud Run
+_db = None
+
+
+def _get_db():
+    global _db
+    if _db is None:
+        _db = firestore.Client(project="shadowtag-omega-v4")
+    return _db
 
 
 @router.post("/vote")
@@ -18,7 +25,7 @@ async def record_human_deception_index(
     This is the exact mechanism that generates the proprietary Human Deception Index (HDI).
     Every swipe is logged. We are mapping human susceptibility to synthetic physics.
     """
-    doc_ref = db.collection("human_deception_index").document()
+    doc_ref = _get_db().collection("human_deception_index").document()
 
     juked = user_vote.upper() != actual_truth.upper()
 
