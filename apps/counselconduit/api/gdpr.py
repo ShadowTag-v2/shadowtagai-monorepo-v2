@@ -36,6 +36,7 @@ _SERVICE_URL = os.getenv(
 
 # Rate limit: 1 deletion request per firm per 24 hours
 _DELETION_COOLDOWN_HOURS = 24
+_deletion_rate_limit: dict[str, float] = {}
 
 # Subcollections to cascade-delete during hard wipe
 SUBCOLLECTIONS_TO_DELETE = ["sessions", "transcripts", "matters", "billing_records", "clients"]
@@ -85,6 +86,31 @@ class DataExportRequest(BaseModel):
     """GDPR Article 20 — Right to data portability."""
 
     format: str = Field(default="json", pattern="^(json|csv)$")
+    firm_id: str = Field(
+        default="demo-firm",
+        description="Firm ID for tenant scoping",
+    )
+    attorney_id: str = Field(
+        default="demo-attorney",
+        description="Requesting attorney's ID",
+    )
+    email: str | None = Field(
+        None,
+        description="Email for export delivery notification",
+    )
+
+
+class CancellationRequest(BaseModel):
+    """User-initiated cancellation of a pending deletion."""
+
+    receipt_id: str = Field(
+        ...,
+        description="The receipt ID from the original deletion request",
+    )
+    firm_id: str = Field(
+        ...,
+        description="Firm ID for tenant scoping",
+    )
 
 
 # ── Cloud Tasks Integration ───────────────────────────────────────────────
@@ -96,8 +122,6 @@ async def _schedule_hard_delete(receipt_id: str, firm_id: str, deletion_date: st
     Queue: gdpr-deletions, Target: POST /account/_execute-delete
     """
     try:
-        import json
-
         from google.cloud import tasks_v2
         from google.protobuf import timestamp_pb2
 
@@ -155,6 +179,21 @@ async def request_account_deletion(
                 "message": "Please type 'DELETE MY ACCOUNT' to confirm.",
             },
         )
+
+    # Enforce deletion rate limit (1 per firm per 24 hours)
+    import time as _time
+
+    now_ts = _time.time()
+    last_deletion = _deletion_rate_limit.get(request.firm_id)
+    if last_deletion and (now_ts - last_deletion) < (_DELETION_COOLDOWN_HOURS * 3600):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail={
+                "code": "DELETION_RATE_LIMITED",
+                "message": f"Maximum 1 deletion request per {_DELETION_COOLDOWN_HOURS} hours per firm.",
+            },
+        )
+    _deletion_rate_limit[request.firm_id] = now_ts
 
     # Generate receipt
     try:
@@ -271,7 +310,7 @@ async def request_data_export(
 
         # Schedule export generation task
         tasks_client = tasks_v2.CloudTasksAsyncClient()
-        project = os.getenv("GCP_PROJECT", "shadowtag-omega-v4")
+        project = os.getenv("GCP_PROJECT_ID", "shadowtag-omega-v4")
         location = os.getenv("GCP_LOCATION", "us-central1")
         queue = "gdpr-deletions"  # Reuse same queue, different task type
         service_url = os.getenv(
@@ -349,8 +388,98 @@ async def check_deletion_status(receipt_id: str) -> dict[str, Any]:
     return {
         "receipt_id": receipt_id,
         "status": "pending",
-        "message": "Deletion is scheduled. Contact support to cancel.",
+        "message": "Deletion is scheduled. Contact support or use /account/cancel-deletion to cancel.",
     }
+
+
+@router.post("/cancel-deletion", status_code=status.HTTP_200_OK)
+async def cancel_account_deletion(
+    request: CancellationRequest,
+) -> dict[str, Any]:
+    """Cancel a pending account deletion (before the 30-day window expires).
+
+    - Updates the GDPR record status from 'pending_grace_period' to 'cancelled'
+    - Logs cancellation in the audit trail
+    - Does NOT cancel already-completed deletions
+    """
+    try:
+        try:
+            from apps.counselconduit.api.firestore_client import (
+                AuditEntry,
+                _get_client,
+                write_audit_log,
+            )
+        except ImportError:
+            from api.firestore_client import (  # type: ignore[no-redef]
+                AuditEntry,
+                _get_client,
+                write_audit_log,
+            )
+
+        db = _get_client()
+        firm_ref = db.collection("firms").document(request.firm_id)
+        gdpr_ref = firm_ref.collection("gdpr").document(request.receipt_id)
+        doc = await gdpr_ref.get()
+
+        if not doc.exists:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={"code": "DELETION_NOT_FOUND", "message": "No pending deletion found for this receipt ID."},
+            )
+
+        record = doc.to_dict()
+        current_status = record.get("status")
+
+        if current_status == "completed":
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail={"code": "DELETION_ALREADY_COMPLETED", "message": "This deletion has already been executed and cannot be reversed."},
+            )
+
+        if current_status == "cancelled":
+            return {
+                "status": "already_cancelled",
+                "receipt_id": request.receipt_id,
+                "message": "This deletion was already cancelled.",
+            }
+
+        await gdpr_ref.update(
+            {
+                "status": "cancelled",
+                "cancelled_at": datetime.now(UTC).isoformat(),
+            }
+        )
+
+        await write_audit_log(
+            AuditEntry(
+                action="account_deletion_cancelled",
+                actor_id=record.get("attorney_id", "unknown"),
+                resource_type="firm",
+                resource_id=request.firm_id,
+                details={"receipt_id": request.receipt_id},
+            )
+        )
+
+        logger.info(
+            "Deletion cancelled: receipt=%s firm=%s",
+            request.receipt_id,
+            request.firm_id,
+        )
+
+        return {
+            "status": "cancelled",
+            "receipt_id": request.receipt_id,
+            "message": "Account deletion has been cancelled. Your data will not be deleted.",
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Cancellation failed: receipt=%s error=%s", request.receipt_id, e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={"code": "CANCELLATION_FAILED", "message": "Failed to cancel deletion. Please contact support."},
+        ) from e
 
 
 @router.post("/_execute-delete", include_in_schema=False)
@@ -393,7 +522,7 @@ async def execute_hard_delete(payload: dict[str, Any]) -> dict[str, str]:
         firm_ref = db.collection("firms").document(firm_id)
 
         # 1. Delete sessions and transcripts
-        for subcol in ["sessions", "transcripts", "matters", "billing", "clients"]:
+        for subcol in SUBCOLLECTIONS_TO_DELETE:
             try:
                 col_ref = firm_ref.collection(subcol)
                 batch_size = 100
@@ -543,7 +672,7 @@ async def execute_data_export(payload: dict[str, Any]) -> dict[str, Any]:
             from google.cloud import storage as gcs
 
             client = gcs.Client()
-            bucket = client.bucket(f"{os.environ.get('GCP_PROJECT', 'shadowtag-omega-v4')}.firebasestorage.app")
+            bucket = client.bucket(f"{os.environ.get('GCP_PROJECT_ID', 'shadowtag-omega-v4')}.firebasestorage.app")
             blob_path = f"exports/{firm_id}/{export_id}.{fmt}"
             blob = bucket.blob(blob_path)
 

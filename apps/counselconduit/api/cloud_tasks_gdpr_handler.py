@@ -128,7 +128,7 @@ async def execute_gdpr_deletion(
     try:
         from google.cloud import firestore as _fs
 
-        db = _fs.Client()
+        db = _fs.AsyncClient()
 
         # Collections to delete (full deletion)
         target_collections = [
@@ -144,14 +144,17 @@ async def execute_gdpr_deletion(
         ]
 
         for collection_name in target_collections:
-            docs = db.collection(collection_name).where("attorney_id", "==", payload.attorney_id).limit(500).get()
+            query = db.collection(collection_name).where("attorney_id", "==", payload.attorney_id).limit(500)
+            docs = []
+            async for doc in query.stream():
+                docs.append(doc)
             batch = db.batch()
             count = 0
             for doc in docs:
                 batch.delete(doc.reference)
                 count += 1
             if count > 0:
-                batch.commit()
+                await batch.commit()
                 total_docs_deleted += count
                 collections_deleted.append(f"{collection_name} ({count} docs)")
                 logger.info(
@@ -162,7 +165,10 @@ async def execute_gdpr_deletion(
 
         # Anonymize retained collections
         for collection_name in anonymize_collections:
-            docs = db.collection(collection_name).where("attorney_id", "==", payload.attorney_id).limit(500).get()
+            query = db.collection(collection_name).where("attorney_id", "==", payload.attorney_id).limit(500)
+            docs = []
+            async for doc in query.stream():
+                docs.append(doc)
             batch = db.batch()
             count = 0
             for doc in docs:
@@ -177,26 +183,30 @@ async def execute_gdpr_deletion(
                 )
                 count += 1
             if count > 0:
-                batch.commit()
+                await batch.commit()
                 total_docs_deleted += count
                 collections_deleted.append(f"{collection_name} ({count} docs anonymized)")
 
         # Delete the beta_accounts record last
         beta_ref = db.collection("beta_accounts").document(payload.attorney_id)
-        beta_doc = beta_ref.get()
+        beta_doc = await beta_ref.get()
         if beta_doc.exists:
             # Archive deletion receipt before deleting
-            db.collection("gdpr_deletion_receipts").document(idempotency_key).set(
-                {
-                    "attorney_id": payload.attorney_id,
-                    "firm_id": payload.firm_id,
-                    "requested_at": payload.requested_at,
-                    "executed_at": _fs.SERVER_TIMESTAMP,
-                    "collections_deleted": collections_deleted,
-                    "total_docs": total_docs_deleted,
-                }
+            await (
+                db.collection("gdpr_deletion_receipts")
+                .document(idempotency_key)
+                .set(
+                    {
+                        "attorney_id": payload.attorney_id,
+                        "firm_id": payload.firm_id,
+                        "requested_at": payload.requested_at,
+                        "executed_at": _fs.SERVER_TIMESTAMP,
+                        "collections_deleted": collections_deleted,
+                        "total_docs": total_docs_deleted,
+                    }
+                )
             )
-            beta_ref.delete()
+            await beta_ref.delete()
             collections_deleted.append("beta_accounts (1 doc)")
             total_docs_deleted += 1
 
