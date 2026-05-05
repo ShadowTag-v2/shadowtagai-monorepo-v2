@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* HeadFade Design System — Dark Luxury Tokens */
+@import '@packages/ui/dark-luxury.css';
+
+/* Global Base Layer */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #000;
+    color: #fff;
+  }
+
+  /* Custom scrollbar for the terminal pane */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
+}
+
+/* HeadFade Gradient Text Utility */
+.text-gradient {
+  background: linear-gradient(135deg, #00f5a0 0%, #00d9f5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
