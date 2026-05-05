@@ -43,7 +43,7 @@ class BashTelemetryTracker:
 
     def track_security_check_failed(self, check_id: Any, command: str, message: str = ""):
         """
-        Logs `tengu_bash_security_check_failed` — emitted when the 23-check
+        Logs `tengu_bash_security_check_failed` — emitted when the 35-check
         pipeline blocks a command.
         """
         self.log_event(
@@ -59,7 +59,7 @@ class BashTelemetryTracker:
     def track_security_validated(self, command: str, checks_passed: int, duration_ms: float):
         """
         Logs `tengu_bash_security_validated` — emitted when a command passes
-        all 23 security checks.
+        all 35 security checks.
         """
         self.log_event(
             "tengu_bash_security_validated",

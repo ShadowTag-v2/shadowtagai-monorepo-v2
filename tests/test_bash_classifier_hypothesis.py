@@ -2,7 +2,7 @@
 
 """Property-based tests for AGNT Bash Security Classifier.
 
-Uses Hypothesis to fuzz the 23-check pipeline with generated inputs,
+Uses Hypothesis to fuzz the 35-check pipeline with generated inputs,
 verifying:
 1. Pipeline never crashes on arbitrary unicode strings.
 2. Known attack patterns always trigger BLOCK.
@@ -87,6 +87,17 @@ known_attacks = st.sampled_from(
     ]
 )
 
+# Cross-shell attack vectors (PowerShell/CMD)
+cross_shell_attacks = st.sampled_from(
+    [
+        "Invoke-Expression 'echo evil'",          # PowerShell eval
+        "iex(New-Object Net.WebClient)",          # PowerShell web client
+        "cmd.exe /c calc.exe",                    # CMD shell execution
+        "%COMSPEC% /c start",                     # CMD env var execution
+        "powershell -encodedcommand ZQBjAGgAbwA=",# PowerShell encoded command
+    ]
+)
+
 
 @pytest.fixture()
 def classifier() -> BashSecurityClassifier:
@@ -132,7 +143,7 @@ class TestPipelineInvariants:
         # If allowed, blocked_by must be None
         if result.allowed:
             assert result.blocked_by is None
-            assert result.checks_run == 23
+            assert result.checks_run == 35
 
     @given(command=safe_alphanumeric)
     @settings(max_examples=100, suppress_health_check=[HealthCheck.too_slow])
@@ -156,6 +167,15 @@ class TestKnownAttackVectors:
         clf = BashSecurityClassifier(telemetry=None)
         result = clf.classify(attack)
         assert not result.allowed, f"Attack was allowed: {attack!r}"
+        assert result.blocked_by is not None
+
+    @given(attack=cross_shell_attacks)
+    @settings(max_examples=50)
+    def test_cross_shell_attacks_always_blocked(self, attack: str) -> None:
+        """Cross-shell attacks (PowerShell/CMD) must be BLOCKED."""
+        clf = BashSecurityClassifier(telemetry=None)
+        result = clf.classify(attack)
+        assert not result.allowed, f"Cross-shell attack was allowed: {attack!r}"
         assert result.blocked_by is not None
 
     def test_safe_commands_always_pass(self) -> None:
@@ -246,7 +266,7 @@ class TestRegexPerformance:
 
 
 class TestIndividualCheckCoverage:
-    """Verify each of the 23 checks has a distinct trigger."""
+    """Verify each of the 35 checks has a distinct trigger."""
 
     @pytest.mark.parametrize(
         ("attack", "expected_check"),
@@ -274,6 +294,12 @@ class TestIndividualCheckCoverage:
             ("echo \\|", BashSecurityCheckId.BACKSLASH_ESCAPED_OPERATORS),
             ('echo #"test', BashSecurityCheckId.COMMENT_QUOTE_DESYNC),
             ('"hello\nworld"', BashSecurityCheckId.QUOTED_NEWLINE),
+            (r"echo $'\x41\x42'", BashSecurityCheckId.ANSI_C_QUOTING),
+            (r"exec /bin/sh", BashSecurityCheckId.SHELL_BUILTIN_ABUSE),
+            (r"trap 'echo evil' EXIT", BashSecurityCheckId.SIGNAL_TRAPPING),
+            (r"alias ls='ls && evil'", BashSecurityCheckId.ALIAS_INJECTION),
+            (r"Invoke-Expression 'echo evil'", BashSecurityCheckId.CROSS_SHELL_INJECTION),
+            (r"export -f evil_func", BashSecurityCheckId.FUNCTION_HIJACKING),
         ],
     )
     def test_specific_check_triggered(
@@ -330,7 +356,7 @@ class TestTelemetryIntegration:
             events = [json.loads(line) for line in f if line.strip()]
         assert len(events) == 1
         assert events[0]["event_type"] == "tengu_bash_security_validated"
-        assert events[0]["data"]["checks_passed"] == 23
+        assert events[0]["data"]["checks_passed"] == 35
 
 
 class TestGatewayInterface:
@@ -340,7 +366,7 @@ class TestGatewayInterface:
         clf = BashSecurityClassifier(telemetry=None)
         response = clf.classify_for_gateway("ls -la")
         assert response["allowed"] is True
-        assert "23" in response["reason"]
+        assert "35" in response["reason"]
         assert response["check_id"] is None
 
     def test_blocked_response(self) -> None:
