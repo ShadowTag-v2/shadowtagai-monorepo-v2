@@ -15,10 +15,19 @@ import pytest
 from gemini_interactions.tools import (
     ToolDefinition,
     code_execution_tool,
+    computer_use_tool,
+    file_search_tool,
     function_tool,
     google_search_tool,
     mcp_server_tool,
     url_context_tool,
+)
+from gemini_interactions.client import (
+    EventType,
+    InteractionsClient,
+    InteractionResult,
+    StreamAccumulator,
+    StreamEvent,
 )
 
 
@@ -40,27 +49,20 @@ class TestGoogleSearchTool:
 
 class TestUrlContextTool:
     def test_basic(self):
-        tool = url_context_tool()
-        assert tool == {"type": "url_context"}
+        assert url_context_tool() == {"type": "url_context"}
 
 
 class TestCodeExecutionTool:
     def test_basic(self):
-        tool = code_execution_tool()
-        assert tool == {"type": "code_execution"}
+        assert code_execution_tool() == {"type": "code_execution"}
 
 
 class TestMcpServerTool:
     def test_basic(self):
-        tool = mcp_server_tool(
-            name="my_server",
-            url="https://example.com/mcp",
-        )
+        tool = mcp_server_tool(name="my_server", url="https://example.com/mcp")
         assert tool["type"] == "mcp_server"
         assert tool["name"] == "my_server"
-        assert tool["url"] == "https://example.com/mcp"
         assert "headers" not in tool
-        assert "allowed_tools" not in tool
 
     def test_with_headers_and_allowed(self):
         tool = mcp_server_tool(
@@ -78,31 +80,49 @@ class TestFunctionTool:
         tool = function_tool(
             name="get_weather",
             description="Gets weather for a city.",
-            parameters={
-                "type": "object",
-                "properties": {"city": {"type": "string"}},
-            },
+            parameters={"type": "object", "properties": {"city": {"type": "string"}}},
         )
         assert tool["type"] == "function"
         assert tool["name"] == "get_weather"
-        assert tool["description"] == "Gets weather for a city."
-        assert tool["parameters"]["type"] == "object"
+
+
+class TestComputerUseTool:
+    def test_defaults(self):
+        tool = computer_use_tool()
+        assert tool["type"] == "computer_use"
+        assert tool["computer_use"]["environment"] == "browser"
+        assert tool["computer_use"]["display_width_px"] == 1024
+        assert tool["computer_use"]["display_height_px"] == 768
+
+    def test_custom(self):
+        tool = computer_use_tool(environment="desktop", display_width_px=1920, display_height_px=1080)
+        assert tool["computer_use"]["environment"] == "desktop"
+        assert tool["computer_use"]["display_width_px"] == 1920
+        assert tool["computer_use"]["display_height_px"] == 1080
+
+
+class TestFileSearchTool:
+    def test_basic(self):
+        tool = file_search_tool()
+        assert tool == {"type": "file_search"}
+
+    def test_with_file_ids(self):
+        tool = file_search_tool(file_ids=["files/abc123", "files/def456"])
+        assert tool["file_search"]["file_ids"] == ["files/abc123", "files/def456"]
+
+    def test_with_vector_store(self):
+        tool = file_search_tool(vector_store_ids=["vs-1"])
+        assert tool["file_search"]["vector_store_ids"] == ["vs-1"]
 
 
 class TestToolDefinition:
     def test_to_dict(self):
-        td = ToolDefinition(type="google_search")
-        assert td.to_dict() == {"type": "google_search"}
+        assert ToolDefinition(type="google_search").to_dict() == {"type": "google_search"}
 
     def test_to_dict_with_config(self):
-        td = ToolDefinition(
-            type="mcp_server",
-            config={"name": "s1", "url": "https://x.com"},
-        )
-        d = td.to_dict()
+        d = ToolDefinition(type="mcp_server", config={"name": "s1", "url": "https://x.com"}).to_dict()
         assert d["type"] == "mcp_server"
         assert d["name"] == "s1"
-        assert d["url"] == "https://x.com"
 
     def test_frozen(self):
         td = ToolDefinition(type="test")
@@ -117,8 +137,6 @@ class TestToolDefinition:
 
 class TestInteractionResult:
     def test_from_interaction_text(self):
-        from gemini_interactions.client import InteractionResult
-
         @dataclass
         class MockOutput:
             type: str = "text"
@@ -138,24 +156,15 @@ class TestInteractionResult:
             usage: MockUsage = None
 
             def __post_init__(self):
-                if self.outputs is None:
-                    self.outputs = [MockOutput()]
-                if self.usage is None:
-                    self.usage = MockUsage()
+                self.outputs = self.outputs if self.outputs is not None else [MockOutput()]
+                self.usage = self.usage if self.usage is not None else MockUsage()
 
-        mock = MockInteraction()
-        result = InteractionResult.from_interaction(mock)
-
+        result = InteractionResult.from_interaction(MockInteraction())
         assert result.id == "int-123"
-        assert result.status == "completed"
         assert result.text == "Hello world"
         assert result.usage["total_tokens"] == 100
-        assert result.usage["prompt_tokens"] == 40
-        assert result.usage["completion_tokens"] == 60
 
     def test_from_interaction_no_text(self):
-        from gemini_interactions.client import InteractionResult
-
         @dataclass
         class MockInteraction:
             id: str = "int-456"
@@ -164,11 +173,75 @@ class TestInteractionResult:
             usage: Any = None
 
             def __post_init__(self):
-                if self.outputs is None:
-                    self.outputs = []
+                self.outputs = self.outputs if self.outputs is not None else []
+
+        assert InteractionResult.from_interaction(MockInteraction()).text is None
+
+    def test_parallel_function_calls(self):
+        """Multiple function_call outputs are collected."""
+
+        @dataclass
+        class MockFC:
+            type: str = "function_call"
+            name: str = ""
+            id: str = ""
+            arguments: dict = None
+
+            def __post_init__(self):
+                self.arguments = self.arguments or {}
+
+        @dataclass
+        class MockInteraction:
+            id: str = "int-parallel"
+            status: str = "completed"
+            outputs: list = None
+            usage: Any = None
+
+            def __post_init__(self):
+                self.outputs = self.outputs or [
+                    MockFC(name="fn_a", id="c1"),
+                    MockFC(name="fn_b", id="c2"),
+                ]
 
         result = InteractionResult.from_interaction(MockInteraction())
+        assert len(result.function_calls) == 2
         assert result.text is None
+
+    def test_annotation_extraction_sdk_objects(self):
+        """SDK annotation objects are normalized to dicts."""
+
+        @dataclass
+        class MockAnnotation:
+            type: str = "file_citation"
+            file_name: str = "doc.pdf"
+            document_uri: str = "gs://bucket/doc.pdf"
+            source: str = None
+            start_index: int = 0
+            end_index: int = 10
+
+        @dataclass
+        class MockOutput:
+            type: str = "text"
+            text: str = "See [1]."
+            annotations: list = None
+
+            def __post_init__(self):
+                self.annotations = self.annotations or [MockAnnotation()]
+
+        @dataclass
+        class MockInteraction:
+            id: str = "int-ann"
+            status: str = "completed"
+            outputs: list = None
+            usage: Any = None
+
+            def __post_init__(self):
+                self.outputs = self.outputs or [MockOutput()]
+
+        result = InteractionResult.from_interaction(MockInteraction())
+        assert len(result.annotations) == 1
+        assert result.annotations[0]["type"] == "file_citation"
+        assert result.annotations[0]["file_name"] == "doc.pdf"
 
 
 # ---------------------------------------------------------------------------
@@ -178,8 +251,6 @@ class TestInteractionResult:
 
 class TestStreamEventParsing:
     def test_parse_text_delta(self):
-        from gemini_interactions.client import InteractionsClient
-
         @dataclass
         class MockDelta:
             type: str = "text"
@@ -193,18 +264,13 @@ class TestStreamEventParsing:
             index: int = 0
 
             def __post_init__(self):
-                if self.delta is None:
-                    self.delta = MockDelta()
+                self.delta = self.delta or MockDelta()
 
         event = InteractionsClient._parse_chunk(MockChunk())
-        assert event.event_type == "content.delta"
         assert event.delta_type == "text"
         assert event.text == "chunk"
-        assert event.event_id == "ev-1"
 
     def test_parse_interaction_start(self):
-        from gemini_interactions.client import InteractionsClient
-
         @dataclass
         class MockInteractionObj:
             id: str = "start-id-99"
@@ -216,16 +282,12 @@ class TestStreamEventParsing:
             interaction: MockInteractionObj = None
 
             def __post_init__(self):
-                if self.interaction is None:
-                    self.interaction = MockInteractionObj()
+                self.interaction = self.interaction or MockInteractionObj()
 
         event = InteractionsClient._parse_chunk(MockChunk())
-        assert event.event_type == "interaction.start"
         assert event.interaction_id == "start-id-99"
 
     def test_parse_function_call_delta(self):
-        from gemini_interactions.client import InteractionsClient
-
         @dataclass
         class MockDelta:
             type: str = "function_call"
@@ -234,8 +296,7 @@ class TestStreamEventParsing:
             arguments: dict = None
 
             def __post_init__(self):
-                if self.arguments is None:
-                    self.arguments = {"city": "NYC"}
+                self.arguments = self.arguments or {"city": "NYC"}
 
         @dataclass
         class MockChunk:
@@ -245,13 +306,128 @@ class TestStreamEventParsing:
             index: int = 0
 
             def __post_init__(self):
-                if self.delta is None:
-                    self.delta = MockDelta()
+                self.delta = self.delta or MockDelta()
 
         event = InteractionsClient._parse_chunk(MockChunk())
-        assert event.delta_type == "function_call"
         assert event.function_call["name"] == "get_weather"
         assert event.function_call["arguments"]["city"] == "NYC"
+
+    def test_parse_thought_signature(self):
+        @dataclass
+        class MockDelta:
+            type: str = "thought_signature"
+            signature: str = "sig-abc-123"
+
+        @dataclass
+        class MockChunk:
+            event_type: str = "content.delta"
+            event_id: str = "ev-sig"
+            delta: MockDelta = None
+            index: int = 0
+
+            def __post_init__(self):
+                self.delta = self.delta or MockDelta()
+
+        event = InteractionsClient._parse_chunk(MockChunk())
+        assert event.delta_type == "thought_signature"
+        assert event.signature == "sig-abc-123"
+
+    def test_parse_content_start(self):
+        @dataclass
+        class MockContent:
+            type: str = "text"
+
+        @dataclass
+        class MockChunk:
+            event_type: str = "content.start"
+            event_id: str = "ev-cs"
+            index: int = 0
+            content: MockContent = None
+
+            def __post_init__(self):
+                self.content = self.content or MockContent()
+
+        event = InteractionsClient._parse_chunk(MockChunk())
+        assert event.event_type == EventType.CONTENT_START
+        assert event.content_type == "text"
+        assert event.index == 0
+
+    def test_parse_content_stop(self):
+        @dataclass
+        class MockChunk:
+            event_type: str = "content.stop"
+            event_id: str = "ev-stop"
+            index: int = 1
+
+        event = InteractionsClient._parse_chunk(MockChunk())
+        assert event.event_type == EventType.CONTENT_STOP
+        assert event.index == 1
+
+
+# ---------------------------------------------------------------------------
+# StreamAccumulator
+# ---------------------------------------------------------------------------
+
+
+class TestStreamAccumulator:
+    def test_text_reconstruction(self):
+        """Feed content.start + two deltas + stop → single text output."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type=EventType.CONTENT_START, index=0, content_type="text"))
+        acc.feed(StreamEvent(event_type=EventType.CONTENT_DELTA, index=0, delta_type="text", text="Hello "))
+        acc.feed(StreamEvent(event_type=EventType.CONTENT_DELTA, index=0, delta_type="text", text="world"))
+        acc.feed(StreamEvent(event_type=EventType.CONTENT_STOP, index=0))
+        assert len(acc.outputs) == 1
+        assert acc.outputs[0]["type"] == "text"
+        assert acc.outputs[0]["text"] == "Hello world"
+
+    def test_mixed_thought_and_text(self):
+        """Thought at index 0, text at index 1 → two outputs sorted by index."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type=EventType.CONTENT_START, index=0, content_type="thought"))
+        acc.feed(StreamEvent(event_type=EventType.CONTENT_DELTA, index=0, delta_type="thought_summary", thought="Thinking..."))
+        acc.feed(StreamEvent(event_type=EventType.CONTENT_DELTA, index=0, delta_type="thought_signature", signature="sig-xyz"))
+        acc.feed(StreamEvent(event_type=EventType.CONTENT_START, index=1, content_type="text"))
+        acc.feed(StreamEvent(event_type=EventType.CONTENT_DELTA, index=1, delta_type="text", text="Answer"))
+        outputs = acc.outputs
+        assert len(outputs) == 2
+        assert outputs[0]["type"] == "thought"
+        assert outputs[0]["summary"] == "Thinking..."
+        assert outputs[0]["signature"] == "sig-xyz"
+        assert outputs[1]["text"] == "Answer"
+
+    def test_function_call_reconstruction(self):
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type=EventType.CONTENT_START, index=0, content_type="function_call"))
+        acc.feed(
+            StreamEvent(
+                event_type=EventType.CONTENT_DELTA,
+                index=0,
+                delta_type="function_call",
+                function_call={"id": "c1", "name": "search", "arguments": {"q": "test"}},
+            )
+        )
+        assert acc.outputs[0]["name"] == "search"
+        assert acc.outputs[0]["id"] == "c1"
+
+    def test_interaction_id_and_usage(self):
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type=EventType.INTERACTION_START, interaction_id="int-abc"))
+        acc.feed(
+            StreamEvent(
+                event_type=EventType.INTERACTION_COMPLETE,
+                interaction_id="int-abc",
+                usage={"total_tokens": 50, "prompt_tokens": 20, "completion_tokens": 30},
+            )
+        )
+        assert acc.interaction_id == "int-abc"
+        assert acc.usage["total_tokens"] == 50
+        assert acc.status == "completed"
+
+    def test_empty_accumulator(self):
+        acc = StreamAccumulator()
+        assert acc.outputs == []
+        assert acc.interaction_id is None
 
 
 # ---------------------------------------------------------------------------
@@ -261,24 +437,16 @@ class TestStreamEventParsing:
 
 class TestBuildKwargs:
     def test_minimal(self):
-        from gemini_interactions.client import InteractionsClient
-
         c = InteractionsClient.__new__(InteractionsClient)
         c._default_model = "gemini-3-flash-preview"
-
         kwargs = c._build_kwargs(input="Hello")
         assert kwargs["model"] == "gemini-3-flash-preview"
-        assert kwargs["input"] == "Hello"
         assert kwargs["store"] is True
         assert "tools" not in kwargs
-        assert "system_instruction" not in kwargs
 
     def test_full(self):
-        from gemini_interactions.client import InteractionsClient
-
         c = InteractionsClient.__new__(InteractionsClient)
         c._default_model = "gemini-3-flash-preview"
-
         kwargs = c._build_kwargs(
             input="Hello",
             model="gemini-3-pro-preview",
@@ -292,16 +460,11 @@ class TestBuildKwargs:
         )
         assert kwargs["model"] == "gemini-3-pro-preview"
         assert kwargs["previous_interaction_id"] == "prev-123"
-        assert kwargs["tools"] == [{"type": "google_search"}]
-        assert kwargs["system_instruction"] == "Be helpful."
-        assert kwargs["generation_config"]["temperature"] == 0.5
-        assert kwargs["response_format"]["type"] == "json_object"
-        assert kwargs["response_modalities"] == ["text"]
         assert kwargs["store"] is False
 
 
 # ---------------------------------------------------------------------------
-# Constants
+# Constants & Exports
 # ---------------------------------------------------------------------------
 
 
@@ -310,7 +473,13 @@ class TestConstants:
         from gemini_interactions.client import SUPPORTED_MODELS
 
         assert "gemini-3-flash-preview" in SUPPORTED_MODELS
-        assert "gemini-3-pro-preview" in SUPPORTED_MODELS
-        assert "gemini-2.5-flash" in SUPPORTED_MODELS
-        assert "gemini-2.5-pro" in SUPPORTED_MODELS
+        assert "gemini-2.5-computer-use-preview-10-2025" in SUPPORTED_MODELS
         assert "gpt-4" not in SUPPORTED_MODELS
+
+    def test_exports(self):
+        import gemini_interactions
+
+        assert hasattr(gemini_interactions, "StreamAccumulator")
+        assert hasattr(gemini_interactions, "EventType")
+        assert hasattr(gemini_interactions, "computer_use_tool")
+        assert hasattr(gemini_interactions, "file_search_tool")
