@@ -15,9 +15,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'HeadFadeAi | Gamified Turing Test',
+  title: 'HeadFadeAi | Global Synthetic Media Infrastructure',
   description:
-    'Can you tell what is real? The world\'s first gamified deepfake detection platform powered by Gemini AI.',
+    'The world\'s first forensic deepfake detection platform. Embed player, creator marketplace, and cognitive telemetry — powered by Gemini AI.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     title: 'HeadFadeAi',
   },
   openGraph: {
-    title: 'HeadFadeAi — The Global Turing Test',
+    title: 'HeadFadeAi — Synthetic Media Infrastructure',
     description:
-      'Swipe through AI-generated and real videos. Can you tell the difference? Powered by Gemini 3.1 Flash Lite forensics.',
+      'Forensic deepfake detection, embeddable players for publishers, and a micro-licensing marketplace for AI creators. Powered by Gemini 3.1.',
     url: 'https://headfade.web.app',
     siteName: 'HeadFadeAi',
     locale: 'en_US',
@@ -37,14 +37,14 @@ export const metadata: Metadata = {
         url: 'https://headfade.web.app/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'HeadFadeAi — Can you tell what is real?',
+        alt: 'HeadFadeAi — Forensic Deepfake Infrastructure',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'HeadFadeAi — The Global Turing Test',
-    description: 'Swipe. Vote. Discover. Powered by Gemini AI forensics.',
+    title: 'HeadFadeAi — Synthetic Media Infrastructure',
+    description: 'Forensic detection. Creator marketplace. Embed distribution. Powered by Gemini AI.',
     images: ['https://headfade.web.app/og-image.png'],
   },
   robots: {
