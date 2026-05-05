@@ -397,9 +397,7 @@ class TestSubAgentCoordinator(unittest.TestCase):
                 await asyncio.sleep(0.05)
                 active_count -= 1
 
-            tasks = [
-                (f"t{i}", tracked_task, {}) for i in range(6)
-            ]
+            tasks = [(f"t{i}", tracked_task, {}) for i in range(6)]
             await coord.dispatch_batch(tasks)
             self.assertLessEqual(max_active, 2)
 

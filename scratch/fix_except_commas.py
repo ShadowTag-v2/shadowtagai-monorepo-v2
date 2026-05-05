@@ -17,10 +17,10 @@ from pathlib import Path
 # Must NOT already have parentheses
 # Must NOT be `except ... as ...:`
 PATTERN = re.compile(
-    r'^(\s*)except\s+'        # leading whitespace + except keyword
-    r'(?!\()'                 # NOT already parenthesized
-    r'([A-Za-z_.]+(?:\s*,\s*[A-Za-z_.]+)+)'  # two or more comma-separated exception names
-    r'\s*:',                  # trailing colon
+    r"^(\s*)except\s+"  # leading whitespace + except keyword
+    r"(?!\()"  # NOT already parenthesized
+    r"([A-Za-z_.]+(?:\s*,\s*[A-Za-z_.]+)+)"  # two or more comma-separated exception names
+    r"\s*:",  # trailing colon
     re.MULTILINE,
 )
 

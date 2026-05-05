@@ -49,11 +49,12 @@ class TestPreventSleepHypothesis(unittest.TestCase):
         # Reset state
         prevent_sleep._ref_count = 0
 
-        with patch.object(prevent_sleep, "_spawn_caffeinate"), \
-             patch.object(prevent_sleep, "_kill_caffeinate"), \
-             patch.object(prevent_sleep, "_start_restart_timer"), \
-             patch.object(prevent_sleep, "_stop_restart_timer"):
-
+        with (
+            patch.object(prevent_sleep, "_spawn_caffeinate"),
+            patch.object(prevent_sleep, "_kill_caffeinate"),
+            patch.object(prevent_sleep, "_start_restart_timer"),
+            patch.object(prevent_sleep, "_stop_restart_timer"),
+        ):
             for _ in range(start_count):
                 prevent_sleep.start_prevent_sleep()
 
@@ -70,11 +71,12 @@ class TestPreventSleepHypothesis(unittest.TestCase):
 
         prevent_sleep._ref_count = 0
 
-        with patch.object(prevent_sleep, "_spawn_caffeinate"), \
-             patch.object(prevent_sleep, "_kill_caffeinate"), \
-             patch.object(prevent_sleep, "_start_restart_timer"), \
-             patch.object(prevent_sleep, "_stop_restart_timer"):
-
+        with (
+            patch.object(prevent_sleep, "_spawn_caffeinate"),
+            patch.object(prevent_sleep, "_kill_caffeinate"),
+            patch.object(prevent_sleep, "_start_restart_timer"),
+            patch.object(prevent_sleep, "_stop_restart_timer"),
+        ):
             for _ in range(n):
                 prevent_sleep.start_prevent_sleep()
             for _ in range(n):
@@ -90,11 +92,12 @@ class TestPreventSleepHypothesis(unittest.TestCase):
 
         prevent_sleep._ref_count = 0
 
-        with patch.object(prevent_sleep, "_spawn_caffeinate"), \
-             patch.object(prevent_sleep, "_kill_caffeinate"), \
-             patch.object(prevent_sleep, "_start_restart_timer"), \
-             patch.object(prevent_sleep, "_stop_restart_timer"):
-
+        with (
+            patch.object(prevent_sleep, "_spawn_caffeinate"),
+            patch.object(prevent_sleep, "_kill_caffeinate"),
+            patch.object(prevent_sleep, "_start_restart_timer"),
+            patch.object(prevent_sleep, "_stop_restart_timer"),
+        ):
             for _ in range(n):
                 prevent_sleep.start_prevent_sleep()
 
@@ -183,7 +186,7 @@ class TestForkedAgentHypothesis(unittest.TestCase):
                 if isinstance(child_ctx, dict) and "env" in child_ctx:
                     child_ctx["env"]["INJECTED"] = "malicious"
                     self.assertNotIn("INJECTED", parent_vars)
-        except (AttributeError, TypeError):
+        except AttributeError, TypeError:
             self.skipTest("create_subagent_context API differs")
 
 
@@ -218,7 +221,7 @@ class TestConversationRecoveryHypothesis(unittest.TestCase):
 
             if first is not None and second is not None:
                 self.assertEqual(first, second)
-        except (AttributeError, TypeError):
+        except AttributeError, TypeError:
             self.skipTest("ConversationRecovery API differs")
 
     @given(
@@ -238,17 +241,19 @@ class TestConversationRecoveryHypothesis(unittest.TestCase):
             recovery = conversation_recovery.ConversationRecovery()
 
             for sid in session_ids:
-                recovery.save_checkpoint({
-                    "session_id": sid,
-                    "message_count": len(sid),
-                    "messages": [],
-                })
+                recovery.save_checkpoint(
+                    {
+                        "session_id": sid,
+                        "message_count": len(sid),
+                        "messages": [],
+                    }
+                )
 
             for sid in session_ids:
                 loaded = recovery.load_checkpoint(sid)
                 if loaded is not None:
                     self.assertEqual(loaded["session_id"], sid)
-        except (AttributeError, TypeError):
+        except AttributeError, TypeError:
             self.skipTest("ConversationRecovery API differs")
 
 

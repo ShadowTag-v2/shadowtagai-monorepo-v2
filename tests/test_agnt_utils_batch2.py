@@ -115,23 +115,23 @@ class TestSanitization:
         assert self.sanitize("hello world") == "hello world"
 
     def test_strips_zero_width_spaces(self):
-        assert self.sanitize("he\u200Bllo") == "hello"
+        assert self.sanitize("he\u200bllo") == "hello"
 
     def test_strips_directional_overrides(self):
-        assert self.sanitize("a\u202Ab\u202Ec") == "abc"
+        assert self.sanitize("a\u202ab\u202ec") == "abc"
 
     def test_strips_bom(self):
-        assert self.sanitize("\uFEFFhello") == "hello"
+        assert self.sanitize("\ufeffhello") == "hello"
 
     def test_strips_bmp_private_use(self):
-        assert self.sanitize("a\uE000b\uF8FFc") == "abc"
+        assert self.sanitize("a\ue000b\uf8ffc") == "abc"
 
     def test_strips_directional_isolates(self):
         assert self.sanitize("x\u2066y\u2069z") == "xyz"
 
     def test_nfkc_normalization(self):
         # ﬁ (U+FB01) normalizes to "fi" under NFKC
-        assert self.sanitize("\uFB01le") == "file"
+        assert self.sanitize("\ufb01le") == "file"
 
     def test_preserves_emoji(self):
         assert self.sanitize("hello 🌍") == "hello 🌍"
@@ -140,18 +140,18 @@ class TestSanitization:
         assert self.sanitize("日本語テスト") == "日本語テスト"
 
     def test_recursive_string(self):
-        assert self.recursive("he\u200Bllo") == "hello"
+        assert self.recursive("he\u200bllo") == "hello"
 
     def test_recursive_list(self):
-        result = self.recursive(["he\u200Bllo", "wo\u200Brld"])
+        result = self.recursive(["he\u200bllo", "wo\u200brld"])
         assert result == ["hello", "world"]
 
     def test_recursive_dict(self):
-        result = self.recursive({"ke\u200By": "va\u200Blue"})
+        result = self.recursive({"ke\u200by": "va\u200blue"})
         assert result == {"key": "value"}
 
     def test_recursive_nested(self):
-        data = {"items": [{"name": "te\u200Bst"}], "count": 42}
+        data = {"items": [{"name": "te\u200bst"}], "count": 42}
         result = self.recursive(data)
         assert result == {"items": [{"name": "test"}], "count": 42}
 
@@ -253,8 +253,10 @@ class TestErrors:
     def test_classify_http_error_auth(self):
         class FakeResp:
             status_code = 401
+
         class FakeErr(Exception):
             response = FakeResp()
+
         result = self.mod.classify_http_error(FakeErr("auth fail"))
         assert result["kind"] == "auth"
         assert result["status"] == 401

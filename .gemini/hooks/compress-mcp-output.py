@@ -53,7 +53,7 @@ def compress_timeseries(data: list) -> str:
 def main():
     try:
         hook_input = json.load(sys.stdin)
-    except (json.JSONDecodeError, EOFError):
+    except json.JSONDecodeError, EOFError:
         # No input or bad JSON — pass through
         json.dump({"decision": "allow"}, sys.stdout)
         return

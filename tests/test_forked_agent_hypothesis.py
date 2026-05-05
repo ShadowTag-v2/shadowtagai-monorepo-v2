@@ -80,9 +80,7 @@ class TestTokenUsageDerived:
     @given(usage=usage_st)
     @settings(max_examples=300 * _FUZZ, suppress_health_check=_HC)
     def test_total_sum(self, usage):
-        assert usage.total_input_tokens == (
-            usage.input_tokens + usage.cache_read_input_tokens + usage.cache_creation_input_tokens
-        )
+        assert usage.total_input_tokens == (usage.input_tokens + usage.cache_read_input_tokens + usage.cache_creation_input_tokens)
 
     @given(usage=usage_st)
     @settings(max_examples=300 * _FUZZ, suppress_health_check=_HC)

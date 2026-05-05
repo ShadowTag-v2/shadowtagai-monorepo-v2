@@ -19,7 +19,6 @@ import json
 import os
 from pathlib import Path
 
-import pytest
 
 from packages.agnt_bash_classifier.classifier import BashSecurityClassifier
 from packages.agnt_bash_classifier.security_checks import BashSecurityCheckId
@@ -136,10 +135,10 @@ class TestTelemetryRoundtrip:
         tracker = BashTelemetryTracker(log_path=log)
         clf = BashSecurityClassifier(telemetry=tracker)
 
-        clf.classify("ls -la")            # pass
-        clf.classify("echo `whoami`")      # block
-        clf.classify("pwd")               # pass
-        clf.classify("echo $(id)")         # block
+        clf.classify("ls -la")  # pass
+        clf.classify("echo `whoami`")  # block
+        clf.classify("pwd")  # pass
+        clf.classify("echo $(id)")  # block
 
         with open(log) as f:
             events = [json.loads(line) for line in f if line.strip()]

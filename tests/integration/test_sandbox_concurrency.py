@@ -84,9 +84,7 @@ class _ConcurrencyTestStore:
     ) -> str:
         await asyncio.sleep(0.005)
         decision_id = f"dec-{int(time.time() * 1000)}-{session_id[:4]}"
-        self._decisions.setdefault(session_id, []).append(
-            {"decision_id": decision_id, "action": action.value}
-        )
+        self._decisions.setdefault(session_id, []).append({"decision_id": decision_id, "action": action.value})
         return decision_id
 
     async def get_decisions(self, session_id: str) -> list[dict[str, Any]]:
@@ -146,9 +144,7 @@ class TestConcurrentSessionCreation:
 
         await asyncio.gather(*[store.create_session(s) for s in sessions])
 
-        reads = await asyncio.gather(
-            *[store.get_session(s.session_id) for s in sessions]
-        )
+        reads = await asyncio.gather(*[store.get_session(s.session_id) for s in sessions])
         assert all(r is not None for r in reads)
         assert {r.session_id for r in reads} == {s.session_id for s in sessions}
 
@@ -163,10 +159,7 @@ class TestConcurrentStateTransitions:
         sessions = [_make_session(i) for i in range(10)]
         await asyncio.gather(*[store.create_session(s) for s in sessions])
 
-        transitions = [
-            store.update_state(s.session_id, SessionState.SPECULATING)
-            for s in sessions
-        ]
+        transitions = [store.update_state(s.session_id, SessionState.SPECULATING) for s in sessions]
         await asyncio.gather(*transitions)
 
         for s in sessions:

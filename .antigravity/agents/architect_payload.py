@@ -7,12 +7,12 @@ plan_interaction = client.create(
     input="Read the KovelAI PRD via the Google Drive MCP. Analyze our local Next.js repository via the Workspace MCP. Research the latest Stripe React hooks and draft an architectural plan.",
     agent_config={
         "type": "deep-research",
-        "collaborative_planning": True, # Pauses execution for human UI review
+        "collaborative_planning": True,  # Pauses execution for human UI review
         "tools": [
-            {"mcp_server": "kovelai_workspace_mcp_read_only"}, 
-            {"mcp_server": "google_workspace_drive_api"}, # The Missing Context
-            {"google_search": {}} 
-        ]
+            {"mcp_server": "kovelai_workspace_mcp_read_only"},
+            {"mcp_server": "google_workspace_drive_api"},  # The Missing Context
+            {"google_search": {}},
+        ],
     },
-    background=True
+    background=True,
 )

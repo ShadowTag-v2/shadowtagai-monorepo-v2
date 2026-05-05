@@ -13,7 +13,6 @@ from __future__ import annotations
 import pathlib
 
 
-
 # ===================================================================
 # magic_docs tests
 # ===================================================================
@@ -227,6 +226,7 @@ class TestPluginInstallationManager:
 
         # Initialize a status first
         from packages.plugin_manager.manager import MarketplaceStatus
+
         mgr._statuses["test"] = MarketplaceStatus(name="test")
 
         mgr._emit_progress("test", "installing")

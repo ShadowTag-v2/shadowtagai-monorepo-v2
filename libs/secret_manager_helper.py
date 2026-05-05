@@ -117,11 +117,7 @@ def get_secret(
     # Circuit breaker gate — fail fast if Secret Manager is down
     breaker = _get_breaker()
     if breaker and not breaker.allow_request():
-        msg = (
-            f"Circuit breaker OPEN for secret_manager — "
-            f"cannot retrieve '{secret_id}'. "
-            f"Probe in {breaker.seconds_until_probe:.0f}s."
-        )
+        msg = f"Circuit breaker OPEN for secret_manager — cannot retrieve '{secret_id}'. Probe in {breaker.seconds_until_probe:.0f}s."
         raise RuntimeError(msg)
 
     # Access Secret Manager

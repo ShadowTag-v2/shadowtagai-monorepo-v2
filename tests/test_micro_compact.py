@@ -113,31 +113,37 @@ class TestCollectCompactableToolIds:
 
     def test_compactable_tools(self) -> None:
         msgs = [
-            _assistant_msg([
-                _tool_use_block("Read", "t1"),
-                _tool_use_block("Bash", "t2"),
-                _tool_use_block("Grep", "t3"),
-            ]),
+            _assistant_msg(
+                [
+                    _tool_use_block("Read", "t1"),
+                    _tool_use_block("Bash", "t2"),
+                    _tool_use_block("Grep", "t3"),
+                ]
+            ),
         ]
         ids = collect_compactable_tool_ids(msgs)
         assert ids == ["t1", "t2", "t3"]
 
     def test_non_compactable_tool(self) -> None:
         msgs = [
-            _assistant_msg([
-                _tool_use_block("CustomTool", "t1"),
-            ]),
+            _assistant_msg(
+                [
+                    _tool_use_block("CustomTool", "t1"),
+                ]
+            ),
         ]
         ids = collect_compactable_tool_ids(msgs)
         assert ids == []
 
     def test_mixed_compactable_and_not(self) -> None:
         msgs = [
-            _assistant_msg([
-                _tool_use_block("Read", "t1"),
-                _tool_use_block("CustomTool", "t2"),
-                _tool_use_block("Bash", "t3"),
-            ]),
+            _assistant_msg(
+                [
+                    _tool_use_block("Read", "t1"),
+                    _tool_use_block("CustomTool", "t2"),
+                    _tool_use_block("Bash", "t3"),
+                ]
+            ),
         ]
         ids = collect_compactable_tool_ids(msgs)
         assert ids == ["t1", "t3"]
@@ -145,11 +151,13 @@ class TestCollectCompactableToolIds:
     def test_extended_tool_names(self) -> None:
         """Extended lowercase tool names should also be compactable."""
         msgs = [
-            _assistant_msg([
-                _tool_use_block("view_file", "t1"),
-                _tool_use_block("run_command", "t2"),
-                _tool_use_block("grep_search", "t3"),
-            ]),
+            _assistant_msg(
+                [
+                    _tool_use_block("view_file", "t1"),
+                    _tool_use_block("run_command", "t2"),
+                    _tool_use_block("grep_search", "t3"),
+                ]
+            ),
         ]
         ids = collect_compactable_tool_ids(msgs)
         assert ids == ["t1", "t2", "t3"]
@@ -163,17 +171,13 @@ class TestEstimateMessageTokens:
         assert estimate_message_tokens([]) == 0
 
     def test_text_message(self) -> None:
-        msgs = [
-            _user_msg([{"type": "text", "text": "hello world this is a test"}])
-        ]
+        msgs = [_user_msg([{"type": "text", "text": "hello world this is a test"}])]
         tokens = estimate_message_tokens(msgs)
         assert tokens > 0
 
     def test_padding_factor(self) -> None:
         """Estimate should be padded by ~4/3."""
-        msgs = [
-            _user_msg([{"type": "text", "text": "a " * 100}])
-        ]
+        msgs = [_user_msg([{"type": "text", "text": "a " * 100}])]
         tokens = estimate_message_tokens(msgs)
         # "a " * 100 = 200 chars. rough_token_estimate → 200/4 = 50.
         # Padded by 4/3 → ceil(66.7) = 67. Must exceed raw 50.
@@ -187,9 +191,11 @@ class TestEstimateMessageTokens:
 
     def test_tool_use_counted(self) -> None:
         msgs = [
-            _assistant_msg([
-                {"type": "tool_use", "name": "Read", "id": "t1", "input": {"path": "/foo"}},
-            ]),
+            _assistant_msg(
+                [
+                    {"type": "tool_use", "name": "Read", "id": "t1", "input": {"path": "/foo"}},
+                ]
+            ),
         ]
         tokens = estimate_message_tokens(msgs)
         assert tokens > 0
@@ -201,11 +207,13 @@ class TestEstimateMessageTokens:
 class TestEvaluateTimeBasedTrigger:
     def setup_method(self) -> None:
         """Reset config before each test."""
-        set_time_based_mc_config(TimeBasedMCConfig(
-            enabled=True,
-            gap_threshold_minutes=60.0,
-            keep_recent=5,
-        ))
+        set_time_based_mc_config(
+            TimeBasedMCConfig(
+                enabled=True,
+                gap_threshold_minutes=60.0,
+                keep_recent=5,
+            )
+        )
 
     def test_disabled(self) -> None:
         set_time_based_mc_config(TimeBasedMCConfig(enabled=False))
@@ -256,11 +264,13 @@ class TestEvaluateTimeBasedTrigger:
 
 class TestMaybeTimeBasedMicrocompact:
     def setup_method(self) -> None:
-        set_time_based_mc_config(TimeBasedMCConfig(
-            enabled=True,
-            gap_threshold_minutes=5.0,  # Low threshold for testing
-            keep_recent=2,
-        ))
+        set_time_based_mc_config(
+            TimeBasedMCConfig(
+                enabled=True,
+                gap_threshold_minutes=5.0,  # Low threshold for testing
+                keep_recent=2,
+            )
+        )
 
     def test_no_trigger(self) -> None:
         """Recent assistant → no compaction."""
@@ -276,18 +286,23 @@ class TestMaybeTimeBasedMicrocompact:
         old_ts = time.time() - 600  # 10 minutes ago
 
         msgs = [
-            _assistant_msg([
-                _tool_use_block("Read", "t1"),
-                _tool_use_block("Read", "t2"),
-                _tool_use_block("Read", "t3"),
-                _tool_use_block("Read", "t4"),
-            ], ts=old_ts),
-            _user_msg([
-                _tool_result_block("t1", "data1"),
-                _tool_result_block("t2", "data2"),
-                _tool_result_block("t3", "data3"),
-                _tool_result_block("t4", "data4"),
-            ]),
+            _assistant_msg(
+                [
+                    _tool_use_block("Read", "t1"),
+                    _tool_use_block("Read", "t2"),
+                    _tool_use_block("Read", "t3"),
+                    _tool_use_block("Read", "t4"),
+                ],
+                ts=old_ts,
+            ),
+            _user_msg(
+                [
+                    _tool_result_block("t1", "data1"),
+                    _tool_result_block("t2", "data2"),
+                    _tool_result_block("t3", "data3"),
+                    _tool_result_block("t4", "data4"),
+                ]
+            ),
         ]
 
         result = maybe_time_based_microcompact(msgs, "repl_main_thread")
@@ -314,12 +329,17 @@ class TestMaybeTimeBasedMicrocompact:
         old_ts = time.time() - 600
 
         msgs = [
-            _assistant_msg([
-                _tool_use_block("CustomTool", "t1"),
-            ], ts=old_ts),
-            _user_msg([
-                _tool_result_block("t1", "important data"),
-            ]),
+            _assistant_msg(
+                [
+                    _tool_use_block("CustomTool", "t1"),
+                ],
+                ts=old_ts,
+            ),
+            _user_msg(
+                [
+                    _tool_result_block("t1", "important data"),
+                ]
+            ),
         ]
 
         result = maybe_time_based_microcompact(msgs, "repl_main_thread")
@@ -330,16 +350,21 @@ class TestMaybeTimeBasedMicrocompact:
         old_ts = time.time() - 600
 
         msgs = [
-            _assistant_msg([
-                _tool_use_block("Read", "t1"),
-                _tool_use_block("Read", "t2"),
-                _tool_use_block("Read", "t3"),
-            ], ts=old_ts),
-            _user_msg([
-                _tool_result_block("t1", TIME_BASED_MC_CLEARED_MESSAGE),  # Already cleared
-                _tool_result_block("t2", "data2"),
-                _tool_result_block("t3", "data3"),
-            ]),
+            _assistant_msg(
+                [
+                    _tool_use_block("Read", "t1"),
+                    _tool_use_block("Read", "t2"),
+                    _tool_use_block("Read", "t3"),
+                ],
+                ts=old_ts,
+            ),
+            _user_msg(
+                [
+                    _tool_result_block("t1", TIME_BASED_MC_CLEARED_MESSAGE),  # Already cleared
+                    _tool_result_block("t2", "data2"),
+                    _tool_result_block("t3", "data3"),
+                ]
+            ),
         ]
 
         result = maybe_time_based_microcompact(msgs, "repl_main_thread")
@@ -352,22 +377,29 @@ class TestMaybeTimeBasedMicrocompact:
 
     def test_keep_recent_floor_at_1(self) -> None:
         """Even with keep_recent=0 in config, at least 1 is kept."""
-        set_time_based_mc_config(TimeBasedMCConfig(
-            enabled=True,
-            gap_threshold_minutes=5.0,
-            keep_recent=0,  # Would clear everything
-        ))
+        set_time_based_mc_config(
+            TimeBasedMCConfig(
+                enabled=True,
+                gap_threshold_minutes=5.0,
+                keep_recent=0,  # Would clear everything
+            )
+        )
         old_ts = time.time() - 600
 
         msgs = [
-            _assistant_msg([
-                _tool_use_block("Read", "t1"),
-                _tool_use_block("Read", "t2"),
-            ], ts=old_ts),
-            _user_msg([
-                _tool_result_block("t1", "data1"),
-                _tool_result_block("t2", "data2"),
-            ]),
+            _assistant_msg(
+                [
+                    _tool_use_block("Read", "t1"),
+                    _tool_use_block("Read", "t2"),
+                ],
+                ts=old_ts,
+            ),
+            _user_msg(
+                [
+                    _tool_result_block("t1", "data1"),
+                    _tool_result_block("t2", "data2"),
+                ]
+            ),
         ]
 
         result = maybe_time_based_microcompact(msgs, "repl_main_thread")
@@ -381,11 +413,13 @@ class TestMaybeTimeBasedMicrocompact:
 
 class TestMicrocompactMessages:
     def setup_method(self) -> None:
-        set_time_based_mc_config(TimeBasedMCConfig(
-            enabled=True,
-            gap_threshold_minutes=5.0,
-            keep_recent=2,
-        ))
+        set_time_based_mc_config(
+            TimeBasedMCConfig(
+                enabled=True,
+                gap_threshold_minutes=5.0,
+                keep_recent=2,
+            )
+        )
 
     def test_passthrough_when_no_trigger(self) -> None:
         msgs = [_user_msg([{"type": "text", "text": "hello"}])]
@@ -397,16 +431,21 @@ class TestMicrocompactMessages:
         old_ts = time.time() - 600
 
         msgs = [
-            _assistant_msg([
-                _tool_use_block("Read", "t1"),
-                _tool_use_block("Read", "t2"),
-                _tool_use_block("Read", "t3"),
-            ], ts=old_ts),
-            _user_msg([
-                _tool_result_block("t1", "data1"),
-                _tool_result_block("t2", "data2"),
-                _tool_result_block("t3", "data3"),
-            ]),
+            _assistant_msg(
+                [
+                    _tool_use_block("Read", "t1"),
+                    _tool_use_block("Read", "t2"),
+                    _tool_use_block("Read", "t3"),
+                ],
+                ts=old_ts,
+            ),
+            _user_msg(
+                [
+                    _tool_result_block("t1", "data1"),
+                    _tool_result_block("t2", "data2"),
+                    _tool_result_block("t3", "data3"),
+                ]
+            ),
         ]
 
         result = microcompact_messages(msgs, "repl_main_thread")

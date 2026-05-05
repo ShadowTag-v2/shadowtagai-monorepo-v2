@@ -26,9 +26,7 @@ from src.intelligence.epistemology_engine import EpistemologicalForensics
 
 
 # Shared strategy: lists of finite floats (no NaN/inf)
-finite_floats = st.floats(
-    min_value=-1e6, max_value=1e6, allow_nan=False, allow_infinity=False
-)
+finite_floats = st.floats(min_value=-1e6, max_value=1e6, allow_nan=False, allow_infinity=False)
 data_lists = st.lists(finite_floats, min_size=1, max_size=200)
 nonempty_data = st.lists(finite_floats, min_size=2, max_size=200)
 
@@ -52,9 +50,7 @@ class TestEffectSizeProperties:
 
         data = [value] * n
         result = forensics._compute_effect_size(data)
-        assert math.isclose(result, 0.0, abs_tol=1e-9), (
-            f"Constant data gave non-zero MAD: {result}"
-        )
+        assert math.isclose(result, 0.0, abs_tol=1e-9), f"Constant data gave non-zero MAD: {result}"
 
     @given(data=nonempty_data)
     @settings(max_examples=50)
@@ -64,9 +60,7 @@ class TestEffectSizeProperties:
         shuffled = data.copy()
         random.shuffle(shuffled)
         permuted = forensics._compute_effect_size(shuffled)
-        assert abs(original - permuted) < 1e-9, (
-            f"Shuffle changed MAD: {original} → {permuted}"
-        )
+        assert abs(original - permuted) < 1e-9, f"Shuffle changed MAD: {original} → {permuted}"
 
     @given(data=data_lists, scale=st.floats(min_value=0.1, max_value=100.0))
     @settings(max_examples=50)
@@ -76,9 +70,7 @@ class TestEffectSizeProperties:
         original = forensics._compute_effect_size(data)
         scaled_data = [x * scale for x in data]
         scaled_mad = forensics._compute_effect_size(scaled_data)
-        assert abs(scaled_mad - scale * original) < 1e-4 * max(1, abs(scaled_mad)), (
-            f"Scaling violated: {scaled_mad} ≠ {scale} * {original}"
-        )
+        assert abs(scaled_mad - scale * original) < 1e-4 * max(1, abs(scaled_mad)), f"Scaling violated: {scaled_mad} ≠ {scale} * {original}"
 
     def test_empty_data_returns_zero(self):
         """Empty list ⇒ MAD = 0.0 (guard clause)."""
@@ -100,16 +92,10 @@ class TestClaimValidationProperties:
         alpha=st.floats(min_value=0.01, max_value=0.99),
     )
     @settings(max_examples=30)
-    def test_p_value_bounded(
-        self, data: list[float], claimed_effect: float, alpha: float
-    ):
+    def test_p_value_bounded(self, data: list[float], claimed_effect: float, alpha: float):
         """p-value must always be in [0, 1]."""
-        result = forensics.validate_statistical_claim(
-            data, claimed_effect, n_permutations=50, alpha=alpha
-        )
-        assert 0.0 <= result["p_value"] <= 1.0, (
-            f"p_value out of range: {result['p_value']}"
-        )
+        result = forensics.validate_statistical_claim(data, claimed_effect, n_permutations=50, alpha=alpha)
+        assert 0.0 <= result["p_value"] <= 1.0, f"p_value out of range: {result['p_value']}"
 
     @given(
         data=nonempty_data,
@@ -117,13 +103,9 @@ class TestClaimValidationProperties:
         alpha=st.floats(min_value=0.01, max_value=0.99),
     )
     @settings(max_examples=30)
-    def test_result_has_required_keys(
-        self, data: list[float], claimed_effect: float, alpha: float
-    ):
+    def test_result_has_required_keys(self, data: list[float], claimed_effect: float, alpha: float):
         """Result dict must always contain 'valid', 'p_value', 'directive'."""
-        result = forensics.validate_statistical_claim(
-            data, claimed_effect, n_permutations=50, alpha=alpha
-        )
+        result = forensics.validate_statistical_claim(data, claimed_effect, n_permutations=50, alpha=alpha)
         assert "valid" in result
         assert "p_value" in result
         assert "directive" in result
@@ -135,17 +117,11 @@ class TestClaimValidationProperties:
         alpha=st.floats(min_value=0.01, max_value=0.99),
     )
     @settings(max_examples=30)
-    def test_directive_is_valid_enum(
-        self, data: list[float], claimed_effect: float, alpha: float
-    ):
+    def test_directive_is_valid_enum(self, data: list[float], claimed_effect: float, alpha: float):
         """Directive must be one of the defined enum values."""
-        result = forensics.validate_statistical_claim(
-            data, claimed_effect, n_permutations=50, alpha=alpha
-        )
+        result = forensics.validate_statistical_claim(data, claimed_effect, n_permutations=50, alpha=alpha)
         valid_directives = {"VERIFIED", "REJECT_HALLUCINATED_ALPHA", "REJECT_EMPTY_DATA"}
-        assert result["directive"] in valid_directives, (
-            f"Unknown directive: {result['directive']}"
-        )
+        assert result["directive"] in valid_directives, f"Unknown directive: {result['directive']}"
 
     def test_empty_data_always_rejects(self):
         """Empty data must always produce REJECT_EMPTY_DATA."""
@@ -159,13 +135,9 @@ class TestClaimValidationProperties:
         alpha=st.floats(min_value=0.01, max_value=0.99),
     )
     @settings(max_examples=30)
-    def test_validity_matches_directive(
-        self, data: list[float], alpha: float
-    ):
+    def test_validity_matches_directive(self, data: list[float], alpha: float):
         """valid=True ⟺ directive='VERIFIED'."""
-        result = forensics.validate_statistical_claim(
-            data, 0.0, n_permutations=50, alpha=alpha
-        )
+        result = forensics.validate_statistical_claim(data, 0.0, n_permutations=50, alpha=alpha)
         if result["valid"]:
             assert result["directive"] == "VERIFIED"
         else:

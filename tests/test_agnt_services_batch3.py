@@ -26,14 +26,10 @@ class _FakeProvider:
     def __init__(self) -> None:
         self._diagnostics: dict[str | None, list[DiagnosticFile]] = {}
 
-    def set_diagnostics(
-        self, key: str | None, files: list[DiagnosticFile]
-    ) -> None:
+    def set_diagnostics(self, key: str | None, files: list[DiagnosticFile]) -> None:
         self._diagnostics[key] = files
 
-    async def get_diagnostics(
-        self, file_uri: str | None = None
-    ) -> list[DiagnosticFile]:
+    async def get_diagnostics(self, file_uri: str | None = None) -> list[DiagnosticFile]:
         return self._diagnostics.get(file_uri, self._diagnostics.get(None, []))
 
     async def open_file(self, file_uri: str) -> None:
@@ -95,11 +91,7 @@ class TestDiagnosticTracking:
         # After edit: both existing + new
         provider.set_diagnostics(
             None,
-            [
-                DiagnosticFile(
-                    uri="file:///test.py", diagnostics=[existing, new_one]
-                )
-            ],
+            [DiagnosticFile(uri="file:///test.py", diagnostics=[existing, new_one])],
         )
         results = await self.svc.get_new_diagnostics()
         assert len(results) == 1
@@ -263,9 +255,7 @@ class _MockGenerator:
         self.call_count = 0
         self.last_messages: list[dict[str, str]] = []
 
-    async def generate(
-        self, messages: list[dict[str, str]], system_prompt: str
-    ) -> str | None:
+    async def generate(self, messages: list[dict[str, str]], system_prompt: str) -> str | None:
         self.call_count += 1
         self.last_messages = messages
         return self.response
@@ -318,9 +308,7 @@ class TestAwaySummary:
             async def generate(self, messages, system_prompt):
                 raise RuntimeError("boom")
 
-        result = await generate_away_summary(
-            [{"role": "user", "content": "hi"}], generator=_Exploder()
-        )
+        result = await generate_away_summary([{"role": "user", "content": "hi"}], generator=_Exploder())
         assert result is None
 
 
@@ -435,6 +423,7 @@ class TestFormatResetTime:
 
     def test_future_hours(self) -> None:
         import time
+
         future = int(time.time()) + 7200  # 2 hours
         result = format_reset_time(future)
         assert result.startswith("in ")
@@ -446,9 +435,7 @@ class TestUsingOverageText:
         import time
 
         future_ts = int(time.time()) + 7200
-        ctx = RateLimitContext(
-            rate_limit_type=RateLimitType.FIVE_HOUR, resets_at=future_ts
-        )
+        ctx = RateLimitContext(rate_limit_type=RateLimitType.FIVE_HOUR, resets_at=future_ts)
         text = get_using_overage_text(ctx)
         assert "extra usage" in text
         assert "session limit" in text

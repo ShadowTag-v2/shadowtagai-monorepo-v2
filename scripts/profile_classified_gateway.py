@@ -26,11 +26,11 @@ import sys
 
 # Create mock modules for imports that won't resolve in isolation
 mock_modules = [
-    'agnt_classifier',
-    'tool_gateway.block_allow_engine',
-    'tool_gateway.gateway',
-    'tool_gateway.sandbox_path_resolver',
-    'tool_gateway.telemetry',
+    "agnt_classifier",
+    "tool_gateway.block_allow_engine",
+    "tool_gateway.gateway",
+    "tool_gateway.sandbox_path_resolver",
+    "tool_gateway.telemetry",
 ]
 
 for mod in mock_modules:
@@ -64,12 +64,12 @@ def profile_classifier_pipeline() -> None:
         "grep -r 'pattern' src/",
         "find . -name '*.py' -type f",
         # Blocked commands (short-circuit at various points)
-        "echo hello |",                          # Check 1
-        "jq 'def f: .; f' input.json",          # Check 2
-        "echo `whoami`",                          # Check 5
-        "echo $BASH_ENV",                         # Check 6
-        "echo $((1+1))",                          # Check 25
-        "base64 -d payload.txt",                  # Check 27
+        "echo hello |",  # Check 1
+        "jq 'def f: .; f' input.json",  # Check 2
+        "echo `whoami`",  # Check 5
+        "echo $BASH_ENV",  # Check 6
+        "echo $((1+1))",  # Check 25
+        "base64 -d payload.txt",  # Check 27
     ]
 
     iterations = 10_000
@@ -98,7 +98,7 @@ def profile_classifier_pipeline() -> None:
     total_calls = len(test_commands) * iterations
     avg_us = (total_ms / total_calls) * 1000  # microseconds
 
-    print(f"=== Performance Summary ===")
+    print("=== Performance Summary ===")
     print(f"Total time: {total_ms:.1f}ms")
     print(f"Total calls: {total_calls:,}")
     print(f"Avg per call: {avg_us:.1f}µs ({total_ms / total_calls:.3f}ms)")
@@ -108,14 +108,14 @@ def profile_classifier_pipeline() -> None:
     # Print top 20 hotspots
     stream = io.StringIO()
     stats = pstats.Stats(profiler, stream=stream)
-    stats.sort_stats('cumulative')
+    stats.sort_stats("cumulative")
     stats.print_stats(20)
     print(stream.getvalue())
 
     # Print callee breakdown for classify()
     stream2 = io.StringIO()
     stats2 = pstats.Stats(profiler, stream=stream2)
-    stats2.sort_stats('tottime')
+    stats2.sort_stats("tottime")
     stats2.print_stats(20)
     print("=== By Total Time ===")
     print(stream2.getvalue())

@@ -114,7 +114,7 @@ class TestXmlTags:
         assert escape_xml("a & b") == "a &amp; b"
 
     def test_escape_xml_all_chars(self) -> None:
-        assert escape_xml('<a>&b</a>') == "&lt;a&gt;&amp;b&lt;/a&gt;"
+        assert escape_xml("<a>&b</a>") == "&lt;a&gt;&amp;b&lt;/a&gt;"
 
     def test_escape_xml_attr(self) -> None:
         assert escape_xml_attr('value="test"') == "value=&quot;test&quot;"
@@ -230,9 +230,7 @@ class TestWithRetrySync:
                 raise exc
             return "ok"
 
-        result, stats = with_retry_sync(
-            flaky, RetryConfig(max_retries=5, max_delay_ms=10)
-        )
+        result, stats = with_retry_sync(flaky, RetryConfig(max_retries=5, max_delay_ms=10))
         assert result == "ok"
         assert stats.total_attempts == 3
 
@@ -243,9 +241,7 @@ class TestWithRetrySync:
             raise exc
 
         with pytest.raises(CannotRetryError):
-            with_retry_sync(
-                always_fail, RetryConfig(max_retries=2, max_delay_ms=10)
-            )
+            with_retry_sync(always_fail, RetryConfig(max_retries=2, max_delay_ms=10))
 
     def test_non_retryable_error(self) -> None:
         def bad_request():
@@ -254,9 +250,7 @@ class TestWithRetrySync:
             raise exc
 
         with pytest.raises(CannotRetryError) as exc_info:
-            with_retry_sync(
-                bad_request, RetryConfig(max_retries=5, max_delay_ms=10)
-            )
+            with_retry_sync(bad_request, RetryConfig(max_retries=5, max_delay_ms=10))
         assert exc_info.value.attempts == 1
 
     def test_fallback_on_529s(self) -> None:
@@ -300,9 +294,7 @@ class TestWithRetryAsync:
                 raise exc
             return "recovered"
 
-        result, stats = await with_retry(
-            flaky, RetryConfig(max_retries=5, max_delay_ms=10)
-        )
+        result, stats = await with_retry(flaky, RetryConfig(max_retries=5, max_delay_ms=10))
         assert result == "recovered"
         assert stats.total_attempts == 2
 
@@ -460,6 +452,7 @@ class TestCircuitBreaker:
 
 # ── Registry integration ──
 
+
 class TestRegistryIntegration:
     """Verify the 4 new modules load via the service registry."""
 
@@ -470,9 +463,7 @@ class TestRegistryIntegration:
         details = result["details"]
 
         for svc in ("prevent_sleep", "xml_tags", "resilient_retry", "circuit_breaker"):
-            assert details.get(svc) == "ready", (
-                f"Service '{svc}' should be ready, got: {details.get(svc)}"
-            )
+            assert details.get(svc) == "ready", f"Service '{svc}' should be ready, got: {details.get(svc)}"
 
     def test_registry_count_increased(self) -> None:
         from packages.agnt_services import health_check
