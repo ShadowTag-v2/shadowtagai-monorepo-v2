@@ -27,6 +27,8 @@ interface ActivityCardProps {
   readonly timestamp: string;
   readonly avatarUrl: string;
   readonly repoName: string;
+  readonly userUrl?: string;
+  readonly repoUrl?: string;
 }
 
 export const ActivityCard: React.FC<ActivityCardProps> = ({
@@ -35,20 +37,25 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   timestamp,
   avatarUrl,
   repoName,
+  userUrl,
+  repoUrl,
 }) => {
   const isMerged = action === 'MERGED';
 
   return (
     <div className="flex items-center justify-between gap-4 rounded-lg bg-surface-dark p-4 min-h-14 shadow-sm ring-1 ring-white/10">
       <div className="flex items-center gap-4 overflow-hidden">
-        <div
-          className="aspect-square h-10 w-10 flex-shrink-0 rounded-full bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${avatarUrl})` }}
-          aria-label={`Avatar for ${username}`}
+        <img
+          className="aspect-square h-10 w-10 flex-shrink-0 rounded-full object-cover"
+          src={avatarUrl}
+          alt={`Avatar for ${username}`}
         />
 
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm sm:text-base">
-          <a href="#" className="font-semibold text-primary hover:underline truncate">
+          <a
+            href={userUrl ?? `/users/${username}`}
+            className="font-semibold text-primary hover:underline truncate"
+          >
             {username}
           </a>
 
@@ -62,7 +69,10 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
 
           <span className="text-white/60">in</span>
 
-          <a href="#" className="text-primary hover:underline truncate">
+          <a
+            href={repoUrl ?? `/repos/${repoName}`}
+            className="text-primary hover:underline truncate"
+          >
             {repoName}
           </a>
         </div>

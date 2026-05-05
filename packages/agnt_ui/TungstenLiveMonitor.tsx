@@ -17,7 +17,7 @@ export const TungstenLiveMonitor: React.FC<{ sessionId: string }> = ({ sessionId
     // In a real app, this would tail the tmux socket or log file
     const interval = setInterval(appendLog, 5000);
     return () => clearInterval(interval);
-  }, [sessionId, appendLog]);
+  }, [appendLog]);
 
   if (!isExpanded) {
     return (

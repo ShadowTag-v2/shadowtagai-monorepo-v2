@@ -8,7 +8,7 @@ const supabase = createClient(
 
 export async function POST(req: Request) {
   try {
-    const { prompt, style, userId } = await req.json();
+    const { prompt, style: _style, userId } = await req.json();
 
     if (!userId || !prompt) {
       return NextResponse.json(

@@ -35,9 +35,10 @@ export const CriticalTile: React.FC<CriticalTileProps> = ({
   const formattedDate = new Date(deadlineIso).toLocaleDateString();
 
   return (
-    <div
+    <button
+      type="button"
       onClick={onTap}
-      className={`relative w-full h-screen flex flex-col justify-center items-center p-8 cursor-pointer transition-all duration-300 transform active:scale-95 ${getColorScheme()}`}
+      className={`relative w-full h-screen flex flex-col justify-center items-center p-8 cursor-pointer transition-all duration-300 transform active:scale-95 border-0 ${getColorScheme()}`}
       style={{
         boxShadow: 'inset 0 0 100px rgba(0,0,0,0.8)',
         backdropFilter: 'blur(10px)',
@@ -71,6 +72,6 @@ export const CriticalTile: React.FC<CriticalTileProps> = ({
         <div className="w-2 h-2 rounded-full bg-current animate-pulse"></div>
         <span className="text-xs uppercase tracking-widest">Tap to route to workflow</span>
       </div>
-    </div>
+    </button>
   );
 };

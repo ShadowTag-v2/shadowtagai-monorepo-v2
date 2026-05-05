@@ -12,6 +12,8 @@
   var scrollProgress = document.getElementById('scrollProgress');
   var contactForm = document.getElementById('contactForm');
   var toast = document.getElementById('toast');
+  var firstInput;
+  var observer;
 
   // ── Nav Scroll ──
   function handleNavScroll() {
@@ -63,7 +65,7 @@
     if (contactModal) {
       contactModal.style.display = 'flex';
       contactModal.setAttribute('aria-hidden', 'false');
-      var firstInput = contactModal.querySelector('input, textarea');
+      firstInput = contactModal.querySelector('input, textarea');
       if (firstInput) firstInput.focus();
     }
   };
@@ -119,7 +121,7 @@
   // ── Intersection Observer for Fade-In ──
   var fadeEls = document.querySelectorAll('.fade-in');
   if (fadeEls.length > 0 && 'IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(
+    observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {

@@ -126,6 +126,7 @@ export function KinematicVerbMatrix({
       <div style={styles.rollUpGrid}>
         {causesOfAction.map((coa) => (
           <button
+            type="button"
             key={coa.action}
             onClick={() => setFilterAction(filterAction === coa.action ? null : coa.action)}
             style={{
@@ -174,11 +175,12 @@ export function KinematicVerbMatrix({
                 CLASSIFICATION_COLORS[verb.kinematic_classification] ||
                 CLASSIFICATION_COLORS.CONTACT_FORCE;
               const isExpanded = expandedVerb === idx;
+              const verbKey = `${verb.verb}-${verb.cause_of_action}-${verb.kinematic_classification}`;
 
               return (
                 <>
                   <tr
-                    key={`verb-${idx}`}
+                    key={`verb-${verbKey}`}
                     onClick={() => setExpandedVerb(isExpanded ? null : idx)}
                     style={{
                       ...styles.tr,
@@ -220,7 +222,7 @@ export function KinematicVerbMatrix({
                     </td>
                   </tr>
                   {isExpanded && (
-                    <tr key={`detail-${idx}`}>
+                    <tr key={`detail-${verbKey}`}>
                       <td colSpan={5} style={styles.expandedRow}>
                         <div style={styles.expandedContent}>
                           <div>

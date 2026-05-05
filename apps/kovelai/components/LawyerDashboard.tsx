@@ -106,7 +106,7 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
   const polygonPoints = points.map((p) => `${p.x},${p.y}`).join(' ');
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+    <svg aria-hidden="true" width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
       {/* Grid rings */}
       {Array.from({ length: levels }, (_, i) => {
         const r = ((i + 1) / levels) * maxRadius;
@@ -118,7 +118,7 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
           .join(' ');
         return (
           <polygon
-            key={`ring-${i}`}
+            key={`ring-level-${i + 1}-of-${levels}`}
             points={ringPoints}
             fill="none"
             stroke="#3c494e"
@@ -129,11 +129,11 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
       })}
 
       {/* Axes */}
-      {data.map((_, i) => {
+      {data.map((d, i) => {
         const angle = i * angleStep - Math.PI / 2;
         return (
           <line
-            key={`axis-${i}`}
+            key={`axis-${d.label}`}
             x1={center}
             y1={center}
             x2={center + maxRadius * Math.cos(angle)}
@@ -154,8 +154,8 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
       />
 
       {/* Data points */}
-      {points.map((p, i) => (
-        <circle key={`point-${i}`} cx={p.x} cy={p.y} r="3" fill="#00d4ff" />
+      {points.map((p) => (
+        <circle key={`point-${p.x}-${p.y}`} cx={p.x} cy={p.y} r="3" fill="#00d4ff" />
       ))}
 
       {/* Labels */}
@@ -166,7 +166,7 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
         const y = center + labelRadius * Math.sin(angle);
         return (
           <text
-            key={`label-${i}`}
+            key={`label-${d.label}`}
             x={x}
             y={y}
             textAnchor="middle"
@@ -362,11 +362,10 @@ export function LawyerDashboard() {
             Client Activity
           </h2>
           {clients.map((client) => (
-            <div
+            <button
+              type="button"
               key={client.clientId}
               onClick={() => setSelectedClient(client)}
-              role="button"
-              tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') setSelectedClient(client);
               }}
@@ -380,6 +379,10 @@ export function LawyerDashboard() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 transition: 'background 0.2s',
+                border: 'none',
+                width: '100%',
+                color: 'inherit',
+                textAlign: 'left',
               }}
             >
               <div>
@@ -389,7 +392,7 @@ export function LawyerDashboard() {
                 </div>
               </div>
               <RiskBadge level={client.riskLevel} />
-            </div>
+            </button>
           ))}
         </div>
 

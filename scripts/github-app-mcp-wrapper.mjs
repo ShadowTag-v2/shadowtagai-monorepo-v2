@@ -180,7 +180,7 @@ async function main() {
   const token = await acquireToken();
 
   // Find the MCP server binary
-  const mcpServerPaths = [
+  const _mcpServerPaths = [
     join(homedir(), '.npm-global', 'bin', 'github-mcp-server'),
     join(homedir(), '.nvm', 'versions', 'node'),
   ];
@@ -216,7 +216,7 @@ async function main() {
   setInterval(async () => {
     try {
       process.stderr.write('[github-app-mcp] Refreshing token...\n');
-      const newToken = await acquireToken();
+      const _newToken = await acquireToken();
       // Note: the running MCP server process uses the initial token.
       // For long-running sessions, a restart is needed.
       // We update the cache so the NEXT spawn gets a fresh token.

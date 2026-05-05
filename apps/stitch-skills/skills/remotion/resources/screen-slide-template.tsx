@@ -12,8 +12,8 @@ export const ScreenSlide: React.FC<ScreenSlideProps> = ({
   imageSrc,
   title,
   description,
-  width,
-  height,
+  width: _width,
+  height: _height,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();

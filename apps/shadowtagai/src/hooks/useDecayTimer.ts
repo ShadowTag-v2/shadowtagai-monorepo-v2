@@ -23,8 +23,9 @@ export function useDecayTimer(ttlSeconds: number, onPurge: () => void) {
       // History push may fail in some environments
     }
 
-    // 3. Clear cookies
+    // 3. Clear cookies (Kovel Doctrine anti-forensic purge)
     document.cookie.split(';').forEach((c) => {
+      // biome-ignore lint/suspicious/noDocumentCookie: Setting expiry to clear each cookie
       document.cookie = c
         .replace(/^ +/, '')
         .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);

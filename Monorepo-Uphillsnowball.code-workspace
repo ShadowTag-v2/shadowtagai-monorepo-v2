@@ -253,7 +253,9 @@
     "cline.apiProvider": "openai",
     "cline.openai.baseUrl": "http://localhost:11434/v1",
     "cline.openai.apiKey": "ollama-local",
-    "cline.openai.modelId": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF"
+    "cline.openai.modelId": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
+    "telemetry.telemetryLevel": "off",
+    "telemetry.enableCrashReporter": false
   },
   "extensions": {
     "recommendations": [

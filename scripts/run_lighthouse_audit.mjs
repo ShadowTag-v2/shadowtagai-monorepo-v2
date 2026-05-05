@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
-import lighthouse from 'lighthouse';
+import fs from 'node:fs';
+import path from 'node:path';
 import * as chromeLauncher from 'chrome-launcher';
+import lighthouse from 'lighthouse';
 
 async function runLighthouseAudit(url) {
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
@@ -17,7 +17,7 @@ async function runLighthouseAudit(url) {
   // `.report` is the HTML report as a string
   const reportHtml = runnerResult.report;
   const reportsDir = path.join(process.cwd(), 'reports');
-  
+
   if (!fs.existsSync(reportsDir)) {
     fs.mkdirSync(reportsDir);
   }

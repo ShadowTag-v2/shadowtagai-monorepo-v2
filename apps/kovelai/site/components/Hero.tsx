@@ -46,10 +46,16 @@ export const KovelaiOverlay: React.FC = () => {
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
-            <button className="px-8 py-4 bg-white text-black font-semibold rounded hover:bg-neutral-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+            <button
+              type="button"
+              className="px-8 py-4 bg-white text-black font-semibold rounded hover:bg-neutral-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+            >
               Initiate Pipeline
             </button>
-            <button className="px-8 py-4 bg-white/5 text-white font-medium rounded border border-white/10 backdrop-blur-md hover:bg-white/10 transition-all">
+            <button
+              type="button"
+              className="px-8 py-4 bg-white/5 text-white font-medium rounded border border-white/10 backdrop-blur-md hover:bg-white/10 transition-all"
+            >
               View Architecture
             </button>
           </div>
@@ -99,6 +105,7 @@ export const KovelaiOverlay: React.FC = () => {
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center">
                 <svg
+                  aria-hidden="true"
                   className="w-4 h-4 text-blue-400"
                   fill="none"
                   viewBox="0 0 24 24"

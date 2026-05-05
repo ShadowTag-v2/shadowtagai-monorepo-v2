@@ -39,7 +39,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </nav>
 
         <div className="p-4 border-t border-white/5">
-          <button className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-red-500/10 hover:border-red-500/20 border border-transparent transition-all">
+          <button
+            type="button"
+            className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-red-500/10 hover:border-red-500/20 border border-transparent transition-all"
+          >
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-cyan-500 p-[1px]">
                 <div className="w-full h-full bg-black rounded-full" />

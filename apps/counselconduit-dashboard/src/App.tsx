@@ -290,7 +290,11 @@ function OverviewView({ onNavigate }: { onNavigate: (v: View) => void }) {
           <div className="section-title">Recent Sessions</div>
           <div className="section-subtitle">Client research sessions with privilege protection</div>
         </div>
-        <button className="btn btn-secondary btn-sm" onClick={() => onNavigate('sessions')}>
+        <button
+          type="button"
+          className="btn btn-secondary btn-sm"
+          onClick={() => onNavigate('sessions')}
+        >
           View All →
         </button>
       </div>
@@ -381,6 +385,7 @@ function SessionDetailView({ session, onBack }: { session: ClientSession; onBack
   return (
     <div className="animate-fade-in">
       <button
+        type="button"
         className="btn btn-ghost btn-sm"
         onClick={onBack}
         style={{ marginBottom: 'var(--space-md)' }}
@@ -414,18 +419,21 @@ function SessionDetailView({ session, onBack }: { session: ClientSession; onBack
 
       <div className="tab-bar">
         <button
+          type="button"
           className={`tab-btn ${tab === 'transcript' ? 'active' : ''}`}
           onClick={() => setTab('transcript')}
         >
           Transcript
         </button>
         <button
+          type="button"
           className={`tab-btn ${tab === 'receipt' ? 'active' : ''}`}
           onClick={() => setTab('receipt')}
         >
           Kovel Receipt
         </button>
         <button
+          type="button"
           className={`tab-btn ${tab === 'memo' ? 'active' : ''}`}
           onClick={() => setTab('memo')}
         >
@@ -435,8 +443,8 @@ function SessionDetailView({ session, onBack }: { session: ClientSession; onBack
 
       {tab === 'transcript' && (
         <div className="glass-panel transcript-panel">
-          {DEMO_TRANSCRIPT.map((entry, i) => (
-            <div className="transcript-entry" key={i}>
+          {DEMO_TRANSCRIPT.map((entry) => (
+            <div className="transcript-entry" key={`${entry.timestamp}-${entry.role}`}>
               <div className={`transcript-role ${entry.role}`}>
                 {entry.role === 'ai' ? `AI (${entry.model})` : entry.role}
               </div>
@@ -486,8 +494,12 @@ function SessionDetailView({ session, onBack }: { session: ClientSession; onBack
           </div>
           <div className="receipt-hash">{DEMO_RECEIPT.hmac_hash}</div>
           <div style={{ marginTop: 'var(--space-md)', display: 'flex', gap: 'var(--space-sm)' }}>
-            <button className="btn btn-primary btn-sm">Download Receipt</button>
-            <button className="btn btn-secondary btn-sm">Verify Hash</button>
+            <button type="button" className="btn btn-primary btn-sm">
+              Download Receipt
+            </button>
+            <button type="button" className="btn btn-secondary btn-sm">
+              Verify Hash
+            </button>
           </div>
         </div>
       )}
@@ -583,7 +595,9 @@ function SessionsView() {
           <div className="section-title">All Sessions</div>
           <div className="section-subtitle">Privilege-protected client research sessions</div>
         </div>
-        <button className="btn btn-primary btn-sm">+ New Session</button>
+        <button type="button" className="btn btn-primary btn-sm">
+          + New Session
+        </button>
       </div>
 
       <div className="glass-panel animate-slide-up">
@@ -653,7 +667,9 @@ function ClientsView() {
             Authorized clients for privileged AI research sessions
           </div>
         </div>
-        <button className="btn btn-primary btn-sm">+ Authorize Client</button>
+        <button type="button" className="btn btn-primary btn-sm">
+          + Authorize Client
+        </button>
       </div>
 
       <div className="client-grid">
@@ -702,10 +718,14 @@ function ModelsView() {
 
       <div className="model-grid">
         {models.map((m) => (
-          <div
+          <button
+            type="button"
             className={`glass-panel model-card ${m.enabled ? 'active' : 'disabled'}`}
             key={m.id}
             onClick={() => toggleModel(m.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') toggleModel(m.id);
+            }}
           >
             <div className="model-name">{m.name}</div>
             <div className="model-provider">{m.provider}</div>
@@ -716,13 +736,15 @@ function ModelsView() {
                 {m.tier}
               </span>
             </div>
-            <div
+            <button
+              type="button"
               className={`model-toggle ${m.enabled ? 'on' : ''}`}
               role="switch"
               aria-checked={m.enabled}
               aria-label={`Toggle ${m.name}`}
+              tabIndex={-1}
             />
-          </div>
+          </button>
         ))}
       </div>
 
@@ -796,7 +818,9 @@ function BillingView() {
             </span>
           </div>
           <div style={{ marginTop: 'var(--space-md)' }}>
-            <button className="btn btn-secondary btn-sm">Manage in Stripe ↗</button>
+            <button type="button" className="btn btn-secondary btn-sm">
+              Manage in Stripe ↗
+            </button>
           </div>
         </div>
 
@@ -825,7 +849,9 @@ function BillingView() {
             </span>
           </div>
           <div style={{ marginTop: 'var(--space-md)' }}>
-            <button className="btn btn-secondary btn-sm">View Payouts ↗</button>
+            <button type="button" className="btn btn-secondary btn-sm">
+              View Payouts ↗
+            </button>
           </div>
         </div>
       </div>
@@ -873,6 +899,7 @@ export default function App() {
         <nav className="sidebar-nav">
           {NAV_ITEMS.map((item) => (
             <button
+              type="button"
               key={item.view}
               className={`nav-btn ${view === item.view ? 'active' : ''}`}
               onClick={() => setView(item.view)}
@@ -899,7 +926,9 @@ export default function App() {
           </div>
           <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center' }}>
             <span className="badge badge-privileged">◈ Kovel Shield Active</span>
-            <button className="btn btn-secondary btn-sm">⟳ Refresh</button>
+            <button type="button" className="btn btn-secondary btn-sm">
+              ⟳ Refresh
+            </button>
           </div>
         </header>
 

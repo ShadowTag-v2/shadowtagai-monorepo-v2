@@ -87,7 +87,15 @@
         "NOTEBOOKLM_PROFILE": "full"
       },
       "capability_owner": true,
-      "owns": ["ask_question", "setup_auth", "list_notebooks", "select_notebook", "get_notebook", "add_notebook", "search_notebooks"],
+      "owns": [
+        "ask_question",
+        "setup_auth",
+        "list_notebooks",
+        "select_notebook",
+        "get_notebook",
+        "add_notebook",
+        "search_notebooks"
+      ],
       "note": "IPI quarantine zone. NotebookLM via Gemini 2.5 — zero-hallucination RAG. Requires one-time Google auth via setup_auth tool. Auth persists in ~/Library/Application Support/notebooklm-mcp/."
     }
   },

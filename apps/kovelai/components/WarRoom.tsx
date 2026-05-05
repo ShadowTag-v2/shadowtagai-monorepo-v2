@@ -288,8 +288,11 @@ export function WarRoom({ sessionId, seuToken, caseTitle, onVerdictReached }: Wa
                   borderTop: '1px solid #21262d',
                 }}
               >
-                {msg.citations.map((c, i) => (
-                  <div key={i} style={{ fontSize: '12px', color: '#8b949e', marginBottom: '4px' }}>
+                {msg.citations.map((c) => (
+                  <div
+                    key={`${c.caseTitle}-${c.citation}`}
+                    style={{ fontSize: '12px', color: '#8b949e', marginBottom: '4px' }}
+                  >
                     📑 <em>{c.caseTitle}</em>, {c.citation}
                   </div>
                 ))}

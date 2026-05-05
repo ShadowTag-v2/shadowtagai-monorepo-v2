@@ -152,6 +152,7 @@ export default function HeppnerEvaporatingChat({
   return (
     <div
       id={`msg-${messageId}`}
+      role="none"
       onCopy={blockCopy}
       onContextMenu={blockContextMenu}
       style={{
