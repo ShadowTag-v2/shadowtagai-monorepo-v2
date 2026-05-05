@@ -12,6 +12,7 @@ import FallingGavel from '@/components/shared/FallingGavel';
 import Features from '@/components/shared/Features';
 import Footer from '@/components/shared/Footer';
 import HowItWorks from '@/components/shared/HowItWorks';
+import KovelSpinner from '@/components/KovelSpinner';
 import Management from '@/components/shared/Management';
 import Nav from '@/components/shared/Nav';
 import Pricing from '@/components/shared/Pricing';
@@ -26,6 +27,8 @@ export default function Home() {
 
   return (
     <>
+      {/* AgentSpinner — KovelAI hydration overlay */}
+      <KovelSpinner />
       {/* WCAG 2.4.1 Skip Navigation */}
       <a href="#main-content" className="skip-nav">
         Skip to main content

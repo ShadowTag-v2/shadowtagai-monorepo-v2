@@ -4,6 +4,8 @@
 
 /* HeadFade Design System — Dark Luxury Tokens */
 @import '@packages/ui/dark-luxury.css';
+/* AgentSpinner Tokens — Forensic Cyan theme */
+@import './agent-spinner.css';
 
 /* Global Base Layer */
 @layer base {

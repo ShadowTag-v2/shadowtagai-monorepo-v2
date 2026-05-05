@@ -1,5 +1,7 @@
 'use client';
 import { useState, useCallback, useRef, useEffect } from 'react';
+import AgentSpinner from '../components/AgentSpinner';
+import '../app/agent-spinner.css';
 
 /** Extract clean filename from local path or full URI */
 function gcsVideoId(localPath: string): string {
@@ -104,16 +106,14 @@ export default function HeadFadeSwiper() {
       <div className="glass-panel w-full max-w-md h-[550px] rounded-3xl overflow-hidden relative shadow-2xl border border-white/5">
         <video className="w-full h-full object-cover" src={video} autoPlay loop muted playsInline />
 
-        {/* Loading overlay */}
+        {/* Loading overlay — AgentSpinner (forensic theme) */}
         {isAnalyzing && (
-          <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-20">
-            <div className="flex flex-col items-center gap-3">
-              <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
-              <p className="text-cyan-400 text-xs font-mono tracking-wider animate-pulse">
-                FORENSIC ANALYSIS IN PROGRESS
-              </p>
-            </div>
-          </div>
+          <AgentSpinner
+            active={isAnalyzing}
+            theme="headfade"
+            overlay
+            label="FORENSIC ANALYSIS"
+          />
         )}
 
         {/* Result badge */}
