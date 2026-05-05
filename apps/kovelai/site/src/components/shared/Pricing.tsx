@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 /**
  * Stripe Integration Reference (DO NOT DELETE):
  * - Account: acct_1Syh9JEHnWpykeMi
@@ -10,20 +12,37 @@
  * - Customer Portal: bpc_1TNKSjEHnWpykeMi0qQPoaHm
  *
  * Payment Link Integration:
- * - Trial and Pro CTAs read from NEXT_PUBLIC_STRIPE_TRIAL_LINK / NEXT_PUBLIC_STRIPE_PRO_LINK env vars.
+ * - Trial CTA reads from NEXT_PUBLIC_STRIPE_TRIAL_LINK env var.
+ * - Pro Monthly CTA reads from NEXT_PUBLIC_STRIPE_PRO_MONTHLY_LINK env var.
+ * - Pro Annual CTA reads from NEXT_PUBLIC_STRIPE_PRO_ANNUAL_LINK env var.
  * - Enterprise routes through the contact modal (onOpenModal).
  * - To activate: Create Payment Links in Stripe Dashboard → set env vars → redeploy.
  * - Checkout API alternative: /api/billing/checkout (server-side Stripe Checkout Session).
  */
 
 const TRIAL_LINK = process.env.NEXT_PUBLIC_STRIPE_TRIAL_LINK || '#';
-const PRO_LINK = process.env.NEXT_PUBLIC_STRIPE_PRO_LINK || '#';
+const PRO_MONTHLY_LINK = process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_LINK
+  || process.env.NEXT_PUBLIC_STRIPE_PRO_LINK
+  || '#';
+const PRO_ANNUAL_LINK = process.env.NEXT_PUBLIC_STRIPE_PRO_ANNUAL_LINK || '#';
 
 interface PricingProps {
   onOpenModal: () => void;
 }
 
 export default function Pricing({ onOpenModal }: PricingProps) {
+  const [isAnnual, setIsAnnual] = useState(false);
+
+  const proPrice = isAnnual ? '119' : '149';
+  const proPeriod = '/mo';
+  const proCtaLabel = isAnnual
+    ? 'Start Pro — $59.50/mo'
+    : 'Start Pro — $74.50/mo';
+  const proCtaLink = isAnnual ? PRO_ANNUAL_LINK : PRO_MONTHLY_LINK;
+  const proSubtext = isAnnual
+    ? 'Billed $1,428/yr — save $360 vs monthly'
+    : 'or save 20% with annual billing →';
+
   const plans = [
     {
       tier: 'Trial',
@@ -43,8 +62,8 @@ export default function Pricing({ onOpenModal }: PricingProps) {
     },
     {
       tier: 'Professional',
-      price: '149',
-      period: '/mo',
+      price: proPrice,
+      period: proPeriod,
       badge: '50% OFF — Beta Launch',
       features: [
         '100,000 tokens/month',
@@ -55,11 +74,11 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         'Matter pipeline integration',
         'Priority support',
       ],
-      cta: 'Start Pro — $74.50/mo',
-      ctaLink: PRO_LINK,
+      cta: proCtaLabel,
+      ctaLink: proCtaLink,
       ctaStyle: 'btn-gold',
       featured: true,
-      annual: 'or $1,428/yr (save $360)',
+      subtext: proSubtext,
     },
     {
       tier: 'Enterprise',
@@ -86,10 +105,49 @@ export default function Pricing({ onOpenModal }: PricingProps) {
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="section-label">Pricing</div>
         <h2 className="section-title">Simple, Transparent Pricing</h2>
-        <p className="section-desc mb-12">
+        <p className="section-desc mb-8">
           Every plan includes Kovel Doctrine privilege protection, zero data retention, and Judge 6
           compliance governance.
         </p>
+
+        {/* Monthly / Annual Toggle */}
+        <div className="flex items-center justify-center gap-3 mb-12">
+          <span
+            className={`text-sm font-medium transition-colors ${!isAnnual ? 'text-primary-text' : 'text-[#998f81]'}`}
+          >
+            Monthly
+          </span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={isAnnual}
+            aria-label="Toggle annual billing"
+            onClick={() => setIsAnnual(!isAnnual)}
+            className="relative inline-flex h-7 w-[52px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-[#071325]"
+            style={{
+              backgroundColor: isAnnual ? '#e6c487' : 'rgba(77,70,58,0.3)',
+            }}
+          >
+            <span
+              className="pointer-events-none inline-block h-[22px] w-[22px] rounded-full bg-white shadow-lg ring-0 transition-transform duration-200 ease-in-out"
+              style={{
+                transform: isAnnual ? 'translateX(26px)' : 'translateX(2px)',
+                marginTop: '1px',
+              }}
+            />
+          </button>
+          <span
+            className={`text-sm font-medium transition-colors ${isAnnual ? 'text-primary-text' : 'text-[#998f81]'}`}
+          >
+            Annual
+          </span>
+          {isAnnual && (
+            <span className="ml-1 inline-flex items-center rounded-full bg-gold/15 px-2.5 py-0.5 text-[0.65rem] font-semibold text-gold uppercase tracking-wider animate-pulse">
+              Save 20%
+            </span>
+          )}
+        </div>
+
         <div className="grid md:grid-cols-3 gap-6">
           {plans.map((p) => (
             <div
@@ -131,7 +189,9 @@ export default function Pricing({ onOpenModal }: PricingProps) {
                   {p.cta}
                 </a>
               )}
-              {p.annual && <p className="text-xs text-center text-[#a89d8e] mt-2">{p.annual}</p>}
+              {p.subtext && (
+                <p className="text-xs text-center text-[#a89d8e] mt-2">{p.subtext}</p>
+              )}
             </div>
           ))}
         </div>
