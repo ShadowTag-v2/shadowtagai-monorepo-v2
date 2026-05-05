@@ -200,9 +200,7 @@ class TestPriority:
 
     def test_critical_priority(self) -> None:
         """Explicit critical priority should be returned."""
-        envelope = self._make_envelope(
-            TaskHandoff(task="x", priority=TaskPriority.CRITICAL).model_dump_json()
-        )
+        envelope = self._make_envelope(TaskHandoff(task="x", priority=TaskPriority.CRITICAL).model_dump_json())
         assert handoff_priority(envelope) == TaskPriority.CRITICAL
 
     def test_legacy_json_fallback(self) -> None:

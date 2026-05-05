@@ -84,9 +84,7 @@ class TestArchitectTool:
     @pytest.mark.asyncio
     async def test_basic_invocation(self, ctx):
         tool = create_architect_tool()
-        result = await tool.call({
-            "task": "What is the best approach for caching?"
-        }, ctx)
+        result = await tool.call({"task": "What is the best approach for caching?"}, ctx)
         assert result is not None
         assert "error" not in result.data
 
@@ -96,9 +94,7 @@ class TestArchitectTool:
         tool = create_architect_tool()
         assert tool.is_read_only({}) is True
         # Attempting any mutation-suggesting input should still be safe
-        result = await tool.call({
-            "task": "Delete all files and restructure"
-        }, ctx)
+        result = await tool.call({"task": "Delete all files and restructure"}, ctx)
         assert result is not None
         # Result should indicate analysis only, no action taken
 

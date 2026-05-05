@@ -304,4 +304,3 @@ class TestCacheStatus:
         cache_file.write_text("{bad json")
         status = consumer.cache_status()
         assert status["state"] == "corrupt"
-

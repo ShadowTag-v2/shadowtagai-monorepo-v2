@@ -1,5 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Tests for packages.agnt_services.telemetry_events (port of src/utils/telemetry/)."""
+
 from __future__ import annotations
 
 import os
@@ -92,6 +93,7 @@ class TestLogOtelEvent:
             env.pop("PYTEST_CURRENT_TEST", None)
             with patch.dict(os.environ, env, clear=True):
                 import logging
+
                 with caplog.at_level(logging.INFO):
                     log_otel_event("test_event", {"key": "value"})
                 assert any("test_event" in r.message for r in caplog.records)

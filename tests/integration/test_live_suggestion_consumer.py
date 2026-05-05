@@ -101,10 +101,7 @@ class TestLiveGenerationCycle:
                 model="gemini-3.1-flash-lite-preview",
                 contents=full_prompt,
                 config=types.GenerateContentConfig(
-                    system_instruction=(
-                        "You predict the developer's next action. "
-                        "STRICT FORMAT: Reply with ONLY a single short phrase, 2-12 words."
-                    ),
+                    system_instruction=("You predict the developer's next action. STRICT FORMAT: Reply with ONLY a single short phrase, 2-12 words."),
                     temperature=0.3,
                     max_output_tokens=60,
                     thinking_config=types.ThinkingConfig(thinking_level="minimal"),

@@ -18,6 +18,7 @@ import pytest
 
 # ── importlib resolution for hyphenated package dirs ──────────────────────────
 
+
 def _import(module_path: str):
     return importlib.import_module(module_path)
 
@@ -25,6 +26,7 @@ def _import(module_path: str):
 # ═══════════════════════════════════════════════════════════════════════════════
 #  token_budget
 # ═══════════════════════════════════════════════════════════════════════════════
+
 
 class TestTokenBudget:
     """Tests for packages.agnt_utils.token_budget."""
@@ -104,6 +106,7 @@ class TestTokenBudget:
 #  circular_buffer
 # ═══════════════════════════════════════════════════════════════════════════════
 
+
 class TestCircularBuffer:
     """Tests for packages.agnt_utils.circular_buffer."""
 
@@ -182,6 +185,7 @@ class TestCircularBuffer:
 # ═══════════════════════════════════════════════════════════════════════════════
 #  activity_manager
 # ═══════════════════════════════════════════════════════════════════════════════
+
 
 class TestActivityManager:
     """Tests for packages.agnt_utils.activity_manager."""
@@ -294,6 +298,7 @@ class TestActivityManager:
 #  memoize
 # ═══════════════════════════════════════════════════════════════════════════════
 
+
 class TestMemoize:
     """Tests for packages.agnt_utils.memoize."""
 
@@ -383,9 +388,7 @@ class TestMemoize:
             call_count += 1
             return x + y
 
-        cached = self.memoize_with_lru(
-            fn, maxsize=10, cache_key=lambda x, y: f"{x}:{y}"
-        )
+        cached = self.memoize_with_lru(fn, maxsize=10, cache_key=lambda x, y: f"{x}:{y}")
         assert cached(1, 2) == 3
         assert cached(1, 2) == 3
         assert call_count == 1
@@ -398,9 +401,7 @@ class TestMemoize:
             call_count += 1
             return x
 
-        cached = self.memoize_with_lru(
-            fn, maxsize=10, cache_key=lambda x: str(x)
-        )
+        cached = self.memoize_with_lru(fn, maxsize=10, cache_key=lambda x: str(x))
         cached(1)
         cached.cache_clear()
         cached(1)
@@ -410,9 +411,7 @@ class TestMemoize:
         def fn(x):
             return x
 
-        cached = self.memoize_with_lru(
-            fn, maxsize=5, cache_key=lambda x: str(x)
-        )
+        cached = self.memoize_with_lru(fn, maxsize=5, cache_key=lambda x: str(x))
         cached(1)
         cached(2)
         info = cached.cache_info()
@@ -423,6 +422,7 @@ class TestMemoize:
 # ═══════════════════════════════════════════════════════════════════════════════
 #  token_estimate
 # ═══════════════════════════════════════════════════════════════════════════════
+
 
 class TestTokenEstimate:
     """Tests for packages.agnt_utils.token_estimate."""
@@ -522,6 +522,7 @@ class TestTokenEstimate:
     def test_block_unknown_type(self):
         block = {"type": "custom_block", "data": "stuff"}
         import json
+
         assert self.rough_block(block) == self.rough(json.dumps(block))
 
     # ── content-level ─────────────────────────────────────────────────────
@@ -598,10 +599,13 @@ class TestTokenEstimate:
     def test_with_estimation_uses_last_usage(self):
         messages = [
             {"type": "user", "message": {"content": "q1"}},
-            {"type": "assistant", "message": {
-                "content": "a1",
-                "usage": {"input_tokens": 1000, "output_tokens": 200},
-            }},
+            {
+                "type": "assistant",
+                "message": {
+                    "content": "a1",
+                    "usage": {"input_tokens": 1000, "output_tokens": 200},
+                },
+            },
             {"type": "user", "message": {"content": "q2"}},
         ]
         base = 1000 + 200
@@ -623,6 +627,7 @@ class TestTokenEstimate:
 # ═══════════════════════════════════════════════════════════════════════════════
 #  truncate
 # ═══════════════════════════════════════════════════════════════════════════════
+
 
 class TestTruncate:
     """Tests for packages.agnt_utils.truncate."""

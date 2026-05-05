@@ -241,7 +241,7 @@ class TestStripeBillingWebhookBreaker:
             # Will fail at signature verification, but that proves we passed the breaker gate
             response = client.post(
                 "/webhooks/stripe",
-                content=b'{}',
+                content=b"{}",
                 headers={"Stripe-Signature": ""},
             )
 
@@ -264,7 +264,7 @@ class TestStripeBillingWebhookBreaker:
             client = self._make_test_client()
             response = client.post(
                 "/webhooks/stripe",
-                content=b'{}',
+                content=b"{}",
                 headers={"Stripe-Signature": ""},
             )
 
@@ -417,4 +417,3 @@ class TestStripeHalfOpenRecovery:
 
         # Second probe should be rejected (one probe at a time)
         assert breaker.allow_request() is False
-

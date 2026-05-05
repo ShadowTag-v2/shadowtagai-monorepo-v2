@@ -53,11 +53,7 @@ class TestScanForSecrets:
         assert "stripe-access-token" in rule_ids
 
     def test_private_key(self) -> None:
-        content = (
-            "-----BEGIN RSA PRIVATE KEY-----\n"
-            + "A" * 100
-            + "\n-----END RSA PRIVATE KEY-----"
-        )
+        content = "-----BEGIN RSA PRIVATE KEY-----\n" + "A" * 100 + "\n-----END RSA PRIVATE KEY-----"
         matches = scan_for_secrets(content)
         rule_ids = {m.rule_id for m in matches}
         assert "private-key" in rule_ids

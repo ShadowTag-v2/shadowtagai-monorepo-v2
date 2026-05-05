@@ -40,6 +40,7 @@ def pexpect_available():
     """Check pexpect is installed."""
     try:
         import pexpect  # noqa: F401
+
         return True
     except ImportError:
         pytest.skip("pexpect not installed — install with: pip install pexpect")
@@ -83,7 +84,7 @@ class TestLiveBridgeHealth:
         # Filter out logging lines (lines starting with non-JSON chars)
 
         # The full JSON is multi-line, so reconstruct
-        json_text = output[output.index("{"):] if "{" in output else output
+        json_text = output[output.index("{") :] if "{" in output else output
         health = json.loads(json_text)
 
         assert health["healthy"] is True

@@ -50,10 +50,7 @@ from context_compactor.post_compact_cleanup import (
 def _make_messages(count: int, tokens_per_msg: int = 500) -> list[dict]:
     """Create dummy messages with ~tokens_per_msg tokens each."""
     content = "x " * (tokens_per_msg * 4)  # ~4 bytes per token
-    return [
-        {"role": "assistant" if i % 2 else "user", "content": content}
-        for i in range(count)
-    ]
+    return [{"role": "assistant" if i % 2 else "user", "content": content} for i in range(count)]
 
 
 class MockCompactor:
@@ -144,7 +141,9 @@ class TestTokenWarningState:
     def test_disabled_auto_compact(self) -> None:
         threshold = get_auto_compact_threshold(200_000)
         state = calculate_token_warning_state(
-            threshold + 1000, 200_000, auto_compact_enabled=False,
+            threshold + 1000,
+            200_000,
+            auto_compact_enabled=False,
         )
         assert not state.is_above_auto_compact_threshold
 
@@ -189,7 +188,9 @@ class TestAutoCompactMiddleware:
 
         messages = _make_messages(5, tokens_per_msg=100)
         result = middleware.compact_if_needed(
-            messages, max_context_tokens=200_000, query_source="repl_main_thread",
+            messages,
+            max_context_tokens=200_000,
+            query_source="repl_main_thread",
         )
         assert not result.was_compacted
         assert compactor.run_count == 0
@@ -201,7 +202,9 @@ class TestAutoCompactMiddleware:
 
         messages = _make_messages(200, tokens_per_msg=1000)
         result = middleware.compact_if_needed(
-            messages, max_context_tokens=200_000, query_source="repl_main_thread",
+            messages,
+            max_context_tokens=200_000,
+            query_source="repl_main_thread",
         )
         assert result.was_compacted
         assert compactor.run_count == 1
@@ -213,7 +216,9 @@ class TestAutoCompactMiddleware:
 
         messages = _make_messages(200, tokens_per_msg=1000)
         result = middleware.compact_if_needed(
-            messages, max_context_tokens=200_000, query_source="compact",
+            messages,
+            max_context_tokens=200_000,
+            query_source="compact",
         )
         assert not result.was_compacted
 
@@ -227,13 +232,15 @@ class TestAutoCompactMiddleware:
         # First 3 failures
         for i in range(3):
             result = middleware.compact_if_needed(
-                messages, max_context_tokens=200_000,
+                messages,
+                max_context_tokens=200_000,
             )
             assert not result.was_compacted
 
         # 4th attempt should be skipped by circuit breaker
         result = middleware.compact_if_needed(
-            messages, max_context_tokens=200_000,
+            messages,
+            max_context_tokens=200_000,
         )
         assert not result.was_compacted
         assert compactor.run_count == 3  # Not 4
@@ -242,12 +249,15 @@ class TestAutoCompactMiddleware:
         compactor = MockCompactor()
         tracker = AutoCompactTracker()
         middleware = AutoCompactMiddleware(
-            compactor, tracker, auto_compact_enabled=False,
+            compactor,
+            tracker,
+            auto_compact_enabled=False,
         )
 
         messages = _make_messages(200, tokens_per_msg=1000)
         result = middleware.compact_if_needed(
-            messages, max_context_tokens=200_000,
+            messages,
+            max_context_tokens=200_000,
         )
         assert not result.was_compacted
 
@@ -277,7 +287,9 @@ class TestPostCompactCleanup:
         state = PostCompactCleanupState()
         called = []
         state.register_hook(
-            "main_only", lambda: called.append("main"), main_thread_only=True,
+            "main_only",
+            lambda: called.append("main"),
+            main_thread_only=True,
         )
 
         # Subagent should NOT fire main-thread hooks
@@ -404,7 +416,8 @@ class TestCompactPrompts:
 
     def test_user_summary_with_transcript(self) -> None:
         msg = get_compact_user_summary_message(
-            "test", transcript_path="/tmp/transcript.md",
+            "test",
+            transcript_path="/tmp/transcript.md",
         )
         assert "/tmp/transcript.md" in msg
 
@@ -439,15 +452,12 @@ class TestMultiTurnIntegration:
 
         # Grow the conversation gradually — 50K window is ~37K threshold
         for turn in range(50):
-            messages.append(
-                {"role": "user", "content": f"User message {turn} " * 200}
-            )
-            messages.append(
-                {"role": "assistant", "content": f"Response {turn} " * 400}
-            )
+            messages.append({"role": "user", "content": f"User message {turn} " * 200})
+            messages.append({"role": "assistant", "content": f"Response {turn} " * 400})
 
             result = middleware.compact_if_needed(
-                messages, max_context_tokens=50_000,
+                messages,
+                max_context_tokens=50_000,
             )
 
             if result.was_compacted:

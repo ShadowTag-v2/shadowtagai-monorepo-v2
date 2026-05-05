@@ -54,10 +54,7 @@ def _tool_use_msg(tool_use_id: str, *, message_id: str | None = None) -> dict:
 def _tool_result_msg(*tool_use_ids: str) -> dict:
     return {
         "role": "user",
-        "content": [
-            {"type": "tool_result", "tool_use_id": tid, "content": "ok"}
-            for tid in tool_use_ids
-        ],
+        "content": [{"type": "tool_result", "tool_use_id": tid, "content": "ok"} for tid in tool_use_ids],
     }
 
 
@@ -116,10 +113,10 @@ class TestAdjustIndex:
     def test_tool_pair_basic(self) -> None:
         """Start index that would orphan a tool_result must be adjusted."""
         messages = [
-            _user_msg(),           # 0
-            _tool_use_msg("t1"),   # 1 - tool_use
+            _user_msg(),  # 0
+            _tool_use_msg("t1"),  # 1 - tool_use
             _tool_result_msg("t1"),  # 2 - tool_result
-            _user_msg(),           # 3
+            _user_msg(),  # 3
         ]
         # Start at 2 would include tool_result but not tool_use
         assert adjust_index_to_preserve_api_invariants(messages, 2) == 1
@@ -137,11 +134,11 @@ class TestAdjustIndex:
     def test_multiple_tool_pairs(self) -> None:
         """Multiple orphan tool_results → adjust to include all uses."""
         messages = [
-            _user_msg(),             # 0
-            _tool_use_msg("t1"),     # 1
-            _tool_use_msg("t2"),     # 2
+            _user_msg(),  # 0
+            _tool_use_msg("t1"),  # 1
+            _tool_use_msg("t2"),  # 2
             _tool_result_msg("t1", "t2"),  # 3
-            _user_msg(),             # 4
+            _user_msg(),  # 4
         ]
         # Start at 3 needs both t1 and t2 tool_uses
         assert adjust_index_to_preserve_api_invariants(messages, 3) == 1
@@ -149,11 +146,11 @@ class TestAdjustIndex:
     def test_thinking_block_same_message_id(self) -> None:
         """Thinking blocks sharing message_id must be kept together."""
         messages = [
-            _user_msg(),              # 0
-            _thinking_msg("msg-1"),   # 1 - thinking
+            _user_msg(),  # 0
+            _thinking_msg("msg-1"),  # 1 - thinking
             _tool_use_msg("t1", message_id="msg-1"),  # 2 - tool_use, same id
-            _tool_result_msg("t1"),   # 3
-            _user_msg(),              # 4
+            _tool_result_msg("t1"),  # 3
+            _user_msg(),  # 4
         ]
         # Start at 2: has tool_use, but msg-1 thinking at index 1 shares message_id
         # Tool result at 3 also needs tool_use at 2, but 2 is already in range.
@@ -167,10 +164,13 @@ class TestAdjustIndex:
             {"role": "assistant", "content": [{"type": "thinking", "thinking": "..."}], "message_id": "X"},  # 1
             {"role": "assistant", "content": [{"type": "tool_use", "id": "ORPHAN", "name": "bash", "input": {}}], "message_id": "X"},  # 2
             {"role": "assistant", "content": [{"type": "tool_use", "id": "VALID", "name": "bash", "input": {}}], "message_id": "X"},  # 3
-            {"role": "user", "content": [  # 4
-                {"type": "tool_result", "tool_use_id": "ORPHAN", "content": "ok"},
-                {"type": "tool_result", "tool_use_id": "VALID", "content": "ok"},
-            ]},
+            {
+                "role": "user",
+                "content": [  # 4
+                    {"type": "tool_result", "tool_use_id": "ORPHAN", "content": "ok"},
+                    {"type": "tool_result", "tool_use_id": "VALID", "content": "ok"},
+                ],
+            },
         ]
         # Start at 3 should expand to 1 (thinking at 1 shares message_id X)
         result = adjust_index_to_preserve_api_invariants(messages, 3)
@@ -195,13 +195,15 @@ class TestCalculateMessagesToKeepIndex:
         # Set low thresholds so minimums are easily met
         set_session_memory_compact_config(
             SessionMemoryCompactConfig(
-                min_tokens=10, min_text_block_messages=1, max_tokens=100_000,
+                min_tokens=10,
+                min_text_block_messages=1,
+                max_tokens=100_000,
             )
         )
         messages = [
-            _user_msg(),   # 0 - summarized
+            _user_msg(),  # 0 - summarized
             _big_msg(200),  # 1
-            _user_msg(),   # 2
+            _user_msg(),  # 2
         ]
         result = calculate_messages_to_keep_index(messages, 0)
         assert result == 1
@@ -210,7 +212,9 @@ class TestCalculateMessagesToKeepIndex:
         """Expands backwards when min_tokens not met."""
         set_session_memory_compact_config(
             SessionMemoryCompactConfig(
-                min_tokens=50_000, min_text_block_messages=1, max_tokens=200_000,
+                min_tokens=50_000,
+                min_text_block_messages=1,
+                max_tokens=200_000,
             )
         )
         messages = [
@@ -227,14 +231,16 @@ class TestCalculateMessagesToKeepIndex:
         """Stops expanding once max_tokens reached."""
         set_session_memory_compact_config(
             SessionMemoryCompactConfig(
-                min_tokens=1, min_text_block_messages=1, max_tokens=100,
+                min_tokens=1,
+                min_text_block_messages=1,
+                max_tokens=100,
             )
         )
         messages = [
-            _big_msg(5000),   # 0
-            _big_msg(5000),   # 1
-            _user_msg(),      # 2 - last summarized
-            _big_msg(5000),   # 3 - already over max_tokens
+            _big_msg(5000),  # 0
+            _big_msg(5000),  # 1
+            _user_msg(),  # 2 - last summarized
+            _big_msg(5000),  # 3 - already over max_tokens
         ]
         result = calculate_messages_to_keep_index(messages, 2)
         # Should not expand backwards since we're already over max
@@ -244,15 +250,17 @@ class TestCalculateMessagesToKeepIndex:
         """Does not expand past the last compact boundary."""
         set_session_memory_compact_config(
             SessionMemoryCompactConfig(
-                min_tokens=100_000, min_text_block_messages=1, max_tokens=500_000,
+                min_tokens=100_000,
+                min_text_block_messages=1,
+                max_tokens=500_000,
             )
         )
         messages = [
-            _big_msg(10000),   # 0
-            _boundary_msg(),   # 1 - boundary
-            _big_msg(10000),   # 2
-            _user_msg(),       # 3 - last summarized
-            _user_msg("x"),    # 4
+            _big_msg(10000),  # 0
+            _boundary_msg(),  # 1 - boundary
+            _big_msg(10000),  # 2
+            _user_msg(),  # 3 - last summarized
+            _user_msg("x"),  # 4
         ]
         result = calculate_messages_to_keep_index(messages, 3)
         # Floor is 2 (boundary at 1 + 1), shouldn't go below 2
@@ -262,7 +270,9 @@ class TestCalculateMessagesToKeepIndex:
         """When last_summarized is -1, starts from end (no messages kept)."""
         set_session_memory_compact_config(
             SessionMemoryCompactConfig(
-                min_tokens=1, min_text_block_messages=1, max_tokens=100,
+                min_tokens=1,
+                min_text_block_messages=1,
+                max_tokens=100,
             )
         )
         messages = [_user_msg(), _assistant_msg()]
@@ -308,7 +318,9 @@ class TestTrySessionMemoryCompact:
         ]
         set_session_memory_compact_config(
             SessionMemoryCompactConfig(
-                min_tokens=1, min_text_block_messages=1, max_tokens=100_000,
+                min_tokens=1,
+                min_text_block_messages=1,
+                max_tokens=100_000,
             )
         )
         result = try_session_memory_compact(
@@ -329,7 +341,9 @@ class TestTrySessionMemoryCompact:
         ]
         set_session_memory_compact_config(
             SessionMemoryCompactConfig(
-                min_tokens=1, min_text_block_messages=1, max_tokens=500_000,
+                min_tokens=1,
+                min_text_block_messages=1,
+                max_tokens=500_000,
             )
         )
         result = try_session_memory_compact(
@@ -348,7 +362,9 @@ class TestTrySessionMemoryCompact:
         ]
         set_session_memory_compact_config(
             SessionMemoryCompactConfig(
-                min_tokens=1, min_text_block_messages=1, max_tokens=100_000,
+                min_tokens=1,
+                min_text_block_messages=1,
+                max_tokens=100_000,
             )
         )
         result = try_session_memory_compact(
@@ -367,7 +383,9 @@ class TestTrySessionMemoryCompact:
         ]
         set_session_memory_compact_config(
             SessionMemoryCompactConfig(
-                min_tokens=1, min_text_block_messages=1, max_tokens=100_000,
+                min_tokens=1,
+                min_text_block_messages=1,
+                max_tokens=100_000,
             )
         )
         result = try_session_memory_compact(

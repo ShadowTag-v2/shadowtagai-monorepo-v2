@@ -347,9 +347,7 @@ class TestCombinedWorkflow:
     """End-to-end workflows combining Think, Architect, and PlanMode."""
 
     @pytest.mark.asyncio
-    async def test_think_then_architect_then_plan(
-        self, think_tool, architect_tool, enter_plan_tool, exit_plan_tool, root_context
-    ) -> None:
+    async def test_think_then_architect_then_plan(self, think_tool, architect_tool, enter_plan_tool, exit_plan_tool, root_context) -> None:
         """Full workflow: Think → Architect → EnterPlan → Think → ExitPlan."""
         # Step 1: Reason about the problem
         r1 = await think_tool.call(
@@ -394,9 +392,7 @@ class TestCombinedWorkflow:
         assert root_context.tool_permission_context.mode == PermissionMode.DEFAULT
 
     @pytest.mark.asyncio
-    async def test_auto_to_plan_and_back(
-        self, enter_plan_tool, exit_plan_tool, auto_context
-    ) -> None:
+    async def test_auto_to_plan_and_back(self, enter_plan_tool, exit_plan_tool, auto_context) -> None:
         """AUTO → PLAN → AUTO roundtrip preserves AUTO mode."""
         assert auto_context.tool_permission_context.mode == PermissionMode.AUTO
         await enter_plan_tool.call({}, auto_context)
@@ -405,9 +401,7 @@ class TestCombinedWorkflow:
         assert auto_context.tool_permission_context.mode == PermissionMode.AUTO
 
     @pytest.mark.asyncio
-    async def test_double_enter_plan_idempotent(
-        self, enter_plan_tool, root_context
-    ) -> None:
+    async def test_double_enter_plan_idempotent(self, enter_plan_tool, root_context) -> None:
         """Entering plan mode twice should be idempotent."""
         await enter_plan_tool.call({}, root_context)
         assert root_context.tool_permission_context.mode == PermissionMode.PLAN
@@ -416,9 +410,7 @@ class TestCombinedWorkflow:
         assert root_context.tool_permission_context.mode == PermissionMode.PLAN
 
     @pytest.mark.asyncio
-    async def test_double_exit_plan_errors(
-        self, enter_plan_tool, exit_plan_tool, root_context
-    ) -> None:
+    async def test_double_exit_plan_errors(self, enter_plan_tool, exit_plan_tool, root_context) -> None:
         """Exiting plan mode twice should error on second call."""
         await enter_plan_tool.call({}, root_context)
         await exit_plan_tool.call({}, root_context)
@@ -461,9 +453,7 @@ class TestSubagentIsolation:
         assert child.tool_permission_context.should_avoid_permission_prompts is True
 
     @pytest.mark.asyncio
-    async def test_subagent_cannot_enter_plan_mode(
-        self, enter_plan_tool, root_context
-    ) -> None:
+    async def test_subagent_cannot_enter_plan_mode(self, enter_plan_tool, root_context) -> None:
         """Clone with agent_id set should be rejected by EnterPlanMode."""
         child = root_context.clone_isolated()
         result = await enter_plan_tool.call({}, child)
@@ -536,10 +526,7 @@ class TestConcurrency:
     @pytest.mark.asyncio
     async def test_parallel_think_calls(self, think_tool, root_context) -> None:
         """Multiple Think calls in parallel should not interfere."""
-        tasks = [
-            think_tool.call({"thought": f"Thought #{i}"}, root_context)
-            for i in range(10)
-        ]
+        tasks = [think_tool.call({"thought": f"Thought #{i}"}, root_context) for i in range(10)]
         results = await asyncio.gather(*tasks)
         for i, r in enumerate(results):
             assert r.data["status"] == "reasoning_recorded"
@@ -547,19 +534,14 @@ class TestConcurrency:
 
     @pytest.mark.asyncio
     async def test_parallel_architect_calls(self, architect_tool, root_context) -> None:
-        tasks = [
-            architect_tool.call({"task": f"Analyze module #{i}"}, root_context)
-            for i in range(10)
-        ]
+        tasks = [architect_tool.call({"task": f"Analyze module #{i}"}, root_context) for i in range(10)]
         results = await asyncio.gather(*tasks)
         for i, r in enumerate(results):
             assert r.data["task"] == f"Analyze module #{i}"
             assert r.data["status"] == "analysis_recorded"
 
     @pytest.mark.asyncio
-    async def test_think_and_architect_parallel(
-        self, think_tool, architect_tool, root_context
-    ) -> None:
+    async def test_think_and_architect_parallel(self, think_tool, architect_tool, root_context) -> None:
         """Think and Architect can run in parallel without interference."""
         t1 = think_tool.call({"thought": "Hypothesis A"}, root_context)
         t2 = architect_tool.call({"task": "Analyze hypothesis A"}, root_context)

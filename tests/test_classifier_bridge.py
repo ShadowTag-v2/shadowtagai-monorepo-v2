@@ -180,35 +180,25 @@ class TestIsMcpServerDenied:
         assert denied
 
     def test_explicit_denylist_name(self):
-        policy = MCPPolicyConfig(
-            denied_servers=[PolicyEntry.from_name("evil-server")]
-        )
-        denied, entry = is_mcp_server_denied(
-            "evil-server", MCPServerInfo(name="evil-server"), policy
-        )
+        policy = MCPPolicyConfig(denied_servers=[PolicyEntry.from_name("evil-server")])
+        denied, entry = is_mcp_server_denied("evil-server", MCPServerInfo(name="evil-server"), policy)
         assert denied
 
     def test_denylist_command_match(self):
-        policy = MCPPolicyConfig(
-            denied_servers=[PolicyEntry.from_command(["malware", "--run"])]
-        )
+        policy = MCPPolicyConfig(denied_servers=[PolicyEntry.from_command(["malware", "--run"])])
         info = MCPServerInfo(name="x", command=["malware", "--run"])
         denied, _ = is_mcp_server_denied("x", info, policy)
         assert denied
 
     def test_denylist_url_match(self):
-        policy = MCPPolicyConfig(
-            denied_servers=[PolicyEntry.from_url("https://evil.com/*")]
-        )
+        policy = MCPPolicyConfig(denied_servers=[PolicyEntry.from_url("https://evil.com/*")])
         info = MCPServerInfo(name="x", url="https://evil.com/mcp")
         denied, _ = is_mcp_server_denied("x", info, policy)
         assert denied
 
     def test_not_denied(self):
         policy = MCPPolicyConfig()
-        denied, _ = is_mcp_server_denied(
-            "firebase-mcp-server", MCPServerInfo(name="firebase-mcp-server"), policy
-        )
+        denied, _ = is_mcp_server_denied("firebase-mcp-server", MCPServerInfo(name="firebase-mcp-server"), policy)
         assert not denied
 
 
@@ -221,72 +211,50 @@ class TestIsMcpServerAllowedByPolicy:
             allowed_servers=[PolicyEntry.from_name("evil-server")],
             denied_servers=[PolicyEntry.from_name("evil-server")],
         )
-        result = is_mcp_server_allowed_by_policy(
-            "evil-server", MCPServerInfo(name="evil-server"), policy
-        )
+        result = is_mcp_server_allowed_by_policy("evil-server", MCPServerInfo(name="evil-server"), policy)
         assert not result.allowed
         assert "denylist" in result.reason.lower()
 
     def test_no_allowlist_allows_all(self):
         policy = MCPPolicyConfig(allowed_servers=None)
-        result = is_mcp_server_allowed_by_policy(
-            "any-server", MCPServerInfo(name="any-server"), policy
-        )
+        result = is_mcp_server_allowed_by_policy("any-server", MCPServerInfo(name="any-server"), policy)
         assert result.allowed
 
     def test_empty_allowlist_blocks_all(self):
         policy = MCPPolicyConfig(allowed_servers=[])
-        result = is_mcp_server_allowed_by_policy(
-            "any-server", MCPServerInfo(name="any-server"), policy
-        )
+        result = is_mcp_server_allowed_by_policy("any-server", MCPServerInfo(name="any-server"), policy)
         assert not result.allowed
 
     def test_allowlist_name_match(self):
-        policy = MCPPolicyConfig(
-            allowed_servers=[PolicyEntry.from_name("my-server")]
-        )
-        result = is_mcp_server_allowed_by_policy(
-            "my-server", MCPServerInfo(name="my-server"), policy
-        )
+        policy = MCPPolicyConfig(allowed_servers=[PolicyEntry.from_name("my-server")])
+        result = is_mcp_server_allowed_by_policy("my-server", MCPServerInfo(name="my-server"), policy)
         assert result.allowed
 
     def test_allowlist_no_match(self):
-        policy = MCPPolicyConfig(
-            allowed_servers=[PolicyEntry.from_name("my-server")]
-        )
-        result = is_mcp_server_allowed_by_policy(
-            "other-server", MCPServerInfo(name="other-server"), policy
-        )
+        policy = MCPPolicyConfig(allowed_servers=[PolicyEntry.from_name("my-server")])
+        result = is_mcp_server_allowed_by_policy("other-server", MCPServerInfo(name="other-server"), policy)
         assert not result.allowed
 
     def test_allowlist_command_match(self):
-        policy = MCPPolicyConfig(
-            allowed_servers=[PolicyEntry.from_command(["npx", "firebase-tools"])]
-        )
+        policy = MCPPolicyConfig(allowed_servers=[PolicyEntry.from_command(["npx", "firebase-tools"])])
         info = MCPServerInfo(name="firebase", command=["npx", "firebase-tools"])
         result = is_mcp_server_allowed_by_policy("firebase", info, policy)
         assert result.allowed
 
     def test_allowlist_command_no_match(self):
-        policy = MCPPolicyConfig(
-            allowed_servers=[PolicyEntry.from_command(["npx", "firebase-tools"])]
-        )
+        policy = MCPPolicyConfig(allowed_servers=[PolicyEntry.from_command(["npx", "firebase-tools"])])
         info = MCPServerInfo(name="firebase", command=["npx", "other-tool"])
         result = is_mcp_server_allowed_by_policy("firebase", info, policy)
         assert not result.allowed
 
     def test_allowlist_url_match(self):
-        policy = MCPPolicyConfig(
-            allowed_servers=[PolicyEntry.from_url("https://mcp.example.com/*")]
-        )
+        policy = MCPPolicyConfig(allowed_servers=[PolicyEntry.from_url("https://mcp.example.com/*")])
         info = MCPServerInfo(name="remote", url="https://mcp.example.com/v1")
         result = is_mcp_server_allowed_by_policy("remote", info, policy)
         assert result.allowed
 
     def test_allowlist_url_no_match(self):
-        policy = MCPPolicyConfig(
-            allowed_servers=[PolicyEntry.from_url("https://mcp.example.com/*")]
-        )
+        policy = MCPPolicyConfig(allowed_servers=[PolicyEntry.from_url("https://mcp.example.com/*")])
         info = MCPServerInfo(name="remote", url="https://other.example.com/v1")
         result = is_mcp_server_allowed_by_policy("remote", info, policy)
         assert not result.allowed
@@ -625,11 +593,4 @@ class TestRunClassifierDiagnostics:
 
     def test_no_failures(self):
         report = run_classifier_diagnostics()
-        assert report["failed"] == 0, (
-            "Diagnostics failed: "
-            + ", ".join(
-                c["message"]
-                for c in report["checks"]
-                if c["status"] == "fail"
-            )
-        )
+        assert report["failed"] == 0, "Diagnostics failed: " + ", ".join(c["message"] for c in report["checks"] if c["status"] == "fail")

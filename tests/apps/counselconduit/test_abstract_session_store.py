@@ -65,9 +65,7 @@ class TestProtocolCompliance:
             "list_active_sessions",
         }
         protocol_methods = {
-            name
-            for name in dir(AbstractSessionStore)
-            if not name.startswith("_") and callable(getattr(AbstractSessionStore, name, None))
+            name for name in dir(AbstractSessionStore) if not name.startswith("_") and callable(getattr(AbstractSessionStore, name, None))
         }
         assert required_methods.issubset(protocol_methods)
 
@@ -122,9 +120,7 @@ class InMemorySessionStore:
         rejection_reason: str = "",
         result_summary: dict[str, Any] | None = None,
     ) -> str:
-        self._decisions.setdefault(session_id, []).append(
-            {"action": action.value, "attorney_uid": attorney_uid}
-        )
+        self._decisions.setdefault(session_id, []).append({"action": action.value, "attorney_uid": attorney_uid})
         return f"decision-{len(self._decisions[session_id])}"
 
     async def get_decisions(self, session_id: str) -> list[dict[str, Any]]:
@@ -242,9 +238,7 @@ class TestAPILayerRefactor:
         """_active_sessions dict must be completely removed from sandbox_api."""
         import apps.counselconduit.api.sandbox.sandbox_api as api_module
 
-        assert not hasattr(api_module, "_active_sessions"), (
-            "_active_sessions must be removed in Phase 4 M3"
-        )
+        assert not hasattr(api_module, "_active_sessions"), "_active_sessions must be removed in Phase 4 M3"
 
     def test_store_typed_as_abstract(self) -> None:
         """_store must be typed against AbstractSessionStore, not concrete."""
@@ -334,6 +328,4 @@ class TestCreateSessionNoDualWrite:
         import apps.counselconduit.api.sandbox.sandbox_api as api_module
 
         source = inspect.getsource(api_module.create_session)
-        assert "_active_sessions" not in source, (
-            "create_session must not write to _active_sessions in Phase 4 M3"
-        )
+        assert "_active_sessions" not in source, "create_session must not write to _active_sessions in Phase 4 M3"

@@ -219,7 +219,7 @@ class DreamLockFile:
                 except OSError:
                     # Process is dead — break the stale lock
                     logger.warning("Breaking orphaned lock (dead PID %d)", held_pid)
-            except (json.JSONDecodeError, KeyError, ValueError):
+            except json.JSONDecodeError, KeyError, ValueError:
                 logger.warning("Corrupt lock file, replacing")
 
         # Write our lock
@@ -246,7 +246,7 @@ class DreamLockFile:
                         lock_data.get("pid", -1),
                         os.getpid(),
                     )
-            except (json.JSONDecodeError, OSError):
+            except json.JSONDecodeError, OSError:
                 pass
 
 
@@ -332,7 +332,7 @@ def orient(ki_dir: Path) -> list[KIEntry]:
             )
             entries.append(entry)
 
-        except (json.JSONDecodeError, KeyError):
+        except json.JSONDecodeError, KeyError:
             pass
 
     return entries
@@ -407,7 +407,7 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
                             "updated_at": entry.updated_at,
                         },
                     )
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
     report.ki_scanned = len(entries)

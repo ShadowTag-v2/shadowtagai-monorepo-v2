@@ -37,10 +37,7 @@ def benchmark_pipeline(iterations: int = 10_000) -> dict[str, dict[str, float]]:
     block_cmd = "echo `whoami`"
 
     # Mixed-complexity PASS command (longer, more tokens)
-    complex_pass_cmd = (
-        "PAGER=cat git diff --stat HEAD~3 HEAD "
-        "-- packages/agnt_bash_classifier/classifier.py"
-    )
+    complex_pass_cmd = "PAGER=cat git diff --stat HEAD~3 HEAD -- packages/agnt_bash_classifier/classifier.py"
 
     results: dict[str, dict[str, float]] = {}
 
