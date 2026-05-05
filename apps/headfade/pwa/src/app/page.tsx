@@ -3,7 +3,7 @@ import { useState } from 'react';
 import '@packages/ui/dark-luxury.css';
 
 export default function HeadFadeSwiper() {
-  const [video, _setVideo] = useState('gs://headfade-cdn-origin/genesis_clip_01.mp4');
+  const [video, _setVideo] = useState('https://storage.googleapis.com/headfade-cdn-origin/genesis_clip_01.mp4');
   const [reveal, setReveal] = useState('');
 
   const castVote = async (vote: 'REAL' | 'AI') => {
