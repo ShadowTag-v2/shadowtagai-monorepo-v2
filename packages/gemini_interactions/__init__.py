@@ -29,6 +29,7 @@ from gemini_interactions.client import (
     StreamAccumulator,
     StreamEvent,
 )
+from gemini_interactions.session import ConversationSession
 from gemini_interactions.tools import (
     ToolDefinition,
     computer_use_tool,
@@ -47,6 +48,8 @@ __all__ = [
     "InteractionResult",
     "StreamAccumulator",
     "StreamEvent",
+    # Session management (best practices)
+    "ConversationSession",
     # Tool builders
     "ToolDefinition",
     "computer_use_tool",
@@ -57,3 +60,4 @@ __all__ = [
     "mcp_server_tool",
     "url_context_tool",
 ]
+
