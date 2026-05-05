@@ -361,6 +361,35 @@ class InteractionsClient:
         interaction = self.client.interactions.get(interaction_id, **kwargs)
         return InteractionResult.from_interaction(interaction)
 
+    def list(
+        self,
+        *,
+        page_size: int = 20,
+        page_token: str | None = None,
+        filter: str | None = None,
+    ) -> list[InteractionResult]:
+        """List previous interactions.
+
+        Args:
+            page_size: Maximum number of interactions to return.
+            page_token: Pagination token from a previous list call.
+            filter: Optional filter string (e.g., "model=gemini-3-flash-preview").
+
+        Returns:
+            List of InteractionResult wrappers.
+        """
+        kwargs: dict[str, Any] = {"page_size": page_size}
+        if page_token:
+            kwargs["page_token"] = page_token
+        if filter:
+            kwargs["filter"] = filter
+
+        response = self.client.interactions.list(**kwargs)
+        results: list[InteractionResult] = []
+        for interaction in getattr(response, "interactions", []):
+            results.append(InteractionResult.from_interaction(interaction))
+        return results
+
     def stream(
         self,
         *,
