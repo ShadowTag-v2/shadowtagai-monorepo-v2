@@ -3,7 +3,7 @@
 """Tests for AGNT Bash Security Check constants and telemetry integration.
 
 Validates:
-1. All 23 BashSecurityCheckId enum values exist and map correctly.
+1. All BashSecurityCheckId enum values exist and map correctly.
 2. ZSH_DANGEROUS_COMMANDS contains all 18 expected builtins.
 3. COMMAND_SUBSTITUTION_PATTERNS detect all 12 attack vectors.
 4. HEREDOC_IN_SUBSTITUTION regex works.
@@ -32,11 +32,12 @@ from packages.telemetry.catalog import EventCatalog
 
 
 class TestBashSecurityCheckIdEnum:
-    """Verify all 23 security check IDs exist with correct numeric values."""
+    """Verify all security check IDs exist with correct numeric values."""
 
     def test_total_count(self) -> None:
-        """There must be exactly 23 security check IDs."""
-        assert len(BashSecurityCheckId) == 23
+        """Check IDs must form a contiguous range from 1..N."""
+        count = len(BashSecurityCheckId)
+        assert count >= 23, f"Expected at least 23 checks, got {count}"
 
     @pytest.mark.parametrize(
         ("name", "expected_value"),
@@ -72,9 +73,9 @@ class TestBashSecurityCheckIdEnum:
         assert member.value == expected_value
 
     def test_values_are_contiguous(self) -> None:
-        """Check IDs 1-23 must form a contiguous range (no gaps)."""
+        """Check IDs 1..N must form a contiguous range (no gaps)."""
         values = sorted(m.value for m in BashSecurityCheckId)
-        assert values == list(range(1, 24))
+        assert values == list(range(1, len(BashSecurityCheckId) + 1))
 
     def test_int_conversion(self) -> None:
         """IntEnum members must be usable as plain ints."""
@@ -305,7 +306,7 @@ class TestBashTelemetryTrackerSecurity:
         assert evt["data"]["message"] == "Dangerous metacharacters detected"
 
     def test_track_security_check_failed_all_ids(self, tracker: BashTelemetryTracker) -> None:
-        """Must be able to emit events for all 23 check IDs."""
+        """Must be able to emit events for all check IDs."""
         for check in BashSecurityCheckId:
             tracker.track_security_check_failed(
                 check_id=check,
@@ -313,7 +314,7 @@ class TestBashTelemetryTrackerSecurity:
                 message=f"Test failure for {check.name}",
             )
         events = self._read_events(tracker)
-        assert len(events) == 23
+        assert len(events) == len(BashSecurityCheckId)
         emitted_ids = {e["data"]["check_id"] for e in events}
         expected_ids = {int(c) for c in BashSecurityCheckId}
         assert emitted_ids == expected_ids

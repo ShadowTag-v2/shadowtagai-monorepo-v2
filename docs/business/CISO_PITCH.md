@@ -44,3 +44,21 @@ The significant step-up to the Enterprise tier reflects the substantial operatio
 3. **Advanced Audit & Governance:** Enterprise customers receive expanded, exportable audit logs and advanced role-based access control (RBAC).
 4. **VPC Peering & Custom Networking:** Support for custom network topologies and dedicated egress IPs.
 5. **Increased Token Limits:** A 10x increase in monthly token limits (1,000,000 tokens) to support large-scale document processing and firm-wide adoption.
+
+## HeadFade Platform — Synthetic Media Compliance
+
+### Deepfake Detection & EU AI Act Compliance
+HeadFade operates as a gamified Turing Test for synthetic media detection. Our compliance posture addresses the rapidly evolving regulatory landscape:
+- **EU AI Act Article 52 (Transparency):** All AI-generated content displayed on the platform is labeled with provenance metadata. Users are informed post-vote whether content was synthetic, satisfying the transparency obligation for AI-generated media.
+- **Visual Provenance Chain:** Every video in the Human Deception Index (HDI) carries a cryptographic hash linking to its source provenance record in Firestore, enabling full audit trail reconstruction.
+
+### Consent & Data Collection Framework
+- **Informed Consent:** Users are presented with clear Terms of Use before participating in the Turing Test. Vote data (user selection, latency, accuracy) is collected under a legitimate interest basis (GDPR Art. 6(1)(f)) for improving deepfake detection accuracy.
+- **COPPA Compliance:** The platform requires age verification (13+) before participation. No personally identifiable information is collected from votes — only anonymous behavioral telemetry (vote direction, hesitation latency).
+- **Data Minimization:** HDI telemetry records contain only: video_id, user_vote, actual_truth, hesitation_latency_ms, and timestamp. No IP addresses, device fingerprints, or user identifiers are stored.
+
+### Liability & Safe Harbor
+- **Section 230 Positioning:** HeadFade functions as an interactive computer service hosting third-party content for educational and research purposes. The forensic analysis is AI-generated commentary, not editorial endorsement.
+- **Deepfake Liability Shield:** HeadFade does not create or distribute deepfakes. The platform ingests content solely for detection benchmarking. All synthetic content is sourced from authorized generative AI services (Veo 3.1, Sora) with proper licensing.
+- **Research Use Exception:** HDI data may be used for academic research into human susceptibility to synthetic media, subject to IRB approval and de-identification requirements.
+

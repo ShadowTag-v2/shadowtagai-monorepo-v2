@@ -32,9 +32,16 @@ except Exception as e:
     print(f"[ARBITER WARNING] Firebase init failed, continuing without HDI tracking. {e}")
     db = None
 
-# GenAI client automatically uses os.environ["GEMINI_API_KEY"] or Application Default Credentials
-# We must enforce the project location for the API wrapper if we are using Vertex, but Google GenAI SDK can handle ADC directly.
-client = genai.Client()
+# GenAI client: lazy-init to prevent module-level crash on Cloud Run startup
+# ADC or GEMINI_API_KEY must be available at request time, not import time
+_client = None
+
+
+def _get_genai_client() -> genai.Client:
+    global _client
+    if _client is None:
+        _client = genai.Client()
+    return _client
 
 
 class AnalyzeRequest(BaseModel):
@@ -77,7 +84,7 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
 
     try:
         # Enforcing MANDATE A & B: gemini-3.1-flash-lite-preview
-        response = client.models.generate_content(
+        response = _get_genai_client().models.generate_content(
             model="gemini-3.1-flash-lite-preview",
             contents=[types.Part.from_uri(file_uri=req.video_uri, mime_type="video/mp4"), prompt],
             config=types.GenerateContentConfig(
