@@ -276,7 +276,6 @@ async function main() {
   }
 }
 
-main().catch((err: Error) => {
-  console.error('Benchmark failed:', err.message);
+main().catch((_err: Error) => {
   process.exitCode = 1;
 });

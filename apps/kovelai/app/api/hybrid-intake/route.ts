@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       ephemeralToken,
       sandboxId,
       firmGoogleCxId,
-      firmId,
+      firmId: _firmId,
     } = body;
 
     // ══════════════════════════════════════════════════════════════

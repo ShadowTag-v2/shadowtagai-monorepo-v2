@@ -226,7 +226,7 @@ const ProductScene: React.FC = () => {
         </FadeIn>
         <div style={{ display: 'flex', gap: 32, justifyContent: 'center' }}>
           {features.map((f, i) => (
-            <FadeIn key={i} delay={20 + i * 25}>
+            <FadeIn key={f.title} delay={20 + i * 25}>
               <div
                 style={{
                   background: 'rgba(255,255,255,0.05)',

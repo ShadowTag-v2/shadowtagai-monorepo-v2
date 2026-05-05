@@ -205,7 +205,7 @@ async function runAnalysisWithClaude(combinedPrompt) {
   console.log('\n🤖 Running analysis with Claude Agent SDK...\n');
 
   try {
-    const { query, ClaudeAgentOptions } = require('@anthropic-ai/claude-agent-sdk');
+    const { query } = require('@anthropic-ai/claude-agent-sdk');
 
     console.log('ℹ️  Using Claude Code preset for analysis...');
 
@@ -270,12 +270,13 @@ function saveOutput(content, outputPath) {
   }
 
   // Generate output filename if not provided
-  if (!outputPath) {
+  let resolvedPath = outputPath;
+  if (!resolvedPath) {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
-    outputPath = path.join(CONFIG.outputDir, `ingestion-layer-analysis-${timestamp}.md`);
+    resolvedPath = path.join(CONFIG.outputDir, `ingestion-layer-analysis-${timestamp}.md`);
   }
 
-  fs.writeFileSync(outputPath, content, 'utf-8');
+  fs.writeFileSync(resolvedPath, content, 'utf-8');
   console.log(`\n💾 Analysis saved to: ${outputPath}`);
   console.log(`   File size: ${(Buffer.byteLength(content, 'utf-8') / 1024).toFixed(2)} KB`);
 }

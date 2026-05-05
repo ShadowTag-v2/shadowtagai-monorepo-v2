@@ -167,7 +167,7 @@ describe('S.E.U. Token Manager', () => {
         sandbox_id: 'sandbox-001',
       });
 
-      const { verifySEUToken, SEUViolationError } = await import(
+      const { verifySEUToken, SEUViolationError: _SEUViolationError } = await import(
         '../lib/security/seu-token-manager'
       );
 

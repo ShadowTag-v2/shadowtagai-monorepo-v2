@@ -35,6 +35,7 @@ export default function TrustManifestoPage() {
           <div className="relative z-10">
             <div className="w-12 h-12 rounded-full bg-surface-highest flex items-center justify-center mb-4 text-gold">
               <svg
+                aria-hidden="true"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
@@ -77,6 +78,7 @@ export default function TrustManifestoPage() {
           <div>
             <div className="w-10 h-10 rounded bg-blue-container/10 flex items-center justify-center mb-4 text-blue">
               <svg
+                aria-hidden="true"
                 width="20"
                 height="20"
                 viewBox="0 0 24 24"
@@ -135,7 +137,9 @@ export default function TrustManifestoPage() {
               </p>
             </div>
             <div className="shrink-0">
-              <button className="btn-gold shadow-ambient">Download Security Whitepaper</button>
+              <button type="button" className="btn-gold shadow-ambient">
+                Download Security Whitepaper
+              </button>
             </div>
           </div>
         </motion.div>

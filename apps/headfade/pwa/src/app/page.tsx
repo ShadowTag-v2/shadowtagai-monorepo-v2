@@ -24,10 +24,11 @@ export default function HeadFadeSwiper() {
       // Phase 2: Stream the Flash Lite Thought Protocol for Casino Viral Engagement
       const res = await fetch(`/api/arbiter_engine/${video}?vote=${vote}`, { method: 'POST' });
       const reader = res.body?.getReader();
+      if (!reader) throw new Error('No response body');
       const decoder = new TextDecoder();
 
       while (true) {
-        const { done, value } = await reader?.read();
+        const { done, value } = await reader.read();
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
 
@@ -60,6 +61,7 @@ export default function HeadFadeSwiper() {
         {/* The Deception Controls */}
         <div className="absolute bottom-8 w-full flex justify-between px-6 z-10">
           <button
+            type="button"
             onClick={() => castVote('REAL')}
             className="glass-card px-8 py-4 rounded-xl text-emerald-400 font-bold tracking-widest hover:bg-emerald-400/10 transition-colors"
           >
@@ -67,6 +69,7 @@ export default function HeadFadeSwiper() {
             REAL{' '}
           </button>
           <button
+            type="button"
             onClick={() => castVote('AI')}
             className="glass-card px-8 py-4 rounded-xl text-cyan-400 font-bold tracking-widest hover:bg-cyan-400/10 transition-colors"
           >

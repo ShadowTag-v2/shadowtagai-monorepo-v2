@@ -77,7 +77,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             lawyerNotes: parsed.notes,
           },
         }),
-      }).catch(console.error);
+      }).catch(() => void 0); // Fire-and-forget — Cloud Tasks failures are non-critical
     }
 
     return NextResponse.json({

@@ -46,7 +46,10 @@ export default function UnusualChassis({ children }: { children: React.ReactNode
               Pricing
             </a>
           </nav>
-          <button className="px-5 py-2 text-sm font-semibold bg-[#FAFAFA] text-[#050505] rounded-full hover:bg-white/90 transition-colors">
+          <button
+            type="button"
+            className="px-5 py-2 text-sm font-semibold bg-[#FAFAFA] text-[#050505] rounded-full hover:bg-white/90 transition-colors"
+          >
             Get Started
           </button>
         </header>

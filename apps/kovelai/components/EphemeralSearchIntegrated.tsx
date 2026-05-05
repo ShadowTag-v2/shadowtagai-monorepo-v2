@@ -241,13 +241,14 @@ export function EphemeralSearchIntegrated({
 
       {/* Results — No copy, no export, no right-click */}
       <div
+        role="none"
         style={{ maxWidth: '800px', margin: '0 auto' }}
         onCopy={(e) => e.preventDefault()}
         onContextMenu={(e) => e.preventDefault()}
       >
-        {results.map((result, i) => (
+        {results.map((result) => (
           <div
-            key={i}
+            key={`${result.url}-${result.title}`}
             style={{
               padding: '16px',
               background: '#161b22',

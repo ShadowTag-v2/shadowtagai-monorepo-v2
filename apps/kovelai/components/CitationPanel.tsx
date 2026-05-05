@@ -65,7 +65,11 @@ export function CitationPanel({
   return (
     <div style={styles.container}>
       {/* Header */}
-      <button onClick={() => setIsCollapsed(!isCollapsed)} style={styles.headerButton}>
+      <button
+        type="button"
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        style={styles.headerButton}
+      >
         <div style={styles.headerLeft}>
           <span style={styles.headerIcon}>📎</span>
           <span style={styles.headerTitle}>Citations ({citations.length})</span>
@@ -112,9 +116,20 @@ export function CitationPanel({
                   borderLeftColor: statusInfo.color,
                 }}
               >
-                <div
-                  style={styles.citationHeader}
+                <button
+                  type="button"
+                  style={{
+                    ...styles.citationHeader,
+                    border: 'none',
+                    background: 'transparent',
+                    width: '100%',
+                    cursor: 'pointer',
+                  }}
                   onClick={() => setExpandedCitation(isExpanded ? null : citation.index)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ')
+                      setExpandedCitation(isExpanded ? null : citation.index);
+                  }}
                 >
                   {/* Index badge */}
                   <span style={styles.indexBadge}>{citation.index}</span>
@@ -158,7 +173,7 @@ export function CitationPanel({
                       {Math.round(citation.relevance_score * 100)}%
                     </span>
                   </div>
-                </div>
+                </button>
 
                 {/* Expanded detail */}
                 {isExpanded && (
@@ -202,8 +217,12 @@ export function InlineCitationMarker({
 }: InlineCitationMarkerProps) {
   const statusInfo = STATUS_CONFIG[status];
   return (
-    <sup
+    <button
+      type="button"
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') onClick?.();
+      }}
       title={authority}
       style={{
         display: 'inline-flex',
@@ -220,11 +239,13 @@ export function InlineCitationMarker({
         marginLeft: '1px',
         verticalAlign: 'super',
         lineHeight: 1,
+        border: 'none',
+        padding: 0,
         transition: 'transform 0.1s ease',
       }}
     >
       {index}
-    </sup>
+    </button>
   );
 }
 

@@ -722,45 +722,45 @@
   .aura-blob--1,
   .aura-blob--2,
   .aura-blob--3 {
-    animation: none !important;
-    opacity: 0.15 !important;
+    animation: none;
+    opacity: 0.15;
   }
 
   /* Kill shield pulse */
   .shield-glow {
-    animation: none !important;
+    animation: none;
   }
 
   /* Kill scroll entrance animation — show immediately */
   .scroll-entrance {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 
   /* Kill glass-card hover transform */
   .glass-card:hover {
-    transform: none !important;
+    transform: none;
   }
 
   /* Kill button hover transforms */
   .btn-gold:hover,
   .btn-ghost:hover {
-    transform: none !important;
+    transform: none;
   }
 
   /* Disable smooth scrolling */
   html {
-    scroll-behavior: auto !important;
+    scroll-behavior: auto;
   }
 
   /* Preserve essential opacity/color transitions but reduce duration */
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.15s !important;
-    scroll-behavior: auto !important;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.15s;
+    scroll-behavior: auto;
   }
 }

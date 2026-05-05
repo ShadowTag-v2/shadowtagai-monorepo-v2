@@ -149,6 +149,7 @@ const ActivistDashboard: React.FC = () => {
               <div className="border-t border-white/10 pt-6 mt-4 flex items-center justify-between relative z-10">
                 <div className="flex items-center space-x-2 text-xs text-gray-500 font-mono">
                   <svg
+                    aria-hidden="true"
                     className="w-4 h-4 text-emerald-500"
                     fill="none"
                     stroke="currentColor"
@@ -164,7 +165,10 @@ const ActivistDashboard: React.FC = () => {
                   </svg>
                   <span>Immutable Evidence Hash: {targetData.evidenceHash}</span>
                 </div>
-                <button className="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all rounded-full font-bold text-sm text-white shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+                <button
+                  type="button"
+                  className="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all rounded-full font-bold text-sm text-white shadow-[0_0_15px_rgba(6,182,212,0.5)]"
+                >
                   Execute Trade Route
                 </button>
               </div>

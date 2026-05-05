@@ -43,7 +43,7 @@ interface EphemeralSearchProps {
 
 export function EphemeralSearchUI({
   seuToken,
-  firmId,
+  firmId: _firmId,
   sandboxId,
   onSessionEnd,
 }: EphemeralSearchProps) {
@@ -167,6 +167,7 @@ export function EphemeralSearchUI({
   return (
     <div
       className="ephemeral-search"
+      role="none"
       onMouseMove={resetInactivityTimer}
       onKeyDown={resetInactivityTimer}
       style={{
@@ -241,6 +242,7 @@ export function EphemeralSearchUI({
             {formatTimer(sessionTimer)}
           </span>
           <button
+            type="button"
             onClick={onSessionEnd}
             style={{
               padding: '6px 16px',
@@ -326,6 +328,7 @@ export function EphemeralSearchUI({
             }}
           />
           <button
+            type="button"
             onClick={handleSearch}
             disabled={loading || !query.trim()}
             style={{
@@ -346,9 +349,9 @@ export function EphemeralSearchUI({
 
         {/* ── Results ── */}
         <div>
-          {results.map((result, i) => (
+          {results.map((result) => (
             <div
-              key={`${result.url}-${i}`}
+              key={`${result.url}-${result.title}`}
               style={{
                 padding: '20px',
                 marginBottom: '12px',
