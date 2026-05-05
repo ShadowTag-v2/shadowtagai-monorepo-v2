@@ -2,7 +2,7 @@
 
 # GUARDRAIL: security-critical
 # Risk: HIGH
-# Classification: Fail-fast bash command validation pipeline (23+ regex checks)
+# Classification: Fail-fast bash command validation pipeline (30 regex checks)
 # Integration: ClassifiedGateway Tier 1.75 → all bash/shell/terminal tool invocations
 # Telemetry: BashTelemetryTracker → EventCatalog (agnt_bash_security_*)
 # Test Coverage: Hypothesis 1000-example property-based + 47-test unit/integration suite
@@ -165,7 +165,7 @@ _BASE64_DECODE_PIPE_RE = re.compile(
 _COPROC_RE = re.compile(r"(?:^|[;\|&])\s*coproc\s")
 
 # Check 29: Heredoc tag injection — arbitrary content injection via <<
-_HEREDOC_TAG_RE = re.compile(r"<<-?\s*['"]?\w+['"]?")
+_HEREDOC_TAG_RE = re.compile(r"""<<-?\s*['"]?\w+['"]?""")
 
 # Check 30: ANSI-C quoting $'...' — escape sequence execution in quotes
 _ANSI_C_QUOTE_RE = re.compile(r"\$'[^']*(?:\\x[0-9a-fA-F]|\\[0-7]|\\n|\\r)[^']*'")
