@@ -892,6 +892,49 @@ class EventCatalog:
     # --- Shell Security Events (Extended) ---
 
     @staticmethod
+    def bash_security_check_failed(
+        check_id: int = 0,
+        check_name: str = "",
+        command_hash: str = "",
+        message: str = "",
+    ) -> TelemetryEvent:
+        """agnt_bash_security_check_failed — Bash command blocked by security pipeline.
+
+        CC equivalent: tengu_bash_security_check_failed
+        """
+        return TelemetryEvent(
+            event="agnt_bash_security_check_failed",
+            category=EventCategory.SHELL,
+            success=False,
+            error_message=message,
+            properties={
+                "check_id": check_id,
+                "check_name": check_name,
+                "command_hash": command_hash,
+            },
+        )
+
+    @staticmethod
+    def bash_security_validated(
+        command_hash: str = "",
+        checks_passed: int = 0,
+        duration_ms: float = 0.0,
+    ) -> TelemetryEvent:
+        """agnt_bash_security_validated — Bash command passed all 23 security checks.
+
+        CC equivalent: tengu_bash_security_validated
+        """
+        return TelemetryEvent(
+            event="agnt_bash_security_validated",
+            category=EventCategory.SHELL,
+            duration_ms=duration_ms,
+            properties={
+                "command_hash": command_hash,
+                "checks_passed": checks_passed,
+            },
+        )
+
+    @staticmethod
     def bash_rate_limit_hit(
         command_hash: str = "",
         call_count: int = 0,

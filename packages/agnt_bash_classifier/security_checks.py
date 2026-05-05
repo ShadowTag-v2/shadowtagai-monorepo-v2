@@ -47,6 +47,14 @@ class BashSecurityCheckId(IntEnum):
     BACKSLASH_ESCAPED_OPERATORS = 21
     COMMENT_QUOTE_DESYNC = 22
     QUOTED_NEWLINE = 23
+    # ── Extended checks (v2 — 2026-05 bypass vectors) ──
+    ANSI_ESCAPE_INJECTION = 24
+    ARITHMETIC_INJECTION = 25
+    SOURCE_DOT_COMMAND = 26
+    BASE64_DECODE_PIPING = 27
+    COPROC_SPAWNING = 28
+    HEREDOC_TAG_INJECTION = 29
+    ANSI_C_QUOTING = 30
 
 
 # Zsh-specific dangerous commands that can bypass security checks.
