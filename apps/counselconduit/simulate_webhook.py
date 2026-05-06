@@ -18,9 +18,9 @@ dummy_payload = {
             "object": "checkout.session",
             "customer": "cus_test_123",
             "customer_email": "test_attorney@example.com",
-            "subscription": "sub_test_123"
+            "subscription": "sub_test_123",
         }
-    }
+    },
 }
 
 payload_bytes = json.dumps(dummy_payload).encode("utf-8")
@@ -34,10 +34,7 @@ expected_sig = hmac.new(
     hashlib.sha256,
 ).hexdigest()
 
-headers = {
-    "Content-Type": "application/json",
-    "Stripe-Signature": f"t={timestamp},v1={expected_sig}"
-}
+headers = {"Content-Type": "application/json", "Stripe-Signature": f"t={timestamp},v1={expected_sig}"}
 
 with patch("apps.counselconduit.api.stripe_handler._get_webhook_secret", return_value=secret):
     with patch("apps.counselconduit.api.firestore_client._get_client") as mock_get_client:
@@ -47,7 +44,7 @@ with patch("apps.counselconduit.api.stripe_handler._get_webhook_secret", return_
         mock_doc_ref = MagicMock()
         mock_doc_ref.set = AsyncMock()
         mock_db.collection().document.return_value = mock_doc_ref
-        
+
         response = client.post("/webhooks/stripe", content=payload_bytes, headers=headers)
 
 print("Status Code:", response.status_code)

@@ -84,9 +84,7 @@
         "JULES_API_KEY": "${JULES_API_KEY}"
       },
       "capability_owner": true,
-      "owns": [
-        "jules_*"
-      ],
+      "owns": ["jules_*"],
       "note": "Jules MCP Server — MUST use for all Jules session management and autonomous code generation tasks."
     }
   },
