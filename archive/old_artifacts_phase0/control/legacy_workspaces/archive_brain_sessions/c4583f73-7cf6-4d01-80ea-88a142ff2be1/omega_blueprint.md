@@ -13970,7 +13970,7 @@ Working directory: [kosmos_gcloud/market_polis.py](file:///Users/pikeymickey/aiy
 > **Goal**: "So a 5th Grader can run it."
 
 ## The User Story
-"Honey, try out this new ShadowTag AI assistant. We just got it at work, and now I don't need to go through IT, CTO, or CIAO to get tech stuff accomplished."
+"Honey, try out this new ShadowTagAI assistant. We just got it at work, and now I don't need to go through IT, CTO, or CIAO to get tech stuff accomplished."
 
 **The "Magic" Moments:**
 1.  **Migrate-to-GCloud**: "It migrated us straight to GCloud from AWS/MS while I slept. Saving millions daily."
@@ -14005,7 +14005,7 @@ Working directory: [kosmos_gcloud/market_polis.py](file:///Users/pikeymickey/aiy
 ## The Narrative
 The user is a non-digital native CEO ("Grandpa"). He doesn't want to know about Kubernetes or Terraform. He wants to go home to his wife and say:
 
-> "Honey, try out this new ShadowTag AI assistant. We just got it at work. I don't need IT, the CTO, or the CIAO anymore. It migrated us specifically to GCloud while I slept. It's saving us millions. It monitors, maintains, and upgrades our tech stack AND business model while I golf."
+> "Honey, try out this new ShadowTagAI assistant. We just got it at work. I don't need IT, the CTO, or the CIAO anymore. It migrated us specifically to GCloud while I slept. It's saving us millions. It monitors, maintains, and upgrades our tech stack AND business model while I golf."
 
 ## Core Features (The "Magic")
 
@@ -63147,7 +63147,7 @@ The objective is to urgently restructure [apps/shadowtag-web/app/page.tsx](file:
 3. **Team/About Us:** Publicly visible "Founder Profiles" with names, roles, photos, and direct LinkedIn links (specifically for Erik Hancock).
 
 ## Aesthetic Direction
-The user has requested that the site look *exactly* like [Unusual Machines](https://www.unusualmachines.com/), but populated exclusively with ShadowTag AI information.
+The user has requested that the site look *exactly* like [Unusual Machines](https://www.unusualmachines.com/), but populated exclusively with ShadowTagAI information.
 
 ## Proposed Changes
 
@@ -63165,7 +63165,7 @@ We will completely rewrite [page.tsx](file:///Users/pikeymickey/aiyou-stack/Shad
     *   Prominent display for Founder / CEO Erik Hancock.
     *   Professional summary reflecting the "Tiny Teams / Army SF + JD" persona.
     *   **CRITICAL:** Explicit, clearly visible link to `https://www.linkedin.com/in/erik-hancock-80442476`.
-    *   *(Note: The user must ensure their LinkedIn profile lists ShadowTag AI as current experience).*
+    *   *(Note: The user must ensure their LinkedIn profile lists ShadowTagAI as current experience).*
 
 ### [MODIFY] [apps/shadowtag-web/app/pitch/page.tsx](file:///Users/pikeymickey/aiyou-stack/ShadowTag-v2/apps/shadowtag-web/app/pitch/page.tsx) (Optional Move)
 *   Since the main page will no longer be the pitch deck, we need to ensure the pitch deck is still accessible, likely housed back at `/pitch` or linked securely from the new investor portal. We will leave it at `/pitch` for now.

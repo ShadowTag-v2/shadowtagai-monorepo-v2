@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"
 from routers import agents
 from routers.auth import verify_activeshield_jwt
 
-app = FastAPI(title="ShadowTag AI Arbiter", version="4.0.0")
+app = FastAPI(title="ShadowTagAI Arbiter", version="4.0.0")
 
 app.add_middleware(
     CORSMiddleware,

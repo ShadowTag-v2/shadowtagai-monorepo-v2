@@ -4,7 +4,7 @@
   "url": "https://counselconduit-767252945109.us-central1.run.app/agents/oracle",
   "version": "1.0.0",
   "provider": {
-    "organization": "ShadowTag AI",
+    "organization": "ShadowTagAI",
     "url": "https://shadowtagai.com"
   },
   "capabilities": {

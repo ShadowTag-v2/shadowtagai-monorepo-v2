@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """DoD CIO CSRMC & NIST RMF Continuous ATO — Judge 6.1 J-6 Policy Enforcement.
 
 Implements Zero Trust Architecture (ZTA) handoff enforcement between J-Staff

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 """cProfile hotspot analysis for bridge.handle().
 

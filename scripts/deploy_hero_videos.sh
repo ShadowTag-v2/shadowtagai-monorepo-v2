@@ -66,7 +66,7 @@ gcloud storage cp "/tmp/${KOVELAI_WEBM}" "${BUCKET}/${KOVELAI_WEBM}" --content-t
 GCS_BASE="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos"
 
 log "Updating HTML source references..."
-# ShadowTag AI
+# ShadowTagAI
 sed -i '' "s|${GCS_BASE}/fluid-kinetic-aura[^\"]*\.mp4|${GCS_BASE}/${SHADOWTAG_VERSIONED}|g" "$SHADOWTAG_HTML"
 sed -i '' "s|${GCS_BASE}/fluid-kinetic-aura[^\"]*\.webm|${GCS_BASE}/${SHADOWTAG_WEBM}|g" "$SHADOWTAG_HTML"
 

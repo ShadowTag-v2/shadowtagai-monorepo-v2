@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 """Evidence Logger — records every function call to .agent/evidence/.
 

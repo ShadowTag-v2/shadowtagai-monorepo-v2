@@ -14,7 +14,7 @@
 
 ---
 
-## Phase 0: Foundation + ShadowTag AI
+## Phase 0: Foundation + ShadowTagAI
 
 **Duration:** 3 months (Q4 2024)
 **Budget:** $350K

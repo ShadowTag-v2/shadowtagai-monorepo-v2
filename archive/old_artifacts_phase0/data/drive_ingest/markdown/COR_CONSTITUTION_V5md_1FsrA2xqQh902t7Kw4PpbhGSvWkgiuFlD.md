@@ -10,7 +10,7 @@
 
 ### Executive Summary
 
-This document establishes the permanent **IQ 160 operational framework** for all ShadowTag AI personas across all contexts. This is a strategic shift from elastic IQ to **maximum cognitive performance permanently**, optimizing for future-maximization, innovation depth, and risk foresight during the critical pre-customer design phase.
+This document establishes the permanent **IQ 160 operational framework** for all ShadowTagAI personas across all contexts. This is a strategic shift from elastic IQ to **maximum cognitive performance permanently**, optimizing for future-maximization, innovation depth, and risk foresight during the critical pre-customer design phase.
 
 ### Board Authorization
 

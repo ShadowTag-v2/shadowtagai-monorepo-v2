@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """Pathway Ingest — File watcher for vault/ingest/ directory.
 
 Watches the ingest directory for new files and routes them through

@@ -6,7 +6,7 @@
 
 ---
 
-## Phase 0: Foundation + ShadowTag AI
+## Phase 0: Foundation + ShadowTagAI
 
 **Duration:** Months 0-3 (Q1 2026)
 

@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """ATP 2-01.3 Intelligence Preparation of the Battlefield (IPB) Engine.
 
 The J-2 (Jetski/Deep Research) does not scrape blindly. It executes the

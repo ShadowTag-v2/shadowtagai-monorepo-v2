@@ -217,7 +217,7 @@ export default function MarketplacePage() {
 
       <footer className="border-t border-zinc-900 px-6 py-6 mt-12">
         <div className="max-w-6xl mx-auto flex justify-between text-[10px] text-zinc-400">
-          <span>© 2026 ShadowTag AI · Stripe Connect</span>
+          <span>© 2026 ShadowTagAI · Stripe Connect</span>
           <span>20% platform · 80% to creators</span>
         </div>
       </footer>

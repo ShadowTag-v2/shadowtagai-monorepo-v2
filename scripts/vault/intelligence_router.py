@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """Intelligence Router — Routes cleaned data to downstream sinks.
 
 After the zero-trust pipeline sanitizes data, the intelligence router

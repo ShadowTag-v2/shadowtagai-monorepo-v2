@@ -1,8 +1,8 @@
-# ShadowTag AI Monorepo — Architecture Context
+# ShadowTagAI Monorepo — Architecture Context
 
 ## Repository Structure
 
-This is a Google Cloud-native monorepo for ShadowTag AI, containing:
+This is a Google Cloud-native monorepo for ShadowTagAI, containing:
 
 ### Production Apps
 - **apps/kovelai** — KovelAI marketing site (Firebase Hosting)

@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """
 KI Schema — Items 1, 7, 17: Typed knowledge with confidence, TTL, classification.
 

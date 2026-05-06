@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """FastAPI endpoint for HumanGateStep external event resumption.
 
 This module provides the HTTP interface that allows authorized users

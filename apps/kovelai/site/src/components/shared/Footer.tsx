@@ -89,7 +89,7 @@ export default function Footer({ onOpenModal }: FooterProps) {
           <span>
             A{' '}
             <a href="https://shadowtagai.com" className="text-gold underline">
-              ShadowTag AI
+              ShadowTagAI
             </a>{' '}
             Company
           </span>

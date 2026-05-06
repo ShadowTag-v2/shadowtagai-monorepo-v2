@@ -68,7 +68,7 @@ def _build_embed(
     if footer:
         embed["footer"] = {"text": footer}
     else:
-        embed["footer"] = {"text": "ShadowTag AI · CounselConduit"}
+        embed["footer"] = {"text": "ShadowTagAI · CounselConduit"}
     return embed
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """GCP Secret Manager Utility — Typed Python wrapper.
 
 Replaces ad-hoc `gcloud secrets` subprocess calls with a proper

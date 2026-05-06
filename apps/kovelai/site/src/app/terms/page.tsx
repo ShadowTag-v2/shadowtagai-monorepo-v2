@@ -94,7 +94,7 @@ The Service is designed to assist law firms in maintaining attorney-client privi
   {
     id: 'ip',
     title: '7. Intellectual Property',
-    content: `• KovelAI, its logos, designs, and documentation are the property of ShadowTag AI, Inc.
+    content: `• KovelAI, its logos, designs, and documentation are the property of ShadowTagAI, Inc.
 • You retain all rights to your firm's data and client information.
 • You grant us a limited license to process your data solely for the purpose of providing the Service.
 • You may not reverse-engineer, decompile, or attempt to extract the source code of the Service.`,

@@ -1676,7 +1676,7 @@ Read more: https://nextjs.org/docs/messages/next-image-unconfigured-localpattern
                     (0, t.jsx)('a', {
                       href: 'https://shadowtagai.com',
                       className: 'text-gold underline',
-                      children: 'ShadowTag AI',
+                      children: 'ShadowTagAI',
                     }),
                     ' ',
                     'Company',

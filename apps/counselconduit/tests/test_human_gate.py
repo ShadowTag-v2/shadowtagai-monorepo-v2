@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """Integration tests for HumanGateStep → OnExternalEvent("UserApproved") flow.
 
 Tests the full lifecycle:

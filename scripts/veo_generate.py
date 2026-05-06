@@ -112,7 +112,7 @@ DEMO_PRESETS = {
         "Cinematic aerial shot of a fortified glass data center in a mountain "
         "valley at dawn. Camera glides through layers of security — laser grids, "
         "biometric scanners, armored server racks with pulsing blue LEDs. A "
-        "holographic ShadowTag AI logo materializes above the central server "
+        "holographic ShadowTagAI logo materializes above the central server "
         "cluster. Text overlay: 'SOVEREIGN · AUTONOMOUS · ZERO-TRUST'. Ultra "
         "wide anamorphic lens, ARRI Alexa quality. Dramatic volumetric fog, "
         "indigo and amber lighting."

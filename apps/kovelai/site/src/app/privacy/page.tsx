@@ -98,7 +98,7 @@ const SECTIONS = [
     content: `For privacy inquiries, data subject requests, or to report a concern:
 
 • **Email:** privacy@kovelai.com
-• **Mail:** ShadowTag AI, Inc. — Privacy Team
+• **Mail:** ShadowTagAI, Inc. — Privacy Team
 
 This policy is effective as of January 1, 2026 and was last updated on May 4, 2026. We will notify registered users of material changes via email at least 30 days before they take effect.`,
   },

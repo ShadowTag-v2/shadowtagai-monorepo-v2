@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """JP 3-33 Joint Task Force Staff Topology.
 
 Maps the 8-Agent Swarm into a formal J-Staff organization per JP 3-33.

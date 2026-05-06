@@ -15,7 +15,7 @@ FROM python:3.14-slim AS runtime
 LABEL org.opencontainers.image.title="CounselConduit" \
       org.opencontainers.image.description="Privileged Legal AI — Kovel Enclave" \
       org.opencontainers.image.version="3.3.2" \
-      org.opencontainers.image.vendor="ShadowTag AI" \
+      org.opencontainers.image.vendor="ShadowTagAI" \
       org.opencontainers.image.source="https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball" \
       org.opencontainers.image.licenses="PROPRIETARY"
 

@@ -67,7 +67,7 @@ Source Brain: f6e572fc-3b8e-45ff-bbe5-7ba6ca9de593
 ## Completed Vectors
 *   **[x] Vector 9: Provisional Patent Claims & Exhaustive Thread Audit:** Drafted 7 core defensible utility patents (Privilege Portal, Objective Options AST, Memory Bead Shredding, Bar Exam Injection, Whiteboard State Lock, ShadowTag DCT Watermarking, RKILL KMS Kill Switch). Executed exhaustive four-corners thread audit recovering 11 gaps across all 14 artifacts.
 *   **[x] Vector 8: The Privilege Portal Premium:** Integrated a new $150K/yr premium tier allowing law firm clients to perform AI research under attorney-client privilege with compute-to-billable-hour capture.
-*   **[x] Vector 7: Corporate Structuring & Liability Insulation:** Restructured ShadowTag AI, Inc. as a Puerto Rico LLC owned by a Panama Private Interest Foundation. Replaced geofencing with the Objective Options Framework. Split Judge 6 pricing into GDPR, Privilege Portal, and Global Liability tiers.
+*   **[x] Vector 7: Corporate Structuring & Liability Insulation:** Restructured ShadowTagAI, Inc. as a Puerto Rico LLC owned by a Panama Private Interest Foundation. Replaced geofencing with the Objective Options Framework. Split Judge 6 pricing into GDPR, Privilege Portal, and Global Liability tiers.
 *   **[x] Vector 6: FedRAMP High / GKC Native Ascension:** Purged all non-Google LLMs (Claude, Anthropic), open-source infrastructure, and OpenClaw from all artifacts. Swapped entirely for GKC Native tech. Counted 1,831 GDrive ingest targets.
 *   **[x] Vector 5: Competitor Moat & Active Mitigation:** Researched Lakera/Amazon Bedrock/Superwise. Updated Pitch Deck and Architecture to highlight Active Mitigation loop (Bar Exam, Whiteboarding, Layer 5 Lock, RKILL).
 *   **[x] Vector 4: Inference Scaling Architecture:** Purged hallucinated deterministic voting. Wrote `omni_kosmos_bioagents_architecture.md` with true Kosmos/BioAgents scaling.
@@ -3380,7 +3380,7 @@ Source Brain: 0cedd488-4776-4c99-a792-6a10d639a01c
 - [x] Validate ingested structure for the `.mil` risk mitigation layer
 
 ### Phase 26: Stitch UI Generation & Redesign
-- [x] Create a Stitch project "ShadowTag AI Light Corporate Redesign"
+- [x] Create a Stitch project "ShadowTagAI Light Corporate Redesign"
 - [x] Generate initial Corporate Landing Page screen using inspiration from unusualmachines.com
 - [x] Generate YOLO variants of the landing page for A/B testing
 - [x] Implement local autonomous Stitch-to-React loop
