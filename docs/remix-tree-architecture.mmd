@@ -1,0 +1,24 @@
+graph TD
+    A[Original Video - orig_123] --> B(Remix 1 - user_456)
+    A --> C(Remix 2 - user_789)
+    B --> D(Remix 1.1 - user_101)
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
+    
+    subgraph DataConnect Layer
+        DB[(Firebase Data Connect Postgres)]
+    end
+    
+    A -.-> DB
+    B -.-> DB
+    C -.-> DB
+    D -.-> DB
+    
+    subgraph HeadFade MCP
+        MCP[Truth Oracle Server]
+    end
+    
+    MCP -->|Queries Provenance| DB

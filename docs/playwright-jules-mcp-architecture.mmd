@@ -1,0 +1,25 @@
+mermaid
+graph TD
+    User((User / Agent)) --> UI[Embed Player & Marketplace]
+    UI --> API[HeadFade API]
+    API --> MCP[Truth Oracle MCP Server]
+    
+    subgraph Cognitive Automation
+        MCP --> JMCP[Jules MCP Client]
+        JMCP --> PB[Playwright Browser]
+        PB --> Target[Target Media Platform]
+    end
+    
+    subgraph Data & Provenance
+        JMCP --> FDC[(Firebase Data Connect)]
+        FDC --> RT[Remix Tree & Ledger]
+        FDC --> HDI[HDI Engine]
+    end
+    
+    subgraph Observability
+        MCP --> OTel[OpenTelemetry]
+        OTel --> K[KAIROS Daemon]
+    end
+    
+    style PB fill:#f96,stroke:#333,stroke-width:2px
+    style JMCP fill:#69f,stroke:#333,stroke-width:2px
