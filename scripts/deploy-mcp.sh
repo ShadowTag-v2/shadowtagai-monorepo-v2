@@ -13,7 +13,6 @@ gcloud run deploy headfade-mcp \
   --region us-central1 \
   --allow-unauthenticated \
   --set-env-vars="NODE_ENV=production" \
-  --max-instances=200 \
   --service-account=headfade-mcp-sa@PROJECT_ID.iam.gserviceaccount.com
 
 echo "✅ MCP Server deployed successfully"

@@ -162,59 +162,137 @@ def verify_stripe_signature(
 # ── Event Handlers ──────────────────────────────────────────────────────────
 
 
-def _handle_checkout_completed(event: dict[str, Any]) -> dict[str, str]:
+async def _handle_checkout_completed(event: dict[str, Any]) -> dict[str, str]:
     """Provision attorney access after successful checkout."""
     session = event.get("data", {}).get("object", {})
     customer_email = session.get("customer_email", "unknown")
     subscription_id = session.get("subscription", "unknown")
+    customer_id = session.get("customer", "unknown")
     logger.info(
         "Checkout completed: email=%s subscription=%s",
         customer_email,
         subscription_id,
     )
-    # TODO: Write to Firestore via MCP — create attorney record
+
+    from datetime import UTC, datetime
+
+    from apps.counselconduit.api.firestore_client import _get_client
+
+    db = _get_client()
+    doc_ref = db.collection("attorneys").document(customer_id)
+    await doc_ref.set(
+        {
+            "email": customer_email,
+            "subscription_id": subscription_id,
+            "status": "active",
+            "access_revoked": False,
+            "grace_period": False,
+            "_created_at": datetime.now(UTC).isoformat(),
+            "_updated_at": datetime.now(UTC).isoformat(),
+        },
+        merge=True,
+    )
+
     return {"action": "provisioned", "email": customer_email}
 
 
-def _handle_subscription_updated(event: dict[str, Any]) -> dict[str, str]:
+async def _handle_subscription_updated(event: dict[str, Any]) -> dict[str, str]:
     """Update attorney tier on subscription change."""
     subscription = event.get("data", {}).get("object", {})
     sub_id = subscription.get("id", "unknown")
     sub_status = subscription.get("status", "unknown")
+    customer_id = subscription.get("customer", "unknown")
     logger.info("Subscription updated: id=%s status=%s", sub_id, sub_status)
-    # TODO: Update Firestore attorney tier via MCP
+
+    from datetime import UTC, datetime
+
+    from apps.counselconduit.api.firestore_client import _get_client
+
+    db = _get_client()
+    doc_ref = db.collection("attorneys").document(customer_id)
+    await doc_ref.set(
+        {
+            "subscription_id": sub_id,
+            "status": sub_status,
+            "_updated_at": datetime.now(UTC).isoformat(),
+        },
+        merge=True,
+    )
+
     return {"action": "tier_updated", "subscription_id": sub_id, "status": sub_status}
 
 
-def _handle_subscription_deleted(event: dict[str, Any]) -> dict[str, str]:
+async def _handle_subscription_deleted(event: dict[str, Any]) -> dict[str, str]:
     """Revoke attorney access on subscription cancellation."""
     subscription = event.get("data", {}).get("object", {})
     sub_id = subscription.get("id", "unknown")
+    customer_id = subscription.get("customer", "unknown")
     logger.info("Subscription deleted: id=%s — revoking access.", sub_id)
-    # TODO: Revoke Firestore access via MCP
+
+    from datetime import UTC, datetime
+
+    from apps.counselconduit.api.firestore_client import _get_client
+
+    db = _get_client()
+    doc_ref = db.collection("attorneys").document(customer_id)
+    await doc_ref.set(
+        {
+            "status": "canceled",
+            "access_revoked": True,
+            "_updated_at": datetime.now(UTC).isoformat(),
+        },
+        merge=True,
+    )
+
     return {"action": "access_revoked", "subscription_id": sub_id}
 
 
-def _handle_invoice_payment_succeeded(event: dict[str, Any]) -> dict[str, str]:
+async def _handle_invoice_payment_succeeded(event: dict[str, Any]) -> dict[str, str]:
     """Record successful billing event for Triple-Dip telemetry."""
     invoice = event.get("data", {}).get("object", {})
     amount = invoice.get("amount_paid", 0)
     customer = invoice.get("customer", "unknown")
+    invoice_id = invoice.get("id", "unknown")
     logger.info(
         "Invoice paid: customer=%s amount=%d cents",
         customer,
         amount,
     )
-    # TODO: Record billing event in Firestore via MCP
+
+    from datetime import UTC, datetime
+
+    from apps.counselconduit.api.firestore_client import _get_client
+
+    db = _get_client()
+    doc_ref = db.collection("attorneys").document(customer)
+    await doc_ref.set(
+        {
+            "grace_period": False,
+            "access_revoked": False,
+            "_updated_at": datetime.now(UTC).isoformat(),
+        },
+        merge=True,
+    )
+
+    billing_ref = db.collection("attorneys").document(customer).collection("billing_events").document(invoice_id)
+    await billing_ref.set(
+        {
+            "amount_cents": amount,
+            "status": "succeeded",
+            "_created_at": datetime.now(UTC).isoformat(),
+        }
+    )
+
     return {"action": "payment_recorded", "customer": customer, "amount_cents": amount}
 
 
-def _handle_invoice_payment_failed(event: dict[str, Any]) -> dict[str, str]:
+async def _handle_invoice_payment_failed(event: dict[str, Any]) -> dict[str, str]:
     """Alert on failed payment — enter grace period + Discord alert."""
     invoice = event.get("data", {}).get("object", {})
     customer = invoice.get("customer", "unknown")
     attempt_count = invoice.get("attempt_count", 0)
     amount = invoice.get("amount_due", 0)
+    invoice_id = invoice.get("id", "unknown")
     logger.warning(
         "Invoice payment FAILED: customer=%s attempt=%d",
         customer,
@@ -242,7 +320,30 @@ def _handle_invoice_payment_failed(event: dict[str, Any]) -> dict[str, str]:
     except Exception as e:
         logger.warning("Chat alert failed (non-fatal): %s", e)
 
-    # TODO: Set grace period flag in Firestore via MCP
+    from datetime import UTC, datetime
+
+    from apps.counselconduit.api.firestore_client import _get_client
+
+    db = _get_client()
+    doc_ref = db.collection("attorneys").document(customer)
+    await doc_ref.set(
+        {
+            "grace_period": True,
+            "_updated_at": datetime.now(UTC).isoformat(),
+        },
+        merge=True,
+    )
+
+    billing_ref = db.collection("attorneys").document(customer).collection("billing_events").document(invoice_id)
+    await billing_ref.set(
+        {
+            "amount_cents": amount,
+            "status": "failed",
+            "attempt_count": attempt_count,
+            "_created_at": datetime.now(UTC).isoformat(),
+        }
+    )
+
     return {"action": "payment_failed", "customer": customer, "attempt": attempt_count}
 
 
@@ -305,7 +406,7 @@ async def stripe_webhook(request: Request) -> dict[str, Any]:
     handler = _EVENT_HANDLERS.get(event_type)
     if handler:
         try:
-            result = handler(event)
+            result = await handler(event)
             if breaker:
                 breaker.record_success()
             return {"received": True, "event_type": event_type, "result": result}
