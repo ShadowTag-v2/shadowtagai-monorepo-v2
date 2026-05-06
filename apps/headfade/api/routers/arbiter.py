@@ -10,13 +10,13 @@ from google.genai import types
 from pydantic import BaseModel
 
 # -------------------------------------------------------------------------------------
-# HEADFADE AI: THE MASTER PLAN (ArXiv 2512.14982 Compliant)
-# MANDATE A: We are building HeadFadeAi, the global Turing Test.
+# HEADFADE: THE MASTER PLAN (ArXiv 2512.14982 Compliant)
+# MANDATE A: We are building HeadFade, the global Turing Test.
 # Model MUST be 'gemini-3.1-flash-lite-preview'.
 # Project MUST be 'shadowtag-omega-v4'.
 # Every vote must build the Human Deception Index.
 #
-# MANDATE B: We are building HeadFadeAi, the global Turing Test.
+# MANDATE B: We are building HeadFade, the global Turing Test.
 # Model MUST be 'gemini-3.1-flash-lite-preview'.
 # Project MUST be 'shadowtag-omega-v4'.
 # Every vote must build the Human Deception Index.
@@ -86,7 +86,7 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
 
     # 2. Forensic Teardown Prompt
     prompt = f"""
-    You are the HeadFadeAi Forensic Arbiter. Watch this video frame-by-frame.
+    You are the HeadFade Forensic Arbiter. Watch this video frame-by-frame.
     The absolute ground truth is that this video is: {req.actual_truth.upper()}.
     Identify the visual artifacts, physics glitches, deepfake seams, or real-world anomalies that ultimately prove this.
     Be brutal, exacting, and highly analytical in your teardown. Produce an unflinching verdict.

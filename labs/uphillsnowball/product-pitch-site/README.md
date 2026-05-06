@@ -1,6 +1,6 @@
-# ShadowTag AI — Product Pitch Site
+# ShadowTagAI — Product Pitch Site
 
-> **Unusual Machines–inspired** product pitch page for ShadowTag AI's legal AI infrastructure.
+> **Unusual Machines–inspired** product pitch page for ShadowTagAI's legal AI infrastructure.
 
 ## Stack
 
@@ -61,4 +61,4 @@ npx -y firebase-tools@latest deploy --only hosting --project shadowtag-omega-v4
 ## Legal
 
 Protected under *United States v. Heppner* (S.D.N.Y., Feb. 10, 2026).
-© 2026 ShadowTag AI. All rights reserved.
+© 2026 ShadowTagAI. All rights reserved.

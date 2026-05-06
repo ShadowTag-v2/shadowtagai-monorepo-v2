@@ -15,21 +15,21 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'HeadFadeAi | Global Synthetic Media Infrastructure',
+  title: 'HeadFade | Global Synthetic Media Infrastructure',
   description:
     "The world's first forensic deepfake detection platform. Embed player, creator marketplace, and cognitive telemetry — powered by Gemini AI.",
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'HeadFadeAi',
+    title: 'HeadFade',
   },
   openGraph: {
-    title: 'HeadFadeAi — Synthetic Media Infrastructure',
+    title: 'HeadFade — Synthetic Media Infrastructure',
     description:
       'Forensic deepfake detection, embeddable players for publishers, and a micro-licensing marketplace for AI creators. Powered by Gemini 3.1.',
     url: 'https://headfade.web.app',
-    siteName: 'HeadFadeAi',
+    siteName: 'HeadFade',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -37,13 +37,13 @@ export const metadata: Metadata = {
         url: 'https://headfade.web.app/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'HeadFadeAi — Forensic Deepfake Infrastructure',
+        alt: 'HeadFade — Forensic Deepfake Infrastructure',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'HeadFadeAi — Synthetic Media Infrastructure',
+    title: 'HeadFade — Synthetic Media Infrastructure',
     description:
       'Forensic detection. Creator marketplace. Embed distribution. Powered by Gemini AI.',
     images: ['https://headfade.web.app/og-image.png'],

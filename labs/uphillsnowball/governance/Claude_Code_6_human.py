@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """JudgeSix-Human — Fast MITM gate for human/server actions.
 
 Operates as the first checkpoint in the Cor.autoresearch loop.

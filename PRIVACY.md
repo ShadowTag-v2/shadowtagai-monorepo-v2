@@ -1,4 +1,4 @@
-# PRIVACY.md — ShadowTag AI Open-Source Privacy Policy
+# PRIVACY.md — ShadowTagAI Open-Source Privacy Policy
 
 **Last Updated:** April 14, 2026
 **Effective Date:** April 14, 2026
@@ -8,7 +8,7 @@
 
 ## 1. Overview
 
-ShadowTag AI ("we," "us," "our") is committed to protecting the privacy of all users across our suite of products: **ShadowTag AI**, **KovelAI**, and **UphillSnowball**. This policy covers data practices for both our open-source repositories and deployed web services.
+ShadowTagAI ("we," "us," "our") is committed to protecting the privacy of all users across our suite of products: **ShadowTagAI**, **KovelAI**, and **UphillSnowball**. This policy covers data practices for both our open-source repositories and deployed web services.
 
 ## 2. Data We Collect
 
@@ -58,7 +58,7 @@ ShadowTag AI ("we," "us," "our") is committed to protecting the privacy of all u
 
 ## 5. Data Sovereignty
 
-ShadowTag AI is built on a **total data sovereignty** model:
+ShadowTagAI is built on a **total data sovereignty** model:
 
 - All production data is stored in **Google Cloud Platform** (US regions by default)
 - Firestore databases are configured with **zero-trust security rules** (deny-all default, admin-only access)
@@ -78,7 +78,7 @@ ShadowTag AI is built on a **total data sovereignty** model:
 - **Contact**: privacy@shadowtagai.com
 
 ### 6.3 EU AI Act
-- ShadowTag AI's **Judge 6 Shield** product is designed to help enterprises comply with EU AI Act requirements
+- ShadowTagAI's **Judge 6 Shield** product is designed to help enterprises comply with EU AI Act requirements
 - Our own AI systems follow transparency and accountability principles
 
 ## 7. Security Measures

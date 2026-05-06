@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """Runtime Watchdog — replaces legacy 'monkey watchdog'.
 
 Monitors active research runs for:
