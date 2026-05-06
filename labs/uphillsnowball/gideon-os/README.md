@@ -107,4 +107,4 @@ labs/uphillsnowball/gideon-os/
 
 ## License
 
-Proprietary — ShadowTag AI, Inc.
+Proprietary — ShadowTagAI, Inc.

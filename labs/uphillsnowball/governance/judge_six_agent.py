@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """JudgeSix-Agent — Final autonomous gate before anything reaches the user.
 
 Operates as the last checkpoint in the Cor.autoresearch loop.

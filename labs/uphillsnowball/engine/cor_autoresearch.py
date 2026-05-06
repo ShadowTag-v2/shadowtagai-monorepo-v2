@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """Cor.autoresearch — Main orchestration engine for UphillSnowball.
 
 Display name: Cor.autoresearch

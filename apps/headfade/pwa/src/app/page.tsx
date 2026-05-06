@@ -102,7 +102,7 @@ export default function HeadFadeSwiper() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4">
       <h1 className="text-4xl font-bold text-gradient mb-2 tracking-tighter shadow-sm">
-        HeadFadeAi
+        HeadFade
       </h1>
       <p className="text-zinc-400 text-sm mb-6 tracking-wide">
         The Global Turing Test — Can You Tell What Is Real?

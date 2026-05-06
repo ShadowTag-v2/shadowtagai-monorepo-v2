@@ -1,6 +1,6 @@
 {
-  "name": "HeadFadeAi — Gamified Turing Test",
-  "short_name": "HeadFadeAi",
+  "name": "HeadFade — Gamified Turing Test",
+  "short_name": "HeadFade",
   "description": "Can you tell what is real? The world's first gamified deepfake detection platform powered by Gemini AI.",
   "start_url": "/",
   "display": "standalone",

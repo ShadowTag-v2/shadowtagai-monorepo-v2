@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """
 Encryption — Item 12: AES-256-GCM encryption for sensitive KIs.
 

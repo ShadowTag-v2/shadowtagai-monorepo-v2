@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About | KovelAI — Built by ShadowTag AI",
-  description: "KovelAI is a product of ShadowTag AI. Learn about our mission to make legal AI privileged, profitable, and production-ready.",
+  title: "About | KovelAI — Built by ShadowTagAI",
+  description: "KovelAI is a product of ShadowTagAI. Learn about our mission to make legal AI privileged, profitable, and production-ready.",
 };
 
 export default function AboutPage() {
@@ -91,10 +91,10 @@ export default function AboutPage() {
       <section className="section-container">
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="section-title text-3xl mb-6">
-            Built by <span className="gradient-text">ShadowTag AI</span>
+            Built by <span className="gradient-text">ShadowTagAI</span>
           </h2>
           <p className="text-[#8b949e] leading-relaxed mb-8">
-            ShadowTag AI is a Google Cloud-native startup building the infrastructure layer for
+            ShadowTagAI is a Google Cloud-native startup building the infrastructure layer for
             privilege-preserving legal technology. We are ex-FAANG engineers and practicing
             attorneys who believe legal AI should be secure, profitable, and code-grade.
           </p>

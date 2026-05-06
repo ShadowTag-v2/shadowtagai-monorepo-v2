@@ -1,8 +1,8 @@
-// Copyright 2026 ShadowTag AI
+// Copyright 2026 ShadowTagAI
 //
 // Genkit Dart MCP Server for UphillSnowball
 //
-// Exposes ShadowTag AI's Genkit actions (tools, prompts, resources) as an MCP
+// Exposes ShadowTagAI's Genkit actions (tools, prompts, resources) as an MCP
 // server over stdio, enabling IDE-native AI development capabilities.
 //
 // See: https://genkit.dev/docs/dart/mcp
@@ -37,7 +37,7 @@ Future<void> main() async {
         content: [
           TextPart(
             text: 'UphillSnowball Platform — Sovereign AI Infrastructure '
-                'by ShadowTag AI. Incorporated January 29, 2026.',
+                'by ShadowTagAI. Incorporated January 29, 2026.',
           ),
         ],
       );

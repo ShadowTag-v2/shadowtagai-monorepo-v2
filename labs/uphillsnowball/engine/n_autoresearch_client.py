@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """n-autoresearch Execution Client.
 
 n-autoresearch owns the bottom execution layer:

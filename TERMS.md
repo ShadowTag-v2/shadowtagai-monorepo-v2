@@ -1,4 +1,4 @@
-# TERMS.md — ShadowTag AI Terms of Service
+# TERMS.md — ShadowTagAI Terms of Service
 
 **Last Updated:** April 14, 2026
 **Effective Date:** April 14, 2026
@@ -8,11 +8,11 @@
 
 ## 1. Acceptance of Terms
 
-By accessing or using any ShadowTag AI service ("Service"), including **ShadowTag AI** (shadowtagai.com), **KovelAI** (kovelai.com), and any associated APIs, you agree to these Terms of Service ("Terms"). If you do not agree, do not use the Service.
+By accessing or using any ShadowTagAI service ("Service"), including **ShadowTagAI** (shadowtagai.com), **KovelAI** (kovelai.com), and any associated APIs, you agree to these Terms of Service ("Terms"). If you do not agree, do not use the Service.
 
 ## 2. Service Description
 
-ShadowTag AI provides:
+ShadowTagAI provides:
 - **Judge 6 Shield**: AI liability mitigation and compliance firewall
 - **KovelAI / CounselConduit**: Privileged client AI intake and legal workflow automation
 - **UphillSnowball**: Infrastructure platform for AI governance and retrieval
@@ -66,7 +66,7 @@ You agree NOT to:
 ## 7. Intellectual Property
 
 ### 7.1 Our IP
-- The Service, including software, algorithms, documentation, and branding, is owned by ShadowTag AI
+- The Service, including software, algorithms, documentation, and branding, is owned by ShadowTagAI
 - Open-source components are licensed under their respective licenses (see repository)
 
 ### 7.2 Your Content
@@ -109,7 +109,7 @@ TO THE MAXIMUM EXTENT PERMITTED BY LAW:
 
 ## 11. Indemnification
 
-You agree to indemnify and hold harmless ShadowTag AI from claims arising from:
+You agree to indemnify and hold harmless ShadowTagAI from claims arising from:
 - Your use of the Service
 - Your violation of these Terms
 - Your violation of any third-party rights

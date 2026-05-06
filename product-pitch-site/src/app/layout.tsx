@@ -86,7 +86,7 @@ const jsonLd = {
   ],
   provider: {
     "@type": "Organization",
-    name: "ShadowTag AI, Inc.",
+    name: "ShadowTagAI, Inc.",
     url: "https://shadowtagai.com",
     foundingDate: "2025",
     sameAs: ["https://kovelai.web.app"],
