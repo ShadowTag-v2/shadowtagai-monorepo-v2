@@ -80,18 +80,24 @@ export default function MarketplacePage() {
     .filter((l) => cat === 'all' || l.category === cat)
     .sort((a, b) => b.remixCount - a.remixCount);
 
-  const buy = useCallback(async (wfId: string) => {
+  const buy = useCallback(async (wfId: string, price: number) => {
     try {
-      const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/marketplace/checkout`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://counselconduit-api.run.app';
+      const r = await fetch(`${apiUrl}/api/marketplace/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ videoId: wfId, buyerId: 'anon' }),
+        body: JSON.stringify({ videoId: wfId, buyerId: 'anon', amount: price }),
       });
       const d = await r.json();
-      if (d.checkoutUrl) window.location.href = d.checkoutUrl;
+      if (d.checkoutUrl) {
+        window.location.href = d.checkoutUrl;
+      } else {
+        throw new Error('No checkout URL returned');
+      }
     } catch (_err: unknown) {
-      void _err;
-      alert('Stripe Connect checkout opens in production.');
+      // eslint-disable-next-line no-console
+      console.error('Checkout error:', _err);
+      alert('Stripe Connect checkout failed or is unavailable.');
     }
   }, []);
 
@@ -104,20 +110,20 @@ export default function MarketplacePage() {
               <span className="text-gradient">HeadFade</span>{' '}
               <span className="text-zinc-400 font-normal">Marketplace</span>
             </h1>
-            <p className="text-zinc-600 text-xs mt-1">
+            <p className="text-zinc-400 text-xs mt-1">
               The GitHub of AI — License workflows, earn passive income from every remix
             </p>
           </div>
           <div className="flex gap-3">
             <a
               href="/"
-              className="text-xs text-zinc-500 border border-zinc-800 px-3 py-1.5 rounded-lg hover:text-white transition-colors"
+              className="text-xs text-zinc-300 border border-zinc-700 px-3 py-1.5 rounded-lg hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#00FF41]"
             >
               ← Sandbox
             </a>
             <button
               type="button"
-              className="text-xs bg-[#00FF41] text-black px-4 py-1.5 rounded-lg font-bold hover:bg-white transition-colors"
+              className="text-xs bg-[#00FF41] text-black px-4 py-1.5 rounded-lg font-bold hover:bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
             >
               List Your Workflow
             </button>
@@ -133,7 +139,7 @@ export default function MarketplacePage() {
             { l: 'Total Remixes', v: '2.4M', s: 'Network effect flywheel' },
           ].map((st) => (
             <div key={st.l} className="p-4 border border-zinc-900 rounded-xl bg-zinc-950/50">
-              <p className="text-zinc-600 text-[10px] uppercase tracking-[0.2em]">{st.l}</p>
+              <p className="text-zinc-400 text-[10px] uppercase tracking-[0.2em]">{st.l}</p>
               <p className="text-xl font-bold text-white mt-1">{st.v}</p>
               <p className="text-[10px] text-emerald-500 mt-0.5">{st.s}</p>
             </div>
@@ -146,7 +152,7 @@ export default function MarketplacePage() {
               key={c}
               type="button"
               onClick={() => setCat(c)}
-              className={`text-[11px] px-3 py-1.5 rounded-lg border transition-all ${cat === c ? 'bg-[#00FF41]/10 text-[#00FF41] border-[#00FF41]/30' : 'text-zinc-500 border-zinc-800 hover:border-zinc-700'}`}
+              className={`text-[11px] px-3 py-1.5 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-[#00FF41] ${cat === c ? 'bg-[#00FF41]/10 text-[#00FF41] border-[#00FF41]/30' : 'text-zinc-300 border-zinc-700 hover:border-zinc-500'}`}
             >
               {c === 'all' ? 'All' : c}
             </button>
@@ -164,8 +170,8 @@ export default function MarketplacePage() {
                 key={l.id}
                 className="border border-zinc-900 rounded-xl p-4 hover:border-zinc-700 transition-all"
               >
-                <h3 className="text-sm font-bold mb-1">{l.title}</h3>
-                <p className="text-[11px] text-zinc-500 mb-2">
+                <h2 className="text-sm font-bold mb-1">{l.title}</h2>
+                <p className="text-[11px] text-zinc-400 mb-2">
                   by <span className="text-cyan-400">@{l.creator}</span>
                 </p>
                 <div className="flex flex-wrap gap-1 mb-2">
@@ -178,14 +184,14 @@ export default function MarketplacePage() {
                     </span>
                   ))}
                 </div>
-                <div className="flex justify-between text-[10px] text-zinc-600 mb-3">
+                <div className="flex justify-between text-[10px] text-zinc-400 mb-3">
                   <span>🔀 {l.remixCount.toLocaleString()} remixes</span>
                   <span>💰 ${l.earnings.toLocaleString()} earned</span>
                 </div>
                 <button
                   type="button"
-                  onClick={() => buy(l.id)}
-                  className="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 text-black py-2 text-[11px] font-bold rounded-lg hover:opacity-90 transition-opacity"
+                  onClick={() => buy(l.id, l.price)}
+                  className="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 text-black py-2 text-[11px] font-bold rounded-lg hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-black"
                 >
                   Fork Workflow — ${l.price.toFixed(2)}
                 </button>
@@ -202,7 +208,7 @@ export default function MarketplacePage() {
           </p>
           <button
             type="button"
-            className="bg-[#00FF41] text-black px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-white transition-colors"
+            className="bg-[#00FF41] text-black px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
           >
             Start Selling
           </button>
@@ -210,7 +216,7 @@ export default function MarketplacePage() {
       </main>
 
       <footer className="border-t border-zinc-900 px-6 py-6 mt-12">
-        <div className="max-w-6xl mx-auto flex justify-between text-[10px] text-zinc-700">
+        <div className="max-w-6xl mx-auto flex justify-between text-[10px] text-zinc-400">
           <span>© 2026 ShadowTag AI · Stripe Connect</span>
           <span>20% platform · 80% to creators</span>
         </div>

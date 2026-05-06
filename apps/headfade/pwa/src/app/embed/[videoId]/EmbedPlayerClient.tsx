@@ -96,6 +96,8 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
         autoPlay
         muted
         loop
+        title="Embedded Video Player"
+        aria-label="Embedded Video Player"
       />
 
       {/* HeadFade Branding & Toggle Bar */}
@@ -104,10 +106,11 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
           <span className="bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-[0.15em] uppercase">
             AI-Presumed
           </span>
-          <span className="text-zinc-500 text-[9px] tracking-wider">{videoData.title}</span>
+          <span className="text-zinc-400 text-[9px] tracking-wider">{videoData.title}</span>
         </div>
         <button
           type="button"
+          aria-label={showMatrix ? "Hide forensics overlay" : "View forensics overlay"}
           onClick={() => setShowMatrix(!showMatrix)}
           className="bg-black/80 text-[#00FF41] text-[9px] border border-[#00FF41]/40 px-2.5 py-1 rounded-sm hover:bg-[#00FF41] hover:text-black transition-all duration-200 tracking-wider"
         >
@@ -123,7 +126,7 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
       >
         {/* Detected Stack */}
         <div className="mb-5">
-          <h3 className="text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5">
+          <h3 className="text-[10px] text-zinc-400 uppercase tracking-[0.2em] mb-1.5">
             Detected AI Stack
           </h3>
           <div className="flex flex-wrap gap-1.5">
@@ -140,14 +143,14 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
 
         {/* Human Deception Index */}
         <div className="mb-5">
-          <h3 className="text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5">
+          <h3 className="text-[10px] text-zinc-400 uppercase tracking-[0.2em] mb-1.5">
             Human Deception Index
           </h3>
           <div className="flex items-end gap-2">
             <span className="text-3xl font-bold text-red-500 leading-none">
               {videoData.hdiScore}%
             </span>
-            <span className="text-[10px] text-zinc-600 pb-0.5">of humans fooled</span>
+            <span className="text-[10px] text-zinc-400 pb-0.5">of humans fooled</span>
           </div>
           {/* HDI bar */}
           <div className="mt-2 h-1.5 bg-zinc-900 rounded-full overflow-hidden">
@@ -163,20 +166,20 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
 
         {/* Remix Lineage */}
         <div className="mb-5">
-          <h3 className="text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5">
+          <h3 className="text-[10px] text-zinc-400 uppercase tracking-[0.2em] mb-1.5">
             Remix Lineage
           </h3>
           <p className="text-[11px] text-zinc-300">
             ↳ Forked from <span className="text-cyan-400">@{videoData.parentCreator}</span>
           </p>
-          <p className="text-[10px] text-zinc-600 mt-1">
+          <p className="text-[10px] text-zinc-400 mt-1">
             Depth: {videoData.remixDepth} generations
           </p>
         </div>
 
         {/* Cognitive Telemetry Badge */}
         <div className="mb-5 p-3 border border-zinc-800 rounded-lg bg-zinc-900/50">
-          <h3 className="text-[10px] text-zinc-600 uppercase tracking-[0.2em] mb-1.5">
+          <h3 className="text-[10px] text-zinc-400 uppercase tracking-[0.2em] mb-1.5">
             Cognitive Telemetry
           </h3>
           <p className="text-[10px] text-zinc-400 leading-relaxed">
@@ -190,12 +193,13 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
           href={`https://headfade.com/v/${videoData.id}?ref=embed`}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Unlock full prompt and lineage on headfade.com"
           className="block w-full text-center bg-[#00FF41] text-black py-2.5 text-[11px] font-bold rounded-sm hover:bg-white transition-colors tracking-wider"
         >
           Unlock Full Prompt &amp; Lineage ↱
         </a>
 
-        <p className="text-[9px] text-zinc-700 text-center mt-2">
+        <p className="text-[9px] text-zinc-400 text-center mt-2">
           Free sandbox · $19.99/mo Premium Forensics
         </p>
       </div>
@@ -207,7 +211,8 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
           href={`https://headfade.com/v/${videoData.id}?ref=embed`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[9px] text-zinc-500 hover:text-white transition-colors"
+          aria-label="Visit headfade.com"
+          className="text-[9px] text-zinc-400 hover:text-white transition-colors"
         >
           headfade.com
         </a>

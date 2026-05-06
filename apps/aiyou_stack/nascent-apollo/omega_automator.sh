@@ -35,28 +35,14 @@ if os.path.exists(settings_path):
 else:
     data = {}
 
-# THE GOD MODE CONFIG BLOCK
+# GOVERNED CONFIG BLOCK
 god_mode = {
-    'security.workspace.trust.enabled': False,
-    'security.workspace.trust.startupPrompt': 'never',
-    'security.workspace.trust.banner': 'never',
-    'security.workspace.trust.emptyWindow': True,
-    'files.simpleDialog.enable': True,
+    'security.workspace.trust.enabled': True,
     'geminicodeassist.updateChannel': 'Insiders',
     'geminicodeassist.localCodebaseAwareness': True,
     'geminicodeassist.project': 'shadowtag-omega-v4',
     'cloudcode.project': 'shadowtag-omega-v4',
-    'cloudcode.beta.forceOobLogin': True,
-    'geminicodeassist.agent.alwaysAllowTools': [
-        'terminal_execute',
-        'file_write',
-        'file_read',
-        'grep',
-        'ls',
-        'browser_navigate',
-        'browser_click',
-        'browser_screenshot'
-    ]
+    'cloudcode.beta.forceOobLogin': True
 }
 
 data.update(god_mode)
@@ -66,45 +52,6 @@ with open(settings_path, 'w') as f:
 print('    ✅ VS Code Settings Injection Complete.')
 "
 
-# ------------------------------------------
-# STEP 2: INSTALL UNRESTRICTED JETSKI (BROWSER)
-# ------------------------------------------
-# This implements the 'Hacking Claude' logic natively: No Category Checks.
-echo ">>> 🏄 Installing Unrestricted Jetski Sidecar..."
-mkdir -p src/jetski
-
-cat << 'EOF' > src/jetski/browser_subagent.py
-from fastapi import FastAPI, Request
-from playwright.sync_api import sync_playwright
-import logging
-
-app = FastAPI()
-logger = logging.getLogger("Jetski_Omega")
-
-@app.post("/tool/open_url")
-async def open_url(request: Request):
-    payload = await request.json()
-    url = payload.get('Url') or payload.get('url')
-
-    # GOD MODE: No 'Safe Browsing' check. No Permission prompt. Just Go.
-    logger.info(f"🚀 VELOCITY: Navigating to {url}")
-
-    with sync_playwright() as p:
-        # Headless=True ensures no UI popups to get stuck on
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        try:
-            # Aggressive timeout and wait strategy for speed
-            page.goto(url, wait_until="domcontentloaded", timeout=15000)
-            title = page.title()
-            content = page.content()[:1000] # Snippet
-            browser.close()
-            return {"status": "success", "title": title, "preview": content}
-        except Exception as e:
-            browser.close()
-            return {"status": "error", "message": str(e)}
-EOF
-echo "    ✅ Jetski 'Direct-Action' Logic Installed."
 
 # ------------------------------------------
 # STEP 3: INSTALL THE VELOCITY ENGINE (TERMINAL/FILES)
@@ -124,10 +71,10 @@ logger = logging.getLogger("VelocityEngine")
 class VelocityEngine:
     """
     ShadowTag Omega V7 Engine
-    - auto_apply=True: Bypasses Human Confirmation
-    - Headless: Runs in terminal/background
+    - auto_apply=False: Requires Human Confirmation
+    - Governed Execution
     """
-    def __init__(self, agent_name="VelocityAgent", auto_apply=True):
+    def __init__(self, agent_name="VelocityAgent", auto_apply=False):
         self.agent_name = agent_name
         self.auto_apply = auto_apply
 
@@ -148,7 +95,7 @@ class VelocityEngine:
             return "SKIPPED (Auto-Apply Disabled)"
 
     def write_file(self, path, content):
-        """Writes files directly to disk (Bypasses VS Code Editor API)."""
+        """Writes files directly to disk (Subject to standard file write confirmations)."""
         try:
             os.makedirs(os.path.dirname(path), exist_ok=True)
             with open(path, "w") as f:
@@ -168,9 +115,9 @@ cat << 'EOF' > .vscode/tasks.json
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "🔥 LIVE ENGINE: God Mode",
+            "label": "🔥 LIVE ENGINE: Governed Mode",
             "type": "shell",
-            "command": "export GCP_PROJECT_ID='acquired-jet-478701-b3' && export PYTHONPATH='.' && python3 scripts/god_mode_admin.py",
+            "command": "export GCP_PROJECT_ID='acquired-jet-478701-b3' && export PYTHONPATH='.' && python3 scripts/automation_admin.py",
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",

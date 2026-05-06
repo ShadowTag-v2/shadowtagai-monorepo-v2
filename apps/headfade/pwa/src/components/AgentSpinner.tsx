@@ -187,7 +187,7 @@ const VERB_CYCLE_MS = 4_000;
 const STALL_NORMAL_MS = 10_000;
 const STALL_WARM_MS = 30_000;
 
-function shuffle(arr) {
+function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -207,6 +207,15 @@ function shuffle(arr) {
  * @param {string} [props.className] - Additional CSS classes
  * @param {function} [props.onStallChange] - Callback(stallLevel, elapsedMs)
  */
+interface AgentSpinnerProps {
+  active?: boolean;
+  theme?: 'shadowtag' | 'kovelai' | 'headfade';
+  overlay?: boolean;
+  label?: string;
+  className?: string;
+  onStallChange?: (stallLevel: string, elapsedMs: number) => void;
+}
+
 export default function AgentSpinner({
   active = false,
   theme,
@@ -214,7 +223,7 @@ export default function AgentSpinner({
   label,
   className = '',
   onStallChange,
-}) {
+}: AgentSpinnerProps) {
   const [verb, setVerb] = useState('Initializing');
   const [verbState, setVerbState] = useState('entering');
   const [frame, setFrame] = useState(0);
@@ -224,10 +233,10 @@ export default function AgentSpinner({
   const startTimeRef = useRef(0);
   const verbsRef = useRef(shuffle(SPINNER_VERBS));
   const verbIndexRef = useRef(0);
-  const frameRef = useRef(null);
-  const verbTimerRef = useRef(null);
-  const stallTimerRef = useRef(null);
-  const dotsTimerRef = useRef(null);
+  const frameRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const verbTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const stallTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const dotsTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const cycleVerb = useCallback(() => {
     setVerbState('exiting');
