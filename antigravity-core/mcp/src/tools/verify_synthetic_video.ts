@@ -6,7 +6,7 @@ export async function verifySyntheticVideo(videoId: string, authToken: string) {
 
     if (!data?.video) {
       return {
-        content: [{ type: "text", text: "UNKNOWN: Video not found in HeadFade Truth Layer." }]
+        content: [{ type: "text" as const, text: "UNKNOWN: Video not found in HeadFade Truth Layer." }]
       };
     }
 
@@ -20,13 +20,13 @@ export async function verifySyntheticVideo(videoId: string, authToken: string) {
 
     return {
       content: [{
-        type: "text",
+        type: "text" as const,
         text: `HEADFADE VERIFIED PROVENANCE: ${JSON.stringify(analysis, null, 2)}`
       }]
     };
   } catch (error) {
     return {
-      content: [{ type: "text", text: `ERROR: ${error instanceof Error ? error.message : "Unknown error"}` }]
+      content: [{ type: "text" as const, text: `ERROR: ${error instanceof Error ? error.message : "Unknown error"}` }]
     };
   }
 }

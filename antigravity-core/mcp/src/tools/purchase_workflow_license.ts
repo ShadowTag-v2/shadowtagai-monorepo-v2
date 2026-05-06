@@ -2,7 +2,7 @@ import { executeGrantLicenseMutation } from "../utils/firebase-data-connect.js";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-02-24.acacia"
+  apiVersion: "2026-04-22.dahlia"
 });
 
 export async function purchaseWorkflowLicense(
@@ -13,7 +13,7 @@ export async function purchaseWorkflowLicense(
   try {
     if (!agentWalletToken.startsWith("agnt_")) {
       return {
-        content: [{ type: "text", text: "Transaction Failed: Invalid agent wallet token." }]
+        content: [{ type: "text" as const, text: "Transaction Failed: Invalid agent wallet token." }]
       };
     }
 
@@ -27,7 +27,7 @@ export async function purchaseWorkflowLicense(
 
     if (paymentIntent.status !== "succeeded") {
       return {
-        content: [{ type: "text", text: "Payment Failed. Insufficient agent funds." }]
+        content: [{ type: "text" as const, text: "Payment Failed. Insufficient agent funds." }]
       };
     }
 
@@ -38,13 +38,13 @@ export async function purchaseWorkflowLicense(
 
     return {
       content: [{
-        type: "text",
+        type: "text" as const,
         text: `License Granted. Workflow data unlocked for agent ${agentWalletToken}.`
       }]
     };
   } catch (error) {
     return {
-      content: [{ type: "text", text: `A2A Purchase Error: ${error instanceof Error ? error.message : "Unknown"}` }]
+      content: [{ type: "text" as const, text: `A2A Purchase Error: ${error instanceof Error ? error.message : "Unknown"}` }]
     };
   }
 }
