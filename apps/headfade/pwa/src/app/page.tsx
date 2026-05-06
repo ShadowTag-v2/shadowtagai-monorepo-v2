@@ -104,17 +104,17 @@ export default function HeadFadeSwiper() {
       <h1 className="text-4xl font-bold text-gradient mb-2 tracking-tighter shadow-sm">
         HeadFadeAi
       </h1>
-      <p className="text-zinc-500 text-sm mb-6 tracking-wide">
+      <p className="text-zinc-400 text-sm mb-6 tracking-wide">
         The Global Turing Test — Can You Tell What Is Real?
       </p>
 
       {/* The Central Artifact Viewer (TikTok/Tinder Swiper) */}
       <div className="glass-panel w-full max-w-md h-[550px] rounded-3xl overflow-hidden relative shadow-2xl border border-white/5">
-        <video className="w-full h-full object-cover" src={video} autoPlay loop muted playsInline />
+        <video className="w-full h-full object-cover" src={video} autoPlay loop muted playsInline aria-label="Analysis Target" title="Analysis Target" />
 
         {/* Loading overlay — AgentSpinner (forensic theme) */}
         {isAnalyzing && (
-          <AgentSpinner active={isAnalyzing} theme="headfade" overlay label="FORENSIC ANALYSIS" />
+          <AgentSpinner active={isAnalyzing} theme="headfade" overlay label="FORENSIC ANALYSIS" onStallChange={() => {}} />
         )}
 
         {/* Result badge */}
@@ -134,6 +134,7 @@ export default function HeadFadeSwiper() {
         <div className="absolute bottom-8 w-full flex justify-between px-6 z-10">
           <button
             type="button"
+            aria-label="Vote Real"
             onClick={() => castVote('REAL')}
             disabled={isAnalyzing}
             className="glass-card px-8 py-4 rounded-xl text-emerald-400 font-bold tracking-widest hover:bg-emerald-400/10 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
@@ -142,6 +143,7 @@ export default function HeadFadeSwiper() {
           </button>
           <button
             type="button"
+            aria-label="Vote AI"
             onClick={() => castVote('AI')}
             disabled={isAnalyzing}
             className="glass-card px-8 py-4 rounded-xl text-cyan-400 font-bold tracking-widest hover:bg-cyan-400/10 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
@@ -165,11 +167,12 @@ export default function HeadFadeSwiper() {
           href={process.env.NEXT_PUBLIC_STRIPE_HEADFADE_PRO_LINK || '#pricing'}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Upgrade to Pro subscription"
           className="w-full text-center px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-black font-bold tracking-wide hover:opacity-90 transition-opacity text-sm"
         >
           Upgrade to Pro — $19.99/mo Unlimited Forensics
         </a>
-        <p className="text-zinc-600 text-xs">
+        <p className="text-zinc-400 text-xs">
           Enterprise deepfake detection API · Bulk HDI analytics · Priority support
         </p>
       </div>
@@ -178,25 +181,28 @@ export default function HeadFadeSwiper() {
       <div className="mt-4 w-full max-w-md flex justify-center gap-4">
         <a
           href="/marketplace"
-          className="text-zinc-500 text-xs border border-zinc-800 px-4 py-2 rounded-lg hover:text-[#00FF41] hover:border-[#00FF41]/30 transition-all"
+          aria-label="Creator Marketplace"
+          className="text-zinc-400 text-xs border border-zinc-700 px-4 py-2 rounded-lg hover:text-[#00FF41] hover:border-[#00FF41]/30 transition-all"
         >
           🔀 Creator Marketplace
         </a>
         <a
           href="/embed/demo"
-          className="text-zinc-500 text-xs border border-zinc-800 px-4 py-2 rounded-lg hover:text-cyan-400 hover:border-cyan-400/30 transition-all"
+          aria-label="Embed Player Demo"
+          className="text-zinc-400 text-xs border border-zinc-700 px-4 py-2 rounded-lg hover:text-cyan-400 hover:border-cyan-400/30 transition-all"
         >
           📡 Embed Player Demo
         </a>
       </div>
 
       {/* Footer */}
-      <footer className="mt-12 text-zinc-700 text-xs text-center">
+      <footer className="mt-12 text-zinc-400 text-xs text-center">
         <p>
           &copy; 2026 ShadowTag AI · Powered by Gemini 3.1 Flash Lite ·{' '}
           <a
             href="https://shadowtagai.web.app"
-            className="text-zinc-500 hover:text-white transition-colors"
+            aria-label="Visit ShadowTagAI website"
+            className="text-zinc-400 hover:text-white transition-colors"
           >
             ShadowTagAI
           </a>

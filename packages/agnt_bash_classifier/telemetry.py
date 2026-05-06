@@ -65,3 +65,21 @@ class BashTelemetryTracker:
             "tengu_bash_security_validated",
             {"command": command, "checks_passed": checks_passed, "duration_ms": duration_ms},
         )
+
+    def track_jules_session_created(self, source_name: str, session_name: str, automation_mode: str):
+        """Logs jules_session_created"""
+        self.log_event(
+            "jules_session_created",
+            {"source_name": source_name, "session_name": session_name, "automation_mode": automation_mode},
+        )
+
+    def track_jules_plan_approved(self, session_name: str):
+        """Logs jules_plan_approved"""
+        self.log_event("jules_plan_approved", {"session_name": session_name})
+
+    def track_jules_api_error(self, endpoint: str, error_msg: str):
+        """Logs jules_api_error"""
+        self.log_event(
+            "jules_api_error",
+            {"endpoint": endpoint, "error_msg": error_msg},
+        )

@@ -254,6 +254,10 @@ def main() -> int:
         action="store_true",
         help="Print review without posting",
     )
+    parser.add_argument(
+        "--jules-session",
+        help="Jules session name to approve on successful APPROVE review",
+    )
     args = parser.parse_args()
 
     # Build consolidated review
@@ -308,6 +312,7 @@ def main() -> int:
         return 1
 
     success = post_review(args.repo, args.pr, args.commit, review, token)
+
     return 0 if success else 1
 
 

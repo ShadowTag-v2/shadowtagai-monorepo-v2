@@ -1,0 +1,139 @@
+/* ============================================================
+   jules-session.css — Sovereign Lens Design System
+   Implementation of the Sovereign Lens tokens for Jules control
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Sovereign Lens Tokens */
+  --sovereign-void: #09090b;
+  --sovereign-surface: rgba(9, 9, 11, 0.6);
+  --sovereign-surface-low: #1c1b1d;
+  --sovereign-surface-high: #353437;
+  --sovereign-primary: #d2bbff;
+  --sovereign-primary-container: #7c3aed;
+  --sovereign-secondary: #0df274;
+  --sovereign-on-surface-variant: #ccc3d8;
+  --sovereign-outline-variant: rgba(74, 68, 85, 0.15); /* #4a4455 at 15% */
+
+  --sovereign-gradient-hydra: linear-gradient(
+    135deg,
+    var(--sovereign-primary),
+    var(--sovereign-primary-container)
+  );
+  --sovereign-electric-edge: 0 0 15px var(--sovereign-secondary);
+  --sovereign-ambient-shadow: 0 40px 80px rgba(210, 187, 255, 0.04);
+
+  --font-space-grotesk: 'Space Grotesk', sans-serif;
+}
+
+.sovereign-container {
+  font-family: var(--font-space-grotesk);
+  background-color: var(--sovereign-void);
+  color: var(--sovereign-on-surface-variant);
+  padding: 2rem;
+  min-height: 100%;
+}
+
+.sovereign-card {
+  background: var(--sovereign-surface-low);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--sovereign-ambient-shadow);
+}
+
+/* Glassmorphism for floating UI */
+.sovereign-glass {
+  background: var(--sovereign-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--sovereign-outline-variant);
+}
+
+.sovereign-display {
+  font-family: var(--font-space-grotesk);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.sovereign-label {
+  font-family: var(--font-space-grotesk);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--sovereign-on-surface-variant);
+  margin-bottom: 0.5rem;
+}
+
+.sovereign-active-state {
+  background: var(--sovereign-surface-high);
+  padding: 1rem;
+  border-radius: 0.25rem;
+}
+
+/* Buttons */
+.sovereign-btn-primary {
+  background: var(--sovereign-gradient-hydra);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-space-grotesk);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.sovereign-btn-primary:hover {
+  opacity: 0.9;
+}
+
+.sovereign-btn-secondary {
+  background: transparent;
+  color: var(--sovereign-on-surface-variant);
+  border: 1px solid var(--sovereign-outline-variant);
+  border-radius: 0.25rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-space-grotesk);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sovereign-btn-secondary:hover {
+  background: var(--sovereign-surface-high);
+  color: #ffffff;
+}
+
+/* Status Indicator */
+.sovereign-status {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--sovereign-secondary);
+  box-shadow: var(--sovereign-electric-edge);
+  margin-right: 0.5rem;
+}
+
+/* Lists */
+.sovereign-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sovereign-list-item {
+  padding: 12px 0;
+  transition: color 0.2s ease;
+}
+
+.sovereign-list-item:hover {
+  color: #ffffff;
+}

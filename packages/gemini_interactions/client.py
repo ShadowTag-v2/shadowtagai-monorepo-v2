@@ -44,6 +44,8 @@ from enum import StrEnum
 from typing import Any
 from collections.abc import Generator
 
+from .telemetry import NullTelemetry, TelemetryCallback, Timer
+
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -280,9 +282,11 @@ class InteractionsClient:
         *,
         api_key: str | None = None,
         default_model: str = DEFAULT_MODEL,
+        telemetry: TelemetryCallback | None = None,
     ) -> None:
         self._api_key = api_key or os.environ.get("GEMINI_API_KEY", "")
         self._default_model = default_model
+        self._telemetry = telemetry or NullTelemetry()
         self._client: Any | None = None  # Lazy init
 
     @property
@@ -342,8 +346,38 @@ class InteractionsClient:
             store=store,
         )
 
-        interaction = self.client.interactions.create(**kwargs)
-        return InteractionResult.from_interaction(interaction)
+        resolved_model = model or self._default_model
+        self._telemetry.on_request_start(
+            method="create",
+            model=resolved_model,
+            is_streaming=False,
+            has_tools=bool(tools),
+            previous_interaction_id=previous_interaction_id,
+        )
+
+        timer = Timer()
+        with timer:
+            try:
+                interaction = self.client.interactions.create(**kwargs)
+            except Exception as exc:
+                self._telemetry.on_request_error(
+                    method="create",
+                    model=resolved_model,
+                    error=exc,
+                    latency_ms=timer.elapsed_ms,
+                )
+                raise
+
+        result = InteractionResult.from_interaction(interaction)
+        self._telemetry.on_request_complete(
+            method="create",
+            model=resolved_model,
+            interaction_id=result.id,
+            latency_ms=timer.elapsed_ms,
+            usage=result.usage,
+            status=result.status,
+        )
+        return result
 
     def get(self, interaction_id: str, *, include_input: bool = False) -> InteractionResult:
         """Retrieve a previously created interaction.
@@ -358,8 +392,38 @@ class InteractionsClient:
         kwargs: dict[str, Any] = {}
         if include_input:
             kwargs["include_input"] = True
-        interaction = self.client.interactions.get(interaction_id, **kwargs)
-        return InteractionResult.from_interaction(interaction)
+
+        self._telemetry.on_request_start(
+            method="get",
+            model=self._default_model,
+            is_streaming=False,
+            has_tools=False,
+            previous_interaction_id=None,
+        )
+
+        timer = Timer()
+        with timer:
+            try:
+                interaction = self.client.interactions.get(interaction_id, **kwargs)
+            except Exception as exc:
+                self._telemetry.on_request_error(
+                    method="get",
+                    model=self._default_model,
+                    error=exc,
+                    latency_ms=timer.elapsed_ms,
+                )
+                raise
+
+        result = InteractionResult.from_interaction(interaction)
+        self._telemetry.on_request_complete(
+            method="get",
+            model=self._default_model,
+            interaction_id=result.id,
+            latency_ms=timer.elapsed_ms,
+            usage=result.usage,
+            status=result.status,
+        )
+        return result
 
     def list(
         self,
@@ -432,55 +496,109 @@ class InteractionsClient:
         )
         kwargs["stream"] = True
 
+        resolved_model = model or self._default_model
+        self._telemetry.on_request_start(
+            method="stream",
+            model=resolved_model,
+            is_streaming=True,
+            has_tools=bool(tools),
+            previous_interaction_id=previous_interaction_id,
+        )
+
         interaction_id: str | None = None
         last_event_id: str | None = None
         is_complete = False
+        usage_dict = None
+        status_str = "completed"
 
-        for attempt in range(MAX_STREAM_RECONNECT_ATTEMPTS + 1):
-            try:
-                if attempt == 0:
-                    raw_stream = self.client.interactions.create(**kwargs)
-                elif interaction_id:
-                    # Reconnection
-                    reconnect_kwargs: dict[str, Any] = {"stream": True}
-                    if last_event_id:
-                        reconnect_kwargs["last_event_id"] = last_event_id
-                    raw_stream = self.client.interactions.get(interaction_id, **reconnect_kwargs)
-                else:
-                    break
+        timer = Timer()
+        timer.__enter__()
+        try:
+            for attempt in range(MAX_STREAM_RECONNECT_ATTEMPTS + 1):
+                try:
+                    if attempt == 0:
+                        raw_stream = self.client.interactions.create(**kwargs)
+                    elif interaction_id:
+                        # Reconnection
+                        self._telemetry.on_stream_reconnect(
+                            attempt=attempt,
+                            max_attempts=MAX_STREAM_RECONNECT_ATTEMPTS,
+                            interaction_id=interaction_id,
+                            last_event_id=last_event_id,
+                        )
+                        reconnect_kwargs: dict[str, Any] = {"stream": True}
+                        if last_event_id:
+                            reconnect_kwargs["last_event_id"] = last_event_id
+                        raw_stream = self.client.interactions.get(interaction_id, **reconnect_kwargs)
+                    else:
+                        break
 
-                for chunk in raw_stream:
-                    event = self._parse_chunk(chunk)
+                    for chunk in raw_stream:
+                        event = self._parse_chunk(chunk)
 
-                    if event.interaction_id:
-                        interaction_id = event.interaction_id
-                    if event.event_id:
-                        last_event_id = event.event_id
+                        if event.interaction_id:
+                            interaction_id = event.interaction_id
+                        if event.event_id:
+                            last_event_id = event.event_id
 
-                    yield event
+                        yield event
 
-                    if event.event_type in (
-                        EventType.INTERACTION_COMPLETE,
-                        EventType.ERROR,
-                    ):
-                        is_complete = True
+                        if event.event_type == EventType.INTERACTION_COMPLETE:
+                            is_complete = True
+                            usage_dict = event.usage
+                            return
+                        elif event.event_type == EventType.ERROR:
+                            is_complete = True
+                            status_str = "failed"
+                            return
+
+                    # Stream ended without completion — check status
+                    if interaction_id and not is_complete:
+                        status = self.client.interactions.get(interaction_id)
+                        if getattr(status, "status", "") != "in_progress":
+                            usage_obj = getattr(status, "usage", None)
+                            if usage_obj:
+                                usage_dict = {
+                                    "total_tokens": getattr(usage_obj, "total_tokens", 0),
+                                    "prompt_tokens": getattr(usage_obj, "prompt_tokens", 0),
+                                    "completion_tokens": getattr(usage_obj, "completion_tokens", 0),
+                                }
+                            return
+                    else:
                         return
 
-                # Stream ended without completion — check status
-                if interaction_id and not is_complete:
-                    status = self.client.interactions.get(interaction_id)
-                    if getattr(status, "status", "") != "in_progress":
-                        return
-                else:
-                    return
-
-            except Exception:
-                logger.warning(
-                    "Stream connection dropped (attempt %d/%d), reconnecting...",
-                    attempt + 1,
-                    MAX_STREAM_RECONNECT_ATTEMPTS,
+                except Exception as exc:
+                    if attempt == MAX_STREAM_RECONNECT_ATTEMPTS:
+                        raise
+                    logger.warning(
+                        "Stream connection dropped (attempt %d/%d), reconnecting...",
+                        attempt + 1,
+                        MAX_STREAM_RECONNECT_ATTEMPTS,
+                    )
+                    time.sleep(RECONNECT_BACKOFF_SECONDS * (attempt + 1))
+        except GeneratorExit:
+            status_str = "cancelled"
+            pass
+        except Exception as exc:
+            timer.__exit__(None, None, None)
+            self._telemetry.on_request_error(
+                method="stream",
+                model=resolved_model,
+                error=exc,
+                latency_ms=timer.elapsed_ms,
+            )
+            raise
+        finally:
+            timer.__exit__(None, None, None)
+            if interaction_id:
+                self._telemetry.on_request_complete(
+                    method="stream",
+                    model=resolved_model,
+                    interaction_id=interaction_id,
+                    latency_ms=timer.elapsed_ms,
+                    usage=usage_dict,
+                    status=status_str if is_complete else "cancelled",
                 )
-                time.sleep(RECONNECT_BACKOFF_SECONDS * (attempt + 1))
 
     def function_call_loop(
         self,
@@ -517,66 +635,104 @@ class InteractionsClient:
         Returns:
             Final InteractionResult after all function calls are resolved.
         """
-        result = self.create(
-            input=input,
-            model=model,
-            tools=tools,
-            system_instruction=system_instruction,
-            generation_config=generation_config,
+        resolved_model = model or self._default_model
+        
+        self._telemetry.on_request_start(
+            method="function_call_loop",
+            model=resolved_model,
+            is_streaming=False,
+            has_tools=bool(tools),
+            previous_interaction_id=None,
         )
+        timer = Timer()
+        timer.__enter__()
 
-        for _round in range(max_rounds):
-            function_calls = [o for o in result.outputs if getattr(o, "type", None) == "function_call"]
-            if not function_calls:
-                break  # No more function calls — done
-
-            # Execute ALL function calls and collect results
-            function_results: list[dict[str, Any]] = []
-            for fc in function_calls:
-                fc_name = getattr(fc, "name", "")
-                fc_id = getattr(fc, "id", "")
-                handler = tool_handlers.get(fc_name)
-                if handler:
-                    try:
-                        call_result = handler(**getattr(fc, "arguments", {}))
-                    except Exception as exc:
-                        logger.warning("Tool '%s' raised: %s", fc_name, exc)
-                        call_result = f"Error executing {fc_name}: {exc}"
-                else:
-                    call_result = f"No handler registered for function '{fc_name}'"
-
-                # Serialize result per API contract:
-                # - str → pass through
-                # - list → pass through (multimodal: [{type: text/image, ...}])
-                # - dict → json.dumps()
-                # - other → str()
-                if isinstance(call_result, str):
-                    serialized = call_result
-                elif isinstance(call_result, list):
-                    serialized = call_result  # Multimodal function_result
-                elif isinstance(call_result, dict):
-                    serialized = json.dumps(call_result)
-                else:
-                    serialized = str(call_result)
-
-                function_results.append(
-                    {
-                        "type": "function_result",
-                        "name": fc_name,
-                        "call_id": fc_id,
-                        "result": serialized,
-                    }
-                )
-
-            # Submit ALL results back in a single input list
+        try:
             result = self.create(
-                input=function_results,
+                input=input,
                 model=model,
                 tools=tools,
                 system_instruction=system_instruction,
                 generation_config=generation_config,
-                previous_interaction_id=result.id,
             )
+
+            for _round in range(1, max_rounds + 1):
+                function_calls = [o for o in result.outputs if getattr(o, "type", None) == "function_call"]
+                if not function_calls:
+                    break  # No more function calls — done
+
+                self._telemetry.on_function_call_round(
+                    round_number=_round,
+                    function_names=[getattr(fc, "name", "") for fc in function_calls],
+                    interaction_id=result.id,
+                )
+
+                # Execute ALL function calls and collect results
+                function_results: list[dict[str, Any]] = []
+                for fc in function_calls:
+                    fc_name = getattr(fc, "name", "")
+                    fc_id = getattr(fc, "id", "")
+                    handler = tool_handlers.get(fc_name)
+                    if handler:
+                        try:
+                            call_result = handler(**getattr(fc, "arguments", {}))
+                        except Exception as exc:
+                            logger.warning("Tool '%s' raised: %s", fc_name, exc)
+                            call_result = f"Error executing {fc_name}: {exc}"
+                    else:
+                        call_result = f"No handler registered for function '{fc_name}'"
+
+                    # Serialize result per API contract:
+                    # - str → pass through
+                    # - list → pass through (multimodal: [{type: text/image, ...}])
+                    # - dict → json.dumps()
+                    # - other → str()
+                    if isinstance(call_result, str):
+                        serialized = call_result
+                    elif isinstance(call_result, list):
+                        serialized = call_result  # Multimodal function_result
+                    elif isinstance(call_result, dict):
+                        serialized = json.dumps(call_result)
+                    else:
+                        serialized = str(call_result)
+
+                    function_results.append(
+                        {
+                            "type": "function_result",
+                            "name": fc_name,
+                            "call_id": fc_id,
+                            "result": serialized,
+                        }
+                    )
+
+                # Submit ALL results back in a single input list
+                result = self.create(
+                    input=function_results,
+                    model=model,
+                    tools=tools,
+                    system_instruction=system_instruction,
+                    generation_config=generation_config,
+                    previous_interaction_id=result.id,
+                )
+        except Exception as exc:
+            timer.__exit__(None, None, None)
+            self._telemetry.on_request_error(
+                method="function_call_loop",
+                model=resolved_model,
+                error=exc,
+                latency_ms=timer.elapsed_ms,
+            )
+            raise
+
+        timer.__exit__(None, None, None)
+        self._telemetry.on_request_complete(
+            method="function_call_loop",
+            model=resolved_model,
+            interaction_id=result.id if result else "",
+            latency_ms=timer.elapsed_ms,
+            usage=result.usage if result else None,
+            status=result.status if result else "failed",
+        )
 
         return result
 
