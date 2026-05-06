@@ -1,10 +1,10 @@
 """# noqa: INP001
 scripts/generate_hero_video.py.
 
-Veo 3.1 Hero Video Generator for ShadowTag AI
+Veo 3.1 Hero Video Generator for ShadowTagAI
 
 Generates high-fidelity background video assets using Google's Veo 3.1 API
-(veo-3.1-generate-preview) for the ShadowTag AI hero section.
+(veo-3.1-generate-preview) for the ShadowTagAI hero section.
 
 Workflow:
   1. Generate a reference image via Gemini 3.1 Flash Image (Nano Banana 2)
@@ -299,7 +299,7 @@ class Veo31Pipeline:
 # CLI Entry Point
 # ──────────────────────────────────────────────
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate Veo 3.1 hero background video for ShadowTag AI")
+    parser = argparse.ArgumentParser(description="Generate Veo 3.1 hero background video for ShadowTagAI")
     parser.add_argument(
         "--prompt",
         default=DEFAULT_VIDEO_PROMPT,

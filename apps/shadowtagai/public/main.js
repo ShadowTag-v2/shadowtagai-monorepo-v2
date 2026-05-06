@@ -1,5 +1,5 @@
 /**
- * ShadowTag AI — Main Application Script
+ * ShadowTagAI — Main Application Script
  * Handles: nav, modals, toast, intersection observer, scroll progress, smooth scroll
  */
 

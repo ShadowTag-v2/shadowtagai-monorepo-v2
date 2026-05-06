@@ -3,7 +3,7 @@
 > **Goal**: "So a 5th Grader can run it."
 
 ## The User Story
-"Honey, try out this new ShadowTag AI assistant. We just got it at work, and now I don't need to go through IT, CTO, or CIAO to get tech stuff accomplished."
+"Honey, try out this new ShadowTagAI assistant. We just got it at work, and now I don't need to go through IT, CTO, or CIAO to get tech stuff accomplished."
 
 **The "Magic" Moments:**
 1.  **Migrate-to-GCloud**: "It migrated us straight to GCloud from AWS/MS while I slept. Saving millions daily."

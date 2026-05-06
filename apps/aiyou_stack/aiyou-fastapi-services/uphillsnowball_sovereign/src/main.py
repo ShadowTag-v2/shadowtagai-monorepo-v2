@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 app = FastAPI(
     title="UphillSnowball Sovereign OS",
     version="1.0.0",
-    description="The internal engine powering CounselConduit and ShadowTag AI products",
+    description="The internal engine powering CounselConduit and ShadowTagAI products",
 )
 
 # CORS for CounselConduit frontend

@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """
 KI Engine — Memory-Kernel-Inspired Knowledge Infrastructure
 ============================================================

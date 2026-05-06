@@ -16,7 +16,7 @@ Antigravity HoldCo, Inc. (Delaware C-Corp)
 │   ├── kovelai.com / kovelai.web.app
 │   ├── CounselConduit API (Cloud Run)
 │   └── Oracle Studio pipeline
-├── ShadowTag AI — Parent brand, portal
+├── ShadowTagAI — Parent brand, portal
 │   ├── shadowtagai.web.app
 │   └── AiYou Stack (Apple Silicon ML runtime)
 └── UphillSnowball Labs — R&D

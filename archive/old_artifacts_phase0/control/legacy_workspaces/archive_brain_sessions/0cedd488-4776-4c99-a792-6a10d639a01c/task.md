@@ -47,7 +47,7 @@
 - [x] Validate ingested structure for the `.mil` risk mitigation layer
 
 ### Phase 26: Stitch UI Generation & Redesign
-- [x] Create a Stitch project "ShadowTag AI Light Corporate Redesign"
+- [x] Create a Stitch project "ShadowTagAI Light Corporate Redesign"
 - [x] Generate initial Corporate Landing Page screen using inspiration from unusualmachines.com
 - [x] Generate YOLO variants of the landing page for A/B testing
 - [x] Implement local autonomous Stitch-to-React loop

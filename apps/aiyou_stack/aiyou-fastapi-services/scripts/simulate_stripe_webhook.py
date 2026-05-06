@@ -58,7 +58,7 @@ def simulate_checkout_completed() -> dict:
                 "metadata": {
                     "tier": "pro",
                     "user_id": "usr_shadowtag_test_001",
-                    "product": "ShadowTag AI Pro",
+                    "product": "ShadowTagAI Pro",
                 },
             },
         },

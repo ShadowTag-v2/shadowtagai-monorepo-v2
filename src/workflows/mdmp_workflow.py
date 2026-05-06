@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """ADP 5-0 Military Decision Making Process (MDMP) Workflow.
 
 The J-5 Architect orchestrates through MDMP (receipt of mission → WARNO →

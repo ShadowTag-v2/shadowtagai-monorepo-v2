@@ -198,7 +198,7 @@ export default function HeadFadeSwiper() {
       {/* Footer */}
       <footer className="mt-12 text-zinc-400 text-xs text-center">
         <p>
-          &copy; 2026 ShadowTag AI · Powered by Gemini 3.1 Flash Lite ·{' '}
+          &copy; 2026 ShadowTagAI · Powered by Gemini 3.1 Flash Lite ·{' '}
           <a
             href="https://shadowtagai.web.app"
             aria-label="Visit ShadowTagAI website"

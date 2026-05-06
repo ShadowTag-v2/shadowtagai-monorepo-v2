@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """J-6 → Cor_Claude_Code_6 Pipeline Bridge.
 
 Wires the JTF J-6 (Command, Control, Cyber, & ZTA) staff designation

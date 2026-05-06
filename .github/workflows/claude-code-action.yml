@@ -107,7 +107,7 @@ jobs:
             BASE: ${{ github.base_ref }}
             HEAD: ${{ github.head_ref }}
 
-            You are reviewing a PR in the ShadowTag AI monorepo.
+            You are reviewing a PR in the ShadowTagAI monorepo.
             The PR branch is already checked out.
 
             ## Review Checklist

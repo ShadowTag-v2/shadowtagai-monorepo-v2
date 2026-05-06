@@ -6,7 +6,7 @@ By leveraging the Stitch MCP, we offloaded the visual styling ("Vibe Design") to
 
 ## Actions Executed
 
-1. **Stitch Payload Generation:** Prompted the Stitch MCP to generate a "Light Corporate Redesign" for ShadowTag AI, closely mirroring the structural layout of `unusualmachines.com`.
+1. **Stitch Payload Generation:** Prompted the Stitch MCP to generate a "Light Corporate Redesign" for ShadowTagAI, closely mirroring the structural layout of `unusualmachines.com`.
 2. **Payload Retrieval:** Overcame TLS/SNI redirection errors by using a highly-reliable Python Fetch script to pull the 2560x5708px DOM schema into the workspace.
 3. **AST Componentization:** Executed the `react:components` skill methodology by creating a Cheerio-based AST parser (`extract_components.js`). This script automatically:
    - Sliced the monolithic static HTML into modular `.tsx` files.
@@ -18,7 +18,7 @@ By leveraging the Stitch MCP, we offloaded the visual styling ("Vibe Design") to
 
 The dark, cinematic grid has been replaced by the stark, accessible, high-trust corporate interface requested by the Founder.
 
-![ShadowTag AI Light Corporate Aesthetic (Stitch)](/Users/pikeymickey/.gemini/antigravity/brain/0cedd488-4776-4c99-a792-6a10d639a01c/stitch_ui_review_1772068734787.webp)
+![ShadowTagAI Light Corporate Aesthetic (Stitch)](/Users/pikeymickey/.gemini/antigravity/brain/0cedd488-4776-4c99-a792-6a10d639a01c/stitch_ui_review_1772068734787.webp)
 
 ## Next Steps
 

@@ -34,12 +34,12 @@ jobs:
             exit 1
           fi
 
-      - name: Check ShadowTag AI
+      - name: Check ShadowTagAI
         run: |
           STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 https://shadowtagai.web.app/)
-          echo "ShadowTag AI: HTTP $STATUS"
+          echo "ShadowTagAI: HTTP $STATUS"
           if [ "$STATUS" -ne 200 ]; then
-            echo "::error::ShadowTag AI returned HTTP $STATUS"
+            echo "::error::ShadowTagAI returned HTTP $STATUS"
             exit 1
           fi
 

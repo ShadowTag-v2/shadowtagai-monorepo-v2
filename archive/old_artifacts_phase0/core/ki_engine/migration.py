@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """
 Migration — Item 21: Migration script from KI format to memory-kernel atoms.
 

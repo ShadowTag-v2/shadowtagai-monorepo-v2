@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """J-6 → Judge6 Pipeline Bridge.
 
 Wires the JTF J-6 (Command, Control, Cyber, & ZTA) staff designation

@@ -30,7 +30,7 @@ client = genai.Client(api_key=api_key)
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "apps")
 
-# ─── ShadowTag AI: Fluid Kinetic Aura ───
+# ─── ShadowTagAI: Fluid Kinetic Aura ───
 # Brand colors from Stitch: primary=#d2bbff, secondary=#0df274, bg=#09090b
 SHADOWTAG_PROMPT = (
     "A seamless 8-second looping 4K background video of a 'Fluid Kinetic Aura.' "
@@ -101,7 +101,7 @@ def main() -> int:
 
     if target in ("shadowtag", "both"):
         st_path = os.path.join(OUTPUT_DIR, "shadowtagai", "public", "fluid-kinetic-aura.mp4")
-        results["shadowtag"] = generate_video(SHADOWTAG_PROMPT, st_path, "ShadowTag AI — Fluid Kinetic Aura")
+        results["shadowtag"] = generate_video(SHADOWTAG_PROMPT, st_path, "ShadowTagAI — Fluid Kinetic Aura")
 
     if target in ("kovelai", "both"):
         kv_path = os.path.join(OUTPUT_DIR, "kovelai", "public", "legal-data-arch.mp4")

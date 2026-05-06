@@ -1,4 +1,4 @@
-# ShadowTag AI Browser Task
+# ShadowTagAI Browser Task
 
 - [x] Navigate to http://localhost:3001
 - [/] Wait for Next.js to compile and render the page (Page rendered, but with some issues)

@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 """Tests for remote_config.py — Firebase Remote Config model parameter control."""
 

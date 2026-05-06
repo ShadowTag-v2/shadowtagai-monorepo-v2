@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   ShadowTag AI — Product Pitch Site
+   ShadowTagAI — Product Pitch Site
    JavaScript: scroll animations, particles, nav
    ═══════════════════════════════════════════════════════════ */
 
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   console.log(
-    '%cShadowTag AI',
+    '%cShadowTagAI',
     'color: #00e5ff; font-size: 16px; font-weight: bold; font-family: monospace;',
   );
   console.log(

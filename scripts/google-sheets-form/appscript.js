@@ -118,7 +118,7 @@ function sendNotification(params, sheetName, row) {
   };
 
   const recipient = recipients[sheetName] || 'founder@kovelai.com';
-  const senderName = sheetName === 'ShadowTagAI' ? 'ShadowTag AI' : 'KovelAI';
+  const senderName = sheetName === 'ShadowTagAI' ? 'ShadowTagAI' : 'KovelAI';
 
   const subject = `${senderName} — New ${params.inquiry_type || 'Contact'} Inquiry from ${params.name || 'Unknown'}`;
 
@@ -157,8 +157,8 @@ function sendNotification(params, sheetName, row) {
 function sendAutoReply(params, sheetName) {
   if (!params.email) return;
 
-  const senderName = sheetName === 'ShadowTagAI' ? 'ShadowTag AI' : 'KovelAI';
-  const replyFrom = sheetName === 'ShadowTagAI' ? 'ShadowTag AI' : 'KovelAI';
+  const senderName = sheetName === 'ShadowTagAI' ? 'ShadowTagAI' : 'KovelAI';
+  const replyFrom = sheetName === 'ShadowTagAI' ? 'ShadowTagAI' : 'KovelAI';
 
   const subject = `Thank you for contacting ${senderName}`;
 

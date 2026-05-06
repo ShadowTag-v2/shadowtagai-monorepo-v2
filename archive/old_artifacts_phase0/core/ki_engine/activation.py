@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """
 Spreading Activation — Items 3, 16, 19: ACT-R spreading activation for KI graphs.
 

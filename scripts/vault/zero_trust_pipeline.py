@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """Zero-Trust Data Pipeline — True Obsidian IPI Quarantine.
 
 Processes untrusted data through a multi-stage sanitization pipeline:

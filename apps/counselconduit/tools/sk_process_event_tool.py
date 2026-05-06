@@ -1,4 +1,4 @@
-# Copyright 2026 ShadowTag AI. All rights reserved.
+# Copyright 2026 ShadowTagAI. All rights reserved.
 """ADK Tool: SK Process External Event Injector.
 
 Agent Development Kit tool that allows an AI agent to inject external

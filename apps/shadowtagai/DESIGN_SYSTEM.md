@@ -1,4 +1,4 @@
-# ShadowTag AI — DESIGN_SYSTEM.md
+# ShadowTagAI — DESIGN_SYSTEM.md
 # Generated via Google Design MCP + Live CSS Extraction
 # Design Language: "Kinetic Void"
 # Source: https://shadowtagai.web.app/ (2026-04-24)

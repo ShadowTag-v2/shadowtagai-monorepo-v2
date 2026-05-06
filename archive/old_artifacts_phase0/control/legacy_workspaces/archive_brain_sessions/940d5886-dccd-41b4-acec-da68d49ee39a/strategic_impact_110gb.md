@@ -10,7 +10,7 @@ The recovery and integration of 110GB+ to 84GB+ of dense, high-agency intelligen
 
 ### The GCP Foundation Fabric & Terraform Repos
 - `cloud-foundation-fabric`, `terraform-google-vertex-ai`, `gcp-hardening-toolkit`, `click-to-deploy-solutions`
-- **Impact**: ShadowTag AI now possesses Google's proprietary internal deployment patterns. Instead of manually scaffolding standard VPCs or IAM configs, the Sovereign OS can autonomously inject validated Google Cloud architectures.
+- **Impact**: ShadowTagAI now possesses Google's proprietary internal deployment patterns. Instead of manually scaffolding standard VPCs or IAM configs, the Sovereign OS can autonomously inject validated Google Cloud architectures.
 - **Tech Stack**: The backend shifts to a pure **Infrastructure-as-Code (IaC) Factory**. We instantiate fully secure environments (Tier-1, Tier-2, Tier-3 CSRMC) programmatically.
 
 ### The Linting Array
