@@ -1,36 +1,62 @@
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
+import { GoogleAuth } from "google-auth-library";
 
-/**
- * Connects to the remote Jules MCP API via its SSE endpoint.
- */
-async function connectJules() {
-  console.log('Initializing connection to Jules MCP API via SSE...');
+// Project Configuration
+const GCP_PROJECT_ID = "shadowtag-omega-v4";
+const SERVICE_ACCOUNT = "antigravity-stitch-bot@shadowtag-omega-v4.iam.gserviceaccount.com";
 
-  // Instantiate the SSE client transport
-  const transport = new SSEClientTransport(new URL('https://mcp.jules.googleapis.com/v1/sse'), {
-    // Add auth headers if needed
-    // requestInit: { headers: { "X-Goog-Api-Key": process.env.JULES_API_KEY } }
-  });
+// Enterprise-Grade IAM Authentication via Workload Identity Federation
+const auth = new GoogleAuth({
+  scopes: [
+    "https://www.googleapis.com/auth/cloud-platform",
+    "https://www.googleapis.com/auth/jules.mcp.execute"
+  ]
+});
 
-  const client = new Client(
-    { name: 'antigravity-jules-connector', version: '1.0.0' },
-    { capabilities: {} },
+async function connectToJulesMCP() {
+  console.log("🔒 [Antigravity] Requesting short-lived IAM token via Workload Identity...");
+
+  const authClient = await auth.getClient();
+  const tokenInfo = await authClient.getAccessToken();
+
+  if (!tokenInfo.token) {
+    throw new Error("Fatal: Failed to obtain Workload Identity token.");
+  }
+
+  console.log("✅ [Antigravity] Short-lived token acquired. Connecting to Jules MCP...");
+
+  // Official MCP SSE Transport (Enterprise Endpoint)
+  const transport = new SSEClientTransport(
+    new URL("https://mcp.jules.googleapis.com/v1/sse"),
+    {
+      headers: {
+        "Authorization": `Bearer ${tokenInfo.token}`,
+        "X-Goog-User-Project": GCP_PROJECT_ID,
+        "Content-Type": "application/json"
+      }
+    }
   );
 
-  try {
-    await client.connect(transport);
-    console.log('✅ Successfully connected to Jules MCP.');
+  const mcpClient = new Client(
+    {
+      name: "HeadFade-Stitch-Orchestrator",
+      version: "2.0.0"
+    },
+    {
+      capabilities: {
+        roots: { listChanged: true }
+      }
+    }
+  );
 
-    // Retrieve available tools from the remote Jules MCP
-    const tools = await client.listTools();
-    console.log('🛠️  Available Tools:', tools);
-  } catch (error) {
-    console.error('❌ Failed to connect to Jules MCP API:', error);
-    process.exit(1);
-  } finally {
-    process.exit(0);
-  }
+  await mcpClient.connect(transport);
+
+  console.log("✅ [Antigravity] Direct Enterprise IAM connection to Jules established via MCP.");
+  console.log("🚀 HeadFade is now ready to deploy https://headfade.com/ using official Jules.");
+
+  return mcpClient;
 }
 
-connectJules();
+connectToJulesMCP().catch(console.error);
+```

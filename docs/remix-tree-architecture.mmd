@@ -1,24 +1,18 @@
+```mermaid
 graph TD
-    A[Original Video - orig_123] --> B(Remix 1 - user_456)
-    A --> C(Remix 2 - user_789)
-    B --> D(Remix 1.1 - user_101)
-    
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#bbf,stroke:#333,stroke-width:2px
-    style D fill:#dfd,stroke:#333,stroke-width:2px
-    
-    subgraph DataConnect Layer
-        DB[(Firebase Data Connect Postgres)]
-    end
-    
-    A -.-> DB
-    B -.-> DB
-    C -.-> DB
-    D -.-> DB
-    
-    subgraph HeadFade MCP
-        MCP[Truth Oracle Server]
-    end
-    
-    MCP -->|Queries Provenance| DB
+    A[Original Prompt + Model Stack] --> B[Remix v1.0]
+    B --> C[Remix v1.1 - Fork by @neonvoid_ai]
+    B --> D[Remix v1.2 - Style Transfer]
+    C --> E[Remix v2.0 - Major Evolution]
+    D --> E
+    E --> F[Remix v2.1 - Human Deception Index: 87%]
+    F --> G[Current Live Version]
+
+    classDef original fill:#22c55e,stroke:#166534,color:white
+    classDef remix fill:#3b82f6,stroke:#1e40af,color:white
+    classDef current fill:#eab308,stroke:#854d0e,color:black
+
+    class A original
+    class B,C,D,E,F remix
+    class G current
+```
