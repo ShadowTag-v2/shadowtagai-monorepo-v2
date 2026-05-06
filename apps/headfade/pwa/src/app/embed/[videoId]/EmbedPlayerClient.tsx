@@ -110,7 +110,7 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
         </div>
         <button
           type="button"
-          aria-label={showMatrix ? "Hide forensics overlay" : "View forensics overlay"}
+          aria-label={showMatrix ? 'Hide forensics overlay' : 'View forensics overlay'}
           onClick={() => setShowMatrix(!showMatrix)}
           className="bg-black/80 text-[#00FF41] text-[9px] border border-[#00FF41]/40 px-2.5 py-1 rounded-sm hover:bg-[#00FF41] hover:text-black transition-all duration-200 tracking-wider"
         >

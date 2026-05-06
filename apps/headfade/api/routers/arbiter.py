@@ -55,34 +55,38 @@ def _get_genai_client() -> genai.Client:
 
 
 class AnalyzeRequest(BaseModel):
+    video_id: str
     video_uri: str
     actual_truth: str
     user_vote: str
+    vote_latency_ms: int = 0
 
 
 @router.post("/analyze")
 async def generate_forensic_reveal(req: AnalyzeRequest):
     """Uses Gemini 3.1 Flash Lite Preview's 'Thinking' feature to forensically breakdown the video.
-    Logs the user's vote into the Human Deception Index.
+    Logs the user's vote into the Human Deception Index and saves the verdict.
     """
-    if not req.video_uri:
-        raise HTTPException(status_code=400, detail="video_uri is required")
+    if not req.video_uri or not req.video_id:
+        raise HTTPException(status_code=400, detail="video_uri and video_id are required")
 
-    # 1. Log to the Human Deception Index
+    # 1. Log to the Human Deception Index (human_telemetry)
     if db:
         try:
-            doc_ref = db.collection("human_deception_index").document()
+            doc_ref = db.collection("human_telemetry").document()
             doc_ref.set(
                 {
-                    "video_uri": req.video_uri,
-                    "ground_truth": req.actual_truth.upper(),
-                    "user_vote": req.user_vote.upper(),
-                    "timestamp": datetime.now(UTC).isoformat(),
-                    "fooled": req.actual_truth.upper() != req.user_vote.upper(),
+                    "videoId": req.video_id,
+                    "userId": None,
+                    "userVote": req.user_vote.upper(),
+                    "actualTruth": req.actual_truth.upper(),
+                    "isCorrect": req.actual_truth.upper() == req.user_vote.upper(),
+                    "latencyMs": req.vote_latency_ms,
+                    "votedAt": datetime.now(UTC),
                 },
             )
         except Exception as e:
-            print(f"[ARBITER WARNING] Failed to write HDI metric: {e}")
+            print(f"[ARBITER WARNING] Failed to write human_telemetry metric: {e}")
 
     # 2. Forensic Teardown Prompt
     prompt = f"""
@@ -93,6 +97,7 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
     """
 
     try:
+        start_time = datetime.now(UTC)
         # Enforcing MANDATE A & B: gemini-3.1-flash-lite-preview
         response = _get_genai_client().models.generate_content(
             model="gemini-3.1-flash-lite-preview",
@@ -102,6 +107,8 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
                 thinking_config=types.ThinkingConfig(include_thoughts=True),
             ),
         )
+        end_time = datetime.now(UTC)
+        latency_ms = int((end_time - start_time).total_seconds() * 1000)
 
         # Extract the AI's internal reasoning (The hidden <thought> block)
         ai_thoughts = ""
@@ -115,10 +122,32 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
                 elif part.text:
                     final_verdict += part.text
 
+        gemini_thoughts = ai_thoughts.strip() if ai_thoughts else "[FATAL DECEPTION: NO THOUGHTS DETECTED.]"
+        gemini_verdict = final_verdict.strip()
+
+        # 3. Save forensic_verdict
+        if db:
+            try:
+                verdict_ref = db.collection("forensic_verdicts").document()
+                verdict_ref.set(
+                    {
+                        "id": verdict_ref.id,
+                        "videoId": req.video_id,
+                        "model": "gemini-3.1-flash-lite-preview",
+                        "geminiVerdict": gemini_verdict,
+                        "geminiThoughts": gemini_thoughts,
+                        "confidenceScore": 0.95,
+                        "latencyMs": latency_ms,
+                        "analyzedAt": datetime.now(UTC),
+                    }
+                )
+            except Exception as e:
+                print(f"[ARBITER WARNING] Failed to write forensic_verdicts metric: {e}")
+
         return {
             "status": "success",
-            "gemini_thoughts": ai_thoughts.strip() if ai_thoughts else "[FATAL DECEPTION: NO THOUGHTS DETECTED.]",
-            "gemini_verdict": final_verdict.strip(),
+            "gemini_thoughts": gemini_thoughts,
+            "gemini_verdict": gemini_verdict,
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))  # noqa: B904

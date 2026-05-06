@@ -101,20 +101,33 @@ export default function HeadFadeSwiper() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4">
-      <h1 className="text-4xl font-bold text-gradient mb-2 tracking-tighter shadow-sm">
-        HeadFade
-      </h1>
+      <h1 className="text-4xl font-bold text-gradient mb-2 tracking-tighter shadow-sm">HeadFade</h1>
       <p className="text-zinc-400 text-sm mb-6 tracking-wide">
         The Global Turing Test — Can You Tell What Is Real?
       </p>
 
       {/* The Central Artifact Viewer (TikTok/Tinder Swiper) */}
       <div className="glass-panel w-full max-w-md h-[550px] rounded-3xl overflow-hidden relative shadow-2xl border border-white/5">
-        <video className="w-full h-full object-cover" src={video} autoPlay loop muted playsInline aria-label="Analysis Target" title="Analysis Target" />
+        <video
+          className="w-full h-full object-cover"
+          src={video}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-label="Analysis Target"
+          title="Analysis Target"
+        />
 
         {/* Loading overlay — AgentSpinner (forensic theme) */}
         {isAnalyzing && (
-          <AgentSpinner active={isAnalyzing} theme="headfade" overlay label="FORENSIC ANALYSIS" onStallChange={() => {}} />
+          <AgentSpinner
+            active={isAnalyzing}
+            theme="headfade"
+            overlay
+            label="FORENSIC ANALYSIS"
+            onStallChange={() => {}}
+          />
         )}
 
         {/* Result badge */}
