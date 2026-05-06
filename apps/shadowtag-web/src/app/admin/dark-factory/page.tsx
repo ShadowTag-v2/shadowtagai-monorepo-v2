@@ -13,8 +13,10 @@ export default function DarkFactoryDashboard() {
   useEffect(() => {
     const timer = setInterval(() => {
       setSessionState((prev) => {
-        if (prev.status === 'UNINITIALIZED') return { status: 'CONNECTING', sessionName: 'Connecting to Jules...' };
-        if (prev.status === 'CONNECTING') return { status: 'PENDING_APPROVAL', sessionName: 'jules-session-8f3a2c' };
+        if (prev.status === 'UNINITIALIZED')
+          return { status: 'CONNECTING', sessionName: 'Connecting to Jules...' };
+        if (prev.status === 'CONNECTING')
+          return { status: 'PENDING_APPROVAL', sessionName: 'jules-session-8f3a2c' };
         return prev;
       });
     }, 2000);
@@ -31,12 +33,26 @@ export default function DarkFactoryDashboard() {
   };
 
   return (
-    <div className="sovereign-bg min-h-screen" style={{ backgroundColor: '#0a0a0c', padding: '2rem' }}>
-      <header style={{ marginBottom: '3rem', borderBottom: '1px solid #333', paddingBottom: '1rem' }}>
-        <h1 style={{ color: '#fff', fontSize: '2rem', fontFamily: 'monospace', letterSpacing: '0.05em' }}>
+    <div
+      className="sovereign-bg min-h-screen"
+      style={{ backgroundColor: '#0a0a0c', padding: '2rem' }}
+    >
+      <header
+        style={{ marginBottom: '3rem', borderBottom: '1px solid #333', paddingBottom: '1rem' }}
+      >
+        <h1
+          style={{
+            color: '#fff',
+            fontSize: '2rem',
+            fontFamily: 'monospace',
+            letterSpacing: '0.05em',
+          }}
+        >
           Sovereign Command Center
         </h1>
-        <p style={{ color: '#888', marginTop: '0.5rem' }}>Monitoring autonomous orchestration swarm.</p>
+        <p style={{ color: '#888', marginTop: '0.5rem' }}>
+          Monitoring autonomous orchestration swarm.
+        </p>
       </header>
 
       <main style={{ maxWidth: '800px' }}>

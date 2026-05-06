@@ -1,0 +1,47 @@
+# HeadFade Marketplace Schema
+
+# User table is keyed by Firebase Auth UID.
+type User @table {
+  # `@default(expr: "auth.uid")` sets it to Firebase Auth UID during insert and upsert.
+  id: String! @default(expr: "auth.uid")
+  email: String!
+  displayName: String
+  role: String! # e.g., "buyer", "seller", "admin"
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type Product @table {
+  id: UUID! @default(expr: "uuidV4()")
+  seller: User!
+  title: String!
+  description: String
+  price: Float!
+  inventoryCount: Int!
+  createdAt: Timestamp! @default(expr: "request.time")
+  updatedAt: Timestamp! @default(expr: "request.time")
+}
+
+type Order @table {
+  id: UUID! @default(expr: "uuidV4()")
+  buyer: User!
+  totalAmount: Float!
+  status: String! # e.g., "pending", "completed", "cancelled"
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type OrderItem @table {
+  id: UUID! @default(expr: "uuidV4()")
+  order: Order!
+  product: Product!
+  quantity: Int!
+  priceAtPurchase: Float!
+}
+
+type Review @table {
+  id: UUID! @default(expr: "uuidV4()")
+  product: Product!
+  reviewer: User!
+  rating: Int!
+  comment: String
+  createdAt: Timestamp! @default(expr: "request.time")
+}

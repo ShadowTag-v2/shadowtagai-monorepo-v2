@@ -188,7 +188,10 @@ export default function Pricing({ onOpenModal }: PricingProps) {
                   {p.cta}
                 </button>
               ) : (
-                <a href={p.ctaLink} className={`cta-btn ${p.ctaStyle} w-full justify-center text-sm`}>
+                <a
+                  href={p.ctaLink}
+                  className={`cta-btn ${p.ctaStyle} w-full justify-center text-sm`}
+                >
                   {p.cta}
                 </a>
               )}

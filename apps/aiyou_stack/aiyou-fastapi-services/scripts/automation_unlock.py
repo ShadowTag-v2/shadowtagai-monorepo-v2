@@ -44,7 +44,7 @@ def display_contract():
 
 def set_autonomy_flags():
     print("\n[*] Setting Automation Environment Variables...")
-    
+
     rc_file = os.path.expanduser("~/.zshrc")
     flags = [
         "export ANTIGRAVITY_AUTOMATION_ENABLED=true",

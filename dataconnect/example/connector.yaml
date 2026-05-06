@@ -1,0 +1,19 @@
+connectorId: example
+generate:
+  adminNodeSdk:
+    - outputDir: ../../../../../src/dataconnect-admin-generated
+      package: "@dataconnect/admin-generated"
+      packageJsonDir: ../../../../..
+  javascriptSdk:
+    - outputDir: ../../../../../../Deleted Users/pikeymickey/src/dataconnect-generated
+      package: "@dataconnect/generated"
+      packageJsonDir: ../../../../../../Deleted Users/pikeymickey
+      react: false
+      angular: false
+      clientCache: {}
+    - outputDir: ../../../../../antigravity2api-nodejs/src/dataconnect-generated
+      package: "@dataconnect/generated"
+      packageJsonDir: ../../../../../antigravity2api-nodejs
+      react: false
+      angular: false
+      clientCache: {}

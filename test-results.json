@@ -26,9 +26,7 @@
         "name": "mobile",
         "testDir": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
-        ],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
         "timeout": 30000
       },
       {
@@ -42,9 +40,7 @@
         "name": "desktop",
         "testDir": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
-        ],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
         "timeout": 30000
       }
     ],
