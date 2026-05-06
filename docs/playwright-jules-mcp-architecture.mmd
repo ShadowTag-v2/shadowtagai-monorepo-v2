@@ -1,25 +1,45 @@
-mermaid
+```mermaid
 graph TD
-    User((User / Agent)) --> UI[Embed Player & Marketplace]
-    UI --> API[HeadFade API]
-    API --> MCP[Truth Oracle MCP Server]
-    
-    subgraph Cognitive Automation
-        MCP --> JMCP[Jules MCP Client]
-        JMCP --> PB[Playwright Browser]
-        PB --> Target[Target Media Platform]
+    subgraph "User Layer"
+        U[End User / Agent] --> EP[Embed Player]
+        U --> MP[Micro-Licensing Marketplace]
     end
-    
-    subgraph Data & Provenance
-        JMCP --> FDC[(Firebase Data Connect)]
-        FDC --> RT[Remix Tree & Ledger]
-        FDC --> HDI[HDI Engine]
+
+    subgraph "HeadFade Core"
+        EP --> MCP[HeadFade Truth Oracle MCP Server]
+        MP --> MCP
+        MCP -->|verify_synthetic_video| HDI[Human Deception Index Engine]
+        MCP -->|purchase_workflow_license| STRIPE[Stripe Micro-Payments]
     end
-    
-    subgraph Observability
-        MCP --> OTel[OpenTelemetry]
-        OTel --> K[KAIROS Daemon]
+
+    subgraph "Jules MCP + Playwright Stack"
+        MCP --> JULES[Jules MCP Server<br/>via Stdio Transport]
+        JULES --> PLAY[Playwright Browser Automation<br/>+ Stealth Plugins]
+        PLAY --> WEB[Target Websites<br/>TikTok, Instagram, X, etc.]
+        WEB -->|DOM + Screenshots + Events| JULES
     end
-    
-    style PB fill:#f96,stroke:#333,stroke-width:2px
-    style JMCP fill:#69f,stroke:#333,stroke-width:2px
+
+    subgraph "Data & Intelligence Layer"
+        JULES --> FDC[Firebase Data Connect<br/>Cloud SQL Postgres]
+        FDC --> REMIX[Remix Family Tree Storage]
+        FDC --> HDI2[HDI Scoring DB]
+        FDC --> LICENSE[License & Order Management]
+    end
+
+    subgraph "Observability & Ops"
+        MCP --> OTEL[OpenTelemetry Traces]
+        OTEL --> GCP[Google Cloud Operations]
+        GCP --> KAIROS[KAIROS Social Monitoring]
+        GCP --> ALERTS[Alerting & Auto-Scaling]
+    end
+
+    classDef core fill:#1e3a8a,stroke:#3b82f6,color:white
+    classDef jules fill:#854d0e,stroke:#fbbf24,color:white
+    classDef data fill:#166534,stroke:#4ade80,color:white
+    classDef ops fill:#7c3aed,stroke:#a78bfa,color:white
+
+    class MCP,EP,MP core
+    class JULES,PLAY jules
+    class FDC,REMIX,HDI2,LICENSE data
+    class OTEL,GCP,KAIROS,ALERTS ops
+```

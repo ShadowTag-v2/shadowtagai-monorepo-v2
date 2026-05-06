@@ -37,6 +37,7 @@ async function main() {
     console.log('✅ Jules token retrieved successfully');
     console.log(JSON.stringify(token, null, 2));
     
+    // In production: push to Google Cloud Secret Manager or use in-memory
     process.exit(0);
   } catch (error) {
     console.error('❌ Failed to retrieve Jules token:', error);
@@ -45,3 +46,4 @@ async function main() {
 }
 
 main();
+```

@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-05-06T07:11:57.876910+00:00",
+  "timestamp": "2026-05-06T08:24:31.850975+00:00",
   "pid": 55555,
   "status": {
-    "cycle": "9121"
+    "cycle": "9223"
   },
   "circuit_breakers": {
     "services": {
@@ -11,7 +11,7 @@
         "state": "closed",
         "consecutive_failures": 0,
         "total_failures": 0,
-        "total_successes": 2,
+        "total_successes": 3,
         "failure_threshold": 3,
         "reset_timeout_s": 120.0,
         "failure_mode": "consecutive",
@@ -20,9 +20,9 @@
       "gemini_deep_research": {
         "service_name": "gemini_deep_research",
         "state": "closed",
-        "consecutive_failures": 1,
+        "consecutive_failures": 0,
         "total_failures": 2,
-        "total_successes": 2,
+        "total_successes": 3,
         "failure_threshold": 3,
         "reset_timeout_s": 300.0,
         "failure_mode": "consecutive",
@@ -48,7 +48,7 @@
       "open_services": [],
       "health_status": "healthy"
     },
-    "timestamp": 1778051517.875953
+    "timestamp": 1778055871.787414
   },
-  "tree_diagnostic": "\u2514 KAIROS Heartbeat\n  \u251c PID: 55555\n  \u251c Cycle: 9121\n  \u251c suggestion_pipeline\n  \u2502 \u251c state: stale\n  \u2502 \u251c suggestion: Execute the full seven step validation c\n  \u2502 \u251c age_s: 1315.4\n  \u2502 \u2514 quality: 0.6\n  \u2514 circuit_breakers\n    \u251c total_breakers: 3\n    \u251c closed: 3\n    \u251c open: 0\n    \u251c half_open: 0\n    \u251c open_services: [Array(0)]\n    \u2514 health_status: healthy"
+  "tree_diagnostic": "\u2514 KAIROS Heartbeat\n  \u251c PID: 55555\n  \u251c Cycle: 9223\n  \u251c suggestion_pipeline\n  \u2502 \u251c state: stale\n  \u2502 \u251c suggestion: Execute the full seven step validation c\n  \u2502 \u251c age_s: 5669.3\n  \u2502 \u2514 quality: 0.6\n  \u2514 circuit_breakers\n    \u251c total_breakers: 3\n    \u251c closed: 3\n    \u251c open: 0\n    \u251c half_open: 0\n    \u251c open_services: [Array(0)]\n    \u2514 health_status: healthy"
 }

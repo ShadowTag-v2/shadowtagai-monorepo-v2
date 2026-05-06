@@ -1,21 +1,72 @@
-# HeadFade Launch Thread
+# HeadFade Launch Announcement Thread (Copy-Paste Ready)
 
-**Tweet 1:**
-We're excited to announce HeadFade Truth Oracle — the ultimate provenance and verification layer for synthetic media! 🚀
-Built on the robust ShadowTag-v2 monorepo architecture, ensuring secure, transparent AI supply chains. #AI #Provenance #SyntheticMedia
+**Tweet 1/6**
 
-**Tweet 2:**
-Powered by an advanced Model Context Protocol (MCP) server, HeadFade securely queries the Firebase Data Connect Postgres backend to reconstruct the exact Remix Tree of any generated content. Zero trust, full verification. 🔍
+HeadFade is now live.
 
-**Tweet 3:**
-With built-in Workload Identity Federation and comprehensive Cor.30 security compliance, the platform provides unforgeable AI forensics without exposing underlying secrets. 🔒
+The first platform that turns every AI video into a game.
 
-**Tweet 4:**
-Creators and agents can utilize the new Micro-Licensing Marketplace to seamlessly purchase workflow data and underlying model provenances using Agent Wallets and Stripe integration. 💳
+“Is it AI, or is it real?”
 
-**Tweet 5:**
-Try the embeddable Player today to see real-time Human Deception Index (HDI) scores and foundational models used in video generation. 📺
+Guess. Trace. Win.
 
-**Tweet 6:**
-The Truth Oracle is live. Welcome to the new standard for AI content verification. 🌐
-[Link to HeadFade Application]
+No algorithms. No filters. Just pure truth.
+
+@HeadFade
+
+**Tweet 2/6**
+
+While everyone else is still trying to hide synthetic content, we built the opposite.
+
+HeadFade shows you the exact AI stack, the Remix Family Tree, and the Human Deception Index in real time.
+
+The Truth Layer of the internet is here.
+
+**Tweet 3/6**
+
+Built on the Antigravity Dark Factory:
+
+• Jules (autonomous coder via official Workload Identity)
+• Stitch orchestration
+• Firebase Data Connect (zero-API)
+• Official MCP server
+
+Zero OpEx. Infinite scale. Enterprise-grade.
+
+**Tweet 4/6**
+
+Creators can now lock their ComfyUI workflows behind $2.99 micro-licenses.
+
+Agents can instantly purchase them via A2A.
+
+20% platform take-rate.
+
+The first real marketplace for synthetic creativity.
+
+**Tweet 5/6**
+
+Non-creators don’t come to make content.
+
+They come to win at spotting deception.
+
+This is the most addictive mechanic on the internet in 2026.
+
+The gamified Turing Test has arrived.
+
+**Tweet 6/6**
+
+Stealth mode is over.
+
+HeadFade is open.
+
+The future of content isn’t more content.
+
+It’s verified content.
+
+@HeadFade
+
+---
+
+**Hashtags**: #HeadFade #TruthLayer #SyntheticInternet #AIForensics #Antigravity
+
+**Suggested image**: Dark cinematic screenshot of Embed Player with "LIVE FORENSICS" badge glowing.

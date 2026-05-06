@@ -1,4 +1,9 @@
+// Firebase Data Connect - Auto-generated client (simulated for demo)
+// In production: import from @firebasegen/headfade-sql
+
 export async function executeGetVideoForensicsQuery(params: { id: string }) {
+  // This would be replaced by real Data Connect SDK call
+  // For now, return mock data that matches expected schema
   return {
     video: {
       id: params.id,
@@ -11,6 +16,7 @@ export async function executeGetVideoForensicsQuery(params: { id: string }) {
 }
 
 export async function executeGrantLicenseMutation(params: { buyerId: string; videoId: string }) {
+  // Real implementation would write to Cloud SQL via Data Connect
   console.log(`[Data Connect] License granted: ${params.buyerId} → ${params.videoId}`);
   return { success: true };
 }

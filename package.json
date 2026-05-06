@@ -1,6 +1,7 @@
 {
   "name": "uphillsnowball",
   "version": "11.0.0",
+  "type": "module",
   "scripts": {
     "build": "echo 'Building Monorepo'",
     "deploy": "firebase deploy",
@@ -14,6 +15,8 @@
     "vitest": "^4.1.5"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "google-auth-library": "^10.6.2",
     "playwright": "^1.59.1",
     "punycode": "^2.3.1"
   }

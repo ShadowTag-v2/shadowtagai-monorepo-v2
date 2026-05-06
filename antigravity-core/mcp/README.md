@@ -46,3 +46,10 @@ npm start
 **Status**: Production Ready (Stealth Mode)
 
 Part of Project Antigravity v11.0
+```
+
+---
+
+Now the **full Embed Player component**. Based on the strategy, this is a Next.js component for embedding HeadFade videos with forensics overlay.
+
+I'll place it in a logical location: `apps/headfade/pwa/embed-player.tsx` (or similar).
