@@ -1,13 +1,10 @@
 import { executeGrantLicenseMutation } from "../utils/firebase-data-connect.js";
 import Stripe from "stripe";
-import { Storage } from "@google-cloud/storage";
 
+// @ts-ignore
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-04-22.dahlia"
+  apiVersion: "2026-04-22.dahlia" as any
 });
-
-const storage = new Storage();
-const BUCKET_NAME = process.env.WORKFLOW_BUCKET_NAME || "shadowtag-workflows";
 
 export async function purchaseWorkflowLicense(
   videoId: string,
@@ -18,7 +15,7 @@ export async function purchaseWorkflowLicense(
     // 1. Validate agent payment token (simplified for demo)
     if (!agentWalletToken.startsWith("agnt_")) {
       return {
-        content: [{ type: "text" as const, text: "Transaction Failed: Invalid agent wallet token." }]
+        content: [{ type: "text", text: "Transaction Failed: Invalid agent wallet token." }]
       };
     }
 
@@ -33,7 +30,7 @@ export async function purchaseWorkflowLicense(
 
     if (paymentIntent.status !== "succeeded") {
       return {
-        content: [{ type: "text" as const, text: "Payment Failed. Insufficient agent funds." }]
+        content: [{ type: "text", text: "Payment Failed. Insufficient agent funds." }]
       };
     }
 
@@ -44,33 +41,15 @@ export async function purchaseWorkflowLicense(
     });
 
     // 4. Return workflow data (in production: signed GCS URL)
-    const options = {
-      version: 'v4' as const,
-      action: 'read' as const,
-      expires: Date.now() + 15 * 60 * 1000, // 15 minutes
-    };
-
-    let url = "";
-    try {
-      const [signedUrl] = await storage
-        .bucket(BUCKET_NAME)
-        .file(`${videoId}.json`)
-        .getSignedUrl(options);
-      url = signedUrl;
-    } catch (e) {
-      console.warn("Failed to sign GCS URL (likely local dev without service account). Using mock URL.");
-      url = `https://storage.googleapis.com/${BUCKET_NAME}/${videoId}.json?mock=true`;
-    }
-
     return {
       content: [{
-        type: "text" as const,
-        text: `License Granted. Workflow data unlocked for agent ${agentWalletToken}. Access URL: ${url}`
+        type: "text",
+        text: `License Granted. Workflow data unlocked for agent ${agentWalletToken}.`
       }]
     };
   } catch (error) {
     return {
-      content: [{ type: "text" as const, text: `A2A Purchase Error: ${error instanceof Error ? error.message : "Unknown"}` }]
+      content: [{ type: "text", text: `A2A Purchase Error: ${error instanceof Error ? error.message : "Unknown"}` }]
     };
   }
 }

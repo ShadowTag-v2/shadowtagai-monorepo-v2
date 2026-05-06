@@ -34,7 +34,7 @@ server.tool(
   { videoId: z.string().describe("HeadFade video ID or hash") },
   async ({ videoId }) => {
     const token = await getAuthToken();
-    return await verifySyntheticVideo(videoId, token);
+    return await verifySyntheticVideo(videoId, token) as any;
   }
 );
 
@@ -47,7 +47,7 @@ server.tool(
   },
   async ({ videoId, agentWalletToken }) => {
     const token = await getAuthToken();
-    return await purchaseWorkflowLicense(videoId, agentWalletToken, token);
+    return await purchaseWorkflowLicense(videoId, agentWalletToken, token) as any;
   }
 );
 
