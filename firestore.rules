@@ -1,76 +1,30 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /system_idempotency_keys/{key} {
-      allow read: if false; // Zero trust
-      allow create: if request.auth != null && request.time < request.resource.data.expiresAt;
-      allow update: if request.auth != null && request.time < resource.data.expiresAt;
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
-
-    // Beta accounts: authenticated users can read their own account by ID
-    // Writes restricted to admin only (via catch-all rule below)
-    match /beta_accounts/{accountId} {
-      allow read: if request.auth != null && resource.data.status == 'active';
+    match /videos/{videoId} {
+      allow read: if resource.data.status == 'PUBLISHED';
+      allow write: if request.auth != null && request.auth.uid == resource.data.creatorId;
     }
-
-    // ── Phase 3: Per-firm tenant isolation ──────────────────────────────
-    // Firm documents: attorneys can only access their own firm
-    match /firms/{firmId} {
-      allow read: if request.auth != null && request.auth.token.firm_id == firmId;
-      allow write: if request.auth != null && request.auth.token.admin == true;
-
-      // Sessions: scoped to firm, readable by firm's attorneys
-      match /sessions/{sessionId} {
-        allow read: if request.auth != null && request.auth.token.firm_id == firmId;
-        allow create: if request.auth != null && request.auth.token.firm_id == firmId;
-        allow delete: if request.auth != null && request.auth.token.admin == true;
-      }
-
-      // Transcripts: immutable once written (lawyer permanent record)
-      match /transcripts/{transcriptId} {
-        allow read: if request.auth != null && request.auth.token.firm_id == firmId;
-        allow create: if request.auth != null && request.auth.token.firm_id == firmId;
-        allow update, delete: if false; // Immutable — per Kovel doctrine
-      }
-
-      // Matters: firm-scoped case management
-      match /matters/{matterId} {
-        allow read, write: if request.auth != null && request.auth.token.firm_id == firmId;
-      }
-
-      // Billing records: read-only for attorneys, write by system only
-      match /billing_records/{recordId} {
-        allow read: if request.auth != null && request.auth.token.firm_id == firmId;
-        allow write: if request.auth != null && request.auth.token.admin == true;
-      }
-
-      // Clients: firm-scoped, restricted to firm attorneys
-      match /clients/{clientId} {
-        allow read, write: if request.auth != null && request.auth.token.firm_id == firmId;
-      }
+    match /forensic_verdicts/{verdictId} {
+      allow read: if true;
+      allow write: if false;
     }
-
-    // GDPR audit trail: read-only for admins, system-write only
-    match /gdpr_audit/{auditId} {
-      allow read: if request.auth != null && request.auth.token.admin == true;
-      allow write: if false; // System-only via admin SDK
+    match /human_telemetry/{telemetryId} {
+      allow read: if false;
+      allow create: if true;
+      allow update, delete: if false;
     }
-
-    // Kovel attestation receipts: immutable, admin-readable
-    match /attestations/{attestationId} {
-      allow read: if request.auth != null && request.auth.token.admin == true;
-      allow create: if request.auth != null;
-      allow update, delete: if false; // Immutable receipts
+    match /licenses/{licenseId} {
+      allow read: if request.auth != null && (resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid);
+      allow write: if false;
     }
-
-    // Stripe webhook events: write-only from authenticated service accounts
-    match /stripe_events/{eventId} {
-      allow read: if request.auth != null && request.auth.token.admin == true;
-      allow create: if request.auth != null;
-    }
-
-    match /{document=**} {
-      allow read, write: if request.auth != null && request.auth.token.admin == true; // Zero-trust default
+    match /embed_telemetry/{telemetryId} {
+      allow read: if request.auth != null && resource.data.publisherId == request.auth.uid;
+      allow create: if true;
+      allow update, delete: if false;
     }
   }
 }

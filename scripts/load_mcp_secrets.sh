@@ -77,7 +77,7 @@ loaded=0
 failed=0
 total=0
 
-for entry in $SECRETS; do
+while read -r entry; do
   [ -z "$entry" ] && continue
   total=$((total + 1))
   var_name="${entry%%:*}"
@@ -93,7 +93,7 @@ for entry in $SECRETS; do
 
   export "${var_name}=${value}"
   loaded=$((loaded + 1))
-done
+done <<< "$SECRETS"
 
 _log "Loaded ${loaded}/${total} secrets from Secret Manager (${failed} failed)"
 
@@ -103,7 +103,7 @@ if [ "$failed" -gt 0 ]; then
 
   # Collect failed secret IDs
   _failed_secrets=""
-  for entry in $SECRETS; do
+  while read -r entry; do
     [ -z "$entry" ] && continue
     var_name="${entry%%:*}"
     secret_id="${entry#*:}"
@@ -111,7 +111,7 @@ if [ "$failed" -gt 0 ]; then
     if [ -z "$val" ]; then
       _failed_secrets="${_failed_secrets} ${var_name}:${secret_id}"
     fi
-  done
+  done <<< "$SECRETS"
 
   # Python helper: gates Secret Manager calls through the circuit breaker
   _py_fallback_result=$(python3 -c "
@@ -159,7 +159,7 @@ for pair in failed_pairs:
 
 for k, v in results.items():
     print(f'{k}={v}')
-" 2>&1)
+" )
 
   # Parse Python output and export recovered secrets
   _recovered=0

@@ -2,9 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { executeGrantLicenseMutation } from '../utils/firebase-data-connect.js';
 
-// @ts-ignore
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-04-22.dahlia' as any
+  apiVersion: '2025-02-24.acacia'
 });
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -44,3 +43,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   res.status(200).json({ received: true });
 }
+```

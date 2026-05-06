@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 
 interface MarketplaceProps {
   videoId: string;
@@ -15,7 +16,7 @@ export const MicroLicensingMarketplace: React.FC<MarketplaceProps> = ({ videoId 
       const res = await fetch('/api/mcp/purchase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ videoId, agentWalletToken: 'agnt_mock_wallet_123' })
+        body: JSON.stringify({ videoId, agentWalletToken: 'agnt_mock_wallet_123' }),
       });
       if (res.ok) {
         setSuccess(true);
@@ -50,7 +51,7 @@ export const MicroLicensingMarketplace: React.FC<MarketplaceProps> = ({ videoId 
             <span className="text-xl font-bold text-blue-600">$2.99</span>
           </div>
         </div>
-        
+
         <button
           onClick={handlePurchase}
           disabled={purchasing}

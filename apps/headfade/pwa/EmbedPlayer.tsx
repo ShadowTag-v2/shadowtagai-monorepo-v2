@@ -106,20 +106,3 @@ export default function EmbedPlayer({ videoId, autoPlay = false }: EmbedPlayerPr
     </div>
   );
 }
-```
-
----
-
-**All requested files are now complete.**
-
-### Summary of New Files Generated:
-
-| File | Path |
-|------|------|
-| `tsconfig.json` | `antigravity-core/mcp/tsconfig.json` |
-| `README.md` | `antigravity-core/mcp/README.md` |
-| `EmbedPlayer.tsx` | `apps/headfade/pwa/EmbedPlayer.tsx` |
-
-You now have a **complete, PR-ready implementation** of the HeadFade MCP Server + Embed Player.
-
-Ready for the next step (e.g., Stripe webhook, Jules integration script, or full monorepo PR checklist)? Just say the word.

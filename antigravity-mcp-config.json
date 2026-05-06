@@ -74,6 +74,20 @@
       "capability_owner": true,
       "owns": ["sequentialthinking"],
       "note": "Sequential Thinking MCP — MUST use for architecture decisions, multi-step reasoning, and complex problem decomposition. No ad-hoc reasoning lists."
+    },
+    "jules-mcp-server": {
+      "command": "node",
+      "args": [
+        "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/antigravity-jules-orchestration/index.js"
+      ],
+      "env": {
+        "JULES_API_KEY": "${JULES_API_KEY}"
+      },
+      "capability_owner": true,
+      "owns": [
+        "jules_*"
+      ],
+      "note": "Jules MCP Server — MUST use for all Jules session management and autonomous code generation tasks."
     }
   },
   "routing_rules": {

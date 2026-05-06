@@ -1,9 +1,9 @@
 {
   "score": "F",
-  "total_findings": 50,
+  "total_findings": 42,
   "critical": 10,
-  "errors": 1,
-  "warnings": 36,
+  "errors": 2,
+  "warnings": 27,
   "info": 3,
   "findings": [
     {
@@ -38,118 +38,118 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/suggestion_cache.json",
-      "fix": "git checkout -- .beads/suggestion_cache.json"
+      "path": "antigravity-core/mcp/package-lock.json",
+      "fix": "git checkout -- antigravity-core/mcp/package-lock.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".reports/skills/guardrail_annotation_audit.md",
-      "fix": "git checkout -- .reports/skills/guardrail_annotation_audit.md"
+      "path": "antigravity-core/mcp/package.json",
+      "fix": "git checkout -- antigravity-core/mcp/package.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".vscode/settings.json",
-      "fix": "git checkout -- .vscode/settings.json"
+      "path": "antigravity-core/mcp/src/api/v2/analyze.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/api/v2/analyze.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/build-manifest.json",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/build-manifest.json"
+      "path": "antigravity-core/mcp/src/index.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/index.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/cache/config.json",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/cache/config.json"
+      "path": "antigravity-core/mcp/src/tools/purchase_workflow_license.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/tools/purchase_workflow_license.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/fallback-build-manifest.json",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/fallback-build-manifest.json"
+      "path": "antigravity-core/mcp/src/tools/verify_synthetic_video.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/tools/verify_synthetic_video.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/package.json",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/package.json"
+      "path": "antigravity-core/mcp/src/utils/firebase-data-connect.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/utils/firebase-data-connect.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/prerender-manifest.json",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/prerender-manifest.json"
+      "path": "antigravity-core/mcp/src/utils/v2/analyze-engine.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/utils/v2/analyze-engine.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/routes-manifest.json",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/routes-manifest.json"
+      "path": "antigravity-core/mcp/src/webhooks/stripe.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/webhooks/stripe.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/app-paths-manifest.json",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/app-paths-manifest.json"
+      "path": "antigravity-core/mcp/test_client.ts",
+      "fix": "git checkout -- antigravity-core/mcp/test_client.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/interception-route-rewrite-manifest.js",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/interception-route-rewrite-manifest.js"
+      "path": "antigravity-core/mcp/tests/purchaseWorkflowLicense.test.ts",
+      "fix": "git checkout -- antigravity-core/mcp/tests/purchaseWorkflowLicense.test.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/middleware-build-manifest.js",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/middleware-build-manifest.js"
+      "path": "antigravity-core/mcp/tests/verifySyntheticVideo.test.ts",
+      "fix": "git checkout -- antigravity-core/mcp/tests/verifySyntheticVideo.test.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/middleware-manifest.json",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/middleware-manifest.json"
+      "path": "antigravity-core/mcp/tsconfig.json",
+      "fix": "git checkout -- antigravity-core/mcp/tsconfig.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/next-font-manifest.js",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/next-font-manifest.js"
+      "path": "apps/headfade/pwa/EmbedPlayer.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/EmbedPlayer.tsx"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/next-font-manifest.json",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/next-font-manifest.json"
+      "path": "apps/headfade/pwa/MetricsDashboard.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/MetricsDashboard.tsx"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/pages-manifest.json",
-      "fix": "git checkout -- _archive_redundant_2026-05-02/nextjs_build_artifacts/kovelai-dev/server/pages-manifest.json"
+      "path": "apps/headfade/pwa/MicroLicensingMarketplace.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/MicroLicensingMarketplace.tsx"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "... and 139 more dirty files",
+      "message": "... and 49 more dirty files",
       "path": "",
       "fix": ""
     },
@@ -226,72 +226,16 @@
     {
       "gate": "secrets",
       "severity": "error",
-      "message": "Betterleaks found 44 potential secrets",
+      "message": "Betterleaks found 83 potential secrets",
       "path": "",
       "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
     },
     {
       "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (1045 KB > 500 KB)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/server/chunks/ssr/node_modules_0nkhf-8._.js",
-      "fix": "Add _archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/server/chunks/ssr/node_modules_0nkhf-8._.js to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (1064 KB > 500 KB)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/server/chunks/ssr/node_modules_next_dist_esm_00xse_0._.js",
-      "fix": "Add _archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/server/chunks/ssr/node_modules_next_dist_esm_00xse_0._.js to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (764 KB > 500 KB)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js",
-      "fix": "Add _archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/static/chunks/node_modules_next_dist_client_0fhqo1d._.js to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (1621 KB > 500 KB)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/static/chunks/node_modules_next_dist_compiled_0o6l_m6._.js",
-      "fix": "Add _archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/static/chunks/node_modules_next_dist_compiled_0o6l_m6._.js to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (1537 KB > 500 KB)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/static/chunks/node_modules_next_dist_compiled_next-devtools_index_0553esy.js",
-      "fix": "Add _archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/static/chunks/node_modules_next_dist_compiled_next-devtools_index_0553esy.js to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (1232 KB > 500 KB)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js",
-      "fix": "Add _archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (1124 KB > 500 KB)",
-      "path": "_archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/static/chunks/node_modules_react-dom_0bruynb._.js",
-      "fix": "Add _archive_redundant_2026-05-02/nextjs_build_artifacts/next-export/dev/static/chunks/node_modules_react-dom_0bruynb._.js to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (1623 KB > 500 KB)",
-      "path": "apps/kovelai/public/dev/static/chunks/0qqu_next_dist_compiled_0aizbqo._.js",
-      "fix": "Add apps/kovelai/public/dev/static/chunks/0qqu_next_dist_compiled_0aizbqo._.js to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (1537 KB > 500 KB)",
-      "path": "apps/kovelai/public/dev/static/chunks/0qqu_next_dist_compiled_next-devtools_index_05z9c-y.js",
-      "fix": "Add apps/kovelai/public/dev/static/chunks/0qqu_next_dist_compiled_next-devtools_index_05z9c-y.js to .gitignore or compress"
+      "severity": "info",
+      "message": "No large files in staging",
+      "path": "",
+      "fix": ""
     },
     {
       "gate": "drift",
@@ -331,7 +275,7 @@
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 11116 more drift files",
+      "message": "... and 11173 more drift files",
       "path": "",
       "fix": ""
     },
@@ -351,10 +295,10 @@
     },
     {
       "gate": "tests",
-      "severity": "info",
-      "message": "Tests: ======================== 3108 tests collected in 15.61s ========================",
+      "severity": "error",
+      "message": "Test collection failed",
       "path": "",
-      "fix": ""
+      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest --co -q 2>&1 | tail -10"
     }
   ]
 }

@@ -9,12 +9,12 @@ jest.mock('../src/utils/firebase-data-connect.js', () => ({
           hdiScore: 95,
           modelsUsed: ['Veo 3.1', 'Gemini 3.1'],
           parentCreatorId: 'orig_123',
-          remixTree: []
-        }
+          remixTree: [],
+        },
       });
     }
     return Promise.resolve({ video: null });
-  })
+  }),
 }));
 
 describe('verifySyntheticVideo', () => {

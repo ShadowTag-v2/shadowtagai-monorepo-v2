@@ -3,6 +3,6 @@ export async function executeAnalyzeVideo(input: any) {
   return {
     syntheticProbability: 0.85,
     processingTimeMs: 120,
-    remixTree: []
+    remixTree: [],
   };
 }

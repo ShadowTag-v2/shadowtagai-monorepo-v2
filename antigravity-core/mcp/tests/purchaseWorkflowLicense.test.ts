@@ -9,13 +9,13 @@ jest.mock('stripe', () => {
           return Promise.resolve({ status: 'succeeded' });
         }
         return Promise.resolve({ status: 'failed' });
-      })
-    }
+      }),
+    },
   }));
 });
 
 jest.mock('../src/utils/firebase-data-connect.js', () => ({
-  executeGrantLicenseMutation: jest.fn().mockResolvedValue({ success: true })
+  executeGrantLicenseMutation: jest.fn().mockResolvedValue({ success: true }),
 }));
 
 describe('purchaseWorkflowLicense', () => {
