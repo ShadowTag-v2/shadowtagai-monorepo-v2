@@ -1,0 +1,55 @@
+# .beads/ configuration — Monorepo OS Task Graph
+#
+# Beads provides Git-native task memory for coding agents.
+# This config declares the operating mode and integration points.
+
+version: 1
+
+mode: embedded
+storage: jsonl
+
+# Authoritative truth files
+truth_files:
+  issues: issues.jsonl
+  session_log: session_log.jsonl
+
+# Rebuildable cache (not git-tracked)
+cache_files:
+  index: beads_index.sqlite
+  temporal: temporal.db
+
+# Integration points
+integrations:
+  memory:
+    events_log: ../.memory/events.ndjson
+    on_issue_resolved: create_knowledge_atom
+  evidence:
+    evidence_dir: ../.agent/evidence/
+    on_tool_gate_check: record_evidence
+  tool_gateway:
+    contracts_dir: ../tool_contracts/
+    on_gate_fail: log_to_issues
+
+# Daemon fleet
+daemons:
+  kairos:
+    script: ../scripts/kairos_daemon.py
+    heartbeat: kairos_heartbeat.json
+  dream:
+    script: ../scripts/dream_consolidation.py
+    log: dream.log
+  autolint:
+    script: ../scripts/gca_autolint_daemon.py
+    log: omni-autolint.log
+  steward:
+    script: ../scripts/loop_steward.py
+    log: steward_daemon.log
+
+# Event types logged to issues.jsonl
+event_types:
+  - lint_sweep
+  - policy_enacted
+  - tool_gateway_check
+  - issue_created
+  - issue_resolved
+  - infrastructure_incident

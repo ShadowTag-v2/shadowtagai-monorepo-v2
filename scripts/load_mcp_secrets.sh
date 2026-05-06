@@ -41,7 +41,17 @@ export VERTEX_PROJECT="shadowtag-omega-v4"
 export VERTEX_LOCATION="us-central1"
 export DISABLE_TELEMETRY="1"
 export DISABLE_ERROR_REPORTING="1"
-_log "Exported 8 config vars"
+
+# HeadFade PWA public config
+export NEXT_PUBLIC_STRIPE_HEADFADE_PRO_LINK="https://buy.stripe.com/<your-payment-link-id>"
+export NEXT_PUBLIC_API_URL="https://headfade-api.run.app"
+
+# KovelAI public config
+export NEXT_PUBLIC_STRIPE_TRIAL_LINK="https://buy.stripe.com/<trial-link>"
+export NEXT_PUBLIC_STRIPE_PRO_MONTHLY_LINK="https://buy.stripe.com/<monthly-link>"
+export NEXT_PUBLIC_STRIPE_PRO_ANNUAL_LINK="https://buy.stripe.com/<annual-link>"
+
+_log "Exported 16 config vars"
 
 # --- Verify gcloud auth ---
 if ! gcloud auth print-access-token --quiet >/dev/null 2>&1; then
@@ -186,6 +196,11 @@ if [ "${1:-}" = "--export" ]; then
   echo "export VERTEX_LOCATION=\"us-central1\""
   echo "export DISABLE_TELEMETRY=\"1\""
   echo "export DISABLE_ERROR_REPORTING=\"1\""
+  echo "export NEXT_PUBLIC_STRIPE_HEADFADE_PRO_LINK=\"https://buy.stripe.com/<your-payment-link-id>\""
+  echo "export NEXT_PUBLIC_API_URL=\"https://headfade-api.run.app\""
+  echo "export NEXT_PUBLIC_STRIPE_TRIAL_LINK=\"https://buy.stripe.com/<trial-link>\""
+  echo "export NEXT_PUBLIC_STRIPE_PRO_MONTHLY_LINK=\"https://buy.stripe.com/<monthly-link>\""
+  echo "export NEXT_PUBLIC_STRIPE_PRO_ANNUAL_LINK=\"https://buy.stripe.com/<annual-link>\""
 
   for entry in $SECRETS; do
     [ -z "$entry" ] && continue
