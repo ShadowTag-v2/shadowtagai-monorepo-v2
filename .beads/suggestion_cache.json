@@ -1,10 +1,10 @@
 {
-  "timestamp": 1778027266.3534741,
-  "iso": "2026-05-06T00:27:46Z",
-  "suggestion": "Execute the full seven step validation cascade",
+  "timestamp": 1778029053.755602,
+  "iso": "2026-05-06T00:57:33Z",
+  "suggestion": "Execute the full validation cascade script",
   "suppressed": false,
   "suppress_reason": null,
   "filtered": false,
   "filter_reason": null,
-  "generation_time_ms": 1333.5
+  "generation_time_ms": 1609.2
 }
