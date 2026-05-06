@@ -8,7 +8,7 @@ test.describe('KovelAI Pricing & Checkout', () => {
   test('pricing page loads with 3 tiers', async ({ page }) => {
     await page.goto(`${BASE_URL}/pricing.html`);
     await expect(page.locator('.pricing-card')).toHaveCount(3);
-    await expect(page.locator('.tier-name')).toContainText(['Trial', 'Professional', 'Enterprise']);
+    await expect(page.locator('.tier-name')).toHaveText(['Trial', 'Professional', 'Enterprise']);
   });
 
   test('monthly/annual toggle updates pricing', async ({ page }) => {
