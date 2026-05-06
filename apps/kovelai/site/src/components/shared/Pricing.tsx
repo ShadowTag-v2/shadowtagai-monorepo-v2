@@ -109,11 +109,14 @@ export default function Pricing({ onOpenModal }: PricingProps) {
 
         {/* Monthly / Annual Toggle */}
         <div className="flex items-center justify-center gap-3 mb-12">
-          <span
+          <button
+            id="monthly-btn"
+            type="button"
+            onClick={() => setIsAnnual(false)}
             className={`text-sm font-medium transition-colors ${!isAnnual ? 'text-primary-text' : 'text-[#998f81]'}`}
           >
             Monthly
-          </span>
+          </button>
           <button
             type="button"
             role="switch"
@@ -133,11 +136,14 @@ export default function Pricing({ onOpenModal }: PricingProps) {
               }}
             />
           </button>
-          <span
+          <button
+            id="annual-btn"
+            type="button"
+            onClick={() => setIsAnnual(true)}
             className={`text-sm font-medium transition-colors ${isAnnual ? 'text-primary-text' : 'text-[#998f81]'}`}
           >
             Annual
-          </span>
+          </button>
           {isAnnual && (
             <span className="ml-1 inline-flex items-center rounded-full bg-gold/15 px-2.5 py-0.5 text-[0.65rem] font-semibold text-gold uppercase tracking-wider animate-pulse">
               Save 20%
@@ -157,12 +163,12 @@ export default function Pricing({ onOpenModal }: PricingProps) {
                   {p.badge}
                 </div>
               )}
-              <div className="text-xs uppercase tracking-[0.05em] text-[#a89d8e] mb-2">
+              <div className="tier-name text-xs uppercase tracking-[0.05em] text-[#a89d8e] mb-2">
                 {p.tier}
               </div>
               <div className="text-3xl font-extrabold text-primary-text mb-4">
                 <span className="text-lg text-[#a89d8e]">$</span>
-                {p.price}
+                <span id={p.tier === 'Professional' ? 'pro-price' : undefined}>{p.price}</span>
                 <span className="text-sm font-normal text-[#a89d8e]">{p.period}</span>
               </div>
               <ul className="flex-1 space-y-2 mb-6">
@@ -177,12 +183,12 @@ export default function Pricing({ onOpenModal }: PricingProps) {
                 <button
                   type="button"
                   onClick={onOpenModal}
-                  className={`${p.ctaStyle} w-full justify-center text-sm`}
+                  className={`cta-btn ${p.ctaStyle} w-full justify-center text-sm`}
                 >
                   {p.cta}
                 </button>
               ) : (
-                <a href={p.ctaLink} className={`${p.ctaStyle} w-full justify-center text-sm`}>
+                <a href={p.ctaLink} className={`cta-btn ${p.ctaStyle} w-full justify-center text-sm`}>
                   {p.cta}
                 </a>
               )}
