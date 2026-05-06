@@ -56,4 +56,3 @@ async function connectToJulesMCP() {
 }
 
 connectToJulesMCP().catch(console.error);
-```
