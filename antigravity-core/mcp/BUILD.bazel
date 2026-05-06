@@ -1,0 +1,20 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_project(
+    name = "headfade_mcp",
+    srcs = glob(["src/**/*.ts"]),
+    deps = [
+        "//:node_modules/@modelcontextprotocol/sdk",
+        "//:node_modules/google-auth-library",
+        "//:node_modules/zod",
+    ],
+    tsconfig = ":tsconfig.json",
+)
+
+js_library(
+    name = "package_json",
+    srcs = ["package.json"],
+)
