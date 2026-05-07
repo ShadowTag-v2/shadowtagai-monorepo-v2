@@ -10,11 +10,15 @@ interface TileProps {
   thumbnail: string;
   authorAvatar?: string;
   hoverVideo?: string;
-  content?: string;
   type?: 'thread' | 'video' | 'insight';
   accent?: boolean;
   duration?: string;
   onClick?: () => void;
+  /* Voting */
+  voteAI: number;
+  voteHuman: number;
+  userVote: 'ai' | 'human' | null;
+  onVote: (choice: 'ai' | 'human') => void;
 }
 
 export function Tile({
@@ -25,14 +29,21 @@ export function Tile({
   thumbnail,
   authorAvatar,
   hoverVideo,
-  type = 'thread',
   accent = false,
   duration,
   onClick,
+  voteAI,
+  voteHuman,
+  userVote,
+  onVote,
 }: TileProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [progressPercent, setProgressPercent] = useState(0);
+
+  const totalVotes = voteAI + voteHuman;
+  const aiPct = totalVotes > 0 ? Math.round((voteAI / totalVotes) * 100) : 50;
+  const humanPct = 100 - aiPct;
 
   const handleMouseEnter = () => {
     setIsHovering(true);
@@ -59,17 +70,15 @@ export function Tile({
   };
 
   return (
-    <div
-      onClick={onClick}
-      className="group bg-transparent overflow-hidden cursor-pointer flex flex-col gap-3"
-    >
-      {/* Thumbnail Area */}
+    <div className="group bg-transparent overflow-hidden cursor-pointer flex flex-col gap-2">
+      {/* ── Thumbnail + overlaid vote bar ── */}
       <div
         className="relative aspect-video rounded-xl overflow-hidden transition-all duration-200 group-hover:rounded-none"
-        style={{ backgroundColor: '#F7F9FC' }}
+        style={{ backgroundColor: '#F0F0FF' }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
+        {/* Thumbnail / video */}
         {hoverVideo ? (
           <>
             <img
@@ -86,6 +95,7 @@ export function Tile({
               muted
               loop
               playsInline
+              crossOrigin="anonymous"
               onTimeUpdate={handleTimeUpdate}
             />
           </>
@@ -98,86 +108,119 @@ export function Tile({
           />
         )}
 
-        {/* Hover overlay */}
+        {/* Hover overlay tint */}
         <div
           className="absolute inset-0 pointer-events-none transition-colors duration-200"
           style={{ backgroundColor: isHovering ? 'rgba(0,0,0,0.05)' : 'transparent' }}
         />
 
-        {/* Video Progress Bar on Hover */}
+        {/* Video scrub progress bar */}
         {isHovering && hoverVideo && (
           <div className="absolute bottom-0 left-0 right-0 h-[3px] z-20" style={{ backgroundColor: 'rgba(255,255,255,0.3)' }}>
             <div
               className="h-full transition-[width] duration-100"
-              style={{ width: `${progressPercent}%`, backgroundColor: '#cc0000' }}
+              style={{ width: `${progressPercent}%`, backgroundColor: '#7C3AED' }}
             />
           </div>
         )}
 
-        {/* Duration Badge */}
+        {/* Duration badge */}
         {duration && !isHovering && (
-          <div className="absolute bottom-1 right-1 bg-black/80 text-white text-[12px] px-1.5 py-0.5 rounded font-medium z-10">
+          <div className="absolute bottom-2 right-2 bg-black/80 text-white text-[12px] px-1.5 py-0.5 rounded font-medium z-10">
             {duration}
           </div>
         )}
 
-        {/* Trending Badge */}
+        {/* Trending badge */}
         {accent && (
-          <div className="absolute top-2 left-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm shadow-sm z-10" style={{ backgroundColor: '#cc0000' }}>
+          <div className="absolute top-2 left-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm shadow-sm z-10" style={{ backgroundColor: '#7C3AED' }}>
             TRENDING
           </div>
         )}
 
-        {/* Watch Later + Add to Queue on Hover */}
-        {isHovering && (
-          <div className="absolute top-1 right-1 flex flex-col gap-1 z-20">
+        {/* AI Presumed badge — top right */}
+        <div className="absolute top-2 right-2 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ backgroundColor: 'rgba(124,58,237,0.85)' }}>
+          <span>🤖</span> AI Presumed
+        </div>
+
+        {/* ── VOTE OVERLAY — bottom of thumbnail ── */}
+        <div
+          className="absolute bottom-0 left-0 right-0 z-30 px-2 pb-2 pt-6"
+          style={{
+            background: 'linear-gradient(to top, rgba(10,15,30,0.82) 0%, transparent 100%)',
+          }}
+        >
+          {/* Vote result bar (shown after voting) */}
+          {userVote && (
+            <div className="mb-1.5 flex flex-col gap-0.5">
+              <div className="flex w-full h-[5px] rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.25)' }}>
+                <div
+                  className="h-full transition-[width] duration-500 rounded-full"
+                  style={{ width: `${aiPct}%`, backgroundColor: '#A78BFA' }}
+                />
+              </div>
+              <div className="flex justify-between text-[10px] text-white/80">
+                <span>🤖 {aiPct}% AI ({voteAI.toLocaleString()})</span>
+                <span>👤 {humanPct}% Human ({voteHuman.toLocaleString()})</span>
+              </div>
+            </div>
+          )}
+
+          {/* Vote buttons */}
+          <div className="flex gap-1.5">
             <button
-              className="w-7 h-7 rounded-sm flex items-center justify-center text-white transition-colors"
-              style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
-              onClick={(e) => { e.stopPropagation(); }}
-              title="Watch later"
+              aria-label="Vote AI-Made"
+              onClick={(e) => { e.stopPropagation(); onVote('ai'); }}
+              className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all"
+              style={{
+                backgroundColor: userVote === 'ai' ? '#7C3AED' : 'rgba(124,58,237,0.25)',
+                color: '#fff',
+                border: `1px solid ${userVote === 'ai' ? '#7C3AED' : 'rgba(167,139,250,0.6)'}`,
+                backdropFilter: 'blur(4px)',
+              }}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              🤖 AI-Made {userVote === 'ai' && '✓'}
             </button>
             <button
-              className="w-7 h-7 rounded-sm flex items-center justify-center text-white transition-colors"
-              style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
-              onClick={(e) => { e.stopPropagation(); }}
-              title="Add to queue"
+              aria-label="Vote Human"
+              onClick={(e) => { e.stopPropagation(); onVote('human'); }}
+              className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all"
+              style={{
+                backgroundColor: userVote === 'human' ? '#0891B2' : 'rgba(8,145,178,0.25)',
+                color: '#fff',
+                border: `1px solid ${userVote === 'human' ? '#0891B2' : 'rgba(103,232,249,0.5)'}`,
+                backdropFilter: 'blur(4px)',
+              }}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" /></svg>
+              👤 Human {userVote === 'human' && '✓'}
             </button>
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Content — Avatar & Text (YouTube layout) */}
-      <div className="flex gap-3">
+      {/* ── Meta row ── */}
+      <div className="flex gap-3 px-0.5">
         {authorAvatar ? (
           <img
             src={authorAvatar}
             alt={author}
-            className="w-9 h-9 rounded-full object-cover flex-shrink-0 mt-0.5"
+            className="w-8 h-8 rounded-full object-cover flex-shrink-0 mt-0.5"
             loading="lazy"
           />
         ) : (
           <div
-            className="w-9 h-9 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center text-xs font-bold uppercase"
-            style={{ backgroundColor: '#E5E8ED', color: '#7A8FA6' }}
+            className="w-8 h-8 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center text-xs font-bold uppercase"
+            style={{ backgroundColor: '#EDE9FF', color: '#7C3AED' }}
           >
             {author.charAt(0)}
           </div>
         )}
 
-        <div className="flex flex-col min-w-0 flex-1">
-          <h3
-            className="font-semibold text-[14px] leading-[20px] line-clamp-2"
-            style={{ color: '#0A2540' }}
-          >
+        <div className="flex flex-col min-w-0 flex-1" onClick={onClick}>
+          <h3 className="font-semibold text-[13px] leading-[18px] line-clamp-2" style={{ color: '#0A2540' }}>
             {title}
           </h3>
-
-          <div className="mt-0.5 flex flex-col text-[13px]" style={{ color: '#4D627A' }}>
+          <div className="mt-0.5 flex flex-col text-[12px]" style={{ color: '#4D627A' }}>
             <span className="hover:text-[#0A2540] transition-colors truncate">{author}</span>
             <div className="flex items-center gap-1">
               <span>{views} views</span>
@@ -187,14 +230,13 @@ export function Tile({
           </div>
         </div>
 
-        {/* 3-dot menu */}
         <button
           aria-label={`More options for ${title}`}
-          className="self-start mt-1 p-1 rounded-full transition-colors opacity-0 group-hover:opacity-100"
+          className="self-start mt-0.5 p-1 rounded-full transition-colors opacity-0 group-hover:opacity-100"
           style={{ color: '#4D627A' }}
           onClick={(e) => { e.stopPropagation(); }}
         >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
         </button>
       </div>
     </div>
