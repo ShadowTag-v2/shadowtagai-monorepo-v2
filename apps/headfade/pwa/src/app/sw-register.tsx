@@ -10,8 +10,7 @@ export function ServiceWorkerRegistrar() {
         .then((reg) => {
           console.log('[HeadFade] SW registered, scope:', reg.scope);
         })
-        .catch((err) => {
-          console.warn('[HeadFade] SW registration failed:', err);
+        .catch((_err) => {
         });
     }
   }, []);

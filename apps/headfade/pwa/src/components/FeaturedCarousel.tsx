@@ -63,7 +63,7 @@ export function FeaturedCarousel({
   const [scrollDrivenIdx, setScrollDrivenIdx] = useState(0); // index from scroll position
 
   /* ── Turing Feed state machine ── */
-  const { currentIndex, autoScroll, revealState, setAutoScroll, handleVote, goToIndex } =
+  const { autoScroll, revealState, setAutoScroll, handleVote, goToIndex } =
     useTuringFeed({
       count: items.length,
       isAuthenticated,
@@ -129,10 +129,10 @@ export function FeaturedCarousel({
   );
 
   return (
-    <div
+    <section
       ref={outerRef}
-      style={{ height: `${SCROLL_PER_CARD * items.length + HEADER_H + 100}px` }}
       aria-label="Featured Videos Carousel"
+      style={{ height: `${SCROLL_PER_CARD * items.length + HEADER_H + 100}px` }}
     >
       {/* Inner sticky panel */}
       <div
@@ -290,10 +290,10 @@ export function FeaturedCarousel({
 
         {/* ── Dot nav ── */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-          {items.map((_, i) => (
+          {items.map((item, i) => (
             <button
               type="button"
-              key={i}
+              key={item.id ?? `dot-${i}`}
               aria-label={`Jump to featured video ${i + 1}`}
               onClick={() => jumpToCard(i)}
               className="rounded-full transition-all duration-300"
@@ -332,6 +332,6 @@ export function FeaturedCarousel({
           scroll
         </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -61,7 +61,7 @@ export function Tile({
   };
 
   const handleTimeUpdate = () => {
-    if (videoRef.current && videoRef.current.duration) {
+    if (videoRef.current?.duration) {
       setProgressPercent(
         (videoRef.current.currentTime / videoRef.current.duration) * 100,
       );
@@ -71,11 +71,14 @@ export function Tile({
   return (
     <div className="group bg-transparent overflow-hidden cursor-pointer flex flex-col gap-0">
       {/* ── Thumbnail + overlays ── */}
-      <div
-        className="relative aspect-video rounded-xl overflow-hidden transition-all duration-200 group-hover:rounded-t-xl group-hover:rounded-b-none"
+      <button
+        type="button"
+        aria-label={`Watch ${title}`}
+        className="relative aspect-video rounded-xl overflow-hidden transition-all duration-200 group-hover:rounded-t-xl group-hover:rounded-b-none w-full p-0 border-0"
         style={{ backgroundColor: '#F0F0FF' }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={onClick}
       >
         {/* Thumbnail / video */}
         {hoverVideo ? (
@@ -132,16 +135,16 @@ export function Tile({
 
         {/* Trending badge */}
         {accent && (
-          <div className="absolute top-2 left-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm shadow-sm z-10" style={{ backgroundColor: '#7C3AED' }}>
+          <span className="absolute top-2 left-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm shadow-sm z-10" style={{ backgroundColor: '#7C3AED' }}>
             TRENDING
-          </div>
+          </span>
         )}
 
         {/* AI Presumed badge — top right */}
         <div className="absolute top-2 right-2 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ backgroundColor: 'rgba(124,58,237,0.85)' }}>
           <span>🤖</span> AI Presumed
         </div>
-      </div>
+      </button>
 
       {/* ── VOTE SECTION — always visible below thumbnail ── */}
       <div
@@ -221,10 +224,6 @@ export function Tile({
 
         <div
           className="flex flex-col min-w-0 flex-1"
-          role="button"
-          tabIndex={0}
-          onClick={onClick}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
         >
           <h3 className="font-semibold text-[13px] leading-[18px] line-clamp-2" style={{ color: '#0A2540' }}>
             {title}

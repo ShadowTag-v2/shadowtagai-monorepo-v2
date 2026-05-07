@@ -3,8 +3,10 @@
 @tailwind utilities;
 
 /* HeadFade Design System — Dark Luxury Tokens */
+/* biome-ignore lint/correctness/noInvalidPositionAtImportRule: Tailwind processes @import after @tailwind directives */
 @import '@packages/ui/dark-luxury.css';
 /* AgentSpinner Tokens — Forensic Cyan theme */
+/* biome-ignore lint/correctness/noInvalidPositionAtImportRule: Tailwind processes @import after @tailwind directives */
 @import './agent-spinner.css';
 
 /* Global Base Layer */
@@ -17,6 +19,7 @@
 
   body {
     background-color: #ffffff;
+    /* biome-ignore lint/correctness/noUnknownFunction: theme() is a Tailwind CSS function, not standard CSS */
     color: theme('colors.tinted.950');
   }
 

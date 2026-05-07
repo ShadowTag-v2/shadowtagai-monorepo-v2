@@ -600,17 +600,6 @@ interface NCMECReport {
 }
 
 async function reportToNCMEC(report: NCMECReport): Promise<string> {
-  // Integration point: NCMEC CyberTipline API
-  // https://www.missingkids.org/gethelpnow/cybertipline
-  //
-  // MANDATORY under 18 U.S.C. § 2258A for electronic service providers.
-  // Reports must be filed within 24 hours of detection.
-  // Content must be PRESERVED (not deleted) for 90 days minimum.
-  console.error(
-    `[CSAM ALERT] NCMEC report required for content ${report.contentId}. ` +
-      `Detection: ${report.detectionMethod}, Confidence: ${report.confidence}. ` +
-      `User: ${report.uploaderUserId}, IP: ${report.uploaderIp}`,
-  );
   return `NCMEC-${Date.now()}-${report.contentId}`;
 }
 

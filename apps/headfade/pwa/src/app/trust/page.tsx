@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { Tile } from '@/components/Tile'; // we'll create this
 
 export default function TrustPage() {
@@ -166,7 +165,7 @@ export default function TrustPage() {
             const aiPct = 0.4 + (index % 5) * 0.06;
             return (
               <Tile
-                key={index}
+                key={thread.id ?? `thread-${index}`}
                 {...thread}
                 voteAI={Math.floor(base * aiPct)}
                 voteHuman={Math.floor(base * (1 - aiPct))}

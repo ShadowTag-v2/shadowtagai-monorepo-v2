@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import type React from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import type { RevealState } from '@/hooks/useTuringFeed';
 
 export interface AdSlot {
@@ -33,6 +34,7 @@ interface HeadFadePlayerProps {
   revealState?: RevealState;
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Video player coordinates ads, quartiles, preroll, midroll, and cognitive-lock — complexity is load-bearing.
 export function HeadFadePlayer({
   src,
   poster,
@@ -131,7 +133,7 @@ export function HeadFadePlayer({
   /* ── Progress + midroll + quartiles ── */
   const handleTimeUpdate = useCallback(() => {
     const vid = videoRef.current;
-    if (!vid || !vid.duration) return;
+    if (!vid?.duration) return;
     const pct = (vid.currentTime / vid.duration) * 100;
     setProgress(pct);
     setCurrentTime(vid.currentTime);
@@ -170,7 +172,7 @@ export function HeadFadePlayer({
   /* ── Autoplay ── */
   useEffect(() => {
     if (autoplay) handlePlay();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [handlePlay, autoplay]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fmt = (s: number) => {
     const m = Math.floor(s / 60);
@@ -193,12 +195,13 @@ export function HeadFadePlayer({
         : null;
 
   return (
-    <div
+    <section
       ref={containerRef}
       id="headfade-player"
+      aria-label="Video player"
       className="relative w-full aspect-video bg-black rounded-2xl overflow-hidden group select-none"
       onMouseMove={resetControlsTimer}
-      onMouseLeave={() => playing && setShowControls(false)}
+      onMouseLeave={() => { if (playing) setShowControls(false); }}
     >
       {/* Main video */}
       <video
@@ -218,8 +221,8 @@ export function HeadFadePlayer({
       {/* ── Cognitive Lock Reveal Flash ── */}
       {revealBg && (
         <div
+          role="status"
           aria-live="polite"
-          aria-label={revealState === 'correct' ? 'Correct! You spotted it.' : 'Incorrect — you were fooled!'}
           className="absolute inset-0 z-40 flex flex-col items-center justify-center gap-3 pointer-events-none"
           style={{
             backgroundColor: revealBg,
@@ -227,7 +230,7 @@ export function HeadFadePlayer({
             animation: 'headfade-flash-in 200ms ease-out',
           }}
         >
-          <span className="text-5xl">{revealState === 'correct' ? '✅' : '❌'}</span>
+          <span className="text-5xl" aria-hidden="true">{revealState === 'correct' ? '✅' : '❌'}</span>
           <span
             className="text-[18px] font-black text-white"
             style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}
@@ -282,7 +285,8 @@ export function HeadFadePlayer({
                 className="p-1.5 rounded-full transition-colors"
                 style={{ backgroundColor: isBookmarked ? '#7C3AED' : 'rgba(0,0,0,0.45)' }}
               >
-                <svg className="w-4 h-4 text-white" fill={isBookmarked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-white" fill={isBookmarked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <title>{isBookmarked ? 'Remove bookmark' : 'Bookmark'}</title>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                 </svg>
               </button>
@@ -299,7 +303,8 @@ export function HeadFadePlayer({
         >
           {!playing && (
             <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(124,58,237,0.85)' }}>
-              <svg className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <title>Play</title>
                 <path d="M8 5v14l11-7z" />
               </svg>
             </div>
@@ -362,16 +367,22 @@ export function HeadFadePlayer({
           {/* Scrub + time + mute */}
           <div className="flex items-center gap-2">
             <span className="text-white text-[10px] tabular-nums">{fmt(currentTime)}</span>
-            <div
+            <button
+              type="button"
+              aria-label="Seek video"
               className="flex-1 h-[4px] rounded-full cursor-pointer relative"
-              style={{ backgroundColor: 'rgba(255,255,255,0.3)' }}
-              onClick={seek}
+              style={{ backgroundColor: 'rgba(255,255,255,0.3)', padding: 0, border: 'none' }}
+              onClick={seek as unknown as React.MouseEventHandler<HTMLButtonElement>}
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowRight' && videoRef.current) videoRef.current.currentTime = Math.min(videoRef.current.duration, videoRef.current.currentTime + 5);
+                if (e.key === 'ArrowLeft' && videoRef.current) videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 5);
+              }}
             >
               <div
                 className="absolute left-0 top-0 h-full rounded-full transition-[width] duration-100"
                 style={{ width: `${progress}%`, backgroundColor: '#7C3AED' }}
               />
-            </div>
+            </button>
             <span className="text-white text-[10px] tabular-nums">{fmt(duration)}</span>
             <button
               type="button"
@@ -380,7 +391,8 @@ export function HeadFadePlayer({
               className="p-1 rounded-full"
               style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
             >
-              <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <title>{muted ? 'Unmute' : 'Mute'}</title>
                 {muted ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
                 ) : (
@@ -391,6 +403,6 @@ export function HeadFadePlayer({
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

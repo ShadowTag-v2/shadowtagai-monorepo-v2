@@ -19,7 +19,6 @@ export async function generateStaticParams(): Promise<{ videoId: string }[]> {
     const url = `${FIRESTORE_BASE}/videos?pageSize=500&mask.fieldPaths=__name__`;
     const res = await fetch(url, { next: { revalidate: 3600 } }); // ISR: re-fetch every hour
     if (!res.ok) {
-      console.warn('[embed/generateStaticParams] Firestore fetch failed:', res.status);
       return [{ videoId: 'demo' }];
     }
     const json = (await res.json()) as { documents?: { name: string }[] };
@@ -35,8 +34,7 @@ export async function generateStaticParams(): Promise<{ videoId: string }[]> {
     }
     console.log(`[embed/generateStaticParams] Pre-rendering ${ids.length} video embed pages`);
     return ids;
-  } catch (err) {
-    console.error('[embed/generateStaticParams] Error:', err);
+  } catch (_err) {
     return [{ videoId: 'demo' }];
   }
 }

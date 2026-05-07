@@ -51,7 +51,6 @@ export function AuthWallModal({ isOpen, onClose, onSignedIn }: AuthWallModalProp
       // User closed the popup — not an error worth surfacing
       if (ae.code !== 'auth/popup-closed-by-user' && ae.code !== 'auth/cancelled-popup-request') {
         setError('Sign-in failed. Try again or check your network.');
-        console.error('[AuthWall]', ae.code, ae.message);
       }
     } finally {
       setLoading(null);

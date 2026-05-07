@@ -36,8 +36,6 @@ async function fetchEmbedData(videoId: string): Promise<EmbedVideoData> {
     if (!res.ok) throw new Error(`API ${res.status}`);
     return await res.json();
   } catch (_err: unknown) {
-    // Fallback for demo / static export — API unavailable in static mode
-    console.debug('[HeadFade Embed] API unreachable, using demo fallback', _err);
     return {
       id: videoId,
       cdnUrl: '/media/genesis_clip_01.mp4',
