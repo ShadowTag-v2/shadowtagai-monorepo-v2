@@ -1,9 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { executeGrantLicenseMutation } from '../utils/firebase-data-connect.js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-02-24.acacia',
+  apiVersion: '2025-02-24.acacia'
 });
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         await executeGrantLicenseMutation({
           buyerId: agentWalletToken,
-          videoId,
+          videoId
         });
 
         console.log(`✅ A2A License granted via webhook: ${agentWalletToken} → ${videoId}`);

@@ -12,7 +12,7 @@ echo ""
 echo "[09:00:15] Scaling Cloud Run to production capacity..."
 gcloud run services update headfade-mcp \
   --min-instances=25 \
-  --max-instances=2000 \
+  --max-instances=200 \
   --region=us-central1 \
   --project shadowtag-omega-v4
 
@@ -33,7 +33,7 @@ echo "[09:05:00] Monitoring initial metrics..."
 echo "   Signups/min: 142"
 echo "   Videos analyzed: 3,847"
 echo "   Micro-licenses sold: 89"
-echo "   Revenue: $265.11"
+echo "   Revenue: \$265.11"
 
 echo ""
 echo "🚀 HEADFADE IS NOW FULLY PUBLIC TO THE WORLD"
