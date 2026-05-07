@@ -69,7 +69,7 @@ export function useVotes(count: number) {
     setSaved((prev) => {
       const next = new Set(prev);
       next.has(id) ? next.delete(id) : next.add(id);
-      saveLS(LS_SAVED, [...next]);
+      saveLS(LS_SAVED, Array.from(next));
       return next;
     });
   }, []);

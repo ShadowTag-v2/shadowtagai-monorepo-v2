@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
+import type { RevealState } from '@/hooks/useTuringFeed';
 
 export interface AdSlot {
-  /** 'preroll' fires before play, 'midroll' fires at midpointSec, 'postroll' fires on ended */
-  type: 'preroll' | 'midroll' | 'postroll';
+  /** 'preroll' fires before play, 'midroll' fires at midpointSec */
+  type: 'preroll' | 'midroll';
   midpointSec?: number;
-  /** Called when the slot becomes active — host resolves with ad content or undefined to skip */
   onAdRequest: (type: AdSlot['type']) => Promise<{ src: string; durationSec: number } | undefined>;
 }
 
@@ -25,6 +25,12 @@ interface HeadFadePlayerProps {
   autoplay?: boolean;
   /** Fired whenever the player crosses a quartile (25/50/75/100) */
   onQuartile?: (pct: 25 | 50 | 75 | 100) => void;
+  /**
+   * Cognitive Lock: when set, the player renders a full-screen reveal flash
+   * overlay. 'correct' = green, 'incorrect' = red.
+   * Parent clears this after REVEAL_DURATION_MS (handled by useTuringFeed).
+   */
+  revealState?: RevealState;
 }
 
 export function HeadFadePlayer({
@@ -41,6 +47,7 @@ export function HeadFadePlayer({
   isBookmarked = false,
   autoplay = false,
   onQuartile,
+  revealState = null,
 }: HeadFadePlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const adVideoRef = useRef<HTMLVideoElement>(null);
@@ -139,18 +146,26 @@ export function HeadFadePlayer({
     // Quartiles
     for (const q of [25, 50, 75, 100] as const) {
       if (!quartilesFired.has(q) && pct >= q) {
-        setQuartilesFired((prev) => new Set([...prev, q]));
+        setQuartilesFired((prev) => new Set(Array.from(prev).concat([q])));
         onQuartile?.(q);
       }
     }
   }, [adSlots, midrollFired, fireAd, quartilesFired, onQuartile]);
 
-  /* ── Postroll on ended ── */
+  /**
+   * Cognitive Lock: on ended, loop the video instead of advancing.
+   * The video loops until the user casts a vote. The parent's useTuringFeed
+   * handles the actual advance after reveal flash completes.
+   */
   const handleEnded = useCallback(() => {
-    setPlaying(false);
-    setShowControls(true);
-    fireAd('postroll');
-  }, [fireAd]);
+    const vid = videoRef.current;
+    if (vid) {
+      vid.currentTime = 0;
+      vid.play().catch(() => {});
+      // Reset quartiles so they can fire again on next loop
+      setQuartilesFired(new Set());
+    }
+  }, []);
 
   /* ── Autoplay ── */
   useEffect(() => {
@@ -168,6 +183,14 @@ export function HeadFadePlayer({
     const ratio = (e.clientX - rect.left) / rect.width;
     if (videoRef.current) videoRef.current.currentTime = ratio * videoRef.current.duration;
   };
+
+  /* Reveal flash colours */
+  const revealBg =
+    revealState === 'correct'
+      ? 'rgba(16,185,129,0.35)' // emerald-500
+      : revealState === 'incorrect'
+        ? 'rgba(239,68,68,0.35)' // red-500
+        : null;
 
   return (
     <div
@@ -191,6 +214,28 @@ export function HeadFadePlayer({
         onEnded={handleEnded}
         onClick={togglePlay}
       />
+
+      {/* ── Cognitive Lock Reveal Flash ── */}
+      {revealBg && (
+        <div
+          aria-live="polite"
+          aria-label={revealState === 'correct' ? 'Correct! You spotted it.' : 'Incorrect — you were fooled!'}
+          className="absolute inset-0 z-40 flex flex-col items-center justify-center gap-3 pointer-events-none"
+          style={{
+            backgroundColor: revealBg,
+            backdropFilter: 'blur(2px)',
+            animation: 'headfade-flash-in 200ms ease-out',
+          }}
+        >
+          <span className="text-5xl">{revealState === 'correct' ? '✅' : '❌'}</span>
+          <span
+            className="text-[18px] font-black text-white"
+            style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}
+          >
+            {revealState === 'correct' ? 'You spotted it!' : 'You were fooled!'}
+          </span>
+        </div>
+      )}
 
       {/* Ad overlay */}
       {adActive && adSrc && (
@@ -259,39 +304,45 @@ export function HeadFadePlayer({
           )}
         </button>
 
-        {/* Bottom bar: progress + vote + mute */}
+        {/* Bottom bar: vote + scrub + mute */}
         <div className="pointer-events-auto flex flex-col gap-2 p-3" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)' }}>
-          {/* Vote buttons */}
+          {/* Vote buttons — ghost opacity until voted */}
           <div className="flex gap-2">
             <button
               aria-label="Vote AI-Made"
+              aria-pressed={userVote === 'ai'}
+              data-testid="vote-ai-btn"
               onClick={onVoteAI}
-              className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all"
+              className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold transition-all duration-200"
               style={{
-                backgroundColor: userVote === 'ai' ? '#7C3AED' : 'rgba(124,58,237,0.3)',
+                backgroundColor: userVote === 'ai' ? '#7C3AED' : 'rgba(124,58,237,0.18)',
                 color: '#fff',
-                border: `1px solid ${userVote === 'ai' ? '#7C3AED' : 'rgba(167,139,250,0.6)'}`,
+                border: `1px solid ${userVote === 'ai' ? '#7C3AED' : 'rgba(167,139,250,0.45)'}`,
                 backdropFilter: 'blur(4px)',
+                opacity: userVote === null ? 0.7 : 1,
               }}
             >
               🤖 AI-Made {userVote === 'ai' && '✓'}
             </button>
             <button
               aria-label="Vote Human"
+              aria-pressed={userVote === 'human'}
+              data-testid="vote-human-btn"
               onClick={onVoteHuman}
-              className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all"
+              className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold transition-all duration-200"
               style={{
-                backgroundColor: userVote === 'human' ? '#0891B2' : 'rgba(8,145,178,0.3)',
+                backgroundColor: userVote === 'human' ? '#0891B2' : 'rgba(8,145,178,0.18)',
                 color: '#fff',
-                border: `1px solid ${userVote === 'human' ? '#0891B2' : 'rgba(103,232,249,0.5)'}`,
+                border: `1px solid ${userVote === 'human' ? '#0891B2' : 'rgba(103,232,249,0.4)'}`,
                 backdropFilter: 'blur(4px)',
+                opacity: userVote === null ? 0.7 : 1,
               }}
             >
               👤 Human {userVote === 'human' && '✓'}
             </button>
           </div>
 
-          {/* Vote result bar */}
+          {/* Vote result bar — only shown after voting */}
           {userVote && (
             <div className="flex flex-col gap-0.5">
               <div className="flex w-full h-[4px] rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
