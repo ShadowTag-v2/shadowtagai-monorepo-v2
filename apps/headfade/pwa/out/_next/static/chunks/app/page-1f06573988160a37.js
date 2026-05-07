@@ -1,1 +1,513 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[974],{4886:()=>{},9627:(e,n,t)=>{Promise.resolve().then(t.bind(t,9716))},9716:(e,n,t)=>{"use strict";t.r(n),t.d(n,{default:()=>m});var i=t(5155),a=t(2115),r=t(2619),l=t.n(r);let o=["Accomplishing","Actioning","Actualizing","Architecting","Baking","Beaming","Beboppin'","Befuddling","Billowing","Blanching","Bloviating","Boogieing","Boondoggling","Booping","Bootstrapping","Brewing","Bunning","Burrowing","Calculating","Canoodling","Caramelizing","Cascading","Catapulting","Cerebrating","Channeling","Choreographing","Churning","Coalescing","Cogitating","Combobulating","Composing","Computing","Concocting","Considering","Contemplating","Cooking","Crafting","Creating","Crunching","Crystallizing","Cultivating","Deciphering","Deliberating","Determining","Discombobulating","Doing","Doodling","Drizzling","Ebbing","Effecting","Elucidating","Embellishing","Enchanting","Envisioning","Fermenting","Finagling","Flamb\xe9ing","Flowing","Flummoxing","Fluttering","Forging","Forming","Frolicking","Frosting","Gallivanting","Galloping","Garnishing","Generating","Gesticulating","Germinating","Grooving","Gusting","Harmonizing","Hashing","Hatching","Herding","Hullaballooing","Hyperspacing","Ideating","Imagining","Improvising","Incubating","Inferring","Infusing","Ionizing","Jitterbugging","Kneading","Leavening","Levitating","Manifesting","Marinating","Meandering","Metamorphosing","Misting","Moonwalking","Moseying","Mulling","Mustering","Musing","Nebulizing","Nesting","Noodling","Nucleating","Orbiting","Orchestrating","Osmosing","Percolating","Perusing","Philosophising","Pollinating","Pondering","Pontificating","Precipitating","Prestidigitating","Processing","Proofing","Propagating","Puttering","Puzzling","Quantumizing","Razzle-dazzling","Recombobulating","Reticulating","Ruminating","Saut\xe9ing","Scampering","Schlepping","Scurrying","Seasoning","Shenaniganing","Shimmying","Simmering","Skedaddling","Sketching","Slithering","Smooshing","Spelunking","Spinning","Sprouting","Stewing","Sublimating","Swirling","Swooping","Synthesizing","Tempering","Thinking","Thundering","Tinkering","Transfiguring","Transmuting","Twisting","Undulating","Unfurling","Unravelling","Vibing","Waddling","Wandering","Warping","Whirlpooling","Whirring","Whisking","Wibbling","Working","Wrangling","Zesting","Zigzagging"],s=["⠋","⠙","⠹","⠸","⠼","⠴","⠦","⠧"];function c(e){let n=[...e];for(let e=n.length-1;e>0;e--){let t=Math.floor(Math.random()*(e+1));[n[e],n[t]]=[n[t],n[e]]}return n}function g(e){let{active:n=!1,theme:t,overlay:r=!1,label:l,className:g="",onStallChange:d}=e,[u,m]=(0,a.useState)("Initializing"),[h,p]=(0,a.useState)("entering"),[x,b]=(0,a.useState)(0),[f,v]=(0,a.useState)("normal"),[I,w]=(0,a.useState)("."),S=(0,a.useRef)(0),N=(0,a.useRef)(c(o)),y=(0,a.useRef)(0),C=(0,a.useRef)(null),E=(0,a.useRef)(null),R=(0,a.useRef)(null),T=(0,a.useRef)(null),A=(0,a.useCallback)(()=>{p("exiting"),setTimeout(()=>{y.current=(y.current+1)%N.current.length,m(N.current[y.current]),p("entering")},250)},[]);return((0,a.useEffect)(()=>{if(!n){C.current&&clearInterval(C.current),E.current&&clearInterval(E.current),R.current&&clearInterval(R.current),T.current&&clearInterval(T.current),v("normal");return}S.current=Date.now(),y.current=0,N.current=c(o),m(N.current[0]),p("entering"),v("normal"),b(0),C.current=setInterval(()=>{b(e=>(e+1)%s.length)},125),E.current=setInterval(A,4e3);let e=[".","..","..."],t=0;return T.current=setInterval(()=>{t=(t+1)%e.length,w(e[t])},500),R.current=setInterval(()=>{let e=Date.now()-S.current,n="normal";e>3e4?n="hot":e>1e4&&(n="warm"),v(t=>(t!==n&&(null==d||d(n,e)),n))},1e3),()=>{C.current&&clearInterval(C.current),E.current&&clearInterval(E.current),R.current&&clearInterval(R.current),T.current&&clearInterval(T.current)}},[n,A,d]),n)?(0,i.jsxs)("div",{className:"agent-spinner".concat(t?" agent-spinner--".concat(t):"").concat(r?" agent-spinner--overlay":""," ").concat(g),"data-stall":f,role:"status","aria-live":"polite","aria-label":"Loading",children:[(0,i.jsx)("span",{className:"agent-spinner__glyph","aria-hidden":"true",children:s[x]}),(0,i.jsx)("div",{className:"agent-spinner__verb-wrap",children:(0,i.jsx)("div",{className:"agent-spinner__verb-inner","data-state":h,children:(0,i.jsx)("span",{className:"agent-spinner__verb",children:u})})}),(0,i.jsx)("span",{className:"agent-spinner__dots","aria-hidden":"true",children:I}),l&&(0,i.jsx)("span",{className:"agent-spinner__label",children:l})]}):null}t(4886);var d=t(5704);function u(e){return e.split("/").pop()||e}function m(){let[e]=(0,a.useState)("/media/genesis_clip_01.mp4"),[n,t]=(0,a.useState)(""),[r,o]=(0,a.useState)(!1),[s,c]=(0,a.useState)(null),m=(0,a.useRef)(null);(0,a.useEffect)(()=>{m.current&&(m.current.scrollTop=m.current.scrollHeight)},[n]);let h=(0,a.useCallback)(async n=>{t("> ■ INITIALIZING GEMINI 3.1 FLASH LITE FORENSICS...\n> ■ Loading multimodal video pipeline...\n"),o(!0),c(null);let i=performance.now();try{await fetch("/api/vote",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({video_id:u(e),user_vote:n,actual_truth:"AI",latency_ms:String(Math.round(performance.now()-i))})}),t(e=>e+"> ■ HDI telemetry logged.\n> ■ Requesting forensic teardown from Vertex AI...\n");let a=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({video_uri:"gs://headfade-cdn-origin/".concat(u(e)),actual_truth:"AI",user_vote:n})}),r=Math.round(performance.now()-i);if(!a.ok){let e=await a.json().catch(()=>({detail:"Unknown error"}));t("> ✗ FORENSIC ENGINE STATUS: ".concat(a.status,"\n> ").concat(e.detail||"Service initializing — video analysis requires uploaded media in GCS."));return}let l=await a.json(),o="AI"===n;c(o?"correct":"fooled"),t("> ■ ANALYSIS COMPLETE [".concat(r,"ms]\n")+"> ■ YOUR VOTE: ".concat(n," | GROUND TRUTH: ").concat("AI","\n")+"> ".concat(o?"✓ CORRECT — You detected the deception.":"✗ FOOLED — The AI deceived you.","\n")+"".concat("─".repeat(48),"\n")+"> GEMINI INTERNAL REASONING:\n".concat(l.gemini_thoughts||"[CLASSIFIED — No internal monologue exposed.]","\n")+"".concat("─".repeat(48),"\n")+"> ARBITER VERDICT:\n".concat(l.gemini_verdict||"[PENDING ANALYSIS]","\n"))}catch(e){t("> ✗ FATAL FORENSIC ARBITER ERROR: ".concat(e))}finally{o(!1)}},[e]);return(0,i.jsxs)("main",{className:"flex flex-col items-center justify-center min-h-screen bg-black text-white p-4",children:[(0,i.jsx)("h1",{className:"text-4xl font-bold text-gradient mb-2 tracking-tighter shadow-sm",children:"HeadFade"}),(0,i.jsx)("p",{className:"text-zinc-400 text-sm mb-6 tracking-wide",children:"The Global Turing Test — Can You Tell What Is Real?"}),(0,i.jsxs)("div",{className:"glass-panel w-full max-w-md h-[550px] rounded-3xl overflow-hidden relative shadow-2xl border border-white/5",children:[(0,i.jsx)("video",{className:"w-full h-full object-cover",src:e,autoPlay:!0,loop:!0,muted:!0,playsInline:!0,"aria-label":"Analysis Target",title:"Analysis Target"}),r&&(0,i.jsx)(g,{active:r,theme:"headfade",overlay:!0,label:"FORENSIC ANALYSIS",onStallChange:()=>{}}),s&&!r&&(0,i.jsx)("div",{className:"absolute top-6 left-1/2 -translate-x-1/2 z-20 px-6 py-2 rounded-full font-bold text-sm tracking-widest animate-fade-in ".concat("correct"===s?"bg-emerald-500/20 text-emerald-400 border border-emerald-400/30":"bg-red-500/20 text-red-400 border border-red-400/30"),children:"correct"===s?"✓ CORRECT":"✗ FOOLED"}),(0,i.jsxs)("div",{className:"absolute bottom-8 w-full flex justify-between px-6 z-10",children:[(0,i.jsx)("button",{type:"button",onClick:()=>h("REAL"),disabled:r,className:"glass-card px-8 py-4 rounded-xl text-emerald-400 font-bold tracking-widest hover:bg-emerald-400/10 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95",children:"REAL"}),(0,i.jsx)("button",{type:"button",onClick:()=>h("AI"),disabled:r,className:"glass-card px-8 py-4 rounded-xl text-cyan-400 font-bold tracking-widest hover:bg-cyan-400/10 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95",children:"AI"})]})]}),(0,i.jsx)("div",{ref:m,className:"mt-6 w-full max-w-md p-6 glass-card font-mono text-xs md:text-sm h-48 overflow-y-auto leading-relaxed text-zinc-400 whitespace-pre-wrap scroll-smooth",children:n||"> SECURE TERMINAL: Awaiting Human Deception Input..."}),(0,i.jsxs)("div",{className:"mt-8 w-full max-w-md flex flex-col items-center gap-3",children:[(0,i.jsx)("a",{href:d.env.NEXT_PUBLIC_STRIPE_HEADFADE_PRO_LINK||"#pricing",target:"_blank",rel:"noopener noreferrer",className:"w-full text-center px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-black font-bold tracking-wide hover:opacity-90 transition-opacity text-sm",children:"Upgrade to Pro — $19.99/mo Unlimited Forensics"}),(0,i.jsx)("p",{className:"text-zinc-400 text-xs",children:"Enterprise deepfake detection API \xb7 Bulk HDI analytics \xb7 Priority support"})]}),(0,i.jsxs)("div",{className:"mt-4 w-full max-w-md flex justify-center gap-4",children:[(0,i.jsx)(l(),{href:"/marketplace",className:"text-zinc-400 text-xs border border-zinc-700 px-4 py-2 rounded-lg hover:text-[#00FF41] hover:border-[#00FF41]/30 transition-all",children:"\uD83D\uDD00 Creator Marketplace"}),(0,i.jsx)(l(),{href:"/embed/demo",className:"text-zinc-400 text-xs border border-zinc-700 px-4 py-2 rounded-lg hover:text-cyan-400 hover:border-cyan-400/30 transition-all",children:"\uD83D\uDCE1 Embed Player Demo"})]}),(0,i.jsx)("footer",{className:"mt-12 text-zinc-400 text-xs text-center",children:(0,i.jsxs)("p",{children:["\xa9 2026 ShadowTagAI \xb7 Powered by Gemini 3.1 Flash Lite \xb7"," ",(0,i.jsx)("a",{href:"https://shadowtagai.web.app",className:"text-zinc-400 hover:text-white transition-colors",children:"ShadowTagAI"})]})})]})}}},e=>{e.O(0,[665,619,441,255,358],()=>e(e.s=9627)),_N_E=e.O()}]);
+(self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
+  [974],
+  {
+    4886: () => {},
+    9627: (e, n, t) => {
+      Promise.resolve().then(t.bind(t, 9716));
+    },
+    9716: (e, n, t) => {
+      t.r(n), t.d(n, { default: () => m });
+      var i = t(5155),
+        a = t(2115),
+        r = t(2619),
+        l = t.n(r);
+      const o = [
+          'Accomplishing',
+          'Actioning',
+          'Actualizing',
+          'Architecting',
+          'Baking',
+          'Beaming',
+          "Beboppin'",
+          'Befuddling',
+          'Billowing',
+          'Blanching',
+          'Bloviating',
+          'Boogieing',
+          'Boondoggling',
+          'Booping',
+          'Bootstrapping',
+          'Brewing',
+          'Bunning',
+          'Burrowing',
+          'Calculating',
+          'Canoodling',
+          'Caramelizing',
+          'Cascading',
+          'Catapulting',
+          'Cerebrating',
+          'Channeling',
+          'Choreographing',
+          'Churning',
+          'Coalescing',
+          'Cogitating',
+          'Combobulating',
+          'Composing',
+          'Computing',
+          'Concocting',
+          'Considering',
+          'Contemplating',
+          'Cooking',
+          'Crafting',
+          'Creating',
+          'Crunching',
+          'Crystallizing',
+          'Cultivating',
+          'Deciphering',
+          'Deliberating',
+          'Determining',
+          'Discombobulating',
+          'Doing',
+          'Doodling',
+          'Drizzling',
+          'Ebbing',
+          'Effecting',
+          'Elucidating',
+          'Embellishing',
+          'Enchanting',
+          'Envisioning',
+          'Fermenting',
+          'Finagling',
+          'Flamb\xe9ing',
+          'Flowing',
+          'Flummoxing',
+          'Fluttering',
+          'Forging',
+          'Forming',
+          'Frolicking',
+          'Frosting',
+          'Gallivanting',
+          'Galloping',
+          'Garnishing',
+          'Generating',
+          'Gesticulating',
+          'Germinating',
+          'Grooving',
+          'Gusting',
+          'Harmonizing',
+          'Hashing',
+          'Hatching',
+          'Herding',
+          'Hullaballooing',
+          'Hyperspacing',
+          'Ideating',
+          'Imagining',
+          'Improvising',
+          'Incubating',
+          'Inferring',
+          'Infusing',
+          'Ionizing',
+          'Jitterbugging',
+          'Kneading',
+          'Leavening',
+          'Levitating',
+          'Manifesting',
+          'Marinating',
+          'Meandering',
+          'Metamorphosing',
+          'Misting',
+          'Moonwalking',
+          'Moseying',
+          'Mulling',
+          'Mustering',
+          'Musing',
+          'Nebulizing',
+          'Nesting',
+          'Noodling',
+          'Nucleating',
+          'Orbiting',
+          'Orchestrating',
+          'Osmosing',
+          'Percolating',
+          'Perusing',
+          'Philosophising',
+          'Pollinating',
+          'Pondering',
+          'Pontificating',
+          'Precipitating',
+          'Prestidigitating',
+          'Processing',
+          'Proofing',
+          'Propagating',
+          'Puttering',
+          'Puzzling',
+          'Quantumizing',
+          'Razzle-dazzling',
+          'Recombobulating',
+          'Reticulating',
+          'Ruminating',
+          'Saut\xe9ing',
+          'Scampering',
+          'Schlepping',
+          'Scurrying',
+          'Seasoning',
+          'Shenaniganing',
+          'Shimmying',
+          'Simmering',
+          'Skedaddling',
+          'Sketching',
+          'Slithering',
+          'Smooshing',
+          'Spelunking',
+          'Spinning',
+          'Sprouting',
+          'Stewing',
+          'Sublimating',
+          'Swirling',
+          'Swooping',
+          'Synthesizing',
+          'Tempering',
+          'Thinking',
+          'Thundering',
+          'Tinkering',
+          'Transfiguring',
+          'Transmuting',
+          'Twisting',
+          'Undulating',
+          'Unfurling',
+          'Unravelling',
+          'Vibing',
+          'Waddling',
+          'Wandering',
+          'Warping',
+          'Whirlpooling',
+          'Whirring',
+          'Whisking',
+          'Wibbling',
+          'Working',
+          'Wrangling',
+          'Zesting',
+          'Zigzagging',
+        ],
+        s = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧'];
+      function c(e) {
+        const n = [...e];
+        for (let e = n.length - 1; e > 0; e--) {
+          const t = Math.floor(Math.random() * (e + 1));
+          [n[e], n[t]] = [n[t], n[e]];
+        }
+        return n;
+      }
+      function g(e) {
+        const {
+            active: n = !1,
+            theme: t,
+            overlay: r = !1,
+            label: l,
+            className: g = '',
+            onStallChange: d,
+          } = e,
+          [u, m] = (0, a.useState)('Initializing'),
+          [h, p] = (0, a.useState)('entering'),
+          [x, b] = (0, a.useState)(0),
+          [f, v] = (0, a.useState)('normal'),
+          [I, w] = (0, a.useState)('.'),
+          S = (0, a.useRef)(0),
+          N = (0, a.useRef)(c(o)),
+          y = (0, a.useRef)(0),
+          C = (0, a.useRef)(null),
+          E = (0, a.useRef)(null),
+          R = (0, a.useRef)(null),
+          T = (0, a.useRef)(null),
+          A = (0, a.useCallback)(() => {
+            p('exiting'),
+              setTimeout(() => {
+                (y.current = (y.current + 1) % N.current.length),
+                  m(N.current[y.current]),
+                  p('entering');
+              }, 250);
+          }, []);
+        return ((0, a.useEffect)(() => {
+          if (!n) {
+            C.current && clearInterval(C.current),
+              E.current && clearInterval(E.current),
+              R.current && clearInterval(R.current),
+              T.current && clearInterval(T.current),
+              v('normal');
+            return;
+          }
+          (S.current = Date.now()),
+            (y.current = 0),
+            (N.current = c(o)),
+            m(N.current[0]),
+            p('entering'),
+            v('normal'),
+            b(0),
+            (C.current = setInterval(() => {
+              b((e) => (e + 1) % s.length);
+            }, 125)),
+            (E.current = setInterval(A, 4e3));
+          let e = ['.', '..', '...'],
+            t = 0;
+          return (
+            (T.current = setInterval(() => {
+              (t = (t + 1) % e.length), w(e[t]);
+            }, 500)),
+            (R.current = setInterval(() => {
+              let e = Date.now() - S.current,
+                n = 'normal';
+              e > 3e4 ? (n = 'hot') : e > 1e4 && (n = 'warm'),
+                v((t) => (t !== n && (null == d || d(n, e)), n));
+            }, 1e3)),
+            () => {
+              C.current && clearInterval(C.current),
+                E.current && clearInterval(E.current),
+                R.current && clearInterval(R.current),
+                T.current && clearInterval(T.current);
+            }
+          );
+        }, [n, A, d]),
+        n)
+          ? (0, i.jsxs)('div', {
+              className: 'agent-spinner'
+                .concat(t ? ' agent-spinner--'.concat(t) : '')
+                .concat(r ? ' agent-spinner--overlay' : '', ' ')
+                .concat(g),
+              'data-stall': f,
+              role: 'status',
+              'aria-live': 'polite',
+              'aria-label': 'Loading',
+              children: [
+                (0, i.jsx)('span', {
+                  className: 'agent-spinner__glyph',
+                  'aria-hidden': 'true',
+                  children: s[x],
+                }),
+                (0, i.jsx)('div', {
+                  className: 'agent-spinner__verb-wrap',
+                  children: (0, i.jsx)('div', {
+                    className: 'agent-spinner__verb-inner',
+                    'data-state': h,
+                    children: (0, i.jsx)('span', { className: 'agent-spinner__verb', children: u }),
+                  }),
+                }),
+                (0, i.jsx)('span', {
+                  className: 'agent-spinner__dots',
+                  'aria-hidden': 'true',
+                  children: I,
+                }),
+                l && (0, i.jsx)('span', { className: 'agent-spinner__label', children: l }),
+              ],
+            })
+          : null;
+      }
+      t(4886);
+      var d = t(5704);
+      function u(e) {
+        return e.split('/').pop() || e;
+      }
+      function m() {
+        const [e] = (0, a.useState)('/media/genesis_clip_01.mp4'),
+          [n, t] = (0, a.useState)(''),
+          [r, o] = (0, a.useState)(!1),
+          [s, c] = (0, a.useState)(null),
+          m = (0, a.useRef)(null);
+        (0, a.useEffect)(() => {
+          m.current && (m.current.scrollTop = m.current.scrollHeight);
+        }, [n]);
+        const h = (0, a.useCallback)(
+          async (n) => {
+            t(
+              '> ■ INITIALIZING GEMINI 3.1 FLASH LITE FORENSICS...\n> ■ Loading multimodal video pipeline...\n',
+            ),
+              o(!0),
+              c(null);
+            const i = performance.now();
+            try {
+              await fetch('/api/vote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                  video_id: u(e),
+                  user_vote: n,
+                  actual_truth: 'AI',
+                  latency_ms: String(Math.round(performance.now() - i)),
+                }),
+              }),
+                t(
+                  (e) =>
+                    e +
+                    '> ■ HDI telemetry logged.\n> ■ Requesting forensic teardown from Vertex AI...\n',
+                );
+              const a = await fetch('/api/analyze', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    video_uri: 'gs://headfade-cdn-origin/'.concat(u(e)),
+                    actual_truth: 'AI',
+                    user_vote: n,
+                  }),
+                }),
+                r = Math.round(performance.now() - i);
+              if (!a.ok) {
+                const e = await a.json().catch(() => ({ detail: 'Unknown error' }));
+                t(
+                  '> ✗ FORENSIC ENGINE STATUS: '
+                    .concat(a.status, '\n> ')
+                    .concat(
+                      e.detail ||
+                        'Service initializing — video analysis requires uploaded media in GCS.',
+                    ),
+                );
+                return;
+              }
+              const l = await a.json(),
+                o = 'AI' === n;
+              c(o ? 'correct' : 'fooled'),
+                t(
+                  '> ■ ANALYSIS COMPLETE ['.concat(r, 'ms]\n') +
+                    '> ■ YOUR VOTE: '.concat(n, ' | GROUND TRUTH: ').concat('AI', '\n') +
+                    '> '.concat(
+                      o
+                        ? '✓ CORRECT — You detected the deception.'
+                        : '✗ FOOLED — The AI deceived you.',
+                      '\n',
+                    ) +
+                    ''.concat('─'.repeat(48), '\n') +
+                    '> GEMINI INTERNAL REASONING:\n'.concat(
+                      l.gemini_thoughts || '[CLASSIFIED — No internal monologue exposed.]',
+                      '\n',
+                    ) +
+                    ''.concat('─'.repeat(48), '\n') +
+                    '> ARBITER VERDICT:\n'.concat(l.gemini_verdict || '[PENDING ANALYSIS]', '\n'),
+                );
+            } catch (e) {
+              t('> ✗ FATAL FORENSIC ARBITER ERROR: '.concat(e));
+            } finally {
+              o(!1);
+            }
+          },
+          [e],
+        );
+        return (0, i.jsxs)('main', {
+          className:
+            'flex flex-col items-center justify-center min-h-screen bg-black text-white p-4',
+          children: [
+            (0, i.jsx)('h1', {
+              className: 'text-4xl font-bold text-gradient mb-2 tracking-tighter shadow-sm',
+              children: 'HeadFade',
+            }),
+            (0, i.jsx)('p', {
+              className: 'text-zinc-400 text-sm mb-6 tracking-wide',
+              children: 'The Global Turing Test — Can You Tell What Is Real?',
+            }),
+            (0, i.jsxs)('div', {
+              className:
+                'glass-panel w-full max-w-md h-[550px] rounded-3xl overflow-hidden relative shadow-2xl border border-white/5',
+              children: [
+                (0, i.jsx)('video', {
+                  className: 'w-full h-full object-cover',
+                  src: e,
+                  autoPlay: !0,
+                  loop: !0,
+                  muted: !0,
+                  playsInline: !0,
+                  'aria-label': 'Analysis Target',
+                  title: 'Analysis Target',
+                }),
+                r &&
+                  (0, i.jsx)(g, {
+                    active: r,
+                    theme: 'headfade',
+                    overlay: !0,
+                    label: 'FORENSIC ANALYSIS',
+                    onStallChange: () => {},
+                  }),
+                s &&
+                  !r &&
+                  (0, i.jsx)('div', {
+                    className:
+                      'absolute top-6 left-1/2 -translate-x-1/2 z-20 px-6 py-2 rounded-full font-bold text-sm tracking-widest animate-fade-in '.concat(
+                        'correct' === s
+                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-400/30'
+                          : 'bg-red-500/20 text-red-400 border border-red-400/30',
+                      ),
+                    children: 'correct' === s ? '✓ CORRECT' : '✗ FOOLED',
+                  }),
+                (0, i.jsxs)('div', {
+                  className: 'absolute bottom-8 w-full flex justify-between px-6 z-10',
+                  children: [
+                    (0, i.jsx)('button', {
+                      type: 'button',
+                      onClick: () => h('REAL'),
+                      disabled: r,
+                      className:
+                        'glass-card px-8 py-4 rounded-xl text-emerald-400 font-bold tracking-widest hover:bg-emerald-400/10 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95',
+                      children: 'REAL',
+                    }),
+                    (0, i.jsx)('button', {
+                      type: 'button',
+                      onClick: () => h('AI'),
+                      disabled: r,
+                      className:
+                        'glass-card px-8 py-4 rounded-xl text-cyan-400 font-bold tracking-widest hover:bg-cyan-400/10 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95',
+                      children: 'AI',
+                    }),
+                  ],
+                }),
+              ],
+            }),
+            (0, i.jsx)('div', {
+              ref: m,
+              className:
+                'mt-6 w-full max-w-md p-6 glass-card font-mono text-xs md:text-sm h-48 overflow-y-auto leading-relaxed text-zinc-400 whitespace-pre-wrap scroll-smooth',
+              children: n || '> SECURE TERMINAL: Awaiting Human Deception Input...',
+            }),
+            (0, i.jsxs)('div', {
+              className: 'mt-8 w-full max-w-md flex flex-col items-center gap-3',
+              children: [
+                (0, i.jsx)('a', {
+                  href: d.env.NEXT_PUBLIC_STRIPE_HEADFADE_PRO_LINK || '#pricing',
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                  className:
+                    'w-full text-center px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-black font-bold tracking-wide hover:opacity-90 transition-opacity text-sm',
+                  children: 'Upgrade to Pro — $19.99/mo Unlimited Forensics',
+                }),
+                (0, i.jsx)('p', {
+                  className: 'text-zinc-400 text-xs',
+                  children:
+                    'Enterprise deepfake detection API \xb7 Bulk HDI analytics \xb7 Priority support',
+                }),
+              ],
+            }),
+            (0, i.jsxs)('div', {
+              className: 'mt-4 w-full max-w-md flex justify-center gap-4',
+              children: [
+                (0, i.jsx)(l(), {
+                  href: '/marketplace',
+                  className:
+                    'text-zinc-400 text-xs border border-zinc-700 px-4 py-2 rounded-lg hover:text-[#00FF41] hover:border-[#00FF41]/30 transition-all',
+                  children: '\uD83D\uDD00 Creator Marketplace',
+                }),
+                (0, i.jsx)(l(), {
+                  href: '/embed/demo',
+                  className:
+                    'text-zinc-400 text-xs border border-zinc-700 px-4 py-2 rounded-lg hover:text-cyan-400 hover:border-cyan-400/30 transition-all',
+                  children: '\uD83D\uDCE1 Embed Player Demo',
+                }),
+              ],
+            }),
+            (0, i.jsx)('footer', {
+              className: 'mt-12 text-zinc-400 text-xs text-center',
+              children: (0, i.jsxs)('p', {
+                children: [
+                  '\xa9 2026 ShadowTagAI \xb7 Powered by Gemini 3.1 Flash Lite \xb7',
+                  ' ',
+                  (0, i.jsx)('a', {
+                    href: 'https://shadowtagai.web.app',
+                    className: 'text-zinc-400 hover:text-white transition-colors',
+                    children: 'ShadowTagAI',
+                  }),
+                ],
+              }),
+            }),
+          ],
+        });
+      }
+    },
+  },
+  (e) => {
+    e.O(0, [665, 619, 441, 255, 358], () => e((e.s = 9627))), (_N_E = e.O());
+  },
+]);

@@ -9,7 +9,9 @@ export default function TrustCenter() {
             ShadowTag AI Trust Manifesto
           </h1>
           <p className="text-xl text-zinc-400 max-w-2xl">
-            We weaponize compliance as a competitive moat. Our platform is engineered from the ground up for zero-trust security, ensuring your enterprise assets remain completely sovereign.
+            We weaponize compliance as a competitive moat. Our platform is engineered from the
+            ground up for zero-trust security, ensuring your enterprise assets remain completely
+            sovereign.
           </p>
         </header>
 
@@ -20,13 +22,21 @@ export default function TrustCenter() {
             </h2>
             <div className="text-zinc-400 space-y-4 text-sm leading-relaxed">
               <p>
-                <strong className="text-zinc-300">The Enterprise Fear:</strong> Companies are terrified of employees pasting proprietary code, financial data, or patient records into an AI prompt, only for it to be stored in a shadow database and regurgitated by a public model.
+                <strong className="text-zinc-300">The Enterprise Fear:</strong> Companies are
+                terrified of employees pasting proprietary code, financial data, or patient records
+                into an AI prompt, only for it to be stored in a shadow database and regurgitated by
+                a public model.
               </p>
               <p>
-                <strong className="text-zinc-300">Our Stance: &quot;Stateless AI.&quot;</strong> We do not log, store, cache, or look at your AI payloads. ShadowTag operates on a strict Zero Data Retention (ZDR) architecture. Prompts and context windows are processed entirely in volatile memory (RAM) and are instantly vaporized the millisecond the inference is returned to the client.
+                <strong className="text-zinc-300">Our Stance: &quot;Stateless AI.&quot;</strong> We
+                do not log, store, cache, or look at your AI payloads. ShadowTag operates on a
+                strict Zero Data Retention (ZDR) architecture. Prompts and context windows are
+                processed entirely in volatile memory (RAM) and are instantly vaporized the
+                millisecond the inference is returned to the client.
               </p>
               <p>
-                <strong className="text-zinc-300">The Guarantee:</strong> We train on absolutely nothing. If our databases are breached, hackers find an empty room.
+                <strong className="text-zinc-300">The Guarantee:</strong> We train on absolutely
+                nothing. If our databases are breached, hackers find an empty room.
               </p>
             </div>
           </div>
@@ -37,10 +47,21 @@ export default function TrustCenter() {
             </h2>
             <div className="text-zinc-400 space-y-4 text-sm leading-relaxed">
               <p>
-                <strong className="text-zinc-300">The Enterprise Fear:</strong> European clients hesitate to buy from U.S. startups because the U.S. CLOUD Act allows federal agencies to subpoena data from U.S. tech companies, even if those servers are physically located in Europe.
+                <strong className="text-zinc-300">The Enterprise Fear:</strong> European clients
+                hesitate to buy from U.S. startups because the U.S. CLOUD Act allows federal
+                agencies to subpoena data from U.S. tech companies, even if those servers are
+                physically located in Europe.
               </p>
               <p>
-                <strong className="text-zinc-300">Our Stance: &quot;You cannot subpoena what does not exist.&quot;</strong> Most companies fight government overreach with armies of lawyers; we fight it with architecture. We neutralize the CLOUD Act through our ZDR pipeline and BYOK (Bring Your Own Key) encryption for user accounts. Even under a federal gag order or warrant, we cannot surrender your proprietary IP because we do not have it. For any persistent workspace data, the enterprise holds the master decryption key—meaning we can only hand the government mathematically unbreakable ciphertext.
+                <strong className="text-zinc-300">
+                  Our Stance: &quot;You cannot subpoena what does not exist.&quot;
+                </strong>{' '}
+                Most companies fight government overreach with armies of lawyers; we fight it with
+                architecture. We neutralize the CLOUD Act through our ZDR pipeline and BYOK (Bring
+                Your Own Key) encryption for user accounts. Even under a federal gag order or
+                warrant, we cannot surrender your proprietary IP because we do not have it. For any
+                persistent workspace data, the enterprise holds the master decryption key—meaning we
+                can only hand the government mathematically unbreakable ciphertext.
               </p>
             </div>
           </div>
@@ -51,10 +72,18 @@ export default function TrustCenter() {
             </h2>
             <div className="text-zinc-400 space-y-4 text-sm leading-relaxed">
               <p>
-                <strong className="text-zinc-300">The Enterprise Fear:</strong> Highly regulated industries (finance, defense, healthcare) legally mandate that their data must never cross international fiber-optic borders.
+                <strong className="text-zinc-300">The Enterprise Fear:</strong> Highly regulated
+                industries (finance, defense, healthcare) legally mandate that their data must never
+                cross international fiber-optic borders.
               </p>
               <p>
-                <strong className="text-zinc-300">Our Stance: &quot;Your data. Your sovereign soil.&quot;</strong> We treat data residency as a strict routing constraint. For enterprise deployments, we utilize geographic ring-fencing. If an EU client connects to ShadowTag, their API calls are routed exclusively to isolated, single-tenant clusters in the EU (e.g., AWS Frankfurt or GCP Paris). Your data never crosses the Atlantic.
+                <strong className="text-zinc-300">
+                  Our Stance: &quot;Your data. Your sovereign soil.&quot;
+                </strong>{' '}
+                We treat data residency as a strict routing constraint. For enterprise deployments,
+                we utilize geographic ring-fencing. If an EU client connects to ShadowTag, their API
+                calls are routed exclusively to isolated, single-tenant clusters in the EU (e.g.,
+                AWS Frankfurt or GCP Paris). Your data never crosses the Atlantic.
               </p>
             </div>
           </div>
@@ -65,10 +94,21 @@ export default function TrustCenter() {
             </h2>
             <div className="text-zinc-400 space-y-4 text-sm leading-relaxed">
               <p>
-                <strong className="text-zinc-300">The Enterprise Fear:</strong> Massive fines for using vendor software that mismanages the Personally Identifiable Information (PII) of European citizens.
+                <strong className="text-zinc-300">The Enterprise Fear:</strong> Massive fines for
+                using vendor software that mismanages the Personally Identifiable Information (PII)
+                of European citizens.
               </p>
               <p>
-                <strong className="text-zinc-300">Our Stance: &quot;Compliance via Non-Applicability.&quot;</strong> We don&apos;t just sign standard Data Processing Agreements (DPAs); we design GDPR into the codebase. Because we run a ZDR pipeline, we inherently minimize the PII footprint—drastically reducing the liability of being a &quot;Data Controller.&quot; Furthermore, we do not require manual IT support tickets for data deletion; we expose a 1-click &quot;Nuke My Data&quot; API that instantly triggers the Right to be Forgotten, cryptographically shredding all associated user auth and billing data across our infrastructure.
+                <strong className="text-zinc-300">
+                  Our Stance: &quot;Compliance via Non-Applicability.&quot;
+                </strong>{' '}
+                We don&apos;t just sign standard Data Processing Agreements (DPAs); we design GDPR
+                into the codebase. Because we run a ZDR pipeline, we inherently minimize the PII
+                footprint—drastically reducing the liability of being a &quot;Data Controller.&quot;
+                Furthermore, we do not require manual IT support tickets for data deletion; we
+                expose a 1-click &quot;Nuke My Data&quot; API that instantly triggers the Right to
+                be Forgotten, cryptographically shredding all associated user auth and billing data
+                across our infrastructure.
               </p>
             </div>
           </div>
