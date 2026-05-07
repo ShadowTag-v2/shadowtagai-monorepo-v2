@@ -1,14 +1,12 @@
-import React from 'react';
-
 export default function TrustCenter() {
   return (
-    <div className="min-h-screen bg-black text-white p-8 font-sans selection:bg-purple-900 selection:text-white">
+    <div className="min-h-screen bg-emerald-950 text-emerald-50 p-8 font-sans selection:bg-emerald-700 selection:text-white">
       <div className="max-w-4xl mx-auto mt-20">
-        <header className="mb-16 border-b border-white/10 pb-12">
+        <header className="mb-16 border-b border-emerald-800/50 pb-12">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
             ShadowTag AI Trust Manifesto
           </h1>
-          <p className="text-xl text-zinc-400 max-w-2xl">
+          <p className="text-xl text-emerald-200/80 max-w-2xl">
             We weaponize compliance as a competitive moat. Our platform is engineered from the
             ground up for zero-trust security, ensuring your enterprise assets remain completely
             sovereign.
@@ -16,44 +14,44 @@ export default function TrustCenter() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          <div className="p-8 bg-zinc-900/50 border border-zinc-800 rounded-xl hover:border-purple-500/50 transition-colors">
-            <h2 className="text-2xl font-semibold mb-4 text-purple-400">
+          <div className="p-8 bg-emerald-900/30 border border-emerald-800/50 rounded-xl hover:border-emerald-500/50 transition-colors">
+            <h2 className="text-2xl font-semibold mb-4 text-emerald-400">
               1. ZDR (Zero Data Retention) — The Prime Directive
             </h2>
-            <div className="text-zinc-400 space-y-4 text-sm leading-relaxed">
+            <div className="text-emerald-200/70 space-y-4 text-sm leading-relaxed">
               <p>
-                <strong className="text-zinc-300">The Enterprise Fear:</strong> Companies are
+                <strong className="text-emerald-300">The Enterprise Fear:</strong> Companies are
                 terrified of employees pasting proprietary code, financial data, or patient records
                 into an AI prompt, only for it to be stored in a shadow database and regurgitated by
                 a public model.
               </p>
               <p>
-                <strong className="text-zinc-300">Our Stance: &quot;Stateless AI.&quot;</strong> We
-                do not log, store, cache, or look at your AI payloads. ShadowTag operates on a
+                <strong className="text-emerald-300">Our Stance: &quot;Stateless AI.&quot;</strong>{' '}
+                We do not log, store, cache, or look at your AI payloads. ShadowTag operates on a
                 strict Zero Data Retention (ZDR) architecture. Prompts and context windows are
                 processed entirely in volatile memory (RAM) and are instantly vaporized the
                 millisecond the inference is returned to the client.
               </p>
               <p>
-                <strong className="text-zinc-300">The Guarantee:</strong> We train on absolutely
+                <strong className="text-emerald-300">The Guarantee:</strong> We train on absolutely
                 nothing. If our databases are breached, hackers find an empty room.
               </p>
             </div>
           </div>
 
-          <div className="p-8 bg-zinc-900/50 border border-zinc-800 rounded-xl hover:border-purple-500/50 transition-colors">
-            <h2 className="text-2xl font-semibold mb-4 text-purple-400">
+          <div className="p-8 bg-emerald-900/30 border border-emerald-800/50 rounded-xl hover:border-emerald-500/50 transition-colors">
+            <h2 className="text-2xl font-semibold mb-4 text-emerald-400">
               2. The U.S. CLOUD Act — Cryptographic Immunity
             </h2>
-            <div className="text-zinc-400 space-y-4 text-sm leading-relaxed">
+            <div className="text-emerald-200/70 space-y-4 text-sm leading-relaxed">
               <p>
-                <strong className="text-zinc-300">The Enterprise Fear:</strong> European clients
+                <strong className="text-emerald-300">The Enterprise Fear:</strong> European clients
                 hesitate to buy from U.S. startups because the U.S. CLOUD Act allows federal
                 agencies to subpoena data from U.S. tech companies, even if those servers are
                 physically located in Europe.
               </p>
               <p>
-                <strong className="text-zinc-300">
+                <strong className="text-emerald-300">
                   Our Stance: &quot;You cannot subpoena what does not exist.&quot;
                 </strong>{' '}
                 Most companies fight government overreach with armies of lawyers; we fight it with
@@ -66,18 +64,18 @@ export default function TrustCenter() {
             </div>
           </div>
 
-          <div className="p-8 bg-zinc-900/50 border border-zinc-800 rounded-xl hover:border-purple-500/50 transition-colors">
-            <h2 className="text-2xl font-semibold mb-4 text-purple-400">
+          <div className="p-8 bg-emerald-900/30 border border-emerald-800/50 rounded-xl hover:border-emerald-500/50 transition-colors">
+            <h2 className="text-2xl font-semibold mb-4 text-emerald-400">
               3. Data Residency — The Geographic Moat
             </h2>
-            <div className="text-zinc-400 space-y-4 text-sm leading-relaxed">
+            <div className="text-emerald-200/70 space-y-4 text-sm leading-relaxed">
               <p>
-                <strong className="text-zinc-300">The Enterprise Fear:</strong> Highly regulated
+                <strong className="text-emerald-300">The Enterprise Fear:</strong> Highly regulated
                 industries (finance, defense, healthcare) legally mandate that their data must never
                 cross international fiber-optic borders.
               </p>
               <p>
-                <strong className="text-zinc-300">
+                <strong className="text-emerald-300">
                   Our Stance: &quot;Your data. Your sovereign soil.&quot;
                 </strong>{' '}
                 We treat data residency as a strict routing constraint. For enterprise deployments,
@@ -88,18 +86,18 @@ export default function TrustCenter() {
             </div>
           </div>
 
-          <div className="p-8 bg-zinc-900/50 border border-zinc-800 rounded-xl hover:border-purple-500/50 transition-colors">
-            <h2 className="text-2xl font-semibold mb-4 text-purple-400">
+          <div className="p-8 bg-emerald-900/30 border border-emerald-800/50 rounded-xl hover:border-emerald-500/50 transition-colors">
+            <h2 className="text-2xl font-semibold mb-4 text-emerald-400">
               4. GDPR — Privacy by Architecture
             </h2>
-            <div className="text-zinc-400 space-y-4 text-sm leading-relaxed">
+            <div className="text-emerald-200/70 space-y-4 text-sm leading-relaxed">
               <p>
-                <strong className="text-zinc-300">The Enterprise Fear:</strong> Massive fines for
+                <strong className="text-emerald-300">The Enterprise Fear:</strong> Massive fines for
                 using vendor software that mismanages the Personally Identifiable Information (PII)
                 of European citizens.
               </p>
               <p>
-                <strong className="text-zinc-300">
+                <strong className="text-emerald-300">
                   Our Stance: &quot;Compliance via Non-Applicability.&quot;
                 </strong>{' '}
                 We don&apos;t just sign standard Data Processing Agreements (DPAs); we design GDPR
@@ -116,12 +114,12 @@ export default function TrustCenter() {
 
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-6">Firewall &amp; Network Configuration</h2>
-          <div className="p-6 bg-black border border-zinc-800 rounded-xl font-mono text-sm text-zinc-300">
+          <div className="p-6 bg-emerald-950/50 border border-emerald-800/50 rounded-xl font-mono text-sm text-emerald-200/70">
             <p className="mb-2"># For Enterprise IT / Network Administrators</p>
             <p className="mb-2">
               # To prevent Palo Alto / Corporate Firewall blocks, please allowlist:
             </p>
-            <ul className="list-disc pl-6 space-y-2 mt-4 text-zinc-400">
+            <ul className="list-disc pl-6 space-y-2 mt-4 text-emerald-200/80">
               <li>headfade.com</li>
               <li>*.headfade.com</li>
               <li>shadowtagai.com</li>
@@ -131,7 +129,7 @@ export default function TrustCenter() {
           </div>
         </section>
 
-        <footer className="text-center text-sm text-zinc-500 mt-20 pb-8">
+        <footer className="text-center text-sm text-emerald-500/60 mt-20 pb-8">
           <p>&copy; 2026 ShadowTagAI Inc. All rights reserved. Sovereign AI for the Enterprise.</p>
         </footer>
       </div>
