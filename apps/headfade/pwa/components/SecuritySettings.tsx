@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface SecuritySettingsProps {
   userId: string;
@@ -23,8 +23,8 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
   const generateCaptcha = () => {
     const challenges = [
       "Type the word 'SECURE' backwards",
-      "What is 7 + 3?",
-      "Type 'SHADOWTAG' in all caps"
+      'What is 7 + 3?',
+      "Type 'SHADOWTAG' in all caps",
     ];
     const randomIndex = Math.floor(Math.random() * challenges.length);
     setCaptchaChallenge(challenges[randomIndex]);
@@ -34,7 +34,7 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
   const verifyCaptcha = (input: string) => {
     const expected = captchaChallenge.toLowerCase().replace(/[^a-z0-9]/g, '');
     const userInput = input.toLowerCase().replace(/[^a-z0-9]/g, '');
-    
+
     if (expected === userInput || input === 'SECURE' || input === '10' || input === 'SHADOWTAG') {
       setCaptchaVerified(true);
       return true;
@@ -74,12 +74,11 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
       }
 
       setSuccess(true);
-      
+
       // Clear session and redirect
       setTimeout(() => {
         router.push('/goodbye');
       }, 2000);
-
     } catch (err: any) {
       setError(err.message || 'An unexpected error occurred. Please try again.');
       setIsLoading(false);
@@ -114,7 +113,7 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
             <p className="text-sm text-zinc-400 mb-4">
               Permanently delete your account and all associated data. This action cannot be undone.
             </p>
-            
+
             <button
               onClick={openNukeModal}
               className="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors"
@@ -137,7 +136,8 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
                   </div>
                   <h3 className="text-2xl font-semibold text-white mb-2">Delete Everything?</h3>
                   <p className="text-zinc-400 text-sm">
-                    This will permanently delete your account, all data, billing information, and revoke all sessions.
+                    This will permanently delete your account, all data, billing information, and
+                    revoke all sessions.
                   </p>
                 </div>
 
@@ -166,9 +166,7 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
                     className="w-full mt-2 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white"
                     onChange={(e) => verifyCaptcha(e.target.value)}
                   />
-                  {captchaVerified && (
-                    <p className="text-emerald-400 text-xs mt-1">✓ Verified</p>
-                  )}
+                  {captchaVerified && <p className="text-emerald-400 text-xs mt-1">✓ Verified</p>}
                 </div>
 
                 {/* Confirmation Input */}

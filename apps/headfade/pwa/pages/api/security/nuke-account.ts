@@ -1,6 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -48,13 +48,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Add root-level collections where userId field exists
     const rootCollections = ['workspaces', 'projects', 'api_keys'];
-    
+
     for (const collectionName of rootCollections) {
-      const snapshot = await db
-        .collection(collectionName)
-        .where('userId', '==', userId)
-        .get();
-      
+      const snapshot = await db.collection(collectionName).where('userId', '==', userId).get();
+
       snapshot.forEach((doc) => {
         // Overwrite with cryptographic noise first (PITR-safe)
         batch.update(doc.ref, {
@@ -70,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Process nested subcollections
     for (const collectionPath of collectionsToShred) {
       const docRef = db.doc(collectionPath);
-      
+
       // Overwrite with noise
       batch.update(docRef, {
         name: crypto.randomUUID(),
@@ -78,7 +75,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: crypto.randomUUID(),
         deletedAt: new Date(),
       });
-      
+
       batch.delete(docRef);
     }
 
@@ -101,7 +98,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       success: true,
       message: 'Account and all data have been cryptographically shredded',
     });
-
   } catch (error: any) {
     console.error('Nuke account error:', error);
     return res.status(500).json({

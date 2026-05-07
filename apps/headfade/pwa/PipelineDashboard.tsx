@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface PipelineRun {
   id: string;
@@ -21,7 +21,7 @@ export default function PipelineDashboard() {
       status: 'success',
       framesExtracted: 87,
       creditsUsed: 2450,
-      duration: '4m 32s'
+      duration: '4m 32s',
     },
     {
       id: 'run_002',
@@ -30,8 +30,8 @@ export default function PipelineDashboard() {
       status: 'success',
       framesExtracted: 64,
       creditsUsed: 1890,
-      duration: '3m 51s'
-    }
+      duration: '3m 51s',
+    },
   ]);
 
   const [totalCreditsUsed, setTotalCreditsUsed] = useState(4340);
@@ -46,7 +46,9 @@ export default function PipelineDashboard() {
         </div>
         <div className="text-right">
           <div className="text-sm text-zinc-500">REMAINING CREDITS</div>
-          <div className="text-3xl font-bold text-emerald-400">{remainingCredits.toLocaleString()}</div>
+          <div className="text-3xl font-bold text-emerald-400">
+            {remainingCredits.toLocaleString()}
+          </div>
         </div>
       </div>
 
@@ -72,7 +74,7 @@ export default function PipelineDashboard() {
       <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
         <div className="px-6 py-4 border-b border-zinc-800 flex justify-between items-center">
           <h2 className="font-semibold">Recent Pipeline Runs</h2>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="px-4 py-1.5 text-sm bg-white text-black rounded-lg hover:bg-zinc-200"
           >
@@ -97,13 +99,17 @@ export default function PipelineDashboard() {
               <tr key={run.id} className="border-b border-zinc-800 hover:bg-zinc-800/50">
                 <td className="px-6 py-4 font-mono text-sm">{run.id}</td>
                 <td className="px-6 py-4">
-                  <span className={`px-2 py-0.5 rounded text-xs ${run.project === 'headfade' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}>
+                  <span
+                    className={`px-2 py-0.5 rounded text-xs ${run.project === 'headfade' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}
+                  >
                     {run.project}
                   </span>
                 </td>
                 <td className="px-6 py-4 text-sm text-zinc-400">{run.timestamp}</td>
                 <td className="px-6 py-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${run.status === 'success' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${run.status === 'success' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}
+                  >
                     {run.status}
                   </span>
                 </td>
