@@ -10,7 +10,7 @@ export default function TrustPage() {
     author: "Headfade Legal",
     views: "142.8k",
     time: "2h ago",
-    thumbnail: "https://picsum.photos/id/1015/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=600&h=340&fit=crop",
     type: "thread" as const,
     accent: true
   },
@@ -19,7 +19,7 @@ export default function TrustPage() {
     author: "Sarah Chen, Esq.",
     views: "89.4k",
     time: "4h ago",
-    thumbnail: "https://picsum.photos/id/106/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&h=340&fit=crop",
     type: "insight" as const
   },
   {
@@ -27,7 +27,7 @@ export default function TrustPage() {
     author: "Headfade Product",
     views: "67.2k",
     time: "6h ago",
-    thumbnail: "https://picsum.photos/id/1074/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&h=340&fit=crop",
     type: "video" as const
   },
   {
@@ -35,7 +35,7 @@ export default function TrustPage() {
     author: "Michael Torres",
     views: "54.9k",
     time: "yesterday",
-    thumbnail: "https://picsum.photos/id/1033/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=340&fit=crop",
     type: "thread" as const
   },
   {
@@ -43,7 +43,7 @@ export default function TrustPage() {
     author: "Headfade Research",
     views: "41.3k",
     time: "yesterday",
-    thumbnail: "https://picsum.photos/id/160/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1606189934390-7ad2a910b785?w=600&h=340&fit=crop",
     type: "insight" as const
   },
   {
@@ -51,7 +51,7 @@ export default function TrustPage() {
     author: "Headfade Enterprise",
     views: "38.7k",
     time: "2d ago",
-    thumbnail: "https://picsum.photos/id/201/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=340&fit=crop",
     type: "thread" as const
   },
   {
@@ -59,7 +59,7 @@ export default function TrustPage() {
     author: "Product Updates",
     views: "29.1k",
     time: "2d ago",
-    thumbnail: "https://picsum.photos/id/107/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=340&fit=crop",
     type: "video" as const
   },
   {
@@ -67,7 +67,7 @@ export default function TrustPage() {
     author: "Headfade Academy",
     views: "24.6k",
     time: "3d ago",
-    thumbnail: "https://picsum.photos/id/102/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1558403194-611308249627?w=600&h=340&fit=crop",
     type: "video" as const
   },
   {
@@ -75,7 +75,7 @@ export default function TrustPage() {
     author: "Headfade Risk Team",
     views: "19.8k",
     time: "3d ago",
-    thumbnail: "https://picsum.photos/id/1060/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&h=340&fit=crop",
     type: "thread" as const
   },
   {
@@ -83,7 +83,7 @@ export default function TrustPage() {
     author: "Compliance Team",
     views: "17.4k",
     time: "4d ago",
-    thumbnail: "https://picsum.photos/id/180/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=340&fit=crop",
     type: "insight" as const
   },
   {
@@ -91,7 +91,7 @@ export default function TrustPage() {
     author: "Headfade Events",
     views: "15.2k",
     time: "5d ago",
-    thumbnail: "https://picsum.photos/id/1036/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&h=340&fit=crop",
     type: "video" as const
   },
   {
@@ -99,7 +99,7 @@ export default function TrustPage() {
     author: "Product Updates",
     views: "13.9k",
     time: "5d ago",
-    thumbnail: "https://picsum.photos/id/1071/600/340",
+    thumbnail: "https://images.unsplash.com/photo-1423592707957-763b527f6f64?w=600&h=340&fit=crop",
     type: "thread" as const,
     accent: true
   }

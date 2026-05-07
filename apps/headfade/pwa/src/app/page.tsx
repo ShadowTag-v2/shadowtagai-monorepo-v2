@@ -45,7 +45,7 @@ const SEED_VIDEOS = [
     author: 'TechVision',
     views: '2.4M',
     time: '3h ago',
-    thumbnail: 'https://picsum.photos/id/1015/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&h=340&fit=crop',
     hoverVideo: GCS,
     accent: true,
     duration: '14:23',
@@ -55,7 +55,7 @@ const SEED_VIDEOS = [
     author: 'Builder Mike',
     views: '1.8M',
     time: '5h ago',
-    thumbnail: 'https://picsum.photos/id/1029/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=340&fit=crop',
     hoverVideo: GCS,
     duration: '22:17',
   },
@@ -64,7 +64,7 @@ const SEED_VIDEOS = [
     author: 'Veritasium',
     views: '4.1M',
     time: '1d ago',
-    thumbnail: 'https://picsum.photos/id/1036/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&h=340&fit=crop',
     duration: '18:05',
   },
   {
@@ -72,7 +72,7 @@ const SEED_VIDEOS = [
     author: 'Joshua Weissman',
     views: '890K',
     time: '6h ago',
-    thumbnail: 'https://picsum.photos/id/292/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=340&fit=crop',
     hoverVideo: GCS,
     duration: '12:33',
   },
@@ -81,7 +81,7 @@ const SEED_VIDEOS = [
     author: 'Film Theory',
     views: '3.2M',
     time: '8h ago',
-    thumbnail: 'https://picsum.photos/id/1074/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600&h=340&fit=crop',
     accent: true,
     duration: '25:41',
   },
@@ -90,7 +90,7 @@ const SEED_VIDEOS = [
     author: 'Joma Tech',
     views: '1.5M',
     time: '2d ago',
-    thumbnail: 'https://picsum.photos/id/1005/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&h=340&fit=crop',
     hoverVideo: GCS,
     duration: '10:08',
   },
@@ -99,7 +99,7 @@ const SEED_VIDEOS = [
     author: 'Graham Stephan',
     views: '2.1M',
     time: '12h ago',
-    thumbnail: 'https://picsum.photos/id/106/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=340&fit=crop',
     duration: '16:54',
   },
   {
@@ -107,7 +107,7 @@ const SEED_VIDEOS = [
     author: 'MKBHD',
     views: '5.7M',
     time: '3d ago',
-    thumbnail: 'https://picsum.photos/id/160/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&h=340&fit=crop',
     hoverVideo: GCS,
     duration: '21:12',
   },
@@ -116,7 +116,7 @@ const SEED_VIDEOS = [
     author: 'GothamChess',
     views: '1.3M',
     time: '1d ago',
-    thumbnail: 'https://picsum.photos/id/1033/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=600&h=340&fit=crop',
     duration: '19:27',
   },
   {
@@ -124,7 +124,7 @@ const SEED_VIDEOS = [
     author: 'Luke TheNotable',
     views: '8.9M',
     time: '4d ago',
-    thumbnail: 'https://picsum.photos/id/201/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=340&fit=crop',
     hoverVideo: GCS,
     accent: true,
     duration: '34:56',
@@ -134,7 +134,7 @@ const SEED_VIDEOS = [
     author: 'Nas Daily',
     views: '6.2M',
     time: '5d ago',
-    thumbnail: 'https://picsum.photos/id/107/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&h=340&fit=crop',
     duration: '8:17',
   },
   {
@@ -142,7 +142,7 @@ const SEED_VIDEOS = [
     author: 'Wendover Productions',
     views: '2.8M',
     time: '6d ago',
-    thumbnail: 'https://picsum.photos/id/102/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=340&fit=crop',
     duration: '15:42',
   },
   {
@@ -150,7 +150,7 @@ const SEED_VIDEOS = [
     author: 'Chloe Ting',
     views: '14.2M',
     time: '1w ago',
-    thumbnail: 'https://picsum.photos/id/1060/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=340&fit=crop',
     hoverVideo: GCS,
     duration: '10:00',
   },
@@ -159,7 +159,7 @@ const SEED_VIDEOS = [
     author: 'Ali Abdaal',
     views: '3.4M',
     time: '2d ago',
-    thumbnail: 'https://picsum.photos/id/180/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=340&fit=crop',
     duration: '13:29',
   },
   {
@@ -167,7 +167,7 @@ const SEED_VIDEOS = [
     author: 'Good Mythical Morning',
     views: '4.5M',
     time: '3d ago',
-    thumbnail: 'https://picsum.photos/id/1011/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&h=340&fit=crop',
     hoverVideo: GCS,
     duration: '20:08',
   },
@@ -176,7 +176,7 @@ const SEED_VIDEOS = [
     author: 'Programming with Mosh',
     views: '9.1M',
     time: '1w ago',
-    thumbnail: 'https://picsum.photos/id/1018/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=600&h=340&fit=crop',
     duration: '1:02:14',
   },
   {
@@ -184,7 +184,7 @@ const SEED_VIDEOS = [
     author: 'Yes Theory',
     views: '7.3M',
     time: '5d ago',
-    thumbnail: 'https://picsum.photos/id/1020/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&h=340&fit=crop&q=80',
     hoverVideo: GCS,
     accent: true,
     duration: '28:33',
@@ -194,7 +194,7 @@ const SEED_VIDEOS = [
     author: 'SmarterEveryDay',
     views: '11.6M',
     time: '2w ago',
-    thumbnail: 'https://picsum.photos/id/1025/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&h=340&fit=crop',
     duration: '17:45',
   },
   {
@@ -202,7 +202,7 @@ const SEED_VIDEOS = [
     author: 'Gordon Ramsay',
     views: '15.8M',
     time: '4d ago',
-    thumbnail: 'https://picsum.photos/id/1040/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&h=340&fit=crop',
     hoverVideo: GCS,
     duration: '11:22',
   },
@@ -211,7 +211,7 @@ const SEED_VIDEOS = [
     author: 'Abroad in Japan',
     views: '5.4M',
     time: '1w ago',
-    thumbnail: 'https://picsum.photos/id/1042/600/340',
+    thumbnail: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&h=340&fit=crop&q=80',
     duration: '23:09',
   },
 ];
@@ -505,7 +505,7 @@ export default function HeadfadeHomepage() {
                     viewBox="0 0 24 24"
                     aria-hidden="true"
                   >
-                    <title>{item.label} icon</title>
+                    <title>{`${item.label} icon`}</title>
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -565,6 +565,8 @@ export default function HeadfadeHomepage() {
               ).map(({ label, value }) => (
                 <button
                   key={value}
+                  type="button"
+                  aria-pressed={filter === value}
                   onClick={() => setFilter(value)}
                   className="flex items-center gap-6 px-3 py-2 rounded-[10px] text-[14px] transition-colors"
                   style={{
@@ -596,6 +598,9 @@ export default function HeadfadeHomepage() {
                 return (
                   <button
                     key={cat.label}
+                    type="button"
+                    aria-label={`Filter by ${cat.label}`}
+                    aria-pressed={isActive}
                     className="cat-chip flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-200 whitespace-nowrap hover:scale-105"
                     onClick={() => setActiveCategory(cat.label)}
                     style={{
@@ -604,7 +609,7 @@ export default function HeadfadeHomepage() {
                       boxShadow: isActive ? `0 2px 12px ${cat.color}55` : 'none',
                     }}
                   >
-                    <span className="cat-glyph text-[15px]">{cat.glyph}</span>
+                    <span className="cat-glyph text-[15px]" aria-hidden="true">{cat.glyph}</span>
                     {cat.label}
                   </button>
                 );
@@ -618,6 +623,7 @@ export default function HeadfadeHomepage() {
                     <span className="text-5xl">🗳️</span>
                     <p className="text-[16px] font-semibold">No videos match this filter</p>
                     <button
+                      type="button"
                       onClick={() => {
                         setFilter('all');
                         setActiveCategory('All');
