@@ -193,7 +193,6 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
           href={`https://headfade.com/v/${videoData.id}?ref=embed`}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Unlock full prompt and lineage on headfade.com"
           className="block w-full text-center bg-[#00FF41] text-black py-2.5 text-[11px] font-bold rounded-sm hover:bg-white transition-colors tracking-wider"
         >
           Unlock Full Prompt &amp; Lineage ↱
@@ -211,7 +210,6 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
           href={`https://headfade.com/v/${videoData.id}?ref=embed`}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Visit headfade.com"
           className="text-[9px] text-zinc-400 hover:text-white transition-colors"
         >
           headfade.com

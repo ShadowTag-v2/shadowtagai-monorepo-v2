@@ -804,7 +804,7 @@ class TestConversationSessionStreamSend:
 
         client = _make_stream_mock_client()
         session = ConversationSession(client, model="gemini-3-flash-preview")
-        events = list(session.stream_send("Hello streaming"))
+        list(session.stream_send("Hello streaming"))
 
         assert session.last_interaction_id == "stream-1"
         assert session.turn_count == 1
@@ -843,7 +843,7 @@ class TestConversationSessionStreamSend:
         session = ConversationSession(client, model="gemini-3-flash-preview")
 
         # First turn: non-streaming
-        r1 = session.send("Non-streaming turn")
+        session.send("Non-streaming turn")
         assert session.last_interaction_id == "int-1"
 
         # Second turn: streaming — should chain from int-1
@@ -918,7 +918,7 @@ class TestConversationSessionFunctionCallLoop:
         # Seed with a regular turn first
         session._interaction_ids.append("seed-id")
 
-        result = session.function_call_loop(
+        session.function_call_loop(
             input="What's the weather?",
             tools=[{"type": "function", "name": "get_weather"}],
             tool_handlers={"get_weather": lambda city: f"Sunny in {city}"},
@@ -1011,7 +1011,7 @@ class TestConversationSessionFunctionCallLoop:
 
         client = _make_fc_mock_client()
         session = ConversationSession(client)
-        result = session.function_call_loop(
+        session.function_call_loop(
             input="Test error handling",
             tools=[{"type": "function", "name": "get_weather"}],
             tool_handlers={"get_weather": failing_handler},
@@ -1026,7 +1026,7 @@ class TestConversationSessionFunctionCallLoop:
 
         client = _make_fc_mock_client()
         session = ConversationSession(client)
-        result = session.function_call_loop(
+        session.function_call_loop(
             input="Test missing handler",
             tools=[{"type": "function", "name": "get_weather"}],
             tool_handlers={},  # No handler registered

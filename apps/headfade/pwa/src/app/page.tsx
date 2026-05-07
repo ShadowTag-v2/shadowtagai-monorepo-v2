@@ -100,7 +100,7 @@ export default function HeadFadeSwiper() {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4">
+    <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4">
       <h1 className="text-4xl font-bold text-gradient mb-2 tracking-tighter shadow-sm">HeadFade</h1>
       <p className="text-zinc-400 text-sm mb-6 tracking-wide">
         The Global Turing Test — Can You Tell What Is Real?
@@ -147,7 +147,6 @@ export default function HeadFadeSwiper() {
         <div className="absolute bottom-8 w-full flex justify-between px-6 z-10">
           <button
             type="button"
-            aria-label="Vote Real"
             onClick={() => castVote('REAL')}
             disabled={isAnalyzing}
             className="glass-card px-8 py-4 rounded-xl text-emerald-400 font-bold tracking-widest hover:bg-emerald-400/10 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
@@ -156,7 +155,6 @@ export default function HeadFadeSwiper() {
           </button>
           <button
             type="button"
-            aria-label="Vote AI"
             onClick={() => castVote('AI')}
             disabled={isAnalyzing}
             className="glass-card px-8 py-4 rounded-xl text-cyan-400 font-bold tracking-widest hover:bg-cyan-400/10 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
@@ -180,7 +178,6 @@ export default function HeadFadeSwiper() {
           href={process.env.NEXT_PUBLIC_STRIPE_HEADFADE_PRO_LINK || '#pricing'}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Upgrade to Pro subscription"
           className="w-full text-center px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-black font-bold tracking-wide hover:opacity-90 transition-opacity text-sm"
         >
           Upgrade to Pro — $19.99/mo Unlimited Forensics
@@ -194,14 +191,12 @@ export default function HeadFadeSwiper() {
       <div className="mt-4 w-full max-w-md flex justify-center gap-4">
         <a
           href="/marketplace"
-          aria-label="Creator Marketplace"
           className="text-zinc-400 text-xs border border-zinc-700 px-4 py-2 rounded-lg hover:text-[#00FF41] hover:border-[#00FF41]/30 transition-all"
         >
           🔀 Creator Marketplace
         </a>
         <a
           href="/embed/demo"
-          aria-label="Embed Player Demo"
           className="text-zinc-400 text-xs border border-zinc-700 px-4 py-2 rounded-lg hover:text-cyan-400 hover:border-cyan-400/30 transition-all"
         >
           📡 Embed Player Demo
@@ -214,13 +209,12 @@ export default function HeadFadeSwiper() {
           &copy; 2026 ShadowTagAI · Powered by Gemini 3.1 Flash Lite ·{' '}
           <a
             href="https://shadowtagai.web.app"
-            aria-label="Visit ShadowTagAI website"
             className="text-zinc-400 hover:text-white transition-colors"
           >
             ShadowTagAI
           </a>
         </p>
       </footer>
-    </div>
+    </main>
   );
 }

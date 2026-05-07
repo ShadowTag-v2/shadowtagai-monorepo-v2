@@ -47,7 +47,7 @@ class SovereignRepairLoop:
     def fix_cycle(self, max_attempts: int | None = None) -> bool:
         """Run test-analyze-fix cycle until tests pass or max attempts reached."""
         attempts = max_attempts or self.max_cycles
-        for i in range(attempts):
+        for _i in range(attempts):
             passed, output = self.run_tests()
             if passed:
                 return True

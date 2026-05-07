@@ -5,7 +5,7 @@ schemas:
   - source: "./schema"
     datasource:
       postgresql:
-        database: "fdcdb"
+        database: "headfade-db"
         cloudSql:
           instanceId: "headfade-fdc"
           # schemaValidation: "STRICT"     # STRICT mode makes Postgres schema match Data Connect exactly.

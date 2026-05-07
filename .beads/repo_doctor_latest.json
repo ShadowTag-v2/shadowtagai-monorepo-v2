@@ -31,125 +31,125 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/research_topic_index.txt",
-      "fix": "git checkout -- .beads/research_topic_index.txt"
+      "path": ".beads/repo_doctor_latest.json",
+      "fix": "git checkout -- .beads/repo_doctor_latest.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/package-lock.json",
-      "fix": "git checkout -- antigravity-core/mcp/package-lock.json"
+      "path": ".beads/suggestion_cache.json",
+      "fix": "git checkout -- .beads/suggestion_cache.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/package.json",
-      "fix": "git checkout -- antigravity-core/mcp/package.json"
+      "path": ".reports/skills/guardrail_annotation_audit.md",
+      "fix": "git checkout -- .reports/skills/guardrail_annotation_audit.md"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/api/v2/analyze.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/api/v2/analyze.ts"
+      "path": "antigravity-jules-orchestration",
+      "fix": "git checkout -- antigravity-jules-orchestration"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/index.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/index.ts"
+      "path": "apps/headfade/pwa/out/404.html",
+      "fix": "git checkout -- apps/headfade/pwa/out/404.html"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": "apps/headfade/pwa/out/_next/static/iJeZUO3hYwDf04kvZ8kUb/_buildManifest.js",
+      "fix": "git checkout -- apps/headfade/pwa/out/_next/static/iJeZUO3hYwDf04kvZ8kUb/_buildManifest.js"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": "apps/headfade/pwa/out/_next/static/iJeZUO3hYwDf04kvZ8kUb/_ssgManifest.js",
+      "fix": "git checkout -- apps/headfade/pwa/out/_next/static/iJeZUO3hYwDf04kvZ8kUb/_ssgManifest.js"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/tools/purchase_workflow_license.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/tools/purchase_workflow_license.ts"
+      "path": "apps/headfade/pwa/out/embed/demo.html",
+      "fix": "git checkout -- apps/headfade/pwa/out/embed/demo.html"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/tools/verify_synthetic_video.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/tools/verify_synthetic_video.ts"
+      "path": "apps/headfade/pwa/out/embed/demo.txt",
+      "fix": "git checkout -- apps/headfade/pwa/out/embed/demo.txt"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/utils/firebase-data-connect.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/utils/firebase-data-connect.ts"
+      "path": "apps/headfade/pwa/out/index.html",
+      "fix": "git checkout -- apps/headfade/pwa/out/index.html"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/utils/v2/analyze-engine.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/utils/v2/analyze-engine.ts"
+      "path": "apps/headfade/pwa/out/index.txt",
+      "fix": "git checkout -- apps/headfade/pwa/out/index.txt"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/webhooks/stripe.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/webhooks/stripe.ts"
+      "path": "apps/headfade/pwa/out/marketplace.html",
+      "fix": "git checkout -- apps/headfade/pwa/out/marketplace.html"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/test_client.ts",
-      "fix": "git checkout -- antigravity-core/mcp/test_client.ts"
+      "path": "apps/headfade/pwa/out/marketplace.txt",
+      "fix": "git checkout -- apps/headfade/pwa/out/marketplace.txt"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/tests/purchaseWorkflowLicense.test.ts",
-      "fix": "git checkout -- antigravity-core/mcp/tests/purchaseWorkflowLicense.test.ts"
+      "path": "packages/jules_orchestrator/client.py",
+      "fix": "git checkout -- packages/jules_orchestrator/client.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/tests/verifySyntheticVideo.test.ts",
-      "fix": "git checkout -- antigravity-core/mcp/tests/verifySyntheticVideo.test.ts"
+      "path": "packages/jules_orchestrator/session.py",
+      "fix": "git checkout -- packages/jules_orchestrator/session.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/tsconfig.json",
-      "fix": "git checkout -- antigravity-core/mcp/tsconfig.json"
+      "path": "packages/jules_orchestrator/test_session.py",
+      "fix": "git checkout -- packages/jules_orchestrator/test_session.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/EmbedPlayer.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/EmbedPlayer.tsx"
+      "path": "target/.rustc_info.json",
+      "fix": "git checkout -- target/.rustc_info.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/MetricsDashboard.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/MetricsDashboard.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/MicroLicensingMarketplace.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/MicroLicensingMarketplace.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "... and 49 more dirty files",
+      "message": "... and 2 more dirty files",
       "path": "",
       "fix": ""
     },
