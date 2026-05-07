@@ -31,13 +31,6 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/repo_doctor_latest.json",
-      "fix": "git checkout -- .beads/repo_doctor_latest.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
       "path": ".beads/suggestion_cache.json",
       "fix": "git checkout -- .beads/suggestion_cache.json"
     },
@@ -45,8 +38,57 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".reports/skills/guardrail_annotation_audit.md",
-      "fix": "git checkout -- .reports/skills/guardrail_annotation_audit.md"
+      "path": "antigravity-core/mcp/package.json",
+      "fix": "git checkout -- antigravity-core/mcp/package.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "antigravity-core/mcp/src/api/v2/analyze.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/api/v2/analyze.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "antigravity-core/mcp/src/index.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/index.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "antigravity-core/mcp/src/tools/purchase_workflow_license.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/tools/purchase_workflow_license.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "antigravity-core/mcp/src/tools/verify_synthetic_video.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/tools/verify_synthetic_video.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "antigravity-core/mcp/src/utils/firebase-data-connect.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/utils/firebase-data-connect.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "antigravity-core/mcp/src/webhooks/stripe.ts",
+      "fix": "git checkout -- antigravity-core/mcp/src/webhooks/stripe.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "antigravity-core/mcp/tsconfig.json",
+      "fix": "git checkout -- antigravity-core/mcp/tsconfig.json"
     },
     {
       "gate": "dirty",
@@ -59,97 +101,55 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/out/404.html",
-      "fix": "git checkout -- apps/headfade/pwa/out/404.html"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (D)",
-      "path": "apps/headfade/pwa/out/_next/static/iJeZUO3hYwDf04kvZ8kUb/_buildManifest.js",
-      "fix": "git checkout -- apps/headfade/pwa/out/_next/static/iJeZUO3hYwDf04kvZ8kUb/_buildManifest.js"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (D)",
-      "path": "apps/headfade/pwa/out/_next/static/iJeZUO3hYwDf04kvZ8kUb/_ssgManifest.js",
-      "fix": "git checkout -- apps/headfade/pwa/out/_next/static/iJeZUO3hYwDf04kvZ8kUb/_ssgManifest.js"
+      "path": "apps/headfade/pwa/EmbedPlayer.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/EmbedPlayer.tsx"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/out/embed/demo.html",
-      "fix": "git checkout -- apps/headfade/pwa/out/embed/demo.html"
+      "path": "apps/headfade/pwa/MetricsDashboard.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/MetricsDashboard.tsx"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/out/embed/demo.txt",
-      "fix": "git checkout -- apps/headfade/pwa/out/embed/demo.txt"
+      "path": "apps/headfade/pwa/MicroLicensingMarketplace.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/MicroLicensingMarketplace.tsx"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/out/index.html",
-      "fix": "git checkout -- apps/headfade/pwa/out/index.html"
+      "path": "apps/headfade/pwa/PipelineDashboard.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/PipelineDashboard.tsx"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/out/index.txt",
-      "fix": "git checkout -- apps/headfade/pwa/out/index.txt"
+      "path": "apps/headfade/pwa/RemixTreeVisualizer.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/RemixTreeVisualizer.tsx"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/out/marketplace.html",
-      "fix": "git checkout -- apps/headfade/pwa/out/marketplace.html"
+      "path": "apps/headfade/pwa/components/SecuritySettings.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/components/SecuritySettings.tsx"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/out/marketplace.txt",
-      "fix": "git checkout -- apps/headfade/pwa/out/marketplace.txt"
+      "path": "apps/headfade/pwa/pages/api/security/nuke-account.ts",
+      "fix": "git checkout -- apps/headfade/pwa/pages/api/security/nuke-account.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "packages/jules_orchestrator/client.py",
-      "fix": "git checkout -- packages/jules_orchestrator/client.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "packages/jules_orchestrator/session.py",
-      "fix": "git checkout -- packages/jules_orchestrator/session.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "packages/jules_orchestrator/test_session.py",
-      "fix": "git checkout -- packages/jules_orchestrator/test_session.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "target/.rustc_info.json",
-      "fix": "git checkout -- target/.rustc_info.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "... and 2 more dirty files",
+      "message": "... and 4 more dirty files",
       "path": "",
       "fix": ""
     },
@@ -241,41 +241,41 @@
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "Claude_Code_6/Cor.Claude_Code_6",
+      "path": "--force/_views/CONFLICTS.md",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "Claude_Code_6/go.mod",
+      "path": "--force/_views/CONSTRAINTS.md",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "Claude_Code_6/main.go",
+      "path": "--force/_views/DECISIONS.md",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "Claude_Code_6/main_test.go",
+      "path": "--force/_views/HANDOFF.md",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "_archive/stale_middleware_2026-05-01/frames_symlink",
+      "path": "--force/_views/INDEX.md",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 11173 more drift files",
+      "message": "... and 11196 more drift files",
       "path": "",
       "fix": ""
     },
