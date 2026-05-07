@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 interface TileProps {
   title: string;
@@ -10,7 +10,6 @@ interface TileProps {
   thumbnail: string;
   authorAvatar?: string;
   hoverVideo?: string;
-  type?: 'thread' | 'video' | 'insight';
   accent?: boolean;
   duration?: string;
   onClick?: () => void;
@@ -70,10 +69,10 @@ export function Tile({
   };
 
   return (
-    <div className="group bg-transparent overflow-hidden cursor-pointer flex flex-col gap-2">
-      {/* ── Thumbnail + overlaid vote bar ── */}
+    <div className="group bg-transparent overflow-hidden cursor-pointer flex flex-col gap-0">
+      {/* ── Thumbnail + overlays ── */}
       <div
-        className="relative aspect-video rounded-xl overflow-hidden transition-all duration-200 group-hover:rounded-none"
+        className="relative aspect-video rounded-xl overflow-hidden transition-all duration-200 group-hover:rounded-t-xl group-hover:rounded-b-none"
         style={{ backgroundColor: '#F0F0FF' }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -142,64 +141,68 @@ export function Tile({
         <div className="absolute top-2 right-2 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ backgroundColor: 'rgba(124,58,237,0.85)' }}>
           <span>🤖</span> AI Presumed
         </div>
+      </div>
 
-        {/* ── VOTE OVERLAY — bottom of thumbnail ── */}
-        <div
-          className="absolute bottom-0 left-0 right-0 z-30 px-2 pb-2 pt-6"
-          style={{
-            background: 'linear-gradient(to top, rgba(10,15,30,0.82) 0%, transparent 100%)',
-          }}
-        >
-          {/* Vote result bar (shown after voting) */}
-          {userVote && (
-            <div className="mb-1.5 flex flex-col gap-0.5">
-              <div className="flex w-full h-[5px] rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.25)' }}>
-                <div
-                  className="h-full transition-[width] duration-500 rounded-full"
-                  style={{ width: `${aiPct}%`, backgroundColor: '#A78BFA' }}
-                />
-              </div>
-              <div className="flex justify-between text-[10px] text-white/80">
-                <span>🤖 {aiPct}% AI ({voteAI.toLocaleString()})</span>
-                <span>👤 {humanPct}% Human ({voteHuman.toLocaleString()})</span>
-              </div>
-            </div>
-          )}
-
-          {/* Vote buttons */}
-          <div className="flex gap-1.5">
-            <button
-              aria-label="Vote AI-Made"
-              onClick={(e) => { e.stopPropagation(); onVote('ai'); }}
-              className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all"
-              style={{
-                backgroundColor: userVote === 'ai' ? '#7C3AED' : 'rgba(124,58,237,0.25)',
-                color: '#fff',
-                border: `1px solid ${userVote === 'ai' ? '#7C3AED' : 'rgba(167,139,250,0.6)'}`,
-                backdropFilter: 'blur(4px)',
-              }}
-            >
-              🤖 AI-Made {userVote === 'ai' && '✓'}
-            </button>
-            <button
-              aria-label="Vote Human"
-              onClick={(e) => { e.stopPropagation(); onVote('human'); }}
-              className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all"
-              style={{
-                backgroundColor: userVote === 'human' ? '#0891B2' : 'rgba(8,145,178,0.25)',
-                color: '#fff',
-                border: `1px solid ${userVote === 'human' ? '#0891B2' : 'rgba(103,232,249,0.5)'}`,
-                backdropFilter: 'blur(4px)',
-              }}
-            >
-              👤 Human {userVote === 'human' && '✓'}
-            </button>
+      {/* ── VOTE SECTION — always visible below thumbnail ── */}
+      <div
+        className="px-2 pt-2 pb-2.5 flex flex-col gap-1.5 rounded-b-xl"
+        style={{ backgroundColor: 'rgba(10,15,30,0.06)', borderTop: '1px solid rgba(124,58,237,0.15)' }}
+      >
+        {/* Vote distribution bar — always shown */}
+        <div className="flex flex-col gap-0.5">
+          <div
+            className="flex w-full h-[5px] rounded-full overflow-hidden"
+            style={{ backgroundColor: 'rgba(124,58,237,0.15)' }}
+            title={`${aiPct}% think AI · ${humanPct}% think Human`}
+          >
+            <div
+              className="h-full transition-[width] duration-500 rounded-full"
+              style={{ width: `${aiPct}%`, backgroundColor: userVote ? '#A78BFA' : 'rgba(167,139,250,0.45)' }}
+            />
           </div>
+          <div className="flex justify-between text-[10px]" style={{ color: '#4D627A' }}>
+            <span>🤖 {aiPct}% AI{userVote ? ` (${voteAI.toLocaleString()})` : ''}</span>
+            <span>👤 {humanPct}% Human{userVote ? ` (${voteHuman.toLocaleString()})` : ''}</span>
+          </div>
+        </div>
+
+        {/* Vote buttons — always visible */}
+        <div className="flex gap-1.5">
+          <button
+            type="button"
+            id={`vote-ai-${title.replace(/\s+/g, '-').toLowerCase().slice(0, 20)}`}
+            aria-label="Vote AI-Made"
+            aria-pressed={userVote === 'ai'}
+            onClick={(e) => { e.stopPropagation(); onVote('ai'); }}
+            className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all active:scale-95"
+            style={{
+              backgroundColor: userVote === 'ai' ? '#7C3AED' : 'rgba(124,58,237,0.12)',
+              color: userVote === 'ai' ? '#fff' : '#7C3AED',
+              border: `1.5px solid ${userVote === 'ai' ? '#7C3AED' : 'rgba(167,139,250,0.5)'}`,
+            }}
+          >
+            🤖 AI-Made {userVote === 'ai' && '✓'}
+          </button>
+          <button
+            type="button"
+            id={`vote-human-${title.replace(/\s+/g, '-').toLowerCase().slice(0, 20)}`}
+            aria-label="Vote Human"
+            aria-pressed={userVote === 'human'}
+            onClick={(e) => { e.stopPropagation(); onVote('human'); }}
+            className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all active:scale-95"
+            style={{
+              backgroundColor: userVote === 'human' ? '#0891B2' : 'rgba(8,145,178,0.12)',
+              color: userVote === 'human' ? '#fff' : '#0891B2',
+              border: `1.5px solid ${userVote === 'human' ? '#0891B2' : 'rgba(103,232,249,0.45)'}`,
+            }}
+          >
+            👤 Human {userVote === 'human' && '✓'}
+          </button>
         </div>
       </div>
 
       {/* ── Meta row ── */}
-      <div className="flex gap-3 px-0.5">
+      <div className="flex gap-3 px-0.5 pt-2">
         {authorAvatar ? (
           <img
             src={authorAvatar}
@@ -216,7 +219,13 @@ export function Tile({
           </div>
         )}
 
-        <div className="flex flex-col min-w-0 flex-1" onClick={onClick}>
+        <div
+          className="flex flex-col min-w-0 flex-1"
+          role="button"
+          tabIndex={0}
+          onClick={onClick}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(); }}
+        >
           <h3 className="font-semibold text-[13px] leading-[18px] line-clamp-2" style={{ color: '#0A2540' }}>
             {title}
           </h3>
@@ -231,12 +240,13 @@ export function Tile({
         </div>
 
         <button
+          type="button"
           aria-label={`More options for ${title}`}
           className="self-start mt-0.5 p-1 rounded-full transition-colors opacity-0 group-hover:opacity-100"
           style={{ color: '#4D627A' }}
           onClick={(e) => { e.stopPropagation(); }}
         >
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><title>More options</title><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
         </button>
       </div>
     </div>

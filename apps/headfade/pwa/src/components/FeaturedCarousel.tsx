@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { RevealState } from '@/hooks/useTuringFeed';
 import { useTuringFeed } from '@/hooks/useTuringFeed';
 import { HeadFadePlayer } from './HeadFadePlayer';
@@ -100,9 +100,16 @@ export function FeaturedCarousel({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [items.length]);
 
-  /* The displayed index is whichever is greater — TuringFeed may be ahead of scroll. */
-  const activeIdx = Math.max(currentIndex, scrollDrivenIdx);
-  const translatePct = scrollProgress * (items.length - 1) * 100;
+  /* Scroll position is the canonical display index.
+   * TuringFeed's onAdvance callback programmatically scrolls the outer
+   * container, which updates scrollDrivenIdx via the scroll listener.
+   * Using Math.max previously prevented backward scrolling past the
+   * TuringFeed-advanced index — this desync is now eliminated. */
+  const activeIdx = scrollDrivenIdx;
+  // Each card occupies (100 / items.length)% of the track's full width.
+  // To place card N flush at the left edge we translateX by N × (100 / items.length)%.
+  // Interpolating over [0,1] progress: progress × (N_cards - 1) × cardSlotPct.
+  const translatePct = scrollProgress * (items.length - 1) * (100 / items.length);
 
   const jumpToCard = useCallback(
     (i: number) => {
@@ -156,6 +163,7 @@ export function FeaturedCarousel({
 
           {/* Auto-Scroll toggle */}
           <button
+            type="button"
             aria-label={autoScroll ? 'Disable auto-scroll' : 'Enable auto-scroll'}
             aria-pressed={autoScroll}
             data-testid="autoscroll-toggle"
@@ -284,6 +292,7 @@ export function FeaturedCarousel({
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
           {items.map((_, i) => (
             <button
+              type="button"
               key={i}
               aria-label={`Jump to featured video ${i + 1}`}
               onClick={() => jumpToCard(i)}
@@ -316,7 +325,8 @@ export function FeaturedCarousel({
             animation: scrollProgress > 0.05 ? 'none' : 'bounce 1.5s infinite',
           }}
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <title>Scroll down</title>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
           scroll
