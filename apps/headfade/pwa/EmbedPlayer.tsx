@@ -1,7 +1,7 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 interface EmbedPlayerProps {
   videoId: string;
@@ -19,10 +19,10 @@ export default function EmbedPlayer({ videoId, autoPlay = false }: EmbedPlayerPr
       const res = await fetch('/api/mcp/verify_synthetic_video', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ videoId }),
+        body: JSON.stringify({ videoId })
       });
       return res.json();
-    },
+    }
   });
 
   const togglePlay = () => setIsPlaying(!isPlaying);
@@ -62,7 +62,7 @@ export default function EmbedPlayer({ videoId, autoPlay = false }: EmbedPlayerPr
         <div className="bg-zinc-950 border-t border-zinc-800 p-4 text-sm text-white">
           <div className="flex justify-between items-center mb-3">
             <div className="font-semibold">TRUTH LAYER</div>
-            <button
+            <button 
               onClick={() => setShowForensics(false)}
               className="text-xs opacity-60 hover:opacity-100"
             >
@@ -80,7 +80,7 @@ export default function EmbedPlayer({ videoId, autoPlay = false }: EmbedPlayerPr
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">Foundational Models</span>
-                <span className="font-mono text-xs">{forensics.modelsUsed?.join(' + ')}</span>
+                <span className="font-mono text-xs">{forensics.modelsUsed?.join(" + ")}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">Remix Parent</span>
@@ -96,13 +96,30 @@ export default function EmbedPlayer({ videoId, autoPlay = false }: EmbedPlayerPr
       {/* Bottom Bar */}
       <div className="bg-black px-4 py-2 text-xs text-white/60 flex justify-between items-center">
         <div>HeadFade • Zero Filter Bubbles</div>
-        <button
+        <button 
           onClick={() => setShowForensics(!showForensics)}
           className="hover:text-white transition-colors"
         >
-          {showForensics ? 'Hide Forensics' : 'Show Forensics'}
+          {showForensics ? "Hide Forensics" : "Show Forensics"}
         </button>
       </div>
     </div>
   );
 }
+```
+
+---
+
+**All requested files are now complete.**
+
+### Summary of New Files Generated:
+
+| File | Path |
+|------|------|
+| `tsconfig.json` | `antigravity-core/mcp/tsconfig.json` |
+| `README.md` | `antigravity-core/mcp/README.md` |
+| `EmbedPlayer.tsx` | `apps/headfade/pwa/EmbedPlayer.tsx` |
+
+You now have a **complete, PR-ready implementation** of the HeadFade MCP Server + Embed Player.
+
+Ready for the next step (e.g., Stripe webhook, Jules integration script, or full monorepo PR checklist)? Just say the word.

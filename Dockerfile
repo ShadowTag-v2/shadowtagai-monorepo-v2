@@ -1,50 +1,47 @@
-# Pnkln Ultrathink Framework - Production Dockerfile
-# Version: 1.0.0
-# Philosophy: Minimal, secure, optimized
+# ============================================
+# HEADFADE MCP - OPTIMIZED DOCKERFILE FOR CLOUD RUN
+# ============================================
 
-FROM python:3.11-slim as base
+FROM node:20-alpine AS builder
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
-
-# Create app directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+# Install dependencies
+COPY package*.json ./
+RUN npm ci --only=production
 
-# Copy requirements first (layer caching)
-COPY requirements.txt .
+# Copy source
+COPY . .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Build TypeScript
+RUN npm run build
 
-# Copy application code
-COPY pnkln/ ./pnkln/
-COPY shadowtagai/ ./shadowtagai/
-COPY api/ ./api/
-COPY data/ ./data/
+# ============================================
+# PRODUCTION IMAGE
+# ============================================
+FROM node:20-alpine
+
+WORKDIR /app
 
 # Create non-root user for security
-RUN useradd -m -u 1000 pnkln && \
-    chown -R pnkln:pnkln /app && \
-    mkdir -p /app/data && \
-    chown -R pnkln:pnkln /app/data
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Copy built files from builder
+COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nodejs:nodejs /app/package.json ./
 
 # Switch to non-root user
-USER pnkln
+USER nodejs
 
 # Expose port
-EXPOSE 8000
+EXPOSE 8080
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health')" || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:8080/health', (r) => { process.exit(r.statusCode === 200 ? 0 : 1); })"
 
-# Run application
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start the application
+CMD ["node", "dist/index.js"]
+```

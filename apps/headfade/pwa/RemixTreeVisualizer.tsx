@@ -1,7 +1,7 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 interface RemixNode {
   id: string;
@@ -19,7 +19,7 @@ export default function RemixTreeVisualizer({ videoId }: { videoId: string }) {
     queryFn: async () => {
       const res = await fetch(`/api/v2/remix-lineage?videoId=${videoId}&depth=5`);
       return res.json();
-    },
+    }
   });
 
   const toggleNode = (id: string) => {
@@ -37,11 +37,11 @@ export default function RemixTreeVisualizer({ videoId }: { videoId: string }) {
   return (
     <div className="bg-zinc-950 p-8 rounded-3xl border border-zinc-800">
       <h2 className="text-3xl font-bold text-white mb-6">Remix Tree Visualizer</h2>
-
+      
       <div className="space-y-2 font-mono text-sm">
         {tree?.lineage?.map((node: RemixNode, index: number) => (
           <div key={index} className="pl-4 border-l border-zinc-700">
-            <div
+            <div 
               onClick={() => toggleNode(node.id)}
               className="flex items-center gap-3 cursor-pointer hover:bg-zinc-900 p-2 rounded"
             >
@@ -52,7 +52,7 @@ export default function RemixTreeVisualizer({ videoId }: { videoId: string }) {
               </span>
               <span className="text-rose-400">HDI: {node.hdi}%</span>
             </div>
-
+            
             {expandedNodes.has(node.id) && node.children && (
               <div className="ml-8 mt-1 space-y-1">
                 {node.children.map((child, i) => (
@@ -72,3 +72,4 @@ export default function RemixTreeVisualizer({ videoId }: { videoId: string }) {
     </div>
   );
 }
+```
