@@ -11,7 +11,7 @@ const brand = {
   bgHover: '#EEF1F6',
   textPrimary: '#0A2540',
   textSecondary: '#4D627A',
-  textMuted: '#7A8FA6',
+  textMuted: '#4D627A',
   accent: '#cc0000',
   border: '#E5E8ED',
   chipActive: '#0A2540',
