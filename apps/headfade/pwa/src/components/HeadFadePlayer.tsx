@@ -276,6 +276,7 @@ export function HeadFadePlayer({
             {/* Bookmark */}
             {onBookmark && (
               <button
+                type="button"
                 aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark video'}
                 onClick={onBookmark}
                 className="p-1.5 rounded-full transition-colors"
@@ -291,6 +292,7 @@ export function HeadFadePlayer({
 
         {/* Center play/pause */}
         <button
+          type="button"
           aria-label={playing ? 'Pause video' : 'Play video'}
           onClick={togglePlay}
           className="pointer-events-auto absolute inset-0 flex items-center justify-center"
@@ -309,6 +311,7 @@ export function HeadFadePlayer({
           {/* Vote buttons — ghost opacity until voted */}
           <div className="flex gap-2">
             <button
+              type="button"
               aria-label="Vote AI-Made"
               aria-pressed={userVote === 'ai'}
               data-testid="vote-ai-btn"
@@ -325,6 +328,7 @@ export function HeadFadePlayer({
               🤖 AI-Made {userVote === 'ai' && '✓'}
             </button>
             <button
+              type="button"
               aria-label="Vote Human"
               aria-pressed={userVote === 'human'}
               data-testid="vote-human-btn"
@@ -370,6 +374,7 @@ export function HeadFadePlayer({
             </div>
             <span className="text-white text-[10px] tabular-nums">{fmt(duration)}</span>
             <button
+              type="button"
               aria-label={muted ? 'Unmute' : 'Mute'}
               onClick={() => setMuted((m) => !m)}
               className="p-1 rounded-full"
