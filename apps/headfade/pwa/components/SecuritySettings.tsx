@@ -233,4 +233,3 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
     </div>
   );
 }
-```

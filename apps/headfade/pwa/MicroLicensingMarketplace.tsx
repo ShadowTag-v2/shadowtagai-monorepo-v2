@@ -106,4 +106,3 @@ export default function MicroLicensingMarketplace() {
     </div>
   );
 }
-```

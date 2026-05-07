@@ -1,137 +1,158 @@
-export default function TrustCenter() {
+'use client';
+
+import React from 'react';
+import { Tile } from '@/components/Tile'; // we'll create this
+
+export default function TrustPage() {
+  const threads = [
+  {
+    title: "United States v. Heppner – Full Risk Analysis & Mitigation Strategy",
+    author: "Headfade Legal",
+    views: "142.8k",
+    time: "2h ago",
+    thumbnail: "https://picsum.photos/id/1015/600/340",
+    type: "thread" as const,
+    accent: true
+  },
+  {
+    title: "How Top Law Firms Cut Legal Review Time by 87% Using AI",
+    author: "Sarah Chen, Esq.",
+    views: "89.4k",
+    time: "4h ago",
+    thumbnail: "https://picsum.photos/id/106/600/340",
+    type: "insight" as const
+  },
+  {
+    title: "Live Demo: Headfade AI Intake Portal in Action",
+    author: "Headfade Product",
+    views: "67.2k",
+    time: "6h ago",
+    thumbnail: "https://picsum.photos/id/1074/600/340",
+    type: "video" as const
+  },
+  {
+    title: "The New Standard: Why 50+ AmLaw 200 Firms Switched to Headfade",
+    author: "Michael Torres",
+    views: "54.9k",
+    time: "yesterday",
+    thumbnail: "https://picsum.photos/id/1033/600/340",
+    type: "thread" as const
+  },
+  {
+    title: "Gamified Turing Test Results – Week 47 Breakdown",
+    author: "Headfade Research",
+    views: "41.3k",
+    time: "yesterday",
+    thumbnail: "https://picsum.photos/id/160/600/340",
+    type: "insight" as const
+  },
+  {
+    title: "Case Study: How We Helped a 340-Attorney Firm Achieve 340% ROI",
+    author: "Headfade Enterprise",
+    views: "38.7k",
+    time: "2d ago",
+    thumbnail: "https://picsum.photos/id/201/600/340",
+    type: "thread" as const
+  },
+  {
+    title: "Real-time Clause Risk Heatmap – Now Available",
+    author: "Product Updates",
+    views: "29.1k",
+    time: "2d ago",
+    thumbnail: "https://picsum.photos/id/107/600/340",
+    type: "video" as const
+  },
+  {
+    title: "B2B SaaS Legal Risk Mitigation Masterclass (Recording)",
+    author: "Headfade Academy",
+    views: "24.6k",
+    time: "3d ago",
+    thumbnail: "https://picsum.photos/id/102/600/340",
+    type: "video" as const
+  },
+  {
+    title: "47 Red Flags We Caught This Month – Thread",
+    author: "Headfade Risk Team",
+    views: "19.8k",
+    time: "3d ago",
+    thumbnail: "https://picsum.photos/id/1060/600/340",
+    type: "thread" as const
+  },
+  {
+    title: "How Headfade Passed SOC 2 Type II + HIPAA in Record Time",
+    author: "Compliance Team",
+    views: "17.4k",
+    time: "4d ago",
+    thumbnail: "https://picsum.photos/id/180/600/340",
+    type: "insight" as const
+  },
+  {
+    title: "The Future of AI in Legal Ethics – Panel Discussion",
+    author: "Headfade Events",
+    views: "15.2k",
+    time: "5d ago",
+    thumbnail: "https://picsum.photos/id/1036/600/340",
+    type: "video" as const
+  },
+  {
+    title: "Multi-Jurisdiction Shield: Now Live in All 50 States",
+    author: "Product Updates",
+    views: "13.9k",
+    time: "5d ago",
+    thumbnail: "https://picsum.photos/id/1071/600/340",
+    type: "thread" as const,
+    accent: true
+  }
+  ];
+
   return (
-    <div className="min-h-screen bg-emerald-950 text-emerald-50 p-8 font-sans selection:bg-emerald-700 selection:text-white">
-      <div className="max-w-4xl mx-auto mt-20">
-        <header className="mb-16 border-b border-emerald-800/50 pb-12">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-            ShadowTag AI Trust Manifesto
-          </h1>
-          <p className="text-xl text-emerald-200/80 max-w-2xl">
-            We weaponize compliance as a competitive moat. Our platform is engineered from the
-            ground up for zero-trust security, ensuring your enterprise assets remain completely
-            sovereign.
-          </p>
-        </header>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          <div className="p-8 bg-emerald-900/30 border border-emerald-800/50 rounded-xl hover:border-emerald-500/50 transition-colors">
-            <h2 className="text-2xl font-semibold mb-4 text-emerald-400">
-              1. ZDR (Zero Data Retention) — The Prime Directive
-            </h2>
-            <div className="text-emerald-200/70 space-y-4 text-sm leading-relaxed">
-              <p>
-                <strong className="text-emerald-300">The Enterprise Fear:</strong> Companies are
-                terrified of employees pasting proprietary code, financial data, or patient records
-                into an AI prompt, only for it to be stored in a shadow database and regurgitated by
-                a public model.
-              </p>
-              <p>
-                <strong className="text-emerald-300">Our Stance: &quot;Stateless AI.&quot;</strong>{' '}
-                We do not log, store, cache, or look at your AI payloads. ShadowTag operates on a
-                strict Zero Data Retention (ZDR) architecture. Prompts and context windows are
-                processed entirely in volatile memory (RAM) and are instantly vaporized the
-                millisecond the inference is returned to the client.
-              </p>
-              <p>
-                <strong className="text-emerald-300">The Guarantee:</strong> We train on absolutely
-                nothing. If our databases are breached, hackers find an empty room.
-              </p>
+    <div className="min-h-screen bg-white text-[#0A2540]">
+      {/* Header */}
+      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-[#E0E5EE]">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-[#0A2540] rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-xl">H</span>
+            </div>
+            <div>
+              <div className="font-semibold text-2xl tracking-tight">Headfade</div>
+              <div className="text-xs text-[#3B4C6B] -mt-1">Trust Center</div>
             </div>
           </div>
 
-          <div className="p-8 bg-emerald-900/30 border border-emerald-800/50 rounded-xl hover:border-emerald-500/50 transition-colors">
-            <h2 className="text-2xl font-semibold mb-4 text-emerald-400">
-              2. The U.S. CLOUD Act — Cryptographic Immunity
-            </h2>
-            <div className="text-emerald-200/70 space-y-4 text-sm leading-relaxed">
-              <p>
-                <strong className="text-emerald-300">The Enterprise Fear:</strong> European clients
-                hesitate to buy from U.S. startups because the U.S. CLOUD Act allows federal
-                agencies to subpoena data from U.S. tech companies, even if those servers are
-                physically located in Europe.
-              </p>
-              <p>
-                <strong className="text-emerald-300">
-                  Our Stance: &quot;You cannot subpoena what does not exist.&quot;
-                </strong>{' '}
-                Most companies fight government overreach with armies of lawyers; we fight it with
-                architecture. We neutralize the CLOUD Act through our ZDR pipeline and BYOK (Bring
-                Your Own Key) encryption for user accounts. Even under a federal gag order or
-                warrant, we cannot surrender your proprietary IP because we do not have it. For any
-                persistent workspace data, the enterprise holds the master decryption key—meaning we
-                can only hand the government mathematically unbreakable ciphertext.
-              </p>
-            </div>
-          </div>
-
-          <div className="p-8 bg-emerald-900/30 border border-emerald-800/50 rounded-xl hover:border-emerald-500/50 transition-colors">
-            <h2 className="text-2xl font-semibold mb-4 text-emerald-400">
-              3. Data Residency — The Geographic Moat
-            </h2>
-            <div className="text-emerald-200/70 space-y-4 text-sm leading-relaxed">
-              <p>
-                <strong className="text-emerald-300">The Enterprise Fear:</strong> Highly regulated
-                industries (finance, defense, healthcare) legally mandate that their data must never
-                cross international fiber-optic borders.
-              </p>
-              <p>
-                <strong className="text-emerald-300">
-                  Our Stance: &quot;Your data. Your sovereign soil.&quot;
-                </strong>{' '}
-                We treat data residency as a strict routing constraint. For enterprise deployments,
-                we utilize geographic ring-fencing. If an EU client connects to ShadowTag, their API
-                calls are routed exclusively to isolated, single-tenant clusters in the EU (e.g.,
-                AWS Frankfurt or GCP Paris). Your data never crosses the Atlantic.
-              </p>
-            </div>
-          </div>
-
-          <div className="p-8 bg-emerald-900/30 border border-emerald-800/50 rounded-xl hover:border-emerald-500/50 transition-colors">
-            <h2 className="text-2xl font-semibold mb-4 text-emerald-400">
-              4. GDPR — Privacy by Architecture
-            </h2>
-            <div className="text-emerald-200/70 space-y-4 text-sm leading-relaxed">
-              <p>
-                <strong className="text-emerald-300">The Enterprise Fear:</strong> Massive fines for
-                using vendor software that mismanages the Personally Identifiable Information (PII)
-                of European citizens.
-              </p>
-              <p>
-                <strong className="text-emerald-300">
-                  Our Stance: &quot;Compliance via Non-Applicability.&quot;
-                </strong>{' '}
-                We don&apos;t just sign standard Data Processing Agreements (DPAs); we design GDPR
-                into the codebase. Because we run a ZDR pipeline, we inherently minimize the PII
-                footprint—drastically reducing the liability of being a &quot;Data Controller.&quot;
-                Furthermore, we do not require manual IT support tickets for data deletion; we
-                expose a 1-click &quot;Nuke My Data&quot; API that instantly triggers the Right to
-                be Forgotten, cryptographically shredding all associated user auth and billing data
-                across our infrastructure.
-              </p>
-            </div>
+          <div className="flex items-center gap-4">
+            <div className="px-4 py-1.5 bg-[#F7F9FC] rounded-full text-sm">Live • 142k threads</div>
+            <button className="px-6 py-2 bg-[#C9A227] hover:bg-[#B38B1F] text-white rounded-xl font-medium transition-all active:scale-[0.985]">
+              Start New Thread
+            </button>
           </div>
         </div>
+      </div>
 
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">Firewall &amp; Network Configuration</h2>
-          <div className="p-6 bg-emerald-950/50 border border-emerald-800/50 rounded-xl font-mono text-sm text-emerald-200/70">
-            <p className="mb-2"># For Enterprise IT / Network Administrators</p>
-            <p className="mb-2">
-              # To prevent Palo Alto / Corporate Firewall blocks, please allowlist:
-            </p>
-            <ul className="list-disc pl-6 space-y-2 mt-4 text-emerald-200/80">
-              <li>headfade.com</li>
-              <li>*.headfade.com</li>
-              <li>shadowtagai.com</li>
-              <li>*.shadowtagai.com</li>
-              <li>headfade-mcp-*.run.app</li>
-            </ul>
+      {/* Hero */}
+      <div className="max-w-7xl mx-auto px-6 pt-12 pb-8">
+        <div className="max-w-2xl">
+          <h1 className="text-6xl font-semibold tracking-tighter">The most trusted<br />legal AI platform.</h1>
+          <p className="mt-4 text-xl text-[#3B4C6B]">Real-time risk mitigation for law firms. Built for the United States v. Heppner era.</p>
+        </div>
+      </div>
+
+      {/* Main Feed — YouTube + TikTok Style */}
+      <div className="max-w-7xl mx-auto px-6 pb-24">
+        <div className="flex items-end justify-between mb-6">
+          <div>
+            <div className="text-sm font-medium text-[#C9A227]">TRENDING RIGHT NOW</div>
+            <div className="text-3xl font-semibold tracking-tight">For You</div>
           </div>
-        </section>
+          <div className="text-sm text-[#3B4C6B] hover:text-[#0A2540] cursor-pointer">See all →</div>
+        </div>
 
-        <footer className="text-center text-sm text-emerald-500/60 mt-20 pb-8">
-          <p>&copy; 2026 ShadowTagAI Inc. All rights reserved. Sovereign AI for the Enterprise.</p>
-        </footer>
+        {/* Responsive Tile Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+          {threads.map((thread, index) => (
+            <Tile key={index} {...thread} />
+          ))}
+        </div>
       </div>
     </div>
   );

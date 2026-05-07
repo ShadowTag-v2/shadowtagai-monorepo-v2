@@ -72,4 +72,3 @@ export default function RemixTreeVisualizer({ videoId }: { videoId: string }) {
     </div>
   );
 }
-```
