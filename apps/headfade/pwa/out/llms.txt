@@ -1,9 +1,0 @@
-# HeadFade - Global Synthetic Media Infrastructure
-
-HeadFade is the world's first forensic deepfake detection platform.
-It features an embed player, a creator marketplace, and cognitive telemetry, powered by Gemini AI.
-
-## Features
-- **Forensic Deepfake Detection**: Uses Gemini 3.1 Flash Lite to analyze videos and determine if they are AI-generated or real.
-- **Creator Marketplace**: A micro-licensing marketplace for AI creators.
-- **Embed Distribution**: Publishers can embed the HeadFade player to provide forensic data on viral media.
