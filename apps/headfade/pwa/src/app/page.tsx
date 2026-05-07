@@ -312,10 +312,6 @@ export default function HeadfadeHomepage() {
       <AuthWallModal
         isOpen={authWallOpen}
         onClose={() => setAuthWallOpen(false)}
-        onSignIn={(provider) => {
-          console.log('Sign in with', provider);
-          setAuthWallOpen(false);
-        }}
       />
 
       <div className="min-h-screen" style={{ backgroundColor: brand.bg, color: brand.textPrimary }}>
@@ -327,10 +323,11 @@ export default function HeadfadeHomepage() {
           <div className="w-full px-4 h-14 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
+                type="button"
                 aria-label="Open menu"
                 className="p-2 hover:bg-[#f2f2f2] rounded-full transition-colors"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -340,7 +337,8 @@ export default function HeadfadeHomepage() {
                 </svg>
               </button>
               <div className="flex items-center gap-2 cursor-pointer select-none">
-                <svg viewBox="0 0 32 32" className="w-8 h-8" fill="none">
+                <svg viewBox="0 0 32 32" className="w-8 h-8" fill="none" aria-label="HeadFade logo" role="img">
+                  <title>HeadFade</title>
                   <rect width="32" height="32" rx="8" fill="#7C3AED" />
                   <path
                     d="M6 22 Q10 10 16 16 Q22 22 26 10"
@@ -366,6 +364,7 @@ export default function HeadfadeHomepage() {
                   style={{ backgroundColor: brand.bg }}
                 />
                 <button
+                  type="button"
                   aria-label="Submit search"
                   className="px-5 py-2"
                   style={{
@@ -373,7 +372,7 @@ export default function HeadfadeHomepage() {
                     borderLeft: `1px solid ${brand.border}`,
                   }}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -396,11 +395,13 @@ export default function HeadfadeHomepage() {
                 </div>
               )}
               <button
+                type="button"
                 aria-label="Upload your AI or non-AI videos — see who you can fake out"
                 className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-[13px] font-bold text-white transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#7C3AED,#0891B2)' }}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <title>Upload icon</title>
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -411,6 +412,7 @@ export default function HeadfadeHomepage() {
                 Upload &amp; Fake Us Out
               </button>
               <button
+                type="button"
                 onClick={() => !isAuthenticated && setAuthWallOpen(true)}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium cursor-pointer"
                 style={{ backgroundColor: brand.accent }}
@@ -486,6 +488,9 @@ export default function HeadfadeHomepage() {
               ].map((item) => (
                 <button
                   key={item.label}
+                  type="button"
+                  aria-label={item.label}
+                  aria-current={item.active ? 'page' : undefined}
                   className="flex items-center gap-6 px-3 py-2.5 rounded-[10px] text-[14px] font-medium transition-colors"
                   style={{
                     backgroundColor: item.active ? '#EDE9FF' : 'transparent',
@@ -498,7 +503,9 @@ export default function HeadfadeHomepage() {
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
+                    <title>{item.label} icon</title>
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"

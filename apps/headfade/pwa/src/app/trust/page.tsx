@@ -122,7 +122,7 @@ export default function TrustPage() {
 
           <div className="flex items-center gap-4">
             <div className="px-4 py-1.5 bg-[#F7F9FC] rounded-full text-sm">Live • 142k threads</div>
-            <button className="px-6 py-2 bg-[#C9A227] hover:bg-[#B38B1F] text-white rounded-xl font-medium transition-all active:scale-[0.985]">
+            <button type="button" className="px-6 py-2 bg-[#C9A227] hover:bg-[#B38B1F] text-white rounded-xl font-medium transition-all active:scale-[0.985]">
               Start New Thread
             </button>
           </div>
