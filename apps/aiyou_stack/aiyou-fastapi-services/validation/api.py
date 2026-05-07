@@ -1,6 +1,5 @@
 """PNKLN Core Stack - Judge 6 Validation API
 
-import os
 FastAPI service exposing validation endpoints across 4 namespaces:
 - ingestion (validates items from ingestion layer)
 - shadowtag (validates authentication requests)
@@ -8,6 +7,9 @@ FastAPI service exposing validation endpoints across 4 namespaces:
 - ShadowTagjr (validates governance decisions)
 """
 
+import os
+import time
+from contextlib import asynccontextmanager
 from datetime import datetime
 
 import structlog
