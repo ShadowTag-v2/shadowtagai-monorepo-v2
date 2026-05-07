@@ -149,9 +149,20 @@ export default function TrustPage() {
 
         {/* Responsive Tile Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
-          {threads.map((thread, index) => (
-            <Tile key={index} {...thread} />
-          ))}
+          {threads.map((thread, index) => {
+            const base = 800 + index * 213;
+            const aiPct = 0.4 + (index % 5) * 0.06;
+            return (
+              <Tile
+                key={index}
+                {...thread}
+                voteAI={Math.floor(base * aiPct)}
+                voteHuman={Math.floor(base * (1 - aiPct))}
+                userVote={null}
+                onVote={() => {}}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
