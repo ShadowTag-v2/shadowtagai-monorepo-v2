@@ -19,6 +19,10 @@ import urllib.request
 import urllib.error
 from typing import Any
 
+import google.auth
+from google.auth.transport.requests import Request
+from google.auth.exceptions import DefaultCredentialsError
+
 logger = logging.getLogger(__name__)
 
 
@@ -35,8 +39,11 @@ class JulesClient:
 
     def __init__(self, api_key: str | None = None) -> None:
         self._api_key = api_key or os.environ.get("JULES_API_KEY", "")
-        if not self._api_key:
-            logger.warning("JULES_API_KEY is not set. API calls will fail.")
+        self._credentials = None
+        try:
+            self._credentials, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
+        except DefaultCredentialsError:
+            logger.warning("Failed to load Application Default Credentials. API calls will fail.")
 
     def _request(
         self, method: str, path: str, payload: dict[str, Any] | None = None, max_retries: int = 3, retry_delay: float = 1.0
@@ -44,9 +51,14 @@ class JulesClient:
         """Perform an HTTP request to the Jules API."""
         url = f"{self.BASE_URL}{path}"
         headers = {
-            "x-goog-api-key": self._api_key,
             "Content-Type": "application/json",
         }
+        
+        if self._credentials:
+            self._credentials.refresh(Request())
+            headers["Authorization"] = f"Bearer {self._credentials.token}"
+            if hasattr(self._credentials, "quota_project_id") and self._credentials.quota_project_id:
+                headers["x-goog-user-project"] = self._credentials.quota_project_id
 
         data = None
         if payload is not None:

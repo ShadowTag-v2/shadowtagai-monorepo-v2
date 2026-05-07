@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 
 interface Workflow {
   id: string;
@@ -20,7 +20,7 @@ export default function MicroLicensingMarketplace() {
       creator: '@neonvoid_ai',
       price: 2.99,
       thumbnail: 'https://picsum.photos/id/1015/300/200',
-      remixCount: 1247
+      remixCount: 1247,
     },
     {
       id: 'wf-002',
@@ -28,8 +28,8 @@ export default function MicroLicensingMarketplace() {
       creator: '@dreamweave',
       price: 2.99,
       thumbnail: 'https://picsum.photos/id/102/300/200',
-      remixCount: 892
-    }
+      remixCount: 892,
+    },
   ]);
 
   const purchaseMutation = useMutation({
@@ -37,17 +37,17 @@ export default function MicroLicensingMarketplace() {
       const res = await fetch('/api/mcp/purchase_workflow_license', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ videoId: workflowId, agentWalletToken: 'agnt_demo_123' })
+        body: JSON.stringify({ videoId: workflowId, agentWalletToken: 'agnt_demo_123' }),
       });
       return res.json();
-    }
+    },
   });
 
   const handlePurchase = (workflow: Workflow) => {
     purchaseMutation.mutate(workflow.id, {
       onSuccess: () => {
         alert(`✅ License purchased! Workflow "${workflow.title}" unlocked.`);
-      }
+      },
     });
   };
 
@@ -55,18 +55,23 @@ export default function MicroLicensingMarketplace() {
     <div className="max-w-6xl mx-auto p-8">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-white mb-2">Workflow Marketplace</h1>
-        <p className="text-zinc-400">Buy, remix, and resell ComfyUI workflows • $2.99 per license</p>
+        <p className="text-zinc-400">
+          Buy, remix, and resell ComfyUI workflows • $2.99 per license
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {workflows.map((workflow) => (
-          <div key={workflow.id} className="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 hover:border-zinc-700 transition-all">
-            <img 
-              src={workflow.thumbnail} 
+          <div
+            key={workflow.id}
+            className="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 hover:border-zinc-700 transition-all"
+          >
+            <img
+              src={workflow.thumbnail}
               alt={workflow.title}
               className="w-full h-48 object-cover"
             />
-            
+
             <div className="p-5">
               <div className="flex justify-between items-start mb-3">
                 <div>
@@ -101,4 +106,3 @@ export default function MicroLicensingMarketplace() {
     </div>
   );
 }
-```

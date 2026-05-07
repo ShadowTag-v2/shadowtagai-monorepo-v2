@@ -25,7 +25,7 @@ def test_muscle():
         print(f"   Browser Path: {agent.brave_path}")
     except Exception as e:
         print(f"❌ AGENT ERROR: {e}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 if __name__ == "__main__":

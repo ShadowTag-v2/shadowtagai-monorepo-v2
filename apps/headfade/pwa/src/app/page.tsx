@@ -1,6 +1,8 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import AgentSpinner from '../components/AgentSpinner';
+
 import '../app/agent-spinner.css';
 
 /** Extract clean filename from local path or full URI */
@@ -11,7 +13,7 @@ function gcsVideoId(localPath: string): string {
 }
 
 export default function HeadFadeSwiper() {
-  const [video, _setVideo] = useState('/media/genesis_clip_01.mp4');
+  const [video] = useState('/media/genesis_clip_01.mp4');
   const [reveal, setReveal] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [userResult, setUserResult] = useState<'correct' | 'fooled' | null>(null);
@@ -189,18 +191,18 @@ export default function HeadFadeSwiper() {
 
       {/* Cross-Navigation — Marketplace */}
       <div className="mt-4 w-full max-w-md flex justify-center gap-4">
-        <a
+        <Link
           href="/marketplace"
           className="text-zinc-400 text-xs border border-zinc-700 px-4 py-2 rounded-lg hover:text-[#00FF41] hover:border-[#00FF41]/30 transition-all"
         >
           🔀 Creator Marketplace
-        </a>
-        <a
+        </Link>
+        <Link
           href="/embed/demo"
           className="text-zinc-400 text-xs border border-zinc-700 px-4 py-2 rounded-lg hover:text-cyan-400 hover:border-cyan-400/30 transition-all"
         >
           📡 Embed Player Demo
-        </a>
+        </Link>
       </div>
 
       {/* Footer */}

@@ -21,7 +21,7 @@ def run_cmd(args, fail_exit=True):
     except subprocess.CalledProcessError as e:
         print(f"[!] Command failed: {' '.join(args)}\n{e.stderr}")
         if fail_exit:
-            raise SystemExit(1)
+            raise SystemExit(1) from e
         return None
 
 

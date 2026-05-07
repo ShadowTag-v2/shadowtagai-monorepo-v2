@@ -43,7 +43,7 @@ class VoiceCapture:
                 console.print(
                     "[red]ERROR: openai-whisper not installed. Run: pip install openai-whisper[/red]",
                 )
-                raise SystemExit(1)
+                raise SystemExit(1) from None
         else:
             self.whisper_model = None
 
@@ -58,7 +58,7 @@ class VoiceCapture:
             console.print(
                 "[yellow]Make sure your microphone is connected and permissions are granted[/yellow]",
             )
-            raise SystemExit(1)
+            raise SystemExit(1) from e
 
     def list_microphones(self):
         """Show available microphones"""

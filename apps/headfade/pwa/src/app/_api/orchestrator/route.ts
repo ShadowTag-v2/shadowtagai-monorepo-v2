@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       sessionId: data.task_id,
       message: 'Backend Bridge API connected to python orchestrator.',
     });
-  } catch (error) {
+  } catch (_error) {
     // console.error('Failed to initiate orchestration:', error);
     return NextResponse.json({ error: 'Failed to initiate orchestration' }, { status: 500 });
   }

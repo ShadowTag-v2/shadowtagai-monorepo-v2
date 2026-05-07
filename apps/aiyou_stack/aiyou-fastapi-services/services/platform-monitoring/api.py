@@ -1,3 +1,5 @@
+import os
+
 """Platform Monitoring API
 
 import os

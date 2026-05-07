@@ -8,8 +8,6 @@ FastAPI service exposing validation endpoints across 4 namespaces:
 """
 
 import os
-import time
-from contextlib import asynccontextmanager
 from datetime import datetime
 
 import structlog

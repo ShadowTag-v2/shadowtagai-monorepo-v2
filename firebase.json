@@ -75,11 +75,7 @@
     {
       "target": "counselconduit-dashboard",
       "public": "apps/counselconduit-dashboard/dist",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
           "source": "**",

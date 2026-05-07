@@ -36,7 +36,7 @@ try:
 except ImportError:
     print("ERROR: Missing required packages. Install with:")
     print("pip install google-cloud-aiplatform")
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 # Configure logging
 logging.basicConfig(
@@ -432,7 +432,7 @@ def main():
 
     except Exception as e:
         logger.error(f"Orchestration failed: {e}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
     # Example 2: Deploy to Vertex AI Training (commented out)
     # Uncomment to deploy as a training job

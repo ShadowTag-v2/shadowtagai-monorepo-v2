@@ -37,7 +37,6 @@ async function fetchEmbedData(videoId: string): Promise<EmbedVideoData> {
     return await res.json();
   } catch (_err: unknown) {
     // Fallback for demo / static export — API unavailable in static mode
-    // eslint-disable-next-line no-console
     console.debug('[HeadFade Embed] API unreachable, using demo fallback', _err);
     return {
       id: videoId,

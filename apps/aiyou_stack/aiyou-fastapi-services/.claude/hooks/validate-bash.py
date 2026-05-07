@@ -57,7 +57,7 @@ def main():
         input_data = json.load(sys.stdin)
     except json.JSONDecodeError as e:
         print(f"Error: Invalid JSON input: {e}", file=sys.stderr)
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
     tool_name = input_data.get("tool_name", "")
     tool_input = input_data.get("tool_input", {})

@@ -74,7 +74,7 @@ def main():
                 scores = json.loads(json_str)
             except json.JSONDecodeError as e:
                 print(f"Error: Invalid JSON input: {e}")
-                raise SystemExit(1)
+                raise SystemExit(1) from e
 
     if not scores:
         # Interactive Mode

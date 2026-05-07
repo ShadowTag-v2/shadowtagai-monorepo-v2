@@ -65,7 +65,7 @@ except ImportError:
     logger.error(
         "Google Cloud libraries not installed. Run: pip install google-cloud-aiplatform google-cloud-storage google-generativeai",
     )
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 console = Console()
 
@@ -1098,7 +1098,7 @@ def main(
 
     except Exception as e:
         console.print(f"[red]Configuration error: {e}[/red]")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
     # Execute
     try:
@@ -1147,12 +1147,12 @@ def main(
 
     except KeyboardInterrupt:
         console.print("\n[yellow]Pipeline interrupted by user[/yellow]")
-        raise SystemExit(1)
+        raise SystemExit(1) from None
 
     except Exception as e:
         logger.exception(f"Pipeline error: {e}")
         console.print(f"\n[red]Pipeline error: {e}[/red]")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 if __name__ == "__main__":

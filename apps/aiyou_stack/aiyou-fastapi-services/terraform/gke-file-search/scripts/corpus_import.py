@@ -27,7 +27,7 @@ def list_corpora(project_id: str, region: str) -> None:
             print(f"  Description: {corpus.description}")
     except Exception as e:
         print(f"Error listing corpora: {e}", file=sys.stderr)
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 def import_files(
@@ -86,7 +86,7 @@ def import_files(
 
     except Exception as e:
         print(f"\n✗ Import failed: {e}", file=sys.stderr)
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 def query_corpus(project_id: str, region: str, vertical: str, query: str, top_k: int = 5) -> None:
@@ -145,7 +145,7 @@ def query_corpus(project_id: str, region: str, vertical: str, query: str, top_k:
 
     except Exception as e:
         print(f"\n✗ Query failed: {e}", file=sys.stderr)
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 def main():

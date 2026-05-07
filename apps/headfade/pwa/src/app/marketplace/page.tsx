@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
 
 interface WorkflowListing {
   id: string;
@@ -95,8 +96,8 @@ export default function MarketplacePage() {
         throw new Error('No checkout URL returned');
       }
     } catch (_err: unknown) {
-      // eslint-disable-next-line no-console
       console.error('Checkout error:', _err);
+
       alert('Stripe Connect checkout failed or is unavailable.');
     }
   }, []);
@@ -115,12 +116,12 @@ export default function MarketplacePage() {
             </p>
           </div>
           <div className="flex gap-3">
-            <a
+            <Link
               href="/"
               className="text-xs text-zinc-300 border border-zinc-700 px-3 py-1.5 rounded-lg hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#00FF41]"
             >
               ← Sandbox
-            </a>
+            </Link>
             <button
               type="button"
               className="text-xs bg-[#00FF41] text-black px-4 py-1.5 rounded-lg font-bold hover:bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
