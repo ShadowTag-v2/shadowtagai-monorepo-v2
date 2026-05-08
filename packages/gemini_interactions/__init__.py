@@ -8,7 +8,7 @@ replacing generateContent with a unified, stateful, tool-orchestrated API.
 Architecture:
   Transport:     google-genai SDK (client.interactions.create/get)
   State:         Server-side via previous_interaction_id (stateful mode)
-  Streaming:     SSE with content.delta events + automatic reconnection
+  Streaming:     SSE with step.delta events + automatic reconnection (legacy content.delta also supported)
   Tools:         Google Search, URL Context, Code Execution, MCP servers,
                  Function Calling, Computer Use, File Search
   Models:        gemini-3-flash-preview, gemini-3-pro-preview, gemini-3.1-*
@@ -16,8 +16,8 @@ Architecture:
 Public API:
   - InteractionsClient: Main client (create, get, stream, function call loop)
   - InteractionResult: Typed wrapper around raw interaction response
-  - StreamEvent: Typed stream event (content.delta, interaction.complete, etc.)
-  - StreamAccumulator: Index-based output reconstruction from streaming
+  - StreamEvent: Typed stream event (step.delta, interaction.completed, etc.)
+  - StreamAccumulator: Index-based step/output reconstruction from streaming
   - EventType: Enumeration of SSE event types
   - ToolDefinition: Typed tool config (function, google_search, mcp_server, etc.)
 """
@@ -60,4 +60,3 @@ __all__ = [
     "mcp_server_tool",
     "url_context_tool",
 ]
-
