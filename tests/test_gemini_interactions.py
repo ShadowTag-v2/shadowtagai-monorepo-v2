@@ -7,7 +7,7 @@ Uses mock objects to test without live API calls.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 import pytest
@@ -29,6 +29,7 @@ from gemini_interactions.client import (
     StreamAccumulator,
     StreamEvent,
 )
+from gemini_interactions.telemetry import NullTelemetry
 
 
 # ---------------------------------------------------------------------------
@@ -431,6 +432,257 @@ class TestStreamAccumulator:
 
 
 # ---------------------------------------------------------------------------
+# New Schema (step.*) — explicit tests for May 2026 breaking changes
+# ---------------------------------------------------------------------------
+
+
+class TestNewSchemaEventParsing:
+    """Tests for step.start/delta/stop and interaction.created/completed events."""
+
+    def test_parse_step_start(self):
+        @dataclass
+        class MockStep:
+            type: str = "model_output"
+
+        @dataclass
+        class MockChunk:
+            event_type: str = "step.start"
+            event_id: str = "ev-ss"
+            index: int = 0
+            step: MockStep = None
+            content: Any = None  # Ensure legacy fallback not used
+
+            def __post_init__(self):
+                self.step = self.step or MockStep()
+
+        event = InteractionsClient._parse_chunk(MockChunk())
+        assert event.event_type == "step.start"
+        assert event.content_type == "model_output"
+        assert event.index == 0
+
+    def test_parse_step_delta_text(self):
+        @dataclass
+        class MockDelta:
+            type: str = "text"
+            text: str = "new schema chunk"
+
+        @dataclass
+        class MockChunk:
+            event_type: str = "step.delta"
+            event_id: str = "ev-sd"
+            delta: MockDelta = None
+            index: int = 0
+
+            def __post_init__(self):
+                self.delta = self.delta or MockDelta()
+
+        event = InteractionsClient._parse_chunk(MockChunk())
+        assert event.event_type == "step.delta"
+        assert event.delta_type == "text"
+        assert event.text == "new schema chunk"
+
+    def test_parse_step_stop(self):
+        @dataclass
+        class MockChunk:
+            event_type: str = "step.stop"
+            event_id: str = "ev-sstop"
+            index: int = 2
+
+        event = InteractionsClient._parse_chunk(MockChunk())
+        assert event.event_type == "step.stop"
+        assert event.index == 2
+
+    def test_parse_interaction_created(self):
+        @dataclass
+        class MockInteractionObj:
+            id: str = "created-id-42"
+
+        @dataclass
+        class MockChunk:
+            event_type: str = "interaction.created"
+            event_id: str = None
+            interaction: MockInteractionObj = None
+
+            def __post_init__(self):
+                self.interaction = self.interaction or MockInteractionObj()
+
+        event = InteractionsClient._parse_chunk(MockChunk())
+        assert event.event_type == "interaction.created"
+        assert event.interaction_id == "created-id-42"
+
+    def test_parse_interaction_completed(self):
+        @dataclass
+        class MockUsage:
+            total_tokens: int = 200
+            prompt_tokens: int = 50
+            completion_tokens: int = 150
+
+        @dataclass
+        class MockInteractionObj:
+            id: str = "completed-id-99"
+            usage: MockUsage = None
+
+            def __post_init__(self):
+                self.usage = self.usage or MockUsage()
+
+        @dataclass
+        class MockChunk:
+            event_type: str = "interaction.completed"
+            event_id: str = None
+            interaction: MockInteractionObj = None
+
+            def __post_init__(self):
+                self.interaction = self.interaction or MockInteractionObj()
+
+        event = InteractionsClient._parse_chunk(MockChunk())
+        assert event.event_type == "interaction.completed"
+        assert event.interaction_id == "completed-id-99"
+        assert event.usage["total_tokens"] == 200
+
+
+class TestNewSchemaStreamAccumulator:
+    """StreamAccumulator with new step.* events."""
+
+    def test_step_based_text_reconstruction(self):
+        """step.start + step.delta + step.stop → single step."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type=EventType.STEP_START, index=0, content_type="model_output"))
+        acc.feed(StreamEvent(event_type=EventType.STEP_DELTA, index=0, delta_type="text", text="Hello "))
+        acc.feed(StreamEvent(event_type=EventType.STEP_DELTA, index=0, delta_type="text", text="step world"))
+        acc.feed(StreamEvent(event_type=EventType.STEP_STOP, index=0))
+        assert len(acc.steps) == 1
+        assert acc.steps[0]["type"] == "model_output"
+        assert acc.steps[0]["text"] == "Hello step world"
+        # Legacy compat
+        assert acc.outputs == acc.steps
+
+    def test_step_based_interaction_lifecycle(self):
+        """interaction.created + steps + interaction.completed."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type=EventType.INTERACTION_CREATED, interaction_id="new-int-1"))
+        acc.feed(StreamEvent(event_type=EventType.STEP_START, index=0, content_type="model_output"))
+        acc.feed(StreamEvent(event_type=EventType.STEP_DELTA, index=0, delta_type="text", text="Response"))
+        acc.feed(StreamEvent(event_type=EventType.STEP_STOP, index=0))
+        acc.feed(
+            StreamEvent(
+                event_type=EventType.INTERACTION_COMPLETED,
+                interaction_id="new-int-1",
+                usage={"total_tokens": 100, "prompt_tokens": 30, "completion_tokens": 70},
+            )
+        )
+        assert acc.interaction_id == "new-int-1"
+        assert acc.usage["total_tokens"] == 100
+        assert acc.status == "completed"
+        assert acc.steps[0]["text"] == "Response"
+
+    def test_step_based_function_call(self):
+        """Function call via step.delta."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type=EventType.STEP_START, index=0, content_type="function_call"))
+        acc.feed(
+            StreamEvent(
+                event_type=EventType.STEP_DELTA,
+                index=0,
+                delta_type="function_call",
+                function_call={"id": "fc-new", "name": "search_docs", "arguments": {"query": "test"}},
+            )
+        )
+        acc.feed(StreamEvent(event_type=EventType.STEP_STOP, index=0))
+        assert acc.steps[0]["name"] == "search_docs"
+        assert acc.steps[0]["id"] == "fc-new"
+
+
+class TestNewSchemaInteractionResult:
+    """InteractionResult.from_interaction with steps[] schema."""
+
+    def test_from_interaction_with_steps(self):
+        """New schema: interaction has steps[] with model_output containing content[]."""
+
+        @dataclass
+        class MockContentItem:
+            type: str = "text"
+            text: str = "Step-based response"
+            annotations: list = None
+
+        @dataclass
+        class MockStep:
+            type: str = "model_output"
+            content: list = None
+
+            def __post_init__(self):
+                self.content = self.content or [MockContentItem()]
+
+        @dataclass
+        class MockInteraction:
+            id: str = "int-steps-1"
+            status: str = "completed"
+            steps: list = None
+            outputs: list = None
+            usage: Any = None
+
+            def __post_init__(self):
+                self.steps = self.steps or [MockStep()]
+
+        result = InteractionResult.from_interaction(MockInteraction())
+        assert result.id == "int-steps-1"
+        assert result.text == "Step-based response"
+        assert len(result.steps) == 1
+        assert result.function_calls == []
+
+    def test_from_interaction_with_steps_function_call(self):
+        """New schema: function_call step type."""
+
+        @dataclass
+        class MockFCStep:
+            type: str = "function_call"
+            name: str = "get_weather"
+            id: str = "fc-step-1"
+            arguments: dict = None
+
+            def __post_init__(self):
+                self.arguments = self.arguments or {"city": "NYC"}
+
+        @dataclass
+        class MockInteraction:
+            id: str = "int-fc-steps"
+            status: str = "completed"
+            steps: list = None
+            outputs: list = None
+            usage: Any = None
+
+            def __post_init__(self):
+                self.steps = self.steps or [MockFCStep()]
+
+        result = InteractionResult.from_interaction(MockInteraction())
+        assert len(result.function_calls) == 1
+        assert result.function_calls[0].name == "get_weather"
+        assert result.text is None
+
+
+class TestLegacyEventMap:
+    """Verify the _LEGACY_EVENT_MAP mappings."""
+
+    def test_all_legacy_events_mapped(self):
+        from gemini_interactions.client import _LEGACY_EVENT_MAP
+
+        assert _LEGACY_EVENT_MAP["interaction.start"] == "interaction.created"
+        assert _LEGACY_EVENT_MAP["content.start"] == "step.start"
+        assert _LEGACY_EVENT_MAP["content.delta"] == "step.delta"
+        assert _LEGACY_EVENT_MAP["content.stop"] == "step.stop"
+        assert _LEGACY_EVENT_MAP["interaction.complete"] == "interaction.completed"
+        assert _LEGACY_EVENT_MAP["error"] == "interaction.error"
+        assert _LEGACY_EVENT_MAP["interaction.status_update"] == "interaction.in_progress"
+
+    def test_new_events_not_in_map(self):
+        """New event names should NOT appear as keys in the legacy map."""
+        from gemini_interactions.client import _LEGACY_EVENT_MAP
+
+        assert "step.start" not in _LEGACY_EVENT_MAP
+        assert "interaction.created" not in _LEGACY_EVENT_MAP
+        assert "interaction.completed" not in _LEGACY_EVENT_MAP
+
+
+# ---------------------------------------------------------------------------
 # Client — build_kwargs
 # ---------------------------------------------------------------------------
 
@@ -461,6 +713,189 @@ class TestBuildKwargs:
         assert kwargs["model"] == "gemini-3-pro-preview"
         assert kwargs["previous_interaction_id"] == "prev-123"
         assert kwargs["store"] is False
+
+
+class TestApiRevision:
+    """Tests for Phase 1 Api-Revision header opt-in support."""
+
+    def test_new_schema_revision_constant(self):
+        assert InteractionsClient.NEW_SCHEMA_REVISION == "2026-05-20"
+
+    def test_default_no_revision(self):
+        c = InteractionsClient.__new__(InteractionsClient)
+        c._api_key = ""
+        c._default_model = "gemini-3-flash-preview"
+        c._telemetry = NullTelemetry()
+        c._api_revision = None
+        c._client = None
+        assert c._api_revision is None
+
+    def test_revision_stored(self):
+        c = InteractionsClient.__new__(InteractionsClient)
+        c._api_key = ""
+        c._default_model = "gemini-3-flash-preview"
+        c._telemetry = NullTelemetry()
+        c._api_revision = "2026-05-20"
+        c._client = None
+        assert c._api_revision == "2026-05-20"
+
+
+class TestPhase2StepSchema:
+    """Phase 2 migration: Verify step.start/step.delta/step.stop event handling.
+
+    Tests cover the new step-based streaming schema that replaces
+    content.start/delta/stop after June 8, 2026.
+    """
+
+    def test_step_text_accumulation(self):
+        """step.start → step.delta(text) × 3 → step.stop → interaction.completed."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type="interaction.created", interaction_id="int-p2-1"))
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="model_output"))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="text", text="Hello"))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="text", text=", "))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="text", text="world!"))
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        acc.feed(
+            StreamEvent(
+                event_type="interaction.completed",
+                interaction_id="int-p2-1",
+                usage={"total_tokens": 42, "prompt_tokens": 10, "completion_tokens": 32},
+            )
+        )
+        assert acc.interaction_id == "int-p2-1"
+        assert acc.status == "completed"
+        assert len(acc.steps) == 1
+        assert acc.steps[0]["text"] == "Hello, world!"
+        assert acc.steps[0]["type"] == "model_output"
+        assert acc.usage["total_tokens"] == 42
+
+    def test_step_function_call_delta(self):
+        """step.delta with function_call payload reconstructs tool invocation."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="function_call"))
+        acc.feed(
+            StreamEvent(
+                event_type="step.delta",
+                index=0,
+                delta_type="function_call",
+                function_call={"name": "search_web", "id": "fc-1"},
+            )
+        )
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        steps = acc.steps
+        assert len(steps) == 1
+        assert steps[0]["name"] == "search_web"
+        assert steps[0]["id"] == "fc-1"
+
+    def test_step_thought_summary_delta(self):
+        """step.delta with thought_summary accumulates thinking content."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="thought"))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="thought_summary", thought="Let me "))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="thought_summary", thought="think..."))
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        assert acc.steps[0]["summary"] == "Let me think..."
+
+    def test_step_thought_signature_delta(self):
+        """step.delta with thought_signature stores verification hash."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="thought"))
+        acc.feed(
+            StreamEvent(
+                event_type="step.delta",
+                index=0,
+                delta_type="thought_signature",
+                signature="sig-abc123",
+            )
+        )
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        assert acc.steps[0]["signature"] == "sig-abc123"
+
+    def test_multi_block_step_indexing(self):
+        """Multiple step indices reconstruct separate blocks correctly."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="thought"))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="thought_summary", thought="Reasoning"))
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        acc.feed(StreamEvent(event_type="step.start", index=1, content_type="model_output"))
+        acc.feed(StreamEvent(event_type="step.delta", index=1, delta_type="text", text="Answer"))
+        acc.feed(StreamEvent(event_type="step.stop", index=1))
+        assert len(acc.steps) == 2
+        assert acc.steps[0]["summary"] == "Reasoning"
+        assert acc.steps[1]["text"] == "Answer"
+
+    def test_interaction_result_new_schema_steps(self):
+        """InteractionResult.from_interaction correctly parses steps[] array."""
+
+        @dataclass
+        class _MockContent:
+            type: str = "text"
+            text: str = "Generated response"
+            annotations: list = field(default_factory=list)
+
+        @dataclass
+        class _MockStep:
+            type: str = "model_output"
+            content: list = field(default_factory=lambda: [_MockContent()])
+
+        @dataclass
+        class _MockUsage:
+            total_tokens: int = 100
+            prompt_tokens: int = 30
+            completion_tokens: int = 70
+
+        @dataclass
+        class _MockInteraction:
+            id: str = "int-p2-new"
+            status: str = "completed"
+            steps: list = field(default_factory=lambda: [_MockStep()])
+            outputs: list = field(default_factory=list)
+            usage: _MockUsage = field(default_factory=_MockUsage)
+
+        result = InteractionResult.from_interaction(_MockInteraction())
+        assert result.id == "int-p2-new"
+        assert result.status == "completed"
+        assert result.text == "Generated response"
+        assert len(result.steps) == 1
+        assert result.usage["total_tokens"] == 100
+
+    def test_legacy_event_map_complete(self):
+        """Verify all legacy events have correct new-schema mappings."""
+        from gemini_interactions.client import _LEGACY_EVENT_MAP
+
+        expected_mappings = {
+            "interaction.start": "interaction.created",
+            "content.start": "step.start",
+            "content.delta": "step.delta",
+            "content.stop": "step.stop",
+            "interaction.complete": "interaction.completed",
+            "error": "interaction.error",
+            "interaction.status_update": "interaction.in_progress",
+        }
+        for legacy, new in expected_mappings.items():
+            assert _LEGACY_EVENT_MAP[legacy] == new, f"{legacy} → {new}"
+
+    def test_mixed_legacy_new_events(self):
+        """Accumulator handles interleaved legacy and new event types."""
+        acc = StreamAccumulator()
+        # Legacy interaction start
+        acc.feed(StreamEvent(event_type="interaction.start", interaction_id="int-mixed"))
+        # New step events
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="model_output"))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="text", text="Mixed"))
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        # Legacy completion
+        acc.feed(
+            StreamEvent(
+                event_type="interaction.complete",
+                interaction_id="int-mixed",
+                usage={"total_tokens": 15},
+            )
+        )
+        assert acc.interaction_id == "int-mixed"
+        assert acc.status == "completed"
+        assert acc.steps[0]["text"] == "Mixed"
 
 
 # ---------------------------------------------------------------------------
@@ -546,6 +981,7 @@ def _make_mock_client():
     client = InteractionsClient.__new__(InteractionsClient)
     client._api_key = "test-key"
     client._default_model = "gemini-3-flash-preview"
+    client._telemetry = NullTelemetry()
     client._client = type("MockGenAI", (), {"interactions": _MockInteractionsAPI()})()
     return client
 
@@ -748,6 +1184,7 @@ def _make_stream_mock_client():
     client = InteractionsClient.__new__(InteractionsClient)
     client._api_key = "test-key"
     client._default_model = "gemini-3-flash-preview"
+    client._telemetry = NullTelemetry()
 
     # Mock the underlying SDK client
     mock_api = _MockInteractionsAPI()
@@ -902,6 +1339,7 @@ def _make_fc_mock_client():
     client = InteractionsClient.__new__(InteractionsClient)
     client._api_key = "test-key"
     client._default_model = "gemini-3-flash-preview"
+    client._telemetry = NullTelemetry()
     client._client = type("MockGenAI", (), {"interactions": _MockFCAPI()})()
     client._fc_call_log = call_log
     return client
@@ -989,6 +1427,7 @@ class TestConversationSessionFunctionCallLoop:
         client = InteractionsClient.__new__(InteractionsClient)
         client._api_key = "test-key"
         client._default_model = "gemini-3-flash-preview"
+        client._telemetry = NullTelemetry()
         client._client = type("M", (), {"interactions": _MockNoFCAPI()})()
 
         session = ConversationSession(client)

@@ -143,6 +143,67 @@ def call_gemini_turn(model: str, conversation_history: list, tools=None) -> dict
         return json.loads(resp.read().decode("utf-8"))
 
 
+import re
+
+# Known MCP server name aliases → canonical server name.
+# Handles variant formats that cause "unknown_tool" after IDE restart.
+_MCP_SERVER_ALIASES: dict[str, str] = {
+    "google_developer_knowledge": "google-developer-knowledge",
+    "googleDeveloperKnowledge": "google-developer-knowledge",
+    "google_developer-knowledge": "google-developer-knowledge",
+    "firebase_mcp_server": "firebase-mcp-server",
+    "firebaseMcpServer": "firebase-mcp-server",
+    "chrome_devtools_mcp": "chrome-devtools-mcp",
+    "chromeDevtoolsMcp": "chrome-devtools-mcp",
+    "sequential_thinking": "sequential-thinking",
+    "sequentialThinking": "sequential-thinking",
+}
+
+
+def _normalize_mcp_tool_name(name: str) -> str:
+    """Resolve variant MCP tool name formats to canonical mcp__server__tool form.
+
+    Handles three patterns:
+      1. mcp__server__tool  (canonical, no-op)
+      2. mcp_server_tool    (single underscore separator)
+      3. mcp_server_tool    (hyphens→underscores in server name)
+    """
+    # Already canonical
+    if name.startswith("mcp__"):
+        parts = name.split("__")
+        if len(parts) >= 3:
+            server = parts[1]
+            canonical = _MCP_SERVER_ALIASES.get(server)
+            if canonical:
+                parts[1] = canonical
+                return "__".join(parts)
+        return name
+
+    # Single-underscore: mcp_server_tool
+    if name.startswith("mcp_"):
+        tail = name[4:]
+        # Try each alias (longest first)
+        for alias in sorted(_MCP_SERVER_ALIASES, key=len, reverse=True):
+            if tail.startswith(alias + "_"):
+                tool_part = tail[len(alias) + 1 :]
+                return f"mcp__{_MCP_SERVER_ALIASES[alias]}__{tool_part}"
+        # Try canonical names with hyphens → underscores
+        seen: set[str] = set()
+        for canonical in _MCP_SERVER_ALIASES.values():
+            if canonical in seen:
+                continue
+            seen.add(canonical)
+            as_under = canonical.replace("-", "_")
+            if tail.startswith(canonical + "_"):
+                tool_part = tail[len(canonical) + 1 :]
+                return f"mcp__{canonical}__{tool_part}"
+            if tail.startswith(as_under + "_"):
+                tool_part = tail[len(as_under) + 1 :]
+                return f"mcp__{canonical}__{tool_part}"
+
+    return name
+
+
 TOOL_DISPATCH = {
     "code_search_tool": code_search_tool,
     "list_files_tool": list_files_tool,

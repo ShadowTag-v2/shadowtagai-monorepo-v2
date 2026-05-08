@@ -863,11 +863,11 @@ function BillingView() {
 
 export default function App() {
   const [view, setView] = useState<View>('overview');
-  const [, setTime] = useState(Date.now());
+  const [, setTimeTick] = useState(0);
 
   // Refresh relative times every minute
   useEffect(() => {
-    const id = setInterval(() => setTime(Date.now()), 60000);
+    const id = setInterval(() => setTimeTick((tick) => tick + 1), 60000);
     return () => clearInterval(id);
   }, []);
 
@@ -932,13 +932,13 @@ export default function App() {
           </div>
         </header>
 
-        <div className="main-body">
+        <main className="main-body">
           {view === 'overview' && <OverviewView onNavigate={setView} />}
           {view === 'sessions' && <SessionsView />}
           {view === 'clients' && <ClientsView />}
           {view === 'models' && <ModelsView />}
           {view === 'billing' && <BillingView />}
-        </div>
+        </main>
       </div>
     </div>
   );

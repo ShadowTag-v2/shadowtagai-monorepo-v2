@@ -571,7 +571,7 @@ def load_messages_from_jsonl_path(path: str) -> tuple[list[Message], str | None]
             ts = datetime.fromisoformat(
                 ts_str.replace("Z", "+00:00"),
             ).timestamp()
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             ts = 0.0
         if ts > tip_ts:
             tip_ts = ts

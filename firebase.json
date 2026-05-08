@@ -14,6 +14,14 @@
             { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
             { "key": "X-XSS-Protection", "value": "1; mode=block" },
             {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "Permissions-Policy",
+              "value": "camera=(), microphone=(), geolocation=(), payment=()"
+            },
+            {
               "key": "Content-Security-Policy",
               "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://www.google-analytics.com"
             }
@@ -23,7 +31,7 @@
     },
     {
       "target": "kovelai",
-      "public": "apps/kovelai/site/out",
+      "public": "apps/kovelai/public",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [{ "source": "**", "destination": "/index.html" }],
       "headers": [
@@ -34,6 +42,14 @@
             { "key": "X-Frame-Options", "value": "DENY" },
             { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
             { "key": "X-XSS-Protection", "value": "1; mode=block" },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "Permissions-Policy",
+              "value": "camera=(), microphone=(), geolocation=(), payment=()"
+            },
             {
               "key": "Content-Security-Policy",
               "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://www.google-analytics.com"
@@ -68,7 +84,7 @@
             { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=()" },
             {
               "key": "Content-Security-Policy",
-              "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://apis.google.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https://storage.googleapis.com https://images.unsplash.com; connect-src 'self' https://*.googleapis.com https://www.google-analytics.com https://analytics.google.com https://*.run.app https://content-firebaseappcheck.googleapis.com https://firebaseinstallations.googleapis.com; frame-src 'self' https://apis.google.com https://*.firebaseapp.com https://www.google.com/recaptcha/"
+              "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://apis.google.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https://storage.googleapis.com https://images.unsplash.com; connect-src 'self' https://*.googleapis.com https://www.google-analytics.com https://analytics.google.com https://*.run.app https://content-firebaseappcheck.googleapis.com https://firebaseinstallations.googleapis.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; frame-src 'self' https://apis.google.com https://*.firebaseapp.com https://www.google.com/recaptcha/"
             }
           ]
         }
@@ -103,6 +119,14 @@
             {
               "key": "X-XSS-Protection",
               "value": "1; mode=block"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "Permissions-Policy",
+              "value": "camera=(), microphone=(), geolocation=(), payment=()"
             },
             {
               "key": "Content-Security-Policy",
