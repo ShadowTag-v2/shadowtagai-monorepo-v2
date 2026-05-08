@@ -16,7 +16,7 @@ keywords = ["ai", "intelligence", "ingestion", "gemini", "gke"]
 
 dependencies = [
     "aiohttp>=3.9.0",
-    "google-genai>=1.65.0",  # Interactions API — dual-schema support (legacy + step-based, June 2026 migration)
+    "google-genai>=1.65.0",  # Interactions API — step-based schema active (May 2026 migration complete)
     "google-cloud-aiplatform>=1.40.0",
     "google-cloud-storage>=2.14.0",
     "google-cloud-bigquery>=3.15.0",
