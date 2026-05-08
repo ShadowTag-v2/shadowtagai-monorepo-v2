@@ -259,7 +259,7 @@ export default function HeadfadeHomepage() {
   const { votes, vote, filter, setFilter, saved, toggleSave, globalAI, globalHuman } = useVotes(
     threads.length,
   );
-  const { elo } = useForensicElo(uid);
+  const { elo, recordVoteOutcome } = useForensicElo(uid);
 
   const loadMore = useCallback(() => {
     const next = initialThreads.map((t) => ({ ...t }));
@@ -670,6 +670,12 @@ export default function HeadfadeHomepage() {
                           return;
                         }
                         vote(key, choice);
+                        // Atomic Elo update — voter accuracy + creator deception stats
+                        recordVoteOutcome(
+                          `video_${index}`,
+                          choice,
+                          thread.isAI ?? true,
+                        );
                       }}
                       onClick={() => {}}
                     />
