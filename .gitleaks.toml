@@ -52,7 +52,26 @@ title = "Monorepo-Uphillsnowball Gitleaks Config"
     '''docs/legacy_shadowtag_v2/''',
     '''\.agent/incoming_repos/''',
     '''\.env\.backup''',
-    '''\.next/''',
+    '''.next/''',
+    # ── Vendored / cached / archived paths (audited 2026-05-08) ──
+    '''.venv-3\.14-bak/''',
+    '''_archive_redundant_''',
+    '''turbopack/''',
+    '''\.sst$''',
+    '''scratch/repos/''',
+    '''apps/.*/out/''',
+    '''apps/.*/public/dev/cache/''',
+    # Documentation (contains referenced API keys in audit reports)
+    '''docs/AUDIT_REPORT\.md''',
+    '''docs/overview\.txt''',
+    # Firebase client config (publishable keys, safe to commit)
+    '''apps/.*/\.env\.local''',
+    '''apps/.*/src/lib/firebase\.ts''',
+    # Test files with mock/fixture secrets
+    '''tests/test_block_allow_engine\.py''',
+    '''tests/test_secret_scanner\.py''',
+    '''tests/test_vcr_fixtures\.py''',
+    '''tests/unit/''',
     # ── HIGH-risk third-party allowlist (audited 2026-04-19) ──
     # Stripe sk_test_ key: Odoo payment_stripe test fixture (NOT our account)
     # Vault s.Fg8w token: OpenTofu website example doc (NOT live)
