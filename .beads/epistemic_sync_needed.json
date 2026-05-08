@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-05-08T03:51:19Z",
-  "commit": "f49e93947f33a8c7c768e7ad37f0276fc82a6144",
-  "changed_docs": ["docs/DARK_FACTORY_ARCHITECTURE.md"],
+  "timestamp": "2026-05-08T20:17:58Z",
+  "commit": "8c0244fc6aa2407eb0fef723bfdfaf9ed08541e9",
+  "changed_docs": ["docs/DARK_FACTORY_ARCHITECTURE.md", "docs/SYSTEM_OVERRIDE.md"],
   "action": "re-upload_to_epistemic_engine",
   "store": "fileSearchStores/uphillsnowballarchitecture-r0dt6v412dh1"
 }
