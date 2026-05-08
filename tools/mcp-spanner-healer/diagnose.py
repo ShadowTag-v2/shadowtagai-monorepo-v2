@@ -16,10 +16,8 @@ Dependencies:
 """
 
 import json
-import subprocess
 import sys
 from dataclasses import dataclass
-from typing import Optional
 
 
 # ─── Thresholds ────────────────────────────────────────────────────────────────
@@ -32,6 +30,7 @@ LOCK_WAIT_THRESHOLD_MS = 100
 @dataclass
 class QueryBottleneck:
     """Represents a detected performance bottleneck."""
+
     query: str
     execution_plan: str
     latency_ms: float
@@ -43,6 +42,7 @@ class QueryBottleneck:
 @dataclass
 class HealingAction:
     """A DDL statement to apply autonomously."""
+
     ddl: str
     reason: str
     target_table: str
@@ -111,23 +111,27 @@ def generate_healing_actions(bottlenecks: list[QueryBottleneck]) -> list[Healing
                 col_list = ", ".join(b.scan_columns)
                 index_name = f"idx_{'_'.join(b.scan_columns)}_on_{b.table_name}"
                 ddl = f"CREATE INDEX {index_name} ON {b.table_name}({col_list})"
-                actions.append(HealingAction(
-                    ddl=ddl,
-                    reason=f"Full table scan detected on {b.table_name} with {b.latency_ms}ms latency",
-                    target_table=b.table_name,
-                    target_columns=b.scan_columns,
-                    estimated_improvement=f"~{int(b.latency_ms * 0.8)}ms reduction",
-                ))
+                actions.append(
+                    HealingAction(
+                        ddl=ddl,
+                        reason=f"Full table scan detected on {b.table_name} with {b.latency_ms}ms latency",
+                        target_table=b.table_name,
+                        target_columns=b.scan_columns,
+                        estimated_improvement=f"~{int(b.latency_ms * 0.8)}ms reduction",
+                    )
+                )
 
         # Rule 2: Lock contention above threshold → Log warning (index won't help)
         if b.lock_wait_ms > LOCK_WAIT_THRESHOLD_MS:
-            actions.append(HealingAction(
-                ddl=f"-- ADVISORY: Lock contention {b.lock_wait_ms}ms on {b.table_name}. Consider transaction splitting.",
-                reason=f"Lock wait {b.lock_wait_ms}ms exceeds {LOCK_WAIT_THRESHOLD_MS}ms threshold",
-                target_table=b.table_name,
-                target_columns=[],
-                estimated_improvement="Requires transaction refactoring",
-            ))
+            actions.append(
+                HealingAction(
+                    ddl=f"-- ADVISORY: Lock contention {b.lock_wait_ms}ms on {b.table_name}. Consider transaction splitting.",
+                    reason=f"Lock wait {b.lock_wait_ms}ms exceeds {LOCK_WAIT_THRESHOLD_MS}ms threshold",
+                    target_table=b.table_name,
+                    target_columns=[],
+                    estimated_improvement="Requires transaction refactoring",
+                )
+            )
 
     return actions
 
@@ -143,29 +147,35 @@ def execute_healing(actions: list[HealingAction], dry_run: bool = True) -> dict:
     for action in actions:
         if action.ddl.startswith("--"):
             # Advisory only, don't execute
-            results["skipped"].append({
-                "ddl": action.ddl,
-                "reason": action.reason,
-            })
+            results["skipped"].append(
+                {
+                    "ddl": action.ddl,
+                    "reason": action.reason,
+                }
+            )
             continue
 
         if dry_run:
-            results["applied"].append({
-                "ddl": action.ddl,
-                "reason": action.reason,
-                "mode": "DRY_RUN",
-                "estimated_improvement": action.estimated_improvement,
-            })
+            results["applied"].append(
+                {
+                    "ddl": action.ddl,
+                    "reason": action.reason,
+                    "mode": "DRY_RUN",
+                    "estimated_improvement": action.estimated_improvement,
+                }
+            )
         else:
             # In production, this calls the Spanner Toolbox MCP:
             #   tool: spanner_execute_sql
             #   args: { "sql": action.ddl, "type": "DDL" }
-            results["applied"].append({
-                "ddl": action.ddl,
-                "reason": action.reason,
-                "mode": "APPLIED",
-                "estimated_improvement": action.estimated_improvement,
-            })
+            results["applied"].append(
+                {
+                    "ddl": action.ddl,
+                    "reason": action.reason,
+                    "mode": "APPLIED",
+                    "estimated_improvement": action.estimated_improvement,
+                }
+            )
 
     return results
 

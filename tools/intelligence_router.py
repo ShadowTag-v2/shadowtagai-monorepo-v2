@@ -145,17 +145,9 @@ def _taint_wrap(content: str, file_path: str, threat_level: ThreatLevel) -> str:
             "</blocked_content>"
         )
     elif threat_level == ThreatLevel.QUARANTINED:
-        return (
-            f"<quarantined_workspace_data source='{file_path}' threat='{threat_level.value}'>\n"
-            f"{content}\n"
-            "</quarantined_workspace_data>"
-        )
+        return f"<quarantined_workspace_data source='{file_path}' threat='{threat_level.value}'>\n{content}\n</quarantined_workspace_data>"
     else:
-        return (
-            f"<untrusted_workspace_data source='{file_path}'>\n"
-            f"{content}\n"
-            "</untrusted_workspace_data>"
-        )
+        return f"<untrusted_workspace_data source='{file_path}'>\n{content}\n</untrusted_workspace_data>"
 
 
 def route_file(file_path: str | Path) -> ScanResult:

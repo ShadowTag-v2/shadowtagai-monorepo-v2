@@ -1,5 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
+
 class UserService:
     @staticmethod
     def find_user(name: str) -> str:

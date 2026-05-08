@@ -1,5 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
+
 def public_function(x: int, y: int) -> int:
     """A public function."""
     return x + y
