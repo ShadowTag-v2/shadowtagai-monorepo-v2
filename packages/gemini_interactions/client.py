@@ -567,7 +567,7 @@ class InteractionsClient:
                     else:
                         return
 
-                except Exception as exc:
+                except Exception:
                     if attempt == MAX_STREAM_RECONNECT_ATTEMPTS:
                         raise
                     logger.warning(
@@ -636,7 +636,7 @@ class InteractionsClient:
             Final InteractionResult after all function calls are resolved.
         """
         resolved_model = model or self._default_model
-        
+
         self._telemetry.on_request_start(
             method="function_call_loop",
             model=resolved_model,

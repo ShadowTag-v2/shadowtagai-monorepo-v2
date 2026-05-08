@@ -53,7 +53,7 @@ class JulesClient:
         headers = {
             "Content-Type": "application/json",
         }
-        
+
         if self._credentials:
             self._credentials.refresh(Request())
             headers["Authorization"] = f"Bearer {self._credentials.token}"

@@ -50,6 +50,9 @@ if (SENTRY_DSN) {
 // ============================================
 const app = express();
 
+// Trust Cloud Run's load balancer (fixes ERR_ERL_UNEXPECTED_X_FORWARDED_FOR on Cloud Run)
+app.set('trust proxy', 1);
+
 // Security Middleware
 app.use(helmet());
 app.use(cors({
@@ -57,11 +60,13 @@ app.use(cors({
   credentials: true,
 }));
 
-// Rate Limiting
+// Rate Limiting (keyGenerator uses X-Forwarded-For via trust proxy)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
   message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 app.use(limiter);
 

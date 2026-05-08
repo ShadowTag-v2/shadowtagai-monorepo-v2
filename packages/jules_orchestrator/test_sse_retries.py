@@ -6,15 +6,16 @@ import time
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(__name__)
 
+
 class SSEClientMock:
     def __init__(self, max_retries=3):
         self.max_retries = max_retries
         self.retries = 0
-        
+
     def connect(self):
         logger.error("Connection failed")
         raise ConnectionError("Connection failed")
-        
+
     def connect_with_retry(self):
         self.retries = 0
         while self.retries <= self.max_retries:
@@ -29,26 +30,29 @@ class SSEClientMock:
                 logger.info(f"Connection failed, retrying in {backoff}s...")
                 time.sleep(backoff)
                 self.retries += 1
-                
+
     def calculate_backoff(self, attempt):
-        return 2 ** attempt
+        return 2**attempt
+
 
 def test_jules_sse_connection_retry_success():
     client = SSEClientMock(max_retries=3)
     client.connect = MagicMock(side_effect=[ConnectionError, ConnectionError, True])
-    with patch('time.sleep') as mock_sleep:
+    with patch("time.sleep") as mock_sleep:
         assert client.connect_with_retry() is True
         assert client.connect.call_count == 3
         assert mock_sleep.call_count == 2
 
+
 def test_jules_sse_connection_max_retries_exceeded():
     client = SSEClientMock(max_retries=2)
     client.connect = MagicMock(side_effect=ConnectionError)
-    with patch('time.sleep') as mock_sleep:
+    with patch("time.sleep") as mock_sleep:
         with pytest.raises(Exception, match="Max retries exceeded"):
             client.connect_with_retry()
         assert client.connect.call_count == 3
         assert mock_sleep.call_count == 2
+
 
 def test_jules_sse_backoff_strategy():
     client = SSEClientMock()

@@ -48,7 +48,9 @@
     "StitchMCP": {
       "command": "npx",
       "args": ["-y", "@anthropic-ai/stitch-mcp@latest"],
-      "env": {},
+      "env": {
+        "STITCH_API_KEY": "${STITCH_API_KEY}"
+      },
       "capability_owner": true,
       "owns": [
         "generate_screen_*",
@@ -62,7 +64,9 @@
     "google-developer-knowledge": {
       "command": "npx",
       "args": ["-y", "@anthropic-ai/google-developer-knowledge-mcp@latest"],
-      "env": {},
+      "env": {
+        "DEVELOPER_KNOWLEDGE_API_KEY": "${DEVELOPER_KNOWLEDGE_API_KEY}"
+      },
       "capability_owner": true,
       "owns": ["search_documents", "get_documents", "answer_query"],
       "note": "Google Developer Knowledge MCP — MUST use instead of search_web for ALL Google API documentation queries."
