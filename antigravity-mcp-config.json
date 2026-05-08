@@ -69,7 +69,9 @@
       },
       "capability_owner": true,
       "owns": ["search_documents", "get_documents", "answer_query"],
-      "note": "Google Developer Knowledge MCP — MUST use instead of search_web for ALL Google API documentation queries."
+      "note": "Google Developer Knowledge MCP — MUST use instead of search_web for ALL Google API documentation queries.",
+      "status": "DEGRADED — standalone server returns 403 when DEVELOPER_KNOWLEDGE_API_KEY env var is empty at IDE launch. WORKAROUND: use firebase-mcp-server bundled tool 'developerknowledge_search_documents' which authenticates via OAuth2.",
+      "fallback": "firebase-mcp-server.developerknowledge_search_documents"
     },
     "sequential-thinking": {
       "command": "npx",
@@ -167,7 +169,7 @@
     }
   },
   "routing_rules": {
-    "google_api_docs": "google-developer-knowledge",
+    "google_api_docs": "google-developer-knowledge | fallback: firebase-mcp-server.developerknowledge_search_documents",
     "firebase_operations": "firebase-mcp-server",
     "browser_interaction": "chrome-devtools-mcp",
     "ui_design": "StitchMCP",
