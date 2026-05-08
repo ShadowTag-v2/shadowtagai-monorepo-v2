@@ -3,8 +3,6 @@
    Premium dark-mode, glassmorphism, legal-grade UI
    ═══════════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
-
 /* ── Design Tokens ──────────────────────────────────────────────────────── */
 :root {
   /* Palette — Deep navy + legal gold accent */
@@ -16,15 +14,15 @@
   --bg-glass-border: rgba(255, 255, 255, 0.06);
 
   --text-primary: #f0f4f8;
-  --text-secondary: #8b97b0;
-  --text-tertiary: #5a6577;
-  --text-muted: #3d4757;
+  --text-secondary: #b7c1d1;
+  --text-tertiary: #9ba8bb;
+  --text-muted: #7e8a9d;
 
   --accent-gold: #c9a44e;
   --accent-gold-dim: rgba(201, 164, 78, 0.15);
   --accent-cyan: #22d3ee;
   --accent-cyan-dim: rgba(34, 211, 238, 0.12);
-  --accent-violet: #8b5cf6;
+  --accent-violet: #a78bfa;
   --accent-violet-dim: rgba(139, 92, 246, 0.12);
 
   --success: #10b981;
@@ -35,8 +33,8 @@
   --danger-dim: rgba(239, 68, 68, 0.12);
 
   /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Mono', Consolas, monospace;
 
   /* Spacing */
   --space-xs: 4px;
