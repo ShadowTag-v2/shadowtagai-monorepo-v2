@@ -2,6 +2,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import AgentSpinner from '../components/AgentSpinner';
 import '../app/agent-spinner.css';
+import { useForensicElo } from '../hooks/useForensicElo';
+import { PomellScorer } from '../lib/pomelli';
 
 /** Extract clean filename from local path or full URI */
 function gcsVideoId(localPath: string): string {
@@ -17,12 +19,15 @@ export default function HeadFadeSwiper() {
   const [userResult, setUserResult] = useState<'correct' | 'fooled' | null>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
+  const { elo, recordVoteOutcome } = useForensicElo();
+  const scorer = useRef(new PomellScorer());
+
   // Auto-scroll terminal to bottom on new content
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
-  }, [reveal]);
+  }, []);
 
   const castVote = useCallback(
     async (vote: 'REAL' | 'AI') => {
@@ -81,10 +86,22 @@ export default function HeadFadeSwiper() {
         const wasCorrect = vote === groundTruth;
         setUserResult(wasCorrect ? 'correct' : 'fooled');
 
+        // Update forensic ELO
+        recordVoteOutcome(wasCorrect);
+
+        // Perform Pomelli Scoring
+        const pomelliScore = scorer.current.analyze({
+          uploadTimestamp: Date.now(),
+          fileSizeBytes: 1024 * 1024 * 4.2, // Placeholder for demo
+          filename: gcsVideoId(video),
+        });
+
         setReveal(
           `> ■ ANALYSIS COMPLETE [${elapsed}ms]\n` +
             `> ■ YOUR VOTE: ${vote} | GROUND TRUTH: ${groundTruth}\n` +
             `> ${wasCorrect ? '✓ CORRECT — You detected the deception.' : '✗ FOOLED — The AI deceived you.'}\n` +
+            `> ■ POMELLI AI-DETECTION SCORE: ${pomelliScore}/100\n` +
+            `> ■ CURRENT FORENSIC ELO: ${elo}\n` +
             `${'─'.repeat(48)}\n` +
             `> GEMINI INTERNAL REASONING:\n${data.gemini_thoughts || '[CLASSIFIED — No internal monologue exposed.]'}\n` +
             `${'─'.repeat(48)}\n` +
@@ -96,7 +113,7 @@ export default function HeadFadeSwiper() {
         setIsAnalyzing(false);
       }
     },
-    [video],
+    [video, elo, recordVoteOutcome],
   );
 
   return (
@@ -171,7 +188,7 @@ export default function HeadFadeSwiper() {
         ref={terminalRef}
         className="mt-6 w-full max-w-md p-6 glass-card font-mono text-xs md:text-sm h-48 overflow-y-auto leading-relaxed text-zinc-400 whitespace-pre-wrap scroll-smooth"
       >
-        {reveal || '> SECURE TERMINAL: Awaiting Human Deception Input...'}
+        {reveal || `> SECURE TERMINAL: Awaiting Human Deception Input... (ELO: ${elo})`}
       </div>
 
       {/* Stripe Pro Upgrade CTA */}
