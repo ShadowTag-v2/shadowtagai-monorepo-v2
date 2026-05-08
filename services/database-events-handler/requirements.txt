@@ -1,2 +1,5 @@
-flask>=3.0.0
-gunicorn>=22.0.0
+# database-events-handler dependencies
+# Cloud Run function for Pub/Sub CDC event processing
+functions-framework==3.*
+google-cloud-bigquery==3.*
+google-cloud-pubsub==2.*
