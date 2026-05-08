@@ -740,6 +740,156 @@ class TestApiRevision:
         assert c._api_revision == "2026-05-20"
 
 
+class TestPhase2StepSchema:
+    """Phase 2 migration: Verify step.start/step.delta/step.stop event handling.
+
+    Tests cover the new step-based streaming schema that replaces
+    content.start/delta/stop after June 8, 2026.
+    """
+
+    def test_step_text_accumulation(self):
+        """step.start → step.delta(text) × 3 → step.stop → interaction.completed."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type="interaction.created", interaction_id="int-p2-1"))
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="model_output"))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="text", text="Hello"))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="text", text=", "))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="text", text="world!"))
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        acc.feed(StreamEvent(
+            event_type="interaction.completed",
+            interaction_id="int-p2-1",
+            usage={"total_tokens": 42, "prompt_tokens": 10, "completion_tokens": 32},
+        ))
+        assert acc.interaction_id == "int-p2-1"
+        assert acc.status == "completed"
+        assert len(acc.steps) == 1
+        assert acc.steps[0]["text"] == "Hello, world!"
+        assert acc.steps[0]["type"] == "model_output"
+        assert acc.usage["total_tokens"] == 42
+
+    def test_step_function_call_delta(self):
+        """step.delta with function_call payload reconstructs tool invocation."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="function_call"))
+        acc.feed(StreamEvent(
+            event_type="step.delta",
+            index=0,
+            delta_type="function_call",
+            function_call={"name": "search_web", "id": "fc-1"},
+        ))
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        steps = acc.steps
+        assert len(steps) == 1
+        assert steps[0]["name"] == "search_web"
+        assert steps[0]["id"] == "fc-1"
+
+    def test_step_thought_summary_delta(self):
+        """step.delta with thought_summary accumulates thinking content."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="thought"))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="thought_summary", thought="Let me "))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="thought_summary", thought="think..."))
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        assert acc.steps[0]["summary"] == "Let me think..."
+
+    def test_step_thought_signature_delta(self):
+        """step.delta with thought_signature stores verification hash."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="thought"))
+        acc.feed(StreamEvent(
+            event_type="step.delta",
+            index=0,
+            delta_type="thought_signature",
+            signature="sig-abc123",
+        ))
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        assert acc.steps[0]["signature"] == "sig-abc123"
+
+    def test_multi_block_step_indexing(self):
+        """Multiple step indices reconstruct separate blocks correctly."""
+        acc = StreamAccumulator()
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="thought"))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="thought_summary", thought="Reasoning"))
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        acc.feed(StreamEvent(event_type="step.start", index=1, content_type="model_output"))
+        acc.feed(StreamEvent(event_type="step.delta", index=1, delta_type="text", text="Answer"))
+        acc.feed(StreamEvent(event_type="step.stop", index=1))
+        assert len(acc.steps) == 2
+        assert acc.steps[0]["summary"] == "Reasoning"
+        assert acc.steps[1]["text"] == "Answer"
+
+    def test_interaction_result_new_schema_steps(self):
+        """InteractionResult.from_interaction correctly parses steps[] array."""
+
+        @dataclass
+        class _MockContent:
+            type: str = "text"
+            text: str = "Generated response"
+            annotations: list = field(default_factory=list)
+
+        @dataclass
+        class _MockStep:
+            type: str = "model_output"
+            content: list = field(default_factory=lambda: [_MockContent()])
+
+        @dataclass
+        class _MockUsage:
+            total_tokens: int = 100
+            prompt_tokens: int = 30
+            completion_tokens: int = 70
+
+        @dataclass
+        class _MockInteraction:
+            id: str = "int-p2-new"
+            status: str = "completed"
+            steps: list = field(default_factory=lambda: [_MockStep()])
+            outputs: list = field(default_factory=list)
+            usage: _MockUsage = field(default_factory=_MockUsage)
+
+        result = InteractionResult.from_interaction(_MockInteraction())
+        assert result.id == "int-p2-new"
+        assert result.status == "completed"
+        assert result.text == "Generated response"
+        assert len(result.steps) == 1
+        assert result.usage["total_tokens"] == 100
+
+    def test_legacy_event_map_complete(self):
+        """Verify all legacy events have correct new-schema mappings."""
+        from gemini_interactions.client import _LEGACY_EVENT_MAP
+
+        expected_mappings = {
+            "interaction.start": "interaction.created",
+            "content.start": "step.start",
+            "content.delta": "step.delta",
+            "content.stop": "step.stop",
+            "interaction.complete": "interaction.completed",
+            "error": "interaction.error",
+            "interaction.status_update": "interaction.in_progress",
+        }
+        for legacy, new in expected_mappings.items():
+            assert _LEGACY_EVENT_MAP[legacy] == new, f"{legacy} → {new}"
+
+    def test_mixed_legacy_new_events(self):
+        """Accumulator handles interleaved legacy and new event types."""
+        acc = StreamAccumulator()
+        # Legacy interaction start
+        acc.feed(StreamEvent(event_type="interaction.start", interaction_id="int-mixed"))
+        # New step events
+        acc.feed(StreamEvent(event_type="step.start", index=0, content_type="model_output"))
+        acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="text", text="Mixed"))
+        acc.feed(StreamEvent(event_type="step.stop", index=0))
+        # Legacy completion
+        acc.feed(StreamEvent(
+            event_type="interaction.complete",
+            interaction_id="int-mixed",
+            usage={"total_tokens": 15},
+        ))
+        assert acc.interaction_id == "int-mixed"
+        assert acc.status == "completed"
+        assert acc.steps[0]["text"] == "Mixed"
+
+
 # ---------------------------------------------------------------------------
 # Constants & Exports
 # ---------------------------------------------------------------------------
