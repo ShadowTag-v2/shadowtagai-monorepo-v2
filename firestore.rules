@@ -1,28 +1,67 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ─── User profiles ─────────────────────────────────────────────────────────
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
+
+    // ─── Videos — public read; vote increments for auth users ─────────────────
     match /videos/{videoId} {
-      allow read: if resource.data.status == 'PUBLISHED';
-      allow write: if request.auth != null && request.auth.uid == resource.data.creatorId;
+      allow read: if true;
+
+      // Creators can fully manage their own videos
+      allow write: if request.auth != null
+        && request.auth.uid == resource.data.creatorId;
+
+      // Authenticated users may atomically update vote counters only.
+      // They CANNOT change any other field (title, status, creatorId, etc.)
+      allow update: if request.auth != null
+        && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['voteAI', 'voteHuman', 'userVoteByKey']);
     }
+
+    // ─── Global vote totals — public read; auth-only write ────────────────────
+    match /meta/{docId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      // Only totalAI / totalHuman counters may be touched
+      allow update: if request.auth != null
+        && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['totalAI', 'totalHuman']);
+    }
+
+    // ─── Per-user vote choices — each user owns their row ─────────────────────
+    match /video_votes/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ─── Forensic verdicts — public read; no user writes ──────────────────────
     match /forensic_verdicts/{verdictId} {
       allow read: if true;
       allow write: if false;
     }
+
+    // ─── Human-interaction telemetry — write-only beacon ──────────────────────
     match /human_telemetry/{telemetryId} {
       allow read: if false;
       allow create: if true;
       allow update, delete: if false;
     }
+
+    // ─── License records — parties only ──────────────────────────────────────
     match /licenses/{licenseId} {
-      allow read: if request.auth != null && (resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid);
+      allow read: if request.auth != null
+        && (resource.data.buyerId == request.auth.uid
+            || resource.data.sellerId == request.auth.uid);
       allow write: if false;
     }
+
+    // ─── Embed telemetry — publisher read; open create beacon ─────────────────
     match /embed_telemetry/{telemetryId} {
-      allow read: if request.auth != null && resource.data.publisherId == request.auth.uid;
+      allow read: if request.auth != null
+        && resource.data.publisherId == request.auth.uid;
       allow create: if true;
       allow update, delete: if false;
     }

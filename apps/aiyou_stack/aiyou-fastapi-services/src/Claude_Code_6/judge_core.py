@@ -44,10 +44,11 @@ class JudgeSix:
             return Verdict.DENIED
 
         # Shared Infra Bias
-        if "cloud" in action.lower() or "cluster" in action.lower():
-            if not context.get("infra_approved"):
-                logger.warning("BLOCK/ALLOW: Shared Infra target without approval.")
-                return Verdict.DENIED
+        if ("cloud" in action.lower() or "cluster" in action.lower()) and not context.get(
+            "infra_approved"
+        ):
+            logger.warning("BLOCK/ALLOW: Shared Infra target without approval.")
+            return Verdict.DENIED
 
         # Composite Action Decomposition
         if "&&" in action or ";" in action:

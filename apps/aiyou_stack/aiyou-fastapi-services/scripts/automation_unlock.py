@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import os
-import subprocess
 import sys
 import time
 
@@ -68,7 +67,7 @@ def enable_automation():
         signature = input(f"Type '{PASSPHRASE}' to authorize: ").strip()
     except KeyboardInterrupt:
         print("\n[!] Aborted.")
-        raise SystemExit(1)
+        raise SystemExit(1) from None
 
     if signature != PASSPHRASE:
         print("\n[!] ACCESS DENIED. Incorrect passphrase.")

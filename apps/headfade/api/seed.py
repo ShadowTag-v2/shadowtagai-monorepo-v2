@@ -7,10 +7,10 @@ import uuid
 def seed():
     print("Initializing Firebase...")
     cred = credentials.ApplicationDefault()
-    try:
+    import contextlib
+
+    with contextlib.suppress(ValueError):
         firebase_admin.initialize_app(cred, {"projectId": "shadowtag-omega-v4"})
-    except ValueError:
-        pass  # Already initialized
     db = firestore.client()
 
     print("Seeding users...")

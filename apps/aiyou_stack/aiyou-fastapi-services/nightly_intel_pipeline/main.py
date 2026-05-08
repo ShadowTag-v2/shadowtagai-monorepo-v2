@@ -120,7 +120,7 @@ Environment Variables Required:
         import traceback
 
         traceback.print_exc()
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 if __name__ == "__main__":

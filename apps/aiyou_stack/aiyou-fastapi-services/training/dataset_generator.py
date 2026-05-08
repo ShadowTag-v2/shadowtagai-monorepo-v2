@@ -63,7 +63,7 @@ try:
     from google.generativeai.types import HarmBlockThreshold, HarmCategory
 except ImportError:
     logger.error("google-generativeai not installed. Run: pip install google-generativeai")
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 console = Console()
 
@@ -1477,7 +1477,7 @@ def main(
         console.print(
             "\n[yellow]Please set GOOGLE_API_KEY environment variable or pass --api_key[/yellow]",
         )
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
     # Calculate num_synthetic per domain
     num_domains = len(ScenarioGenerator.DOMAINS)
@@ -1506,7 +1506,7 @@ def main(
     except Exception as e:
         logger.exception(f"Pipeline failed: {e}")
         console.print(f"\n[red]✗ Pipeline failed: {e}[/red]")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 if __name__ == "__main__":

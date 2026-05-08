@@ -22,7 +22,7 @@ try:
 except ImportError:
     print("ERROR: google-generativeai package not installed")
     print("Install with: pip install google-generativeai")
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 
 class IntelligencePipelineAnalyzer:
@@ -202,7 +202,7 @@ def main():
         print("\nSet your Google API key:")
         print("  export GOOGLE_API_KEY='your-key-here'")
         print("Or pass with --api-key flag")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
     # Load analysis prompt
     prompt_path = args.base_path / "docs" / "GEMINI_ANALYSIS_PROMPT.md"
@@ -212,7 +212,7 @@ def main():
         print(f"✓ Loaded analysis prompt: {len(analysis_prompt):,} chars")
     except FileNotFoundError:
         print(f"ERROR: Analysis prompt not found at {prompt_path}")
-        raise SystemExit(1)
+        raise SystemExit(1) from None
 
     # Load documents
     print("\n📚 Loading input documents...")
@@ -228,7 +228,7 @@ def main():
         report = analyzer.run_analysis(full_prompt)
     except Exception as e:
         print(f"ERROR during analysis: {e}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
     # Add visualizations
     report_with_viz = report + analyzer.generate_visualizations(report)

@@ -48,7 +48,7 @@ async def run_god_mode_batch():
         logger.info(f"✅ SYNAPSE FIRED: Report written to {output_path}")
     except Exception as e:
         logger.error(f"❌ FAILED to write report to {output_path}: {e}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 if __name__ == "__main__":

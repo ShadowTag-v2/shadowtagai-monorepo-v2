@@ -13,7 +13,7 @@ try:
     from shadowtag_v4.proxies.routing_agent import RoutingAgent
 except ImportError as e:
     print(f"!!! FATAL: Import Failed. {e}")
-    raise SystemExit(1)
+    raise SystemExit(1) from e
 
 agent = RoutingAgent()
 

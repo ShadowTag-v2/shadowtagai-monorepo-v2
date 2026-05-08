@@ -16,7 +16,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 _Base = declarative_base()
 
 
-class TierLevel(str, enum.Enum):
+class TierLevel(enum.StrEnum):
     """Subscription tier levels."""
 
     FREE = "free"

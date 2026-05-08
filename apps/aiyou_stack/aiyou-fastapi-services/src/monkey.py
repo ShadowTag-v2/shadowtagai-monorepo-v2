@@ -73,7 +73,7 @@ def run_monkey(mission_id: str, objective: str):
                 },
                 f,
             )
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 if __name__ == "__main__":

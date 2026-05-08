@@ -30,6 +30,7 @@ from apps.counselconduit.api.sandbox.session import (
     SessionConfig,
     SessionState,
 )
+import contextlib
 
 
 # ── Fixtures ─────────────────────────────────────────────────────────────
@@ -358,8 +359,6 @@ class TestSessionTTL:
         """Expired session transitions to EXPIRED state."""
         session = _make_session(ttl_seconds=1)
         session.created_at = time.time() - 10
-        try:
+        with contextlib.suppress(RuntimeError):
             session._check_expiry()
-        except RuntimeError:
-            pass
         assert session.state == SessionState.EXPIRED

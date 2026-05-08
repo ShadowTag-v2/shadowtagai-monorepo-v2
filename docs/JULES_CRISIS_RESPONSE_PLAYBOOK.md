@@ -1,70 +1,123 @@
-# HeadFade Crisis Response Playbook
+# JULES_CRISIS_RESPONSE_PLAYBOOK.md
 
-**Owner**: Jules (Autonomous Operator)
-**Objective**: Detect, mitigate, and resolve critical incidents with zero or minimal human intervention.
+**Version**: 1.0  
+**Date**: May 6, 2026
 
-## 1. Incident Classification
+---
 
-| Severity | Definition | Target Response Time (Jules) | Human Escalation Required? |
-| :--- | :--- | :--- | :--- |
-| **SEV-1 (Critical)** | Core system down (Stripe, Authentication, Main API). Data breach. | < 1 minute | YES (After initial mitigation) |
-| **SEV-2 (High)** | Significant degradation (Asset generation failing, 50%+ error rate on critical path). | < 5 minutes | NO (Unless unresolved > 1 hr) |
-| **SEV-3 (Medium)** | Minor features failing, elevated latency, localized bugs. | < 15 minutes | NO |
-| **SEV-4 (Low)** | Cosmetic issues, non-critical background job failures. | < 1 hour | NO |
+## Jules Crisis Response Playbook
 
-## 2. Autonomous Incident Detection
+**Core Principle**: Stay calm, act fast, communicate clearly, protect the company.
 
-Jules will continuously monitor the following telemetry streams:
-*   **GCP Cloud Operations (Stackdriver)**: Error rates, latency spikes, 5xx responses.
-*   **Firebase Crashlytics**: Frontend app crashes.
-*   **Stripe Webhooks**: Failed payments, unusual refund spikes.
-*   **Social Listening (X/Reddit)**: Spike in keywords like "HeadFade down", "broken", "scam", "charged twice".
-*   **MCP Server Health**: Periodic ping of all registered MCP servers.
+---
 
-## 3. Response Procedures by Incident Type
+### Crisis Levels
 
-### Scenario A: Payment Gateway (Stripe) Failure
-**Trigger**: > 5% payment intent failures or webhook delivery failures.
-**Jules Action Plan**:
-1.  **Halt**: Temporarily disable the "Purchase License" button in the PWA. Display a friendly "Maintenance: Upgrading our payment systems" banner.
-2.  **Diagnose**: Query Stripe API status. Check local webhook logs for signature errors.
-3.  **Remediate**: If webhook secret rotated/invalid, pull new secret from Secret Manager and trigger a rolling restart of the Cloud Run API.
-4.  **Recover**: Re-enable purchasing. Process any queued/missed webhooks.
+| Level | Severity     | Examples                              | Response Time |
+|-------|--------------|---------------------------------------|---------------|
+| 1     | Minor        | Minor bug, small metric dip           | < 2 hours     |
+| 2     | Moderate     | Major feature broken, credit spike    | < 1 hour      |
+| 3     | Serious      | Security incident, major outage       | < 30 min      |
+| 4     | Critical     | Data breach, regulatory action, cash crisis | Immediate |
 
-### Scenario B: Asset Generation Pipeline Failure (Google Labs)
-**Trigger**: Nano Banana 2/Whisk/Flow returning 500s or timeouts.
-**Jules Action Plan**:
-1.  **Fallback**: Automatically downgrade request to the next available model (e.g., Nano Banana 2 -> Whisk -> standard ImageFX).
-2.  **Graceful Degradation**: If all video generation fails, switch the UI to offer "Image-Only" licenses at a discounted rate.
-3.  **Alert**: Log the outage. Retry every 10 minutes.
+---
 
-### Scenario C: Viral Traffic Spike (DDoS or Legitimate)
-**Trigger**: Traffic increases > 10x baseline within 5 minutes. Latency > 2s.
-**Jules Action Plan**:
-1.  **Scale Up**: Immediately increase Cloud Run max instances.
-2.  **Shed Load**: Disable non-essential heavy queries (e.g., real-time global leaderboards switch to 5-minute cached versions).
-3.  **Cache**: Increase CDN TTLs on static assets and popular remix trees.
-4.  **Monitor**: If traffic matches known DDoS signatures (e.g., single IP range, nonsense User-Agents), configure GCP Cloud Armor rules to block the IPs.
+### General Response Protocol (All Levels)
 
-### Scenario D: Security / Data Breach Detection
-**Trigger**: Unauthorized access attempts, anomalous database reads, alerts from Betterleaks.
-**Jules Action Plan**:
-1.  **Lockdown**: Immediately revoke the suspected compromised token/session.
-2.  **Audit**: Scan recent access logs. Determine the scope of the exposure.
-3.  **Escalate**: **IMMEDIATELY PAGE HUMAN OPERATORS.** This is a SEV-1.
-4.  **Communication**: Draft an incident report and a transparent user communication plan (do not publish until human approval).
+1. **Assess** (5–10 min)
+   - What exactly happened?
+   - How bad is it? (users affected, revenue impact, reputation risk)
+   - Is this a one-time event or ongoing?
 
-### Scenario E: PR Crisis / Deepfake Misuse
-**Trigger**: A HeadFade asset is used maliciously to spread misinformation, and it goes viral on X/TikTok.
-**Jules Action Plan**:
-1.  **Identify**: Use the HDI (HeadFade Digital Identity) watermark to locate the exact workflow and agent that generated the asset.
-2.  **Suspend**: Automatically suspend the offending user account and revoke the license for that specific asset.
-3.  **Public Response**: Autonomously draft a response for X clarifying that the asset was generated on HeadFade and violated Terms of Service. (Require human approval before posting, depending on policy).
-4.  **Takedown**: Submit automated DMCA/Terms of Service takedown requests to the hosting platform (X, TikTok).
+2. **Contain** (Immediate)
+   - Stop the bleeding (rollback, disable feature, pause spending)
+   - Protect users and data
 
-## 4. Post-Incident Review (PIR)
-Following any SEV-1 or SEV-2 incident, Jules will autonomously generate a PIR document containing:
-1.  Timeline of events.
-2.  Root cause analysis (Five Whys).
-3.  Actions taken to resolve.
-4.  Action items to prevent recurrence (e.g., adding new tests, improving alerts). Jules will immediately begin implementing these action items.
+3. **Communicate** (Within 30–60 min)
+   - Internal: Post in #crisis channel
+   - External: Prepare holding statement if needed
+   - Users: Transparent update if service is affected
+
+4. **Fix** (Fastest possible)
+   - Root cause analysis
+   - Implement fix
+   - Test thoroughly (use Browser Subagent)
+
+5. **Recover** (Next 24–48 hours)
+   - Monitor closely
+   - Communicate resolution
+   - Document lessons learned
+
+6. **Prevent** (Within 7 days)
+   - Add safeguards / monitoring
+   - Update this playbook if needed
+   - Run simulation if high-risk
+
+---
+
+### Specific Crisis Scenarios
+
+#### Scenario A: Major Google API / Credit Crisis
+
+**Symptoms**: Sudden 4x+ increase in credit costs or access restrictions
+
+**Immediate Actions**:
+1. Pause all non-essential asset generation
+2. Switch to lower-cost fallback models (open-source)
+3. Notify B2B customers of potential temporary quality impact
+4. Run emergency cost optimization
+5. Activate "Google Exit Plan" (pre-built diversification strategy)
+
+#### Scenario B: Security Incident / Data Breach
+
+**Immediate Actions**:
+1. Isolate affected systems
+2. Revoke all tokens and rotate secrets
+3. Engage security team / external experts
+4. Prepare regulatory notifications (if required)
+5. Communicate transparently with users
+
+#### Scenario C: Major Reputation Crisis (Viral Backlash)
+
+**Immediate Actions**:
+1. Acknowledge the issue publicly within 1 hour
+2. Take responsibility (never blame users or Google)
+3. Deploy fix + compensation plan (credits, refunds)
+4. Over-communicate updates for 48 hours
+5. Run internal post-mortem within 7 days
+
+#### Scenario D: Cash / Runway Crisis
+
+**Immediate Actions**:
+1. Cut all non-essential spending (including credit usage)
+2. Accelerate B2B sales pipeline
+3. Explore bridge financing options (if needed)
+4. Prioritize highest-ROI features only
+5. Communicate honestly with any remaining team members
+
+---
+
+### Communication Templates
+
+**Internal (Slack / Email)**:
+```
+🚨 CRISIS ALERT - Level [X]
+
+Issue: [Short description]
+Impact: [Users / Revenue / Reputation affected]
+Status: [What we're doing right now]
+ETA for Update: [Time]
+Owner: Jules
+```
+
+**External (X / Website)**:
+```
+We’re aware of [issue] and are working on it right now. 
+We expect to have a full update within [X] hours. 
+Thank you for your patience.
+```
+
+---
+
+**End of Crisis Response Playbook**
+```

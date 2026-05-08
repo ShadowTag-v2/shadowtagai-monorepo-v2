@@ -8,7 +8,7 @@ TAG="${1:-v3.3.2}"
 SERVICE="counselconduit"
 REGION="us-central1"
 PROJECT="shadowtag-omega-v4"
-CANARY_TAG="canary-${TAG}"
+CANARY_TAG="canary-${TAG//./-}"
 IMAGE="us-central1-docker.pkg.dev/${PROJECT}/counselconduit/counselconduit:${TAG}"
 
 echo "=== CounselConduit Canary Deploy ==="

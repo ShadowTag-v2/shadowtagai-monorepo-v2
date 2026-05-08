@@ -23,10 +23,10 @@ def load_doctrine():
             return json.load(f)
     except FileNotFoundError:
         logger.error(f"FATAL: Doctrine not found at {sop_path}")
-        raise SystemExit(1)
+        raise SystemExit(1) from None
     except json.JSONDecodeError:
         logger.error(f"FATAL: Doctrine corrupted in {sop_path}")
-        raise SystemExit(1)
+        raise SystemExit(1) from None
 
 
 def execute_tier_30():

@@ -27,7 +27,7 @@ try:
 except ImportError:
     print("ERROR: google-generativeai package not installed")
     print("Install with: pip install google-generativeai")
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 
 INTEGRATION_ANALYSIS_PROMPT = """
@@ -446,7 +446,7 @@ def main():
         print(f"ERROR: {e}")
         print("\nSet your Google API key:")
         print("  export GOOGLE_API_KEY='your-key-here'")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
     # Load component specifications
     print("\n📚 Loading component specifications...")
@@ -458,7 +458,7 @@ def main():
         report = analyzer.run_integration_analysis(specs)
     except Exception as e:
         print(f"ERROR during analysis: {e}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
     # Save report
     analyzer.save_report(report, args.output)

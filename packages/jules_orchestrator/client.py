@@ -19,10 +19,16 @@ import urllib.request
 import urllib.error
 from typing import Any
 
+import google.auth
+from google.auth.transport.requests import Request
+from google.auth.exceptions import DefaultCredentialsError
+
 logger = logging.getLogger(__name__)
+
 
 class JulesAPIError(Exception):
     """Exception raised for Jules API errors."""
+
     pass
 
 
@@ -33,23 +39,33 @@ class JulesClient:
 
     def __init__(self, api_key: str | None = None) -> None:
         self._api_key = api_key or os.environ.get("JULES_API_KEY", "")
-        if not self._api_key:
-            logger.warning("JULES_API_KEY is not set. API calls will fail.")
+        self._credentials = None
+        try:
+            self._credentials, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
+        except DefaultCredentialsError:
+            logger.warning("Failed to load Application Default Credentials. API calls will fail.")
 
-    def _request(self, method: str, path: str, payload: dict[str, Any] | None = None, max_retries: int = 3, retry_delay: float = 1.0) -> dict[str, Any]:
+    def _request(
+        self, method: str, path: str, payload: dict[str, Any] | None = None, max_retries: int = 3, retry_delay: float = 1.0
+    ) -> dict[str, Any]:
         """Perform an HTTP request to the Jules API."""
         url = f"{self.BASE_URL}{path}"
         headers = {
-            "x-goog-api-key": self._api_key,
             "Content-Type": "application/json",
         }
-        
+
+        if self._credentials:
+            self._credentials.refresh(Request())
+            headers["Authorization"] = f"Bearer {self._credentials.token}"
+            if hasattr(self._credentials, "quota_project_id") and self._credentials.quota_project_id:
+                headers["x-goog-user-project"] = self._credentials.quota_project_id
+
         data = None
         if payload is not None:
             data = json.dumps(payload).encode("utf-8")
 
         req = urllib.request.Request(url, data=data, headers=headers, method=method)
-        
+
         for attempt in range(max_retries):
             try:
                 with urllib.request.urlopen(req) as response:
@@ -58,7 +74,7 @@ class JulesClient:
                         return json.loads(response_data)
                     return {}
             except urllib.error.HTTPError as e:
-                error_text = e.read().decode("utf-8") if hasattr(e, 'read') else str(e)
+                error_text = e.read().decode("utf-8") if hasattr(e, "read") else str(e)
                 if e.code == 503 and attempt < max_retries - 1:
                     logger.warning("Jules API 503 error, retrying attempt %d/%d in %s seconds...", attempt + 1, max_retries, retry_delay)
                     time.sleep(retry_delay)
@@ -69,8 +85,8 @@ class JulesClient:
             except urllib.error.URLError as e:
                 logger.error("Jules network error: %s", e.reason)
                 raise JulesAPIError(f"Network error: {e.reason}") from e
-                
-        raise JulesAPIError(f"Failed after {max_retries} attempts.") # Should not reach here
+
+        raise JulesAPIError(f"Failed after {max_retries} attempts.")  # Should not reach here
 
     def list_sources(self) -> list[dict[str, Any]]:
         """List available sources (repositories)."""
@@ -99,7 +115,7 @@ class JulesClient:
         payload = {}
         if message:
             payload["message"] = message
-            
+
         return self._request("POST", f"/{session_name}:approvePlan", payload=payload)
 
     def interact(self, session_name: str, text: str) -> dict[str, Any]:
@@ -113,12 +129,12 @@ class JulesClient:
         while time.time() - start_time < timeout:
             session = self.get_session(session_name)
             state = session.get("state", "UNKNOWN")
-            
+
             logger.info("Session %s state: %s", session_name, state)
-            
+
             if state in ("COMPLETED", "FAILED", "NEEDS_APPROVAL", "ACTION_REQUIRED"):
                 return session
-                
+
             time.sleep(interval)
-            
+
         raise JulesAPIError(f"Polling timeout after {timeout} seconds")

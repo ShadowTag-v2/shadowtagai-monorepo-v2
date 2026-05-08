@@ -31,15 +31,8 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/research_topic_index.txt",
-      "fix": "git checkout -- .beads/research_topic_index.txt"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/package-lock.json",
-      "fix": "git checkout -- antigravity-core/mcp/package-lock.json"
+      "path": ".beads/suggestion_cache.json",
+      "fix": "git checkout -- .beads/suggestion_cache.json"
     },
     {
       "gate": "dirty",
@@ -87,13 +80,6 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/utils/v2/analyze-engine.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/utils/v2/analyze-engine.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
       "path": "antigravity-core/mcp/src/webhooks/stripe.ts",
       "fix": "git checkout -- antigravity-core/mcp/src/webhooks/stripe.ts"
     },
@@ -101,29 +87,15 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/test_client.ts",
-      "fix": "git checkout -- antigravity-core/mcp/test_client.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/tests/purchaseWorkflowLicense.test.ts",
-      "fix": "git checkout -- antigravity-core/mcp/tests/purchaseWorkflowLicense.test.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/tests/verifySyntheticVideo.test.ts",
-      "fix": "git checkout -- antigravity-core/mcp/tests/verifySyntheticVideo.test.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
       "path": "antigravity-core/mcp/tsconfig.json",
       "fix": "git checkout -- antigravity-core/mcp/tsconfig.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "antigravity-jules-orchestration",
+      "fix": "git checkout -- antigravity-jules-orchestration"
     },
     {
       "gate": "dirty",
@@ -149,7 +121,35 @@
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "... and 49 more dirty files",
+      "message": "Dirty file (M)",
+      "path": "apps/headfade/pwa/PipelineDashboard.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/PipelineDashboard.tsx"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/headfade/pwa/RemixTreeVisualizer.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/RemixTreeVisualizer.tsx"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/headfade/pwa/components/SecuritySettings.tsx",
+      "fix": "git checkout -- apps/headfade/pwa/components/SecuritySettings.tsx"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/headfade/pwa/pages/api/security/nuke-account.ts",
+      "fix": "git checkout -- apps/headfade/pwa/pages/api/security/nuke-account.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "... and 4 more dirty files",
       "path": "",
       "fix": ""
     },
@@ -241,41 +241,41 @@
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "Claude_Code_6/Cor.Claude_Code_6",
+      "path": "--force/_views/CONFLICTS.md",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "Claude_Code_6/go.mod",
+      "path": "--force/_views/CONSTRAINTS.md",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "Claude_Code_6/main.go",
+      "path": "--force/_views/DECISIONS.md",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "Claude_Code_6/main_test.go",
+      "path": "--force/_views/HANDOFF.md",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
       "message": "File outside canonical layout",
-      "path": "_archive/stale_middleware_2026-05-01/frames_symlink",
+      "path": "--force/_views/INDEX.md",
       "fix": "Move to apps/, libs/, tools/, or archive/"
     },
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 11173 more drift files",
+      "message": "... and 11196 more drift files",
       "path": "",
       "fix": ""
     },

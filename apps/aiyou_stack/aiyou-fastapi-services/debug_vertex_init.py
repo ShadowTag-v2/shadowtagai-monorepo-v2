@@ -6,7 +6,7 @@ try:
     print(f"✅ google-genai imported: {genai.__file__}")
 except ImportError:
     print("❌ google-genai not found")
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 PROJECT_ID = "acquired-jet-478701-b3"
 LOCATION = "us-central1"

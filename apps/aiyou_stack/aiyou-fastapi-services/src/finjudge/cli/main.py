@@ -73,7 +73,7 @@ def eval(decision_file: Path, output: Path | None, format: str, pretty: bool):
         except Exception as e:
             console.print("[bold red]Error:[/bold red] Invalid decision file format")
             console.print(f"[red]{e!s}[/red]")
-            raise SystemExit(1)
+            raise SystemExit(1) from e
 
         # Initialize judge
         console.print("[bold blue]Initializing Pure Judge engine...[/bold blue]")
@@ -103,14 +103,14 @@ def eval(decision_file: Path, output: Path | None, format: str, pretty: bool):
 
     except FileNotFoundError:
         console.print(f"[bold red]Error:[/bold red] File not found: {decision_file}")
-        raise SystemExit(1)
+        raise SystemExit(1) from None
     except json.JSONDecodeError as e:
         console.print("[bold red]Error:[/bold red] Invalid JSON in decision file")
         console.print(f"[red]{e!s}[/red]")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
     except Exception as e:
         console.print(f"[bold red]Error:[/bold red] {e!s}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 def _display_json(ruling: JudgeRuling, pretty: bool):
@@ -328,10 +328,10 @@ def validate(decision_file: Path):
 
     except json.JSONDecodeError as e:
         console.print(f"[bold red]✗[/bold red] Invalid JSON: {e!s}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
     except Exception as e:
         console.print(f"[bold red]✗[/bold red] Validation failed: {e!s}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 if __name__ == "__main__":
