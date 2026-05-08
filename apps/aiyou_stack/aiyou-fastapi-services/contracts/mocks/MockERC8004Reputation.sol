@@ -8,22 +8,10 @@ contract MockERC8004Reputation is IERC8004Reputation {
 
     function postFeedback(
         uint256 agentId,
-<<<<<<< HEAD
         uint8 score,
         string calldata /* context */,
         string calldata /* proofURI */
     ) external {
-||||||| f285896f1
-        uint256 score,
-        string calldata domain,
-        bytes calldata evidence
-    ) external returns (uint256) {
-=======
-        uint8 score,
-        string calldata context,
-        string calldata proofURI
-    ) external {
->>>>>>> feature/n-autoresearch/Kosmos/BioAgentss-integration
         scores[agentId] = score;
     }
 
