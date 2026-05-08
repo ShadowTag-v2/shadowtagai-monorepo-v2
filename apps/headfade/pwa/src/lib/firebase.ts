@@ -28,18 +28,15 @@ export const auth = getAuth(app);
  * Uses ReCaptchaEnterprise in production; enable debug tokens via
  * `self.FIREBASE_APPCHECK_DEBUG_TOKEN = true` in browser console for local dev.
  *
- * SETUP REQUIRED (human handoff):
- * 1. Firebase Console → App Check → Register "HeadFade PWA" web app
- * 2. Choose reCAPTCHA Enterprise provider
- * 3. Copy the site key into NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY
- * 4. Enable enforcement on Firestore in App Check settings
+ * reCAPTCHA Enterprise key registered 2026-05-07 in Firebase Console → App Check.
+ * Domain: headfade.com | Provider: reCAPTCHA Enterprise
  */
 export const appCheck =
   typeof window !== 'undefined'
     ? initializeAppCheck(app, {
         provider: new ReCaptchaEnterpriseProvider(
           process.env.NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY ??
-            '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' // test key — replace with real key
+            '6LfSBt8sAAAAALgjp7rkKxlhGCJGjVmk1NzRJa3g'
         ),
         isTokenAutoRefreshEnabled: true,
       })

@@ -31,5 +31,6 @@
     "**/.git": true,
     "**/.DS_Store": true,
     "**/node_modules": true
-  }
+  },
+  "omnisharp.projectLoadTimeout": 300
 }
