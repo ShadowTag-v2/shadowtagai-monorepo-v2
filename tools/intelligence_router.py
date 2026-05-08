@@ -25,7 +25,7 @@ import hashlib
 import json
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from enum import StrEnum
 from pathlib import Path
 from typing import Any
@@ -145,17 +145,9 @@ def _taint_wrap(content: str, file_path: str, threat_level: ThreatLevel) -> str:
             "</blocked_content>"
         )
     elif threat_level == ThreatLevel.QUARANTINED:
-        return (
-            f"<quarantined_workspace_data source='{file_path}' threat='{threat_level.value}'>\n"
-            f"{content}\n"
-            "</quarantined_workspace_data>"
-        )
+        return f"<quarantined_workspace_data source='{file_path}' threat='{threat_level.value}'>\n{content}\n</quarantined_workspace_data>"
     else:
-        return (
-            f"<untrusted_workspace_data source='{file_path}'>\n"
-            f"{content}\n"
-            "</untrusted_workspace_data>"
-        )
+        return f"<untrusted_workspace_data source='{file_path}'>\n{content}\n</untrusted_workspace_data>"
 
 
 def route_file(file_path: str | Path) -> ScanResult:
@@ -175,7 +167,7 @@ def route_file(file_path: str | Path) -> ScanResult:
             content_type=ContentType.UNKNOWN,
             threat_level=ThreatLevel.BLOCKED,
             findings=[{"pattern": "file_not_found", "threat_level": "blocked"}],
-            scanned_at=datetime.now(timezone.utc).isoformat(),
+            scanned_at=datetime.now(UTC).isoformat(),
         )
 
     content = path.read_text(encoding="utf-8", errors="replace")
@@ -191,7 +183,7 @@ def route_file(file_path: str | Path) -> ScanResult:
         threat_level=threat_level,
         findings=findings,
         content_hash=content_hash,
-        scanned_at=datetime.now(timezone.utc).isoformat(),
+        scanned_at=datetime.now(UTC).isoformat(),
         tainted_content=tainted,
     )
 
@@ -233,16 +225,16 @@ def quarantine_report(results: list[ScanResult]) -> str:
     clean = [r for r in results if r.threat_level == ThreatLevel.CLEAN]
 
     lines = [
-        f"# IPI Quarantine Report — {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
-        f"",
-        f"| Category | Count |",
-        f"|----------|-------|",
+        f"# IPI Quarantine Report — {datetime.now(UTC).strftime('%Y-%m-%d %H:%M UTC')}",
+        "",
+        "| Category | Count |",
+        "|----------|-------|",
         f"| 🔴 Blocked | {len(blocked)} |",
         f"| 🟡 Quarantined | {len(quarantined)} |",
         f"| 🟠 Suspicious | {len(suspicious)} |",
         f"| 🟢 Clean | {len(clean)} |",
         f"| **Total** | **{len(results)}** |",
-        f"",
+        "",
     ]
 
     if blocked:
