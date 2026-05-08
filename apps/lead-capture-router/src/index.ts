@@ -3,6 +3,7 @@ import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import * as logger from 'firebase-functions/logger';
 import { onRequest } from 'firebase-functions/v2/https';
 import { z } from 'zod';
+import { verifyAppCheck } from './appCheckMiddleware';
 
 // Initialize Firebase Admin App
 initializeApp();
@@ -77,6 +78,9 @@ export const captureLead = onRequest(
     memory: '256MiB',
   },
   async (request, response) => {
+    // App Check attestation gate
+    if (!await verifyAppCheck(request, response)) return;
+
     // We only accept POST requests for lead capture
     if (request.method !== 'POST') {
       response.status(405).json({ error: 'Method Not Allowed' });
@@ -151,6 +155,9 @@ export const captureContact = onRequest(
     memory: '256MiB',
   },
   async (request, response) => {
+    // App Check attestation gate
+    if (!await verifyAppCheck(request, response)) return;
+
     if (request.method !== 'POST') {
       response.status(405).json({ error: 'Method Not Allowed' });
       return;
@@ -186,6 +193,9 @@ export const analyticalWebhook = onRequest(
     memory: '128MiB',
   },
   async (request, response) => {
+    // App Check attestation gate
+    if (!await verifyAppCheck(request, response)) return;
+
     if (request.method !== 'POST') {
       response.status(405).json({ error: 'Method Not Allowed' });
       return;
