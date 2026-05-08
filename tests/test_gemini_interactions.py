@@ -29,6 +29,7 @@ from gemini_interactions.client import (
     StreamAccumulator,
     StreamEvent,
 )
+from gemini_interactions.telemetry import NullTelemetry
 
 
 # ---------------------------------------------------------------------------
@@ -546,6 +547,7 @@ def _make_mock_client():
     client = InteractionsClient.__new__(InteractionsClient)
     client._api_key = "test-key"
     client._default_model = "gemini-3-flash-preview"
+    client._telemetry = NullTelemetry()
     client._client = type("MockGenAI", (), {"interactions": _MockInteractionsAPI()})()
     return client
 
@@ -748,6 +750,7 @@ def _make_stream_mock_client():
     client = InteractionsClient.__new__(InteractionsClient)
     client._api_key = "test-key"
     client._default_model = "gemini-3-flash-preview"
+    client._telemetry = NullTelemetry()
 
     # Mock the underlying SDK client
     mock_api = _MockInteractionsAPI()
@@ -902,6 +905,7 @@ def _make_fc_mock_client():
     client = InteractionsClient.__new__(InteractionsClient)
     client._api_key = "test-key"
     client._default_model = "gemini-3-flash-preview"
+    client._telemetry = NullTelemetry()
     client._client = type("MockGenAI", (), {"interactions": _MockFCAPI()})()
     client._fc_call_log = call_log
     return client
@@ -989,6 +993,7 @@ class TestConversationSessionFunctionCallLoop:
         client = InteractionsClient.__new__(InteractionsClient)
         client._api_key = "test-key"
         client._default_model = "gemini-3-flash-preview"
+        client._telemetry = NullTelemetry()
         client._client = type("M", (), {"interactions": _MockNoFCAPI()})()
 
         session = ConversationSession(client)
