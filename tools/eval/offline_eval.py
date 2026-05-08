@@ -47,7 +47,7 @@ def count_ruff_violations() -> int:
         # Count non-empty lines in output as violation groups
         lines = [ln for ln in result.stdout.strip().splitlines() if ln.strip()]
         return len(lines)
-    except (FileNotFoundError, subprocess.TimeoutExpired):
+    except FileNotFoundError, subprocess.TimeoutExpired:
         print("ruff not available — skipping lint eval")
         return 0
 

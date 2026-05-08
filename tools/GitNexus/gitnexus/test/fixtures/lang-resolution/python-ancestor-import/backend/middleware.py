@@ -1,5 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
+
 def get_remaining_slots(tier_limits, limit_type, current_count):
     """Canonical implementation in the backend root."""
     limit = tier_limits.get(limit_type, -1)

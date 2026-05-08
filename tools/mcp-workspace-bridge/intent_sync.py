@@ -51,6 +51,7 @@ def fetch_and_embed_business_intent(
     if not Path(sa_path).exists():
         # Fall back to ADC
         from google.auth import default
+
         creds, _ = default(scopes=["https://www.googleapis.com/auth/drive.readonly"])
     else:
         creds = service_account.Credentials.from_service_account_file(
@@ -71,11 +72,7 @@ def fetch_and_embed_business_intent(
     if drive_folder_id:
         query += f" and '{drive_folder_id}' in parents"
 
-    results = (
-        drive_service.files()
-        .list(q=query, fields="files(id, name, modifiedTime)", orderBy="modifiedTime desc", pageSize=10)
-        .execute()
-    )
+    results = drive_service.files().list(q=query, fields="files(id, name, modifiedTime)", orderBy="modifiedTime desc", pageSize=10).execute()
 
     files = results.get("files", [])
     if not files:
@@ -119,11 +116,13 @@ def fetch_and_embed_business_intent(
                 operation = client.operations.get(operation)
                 attempts += 1
 
-            embedded.append({
-                "name": file_name,
-                "store": store_name,
-                "indexed": operation.done,
-            })
+            embedded.append(
+                {
+                    "name": file_name,
+                    "store": store_name,
+                    "indexed": operation.done,
+                }
+            )
             log.info(f"Embedded: {file_name} → {store_name} (done={operation.done})")
         else:
             log.info(f"Skipping embed (no store_name): {file_name}")
