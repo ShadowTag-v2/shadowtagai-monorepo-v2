@@ -69,7 +69,9 @@
       },
       "capability_owner": true,
       "owns": ["search_documents", "get_documents", "answer_query"],
-      "note": "Google Developer Knowledge MCP — MUST use instead of search_web for ALL Google API documentation queries."
+      "note": "Google Developer Knowledge MCP — MUST use instead of search_web for ALL Google API documentation queries.",
+      "status": "DEGRADED — standalone server returns 403 when DEVELOPER_KNOWLEDGE_API_KEY env var is empty at IDE launch. WORKAROUND: use firebase-mcp-server bundled tool 'developerknowledge_search_documents' which authenticates via OAuth2.",
+      "fallback": "firebase-mcp-server.developerknowledge_search_documents"
     },
     "sequential-thinking": {
       "command": "npx",
@@ -167,7 +169,7 @@
     }
   },
   "routing_rules": {
-    "google_api_docs": "google-developer-knowledge",
+    "google_api_docs": "google-developer-knowledge | fallback: firebase-mcp-server.developerknowledge_search_documents",
     "firebase_operations": "firebase-mcp-server",
     "browser_interaction": "chrome-devtools-mcp",
     "ui_design": "StitchMCP",
@@ -176,6 +178,7 @@
     "cloud_logging_monitoring": "observability",
     "cloud_run_deployment": "cloud-run",
     "cloud_storage_operations": "storage",
+    "sovereign_memory": "gemini-memory",
     "autonomous_coding": "jules-mcp-server"
   },
   "anti_patterns": [
@@ -186,12 +189,22 @@
     "NEVER use ad-hoc reasoning lists — use sequential-thinking MCP",
     "NEVER run gcloud CLI directly in terminal when gcloud MCP can handle it",
     "NEVER guess Cloud Run service state — use cloud-run MCP to query live state",
-    "NEVER write Cloud Logging filters by hand — use observability MCP structured queries"
+    "NEVER write Cloud Logging filters by hand — use observability MCP structured queries",
+    "NEVER use NotebookLM for RAG — use gemini-memory (Epistemic Engine) for all memory operations",
+    "NEVER ingest files matching .geminiignore into the Epistemic Engine"
   ],
   "fleet_manifest": {
-    "total_servers": 11,
-    "platform_injected": ["firebase-mcp-server", "chrome-devtools-mcp", "StitchMCP", "google-developer-knowledge", "sequential-thinking"],
-    "cline_exclusive": ["gcloud", "observability", "cloud-run", "storage", "antigravity-notebooklm-mcp"],
-    "custom": ["jules-mcp-server"]
+    "antigravity_native": {
+      "total": 5,
+      "servers": ["firebase-mcp-server", "chrome-devtools-mcp", "StitchMCP", "google-developer-knowledge", "sequential-thinking"]
+    },
+    "cline_protocol_aligned": {
+      "total": 12,
+      "phase_1_foundation": ["dart-language-server", "gcloud"],
+      "phase_2_observability": ["observability", "google-cloud-spanner"],
+      "phase_3_knowledge": ["gemini-memory", "genkit", "storage"],
+      "phase_4_data": ["firebase-mcp-server", "bigquery", "cloud-run"],
+      "phase_5_compute": ["playwright", "jules-mcp-server"]
+    }
   }
 }

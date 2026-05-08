@@ -157,9 +157,9 @@ class ConversationSession:
     ) -> Generator[StreamEvent]:
         """Stream a turn with auto-chaining.
 
-        The interaction ID is captured from the ``interaction.start`` event
+        The interaction ID is captured from the ``interaction.created`` event
         and added to the session history. Use a ``StreamAccumulator`` to
-        reconstruct outputs.
+        reconstruct steps.
 
         Args:
             input: Text string or content list.
@@ -240,7 +240,8 @@ class ConversationSession:
             self._interaction_ids.append(first_result.id)
 
         # If no function calls, return immediately
-        function_calls = [o for o in first_result.outputs if getattr(o, "type", None) == "function_call"]
+        items = first_result.steps or first_result.outputs
+        function_calls = [o for o in items if getattr(o, "type", None) == "function_call"]
         if not function_calls:
             return first_result
 
@@ -249,7 +250,8 @@ class ConversationSession:
 
         result = first_result
         for _round in range(max_rounds):
-            fc_outputs = [o for o in result.outputs if getattr(o, "type", None) == "function_call"]
+            items = result.steps or result.outputs
+            fc_outputs = [o for o in items if getattr(o, "type", None) == "function_call"]
             if not fc_outputs:
                 break
 

@@ -4,7 +4,7 @@
  * consumers that only need string parsing (e.g., permissionValidation).
  */
 
-import { normalizeNameForMCP } from './normalization.js';
+import { normalizeNameForMCP, resolveMcpToolAlias } from './normalization.js';
 
 /*
  * Extracts MCP server information from a tool name string
@@ -20,7 +20,9 @@ export function mcpInfoFromString(toolString: string): {
   serverName: string;
   toolName: string | undefined;
 } | null {
-  const parts = toolString.split('__');
+  // Resolve aliased/variant tool names to canonical mcp__server__tool format
+  const resolved = resolveMcpToolAlias(toolString);
+  const parts = resolved.split('__');
   const [mcpPart, serverName, ...toolNameParts] = parts;
   if (mcpPart !== 'mcp' || !serverName) {
     return null;

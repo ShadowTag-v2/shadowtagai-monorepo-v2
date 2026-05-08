@@ -1,5 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
+
 def greet(name: str, greeting: str = "Hello") -> str:
     return greeting + ", " + name
 

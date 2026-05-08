@@ -61,7 +61,7 @@ class MemoryEntry:
         try:
             expiry = datetime.fromisoformat(self.expires_at)
             return datetime.now(UTC) > expiry
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             return False
 
     @property
@@ -75,7 +75,7 @@ class MemoryEntry:
         try:
             created = datetime.fromisoformat(self.created_at)
             return (datetime.now(UTC) - created).total_seconds()
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             return 0.0
 
 
@@ -349,7 +349,7 @@ class ColdStore:
                             "confidence": meta.get("confidence_score", 0.0),
                         }
                     )
-                except (json.JSONDecodeError, ValueError):
+                except json.JSONDecodeError, ValueError:
                     entries.append({"key": entry_dir.name, "error": "malformed"})
         return entries
 
@@ -371,7 +371,7 @@ class ColdStore:
         try:
             data = json.loads(self._checkpoint_file.read_text(encoding="utf-8"))
             return float(data.get("last_expiry_check", 0.0))
-        except (json.JSONDecodeError, ValueError, OSError):
+        except json.JSONDecodeError, ValueError, OSError:
             return 0.0
 
     @property

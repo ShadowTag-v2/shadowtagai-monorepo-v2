@@ -1,50 +1,60 @@
-# Gemini: Ignore heavy directories to prevent RAG indexing CPU spikes
-# Mirrors .aiexclude for full coverage
+# .geminiignore — UphillSnowball Epistemic Engine Filter
+# Files matching these patterns are NEVER ingested into the Gemini File Search store.
+# This prevents vector space pollution from minified code, transient noise, and secrets.
 
-# Secrets
-.env
-.env.local
-.env.production
-
-# Design SDK cache
-.stitch-sdk
-
-# Package managers & dependencies
-**/node_modules/**
-**/.pnpm-store/**
-
-# Python environments
-**/.venv/**
-**/venv/**
-**/__pycache__/**
+# Dependencies
+node_modules/
+.dart_tool/
+.pub-cache/
+vendor/
 
 # Build artifacts
-**/.next/**
-**/dist/**
-**/build/**
-**/out/**
+dist/
+build/
+.next/
+out/
+*.min.js
+*.min.css
+*.map
+*.wasm
+*.o
+*.pyc
+__pycache__/
 
 # Version control
-**/.git/**
+.git/
 
-# Large media & binaries
-**/*.mp4
-**/*.webm
-**/*.pdf
-**/*.zip
-**/*.tar.gz
+# Lock files
+*.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
-# Database & caches
-**/.firebase/**
-**/.lancedb/**
-**/*.sqlite3
-**/state.vscdb*
-**/.cache/**
-**/.gradle/**
+# Logs and temp
+*.log
+.beads/
+.tempmediaStorage/
+coverage/
+.nyc_output/
 
-# Monorepo heavy zones
-**/external_repos/**
-**/legacy_workspaces/**
-**/external_payloads/**
-**/devrel-demos/**
-**/deep-archive/**
+# Secrets and keys (NEVER ingest)
+.env
+.env.*
+keys/
+*.pem
+*.p12
+*.key
+
+# Audit and external (already indexed separately)
+_audit_claude_code/
+external_repos/
+
+# Binary and media (use multimodal upload for specific images only)
+*.woff
+*.woff2
+*.ttf
+*.eot
+*.ico
+*.mp4
+*.webm
+*.webp

@@ -7,7 +7,7 @@ Wraps google-genai SDK's `client.interactions` with:
   - Typed response wrappers (InteractionResult, StreamEvent)
   - Stateful conversation chaining via previous_interaction_id
   - Function call loop with automatic tool result submission
-  - StreamAccumulator for index-based output reconstruction
+  - StreamAccumulator for index-based step/output reconstruction
   - Configuration validation before API calls
 
 Usage:
@@ -30,7 +30,8 @@ Usage:
     acc = StreamAccumulator()
     for event in client.stream(...):
         acc.feed(event)
-    print(acc.outputs)  # [{"type": "text", "text": "..."}]
+    print(acc.steps)     # [{"type": "model_output", "content": [...]}]
+    print(acc.outputs)   # legacy compat: [{"type": "text", "text": "..."}]
 """
 
 from __future__ import annotations
@@ -56,9 +57,21 @@ logger = logging.getLogger(__name__)
 class EventType(StrEnum):
     """Stream event types from the Interactions API SSE.
 
-    See: https://ai.google.dev/api/interactions-api#Resource:Interaction
+    Supports both legacy (pre-May 2026) and new step-based schema.
+    See: https://ai.google.dev/gemini-api/docs/interactions-breaking-changes-may-2026
     """
 
+    # New schema (May 2026+)
+    INTERACTION_CREATED = "interaction.created"
+    INTERACTION_IN_PROGRESS = "interaction.in_progress"
+    INTERACTION_REQUIRES_ACTION = "interaction.requires_action"
+    STEP_START = "step.start"
+    STEP_DELTA = "step.delta"
+    STEP_STOP = "step.stop"
+    INTERACTION_COMPLETED = "interaction.completed"
+    INTERACTION_ERROR = "interaction.error"
+
+    # Legacy aliases (removed after June 8, 2026)
     INTERACTION_START = "interaction.start"
     STATUS_UPDATE = "interaction.status_update"
     CONTENT_START = "content.start"
@@ -68,6 +81,18 @@ class EventType(StrEnum):
     ERROR = "error"
 
 
+# Map legacy event names → new event names for dual-schema support
+_LEGACY_EVENT_MAP: dict[str, str] = {
+    "interaction.start": "interaction.created",
+    "content.start": "step.start",
+    "content.delta": "step.delta",
+    "content.stop": "step.stop",
+    "interaction.complete": "interaction.completed",
+    "error": "interaction.error",
+    "interaction.status_update": "interaction.in_progress",
+}
+
+
 @dataclass
 class StreamEvent:
     """A single streaming event from the Interactions API.
@@ -75,15 +100,15 @@ class StreamEvent:
     Attributes:
         event_type: The SSE event type.
         event_id: Server-assigned event ID for reconnection.
-        index: Content block index (for content.* events).
+        index: Content block index (for step.*/content.* events).
         delta_type: Type of delta (text, thought_summary, thought_signature, function_call, image).
         text: Text content (if delta_type == "text").
         thought: Thought summary text (if delta_type == "thought_summary").
         signature: Thought verification signature (if delta_type == "thought_signature").
         function_call: Function call data (if delta_type == "function_call").
-        content_type: Output block type from content.start (e.g., "text", "thought").
-        interaction_id: Interaction ID (set on interaction.start).
-        usage: Usage metadata (set on interaction.complete).
+        content_type: Step type from step.start (e.g., "model_output", "thought").
+        interaction_id: Interaction ID (set on interaction.created).
+        usage: Usage metadata (set on interaction.completed).
         raw: The raw chunk object from the SDK.
     """
 
@@ -105,12 +130,15 @@ class StreamEvent:
 class InteractionResult:
     """Typed wrapper around a completed Interactions API response.
 
+    Supports both legacy (outputs) and new (steps) response schemas.
+
     Attributes:
         id: Server-assigned interaction ID.
         status: Completion status (completed, failed, cancelled).
-        outputs: List of output objects from the response.
+        steps: List of step objects from the new schema response.
+        outputs: Legacy list of output objects (populated from steps if needed).
         text: Convenience accessor for the last text output.
-        function_calls: Convenience list of function_call outputs.
+        function_calls: Convenience list of function_call steps/outputs.
         annotations: Inline citation annotations from text outputs.
         usage: Token usage metadata.
         raw: The raw interaction object from the SDK.
@@ -118,6 +146,7 @@ class InteractionResult:
 
     id: str
     status: str
+    steps: list[Any] = field(default_factory=list)
     outputs: list[Any] = field(default_factory=list)
     text: str | None = None
     function_calls: list[Any] = field(default_factory=list)
@@ -127,36 +156,38 @@ class InteractionResult:
 
     @classmethod
     def from_interaction(cls, interaction: Any) -> InteractionResult:
-        """Create from a raw SDK interaction object."""
-        outputs = getattr(interaction, "outputs", []) or []
+        """Create from a raw SDK interaction object.
+
+        Handles both legacy (outputs) and new (steps) schemas.
+        """
+        # New schema: steps array; legacy: outputs array
+        steps = getattr(interaction, "steps", None) or []
+        outputs = getattr(interaction, "outputs", None) or []
+        use_steps = bool(steps)
+        items = steps if use_steps else outputs
+
         text = None
         func_calls: list[Any] = []
         annotations: list[dict[str, Any]] = []
 
-        for output in outputs:
-            output_type = getattr(output, "type", None)
-            if output_type == "function_call":
-                func_calls.append(output)
-            elif output_type == "text":
-                text = getattr(output, "text", None)
-                # Extract inline citations (file_citation, etc.)
-                output_annotations = getattr(output, "annotations", None)
-                if output_annotations:
-                    for ann in output_annotations:
-                        if isinstance(ann, dict):
-                            annotations.append(ann)
-                        else:
-                            # SDK object — convert to dict
-                            annotations.append(
-                                {
-                                    "type": getattr(ann, "type", "unknown"),
-                                    "file_name": getattr(ann, "file_name", None),
-                                    "document_uri": getattr(ann, "document_uri", None),
-                                    "source": getattr(ann, "source", None),
-                                    "start_index": getattr(ann, "start_index", None),
-                                    "end_index": getattr(ann, "end_index", None),
-                                }
-                            )
+        for item in items:
+            item_type = getattr(item, "type", None)
+
+            if item_type == "function_call":
+                func_calls.append(item)
+
+            elif item_type == "model_output" and use_steps:
+                # New schema: steps have content[] array
+                content_list = getattr(item, "content", []) or []
+                for content_item in content_list:
+                    if getattr(content_item, "type", None) == "text":
+                        text = getattr(content_item, "text", None)
+                        cls._extract_annotations(content_item, annotations)
+
+            elif item_type == "text" and not use_steps:
+                # Legacy schema: direct text output
+                text = getattr(item, "text", None)
+                cls._extract_annotations(item, annotations)
 
         usage_obj = getattr(interaction, "usage", None)
         usage_dict = None
@@ -170,13 +201,37 @@ class InteractionResult:
         return cls(
             id=getattr(interaction, "id", ""),
             status=getattr(interaction, "status", "unknown"),
-            outputs=list(outputs),
+            steps=list(steps),
+            outputs=list(outputs) if outputs else list(steps),
             text=text,
             function_calls=func_calls,
             annotations=annotations,
             usage=usage_dict,
             raw=interaction,
         )
+
+    @staticmethod
+    def _extract_annotations(item: Any, annotations: list[dict[str, Any]]) -> None:
+        """Extract inline citation annotations from a content item."""
+        item_annotations = getattr(item, "annotations", None)
+        if not item_annotations:
+            return
+        for ann in item_annotations:
+            if isinstance(ann, dict):
+                annotations.append(ann)
+            else:
+                annotations.append(
+                    {
+                        "type": getattr(ann, "type", "unknown"),
+                        "file_name": getattr(ann, "file_name", None),
+                        "document_uri": getattr(ann, "document_uri", None),
+                        "source": getattr(ann, "source", None),
+                        "url": getattr(ann, "url", None),
+                        "title": getattr(ann, "title", None),
+                        "start_index": getattr(ann, "start_index", None),
+                        "end_index": getattr(ann, "end_index", None),
+                    }
+                )
 
 
 # ---------------------------------------------------------------------------
@@ -185,17 +240,18 @@ class InteractionResult:
 
 
 class StreamAccumulator:
-    """Reconstruct outputs from streaming content.start/delta/stop events.
+    """Reconstruct steps from streaming step.start/delta/stop events.
 
-    The interaction.complete event does NOT contain outputs when streaming.
-    Use this accumulator to collect content deltas by index and produce
-    the equivalent outputs list.
+    Supports both legacy (content.*) and new (step.*) event schemas.
+    The interaction.completed event does NOT contain steps when streaming.
+    Use this accumulator to collect deltas by index.
 
     Usage:
         acc = StreamAccumulator()
         for event in client.stream(...):
             acc.feed(event)
-        print(acc.outputs)   # [{"type": "text", "text": "..."}]
+        print(acc.steps)     # [{"type": "model_output", "content": [...]}]
+        print(acc.outputs)   # legacy compat alias
         print(acc.usage)     # {"total_tokens": 123}
     """
 
@@ -206,16 +262,19 @@ class StreamAccumulator:
         self.status: str | None = None
 
     def feed(self, event: StreamEvent) -> None:
-        """Process a single StreamEvent."""
-        if event.event_type == EventType.INTERACTION_START:
+        """Process a single StreamEvent (supports both legacy and new schemas)."""
+        # Normalize event type to new schema for uniform handling
+        etype = _LEGACY_EVENT_MAP.get(event.event_type, event.event_type)
+
+        if etype in (EventType.INTERACTION_CREATED, EventType.INTERACTION_START):
             if event.interaction_id:
                 self.interaction_id = event.interaction_id
 
-        elif event.event_type == EventType.CONTENT_START:
+        elif etype in (EventType.STEP_START, EventType.CONTENT_START):
             idx = event.index if event.index is not None else 0
             self._blocks[idx] = {"type": event.content_type or "unknown"}
 
-        elif event.event_type == EventType.CONTENT_DELTA:
+        elif etype in (EventType.STEP_DELTA, EventType.CONTENT_DELTA):
             idx = event.index if event.index is not None else 0
             block = self._blocks.setdefault(idx, {"type": "unknown"})
 
@@ -228,17 +287,25 @@ class StreamAccumulator:
             elif event.delta_type == "function_call":
                 if event.function_call:
                     block.update(event.function_call)
+            elif event.delta_type == "arguments_delta":
+                # New schema: streaming function call arguments
+                block["arguments_json"] = block.get("arguments_json", "") + (getattr(event.raw, "arguments_delta", "") if event.raw else "")
 
-        elif event.event_type == EventType.INTERACTION_COMPLETE:
+        elif etype in (EventType.INTERACTION_COMPLETED, EventType.INTERACTION_COMPLETE):
             if event.interaction_id:
                 self.interaction_id = event.interaction_id
             self.usage = event.usage
             self.status = "completed"
 
     @property
-    def outputs(self) -> list[dict[str, Any]]:
-        """Return reconstructed outputs sorted by index."""
+    def steps(self) -> list[dict[str, Any]]:
+        """Return reconstructed steps sorted by index."""
         return [self._blocks[i] for i in sorted(self._blocks)]
+
+    @property
+    def outputs(self) -> list[dict[str, Any]]:
+        """Legacy compatibility alias for steps."""
+        return self.steps
 
 
 # ---------------------------------------------------------------------------
@@ -275,7 +342,16 @@ class InteractionsClient:
     Args:
         api_key: Gemini API key. Falls back to GEMINI_API_KEY env var.
         default_model: Default model for requests.
+        api_revision: Optional Api-Revision date string (e.g., '2026-05-20') to
+            opt-in to the new step-based schema before the June 8, 2026 cutover.
+            When set, the SDK sends the Api-Revision header and the API returns
+            new-schema events (step.start/delta/stop instead of content.*).
+            See: https://ai.google.dev/gemini-api/docs/interactions-breaking-changes-may-2026
     """
+
+    # The Api-Revision date that triggers new step-based schema responses.
+    # Set this to opt-in before June 8, 2026 mandatory cutover.
+    NEW_SCHEMA_REVISION = "2026-05-20"
 
     def __init__(
         self,
@@ -283,10 +359,12 @@ class InteractionsClient:
         api_key: str | None = None,
         default_model: str = DEFAULT_MODEL,
         telemetry: TelemetryCallback | None = None,
+        api_revision: str | None = None,
     ) -> None:
         self._api_key = api_key or os.environ.get("GEMINI_API_KEY", "")
         self._default_model = default_model
         self._telemetry = telemetry or NullTelemetry()
+        self._api_revision = api_revision
         self._client: Any | None = None  # Lazy init
 
     @property
@@ -299,9 +377,13 @@ class InteractionsClient:
                 kwargs: dict[str, Any] = {}
                 if self._api_key:
                     kwargs["api_key"] = self._api_key
+                if self._api_revision:
+                    kwargs["http_options"] = {
+                        "headers": {"Api-Revision": self._api_revision}
+                    }
                 self._client = genai.Client(**kwargs)
             except ImportError as exc:
-                msg = "google-genai SDK not installed. Run: pip install google-genai>=1.65.0"
+                msg = "google-genai SDK not installed. Run: pip install google-genai>=1.47.0"
                 raise ImportError(msg) from exc
         return self._client
 
@@ -543,11 +625,17 @@ class InteractionsClient:
 
                         yield event
 
-                        if event.event_type == EventType.INTERACTION_COMPLETE:
+                        if event.event_type in (
+                            EventType.INTERACTION_COMPLETED,
+                            EventType.INTERACTION_COMPLETE,
+                        ):
                             is_complete = True
                             usage_dict = event.usage
                             return
-                        elif event.event_type == EventType.ERROR:
+                        elif event.event_type in (
+                            EventType.INTERACTION_ERROR,
+                            EventType.ERROR,
+                        ):
                             is_complete = True
                             status_str = "failed"
                             return
@@ -657,7 +745,8 @@ class InteractionsClient:
             )
 
             for _round in range(1, max_rounds + 1):
-                function_calls = [o for o in result.outputs if getattr(o, "type", None) == "function_call"]
+                items = result.steps or result.outputs
+                function_calls = [o for o in items if getattr(o, "type", None) == "function_call"]
                 if not function_calls:
                     break  # No more function calls — done
 
@@ -780,28 +869,33 @@ class InteractionsClient:
     def _parse_chunk(chunk: Any) -> StreamEvent:
         """Parse a raw SDK stream chunk into a typed StreamEvent.
 
-        Handles all SSE event types documented in the Interactions API:
-        interaction.start, content.start, content.delta (text, thought_summary,
-        thought_signature, function_call), content.stop, interaction.complete.
+        Handles both legacy and new (May 2026) SSE event types:
+        Legacy: interaction.start, content.start/delta/stop, interaction.complete
+        New:    interaction.created, step.start/delta/stop, interaction.completed
         """
+        raw_type = getattr(chunk, "event_type", "unknown")
         event = StreamEvent(
-            event_type=getattr(chunk, "event_type", "unknown"),
+            event_type=raw_type,
             event_id=getattr(chunk, "event_id", None),
             raw=chunk,
         )
 
-        if event.event_type == EventType.INTERACTION_START:
+        # Normalize to new schema for uniform parsing
+        etype = _LEGACY_EVENT_MAP.get(raw_type, raw_type)
+
+        if etype == EventType.INTERACTION_CREATED:
             interaction = getattr(chunk, "interaction", None)
             if interaction:
                 event.interaction_id = getattr(interaction, "id", None)
 
-        elif event.event_type == EventType.CONTENT_START:
+        elif etype == EventType.STEP_START:
             event.index = getattr(chunk, "index", None)
-            content = getattr(chunk, "content", None)
-            if content:
-                event.content_type = getattr(content, "type", None)
+            # New schema: step object; Legacy: content object
+            step = getattr(chunk, "step", None) or getattr(chunk, "content", None)
+            if step:
+                event.content_type = getattr(step, "type", None)
 
-        elif event.event_type == EventType.CONTENT_DELTA:
+        elif etype == EventType.STEP_DELTA:
             delta = getattr(chunk, "delta", None)
             if delta:
                 event.delta_type = getattr(delta, "type", None)
@@ -822,10 +916,10 @@ class InteractionsClient:
                         "arguments": getattr(delta, "arguments", {}),
                     }
 
-        elif event.event_type == EventType.CONTENT_STOP:
+        elif etype == EventType.STEP_STOP:
             event.index = getattr(chunk, "index", None)
 
-        elif event.event_type == EventType.INTERACTION_COMPLETE:
+        elif etype == EventType.INTERACTION_COMPLETED:
             interaction = getattr(chunk, "interaction", None)
             if interaction:
                 event.interaction_id = getattr(interaction, "id", None)
