@@ -1190,3 +1190,11 @@ tests/test_vcr_fixtures.py:generic-api-key
 
 packages/vcr_fixtures/manager.py:generic-api-key:11
 packages/vcr_fixtures/manager.py:generic-api-key
+
+# ════════════════════════════════════════════════════════
+# Secret Scanner Unit Tests — 2026-05-08
+# Test assertions contain example patterns, NOT real keys.
+# ════════════════════════════════════════════════════════
+tests/unit/lib/secrets.test.ts:generic-api-key
+tests/unit/lib/secrets.test.ts:github-pat
+

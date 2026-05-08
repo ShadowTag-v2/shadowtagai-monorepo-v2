@@ -89,4 +89,4 @@ try:
 
 except Exception as e:
     print(f"Error formatting markdown: {e}", file=sys.stderr)
-    raise SystemExit(1)
+    raise SystemExit(1) from e

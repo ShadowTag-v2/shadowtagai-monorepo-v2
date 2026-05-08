@@ -1,3 +1,5 @@
+import os
+
 """PNKLN Core Stack - ShadowTag Authentication API
 
 import os

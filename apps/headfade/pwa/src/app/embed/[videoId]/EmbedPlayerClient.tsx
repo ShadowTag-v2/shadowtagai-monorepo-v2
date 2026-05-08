@@ -36,9 +36,6 @@ async function fetchEmbedData(videoId: string): Promise<EmbedVideoData> {
     if (!res.ok) throw new Error(`API ${res.status}`);
     return await res.json();
   } catch (_err: unknown) {
-    // Fallback for demo / static export — API unavailable in static mode
-    // eslint-disable-next-line no-console
-    console.debug('[HeadFade Embed] API unreachable, using demo fallback', _err);
     return {
       id: videoId,
       cdnUrl: '/media/genesis_clip_01.mp4',
@@ -193,7 +190,6 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
           href={`https://headfade.com/v/${videoData.id}?ref=embed`}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Unlock full prompt and lineage on headfade.com"
           className="block w-full text-center bg-[#00FF41] text-black py-2.5 text-[11px] font-bold rounded-sm hover:bg-white transition-colors tracking-wider"
         >
           Unlock Full Prompt &amp; Lineage ↱
@@ -211,7 +207,6 @@ export default function EmbedPlayerClient({ videoId }: { videoId: string }) {
           href={`https://headfade.com/v/${videoData.id}?ref=embed`}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Visit headfade.com"
           className="text-[9px] text-zinc-400 hover:text-white transition-colors"
         >
           headfade.com

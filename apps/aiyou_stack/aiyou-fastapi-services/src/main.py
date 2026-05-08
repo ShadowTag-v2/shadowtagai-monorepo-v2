@@ -1,3 +1,5 @@
+import os
+
 """Main FastAPI application for agent-based governance system.
 
 Production-ready API with hybrid OPA + agent architecture,

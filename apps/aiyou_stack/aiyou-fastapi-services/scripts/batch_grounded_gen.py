@@ -40,7 +40,7 @@ async def run_batch(
             data = json.load(f)
     except Exception as e:
         print(f"Error reading input file: {e}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
     # Generate prompts
     prompt_texts = []

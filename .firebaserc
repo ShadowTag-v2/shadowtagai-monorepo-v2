@@ -13,6 +13,9 @@
         ],
         "headfade": [
           "headfade"
+        ],
+        "counselconduit-dashboard": [
+          "counselconduit-dashboard"
         ]
       }
     }

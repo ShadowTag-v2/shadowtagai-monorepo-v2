@@ -31,7 +31,7 @@ def recover_reams():
 
     except Exception as e:
         print(f"❌ Recovery Failed: {e}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 if __name__ == "__main__":

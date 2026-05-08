@@ -8,6 +8,74 @@
       },
       "disabled": false,
       "autoApprove": ["setup_auth", "list_notebooks", "search_notebooks", "get_notebook"]
+    },
+    "gcloud": {
+      "command": "npx",
+      "args": ["-y", "@google-cloud/gcloud-mcp"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": false,
+      "autoApprove": ["run_gcloud_command"]
+    },
+    "observability": {
+      "command": "npx",
+      "args": ["-y", "@google-cloud/observability-mcp"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "list_log_entries",
+        "list_log_names",
+        "list_sinks",
+        "list_log_scopes",
+        "list_metric_descriptors",
+        "list_time_series",
+        "list_alert_policies",
+        "list_traces",
+        "get_trace",
+        "list_group_stats"
+      ]
+    },
+    "cloud-run": {
+      "command": "npx",
+      "args": ["-y", "@google-cloud/cloud-run-mcp"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "list-services",
+        "get-service",
+        "get-service-log",
+        "list-projects"
+      ]
+    },
+    "storage": {
+      "command": "npx",
+      "args": ["-y", "@google-cloud/storage-mcp"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "list_buckets",
+        "list_objects",
+        "read_object_metadata",
+        "read_object_content",
+        "get_bucket_metadata",
+        "get_bucket_location"
+      ]
+    },
+    "genkitx": {
+      "command": "npx",
+      "args": ["-y", "genkitx-mcp@latest"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": true,
+      "autoApprove": []
     }
   }
 }

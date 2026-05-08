@@ -20,6 +20,7 @@ Strategic Impact:
 import math
 
 # Import models
+import os
 import sys
 
 from fastapi import FastAPI

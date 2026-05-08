@@ -1,3 +1,5 @@
+import os
+
 """Consolidated API - Generated from iPhone Notes Extraction
 import os
 177 API endpoints extracted → consolidated into modular FastAPI app

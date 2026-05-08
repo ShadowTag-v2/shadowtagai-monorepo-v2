@@ -14,7 +14,7 @@ try:
     import anthropic
 except ImportError:
     print("anthropic package not installed. Run: pip install anthropic", file=sys.stderr)
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 CRITIC_PROMPT = """
 You are a senior code reviewer. Validate this test plan against the diff.

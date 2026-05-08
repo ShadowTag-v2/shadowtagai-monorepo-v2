@@ -50,7 +50,7 @@ except ImportError as e:
     print(
         "Install with: pip install google-cloud-aiplatform google-cloud-storage google-cloud-bigquery httpx",
     )
-    raise SystemExit(1)
+    raise SystemExit(1) from e
 
 # Configure logging
 logging.basicConfig(
@@ -580,7 +580,7 @@ async def main():
 
     except Exception as e:
         logger.error(f"Orchestrator failed: {e}", exc_info=True)
-        raise SystemExit(2)
+        raise SystemExit(2) from e
 
 
 if __name__ == "__main__":

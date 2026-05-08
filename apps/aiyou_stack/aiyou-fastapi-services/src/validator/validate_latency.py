@@ -32,7 +32,7 @@ try:
 except ImportError:
     print("ERROR: Missing required packages. Install with:")
     print("pip install httpx numpy")
-    raise SystemExit(1)
+    raise SystemExit(1) from None
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")

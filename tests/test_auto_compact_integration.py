@@ -230,7 +230,7 @@ class TestAutoCompactMiddleware:
         messages = _make_messages(200, tokens_per_msg=1000)
 
         # First 3 failures
-        for i in range(3):
+        for _i in range(3):
             result = middleware.compact_if_needed(
                 messages,
                 max_context_tokens=200_000,

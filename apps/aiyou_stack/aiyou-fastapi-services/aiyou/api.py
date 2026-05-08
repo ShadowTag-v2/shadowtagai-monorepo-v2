@@ -14,6 +14,7 @@ Endpoints:
 - POST /verify/{item_id} - Verify content authenticity
 """
 
+import os
 from datetime import datetime
 from typing import Literal
 

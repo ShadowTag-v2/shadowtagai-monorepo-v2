@@ -3,8 +3,13 @@ Classification: TIER 30 SOVEREIGN
 Context: 1M+
 """
 
+import logging
+
 from google.api_core.client_options import ClientOptions
 from google.cloud import notebooks_v2
+
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+logger = logging.getLogger(__name__)
 
 # --- CONFIGURATION (UPDATED) ---
 PROJECT_ID = "shadowtag-omega-v2"  # <--- TARGET UPDATED
@@ -14,8 +19,8 @@ INSTANCE_NAME = "judge-six-omega-node"
 
 
 def deploy():
-    print(f">>> 🖥️  PROVISIONING OMEGA NODE: {INSTANCE_NAME}...")
-    print(f"    Target: {PROJECT_ID} (Zone: {ZONE})")
+    logger.info(f">>> 🖥️  PROVISIONING OMEGA NODE: {INSTANCE_NAME}...")
+    logger.info(f"    Target: {PROJECT_ID} (Zone: {ZONE})")
 
     client_options = ClientOptions(api_endpoint=f"{REGION}-notebooks.googleapis.com:443")
     client = notebooks_v2.NotebookServiceClient(client_options=client_options)
@@ -50,10 +55,10 @@ def deploy():
     instance_path = f"{parent}/instances/{INSTANCE_NAME}"
     try:
         client.get_instance(name=instance_path)
-        print(f"    ✅ Instance {INSTANCE_NAME} already exists.")
+        logger.info(f"    ✅ Instance {INSTANCE_NAME} already exists.")
         return
     except Exception:
-        print("    Instance not found. Creating...")
+        logger.info("    Instance not found. Creating...")
 
     try:
         op = client.create_instance(
@@ -63,12 +68,12 @@ def deploy():
                 instance=instance,
             ),
         )
-        print("    ⏳ Creation initiated... (approx 5-10 mins)")
+        logger.info("    ⏳ Creation initiated... (approx 5-10 mins)")
         op.result(timeout=600)
-        print(f"    ✅ SUCCESS: https://{ZONE}-{PROJECT_ID}.notebooks.googleusercontent.com")
-        print("    NOTE: Open JupyterLab -> Terminal to access the 10TB Drive.")
+        logger.info(f"    ✅ SUCCESS: https://{ZONE}-{PROJECT_ID}.notebooks.googleusercontent.com")
+        logger.info("    NOTE: Open JupyterLab -> Terminal to access the 10TB Drive.")
     except Exception as e:
-        print(f"    ❌ FAILED: {e}")
+        logger.error(f"    ❌ FAILED: {e}")
 
 
 if __name__ == "__main__":

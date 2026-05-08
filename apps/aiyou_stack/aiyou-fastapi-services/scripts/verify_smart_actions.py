@@ -36,7 +36,7 @@ def test_risk():
         print("   ✅ /risk Passed")
     except Exception as e:
         print(f"   ❌ /risk Failed: {e}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 def test_scan():
@@ -52,7 +52,7 @@ def test_scan():
         print("   ✅ /scan Passed")
     except Exception as e:
         print(f"   ❌ /scan Failed: {e}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 def test_ui():
@@ -67,7 +67,7 @@ def test_ui():
         print("   ✅ /ui Passed")
     except Exception as e:
         print(f"   ❌ /ui Failed: {e}")
-        raise SystemExit(1)
+        raise SystemExit(1) from e
 
 
 if __name__ == "__main__":

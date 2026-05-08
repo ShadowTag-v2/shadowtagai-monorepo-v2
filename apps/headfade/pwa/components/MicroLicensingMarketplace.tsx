@@ -22,7 +22,6 @@ export const MicroLicensingMarketplace: React.FC<MarketplaceProps> = ({ videoId 
         setSuccess(true);
       }
     } catch (e) {
-      // eslint-disable-next-line no-console
       console.error(e);
     } finally {
       setPurchasing(false);

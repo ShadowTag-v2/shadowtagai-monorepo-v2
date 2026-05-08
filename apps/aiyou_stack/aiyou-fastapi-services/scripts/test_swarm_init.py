@@ -15,7 +15,7 @@ try:
     print(f"   🤖 Available Agents: {orchestrator.available_agents()}")
 except ImportError as e:
     print(f"   ❌ Import Failed: {e}")
-    raise SystemExit(1)
+    raise SystemExit(1) from e
 except Exception as e:
     print(f"   ❌ Initialization Failed: {e}")
-    raise SystemExit(1)
+    raise SystemExit(1) from e

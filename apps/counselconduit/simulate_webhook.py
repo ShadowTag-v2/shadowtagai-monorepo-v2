@@ -36,16 +36,18 @@ expected_sig = hmac.new(
 
 headers = {"Content-Type": "application/json", "Stripe-Signature": f"t={timestamp},v1={expected_sig}"}
 
-with patch("apps.counselconduit.api.stripe_handler._get_webhook_secret", return_value=secret):
-    with patch("apps.counselconduit.api.firestore_client._get_client") as mock_get_client:
-        mock_db = MagicMock()
-        mock_get_client.return_value = mock_db
-        # Mock the async doc_ref.set
-        mock_doc_ref = MagicMock()
-        mock_doc_ref.set = AsyncMock()
-        mock_db.collection().document.return_value = mock_doc_ref
+with (
+    patch("apps.counselconduit.api.stripe_handler._get_webhook_secret", return_value=secret),
+    patch("apps.counselconduit.api.firestore_client._get_client") as mock_get_client,
+):
+    mock_db = MagicMock()
+    mock_get_client.return_value = mock_db
+    # Mock the async doc_ref.set
+    mock_doc_ref = MagicMock()
+    mock_doc_ref.set = AsyncMock()
+    mock_db.collection().document.return_value = mock_doc_ref
 
-        response = client.post("/webhooks/stripe", content=payload_bytes, headers=headers)
+    response = client.post("/webhooks/stripe", content=payload_bytes, headers=headers)
 
 print("Status Code:", response.status_code)
 print("Response JSON:", response.json() if response.status_code == 200 else response.text)

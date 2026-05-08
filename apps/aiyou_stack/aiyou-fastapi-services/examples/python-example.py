@@ -291,7 +291,7 @@ async def main():
         import traceback
 
         traceback.print_exc()
-        raise SystemExit(1)
+        raise SystemExit(1) from error
 
 
 if __name__ == "__main__":
