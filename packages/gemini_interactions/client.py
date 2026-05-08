@@ -383,7 +383,7 @@ class InteractionsClient:
                     }
                 self._client = genai.Client(**kwargs)
             except ImportError as exc:
-                msg = "google-genai SDK not installed. Run: pip install google-genai>=1.65.0"
+                msg = "google-genai SDK not installed. Run: pip install google-genai>=1.47.0"
                 raise ImportError(msg) from exc
         return self._client
 
