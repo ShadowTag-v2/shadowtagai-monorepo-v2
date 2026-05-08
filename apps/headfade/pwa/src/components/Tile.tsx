@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 
 interface TileProps {
@@ -73,7 +74,7 @@ export function Tile({
       {/* ── Thumbnail + overlays ── */}
       <button
         type="button"
-        aria-label={`Watch ${title}`}
+        aria-label={title}
         className="relative aspect-video rounded-xl overflow-hidden transition-all duration-200 group-hover:rounded-t-xl group-hover:rounded-b-none w-full p-0 border-0"
         style={{ backgroundColor: '#F0F0FF' }}
         onMouseEnter={handleMouseEnter}
@@ -83,9 +84,11 @@ export function Tile({
         {/* Thumbnail / video */}
         {hoverVideo ? (
           <>
-            <img
+            <Image
               src={thumbnail}
               alt={title}
+              fill
+              unoptimized
               className="w-full h-full object-cover absolute inset-0 transition-opacity duration-300 z-10"
               style={{ opacity: isHovering ? 0 : 1 }}
               loading="lazy"
@@ -102,9 +105,11 @@ export function Tile({
             />
           </>
         ) : (
-          <img
+          <Image
             src={thumbnail}
             alt={title}
+            fill
+            unoptimized
             className="w-full h-full object-cover"
             loading="lazy"
           />
@@ -128,20 +133,20 @@ export function Tile({
 
         {/* Duration badge */}
         {duration && !isHovering && (
-          <div className="absolute bottom-2 right-2 bg-black/80 text-white text-[12px] px-1.5 py-0.5 rounded font-medium z-10">
+          <div aria-hidden="true" className="absolute bottom-2 right-2 bg-black/80 text-white text-[12px] px-1.5 py-0.5 rounded font-medium z-10">
             {duration}
           </div>
         )}
 
         {/* Trending badge */}
         {accent && (
-          <span className="absolute top-2 left-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm shadow-sm z-10" style={{ backgroundColor: '#7C3AED' }}>
+          <span aria-hidden="true" className="absolute top-2 left-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm shadow-sm z-10" style={{ backgroundColor: '#7C3AED' }}>
             TRENDING
           </span>
         )}
 
         {/* AI Presumed badge — top right */}
-        <div className="absolute top-2 right-2 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ backgroundColor: 'rgba(124,58,237,0.85)' }}>
+        <div aria-hidden="true" className="absolute top-2 right-2 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ backgroundColor: 'rgba(124,58,237,0.85)' }}>
           <span>🤖</span> AI Presumed
         </div>
       </button>
@@ -174,13 +179,13 @@ export function Tile({
           <button
             type="button"
             id={`vote-ai-${title.replace(/\s+/g, '-').toLowerCase().slice(0, 20)}`}
-            aria-label="Vote AI-Made"
+            aria-label="AI-Made"
             aria-pressed={userVote === 'ai'}
             onClick={(e) => { e.stopPropagation(); onVote('ai'); }}
             className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all active:scale-95"
             style={{
               backgroundColor: userVote === 'ai' ? '#7C3AED' : 'rgba(124,58,237,0.12)',
-              color: userVote === 'ai' ? '#fff' : '#7C3AED',
+              color: userVote === 'ai' ? '#fff' : '#5B21B6',
               border: `1.5px solid ${userVote === 'ai' ? '#7C3AED' : 'rgba(167,139,250,0.5)'}`,
             }}
           >
@@ -189,13 +194,13 @@ export function Tile({
           <button
             type="button"
             id={`vote-human-${title.replace(/\s+/g, '-').toLowerCase().slice(0, 20)}`}
-            aria-label="Vote Human"
+            aria-label="Human"
             aria-pressed={userVote === 'human'}
             onClick={(e) => { e.stopPropagation(); onVote('human'); }}
             className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all active:scale-95"
             style={{
               backgroundColor: userVote === 'human' ? '#0891B2' : 'rgba(8,145,178,0.12)',
-              color: userVote === 'human' ? '#fff' : '#0891B2',
+              color: userVote === 'human' ? '#fff' : '#164E63',
               border: `1.5px solid ${userVote === 'human' ? '#0891B2' : 'rgba(103,232,249,0.45)'}`,
             }}
           >
@@ -207,9 +212,12 @@ export function Tile({
       {/* ── Meta row ── */}
       <div className="flex gap-3 px-0.5 pt-2">
         {authorAvatar ? (
-          <img
+          <Image
             src={authorAvatar}
             alt={author}
+            width={32}
+            height={32}
+            unoptimized
             className="w-8 h-8 rounded-full object-cover flex-shrink-0 mt-0.5"
             loading="lazy"
           />
@@ -241,7 +249,7 @@ export function Tile({
         <button
           type="button"
           aria-label={`More options for ${title}`}
-          className="self-start mt-0.5 p-1 rounded-full transition-colors opacity-0 group-hover:opacity-100"
+          className="self-start mt-0.5 p-2 rounded-full transition-colors opacity-0 group-hover:opacity-100"
           style={{ color: '#4D627A' }}
           onClick={(e) => { e.stopPropagation(); }}
         >

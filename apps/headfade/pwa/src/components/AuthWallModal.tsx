@@ -124,7 +124,7 @@ export function AuthWallModal({ isOpen, onClose, onSignedIn }: AuthWallModalProp
             <p className="text-[12px] font-bold text-white mb-1">
               Why sign in?
             </p>
-            <ul className="text-[12px] space-y-1" style={{ color: 'rgba(255,255,255,0.55)' }}>
+            <ul className="text-[12px] space-y-1" style={{ color: 'rgba(255,255,255,0.72)' }}>
               <li>⚡ Earn your <strong className="text-white">Forensic Elo</strong> rating</li>
               <li>🏆 Climb the global detection leaderboard</li>
               <li>🔬 See second-by-second heatmaps of where humans look</li>
@@ -184,7 +184,7 @@ export function AuthWallModal({ isOpen, onClose, onSignedIn }: AuthWallModalProp
           </div>
 
           {/* Ghost viewer notice */}
-          <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <p className="text-[12px]" style={{ color: 'rgba(255,255,255,0.5)' }}>
             Browse freely as a ghost · Sign in only to vote
           </p>
 

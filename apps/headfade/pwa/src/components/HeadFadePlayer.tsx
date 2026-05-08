@@ -282,7 +282,7 @@ export function HeadFadePlayer({
                 type="button"
                 aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark video'}
                 onClick={onBookmark}
-                className="p-1.5 rounded-full transition-colors"
+                className="p-2.5 rounded-full transition-colors"
                 style={{ backgroundColor: isBookmarked ? '#7C3AED' : 'rgba(0,0,0,0.45)' }}
               >
                 <svg className="w-4 h-4 text-white" fill={isBookmarked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -317,7 +317,7 @@ export function HeadFadePlayer({
           <div className="flex gap-2">
             <button
               type="button"
-              aria-label="Vote AI-Made"
+              aria-label="AI-Made"
               aria-pressed={userVote === 'ai'}
               data-testid="vote-ai-btn"
               onClick={onVoteAI}
@@ -334,7 +334,7 @@ export function HeadFadePlayer({
             </button>
             <button
               type="button"
-              aria-label="Vote Human"
+              aria-label="Human"
               aria-pressed={userVote === 'human'}
               data-testid="vote-human-btn"
               onClick={onVoteHuman}
@@ -370,25 +370,27 @@ export function HeadFadePlayer({
             <button
               type="button"
               aria-label="Seek video"
-              className="flex-1 h-[4px] rounded-full cursor-pointer relative"
-              style={{ backgroundColor: 'rgba(255,255,255,0.3)', padding: 0, border: 'none' }}
+              className="flex-1 h-[28px] rounded-full cursor-pointer relative flex items-center"
+              style={{ backgroundColor: 'transparent', padding: '12px 0', border: 'none' }}
               onClick={seek as unknown as React.MouseEventHandler<HTMLButtonElement>}
               onKeyDown={(e) => {
                 if (e.key === 'ArrowRight' && videoRef.current) videoRef.current.currentTime = Math.min(videoRef.current.duration, videoRef.current.currentTime + 5);
                 if (e.key === 'ArrowLeft' && videoRef.current) videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 5);
               }}
             >
-              <div
-                className="absolute left-0 top-0 h-full rounded-full transition-[width] duration-100"
-                style={{ width: `${progress}%`, backgroundColor: '#7C3AED' }}
-              />
+              <div className="absolute left-0 right-0 h-[4px] rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.3)', top: '50%', transform: 'translateY(-50%)' }}>
+                <div
+                  className="h-full rounded-full transition-[width] duration-100"
+                  style={{ width: `${progress}%`, backgroundColor: '#7C3AED' }}
+                />
+              </div>
             </button>
             <span className="text-white text-[10px] tabular-nums">{fmt(duration)}</span>
             <button
               type="button"
               aria-label={muted ? 'Unmute' : 'Mute'}
               onClick={() => setMuted((m) => !m)}
-              className="p-1 rounded-full"
+              className="p-2 rounded-full"
               style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
             >
               <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

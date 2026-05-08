@@ -5,6 +5,7 @@ import { Tile } from '@/components/Tile'; // we'll create this
 export default function TrustPage() {
   const threads = [
   {
+    id: "heppner-risk-analysis",
     title: "United States v. Heppner – Full Risk Analysis & Mitigation Strategy",
     author: "Headfade Legal",
     views: "142.8k",
@@ -15,6 +16,7 @@ export default function TrustPage() {
     accent: true
   },
   {
+    id: "ai-review-time-87pct",
     title: "How Top Law Firms Cut Legal Review Time by 87% Using AI",
     author: "Sarah Chen, Esq.",
     views: "89.4k",
@@ -24,6 +26,7 @@ export default function TrustPage() {
     type: "insight" as const
   },
   {
+    id: "ai-intake-portal-demo",
     title: "Live Demo: Headfade AI Intake Portal in Action",
     author: "Headfade Product",
     views: "67.2k",
@@ -33,6 +36,7 @@ export default function TrustPage() {
     type: "video" as const
   },
   {
+    id: "amlaw200-switch",
     title: "The New Standard: Why 50+ AmLaw 200 Firms Switched to Headfade",
     author: "Michael Torres",
     views: "54.9k",
@@ -42,6 +46,7 @@ export default function TrustPage() {
     type: "thread" as const
   },
   {
+    id: "turing-test-week47",
     title: "Gamified Turing Test Results – Week 47 Breakdown",
     author: "Headfade Research",
     views: "41.3k",
@@ -51,6 +56,7 @@ export default function TrustPage() {
     type: "insight" as const
   },
   {
+    id: "340-attorney-roi",
     title: "Case Study: How We Helped a 340-Attorney Firm Achieve 340% ROI",
     author: "Headfade Enterprise",
     views: "38.7k",
@@ -60,6 +66,7 @@ export default function TrustPage() {
     type: "thread" as const
   },
   {
+    id: "clause-risk-heatmap",
     title: "Real-time Clause Risk Heatmap – Now Available",
     author: "Product Updates",
     views: "29.1k",
@@ -69,6 +76,7 @@ export default function TrustPage() {
     type: "video" as const
   },
   {
+    id: "b2b-risk-masterclass",
     title: "B2B SaaS Legal Risk Mitigation Masterclass (Recording)",
     author: "Headfade Academy",
     views: "24.6k",
@@ -78,6 +86,7 @@ export default function TrustPage() {
     type: "video" as const
   },
   {
+    id: "47-red-flags-monthly",
     title: "47 Red Flags We Caught This Month – Thread",
     author: "Headfade Risk Team",
     views: "19.8k",
@@ -87,6 +96,7 @@ export default function TrustPage() {
     type: "thread" as const
   },
   {
+    id: "soc2-hipaa-compliance",
     title: "How Headfade Passed SOC 2 Type II + HIPAA in Record Time",
     author: "Compliance Team",
     views: "17.4k",
@@ -96,6 +106,7 @@ export default function TrustPage() {
     type: "insight" as const
   },
   {
+    id: "ai-legal-ethics-panel",
     title: "The Future of AI in Legal Ethics – Panel Discussion",
     author: "Headfade Events",
     views: "15.2k",
@@ -105,6 +116,7 @@ export default function TrustPage() {
     type: "video" as const
   },
   {
+    id: "multi-jurisdiction-shield",
     title: "Multi-Jurisdiction Shield: Now Live in All 50 States",
     author: "Product Updates",
     views: "13.9k",
@@ -165,7 +177,7 @@ export default function TrustPage() {
             const aiPct = 0.4 + (index % 5) * 0.06;
             return (
               <Tile
-                key={thread.id ?? `thread-${index}`}
+                key={thread.id}
                 {...thread}
                 voteAI={Math.floor(base * aiPct)}
                 voteHuman={Math.floor(base * (1 - aiPct))}

@@ -164,14 +164,14 @@ export function FeaturedCarousel({
           {/* Auto-Scroll toggle */}
           <button
             type="button"
-            aria-label={autoScroll ? 'Disable auto-scroll' : 'Enable auto-scroll'}
+            aria-label={`Auto-Scroll: ${autoScroll ? 'ON' : 'OFF'}`}
             aria-pressed={autoScroll}
             data-testid="autoscroll-toggle"
             onClick={() => setAutoScroll(!autoScroll)}
             className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-bold transition-all duration-200 hover:scale-105"
             style={{
-              background: autoScroll ? '#0891B2' : 'white',
-              border: `1px solid ${autoScroll ? '#0891B2' : '#D1D5DB'}`,
+              background: autoScroll ? '#0E7490' : 'white',
+              border: `1px solid ${autoScroll ? '#0E7490' : '#D1D5DB'}`,
               color: autoScroll ? 'white' : '#4B5563',
               boxShadow: '0 1px 6px rgba(0,0,0,0.08)',
             }}
@@ -294,16 +294,22 @@ export function FeaturedCarousel({
             <button
               type="button"
               key={item.id ?? `dot-${i}`}
-              aria-label={`Jump to featured video ${i + 1}`}
+              aria-label={`Featured video ${i + 1}`}
               onClick={() => jumpToCard(i)}
-              className="rounded-full transition-all duration-300"
-              style={{
-                width: i === activeIdx ? 24 : 8,
-                height: 8,
-                backgroundColor: i === activeIdx ? '#7C3AED' : 'rgba(124,58,237,0.2)',
-                boxShadow: i === activeIdx ? '0 0 8px rgba(124,58,237,0.4)' : 'none',
-              }}
-            />
+              className="flex items-center justify-center transition-all duration-300"
+              style={{ minWidth: 44, minHeight: 44, padding: 0, background: 'transparent', border: 'none', cursor: 'pointer' }}
+            >
+              <span
+                className="rounded-full transition-all duration-300"
+                style={{
+                  width: i === activeIdx ? 24 : 8,
+                  height: 8,
+                  display: 'block',
+                  backgroundColor: i === activeIdx ? '#7C3AED' : 'rgba(124,58,237,0.2)',
+                  boxShadow: i === activeIdx ? '0 0 8px rgba(124,58,237,0.4)' : 'none',
+                }}
+              />
+            </button>
           ))}
         </div>
 

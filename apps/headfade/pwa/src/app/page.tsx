@@ -17,7 +17,7 @@ const brand = {
   bg: '#FFFFFF',
   bgSubtle: '#F7F9FC',
   textPrimary: '#0A2540',
-  textMuted: '#4D627A',
+  textMuted: '#3D5166',
   accent: '#7C3AED',
   border: '#E5E8ED',
   chipDefault: '#F5F3FF',
@@ -25,18 +25,18 @@ const brand = {
 
 const categories = [
   { label: 'All', color: '#7C3AED', glyph: '🌐' },
-  { label: 'Trending', color: '#DC2626', glyph: '🔥' },
-  { label: 'Music', color: '#DB2777', glyph: '🎵' },
-  { label: 'Gaming', color: '#059669', glyph: '🎮' },
-  { label: 'News', color: '#0891B2', glyph: '📡' },
-  { label: 'Comedy', color: '#D97706', glyph: '😂' },
-  { label: 'Sports', color: '#2563EB', glyph: '⚡' },
+  { label: 'Trending', color: '#B91C1C', glyph: '🔥' },
+  { label: 'Music', color: '#9D174D', glyph: '🎵' },
+  { label: 'Gaming', color: '#065F46', glyph: '🎮' },
+  { label: 'News', color: '#0E7490', glyph: '📡' },
+  { label: 'Comedy', color: '#92400E', glyph: '😂' },
+  { label: 'Sports', color: '#1D4ED8', glyph: '⚡' },
   { label: 'Science', color: '#7C3AED', glyph: '🔬' },
-  { label: 'Fashion', color: '#EC4899', glyph: '✨' },
-  { label: 'Cooking', color: '#EA580C', glyph: '🍳' },
+  { label: 'Fashion', color: '#9D174D', glyph: '✨' },
+  { label: 'Cooking', color: '#9A3412', glyph: '🍳' },
   { label: 'Film', color: '#6D28D9', glyph: '🎬' },
   { label: 'Education', color: '#0D9488', glyph: '📚' },
-  { label: 'Saved', color: '#059669', glyph: '🔖' },
+  { label: 'Saved', color: '#065F46', glyph: '🔖' },
 ];
 
 const SEED_VIDEOS = [
@@ -416,7 +416,7 @@ export default function HeadfadeHomepage() {
               )}
               <button
                 type="button"
-                aria-label="Upload your AI or non-AI videos — see who you can fake out"
+                aria-label="Upload & Fake Us Out"
                 className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-[13px] font-bold text-white transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#7C3AED,#0891B2)' }}
               >
@@ -454,11 +454,11 @@ export default function HeadfadeHomepage() {
               </span>
               <span
                 className="hidden sm:block text-[16px] font-bold px-3 py-0.5 rounded-full animate-pulse"
-                style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}
+                style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
               >
                 Vote Now ↓
               </span>
-              <span className="text-[12px] opacity-75">AI Presumed Videos — Only You Can Tell</span>
+              <span className="text-[13px]" style={{ color: 'rgba(255,255,255,0.88)' }}>AI Presumed Videos — Only You Can Tell</span>
             </div>
             <div className="flex items-center gap-4 text-[12px] text-white/80">
               <span>
@@ -509,7 +509,6 @@ export default function HeadfadeHomepage() {
                 <button
                   key={item.label}
                   type="button"
-                  aria-label={item.label}
                   aria-current={item.active ? 'page' : undefined}
                   className="flex items-center gap-6 px-3 py-2.5 rounded-[10px] text-[14px] font-medium transition-colors"
                   style={{
@@ -619,13 +618,12 @@ export default function HeadfadeHomepage() {
                   <button
                     key={cat.label}
                     type="button"
-                    aria-label={`Filter by ${cat.label}`}
                     aria-pressed={isActive}
-                    className="cat-chip flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-200 whitespace-nowrap hover:scale-105"
+                    className="cat-chip flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-200 whitespace-nowrap hover:scale-105"
                     onClick={() => setActiveCategory(cat.label)}
                     style={{
                       background: isActive ? cat.color : brand.chipDefault,
-                      color: isActive ? '#fff' : cat.color,
+                      color: isActive ? '#fff' : '#1E1B4B',
                       boxShadow: isActive ? `0 2px 12px ${cat.color}55` : 'none',
                     }}
                   >
