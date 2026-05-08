@@ -715,6 +715,31 @@ class TestBuildKwargs:
         assert kwargs["store"] is False
 
 
+class TestApiRevision:
+    """Tests for Phase 1 Api-Revision header opt-in support."""
+
+    def test_new_schema_revision_constant(self):
+        assert InteractionsClient.NEW_SCHEMA_REVISION == "2026-05-20"
+
+    def test_default_no_revision(self):
+        c = InteractionsClient.__new__(InteractionsClient)
+        c._api_key = ""
+        c._default_model = "gemini-3-flash-preview"
+        c._telemetry = NullTelemetry()
+        c._api_revision = None
+        c._client = None
+        assert c._api_revision is None
+
+    def test_revision_stored(self):
+        c = InteractionsClient.__new__(InteractionsClient)
+        c._api_key = ""
+        c._default_model = "gemini-3-flash-preview"
+        c._telemetry = NullTelemetry()
+        c._api_revision = "2026-05-20"
+        c._client = None
+        assert c._api_revision == "2026-05-20"
+
+
 # ---------------------------------------------------------------------------
 # Constants & Exports
 # ---------------------------------------------------------------------------

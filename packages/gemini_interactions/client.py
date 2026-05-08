@@ -342,7 +342,16 @@ class InteractionsClient:
     Args:
         api_key: Gemini API key. Falls back to GEMINI_API_KEY env var.
         default_model: Default model for requests.
+        api_revision: Optional Api-Revision date string (e.g., '2026-05-20') to
+            opt-in to the new step-based schema before the June 8, 2026 cutover.
+            When set, the SDK sends the Api-Revision header and the API returns
+            new-schema events (step.start/delta/stop instead of content.*).
+            See: https://ai.google.dev/gemini-api/docs/interactions-breaking-changes-may-2026
     """
+
+    # The Api-Revision date that triggers new step-based schema responses.
+    # Set this to opt-in before June 8, 2026 mandatory cutover.
+    NEW_SCHEMA_REVISION = "2026-05-20"
 
     def __init__(
         self,
@@ -350,10 +359,12 @@ class InteractionsClient:
         api_key: str | None = None,
         default_model: str = DEFAULT_MODEL,
         telemetry: TelemetryCallback | None = None,
+        api_revision: str | None = None,
     ) -> None:
         self._api_key = api_key or os.environ.get("GEMINI_API_KEY", "")
         self._default_model = default_model
         self._telemetry = telemetry or NullTelemetry()
+        self._api_revision = api_revision
         self._client: Any | None = None  # Lazy init
 
     @property
@@ -366,9 +377,13 @@ class InteractionsClient:
                 kwargs: dict[str, Any] = {}
                 if self._api_key:
                     kwargs["api_key"] = self._api_key
+                if self._api_revision:
+                    kwargs["http_options"] = {
+                        "headers": {"Api-Revision": self._api_revision}
+                    }
                 self._client = genai.Client(**kwargs)
             except ImportError as exc:
-                msg = "google-genai SDK not installed. Run: pip install google-genai>=1.47.0"
+                msg = "google-genai SDK not installed. Run: pip install google-genai>=1.65.0"
                 raise ImportError(msg) from exc
         return self._client
 
