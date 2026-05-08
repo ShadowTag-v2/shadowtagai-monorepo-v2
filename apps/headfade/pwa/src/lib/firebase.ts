@@ -34,13 +34,15 @@ export const auth = getAuth(app);
  * 3. Copy the site key into NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY
  * 4. Enable enforcement on Firestore in App Check settings
  */
+const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY ?? '';
+if (typeof window !== 'undefined' && !recaptchaSiteKey) {
+  console.error('[AppCheck] NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY is missing — App Check disabled');
+}
+
 export const appCheck =
-  typeof window !== 'undefined'
+  typeof window !== 'undefined' && recaptchaSiteKey
     ? initializeAppCheck(app, {
-        provider: new ReCaptchaEnterpriseProvider(
-          process.env.NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY ??
-            '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' // test key — replace with real key
-        ),
+        provider: new ReCaptchaEnterpriseProvider(recaptchaSiteKey),
         isTokenAutoRefreshEnabled: true,
       })
     : undefined;
