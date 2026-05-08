@@ -107,7 +107,7 @@ import {
   McpToolCallError_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
 } from '../mcp/client.js';
 import { mcpInfoFromString } from '../mcp/mcpStringUtils.js';
-import { normalizeNameForMCP } from '../mcp/normalization.js';
+import { normalizeNameForMCP, resolveMcpToolAlias } from '../mcp/normalization.js';
 import type { MCPServerConnection } from '../mcp/types.js';
 import {
   getLoggingSafeMcpBaseUrl,
@@ -319,7 +319,7 @@ export async function* runToolUse(
   canUseTool: CanUseToolFn,
   toolUseContext: ToolUseContext,
 ): AsyncGenerator<MessageUpdateLazy, void> {
-  const toolName = toolUse.name;
+  const toolName = resolveMcpToolAlias(toolUse.name);
   // First try to find in the available tools (what the model sees)
   let tool = findToolByName(toolUseContext.options.tools, toolName);
 
