@@ -7,7 +7,7 @@ Uses mock objects to test without live API calls.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 import pytest
@@ -756,11 +756,13 @@ class TestPhase2StepSchema:
         acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="text", text=", "))
         acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="text", text="world!"))
         acc.feed(StreamEvent(event_type="step.stop", index=0))
-        acc.feed(StreamEvent(
-            event_type="interaction.completed",
-            interaction_id="int-p2-1",
-            usage={"total_tokens": 42, "prompt_tokens": 10, "completion_tokens": 32},
-        ))
+        acc.feed(
+            StreamEvent(
+                event_type="interaction.completed",
+                interaction_id="int-p2-1",
+                usage={"total_tokens": 42, "prompt_tokens": 10, "completion_tokens": 32},
+            )
+        )
         assert acc.interaction_id == "int-p2-1"
         assert acc.status == "completed"
         assert len(acc.steps) == 1
@@ -772,12 +774,14 @@ class TestPhase2StepSchema:
         """step.delta with function_call payload reconstructs tool invocation."""
         acc = StreamAccumulator()
         acc.feed(StreamEvent(event_type="step.start", index=0, content_type="function_call"))
-        acc.feed(StreamEvent(
-            event_type="step.delta",
-            index=0,
-            delta_type="function_call",
-            function_call={"name": "search_web", "id": "fc-1"},
-        ))
+        acc.feed(
+            StreamEvent(
+                event_type="step.delta",
+                index=0,
+                delta_type="function_call",
+                function_call={"name": "search_web", "id": "fc-1"},
+            )
+        )
         acc.feed(StreamEvent(event_type="step.stop", index=0))
         steps = acc.steps
         assert len(steps) == 1
@@ -797,12 +801,14 @@ class TestPhase2StepSchema:
         """step.delta with thought_signature stores verification hash."""
         acc = StreamAccumulator()
         acc.feed(StreamEvent(event_type="step.start", index=0, content_type="thought"))
-        acc.feed(StreamEvent(
-            event_type="step.delta",
-            index=0,
-            delta_type="thought_signature",
-            signature="sig-abc123",
-        ))
+        acc.feed(
+            StreamEvent(
+                event_type="step.delta",
+                index=0,
+                delta_type="thought_signature",
+                signature="sig-abc123",
+            )
+        )
         acc.feed(StreamEvent(event_type="step.stop", index=0))
         assert acc.steps[0]["signature"] == "sig-abc123"
 
@@ -880,11 +886,13 @@ class TestPhase2StepSchema:
         acc.feed(StreamEvent(event_type="step.delta", index=0, delta_type="text", text="Mixed"))
         acc.feed(StreamEvent(event_type="step.stop", index=0))
         # Legacy completion
-        acc.feed(StreamEvent(
-            event_type="interaction.complete",
-            interaction_id="int-mixed",
-            usage={"total_tokens": 15},
-        ))
+        acc.feed(
+            StreamEvent(
+                event_type="interaction.complete",
+                interaction_id="int-mixed",
+                usage={"total_tokens": 15},
+            )
+        )
         assert acc.interaction_id == "int-mixed"
         assert acc.status == "completed"
         assert acc.steps[0]["text"] == "Mixed"
