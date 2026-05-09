@@ -3,3 +3,4 @@
 "@google-labs-code" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
 "@stitch" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
 "@firebase" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
+"@pyrex41" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
