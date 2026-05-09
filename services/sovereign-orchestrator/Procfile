@@ -1,1 +1,1 @@
-web: functions-framework --target=handle_healing_request --port=$PORT
+web: functions-framework --target=handle_healing_request --source=sovereign_orchestrator.py --port=$PORT
