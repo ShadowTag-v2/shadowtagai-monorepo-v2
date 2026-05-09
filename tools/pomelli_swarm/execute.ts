@@ -2,18 +2,34 @@
  * V23 Pomelli Swarm Executor
  * Task 18: NotebookLM + Pomelli integration for autonomous web auditing.
  * Queries NotebookLM for brand guidelines, then dispatches swarm across targets.
+ *
+ * Uses the `nlm` binary (notebooklm-mcp-cli, installed via uv) for direct
+ * NotebookLM MCP queries. Falls back to hardcoded ground truth on failure.
  */
 
 import { $ } from "bun";
 import { POMELLI_TARGET_MATRIX, type SwarmTarget } from "./targets";
 
+const GROUND_TRUTH_FALLBACK =
+  "NOTEBOOK_TRUTH: P100 Lighthouse strictly enforced. Dynamic Firebase imports via initAuthManager(app) only. HSTS preload mandatory. reCAPTCHA Enterprise for App Check. Zero third-party cookies on initial load.";
+
+/**
+ * Query NotebookLM via the `nlm` CLI binary.
+ * Protocol: nlm → stdio MCP → NotebookLM API → grounded response.
+ * Gracefully degrades to GROUND_TRUTH_FALLBACK if nlm is unavailable.
+ */
 async function queryNotebookLM(query: string): Promise<string> {
-  console.log(`🧠 [Gemini Flash-Lite] Querying NotebookLM MCP via uvx: "${query}"`);
+  console.log(`🧠 [NotebookLM] Querying via nlm binary: "${query}"`);
   try {
-    const result = await $`uvx --from notebooklm-mcp-cli notebooklm-mcp query "${query}"`.text();
-    return result || "NOTEBOOK_TRUTH: P100 Lighthouse strictly enforced. Dynamic Firebase imports only.";
-  } catch {
-    return "NOTEBOOK_TRUTH: P100 Lighthouse strictly enforced. Dynamic Firebase imports only.";
+    // nlm is installed at /opt/homebrew/bin/nlm via `uv tool install notebooklm-mcp-cli`
+    // The correct invocation is `nlm query "<prompt>"` — NOT the old broken
+    // `uvx --from notebooklm-mcp-cli notebooklm-mcp query` which was a phantom subcommand.
+    const result = await $`nlm query ${query}`.timeout(15_000).text();
+    const trimmed = result.trim();
+    return trimmed || GROUND_TRUTH_FALLBACK;
+  } catch (err) {
+    console.warn(`⚠️ nlm query failed, using ground truth fallback. Error: ${err}`);
+    return GROUND_TRUTH_FALLBACK;
   }
 }
 
@@ -45,7 +61,10 @@ export async function executeSwarmAudit(): Promise<AuditResult[]> {
 
     // Lighthouse audit via Chrome DevTools MCP
     try {
-      const lighthouse = await $`bunx --bun mcp-cli call chrome-devtools-mcp lighthouse_audit --url "${site.url}"`.text();
+      const lighthouse =
+        await $`bunx --bun mcp-cli call chrome-devtools-mcp lighthouse_audit --url "${site.url}"`
+          .timeout(60_000)
+          .text();
 
       if (lighthouse.includes("performance")) {
         auditResult.optimizations.push(`Lighthouse audit completed for ${site.id}`);
@@ -60,34 +79,34 @@ export async function executeSwarmAudit(): Promise<AuditResult[]> {
       site.lighthouseBaseline.accessibility < 100;
 
     if (needsOptimization) {
-      console.log(`⚡ Optimization opportunity detected for ${site.id}. Queueing AST-Grep patch.`);
+      console.log(
+        `⚡ Optimization opportunity detected for ${site.id}. Queueing AST-Grep patch.`,
+      );
       auditResult.patchQueued = true;
 
-      try {
-        await Bun.write(
-          `.jules_queue/${site.id}_patch_${Date.now()}.json`,
-          JSON.stringify({
-            siteId: site.id,
-            url: site.url,
-            astRule: "Dynamic Import Optimization",
-            baseline: site.lighthouseBaseline,
-            timestamp: Date.now(),
-          }),
-        );
-      } catch {
-        // Queue directory may not exist, create it
-        await $`mkdir -p .jules_queue`.quiet();
-      }
+      const patchDir = ".jules_queue";
+      await $`mkdir -p ${patchDir}`.quiet().catch(() => {});
+      await Bun.write(
+        `${patchDir}/${site.id}_patch_${Date.now()}.json`,
+        JSON.stringify({
+          siteId: site.id,
+          url: site.url,
+          astRule: "Dynamic Import Optimization",
+          baseline: site.lighthouseBaseline,
+          timestamp: Date.now(),
+        }),
+      );
     }
 
     results.push(auditResult);
   }
 
-  // NotebookLM audio overview generation
-  console.log(`\n🎙️ Triggering Audio Overview generation via NotebookLM MCP...`);
-  await $`uvx --from notebooklm-mcp-cli notebooklm-mcp studio_create --type audio_overview`
+  // NotebookLM audio overview generation (deferred in CI, best-effort in local)
+  console.log(`\n🎙️ Triggering Audio Overview generation via nlm...`);
+  await $`nlm audio-overview create`
+    .timeout(30_000)
     .quiet()
-    .catch(() => console.log("⚠️ Audio overview deferred for CI."));
+    .catch(() => console.log("⚠️ Audio overview deferred (nlm offline or no notebook bound)."));
 
   console.log(`\n✅ Pomelli Swarm audit complete. ${results.length} properties analyzed.`);
   return results;
