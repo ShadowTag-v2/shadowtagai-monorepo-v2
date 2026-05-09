@@ -1,12 +1,12 @@
 # ty.toml — Astral ty type checker configuration
 # https://docs.astral.sh/ty/
 # Canonical for: ShadowTag-v2/Monorepo-Uphillsnowball
-# Python: 3.13  |  Platform: darwin
+# Python: 3.14  |  Platform: darwin
 
 [environment]
-python-version = "3.13"
+python-version = "3.14"
 python-platform = "darwin"
-python = "./.venv"
+python = "/opt/homebrew/bin/python3"
 
 [src]
 include = [
