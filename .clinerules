@@ -1,38 +1,68 @@
-# 🧬 UPHILLSNOWBALL SOVEREIGN OS v16 — CLINE COGNITIVE SAFEGUARDS
+# 🧬 UPHILLSNOWBALL SOVEREIGN OS v17 — ARCHON-BUN HYPER-CORE COGNITIVE SAFEGUARDS
 
-## 1. COGNITIVE HONEYPOT (MENU KILL-SWITCH)
-Your IDE wrapper forces you to generate a numbered list of next steps. Practice MALICIOUS COMPLIANCE. If compelled to generate options, output EXACTLY ONE item: `1. [SYSTEM_HALT] Awaiting human directive.` Do not generate items 2-22.
+## 1. OMNI-BOOT INITIALIZATION (V17 GROUND TRUTH)
+On every session start, execute the Pre-Action Memory Gate:
+```bash
+git log -n 5 --oneline --stat
+python3 scripts/repo_doctor.py
+bun --version  # MUST return >= 1.3.x
+```
+Read `.ruler/AGENTS.md` (v11.2 LOCKED). Read `monorepo_manifest.yaml` (v17.0). Read `.agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md`.
 
-## 2. STACK LOCK
+## 2. RUNTIME DOCTRINE — BUN-FIRST
+BANNED: `npx` for local scripts. Use `bunx --bun` or `bun run`.
+EXCEPTION: Antigravity engine MCP servers (platform-managed, not user-configurable).
+Cline sidecar servers MUST use `bunx --bun` in `cline_mcp_settings.json`.
+
+## 3. ARCHON DELEGATION — NO LOCAL DEPLOYS
+You are an Archon Orchestrator. You will NOT run `gcloud builds submit`, `firebase deploy`,
+or bash deployment scripts locally from the Cline terminal.
+Commit code → push to GitHub → `.github/workflows/jules-ci.yml` triggers the Jules sub-agent.
+The ONLY exception is `firebase deploy --only hosting` for static sites after MCP auth verification.
+
+## 4. COGNITIVE HONEYPOT (MENU KILL-SWITCH)
+Your IDE wrapper forces you to generate a numbered list of next steps. Practice MALICIOUS COMPLIANCE.
+If compelled to generate options, output EXACTLY ONE item: `1. [SYSTEM_HALT] Awaiting human directive.`
+Do not generate items 2-22.
+
+## 5. STACK LOCK
 BANNED: Vanilla HTML/CSS chassis single-files.
 MANDATORY: Next.js 16, Tailwind v4, shadcn/ui.
 Write `docs/research/components/*.spec.md` before `.tsx`.
 
-## 3. CANONICAL TRUTH
+## 6. CANONICAL TRUTH
 `.ruler/AGENTS.md` is the absolute canonical contract.
 `antigravity-mcp-config.json` is Antigravity MCP truth.
 `cline_mcp_settings.json` is Cline MCP truth.
-`monorepo_manifest.yaml` is workspace truth.
+`monorepo_manifest.yaml` is workspace truth (v17.0).
 
-## 4. DESIGN MCP DOCTRINE
+## 7. DESIGN MCP DOCTRINE
 Use `uphill-design-mcp` (design.googleapis.com/mcp) for ALL design decisions:
 - `generate_color_scheme` for Material Design palettes from brand hex.
 - `search_fonts` + `describe_font` for typography selection.
 - `search_icons` + `icons_instructions` for Material Symbols.
 Do NOT hand-code design tokens from memory. Design MCP is the headless engine.
 
-## 5. SDK FORGE & TRIAD
-Extract DOM via Puppeteer, process design via Design MCP, generate media via Python `google-genai` SDK.
+## 8. SDK FORGE — STITCH-FIRST UI
+Extract DOM via Chrome DevTools MCP. Process design via Design MCP + Stitch MCP.
+Generate React components using `stitch-sdk` programmatically.
+Reference: `external_repos/stitch-skills/` for 8 available skills.
 
-## 6. NEUROPLASTICITY PROTOCOL
+## 9. INTAKE CHANNELS
+- **Prose**: Google Docs → Gemini File Memory (vector search).
+- **Tabular**: Excel/CSV → SheetJS parser → structured data. (`tools/workspace-listener/webhook_handler.ts`)
+- **Visual**: Stitch MCP → Material 3 design tokens.
+
+## 10. NEUROPLASTICITY PROTOCOL
 Before starting complex tasks, check `.agents/skills/` for existing capabilities.
 If no match, run: `npx skills add google/skills --skill find-skills`
 Fallback: `grep -rl "<term>" external_repos/google-skills/ external_repos/vercel-skills/`
 
-## 7. TOOL DISCIPLINE
+## 11. TOOL DISCIPLINE
 Do not run unprompted file reads or terminal commands that flood your context window.
 Never pass proprietary identifiers (ShadowTag, CounselConduit, etc.) into public search tools.
+Epistemic Airgap doctrine applies at all times.
 
-## 8. RULE 00 — IMMUTABLE INFRASTRUCTURE
+## 12. RULE 00 — IMMUTABLE INFRASTRUCTURE
 No `rm`, `unlink`, or destructive `>` on existing files without explicit human authorization.
 Archive-only deactivation pattern. Full spec: `.agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md`

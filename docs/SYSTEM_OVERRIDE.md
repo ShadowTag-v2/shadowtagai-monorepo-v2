@@ -1,49 +1,69 @@
-# UPHILLSNOWBALL SOVEREIGN OS v16 — SYSTEM OVERRIDE MANIFESTO
+# UPHILLSNOWBALL SOVEREIGN OS v17 — ARCHON-BUN HYPER-CORE
 
-> Version: 16.0 | Status: LOCKED | Date: 2026-05-09
+> Version: 17.0 | Status: LOCKED | Date: 2026-05-09
 
-## Architecture
+## Architecture — Distributed Swarm
 
-The Sovereign OS operates as a biological neural network metaphor mapped onto cloud infrastructure:
+V17 bifurcates the monolithic V16 architecture into a **Local Agent ↔ Cloud Agent** distributed swarm.
+The Local Agent (Cline/Antigravity) handles reasoning, generation, and design. The Cloud Agent (Jules)
+handles CI/CD, deployment, and telemetry — triggered asynchronously via GitHub Actions.
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                    SOVEREIGN OS v16                          │
-│                                                              │
-│  ┌────────────┐  ┌────────────┐  ┌────────────────────────┐ │
-│  │ PREFRONTAL │  │ MOTOR      │  │ SENSORY CORTEX         │ │
-│  │ CORTEX     │  │ CORTEX     │  │                        │ │
-│  │            │  │            │  │ • Observability MCP    │ │
-│  │ • Gemini   │  │ • Cloud    │  │ • Design MCP           │ │
-│  │   Memory   │  │   Run MCP  │  │ • Spanner Healer       │ │
-│  │ • File     │  │ • gcloud   │  │ • Telemetry Healer     │ │
-│  │   Search   │  │   MCP      │  │                        │ │
-│  └─────┬──────┘  └─────┬──────┘  └────────────┬───────────┘ │
-│        │               │                      │             │
-│        └───────────┬────┴──────────────────────┘             │
-│                    │                                         │
-│        ┌───────────▼───────────┐                             │
-│        │ HIPPOCAMPUS           │                             │
-│        │                       │                             │
-│        │ • Firestore State     │                             │
-│        │ • Checkpoint/Resume   │                             │
-│        │ • Skill Registry      │                             │
-│        └───────────┬───────────┘                             │
-│                    │                                         │
-│        ┌───────────▼───────────┐                             │
-│        │ AUTONOMIC NERVOUS     │                             │
-│        │ SYSTEM                │                             │
-│        │                       │                             │
-│        │ • FinOps Governor     │                             │
-│        │ • MCP Watchdog        │                             │
-│        │ • Self-Healing Loop   │                             │
-│        └───────────────────────┘                             │
-└──────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                    SOVEREIGN OS v17                               │
+│                 "Archon-Bun Hyper-Core"                           │
+│                                                                   │
+│  ┌─────────────────────────────┐  ┌────────────────────────────┐ │
+│  │ LOCAL AGENT (Cline)         │  │ CLOUD AGENT (Jules)        │ │
+│  │                             │  │                            │ │
+│  │ • Reasoning / Planning      │  │ • CI/CD Orchestration      │ │
+│  │ • Stitch Generative UI      │  │ • Cloud Run Deployment     │ │
+│  │ • Design MCP (Aesthetic)    │  │ • Spanner DDL Migrations   │ │
+│  │ • SheetJS Tabular Intake    │  │ • Security Scanning        │ │
+│  │ • Code Generation           │  │ • Lighthouse Audits        │ │
+│  │                             │  │                            │ │
+│  │ Runtime: Bun 1.3.11         │  │ Runtime: GitHub Actions    │ │
+│  │ Transport: stdio/HTTP       │  │ Transport: jules-action    │ │
+│  └──────────┬──────────────────┘  └──────────┬─────────────────┘ │
+│             │                                │                    │
+│             └──────────┬─────────────────────┘                    │
+│                        │                                          │
+│  ┌─────────────────────▼──────────────────────────────────────┐  │
+│  │ HIPPOCAMPUS (State Layer)                                   │  │
+│  │                                                             │  │
+│  │ • Firestore Checkpoint/Resume     • Gemini File Memory      │  │
+│  │ • Skill Registry (247 active)     • KI Corpus (20+ items)   │  │
+│  └─────────────────────┬──────────────────────────────────────┘  │
+│                        │                                          │
+│  ┌─────────────────────▼──────────────────────────────────────┐  │
+│  │ AUTONOMIC NERVOUS SYSTEM                                    │  │
+│  │                                                             │  │
+│  │ • FinOps Governor           • MCP Watchdog                  │  │
+│  │ • Self-Healing Loop         • Telemetry Healer              │  │
+│  │ • Repo Doctor (Score: A)    • Dream Consolidation           │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
-## MCP Fleet Manifest (v16)
+## Runtime Upgrade: Bun-First
 
-### Antigravity Engine (10 servers — `antigravity-mcp-config.json`)
+V17 adopts Bun as the preferred JavaScript/TypeScript runtime. Bun (written in Zig,
+backed by mimalloc memory allocator) provides sub-millisecond cold starts for local tooling.
+
+| Dimension | V16 (Node.js) | V17 (Bun-First) |
+|-----------|---------------|-----------------|
+| MCP server boot | `npx -y <pkg>` | `bunx --bun <pkg>` (fallback: `npx`) |
+| Local scripts | Python/Node | Bun TypeScript |
+| Package install | `npm install` | `bun install` |
+| Cold start | ~800ms | ~12ms |
+| Memory allocator | V8 default | mimalloc |
+
+**Migration rule**: Cline sidecar servers migrate to `bunx --bun` where the package supports it.
+Antigravity engine servers remain as-is (platform-managed, not user-configurable).
+
+## MCP Fleet Manifest (v17)
+
+### Antigravity Engine (5 servers — `antigravity-mcp-config.json`)
 
 | # | Server | Transport | Tools | Domain |
 |---|--------|-----------|-------|--------|
@@ -55,28 +75,61 @@ The Sovereign OS operates as a biological neural network metaphor mapped onto cl
 
 ### Cline Sidecar (9 servers — `cline_mcp_settings.json`)
 
-| # | Server | Transport | Tools | Status |
-|---|--------|-----------|-------|--------|
+| # | Server | Runtime | Tools | Status |
+|---|--------|---------|-------|--------|
 | 1 | uphill-design-mcp | StreamableHTTP | 5 | ✅ ACTIVE |
-| 2 | uphill-gcloud-infra | stdio | 1+ | ✅ ACTIVE |
-| 3 | uphill-observability | stdio | 10 | ✅ ACTIVE |
-| 4 | uphill-cloud-run | stdio | 4 | ✅ ACTIVE |
-| 5 | uphill-storage-cdn | stdio | 6 | ✅ ACTIVE |
-| 6 | uphill-notebooklm | stdio | 4 | ✅ ACTIVE |
-| 7 | uphill-epistemic-memory | stdio | 7 | ✅ ACTIVE |
-| 8 | uphill-cognitive-telemetry | stdio | — | ⏸ DISABLED |
-| 9 | uphill-economic-engine | stdio | — | ⏸ DISABLED |
+| 2 | uphill-gcloud-infra | bunx | 1+ | ✅ ACTIVE |
+| 3 | uphill-observability | bunx | 10 | ✅ ACTIVE |
+| 4 | uphill-cloud-run | bunx | 4 | ✅ ACTIVE |
+| 5 | uphill-storage-cdn | bunx | 6 | ✅ ACTIVE |
+| 6 | uphill-epistemic-memory | bun | 7 | ✅ ACTIVE |
+| 7 | uphill-notebooklm | bunx | 4 | ✅ ACTIVE |
+| 8 | uphill-cognitive-telemetry | bunx | — | ⏸ DISABLED |
+| 9 | uphill-economic-engine | bunx | — | ⏸ DISABLED |
 
-**Total: 19 servers, 100+ tools across dual engines.**
+**Total: 14 servers, 100+ tools across dual engines.**
 
-## 7-Step Cognitive Workflow
+## Archon Delegation Doctrine
+
+The Archon pattern replaces the God-Agent anti-pattern. The local agent NEVER runs
+`gcloud builds submit` or bash deployment scripts directly.
+
+```
+Local Agent (Cline)                    Cloud Agent (Jules)
+────────────────────                   ───────────────────
+1. Generate code                       4. Receive push event
+2. Run local tests                     5. Authenticate via WIF
+3. git push → GitHub ──────────────→   6. Run jules-skills
+                                       7. Deploy to Cloud Run
+                                       8. Post deployment URL
+```
+
+**Workflow**: `.github/workflows/jules-ci.yml`
+**Skills repo**: `google-labs-code/jules-skills`
+**Action**: `google-labs-code/jules-action@v1`
+
+## Intake Channels
+
+### Prose Intent (Google Docs)
+Decoded via `Buffer.from(base64, 'base64').toString('utf-8')`.
+Routed to Gemini File Memory for vector search.
+
+### Tabular Ledger (Excel/CSV — NEW in V17)
+Parsed via SheetJS (`xlsx` package) in `tools/workspace-listener/webhook_handler.ts`.
+Converts `.xlsx`/`.csv` to structured CSV, then uploads to Gemini File API.
+
+### Visual Design (Stitch)
+Material 3 UI variants generated programmatically via `stitch-sdk`.
+React components use `react-starter-kit` as the isomorphic chassis.
+
+## 7-Step Cognitive Workflow (V17)
 
 1. **PERCEIVE** — Design MCP + Observability scans the environment
 2. **REMEMBER** — Firestore Hippocampus retrieves agent state
 3. **PLAN** — Sequential Thinking structures multi-step approach
-4. **DESIGN** — Design MCP generates color schemes, fonts, icons
+4. **DESIGN** — Stitch MCP generates M3 UI variants; Design MCP provides tokens
 5. **EXECUTE** — Cloud Run + gcloud MCP deploys infrastructure
-6. **HEAL** — Spanner Healer + Telemetry Healer fix anomalies
+6. **DELEGATE** — Jules CI/CD handles async cloud mutations
 7. **GOVERN** — FinOps Governor enforces cost circuit breakers
 
 ## Neuroplasticity Protocol
@@ -94,37 +147,20 @@ npx skills add vercel-labs/skills --skill <skill-name>
 grep -rl "<capability>" external_repos/google-skills/ external_repos/vercel-skills/
 ```
 
-### External Repos — Reference Leverage (v16)
+### External Repos — Reference Leverage (v17 — 17 repos)
 
-| Repo | Domain | Assets |
-|------|--------|--------|
-| `google-labs-code/stitch-skills` | Stitch design skills | 8 skills (design-md, enhance-prompt, react-components, remotion, shadcn-ui, stitch-design, stitch-loop, taste-design) |
-| `google-labs-code/stitch-sdk` | Stitch SDK | TypeScript SDK for Stitch API |
-| `google-labs-code/jules-skills` | Jules agent skills | 2 skills (automate-github-issues, local-action-verification) |
-| `google-labs-code/jules-sdk` | Jules SDK | TypeScript SDK for Jules API |
-| `google-labs-code/jules-action` | Jules GitHub Action | CI/CD integration |
-| `google-labs-code/jules-awesome-list` | Jules ecosystem list | Community resources |
-| `google-labs-code/action-setup` | Action setup utility | GitHub Actions bootstrap |
-| `cline/prompts` | Cline workflows | 7 workflows (AI DLC, CI/CD, PR review, self-improving) |
-
-## Design MCP Integration
-
-The Google Design MCP (`design.googleapis.com/mcp`) serves as the headless design engine:
-
-- **No API key required** — open access
-- **5 tools**: `generate_color_scheme`, `search_icons`, `icons_instructions`, `search_fonts`, `describe_font`
-- **Transport**: StreamableHTTP (remote SSE, not local stdio)
-- **Use**: Material Design palettes, Google Fonts metadata, Material Symbols search
-
-### Inspector Command
-```bash
-npx @modelcontextprotocol/inspector https://design.googleapis.com/mcp
-```
+| Group | Repos | Purpose |
+|-------|-------|---------|
+| Google Labs | stitch-skills, stitch-sdk, jules-skills, jules-sdk, jules-action, jules-awesome-list, action-setup | Generative UI + Cloud CI/CD |
+| Bun Ecosystem | bun, awesome-bun, mimalloc, zig, libuv, homebrew-bun | Runtime physics upgrade |
+| Tools | sheetjs, react-starter-kit, Archon | Tabular intake, UI chassis, multi-agent patterns |
+| Cline | prompts | Host neuroplasticity reference |
 
 ## Security Invariants
 
 - Rule 00: Immutable Infrastructure — no destructive file operations
 - Secrets: GCP Secret Manager only — no `.env`, no hardcoded keys
-- IPv4-first: `NODE_OPTIONS=--dns-result-order=ipv4first` on all Node.js MCP servers
+- IPv4-first: `NODE_OPTIONS=--dns-result-order=ipv4first` on all MCP servers
 - Proxy clear: `HTTP_PROXY=""`, `HTTPS_PROXY=""` to prevent IDE proxy interference
 - Epistemic Airgap: Never pass proprietary identifiers to public search
+- WIF: Workload Identity Federation for all GitHub Actions → GCP auth
