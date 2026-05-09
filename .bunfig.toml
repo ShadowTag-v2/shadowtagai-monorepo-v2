@@ -1,30 +1,5 @@
-# V18 Zenith — Enterprise Registry Router
-# Routes private scopes to Google Artifact Registry + GitHub Packages
-# Public packages resolve normally via registry.npmjs.org
-
-[install]
-# Use Bun's native lockfile
-lockfile = "bun.lock"
-
 [install.scopes]
-# Google internal MCP + AI packages → GCP Artifact Registry (WIF auth)
 "@google" = { url = "https://us-central1-npm.pkg.dev/shadowtag-omega-v4/mcp-registry/", token = "$GOOGLE_ADC_TOKEN" }
-
-# Google Labs experimental packages → GitHub Packages
 "@google-labs-code" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
-
-# Stitch Design SDK → GitHub Packages
 "@stitch" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
-
-# Firebase enterprise packages → GitHub Packages
 "@firebase" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
-
-# Jules CI/CD SDK → GitHub Packages
-"@jules" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
-
-# ShadowTag internal packages → GCP Artifact Registry
-"@shadowtag" = { url = "https://us-central1-npm.pkg.dev/shadowtag-omega-v4/shadowtag-packages/", token = "$GOOGLE_ADC_TOKEN" }
-
-[run]
-# Bun runtime flags for server.ts
-bun = true

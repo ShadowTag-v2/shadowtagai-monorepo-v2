@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V19 Archon-Bun Hyper-Core — Chassis Preview</title>
+  <meta name="description" content="ShadowTag Sovereign OS V19 Bicameral Archon-Bun Hyper-Core isomorphic chassis preview. Material 3 design system.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --md-sys-color-primary: #6750A4;
+      --md-sys-color-on-primary: #FFFFFF;
+      --md-sys-color-primary-container: #EADDFF;
+      --md-sys-color-surface: #0E0E12;
+      --md-sys-color-surface-variant: #1A1A24;
+      --md-sys-color-on-surface: #E6E0E9;
+      --md-sys-color-on-surface-variant: #CAC4D0;
+      --md-sys-color-outline: #49454F;
+      --md-sys-color-error: #F2B8B5;
+      --md-sys-color-tertiary: #7DD3C0;
+      --md-sys-shape-corner-medium: 12px;
+      --md-sys-shape-corner-large: 16px;
+      --md-sys-shape-corner-full: 100px;
+      --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── Animated Background ─────────────────────────────────── */
+    .bg-grid {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(rgba(103, 80, 164, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(103, 80, 164, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 0;
+      animation: gridPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes gridPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ─── Top Bar ─────────────────────────────────────────────── */
+    .top-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      background: rgba(14, 14, 18, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .top-bar-brand {
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      color: var(--md-sys-color-primary);
+    }
+
+    .top-bar-status {
+      font-size: 0.75rem;
+      color: var(--md-sys-color-on-surface-variant);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 8px; height: 8px;
+      background: var(--md-sys-color-tertiary);
+      border-radius: 50%;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ─── Hero Section ────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 80px 24px 40px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(103, 80, 164, 0.12);
+      border: 1px solid rgba(103, 80, 164, 0.3);
+      border-radius: var(--md-sys-shape-corner-full);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--md-sys-color-primary);
+      margin-bottom: 32px;
+      letter-spacing: 0.03em;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, var(--md-sys-color-on-surface) 0%, var(--md-sys-color-primary) 60%, var(--md-sys-color-tertiary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--md-sys-color-on-surface-variant);
+      max-width: 600px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      border: none;
+      border-radius: var(--md-sys-shape-corner-full);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
+      box-shadow: 0 4px 24px rgba(103, 80, 164, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(103, 80, 164, 0.5);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: transparent;
+      color: var(--md-sys-color-on-surface);
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: var(--md-sys-shape-corner-full);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--font-family);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--md-sys-color-primary);
+      background: rgba(103, 80, 164, 0.08);
+    }
+
+    /* ─── Metrics Grid ────────────────────────────────────────── */
+    .metrics {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+
+    .metric-card {
+      background: var(--md-sys-color-surface-variant);
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: var(--md-sys-shape-corner-large);
+      padding: 28px 24px;
+      transition: all 0.2s ease;
+    }
+
+    .metric-card:hover {
+      border-color: var(--md-sys-color-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(103, 80, 164, 0.12);
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--md-sys-color-on-surface-variant);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--md-sys-color-on-surface);
+      margin-bottom: 4px;
+    }
+
+    .metric-detail {
+      font-size: 0.8rem;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    /* ─── Architecture Section ─────────────────────────────────── */
+    .arch-section {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+
+    .arch-section h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 32px;
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .arch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .arch-grid { grid-template-columns: 1fr; }
+    }
+
+    .arch-item {
+      background: var(--md-sys-color-surface-variant);
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: var(--md-sys-shape-corner-medium);
+      padding: 20px;
+    }
+
+    .arch-item-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--md-sys-color-primary);
+      margin-bottom: 8px;
+    }
+
+    .arch-item-desc {
+      font-size: 0.8rem;
+      color: var(--md-sys-color-on-surface-variant);
+      line-height: 1.6;
+    }
+
+    /* ─── Footer ──────────────────────────────────────────────── */
+    .footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1px solid var(--md-sys-color-outline);
+      font-size: 0.75rem;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <!-- Top Bar -->
+  <header class="top-bar" role="banner">
+    <div class="top-bar-brand">SHADOWTAG</div>
+    <div class="top-bar-status">
+      <span class="status-dot" aria-hidden="true"></span>
+      V19 Archon-Bun Hyper-Core • Live
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main class="hero">
+    <div class="hero-badge">⚡ Bicameral Cognitive Split Active</div>
+    <h1>Sovereign OS<br>V19 Hyper-Core</h1>
+    <p>
+      Autonomous infrastructure built on Bun, Hono, and Spanner.
+      Dual-engine cognitive routing via Claude Opus 4.6 (architect)
+      and Gemini 3.1 Flash-Lite (sensory edge). Zero human intervention.
+    </p>
+    <div class="hero-actions">
+      <button type="button" class="btn-primary" id="cta-boot">
+        Execute Archon-Boot
+      </button>
+      <button type="button" class="btn-outline" id="cta-docs">
+        View Architecture
+      </button>
+    </div>
+  </main>
+
+  <!-- Metrics -->
+  <section class="metrics" aria-label="System Metrics">
+    <div class="metric-card">
+      <div class="metric-label">MCP Fleet</div>
+      <div class="metric-value">5</div>
+      <div class="metric-detail">Active servers • 90 tools</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Skill Fleet</div>
+      <div class="metric-value">247</div>
+      <div class="metric-detail">Active skills • Auto-acquisition</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Runtime</div>
+      <div class="metric-value">Bun</div>
+      <div class="metric-detail">Zig + libuv + mimalloc</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">FinOps Gate</div>
+      <div class="metric-value">85%</div>
+      <div class="metric-detail">Cost-to-revenue circuit breaker</div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="arch-section" aria-label="Architecture Overview">
+    <h2>Bicameral Architecture</h2>
+    <div class="arch-grid">
+      <div class="arch-item">
+        <div class="arch-item-title">Internal Architect</div>
+        <div class="arch-item-desc">Claude Opus 4.6 — structural architecture, infrastructure provisioning, CI/CD orchestration, and codebase mutations.</div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-item-title">External Sensory Edge</div>
+        <div class="arch-item-desc">Gemini 3.1 Flash-Lite — high-throughput webhooks, DOM scraping, SheetJS ingestion, and test-time compute scaling.</div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-item-title">Data Plane</div>
+        <div class="arch-item-desc">Spanner (ledger) → Datastream CDC → Pub/Sub → Cloud Run handler. Firestore for agent state. BigQuery for analytics.</div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-item-title">GraphQL Gateway</div>
+        <div class="arch-item-desc">Hono + GraphQL subscriptions over Bun. Real-time CDC event streaming to connected clients.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    ShadowTag Sovereign OS V19 • shadowtag-omega-v4 • Archon-Bun Hyper-Core
+  </footer>
+</body>
+</html>
