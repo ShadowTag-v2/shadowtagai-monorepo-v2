@@ -14,13 +14,7 @@
  */
 
 import { useState } from 'react';
-import {
-  signInWithPopup,
-  GoogleAuthProvider,
-  OAuthProvider,
-  type AuthError,
-} from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { getAuthInstance } from '@/lib/firebase';
 
 interface AuthWallModalProps {
   isOpen: boolean;
@@ -28,9 +22,6 @@ interface AuthWallModalProps {
   /** Called after a successful sign-in so the parent can refresh state. */
   onSignedIn?: () => void;
 }
-
-const googleProvider = new GoogleAuthProvider();
-const appleProvider = new OAuthProvider('apple.com');
 
 export function AuthWallModal({ isOpen, onClose, onSignedIn }: AuthWallModalProps) {
   const [loading, setLoading] = useState<'google' | 'apple' | null>(null);
@@ -42,12 +33,20 @@ export function AuthWallModal({ isOpen, onClose, onSignedIn }: AuthWallModalProp
     setLoading(provider);
     setError(null);
     try {
-      const p = provider === 'google' ? googleProvider : appleProvider;
-      await signInWithPopup(auth, p);
+      // Dynamic import — firebase/auth module is NOT in the initial JS bundle.
+      // Only loaded when the user actually clicks a sign-in button.
+      const [authMod, authInstance] = await Promise.all([
+        import('firebase/auth'),
+        getAuthInstance(),
+      ]);
+      const p = provider === 'google'
+        ? new authMod.GoogleAuthProvider()
+        : new authMod.OAuthProvider('apple.com');
+      await authMod.signInWithPopup(authInstance, p);
       onClose();
       onSignedIn?.();
     } catch (err) {
-      const ae = err as AuthError;
+      const ae = err as { code?: string };
       // User closed the popup — not an error worth surfacing
       if (ae.code !== 'auth/popup-closed-by-user' && ae.code !== 'auth/cancelled-popup-request') {
         setError('Sign-in failed. Try again or check your network.');
