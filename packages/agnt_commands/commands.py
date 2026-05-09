@@ -116,7 +116,7 @@ async def cmd_doctor(args: str, ctx: CommandContext) -> CommandResult:
             checks.append(f"✓ Git branch: {git_branch.stdout.strip()}")
         else:
             checks.append("✗ Git: not in a repository")
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks.append("✗ Git: not available")
 
     # 3. Knowledge directory

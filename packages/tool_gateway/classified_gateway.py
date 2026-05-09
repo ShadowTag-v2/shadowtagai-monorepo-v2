@@ -46,14 +46,26 @@ logger = logging.getLogger(__name__)
 _PATH_KEYS = frozenset({"path", "file", "target", "TargetFile", "AbsolutePath", "filePath"})
 
 # Tool IDs that represent bash/shell/powershell/cmd command execution
-_SHELL_TOOL_IDS = frozenset({
-    # Unix shells
-    "run_command", "bash", "shell", "terminal", "execute_command",
-    # PowerShell (Windows + cross-platform)
-    "powershell", "pwsh", "run_powershell", "execute_powershell",
-    # CMD (Windows)
-    "cmd", "command_prompt", "run_cmd", "execute_cmd",
-})
+_SHELL_TOOL_IDS = frozenset(
+    {
+        # Unix shells
+        "run_command",
+        "bash",
+        "shell",
+        "terminal",
+        "execute_command",
+        # PowerShell (Windows + cross-platform)
+        "powershell",
+        "pwsh",
+        "run_powershell",
+        "execute_powershell",
+        # CMD (Windows)
+        "cmd",
+        "command_prompt",
+        "run_cmd",
+        "execute_cmd",
+    }
+)
 
 
 class ClassifiedGateway:
@@ -346,7 +358,7 @@ class ClassifiedGateway:
                 if key in tool_input and isinstance(tool_input[key], str):
                     command = tool_input[key]
                     break
-            
+
             if command:
                 bash_result = self._bash_classifier.classify_for_gateway(command)
                 if not bash_result["allowed"]:

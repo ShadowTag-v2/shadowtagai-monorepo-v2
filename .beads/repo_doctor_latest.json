@@ -1,17 +1,157 @@
 {
   "score": "C",
-  "total_findings": 9,
+  "total_findings": 29,
   "critical": 0,
   "errors": 2,
-  "warnings": 1,
+  "warnings": 21,
   "info": 6,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "reports/skills/guardrail_annotation_audit.md",
-      "fix": "git checkout -- reports/skills/guardrail_annotation_audit.md"
+      "path": ".beads/epistemic_sync_needed.json",
+      "fix": "git checkout -- .beads/epistemic_sync_needed.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".beads/repo_doctor_latest.json",
+      "fix": "git checkout -- .beads/repo_doctor_latest.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".betterleaksignore",
+      "fix": "git checkout -- .betterleaksignore"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".reports/skills/guardrail_annotation_audit.md",
+      "fix": "git checkout -- .reports/skills/guardrail_annotation_audit.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/headfade/pwa/src/lib/firebase.ts",
+      "fix": "git checkout -- apps/headfade/pwa/src/lib/firebase.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "package-lock.json",
+      "fix": "git checkout -- package-lock.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_bridge/auth.py",
+      "fix": "git checkout -- packages/agnt_bridge/auth.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_bridge/gate.py",
+      "fix": "git checkout -- packages/agnt_bridge/gate.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_commands/commands.py",
+      "fix": "git checkout -- packages/agnt_commands/commands.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_cost_tracker/cost_tracker.py",
+      "fix": "git checkout -- packages/agnt_cost_tracker/cost_tracker.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_remote/feature_flags.py",
+      "fix": "git checkout -- packages/agnt_remote/feature_flags.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_services/lsp_client.py",
+      "fix": "git checkout -- packages/agnt_services/lsp_client.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_services/mcp_channel_service.py",
+      "fix": "git checkout -- packages/agnt_services/mcp_channel_service.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_services/prevent_sleep.py",
+      "fix": "git checkout -- packages/agnt_services/prevent_sleep.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_services/tool_use_summary.py",
+      "fix": "git checkout -- packages/agnt_services/tool_use_summary.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_termio/osc.py",
+      "fix": "git checkout -- packages/agnt_termio/osc.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_tmux/tmux_socket.py",
+      "fix": "git checkout -- packages/agnt_tmux/tmux_socket.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_tools/config_tool.py",
+      "fix": "git checkout -- packages/agnt_tools/config_tool.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_tools/usage_summary.py",
+      "fix": "git checkout -- packages/agnt_tools/usage_summary.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "packages/agnt_utils/json_utils.py",
+      "fix": "git checkout -- packages/agnt_utils/json_utils.py"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "... and 25 more dirty files",
+      "path": "",
+      "fix": ""
     },
     {
       "gate": "conflicts",
@@ -23,7 +163,7 @@
     {
       "gate": "secrets",
       "severity": "error",
-      "message": "Betterleaks found 3 potential secrets",
+      "message": "Betterleaks found 39 potential secrets",
       "path": "",
       "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
     },
@@ -67,7 +207,7 @@
       "severity": "error",
       "message": "Test collection failed",
       "path": "",
-      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest --co -q 2>&1 | tail -10"
+      "fix": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python3 -m pytest --co -q 2>&1 | tail -10"
     }
   ]
 }

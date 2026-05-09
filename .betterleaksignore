@@ -22,3 +22,16 @@ tests/vcr_cassettes/**
 # Skill/doc files that reference example API keys in documentation
 docs/OMNI_BOOT_V25.md
 docs/SYSTEM_OVERRIDE.md
+
+# Agent fold-in reports (contain obfuscated/scrambled keys from ingested repos)
+.agent/reports/**
+
+# Stitch SDK test stubs (non-secret test-key placeholders)
+.stitch-sdk/scripts/publish-readiness.ts
+
+# K8s secret templates/examples (contain "REPLACE_WITH" / "your_*_here" placeholders)
+apps/aiyou_stack/aiyou-fastapi-services/configs/secrets.example.yml
+apps/aiyou_stack/aiyou-fastapi-services/infra/k8s/secrets.yaml.example
+apps/aiyou_stack/aiyou-fastapi-services/infra/k8s/secrets.yaml.template
+apps/aiyou_stack/aiyou-fastapi-services/infrastructure/k8s/secrets.yaml.example
+apps/aiyou_stack/aiyou-fastapi-services/infrastructure/k8s/secrets.yaml.template

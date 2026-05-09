@@ -149,7 +149,7 @@ class BridgeAuth:
         """
         try:
             token = AuthToken.deserialize(raw_token)
-        except (ValueError, IndexError):
+        except ValueError, IndexError:
             logger.warning("Failed to deserialize auth token")
             return False
         return self.validate_token(token)

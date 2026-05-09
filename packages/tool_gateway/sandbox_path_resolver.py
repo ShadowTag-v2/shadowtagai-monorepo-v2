@@ -136,7 +136,7 @@ class SandboxPathResolver:
         # Resolve symlinks and normalize
         try:
             resolved = raw.resolve()
-        except (OSError, RuntimeError):
+        except OSError, RuntimeError:
             return ResolvedPath(
                 resolved=raw,
                 original=path_str,
