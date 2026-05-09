@@ -1,0 +1,17 @@
+# AST-Grep Configuration — V25 Pinnacle Semantic Scalpel
+# This is the root config for the ast-grep CLI and MCP server.
+# All rules in rules/ are automatically loaded.
+
+ruleDirs:
+  - rules
+
+testConfigs:
+  - testDir: rules-test
+
+languageGlobs:
+  typescript:
+    - "*.ts"
+    - "*.tsx"
+  javascript:
+    - "*.js"
+    - "*.jsx"

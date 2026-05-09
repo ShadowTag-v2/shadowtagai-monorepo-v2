@@ -63,8 +63,10 @@ echo "[4/5] Pushing to GitHub..."
 if [ "$DRY_RUN" = true ]; then
     echo "  [DRY RUN] Would push to origin main via GitHub App JWT"
 else
-    # Use GitHub App auth script if available, otherwise standard push
-    if [ -f "scripts/auth_github_app.py" ]; then
+    # Use Bun-native GitHub App auth (V25), fallback to Python, then standard push
+    if command -v bun &> /dev/null && [ -f "scripts/auth_github_app.ts" ]; then
+        bun run scripts/auth_github_app.ts --push 2>&1 || git push origin HEAD
+    elif [ -f "scripts/auth_github_app.py" ]; then
         python3 scripts/auth_github_app.py --push 2>&1 || git push origin HEAD
     else
         git push origin HEAD
