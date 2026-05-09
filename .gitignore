@@ -39,6 +39,17 @@ archive/labs_graveyard/
 archive/external_payloads/
 archive/claude-code-src-leak/
 archive/external_repos_root/
+archive/claude_code_audit_2026/
+archive/claude_code_src_extract/
+archive/redundant_2026-*/
+archive/redundant_venvs_2026-*/
+archive/scratch_2026/ant_gated_logic.txt
+archive/scratch_2026/ant_type_matches.txt
+archive/scratch_2026/claude_code_src/
+archive/scratch_2026/cprofile_benchmark.py
+archive/scratch_2026/fix_all_except_commas.py
+archive/scratch_2026/fix_except_commas.py
+archive/scratch_2026/repos/
 
 # --- Nested Git Repos ---
 **/.git/
