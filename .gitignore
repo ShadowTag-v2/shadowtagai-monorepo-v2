@@ -9,3 +9,12 @@ dist/
 *.d.cts
 *.d.cts.map
 .bazelrc.local
+
+# External reference repos (100+ cloned repos, ~2GB)
+external_repos/
+
+# Generated infrastructure repos
+agnt-os-infrastructure-repos/
+
+# Reports and logs
+.reports/
