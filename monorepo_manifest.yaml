@@ -5,13 +5,18 @@ mcp-truth: antigravity-mcp-config.json
 judge6-gate: active
 
 # Version & Phase Tracking
-version: "16.0"
+version: "17.0"
 phase: 5
-milestone: 11
-milestone_name: "Absolute OS v16 — 15-Server MCP Fleet + Aesthetic Cortex + FinOps + Immune System"
-milestone_status: "COMPLETE"
+milestone: 12
+milestone_name: "Archon-Bun Hyper-Core v17 — Distributed Swarm + Bun Runtime + Jules CI/CD + SheetJS Intake"
+milestone_status: "ACTIVE"
 phase_started: "2026-05-09"
 last_updated: "2026-05-09"
+
+# Runtime
+bun_runtime: "1.3.11"
+node_runtime: "v24.14.1"
+runtime_preference: "bun-first"
 
 # Canonical Packages (batch-6 through batch-10)
 canonical_packages:
@@ -60,6 +65,21 @@ canonical_packages:
   - packages/gemini_interactions
   - packages/orbstack_sandbox
   - packages/shadowtag
+
+# V17 Architecture Additions
+v17_additions:
+  archon_delegation: true
+  jules_ci_cd: ".github/workflows/jules-ci.yml"
+  sheetjs_intake: "tools/workspace-listener/webhook_handler.ts"
+  generative_ui: "apps/kovelai/src/GavelHero.tsx"
+  sovereign_mode: ".cline/custom_modes/sovereign.json"
+
+# External Repo Groups (V17 — 17 repos cloned)
+external_repos:
+  google_labs: ["stitch-skills", "stitch-sdk", "jules-skills", "jules-sdk", "jules-action", "jules-awesome-list", "action-setup"]
+  cline: ["prompts"]
+  bun_ecosystem: ["bun", "awesome-bun", "mimalloc", "zig", "libuv", "homebrew-bun"]
+  tools: ["sheetjs", "react-starter-kit", "Archon"]
 
 # Deployment
 production_url: "https://counselconduit-767252945109.us-central1.run.app"
