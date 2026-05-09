@@ -3,79 +3,120 @@
  * Allows Opus 4.6 to proactively fetch PRDs and workspace documents on demand.
  * MCP Server: google-drive-api
  */
-import { google } from 'googleapis';
 
-const auth = new google.auth.GoogleAuth({
-  keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-  scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+
+const server = new McpServer({
+  name: "google-drive-api",
+  version: "1.0.0",
+  description: "Google Drive document fetcher — proactive PRD and workspace doc retrieval",
 });
-const drive = google.drive({ version: 'v3', auth });
 
-/**
- * Actively fetches a Google Drive document by file ID and returns its text content.
- */
-export async function fetchDocumentActively(fileId: string): Promise<string> {
-  console.log(`🔍 Active API Fetch: Retrieving Document ${fileId}...`);
-  const res = await drive.files.export({ fileId, mimeType: 'text/plain' });
-  const content = res.data as string;
-  console.log(`✅ Document fetched: ${content.length} chars`);
-  return content;
-}
+server.tool(
+  "drive_search",
+  "Search Google Drive for documents by name or content",
+  {
+    query: z.string().describe("Search query for Drive files"),
+    mimeType: z
+      .string()
+      .optional()
+      .describe("Filter by MIME type (e.g., application/vnd.google-apps.document)"),
+    maxResults: z.number().optional().describe("Max results (default 10)"),
+  },
+  async ({ query, mimeType, maxResults }) => {
+    // Uses ADC for authentication
+    const { google } = await import("googleapis");
+    const auth = new google.auth.GoogleAuth({
+      scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+    });
+    const drive = google.drive({ version: "v3", auth });
 
-/**
- * Lists recent files modified in the last N days.
- */
-export async function listRecentFiles(days: number = 7): Promise<Array<{ id: string; name: string; modifiedTime: string }>> {
-  const cutoff = new Date(Date.now() - days * 86400000).toISOString();
-  const res = await drive.files.list({
-    q: `modifiedTime > '${cutoff}' and trashed = false`,
-    fields: 'files(id, name, modifiedTime, mimeType)',
-    orderBy: 'modifiedTime desc',
-    pageSize: 25,
-  });
-  return (res.data.files || []).map(f => ({
-    id: f.id!,
-    name: f.name!,
-    modifiedTime: f.modifiedTime!,
-  }));
-}
+    let q = `fullText contains '${query.replace(/'/g, "\\'")}'`;
+    if (mimeType) q += ` and mimeType='${mimeType}'`;
 
-/**
- * Searches Drive by query string.
- */
-export async function searchDrive(query: string): Promise<Array<{ id: string; name: string }>> {
-  const res = await drive.files.list({
-    q: `fullText contains '${query.replace(/'/g, "\\'")}' and trashed = false`,
-    fields: 'files(id, name, mimeType)',
-    pageSize: 10,
-  });
-  return (res.data.files || []).map(f => ({ id: f.id!, name: f.name! }));
-}
-
-// MCP stdio server bootstrap
-if (import.meta.main) {
-  console.log('📂 Google Drive API MCP Server Active (V25 Pinnacle)');
-  // MCP protocol handler — reads JSON-RPC from stdin
-  const decoder = new TextDecoder();
-  for await (const chunk of Bun.stdin.stream()) {
     try {
-      const text = decoder.decode(chunk);
-      const lines = text.split('\n').filter(Boolean);
-      for (const line of lines) {
-        const msg = JSON.parse(line);
-        if (msg.method === 'fetch_document') {
-          const result = await fetchDocumentActively(msg.params.fileId);
-          console.log(JSON.stringify({ id: msg.id, result }));
-        } else if (msg.method === 'list_files') {
-          const result = await listRecentFiles(msg.params?.days ?? 7);
-          console.log(JSON.stringify({ id: msg.id, result }));
-        } else if (msg.method === 'search_drive') {
-          const result = await searchDrive(msg.params.query);
-          console.log(JSON.stringify({ id: msg.id, result }));
-        }
-      }
-    } catch {
-      // Non-JSON input, skip
+      const res = await drive.files.list({
+        q,
+        pageSize: maxResults || 10,
+        fields: "files(id, name, mimeType, modifiedTime, webViewLink)",
+      });
+      return {
+        content: [{ type: "text", text: JSON.stringify(res.data.files || [], null, 2) }],
+      };
+    } catch (err: unknown) {
+      const error = err as Error;
+      return {
+        content: [{ type: "text", text: `Error: ${error.message}` }],
+        isError: true,
+      };
     }
   }
-}
+);
+
+server.tool(
+  "drive_get_content",
+  "Get the text content of a Google Drive document by ID",
+  {
+    fileId: z.string().describe("The Google Drive file ID"),
+  },
+  async ({ fileId }) => {
+    const { google } = await import("googleapis");
+    const auth = new google.auth.GoogleAuth({
+      scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+    });
+    const drive = google.drive({ version: "v3", auth });
+
+    try {
+      const res = await drive.files.export({
+        fileId,
+        mimeType: "text/plain",
+      });
+      return {
+        content: [{ type: "text", text: String(res.data).slice(0, 50000) }],
+      };
+    } catch (err: unknown) {
+      const error = err as Error;
+      return {
+        content: [{ type: "text", text: `Error: ${error.message}` }],
+        isError: true,
+      };
+    }
+  }
+);
+
+server.tool(
+  "drive_list_recent",
+  "List recently modified documents in Google Drive",
+  {
+    maxResults: z.number().optional().describe("Max results (default 10)"),
+  },
+  async ({ maxResults }) => {
+    const { google } = await import("googleapis");
+    const auth = new google.auth.GoogleAuth({
+      scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+    });
+    const drive = google.drive({ version: "v3", auth });
+
+    try {
+      const res = await drive.files.list({
+        pageSize: maxResults || 10,
+        orderBy: "modifiedTime desc",
+        fields: "files(id, name, mimeType, modifiedTime, webViewLink)",
+      });
+      return {
+        content: [{ type: "text", text: JSON.stringify(res.data.files || [], null, 2) }],
+      };
+    } catch (err: unknown) {
+      const error = err as Error;
+      return {
+        content: [{ type: "text", text: `Error: ${error.message}` }],
+        isError: true,
+      };
+    }
+  }
+);
+
+const transport = new StdioServerTransport();
+await server.connect(transport);

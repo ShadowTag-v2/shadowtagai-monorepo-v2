@@ -1,14 +1,14 @@
 {
-  "name": "mcp-spanner-bridge",
+  "name": "workspace-api-drive-fetcher",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "bun run drive_fetcher.ts"
   },
   "dependencies": {
-    "@google-cloud/spanner": "^7.0.0",
     "@modelcontextprotocol/sdk": "^1.0.0",
+    "googleapis": "^144.0.0",
     "zod": "^3.0.0"
   }
 }

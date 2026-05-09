@@ -25,3 +25,4 @@ labs/gemini-cookbook/examples/Book_illustration.ipynb filter=lfs diff=lfs merge=
 *.heif filter=lfs diff=lfs merge=lfs -text
 *.avif filter=lfs diff=lfs merge=lfs -text
 *.flac filter=lfs diff=lfs merge=lfs -text
+*.tar.gz !text !filter !merge !diff
