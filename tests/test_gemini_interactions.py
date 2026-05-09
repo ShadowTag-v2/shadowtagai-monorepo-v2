@@ -25,6 +25,7 @@ from gemini_interactions.tools import (
 from gemini_interactions.client import (
     EventType,
     InteractionsClient,
+    NullTelemetry,
     InteractionResult,
     StreamAccumulator,
     StreamEvent,
