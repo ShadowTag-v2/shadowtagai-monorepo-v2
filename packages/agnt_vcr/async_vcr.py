@@ -55,7 +55,7 @@ class AsyncVCR(VCRReplay):
             try:
                 with open(self._index_path, encoding="utf-8") as f:
                     return json.load(f)
-            except (json.JSONDecodeError, OSError):
+            except json.JSONDecodeError, OSError:
                 logger.warning("Corrupt cassette index, rebuilding")
         return {}
 

@@ -213,7 +213,7 @@ def parse(content: str) -> MessageVariant | None:
     """
     try:
         data = json.loads(content)
-    except (json.JSONDecodeError, TypeError):
+    except json.JSONDecodeError, TypeError:
         return None
 
     if not isinstance(data, dict):
@@ -311,7 +311,7 @@ def _extract_legacy_priority(content: str) -> TaskPriority:
         data = json.loads(content)
         raw = data.get("priority", "normal")
         return TaskPriority(raw) if raw in TaskPriority.__members__.values() else TaskPriority.NORMAL
-    except (json.JSONDecodeError, TypeError, ValueError):
+    except json.JSONDecodeError, TypeError, ValueError:
         return TaskPriority.NORMAL
 
 

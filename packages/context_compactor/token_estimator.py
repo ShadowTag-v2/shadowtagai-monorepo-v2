@@ -411,5 +411,5 @@ def _safe_json_serialize(value: Any) -> str:
     """
     try:
         return json.dumps(value, separators=(",", ":"), default=str)
-    except (TypeError, ValueError):
+    except TypeError, ValueError:
         return "[unable to serialize]"

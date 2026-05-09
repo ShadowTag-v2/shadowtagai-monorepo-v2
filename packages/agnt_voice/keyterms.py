@@ -92,7 +92,7 @@ async def _get_git_branch() -> str | None:
         if proc.returncode == 0 and stdout:
             branch = stdout.decode().strip()
             return branch if branch and branch != "HEAD" else None
-    except (FileNotFoundError, OSError):
+    except FileNotFoundError, OSError:
         pass
     return None
 
@@ -109,7 +109,7 @@ def _get_git_branch_sync() -> str | None:
         if result.returncode == 0:
             branch = result.stdout.strip()
             return branch if branch and branch != "HEAD" else None
-    except (FileNotFoundError, OSError, subprocess.TimeoutExpired):
+    except FileNotFoundError, OSError, subprocess.TimeoutExpired:
         pass
     return None
 

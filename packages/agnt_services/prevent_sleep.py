@@ -145,7 +145,7 @@ def _kill_caffeinate() -> None:
             proc.kill()  # SIGKILL for immediate termination
             proc.wait(timeout=2)
             logger.debug("Stopped caffeinate, allowing sleep")
-        except (ProcessLookupError, subprocess.TimeoutExpired):
+        except ProcessLookupError, subprocess.TimeoutExpired:
             # Process may have already exited
             pass
 
