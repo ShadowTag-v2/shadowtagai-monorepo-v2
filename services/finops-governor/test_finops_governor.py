@@ -31,9 +31,8 @@ class TestBudgetStatus:
         assert report.utilization_pct == 20.0  # 100/500 * 100
 
     def test_yellow_at_warn(self):
-        with patch.object(gov, "query_current_spend", return_value=400.0):
-            with patch.object(gov, "publish_alert"):
-                report = gov.evaluate_budget()
+        with patch.object(gov, "query_current_spend", return_value=400.0), patch.object(gov, "publish_alert"):
+            report = gov.evaluate_budget()
         assert report.status == gov.BudgetStatus.YELLOW
         assert report.utilization_pct == 80.0
 
@@ -48,9 +47,8 @@ class TestBudgetStatus:
         assert report.utilization_pct == 110.0
 
     def test_green_no_alert(self):
-        with patch.object(gov, "query_current_spend", return_value=50.0):
-            with patch.object(gov, "publish_alert") as mock_alert:
-                gov.evaluate_budget()
+        with patch.object(gov, "query_current_spend", return_value=50.0), patch.object(gov, "publish_alert") as mock_alert:
+            gov.evaluate_budget()
         mock_alert.assert_not_called()
 
     def test_yellow_publishes_alert(self):
@@ -72,9 +70,8 @@ class TestBudgetStatus:
         assert "database-events-handler" in report.services_scaled_down
 
     def test_zero_budget_no_division_error(self):
-        with patch.object(gov, "BUDGET_MONTHLY_USD", 0):
-            with patch.object(gov, "query_current_spend", return_value=0.0):
-                report = gov.evaluate_budget()
+        with patch.object(gov, "BUDGET_MONTHLY_USD", 0), patch.object(gov, "query_current_spend", return_value=0.0):
+            report = gov.evaluate_budget()
         assert report.utilization_pct == 0
 
 

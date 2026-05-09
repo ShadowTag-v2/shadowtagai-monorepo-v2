@@ -1,8 +1,23 @@
 {
-  "timestamp": "2026-05-08T05:16:11.469123+00:00",
-  "pid": 55555,
+  "timestamp": "2026-05-09T09:45:12.233774+00:00",
+  "pid": 70413,
   "status": {
-    "cycle": "13719"
+    "cycle": "1",
+    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"missing\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": {\"total\": 24, \"source_tracked\": 13, \"session_generated\": 5, \"ide_transient\": 0, \"untracked_new\": 6, \"status\": \"13 source-dirty\"}, \"git_fetch\": \"ok\"}",
+    "dream": "light_ran",
+    "disk_skill_dream": "ran",
+    "dead_code": "ran",
+    "steward": "ran",
+    "vault_ingest": "ran",
+    "quarantine_purge": "ran",
+    "oob_check": "ran",
+    "prompt_assembly": "ok",
+    "token_budget": "{\"AGENTS.md\": 6071, \"GEMINI.md\": 6055, \"manifest\": 1058}",
+    "webhook_events": "ran",
+    "research_sweep": "skipped_or_failed",
+    "gca_bloat": "healthy",
+    "vcr_cassettes": "0_fresh",
+    "egress": "all_closed"
   },
   "circuit_breakers": {
     "services": {
@@ -11,7 +26,7 @@
         "state": "closed",
         "consecutive_failures": 0,
         "total_failures": 0,
-        "total_successes": 3,
+        "total_successes": 0,
         "failure_threshold": 3,
         "reset_timeout_s": 120.0,
         "failure_mode": "consecutive",
@@ -20,9 +35,9 @@
       "gemini_deep_research": {
         "service_name": "gemini_deep_research",
         "state": "closed",
-        "consecutive_failures": 2,
-        "total_failures": 4,
-        "total_successes": 3,
+        "consecutive_failures": 1,
+        "total_failures": 1,
+        "total_successes": 0,
         "failure_threshold": 3,
         "reset_timeout_s": 300.0,
         "failure_mode": "consecutive",
@@ -32,8 +47,8 @@
         "service_name": "gemini_interactions",
         "state": "closed",
         "consecutive_failures": 0,
-        "total_failures": 3,
-        "total_successes": 6,
+        "total_failures": 0,
+        "total_successes": 0,
         "failure_threshold": 5,
         "reset_timeout_s": 180.0,
         "failure_mode": "consecutive",
@@ -48,7 +63,15 @@
       "open_services": [],
       "health_status": "healthy"
     },
-    "timestamp": 1778217371.3828301
+    "timestamp": 1778319912.124535
   },
-  "tree_diagnostic": "\u2514 KAIROS Heartbeat\n  \u251c PID: 55555\n  \u251c Cycle: 13719\n  \u251c suggestion_pipeline\n  \u2502 \u251c state: stale\n  \u2502 \u251c suggestion: Execute the full validation cascade scri\n  \u2502 \u251c age_s: 707.7\n  \u2502 \u2514 quality: 0.6\n  \u2514 circuit_breakers\n    \u251c total_breakers: 3\n    \u251c closed: 3\n    \u251c open: 0\n    \u251c half_open: 0\n    \u251c open_services: [Array(0)]\n    \u2514 health_status: healthy"
+  "egress_proxy": {},
+  "vcr_cassettes": {
+    "total_cassettes": 0,
+    "stale_cassettes": 0,
+    "fresh_cassettes": 0,
+    "max_age_s": 604800,
+    "oldest_age_s": 0.0
+  },
+  "tree_diagnostic": "\u2514 KAIROS Heartbeat\n  \u251c PID: 70413\n  \u251c Cycle: 1\n  \u251c health: {\"gcp_adc\": \"ok\", \"ane_dylib\": \"missing\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": {\"total\": 24, \"source_tracked\": 13, \"session_generated\": 5, \"ide_transient\": 0, \"untracked_new\": 6, \"status\": \"13 source-dirty\"}, \"git_fetch\": \"ok\"}\n  \u251c dream: light_ran\n  \u251c disk_skill_dream: ran\n  \u251c dead_code: ran\n  \u251c steward: ran\n  \u251c vault_ingest: ran\n  \u251c quarantine_purge: ran\n  \u251c oob_check: ran\n  \u251c prompt_assembly: ok\n  \u251c token_budget: {\"AGENTS.md\": 6071, \"GEMINI.md\": 6055, \"manifest\": 1058}\n  \u251c webhook_events: ran\n  \u251c research_sweep: skipped_or_failed\n  \u251c gca_bloat: healthy\n  \u251c vcr_cassettes: 0_fresh\n  \u251c egress: all_closed\n  \u251c suggestion_pipeline\n  \u2502 \u251c state: stale\n  \u2502 \u251c suggestion: Execute the full validation cascade scri\n  \u2502 \u251c age_s: 103248.5\n  \u2502 \u251c quality: 0.6\n  \u2502 \u2514 mode: file\n  \u251c circuit_breakers\n  \u2502 \u251c total_breakers: 3\n  \u2502 \u251c closed: 3\n  \u2502 \u251c open: 0\n  \u2502 \u251c half_open: 0\n  \u2502 \u251c open_services: [Array(0)]\n  \u2502 \u2514 health_status: healthy\n  \u2514 egress_proxy\n    \u251c state: healthy\n    \u2514 hosts: 0"
 }
