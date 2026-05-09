@@ -1,28 +1,38 @@
-# SYSTEM_OVERRIDE.md — V20.1 Sentinel-Reaper Consolidation
+# SYSTEM_OVERRIDE.md — V22 Phosphor-Shift (Dynamic Import Ascension)
 
-**Version:** 20.1  
+**Version:** 22  
 **Runtime:** Bun 1.3.11 (Zig-backed)  
-**Codename:** Sentinel-Reaper (Process Sovereignty + Fleet Consolidation)  
+**Codename:** Phosphor-Shift (Third-Party Cookie Extinction + Branch Zero)  
 **Date:** 2026-05-09  
-**HEAD:** `357ace6e9` (V20 merged + port-killer octal fix + branch cleanup)
+**HEAD:** `d58d0215e` (PR #90 — V21 dynamic import() BP100 merged)
 
 ---
 
-## V20 Milestone: Sentinel-Reaper
+## V22 Milestone: Phosphor-Shift
 
-The Sentinel-Reaper codename reflects two operational upgrades:
+The Phosphor-Shift codename reflects two operational upgrades:
 
-1. **Sentinel**: The 30-check security pipeline + 52/52 bun test suite provide continuous vigilance over the monorepo.
-2. **Reaper**: The port-killer process sovereignty tool eliminates zombie processes that steal compute from the Sovereign OS.
+1. **Phosphor**: The luminescent elimination of third-party cookie penalties — Firebase SDK modules (Auth, Analytics, App Check) have been refactored from static imports to dynamic `import()`, removing all GAPI iframe and reCAPTCHA cookie side-effects from the initial bundle. Lighthouse Best Practices: 73 → **100**.
+2. **Shift**: Complete branch hygiene — all 6 stale `perf/v21-*` local branches and 3 merged remote branches pruned. Branch state: `main` only, zero divergence.
 
-### New Artifacts (V20)
+### PR #90 — Dynamic Import Refactoring
 
-| Artifact | Path | Purpose | Status |
-|----------|------|---------|--------|
-| Port-Killer (Swift source) | `external_repos/port-killer/` | macOS SwiftUI port/process management (1,274 LOC) | ✅ CLONED |
-| Port-Killer CLI Wrapper | `scripts/port_killer.sh` | Bash port of Swift PortScanner — scan, kill, deep-kill, zombie hunt | ✅ DEPLOYED |
-| YOLO Security Classifier | `scripts/ccleaks_yolo_classifier.py` | Command risk classification pipeline | ✅ ACTIVE |
-| Security Audit Phase25 | `scripts/security_audit_phase25.py` | 30-check security pipeline | ✅ ACTIVE |
+| File | Change | Impact |
+|------|--------|--------|
+| `src/lib/firebase.ts` | Static SDK imports → async `getAuthInstance()`, `getAppCheck()`, `getAnalyticsInstance()` getters via `import()` | Zero Firebase code in initial JS bundle |
+| `src/app/page.tsx` | `onAuthStateChanged` loaded dynamically inside auth effect | No GAPI iframe during SSR/hydration |
+| `src/components/AuthWallModal.tsx` | `GoogleAuthProvider`, `OAuthProvider`, `signInWithPopup` deferred to click handler | Auth SDK loaded only on user interaction |
+| `src/hooks/useVotes.ts` | `logEvent` dynamically imported inside vote handler | Analytics SDK excluded from initial chunk |
+
+### Lighthouse Results (headfade.com — Post-V22)
+
+| Category | Score |
+|----------|-------|
+| Performance | 100 |
+| Accessibility | 100 |
+| Best Practices | **100** (was 73) |
+| SEO | 100 |
+| Agentic Browsing | 100 |
 
 ---
 
@@ -127,7 +137,7 @@ The `useStitchTheme()` hook is provided by the **facade** at `apps/client/src/co
 
 | Site | URL | Platform | Status |
 |------|-----|----------|--------|
-| HeadFade | `https://headfade.com` | Firebase Hosting | ✅ LIVE |
+| HeadFade | `https://headfade.com` | Firebase Hosting | ✅ LIVE (LH 100/100/100/100) |
 | CounselConduit | `https://counselconduit-767252945109.us-central1.run.app` | Cloud Run | ✅ LIVE (200 OK, 0.33s) |
 | ShadowTagAI | Firebase Hosting target `shadowtagai` | Firebase Hosting | Configured |
 | KovelAI | Firebase Hosting target `kovelai` | Firebase Hosting | Configured |
@@ -144,10 +154,10 @@ The `useStitchTheme()` hook is provided by the **facade** at `apps/client/src/co
 | Firebase Hosting Targets | 4 |
 | Cline MCP Servers | 13 |
 | Antigravity MCP Servers | 5 |
-| GitHub PRs Merged (V16→V19) | 5 |
+| GitHub PRs Merged (V16→V22) | 6 |
 | Bun Test Suite | 52/52 PASS |
 | Security Pipeline | 30-check (94% pass) |
-| Lighthouse (headfade.com) | P84/A100/BP73/SEO100 |
+| Lighthouse (headfade.com) | **P100/A100/BP100/SEO100** |
 | Lighthouse (shadowtagai.web.app) | P94/A100/BP100/SEO100 |
 
 ---
@@ -158,48 +168,33 @@ The `useStitchTheme()` hook is provided by the **facade** at `apps/client/src/co
 
 ---
 
-## V20.1 Audit Results
+## V22 Audit Results
 
-### V20.1 Patch Notes
+### Branch Hygiene
 
-- **fix(port-killer):** Resolved bash octal parsing for hours with leading zeros (`08`, `09`). Used `10#` prefix for decimal.
-- **Branch cleanup:** Deleted 4 stale local branches (`docs/v19-*`, `feat/v19-*`, `feat/v20-*`, `fix/port-killer-*`).
-- **Lighthouse audits:** headfade.com (P84/A100/BP73/SEO100), shadowtagai.web.app (P94/A100/BP100/SEO100).
+| Action | Count | Detail |
+|--------|-------|--------|
+| Local branches deleted | 6 | `perf/v21-appcheck-lazy-init`, `perf/v21-bp100-dynamic-imports`, `perf/v21-complete-lazy-sdk-deferral`, `perf/v21-defer-auth-gapi`, `perf/v21-harden-auth-deferral`, `perf/v21-headfade-lighthouse-ascension` |
+| Remote branches deleted | 3 | `feat/v20-sentinel-reaper`, `fix/sovereign-os-dockerfile-source-flags`, `perf/v21-bp100-dynamic-imports` |
+| Remaining branches | 1 | `main` (local + remote) |
 
-### Best Practices Analysis (headfade.com — BP73)
+### Dynamic Import Pattern (Canonical)
 
-| Failing Audit | Root Cause | Remediation |
-|--------------|-----------|-------------|
-| `third-party-cookies` | GA4/reCAPTCHA 3rd-party cookies | Migrate to cookieless GA4, reCAPTCHA v3 token mode |
-| `errors-in-console` | JS console errors at runtime | Debug and fix console errors |
-| `inspector-issues` | Chrome DevTools Issues panel flags | Resolve CSP/mixed-content warnings |
+```typescript
+// CORRECT — dynamic import() for Firebase modules
+export async function getAuthInstance() {
+  if (!authInstance) {
+    const { getAuth } = await import('firebase/auth');
+    authInstance = getAuth(app);
+  }
+  return authInstance;
+}
+```
 
-### Performance Analysis (headfade.com — P84)
-
-| Metric | Value | Target | Fix |
-|--------|-------|--------|-----|
-| LCP | 4.3s | <2.5s | Preload hero image, optimize critical path |
-| TTI | 8.4s | <3.8s | Code-split, defer non-critical JS |
-| Unused JS | 222 KiB | 0 | Tree-shake, dynamic imports |
-| Cache lifetimes | 210 KiB | — | Set Cache-Control headers |
-| Render-blocking | 80ms | 0ms | Defer non-critical CSS/JS |
-
-### MCP Fleet Pre-Flight (0/5 UP — Platform Issue)
-
-| # | Server | Status |
-|---|--------|--------|
-| 1 | chrome-devtools-mcp | ❌ NOT FOUND |
-| 2 | firebase-mcp-server | ❌ NOT FOUND |
-| 3 | StitchMCP | ❌ NOT FOUND |
-| 4 | google-developer-knowledge | ❌ NOT FOUND |
-| 5 | sequential-thinking | ❌ NOT FOUND |
-
-### Zombie Extermination Log
-
-| PID | Process | Runtime | Action |
-|-----|---------|---------|--------|
-| 56614 | `curl sdk.cloud.google.com` | 4h14m | ✅ KILLED (SIGKILL) (V20) |
-| — | No new zombies found | — | ✅ CLEAN (V20.1 scan) |
+```typescript
+// PROHIBITED — static import (causes GAPI iframe + cookie penalty)
+import { getAuth } from 'firebase/auth'; // ← NEVER do this at module level
+```
 
 ---
 
@@ -207,6 +202,7 @@ The `useStitchTheme()` hook is provided by the **facade** at `apps/client/src/co
 
 | Version | Codename | HEAD Commit | PR | Date |
 |---------|----------|-------------|-----|------|
+| V22 | Phosphor-Shift (Dynamic Import Ascension) | `d58d0215e` | #90 (merged) | 2026-05-09 |
 | V20.1 | Sentinel-Reaper (Octal Fix) | `357ace6e9` | — | 2026-05-09 |
 | V20 | Sentinel-Reaper | `e828b6abf` | — | 2026-05-09 |
 | V19.1 | Fix Branch Consolidation | `8023e9925` | — (direct merge) | 2026-05-09 |
