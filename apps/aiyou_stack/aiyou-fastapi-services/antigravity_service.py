@@ -143,7 +143,6 @@ def call_gemini_turn(model: str, conversation_history: list, tools=None) -> dict
         return json.loads(resp.read().decode("utf-8"))
 
 
-import re
 
 # Known MCP server name aliases → canonical server name.
 # Handles variant formats that cause "unknown_tool" after IDE restart.

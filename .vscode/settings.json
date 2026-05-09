@@ -14,7 +14,16 @@
     "**/__pycache__/**": true,
     "**/dist/**": true,
     "**/external_repos/**": true,
-    "**/archive/**": true
+    "**/archive/**": true,
+    "**/tools/**": true,
+    "**/labs/**": true,
+    "**/terraform/**": true,
+    "**/third_party/**": true,
+    "**/.lancedb/**": true,
+    "**/reference_architectures/**": true,
+    "**/google-cloud-sdk/**": true,
+    "**/.pixi/**": true,
+    "**/.hypothesis/**": true
   },
   "search.exclude": {
     "**/node_modules": true,
@@ -25,7 +34,13 @@
     "**/__pycache__": true,
     "**/dist": true,
     "**/external_repos": true,
-    "**/archive": true
+    "**/archive": true,
+    "**/tools": true,
+    "**/labs": true,
+    "**/terraform": true,
+    "**/third_party": true,
+    "**/reference_architectures": true,
+    "**/google-cloud-sdk": true
   },
   "files.exclude": {
     "**/.git": true,

@@ -1,122 +1,31 @@
 {
-  "score": "F",
-  "total_findings": 26,
-  "critical": 10,
-  "errors": 2,
-  "warnings": 11,
-  "info": 3,
+  "score": "A",
+  "total_findings": 9,
+  "critical": 0,
+  "errors": 0,
+  "warnings": 1,
+  "info": 8,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "ntigravity-jules-orchestration",
-      "fix": "git checkout -- ntigravity-jules-orchestration"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": "archive/build_output/",
-      "fix": "git add archive/build_output/"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": "archive/product_pitch_site/",
-      "fix": "git add archive/product_pitch_site/"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": "archive/scratch_2026/",
-      "fix": "git add archive/scratch_2026/"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": "scripts/batch_drift_migration.py",
-      "fix": "git add scripts/batch_drift_migration.py"
+      "path": "beads/repo_doctor_latest.json",
+      "fix": "git checkout -- beads/repo_doctor_latest.json"
     },
     {
       "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/.claude/hooks/SessionStart",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/.env.example",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/.gcloudignore",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/libraries/RoyaltyMath.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Identity.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Reputation.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Validation.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/clone-and-flatten.sh",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/deploy-all.sh",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/fork-all-antigravity.sh",
-      "fix": "Resolve merge conflicts manually"
+      "severity": "info",
+      "message": "No conflict markers found",
+      "path": "",
+      "fix": ""
     },
     {
       "gate": "secrets",
-      "severity": "error",
-      "message": "Betterleaks found 84 potential secrets",
+      "severity": "info",
+      "message": "No secrets detected",
       "path": "",
-      "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
+      "fix": ""
     },
     {
       "gate": "large_files",
@@ -127,43 +36,15 @@
     },
     {
       "gate": "drift",
-      "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "--force/_views/CONFLICTS.md",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
+      "severity": "info",
+      "message": "11137 files in known legacy directories (scheduled for archival)",
+      "path": "",
+      "fix": ""
     },
     {
       "gate": "drift",
-      "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "--force/_views/CONSTRAINTS.md",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "--force/_views/DECISIONS.md",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "--force/_views/HANDOFF.md",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "File outside canonical layout",
-      "path": "--force/_views/INDEX.md",
-      "fix": "Move to apps/, libs/, tools/, or archive/"
-    },
-    {
-      "gate": "drift",
-      "severity": "warn",
-      "message": "... and 11746 more drift files",
+      "severity": "info",
+      "message": "No unknown drift \u2014 only known legacy dirs",
       "path": "",
       "fix": ""
     },
@@ -183,10 +64,10 @@
     },
     {
       "gate": "tests",
-      "severity": "error",
-      "message": "Test collection failed",
+      "severity": "info",
+      "message": "Tests: ======================== 3666 tests collected in 3.14s =========================",
       "path": "",
-      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest --co -q 2>&1 | tail -10"
+      "fix": ""
     }
   ]
 }
