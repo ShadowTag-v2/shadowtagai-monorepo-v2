@@ -1,3 +1,6 @@
 packages:
-  - 'experimental/**/*'
+  - 'apps/*'
+  - 'libs/*'
+  - 'packages/*'
   - 'tools/*'
+  - 'experimental/**/*'
