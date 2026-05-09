@@ -935,17 +935,35 @@ def _probe_bridge_health() -> dict[str, Any]:
     if not api_key:
         result["error"] = "GEMINI_API_KEY: not in env, Secret Manager unreachable"
 
-    # 5) Consumer health
+    # 5) Consumer health — feature-flag gated dual consumer
     try:
-        from speculation_engine.consumer import SuggestionConsumer
+        from speculation_engine.feature_flags import FeatureFlagStore, SpecFlags
 
-        consumer = SuggestionConsumer()
-        result["consumer_ready"] = True
-        entry = consumer.get_suggestion()
-        result["suggestion_cached"] = entry is not None
-        if entry:
-            result["suggestion_age_s"] = round(entry.age_seconds, 1)
-            result["suggestion_preview"] = entry.text[:50]
+        flags = FeatureFlagStore.create()
+        if flags.is_enabled(SpecFlags.ASYNC_CONSUMER):
+            from speculation_engine.async_consumer import AsyncSuggestionConsumer
+
+            async_consumer = AsyncSuggestionConsumer()
+            result["consumer_ready"] = True
+            result["consumer_mode"] = "async"
+            # Non-blocking peek for health check
+            entry = asyncio.run(async_consumer.get_suggestion(timeout=0))
+            result["suggestion_cached"] = entry is not None
+            if entry:
+                result["suggestion_age_s"] = round(entry.age_seconds, 1)
+                result["suggestion_preview"] = entry.text[:50]
+            result["async_stats"] = async_consumer.stats
+        else:
+            from speculation_engine.consumer import SuggestionConsumer
+
+            consumer = SuggestionConsumer()
+            result["consumer_ready"] = True
+            result["consumer_mode"] = "file"
+            entry = consumer.get_suggestion()
+            result["suggestion_cached"] = entry is not None
+            if entry:
+                result["suggestion_age_s"] = round(entry.age_seconds, 1)
+                result["suggestion_preview"] = entry.text[:50]
     except ImportError as e:
         result["error"] = f"consumer import: {e}"
 
@@ -1374,13 +1392,24 @@ def write_heartbeat(status: dict, egress_proxy: object | None = None) -> None:
 
         treeify_mod = importlib.import_module("agnt_utils.treeify")
 
-        # Pull suggestion pipeline health into heartbeat tree
+        # Pull suggestion pipeline health into heartbeat tree (dual-consumer)
         suggestion_status = {}
         try:
-            from speculation_engine.consumer import SuggestionConsumer
+            from speculation_engine.feature_flags import FeatureFlagStore, SpecFlags
 
-            consumer = SuggestionConsumer(cache_dir=BEADS_DIR)
-            suggestion_status = consumer.cache_status()
+            hb_flags = FeatureFlagStore.create()
+            if hb_flags.is_enabled(SpecFlags.ASYNC_CONSUMER):
+                from speculation_engine.async_consumer import AsyncSuggestionConsumer
+
+                async_consumer = AsyncSuggestionConsumer()
+                suggestion_status = async_consumer.cache_status()
+                suggestion_status["mode"] = "async"
+            else:
+                from speculation_engine.consumer import SuggestionConsumer
+
+                consumer = SuggestionConsumer(cache_dir=BEADS_DIR)
+                suggestion_status = consumer.cache_status()
+                suggestion_status["mode"] = "file"
         except Exception:
             suggestion_status = {"state": "unavailable"}
 

@@ -416,3 +416,337 @@ class TestSessionIdPropagation:
         """Verify the plan_controller property returns the internal controller."""
         assert isinstance(orch.plan_controller, ExitPlanModeController)
         assert orch.plan_controller is orch._plan_controller
+
+
+# ── Orchestrator Wrappers (V22 Phosphor-Shift) ───────────────────
+
+
+class TestSpeculationComplete:
+    """Tests for speculation_complete() — SPECULATING → CONFIRMING wrapper."""
+
+    def test_speculation_complete_transitions_to_confirming(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Happy path: SPECULATING → CONFIRMING via orchestrator wrapper."""
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Evaluate cache strategy")
+        orch.begin_plan_speculation()
+        assert orch.plan_state == PlanState.SPECULATING
+
+        orch.speculation_complete()
+        assert orch.plan_state == PlanState.CONFIRMING
+
+    def test_speculation_complete_from_planning_raises(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Cannot complete speculation when still in PLANNING state."""
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        with pytest.raises(TransitionError):
+            orch.speculation_complete()
+
+    def test_speculation_complete_from_idle_raises(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Cannot complete speculation from IDLE."""
+        with pytest.raises(TransitionError):
+            orch.speculation_complete()
+
+    def test_speculation_complete_from_confirming_raises(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Cannot complete speculation when already in CONFIRMING state."""
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        orch.begin_plan_speculation()
+        orch.speculation_complete()
+        assert orch.plan_state == PlanState.CONFIRMING
+        with pytest.raises(TransitionError):
+            orch.speculation_complete()
+
+
+class TestNeedsRevisionFromSpeculation:
+    """Tests for needs_revision_from_speculation() — SPECULATING → PLANNING wrapper."""
+
+    def test_needs_revision_returns_to_planning(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Happy path: SPECULATING → PLANNING via orchestrator wrapper."""
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Evaluate option A")
+        orch.begin_plan_speculation()
+        assert orch.plan_state == PlanState.SPECULATING
+
+        orch.needs_revision_from_speculation()
+        assert orch.plan_state == PlanState.PLANNING
+
+    def test_needs_revision_allows_re_speculation(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """After revision, can add steps and re-enter speculation."""
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "First attempt")
+        orch.begin_plan_speculation()
+        orch.needs_revision_from_speculation()
+        assert orch.plan_state == PlanState.PLANNING
+
+        # Re-plan and re-speculate
+        orch.add_plan_step("s1b", "Revised approach")
+        orch.begin_plan_speculation()
+        assert orch.plan_state == PlanState.SPECULATING
+
+    def test_needs_revision_from_planning_raises(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Cannot signal revision need from PLANNING state."""
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        with pytest.raises(TransitionError):
+            orch.needs_revision_from_speculation()
+
+    def test_needs_revision_from_idle_raises(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Cannot signal revision need from IDLE."""
+        with pytest.raises(TransitionError):
+            orch.needs_revision_from_speculation()
+
+
+class TestConfirmPlanStateGuard:
+    """Tests for the confirm_plan() state guard (CONFIRMING gate)."""
+
+    def test_confirm_plan_rejects_planning_state(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Guard rejects confirm when in PLANNING."""
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        with pytest.raises(TransitionError, match="Cannot confirm plan"):
+            orch.confirm_plan()
+
+    def test_confirm_plan_rejects_speculating_state(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Guard rejects confirm when in SPECULATING."""
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        orch.begin_plan_speculation()
+        with pytest.raises(TransitionError, match="Cannot confirm plan"):
+            orch.confirm_plan()
+
+    def test_confirm_plan_rejects_executing_state(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Guard rejects confirm when in EXECUTING."""
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        orch.begin_plan_speculation()
+        orch.speculation_complete()
+        orch.confirm_plan()
+        assert orch.plan_state == PlanState.EXECUTING
+        with pytest.raises(TransitionError, match="Cannot confirm plan"):
+            orch.confirm_plan()
+
+    def test_confirm_plan_rejects_idle_state(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Guard rejects confirm when in IDLE."""
+        with pytest.raises(TransitionError, match="Cannot confirm plan"):
+            orch.confirm_plan()
+
+
+class TestCheckMailboxResolution:
+    """Tests for check_mailbox_resolution() — polling for async mailbox approval."""
+
+    def test_returns_false_when_not_confirming(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Returns False when plan is not in CONFIRMING state."""
+        assert orch.check_mailbox_resolution() is False
+
+    def test_returns_false_when_no_mailbox(self, orch: SpeculativeResearchOrchestrator) -> None:
+        """Returns False when mailbox is not enabled/initialized."""
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        orch.begin_plan_speculation()
+        orch.speculation_complete()
+        assert orch.plan_state == PlanState.CONFIRMING
+        # Mailbox is None because AGENT_MAILBOX flag defaults to False
+        assert orch.check_mailbox_resolution() is False
+
+    def test_returns_false_when_no_session(self, workspace: str) -> None:
+        """Returns False when plan_controller has no session."""
+        from speculation_engine.feature_flags import FeatureFlagStore, SpecFlags
+
+        flags = FeatureFlagStore.create()
+        flags.set_flag(SpecFlags.AGENT_MAILBOX, True)
+        orch = SpeculativeResearchOrchestrator(
+            workspace=workspace,
+            flags=flags,
+        )
+        # Manually put controller in CONFIRMING without a real session
+        # by going through the lifecycle
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        orch.begin_plan_speculation()
+        orch.speculation_complete()
+        assert orch.plan_state == PlanState.CONFIRMING
+
+        # If get_envelope returns None, should return False
+        mock_mailbox = MagicMock()
+        mock_mailbox.get_envelope.return_value = None
+        orch._mailbox = mock_mailbox
+        assert orch.check_mailbox_resolution() is False
+
+    def test_returns_true_on_approved_envelope(self, workspace: str) -> None:
+        """Returns True and transitions to EXECUTING when envelope is approved."""
+        from speculation_engine.feature_flags import FeatureFlagStore, SpecFlags
+
+        flags = FeatureFlagStore.create()
+        flags.set_flag(SpecFlags.AGENT_MAILBOX, True)
+        orch = SpeculativeResearchOrchestrator(
+            workspace=workspace,
+            flags=flags,
+        )
+        orch._session_id = "test-session"
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        orch.begin_plan_speculation()
+        orch.speculation_complete()
+        assert orch.plan_state == PlanState.CONFIRMING
+
+        # Mock mailbox with an approved envelope
+        mock_envelope = MagicMock()
+        mock_envelope.status.value = "approved"
+        mock_mailbox = MagicMock()
+        mock_mailbox.get_envelope.return_value = mock_envelope
+        orch._mailbox = mock_mailbox
+
+        result = orch.check_mailbox_resolution()
+        assert result is True
+        assert orch.plan_state == PlanState.EXECUTING
+
+    def test_returns_false_on_pending_envelope(self, workspace: str) -> None:
+        """Returns False when envelope is still pending."""
+        from speculation_engine.feature_flags import FeatureFlagStore, SpecFlags
+
+        flags = FeatureFlagStore.create()
+        flags.set_flag(SpecFlags.AGENT_MAILBOX, True)
+        orch = SpeculativeResearchOrchestrator(
+            workspace=workspace,
+            flags=flags,
+        )
+        orch._session_id = "test-session"
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        orch.begin_plan_speculation()
+        orch.speculation_complete()
+
+        mock_envelope = MagicMock()
+        mock_envelope.status.value = "pending"
+        mock_mailbox = MagicMock()
+        mock_mailbox.get_envelope.return_value = mock_envelope
+        orch._mailbox = mock_mailbox
+
+        result = orch.check_mailbox_resolution()
+        assert result is False
+        # State should remain CONFIRMING
+        assert orch.plan_state == PlanState.CONFIRMING
+
+    def test_returns_false_on_rejected_envelope(self, workspace: str) -> None:
+        """Returns False when envelope is rejected."""
+        from speculation_engine.feature_flags import FeatureFlagStore, SpecFlags
+
+        flags = FeatureFlagStore.create()
+        flags.set_flag(SpecFlags.AGENT_MAILBOX, True)
+        orch = SpeculativeResearchOrchestrator(
+            workspace=workspace,
+            flags=flags,
+        )
+        orch._session_id = "test-session"
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        orch.begin_plan_speculation()
+        orch.speculation_complete()
+
+        mock_envelope = MagicMock()
+        mock_envelope.status.value = "rejected"
+        mock_mailbox = MagicMock()
+        mock_mailbox.get_envelope.return_value = mock_envelope
+        orch._mailbox = mock_mailbox
+
+        result = orch.check_mailbox_resolution()
+        assert result is False
+
+    def test_returns_false_on_expired_envelope(self, workspace: str) -> None:
+        """Returns False when envelope has expired."""
+        from speculation_engine.feature_flags import FeatureFlagStore, SpecFlags
+
+        flags = FeatureFlagStore.create()
+        flags.set_flag(SpecFlags.AGENT_MAILBOX, True)
+        orch = SpeculativeResearchOrchestrator(
+            workspace=workspace,
+            flags=flags,
+        )
+        orch._session_id = "test-session"
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        orch.begin_plan_speculation()
+        orch.speculation_complete()
+
+        mock_envelope = MagicMock()
+        mock_envelope.status.value = "expired"
+        mock_mailbox = MagicMock()
+        mock_mailbox.get_envelope.return_value = mock_envelope
+        orch._mailbox = mock_mailbox
+
+        result = orch.check_mailbox_resolution()
+        assert result is False
+
+
+class TestTwoHopTimeoutEdgeCase:
+    """Tests for SPECULATING → PLANNING → ABANDONED two-hop timeout path."""
+
+    def test_speculating_to_planning_to_abandoned(self, workspace: str) -> None:
+        """Two-hop: SPECULATING → needs_revision → PLANNING → timeout → ABANDONED."""
+        orch = SpeculativeResearchOrchestrator(
+            workspace=workspace,
+            plan_timeout_seconds=0.01,
+        )
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        orch.begin_plan_speculation()
+        assert orch.plan_state == PlanState.SPECULATING
+
+        # Hop 1: SPECULATING → PLANNING via needs_revision
+        orch.needs_revision_from_speculation()
+        assert orch.plan_state == PlanState.PLANNING
+
+        # Hop 2: PLANNING → ABANDONED via timeout
+        time.sleep(0.02)
+        timed_out = orch.check_plan_timeout()
+        assert timed_out
+        assert orch.plan_state == PlanState.ABANDONED
+
+    def test_speculation_complete_to_confirming_to_abandoned(
+        self,
+        workspace: str,
+    ) -> None:
+        """Two-hop: SPECULATING → CONFIRMING → timeout → ABANDONED."""
+        orch = SpeculativeResearchOrchestrator(
+            workspace=workspace,
+            plan_timeout_seconds=0.01,
+        )
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step")
+        orch.begin_plan_speculation()
+        assert orch.plan_state == PlanState.SPECULATING
+
+        # Hop 1: SPECULATING → CONFIRMING
+        orch.speculation_complete()
+        assert orch.plan_state == PlanState.CONFIRMING
+
+        # Hop 2: CONFIRMING → ABANDONED via timeout
+        time.sleep(0.02)
+        timed_out = orch.check_plan_timeout()
+        assert timed_out
+        assert orch.plan_state == PlanState.ABANDONED
+
+    def test_three_hop_revision_timeout(self, workspace: str) -> None:
+        """Three-hop: SPECULATING → PLANNING → SPECULATING → timeout → ABANDONED."""
+        orch = SpeculativeResearchOrchestrator(
+            workspace=workspace,
+            plan_timeout_seconds=0.01,
+        )
+        orch.enter_plan_mode()
+        orch.add_plan_step("s1", "Step A")
+        orch.begin_plan_speculation()
+
+        # Hop 1: needs revision
+        orch.needs_revision_from_speculation()
+        assert orch.plan_state == PlanState.PLANNING
+
+        # Hop 2: re-speculate
+        orch.add_plan_step("s1b", "Revised step")
+        orch.begin_plan_speculation()
+        assert orch.plan_state == PlanState.SPECULATING
+
+        # Hop 3: timeout while speculating
+        time.sleep(0.02)
+        timed_out = orch.check_plan_timeout()
+        assert timed_out
+        assert orch.plan_state == PlanState.ABANDONED

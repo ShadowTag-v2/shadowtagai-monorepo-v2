@@ -44,7 +44,11 @@ from speculation_engine.suggestion import (
     SuggestionResult,
     try_generate_suggestion,
 )
-from speculation_engine.telemetry import log_speculation_event
+from speculation_engine.telemetry import (
+    log_speculation_event,
+    record_speculation_result,
+)
+from speculation_engine.feature_flags import FeatureFlagStore, SpecFlags
 
 logger = logging.getLogger(__name__)
 
@@ -111,9 +115,11 @@ class SpeculativeResearchOrchestrator:
         *,
         gemini_api_key: str | None = None,
         plan_timeout_seconds: float = 300.0,
+        flags: FeatureFlagStore | None = None,
     ) -> None:
         self._workspace = workspace
         self._config = config or SpeculativeResearchConfig()
+        self._flags = flags or FeatureFlagStore.create()
         self._engine = SpeculationEngine(
             cwd=workspace,
             bypass_permissions=self._config.trust_level >= 2,
@@ -129,10 +135,45 @@ class SpeculativeResearchOrchestrator:
         self._research_sweep: Any | None = None
         self._active_mode: Any = None  # PipelineMode, set by auto_route
 
+        # Lazy-init async consumer when ASYNC_CONSUMER flag is enabled.
+        self._async_consumer: Any | None = None
+
+        # Lazy-init mailbox when AGENT_MAILBOX flag is enabled.
+        self._mailbox: Any | None = None
+
+    @property
+    def flags(self) -> FeatureFlagStore:
+        """Access the feature flag store."""
+        return self._flags
+
+    @property
+    def async_consumer(self) -> Any:
+        """Lazy-init AsyncSuggestionConsumer when ASYNC_CONSUMER is enabled."""
+        if self._async_consumer is None and self._flags.is_enabled(SpecFlags.ASYNC_CONSUMER):
+            from speculation_engine.async_consumer import AsyncSuggestionConsumer
+
+            self._async_consumer = AsyncSuggestionConsumer()
+            logger.info("AsyncSuggestionConsumer activated (flag: ASYNC_CONSUMER)")
+        return self._async_consumer
+
+    @property
+    def mailbox(self) -> Any:
+        """Lazy-init AgentMailbox when AGENT_MAILBOX is enabled."""
+        if self._mailbox is None and self._flags.is_enabled(SpecFlags.AGENT_MAILBOX):
+            from speculation_engine.mailbox import AgentMailbox
+
+            self._mailbox = AgentMailbox()
+            logger.info("AgentMailbox activated (flag: AGENT_MAILBOX)")
+        return self._mailbox
+
     def auto_route(self, query: str) -> Any:
         """Auto-select PipelineMode based on query complexity.
 
-        Heuristics:
+        When SEMANTIC_ROUTING flag is enabled, uses a structured intent
+        classification approach (mirroring sequential-thinking MCP patterns)
+        instead of simple keyword matching.
+
+        Fallback heuristics:
           - Short queries (<100 chars) → pair_programming
           - Keywords like 'research', 'analyze', 'compare', 'landscape' → research_sweep
           - Default → pair_programming
@@ -140,8 +181,22 @@ class SpeculativeResearchOrchestrator:
         Returns:
             The PipelineMode enum value selected.
         """
-        from speculation_engine.gemini_bridge import PipelineMode
         from speculation_engine.telemetry import SpanContext
+
+        with SpanContext("orchestrator.auto_route", query_length=len(query)):
+            if self._flags.is_enabled(SpecFlags.SEMANTIC_ROUTING):
+                mode = self._semantic_classify(query)
+            else:
+                mode = self._keyword_classify(query)
+
+            self._active_mode = mode
+
+        logger.info("Pipeline auto-routed to %s for query: %s...", self._active_mode.value, query[:60])
+        return self._active_mode
+
+    def _keyword_classify(self, query: str) -> Any:
+        """Classic keyword-based intent classification (default fallback)."""
+        from speculation_engine.gemini_bridge import PipelineMode
 
         research_keywords = {
             "research",
@@ -158,15 +213,82 @@ class SpeculativeResearchOrchestrator:
 
         query_lower = query.lower()
         is_complex = len(query) > 100 or any(kw in query_lower for kw in research_keywords)
+        return PipelineMode.RESEARCH_SWEEP if is_complex else PipelineMode.PAIR_PROGRAMMING
 
-        with SpanContext("orchestrator.auto_route", query_length=len(query)):
-            if is_complex:
-                self._active_mode = PipelineMode.RESEARCH_SWEEP
-            else:
-                self._active_mode = PipelineMode.PAIR_PROGRAMMING
+    def _semantic_classify(self, query: str) -> Any:
+        """Structured semantic intent classification.
 
-        logger.info("Pipeline auto-routed to %s for query: %s...", self._active_mode.value, query[:60])
-        return self._active_mode
+        Uses a multi-step reasoning pipeline inspired by sequential-thinking
+        MCP patterns: decompose the query into intent signals, evaluate
+        complexity indicators, and route to the appropriate pipeline mode.
+
+        This replaces the keyword heuristic with a structured classification:
+          1. Length analysis (character count, sentence count)
+          2. Intent signal extraction (action verbs, domain markers)
+          3. Complexity scoring (multi-hop reasoning, comparison needs)
+          4. Mode selection based on composite score
+        """
+        from speculation_engine.gemini_bridge import PipelineMode
+
+        query_lower = query.lower()
+        score = 0.0
+
+        # Factor 1: Length-based complexity (0-0.3)
+        char_len = len(query)
+        sentence_count = query.count(".") + query.count("?") + query.count("!") + 1
+        if char_len > 200:
+            score += 0.3
+        elif char_len > 100:
+            score += 0.2
+        elif char_len > 50:
+            score += 0.1
+        if sentence_count > 3:
+            score += 0.1
+
+        # Factor 2: Research intent signals (0-0.3)
+        research_verbs = {
+            "research", "analyze", "compare", "survey", "audit",
+            "investigate", "benchmark", "evaluate", "assess", "review",
+            "examine", "explore", "study", "profile", "diagnose",
+        }
+        domain_markers = {
+            "landscape", "trend", "ecosystem", "architecture",
+            "tradeoff", "trade-off", "alternatives", "options",
+            "competitors", "state of the art", "best practices",
+        }
+        verb_hits = sum(1 for v in research_verbs if v in query_lower)
+        domain_hits = sum(1 for d in domain_markers if d in query_lower)
+        score += min(verb_hits * 0.1, 0.3)
+        score += min(domain_hits * 0.15, 0.3)
+
+        # Factor 3: Multi-hop reasoning indicators (0-0.2)
+        multi_hop_markers = {
+            "and then", "followed by", "after that", "in order to",
+            "step by step", "first", "second", "third",
+            "how does", "why does", "what are the",
+        }
+        hop_hits = sum(1 for m in multi_hop_markers if m in query_lower)
+        score += min(hop_hits * 0.1, 0.2)
+
+        # Factor 4: Comparison/evaluation needs (0-0.2)
+        comparison_markers = {"vs", "versus", "or", "better", "worse", "pros", "cons"}
+        comp_hits = sum(1 for c in comparison_markers if c in query_lower.split())
+        score += min(comp_hits * 0.1, 0.2)
+
+        # Threshold: >= 0.4 → research sweep, otherwise pair programming
+        threshold = 0.4
+        mode = PipelineMode.RESEARCH_SWEEP if score >= threshold else PipelineMode.PAIR_PROGRAMMING
+
+        log_speculation_event(
+            event="semantic_routing",
+            session_id=self._session_id,
+            score=round(score, 2),
+            threshold=threshold,
+            mode=mode.value,
+            query_length=len(query),
+        )
+
+        return mode
 
     @property
     def pair_programmer(self) -> Any:
@@ -518,6 +640,9 @@ class SpeculativeResearchOrchestrator:
         Transitions plan controller PLANNING → SPECULATING and starts
         the speculation engine if idle.
 
+        When SPECULATION_TELEMETRY flag is enabled, records a detailed
+        speculation result event to the .beads/ evidence trail.
+
         Raises:
             TransitionError: If not in PLANNING state or no steps.
         """
@@ -529,15 +654,71 @@ class SpeculativeResearchOrchestrator:
             session_id=self._session_id,
         )
 
+        # Task 5: Record detailed speculation result for quality benchmarking.
+        if self._flags.is_enabled(SpecFlags.SPECULATION_TELEMETRY):
+            session = self._plan_controller.session
+            step_count = len(session.steps) if session else 0
+            record_speculation_result(
+                session_id=self._session_id,
+                step_count=step_count,
+                plan_state=self._plan_controller.state.value,
+                metadata=session.metadata if session else None,
+            )
+
     def confirm_plan(self) -> None:
         """User confirms the speculated plan.
+
+        When AGENT_MAILBOX flag is enabled, routes through the multi-agent
+        mailbox for delegated approval instead of direct confirmation.
+        Falls back to direct confirmation if mailbox is not enabled or
+        has no required agents configured.
 
         Transitions: CONFIRMING → EXECUTING.
 
         Raises:
             TransitionError: If not in CONFIRMING state.
         """
-        self._plan_controller.user_confirm()
+        # Guard: verify we are in CONFIRMING before any side-effects.
+        if self._plan_controller.state != PlanState.CONFIRMING:
+            msg = f"Cannot confirm plan in {self._plan_controller.state} state"
+            raise TransitionError(msg)
+
+        # Task 7: Route through AgentMailbox when enabled.
+        if self._flags.is_enabled(SpecFlags.AGENT_MAILBOX) and self.mailbox is not None:
+            session = self._plan_controller.session
+            plan_id = session.session_id if session else self._session_id
+            plan_data = {
+                "steps": [
+                    {"id": s.step_id, "description": s.description}
+                    for s in (session.steps if session else [])
+                ],
+                "session_id": self._session_id,
+            }
+            # Submit to mailbox — if no required agents, auto-approves.
+            envelope = self.mailbox.submit_plan(
+                plan_id=plan_id,
+                plan_data=plan_data,
+            )
+            log_speculation_event(
+                event="plan_submitted_to_mailbox",
+                session_id=self._session_id,
+                plan_id=plan_id,
+                status=envelope.status.value,
+            )
+            # If auto-approved (no required agents), proceed with confirmation.
+            if envelope.status.value == "approved":
+                self._plan_controller.user_confirm()
+            else:
+                # Plan remains in CONFIRMING until mailbox resolves.
+                logger.info(
+                    "Plan '%s' awaiting mailbox approval from: %s",
+                    plan_id,
+                    envelope.pending_agents,
+                )
+                return
+        else:
+            self._plan_controller.user_confirm()
+
         log_speculation_event(
             event="plan_confirmed",
             session_id=self._session_id,
@@ -575,6 +756,81 @@ class SpeculativeResearchOrchestrator:
             event="plan_cancelled",
             session_id=self._session_id,
         )
+
+    def speculation_complete(self) -> None:
+        """Mark speculation as complete — transition to CONFIRMING.
+
+        This is the orchestrator wrapper for the SPECULATING → CONFIRMING
+        transition, ensuring telemetry events are emitted.
+
+        Raises:
+            TransitionError: If not in SPECULATING state.
+        """
+        self._plan_controller.speculation_complete()
+        log_speculation_event(
+            event="plan_speculation_complete",
+            session_id=self._session_id,
+        )
+
+    def needs_revision_from_speculation(self) -> None:
+        """Speculation revealed issues — return to PLANNING.
+
+        Orchestrator wrapper for the SPECULATING → PLANNING transition.
+
+        Raises:
+            TransitionError: If not in SPECULATING state.
+        """
+        self._plan_controller.needs_revision()
+        log_speculation_event(
+            event="plan_speculation_needs_revision",
+            session_id=self._session_id,
+        )
+
+    def check_mailbox_resolution(self) -> bool:
+        """Check if a pending mailbox approval has resolved.
+
+        When the plan is in CONFIRMING state and was deferred to the
+        mailbox, this method polls the mailbox for resolution.
+
+        Returns:
+            True if the mailbox resolved and the plan was confirmed.
+            False if still pending, expired, or no mailbox envelope exists.
+        """
+        if self._plan_controller.state != PlanState.CONFIRMING:
+            return False
+        if self.mailbox is None:
+            return False
+
+        session = self._plan_controller.session
+        if session is None:
+            return False
+
+        envelope = self.mailbox.get_envelope(session.session_id)
+        if envelope is None:
+            return False
+
+        # Check timeouts first
+        self.mailbox.check_timeouts()
+
+        if envelope.status.value == "approved":
+            self._plan_controller.user_confirm()
+            log_speculation_event(
+                event="plan_confirmed_via_mailbox",
+                session_id=self._session_id,
+                plan_id=session.session_id,
+            )
+            return True
+
+        if envelope.status.value in ("rejected", "expired"):
+            log_speculation_event(
+                event="plan_mailbox_denied",
+                session_id=self._session_id,
+                plan_id=session.session_id,
+                status=envelope.status.value,
+            )
+            return False
+
+        return False
 
     def complete_plan_execution(self) -> None:
         """Mark plan execution as complete.
