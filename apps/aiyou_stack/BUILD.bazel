@@ -1,0 +1,30 @@
+load("@aspect_rules_py//py:defs.bzl", "py_binary", "py_library", "py_test")
+
+package(default_visibility = ["//visibility:private"])
+
+py_library(
+    name = "aiyou_stack",
+    srcs = glob(["**/*.py"], exclude = ["**/test_*.py", "**/*_test.py"]),
+    visibility = [
+        "//apps:__subpackages__",
+        "//packages:__subpackages__",
+    ],
+)
+
+py_binary(
+    name = "server",
+    srcs = ["main.py"],
+    deps = [":aiyou_stack"],
+)
+
+py_binary(
+    name = "ane_bridge",
+    srcs = ["ane_bridge.py"],
+    deps = [":aiyou_stack"],
+)
+
+py_test(
+    name = "test_ane_bridge",
+    srcs = ["test_ane_bridge.py"],
+    deps = [":aiyou_stack"],
+)

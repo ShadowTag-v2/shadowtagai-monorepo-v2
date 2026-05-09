@@ -1,0 +1,51 @@
+# apps/counselconduit/cloudbuild-staging.yaml
+# Auto-deploy CounselConduit STAGING on push to staging branch.
+
+steps:
+  # Step 1: Run tests
+  - name: 'python:3.13-slim'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        cd apps/counselconduit
+        pip install -r requirements.txt -q
+        pip install pytest -q
+        python -m pytest tests/ -x --tb=short -q
+
+  # Step 2: Deploy to staging Cloud Run service
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud run deploy counselconduit-staging \
+          --source=apps/counselconduit \
+          --region=us-central1 \
+          --project=$PROJECT_ID \
+          --service-account=counselconduit-staging-sa@$PROJECT_ID.iam.gserviceaccount.com \
+          --memory=256Mi \
+          --cpu=1 \
+          --min-instances=0 \
+          --max-instances=3 \
+          --concurrency=80 \
+          --port=8080 \
+          --set-env-vars="GCP_PROJECT_ID=$PROJECT_ID,ENVIRONMENT=staging,OTEL_TRACE_SAMPLING_RATE=1.0" \
+          --labels="managed_by=cloudbuild,environment=staging" \
+          --quiet
+
+  # Step 3: Health check
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        URL=$(gcloud run services describe counselconduit-staging --region=us-central1 --project=$PROJECT_ID --format='value(status.url)')
+        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL/enclave/v1/health")
+        echo "Staging health: $HTTP_CODE"
+        [ "$HTTP_CODE" = "200" ] && echo "✅ Staging deploy verified" || echo "⚠️ Staging health check: $HTTP_CODE"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+timeout: '600s'

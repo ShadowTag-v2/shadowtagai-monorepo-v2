@@ -1,0 +1,47 @@
+# BUILD.bazel — apps/counselconduit
+# Phase 3: Revenue-critical app — package boundary + service lib declarations
+# Owner: product
+#
+# This establishes the Bazel package boundary for CounselConduit.
+# Individual sub-packages (api/, services/, models/) get their own BUILD files
+# in Phase 4+ as hermiticity expands.
+
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//visibility:private"])
+
+# Root-level Python files
+py_library(
+    name = "counselconduit",
+    srcs = [
+        "__init__.py",
+        "Cor.Claude_Code_6_atp519_scoring.py",
+    ],
+    visibility = [
+        "//apps:__subpackages__",
+        "//packages:__subpackages__",
+    ],
+)
+
+# Configuration and deployment files (tracked, not built)
+filegroup(
+    name = "deploy_config",
+    srcs = [
+        "Dockerfile",
+        "Procfile",
+        "cloudbuild.yaml",
+        "docker-compose.dev.yml",
+        "openapi.yaml",
+        "requirements.txt",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# Firestore indexes and security rules
+filegroup(
+    name = "firestore_config",
+    srcs = [
+        "firestore.indexes.json",
+    ],
+    visibility = ["//infra:__subpackages__"],
+)
