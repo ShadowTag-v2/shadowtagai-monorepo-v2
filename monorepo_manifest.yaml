@@ -5,17 +5,17 @@ mcp-truth: antigravity-mcp-config.json
 judge6-gate: active
 
 # Version & Phase Tracking
-version: "22.0"
+version: "23.0"
 phase: 5
-milestone: 15
-milestone_name: "V22 Phosphor-Shift — Dynamic Import Ascension + Branch Zero"
-milestone_status: "MERGED"
+milestone: 16
+milestone_name: "V23 Hyper-Core — Bun-Native Cascade + Pomelli Swarm"
+milestone_status: "ACTIVE"
 phase_started: "2026-05-09"
 last_updated: "2026-05-09"
 
 # Runtime
 bun_runtime: "1.3.11"
-node_runtime: "v24.14.1"
+node_runtime: "v25.9.0"
 runtime_preference: "bun-first"
 
 # Canonical Packages (batch-6 through batch-10)
@@ -26,7 +26,7 @@ canonical_packages:
   - packages/prompt_assembler
   - packages/token_estimation
   - packages/prevent_sleep
-  - packages/speculation_engine
+  # packages/speculation_engine — ARCHIVED to _archive_redundant_2026-05-09/
   - packages/magic_docs
   - packages/plugin_manager
   - packages/terminal_notifier
@@ -104,6 +104,16 @@ v22_additions:
   branch_state: "main-only (Branch Zero)"
   security_pipeline: "35-check BashSecurityClassifier"
   omni_boot: "docs/OMNI_BOOT_V22.md"
+
+# V23 Architecture Additions (Hyper-Core — Bun-Native Cascade + Pomelli Swarm)
+v23_additions:
+  cascade_orchestrator: "tools/cascade/execute_12_point_cascade.ts"
+  pomelli_swarm: "tools/pomelli_swarm/execute.ts"
+  notebooklm_mcp: "mounted via uvx notebooklm-mcp-cli"
+  speculation_engine_archived: "_archive_redundant_2026-05-09/speculation_engine_v22"
+  omni_boot: "docs/OMNI_BOOT_V23.md"
+  head_commit: "pending"
+  branch_state: "main-only (Branch Zero enforced)"
 
 # External Repo Groups (V19 — 21 repos cloned)
 external_repos:
