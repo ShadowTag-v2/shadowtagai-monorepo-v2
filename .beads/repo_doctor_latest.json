@@ -1,24 +1,17 @@
 {
   "score": "A",
-  "total_findings": 10,
+  "total_findings": 9,
   "critical": 0,
   "errors": 0,
-  "warnings": 2,
-  "info": 8,
+  "warnings": 0,
+  "info": 9,
   "findings": [
     {
       "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "beads/epistemic_sync_needed.json",
-      "fix": "git checkout -- beads/epistemic_sync_needed.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".beads/repo_doctor_latest.json",
-      "fix": "git checkout -- .beads/repo_doctor_latest.json"
+      "severity": "info",
+      "message": "Working tree clean",
+      "path": "",
+      "fix": ""
     },
     {
       "gate": "conflicts",
@@ -72,7 +65,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ======================== 3666 tests collected in 2.38s =========================",
+      "message": "Tests: ======================== 3666 tests collected in 3.41s =========================",
       "path": "",
       "fix": ""
     }

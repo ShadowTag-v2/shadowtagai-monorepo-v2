@@ -33,7 +33,11 @@
     "chrome-devtools-mcp": {
       "command": "npx",
       "args": ["-y", "@anthropic-ai/chrome-devtools-mcp@latest"],
-      "env": {},
+      "env": {
+        "NODE_OPTIONS": "--dns-result-order=ipv4first",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": ""
+      },
       "capability_owner": true,
       "owns": [
         "take_screenshot",
@@ -65,18 +69,24 @@
       "command": "npx",
       "args": ["-y", "@anthropic-ai/google-developer-knowledge-mcp@latest"],
       "env": {
-        "DEVELOPER_KNOWLEDGE_API_KEY": "${DEVELOPER_KNOWLEDGE_API_KEY}"
+        "DEVELOPER_KNOWLEDGE_API_KEY": "${DEVELOPER_KNOWLEDGE_API_KEY}",
+        "NODE_OPTIONS": "--dns-result-order=ipv4first",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": ""
       },
       "capability_owner": true,
       "owns": ["search_documents", "get_documents", "answer_query"],
       "note": "Google Developer Knowledge MCP — MUST use instead of search_web for ALL Google API documentation queries.",
-      "status": "DEGRADED — standalone server returns 403 when DEVELOPER_KNOWLEDGE_API_KEY env var is empty at IDE launch. WORKAROUND: use firebase-mcp-server bundled tool 'developerknowledge_search_documents' which authenticates via OAuth2.",
       "fallback": "firebase-mcp-server.developerknowledge_search_documents"
     },
     "sequential-thinking": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-sequential-thinking@latest"],
-      "env": {},
+      "env": {
+        "NODE_OPTIONS": "--dns-result-order=ipv4first",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": ""
+      },
       "capability_owner": true,
       "owns": ["sequentialthinking"],
       "note": "Sequential Thinking MCP — MUST use for architecture decisions, multi-step reasoning, and complex problem decomposition. No ad-hoc reasoning lists."
