@@ -24,6 +24,12 @@ import os
 import httpx
 import pytest
 
+# Gate: skip entire module unless CLOUD_RUN_LIVE_TEST=1 is set
+pytestmark = pytest.mark.skipif(
+    os.getenv("CLOUD_RUN_LIVE_TEST", "") != "1",
+    reason="Set CLOUD_RUN_LIVE_TEST=1 to run Cloud Run e2e tests",
+)
+
 # Base URL for the deployed service (override with COUNSELCONDUIT_BASE_URL env var)
 BASE_URL = os.getenv(
     "COUNSELCONDUIT_BASE_URL",
@@ -99,7 +105,7 @@ class TestHealthAndDiscovery:
 
 
 class TestMagicLinkOnboarding:
-    @pytest.mark.xfail(reason="Cloud Run /onboarding/create-matter returns 422 — validation requires Firestore matter collection")
+
     def test_create_matter(self, base_url):
         """Attorney creates a matter and receives a magic link."""
         payload = {
@@ -118,7 +124,7 @@ class TestMagicLinkOnboarding:
         assert data["client_email"] == "john@example.com"
         assert "kovelai.web.app/portal?token=" in data["magic_link"]
 
-    @pytest.mark.xfail(reason="Depends on test_create_matter — Cloud Run 422 validation pending")
+
     def test_verify_magic_link(self, base_url):
         """Client verifies a magic link token."""
         # First create a matter

@@ -14,7 +14,6 @@ import json
 from dataclasses import asdict
 from unittest.mock import MagicMock, patch
 
-import pytest
 
 import finops_governor as gov
 
