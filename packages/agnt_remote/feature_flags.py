@@ -41,7 +41,7 @@ class LocalFeatureFlags:
             if isinstance(parsed, dict):
                 return parsed
             logger.warning("AGNT_FC_OVERRIDES is not a dict, ignoring")
-        except (json.JSONDecodeError, TypeError):
+        except json.JSONDecodeError, TypeError:
             logger.warning("AGNT_FC_OVERRIDES invalid JSON, ignoring")
         return {}
 
@@ -67,7 +67,7 @@ class LocalFeatureFlags:
             return default
         try:
             return int(val)
-        except (TypeError, ValueError):
+        except TypeError, ValueError:
             return default
 
     def get_str(self, key: str, default: str = "") -> str:

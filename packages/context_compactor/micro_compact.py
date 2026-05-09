@@ -504,7 +504,7 @@ def _get_timestamp(msg: Any) -> float:
 
             dt = datetime.datetime.fromisoformat(ts.replace("Z", "+00:00"))
             return dt.timestamp()
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             return 0.0
 
     return float(ts) if ts else 0.0

@@ -369,7 +369,7 @@ class PolicyLimitsService:
                         metadata=value.get("metadata", {}),
                     )
             return restrictions
-        except (OSError, json.JSONDecodeError, KeyError):
+        except OSError, json.JSONDecodeError, KeyError:
             return None
 
     def _save_cached_restrictions(self, restrictions: dict[str, PolicyRestriction]) -> None:

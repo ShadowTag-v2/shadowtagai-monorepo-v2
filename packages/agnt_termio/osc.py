@@ -170,7 +170,7 @@ def _exec_no_throw(
             timeout=timeout,
         )
         return proc.returncode
-    except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
+    except subprocess.TimeoutExpired, FileNotFoundError, OSError:
         return -1
 
 

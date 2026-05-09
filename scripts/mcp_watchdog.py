@@ -9,6 +9,7 @@ chime confirmation.
 Designed to run as a VS Code background task (see .vscode/tasks.json).
 Zero CPU impact at idle (~0.01% per poll cycle).
 """
+
 from __future__ import annotations
 
 import re
@@ -79,11 +80,7 @@ def send_macos_notification(
     """Trigger a native macOS desktop notification via osascript."""
     safe_title = title.replace('"', '\\"')
     safe_msg = message.replace('"', '\\"')
-    apple_script = (
-        f'display notification "{safe_msg}" '
-        f'with title "{safe_title}" '
-        f'sound name "{sound}"'
-    )
+    apple_script = f'display notification "{safe_msg}" with title "{safe_title}" sound name "{sound}"'
     subprocess.run(
         ["osascript", "-e", apple_script],
         stdout=subprocess.DEVNULL,

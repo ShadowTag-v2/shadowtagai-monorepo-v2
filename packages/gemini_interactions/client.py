@@ -378,9 +378,7 @@ class InteractionsClient:
                 if self._api_key:
                     kwargs["api_key"] = self._api_key
                 if self._api_revision:
-                    kwargs["http_options"] = {
-                        "headers": {"Api-Revision": self._api_revision}
-                    }
+                    kwargs["http_options"] = {"headers": {"Api-Revision": self._api_revision}}
                 self._client = genai.Client(**kwargs)
             except ImportError as exc:
                 msg = "google-genai SDK not installed. Run: pip install google-genai>=1.47.0"

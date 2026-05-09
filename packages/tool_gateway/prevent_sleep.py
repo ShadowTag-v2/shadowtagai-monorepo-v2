@@ -148,7 +148,7 @@ class PreventSleepService:
                 stderr=subprocess.DEVNULL,
             )
             logger.debug("Started caffeinate (PID %d) to prevent sleep", self._process.pid)
-        except (OSError, FileNotFoundError):
+        except OSError, FileNotFoundError:
             # caffeinate not available or spawn failed
             self._process = None
 
@@ -161,7 +161,7 @@ class PreventSleepService:
                 proc.kill()  # SIGKILL for immediate termination
                 proc.wait(timeout=5)
                 logger.debug("Stopped caffeinate, allowing sleep")
-            except (OSError, subprocess.TimeoutExpired):
+            except OSError, subprocess.TimeoutExpired:
                 pass  # Process may have already exited
 
     def _start_restart_timer(self) -> None:
