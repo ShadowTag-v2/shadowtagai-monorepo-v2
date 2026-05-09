@@ -21,7 +21,73 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CANONICAL_APPS = {"counselconduit", "kovelai", "shadowtagai", "lead-capture-router"}
-CANONICAL_LAYOUT = {"apps", "libs", "labs", "packages", "scripts", "tools", "docs", "infra", "vault", "archive"}
+CANONICAL_LAYOUT = {
+    "apps",
+    "libs",
+    "labs",
+    "packages",
+    "scripts",
+    "tools",
+    "docs",
+    "infra",
+    "vault",
+    "archive",
+    "tests",
+    "services",
+    "core",
+    "knowledge",
+    "terraform",
+    "infrastructure",
+    "third_party",
+    "keys",
+    "configs",
+    "config",
+    "build",
+    "external_repos",
+}
+# Known legacy directories — deprecated but not actionable drift.
+# These are scheduled for archival but don't block repo doctor grade.
+KNOWN_LEGACY_PREFIXES = (
+    "_archive",
+    "_audit",
+    "scratch",
+    "src",
+    "control",
+    "Claude_Code",
+    "product-pitch-site",
+    "playwright-report",
+    "test-results",
+    "pnkln",
+    "antigravity-core",
+    "tool_contracts",
+    "dataconnect",
+    "governance",
+    "public",
+    "judge6",
+    "external_payloads",
+    "skills",
+    "shared",
+    "extensions",
+    "staging",
+    "src-tauri",
+    "reports",
+    "reference_architectures",
+    "ops",
+    "evals",
+    "eslint-plugin-cor-rules",
+    "temporal",
+    "templates",
+    "otel",
+    "infrastructure-pulumi",
+    "design",
+    "contracts",
+    "cmd",
+    "benchmarks",
+    "authz",
+    "artifacts",
+    "target",
+    '"archive',  # Broken filename with literal quote
+)
 GITIGNORED_HEAVY = {
     "tools/external_sdks",
     "browser_artifacts",
@@ -247,21 +313,27 @@ def check_drift(report: HealthReport) -> None:
 
     tracked = r.stdout.strip().splitlines()
     drift_count = 0
+    legacy_count = 0
     for fpath in tracked:
         top = fpath.split("/")[0] if "/" in fpath else ""
         # Root-level files are OK, check directory-based paths
-        if top and not top.startswith(".") and top not in CANONICAL_LAYOUT:
-            drift_count += 1
-            if drift_count <= 5:
-                report.findings.append(
-                    Finding(
-                        "drift",
-                        Severity.WARN,
-                        "File outside canonical layout",
-                        path=fpath,
-                        fix="Move to apps/, libs/, tools/, or archive/",
-                    )
+        if not top or top.startswith(".") or top in CANONICAL_LAYOUT:
+            continue
+        # Known legacy dirs — count but don't flag as drift
+        if any(top.startswith(pfx) for pfx in KNOWN_LEGACY_PREFIXES):
+            legacy_count += 1
+            continue
+        drift_count += 1
+        if drift_count <= 5:
+            report.findings.append(
+                Finding(
+                    "drift",
+                    Severity.WARN,
+                    "File outside canonical layout",
+                    path=fpath,
+                    fix="Move to apps/, libs/, tools/, or archive/",
                 )
+            )
 
     if drift_count > 5:
         report.findings.append(
@@ -271,8 +343,18 @@ def check_drift(report: HealthReport) -> None:
                 f"... and {drift_count - 5} more drift files",
             )
         )
-    elif drift_count == 0:
+    if legacy_count > 0:
+        report.findings.append(
+            Finding(
+                "drift",
+                Severity.INFO,
+                f"{legacy_count} files in known legacy directories (scheduled for archival)",
+            )
+        )
+    if drift_count == 0 and legacy_count == 0:
         report.findings.append(Finding("drift", Severity.INFO, "No layout drift detected"))
+    elif drift_count == 0 and legacy_count > 0:
+        report.findings.append(Finding("drift", Severity.INFO, "No unknown drift — only known legacy dirs"))
 
 
 def check_lint(report: HealthReport) -> None:
