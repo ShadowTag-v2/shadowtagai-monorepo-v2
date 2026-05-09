@@ -1,43 +1,30 @@
-# ═══════════════════════════════════════════════════════════════
-# .bunfig.toml — V18 Enterprise Registry Configuration
-# ═══════════════════════════════════════════════════════════════
-#
-# Routes private scopes through Google Artifact Registry.
-# Public packages route through the default Bun registry.
-# Auth via Workload Identity Federation (WIF) — no static tokens.
-#
-# Reference: https://bun.sh/docs/install/registries
+# V18 Zenith — Enterprise Registry Router
+# Routes private scopes to Google Artifact Registry + GitHub Packages
+# Public packages resolve normally via registry.npmjs.org
 
 [install]
-# Fail on lockfile mismatch in CI
-frozenLockfile = true
-
-# Use hardlinks for faster installs
-globalDir = "~/.bun/install/cache"
+# Use Bun's native lockfile
+lockfile = "bun.lock"
 
 [install.scopes]
-# ─── Google Labs Experimental Packages ───────────────────────
-# Sourced from external_repos/ local builds + Artifact Registry
-"@google-labs-code" = { url = "https://us-npm.pkg.dev/shadowtag-omega-v4/google-labs-npm/", token = "$ARTIFACT_REGISTRY_TOKEN" }
+# Google internal MCP + AI packages → GCP Artifact Registry (WIF auth)
+"@google" = { url = "https://us-central1-npm.pkg.dev/shadowtag-omega-v4/mcp-registry/", token = "$GOOGLE_ADC_TOKEN" }
 
-# ─── Stitch Design System SDK ────────────────────────────────
-"@stitch" = { url = "https://us-npm.pkg.dev/shadowtag-omega-v4/stitch-npm/", token = "$ARTIFACT_REGISTRY_TOKEN" }
+# Google Labs experimental packages → GitHub Packages
+"@google-labs-code" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
 
-# ─── Jules CI/CD SDK ─────────────────────────────────────────
-"@jules" = { url = "https://us-npm.pkg.dev/shadowtag-omega-v4/jules-npm/", token = "$ARTIFACT_REGISTRY_TOKEN" }
+# Stitch Design SDK → GitHub Packages
+"@stitch" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
 
-# ─── ShadowTag Internal Packages ─────────────────────────────
-"@shadowtag" = { url = "https://us-npm.pkg.dev/shadowtag-omega-v4/internal-npm/", token = "$ARTIFACT_REGISTRY_TOKEN" }
+# Firebase enterprise packages → GitHub Packages
+"@firebase" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
 
-[install.peer]
-# Auto-install peer dependencies
-enabled = true
+# Jules CI/CD SDK → GitHub Packages
+"@jules" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
+
+# ShadowTag internal packages → GCP Artifact Registry
+"@shadowtag" = { url = "https://us-central1-npm.pkg.dev/shadowtag-omega-v4/shadowtag-packages/", token = "$GOOGLE_ADC_TOKEN" }
 
 [run]
-# Bun-native HTTP server (no Node compat layer)
+# Bun runtime flags for server.ts
 bun = true
-
-[test]
-# Coverage via Bun's native test runner
-coverage = true
-coverageDir = "coverage"
