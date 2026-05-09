@@ -3,10 +3,10 @@ name: "Lighthouse CI Budget"
 on:
   push:
     branches: [main]
-    paths: ['apps/kovelai/**', 'apps/shadowtagai/**']
+    paths: ['apps/kovelai/**', 'apps/shadowtagai/**', 'apps/headfade/**', 'apps/counselconduit-dashboard/**']
   pull_request:
     branches: [main]
-    paths: ['apps/kovelai/**', 'apps/shadowtagai/**']
+    paths: ['apps/kovelai/**', 'apps/shadowtagai/**', 'apps/headfade/**', 'apps/counselconduit-dashboard/**']
   workflow_dispatch:
 
 permissions:
@@ -23,6 +23,10 @@ jobs:
             url: https://kovelai.web.app
           - app: shadowtagai
             url: https://shadowtagai.web.app
+          - app: headfade
+            url: https://headfade.com
+          - app: counselconduit
+            url: https://counselconduit-767252945109.us-central1.run.app
     steps:
       - uses: actions/checkout@v4
 
