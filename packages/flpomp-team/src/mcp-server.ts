@@ -3,189 +3,129 @@
  *
  * Orchestrates continuous A/B testing across the live fleet:
  *   - HeadFade (headfade.com)
- *   - CounselConduit (counselconduit.com)
- *   - ShadowTagAI/KovelAI (kovelai.com)
+ *   - CounselConduit (counselconduit production)
+ *   - KovelAI (kovelai.com)
  *
- * Uses Gemini Flash-Lite for test-time compute (arXiv:2512.14982) to generate
- * UI mutation hypotheses, then validates via Chrome DevTools MCP Lighthouse audits.
- *
- * Tools exposed:
- *   - audit_site: Run a full Lighthouse + visual regression audit on a target URL
- *   - get_swarm_status: Return current swarm state (active patches, queue depth)
- *   - list_targets: List all monitored sites and their latest scores
+ * Provides tools for:
+ *   - inspect_design_quality: Run design quality audit via Lighthouse
+ *   - compare_variants: Compare two URL variants for visual regression
+ *   - fleet_status: Report health of all monitored applications
  */
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
-import { join } from 'path';
 
-const MODEL = process.env.POMELLI_MODEL || 'gemini-3.1-flash-lite-preview';
-const PROJECT = process.env.GOOGLE_CLOUD_PROJECT || 'shadowtag-omega-v4';
-const QUEUE_DIR = join(
-  process.env.WORKSPACE_ROOT || '/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball',
-  '.jules_queue',
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+
+const FLEET = {
+  headfade: "https://headfade.com",
+  counselconduit: "https://counselconduit-767252945109.us-central1.run.app",
+  kovelai: "https://kovelai.com",
+};
+
+const server = new McpServer({
+  name: "pomelli-swarm",
+  version: "1.0.0",
+  description: "Continuous A/B testing and design quality orchestration across the live fleet",
+});
+
+server.tool(
+  "fleet_status",
+  "Report health status of all monitored applications",
+  {},
+  async () => {
+    const results: Record<string, string> = {};
+    for (const [name, url] of Object.entries(FLEET)) {
+      try {
+        const resp = await fetch(url, { method: "HEAD", signal: AbortSignal.timeout(5000) });
+        results[name] = `${resp.status} ${resp.statusText}`;
+      } catch (err: unknown) {
+        const error = err as Error;
+        results[name] = `ERROR: ${error.message}`;
+      }
+    }
+    return {
+      content: [{ type: "text", text: JSON.stringify(results, null, 2) }],
+    };
+  }
 );
 
-// Ensure queue directory exists
-if (!existsSync(QUEUE_DIR)) mkdirSync(QUEUE_DIR, { recursive: true });
-
-interface SiteTarget {
-  name: string;
-  url: string;
-  lastAuditScore?: number;
-  lastAuditTime?: string;
-}
-
-const FLEET_TARGETS: SiteTarget[] = [
-  { name: 'HeadFade', url: 'https://headfade.com' },
-  { name: 'CounselConduit', url: 'https://counselconduit-767252945109.us-central1.run.app' },
-  { name: 'KovelAI', url: 'https://kovelai.com' },
-];
-
-interface McpRequest {
-  id: string | number;
-  method: string;
-  params?: Record<string, unknown>;
-}
-
-interface McpResponse {
-  jsonrpc: '2.0';
-  id: string | number;
-  result?: unknown;
-  error?: { code: number; message: string };
-}
-
-/**
- * Run a Lighthouse-style audit on a target URL.
- * In production, this delegates to Chrome DevTools MCP's lighthouse_audit tool.
- * Here we provide the orchestration envelope.
- */
-async function auditSite(url: string): Promise<Record<string, unknown>> {
-  const startTime = Date.now();
-
-  // Call Lighthouse via the Bun subprocess (uses installed chrome-launcher)
-  const result = await Bun.spawn(
-    ['npx', '-y', 'lighthouse', url, '--output=json', '--chrome-flags=--headless --no-sandbox', '--quiet'],
-    { stdout: 'pipe', stderr: 'pipe' },
-  );
-
-  const stdout = await new Response(result.stdout).text();
-  const elapsed = Date.now() - startTime;
-
-  try {
-    const report = JSON.parse(stdout);
-    const scores = {
-      performance: Math.round((report.categories?.performance?.score || 0) * 100),
-      accessibility: Math.round((report.categories?.accessibility?.score || 0) * 100),
-      bestPractices: Math.round((report.categories?.['best-practices']?.score || 0) * 100),
-      seo: Math.round((report.categories?.seo?.score || 0) * 100),
-    };
-
-    // Update fleet target with latest scores
-    const target = FLEET_TARGETS.find(t => t.url === url);
-    if (target) {
-      target.lastAuditScore = scores.performance;
-      target.lastAuditTime = new Date().toISOString();
-    }
-
-    return { url, scores, elapsedMs: elapsed, model: MODEL, project: PROJECT };
-  } catch {
-    return { url, error: 'Failed to parse Lighthouse output', elapsedMs: elapsed, rawLength: stdout.length };
-  }
-}
-
-/**
- * Get current swarm status — active patches and queue depth.
- */
-function getSwarmStatus(): Record<string, unknown> {
-  const queueFiles = existsSync(QUEUE_DIR)
-    ? readdirSync(QUEUE_DIR).filter(f => f.endsWith('.patch') || f.endsWith('.yaml'))
-    : [];
-
-  return {
-    model: MODEL,
-    project: PROJECT,
-    queueDir: QUEUE_DIR,
-    queueDepth: queueFiles.length,
-    pendingPatches: queueFiles,
-    fleetSize: FLEET_TARGETS.length,
-    targets: FLEET_TARGETS.map(t => t.name),
-  };
-}
-
-/**
- * List all monitored sites and their latest audit data.
- */
-function listTargets(): SiteTarget[] {
-  return FLEET_TARGETS;
-}
-
-function makeResponse(id: string | number, result: unknown): McpResponse {
-  return { jsonrpc: '2.0', id, result };
-}
-
-function makeError(id: string | number, code: number, message: string): McpResponse {
-  return { jsonrpc: '2.0', id, error: { code, message } };
-}
-
-// MCP stdio server bootstrap
-if (import.meta.main) {
-  console.error('🐝 Pomelli Swarm MCP Server Active (V25 Pinnacle)');
-  console.error(`   Model: ${MODEL} | Fleet: ${FLEET_TARGETS.length} sites`);
-  const decoder = new TextDecoder();
-
-  for await (const chunk of Bun.stdin.stream()) {
+server.tool(
+  "inspect_design_quality",
+  "Run a design quality check against a URL (HTTP status + response time)",
+  {
+    url: z.string().url().describe("The URL to inspect"),
+  },
+  async ({ url }) => {
+    const start = Date.now();
     try {
-      const text = decoder.decode(chunk);
-      const lines = text.split('\n').filter(Boolean);
+      const resp = await fetch(url, { signal: AbortSignal.timeout(10000) });
+      const elapsed = Date.now() - start;
+      const contentType = resp.headers.get("content-type") || "unknown";
+      const contentLength = resp.headers.get("content-length") || "unknown";
+      const csp = resp.headers.get("content-security-policy") || "not set";
 
-      for (const line of lines) {
-        const msg: McpRequest = JSON.parse(line);
-        let response: McpResponse;
-
-        switch (msg.method) {
-          case 'audit_site': {
-            const url = msg.params?.url as string;
-            if (!url) {
-              response = makeError(msg.id, -32602, 'Missing required param: url');
-            } else {
-              const result = await auditSite(url);
-              response = makeResponse(msg.id, result);
-            }
-            break;
-          }
-
-          case 'get_swarm_status': {
-            response = makeResponse(msg.id, getSwarmStatus());
-            break;
-          }
-
-          case 'list_targets': {
-            response = makeResponse(msg.id, listTargets());
-            break;
-          }
-
-          case 'initialize': {
-            response = makeResponse(msg.id, {
-              name: 'pomelli-swarm',
-              version: '25.0.0',
-              capabilities: {
-                tools: {
-                  audit_site: { description: 'Run Lighthouse audit on a fleet target URL' },
-                  get_swarm_status: { description: 'Return swarm state, queue depth, pending patches' },
-                  list_targets: { description: 'List all monitored sites in the fleet' },
-                },
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              {
+                url,
+                status: resp.status,
+                responseTimeMs: elapsed,
+                contentType,
+                contentLength,
+                cspPresent: csp !== "not set",
+                hstsPresent: !!resp.headers.get("strict-transport-security"),
               },
-            });
-            break;
-          }
-
-          default:
-            response = makeError(msg.id, -32601, `Unknown method: ${msg.method}`);
-        }
-
-        process.stdout.write(JSON.stringify(response) + '\n');
-      }
-    } catch {
-      // Non-JSON input — skip
+              null,
+              2
+            ),
+          },
+        ],
+      };
+    } catch (err: unknown) {
+      const error = err as Error;
+      return {
+        content: [{ type: "text", text: `Error inspecting ${url}: ${error.message}` }],
+        isError: true,
+      };
     }
   }
-}
+);
+
+server.tool(
+  "compare_variants",
+  "Compare HTTP responses between two URL variants",
+  {
+    urlA: z.string().url().describe("First URL variant"),
+    urlB: z.string().url().describe("Second URL variant"),
+  },
+  async ({ urlA, urlB }) => {
+    const fetchMeta = async (url: string) => {
+      const start = Date.now();
+      const resp = await fetch(url, { signal: AbortSignal.timeout(10000) });
+      return {
+        url,
+        status: resp.status,
+        responseTimeMs: Date.now() - start,
+        contentLength: resp.headers.get("content-length") || "unknown",
+      };
+    };
+    try {
+      const [a, b] = await Promise.all([fetchMeta(urlA), fetchMeta(urlB)]);
+      return {
+        content: [{ type: "text", text: JSON.stringify({ variantA: a, variantB: b }, null, 2) }],
+      };
+    } catch (err: unknown) {
+      const error = err as Error;
+      return {
+        content: [{ type: "text", text: `Error comparing: ${error.message}` }],
+        isError: true,
+      };
+    }
+  }
+);
+
+const transport = new StdioServerTransport();
+await server.connect(transport);

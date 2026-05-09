@@ -1,105 +1,176 @@
 {
   "mcpServers": {
-    "firebase-mcp-server": {
-      "command": "bunx",
-      "args": ["--bun", "@firebase/mcp-server"],
-      "transport": "stdio"
-    },
-    "chrome-devtools-mcp": {
-      "command": "bunx",
-      "args": ["--bun", "@puppeteer/chrome-devtools-mcp"],
-      "env": { "CHROME_DEBUG_PORT": "9222" },
-      "transport": "stdio"
-    },
-    "google-design-mcp": {
-      "command": "bunx",
-      "args": ["--bun", "@google/design-mcp"],
-      "env": { "DESIGN_API_ENDPOINT": "wss://design.googleapis.com/mcp" },
-      "transport": "stdio"
-    },
-    "StitchMCP": {
-      "command": "bunx",
-      "args": ["--bun", "@stitch/mcp-server"],
-      "transport": "stdio"
-    },
-    "google-developer-knowledge": {
-      "command": "bunx",
-      "args": ["--bun", "@googlecloud/vertex-ai-search-mcp"],
-      "transport": "stdio"
-    },
-    "sequential-thinking": {
-      "command": "bunx",
-      "args": ["--bun", "@anthropic/sequential-thinking-mcp"],
-      "transport": "stdio"
-    },
-    "jules-mcp-server": {
-      "command": "bunx",
-      "args": ["--bun", "@google/jules-mcp"],
-      "transport": "stdio"
-    },
-    "os-infrastructure-matrix": {
-      "command": "bunx",
-      "args": ["--bun", "@google/mcp-toolbox"],
-      "env": { "ENABLE_SERVICES": "resourcemanager,spanner,pubsub" },
-      "transport": "stdio"
-    },
-    "database-insights-mcp": {
-      "command": "bunx",
-      "args": ["--bun", "@googlecloud/database-insights-mcp"],
-      "env": { "SPANNER_PROJECT": "shadowtag-omega-v4", "SPANNER_INSTANCE": "core-cluster" },
-      "transport": "stdio"
-    },
-    "observability": {
-      "command": "bunx",
-      "args": ["--bun", "@google/genkit-mcp"],
-      "transport": "stdio"
-    },
-    "cloud-run": {
-      "command": "bunx",
-      "args": ["--bun", "@google/mcp-toolbox"],
-      "env": { "ENABLE_SERVICES": "run" },
-      "transport": "stdio"
-    },
-    "storage": {
-      "command": "bunx",
-      "args": ["--bun", "@google/mcp-toolbox"],
-      "env": { "ENABLE_SERVICES": "storage" },
-      "transport": "stdio"
-    },
-    "stripe-mcp": { "command": "bunx", "args": ["--bun", "@stripe/mcp"], "transport": "stdio" },
-    "bigquery": {
-      "command": "bunx",
-      "args": ["--bun", "@google/mcp-toolbox"],
-      "env": { "ENABLE_SERVICES": "bigquery" },
-      "transport": "stdio"
-    },
     "dart-language-server": {
       "command": "dart",
-      "args": ["language-server", "--protocol=lsp"],
-      "transport": "stdio"
+      "args": ["language-server"],
+      "disabled": false,
+      "autoApprove": []
     },
-    "vertex-ai": {
-      "command": "bunx",
-      "args": ["--bun", "@google/mcp-toolbox"],
-      "env": { "ENABLE_SERVICES": "aiplatform", "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4" },
-      "transport": "stdio"
+    "gcloud": {
+      "command": "npx",
+      "args": ["-y", "@google-cloud/gcloud-mcp"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": false,
+      "autoApprove": ["run_gcloud_command"]
     },
-    "spanner": {
-      "command": "bunx",
-      "args": ["--bun", "@google/mcp-toolbox"],
-      "env": { "ENABLE_SERVICES": "spanner", "SPANNER_PROJECT": "shadowtag-omega-v4", "SPANNER_INSTANCE": "core-cluster" },
-      "transport": "stdio"
+    "observability": {
+      "command": "npx",
+      "args": ["-y", "@google-cloud/observability-mcp"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "list_log_entries",
+        "list_log_names",
+        "list_sinks",
+        "list_log_scopes",
+        "list_metric_descriptors",
+        "list_time_series",
+        "list_alert_policies",
+        "list_traces",
+        "get_trace",
+        "list_group_stats"
+      ]
     },
-    "datastream": {
-      "command": "bunx",
-      "args": ["--bun", "@google/mcp-toolbox"],
-      "env": { "ENABLE_SERVICES": "datastream", "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4" },
-      "transport": "stdio"
+    "google-cloud-spanner": {
+      "command": "node",
+      "args": ["tools/mcp-spanner-bridge/index.js"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
+        "SPANNER_PROJECT": "shadowtag-omega-v4",
+        "SPANNER_INSTANCE": "core-cluster",
+        "SPANNER_DATABASE": "shadowtag-db"
+      },
+      "disabled": false,
+      "autoApprove": ["spanner_list_tables", "spanner_get_schema", "spanner_query"]
+    },
+    "mcp-toolbox-spanner": {
+      "command": "npx",
+      "args": ["-y", "@toolbox-sdk/server", "--prebuilt", "spanner", "--stdio"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
+        "SPANNER_PROJECT": "shadowtag-omega-v4",
+        "SPANNER_INSTANCE": "core-cluster",
+        "SPANNER_DATABASE": "shadowtag-db",
+        "SPANNER_DIALECT": "googlesql"
+      },
+      "disabled": false,
+      "autoApprove": ["list_tables", "execute_sql_dql", "list_graphs"],
+      "_note": "MCP Toolbox for Databases v1.2.0 — replaces phantom database-insights + spanner-toolbox. Prebuilt tools: execute_sql, execute_sql_dql, list_tables, list_graphs."
+    },
+    "gemini-memory": {
+      "command": "node",
+      "args": ["tools/mcp-gemini-memory/index.js"],
+      "disabled": false,
+      "autoApprove": ["memory_store", "memory_recall", "memory_list"]
+    },
+    "genkit": {
+      "command": "npx",
+      "args": ["-y", "genkit@latest"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "storage": {
+      "command": "npx",
+      "args": ["-y", "@google-cloud/storage-mcp"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "list_buckets",
+        "list_objects",
+        "read_object_metadata",
+        "read_object_content",
+        "get_bucket_metadata",
+        "get_bucket_location"
+      ]
+    },
+    "firebase-mcp-server": {
+      "command": "npx",
+      "args": ["-y", "firebase-tools@latest", "mcp"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "bigquery": {
+      "command": "npx",
+      "args": ["-y", "@channel.io/bigquery-mcp"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "cloud-run": {
+      "command": "npx",
+      "args": ["-y", "@google-cloud/cloud-run-mcp"],
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "list-services",
+        "get-service",
+        "get-service-log",
+        "list-projects"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "disabled": false,
+      "autoApprove": []
+    },
+    "jules-mcp-server": {
+      "command": "node",
+      "args": ["antigravity-jules-orchestration/index.js"],
+      "disabled": false,
+      "autoApprove": []
+    },
+    "stripe-governor": {
+      "command": "npx",
+      "args": ["-y", "@stripe/mcp", "--tools=all"],
+      "env": {
+        "STRIPE_SECRET_KEY": "${STRIPE_SECRET_KEY}"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "semantic-scalpel": {
+      "command": "bun",
+      "args": ["run", "packages/ast-grep-mcp/src/index.ts"],
+      "disabled": false,
+      "autoApprove": ["ast_search", "ast_scan"]
+    },
+    "notebooklm-mcp": {
+      "command": "uvx",
+      "args": ["--from", "notebooklm-mcp-cli", "nlm", "mcp"],
+      "env": {
+        "HEADLESS": "true"
+      },
+      "disabled": false,
+      "autoApprove": ["list_notebooks", "search_notebooks", "get_notebook"]
     },
     "pomelli-swarm": {
       "command": "bun",
-      "args": ["run", "scripts/inspect_design_quality.ts"],
-      "transport": "stdio"
+      "args": ["run", "packages/flpomp-team/src/mcp-server.ts"],
+      "disabled": false,
+      "autoApprove": ["fleet_health", "fleet_list"]
+    },
+    "google-drive-api": {
+      "command": "bun",
+      "args": ["run", "tools/workspace-api/drive_fetcher.ts"],
+      "disabled": false,
+      "autoApprove": ["drive_search", "drive_list_recent"]
     }
   }
 }
