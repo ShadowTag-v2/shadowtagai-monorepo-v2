@@ -1,9 +1,10 @@
-# SYSTEM_OVERRIDE.md — V18 Zenith Hyper-Core
+# SYSTEM_OVERRIDE.md — V19 Archon-Bun Hyper-Core
 
-**Version:** 18.0  
+**Version:** 19.0  
 **Runtime:** Bun 1.3.11 (Zig-backed)  
-**Codename:** Isomorphic GraphQL Ascension  
-**Date:** 2026-05-08  
+**Codename:** Cognitive Router + FinOps Governor  
+**Date:** 2026-05-09  
+**HEAD:** `aec15aeb9` (merged via PR #88)
 
 ---
 
@@ -20,7 +21,16 @@ The NPM Illusion has been shattered. All proprietary Google Labs packages are **
 | `@google/jules-sdk` | `external_repos/jules-sdk/` | `packages/core/` | ✅ BUILT |
 | `@google/jules-fleet` | `external_repos/jules-sdk/` | `packages/fleet/dist/cli/index.mjs` | ✅ BUILT |
 
-### Kriasoft Isomorphic Triad
+### V19 New Artifacts (Cognitive Router + FinOps Governor)
+
+| Artifact | Path | Purpose | Status |
+|----------|------|---------|--------|
+| Cognitive Router | `tools/cognitive_router/dispatch.ts` | Multi-model dispatch (Gemini tiers + fallback) | ✅ DEPLOYED |
+| FinOps Governor | `services/finops-governor/` | Cost guardrails, BigQuery billing analytics | ✅ DEPLOYED |
+| `@google/genai` | `node_modules/` | Gemini 3.x generative AI SDK | ✅ INSTALLED |
+| `@google-cloud/bigquery` | `node_modules/` | BigQuery client for FinOps analytics | ✅ INSTALLED |
+
+### Kriasoft Isomorphic Triad (V18)
 
 | Repo | Package Name | Purpose | Location |
 |------|-------------|---------|----------|
@@ -75,8 +85,40 @@ The `useStitchTheme()` hook is provided by the **facade** at `apps/client/src/co
 - `stripe-mcp`: @stripe/mcp
 - Plus: gcloud-mcp, observability, cloud-run, storage, os-dart-compiler
 
+### Live Deployments
+
+| Site | URL | Platform | Status |
+|------|-----|----------|--------|
+| HeadFade | `https://headfade.com` | Firebase Hosting | ✅ LIVE |
+| CounselConduit | `https://counselconduit-767252945109.us-central1.run.app` | Cloud Run | ✅ LIVE |
+| ShadowTagAI | Firebase Hosting target `shadowtagai` | Firebase Hosting | Configured |
+| KovelAI | Firebase Hosting target `kovelai` | Firebase Hosting | Configured |
+| CC Dashboard | Firebase Hosting target `counselconduit-dashboard` | Firebase Hosting | Configured |
+
+### Monorepo Census
+
+| Category | Count |
+|----------|-------|
+| Packages | 91 |
+| Workspace Skills | 92 |
+| External Repos | 21 |
+| Firebase Hosting Targets | 4 |
+| GitHub PRs Merged (V16→V19) | 4 |
+
 ---
 
 ## Ground Truth Axiom
 
 > Local filesystem source code is **absolute ground truth**. The public NPM registry is a distribution mechanism for the masses; it is not the arbiter of reality. When bleeding-edge source code exists on this hard drive, that source code IS the package.
+
+---
+
+## Version History
+
+| Version | Codename | HEAD Commit | PR | Date |
+|---------|----------|-------------|-----|------|
+| V19 | Cognitive Router + FinOps Governor | `aec15aeb9` | #88 (merged) | 2026-05-09 |
+| V18 | Isomorphic GraphQL Ascension | `f35fb96ae` | — | 2026-05-08 |
+| V17 | Archon-Bun Hyper-Core | `5ef4218b3` | — | 2026-05-08 |
+| V16 | Absolute OS | `8b78eaaa4` | — | 2026-05-08 |
+| V15 | Ground Truth Revision | `351ca4856` | — | 2026-05-07 |

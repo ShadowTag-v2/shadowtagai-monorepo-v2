@@ -1,10 +1,10 @@
-# SYSTEM OVERRIDE: OMNI-BOOT INITIALIZATION (V15 — GROUND TRUTH REVISION)
+# SYSTEM OVERRIDE: OMNI-BOOT INITIALIZATION (V19 — GROUND TRUTH REVISION)
 
 **To: Antigravity Core Engine**
 
 Persist operator-invariants and all other memory features as active session invariants. Mirror them internally, verbatim, before any repo-wide action until I explicitly say "MEMORY UNLOCK."
 
-You are booting into a new session with an empty conversational context window. Do not hallucinate our project state. Execute the Pre-Action Memory Gate, verify the 10-server MCP fleet, and confirm auth posture before any code changes.
+You are booting into a new session with an empty conversational context window. Do not hallucinate our project state. Execute the Pre-Action Memory Gate, verify the 5-server MCP fleet, and confirm auth posture before any code changes.
 
 ---
 
@@ -20,7 +20,7 @@ cat .beads/repo_doctor_latest.json
 ```
 
 * Read `.ruler/AGENTS.md` (v11.2 LOCKED) — the canonical contract.
-* Read `monorepo_manifest.yaml` — workspace truth (currently v15.5, Milestone 10 COMPLETE).
+* Read `monorepo_manifest.yaml` — workspace truth (currently v19.0, Milestone 14 ACTIVE).
 * Read `.agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md` — the non-destruction law.
 
 **Auth Invariant Confirmation:**
@@ -39,15 +39,13 @@ cat .beads/repo_doctor_latest.json
 | Document | Role | Current Version |
 |----------|------|-----------------|
 | `AGENTS.md` | Canonical contract | v11.2 LOCKED |
-| `monorepo_manifest.yaml` | Workspace truth | v15.5 |
-| `antigravity-mcp-config.json` | MCP truth | 10 servers |
+| `monorepo_manifest.yaml` | Workspace truth | v19.0 |
+| `antigravity-mcp-config.json` | MCP truth | 5 platform-managed servers |
 | `BUSINESS_CONTEXT_LOCKED.md` | Pricing & architecture | — |
 | `RISK_REGISTER.md` | Operational risk | — |
 | `.agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md` | Non-destruction law | ACTIVE |
 
-### MCP Fleet (10 Servers — Verify ALL)
-
-**Core 5 (Platform-managed, always available):**
+### MCP Fleet (5 Platform-Managed Servers — Verify ALL)
 
 | # | Server | Tools | Domain |
 |---|--------|-------|--------|
@@ -57,15 +55,18 @@ cat .beads/repo_doctor_latest.json
 | 4 | `google-developer-knowledge` | 3 | Google developer docs search, retrieval, grounded answers |
 | 5 | `sequential-thinking` | 1 | Multi-step reasoning, hypothesis verification |
 
-**GCP 5 (Infrastructure-tier):**
+**Cline MCP Servers (13 — configured in `cline_mcp_settings.json`):**
 
 | # | Server | Domain |
 |---|--------|--------|
-| 6 | `jules-mcp-server` | Asynchronous cloud agent delegation |
-| 7 | `gcloud` | GCP CLI operations |
-| 8 | `observability` | Cloud Monitoring, Logging |
-| 9 | `cloud-run` | Service deployment, revisions |
-| 10 | `storage` | Cloud Storage operations |
+| 6 | `jules-mcp-server` | LOCAL binary — asynchronous cloud agent delegation |
+| 7 | `stitch-mcp-server` | LOCAL binary — Stitch SDK direct |
+| 8 | `jules-fleet` | LOCAL binary — multi-agent fleet orchestration |
+| 9 | `gcloud-mcp` | GCP CLI operations |
+| 10 | `observability` | Cloud Monitoring, Logging |
+| 11 | `cloud-run` | Service deployment, revisions |
+| 12 | `storage` | Cloud Storage operations |
+| 13 | `stripe-mcp` | Stripe payments & webhooks |
 
 **Pre-Flight Check (run at session start):**
 1. `list_pages` → chrome-devtools-mcp UP
@@ -78,7 +79,6 @@ cat .beads/repo_doctor_latest.json
 > **Phantom MCPs that DO NOT EXIST (never reference these):**
 > - ~~Google Design MCP (`wss://design.googleapis.com/mcp`)~~ — fabricated
 > - ~~NotebookLM MCP~~ — `notebooklm` is a CLI tool, not an MCP server
-> - ~~Cline MCP servers~~ — Cline is not used in this workspace
 
 ---
 
@@ -99,6 +99,11 @@ CI=true firebase login:list 2>/dev/null | grep -q "@" && echo "FIREBASE_CLI: YES
 | Firebase MCP (Layer 2) | MCP tool calls, Resources | In-memory OAuth2 via `firebase_login` MCP tool |
 | GCP ADC (Layer 3) | Secret Manager, Cloud Run, Vertex | `~/.config/gcloud/application_default_credentials.json` |
 | GitHub | Push/pull, API ops | SSH + App PEM JWT via `scripts/auth_github_app.py` |
+
+**Current Verified Auth (as of V19 session 2026-05-09):**
+- Firebase MCP: `founder@shadowtagai.com` ✅
+- Firebase project: `shadowtag-omega-v4` ✅
+- GitHub App token: Cached and working ✅
 
 **If any auth is NO:** Stop and tell the user the exact command to run in their Mac Terminal. Do NOT attempt `login` commands yourself.
 
@@ -152,33 +157,45 @@ All layout generation and deployment must pass:
 * **STATE A (YOLO):** Unconstrained execution for standard operations. No stopping for permission.
 * **STATE B (Clutch):** Triggered ONLY by: git history rewrites, force-pushes, database migrations, auth/payment changes, architecture shifts >3 packages.
 
+### V19 Cognitive Router
+* `tools/cognitive_router/dispatch.ts` — multi-model dispatch across Gemini tiers.
+* `services/finops-governor/` — Python-based FinOps cost guardrails with BigQuery analytics.
+* `@google/genai` + `@google-cloud/bigquery` wired as runtime dependencies.
+
 ---
 
-## 6. EXECUTION COMMAND
+## 6. LIVE DEPLOYMENT STATE
+
+| Site | URL | Platform | Status |
+|------|-----|----------|--------|
+| HeadFade | `https://headfade.com` | Firebase Hosting | ✅ LIVE |
+| CounselConduit | `https://counselconduit-767252945109.us-central1.run.app` | Cloud Run | ✅ LIVE |
+| ShadowTagAI | Firebase Hosting target `shadowtagai` | Firebase Hosting | Configured |
+| KovelAI | Firebase Hosting target `kovelai` | Firebase Hosting | Configured |
+| CC Dashboard | Firebase Hosting target `counselconduit-dashboard` | Firebase Hosting | Configured |
+
+---
+
+## 7. EXECUTION COMMAND
 
 1. **Run the Pre-Action Memory Gate** — physically execute `git log -n 5`, read `AGENTS.md`, `monorepo_manifest.yaml`, and `RULE_00`.
 2. **Run the 5-server MCP pre-flight** — one tool call per core server.
 3. **Run the auth verification** — the 4-line bash block from §3. Report YES/NO for each.
 4. **Run repo_doctor** — `python3 scripts/repo_doctor.py`. Report grade.
-5. **Report the status table** to the user with: MCP fleet (10/10 or N/10), auth posture (4 YES/NO), repo grade, HEAD commit, manifest version.
+5. **Report the status table** to the user with: MCP fleet (5/5 or N/5), auth posture (4 YES/NO), repo grade, HEAD commit, manifest version.
 
 **Do NOT ask me to run any commands. Do NOT attempt login flows. Execute silently and report.**
 
 ---
 
 > [!IMPORTANT]
-> **Revision Log (V14 → V15)**
-> - Removed phantom "Google Design MCP" — does not exist
-> - Removed phantom "NotebookLM MCP" — CLI tool, not MCP server
-> - Removed phantom "12 Cline MCP servers" — not used
-> - Removed "JCodesMore template clone" — not a concept
-> - Removed "Bandit B310" — replaced with betterleaks + ruff
-> - Removed "11x Chrome Loop" — replaced with chrome-devtools-mcp (29 tools)
-> - Removed "V4 Cognitive Structural Synthesis" — current version is v15.5
-> - Added real 10-server MCP fleet from antigravity-mcp-config.json
-> - Added Three-Layer Firebase Auth architecture
-> - Added TACSOP 7 visual provenance ban
-> - Added Headless CLI Protocol
-> - Added RULE_00 Immutable Infrastructure reference
-> - Added explicit phantom MCP warning to prevent regression
-> - Aligned version numbers: AGENTS.md v11.2, Manifest v15.5, Milestone 10
+> **Revision Log (V15 → V19)**
+> - Bumped from V15 to V19 to match merged state on `main`
+> - Updated manifest reference from v15.5 → v19.0, Milestone 10 → 14
+> - Corrected MCP fleet from "10 servers" to "5 platform-managed + 13 Cline-configured"
+> - Removed phantom Cline MCP warning (Cline servers are REAL, configured in `cline_mcp_settings.json`)
+> - Added V19 Cognitive Router + FinOps Governor to execution pipelines
+> - Added live deployment state table (headfade.com, counselconduit, etc.)
+> - Added current verified auth state from active session
+> - Preserved all behavioral invariants, RULE_00, secrets doctrine, TACSOP 7
+> - Version history: V15 (351ca4856) → V16 (8b78eaaa4) → V17 (5ef4218b3) → V18 (f35fb96ae) → V19 (aec15aeb9)
