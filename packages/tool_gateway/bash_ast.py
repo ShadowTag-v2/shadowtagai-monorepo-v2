@@ -303,7 +303,7 @@ class BashASTAnalyzer:
                     try:
                         float(tokens[idx])
                         idx += 1
-                    except (ValueError, IndexError):
+                    except ValueError, IndexError:
                         pass
                 stripped = " ".join(tokens[idx:])
                 changed = True

@@ -105,7 +105,7 @@ class ConsolidationLock:
                 raw = f.read().strip()
                 parsed = int(raw) if raw.isdigit() else None
                 holder_pid = parsed
-        except (FileNotFoundError, ValueError, OSError):
+        except FileNotFoundError, ValueError, OSError:
             pass  # No prior lock
 
         # Check if lock is held by a live process
@@ -373,7 +373,7 @@ def _is_process_running(pid: int) -> bool:
     try:
         os.kill(pid, 0)
         return True
-    except (ProcessLookupError, PermissionError):
+    except ProcessLookupError, PermissionError:
         return False
     except OSError:
         return False
