@@ -25,3 +25,12 @@ tools/swc/node_modules
 tools/rspack/node_modules
 tools/vite/node_modules
 tools/sass/node_modules
+
+# External reference repos (cloned by scripts/clone-external-reference-repos.sh)
+external_repos
+
+# Generated infrastructure repos (created by scripts/generate-three-repos.sh)
+agnt-os-infrastructure-repos
+
+# Reports and logs
+.reports
