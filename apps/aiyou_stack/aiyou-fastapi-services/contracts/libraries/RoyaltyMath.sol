@@ -41,11 +41,11 @@ library RoyaltyMath {
 
             address parent = parentOf[current];
 
-            // If no parent, current keeps remaining
+            // If no parent, stop
             if (parent == address(0)) {
-                claimedCents[current] += remaining;
-                emit RoyaltyPaid(current, remaining, uint8(i));
-                totalPaid += remaining;
+||||||| f285896f1
+            // If no parent or we reached the Overlord, stop
+            if (parent == address(0) || parent == overlord) {
                 break;
             }
 
@@ -66,6 +66,17 @@ library RoyaltyMath {
             // Check AFTER distributing - if parent is overlord, we're done
             if (parent == overlord) {
                 break;
+||||||| f285896f1
+            if (bps == 0) {
+                current = parent;
+                continue;
+            }
+
+            uint256 cut = (remaining * bps) / 10000;
+            if (cut > 0) {
+                claimedCents[parent] += cut;
+                totalPaid += cut;
+                remaining -= cut;
             }
 
             current = parent;
