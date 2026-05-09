@@ -10,7 +10,7 @@
  *   3. Falls back to Material 3 defaults if the MCP is unreachable
  */
 
-import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import React, { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 
 // ─── M3 Design Token Types ────────────────────────────────────────
 export interface StitchDesignTokens {
@@ -135,11 +135,7 @@ export function StitchThemeProvider({
     }
   }, [projectId]);
 
-  return (
-    <StitchThemeContext.Provider value={tokens}>
-      {children}
-    </StitchThemeContext.Provider>
-  );
+  return <StitchThemeContext.Provider value={tokens}>{children}</StitchThemeContext.Provider>;
 }
 
 /**

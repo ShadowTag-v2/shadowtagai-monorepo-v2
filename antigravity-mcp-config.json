@@ -206,7 +206,13 @@
   "fleet_manifest": {
     "antigravity_native": {
       "total": 5,
-      "servers": ["firebase-mcp-server", "chrome-devtools-mcp", "StitchMCP", "google-developer-knowledge", "sequential-thinking"]
+      "servers": [
+        "firebase-mcp-server",
+        "chrome-devtools-mcp",
+        "StitchMCP",
+        "google-developer-knowledge",
+        "sequential-thinking"
+      ]
     },
     "cline_protocol_aligned": {
       "total": 12,

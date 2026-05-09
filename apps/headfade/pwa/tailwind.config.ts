@@ -48,7 +48,7 @@ const config: Config = {
     },
   },
   plugins: [
-    plugin(function ({ addUtilities }) {
+    plugin(({ addUtilities }) => {
       addUtilities({
         '.scrollbar-hide': {
           '-ms-overflow-style': 'none',

@@ -37,7 +37,7 @@ export const cspReport = onRequest(
   },
   async (req, res) => {
     // App Check attestation gate
-    if (!await verifyAppCheck(req, res)) return;
+    if (!(await verifyAppCheck(req, res))) return;
 
     // Only accept POST with CSP report content type
     if (req.method !== 'POST') {

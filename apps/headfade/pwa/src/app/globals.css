@@ -36,7 +36,7 @@
     background: rgba(6, 53, 80, 0.15);
     border-radius: 3px;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(6, 53, 80, 0.25);
   }

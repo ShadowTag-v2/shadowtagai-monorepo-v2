@@ -5,7 +5,8 @@ const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? 'AIzaSyB-9DQ3RpA0Vh3KCDNdK_XO8S5b16OY2Iw',
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? 'shadowtag-omega-v4.firebaseapp.com',
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? 'shadowtag-omega-v4',
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? 'shadowtag-omega-v4.firebasestorage.app',
+  storageBucket:
+    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? 'shadowtag-omega-v4.firebasestorage.app',
   // biome-ignore lint/security/noSecrets: messagingSenderId is a public GCP project number, not a private credential
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_SENDER_ID ?? '767252945109',
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID ?? '1:767252945109:web:f05bd5fa9c87a7dfcb2a5c',
@@ -13,6 +14,7 @@ const firebaseConfig = {
 };
 
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+
 /** Re-export app for consumers that need it (dynamic auth import etc.) */
 export { app };
 
@@ -53,14 +55,17 @@ if (typeof window !== 'undefined') {
   // Eagerly warm the Firestore singleton after first user interaction
   // so `db` is populated for legacy consumers, but NOT during Lighthouse audit
   const warmFirestore = () => {
-    void getFirestoreInstance().then((instance) => { db = instance; });
+    void getFirestoreInstance().then((instance) => {
+      db = instance;
+    });
   };
   const warmEvents = ['click', 'scroll', 'keydown', 'touchstart'] as const;
   const warmHandler = () => {
     warmFirestore();
     for (const e of warmEvents) window.removeEventListener(e, warmHandler, { capture: true });
   };
-  for (const e of warmEvents) window.addEventListener(e, warmHandler, { capture: true, once: false, passive: true });
+  for (const e of warmEvents)
+    window.addEventListener(e, warmHandler, { capture: true, once: false, passive: true });
   setTimeout(warmFirestore, 60_000);
 }
 
@@ -126,14 +131,17 @@ async function initAppCheckLazy(): Promise<void> {
 if (typeof window !== 'undefined') {
   if (!recaptchaSiteKey) {
     // Warn (not error) — Lighthouse deducts BP points for console.error during load
-    console.warn('[AppCheck] NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY is not configured — App Check disabled');
+    console.warn(
+      '[AppCheck] NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY is not configured — App Check disabled',
+    );
   } else {
     const events = ['click', 'scroll', 'keydown', 'touchstart'] as const;
     const handler = () => {
       void initAppCheckLazy();
       for (const e of events) window.removeEventListener(e, handler, { capture: true });
     };
-    for (const e of events) window.addEventListener(e, handler, { capture: true, once: false, passive: true });
+    for (const e of events)
+      window.addEventListener(e, handler, { capture: true, once: false, passive: true });
     // Fallback: initialize after 60s — must exceed Lighthouse audit window (~35s)
     setTimeout(() => void initAppCheckLazy(), 60_000);
   }
@@ -167,12 +175,13 @@ if (typeof window !== 'undefined') {
   const analyticsEvents = ['click', 'scroll', 'keydown', 'touchstart'] as const;
   const analyticsHandler = () => {
     void initAnalyticsLazy();
-    for (const e of analyticsEvents) window.removeEventListener(e, analyticsHandler, { capture: true });
+    for (const e of analyticsEvents)
+      window.removeEventListener(e, analyticsHandler, { capture: true });
   };
-  for (const e of analyticsEvents) window.addEventListener(e, analyticsHandler, { capture: true, once: false, passive: true });
+  for (const e of analyticsEvents)
+    window.addEventListener(e, analyticsHandler, { capture: true, once: false, passive: true });
   setTimeout(() => void initAnalyticsLazy(), 60_000);
 }
 
 /** Exported getter — returns null until interaction triggers init */
 export const getAnalyticsInstance = () => _analyticsInstance;
-

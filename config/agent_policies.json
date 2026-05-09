@@ -19,7 +19,7 @@
       "model": "gemini-3.1-flash-lite-preview",
       "veto_power": false,
       "required_for": ["infrastructure_changes", "new_services", "database_migrations"],
-      "auto_approve_threshold": 0.90
+      "auto_approve_threshold": 0.9
     },
     "architecture_board": {
       "model": "gemini-3.1-flash-lite-preview",

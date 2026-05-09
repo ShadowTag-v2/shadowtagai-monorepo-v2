@@ -3,8 +3,9 @@
  * Replaces Python auth_github_app.py with pure TypeScript.
  * Uses the 5-tier PEM fallback chain per github_doctrine.
  */
-import { readFileSync, existsSync } from 'fs';
+
 import { $ } from 'bun';
+import { existsSync, readFileSync } from 'fs';
 import * as jwt from 'jsonwebtoken';
 
 const APP_ID = process.env.GITHUB_APP_ID || '3018200';
@@ -31,11 +32,7 @@ function resolvePemPath(): string {
  */
 function generateAppJwt(pem: string): string {
   const now = Math.floor(Date.now() / 1000);
-  return jwt.sign(
-    { iat: now - 60, exp: now + 10 * 60, iss: APP_ID },
-    pem,
-    { algorithm: 'RS256' },
-  );
+  return jwt.sign({ iat: now - 60, exp: now + 10 * 60, iss: APP_ID }, pem, { algorithm: 'RS256' });
 }
 
 /**
@@ -89,7 +86,8 @@ async function authenticateAndPush() {
   await Bun.write(askpassScript, `#!/bin/bash\necho "${token}"`);
   await $`chmod +x ${askpassScript}`;
 
-  const result = await $`GIT_ASKPASS=${askpassScript} git push https://x-access-token:@github.com/${REPO}.git HEAD:main`.nothrow();
+  const result =
+    await $`GIT_ASKPASS=${askpassScript} git push https://x-access-token:@github.com/${REPO}.git HEAD:main`.nothrow();
 
   if (result.exitCode === 0) {
     console.log('  ✅ Pushed to Branch-Zero via GitHub App Auth.');
@@ -101,7 +99,7 @@ async function authenticateAndPush() {
 
 // CLI entry
 if (process.argv.includes('--push')) {
-  authenticateAndPush().catch(err => {
+  authenticateAndPush().catch((err) => {
     console.error(err);
     process.exit(1);
   });

@@ -23,10 +23,7 @@ import type { Request, Response } from 'firebase-functions/v2/https';
  * In development (localhost), bypass is allowed when
  * `process.env.FUNCTIONS_EMULATOR === 'true'`.
  */
-export async function verifyAppCheck(
-  request: Request,
-  response: Response,
-): Promise<boolean> {
+export async function verifyAppCheck(request: Request, response: Response): Promise<boolean> {
   // Allow emulator bypass for local development
   if (process.env.FUNCTIONS_EMULATOR === 'true') {
     logger.info('App Check bypassed: running in emulator');

@@ -7,10 +7,11 @@
  * - HTTP POST for queries and mutations
  * - WebSocket (graphql-ws protocol) for subscriptions via AsyncIterator
  */
-import { buildSchema, graphql, subscribe, parse, type ExecutionResult } from 'graphql';
+
 import { Spanner } from '@google-cloud/spanner';
-import { EventEmitter } from 'events';
 import type { ServerWebSocket } from 'bun';
+import { EventEmitter } from 'events';
+import { buildSchema, type ExecutionResult, graphql, parse, subscribe } from 'graphql';
 
 // ──────────────────────────────────────────────────────────────
 // PubSub — in-memory AsyncIterator-backed event bus
@@ -139,7 +140,7 @@ const rootValue = {
         sql: 'SELECT id, site_id, feature_name, is_active FROM feature_flags WHERE site_id = @siteId',
         params: { siteId: site_id },
       });
-      return rows.map(row => row.toJSON());
+      return rows.map((row) => row.toJSON());
     } catch (err) {
       console.error('[GraphQL] getFlags error:', err);
       return [];
@@ -167,7 +168,7 @@ const rootValue = {
               FROM transactions ORDER BY timestamp DESC LIMIT @pageSize`,
         params: { pageSize },
       });
-      return rows.map(row => row.toJSON());
+      return rows.map((row) => row.toJSON());
     } catch (err) {
       console.error('[GraphQL] getRecentTransactions error:', err);
       return [];
@@ -175,8 +176,16 @@ const rootValue = {
   },
 
   // ── Mutations (publish events to subscribers) ──
-  updateFlag: async ({ id, site_id, feature_name, is_active }: {
-    id: string; site_id: string; feature_name: string; is_active: boolean;
+  updateFlag: async ({
+    id,
+    site_id,
+    feature_name,
+    is_active,
+  }: {
+    id: string;
+    site_id: string;
+    feature_name: string;
+    is_active: boolean;
   }) => {
     try {
       await database.runTransactionAsync(async (transaction) => {
@@ -192,8 +201,14 @@ const rootValue = {
     }
   },
 
-  createTransaction: async ({ id, revenue, ui_variant_id }: {
-    id: string; revenue: number; ui_variant_id: string;
+  createTransaction: async ({
+    id,
+    revenue,
+    ui_variant_id,
+  }: {
+    id: string;
+    revenue: number;
+    ui_variant_id: string;
   }) => {
     const timestamp = new Date().toISOString();
     try {
@@ -228,7 +243,9 @@ const rootValue = {
       },
       return: () => baseIterator.return!(),
       throw: (err: Error) => baseIterator.throw!(err),
-      [Symbol.asyncIterator]() { return this; },
+      [Symbol.asyncIterator]() {
+        return this;
+      },
     };
   },
 
@@ -257,7 +274,7 @@ if (import.meta.main) {
       const upgrade = req.headers.get('upgrade')?.toLowerCase();
       if (upgrade === 'websocket') {
         const protocols = req.headers.get('sec-websocket-protocol') ?? '';
-        const supported = protocols.split(',').map(p => p.trim());
+        const supported = protocols.split(',').map((p) => p.trim());
         if (supported.includes('graphql-transport-ws')) {
           const ok = server.upgrade(req, {
             headers: { 'Sec-WebSocket-Protocol': 'graphql-transport-ws' },
@@ -282,7 +299,12 @@ if (import.meta.main) {
       // ── HTTP POST for queries & mutations ──
       if (req.method === 'POST') {
         const { query, variables } = await req.json();
-        const result = await graphql({ schema, source: query, rootValue, variableValues: variables });
+        const result = await graphql({
+          schema,
+          source: query,
+          rootValue,
+          variableValues: variables,
+        });
         return Response.json(result, {
           headers: { 'Access-Control-Allow-Origin': '*' },
         });
@@ -310,7 +332,13 @@ if (import.meta.main) {
 
             case 'subscribe': {
               if (!ws.data.initialized) {
-                ws.send(JSON.stringify({ id: msg.id, type: 'error', payload: [{ message: 'Not initialized' }] }));
+                ws.send(
+                  JSON.stringify({
+                    id: msg.id,
+                    type: 'error',
+                    payload: [{ message: 'Not initialized' }],
+                  }),
+                );
                 break;
               }
 

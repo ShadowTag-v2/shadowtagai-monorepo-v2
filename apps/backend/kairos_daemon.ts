@@ -8,15 +8,15 @@
  * instrumentation for cast_vote() tracing.
  */
 
-import { autoRoute } from "../tools/cognitive_router/dispatch";
-import { resolveFlag } from "../config/feature_flags";
+import { resolveFlag } from '../config/feature_flags';
+import { autoRoute } from '../tools/cognitive_router/dispatch';
 import {
-  createEnvelope,
   castVote,
-  type VoteRecord,
+  createEnvelope,
   type RiskLevel,
-} from "../tools/mailbox/policies";
-import { startTeleportationBridge, teleportPlanToBrowser } from "../tools/teleportation/bridge";
+  type VoteRecord,
+} from '../tools/mailbox/policies';
+import { startTeleportationBridge, teleportPlanToBrowser } from '../tools/teleportation/bridge';
 
 /** Lightweight OTel-compatible span for cast_vote tracing (Task 11) */
 interface Span {
@@ -54,14 +54,14 @@ function instrumentedCastVote(
   riskLevel: RiskLevel,
   vote: VoteRecord,
 ): { accepted: boolean; span: Span } {
-  const span = startSpan("AgentMailbox.cast_vote", {
-    "mailbox.plan_id": planId,
-    "mailbox.agent": vote.agent,
-    "mailbox.vote": vote.vote,
-    "mailbox.risk_level": riskLevel,
+  const span = startSpan('AgentMailbox.cast_vote', {
+    'mailbox.plan_id': planId,
+    'mailbox.agent': vote.agent,
+    'mailbox.vote': vote.vote,
+    'mailbox.risk_level': riskLevel,
   });
 
-  addSpanEvent(span, "vote_received", {
+  addSpanEvent(span, 'vote_received', {
     confidence: vote.confidence,
     latency_ms: vote.latency_ms,
   });
@@ -69,10 +69,10 @@ function instrumentedCastVote(
   const envelope = createEnvelope(planId, riskLevel);
   const accepted = castVote(envelope, vote);
 
-  span.attributes["mailbox.accepted"] = accepted;
-  span.attributes["mailbox.envelope_status"] = envelope.status;
+  span.attributes['mailbox.accepted'] = accepted;
+  span.attributes['mailbox.envelope_status'] = envelope.status;
 
-  addSpanEvent(span, "vote_processed", {
+  addSpanEvent(span, 'vote_processed', {
     final_status: envelope.status,
     vote_count: envelope.votes.length,
   });
@@ -133,21 +133,23 @@ async function kairosHeartbeat(): Promise<void> {
   let teleportBridge: { stop: () => void } | null = null;
 
   // Start teleportation bridge if enabled
-  if (resolveFlag("TELEPORTATION_PROTOCOL_V1")) {
+  if (resolveFlag('TELEPORTATION_PROTOCOL_V1')) {
     teleportBridge = startTeleportationBridge(9876);
-    console.log("⚡ [KAIROS] Teleportation bridge started on ws://localhost:9876");
+    console.log('⚡ [KAIROS] Teleportation bridge started on ws://localhost:9876');
   }
 
-  console.log("⚡ [KAIROS-TS] Daemon heartbeat started");
-  console.log(`   SEMANTIC_ROUTING: ${resolveFlag("SEMANTIC_ROUTING")}`);
-  console.log(`   TELEPORTATION: ${resolveFlag("TELEPORTATION_PROTOCOL_V1")}`);
-  console.log(`   ASYNC_BATCHING: ${resolveFlag("ASYNC_CONSUMER_BATCHING")}`);
+  console.log('⚡ [KAIROS-TS] Daemon heartbeat started');
+  console.log(`   SEMANTIC_ROUTING: ${resolveFlag('SEMANTIC_ROUTING')}`);
+  console.log(`   TELEPORTATION: ${resolveFlag('TELEPORTATION_PROTOCOL_V1')}`);
+  console.log(`   ASYNC_BATCHING: ${resolveFlag('ASYNC_CONSUMER_BATCHING')}`);
 
   // Simulate a single heartbeat cycle for testing
-  const testInput = "plan the architecture for V24 migration";
+  const testInput = 'plan the architecture for V24 migration';
   const routeResult = await autoRoute(testInput);
 
-  console.log(`   Route result: ${routeResult.intent} (${routeResult.classifier}, ${routeResult.latency_ms.toFixed(2)}ms)`);
+  console.log(
+    `   Route result: ${routeResult.intent} (${routeResult.classifier}, ${routeResult.latency_ms.toFixed(2)}ms)`,
+  );
 
   // Publish a suggestion
   suggestionQueue.publish({
@@ -163,20 +165,18 @@ async function kairosHeartbeat(): Promise<void> {
     console.log(`   Consumed suggestion: ${suggestion.text} (score: ${suggestion.score})`);
 
     // If it's a plan, route through mailbox
-    if (routeResult.intent === "PLAN_REQUEST") {
-      const voteResult = instrumentedCastVote(
-        suggestion.id,
-        "medium",
-        {
-          agent: "architecture_board",
-          vote: "approve",
-          confidence: 0.92,
-          reasoning: "Plan aligns with V23 architecture",
-          timestamp: Date.now(),
-          latency_ms: 12,
-        },
+    if (routeResult.intent === 'PLAN_REQUEST') {
+      const voteResult = instrumentedCastVote(suggestion.id, 'medium', {
+        agent: 'architecture_board',
+        vote: 'approve',
+        confidence: 0.92,
+        reasoning: 'Plan aligns with V23 architecture',
+        timestamp: Date.now(),
+        latency_ms: 12,
+      });
+      console.log(
+        `   Mailbox vote: ${voteResult.accepted ? 'accepted' : 'rejected'} (${voteResult.span.attributes['mailbox.envelope_status']})`,
       );
-      console.log(`   Mailbox vote: ${voteResult.accepted ? "accepted" : "rejected"} (${voteResult.span.attributes["mailbox.envelope_status"]})`);
 
       // Teleport plan to browser if bridge is active
       if (teleportBridge) {
@@ -185,7 +185,7 @@ async function kairosHeartbeat(): Promise<void> {
           text: testInput,
           confidence: routeResult.confidence,
         });
-        console.log("   Plan teleported to browser for visualization");
+        console.log('   Plan teleported to browser for visualization');
       }
     }
   }
@@ -195,16 +195,11 @@ async function kairosHeartbeat(): Promise<void> {
 
   // Cleanup
   if (teleportBridge) teleportBridge.stop();
-  console.log("⚡ [KAIROS-TS] Heartbeat cycle complete");
+  console.log('⚡ [KAIROS-TS] Heartbeat cycle complete');
 }
 
 // Export for testing
-export {
-  kairosHeartbeat,
-  instrumentedCastVote,
-  AsyncSuggestionQueue,
-  spans as capturedSpans,
-};
+export { AsyncSuggestionQueue, instrumentedCastVote, kairosHeartbeat, spans as capturedSpans };
 
 // Run if executed directly
 if (import.meta.main) {

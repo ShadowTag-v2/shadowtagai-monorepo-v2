@@ -4,8 +4,8 @@
  * Wraps all operations in OpenTelemetry spans for distributed tracing.
  */
 
-import { PubSub, type Message } from '@google-cloud/pubsub';
-import { trace, type Span } from '@opentelemetry/api';
+import { type Message, PubSub } from '@google-cloud/pubsub';
+import { type Span, trace } from '@opentelemetry/api';
 
 const PROJECT_ID = 'shadowtag-omega-v4';
 const SUBSCRIPTION_NAME = 'kairos-mailbox-sub';
@@ -35,7 +35,7 @@ export class AsyncSuggestionConsumer {
     this.isListening = true;
 
     tracer.startActiveSpan('consume_mailbox_votes', (span: Span) => {
-      console.log("⚡ [KAIROS] Polling asynchronous mailbox policies...");
+      console.log('⚡ [KAIROS] Polling asynchronous mailbox policies...');
 
       const subscription = this.pubsub.subscription(SUBSCRIPTION_NAME);
 
@@ -56,7 +56,9 @@ export class AsyncSuggestionConsumer {
               'consensus.threshold': CONSENSUS_THRESHOLD,
               'vote.confidence': vote.confidence,
             });
-            console.log(`✅ [KAIROS] Consensus reached: ${vote.confidence} >= ${CONSENSUS_THRESHOLD}`);
+            console.log(
+              `✅ [KAIROS] Consensus reached: ${vote.confidence} >= ${CONSENSUS_THRESHOLD}`,
+            );
           }
 
           message.ack();
@@ -84,6 +86,6 @@ export class AsyncSuggestionConsumer {
 
   stop(): void {
     this.isListening = false;
-    console.log("⚡ [KAIROS] Mailbox consumer stopped.");
+    console.log('⚡ [KAIROS] Mailbox consumer stopped.');
   }
 }
