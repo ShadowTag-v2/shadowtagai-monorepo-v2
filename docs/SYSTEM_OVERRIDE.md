@@ -1,10 +1,10 @@
-# SYSTEM_OVERRIDE.md — V22 Phosphor-Shift (Dynamic Import Ascension)
+# SYSTEM_OVERRIDE.md — V25 Pinnacle (MCP Fleet Ascension + Manifest Gap Closure)
 
-**Version:** 22  
+**Version:** 25  
 **Runtime:** Bun 1.3.11 (Zig-backed)  
-**Codename:** Phosphor-Shift (Third-Party Cookie Extinction + Branch Zero)  
+**Codename:** Pinnacle (24-Server MCP Fleet + 221/221 Test Suite + Manifest v23.0)  
 **Date:** 2026-05-09  
-**HEAD:** `5744baeab` (PR #91 — V22 Phosphor-Shift milestone + branch hygiene)
+**HEAD:** `649c25fc6` (V25 Pinnacle — manifest gap closure + Pomelli swarm CI)
 
 ---
 
@@ -118,20 +118,33 @@ The `useStitchTheme()` hook is provided by the **facade** at `apps/client/src/co
 
 ### MCP Motherboard
 
-`cline_mcp_settings.json` — 13 servers (verified 2026-05-09):
-- `firebase-mcp-server`: npx firebase-tools
-- `chrome-devtools-mcp`: Chrome DevTools Protocol
-- `google-design-mcp`: Material 3 design tokens
-- `StitchMCP`: Generative UI variants
-- `google-developer-knowledge`: Developer docs search
-- `sequential-thinking`: Multi-step reasoning
-- `jules-mcp-server`: LOCAL binary (`external_repos/jules-sdk/packages/mcp/dist/cli.mjs`)
-- `os-infrastructure-matrix`: OS infra tooling
-- `database-insights-mcp`: Database analytics
-- `observability`: Cloud monitoring
-- `cloud-run`: Cloud Run management
+**Antigravity Platform-Managed (5 servers):**
+- `firebase-mcp-server` (45 tools): Auth, Firestore, Hosting, Functions, Storage
+- `chrome-devtools-mcp` (29 tools): Browser automation, DOM, Lighthouse, perf traces
+- `StitchMCP` (12 tools): Design systems, screen generation, UI variants
+- `google-developer-knowledge` (3 tools): Developer docs search, grounded answers
+- `sequential-thinking` (1 tool): Multi-step reasoning, hypothesis verification
+
+**Cline Local (19 servers — verified 2026-05-09):**
+- `bigquery`: BigQuery analytics, FinOps ROI queries
+- `cloud-run`: Service deployment, revisions, traffic splitting
+- `dart-language-server`: Dart/Flutter LSP analysis
+- `database-insights`: Cloud SQL/Spanner performance advisor
+- `firebase-mcp-server`: Firebase CLI operations (Cline-side)
+- `gcloud`: GCP CLI operations
+- `gemini-memory`: Persistent agent memory store
+- `genkit`: Firebase Genkit AI framework
+- `google-cloud-spanner`: Spanner DDL, queries, CDC
+- `google-drive-api`: Google Drive file access
+- `jules-mcp-server`: LOCAL binary — asynchronous cloud agent delegation
+- `notebooklm-mcp`: NotebookLM epistemic corpus queries
+- `observability`: Cloud Monitoring, Logging
+- `playwright`: Browser automation E2E testing
+- `pomelli-swarm`: Fleet Lighthouse optimization orchestration
+- `semantic-scalpel`: AST-Grep semantic code surgery
+- `spanner-toolbox`: Spanner schema, migration, introspection
 - `storage`: Cloud Storage operations
-- `stripe-mcp`: @stripe/mcp
+- `stripe-governor`: Stripe payments, webhooks, billing
 
 ### Live Deployments
 
@@ -147,16 +160,20 @@ The `useStitchTheme()` hook is provided by the **facade** at `apps/client/src/co
 
 | Category | Count |
 |----------|-------|
-| Packages | 91 |
+| Packages | 95 |
 | Workspace Skills | 92 |
 | Global Skills | 298 |
 | External Repos | 22 |
 | Firebase Hosting Targets | 4 |
-| Cline MCP Servers | 13 |
+| Cline MCP Servers | 19 |
 | Antigravity MCP Servers | 5 |
-| GitHub PRs Merged (V16→V22) | 6 |
-| Bun Test Suite | 52/52 PASS |
-| Security Pipeline | 35-check (26 blocked, 9 safe = ✅) |
+| **Total MCP Servers** | **24** |
+| CI Workflows (active) | 70 |
+| Merge Commits on `main` | 98 |
+| Vitest Suite | **221/221 PASS** |
+| Test Files (all runners) | 19 |
+| Security Pipeline | 35-check |
+| Repo Doctor Grade | C (2 non-critical errors) |
 | Lighthouse (headfade.com) | **P100/A100/BP100/SEO100** |
 | Lighthouse (shadowtagai.web.app) | P94/A100/BP100/SEO100 |
 
@@ -202,6 +219,8 @@ import { getAuth } from 'firebase/auth'; // ← NEVER do this at module level
 
 | Version | Codename | HEAD Commit | PR | Date |
 |---------|----------|-------------|-----|------|
+| V25 | **Pinnacle** (MCP Fleet Ascension + Manifest Gap Closure) | `649c25fc6` | — | 2026-05-09 |
+| V23 | Hyper-Core (Bun-Native Cascade + Pomelli Swarm) | `8bd3ac2c2` | — | 2026-05-09 |
 | V22 | Phosphor-Shift (Dynamic Import Ascension) | `5744baeab` | #91 (merged) | 2026-05-09 |
 | V20.1 | Sentinel-Reaper (Octal Fix) | `357ace6e9` | — | 2026-05-09 |
 | V20 | Sentinel-Reaper | `e828b6abf` | — | 2026-05-09 |
