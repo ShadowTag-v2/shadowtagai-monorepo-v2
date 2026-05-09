@@ -1,17 +1,18 @@
-# UPHILLSNOWBALL SOVEREIGN OS v17 — ARCHON-BUN HYPER-CORE
+# UPHILLSNOWBALL SOVEREIGN OS v18 — ISOMORPHIC GRAPHQL ASCENSION
 
-> Version: 17.0 | Status: LOCKED | Date: 2026-05-09
+> Version: 18.0 | Status: LOCKED | Date: 2026-05-09
 
 ## Architecture — Distributed Swarm
 
-V17 bifurcates the monolithic V16 architecture into a **Local Agent ↔ Cloud Agent** distributed swarm.
-The Local Agent (Cline/Antigravity) handles reasoning, generation, and design. The Cloud Agent (Jules)
-handles CI/CD, deployment, and telemetry — triggered asynchronously via GitHub Actions.
+V18 evolves V17's distributed swarm into a **unified isomorphic architecture** powered by the
+**Kriasoft Triad** (react-starter-kit, graphql-starter-kit, react-firebase-starter). Legacy
+Node.js/Python dependencies are replaced with native Bun implementations. The enterprise registry
+(`.bunfig.toml`) routes private packages through Google Artifact Registry.
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                    SOVEREIGN OS v17                               │
-│                 "Archon-Bun Hyper-Core"                           │
+│                    SOVEREIGN OS v18                               │
+│            "Isomorphic GraphQL Ascension"                        │
 │                                                                   │
 │  ┌─────────────────────────────┐  ┌────────────────────────────┐ │
 │  │ LOCAL AGENT (Cline)         │  │ CLOUD AGENT (Jules)        │ │
@@ -45,18 +46,16 @@ handles CI/CD, deployment, and telemetry — triggered asynchronously via GitHub
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-## Runtime Upgrade: Bun-First
+V18 adopts Bun as the **exclusive** JavaScript/TypeScript runtime with the Hono v4 gateway.
 
-V17 adopts Bun as the preferred JavaScript/TypeScript runtime. Bun (written in Zig,
-backed by mimalloc memory allocator) provides sub-millisecond cold starts for local tooling.
-
-| Dimension | V16 (Node.js) | V17 (Bun-First) |
-|-----------|---------------|-----------------|
-| MCP server boot | `npx -y <pkg>` | `bunx --bun <pkg>` (fallback: `npx`) |
-| Local scripts | Python/Node | Bun TypeScript |
-| Package install | `npm install` | `bun install` |
-| Cold start | ~800ms | ~12ms |
-| Memory allocator | V8 default | mimalloc |
+| Dimension | V17 (Bun-First) | V18 (Bun-Native) |
+|-----------|-----------------|-------------------|
+| API framework | Direct handlers | Hono v4 + GraphQL Yoga |
+| MCP server boot | `bunx --bun <pkg>` | `bunx --bun <pkg>` |
+| Package registry | Public NPM | Enterprise `.bunfig.toml` + Artifact Registry |
+| Backend pattern | Script-based | Kriasoft isomorphic GraphQL |
+| Cold start | ~12ms | ~12ms |
+| Memory allocator | mimalloc | mimalloc |
 
 **Migration rule**: Cline sidecar servers migrate to `bunx --bun` where the package supports it.
 Antigravity engine servers remain as-is (platform-managed, not user-configurable).

@@ -5,10 +5,10 @@ mcp-truth: antigravity-mcp-config.json
 judge6-gate: active
 
 # Version & Phase Tracking
-version: "17.0"
+version: "18.0"
 phase: 5
-milestone: 12
-milestone_name: "Archon-Bun Hyper-Core v17 — Distributed Swarm + Bun Runtime + Jules CI/CD + SheetJS Intake"
+milestone: 13
+milestone_name: "V18 Isomorphic GraphQL Ascension — Kriasoft Triad + Enterprise Registry + Hono Gateway"
 milestone_status: "ACTIVE"
 phase_started: "2026-05-09"
 last_updated: "2026-05-09"
@@ -74,12 +74,25 @@ v17_additions:
   generative_ui: "apps/kovelai/src/GavelHero.tsx"
   sovereign_mode: ".cline/custom_modes/sovereign.json"
 
-# External Repo Groups (V17 — 17 repos cloned)
+# V18 Architecture Additions (Isomorphic GraphQL Ascension)
+v18_additions:
+  bunfig_enterprise_registry: ".bunfig.toml"
+  isomorphic_graphql_gateway: "apps/api/server.ts"
+  kriasoft_triad:
+    react_starter_kit: "external_repos/react-starter-kit"
+    graphql_starter_kit: "external_repos/graphql-starter-kit"
+    react_firebase_starter: "external_repos/react-firebase-starter"
+  runtime_framework: "Hono v4 + GraphQL Yoga"
+  bun_native_serve: true
+  legacy_node_replaced: true
+
+# External Repo Groups (V18 — 21 repos cloned)
 external_repos:
   google_labs: ["stitch-skills", "stitch-sdk", "jules-skills", "jules-sdk", "jules-action", "jules-awesome-list", "action-setup"]
   cline: ["prompts"]
   bun_ecosystem: ["bun", "awesome-bun", "mimalloc", "zig", "libuv", "homebrew-bun"]
-  tools: ["sheetjs", "react-starter-kit", "Archon"]
+  kriasoft_triad: ["react-starter-kit", "graphql-starter-kit", "react-firebase-starter"]
+  tools: ["sheetjs", "Archon"]
 
 # Deployment
 production_url: "https://counselconduit-767252945109.us-central1.run.app"

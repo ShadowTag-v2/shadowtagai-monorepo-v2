@@ -1,9 +1,10 @@
 # ═══════════════════════════════════════════════════════════════
-# Jules Asynchronous DevOps Protocol (V17 Archon Pattern)
+# Jules Asynchronous DevOps Protocol (V18 Archon-Bun Hyper-Core)
 # Replaces local bash deployment scripts.
 # Local Agent pushes code → Jules Cloud Agent deploys.
+# V18: Isomorphic GraphQL + Kriasoft Triad + Enterprise Registry
 # ═══════════════════════════════════════════════════════════════
-name: Jules Async CI/CD (Archon Delegation)
+name: Jules Async CI/CD (V18 Archon Delegation)
 
 on:
   push:

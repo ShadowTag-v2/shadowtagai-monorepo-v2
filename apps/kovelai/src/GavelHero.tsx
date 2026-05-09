@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- * GavelHero — V17 Generative UI Component
+ * GavelHero — V18 Generative UI Component
  * ═══════════════════════════════════════════════════════════════
  *
  * Canvas-based hero component with Material 3 design tokens.
@@ -168,7 +168,7 @@ export const GavelHero: React.FC<GavelHeroProps> = ({
               letterSpacing: "0.02em",
             }}
           >
-            Loading V17 Hyper-Core
+            Loading V18 Hyper-Core
           </div>
 
           {/* Progress bar */}
