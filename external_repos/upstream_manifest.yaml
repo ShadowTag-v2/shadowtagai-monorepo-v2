@@ -141,3 +141,15 @@ groups:
     - repowise-dev/repowise
     - braedonsaunders/codeflow
     - GaijinEntertainment/daScript
+
+  google_labs_code:
+    - google-labs-code/stitch-skills
+    - google-labs-code/stitch-sdk
+    - google-labs-code/jules-skills
+    - google-labs-code/jules-sdk
+    - google-labs-code/jules-action
+    - google-labs-code/jules-awesome-list
+    - google-labs-code/action-setup
+
+  cline:
+    - cline/prompts
