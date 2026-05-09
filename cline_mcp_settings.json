@@ -97,12 +97,21 @@
       "note": "Edge Delivery — Cloud Storage + CDN asset management."
     },
     "uphill-epistemic-memory": {
-      "command": "python3",
-      "args": ["./tools/mcp-gemini-memory/server.py"],
+      "command": "node",
+      "args": ["./tools/mcp-gemini-memory/index.js"],
+      "env": {
+        "NODE_OPTIONS": "--dns-result-order=ipv4first",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": ""
+      },
       "transport": "stdio",
-      "disabled": true,
-      "autoApprove": [],
-      "note": "Internal Prefrontal Cortex — Gemini File Search for PRDs and CodeWiki. Enable when server.py is wired."
+      "disabled": false,
+      "autoApprove": [
+        "list_memory_stores",
+        "list_memory_documents",
+        "search_memory"
+      ],
+      "note": "Prefrontal Cortex — Gemini API File Search for internal docs (PRDs, CodeWiki, ADRs). 7 tools, enforced metadata taxonomy."
     },
     "uphill-cognitive-telemetry": {
       "command": "npx",

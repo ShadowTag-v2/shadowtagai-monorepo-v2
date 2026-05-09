@@ -63,7 +63,7 @@ The Sovereign OS operates as a biological neural network metaphor mapped onto cl
 | 4 | uphill-cloud-run | stdio | 4 | ✅ ACTIVE |
 | 5 | uphill-storage-cdn | stdio | 6 | ✅ ACTIVE |
 | 6 | uphill-notebooklm | stdio | 4 | ✅ ACTIVE |
-| 7 | uphill-epistemic-memory | stdio | — | ⏸ DISABLED |
+| 7 | uphill-epistemic-memory | stdio | 7 | ✅ ACTIVE |
 | 8 | uphill-cognitive-telemetry | stdio | — | ⏸ DISABLED |
 | 9 | uphill-economic-engine | stdio | — | ⏸ DISABLED |
 
