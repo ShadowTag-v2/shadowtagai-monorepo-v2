@@ -1,10 +1,10 @@
-# SYSTEM_OVERRIDE.md — V20 Sentinel-Reaper Consolidation
+# SYSTEM_OVERRIDE.md — V20.1 Sentinel-Reaper Consolidation
 
-**Version:** 20.0  
+**Version:** 20.1  
 **Runtime:** Bun 1.3.11 (Zig-backed)  
 **Codename:** Sentinel-Reaper (Process Sovereignty + Fleet Consolidation)  
 **Date:** 2026-05-09  
-**HEAD:** `8023e9925` (V19.1 + port-killer integration + security pipeline)
+**HEAD:** `357ace6e9` (V20 merged + port-killer octal fix + branch cleanup)
 
 ---
 
@@ -147,6 +147,8 @@ The `useStitchTheme()` hook is provided by the **facade** at `apps/client/src/co
 | GitHub PRs Merged (V16→V19) | 5 |
 | Bun Test Suite | 52/52 PASS |
 | Security Pipeline | 30-check (94% pass) |
+| Lighthouse (headfade.com) | P84/A100/BP73/SEO100 |
+| Lighthouse (shadowtagai.web.app) | P94/A100/BP100/SEO100 |
 
 ---
 
@@ -156,23 +158,48 @@ The `useStitchTheme()` hook is provided by the **facade** at `apps/client/src/co
 
 ---
 
-## V20 Audit Results
+## V20.1 Audit Results
 
-### MCP Fleet Pre-Flight (5/5 UP)
+### V20.1 Patch Notes
+
+- **fix(port-killer):** Resolved bash octal parsing for hours with leading zeros (`08`, `09`). Used `10#` prefix for decimal.
+- **Branch cleanup:** Deleted 4 stale local branches (`docs/v19-*`, `feat/v19-*`, `feat/v20-*`, `fix/port-killer-*`).
+- **Lighthouse audits:** headfade.com (P84/A100/BP73/SEO100), shadowtagai.web.app (P94/A100/BP100/SEO100).
+
+### Best Practices Analysis (headfade.com — BP73)
+
+| Failing Audit | Root Cause | Remediation |
+|--------------|-----------|-------------|
+| `third-party-cookies` | GA4/reCAPTCHA 3rd-party cookies | Migrate to cookieless GA4, reCAPTCHA v3 token mode |
+| `errors-in-console` | JS console errors at runtime | Debug and fix console errors |
+| `inspector-issues` | Chrome DevTools Issues panel flags | Resolve CSP/mixed-content warnings |
+
+### Performance Analysis (headfade.com — P84)
+
+| Metric | Value | Target | Fix |
+|--------|-------|--------|-----|
+| LCP | 4.3s | <2.5s | Preload hero image, optimize critical path |
+| TTI | 8.4s | <3.8s | Code-split, defer non-critical JS |
+| Unused JS | 222 KiB | 0 | Tree-shake, dynamic imports |
+| Cache lifetimes | 210 KiB | — | Set Cache-Control headers |
+| Render-blocking | 80ms | 0ms | Defer non-critical CSS/JS |
+
+### MCP Fleet Pre-Flight (0/5 UP — Platform Issue)
 
 | # | Server | Status |
 |---|--------|--------|
-| 1 | chrome-devtools-mcp | ✅ UP |
-| 2 | firebase-mcp-server | ✅ UP |
-| 3 | StitchMCP | ⚠️ TRANSIENT (reconnecting) |
-| 4 | google-developer-knowledge | ✅ UP |
-| 5 | sequential-thinking | ✅ UP |
+| 1 | chrome-devtools-mcp | ❌ NOT FOUND |
+| 2 | firebase-mcp-server | ❌ NOT FOUND |
+| 3 | StitchMCP | ❌ NOT FOUND |
+| 4 | google-developer-knowledge | ❌ NOT FOUND |
+| 5 | sequential-thinking | ❌ NOT FOUND |
 
 ### Zombie Extermination Log
 
 | PID | Process | Runtime | Action |
 |-----|---------|---------|--------|
-| 56614 | `curl sdk.cloud.google.com` | 4h14m | ✅ KILLED (SIGKILL) |
+| 56614 | `curl sdk.cloud.google.com` | 4h14m | ✅ KILLED (SIGKILL) (V20) |
+| — | No new zombies found | — | ✅ CLEAN (V20.1 scan) |
 
 ---
 
@@ -180,7 +207,8 @@ The `useStitchTheme()` hook is provided by the **facade** at `apps/client/src/co
 
 | Version | Codename | HEAD Commit | PR | Date |
 |---------|----------|-------------|-----|------|
-| V20 | Sentinel-Reaper | `8023e9925` | — | 2026-05-09 |
+| V20.1 | Sentinel-Reaper (Octal Fix) | `357ace6e9` | — | 2026-05-09 |
+| V20 | Sentinel-Reaper | `e828b6abf` | — | 2026-05-09 |
 | V19.1 | Fix Branch Consolidation | `8023e9925` | — (direct merge) | 2026-05-09 |
 | V19 | Cognitive Router + FinOps Governor | `aec15aeb9` | #88 (merged) | 2026-05-09 |
 | V18 | Isomorphic GraphQL Ascension | `f35fb96ae` | — | 2026-05-08 |
