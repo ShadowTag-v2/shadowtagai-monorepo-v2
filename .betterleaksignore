@@ -1,0 +1,24 @@
+# Betterleaks Ignore List — V25 Pinnacle
+# Entries here are confirmed false positives from security scanning.
+#
+# Rationale: The Lighthouse HTML reports contain inline scripts with
+# Google Fonts URLs and measurement IDs that trip the "Generic API Key"
+# and "Google API Key" detectors. These are public browser identifiers,
+# not private credentials.
+
+# Lighthouse audit artifacts (HTML reports contain inline measurement IDs)
+.lighthouseci/**
+lighthouse-*.html
+.reports/lighthouse/**
+
+# Firebase config (apiKey is a public browser identifier per Firebase docs)
+# See: https://firebase.google.com/docs/web/setup#available-libraries
+apps/headfade/pwa/src/lib/firebase.ts:apiKey
+apps/headfade/pwa/src/lib/firebase.ts:messagingSenderId
+
+# VCR test cassettes (contain sanitized mock tokens)
+tests/vcr_cassettes/**
+
+# Skill/doc files that reference example API keys in documentation
+docs/OMNI_BOOT_V25.md
+docs/SYSTEM_OVERRIDE.md
