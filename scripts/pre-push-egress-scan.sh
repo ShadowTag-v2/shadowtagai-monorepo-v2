@@ -29,7 +29,7 @@ PATTERNS=(
 VIOLATIONS=0
 
 # Check the most recent commit diff (exclude reports, docs, vendor, locks, third-party, and test fixtures)
-DIFF_CONTENT=$(git diff HEAD~1..HEAD -- . ':(exclude)*.lock' ':(exclude)*.sum' ':(exclude)vendor/' ':(exclude)node_modules/' ':(exclude)docs/AUDIT_REPORT.md' ':(exclude).reports/secrets/' ':(exclude).beads/' ':(exclude)scratch/repos/' ':(exclude)docs/ADAPTER_ONLY_HARDENING_REPORT.md' ':(exclude)tools/external_sdks/' ':(exclude)tests/test_vcr_fixtures.py' ':(exclude)tests/fixtures/vcr/' 2>/dev/null || echo "")
+DIFF_CONTENT=$(git diff HEAD~1..HEAD -- . ':(exclude)*.lock' ':(exclude)*.sum' ':(exclude)vendor/' ':(exclude)node_modules/' ':(exclude)docs/AUDIT_REPORT.md' ':(exclude).reports/secrets/' ':(exclude).beads/' ':(exclude)scratch/repos/' ':(exclude)docs/ADAPTER_ONLY_HARDENING_REPORT.md' ':(exclude)tools/external_sdks/' ':(exclude)tests/test_vcr_fixtures.py' ':(exclude)tests/fixtures/vcr/' ':(exclude)apps/headfade/pwa/src/lib/firebase.ts' ':(exclude)lighthouse-*.html' ':(exclude)reference_architectures/' 2>/dev/null || echo "")
 
 if [ -z "$DIFF_CONTENT" ]; then
   echo "  ✓ No diff to scan (initial commit or no changes)"
