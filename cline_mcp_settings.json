@@ -15,11 +15,11 @@
         "search_fonts",
         "describe_font"
       ],
-      "note": "Google Design MCP — Material Design headless engine. Color palettes, Google Fonts, Material Symbols. No API key required. Endpoint: design.googleapis.com/mcp. Ref: https://developers.google.com/design-mcp/overview"
+      "note": "Google Design MCP — Material Design headless engine. No API key required. V17: unchanged (remote HTTP, not runtime-dependent)."
     },
     "uphill-gcloud-infra": {
-      "command": "npx",
-      "args": ["-y", "@google-cloud/gcloud-mcp@latest"],
+      "command": "bunx",
+      "args": ["--bun", "@google-cloud/gcloud-mcp@latest"],
       "env": {
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
         "NODE_OPTIONS": "--dns-result-order=ipv4first",
@@ -29,11 +29,11 @@
       "transport": "stdio",
       "disabled": false,
       "autoApprove": ["run_gcloud_command"],
-      "note": "Unified GCP control plane — replaces phantom spanner-mcp & database-insights-mcp (both 404 on npm). Covers: Resource Manager, Spanner DDL/DML, Pub/Sub, Cloud Run, Billing, Datastream via gcloud CLI."
+      "note": "V17: Migrated npx→bunx. Unified GCP control plane — Resource Manager, Spanner DDL/DML, Pub/Sub, Cloud Run, Billing, Datastream."
     },
     "uphill-observability": {
-      "command": "npx",
-      "args": ["-y", "@google-cloud/observability-mcp@latest"],
+      "command": "bunx",
+      "args": ["--bun", "@google-cloud/observability-mcp@latest"],
       "env": {
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
         "NODE_OPTIONS": "--dns-result-order=ipv4first",
@@ -54,11 +54,11 @@
         "get_trace",
         "list_group_stats"
       ],
-      "note": "Cloud Logging + Monitoring + Tracing. Cognitive Telemetry for compute/cognitive friction sensing."
+      "note": "V17: Migrated npx→bunx. Cloud Logging + Monitoring + Tracing."
     },
     "uphill-cloud-run": {
-      "command": "npx",
-      "args": ["-y", "@google-cloud/cloud-run-mcp@latest"],
+      "command": "bunx",
+      "args": ["--bun", "@google-cloud/cloud-run-mcp@latest"],
       "env": {
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
         "NODE_OPTIONS": "--dns-result-order=ipv4first",
@@ -73,11 +73,11 @@
         "get-service-log",
         "list-projects"
       ],
-      "note": "Cloud Run compute plane — service deployment, log inspection, revision management."
+      "note": "V17: Migrated npx→bunx. Cloud Run compute plane."
     },
     "uphill-storage-cdn": {
-      "command": "npx",
-      "args": ["-y", "@google-cloud/storage-mcp@latest"],
+      "command": "bunx",
+      "args": ["--bun", "@google-cloud/storage-mcp@latest"],
       "env": {
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
         "NODE_OPTIONS": "--dns-result-order=ipv4first",
@@ -94,10 +94,10 @@
         "get_bucket_metadata",
         "get_bucket_location"
       ],
-      "note": "Edge Delivery — Cloud Storage + CDN asset management."
+      "note": "V17: Migrated npx→bunx. Edge Delivery — Cloud Storage + CDN asset management."
     },
     "uphill-epistemic-memory": {
-      "command": "node",
+      "command": "bun",
       "args": ["./tools/mcp-gemini-memory/index.js"],
       "env": {
         "NODE_OPTIONS": "--dns-result-order=ipv4first",
@@ -111,11 +111,11 @@
         "list_memory_documents",
         "search_memory"
       ],
-      "note": "Prefrontal Cortex — Gemini API File Search for internal docs (PRDs, CodeWiki, ADRs). 7 tools, enforced metadata taxonomy."
+      "note": "V17: Migrated node→bun. Prefrontal Cortex — Gemini API File Search for internal docs."
     },
     "uphill-cognitive-telemetry": {
-      "command": "npx",
-      "args": ["-y", "genkitx-mcp@latest"],
+      "command": "bunx",
+      "args": ["--bun", "genkitx-mcp@latest"],
       "env": {
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
         "NODE_OPTIONS": "--dns-result-order=ipv4first",
@@ -125,11 +125,11 @@
       "transport": "stdio",
       "disabled": true,
       "autoApprove": [],
-      "note": "Genkit OpenTelemetry — wraps LLM calls for Cloud Logging trace capture. Disabled until Genkit flows are authored."
+      "note": "V17: Migrated npx→bunx. Genkit OpenTelemetry. Disabled until Genkit flows are authored."
     },
     "uphill-economic-engine": {
-      "command": "npx",
-      "args": ["-y", "@stripe/agent-toolkit@latest"],
+      "command": "bunx",
+      "args": ["--bun", "@stripe/agent-toolkit@latest"],
       "env": {
         "NODE_OPTIONS": "--dns-result-order=ipv4first",
         "HTTP_PROXY": "",
@@ -138,11 +138,11 @@
       "transport": "stdio",
       "disabled": true,
       "autoApprove": [],
-      "note": "Stripe Agent Toolkit — Payment processing, subscription management. Secrets via GCP Secret Manager only."
+      "note": "V17: Migrated npx→bunx. Stripe Agent Toolkit — Payment processing. Secrets via GCP Secret Manager only."
     },
     "uphill-notebooklm": {
-      "command": "npx",
-      "args": ["-y", "notebooklm-mcp@latest"],
+      "command": "bunx",
+      "args": ["--bun", "notebooklm-mcp@latest"],
       "env": {
         "HEADLESS": "true",
         "NODE_OPTIONS": "--dns-result-order=ipv4first",
@@ -152,7 +152,7 @@
       "transport": "stdio",
       "disabled": false,
       "autoApprove": ["setup_auth", "list_notebooks", "search_notebooks", "get_notebook"],
-      "note": "IPI Quarantine — NotebookLM zero-trust data ingestion via TACSOP 6 pipeline."
+      "note": "V17: Migrated npx→bunx. IPI Quarantine — NotebookLM zero-trust data ingestion."
     }
   }
 }
