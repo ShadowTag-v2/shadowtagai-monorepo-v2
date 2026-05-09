@@ -1,157 +1,45 @@
 {
   "score": "F",
-  "total_findings": 42,
+  "total_findings": 26,
   "critical": 10,
   "errors": 2,
-  "warnings": 27,
+  "warnings": 11,
   "info": 3,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "beads/heartbeat.json",
-      "fix": "git checkout -- beads/heartbeat.json"
+      "path": "ntigravity-jules-orchestration",
+      "fix": "git checkout -- ntigravity-jules-orchestration"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".beads/issues.jsonl",
-      "fix": "git checkout -- .beads/issues.jsonl"
+      "message": "Dirty file (??)",
+      "path": "archive/build_output/",
+      "fix": "git add archive/build_output/"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".beads/kairos_heartbeat.json",
-      "fix": "git checkout -- .beads/kairos_heartbeat.json"
+      "message": "Dirty file (??)",
+      "path": "archive/product_pitch_site/",
+      "fix": "git add archive/product_pitch_site/"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".beads/suggestion_cache.json",
-      "fix": "git checkout -- .beads/suggestion_cache.json"
+      "message": "Dirty file (??)",
+      "path": "archive/scratch_2026/",
+      "fix": "git add archive/scratch_2026/"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/package.json",
-      "fix": "git checkout -- antigravity-core/mcp/package.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/api/v2/analyze.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/api/v2/analyze.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/index.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/index.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/tools/purchase_workflow_license.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/tools/purchase_workflow_license.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/tools/verify_synthetic_video.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/tools/verify_synthetic_video.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/utils/firebase-data-connect.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/utils/firebase-data-connect.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/webhooks/stripe.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/webhooks/stripe.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/tsconfig.json",
-      "fix": "git checkout -- antigravity-core/mcp/tsconfig.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-jules-orchestration",
-      "fix": "git checkout -- antigravity-jules-orchestration"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/EmbedPlayer.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/EmbedPlayer.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/MetricsDashboard.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/MetricsDashboard.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/MicroLicensingMarketplace.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/MicroLicensingMarketplace.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/PipelineDashboard.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/PipelineDashboard.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/RemixTreeVisualizer.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/RemixTreeVisualizer.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/components/SecuritySettings.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/components/SecuritySettings.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/pages/api/security/nuke-account.ts",
-      "fix": "git checkout -- apps/headfade/pwa/pages/api/security/nuke-account.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "... and 4 more dirty files",
-      "path": "",
-      "fix": ""
+      "message": "Dirty file (??)",
+      "path": "scripts/batch_drift_migration.py",
+      "fix": "git add scripts/batch_drift_migration.py"
     },
     {
       "gate": "conflicts",
@@ -226,7 +114,7 @@
     {
       "gate": "secrets",
       "severity": "error",
-      "message": "Betterleaks found 83 potential secrets",
+      "message": "Betterleaks found 84 potential secrets",
       "path": "",
       "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
     },
@@ -275,7 +163,7 @@
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 11196 more drift files",
+      "message": "... and 11746 more drift files",
       "path": "",
       "fix": ""
     },
