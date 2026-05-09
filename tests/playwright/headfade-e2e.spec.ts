@@ -36,4 +36,3 @@ test.describe('HeadFade E2E Test Suite - Pre-May 12 Launch', () => {
     expect(metrics).toBeDefined();
   });
 });
-```
