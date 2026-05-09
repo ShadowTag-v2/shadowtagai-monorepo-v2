@@ -1,133 +1,36 @@
-name: Jules Asynchronous DevOps Protocol (V18 Archon Pattern)
-
+name: Jules Asynchronous DevOps Protocol (Archon Pattern)
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  workflow_dispatch:
-    inputs:
-      deploy_target:
-        description: 'Deploy target (staging/production)'
-        required: false
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
-
-permissions:
-  contents: read
-  id-token: write
-
-env:
-  BUN_VERSION: '1.3.11'
-  GCP_PROJECT: 'shadowtag-omega-v4'
-  GCP_REGION: 'us-central1'
-  CLOUD_RUN_SERVICE: 'counselconduit'
+    branches: [ main ]
 
 jobs:
-  # ─── Phase 1: Build + Typecheck ────────────────────────────────
-  build:
-    name: 'Bun Build + Typecheck'
+  jules-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
 
-      - name: Setup Bun Runtime
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
-
-      - name: Install Dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Typecheck
-        run: bun run typecheck 2>/dev/null || echo "typecheck script not configured yet"
-
-      - name: Build API
-        run: |
-          cd apps/api
-          bun build server.ts --outdir ./dist --target bun
-
-      - name: Build Client
-        run: |
-          cd apps/client
-          bun run build 2>/dev/null || echo "client build not configured yet"
-
-  # ─── Phase 2: Security + Lint ──────────────────────────────────
-  security:
-    name: 'Security Scan'
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Betterleaks Secret Scan
-        run: |
-          if command -v betterleaks &>/dev/null; then
-            betterleaks scan .
-          else
-            echo "betterleaks not installed — skipping"
-          fi
-
-      - name: Biome Lint
-        run: |
-          if command -v biome &>/dev/null; then
-            biome check .
-          else
-            echo "biome not installed — skipping"
-          fi
-
-  # ─── Phase 3: Deploy to Cloud Run ─────────────────────────────
-  deploy:
-    name: 'Deploy to Cloud Run'
-    runs-on: ubuntu-latest
-    needs: [build, security]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: GCP Auth (Workload Identity Federation)
+      - name: GCP Auth (Workload Identity)
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: 'projects/${{ secrets.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/github'
-          service_account: 'counselconduit-sa@${{ env.GCP_PROJECT }}.iam.gserviceaccount.com'
+          project_id: 'shadowtag-omega-v4'
+          workload_identity_provider: 'projects/${{ secrets.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/shadowtag'
 
-      - name: Setup gcloud CLI
-        uses: google-github-actions/setup-gcloud@v2
+      - name: V19 Empirical FinOps Circuit Breaker
+        run: bun run tools/finops/finops_governor.ts
 
-      - name: Setup Bun Runtime
-        uses: oven-sh/setup-bun@v2
+      - uses: google-labs-code/action-setup@v1
+      - name: Delegate to Jules Subagent
+        uses: google-labs-code/jules-action@v1
         with:
-          bun-version: ${{ env.BUN_VERSION }}
-
-      - name: Build for Production
-        run: |
-          cd apps/api
-          bun build server.ts --outdir ./dist --target bun --minify
-
-      - name: Deploy to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v2
-        with:
-          service: ${{ env.CLOUD_RUN_SERVICE }}
-          region: ${{ env.GCP_REGION }}
-          source: ./apps/api
-          env_vars: |
-            PORT=8080
-            NODE_ENV=production
-            BUN_VERSION=${{ env.BUN_VERSION }}
-
-      - name: Smoke Test
-        run: |
-          SERVICE_URL=$(gcloud run services describe ${{ env.CLOUD_RUN_SERVICE }} \
-            --region=${{ env.GCP_REGION }} \
-            --format='value(status.url)' 2>/dev/null || echo "")
-          if [ -n "$SERVICE_URL" ]; then
-            curl -sf "${SERVICE_URL}/health" | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['status']=='OK', f'Health check failed: {d}'; print('✅ Health check passed:', d['version'])"
-          else
-            echo "⚠️ Service URL not available — skipping smoke test"
-          fi
+          internal_model: "Claude Opus 4.6"
+          agent_directive: |
+            You are the Jules DevOps Subagent powered by Claude Opus 4.6.
+            1. Verify the Bun Relay build in the Kriasoft chassis.
+            2. Validate the GraphQL schema against Spanner DDL in shadowtag-omega-v4.
+            3. Deploy the unified Hono container to Cloud Run.
+          skills_repo: 'google-labs-code/jules-skills'

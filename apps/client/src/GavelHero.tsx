@@ -1,5 +1,5 @@
 /**
- * V18 Zenith — GavelHero Isomorphic Component
+ * V19 Archon-Bun Hyper-Core — GavelHero Isomorphic Component
  *
  * Secured by:
  *   - Firebase Auth (react-firebase-starter identity context)
@@ -15,7 +15,7 @@ import { useStitchTheme } from '../core/stitch-bridge';
 
 // ─── Constants ────────────────────────────────────────────────────
 const FRAME_COUNT = 142;
-const CDN_BASE_URL = 'https://storage.googleapis.com/uphill-assets-cdn-v18';
+const CDN_BASE_URL = 'https://storage.googleapis.com/uphill-assets-cdn-v19';
 const GRAPHQL_ENDPOINT = '/graphql';
 
 // ─── Types ────────────────────────────────────────────────────────
@@ -149,7 +149,7 @@ export const GavelHero: React.FC<{
             marginBottom: '1.5rem',
             color: theme.colors.primary,
           }}>
-            V18 Zenith Hyper-Core
+            V19 Archon-Bun Hyper-Core
           </div>
           <div style={{
             color: theme.colors.onSurfaceVariant,
@@ -211,7 +211,7 @@ export const GavelHero: React.FC<{
           opacity: 0.6,
           animation: 'pulse 2s ease-in-out infinite',
         }}>
-          Loading V18 Federated OS...
+          Loading V19 Archon-Bun OS...
         </div>
       )}
 
@@ -237,7 +237,7 @@ export const GavelHero: React.FC<{
         color: theme.colors.onSurface,
         fontFamily: 'monospace',
       }}>
-        UID: {firebaseUid?.slice(0, 12)}... | Ledger: Authorized | V18 Zenith
+        UID: {firebaseUid?.slice(0, 12)}... | Ledger: Authorized | V19 Archon
       </div>
 
       {/* CTA button */}
