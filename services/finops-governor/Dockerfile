@@ -10,4 +10,4 @@ COPY . .
 ENV PORT=8080
 EXPOSE 8080
 
-CMD ["functions-framework", "--target=handle_finops_check", "--port=8080"]
+CMD ["functions-framework", "--target=handle_finops_check", "--source=finops_governor.py", "--port=8080"]
