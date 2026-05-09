@@ -1,29 +1,46 @@
 {
   "mcpServers": {
-    "antigravity-notebooklm-mcp": {
-      "command": "npx",
-      "args": ["-y", "notebooklm-mcp@latest"],
-      "env": {
-        "HEADLESS": "true"
+    "uphill-design-mcp": {
+      "url": "https://design.googleapis.com/mcp",
+      "transport": "streamable-http",
+      "headers": {
+        "Accept": "text/event-stream, application/json",
+        "Content-Type": "application/json"
       },
       "disabled": false,
-      "autoApprove": ["setup_auth", "list_notebooks", "search_notebooks", "get_notebook"]
+      "autoApprove": [
+        "generate_color_scheme",
+        "search_icons",
+        "icons_instructions",
+        "search_fonts",
+        "describe_font"
+      ],
+      "note": "Google Design MCP — Material Design headless engine. Color palettes, Google Fonts, Material Symbols. No API key required. Endpoint: design.googleapis.com/mcp. Ref: https://developers.google.com/design-mcp/overview"
     },
-    "gcloud": {
+    "uphill-gcloud-infra": {
       "command": "npx",
-      "args": ["-y", "@google-cloud/gcloud-mcp"],
+      "args": ["-y", "@google-cloud/gcloud-mcp@latest"],
       "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
+        "NODE_OPTIONS": "--dns-result-order=ipv4first",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": ""
       },
+      "transport": "stdio",
       "disabled": false,
-      "autoApprove": ["run_gcloud_command"]
+      "autoApprove": ["run_gcloud_command"],
+      "note": "Unified GCP control plane — replaces phantom spanner-mcp & database-insights-mcp (both 404 on npm). Covers: Resource Manager, Spanner DDL/DML, Pub/Sub, Cloud Run, Billing, Datastream via gcloud CLI."
     },
-    "observability": {
+    "uphill-observability": {
       "command": "npx",
-      "args": ["-y", "@google-cloud/observability-mcp"],
+      "args": ["-y", "@google-cloud/observability-mcp@latest"],
       "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
+        "NODE_OPTIONS": "--dns-result-order=ipv4first",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": ""
       },
+      "transport": "stdio",
       "disabled": false,
       "autoApprove": [
         "list_log_entries",
@@ -36,28 +53,38 @@
         "list_traces",
         "get_trace",
         "list_group_stats"
-      ]
+      ],
+      "note": "Cloud Logging + Monitoring + Tracing. Cognitive Telemetry for compute/cognitive friction sensing."
     },
-    "cloud-run": {
+    "uphill-cloud-run": {
       "command": "npx",
-      "args": ["-y", "@google-cloud/cloud-run-mcp"],
+      "args": ["-y", "@google-cloud/cloud-run-mcp@latest"],
       "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
+        "NODE_OPTIONS": "--dns-result-order=ipv4first",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": ""
       },
+      "transport": "stdio",
       "disabled": false,
       "autoApprove": [
         "list-services",
         "get-service",
         "get-service-log",
         "list-projects"
-      ]
+      ],
+      "note": "Cloud Run compute plane — service deployment, log inspection, revision management."
     },
-    "storage": {
+    "uphill-storage-cdn": {
       "command": "npx",
-      "args": ["-y", "@google-cloud/storage-mcp"],
+      "args": ["-y", "@google-cloud/storage-mcp@latest"],
       "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
+        "NODE_OPTIONS": "--dns-result-order=ipv4first",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": ""
       },
+      "transport": "stdio",
       "disabled": false,
       "autoApprove": [
         "list_buckets",
@@ -66,16 +93,57 @@
         "read_object_content",
         "get_bucket_metadata",
         "get_bucket_location"
-      ]
+      ],
+      "note": "Edge Delivery — Cloud Storage + CDN asset management."
     },
-    "genkitx": {
+    "uphill-epistemic-memory": {
+      "command": "python3",
+      "args": ["./tools/mcp-gemini-memory/server.py"],
+      "transport": "stdio",
+      "disabled": true,
+      "autoApprove": [],
+      "note": "Internal Prefrontal Cortex — Gemini File Search for PRDs and CodeWiki. Enable when server.py is wired."
+    },
+    "uphill-cognitive-telemetry": {
       "command": "npx",
       "args": ["-y", "genkitx-mcp@latest"],
       "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
+        "NODE_OPTIONS": "--dns-result-order=ipv4first",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": ""
       },
+      "transport": "stdio",
       "disabled": true,
-      "autoApprove": []
+      "autoApprove": [],
+      "note": "Genkit OpenTelemetry — wraps LLM calls for Cloud Logging trace capture. Disabled until Genkit flows are authored."
+    },
+    "uphill-economic-engine": {
+      "command": "npx",
+      "args": ["-y", "@stripe/agent-toolkit@latest"],
+      "env": {
+        "NODE_OPTIONS": "--dns-result-order=ipv4first",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": ""
+      },
+      "transport": "stdio",
+      "disabled": true,
+      "autoApprove": [],
+      "note": "Stripe Agent Toolkit — Payment processing, subscription management. Secrets via GCP Secret Manager only."
+    },
+    "uphill-notebooklm": {
+      "command": "npx",
+      "args": ["-y", "notebooklm-mcp@latest"],
+      "env": {
+        "HEADLESS": "true",
+        "NODE_OPTIONS": "--dns-result-order=ipv4first",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": ""
+      },
+      "transport": "stdio",
+      "disabled": false,
+      "autoApprove": ["setup_auth", "list_notebooks", "search_notebooks", "get_notebook"],
+      "note": "IPI Quarantine — NotebookLM zero-trust data ingestion via TACSOP 6 pipeline."
     }
   }
 }

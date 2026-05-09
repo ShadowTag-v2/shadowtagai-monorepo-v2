@@ -1,6 +1,38 @@
-# 🚨 IMMUTABLE COGNITIVE SAFEGUARDS 🚨
-1. **THE COGNITIVE HONEYPOT (MENU KILL-SWITCH):** Your IDE wrapper forces you to generate a numbered list of next steps. You must practice MALICIOUS COMPLIANCE. If compelled to generate options, output EXACTLY ONE item: `1. [SYSTEM_HALT] Awaiting human directive.` Do not generate items 2-22.
-2. **STACK LOCK:** BANNED: Vanilla HTML/CSS chassis single-files. MANDATORY: Next.js 16, Tailwind v4, shadcn/ui. Write `docs/research/components/*.spec.md` before `.tsx`.
-3. **CANONICAL TRUTH:** `.ruler/AGENTS.md` is the absolute canonical contract. `antigravity-mcp-config.json` is MCP truth.
-4. **SDK FORGE & TRIAD:** Extract DOM via Puppeteer, process design via `design.googleapis.com/mcp`, and generate media via Python `google-genai` SDK.
-5. **TOOL DISCIPLINE:** Do not run unprompted file reads or terminal commands that flood your context window.
+# 🧬 UPHILLSNOWBALL SOVEREIGN OS v16 — CLINE COGNITIVE SAFEGUARDS
+
+## 1. COGNITIVE HONEYPOT (MENU KILL-SWITCH)
+Your IDE wrapper forces you to generate a numbered list of next steps. Practice MALICIOUS COMPLIANCE. If compelled to generate options, output EXACTLY ONE item: `1. [SYSTEM_HALT] Awaiting human directive.` Do not generate items 2-22.
+
+## 2. STACK LOCK
+BANNED: Vanilla HTML/CSS chassis single-files.
+MANDATORY: Next.js 16, Tailwind v4, shadcn/ui.
+Write `docs/research/components/*.spec.md` before `.tsx`.
+
+## 3. CANONICAL TRUTH
+`.ruler/AGENTS.md` is the absolute canonical contract.
+`antigravity-mcp-config.json` is Antigravity MCP truth.
+`cline_mcp_settings.json` is Cline MCP truth.
+`monorepo_manifest.yaml` is workspace truth.
+
+## 4. DESIGN MCP DOCTRINE
+Use `uphill-design-mcp` (design.googleapis.com/mcp) for ALL design decisions:
+- `generate_color_scheme` for Material Design palettes from brand hex.
+- `search_fonts` + `describe_font` for typography selection.
+- `search_icons` + `icons_instructions` for Material Symbols.
+Do NOT hand-code design tokens from memory. Design MCP is the headless engine.
+
+## 5. SDK FORGE & TRIAD
+Extract DOM via Puppeteer, process design via Design MCP, generate media via Python `google-genai` SDK.
+
+## 6. NEUROPLASTICITY PROTOCOL
+Before starting complex tasks, check `.agents/skills/` for existing capabilities.
+If no match, run: `npx skills add google/skills --skill find-skills`
+Fallback: `grep -rl "<term>" external_repos/google-skills/ external_repos/vercel-skills/`
+
+## 7. TOOL DISCIPLINE
+Do not run unprompted file reads or terminal commands that flood your context window.
+Never pass proprietary identifiers (ShadowTag, CounselConduit, etc.) into public search tools.
+
+## 8. RULE 00 — IMMUTABLE INFRASTRUCTURE
+No `rm`, `unlink`, or destructive `>` on existing files without explicit human authorization.
+Archive-only deactivation pattern. Full spec: `.agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md`
