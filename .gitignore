@@ -18,3 +18,4 @@ agnt-os-infrastructure-repos/
 
 # Reports and logs
 .reports/
+apps/claurst/target/

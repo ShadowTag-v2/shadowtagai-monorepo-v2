@@ -3,7 +3,7 @@
 # Owner: quality
 
 load("@rules_python//python:defs.bzl", "py_library", "py_test")
-load("@pip_deps//:requirements.bzl", "requirement")
+load("@pypi//:requirements.bzl", "requirement")
 
 package(default_visibility = ["//apps/counselconduit:__subpackages__"])
 

@@ -15,7 +15,7 @@ py_library(
     name = "counselconduit",
     srcs = [
         "__init__.py",
-        "Cor.Claude_Code_6_atp519_scoring.py",
+        "Cor_Claude_Code_6_atp519_scoring.py",
     ],
     visibility = [
         "//apps:__subpackages__",

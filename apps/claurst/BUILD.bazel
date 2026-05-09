@@ -1,15 +1,25 @@
-load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
+# BUILD.bazel — apps/claurst
+# Rust-based agent execution loop with hermetic crate deps via crate_universe
+
+load("@claurst_crates//:defs.bzl", "aliases", "all_crate_deps")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_test")
 
 package(default_visibility = ["//visibility:private"])
 
 rust_binary(
     name = "claurst",
     srcs = ["src/main.rs"],
+    aliases = aliases(),
+    deps = all_crate_deps(normal = True),
     edition = "2021",
+    proc_macro_deps = all_crate_deps(proc_macro = True),
     visibility = ["//visibility:public"],
 )
 
 rust_test(
     name = "claurst_test",
     crate = ":claurst",
+    aliases = aliases(normal_dev = True),
+    deps = all_crate_deps(normal_dev = True),
+    proc_macro_deps = all_crate_deps(proc_macro_dev = True),
 )
