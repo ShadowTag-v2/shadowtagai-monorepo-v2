@@ -94,6 +94,19 @@ npx skills add vercel-labs/skills --skill <skill-name>
 grep -rl "<capability>" external_repos/google-skills/ external_repos/vercel-skills/
 ```
 
+### External Repos — Reference Leverage (v16)
+
+| Repo | Domain | Assets |
+|------|--------|--------|
+| `google-labs-code/stitch-skills` | Stitch design skills | 8 skills (design-md, enhance-prompt, react-components, remotion, shadcn-ui, stitch-design, stitch-loop, taste-design) |
+| `google-labs-code/stitch-sdk` | Stitch SDK | TypeScript SDK for Stitch API |
+| `google-labs-code/jules-skills` | Jules agent skills | 2 skills (automate-github-issues, local-action-verification) |
+| `google-labs-code/jules-sdk` | Jules SDK | TypeScript SDK for Jules API |
+| `google-labs-code/jules-action` | Jules GitHub Action | CI/CD integration |
+| `google-labs-code/jules-awesome-list` | Jules ecosystem list | Community resources |
+| `google-labs-code/action-setup` | Action setup utility | GitHub Actions bootstrap |
+| `cline/prompts` | Cline workflows | 7 workflows (AI DLC, CI/CD, PR review, self-improving) |
+
 ## Design MCP Integration
 
 The Google Design MCP (`design.googleapis.com/mcp`) serves as the headless design engine:
