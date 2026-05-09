@@ -2,22 +2,58 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    ":preserveSemverRanges",
-    ":rebaseStalePrs",
-    "schedule:weekly",
-    "group:recommended",
-    "group:monorepos",
-    "workarounds:all"
+    ":semanticCommits",
+    ":separateMajorReleases",
+    ":combinePatchMinorReleases",
+    ":automergeMinor",
+    ":automergePatch",
+    ":prConcurrentLimit10",
+    ":rebaseStalePrs"
   ],
-  "labels": ["deps"],
-  "dependencyDashboard": true,
-  "automerge": true,
-  "automergeType": "pr",
-  "platformAutomerge": true,
+  "timezone": "America/Los_Angeles",
+  "schedule": ["before 6am on Monday"],
   "packageRules": [
+    {
+      "matchManagers": ["pnpm"],
+      "groupName": "pnpm dependencies",
+      "automerge": true
+    },
+    {
+      "matchManagers": ["bazel"],
+      "groupName": "Bazel dependencies",
+      "automerge": true
+    },
+    {
+      "matchManagers": ["pip_requirements"],
+      "groupName": "Python dependencies",
+      "automerge": true
+    },
+    {
+      "matchPackagePatterns": ["^@types/"],
+      "groupName": "TypeScript types"
+    },
+    {
+      "matchPackagePatterns": ["^eslint", "^prettier", "^@typescript-eslint"],
+      "groupName": "Linting & Formatting"
+    },
     {
       "matchUpdateTypes": ["patch", "minor"],
       "automerge": true
     }
-  ]
+  ],
+  "ignorePaths": [
+    "external_repos/**",
+    "third_party/**"
+  ],
+  "dependencyDashboard": true,
+  "prCreation": "immediate",
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 0,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 5am on Monday"]
+  },
+  "platformAutomerge": true,
+  "automergeStrategy": "squash",
+  "labels": ["deps", "renovate"]
 }

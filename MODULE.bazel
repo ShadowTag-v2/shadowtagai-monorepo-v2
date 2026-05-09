@@ -1,6 +1,6 @@
 module(
-    name = "tomsoir_monorepo",
-    version = "0.1",
+    name = "shadowtagai_monorepo_v2",
+    version = "15.0.0",
 )
 
 # ---
