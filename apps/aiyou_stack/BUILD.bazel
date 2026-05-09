@@ -1,4 +1,5 @@
 load("@aspect_rules_py//py:defs.bzl", "py_binary", "py_library", "py_test")
+load("@pypi//:requirements.bzl", "requirement")
 
 package(default_visibility = ["//visibility:private"])
 
@@ -26,5 +27,8 @@ py_binary(
 py_test(
     name = "test_ane_bridge",
     srcs = ["test_ane_bridge.py"],
-    deps = [":aiyou_stack"],
+    deps = [
+        ":aiyou_stack",
+        requirement("pytest"),
+    ],
 )
