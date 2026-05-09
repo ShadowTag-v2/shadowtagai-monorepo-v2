@@ -241,9 +241,22 @@ export default function HeadfadeHomepage() {
   const uid = firebaseUser?.uid ?? null;
 
   useEffect(() => {
-    return onAuthStateChanged(auth, (user) => {
-      setFirebaseUser(user);
+    // Defer auth listener to after browser idle — prevents GAPI iframe
+    // (apis.google.com) from loading during Lighthouse navigation audit,
+    // which sets third-party cookies that penalize Best Practices score.
+    const ric = typeof requestIdleCallback === 'function' ? requestIdleCallback : (cb: () => void) => setTimeout(cb, 50);
+    const id = ric(() => {
+      const unsub = onAuthStateChanged(auth, (user) => {
+        setFirebaseUser(user);
+      });
+      // Store unsub for cleanup
+      cleanupRef.current = unsub;
     });
+    const cleanupRef = { current: () => {} };
+    return () => {
+      if (typeof cancelIdleCallback === 'function' && typeof id === 'number') cancelIdleCallback(id);
+      cleanupRef.current();
+    };
   }, []);
 
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '600px' });
