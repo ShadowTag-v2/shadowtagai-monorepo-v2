@@ -1,99 +1,17 @@
 {
   "mcpServers": {
-    "jules-mcp-server": {
-      "command": "bun",
-      "args": ["run", "external_repos/jules-sdk/packages/mcp/dist/cli.mjs"],
-      "transport": "stdio",
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
-      }
-    },
-    "stitch-mcp-server": {
-      "command": "bun",
-      "args": ["run", "external_repos/stitch-sdk/packages/sdk/dist/src/index.js"],
-      "transport": "stdio",
-      "env": {
-        "STITCH_API_KEY": "${STITCH_API_KEY}"
-      }
-    },
-    "firebase-mcp-server": {
-      "command": "npx",
-      "args": ["-y", "firebase-tools@latest", "experimental:mcp"],
-      "transport": "stdio",
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
-      }
-    },
-    "chrome-devtools-mcp": {
-      "command": "npx",
-      "args": ["-y", "@anthropic-ai/chrome-devtools-mcp@latest"],
-      "transport": "stdio",
-      "env": {
-        "CHROME_DEBUG_PORT": "9222"
-      }
-    },
-    "google-developer-knowledge": {
-      "command": "npx",
-      "args": ["-y", "@anthropic-ai/google-developer-knowledge-mcp@latest"],
-      "transport": "stdio",
-      "env": {
-        "GOOGLE_API_KEY": "${DEVELOPER_KNOWLEDGE_API_KEY}"
-      }
-    },
-    "sequential-thinking": {
-      "command": "npx",
-      "args": ["-y", "@anthropic-ai/sequential-thinking-mcp@latest"],
-      "transport": "stdio"
-    },
-    "jules-fleet": {
-      "command": "bun",
-      "args": ["run", "external_repos/jules-sdk/packages/fleet/dist/cli/index.mjs"],
-      "transport": "stdio",
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
-      }
-    },
-    "gcloud-mcp": {
-      "command": "npx",
-      "args": ["-y", "@anthropic-ai/gcloud-mcp@latest"],
-      "transport": "stdio",
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
-      }
-    },
-    "observability": {
-      "command": "npx",
-      "args": ["-y", "@anthropic-ai/observability-mcp@latest"],
-      "transport": "stdio",
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
-      }
-    },
-    "cloud-run": {
-      "command": "npx",
-      "args": ["-y", "@anthropic-ai/cloud-run-mcp@latest"],
-      "transport": "stdio",
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
-      }
-    },
-    "storage": {
-      "command": "npx",
-      "args": ["-y", "@anthropic-ai/storage-mcp@latest"],
-      "transport": "stdio",
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
-      }
-    },
-    "stripe-mcp": {
-      "command": "npx",
-      "args": ["-y", "@stripe/mcp@latest", "--tools=all", "--api-key=${STRIPE_SECRET_KEY}"],
-      "transport": "stdio"
-    },
-    "os-dart-compiler": {
-      "command": "dart",
-      "args": ["language-server", "--protocol=lsp"],
-      "transport": "stdio"
-    }
+    "firebase-mcp-server": { "command": "bunx", "args": ["--bun", "@firebase/mcp-server"], "transport": "stdio" },
+    "chrome-devtools-mcp": { "command": "bunx", "args": ["--bun", "@puppeteer/chrome-devtools-mcp"], "env": { "CHROME_DEBUG_PORT": "9222" }, "transport": "stdio" },
+    "google-design-mcp": { "command": "bunx", "args": ["--bun", "@google/design-mcp"], "env": { "DESIGN_API_ENDPOINT": "wss://design.googleapis.com/mcp" }, "transport": "stdio" },
+    "StitchMCP": { "command": "bunx", "args": ["--bun", "@stitch/mcp-server"], "transport": "stdio" },
+    "google-developer-knowledge": { "command": "bunx", "args": ["--bun", "@googlecloud/vertex-ai-search-mcp"], "transport": "stdio" },
+    "sequential-thinking": { "command": "bunx", "args": ["--bun", "@anthropic/sequential-thinking-mcp"], "transport": "stdio" },
+    "jules-mcp-server": { "command": "bunx", "args": ["--bun", "@google/jules-mcp"], "transport": "stdio" },
+    "os-infrastructure-matrix": { "command": "bunx", "args": ["--bun", "@google/mcp-toolbox"], "env": { "ENABLE_SERVICES": "resourcemanager,spanner,pubsub" }, "transport": "stdio" },
+    "database-insights-mcp": { "command": "bunx", "args": ["--bun", "@googlecloud/database-insights-mcp"], "env": { "SPANNER_PROJECT": "shadowtag-omega-v4", "SPANNER_INSTANCE": "core-cluster" }, "transport": "stdio" },
+    "observability": { "command": "bunx", "args": ["--bun", "@google/genkit-mcp"], "transport": "stdio" },
+    "cloud-run": { "command": "bunx", "args": ["--bun", "@google/mcp-toolbox"], "env": { "ENABLE_SERVICES": "run" }, "transport": "stdio" },
+    "storage": { "command": "bunx", "args": ["--bun", "@google/mcp-toolbox"], "env": { "ENABLE_SERVICES": "storage" }, "transport": "stdio" },
+    "stripe-mcp": { "command": "bunx", "args": ["--bun", "@stripe/mcp"], "transport": "stdio" }
   }
 }
