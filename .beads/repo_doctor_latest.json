@@ -1,94 +1,24 @@
 {
-  "score": "F",
-  "total_findings": 42,
-  "critical": 10,
-  "errors": 2,
-  "warnings": 27,
-  "info": 3,
+  "score": "B",
+  "total_findings": 16,
+  "critical": 0,
+  "errors": 0,
+  "warnings": 10,
+  "info": 6,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "beads/heartbeat.json",
-      "fix": "git checkout -- beads/heartbeat.json"
+      "path": "beads/repo_doctor_latest.json",
+      "fix": "git checkout -- beads/repo_doctor_latest.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/issues.jsonl",
-      "fix": "git checkout -- .beads/issues.jsonl"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".beads/kairos_heartbeat.json",
-      "fix": "git checkout -- .beads/kairos_heartbeat.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".beads/suggestion_cache.json",
-      "fix": "git checkout -- .beads/suggestion_cache.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/package.json",
-      "fix": "git checkout -- antigravity-core/mcp/package.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/api/v2/analyze.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/api/v2/analyze.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/index.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/index.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/tools/purchase_workflow_license.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/tools/purchase_workflow_license.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/tools/verify_synthetic_video.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/tools/verify_synthetic_video.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/utils/firebase-data-connect.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/utils/firebase-data-connect.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/src/webhooks/stripe.ts",
-      "fix": "git checkout -- antigravity-core/mcp/src/webhooks/stripe.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-core/mcp/tsconfig.json",
-      "fix": "git checkout -- antigravity-core/mcp/tsconfig.json"
+      "path": ".betterleaks.toml",
+      "fix": "git checkout -- .betterleaks.toml"
     },
     {
       "gate": "dirty",
@@ -101,134 +31,22 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/EmbedPlayer.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/EmbedPlayer.tsx"
+      "path": "scripts/repo_doctor.py",
+      "fix": "git checkout -- scripts/repo_doctor.py"
     },
     {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/MetricsDashboard.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/MetricsDashboard.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/MicroLicensingMarketplace.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/MicroLicensingMarketplace.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/PipelineDashboard.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/PipelineDashboard.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/RemixTreeVisualizer.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/RemixTreeVisualizer.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/components/SecuritySettings.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/components/SecuritySettings.tsx"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/pages/api/security/nuke-account.ts",
-      "fix": "git checkout -- apps/headfade/pwa/pages/api/security/nuke-account.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "... and 4 more dirty files",
+      "gate": "conflicts",
+      "severity": "info",
+      "message": "No conflict markers found",
       "path": "",
       "fix": ""
     },
     {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/.claude/hooks/SessionStart",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/.env.example",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/.gcloudignore",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/libraries/RoyaltyMath.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Identity.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Reputation.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Validation.sol",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/clone-and-flatten.sh",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/deploy-all.sh",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
-      "gate": "conflicts",
-      "severity": "critical",
-      "message": "Merge conflict marker found",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/fork-all-antigravity.sh",
-      "fix": "Resolve merge conflicts manually"
-    },
-    {
       "gate": "secrets",
-      "severity": "error",
-      "message": "Betterleaks found 83 potential secrets",
+      "severity": "info",
+      "message": "No secrets detected",
       "path": "",
-      "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
+      "fix": ""
     },
     {
       "gate": "large_files",
@@ -275,7 +93,7 @@
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 11196 more drift files",
+      "message": "... and 11762 more drift files",
       "path": "",
       "fix": ""
     },
@@ -295,10 +113,10 @@
     },
     {
       "gate": "tests",
-      "severity": "error",
-      "message": "Test collection failed",
+      "severity": "info",
+      "message": "Tests: ======================== 3666 tests collected in 2.13s =========================",
       "path": "",
-      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest --co -q 2>&1 | tail -10"
+      "fix": ""
     }
   ]
 }
