@@ -1,17 +1,80 @@
 {
-  "score": "A",
-  "total_findings": 9,
+  "score": "B",
+  "total_findings": 18,
   "critical": 0,
   "errors": 0,
-  "warnings": 0,
-  "info": 9,
+  "warnings": 10,
+  "info": 8,
   "findings": [
     {
       "gate": "dirty",
-      "severity": "info",
-      "message": "Working tree clean",
-      "path": "",
-      "fix": ""
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "beads/epistemic_sync_needed.json",
+      "fix": "git checkout -- beads/epistemic_sync_needed.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".beads/repo_doctor_latest.json",
+      "fix": "git checkout -- .beads/repo_doctor_latest.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".clinerules",
+      "fix": "git checkout -- .clinerules"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".reports/skills/guardrail_annotation_audit.md",
+      "fix": "git checkout -- .reports/skills/guardrail_annotation_audit.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "cline_mcp_settings.json",
+      "fix": "git checkout -- cline_mcp_settings.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "docs/SYSTEM_OVERRIDE.md",
+      "fix": "git checkout -- docs/SYSTEM_OVERRIDE.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "monorepo_manifest.yaml",
+      "fix": "git checkout -- monorepo_manifest.yaml"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (??)",
+      "path": ".github/workflows/jules-ci.yml",
+      "fix": "git add .github/workflows/jules-ci.yml"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (??)",
+      "path": "apps/kovelai/src/GavelHero.tsx",
+      "fix": "git add apps/kovelai/src/GavelHero.tsx"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (??)",
+      "path": "tools/workspace-listener/",
+      "fix": "git add tools/workspace-listener/"
     },
     {
       "gate": "conflicts",
@@ -58,14 +121,14 @@
     {
       "gate": "manifest",
       "severity": "info",
-      "message": "Manifest v15.5 valid",
+      "message": "Manifest v17.0 valid",
       "path": "",
       "fix": ""
     },
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ======================== 3666 tests collected in 3.41s =========================",
+      "message": "Tests: ======================== 3666 tests collected in 2.20s =========================",
       "path": "",
       "fix": ""
     }
