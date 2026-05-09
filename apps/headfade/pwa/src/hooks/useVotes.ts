@@ -1,8 +1,7 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
 import { doc, runTransaction, onSnapshot, increment } from 'firebase/firestore';
-import { logEvent } from 'firebase/analytics';
-import { db, analyticsPromise } from '@/lib/firebase';
+import { db, getAnalyticsInstance } from '@/lib/firebase';
 
 const LS_KEY = 'headfade_votes_v1';
 const LS_FILTER = 'headfade_filter_v1';
@@ -118,10 +117,13 @@ export function useVotes(count: number) {
       });
     } catch { /* offline — local state still correct */ }
 
-    // Analytics
-    analyticsPromise.then((analytics) => {
-      if (analytics) logEvent(analytics, 'vote_cast', { choice, videoId: key });
-    });
+    // Analytics — dynamic import; null until first interaction triggers init
+    const analytics = getAnalyticsInstance();
+    if (analytics) {
+      import('firebase/analytics').then(({ logEvent: log }) => {
+        log(analytics, 'vote_cast', { choice, videoId: key });
+      });
+    }
   }, []);
 
   return { votes, vote, filter, setFilter, saved, toggleSave, globalAI, globalHuman };

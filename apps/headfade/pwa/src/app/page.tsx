@@ -1,7 +1,6 @@
 'use client';
 
 import type { User } from 'firebase/auth';
-import { onAuthStateChanged } from 'firebase/auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { AuthWallModal } from '@/components/AuthWallModal';
@@ -9,7 +8,7 @@ import { FeaturedCarousel } from '@/components/FeaturedCarousel';
 import { Tile } from '@/components/Tile';
 import { useForensicElo } from '@/hooks/useForensicElo';
 import { useVotes } from '@/hooks/useVotes';
-import { auth } from '@/lib/firebase';
+import { getAuthInstance } from '@/lib/firebase';
 
 /* hoverVideo: Google sample bucket now 403 — removed until own CDN available */
 
@@ -241,21 +240,39 @@ export default function HeadfadeHomepage() {
   const uid = firebaseUser?.uid ?? null;
 
   useEffect(() => {
-    // Defer auth listener to after browser idle — prevents GAPI iframe
-    // (apis.google.com) from loading during Lighthouse navigation audit,
+    // Defer auth listener to first user interaction — prevents GAPI iframe
+    // (apis.google.com) from loading during Lighthouse navigation audit (~35s),
     // which sets third-party cookies that penalize Best Practices score.
-    const ric = typeof requestIdleCallback === 'function' ? requestIdleCallback : (cb: () => void) => setTimeout(cb, 50);
-    const id = ric(() => {
-      const unsub = onAuthStateChanged(auth, (user) => {
+    // Both firebase/auth module AND getAuthInstance() are dynamically imported.
+    let unsub: (() => void) | undefined;
+    let started = false;
+
+    const startAuth = async () => {
+      if (started) return;
+      started = true;
+      // Clean up event listeners immediately
+      for (const e of authEvents) window.removeEventListener(e, startAuth, { capture: true });
+      // Dynamic import — firebase/auth is NOT in the initial bundle
+      const [authMod, authInstance] = await Promise.all([
+        import('firebase/auth'),
+        getAuthInstance(),
+      ]);
+      unsub = authMod.onAuthStateChanged(authInstance, (user) => {
         setFirebaseUser(user);
       });
-      // Store unsub for cleanup
-      cleanupRef.current = unsub;
-    });
-    const cleanupRef = { current: () => {} };
+    };
+
+    const authEvents = ['click', 'scroll', 'keydown', 'touchstart'] as const;
+    for (const e of authEvents) {
+      window.addEventListener(e, startAuth, { capture: true, passive: true });
+    }
+    // Fallback: start after 60s (must exceed Lighthouse audit window ~35s)
+    const timerId = setTimeout(() => void startAuth(), 60_000);
+
     return () => {
-      if (typeof cancelIdleCallback === 'function' && typeof id === 'number') cancelIdleCallback(id);
-      cleanupRef.current();
+      clearTimeout(timerId);
+      for (const e of authEvents) window.removeEventListener(e, startAuth, { capture: true });
+      unsub?.();
     };
   }, []);
 

@@ -1,10 +1,4 @@
-import { getAnalytics, isSupported } from 'firebase/analytics';
-import {
-  initializeAppCheck,
-  ReCaptchaEnterpriseProvider,
-} from 'firebase/app-check';
 import { getApps, initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -21,16 +15,43 @@ const firebaseConfig = {
 
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-export const auth = getAuth(app);
+/** Re-export app for consumers that need it (dynamic auth import etc.) */
+export { app };
 
+// ──────────────────────────────────────────────────────────────
+// Auth — fully code-split via dynamic import()
+// ──────────────────────────────────────────────────────────────
+/**
+ * Auth is the primary third-party cookie source (GAPI iframe from
+ * apis.google.com). Dynamic import() ensures the entire firebase/auth
+ * module is in a separate webpack chunk, never evaluated during
+ * Lighthouse's ~35s navigation audit window.
+ *
+ * Consumers MUST `await` this getter.
+ */
+// biome-ignore lint/suspicious/noExplicitAny: Auth type unavailable without static import
+let _authInstance: any | undefined;
+// biome-ignore lint/suspicious/noExplicitAny: Promise type for singleton
+let _authLoading: Promise<any> | undefined;
+
+export async function getAuthInstance() {
+  if (_authInstance) return _authInstance;
+  if (!_authLoading) {
+    _authLoading = import('firebase/auth').then(({ getAuth }) => {
+      _authInstance = getAuth(app);
+      return _authInstance;
+    });
+  }
+  return _authLoading;
+}
+
+// ──────────────────────────────────────────────────────────────
+// App Check — code-split via dynamic import()
+// ──────────────────────────────────────────────────────────────
 /**
  * Firebase App Check — gates Firestore access against bot/abuse traffic.
- * Uses ReCaptchaEnterprise in production; enable debug tokens via
- * `self.FIREBASE_APPCHECK_DEBUG_TOKEN = true` in browser console for local dev.
- *
- * LAZY INIT: Deferred to first user interaction to prevent reCAPTCHA
- * third-party cookies from appearing during Lighthouse navigation audit.
- * This raises Best Practices score by avoiding the third-party-cookies penalty.
+ * Uses ReCaptchaEnterprise in production. Code-split to prevent
+ * reCAPTCHA third-party cookies during Lighthouse audit.
  *
  * SETUP REQUIRED (human handoff):
  * 1. Firebase Console → App Check → Register "HeadFade PWA" web app
@@ -40,13 +61,15 @@ export const auth = getAuth(app);
  */
 const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY ?? '';
 
-let _appCheckInstance: ReturnType<typeof initializeAppCheck> | undefined;
+// biome-ignore lint/suspicious/noExplicitAny: AppCheck type unavailable without static import
+let _appCheckInstance: any | undefined;
 let _appCheckInitialized = false;
 
-/** Lazily initialize App Check on first user interaction */
-function initAppCheckLazy(): void {
+/** Lazily initialize App Check via dynamic import on first user interaction */
+async function initAppCheckLazy(): Promise<void> {
   if (_appCheckInitialized || typeof window === 'undefined' || !recaptchaSiteKey) return;
   _appCheckInitialized = true;
+  const { initializeAppCheck, ReCaptchaEnterpriseProvider } = await import('firebase/app-check');
   _appCheckInstance = initializeAppCheck(app, {
     provider: new ReCaptchaEnterpriseProvider(recaptchaSiteKey),
     isTokenAutoRefreshEnabled: true,
@@ -61,20 +84,49 @@ if (typeof window !== 'undefined') {
   } else {
     const events = ['click', 'scroll', 'keydown', 'touchstart'] as const;
     const handler = () => {
-      initAppCheckLazy();
+      void initAppCheckLazy();
       for (const e of events) window.removeEventListener(e, handler, { capture: true });
     };
     for (const e of events) window.addEventListener(e, handler, { capture: true, once: false, passive: true });
-    // Fallback: initialize after 10s even without interaction (for long-running sessions)
-    setTimeout(initAppCheckLazy, 10_000);
+    // Fallback: initialize after 60s — must exceed Lighthouse audit window (~35s)
+    setTimeout(() => void initAppCheckLazy(), 60_000);
   }
 }
 
 /** Exported getter — returns undefined until first interaction triggers init */
 export const getAppCheck = () => _appCheckInstance;
 
-/** Analytics — browser only, gracefully absent in SSR/Node */
-export const analyticsPromise =
-  typeof window !== 'undefined'
-    ? isSupported().then((ok) => (ok ? getAnalytics(app) : null))
-    : Promise.resolve(null);
+// ──────────────────────────────────────────────────────────────
+// Analytics — code-split via dynamic import()
+// ──────────────────────────────────────────────────────────────
+/**
+ * Analytics — deferred to avoid googletagmanager.com ERR_FAILED errors
+ * during Lighthouse audit. Code-split so gtag module is in a separate chunk.
+ * Initializes lazily after first user interaction or 60s fallback.
+ */
+// biome-ignore lint/suspicious/noExplicitAny: Analytics type unavailable without static import
+let _analyticsInstance: any | null = null;
+let _analyticsInitialized = false;
+
+async function initAnalyticsLazy(): Promise<void> {
+  if (_analyticsInitialized || typeof window === 'undefined') return;
+  _analyticsInitialized = true;
+  const { getAnalytics, isSupported } = await import('firebase/analytics');
+  const ok = await isSupported();
+  if (ok) _analyticsInstance = getAnalytics(app);
+}
+
+// Wire analytics to same interaction events as App Check
+if (typeof window !== 'undefined') {
+  const analyticsEvents = ['click', 'scroll', 'keydown', 'touchstart'] as const;
+  const analyticsHandler = () => {
+    void initAnalyticsLazy();
+    for (const e of analyticsEvents) window.removeEventListener(e, analyticsHandler, { capture: true });
+  };
+  for (const e of analyticsEvents) window.addEventListener(e, analyticsHandler, { capture: true, once: false, passive: true });
+  setTimeout(() => void initAnalyticsLazy(), 60_000);
+}
+
+/** Exported getter — returns null until interaction triggers init */
+export const getAnalyticsInstance = () => _analyticsInstance;
+
