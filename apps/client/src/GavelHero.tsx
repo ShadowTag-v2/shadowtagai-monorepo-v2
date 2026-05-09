@@ -10,7 +10,8 @@
  * Runtime: Edge-rendered React + Bun backend
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useStitchTheme } from '../core/stitch-bridge';
 
 // ─── Constants ────────────────────────────────────────────────────
@@ -127,12 +128,14 @@ export const GavelHero: React.FC<{
   if (checking) {
     return (
       <div style={baseStyle}>
-        <div style={{
-          fontFamily: theme.typography.displaySmall,
-          fontSize: '1.25rem',
-          opacity: 0.7,
-          animation: 'pulse 2s ease-in-out infinite',
-        }}>
+        <div
+          style={{
+            fontFamily: theme.typography.displaySmall,
+            fontSize: '1.25rem',
+            opacity: 0.7,
+            animation: 'pulse 2s ease-in-out infinite',
+          }}
+        >
           Authenticating Federated Edge...
         </div>
       </div>
@@ -143,19 +146,23 @@ export const GavelHero: React.FC<{
     return (
       <div style={baseStyle}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{
-            fontFamily: theme.typography.headlineLarge,
-            fontSize: '2rem',
-            marginBottom: '1.5rem',
-            color: theme.colors.primary,
-          }}>
+          <div
+            style={{
+              fontFamily: theme.typography.headlineLarge,
+              fontSize: '2rem',
+              marginBottom: '1.5rem',
+              color: theme.colors.primary,
+            }}
+          >
             V19 Archon-Bun Hyper-Core
           </div>
-          <div style={{
-            color: theme.colors.onSurfaceVariant,
-            marginBottom: '2rem',
-            fontSize: '1.1rem',
-          }}>
+          <div
+            style={{
+              color: theme.colors.onSurfaceVariant,
+              marginBottom: '2rem',
+              fontSize: '1.1rem',
+            }}
+          >
             Identity required. Authenticate via Firebase to access the Sovereign OS.
           </div>
           <button
@@ -185,13 +192,15 @@ export const GavelHero: React.FC<{
   if (error) {
     return (
       <div style={baseStyle}>
-        <div style={{
-          color: theme.colors.error,
-          fontFamily: theme.typography.headlineMedium,
-          fontSize: '1.25rem',
-          textAlign: 'center',
-          padding: '2rem',
-        }}>
+        <div
+          style={{
+            color: theme.colors.error,
+            fontFamily: theme.typography.headlineMedium,
+            fontSize: '1.25rem',
+            textAlign: 'center',
+            padding: '2rem',
+          }}
+        >
           {error}
         </div>
       </div>
@@ -202,15 +211,17 @@ export const GavelHero: React.FC<{
     <div style={baseStyle}>
       {/* Loading overlay */}
       {!loaded && (
-        <div style={{
-          position: 'absolute',
-          zIndex: 10,
-          fontFamily: theme.typography.displayLarge,
-          fontSize: '1.5rem',
-          color: theme.colors.onSurface,
-          opacity: 0.6,
-          animation: 'pulse 2s ease-in-out infinite',
-        }}>
+        <div
+          style={{
+            position: 'absolute',
+            zIndex: 10,
+            fontFamily: theme.typography.displayLarge,
+            fontSize: '1.5rem',
+            color: theme.colors.onSurface,
+            opacity: 0.6,
+            animation: 'pulse 2s ease-in-out infinite',
+          }}
+        >
           Loading V19 Archon-Bun OS...
         </div>
       )}
@@ -228,15 +239,17 @@ export const GavelHero: React.FC<{
       />
 
       {/* HUD overlay */}
-      <div style={{
-        position: 'absolute',
-        top: 20,
-        left: 20,
-        fontSize: '0.75rem',
-        opacity: 0.4,
-        color: theme.colors.onSurface,
-        fontFamily: 'monospace',
-      }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 20,
+          left: 20,
+          fontSize: '0.75rem',
+          opacity: 0.4,
+          color: theme.colors.onSurface,
+          fontFamily: 'monospace',
+        }}
+      >
         UID: {firebaseUid?.slice(0, 12)}... | Ledger: Authorized | V19 Archon
       </div>
 

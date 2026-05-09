@@ -79,7 +79,7 @@ export const captureLead = onRequest(
   },
   async (request, response) => {
     // App Check attestation gate
-    if (!await verifyAppCheck(request, response)) return;
+    if (!(await verifyAppCheck(request, response))) return;
 
     // We only accept POST requests for lead capture
     if (request.method !== 'POST') {
@@ -156,7 +156,7 @@ export const captureContact = onRequest(
   },
   async (request, response) => {
     // App Check attestation gate
-    if (!await verifyAppCheck(request, response)) return;
+    if (!(await verifyAppCheck(request, response))) return;
 
     if (request.method !== 'POST') {
       response.status(405).json({ error: 'Method Not Allowed' });
@@ -194,7 +194,7 @@ export const analyticalWebhook = onRequest(
   },
   async (request, response) => {
     // App Check attestation gate
-    if (!await verifyAppCheck(request, response)) return;
+    if (!(await verifyAppCheck(request, response))) return;
 
     if (request.method !== 'POST') {
       response.status(405).json({ error: 'Method Not Allowed' });

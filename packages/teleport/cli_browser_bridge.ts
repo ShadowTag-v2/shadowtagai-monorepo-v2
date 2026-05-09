@@ -7,7 +7,7 @@
  * This module: Pub/Sub fallback for Cloud Run deployments.
  */
 
-import { PubSub, type Message } from '@google-cloud/pubsub';
+import { type Message, PubSub } from '@google-cloud/pubsub';
 
 const PROJECT_ID = 'shadowtag-omega-v4';
 const TELEPORT_TOPIC = 'teleport-commands';
@@ -36,12 +36,10 @@ export class TeleportationProtocol {
       timestamp: Date.now(),
     };
 
-    const messageId = await this.pubsub
-      .topic(TELEPORT_TOPIC)
-      .publishMessage({
-        data: Buffer.from(JSON.stringify(command)),
-        attributes: { action, source: 'cli' },
-      });
+    const messageId = await this.pubsub.topic(TELEPORT_TOPIC).publishMessage({
+      data: Buffer.from(JSON.stringify(command)),
+      attributes: { action, source: 'cli' },
+    });
 
     console.log(`✅ [Teleport] Message ${messageId} published to ${TELEPORT_TOPIC}`);
     return messageId;
@@ -55,18 +53,13 @@ export class TeleportationProtocol {
       timestamp: Date.now(),
     };
 
-    return this.pubsub
-      .topic(TELEPORT_TOPIC)
-      .publishMessage({
-        data: Buffer.from(JSON.stringify(command)),
-        attributes: { action, source: 'browser' },
-      });
+    return this.pubsub.topic(TELEPORT_TOPIC).publishMessage({
+      data: Buffer.from(JSON.stringify(command)),
+      attributes: { action, source: 'browser' },
+    });
   }
 
-  listenForCommands(
-    subscriptionName: string,
-    handler: (command: TeleportCommand) => void,
-  ): void {
+  listenForCommands(subscriptionName: string, handler: (command: TeleportCommand) => void): void {
     const subscription = this.pubsub.subscription(subscriptionName);
 
     subscription.on('message', (message: Message) => {

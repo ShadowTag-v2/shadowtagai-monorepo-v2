@@ -1,6 +1,6 @@
 'use client';
+import { doc, increment, onSnapshot, runTransaction } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
-import { doc, runTransaction, onSnapshot, increment } from 'firebase/firestore';
 import { db, getAnalyticsInstance } from '@/lib/firebase';
 
 const LS_KEY = 'headfade_votes_v1';
@@ -24,11 +24,19 @@ function seedVotes(i: number) {
 
 function loadLS<T>(key: string, fallback: T): T {
   if (typeof window === 'undefined') return fallback;
-  try { return JSON.parse(localStorage.getItem(key) ?? 'null') ?? fallback; } catch { return fallback; }
+  try {
+    return JSON.parse(localStorage.getItem(key) ?? 'null') ?? fallback;
+  } catch {
+    return fallback;
+  }
 }
 
 function saveLS(key: string, val: unknown) {
-  try { localStorage.setItem(key, JSON.stringify(val)); } catch { /* quota */ }
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+  } catch {
+    /* quota */
+  }
 }
 
 export function useVotes(count: number) {
@@ -38,7 +46,12 @@ export function useVotes(count: number) {
     for (let i = 0; i < count; i++) {
       const uv = saved[i] ?? null;
       const s = seedVotes(i);
-      out[i] = { ...s, voteAI: s.voteAI + (uv === 'ai' ? 1 : 0), voteHuman: s.voteHuman + (uv === 'human' ? 1 : 0), userVote: uv };
+      out[i] = {
+        ...s,
+        voteAI: s.voteAI + (uv === 'ai' ? 1 : 0),
+        voteHuman: s.voteHuman + (uv === 'human' ? 1 : 0),
+        userVote: uv,
+      };
     }
     return out;
   });
@@ -115,7 +128,9 @@ export function useVotes(count: number) {
         else updates.totalHuman = increment(1);
         tx.set(metaRef, updates, { merge: true });
       });
-    } catch { /* offline — local state still correct */ }
+    } catch {
+      /* offline — local state still correct */
+    }
 
     // Analytics — dynamic import; null until first interaction triggers init
     const analytics = getAnalyticsInstance();

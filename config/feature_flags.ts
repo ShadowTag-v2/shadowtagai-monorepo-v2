@@ -35,9 +35,7 @@ const runtimeOverrides: Partial<FeatureFlagConfig> = {};
  * Resolve a flag value through the 4-layer cascade:
  * Runtime > Environment > File (.beads/feature_flags.json) > Defaults
  */
-export function resolveFlag<K extends keyof FeatureFlagConfig>(
-  key: K,
-): FeatureFlagConfig[K] {
+export function resolveFlag<K extends keyof FeatureFlagConfig>(key: K): FeatureFlagConfig[K] {
   // Layer 1: Runtime override
   if (key in runtimeOverrides) {
     return runtimeOverrides[key] as FeatureFlagConfig[K];
@@ -45,9 +43,9 @@ export function resolveFlag<K extends keyof FeatureFlagConfig>(
 
   // Layer 2: Environment variable (e.g., FEATURE_SEMANTIC_ROUTING=false)
   const envKey = `FEATURE_${key}`;
-  const envVal = typeof process !== "undefined" ? process.env[envKey] : undefined;
+  const envVal = typeof process !== 'undefined' ? process.env[envKey] : undefined;
   if (envVal !== undefined) {
-    return (envVal === "true") as FeatureFlagConfig[K];
+    return (envVal === 'true') as FeatureFlagConfig[K];
   }
 
   // Layer 3: Defaults

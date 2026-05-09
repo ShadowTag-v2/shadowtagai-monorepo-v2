@@ -193,7 +193,8 @@ const SEED_VIDEOS = [
     views: '7.3M',
     time: '5d ago',
     // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
-    thumbnail: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&h=340&fit=crop&q=80',
+    thumbnail:
+      'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&h=340&fit=crop&q=80',
     accent: true,
     duration: '28:33',
   },
@@ -221,7 +222,8 @@ const SEED_VIDEOS = [
     views: '5.4M',
     time: '1w ago',
     // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
-    thumbnail: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&h=340&fit=crop&q=80',
+    thumbnail:
+      'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&h=340&fit=crop&q=80',
     duration: '23:09',
   },
 ];
@@ -350,10 +352,7 @@ export default function HeadfadeHomepage() {
       `}</style>
 
       {/* Auth Wall Modal */}
-      <AuthWallModal
-        isOpen={authWallOpen}
-        onClose={() => setAuthWallOpen(false)}
-      />
+      <AuthWallModal isOpen={authWallOpen} onClose={() => setAuthWallOpen(false)} />
 
       <div className="min-h-screen" style={{ backgroundColor: brand.bg, color: brand.textPrimary }}>
         {/* ── Sticky Header ── */}
@@ -368,7 +367,13 @@ export default function HeadfadeHomepage() {
                 aria-label="Open menu"
                 className="p-2 hover:bg-[#f2f2f2] rounded-full transition-colors"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -378,7 +383,13 @@ export default function HeadfadeHomepage() {
                 </svg>
               </button>
               <div className="flex items-center gap-2 cursor-pointer select-none">
-                <svg viewBox="0 0 32 32" className="w-8 h-8" fill="none" aria-label="HeadFade logo" role="img">
+                <svg
+                  viewBox="0 0 32 32"
+                  className="w-8 h-8"
+                  fill="none"
+                  aria-label="HeadFade logo"
+                  role="img"
+                >
                   <title>HeadFade</title>
                   <rect width="32" height="32" rx="8" fill="#7C3AED" />
                   <path
@@ -413,7 +424,13 @@ export default function HeadfadeHomepage() {
                     borderLeft: `1px solid ${brand.border}`,
                   }}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -441,7 +458,13 @@ export default function HeadfadeHomepage() {
                 className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-[13px] font-bold text-white transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#7C3AED,#0891B2)' }}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <title>Upload icon</title>
                   <path
                     strokeLinecap="round"
@@ -479,7 +502,9 @@ export default function HeadfadeHomepage() {
               >
                 Vote Now ↓
               </span>
-              <span className="text-[13px]" style={{ color: 'rgba(255,255,255,0.88)' }}>AI Presumed Videos — Only You Can Tell</span>
+              <span className="text-[13px]" style={{ color: 'rgba(255,255,255,0.88)' }}>
+                AI Presumed Videos — Only You Can Tell
+              </span>
             </div>
             <div className="flex items-center gap-4 text-[12px] text-white/80">
               <span>
@@ -648,7 +673,9 @@ export default function HeadfadeHomepage() {
                       boxShadow: isActive ? `0 2px 12px ${cat.color}55` : 'none',
                     }}
                   >
-                    <span className="cat-glyph text-[15px]" aria-hidden="true">{cat.glyph}</span>
+                    <span className="cat-glyph text-[15px]" aria-hidden="true">
+                      {cat.glyph}
+                    </span>
                     {cat.label}
                   </button>
                 );

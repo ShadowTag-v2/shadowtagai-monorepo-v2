@@ -8,11 +8,11 @@
  *
  * Usage: bun run scripts/archive_legacy.ts [--dry-run] [--verbose]
  */
-import { existsSync, mkdirSync, renameSync, writeFileSync, readFileSync } from 'fs';
-import { join, basename, extname } from 'path';
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'fs';
+import { basename, extname, join } from 'path';
 
-const WORKSPACE = process.env.WORKSPACE_ROOT
-  || '/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball';
+const WORKSPACE =
+  process.env.WORKSPACE_ROOT || '/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball';
 const ARCHIVE_DIR = join(WORKSPACE, '.archive', 'legacy');
 const MANIFEST_PATH = join(ARCHIVE_DIR, 'archive_manifest.json');
 

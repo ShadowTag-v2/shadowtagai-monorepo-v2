@@ -63,9 +63,7 @@ export function Tile({
 
   const handleTimeUpdate = () => {
     if (videoRef.current?.duration) {
-      setProgressPercent(
-        (videoRef.current.currentTime / videoRef.current.duration) * 100,
-      );
+      setProgressPercent((videoRef.current.currentTime / videoRef.current.duration) * 100);
     }
   };
 
@@ -123,7 +121,10 @@ export function Tile({
 
         {/* Video scrub progress bar */}
         {isHovering && hoverVideo && (
-          <div className="absolute bottom-0 left-0 right-0 h-[3px] z-20" style={{ backgroundColor: 'rgba(255,255,255,0.3)' }}>
+          <div
+            className="absolute bottom-0 left-0 right-0 h-[3px] z-20"
+            style={{ backgroundColor: 'rgba(255,255,255,0.3)' }}
+          >
             <div
               className="h-full transition-[width] duration-100"
               style={{ width: `${progressPercent}%`, backgroundColor: '#7C3AED' }}
@@ -133,20 +134,31 @@ export function Tile({
 
         {/* Duration badge */}
         {duration && !isHovering && (
-          <div aria-hidden="true" className="absolute bottom-2 right-2 bg-black/80 text-white text-[12px] px-1.5 py-0.5 rounded font-medium z-10">
+          <div
+            aria-hidden="true"
+            className="absolute bottom-2 right-2 bg-black/80 text-white text-[12px] px-1.5 py-0.5 rounded font-medium z-10"
+          >
             {duration}
           </div>
         )}
 
         {/* Trending badge */}
         {accent && (
-          <span aria-hidden="true" className="absolute top-2 left-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm shadow-sm z-10" style={{ backgroundColor: '#7C3AED' }}>
+          <span
+            aria-hidden="true"
+            className="absolute top-2 left-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm shadow-sm z-10"
+            style={{ backgroundColor: '#7C3AED' }}
+          >
             TRENDING
           </span>
         )}
 
         {/* AI Presumed badge — top right */}
-        <div aria-hidden="true" className="absolute top-2 right-2 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ backgroundColor: 'rgba(124,58,237,0.85)' }}>
+        <div
+          aria-hidden="true"
+          className="absolute top-2 right-2 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white"
+          style={{ backgroundColor: 'rgba(124,58,237,0.85)' }}
+        >
           <span>🤖</span> AI Presumed
         </div>
       </button>
@@ -154,7 +166,10 @@ export function Tile({
       {/* ── VOTE SECTION — always visible below thumbnail ── */}
       <div
         className="px-2 pt-2 pb-2.5 flex flex-col gap-1.5 rounded-b-xl"
-        style={{ backgroundColor: 'rgba(10,15,30,0.06)', borderTop: '1px solid rgba(124,58,237,0.15)' }}
+        style={{
+          backgroundColor: 'rgba(10,15,30,0.06)',
+          borderTop: '1px solid rgba(124,58,237,0.15)',
+        }}
       >
         {/* Vote distribution bar — always shown */}
         <div className="flex flex-col gap-0.5">
@@ -165,12 +180,19 @@ export function Tile({
           >
             <div
               className="h-full transition-[width] duration-500 rounded-full"
-              style={{ width: `${aiPct}%`, backgroundColor: userVote ? '#A78BFA' : 'rgba(167,139,250,0.45)' }}
+              style={{
+                width: `${aiPct}%`,
+                backgroundColor: userVote ? '#A78BFA' : 'rgba(167,139,250,0.45)',
+              }}
             />
           </div>
           <div className="flex justify-between text-[10px]" style={{ color: '#4D627A' }}>
-            <span>🤖 {aiPct}% AI{userVote ? ` (${voteAI.toLocaleString()})` : ''}</span>
-            <span>👤 {humanPct}% Human{userVote ? ` (${voteHuman.toLocaleString()})` : ''}</span>
+            <span>
+              🤖 {aiPct}% AI{userVote ? ` (${voteAI.toLocaleString()})` : ''}
+            </span>
+            <span>
+              👤 {humanPct}% Human{userVote ? ` (${voteHuman.toLocaleString()})` : ''}
+            </span>
           </div>
         </div>
 
@@ -181,7 +203,10 @@ export function Tile({
             id={`vote-ai-${title.replace(/\s+/g, '-').toLowerCase().slice(0, 20)}`}
             aria-label="AI-Made"
             aria-pressed={userVote === 'ai'}
-            onClick={(e) => { e.stopPropagation(); onVote('ai'); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onVote('ai');
+            }}
             className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all active:scale-95"
             style={{
               backgroundColor: userVote === 'ai' ? '#7C3AED' : 'rgba(124,58,237,0.12)',
@@ -196,7 +221,10 @@ export function Tile({
             id={`vote-human-${title.replace(/\s+/g, '-').toLowerCase().slice(0, 20)}`}
             aria-label="Human"
             aria-pressed={userVote === 'human'}
-            onClick={(e) => { e.stopPropagation(); onVote('human'); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onVote('human');
+            }}
             className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all active:scale-95"
             style={{
               backgroundColor: userVote === 'human' ? '#0891B2' : 'rgba(8,145,178,0.12)',
@@ -230,10 +258,11 @@ export function Tile({
           </div>
         )}
 
-        <div
-          className="flex flex-col min-w-0 flex-1"
-        >
-          <h3 className="font-semibold text-[13px] leading-[18px] line-clamp-2" style={{ color: '#0A2540' }}>
+        <div className="flex flex-col min-w-0 flex-1">
+          <h3
+            className="font-semibold text-[13px] leading-[18px] line-clamp-2"
+            style={{ color: '#0A2540' }}
+          >
             {title}
           </h3>
           <div className="mt-0.5 flex flex-col text-[12px]" style={{ color: '#4D627A' }}>
@@ -251,9 +280,14 @@ export function Tile({
           aria-label={`More options for ${title}`}
           className="self-start mt-0.5 p-2 rounded-full transition-colors opacity-0 group-hover:opacity-100"
           style={{ color: '#4D627A' }}
-          onClick={(e) => { e.stopPropagation(); }}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
         >
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><title>More options</title><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <title>More options</title>
+            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+          </svg>
         </button>
       </div>
     </div>
