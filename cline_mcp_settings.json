@@ -41,8 +41,8 @@
       "env": {
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
         "SPANNER_PROJECT": "shadowtag-omega-v4",
-        "SPANNER_INSTANCE": "core-cluster",
-        "SPANNER_DATABASE": "shadowtag-db"
+        "SPANNER_INSTANCE": "uphill-core-cluster",
+        "SPANNER_DATABASE": "uphill-core-db"
       },
       "disabled": false,
       "autoApprove": ["spanner_list_tables", "spanner_get_schema", "spanner_query"]
@@ -53,8 +53,8 @@
       "env": {
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
         "SPANNER_PROJECT": "shadowtag-omega-v4",
-        "SPANNER_INSTANCE": "core-cluster",
-        "SPANNER_DATABASE": "shadowtag-db",
+        "SPANNER_INSTANCE": "uphill-core-cluster",
+        "SPANNER_DATABASE": "uphill-core-db",
         "SPANNER_DIALECT": "googlesql"
       },
       "disabled": false,
