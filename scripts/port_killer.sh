@@ -126,10 +126,10 @@ find_zombies() {
             local days hrs
             days=$(echo "$etime" | cut -d- -f1)
             hrs=$(echo "$etime" | cut -d- -f2 | cut -d: -f1)
-            hours=$((days * 24 + hrs))
+            hours=$((10#$days * 24 + 10#$hrs))
         elif echo "$etime" | grep -cqE '^[0-9]+:[0-9]+:[0-9]+$' > /dev/null 2>&1; then
             # HH:MM:SS format
-            hours=$(echo "$etime" | cut -d: -f1)
+            hours=$((10#$(echo "$etime" | cut -d: -f1)))
         fi
 
         if [ "$hours" -ge "$age_hours" ] 2>/dev/null; then
@@ -161,9 +161,9 @@ kill_zombies() {
             local days hrs
             days=$(echo "$etime" | cut -d- -f1)
             hrs=$(echo "$etime" | cut -d- -f2 | cut -d: -f1)
-            hours=$((days * 24 + hrs))
+            hours=$((10#$days * 24 + 10#$hrs))
         elif echo "$etime" | grep -cqE '^[0-9]+:[0-9]+:[0-9]+$' > /dev/null 2>&1; then
-            hours=$(echo "$etime" | cut -d: -f1)
+            hours=$((10#$(echo "$etime" | cut -d: -f1)))
         fi
 
         if [ "$hours" -ge "$age_hours" ] 2>/dev/null; then
