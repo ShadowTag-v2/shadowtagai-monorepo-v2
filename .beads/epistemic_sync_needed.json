@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-05-09T08:15:35Z",
-  "commit": "6451b48d3aa3fed715fa705aa0555ba6c0d9be45",
-  "changed_docs": ["docs/OMNI_BOOT_V22.md", "docs/SYSTEM_OVERRIDE.md", "monorepo_manifest.yaml"],
+  "timestamp": "2026-05-09T10:31:14Z",
+  "commit": "bfd5161d38f0a45ea2018dba9c89066707728e62",
+  "changed_docs": ["docs/OMNI_BOOT_V23.md", "monorepo_manifest.yaml"],
   "action": "re-upload_to_epistemic_engine",
   "store": "fileSearchStores/uphillsnowballarchitecture-r0dt6v412dh1"
 }

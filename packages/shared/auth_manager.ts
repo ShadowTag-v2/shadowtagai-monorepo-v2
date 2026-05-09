@@ -2,17 +2,30 @@
  * V23 Firebase Dynamic Import — Canonical Auth Manager
  * Static Firebase imports are BANNED to protect P100 Lighthouse scores.
  * All auth access MUST go through this dynamic loader.
+ *
+ * NOTE: This is a shared utility. Consumers must call `initAuthManager(app)`
+ * with their own Firebase App instance before using any auth functions.
+ * Example: `initAuthManager(app)` where `app` comes from firebase.ts.
  */
 
-import { app } from './firebase_app_init';
+import type { FirebaseApp } from 'firebase/app';
 
-let authInstance: ReturnType<typeof import('firebase/auth').getAuth> | null = null;
+// biome-ignore lint/suspicious/noExplicitAny: Auth type unavailable without static import
+let authInstance: any | null = null;
+let _app: FirebaseApp | null = null;
+
+/** Initialize the auth manager with a Firebase App instance */
+export function initAuthManager(app: FirebaseApp): void {
+  _app = app;
+}
 
 export async function getAuthInstance() {
+  if (!_app) {
+    throw new Error('Auth manager not initialized. Call initAuthManager(app) first.');
+  }
   if (!authInstance) {
     const { getAuth } = await import('firebase/auth');
-    authInstance = getAuth(app);
-    console.log("V23 Phosphor-Shift: Firebase Auth dynamically loaded. Lighthouse P100 preserved.");
+    authInstance = getAuth(_app);
   }
   return authInstance;
 }
