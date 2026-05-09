@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #!/bin/bash
 # fork-all-antigravity.sh
 # Mass fork all repositories listed in config/antigravity_repos.json
@@ -53,41 +52,3 @@ done
 
 echo "🎉 Mass Fork Operation Complete!"
 ||||||| merged common ancestors
-=======
-#!/bin/bash
-# scripts/fork-all-antigravity.sh
-# Mass fork script for all identified repos
-
-set -e
-
-CONFIG_FILE="config/antigravity_repos.json"
-GITHUB_USER="ehanc69"
-
-if [ ! -f "$CONFIG_FILE" ]; then
-    echo "Config file not found: $CONFIG_FILE"
-    exit 1
-fi
-
-# Read cleaned repos
-REPOS=$(cat "$CONFIG_FILE" | sed 's/github.com\///')
-
-echo "Starting mass fork of $(echo "$REPOS" | wc -l) repositories..."
-
-count=0
-for REPO in $REPOS; do
-    # Check if we already have it (skip check to save API calls, gh repo fork handles it gracefully usually)
-    # But to be safe and avoid "already exists" errors spamming, we can just try and ignore error.
-
-    echo "Forking $REPO... ($count)"
-    gh repo fork "$REPO" --clone=false --org "$GITHUB_USER" 2>/dev/null || echo "  - Skipped/Failed $REPO"
-
-    count=$((count+1))
-    # Rate limiting: 2 seconds sleep
-    sleep 2
-
-    # Optional: limit for testing
-    # if [ $count -ge 10 ]; then break; fi
-done
-
-echo "Forking process finished."
->>>>>>> upstream/claude/gptram-integration-01

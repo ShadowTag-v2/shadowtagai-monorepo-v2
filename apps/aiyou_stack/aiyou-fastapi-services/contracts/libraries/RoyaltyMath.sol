@@ -41,24 +41,15 @@ library RoyaltyMath {
 
             address parent = parentOf[current];
 
-<<<<<<< HEAD
             // If no parent, stop
             if (parent == address(0)) {
 ||||||| f285896f1
             // If no parent or we reached the Overlord, stop
             if (parent == address(0) || parent == overlord) {
-=======
-            // If no parent, current keeps remaining (or burn? assuming keep)
-            if (parent == address(0)) {
-                claimedCents[current] += remaining;
-                emit RoyaltyPaid(current, remaining, uint8(i));
-                totalPaid += remaining;
->>>>>>> feature/n-autoresearch/Kosmos/BioAgentss-integration
                 break;
             }
 
             uint16 bps = baseRoyaltyBps[current];
-<<<<<<< HEAD
             if (bps > 0) {
                 uint256 cut = (remaining * bps) / 10000;
                 if (cut > 0) {
@@ -86,15 +77,6 @@ library RoyaltyMath {
                 claimedCents[parent] += cut;
                 totalPaid += cut;
                 remaining -= cut;
-=======
-            uint256 cut = (remaining * bps) / 10000;
-
-            if (cut > 0) {
-                claimedCents[current] += cut;
-                emit RoyaltyPaid(current, cut, uint8(i));
-                totalPaid += cut;
-                remaining -= cut;
->>>>>>> feature/n-autoresearch/Kosmos/BioAgentss-integration
             }
 
             current = parent;

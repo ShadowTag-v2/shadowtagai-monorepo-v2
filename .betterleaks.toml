@@ -68,6 +68,39 @@ title = "Monorepo-Uphillsnowball Betterleaks Config"
     # OpenClaw Discord: bundled SDK dist (NOT our Discord app)
     '''libs/cyberpunk_stack/openclaw/dist/''',
 
+    # ── Vendored / cached / archived paths ──
+    '''\.venv-3\.14-bak/''',
+    '''_archive_redundant_''',
+    '''turbopack/''',
+    '''\.sst$''',
+    '''scratch/repos/''',
+    '''apps/.*/out/''',
+    '''apps/.*/public/dev/cache/''',
+    # Documentation (contains referenced API keys in audit reports)
+    '''docs/AUDIT_REPORT\.md''',
+    '''docs/overview\.txt''',
+    # Legacy server session logs
+    '''apps/aiyou_stack/.*/server_log_.*\.txt''',
+    # Conflict resolution utility scripts
+    '''resolve_json\.py''',
+    '''resolve_validate\.py''',
+    '''resolve_yaml\.py''',
+    '''scripts/resolve_conflicts\.py''',
+    # Firebase client config (publishable keys, safe to commit)
+    '''apps/.*/\.env\.local''',
+    '''apps/.*/src/lib/firebase\.ts''',
+    # Test files with mock/fixture secrets
+    '''tests/test_block_allow_engine\.py''',
+    '''tests/test_secret_scanner\.py''',
+    '''tests/test_vcr_fixtures\.py''',
+    '''tests/unit/''',
+    # HeadFade PWA firebase config (publishable keys)
+    '''apps/headfade/pwa/''',
+    # .gitleaks.toml contains regex patterns that match detection rules
+    '''\.gitleaks\.toml''',
+    # Backed-up virtualenvs
+    '''\.venv-.*-bak/''',
+
     # Migrated from .betterleaksignore (False Positives)
     '''\.semgrep/rules/llm-owasp\.yaml''',
     '''libs/steel/sentinel\.py''',

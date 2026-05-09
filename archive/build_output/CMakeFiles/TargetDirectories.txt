@@ -1,0 +1,2 @@
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/build/CMakeFiles/edit_cache.dir
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/build/CMakeFiles/rebuild_cache.dir

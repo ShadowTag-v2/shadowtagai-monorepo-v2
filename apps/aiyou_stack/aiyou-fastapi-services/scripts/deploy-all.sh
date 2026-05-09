@@ -68,7 +68,6 @@ get_configuration() {
         REGION=${REGION:-us-central1}
     fi
 
-<<<<<<< HEAD
     # Anthropic removed - no longer needed
     # if [ -z "$ANTHROPIC_PROJECT_ID" ]; then
     #     read -p "Enter Anthropic Vertex Project ID: " ANTHROPIC_PROJECT_ID
@@ -80,37 +79,6 @@ get_configuration() {
         read -p "Enter Anthropic Vertex Project ID: " ANTHROPIC_PROJECT_ID
     fi
 
-=======
->>>>>>> feature/n-autoresearch/Kosmos/BioAgents-integration
-    export PROJECT_ID
-    export REGION
-
-    log_success "Configuration loaded"
-}
-
-# Deploy infrastructure
-deploy_infrastructure() {
-    log_info "Deploying infrastructure with Terraform..."
-
-    cd terraform
-
-    # Create tfvars if it doesn't exist
-    if [ ! -f terraform.tfvars ]; then
-        cat > terraform.tfvars <<EOF
-<<<<<<< HEAD
-project_id  = "$PROJECT_ID"
-region      = "$REGION"
-environment = "production"
-||||||| f285896f1
-project_id                  = "$PROJECT_ID"
-region                      = "$REGION"
-anthropic_vertex_project_id = "$ANTHROPIC_PROJECT_ID"
-environment                 = "production"
-=======
-project_id                  = "$PROJECT_ID"
-region                      = "$REGION"
-environment                 = "production"
->>>>>>> feature/n-autoresearch/Kosmos/BioAgents-integration
 EOF
         log_info "Created terraform.tfvars"
     fi
