@@ -137,18 +137,29 @@ def check_dirty_files(report: HealthReport) -> None:
 
 def check_conflict_markers(report: HealthReport) -> None:
     """Gate 2: Check for merge conflict markers."""
+    # Files that intentionally contain conflict markers as documentation examples
+    conflict_false_positives = {
+        "libs/autoresearch_sources/Kosmos/archived/bug-fixes-2025-11-19/MERGE_CONFLICT_STRATEGY.md",
+    }
     r = _run(["git", "grep", "-l", "^<<<<<<<", "--", "apps", "libs", "scripts", "docs"])
     if r.returncode == 0 and r.stdout.strip():
-        for line in r.stdout.strip().splitlines()[:10]:
+        real_conflicts = []
+        for line in r.stdout.strip().splitlines():
+            fpath = line.split(":")[0]
+            if fpath not in conflict_false_positives:
+                real_conflicts.append(fpath)
+        for fpath in real_conflicts[:10]:
             report.findings.append(
                 Finding(
                     "conflicts",
                     Severity.CRITICAL,
                     "Merge conflict marker found",
-                    path=line.split(":")[0],
+                    path=fpath,
                     fix="Resolve merge conflicts manually",
                 )
             )
+        if not real_conflicts:
+            report.findings.append(Finding("conflicts", Severity.INFO, "No conflict markers found"))
     else:
         report.findings.append(Finding("conflicts", Severity.INFO, "No conflict markers found"))
 
@@ -166,6 +177,9 @@ def check_secrets(report: HealthReport) -> None:
             )
         )
         return
+    report_path = Path("/tmp/repo_doctor_secrets.json")
+    # Delete stale report to avoid reading previous run's findings
+    report_path.unlink(missing_ok=True)
     _run(
         [
             str(betterleaks),
@@ -175,13 +189,14 @@ def check_secrets(report: HealthReport) -> None:
             "--report-format",
             "json",
             "--report-path",
-            "/tmp/repo_doctor_secrets.json",
+            str(report_path),
             ".",
         ]
     )
     try:
-        with open("/tmp/repo_doctor_secrets.json") as f:
+        with open(report_path) as f:
             findings = json.load(f)
+        # betterleaks writes null when no leaks are found
         if findings:
             report.findings.append(
                 Finding(
